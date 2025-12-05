@@ -186,6 +186,7 @@ const MapField = ({
                 handleMultiPointChange={handleMultiPointChange}
                 inputType={question.input_type}
                 data={value}
+                questionId={question.id}
               />
             ) : (
               <DesktopTabletView
@@ -197,6 +198,7 @@ const MapField = ({
                 handleSinglePointChange={handleSinglePointChange}
                 data={value}
                 handleMultiPointChange={handleMultiPointChange}
+                questionId={question.id}
               />
             )}
           </>

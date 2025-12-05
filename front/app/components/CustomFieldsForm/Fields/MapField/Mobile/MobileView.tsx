@@ -38,6 +38,7 @@ type Props = {
   handleMultiPointChange?: (points: number[][] | undefined) => void;
   inputType: MapInputType;
   data?: GeoJSON.Point | GeoJSON.LineString | GeoJSON.Polygon | undefined;
+  questionId: string;
 };
 
 const MobileView = ({
@@ -48,6 +49,7 @@ const MobileView = ({
   handleMultiPointChange,
   inputType,
   data,
+  questionId,
 }: Props) => {
   const theme = useTheme();
   const locale = useLocale();
@@ -125,7 +127,7 @@ const MobileView = ({
             }}
           />
           <EsriMap
-            id="mobilePreviewMap"
+            id={`mobile-map-${questionId}`}
             height="180px"
             layers={mapLayers}
             initialData={{

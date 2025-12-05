@@ -118,6 +118,8 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
               coordinates: [defaultLatLng[1], defaultLatLng[0]],
             },
             zoom_level: defaultZoom.toString(),
+            tile_provider:
+              appConfig?.data?.attributes?.settings?.maps?.tile_provider,
           },
           {
             onSuccess: (newProjectMapConfig) => {
@@ -187,7 +189,11 @@ const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
     return null;
   }
 
-  if ((isLoadingFieldConfig && mapConfigId) || isLoadingRawFields) {
+  if (
+    !appConfig ||
+    (isLoadingFieldConfig && mapConfigId) ||
+    isLoadingRawFields
+  ) {
     return (
       <Box my="24px">
         <Spinner />

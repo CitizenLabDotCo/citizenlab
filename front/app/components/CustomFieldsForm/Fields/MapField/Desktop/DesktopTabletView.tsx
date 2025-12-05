@@ -41,6 +41,7 @@ type Props = {
   handleSinglePointChange: (point: GeoJSON.Point | undefined) => void;
   handleMultiPointChange?: (points: number[][] | undefined) => void;
   data: GeoJSON.Point | GeoJSON.LineString | GeoJSON.Polygon | undefined;
+  questionId: string;
 };
 
 const DesktopView = ({
@@ -52,6 +53,7 @@ const DesktopView = ({
   handleMultiPointChange,
   mapView,
   data,
+  questionId,
 }: Props) => {
   const theme = useTheme();
   const locale = useLocale();
@@ -165,7 +167,7 @@ const DesktopView = ({
         )}
         <>
           <EsriMap
-            id="e2e-point-control-map"
+            id={`desktop-map-${questionId}`}
             height="420px"
             layers={mapLayers}
             initialData={{
