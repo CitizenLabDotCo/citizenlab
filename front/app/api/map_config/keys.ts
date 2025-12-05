@@ -6,16 +6,17 @@ const mapConfigKeys = {
   all: () => [baseKey],
   items: () => [{ ...baseKey, operation: 'item' }],
   item: ({
+    id,
+
     projectId,
-    mapConfigId,
   }: {
     projectId?: string | null;
-    mapConfigId?: string | null;
+    id?: string | null;
   }) => [
     {
       ...baseKey,
       operation: 'item',
-      parameters: { projectId, mapConfigId },
+      parameters: { projectId, id },
     },
   ],
 } satisfies QueryKeys;

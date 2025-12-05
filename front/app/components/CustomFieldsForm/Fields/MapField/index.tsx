@@ -47,6 +47,10 @@ const MapField = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
+  // Get map configuration to use for this question
+  const { data: customMapConfig, isLoading: isLoadingMapConfig } =
+    useMapConfigById(question.map_config_id);
+
   const {
     formState: { errors: formContextErrors },
     control,
@@ -85,9 +89,6 @@ const MapField = ({
   // State variables
   const [mapView, setMapView] = useState<MapView | null>(null);
 
-  // Get map configuration to use for this question
-  const { data: customMapConfig, isLoading: isLoadingMapConfig } =
-    useMapConfigById(question.map_config_id);
   const { data: projectMapConfig } = useProjectMapConfig(projectId);
 
   // If we dont have a custom map config, fall back to the project map config
