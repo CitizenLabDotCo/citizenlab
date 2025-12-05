@@ -7,6 +7,7 @@ import {
   Accordion,
   Title,
   colors,
+  Badge,
 } from '@citizenlab/cl2-component-library';
 
 import useFileTranscript from 'api/file_transcript/useFileTranscript';
@@ -39,6 +40,18 @@ const Timecode = ({ timecode, onClick }) => {
     >
       {timecodeFormat(timecode)}
     </Text>
+  );
+};
+
+const BetaBadge = () => {
+  const { formatMessage } = useIntl();
+
+  return (
+    <Badge color={colors.coolGrey600} className="inverse">
+      <Box display="flex" justifyContent="center" alignItems="center" gap="6px">
+        {formatMessage(messages.beta)}
+      </Box>
+    </Badge>
   );
 };
 
@@ -128,10 +141,11 @@ const FileTranscription = ({
       <Box pt="12px" display="flex">
         {(transcriptionStatus === 'pending' ||
           transcriptionStatus === 'processing') && (
-          <Box ml="4px" display="flex">
+          <Box ml="4px" display="flex" gap="4px">
             <Centerer width="32px">
               <Spinner size="16px" />
             </Centerer>
+            <BetaBadge />
             {formatMessage(messages.transcriptionPending)}
           </Box>
         )}
@@ -185,6 +199,7 @@ const FileTranscription = ({
           {fileTranscript?.data.attributes.assemblyai_transcript
             ?.utterances && (
             <Box mt="8px">
+              <BetaBadge />
               {fileTranscript.data.attributes.assemblyai_transcript.utterances.map(
                 (utterance, index) => (
                   <Box

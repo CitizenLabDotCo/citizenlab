@@ -1,8 +1,3 @@
-\restrict mgZkyDgtCjSLKfZxRhtiC7mYUyUSQRU7ovUCL1fQC2LD80zlZxvwlHvNXgkKxoK
-
--- Dumped from database version 16.6 (Debian 16.6-1.pgdg110+1)
--- Dumped by pg_dump version 16.10 (Debian 16.10-1.pgdg13+1)
-
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -380,6 +375,8 @@ DROP INDEX IF EXISTS public.index_email_campaigns_campaign_email_commands_on_rec
 DROP INDEX IF EXISTS public.index_dismissals_on_campaign_name_and_user_id;
 DROP INDEX IF EXISTS public.index_custom_forms_on_participation_context;
 DROP INDEX IF EXISTS public.index_custom_fields_on_resource_type_and_resource_id;
+DROP INDEX IF EXISTS public.index_custom_fields_on_resource_id_and_ordering_unique;
+DROP INDEX IF EXISTS public.index_custom_fields_on_ordering;
 DROP INDEX IF EXISTS public.index_custom_field_options_on_custom_field_id_and_key;
 DROP INDEX IF EXISTS public.index_custom_field_options_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_custom_field_option_images_on_custom_field_option_id;
@@ -1748,7 +1745,8 @@ CREATE TABLE public.phases (
     similarity_threshold_body double precision DEFAULT 0.4,
     similarity_enabled boolean DEFAULT true NOT NULL,
     vote_term character varying DEFAULT 'vote'::character varying,
-    voting_min_selected_options integer DEFAULT 1 NOT NULL
+    voting_min_selected_options integer DEFAULT 1 NOT NULL,
+    voting_filtering_enabled boolean DEFAULT false NOT NULL
 );
 
 
@@ -3608,9 +3606,9 @@ CREATE TABLE public.topics (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     ordering integer,
-    code character varying DEFAULT 'custom'::character varying NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
-    include_in_onboarding boolean DEFAULT false NOT NULL
+    include_in_onboarding boolean DEFAULT false NOT NULL,
+    "default" boolean DEFAULT false NOT NULL
 );
 
 
@@ -5306,6 +5304,20 @@ CREATE INDEX index_custom_field_options_on_custom_field_id ON public.custom_fiel
 --
 
 CREATE UNIQUE INDEX index_custom_field_options_on_custom_field_id_and_key ON public.custom_field_options USING btree (custom_field_id, key);
+
+
+--
+-- Name: index_custom_fields_on_ordering; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_custom_fields_on_ordering ON public.custom_fields USING btree (ordering) WHERE (resource_id IS NULL);
+
+
+--
+-- Name: index_custom_fields_on_resource_id_and_ordering_unique; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_custom_fields_on_resource_id_and_ordering_unique ON public.custom_fields USING btree (resource_id, ordering);
 
 
 --
@@ -8022,11 +8034,12 @@ ALTER TABLE ONLY public.ideas_topics
 -- PostgreSQL database dump complete
 --
 
-\unrestrict mgZkyDgtCjSLKfZxRhtiC7mYUyUSQRU7ovUCL1fQC2LD80zlZxvwlHvNXgkKxoK
-
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251124000000'),
+('20251120113747'),
+('20251029135211'),
 ('20251022100725'),
 ('20251022100724'),
 ('20251022100723'),

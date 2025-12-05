@@ -1192,7 +1192,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "Custom",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "Κείμενο κουμπιού",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "Σύνδεσμος κουμπιού",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "Προεπιλεγμένη ετικέτα",
   "app.containers.AdminPage.SettingsPage.delete": "Delete",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Delete",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Αυτό θα διαγράψει την ετικέτα από όλες τις υπάρχουσες δημοσιεύσεις. Αυτή η αλλαγή θα εφαρμοστεί σε όλα τα έργα.",

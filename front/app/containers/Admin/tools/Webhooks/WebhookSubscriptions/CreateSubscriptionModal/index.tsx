@@ -9,18 +9,19 @@ import useProjects from 'api/projects/useProjects';
 import { WEBHOOK_EVENTS } from 'api/webhook_subscriptions/types';
 import useAddWebhookSubscription from 'api/webhook_subscriptions/useAddWebhookSubscription';
 
+import useLocalize from 'hooks/useLocalize';
+
 import Feedback from 'components/HookForm/Feedback';
 import Input from 'components/HookForm/Input';
 import MultipleSelect from 'components/HookForm/MultipleSelect';
 import Select from 'components/HookForm/Select';
 import Toggle from 'components/HookForm/Toggle';
 
-import useLocalize from 'hooks/useLocalize';
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
-import messages from '../messages';
 import SecretTokenDisplay from '../components/SecretTokenDisplay';
+import messages from '../messages';
 
 interface FormValues {
   name: string;

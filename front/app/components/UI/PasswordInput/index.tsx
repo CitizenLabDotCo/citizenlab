@@ -21,6 +21,8 @@ export interface Props {
   placeholder?: string;
   isLoginPasswordInput?: boolean;
   errors?: PasswordErrors;
+  ariaInvalid?: boolean;
+  ariaDescribedBy?: string;
 }
 
 export const DEFAULT_MINIMUM_PASSWORD_LENGTH = 8;
@@ -44,6 +46,8 @@ const PasswordInput = ({
   placeholder,
   isLoginPasswordInput,
   errors,
+  ariaInvalid,
+  ariaDescribedBy,
 }: Props) => {
   const { data: appConfig } = useAppConfiguration();
 
@@ -64,6 +68,8 @@ const PasswordInput = ({
         placeholder={placeholder}
         isLoginPasswordInput={isLoginPasswordInput}
         errors={errors}
+        ariaInvalid={ariaInvalid}
+        ariaDescribedBy={ariaDescribedBy}
       />
     );
   }

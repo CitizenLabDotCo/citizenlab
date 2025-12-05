@@ -8,10 +8,6 @@ FactoryBot.define do
 
     sequence(:title_multiloc) { |n| locales.index_with { |l| "Topic #{n} (#{l})" } }
     sequence(:description_multiloc) { |n| locales.index_with { |l| "Topic-#{n} description (#{l})" } }
-    sequence(:code) do |n|
-      nb_codes = Topic::DEFAULT_CODES.length
-      Topic::DEFAULT_CODES[(n - 1) % nb_codes] # Looping over the codes.
-    end
 
     icon { 'medical' }
 
@@ -38,9 +34,5 @@ FactoryBot.define do
     factory :topic_economy do
       title_multiloc { { 'en' => 'Economy' } }
     end
-  end
-
-  factory :custom_topic, parent: :topic do
-    code { 'custom' }
   end
 end

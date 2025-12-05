@@ -977,7 +977,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "Custom",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "Button text",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "Button link",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "Default tag",
   "app.containers.AdminPage.SettingsPage.delete": "Delete",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Delete",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "This will delete the tag from all existing posts. This change will apply to all projects.",

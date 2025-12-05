@@ -3,7 +3,7 @@
 class WebApi::V1::PermissionsController < ApplicationController
   include LockedUserCustomFieldsConcern
 
-  before_action :set_permission, only: %i[show update reset requirements schema custom_fields custom_field_options access_denied_explanation]
+  before_action :set_permission, only: %i[show update reset requirements custom_fields custom_field_options access_denied_explanation]
   skip_before_action :authenticate_user
 
   def index
@@ -57,12 +57,6 @@ class WebApi::V1::PermissionsController < ApplicationController
     render json: raw_json(json_requirements), status: :ok
   end
 
-  def schema
-    authorize @permission
-    fields = user_requirements_service.requirements_custom_fields @permission
-    render json: raw_json(user_ui_and_json_multiloc_schemas(fields))
-  end
-
   def custom_fields
     authorize @permission
     fields = user_requirements_service.requirements_custom_fields @permission
@@ -98,12 +92,6 @@ class WebApi::V1::PermissionsController < ApplicationController
     ).serializable_hash
   end
 
-  def user_ui_and_json_multiloc_schemas(fields)
-    json_schemas = JsonFormsService.new.user_ui_and_json_multiloc_schemas(fields)
-    mark_locked_json_forms_fields(json_schemas) if current_user
-    json_schemas
-  end
-
   def permissions_update_service
     @permissions_update_service ||= Permissions::PermissionsUpdateService.new
   end
@@ -135,28 +123,6 @@ class WebApi::V1::PermissionsController < ApplicationController
       group_ids: [],
       access_denied_explanation_multiloc: CL2_SUPPORTED_LOCALES
     )
-  end
-
-  # lock any fields locked by verification method(s)
-  def mark_locked_json_forms_fields(schemas)
-    locked_custom_fields = Verification::VerificationService.new.locked_custom_fields(current_user).map(&:to_s)
-
-    # Mark fields as locked & read only
-    schemas[:ui_schema_multiloc].each_value do |ui_schema|
-      ui_schema[:elements]
-        .select { |e| locked_custom_fields.any? { |field| e[:scope].end_with?(field) } }
-        .each_with_index do |element, index|
-        ui_schema[:elements][index] = element.merge(options: element[:options].to_h.merge(readonly: true, verificationLocked: true))
-      end
-    end
-
-    # Mark fields as required (if not already required)
-    schemas[:json_schema_multiloc].each_value do |json_schema|
-      json_schema[:required] = [] if json_schema[:required].nil?
-      locked_custom_fields.each do |locked_field|
-        json_schema[:required] << locked_field if json_schema[:required].exclude?(locked_field)
-      end
-    end
   end
 end
 

@@ -5,7 +5,7 @@ const baseKey = { type: 'summary' };
 const summariesKeys = {
   all: () => [baseKey],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ id }: { id: string }) => [
+  item: ({ id }: { id?: string }) => [
     { ...baseKey, operation: 'item', parameters: { id } },
   ],
 } satisfies QueryKeys;

@@ -12,7 +12,9 @@ import messages from './messages';
 const EsriKeyInput = lazy(() => import('./Esri/EsriKeyInput'));
 const PowerBITemplates = lazy(() => import('./PowerBI/PowerBITemplates'));
 const PublicAPITokens = lazy(() => import('./PublicAPI/PublicAPITokens'));
-const WebhookSubscriptions = lazy(() => import('./Webhooks/WebhookSubscriptions'));
+const WebhookSubscriptions = lazy(
+  () => import('./Webhooks/WebhookSubscriptions')
+);
 const Tools = lazy(() => import('./'));
 
 export enum toolRoutes {

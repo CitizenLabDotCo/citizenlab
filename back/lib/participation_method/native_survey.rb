@@ -12,6 +12,10 @@ module ParticipationMethod
       'native_survey'
     end
 
+    def phase_insights_class
+      Insights::NativeSurveyPhaseInsightsService
+    end
+
     def allowed_extra_field_input_types
       ALLOWED_EXTRA_FIELD_TYPES
     end
