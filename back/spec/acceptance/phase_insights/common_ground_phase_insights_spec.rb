@@ -94,9 +94,9 @@ resource 'Phase insights' do
         common_ground: {
           associated_ideas: 4,
           ideas_posted: 2,
-          ideas_posted_last_7_days: 1,
+          ideas_posted_rolling_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) = 0% change
           reactions: 1,
-          reactions_last_7_days: 1
+          reactions_rolling_7_day_change: 'last_7_days_compared_with_zero' # from 0 (in week before last) to 1 (in last 7 days) => avoid division by zero
         }
       })
 
