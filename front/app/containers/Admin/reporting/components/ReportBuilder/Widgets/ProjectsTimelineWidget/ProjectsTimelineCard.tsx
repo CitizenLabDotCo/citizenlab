@@ -13,6 +13,7 @@ import {
   ProjectSortableParam,
 } from 'api/projects_mini_admin/types';
 
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import { getStatusColor } from 'containers/Admin/projects/all/_shared/utils';
@@ -61,6 +62,7 @@ const ProjectsTimelineCard = ({
 }: ProjectsTimelineCardProps) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const locale = useLocale();
   const { data, isLoading } = useProjectsTimeline({
     start_at: undefined,
     end_at: undefined,
@@ -74,6 +76,7 @@ const ProjectsTimelineCard = ({
     visibility,
     discoverability,
     sort,
+    locale,
     no_of_projects: noOfProjects,
   });
 

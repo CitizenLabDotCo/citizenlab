@@ -1,6 +1,6 @@
 module ReportBuilder
   class Queries::Projects < ReportBuilder::Queries::Base
-    def run_query(start_at: nil, end_at: nil, publication_statuses: ['published'], **_other_props)
+    def run_query(start_at: nil, end_at: nil, publication_statuses: ['published'], sort: nil, locale: 'en', **_other_props)
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
 
       overlapping_project_ids = Phase
@@ -12,6 +12,8 @@ module ReportBuilder
         .where(id: overlapping_project_ids)
         .where(admin_publication: { publication_status: publication_statuses })
         .not_hidden
+
+      overlapping_projects = apply_sorting(overlapping_projects, sort, locale)
 
       periods = Phase
         .select(
@@ -47,6 +49,16 @@ module ReportBuilder
     end
 
     private
+
+    def apply_sorting(scope, sort, locale)
+      return scope unless sort
+
+      ProjectsFinderAdminService.execute(
+        scope,
+        { sort: sort, locale: locale },
+        current_user: @current_user
+      )
+    end
 
     def serialize(entity, serializer)
       serializer.new(entity, params: { current_user: @current_user }).serializable_hash[:data]
