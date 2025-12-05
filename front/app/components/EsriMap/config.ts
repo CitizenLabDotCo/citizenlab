@@ -39,8 +39,14 @@ export const configureMapView = (
   // sometimes use a different projection and need this specific handling.
   //
   // Setting mapView.scale ensures consistent map zooming behavior across all projections.
-  const spatialReferenceId = mapView.center.spatialReference.wkid;
-  if (spatialReferenceId !== 3857 && spatialReferenceId !== 4326) {
+  // Note: In rare cases during initialization, center might not be set yet. Skip this check if so.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const spatialReferenceId = mapView.center?.spatialReference?.wkid;
+  if (
+    spatialReferenceId &&
+    spatialReferenceId !== 3857 &&
+    spatialReferenceId !== 4326
+  ) {
     mapView.scale = calculateScaleFromZoom(zoomLevel);
   }
 
