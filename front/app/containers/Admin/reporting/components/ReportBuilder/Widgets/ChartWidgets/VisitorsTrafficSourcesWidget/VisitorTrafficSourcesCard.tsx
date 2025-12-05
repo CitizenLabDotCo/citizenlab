@@ -7,6 +7,7 @@ import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 import { ProjectId, DatesStrings } from 'components/admin/GraphCards/typings';
 import ReferrerListLink from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/RefferListLink';
 import TableModal from 'components/admin/GraphCards/VisitorsTrafficSourcesCard/TableModal';
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 import NoData from '../../_shared/NoData';
 import messages from '../messages';
@@ -26,7 +27,9 @@ const VisitorsTrafficSourcesCard = ({
   startAt,
   endAt,
   view = 'chart',
-}: Props) => {
+  ariaLabel,
+  ariaDescribedBy,
+}: Props & AccessibilityProps) => {
   const { pieData, tableData } = useVisitorReferrerTypes({
     projectId,
     startAt,
@@ -37,6 +40,10 @@ const VisitorsTrafficSourcesCard = ({
 
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
+  const accessibilityProps = {
+    ariaLabel,
+    ariaDescribedBy,
+  };
 
   if (!pieData || !tableData) {
     return <NoData message={messages.noData} />;
@@ -51,7 +58,7 @@ const VisitorsTrafficSourcesCard = ({
         pb="10px"
       >
         {view === 'chart' ? (
-          <Chart pieData={pieData} layout={layout} />
+          <Chart pieData={pieData} layout={layout} {...accessibilityProps} />
         ) : (
           <>
             <Table tableData={tableData} />
