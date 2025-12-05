@@ -174,6 +174,22 @@ const FilterSelector = ({
       if (willOpen && onOpen) {
         onOpen();
       }
+      if (willOpen) {
+        // check first window zoom level to avoid scrolling issues
+        if (window.devicePixelRatio > 2) return willOpen;
+        setTimeout(() => {
+          const container = document.getElementById(
+            id ? id : 'e2e-events-section-project-page'
+          );
+          if (container) {
+            window.scrollTo({
+              top: container.getBoundingClientRect().top + window.scrollY - 200,
+              behavior: 'smooth',
+            });
+          }
+        }, 150);
+      }
+
       return willOpen;
     });
   };
