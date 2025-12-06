@@ -85,9 +85,10 @@ module Insights
       return 0.0 if voting_participations.empty?
 
       online_picks_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.sum { |p| p[:ideas_count] }
-      online_picks_previous_7_days = voting_participations.select do |p|
+      picks_in_previous_7_days = voting_participations.select do |p|
         p[:acted_at] >= 14.days.ago && p[:acted_at] < 7.days.ago
-      end.sum { |p| p[:ideas_count] }
+      end
+      online_picks_previous_7_days = picks_in_previous_7_days.sum { |p| p[:ideas_count] }
 
       percentage_change(online_picks_previous_7_days, online_picks_last_7_days)
     end
@@ -99,9 +100,10 @@ module Insights
       return 0.0 if voting_participations.empty?
 
       online_votes_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.sum { |p| p[:votes] }
-      online_votes_previous_7_days = voting_participations.select do |p|
+      votes_in_previous_7_days = voting_participations.select do |p|
         p[:acted_at] >= 14.days.ago && p[:acted_at] < 7.days.ago
-      end.sum { |p| p[:votes] }
+      end
+      online_votes_previous_7_days = votes_in_previous_7_days.sum { |p| p[:votes] }
 
       percentage_change(online_votes_previous_7_days, online_votes_last_7_days)
     end
