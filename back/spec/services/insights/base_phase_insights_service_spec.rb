@@ -58,7 +58,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
           participants: 3,
           participants_rolling_7_day_change: 50.0, # From 2 (7 to 14 days ago) to 3 (last 7-day period) unique participants = 50% increase
           engagement_rate: 0.75,
-          engagement_rate_rolling_7_day_change: 49.9 # engagement_rate_last_7_days: 1.0, engagement_rate_last_14_to_8_days: 0.667 = (((1 - 0.667).to_f / 0.667) * 100.0).round(1)
+          engagement_rate_rolling_7_day_change: 49.9 # engagement_rate_last_7_days: 1.0, engagement_rate_previous_7_days: 0.667 = (((1 - 0.667).to_f / 0.667) * 100.0).round(1)
         }
       )
     end

@@ -97,7 +97,7 @@ resource 'Phase insights' do
         participants: 3,
         participants_rolling_7_day_change: 100.0, # from 1 (in week before last) to 2 unique participants (in last 7 days) = 100% increase
         engagement_rate: 0.75,
-        engagement_rate_rolling_7_day_change: 0.0, # engagement_rate_last_7_days: 1.0, engagement_rate_last_14_to_8_days: 1.0 = 0% change
+        engagement_rate_rolling_7_day_change: 0.0, # engagement_rate_last_7_days: 1.0, engagement_rate_previous_7_days: 1.0 = 0% change
         ideation: {
           ideas_posted: 2,
           ideas_posted_rolling_7_day_change: 'last_7_days_compared_with_zero', # from 0 (in week before last) to 1 (in last 7 days) => avoid division by zero

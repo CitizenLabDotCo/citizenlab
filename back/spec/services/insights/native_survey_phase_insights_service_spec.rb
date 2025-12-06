@@ -148,7 +148,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
         submitted_surveys: 2,
         submitted_surveys_rolling_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) = 0% change
         completion_rate: 1.0,
-        completion_rate_rolling_7_day_change: 0.0 # completion_rate_last_7_days: 1.0, completion_rate_last_14_to_8_days: 1.0 = 0% change
+        completion_rate_rolling_7_day_change: 0.0 # completion_rate_last_7_days: 1.0, completion_rate_previous_7_days: 1.0 = 0% change
       })
     end
   end

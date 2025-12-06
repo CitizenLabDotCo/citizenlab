@@ -54,7 +54,7 @@ module Insights
           p[:acted_at] >= 7.days.ago
         end.pluck(:participant_id).uniq.count
 
-        participants_last_14_to_8_days_count = flattened_participations.select do |p|
+        participants_previous_7_days_count = flattened_participations.select do |p|
           p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
         end.pluck(:participant_id).uniq.count
 
@@ -62,20 +62,20 @@ module Insights
           v[:acted_at] >= 7.days.ago
         end.pluck(:visitor_id).uniq.count
 
-        visitors_last_14_to_8_days_count = visits.select do |v|
+        visitors_previous_7_days_count = visits.select do |v|
           v[:acted_at] < 7.days.ago && v[:acted_at] >= 14.days.ago
         end.pluck(:visitor_id).uniq.count
 
         engagement_rate_last_7_days = visitors_last_7_days_count > 0 ? (participants_last_7_days_count.to_f / visitors_last_7_days_count).round(3) : 0
-        engagement_rate_last_14_to_8_days = visitors_last_14_to_8_days_count > 0 ? (participants_last_14_to_8_days_count.to_f / visitors_last_14_to_8_days_count).round(3) : 0
+        engagement_rate_previous_7_days = visitors_previous_7_days_count > 0 ? (participants_previous_7_days_count.to_f / visitors_previous_7_days_count).round(3) : 0
 
         {
           visitors: unique_visitors,
-          visitors_rolling_7_day_change: percentage_change(visitors_last_14_to_8_days_count, visitors_last_7_days_count),
+          visitors_rolling_7_day_change: percentage_change(visitors_previous_7_days_count, visitors_last_7_days_count),
           participants: total_participant_count,
-          participants_rolling_7_day_change: percentage_change(participants_last_14_to_8_days_count, participants_last_7_days_count),
+          participants_rolling_7_day_change: percentage_change(participants_previous_7_days_count, participants_last_7_days_count),
           engagement_rate: unique_visitors > 0 ? (total_participant_count.to_f / unique_visitors).round(3) : 0,
-          engagement_rate_rolling_7_day_change: percentage_change(engagement_rate_last_14_to_8_days, engagement_rate_last_7_days)
+          engagement_rate_rolling_7_day_change: percentage_change(engagement_rate_previous_7_days, engagement_rate_last_7_days)
         }
       else
         {
@@ -120,12 +120,12 @@ module Insights
       return 0.0 if participations.empty?
 
       participations_last_7_days_count = participations.select { |p| p[:acted_at] >= 7.days.ago }
-      participations_last_14_to_8_days_count = participations.select do |p|
+      participations_previous_7_days_count = participations.select do |p|
         p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
       end
 
       percentage_change(
-        participations_last_14_to_8_days_count.count,
+        participations_previous_7_days_count.count,
         participations_last_7_days_count.count
       )
     end

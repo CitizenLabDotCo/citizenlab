@@ -90,7 +90,7 @@ resource 'Phase insights' do
         participants: 2,
         participants_rolling_7_day_change: 100.0, # from 1 (in week before last) to 2 unique participants (in last 7 days) = 100% increase
         engagement_rate: 0.667,
-        engagement_rate_rolling_7_day_change: 100.0, # engagement_rate_last_7_days: 1.0, engagement_rate_last_14_to_8_days: 0.5 = (((1.0 - 0.5).to_f / 0.5) * 100.0).round(1)
+        engagement_rate_rolling_7_day_change: 100.0, # engagement_rate_last_7_days: 1.0, engagement_rate_previous_7_days: 0.5 = (((1.0 - 0.5).to_f / 0.5) * 100.0).round(1)
         common_ground: {
           associated_ideas: 4,
           ideas_posted: 2,

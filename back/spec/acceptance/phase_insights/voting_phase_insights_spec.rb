@@ -125,17 +125,17 @@ resource 'Phase insights' do
         participants: 5,
         participants_rolling_7_day_change: 50.0, # from 3 (in week before last) to 5 unique participants (in last 7 days) = 50% increase
         engagement_rate: 0.833,
-        engagement_rate_rolling_7_day_change: 20.0, # engagement_rate_last_7_days: 0.6, engagement_rate_last_14_to_8_days: 0.5 = (((0.6 - 0.5).to_f / 0.5) * 100.0).round(1)
+        engagement_rate_rolling_7_day_change: 20.0, # engagement_rate_last_7_days: 0.6, engagement_rate_previous_7_days: 0.5 = (((0.6 - 0.5).to_f / 0.5) * 100.0).round(1)
         voting: {
           voting_method: 'multiple_voting',
           online_votes: 6,
-          online_votes_last_7_days: 1,
+          online_votes_rolling_7_day_change: 0.0, # from 3 (in week before last) to 3 (in last 7 days) = 0% change
           offline_votes: 3,
           voters: 3,
-          voters_last_7_days: 1,
+          voters_rolling_7_day_change: 0.0, # from 2 (in week before last) to 2 unique voters (in last 7 days) = 0% change
           associated_ideas: 3,
           comments_posted: 3,
-          comments_posted_last_7_days: 2
+          comments_posted_rolling_7_day_change: 100.0 # from 1 (in week before last) to 2 (in last 7 days) = 100% increase
         }
       })
     end
@@ -160,17 +160,17 @@ resource 'Phase insights' do
           participants: 5,
           participants_rolling_7_day_change: 50.0, # from 3 (in week before last) to 5 unique participants (in last 7 days) = 50% increase
           engagement_rate: 0.833,
-          engagement_rate_rolling_7_day_change: 20.0, # engagement_rate_last_7_days: 0.6, engagement_rate_last_14_to_8_days: 0.5 = (((0.6 - 0.5).to_f / 0.5) * 100.0).round(1)
+          engagement_rate_rolling_7_day_change: 20.0, # engagement_rate_last_7_days: 0.6, engagement_rate_previous_7_days: 0.5 = (((0.6 - 0.5).to_f / 0.5) * 100.0).round(1)
           voting: {
             voting_method: 'budgeting',
             online_picks: 4,
-            online_picks_last_7_days: 1,
+            online_picks_rolling_7_day_change: 0.0, # from 2 (in week before last) to 2 (in last 7 days) = 0% change
             offline_picks: 3,
             voters: 3,
-            voters_last_7_days: 1,
+            voters_rolling_7_day_change: 0.0, # from 2 (in week before last) to 2 unique voters (in last 7 days) = 0% change
             associated_ideas: 3,
             comments_posted: 3,
-            comments_posted_last_7_days: 2
+            comments_posted_rolling_7_day_change: 100.0 # from 1 (in week before last) to 2 (in last 7 days) = 100% increase
           }
         })
 
