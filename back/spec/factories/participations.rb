@@ -130,6 +130,25 @@ FactoryBot.define do
     end
   end
 
+  factory :taking_poll_participation, parent: :participation do
+    initialize_with do
+      participation_user = user || create(:user)
+      response = create(:poll_response, user: participation_user)
+      acted_at_time = acted_at || response.created_at
+      participant_id ||= response.user_id
+      custom_field_values = user_custom_field_values.presence || response.user.custom_field_values || {}
+
+      {
+        item_id: response.id,
+        action: 'taking_poll',
+        acted_at: acted_at_time,
+        classname: 'Response',
+        participant_id: participant_id,
+        user_custom_field_values: custom_field_values
+      }
+    end
+  end
+
   # Alias basket_participation as the default participation
   factory :participation_default, parent: :basket_participation
 end
