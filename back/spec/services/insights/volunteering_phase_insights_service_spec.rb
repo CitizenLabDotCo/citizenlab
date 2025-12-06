@@ -66,4 +66,23 @@ RSpec.describe Insights::VolunteeringPhaseInsightsService do
       ])
     end
   end
+
+  describe 'phase_participation_method_metrics' do
+    let(:user1) { create(:user) }
+    let(:participation1) { create(:volunteering_participation, acted_at: 10.days.ago, user: user1) }
+    let(:participation2) { create(:volunteering_participation, acted_at: 5.days.ago, user: user1) }
+
+    let(:participations) do
+      { volunteering: [participation1, participation2] }
+    end
+
+    it 'calculates the correct metrics' do
+      metrics = service.send(:phase_participation_method_metrics, participations)
+
+      expect(metrics).to eq({
+        volunteerings: 2,
+        volunteerings_rolling_7_day_change: 0.0 # from 1 (in week before last) to 1 (in last 7 days) = 0% change
+      })
+    end
+  end
 end

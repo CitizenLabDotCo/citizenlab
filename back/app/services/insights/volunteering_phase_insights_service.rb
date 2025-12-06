@@ -24,13 +24,9 @@ module Insights
     end
 
     def phase_participation_method_metrics(participations)
-      volunteerings = participations[:volunteering] || []
-      volunteerings_total = volunteerings.count
-      volunteerings_last_7_days = volunteerings.count { |p| p[:acted_at] >= 7.days.ago }
-
       {
-        volunteerings: volunteerings_total,
-        volunteerings_last_7_days: volunteerings_last_7_days
+        volunteerings: participations[:volunteering].count,
+        volunteerings_rolling_7_day_change: participations_rolling_7_day_change(participations[:volunteering])
       }
     end
   end

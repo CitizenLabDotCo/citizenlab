@@ -80,7 +80,7 @@ resource 'Phase insights' do
         engagement_rate_rolling_7_day_change: 0.0, # engagement_rate_last_7_days: 1.0, engagement_rate_last_14_to_8_days: 1.0 = 0% change
         volunteering: {
           volunteerings: 3,
-          volunteerings_last_7_days: 1
+          volunteerings_rolling_7_day_change: 0.0 # from 1 (in week before last) to 1 (in last 7 days) = 0% change
         }
       })
 
