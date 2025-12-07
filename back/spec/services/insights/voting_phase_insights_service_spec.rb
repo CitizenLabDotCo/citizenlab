@@ -91,12 +91,12 @@ RSpec.describe Insights::VotingPhaseInsightsService do
 
       expect(metrics).to eq({
         voting_method: phase.voting_method,
+        associated_ideas: 2,
         online_votes: 5,
         online_votes_rolling_7_day_change: 50.0, # from 2 (in week before last) to 3 (in last 7 days) = 50% increase
         offline_votes: phase.manual_votes_count,
         voters: 1,
         voters_rolling_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) = 0% change
-        associated_ideas: 2,
         comments_posted: 2,
         comments_posted_rolling_7_day_change: 0.0 # from 1 (in week before last) to 1 (in last 7 days) = 0% change
       })

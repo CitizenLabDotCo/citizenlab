@@ -33,24 +33,24 @@ module Insights
       if @phase.voting_method == 'budgeting'
         {
           voting_method: 'budgeting',
+          associated_ideas: associated_published_ideas_count,
           online_picks: participations[:voting].sum { |p| p[:ideas_count] },
           online_picks_rolling_7_day_change: online_picks_rolling_7_day_change(participations),
           offline_picks: @phase.manual_votes_count,
           voters: participations[:voting].pluck(:participant_id).uniq.count,
           voters_rolling_7_day_change: common_rolling_7_day_changes[:voters_rolling_7_day_change],
-          associated_ideas: associated_published_ideas_count,
           comments_posted: participations[:commenting_idea].count,
           comments_posted_rolling_7_day_change: common_rolling_7_day_changes[:comments_posted_rolling_7_day_change]
         }
       else
         {
           voting_method: @phase.voting_method,
+          associated_ideas: associated_published_ideas_count,
           online_votes: participations[:voting].sum { |p| p[:votes] },
           online_votes_rolling_7_day_change: online_votes_rolling_7_day_change(participations),
           offline_votes: @phase.manual_votes_count,
           voters: participations[:voting].pluck(:participant_id).uniq.count,
           voters_rolling_7_day_change: common_rolling_7_day_changes[:voters_rolling_7_day_change],
-          associated_ideas: associated_published_ideas_count,
           comments_posted: participations[:commenting_idea].count,
           comments_posted_rolling_7_day_change: common_rolling_7_day_changes[:comments_posted_rolling_7_day_change]
         }
