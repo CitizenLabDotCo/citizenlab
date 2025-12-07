@@ -45,48 +45,47 @@ module Insights
     end
 
     def base_metrics(participations, participant_ids, visits)
-      total_participant_count = participant_ids.count
-      flattened_participations = participations.values.flatten
       unique_visitors = visits.pluck(:visitor_id).uniq.count
+      unique_participants = participant_ids.count
+      base_rolling_7_day_changes = base_rolling_7_day_changes(participations, visits)
 
-      if phase_has_run_more_than_14_days?
-        participants_last_7_days_count = flattened_participations.select do |p|
-          p[:acted_at] >= 7.days.ago
-        end.pluck(:participant_id).uniq.count
+      {
+        visitors: unique_visitors,
+        visitors_rolling_7_day_change: base_rolling_7_day_changes[:visitors_rolling_7_day_change],
+        participants: unique_participants,
+        participants_rolling_7_day_change: base_rolling_7_day_changes[:participants_rolling_7_day_change],
+        engagement_rate: unique_visitors > 0 ? (unique_participants.to_f / unique_visitors).round(3) : 0,
+        engagement_rate_rolling_7_day_change: base_rolling_7_day_changes[:engagement_rate_rolling_7_day_change]
+      }
+    end
 
-        participants_previous_7_days_count = flattened_participations.select do |p|
-          p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
-        end.pluck(:participant_id).uniq.count
+    def base_rolling_7_day_changes(participations, visits)
+      flattened_participations = participations.values.flatten
 
-        visitors_last_7_days_count = visits.select do |v|
-          v[:acted_at] >= 7.days.ago
-        end.pluck(:visitor_id).uniq.count
+      participants_last_7_days_count = flattened_participations.select do |p|
+        p[:acted_at] >= 7.days.ago
+      end.pluck(:participant_id).uniq.count
 
-        visitors_previous_7_days_count = visits.select do |v|
-          v[:acted_at] < 7.days.ago && v[:acted_at] >= 14.days.ago
-        end.pluck(:visitor_id).uniq.count
+      participants_previous_7_days_count = flattened_participations.select do |p|
+        p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
+      end.pluck(:participant_id).uniq.count
 
-        engagement_rate_last_7_days = visitors_last_7_days_count > 0 ? (participants_last_7_days_count.to_f / visitors_last_7_days_count).round(3) : 0
-        engagement_rate_previous_7_days = visitors_previous_7_days_count > 0 ? (participants_previous_7_days_count.to_f / visitors_previous_7_days_count).round(3) : 0
+      visitors_last_7_days_count = visits.select do |v|
+        v[:acted_at] >= 7.days.ago
+      end.pluck(:visitor_id).uniq.count
 
-        {
-          visitors: unique_visitors,
-          visitors_rolling_7_day_change: percentage_change(visitors_previous_7_days_count, visitors_last_7_days_count),
-          participants: total_participant_count,
-          participants_rolling_7_day_change: percentage_change(participants_previous_7_days_count, participants_last_7_days_count),
-          engagement_rate: unique_visitors > 0 ? (total_participant_count.to_f / unique_visitors).round(3) : 0,
-          engagement_rate_rolling_7_day_change: percentage_change(engagement_rate_previous_7_days, engagement_rate_last_7_days)
-        }
-      else
-        {
-          visitors: unique_visitors,
-          visitors_rolling_7_day_change: nil,
-          participants: total_participant_count,
-          participants_rolling_7_day_change: nil,
-          engagement_rate: unique_visitors > 0 ? (total_participant_count.to_f / unique_visitors).round(3) : 0,
-          engagement_rate_rolling_7_day_change: nil
-        }
-      end
+      visitors_previous_7_days_count = visits.select do |v|
+        v[:acted_at] < 7.days.ago && v[:acted_at] >= 14.days.ago
+      end.pluck(:visitor_id).uniq.count
+
+      engagement_rate_last_7_days = visitors_last_7_days_count > 0 ? (participants_last_7_days_count.to_f / visitors_last_7_days_count).round(3) : 0
+      engagement_rate_previous_7_days = visitors_previous_7_days_count > 0 ? (participants_previous_7_days_count.to_f / visitors_previous_7_days_count).round(3) : 0
+
+      {
+        visitors_rolling_7_day_change: percentage_change(visitors_previous_7_days_count, visitors_last_7_days_count),
+        participants_rolling_7_day_change: percentage_change(participants_previous_7_days_count, participants_last_7_days_count),
+        engagement_rate_rolling_7_day_change: percentage_change(engagement_rate_previous_7_days, engagement_rate_last_7_days)
+      }
     end
 
     def phase_has_run_more_than_14_days?
@@ -119,14 +118,14 @@ module Insights
       return nil unless phase_has_run_more_than_14_days?
       return 0.0 if participations.empty?
 
-      participations_last_7_days_count = participations.select { |p| p[:acted_at] >= 7.days.ago }
-      participations_previous_7_days_count = participations.select do |p|
+      participations_last_7_days = participations.select { |p| p[:acted_at] >= 7.days.ago }
+      participations_previous_7_days = participations.select do |p|
         p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
       end
 
       percentage_change(
-        participations_previous_7_days_count.count,
-        participations_last_7_days_count.count
+        participations_previous_7_days.count,
+        participations_last_7_days.count
       )
     end
 
