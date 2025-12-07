@@ -76,8 +76,8 @@ resource 'Phase insights' do
         visitors_rolling_7_day_change: 0.0, # from 1 (in week before last) to 1 unique visitor (in last 7 days) = 0% change
         participants: 2,
         participants_rolling_7_day_change: 0.0, # from 1 (in week before last) to 1 unique participant (in last 7 days) = 0% change
-        engagement_rate: 1.0,
-        engagement_rate_rolling_7_day_change: 0.0, # engagement_rate_last_7_days: 1.0, engagement_rate_previous_7_days: 1.0 = 0% change
+        participation_rate: 1.0,
+        participation_rate_rolling_7_day_change: 0.0, # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 1.0 = 0% change
         volunteering: {
           volunteerings: 3,
           volunteerings_rolling_7_day_change: 0.0 # from 1 (in week before last) to 1 (in last 7 days) = 0% change

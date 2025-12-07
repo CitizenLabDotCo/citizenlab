@@ -109,8 +109,8 @@ resource 'Phase insights' do
         visitors_rolling_7_day_change: -50.0, # from 2 (in week before last) to 1 unique visitor (in last 7 days) = -50% decrease
         participants: 2,
         participants_rolling_7_day_change: -50.0, # from 2 (in week before last) to 1 unique participant (in last 7 days) = -50% decrease
-        engagement_rate: 0.667,
-        engagement_rate_rolling_7_day_change: 0.0, # engagement_rate_last_7_days: 1.0, engagement_rate_previous_7_days: 1.0 = 0% change
+        participation_rate: 0.667,
+        participation_rate_rolling_7_day_change: 0.0, # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 1.0 = 0% change
         native_survey: {
           submitted_surveys: 2,
           submitted_surveys_rolling_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) = 0% change

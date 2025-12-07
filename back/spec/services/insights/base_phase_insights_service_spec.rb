@@ -57,8 +57,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
           visitors_rolling_7_day_change: 0.0, # From 3 (7 to 14 days ago) to 3 (last 7-day period) unique visitors = 0% change
           participants: 3,
           participants_rolling_7_day_change: 50.0, # From 2 (7 to 14 days ago) to 3 (last 7-day period) unique participants = 50% increase
-          engagement_rate: 0.75,
-          engagement_rate_rolling_7_day_change: 49.9 # engagement_rate_last_7_days: 1.0, engagement_rate_previous_7_days: 0.667 = (((1 - 0.667).to_f / 0.667) * 100.0).round(1)
+          participation_rate: 0.75,
+          participation_rate_rolling_7_day_change: 49.9 # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 0.667 = (((1 - 0.667).to_f / 0.667) * 100.0).round(1)
         }
       )
     end
