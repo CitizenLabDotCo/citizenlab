@@ -33,35 +33,14 @@ module Insights
       submitted_survey_participations = participations[:posting_idea]&.select { |p| p[:survey_submitted_at].present? } || []
       total_submitted_surveys = submitted_survey_participations.count
       completion_rate = completion_rate(posted_ideas_count, total_submitted_surveys)
+      rolling_7_day_changes = rolling_7_day_changes(participations)
 
-      if phase_has_run_more_than_14_days?
-        ideas_last_7_days_count = participations[:posting_idea].count { |p| p[:acted_at] >= 7.days.ago }
-        ideas_previous_7_days_count = participations[:posting_idea].count do |p|
-          p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
-        end
-
-        submitted_last_7_days_count = submitted_survey_participations.count { |p| p[:survey_submitted_at] >= 7.days.ago }
-        submitted_previous_7_days_count = submitted_survey_participations.count do |p|
-          p[:survey_submitted_at] < 7.days.ago && p[:survey_submitted_at] >= 14.days.ago
-        end
-
-        completion_rate_last_7_days = completion_rate(ideas_last_7_days_count, submitted_last_7_days_count)
-        completion_rate_previous_7_days = completion_rate(ideas_previous_7_days_count, submitted_previous_7_days_count)
-
-        {
-          submitted_surveys: total_submitted_surveys,
-          submitted_surveys_rolling_7_day_change: percentage_change(submitted_previous_7_days_count, submitted_last_7_days_count),
-          completion_rate: completion_rate,
-          completion_rate_rolling_7_day_change: percentage_change(completion_rate_previous_7_days, completion_rate_last_7_days)
-        }
-      else
-        {
-          submitted_surveys: total_submitted_surveys,
-          submitted_surveys_rolling_7_day_change: nil,
-          completion_rate: completion_rate,
-          completion_rate_rolling_7_day_change: nil
-        }
-      end
+      {
+        submitted_surveys: total_submitted_surveys,
+        submitted_surveys_rolling_7_day_change: rolling_7_day_changes[:submitted_surveys_rolling_7_day_change],
+        completion_rate: completion_rate,
+        completion_rate_rolling_7_day_change: rolling_7_day_changes[:completion_rate_rolling_7_day_change]
+      }
     end
 
     def completion_rate(all, submitted)
@@ -70,19 +49,33 @@ module Insights
       (submitted.to_f / all).round(3)
     end
 
-    def submitted_surveys_rolling_7_day_change(participations)
-      return nil unless phase_has_run_more_than_14_days?
-      return 0.0 if participations.empty?
+    def rolling_7_day_changes(participations)
+      result = {
+        submitted_surveys_rolling_7_day_change: nil,
+        completion_rate_rolling_7_day_change: nil
+      }
 
-      participations_last_7_days_count = participations.select { |p| p[:survey_submitted_at] >= 7.days.ago }
-      participations_previous_7_days_count = participations.select do |p|
+      return result unless phase_has_run_more_than_14_days?
+
+      ideas_last_7_days_count = participations[:posting_idea].count { |p| p[:acted_at] >= 7.days.ago }
+      ideas_previous_7_days_count = participations[:posting_idea].count do |p|
+        p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
+      end
+
+      submitted_survey_participations = participations[:posting_idea]&.select { |p| p[:survey_submitted_at].present? } || []
+
+      submitted_last_7_days_count = submitted_survey_participations.count { |p| p[:survey_submitted_at] >= 7.days.ago }
+      submitted_previous_7_days_count = submitted_survey_participations.count do |p|
         p[:survey_submitted_at] < 7.days.ago && p[:survey_submitted_at] >= 14.days.ago
       end
 
-      percentage_change(
-        participations_previous_7_days_count.count,
-        participations_last_7_days_count.count
-      )
+      completion_rate_last_7_days = completion_rate(ideas_last_7_days_count, submitted_last_7_days_count)
+      completion_rate_previous_7_days = completion_rate(ideas_previous_7_days_count, submitted_previous_7_days_count)
+
+      result[:submitted_surveys_rolling_7_day_change] = percentage_change(submitted_previous_7_days_count, submitted_last_7_days_count)
+      result[:completion_rate_rolling_7_day_change] = percentage_change(completion_rate_previous_7_days, completion_rate_last_7_days)
+
+      result
     end
   end
 end
