@@ -27,7 +27,7 @@ describe BulkImportIdeas::Extractors::UserExtractor do
         **base_project_data,
         phases: [{
           idea_rows: [{
-            'Email address' => 'test@example.com',
+            'Email address' => 'moc_elpmaxe_tset@example.com',
             'First name(s)' => 'John',
             'Last name' => 'Doe'
           }]
@@ -37,7 +37,7 @@ describe BulkImportIdeas::Extractors::UserExtractor do
       result_users, = service.send(:extract_project_user_data, projects, users, user_custom_fields)
       expect(result_users.length).to eq(1)
       expect(result_users.first).to include(
-        'Email address' => 'moc_elpmaxe_tset@example.com', # Email is replaced and reversed as we're on test
+        'Email address' => 'moc_elpmaxe_tset@example.com',
         'First name(s)' => 'John',
         'Last name' => 'Doe'
       )

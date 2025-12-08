@@ -2,14 +2,6 @@
 
 module BulkImportIdeas::Extractors
   class UserExtractor < BaseExtractor
-    # Fixed keys for the user fields - match the column names in the users.xlsx file
-    USER_EMAIL = 'Email address'
-    USER_FULL_NAME = 'Full name'
-    USER_FIRST_NAME = 'First name(s)'
-    USER_LAST_NAME = 'Last name'
-    USER_CREATED_AT = 'DateCreated'
-    USER_LAST_ACTIVE_AT = 'LastAccess'
-
     def initialize(locale, config, xlsx_file_path)
       super(locale, config)
       begin
@@ -24,6 +16,10 @@ module BulkImportIdeas::Extractors
     # @param [Array<Hash>] projects output of ProjectExtractor#projects
     def user_details(projects)
       users = @rows
+
+      # SECURITY: Replace email addresses so real emails do not get added to dev or staging environments
+      users = sanitize_emails(users)
+
       user_custom_fields = custom_fields
       users, user_custom_fields = extract_project_user_data(projects, users, user_custom_fields) if projects.any?
 
@@ -107,14 +103,6 @@ module BulkImportIdeas::Extractors
       # Ensure unique custom fields by key
       # TODO: user custom fields is nil?
       user_custom_fields&.uniq! { |field| field[:key] }
-
-      # SECURITY: Replace email addresses so real emails do not get added to dev or staging environments
-      unless Rails.env.production?
-        users = users.map do |user_row|
-          user_row[USER_EMAIL] = "#{user_row[USER_EMAIL]&.gsub(/[@.]/, '_')&.reverse}@example.com"
-          user_row
-        end
-      end
 
       [users, user_custom_fields]
     end
