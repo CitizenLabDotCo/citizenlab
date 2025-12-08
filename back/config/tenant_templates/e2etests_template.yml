@@ -210,99 +210,99 @@ models:
     - &topic-nature
       title_multiloc: topics.nature
       description_multiloc: topics.nature_description
-      code: nature
       ordering: 0
       include_in_onboarding: true
+      default: true
     - &topic-waste
       title_multiloc: topics.waste
       description_multiloc: topics.waste_description
-      code: waste
       ordering: 1
       include_in_onboarding: true
+      default: true
     - &topic-sustainability
       title_multiloc: topics.sustainability
       description_multiloc: topics.sustainability_description
-      code: sustainability
       ordering: 2
       include_in_onboarding: true
+      default: true
     - &topic-mobility
       title_multiloc: topics.mobility
       description_multiloc: topics.mobility_description
-      code: mobility
       ordering: 3
       include_in_onboarding: true
+      default: true
     - &topic-technology
       title_multiloc: topics.technology
       description_multiloc: topics.technology_description
-      code: technology
       ordering: 4
       include_in_onboarding: true
+      default: true
     - &topic-economy
       title_multiloc: topics.economy
       description_multiloc: topics.economy_description
-      code: economy
       ordering: 5
       include_in_onboarding: true
+      default: true
     - &topic-housing
       title_multiloc: topics.housing
       description_multiloc: topics.housing_description
-      code: housing
       ordering: 6
       include_in_onboarding: true
+      default: true
     - &topic-public_space
       title_multiloc: topics.public_space
       description_multiloc: topics.public_space_description
-      code: public_space
       ordering: 7
       include_in_onboarding: true
+      default: true
     - &topic-safety
       title_multiloc: topics.safety
       description_multiloc: topics.safety_description
-      code: safety
       ordering: 8
       include_in_onboarding: true
+      default: true
     - &topic-education
       title_multiloc: topics.education
       description_multiloc: topics.education_description
-      code: education
       ordering: 9
       include_in_onboarding: true
+      default: true
     - &topic-culture
       title_multiloc: topics.culture
       description_multiloc: topics.culture_description
-      code: culture
       ordering: 10
       include_in_onboarding: true
+      default: true
     - &topic-health
       title_multiloc: topics.health
       description_multiloc: topics.health_description
-      code: health
       ordering: 11
       include_in_onboarding: true
+      default: true
     - &topic-inclusion
       title_multiloc: topics.inclusion
       description_multiloc: topics.inclusion_description
-      code: inclusion
       ordering: 12
       include_in_onboarding: true
+      default: true
     - &topic-community
       title_multiloc: topics.community
       description_multiloc: topics.community_description
-      code: community
       ordering: 13
       include_in_onboarding: true
+      default: true
     - &topic-services
       title_multiloc: topics.services
       description_multiloc: topics.services_description
-      code: services
       ordering: 14
       include_in_onboarding: true
+      default: true
     - &topic-other
       title_multiloc: topics.other
       description_multiloc: topics.other_description
-      code: other
       ordering: 15
       include_in_onboarding: true
+      default: true
   static_page:
   - &information-page
     code: about
