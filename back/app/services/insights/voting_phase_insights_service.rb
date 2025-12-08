@@ -60,13 +60,13 @@ module Insights
     def common_7_day_changes(participations)
       return nil unless phase_has_run_more_than_14_days?
 
-      voting_participations = participations[:voting] || []
+      voting_participations = participations[:voting]
       voters_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:participant_id).uniq.count
       voters_previous_7_days = voting_participations.select do |p|
         p[:acted_at] >= 14.days.ago && p[:acted_at] < 7.days.ago
       end.pluck(:participant_id).uniq.count
 
-      commenting_ideas_participations = participations[:commenting_idea] || []
+      commenting_ideas_participations = participations[:commenting_idea]
       comments_last_7_days = commenting_ideas_participations.count { |p| p[:acted_at] >= 7.days.ago }
       comments_previous_7_days = commenting_ideas_participations.count do |p|
         p[:acted_at] >= 14.days.ago && p[:acted_at] < 7.days.ago
@@ -81,7 +81,7 @@ module Insights
     def online_picks_7_day_change(participations)
       return nil unless phase_has_run_more_than_14_days?
 
-      voting_participations = participations[:voting] || []
+      voting_participations = participations[:voting]
       return 0.0 if voting_participations.empty?
 
       online_picks_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.sum { |p| p[:ideas_count] }
@@ -96,7 +96,7 @@ module Insights
     def online_votes_7_day_change(participations)
       return nil unless phase_has_run_more_than_14_days?
 
-      voting_participations = participations[:voting] || []
+      voting_participations = participations[:voting]
       return 0.0 if voting_participations.empty?
 
       online_votes_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.sum { |p| p[:votes] }
