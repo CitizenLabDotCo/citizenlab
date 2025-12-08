@@ -359,6 +359,7 @@ const methodToConfig: {
   poll: pollConfig,
   volunteering: volunteeringConfig,
   document_annotation: documentAnnotationConfig,
+  idea_feed: ideationConfig,
 };
 
 /** Get the configuration object for the given participation method

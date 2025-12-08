@@ -165,7 +165,8 @@ export type ParticipationMethod =
   | 'poll'
   | 'volunteering'
   | 'document_annotation'
-  | 'proposals';
+  | 'proposals'
+  | 'idea_feed';
 
 export type VotingMethod = 'budgeting' | 'multiple_voting' | 'single_voting';
 

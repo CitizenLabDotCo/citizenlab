@@ -67,4 +67,8 @@ export default defineMessages({
     id: 'app.containers.Admin.inspirationHub.filters',
     defaultMessage: 'filters',
   },
+  ideaFeed: {
+    id: 'app.containers.Admin.inspirationHub.IdeaFeed',
+    defaultMessage: 'Idea feed',
+  },
 });

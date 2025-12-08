@@ -66,6 +66,10 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.commonGroundPhase',
     defaultMessage: 'Common ground phase',
   },
+  ideaFeedPhase: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.ideaFeedPhase',
+    defaultMessage: 'Idea feed phase',
+  },
   everyone: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.everyone',
     defaultMessage: 'Everyone',

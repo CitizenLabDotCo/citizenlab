@@ -153,4 +153,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.PendingApproval.pendingApproval',
     defaultMessage: 'Pending approval',
   },
+  participationMethodIdeaFeed: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.ideaFeed',
+    defaultMessage: 'Idea Feed',
+  },
 });
