@@ -2,6 +2,14 @@
 
 module BulkImportIdeas::Extractors
   class UserExtractor < BaseExtractor
+    # Fixed keys for the user fields - match the column names in the users.xlsx file
+    USER_EMAIL = 'Email address'
+    USER_FULL_NAME = 'Full name'
+    USER_FIRST_NAME = 'First name(s)'
+    USER_LAST_NAME = 'Last name'
+    USER_CREATED_AT = 'DateCreated'
+    USER_LAST_ACTIVE_AT = 'LastAccess'
+
     def initialize(locale, config, xlsx_file_path)
       super(locale, config)
       begin
@@ -13,19 +21,24 @@ module BulkImportIdeas::Extractors
       end
     end
 
-    def users
-      @rows
+    # @param [Array<Hash>] projects output of ProjectExtractor#projects
+    def user_details(projects)
+      users = @rows
+      user_custom_fields = custom_fields
+      users, user_custom_fields = extract_project_user_data(projects, users, user_custom_fields) if projects.any?
+
+      [users, user_custom_fields]
     end
+
+    private
 
     def custom_fields
       return [] if @rows.empty?
 
       # Ignore the 'special' columns that are not custom fields
-      columns = @rows.flat_map(&:keys).uniq - ['Email address', 'First name(s)', 'Last name', 'DateCreated', 'LastAccess']
+      columns = @rows.flat_map(&:keys).uniq - [USER_EMAIL, USER_FULL_NAME, USER_FIRST_NAME, USER_LAST_NAME, USER_CREATED_AT, USER_LAST_ACTIVE_AT]
       generate_fields(@rows, columns, fixed_key: true)
     end
-
-    private
 
     def generate_user_rows
       data = []
@@ -45,10 +58,79 @@ module BulkImportIdeas::Extractors
           value = clean_string_value(cell.value)
           row_data << [header, value]
         end
-        row_data = row_data.to_h
+        next if row_data.empty? # Skip empty rows
+
+        row_data = extract_full_name_to_first_last(row_data.to_h)
         data << row_data
       end
       data
+    end
+
+    # Phases will have some user data in the idea rows, so we need to extract that so that we can import the users first
+    # Why? Because if imported using the idea importer then they won't be full users
+    def extract_project_user_data(projects, users, user_custom_fields)
+      projects.each do |project_data|
+        project_data[:phases]&.each do |phase_data|
+          if phase_data[:idea_rows].present?
+
+            # Add any custom fields for the user if they exist in the project data
+            if phase_data[:user_custom_fields].present?
+              user_custom_fields.concat(phase_data[:user_custom_fields])
+            end
+
+            # Extract users from the idea rows
+            phase_data[:idea_rows].each do |idea_row|
+              # Ensure the idea row has an author email
+              next if idea_row[USER_EMAIL].blank?
+
+              # Create a user row if it doesn't already exist
+              user_row = users.find { |u| u[USER_EMAIL] == idea_row[USER_EMAIL] }
+              unless user_row
+                idea_row = extract_full_name_to_first_last(idea_row)
+                user_row = {
+                  USER_EMAIL => idea_row[USER_EMAIL],
+                  USER_FIRST_NAME => idea_row[USER_FIRST_NAME],
+                  USER_LAST_NAME => idea_row[USER_LAST_NAME]
+                }
+                # Get custom field values from the idea row (if they exist)
+                custom_field_keys = phase_data[:user_custom_fields]&.pluck(:title_multiloc)&.pluck(@locale)
+                custom_field_keys&.each do |key|
+                  user_row[key] = idea_row[key] if idea_row[key].present?
+                end
+                users << user_row
+              end
+            end
+          end
+        end
+      end
+
+      # Ensure unique custom fields by key
+      # TODO: user custom fields is nil?
+      user_custom_fields&.uniq! { |field| field[:key] }
+
+      # SECURITY: Replace email addresses so real emails do not get added to dev or staging environments
+      unless Rails.env.production?
+        users = users.map do |user_row|
+          user_row[USER_EMAIL] = "#{user_row[USER_EMAIL]&.gsub(/[@.]/, '_')&.reverse}@example.com"
+          user_row
+        end
+      end
+
+      [users, user_custom_fields]
+    end
+
+    def extract_full_name_to_first_last(row)
+      full_name = row[USER_FULL_NAME]&.strip
+      row.delete(USER_FULL_NAME)
+      return row if full_name.blank? || (row[USER_FIRST_NAME].present? && row[USER_LAST_NAME].present?)
+
+      name_parts = full_name.split
+      first_name = name_parts[0..-2].join(' ')
+      last_name = name_parts[-1] || ''
+
+      row[USER_FIRST_NAME] = first_name
+      row[USER_LAST_NAME] = last_name
+      row
     end
 
     # TODO: Custom field extraction is currently specific to EngagementHQ only
