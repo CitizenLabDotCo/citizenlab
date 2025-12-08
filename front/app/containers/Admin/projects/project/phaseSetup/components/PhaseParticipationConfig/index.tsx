@@ -107,7 +107,7 @@ const PhaseParticipationConfig = ({
 
   // If posting without an account is allowed, we allow logged-in users to post
   // anonymously.
-  const anonymousPostingDisabledReason =
+  const toggleAnonymousPostingDisabledReason =
     permissions?.data?.find((p) => p.attributes.action === 'posting_idea')
       ?.attributes.permitted_by === 'everyone'
       ? formatMessage(anonymousMessages.anonymousParticipationAutoEnabled)
@@ -554,7 +554,9 @@ const PhaseParticipationConfig = ({
             noLikingLimitError={validationErrors.noLikingLimitError}
             noDislikingLimitError={validationErrors.noDislikingLimitError}
             allow_anonymous_participation={allow_anonymous_participation}
-            anonymousPostingDisabledReason={anonymousPostingDisabledReason}
+            toggleAnonymousPostingDisabledReason={
+              toggleAnonymousPostingDisabledReason
+            }
             apiErrors={apiErrors}
             togglePostingEnabled={togglePostingEnabled}
             toggleCommentingEnabled={toggleCommentingEnabled}
@@ -598,7 +600,9 @@ const PhaseParticipationConfig = ({
             reacting_like_limited_max={reacting_like_limited_max}
             noLikingLimitError={validationErrors.noLikingLimitError}
             allow_anonymous_participation={allow_anonymous_participation}
-            anonymousPostingDisabledReason={anonymousPostingDisabledReason}
+            toggleAnonymousPostingDisabledReason={
+              toggleAnonymousPostingDisabledReason
+            }
             apiErrors={apiErrors}
             togglePostingEnabled={togglePostingEnabled}
             toggleCommentingEnabled={toggleCommentingEnabled}
