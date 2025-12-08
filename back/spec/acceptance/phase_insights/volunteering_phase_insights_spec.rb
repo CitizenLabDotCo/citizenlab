@@ -2,7 +2,11 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Phase insights' do
-  before { admin_header_token }
+  before do
+    admin_header_token
+    # This reference time means we can expect exact dates in the chart data
+    travel_to(Time.zone.parse('2025-12-02 12:00:00'))
+  end
 
   let!(:custom_field_gender) { create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' }) }
   let!(:custom_field_option_male) { create(:custom_field_option, custom_field: custom_field_gender, key: 'male', title_multiloc: { en: 'Male' }) }
@@ -77,6 +81,16 @@ resource 'Phase insights' do
           volunteerings: 3,
           volunteerings_last_7_days: 1
         }
+      })
+
+      participants_and_visitors_chart_data = json_response_body.dig(:data, :attributes, :participants_and_visitors_chart_data)
+      expect(participants_and_visitors_chart_data).to eq({
+        resolution: 'day',
+        timeseries: [
+          { participants: 1, visitors: 2, date_group: '2025-11-17' },
+          { participants: 1, visitors: 0, date_group: '2025-11-22' },
+          { participants: 1, visitors: 1, date_group: '2025-11-27' }
+        ]
       })
     end
 

@@ -43,6 +43,7 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
           action: 'posting_idea',
           acted_at: a_kind_of(Time),
           classname: 'Idea',
+          threshold_reached_at: nil,
           participant_id: user1.id,
           user_custom_field_values: {}
         },
@@ -51,6 +52,7 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
           action: 'posting_idea',
           acted_at: a_kind_of(Time),
           classname: 'Idea',
+          threshold_reached_at: nil,
           participant_id: user2.id,
           user_custom_field_values: {}
         },
@@ -59,6 +61,7 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
           action: 'posting_idea',
           acted_at: a_kind_of(Time),
           classname: 'Idea',
+          threshold_reached_at: nil,
           participant_id: 'some_author_hash',
           user_custom_field_values: {}
         },
@@ -67,6 +70,7 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
           action: 'posting_idea',
           acted_at: a_kind_of(Time),
           classname: 'Idea',
+          threshold_reached_at: nil,
           participant_id: idea7.id,
           user_custom_field_values: {}
         }
@@ -136,6 +140,132 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
         reaction4.id,
         reaction5.id
       ])
+    end
+  end
+
+  describe '#threshold_reached_at' do
+    it 'returns nil when idea has no threshold_reached status change' do
+      threshold_reached_at = service.send(:threshold_reached_at, idea2)
+
+      expect(threshold_reached_at).to be_nil
+    end
+
+    it 'returns the acted_at time when idea reached threshold' do
+      activity_time = 8.days.ago
+      create(
+        :activity,
+        item: idea2,
+        action: 'changed_input_status',
+        acted_at: activity_time,
+        payload: {
+          input_status_from_code: 'proposed',
+          input_status_to_code: 'threshold_reached'
+        }
+      )
+
+      threshold_reached_at = service.send(:threshold_reached_at, idea2)
+
+      expect(threshold_reached_at).to be_within(1.second).of(activity_time)
+    end
+
+    it 'returns the threshold_reached time even when status changed again after' do
+      threshold_time = 8.days.ago
+      create(
+        :activity,
+        item: idea2,
+        action: 'changed_input_status',
+        acted_at: threshold_time,
+        payload: {
+          input_status_from_code: 'proposed',
+          input_status_to_code: 'threshold_reached'
+        }
+      )
+
+      create(
+        :activity,
+        item: idea2,
+        action: 'changed_input_status',
+        acted_at: 5.days.ago,
+        payload: {
+          input_status_from_code: 'threshold_reached',
+          input_status_to_code: 'accepted'
+        }
+      )
+
+      threshold_reached_at = service.send(:threshold_reached_at, idea2)
+
+      expect(threshold_reached_at).to be_within(1.second).of(threshold_time)
+    end
+
+    it 'returns nil when idea has other status changes but not threshold_reached' do
+      create(
+        :activity,
+        item: idea2,
+        action: 'changed_input_status',
+        acted_at: 8.days.ago,
+        payload: {
+          input_status_from_code: 'proposed',
+          input_status_to_code: 'accepted'
+        }
+      )
+
+      threshold_reached_at = service.send(:threshold_reached_at, idea2)
+
+      expect(threshold_reached_at).to be_nil
+    end
+  end
+
+  describe '#threshold_reached_counts' do
+    it 'returns zero counts when no ideas reached threshold' do
+      mock_participations = [
+        { threshold_reached_at: nil },
+        { threshold_reached_at: nil }
+      ]
+
+      counts = service.send(:threshold_reached_counts, mock_participations)
+
+      expect(counts).to eq({ total: 0, last_7_days: 0 })
+    end
+
+    it 'counts ideas that reached threshold' do
+      mock_participations = [
+        { threshold_reached_at: 10.days.ago },
+        { threshold_reached_at: 5.days.ago },
+        { threshold_reached_at: nil }
+      ]
+
+      counts = service.send(:threshold_reached_counts, mock_participations)
+
+      expect(counts).to eq({ total: 2, last_7_days: 1 })
+    end
+
+    it 'only counts ideas reaching threshold in last 7 days for last_7_days metric' do
+      mock_participations = [
+        { threshold_reached_at: 10.days.ago },
+        { threshold_reached_at: 8.days.ago },
+        { threshold_reached_at: 6.days.ago },
+        { threshold_reached_at: 2.days.ago }
+      ]
+
+      counts = service.send(:threshold_reached_counts, mock_participations)
+
+      expect(counts).to eq({ total: 4, last_7_days: 2 })
+    end
+
+    it 'returns zero counts for empty participations array' do
+      counts = service.send(:threshold_reached_counts, [])
+
+      expect(counts).to eq({ total: 0, last_7_days: 0 })
+    end
+
+    it 'counts ideas that reached threshold exactly 7 days ago' do
+      mock_participations = [
+        { threshold_reached_at: 7.days.ago.beginning_of_day }
+      ]
+
+      counts = service.send(:threshold_reached_counts, mock_participations)
+
+      expect(counts).to eq({ total: 1, last_7_days: 1 })
     end
   end
 end

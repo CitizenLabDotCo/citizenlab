@@ -72,7 +72,7 @@ module IdGentRrn
 
       raise Verification::VerificationService::NoMatchError if reason&.include? 'ERR10'
       raise Verification::VerificationService::NotEntitledError, 'lives_outside' if reason&.include? 'ERR11'
-      raise Verification::VerificationService::NotEntitledError, 'too_young' if reason&.include? 'ERR12'
+      raise Verification::VerificationService::NotEntitledError, 'under_minimum_age' if reason&.include? 'ERR12'
 
       raise Verification::VerificationService::NoMatchError unless body.dig('verificatieResultaat', 'geldig')
 
