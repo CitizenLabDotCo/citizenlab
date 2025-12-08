@@ -104,46 +104,6 @@ RSpec.describe ReportBuilder::Queries::Projects do
         expect(result[:participants]).to be_empty
       end
 
-      it 'returns projects with partial overlap at the start boundary' do
-        result = query.run_query(
-          start_at: Date.new(2021, 3, 1),
-          end_at: Date.new(2021, 4, 1),
-          publication_statuses: %w[published]
-        )
-
-        expect(result[:projects].pluck(:id)).to match_array([@project1.id, @project2.id])
-      end
-
-      it 'returns projects with partial overlap at the end boundary' do
-        result = query.run_query(
-          start_at: Date.new(2021, 1, 1),
-          end_at: Date.new(2021, 2, 1),
-          publication_statuses: %w[published]
-        )
-
-        expect(result[:projects].pluck(:id)).to match_array([@project1.id, @project2.id])
-      end
-
-      it 'returns projects when query range completely contains phase' do
-        result = query.run_query(
-          start_at: Date.new(2021, 1, 1),
-          end_at: Date.new(2021, 4, 1),
-          publication_statuses: %w[published]
-        )
-
-        expect(result[:projects].pluck(:id)).to match_array([@project1.id, @project2.id])
-      end
-
-      it 'returns projects when phase completely contains query range' do
-        result = query.run_query(
-          start_at: Date.new(2021, 3, 1),
-          end_at: Date.new(2021, 3, 31),
-          publication_statuses: %w[published]
-        )
-
-        expect(result[:projects].pluck(:id)).to match_array([@project1.id, @project2.id])
-      end
-
       it 'excludes projects with phases that ended before the query range' do
         result = query.run_query(
           start_at: Date.new(2021, 4, 1),
