@@ -6,9 +6,14 @@ module ReportBuilder
 
       return empty_result if no_data
 
+      finder_params = {
+        **extract_params.except(:start_at, :end_at),
+        phase_start_date: start_date,
+        phase_end_date: end_date
+      }
       projects = ProjectsFinderAdminService.execute(
         Project.not_hidden,
-        extract_params.merge(phase_start_date: start_date, phase_end_date: end_date),
+        finder_params,
         current_user: @current_user
       )
 
