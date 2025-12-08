@@ -28,36 +28,36 @@ module Insights
     end
 
     def phase_participation_method_metrics(participations)
-      common_rolling_7_day_changes = common_rolling_7_day_changes(participations)
+      common_7_day_changes = common_7_day_changes(participations)
 
       if @phase.voting_method == 'budgeting'
         {
           voting_method: 'budgeting',
           associated_ideas: associated_published_ideas_count,
           online_picks: participations[:voting].sum { |p| p[:ideas_count] },
-          online_picks_rolling_7_day_change: online_picks_rolling_7_day_change(participations),
+          online_picks_7_day_change: online_picks_7_day_change(participations),
           offline_picks: @phase.manual_votes_count,
           voters: participations[:voting].pluck(:participant_id).uniq.count,
-          voters_rolling_7_day_change: common_rolling_7_day_changes[:voters_rolling_7_day_change],
+          voters_7_day_change: common_7_day_changes[:voters_7_day_change],
           comments_posted: participations[:commenting_idea].count,
-          comments_posted_rolling_7_day_change: common_rolling_7_day_changes[:comments_posted_rolling_7_day_change]
+          comments_posted_7_day_change: common_7_day_changes[:comments_posted_7_day_change]
         }
       else
         {
           voting_method: @phase.voting_method,
           associated_ideas: associated_published_ideas_count,
           online_votes: participations[:voting].sum { |p| p[:votes] },
-          online_votes_rolling_7_day_change: online_votes_rolling_7_day_change(participations),
+          online_votes_7_day_change: online_votes_7_day_change(participations),
           offline_votes: @phase.manual_votes_count,
           voters: participations[:voting].pluck(:participant_id).uniq.count,
-          voters_rolling_7_day_change: common_rolling_7_day_changes[:voters_rolling_7_day_change],
+          voters_7_day_change: common_7_day_changes[:voters_7_day_change],
           comments_posted: participations[:commenting_idea].count,
-          comments_posted_rolling_7_day_change: common_rolling_7_day_changes[:comments_posted_rolling_7_day_change]
+          comments_posted_7_day_change: common_7_day_changes[:comments_posted_7_day_change]
         }
       end
     end
 
-    def common_rolling_7_day_changes(participations)
+    def common_7_day_changes(participations)
       return nil unless phase_has_run_more_than_14_days?
 
       voting_participations = participations[:voting] || []
@@ -73,12 +73,12 @@ module Insights
       end
 
       {
-        voters_rolling_7_day_change: percentage_change(voters_previous_7_days, voters_last_7_days),
-        comments_posted_rolling_7_day_change: percentage_change(comments_previous_7_days, comments_last_7_days)
+        voters_7_day_change: percentage_change(voters_previous_7_days, voters_last_7_days),
+        comments_posted_7_day_change: percentage_change(comments_previous_7_days, comments_last_7_days)
       }
     end
 
-    def online_picks_rolling_7_day_change(participations)
+    def online_picks_7_day_change(participations)
       return nil unless phase_has_run_more_than_14_days?
 
       voting_participations = participations[:voting] || []
@@ -93,7 +93,7 @@ module Insights
       percentage_change(online_picks_previous_7_days, online_picks_last_7_days)
     end
 
-    def online_votes_rolling_7_day_change(participations)
+    def online_votes_7_day_change(participations)
       return nil unless phase_has_run_more_than_14_days?
 
       voting_participations = participations[:voting] || []

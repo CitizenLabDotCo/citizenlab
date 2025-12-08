@@ -47,19 +47,19 @@ module Insights
     def base_metrics(participations, participant_ids, visits)
       visitors_count = visits.pluck(:visitor_id).uniq.count
       participants_count = participant_ids.count
-      base_rolling_7_day_changes = base_rolling_7_day_changes(participations, visits)
+      base_7_day_changes = base_7_day_changes(participations, visits)
 
       {
         visitors: visitors_count,
-        visitors_rolling_7_day_change: base_rolling_7_day_changes[:visitors_rolling_7_day_change],
+        visitors_7_day_change: base_7_day_changes[:visitors_7_day_change],
         participants: participants_count,
-        participants_rolling_7_day_change: base_rolling_7_day_changes[:participants_rolling_7_day_change],
+        participants_7_day_change: base_7_day_changes[:participants_7_day_change],
         participation_rate: visitors_count > 0 ? (participants_count.to_f / visitors_count).round(3) : 0,
-        participation_rate_rolling_7_day_change: base_rolling_7_day_changes[:participation_rate_rolling_7_day_change]
+        participation_rate_7_day_change: base_7_day_changes[:participation_rate_7_day_change]
       }
     end
 
-    def base_rolling_7_day_changes(participations, visits)
+    def base_7_day_changes(participations, visits)
       flattened_participations = participations.values.flatten
 
       participants_last_7_days_count = flattened_participations.select do |p|
@@ -82,9 +82,9 @@ module Insights
       participation_rate_previous_7_days = visitors_previous_7_days_count > 0 ? (participants_previous_7_days_count.to_f / visitors_previous_7_days_count).round(3) : 0
 
       {
-        visitors_rolling_7_day_change: percentage_change(visitors_previous_7_days_count, visitors_last_7_days_count),
-        participants_rolling_7_day_change: percentage_change(participants_previous_7_days_count, participants_last_7_days_count),
-        participation_rate_rolling_7_day_change: percentage_change(participation_rate_previous_7_days, participation_rate_last_7_days)
+        visitors_7_day_change: percentage_change(visitors_previous_7_days_count, visitors_last_7_days_count),
+        participants_7_day_change: percentage_change(participants_previous_7_days_count, participants_last_7_days_count),
+        participation_rate_7_day_change: percentage_change(participation_rate_previous_7_days, participation_rate_last_7_days)
       }
     end
 
@@ -114,7 +114,7 @@ module Insights
       (((new_value - old_value).to_f / old_value) * 100.0).round(1)
     end
 
-    def participations_rolling_7_day_change(participations)
+    def participations_7_day_change(participations)
       return nil unless phase_has_run_more_than_14_days?
       return 0.0 if participations.empty?
 
