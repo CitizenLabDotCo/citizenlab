@@ -4,7 +4,7 @@ module IdeasCountService
   }
 
   def self.counts(ideas_scope, attributes = %w[idea_status_id topic_id])
-    result = attributes.index_with({})
+    result = attributes.index_with { {} }  # Use a block to create separate hash objects
 
     attributes.each do |attribute|
       join_table = ATTRIBUTE_JOIN_TABLES[attribute]
@@ -15,11 +15,11 @@ module IdeasCountService
 
     ideas_scope
       .select("#{column_names(attributes).join(', ')}, COUNT(DISTINCT(ideas.id)) as count")
-      .reorder(nil) # Avoids SQL error on GROUP BY when a search string was used
+      .reorder(nil)
       .group("GROUPING SETS (#{column_names(attributes).join(', ')})")
       .each do |record|
         attributes.each do |attribute|
-          id = record.send attribute
+          id = record.send(attribute)
           result[attribute][id] = record.count if id
         end
       end
