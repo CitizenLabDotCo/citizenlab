@@ -30,7 +30,12 @@ module Analysis
           render json: WebApi::V1::AnalysisSerializer.new(
             @analysis,
             params: jsonapi_serializer_params,
-            include: serializer_includes
+            include: [
+              *serializer_includes,
+              :'main_custom_field.matrix_statements',
+              :'additional_custom_fields.matrix_statements',
+              :'all_custom_fields.matrix_statements'
+            ]
           ).serializable_hash
         end
 
