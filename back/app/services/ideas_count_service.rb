@@ -15,7 +15,7 @@ module IdeasCountService
 
     ideas_scope
       .select("#{column_names(attributes).join(', ')}, COUNT(DISTINCT(ideas.id)) as count")
-      .reorder(nil)
+      .reorder(nil) # Avoids SQL error on GROUP BY when a search string was used
       .group("GROUPING SETS (#{column_names(attributes).join(', ')})")
       .each do |record|
         attributes.each do |attribute|
