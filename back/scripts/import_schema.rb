@@ -129,7 +129,8 @@ else
 end
 
 # Insert tenant record into public.tenants
-tenant_host = SCHEMA_NAME
+# Host uses dots instead of underscores
+tenant_host = SCHEMA_NAME.tr('_', '.')
 now = Time.now.utc.strftime('%Y-%m-%d %H:%M:%S')
 
 # Escape single quotes in schema name for SQL
