@@ -96,14 +96,18 @@ const PhaseParticipationConfig = ({
   });
 
   const project_library_enabled = useFeatureFlag({ name: 'project_library' });
+  const ideationAccountlessPostingEnabled = useFeatureFlag({
+    name: 'ideation_accountless_posting',
+  });
 
   const { formatMessage } = useIntl();
 
   const { data: permissions } = usePhasePermissions({
-    phaseId: phase?.data.id,
+    phaseId: ideationAccountlessPostingEnabled ? phase?.data.id : undefined,
   });
 
-  // Check if anonymous posting toggle should be disabled
+  // If posting without an account is allowed, we allow logged-in users to post
+  // anonymously.
   const anonymousPostingDisabledReason =
     permissions?.data?.find((p) => p.attributes.action === 'posting_idea')
       ?.attributes.permitted_by === 'everyone'

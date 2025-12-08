@@ -560,7 +560,7 @@ class WebApi::V1::IdeasController < ApplicationController
   # Only relevant for allow_anonymous_participation in the context of ideation
   # Not relevant for 'user_data_collection' in the context of surveys
   def anonymous_not_allowed?(phase)
-    return false if permitted_by_everyone?(phase)
+    return false if AppConfiguration.instance.feature_activated?('ideation_accountless_posting') && permitted_by_everyone?(phase)
 
     params.dig('idea', 'anonymous') && !phase.allow_anonymous_participation
   end
