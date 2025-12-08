@@ -2,6 +2,9 @@ import React from 'react';
 
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
 interface Props {
   variant: 'left' | 'right';
   onClick: () => void;
@@ -15,6 +18,8 @@ const ScrollButton = ({
   onMouseEnter,
   onMouseLeave,
 }: Props) => {
+  const { formatMessage } = useIntl();
+
   return (
     <Box
       as="button"
@@ -35,10 +40,14 @@ const ScrollButton = ({
         e.stopPropagation();
         onClick();
       }}
-      aria-hidden="true"
-      tabIndex={-1}
+      tabIndex={0}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      aria-label={
+        variant === 'left'
+          ? formatMessage(messages.scrollLeft)
+          : formatMessage(messages.scrollRight)
+      }
     >
       <Icon name={`arrow-${variant}`} fill={colors.grey700} />
     </Box>
