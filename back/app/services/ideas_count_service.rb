@@ -4,7 +4,7 @@ module IdeasCountService
   }
 
   def self.counts(ideas_scope, attributes = %w[idea_status_id topic_id])
-    result = attributes.index_with { {} } # Use a block to create separate hash objects
+    result = attributes.index_with { {} }
 
     attributes.each do |attribute|
       join_table = ATTRIBUTE_JOIN_TABLES[attribute]
