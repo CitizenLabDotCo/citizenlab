@@ -38,6 +38,7 @@ resource 'Confirmations' do
 
       example "logs 'completed_registration' activity job when passed the right code" do
         do_request(confirmation: { code: user.email_confirmation_code })
+        user.reload
         expect(LogActivityJob).to have_been_enqueued.with(
           user,
           'completed_registration',

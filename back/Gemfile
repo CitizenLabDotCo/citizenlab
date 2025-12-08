@@ -10,6 +10,7 @@ end
 
 gem 'rails', '~> 7.2.3'
 gem 'pg', '~> 1.5.6'
+gem 'strong_migrations', '~> 2.5'
 gem 'puma', '~> 6.4.3'
 gem 'bcrypt', '~> 3.1.20' # Use ActiveModel has_secure_password
 gem 'csv', '~> 3.3.0'
@@ -63,7 +64,6 @@ group :development do
   gem 'spring-commands-rspec'
   gem 'spring-watcher-listen', '~> 2.1'
   gem 'annotate'
-  gem 'strong_migrations', '~> 2.5'
 end
 
 group :test do
@@ -245,6 +245,7 @@ commercial_engines = [
   'webhooks',
 
   # ID verification & SSO engines.
+  'id_acm',
   'id_auth0',
   'id_bogus',
   'id_bosa_fas',

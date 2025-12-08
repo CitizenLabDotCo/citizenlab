@@ -56,6 +56,22 @@ export const getSortOptions = (
   formatMessage: FormatMessage
 ): ISortOption<ProjectSortableParam>[] => [
   {
+    value: 'alphabetically_asc',
+    label: formatMessage(projectFilterMessages.alphabetically_asc),
+  },
+  {
+    value: 'alphabetically_desc',
+    label: formatMessage(projectFilterMessages.alphabetically_desc),
+  },
+  {
+    value: 'participation_asc',
+    label: formatMessage(projectFilterMessages.participation_asc),
+  },
+  {
+    value: 'participation_desc',
+    label: formatMessage(projectFilterMessages.participation_desc),
+  },
+  {
     value: 'phase_starting_or_ending_soon',
     label: formatMessage(projectFilterMessages.phase_starting_or_ending_soon),
   },
@@ -70,13 +86,5 @@ export const getSortOptions = (
   {
     value: 'recently_created_desc',
     label: formatMessage(projectFilterMessages.recently_created_desc),
-  },
-  {
-    value: 'alphabetically_asc',
-    label: formatMessage(projectFilterMessages.alphabetically_asc),
-  },
-  {
-    value: 'alphabetically_desc',
-    label: formatMessage(projectFilterMessages.alphabetically_desc),
   },
 ];

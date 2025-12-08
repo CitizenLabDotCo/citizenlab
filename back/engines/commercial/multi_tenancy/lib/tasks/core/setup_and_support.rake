@@ -5,44 +5,77 @@ namespace :setup_and_support do
   task :mass_official_feedback, %i[url host locale] => [:environment] do |_t, args|
     # ID, Feedback, Feedback Author Name, Feedback Email, New Status
     data = CSV.parse(open(args[:url]).read, headers: true, col_sep: ',', converters: [])
+    reporter = ScriptReporter.new
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
-      data.each do |d|
-        idea = Idea.find d['ID']
-        first_name = idea.author&.first_name || d['First name'] || ''
-        d['Feedback'] = d['Feedback'].gsub '{{first_name}}', first_name
-      end
+      data.each do |row|
+        idea = Idea.find_by id: row['ID']
+        if !idea
+          reporter.add_error(
+            "Couldn't find idea",
+            context: { idea_id: row['ID'] }
+          )
+          next
+        end
 
-      logs = []
-      created = 0
-      data.each_with_index do |d, i|
-        idea = Idea.find d['ID']
-        status = if d['New Status'].present?
+        status = if row['New Status'].present?
           IdeaStatus.all.find do |some_idea|
-            some_idea.title_multiloc[args[:locale]].downcase.strip == d['New Status'].downcase.strip
+            some_idea.title_multiloc[args[:locale]].downcase.strip == row['New Status'].downcase.strip
           end
         end
-        name = d['Feedback Author Name']
-        text = d['Feedback']
-        user = User.find_by email: d['Feedback Email']
-        if idea
-          if status && idea.idea_status != status
-            idea.update!(idea_status: status)
-            LogActivityJob.perform_later(idea, 'changed_status', user, idea.updated_at.to_i,
-              payload: { change: idea.idea_status_id_previous_change })
-          end
-          feedback = OfficialFeedback.create!(post: idea, body_multiloc: { args[:locale] => text },
-            author_multiloc: { args[:locale] => name }, user: user)
-          LogActivityJob.perform_later(feedback, 'created', user, feedback.created_at.to_i)
-          created += 1
+        if !status
+          reporter.add_error(
+            "Couldn't find status",
+            context: { idea_id: idea.id, new_status: row['New Status'] }
+          )
         end
-        logs += ["#{i}) Couldn't find idea #{d['ID']}"] unless idea
-        logs += ["#{i}) Couldn't find idea author for idea #{d['ID']}"] if idea && !idea.author_id
-        logs += ["#{i}) Couldn't find New Status '#{d['New Status']}' - does it exist for locale #{args[:locale]}?"] if d['New Status'] && !status
-      end
 
-      puts "Created #{created} official feedbacks"
-      logs.each { |l| puts l } && true
+        name = row['Feedback Author Name']
+        text = row['Feedback']
+        first_name = idea.author&.first_name || row['First name'] || ''
+        text = text.gsub '{{first_name}}', first_name
+
+        user = User.find_by email: row['Feedback Email']
+        if !user
+          reporter.add_error(
+            "Couldn't find feedback author",
+            context: { idea_id: idea.id, email: row['Feedback Email'] }
+          )
+          next
+        end
+
+        if status && idea.idea_status != status
+          status_id_was = idea.idea_status_id
+          idea.update!(idea_status: status)
+          LogActivityJob.perform_later(
+            idea,
+            'changed_status',
+            user,
+            idea.updated_at.to_i,
+            payload: { change: idea.idea_status_id_previous_change }
+          )
+          reporter.add_change(
+            status_id_was,
+            status.id,
+            context: { idea_id: idea.id }
+          )
+        end
+
+        feedback_attributes = {
+          idea_id: idea.id,
+          body_multiloc: { args[:locale] => text },
+          author_multiloc: { args[:locale] => name },
+          user_id: user.id
+        }
+        feedback = OfficialFeedback.create!(feedback_attributes)
+        LogActivityJob.perform_later(feedback, 'created', user, feedback.created_at.to_i)
+        reporter.add_create(
+          'OfficialFeedback',
+          feedback_attributes,
+          context: { idea_id: idea.id }
+        )
+      end
     end
+    reporter.report!('mass_official_feedback_report.json', verbose: true)
   end
 
   desc 'Delete tenants through list of hostnames'
