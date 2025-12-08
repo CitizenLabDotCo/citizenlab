@@ -165,4 +165,54 @@ RSpec.describe Project do
       expect(described_class.not_hidden.count).to eq 1
     end
   end
+
+  describe 'with_participation_count scope' do
+    before_all do
+      Analytics::PopulateDimensionsService.populate_types
+    end
+
+    let(:scope_with_count) do
+      described_class
+        .with_participation_count
+        .select('projects.*, project_participants.participants_count')
+    end
+
+    it 'includes participation count for each project' do
+      project1 = create(:project)
+      project2 = create(:project)
+
+      create_list(:idea, 3, project: project1)
+      create_list(:idea, 5, project: project2)
+
+      results = scope_with_count.where(id: [project1.id, project2.id])
+
+      result1 = results.find { |p| p.id == project1.id }
+      result2 = results.find { |p| p.id == project2.id }
+
+      expect(result1['participants_count']).to eq(3)
+      expect(result2['participants_count']).to eq(5)
+    end
+
+    it 'returns 0 for projects with no participation' do
+      project = create(:project)
+
+      result = scope_with_count.find(project.id)
+
+      expect(result['participants_count']).to eq(0)
+    end
+
+    it 'counts distinct participants across multiple participation types' do
+      project = create(:project)
+      idea = create(:idea, project: project)
+
+      # Same user participates multiple times
+      create_list(:comment, 2, idea: idea)
+      create_list(:reaction, 3, reactable: idea)
+
+      result = scope_with_count.find(project.id)
+
+      # Should count distinct participants, not total actions
+      expect(result['participants_count']).to be > 1
+    end
+  end
 end

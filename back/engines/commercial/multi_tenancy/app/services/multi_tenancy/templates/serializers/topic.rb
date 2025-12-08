@@ -4,7 +4,7 @@ module MultiTenancy
   module Templates
     module Serializers
       class Topic < Base
-        attributes %i[code description_multiloc icon ordering title_multiloc]
+        attributes %i[description_multiloc icon ordering title_multiloc]
       end
     end
   end

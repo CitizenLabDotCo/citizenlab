@@ -23,6 +23,7 @@ export interface SSOProviderMap {
   nemlog_in: 'nemlog_in';
   keycloak: 'keycloak';
   twoday: 'twoday';
+  acm: 'acm';
   id_vienna_saml: 'id_vienna_saml';
 }
 

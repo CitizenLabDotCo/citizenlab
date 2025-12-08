@@ -372,6 +372,60 @@ describe ProjectsFinderAdminService do
     end
   end
 
+  describe 'self.sort_by_participation' do
+    before_all do
+      Analytics::PopulateDimensionsService.populate_types
+    end
+
+    let!(:p1) { create(:project, title_multiloc: { 'en' => 'Project 1' }) }
+    let!(:p2) { create(:project, title_multiloc: { 'en' => 'Project 2' }) }
+    let!(:p3) { create(:project, title_multiloc: { 'en' => 'Project 3' }) }
+    let!(:p4) { create(:project, title_multiloc: { 'en' => 'Project 4' }) }
+
+    before do
+      create_list(:idea, 5, project: p1)
+      create_list(:idea, 10, project: p2)
+      create_list(:idea, 2, project: p3)
+    end
+
+    it 'sorts projects by participation count in ascending order' do
+      result = described_class.sort_by_participation(Project.all, { sort: 'participation_asc' })
+      expect(result.pluck(:id)).to eq([p4.id, p3.id, p1.id, p2.id])
+    end
+
+    it 'sorts projects by participation count in descending order' do
+      result = described_class.sort_by_participation(Project.all, { sort: 'participation_desc' })
+      expect(result.pluck(:id)).to eq([p2.id, p1.id, p3.id, p4.id])
+    end
+
+    it 'handles multiple participation types correctly' do
+      idea = create(:idea, project: p3)
+      create_list(:comment, 3, idea: idea)
+      create_list(:reaction, 2, reactable: idea)
+
+      result = described_class.sort_by_participation(Project.all, { sort: 'participation_desc' })
+      # p3 now has: 2 ideas + 1 new idea + 3 comments + 2 reactions = 8 participations
+      # p2 has 10, p3 has 8, p1 has 5, p4 has 0
+      expect(result.pluck(:id)).to eq([p2.id, p3.id, p1.id, p4.id])
+    end
+
+    it 'works with pre-filtered scopes that have joins' do
+      pre_filtered_scope = Project
+        .joins(:admin_publication)
+        .where(admin_publication: { publication_status: 'published' })
+
+      result = described_class.execute(
+        pre_filtered_scope,
+        { sort: 'participation_desc' },
+        current_user: create(:admin)
+      )
+
+      # Force the query to actually run
+      expect { result.to_a }.not_to raise_error(ActiveRecord::StatementInvalid)
+      expect(result.to_a).to be_an(Array)
+    end
+  end
+
   describe 'self.filter_visibility' do
     let!(:public_project) { create(:project, visible_to: 'public') }
     let!(:groups_project) { create(:project, visible_to: 'groups') }

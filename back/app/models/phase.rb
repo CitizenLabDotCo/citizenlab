@@ -284,6 +284,8 @@ class Phase < ApplicationRecord
       ParticipationMethod::Volunteering.new(self)
     when 'common_ground'
       ParticipationMethod::CommonGround.new(self)
+    when 'idea_feed'
+      ParticipationMethod::IdeaFeed.new(self)
     else
       ParticipationMethod::None.new
     end

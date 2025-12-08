@@ -11,6 +11,8 @@ const defaultProps = {
   onSubmit: jest.fn(),
   defaultValues: {
     title_multiloc: { en: '', 'nl-NL': '' },
+    description_multiloc: { en: '', 'nl-NL': '' },
+    default: false,
   },
 };
 
@@ -26,15 +28,20 @@ describe('TopicForm', () => {
   it('submits correct data', async () => {
     const { container } = render(<TopicForm {...defaultProps} />);
 
-    fireEvent.change(screen.getByRole('textbox'), {
+    // Get the title input specifically by its name
+    const titleInput = screen.getByRole('textbox', { name: /topic name/i });
+
+    fireEvent.change(titleInput, {
       target: {
         value: titleEN,
       },
     });
 
-    fireEvent.click(screen.getByText(/nl-NL/i));
+    // Click the first nl-NL button (for the title field)
+    const nlButtons = screen.getAllByText(/nl-NL/i);
+    fireEvent.click(nlButtons[0]);
 
-    fireEvent.change(screen.getByRole('textbox'), {
+    fireEvent.change(titleInput, {
       target: {
         value: titleNL,
       },
@@ -45,6 +52,8 @@ describe('TopicForm', () => {
     await waitFor(() => {
       expect(defaultProps.onSubmit).toHaveBeenCalledWith({
         title_multiloc: { en: titleEN, 'nl-NL': titleNL },
+        description_multiloc: { en: '', 'nl-NL': '' },
+        default: false,
       });
       expect(screen.getByTestId('feedbackSuccessMessage')).toBeInTheDocument();
     });

@@ -23,6 +23,7 @@ ProjectsWidget.craft = {
     publicationStatus: undefined,
     excludedProjectIds: [],
     excludedFolderIds: [],
+    sort: undefined,
   },
   related: {
     settings: Settings,

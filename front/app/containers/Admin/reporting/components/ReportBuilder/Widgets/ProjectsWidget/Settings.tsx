@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Select, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { IOption } from 'typings';
 
@@ -17,6 +17,7 @@ import {
 } from '../ChartWidgets/_shared/ChartWidgetSettings';
 
 import messages from './messages';
+import { getSortOptions } from './ProjectsCard/utils';
 import { Props } from './typings';
 
 const Settings = () => {
@@ -24,12 +25,14 @@ const Settings = () => {
   const {
     actions: { setProp },
     publicationStatuses,
+    sort,
     excludedProjectIds,
     excludedFolderIds,
   } = useNode((node) => ({
     publicationStatuses: node.data.props.publicationStatuses?.length
       ? node.data.props.publicationStatuses
       : ['published'],
+    sort: node.data.props.sort || 'alphabetically_asc',
     excludedProjectIds: node.data.props.excludedProjectIds || [],
     excludedFolderIds: node.data.props.excludedFolderIds || [],
   }));
@@ -57,7 +60,11 @@ const Settings = () => {
     { value: 'published', label: formatMessage(messages.published) },
     { value: 'archived', label: formatMessage(messages.archived) },
   ];
+  const handleSortChange = ({ value }: IOption) => {
+    setProp((props: Props) => (props.sort = value));
+  };
 
+  const sortOptions = getSortOptions(formatMessage);
   return (
     <Box mb="20px">
       <TitleInput />
@@ -71,6 +78,12 @@ const Settings = () => {
           onChange={handleStatusChange}
         />
       </Box>
+      <Select
+        label={formatMessage(messages.sort)}
+        value={sort}
+        options={sortOptions}
+        onChange={handleSortChange}
+      />
       <DateRangeInput />
       <Box mb="20px">
         <Text variant="bodyM" color="textSecondary" mb="5px">
