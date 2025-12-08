@@ -20,8 +20,8 @@ import Body from './Body';
 import CardImage from './CardImage';
 import Container from './Container';
 import Footer from './Footer';
+import { useScrollToCard } from './hooks/useScrollToCard';
 import Interactions from './Interactions';
-import { useScrollToCard } from './utils';
 
 export interface Props {
   ideaId: string;

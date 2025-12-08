@@ -55,7 +55,7 @@ export const useScrollToCard = (
  * scrollToCardAndCleanUpUrl:
  * Function to scroll to the card and clean up the search params.
  */
-export const scrollToCardAndCleanUpUrl = (
+const scrollToCardAndCleanUpUrl = (
   ideaId: string,
   smallerThanPhone: boolean
 ) => {
@@ -71,7 +71,7 @@ export const scrollToCardAndCleanUpUrl = (
  * checkImagesLoaded:
  * Checks if project description images have finished loading.
  */
-export const checkImagesLoaded = (projectDescription: Element): boolean => {
+const checkImagesLoaded = (projectDescription: Element): boolean => {
   // First, check if all images in the project description are loaded.
   // If they are, we've missed the IMAGES_LOADED_EVENT which has already
   // been emitted, so we can perform the scroll right away after checking.
