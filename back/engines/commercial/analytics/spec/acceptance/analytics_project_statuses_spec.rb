@@ -29,11 +29,7 @@ resource 'Analytics - ProjectStatus' do
       })
 
       assert_status 200
-      expect(response_data[:attributes]).to match_array([
-        { status: 'draft', count: 1 },
-        { status: 'published', count: 2 },
-        { status: 'archived', count: 1 }
-      ])
+      expect(response_data[:attributes]).to contain_exactly({ status: 'draft', count: 1 }, { status: 'published', count: 2 }, { status: 'archived', count: 1 })
     end
 
     example 'gets projects that are finished' do

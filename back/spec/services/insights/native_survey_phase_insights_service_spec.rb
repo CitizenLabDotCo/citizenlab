@@ -30,53 +30,47 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
     it 'returns the participation ideas posted data for non-transitive ideas created during phase' do
       participations_posting_idea = service.send(:participations_posting_idea)
 
-      expect(participations_posting_idea).to match_array([
-        {
-          item_id: idea2.id,
-          action: 'posting_idea',
-          acted_at: a_kind_of(Time),
-          classname: 'Idea',
-          survey_submitted_at: idea2.submitted_at,
-          participant_id: user1.id,
-          user_custom_field_values: {}
-        },
-        {
-          item_id: idea4.id,
-          action: 'posting_idea',
-          acted_at: a_kind_of(Time),
-          classname: 'Idea',
-          survey_submitted_at: idea4.submitted_at,
-          participant_id: user2.id,
-          user_custom_field_values: {}
-        },
-        {
-          item_id: idea5.id,
-          action: 'posting_idea',
-          acted_at: a_kind_of(Time),
-          classname: 'Idea',
-          survey_submitted_at: nil,
-          participant_id: user2.id,
-          user_custom_field_values: {}
-        },
-        {
-          item_id: idea6.id,
-          action: 'posting_idea',
-          acted_at: a_kind_of(Time),
-          classname: 'Idea',
-          survey_submitted_at: idea6.submitted_at,
-          participant_id: 'some_author_hash',
-          user_custom_field_values: {}
-        },
-        {
-          item_id: idea7.id,
-          action: 'posting_idea',
-          acted_at: a_kind_of(Time),
-          classname: 'Idea',
-          survey_submitted_at: idea7.submitted_at,
-          participant_id: idea7.id,
-          user_custom_field_values: {}
-        }
-      ])
+      expect(participations_posting_idea).to contain_exactly({
+        item_id: idea2.id,
+        action: 'posting_idea',
+        acted_at: a_kind_of(Time),
+        classname: 'Idea',
+        survey_submitted_at: idea2.submitted_at,
+        participant_id: user1.id,
+        user_custom_field_values: {}
+      }, {
+        item_id: idea4.id,
+        action: 'posting_idea',
+        acted_at: a_kind_of(Time),
+        classname: 'Idea',
+        survey_submitted_at: idea4.submitted_at,
+        participant_id: user2.id,
+        user_custom_field_values: {}
+      }, {
+        item_id: idea5.id,
+        action: 'posting_idea',
+        acted_at: a_kind_of(Time),
+        classname: 'Idea',
+        survey_submitted_at: nil,
+        participant_id: user2.id,
+        user_custom_field_values: {}
+      }, {
+        item_id: idea6.id,
+        action: 'posting_idea',
+        acted_at: a_kind_of(Time),
+        classname: 'Idea',
+        survey_submitted_at: idea6.submitted_at,
+        participant_id: 'some_author_hash',
+        user_custom_field_values: {}
+      }, {
+        item_id: idea7.id,
+        action: 'posting_idea',
+        acted_at: a_kind_of(Time),
+        classname: 'Idea',
+        survey_submitted_at: idea7.submitted_at,
+        participant_id: idea7.id,
+        user_custom_field_values: {}
+      })
 
       first_participation = participations_posting_idea.first
       expect(first_participation[:acted_at])
@@ -87,14 +81,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
       phase.update!(end_at: nil)
       participations_posting_idea = service.send(:participations_posting_idea)
 
-      expect(participations_posting_idea.pluck(:item_id)).to match_array([
-        idea2.id,
-        idea3.id,
-        idea4.id,
-        idea5.id,
-        idea6.id,
-        idea7.id
-      ])
+      expect(participations_posting_idea.pluck(:item_id)).to contain_exactly(idea2.id, idea3.id, idea4.id, idea5.id, idea6.id, idea7.id)
     end
 
     it 'includes draft ideas' do
@@ -122,13 +109,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
         posting_idea: service.send(:participations_posting_idea)
       })
 
-      expect(participations[:posting_idea].map { |p| p[:item_id] }).to match_array([
-        idea2.id,
-        idea4.id,
-        idea5.id,
-        idea6.id,
-        idea7.id
-      ])
+      expect(participations[:posting_idea].map { |p| p[:item_id] }).to contain_exactly(idea2.id, idea4.id, idea5.id, idea6.id, idea7.id)
     end
   end
 

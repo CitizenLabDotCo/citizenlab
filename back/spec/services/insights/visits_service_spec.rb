@@ -33,13 +33,13 @@ describe Insights::VisitsService do
     it 'returns correct visits data for the phase' do
       visits = service.phase_visits(phase)
 
-      expect(visits).to match_array([
+      expect(visits).to contain_exactly(
         { acted_at: pageview2.created_at, visitor_id: user1.id },
         { acted_at: pageview3.created_at, visitor_id: user1.id },
         { acted_at: pageview4.created_at, visitor_id: user2.id },
         { acted_at: pageview5.created_at, visitor_id: user2.id },
         { acted_at: pageview6.created_at, visitor_id: 'anonymous_user_hash' }
-      ])
+      )
     end
   end
 end

@@ -37,44 +37,39 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
     it 'returns the participation ideas published data for published ideas published during phase' do
       participations_posting_idea = service.send(:participations_posting_idea)
 
-      expect(participations_posting_idea).to match_array([
-        {
-          item_id: idea2.id,
-          action: 'posting_idea',
-          acted_at: a_kind_of(Time),
-          classname: 'Idea',
-          threshold_reached_at: nil,
-          participant_id: user1.id,
-          user_custom_field_values: {}
-        },
-        {
-          item_id: idea4.id,
-          action: 'posting_idea',
-          acted_at: a_kind_of(Time),
-          classname: 'Idea',
-          threshold_reached_at: nil,
-          participant_id: user2.id,
-          user_custom_field_values: {}
-        },
-        {
-          item_id: idea6.id,
-          action: 'posting_idea',
-          acted_at: a_kind_of(Time),
-          classname: 'Idea',
-          threshold_reached_at: nil,
-          participant_id: 'some_author_hash',
-          user_custom_field_values: {}
-        },
-        {
-          item_id: idea7.id,
-          action: 'posting_idea',
-          acted_at: a_kind_of(Time),
-          classname: 'Idea',
-          threshold_reached_at: nil,
-          participant_id: idea7.id,
-          user_custom_field_values: {}
-        }
-      ])
+      expect(participations_posting_idea).to contain_exactly({
+        item_id: idea2.id,
+        action: 'posting_idea',
+        acted_at: a_kind_of(Time),
+        classname: 'Idea',
+        threshold_reached_at: nil,
+        participant_id: user1.id,
+        user_custom_field_values: {}
+      }, {
+        item_id: idea4.id,
+        action: 'posting_idea',
+        acted_at: a_kind_of(Time),
+        classname: 'Idea',
+        threshold_reached_at: nil,
+        participant_id: user2.id,
+        user_custom_field_values: {}
+      }, {
+        item_id: idea6.id,
+        action: 'posting_idea',
+        acted_at: a_kind_of(Time),
+        classname: 'Idea',
+        threshold_reached_at: nil,
+        participant_id: 'some_author_hash',
+        user_custom_field_values: {}
+      }, {
+        item_id: idea7.id,
+        action: 'posting_idea',
+        acted_at: a_kind_of(Time),
+        classname: 'Idea',
+        threshold_reached_at: nil,
+        participant_id: idea7.id,
+        user_custom_field_values: {}
+      })
 
       first_participation = participations_posting_idea.first
       expect(first_participation[:acted_at])
@@ -85,13 +80,7 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
       phase.update!(end_at: nil)
       participations_posting_idea = service.send(:participations_posting_idea)
 
-      expect(participations_posting_idea.pluck(:item_id)).to match_array([
-        idea2.id,
-        idea3.id,
-        idea4.id,
-        idea6.id,
-        idea7.id
-      ])
+      expect(participations_posting_idea.pluck(:item_id)).to contain_exactly(idea2.id, idea3.id, idea4.id, idea6.id, idea7.id)
     end
 
     it 'does not include ideas that are not submitted' do
@@ -121,25 +110,11 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
         reacting_idea: service.send(:participations_reacting_idea)
       })
 
-      expect(participations[:posting_idea].map { |p| p[:item_id] }).to match_array([
-        idea2.id,
-        idea4.id,
-        idea6.id,
-        idea7.id
-      ])
+      expect(participations[:posting_idea].map { |p| p[:item_id] }).to contain_exactly(idea2.id, idea4.id, idea6.id, idea7.id)
 
-      expect(participations[:commenting_idea].map { |p| p[:item_id] }).to match_array([
-        comment2.id,
-        comment4.id,
-        comment5.id,
-        comment6.id
-      ])
+      expect(participations[:commenting_idea].map { |p| p[:item_id] }).to contain_exactly(comment2.id, comment4.id, comment5.id, comment6.id)
 
-      expect(participations[:reacting_idea].map { |p| p[:item_id] }).to match_array([
-        reaction2.id,
-        reaction4.id,
-        reaction5.id
-      ])
+      expect(participations[:reacting_idea].map { |p| p[:item_id] }).to contain_exactly(reaction2.id, reaction4.id, reaction5.id)
     end
   end
 

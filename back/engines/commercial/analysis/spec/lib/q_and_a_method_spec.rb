@@ -24,7 +24,7 @@ RSpec.describe Analysis::QAndAMethod do
       end
     end
 
-    it 'works' do
+    it 'generates a Q&A plan with default parameters' do
       plan = Analysis::QAndAMethod::OnePassLLM.new(question).generate_plan
       expect(plan).to have_attributes({
         q_and_a_method_class: Analysis::QAndAMethod::OnePassLLM,
@@ -52,7 +52,7 @@ RSpec.describe Analysis::QAndAMethod do
         .to change { q_and_a_task.question.answer }.from(nil).to('Nothing else')
         .and change { q_and_a_task.question.prompt }.from(nil).to(kind_of(String))
         .and change { q_and_a_task.question.accuracy }.from(nil).to(0.8)
-        .and change { q_and_a_task.question.inputs_ids }.from(nil).to(match_array([inputs[1].id, inputs[2].id]))
+        .and change { q_and_a_task.question.inputs_ids }.from(nil).to(contain_exactly(inputs[1].id, inputs[2].id))
 
       expect(q_and_a_task.reload).to have_attributes({
         state: 'succeeded',

@@ -36,7 +36,7 @@ RSpec.describe EmailCampaigns::Campaigns::ManualProjectParticipants do
     it 'includes project participants and followers' do
       recipients = campaign.apply_recipient_filters
 
-      expect(recipients).to match_array [participant, follower]
+      expect(recipients).to contain_exactly(participant, follower)
     end
   end
 end

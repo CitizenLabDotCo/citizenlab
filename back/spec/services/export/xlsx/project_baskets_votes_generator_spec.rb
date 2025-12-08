@@ -51,12 +51,12 @@ describe Export::Xlsx::ProjectBasketsVotesGenerator do
 
     it 'contains a worksheet for each voting phase' do
       expect(workbook.worksheets.size).to eq(3)
-      expect(workbook.worksheets.map(&:sheet_name)).to match_array(['Phase 1', 'Phase 2', 'Phase 3'])
+      expect(workbook.worksheets.map(&:sheet_name)).to contain_exactly('Phase 1', 'Phase 2', 'Phase 3')
     end
 
     it 'handles phases same title multiloc values' do
       phase1.update!(title_multiloc: phase2.title_multiloc)
-      expect(workbook.worksheets.map(&:sheet_name)).to match_array(['Phase 2 (1)', 'Phase 2 (2)', 'Phase 3'])
+      expect(workbook.worksheets.map(&:sheet_name)).to contain_exactly('Phase 2 (1)', 'Phase 2 (2)', 'Phase 3')
     end
 
     it 'contains a row for every user who voted in each phase' do
@@ -73,7 +73,7 @@ describe Export::Xlsx::ProjectBasketsVotesGenerator do
     it 'contains one column for each idea in a phase, on each respective worksheet' do
       3.times do |i|
         header_row = workbook.worksheets[i][0].cells.map(&:value)
-        expect(header_row).to match_array(['idea1', 'idea2', 'idea3', 'idea4', 'Submitted at'])
+        expect(header_row).to contain_exactly('idea1', 'idea2', 'idea3', 'idea4', 'Submitted at')
       end
     end
 

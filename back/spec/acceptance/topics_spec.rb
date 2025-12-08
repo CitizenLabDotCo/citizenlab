@@ -97,7 +97,7 @@ resource 'Topics' do
         assert_status 200
         expect(response_data.size).to eq 3
         # topics[1] and topics[2] are tied with 2 ideas each, topics[3] has 1 idea
-        expect(response_data.pluck(:id).take(2)).to match_array [@topics[1].id, @topics[2].id]
+        expect(response_data.pluck(:id).take(2)).to contain_exactly(@topics[1].id, @topics[2].id)
         expect(response_data.pluck(:id).last).to eq @topics[3].id
       end
     end

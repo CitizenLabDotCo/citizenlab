@@ -61,14 +61,9 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         commenting_idea: service.send(:participations_commenting_idea)
       })
 
-      expect(participations[:voting].map { |p| p[:item_id] }).to match_array([
-        basket1.id,
-        basket2.id
-      ])
+      expect(participations[:voting].map { |p| p[:item_id] }).to contain_exactly(basket1.id, basket2.id)
 
-      expect(participations[:commenting_idea].map { |p| p[:item_id] }).to match_array([
-        comment2.id
-      ])
+      expect(participations[:commenting_idea].map { |p| p[:item_id] }).to contain_exactly(comment2.id)
     end
   end
 

@@ -30,7 +30,7 @@ resource 'Moderations' do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 1
-          expect(json_response[:data].pluck(:id)).to match_array [@comment.id]
+          expect(json_response[:data].pluck(:id)).to contain_exactly(@comment.id)
         end
       end
 
@@ -41,7 +41,7 @@ resource 'Moderations' do
           expect(status).to eq(200)
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 2
-          expect(json_response[:data].pluck(:id)).to match_array [@idea.id, @other_idea.id]
+          expect(json_response[:data].pluck(:id)).to contain_exactly(@idea.id, @other_idea.id)
         end
       end
     end

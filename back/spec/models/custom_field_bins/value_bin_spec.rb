@@ -92,7 +92,7 @@ RSpec.describe CustomFieldBins::ValueBin do
             described_class.generate_bins(custom_field)
           end.to change(described_class, :count).by(2)
 
-          expect(described_class.all.pluck(:values)).to match_array([[true], [false]])
+          expect(described_class.all.pluck(:values)).to contain_exactly([true], [false])
         end
       end
 
@@ -104,7 +104,7 @@ RSpec.describe CustomFieldBins::ValueBin do
             described_class.generate_bins(custom_field)
           end.to change(described_class, :count).by(3)
 
-          expect(described_class.all.pluck(:values)).to match_array([[1], [2], [3]])
+          expect(described_class.all.pluck(:values)).to contain_exactly([1], [2], [3])
         end
       end
     end

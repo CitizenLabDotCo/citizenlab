@@ -118,7 +118,7 @@ describe SmartGroups::RulesService do
 
     it 'returns only the rules groups the user is part of' do
       groups = service.groups_for_user(user)
-      expect(groups.map(&:id)).to match_array [group1.id, group2.id]
+      expect(groups.map(&:id)).to contain_exactly(group1.id, group2.id)
     end
 
     it 'uses a maximum of 3 queries' do
