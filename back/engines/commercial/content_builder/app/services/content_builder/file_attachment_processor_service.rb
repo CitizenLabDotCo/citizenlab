@@ -10,15 +10,57 @@ module ContentBuilder
     # that have fileId but no fileAttachmentId, then updates the JSON with the new
     # fileAttachmentIds.
     def process_file_attachments
-      return @layout.craftjs_json unless @layout.craftjs_json.present?
+      return @layout.craftjs_json if @layout.craftjs_json.blank?
 
       updated_json = deep_dup(@layout.craftjs_json)
+      cleanup_orphaned_file_attachments(updated_json)
       process_nodes(updated_json)
-      
+
       updated_json
     end
 
     private
+
+    # Removes file attachments that exist in the database but are not referenced in the craftjs JSON
+    def cleanup_orphaned_file_attachments(json_data)
+      return unless @layout.persisted?
+
+      # Get all file_ids currently referenced in the JSON
+      referenced_file_ids = collect_referenced_file_ids(json_data)
+
+      # Find file attachments that are attached to this layout but not in the JSON
+      orphaned_attachments = ::Files::FileAttachment
+        .where(attachable: @layout)
+        .where.not(file_id: referenced_file_ids)
+
+      orphaned_attachments.find_each do |attachment|
+        Rails.logger.info "Removing orphaned FileAttachment #{attachment.id} (file_id: #{attachment.file_id}) from Layout #{@layout.id}"
+        attachment.destroy
+      end
+    end
+
+    # Collects all file_ids that are currently referenced in the craftjs JSON
+    def collect_referenced_file_ids(json_data, file_ids = [])
+      return file_ids unless json_data.is_a?(Hash)
+
+      json_data.each_value do |node_data|
+        next unless node_data.is_a?(Hash)
+
+        # Check if this node has a fileId in props
+        if node_data['props'].is_a?(Hash) && node_data['props']['fileId'].present?
+          file_ids << node_data['props']['fileId']
+        end
+
+        # Recursively check nested nodes
+        if node_data['nodes']&.is_a?(Array)
+          node_data['nodes'].each do |child_node_id|
+            collect_referenced_file_ids({ child_node_id => json_data[child_node_id] }, file_ids) if json_data[child_node_id]
+          end
+        end
+      end
+
+      file_ids.uniq
+    end
 
     def process_nodes(json_data)
       return unless json_data.is_a?(Hash)
@@ -39,7 +81,7 @@ module ContentBuilder
               process_nodes({ child_node_id => json_data[child_node_id] }) if json_data[child_node_id]
             end
           end
-        rescue => e
+        rescue StandardError => e
           Rails.logger.error "Error processing node #{key}: #{e.message}"
           Rails.logger.error "Node data: #{node_data.inspect}"
           Rails.logger.error e.backtrace.join("\n")
@@ -69,7 +111,7 @@ module ContentBuilder
       props = node_data['props'] || {}
       file_id = props['fileId']
 
-      return unless file_id.present?
+      return if file_id.blank?
 
       # Create the file attachment
       file_attachment = ::Files::FileAttachment.create!(
@@ -94,7 +136,11 @@ module ContentBuilder
       when Array
         obj.map { |v| deep_dup(v) }
       else
-        obj.dup rescue obj
+        begin
+          obj.dup
+        rescue StandardError
+          obj
+        end
       end
     end
   end
