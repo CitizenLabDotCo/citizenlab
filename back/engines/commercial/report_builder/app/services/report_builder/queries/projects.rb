@@ -1,6 +1,6 @@
 module ReportBuilder
   class Queries::Projects < ReportBuilder::Queries::Base
-    def run_query(start_at: nil, end_at: nil, publication_statuses: ['published'],sort: nil, locale: 'en', excluded_project_ids: [], excluded_folder_ids: [], **_other_props)
+    def run_query(start_at: nil, end_at: nil, publication_statuses: ['published'], sort: nil, locale: 'en', excluded_project_ids: [], excluded_folder_ids: [], **_other_props)
       start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
 
       overlapping_project_ids = Phase
@@ -71,7 +71,8 @@ module ReportBuilder
       scope.where(
         admin_publication: { parent_id: [nil] }
       ).or(
-        scope.where.not(admin_publication: { parent_id: excluded_folder_admin_pub_ids }))
+        scope.where.not(admin_publication: { parent_id: excluded_folder_admin_pub_ids })
+      )
     end
 
     def apply_sorting(scope, sort, locale)
