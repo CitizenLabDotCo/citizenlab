@@ -82,6 +82,7 @@ export interface IPhaseAttributes {
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
   user_data_collection: UserDataCollection;
+  ideation_method?: IdeationMethod | null;
 }
 
 export interface IPhases {
@@ -133,6 +134,7 @@ export interface IUpdatedPhaseProperties {
   similarity_enabled?: boolean | null;
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
+  ideation_method?: IdeationMethod | null;
 }
 
 export interface AddPhaseObject extends IUpdatedPhaseProperties {
@@ -168,6 +170,8 @@ export type ParticipationMethod =
   | 'proposals';
 
 export type VotingMethod = 'budgeting' | 'multiple_voting' | 'single_voting';
+
+export type IdeationMethod = 'base' | 'idea_feed';
 
 export type VoteTerm = 'vote' | 'point' | 'token' | 'credit';
 
