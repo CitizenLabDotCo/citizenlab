@@ -9,8 +9,8 @@ describe IdeasCountService do
     let!(:idea2) { create(:idea, topics: [topic1, topic2]) }
 
     it 'returns the expected result' do
-      result = IdeasCountService.counts(Idea.all)
-      
+      result = described_class.counts(Idea.all)
+
       expect(result).to eq({
         'idea_status_id' => {
           idea1.idea_status_id => 1,
