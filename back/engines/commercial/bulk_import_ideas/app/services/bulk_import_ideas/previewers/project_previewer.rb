@@ -96,7 +96,7 @@ module BulkImportIdeas::Previewers
     end
 
     def preview_project(project)
-      project_exists = project[:id] ? !!Project.find(project[:id]) : false # Check if the project exists
+      project_exists = project[:id] ? !!Project.find_by(id: project[:id]) : false # Check if the project exists
       if project_exists
         log "EXISTING PROJECT: #{project[:title_multiloc][@locale]} (#{project[:id]})"
       else
@@ -107,7 +107,7 @@ module BulkImportIdeas::Previewers
     end
 
     def preview_phase(phase)
-      phase_exists = phase[:id] ? !!Phase.find(phase[:id]) : false # Check if the project exists
+      phase_exists = phase[:id] ? !!Phase.find_by(id: phase[:id]) : false # Check if the project exists
       if phase_exists
         log "EXISTING PHASE: #{phase[:title_multiloc][@locale]} (#{phase[:id]})"
       else
@@ -133,7 +133,7 @@ module BulkImportIdeas::Previewers
     end
 
     def preview_ideas(phase)
-      ideas_exist = phase[:id] ? !!Phase.find(phase[:id])&.ideas&.any? : false
+      ideas_exist = phase[:id] ? !!Phase.find_by(id: phase[:id])&.ideas&.any? : false
       if ideas_exist
         log "EXISTING IDEAS FOR PHASE: #{phase[:id]}"
       elsif phase[:idea_rows]

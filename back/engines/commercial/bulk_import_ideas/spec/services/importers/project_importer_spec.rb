@@ -139,6 +139,9 @@ describe BulkImportIdeas::Importers::ProjectImporter do
     let(:project) { create(:project) }
 
     it 'imports attachments from local file path' do
+      # Ensure fixture files do not get deleted during tests
+      allow(File).to receive(:delete)
+
       project_data = {
         attachments: [
           Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').to_s,
