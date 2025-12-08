@@ -16,7 +16,7 @@ export default defineMessages({
   forumViewBestFor: {
     id: 'app.containers.AdminPage.ProjectEdit.Ideation.forumViewBestFor',
     defaultMessage:
-      'smaller discussions, when you want engagement metrics to drive visibility.',
+      'Best for: smaller discussions, when you want engagement metrics to drive visibility.',
   },
   sensemakingViewTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.Ideation.sensemakingViewTitle',
@@ -30,10 +30,6 @@ export default defineMessages({
   sensemakingViewBestFor: {
     id: 'app.containers.AdminPage.ProjectEdit.Ideation.sensemakingViewBestFor',
     defaultMessage:
-      'large-scale consultations, finding common ground, avoiding echo chambers.',
-  },
-  bestFor: {
-    id: 'app.containers.AdminPage.ProjectEdit.Ideation.bestFor',
-    defaultMessage: 'Best for:',
+      'Best for: large-scale consultations, finding common ground, avoiding echo chambers.',
   },
 });

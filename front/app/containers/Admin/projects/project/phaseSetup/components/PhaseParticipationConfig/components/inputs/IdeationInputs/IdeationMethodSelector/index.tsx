@@ -43,7 +43,6 @@ const IdeationMethodSelector = ({
                 {formatMessage(messages.forumViewDescription)}
               </Text>
               <Text as="span" display="block" mt="8px" mb="0px" fontSize="s">
-                {formatMessage(messages.bestFor)}{' '}
                 {formatMessage(messages.forumViewBestFor)}
               </Text>
             </>
@@ -65,7 +64,6 @@ const IdeationMethodSelector = ({
                 {formatMessage(messages.sensemakingViewDescription)}
               </Text>
               <Text as="span" display="block" mt="8px" mb="0px" fontSize="s">
-                {formatMessage(messages.bestFor)}{' '}
                 {formatMessage(messages.sensemakingViewBestFor)}
               </Text>
             </>
