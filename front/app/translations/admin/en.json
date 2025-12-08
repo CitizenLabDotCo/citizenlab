@@ -1962,7 +1962,6 @@
   "app.containers.AdminPage.ProjectDescription.whiteSpaceRadioLarge": "Large",
   "app.containers.AdminPage.ProjectDescription.whiteSpaceRadioMedium": "Medium",
   "app.containers.AdminPage.ProjectDescription.whiteSpaceRadioSmall": "Small",
-  "app.containers.AdminPage.ProjectEdit.Ideation.bestFor": "Best for:",
   "app.containers.AdminPage.ProjectEdit.Ideation.forumViewBestFor": "smaller discussions, when you want engagement metrics to drive visibility.",
   "app.containers.AdminPage.ProjectEdit.Ideation.forumViewDescription": "Traditional threaded discussion.",
   "app.containers.AdminPage.ProjectEdit.Ideation.forumViewTitle": "Forum view",
