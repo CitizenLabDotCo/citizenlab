@@ -165,7 +165,7 @@ RSpec.describe ReportBuilder::Queries::Projects do
         result = query.run_query(start_at: start_at, end_at: end_at)
 
         expect(result[:projects].count).to eq(2)
-        expect(result[:projects].pluck(:id)).to match_array([@project1.id, @project2.id])
+        expect(result[:projects].pluck(:id)).to contain_exactly(@project1.id, @project2.id)
       end
     end
 
