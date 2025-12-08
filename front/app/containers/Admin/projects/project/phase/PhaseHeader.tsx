@@ -54,7 +54,6 @@ export const participationMethodMessage: Record<
   native_survey: messages.inPlatformSurveyPhase,
   community_monitor_survey: messages.inPlatformSurveyPhase,
   common_ground: messages.commonGroundPhase,
-  idea_feed: messages.ideaFeedPhase,
 };
 
 interface Props {

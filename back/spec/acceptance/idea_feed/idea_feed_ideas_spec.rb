@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Idea feed ideas' do
-  explanation 'Returns ideas in the specific order for the idea_feed participation method'
+  explanation 'Returns ideas in the specific order for ideation phases with idea_feed ideation method'
   header 'Content-Type', 'application/json'
 
   get 'web_api/v1/phases/:phase_id/idea_feed/ideas' do

@@ -52,7 +52,6 @@ const OPTIONS: { value: ParticipationMethod; message: MessageDescriptor }[] = [
     value: 'common_ground',
     message: messages.participationMethodDocumentCommonGround,
   },
-  { value: 'idea_feed', message: messages.participationMethodIdeaFeed },
 ];
 
 interface Props {

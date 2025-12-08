@@ -70,6 +70,7 @@ class Phase < ApplicationRecord
 
   PARTICIPATION_METHODS = ParticipationMethod::Base.all_methods.map(&:method_str).freeze
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
+  IDEATION_METHODS      = %w[base idea_feed].freeze
   PRESENTATION_MODES    = %w[card map].freeze
   REACTING_METHODS      = %w[unlimited limited].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition].freeze
@@ -174,6 +175,11 @@ class Phase < ApplicationRecord
     validates :autoshare_results_enabled, inclusion: { in: [true, false] }
   end
 
+  # ideation?
+  with_options if: :ideation? do
+    validates :ideation_method, presence: true, inclusion: { in: IDEATION_METHODS }
+  end
+
   validates :voting_min_total,
     numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :voting_max_total,
                     if: %i[voting? voting_max_total],
@@ -260,6 +266,10 @@ class Phase < ApplicationRecord
     participation_method == 'voting'
   end
 
+  def ideation?
+    participation_method == 'ideation'
+  end
+
   def pmethod
     @pmethod = case participation_method
     when 'information'
@@ -284,8 +294,6 @@ class Phase < ApplicationRecord
       ParticipationMethod::Volunteering.new(self)
     when 'common_ground'
       ParticipationMethod::CommonGround.new(self)
-    when 'idea_feed'
-      ParticipationMethod::IdeaFeed.new(self)
     else
       ParticipationMethod::None.new
     end

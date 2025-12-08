@@ -98,10 +98,6 @@ const ParticipationMethodPicker = ({
     name: 'common_ground',
   });
 
-  const ideaFeedEnabled = useFeatureFlag({
-    name: 'idea_feed',
-  });
-
   useEffect(() => {
     setSelectedMethod(participation_method);
     setShowSurveyOptions(
@@ -390,16 +386,6 @@ const ParticipationMethodPicker = ({
                   </ParticipationMethodChoice>
                 )}
               </>
-            )}
-            {ideaFeedEnabled && (
-              <ParticipationMethodChoice
-                onClick={(event) => handleMethodSelect(event, 'idea_feed')}
-                image={ideationImage}
-                title={formatMessage(messages2.ideaFeed)}
-                subtitle={formatMessage(messages2.ideaFeedDescription)}
-                selected={selectedMethod === 'idea_feed'}
-                participation_method="idea_feed"
-              />
             )}
           </Box>
           <Error apiErrors={apiErrors && apiErrors.participation_method} />

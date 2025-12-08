@@ -49,8 +49,4 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.widgets.MethodsUsed.previousXDays',
     defaultMessage: 'Previous {days} days: {count}',
   },
-  ideaFeed: {
-    id: 'app.containers.Admin.reporting.widgets.MethodsUsed.ideaFeed',
-    defaultMessage: 'Idea feed',
-  },
 });
