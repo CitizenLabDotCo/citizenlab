@@ -6,6 +6,34 @@ Object.assign(global, { TextDecoder, TextEncoder });
 
 global.ResizeObserver = require('resize-observer-polyfill');
 
+HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
+  globalAlpha: 1,
+  fillRect: jest.fn(),
+  clearRect: jest.fn(),
+  getImageData: jest.fn(() => ({ data: [] })),
+  putImageData: jest.fn(),
+  createImageData: jest.fn(() => []),
+  setTransform: jest.fn(),
+  drawImage: jest.fn(),
+  save: jest.fn(),
+  restore: jest.fn(),
+  beginPath: jest.fn(),
+  moveTo: jest.fn(),
+  lineTo: jest.fn(),
+  closePath: jest.fn(),
+  stroke: jest.fn(),
+  fill: jest.fn(),
+  translate: jest.fn(),
+  scale: jest.fn(),
+  rotate: jest.fn(),
+  arc: jest.fn(),
+  measureText: jest.fn(() => ({ width: 0 })),
+  transform: jest.fn(),
+  rect: jest.fn(),
+  clip: jest.fn(),
+}));
+HTMLCanvasElement.prototype.toDataURL = jest.fn(() => 'data:image/png;base64,');
+
 jest.mock('polished');
 jest.mock('quill-blot-formatter');
 jest.mock('history', () => ({

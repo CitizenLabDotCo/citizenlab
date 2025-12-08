@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Insights::ProposalsPhaseInsightsService do
-  let(:phase) { create(:proposals_phase, start_at: 15.days.ago, end_at: 2.days.ago) }
+  let(:phase) { create(:proposals_phase, start_at: 17.days.ago, end_at: 2.days.ago) }
   let(:service) { described_class.new(phase) }
 
   let(:user1) { create(:user) }
@@ -190,57 +190,37 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
     end
   end
 
-  describe '#threshold_reached_counts' do
-    it 'returns zero counts when no ideas reached threshold' do
-      mock_participations = [
-        { threshold_reached_at: nil },
-        { threshold_reached_at: nil }
-      ]
+  describe 'phase_participation_method_metrics' do
+    let(:user1) { create(:user) }
+    let(:participation1) { create(:posting_idea_participation, acted_at: 10.days.ago, user: user1) }
+    let(:participation2) { create(:posting_idea_participation, acted_at: 5.days.ago, user: user1) }
+    let(:participation3) { create(:commenting_idea_participation, acted_at: 10.days.ago, user: user1) }
+    let(:participation4) { create(:commenting_idea_participation, acted_at: 5.days.ago, user: user1) }
+    let(:participation5) { create(:reacting_idea_participation, acted_at: 10.days.ago, user: user1) }
+    let(:participation6) { create(:reacting_idea_participation, acted_at: 5.days.ago, user: user1) }
 
-      counts = service.send(:threshold_reached_counts, mock_participations)
-
-      expect(counts).to eq({ total: 0, last_7_days: 0 })
+    let(:participations) do
+      {
+        posting_idea: [participation1, participation2],
+        commenting_idea: [participation3, participation4],
+        reacting_idea: [participation5, participation6]
+      }
     end
 
-    it 'counts ideas that reached threshold' do
-      mock_participations = [
-        { threshold_reached_at: 10.days.ago },
-        { threshold_reached_at: 5.days.ago },
-        { threshold_reached_at: nil }
-      ]
+    it 'calculates the correct metrics' do
+      participation1[:threshold_reached_at] = 8.days.ago
+      metrics = service.send(:phase_participation_method_metrics, participations)
 
-      counts = service.send(:threshold_reached_counts, mock_participations)
-
-      expect(counts).to eq({ total: 2, last_7_days: 1 })
-    end
-
-    it 'only counts ideas reaching threshold in last 7 days for last_7_days metric' do
-      mock_participations = [
-        { threshold_reached_at: 10.days.ago },
-        { threshold_reached_at: 8.days.ago },
-        { threshold_reached_at: 6.days.ago },
-        { threshold_reached_at: 2.days.ago }
-      ]
-
-      counts = service.send(:threshold_reached_counts, mock_participations)
-
-      expect(counts).to eq({ total: 4, last_7_days: 2 })
-    end
-
-    it 'returns zero counts for empty participations array' do
-      counts = service.send(:threshold_reached_counts, [])
-
-      expect(counts).to eq({ total: 0, last_7_days: 0 })
-    end
-
-    it 'counts ideas that reached threshold exactly 7 days ago' do
-      mock_participations = [
-        { threshold_reached_at: 7.days.ago.beginning_of_day }
-      ]
-
-      counts = service.send(:threshold_reached_counts, mock_participations)
-
-      expect(counts).to eq({ total: 1, last_7_days: 1 })
+      expect(metrics).to eq({
+        ideas_posted: 2,
+        ideas_posted_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) => 0% change
+        reached_threshold: 1,
+        reached_threshold_7_day_change: -100.0, # from 1 (in week before last) to 0 (in last 7 days) => -100% change
+        comments_posted: 2,
+        comments_posted_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) => 0% change
+        reactions: 2,
+        reactions_7_day_change: 0.0 # from 1 (in week before last) to 1 (in last 7 days) => 0% change
+      })
     end
   end
 end

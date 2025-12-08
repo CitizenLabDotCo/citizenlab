@@ -26,7 +26,8 @@ module ReportBuilder
         visibility: params[:visibility] || [],
         discoverability: params[:discoverability] || [],
         sort: params[:sort] || 'recently_created_desc',
-        no_of_projects: params[:no_of_projects]
+        no_of_projects: params[:no_of_projects],
+        locale: params[:locale] || 'en'
       }
     end
 
@@ -58,7 +59,7 @@ module ReportBuilder
         {
           id: project.id,
           title: project.title_multiloc,
-          start_date: first_phase&.start_at || project.first_published_at,
+          start_date: first_phase&.start_at || project.admin_publication.first_published_at,
           end_date: last_phase&.end_at,
           current_phase_start_date: current_phase&.start_at,
           current_phase_end_date: current_phase&.end_at,

@@ -54,7 +54,7 @@ resource 'Phase insights' do
       create(:idea, phases: [phase], author: user3, created_at: 2.days.ago, published_at: 2.days.ago) # published after ideation phase (not counted)
 
       # Comments
-      create(:comment, idea: idea2, author: user4, created_at: 10.days.ago) # in ideation phase
+      create(:comment, idea: idea2, author: user4, created_at: 10.days.ago) # in ideation phase (in week before last)
 
       # Reactions
       create(:reaction, reactable: idea2, user: user5, created_at: 5.days.ago) # in ideation phase, and in last 7 days
@@ -74,7 +74,7 @@ resource 'Phase insights' do
       create(:pageview, session: session4, created_at: 15.days.ago, project_id: phase.project.id) # in ideation phase, did not participate
 
       session5 = create(:session, user_id: user4.id)
-      create(:pageview, session: session5, created_at: 10.days.ago, project_id: phase.project.id) # in ideation phase
+      create(:pageview, session: session5, created_at: 10.days.ago, project_id: phase.project.id) # in ideation phase (in week before last)
 
       session6 = create(:session, user_id: user5.id)
       create(:pageview, session: session6, created_at: 5.days.ago, project_id: phase.project.id) # in ideation phase, and in last 7 days
@@ -84,7 +84,7 @@ resource 'Phase insights' do
   let(:id) { ideation_phase.id }
 
   get 'web_api/v1/phases/:id/insights' do
-    example_request 'creates insights for ideation phase' do
+    example_request 'returns insights data for ideation phase' do
       assert_status 200
 
       expect(json_response_body[:data][:id]).to eq(ideation_phase.id.to_s)
@@ -93,17 +93,18 @@ resource 'Phase insights' do
       metrics = json_response_body.dig(:data, :attributes, :metrics)
       expect(metrics).to eq({
         visitors: 4,
-        visitors_last_7_days: 2,
+        visitors_7_day_change: 100.0, # from 1 (in week before last) to 2 unique visitors (in last 7 days) = 100% increase
         participants: 3,
-        participants_last_7_days: 2,
-        engagement_rate: 0.75,
+        participants_7_day_change: 100.0, # from 1 (in week before last) to 2 unique participants (in last 7 days) = 100% increase
+        participation_rate: 0.75,
+        participation_rate_7_day_change: 0.0, # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 1.0 = 0% change
         ideation: {
           ideas_posted: 2,
-          ideas_posted_last_7_days: 1,
+          ideas_posted_7_day_change: 'last_7_days_compared_with_zero', # from 0 (in week before last) to 1 (in last 7 days) => avoid division by zero
           comments_posted: 1,
-          comments_posted_last_7_days: 0,
+          comments_posted_7_day_change: -100.0, # from 1 (in week before last) to 0 (in last 7 days) = -100% decrease
           reactions: 1,
-          reactions_last_7_days: 1
+          reactions_7_day_change: 'last_7_days_compared_with_zero' # from 0 (in week before last) to 1 (in last 7 days) => avoid division by zero
         }
       })
 

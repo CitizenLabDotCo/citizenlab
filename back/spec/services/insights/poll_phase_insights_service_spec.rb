@@ -47,4 +47,23 @@ RSpec.describe Insights::PollPhaseInsightsService do
       expect(participations[:taking_poll].map { |p| p[:item_id] }).to contain_exactly(response1.id, response2.id)
     end
   end
+
+  describe 'phase_participation_method_metrics' do
+    let(:user1) { create(:user) }
+    let(:participation1) { create(:taking_poll_participation, acted_at: 10.days.ago, user: user1) }
+    let(:participation2) { create(:taking_poll_participation, acted_at: 5.days.ago, user: user1) }
+
+    let(:participations) do
+      { taking_poll: [participation1, participation2] }
+    end
+
+    it 'calculates the correct metrics' do
+      metrics = service.send(:phase_participation_method_metrics, participations)
+
+      expect(metrics).to eq({
+        responses: 2,
+        responses_7_day_change: 0.0 # from 1 (in week before last) to 1 (in last 7 days) = 0% change
+      })
+    end
+  end
 end

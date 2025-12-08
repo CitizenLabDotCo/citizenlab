@@ -34,15 +34,12 @@ module Insights
     end
 
     def phase_participation_method_metrics(participations)
-      ideas_counts = phase_ideas_counts(participations[:posting_idea] || [])
-      reactions_counts = phase_reactions_counts(participations)
-
       {
         associated_ideas: associated_published_ideas_count,
-        ideas_posted: ideas_counts[:total],
-        ideas_posted_last_7_days: ideas_counts[:last_7_days],
-        reactions: reactions_counts[:total],
-        reactions_last_7_days: reactions_counts[:last_7_days]
+        ideas_posted: participations[:posting_idea].count,
+        ideas_posted_7_day_change: participations_7_day_change(participations[:posting_idea]),
+        reactions: participations[:reacting_idea].count,
+        reactions_7_day_change: participations_7_day_change(participations[:reacting_idea])
       }
     end
   end
