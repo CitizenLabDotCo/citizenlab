@@ -58,32 +58,122 @@ RSpec.describe ReportBuilder::Queries::Projects do
       create(:project_image, project: @project1)
     end
 
-    it 'returns overlapping projects' do
-      result = query.run_query(
-        start_at: Date.new(2021, 1, 1),
-        end_at: Date.new(2021, 4, 1),
-        publication_statuses: %w[published]
-      )
+    context 'with date range filtering' do
+      it 'returns projects with phases overlapping the date range' do
+        result = query.run_query(
+          start_at: Date.new(2021, 1, 1),
+          end_at: Date.new(2021, 4, 1),
+          publication_statuses: %w[published]
+        )
 
-      expect(result[:projects].count).to eq(2)
+        expect(result[:projects].count).to eq(2)
+        expect(result[:projects].pluck(:id)).to match_array([@project1.id, @project2.id])
+      end
 
-      expect(
-        result[:projects].pluck(:id).sort
-      ).to eq([@project1.id, @project2.id].sort)
-    end
+      it 'returns projects with ongoing phases (NULL end_at)' do
+        result = query.run_query(
+          start_at: Date.new(2022, 1, 1),
+          end_at: Date.new(2022, 4, 1),
+          publication_statuses: %w[published]
+        )
 
-    it 'returns overlapping projects when last phase has no end date' do
-      result = query.run_query(
-        start_at: Date.new(2022, 1, 1),
-        end_at: Date.new(2022, 4, 1),
-        publication_statuses: %w[published]
-      )
+        expect(result[:projects].count).to eq(2)
+        expect(result[:projects].pluck(:id)).to match_array([@project2.id, @project3.id])
+      end
 
-      expect(result[:projects].count).to eq(2)
+      it 'returns projects with ongoing phases in future date ranges' do
+        result = query.run_query(
+          start_at: Date.new(2025, 1, 1),
+          end_at: Date.new(2025, 12, 31),
+          publication_statuses: %w[published]
+        )
 
-      expect(
-        result[:projects].pluck(:id).sort
-      ).to eq([@project2.id, @project3.id].sort)
+        expect(result[:projects].count).to eq(2)
+        expect(result[:projects].pluck(:id)).to match_array([@project2.id, @project3.id])
+      end
+
+      it 'returns empty results when no phases overlap the date range' do
+        result = query.run_query(
+          start_at: Date.new(1989, 1, 1),
+          end_at: Date.new(1990, 12, 31),
+          publication_statuses: %w[published]
+        )
+
+        expect(result[:projects]).to be_empty
+        expect(result[:periods]).to be_empty
+        expect(result[:participants]).to be_empty
+      end
+
+      it 'returns projects with partial overlap at the start boundary' do
+        result = query.run_query(
+          start_at: Date.new(2021, 3, 1),
+          end_at: Date.new(2021, 4, 1),
+          publication_statuses: %w[published]
+        )
+
+        expect(result[:projects].pluck(:id)).to match_array([@project1.id, @project2.id])
+      end
+
+      it 'returns projects with partial overlap at the end boundary' do
+        result = query.run_query(
+          start_at: Date.new(2021, 1, 1),
+          end_at: Date.new(2021, 2, 1),
+          publication_statuses: %w[published]
+        )
+
+        expect(result[:projects].pluck(:id)).to match_array([@project1.id, @project2.id])
+      end
+
+      it 'returns projects when query range completely contains phase' do
+        result = query.run_query(
+          start_at: Date.new(2021, 1, 1),
+          end_at: Date.new(2021, 4, 1),
+          publication_statuses: %w[published]
+        )
+
+        expect(result[:projects].pluck(:id)).to match_array([@project1.id, @project2.id])
+      end
+
+      it 'returns projects when phase completely contains query range' do
+        result = query.run_query(
+          start_at: Date.new(2021, 3, 1),
+          end_at: Date.new(2021, 3, 31),
+          publication_statuses: %w[published]
+        )
+
+        expect(result[:projects].pluck(:id)).to match_array([@project1.id, @project2.id])
+      end
+
+      it 'excludes projects with phases that ended before the query range' do
+        result = query.run_query(
+          start_at: Date.new(2021, 4, 1),
+          end_at: Date.new(2021, 5, 1),
+          publication_statuses: %w[published]
+        )
+
+        expect(result[:projects].pluck(:id)).not_to include(@project1.id)
+      end
+
+      it 'excludes projects with phases that start after the query range' do
+        result = query.run_query(
+          start_at: Date.new(2019, 1, 1),
+          end_at: Date.new(2019, 1, 31),
+          publication_statuses: %w[published]
+        )
+
+        expect(result[:projects].pluck(:id)).not_to include(@past_project.id)
+      end
+
+      it 'returns all published projects when no date range is specified' do
+        result = query.run_query(
+          start_at: nil,
+          end_at: nil,
+          publication_statuses: %w[published]
+        )
+
+        expect(result[:projects].count).to eq(4)
+        expect(result[:projects].pluck(:id)).to match_array([@project1.id, @project2.id, @project3.id, @past_project.id])
+      end
     end
 
     it 'returns project images' do
@@ -228,8 +318,7 @@ RSpec.describe ReportBuilder::Queries::Projects do
             excluded_project_ids: [@project1.id]
           )
 
-          expect(result[:projects].pluck(:id)).not_to include(@project1.id)
-          expect(result[:projects].pluck(:id)).to include(@project2.id, @project3.id)
+          expect(result[:projects].pluck(:id)).to match_array([@project2.id, @project3.id, @past_project.id])
         end
 
         it 'returns all projects when excluded_project_ids is empty' do
@@ -240,7 +329,7 @@ RSpec.describe ReportBuilder::Queries::Projects do
             excluded_project_ids: []
           )
 
-          expect(result[:projects].pluck(:id)).to include(@project1.id, @project2.id, @project3.id)
+          expect(result[:projects].pluck(:id)).to match_array([@project1.id, @project2.id, @project3.id, @past_project.id])
         end
 
         it 'handles non-existent project ID gracefully' do
@@ -301,8 +390,7 @@ RSpec.describe ReportBuilder::Queries::Projects do
             excluded_folder_ids: [@folder.id]
           )
 
-          expect(result[:projects].pluck(:id)).not_to include(@project_in_folder.id)
-          expect(result[:projects].pluck(:id)).to include(@project1.id, @project2.id, @project3.id)
+          expect(result[:projects].pluck(:id)).to match_array([@project_in_folder2.id, @project1.id, @project2.id, @project3.id, @past_project.id])
         end
 
         it 'returns all projects when excluded_folder_ids is empty' do
@@ -313,7 +401,7 @@ RSpec.describe ReportBuilder::Queries::Projects do
             excluded_folder_ids: []
           )
 
-          expect(result[:projects].pluck(:id)).to include(@project_in_folder.id, @project1.id, @project2.id, @project3.id)
+          expect(result[:projects].pluck(:id)).to match_array([@project_in_folder.id, @project_in_folder2.id, @project1.id, @project2.id, @project3.id, @past_project.id])
         end
 
         it 'handles non-existent folder ID gracefully' do

@@ -16,6 +16,7 @@ class ProjectsFinderAdminService
     projects = filter_excluded_folder_ids(projects, params)
     projects = search(projects, params)
     projects = filter_start_date(projects, params)
+    projects = filter_phase_date_range(projects, params)
     projects = filter_participation_states(projects, params)
     projects = filter_current_phase_participation_method(projects, params)
     projects = filter_visibility(projects, params)
@@ -257,6 +258,25 @@ class ProjectsFinderAdminService
       .group(:project_id)
       .having('min(start_at) >= ? AND min(start_at) <= ?', min_start_date, max_start_date)
       .select(:project_id)
+
+    scope.where(id: overlapping_project_ids)
+  end
+
+  # Filter projects by a date range where ANY phase overlaps with the given range.
+  # This is different from filter_start_date which filters by when the first phase started.
+  # Used primarily for report building to find projects active during a time period.
+  def self.filter_phase_date_range(scope, params = {})
+    phase_start_date = params[:phase_start_date]
+    phase_end_date = params[:phase_end_date]
+    return scope if phase_start_date.blank? || phase_end_date.blank?
+
+    start_date = parse_date(phase_start_date)
+    end_date = parse_date(phase_end_date)
+    return scope if start_date.blank? || end_date.blank?
+
+    overlapping_project_ids = Phase
+      .select(:project_id)
+      .where("(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)", start_date, end_date)
 
     scope.where(id: overlapping_project_ids)
   end
