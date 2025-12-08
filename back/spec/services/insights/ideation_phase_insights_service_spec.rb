@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Insights::IdeationPhaseInsightsService do
-  let(:phase) { create(:ideation_phase, start_at: 15.days.ago, end_at: 2.days.ago) }
+  let(:phase) { create(:ideation_phase, start_at: 17.days.ago, end_at: 2.days.ago) }
   let(:service) { described_class.new(phase) }
 
   let(:user1) { create(:user) }
@@ -248,11 +248,11 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
 
       expect(metrics).to eq({
         ideas_posted: 2,
-        ideas_posted_last_7_days: 1,
+        ideas_posted_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) => 0% change
         comments_posted: 2,
-        comments_posted_last_7_days: 1,
+        comments_posted_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) => 0% change
         reactions: 2,
-        reactions_last_7_days: 1
+        reactions_7_day_change: 0.0 # from 1 (in week before last) to 1 (in last 7 days) => 0% change
       })
     end
   end

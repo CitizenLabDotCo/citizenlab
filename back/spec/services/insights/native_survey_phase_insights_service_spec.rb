@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Insights::NativeSurveyPhaseInsightsService do
   let(:service) { described_class.new(phase) }
-  let(:phase) { create(:native_survey_phase, start_at: 15.days.ago, end_at: 2.days.ago) }
+  let(:phase) { create(:native_survey_phase, start_at: 17.days.ago, end_at: 2.days.ago) }
 
   let(:user1) { create(:user) }
   let!(:idea1) { create(:idea, phases: [phase], created_at: 20.days.ago, submitted_at: 20.days.ago, author: user1, creation_phase_id: phase.id) } # before phase start
@@ -129,6 +129,27 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
         idea6.id,
         idea7.id
       ])
+    end
+  end
+
+  describe 'phase_participation_method_metrics' do
+    let(:user1) { create(:user) }
+    let(:participation1) { create(:posting_idea_participation, acted_at: 10.days.ago, user: user1) }
+    let(:participation2) { create(:posting_idea_participation, acted_at: 5.days.ago, user: user1) }
+
+    it 'calculates the correct metrics' do
+      participation1[:survey_submitted_at] = 10.days.ago
+      participation2[:survey_submitted_at] = 5.days.ago
+      participations = { posting_idea: [participation1, participation2] }
+
+      metrics = service.send(:phase_participation_method_metrics, participations)
+
+      expect(metrics).to eq({
+        submitted_surveys: 2,
+        submitted_surveys_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) = 0% change
+        completion_rate: 1.0,
+        completion_rate_7_day_change: 0.0 # completion_rate_last_7_days: 1.0, completion_rate_previous_7_days: 1.0 = 0% change
+      })
     end
   end
 end
