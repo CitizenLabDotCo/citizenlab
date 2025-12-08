@@ -2587,7 +2587,7 @@
   "app.containers.AdminPage.SettingsPage.color_secondary": "Sekundær farve",
   "app.containers.AdminPage.SettingsPage.color_text": "Tekstfarve",
   "app.containers.AdminPage.SettingsPage.colorsTitle": "Farver",
-  "app.containers.AdminPage.SettingsPage.completeYourProfileStep": "Trinnet \"Udfyld din profil",
+  "app.containers.AdminPage.SettingsPage.completeYourProfileStep": "Færdiggør trinnet 'Udfyld din profil'",
   "app.containers.AdminPage.SettingsPage.completeYourProfileStepTooltip2": "Dette vises på trinnet \"udfyld din profil\" i registreringsprocessen.",
   "app.containers.AdminPage.SettingsPage.confirmHeader": "Er du sikker på, at du ønsker at slette dette tag?",
   "app.containers.AdminPage.SettingsPage.contentModeration": "Moderering af indhold",
