@@ -267,6 +267,7 @@ export interface IAppConfigurationSettings {
   customised_automated_emails?: AppConfigurationFeature;
   customised_automated_context_emails?: AppConfigurationFeature;
   project_importer?: AppConfigurationFeature;
+  ideation_accountless_posting?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

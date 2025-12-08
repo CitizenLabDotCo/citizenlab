@@ -346,6 +346,10 @@ namespace :cl2_back do
         project_planning_calendar: {
           enabled: true,
           allowed: true
+        },
+        ideation_accountless_posting: {
+          enabled: true,
+          allowed: true
         }
       }
     )

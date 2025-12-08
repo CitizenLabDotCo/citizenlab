@@ -563,6 +563,10 @@ module MultiTenancy
             project_importer: {
               enabled: true,
               allowed: true
+            },
+            ideation_accountless_posting: {
+              enabled: true,
+              allowed: true
             }
           })
         )
