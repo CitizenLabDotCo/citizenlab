@@ -12,6 +12,9 @@ module BulkImportIdeas::Extractors
       @user_columns = []
       @attributes = attributes
       @rows = generate_idea_rows
+
+      # SECURITY: Replace email addresses so real emails do not get added to dev or staging environments
+      @rows = sanitize_emails(@rows)
     end
 
     # Return a single phase with custom fields and idea rows
@@ -77,7 +80,7 @@ module BulkImportIdeas::Extractors
           row_data << [header, value]
         end
         row_data = row_data.to_h
-        row_data['Permission'] = 'X' if row_data['Email address'].present? # Add in permission where email is present
+        row_data['Permission'] = 'X' if row_data[USER_EMAIL].present? # Add in permission where email is present
         data << row_data
       end
       data

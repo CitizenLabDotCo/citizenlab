@@ -4,6 +4,14 @@ module BulkImportIdeas::Extractors
   class BaseExtractor
     attr_reader :locale
 
+    # Fixed keys for user fields - match the column names in the users.xlsx file
+    USER_EMAIL = 'Email address'
+    USER_FULL_NAME = 'Full name'
+    USER_FIRST_NAME = 'First name(s)'
+    USER_LAST_NAME = 'Last name'
+    USER_CREATED_AT = 'DateCreated'
+    USER_LAST_ACTIVE_AT = 'LastAccess'
+
     def initialize(locale, config)
       @locale = locale || AppConfiguration.instance.settings.dig('core', 'locales').first
       @config = config || {
@@ -276,6 +284,16 @@ module BulkImportIdeas::Extractors
       GPT_PROMPT
       response = gpt_mini.chat(prompt)
       response.split('||').map(&:strip)
+    end
+
+    # SECURITY: Replace email addresses so real emails do not get added to dev or staging environments
+    def sanitize_emails(rows)
+      return rows if Rails.env.production?
+
+      rows.map do |row|
+        row[USER_EMAIL] = "#{row[USER_EMAIL]&.gsub(/[@.]/, '_')&.reverse}@example.com" if row[USER_EMAIL].present?
+        row
+      end
     end
   end
 end
