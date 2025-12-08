@@ -37,7 +37,7 @@ resource 'Impact tracking session' do
 
     example 'Track the start of a session of a resident' do
       resident = create(:user)
-      header_token_for(resident)
+      jwt_cookie(resident)
       do_request
       expect(response_status).to eq 200
       expect(ImpactTracking::Session.count).to eq 1
@@ -50,7 +50,7 @@ resource 'Impact tracking session' do
     example 'Creating a session also updates user last_active_at', document: false do
       last_active_at = 2.days.ago
       user = create(:user, last_active_at: last_active_at)
-      header_token_for(user)
+      jwt_cookie(user)
       do_request
       expect(user.reload.last_active_at.to_i).to be > last_active_at.to_i
     end
@@ -67,9 +67,21 @@ resource 'Impact tracking session' do
       expect(ImpactTracking::Session.count).to eq 0
     end
 
+    # Documenting this behaviour.
+    example 'Create new sesssion with same monthly_user_hash for same signed in user', document: false do
+      user = create(:user)
+      jwt_cookie(user)
+      do_request
+      expect(response_status).to eq 200
+      expect(ImpactTracking::Session.count).to eq 1
+      do_request
+      expect(response_status).to eq 200
+      expect(ImpactTracking::Session.count).to eq 2
+    end
+
     example 'Track the session start of an admin', document: false do
       user = create(:admin)
-      header_token_for(user)
+      jwt_cookie(user)
       do_request
       expect(response_status).to eq 200
       expect(ImpactTracking::Session.count).to eq 1
@@ -81,7 +93,7 @@ resource 'Impact tracking session' do
 
     example 'Track the session start of a super_admin', document: false do
       user = create(:super_admin)
-      header_token_for(user)
+      jwt_cookie(user)
       do_request
       expect(response_status).to eq 200
       expect(ImpactTracking::Session.count).to eq 1
@@ -105,7 +117,7 @@ resource 'Impact tracking session' do
       header 'User-Agent', @user_agent
       header 'X-Forwarded-For', @ip
       user = create(:user)
-      header_token_for(user)
+      jwt_cookie(user)
 
       do_request
 
@@ -123,7 +135,7 @@ resource 'Impact tracking session' do
       header 'X-Forwarded-For', @ip
       last_active_at = 2.days.ago
       user = create(:user, last_active_at: last_active_at)
-      header_token_for(user)
+      jwt_cookie(user)
       do_request
       expect(user.reload.last_active_at.to_i).to be > last_active_at.to_i
     end

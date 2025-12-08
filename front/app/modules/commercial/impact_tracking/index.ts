@@ -5,7 +5,6 @@ import authUserStream from 'api/me/authUserStream';
 import { API_PATH, locales } from 'containers/App/constants';
 
 import { pageChanges$ } from 'utils/analytics';
-import { getJwt } from 'utils/auth/jwt';
 import fetcher from 'utils/cl-react-query/fetcher';
 import matchPath, { getAllPathsFromRoutes } from 'utils/matchPath';
 import { ModuleConfiguration } from 'utils/moduleUtils';
@@ -19,10 +18,9 @@ const trackSessionStarted = async (path: string) => {
   // eslint-disable-next-line
   const referrer = document.referrer ?? window.frames?.top?.document.referrer;
 
-  const jwt = getJwt();
-
   const response = await fetch(`${API_PATH}/sessions`, {
     method: 'POST',
+    credentials: 'include', // Include cookies (session, auth tokens)
     body: JSON.stringify({
       session: {
         referrer,
@@ -30,7 +28,6 @@ const trackSessionStarted = async (path: string) => {
     }),
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${jwt}`,
     },
   });
 
@@ -108,8 +105,6 @@ const hasLocale = (path: string) => {
   return false;
 };
 
-let userWasAuthenticated = !!getJwt();
-
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
     pageChanges$.subscribe((e) => {
@@ -127,15 +122,10 @@ const configuration: ModuleConfiguration = {
       }
     });
 
-    authUserStream.subscribe(() => {
-      const userIsAuthenticated = !!getJwt();
-
-      // If the user was not authenticated, but now they are, trigger upgrade
-      if (!userWasAuthenticated && userIsAuthenticated) {
+    authUserStream.subscribe((user) => {
+      if (!!user && sessionTracked && sessionId) {
         upgradeSession();
       }
-
-      userWasAuthenticated = userIsAuthenticated;
     });
   },
 };
