@@ -20,7 +20,7 @@ import FileDisplay from 'components/UI/FileAttachments/FileDisplay';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import { getFileUsageCount } from './utils';
+import { getIsFileAlreadyUsed } from './utils';
 
 type FileAttachmentProps = {
   fileId?: string;
@@ -136,7 +136,7 @@ const FileAttachmentSettings = () => {
 
   // Filter out any files already being used in the layout
   fileOptions = fileOptions.filter((option) => {
-    const isFileUsed = getFileUsageCount(craftjsJson, option.value);
+    const isFileUsed = getIsFileAlreadyUsed(craftjsJson, option.value);
     return !isFileUsed;
   });
 

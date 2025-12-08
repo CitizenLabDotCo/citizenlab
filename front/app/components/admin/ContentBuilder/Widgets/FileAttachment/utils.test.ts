@@ -1,10 +1,10 @@
 import { SerializedNodes } from '@craftjs/core';
 
-import { getFileUsageCount } from './utils';
+import { getIsFileAlreadyUsed } from './utils';
 
 describe('FileAttachment utils', () => {
-  describe('getFileUsageCount', () => {
-    it('counts how many times a file is used', () => {
+  describe('getIsFileAlreadyUsed', () => {
+    it('checks if a file is already used', () => {
       const craftjsJson = {
         ROOT: {
           type: { resolvedName: 'Container' },
@@ -48,9 +48,9 @@ describe('FileAttachment utils', () => {
         },
       } as SerializedNodes;
 
-      expect(getFileUsageCount(craftjsJson, 'file-123')).toBe(2);
-      expect(getFileUsageCount(craftjsJson, 'file-456')).toBe(1);
-      expect(getFileUsageCount(craftjsJson, 'file-999')).toBe(0);
+      expect(getIsFileAlreadyUsed(craftjsJson, 'file-123')).toBe(true);
+      expect(getIsFileAlreadyUsed(craftjsJson, 'file-456')).toBe(true);
+      expect(getIsFileAlreadyUsed(craftjsJson, 'file-999')).toBe(false);
     });
   });
 });

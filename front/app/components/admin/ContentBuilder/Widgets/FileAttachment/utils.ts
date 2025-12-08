@@ -3,7 +3,7 @@ import { SerializedNodes } from '@craftjs/core';
 /**
  * Check if a specific fileId is used in the layout
  */
-export const getFileUsageCount = (
+export const getIsFileAlreadyUsed = (
   craftjsJson: SerializedNodes,
   fileId: string
 ): boolean => {
