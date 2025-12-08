@@ -30,7 +30,7 @@ interface Props {
   reacting_like_method: 'unlimited' | 'limited' | null | undefined;
   reacting_like_limited_max: number | null | undefined;
   allow_anonymous_participation: boolean | null | undefined;
-  anonymousPostingDisabledReason?: string;
+  toggleAnonymousPostingDisabledReason?: string;
   noLikingLimitError?: string;
   expire_days_limit: number | null | undefined;
   expireDateLimitError?: string;
@@ -73,7 +73,7 @@ const ProposalsInputs = ({
   reacting_enabled,
   reacting_like_method,
   allow_anonymous_participation,
-  anonymousPostingDisabledReason,
+  toggleAnonymousPostingDisabledReason,
   reacting_like_limited_max,
   noLikingLimitError,
   expire_days_limit,
@@ -150,7 +150,7 @@ const ProposalsInputs = ({
         handleAllowAnonymousParticipationOnChange={
           handleAllowAnonymousParticipationOnChange
         }
-        disabledReason={anonymousPostingDisabledReason}
+        disabledReason={toggleAnonymousPostingDisabledReason}
       />
       {prescreeningFeatureEnabled && (
         <PrescreeningToggle
