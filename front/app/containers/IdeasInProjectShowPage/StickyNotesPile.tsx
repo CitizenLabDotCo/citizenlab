@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useRef, useEffect } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -9,21 +9,43 @@ import useTopics from 'api/topics/useTopics';
 
 import StickyNote from './StickyNote';
 import { createTopicColorMap } from './topicColors';
+import CloseIconButton from 'components/UI/CloseIconButton';
 
-const PileContainer = styled(Box)`
+const PileContainer = styled(Box)<{ $isFeedView: boolean }>`
   position: relative;
   width: 100%;
   height: 100%;
   min-height: 800px;
-  padding: 40px 20px;
-  overflow: hidden;
+  padding: ${(props) => (props.$isFeedView ? '20px 60px' : '40px 20px')};
+  overflow: ${(props) => (props.$isFeedView ? 'auto' : 'hidden')};
+  transition: padding 0.4s ease;
 `;
 
-const NoteWrapper = styled(Box)<{ index: number; totalNotes: number }>`
-  position: absolute;
-  transition: transform 0.3s ease, z-index 0s;
+const NoteWrapper = styled(Box)<{
+  index: number;
+  totalNotes: number;
+  $isFeedView: boolean;
+  $clickedIndex: number | null;
+}>`
+  position: ${(props) => (props.$isFeedView ? 'relative' : 'absolute')};
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: ${(props) => {
+    if (!props.$isFeedView) return 1;
+    return 1;
+  }};
 
   ${(props) => {
+    if (props.$isFeedView) {
+      return `
+        left: auto;
+        top: auto;
+        margin: 20px auto;
+        display: flex;
+        justify-content: center;
+        transform: rotate(0deg) !important;
+      `;
+    }
+
     const positions = [
       { left: '5%', top: '2%' },
       { left: '20%', top: '10%' },
@@ -53,15 +75,35 @@ const NoteWrapper = styled(Box)<{ index: number; totalNotes: number }>`
     ];
 
     const position = positions[props.index % positions.length];
+    // Staggered animation delay for a cascading effect
+    const delay = props.index * 0.03;
+
     return `
       left: ${position.left};
       top: ${position.top};
+      animation: noteScatter 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) ${delay}s both;
+
+      @keyframes noteScatter {
+        0% {
+          opacity: 0;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%) scale(0.5);
+        }
+        100% {
+          opacity: 1;
+          transform: translate(0, 0) scale(1);
+        }
+      }
     `;
   }}
 
   &:hover {
-    z-index: 100 !important;
-    transform: scale(1.05) translateY(-8px) rotate(0deg) !important;
+    z-index: ${(props) => (props.$isFeedView ? 'auto' : '100 !important')};
+    transform: ${(props) =>
+      props.$isFeedView
+        ? 'none'
+        : 'scale(1.05) translateY(-8px) rotate(0deg) !important'};
   }
 `;
 
@@ -74,6 +116,11 @@ const StickyNotesPile: React.FC<Props> = ({
   queryParameters,
   maxNotes = 10,
 }) => {
+  const [isFeedView, setIsFeedView] = useState(false);
+  const [clickedIndex, setClickedIndex] = useState<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const noteRefs = useRef<(HTMLDivElement | null)[]>([]);
+
   const { data: ideas, isLoading: ideasLoading } = useIdeas({
     ...queryParameters,
     'page[size]': maxNotes,
@@ -100,6 +147,31 @@ const StickyNotesPile: React.FC<Props> = ({
     return map;
   }, [ideas]);
 
+  // Handle note click to switch to feed view
+  const handleNoteClick = (index: number) => {
+    setClickedIndex(index);
+    setIsFeedView(true);
+  };
+
+  // Handle closing feed view
+  const handleCloseFeed = () => {
+    setIsFeedView(false);
+    setClickedIndex(null);
+  };
+
+  // Scroll to the clicked note when entering feed view
+  useEffect(() => {
+    if (isFeedView && clickedIndex !== null && noteRefs.current[clickedIndex]) {
+      // Wait for the transition to start, then scroll
+      setTimeout(() => {
+        noteRefs.current[clickedIndex]?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+      }, 100);
+    }
+  }, [isFeedView, clickedIndex]);
+
   if (ideasLoading || topicsLoading) {
     return (
       <Box display="flex" justifyContent="center" p="40px">
@@ -119,28 +191,35 @@ const StickyNotesPile: React.FC<Props> = ({
   const totalNotes = Math.min(ideas.data.length, maxNotes);
 
   return (
-    <PileContainer>
-      {ideas.data.slice(0, maxNotes).map((idea, index) => {
-        const topicIds = ideaTopics.get(idea.id) || [];
-        const topicBackgroundColor =
-          topicIds.length > 0 ? topicColorMap.get(topicIds[0]) : '';
+    <>
+      {isFeedView && <CloseIconButton onClick={handleCloseFeed} />}
+      <PileContainer ref={containerRef} $isFeedView={isFeedView}>
+        {ideas.data.slice(0, maxNotes).map((idea, index) => {
+          const topicIds = ideaTopics.get(idea.id) || [];
+          const topicBackgroundColor =
+            topicIds.length > 0 ? topicColorMap.get(topicIds[0]) : '';
 
-        return (
-          <NoteWrapper
-            key={idea.id}
-            index={index}
-            totalNotes={totalNotes}
-            style={{ zIndex: index }}
-          >
-            <StickyNote
-              ideaId={idea.id}
-              rotation={rotations[index % rotations.length]}
-              topicBackgroundColor={topicBackgroundColor}
-            />
-          </NoteWrapper>
-        );
-      })}
-    </PileContainer>
+          return (
+            <NoteWrapper
+              key={idea.id}
+              ref={(el) => (noteRefs.current[index] = el)}
+              index={index}
+              totalNotes={totalNotes}
+              $isFeedView={isFeedView}
+              $clickedIndex={clickedIndex}
+              style={{ zIndex: isFeedView ? 'auto' : index }}
+            >
+              <StickyNote
+                ideaId={idea.id}
+                rotation={isFeedView ? 0 : rotations[index % rotations.length]}
+                topicBackgroundColor={topicBackgroundColor}
+                onClick={() => handleNoteClick(index)}
+              />
+            </NoteWrapper>
+          );
+        })}
+      </PileContainer>
+    </>
   );
 };
 

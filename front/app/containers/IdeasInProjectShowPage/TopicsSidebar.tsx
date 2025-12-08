@@ -62,9 +62,7 @@ const TopicItem: React.FC<TopicItemProps> = ({
         justify="left"
       >
         <Text>{topicTitle}</Text>
-        <Text variant="bodyS" color="grey600">
-          {topicDescription}
-        </Text>
+        <Text variant="bodyS">{topicDescription}</Text>
         <Box mt="8px" w="100%">
           <Box
             width="100%"
@@ -84,7 +82,7 @@ const TopicItem: React.FC<TopicItemProps> = ({
             />
           </Box>
 
-          <Text variant="bodyS" color="grey600">
+          <Text variant="bodyS">
             {topicCount} {topicCount === 1 ? 'idea' : 'ideas'}
           </Text>
         </Box>
@@ -128,7 +126,7 @@ const TopicsSidebar: React.FC<Props> = ({ selectedTopicId, onTopicSelect }) => {
 
   return (
     <Box
-      width="300px"
+      width="30%"
       background={colors.white}
       borderRight={`1px solid ${colors.grey300}`}
       py="20px"

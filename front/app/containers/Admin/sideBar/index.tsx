@@ -135,7 +135,6 @@ const Sidebar = ({ authUser }: Props) => {
     return null;
   }
   const [topNavItems, bottomNavItems] = getTopAndBottomNavItems(navItems);
-
   return (
     <Menu>
       <Outlet id="app.containers.Admin.sideBar.navItems" onData={handleData} />

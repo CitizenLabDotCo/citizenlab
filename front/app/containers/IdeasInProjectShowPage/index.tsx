@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+
+import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import StickyNotesPile from './StickyNotesPile';
 import TopicsSidebar from './TopicsSidebar';
 
 const IdeasInProjectShowPage = () => {
+  const { slug } = useParams<{ slug: string }>();
+  const { data: project } = useProjectBySlug(slug);
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
-
-  const queryParameters = selectedTopicId ? { topics: [selectedTopicId] } : {};
+  const params = { projects: [project?.data.id] };
+  const queryParameters = selectedTopicId
+    ? { ...params, topics: [selectedTopicId] }
+    : { ...params };
 
   return (
     <main id="e2e-project-ideas-page">

@@ -23,12 +23,14 @@ interface Props {
   ideaId: string;
   rotation?: number;
   topicBackgroundColor: string;
+  onClick?: () => void;
 }
 
 const StickyNote: React.FC<Props> = ({
   ideaId,
   rotation = 0,
   topicBackgroundColor,
+  onClick,
 }) => {
   const { data: idea } = useIdeaById(ideaId);
   const localize = useLocalize();
@@ -56,6 +58,7 @@ const StickyNote: React.FC<Props> = ({
       display="flex"
       flexDirection="column"
       gap="8px"
+      onClick={onClick}
     >
       <Text fontSize="l" fontWeight="bold" m="0px" color={'textPrimary'}>
         {title}
