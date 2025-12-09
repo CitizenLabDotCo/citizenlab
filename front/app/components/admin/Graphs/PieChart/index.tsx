@@ -99,7 +99,9 @@ const PieChart = <Row,>({
         {typeof tooltip === 'function' && tooltip(tooltipConfig)}
 
         <Pie
-          data={data}
+          // Recharts expects ChartDataInput (Record<string, unknown>[]) but TS interfaces
+          // don't satisfy index signatures. The cast is safe as our data is always objects.
+          data={data as Record<string, unknown>[]}
           animationDuration={animation.duration}
           animationBegin={animation.begin}
           {...pieConfig.props}
