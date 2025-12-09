@@ -194,6 +194,12 @@ resource 'Users' do
       end
       ValidationErrorHelper.new.error_fields(self, User)
 
+      before do
+        SettingsService.new.activate_feature! 'user_confirmation'
+        SettingsService.new.activate_feature! 'password_login'
+        allow(RequestConfirmationCodeJob).to receive(:perform_now)
+      end
+
       let(:email) { Faker::Internet.email }
       let(:locale) { 'en' }
 
