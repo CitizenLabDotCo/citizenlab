@@ -10,7 +10,7 @@ module ContentBuilder
       return @layout.craftjs_json if @layout.craftjs_json.blank?
 
       cleanup_orphaned_attachments
-      create_missing_attachments
+      create_attachments
 
       @layout.craftjs_json
     end
@@ -30,7 +30,7 @@ module ContentBuilder
         .destroy_all
     end
 
-    def create_missing_attachments
+    def create_attachments
       @layout.craftjs_json.each_value do |node|
         next unless file_attachment_widget?(node) && needs_file_attachment?(node)
 
