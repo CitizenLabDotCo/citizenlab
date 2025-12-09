@@ -261,7 +261,6 @@ resource 'Ideas' do
 
             example '[error] Create an idea with an SVG file should be rejected', document: false do
               do_request
-              byebug
               assert_status 422
               json_response = json_parse(response_body)
               expect(json_response[:errors]).to be_present

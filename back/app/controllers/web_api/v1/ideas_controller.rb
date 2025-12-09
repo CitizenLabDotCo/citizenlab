@@ -223,18 +223,34 @@ class WebApi::V1::IdeasController < ApplicationController
       end
     end
 
-    ActiveRecord::Base.transaction do
-      if input.save(**save_options)
-        update_file_upload_fields input, form, params_for_create
-        sidefx.after_create(input, current_user)
-        write_everyone_tracking_cookie input
-        render json: WebApi::V1::IdeaSerializer.new(
-          input.reload,
-          params: jsonapi_serializer_params,
-          include: %i[author topics phases user_reaction idea_images]
-        ).serializable_hash, status: :created
+    begin
+      ActiveRecord::Base.transaction do
+        if input.save(**save_options)
+          update_file_upload_fields input, form, params_for_create
+          sidefx.after_create(input, current_user)
+          write_everyone_tracking_cookie input
+          render json: WebApi::V1::IdeaSerializer.new(
+            input.reload,
+            params: jsonapi_serializer_params,
+            include: %i[author topics phases user_reaction idea_images]
+          ).serializable_hash, status: :created
+        else
+          render json: { errors: input.errors.details }, status: :unprocessable_entity
+        end
+      end
+    rescue ActiveRecord::RecordInvalid => e
+      # Handle validation errors from file attachments (e.g., SVG files rejected by RestrictedFileUploader)
+      if e.record.is_a?(Files::File) || e.record.is_a?(Files::FileAttachment)
+        render json: { errors: { file_attachments: [{ file: e.record.errors.details[:content] || e.record.errors.details }] } }, status: :unprocessable_entity
       else
-        render json: { errors: input.errors.details }, status: :unprocessable_entity
+        raise
+      end
+    rescue ActiveRecord::NotNullViolation => e
+      # Handle database constraint violations when file validation fails during nested attribute processing
+      if e.message.include?('file_id')
+        render json: { errors: { file_attachments: [{ error: 'file validation failed' }] } }, status: :unprocessable_entity
+      else
+        raise
       end
     end
   end

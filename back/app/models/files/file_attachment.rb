@@ -44,7 +44,6 @@ module Files
 
     validates :file_id, uniqueness: { scope: %i[attachable_type attachable_id] }
     validates :attachable_type, inclusion: { in: ATTACHABLE_TYPES }
-    validates_associated :file  # Ensure uploader validation errors (like rejected SVG) propagate up
     validate :validate_file_belongs_to_project
     validate :validate_idea_attachment_uniqueness
 
