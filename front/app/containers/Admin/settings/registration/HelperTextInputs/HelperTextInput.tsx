@@ -10,18 +10,22 @@ import { LabelTooltip } from 'containers/Admin/settings/registration';
 import { SectionField } from 'components/admin/Section';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
-import messages from './messages';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 type Props = {
+  coreSetting: TAppConfigurationSettingCore;
+  labelMessage: MessageDescriptor;
+  tooltipMessage?: MessageDescriptor;
+  customFieldsSignupHelperTextMultiloc?: Multiloc | null;
   onCoreSettingWithMultilocChange: (
     coreSetting: TAppConfigurationSettingCore
   ) => (multiloc: Multiloc) => void;
-  customFieldsSignupHelperTextMultiloc?: Multiloc | null;
 };
 
-const RegistrationQuestions = ({
+const HelperTextInput = ({
+  coreSetting,
+  labelMessage,
+  tooltipMessage,
   onCoreSettingWithMultilocChange,
   customFieldsSignupHelperTextMultiloc,
 }: Props) => {
@@ -30,15 +34,11 @@ const RegistrationQuestions = ({
       <InputMultilocWithLocaleSwitcher
         type="text"
         valueMultiloc={customFieldsSignupHelperTextMultiloc}
-        onChange={onCoreSettingWithMultilocChange(
-          'custom_fields_signup_helper_text'
-        )}
+        onChange={onCoreSettingWithMultilocChange(coreSetting)}
         label={
           <LabelTooltip>
-            <FormattedMessage {...messages.step2} />
-            <IconTooltip
-              content={<FormattedMessage {...messages.step2Tooltip} />}
-            />
+            <FormattedMessage {...labelMessage} />
+            <IconTooltip content={<FormattedMessage {...tooltipMessage} />} />
           </LabelTooltip>
         }
       />
@@ -46,4 +46,4 @@ const RegistrationQuestions = ({
   );
 };
 
-export default RegistrationQuestions;
+export default HelperTextInput;

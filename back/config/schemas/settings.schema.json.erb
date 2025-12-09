@@ -155,17 +155,32 @@
           },
           "login_helper_text": {
             "title": "Login Helper Text",
-            "description": "Optional short text, shown at the top of the login screen. Supports HTML.",
+            "description": "(DEPRECATED) Optional short text, shown at the top of the login screen. Supports HTML.",
             "$ref": "#/definitions/multiloc_string"
           },
           "signup_helper_text": {
             "title": "Sign-up Helper Text (Step 1)",
-            "description": "Optional short text, shown at the top of Step 1 of the sign up form (i.e., email and password). Supports HTML.",
+            "description": "(DEPRECATED) Optional short text, shown at the top of Step 1 of the sign up form (i.e., email and password). Supports HTML.",
+            "$ref": "#/definitions/multiloc_string"
+          },
+          "enter_email_helper_text": {
+            "title": "Enter email helper text",
+            "description": "Optional short text, shown at the top of the email entry step of the authentication flow. Supports HTML.",
+            "$ref": "#/definitions/multiloc_string"
+          },
+          "enter_password_helper_text": {
+            "title": "Enter password helper text",
+            "description": "Optional short text, shown at the top of the password entry step of the authentication flow. Supports HTML.",
+            "$ref": "#/definitions/multiloc_string"
+          },
+          "complete_your_profile_helper_text": {
+            "title": "Complete profile helper text",
+            "description": "Optional short text, shown at the top of the 'Complete your profile' step of the authentication flow. Supports HTML.",
             "$ref": "#/definitions/multiloc_string"
           },
           "custom_fields_signup_helper_text":  {
-            "title": "Sign-up Helper Text (Step 2)",
-            "description": "Optional short text, shown at the top of Step 2 of the sign up form (i.e., additional registration fields). Supports HTML.",
+            "title": "Demographic questions helper text",
+            "description": "Optional short text, shown at the top demographic questions step the authentication flow. Supports HTML.",
             "$ref": "#/definitions/multiloc_string"
           },
           "onboarding":  {
@@ -1446,6 +1461,18 @@
         "type": "object",
         "title": "Common ground",
         "description": "Common Ground is a participation method that lets participants post and react to concise statements using a swipe style: agree, disagree, or unsure. Statements are then ranked by consensus and controversy.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "idea_feed": {
+        "type": "object",
+        "title": "Idea feed",
+        "description": "Idea Feed is a participation method very similar to ideation, but ideas are presented one-by-one in a scrollable feed, there is a stronger emphasis on clustering. Optimized for larger projects, initially built with America One.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
