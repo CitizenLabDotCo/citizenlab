@@ -18,6 +18,3 @@ node_modules
 # VSCode settings files
 .vscode/
 .devcontainer/.env
-
-# Claude
-.claude/settings.local.json
