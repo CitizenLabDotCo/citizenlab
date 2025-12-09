@@ -29,7 +29,7 @@ module Insights
           counts = select_or_checkbox_counts_for_field(vote_custom_field_values, field)
           counts['_blank'] += total_offline_votes
           counts
-        end 
+        end
 
         {
           id: idea.id,
