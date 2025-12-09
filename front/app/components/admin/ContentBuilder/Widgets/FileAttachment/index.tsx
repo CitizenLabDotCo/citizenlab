@@ -34,8 +34,7 @@ const FileAttachment = ({
   const { data: fileAttachment } = useFileAttachmentById(fileAttachmentId);
 
   if (
-    !fileAttachment ||
-    fileName !== fileAttachment.data.attributes.file_name // We've changed the file
+    !fileAttachmentId // We've changed the file
   ) {
     // Show placeholder with just the file name if we haven't saved yet
     if (fileName) {
@@ -68,23 +67,25 @@ const FileAttachment = ({
 
   return (
     <Box id="e2e-file-attachment" maxWidth="1200px" margin="0 auto">
-      <FileDisplay
-        file={{
-          // Transform the file data to match the current expected type structure.
-          // TODO: In the future, once we remove the old files structure/api, we can simplify this.
-          ...fileAttachment.data,
-          attributes: {
-            ordering: fileAttachment.data.attributes.position,
-            name: fileName || fileAttachment.data.attributes.file_name,
-            size: fileAttachment.data.attributes.file_size,
-            created_at: fileAttachment.data.attributes.created_at,
-            updated_at: fileAttachment.data.attributes.updated_at,
-            file: {
-              url: fileAttachment.data.attributes.file_url,
+      {fileAttachment && (
+        <FileDisplay
+          file={{
+            // Transform the file data to match the current expected type structure.
+            // TODO: In the future, once we remove the old files structure/api, we can simplify this.
+            ...fileAttachment.data,
+            attributes: {
+              ordering: fileAttachment.data.attributes.position,
+              name: fileName || fileAttachment.data.attributes.file_name,
+              size: fileAttachment.data.attributes.file_size,
+              created_at: fileAttachment.data.attributes.created_at,
+              updated_at: fileAttachment.data.attributes.updated_at,
+              file: {
+                url: fileAttachment.data.attributes.file_url,
+              },
             },
-          },
-        }}
-      />
+          }}
+        />
+      )}
     </Box>
   );
 };
@@ -130,6 +131,7 @@ const FileAttachmentSettings = () => {
 
   // Filter out any files already being used in the layout
   fileOptions = fileOptions.filter((option) => {
+    if (option.value === fileId) return true; // Always include the currently selected file
     const isFileUsed = getIsFileAlreadyUsed(craftjsJson, option.value);
     return !isFileUsed;
   });
@@ -157,6 +159,7 @@ const FileAttachmentSettings = () => {
               // File attachment will be created on BE when layout is saved.
               props.fileId = option.value;
               props.fileName = option.label;
+              props.fileAttachmentId = undefined; // Clear old attachment ID if changing file
             });
           }}
           placeholder={formatMessage(messages.selectFile)}
