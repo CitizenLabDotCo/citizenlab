@@ -69,7 +69,6 @@ resource 'Users' do
       before do
         @user = create(:user)
         SettingsService.new.activate_feature! 'user_confirmation'
-        SettingsService.new.activate_feature! 'password_login'
         settings = AppConfiguration.instance.settings
         settings['password_login'] = {
           'allowed' => true,
@@ -77,14 +76,6 @@ resource 'Users' do
           'enable_signup' => true,
           'minimum_length' => 6
         }
-        AppConfiguration.instance.update!(settings: settings)
-        allow(RequestConfirmationCodeJob).to receive(:perform_now)
-        SettingsService.new.activate_feature! 'user_confirmation'
-        SettingsService.new.activate_feature! 'user_confirmation'
-        SettingsService.new.activate_feature! 'password_login'
-        allow(RequestConfirmationCodeJob).to receive(:perform_now)
-        SettingsService.new.activate_feature! 'user_confirmation'
-        SettingsService.new.activate_feature! 'password_login'
       end
 
       let(:id) { @user.id }
@@ -98,6 +89,11 @@ resource 'Users' do
     end
 
     get 'web_api/v1/users/check/:email' do
+      before do
+        SettingsService.new.activate_feature! 'user_confirmation'
+        SettingsService.new.activate_feature! 'password_login'
+      end
+
       let(:email) { 'test@test.com' }
 
       context 'when a user does not exist' do
