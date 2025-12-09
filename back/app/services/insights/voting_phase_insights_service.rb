@@ -1,17 +1,35 @@
 module Insights
   class VotingPhaseInsightsService < IdeationPhaseInsightsService
-    def votes_counts_with_user_custom_field_grouping(_custom_field_id = nil)
-      # field = CustomField.find_by(id: custom_field_id)
-      # return {} unless field
+    def votes_counts_with_user_custom_field_grouping(custom_field_id = nil)
+      field = CustomField.includes(:options).find_by(id: custom_field_id) if custom_field_id
 
-      # field_key = field.key
+      ideas = @phase.ideas.transitive # TODO: This may not be precise enough
 
-      # puts field.key.inspect
+      participations = cached_phase_participations
+      voting_participations = participations[:voting]
 
-      # participations = cached_phase_participations
-      # voting_participations = participations[:voting]
+      { 
+        total_votes: voting_participations.sum { |p| p[:total_votes] },
+        group_by: field&.key,
+        custom_field_id: custom_field_id,
+        options: field ? field.options.map { |opt| { "#{opt.key}": { id: opt.id, title: opt.title_multiloc } } } : [],
+        ideas: idea_vote_counts_data(ideas)
+      }
+    end
 
-      { thing: 'value' }
+    def idea_vote_counts_data(ideas)
+      ideas.map do |idea|
+        total_online_votes = idea&.votes_count || 0
+        total_offline_votes = idea&.manual_votes_amount || 0 
+
+        {
+          id: idea.id,
+          title: idea.title_multiloc,
+          total_online_votes: total_online_votes,
+          total_offline_votes: total_offline_votes,
+          total_votes: total_online_votes + total_offline_votes
+        }
+      end
     end
 
     private
