@@ -31,8 +31,8 @@ resource 'Users' do
       parameter :can_moderate, 'Return only admins and moderators', required: false
 
       parameter :can_moderate_project, <<~DESC, required: false
-        All admins + users who can moderate the project (by project id), excluding folder moderators of folder 
-        containing project (who can, in fact, moderate the project), OR All admins + users with project moderator role 
+        All admins + users who can moderate the project (by project id), excluding folder moderators of folder
+        containing project (who can, in fact, moderate the project), OR All admins + users with project moderator role
         (if no project ID provided).
       DESC
 
@@ -42,7 +42,7 @@ resource 'Users' do
       DESC
 
       parameter :is_not_folder_moderator, <<~DESC, required: false
-        Users who are not folder moderators of folder (by folder id), OR Users who do not have folder moderator role 
+        Users who are not folder moderators of folder (by folder id), OR Users who do not have folder moderator role
         (if no folder ID provided).
       DESC
 
@@ -194,14 +194,8 @@ resource 'Users' do
       end
 
       with_options scope: 'user' do
-        parameter :first_name, 'User full name', required: false
-        parameter :last_name, 'User full name', required: false
         parameter :email, 'E-mail address', required: true
-        parameter :password, 'Password', required: false
         parameter :locale, 'Locale. Should be one of the tenants locales', required: true
-        parameter :avatar, 'Base64 encoded avatar image'
-        parameter :roles, 'Roles array, only allowed when admin'
-        parameter :custom_field_values, 'An object that can only contain keys for custom fields for users. If fields are required, their presence is required as well'
       end
       ValidationErrorHelper.new.error_fields(self, User)
 
@@ -449,7 +443,7 @@ resource 'Users' do
           aggregate_failures 'testing json response' do
             expect(json_response[:data].size).to eq 6
             expect(json_response[:data].pluck(:id)).to match_array group_users.map(&:id)
-            expect(json_response[:data].pluck(:id).reverse.take(2)).to match_array [admin.id, both.id]
+            expect(json_response[:data].pluck(:id).reverse.take(2)).to contain_exactly(admin.id, both.id)
           end
         end
 
@@ -498,7 +492,7 @@ resource 'Users' do
           json_response = json_parse(response_body)
 
           expect(json_response[:data].size).to eq 2
-          expect(json_response[:data].pluck(:id)).to match_array [participant1.id, participant2.id]
+          expect(json_response[:data].pluck(:id)).to contain_exactly(participant1.id, participant2.id)
         end
 
         example 'List users who participated in a project with search' do
@@ -607,7 +601,7 @@ resource 'Users' do
               do_request(project: @project.id)
               expect(status).to eq 200
               json_response = json_parse(response_body)
-              expect(json_response[:data].pluck(:id)).to match_array [@participant1.id]
+              expect(json_response[:data].pluck(:id)).to contain_exactly(@participant1.id)
             end
           end
         end
@@ -656,7 +650,7 @@ resource 'Users' do
 
           do_request(can_moderate_project: p.id)
           json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to match_array [a.id, m1.id, @user.id]
+          expect(json_response[:data].pluck(:id)).to contain_exactly(a.id, m1.id, @user.id)
         end
 
         example 'List all users who can moderate' do
@@ -668,7 +662,7 @@ resource 'Users' do
 
           do_request(can_moderate: true)
           json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to match_array [a.id, m1.id, m2.id, @user.id]
+          expect(json_response[:data].pluck(:id)).to contain_exactly(a.id, m1.id, m2.id, @user.id)
         end
 
         example 'List all moderators who are not admins' do
@@ -681,7 +675,7 @@ resource 'Users' do
 
           do_request(can_moderate: true, can_admin: false)
           json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to match_array [m1.id, m2.id, f.id]
+          expect(json_response[:data].pluck(:id)).to contain_exactly(m1.id, m2.id, f.id)
         end
 
         example 'List all admins' do
@@ -693,7 +687,7 @@ resource 'Users' do
 
           do_request(can_admin: true)
           json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to match_array [a.id, @user.id]
+          expect(json_response[:data].pluck(:id)).to contain_exactly(a.id, @user.id)
         end
 
         example 'List all project reviewers' do
@@ -704,12 +698,12 @@ resource 'Users' do
           do_request(project_reviewer: true)
 
           assert_status 200
-          expect(response_ids).to match_array [project_reviewer.id]
+          expect(response_ids).to contain_exactly(project_reviewer.id)
         end
       end
 
       get 'web_api/v1/users/seats' do
-        before do
+        example 'Get number of admin and manager (moderator) seats' do
           create(:super_admin) # super admin are not included in admins
 
           @admins = [@user, *create_list(:admin, 3)]
@@ -717,9 +711,9 @@ resource 'Users' do
           folder_moderators = create_list(:project_folder_moderator, 2, project_folders: [create(:project_folder)])
           project_moderators = create_list(:project_moderator, 4, projects: [create(:project)])
           @moderators = [*folder_moderators, *project_moderators]
-        end
 
-        example_request 'Get number of admin and manager (moderator) seats' do
+          do_request
+
           expect(status).to eq 200
           expect(response_data[:type]).to eq 'seats'
           attributes = response_data[:attributes]
@@ -778,7 +772,7 @@ resource 'Users' do
           example_request 'XLSX export all users who participated in a project' do
             expect(status).to eq 200
             xlsx_hash = XlsxService.new.xlsx_to_hash_array RubyXL::Parser.parse_buffer(response_body).stream
-            expect(xlsx_hash.pluck('id')).to match_array [@participant1.id, @participant2.id]
+            expect(xlsx_hash.pluck('id')).to contain_exactly(@participant1.id, @participant2.id)
           end
         end
 
@@ -957,34 +951,36 @@ resource 'Users' do
       end
 
       patch 'web_api/v1/users/:id/block' do
-        before do
-          settings = AppConfiguration.instance.settings
-          settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
-          AppConfiguration.instance.update!(settings: settings)
-        end
-
         with_options scope: 'user' do
           parameter :block_reason, 'Reason for blocking & any additional information', required: false
         end
         ValidationErrorHelper.new.error_fields(self, User)
 
-        let!(:user) { create(:user) }
-        let!(:id) { user.id }
+        context 'when user blocking is enabled' do
+          before do
+            settings = AppConfiguration.instance.settings
+            settings['user_blocking'] = { 'enabled' => true, 'allowed' => true, 'duration' => 90 }
+            AppConfiguration.instance.update!(settings: settings)
+          end
 
-        example 'Block a user using a null value for block_reason' do
-          do_request user: { block_reason: nil }
+          let!(:user) { create(:user) }
+          let!(:id) { user.id }
 
-          expect(status).to eq 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :blocked)).to be true
-        end
+          example 'Block a user using a null value for block_reason' do
+            do_request user: { block_reason: nil }
 
-        example 'Block a user and provide a reason' do
-          do_request user: { block_reason: 'reason' }
+            expect(status).to eq 200
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :attributes, :blocked)).to be true
+          end
 
-          expect(status).to eq 200
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :attributes, :blocked)).to be true
+          example 'Block a user and provide a reason' do
+            do_request user: { block_reason: 'reason' }
+
+            expect(status).to eq 200
+            json_response = json_parse(response_body)
+            expect(json_response.dig(:data, :attributes, :blocked)).to be true
+          end
         end
       end
 

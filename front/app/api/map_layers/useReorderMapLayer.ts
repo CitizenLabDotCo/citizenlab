@@ -26,7 +26,7 @@ const useReorderMapLayer = (projectId?: string) => {
     mutationFn: reorderMapLayer,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: mapConfigKeys.item({ mapConfigId: variables.mapConfigId }),
+        queryKey: mapConfigKeys.item({ id: variables.mapConfigId }),
       });
       if (projectId) {
         queryClient.invalidateQueries({

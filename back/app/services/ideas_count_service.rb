@@ -4,7 +4,7 @@ module IdeasCountService
   }
 
   def self.counts(ideas_scope, attributes = %w[idea_status_id topic_id])
-    result = attributes.index_with({})
+    result = attributes.index_with { {} }
 
     attributes.each do |attribute|
       join_table = ATTRIBUTE_JOIN_TABLES[attribute]
@@ -19,7 +19,7 @@ module IdeasCountService
       .group("GROUPING SETS (#{column_names(attributes).join(', ')})")
       .each do |record|
         attributes.each do |attribute|
-          id = record.send attribute
+          id = record.send(attribute)
           result[attribute][id] = record.count if id
         end
       end

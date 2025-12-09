@@ -181,6 +181,8 @@ export type ProjectReportsPublicationStatus = 'published' | 'archived';
 
 export interface ProjectsProps extends DateProps {
   publication_statuses?: ProjectReportsPublicationStatus[];
+  sort?: Parameters['sort'];
+  locale?: Parameters['locale'];
 }
 
 interface ProjectsParams extends BaseParams {

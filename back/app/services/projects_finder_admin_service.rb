@@ -27,6 +27,8 @@ class ProjectsFinderAdminService
       sort_phase_starting_or_ending_soon(projects)
     when 'alphabetically_asc', 'alphabetically_desc'
       sort_alphabetically(projects, params)
+    when 'participation_asc', 'participation_desc'
+      sort_by_participation(projects, params)
     else
       direction = params[:sort] == 'recently_created_desc' ? 'DESC' : 'ASC'
       projects.order("projects.created_at #{direction}, projects.id ASC")
@@ -101,6 +103,14 @@ class ProjectsFinderAdminService
     scope.order(
       Arel.sql("projects.title_multiloc->>'#{locale}' #{direction}, projects.created_at ASC, projects.id ASC")
     )
+  end
+
+  def self.sort_by_participation(scope, params)
+    direction = params[:sort] == 'participation_desc' ? 'DESC' : 'ASC'
+
+    scope
+      .with_participation_count
+      .order(Arel.sql("COALESCE(project_participants.participants_count, 0) #{direction}, projects.id ASC"))
   end
 
   # FILTERING METHODS

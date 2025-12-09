@@ -44,17 +44,17 @@ resource 'Phase insights' do
       user3 = create(:user)
 
       # Volunteerings
-      create(:volunteer, cause: cause1, user: user1, created_at: 15.days.ago)
-      create(:volunteer, cause: cause2, user: user1, created_at: 5.days.ago)
-      create(:volunteer, cause: cause1, user: user2, created_at: 10.days.ago)
+      create(:volunteer, cause: cause1, user: user1, created_at: 15.days.ago) # during phase
+      create(:volunteer, cause: cause2, user: user1, created_at: 5.days.ago) # during phase & last 7 days
+      create(:volunteer, cause: cause1, user: user2, created_at: 10.days.ago) # during phase (in week before last)
 
       # Pageviews and sessions
       session1 = create(:session, user_id: user1.id)
       create(:pageview, session: session1, created_at: 15.days.ago, project_id: phase.project.id) # during phase
+      create(:pageview, session: session1, created_at: 5.days.ago, project_id: phase.project.id) # during phase & last 7 days
 
       session2 = create(:session, user_id: user2.id)
-      create(:pageview, session: session2, created_at: 15.days.ago, project_id: phase.project.id) # during phase
-      create(:pageview, session: session2, created_at: 5.days.ago, project_id: phase.project.id) # during phase & last 7 days, same session
+      create(:pageview, session: session2, created_at: 10.days.ago, project_id: phase.project.id) # during phase (in week before last)
 
       session3 = create(:session, user_id: user3.id)
       create(:pageview, session: session3, created_at: 2.days.ago, project_id: phase.project.id) # after phase
@@ -64,7 +64,7 @@ resource 'Phase insights' do
   let(:id) { volunteering_phase.id }
 
   get 'web_api/v1/phases/:id/insights' do
-    example_request 'creates insights for volunteering phase' do
+    example_request 'returns insights data for volunteering phase' do
       assert_status 200
 
       expect(json_response_body[:data][:id]).to eq(volunteering_phase.id.to_s)
@@ -73,13 +73,14 @@ resource 'Phase insights' do
       metrics = json_response_body.dig(:data, :attributes, :metrics)
       expect(metrics).to eq({
         visitors: 2,
-        visitors_last_7_days: 1,
+        visitors_7_day_change: 0.0, # from 1 (in week before last) to 1 unique visitor (in last 7 days) = 0% change
         participants: 2,
-        participants_last_7_days: 1,
-        engagement_rate: 1.0,
+        participants_7_day_change: 0.0, # from 1 (in week before last) to 1 unique participant (in last 7 days) = 0% change
+        participation_rate: 1.0,
+        participation_rate_7_day_change: 0.0, # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 1.0 = 0% change
         volunteering: {
           volunteerings: 3,
-          volunteerings_last_7_days: 1
+          volunteerings_7_day_change: 0.0 # from 1 (in week before last) to 1 (in last 7 days) = 0% change
         }
       })
 
@@ -87,8 +88,8 @@ resource 'Phase insights' do
       expect(participants_and_visitors_chart_data).to eq({
         resolution: 'day',
         timeseries: [
-          { participants: 1, visitors: 2, date_group: '2025-11-17' },
-          { participants: 1, visitors: 0, date_group: '2025-11-22' },
+          { participants: 1, visitors: 1, date_group: '2025-11-17' },
+          { participants: 1, visitors: 1, date_group: '2025-11-22' },
           { participants: 1, visitors: 1, date_group: '2025-11-27' }
         ]
       })

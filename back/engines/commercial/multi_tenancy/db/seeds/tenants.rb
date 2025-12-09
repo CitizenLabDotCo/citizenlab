@@ -581,6 +581,10 @@ module MultiTenancy
             project_importer: {
               enabled: true,
               allowed: true
+            },
+            phase_insights: {
+              enabled: false,
+              allowed: false
             }
           })
         )
