@@ -2,12 +2,12 @@
 #
 # Table name: idea_exposures
 #
-#  id         :uuid             not null, primary key
-#  user_id    :uuid             not null
-#  idea_id    :uuid             not null
-#  phase_id   :uuid             not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id                                                                                                                :uuid             not null, primary key
+#  user_id                                                                                                           :uuid             not null
+#  idea_id                                                                                                           :uuid             not null
+#  phase_id(This is the phase during which the idea is exposed to the user, stored redundantly for faster querying.) :uuid             not null
+#  created_at                                                                                                        :datetime         not null
+#  updated_at                                                                                                        :datetime         not null
 #
 # Indexes
 #
@@ -21,7 +21,6 @@
 #  fk_rails_...  (phase_id => phases.id)
 #  fk_rails_...  (user_id => users.id)
 #
-# An IdeaExposure represents the user seeing an idea in the ideation feed
 class IdeaExposure < ApplicationRecord
   belongs_to :user
   belongs_to :idea
