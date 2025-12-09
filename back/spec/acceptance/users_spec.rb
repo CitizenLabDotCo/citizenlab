@@ -67,103 +67,104 @@ resource 'Users' do
 
     get 'web_api/v1/users/:id' do
       context 'when confirmation is turned on' do
-      before do
-        @user = create(:user)
-        SettingsService.new.activate_feature! 'user_confirmation'
-        settings = AppConfiguration.instance.settings
-        settings['password_login'] = {
-          'allowed' => true,
-          'enabled' => true,
-          'enable_signup' => true,
-          'minimum_length' => 6
-        }
-      end
+        before do
+          @user = create(:user)
+          SettingsService.new.activate_feature! 'user_confirmation'
+          settings = AppConfiguration.instance.settings
+          settings['password_login'] = {
+            'allowed' => true,
+            'enabled' => true,
+            'enable_signup' => true,
+            'minimum_length' => 6
+          }
+        end
 
-      let(:id) { @user.id }
-      example 'Get a non-authenticated user does not expose the email', document: false do
-        do_request
+        let(:id) { @user.id }
 
-        assert_status 200
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :email)).to be_nil
+        example 'Get a non-authenticated user does not expose the email', document: false do
+          do_request
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :email)).to be_nil
+        end
       end
-    end
     end
 
     get 'web_api/v1/users/check/:email' do
       context 'when confirmation is turned on' do
-      before do
-        SettingsService.new.activate_feature! 'user_confirmation'
-        SettingsService.new.activate_feature! 'password_login'
-      end
+        before do
+          SettingsService.new.activate_feature! 'user_confirmation'
+          SettingsService.new.activate_feature! 'password_login'
+        end
 
-      let(:email) { 'test@test.com' }
+        let(:email) { 'test@test.com' }
 
-      context 'when a user does not exist' do
-        example_request 'Returns "terms"' do
-          assert_status 200
-          expect(json_response_body[:data][:attributes][:action]).to eq('terms')
+        context 'when a user does not exist' do
+          example_request 'Returns "terms"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('terms')
+          end
+        end
+
+        context 'when a user exists without a password and has completed registration', document: false do
+          before { create(:user_no_password, email: 'test@test.com', registration_completed_at: Time.now) }
+
+          example_request 'Returns "confirm"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+          end
+        end
+
+        context 'when a user exists without a password and has not completed registration' do
+          before { create(:user_with_confirmation, email: 'test@email.com', password: nil) }
+
+          let(:email) { 'test@email.com' }
+
+          example_request 'Returns "confirm"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+          end
+        end
+
+        context 'when a user exists with a password', document: false do
+          before { create(:user, email: 'test@test.com') }
+
+          example_request 'Returns "password"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('password')
+          end
+        end
+
+        context 'when an invalid email is used', document: false do
+          let(:email) { 'test_test.com' }
+
+          example_request '[error] Invalid email' do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('invalid')
+          end
+        end
+
+        context 'when an email used by a pending invite is used', document: false do
+          before { create(:invited_user, email: 'test@test.com') }
+
+          example_request '[error] Taken by invite' do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken_by_invite')
+          end
+        end
+
+        context 'when a user exists with different email casing' do
+          before { create(:user, email: 'TeSt@EmAiL.com') }
+
+          let(:email) { 'test@email.com' }
+
+          example_request 'Returns "password" for case-insensitive match' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('password')
+          end
         end
       end
-
-      context 'when a user exists without a password and has completed registration', document: false do
-        before { create(:user_no_password, email: 'test@test.com', registration_completed_at: Time.now) }
-
-        example_request 'Returns "confirm"' do
-          assert_status 200
-          expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
-        end
-      end
-
-      context 'when a user exists without a password and has not completed registration' do
-        before { create(:user_with_confirmation, email: 'test@email.com', password: nil) }
-
-        let(:email) { 'test@email.com' }
-
-        example_request 'Returns "confirm"' do
-          assert_status 200
-          expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
-        end
-      end
-
-      context 'when a user exists with a password', document: false do
-        before { create(:user, email: 'test@test.com') }
-
-        example_request 'Returns "password"' do
-          assert_status 200
-          expect(json_response_body[:data][:attributes][:action]).to eq('password')
-        end
-      end
-
-      context 'when an invalid email is used', document: false do
-        let(:email) { 'test_test.com' }
-
-        example_request '[error] Invalid email' do
-          assert_status 422
-          expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('invalid')
-        end
-      end
-
-      context 'when an email used by a pending invite is used', document: false do
-        before { create(:invited_user, email: 'test@test.com') }
-
-        example_request '[error] Taken by invite' do
-          assert_status 422
-          expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken_by_invite')
-        end
-      end
-
-      context 'when a user exists with different email casing' do
-        before { create(:user, email: 'TeSt@EmAiL.com') }
-
-        let(:email) { 'test@email.com' }
-
-        example_request 'Returns "password" for case-insensitive match' do
-          assert_status 200
-          expect(json_response_body[:data][:attributes][:action]).to eq('password')
-        end
-      end
-    end
 
       context 'when user confirmation is turned off' do
         before do
@@ -199,44 +200,31 @@ resource 'Users' do
       ValidationErrorHelper.new.error_fields(self, User)
 
       context 'when confirmation is turned on' do
-      before do
-        SettingsService.new.activate_feature! 'user_confirmation'
-        SettingsService.new.activate_feature! 'password_login'
-        allow(RequestConfirmationCodeJob).to receive(:perform_now)
-      end
-
-      let(:email) { Faker::Internet.email }
-      let(:locale) { 'en' }
-
-      describe 'create a user with no password' do
-        example_request 'User successfully created and requires confirmation' do
-          assert_status 201
-          user = User.order(:created_at).last
-          expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
-          expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
+        before do
+          SettingsService.new.activate_feature! 'user_confirmation'
+          SettingsService.new.activate_feature! 'password_login'
+          allow(RequestConfirmationCodeJob).to receive(:perform_now)
         end
 
-        example_request 'Registration is not completed by default' do
-          assert_status 201
-          expect(response_data.dig(:attributes, :registration_completed_at)).to be_nil
-        end
-      end
+        let(:email) { Faker::Internet.email }
+        let(:locale) { 'en' }
 
-      describe 'When there is an existing user' do
-        context 'when there is an existing user that has no password' do
-          example 'email taken error is returned and confirmation requirement is not reset' do
-            existing_user = create(:user_no_password, email: email)
-            existing_user.confirm!
-
-            do_request
-            assert_status 422
-            expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
-            expect(existing_user.confirmation_required?).to be(false)
+        describe 'create a user with no password' do
+          example_request 'User successfully created and requires confirmation' do
+            assert_status 201
+            user = User.order(:created_at).last
+            expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
+            expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
           end
 
-          context 'when the request tries to pass additional changed attributes', document: false do
-            let(:first_name) { Faker::Name.first_name }
+          example_request 'Registration is not completed by default' do
+            assert_status 201
+            expect(response_data.dig(:attributes, :registration_completed_at)).to be_nil
+          end
+        end
 
+        describe 'When there is an existing user' do
+          context 'when there is an existing user that has no password' do
             example 'email taken error is returned and confirmation requirement is not reset' do
               existing_user = create(:user_no_password, email: email)
               existing_user.confirm!
@@ -246,21 +234,34 @@ resource 'Users' do
               expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
               expect(existing_user.confirmation_required?).to be(false)
             end
+
+            context 'when the request tries to pass additional changed attributes', document: false do
+              let(:first_name) { Faker::Name.first_name }
+
+              example 'email taken error is returned and confirmation requirement is not reset' do
+                existing_user = create(:user_no_password, email: email)
+                existing_user.confirm!
+
+                do_request
+                assert_status 422
+                expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
+                expect(existing_user.confirmation_required?).to be(false)
+              end
+            end
           end
-        end
 
-        context 'when there is an existing user WITH a password' do
-          example 'email taken error is returned and confirmation requirement is not reset' do
-            existing_user = create(:user, email: email, password: 'gravy123')
+          context 'when there is an existing user WITH a password' do
+            example 'email taken error is returned and confirmation requirement is not reset' do
+              existing_user = create(:user, email: email, password: 'gravy123')
 
-            do_request
-            assert_status 422
-            expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
-            expect(existing_user.confirmation_required?).to be(false)
+              do_request
+              assert_status 422
+              expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
+              expect(existing_user.confirmation_required?).to be(false)
+            end
           end
         end
       end
-    end
     end
   end
 
