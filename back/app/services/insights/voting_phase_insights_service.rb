@@ -13,23 +13,44 @@ module Insights
         group_by: field&.key,
         custom_field_id: custom_field_id,
         options: field ? field.options.map { |opt| { "#{opt.key}": { id: opt.id, title: opt.title_multiloc } } } : [],
-        ideas: idea_vote_counts_data(ideas)
+        ideas: idea_vote_counts_data(ideas, voting_participations, field)
       }
     end
 
-    def idea_vote_counts_data(ideas)
+    def idea_vote_counts_data(ideas, voting_participations, field)
+      idea_ids_to_user_custom_field_values = idea_ids_to_user_custom_field_values(voting_participations)
+
       ideas.map do |idea|
         total_online_votes = idea&.votes_count || 0
         total_offline_votes = idea&.manual_votes_amount || 0
+
+        grouped_online_votes = if field
+          vote_custom_field_values = idea_ids_to_user_custom_field_values[idea.id] || []
+          select_or_checkbox_counts_for_field(vote_custom_field_values, field)
+        end
 
         {
           id: idea.id,
           title: idea.title_multiloc,
           total_online_votes: total_online_votes,
           total_offline_votes: total_offline_votes,
-          total_votes: total_online_votes + total_offline_votes
+          total_votes: total_online_votes + total_offline_votes,
+          grouped_online_votes: grouped_online_votes
         }
       end
+    end
+
+    # Because we are grouping/slicing by votes per demographic attribute (and for blanks),
+    # we need to duplicate the user_custom_field_values for each vote a user cast for that idea.
+    # This handles mutliple voting phases correctly, but could/should be simplified for
+    # single and budgeting voting phases.
+    def idea_ids_to_user_custom_field_values(voting_participations)
+      voting_participations.flat_map do |participation|
+        participation[:votes_per_idea].flat_map do |idea_id, vote_count|
+          # Duplicate the user_custom_field_values hash 'vote_count' times
+          Array.new(vote_count) { [idea_id, participation[:user_custom_field_values]] }
+        end
+      end.group_by(&:first).transform_values { |arr| arr.map(&:last) }
     end
 
     private
