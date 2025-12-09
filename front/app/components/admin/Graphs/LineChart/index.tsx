@@ -82,7 +82,6 @@ const LineChart = <Row,>({
       width={width}
       height={height}
       legend={legend}
-      graphDimensions={graphDimensions}
       legendDimensions={legendDimensions}
       defaultLegendOffset={DEFAULT_LEGEND_OFFSET}
       onUpdateGraphDimensions={setGraphDimensions}
