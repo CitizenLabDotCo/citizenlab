@@ -289,9 +289,9 @@ resource 'Projects' do
 
       describe do
         before do
-          create(:topic, code: 'nature', ordering: 0)
-          create(:topic, code: 'safety', ordering: 2)
-          create(:topic, code: 'mobility', ordering: 1)
+          create(:topic, ordering: 0)
+          create(:topic, ordering: 2)
+          create(:topic, ordering: 1)
         end
 
         let(:project) { build(:project) }

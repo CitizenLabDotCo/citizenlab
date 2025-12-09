@@ -97,6 +97,13 @@ be-up-twoday:
 fe-up-twoday:
 	cd front && npm run start:sso:twoday
 
+be-up-hoplr:
+	docker compose down
+	BASE_DEV_URI=http://localhost:3000 ASSET_HOST_URI=http://localhost:3000 docker compose up
+
+fe-up-hoplr:
+	cd front && npm start
+
 # Run it with:
 # make c
 # # or

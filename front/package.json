@@ -55,7 +55,6 @@
     }
   },
   "dependencies": {
-    "@apollo/client": "3.12.6",
     "@arcgis/core": "4.28.10",
     "@babel/runtime": "7.x",
     "@craftjs/core": "0.2.11",

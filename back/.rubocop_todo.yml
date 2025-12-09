@@ -96,7 +96,7 @@ Metrics/AbcSize:
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns, inherit_mode.
 # AllowedMethods: refine
 Metrics/BlockLength:
-  Max: 354
+  Max: 384
 
 # Offense count: 12
 # Configuration parameters: CountBlocks, CountModifierForms.
@@ -177,31 +177,6 @@ RSpec/BeforeAfterAll:
 # Prefixes: when, with, without
 RSpec/ContextWording:
   Enabled: false
-
-# Offense count: 19
-# Configuration parameters: IgnoredMetadata.
-RSpec/DescribeClass:
-  Exclude:
-    - 'engines/commercial/id_bosa_fas/spec/requests/bosa_fas_verification_spec.rb'
-    - 'engines/commercial/id_clave_unica/spec/requests/clave_unica_verification_spec.rb'
-    - 'engines/commercial/id_franceconnect/spec/requests/franceconnect_verification_spec.rb'
-    - 'engines/commercial/id_vienna_saml/spec/requests/citizen_authentication_spec.rb'
-    - 'engines/commercial/id_vienna_saml/spec/requests/employee_authentication_spec.rb'
-    - 'spec/requests/google_authentication_spec.rb'
-    - 'engines/commercial/multi_tenancy/spec/db/seedfile_spec.rb'
-    - 'engines/commercial/multi_tenancy/spec/tasks/email_campaigns_task_spec.rb'
-    - 'engines/commercial/multi_tenancy/spec/tasks/fix_notifications_task_spec.rb'
-    - 'engines/commercial/multi_tenancy/spec/tasks/invalid_data_checker_task_spec.rb'
-    - 'spec/tasks/single_use/delete_initiative_dimension_types_spec.ignore.rb'
-    - 'spec/tasks/single_use/fix_map_configs_zoom_level_spec.ignore.rb'
-    - 'spec/tasks/single_use/migrate_contextual_campaigns_spec.ignore.rb'
-    - 'spec/tasks/single_use/migrate_engagementhq_demographics_spec.ignore.rb'
-    - 'spec/tasks/single_use/migrate_forms_sections_to_pages_spec.ignore.rb'
-    - 'spec/tasks/single_use/migrate_forms_separate_title_description_pages_spec.ignore.rb'
-    - 'spec/tasks/single_use/migrate_homepage_craftjson_task_spec.ignore.rb'
-    - 'spec/tasks/single_use/rename_gv_profile_spec.ignore.rb'
-    - 'spec/tasks/single_use/substitute_cl_gv_task_spec.ignore.rb'
-    - 'spec/tasks/single_use/custom_field_orderings_spec.ignore.rb'
 
 # Offense count: 149
 # This cop supports safe autocorrection (--autocorrect).
@@ -319,26 +294,6 @@ RSpec/ScatteredSetup:
 # Include: **/*_spec.rb
 RSpec/SpecFilePathFormat:
   Enabled: false
-
-# Offense count: 13
-# Configuration parameters: Include.
-# Include: **/*_spec*rb*, **/spec/**/*
-RSpec/SpecFilePathSuffix:
-  Exclude:
-    - 'spec/migrations/20241127093339_add_first_published_at_to_admin_publications_spec.ignore.rb'
-    - 'spec/tasks/single_use/add_missing_locales_task_spec.ignore.rb'
-    - 'spec/tasks/single_use/continuous_project_migration_service_spec.ignore.rb'
-    - 'spec/tasks/single_use/delete_initiative_dimension_types_spec.ignore.rb'
-    - 'spec/tasks/single_use/fix_map_configs_zoom_level_spec.ignore.rb'
-    - 'spec/tasks/single_use/migrate_contextual_campaigns_spec.ignore.rb'
-    - 'spec/tasks/single_use/migrate_engagementhq_demographics_spec.ignore.rb'
-    - 'spec/tasks/single_use/migrate_forms_sections_to_pages_spec.ignore.rb'
-    - 'spec/tasks/single_use/migrate_forms_separate_title_description_pages_spec.ignore.rb'
-    - 'spec/tasks/single_use/migrate_homepage_craftjson_task_spec.ignore.rb'
-    - 'spec/tasks/single_use/move_ideation_custom_forms_to_project_spec.ignore.rb'
-    - 'spec/tasks/single_use/rename_gv_profile_spec.ignore.rb'
-    - 'spec/tasks/single_use/substitute_cl_gv_task_spec.ignore.rb'
-    - 'spec/tasks/single_use/custom_field_orderings_spec.ignore.rb'
 
 # Offense count: 77
 RSpec/StubbedMock:

@@ -9,6 +9,7 @@ module ParticipationMethod
         CommonGround,
         CommunityMonitorSurvey,
         DocumentAnnotation,
+        IdeaFeed,
         Ideation,
         Information,
         NativeSurvey,

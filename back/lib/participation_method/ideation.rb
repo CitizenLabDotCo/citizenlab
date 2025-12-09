@@ -12,6 +12,10 @@ module ParticipationMethod
       'ideation'
     end
 
+    def phase_insights_class
+      Insights::IdeationPhaseInsightsService
+    end
+
     def additional_export_columns
       %w[manual_votes]
     end

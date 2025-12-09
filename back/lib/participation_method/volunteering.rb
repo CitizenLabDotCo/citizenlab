@@ -5,5 +5,9 @@ module ParticipationMethod
     def self.method_str
       'volunteering'
     end
+
+    def phase_insights_class
+      Insights::VolunteeringPhaseInsightsService
+    end
   end
 end

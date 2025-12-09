@@ -93,21 +93,23 @@ const Blocks = ({
   if (permittedBy === 'users') {
     return (
       <>
-        <Block
-          number={1}
-          text={formatMessage(messages.enterNameLastNameEmailAndPassword)}
-        />
+        <Block number={1} text={formatMessage(messages.enterYourEmail)} />
         {emailConfirmationEnabled && (
           <>
             <Edge />
             <Block number={2} text={formatMessage(messages.confirmYourEmail)} />
           </>
         )}
+        <Edge />
+        <Block
+          number={3}
+          text={formatMessage(messages.enterNameLastNameAndPassword)}
+        />
         {verificationEnabled && (
           <>
             <Edge />
             <VerificationBlock
-              number={2 + enabledSteps(emailConfirmationEnabled)}
+              number={3 + enabledSteps(emailConfirmationEnabled)}
             />
           </>
         )}
@@ -116,7 +118,7 @@ const Blocks = ({
             <Edge />
             <Block
               number={
-                2 + enabledSteps(emailConfirmationEnabled, verificationEnabled)
+                3 + enabledSteps(emailConfirmationEnabled, verificationEnabled)
               }
               text={formatMessage(
                 messages.completeTheDemographicQuestionsAbove

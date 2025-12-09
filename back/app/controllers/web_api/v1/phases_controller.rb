@@ -4,7 +4,7 @@ class WebApi::V1::PhasesController < ApplicationController
   skip_before_action :authenticate_user
   around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
   before_action :set_phase, only: %i[
-    show show_mini update destroy survey_results sentiment_by_quarter
+    show show_mini insights update destroy survey_results sentiment_by_quarter
     submission_count index_xlsx delete_inputs show_progress common_ground_results
   ]
 
@@ -24,6 +24,15 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def show_mini
     render json: WebApi::V1::PhaseMiniSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash
+  end
+
+  def insights
+    insights_data = @phase.pmethod.phase_insights_class.new(@phase).call
+
+    render json: WebApi::V1::PhaseInsightsSerializer.new(
+      @phase,
+      params: jsonapi_serializer_params.merge(**insights_data)
+    ).serializable_hash
   end
 
   def create

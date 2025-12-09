@@ -283,6 +283,9 @@ const App = ({ children }: Props) => {
 
   const isAdminPage = isPage('admin', location.pathname);
   const isPagesAndMenuPage = isPage('pages_menu', location.pathname);
+  const isHomePageBuilderRoute = location.pathname.match(
+    /\/admin\/pages-menu\/homepage-builder/
+  );
   const isIdeaFormPage = isPage('idea_form', location.pathname);
   const isIdeaEditPage = isPage('idea_edit', location.pathname);
   const isEventPage = isPage('event_page', location.pathname);
@@ -303,7 +306,7 @@ const App = ({ children }: Props) => {
 
   const showFrontOfficeNavbar = () => {
     if (isAdminPage) {
-      if (!isPagesAndMenuPage) return false;
+      if (!isPagesAndMenuPage || isHomePageBuilderRoute) return false;
     }
 
     // citizen
