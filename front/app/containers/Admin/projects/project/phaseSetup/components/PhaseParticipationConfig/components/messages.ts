@@ -206,8 +206,4 @@ export default defineMessages({
     defaultMessage:
       'This controls how similar two descriptions must be to be flagged as similar. Use a value between 0 (strict) and 1 (lenient). Lower values return fewer but more accurate matches.',
   },
-  ideaFeedDescription: {
-    id: 'app.containers.AdminPage.phase.methodPicker.ideaFeedDescription1',
-    defaultMessage: 'An AI-powered feed of ideas.',
-  },
 });
