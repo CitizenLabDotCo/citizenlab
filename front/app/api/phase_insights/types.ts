@@ -1,73 +1,84 @@
 import { IResolution } from 'components/admin/ResolutionControl';
 
 /**
+ * Type for 7-day rolling change values
+ * - number: percentage change (e.g., 25.0 means +25%)
+ * - null: phase has not yet run for 14 days
+ * - 'last_7_days_compared_with_zero': previous 7-day period had zero events (division by zero)
+ */
+export type SevenDayChange = number | null | 'last_7_days_compared_with_zero';
+
+/**
  * Method-specific metric types
  * These match the backend API response structure from phase insights endpoint
  */
 export interface IdeationMetrics {
   ideas_posted: number;
-  ideas_posted_last_7_days?: number;
+  ideas_posted_7_day_change?: SevenDayChange;
   comments_posted: number;
-  comments_posted_last_7_days?: number;
+  comments_posted_7_day_change?: SevenDayChange;
   reactions: number;
-  reactions_last_7_days?: number;
+  reactions_7_day_change?: SevenDayChange;
 }
 
 export interface ProposalsMetrics {
   ideas_posted: number;
-  ideas_posted_last_7_days?: number;
+  ideas_posted_7_day_change?: SevenDayChange;
+  reached_threshold: number;
+  reached_threshold_7_day_change?: SevenDayChange;
   comments_posted: number;
-  comments_posted_last_7_days?: number;
+  comments_posted_7_day_change?: SevenDayChange;
   reactions: number;
-  reactions_last_7_days?: number;
+  reactions_7_day_change?: SevenDayChange;
 }
 
 export interface VotingMetrics {
   voting_method: string;
   online_votes: number;
-  online_votes_last_7_days?: number;
+  online_votes_7_day_change?: SevenDayChange;
   offline_votes: number;
   voters: number;
-  voters_last_7_days?: number;
+  voters_7_day_change?: SevenDayChange;
   associated_ideas: number;
   comments_posted: number;
-  comments_posted_last_7_days?: number;
+  comments_posted_7_day_change?: SevenDayChange;
 }
 
 export interface BudgetingMetrics {
   voting_method: 'budgeting';
   online_picks: number;
-  online_picks_last_7_days?: number;
+  online_picks_7_day_change?: SevenDayChange;
   offline_picks: number;
   voters: number;
-  voters_last_7_days?: number;
+  voters_7_day_change?: SevenDayChange;
   associated_ideas: number;
   comments_posted: number;
-  comments_posted_last_7_days?: number;
+  comments_posted_7_day_change?: SevenDayChange;
 }
 
 export interface SurveyMetrics {
   submitted_surveys: number;
-  submitted_surveys_last_7_days?: number;
+  submitted_surveys_7_day_change?: SevenDayChange;
   completion_rate: number; // Decimal format from backend (0.78 = 78%)
+  completion_rate_7_day_change?: SevenDayChange;
 }
 
 export interface PollMetrics {
   responses: number;
-  responses_last_7_days?: number;
+  responses_7_day_change?: SevenDayChange;
 }
 
 export interface CommonGroundMetrics {
   associated_ideas: number;
   ideas_posted: number;
-  ideas_posted_last_7_days?: number;
+  ideas_posted_7_day_change?: SevenDayChange;
   reactions: number;
-  reactions_last_7_days?: number;
+  reactions_7_day_change?: SevenDayChange;
 }
 
 export interface VolunteeringMetrics {
   volunteerings: number;
-  volunteerings_last_7_days?: number;
+  volunteerings_7_day_change?: SevenDayChange;
 }
 
 /**
@@ -75,11 +86,11 @@ export interface VolunteeringMetrics {
  */
 export interface PhaseInsightsParticipationMetrics {
   visitors: number;
+  visitors_7_day_change?: SevenDayChange;
   participants: number;
-  engagement_rate: number;
-  // Time comparison (for "Last 7 days" deltas)
-  visitors_last_7_days?: number;
-  participants_last_7_days?: number;
+  participants_7_day_change?: SevenDayChange;
+  participation_rate: number;
+  participation_rate_7_day_change?: SevenDayChange;
   // Method-specific metrics nested by participation method
   ideation?: IdeationMetrics;
   proposals?: ProposalsMetrics;
