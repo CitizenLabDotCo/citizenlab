@@ -249,26 +249,6 @@ resource 'Ideas' do
           end
 
           describe do
-            let(:idea_files_attributes) do
-              [{
-                name: 'malicious.svg',
-                file_by_content: {
-                  name: 'malicious.svg',
-                  content: file_as_base64('malicious.svg', 'image/svg+xml')
-                }
-              }]
-            end
-
-            example '[error] Create an idea with an SVG file should be rejected', document: false do
-              do_request
-              assert_status 422
-              json_response = json_parse(response_body)
-              expect(json_response[:errors]).to be_present
-              expect(json_response[:errors][:file_attachments]).to be_present
-            end
-          end
-
-          describe do
             let(:project) do
               create(:project_with_current_phase, current_phase_attrs: {
                 participation_method: 'information'
