@@ -28,7 +28,6 @@ Rails.application.routes.draw do
         # We named the param :permission_action, bc :action is already taken (controller action).
         resources :permissions, param: :permission_action do
           get 'requirements', on: :member
-          get 'schema', on: :member
           get 'custom_fields', on: :member
           get 'custom_field_options', on: :member
           get 'access_denied_explanation', on: :member
@@ -71,7 +70,6 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
         get :as_markers, on: :collection, action: 'index_idea_markers'
         get :filter_counts, on: :collection
-        get :json_forms_schema, on: :member
         get 'draft/:phase_id', on: :collection, to: 'ideas#draft_by_phase'
 
         resources :official_feedback, shallow: true
@@ -90,6 +88,7 @@ Rails.application.routes.draw do
         post :similar_ideas, on: :collection
         resources :authoring_assistance_responses, only: %i[create]
         get :as_xlsx, on: :member, action: 'show_xlsx'
+        resources :exposures, controller: 'idea_exposures', only: %i[create]
       end
 
       resources :background_jobs, only: %i[index]
@@ -107,6 +106,7 @@ Rails.application.routes.draw do
 
       # auth
       post 'user_token' => 'user_token#create'
+      post 'user_token/unconfirmed' => 'user_token#user_token_unconfirmed'
 
       resources :users, only: %i[index create update destroy] do
         get :me, on: :collection
@@ -133,8 +133,13 @@ Rails.application.routes.draw do
       get 'users/:id', to: 'users#show', constraints: { id: /\b(?!custom_fields|me)\b\S+/ }
 
       scope path: 'user' do
-        resource :confirmation, path: :confirm, only: %i[create]
-        resource :resend_code, only: %i[create]
+        post 'request_code_unauthenticated', to: 'request_codes#request_code_unauthenticated'
+        post 'request_code_authenticated', to: 'request_codes#request_code_authenticated'
+        post 'request_code_email_change', to: 'request_codes#request_code_email_change'
+
+        post 'confirm_code_unauthenticated', to: 'confirmations#confirm_code_unauthenticated'
+        post 'confirm_code_authenticated', to: 'confirmations#confirm_code_authenticated'
+        post 'confirm_code_email_change', to: 'confirmations#confirm_code_email_change'
       end
 
       resources :topics do
@@ -192,16 +197,21 @@ Rails.application.routes.draw do
           get 'submission_count'
           get 'progress', action: 'show_progress'
           delete 'inputs', action: 'delete_inputs'
+          namespace :idea_feed do
+            resources :ideas, only: [:index]
+          end
         end
 
         resources :inputs, only: [], controller: 'ideas' do
           post 'copy', on: :collection
         end
 
-        resources :files, defaults: { container_type: 'Phase' }, shallow: false
-        resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
-          get 'json_forms_schema', on: :collection
+        resource :insights, only: [], controller: 'insights/phase_insights' do
+          get '', action: 'show_insights'
+          get :voting, action: 'voting_insights'
         end
+
+        resources :files, defaults: { container_type: 'Phase' }, shallow: false
         get 'custom_form', on: :member, controller: 'custom_forms', action: 'show', defaults: { container_type: 'Phase' }
         patch 'custom_form', on: :member, controller: 'custom_forms', action: 'update', defaults: { container_type: 'Phase' }
       end
@@ -215,9 +225,6 @@ Rails.application.routes.draw do
         resources :images, defaults: { container_type: 'Project' }
         resources :files, defaults: { container_type: 'Project' }
         resources :groups_projects, shallow: true, except: [:update]
-        resources :custom_fields, controller: 'project_custom_fields', only: %i[] do
-          get 'json_forms_schema', on: :collection
-        end
         resources :moderators, controller: 'project_moderators', except: [:update] do
           get :users_search, on: :collection
         end

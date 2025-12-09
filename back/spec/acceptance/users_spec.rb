@@ -81,6 +81,11 @@ resource 'Users' do
     end
 
     get 'web_api/v1/users/check/:email' do
+      before do
+        SettingsService.new.activate_feature! 'user_confirmation'
+        SettingsService.new.activate_feature! 'password_login'
+      end
+
       let(:email) { 'test@test.com' }
 
       context 'when a user does not exist' do
@@ -92,6 +97,17 @@ resource 'Users' do
 
       context 'when a user exists without a password and has completed registration', document: false do
         before { create(:user_no_password, email: 'test@test.com', registration_completed_at: Time.now) }
+
+        example_request 'Returns "confirm"' do
+          assert_status 200
+          expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+        end
+      end
+
+      context 'when a user exists without a password and has not completed registration' do
+        before { create(:user_with_confirmation, email: 'test@email.com', password: nil) }
+
+        let(:email) { 'test@email.com' }
 
         example_request 'Returns "confirm"' do
           assert_status 200
@@ -136,6 +152,31 @@ resource 'Users' do
           expect(json_response_body[:data][:attributes][:action]).to eq('password')
         end
       end
+
+      context 'when user confirmation feature is disabled' do
+        before do
+          SettingsService.new.deactivate_feature! 'user_confirmation'
+        end
+
+        example_request 'returns "terms" when user does not exist' do
+          assert_status 200
+          expect(json_response_body[:data][:attributes][:action]).to eq('terms')
+        end
+
+        example 'returns "password" when user exists with a password' do
+          create(:user, email: 'test@test.com')
+          do_request
+          assert_status 200
+          expect(json_response_body[:data][:attributes][:action]).to eq('password')
+        end
+
+        example 'returns "token" when user exists without a password' do
+          create(:user, email: 'test2@email.com', password: nil)
+          do_request(email: 'test2@email.com')
+          assert_status 200
+          expect(json_response_body[:data][:attributes][:action]).to eq('token')
+        end
+      end
     end
 
     post 'web_api/v1/users' do
@@ -148,6 +189,8 @@ resource 'Users' do
           'minimum_length' => 6
         }
         AppConfiguration.instance.update!(settings: settings)
+        allow(RequestConfirmationCodeJob).to receive(:perform_now)
+        SettingsService.new.activate_feature! 'user_confirmation'
       end
 
       with_options scope: 'user' do
@@ -162,232 +205,58 @@ resource 'Users' do
       end
       ValidationErrorHelper.new.error_fields(self, User)
 
-      context 'full registration with a password' do
-        let(:first_name) { Faker::Name.first_name }
-        let(:last_name) { Faker::Name.last_name }
-        let(:email) { Faker::Internet.email }
-        let(:password) { Faker::Internet.password }
-        let(:locale) { 'en' }
-        let(:avatar) { png_image_as_base64 'lorem-ipsum.jpg' }
+      let(:email) { Faker::Internet.email }
+      let(:locale) { 'en' }
 
-        example_request 'Create a user' do
+      describe 'create a user with no password' do
+        example_request 'User successfully created and requires confirmation' do
           assert_status 201
+          user = User.order(:created_at).last
+          expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
+          expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
         end
 
-        context 'when the user_confirmation module is active' do
-          before do
-            allow(RequestConfirmationCodeJob).to receive(:perform_now)
-            SettingsService.new.activate_feature! 'user_confirmation'
-          end
-
-          example_request 'Registration is not completed by default' do
-            assert_status 201
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :registration_completed_at)).to be_nil # when no custom fields
-          end
-
-          example_request 'Requires confirmation' do
-            assert_status 201
-            json_response = json_parse(response_body)
-            user = User.order(:created_at).last
-            expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
-            expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true # when no custom fields
-          end
-        end
-
-        context 'when the user_avatars module is inactive' do
-          before do
-            SettingsService.new.deactivate_feature!('gravatar_avatars')
-            SettingsService.new.deactivate_feature!('user_avatars')
-          end
-
-          example_request 'Create a user without avatar' do
-            assert_status 201
-            user = User.find(response_data[:id])
-            expect(user.avatar).to be_blank
-          end
-        end
-
-        describe 'Creating an admin user' do
-          before do
-            settings = AppConfiguration.instance.settings
-            settings['password_login'] = {
-              'enabled' => true,
-              'allowed' => true,
-              'enable_signup' => true,
-              'minimum_length' => 5
-            }
-            AppConfiguration.instance.update! settings: settings
-          end
-
-          let(:roles) { [{ type: 'admin' }] }
-
-          example 'creates a user, but not an admin', document: false do
-            create(:admin) # there must be at least on admin, otherwise the next user will automatically be made an admin
-            do_request
-            assert_status 201
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :attributes, :roles)).to be_empty
-          end
-        end
-
-        describe 'invalid user errors' do
-          before do
-            settings = AppConfiguration.instance.settings
-            settings['password_login'] = {
-              'enabled' => true,
-              'allowed' => true,
-              'enable_signup' => true,
-              'minimum_length' => 5
-            }
-            AppConfiguration.instance.update! settings: settings
-          end
-
-          let(:password) { 'ab' }
-
-          example '[error] Create an invalid user', document: false do
-            do_request
-            assert_status 422
-            json_response = json_parse response_body
-            expect(json_response).to include_response_error(:password, 'too_short', count: 5)
-          end
-        end
-
-        context 'when email uses blacklisted email domain' do
-          let(:email) { 'xwrknecgyq_1542135485@039b1ee.netsolhost.com' }
-
-          example '[error] Create an invalid user with blacklisted email domain', document: false do
-            do_request(email: email)
-            assert_status 422
-
-            json_response = json_parse response_body
-            expect(json_response).to include_response_error(:email, 'something_went_wrong', code: 'zrb-42')
-
-            # We pass AppConfiguration.instance as item (required)
-            # because the user is not saved and has no ID.
-            expect(LogActivityJob).to have_been_enqueued.with(
-              AppConfiguration.instance,
-              'blacklisted_email_domain_used',
-              nil,
-              anything,
-              payload: { email: email, remote_ip: anything }
-            )
-          end
-        end
-
-        describe 'invited user creation error' do
-          let!(:invitee) { create(:invited_user) }
-          let(:email) { invitee.email }
-
-          example_request '[error] Registering an invited user' do
-            assert_status 422
-            json_response = json_parse response_body
-            expect(json_response).to include_response_error(
-              :email,
-              'taken_by_invite',
-              value: email,
-              inviter_email: invitee.invitee_invite.inviter.email
-            )
-          end
-        end
-
-        describe 'case insensitive email error' do
-          before do
-            create(:user, email: 'JeZuS@citizenlab.co')
-          end
-
-          let(:email) { 'jEzUs@citizenlab.co' }
-
-          example '[error] Registering a user with case insensitive email duplicate', document: false do
-            do_request
-            assert_status 422
-          end
-        end
-
-        describe 'profanity in user fields' do
-          let(:first_name) { 'big fuck face' }
-          let(:last_name) { 'twat' }
-
-          example 'profanity is allowed if extended blocking is not enabled', document: false do
-            config = AppConfiguration.instance
-            config.settings['blocking_profanity'] = { allowed: true, enabled: true, extended_blocking: false }
-            config.save!
-            do_request
-            assert_status 201
-            expect(User.first.first_name).to eq first_name
-            expect(User.first.last_name).to eq last_name
-          end
-
-          example '[error] profanity is NOT allowed if extended blocking is enabled', document: false do
-            config = AppConfiguration.instance
-            config.settings['blocking_profanity'] = { allowed: true, enabled: true, extended_blocking: true }
-            config.save!
-            do_request
-            assert_status 422
-            expect(User.count).to eq 0
-          end
+        example_request 'Registration is not completed by default' do
+          assert_status 201
+          expect(response_data.dig(:attributes, :registration_completed_at)).to be_nil
         end
       end
 
-      context 'light registration without a password' do
-        let(:email) { Faker::Internet.email }
-        let(:locale) { 'en' }
+      describe 'When there is an existing user' do
+        context 'when there is an existing user that has no password' do
+          example 'email taken error is returned and confirmation requirement is not reset' do
+            existing_user = create(:user_no_password, email: email)
+            existing_user.confirm!
 
-        before do
-          allow(RequestConfirmationCodeJob).to receive(:perform_now)
-          SettingsService.new.activate_feature! 'user_confirmation'
-        end
-
-        describe 'create a user with no password' do
-          example_request 'User successfully created and requires confirmation' do
-            assert_status 201
-            user = User.order(:created_at).last
-            expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
-            expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
+            do_request
+            assert_status 422
+            expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
+            expect(existing_user.confirmation_required?).to be(false)
           end
 
-          example_request 'Registration is not completed by default' do
-            assert_status 201
-            expect(response_data.dig(:attributes, :registration_completed_at)).to be_nil
-          end
-        end
+          context 'when the request tries to pass additional changed attributes', document: false do
+            let(:first_name) { Faker::Name.first_name }
 
-        describe 'Reusing an existing user with no password' do
-          context 'when there is an existing user that has no password' do
-            example 'existing confirmed user is successfully returned, confirmation requirement is reset and email sent' do
+            example 'email taken error is returned and confirmation requirement is not reset' do
               existing_user = create(:user_no_password, email: email)
               existing_user.confirm!
-
-              do_request
-              assert_status 200
-              expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
-              expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(existing_user).once
-            end
-
-            context 'when the request tries to pass additional changed attributes', document: false do
-              let(:first_name) { Faker::Name.first_name }
-
-              example 'email taken error is returned and confirmation requirement is not reset' do
-                existing_user = create(:user_no_password, email: email)
-                existing_user.confirm!
-
-                do_request
-                assert_status 422
-                expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
-                expect(existing_user.confirmation_required?).to be(false)
-              end
-            end
-          end
-
-          context 'when there is an existing user WITH a password' do
-            example 'email taken error is returned and confirmation requirement is not reset' do
-              existing_user = create(:user, email: email, password: 'gravy123')
 
               do_request
               assert_status 422
               expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
               expect(existing_user.confirmation_required?).to be(false)
             end
+          end
+        end
+
+        context 'when there is an existing user WITH a password' do
+          example 'email taken error is returned and confirmation requirement is not reset' do
+            existing_user = create(:user, email: email, password: 'gravy123')
+
+            do_request
+            assert_status 422
+            expect(json_response_body.dig(:errors, :email, 0, :error)).to eq('taken')
+            expect(existing_user.confirmation_required?).to be(false)
           end
         end
       end
@@ -1648,6 +1517,24 @@ resource 'Users' do
             @user.reload
             expect(@user.custom_field_values[cf.key]).to eq 'new value'
             expect(@user.custom_field_values[gender_cf.key]).to eq 'male'
+          end
+        end
+
+        describe 'updating the user name when user has no first or last name yet' do
+          let(:user) { create(:user, first_name: nil, last_name: nil) }
+          let(:id) { user.id }
+          let(:first_name) { 'NewFirstName' }
+          let(:last_name) { 'NewLastName' }
+
+          before do
+            header_token_for user
+          end
+
+          example_request 'Updates user name and slug' do
+            assert_status 200
+            expect(user.reload.first_name).to eq 'NewFirstName'
+            expect(user.reload.last_name).to eq 'NewLastName'
+            expect(user.reload.slug).to eq 'newfirstname-newlastname'
           end
         end
       end
