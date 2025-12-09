@@ -52,7 +52,6 @@ export const emailFlow = (
 
           if (action === 'confirm') {
             updateState({ flow: 'signin' });
-            await requestEmailConfirmationCodeUnauthenticated(email);
             setCurrentStep('email:confirmation');
           }
 
