@@ -163,7 +163,7 @@ interface RegistrationsParams {
   props: RegistrationsProps;
 }
 
-export interface MethodsUsedProps extends DateProps, CompareProps {}
+export interface MethodsUsedProps extends CompareProps, ProjectsProps {}
 
 interface MethodsUsedParams extends BaseParams {
   resolved_name: 'MethodsUsedWidget';
@@ -183,6 +183,8 @@ export type ProjectReportsPublicationStatus = 'published' | 'archived';
 
 export interface ProjectsProps extends DateProps {
   publication_statuses?: ProjectReportsPublicationStatus[];
+  sort?: Parameters['sort'];
+  locale?: Parameters['locale'];
 }
 
 interface ProjectsParams extends BaseParams {

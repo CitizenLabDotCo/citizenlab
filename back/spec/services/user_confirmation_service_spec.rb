@@ -2,10 +2,9 @@
 
 require 'rails_helper'
 
-RSpec.describe ConfirmUser do
-  subject(:result) { described_class.call(context) }
+RSpec.describe UserConfirmationService do
+  subject(:service) { described_class.new }
 
-  let(:context) { {} }
   let(:user) { create(:user_with_confirmation) }
 
   before do
@@ -14,32 +13,28 @@ RSpec.describe ConfirmUser do
   end
 
   context 'when the user is nil' do
-    before do
-      context[:code] = '1234'
-    end
+    it 'returns a user blank error' do
+      result = service.validate_and_confirm!(nil, '1234')
 
-    it 'returns a code blank error' do
+      expect(result.success?).to be false
       expect(result.errors.details).to eq({ user: [{ error: :blank }] })
     end
   end
 
   context 'when the code is nil' do
-    before do
-      context[:user] = user
-    end
-
     it 'returns a code blank error' do
+      result = service.validate_and_confirm!(user, nil)
+
+      expect(result.success?).to be false
       expect(result.errors.details).to eq({ code: [{ error: :blank }] })
     end
   end
 
   context 'when the code is incorrect' do
-    before do
-      context[:user] = user
-      context[:code] = 'failcode'
-    end
-
     it 'returns a code invalid error' do
+      result = service.validate_and_confirm!(user, 'failcode')
+
+      expect(result.success?).to be false
       expect(result.errors.details).to eq(code: [{ error: :invalid }])
     end
   end
@@ -47,12 +42,12 @@ RSpec.describe ConfirmUser do
   context 'when the code has expired' do
     before do
       user.update(email_confirmation_code_sent_at: 1.week.ago)
-
-      context[:user] = user
-      context[:code] = user.email_confirmation_code
     end
 
-    it 'returns a code invalid error' do
+    it 'returns a code expired error' do
+      result = service.validate_and_confirm!(user, user.email_confirmation_code)
+
+      expect(result.success?).to be false
       expect(result.errors.details).to eq(code: [{ error: :expired }])
     end
   end
@@ -60,11 +55,12 @@ RSpec.describe ConfirmUser do
   context 'when the code has expired and is invalid' do
     before do
       user.update(email_confirmation_code_sent_at: 1.week.ago)
-      context[:user] = user
-      context[:code] = 'failcode'
     end
 
     it 'returns a code invalid error' do
+      result = service.validate_and_confirm!(user, 'failcode')
+
+      expect(result.success?).to be false
       expect(result.errors.details).to eq(code: [{ error: :invalid }])
     end
   end

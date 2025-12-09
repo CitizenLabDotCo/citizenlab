@@ -71,4 +71,16 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.youNeedToSelectADateRange',
     defaultMessage: 'You need to select a date range first.',
   },
+  projectPublicationStatusLabel: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.MethodsUsedWidget.ChartWidgetSettings.projectPublicationStatusLabel',
+    defaultMessage: 'Project publication status',
+  },
+  publishedLabel: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.MethodsUsedWidget.ChartWidgetSettings.publishedLabel',
+    defaultMessage: 'Published',
+  },
+  archivedLabel: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.MethodsUsedWidget.ChartWidgetSettings.archivedLabel',
+    defaultMessage: 'Archived',
+  },
 });

@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Insights::ProposalsPhaseInsightsService do
-  let(:phase) { create(:proposals_phase, start_at: 15.days.ago, end_at: 2.days.ago) }
+  let(:phase) { create(:proposals_phase, start_at: 17.days.ago, end_at: 2.days.ago) }
   let(:service) { described_class.new(phase) }
 
   let(:user1) { create(:user) }
@@ -37,40 +37,39 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
     it 'returns the participation ideas published data for published ideas published during phase' do
       participations_posting_idea = service.send(:participations_posting_idea)
 
-      expect(participations_posting_idea).to match_array([
-        {
-          item_id: idea2.id,
-          action: 'posting_idea',
-          acted_at: a_kind_of(Time),
-          classname: 'Idea',
-          participant_id: user1.id,
-          user_custom_field_values: {}
-        },
-        {
-          item_id: idea4.id,
-          action: 'posting_idea',
-          acted_at: a_kind_of(Time),
-          classname: 'Idea',
-          participant_id: user2.id,
-          user_custom_field_values: {}
-        },
-        {
-          item_id: idea6.id,
-          action: 'posting_idea',
-          acted_at: a_kind_of(Time),
-          classname: 'Idea',
-          participant_id: 'some_author_hash',
-          user_custom_field_values: {}
-        },
-        {
-          item_id: idea7.id,
-          action: 'posting_idea',
-          acted_at: a_kind_of(Time),
-          classname: 'Idea',
-          participant_id: idea7.id,
-          user_custom_field_values: {}
-        }
-      ])
+      expect(participations_posting_idea).to contain_exactly({
+        item_id: idea2.id,
+        action: 'posting_idea',
+        acted_at: a_kind_of(Time),
+        classname: 'Idea',
+        threshold_reached_at: nil,
+        participant_id: user1.id,
+        user_custom_field_values: {}
+      }, {
+        item_id: idea4.id,
+        action: 'posting_idea',
+        acted_at: a_kind_of(Time),
+        classname: 'Idea',
+        threshold_reached_at: nil,
+        participant_id: user2.id,
+        user_custom_field_values: {}
+      }, {
+        item_id: idea6.id,
+        action: 'posting_idea',
+        acted_at: a_kind_of(Time),
+        classname: 'Idea',
+        threshold_reached_at: nil,
+        participant_id: 'some_author_hash',
+        user_custom_field_values: {}
+      }, {
+        item_id: idea7.id,
+        action: 'posting_idea',
+        acted_at: a_kind_of(Time),
+        classname: 'Idea',
+        threshold_reached_at: nil,
+        participant_id: idea7.id,
+        user_custom_field_values: {}
+      })
 
       first_participation = participations_posting_idea.first
       expect(first_participation[:acted_at])
@@ -81,13 +80,7 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
       phase.update!(end_at: nil)
       participations_posting_idea = service.send(:participations_posting_idea)
 
-      expect(participations_posting_idea.pluck(:item_id)).to match_array([
-        idea2.id,
-        idea3.id,
-        idea4.id,
-        idea6.id,
-        idea7.id
-      ])
+      expect(participations_posting_idea.pluck(:item_id)).to contain_exactly(idea2.id, idea3.id, idea4.id, idea6.id, idea7.id)
     end
 
     it 'does not include ideas that are not submitted' do
@@ -117,25 +110,117 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
         reacting_idea: service.send(:participations_reacting_idea)
       })
 
-      expect(participations[:posting_idea].map { |p| p[:item_id] }).to match_array([
-        idea2.id,
-        idea4.id,
-        idea6.id,
-        idea7.id
-      ])
+      expect(participations[:posting_idea].map { |p| p[:item_id] }).to contain_exactly(idea2.id, idea4.id, idea6.id, idea7.id)
 
-      expect(participations[:commenting_idea].map { |p| p[:item_id] }).to match_array([
-        comment2.id,
-        comment4.id,
-        comment5.id,
-        comment6.id
-      ])
+      expect(participations[:commenting_idea].map { |p| p[:item_id] }).to contain_exactly(comment2.id, comment4.id, comment5.id, comment6.id)
 
-      expect(participations[:reacting_idea].map { |p| p[:item_id] }).to match_array([
-        reaction2.id,
-        reaction4.id,
-        reaction5.id
-      ])
+      expect(participations[:reacting_idea].map { |p| p[:item_id] }).to contain_exactly(reaction2.id, reaction4.id, reaction5.id)
+    end
+  end
+
+  describe '#threshold_reached_at' do
+    it 'returns nil when idea has no threshold_reached status change' do
+      threshold_reached_at = service.send(:threshold_reached_at, idea2)
+
+      expect(threshold_reached_at).to be_nil
+    end
+
+    it 'returns the acted_at time when idea reached threshold' do
+      activity_time = 8.days.ago
+      create(
+        :activity,
+        item: idea2,
+        action: 'changed_input_status',
+        acted_at: activity_time,
+        payload: {
+          input_status_from_code: 'proposed',
+          input_status_to_code: 'threshold_reached'
+        }
+      )
+
+      threshold_reached_at = service.send(:threshold_reached_at, idea2)
+
+      expect(threshold_reached_at).to be_within(1.second).of(activity_time)
+    end
+
+    it 'returns the threshold_reached time even when status changed again after' do
+      threshold_time = 8.days.ago
+      create(
+        :activity,
+        item: idea2,
+        action: 'changed_input_status',
+        acted_at: threshold_time,
+        payload: {
+          input_status_from_code: 'proposed',
+          input_status_to_code: 'threshold_reached'
+        }
+      )
+
+      create(
+        :activity,
+        item: idea2,
+        action: 'changed_input_status',
+        acted_at: 5.days.ago,
+        payload: {
+          input_status_from_code: 'threshold_reached',
+          input_status_to_code: 'accepted'
+        }
+      )
+
+      threshold_reached_at = service.send(:threshold_reached_at, idea2)
+
+      expect(threshold_reached_at).to be_within(1.second).of(threshold_time)
+    end
+
+    it 'returns nil when idea has other status changes but not threshold_reached' do
+      create(
+        :activity,
+        item: idea2,
+        action: 'changed_input_status',
+        acted_at: 8.days.ago,
+        payload: {
+          input_status_from_code: 'proposed',
+          input_status_to_code: 'accepted'
+        }
+      )
+
+      threshold_reached_at = service.send(:threshold_reached_at, idea2)
+
+      expect(threshold_reached_at).to be_nil
+    end
+  end
+
+  describe 'phase_participation_method_metrics' do
+    let(:user1) { create(:user) }
+    let(:participation1) { create(:posting_idea_participation, acted_at: 10.days.ago, user: user1) }
+    let(:participation2) { create(:posting_idea_participation, acted_at: 5.days.ago, user: user1) }
+    let(:participation3) { create(:commenting_idea_participation, acted_at: 10.days.ago, user: user1) }
+    let(:participation4) { create(:commenting_idea_participation, acted_at: 5.days.ago, user: user1) }
+    let(:participation5) { create(:reacting_idea_participation, acted_at: 10.days.ago, user: user1) }
+    let(:participation6) { create(:reacting_idea_participation, acted_at: 5.days.ago, user: user1) }
+
+    let(:participations) do
+      {
+        posting_idea: [participation1, participation2],
+        commenting_idea: [participation3, participation4],
+        reacting_idea: [participation5, participation6]
+      }
+    end
+
+    it 'calculates the correct metrics' do
+      participation1[:threshold_reached_at] = 8.days.ago
+      metrics = service.send(:phase_participation_method_metrics, participations)
+
+      expect(metrics).to eq({
+        ideas_posted: 2,
+        ideas_posted_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) => 0% change
+        reached_threshold: 1,
+        reached_threshold_7_day_change: -100.0, # from 1 (in week before last) to 0 (in last 7 days) => -100% change
+        comments_posted: 2,
+        comments_posted_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) => 0% change
+        reactions: 2,
+        reactions_7_day_change: 0.0 # from 1 (in week before last) to 1 (in last 7 days) => 0% change
+      })
     end
   end
 end
