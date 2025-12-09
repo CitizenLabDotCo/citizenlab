@@ -22,7 +22,9 @@ export const getTooltipConfig = (
     : defaultTooltipConfig;
 };
 
-const DEFAULT_MARGIN = { top: 0, bottom: 0, left: 0, right: 0 };
+// Match recharts' default in version 2.12.7 margin to preserve original visual behavior
+// https://github.com/recharts/recharts/blob/2.x/src/chart/generateCategoricalChart.tsx#L1119
+const DEFAULT_MARGIN = { top: 5, bottom: 5, left: 5, right: 5 };
 
 export const parseMargin = (
   margin: Margin | undefined,
