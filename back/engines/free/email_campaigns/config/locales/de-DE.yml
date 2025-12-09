@@ -407,11 +407,13 @@ de:
       title: '%{requesterName} hat Sie eingeladen, das Projekt "%{projectTitle}" freizugeben'
       event_description: "Derzeit befindet sich das Projekt im Entwurfsmodus und ist für Nutzer*innen nicht sichtbar. Sobald Sie es geprüft und freigegeben haben, kann der/die Projektmanager*in es veröffentlichen."
       cta_button: "Projekt überprüfen"
+      preheader: '%{requesterName} hat Sie eingeladen, das Projekt "%{projectTitle}" freizugeben'
     project_review_state_change:
       subject: '"%{projectTitle}" wurde freigegeben'
       title: '%{reviewerName} hat das Projekt "%{projectTitle}" freigegeben'
       event_description: "Das Projekt ist nun bereit für die Veröffentlichung. Sie können es veröffentlichen, sobald Sie bereit sind!"
       cta_button: "Zu den Projekteinstellungen"
+      preheader: '%{reviewerName} hat das Projekt "%{projectTitle}" freigegeben'
     status_change_on_idea_you_follow:
       status_change: 'Der neue Status dieses Beitrags ist ''%{status}'''
       event_description: '%{organizationName} hat den Status des Beitrags ''%{input_title}'' auf Ihrer digitalen Beteiligungsplattform aktualisiert.'

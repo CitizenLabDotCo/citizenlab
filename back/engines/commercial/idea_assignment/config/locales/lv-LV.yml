@@ -10,4 +10,4 @@ lv:
       event_description: 'Jums ir piešķirts ievades vārds. Sniedziet atsauksmes, rakstot oficiālu atjauninājumu vai mainot tā statusu.'
       title: '%{firstName}, jums tika piešķirts ievades vārds'
       subject: 'Jums ir uzdevums %{organizationName} platformā'
-      preheader_idea: 'Jums ir piešķirta %{authorName} ideja'
+      preheader: 'Jums ir piešķirts %{authorName} ievade.'

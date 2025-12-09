@@ -93,7 +93,7 @@ resource 'Ideas' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 4
-        expect(json_response[:data].pluck(:id)).to match_array [@ideas[0].id, @ideas[1].id, @ideas[3].id, @ideas[4].id]
+        expect(json_response[:data].pluck(:id)).to contain_exactly(@ideas[0].id, @ideas[1].id, @ideas[3].id, @ideas[4].id)
       end
 
       example 'Don\'t list drafts (default behaviour)', document: false do
@@ -149,7 +149,7 @@ resource 'Ideas' do
         do_request topics: [t1.id, t2.id]
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
-        expect(json_response[:data].pluck(:id)).to match_array [i1.id, i2.id, i3.id]
+        expect(json_response[:data].pluck(:id)).to contain_exactly(i1.id, i2.id, i3.id)
       end
 
       example 'List all ideas in a project' do
@@ -171,7 +171,7 @@ resource 'Ideas' do
 
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].pluck(:id)).to match_array [i1.id, i2.id]
+        expect(json_response[:data].pluck(:id)).to contain_exactly(i1.id, i2.id)
       end
 
       example 'List all ideas in a phase of a project' do
@@ -187,7 +187,7 @@ resource 'Ideas' do
         do_request phase: ph2.id
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].pluck(:id)).to match_array [ideas[1].id, ideas[2].id]
+        expect(json_response[:data].pluck(:id)).to contain_exactly(ideas[1].id, ideas[2].id)
       end
 
       example 'List all ideas in a basket' do
@@ -197,7 +197,7 @@ resource 'Ideas' do
         do_request(basket_id: basket.id)
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].pluck(:id)).to match_array [@ideas[1].id, @ideas[4].id]
+        expect(json_response[:data].pluck(:id)).to contain_exactly(@ideas[1].id, @ideas[4].id)
       end
 
       example 'List all ideas in published projects' do
@@ -314,7 +314,7 @@ resource 'Ideas' do
         assert_status 200
 
         expect(response_data.size).to eq 2
-        expect(response_data.pluck(:id)).to match_array [ideas[0].id, ideas[1].id]
+        expect(response_data.pluck(:id)).to contain_exactly(ideas[0].id, ideas[1].id)
         ideas_phases = json_response_body[:included].map { |i| i if i[:type] == 'ideas_phase' }.compact!
         expect(ideas_phases.size).to eq 2
         expect(ideas_phases[0][:attributes][:baskets_count]).to eq 2
@@ -368,11 +368,7 @@ resource 'Ideas' do
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 3
-          expect(json_response[:data].pluck(:id)).to match_array([
-            published_proposal.id,
-            author_published_proposal.id,
-            other_published_proposal.id
-          ])
+          expect(json_response[:data].pluck(:id)).to contain_exactly(published_proposal.id, author_published_proposal.id, other_published_proposal.id)
         end
       end
 
@@ -384,12 +380,7 @@ resource 'Ideas' do
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 4
-          expect(json_response[:data].pluck(:id)).to match_array([
-            published_proposal.id,
-            author_prescreening_proposal.id,
-            author_published_proposal.id,
-            other_published_proposal.id
-          ])
+          expect(json_response[:data].pluck(:id)).to contain_exactly(published_proposal.id, author_prescreening_proposal.id, author_published_proposal.id, other_published_proposal.id)
         end
       end
 
@@ -403,13 +394,7 @@ resource 'Ideas' do
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 5
-          expect(json_response[:data].pluck(:id)).to match_array([
-            published_proposal.id,
-            author_prescreening_proposal.id,
-            other_prescreening_proposal.id,
-            author_published_proposal.id,
-            other_published_proposal.id
-          ])
+          expect(json_response[:data].pluck(:id)).to contain_exactly(published_proposal.id, author_prescreening_proposal.id, other_prescreening_proposal.id, author_published_proposal.id, other_published_proposal.id)
         end
       end
     end

@@ -125,6 +125,7 @@ fr:
     open_idea_project_description_preview: Vous avez une idée qui ne correspond pas à l'un des projets existants? Ensuite, affichez-la ici, obtenez du soutien et inscrivez-la à l'ordre du jour politique!
     open_idea_project_description: >
       <p>Ici, vous pouvez lancer votre propre idée si elle ne correspond pas à un des projets existants.</p><p><strong>L’objectif?</strong> Voir votre idée arriver dans l’agenda politique.</p><p><strong>Comment?</strong> En obtenant le support d’au moins 100 votes dans les 3 mois. Vous pouvez y arriver en rendant votre idée plus attractive: donnez un titre clair, ajoutez une image, donnez des arguments forts basés sur des faits et attachez des fichiers contenant plus de détails. Ensuite, partagez votre idée sur les réseaux sociaux ou par e-mail et invitez des gens à rejoindre la discussion sur votre idée ou simplement pour le convaincre de voter en votre faveur.</p><p><strong>A propos de quoi?</strong> Votre idée peut être à propos de pleins de choses, tant que c’est lié à votre ville. Cela peut être un problème que vous experiencez, une solution ou même une combinaison des deux. Cela peut être vague et à long terme ou bien au contraire tangible et à court terme.</p><p><strong>Et ensuite?</strong> Vous avez obtenu 100 votes en 3 mois? Félicitations! La ville pourra maintenant tenir votre idée en consideration. Si votre idée est évaluée comme faisable, vous aurez la chance de la proposer pendant le conseil communal. Durant cette même réunion, les membres du conseil vous donnerons des avis direct sur ce qu’ils peuvent faire ou non avec votre idée, et pourquoi. Si vous n’obtenez pas 100 votes dans les 3 mois, votre proposition ne sera pas considerée.</p><p>Nous sommes curieux d’en savoir plus à propos de votre idée!</p>
+    published_projects: Projets publiés
   phases:
     open_idea_phase_title: Phase en cours
     native_survey_title: Enquête
@@ -385,3 +386,4 @@ fr:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "Le maximum doit être supérieur au minimum."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Le maximum doit être supérieur ou égal au minimum."

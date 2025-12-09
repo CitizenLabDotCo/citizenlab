@@ -10,4 +10,4 @@ lt:
       event_description: 'Jums buvo priskirtas įvesties kodas. Pateikite atsiliepimus rašydami oficialų atnaujinimą arba keisdami jo būseną.'
       title: '%{firstName}, jums buvo priskirtas įvesties elementas'
       subject: 'Įvestis jums buvo priskirta %{organizationName}platformoje.'
-      preheader_idea: 'Jums priskirta %{authorName} įvestis'
+      preheader: 'Jums priskirta %{authorName} įvestis'

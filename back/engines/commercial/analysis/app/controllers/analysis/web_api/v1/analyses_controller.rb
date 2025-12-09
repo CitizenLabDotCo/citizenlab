@@ -30,7 +30,12 @@ module Analysis
           render json: WebApi::V1::AnalysisSerializer.new(
             @analysis,
             params: jsonapi_serializer_params,
-            include: serializer_includes
+            include: [
+              *serializer_includes,
+              :'main_custom_field.matrix_statements',
+              :'additional_custom_fields.matrix_statements',
+              :'all_custom_fields.matrix_statements'
+            ]
           ).serializable_hash
         end
 
@@ -55,16 +60,24 @@ module Analysis
           @analysis.assign_attributes analysis_params_for_update
           authorize @analysis
 
-          if @analysis.save
-            side_fx_service.after_update(@analysis, current_user)
-            render json: WebApi::V1::AnalysisSerializer.new(
-              @analysis,
-              params: jsonapi_serializer_params,
-              include: serializer_includes
-            ).serializable_hash, status: :ok
-          else
-            render json: { errors: @analysis.errors.details }, status: :unprocessable_entity
+          @analysis.transaction do
+            @analysis.save!
+
+            if params[:analysis].key?(:files)
+              file_ids = params.dig(:analysis, :files).to_a.uniq
+              @analysis.attached_files = Files::File.where(id: file_ids)
+            end
           end
+
+          side_fx_service.after_update(@analysis, current_user)
+
+          render json: WebApi::V1::AnalysisSerializer.new(
+            @analysis,
+            params: jsonapi_serializer_params,
+            include: serializer_includes
+          ).serializable_hash, status: :ok
+        rescue ActiveRecord::RecordInvalid => e
+          render json: { errors: e.record.errors.details }, status: :unprocessable_entity
         end
 
         def destroy

@@ -125,6 +125,7 @@ tr:
     open_idea_project_description_preview: Mevcut projelerde göremediğiniz bir fikriniz mi var? Burada yayınlayın, destek toplayın ve gündemde yer almasını sağlayın!
     open_idea_project_description: >
       <p>Mevcut projelerde göremediğiniz bir fikriniz varsa burada yayınlayabilirsiniz.</p><p><strong>Amaç nedir?</strong> Fikrinizi gündeme taşımak.</p><p><strong>Nasıl mı?</strong> Destek toplayarak, yani 3 ay içinde en az 100 oy alarak. Bunu, öncelikle fikrinizi 'çekici' hale getirerek yapabilirsiniz. Açık ve ilgi çekici bir şekilde yazmak, resimler eklemek, gerçeklere dayalı güçlü argümanlar üretmek ve daha fazla ayrıntı veya arka plan bilgisi içeren eklerle geliştirmek gibi uygulamalar önerilir. Bunu yaptıktan sonra, fikrinizi sosyal medyada veya e-posta yoluyla paylaşmaya başlayın. İnsanları fikrinizle ilgili tartışmaya katılmaya davet edin veya lehte oy vererek fikrinizi desteklemeye ikna edin.</p><p><strong>Ne hakkında?</strong> Fikriniz, kentiniz ve politikasıyla ilgili olduğu sürece pek çok şey hakkında olabilir. Yaşadığınız bir sorun, öngördüğünüz bir çözüm veya bunların birleşimi olabilir. Bu fikir, çılgınca ve uzun vadeli olabileceği gibi çok somut ve hızla gerçekleştirilecek bir fikir de olabilir.</p><p><strong>Peki ya sonra? </strong>3 ay içinde 100 oya ulaştınız mı? Tebrikler! Kent yönetimi artık fikrinizi değerlendirmeye alacaktır. Fikrinizin uygulanabilir olduğu ve belirli gruplara veya bireylere zarar vermediği düşünülürse, kurul toplantısı sırasında önerinizi sunma şansına sahip olursunuz. Aynı toplantı sırasında, kurul üyeleri fikrinizle ilgili ne yapıp yapmayacakları ve neden yapmayacakları konusunda size doğrudan geri bildirimde bulunacaklardır. Eğer 3 ay içinde 100 oy toplayamazsanız öneriniz değerlendirmeye alınmaz.</p><p>Fikirlerinizi öğrenmek için sabırsızlanıyoruz!</p>
+    published_projects: Yayınlanmış projeler
   phases:
     open_idea_phase_title: Mevcut aşama
     native_survey_title: Anket
@@ -385,3 +386,4 @@ tr:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "Maksimum değer minimum değerden büyük olmalıdır."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Maksimum değer minimum değerden büyük veya eşit olmalıdır."

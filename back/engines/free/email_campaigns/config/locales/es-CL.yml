@@ -407,11 +407,13 @@ es-CL:
       title: '%{requesterName} te ha invitado a revisar el proyecto "%{projectTitle}"'
       event_description: "Actualmente, el proyecto está en modo borrador y no es visible para los usuarios. Una vez que lo hayas revisado y aprobado, el moderador podrá publicarlo."
       cta_button: "Revisar el proyecto"
+      preheader: '%{requesterName} te ha invitado a revisar el proyecto "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" ha sido aprobado'
       title: '%{reviewerName} aprobó el proyecto "%{projectTitle}"'
       event_description: "El proyecto ya está listo para publicarse. ¡Puedes publicarlo cuando quieras!"
       cta_button: "Ir a la configuración del proyecto"
+      preheader: '%{reviewerName} aprobó el proyecto "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'El nuevo estado de este aporte es ''%{status}'''
       event_description: '%{organizationName} actualizó el estado del aporte ''%{input_title}'' en su plataforma digital de participación.'

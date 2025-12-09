@@ -23,7 +23,7 @@ describe('Project description builder Text component', () => {
         projectSlug = projectTitle;
         cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
           cy.visit(
-            `/admin/project-description-builder/projects/${projectId}/description`
+            `/admin/description-builder/projects/${projectId}/description`
           );
         });
       });
@@ -61,9 +61,7 @@ describe('Project description builder Text component', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.visit(
-      `/admin/project-description-builder/projects/${projectId}/description`
-    );
+    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
 
     cy.get('.e2e-text-box').click();
     cy.get('#e2e-delete-button').click();

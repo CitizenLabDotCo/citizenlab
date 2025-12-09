@@ -125,6 +125,7 @@ cy:
     open_idea_project_description_preview: Efallai bod gennych chi syniad nad yw'n cyd-fynd ag un o'r prosiectau presennol? Na phostio fan hyn, casglu cefnogaeth a'i gael ar yr agenda wleidyddol!
     open_idea_project_description: >
       <p>Yma, gallwch ddechrau eich syniad eich hun os nad yw'n cyd-fynd ag un o'r prosiectau presennol.</p><p><strong>Yr amcan?</strong> I gael eich syniad ar yr agenda wleidyddol.</p><p><strong>Sut?</strong> Trwy gasglu cefnogaeth, sef o leiaf 100 pleidlais mewn 3 mis. Gallwch wneud hynny drwy wneud eich syniad yn 'ddeniadol' yn gyntaf. Ysgrifennwch ef mewn ffordd glir a deniadol, ychwanegwch ddelweddau, rhowch ddadleuon cryf yn seiliedig ar ffeithiau, ychwanegwch atodiadau gyda manylion pellach neu wybodaeth gefndir, ... Ar ôl i chi wneud hynny, dechreuwch rannu'ch syniad ar gyfryngau cymdeithasol neu drwy e-bost. Gwahoddwch bobl i ymuno â'r drafodaeth ar eich syniad, neu'n syml, darbwyllwch nhw i'w gefnogi drwy bleidleisio o'i blaid.</p><p><strong>Am beth?</strong> Gall eich syniad ymwneud â llawer o bethau, cyn belled â'i fod yn gysylltiedig â'ch dinas a'i pholisi. Gall fod yn broblem rydych chi'n ei chael, yn ddatrysiad rydych chi'n ei ragweld neu hyd yn oed yn gyfuniad o'r ddau. Gall fod yn wyllt ac yn y tymor hir, neu'n ddiriaethol iawn ac yn fuddugoliaeth gyflym.</p><p><strong>Ac wedyn? </strong>A wnaethoch chi gyrraedd 100 pleidlais mewn 3 mis? Llongyfarchiadau! Bydd y ddinas nawr yn cymryd eich syniad i ystyriaeth. Os ystyrir bod eich syniad yn ymarferol ac nad yw'n niweidio grwpiau neu unigolion penodol, cewch gyfle i gyflwyno'ch cynnig yn ystod cyfarfod y cyngor. Yn ystod yr un cyfarfod, bydd aelodau'r cyngor yn rhoi adborth uniongyrchol i chi ar yr hyn y byddant neu na fyddant yn ei wneud â'ch syniad a pham. Os na fyddwch yn casglu 100 o bleidleisiau mewn 3 mis, ni fydd eich cynnig yn cael ei ystyried.</p><p>Rydym yn chwilfrydig i ddysgu am eich syniadau!</p>
+    published_projects: Prosiectau cyhoeddedig
   phases:
     open_idea_phase_title: Cyfnod presennol
     native_survey_title: Arolwg
@@ -389,3 +390,4 @@ cy:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "Rhaid i'r uchafswm fod yn fwy na'r isafswm."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Rhaid i'r uchafswm fod yn fwy na neu'n hafal i'r isafswm."

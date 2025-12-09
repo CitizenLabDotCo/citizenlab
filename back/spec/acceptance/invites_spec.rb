@@ -70,7 +70,7 @@ resource 'Invites' do
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 3
-          expect(json_response[:data].pluck(:id)).to match_array [invite1.id, invite2.id, invite3.id]
+          expect(json_response[:data].pluck(:id)).to contain_exactly(invite1.id, invite2.id, invite3.id)
         end
       end
 

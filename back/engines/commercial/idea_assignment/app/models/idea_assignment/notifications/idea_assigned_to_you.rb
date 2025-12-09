@@ -66,7 +66,7 @@
 module IdeaAssignment
   module Notifications
     class IdeaAssignedToYou < ::Notification
-      validates :initiating_user, :idea, :project, presence: true
+      validates :idea, :project, presence: true
 
       ACTIVITY_TRIGGERS = { 'Idea' => { 'changed_assignee' => true } }.freeze
       EVENT_NAME = 'Idea assigned to you'
@@ -76,9 +76,8 @@ module IdeaAssignment
         recipient_id = input.assignee_id
         initiator_id = activity.user_id
 
-        # We only notify manual assignments, meaning there needs to be an
-        # initiator
-        if recipient_id && initiator_id && recipient_id != initiator_id
+        # We don't generate a notification if the assignee is the one doing the assignment
+        if recipient_id && recipient_id != initiator_id
           [
             new(
               recipient_id: recipient_id,

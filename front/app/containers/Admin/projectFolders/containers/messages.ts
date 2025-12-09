@@ -32,16 +32,22 @@ export default defineMessages({
     defaultMessage: 'Title',
   },
   shortDescriptionInputLabel: {
-    id: 'app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel',
-    defaultMessage: 'Short description',
+    id: 'app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabel2',
+    defaultMessage: 'Homepage description',
   },
   shortDescriptionInputLabelTooltip: {
-    id: 'app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip',
-    defaultMessage: 'shown in the landing page',
+    id: 'app.containers.AdminPage.FoldersEdit.shortDescriptionInputLabelTooltip2',
+    defaultMessage:
+      'This short description will be shown on the card for the folder on the homepage. Keep it concise and engaging.',
   },
   descriptionInputLabel: {
     id: 'app.containers.AdminPage.FoldersEdit.descriptionInputLabel',
     defaultMessage: 'Description',
+  },
+  descriptionTooltip: {
+    id: 'app.containers.AdminPage.FoldersEdit.descriptionTooltip',
+    defaultMessage:
+      'Shown on the project folder. Clearly describe what the folder contains, what you expect from your users and what they can expect from you.',
   },
   projectFolderCardImageLabel: {
     id: 'app.containers.AdminPage.FoldersEdit.projectFolderCardImageLabel',
@@ -143,9 +149,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.folderName',
     defaultMessage: 'Folder name',
   },
-  folderDescriptions: {
-    id: 'app.containers.AdminPage.FoldersEdit.folderDescriptions',
-    defaultMessage: 'Descriptions',
+  folderDescription: {
+    id: 'app.containers.AdminPage.FoldersEdit.folderDescriptions2',
+    defaultMessage: 'Folder Description',
   },
   url: {
     id: 'app.containers.AdminPage.FoldersEdit.url',

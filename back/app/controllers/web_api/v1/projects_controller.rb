@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs refresh_preview_token destroy_participation_data]
+  before_action :set_project, only: %i[show update destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx refresh_preview_token destroy_participation_data]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
@@ -204,26 +204,12 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def create
-    project_attributes = permitted_attributes(Project)
-    text_image_service = TextImageService.new
-    extract_output = text_image_service.extract_data_images_multiloc(
-      project_attributes[:description_multiloc]
-    )
-    project_attributes[:description_multiloc] = extract_output[:content_multiloc]
-
-    project = Project.new(project_attributes)
+    project = Project.new permitted_attributes(Project)
     sidefx.before_create(project, current_user)
 
     created = Project.transaction do
       save_project(project).tap do |saved|
-        if saved
-          text_image_service.bulk_create_images!(
-            extract_output[:extracted_images],
-            project,
-            :description_multiloc
-          )
-          sidefx.after_create(project, current_user)
-        end
+        sidefx.after_create(project, current_user) if saved
       end
     end
 

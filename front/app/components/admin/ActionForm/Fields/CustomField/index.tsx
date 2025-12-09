@@ -11,8 +11,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { Action } from 'api/permissions/types';
-import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
-import useDeletePermissionsCustomField from 'api/permissions_custom_fields/useDeletePermissionsCustomField';
+import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
+import useDeletePermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useDeletePermissionsPhaseCustomField';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 
@@ -29,7 +29,7 @@ import { getDescriptionMessage } from './utils';
 
 interface Props {
   phaseId?: string;
-  field: IPermissionsCustomFieldData;
+  field: IPermissionsPhaseCustomFieldData;
   action: Action;
 }
 
@@ -52,7 +52,7 @@ const CustomField = ({ field, phaseId, action }: Props) => {
     }) || globalCustomFieldsSetting === false;
 
   const { mutate: deletePermissionsCustomField } =
-    useDeletePermissionsCustomField({
+    useDeletePermissionsPhaseCustomField({
       phaseId,
       action,
     });

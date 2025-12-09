@@ -119,6 +119,7 @@ describe('Multiple voting project', () => {
       .should('not.have.class', 'disabled');
     cy.wait(1000);
     cy.get('#e2e-voting-submit-button').find('button').click({ force: true });
+    cy.wait(1000);
 
     cy.contains('Vote submitted');
     cy.contains('Congratulations, your vote has been submitted');

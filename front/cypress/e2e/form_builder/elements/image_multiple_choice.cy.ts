@@ -91,7 +91,7 @@ describe('Form builder image multiple choice choose multiple component', () => {
     );
 
     cy.get(`*[id^="${questionTitle}"]`)
-      .last()
+      .eq(2)
       .should(($element) => {
         const id = $element.attr('id');
         expect(Cypress._.endsWith(id, '_other')).to.be.true;

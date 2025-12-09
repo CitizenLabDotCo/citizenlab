@@ -407,11 +407,13 @@ el:
       title: '%{requesterName} σας προσκάλεσε να επανεξετάσετε το έργο "%{projectTitle}"'
       event_description: "Επί του παρόντος, το έργο βρίσκεται σε κατάσταση προσχεδίου και δεν είναι ορατό στους χρήστες. Μόλις το ελέγξετε και το εγκρίνετε, ο συντονιστής θα μπορεί να το δημοσιεύσει."
       cta_button: "Επανεξέταση του έργου"
+      preheader: '%{requesterName} σας προσκάλεσε να επανεξετάσετε το έργο "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" έχει εγκριθεί'
       title: '%{reviewerName} ενέκρινε το σχέδιο "%{projectTitle}"'
       event_description: "Το έργο είναι τώρα έτοιμο να τεθεί σε λειτουργία. Μπορείτε να το δημοσιεύσετε όποτε είστε έτοιμοι!"
       cta_button: "Μεταβείτε στις ρυθμίσεις του έργου"
+      preheader: '%{reviewerName} ενέκρινε το σχέδιο "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'Η συγκριμένη καταχώρηση ενημερώθηκε σε ''%{status}'''
       event_description: '%{organizationName} ενημέρωσε την κατάσταση της εισόδου ''%{input_title}'' στην πλατφόρμα ψηφιακής συμμετοχής τους.'

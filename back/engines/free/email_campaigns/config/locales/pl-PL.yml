@@ -407,11 +407,13 @@ pl:
       title: '%{requesterName} zaprosił Cię do zapoznania się z projektem "%{projectTitle}"'
       event_description: "Obecnie projekt znajduje się w trybie wersji roboczej i nie jest widoczny dla użytkowników. Gdy go sprawdzisz i zatwierdzisz, moderator będzie mógł go opublikować."
       cta_button: "Przejrzyj projekt"
+      preheader: '%{requesterName} zaprosił Cię do zapoznania się z projektem "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" został zatwierdzony'
       title: '%{reviewerName} zatwierdził projekt "%{projectTitle}"'
       event_description: "Projekt jest już gotowy do uruchomienia. Możesz go opublikować, kiedy tylko będziesz gotowy!"
       cta_button: "Przejdź do ustawień projektu"
+      preheader: '%{reviewerName} zatwierdził projekt "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
       event_description: '%{organizationName} zaktualizował status danych wejściowych "%{input_title}" na swojej cyfrowej platformie uczestnictwa.'

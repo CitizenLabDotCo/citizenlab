@@ -19,6 +19,7 @@ import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
 import { TitleInput } from '../../ChartWidgets/_shared/ChartWidgetSettings';
+import { DEFAULT_NO_OF_PROJECTS } from '../constants';
 import messages from '../messages';
 import { ProjectsTimelineCardProps } from '../ProjectsTimelineCard';
 
@@ -77,7 +78,7 @@ const Settings = () => {
     participationMethods: node.data.props.participationMethods || [],
     showTodayLine: node.data.props.showTodayLine ?? true,
     sort: node.data.props.sort || 'phase_starting_or_ending_soon',
-    noOfProjects: node.data.props.noOfProjects || 10,
+    noOfProjects: node.data.props.noOfProjects,
     minStartDate: node.data.props.minStartDate,
     maxStartDate: node.data.props.maxStartDate,
   }));
@@ -112,10 +113,17 @@ const Settings = () => {
   };
 
   const handleNoOfProjectsChange = (value: string) => {
-    setProp(
-      (props: ProjectsTimelineCardProps) =>
-        (props.noOfProjects = parseInt(value, 10))
-    );
+    if (value === '') {
+      return setProp(
+        (props: ProjectsTimelineCardProps) => (props.noOfProjects = undefined)
+      );
+    }
+    const numValue = parseInt(value, 10);
+    if (!isNaN(numValue)) {
+      return setProp(
+        (props: ProjectsTimelineCardProps) => (props.noOfProjects = numValue)
+      );
+    }
   };
 
   const handleDateRangeChange = (from?: string, to?: string) => {
@@ -287,7 +295,8 @@ const Settings = () => {
       <SettingsField label={formatMessage(messages.numberOfProjects)}>
         <Input
           type="number"
-          value={noOfProjects.toString()}
+          value={noOfProjects?.toString() ?? ''}
+          placeholder={DEFAULT_NO_OF_PROJECTS.toString()}
           onChange={handleNoOfProjectsChange}
         />
       </SettingsField>

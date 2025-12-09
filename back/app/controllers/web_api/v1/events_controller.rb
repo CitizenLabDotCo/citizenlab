@@ -71,26 +71,12 @@ class WebApi::V1::EventsController < ApplicationController
   end
 
   def create
-    event_attributes = event_params
-    text_image_service = TextImageService.new
-    extract_output = text_image_service.extract_data_images_multiloc(
-      event_attributes[:description_multiloc]
-    )
-    event_attributes[:description_multiloc] = extract_output[:content_multiloc]
-
-    event = Event.new(event_attributes)
+    event = Event.new(event_params)
     event.project_id = params[:project_id]
-
-    sidefx.before_create(event, current_user)
-
     authorize(event)
 
+    sidefx.before_create(event, current_user)
     if event.save
-      text_image_service.bulk_create_images!(
-        extract_output[:extracted_images],
-        event,
-        :description_multiloc
-      )
       sidefx.after_create(event, current_user)
       render json: WebApi::V1::EventSerializer.new(event, params: jsonapi_serializer_params, include: %i[event_images]).serializable_hash, status: :created
     else
@@ -101,7 +87,6 @@ class WebApi::V1::EventsController < ApplicationController
   def update
     @event.assign_attributes event_params
     authorize @event
-    sidefx.before_update(@event, current_user)
     if @event.save
       sidefx.after_update(@event, current_user)
       render json: WebApi::V1::EventSerializer.new(@event, params: jsonapi_serializer_params, include: %i[event_images]).serializable_hash, status: :ok

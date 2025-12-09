@@ -17,7 +17,7 @@ export const PublicAPI = () => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box background={colors.white} display="flex" p="20px">
+    <Box background={colors.white} display="flex" p="20px" mb="20px">
       <img
         width="320px"
         height="240px"

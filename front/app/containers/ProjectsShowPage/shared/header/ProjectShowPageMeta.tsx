@@ -69,7 +69,7 @@ const ProjectShowPageMeta = ({ project }: Props) => {
       />
       <meta property="og:url" content={location.href} />
       <meta name="twitter:card" content="summary_large_image" />
-      {project.attributes.listed && <meta name="robots" content="noindex" />}
+      {!project.attributes.listed && <meta name="robots" content="noindex" />}
     </Helmet>
   );
 };

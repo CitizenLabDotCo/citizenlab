@@ -125,6 +125,7 @@ lb:
     open_idea_project_description_preview: Vläicht hutt Dir eng Iddi, déi a kee vun den aktuelle Projete passt? Da post se hei, sammelt Ënnerstëtzung a bréngt se an d'politesch Agenda!
     open_idea_project_description: >
       <p>Hei kënnt Dir Är eegen Iddi ufäken, wann se net an ee vun den aktuelle Projete passt.</p><p><strong>D'Zil?</strong> Är Iddi op d'politesch Agenda ze kréien.</p><p><strong>Wéi?</strong>Duerch d'Sammele vun Ënnerstëtzung, nämlech mindestens 100 Stëmmen an 3 Méint. Dir kënnt dat maachen, andeem Dir Är Iddi fir d'éischt 'attraktiv' maacht. Schreift kloer an uspriechend, fügt Biller bäi, gitt staark Argumenter, déi op Fakte baséieren, fügt Annexe mat weideren Eenzelheeten an Hannergrindinformatioune bäi, ... Nodeem Dir dat gemaach hutt, deelt Är Iddi an de Soziale Medien an iwwer E-Mail. Invitéiert Leit, sech un der Diskussioun iwwer Är Iddi ze bedeelegen oder iwwerzeegt se einfach, dofir ze stëmmen.</p><p><strong>Iwwer wat?</strong>Iddie kënne vill Saache betreffen, esou laang et ëm Är Stad an hir Politik geet. Et kann e Problem sinn, deen Dir hutt, eng Léisung oder esouguer d'Kombinatioun aus béidem. Et ka wëll a laangfristeg sinn, oder ganz konkret an e schnellen Erfolleg.</p><p><strong>An dann? </strong> Hutt Dir 100 Stëmmen an 3 Méint kritt? Häerzleche Gléckkwonsch! D'Stad wäert Är Iddi elo berécksiichtegen. Wann Är Iddi als ëmsetzbar betruecht gëtt a si keng speziell Gruppen oder Eenzelpersone schiedegt, kritt Dir d'Chance, Är Propositioun bei enger Conseilssëtzung virzestellen. Bei dëser Sëtzung ginn d'Conseilsmemberen Iech direkt Feedback, wat si mat Ärer Iddi maachen oder net maachen a firwat. Wann Dir an 3 Méint keng 100 Stëmme sammelt, gëtt Är Propositioun net berécksiichtegt.</p><p>Mir si gespaant op Är Iddien!</p>
+    published_projects: Verëffentlecht Projeten
   phases:
     open_idea_phase_title: Aktuell Phase
     native_survey_title: Ëmfro
@@ -385,3 +386,4 @@ lb:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "De Maximum muss méi grouss wéi de Minimum sinn."
+      max_must_be_greater_than_or_equal_to_min_select_count: "De Maximum muss méi grouss oder gläich dem Minimum sinn."

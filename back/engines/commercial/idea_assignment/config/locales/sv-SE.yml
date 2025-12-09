@@ -10,4 +10,4 @@ sv:
       event_description: 'En input har tilldelats dig. Ge feedback genom att skriva en officiell uppdatering eller genom att ändra dess status.'
       title: '%{firstName}, tilldelades en ingång till dig'
       subject: 'Du har ett uppdrag på plattformen för %{organizationName}'
-      preheader_idea: 'Idén från %{authorName} har tilldelats dig'
+      preheader: 'Inmatningen av %{authorName} har tilldelats dig'

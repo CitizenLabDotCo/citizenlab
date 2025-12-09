@@ -101,6 +101,8 @@ export const FormField = ({
     return pages < 3;
   };
   const shouldShowDelete =
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     !isLastPage() && !field?.constraints?.locks?.deletion;
 
   const editFieldAndValidate = (defaultTab: ICustomFieldSettingsTab) => {

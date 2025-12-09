@@ -28,7 +28,10 @@ describe('profile edition', () => {
     cy.get('input[type="file"]').attachFile('icon.png');
     cy.get('#first_name').clear().type('John');
     cy.get('#last_name').clear().type('Doe');
-    saveChanges();
+    cy.get('button[type="submit"]').contains('Save changes').click();
+    cy.get('#e2e-accept-disclaimer').click();
+    cy.wait('@saveUser');
+    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
   });
 
   it('lets user change their first name when last name is empty', () => {

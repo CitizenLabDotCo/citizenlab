@@ -10,4 +10,4 @@ sr-Latn:
       event_description: 'An input has been assigned to you. Give feedback by writing an official update or by changing its status.'
       title: '%{firstName}, an input was assigned to you'
       subject: 'Imate zadatak na %{organizationName} platformi '
-      preheader_idea: 'Dodeljena vam je ideja od %{authorName}'
+      preheader: 'The input of %{authorName} has been assigned to you'

@@ -407,11 +407,13 @@ sv:
       title: '%{requesterName} har bjudit in dig att granska projektet "%{projectTitle}"'
       event_description: "För närvarande är projektet i utkastläge och är inte synligt för användarna. När du har granskat och godkänt det kommer moderatorn att kunna publicera det."
       cta_button: "Granska projektet"
+      preheader: '%{requesterName} har bjudit in dig att granska projektet "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" har godkänts'
       title: '%{reviewerName} godkänt projektet "%{projectTitle}"'
       event_description: "Projektet är nu redo att gå live. Du kan publicera det när du är redo!"
       cta_button: "Gå till projektinställningar"
+      preheader: '%{reviewerName} godkänt projektet "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'Ny status för detta bidrag är ''%{status}'''
       event_description: '%{organizationName} uppdaterade statusen för inmatningen ''%{input_title}'' på sin plattform för digitalt deltagande.'

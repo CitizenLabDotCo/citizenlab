@@ -407,11 +407,13 @@ lt:
       title: '%{requesterName} pakvietė peržiūrėti projektą "%{projectTitle}"'
       event_description: "Šiuo metu projektas veikia juodraščio režimu ir nėra matomas naudotojams. Kai jį peržiūrėsite ir patvirtinsite, moderatorius galės jį paskelbti."
       cta_button: "Projekto peržiūra"
+      preheader: '%{requesterName} pakvietė peržiūrėti projektą "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" buvo patvirtintas'
       title: '%{reviewerName} patvirtino projektą "%{projectTitle}"'
       event_description: "Projektas jau parengtas veikti. Galite jį paskelbti, kai tik būsite pasiruošę!"
       cta_button: "Eikite į projekto nustatymus"
+      preheader: '%{reviewerName} patvirtino projektą "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'Naujoji šio įvesties būsena yra ''%{status}'''
       event_description: '%{organizationName} savo skaitmeninėje dalyvavimo platformoje atnaujino įvesties statusą "%{input_title}".'

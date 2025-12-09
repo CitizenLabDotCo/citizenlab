@@ -125,6 +125,7 @@ nb:
     open_idea_project_description_preview: Kanskje har du en idé som ikke passer inn i et av de eksisterende prosjektene? Da kan du legge den ut her, samle støtte og få den opp på den politiske dagsordenen!
     open_idea_project_description: >
       <p>Her kan du starte din egen idé hvis den ikke passer inn i et av de eksisterende prosjektene.</p><p><strong>Hva er målet?</strong> Å få ideen din opp på den politiske dagsordenen.</p><p><strong>Hvordan?</strong> Ved å samle støtte, det vil si minst 100 stemmer i løpet av tre måneder. Det kan du gjøre ved først å gjøre ideen din "attraktiv". Skriv den på en tydelig og engasjerende måte, legg til bilder, gi sterke argumenter basert på fakta, legg til vedlegg med ytterligere detaljer eller bakgrunnsinformasjon, ... Når du har gjort det, kan du begynne å dele ideen din på sosiale medier eller via e-post. Inviter folk til å delta i diskusjonen om ideen din, eller overbevis dem ganske enkelt om å støtte den ved å stemme for den.</p><p><strong>Om hva da?</strong> Ideen din kan handle om mange ting, så lenge den er relatert til byen din og dens politikk. Det kan være et problem du opplever, en løsning du ser for deg, eller til og med en kombinasjon av begge deler. Det kan være vilt og langsiktig, eller veldig konkret og en rask gevinst.</p><p><strong>Og så? </strong>Nådde du 100 stemmer på tre måneder? Gratulerer med det! Byen vil nå ta ideen din i betraktning. Hvis ideen din anses som gjennomførbar og ikke skader bestemte grupper eller enkeltpersoner, vil du få sjansen til å presentere forslaget ditt under byrådsmøtet. Under det samme møtet vil rådsmedlemmene gi deg direkte tilbakemelding på hva de vil eller ikke vil gjøre med ideen din, og hvorfor. Hvis du ikke samler 100 stemmer i løpet av tre måneder, vil forslaget ditt ikke bli vurdert.</p><p>Vi er nysgjerrige på ideene dine!</p>
+    published_projects: Publiserte prosjekter
   phases:
     open_idea_phase_title: Nåværende fase
     native_survey_title: Spørreundersøkelse
@@ -385,3 +386,4 @@ nb:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "Maksimum må være større enn minimum."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Maksimum må være større enn eller lik minimum."

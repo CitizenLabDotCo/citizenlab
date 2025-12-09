@@ -13,11 +13,12 @@ const addAnalysisQuestion = async ({
   analysisId,
   filters,
   question,
+  fileIds,
 }: IQuestionAdd) =>
   fetcher<IQuestion>({
     path: `/analyses/${analysisId}/questions`,
     action: 'post',
-    body: { question: { filters, question } },
+    body: { question: { filters, question, file_ids: fileIds } },
   });
 
 const useAddAnalysisQuestion = () => {

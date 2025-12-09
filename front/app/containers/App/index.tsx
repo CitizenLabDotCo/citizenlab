@@ -188,9 +188,10 @@ const App = ({ children }: Props) => {
               custom: {
                 families: [
                   fontName,
-                  // Support additional font variations, if specified
-                  // in the css file (E.g. n4=normal 400, i4=italic 400, n7=normal 700, i7=italic 700, n8=normal 800, i8=italic 800)
-                  `${fontName}:n4,i4,n7,i7,n8,i8`,
+                  // Support all common font variations (webfontloader will only load what exists in the CSS).
+                  // n3=normal 300, n4=normal 400, n5=normal 500, n6=normal 600, n7=normal 700, n8=normal 800
+                  // i3=italic 300, i4=italic 400, i5=italic 500, i6=italic 600, i7=italic 700, i8=italic 800
+                  `${fontName}:n3,n4,n5,n6,n7,n8,i3,i4,i5,i6,i7,i8`,
                 ],
                 urls: [fontURL],
               },
@@ -282,6 +283,9 @@ const App = ({ children }: Props) => {
 
   const isAdminPage = isPage('admin', location.pathname);
   const isPagesAndMenuPage = isPage('pages_menu', location.pathname);
+  const isHomePageBuilderRoute = location.pathname.match(
+    /\/admin\/pages-menu\/homepage-builder/
+  );
   const isIdeaFormPage = isPage('idea_form', location.pathname);
   const isIdeaEditPage = isPage('idea_edit', location.pathname);
   const isEventPage = isPage('event_page', location.pathname);
@@ -302,7 +306,7 @@ const App = ({ children }: Props) => {
 
   const showFrontOfficeNavbar = () => {
     if (isAdminPage) {
-      if (!isPagesAndMenuPage) return false;
+      if (!isPagesAndMenuPage || isHomePageBuilderRoute) return false;
     }
 
     // citizen

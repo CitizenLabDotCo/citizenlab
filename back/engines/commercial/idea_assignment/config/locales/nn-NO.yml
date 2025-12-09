@@ -10,4 +10,4 @@ nn:
       event_description_idea: 'En idé har blitt tildelt deg. Gi en tilbakemelding ved å skrive en offsiel oppdatering eller ved å endre status. '
       main_header: '%{firstName}, du har en ny oppgave'
       subject: 'Du har en ny oppgave på plattformen til %{organizationName}'
-      preheader_idea: 'Ideen til %{authorName} har blitt tildelt deg'
+      preheader: 'Ideen til %{authorName} har blitt tildelt deg'

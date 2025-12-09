@@ -15,7 +15,7 @@ import { IProject } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
+import { FORM_PAGE_CHANGE_EVENT } from 'components/CustomFieldsForm/PageControlButtons/events';
 
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import eventEmitter from 'utils/eventEmitter';

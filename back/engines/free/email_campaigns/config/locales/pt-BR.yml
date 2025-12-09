@@ -407,11 +407,13 @@ pt:
       title: '%{requesterName} convidou você para avaliar o projeto "%{projectTitle}"'
       event_description: "No momento, o projeto está em modo de rascunho e não está visível para os usuários. Depois que você o revisar e aprovar, o moderador poderá publicá-lo."
       cta_button: "Revisar o projeto"
+      preheader: '%{requesterName} convidou você para analisar o projeto "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" " foi aprovado'
       title: '%{reviewerName} aprovou o projeto "%{projectTitle}"'
       event_description: "Agora o projeto está pronto para ser lançado. Você pode publicá-lo quando estiver pronto!"
       cta_button: "Vá para as configurações do projeto"
+      preheader: '%{reviewerName} aprovou o projeto "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
       event_description: '%{organizationName} atualizou o status da entrada ''%{input_title}'' em sua plataforma de participação digital.'

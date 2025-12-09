@@ -10,4 +10,4 @@ mi:
       event_description_idea: 'An idea has been assigned to you. Give feedback by writing an official update or by changing its status.'
       main_header: '%{firstName}, you have a new assignment'
       subject: 'You have an assignment on the platform of %{organizationName}'
-      preheader_idea: 'The idea of %{authorName} has been assigned to you'
+      preheader: 'The idea of %{authorName} has been assigned to you'

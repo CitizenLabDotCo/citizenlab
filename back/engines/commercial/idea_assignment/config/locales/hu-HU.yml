@@ -10,4 +10,4 @@ hu:
       event_description: 'Egy bemenetet rendeltünk hozzád. Visszajelzést adhatsz hivatalos frissítés írásával vagy az állapotának módosításával.'
       title: '%{firstName}, egy bemenetet rendeltek hozzád'
       subject: 'A rendszer hozzárendelt egy bemenetet a %{organizationName}platformon'
-      preheader_idea: 'A %{authorName} bemenet hozzá van rendelve'
+      preheader: 'A %{authorName} bemenet hozzárendelve Önnek'

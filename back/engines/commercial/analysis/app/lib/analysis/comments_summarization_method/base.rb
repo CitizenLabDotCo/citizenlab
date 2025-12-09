@@ -26,7 +26,7 @@ module Analysis
         task.set_succeeded!
       rescue SummarizationFailedError => e
         ErrorReporter.report(e)
-        task.set_failed!
+        task.set_failed!(e)
       end
     end
 

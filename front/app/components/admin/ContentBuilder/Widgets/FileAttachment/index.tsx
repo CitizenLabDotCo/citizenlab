@@ -10,11 +10,11 @@ import {
 import { useNode } from '@craftjs/core';
 import { useParams } from 'react-router-dom';
 
+import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 import useAddFileAttachment from 'api/file_attachments/useAddFileAttachment';
 import useDeleteFileAttachment from 'api/file_attachments/useDeleteFileAttachment';
 import useFileAttachmentById from 'api/file_attachments/useFileAttachmentById';
 import useFiles from 'api/files/useFiles';
-import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import FileDisplay from 'components/UI/FileAttachments/FileDisplay';
@@ -76,7 +76,8 @@ const FileAttachmentSettings = () => {
 
   const { projectId } = useParams();
 
-  const { data: projectDescriptionLayout } = useProjectDescriptionBuilderLayout(
+  const { data: projectDescriptionLayout } = useContentBuilderLayout(
+    'project',
     projectId || ''
   );
 

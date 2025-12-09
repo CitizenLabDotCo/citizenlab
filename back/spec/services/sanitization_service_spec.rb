@@ -125,7 +125,7 @@ describe SanitizationService do
 
     it 'allows youtube video to pass through when video feature is enabled' do
       input = <<~HTML
-        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Y1mtif1B8k0?showinfo=0" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
+        "<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Y1mtif1B8k0?showinfo=0" referrerpolicy="strict-origin-when-cross-origin" data-blot-formatter-unclickable-bound="true" width="497" height="248.5" style="display:block;margin:auto;cursor:nwse-resize;" data-align="center"></iframe>"
       HTML
       features = [:video]
       expect(service.sanitize(input, features)).to eq input

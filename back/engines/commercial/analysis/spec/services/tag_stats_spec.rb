@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Analysis::TagStats do
   describe '#co_occurence_matrix' do
-    it 'works' do
+    it 'calculates co-occurrence matrix for tags' do
       analysis = create(:analysis)
       tag1, tag2, tag3 = create_list(:tag, 3, analysis: analysis)
       idea1, idea2, idea3 = create_list(:idea, 3, project: analysis.project)
@@ -36,7 +36,7 @@ describe Analysis::TagStats do
   end
 
   describe '#dependent_tags' do
-    it 'works' do
+    it 'identifies dependent tags based on co-occurrence' do
       analysis = create(:analysis)
       tag1, tag2, tag3, _tag4 = create_list(:tag, 4, analysis: analysis)
       idea1, idea2, idea3 = create_list(:idea, 3, project: analysis.project)

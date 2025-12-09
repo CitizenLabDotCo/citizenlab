@@ -26,7 +26,7 @@ describe('Project description builder Accordion component', () => {
         projectSlug = projectTitle;
         cy.apiToggleProjectDescriptionBuilder({ projectId }).then(() => {
           cy.visit(
-            `/admin/project-description-builder/projects/${projectId}/description`
+            `/admin/description-builder/projects/${projectId}/description`
           );
         });
       });
@@ -76,9 +76,7 @@ describe('Project description builder Accordion component', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.visit(
-      `/admin/project-description-builder/projects/${projectId}/description`
-    );
+    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
 
     cy.get('#e2e-draggable-accordion').dragAndDrop(
       '#e2e-content-builder-frame',
@@ -112,9 +110,7 @@ describe('Project description builder Accordion component', () => {
     cy.intercept('**/content_builder_layouts/project_description/upsert').as(
       'saveProjectDescriptionBuilder'
     );
-    cy.visit(
-      `/admin/project-description-builder/projects/${projectId}/description`
-    );
+    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
 
     // First, create an accordion to delete
     cy.get('#e2e-draggable-accordion').dragAndDrop(
@@ -149,9 +145,7 @@ describe('Project description builder Accordion component', () => {
     cy.contains('Accordion to delete').should('be.visible');
     cy.contains('Text to be deleted').should('be.visible');
 
-    cy.visit(
-      `/admin/project-description-builder/projects/${projectId}/description`
-    );
+    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
     cy.wait(1000);
 
     // Now delete the accordion

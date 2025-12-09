@@ -8,8 +8,9 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'rails', '~> 7.1.5.2'
+gem 'rails', '~> 7.2.3'
 gem 'pg', '~> 1.5.6'
+gem 'strong_migrations', '~> 2.5'
 gem 'puma', '~> 6.4.3'
 gem 'bcrypt', '~> 3.1.20' # Use ActiveModel has_secure_password
 gem 'csv', '~> 3.3.0'
@@ -41,7 +42,7 @@ group :development, :test do
   gem 'rspec-parameterized'
   gem 'rspec-sqlimit'
   gem 'rspec-its'
-  gem 'rubocop', require: false
+  gem 'rubocop', '~> 1.69', require: false
   gem 'rubocop-ast', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
@@ -63,7 +64,6 @@ group :development do
   gem 'spring-commands-rspec'
   gem 'spring-watcher-listen', '~> 2.1'
   gem 'annotate'
-  gem 'strong_migrations', '~> 2.5'
 end
 
 group :test do
@@ -79,12 +79,12 @@ end
 gem 'pundit', '~> 2.5.0'
 gem 'active_model_serializers', '~> 0.10.15'
 
-gem 'jwt', '~> 2.8.1'
+gem 'jwt', '~> 2.9.2'
 gem 'que', '~> 2.3.0'
 
 gem 'activerecord-import', '~> 1.7'
 gem 'json-schema', '~> 4.3'
-gem 'activerecord-postgis-adapter', '~> 9.0.2'
+gem 'activerecord-postgis-adapter', '~> 10.0.1'
 
 gem 'carrierwave', '~> 3.0.7'
 gem 'carrierwave-base64', '~> 2.11'
@@ -94,7 +94,7 @@ gem 'api-pagination', '~> 6.0.0'
 gem 'kaminari', '~> 1.2'
 gem 'rails-i18n', '~> 7.0.9'
 
-gem 'awesome_nested_set', '~> 3.6.0'
+gem 'awesome_nested_set', '~> 3.8.0'
 gem 'axlsx', '3.0.0.pre' # write xlsx files
 gem 'rubyXL', '~> 3.4.27' # read xlsx files. Has issues with writing files https://github.com/CitizenLabDotCo/citizenlab/pull/7834
 gem 'docx', '~> 0.3.0'
@@ -106,7 +106,7 @@ gem 'interactor-rails'
 gem 'liquid', '~> 5.8'
 gem 'mini_magick', '~> 4.13'
 gem 'nokogiri', '~> 1.18.9'
-gem 'pg_search', '~> 2.3.5'
+gem 'pg_search', '~> 2.3.7'
 gem 'premailer-rails', '~> 1.12.0'
 gem 'rest-client'
 gem 'rgeo-geojson'
@@ -115,15 +115,10 @@ gem 'stackprof', '~> 0.2.26'
 gem 'scientist', '~> 1.6.4'
 
 gem 'okcomputer'
-gem 'omniauth', '~> 2.1'
-gem 'omniauth-saml', '~> 2.2.3'
-gem 'omniauth-rails_csrf_protection'
-gem 'omniauth-facebook'
-gem 'omniauth-google-oauth2'
 gem 'sentry-ruby'
 gem 'sentry-rails'
 gem 'simple_segment', '~>1.5'
-gem 'omniauth_openid_connect', '~> 0.7.1'
+
 gem 'faraday-jwt', '~> 0.1.0'
 gem 'acts_as_list', '~> 1.2'
 gem 'positioning', '~> 0.4.6'
@@ -132,6 +127,14 @@ gem 'faker'
 gem 'order_as_specified'
 gem 'scenic'
 gem 'ice_cube', '~> 0.17'
+
+# Omniauth SSO
+gem 'omniauth', '~> 2.1.4'
+gem 'omniauth-rails_csrf_protection', '~> 1.0.2'
+gem 'omniauth-saml', '~> 2.2.3'
+gem 'omniauth_openid_connect', '~> 0.8.0'
+gem 'omniauth-facebook', '~> 10.0.0'
+gem 'omniauth-google-oauth2', '~> 1.2.1'
 
 # Libraries for PDF generation /reading
 gem 'prawn', '~> 2.5'
@@ -239,8 +242,10 @@ commercial_engines = [
   'report_builder',
   'smart_groups',
   'user_custom_fields',
+  'webhooks',
 
   # ID verification & SSO engines.
+  'id_acm',
   'id_auth0',
   'id_bogus',
   'id_bosa_fas',

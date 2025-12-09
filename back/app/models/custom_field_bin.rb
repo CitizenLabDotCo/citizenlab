@@ -22,6 +22,7 @@
 #
 #  fk_rails_...  (custom_field_id => custom_fields.id)
 #  fk_rails_...  (custom_field_option_id => custom_field_options.id)
+#
 
 # A CustomFieldBin defines a subdivision, often relevant for
 # statistical/graphing purposes, over the answer-values of a CustomField. This

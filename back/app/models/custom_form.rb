@@ -31,28 +31,6 @@ class CustomForm < ApplicationRecord
   before_validation :sanitize_print_start_multiloc
   before_validation :sanitize_print_end_multiloc
 
-  # Fixes custom fields ordering by:
-  # - Moving the first container field (page) to the first position if any
-  # - Ensuring consecutive integers without gaps or duplicates
-  #
-  # This method can be removed once we are confident that inconsistencies in the ordering
-  # are no longer introduced.
-  def heal_fields_ordering!
-    CustomForm.transaction do
-      fields = custom_fields.to_a
-
-      first_container_idx = fields.index(&:page?)
-      fields.insert(0, fields.delete_at(first_container_idx)) if first_container_idx&.positive?
-
-      fields.each.with_index do |field, index|
-        next if field.ordering == index
-
-        logger.debug('Healing field ordering', field_id: field.id, from: field.ordering, to: index)
-        field.update_column(:ordering, index)
-      end
-    end
-  end
-
   # Timestamp when the fields (not the form) were last updated.
   def fields_updated!
     update!(fields_last_updated_at: Time.now)

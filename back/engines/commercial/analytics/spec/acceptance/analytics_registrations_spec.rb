@@ -38,10 +38,7 @@ resource 'Analytics - FactRegistrations model' do
           }
         })
         assert_status 200
-        expect(response_data[:attributes]).to match_array([
-          { 'dimension_date_registration.month': '2022-08', count: 2 },
-          { 'dimension_date_registration.month': '2022-09', count: 1 }
-        ])
+        expect(response_data[:attributes]).to contain_exactly({ 'dimension_date_registration.month': '2022-08', count: 2 }, { 'dimension_date_registration.month': '2022-09', count: 1 })
       end
 
       example 'filter complete registrations between dates and return citizens only' do
@@ -58,7 +55,7 @@ resource 'Analytics - FactRegistrations model' do
           }
         })
         assert_status 200
-        expect(response_data[:attributes]).to match_array([{ count: 1 }])
+        expect(response_data[:attributes]).to contain_exactly({ count: 1 })
       end
     end
   end
@@ -84,7 +81,7 @@ resource 'Analytics - FactRegistrations model' do
           }
         })
         assert_status 200
-        expect(response_data[:attributes]).to match_array([{ count: 2 }])
+        expect(response_data[:attributes]).to contain_exactly({ count: 2 })
       end
 
       example 'group invitations by status' do
@@ -102,12 +99,7 @@ resource 'Analytics - FactRegistrations model' do
           }
         })
         assert_status 200
-        expect(response_data[:attributes]).to match_array(
-          [
-            { 'dimension_user.invite_status': 'pending', count: 2 },
-            { 'dimension_user.invite_status': 'accepted', count: 1 }
-          ]
-        )
+        expect(response_data[:attributes]).to contain_exactly({ 'dimension_user.invite_status': 'pending', count: 2 }, { 'dimension_user.invite_status': 'accepted', count: 1 })
       end
     end
   end

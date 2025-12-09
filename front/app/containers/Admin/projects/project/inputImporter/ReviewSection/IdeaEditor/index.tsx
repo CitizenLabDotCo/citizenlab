@@ -22,8 +22,6 @@ import useUserById from 'api/users/useUserById';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { FormValues } from 'components/Form/typings';
-
 import { FormattedMessage } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
@@ -45,6 +43,8 @@ interface Props {
   ideaId: string | null;
   setIdeaId: (ideaId: null | string) => void;
 }
+
+type FormValues = Record<string, any>;
 
 const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const localize = useLocalize();

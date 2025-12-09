@@ -260,7 +260,7 @@ const Error = (props: ErrorProps) => {
       classNames="error"
       in={!!(text || apiErrors)}
       timeout={timeout}
-      mounOnEnter={true}
+      mountOnEnter={true}
       unmountOnExit={true}
       enter={animate}
       exit={animate}

@@ -125,6 +125,7 @@ hr:
     open_idea_project_description_preview: Imate ideju koja se ne uklapa u neki od postojećih projekata? Objavite je ovdje, prikupite podršku i uvrstite je na dnevni red!
     open_idea_project_description: >
       <p>Ovdje možete pokrenuti svoju vlastitu ideju ako se ne uklapa u jedan od postojećih projekata.</p><p><strong>Cilj?</strong> Staviti svoju ideju na politički dnevni red. </p><p><strong>Kako?</strong> Prikupljanjem podrške, odnosno najmanje 100 glasova u 3 mjeseca. To možete učiniti tako da svoju ideju najprije učinite “privlačnom”. Napišite to na jasan i zanimljiv način, dodajte slike, dajte snažne argumente utemeljene na činjenicama, dodajte privitke s dodatnim detaljima ili pozadinskim informacijama, ... Nakon što to učinite, počnite dijeliti svoju ideju na društvenim medijima ili putem e-pošte. Pozovite ljude da se pridruže raspravi o vašoj ideji ili ih jednostavno uvjerite da je podrže glasanjem za.</p><p><strong>O čemu?</strong> Vaša ideja može se odnositi na mnoge stvari, npr. sve dok je to povezano s vašim gradom i njegovom politikom. To može biti problem koji imate, rješenje koje ste zamislili ili čak kombinacija obojega. Može biti divlja i dugoročna, ili vrlo opipljiva i brza pobjeda.</p><p><strong>I onda? </strong>Jeste li prikupili 100 glasova u 3 mjeseca? Čestitamo! Grad će sada uzeti vašu ideju u obzir. Ako se vaša ideja smatra izvedivom i ne šteti određenim skupinama ili pojedincima, dobit ćete priliku predstaviti svoj prijedlog na sastanku vijeća. Tijekom tog istog sastanka, članovi vijeća dat će vam izravnu povratnu informaciju o tome što će ili neće učiniti s vašom idejom i zašto. Ako ne prikupite 100 glasova u 3 mjeseca, vaš prijedlog neće biti uzet u obzir.</p><p>Željeli bismo saznati više o vašim idejama!</p>
+    published_projects: Objavljeni projekti
   phases:
     open_idea_phase_title: Trenutna faza
     native_survey_title: Pregled
@@ -386,3 +387,4 @@ hr:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "Maksimalna vrijednost mora biti veća od minimalne."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Maksimalna vrijednost mora biti veća ili jednaka minimalnoj vrijednosti."

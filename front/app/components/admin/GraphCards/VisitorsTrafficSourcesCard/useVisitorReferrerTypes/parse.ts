@@ -30,7 +30,7 @@ export const parsePieData = (
 
 export type TranslatedReferrers = {
   referrer_type: string;
-  referrer: string;
+  referrer: string | null; // If the referrer is direct, this might be null
   visits: number;
   visitors: number;
 }[];

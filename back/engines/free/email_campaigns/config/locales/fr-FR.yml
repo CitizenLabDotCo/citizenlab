@@ -407,11 +407,13 @@ fr:
       title: '%{requesterName} vous a invité à vérifier le projet « %{projectTitle} »'
       event_description: "Actuellement, le projet est en mode brouillon et n'est pas visible par les utilisateurs. Une fois que vous l'aurez vérifié et approuvé, le modérateur pourra le publier."
       cta_button: "Vérifier le projet"
+      preheader: '%{requesterName} vous a invité à vérifier le projet « %{projectTitle} »'
     project_review_state_change:
       subject: '"%{projectTitle}" a été approuvé'
       title: '%{reviewerName} a approuvé le projet « %{projectTitle} »'
       event_description: "Le projet est maintenant prêt à être mis en ligne. Vous pouvez le publier dès que vous êtes prêt !"
       cta_button: "Accéder au projet"
+      preheader: '%{reviewerName} a approuvé le projet « %{projectTitle} »'
     status_change_on_idea_you_follow:
       status_change: 'Le nouveau statut de cette contribution est « %{status} »'
       event_description: '%{organizationName} a mis à jour le statut de la contribution « %{input_title} » sur leur plateforme de participation.'

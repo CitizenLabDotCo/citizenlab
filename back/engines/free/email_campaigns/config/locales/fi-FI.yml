@@ -407,11 +407,13 @@ fi:
       title: '%{requesterName} on kutsunut sinut arvostelemaan projektin "%{projectTitle}"'
       event_description: "Projekti on tällä hetkellä luonnostilassa eikä se ole käyttäjien nähtävissä. Kun olet tarkistanut ja hyväksynyt sen, moderaattori voi julkaista sen."
       cta_button: "Tarkista projekti"
+      preheader: '%{requesterName} on kutsunut sinut arvioimaan projektia "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" on hyväksytty'
       title: '%{reviewerName} hyväksyi projektin "%{projectTitle}"'
       event_description: "Projekti on nyt valmis julkaistavaksi. Voit julkaista sen milloin tahansa!"
       cta_button: "Siirry projektin asetuksiin"
+      preheader: '%{reviewerName} hyväksyi projektin "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'Tämän syötteen uusi tila on%{status}'
       event_description: '%{organizationName} päivitti syötteen ''%{input_title}'' tilan digitaalisella osallistumisalustallaan.'

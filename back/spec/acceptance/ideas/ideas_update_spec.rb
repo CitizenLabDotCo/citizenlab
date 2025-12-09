@@ -71,6 +71,14 @@ resource 'Ideas' do
           end
         end
 
+        context 'when body_multiloc contains images' do
+          let(:body_multiloc) { { 'en' => html_with_base64_image } }
+
+          it_behaves_like 'updates record with text images',
+            model_class: Idea,
+            field: :body_multiloc
+        end
+
         describe do
           let(:idea_status_id) { create(:idea_status).id }
 
@@ -697,13 +705,13 @@ resource 'Ideas' do
 
             example 'Successfully removes the idea from a voting phase and recalculates vote counts', document: false do
               # Voting counts before
-              expect(input.ideas_phases.pluck(:votes_count)).to match_array [0, 1]
+              expect(input.ideas_phases.pluck(:votes_count)).to contain_exactly(0, 1)
 
               do_request
               assert_status 200
 
               # Voting phase counts after
-              expect(input.ideas_phases.pluck(:votes_count)).to match_array [0]
+              expect(input.ideas_phases.pluck(:votes_count)).to contain_exactly(0)
             end
           end
 
@@ -713,12 +721,12 @@ resource 'Ideas' do
             example 'Successfully added the idea to the voting phase and restores vote counts', document: false do
               # Voting counts before
               input.update!(phases: [project.phases.first])
-              expect(input.ideas_phases.pluck(:votes_count)).to match_array [0]
+              expect(input.ideas_phases.pluck(:votes_count)).to contain_exactly(0)
 
               do_request
               assert_status 200
 
-              expect(input.ideas_phases.pluck(:votes_count)).to match_array [1]
+              expect(input.ideas_phases.pluck(:votes_count)).to contain_exactly(1)
             end
           end
 

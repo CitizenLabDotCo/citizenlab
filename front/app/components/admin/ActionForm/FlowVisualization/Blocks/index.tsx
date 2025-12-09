@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
+import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
 import { PermittedBy } from 'api/phase_permissions/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -18,7 +18,7 @@ import VerificationBlock from './VerificationBlock';
 
 interface Props {
   permittedBy: PermittedBy;
-  permissionsCustomFields: IPermissionsCustomFieldData[];
+  permissionsCustomFields: IPermissionsPhaseCustomFieldData[];
   verificationEnabled: boolean;
   verificationExpiry: number | null;
   onChangeVerificationExpiry: (value: number | null) => void;

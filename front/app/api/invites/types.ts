@@ -38,7 +38,6 @@ export interface IInviteData {
   attributes: {
     token: string;
     accepted_at: string | null;
-    invite_text: string | null;
     updated_at: string;
     created_at: string;
     activate_invite_url: string;

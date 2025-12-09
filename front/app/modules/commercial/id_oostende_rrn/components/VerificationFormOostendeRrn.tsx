@@ -98,7 +98,7 @@ const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
               setFormError(formatMessage(messages.noMatchFormError));
             } else if (
               get(error, 'errors.base[0].error') === 'not_entitled' &&
-              get(error, 'errors.base[0].why') === 'too_young'
+              get(error, 'errors.base[0].why') === 'under_minimum_age'
             ) {
               setFormError(
                 formatMessage(messages.notEntitledTooYoungFormError)

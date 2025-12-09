@@ -4,7 +4,7 @@ class WebApi::V1::PhasesController < ApplicationController
   skip_before_action :authenticate_user
   around_action :detect_invalid_timeline_changes, only: %i[create update destroy]
   before_action :set_phase, only: %i[
-    show show_mini update destroy survey_results sentiment_by_quarter
+    show show_mini insights update destroy survey_results sentiment_by_quarter
     submission_count index_xlsx delete_inputs show_progress common_ground_results
   ]
 
@@ -26,25 +26,23 @@ class WebApi::V1::PhasesController < ApplicationController
     render json: WebApi::V1::PhaseMiniSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash
   end
 
+  def insights
+    insights_data = @phase.pmethod.phase_insights_class.new(@phase).call
+
+    render json: WebApi::V1::PhaseInsightsSerializer.new(
+      @phase,
+      params: jsonapi_serializer_params.merge(**insights_data)
+    ).serializable_hash
+  end
+
   def create
     phase_attributes = phase_params
-    text_image_service = TextImageService.new
-    extract_output = text_image_service.extract_data_images_multiloc(
-      phase_attributes[:description_multiloc]
-    )
-    phase_attributes[:description_multiloc] = extract_output[:content_multiloc]
-
     @phase = Phase.new(phase_attributes)
     @phase.project_id = params[:project_id]
     sidefx.before_create(@phase, current_user)
     authorize @phase
 
     if @phase.save
-      text_image_service.bulk_create_images!(
-        extract_output[:extracted_images],
-        @phase,
-        :description_multiloc
-      )
       sidefx.after_create(@phase, current_user)
       render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :created
     else
@@ -180,6 +178,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :voting_min_total,
       :voting_max_votes_per_idea,
       :voting_min_selected_options,
+      :voting_filtering_enabled,
       :poll_anonymous,
       :document_annotation_embed_url,
       :ideas_order,

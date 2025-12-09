@@ -407,11 +407,13 @@ lb:
       title: '%{requesterName} huet Iech invitéiert, de Projet "%{projectTitle}" ze iwwerpréiwen'
       event_description: "De Projet ass am Moment am Entworfmodus a kann net fir d'Benotzer gesi ginn. Soubal Dir en iwwerpréift an approuvéiert hutt, kann de Moderator en publizéieren."
       cta_button: "Iwwerpréift de Projet"
+      preheader: '%{requesterName} huet Iech invitéiert, de Projet "%{projectTitle}" ze iwwerpréiwen'
     project_review_state_change:
       subject: '"%{projectTitle}" gouf guttgeheescht'
       title: '%{reviewerName} huet de Projet "%{projectTitle}" guttgeheescht'
       event_description: "De Projet ass elo prett fir online ze goen. Dir kënnt en publizéieren, wann Dir prett sidd!"
       cta_button: "Gitt op d'Projetastellungen"
+      preheader: '%{reviewerName} huet de Projet "%{projectTitle}" guttgeheescht'
     status_change_on_idea_you_follow:
       status_change: 'Den neie Status vun dësem Input ass ''%{status}'''
       event_description: '%{organizationName} huet de Status vum Input ''%{input_title}'' op hirer digitaler Participatiounsplattform aktualiséiert.'

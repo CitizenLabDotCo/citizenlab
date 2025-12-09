@@ -135,7 +135,7 @@ class SanitizationService
       },
       video: {
         tags: %w[iframe],
-        attributes: %w[class frameborder allowfullscreen src data-blot-formatter-unclickable-bound width height data-align style]
+        attributes: %w[class frameborder allowfullscreen referrerpolicy src data-blot-formatter-unclickable-bound width height data-align style]
       },
       mention: {
         tags: %w[span],

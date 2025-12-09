@@ -62,16 +62,16 @@ class XlsxService
     xlsx_from_rows([header, *rows], sheetname: sheetname)
   end
 
-  def generate_xlsx(sheetname, columns, instances)
-    columns = columns.uniq { |c| c[:header] }
+  def generate_xlsx(sheetname, columns, instances, reject_duplicate_columns: true)
+    columns = columns.uniq { |c| c[:header] } if reject_duplicate_columns
     pa = Axlsx::Package.new
-    generate_sheet pa.workbook, sheetname, columns, instances
+    generate_sheet pa.workbook, sheetname, columns, instances, reject_duplicate_columns: reject_duplicate_columns
     pa.to_stream
   end
 
-  def generate_sheet(workbook, sheetname, columns, instances)
+  def generate_sheet(workbook, sheetname, columns, instances, reject_duplicate_columns: true)
     sheetname = utils.sanitize_sheetname sheetname
-    columns = columns.uniq { |c| c[:header] }
+    columns = columns.uniq { |c| c[:header] } if reject_duplicate_columns
     workbook.styles do |s|
       workbook.add_worksheet(name: sheetname) do |sheet|
         header = columns.pluck(:header)

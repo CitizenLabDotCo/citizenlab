@@ -407,11 +407,13 @@ da:
       title: '%{requesterName} har inviteret dig til at gennemgå projektet "%{projectTitle}"'
       event_description: "I øjeblikket er projektet i kladdetilstand og er ikke synligt for brugerne. Når du har gennemgået og godkendt det, vil moderatoren kunne udgive det."
       cta_button: "Gennemgå projektet"
+      preheader: '%{requesterName} har inviteret dig til at gennemgå projektet "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" er blevet godkendt'
       title: '%{reviewerName} godkendte projektet "%{projectTitle}"'
       event_description: "Projektet er nu klar til at gå live. Du kan udgive det, når du er klar!"
       cta_button: "Gå til projektindstillinger"
+      preheader: '%{reviewerName} godkendte projektet "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'Den nye status for dette input er ''%{status}'''
       event_description: '%{organizationName} opdaterede status for input ''%{input_title}'' på deres digitale platform.'

@@ -200,6 +200,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.inputPostingEnabled',
     defaultMessage: 'Submitting inputs',
   },
+  votingFilteringEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.votingFilteringEnabled',
+    defaultMessage: 'Allow users to filter input during voting.',
+  },
   inputCommentingEnabled: {
     id: 'app.containers.AdminPage.ProjectEdit.inputCommentingEnabled',
     defaultMessage: 'Commenting on inputs',
@@ -249,6 +253,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForUsersDescription',
     defaultMessage: 'Select what additional actions users can take.',
   },
+  enabledVotingFiltering: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.enabledVotingFiltering2',
+    defaultMessage: 'Filtering input',
+  },
+
   defaultViewOptions: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.defaultViewOptions',
     defaultMessage: 'Default view of options',

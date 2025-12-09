@@ -125,6 +125,7 @@ sr-Latn:
     open_idea_project_description_preview: Imate ideju koja se ne uklapa u neki od postojećih projekata? Objavite je ovde, skupite podršku i uvrstite je na dnevni red!
     open_idea_project_description: >
       <p>Ovde možete pokrenuti sopstvenu ideju, ukoliko se ne uklapa u neki od postojećih projekata. </p> <p> <strong> Cilj? </strong> Uvrstite svoju ideju na dnevni red. </p><p> <strong> Kako? </strong> Prikupljanjem podrške - odnosno najmanje 100 glasova u 3 meseca. To možete učiniti tako što ćete ideju prvo učiniti „privlačnom“. Opišite je na jasan i zanimljiv način, dodajte slike, dajte jake argumente zasnovane na činjenicama, dodajte priloge sa detaljima i informacijama... Nakon što to učinite, počnite da delite svoju ideju na društvenim mrežama ili putem email obaveštenja. Pozovite ljude da se pridruže diskusiji o vašoj ideji ili ih jednostavno ubedite da je podrže glasanjem za. </p> <p> <strong> O čemu? </strong> Vaša ideja može biti o mnogim stvarima, sve dok je povezana sa vašim gradom i njegovom politikom. To može biti problem sa kojim se suočavate, rešenje koje zamislite ili čak kombinacija obe stvari. Može biti ambiciozno i dugoročno, ili vrlo opipljivo i orijentisano na brzu izvodljivost. </p> <p> <strong> A onda? </strong> Da li ste postigli 100 glasova za 3 meseca? Čestitamo! Vaša ideja će se uzeti u obzir. Ako se vaša ideja smatra izvodljivom i ne šteti određenim grupama ili pojedincima, imaćete priliku da svoj predlog iznesete na zvaničnom sastanku. Tokom sastanka, dobićete povratne informacije o tome šta može biti učinjeno sa vašom idejom i zašto. Ako za 3 meseca ne sakupite 100 glasova, vaš predlog neće biti razmatran.</p> <p>Radoznali smo da saznamo vaše ideje! </p>
+    published_projects: Published projects
   phases:
     open_idea_phase_title: Current phase
     native_survey_title: Survey
@@ -386,3 +387,4 @@ sr-Latn:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "The maximum must be greater than the minimum."
+      max_must_be_greater_than_or_equal_to_min_select_count: "The maximum must be greater than or equal to the minimum."

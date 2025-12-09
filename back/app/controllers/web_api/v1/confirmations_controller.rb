@@ -4,7 +4,8 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   skip_after_action :verify_authorized
 
   def create
-    result = ConfirmUser.call(user: current_user, code: confirmation_params[:code])
+    service = UserConfirmationService.new
+    result = service.validate_and_confirm!(current_user, confirmation_params[:code])
 
     if result.success?
       SideFxUserService.new.after_update(current_user, current_user)

@@ -3,59 +3,78 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'ProjectFile' do
-  explanation 'File attachments.'
+resource 'File attachment as legacy ProjectFile' do
+  explanation <<~EXPLANATION
+    The implementation of this API has been updated to use the +Files:FileAttachment+
+    model behind the scenes, instead of the legacy +ProjectFile+ model.
+  EXPLANATION
 
-  before do
-    header 'Content-Type', 'application/json'
-    admin_header_token
-    @project = create(:project)
-    create_list(:project_file, 2, project: @project)
-  end
+  header 'Content-Type', 'application/json'
+
+  before { admin_header_token }
+
+  let_it_be(:project) { create(:project) }
+  let(:project_id) { project.id }
 
   get 'web_api/v1/projects/:project_id/files' do
-    let(:project_id) { @project.id }
-
-    example_request 'List all file attachments of a project' do
+    example 'List the file attachments' do
+      create_list(:file_attachment, 2, attachable: project)
+      do_request
       assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 2
-    end
-  end
-
-  get 'web_api/v1/projects/:project_id/files/:file_id' do
-    let(:project_id) { @project.id }
-    let(:file_id) { ProjectFile.first.id }
-
-    example_request 'Get one file of a project' do
-      assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :file)).to be_present
+      expect(response_data.size).to eq 2
     end
 
-    context 'when a legacy file is migrated' do
-      example 'Get a migrated legacy file by id [NOT FOUND]' do
-        migrated_file = create(:project_file, project_id: project_id, migrated_file: create(:file))
-        do_request(file_id: migrated_file.id)
-        assert_status 404
+    context 'when there are no file attachments' do
+      example_request 'Returns an empty list' do
+        assert_status 200
+        expect(json_response_body[:data]).to be_empty
       end
     end
   end
 
-  patch 'web_api/v1/projects/:project_id/files/:file_id' do
+  get 'web_api/v1/projects/:project_id/files/:id' do
+    let!(:file_attachment) { create(:file_attachment, attachable: project) }
+    let(:id) { file_attachment.id }
+
+    example_request 'Get a file attachment by id' do
+      assert_status 200
+
+      expect(response_data).to match hash_including(
+        id: id,
+        type: 'file',
+        attributes: hash_including(
+          ordering: file_attachment.position,
+          file: { url: file_attachment.file.content.url },
+          name: file_attachment.file.name,
+          size: file_attachment.file.size,
+          created_at: file_attachment.file.created_at.iso8601(3),
+          updated_at: file_attachment.file.updated_at.iso8601(3)
+        )
+      )
+    end
+  end
+
+  patch 'web_api/v1/projects/:project_id/files/:id' do
     with_options scope: :file do
       parameter :ordering, 'An integer to update the order of the file attachments', required: false
     end
 
-    let(:project_id) { @project.id }
-    let(:file_id) { ProjectFile.first.id }
-    let(:ordering) { 3 }
+    example 'Update the ordering of a file attachment by id' do
+      attachment1 = create(:file_attachment, attachable: project, position: 1)
+      attachment2 = create(:file_attachment, attachable: project, position: 2)
 
-    example_request 'Update the ordering of a file attachment' do
-      do_request(ordering: ordering)
+      expect(attachment1.position).to eq(1)
+      expect(attachment2.position).to eq(2)
+
+      do_request(id: attachment2.id, ordering: 1)
       assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :ordering)).to eq(3)
+      expect(response_data.dig(:attributes, :ordering)).to eq(1)
+
+      # The front-end has full control over the ordering of file attachments which can
+      # lead to inconsistencies. This will be reworked in the future.
+      # See ticket TAN-5126.
+      expect(attachment1.reload.position).to eq(1)
+      expect(attachment2.reload.position).to eq(1)
     end
   end
 
@@ -65,154 +84,77 @@ resource 'ProjectFile' do
       parameter :name, 'The name of the file, including the file extension', required: true
       parameter :ordering, 'An integer that is used to order the file attachments within a project', required: false
     end
-    ValidationErrorHelper.new.error_fields(self, ProjectFile)
-    let(:project_id) { @project.id }
+
+    ValidationErrorHelper.new.error_fields(self, Files::File)
+
     let(:ordering) { 1 }
-    let(:name) { 'afvalkalender.pdf' }
+    let(:name) { 'minimal_pdf.pdf' }
     let(:file) { file_as_base64 name, 'application/pdf' }
 
-    context 'when there are legacy files' do
-      example 'Add a file to a project' do
-        expect { do_request }
-          .to change(@project.project_files.reload, :count).by(1)
-          .and not_change(@project.file_attachments.reload, :count)
+    let!(:file_attachment) { create(:file_attachment, attachable: project, position: 1) }
 
-        assert_status 201
+    example 'Add a file to the project' do
+      expect { do_request }
+        .to change(Files::File, :count).by(1)
+        .and(change(Files::FileAttachment, :count).by(1))
+        .and(change(Files::FilesProject, :count).by(1))
+        .and not_change(ProjectFile, :count)
+        .and not_change(file_attachment.reload, :position)
 
-        json_response = json_parse(response_body)
-        expect(json_response.dig(:data, :attributes, :file)).to be_present
-        expect(json_response.dig(:data, :attributes, :ordering)).to eq(1)
-        expect(json_response.dig(:data, :attributes, :name)).to eq(name)
-        expect(json_response.dig(:data, :attributes, :size)).to be_present
-      end
+      assert_status 201
+
+      expect(response_data).to match hash_including(
+        id: be_present,
+        type: 'file',
+        attributes: {
+          ordering: ordering,
+          file: { url: be_present },
+          name: name,
+          size: 130,
+          created_at: be_present,
+          updated_at: be_present
+        }
+      )
+
+      attachment = Files::FileAttachment.find(response_data[:id])
+      expect(attachment.file.projects).to contain_exactly(project)
     end
 
-    context 'when there are only migrated legacy files' do
-      before do
-        @project.project_files.each do |file|
-          file.update!(migrated_file: create(:file))
-        end
-      end
-
-      example 'Create a file as a file attachment' do
-        expect { do_request }
-          .to change(Files::File, :count).by(1)
-          .and(change(Files::FileAttachment, :count).by(1))
-          .and not_change(ProjectFile, :count)
-
-        assert_status 201
-      end
-    end
-
-    describe do
+    # [TODO] Currently, the +Files::FileUploader+ allows all file extensions.
+    describe 'Add a file with an unsupported file extension', pending: <<~REASON do
+      Currently, the +Files::FileUploader+ allows all file extensions.
+    REASON
       let(:file) { file_as_base64 'keylogger.exe', 'application/octet-stream' }
       let(:name) { 'keylogger.exe' }
 
-      example_request '[error] Add an unsupported file extension as attachment to a project' do
+      example_request '[error]' do
         assert_status 422
-        json_response = json_parse response_body
-        expect(json_response).to include_response_error(:file, 'extension_whitelist_error')
+        expect(json_response_body).to include_response_error(:file, 'extension_whitelist_error')
       end
     end
 
-    describe do
-      example '[error] Add a file of which the size is too large' do
-        # mock the size_range method of ProjectFileUploader to have 3 bytes as maximum size
-        expect_any_instance_of(ProjectFileUploader).to receive(:size_range).and_return(1..3)
+    describe 'Add a file that is too large' do
+      example '[error]' do
+        # Mock the `size_range` method of `Files::FileUploader` to set the maximum size to 3 bytes.
+        expect_any_instance_of(Files::FileUploader).to receive(:size_range).and_return(1..3)
 
         do_request
         assert_status 422
-        json_response = json_parse response_body
-        expect(json_response).to include_response_error(:file, 'max_size_error')
+        expect(json_response_body).to include_response_error(:file, 'max_size_error')
       end
     end
   end
 
-  delete 'web_api/v1/projects/:project_id/files/:file_id' do
-    let(:project_id) { @project.id }
-    let(:file_id) { ProjectFile.first.id }
+  delete 'web_api/v1/projects/:project_id/files/:id' do
+    let!(:file_attachment) { create(:file_attachment, attachable: project) }
+    let(:id) { file_attachment.id }
 
-    example_request 'Delete a file attachment from a project' do
-      expect(response_status).to eq 200
-      expect { ProjectFile.find(file_id) }.to raise_error(ActiveRecord::RecordNotFound)
-    end
+    example 'Delete a file attachment by id' do
+      do_request(id: file_attachment.id)
 
-    context 'when the legacy file is migrated' do
-      example 'Delete a migrated legacy file by id [NOT FOUND]' do
-        migrated_file = create(:project_file, project_id: project_id, migrated_file: create(:file))
-        do_request(file_id: migrated_file.id)
-        assert_status 404
-      end
-    end
-  end
-
-  get 'web_api/v1/projects/:project_id/files' do
-    parameter :project_id, 'Project ID', required: true
-    let(:project) { create(:project) }
-    let(:project_id) { project.id }
-
-    context 'when CONSTANTIZER search returns no legacy files but file attachments exist' do
-      let!(:file) { create(:file, name: 'test-attachment.pdf', projects: [project]) }
-      let!(:file_attachment) { create(:file_attachment, attachable: project, file: file) }
-
-      example_request 'Returns file attachments with exact same JSON structure as legacy files' do
-        assert_status 200
-        json_response = json_parse(response_body)
-
-        expect(json_response[:data].size).to eq(1)
-
-        # Verify JSON API format
-        file_data = json_response[:data][0]
-        expect(file_data[:type]).to eq('file')
-        expect(file_data[:id]).to be_present
-
-        # Verify all required attributes are present
-        attributes = file_data[:attributes]
-        expect(attributes).to have_key(:file)
-        expect(attributes).to have_key(:ordering)
-        expect(attributes).to have_key(:name)
-        expect(attributes).to have_key(:size)
-        expect(attributes).to have_key(:created_at)
-        expect(attributes).to have_key(:updated_at)
-
-        # Verify attribute values and types
-        expect(attributes[:name]).to eq('test-attachment.pdf')
-        expect(attributes[:ordering]).to be_nil
-        expect(attributes[:size]).to be_a(Integer)
-        expect(attributes[:created_at]).to be_a(String)
-        expect(attributes[:updated_at]).to be_a(String)
-
-        # Verify file attribute structure (should contain url)
-        expect(attributes[:file]).to be_a(Hash)
-        expect(attributes[:file]).to have_key(:url)
-        expect(attributes[:file][:url]).to be_a(String)
-        expect(attributes[:file][:url]).to include('.pdf')
-      end
-    end
-
-    context 'when both CONSTANTIZER and file attachments have files' do
-      let!(:project_file) { create(:project_file, project: project) }
-      let!(:file) { create(:file, name: 'test-attachment.pdf', projects: [project]) }
-      let!(:file_attachment) { create(:file_attachment, file: file, attachable: project) }
-
-      example_request 'Prioritizes CONSTANTIZER results over file attachments' do
-        assert_status 200
-        json_response = json_parse(response_body)
-
-        expect(json_response[:data].size).to eq(1)
-
-        # Should return CONSTANTIZER result, not file attachment
-        expect(json_response[:data][0][:id]).to eq(project_file.id)
-      end
-    end
-
-    context 'when neither CONSTANTIZER nor file attachments return results' do
-      example_request 'Returns empty results' do
-        assert_status 200
-        json_response = json_parse(response_body)
-
-        expect(json_response[:data]).to be_empty
-      end
+      assert_status 200
+      expect { file_attachment.file.reload }.not_to raise_error
+      expect { file_attachment.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

@@ -407,11 +407,13 @@ nb:
       title: '%{requesterName} har invitert deg til å vurdere prosjektet "%{projectTitle}"'
       event_description: "For øyeblikket er prosjektet i utkastmodus og er ikke synlig for brukerne. Når du har gjennomgått og godkjent det, vil moderatoren kunne publisere det."
       cta_button: "Gjennomgå prosjektet"
+      preheader: '%{requesterName} har invitert deg til å vurdere prosjektet "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" har blitt godkjent'
       title: '%{reviewerName} godkjente prosjektet "%{projectTitle}"'
       event_description: "Prosjektet er nå klart til å gå live. Du kan publisere det når du er klar!"
       cta_button: "Gå til prosjektinnstillinger"
+      preheader: '%{reviewerName} godkjente prosjektet "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'Den nye statusen for dette innspillet er ''%{status}'''
       event_description: '%{organizationName} oppdaterte statusen for innspillet "%{input_title}" på sin digitale medvirkningsplattform.'

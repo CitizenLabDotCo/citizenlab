@@ -48,6 +48,31 @@ resource 'User', admin_api: true do
     end
   end
 
+  get 'admin_api/users/:id/jwt_token' do
+    let(:id) { user.id }
+
+    example 'Get JWT token for a user' do
+      freeze_time = Time.zone.parse('2023-01-01 12:00:00')
+      travel_to(freeze_time) do
+        do_request
+      end
+
+      expect(status).to eq 200
+      jwt_token = json_parse(response_body)[:jwt_token]
+
+      # Test JWT structure (payloads starting with "{" will always start with "eyJ" when encoded)
+      expect(jwt_token).to match(/\AeyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\z/)
+
+      # Test the decoded payload
+      payload, header = JWT.decode(jwt_token, nil, false)
+      expect(header['alg']).to be_present
+      expect(payload).to include(
+        'sub' => id,
+        'exp' => (freeze_time + 30.minutes).to_i
+      )
+    end
+  end
+
   delete 'admin_api/users/bulk_delete_by_emails', active_job_inline_adapter: true do
     parameter :emails, 'Array of user emails'
 

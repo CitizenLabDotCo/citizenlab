@@ -15,6 +15,7 @@ import {
   AuthenticationData,
   SignUpInError,
   VerificationError,
+  ErrorCode,
 } from '../../typings';
 
 import { Step } from './typings';
@@ -166,14 +167,17 @@ export const sharedSteps = (
       },
 
       TRIGGER_VERIFICATION_ERROR: (error_code?: VerificationError) => {
-        if (error_code === 'not_entitled_under_minimum_age') {
+        const errorMap: Record<VerificationError, ErrorCode> = {
+          not_entitled_under_minimum_age: 'verification_under_minimum_age',
+          not_entitled_lives_outside: 'verification_lives_outside',
+          not_entitled_no_match: 'auth_no_match',
+          not_entitled_service_error: 'auth_service_error',
+          taken: 'verification_taken',
+        };
+
+        if (error_code) {
           setCurrentStep('missing-data:verification');
-          setError('not_entitled_under_minimum_age');
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        } else if (error_code === 'taken') {
-          setCurrentStep('missing-data:verification');
-          setError('verification_taken');
+          setError(errorMap[error_code]);
         } else {
           setCurrentStep('sign-up:auth-providers');
           setError('unknown');
@@ -181,13 +185,19 @@ export const sharedSteps = (
       },
 
       TRIGGER_AUTH_ERROR: (error_code?: SignUpInError) => {
-        if (error_code === 'franceconnect_merging_failed') {
-          setCurrentStep('sign-up:auth-providers');
-          setError('franceconnect_merging_failed');
-        } else if (error_code === 'not_entitled_under_minimum_age') {
-          setCurrentStep('access-denied');
+        const errorMap: Record<SignUpInError, ErrorCode> = {
+          general: 'unknown',
+          franceconnect_merging_failed: 'franceconnect_merging_failed',
+          not_entitled_under_minimum_age: 'auth_under_minimum_age',
+          not_entitled_lives_outside: 'auth_lives_outside',
+          not_entitled_no_match: 'auth_no_match',
+          not_entitled_service_error: 'auth_service_error',
+        };
+
+        setCurrentStep('sign-up:auth-providers');
+        if (error_code) {
+          setError(errorMap[error_code]);
         } else {
-          setCurrentStep('sign-up:auth-providers');
           setError('unknown');
         }
       },

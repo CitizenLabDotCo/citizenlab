@@ -57,15 +57,11 @@ module EmailCampaigns
       comment = activity.item
       initiator = comment.author
 
-      recipient_ids = []
-      unless initiator&.admin?
-        recipients = User.admin
-        if !initiator.project_moderator?(comment.idea.project_id)
-          recipient_ids = recipients.or(User.project_moderator(comment.idea.project_id)).ids
-        end
+      if initiator && UserRoleService.new.can_moderate?(comment, initiator)
+        return users_scope.none
       end
 
-      users_scope.where(id: recipient_ids)
+      UserRoleService.new.moderators_for(comment, users_scope)
     end
 
     def self.recipient_role_multiloc_key

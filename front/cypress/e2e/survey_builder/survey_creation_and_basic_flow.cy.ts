@@ -68,7 +68,7 @@ describe('Survey Builder - Creation and Basic Flow', () => {
       }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
 
-    cy.get(`*[id^="${questionTitle}"]`).type(answer, { force: true });
+    cy.get(`*[id^="${questionTitle}"]`).first().type(answer, { force: true });
 
     // Submit the survey response
     cy.wait(1000);
@@ -239,7 +239,7 @@ describe('Survey Builder - Creation and Basic Flow', () => {
       .should('not.have.class', 'disabled');
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
     cy.contains(questionTitle).should('exist');
-    cy.get(`*[id^="${questionTitle}"]`).type(answer, { force: true });
+    cy.get(`*[id^="${questionTitle}"]`).first().type(answer, { force: true });
 
     // Submit
     cy.wait(1000);

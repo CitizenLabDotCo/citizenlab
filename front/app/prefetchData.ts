@@ -1,8 +1,8 @@
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
 import { fetchAuthenticationRequirements } from 'api/authentication/authentication_requirements/getAuthenticationRequirements';
 import requirementKeys from 'api/authentication/authentication_requirements/keys';
-import homepageBuilderKeys from 'api/home_page_layout/keys';
-import { fetchHomepageBuilderLayout } from 'api/home_page_layout/useHomepageLayout';
+import contentBuilderKeys from 'api/content_builder/keys';
+import { fetchContentBuilderLayout } from 'api/content_builder/useContentBuilderLayout';
 import navbarKeys from 'api/navbar/keys';
 import { fetchNavbarItems } from 'api/navbar/useNavbarItems';
 
@@ -24,8 +24,8 @@ const prefetchData = () => {
 
   if (isHomepage(pathname)) {
     queryClient.prefetchQuery({
-      queryKey: homepageBuilderKeys.items(),
-      queryFn: fetchHomepageBuilderLayout,
+      queryKey: contentBuilderKeys.item({ contentBuildableId: 'homepage' }),
+      queryFn: () => fetchContentBuilderLayout('homepage'),
     });
   }
 };

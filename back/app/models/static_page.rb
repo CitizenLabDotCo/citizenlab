@@ -44,10 +44,13 @@ class StaticPage < ApplicationRecord
 
   enum :projects_filter_type, { no_filter: 'no_filter', areas: 'areas', topics: 'topics' }
 
+  has_many_text_images from: :top_info_section_multiloc, as: :top_info_section_text_images
+  has_many_text_images from: :bottom_info_section_multiloc, as: :bottom_info_section_text_images
+  has_many :text_images, as: :imageable, dependent: :destroy
+  accepts_nested_attributes_for :text_images
+
   has_one :nav_bar_item, dependent: :destroy
   has_many :static_page_files, -> { order(:ordering) }, dependent: :destroy
-  has_many :text_images, as: :imageable, dependent: :destroy
-
   has_many :static_pages_topics, dependent: :destroy
   has_many :topics, -> { order(:ordering) }, through: :static_pages_topics
 
@@ -55,7 +58,6 @@ class StaticPage < ApplicationRecord
   has_many :areas, through: :areas_static_pages
 
   accepts_nested_attributes_for :nav_bar_item
-  accepts_nested_attributes_for :text_images
 
   before_validation :set_code, on: :create
   before_validation :strip_title

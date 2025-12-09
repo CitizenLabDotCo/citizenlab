@@ -14,11 +14,9 @@ class RequestConfirmationCodeJob < ApplicationJob
       user.new_email = new_email
       user.email_confirmation_code_reset_count = 0
     end
-    reset_user_confirmation_code user
-    return if !user.valid?
 
     ActiveRecord::Base.transaction do
-      user.save!
+      user.reset_confirmation_code!
       deliver_confirmation_code!(user)
       schedule_code_expiration! user
       LogActivityJob.perform_later(user, 'received_confirmation_code', user, Time.now.to_i, payload: { new_email: new_email })
@@ -26,12 +24,6 @@ class RequestConfirmationCodeJob < ApplicationJob
   end
 
   private
-
-  def reset_user_confirmation_code(user)
-    first_code = user.email_confirmation_code.nil?
-    user.reset_confirmation_code
-    user.increment_confirmation_code_reset_count if !first_code
-  end
 
   def deliver_confirmation_code!(user)
     ConfirmationsMailer.with(user: user).send_confirmation_code.deliver_now

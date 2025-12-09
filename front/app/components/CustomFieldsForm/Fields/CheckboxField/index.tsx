@@ -27,8 +27,7 @@ const CheckboxField = ({ name, scrollErrorIntoView, ...rest }: Props) => {
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError = errors?.error && ([errors] as CLError[]);
-
-  const currentValue = watch(name) === 'true' ? true : false;
+  const currentValue = watch(name) ? true : false;
   return (
     <>
       <Controller
@@ -41,7 +40,7 @@ const CheckboxField = ({ name, scrollErrorIntoView, ...rest }: Props) => {
             id={name}
             checked={currentValue}
             onChange={() => {
-              setValue(name, currentValue ? 'false' : 'true');
+              setValue(name, !currentValue);
               trigger(name);
             }}
           />

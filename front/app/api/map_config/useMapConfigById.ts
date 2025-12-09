@@ -18,7 +18,7 @@ const fetchMapConfigById = async ({
 
 const useMapConfigById = (mapConfigId?: string | null) => {
   return useQuery<IMapConfig, CLErrors, IMapConfig, MapConfigKeys>({
-    queryKey: mapConfigKeys.item({ mapConfigId }),
+    queryKey: mapConfigKeys.item({ id: mapConfigId }),
     queryFn: () => fetchMapConfigById({ mapConfigId }),
     enabled: !!mapConfigId,
     cacheTime: 0, // Disable caching to always fetch the latest map config. Otherwise, it causes problems in the map page view.

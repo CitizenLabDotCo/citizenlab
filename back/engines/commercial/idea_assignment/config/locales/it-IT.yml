@@ -10,4 +10,4 @@ it:
       event_description_idea: 'Un''idea ti è stata assegnata. Dai un feedback scrivendo un aggiornamento ufficiale o cambiando il suo stato.'
       main_header: '%{firstName}, hai un nuovo incarico'
       subject: 'Hai un compito sulla piattaforma di %{organizationName}'
-      preheader_idea: 'L''idea di %{authorName} ti è stata assegnata'
+      preheader: 'L''idea di %{authorName} ti è stata assegnata'

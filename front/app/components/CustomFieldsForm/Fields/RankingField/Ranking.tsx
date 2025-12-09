@@ -8,7 +8,6 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 import useLocalize from 'hooks/useLocalize';
 
 import { extractOptions } from 'components/CustomFieldsForm/util';
-import messages from 'components/Form/Components/Controls/messages';
 import {
   DragAndDrop,
   Drop,
@@ -16,6 +15,8 @@ import {
 import { DragAndDropResult } from 'components/FormBuilder/edit/utils';
 
 import { useIntl } from 'utils/cl-intl';
+
+import messages from '../../messages';
 
 import RankingOption from './RankingOption';
 

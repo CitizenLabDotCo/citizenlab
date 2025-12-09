@@ -47,6 +47,7 @@ export interface IProjectFolderData {
     header_bg_alt_text_multiloc: Multiloc;
     publication_status: PublicationStatus;
     followers_count: number;
+    uses_content_builder: boolean;
   };
   relationships: {
     admin_publication: {
@@ -58,7 +59,7 @@ export interface IProjectFolderData {
     images: {
       data: IRelationship[] | null;
     };
-    user_follower: {
+    user_follower?: {
       data: IRelationship | null;
     };
   };

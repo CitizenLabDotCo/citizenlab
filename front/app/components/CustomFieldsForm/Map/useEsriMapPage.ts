@@ -3,8 +3,8 @@ import { useEffect, useMemo, useCallback, useRef } from 'react';
 import useMapConfigById from 'api/map_config/useMapConfigById';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 
+import { FORM_PAGE_CHANGE_EVENT } from 'components/CustomFieldsForm/PageControlButtons/events';
 import { parseLayers } from 'components/EsriMap/utils';
-import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
 
 import eventEmitter from 'utils/eventEmitter';
 

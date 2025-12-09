@@ -16,7 +16,6 @@ import {
   Label,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { ControlProps } from '@jsonforms/core';
 import { createPortal } from 'react-dom';
 import { useTheme } from 'styled-components';
 
@@ -49,7 +48,7 @@ import {
 type Props = {
   setShowFullscreenMap: (show: boolean) => void;
   mapConfig?: IMapConfig;
-  data: GeoJSON.Point | number[][] | undefined;
+  data: GeoJSON.Point | GeoJSON.LineString | GeoJSON.Polygon | undefined;
   handleSinglePointChange: (point: GeoJSON.Point | undefined) => void;
   handleMultiPointChange?: (points: number[][] | undefined) => void;
   inputType: MapInputType;
@@ -66,7 +65,7 @@ const FullscreenMapInput = memo<Props>(
     handleMultiPointChange,
     inputType,
     questionPageMapView,
-  }: ControlProps & Props) => {
+  }: Props) => {
     const theme = useTheme();
     const locale = useLocale();
     const localize = useLocalize();
@@ -156,16 +155,16 @@ const FullscreenMapInput = memo<Props>(
 
     // Check if confirm button is enabled
     const isConfirmEnabled = () => {
+      if (!data || !('coordinates' in data)) return false;
       switch (inputType) {
         case 'point':
-          return !(data?.address === '');
         case 'line':
-          // Has 2 or more points
-          return data?.coordinates?.length && data.coordinates.length >= 2;
+          return data.coordinates.length >= 2;
         case 'polygon':
-          // Has 4 or more points (3 & 1 duplicated first point to close the polygon)
+          // For polygon, check if the first ring has 4+ points (3 points + 1 duplicated to close)
           return (
-            data?.coordinates?.[0]?.length && data.coordinates?.[0].length >= 4
+            Array.isArray(data.coordinates[0]) &&
+            data.coordinates[0].length >= 4
           );
       }
     };
@@ -275,7 +274,11 @@ const FullscreenMapInput = memo<Props>(
                       handleMultiPointChange={handleMultiPointChange}
                       mapView={mapView}
                       undoButtonRef={undoButtonRef}
-                      undoEnabled={data}
+                      undoEnabled={
+                        'coordinates' in data &&
+                        Array.isArray(data.coordinates) &&
+                        data.coordinates.length > 0
+                      }
                       inputType={inputType}
                       buttonStyle="secondary"
                     />

@@ -10,7 +10,6 @@ module EmailCampaigns
       with_options if: :manual? do
         validates :body_multiloc, presence: true, multiloc: { presence: true, html: true }
         before_validation :sanitize_body_multiloc
-        after_save :process_body_images
       end
 
       # Automated campaigns only.
@@ -20,7 +19,6 @@ module EmailCampaigns
         validates :button_text_multiloc, multiloc: { presence: true }, if: :editable_button_text?
         before_validation :sanitize_intro_multiloc
         before_validation :reject_default_region_values
-        after_save :process_intro_images
       end
     end
 
@@ -72,27 +70,14 @@ module EmailCampaigns
       self[multiloc] = value
     end
 
-    def process_images(multiloc)
-      processed_multiloc = TextImageService.new.swap_data_images_multiloc self[multiloc], field: multiloc, imageable: self
-      update_column multiloc, processed_multiloc
-    end
-
     # Methods for manual campaigns
     def sanitize_body_multiloc
       sanitize_multiloc(:body_multiloc, %i[title alignment list decoration link image video])
     end
 
-    def process_body_images
-      process_images(:body_multiloc)
-    end
-
     # Methods for automated campaigns
     def sanitize_intro_multiloc
       sanitize_multiloc(:intro_multiloc, %i[alignment list decoration link image video])
-    end
-
-    def process_intro_images
-      process_images(:intro_multiloc)
     end
 
     def merge_default_region_values(region_key)

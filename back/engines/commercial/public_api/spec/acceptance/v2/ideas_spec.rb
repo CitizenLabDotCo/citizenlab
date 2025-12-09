@@ -194,5 +194,159 @@ resource 'Posts' do
     end
   end
 
+  post '/api/v2/ideas' do
+    route_summary 'Create a new post'
+    route_description <<~DESC.squish
+      Create a new post. Posts can be created in projects with an ideation, proposal, or native survey phase. 
+    DESC
+    include_context 'common_auth'
+    header 'Content-Type', 'application/json'
+
+    with_options scope: :idea do
+      parameter :project_id, 'The unique ID of the project where the post will be created', type: 'string', required: true
+      parameter :title_multiloc, 'The post title in multiple languages', type: 'object', required: true
+      parameter :body_multiloc, 'The post description in multiple languages', type: 'object', required: true
+      parameter :assignee_id, 'The ID of the user to assign this post to', type: 'string', required: false
+      parameter :idea_status_id, 'The ID of the status to assign to this post', type: 'string', required: false
+      parameter :topic_ids, 'Array of topic IDs to associate with the post', type: 'array', required: false
+      parameter :phase_ids, 'Array of phase IDs to associate with the post', type: 'array', required: false
+    end
+
+    before do
+      @project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'ideation' })
+      create(:idea_status_proposed) # Ensure default status exists
+    end
+
+    let(:project_id) { @project.id }
+    let(:title_multiloc) { { 'en' => 'My great idea', 'nl-NL' => 'Mijn geweldige idee' } }
+    let(:body_multiloc) { { 'en' => 'This is a detailed description of my idea', 'nl-NL' => 'Dit is een gedetailleerde beschrijving van mijn idee' } }
+
+    example_request 'Create a new idea successfully' do
+      explanation 'Create a new idea in an active ideation phase. The idea will be published automatically.'
+
+      do_request(publication_status: 'published')
+
+      assert_status 201
+      expect(json_response_body[:idea]).to include({
+        title: 'My great idea',
+        project_id: project_id,
+        publication_status: 'published'
+      })
+    end
+  end
+
+  put '/api/v2/ideas/:idea_id' do
+    route_summary 'Update a post'
+    route_description <<~DESC.squish
+      Update an existing post. Only certain fields can be updated and the post
+      must be in a state that allows modifications.
+    DESC
+    include_context 'common_auth'
+    header 'Content-Type', 'application/json'
+
+    parameter :idea_id, 'The unique ID of the idea to update', type: 'string', required: true
+
+    with_options scope: :idea do
+      parameter :title_multiloc, 'Updated post title in multiple languages', type: 'object', required: false
+      parameter :body_multiloc, 'Updated post description in multiple languages', type: 'object', required: false
+      parameter :publication_status, 'The publication status of the post (draft, submitted, published)', type: 'string', required: false
+      parameter :assignee_id, 'The ID of the user to assign this post to', type: 'string', required: false
+      parameter :idea_status_id, 'The ID of the status to assign to this post', type: 'string', required: false
+      parameter :topic_ids, 'Array of topic IDs to associate with the post', type: 'array', required: false
+      parameter :phase_ids, 'Array of phase IDs to associate with the post', type: 'array', required: false
+    end
+
+    before do
+      @project = create(:project_with_current_phase, current_phase_attrs: { participation_method: 'ideation' })
+      @existing_idea = create(:idea,
+        project: @project,
+        title_multiloc: { 'en' => 'Original Title', 'nl-NL' => 'Oorspronkelijke Titel' },
+        body_multiloc: { 'en' => 'Original description', 'nl-NL' => 'Oorspronkelijke beschrijving' },
+        publication_status: 'published')
+    end
+
+    let(:idea_id) { @existing_idea.id }
+    let(:title_multiloc) { { 'en' => 'Updated Amazing Idea', 'nl-NL' => 'Bijgewerkt Geweldig Idee' } }
+    let(:body_multiloc) { { 'en' => 'This is an updated detailed description', 'nl-NL' => 'Dit is een bijgewerkte gedetailleerde beschrijving' } }
+    let(:assignee_id) { nil }
+    let(:idea_status_id) { nil }
+    let(:topic_ids) { [] }
+    let(:phase_ids) { [] }
+
+    example_request 'Update an idea successfully' do
+      explanation 'Update an existing published idea with new content.'
+
+      assert_status 200
+      expect(json_response_body[:idea]).to include({
+        title: 'Updated Amazing Idea',
+        id: idea_id
+      })
+    end
+
+    context 'when the idea does not exist' do
+      example 'Update non-existent idea fails' do
+        expect do
+          do_request(idea_id: 'non-existent-id')
+        end.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'when updating with partial data' do
+      let(:title_multiloc) { { 'en' => 'Partially Updated Title' } }
+      let(:body_multiloc) { nil }
+      let(:assignee_id) { nil }
+      let(:idea_status_id) { nil }
+      let(:topic_ids) { nil }
+      let(:phase_ids) { nil }
+
+      example 'Update with partial data succeeds' do
+        explanation 'Update an existing idea with only some fields provided.'
+
+        do_request
+
+        assert_status 200
+        expect(json_response_body[:idea][:title]).to eq 'Partially Updated Title'
+      end
+    end
+
+    context 'when updating the project_id' do
+      let(:other_project) { create(:project) }
+
+      example 'Update idea with project_id has no effect' do
+        original_project_id = @existing_idea.project_id
+        do_request(idea: { project_id: other_project.id })
+
+        assert_status 200
+        expect(json_response_body[:idea][:project_id]).to eq(original_project_id)
+      end
+    end
+
+    context 'when updating assignee' do
+      before do
+        # Create a user with moderation permissions for the project
+        @assignee_user = create(:project_moderator, projects: [@project])
+      end
+
+      let(:assignee_id) { @assignee_user.id }
+      let(:title_multiloc) { { 'en' => 'Updated Idea with Assignee' } }
+      let(:body_multiloc) { nil }
+      let(:idea_status_id) { nil }
+      let(:phase_ids) { nil }
+
+      example 'Update idea with assignee and topic succeeds' do
+        explanation 'Update an existing idea with a new assignee and topic.'
+
+        do_request
+
+        assert_status 200
+        expect(json_response_body[:idea]).to include({
+          title: 'Updated Idea with Assignee',
+          id: idea_id
+        })
+        expect(json_response_body[:idea][:assignee_id]).to eq(assignee_id)
+      end
+    end
+  end
+
   include_examples '/api/v2/.../deleted', :ideas
 end

@@ -47,20 +47,18 @@
 #
 # Indexes
 #
-#  index_custom_fields_on_resource_type_and_resource_id  (resource_type,resource_id)
+#  index_custom_fields_on_ordering                         (ordering) UNIQUE WHERE (resource_id IS NULL)
+#  index_custom_fields_on_resource_id_and_ordering_unique  (resource_id,ordering) UNIQUE
+#  index_custom_fields_on_resource_type_and_resource_id    (resource_type,resource_id)
 #
-
-# support table :
-# Jsonforms (under dynamic_idea_form and jsonforms_custom_fields) supports all INPUT_TYPES
-# The older react json form version works only with text number multiline_text select multiselect checkbox date
-# The other types will fail for user custom fields and render a shallow schema for idea custom fields with only the required, hidden, title and description.
 class CustomField < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_id]
 
+  has_many_text_images from: :description_multiloc, as: :text_images
+  accepts_nested_attributes_for :text_images
+
   has_many :options, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldOption', inverse_of: :custom_field
   has_many :matrix_statements, -> { order(:ordering) }, dependent: :destroy, class_name: 'CustomFieldMatrixStatement', inverse_of: :custom_field
-  has_many :text_images, as: :imageable, dependent: :destroy
-  accepts_nested_attributes_for :text_images
 
   belongs_to :resource, polymorphic: true, optional: true
   belongs_to :custom_form, foreign_key: :resource_id, optional: true, inverse_of: :custom_fields
@@ -100,8 +98,10 @@ class CustomField < ApplicationRecord
   validates :hidden, inclusion: { in: [true, false] }
   validates :select_count_enabled, inclusion: { in: [true, false] }
   validates :code, inclusion: { in: CODES }, uniqueness: { scope: %i[resource_type resource_id] }, allow_nil: true
-  validates :maximum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
-  validates :minimum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :multiselect?, allow_nil: true
+  validates :maximum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :select_count_enabled_and_supported?, allow_nil: true
+  validates :minimum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :select_count_enabled_and_supported?, allow_nil: true
+  validates :maximum_select_count, absence: true, unless: :select_count_enabled_and_supported?
+  validates :minimum_select_count, absence: true, unless: :select_count_enabled_and_supported?
   validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: :page?
   validates :page_layout, absence: true, unless: :page?
   validates :question_category, absence: true, unless: :supports_category?
@@ -110,6 +110,7 @@ class CustomField < ApplicationRecord
   validates :min_characters, comparison: { greater_than_or_equal_to: 0 }, if: :support_text?, allow_nil: true
   validates :max_characters, comparison: { greater_than: 0 }, if: :support_text?, allow_nil: true
   validate :max_characters_greater_than_min_characters, if: :support_text?
+  validate :maximum_select_count_greater_than_or_equal_to_minimum, if: :select_count_enabled_and_supported?
 
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
@@ -140,6 +141,10 @@ class CustomField < ApplicationRecord
 
   def support_options?
     %w[select multiselect select_image multiselect_image ranking].include?(input_type)
+  end
+
+  def support_reference_distribution?
+    %w[select checkbox multiselect].include?(input_type) || key == 'birthyear'
   end
 
   def includes_other_option?
@@ -321,6 +326,14 @@ class CustomField < ApplicationRecord
 
   def multiselect?
     %w[multiselect multiselect_image].include?(input_type)
+  end
+
+  def supports_select_count?
+    %w[multiselect multiselect_image topic_ids].include?(input_type)
+  end
+
+  def select_count_enabled_and_supported?
+    supports_select_count? && select_count_enabled
   end
 
   def singleselect?
@@ -515,6 +528,14 @@ class CustomField < ApplicationRecord
 
     if max_characters <= min_characters
       errors.add(:max_characters, :max_must_be_greater_than_min_characters)
+    end
+  end
+
+  def maximum_select_count_greater_than_or_equal_to_minimum
+    return unless minimum_select_count.present? && maximum_select_count.present?
+
+    if maximum_select_count < minimum_select_count
+      errors.add(:maximum_select_count, :max_must_be_greater_than_or_equal_to_min_select_count)
     end
   end
 

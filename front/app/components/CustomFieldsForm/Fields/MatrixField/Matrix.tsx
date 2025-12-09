@@ -19,11 +19,10 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import messages from 'components/Form/Components/Controls/messages';
-
 import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 
+import messages from '../../messages';
 import { getLinearScaleLabel } from '../LinearScale/utils';
 
 const StickyTh = styled(Th)<{ hasLongContent: boolean }>`
