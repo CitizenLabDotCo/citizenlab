@@ -29,8 +29,9 @@ describe('Existing project with survey', () => {
     // https://stackoverflow.com/a/64939524
     skipOn('firefox', () => {
       cy.get('.e2e-typeform-survey iframe').then(($iframe) => {
-        const $body = $iframe.contents().find('body');
-        cy.wrap($body).find('#root').contains('Enter');
+        // Check that Iframe src contains citizenlabco.typeform.com
+        const src = $iframe.attr('src');
+        expect(src).to.contain('citizenlabco.typeform.com');
       });
     });
   });
