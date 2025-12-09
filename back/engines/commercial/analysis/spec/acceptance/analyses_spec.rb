@@ -197,8 +197,8 @@ resource 'Analyses' do
       do_request(analysis: { files: [file.id] })
 
       assert_status(422)
-      expect(json_response_body.dig(:errors, :file).map { |e| e[:error] })
-        .to include('does_not_belong_to_project')
+      expect(json_response_body.dig(:errors, :file).sole[:error])
+        .to eq 'does_not_belong_to_project'
     end
   end
 
