@@ -40,17 +40,19 @@ module Insights
       end
     end
 
-    # Because we are grouping/slicing by votes per demographic attribute (and for blanks),
+    # Because we are grouping/slicing by votes per demographic attribute (and for blank == no answer),
     # we need to duplicate the user_custom_field_values for each vote a user cast for that idea.
     # This handles mutliple voting phases correctly, but could/should be simplified for
     # single and budgeting voting phases.
     def idea_ids_to_user_custom_field_values(voting_participations)
-      voting_participations.flat_map do |participation|
+      grouped_data = voting_participations.flat_map do |participation|
         participation[:votes_per_idea].flat_map do |idea_id, vote_count|
           # Duplicate the user_custom_field_values hash 'vote_count' times
           Array.new(vote_count) { [idea_id, participation[:user_custom_field_values]] }
         end
-      end.group_by(&:first).transform_values { |arr| arr.map(&:last) }
+      end
+      
+      grouped_data.group_by(&:first).transform_values { |arr| arr.map(&:last) }
     end
 
     private
