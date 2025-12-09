@@ -9,15 +9,14 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
+import HorizontalBarRow, {
+  HorizontalBarRowData,
+} from '../shared/HorizontalBarRow';
 import { MethodSpecificInsightProps } from '../types';
 
 import messages from './messages';
 
-interface StatusBarData {
-  id: string;
-  title: string;
-  count: number;
-  color: string;
+interface StatusBarData extends HorizontalBarRowData {
   ordering: number;
 }
 
@@ -112,55 +111,9 @@ const ProposalsInsights = ({ phaseId }: MethodSpecificInsightProps) => {
         {formatMessage(messages.proposalStatus)}
       </Text>
       <Box display="flex" flexDirection="column" gap="16px">
-        {statusData.map((status) => {
-          const barWidthPercent =
-            maxCount > 0 ? (status.count / maxCount) * 100 : 0;
-
-          return (
-            <Box key={status.id}>
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                mb="8px"
-              >
-                <Text
-                  m="0"
-                  fontSize="s"
-                  color="textPrimary"
-                  w="50%"
-                  style={{ textTransform: 'capitalize' }}
-                >
-                  {status.title}
-                </Text>
-                <Text
-                  m="0"
-                  fontSize="s"
-                  fontWeight="semi-bold"
-                  style={{ color: status.color }}
-                >
-                  {status.count}
-                </Text>
-              </Box>
-              <Box
-                bgColor="#F3F4F6"
-                borderRadius="9999px"
-                h="12px"
-                overflow="hidden"
-              >
-                <Box
-                  h="100%"
-                  borderRadius="9999px"
-                  style={{
-                    backgroundColor: status.color,
-                    width: `${barWidthPercent}%`,
-                    minWidth: barWidthPercent > 0 ? '12px' : '0',
-                  }}
-                />
-              </Box>
-            </Box>
-          );
-        })}
+        {statusData.map((status) => (
+          <HorizontalBarRow key={status.id} data={status} maxCount={maxCount} />
+        ))}
       </Box>
     </Box>
   );
