@@ -10,7 +10,6 @@ import {
 import { useNode, useEditor } from '@craftjs/core';
 import { useParams } from 'react-router-dom';
 
-import useDeleteFileAttachment from 'api/file_attachments/useDeleteFileAttachment';
 import useFileAttachmentById from 'api/file_attachments/useFileAttachmentById';
 import useFiles from 'api/files/useFiles';
 
@@ -94,7 +93,6 @@ const FileAttachmentSettings = () => {
   const {
     actions: { setProp },
     fileId,
-    fileAttachmentId,
   } = useNode((node) => ({
     fileId: node.data.props.fileId,
     fileAttachmentId: node.data.props.fileAttachmentId,
@@ -102,10 +100,6 @@ const FileAttachmentSettings = () => {
 
   const { formatMessage } = useIntl();
   const { query } = useEditor();
-
-  // File attachment API hooks
-  const { mutate: deleteFileAttachment } = useDeleteFileAttachment({});
-
   const { projectId } = useParams();
 
   // Get files for project
@@ -159,12 +153,8 @@ const FileAttachmentSettings = () => {
           value={fileId}
           onChange={(option) => {
             setProp((props: FileAttachmentProps) => {
-              // Remove any current file attachment if it exists.
-              if (fileAttachmentId) {
-                deleteFileAttachment(fileAttachmentId);
-                props.fileAttachmentId = undefined;
-              }
-              // Set the new selected file ID & name - file attachment will be created when layout is saved.
+              // Set the new selected file ID & name
+              // File attachment will be created on BE when layout is saved.
               props.fileId = option.value;
               props.fileName = option.label;
             });
