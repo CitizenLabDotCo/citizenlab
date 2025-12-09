@@ -56,22 +56,25 @@ const Container = ({
     onUpdateGraphDimensionsRef.current = onUpdateGraphDimensions;
   }, [onUpdateGraphDimensions]);
 
+  // In recharts 3.x, ResponsiveContainer's onResize callback is no longer
+  // reliably called on initial mount. We use our own ResizeObserver to detect
+  // container dimensions for positioning the legend.
   useEffect(() => {
     if (!containerRef.current) return;
 
     const element = containerRef.current;
     const observer = new ResizeObserver((entries) => {
       const entry = entries[0];
-      if (entry) {
-        const { width, height } = entry.contentRect;
-        if (width > 0 && height > 0) {
-          const newDimensions = { width, height };
-          if (!isEqual(prevDimensionsRef.current, newDimensions)) {
-            prevDimensionsRef.current = newDimensions;
-            onUpdateGraphDimensionsRef.current?.(newDimensions);
-          }
-        }
-      }
+      if (!entry) return;
+
+      const { width, height } = entry.contentRect;
+      if (width <= 0 || height <= 0) return;
+
+      const newDimensions = { width, height };
+      if (isEqual(prevDimensionsRef.current, newDimensions)) return;
+
+      prevDimensionsRef.current = newDimensions;
+      onUpdateGraphDimensionsRef.current?.(newDimensions);
     });
 
     observer.observe(element);
