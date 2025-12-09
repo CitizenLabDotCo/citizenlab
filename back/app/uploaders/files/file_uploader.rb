@@ -28,6 +28,12 @@ module Files
       # All file types are allowed.
     end
 
+    def extension_denylist
+      # Explicitly block SVG files due to XSS security risks
+      # SVG files can contain embedded JavaScript that executes when rendered
+      %w[svg]
+    end
+
     def size_range
       # TODO: Not sure this scales up to 100 MB
       (1.byte)..(100.megabytes)
