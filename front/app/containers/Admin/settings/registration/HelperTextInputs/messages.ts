@@ -15,7 +15,7 @@ export default defineMessages({
     defaultMessage: 'Enter password step',
   },
   enterPasswordStepTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.enterPasswordStepTooltip3',
+    id: 'app.containers.AdminPage.SettingsPage.enterPasswordStepTooltip4',
     defaultMessage:
       'This is shown in the step where users enter their password when logging in.',
   },
