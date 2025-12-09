@@ -92,13 +92,13 @@ resource 'Users' do
     end
 
     get 'web_api/v1/users/check/:email' do
+      let(:email) { 'test@test.com' }
+
       context 'when confirmation is turned on' do
         before do
           SettingsService.new.activate_feature! 'user_confirmation'
           SettingsService.new.activate_feature! 'password_login'
         end
-
-        let(:email) { 'test@test.com' }
 
         context 'when a user does not exist' do
           example_request 'Returns "terms"' do
@@ -169,6 +169,7 @@ resource 'Users' do
       context 'when user confirmation is turned off' do
         before do
           SettingsService.new.deactivate_feature! 'user_confirmation'
+          SettingsService.new.activate_feature! 'password_login'
         end
 
         example_request 'returns "terms" when user does not exist' do
