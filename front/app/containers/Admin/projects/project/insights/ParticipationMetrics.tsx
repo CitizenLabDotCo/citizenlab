@@ -2,10 +2,15 @@ import React, { useMemo } from 'react';
 
 import { Box, Text } from 'component-library';
 
+import { SevenDayChange } from 'api/phase_insights/types';
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 import { IPhaseData } from 'api/phases/types';
 
+import TrendIndicator from 'components/TrendIndicator';
+import trendIndicatorMessages from 'components/TrendIndicator/messages';
+
 import { useIntl, MessageDescriptor } from 'utils/cl-intl';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 import messages from './messages';
 import { METRIC_CONFIGS, MetricConfig } from './metricConfigs';
@@ -20,7 +25,7 @@ interface MetricDisplay {
   key: string;
   label: string;
   value: string;
-  subtext?: string;
+  change?: SevenDayChange;
 }
 
 interface FormatMessageFn {
@@ -36,32 +41,29 @@ const buildMetric = <T,>(
   const formattedValue =
     typeof value === 'number' ? value.toLocaleString() : String(value);
 
-  let subtext: string | undefined;
-  if (config.customSubtext) {
-    subtext = config.customSubtext(data, formatMessage);
-  } else if (config.getChange) {
-    const change = config.getChange(data);
-    if (change !== undefined) {
-      subtext = `${formatMessage(
-        messages.last7Days
-      )}: ${change.toLocaleString()}`;
-    }
+  let change: SevenDayChange | undefined;
+  if (config.getChange) {
+    change = config.getChange(data);
   }
 
   return {
     key: config.key,
     label: formatMessage(config.message),
     value: formattedValue,
-    subtext,
+    change,
   };
 };
 
 const ParticipationMetrics = ({ phase }: Props) => {
   const { formatMessage } = useIntl();
-  const { participation_method, voting_method } = phase.attributes;
+  const { participation_method, voting_method, start_at, end_at } =
+    phase.attributes;
   const { data: response } = usePhaseInsights({
     phaseId: phase.id,
   });
+
+  // Only show 7-day change indicators for current/ongoing phases
+  const isCurrentPhase = pastPresentOrFuture([start_at, end_at]) === 'present';
 
   // Transform API data into display format
   const metrics: MetricDisplay[] = useMemo(() => {
@@ -77,7 +79,7 @@ const ParticipationMetrics = ({ phase }: Props) => {
           key: 'visitors',
           message: messages.visitors,
           getValue: (d) => d.visitors,
-          getChange: (d) => d.visitors_last_7_days,
+          getChange: (d) => d.visitors_7_day_change,
         },
         metricsData,
         formatMessage
@@ -90,7 +92,7 @@ const ParticipationMetrics = ({ phase }: Props) => {
           key: 'participants',
           message: messages.participants,
           getValue: (d) => d.participants,
-          getChange: (d) => d.participants_last_7_days,
+          getChange: (d) => d.participants_7_day_change,
         },
         metricsData,
         formatMessage
@@ -116,14 +118,15 @@ const ParticipationMetrics = ({ phase }: Props) => {
       });
     }
 
-    // Always show engagement rate last
+    // Always show participation rate last
     // Backend returns decimal (0.75), multiply by 100 for percentage display
     result.push(
       buildMetric(
         {
-          key: 'engagementRate',
-          message: messages.engagementRate,
-          getValue: (d) => `${(d.engagement_rate * 100).toFixed(1)}%`,
+          key: 'participationRate',
+          message: messages.participationRate,
+          getValue: (d) => `${(d.participation_rate * 100).toFixed(1)}%`,
+          getChange: (d) => d.participation_rate_7_day_change,
         },
         metricsData,
         formatMessage
@@ -132,6 +135,8 @@ const ParticipationMetrics = ({ phase }: Props) => {
 
     return result;
   }, [response, formatMessage, participation_method, voting_method]);
+
+  const comparisonLabel = formatMessage(trendIndicatorMessages.vsLast7Days);
 
   return (
     <Box
@@ -155,10 +160,11 @@ const ParticipationMetrics = ({ phase }: Props) => {
           <Text fontSize="l" color="textPrimary">
             {metric.value}
           </Text>
-          {metric.subtext && (
-            <Text fontSize="s" color="textSecondary">
-              {metric.subtext}
-            </Text>
+          {isCurrentPhase && metric.change !== undefined && (
+            <TrendIndicator
+              percentageDifference={metric.change}
+              comparisonLabel={comparisonLabel}
+            />
           )}
         </Box>
       ))}
