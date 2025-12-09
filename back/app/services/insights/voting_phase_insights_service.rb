@@ -11,8 +11,10 @@ module Insights
     end
 
     def participations_voting
-      @phase.baskets.includes(:user, :baskets_ideas).map do |basket|
-        total_votes = basket.baskets_ideas.to_a.sum(&:votes)
+      @phase.baskets.includes(:user, :baskets_ideas, :ideas).map do |basket|
+        basket_ideas = basket.baskets_ideas
+        total_votes = basket_ideas.to_a.sum(&:votes)
+        votes_per_idea = basket_ideas.map { |bi| [bi.idea_id, bi.votes]}.to_h
 
         {
           item_id: basket.id,
@@ -21,8 +23,9 @@ module Insights
           classname: 'Basket',
           participant_id: participant_id(basket.id, basket.user_id),
           user_custom_field_values: basket&.user&.custom_field_values || {},
-          votes: total_votes,
-          ideas_count: basket.ideas.count
+          total_votes: total_votes,
+          ideas_count: basket.ideas.count,
+          votes_per_idea: votes_per_idea
         }
       end
     end
@@ -46,7 +49,7 @@ module Insights
         {
           voting_method: @phase.voting_method,
           associated_ideas: associated_published_ideas_count,
-          online_votes: participations[:voting].sum { |p| p[:votes] },
+          online_votes: participations[:voting].sum { |p| p[:total_votes] },
           online_votes_7_day_change: online_votes_7_day_change(participations),
           offline_votes: @phase.manual_votes_count,
           voters: participations[:voting].pluck(:participant_id).uniq.count,
@@ -104,12 +107,11 @@ module Insights
       voting_participations = participations[:voting]
       return 0.0 if voting_participations.empty?
 
-      online_votes_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.sum { |p| p[:votes] }
+      online_votes_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.sum { |p| p[:total_votes] }
       votes_in_previous_7_days = voting_participations.select do |p|
         p[:acted_at] >= 14.days.ago && p[:acted_at] < 7.days.ago
       end
-      online_votes_previous_7_days = votes_in_previous_7_days.sum { |p| p[:votes] }
-
+      online_votes_previous_7_days = votes_in_previous_7_days.sum { |p| p[:total_votes] }
       percentage_change(online_votes_previous_7_days, online_votes_last_7_days)
     end
   end
