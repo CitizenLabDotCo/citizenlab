@@ -89,4 +89,27 @@ describe BulkImportIdeas::Extractors::BaseExtractor do
       end
     end
   end
+
+  describe '#sanitize_emails' do
+    let(:rows) do
+      [
+        { 'Email address' => 'bob_smith@somewhere.com' },
+        { 'Email address' => 'terry@govocal.com' }
+      ]
+    end
+
+    it 'obfuscates email addresses if not in production' do
+      new_rows = service.send(:sanitize_emails, rows)
+      expect(new_rows).to eq([
+        { 'Email address' => 'moc_erehwemos_htims_bob@example.com' },
+        { 'Email address' => 'moc_lacovog_yrret@example.com' }
+      ])
+    end
+
+    it 'does not change email addresses in production' do
+      allow(Rails.env).to receive(:production?).and_return(true)
+      new_rows = service.send(:sanitize_emails, rows)
+      expect(new_rows).to eq(rows)
+    end
+  end
 end
