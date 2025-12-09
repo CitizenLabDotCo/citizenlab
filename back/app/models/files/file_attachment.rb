@@ -44,9 +44,9 @@ module Files
 
     validates :file_id, uniqueness: { scope: %i[attachable_type attachable_id] }
     validates :attachable_type, inclusion: { in: ATTACHABLE_TYPES }
-    validates_associated :file  # Ensure uploader validation errors (like rejected SVG) propagate up
     validate :validate_file_belongs_to_project
     validate :validate_idea_attachment_uniqueness
+    validate :validate_file_errors
 
     scope :ordered, -> { order(:position) }
 
@@ -110,6 +110,23 @@ module Files
           :already_attached,
           message: 'cannot be attached to an idea because it is already attached to another resource'
         )
+      end
+    end
+
+    # Propagate file validation errors to this model
+    # This allows CarrierWave errors (like extension_denylist, size errors) to bubble up properly
+    def validate_file_errors
+      return unless file
+
+      # Trigger validation on the file to ensure CarrierWave validations run
+      file.valid?
+
+      # Copy any file errors to this model
+      file.errors.each do |error|
+        # CarrierWave stores specific error messages in options[:message]
+        # (e.g., "max_size_error" instead of generic "carrierwave_integrity_error")
+        error_type = error.options[:message] || error.type
+        errors.add(:file, error_type, message: error.message)
       end
     end
   end

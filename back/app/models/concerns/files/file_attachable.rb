@@ -12,9 +12,6 @@ module Files
         dependent: :destroy
 
       has_many :attached_files, through: :file_attachments, source: :file, class_name: 'Files::File'
-
-      # Validate associated file attachments to ensure uploader validation errors propagate
-      validates_associated :file_attachments
     end
 
     # The project to which the attachable resource belongs. This is used to

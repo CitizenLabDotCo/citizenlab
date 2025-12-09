@@ -29,7 +29,7 @@ resource 'File attachment as legacy IdeaFile' do
 
   get 'web_api/v1/ideas/:idea_id/files/:file_id' do
     let(:idea_id) { @idea.id }
-    let(:file_id) { @idea.file_attachments.first.id }
+    let(:file_id) { @idea.file_attachments.reload.first.id }
 
     example_request 'Get one file attachment of an idea by id' do
       expect(status).to eq(200)
@@ -55,7 +55,7 @@ resource 'File attachment as legacy IdeaFile' do
     end
 
     let(:idea_id) { @idea.id }
-    let(:file_id) { @idea.file_attachments.first.id }
+    let(:file_id) { @idea.file_attachments.reload.first.id }
     let(:ordering) { 3 }
 
     example_request 'Update the ordering of a file attachment' do
@@ -94,7 +94,7 @@ resource 'File attachment as legacy IdeaFile' do
 
   delete 'web_api/v1/ideas/:idea_id/files/:file_id' do
     let(:idea_id) { @idea.id }
-    let(:file_attachment) { @idea.file_attachments.first }
+    let(:file_attachment) { @idea.file_attachments.reload.first }
     let(:file_id) { file_attachment.id }
 
     example 'Delete the file attachment by id and its underlying file' do

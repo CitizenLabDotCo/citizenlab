@@ -28,7 +28,7 @@ resource 'File attachment as legacy PhaseFile' do
 
   get 'web_api/v1/phases/:phase_id/files/:file_id' do
     let(:phase_id) { @phase.id }
-    let(:file_id) { @phase.file_attachments.first.id }
+    let(:file_id) { @phase.file_attachments.reload.first.id }
 
     example_request 'Get one file of a phase' do
       assert_status 200
@@ -54,7 +54,7 @@ resource 'File attachment as legacy PhaseFile' do
     end
 
     let(:phase_id) { @phase.id }
-    let(:file_id) { @phase.file_attachments.first.id }
+    let(:file_id) { @phase.file_attachments.reload.first.id }
     let(:ordering) { 3 }
 
     example_request 'Update the ordering of a file attachment' do
@@ -117,7 +117,7 @@ resource 'File attachment as legacy PhaseFile' do
 
   delete 'web_api/v1/phases/:phase_id/files/:file_id' do
     let(:phase_id) { @phase.id }
-    let(:file_id) { @phase.file_attachments.first.id }
+    let(:file_id) { @phase.file_attachments.reload.first.id }
 
     example 'Delete file attachment from a phase' do
       expect { do_request }
