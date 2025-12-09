@@ -19,7 +19,7 @@ export interface ITopicData {
     static_page_ids: string[];
     followers_count: number;
     include_in_onboarding: boolean;
-    default: boolean;
+    is_default: boolean;
   };
   relationships: {
     static_pages: {
@@ -55,7 +55,7 @@ export interface ITopicsQueryParams {
 export interface ITopicAdd {
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
-  default?: boolean;
+  is_default?: boolean;
 }
 
 export interface ITopicUpdate {
@@ -63,5 +63,5 @@ export interface ITopicUpdate {
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   include_in_onboarding?: boolean;
-  default?: boolean;
+  is_default?: boolean;
 }
