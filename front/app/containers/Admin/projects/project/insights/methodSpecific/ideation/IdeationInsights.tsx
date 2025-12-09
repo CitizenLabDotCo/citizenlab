@@ -29,6 +29,7 @@ import clHistory from 'utils/cl-router/history';
 
 import { MethodSpecificInsightProps } from '../types';
 
+import IdeasByTopic from './IdeasByTopic';
 import messages from './messages';
 
 const MIN_INPUTS_FOR_SUMMARY = 10;
@@ -296,9 +297,7 @@ const IdeationInsights = ({ phaseId }: MethodSpecificInsightProps) => {
             </Box>
           </Box>
         </Box>
-
-        {/* Placeholder for right side (50%) - to be implemented */}
-        <Box w="50%" />
+        <IdeasByTopic phaseId={phaseId} />
       </Box>
     </Box>
   );
