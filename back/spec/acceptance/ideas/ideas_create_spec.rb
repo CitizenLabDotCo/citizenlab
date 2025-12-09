@@ -261,6 +261,7 @@ resource 'Ideas' do
 
             example '[error] Create an idea with an SVG file should be rejected', document: false do
               do_request
+              # byebug
               assert_status 422
               json_response = json_parse(response_body)
               # Check that the error is related to file attachment validation
