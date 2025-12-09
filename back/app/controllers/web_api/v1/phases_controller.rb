@@ -26,15 +26,6 @@ class WebApi::V1::PhasesController < ApplicationController
     render json: WebApi::V1::PhaseMiniSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash
   end
 
-  def insights
-    insights_data = @phase.pmethod.phase_insights_class.new(@phase).call
-
-    render json: WebApi::V1::PhaseInsightsSerializer.new(
-      @phase,
-      params: jsonapi_serializer_params.merge(**insights_data)
-    ).serializable_hash
-  end
-
   def create
     phase_attributes = phase_params
     @phase = Phase.new(phase_attributes)

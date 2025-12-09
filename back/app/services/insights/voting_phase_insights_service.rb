@@ -1,5 +1,19 @@
 module Insights
   class VotingPhaseInsightsService < IdeationPhaseInsightsService
+    def votes_counts_with_user_custom_field_grouping(custom_field_id = nil)
+      # field = CustomField.find_by(id: custom_field_id)
+      # return {} unless field
+
+      # field_key = field.key
+
+      # puts field.key.inspect
+
+      # participations = cached_phase_participations
+      # voting_participations = participations[:voting]
+
+      { thing: 'value' }
+    end
+
     private
 
     def phase_participations
