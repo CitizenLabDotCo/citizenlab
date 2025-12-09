@@ -6,9 +6,9 @@ export default defineMessages({
     defaultMessage: 'Enter email step',
   },
   enterEmailStepTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.enterEmailStepTooltip2',
+    id: 'app.containers.AdminPage.SettingsPage.enterEmailStepTooltip3',
     defaultMessage:
-      "This is shown on the 'enter your email' step in the registration process.",
+      'This is shown in the step where users enter their email in the registration process.',
   },
   enterPasswordStep: {
     id: 'app.containers.AdminPage.SettingsPage.enterPasswordStep',
@@ -17,24 +17,24 @@ export default defineMessages({
   enterPasswordStepTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.enterPasswordStepTooltip3',
     defaultMessage:
-      "This is shown on the 'enter your password' step when logging in.",
+      'This is shown in the step where users enter their password when logging in.',
   },
   completeYourProfileStep: {
     id: 'app.containers.AdminPage.SettingsPage.completeYourProfileStep',
     defaultMessage: "'Complete your profile' step",
   },
   completeYourProfileStepTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.completeYourProfileStepTooltip2',
+    id: 'app.containers.AdminPage.SettingsPage.completeYourProfileStepTooltip3',
     defaultMessage:
-      "This is shown on the 'complete your profile' step in the registration process.",
+      "This is shown in the 'complete your profile' step in the registration process.",
   },
   demographicQuestions: {
     id: 'app.containers.AdminPage.SettingsPage.demographicQuestionsStep',
     defaultMessage: 'Demographic questions',
   },
   demographicQuestionsTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.demographicQuestionsTooltip2',
+    id: 'app.containers.AdminPage.SettingsPage.demographicQuestionsTooltip3',
     defaultMessage:
-      'This is shown on the top of the demographic questions form in the registration process.',
+      'This is shown in the demographic questions step in the registration process.',
   },
 });
