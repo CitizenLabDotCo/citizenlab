@@ -5,6 +5,7 @@ import { ParticipationMethod } from 'api/phases/types';
 import CommonGroundInsights from './commonGround/CommonGroundInsights';
 import IdeationInsights from './ideation/IdeationInsights';
 import NativeSurveyInsights from './nativeSurvey/NativeSurveyInsights';
+import ProposalsInsights from './proposals/ProposalsInsights';
 import { MethodSpecificInsightProps } from './types';
 
 /**
@@ -17,6 +18,7 @@ export const methodSpecificInsightsRegistry: Partial<
   common_ground: CommonGroundInsights,
   native_survey: NativeSurveyInsights,
   ideation: IdeationInsights,
+  proposals: ProposalsInsights,
   // Future implementations:
   // voting: VotingInsights,
   // etc.
