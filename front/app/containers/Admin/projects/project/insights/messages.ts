@@ -57,9 +57,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.votesPerPerson',
     defaultMessage: 'Votes per person',
   },
-  engagementRate: {
-    id: 'app.containers.Admin.projects.project.insights.engagementRate',
-    defaultMessage: 'Engagement rate',
+  participationRate: {
+    id: 'app.containers.Admin.projects.project.insights.participationRate',
+    defaultMessage: 'Participation rate',
   },
   totalVotes: {
     id: 'app.containers.Admin.projects.project.insights.totalVotes',
