@@ -19,7 +19,6 @@ import messages from './messages';
 import { RowDescription, RowTitle } from './RowStyles';
 
 const StyledLink = styled(Link)`
-  color: ${colors.white} !important;
   text-decoration: underline;
 
   &:hover {

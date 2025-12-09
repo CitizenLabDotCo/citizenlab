@@ -6,19 +6,21 @@ describe ProfanityService do
   let(:service) { described_class.new }
 
   describe 'search_blocked_words' do
-    before { Rails.cache.clear } # for some reason, caching is enabled while testing
-
-    before { stub_fetch_blocked_words! service }
+    # for some reason, caching is enabled while testing
+    before do
+      Rails.cache.clear
+      stub_fetch_blocked_words! service
+    end
 
     after { Rails.cache.clear }
 
     it 'matches exact occurences' do
       text = 'Ik vind hem een beetje een zeveraar.'
-      expect(service.search_blocked_words(text)).to match_array([{
+      expect(service.search_blocked_words(text)).to contain_exactly({
         word: 'zeveraar',
         # position: 27,
         language: 'nl'
-      }])
+      })
     end
 
     it 'returns no matches when there are no occurences' do
@@ -62,26 +64,21 @@ describe ProfanityService do
 
     it 'returns matches for multilple languages' do
       text = 'His recipe for chili con carne is so stupid.'
-      expect(service.search_blocked_words(text)).to match_array(
-        [
-          {
-            word: 'con',
-            language: 'fr'
-          },
-          {
-            word: 'stupid',
-            language: 'en'
-          }
-        ]
-      )
+      expect(service.search_blocked_words(text)).to contain_exactly({
+        word: 'con',
+        language: 'fr'
+      }, {
+        word: 'stupid',
+        language: 'en'
+      })
     end
 
     it 'matches case-insensitively' do
       text = 'Il est un peu déBiLE.'
-      expect(service.search_blocked_words(text)).to match_array([{
+      expect(service.search_blocked_words(text)).to contain_exactly({
         word: 'débile',
         language: 'fr'
-      }])
+      })
     end
 
     it "doesn't match on accents or digits" do
@@ -91,10 +88,10 @@ describe ProfanityService do
 
     it 'matches with HTML' do
       text = '<p>Je suis tombé dans une pute</p>'
-      expect(service.search_blocked_words(text)).to match_array([{
+      expect(service.search_blocked_words(text)).to contain_exactly({
         word: 'pute',
         language: 'fr'
-      }])
+      })
     end
   end
 

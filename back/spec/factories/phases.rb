@@ -154,6 +154,11 @@ FactoryBot.define do
       participation_method { 'common_ground' }
     end
 
+    factory :idea_feed_phase do
+      title_multiloc { { 'en' => 'Idea Feed (en)', 'nl-BE' => 'Idea Feed (nl)' } }
+      participation_method { 'idea_feed' }
+    end
+
     trait :ongoing do
       start_at { Time.zone.today - 7.days }
       end_at { Time.zone.today + 7.days }

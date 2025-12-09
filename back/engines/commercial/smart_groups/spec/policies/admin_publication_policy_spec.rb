@@ -21,7 +21,7 @@ describe AdminPublicationPolicy do
 
     it { is_expected.not_to permit(:reorder) }
 
-    it 'should not index the project holder' do
+    it 'does not index the project holder' do
       expect(scope.resolve.size).to eq 0
     end
   end

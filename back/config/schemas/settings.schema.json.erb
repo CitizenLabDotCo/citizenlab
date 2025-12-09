@@ -1454,6 +1454,18 @@
         }
       },
 
+      "idea_feed": {
+        "type": "object",
+        "title": "Idea feed",
+        "description": "Idea Feed is a participation method very similar to ideation, but ideas are presented one-by-one in a scrollable feed, there is a stronger emphasis on clustering. Optimized for larger projects, initially built with America One.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "data_repository_transcription": {
         "type": "object",
         "title": "Data repository transcription",
@@ -1523,6 +1535,18 @@
         "type": "object",
         "title": "Project importer [Alpha]",
         "description": "Super admin only feature to import project, phases and content from XLSX.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "phase_insights": {
+        "type": "object",
+        "title": "Phase insights [In development]",
+        "description": "Phase insights dashboard. In development. Do not enable for customer platforms",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
