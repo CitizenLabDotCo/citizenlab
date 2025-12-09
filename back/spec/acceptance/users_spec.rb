@@ -93,6 +93,11 @@ resource 'Users' do
     end
 
     get 'web_api/v1/users/check/:email' do
+      before do
+        SettingsService.new.activate_feature! 'user_confirmation'
+        SettingsService.new.activate_feature! 'password_login'
+      end
+
       let(:email) { 'test@test.com' }
 
       context 'when a user does not exist' do
@@ -192,6 +197,12 @@ resource 'Users' do
         parameter :locale, 'Locale. Should be one of the tenants locales', required: true
       end
       ValidationErrorHelper.new.error_fields(self, User)
+
+      before do
+        allow(RequestConfirmationCodeJob).to receive(:perform_now)
+        SettingsService.new.activate_feature! 'user_confirmation'
+        SettingsService.new.activate_feature! 'password_login'
+      end
 
       let(:email) { Faker::Internet.email }
       let(:locale) { 'en' }
