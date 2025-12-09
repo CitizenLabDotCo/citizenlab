@@ -1,15 +1,13 @@
+import createAccountFromInvite, {
+  Parameters as CreateAccountFromInviteParameters,
+} from 'api/authentication/createAccountFromInvite';
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
-import createAccountWithPassword, {
-  Parameters as CreateAccountParameters,
-} from 'api/authentication/sign_up/createAccountWithPassword';
-import { handleOnSSOClick } from 'api/authentication/singleSignOn';
 
 import { trackEventByName } from 'utils/analytics';
 
 import tracks from '../../tracks';
 import {
   AuthenticationData,
-  AuthProvider,
   GetRequirements,
   UpdateState,
 } from '../../typings';
@@ -17,57 +15,20 @@ import {
 import { Step } from './typings';
 import { doesNotMeetGroupCriteria, checkMissingData } from './utils';
 
-export const signUpFlow = (
+export const inviteFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
-  updateState: UpdateState,
-  anySSOProviderEnabled: boolean
+  updateState: UpdateState
 ) => {
   return {
-    // old sign up flow
-    'sign-up:auth-providers': {
-      CLOSE: () => setCurrentStep('closed'),
-      SWITCH_FLOW: () => {
-        updateState({ flow: 'signin' });
-        setCurrentStep('sign-in:auth-providers');
-      },
-      SELECT_AUTH_PROVIDER: async (authProvider: AuthProvider) => {
-        if (authProvider === 'email') {
-          setCurrentStep('sign-up:email-password');
-          return;
-        }
-
-        const { requirements } = await getRequirements();
-
-        handleOnSSOClick(
-          authProvider,
-          getAuthenticationData(),
-          requirements.verification,
-          'signup'
-        );
-      },
-    },
-
-    'sign-up:email-password': {
+    'invite:email-password': {
       CLOSE: () => {
         setCurrentStep('closed');
-        trackEventByName(tracks.signUpEmailPasswordStepExited);
       },
-      SWITCH_FLOW: () => {
-        updateState({ flow: 'signup' });
-        setCurrentStep('sign-in:email-password');
-        trackEventByName(tracks.signUpEmailPasswordStepExited);
-      },
-      GO_BACK: () => {
-        if (anySSOProviderEnabled) {
-          setCurrentStep('sign-up:auth-providers');
-          trackEventByName(tracks.signUpEmailPasswordStepExited);
-        }
-      },
-      SUBMIT: async (params: CreateAccountParameters) => {
+      SUBMIT: async (params: CreateAccountFromInviteParameters) => {
         try {
-          await createAccountWithPassword(params);
+          await createAccountFromInvite(params);
 
           const { requirements } = await getRequirements();
           const authenticationData = getAuthenticationData();
@@ -75,7 +36,8 @@ export const signUpFlow = (
           const missingDataStep = checkMissingData(
             requirements,
             authenticationData,
-            'signup'
+            'signup',
+            true
           );
 
           if (missingDataStep) {
@@ -92,11 +54,11 @@ export const signUpFlow = (
         } catch (e) {
           if (e.errors?.email?.[0]?.error === 'taken_by_invite') {
             // If the invitation is already taken:
-            // Store email in state to use in taken-by-invite step
+            // Store email in state to use in invite:taken step
             updateState({ email: params.email });
 
             // Go to step where user can enter invitation token again
-            setCurrentStep('taken-by-invite');
+            setCurrentStep('invite:taken');
           } else {
             trackEventByName(tracks.signInEmailPasswordFailed);
             throw e;
@@ -105,7 +67,7 @@ export const signUpFlow = (
       },
     },
 
-    'sign-up:invite': {
+    'invite:code': {
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (token: string) => {
         const response = await getUserDataFromToken(token);
@@ -118,8 +80,12 @@ export const signUpFlow = (
 
         updateState({ token, prefilledBuiltInFields });
 
-        setCurrentStep('sign-up:email-password');
+        setCurrentStep('invite:email-password');
       },
+    },
+
+    'invite:taken': {
+      CLOSE: () => setCurrentStep('closed'),
     },
   };
 };

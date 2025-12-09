@@ -1,33 +1,9 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  signUpWithEmail: {
-    id: 'app.components.AuthProviders.signUpWithEmail',
-    defaultMessage: 'Sign up with Email',
-  },
-  logInWithEmail: {
-    id: 'app.components.AuthProviders.logInWithEmail',
-    defaultMessage: 'Log in with Email',
-  },
   signUpButtonAltText: {
     id: 'app.components.AuthProviders.signUpButtonAltText',
     defaultMessage: 'Sign up with {loginMechanismName}',
-  },
-  goToLogIn: {
-    id: 'app.components.AuthProviders.goToLogIn',
-    defaultMessage: 'Already have an account? {goToOtherFlowLink}',
-  },
-  goToSignUp: {
-    id: 'app.components.AuthProviders.goToSignUp',
-    defaultMessage: "Don't have an account? {goToOtherFlowLink}",
-  },
-  logIn2: {
-    id: 'app.components.AuthProviders.logIn2',
-    defaultMessage: 'Log in',
-  },
-  signUp2: {
-    id: 'app.components.AuthProviders.signUp2',
-    defaultMessage: 'Sign up',
   },
   continue: {
     id: 'app.components.AuthProviders.continue',

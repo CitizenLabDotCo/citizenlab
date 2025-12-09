@@ -29,4 +29,8 @@ export default defineMessages({
     id: 'app.components.VerificationModal.verifyBosaFas',
     defaultMessage: 'Verify with itsme or eID',
   },
+  verifyAcm: {
+    id: 'app.components.VerificationModal.verifyAcm',
+    defaultMessage: 'Verify with Itsme®',
+  },
 });

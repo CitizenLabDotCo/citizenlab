@@ -1,7 +1,5 @@
-import getAuthUser from 'api/authentication/auth_user/getAuthUser';
-import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
-import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
-import signOut from 'api/authentication/sign_in_out/signOut';
+import { confirmEmailConfirmationCodeAuthenticated } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
+import { requestEmailConfirmationCodeAuthenticated } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import { OnboardingType } from 'api/users/types';
 import {
   updateUser,
@@ -35,24 +33,18 @@ export const missingDataFlow = (
     'missing-data:email-confirmation': {
       CLOSE: () => setCurrentStep('closed'),
       CHANGE_EMAIL: async () => {
-        const authUser = await getAuthUser();
-
-        if (authUser.data.attributes.no_password) {
-          await signOut();
-          setCurrentStep('closed');
-        } else {
-          setCurrentStep('missing-data:change-email');
-        }
+        setCurrentStep('email:start');
       },
-      SUBMIT_CODE: async (code: string) => {
-        await confirmEmail({ code });
+      SUBMIT_CODE: async (_: string, code: string) => {
+        await confirmEmailConfirmationCodeAuthenticated(code);
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
         const missingDataStep = checkMissingData(
           requirements,
           authenticationData,
-          state.flow
+          state.flow,
+          true
         );
 
         if (missingDataStep) {
@@ -67,17 +59,8 @@ export const missingDataFlow = (
 
         setCurrentStep('success');
       },
-    },
-
-    'missing-data:change-email': {
-      CLOSE: () => setCurrentStep('closed'),
-      GO_BACK: () => {
-        setCurrentStep('missing-data:email-confirmation');
-      },
-      RESEND_CODE: async (newEmail: string) => {
-        updateState({ email: newEmail });
-        await resendEmailConfirmationCode(newEmail);
-        setCurrentStep('missing-data:email-confirmation');
+      RESEND_CODE: async () => {
+        await requestEmailConfirmationCodeAuthenticated();
       },
     },
 
@@ -96,18 +79,27 @@ export const missingDataFlow = (
         const missingDataStep = checkMissingData(
           requirements,
           authenticationData,
-          state.flow
+          state.flow,
+          true
         );
 
         if (missingDataStep) {
+          if (
+            missingDataStep === 'missing-data:email-confirmation' &&
+            builtInFieldUpdate.email
+          ) {
+            updateState({ email: builtInFieldUpdate.email });
+          }
+
           setCurrentStep(missingDataStep);
           return;
         }
 
         if (doesNotMeetGroupCriteria(requirements)) {
           setCurrentStep('access-denied');
-          return;
         }
+
+        setCurrentStep('success');
       },
     },
 
@@ -120,7 +112,8 @@ export const missingDataFlow = (
         const missingDataStep = checkMissingData(
           requirements,
           authenticationData,
-          state.flow
+          state.flow,
+          true
         );
 
         if (missingDataStep) {

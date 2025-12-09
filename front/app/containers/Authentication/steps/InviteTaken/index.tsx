@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Box, Button, colors } from '@citizenlab/cl2-component-library';
 
@@ -16,11 +16,9 @@ type Props = {
   state: State;
 };
 
-const InvitationResent = ({ state }: Props) => {
+const InviteTaken = ({ state }: Props) => {
   const { formatMessage } = useIntl();
-  const [status, setStatus] = React.useState<'idle' | 'loading' | 'success'>(
-    'idle'
-  );
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success'>('idle');
 
   const email = state.email;
   if (!email) {
@@ -59,4 +57,4 @@ const InvitationResent = ({ state }: Props) => {
   );
 };
 
-export default InvitationResent;
+export default InviteTaken;

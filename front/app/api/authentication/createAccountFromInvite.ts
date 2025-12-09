@@ -2,9 +2,8 @@ import { SupportedLocale } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import signIn from '../sign_in_out/signIn';
-
-import { CreateAccountWithPasswordProperties } from './types';
+import signIn from './sign_in_out/signIn';
+import { CreateAccountWithPasswordProperties } from './sign_up/types';
 
 export interface Parameters {
   firstName: string;
@@ -12,34 +11,30 @@ export interface Parameters {
   email: string;
   password: string;
   locale: SupportedLocale;
-  isInvitation?: boolean | null | undefined;
-  token?: string | undefined | null;
+  token: string;
 }
 
-const triggerCreateAccountWithPassword = (
-  endpoint: string,
+const triggerCreateAccountFromInvite = (
+  token: string,
   requestBody: CreateAccountWithPasswordProperties
 ) => {
   return fetcher({
-    path: `/${endpoint}`,
+    path: `/invites/by_token/${token}/accept`,
     body: requestBody,
     action: 'post',
   });
 };
 
-export default async function createAccountWithPassword({
+export default async function createAccountFromInvite({
   firstName,
   lastName,
   email,
   password,
   locale,
-  isInvitation,
   token,
 }: Parameters) {
-  const signUpEndpoint =
-    isInvitation === true ? `invites/by_token/${token}/accept` : `users`;
   const bodyData = {
-    [token ? 'invite' : 'user']: {
+    invite: {
       email,
       password,
       locale,
@@ -47,7 +42,7 @@ export default async function createAccountWithPassword({
       last_name: lastName,
     },
   };
-  await triggerCreateAccountWithPassword(signUpEndpoint, bodyData);
+  await triggerCreateAccountFromInvite(token, bodyData);
 
   const authenticatedUser = await signIn({ email, password });
 
