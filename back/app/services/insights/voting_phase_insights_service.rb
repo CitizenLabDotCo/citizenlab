@@ -26,8 +26,10 @@ module Insights
 
         grouped_online_votes = if field
           vote_custom_field_values = idea_ids_to_user_custom_field_values[idea.id] || []
-          select_or_checkbox_counts_for_field(vote_custom_field_values, field)
-        end
+          counts = select_or_checkbox_counts_for_field(vote_custom_field_values, field)
+          counts['_blank'] += total_offline_votes
+          counts
+        end 
 
         {
           id: idea.id,
@@ -51,7 +53,7 @@ module Insights
           Array.new(vote_count) { [idea_id, participation[:user_custom_field_values]] }
         end
       end
-      
+
       grouped_data.group_by(&:first).transform_values { |arr| arr.map(&:last) }
     end
 
