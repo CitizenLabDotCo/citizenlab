@@ -18,32 +18,28 @@ RSpec.describe Insights::VolunteeringPhaseInsightsService do
     it 'returns the participation volunteerings data associated with the phase' do
       participations_volunteering = service.send(:participations_volunteering)
 
-      expect(participations_volunteering).to match_array([
-        {
-          item_id: volunteering1.id,
-          action: 'volunteering',
-          acted_at: volunteering1.created_at,
-          classname: 'Volunteer',
-          participant_id: user1.id,
-          user_custom_field_values: {}
-        },
-        {
-          item_id: volunteering2.id,
-          action: 'volunteering',
-          acted_at: volunteering2.created_at,
-          classname: 'Volunteer',
-          participant_id: user1.id,
-          user_custom_field_values: {}
-        },
-        {
-          item_id: volunteering3.id,
-          action: 'volunteering',
-          acted_at: volunteering3.created_at,
-          classname: 'Volunteer',
-          participant_id: user2.id,
-          user_custom_field_values: {}
-        }
-      ])
+      expect(participations_volunteering).to contain_exactly({
+        item_id: volunteering1.id,
+        action: 'volunteering',
+        acted_at: volunteering1.created_at,
+        classname: 'Volunteer',
+        participant_id: user1.id,
+        user_custom_field_values: {}
+      }, {
+        item_id: volunteering2.id,
+        action: 'volunteering',
+        acted_at: volunteering2.created_at,
+        classname: 'Volunteer',
+        participant_id: user1.id,
+        user_custom_field_values: {}
+      }, {
+        item_id: volunteering3.id,
+        action: 'volunteering',
+        acted_at: volunteering3.created_at,
+        classname: 'Volunteer',
+        participant_id: user2.id,
+        user_custom_field_values: {}
+      })
 
       first_participation = participations_volunteering.first
       expect(first_participation[:acted_at])
@@ -59,11 +55,7 @@ RSpec.describe Insights::VolunteeringPhaseInsightsService do
         volunteering: service.send(:participations_volunteering)
       })
 
-      expect(participations[:volunteering].map { |p| p[:item_id] }).to match_array([
-        volunteering1.id,
-        volunteering2.id,
-        volunteering3.id
-      ])
+      expect(participations[:volunteering].map { |p| p[:item_id] }).to contain_exactly(volunteering1.id, volunteering2.id, volunteering3.id)
     end
   end
 

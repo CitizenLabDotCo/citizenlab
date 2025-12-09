@@ -14,24 +14,21 @@ RSpec.describe Insights::PollPhaseInsightsService do
     it 'returns the participation taking polls data associated with the phase' do
       participation_taking_poll = service.send(:participation_taking_poll)
 
-      expect(participation_taking_poll).to match_array([
-        {
-          item_id: response1.id,
-          action: 'taking_poll',
-          acted_at: a_kind_of(Time),
-          classname: 'Response',
-          participant_id: user1.id,
-          user_custom_field_values: {}
-        },
-        {
-          item_id: response2.id,
-          action: 'taking_poll',
-          acted_at: a_kind_of(Time),
-          classname: 'Response',
-          participant_id: user2.id,
-          user_custom_field_values: {}
-        }
-      ])
+      expect(participation_taking_poll).to contain_exactly({
+        item_id: response1.id,
+        action: 'taking_poll',
+        acted_at: a_kind_of(Time),
+        classname: 'Response',
+        participant_id: user1.id,
+        user_custom_field_values: {}
+      }, {
+        item_id: response2.id,
+        action: 'taking_poll',
+        acted_at: a_kind_of(Time),
+        classname: 'Response',
+        participant_id: user2.id,
+        user_custom_field_values: {}
+      })
 
       first_participation = participation_taking_poll.first
       expect(first_participation[:acted_at])
@@ -47,10 +44,7 @@ RSpec.describe Insights::PollPhaseInsightsService do
         taking_poll: service.send(:participation_taking_poll)
       })
 
-      expect(participations[:taking_poll].map { |p| p[:item_id] }).to match_array([
-        response1.id,
-        response2.id
-      ])
+      expect(participations[:taking_poll].map { |p| p[:item_id] }).to contain_exactly(response1.id, response2.id)
     end
   end
 

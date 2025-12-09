@@ -13,14 +13,14 @@ describe TimelineService do
       phase2 = create(:phase, project: project, start_at: Time.now.to_date - 4.days, end_at: Time.now.to_date - 2.days)
       phase3 = create(:phase, project: project, start_at: Time.now.to_date - 1.day, end_at: Time.now.to_date + 2.days)
       project.phases << [phase1, phase2, phase3]
-      expect(service.past_phases(project)).to match_array [phase1, phase2]
+      expect(service.past_phases(project)).to contain_exactly(phase1, phase2)
     end
 
     it 'returns the past phases when the last phase has no end date' do
       phase1 = create(:phase, project: project, start_at: Time.now.to_date - 10.days, end_at: Time.now.to_date - 2.days)
       phase2 = create(:phase, project: project, start_at: Time.now.to_date - 1.day, end_at: nil)
       project.phases << [phase1, phase2]
-      expect(service.past_phases(project)).to match_array [phase1]
+      expect(service.past_phases(project)).to contain_exactly(phase1)
     end
   end
 
@@ -182,7 +182,7 @@ describe TimelineService do
       current_phase = create(:phase, project: project, start_at: Time.now.to_date - 2.days, end_at: Time.now.to_date + 2.days)
       future_phase = create(:phase, project: project, start_at: Time.now.to_date + 3.days, end_at: nil)
       project.phases << [past_phase, current_phase, future_phase]
-      expect(service.current_and_future_phases(project)).to match_array [current_phase, future_phase]
+      expect(service.current_and_future_phases(project)).to contain_exactly(current_phase, future_phase)
     end
 
     it 'respects the tenant timezone' do

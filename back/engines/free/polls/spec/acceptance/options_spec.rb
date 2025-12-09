@@ -46,7 +46,11 @@ resource 'Poll Options' do
   end
 
   context 'when admin' do
-    before { admin_header_token }
+    before do
+      admin_header_token
+      @question = create(:poll_question, :with_options)
+      @options = @question.options
+    end
 
     post 'web_api/v1/poll_questions/:poll_question_id/poll_options' do
       with_options scope: :option do
@@ -88,11 +92,6 @@ resource 'Poll Options' do
     patch 'web_api/v1/poll_options/:id/reorder' do
       with_options scope: :option do
         parameter :ordering, 'The position, starting from 0, where the option should be at compared to other options to the same question. Options after will move down.', required: true
-      end
-
-      before do
-        @question = create(:poll_question, :with_options)
-        @options = @question.options
       end
 
       let(:id) { @options.last.id }
