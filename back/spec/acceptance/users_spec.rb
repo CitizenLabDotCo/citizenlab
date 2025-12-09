@@ -66,6 +66,7 @@ resource 'Users' do
     end
 
     get 'web_api/v1/users/:id' do
+      context 'when confirmation is turned on' do
       before do
         @user = create(:user)
         SettingsService.new.activate_feature! 'user_confirmation'
@@ -87,8 +88,10 @@ resource 'Users' do
         expect(json_response.dig(:data, :attributes, :email)).to be_nil
       end
     end
+    end
 
     get 'web_api/v1/users/check/:email' do
+      context 'when confirmation is turned on' do
       before do
         SettingsService.new.activate_feature! 'user_confirmation'
         SettingsService.new.activate_feature! 'password_login'
@@ -160,8 +163,9 @@ resource 'Users' do
           expect(json_response_body[:data][:attributes][:action]).to eq('password')
         end
       end
+    end
 
-      context 'when user confirmation feature is disabled' do
+      context 'when user confirmation is turned off' do
         before do
           SettingsService.new.deactivate_feature! 'user_confirmation'
         end
@@ -194,6 +198,7 @@ resource 'Users' do
       end
       ValidationErrorHelper.new.error_fields(self, User)
 
+      context 'when confirmation is turned on' do
       before do
         SettingsService.new.activate_feature! 'user_confirmation'
         SettingsService.new.activate_feature! 'password_login'
@@ -255,6 +260,7 @@ resource 'Users' do
           end
         end
       end
+    end
     end
   end
 
@@ -1287,7 +1293,7 @@ resource 'Users' do
         describe 'updating the user email' do
           let(:email) { 'new-email@email.com' }
 
-          context 'when the user_confirmation module is active' do
+          context 'when confirmation is turned on' do
             before do
               SettingsService.new.activate_feature! 'user_confirmation'
             end
