@@ -6,7 +6,6 @@ FactoryBot.define do
     ideas_order { nil }
     input_term { nil }
     participation_method { 'ideation' }
-    ideation_method { 'base' }
 
     title_multiloc do
       {
