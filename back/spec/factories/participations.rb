@@ -45,7 +45,7 @@ FactoryBot.define do
         user_custom_field_values: custom_field_values,
         total_votes: basket.baskets_ideas.sum(:votes),
         ideas_count: basket.ideas.count,
-        votes_per_idea: basket.baskets_ideas.map { |bi| [bi.idea_id, bi.votes]}.to_h
+        votes_per_idea: basket.baskets_ideas.to_h { |bi| [bi.idea_id, bi.votes] }
       }
     end
 

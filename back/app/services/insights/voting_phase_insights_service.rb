@@ -11,10 +11,10 @@ module Insights
     end
 
     def participations_voting
-      @phase.baskets.includes(:user, :baskets_ideas, :ideas).map do |basket|
+      @phase.baskets.includes(:user, :baskets_ideas).map do |basket|
         basket_ideas = basket.baskets_ideas
         total_votes = basket_ideas.to_a.sum(&:votes)
-        votes_per_idea = basket_ideas.map { |bi| [bi.idea_id, bi.votes]}.to_h
+        votes_per_idea = basket_ideas.to_h { |bi| [bi.idea_id, bi.votes] }
 
         {
           item_id: basket.id,
