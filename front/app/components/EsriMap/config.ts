@@ -113,7 +113,7 @@ export const addMapLegend = (
   showLegendExpanded: boolean | undefined
 ) => {
   // Check if legend already exists and return to prevent duplicates
-  const existingLegend = mapView.ui.find('mapLegendExpand') as Expand | null;
+  const existingLegend = mapView.ui.find('mapLegendExpand') as Expand | null; // Esri has incorrect types here
   if (existingLegend) return;
 
   const legend = new Expand({
@@ -141,7 +141,7 @@ export const showLayerVisibilityControls = (mapView: MapView) => {
   // Check if layer list already exists and return to prevent duplicates
   const existingLayerList = mapView.ui.find(
     'mapLayerListExpand'
-  ) as Expand | null;
+  ) as Expand | null; // Esri has incorrect types here
   if (existingLayerList) return;
 
   const layerList = new Expand({
