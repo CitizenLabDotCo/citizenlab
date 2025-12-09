@@ -58,7 +58,12 @@ module Insights
     end
 
     def common_7_day_changes(participations)
-      return nil unless phase_has_run_more_than_14_days?
+      result = {
+        voters_7_day_change: nil,
+        comments_posted_7_day_change: nil
+      }
+
+      return result unless phase_has_run_more_than_14_days?
 
       voting_participations = participations[:voting]
       voters_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:participant_id).uniq.count
@@ -72,10 +77,10 @@ module Insights
         p[:acted_at] >= 14.days.ago && p[:acted_at] < 7.days.ago
       end
 
-      {
-        voters_7_day_change: percentage_change(voters_previous_7_days, voters_last_7_days),
-        comments_posted_7_day_change: percentage_change(comments_previous_7_days, comments_last_7_days)
-      }
+      result[:voters_7_day_change] = percentage_change(voters_previous_7_days, voters_last_7_days)
+      result[:comments_posted_7_day_change] = percentage_change(comments_previous_7_days, comments_last_7_days)
+
+      result
     end
 
     def online_picks_7_day_change(participations)
