@@ -261,10 +261,9 @@ resource 'Ideas' do
 
             example '[error] Create an idea with an SVG file should be rejected', document: false do
               do_request
+              byebug
               assert_status 422
               json_response = json_parse(response_body)
-              # Check that the error is related to file attachment validation
-              # SVG files are blocked by the uploader's extension_allowlist
               expect(json_response[:errors]).to be_present
               expect(json_response[:errors][:file_attachments]).to be_present
             end
