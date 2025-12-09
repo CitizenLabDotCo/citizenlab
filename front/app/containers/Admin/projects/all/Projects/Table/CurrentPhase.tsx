@@ -12,6 +12,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import { PARTICIPATION_METHOD_LABELS } from 'containers/Admin/inspirationHub/constants';
 
+import PhaseTimeLeft from 'components/PhaseTimeLeft';
+
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { parseBackendDateString, pastPresentOrFuture } from 'utils/dateUtils';
@@ -107,28 +109,8 @@ const CurrentPhase = ({ project }: Props) => {
 
     if (currentPhase) {
       const phaseEndDate = currentPhase.attributes.end_at ?? undefined;
-      const parsedPhaseEndDate = phaseEndDate
-        ? parseBackendDateString(phaseEndDate)
-        : undefined;
-      if (!parsedPhaseEndDate) return;
-
-      const daysUntilPhaseEnds = differenceInDays(parsedPhaseEndDate, now);
-      if (daysUntilPhaseEnds < 0) return; // should not happen, but just in case
-
-      if (daysUntilPhaseEnds === 0) {
-        return formatMessage(messages.endsToday);
-      }
-
-      const { unit, value } = getSignificantDuration(now, parsedPhaseEndDate);
-
-      switch (unit) {
-        case 'day':
-          return formatMessage(messages.daysLeft, { days: value });
-        case 'month':
-          return formatMessage(messages.monthsLeft, { months: value });
-        case 'year':
-          return formatMessage(messages.yearsLeft, { years: value });
-      }
+      if (!phaseEndDate) return;
+      return <PhaseTimeLeft currentPhaseEndsAt={phaseEndDate} />;
     }
 
     const parsedProjectStartDate = first_phase_start_date
