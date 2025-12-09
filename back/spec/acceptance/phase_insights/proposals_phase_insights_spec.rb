@@ -49,42 +49,65 @@ resource 'Phase insights' do
 
       # Ideas
       idea1 = create(:idea, phases: [phase], author: user1, created_at: 25.days.ago, submitted_at: 25.days.ago, creation_phase_id: phase.id) # published before phase (not counted)
-      idea2 = create(:idea, phases: [phase], author: user2, created_at: 15.days.ago, submitted_at: 15.days.ago, creation_phase_id: phase.id) # published during phase
-      create(:idea, phases: [phase], author: user2, created_at: 5.days.ago, submitted_at: 5.days.ago, creation_phase_id: phase.id) # published during phase, and in last 7 days
+      idea2 = create(:idea, phases: [phase], author: user2, created_at: 13.days.ago, submitted_at: 13.days.ago, creation_phase_id: phase.id) # published during phase (in week before last)
+      idea3 = create(:idea, phases: [phase], author: user2, created_at: 5.days.ago, submitted_at: 5.days.ago, creation_phase_id: phase.id) # published during phase, and in last 7 days
       create(:idea, phases: [phase], author: user3, created_at: 2.days.ago, submitted_at: 2.days.ago, creation_phase_id: phase.id) # published after phase (not counted)
 
+      # Activities
+      create(
+        :activity,
+        item: idea2,
+        action: 'changed_input_status',
+        acted_at: 10.days.ago,
+        payload: {
+          input_status_from_code: 'proposed',
+          input_status_to_code: 'threshold_reached'
+        }
+      )
+
+      create(
+        :activity,
+        item: idea3,
+        action: 'changed_input_status',
+        acted_at: 3.days.ago,
+        payload: {
+          input_status_from_code: 'proposed',
+          input_status_to_code: 'threshold_reached'
+        }
+      )
+
       # Comments
-      create(:comment, idea: idea2, author: user4, created_at: 10.days.ago) # in phase
+      create(:comment, idea: idea2, author: user4, created_at: 10.days.ago) # during phase (in week before last)
 
       # Reactions
-      create(:reaction, reactable: idea1, user: user5, created_at: 5.days.ago) # in phase, and in last 7 days
+      create(:reaction, reactable: idea1, user: user5, created_at: 5.days.ago) # during phase & last 7 days
 
       # Pageviews and sessions
       session1 = create(:session, user_id: user1.id)
       create(:pageview, session: session1, created_at: 25.days.ago, project_id: phase.project.id) # before phase
 
       session2 = create(:session, user_id: user2.id)
-      create(:pageview, session: session2, created_at: 15.days.ago, project_id: phase.project.id) # in phase
-      create(:pageview, session: session2, created_at: 5.days.ago, project_id: phase.project.id) # in phase & last 7 days, same session
+      create(:pageview, session: session2, created_at: 13.days.ago, project_id: phase.project.id) # during phase (in week before last)
+      create(:pageview, session: session2, created_at: 5.days.ago, project_id: phase.project.id) # during phase & last 7 days, same session
 
       session3 = create(:session, user_id: user3.id)
       create(:pageview, session: session3, created_at: 2.days.ago, project_id: phase.project.id) # after phase
 
       session4 = create(:session)
-      create(:pageview, session: session4, created_at: 15.days.ago, project_id: phase.project.id) # in phase, did not participate
+      create(:pageview, session: session4, created_at: 15.days.ago, project_id: phase.project.id) # during phase, did not participate
 
       session5 = create(:session, user_id: user4.id)
-      create(:pageview, session: session5, created_at: 10.days.ago, project_id: phase.project.id) # in phase
+      create(:pageview, session: session5, created_at: 10.days.ago, project_id: phase.project.id) # during phase (in week before last)
 
       session6 = create(:session, user_id: user5.id)
-      create(:pageview, session: session6, created_at: 5.days.ago, project_id: phase.project.id) # in phase, and in last 7 days
+      create(:pageview, session: session6, created_at: 5.days.ago, project_id: phase.project.id) # during phase & last 7 days
     end
   end
 
   let(:id) { proposals_phase.id }
 
   get 'web_api/v1/phases/:id/insights' do
-    example_request 'creates insights for proposals phase' do
+    example_request 'returns insights data for proposals phase' do
       assert_status 200
 
       expect(json_response_body[:data][:id]).to eq(proposals_phase.id.to_s)
@@ -93,17 +116,20 @@ resource 'Phase insights' do
       metrics = json_response_body.dig(:data, :attributes, :metrics)
       expect(metrics).to eq({
         visitors: 4,
-        visitors_last_7_days: 2,
+        visitors_7_day_change: 0.0, # from 2 (in week before last) to 2 unique visitors (in last 7 days) = 0% change
         participants: 3,
-        participants_last_7_days: 2,
-        engagement_rate: 0.75,
+        participants_7_day_change: 0.0, # from 2 (in week before last) to 2 unique participants (in last 7 days) = 0% change
+        participation_rate: 0.75,
+        participation_rate_7_day_change: 0.0, # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 1.0 = 0% change
         proposals: {
           ideas_posted: 2,
-          ideas_posted_last_7_days: 1,
+          ideas_posted_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) => 0% change
+          reached_threshold: 2,
+          reached_threshold_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) => 0% change
           comments_posted: 1,
-          comments_posted_last_7_days: 0,
+          comments_posted_7_day_change: -100.0, # from 1 (in week before last) to 0 (in last 7 days) = -100% decrease
           reactions: 1,
-          reactions_last_7_days: 1
+          reactions_7_day_change: 'last_7_days_compared_with_zero' # from 0 (in week before last) to 1 (in last 7 days) => avoid division by zero
         }
       })
 
@@ -111,7 +137,8 @@ resource 'Phase insights' do
       expect(participants_and_visitors_chart_data).to eq({
         resolution: 'day',
         timeseries: [
-          { participants: 1, visitors: 2, date_group: '2025-11-17' },
+          { participants: 0, visitors: 1, date_group: '2025-11-17' },
+          { participants: 1, visitors: 1, date_group: '2025-11-19' },
           { participants: 1, visitors: 1, date_group: '2025-11-22' },
           { participants: 2, visitors: 2, date_group: '2025-11-27' }
         ]

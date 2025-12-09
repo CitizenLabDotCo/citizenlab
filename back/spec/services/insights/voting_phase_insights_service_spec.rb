@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Insights::VotingPhaseInsightsService do
   let(:service) { described_class.new(phase) }
 
-  let!(:phase) { create(:multiple_voting_phase, start_at: 15.days.ago, end_at: 2.days.ago) }
+  let!(:phase) { create(:multiple_voting_phase, start_at: 17.days.ago, end_at: 2.days.ago) }
   let!(:idea1) { create(:idea, phases: [phase]) }
   let!(:idea2) { create(:idea, phases: [phase]) }
 
@@ -61,14 +61,40 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         commenting_idea: service.send(:participations_commenting_idea)
       })
 
-      expect(participations[:voting].map { |p| p[:item_id] }).to match_array([
-        basket1.id,
-        basket2.id
-      ])
+      expect(participations[:voting].map { |p| p[:item_id] }).to contain_exactly(basket1.id, basket2.id)
 
-      expect(participations[:commenting_idea].map { |p| p[:item_id] }).to match_array([
-        comment2.id
-      ])
+      expect(participations[:commenting_idea].map { |p| p[:item_id] }).to contain_exactly(comment2.id)
+    end
+  end
+
+  describe 'phase_participation_method_metrics' do
+    let(:user1) { create(:user) }
+    let(:participation1) { create(:basket_participation, :with_votes, vote_count: 2, acted_at: 10.days.ago, user: user1) }
+    let(:participation2) { create(:basket_participation, :with_votes, vote_count: 3, acted_at: 5.days.ago, user: user1) }
+    let(:participation3) { create(:commenting_idea_participation, acted_at: 10.days.ago, user: user1) }
+    let(:participation4) { create(:commenting_idea_participation, acted_at: 5.days.ago, user: user1) }
+
+    let(:participations) do
+      {
+        voting: [participation1, participation2],
+        commenting_idea: [participation3, participation4]
+      }
+    end
+
+    it 'calculates the correct metrics' do
+      metrics = service.send(:phase_participation_method_metrics, participations)
+
+      expect(metrics).to eq({
+        voting_method: phase.voting_method,
+        associated_ideas: 2,
+        online_votes: 5,
+        online_votes_7_day_change: 50.0, # from 2 (in week before last) to 3 (in last 7 days) = 50% increase
+        offline_votes: phase.manual_votes_count,
+        voters: 1,
+        voters_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) = 0% change
+        comments_posted: 2,
+        comments_posted_7_day_change: 0.0 # from 1 (in week before last) to 1 (in last 7 days) = 0% change
+      })
     end
   end
 end

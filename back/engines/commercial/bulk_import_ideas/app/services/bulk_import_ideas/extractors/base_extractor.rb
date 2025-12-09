@@ -4,6 +4,14 @@ module BulkImportIdeas::Extractors
   class BaseExtractor
     attr_reader :locale
 
+    # Fixed keys for user fields - match the column names in the users.xlsx file
+    USER_EMAIL = 'Email address'
+    USER_FULL_NAME = 'Full name'
+    USER_FIRST_NAME = 'First name(s)'
+    USER_LAST_NAME = 'Last name'
+    USER_CREATED_AT = 'DateCreated'
+    USER_LAST_ACTIVE_AT = 'LastAccess'
+
     def initialize(locale, config)
       @locale = locale || AppConfiguration.instance.settings.dig('core', 'locales').first
       @config = config || {
@@ -63,14 +71,31 @@ module BulkImportIdeas::Extractors
       text_field_attributes(rows, column_name)
     end
 
-    # TODO: This could also detect linear scale fields too
     def number_field_attributes(rows, column_name, override_input_type)
       values = rows.pluck(column_name).compact
-      return nil unless values.all?(Integer) || override_input_type == 'number'
 
-      {
-        input_type: 'number'
-      }
+      return nil unless values_are_numbers?(values) || override_input_type == 'number'
+
+      int_values = values.map(&:to_i)
+      if fits_linear_scale?(int_values)
+        {
+          input_type: 'linear_scale',
+          maximum: int_values.max
+        }
+      else
+        # Default to number field
+        {
+          input_type: 'number'
+        }
+      end
+    end
+
+    def values_are_numbers?(values)
+      values.all?(Integer) || values.all? { |str| str.to_s.match?(/\A\d+\z/) }
+    end
+
+    def fits_linear_scale?(values)
+      values.uniq.size <= 11 && (values.min >= 1 && values.max <= 11)
     end
 
     def text_field_attributes(rows, column_name)
@@ -259,6 +284,16 @@ module BulkImportIdeas::Extractors
       GPT_PROMPT
       response = gpt_mini.chat(prompt)
       response.split('||').map(&:strip)
+    end
+
+    # SECURITY: Replace email addresses so real emails do not get added to dev or staging environments
+    def sanitize_emails(rows)
+      return rows if Rails.env.production?
+
+      rows.map do |row|
+        row[USER_EMAIL] = "#{row[USER_EMAIL]&.gsub(/[@.]/, '_')&.reverse}@example.com" if row[USER_EMAIL].present?
+        row
+      end
     end
   end
 end

@@ -49,12 +49,12 @@ resource 'Phase insights' do
       # Ideas
       create(:idea, phases: [phase], created_at: 25.days.ago, author: ns_user1, creation_phase_id: phase.id) # created & published before phase (not counted)
 
-      # created and submitted during native survey phase
+      # created and submitted during native survey phase (in week before last)
       create(
         :idea,
         phases: [phase],
-        created_at: 15.days.ago,
-        submitted_at: 15.days.ago,
+        created_at: 12.days.ago,
+        submitted_at: 12.days.ago,
         author: ns_user2,
         creation_phase_id: phase.id,
         custom_field_values: { gender: 'female', birthyear: 1980 }
@@ -63,41 +63,41 @@ resource 'Phase insights' do
       create(:idea, phases: [phase], created_at: 5.days.ago, submitted_at: 5.days.ago, author: ns_user2, creation_phase_id: phase.id) # created during phase, and in last 7 days
       create(:idea, phases: [phase], created_at: 2.days.ago, submitted_at: 2.days.ago, author: ns_user3, creation_phase_id: phase.id) # created & published after phase (not counted)
 
-      # created during native survey phase, not submitted
+      # created during native survey phase (in week before last), not submitted (considered incomplete, affecting completion rate)
       create(
         :idea,
         phases: [phase],
-        created_at: 15.days.ago,
+        created_at: 12.days.ago,
         publication_status: 'draft', # Avoid automatic setting of submitted_at
         submitted_at: nil,
         author: ns_user4,
         creation_phase_id: phase.id,
         custom_field_values: { gender: 'male', birthyear: 1990 }
-      ) # created during phase, but not submitted (considered incomplete, affecting completion rate)
+      )
 
       # Pageviews and sessions
       session1 = create(:session, user_id: ns_user1.id)
       create(:pageview, session: session1, created_at: 25.days.ago, project_id: phase.project.id) # before phase
 
       session2 = create(:session, user_id: ns_user2.id)
-      create(:pageview, session: session2, created_at: 15.days.ago, project_id: phase.project.id) # in phase
-      create(:pageview, session: session2, created_at: 5.days.ago, project_id: phase.project.id) # in phase & last 7 days, same session
+      create(:pageview, session: session2, created_at: 15.days.ago, project_id: phase.project.id) # during phase
+      create(:pageview, session: session2, created_at: 5.days.ago, project_id: phase.project.id) # during phase & last 7 days, same session
 
       session3 = create(:session, user_id: ns_user3.id)
       create(:pageview, session: session3, created_at: 2.days.ago, project_id: phase.project.id) # after phase
 
       session4 = create(:session, user_id: ns_user4.id)
-      create(:pageview, session: session4, created_at: 15.days.ago, project_id: phase.project.id) # in phase
+      create(:pageview, session: session4, created_at: 12.days.ago, project_id: phase.project.id) # during phase (in week before last)
 
       session5 = create(:session, user_id: ns_user5.id)
-      create(:pageview, session: session5, created_at: 15.days.ago, project_id: phase.project.id) # in phase, did not participate
+      create(:pageview, session: session5, created_at: 12.days.ago, project_id: phase.project.id) # during phase (in week before last), did not participate
     end
   end
 
   let(:id) { native_survey_phase.id }
 
   get 'web_api/v1/phases/:id/insights' do
-    example_request 'creates insights for native survey phase' do
+    example_request 'returns insights data for native survey phase' do
       assert_status 200
 
       expect(json_response_body[:data][:id]).to eq(native_survey_phase.id.to_s)
@@ -106,14 +106,16 @@ resource 'Phase insights' do
       metrics = json_response_body.dig(:data, :attributes, :metrics)
       expect(metrics).to eq({
         visitors: 3,
-        visitors_last_7_days: 1,
+        visitors_7_day_change: -50.0, # from 2 (in week before last) to 1 unique visitor (in last 7 days) = -50% decrease
         participants: 2,
-        participants_last_7_days: 1,
-        engagement_rate: 0.667,
+        participants_7_day_change: -50.0, # from 2 (in week before last) to 1 unique participant (in last 7 days) = -50% decrease
+        participation_rate: 0.667,
+        participation_rate_7_day_change: 0.0, # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 1.0 = 0% change
         native_survey: {
           submitted_surveys: 2,
-          submitted_surveys_last_7_days: 1,
-          completion_rate: 0.667
+          submitted_surveys_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) = 0% change
+          completion_rate: 0.667,
+          completion_rate_7_day_change: 100.0 # completion_rate_last_7_days: 1.0, completion_rate_previous_7_days: 0.5 = (((1.0 - 0.5).to_f / 0.5) * 100.0).round(1)
         }
       })
 
@@ -121,7 +123,8 @@ resource 'Phase insights' do
       expect(participants_and_visitors_chart_data).to eq({
         resolution: 'day',
         timeseries: [
-          { participants: 2, visitors: 3, date_group: '2025-11-17' },
+          { participants: 0, visitors: 1, date_group: '2025-11-17' },
+          { participants: 2, visitors: 2, date_group: '2025-11-20' },
           { participants: 1, visitors: 1, date_group: '2025-11-27' }
         ]
       })
