@@ -149,7 +149,7 @@ resource 'HeatmapCells' do
 
       expect(status).to eq 200
       expect(response_data.size).to eq(2)
-      expect(response_data.map { _1[:id] }).to match_array([cell1.id, cell2.id])
+      expect(response_data.map { _1[:id] }).to contain_exactly(cell1.id, cell2.id)
     end
   end
 end

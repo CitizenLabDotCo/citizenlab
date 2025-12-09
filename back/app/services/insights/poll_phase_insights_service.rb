@@ -23,13 +23,9 @@ module Insights
     end
 
     def phase_participation_method_metrics(participations)
-      responses = participations[:taking_poll] || []
-      responses_total = responses.count
-      responses_last_7_days = responses.count { |p| p[:acted_at] >= 7.days.ago }
-
       {
-        responses: responses_total,
-        responses_last_7_days: responses_last_7_days
+        responses: participations[:taking_poll].count,
+        responses_7_day_change: participations_7_day_change(participations[:taking_poll])
       }
     end
   end

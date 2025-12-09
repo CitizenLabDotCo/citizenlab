@@ -950,9 +950,7 @@ resource 'Idea Custom Fields' do
           assert_status 200
           expect(CustomFieldOptionImage.all.count).to eq 2
           expect(CustomFieldOption.find(option1.id).image.id).to eq new_image.id
-          expect(CustomFieldOptionImage.pluck(:custom_field_option_id)).to match_array(
-            [new_image.reload.custom_field_option_id, image2.custom_field_option_id]
-          )
+          expect(CustomFieldOptionImage.pluck(:custom_field_option_id)).to contain_exactly(new_image.reload.custom_field_option_id, image2.custom_field_option_id)
           expect(json_response_body[:included].pluck(:type)).to match_array(
             %w[image custom_field_option image custom_field_option custom_form]
           )

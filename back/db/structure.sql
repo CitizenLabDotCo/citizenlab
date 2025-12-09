@@ -3638,7 +3638,7 @@ CREATE TABLE public.topics (
     ordering integer,
     followers_count integer DEFAULT 0 NOT NULL,
     include_in_onboarding boolean DEFAULT false NOT NULL,
-    "default" boolean DEFAULT false NOT NULL
+    is_default boolean DEFAULT false NOT NULL
 );
 
 
@@ -8120,6 +8120,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251209135529'),
 ('20251208163107'),
 ('20251127085639'),
 ('20251124000000'),

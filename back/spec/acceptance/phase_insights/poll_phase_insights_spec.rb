@@ -40,15 +40,15 @@ resource 'Phase insights' do
       user3 = create(:user)
 
       # Poll responses
-      create(:poll_response, phase: phase, user: user1, created_at: 15.days.ago)
-      create(:poll_response, phase: phase, user: user2, created_at: 5.days.ago)
+      create(:poll_response, phase: phase, user: user1, created_at: 12.days.ago) # during phase (in week before last)
+      create(:poll_response, phase: phase, user: user2, created_at: 5.days.ago) # during phase & last 7 days
 
       # Pageviews and sessions
       session1 = create(:session, user_id: user1.id)
-      create(:pageview, session: session1, created_at: 15.days.ago, project_id: phase.project.id) # during phase
+      create(:pageview, session: session1, created_at: 12.days.ago, project_id: phase.project.id) # during phase (in week before last)
 
       session2 = create(:session, user_id: user2.id)
-      create(:pageview, session: session2, created_at: 15.days.ago, project_id: phase.project.id) # during phase
+      create(:pageview, session: session2, created_at: 12.days.ago, project_id: phase.project.id) # during phase (in week before last)
       create(:pageview, session: session2, created_at: 5.days.ago, project_id: phase.project.id) # during phase & last 7 days, same session
 
       session3 = create(:session, user_id: user3.id)
@@ -59,7 +59,7 @@ resource 'Phase insights' do
   let(:id) { poll_phase.id }
 
   get 'web_api/v1/phases/:id/insights' do
-    example_request 'creates insights for poll phase' do
+    example_request 'returns insights data for poll phase' do
       assert_status 200
 
       expect(json_response_body[:data][:id]).to eq(poll_phase.id.to_s)
@@ -68,13 +68,14 @@ resource 'Phase insights' do
       metrics = json_response_body.dig(:data, :attributes, :metrics)
       expect(metrics).to eq({
         visitors: 2,
-        visitors_last_7_days: 1,
+        visitors_7_day_change: -50.0, # from 2 (in week before last) to 1 unique visitor (in last 7 days) = -50% decrease
         participants: 2,
-        participants_last_7_days: 1,
-        engagement_rate: 1.0,
+        participants_7_day_change: 0.0, # from 1 (in week before last) to 1 unique participant (in last 7 days) = 0% change
+        participation_rate: 1.0,
+        participation_rate_7_day_change: 100.0, # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 0.5 = (((1.0 - 0.5).to_f / 0.5) * 100.0).round(1)
         poll: {
           responses: 2,
-          responses_last_7_days: 1
+          responses_7_day_change: 0.0 # from 1 (in week before last) to 1 (in last 7 days) = 0% change
         }
       })
 
@@ -82,7 +83,7 @@ resource 'Phase insights' do
       expect(participants_and_visitors_chart_data).to eq({
         resolution: 'day',
         timeseries: [
-          { participants: 1, visitors: 2, date_group: '2025-11-17' },
+          { participants: 1, visitors: 2, date_group: '2025-11-20' },
           { participants: 1, visitors: 1, date_group: '2025-11-27' }
         ]
       })
