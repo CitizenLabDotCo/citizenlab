@@ -30,4 +30,12 @@ export default defineMessages({
     defaultMessage:
       '{count, plural, one {# new response} other {# new responses}}',
   },
+  topicsAndThemes: {
+    id: 'app.containers.Admin.projects.project.insights.ideation.topics',
+    defaultMessage: 'Topics',
+  },
+  noTopics: {
+    id: 'app.containers.Admin.projects.project.insights.ideation.noTopics',
+    defaultMessage: 'No topics assigned to ideas yet',
+  },
 });
