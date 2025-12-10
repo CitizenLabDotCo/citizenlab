@@ -20,7 +20,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import GoBackButton from 'components/UI/GoBackButton';
 
-import { getTopicColor } from './topicsColor';
+import { getTopicProgressBarColor } from './topicsColor';
 
 interface TopicItemProps {
   topicId: string;
@@ -49,7 +49,7 @@ const TopicItem: React.FC<TopicItemProps> = ({
 }) => {
   const percentage =
     totalIdeasCount > 0 ? (topicCount / totalIdeasCount) * 100 : 0;
-  const topicColor = getTopicColor(topicId);
+  const topicColor = getTopicProgressBarColor(topicId);
 
   return (
     <>

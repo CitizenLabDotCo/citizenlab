@@ -291,7 +291,6 @@ const App = ({ children }: Props) => {
   const isEventPage = isPage('event_page', location.pathname);
   const isNativeSurveyPage = isPage('native_survey', location.pathname);
   const isIdeasFeedPage = isPage('ideas_feed', location.pathname);
-  console.log(isIdeasFeedPage);
   const theme = getTheme(appConfiguration);
   const showFooter =
     !isAdminPage &&
