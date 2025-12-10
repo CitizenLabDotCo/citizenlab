@@ -40,7 +40,7 @@ module WebApi
         end
 
         def validate_and_find_custom_field(group_by)
-          return nil unless group_by.present?
+          return nil if group_by.blank?
 
           custom_field = CustomField.find_by(key: group_by)
 
