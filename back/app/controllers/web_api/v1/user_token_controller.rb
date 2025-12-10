@@ -7,7 +7,7 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
 
   # This endpoint is only used when user_confirmation is disabled.
   def user_token_unconfirmed
-    user = User.find_by(email: user_token_unconfirmed_params[:email])
+    user = User.find_by_cimail(user_token_unconfirmed_params[:email])
 
     raise ActiveRecord::RecordNotFound if user.blank?
 
