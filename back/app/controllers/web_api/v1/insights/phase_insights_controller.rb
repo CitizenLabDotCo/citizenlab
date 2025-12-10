@@ -21,8 +21,8 @@ module WebApi
           end
 
           group_by = params.permit(:group_by)[:group_by]
-
-          custom_field = CustomField.find_by(key: group_by) if group_by.present?
+          custom_field = validate_and_find_custom_field(group_by)
+          return if performed? # Stop if custom_field validation rendered an error
 
           counts_data = @phase.pmethod.phase_insights_class.new(@phase).vote_counts_with_user_custom_field_grouping(custom_field)
 
@@ -37,6 +37,29 @@ module WebApi
         def set_phase
           @phase = Phase.find params[:phase_id]
           authorize @phase
+        end
+
+        def validate_and_find_custom_field(group_by)
+          return nil unless group_by.present?
+
+          custom_field = CustomField.find_by(key: group_by)
+
+          unless custom_field
+            render json: { errors: { group_by: [{ error: 'custom_field not found with the key provided' }] } }, status: :unprocessable_entity
+            return nil
+          end
+
+          unless custom_field.resource_type == 'User'
+            render json: { errors: { group_by: [{ error: 'Invalid custom_field resource_type for grouping' }] } }, status: :unprocessable_entity
+            return nil
+          end
+
+          unless custom_field.support_reference_distribution? || custom_field.key == 'birthyear'
+            render json: { errors: { group_by: [{ error: 'Custom field input_type or key not supported for grouping' }] } }, status: :unprocessable_entity
+            return nil
+          end
+
+          custom_field
         end
       end
     end

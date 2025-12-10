@@ -199,11 +199,44 @@ resource 'Phase insights' do
   end
 
   get 'web_api/v1/phases/:id/insights/voting' do
+    parameter :group_by, 'Custom field key to group votes by (e.g., gender, birthyear)', required: false
+
     example '[Error] Returns error when not a voting phase' do
       do_request(id: ideation_phase.id)
 
       assert_status 422
       expect(json_response_body[:errors]).to eq({ phase: [{ error: 'Not a voting phase' }] })
+    end
+
+    example '[Error] Returns error when group_by is not a custom_field key' do
+      do_request(id: voting_phase.id, group_by: 'non_existent_field')
+
+      assert_status 422
+      expect(json_response_body[:errors]).to eq({ group_by: [{ error: 'custom_field not found with the key provided' }] })
+    end
+
+    example '[Error] Returns error when group_by custom_field resource_type is not User' do
+      non_user_cf = create(:custom_field, resource_type: 'CustomForm', key: 'location_description', input_type: 'text')
+      do_request(id: voting_phase.id, group_by: non_user_cf.key)
+
+      assert_status 422
+      expect(json_response_body[:errors]).to eq({ group_by: [{ error: 'Invalid custom_field resource_type for grouping' }] })
+    end
+
+    example '[Error] Returns error when group_by custom_field input_type is not supported' do
+      unsupported_cf = create(:custom_field, resource_type: 'User', key: 'hobby', input_type: 'text')
+      do_request(id: voting_phase.id, group_by: unsupported_cf.key)
+
+      assert_status 422
+      expect(json_response_body[:errors]).to eq({ group_by: [{ error: 'Custom field input_type or key not supported for grouping' }] })
+    end
+
+    example "[Error] Returns error when group_by custom_field input_type is number but key is not 'birthyear'" do
+      unsupported_number_cf = create(:custom_field, resource_type: 'User', key: 'number_of_cats', input_type: 'number')
+      do_request(id: voting_phase.id, group_by: unsupported_number_cf.key)
+
+      assert_status 422
+      expect(json_response_body[:errors]).to eq({ group_by: [{ error: 'Custom field input_type or key not supported for grouping' }] })
     end
 
     context 'when no custom_field for grouping is provided' do
