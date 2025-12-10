@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
+import { subMonths } from 'date-fns';
 import { FormatMessage } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -20,28 +21,41 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
 import { FormatMessageValues } from 'utils/cl-intl/useIntl';
+import { toBackendDateString } from 'utils/dateUtils';
 import { withoutSpacing } from 'utils/textUtils';
 
-import { WIDGET_TITLES } from '../../Widgets';
-import DemographicsWidget from '../../Widgets/ChartWidgets/DemographicsWidget';
+import {
+  CUSTOM_TEMPLATE_WIDGET_TITLES,
+  WIDGET_TITLES,
+  WIDGETS,
+} from '../../Widgets';
 import {
   INPUT_TYPES,
   isSupportedField,
 } from '../../Widgets/ChartWidgets/DemographicsWidget/Settings';
-import MethodsUsedWidget from '../../Widgets/ChartWidgets/MethodsUsedWidget';
-import ParticipantsWidget from '../../Widgets/ChartWidgets/ParticipantsWidget';
-import ParticipationWidget from '../../Widgets/ChartWidgets/ParticipationWidget';
-import RegistrationsWidget from '../../Widgets/ChartWidgets/RegistrationsWidget';
-import VisitorsWidget from '../../Widgets/ChartWidgets/VisitorsWidget';
-import ImageMultilocWidget from '../../Widgets/ImageMultiloc';
-import ProjectsWidget from '../../Widgets/ProjectsWidget';
-import TextMultiloc from '../../Widgets/TextMultiloc';
-import TwoColumn from '../../Widgets/TwoColumn';
+const {
+  DemographicsWidget,
+  MethodsUsedWidget,
+  ParticipantsWidget,
+  ParticipationWidget,
+  RegistrationsWidget,
+  VisitorsTrafficSourcesWidget,
+  VisitorsWidget,
+  ProjectsWidget,
+  TwoColumn,
+  TextMultiloc,
+  ImageMultiloc,
+} = WIDGETS;
 import { TemplateContext } from '../context';
 import { getPeriod } from '../utils';
 
 import messages from './messages';
-import { getCommunity, getComparedDateRange, getProjects } from './utils';
+import {
+  getCommunity,
+  getComparedDateRange,
+  getDateLastReport,
+  getProjects,
+} from './utils';
 
 interface Props {
   startDate: string;
@@ -112,6 +126,8 @@ const PlatformTemplateContent = ({
       formatMessage,
     });
 
+    const dateLastReport = getDateLastReport({ formatMessage });
+
     const community = getCommunity({
       participantsNumber: stats.participants.value,
       formatMessage,
@@ -127,6 +143,7 @@ const PlatformTemplateContent = ({
       <h3>${formatMessage(messages.executiveSummary)}</h3>
       <ul>
         ${period ? `<li>${period}</li>` : ''}
+        ${dateLastReport}
         ${community}
         ${projectsStat}
       </ul>
@@ -151,13 +168,33 @@ const PlatformTemplateContent = ({
     });
   };
 
+  const toTitleMultiloc = (
+    message: MessageDescriptor,
+    variant: 'h1' | 'h3'
+  ) => {
+    return createMultiloc(appConfigurationLocales, (locale) => {
+      return `<${variant}>${formatMessageWithLocale(
+        locale,
+        message
+      )}</${variant}>`;
+    });
+  };
+
+  const toTextMultiloc = (message: MessageDescriptor, bold?: boolean) => {
+    return createMultiloc(appConfigurationLocales, (locale) => {
+      const text = formatMessageWithLocale(locale, message);
+      const html = bold ? `<p><b>${text}</b></p>` : `<p>${text}</p>`;
+      return html;
+    });
+  };
+
   const supportedEnabledFields = userFields.data
     .filter(isSupportedField)
     .filter((field) => field.attributes.enabled);
 
   return (
     <Element id="platform-report-template" is={Box} canvas>
-      <ImageMultilocWidget
+      <ImageMultiloc
         image={{
           imageUrl: appConfiguration.data.attributes.logo?.medium ?? undefined,
         }}
@@ -172,35 +209,124 @@ const PlatformTemplateContent = ({
         )}
       />
       <WhiteSpace size="small" />
-      <VisitorsWidget
-        title={toMultiloc(WIDGET_TITLES.VisitorsWidget)}
-        {...dateRange}
-        {...comparedDateRange}
-      />
-      <WhiteSpace size="small" />
       <TwoColumn columnLayout="1-1">
-        <Element id="left" is={Container} canvas>
-          <RegistrationsWidget
-            title={toMultiloc(WIDGET_TITLES.RegistrationsWidget)}
-            {...dateRange}
-            {...comparedDateRange}
+        <Element id="column-visitors-left" is={Container} canvas>
+          <VisitorsWidget
+            title={toMultiloc(
+              CUSTOM_TEMPLATE_WIDGET_TITLES.VisitorsWidgetFromStart
+            )}
+            endAt={dateRange.endAt}
           />
         </Element>
-        <Element id="right" is={Container} canvas>
-          <ParticipantsWidget
-            title={toMultiloc(WIDGET_TITLES.ParticipantsWidget)}
+        <Element id="column-visitors-right" is={Container} canvas>
+          <VisitorsWidget
+            title={toMultiloc(WIDGET_TITLES.VisitorsWidget)}
             {...dateRange}
             {...comparedDateRange}
           />
         </Element>
       </TwoColumn>
-      <WhiteSpace size="small" />
-      <TextMultiloc
-        text={getSectionTitleAndDescription(
-          messages.inclusionIndicators,
-          messages.inclusionIndicatorsDescription
-        )}
-      />
+      <TwoColumn columnLayout="1-1">
+        <Element id="column-traffic-sources-left" is={Container} canvas>
+          <VisitorsTrafficSourcesWidget
+            title={toMultiloc(
+              CUSTOM_TEMPLATE_WIDGET_TITLES.TrafficSourcesWidgetFromStart
+            )}
+            endAt={dateRange.endAt}
+          />
+        </Element>
+        <Element id="column-traffic-sources-right" is={Container} canvas>
+          <VisitorsTrafficSourcesWidget
+            title={toMultiloc(
+              CUSTOM_TEMPLATE_WIDGET_TITLES.TrafficSourcesWidgetLast6Months
+            )}
+            endAt={dateRange.endAt}
+            startAt={toBackendDateString(subMonths(new Date(), 6))}
+          />
+        </Element>
+      </TwoColumn>
+      <TwoColumn columnLayout="1-1">
+        <Element id="column-device-type-left" is={Container} canvas>
+          <TextMultiloc
+            text={toTextMultiloc(messages.deviceTypeFromStart, true)}
+          />
+          <ImageMultiloc />
+        </Element>
+        <Element id="column-device-type-right" is={Container} canvas>
+          <TextMultiloc
+            text={toTextMultiloc(messages.deviceTypeLast6Months, true)}
+          />
+          <ImageMultiloc />
+        </Element>
+      </TwoColumn>
+      <WhiteSpace size="small" withDivider />
+      <TextMultiloc text={toTitleMultiloc(messages.comments, 'h3')} />
+      <WhiteSpace size="small" withDivider />
+
+      <TwoColumn columnLayout="1-1">
+        <Element id="column-registrations-left" is={Container} canvas>
+          <RegistrationsWidget
+            title={toMultiloc(WIDGET_TITLES.RegistrationsWidget)}
+            {...dateRange} // TODO: From start (title, date)
+            {...comparedDateRange}
+          />
+        </Element>
+        <Element id="column-registrations-right" is={Container} canvas>
+          <RegistrationsWidget
+            title={toMultiloc(WIDGET_TITLES.RegistrationsWidget)}
+            {...dateRange} // TODO: Last 6 months (title, date)
+            {...comparedDateRange}
+          />
+        </Element>
+      </TwoColumn>
+      <TwoColumn columnLayout="1-1">
+        <Element id="column-participants-left" is={Container} canvas>
+          <ParticipantsWidget
+            title={toMultiloc(WIDGET_TITLES.ParticipantsWidget)}
+            {...dateRange} // TODO: From start (title, date)
+            {...comparedDateRange}
+          />
+        </Element>
+        <Element id="column-participants-right" is={Container} canvas>
+          <ParticipantsWidget
+            title={toMultiloc(WIDGET_TITLES.ParticipantsWidget)}
+            {...dateRange} // TODO: Last 6 months (title, date)
+            {...comparedDateRange}
+          />
+        </Element>
+      </TwoColumn>
+      <TwoColumn columnLayout="1-1">
+        <Element id="column-emails-left" is={Container} canvas>
+          <TextMultiloc text={toTextMultiloc(messages.emailsFromStart, true)} />
+          <ImageMultiloc />
+        </Element>
+        <Element id="column-emails-right" is={Container} canvas>
+          <TextMultiloc
+            text={toTextMultiloc(messages.emailsFromLast6Months, true)}
+          />
+          <ImageMultiloc />
+        </Element>
+      </TwoColumn>
+      <WhiteSpace size="small" withDivider />
+      <TextMultiloc text={toTitleMultiloc(messages.comments, 'h3')} />
+      <WhiteSpace size="small" withDivider />
+      <TwoColumn columnLayout="1-1">
+        <Element id="column-inclusion-left" is={Container} canvas>
+          <TextMultiloc
+            text={getSectionTitleAndDescription(
+              messages.inclusionIndicators,
+              messages.inclusionIndicatorsDescription
+            )}
+          />
+        </Element>
+        <Element id="column-inclusion-right" is={Container} canvas>
+          <TextMultiloc
+            text={toTextMultiloc(messages.yourRegistrationQuestions, true)}
+          />
+          <ImageMultiloc />
+        </Element>
+      </TwoColumn>
+
       <WhiteSpace size="small" />
       {supportedEnabledFields.map((field) => (
         <Element is={Container} canvas key={field.id}>
@@ -213,9 +339,15 @@ const PlatformTemplateContent = ({
             {...dateRange}
             customFieldId={field.id}
           />
+          <ImageMultiloc
+            stretch
+            alt={toMultiloc(messages.imageInclusionLabel)}
+          />
         </Element>
       ))}
-      <WhiteSpace size="small" />
+      <WhiteSpace size="small" withDivider />
+      <TextMultiloc text={toTitleMultiloc(messages.comments, 'h3')} />
+      <WhiteSpace size="small" withDivider />
       <TextMultiloc
         text={getSectionTitleAndDescription(
           messages.yourProjects,
@@ -233,7 +365,26 @@ const PlatformTemplateContent = ({
         {...dateRange}
         {...comparedDateRange}
       />
-      <WhiteSpace size="small" />
+
+      <TwoColumn columnLayout="1-1">
+        <Element id="column-input-status-left" is={Container} canvas>
+          <TextMultiloc
+            text={toTextMultiloc(messages.inputStatusFromStart, true)}
+          />
+          <ImageMultiloc />
+        </Element>
+        <Element id="column-input-status-right" is={Container} canvas>
+          <TextMultiloc
+            text={toTextMultiloc(messages.inputStatusLast6Months, true)}
+          />
+          <ImageMultiloc />
+        </Element>
+      </TwoColumn>
+
+      <WhiteSpace size="small" withDivider />
+      <TextMultiloc text={toTitleMultiloc(messages.comments, 'h3')} />
+      <WhiteSpace size="small" withDivider />
+
       <ParticipationWidget
         title={toMultiloc(WIDGET_TITLES.ParticipationWidget)}
         {...dateRange}
@@ -244,6 +395,37 @@ const PlatformTemplateContent = ({
           votes: true,
         }}
       />
+      <WhiteSpace size="small" withDivider />
+      <TextMultiloc
+        text={toTitleMultiloc(messages.internalOrganization, 'h3')}
+      />
+
+      <TwoColumn columnLayout="1-1">
+        <Element id="column-admin-pms-left" is={Container} canvas>
+          <TextMultiloc text={toTextMultiloc(messages.admins, true)} />
+          <ImageMultiloc />
+        </Element>
+        <Element id="column-admin-pms-right" is={Container} canvas>
+          <TextMultiloc text={toTextMultiloc(messages.projectManagers, true)} />
+          <ImageMultiloc />
+        </Element>
+      </TwoColumn>
+      <WhiteSpace size="small" withDivider />
+      <TextMultiloc text={toTitleMultiloc(messages.comments, 'h3')} />
+      <WhiteSpace size="small" withDivider />
+
+      <TextMultiloc text={toTitleMultiloc(messages.goals, 'h3')} />
+      <TwoColumn columnLayout="1-1">
+        <Element id="column-goals-left" is={Container} canvas>
+          <TextMultiloc text={undefined} />
+        </Element>
+        <Element id="column-goals-right" is={Container} canvas>
+          <ImageMultiloc />
+        </Element>
+      </TwoColumn>
+      <WhiteSpace size="small" withDivider />
+
+      <TextMultiloc text={toTextMultiloc(messages.ending)} />
     </Element>
   );
 };

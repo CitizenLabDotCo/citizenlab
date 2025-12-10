@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary',
     defaultMessage: 'Executive summary',
   },
+  dateLastReport: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.dateLastReport2',
+    defaultMessage: 'Date last report',
+  },
   community: {
     id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community',
     defaultMessage: 'Community',
@@ -55,5 +59,61 @@ export default defineMessages({
   age: {
     id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.age',
     defaultMessage: 'Age',
+  },
+  deviceTypeFromStart: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.deviceTypeFromStart',
+    defaultMessage: 'Device type from the start',
+  },
+  deviceTypeLast6Months: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.deviceTypeLast6Months',
+    defaultMessage: 'Device type last 6 months',
+  },
+  comments: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.comments',
+    defaultMessage: 'Comments',
+  },
+  emailsFromStart: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.emailsFromStart',
+    defaultMessage: 'Emails from the start',
+  },
+  emailsFromLast6Months: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.emailsFromLast6Months',
+    defaultMessage: 'Emails last 6 months',
+  },
+  yourRegistrationQuestions: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourRegistrationQuestions',
+    defaultMessage: 'Your registration questions',
+  },
+  imageInclusionLabel: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.imageInclusionLabel',
+    defaultMessage: 'Image for representativeness dashboard',
+  },
+  inputStatusFromStart: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart',
+    defaultMessage: 'Input status from the start',
+  },
+  inputStatusLast6Months: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusLast6Months',
+    defaultMessage: 'Input status last 6 months',
+  },
+  internalOrganization: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization',
+    defaultMessage: 'Internal organisation',
+  },
+  admins: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.admins',
+    defaultMessage: 'Admins',
+  },
+  projectManagers: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.projectManagers',
+    defaultMessage: 'Project managers',
+  },
+  goals: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.goals',
+    defaultMessage: 'Goals',
+  },
+  ending: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.ending',
+    defaultMessage: 'Ending',
   },
 });
