@@ -4,13 +4,12 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import {
-  dummyCommonGroundResults,
-  dummyCommonGroundResultsWithGender,
-  dummyCommonGroundResultsWithAge,
-  dummyCommonGroundResultsWithDomicile,
-} from '../../containers/Admin/projects/project/insights/methodSpecific/dummyData';
-import { USE_DUMMY_METHOD_SPECIFIC_DATA } from '../phase_insights/dummyData';
-
+  USE_DUMMY_COMMON_GROUND_INSIGHTS_DATA,
+  dummyCommonGroundInsights,
+  dummyCommonGroundInsightsWithGender,
+  dummyCommonGroundInsightsWithAge,
+  dummyCommonGroundInsightsWithDomicile,
+} from './dummyData';
 import commonGroundInsightsKeys from './keys';
 import { CommonGroundResults, GroupByOption, SortOption } from './types';
 
@@ -45,13 +44,13 @@ const fetchCommonGroundResults = ({
 /**
  * Returns dummy data based on groupBy parameter
  */
-const getDummyCommonGroundResults = (
+const getDummyCommonGroundInsights = (
   groupBy?: GroupByOption
 ): CommonGroundResults => {
-  if (groupBy === 'gender') return dummyCommonGroundResultsWithGender;
-  if (groupBy === 'birthyear') return dummyCommonGroundResultsWithAge;
-  if (groupBy === 'domicile') return dummyCommonGroundResultsWithDomicile;
-  return dummyCommonGroundResults;
+  if (groupBy === 'gender') return dummyCommonGroundInsightsWithGender;
+  if (groupBy === 'birthyear') return dummyCommonGroundInsightsWithAge;
+  if (groupBy === 'domicile') return dummyCommonGroundInsightsWithDomicile;
+  return dummyCommonGroundInsights;
 };
 
 interface UseCommonGroundInsightsParams {
@@ -80,8 +79,8 @@ const useCommonGroundInsights = ({
   return useQuery<CommonGroundResults, CLErrors, CommonGroundResults>({
     queryKey: commonGroundInsightsKeys.item({ phaseId, sort, groupBy }),
     queryFn: () =>
-      USE_DUMMY_METHOD_SPECIFIC_DATA
-        ? getDummyCommonGroundResults(groupBy)
+      USE_DUMMY_COMMON_GROUND_INSIGHTS_DATA
+        ? getDummyCommonGroundInsights(groupBy)
         : fetchCommonGroundResults({ phaseId, sort, groupBy }),
     enabled: enabled && !!phaseId,
   });
