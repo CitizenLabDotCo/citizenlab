@@ -10,7 +10,7 @@ import {
   Spinner,
   Icon,
 } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
+import { format } from 'date-fns';
 import styled from 'styled-components';
 
 import useUserParticipationStats from 'api/user_participation_stats/useUserParticipationStats';
@@ -96,7 +96,7 @@ const DeleteUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
   ].filter((item) => item.count && item.count > 0);
 
   const memberSinceDate = user.attributes.registration_completed_at
-    ? moment(user.attributes.registration_completed_at).format('LL')
+    ? format(new Date(user.attributes.registration_completed_at), 'PPP')
     : null;
 
   return (
