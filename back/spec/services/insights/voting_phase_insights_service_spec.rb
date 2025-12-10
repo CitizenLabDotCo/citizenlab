@@ -153,7 +153,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           percentage: 3.5,
           demographic_breakdown: {
             'female' => { count: 2, percentage: 100.0 },
-            '_blank' => { count: 0, percentage: 0.0}
+            '_blank' => { count: 0, percentage: 0.0 }
           }
         },
         {

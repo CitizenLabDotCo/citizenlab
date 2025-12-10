@@ -88,7 +88,6 @@ module Insights
 
       counts['_blank'] ||= 0
       counts['_blank'] += total_offline_votes
-      counts
 
       counts.transform_values do |count|
         {
