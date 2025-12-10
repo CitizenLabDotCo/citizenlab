@@ -7,12 +7,13 @@ import { IOption } from 'typings';
 import { GroupByOption } from 'api/voting_insights/types';
 import useVotingPhaseVotes from 'api/voting_insights/useVotingPhaseVotes';
 
-import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
 import { CHART_COLORS, getStripedPattern } from './constants';
 import messages from './messages';
+import { getDemographicKeys, getDemographicLabel } from './utils';
 import VotingIdeaRow from './VotingIdeaRow';
 
 type ClusterByOption = '' | 'gender' | 'birthyear' | 'domicile';
@@ -23,7 +24,7 @@ interface Props {
 
 const VoteResults = ({ phaseId }: Props) => {
   const { formatMessage } = useIntl();
-  const locale = useLocale();
+  const localize = useLocalize();
   const theme = useTheme();
   const [clusterBy, setClusterBy] = useState<ClusterByOption>('');
 
@@ -75,38 +76,7 @@ const VoteResults = ({ phaseId }: Props) => {
 
   const { ideas, options } = data!.data.attributes;
 
-  // Get demographic keys in order
-  const getDemographicKeys = (): string[] => {
-    if (!clusterBy) return [];
-
-    // For birthyear, we use predefined age ranges (no options from backend)
-    if (clusterBy === 'birthyear') {
-      return ['16-24', '25-34', '35-44', '45-54', '55-64', '65+'];
-    }
-
-    // For other demographics (gender, domicile), use options from backend
-    if (!options) return [];
-
-    return Object.entries(options)
-      .sort(([, a], [, b]) => a.ordering - b.ordering)
-      .map(([key]) => key);
-  };
-
-  // Get demographic label
-  const getDemographicLabel = (key: string): string => {
-    if (clusterBy === 'birthyear') {
-      return key;
-    }
-
-    if (options?.[key]) {
-      const option = options[key];
-      return option.title_multiloc[locale] || option.title_multiloc.en || key;
-    }
-
-    return key;
-  };
-
-  const demographicKeys = getDemographicKeys();
+  const demographicKeys = getDemographicKeys(clusterBy || undefined, options);
   const maxVotes = Math.max(...ideas.map((idea) => idea.total_votes), 0);
 
   if (ideas.length === 0) {
@@ -162,7 +132,9 @@ const VoteResults = ({ phaseId }: Props) => {
               maxVotes={maxVotes}
               clusterBy={clusterBy}
               demographicKeys={demographicKeys}
-              demographicLabels={demographicKeys.map(getDemographicLabel)}
+              demographicLabels={demographicKeys.map((key) =>
+                getDemographicLabel(key, clusterBy, options, localize)
+              )}
             />
           ))}
         </Box>
@@ -175,7 +147,6 @@ const VoteResults = ({ phaseId }: Props) => {
         </Box>
       )}
 
-      {/* Legend */}
       <Box
         display="flex"
         gap="24px"
@@ -202,7 +173,7 @@ const VoteResults = ({ phaseId }: Props) => {
             style={{ backgroundImage: getStripedPattern() }}
           />
           <Text m="0" fontSize="s" color="textSecondary">
-            {formatMessage(messages.inPerson)}
+            {formatMessage(messages.offline)}
           </Text>
         </Box>
       </Box>

@@ -9,9 +9,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.insights.voting.online',
     defaultMessage: 'Online',
   },
-  inPerson: {
-    id: 'app.containers.Admin.projects.insights.voting.inPerson',
-    defaultMessage: 'In person',
+  offline: {
+    id: 'app.containers.Admin.projects.insights.voting.offline',
+    defaultMessage: 'Offline',
   },
   clusterBy: {
     id: 'app.containers.Admin.projects.insights.voting.clusterBy',
@@ -48,5 +48,9 @@ export default defineMessages({
   idea: {
     id: 'app.containers.Admin.projects.insights.voting.idea',
     defaultMessage: 'Idea',
+  },
+  votesTooltip: {
+    id: 'app.containers.Admin.projects.insights.voting.votesTooltip',
+    defaultMessage: 'Solid: online votes. Striped: offline votes.',
   },
 });
