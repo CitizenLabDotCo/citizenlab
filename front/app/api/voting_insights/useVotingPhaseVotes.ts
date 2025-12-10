@@ -42,12 +42,15 @@ const fetchVotingPhaseVotes = ({
  * Returns dummy data based on groupBy parameter
  */
 const getDummyVotingInsights = (groupBy?: GroupByOption): VotingPhaseVotes => {
-  if (groupBy === 'gender')
+  if (groupBy === 'gender') {
     return dummyVotingInsightsWithGender as VotingPhaseVotes;
-  if (groupBy === 'birthyear')
+  }
+  if (groupBy === 'birthyear') {
     return dummyVotingInsightsWithAge as VotingPhaseVotes;
-  if (groupBy === 'domicile')
+  }
+  if (groupBy === 'domicile') {
     return dummyVotingInsightsWithDomicile as VotingPhaseVotes;
+  }
   return dummyVotingInsights as VotingPhaseVotes;
 };
 
