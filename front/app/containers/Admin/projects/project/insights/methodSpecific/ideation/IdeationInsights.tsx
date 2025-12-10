@@ -1,30 +1,32 @@
 import React from 'react';
 
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
-import { useIntl } from 'utils/cl-intl';
-
+import InputsByTopic from '../shared/InputsByTopic';
+import StatusBreakdown from '../shared/StatusBreakdown';
 import { MethodSpecificInsightProps } from '../types';
 
 import AiSummary from './AiSummary';
-import IdeasByTopic from './IdeasByTopic';
-import messages from './messages';
 import MostLikedIdeas from './MostLikedIdeas';
 
 const IdeationInsights = ({ phaseId }: MethodSpecificInsightProps) => {
-  const { formatMessage } = useIntl();
-
   return (
-    <Box mt="16px" gap="12px">
-      <Title variant="h3" m="0" mb="16px">
-        {formatMessage(messages.whatArePeopleSaying)}
-      </Title>
-      <Box display="flex" gap="16px">
-        <AiSummary phaseId={phaseId} />
-        <IdeasByTopic phaseId={phaseId} />
+    <Box mt="16px" gap="24px">
+      <Box display="flex" gap="16px" w="100%">
+        <Box w="100%">
+          <AiSummary phaseId={phaseId} />
+        </Box>
+        <Box w="100%">
+          <InputsByTopic phaseId={phaseId} />
+        </Box>
       </Box>
-      <Box w="50%">
-        <MostLikedIdeas phaseId={phaseId} />
+      <Box display="flex" gap="16px" w="100%" flexDirection="row">
+        <Box w="100%">
+          <MostLikedIdeas phaseId={phaseId} />
+        </Box>
+        <Box w="100%">
+          <StatusBreakdown phaseId={phaseId} participationMethod="ideation" />
+        </Box>
       </Box>
     </Box>
   );

@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 
 import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 
+import { IdeaStatusParticipationMethod } from 'api/idea_statuses/types';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
@@ -9,10 +10,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
-import HorizontalBarRow, {
-  HorizontalBarRowData,
-} from '../shared/HorizontalBarRow';
-
+import HorizontalBarRow, { HorizontalBarRowData } from './HorizontalBarRow';
 import messages from './messages';
 
 interface StatusBarData extends HorizontalBarRowData {
@@ -21,9 +19,10 @@ interface StatusBarData extends HorizontalBarRowData {
 
 interface Props {
   phaseId: string;
+  participationMethod: IdeaStatusParticipationMethod;
 }
 
-const ProposalStatusBreakdown = ({ phaseId }: Props) => {
+const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
@@ -33,7 +32,7 @@ const ProposalStatusBreakdown = ({ phaseId }: Props) => {
     });
 
   const { data: statuses, isLoading: isLoadingStatuses } = useIdeaStatuses({
-    queryParams: { participation_method: 'proposals' },
+    queryParams: { participation_method: participationMethod },
   });
 
   const statusData = useMemo((): StatusBarData[] => {
@@ -93,10 +92,10 @@ const ProposalStatusBreakdown = ({ phaseId }: Props) => {
           fontSize="m"
           color="primary"
         >
-          {formatMessage(messages.proposalStatus)}
+          {formatMessage(messages.statusBreakdown)}
         </Text>
         <Text m="0" color="textSecondary">
-          {formatMessage(messages.noProposalsSubmitted)}
+          {formatMessage(messages.noInputsSubmitted)}
         </Text>
       </Box>
     );
@@ -108,10 +107,9 @@ const ProposalStatusBreakdown = ({ phaseId }: Props) => {
       borderRadius="8px"
       p="24px"
       boxShadow="0px 1px 2px 0px rgba(0,0,0,0.05)"
-      w="50%"
     >
       <Text m="0" mb="24px" fontWeight="semi-bold" fontSize="m" color="primary">
-        {formatMessage(messages.proposalStatus)}
+        {formatMessage(messages.statusBreakdown)}
       </Text>
       <Box display="flex" flexDirection="column" gap="16px">
         {statusData.map((status) => (
@@ -122,4 +120,4 @@ const ProposalStatusBreakdown = ({ phaseId }: Props) => {
   );
 };
 
-export default ProposalStatusBreakdown;
+export default StatusBreakdown;

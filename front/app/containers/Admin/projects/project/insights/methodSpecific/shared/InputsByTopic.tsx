@@ -11,17 +11,14 @@ import { DEFAULT_CATEGORICAL_COLORS } from 'components/admin/Graphs/styling';
 
 import { useIntl } from 'utils/cl-intl';
 
-import HorizontalBarRow, {
-  HorizontalBarRowData,
-} from '../shared/HorizontalBarRow';
-
+import HorizontalBarRow, { HorizontalBarRowData } from './HorizontalBarRow';
 import messages from './messages';
 
 interface Props {
   phaseId: string;
 }
 
-const IdeasByTopic = ({ phaseId }: Props) => {
+const InputsByTopic = ({ phaseId }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
@@ -68,7 +65,6 @@ const IdeasByTopic = ({ phaseId }: Props) => {
   if (isLoading) {
     return (
       <Box
-        w="50%"
         bgColor="white"
         borderRadius="8px"
         p="24px"
@@ -86,7 +82,6 @@ const IdeasByTopic = ({ phaseId }: Props) => {
   if (topicData.length === 0) {
     return (
       <Box
-        w="50%"
         bgColor="white"
         borderRadius="8px"
         p="24px"
@@ -105,7 +100,6 @@ const IdeasByTopic = ({ phaseId }: Props) => {
 
   return (
     <Box
-      w="50%"
       bgColor="white"
       borderRadius="8px"
       p="24px"
@@ -135,4 +129,4 @@ const IdeasByTopic = ({ phaseId }: Props) => {
   );
 };
 
-export default IdeasByTopic;
+export default InputsByTopic;
