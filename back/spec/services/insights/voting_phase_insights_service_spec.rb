@@ -115,7 +115,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
     it 'returns a mapping of idea IDs to user custom field values from the participations' do
       participations = [
         create(:basket_participation, user: user, user_custom_field_values: { 'gender' => 'female' }, votes_per_idea: { idea1.id => 1, idea2.id => 1 }),
-        create(:basket_participation, user: user, user_custom_field_values: { 'gender' => 'male' }, votes_per_idea: { idea2.id => 2 }) 
+        create(:basket_participation, user: user, user_custom_field_values: { 'gender' => 'male' }, votes_per_idea: { idea2.id => 2 })
       ]
 
       mapping = service.send(:idea_ids_to_user_custom_field_values, participations)
@@ -182,7 +182,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_online_votes: 0,
           total_offline_votes: 0,
           total_votes: 0,
-          grouped_online_votes: { '_blank' => 0}
+          grouped_online_votes: { '_blank' => 0 }
         },
         {
           id: idea2.id,
