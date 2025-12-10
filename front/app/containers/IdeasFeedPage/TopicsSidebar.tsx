@@ -24,6 +24,7 @@ import AvatarBubbles from 'components/AvatarBubbles';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import BottomSheet from './BottomSheet';
+import SelectedTopicView from './SelectedTopicView';
 import { getTopicProgressBarColor } from './topicsColor';
 
 interface TopicItemProps {
@@ -124,6 +125,20 @@ const TopicsContent: React.FC<TopicsContentProps> = ({
   const projectTitle = project
     ? localize(project.data.attributes.title_multiloc)
     : '';
+
+  const selectedTopic = selectedTopicId
+    ? topics.data.find((topic) => topic.id === selectedTopicId)
+    : null;
+
+  // When a topic is selected, show only that topic with a back button
+  if (selectedTopic) {
+    return (
+      <SelectedTopicView
+        topic={selectedTopic}
+        onBack={() => onTopicSelect(null)}
+      />
+    );
+  }
 
   return (
     <>
