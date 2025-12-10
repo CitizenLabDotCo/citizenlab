@@ -142,7 +142,7 @@ resource 'Projects' do
         do_request areas: [a1.id], publication_statuses: ['published']
 
         expect(json_response[:data].size).to eq 1
-        expect(json_response[:data].pluck(:id)).to match_array [p1.id]
+        expect(json_response[:data].pluck(:id)).to contain_exactly(p1.id)
       end
 
       example 'List all projects with all given areas', document: false do
@@ -164,7 +164,7 @@ resource 'Projects' do
 
         do_request areas: [a1.id, a2.id], publication_statuses: ['published']
         expect(json_response[:data].size).to eq 2
-        expect(json_response[:data].pluck(:id)).to match_array [p1.id, p2.id]
+        expect(json_response[:data].pluck(:id)).to contain_exactly(p1.id, p2.id)
       end
 
       example 'Admins can moderate all projects', document: false do
@@ -184,16 +184,12 @@ resource 'Projects' do
 
         do_request filter_user_is_moderator_of: moderator.id
         assert_status 200
-        expect(json_response[:data].pluck(:id)).to match_array [@projects[0].id, @projects[1].id]
+        expect(json_response[:data].pluck(:id)).to contain_exactly(@projects[0].id, @projects[1].id)
       end
     end
 
     get 'web_api/v1/projects/:id' do
       let(:id) { @projects.first.id }
-
-      before do
-        Analytics::PopulateDimensionsService.populate_types
-      end
 
       example 'Get one project by id' do
         Permissions::PermissionsUpdateService.new.update_all_permissions
@@ -257,6 +253,7 @@ resource 'Projects' do
       end
 
       example 'Get a project includes the participants_count and avatars_count', document: false do
+        Analytics::PopulateDimensionsService.populate_types
         idea = create(:idea)
         project = idea.project
         do_request id: project.id
@@ -289,9 +286,9 @@ resource 'Projects' do
 
       describe do
         before do
-          create(:topic, code: 'nature', ordering: 0)
-          create(:topic, code: 'safety', ordering: 2)
-          create(:topic, code: 'mobility', ordering: 1)
+          create(:topic, ordering: 0)
+          create(:topic, ordering: 2)
+          create(:topic, ordering: 1)
         end
 
         let(:project) { build(:project) }
@@ -353,125 +350,127 @@ resource 'Projects' do
     patch 'web_api/v1/projects/:id' do
       include_context 'PATCH project parameters'
 
-      before { @project = create(:project) }
+      context do
+        before { @project = create(:project) }
 
-      let(:id) { @project.id }
-      let(:title_multiloc) { { 'en' => 'Changed title' } }
-      let(:description_multiloc) { { 'en' => 'Changed body' } }
-      let(:description_preview_multiloc) { @project.description_preview_multiloc }
-      let(:slug) { 'changed-title' }
-      let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
-      let(:area_ids) { create_list(:area, 2).map(&:id) }
-      let(:topic_ids) { create_list(:topic, 2).map(&:id) }
-      let(:visible_to) { 'groups' }
-      let(:publication_status) { 'archived' }
-      let(:default_assignee_id) { create(:admin).id }
+        let(:id) { @project.id }
+        let(:title_multiloc) { { 'en' => 'Changed title' } }
+        let(:description_multiloc) { { 'en' => 'Changed body' } }
+        let(:description_preview_multiloc) { @project.description_preview_multiloc }
+        let(:slug) { 'changed-title' }
+        let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
+        let(:area_ids) { create_list(:area, 2).map(&:id) }
+        let(:topic_ids) { create_list(:topic, 2).map(&:id) }
+        let(:visible_to) { 'groups' }
+        let(:publication_status) { 'archived' }
+        let(:default_assignee_id) { create(:admin).id }
 
-      example 'Update a project' do
-        old_publcation_ids = AdminPublication.ids
-        do_request
+        example 'Update a project' do
+          old_publcation_ids = AdminPublication.ids
+          do_request
 
-        assert_status 200
-        # admin publications should not be replaced, but rather should be updated
-        expect(AdminPublication.ids).to match_array old_publcation_ids
-        expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
-        expect(json_response.dig(:data, :attributes, :description_multiloc, :en)).to eq 'Changed body'
-        expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
-        expect(json_response.dig(:data, :attributes, :slug)).to eq 'changed-title'
-        expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
-        expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-        expect(json_response.dig(:data, :attributes, :visible_to)).to eq 'groups'
-        expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'archived'
-        expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
-      end
-
-      example 'Add a project to a folder' do
-        folder = create(:project_folder)
-
-        do_request(project: { folder_id: folder.id })
-        @project.reload
-
-        expect(@project.folder_id).to eq folder.id
-        # Projects moved into folders are added to the top
-        expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
-      end
-
-      example 'Remove a project from a folder' do
-        create(:project_folder, projects: [@project])
-
-        do_request(project: { folder_id: nil })
-        @project.reload
-
-        expect(@project.folder_id).to be_nil
-        # Projects moved out of folders are added to the top
-        expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
-      end
-
-      example 'Move a project from one folder to another' do
-        old_folder = create(:project_folder, projects: [@project])
-        new_folder = create(:project_folder)
-        old_folder_moderators = create_list(:project_folder_moderator, 2, project_folders: [old_folder])
-        new_folder_moderators = create_list(:project_folder_moderator, 3, project_folders: [new_folder])
-
-        do_request(project: { folder_id: new_folder.id })
-        @project.reload
-
-        assert_status 200
-        expect(@project.folder_id).to eq new_folder.id
-        expect(@project.admin_publication.parent.id).to eq new_folder.admin_publication.id
-
-        project_moderators = User.project_moderator(@project.id)
-        expect(project_moderators.pluck(:id)).not_to match_array old_folder_moderators.pluck(:id)
-        expect(project_moderators.pluck(:id)).to match_array new_folder_moderators.pluck(:id)
-      end
-
-      example '[error] Put a project in a non-existing folder' do
-        do_request(project: { folder_id: 'dinosaur' })
-        expect(response_status).to eq 404
-      end
-
-      example 'Clear all areas', document: false do
-        @project.update!(area_ids: area_ids)
-        expect(@project.areas.size).to eq 2
-        do_request(project: { area_ids: [] })
-        expect(json_response.dig(:data, :relationships, :areas, :data).size).to eq 0
-      end
-
-      example 'Clear all topics', document: false do
-        @project.update!(topic_ids: topic_ids)
-        expect(@project.topics.size).to eq 2
-        do_request(project: { topic_ids: [] })
-        expect(json_response.dig(:data, :relationships, :topics, :data).size).to eq 0
-      end
-
-      example 'Set default assignee to unassigned', document: false do
-        @project.update!(default_assignee: create(:admin))
-        do_request(project: { default_assignee_id: nil })
-        expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to be_nil
-      end
-
-      context 'when description_multiloc contains images' do
-        let(:description_multiloc) { { 'en' => html_with_base64_image } }
-
-        it_behaves_like 'updates record with text images',
-          model_class: Project,
-          field: :description_multiloc
-      end
-
-      describe do
-        example 'The header image can be removed' do
-          @project.update!(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
-          expect(@project.reload.header_bg_url).to be_present
-          do_request project: { header_bg: nil }
-          expect(@project.reload.header_bg_url).to be_nil
+          assert_status 200
+          # admin publications should not be replaced, but rather should be updated
+          expect(AdminPublication.ids).to match_array old_publcation_ids
+          expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
+          expect(json_response.dig(:data, :attributes, :description_multiloc, :en)).to eq 'Changed body'
+          expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
+          expect(json_response.dig(:data, :attributes, :slug)).to eq 'changed-title'
+          expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
+          expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+          expect(json_response.dig(:data, :attributes, :visible_to)).to eq 'groups'
+          expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'archived'
+          expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
         end
-      end
 
-      example 'Logs `published` activity when going from draft to published', document: false do
-        @project.admin_publication.update!(publication_status: 'draft')
-        expect { do_request project: { admin_publication_attributes: { publication_status: 'published' } } }
-          .to have_enqueued_job(LogActivityJob)
-          .with(@project, 'published', anything, anything, anything)
+        example 'Add a project to a folder' do
+          folder = create(:project_folder)
+
+          do_request(project: { folder_id: folder.id })
+          @project.reload
+
+          expect(@project.folder_id).to eq folder.id
+          # Projects moved into folders are added to the top
+          expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
+        end
+
+        example 'Remove a project from a folder' do
+          create(:project_folder, projects: [@project])
+
+          do_request(project: { folder_id: nil })
+          @project.reload
+
+          expect(@project.folder_id).to be_nil
+          # Projects moved out of folders are added to the top
+          expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
+        end
+
+        example 'Move a project from one folder to another' do
+          old_folder = create(:project_folder, projects: [@project])
+          new_folder = create(:project_folder)
+          old_folder_moderators = create_list(:project_folder_moderator, 2, project_folders: [old_folder])
+          new_folder_moderators = create_list(:project_folder_moderator, 3, project_folders: [new_folder])
+
+          do_request(project: { folder_id: new_folder.id })
+          @project.reload
+
+          assert_status 200
+          expect(@project.folder_id).to eq new_folder.id
+          expect(@project.admin_publication.parent.id).to eq new_folder.admin_publication.id
+
+          project_moderators = User.project_moderator(@project.id)
+          expect(project_moderators.pluck(:id)).not_to match_array old_folder_moderators.pluck(:id)
+          expect(project_moderators.pluck(:id)).to match_array new_folder_moderators.pluck(:id)
+        end
+
+        example '[error] Put a project in a non-existing folder' do
+          do_request(project: { folder_id: 'dinosaur' })
+          expect(response_status).to eq 404
+        end
+
+        example 'Clear all areas', document: false do
+          @project.update!(area_ids: area_ids)
+          expect(@project.areas.size).to eq 2
+          do_request(project: { area_ids: [] })
+          expect(json_response.dig(:data, :relationships, :areas, :data).size).to eq 0
+        end
+
+        example 'Clear all topics', document: false do
+          @project.update!(topic_ids: topic_ids)
+          expect(@project.topics.size).to eq 2
+          do_request(project: { topic_ids: [] })
+          expect(json_response.dig(:data, :relationships, :topics, :data).size).to eq 0
+        end
+
+        example 'Set default assignee to unassigned', document: false do
+          @project.update!(default_assignee: create(:admin))
+          do_request(project: { default_assignee_id: nil })
+          expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to be_nil
+        end
+
+        context 'when description_multiloc contains images' do
+          let(:description_multiloc) { { 'en' => html_with_base64_image } }
+
+          it_behaves_like 'updates record with text images',
+            model_class: Project,
+            field: :description_multiloc
+        end
+
+        describe do
+          example 'The header image can be removed' do
+            @project.update!(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
+            expect(@project.reload.header_bg_url).to be_present
+            do_request project: { header_bg: nil }
+            expect(@project.reload.header_bg_url).to be_nil
+          end
+        end
+
+        example 'Logs `published` activity when going from draft to published', document: false do
+          @project.admin_publication.update!(publication_status: 'draft')
+          expect { do_request project: { admin_publication_attributes: { publication_status: 'published' } } }
+            .to have_enqueued_job(LogActivityJob)
+            .with(@project, 'published', anything, anything, anything)
+        end
       end
     end
 
@@ -581,7 +580,7 @@ resource 'Projects' do
 
           expect(response_status).to eq 200
           expect(layout.reload.craftjs_json['nUOW77iNcW']['props']['adminPublicationIds'])
-            .to match_array [project2.admin_publication.id]
+            .to contain_exactly(project2.admin_publication.id)
         end
       end
     end
@@ -784,154 +783,143 @@ resource 'Projects' do
         )
       end
 
-      before do
-        config = AppConfiguration.instance
-        config.settings['core']['private_attributes_in_export'] = true
-        config.save!
-      end
-
       example_request 'Download inputs of a timeline project with different phases in separate sheets' do
         assert_status 200
         xlsx = xlsx_contents response_body
         expect(xlsx.size).to eq 3
-        expect(xlsx).to match_array([
-          {
-            sheet_name: 'Phase 1 Ideation',
-            column_headers: [
-              'ID',
-              'Title',
-              'Description',
-              'Attachments',
-              'Tags',
-              'Latitude',
-              'Longitude',
-              'Location',
-              'Proposed Budget',
-              extra_idea_field.title_multiloc['en'],
-              'Author name',
-              'Author email',
-              'Author ID',
-              'Submitted at',
-              'Published at',
-              'Comments',
-              'Likes',
-              'Dislikes',
-              'Offline votes',
-              'URL',
-              'Project',
-              'Status',
-              'Assignee',
-              'Assignee email'
-            ],
-            rows: [
-              [
-                ideation_response.id,
-                ideation_response.title_multiloc['en'],
-                'It would improve the air quality!', # html tags are removed
-                '',
-                '',
-                ideation_response.location_point.coordinates.last,
-                ideation_response.location_point.coordinates.first,
-                ideation_response.location_description,
-                ideation_response.proposed_budget,
-                'Answer',
-                ideation_response.author_name,
-                ideation_response.author.email,
-                ideation_response.author_id,
-                an_instance_of(DateTime), # created_at
-                an_instance_of(DateTime), # published_at
-                0,
-                0,
-                0,
-                24,
-                "http://example.org/ideas/#{ideation_response.slug}",
-                project.title_multiloc['en'],
-                ideation_response.idea_status.title_multiloc['en'],
-                nil,
-                nil
-              ]
+        expect(xlsx).to contain_exactly({
+          sheet_name: 'Phase 1 Ideation',
+          column_headers: [
+            'ID',
+            'Title',
+            'Description',
+            'Attachments',
+            'Tags',
+            'Latitude',
+            'Longitude',
+            'Location',
+            'Proposed Budget',
+            extra_idea_field.title_multiloc['en'],
+            'Author name',
+            'Author email',
+            'Author ID',
+            'Submitted at',
+            'Published at',
+            'Comments',
+            'Likes',
+            'Dislikes',
+            'Offline votes',
+            'URL',
+            'Project',
+            'Status',
+            'Assignee',
+            'Assignee email'
+          ],
+          rows: [
+            [
+              ideation_response.id,
+              ideation_response.title_multiloc['en'],
+              'It would improve the air quality!', # html tags are removed
+              '',
+              '',
+              ideation_response.location_point.coordinates.last,
+              ideation_response.location_point.coordinates.first,
+              ideation_response.location_description,
+              ideation_response.proposed_budget,
+              'Answer',
+              ideation_response.author_name,
+              ideation_response.author.email,
+              ideation_response.author_id,
+              an_instance_of(DateTime), # created_at
+              an_instance_of(DateTime), # published_at
+              0,
+              0,
+              0,
+              24,
+              "http://example.org/ideas/#{ideation_response.slug}",
+              project.title_multiloc['en'],
+              ideation_response.idea_status.title_multiloc['en'],
+              nil,
+              nil
             ]
-          },
-          {
-            sheet_name: 'Phase 2 Native survey',
-            column_headers: [
-              'ID',
-              linear_scale_field.title_multiloc['en'],
-              'Author name',
-              'Author email',
-              'Author ID',
-              'Submitted at',
-              'Project'
-            ],
-            rows: [
-              [
-                survey_response.id,
-                2,
-                survey_response.author_name,
-                survey_response.author.email,
-                survey_response.author_id,
-                an_instance_of(DateTime), # created_at
-                project.title_multiloc['en']
-              ]
+          ]
+        }, {
+          sheet_name: 'Phase 2 Native survey',
+          column_headers: [
+            'ID',
+            linear_scale_field.title_multiloc['en'],
+            'Author name',
+            'Author email',
+            'Author ID',
+            'Submitted at',
+            'Project'
+          ],
+          rows: [
+            [
+              survey_response.id,
+              2,
+              survey_response.author_name,
+              survey_response.author.email,
+              survey_response.author_id,
+              an_instance_of(DateTime), # created_at
+              project.title_multiloc['en']
             ]
-          },
-          # Phase 3 is not included because it's an information phase.
-          {
-            sheet_name: 'Phase 4 Voting',
-            column_headers: [
-              'ID',
-              'Title',
-              'Description',
-              'Attachments',
-              'Tags',
-              'Latitude',
-              'Longitude',
-              'Location',
-              'Proposed Budget',
-              extra_idea_field.title_multiloc['en'],
-              'Author name',
-              'Author email',
-              'Author ID',
-              'Submitted at',
-              'Published at',
-              'Comments',
-              'Votes',
-              'Offline votes',
-              'URL',
-              'Project',
-              'Status',
-              'Assignee',
-              'Assignee email'
-            ],
-            rows: [
-              [
-                ideation_response.id,
-                ideation_response.title_multiloc['en'],
-                'It would improve the air quality!', # html tags are removed
-                '',
-                '',
-                ideation_response.location_point.coordinates.last,
-                ideation_response.location_point.coordinates.first,
-                ideation_response.location_description,
-                ideation_response.proposed_budget,
-                'Answer',
-                ideation_response.author_name,
-                ideation_response.author.email,
-                ideation_response.author_id,
-                an_instance_of(DateTime), # created_at
-                an_instance_of(DateTime), # published_at
-                0,
-                0,
-                24,
-                "http://example.org/ideas/#{ideation_response.slug}",
-                project.title_multiloc['en'],
-                ideation_response.idea_status.title_multiloc['en'],
-                nil,
-                nil
-              ]
+          ]
+        }, {
+          sheet_name: 'Phase 4 Voting',
+          column_headers: [
+            'ID',
+            'Title',
+            'Description',
+            'Attachments',
+            'Tags',
+            'Latitude',
+            'Longitude',
+            'Location',
+            'Proposed Budget',
+            extra_idea_field.title_multiloc['en'],
+            'Author name',
+            'Author email',
+            'Author ID',
+            'Submitted at',
+            'Published at',
+            'Comments',
+            'Votes',
+            'Offline votes',
+            'URL',
+            'Project',
+            'Status',
+            'Assignee',
+            'Assignee email'
+          ],
+          rows: [
+            [
+              ideation_response.id,
+              ideation_response.title_multiloc['en'],
+              'It would improve the air quality!', # html tags are removed
+              '',
+              '',
+              ideation_response.location_point.coordinates.last,
+              ideation_response.location_point.coordinates.first,
+              ideation_response.location_description,
+              ideation_response.proposed_budget,
+              'Answer',
+              ideation_response.author_name,
+              ideation_response.author.email,
+              ideation_response.author_id,
+              an_instance_of(DateTime), # created_at
+              an_instance_of(DateTime), # published_at
+              0,
+              0,
+              24,
+              "http://example.org/ideas/#{ideation_response.slug}",
+              project.title_multiloc['en'],
+              ideation_response.idea_status.title_multiloc['en'],
+              nil,
+              nil
             ]
-          }
-        ])
+          ]
+        })
       end
     end
   end
@@ -1008,9 +996,9 @@ resource 'Projects' do
         header_row2 = workbook.worksheets[1][0].cells.map(&:value)
         header_row3 = workbook.worksheets[2][0].cells.map(&:value)
 
-        expect(header_row1).to match_array([dutch_column_headers['submitted_at']])
-        expect(header_row2).to match_array([dutch_column_headers['submitted_at']])
-        expect(header_row3).to match_array([dutch_column_headers['submitted_at']])
+        expect(header_row1).to contain_exactly(dutch_column_headers['submitted_at'])
+        expect(header_row2).to contain_exactly(dutch_column_headers['submitted_at'])
+        expect(header_row3).to contain_exactly(dutch_column_headers['submitted_at'])
       end
     end
 
@@ -1844,7 +1832,7 @@ resource 'Projects' do
     example 'Returns only listed projects' do
       do_request filter_by: 'finished_and_archived'
       assert_status 200
-      expect(response_data.pluck(:id)).to match_array [@listed_archived_project.id]
+      expect(response_data.pluck(:id)).to contain_exactly(@listed_archived_project.id)
     end
   end
 

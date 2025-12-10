@@ -1757,7 +1757,8 @@ CREATE TABLE public.phases (
     similarity_enabled boolean DEFAULT true NOT NULL,
     vote_term character varying DEFAULT 'vote'::character varying,
     voting_min_selected_options integer DEFAULT 1 NOT NULL,
-    voting_filtering_enabled boolean DEFAULT false NOT NULL
+    voting_filtering_enabled boolean DEFAULT false NOT NULL,
+    ideation_method character varying
 );
 
 
@@ -2692,6 +2693,13 @@ CREATE TABLE public.idea_exposures (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
+
+
+--
+-- Name: COLUMN idea_exposures.phase_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.idea_exposures.phase_id IS 'This is the phase during which the idea is exposed to the user, stored redundantly for faster querying.';
 
 
 --
@@ -3631,9 +3639,9 @@ CREATE TABLE public.topics (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     ordering integer,
-    code character varying DEFAULT 'custom'::character varying NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
-    include_in_onboarding boolean DEFAULT false NOT NULL
+    include_in_onboarding boolean DEFAULT false NOT NULL,
+    is_default boolean DEFAULT false NOT NULL
 );
 
 
@@ -8146,7 +8154,10 @@ SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20251203114945'),
+('20251209135529'),
+('20251208163107'),
 ('20251127085639'),
+('20251124000000'),
 ('20251120113747'),
 ('20251029135211'),
 ('20251022100725'),

@@ -25,6 +25,14 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.alphabetically_desc',
     defaultMessage: 'Alphabetically (z-a)',
   },
+  participation_asc: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.participation_asc',
+    defaultMessage: 'Participation (low-high)',
+  },
+  participation_desc: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.participation_desc',
+    defaultMessage: 'Participation (high-low)',
+  },
   status: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.Sort.status',
     defaultMessage: 'Status',

@@ -66,37 +66,37 @@ describe SmartGroups::Rules::ParticipatedInTopic do
     it "correctly filters on 'in' predicate" do
       rule = described_class.new('in', [@topic1.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array([@user1.id, @user2.id, @user3.id])
+      expect(@ids).to contain_exactly(@user1.id, @user2.id, @user3.id)
     end
 
     it "correctly filters on 'not_in' predicate" do
       rule = described_class.new('not_in', @topic2.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user1.id, @user2.id, @user4.id]
+      expect(@ids).to contain_exactly(@user1.id, @user2.id, @user4.id)
     end
 
     it "correctly filters on 'posted_in' predicate" do
       rule = described_class.new('posted_in', [@topic1.id, @topic2.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user1.id, @user3.id]
+      expect(@ids).to contain_exactly(@user1.id, @user3.id)
     end
 
     it "correctly filters on 'not_posted_in' predicate" do
       rule = described_class.new('not_posted_in', @topic1.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user2.id, @user3.id, @user4.id]
+      expect(@ids).to contain_exactly(@user2.id, @user3.id, @user4.id)
     end
 
     it "correctly filters on 'commented_in' predicate" do
       rule = described_class.new('commented_in', [@topic1.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user3.id]
+      expect(@ids).to contain_exactly(@user3.id)
     end
 
     it "correctly filters on 'not_commented_in' predicate" do
       rule = described_class.new('not_commented_in', @topic1.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user1.id, @user2.id, @user4.id]
+      expect(@ids).to contain_exactly(@user1.id, @user2.id, @user4.id)
     end
 
     it "correctly filters on 'reacted_idea_in' predicate" do
@@ -108,19 +108,19 @@ describe SmartGroups::Rules::ParticipatedInTopic do
     it "correctly filters on 'not_reacted_idea_in' predicate" do
       rule = described_class.new('not_reacted_idea_in', @topic1.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user1.id, @user2.id, @user3.id, @user4.id]
+      expect(@ids).to contain_exactly(@user1.id, @user2.id, @user3.id, @user4.id)
     end
 
     it "correctly filters on 'reacted_comment_in' predicate" do
       rule = described_class.new('reacted_comment_in', [@topic1.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user2.id]
+      expect(@ids).to contain_exactly(@user2.id)
     end
 
     it "correctly filters on 'not_reacted_comment_in' predicate" do
       rule = described_class.new('not_reacted_comment_in', @topic1.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user1.id, @user3.id, @user4.id]
+      expect(@ids).to contain_exactly(@user1.id, @user3.id, @user4.id)
     end
   end
 

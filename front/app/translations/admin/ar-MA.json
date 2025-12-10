@@ -921,7 +921,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "مخصصة",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "نص الزر",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "رابط زر",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "موضوع افتراضي",
   "app.containers.AdminPage.SettingsPage.delete": "حذف",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "حذف",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "سيؤدي هذا إلى حذف الوسم من جميع المنشورات الحالية. سيتم تطبيق هذا التغيير على جميع المشاريع.",

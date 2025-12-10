@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.editTopicButtonLabel',
     defaultMessage: 'Edit',
   },
-  defaultTopic: {
-    id: 'app.containers.AdminPage.SettingsPage.defaultTopic',
-    defaultMessage: 'Default topic',
-  },
   subtitleTerminology: {
     id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.subtitleTerminology',
     defaultMessage: 'Terminology (homepage filter)',
@@ -43,5 +39,14 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.tagIsLinkedToStaticPage',
     defaultMessage:
       'This tag cannot be deleted because it is being used to display projects on the following custom page(s). You will need to unlink the tag from the page, or delete the page before you can delete the tag.',
+  },
+
+  noDescriptionProvided: {
+    id: 'app.containers.AdminPage.SettingsPage.noDescriptionProvided',
+    defaultMessage: 'No description provided',
+  },
+  defaultBadge: {
+    id: 'app.containers.AdminPage.SettingsPage.defaultBadge',
+    defaultMessage: 'Default',
   },
 });

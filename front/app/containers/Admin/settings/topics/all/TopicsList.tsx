@@ -4,8 +4,7 @@ import { ITopicData } from 'api/topics/types';
 
 import { List } from 'components/admin/ResourceList';
 
-import CustomTopicRow from './CustomTopicRow';
-import DefaultTopicRow from './DefaultTopicRow';
+import TopicRow from './TopicRow';
 
 interface Props {
   topics: ITopicData[];
@@ -17,12 +16,9 @@ export default ({ topics, handleDeleteClick }: Props) => (
     {topics.map((topic, index) => {
       const isLastItem = index === topics.length - 1;
 
-      const isDefaultTopic = topic.attributes.code !== 'custom';
-
-      return isDefaultTopic ? (
-        <DefaultTopicRow topic={topic} isLastItem={isLastItem} />
-      ) : (
-        <CustomTopicRow
+      return (
+        <TopicRow
+          key={topic.id}
           topic={topic}
           isLastItem={isLastItem}
           handleDeleteClick={handleDeleteClick}

@@ -977,7 +977,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "Custom",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "Tuugassami allannertaq",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "Linkimut attataasaq",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "Tag nalinginnaasoq",
   "app.containers.AdminPage.SettingsPage.delete": "Delete",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Delete",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Tag-i ilanngussanik tamanit peerneqassaaq. Allannguut suliniutinut tamanut atuutissaaq.",

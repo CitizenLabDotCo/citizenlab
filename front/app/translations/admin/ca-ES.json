@@ -1192,7 +1192,6 @@
   "app.containers.AdminPage.SettingsPage.customized_button": "Custom",
   "app.containers.AdminPage.SettingsPage.customized_button_text_label": "Text del botó",
   "app.containers.AdminPage.SettingsPage.customized_button_url_label": "Enllaç del botó",
-  "app.containers.AdminPage.SettingsPage.defaultTopic": "Etiqueta predeterminada",
   "app.containers.AdminPage.SettingsPage.delete": "Delete",
   "app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel": "Delete",
   "app.containers.AdminPage.SettingsPage.deleteTopicConfirmation": "Això eliminarà l'etiqueta de totes les publicacions existents. Aquest canvi s'aplicarà a tots els projectes.",
