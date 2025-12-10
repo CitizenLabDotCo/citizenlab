@@ -210,6 +210,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       expect(result[:total_votes]).to eq(57)
       expect(result[:group_by]).to be_nil
       expect(result[:custom_field_id]).to be_nil
+      expect(result[:input_type]).to be_nil
       expect(result[:options]).to eq([])
 
       expect(result[:ideas]).to contain_exactly(
@@ -245,6 +246,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       expect(result[:total_votes]).to eq(57)
       expect(result[:group_by]).to eq('gender')
       expect(result[:custom_field_id]).to eq(custom_field.id)
+      expect(result[:input_type]).to eq('select')
       expect(result[:options]).to eq([
         { male: { id: custom_field.options.find_by(key: 'male').id, title_multiloc: { 'en' => 'Male' } }, ordering: 0 },
         { female: { id: custom_field.options.find_by(key: 'female').id, title_multiloc: { 'en' => 'Female' } }, ordering: 1 },
@@ -295,6 +297,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       expect(result[:total_votes]).to eq(57)
       expect(result[:group_by]).to eq('multiselect')
       expect(result[:custom_field_id]).to eq(custom_field.id)
+      expect(result[:input_type]).to eq('multiselect')
       expect(result[:options]).to eq([
         { option_a: { id: custom_field.options.find_by(key: 'option_a').id, title_multiloc: { 'en' => 'Option A' } }, ordering: 0 },
         { option_b: { id: custom_field.options.find_by(key: 'option_b').id, title_multiloc: { 'en' => 'Option B' } }, ordering: 1 }
@@ -339,6 +342,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       expect(result[:total_votes]).to eq(57)
       expect(result[:group_by]).to eq('checkbox')
       expect(result[:custom_field_id]).to eq(custom_field.id)
+      expect(result[:input_type]).to eq('checkbox')
       expect(result[:options]).to eq([])
 
       expect(result[:ideas]).to contain_exactly(

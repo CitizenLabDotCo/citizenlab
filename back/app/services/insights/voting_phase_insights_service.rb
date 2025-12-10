@@ -20,6 +20,7 @@ module Insights
         total_votes: voting_participations.sum { |p| p[:total_votes] } + @phase.manual_votes_count,
         group_by: field&.key,
         custom_field_id: custom_field_id,
+        input_type: field&.input_type,
         options: options,
         ideas: idea_vote_counts_data(ideas, voting_participations, field)
       }
