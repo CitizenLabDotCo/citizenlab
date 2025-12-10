@@ -38,4 +38,12 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.ideation.noTopics',
     defaultMessage: 'No topics assigned to ideas yet',
   },
+  mostLiked: {
+    id: 'app.containers.Admin.projects.project.insights.ideation.mostLiked',
+    defaultMessage: 'Most liked',
+  },
+  mostLikedDescription: {
+    id: 'app.containers.Admin.projects.project.insights.ideation.mostLikedDescription',
+    defaultMessage: 'These conversation threads got the most traction',
+  },
 });
