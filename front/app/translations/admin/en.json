@@ -1310,6 +1310,8 @@
   "app.containers.Admin.projects.project.insights.ideation.generatingSummary": "Generating summary...",
   "app.containers.Admin.projects.project.insights.ideation.inputsLabel": "inputs",
   "app.containers.Admin.projects.project.insights.ideation.loading": "Loading...",
+  "app.containers.Admin.projects.project.insights.ideation.mostLiked": "Most liked",
+  "app.containers.Admin.projects.project.insights.ideation.mostLikedDescription": "These conversation threads got the most traction",
   "app.containers.Admin.projects.project.insights.ideation.newResponses": "{count, plural, one {# new response} other {# new responses}}",
   "app.containers.Admin.projects.project.insights.ideation.noTopics": "No topics assigned to ideas yet",
   "app.containers.Admin.projects.project.insights.ideation.refresh": "Refresh",
