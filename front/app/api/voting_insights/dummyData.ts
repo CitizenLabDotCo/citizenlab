@@ -59,72 +59,44 @@ const baseVotingIdeas = [
 ];
 
 // Helper to generate voting demographic breakdown
+// Only uses online votes since offline votes cannot be attributed to demographics
 const generateVotingDemographicBreakdown = (
   onlineVotes: number,
-  offlineVotes: number,
   type: 'gender' | 'age' | 'location'
-): Record<string, { online: number; offline: number }> => {
-  if (type === 'gender') {
-    return {
-      male: {
-        online: Math.round(onlineVotes * 0.42),
-        offline: Math.round(offlineVotes * 0.44),
-      },
-      female: {
-        online: Math.round(onlineVotes * 0.45),
-        offline: Math.round(offlineVotes * 0.43),
-      },
-      unspecified: {
-        online: Math.round(onlineVotes * 0.13),
-        offline: Math.round(offlineVotes * 0.13),
-      },
-    };
-  }
-
-  if (type === 'age') {
-    return {
-      '16-24': {
-        online: Math.round(onlineVotes * 0.22),
-        offline: Math.round(offlineVotes * 0.08),
-      },
-      '25-34': {
-        online: Math.round(onlineVotes * 0.28),
-        offline: Math.round(offlineVotes * 0.15),
-      },
-      '35-44': {
-        online: Math.round(onlineVotes * 0.22),
-        offline: Math.round(offlineVotes * 0.22),
-      },
-      '45-54': {
-        online: Math.round(onlineVotes * 0.15),
-        offline: Math.round(offlineVotes * 0.25),
-      },
-      '55-64': {
-        online: Math.round(onlineVotes * 0.08),
-        offline: Math.round(offlineVotes * 0.18),
-      },
-      '65+': {
-        online: Math.round(onlineVotes * 0.05),
-        offline: Math.round(offlineVotes * 0.12),
-      },
-    };
-  }
-
-  // type === 'location'
-  return {
-    downtown: {
-      online: Math.round(onlineVotes * 0.52),
-      offline: Math.round(offlineVotes * 0.35),
+): Record<string, { count: number; percentage: number }> => {
+  const distributions = {
+    gender: {
+      male: 0.42,
+      female: 0.45,
+      unspecified: 0.13,
     },
-    suburbs: {
-      online: Math.round(onlineVotes * 0.36),
-      offline: Math.round(offlineVotes * 0.45),
+    age: {
+      '16-24': 0.22,
+      '25-34': 0.28,
+      '35-44': 0.22,
+      '45-54': 0.15,
+      '55-64': 0.08,
+      '65+': 0.05,
     },
-    rural: {
-      online: Math.round(onlineVotes * 0.12),
-      offline: Math.round(offlineVotes * 0.2),
+    location: {
+      downtown: 0.52,
+      suburbs: 0.36,
+      rural: 0.12,
     },
   };
+
+  const distribution = distributions[type];
+  const result: Record<string, { count: number; percentage: number }> = {};
+
+  for (const [key, pct] of Object.entries(distribution)) {
+    const count = Math.round(onlineVotes * pct);
+    result[key] = {
+      count,
+      percentage: Math.round(pct * 100 * 10) / 10, // e.g., 42.0, 45.0
+    };
+  }
+
+  return result;
 };
 
 // Calculate total votes for percentage calculation
@@ -186,7 +158,6 @@ export const dummyVotingInsightsWithGender = {
         ).toFixed(0),
         demographic_breakdown: generateVotingDemographicBreakdown(
           idea.online_votes,
-          idea.offline_votes,
           'gender'
         ),
       })),
@@ -212,7 +183,6 @@ export const dummyVotingInsightsWithAge = {
         ).toFixed(0),
         demographic_breakdown: generateVotingDemographicBreakdown(
           idea.online_votes,
-          idea.offline_votes,
           'age'
         ),
       })),
@@ -259,7 +229,6 @@ export const dummyVotingInsightsWithDomicile = {
         ).toFixed(0),
         demographic_breakdown: generateVotingDemographicBreakdown(
           idea.online_votes,
-          idea.offline_votes,
           'location'
         ),
       })),

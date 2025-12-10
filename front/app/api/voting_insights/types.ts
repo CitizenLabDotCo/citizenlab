@@ -3,10 +3,11 @@ import { DemographicOption } from 'api/phase_insights/types';
 /**
  * Demographic vote breakdown for a single idea
  * Each key is a demographic option (e.g., 'male', 'female')
+ * Note: Only contains online votes since offline votes cannot be attributed to demographics
  */
 export interface VotingDemographicBreakdown {
-  online: number;
-  offline: number;
+  count: number;
+  percentage: number;
 }
 
 /**
