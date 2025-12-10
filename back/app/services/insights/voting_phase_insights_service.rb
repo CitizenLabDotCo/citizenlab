@@ -6,15 +6,21 @@ module Insights
       participations = cached_phase_participations
       voting_participations = participations[:voting]
 
+      options = if field
+        field.options.map do |opt|
+          { "#{opt.key}": { id: opt.id, title_multiloc: opt.title_multiloc }, ordering: opt.ordering }
+        end
+      else
+        []
+      end
+
       {
         online_votes: voting_participations.sum { |p| p[:total_votes] },
         offline_votes: @phase.manual_votes_count,
         total_votes: voting_participations.sum { |p| p[:total_votes] } + @phase.manual_votes_count,
         group_by: field&.key,
         custom_field_id: custom_field_id,
-        options: field ? field.options.map do |opt|
-          { "#{opt.key}": { id: opt.id, title_multiloc: opt.title_multiloc }, ordering: opt.ordering }
-        end : [],
+        options: options,
         ideas: idea_vote_counts_data(ideas, voting_participations, field)
       }
     end
