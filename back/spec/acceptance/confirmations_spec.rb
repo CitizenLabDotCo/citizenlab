@@ -88,7 +88,7 @@ resource 'Confirmations' do
         RequestConfirmationCodeJob.perform_now user
       end
 
-      example 'returns a not found status when the email does not exist' do
+      example 'returns a unprocessable entity status when the email does not exist' do
         do_request(confirmation: { email: email, code: '1234' })
         expect(status).to eq 422
       end
