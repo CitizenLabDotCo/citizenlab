@@ -118,8 +118,6 @@ resource 'Confirmations' do
     end
 
     context 'when user is not authenticated' do
-      let(:user) { create(:user_with_confirmation, password: 'password123') }
-
       example 'returns an unauthorized status when the user is not authenticated' do
         do_request(confirmation: { code: '1234' })
         expect(status).to eq 401
@@ -154,8 +152,6 @@ resource 'Confirmations' do
     end
 
     context 'when user is not authenticated' do
-      let(:user) { create(:user, new_email: 'new_email@example.com') }
-
       example 'returns an unauthorized status when the user is not authenticated' do
         do_request(confirmation: { code: '1234' })
         expect(status).to eq 401
