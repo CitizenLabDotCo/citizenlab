@@ -85,11 +85,11 @@ class MockResizeObserver {
 }
 
 /**
- * - Mocks getBoundingClientRect to return dimensions from element styles
- * - Mocks ResizeObserver to call callback with dimensions
- *
+ * Mocks ResizeObserver and getBoundingClientRect to return dimensions
+ * based on element styles. JSDOM doesn't support real layout, so this
+ * is needed for tests that check element dimensions.
  */
-export function setupRechartsTests() {
+export function mockResizeObserver() {
   Element.prototype.getBoundingClientRect = function () {
     const { width, height } = getMockDimensions(this);
     return {

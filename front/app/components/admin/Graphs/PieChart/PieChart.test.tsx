@@ -3,7 +3,7 @@ import React from 'react';
 import { NilOrError } from 'utils/helperUtils';
 import { render, screen, waitFor } from 'utils/testUtils/rtl';
 
-import { setupRechartsTests } from '../testSetup';
+import { mockResizeObserver } from '../testSetup';
 
 import PieChart from './';
 
@@ -19,7 +19,7 @@ const getErrorData = (): Row[] | NilOrError => new Error();
 const getData = (): Row[] | NilOrError => data;
 
 beforeAll(() => {
-  setupRechartsTests();
+  mockResizeObserver();
 });
 
 describe('<PieChart />', () => {

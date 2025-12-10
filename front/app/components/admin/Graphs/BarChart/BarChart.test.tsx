@@ -4,7 +4,7 @@ import { NilOrError } from 'utils/helperUtils';
 import { render, screen } from 'utils/testUtils/rtl';
 
 import { legacyColors } from '../styling';
-import { setupRechartsTests } from '../testSetup';
+import { mockResizeObserver } from '../testSetup';
 
 import BarChart from './';
 
@@ -16,7 +16,7 @@ const emptyData = getEmptyData();
 const errorData = getErrorData();
 
 beforeAll(() => {
-  setupRechartsTests();
+  mockResizeObserver();
 });
 
 describe('<BarChart />', () => {
