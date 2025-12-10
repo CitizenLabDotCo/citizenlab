@@ -292,7 +292,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       create(:custom_field_option, custom_field: custom_field, key: 'option_a', title_multiloc: { en: 'Option A' })
       create(:custom_field_option, custom_field: custom_field, key: 'option_b', title_multiloc: { en: 'Option B' })
 
-      user.update!(custom_field_values: { 'multiselect' => ['option_a', 'option_b'] })
+      user.update!(custom_field_values: { 'multiselect' => %w[option_a option_b] })
 
       result = service.vote_counts_with_user_custom_field_grouping(custom_field.id)
 
@@ -305,7 +305,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           custom_field_id: custom_field.id,
           options: [
             { option_a: { id: custom_field.options.find_by(key: 'option_a').id, title_multiloc: { 'en' => 'Option A' } }, ordering: 0 },
-            { option_b: { id: custom_field.options.find_by(key: 'option_b').id, title_multiloc: { 'en' => 'Option B' } }, ordering: 1 },
+            { option_b: { id: custom_field.options.find_by(key: 'option_b').id, title_multiloc: { 'en' => 'Option B' } }, ordering: 1 }
           ],
           ideas: [
             {
