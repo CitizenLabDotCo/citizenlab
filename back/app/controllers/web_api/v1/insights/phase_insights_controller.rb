@@ -16,11 +16,11 @@ module WebApi
 
         def votes_with_grouping
           unless @phase.participation_method == 'voting'
-            render json: { errors: ['Not a voting phase'] }, status: :unprocessable_entity
+            render json: { errors: { phase: [{ error: 'Not a voting phase' }] } }, status: :unprocessable_entity
             return
           end
 
-          counts_data = @phase.pmethod.phase_insights_class.new(@phase).vote_counts_with_user_custom_field_grouping('b0cee283-d6f0-486b-99bf-a0cc91df66fc')
+          counts_data = @phase.pmethod.phase_insights_class.new(@phase).vote_counts_with_user_custom_field_grouping(nil)
 
           render json: WebApi::V1::Insights::VotingPhaseVotesSerializer.new(
             @phase,

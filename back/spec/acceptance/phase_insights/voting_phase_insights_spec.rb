@@ -53,9 +53,9 @@ resource 'Phase insights' do
       with_permissions: true
     ).tap do |phase|
       # Ideas
-      idea1 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago)
-      idea2 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago)
-      idea3 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago)
+      idea1 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago, title_multiloc: { en: 'Idea 1' })
+      idea2 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago, title_multiloc: { en: 'Idea 2' }, manual_votes_amount: 3)
+      idea3 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago, title_multiloc: { en: 'Idea 3' })
 
       # Users
       user1 = create(:user)
@@ -81,6 +81,11 @@ resource 'Phase insights' do
 
       basket3 = create(:basket, phase: phase, user: user6, submitted_at: 5.days.ago) # during voting phase & last 7 days
       create(:baskets_idea, basket: basket3, idea: idea3, votes: 1)
+
+      # Update votes_count after creating baskets_ideas
+      idea1.update_column(:votes_count, idea1.baskets_ideas.sum(:votes))
+      idea2.update_column(:votes_count, idea2.baskets_ideas.sum(:votes))
+      idea3.update_column(:votes_count, idea3.baskets_ideas.sum(:votes))
 
       # Pageviews and sessions
       session1 = create(:session, user_id: user2.id)
@@ -190,6 +195,62 @@ resource 'Phase insights' do
       include_examples 'phase insights demographics',
         gender_blank: 3,
         birthyear_blank: 3
+    end
+  end
+
+  get 'web_api/v1/phases/:id/insights/voting' do
+    example '[Error] Returns error when not a voting phase' do
+      do_request(id: ideation_phase.id)
+
+      assert_status 422
+      expect(json_response_body[:errors]).to eq({ phase: [{ error: 'Not a voting phase' }] })
+    end
+
+    context 'when no custom_field for grouping is provided' do
+      example_request 'returns votes with grouping for a voting phase' do
+        assert_status 200
+
+        expect(json_response_body[:data][:id]).to eq(voting_phase.id)
+        expect(json_response_body[:data][:type]).to eq('voting_phase_votes')
+
+        attributes = json_response_body[:data][:attributes]
+        expect(attributes[:online_votes]).to eq(6)
+        expect(attributes[:offline_votes]).to eq(3)
+        expect(attributes[:total_votes]).to eq(9)
+        expect(attributes[:group_by]).to eq(nil)
+        expect(attributes[:custom_field_id]).to eq(nil)
+        expect(attributes[:input_type]).to eq(nil)
+        expect(attributes[:options]).to eq([])
+        expect(attributes[:ideas]).to contain_exactly(
+          {
+            id: voting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 1' }).id,
+            title_multiloc: { en: 'Idea 1' },
+            total_online_votes: 1,
+            total_offline_votes: 0,
+            total_votes: 1,
+            percentage: 11.1,
+            demographic_breakdown: nil
+          },
+          {
+            id: voting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 2' }).id,
+            title_multiloc: { en: 'Idea 2' },
+            total_online_votes: 4,
+            total_offline_votes: 3,
+            total_votes: 7,
+            percentage: 77.8,
+            demographic_breakdown: nil
+          },
+          {
+            id: voting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 3' }).id,
+            title_multiloc: { en: 'Idea 3' },
+            total_online_votes: 1,
+            total_offline_votes: 0,
+            total_votes: 1,
+            percentage: 11.1,
+            demographic_breakdown: nil
+          }
+        )
+      end
     end
   end
 end
