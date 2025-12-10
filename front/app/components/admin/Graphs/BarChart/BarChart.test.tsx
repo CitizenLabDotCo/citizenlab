@@ -4,6 +4,7 @@ import { NilOrError } from 'utils/helperUtils';
 import { render, screen } from 'utils/testUtils/rtl';
 
 import { legacyColors } from '../styling';
+import { setupRechartsTests } from '../testSetup';
 
 import BarChart from './';
 
@@ -13,6 +14,10 @@ const getEmptyData = (): Row[] | NilOrError => null;
 const getErrorData = (): Row[] | NilOrError => new Error();
 const emptyData = getEmptyData();
 const errorData = getErrorData();
+
+beforeAll(() => {
+  setupRechartsTests();
+});
 
 describe('<BarChart />', () => {
   describe('Missing data', () => {

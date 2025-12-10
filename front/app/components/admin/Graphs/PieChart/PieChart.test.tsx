@@ -3,6 +3,8 @@ import React from 'react';
 import { NilOrError } from 'utils/helperUtils';
 import { render, screen, waitFor } from 'utils/testUtils/rtl';
 
+import { setupRechartsTests } from '../testSetup';
+
 import PieChart from './';
 
 type Row = { a: number; name: string };
@@ -15,6 +17,10 @@ const data: Row[] = [
 const getNilData = (): Row[] | NilOrError => null;
 const getErrorData = (): Row[] | NilOrError => new Error();
 const getData = (): Row[] | NilOrError => data;
+
+beforeAll(() => {
+  setupRechartsTests();
+});
 
 describe('<PieChart />', () => {
   describe('Missing data', () => {
