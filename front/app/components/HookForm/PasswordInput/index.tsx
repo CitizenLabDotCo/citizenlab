@@ -46,7 +46,7 @@ const PasswordInput = ({ name, label, id, ...rest }: Props) => {
   return (
     <>
       {label && (
-        <Label htmlFor={name}>
+        <Label htmlFor={id ?? name}>
           <span>{label}</span>
         </Label>
       )}

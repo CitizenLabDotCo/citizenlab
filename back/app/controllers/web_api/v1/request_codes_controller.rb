@@ -9,7 +9,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
   # logging in passwordless users
   def request_code_unauthenticated
     email = request_code_unauthenticated_params[:email]
-    user = User.find_by(email: email)
+    user = User.find_by_cimail(email)
 
     if confirmation_codes_service.permit_request_code_unauthenticated(user)
       user.update!(new_email: nil) # Clear any pending email change to avoid confusion
