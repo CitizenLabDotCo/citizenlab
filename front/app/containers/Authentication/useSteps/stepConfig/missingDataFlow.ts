@@ -97,6 +97,7 @@ export const missingDataFlow = (
 
         if (doesNotMeetGroupCriteria(requirements)) {
           setCurrentStep('access-denied');
+          return;
         }
 
         setCurrentStep('success');
