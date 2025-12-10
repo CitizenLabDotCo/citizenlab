@@ -111,6 +111,8 @@ class CustomField < ApplicationRecord
   validates :max_characters, comparison: { greater_than: 0 }, if: :support_text?, allow_nil: true
   validate :max_characters_greater_than_min_characters, if: :support_text?
   validate :maximum_select_count_greater_than_or_equal_to_minimum, if: :select_count_enabled_and_supported?
+  # First input form field must be a page (backed by DB check constraint custom_form_first_field_must_be_page)
+  validates :input_type, inclusion: { in: ['page'] }, if: -> { resource_type == 'CustomForm' && ordering == 0 }
 
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
