@@ -2,25 +2,32 @@ import React from 'react';
 
 import { ParticipationMethod } from 'api/phases/types';
 
-import { methodSpecificInsightsRegistry } from './registry';
+import CommonGroundInsights from './commonGround/CommonGroundInsights';
+import IdeationInsights from './ideation/IdeationInsights';
+import NativeSurveyInsights from './nativeSurvey/NativeSurveyInsights';
+import ProposalsInsights from './proposals/ProposalsInsights';
+import VotingInsights from './voting/VotingInsights';
 
 interface Props {
   phaseId: string;
   participationMethod: ParticipationMethod;
 }
 
-/**
- * Wrapper component that renders method-specific insights based on participation method
- * Returns null if no component is registered for the given method
- */
 const MethodSpecificInsights = ({ phaseId, participationMethod }: Props) => {
-  const InsightComponent = methodSpecificInsightsRegistry[participationMethod];
-
-  if (!InsightComponent) {
-    return null;
+  switch (participationMethod) {
+    case 'common_ground':
+      return <CommonGroundInsights phaseId={phaseId} />;
+    case 'native_survey':
+      return <NativeSurveyInsights phaseId={phaseId} />;
+    case 'ideation':
+      return <IdeationInsights phaseId={phaseId} />;
+    case 'proposals':
+      return <ProposalsInsights phaseId={phaseId} />;
+    case 'voting':
+      return <VotingInsights phaseId={phaseId} />;
+    default:
+      return null;
   }
-
-  return <InsightComponent phaseId={phaseId} />;
 };
 
 export default MethodSpecificInsights;
