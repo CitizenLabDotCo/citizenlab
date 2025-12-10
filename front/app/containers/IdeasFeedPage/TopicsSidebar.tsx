@@ -5,6 +5,7 @@ import {
   Button,
   Divider,
   Text,
+  Title,
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
@@ -22,6 +23,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import AvatarBubbles from 'components/AvatarBubbles';
 import GoBackButton from 'components/UI/GoBackButton';
+
+import { useIntl } from 'utils/cl-intl';
 
 import BottomSheet from './BottomSheet';
 import messages from './messages';
@@ -155,9 +158,9 @@ const TopicsContent: React.FC<TopicsContentProps> = ({
       )}
 
       <Box px="16px" mb="16px">
-        <Text fontWeight="bold" variant="bodyL" mb="8px">
+        <Title fontWeight="bold" variant="h4" as="h1" mb="8px">
           {projectTitle}
-        </Text>
+        </Title>
         {projectId && (
           <AvatarBubbles
             context={{ type: 'project', id: projectId }}
@@ -188,6 +191,7 @@ interface Props {
 }
 
 const TopicsSidebar: React.FC<Props> = ({ selectedTopicId, onTopicSelect }) => {
+  const { formatMessage } = useIntl();
   const { slug } = useParams() as { slug: string };
   const { data: project } = useProjectBySlug(slug);
   const { data: topics, isLoading: topicsLoading } = useTopics();
@@ -215,7 +219,11 @@ const TopicsSidebar: React.FC<Props> = ({ selectedTopicId, onTopicSelect }) => {
 
   if (isMobile) {
     return (
-      <BottomSheet>
+      <BottomSheet
+        a11y_panelLabel={formatMessage(messages.topicsPanel)}
+        a11y_expandLabel={formatMessage(messages.expandPanel)}
+        a11y_collapseLabel={formatMessage(messages.collapsePanel)}
+      >
         <TopicsContent
           topics={topics}
           selectedTopicId={selectedTopicId}

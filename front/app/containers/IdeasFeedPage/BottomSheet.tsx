@@ -29,6 +29,15 @@ const DragHandle = styled.div`
   background: ${colors.grey400};
   border-radius: 2px;
   margin: 12px auto;
+`;
+
+const DragArea = styled.button`
+  display: block;
+  width: 100%;
+  padding: 8px 0;
+  touch-action: none;
+  background: none;
+  border: none;
   cursor: grab;
 
   &:active {
@@ -36,16 +45,19 @@ const DragHandle = styled.div`
   }
 `;
 
-const DragArea = styled.div`
-  padding: 8px 0;
-  touch-action: none;
-`;
-
 interface Props {
   children: React.ReactNode;
+  a11y_panelLabel: string;
+  a11y_expandLabel: string;
+  a11y_collapseLabel: string;
 }
 
-const BottomSheet: React.FC<Props> = ({ children }) => {
+const BottomSheet = ({
+  children,
+  a11y_panelLabel,
+  a11y_expandLabel,
+  a11y_collapseLabel,
+}: Props) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
   const [translateY, setTranslateY] = useState(0);
@@ -155,6 +167,16 @@ const BottomSheet: React.FC<Props> = ({ children }) => {
     setIsExpanded(!isExpanded);
   }, [isExpanded, getSheetHeight]);
 
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleToggle();
+      }
+    },
+    [handleToggle]
+  );
+
   const sheetHeight = sheetRef.current?.offsetHeight || 400;
   const displayTranslateY = isDragging
     ? translateY
@@ -167,6 +189,8 @@ const BottomSheet: React.FC<Props> = ({ children }) => {
       ref={sheetRef}
       translateY={displayTranslateY}
       isDragging={isDragging}
+      role="region"
+      aria-label={a11y_panelLabel}
     >
       <DragArea
         onTouchStart={handleTouchStart}
@@ -174,8 +198,11 @@ const BottomSheet: React.FC<Props> = ({ children }) => {
         onTouchEnd={handleDragEnd}
         onMouseDown={handleMouseDown}
         onClick={handleToggle}
+        onKeyDown={handleKeyDown}
+        aria-expanded={isExpanded}
+        aria-label={isExpanded ? a11y_collapseLabel : a11y_expandLabel}
       >
-        <DragHandle />
+        <DragHandle aria-hidden="true" />
       </DragArea>
 
       <Box px="16px" pb="24px" overflowY="auto" h="100%">
