@@ -1,4 +1,4 @@
-export const USE_DUMMY_COMMON_GROUND_INSIGHTS_DATA = true;
+export const USE_DUMMY_COMMON_GROUND_INSIGHTS_DATA: boolean = true;
 
 const baseStatements = [
   {
