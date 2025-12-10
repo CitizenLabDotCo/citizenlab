@@ -3,7 +3,7 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import { phaseInsightsKey } from './keys';
+import phaseInsightsKeys from './keys';
 import { IPhaseInsights } from './types';
 
 /**
@@ -29,7 +29,7 @@ interface UsePhaseInsightsParams {
  */
 const usePhaseInsights = ({ phaseId }: UsePhaseInsightsParams) => {
   return useQuery<IPhaseInsights, CLErrors, IPhaseInsights>({
-    queryKey: phaseInsightsKey(phaseId),
+    queryKey: phaseInsightsKeys.item({ phaseId }),
     queryFn: () => fetchPhaseInsights(phaseId),
     enabled: !!phaseId,
   });
