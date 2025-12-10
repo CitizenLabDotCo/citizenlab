@@ -65,7 +65,7 @@ module Insights
     def a_as_percentage_of_b(a, b)
       return 0.0 if b.zero? # TODO: Raise error? (or nil?)
 
-      ((a.to_f / b.to_f) * 100).round(1)
+      ((a.to_f / b) * 100).round(1)
     end
 
     # Because we are grouping/slicing by votes per demographic attribute (and for blank == no answer),
