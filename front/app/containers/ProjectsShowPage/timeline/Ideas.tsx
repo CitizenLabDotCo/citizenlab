@@ -6,6 +6,7 @@ import { useSearchParams } from 'react-router-dom';
 import { IdeaSortMethod, IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
+import useProjectById from 'api/projects/useProjectById';
 
 import messages from 'containers/ProjectsShowPage/messages';
 
@@ -16,7 +17,9 @@ const IdeasWithFiltersSidebar = lazy(
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 import { Props as WithFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar';
 import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
+import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 interface InnerProps {
@@ -39,6 +42,7 @@ interface QueryParameters {
 }
 
 const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
+  const { data: project } = useProjectById(projectId);
   const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as IdeaSortMethod | null;
   const searchParam = searchParams.get('search');
@@ -89,6 +93,12 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       id="project-ideas"
       className={`e2e-timeline-project-idea-cards ${className || ''}`}
     >
+      <ButtonWithLink
+        linkTo={`/projects/${project?.data.attributes.slug}/ideas-feed`}
+        mb="16px"
+      >
+        <FormattedMessage {...messages.seeTheIdeas} />
+      </ButtonWithLink>
       {sidebarFiltersEnabled ? (
         <>
           <IdeaListScrollAnchor />
