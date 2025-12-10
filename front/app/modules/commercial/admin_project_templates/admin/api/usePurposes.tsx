@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-
 import useGraphqlTenantLocales from 'modules/commercial/admin_project_templates/admin/api/useGraphqlTenantLocales';
 
 import { graphqlFetcher } from '../../utils/graphqlFetcher';
