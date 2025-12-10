@@ -12,7 +12,9 @@ module Insights
         total_votes: voting_participations.sum { |p| p[:total_votes] } + @phase.manual_votes_count,
         group_by: field&.key,
         custom_field_id: custom_field_id,
-        options: field ? field.options.map { |opt| { "#{opt.key}": { id: opt.id, title_multiloc: opt.title_multiloc } } } : [],
+        options: field ? field.options.map do |opt|
+          { "#{opt.key}": { id: opt.id, title_multiloc: opt.title_multiloc }, ordering: opt.ordering }
+        end : [],
         ideas: idea_vote_counts_data(ideas, voting_participations, field)
       }
     end

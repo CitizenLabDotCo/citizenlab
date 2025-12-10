@@ -251,9 +251,9 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           group_by: 'gender',
           custom_field_id: custom_field.id,
           options: [
-            { male: { id: custom_field.options.find_by(key: 'male').id, title_multiloc: { 'en' => 'Male' } } },
-            { female: { id: custom_field.options.find_by(key: 'female').id, title_multiloc: { 'en' => 'Female' } } },
-            { unspecified: { id: custom_field.options.find_by(key: 'unspecified').id, title_multiloc: { 'en' => 'Unspecified' } } }
+            { male: { id: custom_field.options.find_by(key: 'male').id, title_multiloc: { 'en' => 'Male' } }, ordering: 0 },
+            { female: { id: custom_field.options.find_by(key: 'female').id, title_multiloc: { 'en' => 'Female' } }, ordering: 1 },
+            { unspecified: { id: custom_field.options.find_by(key: 'unspecified').id, title_multiloc: { 'en' => 'Unspecified' } }, ordering: 2 }
           ],
           ideas: [
             {
