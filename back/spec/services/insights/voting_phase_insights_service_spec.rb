@@ -142,31 +142,29 @@ RSpec.describe Insights::VotingPhaseInsightsService do
 
       data = service.send(:idea_vote_counts_data, [idea1, idea2], participations, custom_field)
 
-      expect(data).to eq([
-        {
-          id: idea1.id,
-          title_multiloc: idea1.title_multiloc,
-          total_online_votes: 2,
-          total_offline_votes: 0,
-          total_votes: 2,
-          demographic_breakdown: {
-            'female' => 2,
-            '_blank' => 0
-          }
-        },
-        {
-          id: idea2.id,
-          title_multiloc: idea2.title_multiloc,
-          total_online_votes: 45,
-          total_offline_votes: 10,
-          total_votes: 55,
-          demographic_breakdown: {
-            'female' => 3,
-            'male' => 42,
-            '_blank' => 10
-          }
+      expect(data).to contain_exactly({
+        id: idea1.id,
+        title_multiloc: idea1.title_multiloc,
+        total_online_votes: 2,
+        total_offline_votes: 0,
+        total_votes: 2,
+        demographic_breakdown: {
+          'female' => 2,
+          '_blank' => 0
         }
-      ])
+      },
+      {
+        id: idea2.id,
+        title_multiloc: idea2.title_multiloc,
+        total_online_votes: 45,
+        total_offline_votes: 10,
+        total_votes: 55,
+        demographic_breakdown: {
+          'female' => 3,
+          'male' => 42,
+          '_blank' => 10
+        }
+      })
     end
 
     it 'handles empty participations' do
@@ -175,24 +173,22 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       idea2.update!(votes_count: 0)
 
       data = service.send(:idea_vote_counts_data, [idea1, idea2], [], custom_field)
-      expect(data).to eq([
-        {
-          id: idea1.id,
-          title_multiloc: idea1.title_multiloc,
-          total_online_votes: 0,
-          total_offline_votes: 0,
-          total_votes: 0,
-          demographic_breakdown: { '_blank' => 0 }
-        },
-        {
-          id: idea2.id,
-          title_multiloc: idea2.title_multiloc,
-          total_online_votes: 0,
-          total_offline_votes: 10,
-          total_votes: 10,
-          demographic_breakdown: { '_blank' => 10 }
-        }
-      ])
+      expect(data).to contain_exactly({
+        id: idea1.id,
+        title_multiloc: idea1.title_multiloc,
+        total_online_votes: 0,
+        total_offline_votes: 0,
+        total_votes: 0,
+        demographic_breakdown: { '_blank' => 0 }
+      },
+      {
+        id: idea2.id,
+        title_multiloc: idea2.title_multiloc,
+        total_online_votes: 0,
+        total_offline_votes: 10,
+        total_votes: 10,
+        demographic_breakdown: { '_blank' => 10 }
+      })
     end
 
     it 'handles empty ideas and participations' do
@@ -205,34 +201,29 @@ RSpec.describe Insights::VotingPhaseInsightsService do
     it 'gives expected results when custom_field is nil' do
       result = service.vote_counts_with_user_custom_field_grouping(nil)
 
-      expect(result).to eq(
-        {
-          online_votes: 47,
-          offline_votes: 10,
-          total_votes: 57,
-          group_by: nil,
-          custom_field_id: nil,
-          options: [],
-          ideas: [
-            {
-              id: idea1.id,
-              title_multiloc: idea1.title_multiloc,
-              total_online_votes: 2,
-              total_offline_votes: 0,
-              total_votes: 2,
-              demographic_breakdown: nil
-            },
-            {
-              id: idea2.id,
-              title_multiloc: idea2.title_multiloc,
-              total_online_votes: 45,
-              total_offline_votes: 10,
-              total_votes: 55,
-              demographic_breakdown: nil
-            }
-          ]
-        }
-      )
+      expect(result[:online_votes]).to eq(47)
+      expect(result[:offline_votes]).to eq(10)
+      expect(result[:total_votes]).to eq(57)
+      expect(result[:group_by]).to be_nil
+      expect(result[:custom_field_id]).to be_nil
+      expect(result[:options]).to eq([])
+
+      expect(result[:ideas]).to contain_exactly({
+        id: idea1.id,
+        title_multiloc: idea1.title_multiloc,
+        total_online_votes: 2,
+        total_offline_votes: 0,
+        total_votes: 2,
+        demographic_breakdown: nil
+      },
+      {
+        id: idea2.id,
+        title_multiloc: idea2.title_multiloc,
+        total_online_votes: 45,
+        total_offline_votes: 10,
+        total_votes: 55,
+        demographic_breakdown: nil
+      })
     end
 
     it 'gives expected results when grouping by a single-select custom field' do
@@ -243,48 +234,43 @@ RSpec.describe Insights::VotingPhaseInsightsService do
 
       result = service.vote_counts_with_user_custom_field_grouping(custom_field.id)
 
-      expect(result).to eq(
-        {
-          online_votes: 47,
-          offline_votes: 10,
-          total_votes: 57,
-          group_by: 'gender',
-          custom_field_id: custom_field.id,
-          options: [
-            { male: { id: custom_field.options.find_by(key: 'male').id, title_multiloc: { 'en' => 'Male' } }, ordering: 0 },
-            { female: { id: custom_field.options.find_by(key: 'female').id, title_multiloc: { 'en' => 'Female' } }, ordering: 1 },
-            { unspecified: { id: custom_field.options.find_by(key: 'unspecified').id, title_multiloc: { 'en' => 'Unspecified' } }, ordering: 2 }
-          ],
-          ideas: [
-            {
-              id: idea1.id,
-              title_multiloc: idea1.title_multiloc,
-              total_online_votes: 2,
-              total_offline_votes: 0,
-              total_votes: 2,
-              demographic_breakdown: {
-                'male' => 2,
-                'female' => 0,
-                'unspecified' => 0,
-                '_blank' => 0
-              }
-            },
-            {
-              id: idea2.id,
-              title_multiloc: idea2.title_multiloc,
-              total_online_votes: 45,
-              total_offline_votes: 10,
-              total_votes: 55,
-              demographic_breakdown: {
-                'male' => 3,
-                'female' => 0,
-                'unspecified' => 0,
-                '_blank' => 52
-              }
-            }
-          ]
+      expect(result[:online_votes]).to eq(47)
+      expect(result[:offline_votes]).to eq(10)
+      expect(result[:total_votes]).to eq(57)
+      expect(result[:group_by]).to eq('gender')
+      expect(result[:custom_field_id]).to eq(custom_field.id)
+      expect(result[:options]).to eq([
+        { male: { id: custom_field.options.find_by(key: 'male').id, title_multiloc: { 'en' => 'Male' } }, ordering: 0 },
+        { female: { id: custom_field.options.find_by(key: 'female').id, title_multiloc: { 'en' => 'Female' } }, ordering: 1 },
+        { unspecified: { id: custom_field.options.find_by(key: 'unspecified').id, title_multiloc: { 'en' => 'Unspecified' } }, ordering: 2 }
+      ])
+
+      expect(result[:ideas]).to contain_exactly({
+        id: idea1.id,
+        title_multiloc: idea1.title_multiloc,
+        total_online_votes: 2,
+        total_offline_votes: 0,
+        total_votes: 2,
+        demographic_breakdown: {
+          'male' => 2,
+          'female' => 0,
+          'unspecified' => 0,
+          '_blank' => 0
         }
-      )
+      },
+      {
+        id: idea2.id,
+        title_multiloc: idea2.title_multiloc,
+        total_online_votes: 45,
+        total_offline_votes: 10,
+        total_votes: 55,
+        demographic_breakdown: {
+          'male' => 3,
+          'female' => 0,
+          'unspecified' => 0,
+          '_blank' => 52
+        }
+      })
     end
 
     it 'gives expected results when grouping by a multi-select custom field' do
@@ -296,45 +282,40 @@ RSpec.describe Insights::VotingPhaseInsightsService do
 
       result = service.vote_counts_with_user_custom_field_grouping(custom_field.id)
 
-      expect(result).to eq(
-        {
-          online_votes: 47,
-          offline_votes: 10,
-          total_votes: 57,
-          group_by: 'multiselect',
-          custom_field_id: custom_field.id,
-          options: [
-            { option_a: { id: custom_field.options.find_by(key: 'option_a').id, title_multiloc: { 'en' => 'Option A' } }, ordering: 0 },
-            { option_b: { id: custom_field.options.find_by(key: 'option_b').id, title_multiloc: { 'en' => 'Option B' } }, ordering: 1 }
-          ],
-          ideas: [
-            {
-              id: idea1.id,
-              title_multiloc: idea1.title_multiloc,
-              total_online_votes: 2,
-              total_offline_votes: 0,
-              total_votes: 2,
-              demographic_breakdown: {
-                'option_a' => 2,
-                'option_b' => 2,
-                '_blank' => 0
-              }
-            },
-            {
-              id: idea2.id,
-              title_multiloc: idea2.title_multiloc,
-              total_online_votes: 45,
-              total_offline_votes: 10,
-              total_votes: 55,
-              demographic_breakdown: {
-                'option_a' => 3,
-                'option_b' => 3,
-                '_blank' => 52
-              }
-            }
-          ]
+      expect(result[:online_votes]).to eq(47)
+      expect(result[:offline_votes]).to eq(10)
+      expect(result[:total_votes]).to eq(57)
+      expect(result[:group_by]).to eq('multiselect')
+      expect(result[:custom_field_id]).to eq(custom_field.id)
+      expect(result[:options]).to eq([
+        { option_a: { id: custom_field.options.find_by(key: 'option_a').id, title_multiloc: { 'en' => 'Option A' } }, ordering: 0 },
+        { option_b: { id: custom_field.options.find_by(key: 'option_b').id, title_multiloc: { 'en' => 'Option B' } }, ordering: 1 }
+      ])
+
+      expect(result[:ideas]).to contain_exactly({
+        id: idea1.id,
+        title_multiloc: idea1.title_multiloc,
+        total_online_votes: 2,
+        total_offline_votes: 0,
+        total_votes: 2,
+        demographic_breakdown: {
+          'option_a' => 2,
+          'option_b' => 2,
+          '_blank' => 0
         }
-      )
+      },
+      {
+        id: idea2.id,
+        title_multiloc: idea2.title_multiloc,
+        total_online_votes: 45,
+        total_offline_votes: 10,
+        total_votes: 55,
+        demographic_breakdown: {
+          'option_a' => 3,
+          'option_b' => 3,
+          '_blank' => 52
+        }
+      })
     end
 
     it 'gives expected results when grouping by a checkbox custom field' do
@@ -343,42 +324,37 @@ RSpec.describe Insights::VotingPhaseInsightsService do
 
       result = service.vote_counts_with_user_custom_field_grouping(custom_field.id)
 
-      expect(result).to eq(
-        {
-          online_votes: 47,
-          offline_votes: 10,
-          total_votes: 57,
-          group_by: 'checkbox',
-          custom_field_id: custom_field.id,
-          options: [],
-          ideas: [
-            {
-              id: idea1.id,
-              title_multiloc: idea1.title_multiloc,
-              total_online_votes: 2,
-              total_offline_votes: 0,
-              total_votes: 2,
-              demographic_breakdown: {
-                true => 2,
-                false => 0,
-                '_blank' => 0
-              }
-            },
-            {
-              id: idea2.id,
-              title_multiloc: idea2.title_multiloc,
-              total_online_votes: 45,
-              total_offline_votes: 10,
-              total_votes: 55,
-              demographic_breakdown: {
-                true => 3,
-                false => 0,
-                '_blank' => 52
-              }
-            }
-          ]
+      expect(result[:online_votes]).to eq(47)
+      expect(result[:offline_votes]).to eq(10)
+      expect(result[:total_votes]).to eq(57)
+      expect(result[:group_by]).to eq('checkbox')
+      expect(result[:custom_field_id]).to eq(custom_field.id)
+      expect(result[:options]).to eq([])
+
+      expect(result[:ideas]).to contain_exactly({
+        id: idea1.id,
+        title_multiloc: idea1.title_multiloc,
+        total_online_votes: 2,
+        total_offline_votes: 0,
+        total_votes: 2,
+        demographic_breakdown: {
+          true => 2,
+          false => 0,
+          '_blank' => 0
         }
-      )
+      },
+      {
+        id: idea2.id,
+        title_multiloc: idea2.title_multiloc,
+        total_online_votes: 45,
+        total_offline_votes: 10,
+        total_votes: 55,
+        demographic_breakdown: {
+          true => 3,
+          false => 0,
+          '_blank' => 52
+        }
+      })
     end
   end
 end
