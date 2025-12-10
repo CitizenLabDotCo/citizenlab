@@ -507,11 +507,11 @@ describe 'Rack::Attack' do
     end
   end
 
-  it 'limits unconfirmed login requests from same IP to 5 in 20 seconds' do
+  it 'limits unconfirmed login requests from same IP to 10 in 20 seconds' do
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
     freeze_time do
-      5.times do |i|
+      10.times do |i|
         post(
           '/web_api/v1/user_token/unconfirmed',
           params: "{ \"auth\": { \"email\": \"user#{i}@test.com\" } }",
@@ -538,9 +538,9 @@ describe 'Rack::Attack' do
     end
   end
 
-  it 'limits unconfirmed login requests to same email to 5 in 5 minutes' do
+  it 'limits unconfirmed login requests to same email to 10 in 20 seconds' do
     freeze_time do
-      5.times do |i|
+      10.times do |i|
         headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => "1.2.3.#{i}" }
         post(
           '/web_api/v1/user_token/unconfirmed',
@@ -559,7 +559,7 @@ describe 'Rack::Attack' do
       expect(status).to eq(429) # Too many requests
     end
 
-    travel_to(5.minutes.from_now) do
+    travel_to(21.seconds.from_now) do
       headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.8' }
       post(
         '/web_api/v1/user_token/unconfirmed',
