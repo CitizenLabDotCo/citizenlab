@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Text, Select } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
-import { SortOption } from 'api/phase_insights/types';
+import { SortOption } from 'api/common_ground_insights/types';
 
 import { useIntl } from 'utils/cl-intl';
 

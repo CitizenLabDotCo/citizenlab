@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 
-import { SortOption } from 'api/phase_insights/types';
-import useCommonGroundInsights from 'api/phase_insights/useCommonGroundInsights';
+import { SortOption } from 'api/common_ground_insights/types';
+import useCommonGroundInsights from 'api/common_ground_insights/useCommonGroundInsights';
 
 import useLocale from 'hooks/useLocale';
 

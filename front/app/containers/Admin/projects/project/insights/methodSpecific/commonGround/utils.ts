@@ -1,4 +1,4 @@
-import { SortOption } from 'api/phase_insights/types';
+import { SortOption } from 'api/common_ground_insights/types';
 
 export interface VoteStats {
   up: number;
