@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
+
+import GoBackButton from 'components/UI/GoBackButton';
 
 import TopicsSidebar from './TopicsSidebar';
 
 const IdeasFeedPage = () => {
+  const { slug } = useParams() as { slug: string };
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
+  const isMobile = useBreakpoint('phone');
 
   return (
     <main id="e2e-project-ideas-page">
@@ -19,6 +24,18 @@ const IdeasFeedPage = () => {
         zIndex="1010"
         overflow="hidden"
       >
+        {isMobile && (
+          <Box position="absolute" top="16px" left="16px" zIndex="1">
+            <GoBackButton
+              linkTo={selectedTopicId ? undefined : `/projects/${slug}`}
+              onClick={
+                selectedTopicId ? () => setSelectedTopicId(null) : undefined
+              }
+              showGoBackText={false}
+              buttonStyle="white"
+            />
+          </Box>
+        )}
         <Box
           mx="auto"
           position="relative"
@@ -30,7 +47,7 @@ const IdeasFeedPage = () => {
             selectedTopicId={selectedTopicId}
             onTopicSelect={setSelectedTopicId}
           />
-          <Box flex="4">Sticky notes will come here</Box>
+          <Box flex="4">Sticky notes will be placed here</Box>
         </Box>
       </Box>
     </main>

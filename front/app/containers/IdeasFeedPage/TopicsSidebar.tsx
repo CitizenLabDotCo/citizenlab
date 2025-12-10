@@ -24,6 +24,7 @@ import AvatarBubbles from 'components/AvatarBubbles';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import BottomSheet from './BottomSheet';
+import messages from './messages';
 import SelectedTopicView from './SelectedTopicView';
 import { getTopicProgressBarColor } from './topicsColor';
 
@@ -136,6 +137,7 @@ const TopicsContent: React.FC<TopicsContentProps> = ({
       <SelectedTopicView
         topic={selectedTopic}
         onBack={() => onTopicSelect(null)}
+        hideBackButton={!showBackButton}
       />
     );
   }
@@ -144,7 +146,11 @@ const TopicsContent: React.FC<TopicsContentProps> = ({
     <>
       {showBackButton && (
         <Box mb="24px">
-          <GoBackButton linkTo={`/projects/${slug}`} size="s" />
+          <GoBackButton
+            linkTo={`/projects/${slug}`}
+            size="s"
+            customMessage={messages.backToProject}
+          />
         </Box>
       )}
 
@@ -159,7 +165,7 @@ const TopicsContent: React.FC<TopicsContentProps> = ({
           />
         )}
       </Box>
-
+      <Divider mb="0px" />
       {topics.data.map((topic) => (
         <TopicItem
           key={topic.id}

@@ -5,6 +5,8 @@ import styled from 'styled-components';
 
 const COLLAPSED_HEIGHT = 60;
 
+const SHEET_HEIGHT = 'calc(80vh - 60px)';
+
 const Container = styled.div<{ translateY: number; isDragging: boolean }>`
   position: fixed;
   bottom: 0;
@@ -17,7 +19,7 @@ const Container = styled.div<{ translateY: number; isDragging: boolean }>`
   transform: translateY(${({ translateY }) => translateY}px);
   transition: ${({ isDragging }) =>
     isDragging ? 'none' : 'transform 0.3s ease-out'};
-  max-height: 80vh;
+  height: ${SHEET_HEIGHT};
   z-index: 1020;
 `;
 
@@ -176,12 +178,7 @@ const BottomSheet: React.FC<Props> = ({ children }) => {
         <DragHandle />
       </DragArea>
 
-      <Box
-        px="16px"
-        pb="24px"
-        overflowY="auto"
-        style={{ maxHeight: 'calc(80vh - 100px)' }}
-      >
+      <Box px="16px" pb="24px" overflowY="auto" h="100%">
         {children}
       </Box>
     </Container>
