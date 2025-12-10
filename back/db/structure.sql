@@ -2324,7 +2324,8 @@ CREATE TABLE public.custom_fields (
     question_category character varying,
     include_in_printed_form boolean DEFAULT true NOT NULL,
     min_characters integer,
-    max_characters integer
+    max_characters integer,
+    CONSTRAINT custom_form_first_field_must_be_page CHECK ((((resource_type)::text <> 'CustomForm'::text) OR (ordering <> 0) OR ((input_type)::text = 'page'::text)))
 );
 
 
@@ -8120,6 +8121,8 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251210114620'),
+('20251210113143'),
 ('20251209135529'),
 ('20251208163107'),
 ('20251127085639'),

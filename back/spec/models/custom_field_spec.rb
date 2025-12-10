@@ -200,6 +200,29 @@ RSpec.describe CustomField do
     end
   end
 
+  describe 'first page validation' do
+    it 'rejects a non-page as the first field in an input form' do
+      field = build(:custom_field, resource: build(:custom_form), ordering: 0, input_type: 'text')
+      expect(field.valid?).to be false
+      expect(field.errors.details).to eq({ input_type: [{ error: :inclusion, value: 'text' }] })
+    end
+
+    it 'accepts a page as the first field in an input form' do
+      field = build(:custom_field_page, resource: build(:custom_form), ordering: 0, input_type: 'page')
+      expect(field.valid?).to be true
+    end
+
+    it 'accepts a non-page as a non-first field in an input form' do
+      field = build(:custom_field, resource: build(:custom_form), ordering: 1, input_type: 'text')
+      expect(field.valid?).to be true
+    end
+
+    it 'accepts a non-page as the first field in a registration form' do
+      field = build(:custom_field, resource_type: 'User', ordering: 0, input_type: 'text')
+      expect(field.valid?).to be true
+    end 
+  end
+
   describe 'page_layout validation' do
     context 'for page custom_field' do
       let(:page_custom_field) { build(:custom_field_page) }
