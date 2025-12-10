@@ -5,6 +5,7 @@ module Insights
       ideas = @phase.ideas.transitive # TODO: This may not be precise enough
       participations = cached_phase_participations
       voting_participations = participations[:voting]
+      total_votes = voting_participations.sum { |p| p[:total_votes] } + @phase.manual_votes_count
 
       options = if field&.options&.any?
         field.options.map do |opt|
@@ -17,23 +18,24 @@ module Insights
       {
         online_votes: voting_participations.sum { |p| p[:total_votes] },
         offline_votes: @phase.manual_votes_count,
-        total_votes: voting_participations.sum { |p| p[:total_votes] } + @phase.manual_votes_count,
+        total_votes: total_votes,
         group_by: field&.key,
         custom_field_id: custom_field_id,
         input_type: field&.input_type,
         options: options,
-        ideas: idea_vote_counts_data(ideas, voting_participations, field)
+        ideas: idea_vote_counts_data(ideas, voting_participations, field, total_votes)
       }
     end
 
     private
 
-    def idea_vote_counts_data(ideas, voting_participations, field)
+    def idea_vote_counts_data(ideas, voting_participations, field, total_phase_votes)
       idea_ids_to_user_custom_field_values = idea_ids_to_user_custom_field_values(voting_participations)
 
       ideas.map do |idea|
         total_online_votes = idea&.votes_count || 0
         total_offline_votes = idea&.manual_votes_amount || 0
+        total_votes = total_online_votes + total_offline_votes
 
         grouped_online_votes = if field
           vote_custom_field_values = idea_ids_to_user_custom_field_values[idea.id] || []
@@ -53,10 +55,17 @@ module Insights
           title_multiloc: idea.title_multiloc,
           total_online_votes: total_online_votes,
           total_offline_votes: total_offline_votes,
-          total_votes: total_online_votes + total_offline_votes,
+          total_votes: total_votes,
+          percentage: a_as_percentage_of_b(total_votes, total_phase_votes),
           demographic_breakdown: grouped_online_votes
         }
       end
+    end
+
+    def a_as_percentage_of_b(a, b)
+      return 0.0 if b.zero? # TODO: Raise error? (or nil?)
+
+      ((a.to_f / b.to_f) * 100).round(1)
     end
 
     # Because we are grouping/slicing by votes per demographic attribute (and for blank == no answer),

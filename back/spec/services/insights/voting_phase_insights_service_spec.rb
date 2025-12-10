@@ -140,7 +140,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       participations[0][:user_custom_field_values] = { 'gender' => 'female' }
       participations[1][:user_custom_field_values] = { 'gender' => 'male' }
 
-      data = service.send(:idea_vote_counts_data, [idea1, idea2], participations, custom_field)
+      phase_total_votes = 57
+      data = service.send(:idea_vote_counts_data, [idea1, idea2], participations, custom_field, phase_total_votes)
 
       expect(data).to contain_exactly(
         {
@@ -149,6 +150,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_online_votes: 2,
           total_offline_votes: 0,
           total_votes: 2,
+          percentage: 3.5,
           demographic_breakdown: {
             'female' => 2,
             '_blank' => 0
@@ -160,6 +162,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_online_votes: 45,
           total_offline_votes: 10,
           total_votes: 55,
+          percentage: 96.5,
           demographic_breakdown: {
             'female' => 3,
             'male' => 42,
@@ -174,7 +177,9 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       idea1.update!(votes_count: 0)
       idea2.update!(votes_count: 0)
 
-      data = service.send(:idea_vote_counts_data, [idea1, idea2], [], custom_field)
+      phase_total_votes = 57
+      data = service.send(:idea_vote_counts_data, [idea1, idea2], [], custom_field, phase_total_votes)
+
       expect(data).to contain_exactly(
         {
           id: idea1.id,
@@ -182,6 +187,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_online_votes: 0,
           total_offline_votes: 0,
           total_votes: 0,
+          percentage: 0.0,
           demographic_breakdown: { '_blank' => 0 }
         },
         {
@@ -190,13 +196,14 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_online_votes: 0,
           total_offline_votes: 10,
           total_votes: 10,
+          percentage: 17.5, # 10 / 57 total_phase_votes * 100
           demographic_breakdown: { '_blank' => 10 }
         }
       )
     end
 
     it 'handles empty ideas and participations' do
-      data = service.send(:idea_vote_counts_data, [], [], custom_field)
+      data = service.send(:idea_vote_counts_data, [], [], custom_field, 57)
       expect(data).to eq([])
     end
   end
@@ -220,6 +227,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_online_votes: 2,
           total_offline_votes: 0,
           total_votes: 2,
+          percentage: 3.5, # 2 / 57 total_phase_votes * 100
           demographic_breakdown: nil
         },
         {
@@ -228,6 +236,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_online_votes: 45,
           total_offline_votes: 10,
           total_votes: 55,
+          percentage: 96.5, # 55 / 57 total_phase_votes * 100
           demographic_breakdown: nil
         }
       )
@@ -260,6 +269,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_online_votes: 2,
           total_offline_votes: 0,
           total_votes: 2,
+          percentage: 3.5, # 2 / 57 total_phase_votes * 100
           demographic_breakdown: {
             'male' => 2,
             'female' => 0,
@@ -273,6 +283,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_online_votes: 45,
           total_offline_votes: 10,
           total_votes: 55,
+          percentage: 96.5, # 55 / 57 total_phase_votes * 100
           demographic_breakdown: {
             'male' => 3,
             'female' => 0,
@@ -310,6 +321,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_online_votes: 2,
           total_offline_votes: 0,
           total_votes: 2,
+          percentage: 3.5, # 2 / 57 total_phase_votes * 100
           demographic_breakdown: {
             'option_a' => 2,
             'option_b' => 2,
@@ -322,6 +334,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_online_votes: 45,
           total_offline_votes: 10,
           total_votes: 55,
+          percentage: 96.5, # 55 / 57 total_phase_votes * 100
           demographic_breakdown: {
             'option_a' => 3,
             'option_b' => 3,
@@ -352,6 +365,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_online_votes: 2,
           total_offline_votes: 0,
           total_votes: 2,
+          percentage: 3.5, # 2 / 57 total_phase_votes * 100
           demographic_breakdown: {
             true => 2,
             false => 0,
@@ -364,6 +378,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_online_votes: 45,
           total_offline_votes: 10,
           total_votes: 55,
+          percentage: 96.5, # 55 / 57 total_phase_votes * 100
           demographic_breakdown: {
             true => 3,
             false => 0,
@@ -402,6 +417,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_online_votes: 2,
           total_offline_votes: 0,
           total_votes: 2,
+          percentage: 3.5, # 2 / 57 total_phase_votes * 100
           demographic_breakdown: {
             '18-24' => 0,
             '25-34' => 2,
@@ -418,6 +434,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_online_votes: 45,
           total_offline_votes: 10,
           total_votes: 55,
+          percentage: 96.5, # 55 / 57 total_phase_votes * 100
           demographic_breakdown: {
             '18-24' => 0,
             '25-34' => 3,
