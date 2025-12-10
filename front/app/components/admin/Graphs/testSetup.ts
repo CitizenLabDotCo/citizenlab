@@ -42,27 +42,7 @@ function getMockDimensions(element: Element | null): {
   return { width: width > 0 ? width : 400, height: height > 0 ? height : 200 };
 }
 
-// Mock getBoundingClientRect to return dimensions based on element styles.
-// This is needed because recharts' ResponsiveContainer uses getBoundingClientRect
-// to determine chart dimensions, and JSDOM doesn't support real layout.
-Element.prototype.getBoundingClientRect = function () {
-  const { width, height } = getMockDimensions(this);
-  return {
-    width,
-    height,
-    top: 0,
-    left: 0,
-    bottom: height,
-    right: width,
-    x: 0,
-    y: 0,
-    toJSON: () => ({}),
-  };
-};
-
 // Mock ResizeObserver that calls callback with dimensions.
-// This is needed because our Container component uses ResizeObserver
-// to get dimensions for legend positioning.
 class MockResizeObserver {
   private callback: ResizeObserverCallback;
 
@@ -104,4 +84,26 @@ class MockResizeObserver {
   disconnect() {}
 }
 
-window.ResizeObserver = MockResizeObserver;
+/**
+ * - Mocks getBoundingClientRect to return dimensions from element styles
+ * - Mocks ResizeObserver to call callback with dimensions
+ *
+ */
+export function setupRechartsTests() {
+  Element.prototype.getBoundingClientRect = function () {
+    const { width, height } = getMockDimensions(this);
+    return {
+      width,
+      height,
+      top: 0,
+      left: 0,
+      bottom: height,
+      right: width,
+      x: 0,
+      y: 0,
+      toJSON: () => ({}),
+    };
+  };
+
+  window.ResizeObserver = MockResizeObserver;
+}
