@@ -73,7 +73,7 @@ class Rack::Attack
   throttle('user_token_unconfirmed/email', limit: 10, period: 20.seconds) do |req|
     if req.path == '/web_api/v1/user_token/unconfirmed' && req.post?
       begin
-        JSON.parse(req.body.string).dig('auth', 'email')&.to_s&.downcase&.gsub(/\s+/, '')&.presence
+        JSON.parse(req.body.string).dig('auth', 'email').to_s.downcase.strip.presence
       rescue JSON::ParserError
         # do nothing
       end
