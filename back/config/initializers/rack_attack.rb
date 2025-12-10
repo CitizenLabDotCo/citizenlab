@@ -164,7 +164,7 @@ class Rack::Attack
     if req.path.start_with?('/web_api/v1/users/check') && req.get?
       begin
         # Extract email from the path: /web_api/v1/users/check/user@test.com
-        req.path.split('/').last&.to_s&.downcase&.gsub(/\s+/, '')&.presence
+        req.path.split('/').last&.downcase&.strip&.presence
       rescue StandardError
         # do nothing
       end
