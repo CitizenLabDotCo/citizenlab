@@ -12,10 +12,12 @@ module Insights
         total_votes: voting_participations.sum { |p| p[:total_votes] } + @phase.manual_votes_count,
         group_by: field&.key,
         custom_field_id: custom_field_id,
-        options: field ? field.options.map { |opt| { "#{opt.key}": { id: opt.id, title: opt.title_multiloc } } } : [],
+        options: field ? field.options.map { |opt| { "#{opt.key}": { id: opt.id, title_multiloc: opt.title_multiloc } } } : [],
         ideas: idea_vote_counts_data(ideas, voting_participations, field)
       }
     end
+
+    private
 
     def idea_vote_counts_data(ideas, voting_participations, field)
       idea_ids_to_user_custom_field_values = idea_ids_to_user_custom_field_values(voting_participations)
@@ -27,13 +29,14 @@ module Insights
         grouped_online_votes = if field
           vote_custom_field_values = idea_ids_to_user_custom_field_values[idea.id] || []
           counts = select_or_checkbox_counts_for_field(vote_custom_field_values, field)
+          counts['_blank'] ||= 0
           counts['_blank'] += total_offline_votes
           counts
         end
 
         {
           id: idea.id,
-          title: idea.title_multiloc,
+          title_multiloc: idea.title_multiloc,
           total_online_votes: total_online_votes,
           total_offline_votes: total_offline_votes,
           total_votes: total_online_votes + total_offline_votes,
@@ -56,8 +59,6 @@ module Insights
 
       grouped_data.group_by(&:first).transform_values { |arr| arr.map(&:last) }
     end
-
-    private
 
     def phase_participations
       # Events are not associated with phase, so attending_event not included at phase-level.
