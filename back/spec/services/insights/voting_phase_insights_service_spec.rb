@@ -372,5 +372,63 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         }
       )
     end
+
+    it 'gives expected results when grouping by a birthyear custom field' do
+      custom_field = create(:custom_field, resource_type: 'User', key: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' })
+
+      create(
+        :binned_distribution,
+        custom_field: custom_field,
+        bins: [18, 25, 35, 45, 55, 65, nil], # Age ranges: <18, 18-25, 25-35, 35-45, 45-65, >65
+        counts: [50, 200, 400, 300, 50, 700] # Population in each bin
+      )
+
+      user.update!(custom_field_values: { 'birthyear' => Date.current.year - 30 }) # Age 30
+
+      result = service.vote_counts_with_user_custom_field_grouping(custom_field.id)
+
+      expect(result[:online_votes]).to eq(47)
+      expect(result[:offline_votes]).to eq(10)
+      expect(result[:total_votes]).to eq(57)
+      expect(result[:group_by]).to eq('birthyear')
+      expect(result[:custom_field_id]).to eq(custom_field.id)
+      expect(result[:input_type]).to eq('number')
+      expect(result[:options]).to eq([])
+
+      expect(result[:ideas]).to contain_exactly(
+        {
+          id: idea1.id,
+          title_multiloc: idea1.title_multiloc,
+          total_online_votes: 2,
+          total_offline_votes: 0,
+          total_votes: 2,
+          demographic_breakdown: {
+            '18-24' => 0,
+            '25-34' => 2,
+            '35-44' => 0,
+            '45-54' => 0,
+            '55-64' => 0,
+            '65+' => 0,
+            '_blank' => 0
+          }
+        },
+        {
+          id: idea2.id,
+          title_multiloc: idea2.title_multiloc,
+          total_online_votes: 45,
+          total_offline_votes: 10,
+          total_votes: 55,
+          demographic_breakdown: {
+            '18-24' => 0,
+            '25-34' => 3,
+            '35-44' => 0,
+            '45-54' => 0,
+            '55-64' => 0,
+            '65+' => 0,
+            '_blank' => 52
+          }
+        }
+      )
+    end
   end
 end

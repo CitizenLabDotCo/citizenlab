@@ -37,7 +37,12 @@ module Insights
 
         grouped_online_votes = if field
           vote_custom_field_values = idea_ids_to_user_custom_field_values[idea.id] || []
-          counts = select_or_checkbox_counts_for_field(vote_custom_field_values, field)
+          counts = if field.key == 'birthyear'
+            birthyear_counts(vote_custom_field_values)
+          else
+            select_or_checkbox_counts_for_field(vote_custom_field_values, field)
+          end
+
           counts['_blank'] ||= 0
           counts['_blank'] += total_offline_votes
           counts
@@ -67,6 +72,11 @@ module Insights
       end
 
       grouped_data.group_by(&:first).transform_values { |arr| arr.map(&:last) }
+    end
+
+    def birthyear_counts(vote_custom_field_values)
+      age_stats = UserCustomFields::AgeStats.calculate(vote_custom_field_values)
+      age_stats.format_in_ranges[:ranged_series]
     end
 
     def phase_participations
