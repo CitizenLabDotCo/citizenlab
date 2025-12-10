@@ -139,7 +139,7 @@ describe UserPolicy do
       it { is_expected.not_to permit(:block)   }
       it { is_expected.not_to permit(:unblock) }
       it { is_expected.not_to permit(:index_xlsx) }
-      it { is_expected.to     permit(:participation_stats) }
+      it { is_expected.not_to permit(:participation_stats) }
 
       it 'does not index the user through the scope' do
         subject_user.save!
@@ -195,7 +195,7 @@ describe UserPolicy do
       it { is_expected.not_to permit(:block)   }
       it { is_expected.not_to permit(:unblock) }
       it { is_expected.not_to permit(:index_xlsx) }
-      it { is_expected.to     permit(:participation_stats) }
+      it { is_expected.not_to permit(:participation_stats) }
 
       it 'does not index the user through the scope' do
         subject_user.save!

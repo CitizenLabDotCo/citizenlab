@@ -77,7 +77,9 @@ class UserPolicy < ApplicationPolicy
   end
 
   def participation_stats?
-    record.id == user&.id || (active? && !user.normal_user?)
+    # Currently, participation_stats is only used in the delete user modal, so only admin
+    # users should have access (self is not even used).
+    record.id == user&.id || active_admin?
   end
 
   def update_password?
