@@ -3,7 +3,7 @@
 # After https://github.com/nsarno/knock/blob/master/app/controllers/knock/auth_token_controller.rb.
 module AuthToken
   class AuthTokenController < ActionController::API
-    before_action :authenticate, only: [:create]
+    before_action :authenticate
 
     rescue_from ActiveRecord::RecordNotFound, with: :not_found
 
