@@ -14,7 +14,7 @@ module AuthToken
     private
 
     def authenticate
-      block_because_requires_confirmation = entity.respond_to?(:confirmation_required?) && entity.confirmation_required?
+      block_because_requires_confirmation = entity.try(:confirmation_required?)
 
       return if entity.present? &&
                 entity.authenticate(auth_params[secret_param]) &&
