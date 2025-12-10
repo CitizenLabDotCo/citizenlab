@@ -20,7 +20,11 @@ module WebApi
             return
           end
 
-          counts_data = @phase.pmethod.phase_insights_class.new(@phase).vote_counts_with_user_custom_field_grouping(nil)
+          group_by = params.permit(:group_by)[:group_by]
+
+          custom_field = CustomField.find_by(key: group_by) if group_by.present?
+
+          counts_data = @phase.pmethod.phase_insights_class.new(@phase).vote_counts_with_user_custom_field_grouping(custom_field)
 
           render json: WebApi::V1::Insights::VotingPhaseVotesSerializer.new(
             @phase,

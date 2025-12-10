@@ -1,7 +1,6 @@
 module Insights
   class VotingPhaseInsightsService < IdeationPhaseInsightsService
-    def vote_counts_with_user_custom_field_grouping(custom_field_id = nil)
-      field = CustomField.includes(:options).find_by(id: custom_field_id) if custom_field_id
+    def vote_counts_with_user_custom_field_grouping(custom_field = nil)
       ideas = @phase.ideas.transitive # TODO: This may not be precise enough
       participations = cached_phase_participations
       voting_participations = participations[:voting]
@@ -14,8 +13,8 @@ module Insights
 
       total_votes = online_votes + offline_votes
 
-      options = if field&.options&.any?
-        field.options.map do |opt|
+      options = if custom_field&.options&.any?
+        custom_field.options.map do |opt|
           { "#{opt.key}": { id: opt.id, title_multiloc: opt.title_multiloc }, ordering: opt.ordering }
         end
       else
@@ -26,11 +25,11 @@ module Insights
         online_votes: online_votes,
         offline_votes: offline_votes,
         total_votes: total_votes,
-        group_by: field&.key,
-        custom_field_id: custom_field_id,
-        input_type: field&.input_type,
+        group_by: custom_field&.key,
+        custom_field_id: custom_field&.id,
+        input_type: custom_field&.input_type,
         options: options,
-        ideas: idea_vote_counts_data(ideas, voting_participations, field, total_votes)
+        ideas: idea_vote_counts_data(ideas, voting_participations, custom_field, total_votes)
       }
     end
 
