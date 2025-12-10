@@ -152,8 +152,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_votes: 2,
           percentage: 3.5,
           demographic_breakdown: {
-            'female' => 2,
-            '_blank' => 0
+            'female' => { count: 2, percentage: 100.0 },
+            '_blank' => { count: 0, percentage: 0.0}
           }
         },
         {
@@ -164,9 +164,9 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_votes: 55,
           percentage: 96.5,
           demographic_breakdown: {
-            'female' => 3,
-            'male' => 42,
-            '_blank' => 10
+            'female' => { count: 3, percentage: 5.5 },
+            'male' => { count: 42, percentage: 76.4 },
+            '_blank' => { count: 10, percentage: 18.2 }
           }
         }
       )
@@ -188,7 +188,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_offline_votes: 0,
           total_votes: 0,
           percentage: 0.0,
-          demographic_breakdown: { '_blank' => 0 }
+          demographic_breakdown: { '_blank' => { count: 0, percentage: nil } }
         },
         {
           id: idea2.id,
@@ -197,7 +197,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_offline_votes: 10,
           total_votes: 10,
           percentage: 17.5, # 10 / 57 total_phase_votes * 100
-          demographic_breakdown: { '_blank' => 10 }
+          demographic_breakdown: { '_blank' => { count: 10, percentage: 100.0 } }
         }
       )
     end
@@ -277,10 +277,10 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_votes: 2,
           percentage: 3.5, # 2 / 57 total_phase_votes * 100
           demographic_breakdown: {
-            'male' => 2,
-            'female' => 0,
-            'unspecified' => 0,
-            '_blank' => 0
+            'male' => { count: 2, percentage: 100.0 },
+            'female' => { count: 0, percentage: 0.0 },
+            'unspecified' => { count: 0, percentage: 0.0 },
+            '_blank' => { count: 0, percentage: 0.0 }
           }
         },
         {
@@ -291,10 +291,10 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_votes: 55,
           percentage: 96.5, # 55 / 57 total_phase_votes * 100
           demographic_breakdown: {
-            'male' => 3,
-            'female' => 0,
-            'unspecified' => 0,
-            '_blank' => 52
+            'male' => { count: 3, percentage: 5.5 },
+            'female' => { count: 0, percentage: 0.0 },
+            'unspecified' => { count: 0, percentage: 0.0 },
+            '_blank' => { count: 52, percentage: 94.5 }
           }
         }
       )
@@ -329,9 +329,9 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_votes: 2,
           percentage: 3.5, # 2 / 57 total_phase_votes * 100
           demographic_breakdown: {
-            'option_a' => 2,
-            'option_b' => 2,
-            '_blank' => 0
+            'option_a' => { count: 2, percentage: 100.0 },
+            'option_b' => { count: 2, percentage: 100.0 },
+            '_blank' => { count: 0, percentage: 0.0 }
           }
         },
         {
@@ -342,9 +342,9 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_votes: 55,
           percentage: 96.5, # 55 / 57 total_phase_votes * 100
           demographic_breakdown: {
-            'option_a' => 3,
-            'option_b' => 3,
-            '_blank' => 52
+            'option_a' => { count: 3, percentage: 5.5 },
+            'option_b' => { count: 3, percentage: 5.5 },
+            '_blank' => { count: 52, percentage: 94.5 }
           }
         }
       )
@@ -373,9 +373,9 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_votes: 2,
           percentage: 3.5, # 2 / 57 total_phase_votes * 100
           demographic_breakdown: {
-            true => 2,
-            false => 0,
-            '_blank' => 0
+            true => { count: 2, percentage: 100.0 },
+            false => { count: 0, percentage: 0.0 },
+            '_blank' => { count: 0, percentage: 0.0 }
           }
         },
         {
@@ -386,9 +386,9 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_votes: 55,
           percentage: 96.5, # 55 / 57 total_phase_votes * 100
           demographic_breakdown: {
-            true => 3,
-            false => 0,
-            '_blank' => 52
+            true => { count: 3, percentage: 5.5 },
+            false => { count: 0, percentage: 0.0 },
+            '_blank' => { count: 52, percentage: 94.5 }
           }
         }
       )
@@ -425,13 +425,13 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_votes: 2,
           percentage: 3.5, # 2 / 57 total_phase_votes * 100
           demographic_breakdown: {
-            '18-24' => 0,
-            '25-34' => 2,
-            '35-44' => 0,
-            '45-54' => 0,
-            '55-64' => 0,
-            '65+' => 0,
-            '_blank' => 0
+            '18-24' => { count: 0, percentage: 0.0 },
+            '25-34' => { count: 2, percentage: 100.0 },
+            '35-44' => { count: 0, percentage: 0.0 },
+            '45-54' => { count: 0, percentage: 0.0 },
+            '55-64' => { count: 0, percentage: 0.0 },
+            '65+' => { count: 0, percentage: 0.0 },
+            '_blank' => { count: 0, percentage: 0.0 }
           }
         },
         {
@@ -442,13 +442,13 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_votes: 55,
           percentage: 96.5, # 55 / 57 total_phase_votes * 100
           demographic_breakdown: {
-            '18-24' => 0,
-            '25-34' => 3,
-            '35-44' => 0,
-            '45-54' => 0,
-            '55-64' => 0,
-            '65+' => 0,
-            '_blank' => 52
+            '18-24' => { count: 0, percentage: 0.0 },
+            '25-34' => { count: 3, percentage: 5.5 },
+            '35-44' => { count: 0, percentage: 0.0 },
+            '45-54' => { count: 0, percentage: 0.0 },
+            '55-64' => { count: 0, percentage: 0.0 },
+            '65+' => { count: 0, percentage: 0.0 },
+            '_blank' => { count: 52, percentage: 94.5 }
           }
         }
       )

@@ -47,18 +47,8 @@ module Insights
 
         total_offline_votes = idea&.manual_votes_amount || 0
         total_votes = total_online_votes + total_offline_votes
-
-        grouped_online_votes = if field
-          vote_custom_field_values = idea_ids_to_user_custom_field_values[idea.id] || []
-          counts = if field.key == 'birthyear'
-            birthyear_counts(vote_custom_field_values)
-          else
-            select_or_checkbox_counts_for_field(vote_custom_field_values, field)
-          end
-
-          counts['_blank'] ||= 0
-          counts['_blank'] += total_offline_votes
-          counts
+        votes_demographics = if field.present?
+          idea_votes_demographics(field, idea_ids_to_user_custom_field_values, idea, total_votes, total_offline_votes)
         end
 
         {
@@ -68,7 +58,7 @@ module Insights
           total_offline_votes: total_offline_votes,
           total_votes: total_votes,
           percentage: a_as_percentage_of_b(total_votes, total_phase_votes),
-          demographic_breakdown: grouped_online_votes
+          demographic_breakdown: votes_demographics
         }
       end
     end
@@ -86,6 +76,26 @@ module Insights
       end
 
       grouped_data.group_by(&:first).transform_values { |arr| arr.map(&:last) }
+    end
+
+    def idea_votes_demographics(field, idea_ids_to_user_custom_field_values, idea, total_votes, total_offline_votes)
+      vote_custom_field_values = idea_ids_to_user_custom_field_values[idea.id] || []
+      counts = if field.key == 'birthyear'
+        birthyear_counts(vote_custom_field_values)
+      else
+        select_or_checkbox_counts_for_field(vote_custom_field_values, field)
+      end
+
+      counts['_blank'] ||= 0
+      counts['_blank'] += total_offline_votes
+      counts
+
+      counts.transform_values do |count|
+        {
+          count: count,
+          percentage: a_as_percentage_of_b(count, total_votes)
+        }
+      end
     end
 
     def birthyear_counts(vote_custom_field_values)
