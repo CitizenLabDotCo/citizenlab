@@ -217,9 +217,9 @@ resource 'Phase insights' do
         expect(attributes[:online_votes]).to eq(6)
         expect(attributes[:offline_votes]).to eq(3)
         expect(attributes[:total_votes]).to eq(9)
-        expect(attributes[:group_by]).to eq(nil)
-        expect(attributes[:custom_field_id]).to eq(nil)
-        expect(attributes[:input_type]).to eq(nil)
+        expect(attributes[:group_by]).to be_nil
+        expect(attributes[:custom_field_id]).to be_nil
+        expect(attributes[:input_type]).to be_nil
         expect(attributes[:options]).to eq([])
         expect(attributes[:ideas]).to contain_exactly(
           {
