@@ -48,7 +48,7 @@ module Insights
           total_online_votes: total_online_votes,
           total_offline_votes: total_offline_votes,
           total_votes: total_online_votes + total_offline_votes,
-          grouped_online_votes: grouped_online_votes
+          demographic_breakdown: grouped_online_votes
         }
       end
     end

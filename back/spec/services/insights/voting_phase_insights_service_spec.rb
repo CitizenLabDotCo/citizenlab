@@ -149,7 +149,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_online_votes: 2,
           total_offline_votes: 0,
           total_votes: 2,
-          grouped_online_votes: {
+          demographic_breakdown: {
             'female' => 2,
             '_blank' => 0
           }
@@ -160,7 +160,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_online_votes: 45,
           total_offline_votes: 10,
           total_votes: 55,
-          grouped_online_votes: {
+          demographic_breakdown: {
             'female' => 3,
             'male' => 42,
             '_blank' => 10
@@ -182,7 +182,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_online_votes: 0,
           total_offline_votes: 0,
           total_votes: 0,
-          grouped_online_votes: { '_blank' => 0 }
+          demographic_breakdown: { '_blank' => 0 }
         },
         {
           id: idea2.id,
@@ -190,7 +190,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_online_votes: 0,
           total_offline_votes: 10,
           total_votes: 10,
-          grouped_online_votes: { '_blank' => 10 }
+          demographic_breakdown: { '_blank' => 10 }
         }
       ])
     end
@@ -220,7 +220,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
               total_online_votes: 2,
               total_offline_votes: 0,
               total_votes: 2,
-              grouped_online_votes: nil
+              demographic_breakdown: nil
             },
             {
               id: idea2.id,
@@ -228,7 +228,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
               total_online_votes: 45,
               total_offline_votes: 10,
               total_votes: 55,
-              grouped_online_votes: nil
+              demographic_breakdown: nil
             }
           ]
         }
@@ -262,7 +262,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
               total_online_votes: 2,
               total_offline_votes: 0,
               total_votes: 2,
-              grouped_online_votes: {
+              demographic_breakdown: {
                 'male' => 2,
                 'female' => 0,
                 'unspecified' => 0,
@@ -275,7 +275,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
               total_online_votes: 45,
               total_offline_votes: 10,
               total_votes: 55,
-              grouped_online_votes: {
+              demographic_breakdown: {
                 'male' => 3,
                 'female' => 0,
                 'unspecified' => 0,
