@@ -11,8 +11,8 @@ import AvatarBubbles from 'components/AvatarBubbles';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import messages from '../messages';
-import SelectedTopicView from '../SelectedTopicView';
 
+import SelectedTopicView from './SelectedTopicView';
 import TopicItem from './TopicItem';
 
 interface Props {

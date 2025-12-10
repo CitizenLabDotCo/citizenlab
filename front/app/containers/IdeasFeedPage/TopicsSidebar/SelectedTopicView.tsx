@@ -8,7 +8,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import GoBackButton from 'components/UI/GoBackButton';
 
-import messages from './messages';
+import messages from '../messages';
 
 interface Props {
   topic: ITopicData;
@@ -26,7 +26,7 @@ const SelectedTopicView: React.FC<Props> = ({
   return (
     <>
       {!hideBackButton && (
-        <Box mb="16px" px="16px">
+        <Box mb="16px">
           <GoBackButton
             onClick={onBack}
             customMessage={messages.allTopics}
