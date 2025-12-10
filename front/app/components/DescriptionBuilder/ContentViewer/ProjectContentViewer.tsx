@@ -6,6 +6,7 @@ import { Multiloc } from 'typings';
 
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 import useProjectFiles from 'api/project_files/useProjectFiles';
+import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
@@ -40,12 +41,14 @@ const ProjectContentViewer = ({
     name: 'project_description_builder',
   });
   const { data: projectFiles } = useProjectFiles(projectId);
+  const { data: project } = useProjectById(projectId);
   const { data: descriptionBuilderLayout, isInitialLoading } =
     useContentBuilderLayout('project', projectId, featureEnabled && enabled);
 
   if (!featureEnabled) return null;
 
   const descriptionBuilderContent =
+    project?.data.attributes.uses_content_builder &&
     descriptionBuilderLayout &&
     descriptionBuilderLayout.data.attributes.enabled &&
     !isEmpty(descriptionBuilderLayout.data.attributes.craftjs_json);
