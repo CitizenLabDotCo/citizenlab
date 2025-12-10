@@ -64,7 +64,7 @@ export const emailFlow = (
             const missingDataStep = checkMissingData(
               requirements,
               authenticationData,
-              state.flow,
+              'signin',
               true
             );
 
