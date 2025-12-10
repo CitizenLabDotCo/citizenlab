@@ -7,6 +7,7 @@ import IdeationInsights from './ideation/IdeationInsights';
 import NativeSurveyInsights from './nativeSurvey/NativeSurveyInsights';
 import ProposalsInsights from './proposals/ProposalsInsights';
 import { MethodSpecificInsightProps } from './types';
+import VotingInsights from './voting/VotingInsights';
 
 /**
  * Registry mapping participation methods to their insight components
@@ -19,7 +20,5 @@ export const methodSpecificInsightsRegistry: Partial<
   native_survey: NativeSurveyInsights,
   ideation: IdeationInsights,
   proposals: ProposalsInsights,
-  // Future implementations:
-  // voting: VotingInsights,
-  // etc.
+  voting: VotingInsights,
 };
