@@ -153,6 +153,7 @@ resource 'Confirmations' do
 
     context 'when user is not authenticated' do
       let(:code) { '1234' }
+
       example_request 'returns an unauthorized status when the user is not authenticated' do
         expect(status).to eq 401
       end
