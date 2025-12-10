@@ -14,7 +14,7 @@ export default defineMessages({
     defaultMessage: 'Traditional threaded discussion.',
   },
   forumViewBestFor: {
-    id: 'app.containers.AdminPage.ProjectEdit.Ideation.forumViewBestFor',
+    id: 'app.containers.AdminPage.ProjectEdit.Ideation.forumViewBestFor1',
     defaultMessage:
       'Best for: smaller discussions, when you want engagement metrics to drive visibility.',
   },
@@ -28,7 +28,7 @@ export default defineMessages({
       'Participants explore the discussion via emerging topics, and AI surfaces representative voices and bridges between perspectives.',
   },
   sensemakingViewBestFor: {
-    id: 'app.containers.AdminPage.ProjectEdit.Ideation.sensemakingViewBestFor',
+    id: 'app.containers.AdminPage.ProjectEdit.Ideation.sensemakingViewBestFor1',
     defaultMessage:
       'Best for: large-scale consultations, finding common ground, avoiding echo chambers.',
   },

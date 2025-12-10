@@ -1,7 +1,6 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { isEqual } from 'lodash-es';
 import { ResponsiveContainer } from 'recharts';
 import { Percentage } from 'typings';
 
@@ -48,39 +47,6 @@ const Container = ({
   onUpdateLegendDimensions,
   children,
 }: Props) => {
-  const prevDimensionsRef = useRef<GraphDimensions | undefined>();
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const onUpdateGraphDimensionsRef = useRef(onUpdateGraphDimensions);
-
-  useEffect(() => {
-    onUpdateGraphDimensionsRef.current = onUpdateGraphDimensions;
-  }, [onUpdateGraphDimensions]);
-
-  // In recharts 3.x, ResponsiveContainer's onResize callback is no longer
-  // reliably called on initial mount. We use our own ResizeObserver to detect
-  // container dimensions for positioning the legend.
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    const element = containerRef.current;
-    const observer = new ResizeObserver((entries) => {
-      const entry = entries[0];
-      if (!entry) return;
-
-      const { width, height } = entry.contentRect;
-      if (width <= 0 || height <= 0) return;
-
-      const newDimensions = { width, height };
-      if (isEqual(prevDimensionsRef.current, newDimensions)) return;
-
-      prevDimensionsRef.current = newDimensions;
-      onUpdateGraphDimensionsRef.current?.(newDimensions);
-    });
-
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, []);
-
   const rightLegend = legend?.position?.includes('right');
   const maintainGraphSize = !!legend?.maintainGraphSize;
 
@@ -98,6 +64,12 @@ const Container = ({
         (legend.marginTop ?? defaultLegendOffset)
       : height;
 
+  useEffect(() => {
+    if (typeof parsedWidth === 'number' && typeof parsedHeight === 'number') {
+      onUpdateGraphDimensions?.({ width: parsedWidth, height: parsedHeight });
+    }
+  }, [parsedWidth, parsedHeight, onUpdateGraphDimensions]);
+
   return (
     <Box
       display="flex"
@@ -107,7 +79,6 @@ const Container = ({
       height="100%"
     >
       <Box
-        ref={containerRef}
         width={
           typeof parsedWidth === 'number' ? `${parsedWidth}px` : parsedWidth
         }
