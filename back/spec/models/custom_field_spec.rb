@@ -220,7 +220,7 @@ RSpec.describe CustomField do
     it 'accepts a non-page as the first field in a registration form' do
       field = build(:custom_field, resource_type: 'User', ordering: 0, input_type: 'text')
       expect(field.valid?).to be true
-    end 
+    end
   end
 
   describe 'page_layout validation' do
