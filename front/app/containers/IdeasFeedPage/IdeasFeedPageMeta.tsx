@@ -8,12 +8,13 @@ import { IProjectData } from 'api/projects/types';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocalize from 'hooks/useLocalize';
 
+import messages from 'containers/ProjectsShowPage/messages';
+
 import { useIntl } from 'utils/cl-intl';
 import getAlternateLinks from 'utils/cl-router/getAlternateLinks';
 import getCanonicalLink from 'utils/cl-router/getCanonicalLink';
 import { imageSizes } from 'utils/fileUtils';
-
-import messages from './messages';
+import { stripHtml } from 'utils/textUtils';
 
 interface Props {
   project: IProjectData;
@@ -27,12 +28,15 @@ const IdeasFeedPageMeta = ({ project }: Props) => {
 
   if (!tenantLocales) return null;
 
-  const projectTitle = localize(project.attributes.title_multiloc, {
-    maxChar: 50,
+  const metaTitle = formatMessage(messages.metaTitle1, {
+    projectTitle: localize(project.attributes.title_multiloc, {
+      maxChar: 50,
+    }),
   });
-
-  const metaTitle = formatMessage(messages.metaTitle, { projectTitle });
-  const description = formatMessage(messages.metaDescription, { projectTitle });
+  const description = stripHtml(
+    localize(project.attributes.description_multiloc),
+    250
+  );
   const image = project.attributes.header_bg.large;
   const { location } = window;
 
@@ -45,7 +49,8 @@ const IdeasFeedPageMeta = ({ project }: Props) => {
           authUser.data.attributes.unread_notifications > 0
             ? `(${authUser.data.attributes.unread_notifications}) `
             : ''
-        }${metaTitle}`}
+        }
+            ${metaTitle}`}
       </title>
       {getCanonicalLink()}
       {getAlternateLinks(tenantLocales)}
@@ -64,6 +69,7 @@ const IdeasFeedPageMeta = ({ project }: Props) => {
       />
       <meta property="og:url" content={location.href} />
       <meta name="twitter:card" content="summary_large_image" />
+      {!project.attributes.listed && <meta name="robots" content="noindex" />}
     </Helmet>
   );
 };

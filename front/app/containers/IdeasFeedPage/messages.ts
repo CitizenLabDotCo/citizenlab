@@ -21,12 +21,4 @@ export default defineMessages({
     id: 'app.containers.IdeasFeedPage.topicsPanel',
     defaultMessage: 'Topics panel',
   },
-  metaTitle: {
-    id: 'app.containers.IdeasFeedPage.metaTitle',
-    defaultMessage: 'Ideas Feed | {projectTitle}',
-  },
-  metaDescription: {
-    id: 'app.containers.IdeasFeedPage.metaDescription',
-    defaultMessage: 'Explore and discuss ideas for {projectTitle}',
-  },
 });
