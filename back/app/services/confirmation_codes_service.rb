@@ -34,11 +34,9 @@ class ConfirmationCodesService
 
   private
 
-  def app_configuration
-    @app_configuration ||= AppConfiguration.instance
-  end
-
   def correct_feature_flags_enabled?
+    app_configuration = AppConfiguration.instance
+
     app_configuration.feature_activated?('password_login') &&
       app_configuration.feature_activated?('user_confirmation')
   end
