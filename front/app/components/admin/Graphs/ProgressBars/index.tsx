@@ -127,11 +127,7 @@ export default function ({
           isAnimationActive={false}
           shape={<OneSideRoundedBar />}
         >
-          <LabelList
-            dataKey="label"
-            data={data}
-            content={renderCustomizedLabel}
-          />
+          <LabelList dataKey="label" content={renderCustomizedLabel} />
         </Bar>
         <Bar
           dataKey="remainder"

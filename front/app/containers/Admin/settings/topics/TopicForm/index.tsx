@@ -21,7 +21,7 @@ import messages from '../messages';
 export interface FormValues {
   title_multiloc: Multiloc;
   description_multiloc?: Multiloc;
-  default?: boolean;
+  is_default?: boolean;
 }
 
 type Props = {
@@ -83,7 +83,7 @@ const TopicForm = ({ onSubmit, defaultValues }: Props) => {
           <SectionField>
             <Box display="flex" alignItems="center" gap="8px">
               <Toggle
-                name="default"
+                name="is_default"
                 label={formatMessage(messages.fieldTopicDefault)}
               />
               <IconTooltip

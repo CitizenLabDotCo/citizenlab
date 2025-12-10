@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { debounce, isEqual } from 'lodash-es';
+import { isEqual } from 'lodash-es';
 import { ResponsiveContainer } from 'recharts';
 import { Percentage } from 'typings';
 
@@ -17,7 +17,6 @@ interface Props {
   width?: number | Percentage;
   height?: number | Percentage;
   legend?: Legend;
-  graphDimensions: GraphDimensions | undefined;
   legendDimensions: LegendDimensions | undefined;
   defaultLegendOffset: number;
   onUpdateGraphDimensions?: (graphDimensions: GraphDimensions) => void;
@@ -43,26 +42,44 @@ const Container = ({
   width,
   height,
   legend,
-  graphDimensions,
   legendDimensions,
   defaultLegendOffset,
   onUpdateGraphDimensions,
   onUpdateLegendDimensions,
   children,
 }: Props) => {
-  const handleResize = useMemo(
-    () =>
-      debounce((width: number, height: number) => {
-        const newGraphDimensions = { width, height };
+  const prevDimensionsRef = useRef<GraphDimensions | undefined>();
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const onUpdateGraphDimensionsRef = useRef(onUpdateGraphDimensions);
 
-        if (!isEqual(graphDimensions, newGraphDimensions)) {
-          if (onUpdateGraphDimensions) {
-            onUpdateGraphDimensions(newGraphDimensions);
-          }
-        }
-      }, 50),
-    [graphDimensions, onUpdateGraphDimensions]
-  );
+  useEffect(() => {
+    onUpdateGraphDimensionsRef.current = onUpdateGraphDimensions;
+  }, [onUpdateGraphDimensions]);
+
+  // In recharts 3.x, ResponsiveContainer's onResize callback is no longer
+  // reliably called on initial mount. We use our own ResizeObserver to detect
+  // container dimensions for positioning the legend.
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const element = containerRef.current;
+    const observer = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (!entry) return;
+
+      const { width, height } = entry.contentRect;
+      if (width <= 0 || height <= 0) return;
+
+      const newDimensions = { width, height };
+      if (isEqual(prevDimensionsRef.current, newDimensions)) return;
+
+      prevDimensionsRef.current = newDimensions;
+      onUpdateGraphDimensionsRef.current?.(newDimensions);
+    });
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
 
   const rightLegend = legend?.position?.includes('right');
   const maintainGraphSize = !!legend?.maintainGraphSize;
@@ -89,13 +106,19 @@ const Container = ({
       width="100%"
       height="100%"
     >
-      <ResponsiveContainer
-        width={parsedWidth}
-        height={parsedHeight}
-        onResize={handleResize}
+      <Box
+        ref={containerRef}
+        width={
+          typeof parsedWidth === 'number' ? `${parsedWidth}px` : parsedWidth
+        }
+        height={
+          typeof parsedHeight === 'number' ? `${parsedHeight}px` : parsedHeight
+        }
       >
-        {children}
-      </ResponsiveContainer>
+        <ResponsiveContainer width="100%" height="100%">
+          {children}
+        </ResponsiveContainer>
+      </Box>
 
       {legend && onUpdateLegendDimensions && (
         <FakeLegend
