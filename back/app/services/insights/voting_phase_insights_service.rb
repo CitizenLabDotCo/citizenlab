@@ -5,7 +5,14 @@ module Insights
       ideas = @phase.ideas.transitive # TODO: This may not be precise enough
       participations = cached_phase_participations
       voting_participations = participations[:voting]
-      total_votes = voting_participations.sum { |p| p[:total_votes] } + @phase.manual_votes_count
+      offline_votes = @phase.manual_votes_count
+      online_votes = if @phase.voting_method == 'budgeting'
+        voting_participations.sum { |p| p[:ideas_count] }
+      else
+        voting_participations.sum { |p| p[:total_votes] }
+      end
+
+      total_votes = online_votes + offline_votes
 
       options = if field&.options&.any?
         field.options.map do |opt|
@@ -16,8 +23,8 @@ module Insights
       end
 
       {
-        online_votes: voting_participations.sum { |p| p[:total_votes] },
-        offline_votes: @phase.manual_votes_count,
+        online_votes: online_votes,
+        offline_votes: offline_votes,
         total_votes: total_votes,
         group_by: field&.key,
         custom_field_id: custom_field_id,
@@ -33,7 +40,12 @@ module Insights
       idea_ids_to_user_custom_field_values = idea_ids_to_user_custom_field_values(voting_participations)
 
       ideas.map do |idea|
-        total_online_votes = idea&.votes_count || 0
+        total_online_votes = if @phase.voting_method == 'budgeting'
+          idea&.baskets_count || 0
+        else
+          idea&.votes_count || 0
+        end
+
         total_offline_votes = idea&.manual_votes_amount || 0
         total_votes = total_online_votes + total_offline_votes
 
@@ -62,12 +74,6 @@ module Insights
       end
     end
 
-    def a_as_percentage_of_b(a, b)
-      return 0.0 if b.zero? # TODO: Raise error? (or nil?)
-
-      ((a.to_f / b) * 100).round(1)
-    end
-
     # Because we are grouping/slicing by votes per demographic attribute (and for blank == no answer),
     # we need to duplicate the user_custom_field_values for each vote a user cast for that idea.
     # This handles mutliple voting phases correctly, but could/should be simplified for
@@ -88,6 +94,12 @@ module Insights
       age_stats.format_in_ranges[:ranged_series]
     end
 
+    def a_as_percentage_of_b(a, b)
+      return 0.0 if b.zero? # TODO: Raise error? (or nil?)
+
+      ((a.to_f / b) * 100).round(1)
+    end
+
     def phase_participations
       # Events are not associated with phase, so attending_event not included at phase-level.
       {
@@ -100,7 +112,11 @@ module Insights
       @phase.baskets.includes(:user, :baskets_ideas).map do |basket|
         basket_ideas = basket.baskets_ideas
         total_votes = basket_ideas.to_a.sum(&:votes)
-        votes_per_idea = basket_ideas.to_h { |bi| [bi.idea_id, bi.votes] }
+        votes_per_idea = if @phase.voting_method == 'budgeting'
+          basket_ideas.to_h { |bi| [bi.idea_id, 1] }
+        else
+          basket_ideas.to_h { |bi| [bi.idea_id, bi.votes] }
+        end
 
         {
           item_id: basket.id,

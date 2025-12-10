@@ -143,6 +143,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       phase_total_votes = 57
       data = service.send(:idea_vote_counts_data, [idea1, idea2], participations, custom_field, phase_total_votes)
 
+      pp data
+
       expect(data).to contain_exactly(
         {
           id: idea1.id,
