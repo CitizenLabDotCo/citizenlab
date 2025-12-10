@@ -6,7 +6,7 @@ module Insights
       participations = cached_phase_participations
       voting_participations = participations[:voting]
 
-      options = if field
+      options = if field && field&.options.any?
         field.options.map do |opt|
           { "#{opt.key}": { id: opt.id, title_multiloc: opt.title_multiloc }, ordering: opt.ordering }
         end

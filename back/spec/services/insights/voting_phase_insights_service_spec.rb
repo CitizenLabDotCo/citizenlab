@@ -235,7 +235,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       )
     end
 
-    it 'gives expected results when grouping by a custom field' do
+    it 'gives expected results when grouping by a single-select custom field' do
       custom_field = create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' })
       create(:custom_field_option, custom_field: custom_field, key: 'male', title_multiloc: { en: 'Male' })
       create(:custom_field_option, custom_field: custom_field, key: 'female', title_multiloc: { en: 'Female' })
@@ -279,6 +279,100 @@ RSpec.describe Insights::VotingPhaseInsightsService do
                 'male' => 3,
                 'female' => 0,
                 'unspecified' => 0,
+                '_blank' => 52
+              }
+            }
+          ]
+        }
+      )
+    end
+
+    it 'gives expected results when grouping by a multi-select custom field' do
+      custom_field = create(:custom_field, resource_type: 'User', key: 'multiselect', input_type: 'multiselect', title_multiloc: { en: 'Multi-select' })
+      create(:custom_field_option, custom_field: custom_field, key: 'option_a', title_multiloc: { en: 'Option A' })
+      create(:custom_field_option, custom_field: custom_field, key: 'option_b', title_multiloc: { en: 'Option B' })
+
+      user.update!(custom_field_values: { 'multiselect' => ['option_a', 'option_b'] })
+
+      result = service.vote_counts_with_user_custom_field_grouping(custom_field.id)
+
+      expect(result).to eq(
+        {
+          online_votes: 47,
+          offline_votes: 10,
+          total_votes: 57,
+          group_by: 'multiselect',
+          custom_field_id: custom_field.id,
+          options: [
+            { option_a: { id: custom_field.options.find_by(key: 'option_a').id, title_multiloc: { 'en' => 'Option A' } }, ordering: 0 },
+            { option_b: { id: custom_field.options.find_by(key: 'option_b').id, title_multiloc: { 'en' => 'Option B' } }, ordering: 1 },
+          ],
+          ideas: [
+            {
+              id: idea1.id,
+              title_multiloc: idea1.title_multiloc,
+              total_online_votes: 2,
+              total_offline_votes: 0,
+              total_votes: 2,
+              demographic_breakdown: {
+                'option_a' => 2,
+                'option_b' => 2,
+                '_blank' => 0
+              }
+            },
+            {
+              id: idea2.id,
+              title_multiloc: idea2.title_multiloc,
+              total_online_votes: 45,
+              total_offline_votes: 10,
+              total_votes: 55,
+              demographic_breakdown: {
+                'option_a' => 3,
+                'option_b' => 3,
+                '_blank' => 52
+              }
+            }
+          ]
+        }
+      )
+    end
+
+    it 'gives expected results when grouping by a checkbox custom field' do
+      custom_field = create(:custom_field, resource_type: 'User', key: 'checkbox', input_type: 'checkbox', title_multiloc: { en: 'Checkbox' })
+      user.update!(custom_field_values: { 'checkbox' => true })
+
+      result = service.vote_counts_with_user_custom_field_grouping(custom_field.id)
+
+      expect(result).to eq(
+        {
+          online_votes: 47,
+          offline_votes: 10,
+          total_votes: 57,
+          group_by: 'checkbox',
+          custom_field_id: custom_field.id,
+          options: [],
+          ideas: [
+            {
+              id: idea1.id,
+              title_multiloc: idea1.title_multiloc,
+              total_online_votes: 2,
+              total_offline_votes: 0,
+              total_votes: 2,
+              demographic_breakdown: {
+                true => 2,
+                false => 0,
+                '_blank' => 0
+              }
+            },
+            {
+              id: idea2.id,
+              title_multiloc: idea2.title_multiloc,
+              total_online_votes: 45,
+              total_offline_votes: 10,
+              total_votes: 55,
+              demographic_breakdown: {
+                true => 3,
+                false => 0,
                 '_blank' => 52
               }
             }
