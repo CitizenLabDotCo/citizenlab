@@ -28,12 +28,12 @@ class UserPolicy < ApplicationPolicy
   end
 
   def index_xlsx?
-    user&.active? && user.admin?
+    active_admin?
   end
 
   def create?
     app_config = AppConfiguration.instance
-    (app_config.feature_activated?('password_login') && app_config.settings('password_login', 'enable_signup')) || (user&.active? && user.admin?)
+    (app_config.feature_activated?('password_login') && app_config.settings('password_login', 'enable_signup')) || active_admin?
   end
 
   def show?
@@ -53,15 +53,15 @@ class UserPolicy < ApplicationPolicy
   end
 
   def destroy?
-    record.id == user&.id || (user&.active? && user.admin?)
+    record.id == user&.id || active_admin?
   end
 
   def block?
-    user&.active? && user.admin?
+    active_admin?
   end
 
   def unblock?
-    user&.active? && user.admin?
+    active_admin?
   end
 
   def blocked_count?
