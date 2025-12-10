@@ -94,7 +94,7 @@ module Insights
     end
 
     def a_as_percentage_of_b(a, b)
-      return 0.0 if b.zero? # TODO: Raise error? (or nil?)
+      return nil if b.zero? # Avoid division by zero.
 
       ((a.to_f / b) * 100).round(1)
     end

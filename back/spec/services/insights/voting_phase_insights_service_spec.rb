@@ -143,8 +143,6 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       phase_total_votes = 57
       data = service.send(:idea_vote_counts_data, [idea1, idea2], participations, custom_field, phase_total_votes)
 
-      pp data
-
       expect(data).to contain_exactly(
         {
           id: idea1.id,
@@ -202,6 +200,12 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           demographic_breakdown: { '_blank' => 10 }
         }
       )
+    end
+
+    it 'avoids division by zero when total_phase_votes is zero' do
+      phase_total_votes = 0
+      data = service.send(:idea_vote_counts_data, [idea1, idea2], [], custom_field, phase_total_votes)
+      expect(data.pluck(:percentage)).to all(be_nil)
     end
 
     it 'handles empty ideas and participations' do
