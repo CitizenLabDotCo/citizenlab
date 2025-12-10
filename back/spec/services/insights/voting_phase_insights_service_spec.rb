@@ -175,22 +175,24 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       idea2.update!(votes_count: 0)
 
       data = service.send(:idea_vote_counts_data, [idea1, idea2], [], custom_field)
-      expect(data).to contain_exactly({
-        id: idea1.id,
-        title_multiloc: idea1.title_multiloc,
-        total_online_votes: 0,
-        total_offline_votes: 0,
-        total_votes: 0,
-        demographic_breakdown: { '_blank' => 0 }
-      },
-      {
-        id: idea2.id,
-        title_multiloc: idea2.title_multiloc,
-        total_online_votes: 0,
-        total_offline_votes: 10,
-        total_votes: 10,
-        demographic_breakdown: { '_blank' => 10 }
-      })
+      expect(data).to contain_exactly(
+        {
+          id: idea1.id,
+          title_multiloc: idea1.title_multiloc,
+          total_online_votes: 0,
+          total_offline_votes: 0,
+          total_votes: 0,
+          demographic_breakdown: { '_blank' => 0 }
+        },
+        {
+          id: idea2.id,
+          title_multiloc: idea2.title_multiloc,
+          total_online_votes: 0,
+          total_offline_votes: 10,
+          total_votes: 10,
+          demographic_breakdown: { '_blank' => 10 }
+        }
+      )
     end
 
     it 'handles empty ideas and participations' do
