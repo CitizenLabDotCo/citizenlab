@@ -31,6 +31,7 @@ import { MethodSpecificInsightProps } from '../types';
 
 import IdeasByTopic from './IdeasByTopic';
 import messages from './messages';
+import MostLikedIdeas from './MostLikedIdeas';
 
 const MIN_INPUTS_FOR_SUMMARY = 10;
 
@@ -206,7 +207,7 @@ const IdeationInsights = ({ phaseId }: MethodSpecificInsightProps) => {
     summaryData.data.relationships.background_task.data.id;
 
   return (
-    <Box mt="16px">
+    <Box mt="16px" gap="12px">
       <Title variant="h3" m="0" mb="16px">
         {formatMessage(messages.whatArePeopleSaying)}
       </Title>
@@ -298,6 +299,9 @@ const IdeationInsights = ({ phaseId }: MethodSpecificInsightProps) => {
           </Box>
         </Box>
         <IdeasByTopic phaseId={phaseId} />
+      </Box>
+      <Box w="50%">
+        <MostLikedIdeas phaseId={phaseId} />
       </Box>
     </Box>
   );
