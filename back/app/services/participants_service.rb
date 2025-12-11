@@ -206,8 +206,16 @@ class ParticipantsService
   # @param user [User] The user to get participation stats for
   # @return [Hash] Counts of each participation type
   def user_participation_stats(user)
+    idea_counts = user.ideas.published
+      .reorder(nil) # default ORDER BY on user.ideas conflicts with the GROUP BY
+      .left_joins(:creation_phase)
+      .group("COALESCE(phases.participation_method, 'ideation')")
+      .count
+
     {
-      ideas_count: user.ideas.published.count,
+      ideas_count: idea_counts['ideation'] || 0,
+      proposals_count: idea_counts['proposals'] || 0,
+      survey_responses_count: idea_counts['native_survey'] || 0,
       comments_count: user.comments.published.count,
       reactions_count: user.reactions.count,
       baskets_count: user.baskets.submitted.count,

@@ -507,6 +507,8 @@ describe ParticipantsService do
 
       expect(service.user_participation_stats(user)).to eq(
         ideas_count: 1,
+        proposals_count: 0,
+        survey_responses_count: 0,
         comments_count: 1,
         reactions_count: 1,
         baskets_count: 1,
@@ -518,6 +520,23 @@ describe ParticipantsService do
 
     it 'returns zero counts when user has no participation' do
       expect(service.user_participation_stats(user).values).to all(eq 0)
+    end
+
+    it 'counts ideas, proposals, and survey responses separately' do
+      create_default(:idea_status)
+      create_default(:single_phase_native_survey_project)
+      create_default(:single_phase_proposals_project)
+
+      create(:idea_status_proposed)
+      create(:idea, author: user, publication_status: 'published')
+      create_list(:proposal, 2, author: user, publication_status: 'published')
+      create_list(:native_survey_response, 3, author: user, publication_status: 'published')
+
+      stats = service.user_participation_stats(user)
+
+      expect(stats[:ideas_count]).to eq(1)
+      expect(stats[:proposals_count]).to eq(2)
+      expect(stats[:survey_responses_count]).to eq(3)
     end
   end
 

@@ -21,6 +21,15 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.deleteUserModal.ideasCount',
     defaultMessage: '{count, plural, one {# idea} other {# ideas}}',
   },
+  proposalsCount: {
+    id: 'app.containers.Admin.Users.deleteUserModal.proposalsCount',
+    defaultMessage: '{count, plural, one {# proposal} other {# proposals}}',
+  },
+  surveyResponsesCount: {
+    id: 'app.containers.Admin.Users.deleteUserModal.surveyResponsesCount',
+    defaultMessage:
+      '{count, plural, one {# survey response} other {# survey responses}}',
+  },
   commentsCount: {
     id: 'app.containers.Admin.Users.deleteUserModal.commentsCount',
     defaultMessage: '{count, plural, one {# comment} other {# comments}}',

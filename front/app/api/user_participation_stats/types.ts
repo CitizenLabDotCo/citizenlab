@@ -12,6 +12,8 @@ export type IParameters = {
 
 export interface IParticipationStatsAttributes {
   ideas_count: number;
+  proposals_count: number;
+  survey_responses_count: number;
   comments_count: number;
   reactions_count: number;
   baskets_count: number;

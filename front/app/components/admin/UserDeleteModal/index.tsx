@@ -81,6 +81,11 @@ const DeleteUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
 
   const participationItems = [
     { count: stats?.ideas_count, message: messages.ideasCount },
+    { count: stats?.proposals_count, message: messages.proposalsCount },
+    {
+      count: stats?.survey_responses_count,
+      message: messages.surveyResponsesCount,
+    },
     { count: stats?.comments_count, message: messages.commentsCount },
     { count: stats?.reactions_count, message: messages.reactionsCount },
     { count: stats?.baskets_count, message: messages.votesCount },
