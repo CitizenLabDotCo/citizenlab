@@ -61,8 +61,8 @@ export default defineMessages({
     defaultMessage: 'Age',
   },
   deviceTypeFromStart: {
-    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.deviceTypeFromStart',
-    defaultMessage: 'Device type from the start',
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.deviceTypeFromStart2',
+    defaultMessage: 'Device type since the start',
   },
   deviceTypeLast6Months: {
     id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.deviceTypeLast6Months',
@@ -73,8 +73,8 @@ export default defineMessages({
     defaultMessage: 'Comments',
   },
   emailsFromStart: {
-    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.emailsFromStart',
-    defaultMessage: 'Emails from the start',
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.emailsFromStart2',
+    defaultMessage: 'Emails since the start',
   },
   emailsFromLast6Months: {
     id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.emailsFromLast6Months',
@@ -89,8 +89,8 @@ export default defineMessages({
     defaultMessage: 'Image for representativeness dashboard',
   },
   inputStatusFromStart: {
-    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart',
-    defaultMessage: 'Input status from the start',
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart2',
+    defaultMessage: 'Input status since the start',
   },
   inputStatusLast6Months: {
     id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusLast6Months',
@@ -115,5 +115,9 @@ export default defineMessages({
   ending: {
     id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.ending',
     defaultMessage: 'Ending',
+  },
+  representativenessDashboard: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.representativenessDashboard',
+    defaultMessage: 'Representativeness dashboard',
   },
 });

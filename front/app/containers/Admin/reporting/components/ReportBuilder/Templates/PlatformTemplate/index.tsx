@@ -200,8 +200,11 @@ const PlatformTemplateContent = ({
         }}
         stretch={false}
       />
+      {/* ----- EXECUTIVE SUMMARY ----- */}
       <TextMultiloc text={reportStats} />
       <WhiteSpace size="small" />
+
+      {/* ----- TOP-LEVEL PARTICIPATION INDICATORS ----- */}
       <TextMultiloc
         text={getSectionTitleAndDescription(
           messages.participationIndicators,
@@ -210,6 +213,7 @@ const PlatformTemplateContent = ({
       />
       <WhiteSpace size="small" />
       <TwoColumn columnLayout="1-1">
+        {/* VISITORS */}
         <Element id="column-visitors-left" is={Container} canvas>
           <VisitorsWidget
             title={toMultiloc(
@@ -227,6 +231,7 @@ const PlatformTemplateContent = ({
         </Element>
       </TwoColumn>
       <TwoColumn columnLayout="1-1">
+        {/* TRAFFIC SOURCES */}
         <Element id="column-traffic-sources-left" is={Container} canvas>
           <VisitorsTrafficSourcesWidget
             title={toMultiloc(
@@ -246,6 +251,7 @@ const PlatformTemplateContent = ({
         </Element>
       </TwoColumn>
       <TwoColumn columnLayout="1-1">
+        {/* DEVICE TYPE */}
         <Element id="column-device-type-left" is={Container} canvas>
           <TextMultiloc
             text={toTextMultiloc(messages.deviceTypeFromStart, true)}
@@ -259,11 +265,14 @@ const PlatformTemplateContent = ({
           <ImageMultiloc />
         </Element>
       </TwoColumn>
+
+      {/* COMMENTS */}
       <WhiteSpace size="small" withDivider />
       <TextMultiloc text={toTitleMultiloc(messages.comments, 'h3')} />
       <WhiteSpace size="small" withDivider />
 
       <TwoColumn columnLayout="1-1">
+        {/* REGISTRATIONS */}
         <Element id="column-registrations-left" is={Container} canvas>
           <RegistrationsWidget
             title={toMultiloc(WIDGET_TITLES.RegistrationsWidget)}
@@ -280,6 +289,7 @@ const PlatformTemplateContent = ({
         </Element>
       </TwoColumn>
       <TwoColumn columnLayout="1-1">
+        {/* PARTICIPANTS */}
         <Element id="column-participants-left" is={Container} canvas>
           <ParticipantsWidget
             title={toMultiloc(WIDGET_TITLES.ParticipantsWidget)}
@@ -296,6 +306,7 @@ const PlatformTemplateContent = ({
         </Element>
       </TwoColumn>
       <TwoColumn columnLayout="1-1">
+        {/* EMAILS */}
         <Element id="column-emails-left" is={Container} canvas>
           <TextMultiloc text={toTextMultiloc(messages.emailsFromStart, true)} />
           <ImageMultiloc />
@@ -307,9 +318,13 @@ const PlatformTemplateContent = ({
           <ImageMultiloc />
         </Element>
       </TwoColumn>
+
+      {/* COMMENTS */}
       <WhiteSpace size="small" withDivider />
       <TextMultiloc text={toTitleMultiloc(messages.comments, 'h3')} />
       <WhiteSpace size="small" withDivider />
+
+      {/* ----- TOP-LEVEL INCLUSION INDICATORS ----- */}
       <TwoColumn columnLayout="1-1">
         <Element id="column-inclusion-left" is={Container} canvas>
           <TextMultiloc
@@ -326,8 +341,8 @@ const PlatformTemplateContent = ({
           <ImageMultiloc />
         </Element>
       </TwoColumn>
-
       <WhiteSpace size="small" />
+      {/* DEMOGRAPHICS */}
       {supportedEnabledFields.map((field) => (
         <Element is={Container} canvas key={field.id}>
           <DemographicsWidget
@@ -339,15 +354,22 @@ const PlatformTemplateContent = ({
             {...dateRange}
             customFieldId={field.id}
           />
+          <TextMultiloc
+            text={toTextMultiloc(messages.representativenessDashboard, true)}
+          />
           <ImageMultiloc
             stretch
             alt={toMultiloc(messages.imageInclusionLabel)}
           />
         </Element>
       ))}
+
+      {/* COMMENTS */}
       <WhiteSpace size="small" withDivider />
       <TextMultiloc text={toTitleMultiloc(messages.comments, 'h3')} />
       <WhiteSpace size="small" withDivider />
+
+      {/* ----- YOUR PROJECTS ----- */}
       <TextMultiloc
         text={getSectionTitleAndDescription(
           messages.yourProjects,
@@ -355,11 +377,13 @@ const PlatformTemplateContent = ({
         )}
       />
       <WhiteSpace size="small" />
+      {/* PROJECTS */}
       <ProjectsWidget
         title={toMultiloc(WIDGET_TITLES.ProjectsWidget)}
         {...dateRange}
       />
       <WhiteSpace size="small" />
+      {/* METHODS USED */}
       <MethodsUsedWidget
         title={toMultiloc(WIDGET_TITLES.MethodsUsedWidget)}
         {...dateRange}
@@ -367,6 +391,7 @@ const PlatformTemplateContent = ({
       />
 
       <TwoColumn columnLayout="1-1">
+        {/* INPUT STATUS */}
         <Element id="column-input-status-left" is={Container} canvas>
           <TextMultiloc
             text={toTextMultiloc(messages.inputStatusFromStart, true)}
@@ -381,10 +406,7 @@ const PlatformTemplateContent = ({
         </Element>
       </TwoColumn>
 
-      <WhiteSpace size="small" withDivider />
-      <TextMultiloc text={toTitleMultiloc(messages.comments, 'h3')} />
-      <WhiteSpace size="small" withDivider />
-
+      {/* PARTICIPATION */}
       <ParticipationWidget
         title={toMultiloc(WIDGET_TITLES.ParticipationWidget)}
         {...dateRange}
@@ -395,12 +417,20 @@ const PlatformTemplateContent = ({
           votes: true,
         }}
       />
+
+      {/* COMMENTS */}
+      <WhiteSpace size="small" withDivider />
+      <TextMultiloc text={toTitleMultiloc(messages.comments, 'h3')} />
+      <WhiteSpace size="small" withDivider />
+
+      {/* ----- INTERNAL ORGANISATION ----- */}
       <WhiteSpace size="small" withDivider />
       <TextMultiloc
         text={toTitleMultiloc(messages.internalOrganization, 'h3')}
       />
 
       <TwoColumn columnLayout="1-1">
+        {/* ADMIN & PROJECT MANAGERS */}
         <Element id="column-admin-pms-left" is={Container} canvas>
           <TextMultiloc text={toTextMultiloc(messages.admins, true)} />
           <ImageMultiloc />
@@ -410,10 +440,13 @@ const PlatformTemplateContent = ({
           <ImageMultiloc />
         </Element>
       </TwoColumn>
+
+      {/* COMMENTS */}
       <WhiteSpace size="small" withDivider />
       <TextMultiloc text={toTitleMultiloc(messages.comments, 'h3')} />
       <WhiteSpace size="small" withDivider />
 
+      {/* ----- GOALS & ENDING ----- */}
       <TextMultiloc text={toTitleMultiloc(messages.goals, 'h3')} />
       <TwoColumn columnLayout="1-1">
         <Element id="column-goals-left" is={Container} canvas>
