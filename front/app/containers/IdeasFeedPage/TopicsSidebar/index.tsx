@@ -6,8 +6,8 @@ import { useParams } from 'react-router-dom';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
+import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
-import useTopics from 'api/topics/useTopics';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -25,7 +25,8 @@ const TopicsSidebar = ({ selectedTopicId, onTopicSelect }: Props) => {
   const { formatMessage } = useIntl();
   const { slug } = useParams() as { slug: string };
   const { data: project } = useProjectBySlug(slug);
-  const { data: topics, isLoading: topicsLoading } = useTopics();
+  const { data: topics, isLoading: topicsLoading } =
+    useProjectAllowedInputTopics({ projectId: project?.data.id });
   const projectId = project?.data.id;
   const { data: phases } = usePhases(projectId);
   const currentPhase = getCurrentPhase(phases?.data);
@@ -48,6 +49,10 @@ const TopicsSidebar = ({ selectedTopicId, onTopicSelect }: Props) => {
     return null;
   }
 
+  const topicIds = topics.data.map(
+    (topic) => topic.relationships.topic.data.id
+  );
+
   if (isMobile) {
     return (
       <BottomSheet
@@ -56,7 +61,7 @@ const TopicsSidebar = ({ selectedTopicId, onTopicSelect }: Props) => {
         a11y_collapseLabel={formatMessage(messages.collapsePanel)}
       >
         <TopicsContent
-          topics={topics}
+          topicIds={topicIds}
           selectedTopicId={selectedTopicId}
           onTopicSelect={onTopicSelect}
           totalIdeasCount={totalIdeasCount}
@@ -77,7 +82,7 @@ const TopicsSidebar = ({ selectedTopicId, onTopicSelect }: Props) => {
       overflowY="auto"
     >
       <TopicsContent
-        topics={topics}
+        topicIds={topicIds}
         selectedTopicId={selectedTopicId}
         onTopicSelect={onTopicSelect}
         totalIdeasCount={totalIdeasCount}

@@ -3,7 +3,6 @@ import React from 'react';
 import { Box, Divider, Title } from '@citizenlab/cl2-component-library';
 
 import useProjectBySlug from 'api/projects/useProjectBySlug';
-import { ITopics } from 'api/topics/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -16,7 +15,7 @@ import SelectedTopicView from './SelectedTopicView';
 import TopicItem from './TopicItem';
 
 interface Props {
-  topics: ITopics;
+  topicIds: string[];
   selectedTopicId: string | null;
   onTopicSelect: (topicId: string | null) => void;
   totalIdeasCount: number;
@@ -26,7 +25,7 @@ interface Props {
 }
 
 const TopicsContent = ({
-  topics,
+  topicIds,
   selectedTopicId,
   onTopicSelect,
   totalIdeasCount,
@@ -41,15 +40,11 @@ const TopicsContent = ({
     ? localize(project.data.attributes.title_multiloc)
     : '';
 
-  const selectedTopic = selectedTopicId
-    ? topics.data.find((topic) => topic.id === selectedTopicId)
-    : null;
-
   // When a topic is selected, show only that topic with a back button
-  if (selectedTopic) {
+  if (selectedTopicId) {
     return (
       <SelectedTopicView
-        topic={selectedTopic}
+        topicId={selectedTopicId}
         onBack={() => onTopicSelect(null)}
         hideBackButton={!showBackButton}
       />
@@ -80,15 +75,13 @@ const TopicsContent = ({
         )}
       </Box>
       <Divider mb="0px" />
-      {topics.data.map((topic) => (
+      {topicIds.map((topicId) => (
         <TopicItem
-          key={topic.id}
-          topicId={topic.id}
-          topicTitle={localize(topic.attributes.title_multiloc)}
-          topicDescription={localize(topic.attributes.description_multiloc)}
-          isActive={selectedTopicId === topic.id}
+          key={topicId}
+          topicId={topicId}
+          isActive={selectedTopicId === topicId}
           totalIdeasCount={totalIdeasCount}
-          topicCount={topicCounts[topic.id] || 0}
+          topicCount={topicCounts[topicId] || 0}
           onTopicSelect={onTopicSelect}
         />
       ))}

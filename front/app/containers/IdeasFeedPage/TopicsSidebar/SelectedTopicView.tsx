@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
-import { ITopicData } from 'api/topics/types';
+import useTopic from 'api/topics/useTopic';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -11,16 +11,17 @@ import GoBackButton from 'components/UI/GoBackButton';
 import messages from '../messages';
 
 interface Props {
-  topic: ITopicData;
+  topicId: string;
   onBack: () => void;
   hideBackButton?: boolean;
 }
 
-const SelectedTopicView: React.FC<Props> = ({
-  topic,
+const SelectedTopicView = ({
+  topicId,
   onBack,
   hideBackButton = false,
-}) => {
+}: Props) => {
+  const { data: topic } = useTopic(topicId);
   const localize = useLocalize();
 
   return (
@@ -37,10 +38,10 @@ const SelectedTopicView: React.FC<Props> = ({
 
       <Box px="16px" mb="16px">
         <Text fontWeight="bold" variant="bodyL" mb="8px">
-          {localize(topic.attributes.title_multiloc)}
+          {localize(topic?.data.attributes.title_multiloc)}
         </Text>
         <Text variant="bodyS" color="coolGrey600">
-          {localize(topic.attributes.description_multiloc)}
+          {localize(topic?.data.attributes.description_multiloc)}
         </Text>
       </Box>
     </>

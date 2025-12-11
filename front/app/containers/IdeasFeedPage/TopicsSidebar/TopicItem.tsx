@@ -9,12 +9,14 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useTopic from 'api/topics/useTopic';
+
+import useLocalize from 'hooks/useLocalize';
+
 import { getTopicProgressBarColor } from '../topicsColor';
 
 interface Props {
   topicId: string;
-  topicTitle: string;
-  topicDescription: string;
   isActive: boolean;
   totalIdeasCount: number;
   topicCount: number;
@@ -29,13 +31,13 @@ const StyledButton = styled(Button)`
 
 const TopicItem = ({
   topicId,
-  topicTitle,
-  topicDescription,
   isActive,
   totalIdeasCount,
   topicCount,
   onTopicSelect,
 }: Props) => {
+  const { data: topic } = useTopic(topicId);
+  const localize = useLocalize();
   const percentage =
     totalIdeasCount > 0 ? (topicCount / totalIdeasCount) * 100 : 0;
   const topicColor = getTopicProgressBarColor(topicId);
@@ -50,9 +52,9 @@ const TopicItem = ({
         borderColor="transparent"
         justify="left"
       >
-        <Text mb="0px">{topicTitle}</Text>
+        <Text mb="0px">{localize(topic?.data.attributes.title_multiloc)}</Text>
         <Text m="0px" variant="bodyS">
-          {topicDescription}
+          {localize(topic?.data.attributes.description_multiloc)}
         </Text>
         <Box mt="8px" w="100%">
           <Box

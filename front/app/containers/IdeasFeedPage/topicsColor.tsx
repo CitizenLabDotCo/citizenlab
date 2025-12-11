@@ -50,10 +50,10 @@ export const getTopicProgressBarColor = (topicId: string): string => {
 };
 
 // Function to get both colors for a topic ID
-export const getTopicColors = (topicId: string): TopicColorPair => {
-  const index = getTopicColorIndex(topicId);
-  return TOPIC_COLOR_PALETTE[index];
-};
+// export const getTopicColors = (topicId: string): TopicColorPair => {
+//   const index = getTopicColorIndex(topicId);
+//   return TOPIC_COLOR_PALETTE[index];
+// };
 
 // // Create a map of topic IDs to color pairs for multiple topics
 // export const createTopicColorMap = (

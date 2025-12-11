@@ -8,8 +8,6 @@ import usePhase from 'api/phases/usePhase';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import messages from 'containers/ProjectsShowPage/messages';
 
 const IdeasWithFiltersSidebar = lazy(
@@ -53,10 +51,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   const config = getMethodConfig(phase.attributes.participation_method, {
     showIdeaFilters: phase.attributes.voting_filtering_enabled,
   });
-  const isIdeasFeedEnabled = useFeatureFlag({ name: 'idea_feed' });
-  const isIdeasFeedPhase = phase.attributes.ideation_method === 'idea_feed';
-  const showIdeasFeedLink = isIdeasFeedEnabled && isIdeasFeedPhase;
-
+  const showIdeasFeedLink = phase.attributes.ideation_method === 'idea_feed';
   const ideaQueryParameters = useMemo<QueryParameters>(
     () => ({
       'page[number]': 1,
