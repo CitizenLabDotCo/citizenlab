@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Element } from '@craftjs/core';
-import { subMonths } from 'date-fns';
 import { FormatMessage } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -21,7 +20,7 @@ import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
 
 import { MessageDescriptor, useFormatMessageWithLocale } from 'utils/cl-intl';
 import { FormatMessageValues } from 'utils/cl-intl/useIntl';
-import { toBackendDateString } from 'utils/dateUtils';
+import { parseBackendDateString } from 'utils/dateUtils';
 import { withoutSpacing } from 'utils/textUtils';
 
 import {
@@ -147,6 +146,11 @@ const PlatformTemplateContent = ({
         ${community}
         ${projectsStat}
       </ul>
+      <p>
+      <b>
+        ${formatMessage(messages.comments)}:
+      </b>
+      </p>
     `;
   });
 
@@ -162,9 +166,12 @@ const PlatformTemplateContent = ({
     });
   };
 
-  const toMultiloc = (message: MessageDescriptor) => {
+  const toMultiloc = (
+    message: MessageDescriptor,
+    values?: FormatMessageValues
+  ) => {
     return createMultiloc(appConfigurationLocales, (locale) => {
-      return formatMessageWithLocale(locale, message);
+      return formatMessageWithLocale(locale, message, values);
     });
   };
 
@@ -180,9 +187,13 @@ const PlatformTemplateContent = ({
     });
   };
 
-  const toTextMultiloc = (message: MessageDescriptor, bold?: boolean) => {
+  const toTextMultiloc = (
+    message: MessageDescriptor,
+    bold?: boolean,
+    values?: FormatMessageValues
+  ) => {
     return createMultiloc(appConfigurationLocales, (locale) => {
-      const text = formatMessageWithLocale(locale, message);
+      const text = formatMessageWithLocale(locale, message, values);
       const html = bold ? `<p><b>${text}</b></p>` : `<p>${text}</p>`;
       return html;
     });
@@ -191,6 +202,10 @@ const PlatformTemplateContent = ({
   const supportedEnabledFields = userFields.data
     .filter(isSupportedField)
     .filter((field) => field.attributes.enabled);
+
+  // Format the startDate for display in widget titles
+  const formattedStartDate =
+    parseBackendDateString(startDate).toLocaleDateString();
 
   return (
     <Element id="platform-report-template" is={Box} canvas>
@@ -224,7 +239,10 @@ const PlatformTemplateContent = ({
         </Element>
         <Element id="column-visitors-right" is={Container} canvas>
           <VisitorsWidget
-            title={toMultiloc(WIDGET_TITLES.VisitorsWidget)}
+            title={toMultiloc(
+              CUSTOM_TEMPLATE_WIDGET_TITLES.VisitorsWidgetSince,
+              { date: formattedStartDate }
+            )}
             {...dateRange}
             {...comparedDateRange}
           />
@@ -243,10 +261,11 @@ const PlatformTemplateContent = ({
         <Element id="column-traffic-sources-right" is={Container} canvas>
           <VisitorsTrafficSourcesWidget
             title={toMultiloc(
-              CUSTOM_TEMPLATE_WIDGET_TITLES.TrafficSourcesWidgetLast6Months
+              CUSTOM_TEMPLATE_WIDGET_TITLES.TrafficSourcesWidgetSince,
+              { date: formattedStartDate }
             )}
-            endAt={dateRange.endAt}
-            startAt={toBackendDateString(subMonths(new Date(), 6))}
+            {...dateRange}
+            {...comparedDateRange}
           />
         </Element>
       </TwoColumn>
@@ -260,7 +279,9 @@ const PlatformTemplateContent = ({
         </Element>
         <Element id="column-device-type-right" is={Container} canvas>
           <TextMultiloc
-            text={toTextMultiloc(messages.deviceTypeLast6Months, true)}
+            text={toTextMultiloc(messages.deviceTypeSince, true, {
+              date: formattedStartDate,
+            })}
           />
           <ImageMultiloc />
         </Element>
@@ -275,15 +296,19 @@ const PlatformTemplateContent = ({
         {/* REGISTRATIONS */}
         <Element id="column-registrations-left" is={Container} canvas>
           <RegistrationsWidget
-            title={toMultiloc(WIDGET_TITLES.RegistrationsWidget)}
-            {...dateRange} // TODO: From start (title, date)
-            {...comparedDateRange}
+            title={toMultiloc(
+              CUSTOM_TEMPLATE_WIDGET_TITLES.RegistrationsWidgetFromStart
+            )}
+            endAt={dateRange.endAt}
           />
         </Element>
         <Element id="column-registrations-right" is={Container} canvas>
           <RegistrationsWidget
-            title={toMultiloc(WIDGET_TITLES.RegistrationsWidget)}
-            {...dateRange} // TODO: Last 6 months (title, date)
+            title={toMultiloc(
+              CUSTOM_TEMPLATE_WIDGET_TITLES.RegistrationsWidgetSince,
+              { date: formattedStartDate }
+            )}
+            {...dateRange}
             {...comparedDateRange}
           />
         </Element>
@@ -292,15 +317,19 @@ const PlatformTemplateContent = ({
         {/* PARTICIPANTS */}
         <Element id="column-participants-left" is={Container} canvas>
           <ParticipantsWidget
-            title={toMultiloc(WIDGET_TITLES.ParticipantsWidget)}
-            {...dateRange} // TODO: From start (title, date)
-            {...comparedDateRange}
+            title={toMultiloc(
+              CUSTOM_TEMPLATE_WIDGET_TITLES.ParticipantsWidgetFromStart
+            )}
+            endAt={dateRange.endAt}
           />
         </Element>
         <Element id="column-participants-right" is={Container} canvas>
           <ParticipantsWidget
-            title={toMultiloc(WIDGET_TITLES.ParticipantsWidget)}
-            {...dateRange} // TODO: Last 6 months (title, date)
+            title={toMultiloc(
+              CUSTOM_TEMPLATE_WIDGET_TITLES.ParticipantsWidgetSince,
+              { date: formattedStartDate }
+            )}
+            {...dateRange}
             {...comparedDateRange}
           />
         </Element>
@@ -313,7 +342,9 @@ const PlatformTemplateContent = ({
         </Element>
         <Element id="column-emails-right" is={Container} canvas>
           <TextMultiloc
-            text={toTextMultiloc(messages.emailsFromLast6Months, true)}
+            text={toTextMultiloc(messages.emailsSince, true, {
+              date: formattedStartDate,
+            })}
           />
           <ImageMultiloc />
         </Element>
@@ -400,7 +431,9 @@ const PlatformTemplateContent = ({
         </Element>
         <Element id="column-input-status-right" is={Container} canvas>
           <TextMultiloc
-            text={toTextMultiloc(messages.inputStatusLast6Months, true)}
+            text={toTextMultiloc(messages.inputStatusSince, true, {
+              date: formattedStartDate,
+            })}
           />
           <ImageMultiloc />
         </Element>
@@ -424,7 +457,6 @@ const PlatformTemplateContent = ({
       <WhiteSpace size="small" withDivider />
 
       {/* ----- INTERNAL ORGANISATION ----- */}
-      <WhiteSpace size="small" withDivider />
       <TextMultiloc
         text={toTitleMultiloc(messages.internalOrganization, 'h3')}
       />

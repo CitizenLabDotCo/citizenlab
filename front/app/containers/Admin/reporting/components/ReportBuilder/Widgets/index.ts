@@ -79,7 +79,12 @@ export const CUSTOM_TEMPLATE_WIDGET_TITLES: Record<string, MessageDescriptor> =
   {
     VisitorsWidgetFromStart: messages.visitorsWidgetFromStart,
     TrafficSourcesWidgetFromStart: messages.trafficSourcesWidgetFromStart,
-    TrafficSourcesWidgetLast6Months: messages.trafficSourcesWidgetLast6Months,
+    TrafficSourcesWidgetSince: messages.trafficSourcesWidgetSince,
+    VisitorsWidgetSince: messages.visitorsWidgetSince,
+    RegistrationsWidgetFromStart: messages.registrationWidgetFromStart,
+    RegistrationsWidgetSince: messages.registrationWidgetSince,
+    ParticipantsWidgetFromStart: messages.participantsWidgetFromStart,
+    ParticipantsWidgetSince: messages.participantsWidgetSince,
   };
 
 export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {

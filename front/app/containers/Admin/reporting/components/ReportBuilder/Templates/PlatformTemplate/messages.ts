@@ -64,9 +64,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.deviceTypeFromStart2',
     defaultMessage: 'Device type since the start',
   },
-  deviceTypeLast6Months: {
-    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.deviceTypeLast6Months',
-    defaultMessage: 'Device type last 6 months',
+  deviceTypeSince: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.deviceTypeSince',
+    defaultMessage: 'Device type since {date}',
   },
   comments: {
     id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.comments',
@@ -75,10 +75,6 @@ export default defineMessages({
   emailsFromStart: {
     id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.emailsFromStart2',
     defaultMessage: 'Emails since the start',
-  },
-  emailsFromLast6Months: {
-    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.emailsFromLast6Months',
-    defaultMessage: 'Emails last 6 months',
   },
   yourRegistrationQuestions: {
     id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourRegistrationQuestions',
@@ -91,10 +87,6 @@ export default defineMessages({
   inputStatusFromStart: {
     id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart2',
     defaultMessage: 'Input status since the start',
-  },
-  inputStatusLast6Months: {
-    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusLast6Months',
-    defaultMessage: 'Input status last 6 months',
   },
   internalOrganization: {
     id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization',
@@ -119,5 +111,13 @@ export default defineMessages({
   representativenessDashboard: {
     id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.representativenessDashboard',
     defaultMessage: 'Representativeness dashboard',
+  },
+  emailsSince: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.emailsSince',
+    defaultMessage: 'Emails since {date}',
+  },
+  inputStatusSince: {
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusSince',
+    defaultMessage: 'Input status since {date}',
   },
 });

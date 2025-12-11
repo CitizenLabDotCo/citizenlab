@@ -19,15 +19,35 @@ export default defineMessages({
   },
   // Custom widget titles for global platform report
   visitorsWidgetFromStart: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.visitorsWidgetFromStart',
-    defaultMessage: 'Visitor timeline from the start',
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.visitorsWidgetFromStart2',
+    defaultMessage: 'Visitor timeline since the start',
   },
   trafficSourcesWidgetFromStart: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.trafficSourcesWidgetFromStart',
-    defaultMessage: 'Traffic sources from the start',
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.trafficSourcesWidgetFromStart2',
+    defaultMessage: 'Traffic sources since the start',
   },
-  trafficSourcesWidgetLast6Months: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.trafficSourcesWidgetLast6Months',
-    defaultMessage: 'Traffic sources last 6 months',
+  trafficSourcesWidgetSince: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.trafficSourcesWidgetSince',
+    defaultMessage: 'Traffic sources since {date}',
+  },
+  visitorsWidgetSince: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.visitorsWidgetSince',
+    defaultMessage: 'Visitor timeline since {date}',
+  },
+  registrationWidgetFromStart: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.registrationWidgetFromStart',
+    defaultMessage: 'Registrations timeline since the start',
+  },
+  registrationWidgetSince: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.registrationWidgetSince',
+    defaultMessage: 'Registrations timeline since {date}',
+  },
+  participantsWidgetFromStart: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.participantsWidgetFromStart',
+    defaultMessage: 'Participants timeline since the start',
+  },
+  participantsWidgetSince: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.participantsWidgetSince',
+    defaultMessage: 'Participants timeline since {date}',
   },
 });
