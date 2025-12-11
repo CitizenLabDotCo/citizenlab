@@ -155,7 +155,9 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_votes: 2,
           percentage: 3.5,
           demographic_breakdown: {
+            'male' => { count: 0, percentage: 0.0 },
             'female' => { count: 2, percentage: 100.0 },
+            'unspecified' => { count: 0, percentage: 0.0 },
             '_blank' => { count: 0, percentage: 0.0 }
           }
         },
@@ -167,8 +169,9 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_votes: 55,
           percentage: 96.5,
           demographic_breakdown: {
-            'female' => { count: 3, percentage: 5.5 },
             'male' => { count: 42, percentage: 76.4 },
+            'female' => { count: 3, percentage: 5.5 },
+            'unspecified' => { count: 0, percentage: 0.0 },
             '_blank' => { count: 10, percentage: 18.2 }
           }
         }
