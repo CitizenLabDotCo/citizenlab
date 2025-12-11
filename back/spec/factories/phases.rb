@@ -156,7 +156,8 @@ FactoryBot.define do
 
     factory :idea_feed_phase do
       title_multiloc { { 'en' => 'Idea Feed (en)', 'nl-BE' => 'Idea Feed (nl)' } }
-      participation_method { 'idea_feed' }
+      participation_method { 'ideation' }
+      ideation_method { 'idea_feed' }
     end
 
     trait :ongoing do
