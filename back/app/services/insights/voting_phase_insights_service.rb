@@ -1,6 +1,112 @@
 module Insights
   class VotingPhaseInsightsService < IdeationPhaseInsightsService
+    def vote_counts_with_user_custom_field_grouping(custom_field = nil)
+      ideas = @phase.ideas.transitive # TODO: This may not be precise enough
+      participations = cached_phase_participations
+      voting_participations = participations[:voting]
+      offline_votes = @phase.manual_votes_count
+      online_votes = if @phase.voting_method == 'budgeting'
+        voting_participations.sum { |p| p[:ideas_count] }
+      else
+        voting_participations.sum { |p| p[:total_votes] }
+      end
+
+      total_votes = online_votes + offline_votes
+
+      options = if custom_field&.options&.any?
+        custom_field.options.map do |opt|
+          { "#{opt.key}": { id: opt.id, title_multiloc: opt.title_multiloc }, ordering: opt.ordering }
+        end
+      else
+        []
+      end
+
+      {
+        online_votes: online_votes,
+        offline_votes: offline_votes,
+        total_votes: total_votes,
+        group_by: custom_field&.key,
+        custom_field_id: custom_field&.id,
+        input_type: custom_field&.input_type,
+        options: options,
+        ideas: idea_vote_counts_data(ideas, voting_participations, custom_field, total_votes)
+      }
+    end
+
     private
+
+    def idea_vote_counts_data(ideas, voting_participations, field, total_phase_votes)
+      idea_ids_to_user_custom_field_values = idea_ids_to_user_custom_field_values(voting_participations)
+
+      ideas.map do |idea|
+        online_votes = if @phase.voting_method == 'budgeting'
+          idea&.baskets_count || 0
+        else
+          idea&.votes_count || 0
+        end
+
+        offline_votes = idea&.manual_votes_amount || 0
+        total_votes = online_votes + offline_votes
+        votes_demographics = if field.present?
+          idea_votes_demographics(field, idea_ids_to_user_custom_field_values, idea, total_votes, offline_votes)
+        end
+
+        {
+          id: idea.id,
+          title_multiloc: idea.title_multiloc,
+          online_votes: online_votes,
+          offline_votes: offline_votes,
+          total_votes: total_votes,
+          percentage: a_as_percentage_of_b(total_votes, total_phase_votes),
+          series: votes_demographics
+        }
+      end
+    end
+
+    # Because we are grouping/slicing by votes per demographic attribute (and for blank == no answer),
+    # we need to duplicate the user_custom_field_values for each vote a user cast for that idea.
+    # This handles mutliple voting phases correctly, but could/should be simplified for
+    # single and budgeting voting phases.
+    def idea_ids_to_user_custom_field_values(voting_participations)
+      grouped_data = voting_participations.flat_map do |participation|
+        participation[:votes_per_idea].flat_map do |idea_id, vote_count|
+          # Duplicate the user_custom_field_values hash 'vote_count' times
+          Array.new(vote_count) { [idea_id, participation[:user_custom_field_values]] }
+        end
+      end
+
+      grouped_data.group_by(&:first).transform_values { |arr| arr.map(&:last) }
+    end
+
+    def idea_votes_demographics(field, idea_ids_to_user_custom_field_values, idea, total_votes, offline_votes)
+      vote_custom_field_values = idea_ids_to_user_custom_field_values[idea.id] || []
+      counts = if field.key == 'birthyear'
+        birthyear_counts(vote_custom_field_values)
+      else
+        select_or_checkbox_counts_for_field(vote_custom_field_values, field)
+      end
+
+      counts['_blank'] ||= 0
+      counts['_blank'] += offline_votes
+
+      counts.transform_values do |count|
+        {
+          count: count,
+          percentage: a_as_percentage_of_b(count, total_votes)
+        }
+      end
+    end
+
+    def birthyear_counts(vote_custom_field_values)
+      age_stats = UserCustomFields::AgeStats.calculate(vote_custom_field_values)
+      age_stats.format_in_ranges[:ranged_series]
+    end
+
+    def a_as_percentage_of_b(a, b)
+      return nil if b.zero? # Avoid division by zero.
+
+      ((a.to_f / b) * 100).round(1)
+    end
 
     def phase_participations
       # Events are not associated with phase, so attending_event not included at phase-level.
@@ -12,7 +118,13 @@ module Insights
 
     def participations_voting
       @phase.baskets.includes(:user, :baskets_ideas).map do |basket|
-        total_votes = basket.baskets_ideas.to_a.sum(&:votes)
+        basket_ideas = basket.baskets_ideas
+        total_votes = basket_ideas.to_a.sum(&:votes)
+        votes_per_idea = if @phase.voting_method == 'budgeting'
+          basket_ideas.to_h { |bi| [bi.idea_id, 1] }
+        else
+          basket_ideas.to_h { |bi| [bi.idea_id, bi.votes] }
+        end
 
         {
           item_id: basket.id,
@@ -21,8 +133,9 @@ module Insights
           classname: 'Basket',
           participant_id: participant_id(basket.id, basket.user_id),
           user_custom_field_values: basket&.user&.custom_field_values || {},
-          votes: total_votes,
-          ideas_count: basket.ideas.count
+          total_votes: total_votes,
+          ideas_count: basket.ideas.count,
+          votes_per_idea: votes_per_idea
         }
       end
     end
@@ -46,7 +159,7 @@ module Insights
         {
           voting_method: @phase.voting_method,
           associated_ideas: associated_published_ideas_count,
-          online_votes: participations[:voting].sum { |p| p[:votes] },
+          online_votes: participations[:voting].sum { |p| p[:total_votes] },
           online_votes_7_day_change: online_votes_7_day_change(participations),
           offline_votes: @phase.manual_votes_count,
           voters: participations[:voting].pluck(:participant_id).uniq.count,
@@ -104,12 +217,11 @@ module Insights
       voting_participations = participations[:voting]
       return 0.0 if voting_participations.empty?
 
-      online_votes_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.sum { |p| p[:votes] }
+      online_votes_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.sum { |p| p[:total_votes] }
       votes_in_previous_7_days = voting_participations.select do |p|
         p[:acted_at] >= 14.days.ago && p[:acted_at] < 7.days.ago
       end
-      online_votes_previous_7_days = votes_in_previous_7_days.sum { |p| p[:votes] }
-
+      online_votes_previous_7_days = votes_in_previous_7_days.sum { |p| p[:total_votes] }
       percentage_change(online_votes_previous_7_days, online_votes_last_7_days)
     end
   end
