@@ -8,6 +8,7 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import IdeasFeedPageMeta from './IdeasFeedPageMeta';
+import StickyNotesPile from './StickyNotes';
 import TopicsSidebar from './TopicsSidebar';
 
 const IdeasFeedPage = () => {
@@ -16,6 +17,11 @@ const IdeasFeedPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const selectedTopicId = searchParams.get('topic');
   const isMobile = useBreakpoint('phone');
+
+  const params = { projects: project ? [project.data.id] : [] };
+  const queryParameters = selectedTopicId
+    ? { ...params, topics: [selectedTopicId] }
+    : { ...params };
 
   const setSelectedTopicId = (topicId: string | null) => {
     if (topicId) {
@@ -61,7 +67,9 @@ const IdeasFeedPage = () => {
             selectedTopicId={selectedTopicId}
             onTopicSelect={setSelectedTopicId}
           />
-          <Box flex="4">Sticky notes will be placed here</Box>
+          <Box flex="4">
+            <StickyNotesPile queryParameters={queryParameters} maxNotes={20} />
+          </Box>
         </Box>
       </Box>
     </main>
