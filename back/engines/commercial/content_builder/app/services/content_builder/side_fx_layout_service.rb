@@ -13,8 +13,6 @@ module ContentBuilder
     end
 
     def before_update(layout, _user)
-      # Process file attachments before swapping data images
-      layout.craftjs_json = FileAttachmentProcessorService.new(layout).process_file_attachments
       layout.craftjs_json = LayoutImageService.new.swap_data_images layout.craftjs_json
     end
 
