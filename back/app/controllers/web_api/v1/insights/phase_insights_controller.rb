@@ -18,7 +18,7 @@ module WebApi
           group_by = params.permit(:group_by)[:group_by]
           custom_field = group_by.present? ? CustomField.find_by(key: group_by) : nil
           error = validate_voting_phase_and_custom_field(group_by, custom_field)
-          
+
           if error
             render json: { errors: error }, status: :unprocessable_entity
             return
