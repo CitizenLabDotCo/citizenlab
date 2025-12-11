@@ -10,9 +10,9 @@ import {
   IParticipationStats,
 } from './types';
 
-const fetchUserParticipationStats = ({ userId }: IParameters) =>
+const fetchUserParticipationStats = ({ id }: IParameters) =>
   fetcher<IParticipationStats>({
-    path: `/users/${userId}/participation_stats`,
+    path: `/users/${id}/participation_stats`,
     action: 'get',
   });
 
@@ -21,7 +21,7 @@ interface UseUserParticipationStatsParams extends IParameters {
 }
 
 const useUserParticipationStats = ({
-  userId,
+  id,
   enabled = true,
 }: UseUserParticipationStatsParams) => {
   return useQuery<
@@ -30,8 +30,8 @@ const useUserParticipationStats = ({
     IParticipationStats,
     UserParticipationStatsKeys
   >({
-    queryKey: userParticipationStatsKeys.item({ userId }),
-    queryFn: () => fetchUserParticipationStats({ userId }),
+    queryKey: userParticipationStatsKeys.item({ id }),
+    queryFn: () => fetchUserParticipationStats({ id }),
     staleTime: 0,
     enabled,
   });

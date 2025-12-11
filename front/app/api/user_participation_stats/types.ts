@@ -7,7 +7,7 @@ export type UserParticipationStatsKeys = Keys<
 >;
 
 export type IParameters = {
-  userId: string;
+  id: string;
 };
 
 export interface IParticipationStatsAttributes {

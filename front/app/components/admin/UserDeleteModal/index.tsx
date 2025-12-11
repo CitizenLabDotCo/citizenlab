@@ -54,7 +54,7 @@ const DeleteUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
   const { formatMessage } = useIntl();
   const { mutate: deleteUser, isLoading } = useDeleteUser();
   const { data: statsResponse, isLoading: isLoadingStats } =
-    useUserParticipationStats({ userId: user.id, enabled: open });
+    useUserParticipationStats({ id: user.id, enabled: open });
 
   const stats = statsResponse?.data.attributes;
 
