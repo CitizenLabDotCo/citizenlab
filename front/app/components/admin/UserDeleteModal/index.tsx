@@ -7,6 +7,7 @@ import {
   Toggle,
   CollapsibleContainer,
   colors,
+  fontSizes,
   Spinner,
   Icon,
 } from '@citizenlab/cl2-component-library';
@@ -32,6 +33,7 @@ import messages from './messages';
 const ProfileLink = styled.a`
   color: inherit;
   font-weight: bold;
+  font-size: ${fontSizes.m}px;
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -137,14 +139,14 @@ const DeleteUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
             />
           </ProfileLink>
 
-          <Text m="0" mt="4px" fontSize="s">
+          <Text m="0" mt="4px">
             <EmailLink href={`mailto:${user.attributes.email}`}>
               {user.attributes.email}
             </EmailLink>
           </Text>
 
           {memberSinceDate && (
-            <Text m="0" mt="4px" color="textSecondary" fontSize="s">
+            <Text m="0" mt="4px" color="textSecondary">
               {formatMessage(messages.memberSince, { date: memberSinceDate })}
             </Text>
           )}
