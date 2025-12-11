@@ -262,7 +262,7 @@ resource 'Phase insights' do
             total_offline_votes: 0,
             total_votes: 1,
             percentage: 11.1,
-            demographic_breakdown: nil
+            series: nil
           },
           {
             id: voting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 2' }).id,
@@ -271,7 +271,7 @@ resource 'Phase insights' do
             total_offline_votes: 3,
             total_votes: 7,
             percentage: 77.8,
-            demographic_breakdown: nil
+            series: nil
           },
           {
             id: voting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 3' }).id,
@@ -280,7 +280,7 @@ resource 'Phase insights' do
             total_offline_votes: 0,
             total_votes: 1,
             percentage: 11.1,
-            demographic_breakdown: nil
+            series: nil
           }
         )
       end
@@ -315,7 +315,7 @@ resource 'Phase insights' do
             total_offline_votes: 0,
             total_votes: 1,
             percentage: 11.1,
-            demographic_breakdown: {
+            series: {
               male: { count: 0, percentage: 0.0 },
               female: { count: 0, percentage: 0.0 },
               unspecified: { count: 0, percentage: 0.0 },
@@ -329,7 +329,7 @@ resource 'Phase insights' do
             total_offline_votes: 3,
             total_votes: 7,
             percentage: 77.8,
-            demographic_breakdown: {
+            series: {
               male: { count: 0, percentage: 0.0 },
               female: { count: 1, percentage: 14.3 },
               unspecified: { count: 0, percentage: 0.0 },
@@ -343,7 +343,7 @@ resource 'Phase insights' do
             total_offline_votes: 0,
             total_votes: 1,
             percentage: 11.1,
-            demographic_breakdown: {
+            series: {
               male: { count: 1, percentage: 100.0 },
               female: { count: 0, percentage: 0.0 },
               unspecified: { count: 0, percentage: 0.0 },
@@ -420,7 +420,7 @@ resource 'Phase insights' do
               total_offline_votes: 0,
               total_votes: 1,
               percentage: 14.3, # of total votes (1 out of 7)
-              demographic_breakdown: {
+              series: {
                 male: { count: 0, percentage: 0.0 },
                 female: { count: 0, percentage: 0.0 },
                 unspecified: { count: 0, percentage: 0.0 },
@@ -434,7 +434,7 @@ resource 'Phase insights' do
               total_offline_votes: 3,
               total_votes: 5,
               percentage: 71.4, # of total votes (5 out of 7)
-              demographic_breakdown: {
+              series: {
                 male: { count: 0, percentage: 0.0 },
                 female: { count: 1, percentage: 20.0 },
                 unspecified: { count: 0, percentage: 0.0 },
@@ -448,7 +448,7 @@ resource 'Phase insights' do
               total_offline_votes: 0,
               total_votes: 1,
               percentage: 14.3, # of total votes (1 out of 7)
-              demographic_breakdown: {
+              series: {
                 male: { count: 1, percentage: 100.0 },
                 female: { count: 0, percentage: 0.0 },
                 unspecified: { count: 0, percentage: 0.0 },

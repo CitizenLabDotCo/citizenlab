@@ -58,7 +58,7 @@ module Insights
           total_offline_votes: total_offline_votes,
           total_votes: total_votes,
           percentage: a_as_percentage_of_b(total_votes, total_phase_votes),
-          demographic_breakdown: votes_demographics
+          series: votes_demographics
         }
       end
     end

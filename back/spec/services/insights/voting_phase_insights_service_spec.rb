@@ -154,7 +154,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_offline_votes: 0,
           total_votes: 2,
           percentage: 3.5,
-          demographic_breakdown: {
+          series: {
             'male' => { count: 0, percentage: 0.0 },
             'female' => { count: 2, percentage: 100.0 },
             'unspecified' => { count: 0, percentage: 0.0 },
@@ -168,7 +168,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_offline_votes: 10,
           total_votes: 55,
           percentage: 96.5,
-          demographic_breakdown: {
+          series: {
             'male' => { count: 42, percentage: 76.4 },
             'female' => { count: 3, percentage: 5.5 },
             'unspecified' => { count: 0, percentage: 0.0 },
@@ -194,7 +194,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_offline_votes: 0,
           total_votes: 0,
           percentage: 0.0,
-          demographic_breakdown: {
+          series: {
             'male' => { count: 0, percentage: nil },
             'female' => { count: 0, percentage: nil },
             'unspecified' => { count: 0, percentage: nil },
@@ -208,7 +208,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_offline_votes: 10,
           total_votes: 10,
           percentage: 17.5, # 10 / 57 total_phase_votes * 100
-          demographic_breakdown: {
+          series: {
             'male' => { count: 0, percentage: 0.0 },
             'female' => { count: 0, percentage: 0.0 },
             'unspecified' => { count: 0, percentage: 0.0 },
@@ -250,7 +250,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_offline_votes: 0,
           total_votes: 2,
           percentage: 3.5, # 2 / 57 total_phase_votes * 100
-          demographic_breakdown: nil
+          series: nil
         },
         {
           id: idea2.id,
@@ -259,7 +259,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_offline_votes: 10,
           total_votes: 55,
           percentage: 96.5, # 55 / 57 total_phase_votes * 100
-          demographic_breakdown: nil
+          series: nil
         }
       )
     end
@@ -292,7 +292,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_offline_votes: 0,
           total_votes: 2,
           percentage: 3.5, # 2 / 57 total_phase_votes * 100
-          demographic_breakdown: {
+          series: {
             'male' => { count: 2, percentage: 100.0 },
             'female' => { count: 0, percentage: 0.0 },
             'unspecified' => { count: 0, percentage: 0.0 },
@@ -306,7 +306,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_offline_votes: 10,
           total_votes: 55,
           percentage: 96.5, # 55 / 57 total_phase_votes * 100
-          demographic_breakdown: {
+          series: {
             'male' => { count: 3, percentage: 5.5 },
             'female' => { count: 0, percentage: 0.0 },
             'unspecified' => { count: 0, percentage: 0.0 },
@@ -344,7 +344,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_offline_votes: 0,
           total_votes: 2,
           percentage: 3.5, # 2 / 57 total_phase_votes * 100
-          demographic_breakdown: {
+          series: {
             'option_a' => { count: 2, percentage: 100.0 },
             'option_b' => { count: 2, percentage: 100.0 },
             '_blank' => { count: 0, percentage: 0.0 }
@@ -357,7 +357,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_offline_votes: 10,
           total_votes: 55,
           percentage: 96.5, # 55 / 57 total_phase_votes * 100
-          demographic_breakdown: {
+          series: {
             'option_a' => { count: 3, percentage: 5.5 },
             'option_b' => { count: 3, percentage: 5.5 },
             '_blank' => { count: 52, percentage: 94.5 }
@@ -388,7 +388,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_offline_votes: 0,
           total_votes: 2,
           percentage: 3.5, # 2 / 57 total_phase_votes * 100
-          demographic_breakdown: {
+          series: {
             true => { count: 2, percentage: 100.0 },
             false => { count: 0, percentage: 0.0 },
             '_blank' => { count: 0, percentage: 0.0 }
@@ -401,7 +401,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_offline_votes: 10,
           total_votes: 55,
           percentage: 96.5, # 55 / 57 total_phase_votes * 100
-          demographic_breakdown: {
+          series: {
             true => { count: 3, percentage: 5.5 },
             false => { count: 0, percentage: 0.0 },
             '_blank' => { count: 52, percentage: 94.5 }
@@ -440,7 +440,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_offline_votes: 0,
           total_votes: 2,
           percentage: 3.5, # 2 / 57 total_phase_votes * 100
-          demographic_breakdown: {
+          series: {
             '18-24' => { count: 0, percentage: 0.0 },
             '25-34' => { count: 2, percentage: 100.0 },
             '35-44' => { count: 0, percentage: 0.0 },
@@ -457,7 +457,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_offline_votes: 10,
           total_votes: 55,
           percentage: 96.5, # 55 / 57 total_phase_votes * 100
-          demographic_breakdown: {
+          series: {
             '18-24' => { count: 0, percentage: 0.0 },
             '25-34' => { count: 3, percentage: 5.5 },
             '35-44' => { count: 0, percentage: 0.0 },
