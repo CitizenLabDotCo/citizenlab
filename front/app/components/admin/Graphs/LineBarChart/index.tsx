@@ -104,7 +104,6 @@ const LineBarChart = <Row,>({
       width={width}
       height={height}
       legend={legend_}
-      graphDimensions={graphDimensions}
       legendDimensions={legendDimensions}
       defaultLegendOffset={DEFAULT_LEGEND_OFFSET}
       onUpdateGraphDimensions={setGraphDimensions}

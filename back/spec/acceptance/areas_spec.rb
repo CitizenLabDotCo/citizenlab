@@ -54,7 +54,19 @@ resource 'Areas' do
   end
 
   context 'when admin' do
-    before { header_token_for user }
+    before do
+      header_token_for user
+      CustomField.create!(
+        resource_type: 'User',
+        key: 'domicile',
+        title_multiloc: { 'en' => 'Domicile' },
+        input_type: 'select',
+        required: false,
+        ordering: 2,
+        enabled: true,
+        code: 'domicile'
+      )
+    end
 
     let(:user) { create(:admin) }
 
@@ -137,19 +149,6 @@ resource 'Areas' do
     end
 
     delete 'web_api/v1/areas/:id' do
-      before do
-        CustomField.create!(
-          resource_type: 'User',
-          key: 'domicile',
-          title_multiloc: { 'en' => 'Domicile' },
-          input_type: 'select',
-          required: false,
-          ordering: 2,
-          enabled: true,
-          code: 'domicile'
-        )
-      end
-
       let(:area) { create(:area) }
       let!(:id) { area.id }
 

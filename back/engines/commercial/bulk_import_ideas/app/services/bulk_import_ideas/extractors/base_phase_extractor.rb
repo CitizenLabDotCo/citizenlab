@@ -12,6 +12,9 @@ module BulkImportIdeas::Extractors
       @user_columns = []
       @attributes = attributes
       @rows = generate_idea_rows
+
+      # SECURITY: Replace email addresses so real emails do not get added to dev or staging environments
+      @rows = sanitize_emails(@rows)
     end
 
     # Return a single phase with custom fields and idea rows
@@ -36,6 +39,14 @@ module BulkImportIdeas::Extractors
 
     def default_phase_title
       @worksheet ? @worksheet.sheet_name : 'Default phase title'
+    end
+
+    def ideas_row_range
+      [1, @worksheet.count]
+    end
+
+    def ideas_col_range
+      [0, @worksheet[0].size - 1] # Start from column 1 (index 0) to the last column index of header row
     end
 
     def idea_custom_fields
@@ -69,7 +80,7 @@ module BulkImportIdeas::Extractors
           row_data << [header, value]
         end
         row_data = row_data.to_h
-        row_data['Permission'] = 'X' if row_data['Email address'].present? # Add in permission where email is present
+        row_data['Permission'] = 'X' if row_data[USER_EMAIL].present? # Add in permission where email is present
         data << row_data
       end
       data
@@ -106,6 +117,15 @@ module BulkImportIdeas::Extractors
         native_survey_title_multiloc: { en: 'Survey' },
         native_survey_button_multiloc: { en: 'Take the Survey' }
       }
+    end
+
+    # Default does nothing
+    def reformat_multiselect_values(_column_name, _option_values)
+      @rows
+    end
+
+    def reformat_matrix_values(_column_name, _labels)
+      @rows
     end
   end
 end

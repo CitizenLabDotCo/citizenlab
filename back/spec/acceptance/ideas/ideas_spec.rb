@@ -68,7 +68,7 @@ resource 'Ideas' do
           do_request phase: ph2.id
           json_response = json_parse(response_body)
           expect(json_response[:data].size).to eq 2
-          expect(json_response[:data].pluck(:id)).to match_array [i2.id, i3.id]
+          expect(json_response[:data].pluck(:id)).to contain_exactly(i2.id, i3.id)
         end
       end
     end

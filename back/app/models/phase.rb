@@ -70,6 +70,7 @@ class Phase < ApplicationRecord
 
   PARTICIPATION_METHODS = ParticipationMethod::Base.all_methods.map(&:method_str).freeze
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
+  IDEATION_METHODS      = %w[base idea_feed].freeze
   PRESENTATION_MODES    = %w[card map].freeze
   REACTING_METHODS      = %w[unlimited limited].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition].freeze
@@ -97,6 +98,7 @@ class Phase < ApplicationRecord
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
   before_validation :set_participation_method_defaults, on: :create
+  before_validation :set_participation_method_defaults_on_method_change, on: :update
   before_validation :set_presentation_mode, on: :create
 
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
@@ -172,6 +174,11 @@ class Phase < ApplicationRecord
   with_options if: :voting? do
     validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
     validates :autoshare_results_enabled, inclusion: { in: [true, false] }
+  end
+
+  # ideation?
+  with_options if: :ideation? do
+    validates :ideation_method, presence: true, inclusion: { in: IDEATION_METHODS }
   end
 
   validates :voting_min_total,
@@ -260,6 +267,10 @@ class Phase < ApplicationRecord
     participation_method == 'voting'
   end
 
+  def ideation?
+    participation_method == 'ideation'
+  end
+
   def pmethod
     @pmethod = case participation_method
     when 'information'
@@ -284,8 +295,6 @@ class Phase < ApplicationRecord
       ParticipationMethod::Volunteering.new(self)
     when 'common_ground'
       ParticipationMethod::CommonGround.new(self)
-    when 'idea_feed'
-      ParticipationMethod::IdeaFeed.new(self)
     else
       ParticipationMethod::None.new
     end
@@ -374,6 +383,12 @@ class Phase < ApplicationRecord
   end
 
   def set_participation_method_defaults
+    pmethod.assign_defaults_for_phase
+  end
+
+  def set_participation_method_defaults_on_method_change
+    return unless participation_method_changed?
+
     pmethod.assign_defaults_for_phase
   end
 

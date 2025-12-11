@@ -149,7 +149,7 @@ RSpec.describe Project do
     let!(:project3) { create(:project) }
 
     it 'returns projects not in a draft folder' do
-      expect(described_class.not_in_draft_folder).to match_array([project2, project3])
+      expect(described_class.not_in_draft_folder).to contain_exactly(project2, project3)
     end
   end
 

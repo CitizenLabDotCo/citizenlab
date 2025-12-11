@@ -165,7 +165,7 @@ RSpec.describe ReportBuilder::Queries::Projects do
         result = query.run_query(start_at: start_at, end_at: end_at)
 
         expect(result[:projects].count).to eq(2)
-        expect(result[:projects].pluck(:id)).to match_array([@project1.id, @project2.id])
+        expect(result[:projects].pluck(:id)).to contain_exactly(@project1.id, @project2.id)
       end
     end
 
@@ -177,7 +177,7 @@ RSpec.describe ReportBuilder::Queries::Projects do
         )
 
         expect(result[:projects].count).to eq(4)
-        expect(result[:projects].pluck(:id)).to match_array [@project1.id, @project2.id, @project3.id, @past_project.id]
+        expect(result[:projects].pluck(:id)).to contain_exactly(@project1.id, @project2.id, @project3.id, @past_project.id)
       end
 
       it 'returns only published projects when only published is requested' do
@@ -188,7 +188,7 @@ RSpec.describe ReportBuilder::Queries::Projects do
         )
 
         expect(result[:projects].count).to eq(4)
-        expect(result[:projects].pluck(:id)).to match_array [@project1.id, @project2.id, @project3.id, @past_project.id]
+        expect(result[:projects].pluck(:id)).to contain_exactly(@project1.id, @project2.id, @project3.id, @past_project.id)
       end
 
       it 'returns only archived projects when only archived is requested' do
@@ -211,7 +211,7 @@ RSpec.describe ReportBuilder::Queries::Projects do
 
         expect(result[:projects].count).to eq(5)
         expect(result[:projects].pluck(:id))
-          .to match_array [@project1.id, @project2.id, @project3.id, @project5.id, @past_project.id]
+          .to contain_exactly(@project1.id, @project2.id, @project3.id, @project5.id, @past_project.id)
       end
     end
   end

@@ -350,6 +350,10 @@ namespace :cl2_back do
         project_planning_calendar: {
           enabled: true,
           allowed: true
+        },
+        phase_insights: {
+          enabled: false,
+          allowed: false
         }
       }
     )

@@ -127,7 +127,7 @@ const TopicRow = (props: Props) => {
         </Box>
       </Box>
       <Box display="flex" alignItems="center" gap="16px">
-        {topic.attributes.default && (
+        {topic.attributes.is_default && (
           <Badge color={colors.teal400} mr="16px">
             <FormattedMessage {...messages.defaultBadge} />
           </Badge>

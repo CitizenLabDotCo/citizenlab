@@ -93,7 +93,7 @@ describe SimilarIdeasService do
       idea # Load idea to start from correct EmbeddingsSimilarity.count
       expect { service.upsert_embeddings! }.to change(EmbeddingsSimilarity, :count).by(2)
       expect(idea.embeddings_similarities.pluck(:embedded_attributes)).to match_array %w[title body]
-      expect(idea.embeddings_similarities.pluck(:embedding)).to match_array [embedding, embedding]
+      expect(idea.embeddings_similarities.pluck(:embedding)).to contain_exactly(embedding, embedding)
     end
 
     it 'updates the embedding if it already exists' do
@@ -104,7 +104,7 @@ describe SimilarIdeasService do
       idea # Load idea to start from correct EmbeddingsSimilarity.count
       expect { service.upsert_embeddings! }.to change(EmbeddingsSimilarity, :count).by(1)
       expect(idea.embeddings_similarities.pluck(:embedded_attributes)).to match_array %w[title body]
-      expect(idea.embeddings_similarities.pluck(:embedding)).to match_array [embedding, embedding]
+      expect(idea.embeddings_similarities.pluck(:embedding)).to contain_exactly(embedding, embedding)
     end
   end
 end
