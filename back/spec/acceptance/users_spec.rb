@@ -91,8 +91,10 @@ resource 'Users' do
       end
     end
 
-    get 'web_api/v1/users/check/:email' do
-      let(:email) { 'test@test.com' }
+    post 'web_api/v1/users/check' do
+      with_options scope: :user do
+        parameter :email, 'E-mail address to check', required: true
+      end
 
       context 'when confirmation is turned on' do
         before do
@@ -101,6 +103,8 @@ resource 'Users' do
         end
 
         context 'when a user does not exist' do
+          let(:email) { 'test@test.com' }
+
           example_request 'Returns "terms"' do
             assert_status 200
             expect(json_response_body[:data][:attributes][:action]).to eq('terms')
@@ -109,6 +113,8 @@ resource 'Users' do
 
         context 'when a user exists without a password and has completed registration', document: false do
           before { create(:user_no_password, email: 'test@test.com', registration_completed_at: Time.now) }
+
+          let(:email) { 'test@test.com' }
 
           example_request 'Returns "confirm"' do
             assert_status 200
@@ -130,6 +136,8 @@ resource 'Users' do
         context 'when a user exists with a password', document: false do
           before { create(:user, email: 'test@test.com') }
 
+          let(:email) { 'test@test.com' }
+
           example_request 'Returns "password"' do
             assert_status 200
             expect(json_response_body[:data][:attributes][:action]).to eq('password')
@@ -147,6 +155,8 @@ resource 'Users' do
 
         context 'when an email used by a pending invite is used', document: false do
           before { create(:invited_user, email: 'test@test.com') }
+
+          let(:email) { 'test@test.com' }
 
           example_request '[error] Taken by invite' do
             assert_status 422
@@ -172,6 +182,8 @@ resource 'Users' do
           SettingsService.new.activate_feature! 'password_login'
         end
 
+        let(:email) { 'test@test.com' }
+
         example_request 'returns "terms" when user does not exist' do
           assert_status 200
           expect(json_response_body[:data][:attributes][:action]).to eq('terms')
@@ -186,7 +198,7 @@ resource 'Users' do
 
         example 'returns "token" when user exists without a password' do
           create(:user, email: 'test2@email.com', password: nil)
-          do_request(email: 'test2@email.com')
+          do_request(user: { email: 'test2@email.com' })
           assert_status 200
           expect(json_response_body[:data][:attributes][:action]).to eq('token')
         end

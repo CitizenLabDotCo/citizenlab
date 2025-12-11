@@ -114,12 +114,14 @@ class WebApi::V1::UsersController < ApplicationController
   # To validate an email without creating a user and return which action to go to next
   def check
     skip_authorization
-    if User::EMAIL_REGEX.match?(params[:email])
-      @user = User.find_by_cimail(params[:email])
+    email = params[:user][:email]
+
+    if User::EMAIL_REGEX.match?(email)
+      @user = User.find_by_cimail(email)
       if @user.nil?
         render json: raw_json({ action: 'terms' })
       elsif @user.invite_pending?
-        render json: { errors: { email: [{ error: 'taken_by_invite', value: params[:email], inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
+        render json: { errors: { email: [{ error: 'taken_by_invite', value: email, inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
       elsif !@user.no_password?
         render json: raw_json({ action: 'password' })
       elsif !app_configuration.feature_activated?('user_confirmation')
@@ -128,7 +130,7 @@ class WebApi::V1::UsersController < ApplicationController
         render json: raw_json({ action: 'confirm' })
       end
     else
-      render json: { errors: { email: [{ error: 'invalid', value: params[:email] }] } }, status: :unprocessable_entity
+      render json: { errors: { email: [{ error: 'invalid', value: email }] } }, status: :unprocessable_entity
     end
   end
 
