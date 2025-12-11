@@ -53,9 +53,9 @@ resource 'Phase insights' do
       with_permissions: true
     ).tap do |phase|
       # Ideas
-      idea1 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago)
-      idea2 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago)
-      idea3 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago)
+      idea1 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago, title_multiloc: { en: 'Idea 1' })
+      idea2 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago, title_multiloc: { en: 'Idea 2' }, manual_votes_amount: 3)
+      idea3 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago, title_multiloc: { en: 'Idea 3' })
 
       # Users
       user1 = create(:user)
@@ -81,6 +81,11 @@ resource 'Phase insights' do
 
       basket3 = create(:basket, phase: phase, user: user6, submitted_at: 5.days.ago) # during voting phase & last 7 days
       create(:baskets_idea, basket: basket3, idea: idea3, votes: 1)
+
+      # Update votes_count after creating baskets_ideas
+      idea1.update_column(:votes_count, idea1.baskets_ideas.sum(:votes))
+      idea2.update_column(:votes_count, idea2.baskets_ideas.sum(:votes))
+      idea3.update_column(:votes_count, idea3.baskets_ideas.sum(:votes))
 
       # Pageviews and sessions
       session1 = create(:session, user_id: user2.id)
@@ -190,6 +195,269 @@ resource 'Phase insights' do
       include_examples 'phase insights demographics',
         gender_blank: 3,
         birthyear_blank: 3
+    end
+  end
+
+  get 'web_api/v1/phases/:id/insights/voting' do
+    parameter :group_by, 'Custom field key to group votes by (e.g., gender, birthyear)', required: false
+
+    example '[Error] Returns error when not a voting phase' do
+      do_request(id: ideation_phase.id)
+
+      assert_status 422
+      expect(json_response_body[:errors]).to eq({ phase: [{ error: 'Not a voting phase' }] })
+    end
+
+    example '[Error] Returns error when group_by is not a custom_field key' do
+      do_request(id: voting_phase.id, group_by: 'non_existent_field')
+
+      assert_status 422
+      expect(json_response_body[:errors]).to eq({ group_by: [{ error: 'custom_field not found with the key provided' }] })
+    end
+
+    example '[Error] Returns error when group_by custom_field resource_type is not User' do
+      non_user_cf = create(:custom_field, resource_type: 'CustomForm', key: 'location_description', input_type: 'text')
+      do_request(id: voting_phase.id, group_by: non_user_cf.key)
+
+      assert_status 422
+      expect(json_response_body[:errors]).to eq({ group_by: [{ error: 'Invalid custom_field resource_type for grouping' }] })
+    end
+
+    example '[Error] Returns error when group_by custom_field input_type is not supported' do
+      unsupported_cf = create(:custom_field, resource_type: 'User', key: 'hobby', input_type: 'text')
+      do_request(id: voting_phase.id, group_by: unsupported_cf.key)
+
+      assert_status 422
+      expect(json_response_body[:errors]).to eq({ group_by: [{ error: 'Custom field input_type or key not supported for grouping' }] })
+    end
+
+    example "[Error] Returns error when group_by custom_field input_type is number but key is not 'birthyear'" do
+      unsupported_number_cf = create(:custom_field, resource_type: 'User', key: 'number_of_cats', input_type: 'number')
+      do_request(id: voting_phase.id, group_by: unsupported_number_cf.key)
+
+      assert_status 422
+      expect(json_response_body[:errors]).to eq({ group_by: [{ error: 'Custom field input_type or key not supported for grouping' }] })
+    end
+
+    context 'when no custom_field for grouping is provided' do
+      example_request 'returns votes with grouping for a voting phase' do
+        assert_status 200
+
+        expect(json_response_body[:data][:id]).to eq(voting_phase.id)
+        expect(json_response_body[:data][:type]).to eq('voting_phase_votes')
+
+        attributes = json_response_body[:data][:attributes]
+        expect(attributes[:online_votes]).to eq(6)
+        expect(attributes[:offline_votes]).to eq(3)
+        expect(attributes[:total_votes]).to eq(9)
+        expect(attributes[:group_by]).to be_nil
+        expect(attributes[:custom_field_id]).to be_nil
+        expect(attributes[:input_type]).to be_nil
+        expect(attributes[:options]).to eq([])
+        expect(attributes[:ideas]).to contain_exactly(
+          {
+            id: voting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 1' }).id,
+            title_multiloc: { en: 'Idea 1' },
+            online_votes: 1,
+            offline_votes: 0,
+            total_votes: 1,
+            percentage: 11.1,
+            series: nil
+          },
+          {
+            id: voting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 2' }).id,
+            title_multiloc: { en: 'Idea 2' },
+            online_votes: 4,
+            offline_votes: 3,
+            total_votes: 7,
+            percentage: 77.8,
+            series: nil
+          },
+          {
+            id: voting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 3' }).id,
+            title_multiloc: { en: 'Idea 3' },
+            online_votes: 1,
+            offline_votes: 0,
+            total_votes: 1,
+            percentage: 11.1,
+            series: nil
+          }
+        )
+      end
+    end
+
+    context 'when appropriate custom_field for grouping is provided' do
+      example 'returns votes with grouping for a voting phase' do
+        do_request(id: voting_phase.id, group_by: 'gender')
+        assert_status 200
+
+        expect(json_response_body[:data][:id]).to eq(voting_phase.id)
+        expect(json_response_body[:data][:type]).to eq('voting_phase_votes')
+
+        attributes = json_response_body[:data][:attributes]
+        expect(attributes[:online_votes]).to eq(6)
+        expect(attributes[:offline_votes]).to eq(3)
+        expect(attributes[:total_votes]).to eq(9)
+        expect(attributes[:group_by]).to eq('gender')
+        expect(attributes[:custom_field_id]).to eq(custom_field_gender.id)
+        expect(attributes[:input_type]).to eq('select')
+        expect(attributes[:options]).to contain_exactly(
+          { male: { id: custom_field_option_male.id, title_multiloc: { en: 'Male' } }, ordering: custom_field_option_male.ordering },
+          { female: { id: custom_field_option_female.id, title_multiloc: { en: 'Female' } }, ordering: custom_field_option_female.ordering },
+          { unspecified: { id: custom_field_option_other.id, title_multiloc: { en: 'Unspecified' } }, ordering: custom_field_option_other.ordering }
+        )
+
+        expect(attributes[:ideas]).to contain_exactly(
+          {
+            id: voting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 1' }).id,
+            title_multiloc: { en: 'Idea 1' },
+            online_votes: 1,
+            offline_votes: 0,
+            total_votes: 1,
+            percentage: 11.1,
+            series: {
+              male: { count: 0, percentage: 0.0 },
+              female: { count: 0, percentage: 0.0 },
+              unspecified: { count: 0, percentage: 0.0 },
+              _blank: { count: 1, percentage: 100.0 }
+            }
+          },
+          {
+            id: voting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 2' }).id,
+            title_multiloc: { en: 'Idea 2' },
+            online_votes: 4,
+            offline_votes: 3,
+            total_votes: 7,
+            percentage: 77.8,
+            series: {
+              male: { count: 0, percentage: 0.0 },
+              female: { count: 1, percentage: 14.3 },
+              unspecified: { count: 0, percentage: 0.0 },
+              _blank: { count: 6, percentage: 85.7 }
+            }
+          },
+          {
+            id: voting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 3' }).id,
+            title_multiloc: { en: 'Idea 3' },
+            online_votes: 1,
+            offline_votes: 0,
+            total_votes: 1,
+            percentage: 11.1,
+            series: {
+              male: { count: 1, percentage: 100.0 },
+              female: { count: 0, percentage: 0.0 },
+              unspecified: { count: 0, percentage: 0.0 },
+              _blank: { count: 0, percentage: 0.0 }
+            }
+          }
+        )
+      end
+
+      context 'when phase is budgeting phase' do
+        let(:budgeting_phase) do
+          create(
+            :phase,
+            participation_method: 'voting',
+            voting_method: 'budgeting',
+            start_at: 15.days.ago,
+            end_at: 1.day.ago,
+            manual_votes_count: 3,
+            with_permissions: true
+          ).tap do |phase|
+            # Ideas
+            idea1 = create(:idea, phases: [phase], project: phase.project, submitted_at: 20.days.ago, title_multiloc: { en: 'Idea 1' })
+            idea2 = create(:idea, phases: [phase], project: phase.project, submitted_at: 20.days.ago, title_multiloc: { en: 'Idea 2' }, manual_votes_amount: 3)
+            idea3 = create(:idea, phases: [phase], project: phase.project, submitted_at: 20.days.ago, title_multiloc: { en: 'Idea 3' })
+
+            # Users
+            user1 = create(:user)
+            user2 = create(:user, custom_field_values: { gender: 'female', birthyear: 1980 })
+            user3 = create(:user, custom_field_values: { gender: 'male', birthyear: 1990 })
+
+            # Baskets and votes
+            basket1 = create(:basket, phase: phase, user: user1, submitted_at: 20.days.ago) # before voting phase (still counts)
+            create(:baskets_idea, basket: basket1, idea: idea1, votes: 150) # budgeting votes = budget allocated to idea
+            create(:baskets_idea, basket: basket1, idea: idea2, votes: 300) # budgeting votes = budget allocated to idea
+
+            basket2 = create(:basket, phase: phase, user: user2, submitted_at: 10.days.ago) # during voting phase (in week before last)
+            create(:baskets_idea, basket: basket2, idea: idea2, votes: 300) # budgeting votes = budget allocated to idea
+
+            basket3 = create(:basket, phase: phase, user: user3, submitted_at: 5.days.ago) # during voting phase & last 7 days
+            create(:baskets_idea, basket: basket3, idea: idea3, votes: 420) # budgeting votes = budget allocated to idea
+
+            # Update votes_count after creating baskets_ideas
+            idea1.update_column(:baskets_count, idea1.baskets.count)
+            idea2.update_column(:baskets_count, idea2.baskets.count)
+            idea3.update_column(:baskets_count, idea3.baskets.count)
+          end
+        end
+
+        example 'returns votes with grouping for a budgeting voting phase' do
+          do_request(id: budgeting_phase.id, group_by: 'gender')
+          assert_status 200
+
+          expect(json_response_body[:data][:id]).to eq(budgeting_phase.id)
+          expect(json_response_body[:data][:type]).to eq('voting_phase_votes')
+
+          attributes = json_response_body[:data][:attributes]
+          expect(attributes[:online_votes]).to eq(4) # The number of 'picks' (i.e., number of ideas budget allocated to), not the total budget allocated
+          expect(attributes[:offline_votes]).to eq(3)
+          expect(attributes[:total_votes]).to eq(7)
+          expect(attributes[:group_by]).to eq('gender')
+          expect(attributes[:custom_field_id]).to eq(custom_field_gender.id)
+          expect(attributes[:input_type]).to eq('select')
+          expect(attributes[:options]).to contain_exactly(
+            { male: { id: custom_field_option_male.id, title_multiloc: { en: 'Male' } }, ordering: custom_field_option_male.ordering },
+            { female: { id: custom_field_option_female.id, title_multiloc: { en: 'Female' } }, ordering: custom_field_option_female.ordering },
+            { unspecified: { id: custom_field_option_other.id, title_multiloc: { en: 'Unspecified' } }, ordering: custom_field_option_other.ordering }
+          )
+
+          expect(attributes[:ideas]).to contain_exactly(
+            {
+              id: budgeting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 1' }).id,
+              title_multiloc: { en: 'Idea 1' },
+              online_votes: 1,
+              offline_votes: 0,
+              total_votes: 1,
+              percentage: 14.3, # of total votes (1 out of 7)
+              series: {
+                male: { count: 0, percentage: 0.0 },
+                female: { count: 0, percentage: 0.0 },
+                unspecified: { count: 0, percentage: 0.0 },
+                _blank: { count: 1, percentage: 100.0 }
+              }
+            },
+            {
+              id: budgeting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 2' }).id,
+              title_multiloc: { en: 'Idea 2' },
+              online_votes: 2,
+              offline_votes: 3,
+              total_votes: 5,
+              percentage: 71.4, # of total votes (5 out of 7)
+              series: {
+                male: { count: 0, percentage: 0.0 },
+                female: { count: 1, percentage: 20.0 },
+                unspecified: { count: 0, percentage: 0.0 },
+                _blank: { count: 4, percentage: 80.0 }
+              }
+            },
+            {
+              id: budgeting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 3' }).id,
+              title_multiloc: { en: 'Idea 3' },
+              online_votes: 1,
+              offline_votes: 0,
+              total_votes: 1,
+              percentage: 14.3, # of total votes (1 out of 7)
+              series: {
+                male: { count: 1, percentage: 100.0 },
+                female: { count: 0, percentage: 0.0 },
+                unspecified: { count: 0, percentage: 0.0 },
+                _blank: { count: 0, percentage: 0.0 }
+              }
+            }
+          )
+        end
+      end
     end
   end
 end
