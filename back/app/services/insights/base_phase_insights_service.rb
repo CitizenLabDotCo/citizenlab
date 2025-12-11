@@ -217,19 +217,8 @@ module Insights
     end
 
     def select_or_checkbox_field_demographics_data(participant_custom_field_values, custom_field)
-      counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
-
-      # Ensure checkbox fields always include both true and false options in consistent order
-      if custom_field.input_type == 'checkbox'
-        counts = {
-          true => counts[true] || 0,
-          false => counts[false] || 0,
-          '_blank' => counts['_blank']
-        }.compact
-      end
-
+      counts = select_or_checkbox_counts_for_field(participant_custom_field_values, custom_field)
       reference_distribution = calculate_reference_distribution(custom_field)
-
       r_score = calculate_r_score(counts, reference_distribution)
 
       options = nil
@@ -245,6 +234,21 @@ module Insights
         reference_distribution: reference_distribution,
         options: options
       }
+    end
+
+    def select_or_checkbox_counts_for_field(participant_custom_field_values, custom_field)
+      counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
+
+      # Ensure checkbox fields always include both true and false options in consistent order
+      if custom_field.input_type == 'checkbox'
+        counts = {
+          true => counts[true] || 0,
+          false => counts[false] || 0,
+          '_blank' => counts['_blank']
+        }.compact
+      end
+
+      counts
     end
 
     def participants_custom_field_values(participations, participant_ids)
