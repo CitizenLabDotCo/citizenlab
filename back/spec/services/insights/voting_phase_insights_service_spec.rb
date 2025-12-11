@@ -135,6 +135,9 @@ RSpec.describe Insights::VotingPhaseInsightsService do
   describe '#idea_vote_counts_data' do
     let(:participations) { service.send(:phase_participations)[:voting] }
     let(:custom_field) { create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' }) }
+    let!(:custom_field_option_male) { create(:custom_field_option, custom_field: custom_field, key: 'male', title_multiloc: { en: 'Male' }) }
+    let!(:custom_field_option_female) { create(:custom_field_option, custom_field: custom_field, key: 'female', title_multiloc: { en: 'Female' }) }
+    let!(:custom_field_option_unspecified) { create(:custom_field_option, custom_field: custom_field, key: 'unspecified', title_multiloc: { en: 'Unspecified' }) }
 
     it 'returns the correct vote counts data per idea for a given custom field' do
       participations[0][:user_custom_field_values] = { 'gender' => 'female' }
@@ -188,7 +191,12 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_offline_votes: 0,
           total_votes: 0,
           percentage: 0.0,
-          demographic_breakdown: { '_blank' => { count: 0, percentage: nil } }
+          demographic_breakdown: {
+            'male' => { count: 0, percentage: nil },
+            'female' => { count: 0, percentage: nil },
+            'unspecified' => { count: 0, percentage: nil },
+            '_blank' => { count: 0, percentage: nil }
+          }
         },
         {
           id: idea2.id,
@@ -197,7 +205,12 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           total_offline_votes: 10,
           total_votes: 10,
           percentage: 17.5, # 10 / 57 total_phase_votes * 100
-          demographic_breakdown: { '_blank' => { count: 10, percentage: 100.0 } }
+          demographic_breakdown: {
+            'male' => { count: 0, percentage: 0.0 },
+            'female' => { count: 0, percentage: 0.0 },
+            'unspecified' => { count: 0, percentage: 0.0 },
+            '_blank' => { count: 10, percentage: 100.0 }
+          }
         }
       )
     end

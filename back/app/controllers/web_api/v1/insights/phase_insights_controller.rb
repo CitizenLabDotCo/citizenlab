@@ -43,19 +43,18 @@ module WebApi
           return nil if group_by.blank?
 
           custom_field = CustomField.find_by(key: group_by)
+          error = nil
 
-          unless custom_field
-            render json: { errors: { group_by: [{ error: 'custom_field not found with the key provided' }] } }, status: :unprocessable_entity
-            return nil
+          if custom_field.nil?
+            error = 'custom_field not found with the key provided'
+          elsif custom_field.resource_type != 'User'
+            error = 'Invalid custom_field resource_type for grouping'
+          elsif !custom_field.support_reference_distribution? && custom_field.key != 'birthyear'
+            error = 'Custom field input_type or key not supported for grouping'
           end
 
-          unless custom_field.resource_type == 'User'
-            render json: { errors: { group_by: [{ error: 'Invalid custom_field resource_type for grouping' }] } }, status: :unprocessable_entity
-            return nil
-          end
-
-          unless custom_field.support_reference_distribution? || custom_field.key == 'birthyear'
-            render json: { errors: { group_by: [{ error: 'Custom field input_type or key not supported for grouping' }] } }, status: :unprocessable_entity
+          if error
+            render json: { errors: { group_by: [{ error: error }] } }, status: :unprocessable_entity
             return nil
           end
 
