@@ -6,12 +6,11 @@ RSpec.describe EmailCampaigns::NewCommentForAdminMailer do
   describe 'NewCommentForAdmin' do
     let_it_be(:recipient) { create(:user, locale: 'en', first_name: 'Homer') }
     let_it_be(:campaign) { EmailCampaigns::Campaigns::NewCommentForAdmin.create! }
-    let_it_be(:command) do
+    let(:command) do
       {
         recipient: recipient,
         event_payload: {
           initiating_user_first_name: 'Chewbacca',
-          initiating_user_last_name: nil,
           comment_author_name: 'Chewbacca',
           comment_body_multiloc: {
             en: 'Ruh roooarrgh yrroonn wyaaaaaa ahuma hnn-rowr ma'
@@ -26,9 +25,9 @@ RSpec.describe EmailCampaigns::NewCommentForAdminMailer do
       }
     end
 
-    let_it_be(:mailer) { described_class.with(command: command, campaign: campaign) }
-    let_it_be(:mail) { mailer.campaign_mail.deliver_now }
-    let_it_be(:body) { mail_body(mail) }
+    let(:mailer) { described_class.with(command: command, campaign: campaign) }
+    let(:mail) { mailer.campaign_mail.deliver_now }
+    let(:body) { mail_body(mail) }
 
     before_all { EmailCampaigns::UnsubscriptionToken.create!(user_id: recipient.id) }
 
@@ -84,7 +83,29 @@ RSpec.describe EmailCampaigns::NewCommentForAdminMailer do
       end
     end
 
-    # TODO: Anonymous author
+    context 'when the comment author is anonymous' do
+      before { command[:event_payload].merge!(initiating_user_first_name: nil, comment_author_name: nil) }
+
+      it 'includes the header' do
+        expect(body).to have_tag('div') do
+          with_tag 'h1' do
+            with_text(/Homer, a new comment has been posted on your platform/)
+          end
+          with_tag 'p' do
+            with_text(/Anonymous user added a new comment on your platform./)
+          end
+        end
+      end
+
+      it 'includes the comment box' do
+        expect(body).to have_tag('table') do
+          with_text(/Anonymous user commented:/)
+          with_tag 'p' do
+            with_text(/Ruh roooarrgh yrroonn wyaaaaaa ahuma hnn-rowr ma/)
+          end
+        end
+      end
+    end
 
     context 'with custom text' do
       let(:mail) { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
