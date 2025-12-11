@@ -147,4 +147,3 @@ RSpec.describe EmailCampaigns::NewCommentForAdminMailer do
     end
   end
 end
-
