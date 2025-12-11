@@ -121,7 +121,7 @@ Rails.application.routes.draw do
         get 'ideas_count', on: :member
         get 'comments_count', on: :member
         get 'blocked_count', on: :collection
-        get 'check/:email', on: :collection, to: 'users#check', constraints: { email: /.*/ }
+        post 'check', on: :collection, to: 'users#check'
         scope module: 'verification' do
           get 'me/locked_attributes', on: :collection, to: 'locked_attributes#index'
         end
