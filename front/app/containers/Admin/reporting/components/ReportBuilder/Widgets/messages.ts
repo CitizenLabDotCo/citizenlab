@@ -19,8 +19,8 @@ export default defineMessages({
   },
   // Custom widget titles for global platform report
   visitorsWidgetFromStart: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.visitorsWidgetFromStart2',
-    defaultMessage: 'Visitor timeline since the start',
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.visitorsWidgetFromStart3',
+    defaultMessage: 'Visitors timeline since the start',
   },
   trafficSourcesWidgetFromStart: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.trafficSourcesWidgetFromStart2',
@@ -31,8 +31,8 @@ export default defineMessages({
     defaultMessage: 'Traffic sources since {date}',
   },
   visitorsWidgetSince: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.visitorsWidgetSince',
-    defaultMessage: 'Visitor timeline since {date}',
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.visitorsWidgetSince2',
+    defaultMessage: 'Visitors timeline since {date}',
   },
   registrationWidgetFromStart: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.registrationWidgetFromStart',
