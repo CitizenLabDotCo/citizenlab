@@ -12,6 +12,7 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 
 import { CHART_COLORS, getStripedPattern } from './constants';
+import DemographicSection from './DemographicSection';
 import messages from './messages';
 import { getDemographicKeys, getDemographicLabel } from './utils';
 import VotingIdeaRow from './VotingIdeaRow';
@@ -121,20 +122,15 @@ const VoteResults = ({ phaseId }: Props) => {
         </Box>
       </Box>
 
-      {/* Ideas list - different layout for clustered vs non-clustered */}
       {clusterBy && demographicKeys.length > 0 ? (
-        // Clustered view with demographic columns
+        // Clustered view with vertical demographic sections
         <Box>
-          {ideas.map((idea) => (
-            <VotingIdeaRow
-              key={idea.id}
-              idea={idea}
-              maxVotes={maxVotes}
-              clusterBy={clusterBy}
-              demographicKeys={demographicKeys}
-              demographicLabels={demographicKeys.map((key) =>
-                getDemographicLabel(key, clusterBy, options, localize)
-              )}
+          {demographicKeys.map((key) => (
+            <DemographicSection
+              key={key}
+              label={getDemographicLabel(key, clusterBy, options, localize)}
+              ideas={ideas}
+              demographicKey={key}
             />
           ))}
         </Box>
