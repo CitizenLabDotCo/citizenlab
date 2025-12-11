@@ -150,8 +150,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         {
           id: idea1.id,
           title_multiloc: idea1.title_multiloc,
-          total_online_votes: 2,
-          total_offline_votes: 0,
+          online_votes: 2,
+          offline_votes: 0,
           total_votes: 2,
           percentage: 3.5,
           series: {
@@ -164,8 +164,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         {
           id: idea2.id,
           title_multiloc: idea2.title_multiloc,
-          total_online_votes: 45,
-          total_offline_votes: 10,
+          online_votes: 45,
+          offline_votes: 10,
           total_votes: 55,
           percentage: 96.5,
           series: {
@@ -190,8 +190,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         {
           id: idea1.id,
           title_multiloc: idea1.title_multiloc,
-          total_online_votes: 0,
-          total_offline_votes: 0,
+          online_votes: 0,
+          offline_votes: 0,
           total_votes: 0,
           percentage: 0.0,
           series: {
@@ -204,8 +204,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         {
           id: idea2.id,
           title_multiloc: idea2.title_multiloc,
-          total_online_votes: 0,
-          total_offline_votes: 10,
+          online_votes: 0,
+          offline_votes: 10,
           total_votes: 10,
           percentage: 17.5, # 10 / 57 total_phase_votes * 100
           series: {
@@ -246,8 +246,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         {
           id: idea1.id,
           title_multiloc: idea1.title_multiloc,
-          total_online_votes: 2,
-          total_offline_votes: 0,
+          online_votes: 2,
+          offline_votes: 0,
           total_votes: 2,
           percentage: 3.5, # 2 / 57 total_phase_votes * 100
           series: nil
@@ -255,8 +255,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         {
           id: idea2.id,
           title_multiloc: idea2.title_multiloc,
-          total_online_votes: 45,
-          total_offline_votes: 10,
+          online_votes: 45,
+          offline_votes: 10,
           total_votes: 55,
           percentage: 96.5, # 55 / 57 total_phase_votes * 100
           series: nil
@@ -288,8 +288,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         {
           id: idea1.id,
           title_multiloc: idea1.title_multiloc,
-          total_online_votes: 2,
-          total_offline_votes: 0,
+          online_votes: 2,
+          offline_votes: 0,
           total_votes: 2,
           percentage: 3.5, # 2 / 57 total_phase_votes * 100
           series: {
@@ -302,8 +302,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         {
           id: idea2.id,
           title_multiloc: idea2.title_multiloc,
-          total_online_votes: 45,
-          total_offline_votes: 10,
+          online_votes: 45,
+          offline_votes: 10,
           total_votes: 55,
           percentage: 96.5, # 55 / 57 total_phase_votes * 100
           series: {
@@ -340,8 +340,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         {
           id: idea1.id,
           title_multiloc: idea1.title_multiloc,
-          total_online_votes: 2,
-          total_offline_votes: 0,
+          online_votes: 2,
+          offline_votes: 0,
           total_votes: 2,
           percentage: 3.5, # 2 / 57 total_phase_votes * 100
           series: {
@@ -353,8 +353,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         {
           id: idea2.id,
           title_multiloc: idea2.title_multiloc,
-          total_online_votes: 45,
-          total_offline_votes: 10,
+          online_votes: 45,
+          offline_votes: 10,
           total_votes: 55,
           percentage: 96.5, # 55 / 57 total_phase_votes * 100
           series: {
@@ -384,8 +384,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         {
           id: idea1.id,
           title_multiloc: idea1.title_multiloc,
-          total_online_votes: 2,
-          total_offline_votes: 0,
+          online_votes: 2,
+          offline_votes: 0,
           total_votes: 2,
           percentage: 3.5, # 2 / 57 total_phase_votes * 100
           series: {
@@ -397,8 +397,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         {
           id: idea2.id,
           title_multiloc: idea2.title_multiloc,
-          total_online_votes: 45,
-          total_offline_votes: 10,
+          online_votes: 45,
+          offline_votes: 10,
           total_votes: 55,
           percentage: 96.5, # 55 / 57 total_phase_votes * 100
           series: {
@@ -436,8 +436,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         {
           id: idea1.id,
           title_multiloc: idea1.title_multiloc,
-          total_online_votes: 2,
-          total_offline_votes: 0,
+          online_votes: 2,
+          offline_votes: 0,
           total_votes: 2,
           percentage: 3.5, # 2 / 57 total_phase_votes * 100
           series: {
@@ -453,8 +453,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         {
           id: idea2.id,
           title_multiloc: idea2.title_multiloc,
-          total_online_votes: 45,
-          total_offline_votes: 10,
+          online_votes: 45,
+          offline_votes: 10,
           total_votes: 55,
           percentage: 96.5, # 55 / 57 total_phase_votes * 100
           series: {

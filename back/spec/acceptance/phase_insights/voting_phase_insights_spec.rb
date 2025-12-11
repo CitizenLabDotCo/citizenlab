@@ -258,8 +258,8 @@ resource 'Phase insights' do
           {
             id: voting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 1' }).id,
             title_multiloc: { en: 'Idea 1' },
-            total_online_votes: 1,
-            total_offline_votes: 0,
+            online_votes: 1,
+            offline_votes: 0,
             total_votes: 1,
             percentage: 11.1,
             series: nil
@@ -267,8 +267,8 @@ resource 'Phase insights' do
           {
             id: voting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 2' }).id,
             title_multiloc: { en: 'Idea 2' },
-            total_online_votes: 4,
-            total_offline_votes: 3,
+            online_votes: 4,
+            offline_votes: 3,
             total_votes: 7,
             percentage: 77.8,
             series: nil
@@ -276,8 +276,8 @@ resource 'Phase insights' do
           {
             id: voting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 3' }).id,
             title_multiloc: { en: 'Idea 3' },
-            total_online_votes: 1,
-            total_offline_votes: 0,
+            online_votes: 1,
+            offline_votes: 0,
             total_votes: 1,
             percentage: 11.1,
             series: nil
@@ -311,8 +311,8 @@ resource 'Phase insights' do
           {
             id: voting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 1' }).id,
             title_multiloc: { en: 'Idea 1' },
-            total_online_votes: 1,
-            total_offline_votes: 0,
+            online_votes: 1,
+            offline_votes: 0,
             total_votes: 1,
             percentage: 11.1,
             series: {
@@ -325,8 +325,8 @@ resource 'Phase insights' do
           {
             id: voting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 2' }).id,
             title_multiloc: { en: 'Idea 2' },
-            total_online_votes: 4,
-            total_offline_votes: 3,
+            online_votes: 4,
+            offline_votes: 3,
             total_votes: 7,
             percentage: 77.8,
             series: {
@@ -339,8 +339,8 @@ resource 'Phase insights' do
           {
             id: voting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 3' }).id,
             title_multiloc: { en: 'Idea 3' },
-            total_online_votes: 1,
-            total_offline_votes: 0,
+            online_votes: 1,
+            offline_votes: 0,
             total_votes: 1,
             percentage: 11.1,
             series: {
@@ -416,8 +416,8 @@ resource 'Phase insights' do
             {
               id: budgeting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 1' }).id,
               title_multiloc: { en: 'Idea 1' },
-              total_online_votes: 1,
-              total_offline_votes: 0,
+              online_votes: 1,
+              offline_votes: 0,
               total_votes: 1,
               percentage: 14.3, # of total votes (1 out of 7)
               series: {
@@ -430,8 +430,8 @@ resource 'Phase insights' do
             {
               id: budgeting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 2' }).id,
               title_multiloc: { en: 'Idea 2' },
-              total_online_votes: 2,
-              total_offline_votes: 3,
+              online_votes: 2,
+              offline_votes: 3,
               total_votes: 5,
               percentage: 71.4, # of total votes (5 out of 7)
               series: {
@@ -444,8 +444,8 @@ resource 'Phase insights' do
             {
               id: budgeting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 3' }).id,
               title_multiloc: { en: 'Idea 3' },
-              total_online_votes: 1,
-              total_offline_votes: 0,
+              online_votes: 1,
+              offline_votes: 0,
               total_votes: 1,
               percentage: 14.3, # of total votes (1 out of 7)
               series: {

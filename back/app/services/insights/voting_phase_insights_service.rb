@@ -39,23 +39,23 @@ module Insights
       idea_ids_to_user_custom_field_values = idea_ids_to_user_custom_field_values(voting_participations)
 
       ideas.map do |idea|
-        total_online_votes = if @phase.voting_method == 'budgeting'
+        online_votes = if @phase.voting_method == 'budgeting'
           idea&.baskets_count || 0
         else
           idea&.votes_count || 0
         end
 
-        total_offline_votes = idea&.manual_votes_amount || 0
-        total_votes = total_online_votes + total_offline_votes
+        offline_votes = idea&.manual_votes_amount || 0
+        total_votes = online_votes + offline_votes
         votes_demographics = if field.present?
-          idea_votes_demographics(field, idea_ids_to_user_custom_field_values, idea, total_votes, total_offline_votes)
+          idea_votes_demographics(field, idea_ids_to_user_custom_field_values, idea, total_votes, offline_votes)
         end
 
         {
           id: idea.id,
           title_multiloc: idea.title_multiloc,
-          total_online_votes: total_online_votes,
-          total_offline_votes: total_offline_votes,
+          online_votes: online_votes,
+          offline_votes: offline_votes,
           total_votes: total_votes,
           percentage: a_as_percentage_of_b(total_votes, total_phase_votes),
           series: votes_demographics
@@ -78,7 +78,7 @@ module Insights
       grouped_data.group_by(&:first).transform_values { |arr| arr.map(&:last) }
     end
 
-    def idea_votes_demographics(field, idea_ids_to_user_custom_field_values, idea, total_votes, total_offline_votes)
+    def idea_votes_demographics(field, idea_ids_to_user_custom_field_values, idea, total_votes, offline_votes)
       vote_custom_field_values = idea_ids_to_user_custom_field_values[idea.id] || []
       counts = if field.key == 'birthyear'
         birthyear_counts(vote_custom_field_values)
@@ -87,7 +87,7 @@ module Insights
       end
 
       counts['_blank'] ||= 0
-      counts['_blank'] += total_offline_votes
+      counts['_blank'] += offline_votes
 
       counts.transform_values do |count|
         {
