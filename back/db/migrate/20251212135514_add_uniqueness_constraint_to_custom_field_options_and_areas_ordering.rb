@@ -4,7 +4,7 @@ class AddUniquenessConstraintToCustomFieldOptionsAndAreasOrdering < ActiveRecord
   def change
     add_index :custom_field_options, %i[custom_field_id ordering],
       unique: true,
-      name: 'index_custom_field_options_on_custom_field_id_and_ordering_unique',
+      name: 'index_custom_field_options_on_field_id_and_ordering_unique',
       algorithm: :concurrently
 
     add_index :areas, :ordering,

@@ -15,8 +15,9 @@
 #
 # Indexes
 #
-#  index_custom_field_options_on_custom_field_id          (custom_field_id)
-#  index_custom_field_options_on_custom_field_id_and_key  (custom_field_id,key) UNIQUE
+#  index_custom_field_options_on_custom_field_id               (custom_field_id)
+#  index_custom_field_options_on_custom_field_id_and_key       (custom_field_id,key) UNIQUE
+#  index_custom_field_options_on_field_id_and_ordering_unique  (custom_field_id,ordering) UNIQUE
 #
 # Foreign Keys
 #

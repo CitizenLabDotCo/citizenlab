@@ -18,6 +18,7 @@
 #
 #  index_areas_on_custom_field_option_id  (custom_field_option_id)
 #  index_areas_on_include_in_onboarding   (include_in_onboarding)
+#  index_areas_on_ordering_unique         (ordering) UNIQUE
 #
 # Foreign Keys
 #
