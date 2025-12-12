@@ -47,6 +47,7 @@ module UserConfirmation
       .update_all(new_email: nil, email_confirmation_code: nil, updated_at: Time.zone.now)
   end
 
+  # ONLY USED IN SPECS
   def reset_confirmation_and_counts
     if !confirmation_required?
       # Only reset code and retry/reset counts if account has already been confirmed
