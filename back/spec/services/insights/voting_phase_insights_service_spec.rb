@@ -521,8 +521,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       original_data = service.send(:vote_counts_by_demographic, nil)
       result1 = service.cached_vote_counts_by_demographic
 
-      expect(result1).to have_key(:online_votes)
-      expect(result1).to have_key(:ideas)
+      expect(result1).to eq(original_data)
 
       # Change underlying vote data for existing ideas
       # (just update columns, don't create new records, as that is flaky)
