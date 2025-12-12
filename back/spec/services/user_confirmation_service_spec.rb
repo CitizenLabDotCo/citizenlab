@@ -12,56 +12,58 @@ RSpec.describe UserConfirmationService do
     RequestConfirmationCodeJob.perform_now user
   end
 
-  context 'when the user is nil' do
-    it 'returns a user blank error' do
-      result = service.validate_and_confirm!(nil, '1234')
+  describe '#validate_and_confirm_authenticated!' do
+    context 'when the user is nil' do
+      it 'returns a user blank error' do
+        result = service.validate_and_confirm_authenticated!(nil, '1234')
 
-      expect(result.success?).to be false
-      expect(result.errors.details).to eq({ user: [{ error: :blank }] })
-    end
-  end
-
-  context 'when the code is nil' do
-    it 'returns a code blank error' do
-      result = service.validate_and_confirm!(user, nil)
-
-      expect(result.success?).to be false
-      expect(result.errors.details).to eq({ code: [{ error: :blank }] })
-    end
-  end
-
-  context 'when the code is incorrect' do
-    it 'returns a code invalid error' do
-      result = service.validate_and_confirm!(user, 'failcode')
-
-      expect(result.success?).to be false
-      expect(result.errors.details).to eq(code: [{ error: :invalid }])
-    end
-  end
-
-  context 'when the code has expired' do
-    before do
-      user.update(email_confirmation_code_sent_at: 1.week.ago)
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq({ user: [{ error: :blank }] })
+      end
     end
 
-    it 'returns a code expired error' do
-      result = service.validate_and_confirm!(user, user.email_confirmation_code)
+    context 'when the code is nil' do
+      it 'returns a code blank error' do
+        result = service.validate_and_confirm_authenticated!(user, nil)
 
-      expect(result.success?).to be false
-      expect(result.errors.details).to eq(code: [{ error: :expired }])
-    end
-  end
-
-  context 'when the code has expired and is invalid' do
-    before do
-      user.update(email_confirmation_code_sent_at: 1.week.ago)
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq({ code: [{ error: :blank }] })
+      end
     end
 
-    it 'returns a code invalid error' do
-      result = service.validate_and_confirm!(user, 'failcode')
+    context 'when the code is incorrect' do
+      it 'returns a code invalid error' do
+        result = service.validate_and_confirm_authenticated!(user, 'failcode')
 
-      expect(result.success?).to be false
-      expect(result.errors.details).to eq(code: [{ error: :invalid }])
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(code: [{ error: :invalid }])
+      end
+    end
+
+    context 'when the code has expired' do
+      before do
+        user.update(email_confirmation_code_sent_at: 1.week.ago)
+      end
+
+      it 'returns a code expired error' do
+        result = service.validate_and_confirm_authenticated!(user, user.email_confirmation_code)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(code: [{ error: :expired }])
+      end
+    end
+
+    context 'when the code has expired and is invalid' do
+      before do
+        user.update(email_confirmation_code_sent_at: 1.week.ago)
+      end
+
+      it 'returns a code invalid error' do
+        result = service.validate_and_confirm_authenticated!(user, 'failcode')
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(code: [{ error: :invalid }])
+      end
     end
   end
 end
