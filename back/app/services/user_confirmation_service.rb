@@ -5,7 +5,7 @@
 #
 # @example
 #   service = UserConfirmationService.new
-#   result = service.validate_and_confirm!(user, '1234')
+#   result = service.validate_and_confirm_unauthenticated!(user, '1234')
 #
 #   if result.success?
 #     # User confirmed successfully
