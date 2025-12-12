@@ -227,7 +227,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
 
   describe '#vote_counts_by_demographic' do
     it 'gives expected results when custom_field is nil' do
-      result = service.vote_counts_by_demographic(nil)
+      result = service.send(:vote_counts_by_demographic, nil)
 
       expect(result[:online_votes]).to eq(47)
       expect(result[:offline_votes]).to eq(10)
@@ -265,7 +265,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       create(:custom_field_option, custom_field: custom_field, key: 'female', title_multiloc: { en: 'Female' })
       create(:custom_field_option, custom_field: custom_field, key: 'unspecified', title_multiloc: { en: 'Unspecified' })
 
-      result = service.vote_counts_by_demographic(custom_field)
+      result = service.send(:vote_counts_by_demographic, custom_field)
 
       expect(result[:online_votes]).to eq(47)
       expect(result[:offline_votes]).to eq(10)
@@ -318,7 +318,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
 
       user.update!(custom_field_values: { 'multiselect' => %w[option_a option_b] })
 
-      result = service.vote_counts_by_demographic(custom_field)
+      result = service.send(:vote_counts_by_demographic, custom_field)
 
       expect(result[:online_votes]).to eq(47)
       expect(result[:offline_votes]).to eq(10)
@@ -365,7 +365,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       custom_field = create(:custom_field, resource_type: 'User', key: 'checkbox', input_type: 'checkbox', title_multiloc: { en: 'Checkbox' })
       user.update!(custom_field_values: { 'checkbox' => true })
 
-      result = service.vote_counts_by_demographic(custom_field)
+      result = service.send(:vote_counts_by_demographic, custom_field)
 
       expect(result[:online_votes]).to eq(47)
       expect(result[:offline_votes]).to eq(10)
@@ -417,7 +417,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
 
       user.update!(custom_field_values: { 'birthyear' => Date.current.year - 30 }) # Age 30
 
-      result = service.vote_counts_by_demographic(custom_field)
+      result = service.send(:vote_counts_by_demographic, custom_field)
 
       expect(result[:online_votes]).to eq(47)
       expect(result[:offline_votes]).to eq(10)
@@ -489,6 +489,62 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       ordered_ideas = service.send(:ideas_ordered_by_total_votes)
 
       expect(ordered_ideas).to eq([idea2, idea4, idea1, idea3])
+    end
+  end
+
+  describe '#cached_vote_counts_by_demographic' do
+    # Enable memory store for these tests
+    around do |example|
+      original_cache_store = Rails.cache
+      Rails.cache = ActiveSupport::Cache::MemoryStore.new
+      example.run
+      Rails.cache = original_cache_store
+    end
+
+    it 'caches vote counts on first call' do
+      expect(service).to receive(:vote_counts_by_demographic).once.and_call_original
+
+      service.cached_vote_counts_by_demographic
+      service.cached_vote_counts_by_demographic # Second call should use cache
+    end
+
+    it 'caches vote counts for a custom field on first call' do
+      custom_field = create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select')
+
+      expect(service).to receive(:vote_counts_by_demographic).once.and_call_original
+
+      service.cached_vote_counts_by_demographic(custom_field)
+      service.cached_vote_counts_by_demographic(custom_field) # Second call should use cache
+    end
+
+    it 'returns cached data even when underlying data changes' do
+      result1 = service.cached_vote_counts_by_demographic
+
+      expect(result1).to have_key(:online_votes)
+      expect(result1).to have_key(:ideas)
+
+      # Change underlying data
+      new_idea = create(:idea, phases: [phase], votes_count: 100)
+      new_basket = create(:basket, phase: phase, user: user, submitted_at: phase.start_at + 2.days)
+      create(:baskets_idea, basket: new_basket, idea: new_idea, votes: 50)
+
+      phase.reload # to update updated_at timestamp
+
+      result2 = service.cached_vote_counts_by_demographic
+      fresh_data = service.send(:vote_counts_by_demographic, nil)
+
+      # Should still return old cached data, not recalculated data
+      expect(result2).to eq(result1)
+      expect(result2).not_to eq(fresh_data)
+    end
+
+    it 'uses cache key based on phase id and updated_at' do
+      cache_key = "phase_vote_counts_by_demographic/#{phase.id}/#{phase.updated_at.to_i}"
+
+      allow(Rails.cache).to receive(:fetch).and_call_original
+      expect(Rails.cache).to receive(:fetch).with(cache_key, expires_in: 5.minutes).and_call_original
+
+      service.cached_vote_counts_by_demographic
     end
   end
 end

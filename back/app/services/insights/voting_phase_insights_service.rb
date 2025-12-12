@@ -1,5 +1,15 @@
 module Insights
   class VotingPhaseInsightsService < IdeationPhaseInsightsService
+    def cached_vote_counts_by_demographic(custom_field = nil)
+      cache_key = "phase_vote_counts_by_demographic/#{@phase.id}/#{@phase.updated_at.to_i}"
+
+      Rails.cache.fetch(cache_key, expires_in: @cache_expires_in) do
+        vote_counts_by_demographic(custom_field)
+      end
+    end
+
+    private
+
     def vote_counts_by_demographic(custom_field = nil)
       participations = cached_phase_participations
       voting_participations = participations[:voting]
@@ -31,8 +41,6 @@ module Insights
         ideas: idea_vote_counts_data(voting_participations, custom_field, total_votes)
       }
     end
-
-    private
 
     def ideas_ordered_by_total_votes
       vote_count_column = @phase.voting_method == 'budgeting' ? 'baskets_count' : 'votes_count'
