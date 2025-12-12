@@ -66,6 +66,7 @@ class Idea < ApplicationRecord
   include GeoJsonHelpers
   include AnonymousParticipation
   include Files::FileAttachable
+  include ClaimableParticipation
   extend OrderAsSpecified
 
   PUBLICATION_STATUSES = %w[draft submitted published].freeze
