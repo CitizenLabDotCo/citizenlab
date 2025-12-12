@@ -538,16 +538,14 @@ resource 'Ideas' do
 
           example_request 'Create a native survey response without author' do
             assert_status 201
-            json_response = json_parse response_body
-            idea_from_db = Idea.find(json_response[:data][:id])
-            expect(idea_from_db.author_id).to be_nil
-            expect(idea_from_db.custom_field_values.to_h).to eq({
-              extra_field_name => 'test value'
-            })
 
-            expect(idea_from_db.claim_token).to be_present
-            expect(response_data.dig(:attributes, :claim_token)).to be_present.and eq(idea_from_db.claim_token.token)
-            expect(response_data.dig(:attributes, :claim_token_expires_at)).to eq(idea_from_db.claim_token.expires_at.iso8601(3))
+            idea = Idea.find(response_data[:id])
+            expect(idea.author_id).to be_nil
+            expect(idea.custom_field_values.to_h).to eq(extra_field_name => 'test value')
+
+            expect(idea.claim_token).to be_present
+            expect(response_data.dig(:attributes, :claim_token)).to be_present.and eq(idea.claim_token.token)
+            expect(response_data.dig(:attributes, :claim_token_expires_at)).to eq(idea.claim_token.expires_at.iso8601(3))
           end
         end
       end
