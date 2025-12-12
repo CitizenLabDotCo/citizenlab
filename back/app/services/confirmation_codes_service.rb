@@ -13,16 +13,6 @@ class ConfirmationCodesService
     true
   end
 
-  def permit_request_code_authenticated(user)
-    return false unless correct_feature_flags_enabled?
-    return false if user.nil?
-    return false if user.email.blank?
-    return false if user.email_confirmation_code_reset_count >= MAX_RETRIES - 1
-    return false unless user.confirmation_required?
-
-    true
-  end
-
   def permit_request_code_email_change(user, new_email)
     return false unless correct_feature_flags_enabled?
     return false if user.nil?
