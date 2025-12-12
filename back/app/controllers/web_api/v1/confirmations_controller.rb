@@ -27,27 +27,6 @@ class WebApi::V1::ConfirmationsController < ApplicationController
     end
   end
 
-  # This endpoint is for users who are logged in, but don't yet have a confirmed email
-  # this can happen if they signed up via SSO without an email, or if they signed up
-  # with an email but never confirmed it (now not possible anymore, but previously it was)
-  def confirm_code_authenticated
-    result = user_confirmation_service.validate_and_confirm_authenticated!(
-      current_user,
-      confirm_code_params[:code]
-    )
-
-    if result.success?
-      SideFxUserService.new.after_update(current_user, current_user)
-
-      payload = current_user.to_token_payload
-      auth_token = AuthToken::AuthToken.new payload: payload
-
-      render json: raw_json({ auth_token: })
-    else
-      render json: { errors: result.errors.details }, status: :unprocessable_entity
-    end
-  end
-
   # This endpoint is used when a logged in user wants to change their email
   def confirm_code_email_change
     result = user_confirmation_service.validate_and_confirm_email_change!(

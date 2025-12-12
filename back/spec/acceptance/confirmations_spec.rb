@@ -120,40 +120,6 @@ resource 'Confirmations' do
     end
   end
 
-  post 'web_api/v1/user/confirm_code_authenticated' do
-    with_options scope: :confirmation do
-      parameter :code, 'The 4-digit confirmation code received by email.'
-    end
-
-    context 'when user is not authenticated' do
-      example 'returns an unauthorized status when the user is not authenticated' do
-        do_request(confirmation: { code: '1234' })
-        expect(status).to eq 401
-      end
-    end
-
-    context 'when user is authenticated' do
-      let(:user) { create(:user_with_confirmation, password: 'password123') }
-
-      before do
-        header_token_for user
-        RequestConfirmationCodeJob.perform_now user
-      end
-
-      include_examples 'confirmation code validation'
-
-      example 'allows confirming a user without password' do
-        user_without_password = create(:user_with_confirmation, password: nil)
-        header_token_for(user_without_password)
-        RequestConfirmationCodeJob.perform_now user_without_password
-
-        code = user_without_password.email_confirmation_code
-        do_request(confirmation: { code: code })
-        assert_status 200
-      end
-    end
-  end
-
   post 'web_api/v1/user/confirm_code_email_change' do
     with_options scope: :confirmation do
       parameter :code, 'The 4-digit confirmation code received by email.'

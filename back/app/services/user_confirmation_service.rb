@@ -48,21 +48,6 @@ class UserConfirmationService
     failure_result(e)
   end
 
-  def validate_and_confirm_authenticated!(user, code)
-    # For authenticated confirmation, it is possible that people
-    # have password login disabled, and that they signed in with e.g.
-    # clave unica which does not return an email. In this case, they
-    # still need to enter their email and confirm it.
-    validate_user!(user)
-    validate_email!(user.email)
-    validate_user_confirmation_required!(user)
-    validate_and_confirm!(user, code)
-
-    success_result(user)
-  rescue ValidationError => e
-    failure_result(e)
-  end
-
   def validate_and_confirm_email_change!(user, code)
     validate_user!(user)
     validate_email!(user.new_email)

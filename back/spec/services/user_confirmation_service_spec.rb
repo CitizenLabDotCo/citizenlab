@@ -106,25 +106,6 @@ RSpec.describe UserConfirmationService do
     end
   end
 
-  describe '#validate_and_confirm_authenticated!' do
-    let(:user) { create(:user_with_confirmation) }
-
-    include_examples 'validation and confirmation', :validate_and_confirm_authenticated!
-
-    context 'when confirmation is not required' do
-      before do
-        user.update_column(:confirmation_required, false) 
-      end
-
-      it 'returns a confirmation not required error' do
-        result = service.validate_and_confirm_authenticated!(user, user.email_confirmation_code)
-
-        expect(result.success?).to be false
-        expect(result.errors.details).to eq(base: [{ error: :confirmation_not_required }])
-      end
-    end
-  end
-
   describe '#validate_and_confirm_email_change!' do
     let(:user) { create(:user, new_email: 'new@email.com') }
 
