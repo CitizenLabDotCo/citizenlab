@@ -36,6 +36,14 @@ resource 'Confirmations' do
       expect(token[0..2]).to eq 'eyJ' # JWTs start with 'eyJ'
     end
 
+    example 'sets email_confirmation_code_reset_count to 0 upon successful confirmation' do
+      user.update(email_confirmation_code_reset_count: 3)
+      do_request(confirmation: { email: user.email, code: user.email_confirmation_code })
+      assert_status 200
+      user.reload
+      expect(user.email_confirmation_code_reset_count).to eq 0
+    end
+
     example 'returns an code.blank error code when no code is passed' do
       do_request(confirmation: { email: user.email, code: nil })
 
@@ -173,6 +181,14 @@ resource 'Confirmations' do
         user.reload
         expect(user.email).to eq 'new_email@example.com'
         expect(user.new_email).to be_nil
+      end
+
+      example 'sets email_confirmation_code_reset_count to 0 upon successful confirmation' do
+        user.update(email_confirmation_code_reset_count: 3)
+        do_request(confirmation: { email: user.email, code: user.email_confirmation_code })
+        assert_status 200
+        user.reload
+        expect(user.email_confirmation_code_reset_count).to eq 0
       end
 
       example 'returns an code.blank error code when no code is passed' do
