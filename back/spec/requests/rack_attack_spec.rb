@@ -638,28 +638,31 @@ describe 'Rack::Attack' do
     end
   end
 
-  it 'limits user check requests from same IP to 5 in 20 seconds' do
+    it 'limits user check requests from same IP to 5 in 20 seconds' do
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
     freeze_time do
       5.times do |i|
-        get(
-          "/web_api/v1/users/check/user#{i}@test.com",
+        post(
+          '/web_api/v1/users/check',
+          params: "{ \"user\": { \"email\": \"user#{i}@test.com\" } }",
           headers: headers
         )
       end
       expect(status).to eq(200) # ok
 
-      get(
-        '/web_api/v1/users/check/user6@test.com',
+      post(
+        '/web_api/v1/users/check',
+        params: '{ "user": { "email": "user6@test.com" } }',
         headers: headers
       )
       expect(status).to eq(429) # Too many requests
     end
 
     travel_to(2.minutes.from_now) do
-      get(
-        '/web_api/v1/users/check/user7@test.com',
+      post(
+        '/web_api/v1/users/check',
+        params: '{ "user": { "email": "user7@test.com" } }',
         headers: headers
       )
       expect(status).to eq(200) # ok
@@ -670,16 +673,18 @@ describe 'Rack::Attack' do
     freeze_time do
       5.times do |i|
         headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => "1.2.3.#{i}" }
-        get(
-          '/web_api/v1/users/check/user@test.com',
+        post(
+          '/web_api/v1/users/check',
+          params: '{ "user": { "email": "user@test.com" } }',
           headers: headers
         )
       end
       expect(status).to eq(200) # ok
 
       headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.7' }
-      get(
-        '/web_api/v1/users/check/user@test.com',
+      post(
+        '/web_api/v1/users/check',
+        params: '{ "user": { "email": "user@test.com" } }',
         headers: headers
       )
       expect(status).to eq(429) # Too many requests
@@ -687,8 +692,9 @@ describe 'Rack::Attack' do
 
     travel_to(5.minutes.from_now) do
       headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.8' }
-      get(
-        '/web_api/v1/users/check/user@test.com',
+      post(
+        '/web_api/v1/users/check',
+        params: '{ "user": { "email": "user@test.com" } }',
         headers: headers
       )
       expect(status).to eq(200) # ok

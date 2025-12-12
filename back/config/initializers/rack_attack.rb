@@ -155,17 +155,16 @@ class Rack::Attack
 
   # User check endpoint
   throttle('user_check/ip', limit: 5, period: 2.minutes) do |req|
-    if req.path.start_with?('/web_api/v1/users/check') && req.get?
+    if req.path == '/web_api/v1/users/check' && req.post?
       req.remote_ip
     end
   end
 
   throttle('user_check/email', limit: 5, period: 5.minutes) do |req|
-    if req.path.start_with?('/web_api/v1/users/check') && req.get?
+    if req.path == '/web_api/v1/users/check' && req.post?
       begin
-        # Extract email from the path: /web_api/v1/users/check/user@test.com
-        req.path.split('/').last&.downcase&.strip&.presence
-      rescue StandardError
+        JSON.parse(req.body.string).dig('user', 'email')&.to_s&.downcase&.gsub(/\s+/, '')&.presence
+      rescue JSON::ParserError
         # do nothing
       end
     end
