@@ -522,7 +522,6 @@ resource 'Ideas' do
 
     context 'in a native survey phase' do
       let(:project) { create(:single_phase_native_survey_project, default_assignee_id: create(:admin).id) }
-      let(:idea) { build(:native_survey_response, project: project) }
 
       context 'when visitor' do
         describe "native survey response when permission is 'everyone'" do
