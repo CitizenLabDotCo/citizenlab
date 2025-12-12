@@ -50,15 +50,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
 
   # This endpoint is used when a logged in user wants to change their email
   def confirm_code_email_change
-    unless confirmation_codes_service.permit_request_code_email_change(
-      current_user,
-      current_user.new_email
-    )
-      render json: { errors: { base: ['Confirmation not permitted'] } }, status: :unprocessable_entity
-      return
-    end
-
-    result = user_confirmation_service.validate_and_confirm!(
+    result = user_confirmation_service.validate_and_confirm_email_change!(
       current_user,
       confirm_code_params[:code]
     )
