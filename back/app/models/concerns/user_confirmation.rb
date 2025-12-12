@@ -47,19 +47,6 @@ module UserConfirmation
       .update_all(new_email: nil, email_confirmation_code: nil, updated_at: Time.zone.now)
   end
 
-  # ONLY USED IN SPECS
-  def reset_confirmation_and_counts
-    if !confirmation_required?
-      # Only reset code and retry/reset counts if account has already been confirmed
-      # To keep limits in place for retries when not confirmed
-      self.email_confirmation_code = nil
-      self.email_confirmation_retry_count = 0
-      self.email_confirmation_code_reset_count = 0
-    end
-    self.confirmation_required = true
-    self.email_confirmation_code_sent_at = nil
-  end
-
   def email_confirmation_code_expiration_at
     email_confirmation_code_sent_at + confirmation_code_duration
   end
@@ -74,6 +61,21 @@ module UserConfirmation
 
   def expire_confirmation_code!
     update!(email_confirmation_code: generate_confirmation_code)
+  end
+
+  # ONLY USED IN SPECS!
+  def reset_confirmation_and_counts
+    raise 'Only use in specs!' unless Rails.env.test?
+ 
+    if !confirmation_required?
+      # Only reset code and retry/reset counts if account has already been confirmed
+      # To keep limits in place for retries when not confirmed
+      self.email_confirmation_code = nil
+      self.email_confirmation_retry_count = 0
+      self.email_confirmation_code_reset_count = 0
+    end
+    self.confirmation_required = true
+    self.email_confirmation_code_sent_at = nil
   end
 
   private
