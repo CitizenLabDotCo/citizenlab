@@ -1,7 +1,6 @@
 module Insights
   class VotingPhaseInsightsService < IdeationPhaseInsightsService
     def vote_counts_with_user_custom_field_grouping(custom_field = nil)
-      ideas = @phase.ideas.transitive # TODO: This may not be precise enough
       participations = cached_phase_participations
       voting_participations = participations[:voting]
       offline_votes = @phase.manual_votes_count
@@ -29,14 +28,23 @@ module Insights
         custom_field_id: custom_field&.id,
         input_type: custom_field&.input_type,
         options: options,
-        ideas: idea_vote_counts_data(ideas, voting_participations, custom_field, total_votes)
+        ideas: idea_vote_counts_data(voting_participations, custom_field, total_votes)
       }
     end
 
     private
 
-    def idea_vote_counts_data(ideas, voting_participations, field, total_phase_votes)
+    def ideas_ordered_by_total_votes
+      vote_count_column = @phase.voting_method == 'budgeting' ? 'baskets_count' : 'votes_count'
+      
+      @phase.ideas.transitive.order(
+        Arel.sql("COALESCE(ideas.#{vote_count_column}, 0) + COALESCE(ideas.manual_votes_amount, 0) DESC")
+      )
+    end
+
+    def idea_vote_counts_data(voting_participations, field, total_phase_votes)
       idea_ids_to_user_custom_field_values = idea_ids_to_user_custom_field_values(voting_participations)
+      ideas = ideas_ordered_by_total_votes
 
       ideas.map do |idea|
         online_votes = if @phase.voting_method == 'budgeting'

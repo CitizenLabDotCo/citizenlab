@@ -144,7 +144,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       participations[1][:user_custom_field_values] = { 'gender' => 'male' }
 
       phase_total_votes = 57
-      data = service.send(:idea_vote_counts_data, [idea1, idea2], participations, custom_field, phase_total_votes)
+      data = service.send(:idea_vote_counts_data, participations, custom_field, phase_total_votes)
 
       expect(data).to contain_exactly(
         {
@@ -184,7 +184,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       idea2.update!(votes_count: 0)
 
       phase_total_votes = 57
-      data = service.send(:idea_vote_counts_data, [idea1, idea2], [], custom_field, phase_total_votes)
+      data = service.send(:idea_vote_counts_data, [], custom_field, phase_total_votes)
 
       expect(data).to contain_exactly(
         {
@@ -220,13 +220,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
 
     it 'avoids division by zero when total_phase_votes is zero' do
       phase_total_votes = 0
-      data = service.send(:idea_vote_counts_data, [idea1, idea2], [], custom_field, phase_total_votes)
+      data = service.send(:idea_vote_counts_data, [], custom_field, phase_total_votes)
       expect(data.pluck(:percentage)).to all(be_nil)
-    end
-
-    it 'handles empty ideas and participations' do
-      data = service.send(:idea_vote_counts_data, [], [], custom_field, 57)
-      expect(data).to eq([])
     end
   end
 
@@ -468,6 +463,19 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           }
         }
       )
+    end
+  end
+
+  describe '#ideas_ordered_by_total_votes' do
+    it 'returns ideas ordered by total votes' do
+      idea1.update!(votes_count: 2, manual_votes_amount: 0)   # total votes = 2
+      idea2.update!(votes_count: 45, manual_votes_amount: 10) # total votes = 55
+      idea3 = create(:idea, phases: [phase], votes_count: 0, manual_votes_amount: 0) # total votes = 0
+      idea4 = create(:idea, phases: [phase], votes_count: 10, manual_votes_amount: 5) # total votes = 15
+
+      ordered_ideas = service.send(:ideas_ordered_by_total_votes)
+
+      expect(ordered_ideas).to eq([idea2, idea4, idea1, idea3])
     end
   end
 end
