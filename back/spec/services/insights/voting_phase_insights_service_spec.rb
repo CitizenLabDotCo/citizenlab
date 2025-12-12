@@ -518,15 +518,16 @@ RSpec.describe Insights::VotingPhaseInsightsService do
     end
 
     it 'returns cached data even when underlying data changes' do
+      original_data = service.send(:vote_counts_by_demographic, nil)
       result1 = service.cached_vote_counts_by_demographic
 
       expect(result1).to have_key(:online_votes)
       expect(result1).to have_key(:ideas)
 
-      # Change underlying data
-      new_idea = create(:idea, phases: [phase], votes_count: 100)
-      new_basket = create(:basket, phase: phase, user: user, submitted_at: phase.start_at + 2.days)
-      create(:baskets_idea, basket: new_basket, idea: new_idea, votes: 50)
+      # Change underlying vote data for existing ideas
+      # (just update columns, don't create new records, as that is flaky)
+      idea1.update_column(:votes_count, 1000)
+      idea1.update_column(:manual_votes_amount, 500)
 
       result2 = service.cached_vote_counts_by_demographic
       fresh_data = service.send(:vote_counts_by_demographic, nil)

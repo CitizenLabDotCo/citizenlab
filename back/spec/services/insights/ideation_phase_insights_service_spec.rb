@@ -248,14 +248,15 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
 
       expect(result1).to eq(participations1)
 
-      # Change underlying data
-      create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: user1)
-      create(:comment, idea: idea1, created_at: 10.days.ago, author: user2)
+      # Change underlying data - move idea1 into the phase timeframe
+      # (just update columns, don't create new records, as that is flaky)
+      idea1.update_column(:created_at, 10.days.ago)
+      idea1.update_column(:published_at, 10.days.ago)
 
       result2 = service.cached_phase_participations
       participations2 = service.send(:phase_participations)
 
-      # Should still return old cached data, not including new idea/comment
+      # Should still return old cached data, not including updated idea
       expect(result2).to eq(result1)
       expect(result2).not_to eq(participations2)
     end
@@ -289,14 +290,15 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
 
     it 'returns cached data even when underlying data changes' do
       participations1 = service.send(:phase_participations)
+      original_data = service.send(:insights_data, participations1)
       result1 = service.send(:cached_insights_data, participations1)
 
-      expect(result1).to have_key(:metrics)
-      expect(result1).to have_key(:demographics)
+      expect(result1).to eq(original_data)
 
-      # Change underlying data
-      create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: user1)
-      create(:comment, idea: idea1, created_at: 10.days.ago, author: user2)
+      # Change underlying data - move idea1 into the phase timeframe
+      # (just update columns, don't create new records, as that is flaky)
+      idea1.update_column(:created_at, 10.days.ago)
+      idea1.update_column(:published_at, 10.days.ago)
 
       result2 = service.send(:cached_insights_data, participations1)
       participations2 = service.send(:phase_participations)
