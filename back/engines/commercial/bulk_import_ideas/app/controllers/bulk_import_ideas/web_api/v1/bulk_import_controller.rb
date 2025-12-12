@@ -16,9 +16,14 @@ module BulkImportIdeas
           exporter_class: Exporters::IdeaHtmlFormExporter,
           parser_class: nil # Not implemented for importing
         },
-        'pdf' => {
+        'gpt_pdf' => {
           exporter_class: Exporters::IdeaPdfFormExporter,
           parser_class: Parsers::IdeaPdfFileParser
+        },
+        # Alpha feature for GPT based PDF form parser
+        'pdf' => {
+          exporter_class: Exporters::IdeaPdfFormExporter,
+          parser_class: Parsers::IdeaPdfFileGPTParser
         },
         # The following classes are now for legacy support of the prawn based pdf import/export
         'legacy_pdf' => {
@@ -154,6 +159,7 @@ module BulkImportIdeas
       return CONSTANTIZER.fetch(model)[class_type] if class_type == :serializer_class
 
       format = 'legacy_pdf' if format == 'pdf' && use_legacy_pdf?
+      format = 'gpt_pdf' if format == 'pdf' && use_gpt_form_parser?
 
       CONSTANTIZER.fetch(model).fetch(format)[class_type]
     end
@@ -162,6 +168,11 @@ module BulkImportIdeas
     def use_legacy_pdf?
       legacy = params[:import] ? !!bulk_create_params[:legacy_pdf] : false # Allows backdoor access to the old pdf format whilst feature flag is on
       !AppConfiguration.instance.settings.dig('html_pdfs', 'enabled') || legacy
+    end
+
+    # Allows gpt_parser to be enabled (currently in alpha) via ?gpt_form_parser=true in importer url
+    def use_gpt_form_parser?
+      params[:import] ? !!bulk_create_params[:gpt_form_parser] : false
     end
 
     def serializer
