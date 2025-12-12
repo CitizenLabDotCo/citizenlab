@@ -1277,6 +1277,7 @@
   "app.containers.Admin.projects.project.information.ReportTab.visibleStarted1": "This report is currently public. To make it not public, disable the \"Visible\" toggle.",
   "app.containers.Admin.projects.project.information.areYouSureYouWantToDelete": "Are you sure you want to delete this report? This action cannot be undone.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Add to phase",
+  "app.containers.Admin.projects.project.offlineInputs.ImportModal.azureConsent": "I hereby consent to processing this file using Azure Open AI",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded": "You need to consent to this before you can continue",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formCanBeDownloadedHere": "The form can be downloaded here.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formHasPersonalData": "The uploaded form was created with the \"Personal data\" section",
