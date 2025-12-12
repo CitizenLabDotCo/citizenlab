@@ -225,4 +225,47 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
       })
     end
   end
+
+  describe '#cached_phase_participations' do
+    # Enable memory store for these tests
+    around do |example|
+      original_cache_store = Rails.cache
+      Rails.cache = ActiveSupport::Cache::MemoryStore.new
+      example.run
+      Rails.cache = original_cache_store
+    end
+
+    it 'caches participations on first call' do
+      expect(service).to receive(:phase_participations).once.and_call_original
+      
+      service.cached_phase_participations
+      service.cached_phase_participations # Second call should use cache
+    end
+
+    it 'returns cached data even when underlying data changes' do
+      participations1 = service.send(:phase_participations)
+      result1 = service.cached_phase_participations
+
+      expect(result1).to eq(participations1)
+      
+      # Change underlying data
+      create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: user1)
+      create(:comment, idea: idea1, created_at: 10.days.ago, author: user2)
+      
+      result2 = service.cached_phase_participations
+      participations2 = service.send(:phase_participations)
+      
+      # Should still return old cached data, not including new idea/comment
+      expect(result2).to eq(result1)
+      expect(result2).not_to eq(participations2)
+    end
+
+    it 'uses cache key based on phase id and updated_at' do
+      cache_key = "phase_participations/#{phase.id}/#{phase.updated_at.to_i}"
+      
+      expect(Rails.cache).to receive(:fetch).with(cache_key, expires_in: 1.minute).and_call_original
+      
+      service.cached_phase_participations
+    end
+  end
 end
