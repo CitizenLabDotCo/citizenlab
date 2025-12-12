@@ -49,6 +49,10 @@ module Analysis
         ).responses
       end
 
+      def family
+        'azure_openai'
+      end
+
       # @param message [String, Analysis::LLM::Message, Array<String, Analysis::LLM::Message>]
       #   The message(s) to send to the model.
       def response(message, retries: MAX_RETRIES, **params)
