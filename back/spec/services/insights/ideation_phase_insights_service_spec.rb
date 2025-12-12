@@ -252,8 +252,6 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
       create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: user1)
       create(:comment, idea: idea1, created_at: 10.days.ago, author: user2)
 
-      phase.reload # to update updated_at timestamp
-
       result2 = service.cached_phase_participations
       participations2 = service.send(:phase_participations)
 
@@ -299,8 +297,6 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
       # Change underlying data
       create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: user1)
       create(:comment, idea: idea1, created_at: 10.days.ago, author: user2)
-
-      phase.reload # to update updated_at timestamp
 
       result2 = service.send(:cached_insights_data, participations1)
       participations2 = service.send(:phase_participations)

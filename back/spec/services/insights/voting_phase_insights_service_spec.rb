@@ -518,7 +518,6 @@ RSpec.describe Insights::VotingPhaseInsightsService do
     end
 
     it 'returns cached data even when underlying data changes' do
-      puts "Before first call: #{phase.updated_at}"
       result1 = service.cached_vote_counts_by_demographic
 
       expect(result1).to have_key(:online_votes)
@@ -529,17 +528,12 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       new_basket = create(:basket, phase: phase, user: user, submitted_at: phase.start_at + 2.days)
       create(:baskets_idea, basket: new_basket, idea: new_idea, votes: 50)
 
-      puts "Before reload: #{phase.updated_at}"
-      phase.reload # to update updated_at timestamp
-      puts "After reload: #{phase.updated_at}"
-
       result2 = service.cached_vote_counts_by_demographic
       fresh_data = service.send(:vote_counts_by_demographic, nil)
 
       # Should still return old cached data, not recalculated data
       expect(result2).to eq(result1)
       expect(result2).not_to eq(fresh_data)
-      puts "after data change and reload: #{phase.updated_at}"
     end
 
     it 'uses cache key based on phase id and updated_at' do
