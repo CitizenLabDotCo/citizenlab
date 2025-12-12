@@ -20,7 +20,7 @@ module UserConfirmation
   def confirmation_required?
     # if the user registered via SSO, but the SSO did not return an email:
     # we only say that the user requires confirmation if they have requested to set their
-    # email through the `request_code_email_change`endpoint`.
+    # email.
     # If they haven't, we will regard them as not requiring confirmation.
     is_verified_sso_user_without_email = sso? && verified && email.nil? && new_email.nil?
 
