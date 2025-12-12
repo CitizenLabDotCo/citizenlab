@@ -34,7 +34,7 @@ module UserConfirmation
   end
 
   def confirm!
-    return unless confirmation_required? || new_email
+    return unless confirmation_required?
 
     confirm_new_email if new_email.present?
     confirm
