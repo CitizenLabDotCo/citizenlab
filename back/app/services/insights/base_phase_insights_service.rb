@@ -25,7 +25,6 @@ module Insights
 
     private
 
-    # TODO: Implement caching? (may not be needed if performance good enough)
     def cached_insights_data(participations)
       cache_key = "phase_insights_data/#{@phase.id}/#{@phase.updated_at.to_i}"
 

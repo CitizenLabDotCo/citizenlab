@@ -225,9 +225,9 @@ RSpec.describe Insights::VotingPhaseInsightsService do
     end
   end
 
-  describe '#vote_counts_with_user_custom_field_grouping' do
+  describe '#vote_counts_by_demographic' do
     it 'gives expected results when custom_field is nil' do
-      result = service.vote_counts_with_user_custom_field_grouping(nil)
+      result = service.vote_counts_by_demographic(nil)
 
       expect(result[:online_votes]).to eq(47)
       expect(result[:offline_votes]).to eq(10)
@@ -265,7 +265,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       create(:custom_field_option, custom_field: custom_field, key: 'female', title_multiloc: { en: 'Female' })
       create(:custom_field_option, custom_field: custom_field, key: 'unspecified', title_multiloc: { en: 'Unspecified' })
 
-      result = service.vote_counts_with_user_custom_field_grouping(custom_field)
+      result = service.vote_counts_by_demographic(custom_field)
 
       expect(result[:online_votes]).to eq(47)
       expect(result[:offline_votes]).to eq(10)
@@ -318,7 +318,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
 
       user.update!(custom_field_values: { 'multiselect' => %w[option_a option_b] })
 
-      result = service.vote_counts_with_user_custom_field_grouping(custom_field)
+      result = service.vote_counts_by_demographic(custom_field)
 
       expect(result[:online_votes]).to eq(47)
       expect(result[:offline_votes]).to eq(10)
@@ -365,7 +365,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       custom_field = create(:custom_field, resource_type: 'User', key: 'checkbox', input_type: 'checkbox', title_multiloc: { en: 'Checkbox' })
       user.update!(custom_field_values: { 'checkbox' => true })
 
-      result = service.vote_counts_with_user_custom_field_grouping(custom_field)
+      result = service.vote_counts_by_demographic(custom_field)
 
       expect(result[:online_votes]).to eq(47)
       expect(result[:offline_votes]).to eq(10)
@@ -417,7 +417,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
 
       user.update!(custom_field_values: { 'birthyear' => Date.current.year - 30 }) # Age 30
 
-      result = service.vote_counts_with_user_custom_field_grouping(custom_field)
+      result = service.vote_counts_by_demographic(custom_field)
 
       expect(result[:online_votes]).to eq(47)
       expect(result[:offline_votes]).to eq(10)

@@ -24,7 +24,7 @@ module WebApi
             return
           end
 
-          counts_data = @phase.pmethod.phase_insights_class.new(@phase).vote_counts_with_user_custom_field_grouping(custom_field)
+          counts_data = @phase.pmethod.phase_insights_class.new(@phase).vote_counts_by_demographic(custom_field)
 
           render json: WebApi::V1::Insights::VotingPhaseVotesSerializer.new(
             @phase,

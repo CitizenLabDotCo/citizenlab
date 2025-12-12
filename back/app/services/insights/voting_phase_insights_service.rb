@@ -1,6 +1,6 @@
 module Insights
   class VotingPhaseInsightsService < IdeationPhaseInsightsService
-    def vote_counts_with_user_custom_field_grouping(custom_field = nil)
+    def vote_counts_by_demographic(custom_field = nil)
       participations = cached_phase_participations
       voting_participations = participations[:voting]
       offline_votes = @phase.manual_votes_count
