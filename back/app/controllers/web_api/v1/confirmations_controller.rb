@@ -10,12 +10,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   def confirm_code_unauthenticated
     user = User.find_by(email: confirm_code_unauthenticated_params[:email])
 
-    unless confirmation_codes_service.permit_request_code_unauthenticated(user)
-      render json: { errors: { base: ['Confirmation not permitted'] } }, status: :unprocessable_entity
-      return
-    end
-
-    result = user_confirmation_service.validate_and_confirm!(
+    result = user_confirmation_service.validate_and_confirm_unauthenticated!(
       user,
       confirm_code_unauthenticated_params[:code]
     )
@@ -36,12 +31,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   # this can happen if they signed up via SSO without an email, or if they signed up
   # with an email but never confirmed it (now not possible anymore, but previously it was)
   def confirm_code_authenticated
-    unless confirmation_codes_service.permit_request_code_authenticated(current_user)
-      render json: { errors: { base: ['Confirmation not permitted'] } }, status: :unprocessable_entity
-      return
-    end
-
-    result = user_confirmation_service.validate_and_confirm!(
+    result = user_confirmation_service.validate_and_confirm_authenticated!(
       current_user,
       confirm_code_params[:code]
     )
@@ -90,10 +80,6 @@ class WebApi::V1::ConfirmationsController < ApplicationController
 
   def confirm_code_params
     params.require(:confirmation).permit(:code)
-  end
-
-  def confirmation_codes_service
-    @confirmation_codes_service ||= ConfirmationCodesService.new
   end
 
   def user_confirmation_service
