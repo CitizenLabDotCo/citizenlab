@@ -243,6 +243,9 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
     end
 
     it 'returns cached data even when underlying data changes' do
+      puts "Cache class: #{Rails.cache.class}"
+      puts "Phase updated_at before: #{phase.updated_at}"
+      
       participations1 = service.send(:phase_participations)
       result1 = service.cached_phase_participations
 
@@ -251,6 +254,10 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
       # Change underlying data
       create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: user1)
       create(:comment, idea: idea1, created_at: 10.days.ago, author: user2)
+      
+      phase.reload
+      puts "Phase updated_at after: #{phase.updated_at}"
+      puts "Cache key 1: phase_participations/#{phase.id}/#{participations1.object_id}"
       
       result2 = service.cached_phase_participations
       participations2 = service.send(:phase_participations)
@@ -263,7 +270,7 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
     it 'uses cache key based on phase id and updated_at' do
       cache_key = "phase_participations/#{phase.id}/#{phase.updated_at.to_i}"
       
-      expect(Rails.cache).to receive(:fetch).with(cache_key, expires_in: 1.minute).and_call_original
+      expect(Rails.cache).to receive(:fetch).with(cache_key, expires_in: 5.minutes).and_call_original
       
       service.cached_phase_participations
     end

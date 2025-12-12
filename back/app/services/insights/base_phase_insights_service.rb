@@ -17,7 +17,7 @@ module Insights
     # Using @phase.updated_at in cache key to help catch case where phase start_at or end_at changes
     def cached_phase_participations
       cache_key = "phase_participations/#{@phase.id}/#{@phase.updated_at.to_i}"
-      
+ 
       Rails.cache.fetch(cache_key, expires_in: @cache_expires_in) do
         phase_participations
       end
