@@ -53,6 +53,11 @@ RSpec.describe RequestConfirmationCodeJob do
           expect(user.reload.confirmation_required?).to be true
         end
 
+        it 'resets email_confirmation_retry_count' do
+          user.update!(email_confirmation_retry_count: 3)
+          expect { job.perform(user) }.to change(user, :email_confirmation_retry_count).to(0)
+        end
+
         context 'when setting a new email' do
           let(:new_email) { 'new@email.com' }
 
@@ -102,6 +107,11 @@ RSpec.describe RequestConfirmationCodeJob do
             job.perform(user, new_email: new_email)
             expect(user.reload.confirmation_required?).to be true
           end
+
+          it 'resets email_confirmation_retry_count' do
+            user.update!(email_confirmation_retry_count: 3)
+            expect { job.perform(user) }.to change(user, :email_confirmation_retry_count).to(0)
+          end
         end
       end
 
@@ -115,6 +125,11 @@ RSpec.describe RequestConfirmationCodeJob do
             job.perform(user, new_email: new_email)
             expect(user.new_email).to eq new_email
             expect(user.email).to eq 'some_email@email.com'
+          end
+
+          it 'resets email_confirmation_retry_count' do
+            user.update!(email_confirmation_retry_count: 3)
+            expect { job.perform(user) }.to change(user, :email_confirmation_retry_count).to(0)
           end
         end
       end

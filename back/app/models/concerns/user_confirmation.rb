@@ -67,6 +67,7 @@ module UserConfirmation
   def reset_confirmation_code!
     self.email_confirmation_code = generate_confirmation_code
     self.email_confirmation_code_reset_count += 1
+    self.email_confirmation_retry_count = 0
     self.confirmation_required = true
     save!
   end
