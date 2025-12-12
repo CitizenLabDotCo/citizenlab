@@ -242,7 +242,7 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
       service.cached_phase_participations # Second call should use cache
     end
 
-    it 'returns cached data even when underlying data changes' do      
+    it 'returns cached data even when underlying data changes' do
       participations1 = service.send(:phase_participations)
       result1 = service.cached_phase_participations
 
@@ -256,7 +256,7 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
 
       result2 = service.cached_phase_participations
       participations2 = service.send(:phase_participations)
-  
+
       # Should still return old cached data, not including new idea/comment
       expect(result2).to eq(result1)
       expect(result2).not_to eq(participations2)
@@ -268,6 +268,56 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
       expect(Rails.cache).to receive(:fetch).with(cache_key, expires_in: 5.minutes).and_call_original
 
       service.cached_phase_participations
+    end
+  end
+
+  describe '#cached_insights_data' do
+    # Enable memory store for these tests
+    around do |example|
+      original_cache_store = Rails.cache
+      Rails.cache = ActiveSupport::Cache::MemoryStore.new
+      example.run
+      Rails.cache = original_cache_store
+    end
+
+    it 'caches insights data on first call' do
+      participations = service.send(:phase_participations)
+
+      expect(service).to receive(:insights_data).once.and_call_original
+
+      service.send(:cached_insights_data, participations)
+      service.send(:cached_insights_data, participations) # Second call should use cache
+    end
+
+    it 'returns cached data even when underlying data changes' do
+      participations1 = service.send(:phase_participations)
+      result1 = service.send(:cached_insights_data, participations1)
+
+      expect(result1).to have_key(:metrics)
+      expect(result1).to have_key(:demographics)
+
+      # Change underlying data
+      create(:idea, phases: [phase], created_at: 10.days.ago, published_at: 10.days.ago, author: user1)
+      create(:comment, idea: idea1, created_at: 10.days.ago, author: user2)
+
+      phase.reload # to update updated_at timestamp
+
+      result2 = service.send(:cached_insights_data, participations1)
+      participations2 = service.send(:phase_participations)
+      insights2 = service.send(:insights_data, participations2)
+
+      # Should still return old cached data, not recalculated insights
+      expect(result2).to eq(result1)
+      expect(result2).not_to eq(insights2)
+    end
+
+    it 'uses cache key based on phase id and updated_at' do
+      participations = service.send(:phase_participations)
+      cache_key = "phase_insights_data/#{phase.id}/#{phase.updated_at.to_i}"
+
+      expect(Rails.cache).to receive(:fetch).with(cache_key, expires_in: 5.minutes).and_call_original
+
+      service.send(:cached_insights_data, participations)
     end
   end
 end
