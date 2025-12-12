@@ -12,14 +12,15 @@ module BulkImportIdeas
       idea_rows = []
       idea_import_files.each do |file|
         idea_rows += file_parser.parse_rows file
+        # TODO: Get logs of raw data from file_parser.raw_idea_data and add to idea_import object
       end
 
-      # Correct jumbled up text fields with GPT if importing PDF
-      format = file_parser_class == BulkImportIdeas::Parsers::IdeaXlsxFileParser ? 'xlsx' : 'pdf'
-      idea_rows = idea_rows_with_corrected_texts(phase, idea_rows) if format == 'pdf'
+      # Correct jumbled up text fields with GPT if using google PDF
+      idea_rows = idea_rows_with_corrected_texts(phase, idea_rows, file_parser_class)
 
       ideas = import_service.import(idea_rows)
       users = import_service.imported_users
+      format = file_parser_class == BulkImportIdeas::Parsers::IdeaXlsxFileParser ? 'xlsx' : 'pdf'
 
       SideFxBulkImportService.new.after_success(import_user, phase, 'idea', format, ideas, users)
     rescue StandardError => e
@@ -30,7 +31,9 @@ module BulkImportIdeas
 
     private
 
-    def idea_rows_with_corrected_texts(phase, idea_rows)
+    def idea_rows_with_corrected_texts(phase, idea_rows, file_parser_class)
+      return idea_rows unless [BulkImportIdeas::Parsers::IdeaPdfFileParser, BulkImportIdeas::Legacy::IdeaPdfFileParser].include?(file_parser_class)
+
       corrector = BulkImportIdeas::Parsers::Pdf::GPTTextCorrector.new(phase, idea_rows)
       corrector.correct
     end

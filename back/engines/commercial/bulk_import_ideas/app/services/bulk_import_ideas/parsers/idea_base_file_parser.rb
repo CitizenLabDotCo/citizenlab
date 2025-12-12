@@ -2,12 +2,15 @@
 
 module BulkImportIdeas::Parsers
   class IdeaBaseFileParser
+    attr_reader :raw_idea_data
+
     def initialize(current_user, locale, phase_id, personal_data_enabled)
       @import_user = current_user
       @phase = Phase.find(phase_id)
       @project = @phase.project
       @locale = locale || AppConfiguration.instance.settings('core', 'locales').first # Default locale for any new users created
       @personal_data_enabled = personal_data_enabled
+      @raw_idea_data = [] # For logging raw data so we can debug if needed
     end
 
     # Default is real time import of ideas
@@ -169,7 +172,7 @@ module BulkImportIdeas::Parsers
         values = field[:value].is_a?(Array) ? field[:value] : field[:value].to_s.split(';')
         if values.count > 0
           options = values.map do |value|
-            option = form_fields.find { |f| f[:parent_key] == field[:key] && f[:name] == value.strip }
+            option = form_fields.find { |f| f[:parent_key] == field[:key] && f[:name].strip == value.strip }
             option[:key] if option
           end
           field[:value] = options.compact.uniq

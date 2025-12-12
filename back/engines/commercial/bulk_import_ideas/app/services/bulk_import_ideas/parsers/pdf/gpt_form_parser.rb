@@ -32,7 +32,6 @@ module BulkImportIdeas::Parsers::Pdf
       corrected_response = gpt_response.match(/\[.+\]/m)&.try(:[], 0) # to be sure it is json that can be parsed
 
       corrected_response.present? ? JSON.parse(corrected_response) : nil
-
       # binding.pry
     end
 
@@ -44,11 +43,13 @@ module BulkImportIdeas::Parsers::Pdf
   
         Do not attempt to interpret or summarize the responses. Ignore any text that does not appear handwritten. Do not fill in any missing answers.
   
+        Do not extract answers unless they are in the correct order in the scanned form.
+
         The language used in the form is #{@locale}.
 
         Return the same array of JSON objects in the same order, but with some additional attributes:
         - if the question is a text question, add an attribute answer with the extracted handwritten text as value.
-        - if the question has options then return an attribute answer with a semicolon-separated string of the checked options' text as value. If no options were checked, return an empty string.
+        - if the question has options then return an attribute answer as an array of the checked options' text values. If no options were checked, return an empty array.
         - if the question is optional, sometimes it may not be present in the scanned form.
         - if the question is of type checkbox, return the answer as 'checked' if it has been checked.
 
