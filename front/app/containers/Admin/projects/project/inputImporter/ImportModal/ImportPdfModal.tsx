@@ -61,7 +61,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   const [searchParams] = useSearchParams();
   const parser = (searchParams.get('parser') || undefined) as ParserType;
   const consentLabel =
-    parser == 'gpt' ? messages.azureConsent : messages.googleConsent;
+    parser === 'gpt' ? messages.azureConsent : messages.googleConsent;
 
   const downloadFormPath =
     phase?.data.attributes.participation_method === 'native_survey'
@@ -110,7 +110,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
         phase_id: phaseId,
         file: file.base64,
         format: 'pdf',
-        parser: parser,
+        parser,
         locale,
         personal_data,
       });
