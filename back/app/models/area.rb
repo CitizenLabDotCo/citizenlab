@@ -98,10 +98,8 @@ class Area < ApplicationRecord
     return unless custom_field_option
     return unless ordering_previously_changed? || title_multiloc_previously_changed?
 
-    custom_field_option.update!(
-      title_multiloc: title_multiloc,
-      ordering: ordering
-    )
+    custom_field_option.update!(title_multiloc: title_multiloc)
+    custom_field_option.insert_at(ordering)
   end
 
   # The optional +domicile_field+ parameter is only there for performance

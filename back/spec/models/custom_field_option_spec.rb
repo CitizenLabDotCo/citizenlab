@@ -28,10 +28,11 @@ RSpec.describe CustomFieldOption do
       new_title = { 'en' => 'new title' }
       expect(option.title_multiloc).not_to eq new_title # sanity check
 
-      option.update(title_multiloc: new_title, ordering: 0)
+      option.update!(title_multiloc: new_title)
+      option.insert_at(1)
 
-      expect(option.title_multiloc).to eq(new_title)
-      expect(option.ordering).to eq(0)
+      expect(option.area.title_multiloc).to eq(new_title)
+      expect(option.area.ordering).to eq(1)
     end
   end
 

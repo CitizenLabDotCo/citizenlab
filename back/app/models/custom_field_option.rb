@@ -66,10 +66,8 @@ class CustomFieldOption < ApplicationRecord
     return unless area
     return unless ordering_previously_changed? || title_multiloc_previously_changed?
 
-    area.update!(
-      ordering: ordering,
-      title_multiloc: title_multiloc
-    )
+    area.update!(title_multiloc: title_multiloc)
+    area.insert_at(ordering)
   end
 
   def generate_key
