@@ -11,6 +11,13 @@ RSpec.describe UserConfirmationService do
   end
 
   shared_examples 'validation and confirmation' do |method_name|
+    context 'when the code is correct' do
+      it 'returns success' do
+        result = service.public_send(method_name, user, user.email_confirmation_code)
+        expect(result.success?).to be true
+      end
+    end
+
     context 'when the user is nil' do
       it 'returns a user blank error' do
         result = service.public_send(method_name, nil, '1234')
