@@ -40,10 +40,12 @@ module BulkImportIdeas::Parsers::Pdf
       <<~GPT_PROMPT
         In this message is a scanned survey form containing handwritten responses and checked options.
   
-        Your task is to extract the text and checked options based on the JSON form schema below:
+        Your task is to extract the text and checked options based on the questions in the JSON form schema below.
   
         Do not attempt to interpret or summarize the responses. Ignore any text that does not appear handwritten. Do not fill in any missing answers.
   
+        The language used in the form is #{@locale}.
+
         Return the same array of JSON objects in the same order, but with some additional attributes:
         - if the question is a text question, add an attribute answer with the extracted handwritten text as value.
         - if the question has options then return an attribute answer with a semicolon-separated string of the checked options' text as value. If no options were checked, return an empty string.
@@ -58,8 +60,6 @@ module BulkImportIdeas::Parsers::Pdf
     end
 
     # Return a simple schema to send to GPT
-    # [{ id: 1, type: 'text', text: 'Text field' },
-    #  { id: 3, type: 'select', text: 'Select field', options: [{ id: 1, text: 'Single 1' }, { id: 2, text: 'Single 2' }] }]
     def form_schema
       index = 0
       fields = printable_form_fields.map do |f|
