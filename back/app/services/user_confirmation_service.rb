@@ -39,7 +39,7 @@ class UserConfirmationService
     # feature is enabled for unauthenticated confirmation
     validate_password_login_enabled!()
     validate_user!(user)
-    validate_user_has_email!(user)
+    validate_email!(user.email)
     validate_user_has_no_password!(user)
     validate_and_confirm!(user, code)
   end
@@ -50,8 +50,14 @@ class UserConfirmationService
     # clave unica which does not return an email. In this case, they
     # still need to enter their email and confirm it.
     validate_user!(user)
-    validate_user_has_email!(user)
+    validate_email!(user.email)
     validate_user_confirmation_required!(user)
+    validate_and_confirm!(user, code)
+  end
+
+  def validate_and_confirm_email_change!(user, code)
+    validate_user!(user)
+    validate_email!(user.new_email)
     validate_and_confirm!(user, code)
   end
 
@@ -83,8 +89,8 @@ class UserConfirmationService
     raise ValidationError.new(:user, :blank) if user.blank?
   end
 
-  def validate_user_has_email!(user)
-    raise ValidationError.new(:user, :no_email) if user.email.blank?
+  def validate_email!(email)
+    raise ValidationError.new(:user, :no_email) if email.blank?
   end
 
   def validate_user_has_no_password!(user)
