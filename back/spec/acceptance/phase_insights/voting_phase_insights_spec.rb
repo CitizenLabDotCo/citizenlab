@@ -284,6 +284,13 @@ resource 'Phase insights' do
           }
         )
       end
+
+      example_request 'orders ideas data by total votes' do
+        assert_status 200
+
+        idea_titles = json_response_body[:data][:attributes][:ideas].map { |idea| idea[:title_multiloc][:en] }
+        expect(idea_titles).to eq(['Idea 2', 'Idea 1', 'Idea 3'])
+      end
     end
 
     context 'when appropriate custom_field for grouping is provided' do
