@@ -19,19 +19,9 @@ class WebApi::V1::RequestCodesController < ApplicationController
     head :ok
   end
 
-  # This endpoint is for users who are logged in, but don't yet have a confirmed email
-  # this can happen if they signed up via SSO without an email, or if they signed up
-  # with an email but never confirmed it (now not possible anymore, but previously it was)
-  def request_code_authenticated
-    if confirmation_codes_service.permit_request_code_authenticated(current_user)
-      current_user.update!(new_email: nil) # Clear any pending email change to avoid confusion
-      RequestConfirmationCodeJob.perform_now current_user
-    end
-
-    head :ok
-  end
-
   # This endpoint is used when a logged in user wants to change their email
+  # It is also used for people who return from SSO and the SSO does not
+  # provide a confirmed email.
   def request_code_email_change
     new_email = request_code_email_change_params[:new_email]
 

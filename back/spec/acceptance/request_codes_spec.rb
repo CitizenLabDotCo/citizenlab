@@ -48,53 +48,6 @@ resource 'Request codes' do
     end
   end
 
-  post 'web_api/v1/user/request_code_authenticated' do
-    before do
-      allow(RequestConfirmationCodeJob).to receive(:perform_now)
-    end
-
-    example 'It works with authenticated user that requires confirmation' do
-      user = create(:user_with_confirmation)
-      header_token_for(user)
-      do_request
-      expect(response_status).to eq 200
-      expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
-    end
-
-    example 'It does not work if user is already confirmed' do
-      user = create(:user)
-      header_token_for(user)
-      do_request
-      expect(response_status).to eq 200
-      expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
-    end
-
-    example 'It works if user has no password' do
-      user = create(:user_no_password)
-      header_token_for(user)
-      do_request
-      expect(response_status).to eq 200
-      expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
-    end
-
-    example 'It does not work if user reached email_confirmation_code_reset_count' do
-      user = create(:user_with_confirmation, email_confirmation_code_reset_count: 4)
-      header_token_for(user)
-      do_request
-      expect(response_status).to eq 200
-      expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
-    end
-
-    example 'It does not work if user does not have email' do
-      user = create(:user_with_confirmation)
-      user.update_column(:email, nil)
-      header_token_for(user)
-      do_request
-      expect(response_status).to eq 200
-      expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
-    end
-  end
-
   post 'web_api/v1/user/request_code_email_change' do
     with_options scope: :request_code do
       parameter :new_email, 'The email of the user requesting a confirmation code.', required: true
