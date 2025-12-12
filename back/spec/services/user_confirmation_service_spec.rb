@@ -86,6 +86,17 @@ RSpec.describe UserConfirmationService do
         expect(result.errors.details).to eq(base: [{ error: :password_login_feature_disabled }])
       end
     end
+
+    context 'when the user has a password' do
+      let(:user) { create(:user) }
+
+      it 'returns a user has password error' do
+        result = service.validate_and_confirm_unauthenticated!(user, user.email_confirmation_code)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(user: [{ error: :has_password }])
+      end
+    end
   end
 
   describe '#validate_and_confirm_authenticated!' do
