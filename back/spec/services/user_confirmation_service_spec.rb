@@ -106,7 +106,7 @@ RSpec.describe UserConfirmationService do
 
     context 'when confirmation is not required' do
       before do
-        user.update_column(:confirmation_required, false)
+        user.update_column(:confirmation_required, false) 
       end
 
       it 'returns a confirmation not required error' do
