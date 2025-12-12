@@ -42,6 +42,10 @@ class UserConfirmationService
     validate_email!(user.email)
     validate_user_has_no_password!(user)
     validate_and_confirm!(user, code)
+
+    success_result(user)
+  rescue ValidationError => e
+    failure_result(e)
   end
 
   def validate_and_confirm_authenticated!(user, code)
@@ -53,12 +57,20 @@ class UserConfirmationService
     validate_email!(user.email)
     validate_user_confirmation_required!(user)
     validate_and_confirm!(user, code)
+
+    success_result(user)
+  rescue ValidationError => e
+    failure_result(e)
   end
 
   def validate_and_confirm_email_change!(user, code)
     validate_user!(user)
     validate_email!(user.new_email)
     validate_and_confirm!(user, code)
+
+    success_result(user)
+  rescue ValidationError => e
+    failure_result(e)
   end
 
   private
@@ -69,10 +81,6 @@ class UserConfirmationService
     validate_code_value!(user, code)
     validate_code_expiration!(user)
     confirm_user!(user)
-
-    success_result(user)
-  rescue ValidationError => e
-    failure_result(e)
   end
 
   def validate_password_login_enabled!
