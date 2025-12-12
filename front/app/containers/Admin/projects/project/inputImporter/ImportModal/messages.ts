@@ -54,6 +54,11 @@ export default defineMessages({
     defaultMessage:
       'I hereby consent to processing this file using the Google Cloud Form Parser',
   },
+  azureConsent: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.azureConsent',
+    defaultMessage:
+      'I hereby consent to processing this file using Azure Open AI',
+  },
   consentNeeded: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded',
     defaultMessage: 'You need to consent to this before you can continue',

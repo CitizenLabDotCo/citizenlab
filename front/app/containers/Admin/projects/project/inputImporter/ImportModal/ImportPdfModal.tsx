@@ -14,7 +14,9 @@ import { SupportedLocale } from 'typings';
 import { object, mixed, boolean } from 'yup';
 
 import { IBackgroundJobData } from 'api/background_jobs/types';
-import useAddOfflineIdeasAsync from 'api/import_ideas/useAddOfflineIdeasAsync';
+import useAddOfflineIdeasAsync, {
+  ParserType,
+} from 'api/import_ideas/useAddOfflineIdeasAsync';
 import usePhase from 'api/phases/usePhase';
 
 import useLocale from 'hooks/useLocale';
@@ -55,9 +57,11 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
     projectId: string;
   };
 
-  // TEMP: Remove this when the legacy PDF format is no longer required
+  // Allows switching of different parsers if needed
   const [searchParams] = useSearchParams();
-  const legacyPdfImport = searchParams.get('legacy_pdf') !== null;
+  const parser = (searchParams.get('parser') || undefined) as ParserType;
+  const consentLabel =
+    parser == 'gpt' ? messages.azureConsent : messages.googleConsent;
 
   const downloadFormPath =
     phase?.data.attributes.participation_method === 'native_survey'
@@ -106,7 +110,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
         phase_id: phaseId,
         file: file.base64,
         format: 'pdf',
-        legacy_pdf: legacyPdfImport,
+        parser: parser,
         locale,
         personal_data,
       });
@@ -169,7 +173,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
             <Box mt="24px">
               <CheckboxWithLabel
                 name="google_consent"
-                label={<FormattedMessage {...messages.googleConsent} />}
+                label={<FormattedMessage {...consentLabel} />}
               />
             </Box>
             <Box w="100%" display="flex" mt="32px">
