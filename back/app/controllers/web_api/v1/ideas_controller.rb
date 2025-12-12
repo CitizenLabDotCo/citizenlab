@@ -234,9 +234,14 @@ class WebApi::V1::IdeasController < ApplicationController
         update_file_upload_fields input, form, params_for_create
         sidefx.after_create(input, current_user)
         write_everyone_tracking_cookie input
+
+        # [TODO] How to handle anonymous participation?
+        ClaimTokenService.generate(input) unless input.author_id
+        serializer_params = jsonapi_serializer_params.merge(include_claim_token: true)
+
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
-          params: jsonapi_serializer_params,
+          params: serializer_params,
           include: %i[author topics phases user_reaction idea_images]
         ).serializable_hash, status: :created
       else
