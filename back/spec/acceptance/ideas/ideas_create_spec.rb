@@ -62,6 +62,29 @@ resource 'Ideas' do
             assert_status 401
           end
         end
+
+        describe 'with everyone permission (accountless posting)' do
+          before { SettingsService.new.activate_feature!('ideation_accountless_posting') }
+
+          let(:project) do
+            create(:single_phase_ideation_project, phase_attrs: { with_permissions: true }).tap do |project|
+              project
+                .phases.sole
+                .permissions.find_by(action: 'posting_idea')
+                .update!(permitted_by: 'everyone')
+            end
+          end
+
+          example 'Create an idea and receive claim_token', document: false do
+            do_request
+            assert_status 201
+
+            idea = Idea.find(response_data[:id])
+            expect(idea.claim_token).to be_present
+            expect(response_data.dig(:attributes, :claim_token)).to be_present.and eq(idea.claim_token.token)
+            expect(response_data.dig(:attributes, :claim_token_expires_at)).to eq(idea.claim_token.expires_at.iso8601(3))
+          end
+        end
       end
 
       context 'when resident' do
@@ -78,6 +101,11 @@ resource 'Ideas' do
           expect(response_data.dig(:relationships, :topics, :data).pluck(:id)).to match_array topic_ids
           expect(response_data.dig(:attributes, :location_point_geojson)).to eq location_point_geojson
           expect(response_data.dig(:attributes, :location_description)).to eq location_description
+
+          expect(response_data[:attributes].keys).to include(:claim_token, :claim_token_expires_at)
+          expect(response_data.dig(:attributes, :claim_token)).to be_nil
+          expect(response_data.dig(:attributes, :claim_token_expires_at)).to be_nil
+
           expect(project.reload.ideas_count).to eq 1
         end
 
@@ -517,6 +545,10 @@ resource 'Ideas' do
             expect(idea_from_db.custom_field_values.to_h).to eq({
               extra_field_name => 'test value'
             })
+
+            expect(idea_from_db.claim_token).to be_present
+            expect(response_data.dig(:attributes, :claim_token)).to be_present.and eq(idea_from_db.claim_token.token)
+            expect(response_data.dig(:attributes, :claim_token_expires_at)).to eq(idea_from_db.claim_token.expires_at.iso8601(3))
           end
         end
       end
