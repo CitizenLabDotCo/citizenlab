@@ -477,5 +477,18 @@ RSpec.describe Insights::VotingPhaseInsightsService do
 
       expect(ordered_ideas).to eq([idea2, idea4, idea1, idea3])
     end
+
+    it 'orders ideas by total votes for budgeting voting method' do
+      phase.update!(voting_method: 'budgeting')
+
+      idea1.update!(baskets_count: 3, manual_votes_amount: 0)   # total votes = 3
+      idea2.update!(baskets_count: 20, manual_votes_amount: 10) # total votes = 30
+      idea3 = create(:idea, phases: [phase], baskets_count: 0, manual_votes_amount: 0) # total votes = 0
+      idea4 = create(:idea, phases: [phase], baskets_count: 7, manual_votes_amount: 0) # total votes = 7
+
+      ordered_ideas = service.send(:ideas_ordered_by_total_votes)
+
+      expect(ordered_ideas).to eq([idea2, idea4, idea1, idea3])
+    end
   end
 end
