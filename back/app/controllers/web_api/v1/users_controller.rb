@@ -235,6 +235,21 @@ class WebApi::V1::UsersController < ApplicationController
     end
   end
 
+  # This endpoint is only used when user_confirmation is disabled.
+  def update_email_unconfirmed
+    @user = current_user
+    authorize @user
+
+    if @user.update(email: params[:user][:email])
+        render json: WebApi::V1::UserSerializer.new(
+          @user,
+          params: jsonapi_serializer_params
+        ).serializable_hash
+      else
+        render json: { errors: @user.errors.details }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def set_user

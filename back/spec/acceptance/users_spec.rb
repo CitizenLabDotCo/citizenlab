@@ -1610,6 +1610,44 @@ resource 'Users' do
         end
       end
 
+      post 'web_api/v1/users/update_email_unconfirmed' do
+        with_options scope: :user do
+          parameter :email, required: true
+        end
+
+        context 'when user_confirmation is enabled' do
+          before do
+            SettingsService.new.activate_feature! 'user_confirmation'
+          end
+
+          describe do
+            let(:email) { 'new_email@example.com' }
+
+            example_request '[error] does not allow email change' do
+              @user.reload
+              expect(response_status).to eq 401
+              expect(@user.email).not_to eq email
+            end
+          end
+        end
+
+        context 'when user_confirmation is disabled' do
+          before do
+            SettingsService.new.deactivate_feature! 'user_confirmation'
+          end
+
+          describe do
+            let(:email) { 'new_email@example.com' }
+
+            example_request 'It allows email change' do
+              @user.reload
+              expect(response_status).to eq 200
+              expect(@user.email).to eq email
+            end
+          end
+        end
+      end
+
       delete 'web_api/v1/users/:id' do
         before do
           @user.update!(roles: [{ type: 'admin' }])
