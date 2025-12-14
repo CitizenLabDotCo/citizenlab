@@ -44,27 +44,6 @@ export const confirmEmailConfirmationCodeUnauthenticated = async (
   }
 };
 
-export const confirmEmailConfirmationCodeAuthenticated = async (
-  code: string
-) => {
-  try {
-    const res = await fetcher<Response>({
-      path: `/user/confirm_code_authenticated`,
-      action: 'post',
-      body: {
-        confirmation: { code },
-      },
-    });
-
-    setJwt(res.data.attributes.auth_token.token, false);
-    invalidateQueryCache();
-
-    return true;
-  } catch (errors) {
-    throw errors.errors;
-  }
-};
-
 export const confirmEmailConfirmationCodeChangeEmail = async (code: string) => {
   try {
     await fetcher({

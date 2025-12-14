@@ -1,5 +1,5 @@
-import { confirmEmailConfirmationCodeAuthenticated } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
-import { requestEmailConfirmationCodeAuthenticated } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import { confirmEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
+import { requestEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import { OnboardingType } from 'api/users/types';
 import {
   updateUser,
@@ -36,7 +36,7 @@ export const missingDataFlow = (
         setCurrentStep('email:start');
       },
       SUBMIT_CODE: async (_: string, code: string) => {
-        await confirmEmailConfirmationCodeAuthenticated(code);
+        await confirmEmailConfirmationCodeChangeEmail(code);
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
@@ -60,7 +60,7 @@ export const missingDataFlow = (
         setCurrentStep('success');
       },
       RESEND_CODE: async () => {
-        await requestEmailConfirmationCodeAuthenticated();
+        await requestEmailConfirmationCodeChangeEmail();
       },
     },
 

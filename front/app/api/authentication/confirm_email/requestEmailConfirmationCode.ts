@@ -20,21 +20,8 @@ export const requestEmailConfirmationCodeUnauthenticated = async (
   }
 };
 
-export const requestEmailConfirmationCodeAuthenticated = async () => {
-  try {
-    await fetcher({
-      path: `/user/request_code_authenticated`,
-      action: 'post',
-      body: {},
-    });
-    return true;
-  } catch (errors) {
-    throw errors.errors;
-  }
-};
-
 export const requestEmailConfirmationCodeChangeEmail = async (
-  new_email: string
+  new_email?: string
 ) => {
   try {
     await fetcher({
