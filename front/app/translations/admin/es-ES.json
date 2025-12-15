@@ -1505,6 +1505,8 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publicationStatus": "Estado de la publicación",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.published": "Publicado",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.sort": "Ordenar por",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeFolders": "Excluir carpetas",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeProjects": "Excluir proyectos",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Faltan los datos de este widget. Reconfigúralo o elimínalo para poder guardar el informe.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.communityMonitorHealthScoreTitle": "Índice de bienestar del barómetro",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.quarter": "Trimestre",
