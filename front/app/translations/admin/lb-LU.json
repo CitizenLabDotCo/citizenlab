@@ -723,7 +723,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.goals": "Ziler",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.imageInclusionLabel": "Bild fir den Dashboard fir Representativitéit",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Top-level inclusion indicators",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "The following section outlines inclusion indicators, highlighting your our progress towards fostering a more inclusive and representative participation platform.",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription2": "Déi folgend Sektioun beschreift Inklusiounsindikatoren, déi Äre Fortschrëtt bei der Fërderung vun enger méi inklusiver a representativer Participatiounsplattform ervirhiewen.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart2": "Status vun den Entréeën zënter dem Ufank",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusSince": "Inputstatus zënter {date}",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization": "Intern Organisatioun",
