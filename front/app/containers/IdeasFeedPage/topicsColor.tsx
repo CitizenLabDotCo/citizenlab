@@ -54,39 +54,3 @@ export const getTopicColors = (topicId: string): TopicColorPair => {
   const index = getTopicColorIndex(topicId);
   return TOPIC_COLOR_PALETTE[index];
 };
-
-// Create a map of topic IDs to color pairs for multiple topics
-export const createTopicColorMap = (
-  topicIds: string[]
-): Map<string, TopicColorPair> => {
-  const colorMap = new Map<string, TopicColorPair>();
-
-  topicIds.forEach((topicId) => {
-    colorMap.set(topicId, getTopicColors(topicId));
-  });
-
-  return colorMap;
-};
-
-// // Get the primary topic colors for an idea (uses first topic if multiple)
-export const getPrimaryTopicColor = (
-  topicIds: string[]
-): { background: string; progressBar: string; text: string } => {
-  if (topicIds.length === 0) {
-    // Default to teal if no topics
-    return {
-      background: colors.teal200,
-      progressBar: '#5CB8C2',
-      text: colors.grey800,
-    };
-  }
-
-  const primaryTopicId = topicIds[0];
-  const topicColors = getTopicColors(primaryTopicId);
-
-  return {
-    background: topicColors.background,
-    progressBar: topicColors.progressBar,
-    text: colors.grey800,
-  };
-};
