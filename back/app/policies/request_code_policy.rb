@@ -1,19 +1,6 @@
 # frozen_string_literal: true
 
 class RequestCodePolicy < ApplicationPolicy
-  class Scope
-    attr_reader :user, :scope
-
-    def initialize(user, scope)
-      @user = user
-      @scope = scope
-    end
-
-    def resolve
-      scope.all
-    end
-  end
-
   # For unauthenticated code requests (email signup/passwordless login)
   def request_code_unauthenticated?
     return false unless correct_feature_flags_enabled?
