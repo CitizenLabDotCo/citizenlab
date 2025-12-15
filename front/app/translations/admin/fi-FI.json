@@ -723,7 +723,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.goals": "Tavoitteet",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.imageInclusionLabel": "Edustavuuden koontinäytön kuva",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Huipputason osallistamisindikaattorit",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "Seuraavassa osiossa hahmotellaan osallistamisindikaattoreita ja korostetaan edistymistäsi osallistavamman ja edustavamman osallistumisalustan edistämisessä.",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription2": "Seuraavassa osiossa esitetään osallisuuden indikaattoreita, jotka korostavat edistymistäsi kohti osallistavamman ja edustavamman osallistumisalustan edistämistä.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart2": "Syötön tila alusta lähtien",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusSince": "Syötetila {date}:n jälkeen",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization": "Sisäinen organisaatio",
