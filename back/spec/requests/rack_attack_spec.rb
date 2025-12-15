@@ -638,7 +638,7 @@ describe 'Rack::Attack' do
     end
   end
 
-    it 'limits user check requests from same IP to 5 in 20 seconds' do
+  it 'limits user check requests from same IP to 5 in 20 seconds' do
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
     freeze_time do

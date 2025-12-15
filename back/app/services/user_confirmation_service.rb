@@ -35,9 +35,9 @@ class UserConfirmationService
   end
 
   def validate_and_confirm_unauthenticated!(user, code)
-    # Ensure that password login (i.e. 'normal', non-SSO login) 
+    # Ensure that password login (i.e. 'normal', non-SSO login)
     # feature is enabled for unauthenticated confirmation
-    validate_password_login_enabled!()
+    validate_password_login_enabled!
     validate_user!(user)
     validate_email!(user.email)
     validate_user_has_no_password!(user)
@@ -61,7 +61,7 @@ class UserConfirmationService
   private
 
   def validate_and_confirm!(user, code)
-    validate_user_confirmation_enabled!()
+    validate_user_confirmation_enabled!
     validate_retry_count!(user, code)
     validate_code_value!(user, code)
     validate_code_expiration!(user)
@@ -70,11 +70,13 @@ class UserConfirmationService
 
   def validate_password_login_enabled!
     return if app_configuration.feature_activated?('password_login')
+
     raise ValidationError.new(:base, :password_login_feature_disabled)
   end
 
   def validate_user_confirmation_enabled!
     return if app_configuration.feature_activated?('user_confirmation')
+
     raise ValidationError.new(:base, :user_confirmation_feature_disabled)
   end
 
@@ -103,6 +105,7 @@ class UserConfirmationService
     raise ValidationError.new(:code, :blank) if code.blank?
 
     return if user.email_confirmation_code == code
+
     raise ValidationError.new(:code, :invalid)
   end
 
@@ -114,6 +117,7 @@ class UserConfirmationService
 
   def validate_user_confirmation_required!(user)
     return if user.confirmation_required?
+
     raise ValidationError.new(:base, :confirmation_not_required)
   end
 

@@ -67,7 +67,7 @@ module UserConfirmation
   # ONLY USED IN SPECS!
   def reset_confirmation_and_counts
     raise 'Only use in specs!' unless Rails.env.test?
- 
+
     if !confirmation_required?
       # Only reset code and retry/reset counts if account has already been confirmed
       # To keep limits in place for retries when not confirmed

@@ -241,12 +241,12 @@ class WebApi::V1::UsersController < ApplicationController
     authorize @user
 
     if @user.update(email: params[:user][:email])
-        render json: WebApi::V1::UserSerializer.new(
-          @user,
-          params: jsonapi_serializer_params
-        ).serializable_hash
-      else
-        render json: { errors: @user.errors.details }, status: :unprocessable_entity
+      render json: WebApi::V1::UserSerializer.new(
+        @user,
+        params: jsonapi_serializer_params
+      ).serializable_hash
+    else
+      render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
   end
 

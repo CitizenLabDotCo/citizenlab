@@ -125,4 +125,3 @@ RSpec.describe UserConfirmationService do
     end
   end
 end
- 
