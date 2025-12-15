@@ -1294,6 +1294,7 @@
   "app.containers.Admin.projects.project.insights.areas": "Areas",
   "app.containers.Admin.projects.project.insights.associatedIdeas": "Associated ideas",
   "app.containers.Admin.projects.project.insights.comments": "Comments",
+  "app.containers.Admin.projects.project.insights.commonGroundStatements": "Statements",
   "app.containers.Admin.projects.project.insights.completionRate": "Completion rate",
   "app.containers.Admin.projects.project.insights.deleteSurveyResults": "Delete survey results",
   "app.containers.Admin.projects.project.insights.demographicsAndAudience": "Demographics & Audience",
