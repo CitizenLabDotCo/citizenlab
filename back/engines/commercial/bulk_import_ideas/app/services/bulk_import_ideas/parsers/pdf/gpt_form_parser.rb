@@ -36,8 +36,9 @@ module BulkImportIdeas::Parsers::Pdf
     end
 
     def prompt
+      # In this message is a scanned survey form containing handwritten responses and checked options.
       <<~GPT_PROMPT
-        In this message is a scanned survey form containing handwritten responses and checked options.
+        In this message is a scanned survey form that has been filled in by hand.
   
         Your task is to extract the text and checked options based on the questions in the JSON form schema below.
   
@@ -47,11 +48,14 @@ module BulkImportIdeas::Parsers::Pdf
 
         The language used in the form is #{@locale}.
 
-        Return the same array of JSON objects in the same order, but with some additional attributes:
+        Return the same array of JSON objects in the same order, but with an additional 'answer' attribute for each question, according to the following rules:
         - if the question is a text question, add an attribute answer with the extracted handwritten text as value.
-        - if the question has options then return an attribute answer as an array of the checked options' text values. If no options were checked, return an empty array.
-        - if the question is optional, sometimes it may not be present in the scanned form.
+        - if the question is of type select or multiselect then return an attribute answer as an array of the checked or ticked options' text values. If no options were checked, return an empty array.
         - if the question is of type checkbox, return the answer as 'checked' if it has been checked.
+        - if the question is of type linear_scale, rating or sentiment_linear_scale, return the answer as a number.
+        - if the question is of type ranking, then there will be a number written in a box next to each option indicating its rank. Return the answer as an array of option texts ordered by their rank from lowest to highest. The written numbers will not be higher than the number of options.
+        - if the question is of type matrix_linear_scale, then there will checkboxes in rows against a list of matrix_statements on the left hand side. Return the answer as a hash with each statement as the key and the value as the number corresponding to the order (starting from 1, left to right) of the box that is checked or ticked for that row.
+        - if the question is optional, sometimes it may not be present in the scanned form.
 
         Provide only the JSON without any additional text or markers.
   
@@ -62,21 +66,29 @@ module BulkImportIdeas::Parsers::Pdf
 
     # Return a simple schema to send to GPT
     def form_schema
-      index = 0
-      fields = printable_form_fields.map do |f|
+      fields = printable_form_fields.map.with_index do |f, field_num|
         next if f.page?
 
-        # index += 1
         field = {
-          id: index += 1,
+          id: field_num + 1,
           type: f.input_type,
           text: f.title_multiloc[@locale.to_s]
         }
 
         if f.support_options?
-          field[:options] = f.options.map.with_index do |o, i|
-            { id: i + 1, text: o.title_multiloc[@locale.to_s] }
+          field[:options] = f.options.map do |o|
+            o.title_multiloc[@locale.to_s]
           end
+        end
+
+        if f.supports_matrix_statements?
+          field[:matrix_statements] = f.matrix_statements.map.with_index do |ms, _statement_num|
+            ms.title_multiloc[@locale.to_s]
+          end
+          field[:labels] = (1..f.maximum).map do |label_num|
+            attr_name = :"linear_scale_label_#{label_num}_multiloc"
+            f[attr_name][@locale.to_s]
+          end.compact_blank
         end
 
         field
