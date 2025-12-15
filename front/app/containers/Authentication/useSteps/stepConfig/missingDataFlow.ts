@@ -1,3 +1,4 @@
+import requirementKeys from 'api/authentication/authentication_requirements/keys';
 import { confirmEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
 import { requestEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import { updateEmailUnconfirmed } from 'api/authentication/updateEmailUnconfirmed';
@@ -54,6 +55,8 @@ export const missingDataFlow = (
       },
       SUBMIT_CODE: async (_: string, code: string) => {
         await confirmEmailConfirmationCodeChangeEmail(code);
+        await queryClient.invalidateQueries(requirementKeys.all());
+
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
