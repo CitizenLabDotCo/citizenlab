@@ -723,7 +723,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.goals": "Doelen",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.imageInclusionLabel": "Afbeelding voor representativiteitsdashboard",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Door wie wordt er geparticipeerd?",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription2": "In het volgende gedeelte worden inclusie-indicatoren beschreven, waarmee je de vooruitgang kunt markeren die je hebt geboekt bij het bevorderen van een meer inclusief en representatief participatieplatform.",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription2": "In het volgende gedeelte worden inclusie-indicatoren beschreven, waarmee je vooruitgang bij het bevorderen van een inclusiever en representatiever participatieplatform wordt toegelicht.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart2": "Bijdragen op status sinds het begin",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusSince": "Bijdragen op status sinds {date}",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization": "Interne organisatie",
