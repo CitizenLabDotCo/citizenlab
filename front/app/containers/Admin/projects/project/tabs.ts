@@ -14,11 +14,17 @@ export type FeatureFlags = {
   surveys_enabled: boolean;
   typeform_enabled: boolean;
   report_builder_enabled: boolean;
+  phase_insights_enabled: boolean;
 };
 
 export const getTabs = (
   phase: IPhaseData,
-  { surveys_enabled, typeform_enabled, report_builder_enabled }: FeatureFlags,
+  {
+    surveys_enabled,
+    typeform_enabled,
+    report_builder_enabled,
+    phase_insights_enabled,
+  }: FeatureFlags,
   formatMessage: FormatMessage
 ): IPhaseTab[] => {
   return [
@@ -53,6 +59,13 @@ export const getTabs = (
       feature: 'polls',
       name: 'poll',
     },
+    // Show Results tab for native_survey when phase_insights is disabled (old behavior)
+    phase.attributes.participation_method === 'native_survey' &&
+      !phase_insights_enabled && {
+        label: formatMessage(messages.resultsTab),
+        url: 'results',
+        name: 'results',
+      },
     phase.attributes.participation_method === 'native_survey' && {
       label: formatMessage(messages.surveyFormTab),
       url: 'survey-form',
@@ -80,11 +93,13 @@ export const getTabs = (
         ? undefined
         : formatMessage(messages.lockedTooltip),
     },
-    phase.attributes.participation_method !== 'information' && {
-      label: formatMessage(messages.insightsTab),
-      url: 'insights',
-      name: 'insights',
-    },
+    // Show Insights tab when phase_insights is enabled (for all methods except information)
+    phase.attributes.participation_method !== 'information' &&
+      phase_insights_enabled && {
+        label: formatMessage(messages.insightsTab),
+        url: 'insights',
+        name: 'insights',
+      },
     {
       label: formatMessage(messages.phaseAccessRights),
       url: 'access-rights',

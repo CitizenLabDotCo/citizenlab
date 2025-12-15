@@ -10,7 +10,8 @@ export default function setPhaseURL(
   selectedPhase: IPhaseData,
   phases: IPhaseData[],
   project: IProjectData,
-  isBackoffice?: boolean
+  isBackoffice?: boolean,
+  phaseInsightsEnabled = true
 ) {
   const selectedPhaseId = selectedPhase.id;
   const phaseNumber =
@@ -19,7 +20,7 @@ export default function setPhaseURL(
   const currentPhase = getCurrentPhase(phases);
   const currentPhaseId = currentPhase?.id;
   const search = window.location.search;
-  const redirectTab = getTimelineTab(selectedPhase);
+  const redirectTab = getTimelineTab(selectedPhase, phaseInsightsEnabled);
 
   if (isBackoffice) {
     const backOfficeProjectURL = `/admin/projects/${project.id}`;

@@ -1,12 +1,14 @@
 import { IPhaseData } from 'api/phases/types';
 
 export function getTimelineTab(
-  phase: IPhaseData
+  phase: IPhaseData,
+  phaseInsightsEnabled = true
 ):
   | 'setup'
   | 'ideas'
   | 'proposals'
   | 'insights'
+  | 'results'
   | 'polls'
   | 'survey-results'
   | 'volunteering' {
@@ -17,7 +19,8 @@ export function getTimelineTab(
   } else if (participationMethod === 'proposals') {
     return 'proposals';
   } else if (participationMethod === 'native_survey') {
-    return 'insights';
+    // When phase_insights is disabled, redirect to old 'results' tab
+    return phaseInsightsEnabled ? 'insights' : 'results';
   } else if (participationMethod === 'poll') {
     return 'polls';
   } else if (participationMethod === 'survey') {
