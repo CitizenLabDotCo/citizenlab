@@ -8,6 +8,7 @@ FactoryBot.define do
       user { nil }
       user_custom_field_values { {} }
       participant_id { nil }
+      votes_per_idea { {} }
     end
 
     initialize_with do
@@ -43,7 +44,9 @@ FactoryBot.define do
         classname: 'Basket',
         participant_id: participant_id,
         user_custom_field_values: custom_field_values,
-        votes: basket.baskets_ideas.sum(:votes)
+        total_votes: basket.baskets_ideas.sum(:votes),
+        ideas_count: basket.ideas.count,
+        votes_per_idea: votes_per_idea || basket.baskets_ideas.to_h { |bi| [bi.idea_id, bi.votes] }
       }
     end
 
@@ -67,7 +70,9 @@ FactoryBot.define do
           classname: 'Basket',
           participant_id: participant_id,
           user_custom_field_values: custom_field_values,
-          votes: vote_count
+          total_votes: vote_count,
+          ideas_count: basket.ideas.count,
+          votes_per_idea: votes_per_idea || { basket.baskets_ideas.first.idea_id => vote_count }
         }
       end
     end
