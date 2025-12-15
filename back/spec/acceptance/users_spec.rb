@@ -1278,7 +1278,7 @@ resource 'Users' do
         with_options scope: 'user' do
           parameter :first_name, 'User full name'
           parameter :last_name, 'User full name'
-          parameter :email, 'E-mail address'
+          parameter :new_email, 'E-mail address'
           parameter :password, 'Password'
           parameter :locale, 'Locale. Should be one of the tenants locales'
           parameter :avatar, 'Base64 encoded avatar image'
@@ -1305,51 +1305,48 @@ resource 'Users' do
         end
 
         describe 'updating the user email' do
-          let(:email) { 'new-email@email.com' }
+          let(:new_email) { 'new-email@email.com' }
 
-          context 'when confirmation is turned on' do
-            before do
-              SettingsService.new.activate_feature! 'user_confirmation'
-            end
-
-            example_request '[error] is not allowed' do
-              expect(@user.reload.email).not_to eq(email)
-              assert_status 422
-            end
-
-            context 'when email was empty' do # see User#allows_empty_email?
-              before { @user.update_columns(email: nil) }
-
-              example_request 'is allowed' do
-                expect(@user.reload.email).to eq(email)
-                assert_status 200
-              end
-
-              example 'is not allowed when there is already an invite associated with email' do
-                create(:invited_user, email: email)
-                do_request
-
-                expect(@user.reload.email).to be_nil
-                assert_status 422
-              end
-            end
-
-            context 'when new_email was set properly' do
-              before { @user.update!(new_email: email) }
-
-              example_request 'is allowed' do
-                expect(@user.reload.email).to eq(email)
-                assert_status 200
-              end
-            end
+          before do
+            SettingsService.new.activate_feature! 'user_confirmation'
+            allow(RequestConfirmationCodeJob).to receive(:perform_now)
           end
 
-          context 'when the user_confirmation module is not active' do
+          example_request '[error] is not allowed' do
+            expect(@user.reload.new_email).not_to eq(new_email)
+            assert_status 422
+            expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
+          end
+
+          context 'when email was empty' do # see User#allows_empty_email?
+            before { @user.update_columns(email: nil) }
+
             example_request 'is allowed' do
-              expect(@user.reload.email).to eq(email)
+              expect(@user.reload.new_email).to eq(new_email)
+              expect(@user.email).to be_nil
+              expect(@user.confirmation_required).to be_truthy
+              expect(RequestConfirmationCodeJob).to have_received(:perform_now)
+                .with(@user, new_email: 'new-email@email.com').once
+
               assert_status 200
-              json_response = json_parse(response_body)
-              expect(json_response.dig(:data, :attributes, :email)).to eq(email)
+            end
+
+            example 'is not allowed when there is already a user associated with email' do
+              create(:user, email: new_email)
+              do_request
+
+              expect(@user.reload.new_email).to be_nil
+              assert_status 422
+              expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
+            end
+
+            example 'is not allowed when there is already an invite associated with email' do
+              create(:invited_user, email: new_email)
+              do_request
+
+              expect(@user.reload.new_email).to be_nil
+              assert_status 422
+              expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
             end
           end
         end
@@ -1489,7 +1486,6 @@ resource 'Users' do
           end
           let(:first_name) { 'Raymond' }
           let(:last_name) { 'Betancourt' }
-          let(:email) { 'ray.mond@rocks.com' }
           let(:locale) { 'fr-FR' }
           let(:birthyear) { 1969 }
 
@@ -1502,7 +1498,6 @@ resource 'Users' do
             expect(@user.custom_field_values[cf.key]).to eq 'new value'
             expect(@user.first_name).not_to eq first_name
             expect(@user.last_name).not_to eq last_name
-            expect(@user.email).to eq email
           end
 
           example 'Can change many attributes of a user verified with FranceConnect', document: false do
@@ -1510,7 +1505,6 @@ resource 'Users' do
             do_request
             expect(response_status).to eq 200
             @user.reload
-            expect(@user.email).to eq email
             expect(@user.locale).to eq locale
             expect(@user.birthyear).to eq birthyear
           end
