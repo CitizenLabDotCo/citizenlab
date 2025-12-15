@@ -1505,6 +1505,8 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publicationStatus": "Status for publisering",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.published": "Publisert",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.sort": "Sorter etter",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeFolders": "Ekskluder mapper",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeProjects": "Ekskluder prosjekter",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Dataene for denne widgeten mangler. Rekonfigurer eller slett den for å kunne lagre rapporten.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.communityMonitorHealthScoreTitle": "Community Monitor Health Score",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.quarter": "Kvartal",
