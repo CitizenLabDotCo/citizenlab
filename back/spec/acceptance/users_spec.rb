@@ -151,21 +151,24 @@ resource 'Users' do
       end
 
       with_options scope: 'user' do
-        parameter :first_name, 'User full name', required: false
-        parameter :last_name, 'User full name', required: false
+        parameter :first_name, 'First name'
+        parameter :last_name, 'Last name'
         parameter :email, 'E-mail address', required: true
-        parameter :password, 'Password', required: false
-        parameter :locale, 'Locale. Should be one of the tenants locales', required: true
+        parameter :password, 'Password'
+        parameter :locale, 'Locale (must be one of the tenant locales)', required: true
         parameter :avatar, 'Base64 encoded avatar image'
-        parameter :roles, 'Roles array, only allowed when admin'
-        parameter :custom_field_values, 'An object that can only contain keys for custom fields for users. If fields are required, their presence is required as well'
-        parameter :claim_tokens, <<~DESC, required: false
-          An array of tokens used to claim participation data created by the user before
-          registration. If confirmation is required, the tokens are marked as pending and
-          the participation data is associated with the user after confirmation.
-          Otherwise, the participation data is claimed immediately.
+        parameter :roles, 'Roles array (only allowed when admin)'
+        parameter :custom_field_values, <<~DESC
+          An object that can only contain keys for custom fields for users.
+          If fields are required, their presence is required as well.
+        DESC
+        parameter :claim_tokens, <<~DESC
+          Tokens used to claim participation data created before registration.
+          If confirmation is required, tokens are marked as pending until confirmed.
+          Otherwise, participation data is claimed immediately.
         DESC
       end
+
       ValidationErrorHelper.new.error_fields(self, User)
 
       context 'full registration with a password' do
