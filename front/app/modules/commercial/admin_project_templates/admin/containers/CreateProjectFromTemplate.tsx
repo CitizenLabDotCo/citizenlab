@@ -1,11 +1,11 @@
 import React, { ReactElement, memo, useState, useCallback } from 'react';
 
 import { isEmpty } from 'lodash-es';
+import useGraphqlTenantLocales from 'modules/commercial/admin_project_templates/admin/api/useGraphqlTenantLocales';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useGraphqlTenantLocales from 'modules/commercial/admin_project_templates/admin/api/useGraphqlTenantLocales';
 
 import { trackEventByName } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';

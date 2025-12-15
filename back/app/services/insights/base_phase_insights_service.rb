@@ -23,19 +23,19 @@ module Insights
 
     # TODO: Implement caching? (may not be needed if performance good enough)
     def cached_insights_data(participations)
-      visits_data = VisitsService.new.phase_visits_data(@phase)
+      visits = VisitsService.new.phase_visits(@phase)
       flattened_participations = participations.values.flatten
       participant_ids = flattened_participations.pluck(:participant_id).uniq
       participation_method_metrics = phase_participation_method_metrics(participations)
-      metrics = metrics_data(participations, participant_ids, visits_data, participation_method_metrics)
+      metrics = metrics_data(participations, participant_ids, visits, participation_method_metrics)
       demographics = demographics_data(flattened_participations, participant_ids)
-      participants_and_visitors_chart_data = participants_and_visitors_chart_data(flattened_participations, visits_data)
+      participants_and_visitors_chart_data = participants_and_visitors_chart_data(flattened_participations, visits)
 
       metrics.merge(demographics: { fields: demographics }, participants_and_visitors_chart_data: participants_and_visitors_chart_data)
     end
 
-    def metrics_data(participations, participant_ids, visits_data, participation_method_metrics)
-      base_metrics = base_metrics(participations, participant_ids, visits_data)
+    def metrics_data(participations, participant_ids, visits, participation_method_metrics)
+      base_metrics = base_metrics(participations, participant_ids, visits)
 
       phase_participation_method_metrics = {
         @phase.participation_method => participation_method_metrics
@@ -44,18 +44,89 @@ module Insights
       { metrics: base_metrics.merge(phase_participation_method_metrics) }
     end
 
-    def base_metrics(participations, participant_ids, visits_data)
-      total_participant_count = participant_ids.count
-      flattened_participations = participations.values.flatten
-      participants_last_7_days_count = flattened_participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:participant_id).uniq.count
+    def base_metrics(participations, participant_ids, visits)
+      visitors_count = visits.pluck(:visitor_id).uniq.count
+      participants_count = participant_ids.count
+      base_7_day_changes = base_7_day_changes(participations, visits)
 
       {
-        visitors: visits_data[:visitors_total],
-        visitors_last_7_days: visits_data[:visitors_last_7_days],
-        participants: total_participant_count,
-        participants_last_7_days: participants_last_7_days_count,
-        engagement_rate: visits_data[:visitors_total] > 0 ? (total_participant_count.to_f / visits_data[:visitors_total]).round(3) : 0
+        visitors: visitors_count,
+        visitors_7_day_change: base_7_day_changes[:visitors_7_day_change],
+        participants: participants_count,
+        participants_7_day_change: base_7_day_changes[:participants_7_day_change],
+        participation_rate: visitors_count > 0 ? (participants_count.to_f / visitors_count).round(3) : 0,
+        participation_rate_7_day_change: base_7_day_changes[:participation_rate_7_day_change]
       }
+    end
+
+    def base_7_day_changes(participations, visits)
+      flattened_participations = participations.values.flatten
+
+      participants_last_7_days_count = flattened_participations.select do |p|
+        p[:acted_at] >= 7.days.ago
+      end.pluck(:participant_id).uniq.count
+
+      participants_previous_7_days_count = flattened_participations.select do |p|
+        p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
+      end.pluck(:participant_id).uniq.count
+
+      visitors_last_7_days_count = visits.select do |v|
+        v[:acted_at] >= 7.days.ago
+      end.pluck(:visitor_id).uniq.count
+
+      visitors_previous_7_days_count = visits.select do |v|
+        v[:acted_at] < 7.days.ago && v[:acted_at] >= 14.days.ago
+      end.pluck(:visitor_id).uniq.count
+
+      participation_rate_last_7_days = visitors_last_7_days_count > 0 ? (participants_last_7_days_count.to_f / visitors_last_7_days_count).round(3) : 0
+      participation_rate_previous_7_days = visitors_previous_7_days_count > 0 ? (participants_previous_7_days_count.to_f / visitors_previous_7_days_count).round(3) : 0
+
+      {
+        visitors_7_day_change: percentage_change(visitors_previous_7_days_count, visitors_last_7_days_count),
+        participants_7_day_change: percentage_change(participants_previous_7_days_count, participants_last_7_days_count),
+        participation_rate_7_day_change: percentage_change(participation_rate_previous_7_days, participation_rate_last_7_days)
+      }
+    end
+
+    def phase_has_run_more_than_14_days?
+      time_now = Time.current
+      phase_start_at = @phase.start_at.to_time
+      phase_end_at = (@phase.end_at || time_now).to_time
+
+      # Check if the phase duration (start to end or current time) is more than 14 days
+      phase_duration_seconds = phase_end_at - phase_start_at
+      phase_duration_days = (phase_duration_seconds / 86_400).to_i
+
+      return false if phase_duration_days < 14
+
+      # Check if the elapsed time from phase start to now is more than 14 days
+      elapsed_seconds = time_now - phase_start_at
+      elapsed_days = (elapsed_seconds / 86_400).to_i
+
+      elapsed_days >= 14
+    end
+
+    def percentage_change(old_value, new_value)
+      return 0.0 if old_value == new_value # Includes case where both are zero
+      return 'last_7_days_compared_with_zero' if old_value.zero? # Infinite percentage change (avoid division by zero)
+
+      # Round to one decimal place
+      (((new_value - old_value).to_f / old_value) * 100.0).round(1)
+    end
+
+    def participations_7_day_change(participations)
+      return nil unless phase_has_run_more_than_14_days?
+      return 0.0 if participations.empty?
+
+      participations_last_7_days = participations.select { |p| p[:acted_at] >= 7.days.ago }
+      participations_previous_7_days = participations.select do |p|
+        p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
+      end
+
+      percentage_change(
+        participations_previous_7_days.count,
+        participations_last_7_days.count
+      )
     end
 
     def participant_id(item_id, user_id, user_hash = nil)
@@ -64,39 +135,6 @@ module Insights
 
     def associated_published_ideas_count
       @phase.ideas.where(publication_status: 'published').count
-    end
-
-    def phase_ideas_counts(participations)
-      total_ideas = participations.count
-      ideas_last_7_days = participations.count { |p| p[:acted_at] >= 7.days.ago }
-
-      {
-        total: total_ideas,
-        last_7_days: ideas_last_7_days
-      }
-    end
-
-    # idea comments posted during the phase
-    def phase_comments_counts(participations)
-      commenting_participations = participations[:commenting_idea] || []
-      total_comments = commenting_participations.count
-      comments_last_7_days = commenting_participations.count { |p| p[:acted_at] >= 7.days.ago }
-
-      {
-        total: total_comments,
-        last_7_days: comments_last_7_days
-      }
-    end
-
-    def phase_reactions_counts(participations)
-      reacting_participations = participations[:reacting_idea] || []
-      total_reactions = reacting_participations.count
-      reactions_last_7_days = reacting_participations.count { |p| p[:acted_at] >= 7.days.ago }
-
-      {
-        total: total_reactions,
-        last_7_days: reactions_last_7_days
-      }
     end
 
     def demographics_data(participations, participant_ids)
@@ -179,19 +217,8 @@ module Insights
     end
 
     def select_or_checkbox_field_demographics_data(participant_custom_field_values, custom_field)
-      counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
-
-      # Ensure checkbox fields always include both true and false options in consistent order
-      if custom_field.input_type == 'checkbox'
-        counts = {
-          true => counts[true] || 0,
-          false => counts[false] || 0,
-          '_blank' => counts['_blank']
-        }.compact
-      end
-
+      counts = select_or_checkbox_counts_for_field(participant_custom_field_values, custom_field)
       reference_distribution = calculate_reference_distribution(custom_field)
-
       r_score = calculate_r_score(counts, reference_distribution)
 
       options = nil
@@ -207,6 +234,21 @@ module Insights
         reference_distribution: reference_distribution,
         options: options
       }
+    end
+
+    def select_or_checkbox_counts_for_field(participant_custom_field_values, custom_field)
+      counts = UserCustomFields::FieldValueCounter.counts_by_field_option(participant_custom_field_values, custom_field)
+
+      # Ensure checkbox fields always include both true and false options in consistent order
+      if custom_field.input_type == 'checkbox'
+        counts = {
+          true => counts[true] || 0,
+          false => counts[false] || 0,
+          '_blank' => counts['_blank']
+        }.compact
+      end
+
+      counts
     end
 
     def participants_custom_field_values(participations, participant_ids)
@@ -235,9 +277,9 @@ module Insights
       UserCustomFields::Representativeness::RScore.compute_scores(counts, reference_distribution)[:min_max_p_ratio]
     end
 
-    def participants_and_visitors_chart_data(flattened_participations, visits_data)
+    def participants_and_visitors_chart_data(flattened_participations, visits)
       resolution = chart_resolution
-      grouped_visits = visits_data[:visits].group_by { |v| date_truncate(v[:date], resolution) }
+      grouped_visits = visits.group_by { |v| date_truncate(v[:acted_at], resolution) }
       grouped_participations = flattened_participations.group_by { |p| date_truncate(p[:acted_at], resolution) }
 
       # Get all unique date groups from both participations and visits
@@ -249,7 +291,7 @@ module Insights
 
         {
           participants: participations_in_group.pluck(:participant_id).uniq.count,
-          visitors: visits_in_group.pluck(:visitor_id).compact.uniq.count,
+          visitors: visits_in_group.pluck(:visitor_id).uniq.count,
           date_group: date_group
         }
       end

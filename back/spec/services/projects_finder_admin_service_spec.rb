@@ -50,19 +50,12 @@ describe ProjectsFinderAdminService do
     it 'returns all projects for admin user' do
       admin_user = create(:admin)
       result = described_class.filter_moderatable(Project.all, admin_user)
-      expect(result.pluck(:id)).to match_array([
-        project_in_folder1.id,
-        project_in_folder2.id,
-        project_without_folder.id
-      ])
+      expect(result.pluck(:id)).to contain_exactly(project_in_folder1.id, project_in_folder2.id, project_without_folder.id)
     end
 
     it 'returns projects user can moderate if not admin' do
       result = described_class.filter_moderatable(Project.all, user)
-      expect(result.pluck(:id)).to match_array([
-        project_without_folder.id,
-        project_in_folder1.id
-      ])
+      expect(result.pluck(:id)).to contain_exactly(project_without_folder.id, project_in_folder1.id)
     end
   end
 
@@ -155,7 +148,7 @@ describe ProjectsFinderAdminService do
 
     it 'returns all projects when no managers specified' do
       result = described_class.filter_project_manager(Project.all, {})
-      expect(result.pluck(:id)).to match_array([p1.id, p2.id, p3.id])
+      expect(result.pluck(:id)).to contain_exactly(p1.id, p2.id, p3.id)
     end
   end
 
@@ -191,12 +184,12 @@ describe ProjectsFinderAdminService do
 
     it 'filters projects by start date' do
       result = described_class.filter_start_date(Project.all, { min_start_date: Time.zone.today - 7.days, max_start_date: Time.zone.today + 3.days })
-      expect(result.pluck(:id).sort).to match_array([p1.id, p4.id])
+      expect(result.pluck(:id).sort).to contain_exactly(p1.id, p4.id)
     end
 
     it 'returns all projects when range is empty' do
       result = described_class.filter_start_date(Project.all, { min_start_date: nil, max_start_date: nil })
-      expect(result.pluck(:id).sort).to match_array([p1.id, p2.id, p3.id, p4.id, p5.id])
+      expect(result.pluck(:id).sort).to contain_exactly(p1.id, p2.id, p3.id, p4.id, p5.id)
     end
   end
 
@@ -307,12 +300,12 @@ describe ProjectsFinderAdminService do
 
     it 'returns projects in the specified folder' do
       result = described_class.filter_by_folder_ids(Project.all, { folder_ids: [folder1.id] })
-      expect(result.pluck(:id)).to match_array([project_in_folder1.id])
+      expect(result.pluck(:id)).to contain_exactly(project_in_folder1.id)
     end
 
     it 'returns projects in any of the specified folders' do
       result = described_class.filter_by_folder_ids(Project.all, { folder_ids: [folder1.id, folder2.id] })
-      expect(result.pluck(:id)).to match_array([project_in_folder1.id, project_in_folder2.id])
+      expect(result.pluck(:id)).to contain_exactly(project_in_folder1.id, project_in_folder2.id)
     end
 
     it 'returns all projects if folder_ids is blank' do
@@ -345,9 +338,7 @@ describe ProjectsFinderAdminService do
 
     it 'returns all projects when no participation_methods specified' do
       result = described_class.filter_current_phase_participation_method(Project.all, {})
-      expect(result.pluck(:id)).to match_array([
-        project_ideation.id, project_voting.id, project_information.id, project_ideation_future.id
-      ])
+      expect(result.pluck(:id)).to contain_exactly(project_ideation.id, project_voting.id, project_information.id, project_ideation_future.id)
     end
 
     it 'filters projects by a single participation method' do
@@ -357,7 +348,7 @@ describe ProjectsFinderAdminService do
 
     it 'filters projects by multiple participation methods' do
       result = described_class.filter_current_phase_participation_method(Project.all, { participation_methods: %w[ideation voting] })
-      expect(result.pluck(:id)).to match_array([project_ideation.id, project_voting.id])
+      expect(result.pluck(:id)).to contain_exactly(project_ideation.id, project_voting.id)
     end
   end
 

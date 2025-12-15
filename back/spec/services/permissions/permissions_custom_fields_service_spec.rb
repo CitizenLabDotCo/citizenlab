@@ -18,16 +18,16 @@ describe Permissions::PermissionsCustomFieldsService do
         permission = create(:permission, permitted_by: 'users', global_custom_fields: true)
         fields = service.fields_for_permission(permission)
         expect(fields.count).to eq 2
-        expect(fields.map(&:persisted?)).to match_array [false, false]
-        expect(fields.pluck(:required)).to match_array([true, false])
+        expect(fields.map(&:persisted?)).to contain_exactly(false, false)
+        expect(fields.pluck(:required)).to contain_exactly(true, false)
       end
 
       it 'returns non-persisted default fields when permitted_by "verified"' do
         permission = create(:permission, permitted_by: 'verified', global_custom_fields: true)
         fields = service.fields_for_permission(permission)
         expect(fields.count).to eq 2
-        expect(fields.map(&:persisted?)).to match_array [false, false]
-        expect(fields.pluck(:required)).to match_array([false, true])
+        expect(fields.map(&:persisted?)).to contain_exactly(false, false)
+        expect(fields.pluck(:required)).to contain_exactly(false, true)
       end
 
       it 'returns no permissions fields by default when permitted_by "everyone"' do
@@ -113,12 +113,7 @@ describe Permissions::PermissionsCustomFieldsService do
                 { ruleType: 'custom_field_select', customFieldId: '2a982fca-e026-4173-9ddd-03a8082160dc', predicate: 'is_empty' }
               ])
             ]
-            expect(service.send(:extract_custom_field_ids_from_rules, groups)).to match_array([
-              { id: '19b2088c-bb8c-4f3c-812d-4a2faf594497', required: false },
-              { id: '9b43081c-2ba1-432a-89fb-81cfa243cee7', required: true },
-              { id: '8240f6b0-aca3-4151-a8ca-f68a028d0e83', required: true },
-              { id: '2a982fca-e026-4173-9ddd-03a8082160dc', required: false }
-            ])
+            expect(service.send(:extract_custom_field_ids_from_rules, groups)).to contain_exactly({ id: '19b2088c-bb8c-4f3c-812d-4a2faf594497', required: false }, { id: '9b43081c-2ba1-432a-89fb-81cfa243cee7', required: true }, { id: '8240f6b0-aca3-4151-a8ca-f68a028d0e83', required: true }, { id: '2a982fca-e026-4173-9ddd-03a8082160dc', required: false })
           end
         end
       end
