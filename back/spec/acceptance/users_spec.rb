@@ -159,6 +159,12 @@ resource 'Users' do
         parameter :avatar, 'Base64 encoded avatar image'
         parameter :roles, 'Roles array, only allowed when admin'
         parameter :custom_field_values, 'An object that can only contain keys for custom fields for users. If fields are required, their presence is required as well'
+        parameter :claim_tokens, <<~DESC, required: false
+          An array of tokens used to claim participation data created by the user before
+          registration. If confirmation is required, the tokens are marked as pending and
+          the participation data is associated with the user after confirmation.
+          Otherwise, the participation data is claimed immediately.
+        DESC
       end
       ValidationErrorHelper.new.error_fields(self, User)
 
@@ -172,6 +178,23 @@ resource 'Users' do
 
         example_request 'Create a user' do
           assert_status 201
+        end
+
+        context 'with claim_tokens (confirmation not required)' do
+          let!(:claim_token) { create(:claim_token) }
+          let(:idea) { claim_token.item }
+          let(:claim_tokens) { [claim_token.token] }
+
+          example 'claims items immediately', document: false do
+            do_request
+            assert_status 201
+
+            user = User.find(response_data[:id])
+
+            expect(user.claim_tokens).to be_empty
+            expect(idea.reload.author_id).to eq(user.id)
+            expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
+          end
         end
 
         context 'when the user_confirmation module is active' do
@@ -192,6 +215,22 @@ resource 'Users' do
             user = User.order(:created_at).last
             expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
             expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true # when no custom fields
+          end
+
+          context 'with claim_tokens' do
+            let!(:claim_token) { create(:claim_token) }
+            let(:idea) { claim_token.item }
+            let(:claim_tokens) { [claim_token.token] }
+
+            example 'marks claim tokens as pending for the new user', document: false do
+              do_request
+              assert_status 201
+
+              user = User.find(response_data[:id])
+
+              expect(user.claim_tokens).to contain_exactly(claim_token)
+              expect(idea.reload.author_id).to be_nil # Not yet claimed
+            end
           end
         end
 
