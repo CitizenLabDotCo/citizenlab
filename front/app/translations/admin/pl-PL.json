@@ -723,7 +723,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.goals": "Cele",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.imageInclusionLabel": "Obraz dla pulpitu nawigacyjnego reprezentatywności",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Wskaźniki włączenia na najwyższym poziomie",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "Poniższa sekcja przedstawia wskaźniki inkluzywności, podkreślając nasze postępy w kierunku wspierania bardziej inkluzywnej i reprezentatywnej platformy uczestnictwa.",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription2": "Poniższa sekcja przedstawia wskaźniki inkluzywności, podkreślając twoje postępy w kierunku wspierania bardziej inkluzywnej i reprezentatywnej platformy uczestnictwa.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart2": "Stan wejścia od początku",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusSince": "Status wejścia od {date}",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization": "Organizacja wewnętrzna",
