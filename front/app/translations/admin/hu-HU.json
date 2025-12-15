@@ -723,7 +723,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.goals": "Célok",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.imageInclusionLabel": "Kép a reprezentativitási irányítópulthoz",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Top-level inclusion indicators",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "The following section outlines inclusion indicators, highlighting your our progress towards fostering a more inclusive and representative participation platform.",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription2": "A következő szakasz a befogadási mutatókat vázolja fel, kiemelve az Ön által elért haladást egy befogadóbb és reprezentatívabb részvételi platform előmozdítása felé.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart2": "Bemeneti állapot a kezdetektől fogva",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusSince": "Bemeneti állapot {date}óta",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization": "Belső szervezet",
