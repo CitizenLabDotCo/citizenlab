@@ -331,7 +331,7 @@ context 'keycloak verification (ID-Porten - Oslo)' do
 
         token = AuthToken::AuthToken.new(payload: user.to_token_payload).token
         headers = { 'Authorization' => "Bearer #{token}" }
-        patch "/web_api/v1/users/update_email_unconfirmed", params: { user: { email: 'newcoolemail@example.org' } }, headers: headers
+        patch '/web_api/v1/users/update_email_unconfirmed', params: { user: { email: 'newcoolemail@example.org' } }, headers: headers
         expect(response).to have_http_status(:ok)
         expect(user.reload).to have_attributes({ email: 'newcoolemail@example.org' })
         expect(user.confirmation_required?).to be(false)

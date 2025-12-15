@@ -295,7 +295,7 @@ describe 'clave_unica verification' do
         expect_to_create_verified_and_identified_user(user)
 
         headers = { 'Authorization' => authorization_header(user) }
-        patch "/web_api/v1/users/update_email_unconfirmed", params: { user: { email: 'newcoolemail@example.org' } }, headers: headers
+        patch '/web_api/v1/users/update_email_unconfirmed', params: { user: { email: 'newcoolemail@example.org' } }, headers: headers
 
         expect(response).to have_http_status(:ok)
         expect(user.reload).to have_attributes({ email: 'newcoolemail@example.org' })
