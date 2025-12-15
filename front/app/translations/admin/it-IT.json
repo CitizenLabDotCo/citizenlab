@@ -723,7 +723,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.goals": "Obiettivi",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.imageInclusionLabel": "Immagine per il cruscotto di rappresentatività",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Indicatori di inclusione di primo livello",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "La sezione seguente illustra gli indicatori di inclusione, evidenziando i nostri progressi verso la promozione di una piattaforma di partecipazione più inclusiva e rappresentativa.",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription2": "La sezione seguente illustra gli indicatori di inclusione, evidenziando i tuoi progressi nel promuovere una piattaforma di partecipazione più inclusiva e rappresentativa.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart2": "Stato degli ingressi dall'inizio",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusSince": "Stato degli ingressi da {date}",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization": "Organizzazione interna",
