@@ -1302,7 +1302,6 @@
   "app.containers.Admin.projects.project.insights.downloadSurveyResults": "Download survey results",
   "app.containers.Admin.projects.project.insights.errorLoadingCommonGround": "Error loading Common Ground results",
   "app.containers.Admin.projects.project.insights.gender": "Gender",
-  "app.containers.Admin.projects.project.insights.generateReport": "Generate report",
   "app.containers.Admin.projects.project.insights.ideasPosted": "Ideas posted",
   "app.containers.Admin.projects.project.insights.ideation.explore": "Explore",
   "app.containers.Admin.projects.project.insights.ideation.generatingSummary": "Generating summary...",
