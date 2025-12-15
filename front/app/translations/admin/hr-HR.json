@@ -723,7 +723,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.goals": "Ciljevi",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.imageInclusionLabel": "Slika za nadzornu ploču reprezentativnosti",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Indikatori uključenosti najviše razine",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "Sljedeći odjeljak opisuje pokazatelje uključenosti, ističući vaš naš napredak prema poticanju inkluzivnije i reprezentativnije platforme za sudjelovanje.",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription2": "Sljedeći odjeljak opisuje pokazatelje uključivosti, ističući vaš napredak prema poticanju uključivije i reprezentativnije platforme za sudjelovanje.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart2": "Status unosa od početka",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusSince": "Status unosa od {date}",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization": "Unutarnja organizacija",
