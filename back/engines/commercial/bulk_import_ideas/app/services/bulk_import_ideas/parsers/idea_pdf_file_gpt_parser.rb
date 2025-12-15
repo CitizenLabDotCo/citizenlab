@@ -11,9 +11,6 @@ module BulkImportIdeas::Parsers
       file_path = file.file.file.file
       gpt_service = BulkImportIdeas::Parsers::Pdf::GPTFormParser.new(@phase, @locale)
       form_parsed_idea = gpt_service.parse_idea(file_path, template_data[:page_count])
-
-      @raw_idea_data << form_parsed_idea # Logging raw data for debugging later - currently not used
-
       [idea_to_idea_row(form_parsed_idea, file)]
     end
 

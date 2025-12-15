@@ -12,7 +12,6 @@ module BulkImportIdeas
       idea_rows = []
       idea_import_files.each do |file|
         idea_rows += file_parser.parse_rows file
-        # TODO: Get logs of raw data from file_parser.raw_idea_data and add to idea_import object
       end
 
       # Correct jumbled up text fields with GPT if using google PDF

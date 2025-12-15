@@ -2,15 +2,12 @@
 
 module BulkImportIdeas::Parsers
   class IdeaBaseFileParser
-    attr_reader :raw_idea_data
-
     def initialize(current_user, locale, phase_id, personal_data_enabled)
       @import_user = current_user
       @phase = Phase.find(phase_id)
       @project = @phase.project
       @locale = locale || AppConfiguration.instance.settings('core', 'locales').first # Default locale for any new users created
       @personal_data_enabled = personal_data_enabled
-      @raw_idea_data = [] # For logging raw data so we can debug if needed
     end
 
     # Default is real time import of ideas
