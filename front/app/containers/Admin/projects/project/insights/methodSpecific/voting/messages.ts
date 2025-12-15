@@ -21,18 +21,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.insights.voting.none',
     defaultMessage: 'None',
   },
-  gender: {
-    id: 'app.containers.Admin.projects.insights.voting.gender',
-    defaultMessage: 'Gender',
-  },
-  age: {
-    id: 'app.containers.Admin.projects.insights.voting.age',
-    defaultMessage: 'Age',
-  },
-  location: {
-    id: 'app.containers.Admin.projects.insights.voting.location',
-    defaultMessage: 'Location',
-  },
   loading: {
     id: 'app.containers.Admin.projects.insights.voting.loading',
     defaultMessage: 'Loading vote results...',
@@ -52,5 +40,9 @@ export default defineMessages({
   votesTooltip: {
     id: 'app.containers.Admin.projects.insights.voting.votesTooltip',
     defaultMessage: 'Solid: online votes. Striped: offline votes.',
+  },
+  unknownDemographic: {
+    id: 'app.containers.Admin.projects.insights.voting.unknownDemographic',
+    defaultMessage: 'Unknown',
   },
 });
