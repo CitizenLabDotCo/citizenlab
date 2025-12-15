@@ -15,6 +15,7 @@ import {
 } from 'containers/Authentication/typings';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import { isNil } from 'utils/helperUtils';
 
 import { Step, BuiltInFieldsUpdate } from './typings';
 import {
@@ -22,6 +23,20 @@ import {
   doesNotMeetGroupCriteria,
   checkMissingData,
 } from './utils';
+
+const isEmpty = (obj: Record<string, unknown>) => {
+  if (Object.keys(obj).length === 0) {
+    return true;
+  }
+
+  for (const key in obj) {
+    if (!isNil(obj[key])) {
+      return false;
+    }
+  }
+
+  return true;
+};
 
 export const missingDataFlow = (
   getAuthenticationData: () => AuthenticationData,
@@ -80,7 +95,12 @@ export const missingDataFlow = (
           }
         }
 
-        await updateUser({ userId, ...restBuiltInFieldUpdate });
+        if (!isEmpty(restBuiltInFieldUpdate)) {
+          await updateUser({
+            userId,
+            ...restBuiltInFieldUpdate,
+          });
+        }
 
         invalidateCacheAfterUpdateUser(queryClient);
 
