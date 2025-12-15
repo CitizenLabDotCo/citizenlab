@@ -4,8 +4,8 @@ import { Box, Success } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
 import { requestEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import { updateEmailUnconfirmed } from 'api/authentication/updateEmailUnconfirmed';
 import { IUserData } from 'api/users/types';
-import useUpdateUser from 'api/users/useUpdateUser';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -42,7 +42,6 @@ const UpdateEmailForm = ({
   user,
 }: UpdateEmailFormProps) => {
   const { formatMessage } = useIntl();
-  const { mutateAsync: updateUser } = useUpdateUser();
   const [error, setError] = useState<'taken' | undefined>(undefined);
   const userConfirmationEnabled = useFeatureFlag({ name: 'user_confirmation' });
 
@@ -60,7 +59,7 @@ const UpdateEmailForm = ({
           });
       } else {
         // Otherwise, update the user's email
-        await updateUser({ userId: user.id, ...formValues });
+        await updateEmailUnconfirmed(formValues.email);
         setUpdateSuccessful(true);
       }
     } catch (error) {
