@@ -723,7 +723,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.goals": "Nodau",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.imageInclusionLabel": "Delwedd ar gyfer dangosfwrdd cynrychiolaeth",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Dangosyddion cynhwysiant lefel uchaf",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "Mae'r adran ganlynol yn amlinellu dangosyddion cynhwysiant, gan amlygu eich cynnydd tuag at feithrin llwyfan cyfranogiad mwy cynhwysol a chynrychioliadol.",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription2": "Mae'r adran ganlynol yn amlinellu dangosyddion cynhwysiant, gan dynnu sylw at eich cynnydd tuag at feithrin platfform cyfranogiad mwy cynhwysol a chynrychioliadol.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart2": "Statws mewnbwn ers y dechrau",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusSince": "Statws mewnbwn ers {date}",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization": "Trefniadaeth fewnol",
