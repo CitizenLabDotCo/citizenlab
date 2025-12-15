@@ -3,7 +3,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 export const updateEmailUnconfirmed = async (email: string) => {
   try {
     await fetcher({
-      path: '/user/update_email_unconfirmed',
+      path: '/users/update_email_unconfirmed',
       action: 'patch',
       body: {
         email,
