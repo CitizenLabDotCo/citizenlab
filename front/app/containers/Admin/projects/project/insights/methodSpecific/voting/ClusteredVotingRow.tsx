@@ -44,7 +44,7 @@ const ClusteredVotingRow = ({
       </Box>
 
       {demographicKeys.map((key, index) => {
-        const breakdown = idea.demographic_breakdown?.[key];
+        const breakdown = idea.series?.[key];
         return (
           <DemographicColumn
             key={key}
