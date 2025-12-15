@@ -723,7 +723,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.goals": "Mērķi",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.imageInclusionLabel": "Attēls reprezentativitātes mērinstrumentu panelim",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Augstākā līmeņa iekļaušanas rādītāji",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "Turpmākajā sadaļā ir izklāstīti iekļaušanas rādītāji, kuros ir uzsvērts mūsu progress ceļā uz iekļaujošākas un reprezentatīvākas līdzdalības platformas izveidi.",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription2": "Turpmākajā sadaļā ir izklāstīti iekļaušanas rādītāji, kas norāda uz jūsu progresu iekļaujošākas un reprezentatīvākas līdzdalības platformas veicināšanā.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart2": "Ievades statuss kopš sākuma",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusSince": "Ievades statuss kopš {date}",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization": "Iekšējā organizācija",
