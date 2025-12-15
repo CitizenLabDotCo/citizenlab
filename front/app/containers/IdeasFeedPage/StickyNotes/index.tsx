@@ -40,7 +40,6 @@ const NoteWrapper = styled(Box)<{
         top: auto;
         margin: 20px auto;
         display: flex;
-        justify-content: center;
         transform: rotate(0deg) !important;
       `;
     }
@@ -92,7 +91,8 @@ const NoteWrapper = styled(Box)<{
       }
     `;
   }}
-  &:hover {
+  &:hover,
+  &:focus-within {
     z-index: ${(props) => (props.$isFeedView ? 'auto' : '100 !important')};
     transform: ${(props) =>
       props.$isFeedView

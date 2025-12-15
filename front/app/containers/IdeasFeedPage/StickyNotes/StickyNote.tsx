@@ -10,12 +10,15 @@ import useLocalize from 'hooks/useLocalize';
 import Avatar from 'components/Avatar';
 import T from 'components/T';
 
-// Only using styled-component for :hover pseudo-selector which isn't available as a Box prop
+// Only using styled-component for :hover/:focus pseudo-selectors which aren't available as Box props
 const HoverableDiv = styled(Box)`
   transition: all 0.3s ease;
-  &:hover {
+  &:hover,
+  &:focus {
     transform: translateY(-4px) rotate(0deg) !important;
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    outline: 2px solid ${colors.primary};
+    outline-offset: 2px;
   }
 `;
 
@@ -35,6 +38,13 @@ const StickyNote: React.FC<Props> = ({
   const { data: idea } = useIdeaById(ideaId);
   const localize = useLocalize();
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      onClick?.();
+    }
+  };
+
   if (!idea) {
     return null;
   }
@@ -46,6 +56,7 @@ const StickyNote: React.FC<Props> = ({
 
   return (
     <HoverableDiv
+      as="button"
       p="12px"
       borderRadius="2px"
       w="250px"
@@ -58,7 +69,11 @@ const StickyNote: React.FC<Props> = ({
       display="flex"
       flexDirection="column"
       gap="8px"
+      border="none"
+      textAlign="left"
       onClick={onClick}
+      onKeyDown={handleKeyDown}
+      aria-label={title}
     >
       <Text fontSize="l" fontWeight="bold" m="0px" color={'textPrimary'}>
         {title}
