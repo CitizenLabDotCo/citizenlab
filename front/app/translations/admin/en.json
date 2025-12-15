@@ -1254,6 +1254,8 @@
   "app.containers.Admin.projects.insights.voting.unknownDemographic": "Unknown",
   "app.containers.Admin.projects.insights.voting.voteResults": "Vote Results",
   "app.containers.Admin.projects.insights.voting.votesTooltip": "Solid: online votes. Striped: offline votes.",
+  "app.containers.Admin.projects.insights.voting.xVotes": "{count} votes",
+  "app.containers.Admin.projects.insights.voting.xVotesInclOffline": "{count} votes (incl. {offlineCount} offline)",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI Summary",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Comments",
   "app.containers.Admin.projects.project.analysis.Comments.commentsSummaryVisibilityExplanation": "Comment summary is available when there are 5 or more comments.",
