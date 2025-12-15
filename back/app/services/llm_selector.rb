@@ -58,6 +58,18 @@ class LLMSelector
       description: 'Generating descriptions for 360 input files',
       supported_models: [::Analysis::LLM::GPT4o, ::Analysis::LLM::ClaudeSonnet45, ::Analysis::LLM::Gemini25Pro],
       default_model: ::Analysis::LLM::GPT4o
+    ),
+    LLMUseCase.new(
+      key: 'idea_feed_live_topic_model',
+      description: 'Automatically manage the tags in the Idea Feed constantly.',
+      supported_models: [::Analysis::LLM::ClaudeOpus45, ::Analysis::LLM::Gemini25Pro],
+      default_model: ::Analysis::LLM::Gemini25Pro
+    ),
+    LLMUseCase.new(
+      key: 'idea_feed_live_classification',
+      description: 'Classify ideas into existing topics in the Idea Feed constantly.',
+      supported_models: [::Analysis::LLM::ClaudeHaiku45, ::Analysis::LLM::Gemini25Flash],
+      default_model: ::Analysis::LLM::Gemini25Flash
     )
   ]
 
@@ -119,6 +131,6 @@ class LLMSelector
 
   def configured_family_for_use_case(use_case, app_configuration)
     ai_providers_config = app_configuration.settings('core', 'ai_providers')
-    ai_providers_config[use_case.key]
+    ai_providers_config&.dig(use_case.key)
   end
 end

@@ -25,8 +25,8 @@ module Analysis
       def chat_context
         ::RubyLLM.context do |config|
           config.vertexai_project_id = ENV.fetch('VERTEXAI_PROJECT_ID', nil)
-          # config.vertexai_location = 'europe-west3'
-          config.vertexai_location = ENV.fetch('VERTEXAI_LOCATION', 'europe-west1')
+          config.vertexai_location = 'europe-west1'
+          # config.vertexai_location = ENV.fetch('VERTEXAI_LOCATION', 'europe-west1')
         end
       end
     end

@@ -32,6 +32,10 @@ describe LLMSelector do
     end
   end
 
+  it 'only lists models that are subclasses of Analysis::LLM::Base' do
+    expect(described_class::MODELS).to all(be < Analysis::LLM::Base)
+  end
+
   describe '#llm_claz_for_use_case' do
     it 'raises an error for unknown use case keys' do
       expect do
@@ -75,6 +79,15 @@ describe LLMSelector do
 
       selected_model = service.llm_claz_for_use_case('test_use_case', app_configuration)
       expect(selected_model).to eq(mock_model_b)
+    end
+
+    it 'returns the default model when ai_providers config is non existent' do
+      use_case = described_class::USE_CASES.first
+      app_configuration = instance_double(AppConfiguration)
+      allow(app_configuration).to receive(:settings).with('core', 'ai_providers').and_return(nil)
+
+      selected_model = service.llm_claz_for_use_case(use_case.key, app_configuration)
+      expect(selected_model).to eq(use_case.default_model)
     end
   end
 
