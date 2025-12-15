@@ -1505,6 +1505,8 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publicationStatus": "ਪ੍ਰਕਾਸ਼ਨ ਸਥਿਤੀ",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.published": "ਪ੍ਰਕਾਸ਼ਿਤ",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.sort": "ਦੇ ਨਾਲ ਕ੍ਰਮਬੱਧ",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeFolders": "ਫੋਲਡਰਾਂ ਨੂੰ ਬਾਹਰ ਕੱਢੋ",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeProjects": "ਪ੍ਰੋਜੈਕਟਾਂ ਨੂੰ ਸ਼ਾਮਲ ਨਾ ਕਰੋ",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "ਇਸ ਵਿਜੇਟ ਲਈ ਡੇਟਾ ਗੁੰਮ ਹੈ। ਰਿਪੋਰਟ ਨੂੰ ਸੁਰੱਖਿਅਤ ਕਰਨ ਦੇ ਯੋਗ ਹੋਣ ਲਈ ਇਸਨੂੰ ਮੁੜ ਸੰਰਚਿਤ ਕਰੋ ਜਾਂ ਮਿਟਾਓ।",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.communityMonitorHealthScoreTitle": "ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਹੈਲਥ ਸਕੋਰ",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.quarter": "ਤਿਮਾਹੀ",
