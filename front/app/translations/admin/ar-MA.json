@@ -723,7 +723,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.goals": "الأهداف",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.imageInclusionLabel": "صورة للوحة معلومات التمثيل",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "مؤشرات الإدماج ذات المستوى الأعلى",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "يوضح القسم التالي مؤشرات الشمول، ويسلط الضوء على التقدم الذي أحرزناه نحو تعزيز منصة مشاركة أكثر شمولاً وتمثيلاً.",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription2": "يوضح القسم التالي مؤشرات الإدماج، مسلطاً الضوء على تقدمكم نحو تعزيز منصة مشاركة أكثر شمولاً وتمثيلاً.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart2": "حالة الإدخال منذ البداية",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusSince": "حالة الإدخال منذ {date}",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization": "التنظيم الداخلي",
