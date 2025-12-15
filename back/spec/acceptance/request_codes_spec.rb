@@ -28,23 +28,22 @@ resource 'Request codes' do
     example 'It does not work with a user with password' do
       user = create(:user)
       do_request(request_code: { email: user.email })
-      expect(response_status).to eq 200
+      expect(response_status).to eq 401
       expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
     end
 
     example 'It does not work if user reached email_confirmation_code_reset_count' do
       user = create(:user_no_password, email_confirmation_code_reset_count: 4)
       do_request(request_code: { email: user.email })
-      expect(response_status).to eq 200
+      expect(response_status).to eq 401
       expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
     end
 
-    example 'Clears the new_email if present' do
+    example 'It does not work if new_email is present' do
       user = create(:user_no_password, new_email: 'new@email.com')
       expect(user.new_email).to eq 'new@email.com'
       do_request(request_code: { email: user.email })
-      expect(response_status).to eq 200
-      expect(user.reload.new_email).to be_nil
+      expect(response_status).to eq 401
     end
   end
 
@@ -70,7 +69,7 @@ resource 'Request codes' do
       user = create(:user)
       header_token_for(user)
       do_request(request_code: { new_email: '' })
-      expect(response_status).to eq 200
+      expect(response_status).to eq 401
       expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
     end
 
@@ -79,7 +78,7 @@ resource 'Request codes' do
       user.update_column(:email_confirmation_code_reset_count, 4)
       header_token_for(user)
       do_request(request_code: { new_email: 'new_email@example.com' })
-      expect(response_status).to eq 200
+      expect(response_status).to eq 401
       expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
     end
   end
