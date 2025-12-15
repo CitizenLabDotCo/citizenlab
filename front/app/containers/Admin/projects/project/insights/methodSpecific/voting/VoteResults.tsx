@@ -4,6 +4,7 @@ import { Box, Text, Title, Select } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
 
+import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import { GroupByOption } from 'api/voting_insights/types';
 import useVotingPhaseVotes from 'api/voting_insights/useVotingPhaseVotes';
 
@@ -17,8 +18,6 @@ import messages from './messages';
 import { getDemographicKeys, getDemographicLabel } from './utils';
 import VotingIdeaRow from './VotingIdeaRow';
 
-type ClusterByOption = '' | 'gender' | 'birthyear' | 'domicile';
-
 interface Props {
   phaseId: string;
 }
@@ -27,30 +26,38 @@ const VoteResults = ({ phaseId }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const theme = useTheme();
-  const [clusterBy, setClusterBy] = useState<ClusterByOption>('');
+  const [clusterBy, setClusterBy] = useState<string>('');
+
+  const { data: userCustomFields } = useUserCustomFields({
+    inputTypes: ['select', 'multiselect', 'checkbox', 'number'],
+  });
 
   const { data, isLoading, error } = useVotingPhaseVotes({
     phaseId,
     groupBy: (clusterBy || undefined) as GroupByOption | undefined,
   });
 
+  // Filter to fields that support demographic clustering
+  // Backend supports: select, checkbox, multiselect, and birthyear (number type)
+  const demographicFields =
+    userCustomFields?.data.filter((field) => {
+      if (!field.attributes.enabled) return false;
+      if (field.attributes.input_type === 'number') {
+        // Only birthyear is supported for number fields
+        return field.attributes.key === 'birthyear';
+      }
+      return true;
+    }) ?? [];
+
   const clusterByOptions: IOption[] = [
     {
       value: '',
       label: formatMessage(messages.none),
     },
-    {
-      value: 'gender',
-      label: formatMessage(messages.gender),
-    },
-    {
-      value: 'birthyear',
-      label: formatMessage(messages.age),
-    },
-    {
-      value: 'domicile',
-      label: formatMessage(messages.location),
-    },
+    ...demographicFields.map((field) => ({
+      value: field.attributes.key,
+      label: localize(field.attributes.title_multiloc),
+    })),
   ];
 
   if (isLoading) {
@@ -114,9 +121,7 @@ const VoteResults = ({ phaseId }: Props) => {
             <Select
               value={clusterBy}
               options={clusterByOptions}
-              onChange={(option) =>
-                setClusterBy(option.value as ClusterByOption)
-              }
+              onChange={(option) => setClusterBy(option.value)}
             />
           </Box>
         </Box>
@@ -128,7 +133,13 @@ const VoteResults = ({ phaseId }: Props) => {
           {demographicKeys.map((key) => (
             <DemographicSection
               key={key}
-              label={getDemographicLabel(key, clusterBy, options, localize)}
+              label={getDemographicLabel(
+                key,
+                clusterBy,
+                options,
+                localize,
+                formatMessage
+              )}
               ideas={ideas}
               demographicKey={key}
             />
