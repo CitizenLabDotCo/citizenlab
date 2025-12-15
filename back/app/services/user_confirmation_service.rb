@@ -41,6 +41,7 @@ class UserConfirmationService
     validate_user!(user)
     validate_email!(user.email)
     validate_user_has_no_password!(user)
+    validate_user_has_no_new_email!(user)
     validate_and_confirm!(user, code)
 
     success_result(user)
@@ -119,6 +120,21 @@ class UserConfirmationService
     return if user.confirmation_required?
 
     raise ValidationError.new(:base, :confirmation_not_required)
+  end
+
+  # This one is in the case where a user does not have a password,
+  # and is trying to change their email, but has not confirmed their new email yet.
+  # In this situation, we do not allow them to confirm their email with this endpoint.
+  # The first reason is because right now, they could confirm their new email using a
+  # new code sent to their old email, which we don't want.
+  # We could wipe the new_email before, but then the issue is that they can basically
+  # request infinite codes and brute-force the code.
+  # I could refactor everything and not reseet the reset email_confirmation_code_reset_count
+  # in this case, but it's too much work for now so I'll do it later.
+  def validate_user_has_no_new_email!(user)
+    return if user.new_email.blank?
+
+    raise ValidationError.new(:user, :has_new_email)
   end
 
   def confirm_user!(user)

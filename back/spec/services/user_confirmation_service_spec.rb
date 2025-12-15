@@ -104,6 +104,17 @@ RSpec.describe UserConfirmationService do
         expect(result.errors.details).to eq(user: [{ error: :has_password }])
       end
     end
+
+    context 'when account already has a new_email' do
+      let(:user) { create(:user_no_password, new_email: 'some@email.com') }
+      
+      it 'returns a user has new email error' do
+        result = service.validate_and_confirm_unauthenticated!(user, user.email_confirmation_code)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(user: [{ error: :has_new_email }])
+      end
+    end
   end
 
   describe '#validate_and_confirm_email_change!' do
