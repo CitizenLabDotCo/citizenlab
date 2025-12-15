@@ -28,7 +28,7 @@ class WebApi::V1::RequestCodesController < ApplicationController
 
     # Store new_email for the policy to access
     current_user.instance_variable_set(:@new_email_for_policy, new_email)
-    
+
     authorize current_user, policy_class: RequestCodePolicy
 
     RequestConfirmationCodeJob.perform_now(current_user, new_email: new_email)
