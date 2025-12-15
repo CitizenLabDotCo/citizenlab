@@ -2,7 +2,6 @@
 
 class WebApi::V1::RequestCodesController < ApplicationController
   skip_before_action :authenticate_user, only: %i[request_code_unauthenticated]
-  skip_after_action :verify_authorized
 
   # This endpoint allows unauthenticated users to request a confirmation code
   # This is used in the email account creation flow and when
@@ -11,7 +10,9 @@ class WebApi::V1::RequestCodesController < ApplicationController
     email = request_code_unauthenticated_params[:email]
     user = User.find_by_cimail(email)
 
-    if confirmation_codes_service.permit_request_code_unauthenticated(user)
+    authorize user, policy_class: RequestCodePolicy
+
+    if user
       user.update!(new_email: nil) # Clear any pending email change to avoid confusion
       RequestConfirmationCodeJob.perform_now user
     end
@@ -25,14 +26,12 @@ class WebApi::V1::RequestCodesController < ApplicationController
   def request_code_email_change
     new_email = request_code_email_change_params[:new_email]
 
-    if confirmation_codes_service.permit_request_code_email_change(
-      current_user,
-      new_email
-    )
-      RequestConfirmationCodeJob.perform_now(
-        current_user, new_email:
-      )
-    end
+    # Store new_email for the policy to access
+    current_user.instance_variable_set(:@new_email_for_policy, new_email)
+    
+    authorize current_user, policy_class: RequestCodePolicy
+
+    RequestConfirmationCodeJob.perform_now(current_user, new_email: new_email)
 
     head :ok
   end
@@ -45,9 +44,5 @@ class WebApi::V1::RequestCodesController < ApplicationController
 
   def request_code_email_change_params
     params.require(:request_code).permit(:new_email)
-  end
-
-  def confirmation_codes_service
-    @confirmation_codes_service ||= ConfirmationCodesService.new
   end
 end
