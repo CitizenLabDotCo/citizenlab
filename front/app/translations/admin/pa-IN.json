@@ -723,7 +723,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.goals": "ਟੀਚੇ",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.imageInclusionLabel": "ਪ੍ਰਤੀਨਿਧਤਾ ਡੈਸ਼ਬੋਰਡ ਲਈ ਚਿੱਤਰ",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "ਸਿਖਰ-ਪੱਧਰੀ ਸੰਮਿਲਨ ਸੰਕੇਤਕ",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "ਨਿਮਨਲਿਖਤ ਭਾਗ ਇੱਕ ਹੋਰ ਸਮਾਵੇਸ਼ੀ ਅਤੇ ਪ੍ਰਤੀਨਿਧ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਨੂੰ ਉਤਸ਼ਾਹਿਤ ਕਰਨ ਲਈ ਤੁਹਾਡੀ ਸਾਡੀ ਪ੍ਰਗਤੀ ਨੂੰ ਉਜਾਗਰ ਕਰਦੇ ਹੋਏ, ਸਮਾਵੇਸ਼ ਸੂਚਕਾਂ ਦੀ ਰੂਪਰੇਖਾ ਦਿੰਦਾ ਹੈ।",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription2": "ਹੇਠਲਾ ਭਾਗ ਸਮਾਵੇਸ਼ ਸੂਚਕਾਂ ਦੀ ਰੂਪਰੇਖਾ ਦਿੰਦਾ ਹੈ, ਜੋ ਇੱਕ ਵਧੇਰੇ ਸਮਾਵੇਸ਼ੀ ਅਤੇ ਪ੍ਰਤੀਨਿਧ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ਨੂੰ ਉਤਸ਼ਾਹਿਤ ਕਰਨ ਵੱਲ ਤੁਹਾਡੀ ਪ੍ਰਗਤੀ ਨੂੰ ਉਜਾਗਰ ਕਰਦਾ ਹੈ।",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart2": "ਸ਼ੁਰੂ ਤੋਂ ਇਨਪੁੱਟ ਸਥਿਤੀ",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusSince": "{date}ਤੋਂ ਇਨਪੁੱਟ ਸਥਿਤੀ",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization": "ਅੰਦਰੂਨੀ ਸੰਗਠਨ",
