@@ -1505,6 +1505,8 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publicationStatus": "Leidinio statusas",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.published": "Paskelbta",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.sort": "Rūšiuoti pagal",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeFolders": "Neįtraukti aplankų",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeProjects": "Neįtraukti projektų",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Trūksta šio valdiklio duomenų. Perkonfigūruokite arba ištrinkite jį, kad galėtumėte išsaugoti ataskaitą.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.communityMonitorHealthScoreTitle": "Bendrijos stebėsenos sistemos sveikatos balas",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.quarter": "Ketvirtis",
