@@ -43,9 +43,9 @@ export default defineMessages({
     defaultMessage: 'Top-level inclusion indicators',
   },
   inclusionIndicatorsDescription: {
-    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription',
+    id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription2',
     defaultMessage:
-      'The following section outlines inclusion indicators, highlighting your our progress towards fostering a more inclusive and representative participation platform.',
+      'The following section outlines inclusion indicators, highlighting your progress towards fostering a more inclusive and representative participation platform.',
   },
   yourProjects: {
     id: 'app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourProjects',
