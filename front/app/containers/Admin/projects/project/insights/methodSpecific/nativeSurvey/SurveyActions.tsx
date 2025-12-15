@@ -258,14 +258,6 @@ const SurveyActions = ({ phase }: Props) => {
         </Box>
         <Button
           buttonStyle="text"
-          onClick={() => {
-            // TODO: Implement generate report
-          }}
-        >
-          {formatMessage(messages.generateReport)}
-        </Button>
-        <Button
-          buttonStyle="text"
           onClick={downloadPdf}
           processing={isDownloadingPdf}
           aria-label={formatMessage(messages.downloadInsightsPdf)}
