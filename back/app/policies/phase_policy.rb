@@ -66,7 +66,7 @@ class PhasePolicy < ApplicationPolicy
     active_moderator?
   end
 
-  def voting_insights?
+  def votes_with_grouping?
     active_moderator?
   end
 

@@ -209,7 +209,7 @@ Rails.application.routes.draw do
 
         resource :insights, only: [], controller: 'insights/phase_insights' do
           get '', action: 'show_insights'
-          get :voting, action: 'voting_insights'
+          get :voting, action: 'votes_with_grouping'
         end
 
         resources :files, defaults: { container_type: 'Phase' }, shallow: false
