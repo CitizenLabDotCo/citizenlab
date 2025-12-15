@@ -208,14 +208,14 @@ resource 'Users' do
     post 'web_api/v1/users' do
       with_options scope: 'user' do
         parameter :email, 'E-mail address', required: true
-        parameter :locale, 'Locale. Should be one of the tenants locales', required: true
-        parameter :claim_tokens, <<~DESC, required: false
-          An array of tokens used to claim participation data created by the user before
-          registration. If confirmation is required, the tokens are marked as pending and
-          the participation data is associated with the user after confirmation.
-          Otherwise, the participation data is claimed immediately.
+        parameter :locale, 'Locale (must be one of the tenant locales)', required: true
+        parameter :claim_tokens, <<~DESC
+          Tokens used to claim participation data created before registration.
+          If confirmation is required, tokens are marked as pending until confirmed.
+          Otherwise, participation data is claimed immediately.
         DESC
       end
+
       ValidationErrorHelper.new.error_fields(self, User)
 
       context 'when confirmation is turned on' do
