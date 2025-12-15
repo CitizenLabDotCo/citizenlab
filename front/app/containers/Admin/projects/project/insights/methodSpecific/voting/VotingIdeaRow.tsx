@@ -11,10 +11,9 @@ import SimpleVotingRow from './SimpleVotingRow';
 
 interface Props {
   idea: VotingIdeaResult;
-  maxVotes: number;
 }
 
-const VotingIdeaRow = ({ idea, maxVotes }: Props) => {
+const VotingIdeaRow = ({ idea }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
@@ -24,7 +23,6 @@ const VotingIdeaRow = ({ idea, maxVotes }: Props) => {
     <SimpleVotingRow
       idea={idea}
       title={title}
-      maxVotes={maxVotes}
       tooltip={formatMessage(messages.votesTooltip)}
     />
   );

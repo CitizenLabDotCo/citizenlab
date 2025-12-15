@@ -45,4 +45,12 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.insights.voting.unknownDemographic',
     defaultMessage: 'Unknown',
   },
+  xVotes: {
+    id: 'app.containers.Admin.projects.insights.voting.xVotes',
+    defaultMessage: '{count} votes',
+  },
+  xVotesInclOffline: {
+    id: 'app.containers.Admin.projects.insights.voting.xVotesInclOffline',
+    defaultMessage: '{count} votes (incl. {offlineCount} offline)',
+  },
 });

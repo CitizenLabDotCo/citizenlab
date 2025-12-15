@@ -91,7 +91,6 @@ const VoteResults = ({ phaseId }: Props) => {
   const { ideas, options } = data!.data.attributes;
 
   const demographicKeys = getDemographicKeys(clusterBy || undefined, options);
-  const maxVotes = Math.max(...ideas.map((idea) => idea.total_votes), 0);
 
   if (ideas.length === 0) {
     return (
@@ -140,7 +139,6 @@ const VoteResults = ({ phaseId }: Props) => {
             <React.Fragment key={idea.id}>
               <ClusteredIdeaRow
                 idea={idea}
-                maxVotes={maxVotes}
                 demographicKeys={demographicKeys}
                 clusterBy={clusterBy}
                 options={options}
@@ -155,7 +153,7 @@ const VoteResults = ({ phaseId }: Props) => {
         // Non-clustered view: simple list
         <Box>
           {ideas.map((idea) => (
-            <VotingIdeaRow key={idea.id} idea={idea} maxVotes={maxVotes} />
+            <VotingIdeaRow key={idea.id} idea={idea} />
           ))}
         </Box>
       )}

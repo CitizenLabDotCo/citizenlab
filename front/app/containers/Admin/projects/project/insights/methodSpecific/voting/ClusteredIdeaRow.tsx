@@ -19,7 +19,6 @@ import VoteStats from './VoteStats';
 
 interface Props {
   idea: VotingIdeaResult;
-  maxVotes: number;
   demographicKeys: string[];
   clusterBy: string;
   options: Record<string, DemographicOption> | undefined;
@@ -27,7 +26,6 @@ interface Props {
 
 const ClusteredIdeaRow = ({
   idea,
-  maxVotes,
   demographicKeys,
   clusterBy,
   options,
@@ -39,7 +37,7 @@ const ClusteredIdeaRow = ({
   const { onlinePct, offlinePct } = getScaledPercentages(
     idea.online_votes,
     idea.offline_votes,
-    maxVotes
+    idea.percentage
   );
 
   return (

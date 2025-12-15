@@ -14,15 +14,14 @@ import VoteStats from './VoteStats';
 interface Props {
   idea: VotingIdeaResult;
   title: string;
-  maxVotes: number;
   tooltip: string;
 }
 
-const SimpleVotingRow = ({ idea, title, maxVotes, tooltip }: Props) => {
+const SimpleVotingRow = ({ idea, title, tooltip }: Props) => {
   const { onlinePct, offlinePct } = getScaledPercentages(
     idea.online_votes,
     idea.offline_votes,
-    maxVotes
+    idea.percentage
   );
 
   return (

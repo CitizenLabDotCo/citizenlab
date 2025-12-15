@@ -63,17 +63,25 @@ export const getDemographicLabel = (
 };
 
 /**
- * Calculate bar percentages scaled to maxVotes
- * Returns online and offline percentages for progress bar display
+ * Calculate bar percentages for progress bar display
+ * The bar represents the idea's share of total votes (percentage),
+ * split into online and offline portions
  */
 export const getScaledPercentages = (
   online: number,
   offline: number,
-  maxVotes: number
+  percentage: number | null
 ): { onlinePct: number; offlinePct: number } => {
   const total = online + offline;
-  const scaleFactor = maxVotes > 0 ? total / maxVotes : 0;
-  const onlinePct = total > 0 ? (online / total) * 100 * scaleFactor : 0;
-  const offlinePct = total > 0 ? (offline / total) * 100 * scaleFactor : 0;
+  const totalPercentage = percentage ?? 0;
+
+  if (total === 0) {
+    return { onlinePct: 0, offlinePct: 0 };
+  }
+
+  // Split the total percentage into online and offline portions
+  const onlinePct = (online / total) * totalPercentage;
+  const offlinePct = (offline / total) * totalPercentage;
+
   return { onlinePct, offlinePct };
 };

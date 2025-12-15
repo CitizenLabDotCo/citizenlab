@@ -4,19 +4,30 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { VotingIdeaResult } from 'api/voting_insights/types';
 
+import { useIntl } from 'utils/cl-intl';
+
 import { CHART_COLORS } from './constants';
+import messages from './messages';
 
 interface Props {
   idea: VotingIdeaResult;
 }
 
 const VoteStats = ({ idea }: Props) => {
+  const { formatMessage } = useIntl();
   const totalVotes = idea.total_votes;
-  const offlinePercentage =
-    totalVotes > 0 ? Math.round((idea.offline_votes / totalVotes) * 100) : 0;
+  const offlineVotes = idea.offline_votes;
+
+  const votesText =
+    offlineVotes > 0
+      ? formatMessage(messages.xVotesInclOffline, {
+          count: totalVotes,
+          offlineCount: offlineVotes,
+        })
+      : formatMessage(messages.xVotes, { count: totalVotes });
 
   return (
-    <Box display="flex" alignItems="center" gap="8px" flexShrink={0}>
+    <Box display="flex" alignItems="center" gap="4px" flexShrink={0}>
       <Text
         m="0"
         fontSize="s"
@@ -25,13 +36,11 @@ const VoteStats = ({ idea }: Props) => {
       >
         {idea.percentage}%
       </Text>
-      {idea.offline_votes > 0 && (
-        <Text m="0" fontSize="s" color="textSecondary">
-          ⫶ {offlinePercentage}%
-        </Text>
-      )}
       <Text m="0" fontSize="s" color="textSecondary">
-        ({totalVotes})
+        •
+      </Text>
+      <Text m="0" fontSize="s" color="textSecondary">
+        {votesText}
       </Text>
     </Box>
   );
