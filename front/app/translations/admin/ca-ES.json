@@ -723,7 +723,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.goals": "Objectius",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.imageInclusionLabel": "Imatge per al tauler de control de representativitat",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Top-level inclusion indicators",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "The following section outlines inclusion indicators, highlighting your our progress towards fostering a more inclusive and representative participation platform.",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription2": "La secció següent descriu els indicadors d'inclusió i destaca el vostre progrés cap al foment d'una plataforma de participació més inclusiva i representativa.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart2": "Estat de l'entrada des de l'inici",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusSince": "Estat de l'entrada des de {date}",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization": "Organització interna",
