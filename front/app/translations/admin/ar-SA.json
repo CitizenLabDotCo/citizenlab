@@ -1505,6 +1505,8 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publicationStatus": "حالة النشر",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.published": "نُشرت",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.sort": "فرز حسب",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeFolders": "استبعاد المجلدات",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeProjects": "استبعاد المشاريع",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "البيانات الخاصة بهذه القطعة مفقودة. أعد تكوينه أو احذفه لتتمكن من حفظ التقرير.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.communityMonitorHealthScoreTitle": "تقييم صحة المجتمع",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.quarter": "ربع",
