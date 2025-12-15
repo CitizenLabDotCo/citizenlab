@@ -723,7 +723,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.goals": "Στόχοι",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.imageInclusionLabel": "Εικόνα για το ταμπλό αντιπροσωπευτικότητας",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Top-level inclusion indicators",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "The following section outlines inclusion indicators, highlighting your our progress towards fostering a more inclusive and representative participation platform.",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription2": "Η ακόλουθη ενότητα περιγράφει δείκτες ένταξης, υπογραμμίζοντας την πρόοδό σας προς την κατεύθυνση της προώθησης μιας πιο περιεκτικής και αντιπροσωπευτικής πλατφόρμας συμμετοχής.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart2": "Κατάσταση εισόδου από την έναρξη",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusSince": "Κατάσταση εισόδου από το {date}",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization": "Εσωτερική οργάνωση",
