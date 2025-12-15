@@ -1,0 +1,141 @@
+import React from 'react';
+
+import { Box, Text } from '@citizenlab/cl2-component-library';
+
+import { DemographicOption } from 'api/phase_insights/types';
+import { VotingIdeaResult } from 'api/voting_insights/types';
+
+import useLocalize from 'hooks/useLocalize';
+
+import ProgressBarWrapper from 'containers/ProjectsShowPage/timeline/VotingResults/ProgressBar/ProgressBarWrapper';
+
+import { useIntl } from 'utils/cl-intl';
+
+import { CHART_COLORS } from './constants';
+import IdeaThumbnail from './IdeaThumbnail';
+import messages from './messages';
+import { getScaledPercentages, getDemographicLabel } from './utils';
+import VoteStats from './VoteStats';
+
+interface Props {
+  idea: VotingIdeaResult;
+  maxVotes: number;
+  demographicKeys: string[];
+  clusterBy: string;
+  options: Record<string, DemographicOption> | undefined;
+}
+
+const ClusteredIdeaRow = ({
+  idea,
+  maxVotes,
+  demographicKeys,
+  clusterBy,
+  options,
+}: Props) => {
+  const localize = useLocalize();
+  const { formatMessage } = useIntl();
+  const title = localize(idea.title_multiloc);
+
+  const { onlinePct, offlinePct } = getScaledPercentages(
+    idea.online_votes,
+    idea.offline_votes,
+    maxVotes
+  );
+
+  return (
+    <Box py="16px">
+      {/* Main idea row */}
+      <Box display="flex" alignItems="center" gap="16px">
+        <Box flexShrink={0}>
+          <IdeaThumbnail imageUrl={idea.image_url} alt={title} />
+        </Box>
+
+        <Box flex="1" minWidth="0">
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            mb="8px"
+          >
+            <Text
+              m="0"
+              fontSize="s"
+              fontWeight="bold"
+              color="textPrimary"
+              style={{
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {title}
+            </Text>
+            <VoteStats idea={idea} />
+          </Box>
+          <ProgressBarWrapper
+            votesPercentage={onlinePct}
+            manualVotesPercentage={offlinePct}
+            tooltip={formatMessage(messages.votesTooltip)}
+            barColor={CHART_COLORS.darkBlue}
+            bgColor="#E0E0E0"
+            height="16px"
+          />
+        </Box>
+      </Box>
+
+      {/* Nested demographic breakdown */}
+      <Box ml="76px" mt="12px">
+        {demographicKeys.map((key) => {
+          const breakdown = idea.series?.[key];
+          const percentage = breakdown?.percentage ?? 0;
+          const label = getDemographicLabel(
+            key,
+            clusterBy,
+            options,
+            localize,
+            formatMessage
+          );
+
+          return (
+            <Box
+              key={key}
+              display="flex"
+              alignItems="center"
+              gap="12px"
+              py="6px"
+            >
+              <Text
+                m="0"
+                fontSize="s"
+                color="textSecondary"
+                style={{ width: '100px', flexShrink: 0 }}
+              >
+                {label}
+              </Text>
+              <Box flex="1" display="flex" alignItems="center" gap="8px">
+                <Box flex="1">
+                  <ProgressBarWrapper
+                    votesPercentage={percentage}
+                    barColor={CHART_COLORS.darkBlue}
+                    bgColor="#E0E0E0"
+                    height="12px"
+                  />
+                </Box>
+                <Text
+                  m="0"
+                  fontSize="s"
+                  color="textSecondary"
+                  style={{ width: '60px', textAlign: 'right', flexShrink: 0 }}
+                >
+                  {percentage}%
+                </Text>
+              </Box>
+            </Box>
+          );
+        })}
+      </Box>
+    </Box>
+  );
+};
+
+export default ClusteredIdeaRow;

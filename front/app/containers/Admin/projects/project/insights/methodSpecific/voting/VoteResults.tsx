@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 
-import { Box, Text, Title, Select } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  Title,
+  Select,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
 
@@ -12,10 +18,10 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
+import ClusteredIdeaRow from './ClusteredIdeaRow';
 import { CHART_COLORS, getStripedPattern } from './constants';
-import DemographicSection from './DemographicSection';
 import messages from './messages';
-import { getDemographicKeys, getDemographicLabel } from './utils';
+import { getDemographicKeys } from './utils';
 import VotingIdeaRow from './VotingIdeaRow';
 
 interface Props {
@@ -128,21 +134,21 @@ const VoteResults = ({ phaseId }: Props) => {
       </Box>
 
       {clusterBy && demographicKeys.length > 0 ? (
-        // Clustered view with vertical demographic sections
+        // Clustered view with nested demographic breakdown per idea
         <Box>
-          {demographicKeys.map((key) => (
-            <DemographicSection
-              key={key}
-              label={getDemographicLabel(
-                key,
-                clusterBy,
-                options,
-                localize,
-                formatMessage
+          {ideas.map((idea, index) => (
+            <React.Fragment key={idea.id}>
+              <ClusteredIdeaRow
+                idea={idea}
+                maxVotes={maxVotes}
+                demographicKeys={demographicKeys}
+                clusterBy={clusterBy}
+                options={options}
+              />
+              {index < ideas.length - 1 && (
+                <Box borderBottom={`1px solid ${colors.divider}`} />
               )}
-              ideas={ideas}
-              demographicKey={key}
-            />
+            </React.Fragment>
           ))}
         </Box>
       ) : (
