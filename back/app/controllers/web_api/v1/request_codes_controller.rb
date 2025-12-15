@@ -9,13 +9,9 @@ class WebApi::V1::RequestCodesController < ApplicationController
   def request_code_unauthenticated
     email = request_code_unauthenticated_params[:email]
     user = User.find_by_cimail(email)
-
     authorize user, policy_class: RequestCodePolicy
 
-    if user
-      user.update!(new_email: nil) # Clear any pending email change to avoid confusion
-      RequestConfirmationCodeJob.perform_now user
-    end
+    RequestConfirmationCodeJob.perform_now user
 
     head :ok
   end
