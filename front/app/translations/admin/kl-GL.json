@@ -723,7 +723,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.goals": "Goals",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.imageInclusionLabel": "Image for representativeness dashboard",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Top-level inclusion indicators",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "The following section outlines inclusion indicators, highlighting your our progress towards fostering a more inclusive and representative participation platform.",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription2": "The following section outlines inclusion indicators, highlighting your progress towards fostering a more inclusive and representative participation platform.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart2": "Input status since the start",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusSince": "Input status since {date}",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization": "Internal organisation",
