@@ -17,8 +17,6 @@ const HoverableDiv = styled(Box)`
   &:focus {
     transform: translateY(-4px) rotate(0deg) !important;
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-    outline: 2px solid ${colors.primary};
-    outline-offset: 2px;
   }
 `;
 
@@ -70,7 +68,7 @@ const StickyNote: React.FC<Props> = ({
       flexDirection="column"
       gap="8px"
       border="none"
-      textAlign="left"
+      style={{ textAlign: 'left' }}
       onClick={onClick}
       onKeyDown={handleKeyDown}
       aria-label={title}

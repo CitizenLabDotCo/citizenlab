@@ -7,11 +7,12 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import GoBackButton from 'components/UI/GoBackButton';
 
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
 import IdeasFeedPageMeta from './IdeasFeedPageMeta';
 import StickyNotesPile from './StickyNotes';
 import TopicsSidebar from './TopicsSidebar';
-import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 const IdeasFeedPage = () => {
   const { slug } = useParams() as { slug: string };

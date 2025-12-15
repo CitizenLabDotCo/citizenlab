@@ -48,9 +48,3 @@ export const getTopicProgressBarColor = (topicId: string): string => {
   const index = getTopicColorIndex(topicId);
   return TOPIC_COLOR_PALETTE[index].progressBar;
 };
-
-// Function to get both colors for a topic ID
-export const getTopicColors = (topicId: string): TopicColorPair => {
-  const index = getTopicColorIndex(topicId);
-  return TOPIC_COLOR_PALETTE[index];
-};

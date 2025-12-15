@@ -1,15 +1,16 @@
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
+
+import useIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
 
 import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { getTopicColor } from '../topicsColor';
 
 import StickyNote from './StickyNote';
-import useIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
-import { useSearchParams } from 'react-router-dom';
 
 const PileContainer = styled(Box)<{ $isFeedView: boolean }>`
   position: relative;
@@ -126,7 +127,6 @@ const StickyNotesPile: React.FC<Props> = ({ maxNotes = 10, phaseId }) => {
 
   // Extract topic IDs for each idea
   const ideaTopics = useMemo(() => {
-    if (!ideas) return new Map<string, string[]>();
     const map = new Map<string, string[]>();
     flatIdeas.forEach((idea) => {
       const topicIds =
@@ -134,7 +134,7 @@ const StickyNotesPile: React.FC<Props> = ({ maxNotes = 10, phaseId }) => {
       map.set(idea.id, topicIds);
     });
     return map;
-  }, [ideas]);
+  }, [flatIdeas]);
 
   // Handle note click to switch to feed view
   const handleNoteClick = (index: number) => {
