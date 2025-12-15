@@ -8,6 +8,7 @@ class ConfirmationCodesService
     return false if user.nil?
     return false if user.email.blank?
     return false if user.password_digest?
+    return false if user.new_email.present?
     return false if user.email_confirmation_code_reset_count >= MAX_RETRIES - 1
 
     true
