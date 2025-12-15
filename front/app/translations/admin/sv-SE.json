@@ -723,7 +723,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.goals": "Mål",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.imageInclusionLabel": "Bild för instrumentpanel för representativitet",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Indikatorer för inkludering på högsta nivå",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "I följande avsnitt beskrivs indikatorer för inkludering som belyser våra framsteg mot att skapa en mer inkluderande och representativ plattform för deltagande.",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription2": "I följande avsnitt beskrivs indikatorer för inkludering som belyser era framsteg mot att skapa en mer inkluderande och representativ plattform för deltagande.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart2": "Inmatningsstatus sedan starten",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusSince": "Inmatningsstatus sedan {date}",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization": "Intern organisation",
