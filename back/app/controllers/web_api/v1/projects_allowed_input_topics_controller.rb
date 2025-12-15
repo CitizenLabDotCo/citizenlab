@@ -10,7 +10,7 @@ class WebApi::V1::ProjectsAllowedInputTopicsController < ApplicationController
 
     @projects_allowed_input_topics = paginate @projects_allowed_input_topics.order(:ordering)
 
-    render json: linked_json(@projects_allowed_input_topics, WebApi::V1::ProjectsAllowedInputTopicSerializer, params: jsonapi_serializer_params)
+    render json: linked_json(@projects_allowed_input_topics, WebApi::V1::ProjectsAllowedInputTopicSerializer, params: jsonapi_serializer_params, include: [:topic])
   end
 
   def show
