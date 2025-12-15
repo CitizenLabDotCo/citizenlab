@@ -658,7 +658,7 @@ describe ProjectsFinderAdminService do
           current_user: admin_user
         )
 
-        expect(result.pluck(:id)).to match_array [project2.id, project3.id]
+        expect(result.pluck(:id)).to contain_exactly(project2.id, project3.id)
       end
 
       it 'returns all projects when excluded_project_ids is empty' do
@@ -668,7 +668,7 @@ describe ProjectsFinderAdminService do
           current_user: admin_user
         )
 
-        expect(result.pluck(:id)).to match_array [project1.id, project2.id, project3.id]
+        expect(result.pluck(:id)).to contain_exactly(project1.id, project2.id, project3.id)
       end
     end
 
@@ -685,7 +685,7 @@ describe ProjectsFinderAdminService do
           current_user: admin_user
         )
 
-        expect(result.pluck(:id)).to match_array [project_outside_folder.id]
+        expect(result.pluck(:id)).to contain_exactly(project_outside_folder.id)
       end
 
       it 'returns all projects when excluded_folder_ids is empty' do
@@ -695,7 +695,7 @@ describe ProjectsFinderAdminService do
           current_user: admin_user
         )
 
-        expect(result.pluck(:id)).to match_array [project_in_folder.id, project_outside_folder.id]
+        expect(result.pluck(:id)).to contain_exactly(project_in_folder.id, project_outside_folder.id)
       end
     end
   end
