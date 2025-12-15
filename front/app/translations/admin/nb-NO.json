@@ -713,7 +713,6 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "Fellesskapet",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "Sammendrag",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Indikatorer for inkludering på toppnivå",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "I det følgende beskrives indikatorer for inkludering, som viser hvor langt vi har kommet i arbeidet med å skape en mer inkluderende og representativ plattform for deltakelse.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participants": "deltakere",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participationIndicators": "Indikatorer for deltakelse på toppnivå",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participationIndicatorsDescription": "I det følgende avsnittet skisseres de viktigste indikatorene for deltakelse i det valgte tidsrommet, noe som gir en oversikt over engasjementstrender og resultatmålinger.",

@@ -713,7 +713,6 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "Yhteisö",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "Tiivistelmä",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Huipputason osallistamisindikaattorit",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "Seuraavassa osiossa hahmotellaan osallistamisindikaattoreita ja korostetaan edistymistäsi osallistavamman ja edustavamman osallistumisalustan edistämisessä.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participants": "osallistujia",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participationIndicators": "Huipputason osallistumisindikaattorit",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participationIndicatorsDescription": "Seuraavassa osiossa hahmotellaan tärkeimmät osallistumisindikaattorit valitulla aikajaksolla, ja se tarjoaa yleiskatsauksen sitoutumistrendeistä ja suorituskykymittareista.",
