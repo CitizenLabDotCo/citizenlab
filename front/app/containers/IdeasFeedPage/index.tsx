@@ -10,26 +10,28 @@ import GoBackButton from 'components/UI/GoBackButton';
 import IdeasFeedPageMeta from './IdeasFeedPageMeta';
 import StickyNotesPile from './StickyNotes';
 import TopicsSidebar from './TopicsSidebar';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 const IdeasFeedPage = () => {
   const { slug } = useParams() as { slug: string };
   const { data: project } = useProjectBySlug(slug);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const selectedTopicId = searchParams.get('topic');
-  const isMobile = useBreakpoint('phone');
-
-  const params = { projects: project ? [project.data.id] : [] };
-  const queryParameters = selectedTopicId
-    ? { ...params, topics: [selectedTopicId] }
-    : { ...params };
+  const phaseId = searchParams.get('phase_id');
+  const isMobileOrSmaller = useBreakpoint('phone');
 
   const setSelectedTopicId = (topicId: string | null) => {
     if (topicId) {
-      setSearchParams({ topic: topicId });
+      updateSearchParams({ topic: topicId });
     } else {
-      setSearchParams({});
+      removeSearchParams(['topic']);
     }
   };
+
+  if (!phaseId) {
+    return null;
+  }
 
   return (
     <main id="e2e-project-ideas-page">
@@ -44,7 +46,7 @@ const IdeasFeedPage = () => {
         zIndex="1010"
         overflow="hidden"
       >
-        {isMobile && (
+        {isMobileOrSmaller && (
           <Box position="absolute" top="16px" left="16px" zIndex="1">
             <GoBackButton
               linkTo={selectedTopicId ? undefined : `/projects/${slug}`}
@@ -68,7 +70,7 @@ const IdeasFeedPage = () => {
             onTopicSelect={setSelectedTopicId}
           />
           <Box flex="4">
-            <StickyNotesPile queryParameters={queryParameters} maxNotes={20} />
+            <StickyNotesPile phaseId={phaseId} maxNotes={20} />
           </Box>
         </Box>
       </Box>

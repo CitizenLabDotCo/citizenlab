@@ -3,15 +3,13 @@ import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { IIdeaQueryParameters } from 'api/ideas/types';
-import useIdeas from 'api/ideas/useIdeas';
-import useTopics from 'api/topics/useTopics';
-
 import CloseIconButton from 'components/UI/CloseIconButton';
 
-import { createTopicColorMap, getTopicColor } from '../topicsColor';
+import { getTopicColor } from '../topicsColor';
 
 import StickyNote from './StickyNote';
+import useIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
+import { useSearchParams } from 'react-router-dom';
 
 const PileContainer = styled(Box)<{ $isFeedView: boolean }>`
   position: relative;
@@ -104,38 +102,33 @@ const NoteWrapper = styled(Box)<{
 `;
 
 interface Props {
-  queryParameters: IIdeaQueryParameters;
+  phaseId: string;
   maxNotes?: number;
 }
 
-const StickyNotesPile: React.FC<Props> = ({
-  queryParameters,
-  maxNotes = 10,
-}) => {
+const StickyNotesPile: React.FC<Props> = ({ maxNotes = 10, phaseId }) => {
   const [isFeedView, setIsFeedView] = useState(false);
   const [clickedIndex, setClickedIndex] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const noteRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  const { data: ideas, isLoading: ideasLoading } = useIdeas({
-    ...queryParameters,
+  const [searchParams] = useSearchParams();
+  const topicId = searchParams.get('topic');
+  const { data: ideas, isLoading: ideasLoading } = useIdeaFeedIdeas({
+    phaseId,
+    topic: topicId || undefined,
     'page[size]': maxNotes,
   });
 
-  const { data: topics, isLoading: topicsLoading } = useTopics();
-
-  // Create a color map for all topics
-  const topicColorMap = useMemo(() => {
-    if (!topics) return new Map();
-    const topicIds = topics.data.map((topic) => topic.id);
-    return createTopicColorMap(topicIds);
-  }, [topics]);
+  const flatIdeas = useMemo(() => {
+    if (!ideas) return [];
+    return ideas.data;
+  }, [ideas]);
 
   // Extract topic IDs for each idea
   const ideaTopics = useMemo(() => {
     if (!ideas) return new Map<string, string[]>();
     const map = new Map<string, string[]>();
-    ideas.data.forEach((idea) => {
+    flatIdeas.forEach((idea) => {
       const topicIds =
         idea.relationships.topics?.data.map((topic) => topic.id) || [];
       map.set(idea.id, topicIds);
@@ -168,7 +161,7 @@ const StickyNotesPile: React.FC<Props> = ({
     }
   }, [isFeedView, clickedIndex]);
 
-  if (ideasLoading || topicsLoading) {
+  if (ideasLoading) {
     return (
       <Box display="flex" justifyContent="center" p="40px">
         <Spinner />
@@ -176,7 +169,7 @@ const StickyNotesPile: React.FC<Props> = ({
     );
   }
 
-  if (!ideas || ideas.data.length === 0) {
+  if (!ideas || flatIdeas.length === 0) {
     return null;
   }
 
@@ -184,13 +177,13 @@ const StickyNotesPile: React.FC<Props> = ({
     -8, 5, -3, 7, -5, 2, -6, 4, -2, 6, -4, 3, -7, 8, -1, 5, -9, 4, -3, 7, -5, 2,
     -4, 6, -2,
   ];
-  const totalNotes = Math.min(ideas.data.length, maxNotes);
+  const totalNotes = Math.min(flatIdeas.length, maxNotes);
 
   return (
     <>
       {isFeedView && <CloseIconButton onClick={handleCloseFeed} />}
       <PileContainer ref={containerRef} $isFeedView={isFeedView}>
-        {ideas.data.slice(0, maxNotes).map((idea, index) => {
+        {flatIdeas.slice(0, maxNotes).map((idea, index) => {
           const topicIds = ideaTopics.get(idea.id) || [];
           const topicBackgroundColor = getTopicColor(topicIds[0]);
 
