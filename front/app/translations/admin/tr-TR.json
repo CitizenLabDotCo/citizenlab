@@ -723,7 +723,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.goals": "Hedefler",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.imageInclusionLabel": "Temsili gösterge tablosu için resim",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Üst düzey kapsayıcılık göstergeleri",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "Aşağıdaki bölüm, daha kapsayıcı ve temsili bir katılım platformunu teşvik etmeye yönelik ilerlememizi vurgulayan kapsayıcılık göstergelerini özetlemektedir.",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription2": "Aşağıdaki bölüm, daha kapsayıcı ve temsili bir katılım platformunu teşvik etmeye yönelik ilerlemenizi vurgulayan kapsayıcılık göstergelerini özetlemektedir.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart2": "Başlangıçtan bu yana giriş durumu",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusSince": "{date}adresinden beri giriş durumu",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization": "İç organizasyon",
