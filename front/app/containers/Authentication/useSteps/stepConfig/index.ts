@@ -44,7 +44,8 @@ export const getStepConfig = (
       getRequirements,
       setCurrentStep,
       updateState,
-      state
+      state,
+      userConfirmationEnabled
     ),
 
     ...sharedSteps(

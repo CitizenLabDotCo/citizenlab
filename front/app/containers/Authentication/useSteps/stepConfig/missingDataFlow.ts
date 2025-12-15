@@ -1,5 +1,6 @@
 import { confirmEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
 import { requestEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import { updateEmailUnconfirmed } from 'api/authentication/updateEmailUnconfirmed';
 import { OnboardingType } from 'api/users/types';
 import {
   updateUser,
@@ -27,7 +28,8 @@ export const missingDataFlow = (
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   updateState: UpdateState,
-  state: State
+  state: State,
+  userConfirmationEnabled: boolean
 ) => {
   return {
     'missing-data:email-confirmation': {
@@ -70,7 +72,14 @@ export const missingDataFlow = (
         userId: string,
         { email, ...restBuiltInFieldUpdate }: BuiltInFieldsUpdate
       ) => {
-        await requestEmailConfirmationCodeChangeEmail(email);
+        if (email) {
+          if (userConfirmationEnabled) {
+            await requestEmailConfirmationCodeChangeEmail(email);
+          } else {
+            await updateEmailUnconfirmed(email);
+          }
+        }
+
         await updateUser({ userId, ...restBuiltInFieldUpdate });
 
         invalidateCacheAfterUpdateUser(queryClient);
