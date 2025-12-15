@@ -68,9 +68,11 @@ export const missingDataFlow = (
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (
         userId: string,
-        builtInFieldUpdate: BuiltInFieldsUpdate
+        { email, ...restBuiltInFieldUpdate }: BuiltInFieldsUpdate
       ) => {
-        await updateUser({ userId, ...builtInFieldUpdate });
+        await requestEmailConfirmationCodeChangeEmail(email);
+        await updateUser({ userId, ...restBuiltInFieldUpdate });
+
         invalidateCacheAfterUpdateUser(queryClient);
 
         const { requirements } = await getRequirements();
@@ -84,11 +86,8 @@ export const missingDataFlow = (
         );
 
         if (missingDataStep) {
-          if (
-            missingDataStep === 'missing-data:email-confirmation' &&
-            builtInFieldUpdate.email
-          ) {
-            updateState({ email: builtInFieldUpdate.email });
+          if (missingDataStep === 'missing-data:email-confirmation' && email) {
+            updateState({ email });
           }
 
           setCurrentStep(missingDataStep);
