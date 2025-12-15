@@ -300,7 +300,7 @@ describe 'Rack::Attack' do
       10.times do
         post('/web_api/v1/user/request_code_unauthenticated', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
       end
-      expect(status).to eq(200) # ok
+      expect(status).to eq(401) # Unauthorized
 
       post('/web_api/v1/user/request_code_unauthenticated', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
       expect(status).to eq(429) # Too many requests
@@ -308,7 +308,7 @@ describe 'Rack::Attack' do
 
     travel_to(5.minutes.from_now) do
       post('/web_api/v1/user/request_code_unauthenticated', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
-      expect(status).to eq(200) # ok
+      expect(status).to eq(401) # Unauthorized
     end
   end
 

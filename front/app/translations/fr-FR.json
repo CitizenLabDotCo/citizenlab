@@ -50,10 +50,6 @@
   "app.components.AuthProviders.continueWithLoginMechanism": "Continuer avec {loginMechanismName}",
   "app.components.AuthProviders.continueWithNemlogIn": "Continuer avec MitID",
   "app.components.AuthProviders.franceConnectMergingFailed": "Un compte d’utilisateur avec cette adresse mail existe déjà.{br}{br}Vous ne pouvez pas accéder à la plateforme en utilisant FranceConnect, puisque les informations personnelles ne correspondent pas au compte. Pour vous identifier en utilisant FranceConnect, il faudrait d’abord changer le nom et prénom sur la plateforme pour qu’ils correspondent aux informations officielles.{br}{br}Vous pouvez vous connectez en suivant le champ ci-dessous.",
-<<<<<<< HEAD
-  "app.components.AuthProviders.nemlogInUnderMinimumAgeVerificationFailed": "Vous devez avoir l'âge minimum spécifié ou plus pour être vérifié.",
-  "app.components.AuthProviders.signUpButtonAltText": "Inscrivez-vous avec {loginMechanismName}",
-=======
   "app.components.AuthProviders.goToLogIn": "Vous avez déjà un compte ? {goToOtherFlowLink}",
   "app.components.AuthProviders.goToSignUp": "Vous n'avez pas de compte ? {goToOtherFlowLink}",
   "app.components.AuthProviders.livesOutsideAreaAuthFailed": "Connexion impossible : votre adresse ne se trouve pas dans la zone éligible.",
@@ -69,7 +65,6 @@
   "app.components.AuthProviders.signUpButtonAltText": "Inscrivez-vous avec {loginMechanismName}",
   "app.components.AuthProviders.signUpWithEmail": "Inscrivez-vous avec votre e-mail",
   "app.components.AuthProviders.underMinimumAgeAuthFailed": "Connexion impossible : vous n’avez pas l’âge minimum requis pour participer.",
->>>>>>> master
   "app.components.AuthProviders.verificationRequired": "Vérification requise",
   "app.components.Author.a11yPostedBy": "Publié par",
   "app.components.AvatarBubbles.numberOfParticipants1": "{numberOfParticipants, plural, one {1 participant} other {{numberOfParticipants} participants}}",
