@@ -2337,7 +2337,7 @@
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsOnceYouAreDone": "Når du er ferdig, klikker du på \"Send\" for å avgi din stemme.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsPreferredOptions2": "Velg de alternativene du foretrekker ved å trykke på \"Select\".",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalCredits2": "Du har totalt <b>{totalVotes, plural, one {# credit} other {# credits}} å fordele mellom {optionCount, plural, one {# option} other {# options}}. </b>",
-  "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalPoints2": "You have a total of <b>{totalVotes, plural, one {# point} other {# points}} to distribute between {optionCount, plural, one {# option} other {# options}}</b>.",
+  "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalPoints2": "Du har totalt <b>{totalVotes, plural, one {# poeng} other {# poeng}} å fordele mellom {optionCount, plural, one {# alternativ} other {# alternativer}}</b>.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalTokens2": "Du har totalt <b>{totalVotes, plural, one {# token} other {# tokens}} å fordele mellom {optionCount, plural, one {# option} other {# options}}. </b>",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalVotes3": "Du har totalt <b>{totalVotes, plural, one {# vote} other {# votes}} å fordele mellom {optionCount, plural, one {# option} other {# options}}. </b>",
   "app.utils.votingMethodUtils.finalResults": "Endelig resultat",
