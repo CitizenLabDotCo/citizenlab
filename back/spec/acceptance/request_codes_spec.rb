@@ -75,7 +75,8 @@ resource 'Request codes' do
     end
 
     example 'It does not work if user reached email_confirmation_code_reset_count' do
-      user = create(:user, email_confirmation_code_reset_count: 4)
+      user = create(:user)
+      user.update_column(:email_confirmation_code_reset_count, 4)
       header_token_for(user)
       do_request(request_code: { new_email: 'new_email@example.com' })
       expect(response_status).to eq 200
