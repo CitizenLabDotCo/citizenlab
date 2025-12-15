@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights',
     defaultMessage: 'Insights',
   },
-  generateReport: {
-    id: 'app.containers.Admin.projects.project.insights.generateReport',
-    defaultMessage: 'Generate report',
-  },
   download: {
     id: 'app.containers.Admin.projects.project.insights.download',
     defaultMessage: 'Download',

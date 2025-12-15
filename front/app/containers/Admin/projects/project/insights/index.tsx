@@ -125,15 +125,6 @@ const InsightsContent = () => {
           ) : (
             <Box display="flex" gap="8px" data-pdf-exclude="true">
               <Button
-                buttonStyle="secondary"
-                icon="edit"
-                onClick={() => {
-                  // TODO: Implement generate report
-                }}
-              >
-                <FormattedMessage {...messages.generateReport} />
-              </Button>
-              <Button
                 buttonStyle={supportsAiAnalysis ? 'secondary' : 'primary'}
                 icon="download"
                 onClick={downloadPdf}
