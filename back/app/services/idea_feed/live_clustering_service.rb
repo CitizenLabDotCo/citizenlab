@@ -5,6 +5,8 @@ module IdeaFeed
   # up to date with the latest ideas. It tries to strike a balance between
   # accuracy and stability of the clusters.
   class LiveClusteringService
+    RETRIES_INVALID_RESPONSE = 3
+
     def initialize(phase)
       @phase = phase
     end
@@ -23,12 +25,25 @@ module IdeaFeed
       prompt = classification_prompt(idea, topics)
       puts prompt
 
-      response = llm.chat(prompt)
-      puts response
+      selected_topics = RETRIES_INVALID_RESPONSE.times do |i|
+        response = llm.chat(prompt)
+        puts response
 
-      topic_ids = JSON.parse(response)
-      selected_topics = topic_ids.map { topics[it - 1] }
+        topic_ids = JSON.parse(response)
+        selected_topics = topic_ids.map { topics[it - 1] }
+
+        if selected_topics.all? { it.is_a?(Topic) }
+          break selected_topics
+        else
+          Rails.logger.warn("LLM response for idea classification contained invalid topic IDs. Attempt #{i + 1} Retrying...")
+        end
+      rescue JSON::ParserError
+        # Retry once if the response is not valid JSON
+        Rails.logger.warn("LLM response for idea classification was not valid JSON. Attempt #{i + 1} Retrying...")
+      end
+
       idea.update!(topics: selected_topics)
+
       selected_topics
     end
 
