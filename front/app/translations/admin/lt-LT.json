@@ -723,7 +723,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.goals": "Tikslai",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.imageInclusionLabel": "Reprezentatyvumo prietaisų skydelio vaizdas",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Aukščiausio lygio įtraukties rodikliai",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "Toliau pateikiame įtraukties rodiklius, kuriuose išryškinama mūsų pažanga, padaryta kuriant įtraukesnę ir reprezentatyvesnę dalyvavimo platformą.",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription2": "Toliau šiame skirsnyje pateikiami įtraukties rodikliai, kuriuose išryškinama jūsų pažanga skatinant įtraukesnę ir reprezentatyvesnę dalyvavimo platformą.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart2": "Įvesties būsena nuo pradžios",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusSince": "Įvesties būsena nuo {date}",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization": "Vidaus organizacija",
