@@ -1537,7 +1537,7 @@ resource 'Users' do
         end
       end
 
-      post 'web_api/v1/users/update_email_unconfirmed' do
+      patch 'web_api/v1/users/update_email_unconfirmed' do
         with_options scope: :user do
           parameter :email, required: true
         end

@@ -4,7 +4,7 @@ export const updateEmailUnconfirmed = async (email: string) => {
   try {
     await fetcher({
       path: '/user/update_email_unconfirmed',
-      action: 'post',
+      action: 'patch',
       body: {
         email,
       },
