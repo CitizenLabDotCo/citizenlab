@@ -1022,7 +1022,6 @@ resource 'Users' do
         with_options scope: 'user' do
           parameter :first_name, 'User full name'
           parameter :last_name, 'User full name'
-          parameter :email, 'E-mail address. Can only be changed directly when user confirmation is turned off.'
           parameter :password, 'Password'
           parameter :locale, 'Locale. Should be one of the tenants locales'
           parameter :avatar, 'Base64 encoded avatar image'
@@ -1087,25 +1086,6 @@ resource 'Users' do
                 do_request
                 assert_status 200
                 expect(AppConfiguration.instance.settings['core']['additional_admins_number']).to eq(0)
-              end
-            end
-
-            describe 'when confirmation is turned off' do
-              before { SettingsService.new.deactivate_feature! 'user_confirmation' }
-
-              example 'Email can be changed', document: false do
-                do_request(user: { email: 'changed@email.com' })
-                assert_status 200
-                expect(resident.reload.email).to eq 'changed@email.com'
-              end
-            end
-
-            describe 'when confirmation is turned on' do
-              before { SettingsService.new.activate_feature! 'user_confirmation' }
-
-              example 'Email cannot be changed', document: false do
-                do_request(user: { email: 'changed@email.com' })
-                expect(resident.reload.email).to eq 'original@email.com'
               end
             end
 
