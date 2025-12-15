@@ -723,7 +723,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.goals": "Målsettinger",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.imageInclusionLabel": "Bilde for dashbord for representativitet",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Indikatorer for inkludering på toppnivå",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "I det følgende beskrives indikatorer for inkludering, som viser hvor langt vi har kommet i arbeidet med å skape en mer inkluderende og representativ plattform for deltakelse.",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription2": "I det følgende beskrives inkluderingsindikatorer som viser hvor langt dere har kommet i arbeidet med å skape en mer inkluderende og representativ plattform for deltakelse.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart2": "Inngangsstatus siden starten",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusSince": "Inngangsstatus siden {date}",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization": "Intern organisering",
