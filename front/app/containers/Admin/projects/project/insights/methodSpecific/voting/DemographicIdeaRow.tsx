@@ -16,7 +16,7 @@ interface Props {
 }
 
 const DemographicIdeaRow = ({ idea, title, demographicKey }: Props) => {
-  const breakdown = idea.demographic_breakdown?.[demographicKey];
+  const breakdown = idea.series?.[demographicKey];
   const count = breakdown?.count ?? 0;
   const percentage = breakdown?.percentage ?? 0;
 
