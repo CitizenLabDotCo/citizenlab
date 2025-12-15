@@ -10,6 +10,11 @@ export interface VotingDemographicBreakdown {
   percentage: number;
 }
 
+export type BackendDemographicOption = Record<
+  string,
+  { id: string; title_multiloc: Record<string, string> } | number
+>;
+
 /**
  * Individual idea in voting phase votes results
  */
@@ -20,19 +25,30 @@ export interface VotingIdeaResult {
   online_votes: number;
   offline_votes: number;
   total_votes: number;
-  percentage: string; // Pre-calculated percentage as string (e.g., "17")
-  demographic_breakdown?: Record<string, VotingDemographicBreakdown>;
+  percentage: number | null;
+  series?: Record<string, VotingDemographicBreakdown>;
 }
 
 /**
  * Voting phase votes attributes
  */
 export interface VotingPhaseVotesAttributes {
+  online_votes: number;
+  offline_votes: number;
   total_votes: number;
   group_by?: string; // custom_field.key (e.g., 'gender')
   custom_field_id?: string;
-  options?: Record<string, DemographicOption>; // Demographic option labels
+  input_type?: string;
+  options?: BackendDemographicOption[];
   ideas: VotingIdeaResult[];
+}
+
+/**
+ * Transformed attributes with options as Record for frontend use
+ */
+export interface TransformedVotingPhaseVotesAttributes
+  extends Omit<VotingPhaseVotesAttributes, 'options'> {
+  options?: Record<string, DemographicOption>;
 }
 
 /**
@@ -49,6 +65,16 @@ export interface VotingPhaseVotesData {
  */
 export interface VotingPhaseVotes {
   data: VotingPhaseVotesData;
+}
+
+export interface TransformedVotingPhaseVotesData {
+  type: 'voting_phase_votes';
+  id: string;
+  attributes: TransformedVotingPhaseVotesAttributes;
+}
+
+export interface TransformedVotingPhaseVotes {
+  data: TransformedVotingPhaseVotesData;
 }
 
 /**
