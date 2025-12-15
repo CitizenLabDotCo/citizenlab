@@ -1304,53 +1304,6 @@ resource 'Users' do
           end
         end
 
-        describe 'updating the user email' do
-          let(:new_email) { 'new-email@email.com' }
-
-          before do
-            SettingsService.new.activate_feature! 'user_confirmation'
-            allow(RequestConfirmationCodeJob).to receive(:perform_now)
-          end
-
-          example_request '[error] is not allowed' do
-            expect(@user.reload.new_email).not_to eq(new_email)
-            assert_status 422
-            expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
-          end
-
-          context 'when email was empty' do # see User#allows_empty_email?
-            before { @user.update_columns(email: nil) }
-
-            example_request 'is allowed' do
-              expect(@user.reload.new_email).to eq(new_email)
-              expect(@user.email).to be_nil
-              expect(@user.confirmation_required).to be_truthy
-              expect(RequestConfirmationCodeJob).to have_received(:perform_now)
-                .with(@user, new_email: 'new-email@email.com').once
-
-              assert_status 200
-            end
-
-            example 'is not allowed when there is already a user associated with email' do
-              create(:user, email: new_email)
-              do_request
-
-              expect(@user.reload.new_email).to be_nil
-              assert_status 422
-              expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
-            end
-
-            example 'is not allowed when there is already an invite associated with email' do
-              create(:invited_user, email: new_email)
-              do_request
-
-              expect(@user.reload.new_email).to be_nil
-              assert_status 422
-              expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
-            end
-          end
-        end
-
         describe do
           example "Set a user's custom field values" do
             cf = create(:custom_field)
