@@ -328,12 +328,13 @@ const UserTableRow = ({
             actions={getActions()}
           />
         </Td>
-        <BlockUser
-          user={userInRow}
-          setClose={() => setShowBlockUserModal(false)}
-          open={showBlockUserModal}
-          returnFocusRef={moreActionsButtonRef}
-        />
+        {showBlockUserModal && (
+          <BlockUser
+            user={userInRow}
+            setClose={() => setShowBlockUserModal(false)}
+            returnFocusRef={moreActionsButtonRef}
+          />
+        )}
         {showUnblockUserModal && (
           <UnblockUser
             user={userInRow}

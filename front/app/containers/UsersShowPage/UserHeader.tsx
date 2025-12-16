@@ -179,11 +179,12 @@ const UserHeader = ({ userSlug }: Props) => {
         )}
         {isCurrentUserAdmin && (
           <>
-            <BlockUser
-              user={user.data}
-              setClose={() => setShowBlockUserModal(false)}
-              open={showBlockUserModal}
-            />
+            {showBlockUserModal && (
+              <BlockUser
+                user={user.data}
+                setClose={() => setShowBlockUserModal(false)}
+              />
+            )}
             {showUnblockUserModal && (
               <UnblockUser
                 user={user.data}
