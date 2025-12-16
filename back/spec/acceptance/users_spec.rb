@@ -1764,6 +1764,10 @@ resource 'Users' do
           When true, permanently deletes all participation data associated with the user
           instead of anonymizing it (default: false).
         DESC
+        parameter :ban_email, <<~DESC.squish, required: false
+          When true, bans the user's email address from future registrations (default: false).
+        DESC
+        parameter :ban_reason, 'Reason for banning the email (optional, only used when ban_email is true)', required: false
 
         before do
           @user.update!(roles: [{ type: 'admin' }])
@@ -1801,6 +1805,15 @@ resource 'Users' do
 
             # Comments are soft-deleted to preserve thread structure
             expect(Comment.find(comment.id).publication_status).to eq('deleted')
+          end
+        end
+
+        describe 'with ban_email parameter' do
+          example 'Delete a user and ban their email' do
+            do_request(ban_email: true, ban_reason: 'Spam account')
+
+            expect(response_status).to eq 200
+            expect(EmailBan.banned?(@subject_user.email)).to be true
           end
         end
       end

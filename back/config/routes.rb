@@ -163,6 +163,11 @@ Rails.application.routes.draw do
 
       resource :app_configuration, only: %i[show update]
 
+      # Constraint allows dots in email (prevents Rails treating top level domain as format)
+      resources :email_bans, only: %i[show destroy], param: :email, constraints: { email: %r{[^/]+} } do
+        get :count, on: :collection
+      end
+
       resources :static_pages do
         concerns :file_attachable, attachable_type: 'StaticPage'
         resources :files, defaults: { container_type: 'StaticPage' }, shallow: false

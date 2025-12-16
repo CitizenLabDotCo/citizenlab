@@ -328,24 +328,27 @@ const UserTableRow = ({
             actions={getActions()}
           />
         </Td>
-        <BlockUser
-          user={userInRow}
-          setClose={() => setShowBlockUserModal(false)}
-          open={showBlockUserModal}
-          returnFocusRef={moreActionsButtonRef}
-        />
-        <UnblockUser
-          user={userInRow}
-          setClose={() => setShowUnblockUserModal(false)}
-          open={showUnblockUserModal}
-          returnFocusRef={moreActionsButtonRef}
-        />
-        <DeleteUser
-          user={userInRow}
-          setClose={() => setShowDeleteUserModal(false)}
-          open={showDeleteUserModal}
-          returnFocusRef={moreActionsButtonRef}
-        />
+        {showBlockUserModal && (
+          <BlockUser
+            user={userInRow}
+            setClose={() => setShowBlockUserModal(false)}
+            returnFocusRef={moreActionsButtonRef}
+          />
+        )}
+        {showUnblockUserModal && (
+          <UnblockUser
+            user={userInRow}
+            setClose={() => setShowUnblockUserModal(false)}
+            returnFocusRef={moreActionsButtonRef}
+          />
+        )}
+        {showDeleteUserModal && (
+          <DeleteUser
+            user={userInRow}
+            setClose={() => setShowDeleteUserModal(false)}
+            returnFocusRef={moreActionsButtonRef}
+          />
+        )}
         <Suspense fallback={null}>
           <ChangeSeatModal
             userToChangeSeat={userInRow}
