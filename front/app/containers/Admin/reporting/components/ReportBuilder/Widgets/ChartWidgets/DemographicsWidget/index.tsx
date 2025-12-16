@@ -75,14 +75,12 @@ const DemographicsWidget = ({
 
   const chartElement = (
     <Box>
-      {/* R-Score (only shown when reference data is available) */}
       {rScore !== undefined && (
         <Box mb="8px">
           <RScore value={rScore} />
         </Box>
       )}
 
-      {/* Chart */}
       <ComparisonBarChart
         data={chartData}
         mapping={{
