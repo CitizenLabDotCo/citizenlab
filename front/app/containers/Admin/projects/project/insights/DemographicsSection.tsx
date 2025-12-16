@@ -1,6 +1,11 @@
 import React, { useMemo, useState } from 'react';
 
-import { Box, Text, colors, fontSizes } from 'component-library';
+import {
+  Box,
+  Text,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import styled, { css } from 'styled-components';
 
 import { transformDemographicsResponse } from 'api/phase_insights/transformDemographics';
@@ -55,7 +60,7 @@ const TabButton = styled.button<{ active: boolean }>`
 
     &:hover {
       color: ${colors.primary};
-      ${!active && `border-color: #ddd;`}
+      ${!active && `border-color: ${colors.divider};`}
     }
 
     ${active &&
@@ -87,8 +92,6 @@ const DemographicsSection = ({ phase }: Props) => {
     phaseId: phase?.id || '',
   });
 
-  // Transform backend data to frontend format
-  // Only show demographics for non-anonymous phases
   const blankLabel = formatMessage(messages.noAnswer);
   const demographicsData = useMemo(() => {
     if (userDataCollection === 'anonymous') return null;
@@ -106,7 +109,6 @@ const DemographicsSection = ({ phase }: Props) => {
   );
   const selectedField = fields[selectedFieldIndex];
 
-  // Show loading state
   if (isLoading) {
     return (
       <Box
@@ -128,7 +130,6 @@ const DemographicsSection = ({ phase }: Props) => {
     );
   }
 
-  // Show empty state if no fields
   if (fields.length === 0) {
     return (
       <Box
@@ -150,7 +151,6 @@ const DemographicsSection = ({ phase }: Props) => {
     );
   }
 
-  // PDF Export mode: wrap header + first field together, then each subsequent field separately
   if (isPdfExport) {
     return (
       <Box
@@ -162,7 +162,6 @@ const DemographicsSection = ({ phase }: Props) => {
         role="region"
         aria-label={formatMessage(messages.demographicsAndAudience)}
       >
-        {/* Header + first field wrapped together to stay on same page */}
         <PageBreakBox>
           <Box display="flex" flexDirection="column" gap="24px">
             <Box
@@ -178,7 +177,6 @@ const DemographicsSection = ({ phase }: Props) => {
           </Box>
         </PageBreakBox>
 
-        {/* Remaining fields each get their own PageBreakBox */}
         {fields.slice(1).map((field) => (
           <PageBreakBox key={field.field_id}>
             <DemographicFieldContent field={field} showExportMenu={false} />
@@ -188,7 +186,6 @@ const DemographicsSection = ({ phase }: Props) => {
     );
   }
 
-  // Normal view
   return (
     <Box
       background="white"
@@ -199,14 +196,12 @@ const DemographicsSection = ({ phase }: Props) => {
       role="region"
       aria-label={formatMessage(messages.demographicsAndAudience)}
     >
-      {/* Header */}
       <Box display="flex" alignItems="center" justifyContent="space-between">
         <Text fontSize="m" fontWeight="bold" m="0px">
           {formatMessage(messages.demographicsAndAudience)}
         </Text>
       </Box>
 
-      {/* Tabs */}
       <TabsContainer data-pdf-exclude="true">
         {fields.map((field, index) => (
           <TabButton
@@ -222,7 +217,6 @@ const DemographicsSection = ({ phase }: Props) => {
         ))}
       </TabsContainer>
 
-      {/* Selected field content */}
       <DemographicFieldContent field={selectedField} showExportMenu={true} />
     </Box>
   );

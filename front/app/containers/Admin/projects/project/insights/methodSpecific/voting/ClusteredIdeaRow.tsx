@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
 import { DemographicOption } from 'api/phase_insights/types';
 import { VotingIdeaResult } from 'api/voting_insights/types';
@@ -75,7 +75,7 @@ const ClusteredIdeaRow = ({
             manualVotesPercentage={offlinePct}
             tooltip={formatMessage(messages.votesTooltip)}
             barColor={CHART_COLORS.darkBlue}
-            bgColor="#E0E0E0"
+            bgColor={colors.grey300}
             height="16px"
           />
         </Box>
@@ -115,7 +115,7 @@ const ClusteredIdeaRow = ({
                   <ProgressBarWrapper
                     votesPercentage={percentage}
                     barColor={CHART_COLORS.darkBlue}
-                    bgColor="#E0E0E0"
+                    bgColor={colors.grey300}
                     height="12px"
                   />
                 </Box>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Title, Button } from 'component-library';
+import { Box, Title, Button } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';

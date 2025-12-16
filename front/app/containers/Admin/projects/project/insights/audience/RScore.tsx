@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text } from 'component-library';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -38,7 +38,7 @@ const RScore: React.FC<RScoreProps> = ({ value }) => {
           fontSize="s"
           fontWeight="semi-bold"
           m="0px"
-          style={{ fontSize: '14px', color: '#bdbdbd' }}
+          style={{ fontSize: '14px', color: colors.grey500 }}
         >
           /100
         </Text>

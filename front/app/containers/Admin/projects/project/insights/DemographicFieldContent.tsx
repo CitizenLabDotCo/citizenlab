@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text } from 'component-library';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
 import { DemographicField } from 'api/phase_insights/types';
 
@@ -28,7 +28,6 @@ const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
 
   return (
     <Box mb="24px">
-      {/* Field name and download button */}
       <Box
         display="flex"
         justifyContent="space-between"
@@ -46,14 +45,12 @@ const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
         )}
       </Box>
 
-      {/* R.Score - only show when population data exists */}
       {hasPopulationData && field.r_score !== undefined && (
         <Box mb="8px">
           <RScore value={field.r_score} />
         </Box>
       )}
 
-      {/* Legend */}
       <Box display="flex" gap="24px" mb="12px">
         <Box display="flex" gap="8px" alignItems="center">
           <Box
@@ -73,7 +70,7 @@ const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
               width="8px"
               height="8px"
               borderRadius="50%"
-              background="#40b8c5"
+              background={colors.teal300}
               aria-hidden="true"
             />
             <Text fontSize="s" color="coolGrey700" m="0px">
@@ -83,7 +80,6 @@ const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
         )}
       </Box>
 
-      {/* Chart */}
       <ComparisonBarChart
         data={toChartData(field)}
         mapping={{
@@ -93,7 +89,7 @@ const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
         }}
         showComparison={hasPopulationData}
         primaryColor="#2f478a"
-        comparisonColor="#40b8c5"
+        comparisonColor={colors.teal300}
       />
     </Box>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
 import { VotingIdeaResult } from 'api/voting_insights/types';
 
@@ -56,7 +56,7 @@ const SimpleVotingRow = ({ idea, title, tooltip }: Props) => {
           manualVotesPercentage={offlinePct}
           tooltip={tooltip}
           barColor={CHART_COLORS.darkBlue}
-          bgColor="#E0E0E0"
+          bgColor={colors.grey300}
           height="16px"
         />
       </Box>

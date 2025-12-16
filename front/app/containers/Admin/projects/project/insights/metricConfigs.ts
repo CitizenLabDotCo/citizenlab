@@ -25,6 +25,23 @@ export interface MetricConfig<T = unknown> {
   ) => string | undefined;
 }
 
+// Shared config for native_survey and survey (identical metrics)
+const surveyMetricConfig = [
+  {
+    key: 'submissions',
+    message: messages.submissions,
+    getValue: (d: SurveyMetrics) => d.submitted_surveys,
+    getChange: (d: SurveyMetrics) => d.submitted_surveys_7_day_change,
+  },
+  {
+    key: 'completionRate',
+    message: messages.completionRate,
+    // Backend returns decimal (0.78), multiply by 100 for percentage display
+    getValue: (d: SurveyMetrics) => `${(d.completion_rate * 100).toFixed(1)}%`,
+    getChange: (d: SurveyMetrics) => d.completion_rate_7_day_change,
+  },
+] satisfies MetricConfig<SurveyMetrics>[];
+
 export const METRIC_CONFIGS = {
   ideation: [
     {
@@ -68,38 +85,8 @@ export const METRIC_CONFIGS = {
   ] satisfies MetricConfig<ProposalsMetrics>[],
   voting: [] satisfies MetricConfig<VotingMetrics>[],
   budgeting: [] satisfies MetricConfig<BudgetingMetrics>[],
-  native_survey: [
-    {
-      key: 'submissions',
-      message: messages.submissions,
-      getValue: (d: SurveyMetrics) => d.submitted_surveys,
-      getChange: (d: SurveyMetrics) => d.submitted_surveys_7_day_change,
-    },
-    {
-      key: 'completionRate',
-      message: messages.completionRate,
-      // Backend returns decimal (0.78), multiply by 100 for percentage display
-      getValue: (d: SurveyMetrics) =>
-        `${(d.completion_rate * 100).toFixed(1)}%`,
-      getChange: (d: SurveyMetrics) => d.completion_rate_7_day_change,
-    },
-  ] satisfies MetricConfig<SurveyMetrics>[],
-  survey: [
-    {
-      key: 'submissions',
-      message: messages.submissions,
-      getValue: (d: SurveyMetrics) => d.submitted_surveys,
-      getChange: (d: SurveyMetrics) => d.submitted_surveys_7_day_change,
-    },
-    {
-      key: 'completionRate',
-      message: messages.completionRate,
-      // Backend returns decimal (0.78), multiply by 100 for percentage display
-      getValue: (d: SurveyMetrics) =>
-        `${(d.completion_rate * 100).toFixed(1)}%`,
-      getChange: (d: SurveyMetrics) => d.completion_rate_7_day_change,
-    },
-  ] satisfies MetricConfig<SurveyMetrics>[],
+  native_survey: surveyMetricConfig,
+  survey: surveyMetricConfig,
   poll: [
     {
       key: 'responses',

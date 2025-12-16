@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
 export interface HorizontalBarRowData {
   id: string;
@@ -46,7 +46,12 @@ const HorizontalBarRow = ({
           )}
         </Text>
       </Box>
-      <Box bgColor="#F3F4F6" borderRadius="9999px" h="12px" overflow="hidden">
+      <Box
+        bgColor={colors.grey100}
+        borderRadius="9999px"
+        h="12px"
+        overflow="hidden"
+      >
         <Box
           h="100%"
           borderRadius="9999px"

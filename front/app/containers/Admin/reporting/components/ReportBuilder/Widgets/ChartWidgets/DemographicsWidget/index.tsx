@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { Box, Title } from '@citizenlab/cl2-component-library';
+import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 
 import { useDemographics } from 'api/graph_data_units';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
@@ -93,7 +93,7 @@ const DemographicsWidget = ({
         }}
         showComparison={hasComparisonData}
         primaryColor="#2f478a"
-        comparisonColor="#40b8c5"
+        comparisonColor={colors.teal300}
         barHeight={16}
       />
     </Box>

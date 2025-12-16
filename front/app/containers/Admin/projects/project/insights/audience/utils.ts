@@ -1,16 +1,8 @@
 import { DemographicField } from 'api/phase_insights/types';
 
-import { XlsxData } from 'components/admin/ReportExportMenu';
+import { DemographicChartRow } from 'containers/Admin/reporting/components/ReportBuilder/Widgets/ChartWidgets/DemographicsWidget/utils';
 
-/**
- * Chart row format for ComparisonBarChart
- */
-export interface DemographicChartRow {
-  category: string;
-  participants: number;
-  population?: number;
-  count: number;
-}
+import { XlsxData } from 'components/admin/ReportExportMenu';
 
 /**
  * Convert DemographicField data to chart row format

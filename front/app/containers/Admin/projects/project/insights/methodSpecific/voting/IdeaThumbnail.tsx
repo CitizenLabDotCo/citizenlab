@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Image } from '@citizenlab/cl2-component-library';
+import { Box, Image, colors } from '@citizenlab/cl2-component-library';
 
 interface Props {
   imageUrl?: string;
@@ -21,7 +21,7 @@ const IdeaThumbnail = ({ imageUrl, alt }: Props) => {
     );
   }
 
-  return <Box w="48px" h="48px" borderRadius="4px" bgColor="#E5E7EB" />;
+  return <Box w="48px" h="48px" borderRadius="4px" bgColor={colors.grey200} />;
 };
 
 export default IdeaThumbnail;
