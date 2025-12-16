@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -10,7 +10,7 @@ interface RScoreProps {
   value: number;
 }
 
-const RScore: React.FC<RScoreProps> = ({ value }) => {
+const RScore = ({ value }: RScoreProps) => {
   const { formatMessage } = useIntl();
 
   return (
@@ -34,12 +34,7 @@ const RScore: React.FC<RScoreProps> = ({ value }) => {
         >
           {value}
         </Text>
-        <Text
-          fontSize="s"
-          fontWeight="semi-bold"
-          m="0px"
-          style={{ fontSize: '14px', color: colors.grey500 }}
-        >
+        <Text fontSize="s" fontWeight="semi-bold" m="0px" color="grey500">
           /100
         </Text>
       </Box>
