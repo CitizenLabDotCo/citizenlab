@@ -99,7 +99,7 @@ const ComparisonBarChart = <Row,>({
                 <Text fontSize="s" color="coolGrey700" m="0px">
                   {payload.primaryValue}%
                 </Text>
-                {showComparison && payload.comparisonValue !== undefined && (
+                {showComparison && payload.comparisonValue && (
                   <Text fontSize="s" color="coolGrey700" m="0px">
                     {payload.comparisonValue}%
                   </Text>
@@ -117,7 +117,7 @@ const ComparisonBarChart = <Row,>({
                     isFullHeight={!showComparison}
                   />
                 </BarRow>
-                {showComparison && payload.comparisonValue !== undefined && (
+                {showComparison && payload.comparisonValue && (
                   <BarRow>
                     <BarFill
                       percentage={payload.comparisonValue}
