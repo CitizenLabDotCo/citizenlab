@@ -81,9 +81,6 @@ export interface VolunteeringMetrics {
   volunteerings_7_day_change?: SevenDayChange;
 }
 
-/**
- * Participation metrics attributes (nested in JSONAPI response)
- */
 export interface PhaseInsightsParticipationMetrics {
   visitors: number;
   visitors_7_day_change?: SevenDayChange;
