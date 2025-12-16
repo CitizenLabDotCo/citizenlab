@@ -1163,6 +1163,7 @@
   "app.containers.AreaTerms.areaTerm": "area",
   "app.containers.AreaTerms.areasTerm": "areas",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "An account with this email already exists. You can sign out, log in with this email address and verify your account on the settings page.",
+  "app.containers.Authentication.stayInTouch": "Stay in touch",
   "app.containers.Authentication.steps.AccessDenied.close": "Close",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "You do not meet the requirements to participate in this process.",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Please enter a token",
