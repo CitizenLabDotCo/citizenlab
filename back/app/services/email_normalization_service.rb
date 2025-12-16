@@ -12,10 +12,6 @@ class EmailNormalizationService
   # Gmail ignores dots in local part
   GMAIL_DOMAINS = %w[gmail.com googlemail.com].freeze
 
-  def self.canonicalize(email)
-    email.strip.downcase
-  end
-
   # Be careful when changing this method. Removing a normalization rule could
   # potentially unban emails that were previously banned.
   def self.normalize(email)
