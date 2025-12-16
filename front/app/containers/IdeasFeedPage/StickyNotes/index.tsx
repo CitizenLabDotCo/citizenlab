@@ -100,31 +100,29 @@ const StickyNotesPile = ({ maxNotes = 20, phaseId }: Props) => {
   }
 
   return (
-    <>
-      <PileContainer>
-        {flatIdeas.slice(0, maxNotes).map((idea, index) => {
-          const topicIds = ideaTopics.get(idea.id) || [];
-          const topicBackgroundColor = getTopicColor(topicIds[0]);
+    <PileContainer>
+      {flatIdeas.slice(0, maxNotes).map((idea, index) => {
+        const topicIds = ideaTopics.get(idea.id) || [];
+        const topicBackgroundColor = getTopicColor(topicIds[0]);
 
-          return (
-            <NoteWrapper
-              key={idea.id}
-              zIndex={String(index)}
-              left={POSITIONS[index % POSITIONS.length].left}
-              top={POSITIONS[index % POSITIONS.length].top}
-            >
-              <StickyNote
-                ideaId={idea.id}
-                topicBackgroundColor={topicBackgroundColor}
-                onClick={() => {
-                  // TODO: open feed
-                }}
-              />
-            </NoteWrapper>
-          );
-        })}
-      </PileContainer>
-    </>
+        return (
+          <NoteWrapper
+            key={idea.id}
+            zIndex={String(index)}
+            left={POSITIONS[index % POSITIONS.length].left}
+            top={POSITIONS[index % POSITIONS.length].top}
+          >
+            <StickyNote
+              ideaId={idea.id}
+              topicBackgroundColor={topicBackgroundColor}
+              onClick={() => {
+                // TODO: open feed
+              }}
+            />
+          </NoteWrapper>
+        );
+      })}
+    </PileContainer>
   );
 };
 
