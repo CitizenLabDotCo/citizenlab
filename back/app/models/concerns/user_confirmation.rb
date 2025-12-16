@@ -5,7 +5,6 @@ module UserConfirmation
 
   included do
     with_options if: -> { user_confirmation_enabled? } do
-      before_validation :set_confirmation_required
       before_validation :confirm, if: ->(user) { user.invite_status_change&.last == 'accepted' }
     end
 
@@ -80,15 +79,6 @@ module UserConfirmation
   end
 
   private
-
-  def set_confirmation_required
-    return unless new_record? && email_changed?
-
-    return unless confirmation_required # to be able to create a confirmed user
-
-    confirmation_not_required = invite_status.present? || active?
-    self.confirmation_required = !confirmation_not_required
-  end
 
   def confirm_new_email
     return unless new_email
