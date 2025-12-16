@@ -10,25 +10,27 @@ module IdeaFeed
 
     def initialize(phase)
       @phase = phase
+      @llm = LLMSelector.new.llm_claz_for_use_case('idea_feed_live_topic_model').new
     end
 
     # `rebalance_topics!` is supposed to be called periodically (every day or
     # few days) to update the topics. It tries to keep the topics stable to some
     # extent, but also reshuffles them if needed.
     def rebalance_topics!
+      old_topics = @phase.project.allowed_input_topics
+
+      # Run the topic model from scratch on the current set of inputs
       new_topics = run_topic_model
 
-      Topic.transaction do
-        new_topics.each do |new_topic|
-          topic = Topic.create!(
-            title_multiloc: new_topic['title_multiloc'],
-            description_multiloc: new_topic['description_multiloc']
-          )
-          ProjectsAllowedInputTopic.create!(
-            project: @phase.project,
-            topic:
-          )
-        end
+      # Compare the new topics with the existing topics to find matches
+      if old_topics.any?
+        mapping = run_map_old_to_new_topics(old_topics, new_topics)
+
+        update_changed_topics!(mapping, old_topics, new_topics)
+        create_new_topics!(mapping, new_topics)
+        remove_obsolete_topics!(mapping, old_topics)
+      else
+        create_new_topics!({}, new_topics)
       end
     end
 
@@ -84,14 +86,19 @@ module IdeaFeed
     end
 
     def run_topic_model
-      llm = LLMSelector.new.llm_claz_for_use_case('idea_feed_live_topic_model').new
       inputs = @phase.ideas.published
 
       prompt = topic_model_prompt(inputs)
       # puts prompt
 
-      llm.chat(prompt, response_schema: topic_model_response_schema)
+      @llm.chat(prompt, response_schema: topic_model_response_schema)
       # puts response
+    end
+
+    def run_map_old_to_new_topics(old_topics, new_topics)
+      prompt = topic_mapping_prompt(old_topics, new_topics)
+      puts prompt
+      @llm.chat(prompt, response_schema: topic_mapping_response_schema(old_topics))
     end
 
     def topic_model_response_schema
@@ -137,6 +144,99 @@ module IdeaFeed
         project: @phase.project,
         custom_fields: custom_fields_without_topics(form),
         inputs_text: input_texts)
+    end
+
+    def topic_mapping_prompt(old_topics, new_topics)
+      ::Analysis::LLM::Prompt.new.fetch('idea_feed_live_topic_mapping',
+        multiloc_service: MultilocService.new,
+        project_description:,
+        project: @phase.project,
+        old_topics:,
+        new_topics:)
+    end
+
+    def topic_mapping_response_schema(old_topics)
+      locales = AppConfiguration.instance.settings('core', 'locales') || ['en']
+
+      {
+        type: 'object',
+        description: 'A mapping from old topic IDs to new topic IDs',
+        additionalProperties: false,
+        properties: old_topics.each_with_object({}).with_index do |(_old_topic, hash), i|
+          hash["OLD-#{i}"] = {
+            type: 'object',
+            additionalProperties: false,
+            properties: {
+              new_topic_id: { type: %w[string null], description: 'The ID of the corresponding new topic (e.g. NEW-5), or null if there is no match' },
+              adjusted_topic_title_multiloc: {
+                type: 'object',
+                description: "An adjusted title of the old topic, incorporating any new nuance from the new topic, if anything. Only make a change if it is really necessary. In languages #{locales.join(', ')}",
+                properties: locales.index_with { |locale| { type: 'string', description: "The title in #{locale}" } },
+                additionalProperties: false
+              },
+              adjusted_topic_description_multiloc: {
+                type: 'object',
+                description: "An adjusted description of the old topic, incorporating any new nuance from the new topic. Only make a change if it is really necessary. In languages #{locales.join(', ')}",
+                properties: locales.index_with { |locale| { type: 'string', description: "The title in #{locale}" } },
+                additionalProperties: false
+              }
+            },
+            required: %w[new_topic_id]
+          }
+        end
+      }
+    end
+
+    def update_changed_topics!(mapping, old_topics, new_topics)
+      mapping.each do |old_topic_id, v|
+        next if v['new_topic_id'].blank?
+
+        old_integer_id = old_topic_id.match(/^OLD-(\d+)$/)[1].to_i
+        new_integer_id = v['new_topic_id'].match(/^NEW-(\d+)$/)[1].to_i
+        old_topic = old_topics[old_integer_id]
+        new_topic = new_topics[new_integer_id]
+
+        new_title_multiloc = v['adjusted_topic_title_multiloc'] || new_topic['title_multiloc']
+        new_description_multiloc = v['adjusted_topic_description_multiloc'] || new_topic['description_multiloc']
+
+        if old_topic.title_multiloc != new_title_multiloc || old_topic.description_multiloc != new_description_multiloc
+          old_topic.update!(
+            title_multiloc: v['adjusted_topic_title_multiloc'] || new_topic['title_multiloc'],
+            description_multiloc: v['adjusted_topic_description_multiloc'] || new_topic['description_multiloc']
+          )
+        end
+      end
+    end
+
+    def create_new_topics!(mapping, new_topics)
+      new_topics
+        .filter { |new_topic| mapping.values.none? { |v| v['new_topic_id'] == "NEW-#{new_topics.index(new_topic)}" } }
+        .each do |new_topic|
+          Topic.transaction do
+            topic = Topic.create!(
+              title_multiloc: new_topic['title_multiloc'],
+              description_multiloc: new_topic['description_multiloc']
+            )
+            ProjectsAllowedInputTopic.create!(
+              project: @phase.project,
+              topic:
+            )
+          end
+        end
+    end
+
+    def remove_obsolete_topics!(mapping, old_topics)
+      obsolete_old_topic_ids = mapping
+        .filter { |_, v| v['new_topic_id'].blank? }
+        .keys
+      obsolete_old_topic_ids.each do |old_topic_id|
+        old_integer_id = old_topic_id.match(/^OLD-(\d+)$/)[1].to_i
+        old_topic = old_topics[old_integer_id]
+        Topic.transaction do
+          IdeasTopic.where(topic: old_topic, idea: @phase.project.ideas.published).destroy_all
+          ProjectsAllowedInputTopic.where(project: @phase.project, topic: old_topic).destroy_all
+        end
+      end
     end
 
     def project_description
