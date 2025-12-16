@@ -23,7 +23,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
     select_field = create(:custom_field_select, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => 'Select field' })
     create(:custom_field_option, custom_field: select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
     create(:custom_field_option, custom_field: select_field, key: 'no', title_multiloc: { 'en' => 'No' })
-    create(:custom_field_option, custom_field: select_field, other: true, title_multiloc: { 'en' => 'Other' })
+    create(:custom_field_option, custom_field: select_field, key: 'other', other: true, title_multiloc: { 'en' => 'Other' })
 
     multiselect_field = create(:custom_field_multiselect, resource: custom_form, key: 'multiselect_field', title_multiloc: { 'en' => 'Multi select field' })
     create(:custom_field_option, custom_field: multiselect_field, key: 'this', title_multiloc: { 'en' => 'This' })
@@ -190,6 +190,33 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       expect(idea_rows.count).to eq 1
       expect(idea_rows[0][:custom_field_values][:text_field]).to eq 'First text field'
       expect(idea_rows[0][:custom_field_values][:text_field2]).to eq 'Second text field'
+    end
+
+    it 'correctly converts multiple select fields with other options' do
+      another_select_field = create(:custom_field_multiselect, resource: custom_form, key: 'another_select_field', title_multiloc: { 'en' => 'Another select field' })
+      create(:custom_field_option, custom_field: another_select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
+      create(:custom_field_option, custom_field: another_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
+      create(:custom_field_option, custom_field: another_select_field, key: 'other', other: true, title_multiloc: { 'en' => 'Other' })
+
+      base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/import_select_other.xlsx').read
+      file = service.send(:upload_source_file, "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}")
+      parsed_rows = service.parse_rows(file)
+
+      expect(parsed_rows.pluck(:custom_field_values)).to eq(
+        [
+          {
+            select_field: 'other',
+            select_field_other: 'Answer one',
+            another_select_field: ['other'],
+            another_select_field_other: 'Answer two'
+          },
+          {
+            select_field: 'other',
+            another_select_field: ['other'],
+            another_select_field_other: 'Answer two'
+          }
+        ]
+      )
     end
 
     it 'correctly parses the rows of a real xlsx file and converts to idea_rows' do

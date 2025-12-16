@@ -556,7 +556,7 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
-    carrierwave (3.0.7)
+    carrierwave (3.1.2)
       activemodel (>= 6.0.0)
       activesupport (>= 6.0.0)
       addressable (~> 2.6)
@@ -1389,7 +1389,7 @@ DEPENDENCIES
   bunny (>= 2.7.2)
   byebug
   capybara (~> 3.40)
-  carrierwave (~> 3.0.7)
+  carrierwave (~> 3.1.2)
   carrierwave-base64 (~> 2.11)
   cloudfront-rails (~> 0.4)
   combine_pdf (~> 1.0.26)
