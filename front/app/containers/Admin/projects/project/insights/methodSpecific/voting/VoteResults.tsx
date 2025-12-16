@@ -92,7 +92,11 @@ const VoteResults = ({ phaseId }: Props) => {
 
   const { ideas, options } = data!.data.attributes;
 
-  const demographicKeys = getDemographicKeys(clusterBy || undefined, options);
+  const demographicKeys = getDemographicKeys(
+    clusterBy || undefined,
+    options,
+    ideas
+  );
 
   if (ideas.length === 0) {
     return (
