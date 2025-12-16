@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, ReactNode } from 'react';
 
 import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 
@@ -13,6 +13,28 @@ import { useIntl } from 'utils/cl-intl';
 
 import HorizontalBarRow, { HorizontalBarRowData } from './HorizontalBarRow';
 import messages from './messages';
+
+interface TopicCardProps {
+  children: ReactNode;
+  centered?: boolean;
+  flexColumn?: boolean;
+}
+
+const TopicCard = ({ children, centered, flexColumn }: TopicCardProps) => (
+  <Box
+    bgColor="white"
+    borderRadius="8px"
+    p="24px"
+    boxShadow="0px 1px 2px 0px rgba(0,0,0,0.05)"
+    h="400px"
+    display={centered || flexColumn ? 'flex' : undefined}
+    alignItems={centered ? 'center' : undefined}
+    justifyContent={centered ? 'center' : undefined}
+    flexDirection={flexColumn ? 'column' : undefined}
+  >
+    {children}
+  </Box>
+);
 
 interface Props {
   phaseId: string;
@@ -64,50 +86,27 @@ const InputsByTopic = ({ phaseId }: Props) => {
 
   if (isLoading) {
     return (
-      <Box
-        bgColor="white"
-        borderRadius="8px"
-        p="24px"
-        boxShadow="0px 1px 2px 0px rgba(0,0,0,0.05)"
-        h="400px"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
+      <TopicCard centered>
         <Spinner size="24px" />
-      </Box>
+      </TopicCard>
     );
   }
 
   if (topicData.length === 0) {
     return (
-      <Box
-        bgColor="white"
-        borderRadius="8px"
-        p="24px"
-        boxShadow="0px 1px 2px 0px rgba(0,0,0,0.05)"
-        h="400px"
-      >
+      <TopicCard>
         <Text m="0" mb="16px" fontWeight="semi-bold" fontSize="m">
           {formatMessage(messages.topicsAndThemes)}
         </Text>
         <Text m="0" color="textSecondary">
           {formatMessage(messages.noTopics)}
         </Text>
-      </Box>
+      </TopicCard>
     );
   }
 
   return (
-    <Box
-      bgColor="white"
-      borderRadius="8px"
-      p="24px"
-      boxShadow="0px 1px 2px 0px rgba(0,0,0,0.05)"
-      h="400px"
-      display="flex"
-      flexDirection="column"
-    >
+    <TopicCard flexColumn>
       <Box flexShrink={0}>
         <Text m="0" mb="16px" fontWeight="semi-bold" fontSize="m">
           {formatMessage(messages.topicsAndThemes)}
@@ -125,7 +124,7 @@ const InputsByTopic = ({ phaseId }: Props) => {
           ))}
         </Box>
       </Box>
-    </Box>
+    </TopicCard>
   );
 };
 
