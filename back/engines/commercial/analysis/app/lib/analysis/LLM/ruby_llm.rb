@@ -6,7 +6,11 @@ module Analysis
       def chat(prompt, **params)
         chat = chat_context.chat(model:, **chat_options)
 
-        response = chat.ask(prompt, **params)
+        if params[:response_schema]
+          chat = chat.with_schema(params[:response_schema])
+        end
+
+        response = chat.ask(prompt, **params.except(:response_schema))
         response.content
       end
 
