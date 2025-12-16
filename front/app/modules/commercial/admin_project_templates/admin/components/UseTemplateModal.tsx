@@ -1,6 +1,5 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 
-import { gql, useQuery, useMutation } from '@apollo/client';
 import {
   Input,
   Icon,
@@ -16,14 +15,10 @@ import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 import { SupportedLocale, Multiloc, IOption } from 'typings';
 
-import adminPublicationsKeys from 'api/admin_publications/keys';
-import meKeys from 'api/me/keys';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolders from 'api/project_folders/useProjectFolders';
-import projectsKeys from 'api/projects/keys';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import useLocalize from 'hooks/useLocalize';
 
 import T from 'components/T';
@@ -34,7 +29,6 @@ import Modal from 'components/UI/Modal';
 
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { queryClient } from 'utils/cl-react-query/queryClient';
 import Link from 'utils/cl-router/Link';
 import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import eventEmitter from 'utils/eventEmitter';
@@ -46,7 +40,8 @@ import {
 } from 'utils/permissions/rules/projectFolderPermissions';
 
 import tracks from '../../tracks';
-import { client } from '../../utils/apolloUtils';
+import useApplyProjectTemplate from '../api/useApplyProjectTemplate';
+import useTemplateTitle from '../api/useTemplateTitle';
 
 import messages from './messages';
 
@@ -115,13 +110,6 @@ export interface Props {
   close: () => void;
 }
 
-interface IVariables {
-  projectTemplateId: string | undefined;
-  titleMultiloc: Multiloc;
-  timelineStartAt: string;
-  folderId: string | null;
-}
-
 const noFolderOption = 'NO_FOLDER_OPTION';
 
 const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
@@ -138,56 +126,22 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
       projectTemplateId || get(params, 'projectTemplateId');
 
     const tenantLocales = useAppConfigurationLocales();
-    const graphqlTenantLocales = useGraphqlTenantLocales();
     const { data: projectFolders } = useProjectFolders({});
     const { data: authUser } = useAuthUser();
     const localize = useLocalize();
+
+    const { data } = useTemplateTitle(templateId);
+    const { mutateAsync: applyProjectTemplate } = useApplyProjectTemplate();
+
     const [titleMultiloc, setTitleMultiloc] = useState<Multiloc | null>(null);
     const [startDate, setStartDate] = useState<string | null>(null);
     const [folderId, setFolderId] = useState<string | null>(null);
     const [folderOptions, setFolderOptions] = useState<IOption[] | null>(null);
-    const [selectedLocale, setSelectedLocale] =
-      useState<SupportedLocale | null>(null);
     const [titleError, setTitleError] = useState<string | null>(null);
     const [startDateError, setStartDateError] = useState<string | null>(null);
     const [processing, setProcessing] = useState(false);
     const [success, setSuccess] = useState(false);
     const [responseError, setResponseError] = useState<any>(null);
-
-    const TEMPLATE_TITLE_QUERY = gql`
-    {
-      projectTemplate(id: "${projectTemplateId}"){
-        titleMultiloc {
-          ${graphqlTenantLocales}
-        }
-      }
-    }
-  `;
-
-    const APPLY_PROJECT_TEMPLATE = gql`
-      mutation ApplyProjectTemplate(
-        $projectTemplateId: ID!
-        $titleMultiloc: MultilocAttributes!
-        $timelineStartAt: String
-        $folderId: String
-      ) {
-        applyProjectTemplate(
-          projectTemplateId: $projectTemplateId
-          titleMultiloc: $titleMultiloc
-          timelineStartAt: $timelineStartAt
-          folderId: $folderId
-        ) {
-          errors
-        }
-      }
-    `;
-
-    const { data } = useQuery(TEMPLATE_TITLE_QUERY, { client });
-
-    const [applyProjectTemplate] = useMutation<any, IVariables>(
-      APPLY_PROJECT_TEMPLATE,
-      { client }
-    );
 
     const onCreateProject = useCallback(async () => {
       const invalidTitle =
@@ -234,23 +188,16 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
 
         try {
           await applyProjectTemplate({
-            variables: {
-              titleMultiloc: transform(
-                titleMultiloc,
-                (result: Multiloc, val, key: SupportedLocale) => {
-                  result[convertToGraphqlLocale(key)] = val;
-                }
-              ),
-              projectTemplateId: templateId,
-              timelineStartAt: startDate,
-              folderId: folderId !== noFolderOption ? folderId : null,
-            },
+            titleMultiloc: transform(
+              titleMultiloc,
+              (result: Multiloc, val, key: SupportedLocale) => {
+                result[convertToGraphqlLocale(key)] = val;
+              }
+            ),
+            projectTemplateId: templateId!,
+            timelineStartAt: startDate,
+            folderId: folderId !== noFolderOption ? folderId : null,
           });
-          queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
-          queryClient.invalidateQueries({
-            queryKey: adminPublicationsKeys.lists(),
-          });
-          queryClient.invalidateQueries({ queryKey: meKeys.all() });
 
           if (emitSuccessEvent) {
             eventEmitter.emit('NewProjectCreated');
@@ -263,26 +210,27 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
           setResponseError(error);
         }
       }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [tenantLocales, titleMultiloc, startDate, selectedLocale, folderId]);
+    }, [
+      titleMultiloc,
+      startDate,
+      projectTemplateId,
+      tenantLocales,
+      intl,
+      applyProjectTemplate,
+      templateId,
+      folderId,
+      emitSuccessEvent,
+    ]);
 
     const onClose = useCallback(() => {
       close();
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [close]);
 
     const onTitleChange = useCallback((titleMultiloc: Multiloc | null) => {
       setResponseError(null);
       setTitleError(null);
       setTitleMultiloc(titleMultiloc);
     }, []);
-
-    const onSelectedLocaleChange = useCallback(
-      (newSelectedLocale: SupportedLocale) => {
-        setSelectedLocale(newSelectedLocale);
-      },
-      []
-    );
 
     const onStartDateChange = useCallback((startDate: string) => {
       setResponseError(null);
@@ -297,7 +245,6 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
     useEffect(() => {
       setTitleMultiloc(null);
       setStartDate(null);
-      setSelectedLocale(null);
       setTitleError(null);
       setStartDateError(null);
       setProcessing(false);
@@ -404,7 +351,6 @@ const UseTemplateModal = memo<Props & WithRouterProps & WrappedComponentProps>(
                 type="text"
                 valueMultiloc={titleMultiloc}
                 onChange={onTitleChange}
-                onSelectedLocaleChange={onSelectedLocaleChange}
                 error={titleError}
                 autoFocus={true}
               />

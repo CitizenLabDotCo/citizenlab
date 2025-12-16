@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, Title, Text, Tooltip } from '@citizenlab/cl2-component-library';
 import { snakeCase } from 'lodash-es';
+import styled from 'styled-components';
 
 import { LogicConfig, ResultUngrouped } from 'api/survey_results/types';
 
@@ -16,6 +17,16 @@ import messages from '../messages';
 
 import FormResultQuestionValue from './components/FormResultsQuestionValue';
 import InputType from './InputType';
+
+const DescriptionContainer = styled.div`
+  img {
+    max-width: 400px;
+    max-height: 300px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+`;
 
 type FormResultsQuestionProps = {
   result: ResultUngrouped;
@@ -79,9 +90,11 @@ const FormResultsQuestion = ({
             totalResponses={questionResponseCount}
           />
         </Tooltip>
-        <Text variant="bodyS" color="textSecondary" mt="12px" mb="12px">
-          <T value={description} supportHtml={true} />
-        </Text>
+        <DescriptionContainer>
+          <Text variant="bodyS" color="textSecondary" mt="12px" mb="12px">
+            <T value={description} supportHtml={true} />
+          </Text>
+        </DescriptionContainer>
 
         <FormResultQuestionValue result={result} logicConfig={logicConfig} />
 

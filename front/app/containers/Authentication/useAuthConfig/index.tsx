@@ -76,6 +76,11 @@ export default function useAuthConfig() {
       name: 'twoday_login',
     }) || providerForTest === 'twoday';
 
+  const acm =
+    useFeatureFlag({
+      name: 'acm_login',
+    }) || providerForTest === 'acm';
+
   const fakeSso = useFeatureFlag({ name: 'fake_sso' });
 
   const ssoProviders = {
@@ -92,6 +97,7 @@ export default function useAuthConfig() {
     nemlogIn,
     keycloak,
     twoday,
+    acm,
     fakeSso,
   };
 

@@ -12,6 +12,7 @@ SET row_security = off;
 ALTER TABLE IF EXISTS ONLY public.ideas_topics DROP CONSTRAINT IF EXISTS fk_rails_ff1788eb50;
 ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS fk_rails_fdbeb12ddd;
 ALTER TABLE IF EXISTS ONLY public.ideas_topics DROP CONSTRAINT IF EXISTS fk_rails_fd874ecf4b;
+ALTER TABLE IF EXISTS ONLY public.idea_exposures DROP CONSTRAINT IF EXISTS fk_rails_fd29df3731;
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS fk_rails_fba307ba3b;
 ALTER TABLE IF EXISTS ONLY public.files_projects DROP CONSTRAINT IF EXISTS fk_rails_f5c8c46abb;
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_f44b1e3c8a;
@@ -66,6 +67,7 @@ ALTER TABLE IF EXISTS ONLY public.custom_field_options DROP CONSTRAINT IF EXISTS
 ALTER TABLE IF EXISTS ONLY public.baskets DROP CONSTRAINT IF EXISTS fk_rails_b3d04c10d5;
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS fk_rails_b0efe660f5;
 ALTER TABLE IF EXISTS ONLY public.analysis_tags DROP CONSTRAINT IF EXISTS fk_rails_afc2d02258;
+ALTER TABLE IF EXISTS ONLY public.idea_exposures DROP CONSTRAINT IF EXISTS fk_rails_ad985054f0;
 ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS fk_rails_ac7bc0a42f;
 ALTER TABLE IF EXISTS ONLY public.maps_layers DROP CONSTRAINT IF EXISTS fk_rails_abbf8658b2;
 ALTER TABLE IF EXISTS ONLY public.files_previews DROP CONSTRAINT IF EXISTS fk_rails_ab74281536;
@@ -124,6 +126,7 @@ ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rail
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_5ac7668cd3;
 ALTER TABLE IF EXISTS ONLY public.event_files DROP CONSTRAINT IF EXISTS fk_rails_577d1fb456;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_575368d182;
+ALTER TABLE IF EXISTS ONLY public.idea_exposures DROP CONSTRAINT IF EXISTS fk_rails_55d2ba0ca8;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_5471f55cd6;
 ALTER TABLE IF EXISTS ONLY public.identities DROP CONSTRAINT IF EXISTS fk_rails_5373344100;
 ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF EXISTS fk_rails_50335fc43f;
@@ -170,6 +173,7 @@ DROP INDEX IF EXISTS public.que_jobs_args_gin_idx;
 DROP INDEX IF EXISTS public.moderation_statuses_moderatable;
 DROP INDEX IF EXISTS public.machine_translations_translatable;
 DROP INDEX IF EXISTS public.machine_translations_lookup;
+DROP INDEX IF EXISTS public.index_wise_voice_flags_on_flaggable;
 DROP INDEX IF EXISTS public.index_webhooks_subscriptions_on_project_id;
 DROP INDEX IF EXISTS public.index_webhooks_subscriptions_on_events;
 DROP INDEX IF EXISTS public.index_webhooks_subscriptions_on_enabled;
@@ -315,6 +319,9 @@ DROP INDEX IF EXISTS public.index_idea_import_files_on_parent_id;
 DROP INDEX IF EXISTS public.index_idea_images_on_idea_id;
 DROP INDEX IF EXISTS public.index_idea_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_idea_files_on_idea_id;
+DROP INDEX IF EXISTS public.index_idea_exposures_on_user_id;
+DROP INDEX IF EXISTS public.index_idea_exposures_on_phase_id;
+DROP INDEX IF EXISTS public.index_idea_exposures_on_idea_id;
 DROP INDEX IF EXISTS public.index_id_id_card_lookup_id_cards_on_hashed_card_id;
 DROP INDEX IF EXISTS public.index_groups_projects_on_project_id;
 DROP INDEX IF EXISTS public.index_groups_projects_on_group_id_and_project_id;
@@ -463,6 +470,7 @@ DROP INDEX IF EXISTS public.i_l_v_locale;
 DROP INDEX IF EXISTS public.i_d_referrer_key;
 DROP INDEX IF EXISTS public.i_analytics_dim_projects_fact_visits_on_project_and_visit_ids;
 DROP INDEX IF EXISTS public.i_analytics_dim_locales_fact_visits_on_locale_and_visit_ids;
+ALTER TABLE IF EXISTS ONLY public.wise_voice_flags DROP CONSTRAINT IF EXISTS wise_voice_flags_pkey;
 ALTER TABLE IF EXISTS ONLY public.webhooks_subscriptions DROP CONSTRAINT IF EXISTS webhooks_subscriptions_pkey;
 ALTER TABLE IF EXISTS ONLY public.webhooks_deliveries DROP CONSTRAINT IF EXISTS webhooks_deliveries_pkey;
 ALTER TABLE IF EXISTS ONLY public.reactions DROP CONSTRAINT IF EXISTS votes_pkey;
@@ -532,6 +540,7 @@ ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS idea_im
 ALTER TABLE IF EXISTS ONLY public.idea_import_files DROP CONSTRAINT IF EXISTS idea_import_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.idea_images DROP CONSTRAINT IF EXISTS idea_images_pkey;
 ALTER TABLE IF EXISTS ONLY public.idea_files DROP CONSTRAINT IF EXISTS idea_files_pkey;
+ALTER TABLE IF EXISTS ONLY public.idea_exposures DROP CONSTRAINT IF EXISTS idea_exposures_pkey;
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS groups_projects_pkey;
 ALTER TABLE IF EXISTS ONLY public.groups DROP CONSTRAINT IF EXISTS groups_pkey;
 ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS groups_permissions_pkey;
@@ -595,6 +604,7 @@ ALTER TABLE IF EXISTS ONLY public.admin_publications DROP CONSTRAINT IF EXISTS a
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS activities_pkey;
 ALTER TABLE IF EXISTS public.que_jobs ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public.areas_static_pages ALTER COLUMN id DROP DEFAULT;
+DROP TABLE IF EXISTS public.wise_voice_flags;
 DROP TABLE IF EXISTS public.webhooks_subscriptions;
 DROP TABLE IF EXISTS public.webhooks_deliveries;
 DROP TABLE IF EXISTS public.verification_verifications;
@@ -652,6 +662,7 @@ DROP TABLE IF EXISTS public.idea_imports;
 DROP TABLE IF EXISTS public.idea_import_files;
 DROP TABLE IF EXISTS public.idea_images;
 DROP TABLE IF EXISTS public.idea_files;
+DROP TABLE IF EXISTS public.idea_exposures;
 DROP TABLE IF EXISTS public.id_id_card_lookup_id_cards;
 DROP TABLE IF EXISTS public.groups_projects;
 DROP TABLE IF EXISTS public.groups_permissions;
@@ -1751,7 +1762,8 @@ CREATE TABLE public.phases (
     similarity_enabled boolean DEFAULT true NOT NULL,
     vote_term character varying DEFAULT 'vote'::character varying,
     voting_min_selected_options integer DEFAULT 1 NOT NULL,
-    voting_filtering_enabled boolean DEFAULT false NOT NULL
+    voting_filtering_enabled boolean DEFAULT false NOT NULL,
+    ideation_method character varying
 );
 
 
@@ -2685,6 +2697,27 @@ CREATE TABLE public.id_id_card_lookup_id_cards (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     hashed_card_id character varying
 );
+
+
+--
+-- Name: idea_exposures; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.idea_exposures (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    user_id uuid NOT NULL,
+    idea_id uuid NOT NULL,
+    phase_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN idea_exposures.phase_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.idea_exposures.phase_id IS 'This is the phase during which the idea is exposed to the user, stored redundantly for faster querying.';
 
 
 --
@@ -3624,9 +3657,9 @@ CREATE TABLE public.topics (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     ordering integer,
-    code character varying DEFAULT 'custom'::character varying NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
-    include_in_onboarding boolean DEFAULT false NOT NULL
+    include_in_onboarding boolean DEFAULT false NOT NULL,
+    is_default boolean DEFAULT false NOT NULL
 );
 
 
@@ -3692,6 +3725,21 @@ CREATE TABLE public.webhooks_subscriptions (
     events jsonb DEFAULT '[]'::jsonb NOT NULL,
     project_id uuid,
     enabled boolean DEFAULT true NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: wise_voice_flags; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.wise_voice_flags (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    flaggable_type character varying NOT NULL,
+    flaggable_id uuid NOT NULL,
+    role_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    quotes jsonb DEFAULT '[]'::jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -4197,6 +4245,14 @@ ALTER TABLE ONLY public.groups
 
 ALTER TABLE ONLY public.groups_projects
     ADD CONSTRAINT groups_projects_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: idea_exposures idea_exposures_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.idea_exposures
+    ADD CONSTRAINT idea_exposures_pkey PRIMARY KEY (id);
 
 
 --
@@ -4749,6 +4805,14 @@ ALTER TABLE ONLY public.webhooks_deliveries
 
 ALTER TABLE ONLY public.webhooks_subscriptions
     ADD CONSTRAINT webhooks_subscriptions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: wise_voice_flags wise_voice_flags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.wise_voice_flags
+    ADD CONSTRAINT wise_voice_flags_pkey PRIMARY KEY (id);
 
 
 --
@@ -5788,6 +5852,27 @@ CREATE INDEX index_id_id_card_lookup_id_cards_on_hashed_card_id ON public.id_id_
 
 
 --
+-- Name: index_idea_exposures_on_idea_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_idea_exposures_on_idea_id ON public.idea_exposures USING btree (idea_id);
+
+
+--
+-- Name: index_idea_exposures_on_phase_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_idea_exposures_on_phase_id ON public.idea_exposures USING btree (phase_id);
+
+
+--
+-- Name: index_idea_exposures_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_idea_exposures_on_user_id ON public.idea_exposures USING btree (user_id);
+
+
+--
 -- Name: index_idea_files_on_idea_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6803,6 +6888,13 @@ CREATE INDEX index_webhooks_subscriptions_on_project_id ON public.webhooks_subsc
 
 
 --
+-- Name: index_wise_voice_flags_on_flaggable; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_wise_voice_flags_on_flaggable ON public.wise_voice_flags USING btree (flaggable_type, flaggable_id);
+
+
+--
 -- Name: machine_translations_lookup; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7156,6 +7248,14 @@ ALTER TABLE ONLY public.identities
 
 ALTER TABLE ONLY public.notifications
     ADD CONSTRAINT fk_rails_5471f55cd6 FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
+-- Name: idea_exposures fk_rails_55d2ba0ca8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.idea_exposures
+    ADD CONSTRAINT fk_rails_55d2ba0ca8 FOREIGN KEY (phase_id) REFERENCES public.phases(id);
 
 
 --
@@ -7623,6 +7723,14 @@ ALTER TABLE ONLY public.project_reviews
 
 
 --
+-- Name: idea_exposures fk_rails_ad985054f0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.idea_exposures
+    ADD CONSTRAINT fk_rails_ad985054f0 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: analysis_tags fk_rails_afc2d02258; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8055,6 +8163,14 @@ ALTER TABLE ONLY public.events_attendances
 
 
 --
+-- Name: idea_exposures fk_rails_fd29df3731; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.idea_exposures
+    ADD CONSTRAINT fk_rails_fd29df3731 FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
 -- Name: ideas_topics fk_rails_fd874ecf4b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8085,7 +8201,12 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251209135529'),
+('20251208163107'),
+('20251203114945'),
 ('20251201130137'),
+('20251127085639'),
+('20251124000000'),
 ('20251120113747'),
 ('20251029135211'),
 ('20251022100725'),

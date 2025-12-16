@@ -12,13 +12,6 @@ class WebApi::V1::IdeasController < ApplicationController
   after_action :verify_policy_scoped, only: %i[index index_mini]
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  def json_forms_schema
-    input = Idea.find params[:id]
-    enabled_fields = IdeaCustomFieldsService.new(input.custom_form).enabled_fields
-    json_attributes = JsonFormsService.new.input_ui_and_json_multiloc_schemas enabled_fields, current_user, input.participation_method_on_creation, input.input_term
-    render json: raw_json(json_attributes)
-  end
-
   def index
     ideas = IdeasFinder.new(
       params,
@@ -470,7 +463,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def build_idea_file_attachment(idea, file_params)
-    files_file = Files::File.new(
+    files_file = Files::RestrictedFile.new( # temporary-fix-for-vienna-svg-security-issue (use Files::File.new to undo)
       content_by_content: {
         content: file_params['content'],
         name: file_params['name']

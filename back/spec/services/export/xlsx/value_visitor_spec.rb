@@ -636,10 +636,10 @@ describe Export::Xlsx::ValueVisitor do
       context 'when there is one topic selected' do
         let(:topics) do
           [
-            create(:topic, code: 'nature', title_multiloc: { 'en' => 'Topic 1', 'nl-NL' => 'Onderwerp 1' })
+            create(:topic, title_multiloc: { 'en' => 'Topic 1', 'nl-NL' => 'Onderwerp 1' })
           ]
         end
-        let(:value) { ['nature'] }
+        let(:value) { [topics.first.id] }
 
         it 'returns the value for the report' do
           I18n.with_locale('nl-NL') do
@@ -651,11 +651,11 @@ describe Export::Xlsx::ValueVisitor do
       context 'when there are multiple topics selected' do
         let(:topics) do
           [
-            create(:topic, code: 'nature', title_multiloc: { 'en' => 'Topic 1', 'nl-NL' => 'Onderwerp 1' }),
-            create(:topic, code: 'waste', title_multiloc: { 'en' => 'Topic 2', 'nl-NL' => 'Onderwerp 2' })
+            create(:topic, title_multiloc: { 'en' => 'Topic 1', 'nl-NL' => 'Onderwerp 1' }),
+            create(:topic, title_multiloc: { 'en' => 'Topic 2', 'nl-NL' => 'Onderwerp 2' })
           ]
         end
-        let(:value) { %w[nature waste] }
+        let(:value) { topics.map(&:id) }
 
         it 'returns the value for the report' do
           I18n.with_locale('nl-NL') do

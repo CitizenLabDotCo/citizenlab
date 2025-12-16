@@ -52,7 +52,7 @@ describe ParticipantsService do
       end
       create(:comment, idea: idea, author: pp4)
 
-      expect(service.participants(since: (Time.now - 6.days)).map(&:dimension_user_id)).to match_array [pp2.id, pp3.id, pp4.id]
+      expect(service.participants(since: (Time.now - 6.days)).map(&:dimension_user_id)).to contain_exactly(pp2.id, pp3.id, pp4.id)
     end
   end
 
@@ -299,7 +299,7 @@ describe ParticipantsService do
       end
       create(:comment, idea: idea, author: pp4)
 
-      expect(service.projects_participants([project], since: (Time.now - 5.days)).map(&:id)).to match_array [pp2.id, pp3.id, pp4.id]
+      expect(service.projects_participants([project], since: (Time.now - 5.days)).map(&:id)).to contain_exactly(pp2.id, pp3.id, pp4.id)
     end
 
     it 'returns only participants for specific actions' do
@@ -315,7 +315,7 @@ describe ParticipantsService do
       create(:basket, ideas: [i], phase: project.phases.first, user: pp4)
       create(:idea, author: other)
 
-      expect(service.projects_participants([project], actions: %i[posting voting]).map(&:id)).to match_array [pp1.id, pp4.id]
+      expect(service.projects_participants([project], actions: %i[posting voting]).map(&:id)).to contain_exactly(pp1.id, pp4.id)
     end
 
     it 'returns only participants for comment_reacting' do
@@ -331,7 +331,7 @@ describe ParticipantsService do
       create(:reaction, reactable: c, user: pp4)
       create(:idea, author: other)
 
-      expect(service.projects_participants([project], actions: [:comment_reacting]).map(&:id)).to match_array [pp4.id]
+      expect(service.projects_participants([project], actions: [:comment_reacting]).map(&:id)).to contain_exactly(pp4.id)
     end
 
     it 'returns only participants for commenting' do
@@ -347,7 +347,7 @@ describe ParticipantsService do
       create(:basket, ideas: [i], phase: project.phases.first, user: pp4)
       create(:idea, author: other)
 
-      expect(service.projects_participants([project], actions: [:commenting]).map(&:id)).to match_array [pp2.id]
+      expect(service.projects_participants([project], actions: [:commenting]).map(&:id)).to contain_exactly(pp2.id)
     end
 
     it 'returns event attendees' do
@@ -356,7 +356,7 @@ describe ParticipantsService do
       attendee1 = create(:event_attendance, event: event).attendee
       attendee2 = create(:event_attendance, event: event).attendee
 
-      expect(service.projects_participants([project]).map(&:id)).to match_array [attendee1.id, attendee2.id]
+      expect(service.projects_participants([project]).map(&:id)).to contain_exactly(attendee1.id, attendee2.id)
     end
 
     it 'does not return followers' do
@@ -366,7 +366,7 @@ describe ParticipantsService do
       idea = create(:idea, project: project, author: author)
       create(:follower, followable: idea).user
 
-      expect(service.projects_participants([project]).map(&:id)).to match_array [author.id]
+      expect(service.projects_participants([project]).map(&:id)).to contain_exactly(author.id)
     end
 
     # Regression test: mainly to avoid counting unsubmitted survey responses as project participation

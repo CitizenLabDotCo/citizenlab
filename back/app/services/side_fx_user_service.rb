@@ -34,7 +34,6 @@ class SideFxUserService
     AdditionalSeatsIncrementer.increment_if_necessary(user, current_user) if user.roles_previously_changed?
 
     UpdateMemberCountJob.perform_later
-    RequestConfirmationCodeJob.perform_now(user) if should_send_confirmation_email?(user)
   end
 
   def after_destroy(frozen_user, current_user, participation_data_deleted: false)

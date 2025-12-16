@@ -40,7 +40,7 @@ const TopicsSettings = ({
 
   return (
     <Box mb="24px">
-      <Box mb="16px">
+      <Box mb="16px" data-cy="e2e-limit-topics-toggle">
         <Toggle
           name={selectCountToggleName}
           label={
@@ -59,7 +59,7 @@ const TopicsSettings = ({
 
       {watch(selectCountToggleName) && (
         <Box ml="16px">
-          <Box mb="8px" display="flex">
+          <Box mb="8px" display="flex" data-cy="e2e-limit-topics-minimum">
             <Box minWidth="100px" my="auto">
               <StyledLabel
                 htmlFor="minimumInput"
@@ -75,7 +75,7 @@ const TopicsSettings = ({
               onKeyDown={handleKeyDown}
             />
           </Box>
-          <Box display="flex">
+          <Box display="flex" data-cy="e2e-limit-topics-maximum">
             <Box minWidth="100px" my="auto">
               <StyledLabel
                 htmlFor="maximumInput"

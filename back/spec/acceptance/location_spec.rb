@@ -28,7 +28,7 @@ resource 'Location' do
 
     example_request 'Autocomplete' do
       expect(status).to eq(200)
-      expect(response_data[:attributes][:results]).to match_array(['New York, NY, USA'])
+      expect(response_data[:attributes][:results]).to contain_exactly('New York, NY, USA')
     end
   end
 

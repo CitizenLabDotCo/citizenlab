@@ -46,6 +46,7 @@ const ProjectContentViewer = ({
   if (!featureEnabled) return null;
 
   const descriptionBuilderContent =
+    enabled &&
     descriptionBuilderLayout &&
     descriptionBuilderLayout.data.attributes.enabled &&
     !isEmpty(descriptionBuilderLayout.data.attributes.craftjs_json);

@@ -33,7 +33,8 @@ class UserPolicy < ApplicationPolicy
 
   def create?
     app_config = AppConfiguration.instance
-    (app_config.feature_activated?('password_login') && app_config.settings('password_login', 'enable_signup')) || active_admin?
+    allow_signup = app_config.feature_activated?('password_login') && app_config.settings('password_login', 'enable_signup')
+    allow_signup || active_admin?
   end
 
   def show?
@@ -86,6 +87,13 @@ class UserPolicy < ApplicationPolicy
     user&.active? && (record.id == user.id)
   end
 
+  def update_email_unconfirmed?
+    app_configuration = AppConfiguration.instance
+    return false if app_configuration.feature_activated?('user_confirmation')
+
+    user&.active? && (record.id == user.id)
+  end
+
   def view_private_attributes?
     # When the policy was created with a class
     # instead of an instance, record is set to
@@ -99,15 +107,13 @@ class UserPolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_create
-    permitted_attributes_for_update.tap do |attributes|
-      attributes.delete(:avatar) unless AppConfiguration.instance.feature_activated?('user_avatars')
-    end
+    %i[email locale]
   end
 
   def permitted_attributes_for_update
     # avatar is allowed even if the feature "user_avatars" is not activated to allow
     # users to remove their avatar.
-    shared = [:email, :first_name, :last_name, :password, :avatar, :locale, { onboarding: [:topics_and_areas], custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
+    shared = [:first_name, :last_name, :password, :avatar, :locale, { onboarding: [:topics_and_areas], custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
     attributes = admin? ? shared + [roles: %i[type project_id project_folder_id project_reviewer]] : shared
     attributes - verification_service.locked_attributes(record) # locked attributes cannot be updated
   end

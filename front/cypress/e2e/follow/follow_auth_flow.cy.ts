@@ -1,29 +1,15 @@
+import {
+  enterUserInfo,
+  signUpEmailConformation,
+  logIn,
+} from '../../support/auth';
 import { randomString, randomEmail } from '../../support/commands';
 
 const signUp = (email = randomEmail(), password = randomString()) => {
   cy.goToLandingPage();
   cy.get('#e2e-navbar-login-menu-item').click();
-  cy.get('#e2e-goto-signup').click();
-  cy.get('#e2e-sign-up-email-password-container');
-
-  const firstName = randomString();
-  const lastName = randomString();
-
-  cy.get('#firstName').type(firstName);
-  cy.get('#lastName').type(lastName);
-  cy.get('#email').type(email);
-  cy.get('#password').type(password);
-  cy.get('[data-testid="termsAndConditionsAccepted"] .e2e-checkbox')
-    .click()
-    .should('have.class', 'checked');
-  cy.get('[data-testid="privacyPolicyAccepted"] .e2e-checkbox')
-    .click()
-    .should('have.class', 'checked');
-  cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
-
-  cy.get('#code').should('exist');
-  cy.get('#code').click().type('1234');
-  cy.get('#e2e-verify-email-button').click();
+  signUpEmailConformation(cy, email);
+  enterUserInfo(cy, { password });
 };
 
 describe('Follow: in auth flow', () => {
@@ -50,9 +36,7 @@ describe('Follow: in auth flow', () => {
 
     cy.get('#e2e-navbar-login-menu-item').click();
     cy.get('#e2e-authentication-modal').should('exist');
-    cy.get('#email').type(email);
-    cy.get('#password').type(password);
-    cy.get('#e2e-signin-password-submit-button').click();
+    logIn(cy, email, password);
 
     cy.get('#e2e-follow-topics').should('exist');
   });

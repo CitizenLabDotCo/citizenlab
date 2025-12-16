@@ -12,6 +12,10 @@ module ParticipationMethod
       'ideation'
     end
 
+    def phase_insights_class
+      Insights::IdeationPhaseInsightsService
+    end
+
     def additional_export_columns
       %w[manual_votes]
     end
@@ -35,6 +39,7 @@ module ParticipationMethod
       phase.input_term ||= default_input_term if supports_input_term?
       phase.similarity_threshold_title ||= 0.3
       phase.similarity_threshold_body ||= 0.4
+      phase.ideation_method ||= 'base'
     end
 
     def author_in_form?(user)
@@ -450,6 +455,10 @@ module ParticipationMethod
 
     def add_autoreaction_to_inputs?
       true
+    end
+
+    def supports_serializing?(attribute)
+      %i[ideation_method].include?(attribute)
     end
 
     private

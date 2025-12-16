@@ -517,8 +517,8 @@ describe Invites::Service do
         expect { service.bulk_create_xlsx(xlsx) }.to change(Invite, :count).from(0).to(1)
 
         user.reload
-        expect(user.roles).to match_array([{ 'type' => 'admin' }, old_role])
-        expect(user.manual_groups).to match_array([old_group, new_group])
+        expect(user.roles).to contain_exactly({ 'type' => 'admin' }, old_role)
+        expect(user.manual_groups).to contain_exactly(old_group, new_group)
       end
 
       context 'when new role and group duplicate existing ones' do
@@ -535,8 +535,8 @@ describe Invites::Service do
           expect { service.bulk_create_xlsx(xlsx, default_params) }.to change(Invite, :count).from(0).to(1)
 
           user.reload
-          expect(user.roles).to match_array([old_role])
-          expect(user.manual_groups).to match_array([old_group])
+          expect(user.roles).to contain_exactly(old_role)
+          expect(user.manual_groups).to contain_exactly(old_group)
         end
       end
     end

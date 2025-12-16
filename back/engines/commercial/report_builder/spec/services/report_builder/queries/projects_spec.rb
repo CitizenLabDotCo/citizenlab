@@ -3,10 +3,14 @@
 require 'rails_helper'
 
 RSpec.describe ReportBuilder::Queries::Projects do
-  subject(:query) { described_class.new(build(:user)) }
+  let(:user) { create(:admin) }
+  let(:query) { described_class.new(user) }
 
   describe '#run_query' do
     before_all do
+      # Populate analytics dimension types for participation sorting
+      Analytics::PopulateDimensionsService.populate_types
+
       # 2020
       @past_project = create(:project)
       create(
@@ -18,12 +22,14 @@ RSpec.describe ReportBuilder::Queries::Projects do
       )
 
       # 2021
-      @project1 = create(:project)
+      @project1 = create(:project, title_multiloc: { 'en' => 'Alpha', 'fr-FR' => 'Zeta' })
       create(:phase, project: @project1, start_at: Date.new(2021, 2, 1), end_at: Date.new(2021, 3, 1))
+      create_list(:idea, 5, project: @project1)
 
-      @project2 = create(:project)
+      @project2 = create(:project, title_multiloc: { 'en' => 'Zeta', 'fr-FR' => 'Alpha' })
       create(:phase, project: @project2, start_at: Date.new(2021, 2, 1), end_at: Date.new(2021, 3, 1))
       create(:phase, project: @project2, start_at: Date.new(2021, 3, 2), end_at: nil)
+      create_list(:idea, 10, project: @project2)
 
       # 2022
       @project3 = create(:project)
@@ -108,6 +114,61 @@ RSpec.describe ReportBuilder::Queries::Projects do
       })
     end
 
+    context 'when sorting is applied' do
+      let(:start_at) { Date.new(2021, 1, 1) }
+      let(:end_at) { Date.new(2021, 4, 1) }
+
+      it 'sorts projects alphabetically in ascending order' do
+        result = query.run_query(start_at: start_at, end_at: end_at, sort: 'alphabetically_asc')
+
+        expect(result[:projects].pluck(:id)).to eq([@project1.id, @project2.id])
+      end
+
+      it 'sorts projects alphabetically in descending order' do
+        result = query.run_query(start_at: start_at, end_at: end_at, sort: 'alphabetically_desc')
+
+        expect(result[:projects].pluck(:id)).to eq([@project2.id, @project1.id])
+      end
+
+      it 'sorts projects alphabetically using the specified locale' do
+        result_en = query.run_query(
+          start_at: start_at,
+          end_at: end_at,
+          sort: 'alphabetically_asc',
+          locale: 'en'
+        )
+
+        result_fr = query.run_query(
+          start_at: start_at,
+          end_at: end_at,
+          sort: 'alphabetically_asc',
+          locale: 'fr-FR'
+        )
+
+        expect(result_en[:projects].pluck(:id)).to eq([@project1.id, @project2.id])
+        expect(result_fr[:projects].pluck(:id)).to eq([@project2.id, @project1.id])
+      end
+
+      it 'sorts projects by participation count in ascending order' do
+        result = query.run_query(start_at: start_at, end_at: end_at, sort: 'participation_asc')
+
+        expect(result[:projects].pluck(:id)).to eq([@project1.id, @project2.id])
+      end
+
+      it 'sorts projects by participation count in descending order' do
+        result = query.run_query(start_at: start_at, end_at: end_at, sort: 'participation_desc')
+
+        expect(result[:projects].pluck(:id)).to eq([@project2.id, @project1.id])
+      end
+
+      it 'returns unsorted projects when no sort parameter is provided' do
+        result = query.run_query(start_at: start_at, end_at: end_at)
+
+        expect(result[:projects].count).to eq(2)
+        expect(result[:projects].pluck(:id)).to contain_exactly(@project1.id, @project2.id)
+      end
+    end
+
     context 'when specific publication statuses are requested' do
       it 'returns only published projects when no publication_statuses are specified exiplicitly' do
         result = query.run_query(
@@ -116,7 +177,7 @@ RSpec.describe ReportBuilder::Queries::Projects do
         )
 
         expect(result[:projects].count).to eq(4)
-        expect(result[:projects].pluck(:id)).to match_array [@project1.id, @project2.id, @project3.id, @past_project.id]
+        expect(result[:projects].pluck(:id)).to contain_exactly(@project1.id, @project2.id, @project3.id, @past_project.id)
       end
 
       it 'returns only published projects when only published is requested' do
@@ -127,7 +188,7 @@ RSpec.describe ReportBuilder::Queries::Projects do
         )
 
         expect(result[:projects].count).to eq(4)
-        expect(result[:projects].pluck(:id)).to match_array [@project1.id, @project2.id, @project3.id, @past_project.id]
+        expect(result[:projects].pluck(:id)).to contain_exactly(@project1.id, @project2.id, @project3.id, @past_project.id)
       end
 
       it 'returns only archived projects when only archived is requested' do
@@ -150,7 +211,7 @@ RSpec.describe ReportBuilder::Queries::Projects do
 
         expect(result[:projects].count).to eq(5)
         expect(result[:projects].pluck(:id))
-          .to match_array [@project1.id, @project2.id, @project3.id, @project5.id, @past_project.id]
+          .to contain_exactly(@project1.id, @project2.id, @project3.id, @project5.id, @past_project.id)
       end
     end
   end
