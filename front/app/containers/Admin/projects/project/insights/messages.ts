@@ -197,4 +197,20 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.count',
     defaultMessage: 'Count',
   },
+  vsLast7Days: {
+    id: 'app.containers.Admin.projects.project.insights.vsLast7Days',
+    defaultMessage: 'vs last 7 days',
+  },
+  noComparisonData: {
+    id: 'app.containers.Admin.projects.project.insights.noComparisonData',
+    defaultMessage: 'No comparison data',
+  },
+  comparisonAvailableAfter14Days: {
+    id: 'app.containers.Admin.projects.project.insights.comparisonAvailableAfter14Days',
+    defaultMessage: 'Comparison available after 14 days',
+  },
+  firstActivityWithinLast7Days: {
+    id: 'app.containers.Admin.projects.project.insights.firstActivityWithinLast7Days',
+    defaultMessage: 'First activity started within the last 7 days',
+  },
 });
