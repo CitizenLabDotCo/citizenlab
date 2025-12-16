@@ -65,7 +65,11 @@ interface Props {
 const StickyNotesPile = ({ maxNotes = 20, phaseId }: Props) => {
   const [searchParams] = useSearchParams();
   const topicId = searchParams.get('topic');
-  const { data: ideas, isLoading: ideasLoading } = useIdeaFeedIdeas({
+  const {
+    data: ideas,
+    isLoading: ideasLoading,
+    isFetching,
+  } = useIdeaFeedIdeas({
     phaseId,
     topic: topicId || undefined,
     'page[size]': maxNotes,
@@ -103,7 +107,10 @@ const StickyNotesPile = ({ maxNotes = 20, phaseId }: Props) => {
     <PileContainer>
       {flatIdeas.slice(0, maxNotes).map((idea, index) => {
         const topicIds = ideaTopics.get(idea.id) || [];
-        const topicBackgroundColor = getTopicColor(topicIds[0]);
+        const topicBackgroundColor =
+          topicId && !isFetching
+            ? getTopicColor(topicId)
+            : getTopicColor(topicIds[0]);
 
         return (
           <NoteWrapper
