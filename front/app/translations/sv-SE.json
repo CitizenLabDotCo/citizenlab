@@ -2111,6 +2111,7 @@
   "app.errors.confirmation_code_too_many_retries": "Du har försökt för många gånger. Begär en ny kod eller prova att ändra din e-postadress.",
   "app.errors.email_already_active": "E-postadressen {value} som finns på rad {row} tillhör redan en registrerad deltagare",
   "app.errors.email_already_invited": "E-postadressen {value} som hittades på rad {row} var redan inbjuden",
+  "app.errors.email_banned": "E-postadressen {value} som finns på rad {row} har blivit bannlyst och kan inte bjudas in",
   "app.errors.email_blank": "Det här får inte vara tomt",
   "app.errors.email_domain_blacklisted": "Använd en annan e-postdomän för att registrera dig.",
   "app.errors.email_invalid": "Använd en giltig e-postadress.",
