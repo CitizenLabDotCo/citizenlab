@@ -6,7 +6,6 @@ import { VotingIdeaResult } from 'api/voting_insights/types';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { CHART_COLORS } from './constants';
 import messages from './messages';
 
 interface Props {
@@ -28,12 +27,7 @@ const VoteStats = ({ idea }: Props) => {
 
   return (
     <Box display="flex" alignItems="center" gap="4px" flexShrink={0}>
-      <Text
-        m="0"
-        fontSize="s"
-        fontWeight="bold"
-        style={{ color: CHART_COLORS.darkBlue }}
-      >
+      <Text m="0" fontSize="s" fontWeight="bold" color="blue500">
         {idea.percentage}%
       </Text>
       <Text m="0" fontSize="s" color="textSecondary">

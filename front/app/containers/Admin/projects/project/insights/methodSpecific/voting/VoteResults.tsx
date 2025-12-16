@@ -18,8 +18,10 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { INSIGHTS_CHART_COLORS } from '../../constants';
+
 import ClusteredIdeaRow from './ClusteredIdeaRow';
-import { CHART_COLORS, getStripedPattern } from './constants';
+import { getStripedPattern } from './constants';
 import messages from './messages';
 import { getDemographicKeys } from './utils';
 import VotingIdeaRow from './VotingIdeaRow';
@@ -170,7 +172,7 @@ const VoteResults = ({ phaseId }: Props) => {
             w="16px"
             h="12px"
             borderRadius="2px"
-            style={{ backgroundColor: CHART_COLORS.darkBlue }}
+            background={INSIGHTS_CHART_COLORS.darkBlue}
           />
           <Text m="0" fontSize="s" color="textSecondary">
             {formatMessage(messages.online)}

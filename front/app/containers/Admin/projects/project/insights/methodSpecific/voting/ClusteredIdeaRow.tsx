@@ -11,7 +11,8 @@ import ProgressBarWrapper from 'containers/ProjectsShowPage/timeline/VotingResul
 
 import { useIntl } from 'utils/cl-intl';
 
-import { CHART_COLORS } from './constants';
+import { INSIGHTS_CHART_COLORS } from '../../constants';
+
 import IdeaThumbnail from './IdeaThumbnail';
 import messages from './messages';
 import { getScaledPercentages, getDemographicLabel } from './utils';
@@ -74,7 +75,7 @@ const ClusteredIdeaRow = ({
             votesPercentage={onlinePct}
             manualVotesPercentage={offlinePct}
             tooltip={formatMessage(messages.votesTooltip)}
-            barColor={CHART_COLORS.darkBlue}
+            barColor={INSIGHTS_CHART_COLORS.darkBlue}
             bgColor={colors.grey300}
             height="16px"
           />
@@ -114,7 +115,7 @@ const ClusteredIdeaRow = ({
                 <Box flex="1">
                   <ProgressBarWrapper
                     votesPercentage={percentage}
-                    barColor={CHART_COLORS.darkBlue}
+                    barColor={INSIGHTS_CHART_COLORS.darkBlue}
                     bgColor={colors.grey300}
                     height="12px"
                   />

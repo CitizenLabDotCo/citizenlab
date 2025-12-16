@@ -6,7 +6,8 @@ import { VotingIdeaResult } from 'api/voting_insights/types';
 
 import ProgressBarWrapper from 'containers/ProjectsShowPage/timeline/VotingResults/ProgressBar/ProgressBarWrapper';
 
-import { CHART_COLORS } from './constants';
+import { INSIGHTS_CHART_COLORS } from '../../constants';
+
 import IdeaThumbnail from './IdeaThumbnail';
 import { getScaledPercentages } from './utils';
 import VoteStats from './VoteStats';
@@ -55,7 +56,7 @@ const SimpleVotingRow = ({ idea, title, tooltip }: Props) => {
           votesPercentage={onlinePct}
           manualVotesPercentage={offlinePct}
           tooltip={tooltip}
-          barColor={CHART_COLORS.darkBlue}
+          barColor={INSIGHTS_CHART_COLORS.darkBlue}
           bgColor={colors.grey300}
           height="16px"
         />
