@@ -5,24 +5,8 @@ import { Localize } from 'hooks/useLocalize';
 import { binAge } from 'utils/dataUtils';
 import { roundPercentages } from 'utils/math';
 
-/**
- * Utilities for transforming demographics data from backend format
- * (series/options) to frontend chart format.
- *
- * Used by:
- * - Report Builder DemographicsWidget
- * - Phase Insights DemographicsSection
- */
-
-// ============================================================================
-// Types
-// ============================================================================
-
-/**
- * Backend format (series/options pattern)
- */
 export interface DemographicsSeriesData {
-  series: Record<string, number>; // { "male": 680, "female": 830, "_blank": 10 }
+  series: Record<string, number>;
   options?: Record<
     string,
     {
@@ -33,9 +17,6 @@ export interface DemographicsSeriesData {
   population_distribution?: Record<string, number>;
 }
 
-/**
- * Chart row format for ComparisonBarChart
- */
 export interface DemographicChartRow {
   category: string;
   participants: number;
@@ -43,19 +24,6 @@ export interface DemographicChartRow {
   count: number;
 }
 
-// ============================================================================
-// Main Transformer
-// ============================================================================
-
-/**
- * Transform demographics data from backend series/options format to chart rows
- *
- * @param data - Backend series data with optional options and population
- * @param customFieldCode - Field code (e.g., 'birthyear', 'gender') for special handling
- * @param blankLabel - Label to use for blank/unknown values
- * @param localizeOption - Function to localize option labels (key, multiloc) => string
- * @returns Array of chart rows ready for ComparisonBarChart
- */
 export const transformDemographicsToChartRows = (
   data: DemographicsSeriesData,
   customFieldCode: string | undefined,
@@ -87,19 +55,11 @@ export const transformDemographicsToChartRows = (
   );
 };
 
-// ============================================================================
-// Birthyear-Specific Transformation
-// ============================================================================
-
-/**
- * Transform birthyear data by binning ages into ranges
- */
 const transformBirthyearData = (
   series: Record<string, number>,
   blankLabel: string,
   population_distribution?: Record<string, number>
 ): DemographicChartRow[] => {
-  // Bin participant ages
   const bins = binAge(series, {
     missingBin: blankLabel,
   });
@@ -107,7 +67,6 @@ const transformBirthyearData = (
   const values = bins.map((bin) => bin.value);
   const percentages = roundPercentages(values);
 
-  // Bin population ages if available
   let populationPercentages: (number | undefined)[] | undefined;
   if (population_distribution) {
     const populationBins = binAge(population_distribution, {
@@ -125,13 +84,6 @@ const transformBirthyearData = (
   }));
 };
 
-// ============================================================================
-// Select Field Transformation
-// ============================================================================
-
-/**
- * Transform select field data with options metadata
- */
 const transformSelectFieldData = (
   series: Record<string, number>,
   options: Record<
@@ -145,22 +97,18 @@ const transformSelectFieldData = (
   localizeOption: (key: string, multiloc?: Record<string, string>) => string,
   population_distribution?: Record<string, number>
 ): DemographicChartRow[] => {
-  // Sort option keys by ordering
   const columnsWithoutBlank = Object.keys(options).sort(
     (a, b) => options[a].ordering - options[b].ordering
   );
 
-  // Add blank column if it has data
   const hasBlank = (series['_blank'] ?? 0) > 0;
   const columns = hasBlank
     ? [...columnsWithoutBlank, '_blank']
     : columnsWithoutBlank;
 
-  // Calculate participant percentages
   const values = columns.map((column) => series[column] || 0);
   const percentages = roundPercentages(values);
 
-  // Calculate population percentages if available
   let populationPercentages: (number | undefined)[] | undefined;
   if (population_distribution) {
     const populationValues = columns.map(
@@ -169,7 +117,6 @@ const transformSelectFieldData = (
     populationPercentages = roundPercentages(populationValues);
   }
 
-  // Map to chart rows
   return columns.map((column, index) => {
     const category =
       column === '_blank'
@@ -185,14 +132,6 @@ const transformSelectFieldData = (
   });
 };
 
-// ============================================================================
-// Report Builder Specific Adapter
-// ============================================================================
-
-/**
- * Transform Report Builder demographics response to chart data
- * Adapts the Report Builder API response format to the generic transformer
- */
 export const transformReportBuilderDemographics = (
   response: DemographicsResponse,
   localize: Localize,

@@ -46,21 +46,17 @@ const SurveyActions = ({ phase }: Props) => {
   const projectId = phase.relationships.project.data.id;
   const phaseId = phase.id;
 
-  // PDF download from context (shared with parent)
   const { downloadPdf, isDownloading: isDownloadingPdf } =
     usePdfExportContext();
 
-  // Project and phase hooks
   const { data: project } = useProjectById(projectId);
   const { mutate: updatePhase } = useUpdatePhase();
 
-  // Form hooks
   const { mutate: deleteFormResults } = useDeleteSurveyResults();
   const { data: submissionCount } = useFormSubmissionCount({
     phaseId,
   });
 
-  // Analysis hooks
   const { mutate: addAnalysis, isLoading: isAddLoading } = useAddAnalysis();
   const { mutate: updateAnalysis, isLoading: isUpdateLoading } =
     useUpdateAnalysis();
@@ -70,10 +66,7 @@ const SurveyActions = ({ phase }: Props) => {
     phaseId,
   });
 
-  // Modal states
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  // Other states
   const [isDropdownOpened, setDropdownOpened] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
 
@@ -81,15 +74,12 @@ const SurveyActions = ({ phase }: Props) => {
     return null;
   }
 
-  // Form-related variables
   const haveSubmissionsComeIn =
     submissionCount.data.attributes.totalSubmissions > 0;
 
-  // Variables from form config
   const { postingEnabled, togglePostingEnabled, inputImporterLink } =
     getFormActionsConfig(project.data, updatePhase, phase);
 
-  // Analysis-related variables
   const inputCustomFieldsIds = inputCustomFields?.data.map(
     (customField) => customField.id
   );
@@ -108,12 +98,10 @@ const SurveyActions = ({ phase }: Props) => {
     analysisCustomFieldIds.length === inputCustomFieldsIds.length &&
     analysisCustomFieldIds.every((id) => inputCustomFieldsIds.includes(id));
 
-  // Functions to handle modal states
   const closeDeleteModal = () => {
     setShowDeleteModal(false);
   };
 
-  // Function to handle result deletion
   const deleteResults = () => {
     deleteFormResults(
       { phaseId },
@@ -125,20 +113,18 @@ const SurveyActions = ({ phase }: Props) => {
     );
   };
 
-  // Functions to handle downloads
   const handleDownloadResults = async () => {
     try {
       setIsDownloading(true);
       setDropdownOpened(false);
       await downloadSurveyResults(locale, phase);
     } catch (error) {
-      // Not handling errors for now
+      // eslint-disable-next-line no-empty
     } finally {
       setIsDownloading(false);
     }
   };
 
-  // Function to navigate to AI analysis
   const openAnalysis = (analysisId: string) => {
     clHistory.push(
       `/admin/projects/${projectId}/analysis/${analysisId}?${stringify({

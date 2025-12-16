@@ -47,41 +47,34 @@ const AiSummary = ({ phaseId }: Props) => {
     onlyCheckAllowed: true,
   });
 
-  // Fetch existing analysis for this project (ideation uses project-scoped analysis)
   const { data: analyses, isLoading: isLoadingAnalyses } = useAnalyses({
     projectId,
   });
   const analysis = analyses?.data[0];
   const analysisId = analysis?.id;
 
-  // Create analysis if needed
   const { mutate: addAnalysis, isLoading: isCreatingAnalysis } =
     useAddAnalysis();
 
-  // Fetch insights (summaries) for the analysis
   const { data: insights, isLoading: isLoadingInsights } = useAnalysisInsights({
     analysisId: analysisId || '',
   });
 
-  // Get the first summary insight
   const summaryInsight = insights?.data.find(
     (insight) => insight.relationships.insightable.data.type === 'summary'
   );
   const summaryId = summaryInsight?.relationships.insightable.data.id;
 
-  // Fetch the full summary data
   const { data: summaryData } = useAnalysisSummary({
     analysisId: analysisId || '',
     id: summaryId || '',
   });
 
-  // Get input count for the analysis
   const { data: inputs } = useInfiniteAnalysisInputs({
     analysisId: analysisId || '',
   });
   const inputCount = inputs?.pages[0].meta.filtered_count || 0;
 
-  // Summary generation hooks
   const { mutate: preCheck, isLoading: isPreChecking } =
     useAddAnalysisSummaryPreCheck();
   const { mutate: addSummary, isLoading: isAddingSummary } =
@@ -89,11 +82,9 @@ const AiSummary = ({ phaseId }: Props) => {
   const { mutate: regenerateSummary, isLoading: isRegenerating } =
     useRegenerateAnalysisSummary();
 
-  // Calculate missing inputs count for refresh button
   const missingInputsCount =
     summaryData?.data.attributes.missing_inputs_count || 0;
 
-  // Auto-create analysis if none exists (use projectId for ideation)
   useEffect(() => {
     if (
       analyses &&
@@ -112,7 +103,6 @@ const AiSummary = ({ phaseId }: Props) => {
     analysisCreationAttempted,
   ]);
 
-  // Auto-generate summary if none exists
   useEffect(() => {
     if (
       analysisId &&
@@ -164,7 +154,6 @@ const AiSummary = ({ phaseId }: Props) => {
     }
   };
 
-  // Loading state
   if (isLoadingAnalyses || isLoadingInsights || isCreatingAnalysis) {
     return (
       <Box p="24px" bg="white" borderRadius="3px">
@@ -176,12 +165,10 @@ const AiSummary = ({ phaseId }: Props) => {
     );
   }
 
-  // No analysis or not enough inputs
   if (!analysisId || inputCount < MIN_INPUTS_FOR_SUMMARY) {
     return null;
   }
 
-  // Generating summary
   if (isPreChecking || isAddingSummary) {
     return (
       <Box p="24px" bg="white" borderRadius="3px">
@@ -193,7 +180,6 @@ const AiSummary = ({ phaseId }: Props) => {
     );
   }
 
-  // No summary generated yet
   if (!summaryData) {
     return null;
   }

@@ -89,7 +89,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.volunteerings',
     defaultMessage: 'Volunteers',
   },
-  // Demographics
   demographicsAndAudience: {
     id: 'app.containers.Admin.projects.project.insights.demographicsAndAudience',
     defaultMessage: 'Demographics & Audience',

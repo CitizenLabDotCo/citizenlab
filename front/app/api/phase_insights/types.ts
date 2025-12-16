@@ -59,7 +59,7 @@ export interface BudgetingMetrics {
 export interface SurveyMetrics {
   submitted_surveys: number;
   submitted_surveys_7_day_change?: SevenDayChange;
-  completion_rate: number; // Decimal format from backend (0.78 = 78%)
+  completion_rate: number;
   completion_rate_7_day_change?: SevenDayChange;
 }
 
@@ -91,7 +91,6 @@ export interface PhaseInsightsParticipationMetrics {
   participants_7_day_change?: SevenDayChange;
   participation_rate: number;
   participation_rate_7_day_change?: SevenDayChange;
-  // Method-specific metrics nested by participation method
   ideation?: IdeationMetrics;
   proposals?: ProposalsMetrics;
   voting?: VotingMetrics;
@@ -103,39 +102,23 @@ export interface PhaseInsightsParticipationMetrics {
   volunteering?: VolunteeringMetrics;
 }
 
-// ============================================================================
-// DEMOGRAPHICS TYPES - FRONTEND FORMAT (Component Consumption)
-// ============================================================================
-
-/**
- * Individual data point for a demographic option
- * Used by components for rendering charts and visualizations
- */
 export interface DemographicDataPoint {
   key: string;
-  label: string; // Localized label
+  label: string;
   count: number;
-  percentage: number; // Rounded to 1 decimal, sums to 100
-  population_percentage?: number; // For representativeness comparison
+  percentage: number;
+  population_percentage?: number;
 }
 
-/**
- * Complete demographic field data for frontend consumption
- * Contains pre-processed data points ready for visualization
- */
 export interface DemographicField {
   field_id: string;
   field_key: string;
-  field_name: string; // Localized name
-  field_code?: string | null; // Built-in fields: 'gender', 'birthyear', 'domicile'
+  field_name: string;
+  field_code?: string | null;
   data_points: DemographicDataPoint[];
-  r_score?: number; // Representativeness score (0-100)
+  r_score?: number;
 }
 
-/**
- * Demographics response in frontend format
- * This is what hooks return and components consume
- */
 export interface PhaseInsightsDemographics {
   fields: DemographicField[];
 }
@@ -151,44 +134,23 @@ export interface ParticipantsAndVisitorsChartData {
   timeseries: ChartTimeseriesDataPoint[];
 }
 
-// ============================================================================
-// DEMOGRAPHICS TYPES - BACKEND FORMAT (Series/Options Pattern)
-// ============================================================================
-
-/**
- * Backend response format following Report Builder pattern
- * Uses series/options structure for consistency with existing analytics endpoints
- */
-
-/**
- * Option metadata from backend
- * Contains multiloc labels and ordering information
- */
 export interface DemographicOption {
-  title_multiloc: Record<string, string>; // { en: "Male", fr: "Homme", ... }
+  title_multiloc: Record<string, string>;
   ordering: number;
 }
 
-/**
- * Backend demographic field using series/options pattern
- * This is what the API returns before transformation
- */
 export interface DemographicFieldBackend {
   id: string;
   key: string;
   code?: string | null;
-  input_type: string; // 'select', 'checkbox', 'multiselect', 'number'
-  title_multiloc: Record<string, string>; // { en: "Gender", fr: "Genre", ... }
+  input_type: string;
+  title_multiloc: Record<string, string>;
   r_score?: number | null;
-  series: Record<string, number>; // { "male": 680, "female": 830, "_blank": 10 }
-  options?: Record<string, DemographicOption>; // Metadata for each series key
-  reference_distribution?: Record<string, number>; // Reference population counts
+  series: Record<string, number>;
+  options?: Record<string, DemographicOption>;
+  reference_distribution?: Record<string, number>;
 }
 
-/**
- * Consolidated phase insights attributes from single API endpoint
- * Contains metrics, demographics, and chart data
- */
 export interface PhaseInsightsAttributes {
   metrics: PhaseInsightsParticipationMetrics;
   demographics: {
@@ -197,19 +159,12 @@ export interface PhaseInsightsAttributes {
   participants_and_visitors_chart_data: ParticipantsAndVisitorsChartData;
 }
 
-/**
- * Phase insights data (nested in JSONAPI response)
- */
 export interface PhaseInsightsData {
   id: string;
   type: 'phase_insights';
   attributes: PhaseInsightsAttributes;
 }
 
-/**
- * Consolidated phase insights response (full JSONAPI structure)
- * This is what the API returns from GET /phases/:id/insights
- */
 export interface IPhaseInsights {
   data: PhaseInsightsData;
 }

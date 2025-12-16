@@ -46,8 +46,6 @@ const FormResults = (props: Props) => {
   );
   const totalSubmissions = formResults?.data.attributes.totalSubmissions ?? 0;
 
-  // Group results: each page groups with the first question that follows it
-  // This ensures page headers stay with their first question in PDF export
   const groupedResults = useMemo(() => {
     if (!props.isPdfExport || results.length === 0) return null;
 
@@ -65,7 +63,6 @@ const FormResults = (props: Props) => {
 
     results.forEach((result) => {
       if (result.inputType === 'page') {
-        // Save current group if it has content
         if (
           currentGroup.page ||
           currentGroup.firstQuestion ||
@@ -73,25 +70,20 @@ const FormResults = (props: Props) => {
         ) {
           groups.push(currentGroup);
         }
-        // Start new group with this page
         currentGroup = {
           page: result,
           firstQuestion: null,
           remainingQuestions: [],
         };
       } else {
-        // It's a question
         if (currentGroup.page && !currentGroup.firstQuestion) {
-          // First question after a page
           currentGroup.firstQuestion = result;
         } else {
-          // Remaining questions
           currentGroup.remainingQuestions.push(result);
         }
       }
     });
 
-    // Don't forget the last group
     if (
       currentGroup.page ||
       currentGroup.firstQuestion ||
@@ -128,14 +120,12 @@ const FormResults = (props: Props) => {
     isLoading: isLoadingResults,
   };
 
-  // PDF Export: render grouped results with title grouped with first content
   if (props.isPdfExport && groupedResults) {
     const firstGroup = groupedResults[0];
     const remainingGroups = groupedResults.slice(1);
 
     return (
       <Box width="100%">
-        {/* Title + response count + first page/question grouped together */}
         <PageBreakBox>
           <Title variant="h3" as="h2" color="textPrimary" m="0px" mb="16px">
             {formatMessage(messages.questions)}
@@ -164,7 +154,6 @@ const FormResults = (props: Props) => {
           )}
         </PageBreakBox>
 
-        {/* First group's remaining questions */}
         {firstGroup.remainingQuestions.map((result, qIndex) => (
           <FormResultsQuestion
             key={`0-${qIndex}`}
@@ -175,10 +164,8 @@ const FormResults = (props: Props) => {
           />
         ))}
 
-        {/* Remaining groups */}
         {remainingGroups.map((group, groupIndex) => (
           <React.Fragment key={groupIndex + 1}>
-            {/* Page + first question wrapped together */}
             {(group.page || group.firstQuestion) && (
               <PageBreakBox>
                 {group.page && (
@@ -198,7 +185,6 @@ const FormResults = (props: Props) => {
                 )}
               </PageBreakBox>
             )}
-            {/* Remaining questions each get their own PageBreakBox */}
             {group.remainingQuestions.map((result, qIndex) => (
               <FormResultsQuestion
                 key={`${groupIndex + 1}-${qIndex}`}
@@ -214,7 +200,6 @@ const FormResults = (props: Props) => {
     );
   }
 
-  // Normal view: render flat list with title
   return (
     <Box width="100%">
       <Title variant="h3" as="h2" color="textPrimary" m="0px" mb="16px">

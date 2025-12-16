@@ -49,7 +49,6 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
     })),
   };
 
-  // Get date range from timeseries
   const startAtMoment =
     timeSeries.length > 0 ? moment(timeSeries[0].date_group) : null;
   const endAtMoment =

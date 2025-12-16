@@ -25,7 +25,6 @@ const TrendIndicator = ({
 }: Props) => {
   const { formatMessage } = useIntl();
 
-  // Show tooltip with explanatory text when null (phase < 14 days) or when comparing against zero
   if (percentageDifference === null) {
     return (
       <Box display="flex" alignItems="center" gap="4px">
@@ -54,20 +53,16 @@ const TrendIndicator = ({
     );
   }
 
-  // Determine if the percentage difference is positive, negative, or zero
   let trendType: 'positive' | 'negative' | 'zero' = 'zero';
   if (percentageDifference > 0) trendType = 'positive';
   if (percentageDifference < 0) trendType = 'negative';
 
-  // Get the current trend configuration object based on the trend type
   const currentTrendConfig = trendConfiguration[trendType];
 
-  // Format the percentage difference for display
   const trendPercentageLabel = `${
     percentageDifference >= 0 ? '+' : ''
   }${Math.round(percentageDifference)}%`;
 
-  // Determine which label to show
   const labelToShow = comparisonLabel
     ? comparisonLabel
     : showQuarterComparisonLabel
