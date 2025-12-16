@@ -969,8 +969,6 @@
   "app.containers.AdminPage.SettingsPage.sign_up_button": "\"Sign up\"",
   "app.containers.AdminPage.SettingsPage.signed_in": "Button for registered visitors",
   "app.containers.AdminPage.SettingsPage.signed_out": "Button for non-registered visitors",
-  "app.containers.AdminPage.SettingsPage.step1": "Email and password step",
-  "app.containers.AdminPage.SettingsPage.step1Tooltip": "This is shown on the top of the first page of the sign-up form (name, email, password).",
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Define the geographic areas that you would like to use for your platform, such as neighborhoods, boroughs or districts. You can associate these geographic areas with projects (filterable on the landing page) or ask participants to select their area of residence as a registration field to create Smart Groups and define access rights.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Choose how people will see your organization name, select the languages of your platform and link to your website.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "The provided subtitle exceeds the maximum allowed character limit (90 chars)",
