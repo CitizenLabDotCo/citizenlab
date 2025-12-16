@@ -86,7 +86,7 @@ gem 'activerecord-import', '~> 1.7'
 gem 'json-schema', '~> 4.3'
 gem 'activerecord-postgis-adapter', '~> 10.0.1'
 
-gem 'carrierwave', '~> 3.0.7'
+gem 'carrierwave', '~> 3.1.2'
 gem 'carrierwave-base64', '~> 2.11'
 gem 'fog-aws', '~> 3.24'
 

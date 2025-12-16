@@ -5,63 +5,134 @@ require 'rails_helper'
 RSpec.describe UserConfirmationService do
   subject(:service) { described_class.new }
 
-  let(:user) { create(:user_with_confirmation) }
-
   before do
     SettingsService.new.activate_feature! 'user_confirmation'
     RequestConfirmationCodeJob.perform_now user
   end
 
-  context 'when the user is nil' do
-    it 'returns a user blank error' do
-      result = service.validate_and_confirm!(nil, '1234')
+  shared_examples 'validation and confirmation' do |method_name|
+    context 'when the code is correct' do
+      it 'returns success' do
+        result = service.public_send(method_name, user, user.email_confirmation_code)
+        expect(result.success?).to be true
+      end
+    end
 
-      expect(result.success?).to be false
-      expect(result.errors.details).to eq({ user: [{ error: :blank }] })
+    context 'when the user is nil' do
+      it 'returns a user blank error' do
+        result = service.public_send(method_name, nil, '1234')
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq({ user: [{ error: :blank }] })
+      end
+    end
+
+    context 'when the code is nil' do
+      it 'returns a code blank error' do
+        result = service.public_send(method_name, user, nil)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq({ code: [{ error: :blank }] })
+      end
+    end
+
+    context 'when the code is incorrect' do
+      it 'returns a code invalid error' do
+        result = service.public_send(method_name, user, 'failcode')
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(code: [{ error: :invalid }])
+      end
+    end
+
+    context 'when the code has expired' do
+      before do
+        user.update(email_confirmation_code_sent_at: 1.week.ago)
+      end
+
+      it 'returns a code expired error' do
+        result = service.public_send(method_name, user, user.email_confirmation_code)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(code: [{ error: :expired }])
+      end
+    end
+
+    context 'when the code has expired and is invalid' do
+      before do
+        user.update(email_confirmation_code_sent_at: 1.week.ago)
+      end
+
+      it 'returns a code invalid error' do
+        result = service.public_send(method_name, user, 'failcode')
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(code: [{ error: :invalid }])
+      end
     end
   end
 
-  context 'when the code is nil' do
-    it 'returns a code blank error' do
-      result = service.validate_and_confirm!(user, nil)
-
-      expect(result.success?).to be false
-      expect(result.errors.details).to eq({ code: [{ error: :blank }] })
-    end
-  end
-
-  context 'when the code is incorrect' do
-    it 'returns a code invalid error' do
-      result = service.validate_and_confirm!(user, 'failcode')
-
-      expect(result.success?).to be false
-      expect(result.errors.details).to eq(code: [{ error: :invalid }])
-    end
-  end
-
-  context 'when the code has expired' do
+  describe '#validate_and_confirm_unauthenticated!' do
     before do
-      user.update(email_confirmation_code_sent_at: 1.week.ago)
+      SettingsService.new.activate_feature! 'password_login'
     end
 
-    it 'returns a code expired error' do
-      result = service.validate_and_confirm!(user, user.email_confirmation_code)
+    let(:user) { create(:user_no_password) }
 
-      expect(result.success?).to be false
-      expect(result.errors.details).to eq(code: [{ error: :expired }])
+    include_examples 'validation and confirmation', :validate_and_confirm_unauthenticated!
+
+    context 'when password_login is disabled' do
+      before do
+        SettingsService.new.deactivate_feature! 'password_login'
+      end
+
+      it 'returns a password login feature disabled error' do
+        result = service.validate_and_confirm_unauthenticated!(user, user.email_confirmation_code)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(base: [{ error: :password_login_feature_disabled }])
+      end
+    end
+
+    context 'when the user has a password' do
+      let(:user) { create(:user) }
+
+      it 'returns a user has password error' do
+        result = service.validate_and_confirm_unauthenticated!(user, user.email_confirmation_code)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(user: [{ error: :has_password }])
+      end
+    end
+
+    context 'when account already has a new_email' do
+      let(:user) { create(:user_no_password, new_email: 'some@email.com') }
+
+      it 'returns a user has new email error' do
+        result = service.validate_and_confirm_unauthenticated!(user, user.email_confirmation_code)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(user: [{ error: :has_new_email }])
+      end
     end
   end
 
-  context 'when the code has expired and is invalid' do
-    before do
-      user.update(email_confirmation_code_sent_at: 1.week.ago)
-    end
+  describe '#validate_and_confirm_email_change!' do
+    let(:user) { create(:user, new_email: 'new@email.com') }
 
-    it 'returns a code invalid error' do
-      result = service.validate_and_confirm!(user, 'failcode')
+    include_examples 'validation and confirmation', :validate_and_confirm_email_change!
 
-      expect(result.success?).to be false
-      expect(result.errors.details).to eq(code: [{ error: :invalid }])
+    context 'when the new email is blank' do
+      before do
+        user.update(new_email: nil)
+      end
+
+      it 'returns a no email error' do
+        result = service.validate_and_confirm_email_change!(user, user.email_confirmation_code)
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(user: [{ error: :no_email }])
+      end
     end
   end
 end
