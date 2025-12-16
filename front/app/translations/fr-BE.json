@@ -2111,6 +2111,7 @@
   "app.errors.confirmation_code_too_many_retries": "Vous avez essayé trop de fois. Veuillez renvoyer un code ou essayez de modifier votre adresse e-mail.",
   "app.errors.email_already_active": "L'adresse e-mail {value} trouvée ligne {row} du fichier appartient a un utilisateur déjà inscrit",
   "app.errors.email_already_invited": "L'adresse {value} trouvée à la ligne {row} du fichier a déjà reçu une invitation",
+  "app.errors.email_banned": "L'adresse électronique {value} trouvée dans la ligne {row} a été bannie et ne peut pas être invitée.",
   "app.errors.email_blank": "Cela ne peut pas être vide",
   "app.errors.email_domain_blacklisted": "Veuillez utiliser un domaine de messagerie différent pour vous inscrire.",
   "app.errors.email_invalid": "Veuillez entrer une adresse e-mail valide.",
