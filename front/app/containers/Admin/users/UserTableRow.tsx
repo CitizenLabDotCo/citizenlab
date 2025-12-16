@@ -334,12 +334,13 @@ const UserTableRow = ({
           open={showBlockUserModal}
           returnFocusRef={moreActionsButtonRef}
         />
-        <UnblockUser
-          user={userInRow}
-          setClose={() => setShowUnblockUserModal(false)}
-          open={showUnblockUserModal}
-          returnFocusRef={moreActionsButtonRef}
-        />
+        {showUnblockUserModal && (
+          <UnblockUser
+            user={userInRow}
+            setClose={() => setShowUnblockUserModal(false)}
+            returnFocusRef={moreActionsButtonRef}
+          />
+        )}
         {showDeleteUserModal && (
           <DeleteUser
             user={userInRow}

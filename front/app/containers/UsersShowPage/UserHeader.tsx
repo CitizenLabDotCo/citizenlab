@@ -184,11 +184,12 @@ const UserHeader = ({ userSlug }: Props) => {
               setClose={() => setShowBlockUserModal(false)}
               open={showBlockUserModal}
             />
-            <UnblockUser
-              user={user.data}
-              setClose={() => setShowUnblockUserModal(false)}
-              open={showUnblockUserModal}
-            />
+            {showUnblockUserModal && (
+              <UnblockUser
+                user={user.data}
+                setClose={() => setShowUnblockUserModal(false)}
+              />
+            )}
           </>
         )}
       </Box>
