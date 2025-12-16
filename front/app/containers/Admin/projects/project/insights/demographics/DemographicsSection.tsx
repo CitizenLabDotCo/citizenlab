@@ -24,9 +24,10 @@ import {
 
 import { useIntl } from 'utils/cl-intl';
 
+import messages from '../messages';
+import { usePdfExportContext } from '../PdfExportContext';
+
 import DemographicFieldContent from './DemographicFieldContent';
-import messages from './messages';
-import { usePdfExportContext } from './PdfExportContext';
 
 // Styled components reusing NavigationTabs constants and styles
 const TabsContainer = styled.div`

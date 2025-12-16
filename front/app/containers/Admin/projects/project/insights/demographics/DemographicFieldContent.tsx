@@ -9,9 +9,10 @@ import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 import { useIntl } from 'utils/cl-intl';
 
-import RScore from './audience/RScore';
-import { toChartData, toExcelData } from './audience/utils';
-import messages from './messages';
+import messages from '../messages';
+
+import RScore from './RScore';
+import { toChartData, toExcelData } from './utils';
 
 interface Props {
   field: DemographicField;

@@ -7,7 +7,7 @@ import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 
 import useLocalize from 'hooks/useLocalize';
 
-import RScore from 'containers/Admin/projects/project/insights/audience/RScore';
+import RScore from 'containers/Admin/projects/project/insights/demographics/RScore';
 
 import ComparisonBarChart from 'components/admin/Graphs/ComparisonBarChart';
 

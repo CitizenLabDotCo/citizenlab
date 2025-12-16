@@ -14,12 +14,12 @@ import clHistory from 'utils/cl-router/history';
 
 import { getAnalysisScope } from '../../components/AnalysisBanner/utils';
 
-import DemographicsSection from './DemographicsSection';
+import DemographicsSection from './demographics/DemographicsSection';
 import messages from './messages';
 import MethodSpecificInsights from './methodSpecific/MethodSpecificInsights';
 import SurveyActions from './methodSpecific/nativeSurvey/SurveyActions';
 import ParticipantsTimeline from './ParticipantsTimeline';
-import ParticipationMetrics from './ParticipationMetrics';
+import ParticipationMetrics from './participationMetrics/ParticipationMetrics';
 import { PdfExportProvider, usePdfExportContext } from './PdfExportContext';
 
 const AI_ANALYSIS_SUPPORTED_METHODS = [

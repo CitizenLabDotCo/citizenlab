@@ -8,7 +8,8 @@ import { IPhaseData } from 'api/phases/types';
 import { useIntl } from 'utils/cl-intl';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
-import messages from './messages';
+import messages from '../messages';
+
 import MethodMetrics from './MethodMetrics';
 import Metric from './Metric';
 

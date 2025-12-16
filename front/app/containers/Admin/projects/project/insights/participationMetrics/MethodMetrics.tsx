@@ -4,7 +4,8 @@ import { PhaseInsightsParticipationMetrics } from 'api/phase_insights/types';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from './messages';
+import messages from '../messages';
+
 import Metric from './Metric';
 
 interface Props {
