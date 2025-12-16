@@ -23,15 +23,16 @@ type Props = Dates &
     showVisitors?: boolean;
   };
 
-const emptyLineConfig = { strokeWidths: [0] };
-const emptyLineConfigDual = { strokeWidths: [0, 0] };
-const lineConfig = {
-  strokes: [colors.categorical01],
-  activeDot: { r: 4 },
-};
-const lineConfigDual = {
-  strokes: [colors.categorical01, colors.categorical03],
-  activeDot: { r: 4 },
+const getLineConfig = (noData: boolean, showVisitors: boolean) => {
+  if (noData) {
+    return { strokeWidths: showVisitors ? [0, 0] : [0] };
+  }
+  return {
+    strokes: showVisitors
+      ? [colors.categorical01, colors.categorical03]
+      : [colors.categorical01],
+    activeDot: { r: 4 },
+  };
 };
 
 const Chart = ({
@@ -95,15 +96,7 @@ const Chart = ({
         y: showVisitors ? ['participants', 'visitors'] : ['participants'],
       }}
       margin={margin}
-      lines={
-        noData
-          ? showVisitors
-            ? emptyLineConfigDual
-            : emptyLineConfig
-          : showVisitors
-          ? lineConfigDual
-          : lineConfig
-      }
+      lines={getLineConfig(noData, showVisitors)}
       grid={{ vertical: true }}
       xaxis={{ tickFormatter: formatTick }}
       yaxis={yaxis}
