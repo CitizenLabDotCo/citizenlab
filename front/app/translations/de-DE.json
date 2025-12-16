@@ -1615,6 +1615,8 @@
   "app.containers.NewAuthModal.steps.Password.password": "Passwort",
   "app.containers.NewAuthModal.steps.Password.rememberMe": "Angemeldet bleiben",
   "app.containers.NewAuthModal.steps.Password.rememberMeTooltip": "Nicht auswählen, wenn Sie einen öffentlichen Computer benutzen",
+  "app.containers.NewAuthModal.steps.Policies.change1": "ändern",
+  "app.containers.NewAuthModal.steps.Policies.createANewAccountWith": "Neues Konto erstellen mit: {email} {changeLink}",
   "app.containers.NewAuthModal.steps.Success.allDone": "Alles erledigt",
   "app.containers.NewAuthModal.steps.Success.nowContinueYourParticipation": "Los geht's!",
   "app.containers.NewAuthModal.steps.VerificationSuccess.userVerifiedSubtitle": "Ihre Identität wurde überprüft. Sie sind jetzt ein Mitglied der Community auf dieser Plattform.",
