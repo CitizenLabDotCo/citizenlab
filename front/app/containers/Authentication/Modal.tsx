@@ -290,6 +290,19 @@ const AuthModal = () => {
             onClose={transition(currentStep, 'CLOSE')}
           />
         )}
+
+        {currentStep === 'post-participation:email' && (
+          <EmailFlowStart
+            loading={loading}
+            setError={setError}
+            onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
+            onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
+            onEnterFranceConnect={transition(
+              currentStep,
+              'ENTER_FRANCE_CONNECT'
+            )}
+          />
+        )}
       </Box>
     </Modal>
   );

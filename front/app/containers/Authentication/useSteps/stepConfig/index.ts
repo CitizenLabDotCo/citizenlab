@@ -71,5 +71,22 @@ export const getStepConfig = (
     'verification-success': {
       CLOSE: () => setCurrentStep('closed'),
     },
+
+    'post-participation:email': {
+      CLOSE: () => setCurrentStep('closed'),
+      SUBMIT_EMAIL: () => {
+        // TODO handle post-participation email submission
+      },
+      CONTINUE_WITH_SSO: () => {
+        // TODO handle SSO continuation
+      },
+      ENTER_FRANCE_CONNECT: () => {
+        // TODO handle France Connect entry
+      },
+      DO_NOT_ASK_AGAIN: () => {
+        // TODO set cookie / local storage
+        setCurrentStep('closed');
+      },
+    },
   };
 };
