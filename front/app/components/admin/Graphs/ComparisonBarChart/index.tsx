@@ -87,7 +87,6 @@ const ComparisonBarChart = <Row,>({
             onMouseOver={(e) => onMouseOver?.(payload, e)}
             onMouseOut={(e) => onMouseOut?.(payload, e)}
           >
-            {/* Category label and percentages */}
             <Box
               display="flex"
               justifyContent="space-between"
@@ -108,10 +107,8 @@ const ComparisonBarChart = <Row,>({
               </Box>
             </Box>
 
-            {/* Comparison bar chart */}
             <BarContainer style={{ height: `${barHeight}px` }}>
               <Box display="flex" flexDirection="column" h="100%">
-                {/* Primary bar */}
                 <BarRow isFullHeight={!showComparison}>
                   <BarFill
                     percentage={payload.primaryValue}
@@ -120,7 +117,6 @@ const ComparisonBarChart = <Row,>({
                     isFullHeight={!showComparison}
                   />
                 </BarRow>
-                {/* Comparison bar */}
                 {showComparison && payload.comparisonValue !== undefined && (
                   <BarRow>
                     <BarFill
