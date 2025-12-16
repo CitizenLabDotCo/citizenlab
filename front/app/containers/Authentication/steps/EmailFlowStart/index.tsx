@@ -23,7 +23,6 @@ interface Props {
   setError: SetError;
   onSubmit: (email: string) => void;
   onSwitchToSSO: (ssoProvider: SSOProvider) => void;
-  onEnterFranceConnect: () => void;
 }
 
 const EmailFlowStart = ({
@@ -31,7 +30,6 @@ const EmailFlowStart = ({
   setError,
   onSubmit,
   onSwitchToSSO,
-  onEnterFranceConnect,
 }: Props) => {
   const { passwordLoginEnabled, ssoProviders } = useAuthConfig();
   const { formatMessage } = useIntl();
@@ -44,7 +42,7 @@ const EmailFlowStart = ({
             logoAlt={formatMessage(oldMessages.signUpButtonAltText, {
               loginMechanismName: 'FranceConnect',
             })}
-            onClick={onEnterFranceConnect}
+            onClick={() => onSwitchToSSO('franceconnect')}
           />
           {passwordLoginEnabled && (
             <Box mt="24px">
