@@ -10,14 +10,20 @@ import useLocalize from 'hooks/useLocalize';
 import Avatar from 'components/Avatar';
 import T from 'components/T';
 
-// Only using styled-component for :hover/:focus pseudo-selectors which aren't available as Box props
 const HoverableDiv = styled(Box)`
   transition: all 0.3s ease;
+  text-align: left;
   &:hover,
   &:focus {
     transform: translateY(-4px) rotate(0deg) !important;
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1) !important;
   }
+`;
+
+const BodyText = styled(Text)`
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
 `;
 
 interface Props {
@@ -68,7 +74,6 @@ const StickyNote: React.FC<Props> = ({
       flexDirection="column"
       gap="8px"
       border="none"
-      style={{ textAlign: 'left' }}
       onClick={onClick}
       onKeyDown={handleKeyDown}
       aria-label={title}
@@ -84,20 +89,15 @@ const StickyNote: React.FC<Props> = ({
           </Text>
         </Box>
       )}
-      <Text
+      <BodyText
         fontSize="m"
         color="textPrimary"
         textOverflow="ellipsis"
         overflow="hidden"
         m="0px"
-        style={{
-          display: '-webkit-box',
-          WebkitLineClamp: 4,
-          WebkitBoxOrient: 'vertical',
-        }}
       >
         <T supportHtml={true} value={idea.data.attributes.body_multiloc} />
-      </Text>
+      </BodyText>
     </HoverableDiv>
   );
 };
