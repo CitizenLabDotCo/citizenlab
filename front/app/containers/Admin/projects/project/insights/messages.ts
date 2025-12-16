@@ -121,10 +121,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.totalPopulation',
     defaultMessage: 'Total population',
   },
-  loading: {
-    id: 'app.containers.Admin.projects.project.insights.loading',
-    defaultMessage: 'Loading...',
-  },
   errorLoading: {
     id: 'app.containers.Admin.projects.project.insights.errorLoading',
     defaultMessage: 'Error loading insights data',

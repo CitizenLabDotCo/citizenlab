@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
@@ -25,7 +25,7 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
   if (isLoading) {
     return (
       <Box mt="8px" bg="white" p="24px" borderRadius="8px">
-        <Text>{formatMessage(messages.loading)}</Text>
+        <Spinner size="24px" />
       </Box>
     );
   }
