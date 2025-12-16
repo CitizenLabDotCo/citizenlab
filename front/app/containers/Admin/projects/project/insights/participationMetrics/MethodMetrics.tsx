@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { PhaseInsightsParticipationMetrics } from 'api/phase_insights/types';
+import { ParticipationMethod } from 'api/phases/types';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -9,7 +10,7 @@ import messages from '../messages';
 import Metric from './Metric';
 
 interface Props {
-  participationMethod: string;
+  participationMethod: ParticipationMethod;
   metrics: PhaseInsightsParticipationMetrics;
   showChange: boolean;
 }
