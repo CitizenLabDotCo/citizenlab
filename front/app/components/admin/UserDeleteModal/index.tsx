@@ -48,23 +48,20 @@ const EmailLink = styled.a`
 `;
 
 type Props = {
-  open: boolean;
   setClose: () => void;
   user: IUserData;
   returnFocusRef?: React.RefObject<HTMLElement>;
 };
 
-const DeleteUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
+const DeleteUserModal = ({ setClose, user, returnFocusRef }: Props) => {
   const [deleteParticipationData, setDeleteParticipationData] = useState(false);
   const [banEmail, setBanEmail] = useState(false);
   const [banReason, setBanReason] = useState('');
   const { formatMessage } = useIntl();
   const { mutate: deleteUser, isLoading } = useDeleteUser();
   const { data: statsResponse, isLoading: isLoadingStats } =
-    useUserParticipationStats({ id: user.id, enabled: open });
-  const { data: banDetails } = useCheckEmailBan(
-    open ? user.attributes.email : null
-  );
+    useUserParticipationStats({ id: user.id });
+  const { data: banDetails } = useCheckEmailBan(user.attributes.email);
 
   const stats = statsResponse?.data.attributes;
   const isAlreadyBanned = !!banDetails;
@@ -123,7 +120,7 @@ const DeleteUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
   return (
     <Modal
       close={setClose}
-      opened={open}
+      opened={true}
       header={formatMessage(messages.deleteUserHeader)}
       returnFocusRef={returnFocusRef}
     >

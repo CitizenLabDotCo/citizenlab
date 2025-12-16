@@ -340,12 +340,13 @@ const UserTableRow = ({
           open={showUnblockUserModal}
           returnFocusRef={moreActionsButtonRef}
         />
-        <DeleteUser
-          user={userInRow}
-          setClose={() => setShowDeleteUserModal(false)}
-          open={showDeleteUserModal}
-          returnFocusRef={moreActionsButtonRef}
-        />
+        {showDeleteUserModal && (
+          <DeleteUser
+            user={userInRow}
+            setClose={() => setShowDeleteUserModal(false)}
+            returnFocusRef={moreActionsButtonRef}
+          />
+        )}
         <Suspense fallback={null}>
           <ChangeSeatModal
             userToChangeSeat={userInRow}
