@@ -22,7 +22,7 @@ module WebApi
         end
 
         def page_size
-          params.dig(:page, :size)&.to_i
+          params.dig(:page, :size)&.to_i || 5
         end
       end
     end
