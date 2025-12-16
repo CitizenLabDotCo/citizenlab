@@ -146,7 +146,6 @@ const VoteResults = ({ phaseId }: Props) => {
               <ClusteredIdeaRow
                 idea={idea}
                 demographicKeys={demographicKeys}
-                clusterBy={clusterBy}
                 options={options}
               />
               {index < ideas.length - 1 && (

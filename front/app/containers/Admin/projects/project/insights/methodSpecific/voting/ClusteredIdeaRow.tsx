@@ -21,16 +21,10 @@ import VoteStats from './VoteStats';
 interface Props {
   idea: VotingIdeaResult;
   demographicKeys: string[];
-  clusterBy: string;
   options: Record<string, DemographicOption> | undefined;
 }
 
-const ClusteredIdeaRow = ({
-  idea,
-  demographicKeys,
-  clusterBy,
-  options,
-}: Props) => {
+const ClusteredIdeaRow = ({ idea, demographicKeys, options }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const title = localize(idea.title_multiloc);
@@ -85,7 +79,6 @@ const ClusteredIdeaRow = ({
           const percentage = breakdown?.percentage ?? 0;
           const label = getDemographicLabel(
             key,
-            clusterBy,
             options,
             localize,
             formatMessage

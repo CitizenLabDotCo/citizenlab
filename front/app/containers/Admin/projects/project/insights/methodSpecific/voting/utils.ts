@@ -1,9 +1,9 @@
+import { FormatMessage } from 'typings';
+
 import { DemographicOption } from 'api/phase_insights/types';
 import { VotingIdeaResult } from 'api/voting_insights/types';
 
 import { Localize } from 'hooks/useLocalize';
-
-import { MessageDescriptor } from 'utils/cl-intl';
 
 import messages from './messages';
 
@@ -45,26 +45,19 @@ export const getDemographicKeys = (
 
 export const getDemographicLabel = (
   key: string,
-  clusterBy: string | undefined,
   options: Record<string, DemographicOption> | undefined,
   localize: Localize,
-  formatMessage?: (message: MessageDescriptor) => string
+  formatMessage: FormatMessage
 ): string => {
-  // Handle _blank key - users without demographic data + offline votes
   if (key === BLANK_KEY) {
-    return formatMessage
-      ? formatMessage(messages.unknownDemographic)
-      : 'Unknown';
-  }
-
-  if (clusterBy === 'birthyear') {
-    return key;
+    return formatMessage(messages.unknownDemographic);
   }
 
   if (options?.[key]) {
     return localize(options[key].title_multiloc);
   }
 
+  // For birthyear age ranges or unknown keys, just return the key as-is
   return key;
 };
 
