@@ -15,6 +15,54 @@ import FormResultsPage from './FormResultsPage';
 import FormResultsQuestion from './FormResultsQuestion';
 import messages from './messages';
 
+interface ResultGroup {
+  page: ResultUngrouped | null;
+  firstQuestion: ResultUngrouped | null;
+  remainingQuestions: ResultUngrouped[];
+}
+
+/**
+ * Groups survey results for PDF export with proper page breaks.
+ * Each group contains a page header + first question (kept together in PageBreakBox)
+ * and remaining questions rendered separately.
+ */
+const groupResultsForPdfExport = (
+  results: ResultUngrouped[]
+): ResultGroup[] => {
+  const groups: ResultGroup[] = [];
+  let currentGroup: ResultGroup = {
+    page: null,
+    firstQuestion: null,
+    remainingQuestions: [],
+  };
+
+  const hasContent = (group: ResultGroup) =>
+    group.page || group.firstQuestion || group.remainingQuestions.length > 0;
+
+  results.forEach((result) => {
+    if (result.inputType === 'page') {
+      if (hasContent(currentGroup)) {
+        groups.push(currentGroup);
+      }
+      currentGroup = {
+        page: result,
+        firstQuestion: null,
+        remainingQuestions: [],
+      };
+    } else if (currentGroup.page && !currentGroup.firstQuestion) {
+      currentGroup.firstQuestion = result;
+    } else {
+      currentGroup.remainingQuestions.push(result);
+    }
+  });
+
+  if (hasContent(currentGroup)) {
+    groups.push(currentGroup);
+  }
+
+  return groups;
+};
+
 type Props = {
   projectId?: string;
   phaseId?: string;
@@ -48,51 +96,7 @@ const FormResults = (props: Props) => {
 
   const groupedResults = useMemo(() => {
     if (!props.isPdfExport || results.length === 0) return null;
-
-    const groups: {
-      page: ResultUngrouped | null;
-      firstQuestion: ResultUngrouped | null;
-      remainingQuestions: ResultUngrouped[];
-    }[] = [];
-
-    let currentGroup: {
-      page: ResultUngrouped | null;
-      firstQuestion: ResultUngrouped | null;
-      remainingQuestions: ResultUngrouped[];
-    } = { page: null, firstQuestion: null, remainingQuestions: [] };
-
-    results.forEach((result) => {
-      if (result.inputType === 'page') {
-        if (
-          currentGroup.page ||
-          currentGroup.firstQuestion ||
-          currentGroup.remainingQuestions.length > 0
-        ) {
-          groups.push(currentGroup);
-        }
-        currentGroup = {
-          page: result,
-          firstQuestion: null,
-          remainingQuestions: [],
-        };
-      } else {
-        if (currentGroup.page && !currentGroup.firstQuestion) {
-          currentGroup.firstQuestion = result;
-        } else {
-          currentGroup.remainingQuestions.push(result);
-        }
-      }
-    });
-
-    if (
-      currentGroup.page ||
-      currentGroup.firstQuestion ||
-      currentGroup.remainingQuestions.length > 0
-    ) {
-      groups.push(currentGroup);
-    }
-
-    return groups;
+    return groupResultsForPdfExport(results);
   }, [results, props.isPdfExport]);
 
   if (!formResults || !project) {
