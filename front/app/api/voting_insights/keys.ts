@@ -1,7 +1,7 @@
 import { QueryKeys } from 'utils/cl-react-query/types';
 
 const baseKey = {
-  type: 'voting_insights',
+  type: 'voting_phase_votes',
 };
 
 const votingInsightsKeys = {
