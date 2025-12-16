@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, ReactNode } from 'react';
 
 import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 
@@ -16,6 +16,17 @@ import messages from './messages';
 interface StatusBarData extends HorizontalBarRowData {
   ordering: number;
 }
+
+const StatusCard = ({ children }: { children: ReactNode }) => (
+  <Box
+    bgColor="white"
+    borderRadius="8px"
+    p="24px"
+    boxShadow="0px 1px 2px 0px rgba(0,0,0,0.05)"
+  >
+    {children}
+  </Box>
+);
 
 interface Props {
   phaseId: string;
@@ -64,27 +75,17 @@ const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
 
   if (isLoading) {
     return (
-      <Box
-        bgColor="white"
-        borderRadius="8px"
-        p="24px"
-        boxShadow="0px 1px 2px 0px rgba(0,0,0,0.05)"
-      >
+      <StatusCard>
         <Box display="flex" alignItems="center" gap="8px">
           <Spinner size="24px" />
         </Box>
-      </Box>
+      </StatusCard>
     );
   }
 
   if (statusData.length === 0) {
     return (
-      <Box
-        bgColor="white"
-        borderRadius="8px"
-        p="24px"
-        boxShadow="0px 1px 2px 0px rgba(0,0,0,0.05)"
-      >
+      <StatusCard>
         <Text
           m="0"
           mb="16px"
@@ -97,17 +98,12 @@ const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
         <Text m="0" color="textSecondary">
           {formatMessage(messages.noInputsSubmitted)}
         </Text>
-      </Box>
+      </StatusCard>
     );
   }
 
   return (
-    <Box
-      bgColor="white"
-      borderRadius="8px"
-      p="24px"
-      boxShadow="0px 1px 2px 0px rgba(0,0,0,0.05)"
-    >
+    <StatusCard>
       <Text m="0" mb="24px" fontWeight="semi-bold" fontSize="m" color="primary">
         {formatMessage(messages.statusBreakdown)}
       </Text>
@@ -116,7 +112,7 @@ const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
           <HorizontalBarRow key={status.id} data={status} maxCount={maxCount} />
         ))}
       </Box>
-    </Box>
+    </StatusCard>
   );
 };
 
