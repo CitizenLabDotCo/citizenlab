@@ -31,13 +31,13 @@ class XlsxService
   # | John  |      | 35  |
   # into this hash array:
   #   [{'name' => 'Ron', 'size' => 'xl'), {'name' => 'John', 'age' => 35}]
-  def xlsx_to_hash_array(xlsx)
+  def xlsx_to_hash_array(xlsx, include_empty_cells: false)
     workbook = RubyXL::Parser.parse_buffer(xlsx)
     worksheet = workbook.worksheets[0]
     worksheet.drop(1).map do |row|
       xlsx_utils = Export::Xlsx::Utils.new
       (row&.cells || []).compact.filter_map do |cell|
-        if cell.value
+        if cell.value || include_empty_cells
           column_header = xlsx_utils.add_duplicate_column_name_suffix(worksheet[0][cell.column]&.value)
           [column_header, cell.value]
         end

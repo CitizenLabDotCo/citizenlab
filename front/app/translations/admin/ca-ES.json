@@ -1252,8 +1252,6 @@
   "app.containers.AdminPage.SettingsPage.sign_up_button": "\"Registra't\"",
   "app.containers.AdminPage.SettingsPage.signed_in": "Botó per als visitants registrats",
   "app.containers.AdminPage.SettingsPage.signed_out": "Botó per a visitants no registrats",
-  "app.containers.AdminPage.SettingsPage.step1": "Pas de correu electrònic i contrasenya",
-  "app.containers.AdminPage.SettingsPage.step1Tooltip": "Això es mostra a la part superior de la primera pàgina del formulari d'inscripció (nom, correu electrònic, contrasenya).",
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Definiu les àrees geogràfiques que voleu utilitzar per a la vostra plataforma, com ara barris, districtes o districtes. Podeu associar aquestes àrees geogràfiques amb projectes (filtrables a la pàgina de destinació) o demanar als participants que seleccionen la seva àrea de residència com a camp de registre per crear Grups intel·ligents i definir els drets d'accés.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Trieu com veuran les persones el nom de la vostra organització, seleccioneu els idiomes de la vostra plataforma i enllaceu al vostre lloc web.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "El subtítol proporcionat supera el límit màxim de caràcters permès (90 caràcters)",

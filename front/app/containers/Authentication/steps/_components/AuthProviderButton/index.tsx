@@ -5,15 +5,15 @@ import { darken } from 'polished';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled, { useTheme } from 'styled-components';
 
+import { AuthProvider } from 'containers/Authentication/typings';
+
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 
-import { AuthProvider } from '../../AuthProviders';
-import messages from '../../AuthProviders/messages';
-
 import Consent from './Consent';
+import messages from './messages';
 import tracks from './tracks';
 
 const timeout = 300;
