@@ -1,4 +1,5 @@
 import { DemographicOption } from 'api/phase_insights/types';
+import { VotingIdeaResult } from 'api/voting_insights/types';
 
 import { Localize } from 'hooks/useLocalize';
 
@@ -6,26 +7,31 @@ import { MessageDescriptor } from 'utils/cl-intl';
 
 import messages from './messages';
 
-// Predefined age ranges for birthyear clustering
-const AGE_RANGES = ['16-24', '25-34', '35-44', '45-54', '55-64', '65+'];
-
 // Special key for users without demographic data + offline votes
 const BLANK_KEY = '_blank';
 
 /**
  * Get demographic keys in display order
- * For birthyear: predefined age ranges + _blank
- * For other demographics (gender, domicile): from backend options sorted by ordering + _blank
+ * For birthyear: extract keys from ideas series data (backend provides age ranges dynamically)
+ * For other demographics (gender, domicile): from backend options sorted by ordering
  * _blank is always added at the end to show users without data and offline votes
  */
 export const getDemographicKeys = (
   clusterBy: string | undefined,
-  options: Record<string, DemographicOption> | undefined
+  options: Record<string, DemographicOption> | undefined,
+  ideas?: VotingIdeaResult[]
 ): string[] => {
   if (!clusterBy) return [];
 
   if (clusterBy === 'birthyear') {
-    return [...AGE_RANGES, BLANK_KEY];
+    // Extract age range keys from the first idea's series (backend provides these dynamically)
+    const firstIdeaWithSeries = ideas?.find((idea) => idea.series);
+    if (!firstIdeaWithSeries?.series) return [];
+
+    const keys = Object.keys(firstIdeaWithSeries.series).filter(
+      (key) => key !== BLANK_KEY
+    );
+    return [...keys, BLANK_KEY];
   }
 
   if (!options) return [];
