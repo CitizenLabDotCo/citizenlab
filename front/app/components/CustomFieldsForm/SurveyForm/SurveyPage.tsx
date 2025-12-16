@@ -1,17 +1,20 @@
 import React, { useRef } from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, Button, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
+
+import { triggerPostParticipationFlow } from 'containers/Authentication/events';
 
 import SubmissionReference from 'components/CustomFieldsForm/PageControlButtons/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
@@ -85,6 +88,7 @@ const SurveyPage = ({
   const isAdminPage = isPage('admin', pathname);
   const isMapPage = page.page_layout === 'map';
   const isMobileOrSmaller = useBreakpoint('phone');
+  const { data: authUser } = useAuthUser();
 
   const [searchParams] = useSearchParams();
   const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
@@ -171,6 +175,8 @@ const SurveyPage = ({
     setCurrentPageIndex(previousPageNumber);
   };
 
+  const isLastPage = currentPageIndex === lastPageIndex;
+
   return (
     <FormProvider {...methods}>
       <StyledForm id="idea-form">
@@ -231,14 +237,20 @@ const SurveyPage = ({
                         phase={phase}
                         participationMethod={participationMethod}
                       />
-                      {currentPageIndex === lastPageIndex &&
-                        idea &&
-                        showIdeaId && (
-                          <SubmissionReference
-                            inputId={idea.data.id}
-                            participationMethod={participationMethod}
-                          />
-                        )}
+                      {isLastPage && idea && showIdeaId && (
+                        <SubmissionReference
+                          inputId={idea.data.id}
+                          participationMethod={participationMethod}
+                        />
+                      )}
+                      {isLastPage && !authUser && (
+                        <Button
+                          onClick={triggerPostParticipationFlow}
+                          mt="16px"
+                        >
+                          Sign up!
+                        </Button>
+                      )}
                     </Box>
                   </Box>
                 </Box>
