@@ -55,10 +55,10 @@ const HorizontalBarRow = ({
         <Box
           h="100%"
           borderRadius="9999px"
+          width={`${barWidthPercent}%`}
+          minWidth={barWidthPercent > 0 ? '12px' : '0'}
           style={{
             backgroundColor: data.color,
-            width: `${barWidthPercent}%`,
-            minWidth: barWidthPercent > 0 ? '12px' : '0',
           }}
         />
       </Box>
