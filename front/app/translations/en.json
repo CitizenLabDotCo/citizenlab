@@ -1171,6 +1171,7 @@
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} is already taken by a pending invite. Please check your email and click on the link to accept the invitation. If you can't find the invitation email, click the button below to resend it. The email might take a few minutes to arrive.",
   "app.containers.Authentication.steps.InvitationResent.invitationResent2": "Invitation resent!",
   "app.containers.Authentication.steps.InvitationResent.resendInvite2": "Resend invitation",
+  "app.containers.Authentication.steps.PostParticipationFlowStart.dropUsYourEmailIfYouWantToStayUpdated": "Drop us your email if you want to stay updated on future participation opportunities and results.",
   "app.containers.Authentication.steps.SSOVerification.alreadyHaveAnAccount": "Already have an account? {loginLink}",
   "app.containers.Authentication.steps.SSOVerification.logIn": "Log in",
   "app.containers.CampaignsConsentForm.ally_categoryLabel": "Emails in this category",
