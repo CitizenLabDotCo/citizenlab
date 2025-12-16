@@ -981,8 +981,6 @@
   "app.containers.AdminPage.SettingsPage.sign_up_button": "\"تسجيل الاشتراك\"",
   "app.containers.AdminPage.SettingsPage.signed_in": "زر للزائرين المسجَّلين",
   "app.containers.AdminPage.SettingsPage.signed_out": "زر للزائرين غير المسجَّلين",
-  "app.containers.AdminPage.SettingsPage.step1": "خطوة البريد الإلكتروني وكلمة المرور",
-  "app.containers.AdminPage.SettingsPage.step1Tooltip": "تظهر في الجزء العلوي من الصفحة الأولى لنموذج تسجيل الاشتراك (الاسم، البريد الإلكتروني، كلمة المرور).",
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "حدد التقسيمات الفرعية الجغرافية لمنطقتك.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "اختر كيفية رؤية الناس لاسمك، وحدّد لغات منصتك واربطها بموقعك الإلكتروني.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "يتجاوز النص الحد الأقصى المسموح به لعدد الأحرف وهو 90 حرفًا",
