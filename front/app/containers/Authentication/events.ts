@@ -11,6 +11,7 @@ type Event = {
   flow: 'signup' | 'signin';
 };
 
+// General auth flow
 export function triggerAuthenticationFlow(
   partialAuthenticationData?: Partial<AuthenticationData>,
   flow: 'signup' | 'signin' = 'signin'
@@ -32,6 +33,7 @@ export const triggerAuthenticationFlow$ = eventEmitter.observeEvent<Event>(
   TRIGGER_AUTHENTICATION_FLOW
 );
 
+// Verification only flow
 const TRIGGER_VERIFICATION_ONLY = 'triggerVerificationOnly';
 
 export function triggerVerificationOnly() {
@@ -41,3 +43,13 @@ export function triggerVerificationOnly() {
 export const triggerVerificationOnly$ = eventEmitter.observeEvent<undefined>(
   TRIGGER_VERIFICATION_ONLY
 );
+
+// Post-participation flow
+const TRIGGER_POST_PARTICIPATION_FLOW = 'triggerPostParticipationFlow';
+
+export function triggerPostParticipationFlow() {
+  eventEmitter.emit(TRIGGER_POST_PARTICIPATION_FLOW);
+}
+
+export const triggerPostParticipationFlow$ =
+  eventEmitter.observeEvent<undefined>(TRIGGER_POST_PARTICIPATION_FLOW);
