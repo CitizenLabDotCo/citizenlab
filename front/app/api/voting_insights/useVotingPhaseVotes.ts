@@ -10,7 +10,7 @@ import {
   VotingPhaseVotes,
   TransformedVotingPhaseVotes,
   BackendDemographicOption,
-  GroupByOption,
+  DemographicFieldKey,
 } from './types';
 
 /**
@@ -71,7 +71,7 @@ const fetchVotingPhaseVotes = async ({
   groupBy,
 }: {
   phaseId: string;
-  groupBy?: GroupByOption;
+  groupBy?: DemographicFieldKey;
 }): Promise<TransformedVotingPhaseVotes> => {
   const params = new URLSearchParams();
   if (groupBy) params.append('group_by', groupBy);
@@ -91,7 +91,7 @@ const fetchVotingPhaseVotes = async ({
 
 interface UseVotingPhaseVotesParams {
   phaseId: string;
-  groupBy?: GroupByOption;
+  groupBy?: DemographicFieldKey;
   enabled?: boolean;
 }
 

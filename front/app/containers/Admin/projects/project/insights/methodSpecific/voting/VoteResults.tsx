@@ -11,7 +11,7 @@ import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
 
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
-import { GroupByOption } from 'api/voting_insights/types';
+import { DemographicFieldKey } from 'api/voting_insights/types';
 import useVotingPhaseVotes from 'api/voting_insights/useVotingPhaseVotes';
 
 import useLocalize from 'hooks/useLocalize';
@@ -40,7 +40,7 @@ const VoteResults = ({ phaseId }: Props) => {
 
   const { data, isLoading, error } = useVotingPhaseVotes({
     phaseId,
-    groupBy: (clusterBy || undefined) as GroupByOption | undefined,
+    groupBy: (clusterBy || undefined) as DemographicFieldKey | undefined,
   });
 
   // Filter to fields that support demographic clustering

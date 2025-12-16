@@ -68,4 +68,4 @@ export interface TransformedVotingPhaseVotes {
   data: TransformedVotingPhaseVotesData;
 }
 
-export type GroupByOption = 'gender' | 'birthyear' | 'domicile' | string;
+export type DemographicFieldKey = 'gender' | 'birthyear' | 'domicile' | string;
