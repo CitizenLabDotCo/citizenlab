@@ -41,7 +41,7 @@ const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
         {showExportMenu && (
           <ReportExportMenu
             name={field.field_name}
-            xlsx={{ data: toExcelData(field) }}
+            xlsx={{ data: toExcelData(field, formatMessage) }}
           />
         )}
       </Box>

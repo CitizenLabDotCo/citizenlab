@@ -166,4 +166,20 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.noAnswer',
     defaultMessage: 'No answer',
   },
+  category: {
+    id: 'app.containers.Admin.projects.project.insights.category',
+    defaultMessage: 'Category',
+  },
+  participantsPercent: {
+    id: 'app.containers.Admin.projects.project.insights.participantsPercent',
+    defaultMessage: 'Participants (%)',
+  },
+  populationPercent: {
+    id: 'app.containers.Admin.projects.project.insights.populationPercent',
+    defaultMessage: 'Population (%)',
+  },
+  count: {
+    id: 'app.containers.Admin.projects.project.insights.count',
+    defaultMessage: 'Count',
+  },
 });
