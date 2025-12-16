@@ -21,9 +21,11 @@ class WebApi::V1::RequestCodesController < ApplicationController
   # provide a confirmed email.
   def request_code_email_change
     new_email = request_code_email_change_params[:new_email]
-
-    # Store new_email for the policy to access
-    current_user.instance_variable_set(:@new_email_for_policy, new_email)
+    
+    if current_user.new_email.blank? && new_email.blank?
+      render json: { error: 'new_email cannot be blank' }, status: :unprocessable_entity
+      return
+    end
 
     authorize current_user, policy_class: RequestCodePolicy
 

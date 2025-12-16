@@ -43,7 +43,7 @@ resource 'Request codes' do
       user = create(:user_no_password, new_email: 'new@email.com')
       expect(user.new_email).to eq 'new@email.com'
       do_request(request_code: { email: user.email })
-      expect(response_status).to eq 401
+      expect(response_status).to eq 422
     end
   end
 

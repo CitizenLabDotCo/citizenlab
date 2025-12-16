@@ -17,7 +17,6 @@ class RequestCodePolicy < ApplicationPolicy
   def request_code_email_change?
     return false unless app_configuration.feature_activated?('user_confirmation')
     return false if user.nil?
-    return false if new_email.blank? && user.new_email.blank?
     return false if user.email_confirmation_code_reset_count >= max_retries - 1
 
     true
@@ -36,10 +35,5 @@ class RequestCodePolicy < ApplicationPolicy
 
   def max_retries
     ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5).to_i
-  end
-
-  # For email change, we need access to the new_email parameter
-  def new_email
-    @new_email ||= user.instance_variable_get(:@new_email_for_policy)
   end
 end
