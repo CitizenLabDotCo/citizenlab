@@ -2111,6 +2111,7 @@
   "app.errors.confirmation_code_too_many_retries": "لقد أجريت محاولات أكثر مما ينبغي. يرجى طلب رمز جديد أو محاولة تغيير عنوان بريدك الإلكتروني.",
   "app.errors.email_already_active": "عنوان البريد الإلكتروني {value} والموجود في الصف {row} ينتمي بالفعل إلى مستخدم مسجّل",
   "app.errors.email_already_invited": "عنوان البريد الإلكتروني {value} والموجود في الصف {row} تمت دعوته بالفعل",
+  "app.errors.email_banned": "تم حظر عنوان البريد الإلكتروني {value} الموجود في الصف {row} ولا يمكن دعوته",
   "app.errors.email_blank": "لا يمكن أن يكون هذا فارغًا",
   "app.errors.email_domain_blacklisted": "يُرجى استخدام نطاق بريد إلكتروني مختلف للتسجيل.",
   "app.errors.email_invalid": "يُرجى استخدام عنوان بريد إلكتروني صالح.",
