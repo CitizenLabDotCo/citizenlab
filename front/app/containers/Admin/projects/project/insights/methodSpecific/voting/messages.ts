@@ -21,10 +21,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.insights.voting.none',
     defaultMessage: 'None',
   },
-  loading: {
-    id: 'app.containers.Admin.projects.insights.voting.loading',
-    defaultMessage: 'Loading vote results...',
-  },
   errorLoading: {
     id: 'app.containers.Admin.projects.insights.voting.errorLoading',
     defaultMessage: 'Error loading vote results',

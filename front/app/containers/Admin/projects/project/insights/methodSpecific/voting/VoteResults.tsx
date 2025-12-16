@@ -5,6 +5,7 @@ import {
   Text,
   Title,
   Select,
+  Spinner,
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
@@ -74,7 +75,7 @@ const VoteResults = ({ phaseId }: Props) => {
         <Title variant="h3" mb="16px">
           {formatMessage(messages.voteResults)}
         </Title>
-        <Text>{formatMessage(messages.loading)}</Text>
+        <Spinner size="24px" />
       </Box>
     );
   }
@@ -111,7 +112,6 @@ const VoteResults = ({ phaseId }: Props) => {
 
   return (
     <Box>
-      {/* Header with title and cluster by dropdown */}
       <Box mb="24px">
         <Title variant="h3" mb="16px">
           {formatMessage(messages.voteResults)}
@@ -139,7 +139,6 @@ const VoteResults = ({ phaseId }: Props) => {
       </Box>
 
       {clusterBy && demographicKeys.length > 0 ? (
-        // Clustered view with nested demographic breakdown per idea
         <Box>
           {ideas.map((idea, index) => (
             <React.Fragment key={idea.id}>
@@ -155,7 +154,6 @@ const VoteResults = ({ phaseId }: Props) => {
           ))}
         </Box>
       ) : (
-        // Non-clustered view: simple list
         <Box>
           {ideas.map((idea) => (
             <VotingIdeaRow key={idea.id} idea={idea} />
