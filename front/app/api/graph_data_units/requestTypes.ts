@@ -140,8 +140,6 @@ export interface DemographicsParams extends BaseParams {
 
 export interface ParticipantsProps extends AnalyticsProps, CompareProps {
   exclude_roles?: ExcludeRoles;
-  show_visitors?: boolean;
-  phase_id?: string;
 }
 
 export interface ParticipantsParams extends BaseParams {

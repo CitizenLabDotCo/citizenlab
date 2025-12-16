@@ -7,7 +7,6 @@ export interface Props extends TimeSeriesWidgetProps {
   compareEndAt?: string;
   hideStatistics?: boolean;
   showVisitors?: boolean;
-  phaseId?: string;
 }
 
 export type Stats = ReturnType<typeof parseStats>;

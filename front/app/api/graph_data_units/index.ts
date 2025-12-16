@@ -144,7 +144,7 @@ export const useDemographicsLive = (props: DemographicsProps) => {
 
 export const useParticipants = (
   props: ParticipantsProps,
-  { onSuccess }: { onSuccess?: () => void } = {}
+  { onSuccess }: { onSuccess?: () => void }
 ) => {
   return useGraphDataUnits<ParticipantsResponse>(
     {
