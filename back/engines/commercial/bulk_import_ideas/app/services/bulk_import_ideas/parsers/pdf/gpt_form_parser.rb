@@ -66,11 +66,12 @@ module BulkImportIdeas::Parsers::Pdf
 
     # Return a simple schema to send to GPT
     def form_schema
-      fields = printable_form_fields.map.with_index do |f, field_num|
+      field_num = 0
+      fields = printable_form_fields.map do |f|
         next if f.page?
 
         field = {
-          id: field_num + 1,
+          id: field_num += 1,
           type: f.input_type,
           text: f.title_multiloc[@locale.to_s]
         }

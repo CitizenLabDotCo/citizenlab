@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe BulkImportIdeas::Parsers::Pdf::GPTFormParser do
   subject(:parser) { described_class.new(phase, 'en') }
 
-  let(:phase) { create(:native_survey_phase) }
+  let(:phase) { create(:native_survey_phase, with_permissions: true) }
 
   describe '#parse_idea' do
     it 'returns the correct form data' do
@@ -117,60 +117,65 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::GPTFormParser do
     let!(:polygon_field) { create(:custom_field_polygon, resource: custom_form, title_multiloc: { 'en' => 'Polygon field' }) }
     let!(:end_page_field) { create(:custom_field_form_end_page, resource: custom_form) }
 
-    # User fields
-    let_it_be(:checkbox_field) { create(:custom_field_checkbox, resource_type: 'User', title_multiloc: { 'en' => 'Checkbox field' }) }
-    let_it_be(:date_field) { create(:custom_field_date, resource_type: 'User', title_multiloc: { 'en' => 'Date field' }) }
+    # User field
+    let_it_be(:user_text_field) do
+      create(:custom_field_text, resource_type: 'User', title_multiloc: { 'en' => 'User text field' })
+    end
 
     context 'no user fields in form' do
       it 'produces a schema to send to GPT' do
         schema = parser.send(:form_schema)
 
-        expect(schema).to eq(
-          [{ id: 1, type: 'text', text: 'Text field' },
-            { id: 2, type: 'multiline_text', text: 'Multiline field' },
-            { id: 3, type: 'select', text: 'Select field', options: [{ id: 1, text: 'Single 1' }, { id: 2, text: 'Single 2' }] },
-            { id: 4, type: 'multiselect', text: 'Multi select field', options: [{ id: 1, text: 'Option 1' }, { id: 2, text: 'Option 2' }] },
-            { id: 5, type: 'ranking', text: 'Ranking field', options: [{ id: 1, text: 'Ranking one' }, { id: 2, text: 'Ranking two' }] },
-            { id: 6, type: 'multiselect_image', text: 'Select image field', options: [{ id: 1, text: 'Image one' }, { id: 2, text: 'Image two' }, { id: 3, text: 'Image three' }] },
-            { id: 7, type: 'matrix_linear_scale', text: 'Matrix field' },
-            { id: 8, type: 'rating', text: 'Rating field' },
-            { id: 9, type: 'sentiment_linear_scale', text: 'Sentiment scale field' },
-            { id: 10, type: 'point', text: 'Point field' },
-            { id: 11, type: 'line', text: 'Line field' },
-            { id: 12, type: 'polygon', text: 'Polygon field' }]
-        )
+        expect(schema).to eq([
+          { id: 1, type: 'text', text: 'Text field' },
+          { id: 2, type: 'multiline_text', text: 'Multiline field' },
+          { id: 3, type: 'select', text: 'Select field', options: ['Single 1', 'Single 2'] },
+          { id: 4, type: 'multiselect', text: 'Multi select field', options: ['Option 1', 'Option 2'] },
+          { id: 5, type: 'ranking', text: 'Ranking field', options: ['Ranking one', 'Ranking two'] },
+          { id: 6, type: 'multiselect_image', text: 'Select image field', options: ['Image one', 'Image two', 'Image three'] },
+          { id: 7,
+            type: 'matrix_linear_scale',
+            text: 'Matrix field',
+            matrix_statements: ['We should send more animals into space', 'We should ride our bicycles more often', 'Matrix statement one', 'Matrix statement two'],
+            labels: ['Strongly disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly agree'] },
+          { id: 8, type: 'rating', text: 'Rating field' },
+          { id: 9, type: 'sentiment_linear_scale', text: 'Sentiment scale field' },
+          { id: 10, type: 'point', text: 'Point field' },
+          { id: 11, type: 'line', text: 'Line field' },
+          { id: 12, type: 'polygon', text: 'Polygon field' }
+        ])
       end
     end
 
     context 'user fields in survey form' do
+      before { phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true) }
+
       it 'produces a schema with the user fields in' do
-        # TODO: This test needs implementing
         schema = parser.send(:form_schema)
-        expect(schema).to eq(
-          [
-            { id: 1, type: 'text', text: 'Text field' },
-            { id: 2, type: 'multiline_text', text: 'Multiline field' },
-            { id: 3, type: 'select', text: 'Select field', options: [{ id: 1, text: 'Single 1' }, { id: 2, text: 'Single 2' }] },
-            { id: 4, type: 'multiselect', text: 'Multi select field', options: [{ id: 1, text: 'Option 1' }, { id: 2, text: 'Option 2' }] },
-            { id: 5, type: 'ranking', text: 'Ranking field', options: [{ id: 1, text: 'Ranking one' }, { id: 2, text: 'Ranking two' }] },
-            { id: 6, type: 'multiselect_image', text: 'Select image field', options: [{ id: 1, text: 'Image one' }, { id: 2, text: 'Image two' }, { id: 3, text: 'Image three' }] },
-            { id: 7, type: 'matrix_linear_scale', text: 'Matrix field' },
-            { id: 8, type: 'rating', text: 'Rating field' },
-            { id: 9, type: 'sentiment_linear_scale', text: 'Sentiment scale field' },
-            { id: 10, type: 'point', text: 'Point field' },
-            { id: 11, type: 'line', text: 'Line field' },
-            { id: 12, type: 'polygon', text: 'Polygon field' }
-          ]
-        )
+        expect(schema).to eq([
+          { id: 1, type: 'text', text: 'Text field' },
+          { id: 2, type: 'multiline_text', text: 'Multiline field' },
+          { id: 3, type: 'select', text: 'Select field', options: ['Single 1', 'Single 2'] },
+          { id: 4, type: 'multiselect', text: 'Multi select field', options: ['Option 1', 'Option 2'] },
+          { id: 5, type: 'ranking', text: 'Ranking field', options: ['Ranking one', 'Ranking two'] },
+          { id: 6, type: 'multiselect_image', text: 'Select image field', options: ['Image one', 'Image two', 'Image three'] },
+          { id: 7,
+            type: 'matrix_linear_scale',
+            text: 'Matrix field',
+            matrix_statements: ['We should send more animals into space', 'We should ride our bicycles more often', 'Matrix statement one', 'Matrix statement two'],
+            labels: ['Strongly disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly agree'] },
+          { id: 8, type: 'rating', text: 'Rating field' },
+          { id: 9, type: 'sentiment_linear_scale', text: 'Sentiment scale field' },
+          { id: 10, type: 'point', text: 'Point field' },
+          { id: 11, type: 'line', text: 'Line field' },
+          { id: 12, type: 'polygon', text: 'Polygon field' },
+          { id: 13, type: 'text', text: 'User text field' },
+          # The following are the default user fields
+          { id: 14, type: 'select', text: 'Member of councils?', options: ['youth council'] },
+          { id: 15, type: 'select', text: 'Member of councils?', options: ['youth council'] },
+          { id: 16, type: 'select', text: 'Member of councils?', options: ['youth council'] }
+        ])
       end
     end
-
-    # Enable only to test against actual LLM
-    # describe '#parse' do
-    #   it 'scans a document' do
-    #     file = Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/walworth_survey.pdf')
-    #     parser.send(:parse, file)
-    #   end
-    # end
   end
 end

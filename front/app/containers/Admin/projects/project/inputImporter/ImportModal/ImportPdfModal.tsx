@@ -38,7 +38,7 @@ interface FormValues {
   locale: SupportedLocale;
   file: Record<string, any>;
   personal_data: boolean;
-  google_consent: boolean;
+  parser_consent: boolean;
 }
 
 interface Props {
@@ -60,8 +60,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   // Allows switching of different parsers if needed
   const [searchParams] = useSearchParams();
   const parser = (searchParams.get('parser') || undefined) as ParserType;
-  const consentLabel =
-    parser === 'gpt' ? messages.azureConsent : messages.googleConsent;
+  const parserConsentRequired = parser !== 'gpt'; // Only need to show consent when using Google document AI parser
 
   const downloadFormPath =
     phase?.data.attributes.participation_method === 'native_survey'
@@ -72,7 +71,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
     locale,
     file: undefined,
     personal_data: false,
-    google_consent: false,
+    parser_consent: !parserConsentRequired,
   };
 
   const schema = object({
@@ -80,7 +79,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
     file: mixed().required(formatMessage(messages.pleaseUploadFile)),
 
     personal_data: boolean().required(),
-    google_consent: boolean()
+    parser_consent: boolean()
       .required()
       .test('', formatMessage(messages.consentNeeded), (v, context) => {
         if (context.parent.file?.extension === 'application/pdf') {
@@ -99,7 +98,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
 
   const submitFile = async ({
     file,
-    google_consent: _,
+    parser_consent: _,
     locale,
     personal_data,
   }: FormValues) => {
@@ -170,12 +169,14 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
                 label={<FormattedMessage {...messages.formHasPersonalData} />}
               />
             </Box>
-            <Box mt="24px">
-              <CheckboxWithLabel
-                name="google_consent"
-                label={<FormattedMessage {...consentLabel} />}
-              />
-            </Box>
+            {parserConsentRequired && (
+              <Box mt="24px">
+                <CheckboxWithLabel
+                  name="parser_consent"
+                  label={<FormattedMessage {...messages.googleConsent} />}
+                />
+              </Box>
+            )}
             <Box w="100%" display="flex" mt="32px">
               <Button
                 bgColor={colors.primary}
