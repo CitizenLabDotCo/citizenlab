@@ -60,11 +60,9 @@ const ClusteredIdeaRow = ({
               fontSize="s"
               fontWeight="bold"
               color="textPrimary"
-              style={{
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}
+              whiteSpace="nowrap"
+              overflow="hidden"
+              textOverflow="ellipsis"
             >
               {title}
             </Text>
@@ -122,7 +120,9 @@ const ClusteredIdeaRow = ({
                   m="0"
                   fontSize="s"
                   color="textSecondary"
-                  style={{ width: '60px', textAlign: 'right', flexShrink: 0 }}
+                  textAlign="right"
+                  w="60px"
+                  style={{ flexShrink: 0 }}
                 >
                   {percentage}%
                 </Text>

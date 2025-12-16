@@ -42,11 +42,9 @@ const SimpleVotingRow = ({ idea, title, tooltip }: Props) => {
             m="0"
             fontSize="s"
             color="textPrimary"
-            style={{
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-            }}
+            whiteSpace="nowrap"
+            overflow="hidden"
+            textOverflow="ellipsis"
           >
             {title}
           </Text>
