@@ -9,6 +9,7 @@ import ReportExportMenu from 'components/admin/ReportExportMenu';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { INSIGHTS_CHART_COLORS } from '../constants';
 import messages from '../messages';
 
 import RScore from './RScore';
@@ -58,7 +59,7 @@ const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
             width="8px"
             height="8px"
             borderRadius="50%"
-            background="#2f478a"
+            background={INSIGHTS_CHART_COLORS.darkBlue}
             aria-hidden="true"
           />
           <Text fontSize="s" color="coolGrey700" m="0px">
@@ -89,7 +90,7 @@ const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
           comparisonValue: 'population',
         }}
         showComparison={hasPopulationData}
-        primaryColor="#2f478a"
+        primaryColor={INSIGHTS_CHART_COLORS.darkBlue}
         comparisonColor={colors.teal300}
       />
     </Box>

@@ -1,13 +1,9 @@
-export const CHART_COLORS = {
-  darkBlue: '#2F478A',
-  lightBlue: '#B8C4E0',
-} as const;
+import { INSIGHTS_CHART_COLORS } from '../../constants';
 
-// Striped pattern for in-person votes
 export const getStripedPattern = () => `repeating-linear-gradient(
   135deg,
-  ${CHART_COLORS.darkBlue},
-  ${CHART_COLORS.darkBlue} 3px,
-  ${CHART_COLORS.lightBlue} 3px,
-  ${CHART_COLORS.lightBlue} 6px
+  ${INSIGHTS_CHART_COLORS.darkBlue},
+  ${INSIGHTS_CHART_COLORS.darkBlue} 3px,
+  ${INSIGHTS_CHART_COLORS.lightBlue} 3px,
+  ${INSIGHTS_CHART_COLORS.lightBlue} 6px
 )`;
