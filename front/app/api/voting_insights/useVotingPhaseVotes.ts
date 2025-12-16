@@ -13,19 +13,37 @@ import {
   GroupByOption,
 } from './types';
 
+/**
+ * Transforms backend demographic options format to frontend format.
+ * Backend format: [{ ordering: 0, gender: { id: '...', title_multiloc: {...} } }, ...]
+ * Frontend format: { gender: { title_multiloc: {...}, ordering: 0 }, ... }
+ */
 const transformOptions = (
   options?: BackendDemographicOption[]
 ): Record<string, DemographicOption> | undefined => {
   if (!options || options.length === 0) return undefined;
 
   return options.reduce((acc, opt) => {
-    const ordering = typeof opt.ordering === 'number' ? opt.ordering : 0;
+    const ordering = opt.ordering ?? 0;
+
+    // Find the key that is not 'ordering'
     const key = Object.keys(opt).find((k) => k !== 'ordering');
+
     if (key) {
       const value = opt[key];
-      if (typeof value === 'object' && 'title_multiloc' in value) {
+
+      if (
+        typeof value === 'object' &&
+        'title_multiloc' in value &&
+        typeof (value as { title_multiloc: unknown }).title_multiloc ===
+          'object'
+      ) {
+        const demographicValue = value as {
+          id: string;
+          title_multiloc: Record<string, string>;
+        };
         acc[key] = {
-          title_multiloc: value.title_multiloc,
+          title_multiloc: demographicValue.title_multiloc,
           ordering,
         };
       }

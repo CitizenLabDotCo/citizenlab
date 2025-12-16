@@ -125,9 +125,25 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.loading',
     defaultMessage: 'Loading...',
   },
+  errorLoading: {
+    id: 'app.containers.Admin.projects.project.insights.errorLoading',
+    defaultMessage: 'Error loading insights data',
+  },
   errorLoadingCommonGround: {
     id: 'app.containers.Admin.projects.project.insights.errorLoadingCommonGround',
     defaultMessage: 'Error loading Common Ground results',
+  },
+  errorLoadingDemographics: {
+    id: 'app.containers.Admin.projects.project.insights.errorLoadingDemographics',
+    defaultMessage: 'Error loading demographics data',
+  },
+  errorLoadingMetrics: {
+    id: 'app.containers.Admin.projects.project.insights.errorLoadingMetrics',
+    defaultMessage: 'Error loading participation metrics',
+  },
+  errorPdfDownload: {
+    id: 'app.containers.Admin.projects.project.insights.errorPdfDownload',
+    defaultMessage: 'Failed to download PDF. Please try again.',
   },
   participationOverTime: {
     id: 'app.containers.Admin.projects.project.insights.participationOverTime',

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Title, Button } from '@citizenlab/cl2-component-library';
+import { Box, Title, Button, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
@@ -41,6 +41,7 @@ const InsightsContent = () => {
     downloadPdf,
     isDownloading: isDownloadingPdf,
     isPdfExport,
+    error: pdfError,
   } = usePdfExportContext();
 
   const participationMethod = phase?.data.attributes.participation_method;
@@ -119,29 +120,47 @@ const InsightsContent = () => {
         >
           <FormattedMessage {...messages.insights} />
         </Title>
-        <Box display="flex" gap="8px">
+        <Box
+          display="flex"
+          flexDirection="column"
+          gap="8px"
+          alignItems="flex-end"
+        >
           {isNativeSurvey ? (
             <SurveyActions phase={phase.data} />
           ) : (
-            <Box display="flex" gap="8px" data-pdf-exclude="true">
-              <Button
-                buttonStyle={supportsAiAnalysis ? 'secondary' : 'primary'}
-                icon="download"
-                onClick={downloadPdf}
-                processing={isDownloadingPdf}
-                aria-label={formatMessage(messages.downloadInsightsPdf)}
-              >
-                <FormattedMessage {...messages.download} />
-              </Button>
-              {supportsAiAnalysis && (
+            <Box
+              display="flex"
+              flexDirection="column"
+              gap="8px"
+              alignItems="flex-end"
+              data-pdf-exclude="true"
+            >
+              <Box display="flex" gap="8px">
                 <Button
-                  buttonStyle="primary"
-                  icon="stars"
-                  onClick={handleGoToAnalysis}
-                  processing={isCreatingAnalysis}
+                  buttonStyle={supportsAiAnalysis ? 'secondary' : 'primary'}
+                  icon="download"
+                  onClick={downloadPdf}
+                  processing={isDownloadingPdf}
+                  aria-label={formatMessage(messages.downloadInsightsPdf)}
                 >
-                  <FormattedMessage {...messages.aiAnalysis} />
+                  <FormattedMessage {...messages.download} />
                 </Button>
+                {supportsAiAnalysis && (
+                  <Button
+                    buttonStyle="primary"
+                    icon="stars"
+                    onClick={handleGoToAnalysis}
+                    processing={isCreatingAnalysis}
+                  >
+                    <FormattedMessage {...messages.aiAnalysis} />
+                  </Button>
+                )}
+              </Box>
+              {pdfError && (
+                <Text fontSize="s" color="error" m="0px">
+                  {formatMessage(messages.errorPdfDownload)}
+                </Text>
               )}
             </Box>
           )}

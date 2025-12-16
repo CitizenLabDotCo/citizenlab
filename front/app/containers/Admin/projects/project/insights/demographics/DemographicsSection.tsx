@@ -3,6 +3,7 @@ import React, { useMemo, useState } from 'react';
 import {
   Box,
   Text,
+  Spinner,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
@@ -89,7 +90,11 @@ const DemographicsSection = ({ phase }: Props) => {
   const userDataCollection =
     phase?.attributes.user_data_collection || 'anonymous';
 
-  const { data: response, isLoading } = usePhaseInsights({
+  const {
+    data: response,
+    isLoading,
+    error,
+  } = usePhaseInsights({
     phaseId: phase?.id || '',
   });
 
@@ -124,8 +129,32 @@ const DemographicsSection = ({ phase }: Props) => {
             {formatMessage(messages.demographicsAndAudience)}
           </Text>
         </Box>
-        <Text color="textSecondary">
-          {formatMessage(messages.loadingDemographics)}
+        <Box display="flex" alignItems="center" gap="8px">
+          <Spinner size="24px" />
+          <Text color="textSecondary" m="0">
+            {formatMessage(messages.loadingDemographics)}
+          </Text>
+        </Box>
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Box
+        background="white"
+        borderRadius="8px"
+        display="flex"
+        flexDirection="column"
+        gap="24px"
+      >
+        <Box display="flex" alignItems="center" gap="8px">
+          <Text fontSize="m" fontWeight="bold" m="0px">
+            {formatMessage(messages.demographicsAndAudience)}
+          </Text>
+        </Box>
+        <Text color="error">
+          {formatMessage(messages.errorLoadingDemographics)}
         </Text>
       </Box>
     );

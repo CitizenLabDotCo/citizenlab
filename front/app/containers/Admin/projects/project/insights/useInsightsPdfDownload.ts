@@ -5,12 +5,14 @@ import { colors } from '@citizenlab/cl2-component-library';
 interface UseInsightsPdfDownloadOptions {
   filename?: string;
   containerId?: string;
+  errorMessage: string;
 }
 
 interface UseInsightsPdfDownloadReturn {
   downloadPdf: () => Promise<void>;
   isDownloading: boolean;
   isPdfExport: boolean;
+  error: string | null;
 }
 
 /**
@@ -18,15 +20,18 @@ interface UseInsightsPdfDownloadReturn {
  * Manages both the download state and the PDF export mode state.
  */
 export default function useInsightsPdfDownload({
+  errorMessage,
   filename = 'insights',
   containerId = 'insights-pdf-container',
-}: UseInsightsPdfDownloadOptions = {}): UseInsightsPdfDownloadReturn {
+}: UseInsightsPdfDownloadOptions): UseInsightsPdfDownloadReturn {
   const [isDownloading, setIsDownloading] = useState(false);
   const [isPdfExport, setIsPdfExport] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const downloadPdf = useCallback(async () => {
     setIsDownloading(true);
     setIsPdfExport(true);
+    setError(null);
 
     try {
       // Allow React to re-render with PDF export mode
@@ -102,15 +107,17 @@ export default function useInsightsPdfDownload({
       await html2pdf().set(options).from(clonedElement).save();
     } catch (err) {
       console.error('PDF download error:', err);
+      setError(errorMessage);
     } finally {
       setIsPdfExport(false);
       setIsDownloading(false);
     }
-  }, [containerId, filename]);
+  }, [containerId, filename, errorMessage]);
 
   return {
     downloadPdf,
     isDownloading,
     isPdfExport,
+    error,
   };
 }

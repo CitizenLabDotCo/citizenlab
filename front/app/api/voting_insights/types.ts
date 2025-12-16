@@ -5,10 +5,21 @@ export interface VotingDemographicBreakdown {
   percentage: number;
 }
 
-export type BackendDemographicOption = Record<
-  string,
-  { id: string; title_multiloc: Record<string, string> } | number
->;
+/**
+ * Backend format for demographic options.
+ * Each option is a record with:
+ * - An optional 'ordering' key with a number value
+ * - One other key-value pair where:
+ *   - The key is the demographic field key (e.g., 'gender', 'birthyear')
+ *   - The value is an object with id and title_multiloc (for select/multiselect/checkbox fields)
+ */
+export type BackendDemographicOption = {
+  ordering?: number;
+  [demographicKey: string]:
+    | { id: string; title_multiloc: Record<string, string> }
+    | number
+    | undefined;
+};
 
 export interface VotingIdeaResult {
   id: string;

@@ -18,9 +18,9 @@ interface Props {
 
 const ParticipantsTimeline = ({ phaseId }: Props) => {
   const { formatMessage } = useIntl();
-  const graphRef = useRef();
+  const graphRef = useRef<SVGElement>(null);
 
-  const { data, isLoading } = usePhaseInsights({ phaseId });
+  const { data, isLoading, error } = usePhaseInsights({ phaseId });
 
   if (isLoading) {
     return (
@@ -30,10 +30,18 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
     );
   }
 
+  if (error) {
+    return (
+      <Box mt="8px" bg="white" p="24px" borderRadius="8px">
+        <Text color="error">{formatMessage(messages.errorLoading)}</Text>
+      </Box>
+    );
+  }
+
   const chartDataFromApi =
-    data?.data.attributes.participants_and_visitors_chart_data;
-  const timeSeries = chartDataFromApi?.timeseries || [];
-  const resolution = chartDataFromApi?.resolution || 'month';
+    data.data.attributes.participants_and_visitors_chart_data;
+  const timeSeries = chartDataFromApi.timeseries;
+  const resolution = chartDataFromApi.resolution;
 
   const chartData = timeSeries.map((row) => ({
     date: row.date_group,
