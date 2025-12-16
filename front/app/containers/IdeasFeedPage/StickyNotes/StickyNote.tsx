@@ -10,7 +10,7 @@ import useLocalize from 'hooks/useLocalize';
 import Avatar from 'components/Avatar';
 import T from 'components/T';
 
-const HoverableDiv = styled(Box)`
+const StyledNote = styled(Box)`
   transition: all 0.3s ease;
   text-align: left;
   &:hover,
@@ -59,7 +59,7 @@ const StickyNote: React.FC<Props> = ({
   const authorHash = idea.data.attributes.author_hash;
 
   return (
-    <HoverableDiv
+    <StyledNote
       as="button"
       p="12px"
       borderRadius="2px"
@@ -98,7 +98,7 @@ const StickyNote: React.FC<Props> = ({
       >
         <T supportHtml={true} value={idea.data.attributes.body_multiloc} />
       </BodyText>
-    </HoverableDiv>
+    </StyledNote>
   );
 };
 

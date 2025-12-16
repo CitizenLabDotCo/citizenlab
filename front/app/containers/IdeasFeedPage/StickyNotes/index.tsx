@@ -62,7 +62,7 @@ interface Props {
   maxNotes?: number;
 }
 
-const StickyNotesPile: React.FC<Props> = ({ maxNotes = 20, phaseId }) => {
+const StickyNotesPile = ({ maxNotes = 20, phaseId }: Props) => {
   const [searchParams] = useSearchParams();
   const topicId = searchParams.get('topic');
   const { data: ideas, isLoading: ideasLoading } = useIdeaFeedIdeas({
