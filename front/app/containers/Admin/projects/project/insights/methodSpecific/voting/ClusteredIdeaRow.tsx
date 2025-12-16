@@ -43,7 +43,6 @@ const ClusteredIdeaRow = ({
 
   return (
     <Box py="16px">
-      {/* Main idea row */}
       <Box display="flex" alignItems="center" gap="16px">
         <Box flexShrink={0}>
           <IdeaThumbnail imageUrl={idea.image_url} alt={title} />
@@ -82,7 +81,6 @@ const ClusteredIdeaRow = ({
         </Box>
       </Box>
 
-      {/* Nested demographic breakdown */}
       <Box ml="76px" mt="12px">
         {demographicKeys.map((key) => {
           const breakdown = idea.series?.[key];
