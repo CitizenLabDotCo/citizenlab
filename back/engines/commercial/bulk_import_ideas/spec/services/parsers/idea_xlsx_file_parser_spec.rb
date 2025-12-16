@@ -198,6 +198,16 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       create(:custom_field_option, custom_field: another_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
       create(:custom_field_option, custom_field: another_select_field, key: 'other', other: true, title_multiloc: { 'en' => 'Other' })
 
+      third_select_field = create(:custom_field_multiselect, resource: custom_form, key: 'third_select_field', title_multiloc: { 'en' => 'Third select field' })
+      create(:custom_field_option, custom_field: third_select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
+      create(:custom_field_option, custom_field: third_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
+      create(:custom_field_option, custom_field: third_select_field, key: 'other', other: true, title_multiloc: { 'en' => 'Other' })
+
+      fourth_select_field = create(:custom_field_multiselect, resource: custom_form, key: 'fourth_select_field', title_multiloc: { 'en' => 'Fourth select field' })
+      create(:custom_field_option, custom_field: fourth_select_field, key: 'yes', title_multiloc: { 'en' => 'Yes' })
+      create(:custom_field_option, custom_field: fourth_select_field, key: 'no', title_multiloc: { 'en' => 'No' })
+      create(:custom_field_option, custom_field: fourth_select_field, key: 'other', other: true, title_multiloc: { 'en' => 'Other' })
+
       base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/import_select_other.xlsx').read
       file = service.send(:upload_source_file, "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}")
       parsed_rows = service.parse_rows(file)
@@ -208,12 +218,19 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
             select_field: 'other',
             select_field_other: 'Answer one',
             another_select_field: ['other'],
-            another_select_field_other: 'Answer two'
+            another_select_field_other: 'Answer two',
+            third_select_field: ['other'],
+            third_select_field_other: 'Answer three',
+            fourth_select_field: ['other'],
+            fourth_select_field_other: 'Answer Four'
           },
           {
             select_field: 'other',
             another_select_field: ['other'],
-            another_select_field_other: 'Answer two'
+            another_select_field_other: 'Answer two',
+            third_select_field: ['other'],
+            fourth_select_field: ['other'],
+            fourth_select_field_other: 'Answer Four'
           }
         ]
       )

@@ -1026,10 +1026,10 @@ GEM
       base64 (>= 0.2)
     que (2.3.0)
     racc (1.8.1)
-    rack (2.2.20)
+    rack (2.2.21)
     rack-attack (6.7.0)
       rack (>= 1.0, < 4)
-    rack-cors (2.0.0)
+    rack-cors (2.0.2)
       rack (>= 2.0.0)
     rack-mini-profiler (3.3.1)
       rack (>= 1.2.0)
@@ -1286,7 +1286,7 @@ GEM
       listen (>= 2.7, < 4.0)
       spring (>= 4)
     ssrf_filter (1.2.0)
-    stackprof (0.2.26)
+    stackprof (0.2.27)
     stringio (3.1.7)
     strong_migrations (2.5.0)
       activerecord (>= 7.1)
@@ -1486,7 +1486,7 @@ DEPENDENCIES
   pundit (~> 2.5.0)
   que (~> 2.3.0)
   rack-attack (~> 6)
-  rack-cors (= 2.0.0)
+  rack-cors (= 2.0.2)
   rack-mini-profiler
   rails (~> 7.2.3)
   rails-i18n (~> 7.0.9)
@@ -1528,7 +1528,7 @@ DEPENDENCIES
   spring
   spring-commands-rspec
   spring-watcher-listen (~> 2.1)
-  stackprof (~> 0.2.26)
+  stackprof (~> 0.2.27)
   strong_migrations (~> 2.5)
   surveys!
   test-prof (~> 1.3)
