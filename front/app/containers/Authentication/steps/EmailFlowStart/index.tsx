@@ -13,6 +13,8 @@ import Or from 'components/UI/Or';
 
 import { useIntl } from 'utils/cl-intl';
 
+import messages from '../messages';
+
 import EmailForm from './EmailForm';
 import SSOButtons from './SSOButtons';
 
@@ -52,7 +54,12 @@ const EmailFlowStart = ({
         </>
       )}
       {passwordLoginEnabled && (
-        <EmailForm loading={loading} setError={setError} onSubmit={onSubmit} />
+        <EmailForm
+          loading={loading}
+          topText={messages.enterYourEmailAddress}
+          setError={setError}
+          onSubmit={onSubmit}
+        />
       )}
       <SSOButtons onClickSSO={onSwitchToSSO} />
     </Box>

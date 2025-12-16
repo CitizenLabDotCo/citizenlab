@@ -10,7 +10,7 @@ import { SetError } from 'containers/Authentication/typings';
 import Input from 'components/HookForm/Input';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import {
   isCLErrorsWrapper,
   handleHookFormSubmissionError,
@@ -27,11 +27,12 @@ const DEFAULT_VALUES: Partial<FormValues> = {
 
 interface Props {
   loading: boolean;
+  topText: MessageDescriptor;
   setError: SetError;
   onSubmit: (email: string) => void;
 }
 
-const EmailForm = ({ loading, setError, onSubmit }: Props) => {
+const EmailForm = ({ loading, topText, setError, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
 
   const schema = useMemo(
@@ -72,7 +73,7 @@ const EmailForm = ({ loading, setError, onSubmit }: Props) => {
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(handleSubmit)}>
         <Text mt="0px" mb="32px" color="tenantText">
-          {formatMessage(sharedMessages.enterYourEmailAddress)}
+          {formatMessage(topText)}
         </Text>
         <Box data-cy="email-flow-start-email-input">
           <Input
