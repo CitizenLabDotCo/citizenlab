@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { DemographicsResponse } from 'api/graph_data_units/responseTypes/DemographicsWidget';
+import { IUserCustomField } from 'api/user_custom_fields/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -20,9 +21,10 @@ import { tooltip } from './tooltip';
 
 interface Props {
   response: DemographicsResponse;
+  customField?: IUserCustomField;
 }
 
-const StackedBarChart = ({ response }: Props) => {
+const StackedBarChart = ({ response, customField }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
@@ -37,9 +39,17 @@ const StackedBarChart = ({ response }: Props) => {
   const onMouseOutStackedBar = () => {
     setStackedBarHoverIndex(undefined);
   };
+  const parsedResponse = parseResponse(
+    response,
+    localize,
+    formatMessage(messages.unknown),
+    customField
+  );
+
+  if (!parsedResponse) return null;
 
   const { data, percentages, columns, statusColorById, labels, legendItems } =
-    parseResponse(response, localize, formatMessage(messages.unknown));
+    parsedResponse;
 
   return (
     <BaseStackedBarChart
