@@ -9,6 +9,11 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import { handleBlockedUserError } from 'utils/errorUtils';
 import { reportError } from 'utils/loggingUtils';
 
+import {
+  transformResponseData,
+  TransformResponseData,
+} from './transformResponseData';
+
 // FETCHER
 
 type Path = `/${string}`;
@@ -65,7 +70,7 @@ function fetcher<TResponseData extends BaseResponseData>(
   args: FetcherArgs
 ): FetcherArgs['action'] extends 'delete'
   ? null
-  : Promise<Omit<TResponseData, 'included'>>;
+  : Promise<TransformResponseData<TResponseData>>;
 
 /**
  * @param cacheIndividualItems : When set to true, if the API response returns an array of items, these items will individually be added to the cache in addition to the whole request.
@@ -226,12 +231,7 @@ async function fetcher({
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!data) return null;
-
-  if (!cacheIndividualItems) {
-    return data;
-  }
-  const { included: _included, ...rest } = data;
-  return rest as Omit<BaseResponseData, 'included'>;
+  return transformResponseData(data);
 }
 
 export default fetcher;
