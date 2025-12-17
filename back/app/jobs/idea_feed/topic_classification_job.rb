@@ -1,5 +1,5 @@
 module IdeaFeed
-  class IdeaTopicClassificationJob < ApplicationJob
+  class TopicClassificationJob < ApplicationJob
     queue_as :default
     self.priority = 70 # low priority
 

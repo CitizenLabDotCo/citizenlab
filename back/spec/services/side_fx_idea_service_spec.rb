@@ -155,20 +155,34 @@ describe SideFxIdeaService do
         .with(idea)
     end
 
-    it 'enqueues a wise voice detection job when idea_feed feature is activated' do
-      SettingsService.new.activate_feature! 'idea_feed'
+    it 'enqueues a wise voice detection job if the ideation_method is idea_feed' do
       idea = create(:idea)
+      idea.phases.first.update!(ideation_method: 'idea_feed')
       expect { service.after_create(idea, user) }
         .to enqueue_job(WiseVoiceDetectionJob)
         .with(idea)
         .exactly(1).times
     end
 
-    it "doesn't enqueue a wise voice detection job when idea_feed is inactivated" do
-      SettingsService.new.deactivate_feature! 'idea_feed'
+    it "doesn't enqueue a wise voice detection job if the ideation_method is not idea_feed" do
       idea = create(:idea)
       expect { service.after_create(idea, user) }
         .not_to enqueue_job(WiseVoiceDetectionJob)
+    end
+
+    it 'enqueues an IdeaFeed::TopicClassificationJob if the ideation_method is idea_feed' do
+      idea = create(:idea)
+      idea.phases.first.update!(ideation_method: 'idea_feed')
+      expect { service.after_create(idea, user) }
+        .to enqueue_job(IdeaFeed::TopicClassificationJob)
+        .with(idea)
+        .exactly(1).times
+    end
+
+    it "doesn't enqueue an IdeaFeed::TopicClassificationJob if the ideation_method is not idea_feed" do
+      idea = create(:idea)
+      expect { service.after_create(idea, user) }
+        .not_to enqueue_job(IdeaFeed::TopicClassificationJob)
     end
   end
 
@@ -422,9 +436,9 @@ describe SideFxIdeaService do
         .with(idea)
     end
 
-    it 'enqueues a wise voice detection job when idea_feed feature is activated and title or body changed' do
-      SettingsService.new.activate_feature! 'idea_feed'
+    it 'enqueues a wise voice detection job when ideation_method is idea_feed and title or body changed' do
       idea = create(:idea)
+      idea.phases.first.update!(ideation_method: 'idea_feed')
       idea.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
         .to enqueue_job(WiseVoiceDetectionJob)
@@ -432,8 +446,7 @@ describe SideFxIdeaService do
         .exactly(1).times
     end
 
-    it 'does not enqueue a wise voice detection job when idea_feed feature is deactivated' do
-      SettingsService.new.deactivate_feature! 'idea_feed'
+    it 'does not enqueue a wise voice detection job when ideation_method is not idea_feed' do
       idea = create(:idea)
       idea.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
@@ -441,11 +454,29 @@ describe SideFxIdeaService do
         .with(idea)
     end
 
-    it 'does not enqueue a wise voice detection job when idea_feed feature is activated but title and body did not change' do
-      SettingsService.new.activate_feature! 'idea_feed'
+    it 'does not enqueue a wise voice detection job when ideation_method is idea_feed but title and body did not change' do
       idea = create(:idea).reload
+      idea.phases.first.update!(ideation_method: 'idea_feed')
       expect { service.after_update(idea, user) }
         .not_to enqueue_job(WiseVoiceDetectionJob)
+        .with(idea)
+    end
+
+    it 'enqueues an IdeaFeed::TopicClassificationJob when ideation_method is idea_feed and title or body changed' do
+      idea = create(:idea)
+      idea.phases.first.update!(ideation_method: 'idea_feed')
+      idea.update!(title_multiloc: { en: 'changed' })
+      expect { service.after_update(idea, user) }
+        .to enqueue_job(IdeaFeed::TopicClassificationJob)
+        .with(idea)
+        .exactly(1).times
+    end
+
+    it 'does not enqueue an IdeaFeed::TopicClassificationJob when ideation_method is not idea_feed' do
+      idea = create(:idea)
+      idea.update!(title_multiloc: { en: 'changed' })
+      expect { service.after_update(idea, user) }
+        .not_to enqueue_job(IdeaFeed::TopicClassificationJob)
         .with(idea)
     end
 

@@ -191,7 +191,7 @@ describe IdeaFeed::LiveClusteringService do
 
       expect do
         service.classify_all_inputs_in_background!
-      end.to have_enqueued_job(IdeaFeed::IdeaTopicClassificationJob).exactly(3).times
+      end.to have_enqueued_job(IdeaFeed::TopicClassificationJob).exactly(3).times
     end
   end
 end
