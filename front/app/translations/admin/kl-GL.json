@@ -830,7 +830,6 @@
   "app.containers.AdminPage.ProjectEdit.survey.linear_scale2": "Linear scale",
   "app.containers.AdminPage.ProjectEdit.survey.multiselectText2": "Multiple choice - choose many",
   "app.containers.AdminPage.ProjectEdit.survey.noSurveyResponses2": "No survey responses yet",
-  "app.containers.AdminPage.ProjectEdit.survey.openForResponses2": "Open for responses",
   "app.containers.AdminPage.ProjectEdit.survey.optional2": "Optional",
   "app.containers.AdminPage.ProjectEdit.survey.quitReportConfirmationQuestion": "Are you sure you want to leave?",
   "app.containers.AdminPage.ProjectEdit.survey.required2": "Required",

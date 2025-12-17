@@ -84,7 +84,11 @@ const CommonGroundTabs = ({ phaseId, project }: Props) => {
         {currentTab === 'statements' && (
           <CommonGroundStatements phaseId={phaseId} />
         )}
-        {currentTab === 'results' && <CommonGroundResults phaseId={phaseId} />}
+        {currentTab === 'results' && (
+          <Box p="30px 30px 48px 30px" bg="white">
+            <CommonGroundResults phaseId={phaseId} />
+          </Box>
+        )}
       </Box>
     </ParticipationPermission>
   );

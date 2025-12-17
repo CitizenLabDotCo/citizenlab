@@ -44,7 +44,7 @@ const CommonGroundResults = ({ phaseId }: Props) => {
   const totalVotes = votes.up + votes.down + votes.neutral;
 
   return (
-    <Box mt="8px" bg="white" p="30px 30px 48px 30px">
+    <Box mt="8px">
       <Statistics
         numOfParticipants={num_participants}
         numOfIdeas={num_ideas}
