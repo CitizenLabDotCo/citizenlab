@@ -3277,7 +3277,7 @@
   "app.containers.admin.ReportBuilder.charts.analyticsChartAriaLabel": "Etiket",
   "app.containers.admin.ReportBuilder.charts.analyticsChartAriaLabelTooltip3": "Daha iyi erişilebilirlik için grafiği açıklayan bir etiket sağlayın.",
   "app.containers.admin.ReportBuilder.charts.analyticsChartDateRange": "Tarih aralığı",
-  "app.containers.admin.ReportBuilder.charts.analyticsChartDescription": "Description",
+  "app.containers.admin.ReportBuilder.charts.analyticsChartDescription": "Açıklama",
   "app.containers.admin.ReportBuilder.charts.analyticsChartDescriptionTooltip3": "Grafiğin daha ayrıntılı bir açıklamasını ve gelişmiş erişilebilirlik için ilgili eğilimleri sağlayın.",
   "app.containers.admin.ReportBuilder.charts.analyticsChartTitle": "Başlık",
   "app.containers.admin.ReportBuilder.charts.noData": "Seçtiğiniz filtreler için kullanılabilir veri yok.",
