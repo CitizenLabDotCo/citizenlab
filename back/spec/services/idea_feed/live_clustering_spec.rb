@@ -169,7 +169,29 @@ describe IdeaFeed::LiveClusteringService do
           .and change { project.allowed_input_topics.count }.from(3).to(2)
           .and change { old_topics[0].reload.title_multiloc['en'] }.from('Parking areas').to('Parking')
           .and change { old_topics[0].reload.description_multiloc['fr-FR'] }.from(nil).to('Contributions relatives à la disponibilité du stationnement, à la réglementation et aux infrastructures pour les véhicules.')
+          .and have_enqueued_job(LogActivityJob).at_least(:once).with(kind_of(Topic), 'created', nil, anything)
+          .and have_enqueued_job(LogActivityJob).at_least(:once).with(phase, 'topics_rebalanced', nil, anything, project_id: kind_of(String), payload: hash_including(
+            update_log: [{ topic_id: old_topics[0].id, title_multiloc: { old: { 'en' => 'Parking areas' }, new: { 'en' => 'Parking', 'fr-FR' => 'Stationnement', 'nl-NL' => 'Parkeren' } }, description_multiloc: { old: { 'en' => 'Ideas about depositing your car' }, new: { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.', 'fr-FR' => 'Contributions relatives à la disponibilité du stationnement, à la réglementation et aux infrastructures pour les véhicules.', 'nl-NL' => 'Bijdragen met betrekking tot de beschikbaarheid van parkeerplaatsen, regelgeving en infrastructuur voor voertuigen.' } } }],
+            input_count: 1,
+            creation_log: [{ topic_id: kind_of(String), title_multiloc: { 'en' => 'Public Transportation' }, description_multiloc: { 'en' => 'Ideas about public transportation systems and services' } }],
+            removal_log: [{ topic_id: old_topics[1].id }, { topic_id: old_topics[2].id }]
+          ))
       end
+    end
+  end
+
+  describe '#classify_all_inputs_in_background!' do
+    let_it_be(:project) { create(:project) }
+    let_it_be(:phase) { create(:idea_feed_phase, project:) }
+    let_it_be(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
+
+    it 'enqueues classification jobs for all published ideas in the phase' do
+      create_list(:idea, 3, project:, phases: [phase], topics: [])
+      create(:idea)
+
+      expect do
+        service.classify_all_inputs_in_background!
+      end.to have_enqueued_job(IdeaFeed::IdeaTopicClassificationJob).exactly(3).times
     end
   end
 end

@@ -26,12 +26,14 @@ module IdeaFeed
       if old_topics.any?
         mapping = run_map_old_to_new_topics(old_topics, new_topics)
 
-        update_changed_topics!(mapping, old_topics, new_topics)
-        create_new_topics!(mapping, new_topics)
-        remove_obsolete_topics!(mapping, old_topics)
+        update_log = update_changed_topics!(mapping, old_topics, new_topics)
+        creation_log = create_new_topics!(mapping, new_topics)
+        removal_log = remove_obsolete_topics!(mapping, old_topics)
       else
-        create_new_topics!({}, new_topics)
+        creation_log = create_new_topics!({}, new_topics)
       end
+
+      log_topics_rebalanced_activity(update_log:, creation_log:, removal_log:)
     end
 
     # Given an idea, classifies it into one or more topics, overwriting any
@@ -63,6 +65,13 @@ module IdeaFeed
       idea.update!(topics: selected_topics)
 
       selected_topics
+    end
+
+    def classify_all_inputs_in_background!
+      classification_jobs = @phase.ideas.published.find_each.map do |input|
+        IdeaTopicClassificationJob.new(@phase, input)
+      end
+      ActiveJob.perform_all_later(classification_jobs)
     end
 
     private
@@ -97,7 +106,6 @@ module IdeaFeed
 
     def run_map_old_to_new_topics(old_topics, new_topics)
       prompt = topic_mapping_prompt(old_topics, new_topics)
-      puts prompt
       @llm.chat(prompt, response_schema: topic_mapping_response_schema(old_topics))
     end
 
@@ -188,6 +196,7 @@ module IdeaFeed
     end
 
     def update_changed_topics!(mapping, old_topics, new_topics)
+      update_log = []
       mapping.each do |old_topic_id, v|
         next if v['new_topic_id'].blank?
 
@@ -200,15 +209,23 @@ module IdeaFeed
         new_description_multiloc = v['adjusted_topic_description_multiloc'] || new_topic['description_multiloc']
 
         if old_topic.title_multiloc != new_title_multiloc || old_topic.description_multiloc != new_description_multiloc
+          update_log << {
+            topic_id: old_topic.id,
+            title_multiloc: { old: old_topic.title_multiloc, new: new_title_multiloc },
+            description_multiloc: { old: old_topic.description_multiloc, new: new_description_multiloc }
+          }
+
           old_topic.update!(
             title_multiloc: v['adjusted_topic_title_multiloc'] || new_topic['title_multiloc'],
             description_multiloc: v['adjusted_topic_description_multiloc'] || new_topic['description_multiloc']
           )
         end
       end
+      update_log
     end
 
     def create_new_topics!(mapping, new_topics)
+      creation_log = []
       new_topics
         .filter { |new_topic| mapping.values.none? { |v| v['new_topic_id'] == "NEW-#{new_topics.index(new_topic)}" } }
         .each do |new_topic|
@@ -221,11 +238,19 @@ module IdeaFeed
               project: @phase.project,
               topic:
             )
+            SideFxTopicService.new.after_create(topic, nil)
+            creation_log << {
+              topic_id: topic.id,
+              title_multiloc: new_topic['title_multiloc'],
+              description_multiloc: new_topic['description_multiloc']
+            }
           end
         end
+      creation_log
     end
 
     def remove_obsolete_topics!(mapping, old_topics)
+      removal_log = []
       obsolete_old_topic_ids = mapping
         .filter { |_, v| v['new_topic_id'].blank? }
         .keys
@@ -236,7 +261,11 @@ module IdeaFeed
           IdeasTopic.where(topic: old_topic, idea: @phase.project.ideas.published).destroy_all
           ProjectsAllowedInputTopic.where(project: @phase.project, topic: old_topic).destroy_all
         end
+        removal_log << {
+          topic_id: old_topic.id
+        }
       end
+      removal_log
     end
 
     def project_description
@@ -246,6 +275,21 @@ module IdeaFeed
         @phase.project.description_multiloc
       end
       multiloc_service.t(description_multiloc)
+    end
+
+    def log_topics_rebalanced_activity(update_log: [], creation_log: [], removal_log: [])
+      LogActivityJob.perform_later(
+        @phase,
+        'topics_rebalanced',
+        nil,
+        Time.now.to_i,
+        payload: {
+          input_count: @phase.ideas.published.count,
+          update_log:,
+          creation_log:,
+          removal_log:
+        }
+      )
     end
   end
 end
