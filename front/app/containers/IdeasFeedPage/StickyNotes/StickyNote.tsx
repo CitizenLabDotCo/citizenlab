@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  colors,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -26,21 +31,42 @@ const BodyText = styled(Text)`
   -webkit-box-orient: vertical;
 `;
 
+type Size = 'small' | 'large';
+
 interface Props {
   ideaId: string;
   rotation?: number;
   topicBackgroundColor: string;
   onClick?: () => void;
+  size?: Size;
 }
+
+type SizeStyles = { width: string; minHeight: string; padding: string };
+
+const sizeStylesMobile: Record<Size, SizeStyles> = {
+  small: { width: '200px', minHeight: '160px', padding: '10px' },
+  large: { width: '300px', minHeight: '400px', padding: '16px' },
+};
+
+const sizeStylesDesktop: Record<Size, SizeStyles> = {
+  small: { width: '250px', minHeight: '200px', padding: '12px' },
+  large: { width: '350px', minHeight: '500px', padding: '24px' },
+};
 
 const StickyNote: React.FC<Props> = ({
   ideaId,
   rotation = 0,
   topicBackgroundColor,
   onClick,
+  size = 'small',
 }) => {
   const { data: idea } = useIdeaById(ideaId);
   const localize = useLocalize();
+  const isMobile = useBreakpoint('phone');
+
+  const sizeStyles = isMobile
+    ? sizeStylesMobile[size]
+    : sizeStylesDesktop[size];
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' || event.key === ' ') {
@@ -61,10 +87,10 @@ const StickyNote: React.FC<Props> = ({
   return (
     <StyledNote
       as="button"
-      p="12px"
+      p={sizeStyles.padding}
       borderRadius="2px"
-      w="250px"
-      minHeight="200px"
+      w={sizeStyles.width}
+      minHeight={sizeStyles.minHeight}
       transform={`rotate(${rotation}deg)`}
       background={topicBackgroundColor || colors.teal200}
       boxShadow="0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)"

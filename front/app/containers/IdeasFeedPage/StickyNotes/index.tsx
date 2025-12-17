@@ -1,13 +1,14 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useCallback } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import useIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
+import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
 
 import { getTopicColor } from '../topicsColor';
 
+import IdeasFeed from './IdeasFeed';
 import StickyNote from './StickyNote';
 
 const PileContainer = styled(Box)`
@@ -65,20 +66,22 @@ interface Props {
 const StickyNotesPile = ({ maxNotes = 20, phaseId }: Props) => {
   const [searchParams] = useSearchParams();
   const topicId = searchParams.get('topic');
+  const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
+
   const {
-    data: ideas,
+    data,
     isLoading: ideasLoading,
     isFetching,
-  } = useIdeaFeedIdeas({
+  } = useInfiniteIdeaFeedIdeas({
     phaseId,
     topic: topicId || undefined,
     'page[size]': maxNotes,
   });
 
   const flatIdeas = useMemo(() => {
-    if (!ideas) return [];
-    return ideas.data;
-  }, [ideas]);
+    if (!data) return [];
+    return data.pages.flatMap((page) => page.data);
+  }, [data]);
 
   // Extract topic IDs for each idea
   const ideaTopics = useMemo(() => {
@@ -91,6 +94,14 @@ const StickyNotesPile = ({ maxNotes = 20, phaseId }: Props) => {
     return map;
   }, [flatIdeas]);
 
+  const handleNoteClick = useCallback((ideaId: string) => {
+    setSelectedIdeaId(ideaId);
+  }, []);
+
+  const handleCloseFeed = useCallback(() => {
+    setSelectedIdeaId(null);
+  }, []);
+
   if (ideasLoading) {
     return (
       <Box display="flex" justifyContent="center" p="40px">
@@ -99,10 +110,23 @@ const StickyNotesPile = ({ maxNotes = 20, phaseId }: Props) => {
     );
   }
 
-  if (!ideas || flatIdeas.length === 0) {
+  if (!data || flatIdeas.length === 0) {
     return null;
   }
 
+  // Show the feed view when an idea is selected
+  if (selectedIdeaId) {
+    return (
+      <IdeasFeed
+        phaseId={phaseId}
+        topicId={topicId}
+        initialIdeaId={selectedIdeaId}
+        onClose={handleCloseFeed}
+      />
+    );
+  }
+
+  // Show the pile view
   return (
     <PileContainer>
       {flatIdeas.slice(0, maxNotes).map((idea, index) => {
@@ -122,9 +146,7 @@ const StickyNotesPile = ({ maxNotes = 20, phaseId }: Props) => {
             <StickyNote
               ideaId={idea.id}
               topicBackgroundColor={topicBackgroundColor}
-              onClick={() => {
-                // TODO: open feed
-              }}
+              onClick={() => handleNoteClick(idea.id)}
             />
           </NoteWrapper>
         );
