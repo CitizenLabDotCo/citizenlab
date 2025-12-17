@@ -19,6 +19,18 @@ export interface BaseProps<Row, Payload> {
   onMouseOver?: (payload: Payload, event: React.MouseEvent) => void;
   onMouseOut?: (payload: Payload, event: React.MouseEvent) => void;
 }
+export interface AccessibilityProps {
+  ariaLabel?: string;
+  ariaDescribedBy?: string;
+}
+
+export interface RechartsAccessibilityProps {
+  accessibilityLayer?: boolean;
+  role?: string;
+  'aria-label'?: string;
+  'aria-describedby'?: string;
+  tabIndex?: number;
+}
 
 // STYLING
 export interface Margin {
