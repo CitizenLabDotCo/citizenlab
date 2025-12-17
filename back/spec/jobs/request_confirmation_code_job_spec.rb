@@ -46,6 +46,18 @@ RSpec.describe RequestConfirmationCodeJob do
           expect { job.perform(user) }.not_to change(user, :new_email)
         end
 
+        it 'sets confirmation_required to true' do
+          user = create(:user)
+          expect(user.confirmation_required?).to be false
+          job.perform(user)
+          expect(user.reload.confirmation_required?).to be true
+        end
+
+        it 'resets email_confirmation_retry_count' do
+          user.update!(email_confirmation_retry_count: 3)
+          expect { job.perform(user) }.to change(user, :email_confirmation_retry_count).to(0)
+        end
+
         context 'when setting a new email' do
           let(:new_email) { 'new@email.com' }
 
@@ -79,6 +91,27 @@ RSpec.describe RequestConfirmationCodeJob do
             expect(user.errors.details).to eq({ email: [{ error: :taken, value: new_email }] })
             expect(user.reload.new_email).to be_nil
           end
+
+          it 'does not reset email_confirmation_code_reset_count' do
+            # Since the user here comes from the :user_with_confirmation factory,
+            # the reset count is already 1 at the start of this test
+            job.perform(user, new_email: new_email)
+            expect(user.email_confirmation_code_reset_count).to eq 2
+            job.perform(user, new_email: new_email)
+            expect(user.email_confirmation_code_reset_count).to eq 3
+          end
+
+          it 'sets confirmation_required to true' do
+            user = create(:user)
+            expect(user.confirmation_required?).to be false
+            job.perform(user, new_email: new_email)
+            expect(user.reload.confirmation_required?).to be true
+          end
+
+          it 'resets email_confirmation_retry_count' do
+            user.update!(email_confirmation_retry_count: 3)
+            expect { job.perform(user) }.to change(user, :email_confirmation_retry_count).to(0)
+          end
         end
       end
 
@@ -92,6 +125,11 @@ RSpec.describe RequestConfirmationCodeJob do
             job.perform(user, new_email: new_email)
             expect(user.new_email).to eq new_email
             expect(user.email).to eq 'some_email@email.com'
+          end
+
+          it 'resets email_confirmation_retry_count' do
+            user.update!(email_confirmation_retry_count: 3)
+            expect { job.perform(user) }.to change(user, :email_confirmation_retry_count).to(0)
           end
         end
       end
