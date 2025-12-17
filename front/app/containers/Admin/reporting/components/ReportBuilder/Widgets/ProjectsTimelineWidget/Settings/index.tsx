@@ -18,6 +18,9 @@ import MultiSelect from 'components/UI/MultiSelect';
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
+import FolderMultiSelect from '../../_shared/FolderMultiSelect';
+import sharedMessages from '../../_shared/messages';
+import ProjectMultiSelect from '../../_shared/ProjectMultiSelect';
 import { TitleInput } from '../../ChartWidgets/_shared/ChartWidgetSettings';
 import { DEFAULT_NO_OF_PROJECTS } from '../constants';
 import messages from '../messages';
@@ -68,6 +71,8 @@ const Settings = () => {
     noOfProjects,
     minStartDate,
     maxStartDate,
+    excludedProjectIds,
+    excludedFolderIds,
   } = useNode((node) => ({
     status: node.data.props.status || ['published'],
     managers: node.data.props.managers || [],
@@ -81,6 +86,8 @@ const Settings = () => {
     noOfProjects: node.data.props.noOfProjects,
     minStartDate: node.data.props.minStartDate,
     maxStartDate: node.data.props.maxStartDate,
+    excludedProjectIds: node.data.props.excludedProjectIds || [],
+    excludedFolderIds: node.data.props.excludedFolderIds || [],
   }));
 
   const { data: managersData } = useUsers({});
@@ -130,6 +137,18 @@ const Settings = () => {
     setProp((props: ProjectsTimelineCardProps) => {
       props.minStartDate = from;
       props.maxStartDate = to;
+    });
+  };
+
+  const handleExcludedFoldersChange = (ids: string[]) => {
+    setProp((props: ProjectsTimelineCardProps) => {
+      props.excludedFolderIds = ids;
+    });
+  };
+
+  const handleExcludedProjectsChange = (ids: string[]) => {
+    setProp((props: ProjectsTimelineCardProps) => {
+      props.excludedProjectIds = ids;
     });
   };
 
@@ -285,6 +304,14 @@ const Settings = () => {
           tooltipContent={formatMessage(projectFilterMessages.projectStartDate)}
         />
       </SettingsField>
+      <SettingsField label={formatMessage(messages.numberOfProjects)}>
+        <Input
+          type="number"
+          value={noOfProjects?.toString() ?? ''}
+          placeholder={DEFAULT_NO_OF_PROJECTS.toString()}
+          onChange={handleNoOfProjectsChange}
+        />
+      </SettingsField>
       <SettingsField label={formatMessage(messages.sort)}>
         <Select
           value={sort}
@@ -292,12 +319,20 @@ const Settings = () => {
           onChange={handleSortChange}
         />
       </SettingsField>
-      <SettingsField label={formatMessage(messages.numberOfProjects)}>
-        <Input
-          type="number"
-          value={noOfProjects?.toString() ?? ''}
-          placeholder={DEFAULT_NO_OF_PROJECTS.toString()}
-          onChange={handleNoOfProjectsChange}
+      <SettingsField label={formatMessage(sharedMessages.excludeFolders)}>
+        <FolderMultiSelect
+          value={excludedFolderIds}
+          onChange={handleExcludedFoldersChange}
+          placeholder={formatMessage(sharedMessages.excludeFolders)}
+        />
+      </SettingsField>
+      <SettingsField label={formatMessage(sharedMessages.excludeProjects)}>
+        <ProjectMultiSelect
+          value={excludedProjectIds}
+          onChange={handleExcludedProjectsChange}
+          publicationStatusFilter={status}
+          excludedFolderIds={excludedFolderIds}
+          placeholder={formatMessage(sharedMessages.excludeProjects)}
         />
       </SettingsField>
     </Box>

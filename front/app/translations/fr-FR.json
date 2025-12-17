@@ -1869,6 +1869,7 @@
   "app.containers.SignIn.createAnAccountLink": "créez un compte",
   "app.containers.SignIn.franceConnectIsTheSolutionProposedByTheGovernment": "FranceConnect est la solution proposée par l'État pour sécuriser et simplifier la connexion à vos services en ligne.",
   "app.containers.SignIn.or": "Ou",
+  "app.containers.SignIn.signInError2": "Les informations fournies ne sont pas correctes. Cliquez sur \"Mot de passe oublié ?\" pour réinitialiser votre mot de passe, ou {createAnAccountLink}.",
   "app.containers.SignIn.useFranceConnectToLoginCreateOrVerifyYourAccount": "Utilisez FranceConnect pour vous connecter, créer ou vérifier votre compte.",
   "app.containers.SignIn.whatIsFranceConnect": "Qu'est-ce que FranceConnect ?",
   "app.containers.SignUp.adminOptions2": "Pour les administrateurs et les gestionnaires de projet",

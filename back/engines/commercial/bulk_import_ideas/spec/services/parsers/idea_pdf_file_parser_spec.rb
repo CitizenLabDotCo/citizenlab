@@ -459,7 +459,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
     it 'returns an array of idea rows ready to be imported' do
       service = described_class.new create(:admin), 'en', survey_phase.id, false
       allow(service).to receive_messages(template_data: pdf_template_data, google_parsed_idea: google_form_parsed_idea, text_parsed_idea: raw_text_parsed_idea)
-      upload_file = create(:file_upload)
+      upload_file = create(:idea_import_file)
       expect(service.parse_rows(upload_file)).to eq([
         {
           id: 0,
