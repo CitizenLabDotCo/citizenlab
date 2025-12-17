@@ -7,23 +7,32 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import GoBackButton from 'components/UI/GoBackButton';
 
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
 import IdeasFeedPageMeta from './IdeasFeedPageMeta';
+import StickyNotesPile from './StickyNotes';
 import TopicsSidebar from './TopicsSidebar';
 
 const IdeasFeedPage = () => {
   const { slug } = useParams() as { slug: string };
   const { data: project } = useProjectBySlug(slug);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const selectedTopicId = searchParams.get('topic');
-  const isMobile = useBreakpoint('phone');
+  const phaseId = searchParams.get('phase_id');
+  const isMobileOrSmaller = useBreakpoint('phone');
 
   const setSelectedTopicId = (topicId: string | null) => {
     if (topicId) {
-      setSearchParams({ topic: topicId });
+      updateSearchParams({ topic: topicId });
     } else {
-      setSearchParams({});
+      removeSearchParams(['topic']);
     }
   };
+
+  if (!phaseId) {
+    return null;
+  }
 
   return (
     <main id="e2e-project-ideas-page">
@@ -38,7 +47,7 @@ const IdeasFeedPage = () => {
         zIndex="1010"
         overflow="hidden"
       >
-        {isMobile && (
+        {isMobileOrSmaller && (
           <Box position="absolute" top="16px" left="16px" zIndex="1">
             <GoBackButton
               linkTo={selectedTopicId ? undefined : `/projects/${slug}`}
@@ -61,7 +70,9 @@ const IdeasFeedPage = () => {
             selectedTopicId={selectedTopicId}
             onTopicSelect={setSelectedTopicId}
           />
-          <Box flex="4">Sticky notes will be placed here</Box>
+          <Box flex="4">
+            <StickyNotesPile phaseId={phaseId} maxNotes={20} />
+          </Box>
         </Box>
       </Box>
     </main>
