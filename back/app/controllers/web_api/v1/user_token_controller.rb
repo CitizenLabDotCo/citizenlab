@@ -21,6 +21,11 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
     end
   end
 
+  def create
+    ClaimTokenService.claim(entity, auth_params[:claim_tokens]) if auth_params[:claim_tokens].present?
+    super
+  end
+
   private
 
   def auth_token
@@ -34,7 +39,7 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
   end
 
   def extra_params
-    [:remember_me]
+    [:remember_me, { claim_tokens: [] }]
   end
 
   def user_token_unconfirmed_params
