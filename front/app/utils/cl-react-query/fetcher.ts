@@ -18,7 +18,6 @@ interface Get {
   queryParams?: Record<string, any>;
   body?: never;
   cacheIndividualItems?: boolean;
-  returnIncluded?: boolean;
   apiPath?: Path;
 }
 interface Patch {
