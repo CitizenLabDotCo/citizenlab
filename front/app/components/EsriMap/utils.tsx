@@ -50,26 +50,32 @@ export const useLabelExpandButtons = ({
   useEffect(() => {
     if (!mapView) return;
 
+    const SELECTORS = {
+      EXPAND_CONTAINER: '.esri-expand__container',
+      EXPAND_BUTTON: ".esri-widget--button[role='button']",
+      EXPAND_CONTENT: '.esri-expand__content',
+      LAYER_LIST: '.esri-layer-list',
+      LEGEND: '.esri-legend',
+    } as const;
+
     const labelExpandButtons = () => {
       document
-        .querySelectorAll('.esri-expand__container')
+        .querySelectorAll(SELECTORS.EXPAND_CONTAINER)
         .forEach((container) => {
-          const button = container.querySelector(
-            ".esri-widget--button[role='button']"
-          );
-          const content = container.querySelector('.esri-expand__content');
+          const button = container.querySelector(SELECTORS.EXPAND_BUTTON);
+          const content = container.querySelector(SELECTORS.EXPAND_CONTENT);
           if (!button || !content) return;
 
-          if (content.querySelector('.esri-layer-list')) {
+          if (content.querySelector(SELECTORS.LAYER_LIST)) {
             button.setAttribute(
               'aria-label',
-              formatMessage(messages.a11y_mapTopButton)
+              formatMessage(messages.mapLayerListAriaLabel)
             );
           }
-          if (content.querySelector('.esri-legend')) {
+          if (content.querySelector(SELECTORS.LEGEND)) {
             button.setAttribute(
               'aria-label',
-              formatMessage(messages.a11y_mapBottomButton)
+              formatMessage(messages.mapLegendAriaLabel)
             );
           }
         });
