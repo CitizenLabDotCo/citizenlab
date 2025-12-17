@@ -250,7 +250,7 @@ class SideFxIdeaService
     current_phase = TimelineService.new.current_phase(idea.project)
     return unless current_phase&.ideation_method == 'idea_feed'
 
-    IdeaFeed::TopicClassificationJob.set(priority: 10).perform_later(idea)
+    IdeaFeed::TopicClassificationJob.set(priority: 10).perform_later(current_phase, idea)
   end
 
   # update the user profile if user fields are changed as part of a survey

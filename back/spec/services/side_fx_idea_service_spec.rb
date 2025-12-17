@@ -175,7 +175,7 @@ describe SideFxIdeaService do
       idea.phases.first.update!(ideation_method: 'idea_feed')
       expect { service.after_create(idea, user) }
         .to enqueue_job(IdeaFeed::TopicClassificationJob)
-        .with(idea)
+        .with(idea.phases.first, idea)
         .exactly(1).times
     end
 
@@ -468,7 +468,7 @@ describe SideFxIdeaService do
       idea.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
         .to enqueue_job(IdeaFeed::TopicClassificationJob)
-        .with(idea)
+        .with(idea.phases.first, idea)
         .exactly(1).times
     end
 
