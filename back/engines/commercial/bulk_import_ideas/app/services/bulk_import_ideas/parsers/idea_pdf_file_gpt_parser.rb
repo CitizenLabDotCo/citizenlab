@@ -6,11 +6,8 @@ module BulkImportIdeas::Parsers
     # Returns an array of idea rows compatible with IdeaImporter
     # Only one row ever returned as only one PDF per idea is parsed by this service
     def parse_rows(file)
-      # NEW USING GPT
-      # TODO: Will this work with AWS S3?
-      file_path = file.file.file.file
       gpt_service = BulkImportIdeas::Parsers::Pdf::GPTFormParser.new(@phase, @locale)
-      form_parsed_idea = gpt_service.parse_idea(file_path, template_data[:page_count])
+      form_parsed_idea = gpt_service.parse_idea(file.file, template_data[:page_count])
       [idea_to_idea_row(form_parsed_idea, file)]
     end
 
