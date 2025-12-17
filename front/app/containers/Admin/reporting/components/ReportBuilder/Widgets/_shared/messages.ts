@@ -10,4 +10,12 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.description',
     defaultMessage: 'Description:',
   },
+  excludeFolders: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeFolders',
+    defaultMessage: 'Exclude folders',
+  },
+  excludeProjects: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeProjects',
+    defaultMessage: 'Exclude projects',
+  },
 });
