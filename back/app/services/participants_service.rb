@@ -202,4 +202,58 @@ class ParticipantsService
     ideas_in_voting_phases = IdeasPhase.where(phase: voting_phases).select(:idea_id)
     Idea.where(project: project).where.not(id: ideas_in_voting_phases).destroy_all
   end
+
+  # @param user [User] The user to get participation stats for
+  # @return [Hash] Counts of each participation type
+  def user_participation_stats(user)
+    idea_counts = user.ideas.published
+      .reorder(nil) # default ORDER BY on user.ideas conflicts with the GROUP BY
+      .left_joins(:creation_phase)
+      .group("COALESCE(phases.participation_method, 'ideation')")
+      .count
+
+    {
+      ideas_count: idea_counts['ideation'] || 0,
+      proposals_count: idea_counts['proposals'] || 0,
+      survey_responses_count: idea_counts['native_survey'] || 0,
+      comments_count: user.comments.published.count,
+      reactions_count: user.reactions.count,
+      baskets_count: user.baskets.submitted.count,
+      poll_responses_count: user.poll_responses.count,
+      volunteers_count: user.volunteers.count,
+      event_attendances_count: user.event_attendances.count
+    }
+  end
+
+  # Destroys all participation data for a user.
+  def destroy_user_participation_data(user)
+    project_ids = participated_project_ids(user)
+
+    ActiveRecord::Base.transaction do
+      # Comments are marked as deleted instead of being removed, so we don't delete
+      # the replies and preserve the thread structure. Must be done before ideas
+      # are destroyed since comments belong to ideas.
+      user.comments.update_all(publication_status: 'deleted')
+      user.reactions.destroy_all
+      user.ideas.destroy_all
+      user.baskets.destroy_all
+      user.poll_responses.destroy_all
+      user.volunteers.destroy_all
+      user.event_attendances.destroy_all
+    end
+
+    Project.where(id: project_ids).each do |project|
+      clear_project_participants_count_cache(project)
+    end
+  end
+
+  private
+
+  def participated_project_ids(user)
+    Analytics::FactParticipation
+      .where(dimension_user_id: user.id)
+      .pluck(:dimension_project_id)
+      .compact
+      .uniq
+  end
 end
