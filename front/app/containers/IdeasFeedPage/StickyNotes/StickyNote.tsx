@@ -44,13 +44,13 @@ interface Props {
 type SizeStyles = { width: string; minHeight: string; padding: string };
 
 const sizeStylesMobile: Record<Size, SizeStyles> = {
-  small: { width: '200px', minHeight: '160px', padding: '10px' },
+  small: { width: '200px', minHeight: '160px', padding: '8px' },
   large: { width: '300px', minHeight: '400px', padding: '16px' },
 };
 
 const sizeStylesDesktop: Record<Size, SizeStyles> = {
   small: { width: '250px', minHeight: '200px', padding: '12px' },
-  large: { width: '350px', minHeight: '500px', padding: '24px' },
+  large: { width: '350px', minHeight: '100%', padding: '24px' },
 };
 
 const StickyNote: React.FC<Props> = ({

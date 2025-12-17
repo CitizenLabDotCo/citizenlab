@@ -15,7 +15,6 @@ const PileContainer = styled(Box)`
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 800px;
   transition: padding 0.4s ease;
 `;
 

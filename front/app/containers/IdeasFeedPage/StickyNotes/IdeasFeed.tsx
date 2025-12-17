@@ -1,4 +1,10 @@
-import React, { useEffect, useMemo, useRef, useCallback } from 'react';
+import React, {
+  useEffect,
+  useMemo,
+  useRef,
+  useCallback,
+  useState,
+} from 'react';
 
 import {
   Box,
@@ -17,7 +23,7 @@ import { getTopicColor } from '../topicsColor';
 
 import StickyNote from './StickyNote';
 
-const PEEK_HEIGHT_MOBILE = 500;
+const PEEK_HEIGHT_MOBILE = 350;
 const PEEK_HEIGHT_DESKTOP = 400;
 
 const FeedContainer = styled(Box)`
@@ -32,7 +38,7 @@ const FeedContainer = styled(Box)`
   scrollbar-width: none;
 `;
 
-const NoteContainer = styled(Box)<{ peekHeight: number }>`
+const NoteContainer = styled(Box)<{ peekHeight: number; isCentered: boolean }>`
   scroll-snap-align: center;
   scroll-snap-stop: always;
   display: flex;
@@ -40,6 +46,8 @@ const NoteContainer = styled(Box)<{ peekHeight: number }>`
   align-items: center;
   height: calc(100vh - ${({ peekHeight }) => peekHeight}px);
   padding: 20px;
+  transform: scale(${({ isCentered }) => (isCentered ? 1.08 : 1)});
+  transition: transform 0.3s ease;
 `;
 
 const VirtualItem = styled.div<{ start: number; topOffset: number }>`
@@ -60,6 +68,7 @@ interface Props {
 const IdeasFeed = ({ phaseId, topicId, initialIdeaId, onClose }: Props) => {
   const parentRef = useRef<HTMLDivElement | null>(null);
   const currentIndexRef = useRef<number>(0);
+  const [centeredIndex, setCenteredIndex] = useState<number>(0);
   const isMobile = useBreakpoint('phone');
 
   const peekHeight = isMobile ? PEEK_HEIGHT_MOBILE : PEEK_HEIGHT_DESKTOP;
@@ -185,6 +194,7 @@ const IdeasFeed = ({ phaseId, topicId, initialIdeaId, onClose }: Props) => {
         newIndex < ideasLength
       ) {
         currentIndexRef.current = newIndex;
+        setCenteredIndex(newIndex);
       }
     };
 
@@ -227,7 +237,7 @@ const IdeasFeed = ({ phaseId, topicId, initialIdeaId, onClose }: Props) => {
                 data-index={virtualRow.index}
                 ref={measureElement}
               >
-                <NoteContainer peekHeight={peekHeight}>
+                <NoteContainer peekHeight={peekHeight} isCentered={false}>
                   <Spinner />
                 </NoteContainer>
               </VirtualItem>
@@ -247,7 +257,11 @@ const IdeasFeed = ({ phaseId, topicId, initialIdeaId, onClose }: Props) => {
               data-index={virtualRow.index}
               ref={measureElement}
             >
-              <NoteContainer peekHeight={peekHeight} bgColor={colors.grey100}>
+              <NoteContainer
+                peekHeight={peekHeight}
+                bgColor={colors.grey100}
+                isCentered={virtualRow.index === centeredIndex}
+              >
                 <StickyNote
                   ideaId={idea.id}
                   topicBackgroundColor={topicBackgroundColor}
