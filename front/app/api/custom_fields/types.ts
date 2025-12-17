@@ -8,12 +8,15 @@ import customFieldsKeys from './keys';
 
 export type CustomFieldsKeys = Keys<typeof customFieldsKeys>;
 
+export type ICustomFieldIncludedResource = { id?: string; type: string };
+
 export interface ICustomFieldsParameters {
   projectId?: string;
   phaseId?: string;
   inputTypes?: ICustomFieldInputType[];
   copy?: boolean;
   publicFields?: boolean;
+  cacheIndividualItems?: boolean;
 }
 
 export type ICustomFieldInputType =
@@ -204,6 +207,7 @@ export type IFlatCreateCustomField = Omit<
 
 export interface ICustomFields {
   data: ICustomFieldResponse[];
+  included?: ICustomFieldIncludedResource[];
 }
 
 export interface ICustomField {

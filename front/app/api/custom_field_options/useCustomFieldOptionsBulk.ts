@@ -11,8 +11,10 @@ type CustomFieldsOptionsReturnType = UseQueryOptions<ICustomFieldOption>[];
 /** Fetch all customFieldOptions for all given customFields */
 const useCustomFieldOptionsBulk = ({
   customFields,
+  enabled = true,
 }: {
   customFields?: ICustomFields;
+  enabled?: boolean;
 }) => {
   const customFieldsOptionsIds =
     customFields?.data.flatMap((customField) =>
@@ -25,6 +27,7 @@ const useCustomFieldOptionsBulk = ({
         optionId: id,
       }),
       queryFn: () => fetchOption({ optionId: id }),
+      enabled,
     };
   });
   return useQueries<CustomFieldsOptionsReturnType>({ queries });

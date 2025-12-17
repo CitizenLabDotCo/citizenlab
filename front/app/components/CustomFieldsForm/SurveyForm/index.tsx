@@ -50,6 +50,7 @@ const SurveyForm = ({
     projectId,
     phaseId,
     publicFields: true,
+    cacheIndividualItems: false,
   });
 
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);

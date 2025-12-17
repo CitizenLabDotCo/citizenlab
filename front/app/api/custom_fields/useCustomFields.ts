@@ -1,3 +1,6 @@
+import React from 'react';
+
+import { ICustomFieldOptionData } from 'api/custom_field_options/types';
 import useCustomFieldOptionsBulk from 'api/custom_field_options/useCustomFieldOptionsBulk';
 import { IFormCustomFieldStatementData } from 'api/custom_field_statements/types';
 import useCustomFieldStatements from 'api/custom_field_statements/useCustomFieldStatements';
@@ -12,6 +15,7 @@ const useCustomFields = ({
   inputTypes,
   copy,
   publicFields = false,
+  cacheIndividualItems = true,
 }: ICustomFieldsParameters) => {
   const result = useRawCustomFields({
     projectId,
@@ -19,16 +23,54 @@ const useCustomFields = ({
     inputTypes,
     copy,
     publicFields,
+    cacheIndividualItems,
   });
 
-  const options = useCustomFieldOptionsBulk({
+  const fetchedOptions = useCustomFieldOptionsBulk({
     customFields: result.data,
+    enabled: cacheIndividualItems,
   });
-  const statements = useCustomFieldStatements({
+  const fetchedStatements = useCustomFieldStatements({
     projectId,
     phaseId,
     customFields: result.data,
+    enabled: cacheIndividualItems,
   });
+
+  // Normalize to match the structure that the rest of the code expects
+  const options = React.useMemo(() => {
+    if (!cacheIndividualItems) {
+      // Extract from included and convert directly to array format
+      return (
+        result.data?.included
+          ?.filter(
+            (resource): resource is ICustomFieldOptionData =>
+              resource.type === 'custom_field_option' && !!resource.id
+          )
+          .map((resource) => ({
+            data: { data: resource },
+          })) ?? []
+      );
+    }
+    return fetchedOptions;
+  }, [cacheIndividualItems, result.data?.included, fetchedOptions]);
+
+  const statements = React.useMemo(() => {
+    if (!cacheIndividualItems) {
+      // Extract from included and convert directly to array format
+      return (
+        result.data?.included
+          ?.filter(
+            (resource): resource is IFormCustomFieldStatementData =>
+              resource.type === 'custom_field_matrix_statement' && !!resource.id
+          )
+          .map((resource) => ({
+            data: { data: resource },
+          })) ?? []
+      );
+    }
+    return fetchedStatements;
+  }, [cacheIndividualItems, result.data?.included, fetchedStatements]);
 
   const statementsById = statements.reduce((acc, statement) => {
     if (!statement.data) return acc;

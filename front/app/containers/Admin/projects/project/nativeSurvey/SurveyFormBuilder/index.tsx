@@ -26,6 +26,7 @@ const SurveyFormBuilder = ({
     projectId,
     phaseId: copyFrom ? copyFrom : phaseId,
     copy: copyFrom ? true : false,
+    cacheIndividualItems: false,
   });
 
   if (!phase || !project || !formCustomFields) return null;

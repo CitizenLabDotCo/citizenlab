@@ -18,6 +18,7 @@ interface Get {
   queryParams?: Record<string, any>;
   body?: never;
   cacheIndividualItems?: boolean;
+  returnIncluded?: boolean;
   apiPath?: Path;
 }
 interface Patch {
@@ -227,6 +228,9 @@ async function fetcher({
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!data) return null;
 
+  if (!cacheIndividualItems) {
+    return data;
+  }
   const { included: _included, ...rest } = data;
   return rest as Omit<BaseResponseData, 'included'>;
 }

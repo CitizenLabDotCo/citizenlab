@@ -16,6 +16,7 @@ type Params = {
   inputTypes?: ICustomFieldInputType[];
   copy?: boolean;
   publicFields?: boolean;
+  cacheIndividualItems?: boolean;
 };
 
 export const fetchCustomFields = ({
@@ -24,6 +25,7 @@ export const fetchCustomFields = ({
   inputTypes,
   copy,
   publicFields,
+  cacheIndividualItems = true,
 }: Params) => {
   const apiEndpoint = phaseId
     ? `phases/${phaseId}/custom_fields`
@@ -37,6 +39,7 @@ export const fetchCustomFields = ({
       copy,
       public_fields: publicFields,
     },
+    cacheIndividualItems,
   });
 };
 
@@ -46,6 +49,7 @@ const useRawCustomFields = ({
   inputTypes,
   copy,
   publicFields = false,
+  cacheIndividualItems = true,
 }: Params) => {
   return useQuery<ICustomFields, CLErrors, ICustomFields, CustomFieldsKeys>({
     queryKey: customFieldsKeys.list({
@@ -56,7 +60,14 @@ const useRawCustomFields = ({
       publicFields,
     }),
     queryFn: () =>
-      fetchCustomFields({ projectId, phaseId, inputTypes, copy, publicFields }),
+      fetchCustomFields({
+        projectId,
+        phaseId,
+        inputTypes,
+        copy,
+        publicFields,
+        cacheIndividualItems,
+      }),
     enabled: !!(projectId ?? phaseId),
   });
 };

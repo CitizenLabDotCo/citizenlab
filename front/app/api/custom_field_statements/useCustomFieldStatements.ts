@@ -27,7 +27,12 @@ const fetchCustomFieldStatement = ({
 type CustomFieldsStatementsReturnType =
   UseQueryOptions<IFormCustomFieldStatement>[];
 
-const useCustomFieldStatements = ({ projectId, phaseId, customFields }) => {
+const useCustomFieldStatements = ({
+  projectId,
+  phaseId,
+  customFields,
+  enabled = true,
+}) => {
   const customFieldsStatementIds =
     customFields?.data.flatMap((customField) =>
       customField.relationships.matrix_statements?.data.map(
@@ -46,7 +51,7 @@ const useCustomFieldStatements = ({ projectId, phaseId, customFields }) => {
 
   const queries = customFieldsStatementIds.map((id) => {
     return {
-      enabled: !!id,
+      enabled: !!id && enabled,
       queryKey: customFieldStatementKeys.item({
         id,
       }),
