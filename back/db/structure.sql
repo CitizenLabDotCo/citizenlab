@@ -172,6 +172,7 @@ DROP INDEX IF EXISTS public.que_jobs_args_gin_idx;
 DROP INDEX IF EXISTS public.moderation_statuses_moderatable;
 DROP INDEX IF EXISTS public.machine_translations_translatable;
 DROP INDEX IF EXISTS public.machine_translations_lookup;
+DROP INDEX IF EXISTS public.index_wise_voice_flags_on_flaggable;
 DROP INDEX IF EXISTS public.index_webhooks_subscriptions_on_project_id;
 DROP INDEX IF EXISTS public.index_webhooks_subscriptions_on_events;
 DROP INDEX IF EXISTS public.index_webhooks_subscriptions_on_enabled;
@@ -466,6 +467,7 @@ DROP INDEX IF EXISTS public.i_l_v_locale;
 DROP INDEX IF EXISTS public.i_d_referrer_key;
 DROP INDEX IF EXISTS public.i_analytics_dim_projects_fact_visits_on_project_and_visit_ids;
 DROP INDEX IF EXISTS public.i_analytics_dim_locales_fact_visits_on_locale_and_visit_ids;
+ALTER TABLE IF EXISTS ONLY public.wise_voice_flags DROP CONSTRAINT IF EXISTS wise_voice_flags_pkey;
 ALTER TABLE IF EXISTS ONLY public.webhooks_subscriptions DROP CONSTRAINT IF EXISTS webhooks_subscriptions_pkey;
 ALTER TABLE IF EXISTS ONLY public.webhooks_deliveries DROP CONSTRAINT IF EXISTS webhooks_deliveries_pkey;
 ALTER TABLE IF EXISTS ONLY public.reactions DROP CONSTRAINT IF EXISTS votes_pkey;
@@ -598,6 +600,7 @@ ALTER TABLE IF EXISTS ONLY public.admin_publications DROP CONSTRAINT IF EXISTS a
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS activities_pkey;
 ALTER TABLE IF EXISTS public.que_jobs ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public.areas_static_pages ALTER COLUMN id DROP DEFAULT;
+DROP TABLE IF EXISTS public.wise_voice_flags;
 DROP TABLE IF EXISTS public.webhooks_subscriptions;
 DROP TABLE IF EXISTS public.webhooks_deliveries;
 DROP TABLE IF EXISTS public.verification_verifications;
@@ -1754,7 +1757,8 @@ CREATE TABLE public.phases (
     similarity_enabled boolean DEFAULT true NOT NULL,
     vote_term character varying DEFAULT 'vote'::character varying,
     voting_min_selected_options integer DEFAULT 1 NOT NULL,
-    voting_filtering_enabled boolean DEFAULT false NOT NULL
+    voting_filtering_enabled boolean DEFAULT false NOT NULL,
+    ideation_method character varying
 );
 
 
@@ -2689,6 +2693,13 @@ CREATE TABLE public.idea_exposures (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
+
+
+--
+-- Name: COLUMN idea_exposures.phase_id; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.idea_exposures.phase_id IS 'This is the phase during which the idea is exposed to the user, stored redundantly for faster querying.';
 
 
 --
@@ -3630,7 +3641,7 @@ CREATE TABLE public.topics (
     ordering integer,
     followers_count integer DEFAULT 0 NOT NULL,
     include_in_onboarding boolean DEFAULT false NOT NULL,
-    "default" boolean DEFAULT false NOT NULL
+    is_default boolean DEFAULT false NOT NULL
 );
 
 
@@ -3696,6 +3707,21 @@ CREATE TABLE public.webhooks_subscriptions (
     events jsonb DEFAULT '[]'::jsonb NOT NULL,
     project_id uuid,
     enabled boolean DEFAULT true NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: wise_voice_flags; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.wise_voice_flags (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    flaggable_type character varying NOT NULL,
+    flaggable_id uuid NOT NULL,
+    role_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    quotes jsonb DEFAULT '[]'::jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -4753,6 +4779,14 @@ ALTER TABLE ONLY public.webhooks_deliveries
 
 ALTER TABLE ONLY public.webhooks_subscriptions
     ADD CONSTRAINT webhooks_subscriptions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: wise_voice_flags wise_voice_flags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.wise_voice_flags
+    ADD CONSTRAINT wise_voice_flags_pkey PRIMARY KEY (id);
 
 
 --
@@ -6814,6 +6848,13 @@ CREATE INDEX index_webhooks_subscriptions_on_project_id ON public.webhooks_subsc
 
 
 --
+-- Name: index_wise_voice_flags_on_flaggable; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_wise_voice_flags_on_flaggable ON public.wise_voice_flags USING btree (flaggable_type, flaggable_id);
+
+
+--
 -- Name: machine_translations_lookup; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8112,6 +8153,9 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251203114945'),
+('20251209135529'),
+('20251208163107'),
 ('20251127085639'),
 ('20251124000000'),
 ('20251120113747'),

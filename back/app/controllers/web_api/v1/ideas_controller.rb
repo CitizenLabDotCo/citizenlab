@@ -463,7 +463,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def build_idea_file_attachment(idea, file_params)
-    files_file = Files::File.new(
+    files_file = Files::RestrictedFile.new( # temporary-fix-for-vienna-svg-security-issue (use Files::File.new to undo)
       content_by_content: {
         content: file_params['content'],
         name: file_params['name']

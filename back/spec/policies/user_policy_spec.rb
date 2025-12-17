@@ -17,7 +17,7 @@ describe UserPolicy do
     it { is_expected.not_to permit(:index) }
     it { is_expected.not_to permit(:index_xlsx) }
 
-    it 'should not index the user through the scope' do
+    it 'does not index the user through the scope' do
       subject_user.save!
       expect(scope.resolve.size).to eq 0
     end
@@ -35,7 +35,7 @@ describe UserPolicy do
       it { is_expected.not_to permit(:index) }
       it { is_expected.not_to permit(:index_xlsx) }
 
-      it 'should not index the user through the scope' do
+      it 'does not index the user through the scope' do
         subject_user.save!
         expect(scope.resolve.size).to eq 0
       end
@@ -59,7 +59,7 @@ describe UserPolicy do
       it { is_expected.not_to permit(:index) }
       it { is_expected.not_to permit(:index_xlsx) }
 
-      it 'should index the users through the scope' do
+      it 'indexes the users through the scope' do
         subject_user.save!
         expect(scope.resolve.size).to eq 0
       end
@@ -78,7 +78,7 @@ describe UserPolicy do
       it { is_expected.to permit(:index) }
       it { is_expected.to permit(:index_xlsx) }
 
-      it 'should index the user through the scope' do
+      it 'indexes the user through the scope' do
         subject_user.save!
         expect(scope.resolve.size).to eq 1
       end
@@ -93,7 +93,7 @@ describe UserPolicy do
       it { is_expected.to permit(:index) }
       it { is_expected.to permit(:index_xlsx) }
 
-      it 'should index the users through the scope' do
+      it 'indexes the users through the scope' do
         subject_user.save!
         expect(scope.resolve.size).to eq 2
       end
@@ -148,7 +148,7 @@ describe UserPolicy do
       create(:idea).author
       participant = create(:idea, project: project2).author
       admin = create(:admin)
-      expect(scope.resolve.ids).to match_array [participant.id, current_user.id, moderators[0].id, moderators[2].id, admin.id]
+      expect(scope.resolve.ids).to contain_exactly(participant.id, current_user.id, moderators[0].id, moderators[2].id, admin.id)
     end
   end
 
@@ -203,7 +203,7 @@ describe UserPolicy do
       create(:comment).author
       participant = create(:idea, project: project2).author
       admin = create(:admin)
-      expect(scope.resolve.ids).to match_array [participant.id, current_user.id, moderators[0].id, moderators[2].id, admin.id]
+      expect(scope.resolve.ids).to contain_exactly(participant.id, current_user.id, moderators[0].id, moderators[2].id, admin.id)
     end
   end
 end

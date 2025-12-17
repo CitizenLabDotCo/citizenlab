@@ -13,7 +13,7 @@
 #  ordering              :integer
 #  followers_count       :integer          default(0), not null
 #  include_in_onboarding :boolean          default(FALSE), not null
-#  default               :boolean          default(FALSE), not null
+#  is_default            :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -37,9 +37,9 @@ class Topic < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false }
   validates :include_in_onboarding, inclusion: { in: [true, false] }
-  validates :default, inclusion: { in: [true, false] }
+  validates :is_default, inclusion: { in: [true, false] }
 
-  scope :defaults, -> { where(default: true) }
+  scope :defaults, -> { where(is_default: true) }
 
   before_validation :strip_title
 

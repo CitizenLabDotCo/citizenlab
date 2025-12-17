@@ -33,8 +33,11 @@ export type IAppConfigurationSettingsCore = {
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
   google_search_console_meta_attribute?: string | null;
-  login_helper_text?: Multiloc | null;
-  signup_helper_text?: Multiloc | null;
+  login_helper_text?: Multiloc | null; // DEPRECATED
+  signup_helper_text?: Multiloc | null; // DEPRECATED
+  enter_email_helper_text?: Multiloc | null;
+  enter_password_helper_text?: Multiloc | null;
+  complete_your_profile_helper_text?: Multiloc | null;
   custom_fields_signup_helper_text?: Multiloc | null;
   color_main: string | null;
   color_secondary: string | null;
@@ -271,6 +274,7 @@ export interface IAppConfigurationSettings {
   customised_automated_emails?: AppConfigurationFeature;
   customised_automated_context_emails?: AppConfigurationFeature;
   project_importer?: AppConfigurationFeature;
+  idea_feed?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

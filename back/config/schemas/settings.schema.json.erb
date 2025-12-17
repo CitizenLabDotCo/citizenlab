@@ -155,17 +155,32 @@
           },
           "login_helper_text": {
             "title": "Login Helper Text",
-            "description": "Optional short text, shown at the top of the login screen. Supports HTML.",
+            "description": "(DEPRECATED) Optional short text, shown at the top of the login screen. Supports HTML.",
             "$ref": "#/definitions/multiloc_string"
           },
           "signup_helper_text": {
             "title": "Sign-up Helper Text (Step 1)",
-            "description": "Optional short text, shown at the top of Step 1 of the sign up form (i.e., email and password). Supports HTML.",
+            "description": "(DEPRECATED) Optional short text, shown at the top of Step 1 of the sign up form (i.e., email and password). Supports HTML.",
+            "$ref": "#/definitions/multiloc_string"
+          },
+          "enter_email_helper_text": {
+            "title": "Enter email helper text",
+            "description": "Optional short text, shown at the top of the email entry step of the authentication flow. Supports HTML.",
+            "$ref": "#/definitions/multiloc_string"
+          },
+          "enter_password_helper_text": {
+            "title": "Enter password helper text",
+            "description": "Optional short text, shown at the top of the password entry step of the authentication flow. Supports HTML.",
+            "$ref": "#/definitions/multiloc_string"
+          },
+          "complete_your_profile_helper_text": {
+            "title": "Complete profile helper text",
+            "description": "Optional short text, shown at the top of the 'Complete your profile' step of the authentication flow. Supports HTML.",
             "$ref": "#/definitions/multiloc_string"
           },
           "custom_fields_signup_helper_text":  {
-            "title": "Sign-up Helper Text (Step 2)",
-            "description": "Optional short text, shown at the top of Step 2 of the sign up form (i.e., additional registration fields). Supports HTML.",
+            "title": "Demographic questions helper text",
+            "description": "Optional short text, shown at the top demographic questions step the authentication flow. Supports HTML.",
             "$ref": "#/definitions/multiloc_string"
           },
           "onboarding":  {
@@ -1535,6 +1550,18 @@
         "type": "object",
         "title": "Project importer [Alpha]",
         "description": "Super admin only feature to import project, phases and content from XLSX.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "phase_insights": {
+        "type": "object",
+        "title": "Phase insights [In development]",
+        "description": "Phase insights dashboard. In development. Do not enable for customer platforms",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

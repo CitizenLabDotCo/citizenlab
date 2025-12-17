@@ -62,9 +62,7 @@ describe BulkImportIdeas::Importers::IdeaImporter do
 
       expect(project.ideas.count).to eq 2
       expect(project.reload.ideas_count).to eq 0
-      expect(project.reload.ideas.pluck(:custom_field_values)).to match_array(
-        [{ 'text_field' => 'custom text field content' }, { 'text_field' => 'custom text field content 2' }]
-      )
+      expect(project.reload.ideas.pluck(:custom_field_values)).to contain_exactly({ 'text_field' => 'custom text field content' }, { 'text_field' => 'custom text field content 2' })
     end
 
     it 'imports draft ideas with idea import meta data' do
