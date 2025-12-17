@@ -2,8 +2,8 @@
 
 # Service to select the most appropriate and permitted LLM for a given task
 class LLMSelector
-  LLMFamily = Struct.new('LLMFamily', :key, :name, :description, keyword_init: true)
-  LLMUseCase = Struct.new('LLMUseCase', :key, :description, :supported_models, :default_model, keyword_init: true)
+  LLMFamily = Data.define(:key, :name, :description)
+  LLMUseCase = Data.define(:key, :description, :supported_models, :default_model)
 
   FAMILIES = [
     LLMFamily.new(
@@ -77,9 +77,9 @@ class LLMSelector
     use_case = use_cases.find { |uc| uc.key == use_case_key }
     raise ArgumentError, "Use case not found: #{use_case_key}" unless use_case
 
-    family = configured_family_for_use_case(use_case, app_configuration)
+    family = configured_family_key_for_use_case(use_case, app_configuration)
 
-    return use_case.default_model if family.nil?
+    return use_case.default_model if family.nil? || family == 'auto'
 
     selected_model = use_case.supported_models.find { |model_claz| model_claz.new.family == family.key }
     raise "Configured family #{family.key} for use case #{use_case.key} has no supported models" unless selected_model
@@ -129,7 +129,7 @@ class LLMSelector
 
   private
 
-  def configured_family_for_use_case(use_case, app_configuration)
+  def configured_family_key_for_use_case(use_case, app_configuration)
     ai_providers_config = app_configuration.settings('core', 'ai_providers')
     ai_providers_config&.dig(use_case.key)
   end

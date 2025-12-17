@@ -52,6 +52,14 @@ describe LLMSelector do
       expect(selected_model).to eq(use_case.default_model)
     end
 
+    it 'returns the default model when family is configured as auto' do
+      use_case = described_class::USE_CASES.first
+      app_configuration = instance_double(AppConfiguration)
+      allow(app_configuration).to receive(:settings).with('core', 'ai_providers').and_return({ use_case.key => 'auto' })
+      selected_model = service.llm_claz_for_use_case(use_case.key, app_configuration)
+      expect(selected_model).to eq(use_case.default_model)
+    end
+
     it 'returns the correct model for a configured family' do
       mock_model_a = Class.new(Analysis::LLM::Base) do
         define_method(:family) { 'family_a' }
