@@ -128,6 +128,9 @@ const CallToAction = ({
   const isSmallerThanTablet = useBreakpoint('tablet');
   const lоcalize = useLocalize();
 
+  const renderSecondaryButton = secondaryButtonLink && secondaryButtonText;
+  const renderPrimaryButton = primaryButtonLink && primaryButtonText;
+  const renderAnyButton = renderSecondaryButton || renderPrimaryButton;
   return (
     <Box
       data-cy="e2e-highlight"
@@ -152,9 +155,9 @@ const CallToAction = ({
               {lоcalize(description)}
             </Text>
           </Box>
-          {enabled && (
+          {enabled && renderAnyButton && (
             <ButtonContainer>
-              {secondaryButtonLink && secondaryButtonText && (
+              {renderSecondaryButton && (
                 <ButtonWithLink
                   fontWeight="500"
                   padding="13px 22px"
@@ -169,7 +172,7 @@ const CallToAction = ({
                   {lоcalize(secondaryButtonText)}
                 </ButtonWithLink>
               )}
-              {primaryButtonLink && primaryButtonText && (
+              {renderPrimaryButton && (
                 <StyledPrimaryButton
                   fontWeight="500"
                   linkTo={getLink(primaryButtonLink)}
