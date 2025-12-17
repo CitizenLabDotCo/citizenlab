@@ -1507,6 +1507,8 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publicationStatus": "اشاعت کی حیثیت",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.published": "شائع شدہ",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.sort": "ترتیب دیں",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeFolders": "فولڈرز کو خارج کریں۔",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeProjects": "منصوبوں کو خارج کر دیں۔",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "اس ویجیٹ کا ڈیٹا غائب ہے۔ رپورٹ کو محفوظ کرنے کے لیے اسے دوبارہ ترتیب دیں یا حذف کریں۔",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.communityMonitorHealthScoreTitle": "کمیونٹی مانیٹر ہیلتھ سکور",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.quarter": "کوارٹر",

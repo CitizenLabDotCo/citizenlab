@@ -1507,6 +1507,8 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publicationStatus": "Statws cyhoeddi",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.published": "Cyhoeddwyd",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.sort": "Trefnu yn ôl",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeFolders": "Eithrio ffolderi",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeProjects": "Eithrio prosiectau",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Mae'r data ar gyfer y teclyn hwn ar goll. Ail-ffurfweddwch neu dilëwch ef i allu cadw'r adroddiad.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.communityMonitorHealthScoreTitle": "Sgôr Iechyd Monitor Cymunedol",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.quarter": "Chwarter",

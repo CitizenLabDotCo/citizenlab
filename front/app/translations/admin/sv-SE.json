@@ -1507,6 +1507,8 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publicationStatus": "Status för publicering",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.published": "Publicerad",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.sort": "Sortera efter",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeFolders": "Uteslut mappar",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeProjects": "Exkludera projekt",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Data för denna widget saknas. Konfigurera om eller ta bort den för att kunna spara rapporten.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.communityMonitorHealthScoreTitle": "Community Monitor Hälsoindex",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.quarter": "Kvartal",
