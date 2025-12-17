@@ -1,10 +1,12 @@
-import React from 'react';
+import { useMemo } from 'react';
 
 import { ICustomFieldOptionData } from 'api/custom_field_options/types';
 import useCustomFieldOptionsBulk from 'api/custom_field_options/useCustomFieldOptionsBulk';
 import { IFormCustomFieldStatementData } from 'api/custom_field_statements/types';
 import useCustomFieldStatements from 'api/custom_field_statements/useCustomFieldStatements';
 import { IMatrixStatementsType } from 'api/custom_fields/types';
+
+import { groupIncludedResources } from 'utils/cl-react-query/groupIncludedResources';
 
 import { ICustomFieldsParameters, IFlatCustomField } from './types';
 import useRawCustomFields from './useRawCustomFields';
@@ -26,6 +28,17 @@ const useCustomFields = ({
     cacheIndividualItems,
   });
 
+  const includedByType = useMemo(() => {
+    const included = result.data?.included;
+    if (!included) return undefined;
+
+    return groupIncludedResources(included);
+  }, [result]);
+
+  if (includedByType) {
+    const options = includedByType.custom_field_option;
+  }
+
   const fetchedOptions = useCustomFieldOptionsBulk({
     customFields: result.data,
     enabled: cacheIndividualItems,
@@ -38,7 +51,7 @@ const useCustomFields = ({
   });
 
   // Normalize to match the structure that the rest of the code expects
-  const options = React.useMemo(() => {
+  const options = useMemo(() => {
     if (!cacheIndividualItems) {
       // Extract from included and convert directly to array format
       return (
@@ -55,7 +68,7 @@ const useCustomFields = ({
     return fetchedOptions;
   }, [cacheIndividualItems, result.data?.included, fetchedOptions]);
 
-  const statements = React.useMemo(() => {
+  const statements = useMemo(() => {
     if (!cacheIndividualItems) {
       // Extract from included and convert directly to array format
       return (
