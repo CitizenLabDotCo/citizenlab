@@ -6,4 +6,12 @@ export default defineMessages({
     defaultMessage:
       'The data for this widget is missing. Reconfigure or delete it to be able to save the report.',
   },
+  excludeFolders: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeFolders',
+    defaultMessage: 'Exclude folders',
+  },
+  excludeProjects: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeProjects',
+    defaultMessage: 'Exclude projects',
+  },
 });

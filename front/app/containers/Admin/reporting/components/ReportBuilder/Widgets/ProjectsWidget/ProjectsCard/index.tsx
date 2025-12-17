@@ -10,12 +10,21 @@ import { Props } from '../typings';
 
 import ProjectRow from './ProjectRow';
 
-const ProjectsCard = ({ startAt, endAt, publicationStatuses, sort }: Props) => {
+const ProjectsCard = ({
+  startAt,
+  endAt,
+  publicationStatuses,
+  sort,
+  excludedProjectIds,
+  excludedFolderIds,
+}: Props) => {
   const locale = useLocale();
   const { data: response } = useProjects({
     start_at: startAt,
     end_at: endAt,
     publication_statuses: publicationStatuses,
+    excluded_project_ids: excludedProjectIds,
+    excluded_folder_ids: excludedFolderIds,
     sort,
     locale,
   });
