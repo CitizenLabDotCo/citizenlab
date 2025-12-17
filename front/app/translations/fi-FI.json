@@ -91,7 +91,7 @@
   "app.components.Comments.seeTranslation": "Katso käännös",
   "app.components.Comments.yourComment": "Kommenttisi",
   "app.components.CommonGroundResults.closeCallsDescription": "Nämä lausunnot herättivät eniten erimielisyyttä, ja samaa tai eri mieltä -äänet olivat lähimpänä 50/50-jakaumaa.",
-  "app.components.CommonGroundResults.closeCallsTitle": "Läheiset puhelut",
+  "app.components.CommonGroundResults.closeCallsTitle": "Matalin konsensus",
   "app.components.CommonGroundResults.highestConsensusDescription": "Lausunnot, joista on selkeä yksimielisyys – enemmistö äänestäneistä oli joko samaa tai eri mieltä ja valitsi saman kannan.",
   "app.components.CommonGroundResults.highestConsensusTitle": "Korkein konsensus",
   "app.components.CommonGroundResults.participantLabel": "osallistuja",
