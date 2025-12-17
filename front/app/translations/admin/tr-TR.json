@@ -1507,6 +1507,8 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publicationStatus": "Yayın durumu",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.published": "Yayınlandı",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.sort": "Göre sırala",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeFolders": "Klasörleri hariç tut",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeProjects": "Projeleri hariç tut",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Bu widget için veriler eksik. Raporu kaydedebilmek için yeniden yapılandırın veya silin.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.communityMonitorHealthScoreTitle": "Topluluk Monitörü Sağlık Puanı",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.quarter": "Çeyrek",
