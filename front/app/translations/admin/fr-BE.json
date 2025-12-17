@@ -1034,6 +1034,8 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.important": "Important :",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.sentimentQuestionPreviewAltText": "Exemple de question à échelle de sentiment",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.noEndDate": "Pas de date de fin",
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollLeft": "Faire défiler vers la gauche",
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollRight": "Faire défiler vers la droite",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel": "Appuyez sur Échap (Esc) pour passer le carrousel",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle1": "Projets et dossiers (ancienne version)",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitleLabel": "Titre du projet",

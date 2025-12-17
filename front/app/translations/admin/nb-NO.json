@@ -1034,6 +1034,8 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.important": "Det er viktig:",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.sentimentQuestionPreviewAltText": "Eksempel på et spørsmål i en sentimentundersøkelse",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.noEndDate": "Ingen sluttdato",
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollLeft": "Bla til venstre",
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollRight": "Bla til høyre",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel": "Trykk escape for å hoppe over karusellen",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle1": "Prosjekter og mapper (eldre)",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitleLabel": "Prosjektets tittel",

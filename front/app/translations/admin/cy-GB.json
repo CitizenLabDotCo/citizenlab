@@ -1034,6 +1034,8 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.important": "Pwysig:",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.sentimentQuestionPreviewAltText": "Enghraifft o gwestiwn arolwg teimladau",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.noEndDate": "Dim dyddiad gorffen",
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollLeft": "Sgroliwch i'r chwith",
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollRight": "Sgroliwch i'r dde",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel": "Pwyswch y dihangfa i hepgor y carwsél",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle1": "Prosiectau a ffolderi (etifeddiaeth)",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitleLabel": "Teitl y prosiect",

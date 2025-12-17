@@ -1034,6 +1034,8 @@
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.important": "اہم:",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.sentimentQuestionPreviewAltText": "جذباتی سروے کے سوال کی مثال",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.noEndDate": "کوئی اختتامی تاریخ نہیں۔",
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollLeft": "بائیں سکرول کریں۔",
+  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollRight": "دائیں سکرول کریں۔",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel": "کیروسل کو چھوڑنے کے لیے escape دبائیں۔",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitle1": "پروجیکٹس اور فولڈرز (وراثت)",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.Projects.projectsTitleLabel": "پروجیکٹس کا عنوان",
