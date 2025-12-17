@@ -26,19 +26,3 @@ export const groupIncludedResources = <T extends { type: string }>(
 
   return result as GroupByType<T>;
 };
-
-// Example usage
-// type TypeA = { type: 'a'; valueA: string };
-// type TypeB = { type: 'b'; valueB: number };
-
-// const values: (TypeA | TypeB)[] = [
-//   { type: 'a', valueA: 'hello' },
-//   { type: 'b', valueB: 42 },
-//   { type: 'a', valueA: 'world' },
-// ];
-
-// const result = groupIncludedResources(values);
-// // result is typed as: { a: TypeA[]; b: TypeB[] }
-
-// const aValues = result.a; // TypeA[]
-// const bValues = result.b; // TypeB[]
