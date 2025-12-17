@@ -1507,6 +1507,8 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publicationStatus": "Julkaisun tila",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.published": "Julkaistu",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.sort": "Lajittele",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeFolders": "Jätä kansiot pois",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeProjects": "Sulje pois projektit",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "Tämän widgetin tiedot puuttuvat. Määritä se uudelleen tai poista se, jotta voit tallentaa raportin.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.communityMonitorHealthScoreTitle": "Yhteisön monitorin terveyspisteet",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.quarter": "vuosineljännes",
