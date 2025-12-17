@@ -1507,6 +1507,8 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.publicationStatus": "crwdns3094685:0crwdne3094685:0",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.published": "crwdns3094687:0crwdne3094687:0",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.sort": "crwdns5774397:0crwdne5774397:0",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeFolders": "crwdns5829471:0crwdne5829471:0",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeProjects": "crwdns5829473:0crwdne5829473:0",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.missingData": "crwdns1963248:0crwdne1963248:0",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.communityMonitorHealthScoreTitle": "crwdns4305592:0crwdne4305592:0",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.communityMonitorHealthScore.quarter": "crwdns4305594:0crwdne4305594:0",
