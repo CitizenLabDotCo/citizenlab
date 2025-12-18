@@ -22,6 +22,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import {
   triggerAuthenticationFlow$,
+  triggerPostParticipationFlow$,
   triggerVerificationOnly$,
 } from '../events';
 import {
@@ -192,6 +193,24 @@ export default function useSteps() {
       updateState({ flow: 'signup' });
 
       transition(currentStep, 'TRIGGER_VERIFICATION_ONLY')();
+    });
+
+    return () => subscription.unsubscribe();
+  }, [currentStep, transition, updateState]);
+
+  // Listen for any action that triggers the authentication flow, and initialize
+  // the flow if no flow is ongoing
+  useEffect(() => {
+    const subscription = triggerPostParticipationFlow$.subscribe(() => {
+      if (currentStep !== 'closed') return;
+
+      authenticationDataRef.current = {
+        context: GLOBAL_CONTEXT,
+      };
+
+      updateState({ flow: 'signup' });
+
+      transition(currentStep, 'TRIGGER_POST_PARTICIPATION_FLOW')();
     });
 
     return () => subscription.unsubscribe();

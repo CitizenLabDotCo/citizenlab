@@ -170,6 +170,10 @@ export const sharedSteps = (
           setError('unknown');
         }
       },
+
+      TRIGGER_POST_PARTICIPATION_FLOW: async () => {
+        setCurrentStep('post-participation:email');
+      },
     },
 
     success: {

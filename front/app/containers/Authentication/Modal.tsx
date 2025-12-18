@@ -37,6 +37,7 @@ import Onboarding from './steps/Onboarding';
 import Password from './steps/Password';
 import EmailPolicies from './steps/Policies/EmailPolicies';
 import SSOPolicies from './steps/Policies/SSOPolicies';
+import PostParticipationFlowStart from './steps/PostParticipationFlowStart';
 import SSOVerification from './steps/SSOVerification';
 import SSOVerificationPolicies from './steps/SSOVerificationPolicies';
 import Success from './steps/Success';
@@ -288,6 +289,19 @@ const AuthModal = () => {
           <AccessDenied
             authenticationData={authenticationData}
             onClose={transition(currentStep, 'CLOSE')}
+          />
+        )}
+
+        {currentStep === 'post-participation:email' && (
+          <PostParticipationFlowStart
+            loading={loading}
+            setError={setError}
+            onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
+            onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
+            onEnterFranceConnect={transition(
+              currentStep,
+              'ENTER_FRANCE_CONNECT'
+            )}
           />
         )}
       </Box>
