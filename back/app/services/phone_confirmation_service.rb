@@ -4,6 +4,7 @@ require 'twilio-ruby'
 
 account_sid = ENV.fetch('TWILIO_ACCOUNT_SID')
 auth_token = ENV.fetch('TWILIO_AUTH_TOKEN')
+from_phone_number = ENV.fetch('TWILIO_PHONE_NUMBER')
 
 class PhoneConfirmationService
   def send_confirmation_code(phone_number, code)
@@ -13,7 +14,7 @@ class PhoneConfirmationService
       .messages
       .create(
         body: "Your confirmation code is #{code}",
-        from: '+15017122661',
+        from: from_phone_number,
         to: phone_number
       )
   end
