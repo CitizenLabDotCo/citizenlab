@@ -3277,7 +3277,7 @@
   "app.containers.admin.ReportBuilder.charts.analyticsChartAriaLabel": "Rótulo",
   "app.containers.admin.ReportBuilder.charts.analyticsChartAriaLabelTooltip3": "Forneça um rótulo que descreva o gráfico para melhorar a acessibilidade.",
   "app.containers.admin.ReportBuilder.charts.analyticsChartDateRange": "Intervalo de datas",
-  "app.containers.admin.ReportBuilder.charts.analyticsChartDescription": "Description",
+  "app.containers.admin.ReportBuilder.charts.analyticsChartDescription": "Descrição",
   "app.containers.admin.ReportBuilder.charts.analyticsChartDescriptionTooltip3": "Forneça uma descrição mais detalhada do gráfico e quaisquer tendências relevantes para melhorar a acessibilidade.",
   "app.containers.admin.ReportBuilder.charts.analyticsChartTitle": "Assunto",
   "app.containers.admin.ReportBuilder.charts.noData": "Não há dados disponíveis para os filtros que seleccionou.",
