@@ -68,4 +68,29 @@ RSpec.describe ConfirmUser do
       expect(result.errors.details).to eq(code: [{ error: :invalid }])
     end
   end
+
+  context 'when the code is correct' do
+    before do
+      context[:user] = user
+      context[:code] = user.email_confirmation_code
+    end
+
+    it 'confirms the user' do
+      expect { result }.to change { user.reload.email_confirmed_at }.from(nil)
+      expect(result).to be_success
+    end
+
+    context 'when user has pending claim tokens' do
+      let!(:claim_token) { create(:claim_token, pending_claimer: user) }
+      let(:idea) { claim_token.item }
+
+      it 'completes the pending claims' do
+        expect { result }.to change { idea.reload.author_id }.from(nil).to(user.id)
+      end
+
+      it 'deletes the claim token' do
+        expect { result }.to change(ClaimToken, :count).by(-1)
+      end
+    end
+  end
 end

@@ -151,15 +151,24 @@ resource 'Users' do
       end
 
       with_options scope: 'user' do
-        parameter :first_name, 'User full name', required: false
-        parameter :last_name, 'User full name', required: false
+        parameter :first_name, 'First name'
+        parameter :last_name, 'Last name'
         parameter :email, 'E-mail address', required: true
-        parameter :password, 'Password', required: false
-        parameter :locale, 'Locale. Should be one of the tenants locales', required: true
+        parameter :password, 'Password'
+        parameter :locale, 'Locale (must be one of the tenant locales)', required: true
         parameter :avatar, 'Base64 encoded avatar image'
-        parameter :roles, 'Roles array, only allowed when admin'
-        parameter :custom_field_values, 'An object that can only contain keys for custom fields for users. If fields are required, their presence is required as well'
+        parameter :roles, 'Roles array (only allowed when admin)'
+        parameter :custom_field_values, <<~DESC
+          An object that can only contain keys for custom fields for users.
+          If fields are required, their presence is required as well.
+        DESC
+        parameter :claim_tokens, <<~DESC
+          Tokens used to claim participation data created before registration.
+          If confirmation is required, tokens are marked as pending until confirmed.
+          Otherwise, participation data is claimed immediately.
+        DESC
       end
+
       ValidationErrorHelper.new.error_fields(self, User)
 
       context 'full registration with a password' do
@@ -172,6 +181,23 @@ resource 'Users' do
 
         example_request 'Create a user' do
           assert_status 201
+        end
+
+        context 'with claim_tokens (confirmation not required)' do
+          let!(:claim_token) { create(:claim_token) }
+          let(:idea) { claim_token.item }
+          let(:claim_tokens) { [claim_token.token] }
+
+          example 'claims items immediately', document: false do
+            do_request
+            assert_status 201
+
+            user = User.find(response_data[:id])
+
+            expect(user.claim_tokens).to be_empty
+            expect(idea.reload.author_id).to eq(user.id)
+            expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
+          end
         end
 
         context 'when the user_confirmation module is active' do
@@ -192,6 +218,22 @@ resource 'Users' do
             user = User.order(:created_at).last
             expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
             expect(json_response.dig(:data, :attributes, :confirmation_required)).to be true # when no custom fields
+          end
+
+          context 'with claim_tokens' do
+            let!(:claim_token) { create(:claim_token) }
+            let(:idea) { claim_token.item }
+            let(:claim_tokens) { [claim_token.token] }
+
+            example 'marks claim tokens as pending for the new user', document: false do
+              do_request
+              assert_status 201
+
+              user = User.find(response_data[:id])
+
+              expect(user.claim_tokens).to contain_exactly(claim_token)
+              expect(idea.reload.author_id).to be_nil # Not yet claimed
+            end
           end
         end
 

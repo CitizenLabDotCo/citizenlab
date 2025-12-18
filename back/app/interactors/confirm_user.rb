@@ -40,8 +40,8 @@ class ConfirmUser < ApplicationInteractor
   end
 
   def confirm_user
-    return if user.confirm!
+    return fail_with_error!(:user, :confirmation, message: 'Something went wrong.') unless user.confirm!
 
-    fail_with_error! :user, :confirmation, message: 'Something went wrong.'
+    ClaimTokenService.complete(user)
   end
 end
