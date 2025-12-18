@@ -1,22 +1,16 @@
 # frozen_string_literal: true
-require 'twilio-ruby'
-
-account_sid = ENV.fetch('TWILIO_ACCOUNT_SID')
-auth_token = ENV.fetch('TWILIO_AUTH_TOKEN')
 
 class WebApi::V1::PhoneConfirmationController < ApplicationController
   skip_after_action :verify_authorized
 
-  def request_code
-    twilio_client
-      .api
-      .v2010
-      .messages
-      .create(
-        body: 'Your confirmation code is 123456',
-        from: '+15017122661',
-        to: '+15558675310'
-      )
+  def send_code
+    phone_number = request_code_params[:phone_number]
+    code = rand(100000..999999).to_s.rjust(6, '0')
+
+    phone_confirmation_service.send_confirmation_code(
+      phone_number, 
+      code
+    )
 
     head :ok
   end
@@ -27,7 +21,7 @@ class WebApi::V1::PhoneConfirmationController < ApplicationController
     params.permit(:phone_number)
   end
 
-  def twilio_client
-    @twilio_client ||= Twilio::REST::Client.new(account_sid, auth_token)
+  def phone_confirmation_service
+    @phone_confirmation_service ||= PhoneConfirmationService.new
   end
 end
