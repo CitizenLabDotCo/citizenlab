@@ -92,6 +92,7 @@ class OmniauthCallbackController < ApplicationController
           SideFxUserService.new.after_update(@user, nil) # Logs 'registration_completed' activity Job`
           @invite.save!
           SideFxInviteService.new.after_accept @invite # Logs 'accepted' activity Job
+          ClaimTokenService.claim(@user, claim_tokens) if claim_tokens.present?
           verify_and_sign_in(auth, @user, verify, sign_up: true)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
@@ -103,6 +104,7 @@ class OmniauthCallbackController < ApplicationController
           update_user!(auth, @user, authver_method)
           update_identity!(auth, @identity, authver_method)
           SideFxUserService.new.after_update(@user, nil)
+          ClaimTokenService.claim(@user, claim_tokens) if claim_tokens.present?
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
           signin_failure_redirect
@@ -120,7 +122,7 @@ class OmniauthCallbackController < ApplicationController
       @user.identities << @identity
       begin
         @user.save!
-        SideFxUserService.new.after_create(@user, nil)
+        SideFxUserService.new.after_create(@user, nil, claim_tokens:)
         verify_and_sign_in(auth, @user, verify, sign_up: true, user_created: true)
       rescue ActiveRecord::RecordInvalid => e
         Rails.logger.info "Social signup failed: #{e.message}"
@@ -177,6 +179,10 @@ class OmniauthCallbackController < ApplicationController
 
   def sso_redirect_path
     omniauth_params&.dig('sso_pathname') || '/'
+  end
+
+  def claim_tokens
+    omniauth_params&.dig('claim_tokens')
   end
 
   # Reject any parameters we don't need to be passed to the frontend in the URL
