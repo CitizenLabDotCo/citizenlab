@@ -91,7 +91,6 @@ const FormEdit = ({
   const { data: formCustomFields, isFetching } = useFormCustomFields({
     projectId,
     phaseId: isFormPhaseSpecific ? phaseId : undefined,
-    cacheIndividualItems: false,
   });
 
   const { data: customForm } = useCustomForm(phase);

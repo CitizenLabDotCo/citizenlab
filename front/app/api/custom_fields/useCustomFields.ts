@@ -14,7 +14,6 @@ const useCustomFields = ({
   inputTypes,
   copy,
   publicFields = false,
-  cacheIndividualItems = true,
 }: ICustomFieldsParameters) => {
   const result = useRawCustomFields({
     projectId,
@@ -22,7 +21,6 @@ const useCustomFields = ({
     inputTypes,
     copy,
     publicFields,
-    cacheIndividualItems,
   });
 
   const includedByType = useMemo(() => {

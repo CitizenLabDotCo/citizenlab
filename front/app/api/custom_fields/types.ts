@@ -16,7 +16,6 @@ export interface ICustomFieldsParameters {
   inputTypes?: ICustomFieldInputType[];
   copy?: boolean;
   publicFields?: boolean;
-  cacheIndividualItems?: boolean;
 }
 
 export type ICustomFieldInputType =
