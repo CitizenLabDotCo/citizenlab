@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
@@ -10,9 +10,9 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
+import IdeasFeed from './IdeasFeed';
 import IdeasFeedPageMeta from './IdeasFeedPageMeta';
 import Sidebar from './Sidebar';
-import StickyNotesPile from './StickyNotes';
 
 const IdeasFeedPage = () => {
   const { slug } = useParams() as { slug: string };
@@ -21,6 +21,7 @@ const IdeasFeedPage = () => {
   const selectedTopicId = searchParams.get('topic');
   const phaseId = searchParams.get('phase_id');
   const isMobileOrSmaller = useBreakpoint('phone');
+  const initialIdeaId = searchParams.get('initial_idea_id') || undefined;
 
   const setSelectedTopicId = (topicId: string | null) => {
     if (topicId) {
@@ -29,12 +30,6 @@ const IdeasFeedPage = () => {
       removeSearchParams(['topic']);
     }
   };
-
-  const handleIdeaSelect = useCallback((ideaId: string | null) => {
-    if (ideaId) {
-      updateSearchParams({ idea_id: ideaId });
-    }
-  }, []);
 
   if (!phaseId) {
     return null;
@@ -74,11 +69,7 @@ const IdeasFeedPage = () => {
         >
           <Sidebar />
           <Box flex="4">
-            <StickyNotesPile
-              phaseId={phaseId}
-              maxNotes={20}
-              onIdeaSelect={handleIdeaSelect}
-            />
+            <IdeasFeed initialIdeaId={initialIdeaId} />
           </Box>
         </Box>
       </Box>

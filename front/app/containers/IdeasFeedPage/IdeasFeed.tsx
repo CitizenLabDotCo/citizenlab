@@ -13,16 +13,16 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { useVirtualizer } from '@tanstack/react-virtual';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAddIdeaExposure from 'api/idea_exposure/useAddIdeaExposure';
 import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
 
-import useKeyPress from 'hooks/useKeyPress';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
-import { getTopicColor } from '../topicsColor';
-
-import StickyNote from './StickyNote';
+import StickyNote from './StickyNotes/StickyNote';
+import { getTopicColor } from './topicsColor';
 
 const PEEK_HEIGHT_MOBILE = 350;
 const PEEK_HEIGHT_DESKTOP = 400;
@@ -60,25 +60,25 @@ const VirtualItem = styled.div<{ start: number; topOffset: number }>`
 `;
 
 interface Props {
-  phaseId: string;
-  topicId: string | null;
-  initialIdeaId: string;
-  onClose: () => void;
-  onIdeaSelect: (ideaId: string | null) => void;
+  initialIdeaId?: string;
 }
 
-const IdeasFeed = ({
-  phaseId,
-  topicId,
-  initialIdeaId,
-  onClose,
-  onIdeaSelect,
-}: Props) => {
+const IdeasFeed = ({ initialIdeaId }: Props) => {
+  const [searchParams] = useSearchParams();
+  const phaseId = searchParams.get('phase_id')!;
+  const topicId = searchParams.get('topic');
+
   const parentRef = useRef<HTMLDivElement | null>(null);
   const currentIndexRef = useRef<number>(0);
   const [centeredIndex, setCenteredIndex] = useState<number>(0);
   const exposedIdeaIdsRef = useRef<Set<string>>(new Set());
   const isMobile = useBreakpoint('phone');
+
+  const handleIdeaSelect = useCallback((ideaId: string | null) => {
+    if (ideaId) {
+      updateSearchParams({ idea_id: ideaId });
+    }
+  }, []);
 
   const { mutate: addIdeaExposure } = useAddIdeaExposure();
 
@@ -129,18 +129,18 @@ const IdeasFeed = ({
 
   const itemHeight = window.innerHeight - peekHeight;
 
-  const { getVirtualItems, getTotalSize, measureElement, scrollToIndex } =
-    useVirtualizer({
-      count: hasNextPage ? ideasLength + 1 : ideasLength,
-      getScrollElement: () => parentRef.current,
-      estimateSize: () => itemHeight,
-      overscan: 2,
-    });
+  const { getVirtualItems, getTotalSize, measureElement } = useVirtualizer({
+    count: hasNextPage ? ideasLength + 1 : ideasLength,
+    getScrollElement: () => parentRef.current,
+    estimateSize: () => itemHeight,
+    overscan: 2,
+  });
 
   const virtualItems = getVirtualItems();
 
   // Fetch next page when reaching the end
   useEffect(() => {
+    if (virtualItems.length === 0) return;
     const lastItem = virtualItems[virtualItems.length - 1];
 
     if (
@@ -157,46 +157,6 @@ const IdeasFeed = ({
     ideasLength,
     virtualItems,
   ]);
-
-  // Keyboard navigation
-  const upArrow = useKeyPress('ArrowUp');
-  const downArrow = useKeyPress('ArrowDown');
-  const escapeKey = useKeyPress('Escape');
-
-  const scrollToNote = useCallback(
-    (index: number) => {
-      if (index >= 0 && index < ideasLength) {
-        currentIndexRef.current = index;
-        scrollToIndex(index, { align: 'center', behavior: 'smooth' });
-      }
-    },
-    [ideasLength, scrollToIndex]
-  );
-
-  useEffect(() => {
-    if (upArrow && currentIndexRef.current > 0) {
-      scrollToNote(currentIndexRef.current - 1);
-    }
-  }, [upArrow, scrollToNote]);
-
-  useEffect(() => {
-    if (downArrow && currentIndexRef.current < ideasLength - 1) {
-      scrollToNote(currentIndexRef.current + 1);
-    }
-  }, [downArrow, ideasLength, scrollToNote]);
-
-  useEffect(() => {
-    if (escapeKey) {
-      onClose();
-    }
-  }, [escapeKey, onClose]);
-
-  const handleNoteClick = useCallback(
-    (ideaId: string) => {
-      onIdeaSelect(ideaId);
-    },
-    [onIdeaSelect]
-  );
 
   // Handle scroll events to track current index
   useEffect(() => {
@@ -297,7 +257,7 @@ const IdeasFeed = ({
                   ideaId={idea.id}
                   topicBackgroundColor={topicBackgroundColor}
                   size="large"
-                  onClick={() => handleNoteClick(idea.id)}
+                  onClick={() => handleIdeaSelect(idea.id)}
                 />
               </NoteContainer>
             </VirtualItem>
