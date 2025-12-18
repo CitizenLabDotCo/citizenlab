@@ -806,4 +806,25 @@ RSpec.describe Surveys::ResultsGenerator do
       end
     end
   end
+
+  describe 'format_raw_data' do
+    before_all do
+      # Update fields from survey_setup shared context with some (meaningless but valid) end_page logic
+      linear_scale_field.update!(logic: { rules: [{ if: 2, goto_page_id: last_page_field.id }, { if: 'no_answer', goto_page_id: last_page_field.id }] })
+      page_field.update!(logic: { next_page_id: last_page_field.id })
+    end
+
+
+    it 'formats raw data correctly for text fields' do
+
+
+      formatted_data = generator.send(:format_raw_data)
+
+      binding.pry
+
+      # expect(formatted_data).to eq({
+      #   text_field.id => ['Blue', 'Green']
+      # })
+    end
+  end
 end

@@ -16,6 +16,64 @@ module Surveys
       @inputs = phase.ideas.supports_survey.published
     end
 
+    def format_raw_data
+      # @fields.map do |field|
+      #   field.key.to_s => @inputs.map do |input|
+      #     { id: input.id, value: input.custom_field_values[field.key] }
+      #   end
+      # end
+
+      has_logic = @fields.any? { |field| field.logic != {} }
+
+
+      # TODO: If structure by category is enabled then logic will not work any more - community monitor only?
+
+      # First map the fields to pages to make logic easier
+      current_page = nil
+      fields_with_pages = @fields.map do |field|
+        current_page = field.id if field.input_type == 'page'
+        {
+          page_id: current_page,
+          field: field
+        }
+      end
+
+      binding.pry
+
+      # Next build the responses with an array of field IDs that were seen based on logic & values
+      responses = @inputs.map do |input|
+        seen = []
+        next_page_id = nil
+        # @fields.each do |field|
+        #   if field.logic['rules']
+        #     field.logic['rules']&.find { |r| r['if'] == 'no_answer' }&.dig('goto_page_id')
+        # end
+        {
+          id: input.id,
+          values: input.custom_field_values,
+          seen: seen
+        }
+      end
+
+      # Now build the structure with only those responses per question that were seen
+      # - so nil values mean that they were seen but not answered
+      data = @fields.to_h do |field|
+        [
+          field.key.to_sym,
+          @inputs.map do |input|
+            {
+              id: input.id,
+              value: input.custom_field_values[field.key],
+              seen: true
+            }
+          end
+        ]
+      end
+
+      # Now work out which inputs were not seen for each field
+
+    end
+
     # Get the results for a single survey question
     def generate_result_for_field(field_id)
       field = find_question(field_id)
