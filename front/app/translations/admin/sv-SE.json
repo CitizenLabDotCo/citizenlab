@@ -3277,7 +3277,7 @@
   "app.containers.admin.ReportBuilder.charts.analyticsChartAriaLabel": "Etikett",
   "app.containers.admin.ReportBuilder.charts.analyticsChartAriaLabelTooltip3": "Ange en etikett som beskriver diagrammet för förbättrad tillgänglighet.",
   "app.containers.admin.ReportBuilder.charts.analyticsChartDateRange": "Datumintervall",
-  "app.containers.admin.ReportBuilder.charts.analyticsChartDescription": "Description",
+  "app.containers.admin.ReportBuilder.charts.analyticsChartDescription": "Beskrivning",
   "app.containers.admin.ReportBuilder.charts.analyticsChartDescriptionTooltip3": "Ge en mer detaljerad beskrivning av diagrammet och eventuella relevanta trender för förbättrad tillgänglighet.",
   "app.containers.admin.ReportBuilder.charts.analyticsChartTitle": "Titel",
   "app.containers.admin.ReportBuilder.charts.noData": "Det finns inga data tillgängliga för de filter du har valt.",
