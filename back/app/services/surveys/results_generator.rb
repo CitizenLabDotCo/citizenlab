@@ -16,6 +16,10 @@ module Surveys
       @inputs = phase.ideas.supports_survey.published
     end
 
+    def survey_has_logic?
+      @survey_has_logic ||= @fields.any? { |field| field.logic != {} }
+    end
+
     def format_raw_data
       # @fields.map do |field|
       #   field.key.to_s => @inputs.map do |input|
@@ -23,8 +27,7 @@ module Surveys
       #   end
       # end
 
-      has_logic = @fields.any? { |field| field.logic != {} }
-
+      @fields.any? { |field| field.logic != {} }
 
       # TODO: If structure by category is enabled then logic will not work any more - community monitor only?
 
@@ -40,20 +43,45 @@ module Surveys
 
       binding.pry
 
+      all_page_ids = @fields.select { |f| f.input_type == 'page' }.map(&:id)
+
       # Next build the responses with an array of field IDs that were seen based on logic & values
       responses = @inputs.map do |input|
         seen = []
-        next_page_id = nil
-        # @fields.each do |field|
-        #   if field.logic['rules']
-        #     field.logic['rules']&.find { |r| r['if'] == 'no_answer' }&.dig('goto_page_id')
-        # end
+        if survey_has_logic?
+          previous_page_id = nil
+          next_page_id = nil
+          fields_with_pages.each do |field_with_page|
+            current_page_id = field_with_page[:page_id]
+            field = field_with_page[:field]
+
+            if previous_page_id.nil? || current_page_id == previous_page_id || current_page_id == next_page_id
+              seen << field.key.to_s
+            end
+
+            # TODO: Now work out the rules for next page
+            # if field.page? && all_page_ids.index(current_page_id) != all_page_ids.size - 1 # last page has no next page
+            #   # If there is logic for the next page, use that
+            #   if field.logic['rules']
+            #     next_page_id = field.logic['rules']&.dig('goto_page_id')
+            #   else
+            #     # By default go to the next page
+            #     next_page_id = all_page_ids[all_page_ids.index(current_page_id) + 1]
+            #   end
+            # end
+
+            previous_page_id = current_page_id
+          end
+        end
+          #
         {
           id: input.id,
           values: input.custom_field_values,
           seen: seen
         }
       end
+
+      binding.pry
 
       # Now build the structure with only those responses per question that were seen
       # - so nil values mean that they were seen but not answered
