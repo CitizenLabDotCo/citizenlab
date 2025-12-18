@@ -1,10 +1,13 @@
-import React, { useMemo, useState, useCallback, useEffect } from 'react';
+import React, { useMemo, useCallback } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
+
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import { getTopicColor } from '../topicsColor';
 
@@ -66,7 +69,7 @@ interface Props {
 const StickyNotesPile = ({ maxNotes = 20, phaseId, onIdeaSelect }: Props) => {
   const [searchParams] = useSearchParams();
   const topicId = searchParams.get('topic');
-  const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
+  const selectedIdeaId = searchParams.get('idea_id');
 
   const {
     data,
@@ -95,17 +98,12 @@ const StickyNotesPile = ({ maxNotes = 20, phaseId, onIdeaSelect }: Props) => {
   }, [flatIdeas]);
 
   const handleNoteClick = useCallback((ideaId: string) => {
-    setSelectedIdeaId(ideaId);
+    updateSearchParams({ idea_id: ideaId });
   }, []);
 
   const handleCloseFeed = useCallback(() => {
-    setSelectedIdeaId(null);
+    removeSearchParams(['idea_id']);
   }, []);
-
-  // Go back to pile view when topic changes
-  useEffect(() => {
-    setSelectedIdeaId(null);
-  }, [topicId]);
 
   if (ideasLoading) {
     return (

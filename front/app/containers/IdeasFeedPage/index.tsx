@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
@@ -39,8 +39,8 @@ const IdeasFeedPage = () => {
   const [searchParams] = useSearchParams();
   const selectedTopicId = searchParams.get('topic');
   const phaseId = searchParams.get('phase_id');
+  const selectedIdeaId = searchParams.get('idea_id');
   const isMobileOrSmaller = useBreakpoint('phone');
-  const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
 
   const { data: selectedIdea } = useIdeaById(selectedIdeaId ?? undefined);
 
@@ -55,11 +55,15 @@ const IdeasFeedPage = () => {
   };
 
   const handleIdeaSelect = useCallback((ideaId: string | null) => {
-    setSelectedIdeaId(ideaId);
+    if (ideaId) {
+      updateSearchParams({ idea_id: ideaId });
+    } else {
+      removeSearchParams(['idea_id']);
+    }
   }, []);
 
   const handleCloseSidebar = useCallback(() => {
-    setSelectedIdeaId(null);
+    removeSearchParams(['idea_id']);
   }, []);
 
   if (!phaseId) {
