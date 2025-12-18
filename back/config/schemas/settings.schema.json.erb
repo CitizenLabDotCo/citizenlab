@@ -1568,6 +1568,18 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "phone_confirmation": {
+        "type": "object",
+        "title": "Phone confirmation",
+        "description": "Enables storing phone numbers and confirming them via SMS, which can be used as a second factor of authentication in phase access rights.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {
