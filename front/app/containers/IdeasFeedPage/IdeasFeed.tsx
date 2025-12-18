@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useMemo,
-  useRef,
-  useCallback,
-  useState,
-} from 'react';
+import React, { useMemo, useRef, useCallback, useState } from 'react';
 
 import {
   Box,
@@ -16,7 +10,6 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import useAddIdeaExposure from 'api/idea_exposure/useAddIdeaExposure';
 import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -24,7 +17,7 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import StickyNote from './StickyNotes/StickyNote';
 import { getTopicColor } from './topicsColor';
 
-const PEEK_HEIGHT_MOBILE = 350;
+const PEEK_HEIGHT_MOBILE = 200;
 const PEEK_HEIGHT_DESKTOP = 400;
 
 const FeedContainer = styled(Box)`
@@ -71,7 +64,6 @@ const IdeasFeed = ({ initialIdeaId }: Props) => {
   const parentRef = useRef<HTMLDivElement | null>(null);
   const currentIndexRef = useRef<number>(0);
   const [centeredIndex, setCenteredIndex] = useState<number>(0);
-  const exposedIdeaIdsRef = useRef<Set<string>>(new Set());
   const isMobile = useBreakpoint('phone');
 
   const handleIdeaSelect = useCallback((ideaId: string | null) => {
@@ -79,8 +71,6 @@ const IdeasFeed = ({ initialIdeaId }: Props) => {
       updateSearchParams({ idea_id: ideaId });
     }
   }, []);
-
-  const { mutate: addIdeaExposure } = useAddIdeaExposure();
 
   const peekHeight = isMobile ? PEEK_HEIGHT_MOBILE : PEEK_HEIGHT_DESKTOP;
 
@@ -138,34 +128,12 @@ const IdeasFeed = ({ initialIdeaId }: Props) => {
 
   const virtualItems = getVirtualItems();
 
-  // Fetch next page when reaching the end
-  useEffect(() => {
-    if (virtualItems.length === 0) return;
-    const lastItem = virtualItems[virtualItems.length - 1];
-
-    if (
-      lastItem.index >= ideasLength - 1 &&
-      hasNextPage &&
-      !isFetchingNextPage
-    ) {
-      fetchNextPage();
-    }
-  }, [
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage,
-    ideasLength,
-    virtualItems,
-  ]);
-
-  // Handle scroll events to track current index
-  useEffect(() => {
-    const container = parentRef.current;
-    if (!container) return;
-
-    const handleScroll = () => {
-      const scrollTop = container.scrollTop;
+  const handleScroll = useCallback(
+    (e: React.UIEvent<HTMLElement>) => {
+      const scrollTop = e.currentTarget.scrollTop;
       const newIndex = Math.round(scrollTop / itemHeight);
+
+      // Update centered index and URL
       if (
         newIndex !== currentIndexRef.current &&
         newIndex >= 0 &&
@@ -173,25 +141,34 @@ const IdeasFeed = ({ initialIdeaId }: Props) => {
       ) {
         currentIndexRef.current = newIndex;
         setCenteredIndex(newIndex);
+        const centeredIdeaId = orderedIdeas[newIndex]?.id;
+        if (centeredIdeaId) {
+          updateSearchParams({ centered_idea_id: centeredIdeaId });
+        }
       }
-    };
 
-    container.addEventListener('scroll', handleScroll);
-    return () => container.removeEventListener('scroll', handleScroll);
-  }, [ideasLength, itemHeight]);
-
-  // Track idea exposure when a sticky note is focused
-  useEffect(() => {
-    if (orderedIdeas.length === 0 || centeredIndex >= orderedIdeas.length) {
-      return;
-    }
-
-    const ideaId = orderedIdeas[centeredIndex].id;
-    if (exposedIdeaIdsRef.current.has(ideaId)) return;
-
-    exposedIdeaIdsRef.current.add(ideaId);
-    addIdeaExposure({ ideaId });
-  }, [centeredIndex, orderedIdeas, addIdeaExposure]);
+      // Fetch next page when reaching the end
+      if (virtualItems.length > 0) {
+        const lastItem = virtualItems[virtualItems.length - 1];
+        if (
+          lastItem.index >= ideasLength - 1 &&
+          hasNextPage &&
+          !isFetchingNextPage
+        ) {
+          fetchNextPage();
+        }
+      }
+    },
+    [
+      itemHeight,
+      ideasLength,
+      orderedIdeas,
+      virtualItems,
+      hasNextPage,
+      isFetchingNextPage,
+      fetchNextPage,
+    ]
+  );
 
   if (isLoading) {
     return (
@@ -209,7 +186,7 @@ const IdeasFeed = ({ initialIdeaId }: Props) => {
   const topPadding = peekHeight / 2;
 
   return (
-    <FeedContainer ref={parentRef}>
+    <FeedContainer ref={parentRef} onScroll={handleScroll}>
       <Box
         height={`${getTotalSize() + topPadding}px`}
         width="100%"

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import {
   Box,
@@ -7,8 +7,10 @@ import {
   useBreakpoint,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
+import useAddIdeaExposure from 'api/idea_exposure/useAddIdeaExposure';
 import useIdeaById from 'api/ideas/useIdeaById';
 
 import useLocalize from 'hooks/useLocalize';
@@ -62,9 +64,21 @@ const StickyNote: React.FC<Props> = ({
   onClick,
   size = 'small',
 }) => {
+  const [searchParams] = useSearchParams();
+  const centeredIdeaId = searchParams.get('centered_idea_id');
+  const isCentered = centeredIdeaId === ideaId;
+
   const { data: idea } = useIdeaById(ideaId);
   const localize = useLocalize();
   const isMobile = useBreakpoint('phone');
+  const { mutate: addIdeaExposure } = useAddIdeaExposure();
+
+  // Track idea exposure when sticky note becomes centered
+  useEffect(() => {
+    if (isCentered) {
+      addIdeaExposure({ ideaId });
+    }
+  }, [isCentered, ideaId, addIdeaExposure]);
 
   const sizeStyles = isMobile
     ? sizeStylesMobile[size]
