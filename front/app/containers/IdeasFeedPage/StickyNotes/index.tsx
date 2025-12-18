@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useCallback } from 'react';
+import React, { useMemo, useState, useCallback, useEffect } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
@@ -100,6 +100,11 @@ const StickyNotesPile = ({ maxNotes = 20, phaseId }: Props) => {
   const handleCloseFeed = useCallback(() => {
     setSelectedIdeaId(null);
   }, []);
+
+  // Go back to pile view when topic changes
+  useEffect(() => {
+    setSelectedIdeaId(null);
+  }, [topicId]);
 
   if (ideasLoading) {
     return (

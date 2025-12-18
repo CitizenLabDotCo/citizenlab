@@ -15,6 +15,7 @@ import {
 import { useVirtualizer } from '@tanstack/react-virtual';
 import styled from 'styled-components';
 
+import useAddIdeaExposure from 'api/idea_exposure/useAddIdeaExposure';
 import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
 
 import useKeyPress from 'hooks/useKeyPress';
@@ -69,7 +70,10 @@ const IdeasFeed = ({ phaseId, topicId, initialIdeaId, onClose }: Props) => {
   const parentRef = useRef<HTMLDivElement | null>(null);
   const currentIndexRef = useRef<number>(0);
   const [centeredIndex, setCenteredIndex] = useState<number>(0);
+  const exposedIdeaIdsRef = useRef<Set<string>>(new Set());
   const isMobile = useBreakpoint('phone');
+
+  const { mutate: addIdeaExposure } = useAddIdeaExposure();
 
   const peekHeight = isMobile ? PEEK_HEIGHT_MOBILE : PEEK_HEIGHT_DESKTOP;
 
@@ -201,6 +205,19 @@ const IdeasFeed = ({ phaseId, topicId, initialIdeaId, onClose }: Props) => {
     container.addEventListener('scroll', handleScroll);
     return () => container.removeEventListener('scroll', handleScroll);
   }, [ideasLength, itemHeight]);
+
+  // Track idea exposure when a sticky note is focused
+  useEffect(() => {
+    if (orderedIdeas.length === 0 || centeredIndex >= orderedIdeas.length) {
+      return;
+    }
+
+    const ideaId = orderedIdeas[centeredIndex].id;
+    if (exposedIdeaIdsRef.current.has(ideaId)) return;
+
+    exposedIdeaIdsRef.current.add(ideaId);
+    addIdeaExposure({ ideaId });
+  }, [centeredIndex, orderedIdeas, addIdeaExposure]);
 
   if (isLoading) {
     return (
