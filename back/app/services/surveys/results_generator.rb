@@ -13,93 +13,95 @@ module Surveys
       form = phase.custom_form || CustomForm.new(participation_context: phase)
       @fields = IdeaCustomFieldsService.new(form).survey_results_fields(structure_by_category:)
       @locales = AppConfiguration.instance.settings('core', 'locales')
-      @inputs = phase.ideas.supports_survey.published
+      @inputs = phase.ideas.supports_survey.published # TODO: Add .includes(:author)
+      @responses_by_field = format_responses_by_field
     end
 
     def survey_has_logic?
-      @survey_has_logic ||= @fields.any? { |field| field.logic != {} }
+      @survey_has_logic ||= fields.any? { |field| field.logic != {} }
     end
 
-    def format_raw_data
-      # @fields.map do |field|
-      #   field.key.to_s => @inputs.map do |input|
-      #     { id: input.id, value: input.custom_field_values[field.key] }
-      #   end
-      # end
+    def total_response_count
+      # Number of responses for the first page will always be total responses
+      num_times_field_seen(responses_by_field.keys.first)
+    end
 
-      @fields.any? { |field| field.logic != {} }
+    def num_times_field_seen(field_key)
+      responses_by_field[field_key].size
+    end
 
+    def format_responses_by_field
       # TODO: If structure by category is enabled then logic will not work any more - community monitor only?
 
-      # First map the fields to pages to make logic easier
+      # First nest the fields inside pages to make logic easier
       current_page = nil
-      fields_with_pages = @fields.map do |field|
+      pages = {}
+      fields.each do |field|
         current_page = field.id if field.input_type == 'page'
-        {
-          page_id: current_page,
-          field: field
-        }
+        pages[current_page] ||= []
+        pages[current_page] << field
       end
 
-      binding.pry
-
-      all_page_ids = @fields.select { |f| f.input_type == 'page' }.map(&:id)
+      all_page_ids = pages.keys.compact
 
       # Next build the responses with an array of field IDs that were seen based on logic & values
-      responses = @inputs.map do |input|
+      responses = inputs.map do |input|
         seen = []
         if survey_has_logic?
-          previous_page_id = nil
           next_page_id = nil
-          fields_with_pages.each do |field_with_page|
-            current_page_id = field_with_page[:page_id]
-            field = field_with_page[:field]
+          pages.each do |page_id, fields|
+            next unless next_page_id.nil? || page_id == next_page_id
 
-            if previous_page_id.nil? || current_page_id == previous_page_id || current_page_id == next_page_id
-              seen << field.key.to_s
+            fields.each do |field|
+              seen << field.key
+
+              # TODO: Not currently adding the other/follow_up fields in here - ie if other option selected it will have been seen
+
+              if field.page?
+                if field.logic['next_page_id']
+                  # Any page logic that will change the next page?
+                  next_page_id = field.logic['next_page_id']
+                else
+                  # By default go to the next page
+                  next_page_id = all_page_ids[all_page_ids.index(page_id) + 1]
+                end
+              elsif field.logic['rules']
+                # TODO: select or linear scale fields
+              end
             end
-
-            # TODO: Now work out the rules for next page
-            # if field.page? && all_page_ids.index(current_page_id) != all_page_ids.size - 1 # last page has no next page
-            #   # If there is logic for the next page, use that
-            #   if field.logic['rules']
-            #     next_page_id = field.logic['rules']&.dig('goto_page_id')
-            #   else
-            #     # By default go to the next page
-            #     next_page_id = all_page_ids[all_page_ids.index(current_page_id) + 1]
-            #   end
-            # end
-
-            previous_page_id = current_page_id
           end
         end
-          #
+
+        # TODO: Add the values from users here too
+
         {
           id: input.id,
-          values: input.custom_field_values,
+          values: merge_user_custom_field_values(input),
           seen: seen
         }
       end
 
-      binding.pry
-
       # Now build the structure with only those responses per question that were seen
-      # - so nil values mean that they were seen but not answered
-      data = @fields.to_h do |field|
+      # So nil values mean that they were seen but not answered
+      fields.to_h do |field|
         [
-          field.key.to_sym,
-          @inputs.map do |input|
+          field.key,
+          responses.map do |response|
+            # Remove any responses that were not seen due to logic
+            next if survey_has_logic? && response[:seen].exclude?(field.key)
+
             {
-              id: input.id,
-              value: input.custom_field_values[field.key],
-              seen: true
+              id: response[:id],
+              answer: response[:values][field.key],
             }
-          end
+          end.compact
         ]
       end
+    end
 
-      # Now work out which inputs were not seen for each field
-
+    def merge_user_custom_field_values(input)
+      user_values = input.author&.custom_field_values.map { |k, v| ["u_#{k}", v] }.to_h || {}
+      user_values.merge(input.custom_field_values) # Idea values take priority over user values
     end
 
     # Get the results for a single survey question
@@ -111,7 +113,7 @@ module Surveys
 
     # Get the results for all survey questions
     def generate_results
-      results = fields.filter_map { |f| visit f }
+      results = fields.filter_map { |f| f.id ? visit(f) : nil } # Skip other/follow_up questions which have no ID
       if results.present?
         results = add_question_numbers_to_results results
         results = add_page_response_count_to_results results
@@ -122,12 +124,12 @@ module Surveys
 
       {
         results: results,
-        totalSubmissions: inputs.size
+        totalSubmissions: total_response_count,
       }
     end
 
     def visit_number(field)
-      responses = base_responses(field)
+      responses = base_responses(field.key)
       response_count = responses.size
 
       core_field_attributes(field, response_count:).merge({
@@ -188,10 +190,14 @@ module Surveys
     end
 
     def visit_file_upload(field)
-      file_ids = inputs
-        .select("custom_field_values->'#{field.key}'->'id' as value")
-        .where("custom_field_values->'#{field.key}' IS NOT NULL")
-        .map(&:value)
+      # New version
+      file_ids = base_responses(field.key).map { |a| a[:answer]['id'] } || []
+
+      # OLD VERSION
+      # file_ids = inputs
+      #   .select("custom_field_values->'#{field.key}'->'id' as value")
+      #   .where("custom_field_values->'#{field.key}' IS NOT NULL")
+      #   .map(&:value)
 
       files = ::Files::FileAttachment.where(id: file_ids).map do |attachment|
         { name: attachment.file.name, url: attachment.file.content.url }
@@ -226,14 +232,14 @@ module Surveys
 
     private
 
-    attr_reader :phase, :fields, :inputs, :locales
+    attr_reader :phase, :fields, :inputs, :locales, :responses_by_field
 
     def add_additional_fields_to_results(results)
       results # This method is a placeholder for overriding in subclasses
     end
 
     def core_field_attributes(field, response_count: nil)
-      response_count ||= base_responses(field).size
+      response_count ||= base_responses(field.key).size
       {
         inputType: field.input_type,
         question: field.title_multiloc,
@@ -242,7 +248,7 @@ module Surveys
         required: field.required,
         grouped: false,
         hidden: false,
-        totalResponseCount: @inputs.size,
+        totalResponseCount: num_times_field_seen(field.key),
         questionResponseCount: response_count,
         pageNumber: nil,
         questionNumber: nil,
@@ -250,13 +256,19 @@ module Surveys
       }
     end
 
-    def base_responses(field)
-      inputs
-        .select("custom_field_values->'#{field.key}' as value")
-        .where("custom_field_values->'#{field.key}' IS NOT NULL")
-        .map do |response|
-        { answer: response.value }
-      end
+    def base_responses(field_key)
+      # NEW VERSION
+      responses_by_field[field_key]
+        &.select { |r| r[:answer].present? }
+        &.map { |r| { answer: r[:answer] } } || []
+
+      # OLD VERSION
+      # inputs
+      #   .select("custom_field_values->'#{field.key}' as value")
+      #   .where("custom_field_values->'#{field.key}' IS NOT NULL")
+      #   .map do |response|
+      #   { answer: response.value }
+      # end
     end
 
     def visit_select_base(field)
@@ -389,7 +401,7 @@ module Surveys
     end
 
     def responses_to_geographic_input_type(field)
-      responses = base_responses(field)
+      responses = base_responses(field.key)
       response_count = responses.size
       core_field_attributes(field, response_count:).merge({
         mapConfigId: field&.map_config&.id, "#{field.input_type}Responses": responses
@@ -398,14 +410,18 @@ module Surveys
 
     # Get any associated text responses - where follow up question or other option is used
     def get_text_responses(field_key)
-      inputs
-        .select("custom_field_values->'#{field_key}' as value")
-        .where("custom_field_values->'#{field_key}' IS NOT NULL")
-        # Remove all sequences of one or more whitespace characters (including spaces, newlines, tabs),
-        # then check the result is not empty. TRIM would not handle newlines correctly.
-        .where("regexp_replace(custom_field_values->>'#{field_key}', '[[:space:]]+', '', 'g') != ''")
-        .map { |answer| { answer: answer.value.to_s } }
-        .sort_by { |a| a[:answer] }
+      # NEW VERSION - TODO: Not working yet
+      base_responses(field_key).sort_by { |a| a[:answer] } || []
+
+      # OLD VERSION
+      # inputs
+      #   .select("custom_field_values->'#{field_key}' as value")
+      #   .where("custom_field_values->'#{field_key}' IS NOT NULL")
+      #   # Remove all sequences of one or more whitespace characters (including spaces, newlines, tabs),
+      #   # then check the result is not empty. TRIM would not handle newlines correctly.
+      #   .where("regexp_replace(custom_field_values->>'#{field_key}', '[[:space:]]+', '', 'g') != ''")
+      #   .map { |answer| { answer: answer.value.to_s } }
+      #   .sort_by { |a| a[:answer] }
     end
 
     def find_question(question_field_id)
