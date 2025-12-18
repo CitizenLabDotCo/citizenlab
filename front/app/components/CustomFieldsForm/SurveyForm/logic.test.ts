@@ -1,6 +1,11 @@
 import { Pages } from '../util';
 
-import { determineNextPageNumber, determinePreviousPageNumber } from './logic';
+import {
+  determineNextPageNumber,
+  determinePreviousPageNumber,
+  getValidPagePath,
+  getSkippedPageIndices,
+} from './logic';
 
 const pages: Pages = [
   {
@@ -502,6 +507,104 @@ describe('Survey form logic', () => {
 
       // Should return page 2 (the most recent previous page in history)
       expect(previousPageIndex).toBe(2);
+    });
+  });
+
+  describe('Skipped pages logic', () => {
+    beforeEach(() => {
+      pages[0].page.logic = {};
+      pages[0].pageQuestions = [
+        {
+          type: 'custom_field',
+          id: 'q1',
+          key: 'answer_q1',
+          input_type: 'select',
+          options: [
+            { id: 'yes_option', key: 'yes', title_multiloc: { en: 'Yes' } },
+            { id: 'no_option', key: 'no', title_multiloc: { en: 'No' } },
+          ],
+          logic: {
+            rules: [
+              { if: 'yes_option', goto_page_id: 'page2' },
+              { if: 'no_option', goto_page_id: 'page3' },
+            ],
+          },
+          title_multiloc: { en: 'Question 1' },
+          description_multiloc: {},
+          required: false,
+          ordering: 0,
+          enabled: true,
+          created_at: '',
+          updated_at: '',
+        },
+      ];
+
+      pages[1].page.logic = { next_page_id: 'page4' };
+      pages[1].pageQuestions = [
+        {
+          type: 'custom_field',
+          id: 'q2',
+          key: 'answer_q2',
+          input_type: 'text',
+          logic: { rules: [] },
+          title_multiloc: { en: 'Question 2' },
+          description_multiloc: {},
+          required: false,
+          ordering: 0,
+          enabled: true,
+          created_at: '',
+          updated_at: '',
+        },
+      ];
+
+      pages[2].page.logic = { next_page_id: 'page4' };
+      pages[2].pageQuestions = [
+        {
+          type: 'custom_field',
+          id: 'q3',
+          key: 'answer_q3',
+          input_type: 'text',
+          logic: { rules: [] },
+          title_multiloc: { en: 'Question 3' },
+          description_multiloc: {},
+          required: false,
+          ordering: 0,
+          enabled: true,
+          created_at: '',
+          updated_at: '',
+        },
+      ];
+
+      pages[3].page.logic = {};
+      pages[3].pageQuestions = [];
+    });
+
+    it('should trace the valid path through conditional logic', () => {
+      const validPathWhenYes = getValidPagePath({
+        pages,
+        formData: { answer_q1: 'yes' },
+      });
+      expect(validPathWhenYes).toEqual([0, 1, 3, 4]);
+
+      const validPathWhenNo = getValidPagePath({
+        pages,
+        formData: { answer_q1: 'no' },
+      });
+      expect(validPathWhenNo).toEqual([0, 2, 3, 4]);
+    });
+
+    it('should identify which pages are skipped based on current form data', () => {
+      const skippedWhenYes = getSkippedPageIndices({
+        pages,
+        formData: { answer_q1: 'yes' },
+      });
+      expect(skippedWhenYes).toEqual([2]);
+
+      const skippedWhenNo = getSkippedPageIndices({
+        pages,
+        formData: { answer_q1: 'no' },
+      });
+      expect(skippedWhenNo).toEqual([1]);
     });
   });
 });
