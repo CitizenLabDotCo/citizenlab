@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class WebApi::V1::PhoneConfirmationController < ApplicationController
-  skip_after_action :verify_authorized
+  def send_confirmation_code
+    authorize current_user, policy_class: RequestCodePolicy
 
-  def send_code
     phone_number = request_code_params[:phone_number]
     code = rand(100000..999999).to_s.rjust(6, '0')
 
