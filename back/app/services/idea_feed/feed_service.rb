@@ -1,10 +1,11 @@
 module IdeaFeed
   class FeedService
-    attr_reader :phase, :user
+    attr_reader :phase, :user, :topic_ids
 
-    def initialize(phase, user)
+    def initialize(phase, user, topic_ids: nil)
       @phase = phase
       @user = user
+      @topic_ids = topic_ids
     end
 
     def top_n(n = 5, scope = Idea.all)
@@ -33,11 +34,15 @@ module IdeaFeed
     def fetch_eligible_ideas(scope)
       exposed_ideas = IdeaExposure.where(user:, phase:).select(:idea_id).distinct
 
-      scope
+      scope = scope
         .joins(:ideas_phases)
         .where(ideas_phases: { phase_id: phase.id })
         .published
         .where.not(id: exposed_ideas)
+
+      scope = scope.with_some_topics(topic_ids) if topic_ids.present?
+
+      scope
     end
   end
 end

@@ -95,7 +95,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
     >
       {showIdeasFeedLink ? (
         <ButtonWithLink
-          linkTo={`/projects/${project?.data.attributes.slug}/ideas-feed`}
+          linkTo={`/projects/${project?.data.attributes.slug}/ideas-feed?phase_id=${phase.id}`}
           mb="16px"
         >
           <FormattedMessage {...messages.seeTheIdeas} />

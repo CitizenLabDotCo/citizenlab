@@ -8,8 +8,8 @@ module BulkImportIdeas::Parsers::Pdf
     end
 
     # Return in format compatible with idea_to_idea_row
-    def parse_idea(file_path, page_count)
-      parsed_response = parse(file_path)
+    def parse_idea(file_uploader, page_count)
+      parsed_response = parse(file_uploader)
 
       {
         pdf_pages: (1..page_count).to_a,
@@ -19,11 +19,11 @@ module BulkImportIdeas::Parsers::Pdf
 
     private
 
-    def parse(file_path)
+    def parse(file_uploader)
       pdf_file = Files::File.new(
         name: 'scan.pdf',
         mime_type: 'application/pdf',
-        content: File.open(file_path) # Uses the uploader
+        content: file_uploader
       )
 
       message = Analysis::LLM::Message.new(prompt, pdf_file)
@@ -32,7 +32,6 @@ module BulkImportIdeas::Parsers::Pdf
       corrected_response = gpt_response.match(/\[.+\]/m)&.try(:[], 0) # to be sure it is json that can be parsed
 
       corrected_response.present? ? JSON.parse(corrected_response) : nil
-      # binding.pry
     end
 
     def prompt
