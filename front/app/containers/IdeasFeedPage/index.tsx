@@ -2,12 +2,8 @@ import React, { useCallback } from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
-import styled from 'styled-components';
 
-import useIdeaById from 'api/ideas/useIdeaById';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
-
-import IdeasShow from 'containers/IdeasShow';
 
 import GoBackButton from 'components/UI/GoBackButton';
 
@@ -15,23 +11,8 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import IdeasFeedPageMeta from './IdeasFeedPageMeta';
+import Sidebar from './Sidebar';
 import StickyNotesPile from './StickyNotes';
-import TopicsSidebar from './TopicsSidebar';
-
-const IdeaSidebarContainer = styled(Box)`
-  width: 30%;
-  background: ${colors.white};
-  border-right: 1px solid ${colors.grey300};
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-`;
-
-const SidebarContent = styled(Box)`
-  flex: 1;
-  overflow-y: auto;
-  padding: 24px;
-`;
 
 const IdeasFeedPage = () => {
   const { slug } = useParams() as { slug: string };
@@ -39,12 +20,7 @@ const IdeasFeedPage = () => {
   const [searchParams] = useSearchParams();
   const selectedTopicId = searchParams.get('topic');
   const phaseId = searchParams.get('phase_id');
-  const selectedIdeaId = searchParams.get('idea_id');
   const isMobileOrSmaller = useBreakpoint('phone');
-
-  const { data: selectedIdea } = useIdeaById(selectedIdeaId ?? undefined);
-
-  const projectId = selectedIdea?.data.relationships.project.data.id;
 
   const setSelectedTopicId = (topicId: string | null) => {
     if (topicId) {
@@ -57,13 +33,7 @@ const IdeasFeedPage = () => {
   const handleIdeaSelect = useCallback((ideaId: string | null) => {
     if (ideaId) {
       updateSearchParams({ idea_id: ideaId });
-    } else {
-      removeSearchParams(['idea_id']);
     }
-  }, []);
-
-  const handleCloseSidebar = useCallback(() => {
-    removeSearchParams(['idea_id']);
   }, []);
 
   if (!phaseId) {
@@ -102,31 +72,7 @@ const IdeasFeedPage = () => {
           overflow="auto"
           h="100vh"
         >
-          {selectedIdeaId && selectedIdea && projectId && !isMobileOrSmaller ? (
-            <IdeaSidebarContainer>
-              <Box>
-                <GoBackButton
-                  onClick={handleCloseSidebar}
-                  showGoBackText={false}
-                />
-              </Box>
-              <SidebarContent>
-                <IdeasShow
-                  ideaId={selectedIdeaId}
-                  projectId={projectId}
-                  compact={true}
-                />
-              </SidebarContent>
-            </IdeaSidebarContainer>
-          ) : (
-            <TopicsSidebar
-              selectedTopicId={selectedTopicId}
-              onTopicSelect={setSelectedTopicId}
-              selectedIdeaId={selectedIdeaId}
-              selectedIdeaProjectId={projectId}
-              onCloseIdea={handleCloseSidebar}
-            />
-          )}
+          <Sidebar />
           <Box flex="4">
             <StickyNotesPile
               phaseId={phaseId}
