@@ -38,6 +38,11 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  unique_code                         :string
 #  last_active_at                      :datetime
 #  imported                            :boolean          default(FALSE), not null
+#  phone_confirmed_at                  :datetime
+#  phone_confirmation_code             :string
+#  phone_confirmation_retry_count      :integer          default(0), not null
+#  phone_confirmation_code_reset_count :integer          default(0), not null
+#  phone_confirmation_code_sent_at     :datetime
 #
 # Indexes
 #
