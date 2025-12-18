@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PhoneConfirmationPolicy < ApplicationPolicy
-  def send_confirmation_code?
+  def request_phone_confirmation_code?
     return false unless app_configuration.feature_activated?('phone_confirmation')
     return false if user.nil?
     return false if user.phone_confirmation_code_reset_count >= max_retries - 1
