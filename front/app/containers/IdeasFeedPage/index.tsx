@@ -10,9 +10,9 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
+import IdeasFeed from './IdeasFeed';
 import IdeasFeedPageMeta from './IdeasFeedPageMeta';
-import StickyNotesPile from './StickyNotes';
-import TopicsSidebar from './TopicsSidebar';
+import Sidebar from './Sidebar';
 
 const IdeasFeedPage = () => {
   const { slug } = useParams() as { slug: string };
@@ -21,6 +21,7 @@ const IdeasFeedPage = () => {
   const selectedTopicId = searchParams.get('topic');
   const phaseId = searchParams.get('phase_id');
   const isMobileOrSmaller = useBreakpoint('phone');
+  const initialIdeaId = searchParams.get('initial_idea_id') || undefined;
 
   const setSelectedTopicId = (topicId: string | null) => {
     if (topicId) {
@@ -66,12 +67,9 @@ const IdeasFeedPage = () => {
           overflow="auto"
           h="100vh"
         >
-          <TopicsSidebar
-            selectedTopicId={selectedTopicId}
-            onTopicSelect={setSelectedTopicId}
-          />
+          <Sidebar />
           <Box flex="4">
-            <StickyNotesPile phaseId={phaseId} maxNotes={20} />
+            <IdeasFeed initialIdeaId={initialIdeaId} />
           </Box>
         </Box>
       </Box>

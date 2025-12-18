@@ -1,20 +1,17 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import useIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
+import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
+
+import clHistory from 'utils/cl-router/history';
 
 import { getTopicColor } from '../topicsColor';
 
 import StickyNote from './StickyNote';
 
 const PileContainer = styled(Box)`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 800px;
   transition: padding 0.4s ease;
 `;
 
@@ -59,58 +56,34 @@ const POSITIONS = [
 
 interface Props {
   phaseId: string;
-  maxNotes?: number;
+  slug: string;
 }
 
-const StickyNotesPile = ({ maxNotes = 20, phaseId }: Props) => {
-  const [searchParams] = useSearchParams();
-  const topicId = searchParams.get('topic');
-  const {
-    data: ideas,
-    isLoading: ideasLoading,
-    isFetching,
-  } = useIdeaFeedIdeas({
+const StickyNotesPile = ({ phaseId, slug }: Props) => {
+  const { data } = useInfiniteIdeaFeedIdeas({
     phaseId,
-    topic: topicId || undefined,
-    'page[size]': maxNotes,
+    'page[size]': 20,
   });
 
-  const flatIdeas = useMemo(() => {
-    if (!ideas) return [];
-    return ideas.data;
-  }, [ideas]);
+  const flatIdeas = data?.pages.flatMap((page) => page.data);
 
-  // Extract topic IDs for each idea
-  const ideaTopics = useMemo(() => {
-    const map = new Map<string, string[]>();
-    flatIdeas.forEach((idea) => {
-      const topicIds =
-        idea.relationships.topics?.data.map((topic) => topic.id) || [];
-      map.set(idea.id, topicIds);
-    });
-    return map;
-  }, [flatIdeas]);
-
-  if (ideasLoading) {
-    return (
-      <Box display="flex" justifyContent="center" p="40px">
-        <Spinner />
-      </Box>
+  const handleNoteClick = (ideaId: string) => {
+    clHistory.push(
+      `/projects/${slug}/ideas-feed?phase_id=${phaseId}&initial_idea_id=${ideaId}`
     );
-  }
-
-  if (!ideas || flatIdeas.length === 0) {
-    return null;
-  }
+  };
 
   return (
-    <PileContainer>
-      {flatIdeas.slice(0, maxNotes).map((idea, index) => {
-        const topicIds = ideaTopics.get(idea.id) || [];
-        const topicBackgroundColor =
-          topicId && !isFetching
-            ? getTopicColor(topicId)
-            : getTopicColor(topicIds[0]);
+    <PileContainer
+      position="relative"
+      width="100%"
+      height="100%"
+      minHeight="750px"
+    >
+      {flatIdeas?.map((idea, index) => {
+        const topicIds =
+          idea.relationships.topics?.data.map((topic) => topic.id) || [];
+        const topicBackgroundColor = getTopicColor(topicIds[0]);
 
         return (
           <NoteWrapper
@@ -122,9 +95,7 @@ const StickyNotesPile = ({ maxNotes = 20, phaseId }: Props) => {
             <StickyNote
               ideaId={idea.id}
               topicBackgroundColor={topicBackgroundColor}
-              onClick={() => {
-                // TODO: open feed
-              }}
+              onClick={() => handleNoteClick(idea.id)}
             />
           </NoteWrapper>
         );

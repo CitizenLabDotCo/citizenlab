@@ -16,7 +16,7 @@ interface Props {
   hideBackButton?: boolean;
 }
 
-const SelectedTopicView = ({
+const SelectedTopicContent = ({
   topicId,
   onBack,
   hideBackButton = false,
@@ -48,4 +48,4 @@ const SelectedTopicView = ({
   );
 };
 
-export default SelectedTopicView;
+export default SelectedTopicContent;
