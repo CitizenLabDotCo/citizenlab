@@ -7,7 +7,7 @@ auth_token = ENV.fetch('TWILIO_AUTH_TOKEN')
 from_phone_number = ENV.fetch('TWILIO_PHONE_NUMBER')
 
 class PhoneConfirmationService
-  def send_confirmation_code!(phone_number, code)
+  def request_phone_confirmation_code!(phone_number, code)
     twilio_client
       .api
       .v2010
