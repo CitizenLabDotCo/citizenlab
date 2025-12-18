@@ -9,6 +9,10 @@ import { getCurrentPhase } from 'api/phases/utils';
 import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
+import IdeasShow from 'containers/IdeasShow';
+
+import GoBackButton from 'components/UI/GoBackButton';
+
 import { useIntl } from 'utils/cl-intl';
 
 import BottomSheet from '../BottomSheet';
@@ -19,9 +23,18 @@ import TopicsContent from './TopicsContent';
 interface Props {
   selectedTopicId: string | null;
   onTopicSelect: (topicId: string | null) => void;
+  selectedIdeaId?: string | null;
+  selectedIdeaProjectId?: string | null;
+  onCloseIdea?: () => void;
 }
 
-const TopicsSidebar = ({ selectedTopicId, onTopicSelect }: Props) => {
+const TopicsSidebar = ({
+  selectedTopicId,
+  onTopicSelect,
+  selectedIdeaId,
+  selectedIdeaProjectId,
+  onCloseIdea,
+}: Props) => {
   const { formatMessage } = useIntl();
   const { slug } = useParams() as { slug: string };
   const { data: project } = useProjectBySlug(slug);
@@ -60,15 +73,28 @@ const TopicsSidebar = ({ selectedTopicId, onTopicSelect }: Props) => {
         a11y_expandLabel={formatMessage(messages.expandPanel)}
         a11y_collapseLabel={formatMessage(messages.collapsePanel)}
       >
-        <TopicsContent
-          topicIds={topicIds}
-          selectedTopicId={selectedTopicId}
-          onTopicSelect={onTopicSelect}
-          totalIdeasCount={totalIdeasCount}
-          topicCounts={topicCounts}
-          slug={slug}
-          showBackButton={false}
-        />
+        {selectedIdeaId && selectedIdeaProjectId ? (
+          <>
+            <Box mb="16px">
+              <GoBackButton onClick={onCloseIdea} showGoBackText={false} />
+            </Box>
+            <IdeasShow
+              ideaId={selectedIdeaId}
+              projectId={selectedIdeaProjectId}
+              compact={true}
+            />
+          </>
+        ) : (
+          <TopicsContent
+            topicIds={topicIds}
+            selectedTopicId={selectedTopicId}
+            onTopicSelect={onTopicSelect}
+            totalIdeasCount={totalIdeasCount}
+            topicCounts={topicCounts}
+            slug={slug}
+            showBackButton={false}
+          />
+        )}
       </BottomSheet>
     );
   }

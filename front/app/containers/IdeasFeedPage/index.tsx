@@ -98,7 +98,7 @@ const IdeasFeedPage = () => {
           overflow="auto"
           h="100vh"
         >
-          {selectedIdeaId && selectedIdea && projectId ? (
+          {selectedIdeaId && selectedIdea && projectId && !isMobileOrSmaller ? (
             <IdeaSidebarContainer>
               <Box>
                 <GoBackButton
@@ -118,6 +118,9 @@ const IdeasFeedPage = () => {
             <TopicsSidebar
               selectedTopicId={selectedTopicId}
               onTopicSelect={setSelectedTopicId}
+              selectedIdeaId={selectedIdeaId}
+              selectedIdeaProjectId={projectId}
+              onCloseIdea={handleCloseSidebar}
             />
           )}
           <Box flex="4">
