@@ -16,7 +16,6 @@ type Params = {
   inputTypes?: ICustomFieldInputType[];
   copy?: boolean;
   publicFields?: boolean;
-  cacheIndividualItems?: boolean;
 };
 
 export const fetchCustomFields = ({
