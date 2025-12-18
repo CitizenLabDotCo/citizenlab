@@ -7,7 +7,7 @@ class WebApi::V1::PhoneConfirmationController < ApplicationController
     phone_number = request_code_params[:phone_number]
     code = rand(100000..999999).to_s.rjust(6, '0')
 
-    phone_confirmation_service.send_confirmation_code(
+    phone_confirmation_service.send_confirmation_code!(
       phone_number, 
       code
     )
