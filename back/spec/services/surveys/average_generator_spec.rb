@@ -55,7 +55,7 @@ RSpec.describe Surveys::AverageGenerator do
       end
 
       it 'does not run too many queries' do
-        expect { generator.summary_averages_by_quarter }.not_to exceed_query_limit(8)
+        expect { generator.summary_averages_by_quarter }.not_to exceed_query_limit(6)
       end
     end
 
@@ -175,7 +175,7 @@ RSpec.describe Surveys::AverageGenerator do
       end
 
       it 'does not run too many queries' do
-        expect { generator.summary_averages_by_quarter }.not_to exceed_query_limit(8)
+        expect { generator.summary_averages_by_quarter }.not_to exceed_query_limit(5)
       end
     end
 

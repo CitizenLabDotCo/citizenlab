@@ -106,9 +106,16 @@ module Surveys
 
     # Get the results for a single survey question
     def generate_result_for_field(field_id)
-      field = find_question(field_id)
-      result = visit field
-      add_averages([result]).first
+      # NEW Query
+      result = generate_results[:results].find { |r| r[:customFieldId] == field_id }
+      raise 'Question not found' unless result
+
+      result
+
+      # OLD Query
+      # field = find_question(field_id)
+      # result = visit field
+      # add_averages([result]).first
     end
 
     # Get the results for all survey questions
@@ -175,6 +182,7 @@ module Surveys
     end
 
     def visit_matrix_linear_scale(field)
+      # TODO: Convert this.
       core_field_attributes(field).merge({
         multilocs: { answer: build_scaled_input_multilocs(field) },
         linear_scales: matrix_linear_scale_statements(field)
@@ -248,7 +256,7 @@ module Surveys
         required: field.required,
         grouped: false,
         hidden: false,
-        totalResponseCount: num_times_field_seen(field.key),
+        totalResponseCount: num_times_field_seen(field.key),  # TODO: Change to questionSeenCount?
         questionResponseCount: response_count,
         pageNumber: nil,
         questionNumber: nil,
@@ -272,38 +280,67 @@ module Surveys
     end
 
     def visit_select_base(field)
-      query = inputs.select(
-        select_field_query(field, as: 'answer')
-      )
-      answers = construct_select_answers(query, field)
+      # query = inputs.select(
+      #   select_field_query(field, as: 'answer')
+      # )
+      # answers = construct_select_answers(query, field)
+
+      # Extract all the responses from array values (if multiselect)
+      responses = base_responses(field.key).flat_map do |r|
+        r[:answer].is_a?(Array) ?
+          r[:answer].map { |a| { answer: a } } :
+          { answer: r[:answer] }
+      end
+
+      # Count all the answers
+      counts = responses.group_by { |h| h[:answer] }.transform_values(&:count)
+
+      # Build the result array with all required answers
+      answer_keys = generate_select_answer_keys(field)
+      answers = answer_keys.map { |a| { answer: a, count: counts[a] || 0 } }
+
+      # Add the nil counts
+      answers << { answer: nil, count: nil_response_count(field) }
 
       # Build response
       build_select_response(answers, field)
     end
 
-    def select_field_query(field, as: 'answer')
-      table = field.resource_type == 'User' ? 'users' : 'ideas'
+    def nil_response_count(field, matrix_statement_key: nil)
+      nil_count = responses_by_field[field.key].size - base_responses(field.key).size
+      return nil_count unless matrix_statement_key
 
-      if field.supports_single_selection?
-        "COALESCE(#{table}.custom_field_values->'#{field.key}', 'null') as #{as}"
-      elsif field.supports_multiple_selection?
-        %{
-          jsonb_array_elements(
-            CASE WHEN (
-              jsonb_path_exists(#{table}.custom_field_values, '$ ? (exists (@."#{field.key}"))') AND
-              jsonb_typeof(#{table}.custom_field_values->'#{field.key}') = 'array'
-            ) THEN #{table}.custom_field_values->'#{field.key}'
-              ELSE '[null]'::jsonb END
-          ) as #{as}
-      }
-      else
-        raise "Unsupported field type: #{field.input_type}"
-      end
+      # For matrix questions we also need to count those that did not answer the specific statement
+      nil_count + base_responses(field.key).count { |h| !h[:answer].key?(matrix_statement_key) }
     end
 
+    # def select_field_query(field, as: 'answer')
+    #   table = field.resource_type == 'User' ? 'users' : 'ideas'
+    #
+    #   if field.supports_single_selection?
+    #     "COALESCE(#{table}.custom_field_values->'#{field.key}', 'null') as #{as}"
+    #   elsif field.supports_multiple_selection?
+    #     %{
+    #       jsonb_array_elements(
+    #         CASE WHEN (
+    #           jsonb_path_exists(#{table}.custom_field_values, '$ ? (exists (@."#{field.key}"))') AND
+    #           jsonb_typeof(#{table}.custom_field_values->'#{field.key}') = 'array'
+    #         ) THEN #{table}.custom_field_values->'#{field.key}'
+    #           ELSE '[null]'::jsonb END
+    #       ) as #{as}
+    #   }
+    #   else
+    #     raise "Unsupported field type: #{field.input_type}"
+    #   end
+    # end
+
     def build_select_response(answers, field)
+      # NEW QUERY
+      question_response_count = base_responses(field.key).size
+
+      # OLD QUERY
       # NOTE: This is an additional query for selects so impacts performance slightly
-      question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
+      # question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
 
       # Sort answers correctly
       answers = answers.sort_by { |a| -a[:count] } unless field.supports_linear_scale?
@@ -353,44 +390,62 @@ module Surveys
     end
 
     def construct_select_answers(query, field)
-      answer_keys = generate_select_answer_keys(field)
 
-      grouped_answers_hash = select_group_query(query)
-        .each_with_object({}) do |(answer, count), accu|
-        valid_answer = answer_keys.include?(answer) ? answer : nil
+      # counts = input.group_by { |h| h[:answer] }.transform_values(&:count)
+      #
+      # # Build the result array with all required answers
+      # answers = ["cat", "dog", "cow", "pig", "no_response", nil]
+      # result = answers.map { |a| { answer: a, count: counts[a] || 0 } }
 
-        accu[valid_answer] ||= { answer: valid_answer, count: 0 }
-        accu[valid_answer][:count] += count
-      end
 
-      answer_keys.map do |key|
-        grouped_answers_hash[key] || { answer: key, count: 0 }
-      end
+      # answer_keys = generate_select_answer_keys(field)
+      #
+      # grouped_answers_hash = select_group_query(query)
+      #   .each_with_object({}) do |(answer, count), accu|
+      #   valid_answer = answer_keys.include?(answer) ? answer : nil
+      #
+      #   accu[valid_answer] ||= { answer: valid_answer, count: 0 }
+      #   accu[valid_answer][:count] += count
+      # end
+      #
+      # answer_keys.map do |key|
+      #   grouped_answers_hash[key] || { answer: key, count: 0 }
+      # end
     end
 
-    def select_group_query(query)
-      Idea
-        .select(:answer)
-        .from(query)
-        .group(:answer)
-        .count
-    end
+    # def select_group_query(query)
+    #   Idea
+    #     .select(:answer)
+    #     .from(query)
+    #     .group(:answer)
+    #     .count
+    # end
 
     def generate_select_answer_keys(field)
-      (field.supports_linear_scale? ? (1..field.maximum).to_a : field.ordered_transformed_options.map(&:key)) + [nil]
+      (field.supports_linear_scale? ? (1..field.maximum).to_a : field.ordered_transformed_options.map(&:key))
     end
 
     def matrix_linear_scale_statements(field)
       field.matrix_statements.pluck(:key, :title_multiloc).to_h do |statement_key, statement_title_multiloc|
-        query_result = inputs.group("custom_field_values->'#{field.key}'->'#{statement_key}'").count
+        # OLD VERSION
+        # statement_counts = inputs.group("custom_field_values->'#{field.key}'->'#{statement_key}'").count
+
+        # NEW VERSION
+        statement_counts = base_responses(field.key)
+          .map { |h| h[:answer][statement_key] }
+          .compact
+          .group_by(&:itself)
+          .transform_values(&:count)
+
         answers = (1..field.maximum).reverse_each.map do |answer|
-          { answer: answer, count: query_result[answer] || 0 }
+          { answer: answer, count: statement_counts[answer] || 0 }
         end
         question_response_count = answers.sum { |a| a[:count] }
         answers.each do |answer|
           answer[:percentage] = question_response_count > 0 ? (answer[:count].to_f / question_response_count) : 0.0
         end
-        answers += [{ answer: nil, count: query_result[nil] || 0 }]
+        # Add count for nil answers
+        answers += [{ answer: nil, count: nil_response_count(field, matrix_statement_key: statement_key) }]
         value = {
           question: statement_title_multiloc,
           questionResponseCount: question_response_count,
@@ -424,12 +479,12 @@ module Surveys
       #   .sort_by { |a| a[:answer] }
     end
 
-    def find_question(question_field_id)
-      question = fields.find { |f| f[:id] == question_field_id }
-      raise 'Question not found' unless question
-
-      question
-    end
+    # def find_question(question_field_id)
+    #   question = fields.find { |f| f[:id] == question_field_id }
+    #   raise 'Question not found' unless question
+    #
+    #   question
+    # end
 
     def add_page_response_count_to_results(results)
       current_page_index = nil

@@ -108,7 +108,6 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns a single result for a text field' do
-        expected_result_text_field[:questionNumber] = nil # Question number is null when requesting a single result
         expect(generator.generate_result_for_field(text_field.id)).to match expected_result_text_field
       end
 
@@ -210,7 +209,6 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns a single result for multiselect' do
-        expected_result_multiselect[:questionNumber] = nil
         expect(generator.generate_result_for_field(multiselect_field.id)).to match expected_result_multiselect
       end
     end
@@ -230,7 +228,7 @@ RSpec.describe Surveys::ResultsGenerator do
           description: { 'en' => 'Please indicate how strong you agree or disagree.' },
           hidden: false,
           pageNumber: nil,
-          questionNumber: nil,
+          questionNumber: 4,
           questionCategory: nil,
           totalResponseCount: 27,
           questionResponseCount: 22,
@@ -261,7 +259,6 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns the results for a linear scale field' do
-        expected_result_linear_scale[:questionNumber] = 4
         expect(generated_results[:results][4]).to match expected_result_linear_scale
       end
 
@@ -348,7 +345,6 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns a single result for a rating field' do
-        expected_result_rating[:questionNumber] = nil # Question number is null when requesting a single result
         expect(generator.generate_result_for_field(rating_field.id)).to match expected_result_rating
       end
     end
@@ -403,7 +399,6 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns a single result for a sentiment linear scale field' do
-        expected_result_sentiment_linear_scale[:questionNumber] = nil # Question number is null when requesting a single result
         expect(generator.generate_result_for_field(sentiment_linear_scale_field.id)).to match expected_result_sentiment_linear_scale
       end
     end
@@ -472,7 +467,6 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns a single result for a linear scale field' do
-        expected_result_matrix_linear_scale[:questionNumber] = nil # Question number is null when requesting a single result
         expect(generator.generate_result_for_field(matrix_linear_scale_field.id)).to match expected_result_matrix_linear_scale
       end
     end
@@ -492,7 +486,7 @@ RSpec.describe Surveys::ResultsGenerator do
           description: {},
           hidden: false,
           pageNumber: nil,
-          questionNumber: nil,
+          questionNumber: 5,
           questionCategory: nil,
           totalResponseCount: 27,
           questionResponseCount: 6,
@@ -519,7 +513,6 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns the correct results for a select field' do
-        expected_result_select[:questionNumber] = 5
         expect(generated_results[:results][5]).to match expected_result_select
       end
 
