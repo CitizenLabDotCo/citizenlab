@@ -64,9 +64,16 @@ interface Props {
   topicId: string | null;
   initialIdeaId: string;
   onClose: () => void;
+  onIdeaSelect: (ideaId: string | null) => void;
 }
 
-const IdeasFeed = ({ phaseId, topicId, initialIdeaId, onClose }: Props) => {
+const IdeasFeed = ({
+  phaseId,
+  topicId,
+  initialIdeaId,
+  onClose,
+  onIdeaSelect,
+}: Props) => {
   const parentRef = useRef<HTMLDivElement | null>(null);
   const currentIndexRef = useRef<number>(0);
   const [centeredIndex, setCenteredIndex] = useState<number>(0);
@@ -184,6 +191,13 @@ const IdeasFeed = ({ phaseId, topicId, initialIdeaId, onClose }: Props) => {
     }
   }, [escapeKey, onClose]);
 
+  const handleNoteClick = useCallback(
+    (ideaId: string) => {
+      onIdeaSelect(ideaId);
+    },
+    [onIdeaSelect]
+  );
+
   // Handle scroll events to track current index
   useEffect(() => {
     const container = parentRef.current;
@@ -283,6 +297,7 @@ const IdeasFeed = ({ phaseId, topicId, initialIdeaId, onClose }: Props) => {
                   ideaId={idea.id}
                   topicBackgroundColor={topicBackgroundColor}
                   size="large"
+                  onClick={() => handleNoteClick(idea.id)}
                 />
               </NoteContainer>
             </VirtualItem>

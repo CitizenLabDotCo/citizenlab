@@ -60,9 +60,10 @@ const POSITIONS = [
 interface Props {
   phaseId: string;
   maxNotes?: number;
+  onIdeaSelect: (ideaId: string | null) => void;
 }
 
-const StickyNotesPile = ({ maxNotes = 20, phaseId }: Props) => {
+const StickyNotesPile = ({ maxNotes = 20, phaseId, onIdeaSelect }: Props) => {
   const [searchParams] = useSearchParams();
   const topicId = searchParams.get('topic');
   const [selectedIdeaId, setSelectedIdeaId] = useState<string | null>(null);
@@ -126,6 +127,7 @@ const StickyNotesPile = ({ maxNotes = 20, phaseId }: Props) => {
         topicId={topicId}
         initialIdeaId={selectedIdeaId}
         onClose={handleCloseFeed}
+        onIdeaSelect={onIdeaSelect}
       />
     );
   }

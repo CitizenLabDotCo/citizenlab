@@ -5,6 +5,7 @@ import {
   Text,
   colors,
   useBreakpoint,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -16,6 +17,7 @@ import Avatar from 'components/Avatar';
 import T from 'components/T';
 
 const StyledNote = styled(Box)`
+  border-radius: ${stylingConsts.borderRadius};
   transition: all 0.3s ease;
   text-align: left;
   &:hover,
