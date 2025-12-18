@@ -1,5 +1,7 @@
 import { IRelationship, Multiloc } from 'typings';
 
+import { ICustomFieldOptionData } from 'api/custom_field_options/types';
+import { IFormCustomFieldStatementData } from 'api/custom_field_statements/types';
 import { IMapConfig } from 'api/map_config/types';
 
 import { Keys } from 'utils/cl-react-query/types';
@@ -7,8 +9,6 @@ import { Keys } from 'utils/cl-react-query/types';
 import customFieldsKeys from './keys';
 
 export type CustomFieldsKeys = Keys<typeof customFieldsKeys>;
-
-export type ICustomFieldIncludedResource = { id?: string; type: string };
 
 export interface ICustomFieldsParameters {
   projectId?: string;
@@ -207,7 +207,7 @@ export type IFlatCreateCustomField = Omit<
 
 export interface ICustomFields {
   data: ICustomFieldResponse[];
-  included?: ICustomFieldIncludedResource[];
+  included?: (ICustomFieldOptionData | IFormCustomFieldStatementData)[];
 }
 
 export interface ICustomField {

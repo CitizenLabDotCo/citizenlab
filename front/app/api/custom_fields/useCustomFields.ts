@@ -1,10 +1,9 @@
-import React from 'react';
+import { useMemo } from 'react';
 
-import { ICustomFieldOptionData } from 'api/custom_field_options/types';
-import useCustomFieldOptionsBulk from 'api/custom_field_options/useCustomFieldOptionsBulk';
 import { IFormCustomFieldStatementData } from 'api/custom_field_statements/types';
-import useCustomFieldStatements from 'api/custom_field_statements/useCustomFieldStatements';
 import { IMatrixStatementsType } from 'api/custom_fields/types';
+
+import { groupIncludedResources } from 'utils/cl-react-query/groupIncludedResources';
 
 import { ICustomFieldsParameters, IFlatCustomField } from './types';
 import useRawCustomFields from './useRawCustomFields';
@@ -26,57 +25,19 @@ const useCustomFields = ({
     cacheIndividualItems,
   });
 
-  const fetchedOptions = useCustomFieldOptionsBulk({
-    customFields: result.data,
-    enabled: cacheIndividualItems,
-  });
-  const fetchedStatements = useCustomFieldStatements({
-    projectId,
-    phaseId,
-    customFields: result.data,
-    enabled: cacheIndividualItems,
-  });
+  const includedByType = useMemo(() => {
+    const included = result.data?.included;
+    if (!included) return undefined;
 
-  // Normalize to match the structure that the rest of the code expects
-  const options = React.useMemo(() => {
-    if (!cacheIndividualItems) {
-      // Extract from included and convert directly to array format
-      return (
-        result.data?.included
-          ?.filter(
-            (resource): resource is ICustomFieldOptionData =>
-              resource.type === 'custom_field_option' && !!resource.id
-          )
-          .map((resource) => ({
-            data: { data: resource },
-          })) ?? []
-      );
-    }
-    return fetchedOptions;
-  }, [cacheIndividualItems, result.data?.included, fetchedOptions]);
+    return groupIncludedResources(included);
+  }, [result]);
 
-  const statements = React.useMemo(() => {
-    if (!cacheIndividualItems) {
-      // Extract from included and convert directly to array format
-      return (
-        result.data?.included
-          ?.filter(
-            (resource): resource is IFormCustomFieldStatementData =>
-              resource.type === 'custom_field_matrix_statement' && !!resource.id
-          )
-          .map((resource) => ({
-            data: { data: resource },
-          })) ?? []
-      );
-    }
-    return fetchedStatements;
-  }, [cacheIndividualItems, result.data?.included, fetchedStatements]);
+  const options = includedByType?.custom_field_option ?? [];
+  const statements = includedByType?.custom_field_matrix_statement ?? [];
 
   const statementsById = statements.reduce((acc, statement) => {
-    if (!statement.data) return acc;
-
-    const id = statement.data.data.id;
-    acc[id] = statement.data.data;
+    const id = statement.id;
+    acc[id] = statement;
     return acc;
   }, {} as Record<string, IFormCustomFieldStatementData>);
 
@@ -101,10 +62,10 @@ const useCustomFields = ({
           customField.relationships.options.data.map((option) => option.id);
 
         return (
-          option.data?.data.id &&
+          option.id &&
           // TODO: Fix this the next time the file is edited.
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          relationshipOptionIds.includes(option.data?.data.id)
+          relationshipOptionIds.includes(option.id)
         );
       });
 
@@ -131,15 +92,14 @@ const useCustomFields = ({
         options:
           optionsForCustomField.length > 0
             ? optionsForCustomField.map((option) => ({
-                id: option.data?.data.id,
-                key: option.data?.data.attributes.key,
-                title_multiloc:
-                  option.data?.data.attributes.title_multiloc || {},
-                other: option.data?.data.attributes.other || false,
+                id: option.id,
+                key: option.attributes.key,
+                title_multiloc: option.attributes.title_multiloc,
+                other: option.attributes.other || false,
                 // TODO: Fix this the next time the file is edited.
                 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                image_id: option.data?.data.relationships.image?.data?.id,
-                temp_id: option.data?.data.attributes.temp_id,
+                image_id: option.relationships.image?.data?.id,
+                temp_id: option.attributes.temp_id,
               }))
             : [],
       };
