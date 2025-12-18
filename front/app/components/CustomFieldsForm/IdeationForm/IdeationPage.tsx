@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, Button, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -14,6 +14,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { triggerPostParticipationFlow } from 'containers/Authentication/events';
 import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
@@ -195,6 +196,8 @@ const IdeationPage = ({
     setIsDisclaimerOpened(false);
   };
 
+  const isLastPage = currentPageIndex === lastPageIndex;
+
   return (
     <FormProvider {...methods}>
       <StyledForm id="idea-form">
@@ -276,14 +279,21 @@ const IdeationPage = ({
                           onChange={handleOnChangeAnonymousPosting}
                         />
                       )}
-                    {currentPageIndex === lastPageIndex &&
-                      idea &&
-                      showIdeaId && (
-                        <SubmissionReference
-                          inputId={idea.data.id}
-                          participationMethod={participationMethod}
-                        />
-                      )}
+                    {isLastPage && idea && showIdeaId && (
+                      <SubmissionReference
+                        inputId={idea.data.id}
+                        participationMethod={participationMethod}
+                      />
+                    )}
+                    {isLastPage && !authUser && (
+                      <Button
+                        onClick={triggerPostParticipationFlow}
+                        mt="16px"
+                        width="auto"
+                      >
+                        Sign up to stay in touch
+                      </Button>
+                    )}
                   </Box>
                 </Box>
               </Box>

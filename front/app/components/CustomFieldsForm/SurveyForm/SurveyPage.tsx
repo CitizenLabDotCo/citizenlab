@@ -247,8 +247,9 @@ const SurveyPage = ({
                         <Button
                           onClick={triggerPostParticipationFlow}
                           mt="16px"
+                          width="auto"
                         >
-                          Sign up!
+                          Sign up to stay in touch
                         </Button>
                       )}
                     </Box>
