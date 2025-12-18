@@ -110,6 +110,26 @@ const App = ({ children }: Props) => {
 
   const redirectsEnabled = useFeatureFlag({ name: 'redirects' });
 
+  // Scroll focused elements to center on mobile/tablet
+  // This improves accessibility for keyboard and screen reader users and has been
+  // recommended by the Frameless accessibility auditor.
+  useEffect(() => {
+    if (!isSmallerThanTablet) return;
+
+    const handleFocus = (e: FocusEvent) => {
+      const target = e.target as HTMLElement;
+      // :focus-visible for only keyboard focus
+      if (target.matches(':focus-visible')) {
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
+    };
+
+    document.addEventListener('focusin', handleFocus, true);
+    return () => document.removeEventListener('focusin', handleFocus, true);
+  }, [isSmallerThanTablet]);
+
   useEffect(() => {
     moment.locale(momentLocale);
   }, [momentLocale]);
