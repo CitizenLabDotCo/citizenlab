@@ -48,11 +48,6 @@ export const getPrimaryColourByPercentage = (percentage: number) => {
 
 // getPercentageTextBorder
 // Description: Return text border style based on a percentage
-export const getPercentageTextBorder = (percentage: number) => {
-  const textBorderColor = percentage >= 75 ? colors.textPrimary : 'white';
-
-  return `-1px 0 ${textBorderColor}, 0 1px ${textBorderColor}, 1px 0 ${textBorderColor}, 0 -1px ${textBorderColor}`;
-};
 
 // getPercentage
 // Description: Return percentage based on statementWithResult and linearScaleMultiloc
