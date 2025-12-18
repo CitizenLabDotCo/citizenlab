@@ -46,7 +46,8 @@ describe('Idea submission form', () => {
 
   it('shows an error when no title is provided', () => {
     // Try to go to the next page
-    cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.get('#idea-form').should('be.visible');
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
     cy.get('.e2e-error-message');
   });
 

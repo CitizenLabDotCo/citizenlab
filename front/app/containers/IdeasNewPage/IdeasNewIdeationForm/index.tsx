@@ -1,6 +1,11 @@
 import React, { Suspense, useEffect, useState } from 'react';
 
-import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  useBreakpoint,
+  useWindowSize,
+} from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import { IPhases, IPhaseData, ParticipationMethod } from 'api/phases/types';
@@ -59,6 +64,9 @@ const IdeasNewIdeationForm = ({
   const handleCloseDetail = () => {
     updateSearchParams({ selected_idea_id: null });
   };
+
+  // Used only to rerender the component when window is resized to recalculate the form's height https://stackoverflow.com/a/38641993
+  useWindowSize();
 
   useEffect(() => {
     const subscription = eventEmitter

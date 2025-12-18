@@ -495,6 +495,74 @@ RSpec.describe CustomField do
     end
   end
 
+  describe 'topic_ids field with select counts' do
+    let(:project) { create(:single_phase_native_survey_project) }
+    let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
+    let(:field) { create(:custom_field, resource: custom_form, input_type: 'topic_ids', select_count_enabled: true) }
+
+    it 'accepts valid minimum_select_count' do
+      field.minimum_select_count = 2
+      expect(field.valid?).to be true
+    end
+
+    it 'accepts valid maximum_select_count' do
+      field.maximum_select_count = 5
+      expect(field.valid?).to be true
+    end
+
+    it 'cannot have minimum_select_count less than 0' do
+      field.minimum_select_count = -1
+      expect(field.valid?).to be false
+    end
+
+    it 'cannot have maximum_select_count less than 0' do
+      field.maximum_select_count = -1
+      expect(field.valid?).to be false
+    end
+
+    it 'supports select_count_enabled flag' do
+      field.select_count_enabled = true
+      field.minimum_select_count = 1
+      field.maximum_select_count = 3
+      expect(field.valid?).to be true
+    end
+
+    it 'cannot have maximum_select_count less than minimum_select_count' do
+      field.minimum_select_count = 5
+      field.maximum_select_count = 3
+      expect(field.valid?).to be false
+      expect(field.errors[:maximum_select_count]).to be_present
+    end
+
+    it 'can have maximum_select_count equal to minimum_select_count' do
+      field.minimum_select_count = 3
+      field.maximum_select_count = 3
+      expect(field.valid?).to be true
+    end
+
+    context 'when select_count_enabled is false' do
+      before { field.select_count_enabled = false }
+
+      it 'cannot set minimum_select_count' do
+        field.minimum_select_count = 2
+        expect(field.valid?).to be false
+        expect(field.errors[:minimum_select_count]).to be_present
+      end
+
+      it 'cannot set maximum_select_count' do
+        field.maximum_select_count = 5
+        expect(field.valid?).to be false
+        expect(field.errors[:maximum_select_count]).to be_present
+      end
+
+      it 'is valid when both counts are nil' do
+        field.minimum_select_count = nil
+        field.maximum_select_count = nil
+        expect(field.valid?).to be true
+      end
+    end
+  end
+
   describe '#other_option_text_field' do
     let(:field) { create(:custom_field_multiselect, :with_options, key: 'select_field') }
 
@@ -583,7 +651,7 @@ RSpec.describe CustomField do
     let!(:option3) { create(:custom_field_option, custom_field: field, key: 'by_train') }
     let!(:option4) { create(:custom_field_option, custom_field: field, key: 'by_horse') }
 
-    it 'works' do
+    it 'calculates average rankings for field options' do
       create(:idea, custom_field_values: { field.key => %w[by_bike by_horse by_train by_foot] })
       create(:idea, custom_field_values: { field.key => %w[by_train by_bike by_foot by_horse] })
       create(:idea, custom_field_values: {})
@@ -607,7 +675,7 @@ RSpec.describe CustomField do
     let!(:option3) { create(:custom_field_option, custom_field: field, key: 'by_train') }
     let!(:option4) { create(:custom_field_option, custom_field: field, key: 'by_horse') }
 
-    it 'works' do
+    it 'returns ranking position counts for each option' do
       create(:user, custom_field_values: { field.key => %w[by_bike by_horse by_train by_foot] })
       create(:user, custom_field_values: { field.key => %w[by_train by_bike by_foot by_horse] })
       create(:user, custom_field_values: {})

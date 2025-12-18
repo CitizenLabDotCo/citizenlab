@@ -388,3 +388,4 @@ pl:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "Maksimum musi być większe niż minimum."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Maksimum musi być większe lub równe minimum."

@@ -24,14 +24,25 @@ import SurveyQuestionResultWidget from '../../Widgets/SurveyQuestionResultWidget
 import TextMultiloc from '../../Widgets/TextMultiloc';
 import { TemplateContext } from '../context';
 
-import Insights from './Insights';
 import messages from './messages';
-interface Props {
+import usePrefetchSummaries from './usePrefetchSummaries';
+
+interface PhaseTemplateContentProps {
+  phaseId: string;
+  selectedLocale: string;
+  summaries: Record<string, string>;
+}
+
+interface PhaseTemplateProps {
   phaseId: string;
   selectedLocale: string;
 }
 
-const PhaseTemplateContent = ({ phaseId, selectedLocale }: Props) => {
+const PhaseTemplateContent = ({
+  phaseId,
+  selectedLocale,
+  summaries,
+}: PhaseTemplateContentProps) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const appConfigurationLocales = useAppConfigurationLocales();
   const { data: phase } = usePhase(phaseId);
@@ -91,10 +102,10 @@ const PhaseTemplateContent = ({ phaseId, selectedLocale }: Props) => {
             phaseId={phaseId}
             questionId={question.id}
           />
-          <Insights
-            phaseId={phaseId}
-            questionId={question.id}
-            selectedLocale={selectedLocale}
+          <TextMultiloc
+            text={{
+              [selectedLocale]: summaries[question.id],
+            }}
           />
           <WhiteSpace />
         </Element>
@@ -112,12 +123,23 @@ const PhaseTemplateContent = ({ phaseId, selectedLocale }: Props) => {
   );
 };
 
-const PhaseTemplate = ({ phaseId, selectedLocale }: Props) => {
+const PhaseTemplate = ({ phaseId, selectedLocale }: PhaseTemplateProps) => {
+  const { summaries, summariesReady } = usePrefetchSummaries({ phaseId });
   const enabled = useContext(TemplateContext);
+
+  if (!summariesReady) {
+    return null;
+  }
 
   if (enabled) {
     return (
-      <PhaseTemplateContent phaseId={phaseId} selectedLocale={selectedLocale} />
+      <>
+        <PhaseTemplateContent
+          summaries={summaries}
+          phaseId={phaseId}
+          selectedLocale={selectedLocale}
+        />
+      </>
     );
   } else {
     return <Element id="phase-report-template" is={Box} canvas />;

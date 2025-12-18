@@ -1,20 +1,19 @@
 import React, { ReactElement, memo, useState, useCallback } from 'react';
 
-import { gql, useQuery } from '@apollo/client';
-import { get, isEmpty } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
+import useGraphqlTenantLocales from 'modules/commercial/admin_project_templates/admin/api/useGraphqlTenantLocales';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 
 import { trackEventByName } from 'utils/analytics';
 import { isNilOrError } from 'utils/helperUtils';
 
 import tracks from '../../tracks';
-import { client } from '../../utils/apolloUtils';
+import { Templates } from '../../types';
+import usePublishedProjectTemplates from '../api/usePublishedProjectTemplates';
 import ProjectTemplateCards from '../components/ProjectTemplateCards';
-
 interface Props {
   className?: string;
   graphqlTenantLocales: string[];
@@ -24,9 +23,6 @@ const CreateProjectFromTemplate = memo(
   ({ graphqlTenantLocales, className }: Props): ReactElement => {
     const { data: appConfig } = useAppConfiguration();
 
-    const locales = !isNilOrError(appConfig)
-      ? appConfig.data.attributes.settings.core.locales
-      : null;
     const organizationTypes = !isNilOrError(appConfig)
       ? appConfig.data.attributes.settings.core.organization_type
       : null;
@@ -37,104 +33,49 @@ const CreateProjectFromTemplate = memo(
       string[] | null
     >(null);
     const [search, setSearch] = useState<string | null>(null);
-    const [loadingMore, setLoadingMore] = useState(false);
 
     const tenantLocales = useAppConfigurationLocales();
 
-    const TEMPLATES_QUERY = gql`
-    query PublishedProjectTemplatesQuery(
-      $cursor: String,
-      $departments: [ID!],
-      $purposes: [ID!],
-      $participationLevels: [ID!],
-      $search: String,
-      $locales: [String!],
-      $organizationTypes: [String!]
-    ) {
-      publishedProjectTemplates(
-        first: 24,
-        after: $cursor,
-        departments: $departments,
-        purposes: $purposes,
-        participationLevels: $participationLevels,
-        search: $search,
-        locales: $locales,
-        organizationTypes: $organizationTypes
-      ) {
-        edges {
-          node {
-            id,
-            cardImage,
-            titleMultiloc {
-              ${graphqlTenantLocales}
-            },
-            subtitleMultiloc {
-              ${graphqlTenantLocales}
-            }
-          }
-          cursor
-        }
-        pageInfo{
-          endCursor
-          hasNextPage
-        }
-      }
-    }
-  `;
-    const { loading, data, fetchMore } = useQuery(TEMPLATES_QUERY, {
-      client,
-      variables: {
-        departments,
-        purposes,
-        participationLevels,
-        search,
-        organizationTypes,
-        cursor: null,
-        locales: tenantLocales,
-      },
+    const {
+      data,
+      isLoading: loading,
+      fetchNextPage,
+      isFetchingNextPage,
+    } = usePublishedProjectTemplates({
+      departments,
+      purposes,
+      participationLevels,
+      search,
+      locales: tenantLocales,
+      organizationTypes,
+      graphqlTenantLocales,
     });
 
-    const templates = get(data, 'publishedProjectTemplates', null);
+    // Transform the infinite query data to match the expected structure
+    const templates: Templates = data
+      ? {
+          edges: data.pages.flatMap((page) =>
+            page.publishedProjectTemplates.nodes.map((node) => ({
+              node,
+              cursor: node.id, // Use node id as cursor fallback
+            }))
+          ),
+          pageInfo: {
+            hasNextPage: Boolean(
+              data.pages[data.pages.length - 1]?.publishedProjectTemplates
+                .pageInfo.hasNextPage
+            ),
+            endCursor:
+              data.pages[data.pages.length - 1]?.publishedProjectTemplates
+                .pageInfo.endCursor,
+          },
+        }
+      : null;
 
     const handleLoadMoreTemplatesOnClick = useCallback(async () => {
       trackEventByName(tracks.templatesLoadMoreButtonClicked);
-      setLoadingMore(true);
-
-      try {
-        await fetchMore({
-          variables: {
-            departments,
-            purposes,
-            participationLevels,
-            search,
-            locales,
-            organizationTypes,
-            cursor: templates.pageInfo.endCursor,
-          },
-          updateQuery: (
-            previousResult,
-            { fetchMoreResult }: { fetchMoreResult: any }
-          ) => {
-            const newEdges = fetchMoreResult.publishedProjectTemplates.edges;
-            const pageInfo = fetchMoreResult.publishedProjectTemplates.pageInfo;
-
-            return newEdges.length
-              ? {
-                  publishedProjectTemplates: {
-                    pageInfo,
-                    __typename: templates.__typename,
-                    edges: [...templates.edges, ...newEdges],
-                  },
-                }
-              : previousResult;
-          },
-        });
-        setLoadingMore(false);
-      } catch {
-        setLoadingMore(false);
-      }
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [templates]);
+      fetchNextPage();
+    }, [fetchNextPage]);
 
     const handleDepartmentFilterOnChange = useCallback(
       (departments: string[]) => {
@@ -188,7 +129,7 @@ const CreateProjectFromTemplate = memo(
         className={className}
         loading={loading}
         onLoadMore={handleLoadMoreTemplatesOnClick}
-        loadingMore={loadingMore}
+        loadingMore={isFetchingNextPage}
         onSearchChange={handleSearchOnChange}
         onPurposeFilterChange={handlePurposeFilterOnChange}
         onDepartmentFilterChange={handleDepartmentFilterOnChange}

@@ -26,7 +26,7 @@ describe PhasePolicy do
       it { is_expected.not_to permit(:show_progress) }
       it { is_expected.not_to permit(:copy_inputs_to_phase) }
 
-      it 'should index the phase' do
+      it 'indexes the phase' do
         expect(scope.resolve.size).to eq 1
       end
     end
@@ -46,7 +46,7 @@ describe PhasePolicy do
       it { is_expected.to     permit(:show_progress) }
       it { is_expected.not_to permit(:copy_inputs_to_phase) }
 
-      it 'should index the phase' do
+      it 'indexes the phase' do
         expect(scope.resolve.size).to eq 1
       end
     end
@@ -66,7 +66,7 @@ describe PhasePolicy do
       it { is_expected.to permit(:show_progress) }
       it { is_expected.to permit(:copy_inputs_to_phase) }
 
-      it 'should index the phase' do
+      it 'indexes the phase' do
         expect(scope.resolve.size).to eq 1
       end
     end
@@ -109,7 +109,7 @@ describe PhasePolicy do
     it { is_expected.not_to permit(:show_progress) }
     it { is_expected.not_to permit(:copy_inputs_to_phase) }
 
-    it 'should not index the phase' do
+    it 'does not index the phase' do
       expect(scope.resolve.size).to eq 0
     end
   end
@@ -131,7 +131,7 @@ describe PhasePolicy do
     it { is_expected.not_to permit(:show_progress) }
     it { is_expected.not_to permit(:copy_inputs_to_phase) }
 
-    it 'should not index the phase' do
+    it 'does not index the phase' do
       expect(scope.resolve.size).to eq 0
     end
   end
@@ -153,7 +153,7 @@ describe PhasePolicy do
     it { is_expected.to     permit(:show_progress) }
     it { is_expected.not_to permit(:copy_inputs_to_phase) }
 
-    it 'should index the phase' do
+    it 'indexes the phase' do
       expect(scope.resolve.size).to eq 1
     end
   end

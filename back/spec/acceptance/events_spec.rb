@@ -82,12 +82,12 @@ resource 'Events' do
 
       example 'List events that overlap with the given range' do
         do_request(ongoing_during: '[2020-12-31T00:00:00Z,2020-12-31T23:59:59Z]')
-        expect(response_ids).to match_array [event1.id]
+        expect(response_ids).to contain_exactly(event1.id)
       end
 
       example 'List events that overlap with the given range (right open-ended)', document: false do
         do_request(ongoing_during: '[2020-12-31,null]')
-        expect(response_ids).to match_array [event1.id, event2.id]
+        expect(response_ids).to contain_exactly(event1.id, event2.id)
       end
 
       example 'List events that overlap with the given range (left open-ended)', document: false do
@@ -263,12 +263,7 @@ resource 'Events' do
         workbook = RubyXL::Parser.parse_buffer(response_body)
         header_row = workbook.worksheets[0][0].cells.map(&:value)
 
-        expect(header_row).to match_array([
-          french_column_headers['first_name'],
-          french_column_headers['last_name'],
-          french_column_headers['email'],
-          french_column_headers['registration_completed_at']
-        ])
+        expect(header_row).to contain_exactly(french_column_headers['first_name'], french_column_headers['last_name'], french_column_headers['email'], french_column_headers['registration_completed_at'])
       end
     end
 
@@ -416,25 +411,17 @@ resource 'Events' do
         end
       end
 
-      describe 'when event description contains images' do
+      context 'when event description contains images' do
         let(:project_id) { @project.id }
         let(:title_multiloc) { event.title_multiloc }
-        let(:description_multiloc) do
-          {
-            'en' => html_with_base64_image
-          }
-        end
+        let(:description_multiloc) { { 'en' => html_with_base64_image } }
         let(:start_at) { event.start_at }
         let(:end_at) { event.end_at }
         let(:online_link) { event.online_link }
 
-        example_request 'Create an event with description containing images', document: false do
-          assert_status 201
-          json_parse(response_body)
-          expect(response_data.dig(:attributes, :description_multiloc, :en)).to include('<p>Some text</p><img alt="Red dot"')
-          text_image = TextImage.find_by(imageable_id: response_data[:id], imageable_type: 'Event', imageable_field: 'description_multiloc')
-          expect(response_data.dig(:attributes, :description_multiloc, :en)).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")
-        end
+        it_behaves_like 'creates record with text images',
+          model_class: Event,
+          field: :description_multiloc
       end
 
       example 'Create an event with a location using location_multiloc parameter', document: false do
@@ -542,6 +529,14 @@ resource 'Events' do
         attributes = response_data[:attributes].with_indifferent_access
         expect(attributes[:address_1]).to eq(address_1)
         expect(attributes[:address_2_multiloc]).to eq(address_2_multiloc)
+      end
+
+      context 'when description_multiloc contains images' do
+        let(:description_multiloc) { { 'en' => html_with_base64_image } }
+
+        it_behaves_like 'updates record with text images',
+          model_class: Event,
+          field: :description_multiloc
       end
 
       example 'Update event location using location_multiloc parameter', document: false do

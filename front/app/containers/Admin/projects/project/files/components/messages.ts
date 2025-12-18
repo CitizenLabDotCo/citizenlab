@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectFiles.deleteFile2',
     defaultMessage: 'Delete file',
   },
+  beta: {
+    id: 'app.containers.AdminPage.ProjectFiles.beta',
+    defaultMessage: 'Beta',
+  },
   cancel: {
     id: 'app.containers.AdminPage.ProjectFiles.cancel',
     defaultMessage: 'Cancel',

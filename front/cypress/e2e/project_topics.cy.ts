@@ -115,13 +115,7 @@ describe('Project topics', () => {
         .first()
         .find('#e2e-custom-topic-edit-button')
         .click();
-      cy.get('#title_multiloc').clear().type(editedTopicTitle);
-      cy.get('.nl-BE').click();
-      cy.get('#title_multiloc').clear().type(editedTopicTitle);
-      cy.get('.nl-NL').click();
-      cy.get('#title_multiloc').clear().type(editedTopicTitle);
-      cy.get('.fr-BE').click();
-      cy.get('#title_multiloc').clear().type(editedTopicTitle);
+      cy.clickLocaleSwitcherAndType(editedTopicTitle);
       cy.get('#e2e-submit-wrapper-button').click();
       cy.wait(1000);
       cy.get('.e2e-admin-list-row').contains(editedTopicTitle);

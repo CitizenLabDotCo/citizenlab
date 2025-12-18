@@ -386,3 +386,4 @@ fi:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "Maksimin on oltava suurempi kuin minimin."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Maksimin on oltava suurempi tai yhtä suuri kuin minimi."

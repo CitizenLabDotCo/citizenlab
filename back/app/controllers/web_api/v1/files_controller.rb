@@ -5,121 +5,60 @@ class WebApi::V1::FilesController < ApplicationController
 
   skip_before_action :authenticate_user
 
-  CONSTANTIZER = {
-    'Idea' => {
-      container_class: Idea,
-      file_class: IdeaFile,
-      policy_scope_class: IdeaFilePolicy::Scope,
-      file_relationship: :idea_files,
-      container_id: :idea_id
-    },
-    'Project' => {
-      container_class: Project,
-      file_class: ProjectFile,
-      policy_scope_class: ProjectFilePolicy::Scope,
-      file_relationship: :project_files,
-      container_id: :project_id
-    },
-    'ProjectFolder' => {
-      container_class: ProjectFolders::Folder,
-      file_class: ProjectFolders::File,
-      policy_scope_class: ProjectFolders::FilePolicy::Scope,
-      file_relationship: :files,
-      container_id: :project_folder_id
-    },
-    'Event' => {
-      container_class: Event,
-      file_class: EventFile,
-      policy_scope_class: EventFilePolicy::Scope,
-      file_relationship: :event_files,
-      container_id: :event_id
-    },
-    'Phase' => {
-      container_class: Phase,
-      file_class: PhaseFile,
-      policy_scope_class: PhaseFilePolicy::Scope,
-      file_relationship: :phase_files,
-      container_id: :phase_id
-    },
-    'StaticPage' => {
-      container_class: StaticPage,
-      file_class: StaticPageFile,
-      policy_scope_class: StaticPageFilePolicy::Scope,
-      file_relationship: :static_page_files,
-      container_id: :static_page_id
-    }
+  # Maps container types (as used in params) to their corresponding container classes and
+  # the key of the container ID in params. Ideally, the ID parameter should be the same
+  # for all container types (for example, +container_id+).
+  CONTAINER_MAPPINGS = {
+    'Idea' => [Idea, :idea_id],
+    'Project' => [Project, :project_id],
+    'ProjectFolder' => [ProjectFolders::Folder, :project_folder_id],
+    'Event' => [Event, :event_id],
+    'Phase' => [Phase, :phase_id],
+    'StaticPage' => [StaticPage, :static_page_id]
   }
 
-  before_action :set_container, only: %i[index create]
-  before_action :set_file, only: %i[show destroy update]
-  skip_after_action :verify_policy_scoped
-
   def index
-    files = @container.send(secure_constantize(:file_relationship)).order(:ordering)
+    file_attachments = policy_scope(container.file_attachments.includes(:file))
 
-    if files.empty?
-      file_attachments = policy_scope(@container.file_attachments.includes(:file))
-      render json: WebApi::V1::FileAttachmentSerializerAsLegacyFile.new(
-        file_attachments,
-        params: jsonapi_serializer_params
-      ).serializable_hash
-    else
-      files = secure_constantize(:policy_scope_class).new(pundit_user, files).resolve
-      render json: WebApi::V1::FileSerializer.new(
-        files,
-        params: jsonapi_serializer_params
-      ).serializable_hash
-    end
+    render json: WebApi::V1::FileAttachmentSerializerAsLegacyFile.new(
+      file_attachments,
+      params: jsonapi_serializer_params
+    ).serializable_hash
   end
 
   def show
-    render json: serialize_file(@file)
+    render json: serialize_file(file_attachment)
   end
 
   def create
-    container_files = @container.send(secure_constantize(:file_relationship))
+    file_attachment = authorize(build_file_attachment)
+    file_attachment.file.save!
+    file_attachment.save!
 
-    # If there exist files using the legacy file class, continue using it. We'll migrate
-    # all the files of a given container at once. They cannot be mixed.
-    file = if container_files.exists?
-      @container.send(secure_constantize(:file_relationship)).new(create_file_params)
-    else
-      build_file_attachment
-    end
-
-    authorize(file)
-
-    if file.save
-      render json: serialize_file(file), status: :created
-    else
-      render json: { errors: transform_carrierwave_error_details(file.errors, :file) }, status: :unprocessable_entity
-    end
+    render json: serialize_file(file_attachment), status: :created
+  rescue ActiveRecord::RecordInvalid
+    errors = format_errors(file_attachment)
+    render json: { errors: }, status: :unprocessable_entity
   end
 
   def update
-    new_ordering = params.dig(:file, :ordering)
-    return render(json: serialize_file(@file)) unless new_ordering
+    position = params.dig(:file, :ordering)
 
-    if @file.is_a?(Files::FileAttachment)
-      @file.position = new_ordering
+    if file_attachment.update(position:)
+      render json: serialize_file(file_attachment)
     else
-      @file.ordering = new_ordering
-    end
-
-    if @file.save
-      render json: serialize_file(@file)
-    else
-      render json: { errors: transform_carrierwave_error_details(@file.errors, :file) }, status: :unprocessable_entity
+      errors = format_errors(file_attachment)
+      render json: { errors: }, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @file.destroy!
-    SideFxFileService.new.after_destroy(@file)
+    file_attachment.destroy!
+    SideFxFileService.new.after_destroy(file_attachment)
 
     head :ok
   rescue ActiveRecord::RecordNotDestroyed
-    render json: { errors: @file.errors.details }, status: :unprocessable_entity
+    render json: { errors: file_attachment.errors.details }, status: :unprocessable_entity
   end
 
   private
@@ -141,32 +80,25 @@ class WebApi::V1::FilesController < ApplicationController
     returned_file_params
   end
 
-  def update_file_params
-    params.require(:file).permit(:ordering)
+  def file_attachment
+    @file_attachment ||= authorize(
+      # TODO: (tech-debt) Ideally, we should use the id of the file, not the id of the
+      #   file attachment.
+      Files::FileAttachment.includes(:file).find(params[:id])
+    )
   end
 
-  def set_file
-    # First attempt to find using legacy file class
-    @file = secure_constantize(:file_class).find(params[:id])
-    authorize @file
-  rescue ActiveRecord::RecordNotFound
-    # Fall back to FileAttachment lookup
-    @file = Files::FileAttachment.includes(:file).find(params[:id])
-    authorize @file
-  end
-
-  def set_container
-    container_id = params[secure_constantize(:container_id)]
-    @container = secure_constantize(:container_class).find container_id
-  end
-
-  def secure_constantize(key)
-    CONSTANTIZER.fetch(params[:container_type])[key]
+  def container
+    @container ||= begin
+      container_class, id_key = CONTAINER_MAPPINGS.fetch(params[:container_type])
+      container_class.find(params[id_key])
+    end
   end
 
   def serialize_file(file)
-    serializer_class = file.is_a?(Files::FileAttachment) ? WebApi::V1::FileAttachmentSerializerAsLegacyFile : WebApi::V1::FileSerializer
-    serializer_class.new(file, params: jsonapi_serializer_params).serializable_hash
+    WebApi::V1::FileAttachmentSerializerAsLegacyFile
+      .new(file, params: jsonapi_serializer_params)
+      .serializable_hash
   end
 
   def build_file_attachment
@@ -177,14 +109,22 @@ class WebApi::V1::FilesController < ApplicationController
       uploader: current_user
     )
 
-    if (project = @container.try(:project))
+    if (project = container.try(:project))
       files_file.files_projects.build(project: project)
     end
 
     Files::FileAttachment.new(
       file: files_file,
-      attachable: @container,
+      attachable: container,
       position: file_params[:ordering]
     )
+  end
+
+  def format_errors(file_attachment)
+    # Surface the file errors in the response.
+    file_errors = transform_carrierwave_error_details(file_attachment.file.errors, :content)
+    # TODO: Adapt the front-end to use "content" instead of "file".
+    file_errors[:file] = file_errors.delete(:content)
+    file_errors.merge(file_attachment.errors.details)
   end
 end

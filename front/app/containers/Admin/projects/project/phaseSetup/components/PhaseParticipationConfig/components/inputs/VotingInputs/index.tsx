@@ -16,6 +16,7 @@ import { VoteTerm, VotingMethod } from 'api/phases/types';
 import {
   SectionDescription,
   SectionField,
+  SubSectionTitle,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -41,6 +42,10 @@ export const StyledSectionDescription = styled(SectionDescription)`
   margin-bottom: 20px;
 `;
 
+const WideToggleRow = styled(ToggleRow)`
+  max-width: 500px;
+`;
+
 export interface VotingInputsProps {
   voting_method: VotingMethod | null | undefined;
   voting_min_total: number | null | undefined;
@@ -49,10 +54,12 @@ export interface VotingInputsProps {
   autoshare_results_enabled: boolean | null | undefined;
   voting_max_votes_per_idea?: number | null;
   voting_min_selected_options?: number | null;
+  voting_filtering_enabled?: boolean | null;
   handleMinVotingOptionsChange: (newMinVotingOptions: string | null) => void;
   handleVotingMinTotalChange: (newVotingMinTotal: string) => void;
   handleVotingMaxTotalChange: (newVotingMaxTotal: string | null) => void;
   handleMaxVotesPerOptionAmountChange: (newMaxVotesPerOption: string) => void;
+  toggleVotingFilteringEnabled: () => void;
   handleVoteTermChange: (option: IOption) => void;
   voteTerm?: VoteTerm;
   toggleCommentingEnabled: () => void;
@@ -77,6 +84,7 @@ const VotingInputs = ({
   voting_min_total,
   voting_max_total,
   voting_min_selected_options,
+  voting_filtering_enabled,
   commenting_enabled,
   autoshare_results_enabled,
   voting_max_votes_per_idea,
@@ -86,6 +94,7 @@ const VotingInputs = ({
   toggleAutoshareResultsEnabled,
   handleMaxVotesPerOptionAmountChange,
   handleMinVotingOptionsChange,
+  toggleVotingFilteringEnabled,
   apiErrors,
   validationErrors,
   presentation_mode,
@@ -219,18 +228,30 @@ const VotingInputs = ({
           <StyledSectionDescription>
             <FormattedMessage {...messages.enabledActionsForUsersDescription} />
           </StyledSectionDescription>
-
           <ToggleRow>
             <Toggle
               checked={!!commenting_enabled}
               onChange={toggleCommentingEnabled}
-              label={FormattedMessage(messages.inputCommentingEnabled)}
+              label={formatMessage(messages.inputCommentingEnabled)}
             />
           </ToggleRow>
           <Text mb="0px" pb="0px" color={'textSecondary'} fontSize="s">
             {formatMessage(messages.commentingBias)}
           </Text>
           <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
+        </SectionField>
+        <SectionField>
+          <SubSectionTitle>
+            <FormattedMessage {...messages.enabledVotingFiltering} />
+          </SubSectionTitle>
+          <WideToggleRow>
+            <Toggle
+              checked={!!voting_filtering_enabled}
+              onChange={toggleVotingFilteringEnabled}
+              label={formatMessage(messages.votingFilteringEnabled)}
+            />
+          </WideToggleRow>
+          <Error apiErrors={apiErrors && apiErrors.votingFilteringEnabled} />
         </SectionField>
 
         <ShareResultsToggle

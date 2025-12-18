@@ -179,20 +179,12 @@ resource 'ProjectFolder' do
         expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
       end
 
-      describe 'when the folder description contains images' do
-        let(:description_multiloc) do
-          {
-            'en' => html_with_base64_image
-          }
-        end
+      context 'when the folder description contains images' do
+        let(:description_multiloc) { { 'en' => html_with_base64_image } }
 
-        example_request 'Create a folder with images in the description', document: false do
-          assert_status 201
-          json_parse(response_body)
-          expect(response_data.dig(:attributes, :description_multiloc, :en)).to include('<p>Some text</p><img alt="Red dot"')
-          text_image = TextImage.find_by(imageable_id: response_data[:id], imageable_type: 'ProjectFolders::Folder', imageable_field: 'description_multiloc')
-          expect(response_data.dig(:attributes, :description_multiloc, :en)).to include("data-cl2-text-image-text-reference=\"#{text_image.text_reference}\"")
-        end
+        it_behaves_like 'creates record with text images',
+          model_class: ProjectFolders::Folder,
+          field: :description_multiloc
       end
     end
 
@@ -225,6 +217,14 @@ resource 'ProjectFolder' do
         expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'archived'
+      end
+
+      context 'when description_multiloc contains images' do
+        let(:description_multiloc) { { 'en' => html_with_base64_image } }
+
+        it_behaves_like 'updates record with text images',
+          model_class: ProjectFolders::Folder,
+          field: :description_multiloc
       end
 
       describe do
@@ -402,7 +402,7 @@ resource 'ProjectFolder' do
 
           expect(response_status).to eq 200
           expect(layout.reload.craftjs_json['nUOW77iNcW']['props']['adminPublicationIds'])
-            .to match_array [project_folder2.admin_publication.id, project3.admin_publication.id]
+            .to contain_exactly(project_folder2.admin_publication.id, project3.admin_publication.id)
         end
       end
     end

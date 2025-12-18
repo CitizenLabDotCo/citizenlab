@@ -97,6 +97,7 @@ class WebApi::V1::AdminPublicationsController < ApplicationController
 
     admin_publication_filterer = AdminPublicationsFilteringService.new
     admin_publications = policy_scope(AdminPublication.includes(:parent))
+    admin_publications = apply_projects_listed_scope(admin_publications)
     admin_publications = admin_publication_filterer.filter(admin_publications, params)
 
     counts = admin_publications.group(:publication_status).count

@@ -47,6 +47,10 @@ class PhasePolicy < ApplicationPolicy
     show?
   end
 
+  def insights?
+    active_moderator?
+  end
+
   def delete_inputs?
     active_moderator?
   end
@@ -55,6 +59,14 @@ class PhasePolicy < ApplicationPolicy
     # Moderators are also allowed to copy ideas to phases they moderate. However, they
     # can only import inputs they have access to. This approach is a bit simplistic.
     # Ideally, moderators should only be able to copy inputs from projects they manage.
+    active_moderator?
+  end
+
+  def show_insights?
+    active_moderator?
+  end
+
+  def votes_with_grouping?
     active_moderator?
   end
 

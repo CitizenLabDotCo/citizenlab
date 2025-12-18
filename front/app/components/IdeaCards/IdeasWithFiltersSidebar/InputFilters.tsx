@@ -54,6 +54,7 @@ const InputFilters = ({
     phase?.data.attributes.participation_method || 'ideation'; // Ideation used as fallback here for All Ideas page.
   const isProposalsOrIdeation =
     participationMethod === 'ideation' || participationMethod === 'proposals';
+  const isVoting = participationMethod === 'voting';
 
   return (
     <>
@@ -77,9 +78,14 @@ const InputFilters = ({
           />
         </Box>
       )}
-      <Box mb="20px">
-        <SortingBox handleSortOnChange={handleSortOnChange} phaseId={phaseId} />
-      </Box>
+      {!isVoting && (
+        <Box mb="20px">
+          <SortingBox
+            handleSortOnChange={handleSortOnChange}
+            phaseId={phaseId}
+          />
+        </Box>
+      )}
       <Box mb="20px">
         <TopicFilterBox
           selectedTopicIds={ideaQueryParameters.topics}

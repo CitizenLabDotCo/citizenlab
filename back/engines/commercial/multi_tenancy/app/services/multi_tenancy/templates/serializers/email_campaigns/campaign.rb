@@ -5,7 +5,7 @@ module MultiTenancy
     module Serializers
       module EmailCampaigns
         class Campaign < Base
-          ref_attribute :author
+          ref_attributes %i[author context]
 
           attributes %i[
             type

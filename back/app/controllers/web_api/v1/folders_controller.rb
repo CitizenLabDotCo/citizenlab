@@ -76,23 +76,10 @@ class WebApi::V1::FoldersController < ApplicationController
   end
 
   def create
-    project_folder_attributes = project_folder_params
-    text_image_service = TextImageService.new
-    extract_output = text_image_service.extract_data_images_multiloc(
-      project_folder_attributes[:description_multiloc]
-    )
-    project_folder_attributes[:description_multiloc] = extract_output[:content_multiloc]
-
-    @project_folder = ProjectFolders::Folder.new(project_folder_attributes)
-
+    @project_folder = ProjectFolders::Folder.new(project_folder_params)
     authorize @project_folder
 
     if @project_folder.save
-      text_image_service.bulk_create_images!(
-        extract_output[:extracted_images],
-        @project_folder,
-        :description_multiloc
-      )
       ProjectFolders::SideFxProjectFolderService.new.after_create(@project_folder, current_user)
 
       render json: WebApi::V1::FolderSerializer.new(
@@ -110,7 +97,6 @@ class WebApi::V1::FoldersController < ApplicationController
     authorize @project_folder
     remove_image_if_requested!(@project_folder, project_folder_params, :header_bg)
 
-    ProjectFolders::SideFxProjectFolderService.new.before_update(@project_folder, current_user)
     if @project_folder.save
       ProjectFolders::SideFxProjectFolderService.new.after_update(@project_folder, current_user)
       render json: WebApi::V1::FolderSerializer.new(

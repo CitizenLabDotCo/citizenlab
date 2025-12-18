@@ -162,7 +162,7 @@ describe MultiTenancy::Templates::TenantSerializer do
 
         new_timeline_project = Project.first
         new_survey_phase = new_timeline_project.phases.order(:start_at).last
-        expect(new_timeline_project.ideas.map(&:creation_phase_id)).to match_array [nil, new_survey_phase.id]
+        expect(new_timeline_project.ideas.map(&:creation_phase_id)).to contain_exactly(nil, new_survey_phase.id)
         expect(new_survey_phase.custom_form.custom_fields.pluck(:input_type)).to eq ['text']
         new_field = new_survey_phase.custom_form.custom_fields.first
         expect(new_survey_phase.ideas_count).to eq 1
@@ -171,11 +171,8 @@ describe MultiTenancy::Templates::TenantSerializer do
     end
 
     it 'successfully exports custom field' do
-      description_multiloc = {
-        'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
-      }
+      description_multiloc = { 'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />' }
       field = create(:custom_field_page, :for_custom_form, description_multiloc: description_multiloc)
-      field.update! description_multiloc: TextImageService.new.swap_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
 
       template = tenant_serializer.run(deserializer_format: true)
 
@@ -296,7 +293,7 @@ describe MultiTenancy::Templates::TenantSerializer do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
         expect(Basket.count).to eq 2
         expect(BasketsIdea.count).to eq 2
-        expect(BasketsIdea.all.pluck(:votes)).to match_array([1, 2])
+        expect(BasketsIdea.all.pluck(:votes)).to contain_exactly(1, 2)
       end
     end
 
@@ -320,6 +317,44 @@ describe MultiTenancy::Templates::TenantSerializer do
       template = tenant_serializer.run(deserializer_format: true)
       expect(template['models']['permission'].first['permitted_by']).to eq 'admins_moderators' # Not changed
       expect(template['models']['permission'].last['permitted_by']).to eq 'users' # Changed
+    end
+
+    it 'successfully exports only manual campaigns with the context relationship' do
+      _global_auto_campaign = create(:comment_on_your_comment_campaign)
+      global_manual_campaign = create(:manual_campaign)
+      phase = create(:ideation_phase)
+      _context_auto_campaign = create(:comment_on_your_comment_campaign, context: phase)
+      project = create(:project)
+      context_manual_campaign = create(:manual_project_participants_campaign, context: project)
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      expect(template['models']['email_campaigns/campaign'].size).to eq 2
+      expect(template['models']['email_campaigns/campaign']).to match array_including(
+        hash_including(
+          'type' => 'EmailCampaigns::Campaigns::Manual',
+          'enabled' => global_manual_campaign.enabled,
+          'sender' => global_manual_campaign.sender,
+          'subject_multiloc' => global_manual_campaign.subject_multiloc,
+          'body_multiloc' => global_manual_campaign.body_multiloc
+        ),
+        hash_including(
+          'type' => 'EmailCampaigns::Campaigns::ManualProjectParticipants',
+          'enabled' => context_manual_campaign.enabled,
+          'sender' => context_manual_campaign.sender,
+          'subject_multiloc' => context_manual_campaign.subject_multiloc,
+          'body_multiloc' => context_manual_campaign.body_multiloc,
+          'context_ref' => hash_including(
+            'title_multiloc' => project.title_multiloc
+          )
+        )
+      )
+
+      tenant = create(:tenant, locales: AppConfiguration.instance.settings('core', 'locales'))
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+        expect(EmailCampaigns::Campaign.count).to eq 2
+      end
     end
   end
 end

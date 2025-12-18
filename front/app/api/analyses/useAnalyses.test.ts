@@ -13,6 +13,7 @@ const apiPath = '*analyses';
 const params: IAnalysesQueryParams = {
   pageNumber: 1,
   pageSize: 5000,
+  phaseId: 'phaseId123',
 };
 
 const server = setupServer(

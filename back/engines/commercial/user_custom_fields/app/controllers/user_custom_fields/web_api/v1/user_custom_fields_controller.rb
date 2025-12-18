@@ -23,25 +23,12 @@ module UserCustomFields
         end
 
         def create
-          params = custom_field_params(CustomField)
-          text_image_service = TextImageService.new
-          extract_output = text_image_service.extract_data_images_multiloc(
-            params[:description_multiloc]
-          )
-          params['description_multiloc'] = extract_output[:content_multiloc]
-
-          @custom_field = CustomField.new params
+          @custom_field = CustomField.new custom_field_params(CustomField)
           @custom_field.resource_type = 'User'
           authorize @custom_field, policy_class: UserCustomFieldPolicy
 
           SideFxCustomFieldService.new.before_create(@custom_field, current_user)
-
           if @custom_field.save
-            text_image_service.bulk_create_images!(
-              extract_output[:extracted_images],
-              @custom_field,
-              :description_multiloc
-            )
             SideFxCustomFieldService.new.after_create(@custom_field, current_user)
             render json: serialize_custom_fields(@custom_field, params: jsonapi_serializer_params_with_locked_fields), status: :created
           else
@@ -52,7 +39,7 @@ module UserCustomFields
         def update
           @custom_field.assign_attributes custom_field_params(@custom_field)
           authorize @custom_field, policy_class: UserCustomFieldPolicy
-          SideFxCustomFieldService.new.before_update @custom_field, current_user
+
           if @custom_field.save
             SideFxCustomFieldService.new.after_update(@custom_field, current_user)
             render json: serialize_custom_fields(@custom_field.reload, params: jsonapi_serializer_params_with_locked_fields), status: :ok
@@ -62,7 +49,6 @@ module UserCustomFields
         end
 
         def reorder
-          fix_reordering
           if @custom_field.insert_at(custom_field_params(@custom_field)[:ordering])
             SideFxCustomFieldService.new.after_update(@custom_field, current_user)
             render json: serialize_custom_fields(@custom_field.reload, params: jsonapi_serializer_params_with_locked_fields), status: :ok
@@ -101,16 +87,6 @@ module UserCustomFields
 
         def serialize_custom_fields(...)
           UserCustomFields::WebApi::V1::UserCustomFieldSerializer.new(...).serializable_hash.to_json
-        end
-
-        # Fix the ordering so it is sequential - sometimes some fields can get set to the same order position
-        def fix_reordering
-          fields = CustomField.registration.order(:ordering)
-          if fields.pluck(:ordering) != (0..fields.size - 1).to_a
-            fields.each_with_index do |field, index|
-              field.set_list_position(index)
-            end
-          end
         end
       end
     end

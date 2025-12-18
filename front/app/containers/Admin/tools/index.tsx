@@ -13,6 +13,7 @@ import Esri from './Esri';
 import messages from './messages';
 import PowerBI from './PowerBI';
 import PublicAPI from './PublicAPI';
+import Webhooks from './Webhooks';
 import Widget from './Widget';
 import Workshops from './Workshops';
 
@@ -31,6 +32,7 @@ const Tools = () => {
             {isEsriIntegrationEnabled && <Esri />}
             <Widget />
             <PublicAPI />
+            <Webhooks />
             <PowerBI />
           </>
         )}

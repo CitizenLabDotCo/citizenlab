@@ -12,13 +12,6 @@ class WebApi::V1::IdeasController < ApplicationController
   after_action :verify_policy_scoped, only: %i[index index_mini]
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
-  def json_forms_schema
-    input = Idea.find params[:id]
-    enabled_fields = IdeaCustomFieldsService.new(input.custom_form).enabled_fields
-    json_attributes = JsonFormsService.new.input_ui_and_json_multiloc_schemas enabled_fields, current_user, input.participation_method_on_creation, input.input_term
-    render json: raw_json(json_attributes)
-  end
-
   def index
     ideas = IdeasFinder.new(
       params,
@@ -167,7 +160,6 @@ class WebApi::V1::IdeasController < ApplicationController
   #   Normal users always post in an active phase. They should never provide a phase id.
   #   Users who can moderate projects post in an active phase if no phase id is given.
   #   Users who can moderate projects post in the given phase if a phase id is given.
-  # rubocop:disable Metrics/MethodLength
   def create
     send_error and return if !phase_for_input
 
@@ -175,12 +167,6 @@ class WebApi::V1::IdeasController < ApplicationController
     extract_custom_field_values_from_params!(form)
     params_for_create = idea_params form
     files_params = extract_file_params(params_for_create)
-
-    text_image_service = TextImageService.new
-    extract_output = text_image_service.extract_data_images_multiloc(
-      params_for_create[:body_multiloc]
-    )
-    params_for_create[:body_multiloc] = extract_output[:content_multiloc]
 
     input = Idea.new params_for_create
 
@@ -240,11 +226,6 @@ class WebApi::V1::IdeasController < ApplicationController
     ActiveRecord::Base.transaction do
       if input.save(**save_options)
         update_file_upload_fields input, form, params_for_create
-        text_image_service.bulk_create_images!(
-          extract_output[:extracted_images],
-          input,
-          :body_multiloc
-        )
         sidefx.after_create(input, current_user)
         write_everyone_tracking_cookie input
         render json: WebApi::V1::IdeaSerializer.new(
@@ -257,7 +238,6 @@ class WebApi::V1::IdeasController < ApplicationController
       end
     end
   end
-  # rubocop:enable Metrics/MethodLength
 
   def update
     input = Idea.find params[:id]
@@ -483,7 +463,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def build_idea_file_attachment(idea, file_params)
-    files_file = Files::File.new(
+    files_file = Files::RestrictedFile.new( # temporary-fix-for-vienna-svg-security-issue (use Files::File.new to undo)
       content_by_content: {
         content: file_params['content'],
         name: file_params['name']

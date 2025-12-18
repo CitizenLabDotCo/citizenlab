@@ -421,7 +421,9 @@ const ReactionButton = ({
       <Tooltip
         placement="top"
         theme="dark"
-        disabled={disabledReason === null}
+        disabled={
+          disabledReason === null || isFixableByAuthentication(disabledReason)
+        }
         content={
           <span
             // aria-hidden is needed because we already use ScreenReaderOnly for screen readers

@@ -34,6 +34,7 @@ export interface IPhaseData {
 }
 
 export interface IPhaseAttributes {
+  voting_filtering_enabled: boolean;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
   start_at: string;
@@ -61,7 +62,7 @@ export interface IPhaseAttributes {
   document_annotation_embed_url?: string | null;
   custom_form_persisted?: boolean;
   voting_method?: VotingMethod | null;
-  vote_term: VoteTerm;
+  vote_term?: VoteTerm; // Some existing phases in reports JSON may not have this defined.
   voting_min_total?: number | null;
   voting_max_total?: number | null;
   voting_min_selected_options?: number | null;
@@ -81,6 +82,7 @@ export interface IPhaseAttributes {
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
   user_data_collection: UserDataCollection;
+  ideation_method?: IdeationMethod | null;
 }
 
 export interface IPhases {
@@ -115,6 +117,7 @@ export interface IUpdatedPhaseProperties {
   voting_min_total?: number | null;
   voting_max_total?: number | null;
   voting_max_votes_per_idea?: number | null;
+  voting_filtering_enabled?: boolean | null;
   vote_term?: VoteTerm;
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
@@ -131,6 +134,7 @@ export interface IUpdatedPhaseProperties {
   similarity_enabled?: boolean | null;
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
+  ideation_method?: IdeationMethod | null;
 }
 
 export interface AddPhaseObject extends IUpdatedPhaseProperties {
@@ -166,6 +170,8 @@ export type ParticipationMethod =
   | 'proposals';
 
 export type VotingMethod = 'budgeting' | 'multiple_voting' | 'single_voting';
+
+export type IdeationMethod = 'base' | 'idea_feed';
 
 export type VoteTerm = 'vote' | 'point' | 'token' | 'credit';
 

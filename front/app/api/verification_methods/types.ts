@@ -35,7 +35,8 @@ export type TVerificationMethodName =
   | 'twoday'
   | 'nemlog_in'
   | 'oostende_rrn'
-  | 'id_austria';
+  | 'id_austria'
+  | 'acm';
 
 export interface IVerificationMethods {
   data: TVerificationMethod[];
@@ -112,6 +113,16 @@ export type IDTwodayMethod = {
   type: 'verification_method';
   attributes: {
     name: 'twoday';
+    method_metadata?: MethodMetadata;
+    ui_method_name: string;
+  };
+};
+
+export type IDAcmMethod = {
+  id: string;
+  type: 'verification_method';
+  attributes: {
+    name: 'acm';
     method_metadata?: MethodMetadata;
     ui_method_name: string;
   };

@@ -27,10 +27,10 @@ RSpec.describe ExpireConfirmationCodeOrDeleteJob do
     end
 
     it 'does nothing when the user does not require confirmation' do
-      old_code = user.email_confirmation_code
+      user.email_confirmation_code
       user.confirm!
       described_class.perform_now(user.id, user.email_confirmation_code)
-      expect(user.reload.email_confirmation_code).to eq(old_code)
+      expect(user.reload.email_confirmation_code).to be_nil
       expect(DeleteUserJob).not_to have_been_enqueued
     end
 

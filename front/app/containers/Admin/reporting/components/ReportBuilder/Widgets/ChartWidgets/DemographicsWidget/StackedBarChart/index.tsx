@@ -9,6 +9,7 @@ import {
   getCornerRadius,
   stackLabels,
 } from 'components/admin/Graphs/StackedBarChart/singleBarHelpers';
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -22,7 +23,11 @@ interface Props {
   response: DemographicsResponse;
 }
 
-const StackedBarChart = ({ response }: Props) => {
+const StackedBarChart = ({
+  response,
+  ariaLabel,
+  ariaDescribedBy,
+}: Props & AccessibilityProps) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
@@ -41,6 +46,10 @@ const StackedBarChart = ({ response }: Props) => {
   const { data, percentages, columns, statusColorById, labels, legendItems } =
     parseResponse(response, localize, formatMessage(messages.unknown));
 
+  const accessibilityProps = {
+    ariaLabel,
+    ariaDescribedBy,
+  };
   return (
     <BaseStackedBarChart
       data={data}
@@ -73,6 +82,7 @@ const StackedBarChart = ({ response }: Props) => {
       onMouseOver={onMouseOverStackedBar}
       onMouseOut={onMouseOutStackedBar}
       CustomLegend={DemographicsLegend}
+      {...accessibilityProps}
     />
   );
 };

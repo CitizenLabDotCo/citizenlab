@@ -386,3 +386,4 @@ fr:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "Le maximum doit être supérieur au minimum."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Le maximum doit être supérieur ou égal au minimum."

@@ -64,49 +64,49 @@ describe SmartGroups::Rules::ParticipatedInProject do
     it "correctly filters on 'in' predicate" do
       rule = described_class.new('in', [project1.id])
       expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
-      expect(@users).to match_array [user1, user2, user3, user4]
+      expect(@users).to contain_exactly(user1, user2, user3, user4)
     end
 
     it "correctly filters on 'not_in' predicate" do
       rule = described_class.new('not_in', project2.id)
       expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
-      expect(@users).to match_array [user1, user2, user4]
+      expect(@users).to contain_exactly(user1, user2, user4)
     end
 
     it "correctly filters on 'posted_in' predicate" do
       rule = described_class.new('posted_in', [project1.id, project2.id])
       expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
-      expect(@users).to match_array [user1, user3, user4]
+      expect(@users).to contain_exactly(user1, user3, user4)
     end
 
     it "correctly filters on 'not_posted_in' predicate" do
       rule = described_class.new('not_posted_in', project1.id)
       expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
-      expect(@users).to match_array [user2, user3]
+      expect(@users).to contain_exactly(user2, user3)
     end
 
     it "correctly filters on 'commented_in' predicate" do
       rule = described_class.new('commented_in', [project1.id])
       expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
-      expect(@users).to match_array [user3]
+      expect(@users).to contain_exactly(user3)
     end
 
     it "correctly filters on 'not_commented_in' predicate" do
       rule = described_class.new('not_commented_in', project1.id)
       expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
-      expect(@users).to match_array [user1, user2, user4]
+      expect(@users).to contain_exactly(user1, user2, user4)
     end
 
     it "correctly filters on 'reacted_idea_in' predicate" do
       rule = described_class.new('reacted_idea_in', [project1.id])
       expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
-      expect(@users).to match_array [user2]
+      expect(@users).to contain_exactly(user2)
     end
 
     it "correctly filters on 'not_reacted_idea_in' predicate" do
       rule = described_class.new('not_reacted_idea_in', project1.id)
       expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
-      expect(@users).to match_array [user1, user3, user4]
+      expect(@users).to contain_exactly(user1, user3, user4)
     end
 
     it "correctly filters on 'reacted_comment_in' predicate" do
@@ -118,7 +118,7 @@ describe SmartGroups::Rules::ParticipatedInProject do
     it "correctly filters on 'not_reacted_comment_in' predicate" do
       rule = described_class.new('not_reacted_comment_in', project2.id)
       expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
-      expect(@users).to match_array [user1, user2, user3, user4]
+      expect(@users).to contain_exactly(user1, user2, user3, user4)
     end
 
     it "correctly filters on 'voted_in' predicate" do
@@ -130,7 +130,7 @@ describe SmartGroups::Rules::ParticipatedInProject do
     it "correctly filters on 'not_voted_in' predicate" do
       rule = described_class.new('not_voted_in', project2.id)
       expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
-      expect(@users).to match_array [user1, user2, user3, user4]
+      expect(@users).to contain_exactly(user1, user2, user3, user4)
     end
 
     it "correctly filters on 'volunteered_in' predicate" do
@@ -142,7 +142,7 @@ describe SmartGroups::Rules::ParticipatedInProject do
     it "correctly filters on 'not_volunteered_in' predicate" do
       rule = described_class.new('not_volunteered_in', project2.id)
       expect { @users = rule.filter(User) }.not_to exceed_query_limit(1)
-      expect(@users).to match_array [user1, user2, user3, user4]
+      expect(@users).to contain_exactly(user1, user2, user3, user4)
     end
   end
 

@@ -129,7 +129,7 @@ resource 'BulkImportIdeasImportIdeas' do
 
         # Should return only the 2 draft ideas added to the phase
         expect(response_data.count).to eq 2
-        expect(response_data.pluck(:id)).to match_array [draft_ideas[0][:id], draft_ideas[1][:id]]
+        expect(response_data.pluck(:id)).to contain_exactly(draft_ideas[0][:id], draft_ideas[1][:id])
 
         # Relationships
         expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
@@ -191,7 +191,7 @@ resource 'BulkImportIdeasImportIdeas' do
         example_request 'Get the import meta data for an idea' do
           assert_status 200
           expect(response_data[:type]).to eq 'idea_import'
-          expect(response_data[:attributes].keys).to eq %i[user_created user_consent page_range locale created_at updated_at file import_type]
+          expect(response_data[:attributes].keys).to eq %i[user_created user_consent page_range locale created_at updated_at file import_type parsed_value]
         end
       end
 

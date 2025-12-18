@@ -14,10 +14,6 @@ module ProjectFolders
       )
     end
 
-    def before_update(folder, _user)
-      folder.description_multiloc = TextImageService.new.swap_data_images_multiloc(folder.description_multiloc, field: :description_multiloc, imageable: folder)
-    end
-
     def after_update(folder, user)
       change = folder.saved_changes
       payload = { project_folder: clean_time_attributes(folder.attributes) }

@@ -386,3 +386,4 @@ lb:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "De Maximum muss méi grouss wéi de Minimum sinn."
+      max_must_be_greater_than_or_equal_to_min_select_count: "De Maximum muss méi grouss oder gläich dem Minimum sinn."

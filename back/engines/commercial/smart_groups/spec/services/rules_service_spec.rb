@@ -81,6 +81,33 @@ describe SmartGroups::RulesService do
       result = service.filter User, rules
       expect(result.count).to eq 1
     end
+
+    context 'voting' do
+      let(:project1) { create(:single_voting_phase, :ongoing).project }
+      let(:project2) { create(:single_voting_phase, :ongoing).project }
+
+      let(:rules) do
+        [
+          { 'ruleType' => 'participated_in_project', 'predicate' => 'not_voted_in', 'value' => project1.id },
+          { 'ruleType' => 'participated_in_project', 'predicate' => 'not_voted_in', 'value' => project2.id }
+        ]
+      end
+
+      it 'includes all users who have not voted in any of the projects' do
+        result = service.filter User, rules
+        expect(result.count).to eq 4
+      end
+
+      it 'filters out users who have voted in at least one of the projects' do
+        # 3 baskets, 2 users have voted in at least one project
+        create(:basket, phase: project1.phases.first, user: User.first)
+        create(:basket, phase: project2.phases.first, user: User.last)
+        create(:basket, phase: project2.phases.first, user: User.last)
+
+        result = service.filter User, rules
+        expect(result.count).to eq 2
+      end
+    end
   end
 
   describe 'groups_for_user' do
@@ -91,7 +118,7 @@ describe SmartGroups::RulesService do
 
     it 'returns only the rules groups the user is part of' do
       groups = service.groups_for_user(user)
-      expect(groups.map(&:id)).to match_array [group1.id, group2.id]
+      expect(groups.map(&:id)).to contain_exactly(group1.id, group2.id)
     end
 
     it 'uses a maximum of 3 queries' do

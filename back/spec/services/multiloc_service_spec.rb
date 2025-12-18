@@ -57,6 +57,13 @@ describe MultilocService do
       translations['en'] = ''
       expect(service.t(translations, preferred_locale)).to eq ''
     end
+
+    context 'with ignore_blank: true' do
+      it 'ignores blank translations when looking for a translation' do
+        translations = { 'en' => '', 'fr-FR' => 'traduction' }
+        expect(service.t(translations, 'en', ignore_blank: true)).to eq('traduction')
+      end
+    end
   end
 
   describe 'i18n_to_multiloc' do

@@ -25,29 +25,8 @@ class WebApi::V1::StaticPagesController < ApplicationController
     assign_attributes
     authorize @page
 
-    text_image_service = TextImageService.new
-    extract_output_top = text_image_service.extract_data_images_multiloc(
-      @page.top_info_section_multiloc
-    )
-    extract_output_bottom = text_image_service.extract_data_images_multiloc(
-      @page.bottom_info_section_multiloc
-    )
-    @page.top_info_section_multiloc = extract_output_top[:content_multiloc]
-    @page.bottom_info_section_multiloc = extract_output_bottom[:content_multiloc]
-
     SideFxStaticPageService.new.before_create @page, current_user
     if @page.save
-      text_image_service.bulk_create_images!(
-        extract_output_top[:extracted_images],
-        @page,
-        :top_info_section_multiloc
-      )
-      text_image_service.bulk_create_images!(
-        extract_output_bottom[:extracted_images],
-        @page,
-        :bottom_info_section_multiloc
-      )
-
       SideFxStaticPageService.new.after_create @page, current_user
       render(
         json: WebApi::V1::StaticPageSerializer.new(@page, params: jsonapi_serializer_params).serializable_hash,
@@ -62,7 +41,6 @@ class WebApi::V1::StaticPagesController < ApplicationController
     assign_attributes
     authorize @page
 
-    SideFxStaticPageService.new.before_update @page, current_user
     if @page.save
       SideFxStaticPageService.new.after_update @page, current_user
       render json: WebApi::V1::StaticPageSerializer.new(@page, params: jsonapi_serializer_params).serializable_hash, status: :ok

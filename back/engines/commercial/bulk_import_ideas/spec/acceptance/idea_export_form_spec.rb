@@ -63,12 +63,12 @@ resource 'Idea form exports' do
               assert_status 200
             end
 
-            example 'Get the legacy PDF version of the idea form when ?legacy=true', document: false do
+            example 'Get the legacy PDF version of the idea form when ?parser=legacy', document: false do
               # Expect the Legacy PDF generator to be invoked
               expect_any_instance_of(BulkImportIdeas::Legacy::IdeaPdfFormExporter).to receive(:export).and_return(
                 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read
               )
-              do_request({ import: { legacy_pdf: true } })
+              do_request({ import: { parser: 'legacy' } })
               assert_status 200
             end
           end

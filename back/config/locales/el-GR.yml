@@ -386,3 +386,4 @@ el:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "Το μέγιστο πρέπει να είναι μεγαλύτερο από το ελάχιστο."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Το μέγιστο πρέπει να είναι μεγαλύτερο ή ίσο με το ελάχιστο."

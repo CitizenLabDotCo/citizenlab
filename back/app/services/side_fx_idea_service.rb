@@ -34,12 +34,11 @@ class SideFxIdeaService
   def before_update(idea, user)
     @old_cosponsor_ids = idea.cosponsor_ids
     @old_phase_ids = idea.phase_ids
-    idea.body_multiloc = TextImageService.new.swap_data_images_multiloc(idea.body_multiloc, field: :body_multiloc, imageable: idea)
     idea.publication_status = 'published' if idea.submitted_or_published? && idea.idea_status&.public_post?
     before_publish_or_submit idea, user if idea.will_be_submitted? || idea.will_be_published?
   end
 
-  def after_update(idea, user)
+  def after_update(idea, user) # rubocop:disable Metrics/MethodLength
     # We need to check if the idea was just submitted or just published before
     # we do anything else because updates to the idea can change this state.
     just_submitted = idea.just_submitted?
@@ -100,6 +99,7 @@ class SideFxIdeaService
     end
 
     enqueue_embeddings_job(idea) if idea.title_multiloc_previously_changed? || idea.body_multiloc_previously_changed?
+    enqueue_wise_voice_detection_job(idea) if idea.title_multiloc_previously_changed? || idea.body_multiloc_previously_changed?
 
     if idea.manual_votes_amount_previously_changed?
       LogActivityJob.perform_later(
@@ -149,6 +149,7 @@ class SideFxIdeaService
   def after_submission(idea, user)
     add_autoreaction(idea)
     create_followers(idea, user) unless idea.anonymous?
+    enqueue_wise_voice_detection_job(idea)
     LogActivityJob.set(wait: 20.seconds).perform_later(idea, 'submitted', user_for_activity_on_anonymizable_item(idea, user), idea.submitted_at.to_i)
   end
 
@@ -231,6 +232,12 @@ class SideFxIdeaService
     return if !idea.participation_method_on_creation.supports_public_visibility?
 
     UpsertEmbeddingJob.perform_later(idea)
+  end
+
+  def enqueue_wise_voice_detection_job(idea)
+    return if !AppConfiguration.instance.feature_activated?('idea_feed')
+
+    WiseVoiceDetectionJob.perform_later(idea)
   end
 
   # update the user profile if user fields are changed as part of a survey

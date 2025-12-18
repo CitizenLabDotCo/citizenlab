@@ -386,3 +386,4 @@ hu:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "A maximumnak nagyobbnak kell lennie a minimumnál."
+      max_must_be_greater_than_or_equal_to_min_select_count: "A maximumnak nagyobbnak vagy egyenlőnek kell lennie a minimummal."

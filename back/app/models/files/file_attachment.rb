@@ -23,13 +23,15 @@
 module Files
   class FileAttachment < ApplicationRecord
     ATTACHABLE_TYPES = %w[
+      Analysis::Analysis
+      Analysis::Question
+      ContentBuilder::Layout
+      Event
+      Idea
       Phase
       Project
       ProjectFolders::Folder
-      Event
-      Idea
       StaticPage
-      ContentBuilder::Layout
     ].freeze
 
     belongs_to :file, class_name: 'Files::File', inverse_of: :attachments
@@ -65,14 +67,24 @@ module Files
 
     # Prevent files from being attached to resources in other projects.
     def validate_file_belongs_to_project
-      return unless attachable_type.in?(%w[Project Phase Event Idea])
       return unless file.present? && attachable.present?
+      return unless attachable_type.in?(%w[
+        Project
+        Phase
+        Event
+        Idea
+        Analysis::Analysis
+        Analysis::Question
+      ])
 
       # Using `files_projects` instead of `projects` because `projects` does not include
       # projects whose corresponding `files_project` records have not yet been saved.
       project_ids = file.files_projects.map(&:project_id)
 
-      if project_ids.exclude?(attachable.project_id)
+      # This will fail for Analysis::Analysis and Analysis::Question if the analysis is
+      # not associated with a project. However, we currently do not support that scenario,
+      # so it should not occur in practice.
+      if project_ids.exclude?(attachable.source_project.id)
         errors.add(:file, :does_not_belong_to_project, message: 'does not belong to the project')
       end
     end

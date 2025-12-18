@@ -16,7 +16,9 @@ export type ProjectSortableParam =
   | 'recently_created_asc'
   | 'recently_created_desc'
   | 'alphabetically_asc'
-  | 'alphabetically_desc';
+  | 'alphabetically_desc'
+  | 'participation_asc'
+  | 'participation_desc';
 
 export type Parameters = {
   status?: PublicationStatus[];

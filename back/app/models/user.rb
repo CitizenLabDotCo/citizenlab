@@ -153,6 +153,8 @@ class User < ApplicationRecord
   has_many :files, class_name: 'Files::File', foreign_key: :uploader_id, inverse_of: :uploader, dependent: :nullify
 
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
+  before_validation :sanitize_first_name, if: :first_name_changed?
+  before_validation :sanitize_last_name, if: :last_name_changed?
   before_validation :complete_registration
 
   has_many :identities, dependent: :destroy
@@ -348,6 +350,14 @@ class User < ApplicationRecord
     )
     self.bio_multiloc = service.remove_multiloc_empty_trailing_tags(bio_multiloc)
     self.bio_multiloc = service.linkify_multiloc(bio_multiloc)
+  end
+
+  def sanitize_first_name
+    self.first_name = ActionView::Base.full_sanitizer.sanitize(first_name)
+  end
+
+  def sanitize_last_name
+    self.last_name = ActionView::Base.full_sanitizer.sanitize(last_name)
   end
 
   def email_or_new_email_changed?

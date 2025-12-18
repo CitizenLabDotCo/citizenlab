@@ -386,3 +386,4 @@ da:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "Maksimum skal være større end minimum."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Maksimum skal være større end eller lig med minimum."

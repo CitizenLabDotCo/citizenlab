@@ -56,7 +56,7 @@ resource 'Idea Custom Fields' do
       before { admin_header_token }
 
       context 'when the form is persisted for the first time' do
-        let(:custom_form) { create(:custom_form, participation_context: context) }
+        let(:custom_form) { build(:custom_form, participation_context: context) }
 
         example 'Updating custom fields', document: false do
           create(:idea, project: context)

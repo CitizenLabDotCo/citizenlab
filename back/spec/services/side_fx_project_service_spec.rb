@@ -38,13 +38,6 @@ describe SideFxProjectService do
     end
   end
 
-  describe 'before_update' do
-    it 'runs the description through the text image service' do
-      expect_any_instance_of(TextImageService).to receive(:swap_data_images_multiloc).with(project.description_multiloc, field: :description_multiloc, imageable: project).and_return(project.description_multiloc)
-      service.before_update(project, user)
-    end
-  end
-
   describe 'after_update' do
     it "logs a 'changed' action job when the project has changed" do
       service.before_update(project, user)

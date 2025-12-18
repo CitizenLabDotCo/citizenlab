@@ -79,6 +79,7 @@ import Toggle from './components/Toggle';
 import Tooltip, { TooltipProps } from './components/Tooltip';
 import useBreakpoint from './hooks/useBreakpoint';
 import useWindowSize from './hooks/useWindowSize';
+import ClickOutside from './utils/containers/clickOutside';
 import InputContainer from './utils/containers/InputContainer';
 import {
   viewportWidths,
@@ -209,6 +210,7 @@ export {
   Divider,
   Quote,
   InputContainer,
+  ClickOutside,
 
   /** @deprecated Please use components/UI/MultiSelect instead */
   MultiSelect,

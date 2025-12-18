@@ -33,6 +33,7 @@ export const phasesData: IPhaseData[] = [
       report_public: false,
       total_votes_amount: 0,
       user_data_collection: 'all_data',
+      voting_filtering_enabled: false,
     },
     relationships: {
       permissions: {
@@ -79,6 +80,7 @@ export const phasesData: IPhaseData[] = [
       report_public: false,
       total_votes_amount: 0,
       user_data_collection: 'all_data',
+      voting_filtering_enabled: false,
     },
     relationships: {
       permissions: {
@@ -121,6 +123,7 @@ export const phasesData: IPhaseData[] = [
       report_public: false,
       total_votes_amount: 0,
       user_data_collection: 'all_data',
+      voting_filtering_enabled: false,
     },
     relationships: {
       permissions: {
@@ -168,6 +171,7 @@ export const mockPhaseInformationData: IPhaseData = {
     report_public: false,
     total_votes_amount: 0,
     user_data_collection: 'all_data',
+    voting_filtering_enabled: false,
   },
   relationships: {
     permissions: {
@@ -214,6 +218,7 @@ export const mockPhaseIdeationData: IPhaseData = {
     report_public: false,
     total_votes_amount: 0,
     user_data_collection: 'all_data',
+    voting_filtering_enabled: false,
   },
   relationships: {
     permissions: {
@@ -262,6 +267,7 @@ export const mockPhaseSurveyTypeformData: IPhaseData = {
     report_public: false,
     total_votes_amount: 0,
     user_data_collection: 'all_data',
+    voting_filtering_enabled: false,
   },
   relationships: {
     permissions: {
@@ -310,6 +316,7 @@ export const mockPhaseSurveyGoogleFormData: IPhaseData = {
     report_public: false,
     total_votes_amount: 0,
     user_data_collection: 'all_data',
+    voting_filtering_enabled: false,
   },
   relationships: {
     permissions: {
@@ -377,6 +384,7 @@ const votingPhase: IPhaseData = {
     vote_term: 'vote',
     report_public: false,
     user_data_collection: 'all_data',
+    voting_filtering_enabled: true,
   },
   relationships: {
     permissions: {

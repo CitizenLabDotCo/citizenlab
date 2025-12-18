@@ -96,6 +96,8 @@ class Idea < ApplicationRecord
     delta_magnitude: proc { |idea| idea.comments_count }
   )
 
+  has_many_text_images from: :body_multiloc
+
   # Must appear before before_destroy
   before_save :convert_wkt_geo_custom_field_values_to_geojson
   after_update :fix_comments_count_on_projects
@@ -124,7 +126,6 @@ class Idea < ApplicationRecord
   has_many :phases, through: :ideas_phases, after_add: :update_phase_counts, after_remove: :update_phase_counts
   has_many :baskets_ideas, dependent: :destroy
   has_many :baskets, through: :baskets_ideas
-  has_many :text_images, as: :imageable, dependent: :destroy
   has_many :followers, as: :followable, dependent: :destroy
   has_many :official_feedbacks, dependent: :destroy
 
@@ -139,6 +140,9 @@ class Idea < ApplicationRecord
 
   has_many :idea_relations, dependent: :destroy
   has_many :related_ideas, through: :idea_relations
+
+  has_many :idea_exposures, dependent: :destroy
+  has_one :wise_voice_flag, as: :flaggable, class_name: 'WiseVoiceFlag', dependent: :destroy
 
   accepts_nested_attributes_for :text_images, :idea_images, :idea_files
 

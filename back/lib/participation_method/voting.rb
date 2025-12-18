@@ -9,6 +9,10 @@ module ParticipationMethod
       'voting'
     end
 
+    def phase_insights_class
+      Insights::VotingPhaseInsightsService
+    end
+
     def allowed_ideas_orders
       %w[random]
     end

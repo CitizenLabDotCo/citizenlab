@@ -390,3 +390,4 @@ cy:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "Rhaid i'r uchafswm fod yn fwy na'r isafswm."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Rhaid i'r uchafswm fod yn fwy na neu'n hafal i'r isafswm."
