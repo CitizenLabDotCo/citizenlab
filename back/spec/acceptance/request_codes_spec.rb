@@ -96,7 +96,7 @@ resource 'Request codes' do
         .with(user, new_email: 'new_email@example.com').once
     end
 
-    example 'It does not work if new_email is blank' do
+    example 'It does not work if new_email is blank and new_email is not yet set on user' do
       user = create(:user)
       header_token_for(user)
       do_request(request_code: { new_email: '' })
