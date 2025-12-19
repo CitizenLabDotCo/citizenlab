@@ -17,7 +17,7 @@ import {
   useFormContext,
   useWatch,
 } from 'react-hook-form';
-import { SupportedLocale, CLError, RHFErrors } from 'typings';
+import { SupportedLocale, CLError, RHFErrors, UploadFile } from 'typings';
 
 import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
 
@@ -94,25 +94,30 @@ const ConfigSelectWithLocaleSwitcher = ({
       customFieldOptionImages.length !== prevImageQueries?.length
     ) {
       (async () => {
-        const promises = customFieldOptionImages.map(
-          async (customFieldOptionImage) => {
-            if (
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              !customFieldOptionImage.attributes.versions.medium
-            ) {
-              return;
-            }
-            const imageData = await convertUrlToUploadFile(
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              customFieldOptionImage.attributes.versions.medium
-            );
-            return { [customFieldOptionImage.id]: imageData };
+        const ids: string[] = [];
+        const promises: Promise<UploadFile | null>[] = [];
+
+        customFieldOptionImages.forEach((customFieldOptionImage) => {
+          if (!customFieldOptionImage) return;
+          if (!customFieldOptionImage.attributes.versions.medium) {
+            return;
           }
-        );
+
+          const imageData = convertUrlToUploadFile(
+            customFieldOptionImage.attributes.versions.medium
+          );
+
+          ids.push(customFieldOptionImage.id);
+          promises.push(imageData);
+        });
+
         const optionImageArray = await Promise.all(promises);
-        const optionImagesObject = Object.assign({}, ...optionImageArray);
+
+        const optionImagesObject = {};
+        ids.forEach((id, index) => {
+          optionImagesObject[id] = optionImageArray[index];
+        });
+
         setOptionImages(optionImagesObject);
       })();
     }
