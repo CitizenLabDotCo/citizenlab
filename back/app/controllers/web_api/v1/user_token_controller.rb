@@ -17,12 +17,13 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
         status: :unprocessable_entity
       )
     else
+      ClaimTokenService.claim(user, nil)
       render json: auth_token, status: :created
     end
   end
 
   def create
-    ClaimTokenService.claim(entity, auth_params[:claim_tokens]) if auth_params[:claim_tokens].present?
+    ClaimTokenService.claim(entity, auth_params[:claim_tokens])
     super
   end
 

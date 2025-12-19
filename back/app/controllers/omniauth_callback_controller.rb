@@ -92,7 +92,7 @@ class OmniauthCallbackController < ApplicationController
           SideFxUserService.new.after_update(@user, nil) # Logs 'registration_completed' activity Job`
           @invite.save!
           SideFxInviteService.new.after_accept @invite # Logs 'accepted' activity Job
-          ClaimTokenService.claim(@user, claim_tokens) if claim_tokens.present?
+          ClaimTokenService.claim(@user, claim_tokens)
           verify_and_sign_in(auth, @user, verify, sign_up: true)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
@@ -104,7 +104,7 @@ class OmniauthCallbackController < ApplicationController
           update_user!(auth, @user, authver_method)
           update_identity!(auth, @identity, authver_method)
           SideFxUserService.new.after_update(@user, nil)
-          ClaimTokenService.claim(@user, claim_tokens) if claim_tokens.present?
+          ClaimTokenService.claim(@user, claim_tokens)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
           signin_failure_redirect
