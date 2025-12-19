@@ -54,6 +54,7 @@ export type IOptionsType = {
   other?: boolean;
   temp_id?: string;
   image_id?: string;
+  image?: ICustomFieldOptionImage['data'];
 };
 
 export type IMatrixStatementsType = {
