@@ -1,3 +1,4 @@
+import { ICustomFieldOptionImage } from 'api/content_field_option_images/types';
 import { ICustomFieldOptionData } from 'api/custom_field_options/types';
 import { IFormCustomFieldStatementData } from 'api/custom_field_statements/types';
 
@@ -15,6 +16,7 @@ export const constructFlatCustomFields = (rawCustomFields: ICustomFields) => {
   const includedByType = groupIncludedResources(rawCustomFields.included);
 
   const options = includedByType.custom_field_option;
+  const images = includedByType.image;
   const statements = includedByType.custom_field_matrix_statement;
 
   const optionsByCustomFieldId = groupOptionsByCustomFieldId(
@@ -27,10 +29,16 @@ export const constructFlatCustomFields = (rawCustomFields: ICustomFields) => {
     rawCustomFields
   );
 
+  const imagesById = groupImagesById(images);
+
   const flatCustomFields: IFlatCustomField[] | undefined =
     rawCustomFields.data.map((customField) => {
       const optionsForCustomField = optionsByCustomFieldId[customField.id];
-      const optionsConverted = convertOptions(optionsForCustomField);
+
+      const optionsConverted = convertOptions(
+        optionsForCustomField,
+        imagesById
+      );
 
       const statementsForCustomField =
         statementsByCustomFieldId[customField.id];
@@ -103,17 +111,33 @@ const groupStatementsByCustomFieldId = (
   return statementsByCustomFieldId;
 };
 
-const convertOptions = (options: ICustomFieldOptionData[]): IOptionsType[] => {
-  return options.map((option) => ({
-    id: option.id,
-    key: option.attributes.key,
-    title_multiloc: option.attributes.title_multiloc,
-    other: option.attributes.other || false,
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    image_id: option.relationships.image?.data?.id,
-    temp_id: option.attributes.temp_id,
-  }));
+type ImagesById = Record<string, ICustomFieldOptionImage['data']>;
+
+const groupImagesById = (images: ICustomFieldOptionImage['data'][]) => {
+  return images.reduce((acc, image) => {
+    const id = image.id;
+    acc[id] = image;
+    return acc;
+  }, {} as ImagesById);
+};
+
+const convertOptions = (
+  options: ICustomFieldOptionData[],
+  imagesById: ImagesById
+): IOptionsType[] => {
+  return options.map((option) => {
+    const image_id = option.relationships.image?.data?.id;
+
+    return {
+      id: option.id,
+      key: option.attributes.key,
+      title_multiloc: option.attributes.title_multiloc,
+      other: option.attributes.other || false,
+      image_id,
+      image: image_id ? imagesById[image_id] : undefined,
+      temp_id: option.attributes.temp_id,
+    };
+  });
 };
 
 const convertStatements = (
