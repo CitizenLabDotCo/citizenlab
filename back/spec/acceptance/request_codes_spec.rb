@@ -44,6 +44,7 @@ resource 'Request codes' do
       expect(user.password_digest).not_to be_nil
       expect(user.confirmation_required?).to be false
 
+      do_request(request_code: { email: user.email })
       expect(response_status).to eq 401
       expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
     end
@@ -62,6 +63,7 @@ resource 'Request codes' do
 
     example 'It does not work if user reached email_confirmation_code_reset_count' do
       user = create(:user_no_password, email_confirmation_code_reset_count: 4)
+
       do_request(request_code: { email: user.email })
       expect(response_status).to eq 401
       expect(RequestConfirmationCodeJob).not_to have_received(:perform_now)
@@ -70,6 +72,7 @@ resource 'Request codes' do
     example 'It does not work if new_email is present' do
       user = create(:user_no_password, new_email: 'new@email.com')
       expect(user.new_email).to eq 'new@email.com'
+
       do_request(request_code: { email: user.email })
       expect(response_status).to eq 401
     end
