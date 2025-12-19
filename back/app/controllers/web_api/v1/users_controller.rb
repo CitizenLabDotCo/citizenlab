@@ -123,7 +123,15 @@ class WebApi::V1::UsersController < ApplicationController
       elsif @user.invite_pending?
         render json: { errors: { email: [{ error: 'taken_by_invite', value: email, inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
       elsif !@user.no_password?
-        render json: raw_json({ action: 'password' })
+        if @user.confirmation_required?
+          # If a user has a password set but still needs to confirm their email,
+          # we send them to the confirm action first.
+          # This situation only exists for legacy users that were created before
+          # we made email confirmation required before being able to set a password
+          render json: raw_json({ action: 'confirm' })
+        else
+          render json: raw_json({ action: 'password' })
+        end
       elsif !app_configuration.feature_activated?('user_confirmation')
         render json: raw_json({ action: 'token' })
       else
