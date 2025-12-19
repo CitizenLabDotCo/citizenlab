@@ -111,8 +111,10 @@ resource 'Users' do
           end
         end
 
-        context 'when a user exists without a password and has completed registration', document: false do
-          before { create(:user_no_password, email: 'test@test.com', registration_completed_at: Time.now) }
+        context 'when a user exists without a password and has email confirmed', document: false do
+          before do 
+            user = create(:user_no_password, email: 'test@test.com') 
+          end
 
           let(:email) { 'test@test.com' }
 
@@ -122,8 +124,10 @@ resource 'Users' do
           end
         end
 
-        context 'when a user exists without a password and has not completed registration' do
-          before { create(:user_with_confirmation, email: 'test@email.com', password: nil) }
+        context 'when a user exists without a password and does not have email confirmed' do
+          before do
+            create(:user_no_password, email: 'test@email.com')
+          end
 
           let(:email) { 'test@email.com' }
 
