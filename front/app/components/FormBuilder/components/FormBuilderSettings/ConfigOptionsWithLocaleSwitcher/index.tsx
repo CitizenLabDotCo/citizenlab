@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import {
   Box,
@@ -77,6 +77,7 @@ const ConfigSelectWithLocaleSwitcher = ({
   const { formatMessage } = useIntl();
   const selectOptions = useWatch({ name }) as any as IOptionsType[];
   const [optionImages, setOptionImages] = useState<OptionImageType>({});
+  const optionImagesLoaded = useRef({});
 
   useEffect(() => {
     selectOptions.forEach((option) => {
@@ -86,15 +87,16 @@ const ConfigSelectWithLocaleSwitcher = ({
         const id = image.id;
         const medium = image.attributes.versions.medium;
 
-        if (!(id in optionImages)) {
-          // Set to null while we wait for the conversion,
+        if (!(id in optionImagesLoaded.current)) {
+          // Set to true while we wait for the conversion,
           // so that we don't accidentally request this twice
-          optionImages[id] = null;
+          optionImagesLoaded.current[id] = null;
+
           convertUrlToUploadFile(medium).then((uploadFile) => {
             if (uploadFile === null) return;
 
-            setOptionImages(() => ({
-              ...optionImages,
+            setOptionImages((currentImages) => ({
+              ...currentImages,
               [id]: uploadFile,
             }));
           });
