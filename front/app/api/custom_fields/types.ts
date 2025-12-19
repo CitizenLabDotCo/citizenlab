@@ -127,7 +127,7 @@ export interface ICustomFieldResponse {
   type: string;
   attributes: IAttributes;
   relationships: {
-    options: {
+    options?: {
       data: IRelationship[];
     };
     matrix_statements?: {
