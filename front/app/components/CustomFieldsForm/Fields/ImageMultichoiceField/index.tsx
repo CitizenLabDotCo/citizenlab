@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
 
 import {
   Box,
@@ -78,23 +78,18 @@ const ImageMultichoiceField = ({
 
   const value = watch(name);
 
-  // Store customFieldOptionImages in a ref to avoid dependency
-  const customFieldOptionImagesRef = useRef(customFieldOptionImages);
-  // Update the ref whenever customFieldOptionImages changes
-  useEffect(() => {
-    customFieldOptionImagesRef.current = customFieldOptionImages;
-  }, [customFieldOptionImages]);
+  // Memoize the order of options separately to prevent re-randomization
+  const orderedOptions = useMemo(() => {
+    return extractOptions(question, localize, question.random_option_ordering);
+  }, [question, localize]);
 
+  // Map images to options - this updates when images load without changing the order
   const options = useMemo(() => {
-    return extractOptions(
-      question,
-      localize,
-      question.random_option_ordering
-    ).map((option) => {
+    return orderedOptions.map((option) => {
       return {
         ...option,
         imageId:
-          customFieldOptionImagesRef.current.find(
+          customFieldOptionImages.find(
             (query) =>
               query.data?.data.id ===
               question.options?.find((opt) => opt.key === option.value)
@@ -102,7 +97,7 @@ const ImageMultichoiceField = ({
           )?.data?.data.attributes.versions.large || imageFile,
       };
     });
-  }, [question, localize]);
+  }, [orderedOptions, customFieldOptionImages, question.options]);
 
   const errors = formContextErrors[name] as RHFErrors;
   const validationError = errors?.message;

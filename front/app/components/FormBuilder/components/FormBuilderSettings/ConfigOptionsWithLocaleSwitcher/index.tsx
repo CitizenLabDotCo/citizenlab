@@ -88,11 +88,24 @@ const ConfigSelectWithLocaleSwitcher = ({
   const [optionImages, setOptionImages] = useState<OptionImageType>();
 
   useEffect(() => {
+    // Create a string key of loaded image IDs to detect when data actually loads
+    const currentLoadedIds = customFieldOptionImages
+      .filter((q) => q.data?.data.id)
+      .map((q) => q.data?.data.id)
+      .sort()
+      .join(',');
+    const prevLoadedIds = (prevImageQueries || [])
+      .filter((q) => q.data?.data.id)
+      .map((q) => q.data?.data.id)
+      .sort()
+      .join(',');
+
     if (
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       customFieldOptionImages &&
-      customFieldOptionImages.length !== prevImageQueries?.length
+      (customFieldOptionImages.length !== prevImageQueries?.length ||
+        currentLoadedIds !== prevLoadedIds)
     ) {
       (async () => {
         const promises = customFieldOptionImages.map(
