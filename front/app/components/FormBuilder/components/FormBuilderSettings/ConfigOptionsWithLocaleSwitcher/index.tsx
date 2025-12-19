@@ -79,10 +79,6 @@ const ConfigSelectWithLocaleSwitcher = ({
   const { formatMessage } = useIntl();
   const selectOptions = useWatch({ name }) as any as IOptionsType[];
 
-  // const imageIds = selectOptions
-  //   .filter((selectOption) => selectOption?.image_id)
-  //   .map((selectOption) => selectOption?.image_id);
-  // const customFieldOptionImages = useCustomFieldOptionImages(imageIds);
   const customFieldOptionImages = selectOptions
     .map((selectOption) => selectOption.image)
     .filter((image) => !!image);
