@@ -15,9 +15,9 @@ export const constructFlatCustomFields = (rawCustomFields: ICustomFields) => {
   if (!rawCustomFields.included) return undefined;
   const includedByType = groupIncludedResources(rawCustomFields.included);
 
-  const options = includedByType.custom_field_option;
-  const images = includedByType.image;
-  const statements = includedByType.custom_field_matrix_statement;
+  const options = includedByType.custom_field_option ?? [];
+  const images = includedByType.image ?? [];
+  const statements = includedByType.custom_field_matrix_statement ?? [];
 
   const optionsByCustomFieldId = groupOptionsByCustomFieldId(
     options,
