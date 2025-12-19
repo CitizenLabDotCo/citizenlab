@@ -16,6 +16,7 @@ const ActionFormDefault = ({
   permissionData,
   onChange,
   onReset,
+  showAnyone = false,
 }: Props) => {
   const {
     attributes: {
@@ -38,7 +39,11 @@ const ActionFormDefault = ({
 
   return (
     <form className={`e2e-action-form-${action}`}>
-      <AccessRestrictions permissionData={permissionData} onChange={onChange} />
+      <AccessRestrictions
+        showAnyone={showAnyone}
+        permissionData={permissionData}
+        onChange={onChange}
+      />
       {permitted_by !== 'admins_moderators' && (
         <>
           <Box mt="24px">
