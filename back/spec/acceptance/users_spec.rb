@@ -182,8 +182,8 @@ resource 'Users' do
 
       context 'when user confirmation is turned off' do
         before do
-          SettingsService.new.activate_feature! 'user_confirmation'
-          SettingsService.new.deactivate_feature! 'password_login'
+          SettingsService.new.deactivate_feature! 'user_confirmation'
+          SettingsService.new.activate_feature! 'password_login'
         end
 
         let(:email) { 'test@test.com' }
