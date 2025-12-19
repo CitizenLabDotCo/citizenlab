@@ -19,10 +19,14 @@ const useCustomFields = ({
     publicFields,
   });
 
+  console.log(result.data);
+
   const flatCustomFields = useMemo(() => {
     if (!result.data) return undefined;
     return constructFlatCustomFields(result.data);
   }, [result.data]);
+
+  console.log({ flatCustomFields });
 
   return {
     ...result,
