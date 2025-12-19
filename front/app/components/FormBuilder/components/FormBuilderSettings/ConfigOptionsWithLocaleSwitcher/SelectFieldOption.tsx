@@ -19,7 +19,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 export interface OptionImageType {
-  [key: string]: UploadFile;
+  [key: string]: UploadFile | null;
 }
 
 interface Props {
@@ -52,12 +52,18 @@ const SelectFieldOption = memo(
       inputType === 'multiselect_image' && !choice.other;
     const { mutateAsync: addCustomFieldOptionImage } =
       useAddCustomFieldOptionImage();
-    const image =
-      optionImages &&
-      choice.image_id &&
-      Object.prototype.hasOwnProperty.call(optionImages, choice.image_id)
-        ? [optionImages[choice.image_id]]
-        : [];
+
+    const getImage = () => {
+      if (!optionImages) return [];
+      const imageId = choice.image_id;
+      if (!imageId) return [];
+      if (!(imageId in optionImages)) return [];
+      const image = optionImages[imageId];
+      if (!image) return [];
+      return [image];
+    };
+
+    const image = getImage();
 
     const handleOnAddImage = async (imageFiles: UploadFile[]) => {
       try {
@@ -83,7 +89,12 @@ const SelectFieldOption = memo(
       onChoiceUpdate(
         {
           ...choice,
-          image_id: undefined,
+
+          // WARNING!
+          // THIS image_id REALLY HAS TO BE AN EMPTY STRING.
+          // IF YOU SET IT TO UNDEFINED, IT WON'T REMOVE
+          // THE IMAGE RELATION FROM THE OPTION IN THE BACKEND.
+          image_id: '',
           image: undefined,
         } as IOptionsType,
         index
