@@ -1,5 +1,6 @@
 import { IRelationship, Multiloc } from 'typings';
 
+import { ICustomFieldOptionImage } from 'api/content_field_option_images/types';
 import { ICustomFieldOptionData } from 'api/custom_field_options/types';
 import { IFormCustomFieldStatementData } from 'api/custom_field_statements/types';
 import { IMapConfig } from 'api/map_config/types';
@@ -206,7 +207,11 @@ export type IFlatCreateCustomField = Omit<
 
 export interface ICustomFields {
   data: ICustomFieldResponse[];
-  included?: (ICustomFieldOptionData | IFormCustomFieldStatementData)[];
+  included?: (
+    | ICustomFieldOptionData
+    | IFormCustomFieldStatementData
+    | ICustomFieldOptionImage
+  )[];
 }
 
 export interface ICustomField {
