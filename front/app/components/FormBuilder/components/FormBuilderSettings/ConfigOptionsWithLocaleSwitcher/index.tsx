@@ -19,7 +19,6 @@ import {
 } from 'react-hook-form';
 import { SupportedLocale, CLError, RHFErrors } from 'typings';
 
-import { useCustomFieldOptionImages } from 'api/content_field_option_images/useCustomFieldOptionImage';
 import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
 
 import usePrevious from 'hooks/usePrevious';
@@ -78,12 +77,16 @@ const ConfigSelectWithLocaleSwitcher = ({
     platformLocale
   );
   const { formatMessage } = useIntl();
-  const selectOptions = useWatch({ name });
+  const selectOptions = useWatch({ name }) as any as IOptionsType[];
 
-  const imageIds = selectOptions
-    .filter((selectOption) => selectOption?.image_id)
-    .map((selectOption) => selectOption?.image_id);
-  const customFieldOptionImages = useCustomFieldOptionImages(imageIds);
+  // const imageIds = selectOptions
+  //   .filter((selectOption) => selectOption?.image_id)
+  //   .map((selectOption) => selectOption?.image_id);
+  // const customFieldOptionImages = useCustomFieldOptionImages(imageIds);
+  const customFieldOptionImages = selectOptions
+    .map((selectOption) => selectOption.image)
+    .filter((image) => !!image);
+
   const prevImageQueries = usePrevious(customFieldOptionImages);
   const [optionImages, setOptionImages] = useState<OptionImageType>();
 
@@ -100,16 +103,16 @@ const ConfigSelectWithLocaleSwitcher = ({
             if (
               // TODO: Fix this the next time the file is edited.
               // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              !customFieldOptionImage?.data?.data.attributes.versions.medium
+              !customFieldOptionImage.attributes.versions.medium
             ) {
               return;
             }
             const imageData = await convertUrlToUploadFile(
               // TODO: Fix this the next time the file is edited.
               // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              customFieldOptionImage?.data?.data.attributes.versions.medium
+              customFieldOptionImage.attributes.versions.medium
             );
-            return { [customFieldOptionImage.data.data.id]: imageData };
+            return { [customFieldOptionImage.id]: imageData };
           }
         );
         const optionImageArray = await Promise.all(promises);
