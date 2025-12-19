@@ -103,8 +103,6 @@ const ConfigSelectWithLocaleSwitcher = ({
     });
   }, [selectOptions, optionImages]);
 
-  console.log({ optionImages });
-
   // Handles locale change
   useEffect(() => {
     setSelectedLocale(platformLocale);
