@@ -252,7 +252,7 @@ resource 'Users' do
 
               user = User.find(response_data[:id])
 
-              expect(user.claim_tokens).to contain_exactly(claim_token)
+              expect(claim_token.reload.pending_claimer_id).to eq(user.id)
               expect(idea.reload.author_id).to be_nil # Not yet claimed
             end
           end
