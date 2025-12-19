@@ -30,30 +30,12 @@ export const constructFlatCustomFields = (rawCustomFields: ICustomFields) => {
   const flatCustomFields: IFlatCustomField[] | undefined =
     rawCustomFields.data.map((customField) => {
       const optionsForCustomField = optionsByCustomFieldId[customField.id];
-
-      const optionsConverted: IOptionsType[] = optionsForCustomField.map(
-        (option) => ({
-          id: option.id,
-          key: option.attributes.key,
-          title_multiloc: option.attributes.title_multiloc,
-          other: option.attributes.other || false,
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          image_id: option.relationships.image?.data?.id,
-          temp_id: option.attributes.temp_id,
-        })
-      );
+      const optionsConverted = convertOptions(optionsForCustomField);
 
       const statementsForCustomField =
         statementsByCustomFieldId[customField.id];
 
-      const statementsConverted: IMatrixStatementsType[] =
-        statementsForCustomField.map((statement) => ({
-          id: statement.id,
-          key: statement.attributes.key,
-          title_multiloc: statement.attributes.title_multiloc,
-          temp_id: statement.attributes.temp_id,
-        }));
+      const statementsConverted = convertStatements(statementsForCustomField);
 
       return {
         ...customField,
@@ -119,4 +101,28 @@ const groupStatementsByCustomFieldId = (
   );
 
   return statementsByCustomFieldId;
+};
+
+const convertOptions = (options: ICustomFieldOptionData[]): IOptionsType[] => {
+  return options.map((option) => ({
+    id: option.id,
+    key: option.attributes.key,
+    title_multiloc: option.attributes.title_multiloc,
+    other: option.attributes.other || false,
+    // TODO: Fix this the next time the file is edited.
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    image_id: option.relationships.image?.data?.id,
+    temp_id: option.attributes.temp_id,
+  }));
+};
+
+const convertStatements = (
+  statements: IFormCustomFieldStatementData[]
+): IMatrixStatementsType[] => {
+  return statements.map((statement) => ({
+    id: statement.id,
+    key: statement.attributes.key,
+    title_multiloc: statement.attributes.title_multiloc,
+    temp_id: statement.attributes.temp_id,
+  }));
 };
