@@ -210,7 +210,7 @@ export interface ICustomFields {
   included?: (
     | ICustomFieldOptionData
     | IFormCustomFieldStatementData
-    | ICustomFieldOptionImage
+    | ICustomFieldOptionImage['data']
   )[];
 }
 
