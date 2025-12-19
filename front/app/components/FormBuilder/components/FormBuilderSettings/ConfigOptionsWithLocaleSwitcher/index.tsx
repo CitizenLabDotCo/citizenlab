@@ -17,11 +17,9 @@ import {
   useFormContext,
   useWatch,
 } from 'react-hook-form';
-import { SupportedLocale, CLError, RHFErrors, UploadFile } from 'typings';
+import { SupportedLocale, CLError, RHFErrors } from 'typings';
 
 import { ICustomFieldInputType, IOptionsType } from 'api/custom_fields/types';
-
-import usePrevious from 'hooks/usePrevious';
 
 import { List, Row } from 'components/admin/ResourceList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
@@ -78,50 +76,66 @@ const ConfigSelectWithLocaleSwitcher = ({
   );
   const { formatMessage } = useIntl();
   const selectOptions = useWatch({ name }) as any as IOptionsType[];
-
-  const customFieldOptionImages = selectOptions
-    .map((selectOption) => selectOption.image)
-    .filter((image) => !!image);
-
-  const prevImageQueries = usePrevious(customFieldOptionImages);
-  const [optionImages, setOptionImages] = useState<OptionImageType>();
+  const [optionImages, setOptionImages] = useState<OptionImageType>({});
 
   useEffect(() => {
-    if (
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      customFieldOptionImages &&
-      customFieldOptionImages.length !== prevImageQueries?.length
-    ) {
-      (async () => {
-        const ids: string[] = [];
-        const promises: Promise<UploadFile | null>[] = [];
+    selectOptions.forEach((option) => {
+      const image = option.image;
 
-        customFieldOptionImages.forEach((customFieldOptionImage) => {
-          if (!customFieldOptionImage) return;
-          if (!customFieldOptionImage.attributes.versions.medium) {
-            return;
-          }
+      if (image?.attributes.versions.medium) {
+        const id = image.id;
+        const medium = image.attributes.versions.medium;
 
-          const imageData = convertUrlToUploadFile(
-            customFieldOptionImage.attributes.versions.medium
-          );
+        if (!(id in optionImages)) {
+          convertUrlToUploadFile(medium).then((uploadFile) => {
+            if (uploadFile === null) return;
 
-          ids.push(customFieldOptionImage.id);
-          promises.push(imageData);
-        });
+            setOptionImages((prevOptionImages) => ({
+              ...prevOptionImages,
+              [id]: uploadFile,
+            }));
+          });
+        }
+      }
+    });
+  }, [selectOptions, optionImages]);
 
-        const optionImageArray = await Promise.all(promises);
+  // useEffect(() => {
+  //   if (
+  //     // TODO: Fix this the next time the file is edited.
+  //     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  //     customFieldOptionImages &&
+  //     customFieldOptionImages.length !== prevImageQueries?.length
+  //   ) {
+  //     (async () => {
+  //       const ids: string[] = [];
+  //       const promises: Promise<UploadFile | null>[] = [];
 
-        const optionImagesObject = {};
-        ids.forEach((id, index) => {
-          optionImagesObject[id] = optionImageArray[index];
-        });
+  //       customFieldOptionImages.forEach((customFieldOptionImage) => {
+  //         if (!customFieldOptionImage) return;
+  //         if (!customFieldOptionImage.attributes.versions.medium) {
+  //           return;
+  //         }
 
-        setOptionImages(optionImagesObject);
-      })();
-    }
-  }, [customFieldOptionImages, prevImageQueries]);
+  //         const imageData = convertUrlToUploadFile(
+  //           customFieldOptionImage.attributes.versions.medium
+  //         );
+
+  //         ids.push(customFieldOptionImage.id);
+  //         promises.push(imageData);
+  //       });
+
+  //       const optionImageArray = await Promise.all(promises);
+
+  //       const optionImagesObject = {};
+  //       ids.forEach((id, index) => {
+  //         optionImagesObject[id] = optionImageArray[index];
+  //       });
+
+  //       setOptionImages(optionImagesObject);
+  //     })();
+  //   }
+  // }, [customFieldOptionImages, prevImageQueries]);
 
   // Handles locale change
   useEffect(() => {
