@@ -68,6 +68,7 @@ const SelectFieldOption = memo(
           {
             ...choice,
             image_id: response.data.id,
+            image: response.data,
           } as IOptionsType,
           index
         );
@@ -82,7 +83,8 @@ const SelectFieldOption = memo(
       onChoiceUpdate(
         {
           ...choice,
-          image_id: '',
+          image_id: undefined,
+          image: undefined,
         } as IOptionsType,
         index
       );
