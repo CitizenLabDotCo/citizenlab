@@ -37,13 +37,14 @@ class ClaimTokenService
       ClaimToken.for_user(user).map { |claim_token| claim_item(claim_token) }
     end
 
-    # Claim items immediately for a user.
-    # @param user [User, String] the user to claim items for
+    # Claim items for a user. Only marks tokens if the user requires confirmation.
+    # Effectively claims items if the user does not require confirmation.
+    # @param user [User] the user to claim items for
     # @param tokens [Array<String>] array of token strings
-    # @return [Array<ClaimableParticipation>] items that were claimed
+    # @return [Array<ClaimableParticipation>, nil] claimed items, or nil if pending confirmation
     def claim(user, tokens)
       mark(user, tokens)
-      complete(user)
+      complete(user) unless user.confirmation_required?
     end
 
     # Delete all expired tokens.

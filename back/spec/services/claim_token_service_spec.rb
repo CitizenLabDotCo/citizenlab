@@ -124,32 +124,67 @@ RSpec.describe ClaimTokenService do
   end
 
   describe '.claim' do
-    let(:user) { create(:user) }
     let(:idea) { claim_token.item }
     let!(:claim_token) { create(:claim_token) }
 
-    it 'claims items immediately' do
-      result = described_class.claim(user, [claim_token.token])
+    context 'when user does not require confirmation' do
+      let(:user) { create(:user, email_confirmed_at: Time.current) }
 
-      expect(result).to contain_exactly(idea)
-      expect(idea.reload.author_id).to eq(user.id)
-      expect(ClaimToken.find_by(id: claim_token.id)).to be_nil
+      it 'claims items immediately' do
+        result = described_class.claim(user, [claim_token.token])
+
+        expect(result).to contain_exactly(idea)
+        expect(idea.reload.author_id).to eq(user.id)
+        expect(ClaimToken.find_by(id: claim_token.id)).to be_nil
+      end
+
+      it 'logs claimed activity' do
+        expect(LogActivityJob).to receive(:perform_later).with(idea, 'claimed', user, anything)
+        described_class.claim(user, [claim_token.token])
+      end
+
+      it 'ignores invalid tokens' do
+        result = described_class.claim(user, ['invalid-token'])
+        expect(result).to be_empty
+      end
+
+      it 'ignores expired tokens' do
+        expired_token = create(:claim_token, :expired)
+        result = described_class.claim(user, [expired_token.token])
+        expect(result).to be_empty
+      end
     end
 
-    it 'logs claimed activity' do
-      expect(LogActivityJob).to receive(:perform_later).with(idea, 'claimed', user, anything)
-      described_class.claim(user, [claim_token.token])
+    context 'when user requires confirmation' do
+      let(:user) { create(:user_no_password) }
+
+      before do
+        SettingsService.new.activate_feature!('user_confirmation')
+      end
+
+      it 'marks tokens but does not claim immediately' do
+        expect(user.confirmation_required?).to be true
+
+        result = described_class.claim(user, [claim_token.token])
+
+        expect(result).to be_nil
+        expect(claim_token.reload.pending_claimer_id).to eq(user.id)
+        expect(idea.reload.author_id).to be_nil
+      end
     end
 
-    it 'ignores invalid tokens' do
-      result = described_class.claim(user, ['invalid-token'])
-      expect(result).to be_empty
-    end
+    context 'with blank tokens' do
+      let(:user) { create(:user) }
 
-    it 'ignores expired tokens' do
-      expired_token = create(:claim_token, :expired)
-      result = described_class.claim(user, [expired_token.token])
-      expect(result).to be_empty
+      it 'returns empty array for empty tokens' do
+        result = described_class.claim(user, [])
+        expect(result).to be_empty
+      end
+
+      it 'returns empty array for nil tokens' do
+        result = described_class.claim(user, nil)
+        expect(result).to be_empty
+      end
     end
   end
 
