@@ -18,10 +18,11 @@ class WebApi::V1::UsersController < ApplicationController
     @users = @users.blocked if params[:only_blocked]
     @users = @users.search_by_all(params[:search]) if params[:search].present?
 
+    private_attributes_in_export = AppConfiguration.instance.settings['core']['private_attributes_in_export']
     # Filter by project participants
     if params[:project].present?
       # Block access to project participants list if private_attributes_in_export is disabled
-      if !app_configuration.settings('core', 'private_attributes_in_export')
+      if !private_attributes_in_export
         raise ActiveRecord::RecordNotFound
       end
 

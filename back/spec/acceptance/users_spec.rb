@@ -8,6 +8,9 @@ resource 'Users' do
 
   before do
     header 'Content-Type', 'application/json'
+    settings = AppConfiguration.instance.settings
+    settings['core']['private_attributes_in_export'] = true
+    AppConfiguration.instance.update!(settings: settings)
   end
 
   context 'when not authenticated' do
