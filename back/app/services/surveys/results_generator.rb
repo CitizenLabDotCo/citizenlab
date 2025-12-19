@@ -107,10 +107,7 @@ module Surveys
     # Get the results for a single survey question
     def generate_result_for_field(field_id)
       # NEW Query
-      result = generate_results[:results].find { |r| r[:customFieldId] == field_id }
-      raise 'Question not found' unless result
-
-      result
+      result = find_question(field_id)
 
       # OLD Query
       # field = find_question(field_id)
@@ -268,7 +265,7 @@ module Surveys
       # NEW VERSION
       responses_by_field[field_key]
         &.select { |r| r[:answer].present? }
-        &.map { |r| { answer: r[:answer] } } || []
+        # &.map { |r| { answer: r[:answer] } } || []
 
       # OLD VERSION
       # inputs
@@ -285,12 +282,7 @@ module Surveys
       # )
       # answers = construct_select_answers(query, field)
 
-      # Extract all the responses from array values (if multiselect)
-      responses = base_responses(field.key).flat_map do |r|
-        r[:answer].is_a?(Array) ?
-          r[:answer].map { |a| { answer: a } } :
-          { answer: r[:answer] }
-      end
+      responses = select_field_answers(field.key)
 
       # Count all the answers
       counts = responses.group_by { |h| h[:answer] }.transform_values(&:count)
@@ -304,6 +296,15 @@ module Surveys
 
       # Build response
       build_select_response(answers, field)
+    end
+
+    def select_field_answers(field_key)
+      # Extract all the responses from array values (if multiselect)
+      base_responses(field_key).flat_map do |r|
+        r[:answer].is_a?(Array) ?
+          r[:answer].map { |a| { id: r[:id], answer: a } } :
+          { id: r[:id], answer: r[:answer] }
+      end
     end
 
     def nil_response_count(field, matrix_statement_key: nil)
@@ -479,12 +480,12 @@ module Surveys
       #   .sort_by { |a| a[:answer] }
     end
 
-    # def find_question(question_field_id)
-    #   question = fields.find { |f| f[:id] == question_field_id }
-    #   raise 'Question not found' unless question
-    #
-    #   question
-    # end
+    def find_question(result_field_id)
+      result = generate_results[:results].find { |r| r[:customFieldId] == result_field_id }
+      raise 'Question not found' unless result
+
+      result
+    end
 
     def add_page_response_count_to_results(results)
       current_page_index = nil

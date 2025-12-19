@@ -8,14 +8,14 @@ module Surveys
       @group_field_id = group_field_id
     end
 
-    def generate_result_for_field(field_id)
-      super if group_field
-    end
+    # def generate_result_for_field(field_id)
+    #   super if group_field
+    # end
 
-    def generate_results
-      # Grouping only allowed for individual questions currently
-      raise NotImplementedError, 'This method is not implemented'
-    end
+    # def generate_results
+    #   # Grouping only allowed for individual questions currently
+    #   raise NotImplementedError, 'This method is not implemented'
+    # end
 
     private
 
@@ -28,17 +28,41 @@ module Surveys
     end
 
     def visit_select_base(field)
-      query = inputs
-      query = query.joins(:author) if group_mode == 'user_field'
+      # query = inputs
+      # query = query.joins(:author) if group_mode == 'user_field'
 
+      # raise "Unsupported group field type: #{group_field.input_type}" unless group_field.supports_single_selection?
+      # raise "Unsupported question type: #{field.input_type}" unless field.supports_selection?
+
+      # query = query.select(
+      #   select_field_query(field, as: 'answer'),
+      #   select_field_query(group_field, as: 'group')
+      # )
+      # answers = construct_select_answers(query, field)
+
+
+      # NEW: Currently with no grouping
+
+      group_field = fields.find { |f| f.id == group_field_id }
+
+      raise 'Question not found' unless group_field
       raise "Unsupported group field type: #{group_field.input_type}" unless group_field.supports_single_selection?
       raise "Unsupported question type: #{field.input_type}" unless field.supports_selection?
 
-      query = query.select(
-        select_field_query(field, as: 'answer'),
-        select_field_query(group_field, as: 'group')
-      )
-      answers = construct_select_answers(query, field)
+      responses = select_field_answers(field.key)
+      group_responses = select_field_answers(group_field.key)
+
+      binding.pry
+
+      # Count all the answers
+      counts = responses.group_by { |h| h[:answer] }.transform_values(&:count)
+
+      # Build the result array with all required answers
+      answer_keys = generate_select_answer_keys(field)
+      answers = answer_keys.map { |a| { answer: a, count: counts[a] || 0 } }
+
+      # Add the nil counts
+      answers << { answer: nil, count: nil_response_count(field) }
 
       # Build response
       build_select_response(answers, field)
@@ -102,11 +126,7 @@ module Surveys
     end
 
     def group_field
-      @group_field ||= if group_mode == 'user_field'
-        CustomField.find(group_field_id)
-      else
-        find_question(group_field_id)
-      end
+      find_question(group_field_id)
     end
   end
 end

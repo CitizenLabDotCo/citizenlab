@@ -11,10 +11,11 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
   include_context 'survey_setup'
 
   describe 'generate_results' do
-    it 'is not implemented and returns an error' do
-      generator = described_class.new(survey_phase)
-      expect { generator.generate_results }.to raise_error(NotImplementedError)
-    end
+    # TODO: Tests for grouping the whole set of results
+    # it 'is not implemented and returns an error' do
+    #   generator = described_class.new(survey_phase)
+    #   expect { generator.generate_results }.to raise_error(NotImplementedError)
+    # end
   end
 
   describe 'generate_result_for_field' do

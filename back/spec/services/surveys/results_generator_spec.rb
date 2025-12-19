@@ -819,6 +819,8 @@ RSpec.describe Surveys::ResultsGenerator do
 
       # binding.pry
 
+      # TODO: Add a test for number of queries run to prove 50% quicker
+
       # expect(formatted_data).to eq({
       #   text_field.id => ['Blue', 'Green']
       # })
