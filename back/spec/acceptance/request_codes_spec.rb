@@ -80,7 +80,7 @@ resource 'Request codes' do
 
   post 'web_api/v1/user/request_code_email_change' do
     with_options scope: :request_code do
-      parameter :new_email, 'The email of the user requesting a confirmation code.', required: true
+      parameter :new_email, 'The email of the user requesting a confirmation code.', required: false
     end
 
     before do
