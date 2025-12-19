@@ -75,9 +75,6 @@ const groupOptionsByCustomFieldId = (
   const optionsByCustomFieldId = rawCustomFields.data.reduce(
     (acc, customField) => {
       const options = customField.relationships.options?.data ?? [];
-
-      if (options.length === 0) return acc;
-
       const optionIds = options.map((option) => option.id);
 
       acc[customField.id] = optionIds.map((id) => optionsById[id]);
@@ -103,9 +100,6 @@ const groupStatementsByCustomFieldId = (
     (acc, customField) => {
       const statements =
         customField.relationships.matrix_statements?.data ?? [];
-
-      if (statements.length === 0) return acc;
-
       const statementIds = statements.map((statement) => statement.id);
 
       acc[customField.id] = statementIds.map((id) => statementsById[id]);
