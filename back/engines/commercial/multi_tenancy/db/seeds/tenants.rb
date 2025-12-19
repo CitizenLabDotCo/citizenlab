@@ -585,6 +585,10 @@ module MultiTenancy
             phase_insights: {
               enabled: false,
               allowed: false
+            },
+            phone_confirmation: {
+              enabled: false,
+              allowed: false
             }
           })
         )

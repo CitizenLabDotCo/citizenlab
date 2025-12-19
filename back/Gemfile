@@ -127,6 +127,7 @@ gem 'faker'
 gem 'order_as_specified'
 gem 'scenic'
 gem 'ice_cube', '~> 0.17'
+gem 'twilio-ruby', '~> 7.8.5'
 
 # Omniauth SSO
 gem 'omniauth', '~> 2.1.4'

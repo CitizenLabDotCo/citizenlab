@@ -1497,7 +1497,13 @@ CREATE TABLE public.users (
     onboarding jsonb DEFAULT '{}'::jsonb NOT NULL,
     unique_code character varying,
     last_active_at timestamp(6) without time zone,
-    imported boolean DEFAULT false NOT NULL
+    imported boolean DEFAULT false NOT NULL,
+    phone_number character varying,
+    phone_confirmed_at timestamp(6) without time zone,
+    phone_confirmation_code character varying,
+    phone_confirmation_retry_count integer DEFAULT 0 NOT NULL,
+    phone_confirmation_code_reset_count integer DEFAULT 0 NOT NULL,
+    phone_confirmation_code_sent_at timestamp(6) without time zone
 );
 
 
@@ -8154,6 +8160,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251218163800'),
 ('20251217110845'),
 ('20251209135529'),
 ('20251208163107'),

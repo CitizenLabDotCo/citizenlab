@@ -141,6 +141,8 @@ Rails.application.routes.draw do
         post 'confirm_code_unauthenticated', to: 'confirmations#confirm_code_unauthenticated'
         post 'confirm_code_authenticated', to: 'confirmations#confirm_code_authenticated'
         post 'confirm_code_email_change', to: 'confirmations#confirm_code_email_change'
+
+        post 'request_phone_confirmation_code', to: 'phone_confirmation#request_phone_confirmation_code'
       end
 
       resources :topics do
