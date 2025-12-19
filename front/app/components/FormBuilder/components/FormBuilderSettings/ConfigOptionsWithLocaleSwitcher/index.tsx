@@ -87,11 +87,14 @@ const ConfigSelectWithLocaleSwitcher = ({
         const medium = image.attributes.versions.medium;
 
         if (!(id in optionImages)) {
+          // Set to null while we wait for the conversion,
+          // so that we don't accidentally request this twice
+          optionImages[id] = null;
           convertUrlToUploadFile(medium).then((uploadFile) => {
             if (uploadFile === null) return;
 
-            setOptionImages((prevOptionImages) => ({
-              ...prevOptionImages,
+            setOptionImages(() => ({
+              ...optionImages,
               [id]: uploadFile,
             }));
           });
@@ -100,42 +103,7 @@ const ConfigSelectWithLocaleSwitcher = ({
     });
   }, [selectOptions, optionImages]);
 
-  // useEffect(() => {
-  //   if (
-  //     // TODO: Fix this the next time the file is edited.
-  //     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  //     customFieldOptionImages &&
-  //     customFieldOptionImages.length !== prevImageQueries?.length
-  //   ) {
-  //     (async () => {
-  //       const ids: string[] = [];
-  //       const promises: Promise<UploadFile | null>[] = [];
-
-  //       customFieldOptionImages.forEach((customFieldOptionImage) => {
-  //         if (!customFieldOptionImage) return;
-  //         if (!customFieldOptionImage.attributes.versions.medium) {
-  //           return;
-  //         }
-
-  //         const imageData = convertUrlToUploadFile(
-  //           customFieldOptionImage.attributes.versions.medium
-  //         );
-
-  //         ids.push(customFieldOptionImage.id);
-  //         promises.push(imageData);
-  //       });
-
-  //       const optionImageArray = await Promise.all(promises);
-
-  //       const optionImagesObject = {};
-  //       ids.forEach((id, index) => {
-  //         optionImagesObject[id] = optionImageArray[index];
-  //       });
-
-  //       setOptionImages(optionImagesObject);
-  //     })();
-  //   }
-  // }, [customFieldOptionImages, prevImageQueries]);
+  console.log({ optionImages });
 
   // Handles locale change
   useEffect(() => {
