@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useLocation, useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import { ITab } from 'typings';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import ProjectTraffic from 'containers/Admin/projects/project/traffic';
 
@@ -21,26 +23,45 @@ const ProjectParticipation = () => {
   const { projectId } = useParams() as { projectId: string };
   const { pathname } = useLocation();
   const { formatMessage } = useIntl();
+  const { data: appConfiguration } = useAppConfiguration();
 
   const basePath = `/admin/projects/${projectId}/audience`;
 
-  const tabs: ITab[] = [
-    {
-      name: 'participants',
-      label: formatMessage(messages.participantsTab),
-      url: `/admin/projects/${projectId}/audience` as RouteType,
-    },
-    {
-      name: 'demographics',
-      label: formatMessage(messages.demographicsTab),
-      url: `/admin/projects/${projectId}/audience/demographics` as RouteType,
-    },
-    {
-      name: 'traffic',
-      label: formatMessage(messages.trafficTab),
-      url: `/admin/projects/${projectId}/audience/traffic` as RouteType,
-    },
-  ];
+  const privateAttributesInExport =
+    appConfiguration?.data.attributes.settings.core
+      .private_attributes_in_export;
+
+  // Build tabs based on whether participants are visible
+  const tabs: ITab[] = privateAttributesInExport
+    ? [
+        {
+          name: 'participants',
+          label: formatMessage(messages.participantsTab),
+          url: `/admin/projects/${projectId}/audience` as RouteType,
+        },
+        {
+          name: 'demographics',
+          label: formatMessage(messages.demographicsTab),
+          url: `/admin/projects/${projectId}/audience/demographics` as RouteType,
+        },
+        {
+          name: 'traffic',
+          label: formatMessage(messages.trafficTab),
+          url: `/admin/projects/${projectId}/audience/traffic` as RouteType,
+        },
+      ]
+    : [
+        {
+          name: 'demographics',
+          label: formatMessage(messages.demographicsTab),
+          url: `/admin/projects/${projectId}/audience` as RouteType,
+        },
+        {
+          name: 'traffic',
+          label: formatMessage(messages.trafficTab),
+          url: `/admin/projects/${projectId}/audience/traffic` as RouteType,
+        },
+      ];
 
   // Find the active tab based on current pathname
   const activeTab =
