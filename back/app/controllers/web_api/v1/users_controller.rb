@@ -113,7 +113,8 @@ class WebApi::V1::UsersController < ApplicationController
 
   # To validate an email without creating a user and return which action to go to next
   def check
-    skip_authorization
+    authorize :user, :check?
+
     email = params[:user][:email]
 
     if User::EMAIL_REGEX.match?(email)

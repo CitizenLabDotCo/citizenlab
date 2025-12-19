@@ -178,8 +178,8 @@ resource 'Users' do
 
       context 'when user confirmation is turned off' do
         before do
-          SettingsService.new.deactivate_feature! 'user_confirmation'
-          SettingsService.new.activate_feature! 'password_login'
+          SettingsService.new.activate_feature! 'user_confirmation'
+          SettingsService.new.deactivate_feature! 'password_login'
         end
 
         let(:email) { 'test@test.com' }
@@ -201,6 +201,19 @@ resource 'Users' do
           do_request(user: { email: 'test2@email.com' })
           assert_status 200
           expect(json_response_body[:data][:attributes][:action]).to eq('token')
+        end
+      end
+
+      context 'when password_login is turned off' do
+        before do
+          SettingsService.new.activate_feature! 'user_confirmation'
+          SettingsService.new.deactivate_feature! 'password_login'
+        end
+
+        let(:email) { 'test@test.com' }
+
+        example_request '[error] returns 401' do
+          assert_status 401
         end
       end
     end
