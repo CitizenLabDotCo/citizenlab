@@ -29,39 +29,31 @@ const ProjectParticipation = () => {
 
   const privateAttributesInExport =
     appConfiguration?.data.attributes.settings.core
-      .private_attributes_in_export;
+      .private_attributes_in_export !== false;
 
-  // Build tabs based on whether participants are visible
-  const tabs: ITab[] = privateAttributesInExport
+  const participantsTab: ITab[] = privateAttributesInExport
     ? [
         {
           name: 'participants',
           label: formatMessage(messages.participantsTab),
-          url: `/admin/projects/${projectId}/audience` as RouteType,
-        },
-        {
-          name: 'demographics',
-          label: formatMessage(messages.demographicsTab),
-          url: `/admin/projects/${projectId}/audience/demographics` as RouteType,
-        },
-        {
-          name: 'traffic',
-          label: formatMessage(messages.trafficTab),
-          url: `/admin/projects/${projectId}/audience/traffic` as RouteType,
+          url: basePath as RouteType,
         },
       ]
-    : [
-        {
-          name: 'demographics',
-          label: formatMessage(messages.demographicsTab),
-          url: `/admin/projects/${projectId}/audience` as RouteType,
-        },
-        {
-          name: 'traffic',
-          label: formatMessage(messages.trafficTab),
-          url: `/admin/projects/${projectId}/audience/traffic` as RouteType,
-        },
-      ];
+    : [];
+
+  const tabs: ITab[] = [
+    ...participantsTab,
+    {
+      name: 'demographics',
+      label: formatMessage(messages.demographicsTab),
+      url: `${basePath}/demographics` as RouteType,
+    },
+    {
+      name: 'traffic',
+      label: formatMessage(messages.trafficTab),
+      url: `${basePath}/traffic` as RouteType,
+    },
+  ];
 
   // Find the active tab based on current pathname
   const activeTab =
