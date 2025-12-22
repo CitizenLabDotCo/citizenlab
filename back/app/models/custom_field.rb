@@ -52,7 +52,7 @@
 #  index_custom_fields_on_resource_type_and_resource_id    (resource_type,resource_id)
 #
 class CustomField < ApplicationRecord
-  acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_id]
+  acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_id], sequential_updates: true
 
   has_many_text_images from: :description_multiloc, as: :text_images
   accepts_nested_attributes_for :text_images

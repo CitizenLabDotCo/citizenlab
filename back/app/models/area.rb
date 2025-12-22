@@ -25,7 +25,7 @@
 #  fk_rails_...  (custom_field_option_id => custom_field_options.id)
 #
 class Area < ApplicationRecord
-  acts_as_list column: :ordering, top_of_list: 0
+  acts_as_list column: :ordering, top_of_list: 0, sequential_updates: true
 
   has_many :areas_projects, dependent: :destroy
   has_many :projects, through: :areas_projects
@@ -48,11 +48,6 @@ class Area < ApplicationRecord
   after_create :recreate_custom_field_option
   after_update :update_custom_field_option
   before_destroy :destroy_custom_field_option
-
-  validates :ordering, numericality: {
-    only_integer: true,
-    greater_than_or_equal_to: 0
-  }, unless: ->(area) { area.ordering.nil? }
 
   scope :order_projects_count, lambda { |direction = :desc|
     safe_dir = direction == :desc ? 'DESC' : 'ASC'
