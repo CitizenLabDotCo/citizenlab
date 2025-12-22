@@ -43,7 +43,6 @@ class CustomFieldOption < ApplicationRecord
   # The two associated resources are kept in sync: changes to the
   # area are reflected in the option, and vice versa.
   has_one :area, dependent: :nullify
-  after_update :update_area
 
   has_one :image, dependent: :destroy, class_name: 'CustomFieldOptionImage', inverse_of: :custom_field_option
   has_many :custom_field_bins, dependent: :destroy, class_name: 'CustomFieldBins::OptionBin', inverse_of: :custom_field_option
@@ -60,14 +59,6 @@ class CustomFieldOption < ApplicationRecord
       :option_on_non_select_field,
       message: 'The custom field option you\'re specifying does not belong to a custom field that supports options'
     )
-  end
-
-  def update_area
-    return unless area
-    return unless ordering_previously_changed? || title_multiloc_previously_changed?
-
-    area.update!(title_multiloc: title_multiloc)
-    area.insert_at(ordering)
   end
 
   def generate_key
