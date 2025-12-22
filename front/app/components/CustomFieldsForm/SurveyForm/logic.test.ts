@@ -557,7 +557,7 @@ describe('Survey form logic', () => {
         },
       ];
 
-      pages[2].page.logic = { next_page_id: 'page4' };
+      pages[2].page.logic = { next_page_id: 'page5' };
       pages[2].pageQuestions = [
         {
           type: 'custom_field',
@@ -590,7 +590,7 @@ describe('Survey form logic', () => {
         pages,
         formData: { answer_q1: 'no' },
       });
-      expect(validPathWhenNo).toEqual([0, 2, 3, 4]);
+      expect(validPathWhenNo).toEqual([0, 2, 4]);
     });
 
     it('should identify which pages are skipped based on current form data', () => {
@@ -604,7 +604,7 @@ describe('Survey form logic', () => {
         pages,
         formData: { answer_q1: 'no' },
       });
-      expect(skippedWhenNo).toEqual([1]);
+      expect(skippedWhenNo).toEqual([1, 3]);
     });
   });
 });
