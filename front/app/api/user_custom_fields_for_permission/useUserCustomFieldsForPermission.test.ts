@@ -10,11 +10,6 @@ import {
 } from './__mocks__/useUserCustomFieldsForPermission';
 import useUserCustomFieldsForPermission from './useUserCustomFieldsForPermission';
 
-// Mock the useCustomFieldOptionsBulk hook
-jest.mock('api/custom_field_options/useCustomFieldOptionsBulk', () => {
-  return jest.fn(() => []);
-});
-
 const phasePath = '*phases/456/permissions/posting_idea/custom_fields';
 const ideaPath = '*ideas/789/permissions/commenting_idea/custom_fields';
 

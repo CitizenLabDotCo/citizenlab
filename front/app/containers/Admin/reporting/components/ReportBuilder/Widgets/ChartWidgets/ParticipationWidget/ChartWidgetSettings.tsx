@@ -7,6 +7,7 @@ import { ParticipationType } from 'api/graph_data_units/requestTypes';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { AccessibilityInputs } from '../_shared/AccessibilityInputs';
 import {
   ComparisonToggle,
   HideStatisticsToggle,
@@ -78,6 +79,7 @@ const ChartWidgetSettings = () => {
           label={formatMessage(messages.showVotes)}
         />
       </Box>
+      <AccessibilityInputs />
     </Box>
   );
 };

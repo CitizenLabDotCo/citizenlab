@@ -4,7 +4,13 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 import { LegendDimensions } from './_components/Legend/typings';
 import { legacyColors } from './styling';
-import { Tooltip, TooltipConfig, Margin, Legend } from './typings';
+import {
+  Tooltip,
+  TooltipConfig,
+  Margin,
+  Legend,
+  RechartsAccessibilityProps,
+} from './typings';
 
 export const hasNoData = (data: any): data is NilOrError =>
   isNilOrError(data) || data.every(isEmpty) || data.length <= 0;
@@ -63,3 +69,16 @@ function getLegendPosition(legend: Legend) {
     ? 'bottom'
     : 'right';
 }
+
+export const getRechartsAccessibilityProps = (
+  ariaLabel: string | undefined,
+  ariaDescribedBy: string | undefined
+): RechartsAccessibilityProps => {
+  return {
+    accessibilityLayer: true,
+    role: 'img',
+    'aria-label': ariaLabel,
+    'aria-describedby': ariaDescribedBy,
+    tabIndex: 0,
+  };
+};

@@ -2,6 +2,8 @@ import React from 'react';
 
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
+
 import NoData from '../../../_shared/NoData';
 import chartWidgetMessages from '../../messages';
 import { Props } from '../typings';
@@ -19,7 +21,9 @@ const ParticipationCard = ({
   compareEndAt,
   hideStatistics = false,
   participationTypes,
-}: Props) => {
+  ariaLabel,
+  ariaDescribedBy,
+}: Props & AccessibilityProps) => {
   const layout = useLayout();
 
   const { timeSeries, stats, currentResolution } = useParticipation({
@@ -51,6 +55,8 @@ const ParticipationCard = ({
     stats,
     currentResolution,
     participationTypes,
+    ariaLabel,
+    ariaDescribedBy,
   };
 
   return layout === 'wide' ? <Wide {...props} /> : <Narrow {...props} />;

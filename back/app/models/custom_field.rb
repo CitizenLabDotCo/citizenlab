@@ -303,6 +303,11 @@ class CustomField < ApplicationRecord
     printable? && ignore_field_types.exclude?(input_type)
   end
 
+  def pdf_gpt_importable?
+    ignore_field_types = %w[page checkbox files topic_ids image_files file_upload shapefile_upload point line polygon cosponsor_ids]
+    printable? && ignore_field_types.exclude?(input_type)
+  end
+
   def xlsx_importable?
     ignore_field_types = %w[page files image_files file_upload shapefile_upload point line polygon cosponsor_ids]
     ignore_field_types.exclude? input_type

@@ -2755,7 +2755,8 @@ CREATE TABLE public.idea_import_files (
     num_pages integer DEFAULT 0,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    parent_id uuid
+    parent_id uuid,
+    parsed_value jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -8169,6 +8170,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251217110845'),
 ('20251212135514'),
 ('20251209135529'),
 ('20251208163107'),

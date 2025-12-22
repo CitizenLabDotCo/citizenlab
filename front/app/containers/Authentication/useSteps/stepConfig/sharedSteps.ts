@@ -19,15 +19,14 @@ import {
 } from '../../typings';
 
 import { Step } from './typings';
-import { confirmationRequired, checkMissingData } from './utils';
+import { checkMissingData } from './utils';
 
 export const sharedSteps = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   setError: SetError,
-  updateState: UpdateState,
-  anySSOEnabled: boolean
+  updateState: UpdateState
 ) => {
   return {
     closed: {
@@ -47,13 +46,13 @@ export const sharedSteps = (
             };
 
             updateState({ token, prefilledBuiltInFields });
-            setCurrentStep('sign-up:email-password');
+            setCurrentStep('invite:email-password');
           } catch {
-            setCurrentStep('sign-up:email-password');
+            setCurrentStep('invite:email-password');
             setError('invitation_error');
           }
         } else {
-          setCurrentStep('sign-up:invite');
+          setCurrentStep('invite:code');
         }
       },
 
@@ -65,7 +64,8 @@ export const sharedSteps = (
         const missingDataStep = checkMissingData(
           requirements,
           authenticationData,
-          flow
+          flow,
+          true
         );
 
         if (missingDataStep) {
@@ -97,7 +97,6 @@ export const sharedSteps = (
         const authenticationData = getAuthenticationData();
 
         const { permitted_by } = requirements.authentication;
-        const isLightFlow = permitted_by === 'everyone_confirmed_email';
 
         // This `disabled_reason === null` is a bit of a weird check,
         // because most of the times if there is no disabled reason,
@@ -107,27 +106,10 @@ export const sharedSteps = (
         const signedIn =
           disabled_reason === null || disabled_reason !== 'user_not_signed_in';
 
-        if (isLightFlow) {
-          if (!signedIn) {
-            setCurrentStep('light-flow:email');
-            return;
-          }
-
-          if (confirmationRequired(requirements)) {
-            setCurrentStep('light-flow:email-confirmation');
-            return;
-          }
-        }
-
         const isVerifiedActionFlow = permitted_by === 'verified';
-
-        const userNotSignedIn = !signedIn;
         const userRequiresVerification = requirements.verification;
 
-        if (
-          isVerifiedActionFlow &&
-          (userNotSignedIn || userRequiresVerification)
-        ) {
+        if (isVerifiedActionFlow && (!signedIn || userRequiresVerification)) {
           setCurrentStep('sso-verification:sso-providers');
           return;
         }
@@ -136,7 +118,8 @@ export const sharedSteps = (
           const missingDataStep = checkMissingData(
             requirements,
             authenticationData,
-            flow
+            flow,
+            true
           );
 
           if (missingDataStep) {
@@ -145,21 +128,7 @@ export const sharedSteps = (
           }
         }
 
-        if (flow === 'signin') {
-          anySSOEnabled
-            ? setCurrentStep('sign-in:auth-providers')
-            : setCurrentStep('sign-in:email-password');
-          return;
-        }
-
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if (flow === 'signup') {
-          anySSOEnabled
-            ? setCurrentStep('sign-up:auth-providers')
-            : setCurrentStep('sign-up:email-password');
-          return;
-        }
+        setCurrentStep('email:start');
       },
 
       TRIGGER_VERIFICATION_ONLY: () => {
@@ -179,7 +148,7 @@ export const sharedSteps = (
           setCurrentStep('missing-data:verification');
           setError(errorMap[error_code]);
         } else {
-          setCurrentStep('sign-up:auth-providers');
+          setCurrentStep('email:start');
           setError('unknown');
         }
       },
@@ -194,7 +163,7 @@ export const sharedSteps = (
           not_entitled_service_error: 'auth_service_error',
         };
 
-        setCurrentStep('sign-up:auth-providers');
+        setCurrentStep('email:start');
         if (error_code) {
           setError(errorMap[error_code]);
         } else {
