@@ -23,7 +23,7 @@ class WebApi::V1::UsersController < ApplicationController
       # Block access to project participants list if private_attributes_in_export is disabled
       private_attributes_in_export = AppConfiguration.instance.settings['core']['private_attributes_in_export'] != false
       raise ActiveRecord::RecordNotFound unless private_attributes_in_export
-      
+
       project = Project.find(params[:project])
       participant_ids = ParticipantsService.new.project_participants(project).pluck(:id)
       @users = @users.where(id: participant_ids)
