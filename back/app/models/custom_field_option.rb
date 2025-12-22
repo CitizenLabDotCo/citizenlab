@@ -27,7 +27,7 @@ class CustomFieldOption < ApplicationRecord
   # non-persisted attribute to enable form copying
   attribute :temp_id, :string, default: nil
 
-  acts_as_list column: :ordering, top_of_list: 0, scope: :custom_field
+  acts_as_list column: :ordering, top_of_list: 0, scope: :custom_field, sequential_updates: true
 
   belongs_to :custom_field
 
