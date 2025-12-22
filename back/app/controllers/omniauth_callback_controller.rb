@@ -234,7 +234,7 @@ class OmniauthCallbackController < ApplicationController
 
   # Updates the auth_hash in a users identity to ensure tokens are up to date for logout (mainly for FranceConnect)
   def update_identity!(auth, identity, authver_method)
-    return if authver_method.class.name == "IdHoplr::HoplrOmniauth" # Temp fix for Hoplr not being able to log back in
+    return if authver_method.instance_of? ::IdHoplr::HoplrOmniauth # Temp fix for Hoplr not being able to log back in
 
     identity.update_auth_hash!(auth, authver_method)
   end
