@@ -492,6 +492,17 @@ resource 'Users' do
           end
         end
 
+        example 'Return not found when private_attributes_in_export is disabled' do
+          settings = AppConfiguration.instance.settings
+          settings['core']['private_attributes_in_export'] = false
+          AppConfiguration.instance.update!(settings: settings)
+
+          project = create(:project)
+
+          do_request(project: project.id)
+          expect(status).to eq 404
+        end
+
         example 'List all users who participated in a project' do
           project = create(:project)
 
