@@ -1,3 +1,5 @@
+import { Multiloc } from 'component-library/utils/typings';
+
 import { GroupMode } from 'api/graph_data_units/requestTypes';
 
 export interface Props {
@@ -9,4 +11,6 @@ export interface Props {
   groupMode?: GroupMode;
   groupFieldId?: string;
   heatmap?: boolean;
+  ariaLabel?: Multiloc;
+  description?: Multiloc;
 }

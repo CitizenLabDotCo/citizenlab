@@ -47,6 +47,9 @@ export const AccessibilityInputs = () => {
       <Text color="grey800" fontWeight="semi-bold" fontSize="l">
         {formatMessage(messages.accessibility)}
       </Text>
+      <Text color="coolGrey600" fontSize="m" mb="16px">
+        {formatMessage(messages.accessibilityDescription)}
+      </Text>
       <Box>
         <Box mb="12px">
           <InputMultilocWithLocaleSwitcher
