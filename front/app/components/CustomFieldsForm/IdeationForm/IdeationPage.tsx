@@ -101,6 +101,11 @@ const IdeationPage = ({
     idea?.data.attributes.anonymous || false
   );
 
+  // allow moderators also to edit all ideation form fields
+  const isAdminOrModerator =
+    isAdmin(authUser) ||
+    (project && canModerateProject(project.data, authUser));
+
   const handleNextAndsubmit = () => {
     pageRef.current?.scrollTo(0, 0);
     if (currentPageIndex === lastPageIndex) {
@@ -248,13 +253,13 @@ const IdeationPage = ({
                   <Box display="flex" flexDirection="column">
                     <PageTitle page={page} />
 
-                    {currentPageIndex === 0 && isAdmin(authUser) && (
+                    {currentPageIndex === 0 && isAdminOrModerator && (
                       <Box mb="24px">
                         <AuthorField name="author_id" />
                       </Box>
                     )}
                     {currentPageIndex === lastPageIndex - 1 &&
-                      isAdmin(authUser) &&
+                      isAdminOrModerator &&
                       phase?.attributes.voting_method === 'budgeting' && (
                         <Box mb="24px">
                           <BudgetField name="budget" />
