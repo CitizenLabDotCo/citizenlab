@@ -73,7 +73,6 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
 
       let(:expected_result_multiselect_with_user_field_grouping) do
         expected_result_multiselect.tap do |result|
-          result[:questionNumber] = nil
           result[:grouped] = true
           result[:legend] = ['male', 'female', 'unspecified', nil]
           result[:answers] = [
@@ -127,7 +126,6 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
 
       let(:expected_result_multiselect_with_select_field_grouping) do
         expected_result_multiselect.tap do |result|
-          result[:questionNumber] = nil
           result[:grouped] = true
           result[:legend] = ['la', 'ny', 'other', nil]
           result[:answers] = [
@@ -218,7 +216,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           description: { 'en' => 'Please indicate how strong you agree or disagree.' },
           hidden: false,
           pageNumber: nil,
-          questionNumber: nil,
+          questionNumber: 4,
           questionCategory: nil,
           totalResponseCount: 27,
           questionResponseCount: 22,
@@ -322,7 +320,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           description: { 'en' => 'Please rate your experience from 1 (poor) to 7 (excellent).' },
           hidden: false,
           pageNumber: nil,
-          questionNumber: nil,
+          questionNumber: 16,
           questionCategory: nil,
           totalResponseCount: 27,
           questionResponseCount: 22,
@@ -401,7 +399,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           description: {},
           hidden: false,
           pageNumber: nil,
-          questionNumber: nil,
+          questionNumber: 5,
           questionCategory: nil,
           totalResponseCount: 27,
           questionResponseCount: 6,
@@ -528,7 +526,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           description: {},
           hidden: false,
           pageNumber: nil,
-          questionNumber: nil,
+          questionNumber: 5,
           questionCategory: nil,
           totalResponseCount: 27,
           questionResponseCount: 6,

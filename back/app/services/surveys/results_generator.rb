@@ -11,14 +11,16 @@ module Surveys
       super()
       @phase = phase
       form = phase.custom_form || CustomForm.new(participation_context: phase)
-      @fields = IdeaCustomFieldsService.new(form).survey_results_fields(structure_by_category:)
+      
+      @user_fields = CustomField.registration
+      @input_fields = IdeaCustomFieldsService.new(form).survey_results_fields(structure_by_category:)
       @locales = AppConfiguration.instance.settings('core', 'locales')
       @inputs = phase.ideas.supports_survey.published # TODO: Add .includes(:author)
       @responses_by_field = format_responses_by_field
     end
 
     def survey_has_logic?
-      @survey_has_logic ||= fields.any? { |field| field.logic != {} }
+      @survey_has_logic ||= input_fields.any? { |field| field.logic != {} }
     end
 
     def total_response_count
@@ -30,13 +32,14 @@ module Surveys
       responses_by_field[field_key].size
     end
 
+    # TODO: Reformat to make smaller { "7c4fda2e-d552-4c27-b9a3-5ed86ce0698d" => "female" }
     def format_responses_by_field
       # TODO: If structure by category is enabled then logic will not work any more - community monitor only?
 
-      # First nest the fields inside pages to make logic easier
+      # First nest the input_fields inside pages to make logic easier
       current_page = nil
       pages = {}
-      fields.each do |field|
+      input_fields.each do |field|
         current_page = field.id if field.input_type == 'page'
         pages[current_page] ||= []
         pages[current_page] << field
@@ -49,13 +52,13 @@ module Surveys
         seen = []
         if survey_has_logic?
           next_page_id = nil
-          pages.each do |page_id, fields|
+          pages.each do |page_id, input_fields|
             next unless next_page_id.nil? || page_id == next_page_id
 
-            fields.each do |field|
+            input_fields.each do |field|
               seen << field.key
 
-              # TODO: Not currently adding the other/follow_up fields in here - ie if other option selected it will have been seen
+              # TODO: Not currently adding the other/follow_up input_fields in here - ie if other option selected it will have been seen
 
               if field.page?
                 if field.logic['next_page_id']
@@ -66,7 +69,7 @@ module Surveys
                   next_page_id = all_page_ids[all_page_ids.index(page_id) + 1]
                 end
               elsif field.logic['rules']
-                # TODO: select or linear scale fields
+                # TODO: select or linear scale input_fields
               end
             end
           end
@@ -83,7 +86,7 @@ module Surveys
 
       # Now build the structure with only those responses per question that were seen
       # So nil values mean that they were seen but not answered
-      fields.to_h do |field|
+      responses_by_field = input_fields.to_h do |field|
         [
           field.key,
           responses.map do |response|
@@ -97,6 +100,29 @@ module Surveys
           end.compact
         ]
       end
+
+      # binding.pry
+      
+      # Now add in the user input_fields too if not already there in the input fields - generate_fields only returns fields in the form,
+      # but when grouping we need the additional user fields in the raw responses too
+      # Logic not needed here as these fields will only be used for grouping
+      # TODO: Move to group generator? Do we only need the field that is being grouped by?
+
+
+      # Now add in the user input_fields too if not already there in the input fields
+      user_field_keys = user_fields.map { |f| "u_#{f[:key]}" }
+      responses_by_field.merge(
+        user_field_keys.each_with_object({}) do |key, accu|
+          next if responses_by_field.key?(key) # Field already present in input fields
+
+          accu[key] = responses.map do |response|
+            {
+              id: response[:id],
+              answer: response[:values][key],
+            }
+          end.compact
+        end
+      )
     end
 
     def merge_user_custom_field_values(input)
@@ -107,7 +133,8 @@ module Surveys
     # Get the results for a single survey question
     def generate_result_for_field(field_id)
       # NEW Query
-      result = find_question(field_id)
+      find_result(field_id)
+
 
       # OLD Query
       # field = find_question(field_id)
@@ -117,7 +144,7 @@ module Surveys
 
     # Get the results for all survey questions
     def generate_results
-      results = fields.filter_map { |f| f.id ? visit(f) : nil } # Skip other/follow_up questions which have no ID
+      results = input_fields.filter_map { |f| f.id ? visit(f) : nil } # Skip other/follow_up questions which have no ID
       if results.present?
         results = add_question_numbers_to_results results
         results = add_page_response_count_to_results results
@@ -133,7 +160,7 @@ module Surveys
     end
 
     def visit_number(field)
-      responses = base_responses(field.key)
+      responses = base_responses(field.key).map { |r| r.except(:id) } # TODO: A lot of repetition of this pattern - refactor?
       response_count = responses.size
 
       core_field_attributes(field, response_count:).merge({
@@ -237,7 +264,7 @@ module Surveys
 
     private
 
-    attr_reader :phase, :fields, :inputs, :locales, :responses_by_field
+    attr_reader :phase, :input_fields, :user_fields, :inputs, :locales, :responses_by_field
 
     def add_additional_fields_to_results(results)
       results # This method is a placeholder for overriding in subclasses
@@ -254,18 +281,19 @@ module Surveys
         grouped: false,
         hidden: false,
         totalResponseCount: num_times_field_seen(field.key),  # TODO: Change to questionSeenCount?
-        questionResponseCount: response_count,
+        questionResponseCount: response_count, # TODO: Change to questionAnsweredCount?
         pageNumber: nil,
         questionNumber: nil,
         questionCategory: field.question_category
       }
     end
 
-    def base_responses(field_key)
+    def base_responses(field_key, with_nil: false)
+      return responses_by_field[field_key] if with_nil
+
       # NEW VERSION
       responses_by_field[field_key]
         &.select { |r| r[:answer].present? }
-        # &.map { |r| { answer: r[:answer] } } || []
 
       # OLD VERSION
       # inputs
@@ -298,9 +326,9 @@ module Surveys
       build_select_response(answers, field)
     end
 
-    def select_field_answers(field_key)
+    def select_field_answers(field_key, with_nil: false)
       # Extract all the responses from array values (if multiselect)
-      base_responses(field_key).flat_map do |r|
+      base_responses(field_key, with_nil:).flat_map do |r|
         r[:answer].is_a?(Array) ?
           r[:answer].map { |a| { id: r[:id], answer: a } } :
           { id: r[:id], answer: r[:answer] }
@@ -457,17 +485,19 @@ module Surveys
     end
 
     def responses_to_geographic_input_type(field)
-      responses = base_responses(field.key)
+      responses = base_responses(field.key).map { |r| r.except(:id) }
       response_count = responses.size
       core_field_attributes(field, response_count:).merge({
         mapConfigId: field&.map_config&.id, "#{field.input_type}Responses": responses
       })
     end
 
-    # Get any associated text responses - where follow up question or other option is used
+    # Get any associated text responses - where follow-up question or other option is used
     def get_text_responses(field_key)
-      # NEW VERSION - TODO: Not working yet
-      base_responses(field_key).sort_by { |a| a[:answer] } || []
+      # NEW VERSION
+      base_responses(field_key)
+        &.map { |a| a.except(:id) }
+        &.sort_by { |a| a[:answer] } || []
 
       # OLD VERSION
       # inputs
@@ -480,7 +510,7 @@ module Surveys
       #   .sort_by { |a| a[:answer] }
     end
 
-    def find_question(result_field_id)
+    def find_result(result_field_id)
       result = generate_results[:results].find { |r| r[:customFieldId] == result_field_id }
       raise 'Question not found' unless result
 
