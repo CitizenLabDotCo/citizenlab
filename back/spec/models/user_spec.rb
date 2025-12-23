@@ -1228,6 +1228,10 @@ RSpec.describe User do
     end
 
     describe '#confirm!' do
+      before do
+        SettingsService.new.activate_feature! 'user_confirmation'
+      end
+
       it 'sets email confirmed at' do
         user.save!
         expect { user.confirm! }.to change(user, :saved_change_to_email_confirmed_at?)
@@ -1236,6 +1240,8 @@ RSpec.describe User do
       it 'cancels any pending email change initiated with the same email' do
         new_email = 'new-email@provider.org'
         user1, user2 = create_list(:user, 2, new_email: new_email, email_confirmation_code: 9999)
+        user1.update_column(:confirmation_required, true)
+        user1.save!
 
         user1.confirm!
 

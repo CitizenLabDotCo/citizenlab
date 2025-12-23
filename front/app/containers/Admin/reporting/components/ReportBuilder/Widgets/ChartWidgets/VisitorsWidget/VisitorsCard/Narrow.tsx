@@ -5,6 +5,7 @@ import moment from 'moment';
 
 import Chart from 'components/admin/GraphCards/VisitorsCard/Chart';
 import visitorsCardMessages from 'components/admin/GraphCards/VisitorsCard/messages';
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 import { formatLargeNumber, getDaysInRange } from '../../utils';
 
@@ -23,9 +24,14 @@ const Narrow = ({
   stats,
   timeSeries,
   hideStatistics,
-}: Props) => {
+  ariaLabel,
+  ariaDescribedBy,
+}: Props & AccessibilityProps) => {
   const previousDays = getDaysInRange(startAt, endAt);
-
+  const accessibilityProps = {
+    ariaLabel,
+    ariaDescribedBy,
+  };
   return (
     <Box height="100%" display="flex" flexDirection="column">
       {!hideStatistics && (
@@ -78,6 +84,7 @@ const Narrow = ({
             orientation: 'right',
             tickFormatter: formatLargeNumber,
           }}
+          {...accessibilityProps}
         />
       </Box>
     </Box>

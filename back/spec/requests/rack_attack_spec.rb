@@ -115,12 +115,7 @@ describe 'Rack::Attack' do
       10.times do |i|
         post(
           '/web_api/v1/users',
-          params: '{ "user": { "email": "INSERT",
-                              "password": "test123456",
-                              "locale": "en",
-                              "first_name": "Jane",
-                              "last_name": "Doe" }
-                  }'.gsub('INSERT', "a#{i + 1}@b.com"),
+          params: '{ "user": { "email": "INSERT", "locale": "en" }}'.gsub('INSERT', "a#{i + 1}@b.com"),
           headers: headers
         )
       end
@@ -128,12 +123,7 @@ describe 'Rack::Attack' do
 
       post(
         '/web_api/v1/users',
-        params: '{ "user": { "email": "a11@b.com",
-                            "password": "test123456",
-                            "locale": "en",
-                            "first_name": "Jane",
-                            "last_name": "Doe" }
-                }',
+        params: '{ "user": { "email": "a11@b.com", "locale": "en" }}',
         headers: headers
       )
       expect(status).to eq(429) # Too many requests
@@ -141,12 +131,7 @@ describe 'Rack::Attack' do
 
     travel_to(20.seconds.from_now) do
       post '/web_api/v1/users',
-        params: '{ "user": { "email": "a12@b.com",
-                                "password": "test123456",
-                                "locale": "en",
-                                "first_name": "Jane",
-                                "last_name": "Doe" }
-                    }',
+        params: '{ "user": { "email": "a12@b.com", "locale": "en" }}',
         headers: headers
       expect(status).to eq(201) # Created
     end
@@ -308,41 +293,41 @@ describe 'Rack::Attack' do
     end
   end
 
-  it 'limits resend code requests from same IP to 10 in 5 minutes' do
+  it 'limits unauthenticated code requests from same IP to 10 in 5 minutes' do
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
     freeze_time do
       10.times do
-        post('/web_api/v1/user/resend_code', headers: headers)
+        post('/web_api/v1/user/request_code_unauthenticated', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
       end
       expect(status).to eq(401) # Unauthorized
 
-      post('/web_api/v1/user/resend_code', headers: headers)
+      post('/web_api/v1/user/request_code_unauthenticated', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
       expect(status).to eq(429) # Too many requests
     end
 
     travel_to(5.minutes.from_now) do
-      post('/web_api/v1/user/resend_code', headers: headers)
+      post('/web_api/v1/user/request_code_unauthenticated', params: '{ "request_code": { "email": "coolemail@example.org" } }', headers: headers)
       expect(status).to eq(401) # Unauthorized
     end
   end
 
-  it 'limits confirmation requests from same IP to 5 in 20 seconds' do
+  it 'limits unauthenticated confirmation requests from same IP to 5 in 20 seconds' do
     headers = { 'CONTENT_TYPE' => 'application/json' }
 
     freeze_time do
       5.times do
         post(
-          '/web_api/v1/user/confirm',
-          params: '{ "confirmation": { "code": "1234" } }',
+          '/web_api/v1/user/confirm_code_unauthenticated',
+          params: "{ \"confirmation\": { \"email\": \"#{user.email}\", \"code\": \"1234\" } }",
           headers: headers
         )
       end
-      expect(status).to eq(401) # Unauthorized
+      expect(status).to eq(422)
 
       post(
-        '/web_api/v1/user/confirm',
-        params: '{ "confirmation": { "code": "1234" } }',
+        '/web_api/v1/user/confirm_code_unauthenticated',
+        params: "{ \"confirmation\": { \"email\": \"#{user.email}\", \"code\": \"1234\" } }",
         headers: headers
       )
       expect(status).to eq(429) # Too many requests
@@ -350,70 +335,11 @@ describe 'Rack::Attack' do
 
     travel_to(20.seconds.from_now) do
       post(
-        '/web_api/v1/user/confirm',
-        params: '{ "confirmation": { "code": "1234" } }',
+        '/web_api/v1/user/confirm_code_unauthenticated',
+        params: "{ \"confirmation\": { \"email\": \"#{user.email}\", \"code\": \"1234\" } }",
         headers: headers
       )
-      expect(status).to eq(401) # Unauthorized
-    end
-  end
-
-  it 'limits confirmation requests from same user to 10 in 24 hours' do
-    # Use a different IP for each request, to avoid testing limit by IP
-    token1 = AuthToken::AuthToken.new(payload: user.to_token_payload).token
-    token2 = AuthToken::AuthToken.new(payload: create(:user).to_token_payload).token
-    headers = { 'CONTENT_TYPE' => 'application/json', 'Authorization' => "Bearer #{token1}" }
-    start_time = Time.zone.now.midnight # Avoid testing 24-hour period that spans midnight
-
-    travel_to(start_time) do
-      10.times do |i|
-        headers['REMOTE_ADDR'] = "1.2.3.#{i + 1}"
-        post(
-          '/web_api/v1/user/confirm',
-          params: '{ "confirmation": { "code": "12345" } }',
-          headers: headers
-        )
-      end
-      expect(status).to eq(422) # Unprocessable entity == given confirmation code is not correct
-
-      headers['REMOTE_ADDR'] = '1.2.3.11'
-      post(
-        '/web_api/v1/user/confirm',
-        params: '{ "confirmation": { "code": "12345" } }',
-        headers: headers
-      )
-      expect(status).to eq(429) # Too many requests
-
-      # Use a different user for the next request, to test throttling is only for the first user
-      headers['Authorization'] = "Bearer #{token2}"
-      headers['REMOTE_ADDR'] = '1.2.3.12'
-      post(
-        '/web_api/v1/user/confirm',
-        params: '{ "confirmation": { "code": "12345" } }',
-        headers: headers
-      )
-      expect(status).to eq(422) # Unprocessable entity == given confirmation code is not correct
-    end
-
-    headers['Authorization'] = "Bearer #{token1}"
-    travel_to(start_time + 23.hours) do
-      headers['REMOTE_ADDR'] = '1.2.3.13'
-      post(
-        '/web_api/v1/user/confirm',
-        params: '{ "confirmation": { "code": "12345" } }',
-        headers: headers
-      )
-      expect(status).to eq(429) # Too many requests
-    end
-
-    travel_to(start_time + 25.hours) do
-      headers['REMOTE_ADDR'] = '1.2.3.13'
-      post(
-        '/web_api/v1/user/confirm',
-        params: '{ "confirmation": { "code": "12345" } }',
-        headers: headers
-      )
-      expect(status).to eq(422) # Unprocessable entity == given confirmation code is not correct
+      expect(status).to eq(422)
     end
   end
 
@@ -522,6 +448,69 @@ describe 'Rack::Attack' do
     end
   end
 
+  it 'limits unconfirmed login requests from same IP to 10 in 20 seconds' do
+    headers = { 'CONTENT_TYPE' => 'application/json' }
+
+    freeze_time do
+      10.times do |i|
+        post(
+          '/web_api/v1/user_token/unconfirmed',
+          params: "{ \"auth\": { \"email\": \"user#{i}@test.com\" } }",
+          headers: headers
+        )
+      end
+      expect(status).to eq(404) # Not found
+
+      post(
+        '/web_api/v1/user_token/unconfirmed',
+        params: '{ "auth": { "email": "user6@test.com" } }',
+        headers: headers
+      )
+      expect(status).to eq(429) # Too many requests
+    end
+
+    travel_to(21.seconds.from_now) do
+      post(
+        '/web_api/v1/user_token/unconfirmed',
+        params: '{ "auth": { "email": "user7@test.com" } }',
+        headers: headers
+      )
+      expect(status).to eq(404) # Not found
+    end
+  end
+
+  it 'limits unconfirmed login requests to same email to 10 in 20 seconds' do
+    freeze_time do
+      10.times do |i|
+        headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => "1.2.3.#{i}" }
+        post(
+          '/web_api/v1/user_token/unconfirmed',
+          params: "{ \"auth\": { \"email\": \"#{user.email}\" } }",
+          headers: headers
+        )
+      end
+      expect(status).to eq(422) # Unauthorized
+
+      headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.7' }
+      post(
+        '/web_api/v1/user_token/unconfirmed',
+        params: "{ \"auth\": { \"email\": \"#{user.email}\" } }",
+        headers: headers
+      )
+      expect(status).to eq(429) # Too many requests
+    end
+
+    travel_to(21.seconds.from_now) do
+      headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.8' }
+      post(
+        '/web_api/v1/user_token/unconfirmed',
+        params: "{ \"auth\": { \"email\": \"#{user.email}\", \"password\": \"test123456\" } }",
+        headers: headers
+      )
+      expect(status).to eq(422) # Unauthorized
+    end
+  end
+
   it 'limits authoring assistance response requests from same IP to 10 in 20 seconds' do
     token = AuthToken::AuthToken.new(payload: create(:user).to_token_payload).token
     headers = {
@@ -587,6 +576,69 @@ describe 'Rack::Attack' do
         headers: headers
       )
       expect(status).to eq 429 # Too many requests
+    end
+  end
+
+  it 'limits user check requests from same IP to 5 in 20 seconds' do
+    headers = { 'CONTENT_TYPE' => 'application/json' }
+
+    freeze_time do
+      5.times do |i|
+        post(
+          '/web_api/v1/users/check',
+          params: "{ \"user\": { \"email\": \"user#{i}@test.com\" } }",
+          headers: headers
+        )
+      end
+      expect(status).to eq(200) # ok
+
+      post(
+        '/web_api/v1/users/check',
+        params: '{ "user": { "email": "user6@test.com" } }',
+        headers: headers
+      )
+      expect(status).to eq(429) # Too many requests
+    end
+
+    travel_to(2.minutes.from_now) do
+      post(
+        '/web_api/v1/users/check',
+        params: '{ "user": { "email": "user7@test.com" } }',
+        headers: headers
+      )
+      expect(status).to eq(200) # ok
+    end
+  end
+
+  it 'limits user check requests to same email to 5 in 5 minutes' do
+    freeze_time do
+      5.times do |i|
+        headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => "1.2.3.#{i}" }
+        post(
+          '/web_api/v1/users/check',
+          params: '{ "user": { "email": "user@test.com" } }',
+          headers: headers
+        )
+      end
+      expect(status).to eq(200) # ok
+
+      headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.7' }
+      post(
+        '/web_api/v1/users/check',
+        params: '{ "user": { "email": "user@test.com" } }',
+        headers: headers
+      )
+      expect(status).to eq(429) # Too many requests
+    end
+
+    travel_to(5.minutes.from_now) do
+      headers = { 'CONTENT_TYPE' => 'application/json', 'REMOTE_ADDR' => '1.2.3.8' }
+      post(
+        '/web_api/v1/users/check',
+        params: '{ "user": { "email": "user@test.com" } }',
+        headers: headers
+      )
+      expect(status).to eq(200) # ok
     end
   end
 end

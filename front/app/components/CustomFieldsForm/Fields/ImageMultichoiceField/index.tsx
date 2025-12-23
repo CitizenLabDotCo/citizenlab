@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo } from 'react';
 
 import {
   Box,
@@ -12,7 +12,6 @@ import { Controller, useFormContext } from 'react-hook-form';
 import styled, { useTheme } from 'styled-components';
 import { CLError, RHFErrors } from 'typings';
 
-import { useCustomFieldOptionImages } from 'api/content_field_option_images/useCustomFieldOptionImage';
 import { IFlatCustomField } from 'api/custom_fields/types';
 
 import useLocalize from 'hooks/useLocalize';
@@ -26,7 +25,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 import { extractOptions } from '../../util';
 
-import imageFile from './emptyImage.png';
+import emptyImageFile from './emptyImage.png';
 
 const HoverBox = styled(Box)<{ selected: boolean }>`
   cursor: pointer;
@@ -55,13 +54,6 @@ const ImageMultichoiceField = ({
   question: IFlatCustomField;
   scrollErrorIntoView?: boolean;
 }) => {
-  const imageIds =
-    question.options
-      ?.map((option) => option.image_id)
-      .filter((imageId): imageId is string => typeof imageId === 'string') ||
-    [];
-  const customFieldOptionImages = useCustomFieldOptionImages(imageIds);
-
   const isSmallerThanPhone = useBreakpoint('phone');
   const theme = useTheme();
   const localize = useLocalize();
@@ -78,30 +70,8 @@ const ImageMultichoiceField = ({
 
   const value = watch(name);
 
-  // Store customFieldOptionImages in a ref to avoid dependency
-  const customFieldOptionImagesRef = useRef(customFieldOptionImages);
-  // Update the ref whenever customFieldOptionImages changes
-  useEffect(() => {
-    customFieldOptionImagesRef.current = customFieldOptionImages;
-  }, [customFieldOptionImages]);
-
   const options = useMemo(() => {
-    return extractOptions(
-      question,
-      localize,
-      question.random_option_ordering
-    ).map((option) => {
-      return {
-        ...option,
-        imageId:
-          customFieldOptionImagesRef.current.find(
-            (query) =>
-              query.data?.data.id ===
-              question.options?.find((opt) => opt.key === option.value)
-                ?.image_id
-          )?.data?.data.attributes.versions.large || imageFile,
-      };
-    });
+    return extractOptions(question, localize, question.random_option_ordering);
   }, [question, localize]);
 
   const errors = formContextErrors[name] as RHFErrors;
@@ -156,14 +126,20 @@ const ImageMultichoiceField = ({
                         {option.value === 'other' ? (
                           <Image
                             width="100%"
-                            src={option.imageId || imageFile}
+                            src={
+                              option.image?.attributes.versions.medium ||
+                              emptyImageFile
+                            }
                             alt=""
                             style={{ borderRadius: '3px 3px 0 0' }}
                           />
                         ) : (
                           <Box minHeight="200px">
                             <FullscreenImage
-                              src={option.imageId || imageFile}
+                              src={
+                                option.image?.attributes.versions.large ||
+                                emptyImageFile
+                              }
                               altText={option.label}
                             />
                           </Box>
