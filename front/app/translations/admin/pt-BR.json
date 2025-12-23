@@ -713,7 +713,6 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "Comunidade",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "Resumo executivo",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Indicadores de inclusão de nível superior",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "A seção a seguir descreve os indicadores de inclusão, destacando o nosso progresso no sentido de promover uma plataforma de participação mais inclusiva e representativa.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participants": "participantes",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participationIndicators": "Indicadores de participação de alto nível",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participationIndicatorsDescription": "A seção a seguir descreve os principais indicadores de participação para o intervalo de tempo selecionado, fornecendo uma visão geral das tendências de envolvimento e métricas de desempenho.",

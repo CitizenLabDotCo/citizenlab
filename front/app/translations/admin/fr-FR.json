@@ -713,7 +713,6 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "Communauté",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "Résumé",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Indicateurs d'inclusion",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "Cette section présente des indicateurs d'inclusion qui donnent un aperçu de notre progression vers une plateforme de participation plus ouverte et représentative.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participants": "participants",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participationIndicators": "Indicateurs de participation",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participationIndicatorsDescription": "Cette section présente les principaux indicateurs de participation pour la période sélectionnée, offrant ainsi un aperçu des performances en matière de participation.",

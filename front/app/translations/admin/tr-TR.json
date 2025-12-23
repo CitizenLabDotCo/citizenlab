@@ -713,7 +713,6 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "Topluluk",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "Yönetici özeti",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Üst düzey kapsayıcılık göstergeleri",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription": "Aşağıdaki bölüm, daha kapsayıcı ve temsili bir katılım platformunu teşvik etmeye yönelik ilerlememizi vurgulayan kapsayıcılık göstergelerini özetlemektedir.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participants": "Katılımcılar",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participationIndicators": "Üst düzey katılım göstergeleri",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participationIndicatorsDescription": "Aşağıdaki bölüm, seçilen zaman aralığı için temel katılım göstergelerini özetlemekte ve katılım eğilimlerine ve performans ölçütlerine genel bir bakış sağlamaktadır.",
