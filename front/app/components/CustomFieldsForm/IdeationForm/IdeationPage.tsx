@@ -253,7 +253,7 @@ const IdeationPage = ({
                   <Box display="flex" flexDirection="column">
                     <PageTitle page={page} />
 
-                    {currentPageIndex === 0 && isAdminOrModerator && (
+                    {currentPageIndex === 0 && isAdmin(authUser) && (
                       <Box mb="24px">
                         <AuthorField name="author_id" />
                       </Box>
