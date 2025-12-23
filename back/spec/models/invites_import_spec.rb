@@ -15,7 +15,7 @@ RSpec.describe InvitesImport do
       user = create(:user)
       create(:invites_import, importer: user)
 
-      expect { user.destroy }.to change { InvitesImport.where(importer_id: user.id).count }.from(1).to(0)
+      expect { user.destroy }.to change { described_class.where(importer_id: user.id).count }.from(1).to(0)
     end
   end
 end
