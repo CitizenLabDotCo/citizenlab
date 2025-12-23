@@ -8,6 +8,9 @@ resource 'Users' do
 
   before do
     header 'Content-Type', 'application/json'
+    settings = AppConfiguration.instance.settings
+    settings['core']['private_attributes_in_export'] = true
+    AppConfiguration.instance.update!(settings: settings)
   end
 
   context 'when not authenticated' do
@@ -487,6 +490,17 @@ resource 'Users' do
 
             expect(json_response[:links][:next]).to be_present
           end
+        end
+
+        example 'Return not found when private_attributes_in_export is disabled' do
+          settings = AppConfiguration.instance.settings
+          settings['core']['private_attributes_in_export'] = false
+          AppConfiguration.instance.update!(settings: settings)
+
+          project = create(:project)
+
+          do_request(project: project.id)
+          expect(status).to eq 404
         end
 
         example 'List all users who participated in a project' do
