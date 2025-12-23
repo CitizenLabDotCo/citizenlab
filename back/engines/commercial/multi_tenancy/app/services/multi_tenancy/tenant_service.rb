@@ -103,6 +103,7 @@ module MultiTenancy
       data_listing = Cl2DataListingService.new
 
       data_listing.cl2_schema_leaf_models.each do |claz|
+        puts claz.name
         next if claz == QueJob
 
         timestamp_attrs = data_listing.timestamp_attributes claz
@@ -112,7 +113,7 @@ module MultiTenancy
         next if timestamp_attrs.blank?
 
         query = timestamp_attrs.map do |timestamp_attr|
-          "#{timestamp_attr} = (#{timestamp_attr} + ':num_days DAY'::INTERVAL)"
+          "#{timestamp_attr} = (#{timestamp_attr} + (:num_days * INTERVAL '1 day'))"
         end.join(', ')
         claz.update_all [query, { num_days: num_days }]
 
@@ -120,9 +121,10 @@ module MultiTenancy
         # timestamps to remain in the future (e.g. future timeline phases, expiration
         # date etc.)
         timestamp_attrs.each do |atr|
+          puts atr
           instances = claz.where("#{atr} > NOW()")
-            .where("(#{atr} - ':num_days DAY'::INTERVAL) < NOW()", num_days: num_days)
-          query = "#{atr} = (#{atr} - ':num_days DAY'::INTERVAL)"
+            .where("(#{atr} - (:num_days * INTERVAL '1 day')) < NOW()", num_days: num_days)
+          query = "#{atr} = (#{atr} - (:num_days * INTERVAL '1 day'))"
           instances.update_all [query, { num_days: num_days }]
         end
       end
