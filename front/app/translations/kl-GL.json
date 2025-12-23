@@ -2111,6 +2111,7 @@
   "app.errors.confirmation_code_too_many_retries": "Misiliivallaarsimavutit. Isissutissamik allamik qinugit, imaluunniit emailit allanngortillugu misiliguk.",
   "app.errors.email_already_active": "E-mailadresse {value} titarnerni quleriiaani nassaaq {row} atuisup allap pigereerpaa",
   "app.errors.email_already_invited": "E-mailadresse {value} titarnerni quleriiaani nassaaq {row} qaaqquneqareersimavoq",
+  "app.errors.email_banned": "The email address {value} found in row {row} has been banned and cannot be invited",
   "app.errors.email_blank": "Una allassimasoqassaaq",
   "app.errors.email_domain_blacklisted": "E-mailip suminngaanneerfittut atuuffia alla atorlugu isertaatiliorit.",
   "app.errors.email_invalid": "E-mail atorsinnaasoq allalaaruk",
