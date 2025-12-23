@@ -13,8 +13,10 @@ RSpec.describe UserConfirmationService do
   shared_examples 'validation and confirmation' do |method_name|
     context 'when the code is correct' do
       it 'returns success' do
+        expect(user.confirmation_required?).to be true
         result = service.public_send(method_name, user, user.email_confirmation_code)
         expect(result.success?).to be true
+        expect(user.reload.confirmation_required?).to be false
       end
     end
 
@@ -95,13 +97,14 @@ RSpec.describe UserConfirmationService do
     end
 
     context 'when the user has a password' do
-      let(:user) { create(:user) }
+      let(:user) { create(:user_with_confirmation) }
 
       it 'returns a user has password error' do
+        expect(user.confirmation_required?).to be true
+        expect(user.password_digest).not_to be_nil
         result = service.validate_and_confirm_unauthenticated!(user, user.email_confirmation_code)
-
-        expect(result.success?).to be false
-        expect(result.errors.details).to eq(user: [{ error: :has_password }])
+        expect(result.success?).to be true
+        expect(user.reload.confirmation_required?).to be false
       end
     end
 

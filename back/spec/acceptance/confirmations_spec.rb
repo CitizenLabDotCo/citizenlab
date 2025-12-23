@@ -111,11 +111,24 @@ resource 'Confirmations' do
 
       include_examples 'confirmation code validation'
 
-      example 'does not allow confirming a user with password' do
+      example 'does not allow confirming a user with password that is already confirmed' do
         user_with_password = create(:user_with_confirmation, password: 'password123')
+        user_with_password.confirm
+        expect(user_with_password).not_to be_confirmation_required
+
         code = user_with_password.email_confirmation_code
         do_request(confirmation: { email: user_with_password.email, code: })
         assert_status 422
+      end
+
+      example 'allows confirming a user with password that requires confirmation' do
+        user_with_password = create(:user_with_confirmation, password: 'password123')
+        RequestConfirmationCodeJob.perform_now user_with_password
+        expect(user_with_password).to be_confirmation_required
+
+        code = user_with_password.email_confirmation_code
+        do_request(confirmation: { email: user_with_password.email, code: })
+        assert_status 200
       end
     end
   end

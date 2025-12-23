@@ -40,7 +40,6 @@ class UserConfirmationService
     validate_password_login_enabled!
     validate_user!(user)
     validate_email!(user.email)
-    validate_user_has_no_password!(user)
     validate_user_has_no_new_email!(user)
     validate_and_confirm!(user, code)
 
@@ -87,10 +86,6 @@ class UserConfirmationService
 
   def validate_email!(email)
     raise ValidationError.new(:user, :no_email) if email.blank?
-  end
-
-  def validate_user_has_no_password!(user)
-    raise ValidationError.new(:user, :has_password) if user.password_digest?
   end
 
   def validate_retry_count!(user, code)
