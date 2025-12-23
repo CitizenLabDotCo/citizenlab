@@ -101,7 +101,7 @@ const IdeationPage = ({
     idea?.data.attributes.anonymous || false
   );
 
-  // allow moderators also to edit all ideation form fields
+  // allow moderators also to edit BudgetField
   const isAdminOrModerator =
     isAdmin(authUser) ||
     (project && canModerateProject(project.data, authUser));
