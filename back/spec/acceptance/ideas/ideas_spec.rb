@@ -402,6 +402,28 @@ resource 'Ideas' do
       end
       let(:phase_id) { phase.id }
 
+      context 'for a native survey with global_custom_fields (default state)' do
+        let(:default_phase) { create(:native_survey_phase, with_permissions: true) }
+        let(:user) { create(:user) }
+
+        before do
+          create(:custom_field, resource_type: 'User', key: 'city', enabled: true, hidden: false)
+          create(:custom_field, resource_type: 'User', key: 'age', enabled: true, hidden: false)
+        end
+
+        example 'Pre-populates user fields when using default global_custom_fields=true' do
+          user.update!(custom_field_values: { 'city' => 'New York', 'age' => 30 })
+          do_request
+
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          attributes = json_response.dig(:data, :attributes)
+
+          expect(attributes[:u_city]).to eq('New York')
+          expect(attributes[:u_age]).to eq(30)
+        end
+      end
+
       context 'idea authored by user' do
         let!(:idea) do
           create(
@@ -714,5 +736,14 @@ resource 'Ideas' do
         expect(upvote_disabled_reason).to eq 'user_not_signed_in'
       end
     end
+  end
+
+  get 'web_api/v1/ideas/draft/:phase_id' do
+    before do
+      @user = create(:user, custom_field_values: { 'age' => 30, 'city' => 'New York' })
+      header_token_for @user
+    end
+
+    parameter :phase_id, 'The ID of the phase', required: true
   end
 end
