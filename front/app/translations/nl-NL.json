@@ -207,6 +207,8 @@
   "app.components.ErrorBoundary.openFormText": "help ons het op te lossen",
   "app.components.ErrorToast.budgetExceededError": "Je hebt niet genoeg budget",
   "app.components.ErrorToast.votesExceededError": "Je hebt niet genoeg stemmen over",
+  "app.components.EsriMap.mapLayerListAriaLabel": "Laaglijst weergeven/verbergen",
+  "app.components.EsriMap.mapLegendAriaLabel": "Legenda weergeven/verbergen",
   "app.components.EventAttendanceButton.forwardToFriend": "Doorsturen naar een vriend",
   "app.components.EventAttendanceButton.maxRegistrationsReached": "Het maximum aantal geregistreerden voor de activiteit is bereikt. Er zijn geen plekken meer vrij.",
   "app.components.EventAttendanceButton.register": "Registreer",
