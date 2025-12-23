@@ -742,13 +742,4 @@ resource 'Ideas' do
       end
     end
   end
-
-  get 'web_api/v1/ideas/draft/:phase_id' do
-    before do
-      @user = create(:user, custom_field_values: { 'age' => 30, 'city' => 'New York' })
-      header_token_for @user
-    end
-
-    parameter :phase_id, 'The ID of the phase', required: true
-  end
 end
