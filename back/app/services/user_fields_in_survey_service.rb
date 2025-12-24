@@ -10,10 +10,12 @@ class UserFieldsInSurveyService
     return idea_custom_field_values if phase.blank?
 
     permission = phase.permissions.find_by(action: 'posting_idea')
-    permissions_custom_fields = permission.permissions_custom_fields
-    custom_fields = CustomField.where(id: permissions_custom_fields.select(:custom_field_id))
 
-    allowed_keys = custom_fields.pluck(:key).uniq
+    # Use PermissionsCustomFieldsService to get fields, which handles both persisted and non-persisted (global) fields
+    permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
+    permissions_custom_fields = permissions_custom_fields_service.fields_for_permission(permission)
+
+    allowed_keys = permissions_custom_fields.map { |pcf| pcf.custom_field.key }.uniq
 
     user_values = current_user
       .custom_field_values
