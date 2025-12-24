@@ -90,7 +90,6 @@ module EmailCampaigns
       [{
         event_payload: {
           initiating_user_first_name: comment.author&.first_name,
-          initiating_user_last_name: comment.author&.last_name,
           comment_author_name: comment.author_name,
           comment_body_multiloc: comment.body_multiloc,
           comment_url: Frontend::UrlService.new.model_to_url(comment, locale: Locale.new(recipient.locale)),
