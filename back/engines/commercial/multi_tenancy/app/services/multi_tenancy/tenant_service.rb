@@ -112,7 +112,7 @@ module MultiTenancy
         next if timestamp_attrs.blank?
 
         query = timestamp_attrs.map do |timestamp_attr|
-          "#{timestamp_attr} = (#{timestamp_attr} + ':num_days DAY'::INTERVAL)"
+          "#{timestamp_attr} = (#{timestamp_attr} + (:num_days * INTERVAL '1 day'))"
         end.join(', ')
         claz.update_all [query, { num_days: num_days }]
 
@@ -121,8 +121,8 @@ module MultiTenancy
         # date etc.)
         timestamp_attrs.each do |atr|
           instances = claz.where("#{atr} > NOW()")
-            .where("(#{atr} - ':num_days DAY'::INTERVAL) < NOW()", num_days: num_days)
-          query = "#{atr} = (#{atr} - ':num_days DAY'::INTERVAL)"
+            .where("(#{atr} - (:num_days * INTERVAL '1 day')) < NOW()", num_days: num_days)
+          query = "#{atr} = (#{atr} - (:num_days * INTERVAL '1 day'))"
           instances.update_all [query, { num_days: num_days }]
         end
       end
