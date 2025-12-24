@@ -4,15 +4,16 @@
 #
 # Table name: app_configurations
 #
-#  id         :uuid             not null, primary key
-#  name       :string
-#  host       :string
-#  logo       :string
-#  favicon    :string
-#  settings   :jsonb
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  style      :jsonb
+#  id                         :uuid             not null, primary key
+#  name                       :string
+#  host                       :string
+#  logo                       :string
+#  favicon                    :string
+#  settings                   :jsonb
+#  created_at                 :datetime         not null
+#  updated_at                 :datetime         not null
+#  style                      :jsonb
+#  override_platform_start_at :datetime
 #
 class AppConfiguration < ApplicationRecord
   include StyleSettings
@@ -203,6 +204,12 @@ class AppConfiguration < ApplicationRecord
 
   def churned?
     lifecycle_stage == 'churned'
+  end
+
+  # For migrated platforms, we sometimes need to override the platform start date to get stats on imported data
+  # 'override_platform_start_at' is null by default and can only be set via the rails console
+  def platform_start_at
+    override_platform_start_at || created_at
   end
 
   private
