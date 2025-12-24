@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { IAreaData } from 'api/areas/types';
 import useAreas from 'api/areas/useAreas';
 import useDeleteArea from 'api/areas/useDeleteArea';
-import useUpdateArea from 'api/areas/useUpdateArea';
+import useReorderArea from 'api/areas/useReorderArea';
 import useCustomPages from 'api/custom_pages/useCustomPages';
 
 import useLocalize from 'hooks/useLocalize';
@@ -42,7 +42,7 @@ export const StyledLink = styled(Link)`
 const AreaList = () => {
   const { data: areas } = useAreas({ includeStaticPages: true });
   const { mutate: deleteArea } = useDeleteArea();
-  const { mutate: reorderArea } = useUpdateArea();
+  const { mutate: reorderArea } = useReorderArea();
 
   const { formatMessage } = useIntl();
 
