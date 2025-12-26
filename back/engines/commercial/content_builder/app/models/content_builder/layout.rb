@@ -26,6 +26,7 @@ module ContentBuilder
 
     before_validation :swap_data_images, on: :create
     before_validation :set_craftjs_json, :sanitize_craftjs_json
+    before_validation :process_file_attachments, on: :update
 
     validates :code, presence: true
     validate :validate_iframe_urls
@@ -90,6 +91,16 @@ module ContentBuilder
       return if code != 'homepage' || craftjs_json.blank?
 
       self.craftjs_json = ContentBuilder::LayoutImageService.new.swap_data_images(craftjs_json)
+    end
+
+    # Process file attachments in the craftjs_json, ensuring this happens in the same transaction
+    # as the layout save. This will:
+    # 1. Cleanup orphaned attachments (attachments no longer referenced in the JSON)
+    # 2. Create new file attachments and inject their IDs into the craftjs_json
+    def process_file_attachments
+      return if craftjs_json.blank?
+
+      self.craftjs_json = ContentBuilder::FileAttachmentProcessorService.new(self).process_file_attachments
     end
   end
 end
