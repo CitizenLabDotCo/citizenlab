@@ -160,7 +160,7 @@ class FormLogicService
   end
 
   def ui_schema_hide_rule_for(field, value)
-    if field.input_strategy.supports_options? && value != 'no_answer'
+    if field.supports_options? && value != 'no_answer'
       value = option_index[value].key
     end
     {
@@ -243,7 +243,7 @@ class FormLogicService
     any_other_answer_rule = rules.find { |rule| rule['if'] == 'any_other_answer' }
     if any_other_answer_rule
       target_id = any_other_answer_rule['goto_page_id']
-      if field.input_strategy.supports_options?
+      if field.supports_options?
         field.options.each do |option|
           logic[option.id] = target_id unless logic.key?(option.id)
         end
@@ -262,7 +262,7 @@ class FormLogicService
   end
 
   def page_level_logic_for_field(logic, field, next_page_id)
-    if field.input_strategy.supports_options?
+    if field.supports_options?
       field.options.each do |option|
         value = option.id
         next if logic.key?(value)
@@ -324,7 +324,7 @@ class FormLogicService
       allowed_if_values = field.options.pluck(:id)
       allowed_if_values << 'any_other_answer'
       allowed_if_values << 'no_answer' unless field.required?
-      if field.input_strategy.supports_options? && allowed_if_values.exclude?(rule['if'])
+      if field.supports_options? && allowed_if_values.exclude?(rule['if'])
         rules.delete(rule)
       end
     end

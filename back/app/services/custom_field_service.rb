@@ -137,11 +137,11 @@ class CustomFieldService
     fields.each do |field|
       visible_keys << field.key
 
-      if field.input_strategy.supports_other_option?
+      if field.supports_other_option?
         visible_keys << "#{field.key}_other"
       end
 
-      if field.input_strategy.supports_follow_up?
+      if field.supports_follow_up?
         visible_keys << "#{field.key}_follow_up"
       end
     end

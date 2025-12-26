@@ -163,7 +163,7 @@ module BulkImportIdeas::Parsers::Pdf
       end
 
       {
-        start: field.input_strategy.supports_options? ? current_line : page_text[start_line_index], # Select fields use just the current line as start is less important
+        start: field.supports_options? ? current_line : page_text[start_line_index], # Select fields use just the current line as start is less important
         end: page_text[next_line_index] ? page_text[next_line_index].strip : next_question_title&.slice(0, 50)&.strip # truncated next_question_title will be used if this is the last field on the page
       }
     end

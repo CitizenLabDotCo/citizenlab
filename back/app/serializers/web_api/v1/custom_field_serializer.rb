@@ -31,11 +31,11 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   }
 
   attribute :dropdown_layout, if: proc { |object, _params|
-    object.input_strategy.supports_dropdown_layout?
+    object.supports_dropdown_layout?
   }
 
   attribute :ask_follow_up, if: proc { |object, _params|
-    object.input_strategy.supports_follow_up?
+    object.supports_follow_up?
   }
 
   attribute :constraints do |object, params|
@@ -47,7 +47,7 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :maximum, if: proc { |object, _params|
-    object.input_strategy.supports_linear_scale?
+    object.supports_linear_scale?
   }
 
   attribute :question_category, if: proc { |object, _params|
@@ -65,19 +65,19 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
     :linear_scale_label_9_multiloc,
     :linear_scale_label_10_multiloc,
     :linear_scale_label_11_multiloc,
-    if: proc { |object, _params| object.input_strategy.supports_linear_scale_labels? }
+    if: proc { |object, _params| object.supports_linear_scale_labels? }
 
   attributes :select_count_enabled, :maximum_select_count, :minimum_select_count, if: proc { |object, _params|
     object.multiselect?
   }
 
   attributes :min_characters, :max_characters, if: proc { |object, _params|
-    object.input_strategy.supports_text?
+    object.supports_text?
   }
 
   has_many :options, record_type: :custom_field_option, serializer: ::WebApi::V1::CustomFieldOptionSerializer
   has_many :matrix_statements, record_type: :custom_field_matrix_statement, serializer: ::WebApi::V1::CustomFieldMatrixStatementSerializer, if: proc { |field|
-    field.input_strategy.supports_matrix_statements?
+    field.supports_matrix_statements?
   }
   has_one :resource, record_type: :custom_form, serializer: ::WebApi::V1::CustomFormSerializer
 end

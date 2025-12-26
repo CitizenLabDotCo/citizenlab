@@ -43,7 +43,7 @@ class UserFieldsInSurveyService
 
     # Transform the user fields to pretend to be idea fields
     user_fields.each do |field|
-      field.dropdown_layout = true if field.input_strategy.supports_dropdown_layout?
+      field.dropdown_layout = true if field.supports_dropdown_layout?
       field.code = nil # Remove the code so it doesn't appear as built in
       field.key = prefix_key(field.key) # Change the key so we cans clearly identify user data in the saved data
       field.resource = custom_form # User field pretend to be part of the form

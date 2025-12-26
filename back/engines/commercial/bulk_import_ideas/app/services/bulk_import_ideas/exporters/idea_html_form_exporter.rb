@@ -143,7 +143,7 @@ module BulkImportIdeas::Exporters
     end
 
     def option_image_url(field, option)
-      return nil unless field.input_strategy.supports_option_images? && option.image
+      return nil unless field.supports_option_images? && option.image
 
       format_urls(option.image.image.versions[:large].url)
     end
@@ -374,7 +374,7 @@ module BulkImportIdeas::Exporters
     end
 
     def field_matrix_details(field)
-      return unless field.input_strategy.supports_matrix_statements?
+      return unless field.supports_matrix_statements?
 
       {
         statements: field.matrix_statements.map { |statement| field_print_title(statement) },
@@ -386,7 +386,7 @@ module BulkImportIdeas::Exporters
     end
 
     def matrix_print_instructions(field)
-      return '' unless field.input_strategy.supports_matrix_statements?
+      return '' unless field.supports_matrix_statements?
 
       description = I18n.with_locale(@locale) do
         I18n.t('form_builder.pdf_export.matrix_print_description')

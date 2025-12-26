@@ -186,9 +186,9 @@ module Surveys
     def select_field_query(field, as: 'answer')
       table = field.resource_type == 'User' ? 'users' : 'ideas'
 
-      if field.input_strategy.supports_single_selection?
+      if field.supports_single_selection?
         "COALESCE(#{table}.custom_field_values->'#{field.key}', 'null') as #{as}"
-      elsif field.input_strategy.supports_multiple_selection?
+      elsif field.supports_multiple_selection?
         %{
           jsonb_array_elements(
             CASE WHEN (
@@ -208,7 +208,7 @@ module Surveys
       question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
 
       # Sort answers correctly
-      answers = answers.sort_by { |a| -a[:count] } unless field.input_strategy.supports_linear_scale?
+      answers = answers.sort_by { |a| -a[:count] } unless field.supports_linear_scale?
       answers = answers.sort_by { |a| a[:answer] == 'other' ? 1 : 0 } # other should always be last
 
       attributes = core_field_attributes(field, response_count: question_response_count).merge({
@@ -227,13 +227,13 @@ module Surveys
     end
 
     def get_option_multilocs(field)
-      if field.input_strategy.supports_linear_scale?
+      if field.supports_linear_scale?
         return build_scaled_input_multilocs(field)
       end
 
       field.ordered_transformed_options.each_with_object({}) do |option, accu|
         option_detail = { title_multiloc: option.title_multiloc }
-        option_detail[:image] = option.image&.image&.versions&.transform_values(&:url) if field.input_strategy.supports_option_images?
+        option_detail[:image] = option.image&.image&.versions&.transform_values(&:url) if field.supports_option_images?
         accu[option.key] = option_detail
       end
     end
@@ -245,7 +245,7 @@ module Surveys
 
       answer_multilocs.each_key do |value|
         labels = field.nth_linear_scale_multiloc(value).transform_values do |label|
-          label.present? && field.input_strategy.supports_linear_scale_labels? ? "#{value} - #{label}" : value
+          label.present? && field.supports_linear_scale_labels? ? "#{value} - #{label}" : value
         end
 
         answer_multilocs[value][:title_multiloc].merge! labels
@@ -279,7 +279,7 @@ module Surveys
     end
 
     def generate_select_answer_keys(field)
-      (field.input_strategy.supports_linear_scale? ? (1..field.maximum).to_a : field.ordered_transformed_options.map(&:key)) + [nil]
+      (field.supports_linear_scale? ? (1..field.maximum).to_a : field.ordered_transformed_options.map(&:key)) + [nil]
     end
 
     def matrix_linear_scale_statements(field)

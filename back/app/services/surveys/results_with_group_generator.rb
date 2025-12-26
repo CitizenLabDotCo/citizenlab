@@ -31,8 +31,8 @@ module Surveys
       query = inputs
       query = query.joins(:author) if group_mode == 'user_field'
 
-      raise "Unsupported group field type: #{group_field.input_type}" unless group_field.input_strategy.supports_single_selection?
-      raise "Unsupported question type: #{field.input_type}" unless field.input_strategy.supports_selection?
+      raise "Unsupported group field type: #{group_field.input_type}" unless group_field.supports_single_selection?
+      raise "Unsupported question type: #{field.input_type}" unless field.supports_selection?
 
       query = query.select(
         select_field_query(field, as: 'answer'),

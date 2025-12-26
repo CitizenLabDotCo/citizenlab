@@ -68,7 +68,7 @@ class InputUiSchemaGeneratorService < UiSchemaGeneratorService
       defaults[:answer_visible_to] = field.visible_to_public? ? 'public' : 'admins'
     end
     defaults[:otherField] = field.other_option_text_field&.key if field.other_option_text_field
-    defaults[:dropdown_layout] = field.dropdown_layout if field.input_strategy.supports_dropdown_layout?
+    defaults[:dropdown_layout] = field.dropdown_layout if field.supports_dropdown_layout?
     super.merge(defaults).tap do |options|
       options[:description] = description_option field
     end

@@ -234,7 +234,7 @@ module BulkImportIdeas::Legacy
       # is not enough space on the current page
       pdf.group do |pdf_group|
         # Add print description to linear scale fields (if not overridden by the admin)
-        if custom_field.input_strategy.supports_linear_scale? && custom_field.description_multiloc[@locale].blank?
+        if custom_field.supports_linear_scale? && custom_field.description_multiloc[@locale].blank?
           custom_field.description_multiloc[@locale] = custom_field.linear_scale_print_description(@locale)
         end
 

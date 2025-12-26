@@ -5,7 +5,7 @@ module Surveys
     def initialize(phase, input_type: nil)
       form = phase.custom_form || CustomForm.new(participation_context: phase)
       @fields = IdeaCustomFieldsService.new(form).enabled_fields.select do |f|
-        input_type ? f.input_type == input_type : f.input_strategy.supports_average? # Defaults to returning all fields that support averages
+        input_type ? f.input_type == input_type : f.supports_average? # Defaults to returning all fields that support averages
       end
       @inputs = phase.ideas.supports_survey.published
       @phase = phase

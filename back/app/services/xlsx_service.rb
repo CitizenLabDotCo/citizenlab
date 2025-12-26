@@ -254,7 +254,7 @@ class XlsxService
   end
 
   def value_getter_for_user_custom_field_columns(field, record_to_user, options)
-    if field.input_strategy.supports_options? # field with options
+    if field.supports_options? # field with options
       if field.domicile? # 'domicile' options are a special case
         options = field.ordered_transformed_options.index_by { |option| namespace(option.custom_field_id, option.key) }
       end
