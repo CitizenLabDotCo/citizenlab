@@ -150,52 +150,7 @@ class CustomField < ApplicationRecord
   end
 
   def input_strategy
-    @input_strategy ||= case input_type
-    when 'linear_scale'
-      InputStrategy::LinearScale.new(self)
-    when 'sentiment_linear_scale'
-      InputStrategy::SentimentLinearScale.new(self)
-    when 'rating'
-      InputStrategy::Rating.new(self)
-    when 'number'
-      InputStrategy::Number.new(self)
-    when 'select'
-      InputStrategy::Select.new(self)
-    when 'multiselect'
-      InputStrategy::Multiselect.new(self)
-    when 'select_image'
-      InputStrategy::SelectImage.new(self)
-    when 'multiselect_image'
-      InputStrategy::MultiselectImage.new(self)
-    when 'ranking'
-      InputStrategy::Ranking.new(self)
-    when 'text'
-      InputStrategy::Text.new(self)
-    when 'multiline_text'
-      InputStrategy::MultilineText.new(self)
-    when 'text_multiloc'
-      InputStrategy::TextMultiloc.new(self)
-    when 'multiline_text_multiloc'
-      InputStrategy::MultilineTextMultiloc.new(self)
-    when 'html_multiloc'
-      InputStrategy::HtmlMultiloc.new(self)
-    when 'matrix_linear_scale'
-      InputStrategy::MatrixLinearScale.new(self)
-    when 'topic_ids'
-      InputStrategy::TopicIds.new(self)
-    when 'point'
-      InputStrategy::Point.new(self)
-    when 'line'
-      InputStrategy::Line.new(self)
-    when 'polygon'
-      InputStrategy::Polygon.new(self)
-    when 'page'
-      InputStrategy::Page.new(self)
-    when 'image_files'
-      InputStrategy::ImageFiles.new(self)
-    else
-      InputStrategy::Base.new(self)
-    end
+    @input_strategy ||= "InputStrategy::#{input_type.camelize}".constantize.new(self)
   end
 
   def includes_other_option?

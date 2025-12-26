@@ -128,6 +128,16 @@ RSpec.describe CustomField do
     end
   end
 
+  describe '#input_strategy' do
+    it 'has a strategy class for every INPUT_TYPE' do
+      CustomField::INPUT_TYPES.each do |input_type|
+        strategy_class_name = "InputStrategy::#{input_type.camelize}"
+        expect { strategy_class_name.constantize }.not_to raise_error,
+          "Missing InputStrategy class for '#{input_type}'. Expected #{strategy_class_name} to exist."
+      end
+    end
+  end
+
   describe '#logic?' do
     it 'returns true when there is logic' do
       field.logic = { 'rules' => [{ if: 2, goto_page_id: 'some_page_id' }] }
