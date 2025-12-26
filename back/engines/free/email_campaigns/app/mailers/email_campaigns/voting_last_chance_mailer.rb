@@ -5,7 +5,7 @@ module EmailCampaigns
     include EditableWithPreview
 
     def editable
-      %i[subject_multiloc title_multiloc button_text_multiloc]
+      %i[subject_multiloc title_multiloc intro_multiloc button_text_multiloc]
     end
 
     def substitution_variables
@@ -28,10 +28,10 @@ module EmailCampaigns
       }
     end
 
-    private
+    # private
 
-    def header_message
-      nil
-    end
+    # def header_message
+    #   nil
+    # end
   end
 end

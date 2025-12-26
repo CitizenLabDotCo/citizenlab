@@ -76,6 +76,7 @@ RSpec.describe EmailCampaigns::VotingLastChanceMailer do
           :voting_last_chance_campaign,
           context: create(:phase),
           subject_multiloc: { 'en' => 'Custom Context Subject - {{ projectTitle }}' },
+          intro_multiloc: { 'en' => '<b>NEW BODY TEXT</b>' },
           button_text_multiloc: { 'en' => 'CLICK THE CONTEXT BUTTON' },
           reply_to: 'noreply@govocal.com'
         )

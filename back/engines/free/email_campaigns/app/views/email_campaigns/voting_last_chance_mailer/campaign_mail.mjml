@@ -2,9 +2,7 @@
 <mj-section padding="0 25px">
   <mj-column>
     <mj-text>
-      <p style="margin-top: 0px;"><%= format_message('body_1', values: { projectTitle: localize_for_recipient(event.project_title_multiloc) }) %></p>
-      <p><%= format_message('body_2', ) %></p>
-      <p><%= format_message('body_3') %></p>
+      <%= header_message %>
     </mj-text>
   </mj-column>
 </mj-section>
