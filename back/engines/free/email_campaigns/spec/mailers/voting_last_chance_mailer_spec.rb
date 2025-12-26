@@ -127,6 +127,12 @@ RSpec.describe EmailCampaigns::VotingLastChanceMailer do
           end
         end
 
+        it 'can customize the intro text' do
+          expect(body).to have_tag('b') do
+            with_text(/NEW BODY TEXT/)
+          end
+        end
+
         it 'includes the CTA' do
           expect(body).to have_tag('a', with: { href: 'https://govocal.com/projects/example' }) do
             with_text(/CLICK THE CONTEXT BUTTON/)
