@@ -59,12 +59,7 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
   end
 
   describe '#default_fields' do
-    it 'returns an empty list if form is persisted' do
-      form = create(:custom_form, participation_context: phase)
-      expect(participation_method.default_fields(form)).to eq []
-    end
-
-    it 'returns the default fields if the form is not persisted' do
+    it 'returns the default fields' do
       form = build(:custom_form, participation_context: phase)
       expect(participation_method.default_fields(form).count).to eq 15
       expect(participation_method.default_fields(form).pluck(:key)).to eq(%w[
