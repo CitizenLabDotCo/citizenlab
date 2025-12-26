@@ -57,10 +57,10 @@
 # The older react json form version works only with text number multiline_text select multiselect checkbox date
 # The other types will fail for user custom fields and render a shallow schema for idea custom fields with only the required, hidden, title and description.
 class CustomField < ApplicationRecord
-  delegate :supports_average?, :supports_options?, :supports_other_option?, :supports_option_images?, supports_follow_up?, supports_text?,
-    supports_linear_scale?, supports_linear_scale_labels?, supports_matrix_statements?, supports_single_selection?,
-    supports_multiple_selection?, supports_selection?, supports_select_count?, supports_dropdown_layout?, supports_free_text_value?,
-    supports_xlsx_export?, supports_geojson?, to: :input_strategy
+  delegate :supports_average?, :supports_options?, :supports_other_option?, :supports_option_images?, :supports_follow_up?, :supports_text?,
+    :supports_linear_scale?, :supports_linear_scale_labels?, :supports_matrix_statements?, :supports_single_selection?,
+    :supports_multiple_selection?, :supports_selection?, :supports_select_count?, :supports_dropdown_layout?, :supports_free_text_value?,
+    :supports_xlsx_export?, :supports_geojson?, to: :input_strategy
 
   acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_id]
 
