@@ -27,11 +27,5 @@ module EmailCampaigns
         }
       }
     end
-
-    # private
-
-    # def header_message
-    #   nil
-    # end
   end
 end

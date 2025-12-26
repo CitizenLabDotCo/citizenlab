@@ -115,8 +115,6 @@ const EditCampaignForm = ({
   };
 
   const defaultReplyTo = appConfig.data.attributes.settings.core.reply_to_email;
-  console.log(editableRegions);
-
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>

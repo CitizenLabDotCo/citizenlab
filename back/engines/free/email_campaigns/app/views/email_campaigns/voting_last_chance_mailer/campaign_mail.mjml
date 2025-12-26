@@ -1,11 +1,2 @@
-<!-- Body text -->
-<mj-section padding="0 25px">
-  <mj-column>
-    <mj-text>
-      <%= header_message %>
-    </mj-text>
-  </mj-column>
-</mj-section>
-
 <!-- CTA button -->
 <%= render partial: 'application/cta_button', locals: { href: event.project_url, message: cta_button_text } %>
