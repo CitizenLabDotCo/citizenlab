@@ -27,11 +27,11 @@ class IdeaCustomFieldsService
   def xlsx_exportable_fields
     UserFieldsInSurveyService
       .add_user_fields_to_form(all_fields, participation_method, custom_form)
-      .filter { |field| field.supports_xlsx_export? }
+      .filter(&:supports_xlsx_export?)
   end
 
   def geojson_supported_fields
-    all_fields.filter { |field| field.supports_geojson? }
+    all_fields.filter(&:supports_geojson?)
   end
 
   def visible_fields
