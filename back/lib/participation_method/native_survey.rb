@@ -44,8 +44,6 @@ module ParticipationMethod
     end
 
     def default_fields(custom_form)
-      return [] if custom_form.persisted?
-
       multiloc_service = MultilocService.new
       [
         start_page_field(custom_form),
