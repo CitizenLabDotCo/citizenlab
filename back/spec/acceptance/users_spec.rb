@@ -111,36 +111,62 @@ resource 'Users' do
           end
         end
 
-        context 'when a user exists without a password and has completed registration', document: false do
-          before { create(:user_no_password, email: 'test@test.com', registration_completed_at: Time.now) }
+        context 'when a user exists without a password and has email confirmed', document: false do
+          before do
+            @user = create(:user_no_password, email: 'test@test.com')
+            @user.confirm
+          end
 
           let(:email) { 'test@test.com' }
 
           example_request 'Returns "confirm"' do
+            expect(@user.password_digest).to be_nil
+            expect(@user.confirmation_required?).to be false
             assert_status 200
             expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
           end
         end
 
-        context 'when a user exists without a password and has not completed registration' do
-          before { create(:user_with_confirmation, email: 'test@email.com', password: nil) }
+        context 'when a user exists without a password and does not have email confirmed' do
+          before { @user = create(:user_no_password, email: 'test@email.com') }
 
           let(:email) { 'test@email.com' }
 
           example_request 'Returns "confirm"' do
+            expect(@user.password_digest).to be_nil
+            expect(@user.confirmation_required?).to be true
             assert_status 200
             expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
           end
         end
 
-        context 'when a user exists with a password', document: false do
-          before { create(:user, email: 'test@test.com') }
+        context 'when a user exists with a password and has email confirmed', document: false do
+          before { @user = create(:user, email: 'test@test.com') }
 
           let(:email) { 'test@test.com' }
 
           example_request 'Returns "password"' do
+            expect(@user.password_digest).not_to be_nil
+            expect(@user.confirmation_required?).to be false
             assert_status 200
             expect(json_response_body[:data][:attributes][:action]).to eq('password')
+          end
+        end
+
+        context 'when a user exists with a password and does not have email confirmed', document: false do
+          before do
+            @user = create(:user_with_confirmation, email: 'test@test.com')
+            allow(RequestConfirmationCodeJob).to receive(:perform_now)
+          end
+
+          let(:email) { 'test@test.com' }
+
+          example_request 'Returns "confirm"' do
+            expect(@user.password_digest).not_to be_nil
+            expect(@user.confirmation_required?).to be true
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+            expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(@user)
           end
         end
 
@@ -201,6 +227,19 @@ resource 'Users' do
           do_request(user: { email: 'test2@email.com' })
           assert_status 200
           expect(json_response_body[:data][:attributes][:action]).to eq('token')
+        end
+      end
+
+      context 'when password_login is turned off' do
+        before do
+          SettingsService.new.activate_feature! 'user_confirmation'
+          SettingsService.new.deactivate_feature! 'password_login'
+        end
+
+        let(:email) { 'test@test.com' }
+
+        example_request '[error] returns 401' do
+          assert_status 401
         end
       end
     end
