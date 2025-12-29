@@ -123,15 +123,6 @@ module Surveys
       skip_fields
     end
 
-    # def cleanup_results(results)
-    #   # remove the temporary fields that are now not needed
-    #   super.map do |question|
-    #     question.delete(:questionViewedCount)
-    #     question.delete(:key)
-    #     question
-    #   end
-    # end
-
     def supports_question_logic?(input_type)
       %w[select multiselect linear_scale multiselect_image rating].include? input_type
     end
