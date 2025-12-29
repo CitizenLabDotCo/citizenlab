@@ -135,7 +135,7 @@ HTMLCanvasElement.prototype.getContext = jest.fn(() => ({
 HTMLCanvasElement.prototype.toDataURL = jest.fn(() => 'data:image/png;base64,');
 
 jest.mock('polished');
-jest.mock('quill-blot-formatter');
+jest.mock('@enzedonline/quill-blot-formatter2');
 jest.mock('history', () => ({
   createBrowserHistory: () => ({
     replace: jest.fn(),
