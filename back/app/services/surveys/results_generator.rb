@@ -209,6 +209,7 @@ module Surveys
 
     def visit_ranking(field)
       # TODO: Should we be reading survey_inputs directly here?
+      # NO - but it will need some refactoring as the ranking is calculated on the custom_field model
       core_field_attributes(field).merge({
         average_rankings: field.average_rankings(survey_inputs),
         rankings_counts: field.rankings_counts(survey_inputs),
