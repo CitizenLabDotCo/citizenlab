@@ -6,11 +6,5 @@ module Files
     def extension_denylist
       %w[svg]
     end
-
-    def store_dir
-      # Keep the same directory structure as Files::File:
-      # ".../uploads/<tenant_id>/files/file/<mounted_as>/<model.id>"
-      super.sub('/files/restricted_file/', '/files/file/')
-    end
   end
 end
