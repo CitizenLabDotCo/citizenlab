@@ -132,6 +132,7 @@ class WebApi::V1::UsersController < ApplicationController
           # we send them to the confirm action first.
           # This situation only exists for legacy users that were created before
           # we made email confirmation required before being able to set a password
+          RequestConfirmationCodeJob.perform_now(@user)
           render json: raw_json({ action: 'confirm' })
         else
           render json: raw_json({ action: 'password' })

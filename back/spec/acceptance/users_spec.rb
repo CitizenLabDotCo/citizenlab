@@ -115,7 +115,6 @@ resource 'Users' do
           before do
             @user = create(:user_no_password, email: 'test@test.com')
             @user.confirm
-            @user
           end
 
           let(:email) { 'test@test.com' }
@@ -155,7 +154,10 @@ resource 'Users' do
         end
 
         context 'when a user exists with a password and does not have email confirmed', document: false do
-          before { @user = create(:user_with_confirmation, email: 'test@test.com') }
+          before do 
+            @user = create(:user_with_confirmation, email: 'test@test.com')
+            allow(RequestConfirmationCodeJob).to receive(:perform_now)
+          end
 
           let(:email) { 'test@test.com' }
 
@@ -164,6 +166,7 @@ resource 'Users' do
             expect(@user.confirmation_required?).to be true
             assert_status 200
             expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+            expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(@user)
           end
         end
 
