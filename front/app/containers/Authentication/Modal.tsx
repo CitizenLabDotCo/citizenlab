@@ -157,10 +157,6 @@ const AuthModal = () => {
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
             onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
-            onEnterFranceConnect={transition(
-              currentStep,
-              'ENTER_FRANCE_CONNECT'
-            )}
           />
         )}
         {currentStep === 'email:policies' && (
@@ -298,10 +294,6 @@ const AuthModal = () => {
             setError={setError}
             onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
             onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
-            onEnterFranceConnect={transition(
-              currentStep,
-              'ENTER_FRANCE_CONNECT'
-            )}
           />
         )}
       </Box>
