@@ -3295,6 +3295,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "Reģistrācijas likme",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "Reģistrācijas",
   "app.containers.admin.ReportBuilder.charts.accessibility": "Pieejamība",
+  "app.containers.admin.ReportBuilder.charts.accessibilityDescription": "Izmantojiet šos laukus, lai sniegtu skaidru teksta aprakstu, lai lietotāji, kas izmanto palīgtehnoloģijas, varētu saprast diagrammas nozīmi.",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "Dalībnieku grafiks",
   "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning1": "Lūdzu, ņemiet vērā, ka dalības rādītāji var nebūt pilnīgi precīzi, jo daži dati tiek iegūti ārējā aptaujā, kuru mēs nesekojam.",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "Diagramma",
