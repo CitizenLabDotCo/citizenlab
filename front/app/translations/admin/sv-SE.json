@@ -3295,6 +3295,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "Registreringsavgift",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "Registreringar",
   "app.containers.admin.ReportBuilder.charts.accessibility": "Tillgänglighet",
+  "app.containers.admin.ReportBuilder.charts.accessibilityDescription": "Använd dessa fält för att ge en tydlig textbeskrivning så att användare som använder hjälpmedel kan förstå diagrammets innebörd.",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "Deltagarnas tidslinje",
   "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning1": "Observera att antalet deltagare kanske inte är helt korrekt eftersom vissa uppgifter samlas in i en extern undersökning som vi inte följer upp.",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "DIAGRAM",
