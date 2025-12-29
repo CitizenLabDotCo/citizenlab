@@ -69,6 +69,27 @@ module Surveys
                   next_page_id = all_page_ids[all_page_ids.index(page_id) + 1]
                 end
               elsif field.logic['rules']
+
+                # TODO: Pasted from SurveyResponseLogicService - Need to change
+                # is_linear_or_rating = field.supports_linear_scale?
+                # options = if is_linear_or_rating
+                #             # Create a unique ID for this linear scale option in the full results so we can filter logic
+                #             (1..field.maximum).map { |value| { id: "#{field.id}_#{value}", key: value } }
+                #           else
+                #             field.ordered_options.map { |option| { id: option.id, key: option.key } }
+                #           end
+                #
+                # # NOTE: Only options with logic will be returned
+                # any_other_answer_page_id = field.logic['rules']&.find { |r| r['if'] == 'any_other_answer' }&.dig('goto_page_id')
+                # option_logic = options.each_with_object({}) do |option, accu|
+                #   rule_id = is_linear_or_rating ? option[:key] : option[:id]
+                #   logic_next_page_id = field.logic['rules']&.find { |r| r['if'] == rule_id }&.dig('goto_page_id') || any_other_answer_page_id
+                #   accu[option[:key]] = { id: option[:id], nextPageId: logic_next_page_id } if logic_next_page_id
+                # end
+                #
+                # no_answer_logic_page_id = field.logic['rules']&.find { |r| r['if'] == 'no_answer' }&.dig('goto_page_id')
+
+
                 # TODO: select or linear scale input_fields
               end
             end
@@ -222,14 +243,7 @@ module Surveys
     end
 
     def visit_file_upload(field)
-      # New version
       file_ids = base_responses(field.key).map { |a| a[:answer]['id'] } || []
-
-      # OLD VERSION
-      # file_ids = inputs
-      #   .select("custom_field_values->'#{field.key}'->'id' as value")
-      #   .where("custom_field_values->'#{field.key}' IS NOT NULL")
-      #   .map(&:value)
 
       files = ::Files::FileAttachment.where(id: file_ids).map do |attachment|
         { name: attachment.file.name, url: attachment.file.content.url }
@@ -291,25 +305,11 @@ module Surveys
     def base_responses(field_key, with_nil: false)
       return responses_by_field[field_key] if with_nil
 
-      # NEW VERSION
       responses_by_field[field_key]
         &.select { |r| r[:answer].present? }
-
-      # OLD VERSION
-      # inputs
-      #   .select("custom_field_values->'#{field.key}' as value")
-      #   .where("custom_field_values->'#{field.key}' IS NOT NULL")
-      #   .map do |response|
-      #   { answer: response.value }
-      # end
     end
 
     def visit_select_base(field)
-      # query = inputs.select(
-      #   select_field_query(field, as: 'answer')
-      # )
-      # answers = construct_select_answers(query, field)
-
       responses = select_field_answers(field.key)
 
       # Count all the answers
@@ -343,33 +343,8 @@ module Surveys
       nil_count + base_responses(field.key).count { |h| !h[:answer].key?(matrix_statement_key) }
     end
 
-    # def select_field_query(field, as: 'answer')
-    #   table = field.resource_type == 'User' ? 'users' : 'ideas'
-    #
-    #   if field.supports_single_selection?
-    #     "COALESCE(#{table}.custom_field_values->'#{field.key}', 'null') as #{as}"
-    #   elsif field.supports_multiple_selection?
-    #     %{
-    #       jsonb_array_elements(
-    #         CASE WHEN (
-    #           jsonb_path_exists(#{table}.custom_field_values, '$ ? (exists (@."#{field.key}"))') AND
-    #           jsonb_typeof(#{table}.custom_field_values->'#{field.key}') = 'array'
-    #         ) THEN #{table}.custom_field_values->'#{field.key}'
-    #           ELSE '[null]'::jsonb END
-    #       ) as #{as}
-    #   }
-    #   else
-    #     raise "Unsupported field type: #{field.input_type}"
-    #   end
-    # end
-
     def build_select_response(answers, field)
-      # NEW QUERY
       question_response_count = base_responses(field.key).size
-
-      # OLD QUERY
-      # NOTE: This is an additional query for selects so impacts performance slightly
-      # question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
 
       # Sort answers correctly
       answers = answers.sort_by { |a| -a[:count] } unless field.supports_linear_scale?
@@ -418,48 +393,12 @@ module Surveys
       answer_multilocs
     end
 
-    def construct_select_answers(query, field)
-
-      # counts = input.group_by { |h| h[:answer] }.transform_values(&:count)
-      #
-      # # Build the result array with all required answers
-      # answers = ["cat", "dog", "cow", "pig", "no_response", nil]
-      # result = answers.map { |a| { answer: a, count: counts[a] || 0 } }
-
-
-      # answer_keys = generate_select_answer_keys(field)
-      #
-      # grouped_answers_hash = select_group_query(query)
-      #   .each_with_object({}) do |(answer, count), accu|
-      #   valid_answer = answer_keys.include?(answer) ? answer : nil
-      #
-      #   accu[valid_answer] ||= { answer: valid_answer, count: 0 }
-      #   accu[valid_answer][:count] += count
-      # end
-      #
-      # answer_keys.map do |key|
-      #   grouped_answers_hash[key] || { answer: key, count: 0 }
-      # end
-    end
-
-    # def select_group_query(query)
-    #   Idea
-    #     .select(:answer)
-    #     .from(query)
-    #     .group(:answer)
-    #     .count
-    # end
-
     def generate_select_answer_keys(field)
       (field.supports_linear_scale? ? (1..field.maximum).to_a : field.ordered_transformed_options.map(&:key))
     end
 
     def matrix_linear_scale_statements(field)
       field.matrix_statements.pluck(:key, :title_multiloc).to_h do |statement_key, statement_title_multiloc|
-        # OLD VERSION
-        # statement_counts = inputs.group("custom_field_values->'#{field.key}'->'#{statement_key}'").count
-
-        # NEW VERSION
         statement_counts = base_responses(field.key)
           .map { |h| h[:answer][statement_key] }
           .compact
@@ -494,25 +433,14 @@ module Surveys
 
     # Get any associated text responses - where follow-up question or other option is used
     def get_text_responses(field_key)
-      # NEW VERSION
       base_responses(field_key)
         &.map { |a| a.except(:id) }
         &.sort_by { |a| a[:answer] } || []
-
-      # OLD VERSION
-      # inputs
-      #   .select("custom_field_values->'#{field_key}' as value")
-      #   .where("custom_field_values->'#{field_key}' IS NOT NULL")
-      #   # Remove all sequences of one or more whitespace characters (including spaces, newlines, tabs),
-      #   # then check the result is not empty. TRIM would not handle newlines correctly.
-      #   .where("regexp_replace(custom_field_values->>'#{field_key}', '[[:space:]]+', '', 'g') != ''")
-      #   .map { |answer| { answer: answer.value.to_s } }
-      #   .sort_by { |a| a[:answer] }
     end
 
     def find_result(result_field_id)
       result = generate_results[:results].find { |r| r[:customFieldId] == result_field_id }
-      raise 'Question not found' unless result
+      raise 'Question not found' unless result # Raise 404 if not found?
 
       result
     end
