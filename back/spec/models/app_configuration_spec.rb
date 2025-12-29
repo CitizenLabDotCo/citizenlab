@@ -40,20 +40,4 @@ RSpec.describe AppConfiguration do
       end
     end
   end
-
-  describe '.platform_start_at' do
-    it 'returns the platform creation time by default' do
-      app_config = described_class.instance
-      expect(app_config.platform_start_at.to_i).to eq app_config.created_at.to_i
-    end
-
-    it 'returns the overridden platform start time if set' do
-      overridden_time = 1.week.ago.beginning_of_day
-      app_config = described_class.instance
-      app_config.override_platform_start_at = overridden_time
-      app_config.save!
-
-      expect(app_config.platform_start_at.to_i).to eq overridden_time.to_i
-    end
-  end
 end

@@ -2066,7 +2066,7 @@ CREATE TABLE public.app_configurations (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     style jsonb DEFAULT '{}'::jsonb,
-    override_platform_start_at timestamp(6) without time zone
+    platform_start_at timestamp(6) without time zone DEFAULT now() NOT NULL
 );
 
 
