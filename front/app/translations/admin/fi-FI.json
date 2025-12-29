@@ -3295,6 +3295,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "Rekisteröintiprosentti",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "Rekisteröinnit",
   "app.containers.admin.ReportBuilder.charts.accessibility": "Esteettömyys",
+  "app.containers.admin.ReportBuilder.charts.accessibilityDescription": "Käytä näitä kenttiä selkeän tekstikuvauksen antamiseen, jotta avustavia teknologioita käyttävät käyttäjät ymmärtävät kaavion merkityksen.",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "Osallistujien aikajana",
   "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning1": "Huomaa, että osallistumisluvut eivät välttämättä ole täysin tarkkoja, koska osa tiedoista on kerätty ulkoiseen kyselyyn, jota emme seuraa.",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "Kartoittaa",
