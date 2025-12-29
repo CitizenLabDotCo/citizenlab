@@ -101,10 +101,14 @@ const Container = ({
       <Box
         ref={ref}
         width={
-          typeof parsedWidth === 'number' ? `${parsedWidth}px` : parsedWidth
+          typeof parsedWidth === 'number'
+            ? `${parsedWidth}px`
+            : parsedWidth ?? '100%'
         }
         height={
-          typeof parsedHeight === 'number' ? `${parsedHeight}px` : parsedHeight
+          typeof parsedHeight === 'number'
+            ? `${parsedHeight}px`
+            : parsedHeight ?? '100%'
         }
       >
         <ResponsiveContainer width="100%" height="100%">
