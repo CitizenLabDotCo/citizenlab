@@ -9,7 +9,7 @@ class AddPlatformStartAtToAppConfigurations < ActiveRecord::Migration[7.2]
           execute <<-SQL.squish
           UPDATE app_configurations
           SET platform_start_at = created_at
-        SQL
+          SQL
         end
       end
     end
