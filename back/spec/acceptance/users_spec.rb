@@ -154,7 +154,7 @@ resource 'Users' do
         end
 
         context 'when a user exists with a password and does not have email confirmed', document: false do
-          before do 
+          before do
             @user = create(:user_with_confirmation, email: 'test@test.com')
             allow(RequestConfirmationCodeJob).to receive(:perform_now)
           end
