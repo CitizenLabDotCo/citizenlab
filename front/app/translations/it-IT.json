@@ -216,7 +216,7 @@
   "app.components.ErrorToast.votesExceededError": "Non hai abbastanza voti a disposizione",
   "app.components.EventAttendanceButton.forwardToFriend": "Inoltra ad un amico",
   "app.components.EventAttendanceButton.maxRegistrationsReached": "Il numero massimo di iscrizioni all'evento è stato raggiunto. Non ci sono più posti disponibili.",
-  "app.components.EventAttendanceButton.register": "Registro",
+  "app.components.EventAttendanceButton.register": "Registrati",
   "app.components.EventAttendanceButton.registered": "Registrato",
   "app.components.EventAttendanceButton.seeYouThere": "Ci vediamo lì!",
   "app.components.EventAttendanceButton.seeYouThereName": "Ci vediamo lì, {userFirstName}!",
