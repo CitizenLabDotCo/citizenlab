@@ -9,7 +9,7 @@ type FilterByType<Union, TypeValue> = Union extends any
   : never;
 
 type GroupByType<T extends { type: string }> = {
-  [K in ExtractType<T>]: FilterByType<T, K>[];
+  [K in ExtractType<T>]?: FilterByType<T, K>[];
 };
 
 export const groupIncludedResources = <T extends { type: string }>(

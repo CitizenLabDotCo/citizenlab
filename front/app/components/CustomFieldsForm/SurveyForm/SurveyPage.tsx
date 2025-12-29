@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import { Box, Button, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
@@ -33,7 +33,11 @@ import { FormValues } from '../Page/types';
 import usePageForm from '../Page/usePageForm';
 import { getFormCompletionPercentage, Pages } from '../util';
 
-import { determineNextPageNumber, determinePreviousPageNumber } from './logic';
+import {
+  determineNextPageNumber,
+  determinePreviousPageNumber,
+  getSkippedPageIndices,
+} from './logic';
 
 const StyledForm = styled.form`
   height: 100%;
@@ -119,6 +123,35 @@ const SurveyPage = ({
     currentPage: page,
     formData: methods.watch(),
   });
+
+  // Clear values from skipped pages when form data changes
+  // This ensures that if a user changes an answer that affects conditional logic,
+  // any previously filled values from now-skipped pages are removed
+  useEffect(() => {
+    const subscription = methods.watch((formData) => {
+      const skippedPageIndices = getSkippedPageIndices({
+        pages,
+        formData,
+      });
+
+      // Clear all field values from skipped pages
+      skippedPageIndices.forEach((skippedPageIndex) => {
+        const skippedPage = pages[skippedPageIndex];
+        skippedPage.pageQuestions.forEach((question) => {
+          const currentValue = methods.getValues(question.key);
+          // Only clear if there's actually a value to clear
+          if (currentValue !== undefined && currentValue !== null) {
+            methods.setValue(question.key, undefined, {
+              shouldValidate: false,
+              shouldDirty: false,
+            });
+          }
+        });
+      });
+    });
+
+    return () => subscription.unsubscribe();
+  }, [methods, pages]);
 
   const onFormSubmit = async (formValues: FormValues) => {
     // Go to the project page if this is the last page

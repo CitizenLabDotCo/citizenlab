@@ -2,7 +2,7 @@
 
 module BulkImportIdeas::Extractors
   class BasePhaseExtractor < BaseExtractor
-    def initialize(locale, config, xlsx_file_path, worksheet_name, attributes = {})
+    def initialize(locale, config, xlsx_file_path, worksheet_name, attributes, append_ideas)
       super(locale, config)
       if xlsx_file_path
         workbook = RubyXL::Parser.parse_buffer(open(xlsx_file_path).read)
@@ -11,6 +11,7 @@ module BulkImportIdeas::Extractors
       @idea_columns = []
       @user_columns = []
       @attributes = attributes
+      @append_ideas = append_ideas # Do we want to append ideas if there are existing ones in this phase?
       @rows = generate_idea_rows
 
       # SECURITY: Replace email addresses so real emails do not get added to dev or staging environments
@@ -29,7 +30,8 @@ module BulkImportIdeas::Extractors
         end_at: @attributes[:end_at],
         idea_rows: @rows,
         idea_custom_fields: idea_custom_fields,
-        user_custom_fields: user_custom_fields
+        user_custom_fields: user_custom_fields,
+        append_ideas: @append_ideas
       }.merge(
         participation_method_attributes
       )
