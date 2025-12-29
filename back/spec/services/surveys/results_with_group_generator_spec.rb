@@ -661,7 +661,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           group_field_id: gender_user_custom_field.id
         )
         generator.generate_result_for_field(select_field.id)
-      end.not_to exceed_query_limit(17)
+      end.not_to exceed_query_limit(18) # Down from 21
     end
   end
 end

@@ -215,40 +215,6 @@ class CustomField < ApplicationRecord
     supports_single_selection? || supports_multiple_selection?
   end
 
-  def average_rankings(scope)
-    # This basically starts from all combinations of scope ID, option key (value)
-    # and position (ordinality) and then calculates the average position for each
-    # option. "#>> '{}'" is used to unescape the double quotes in the JSONB value.
-    return {} if input_type != 'ranking'
-
-    scope
-      .where.not("custom_field_values ->> '#{key}' IS NULL")
-      .joins("CROSS JOIN jsonb_array_elements(custom_field_values->'#{key}') WITH ORDINALITY AS elem(value, ordinality)")
-      .group("elem.value #>> '{}'")
-      .average('elem.ordinality')
-  end
-
-  def rankings_counts(scope)
-    # This basically starts from all combinations of scope ID, option key (value)
-    # and position (ordinality) and then calculates the count for each option and
-    # position. "#>> '{}'" is used to unescape the double quotes in the JSONB
-    # value.
-    return {} if input_type != 'ranking'
-
-    query_result = scope
-      .where.not("custom_field_values ->> '#{key}' IS NULL")
-      .joins("CROSS JOIN jsonb_array_elements(custom_field_values->'#{key}') WITH ORDINALITY AS elem(value, ordinality)")
-      .group("elem.value #>> '{}'", 'elem.ordinality')
-      .count
-
-    # Transform pair to ordinality hash into a hash of hashes
-    options.pluck(:key).index_with do |option_key|
-      (1..options.size).index_with do |ranking|
-        query_result[[option_key, ranking]] || 0
-      end
-    end
-  end
-
   def built_in?
     !!code
   end
@@ -465,7 +431,7 @@ class CustomField < ApplicationRecord
     @ordered_options ||= if random_option_ordering
       options.shuffle.sort_by { |o| o.other ? 1 : 0 }
     else
-      options.order(:ordering)
+      options # options are by default ordered by :ordering from the association
     end
   end
 
@@ -572,12 +538,12 @@ class CustomField < ApplicationRecord
 
   # Return domicile options with IDs and descriptions taken from areas
   def domicile_options
-    return options.order(:ordering) unless domicile?
+    return options unless domicile?
 
     areas = Area.where(custom_field_option_id: options.pluck(:id))
     area_id_map = areas.map { |a| { a.custom_field_option_id => { id: a.id, title: a.title_multiloc } } }.reduce({}, :merge)
 
-    options.order(:ordering).map do |option|
+    options.map do |option|
       option.key = area_id_map.dig(option.id, :id) || 'outside'
       option.title_multiloc = area_id_map.dig(option.id, :title) || MultilocService.new.i18n_to_multiloc('custom_field_options.domicile.outside')
       option

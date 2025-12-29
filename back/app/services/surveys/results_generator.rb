@@ -14,6 +14,156 @@ module Surveys
       @locales = AppConfiguration.instance.settings('core', 'locales')
     end
 
+    # Get the results for a single survey question
+    def generate_result_for_field(field_id)
+      result = generate_results[:results].find { |r| r[:customFieldId] == field_id }
+      raise 'Question not found' unless result
+
+      result
+    end
+
+    # Get the results for all survey questions
+    def generate_results
+      results = input_fields.filter_map { |f| f.id ? visit(f) : nil } # Skip other/follow_up questions which have no ID
+      if results.present?
+        results = add_question_numbers_to_results results
+        results = add_page_response_count_to_results results
+        results = add_averages results
+        results = add_additional_attributes_to_results results
+        results = cleanup_results results
+      end
+
+      {
+        results: results,
+        totalSubmissions: total_response_count
+      }
+    end
+
+    def visit_number(field)
+      responses = base_responses(field.key).map { |r| r.except(:id) } # TODO: A lot of repetition of this pattern - refactor?
+      response_count = responses.size
+
+      core_field_attributes(field, response_count:).merge({
+        numberResponses: responses
+      })
+    end
+
+    def visit_select(field)
+      visit_select_base(field)
+    end
+
+    def visit_multiselect(field)
+      visit_select_base(field)
+    end
+
+    def visit_multiselect_image(field)
+      visit_select_base(field)
+    end
+
+    def visit_ranking(field)
+      responses = base_responses(field.key).pluck(:answer)
+      option_keys = field.options.pluck(:key)
+
+      # Calculate the counts for each ranking position per option
+      rankings_counts = option_keys.index_with do |_key|
+        (1..option_keys.count).to_a.index_with { |_i| 0 }
+      end
+
+      option_keys.each do |k|
+        responses.each do |r|
+          index = r.index(k)
+          next unless index
+
+          rank = index + 1
+          rankings_counts[k][rank] += 1
+        end
+      end
+
+      # Calculate average ranking per option
+      average_rankings = rankings_counts.transform_values do |counts|
+        total = counts.sum { |rank, count| rank * count }
+        count = counts.values.sum
+        (total.to_f / count).round(2)
+      end
+
+      core_field_attributes(field).merge({
+        average_rankings:,
+        rankings_counts:,
+        multilocs: get_multilocs(field)
+      })
+    end
+
+    def visit_text(field)
+      answers = get_text_responses(field.key)
+      response_count = answers.size
+
+      core_field_attributes(field, response_count:).merge({
+        textResponses: answers
+      })
+    end
+
+    def visit_multiline_text(field)
+      visit_text(field)
+    end
+
+    def visit_linear_scale(field)
+      visit_select_base(field)
+    end
+
+    def visit_matrix_linear_scale(field)
+      # TODO: Convert this.
+      core_field_attributes(field).merge({
+        multilocs: { answer: build_scaled_input_multilocs(field) },
+        linear_scales: matrix_linear_scale_statements(field)
+      })
+    end
+
+    def visit_rating(field)
+      visit_select_base(field)
+    end
+
+    def visit_sentiment_linear_scale(field)
+      visit_select_base(field)
+    end
+
+    def visit_file_upload(field)
+      file_ids = base_responses(field.key).map { |a| a[:answer]['id'] } || []
+
+      files = ::Files::FileAttachment.where(id: file_ids).map do |attachment|
+        { name: attachment.file.name, url: attachment.file.content.url }
+      end
+
+      files.concat(IdeaFile.where(id: file_ids).map do |file|
+        { name: file.name, url: file.file.url }
+      end)
+
+      core_field_attributes(field, response_count: files.size).merge(files: files)
+    end
+
+    def visit_shapefile_upload(field)
+      visit_file_upload(field)
+    end
+
+    def visit_point(field)
+      responses_to_geographic_input_type(field)
+    end
+
+    def visit_line(field)
+      responses_to_geographic_input_type(field)
+    end
+
+    def visit_polygon(field)
+      responses_to_geographic_input_type(field)
+    end
+
+    def visit_page(field)
+      core_field_attributes(field, response_count: 0) # Response count gets updated later by looking at all the results
+    end
+
+    private
+
+    attr_reader :phase, :locales, :structure_by_category
+
     def responses_by_field
       @responses_by_field ||= format_responses_by_field
     end
@@ -21,34 +171,19 @@ module Surveys
     def input_fields
       @input_fields ||= IdeaCustomFieldsService
         .new(phase.custom_form || CustomForm.new(participation_context: phase))
-        .survey_results_fields(structure_by_category: @structure_by_category)
+        .survey_results_fields(structure_by_category: structure_by_category)
     end
 
     def user_fields
-      @user_fields ||= CustomField.registration
+      @user_fields ||= CustomField.registration.includes(:options)
     end
 
     def survey_inputs
-      @survey_inputs ||= phase.ideas.supports_survey.published # TODO: Add .includes(:author)
-    end
-
-    def survey_has_logic?
-      @survey_has_logic ||= input_fields.any? { |field| field.logic != {} }
-    end
-
-    def total_response_count
-      # Number of responses for the first page will always be total responses
-      num_times_field_seen(responses_by_field.keys.first)
-    end
-
-    def num_times_field_seen(field_key)
-      responses_by_field[field_key].size
+      @survey_inputs ||= phase.ideas.includes(:author).supports_survey.published
     end
 
     # TODO: Reformat to make smaller { "7c4fda2e-d552-4c27-b9a3-5ed86ce0698d" => "female" }
     def format_responses_by_field
-      # TODO: If structure by category is enabled then logic will not work any more - community monitor only?
-
       # First nest the input_fields inside pages to make logic easier
       current_page = nil
       pages = {}
@@ -126,6 +261,11 @@ module Surveys
       )
     end
 
+    def total_response_count
+      # Number of responses for the first page will always be total responses
+      num_times_field_seen(responses_by_field.keys.first)
+    end
+
     def next_page_id_from_logic(field, input)
       return if field.logic.blank?
 
@@ -158,135 +298,15 @@ module Surveys
       user_values.merge(input.custom_field_values) # Idea values take priority over user values
     end
 
-    # Get the results for a single survey question
-    def generate_result_for_field(field_id)
-      # NEW Query
-      find_result(field_id)
+    def survey_has_logic?
+      return false if structure_by_category # If structuring by category (community monitor only) then logic will not work
 
-      # OLD Query
-      # field = find_question(field_id)
-      # result = visit field
-      # add_averages([result]).first
+      @survey_has_logic ||= input_fields.any? { |field| field.logic != {} }
     end
 
-    # Get the results for all survey questions
-    def generate_results
-      results = input_fields.filter_map { |f| f.id ? visit(f) : nil } # Skip other/follow_up questions which have no ID
-      if results.present?
-        results = add_question_numbers_to_results results
-        results = add_page_response_count_to_results results
-        results = add_averages results
-        results = add_additional_attributes_to_results results
-        results = cleanup_results results
-      end
-
-      {
-        results: results,
-        totalSubmissions: total_response_count
-      }
+    def num_times_field_seen(field_key)
+      responses_by_field[field_key].size
     end
-
-    def visit_number(field)
-      responses = base_responses(field.key).map { |r| r.except(:id) } # TODO: A lot of repetition of this pattern - refactor?
-      response_count = responses.size
-
-      core_field_attributes(field, response_count:).merge({
-        numberResponses: responses
-      })
-    end
-
-    def visit_select(field)
-      visit_select_base(field)
-    end
-
-    def visit_multiselect(field)
-      visit_select_base(field)
-    end
-
-    def visit_multiselect_image(field)
-      visit_select_base(field)
-    end
-
-    def visit_ranking(field)
-      # TODO: Should we be reading survey_inputs directly here?
-      # NO - but it will need some refactoring as the ranking is calculated on the custom_field model
-      core_field_attributes(field).merge({
-        average_rankings: field.average_rankings(survey_inputs),
-        rankings_counts: field.rankings_counts(survey_inputs),
-        multilocs: get_multilocs(field)
-      })
-    end
-
-    def visit_text(field)
-      answers = get_text_responses(field.key)
-      response_count = answers.size
-
-      core_field_attributes(field, response_count:).merge({
-        textResponses: answers
-      })
-    end
-
-    def visit_multiline_text(field)
-      visit_text(field)
-    end
-
-    def visit_linear_scale(field)
-      visit_select_base(field)
-    end
-
-    def visit_matrix_linear_scale(field)
-      # TODO: Convert this.
-      core_field_attributes(field).merge({
-        multilocs: { answer: build_scaled_input_multilocs(field) },
-        linear_scales: matrix_linear_scale_statements(field)
-      })
-    end
-
-    def visit_rating(field)
-      visit_select_base(field)
-    end
-
-    def visit_sentiment_linear_scale(field)
-      visit_select_base(field)
-    end
-
-    def visit_file_upload(field)
-      file_ids = base_responses(field.key).map { |a| a[:answer]['id'] } || []
-
-      files = ::Files::FileAttachment.where(id: file_ids).map do |attachment|
-        { name: attachment.file.name, url: attachment.file.content.url }
-      end
-
-      files.concat(IdeaFile.where(id: file_ids).map do |file|
-        { name: file.name, url: file.file.url }
-      end)
-
-      core_field_attributes(field, response_count: files.size).merge(files: files)
-    end
-
-    def visit_shapefile_upload(field)
-      visit_file_upload(field)
-    end
-
-    def visit_point(field)
-      responses_to_geographic_input_type(field)
-    end
-
-    def visit_line(field)
-      responses_to_geographic_input_type(field)
-    end
-
-    def visit_polygon(field)
-      responses_to_geographic_input_type(field)
-    end
-
-    def visit_page(field)
-      core_field_attributes(field, response_count: 0) # Response count gets updated later by looking at all the results
-    end
-
-    private
-
-    attr_reader :phase, :locales
 
     def add_additional_attributes_to_results(results)
       results # This method is a placeholder for overriding in subclasses
@@ -310,8 +330,8 @@ module Surveys
       }
     end
 
-    def base_responses(field_key, with_nil: false)
-      return responses_by_field[field_key] if with_nil
+    def base_responses(field_key, with_nil_answers: false)
+      return responses_by_field[field_key] if with_nil_answers
 
       responses_by_field[field_key]
         &.select { |r| r[:answer].present? }
@@ -334,9 +354,9 @@ module Surveys
       build_select_response(answers, field)
     end
 
-    def select_field_answers(field_key, with_nil: false)
+    def select_field_answers(field_key, with_nil_answers: false)
       # Extract all the responses from array values (if multiselect)
-      base_responses(field_key, with_nil:).flat_map do |r|
+      base_responses(field_key, with_nil_answers:).flat_map do |r|
         if r[:answer].is_a?(Array)
           r[:answer].map { |a| { id: r[:id], answer: a } }
         else
@@ -445,13 +465,6 @@ module Surveys
       base_responses(field_key)
         &.map { |a| a.except(:id) }
         &.sort_by { |a| a[:answer] } || []
-    end
-
-    def find_result(result_field_id)
-      result = generate_results[:results].find { |r| r[:customFieldId] == result_field_id }
-      raise 'Question not found' unless result
-
-      result
     end
 
     def add_page_response_count_to_results(results)
