@@ -3295,6 +3295,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "Registrierungsrate",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "Registrierungen",
   "app.containers.admin.ReportBuilder.charts.accessibility": "Barrierefreiheit",
+  "app.containers.admin.ReportBuilder.charts.accessibilityDescription": "Verwenden Sie diese Felder, um eine klare Textbeschreibung bereitzustellen, damit Benutzer, die auf unterstützende Technologien angewiesen sind, die Bedeutung der Tabelle verstehen können.",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "Zeitleiste der Teilnehmenden",
   "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning1": "Bitte beachten Sie, dass die Teilnahmezahlen möglicherweise nicht ganz genau sind, da einige Daten in einer externen Umfrage erfasst werden, die wir nicht verfolgen können.",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "Diagramm",
