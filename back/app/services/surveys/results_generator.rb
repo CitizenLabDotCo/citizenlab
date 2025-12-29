@@ -10,13 +10,26 @@ module Surveys
     def initialize(phase, structure_by_category: false)
       super()
       @phase = phase
-      form = phase.custom_form || CustomForm.new(participation_context: phase)
-      
-      @user_fields = CustomField.registration
-      @input_fields = IdeaCustomFieldsService.new(form).survey_results_fields(structure_by_category:)
+      @structure_by_category = structure_by_category
       @locales = AppConfiguration.instance.settings('core', 'locales')
-      @inputs = phase.ideas.supports_survey.published # TODO: Add .includes(:author)
-      @responses_by_field = format_responses_by_field
+    end
+
+    def responses_by_field
+      @responses_by_field ||= format_responses_by_field
+    end
+
+    def input_fields
+      @input_fields ||= IdeaCustomFieldsService
+        .new(phase.custom_form || CustomForm.new(participation_context: phase))
+        .survey_results_fields(structure_by_category: @structure_by_category)
+    end
+
+    def user_fields
+      @user_fields ||= CustomField.registration
+    end
+
+    def survey_inputs
+      @survey_inputs ||= phase.ideas.supports_survey.published # TODO: Add .includes(:author)
     end
 
     def survey_has_logic?
@@ -48,55 +61,27 @@ module Surveys
       all_page_ids = pages.keys.compact
 
       # Next build the responses with an array of field IDs that were seen based on logic & values
-      responses = inputs.map do |input|
+      seen_responses = survey_inputs.map do |input|
         seen = []
         if survey_has_logic?
           next_page_id = nil
-          pages.each do |page_id, input_fields|
+          pages.each do |page_id, fields_on_page|
             next unless next_page_id.nil? || page_id == next_page_id
 
-            input_fields.each do |field|
+            # Define the default next page if no logic changes it
+            next_page_id = all_page_ids[all_page_ids.index(page_id) + 1]
+
+            fields_on_page.each do |field|
               seen << field.key
 
               # TODO: Not currently adding the other/follow_up input_fields in here - ie if other option selected it will have been seen
 
-              if field.page?
-                if field.logic['next_page_id']
-                  # Any page logic that will change the next page?
-                  next_page_id = field.logic['next_page_id']
-                else
-                  # By default go to the next page
-                  next_page_id = all_page_ids[all_page_ids.index(page_id) + 1]
-                end
-              elsif field.logic['rules']
-
-                # TODO: Pasted from SurveyResponseLogicService - Need to change
-                # is_linear_or_rating = field.supports_linear_scale?
-                # options = if is_linear_or_rating
-                #             # Create a unique ID for this linear scale option in the full results so we can filter logic
-                #             (1..field.maximum).map { |value| { id: "#{field.id}_#{value}", key: value } }
-                #           else
-                #             field.ordered_options.map { |option| { id: option.id, key: option.key } }
-                #           end
-                #
-                # # NOTE: Only options with logic will be returned
-                # any_other_answer_page_id = field.logic['rules']&.find { |r| r['if'] == 'any_other_answer' }&.dig('goto_page_id')
-                # option_logic = options.each_with_object({}) do |option, accu|
-                #   rule_id = is_linear_or_rating ? option[:key] : option[:id]
-                #   logic_next_page_id = field.logic['rules']&.find { |r| r['if'] == rule_id }&.dig('goto_page_id') || any_other_answer_page_id
-                #   accu[option[:key]] = { id: option[:id], nextPageId: logic_next_page_id } if logic_next_page_id
-                # end
-                #
-                # no_answer_logic_page_id = field.logic['rules']&.find { |r| r['if'] == 'no_answer' }&.dig('goto_page_id')
-
-
-                # TODO: select or linear scale input_fields
-              end
+              # Is there a different next page based on logic?
+              next_logic_page_id = next_page_id_from_logic(field, input)
+              next_page_id = next_logic_page_id if next_logic_page_id
             end
           end
         end
-
-        # TODO: Add the values from users here too
 
         {
           id: input.id,
@@ -107,47 +92,69 @@ module Surveys
 
       # Now build the structure with only those responses per question that were seen
       # So nil values mean that they were seen but not answered
-      responses_by_field = input_fields.to_h do |field|
+      responses = input_fields.to_h do |field|
         [
           field.key,
-          responses.map do |response|
+          seen_responses.filter_map do |response|
             # Remove any responses that were not seen due to logic
             next if survey_has_logic? && response[:seen].exclude?(field.key)
 
             {
               id: response[:id],
-              answer: response[:values][field.key],
+              answer: response[:values][field.key]
             }
-          end.compact
+          end
         ]
       end
 
-      # binding.pry
-      
       # Now add in the user input_fields too if not already there in the input fields - generate_fields only returns fields in the form,
       # but when grouping we need the additional user fields in the raw responses too
       # Logic not needed here as these fields will only be used for grouping
       # TODO: Move to group generator? Do we only need the field that is being grouped by?
-
-
-      # Now add in the user input_fields too if not already there in the input fields
       user_field_keys = user_fields.map { |f| "u_#{f[:key]}" }
-      responses_by_field.merge(
+      responses.merge(
         user_field_keys.each_with_object({}) do |key, accu|
-          next if responses_by_field.key?(key) # Field already present in input fields
+          next if responses.key?(key) # Field already present in input fields
 
-          accu[key] = responses.map do |response|
+          accu[key] = seen_responses.filter_map do |response|
             {
               id: response[:id],
-              answer: response[:values][key],
+              answer: response[:values][key]
             }
-          end.compact
+          end
         end
       )
     end
 
+    def next_page_id_from_logic(field, input)
+      return if field.logic.blank?
+
+      # Any page logic that will change the next page?
+      return field.logic['next_page_id'] if field.page?
+
+      # Options/ Linear scale logic
+      field_value = input.custom_field_values[field.key]
+
+      if field_value
+        # Option selected
+
+        option_next_page_id = field.logic['rules']&.find { |r| r['if'] == field_value }&.dig('goto_page_id')
+        Rails.logger.debug { "FOUND option_next_page_id: #{option_next_page_id} for field #{field.key} with value #{field_value}" } if option_next_page_id
+
+        return option_next_page_id if option_next_page_id
+
+        # Any other answer selected?
+        field.logic['rules']&.find { |r| r['if'] == 'any_other_answer' }&.dig('goto_page_id')
+      else
+        # Field empty
+        no_answer_next_page_id = field.logic['rules']&.find { |r| r['if'] == 'no_answer' }&.dig('goto_page_id')
+        Rails.logger.debug { "NO ANSWER next page found: #{no_answer_next_page_id} for field #{field.key}" }
+        no_answer_next_page_id
+      end
+    end
+
     def merge_user_custom_field_values(input)
-      user_values = input.author&.custom_field_values.map { |k, v| ["u_#{k}", v] }.to_h || {}
+      user_values = input.author&.custom_field_values&.transform_keys { |k| "u_#{k}" } || {}
       user_values.merge(input.custom_field_values) # Idea values take priority over user values
     end
 
@@ -155,7 +162,6 @@ module Surveys
     def generate_result_for_field(field_id)
       # NEW Query
       find_result(field_id)
-
 
       # OLD Query
       # field = find_question(field_id)
@@ -170,13 +176,13 @@ module Surveys
         results = add_question_numbers_to_results results
         results = add_page_response_count_to_results results
         results = add_averages results
-        results = add_additional_fields_to_results results
+        results = add_additional_attributes_to_results results
         results = cleanup_results results
       end
 
       {
         results: results,
-        totalSubmissions: total_response_count,
+        totalSubmissions: total_response_count
       }
     end
 
@@ -202,9 +208,10 @@ module Surveys
     end
 
     def visit_ranking(field)
+      # TODO: Should we be reading survey_inputs directly here?
       core_field_attributes(field).merge({
-        average_rankings: field.average_rankings(inputs),
-        rankings_counts: field.rankings_counts(inputs),
+        average_rankings: field.average_rankings(survey_inputs),
+        rankings_counts: field.rankings_counts(survey_inputs),
         multilocs: get_multilocs(field)
       })
     end
@@ -278,9 +285,9 @@ module Surveys
 
     private
 
-    attr_reader :phase, :input_fields, :user_fields, :inputs, :locales, :responses_by_field
+    attr_reader :phase, :locales
 
-    def add_additional_fields_to_results(results)
+    def add_additional_attributes_to_results(results)
       results # This method is a placeholder for overriding in subclasses
     end
 
@@ -294,8 +301,8 @@ module Surveys
         required: field.required,
         grouped: false,
         hidden: false,
-        totalResponseCount: num_times_field_seen(field.key),  # TODO: Change to questionSeenCount?
-        questionResponseCount: response_count, # TODO: Change to questionAnsweredCount?
+        totalResponseCount: num_times_field_seen(field.key), # NOTE: This is technically 'questionSeenCount' but we have to keep backwards compatibility for report builder
+        questionResponseCount: response_count, # NOTE: This is technically 'questionAnsweredCount'
         pageNumber: nil,
         questionNumber: nil,
         questionCategory: field.question_category
@@ -329,9 +336,11 @@ module Surveys
     def select_field_answers(field_key, with_nil: false)
       # Extract all the responses from array values (if multiselect)
       base_responses(field_key, with_nil:).flat_map do |r|
-        r[:answer].is_a?(Array) ?
-          r[:answer].map { |a| { id: r[:id], answer: a } } :
+        if r[:answer].is_a?(Array)
+          r[:answer].map { |a| { id: r[:id], answer: a } }
+        else
           { id: r[:id], answer: r[:answer] }
+        end
       end
     end
 
@@ -400,8 +409,7 @@ module Surveys
     def matrix_linear_scale_statements(field)
       field.matrix_statements.pluck(:key, :title_multiloc).to_h do |statement_key, statement_title_multiloc|
         statement_counts = base_responses(field.key)
-          .map { |h| h[:answer][statement_key] }
-          .compact
+          .filter_map { |h| h[:answer][statement_key] }
           .group_by(&:itself)
           .transform_values(&:count)
 
@@ -440,7 +448,7 @@ module Surveys
 
     def find_result(result_field_id)
       result = generate_results[:results].find { |r| r[:customFieldId] == result_field_id }
-      raise 'Question not found' unless result # Raise 404 if not found?
+      raise 'Question not found' unless result
 
       result
     end

@@ -10,14 +10,6 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
 
   include_context 'survey_setup'
 
-  describe 'generate_results' do
-    # TODO: Tests for grouping the whole set of results
-    # it 'is not implemented and returns an error' do
-    #   generator = described_class.new(survey_phase)
-    #   expect { generator.generate_results }.to raise_error(NotImplementedError)
-    # end
-  end
-
   describe 'generate_result_for_field' do
     describe 'errors' do
       it 'raises an error if the group field is not found' do
@@ -27,7 +19,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
 
       it 'raises an error if the user group field is not found' do
         generator = described_class.new(survey_phase, group_mode: 'user_field', group_field_id: '12345')
-        expect { generator.generate_result_for_field('missing_field') }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { generator.generate_result_for_field(multiselect_field.id) }.to raise_error('Group field not found')
       end
     end
 
