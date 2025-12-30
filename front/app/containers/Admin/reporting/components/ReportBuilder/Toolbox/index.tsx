@@ -289,6 +289,7 @@ const ReportBuilderToolbox = ({
                 <VisitorsWidget
                   title={toMultiloc(WIDGET_TITLES.VisitorsWidget)}
                   startAt={undefined}
+                  projectId={selectedProjectId}
                   endAt={chartEndDate}
                 />
               }
