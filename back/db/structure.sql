@@ -159,6 +159,7 @@ ALTER TABLE IF EXISTS ONLY public.project_files DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS fk_rails_06b2d7a3a8;
 ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS fk_rails_04be8cf6ba;
 ALTER TABLE IF EXISTS ONLY public.events DROP CONSTRAINT IF EXISTS fk_rails_0434b48643;
+ALTER TABLE IF EXISTS ONLY public.claim_tokens DROP CONSTRAINT IF EXISTS fk_rails_0176970569;
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_locales_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_00698f2e02;
 DROP TRIGGER IF EXISTS que_state_notify ON public.que_jobs;
 DROP TRIGGER IF EXISTS que_job_notify ON public.que_jobs;
@@ -401,6 +402,10 @@ DROP INDEX IF EXISTS public.index_comments_on_lft;
 DROP INDEX IF EXISTS public.index_comments_on_idea_id;
 DROP INDEX IF EXISTS public.index_comments_on_created_at;
 DROP INDEX IF EXISTS public.index_comments_on_author_id;
+DROP INDEX IF EXISTS public.index_claim_tokens_on_token;
+DROP INDEX IF EXISTS public.index_claim_tokens_on_pending_claimer_id;
+DROP INDEX IF EXISTS public.index_claim_tokens_on_item_type_and_item_id;
+DROP INDEX IF EXISTS public.index_claim_tokens_on_expires_at;
 DROP INDEX IF EXISTS public.index_campaigns_groups;
 DROP INDEX IF EXISTS public.index_baskets_on_user_id;
 DROP INDEX IF EXISTS public.index_baskets_on_submitted_at;
@@ -573,6 +578,7 @@ ALTER TABLE IF EXISTS ONLY public.content_builder_layouts DROP CONSTRAINT IF EXI
 ALTER TABLE IF EXISTS ONLY public.content_builder_layout_images DROP CONSTRAINT IF EXISTS content_builder_layout_images_pkey;
 ALTER TABLE IF EXISTS ONLY public.common_passwords DROP CONSTRAINT IF EXISTS common_passwords_pkey;
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS comments_pkey;
+ALTER TABLE IF EXISTS ONLY public.claim_tokens DROP CONSTRAINT IF EXISTS claim_tokens_pkey;
 ALTER TABLE IF EXISTS ONLY public.baskets DROP CONSTRAINT IF EXISTS baskets_pkey;
 ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS baskets_ideas_pkey;
 ALTER TABLE IF EXISTS ONLY public.authoring_assistance_responses DROP CONSTRAINT IF EXISTS authoring_assistance_responses_pkey;
@@ -690,6 +696,7 @@ DROP TABLE IF EXISTS public.cosponsorships;
 DROP TABLE IF EXISTS public.content_builder_layouts;
 DROP TABLE IF EXISTS public.content_builder_layout_images;
 DROP TABLE IF EXISTS public.common_passwords;
+DROP TABLE IF EXISTS public.claim_tokens;
 DROP TABLE IF EXISTS public.baskets_ideas;
 DROP TABLE IF EXISTS public.authoring_assistance_responses;
 DROP SEQUENCE IF EXISTS public.areas_static_pages_id_seq;
@@ -2166,6 +2173,22 @@ CREATE TABLE public.baskets_ideas (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     votes integer DEFAULT 1 NOT NULL
+);
+
+
+--
+-- Name: claim_tokens; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.claim_tokens (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    token character varying NOT NULL,
+    item_type character varying NOT NULL,
+    item_id uuid NOT NULL,
+    expires_at timestamp(6) without time zone NOT NULL,
+    pending_claimer_id uuid,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -3943,6 +3966,14 @@ ALTER TABLE ONLY public.baskets
 
 
 --
+-- Name: claim_tokens claim_tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.claim_tokens
+    ADD CONSTRAINT claim_tokens_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: comments comments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5250,6 +5281,34 @@ CREATE INDEX index_baskets_on_user_id ON public.baskets USING btree (user_id);
 --
 
 CREATE UNIQUE INDEX index_campaigns_groups ON public.email_campaigns_campaigns_groups USING btree (campaign_id, group_id);
+
+
+--
+-- Name: index_claim_tokens_on_expires_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_claim_tokens_on_expires_at ON public.claim_tokens USING btree (expires_at);
+
+
+--
+-- Name: index_claim_tokens_on_item_type_and_item_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_claim_tokens_on_item_type_and_item_id ON public.claim_tokens USING btree (item_type, item_id);
+
+
+--
+-- Name: index_claim_tokens_on_pending_claimer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_claim_tokens_on_pending_claimer_id ON public.claim_tokens USING btree (pending_claimer_id);
+
+
+--
+-- Name: index_claim_tokens_on_token; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_claim_tokens_on_token ON public.claim_tokens USING btree (token);
 
 
 --
@@ -6948,6 +7007,14 @@ ALTER TABLE ONLY public.analytics_dimension_locales_fact_visits
 
 
 --
+-- Name: claim_tokens fk_rails_0176970569; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.claim_tokens
+    ADD CONSTRAINT fk_rails_0176970569 FOREIGN KEY (pending_claimer_id) REFERENCES public.users(id);
+
+
+--
 -- Name: events fk_rails_0434b48643; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8157,6 +8224,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20251217110845'),
 ('20251209135529'),
 ('20251208163107'),
+('20251208000001'),
 ('20251203114945'),
 ('20251127085639'),
 ('20251124000000'),

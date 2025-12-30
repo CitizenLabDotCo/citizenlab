@@ -153,7 +153,9 @@ class WebApi::V1::UsersController < ApplicationController
       authorize @user
     end
     if saved
-      SideFxUserService.new.after_create(@user, current_user)
+      claim_tokens = params.dig(:user, :claim_tokens)
+      SideFxUserService.new.after_create(@user, current_user, claim_tokens:)
+
       render json: WebApi::V1::UserSerializer.new(
         @user,
         params: jsonapi_serializer_params

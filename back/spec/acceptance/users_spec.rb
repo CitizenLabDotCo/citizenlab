@@ -247,8 +247,14 @@ resource 'Users' do
     post 'web_api/v1/users' do
       with_options scope: 'user' do
         parameter :email, 'E-mail address', required: true
-        parameter :locale, 'Locale. Should be one of the tenants locales', required: true
+        parameter :locale, 'Locale (must be one of the tenant locales)', required: true
+        parameter :claim_tokens, <<~DESC
+          Tokens used to claim participation data created before registration.
+          If confirmation is required, tokens are marked as pending until confirmed.
+          Otherwise, participation data is claimed immediately.
+        DESC
       end
+
       ValidationErrorHelper.new.error_fields(self, User)
 
       context 'when confirmation is turned on' do
@@ -272,6 +278,22 @@ resource 'Users' do
           example_request 'Registration is not completed by default' do
             assert_status 201
             expect(response_data.dig(:attributes, :registration_completed_at)).to be_nil
+          end
+
+          context 'with claim_tokens' do
+            let!(:claim_token) { create(:claim_token) }
+            let(:idea) { claim_token.item }
+            let(:claim_tokens) { [claim_token.token] }
+
+            example 'marks claim tokens as pending for the new user', document: false do
+              do_request
+              assert_status 201
+
+              user = User.find(response_data[:id])
+
+              expect(claim_token.reload.pending_claimer_id).to eq(user.id)
+              expect(idea.reload.author_id).to be_nil # Not yet claimed
+            end
           end
         end
 
