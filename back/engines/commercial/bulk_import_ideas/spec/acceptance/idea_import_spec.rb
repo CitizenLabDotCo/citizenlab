@@ -83,8 +83,7 @@ resource 'BulkImportIdeasImportIdeas' do
           let(:file) { create_project_bulk_import_ideas_pdf 1 }
 
           before do
-            # Enable HTML PDFs & stub the external export and import APIs
-            SettingsService.new.activate_feature! 'html_pdfs'
+            # Enable stub the external export and import APIs
             stub_external_apis
           end
 
