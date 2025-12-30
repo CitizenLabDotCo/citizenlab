@@ -12,6 +12,7 @@ import userIdeaCountKeys from 'api/user_ideas_count/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
+import { storeClaimToken } from './claimToken';
 import ideasKeys from './keys';
 import { IIdea, IIdeaAdd } from './types';
 
@@ -27,6 +28,12 @@ const useAddIdea = () => {
   return useMutation<IIdea, CLErrors, IIdeaAdd>({
     mutationFn: addIdea,
     onSuccess: (idea) => {
+      const { claim_token } = idea.data.attributes;
+
+      if (claim_token) {
+        storeClaimToken(claim_token);
+      }
+
       queryClient.invalidateQueries({ queryKey: ideasKeys.lists() });
       queryClient.invalidateQueries({ queryKey: ideaMarkersKeys.lists() });
       queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
