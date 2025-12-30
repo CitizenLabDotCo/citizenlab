@@ -626,7 +626,7 @@
   "app.components.admin.UserFilterConditions.field_event_attendance": "Iscrizioni agli eventi",
   "app.components.admin.UserFilterConditions.field_follow": "Segui",
   "app.components.admin.UserFilterConditions.field_lives_in": "Vive in",
-  "app.components.admin.UserFilterConditions.field_participated_in_community_monitor": "Sondaggio di monitoraggio della comunità",
+  "app.components.admin.UserFilterConditions.field_participated_in_community_monitor": "Sondaggio del barometro civico",
   "app.components.admin.UserFilterConditions.field_participated_in_input_status": "Ha interagito con un ingresso con stato",
   "app.components.admin.UserFilterConditions.field_participated_in_project": "Ha contribuito al progetto",
   "app.components.admin.UserFilterConditions.field_participated_in_topic": "Pubblicato qualcosa con tag",
