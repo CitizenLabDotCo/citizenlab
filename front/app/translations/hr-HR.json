@@ -2111,6 +2111,7 @@
   "app.errors.confirmation_code_too_many_retries": "Pokušali ste previše puta. Zatražite novi kod ili pokušajte promijeniti adresu e-pošte.",
   "app.errors.email_already_active": "Adresa e-pošte {value} u redu {row} pripada već registriranom sudioniku",
   "app.errors.email_already_invited": "Adresa e-pošte {value} u redu {row} je već pozvana",
+  "app.errors.email_banned": "E-mail adresa {value} pronađena u retku {row} je zabranjena i ne može se pozvati",
   "app.errors.email_blank": "Ovo ne može biti prazno",
   "app.errors.email_domain_blacklisted": "Molimo vas da koristite drugu domenu e-pošte za registraciju.",
   "app.errors.email_invalid": "Molimo da unesete valjanu adresu e-pošte.",
