@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 
 import {
   Box,
+  Button,
   stylingConsts,
   Text,
   Title,
@@ -15,11 +16,15 @@ import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
+import { IFlatCustomField } from 'api/custom_fields/types';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 import useSubmissionsCount from 'api/submission_count/useSubmissionCount';
 
 import useLocalize from 'hooks/useLocalize';
+import useSuperAdmin from 'hooks/useSuperAdmin';
+
+import EditSchemaModal from './EditSchemaModal';
 
 import DownloadPDFButtonWithModal from 'components/admin/FormSync/DownloadPDFButtonWithModal';
 import {
@@ -51,6 +56,7 @@ type FormBuilderTopBarProps = {
   autosaveEnabled: boolean;
   setAutosaveEnabled: Dispatch<SetStateAction<boolean>>;
   phaseId: string;
+  onSchemaUpdate?: () => void;
 };
 
 const FormBuilderTopBar = ({
@@ -60,12 +66,15 @@ const FormBuilderTopBar = ({
   autosaveEnabled,
   setAutosaveEnabled,
   phaseId,
+  onSchemaUpdate,
 }: FormBuilderTopBarProps) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { projectId } = useParams() as {
     projectId: string;
   };
+  const isSuperAdmin = useSuperAdmin();
+
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
   const { data: submissionCount } = useSubmissionsCount({
@@ -73,8 +82,11 @@ const FormBuilderTopBar = ({
   });
   const {
     formState: { isDirty },
+    watch,
   } = useFormContext();
+  const customFields = watch('customFields') as IFlatCustomField[];
   const [showLeaveModal, setShowLeaveModal] = useState(false);
+  const [showEditSchemaModal, setShowEditSchemaModal] = useState(false);
 
   const closeModal = () => {
     setShowLeaveModal(false);
@@ -175,6 +187,16 @@ const FormBuilderTopBar = ({
           formType={builderConfig.type}
           phaseId={phaseId}
         />
+        {isSuperAdmin && (
+          <Button
+            buttonStyle="secondary-outlined"
+            icon="code"
+            mr="20px"
+            onClick={() => setShowEditSchemaModal(true)}
+          >
+            <FormattedMessage {...ownMessages.editSchema} />
+          </Button>
+        )}
         <ButtonWithLink
           buttonStyle="secondary-outlined"
           icon="eye"
@@ -230,6 +252,17 @@ const FormBuilderTopBar = ({
           </Box>
         </Box>
       </Modal>
+      {isSuperAdmin && phase && (
+        <EditSchemaModal
+          opened={showEditSchemaModal}
+          onClose={() => setShowEditSchemaModal(false)}
+          customFields={customFields}
+          projectId={projectId}
+          phase={phase.data}
+          isFormPhaseSpecific={builderConfig.isFormPhaseSpecific}
+          onSaveSuccess={onSchemaUpdate}
+        />
+      )}
     </Box>
   );
 };
