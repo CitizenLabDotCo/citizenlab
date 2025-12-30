@@ -29,6 +29,15 @@ const Tab = styled.button<{ active: boolean; fullWidth: boolean }>`
   color: ${({ active, theme }) =>
     active ? theme.colors.tenantPrimary : colors.textSecondary};
 
+  /* Custom focus styles for tabs */
+  &:focus {
+    outline: none !important;
+    box-shadow: inset 0 0 0 1px #ffffff, 0 0 0 3px #000000 !important;
+    margin: 3px 1px !important;
+    position: relative;
+    z-index: 1000;
+  }
+
   ${({ active, theme }) =>
     active
       ? ''
