@@ -13,4 +13,4 @@ This script is divided into three parts:
 3. Copy all S3 resources to new names using the UUID mapping file generated in step 1.
 ``` docker compose run --rm web ruby scripts/copy_s3_resources.rb c72c5211-8e03-470b-9564-04ec0a8c322b 9965b54f-10de-4f7e-bd3b-2d9c9e61b4e9 scripts/dumps/localhost_schema_20251207_140355_uuid_mapping.json```
 
-TODO: AWS resources are returning Access Denied errors, need to investigate further.
+TODO: AWS resources are returning Access Denied errors locally, need to investigate further.
