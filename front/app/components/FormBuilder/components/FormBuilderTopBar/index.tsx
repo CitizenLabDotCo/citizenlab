@@ -24,8 +24,6 @@ import useSubmissionsCount from 'api/submission_count/useSubmissionCount';
 import useLocalize from 'hooks/useLocalize';
 import useSuperAdmin from 'hooks/useSuperAdmin';
 
-import EditSchemaModal from './EditSchemaModal';
-
 import DownloadPDFButtonWithModal from 'components/admin/FormSync/DownloadPDFButtonWithModal';
 import {
   FormBuilderConfig,
@@ -42,6 +40,7 @@ import clHistory from 'utils/cl-router/history';
 import messages from '../messages';
 import tracks from '../tracks';
 
+import EditSchemaModal from './EditSchemaModal';
 import ownMessages from './messages';
 
 const StyledStatusLabel = styled(StatusLabel)`
@@ -252,7 +251,7 @@ const FormBuilderTopBar = ({
           </Box>
         </Box>
       </Modal>
-      {isSuperAdmin && phase && (
+      {isSuperAdmin && (
         <EditSchemaModal
           opened={showEditSchemaModal}
           onClose={() => setShowEditSchemaModal(false)}

@@ -70,7 +70,7 @@ const EditSchemaModal = ({
   const { data: customForm } = useCustomForm(phase);
 
   useEffect(() => {
-    if (opened && customFields) {
+    if (opened) {
       const transformed = customFields.map((field) =>
         transformFieldForSubmission(field, customFields)
       );
