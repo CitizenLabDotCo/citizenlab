@@ -259,6 +259,7 @@ sr-Cyrl:
       x_days_ago_by_author: 'Пре %{x} дана до %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} је коментарисало:'
+      anonymous_user: Anonymous user
       cta_button: 'View %{authorFirstName}''s comment'
       days_ago: 'пре %{numberOfDays} дана'
       event_description: '%{authorName} је додао/ла нови коментар на вашој платформи.'

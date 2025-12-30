@@ -3295,6 +3295,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "Stawka rejestracyjna",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "Rejestracje",
   "app.containers.admin.ReportBuilder.charts.accessibility": "Dostępność",
+  "app.containers.admin.ReportBuilder.charts.accessibilityDescription": "Użyj tych pól, aby zapewnić jasny opis tekstowy, aby użytkownicy korzystający z technologii wspomagających mogli zrozumieć znaczenie wykresu.",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "Oś czasu uczestników",
   "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning1": "Pamiętaj, że liczba uczestników może nie być w pełni dokładna, ponieważ niektóre dane są rejestrowane w zewnętrznej ankiecie, której nie śledzimy.",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "Wykres",

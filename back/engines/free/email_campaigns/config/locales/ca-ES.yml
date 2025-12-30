@@ -259,6 +259,7 @@ ca:
       x_days_ago_by_author: 'fa %{x} dies per %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} ha comentat:'
+      anonymous_user: Usuari anònim
       cta_button: 'Veure el comentari de %{authorFirstName}'
       days_ago: 'fa %{numberOfDays} dies'
       event_description: '%{authorName} ha afegit un comentari nou a la teva plataforma.'

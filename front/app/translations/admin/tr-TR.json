@@ -3295,6 +3295,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "Kayıt ücreti",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "Kayıtlar",
   "app.containers.admin.ReportBuilder.charts.accessibility": "Erişilebilirlik",
+  "app.containers.admin.ReportBuilder.charts.accessibilityDescription": "Yardımcı teknolojilere güvenen kullanıcıların grafiğin anlamını anlayabilmesi için bu alanları net bir metin açıklaması sağlamak üzere kullanın.",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "Katılımcılar zaman çizelgesi",
   "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning1": "Bazı veriler bizim takip etmediğimiz harici bir ankette toplandığı için katılım sayılarının tam olarak doğru olmayabileceğini lütfen unutmayın.",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "Grafik",

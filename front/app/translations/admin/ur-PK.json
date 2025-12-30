@@ -3295,6 +3295,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "رجسٹریشن کی شرح",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "رجسٹریشنز",
   "app.containers.admin.ReportBuilder.charts.accessibility": "رسائی",
+  "app.containers.admin.ReportBuilder.charts.accessibilityDescription": "واضح متن کی وضاحت فراہم کرنے کے لیے ان فیلڈز کا استعمال کریں تاکہ وہ صارفین جو معاون ٹیکنالوجیز پر انحصار کرتے ہیں وہ چارٹ کے معنی کو سمجھ سکیں۔",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "شرکاء کی ٹائم لائن",
   "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning1": "براہ کرم نوٹ کریں کہ شرکت کے نمبر مکمل طور پر درست نہیں ہو سکتے ہیں کیونکہ کچھ ڈیٹا ایک بیرونی سروے میں لیا گیا ہے جسے ہم ٹریک نہیں کرتے ہیں۔",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "چارٹ",

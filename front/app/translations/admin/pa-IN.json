@@ -3295,6 +3295,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਦਰ",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "ਰਜਿਸਟ੍ਰੇਸ਼ਨਾਂ",
   "app.containers.admin.ReportBuilder.charts.accessibility": "ਪਹੁੰਚਯੋਗਤਾ",
+  "app.containers.admin.ReportBuilder.charts.accessibilityDescription": "ਇਹਨਾਂ ਖੇਤਰਾਂ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਇੱਕ ਸਪਸ਼ਟ ਟੈਕਸਟ ਵੇਰਵਾ ਪ੍ਰਦਾਨ ਕਰੋ ਤਾਂ ਜੋ ਸਹਾਇਕ ਤਕਨਾਲੋਜੀਆਂ 'ਤੇ ਨਿਰਭਰ ਕਰਨ ਵਾਲੇ ਉਪਭੋਗਤਾ ਚਾਰਟ ਦੇ ਅਰਥ ਨੂੰ ਸਮਝ ਸਕਣ।",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "ਭਾਗੀਦਾਰਾਂ ਦੀ ਸਮਾਂਰੇਖਾ",
   "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning1": "ਕਿਰਪਾ ਕਰਕੇ ਨੋਟ ਕਰੋ ਕਿ ਭਾਗੀਦਾਰੀ ਨੰਬਰ ਪੂਰੀ ਤਰ੍ਹਾਂ ਸਹੀ ਨਹੀਂ ਹੋ ਸਕਦੇ ਹਨ ਕਿਉਂਕਿ ਕੁਝ ਡੇਟਾ ਇੱਕ ਬਾਹਰੀ ਸਰਵੇਖਣ ਵਿੱਚ ਕੈਪਚਰ ਕੀਤਾ ਗਿਆ ਹੈ ਜਿਸਨੂੰ ਅਸੀਂ ਟਰੈਕ ਨਹੀਂ ਕਰਦੇ ਹਾਂ।",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "ਚਾਰਟ",

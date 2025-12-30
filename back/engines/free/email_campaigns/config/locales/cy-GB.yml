@@ -259,6 +259,7 @@ cy:
       x_days_ago_by_author: '%{x} diwrnod yn ôl erbyn %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} sylw:'
+      anonymous_user: Defnyddiwr anhysbys
       cta_button: 'Gweld sylw %{authorFirstName}'
       days_ago: '%{numberOfDays} diwrnod yn ôl'
       event_description: 'Ychwanegodd %{authorName} sylw newydd ar eich platfform.'

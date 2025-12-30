@@ -3295,6 +3295,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "Tasa de registro",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "Registros",
   "app.containers.admin.ReportBuilder.charts.accessibility": "Accesibilidad",
+  "app.containers.admin.ReportBuilder.charts.accessibilityDescription": "Utiliza estos campos para proporcionar una descripción de texto clara, de modo que los usuarios que dependen de tecnologías de asistencia puedan comprender el significado del gráfico.",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "Calendario de participantes",
   "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning1": "Ten en cuenta que las cifras de participación pueden no ser totalmente exactas, ya que algunos datos se recogen en una encuesta externa de la que no hacemos un seguimiento.",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "Gráfico",

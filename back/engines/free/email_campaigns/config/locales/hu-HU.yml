@@ -259,6 +259,7 @@ hu:
       x_days_ago_by_author: '%{x} napja, %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} hozzászólt:'
+      anonymous_user: Névtelen felhasználó
       cta_button: '%{authorFirstName}hozzászólásának megtekintése'
       days_ago: '%{numberOfDays} napja'
       event_description: '%{authorName} új megjegyzést fűzött a platformjához.'

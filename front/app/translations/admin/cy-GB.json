@@ -3295,6 +3295,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "Cyfradd gofrestru",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "Cofrestriadau",
   "app.containers.admin.ReportBuilder.charts.accessibility": "Hygyrchedd",
+  "app.containers.admin.ReportBuilder.charts.accessibilityDescription": "Defnyddiwch y meysydd hyn i ddarparu disgrifiad testun clir fel y gall defnyddwyr sy'n dibynnu ar dechnolegau cynorthwyol ddeall ystyr y siart.",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "Llinell amser cyfranogwyr",
   "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning1": "Sylwch efallai na fydd niferoedd cyfranogiad yn gwbl gywir gan fod rhywfaint o ddata yn cael ei gasglu mewn arolwg allanol nad ydym yn ei olrhain.",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "Siart",

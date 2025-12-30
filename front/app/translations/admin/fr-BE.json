@@ -3295,6 +3295,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "Taux d'inscription",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "Inscriptions",
   "app.containers.admin.ReportBuilder.charts.accessibility": "Accessibilité",
+  "app.containers.admin.ReportBuilder.charts.accessibilityDescription": "Utilisez ces champs pour fournir une description textuelle claire afin que les utilisateurs utilisant des technologies d'assistance puissent comprendre la signification du graphique.",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "Calendrier des participants",
   "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning1": "Veuillez noter que les chiffres de participation peuvent être inférieurs à la réalité, car les données de participation à des enquêtes externes ne peuvent être mesurées.",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "Graphique",

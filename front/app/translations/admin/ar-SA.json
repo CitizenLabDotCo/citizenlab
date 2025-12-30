@@ -3295,6 +3295,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "معدل التسجيل",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "التسجيلات",
   "app.containers.admin.ReportBuilder.charts.accessibility": "إمكانية الوصول",
+  "app.containers.admin.ReportBuilder.charts.accessibilityDescription": "استخدم هذه الحقول لتقديم وصف نصي واضح حتى يتمكن المستخدمون الذين يعتمدون على التقنيات المساعدة من فهم معنى الرسم البياني.",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "المخطط الزمني للمشاركين",
   "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning1": "يرجى ملاحظة أن أرقام المشاركة قد لا تكون دقيقة تمامًا حيث يتم التقاط بعض البيانات في استبيان خارجي لا نقوم بتتبعه.",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "مخطط",

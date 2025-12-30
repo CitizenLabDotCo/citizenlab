@@ -259,6 +259,7 @@ lt:
       x_days_ago_by_author: '%{x} prieš keletą dienų parašė %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} komentavo:'
+      anonymous_user: Anoniminis naudotojas
       cta_button: 'Peržiūrėti %{authorFirstName}''s komentarą'
       days_ago: '%{numberOfDays} prieš keletą dienų'
       event_description: '%{authorName} pridėjo naują komentarą apie savo platformą.'

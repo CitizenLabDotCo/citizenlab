@@ -259,6 +259,7 @@ nl-BE:
       x_days_ago_by_author: '%{x} dagen geleden door %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} schreef:'
+      anonymous_user: Anonieme gebruiker
       cta_button: 'Bekijk de reactie van %{authorFirstName}'
       days_ago: '%{numberOfDays} dagen geleden'
       event_description: '%{authorName} schreef een reactie op je platform. Aarzel niet om aan de discussie deel te nemen en het gesprek gaande te houden!'

@@ -259,6 +259,7 @@ lv:
       x_days_ago_by_author: 'pirms %{x} dienām %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} komentēja:'
+      anonymous_user: Anonīms lietotājs
       cta_button: 'Skatīt %{authorFirstName}''s komentārs'
       days_ago: 'pirms %{numberOfDays} dienām'
       event_description: '%{authorName} pievienoja jaunu komentāru jūsu platformā.'

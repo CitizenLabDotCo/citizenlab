@@ -259,6 +259,7 @@ hr:
       x_days_ago_by_author: 'prije %{x} dana od %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} je komentirao/la:'
+      anonymous_user: Anonimni korisnik
       cta_button: 'Pogledajte komentar korisnika %{authorFirstName}'
       days_ago: 'Prije %{numberOfDays} dana'
       event_description: '%{authorName} dodao je novi komentar na vašoj platformi.'

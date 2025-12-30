@@ -3295,6 +3295,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "Registracijos tarifas",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "Registracijos",
   "app.containers.admin.ReportBuilder.charts.accessibility": "Prieinamumas",
+  "app.containers.admin.ReportBuilder.charts.accessibilityDescription": "Šiuose laukuose pateikite aiškų teksto aprašymą, kad naudotojai, kurie naudojasi pagalbinėmis technologijomis, galėtų suprasti diagramos reikšmę.",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "Dalyvių tvarkaraštis",
   "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning1": "Atkreipkite dėmesį, kad dalyvaujančiųjų skaičius gali būti nevisiškai tikslus, nes kai kurie duomenys yra surinkti atliekant išorinę apklausą, kurios mes nesekame.",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "Diagrama",

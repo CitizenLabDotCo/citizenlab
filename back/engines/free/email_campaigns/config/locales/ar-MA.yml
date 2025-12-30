@@ -259,6 +259,7 @@ ar-MA:
       x_days_ago_by_author: 'قبل %{x} يوم بواسطة %{author}'
     new_comment_for_admin:
       commented: 'علّق %{authorFirstName}:'
+      anonymous_user: مستخدم مجهول
       cta_button: 'عرض تعليق %{authorFirstName}'
       days_ago: 'قبل %{numberOfDays} يوم'
       event_description: 'كتب %{authorName} تعليقًا على منصتك. لا تتردد بالانضمام إلى النقاش وإبقاء الحوار مستمرًا!'

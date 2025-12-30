@@ -259,6 +259,7 @@ lb:
       x_days_ago_by_author: 'Virun %{x} Deeg %{author} vun'
     new_comment_for_admin:
       commented: '%{authorFirstName} huet kommentéiert:'
+      anonymous_user: Anonyme Benotzer
       cta_button: 'Kuckt de Kommentar vun %{authorFirstName}'
       days_ago: 'Virun %{numberOfDays} Deeg'
       event_description: '%{authorName} huet en neie Kommentar op Är Plattform hannerlooss.'
