@@ -49,7 +49,7 @@ export const getClaimTokens = () => {
   return IN_MEMORY_STORAGE;
 };
 
-export const clearTokens = () => {
+export const clearClaimTokens = () => {
   if (isLocalStorageAvailable()) {
     localStorage.removeItem(STORAGE_KEY);
   } else {
