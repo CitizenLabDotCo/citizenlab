@@ -45,6 +45,25 @@ describe UserFieldsInSurveyService do
         'satisfaction' => 'high'
       })
     end
+
+    it 'pre-populates user fields when using global_custom_fields being the default' do
+      user = build(:user, custom_field_values: { 'age' => 30, 'city' => 'New York' })
+      idea = build(:idea, custom_field_values: {})
+
+      phase = create(:native_survey_phase, with_permissions: true)
+
+      merged_values = described_class.merge_user_fields_into_idea(
+        user,
+        phase,
+        idea.custom_field_values
+      )
+
+      # Should include user fields even though permissions_custom_fields are not persisted to database
+      expect(merged_values).to eq({
+        'u_age' => 30,
+        'u_city' => 'New York'
+      })
+    end
   end
 
   describe '#add_user_fields_to_form' do

@@ -134,10 +134,14 @@ module BulkImportIdeas::Previewers
 
     def preview_ideas(phase)
       ideas_exist = phase[:id] ? !!Phase.find_by(id: phase[:id])&.ideas&.any? : false
-      if ideas_exist
+      if ideas_exist && !phase[:append_ideas]
         log "EXISTING IDEAS FOR PHASE: #{phase[:id]}"
       elsif phase[:idea_rows]
-        log "NEW IDEAS TO IMPORT: #{phase[:idea_rows].count} ideas will be imported"
+        if ideas_exist && phase[:append_ideas]
+          log "NEW IDEAS TO IMPORT: #{phase[:idea_rows].count} ideas will be imported and appended to existing ideas"
+        else
+          log "NEW IDEAS TO IMPORT: #{phase[:idea_rows].count} ideas will be imported"
+        end
       else
         log 'NO IDEAS TO IMPORT'
       end

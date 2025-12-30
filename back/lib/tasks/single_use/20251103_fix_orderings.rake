@@ -48,4 +48,45 @@ namespace :fix_existing_tenants do
     end
     reporter.report!('fix_custom_fields_orderings_report.json', verbose: true)
   end
+
+  desc 'Fix custom field options and areas (domicile) orderings.'
+  task :custom_field_options_orderings, [] => [:environment] do
+    reporter = ScriptReporter.new
+    Tenant.all.each do |tenant|
+      tenant.switch do
+        CustomField.all.select(&:support_options?).each do |custom_field|
+          options = custom_field.options.order(:ordering)
+
+          # Check if ordering is correct
+          next if options.pluck(:ordering) == (0...options.size).to_a
+
+          # Fix orderings
+          options.each.with_index do |option, index|
+            option.update_column(:ordering, index)
+          end
+          reporter.add_change(
+            nil,
+            'Fixed options orderings',
+            context: { tenant: tenant.host, custom_field: custom_field.id }
+          )
+        end
+
+        areas = Area.order(:ordering)
+
+        # Check if ordering is correct
+        next if areas.pluck(:ordering) == (0...areas.size).to_a
+
+        # Fix orderings
+        areas.each.with_index do |area, index|
+          area.update_column(:ordering, index)
+        end
+        reporter.add_change(
+          nil,
+          'Fixed areas orderings',
+          context: { tenant: tenant.host }
+        )
+      end
+    end
+    reporter.report!('fix_custom_field_options_orderings_report.json', verbose: true)
+  end
 end
