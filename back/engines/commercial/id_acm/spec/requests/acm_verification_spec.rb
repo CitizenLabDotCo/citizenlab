@@ -206,7 +206,7 @@ context 'ACM verification (Oostende Itsme)' do
       expect(existing_user.reload.verifications.count).to eq 2 # Adds a new verification record
     end
 
-    it 'logs an existing user but changes their RRN result if the users verification status has changed' do
+    it 'logs in an existing user but changes their RRN result if the users verification status has changed' do
       stub_wijk_budget_api({ geldig: false, redenNietGeldig: 'ERR11' })
 
       get '/auth/acm?sso_pathname=/some-page'
