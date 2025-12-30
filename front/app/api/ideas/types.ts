@@ -129,6 +129,8 @@ export interface IIdeaData {
     followers_count: number;
     reacting_threshold?: number;
     expires_at?: string;
+    claim_token?: string;
+    claim_token_expires_at?: string;
   };
   relationships: {
     assignee?: {
