@@ -122,15 +122,15 @@ describe IdeaCustomFieldsService do
         it 'returns fields structured as per the survey form' do
           output = service.survey_results_fields
           expect(output.pluck(:input_type)).to eq %w[
-            page sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale
-            page sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale
-            page sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale
+            page sentiment_linear_scale multiline_text sentiment_linear_scale multiline_text sentiment_linear_scale multiline_text sentiment_linear_scale multiline_text sentiment_linear_scale multiline_text
+            page sentiment_linear_scale multiline_text sentiment_linear_scale multiline_text sentiment_linear_scale multiline_text
+            page sentiment_linear_scale multiline_text sentiment_linear_scale multiline_text sentiment_linear_scale multiline_text
             page
           ]
           expect(output.pluck(:key)).to eq %w[
-            page_quality_of_life place_to_live sense_of_safety access_to_parks affordable_housing employment_opportunities
-            page_service_delivery quality_of_services overall_value cleanliness_and_maintenance
-            page_governance_and_trust trust_in_government responsiveness_of_officials transparency_of_money_spent
+            page_quality_of_life place_to_live place_to_live_follow_up sense_of_safety sense_of_safety_follow_up access_to_parks access_to_parks_follow_up affordable_housing affordable_housing_follow_up employment_opportunities employment_opportunities_follow_up
+            page_service_delivery quality_of_services quality_of_services_follow_up overall_value overall_value_follow_up cleanliness_and_maintenance cleanliness_and_maintenance_follow_up
+            page_governance_and_trust trust_in_government trust_in_government_follow_up responsiveness_of_officials responsiveness_of_officials_follow_up transparency_of_money_spent transparency_of_money_spent_follow_up
             form_end
           ]
         end
@@ -138,16 +138,16 @@ describe IdeaCustomFieldsService do
         it 'returns fields with categories as pages' do
           output = service.survey_results_fields(structure_by_category: true)
           expect(output.pluck(:input_type)).to eq %w[
-            page sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale
-            page sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale
-            page sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale sentiment_linear_scale
-            page sentiment_linear_scale
+            page sentiment_linear_scale multiline_text sentiment_linear_scale multiline_text sentiment_linear_scale multiline_text
+            page sentiment_linear_scale multiline_text sentiment_linear_scale multiline_text sentiment_linear_scale multiline_text
+            page sentiment_linear_scale multiline_text sentiment_linear_scale multiline_text sentiment_linear_scale multiline_text sentiment_linear_scale multiline_text
+            page sentiment_linear_scale multiline_text
           ]
           expect(output.pluck(:key)).to eq %w[
-            category_quality_of_life place_to_live affordable_housing employment_opportunities
-            category_service_delivery quality_of_services overall_value cleanliness_and_maintenance
-            category_governance_and_trust sense_of_safety trust_in_government responsiveness_of_officials transparency_of_money_spent
-            category_other access_to_parks
+            category_quality_of_life place_to_live place_to_live_follow_up affordable_housing affordable_housing_follow_up employment_opportunities employment_opportunities_follow_up
+            category_service_delivery quality_of_services quality_of_services_follow_up overall_value overall_value_follow_up cleanliness_and_maintenance cleanliness_and_maintenance_follow_up
+            category_governance_and_trust sense_of_safety sense_of_safety_follow_up trust_in_government trust_in_government_follow_up responsiveness_of_officials responsiveness_of_officials_follow_up transparency_of_money_spent transparency_of_money_spent_follow_up
+            category_other access_to_parks access_to_parks_follow_up
           ]
         end
       end

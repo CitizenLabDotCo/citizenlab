@@ -414,6 +414,8 @@ class CustomField < ApplicationRecord
       key: follow_up_field_key,
       input_type: 'multiline_text',
       title_multiloc: title_multiloc,
+      question_category: question_category,
+      ordering: ordering,
       required: false,
       enabled: true
     )
