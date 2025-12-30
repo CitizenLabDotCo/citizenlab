@@ -8,7 +8,7 @@ it:
       "comment_marked_as_spam": Segnalazione di spam di commenti
       "comment_on_your_comment": Una risposta al mio commento
       "comment_on_idea_you_follow": Un commento su un'idea che segui
-      "community_monitor_report": Rapporto di monitoraggio della comunità
+      "community_monitor_report": Rapporto del barometro civico
       "cosponsor_of_your_idea": Un utente accetta il mio invito a co-sponsorizzare la mia proposta
       "event_registration_confirmation": Conferma della registrazione all'evento
       "idea_marked_as_spam": Segnalazione di spam di idee
@@ -175,12 +175,12 @@ it:
       wrong_content: 'Il commento non è pertinente.'
       yesterday: Ieri
     community_monitor_report:
-      subject: 'È disponibile un nuovo rapporto di monitoraggio della comunità'
-      preheader: 'È disponibile un nuovo rapporto di monitoraggio della comunità'
-      title: 'È disponibile un nuovo rapporto di monitoraggio della comunità'
-      event_description: 'È stato creato un rapporto di monitoraggio della comunità per il trimestre precedente. Puoi accedervi cliccando sul pulsante qui sotto ed effettuando il login.'
+      subject: 'È disponibile un nuovo rapporto del barometro civico'
+      preheader: 'È disponibile un nuovo rapporto del barometro civico'
+      title: 'È disponibile un nuovo rapporto del barometro civico'
+      event_description: 'È stato creato un rapporto del barometro civico per il trimestre precedente. Puoi accedervi cliccando sul pulsante qui sotto ed effettuando il login.'
       cta_button: 'Visualizza il rapporto'
-      report_name: 'Rapporto di monitoraggio della comunità'
+      report_name: 'Rapporto del barometro civico'
     cosponsor_of_your_idea:
       subject: '%{cosponsorName} ha accettato il tuo invito a co-sponsorizzare la tua proposta'
       preheader: '%{cosponsorName} ha accettato il tuo invito a co-sponsorizzare la tua proposta'
