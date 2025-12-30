@@ -3,6 +3,7 @@ import { useLocation, useSearchParams } from 'react-router-dom';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useSuperAdmin from 'hooks/useSuperAdmin';
 
 export default function useAuthConfig() {
   const { data: appConfiguration } = useAppConfiguration();
@@ -14,15 +15,15 @@ export default function useAuthConfig() {
   const providerForTest = searchParams.get('provider');
 
   // Allows super admins to sign in with password when password login is disabled
-  // through hidden param (?super_admin)
-  const superAdminParam = searchParams.get('super_admin') !== null;
+  // through hidden param (?super_admin) or cookie
+  const isSuperAdmin = useSuperAdmin();
 
   // A hidden path that will show all methods inc any that are admin only
   const { pathname } = useLocation();
   const showAdminOnlyMethods = pathname.endsWith('/sign-in/admin');
 
   const passwordLoginEnabled =
-    useFeatureFlag({ name: 'password_login' }) || superAdminParam;
+    useFeatureFlag({ name: 'password_login' }) || isSuperAdmin;
 
   const google = useFeatureFlag({ name: 'google_login' });
 
