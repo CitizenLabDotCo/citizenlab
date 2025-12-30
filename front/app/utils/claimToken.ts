@@ -1,5 +1,5 @@
 const STORAGE_KEY = 'claim_tokens';
-let IN_MEMORY_STORAGE: string[] = [];
+let inMemoryStorage: string[] = [];
 
 let localStorageAvailable: boolean | undefined = undefined;
 
@@ -30,7 +30,7 @@ export const storeClaimToken = (token: string) => {
   if (isLocalStorageAvailable()) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify([...storedTokens, token]));
   } else {
-    IN_MEMORY_STORAGE = [...storedTokens, token];
+    inMemoryStorage = [...storedTokens, token];
   }
 };
 
@@ -46,13 +46,13 @@ export const getClaimTokens = () => {
     return [];
   }
 
-  return IN_MEMORY_STORAGE;
+  return inMemoryStorage;
 };
 
 export const clearClaimTokens = () => {
   if (isLocalStorageAvailable()) {
     localStorage.removeItem(STORAGE_KEY);
   } else {
-    IN_MEMORY_STORAGE = [];
+    inMemoryStorage = [];
   }
 };
