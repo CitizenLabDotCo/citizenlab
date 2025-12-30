@@ -12,7 +12,8 @@ import userIdeaCountKeys from 'api/user_ideas_count/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import { storeClaimToken } from './claimToken';
+import { storeClaimToken } from '../../utils/claimToken';
+
 import ideasKeys from './keys';
 import { IIdea, IIdeaAdd } from './types';
 
