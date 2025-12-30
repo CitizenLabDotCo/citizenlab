@@ -309,18 +309,20 @@ const ReportBuilderToolbox = ({
               icon="chart-bar"
               label={formatMessage(WIDGET_TITLES.ParticipantsWidget)}
             />
-            <DraggableElement
-              id="e2e-draggable-registrations-widget"
-              component={
-                <RegistrationsWidget
-                  title={toMultiloc(WIDGET_TITLES.RegistrationsWidget)}
-                  startAt={undefined}
-                  endAt={chartEndDate}
-                />
-              }
-              icon="chart-bar"
-              label={formatMessage(WIDGET_TITLES.RegistrationsWidget)}
-            />
+            {isUserAdmin && (
+              <DraggableElement
+                id="e2e-draggable-registrations-widget"
+                component={
+                  <RegistrationsWidget
+                    title={toMultiloc(WIDGET_TITLES.RegistrationsWidget)}
+                    startAt={undefined}
+                    endAt={chartEndDate}
+                  />
+                }
+                icon="chart-bar"
+                label={formatMessage(WIDGET_TITLES.RegistrationsWidget)}
+              />
+            )}
             <DraggableElement
               id="e2e-draggable-visitors-traffic-sources-widget"
               component={
@@ -366,18 +368,20 @@ const ReportBuilderToolbox = ({
               icon="chart-bar"
               label={formatMessage(WIDGET_TITLES.ParticipationWidget)}
             />
-            <DraggableElement
-              id="e2e-draggable-methods-used-widget"
-              component={
-                <MethodsUsedWidget
-                  title={toMultiloc(WIDGET_TITLES.MethodsUsedWidget)}
-                  startAt={undefined}
-                  endAt={chartEndDate}
-                />
-              }
-              icon="chart-bar"
-              label={formatMessage(WIDGET_TITLES.MethodsUsedWidget)}
-            />
+            {isUserAdmin && (
+              <DraggableElement
+                id="e2e-draggable-methods-used-widget"
+                component={
+                  <MethodsUsedWidget
+                    title={toMultiloc(WIDGET_TITLES.MethodsUsedWidget)}
+                    startAt={undefined}
+                    endAt={chartEndDate}
+                  />
+                }
+                icon="chart-bar"
+                label={formatMessage(WIDGET_TITLES.MethodsUsedWidget)}
+              />
+            )}
             {/* Only show Projects Widget for admins, not for project moderators */}
             {isUserAdmin && (
               <DraggableElement
