@@ -268,7 +268,6 @@ export interface IAppConfigurationSettings {
   data_repository_transcription?: AppConfigurationFeature;
   data_repository_ai_analysis?: AppConfigurationFeature;
   user_fields_in_surveys?: AppConfigurationFeature;
-  html_pdfs?: AppConfigurationFeature;
   project_planning_calendar?: AppConfigurationFeature;
   common_ground?: AppConfigurationFeature;
   customised_automated_emails?: AppConfigurationFeature;

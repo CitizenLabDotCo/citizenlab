@@ -290,14 +290,6 @@ class CustomField < ApplicationRecord
     all_input_types.include? input_type
   end
 
-  # This supports the deprecated prawn based PDF export/import that did not support all field types
-  def printable_legacy?
-    return false if key&.start_with?('u_') # NOTE: User fields from 'user_fields_in_form' are not supported
-
-    ignore_field_types = %w[page date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids ranking matrix_linear_scale]
-    ignore_field_types.exclude? input_type
-  end
-
   def pdf_importable?
     ignore_field_types = %w[page checkbox files topic_ids image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking matrix_linear_scale]
     printable? && ignore_field_types.exclude?(input_type)
