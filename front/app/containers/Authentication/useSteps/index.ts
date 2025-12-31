@@ -201,13 +201,11 @@ export default function useSteps() {
   // Listen for any action that triggers the authentication flow, and initialize
   // the flow if no flow is ongoing
   useEffect(() => {
-    const subscription = triggerPostParticipationFlow$.subscribe(() => {
+    const subscription = triggerPostParticipationFlow$.subscribe((event) => {
       if (currentStep !== 'closed') return;
 
-      authenticationDataRef.current = {
-        context: GLOBAL_CONTEXT,
-        // successAction: {} TODO
-      };
+      const { authenticationData } = event.eventValue;
+      authenticationDataRef.current = authenticationData;
 
       updateState({ flow: 'signup' });
 
