@@ -10,7 +10,7 @@ class IdeaCustomFieldsService
     fields = if @custom_form.custom_field_ids.empty?
       @participation_method.default_fields(@custom_form)
     else
-      @custom_form.custom_fields.includes(:map_config, options: [:image])
+      @custom_form.custom_fields.includes(:map_config, :matrix_statements, options: [:image])
     end
 
     fields = fields.to_a
@@ -78,12 +78,12 @@ class IdeaCustomFieldsService
   end
 
   def survey_results_fields(structure_by_category: false)
-    return enabled_fields unless structure_by_category && @participation_method.supports_custom_field_categories?
+    return enabled_fields_with_other_options unless structure_by_category && @participation_method.supports_custom_field_categories?
 
     # Restructure the results to order by category with each category as a page
 
     # Remove the original pages
-    fields = enabled_fields.reject { |field| field.input_type == 'page' }
+    fields = enabled_fields_with_other_options.reject { |field| field.input_type == 'page' }
 
     # Order fields by the order of categories in custom field
     categories = CustomField::QUESTION_CATEGORIES

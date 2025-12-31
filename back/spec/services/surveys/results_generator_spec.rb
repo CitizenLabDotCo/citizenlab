@@ -108,7 +108,6 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns a single result for a text field' do
-        expected_result_text_field[:questionNumber] = nil # Question number is null when requesting a single result
         expect(generator.generate_result_for_field(text_field.id)).to match expected_result_text_field
       end
 
@@ -210,7 +209,6 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns a single result for multiselect' do
-        expected_result_multiselect[:questionNumber] = nil
         expect(generator.generate_result_for_field(multiselect_field.id)).to match expected_result_multiselect
       end
     end
@@ -230,7 +228,7 @@ RSpec.describe Surveys::ResultsGenerator do
           description: { 'en' => 'Please indicate how strong you agree or disagree.' },
           hidden: false,
           pageNumber: nil,
-          questionNumber: nil,
+          questionNumber: 4,
           questionCategory: nil,
           totalResponseCount: 27,
           questionResponseCount: 22,
@@ -261,7 +259,6 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns the results for a linear scale field' do
-        expected_result_linear_scale[:questionNumber] = 4
         expect(generated_results[:results][4]).to match expected_result_linear_scale
       end
 
@@ -348,7 +345,6 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns a single result for a rating field' do
-        expected_result_rating[:questionNumber] = nil # Question number is null when requesting a single result
         expect(generator.generate_result_for_field(rating_field.id)).to match expected_result_rating
       end
     end
@@ -403,7 +399,6 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns a single result for a sentiment linear scale field' do
-        expected_result_sentiment_linear_scale[:questionNumber] = nil # Question number is null when requesting a single result
         expect(generator.generate_result_for_field(sentiment_linear_scale_field.id)).to match expected_result_sentiment_linear_scale
       end
     end
@@ -472,7 +467,6 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns a single result for a linear scale field' do
-        expected_result_matrix_linear_scale[:questionNumber] = nil # Question number is null when requesting a single result
         expect(generator.generate_result_for_field(matrix_linear_scale_field.id)).to match expected_result_matrix_linear_scale
       end
     end
@@ -492,7 +486,7 @@ RSpec.describe Surveys::ResultsGenerator do
           description: {},
           hidden: false,
           pageNumber: nil,
-          questionNumber: nil,
+          questionNumber: 5,
           questionCategory: nil,
           totalResponseCount: 27,
           questionResponseCount: 6,
@@ -519,7 +513,6 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       it 'returns the correct results for a select field' do
-        expected_result_select[:questionNumber] = 5
         expect(generated_results[:results][5]).to match expected_result_select
       end
 
@@ -807,6 +800,77 @@ RSpec.describe Surveys::ResultsGenerator do
     end
   end
 
+  # TODO: Add a test for number of queries run to prove 50% quicker
+
+  describe 'with logic' do
+    let_it_be(:mid_page_field1) { create(:custom_field_page, resource: form, ordering: 5) }
+    let_it_be(:mid_page_field2) { create(:custom_field_page, resource: form, ordering: 10) }
+
+    # TODO: Complete these tests
+    describe '#next_page_id_from_logic' do
+      let(:input) { create(:native_survey_response, project: project, phases: phases_of_inputs) }
+
+      before do
+        # Update fields from survey_setup shared context with some logic
+        linear_scale_field.update!(logic: { rules: [{ if: 2, goto_page_id: mid_page_field2.id }, { if: 'no_answer', goto_page_id: last_page_field.id }] })
+        mid_page_field1.update!(logic: { next_page_id: last_page_field.id })
+      end
+
+      it 'returns the correct next_page_id from linear scale logic' do
+        input.update!(custom_field_values: { linear_scale_field.key => 2 })
+        logic_next_page_id = generator.send(:next_page_id_from_logic, linear_scale_field, input)
+        expect(logic_next_page_id).to eq mid_page_field2.id
+      end
+
+      it 'returns the correct next_page_id from no answer logic' do
+        input.update!(custom_field_values: {})
+        logic_next_page_id = generator.send(:next_page_id_from_logic, linear_scale_field, input)
+        expect(logic_next_page_id).to eq last_page_field.id
+      end
+
+      it 'returns no next_page_id when no logic present for the answer' do
+        input.update!(custom_field_values: { linear_scale_field.key => 3 })
+        logic_next_page_id = generator.send(:next_page_id_from_logic, linear_scale_field, input)
+        expect(logic_next_page_id).to be_nil
+      end
+    end
+
+    describe '#generate_results' do
+      before do
+        # Reset the logic to nothing
+        linear_scale_field.update!(logic: {})
+        mid_page_field1.update!(logic: {})
+      end
+
+      it 'returns correct response numbers based on logic 1' do
+        mid_page_field1.update!(logic: { next_page_id: last_page_field.id })
+        linear_scale_field.update!(logic: {
+          rules: [
+            { if: 2, goto_page_id: mid_page_field2.id },
+            { if: 'no_answer', goto_page_id: last_page_field.id }
+          ]
+        })
+        generator = described_class.new(survey_phase)
+        expect(generator.generate_results[:results].pluck(:totalResponseCount)).to eq(
+          [27, 27, 27, 27, 27, 27, 27, 27, 27, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+        )
+      end
+
+      it 'returns correct response numbers based on logic 2' do
+        linear_scale_field.update!(logic: {
+          rules: [
+            { if: 3, goto_page_id: last_page_field.id },
+            { if: 4, goto_page_id: last_page_field.id }
+          ]
+        })
+        generator = described_class.new(survey_phase)
+        expect(generator.generate_results[:results].pluck(:totalResponseCount)).to eq(
+          [27, 27, 27, 27, 27, 27, 27, 27, 27, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18]
+        )
+      end
+    end
+  end
+
   describe 'performance' do
     before { survey_phase.touch } # To ensure the phase creation is excluded from the query count
 
@@ -814,14 +878,14 @@ RSpec.describe Surveys::ResultsGenerator do
       expect do
         generator = described_class.new survey_phase
         generator.generate_results
-      end.not_to exceed_query_limit(51)
+      end.not_to exceed_query_limit(18) # Down from 51
     end
 
     it 'does not run too many SQL queries when generating a single result' do
       expect do
         generator = described_class.new survey_phase
         generator.generate_result_for_field(select_field.id)
-      end.not_to exceed_query_limit(13)
+      end.not_to exceed_query_limit(16) # Up from 13
     end
   end
 end

@@ -6,17 +6,16 @@ module Surveys
       super(phase, structure_by_category: structure_by_category)
       @year = year&.to_i
       @quarter = quarter&.to_i
-      filter_inputs_by_quarter
     end
 
     private
 
-    def filter_inputs_by_quarter
-      return unless @year && @quarter
+    def survey_inputs
+      return super unless @year && @quarter
 
       raise ArgumentError, 'Invalid date format' unless valid_quarter?
 
-      @inputs = @inputs.where(created_at: quarter_to_date_range(@year, @quarter))
+      @survey_inputs ||= phase.ideas.supports_survey.published.where(created_at: quarter_to_date_range(@year, @quarter))
     end
 
     def add_averages(results)

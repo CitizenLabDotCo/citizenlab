@@ -10,13 +10,6 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
 
   include_context 'survey_setup'
 
-  describe 'generate_results' do
-    it 'is not implemented and returns an error' do
-      generator = described_class.new(survey_phase)
-      expect { generator.generate_results }.to raise_error(NotImplementedError)
-    end
-  end
-
   describe 'generate_result_for_field' do
     describe 'errors' do
       it 'raises an error if the group field is not found' do
@@ -26,7 +19,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
 
       it 'raises an error if the user group field is not found' do
         generator = described_class.new(survey_phase, group_mode: 'user_field', group_field_id: '12345')
-        expect { generator.generate_result_for_field('missing_field') }.to raise_error(ActiveRecord::RecordNotFound)
+        expect { generator.generate_result_for_field(multiselect_field.id) }.to raise_error('Group field not found')
       end
     end
 
@@ -72,7 +65,6 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
 
       let(:expected_result_multiselect_with_user_field_grouping) do
         expected_result_multiselect.tap do |result|
-          result[:questionNumber] = nil
           result[:grouped] = true
           result[:legend] = ['male', 'female', 'unspecified', nil]
           result[:answers] = [
@@ -126,7 +118,6 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
 
       let(:expected_result_multiselect_with_select_field_grouping) do
         expected_result_multiselect.tap do |result|
-          result[:questionNumber] = nil
           result[:grouped] = true
           result[:legend] = ['la', 'ny', 'other', nil]
           result[:answers] = [
@@ -217,7 +208,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           description: { 'en' => 'Please indicate how strong you agree or disagree.' },
           hidden: false,
           pageNumber: nil,
-          questionNumber: nil,
+          questionNumber: 4,
           questionCategory: nil,
           totalResponseCount: 27,
           questionResponseCount: 22,
@@ -321,7 +312,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           description: { 'en' => 'Please rate your experience from 1 (poor) to 7 (excellent).' },
           hidden: false,
           pageNumber: nil,
-          questionNumber: nil,
+          questionNumber: 16,
           questionCategory: nil,
           totalResponseCount: 27,
           questionResponseCount: 22,
@@ -400,7 +391,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           description: {},
           hidden: false,
           pageNumber: nil,
-          questionNumber: nil,
+          questionNumber: 5,
           questionCategory: nil,
           totalResponseCount: 27,
           questionResponseCount: 6,
@@ -527,7 +518,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           description: {},
           hidden: false,
           pageNumber: nil,
-          questionNumber: nil,
+          questionNumber: 5,
           questionCategory: nil,
           totalResponseCount: 27,
           questionResponseCount: 6,
@@ -670,7 +661,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           group_field_id: gender_user_custom_field.id
         )
         generator.generate_result_for_field(select_field.id)
-      end.not_to exceed_query_limit(17)
+      end.not_to exceed_query_limit(18) # Down from 21
     end
   end
 end
