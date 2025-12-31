@@ -45,6 +45,7 @@ interface Props {
   hideLabel?: boolean;
   onProjectFilter: (filter: Option) => void;
   includeHiddenProjects?: boolean;
+  isClearable?: boolean;
 }
 
 const generateProjectOptions = (
@@ -73,6 +74,7 @@ const ProjectFilter = ({
   hideLabel = false,
   onProjectFilter,
   includeHiddenProjects = false,
+  isClearable = true,
   id,
   ...boxProps
 }: Props & Omit<BoxProps, 'children'>) => {
@@ -209,7 +211,7 @@ const ProjectFilter = ({
         }}
         menuPosition="fixed"
         menuPlacement="auto"
-        isClearable
+        isClearable={isClearable}
       />
     </Box>
   );

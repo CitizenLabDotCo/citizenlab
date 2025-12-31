@@ -5,11 +5,20 @@ module IdAcm
     include AcmVerification
 
     def profile_to_user_attrs(auth)
+      # Validate the RRN against the API and store the result in a custom field
+      # Custom field should be a select field with options: [valid, lives_outside, under_minimum_age, no_match, service_error]
+      custom_field_values = {}
+      if (rrn_result_key = config[:rrn_result_custom_field_key])
+        rrn_result = rnn_verification_result(auth.extra.raw_info.rrn)
+        custom_field_values[rrn_result_key] = rrn_result if rrn_result
+      end
+
       {
         first_name: auth.info.first_name,
         last_name: auth.info.last_name,
         email: auth.info.email,
-        locale: AppConfiguration.instance.closest_locale_to('nl-BE')
+        locale: AppConfiguration.instance.closest_locale_to('nl-BE'),
+        custom_field_values: custom_field_values
       }
     end
 
