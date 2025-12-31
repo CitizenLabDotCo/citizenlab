@@ -44,10 +44,6 @@ export interface SSOParams {
   verification_success?: string;
 }
 
-const setHrefVienna = () => {
-  window.location.href = `${AUTH_PATH}/vienna_citizen`;
-};
-
 export const handleOnSSOClick = (
   provider: SSOProvider,
   metaData: AuthenticationData,
@@ -63,9 +59,7 @@ export const handleOnSSOClick = (
   localStorage.setItem('auth_context', JSON.stringify(metaData.context));
   localStorage.setItem('auth_path', window.location.pathname as RouteType);
 
-  provider === 'id_vienna_saml'
-    ? setHrefVienna()
-    : setHref(provider, metaData, verification, flow);
+  setHref(provider, metaData, verification, flow);
 };
 
 function setHref(
@@ -85,6 +79,9 @@ function setHref(
     sso_verification_id: isProjectContext(context) ? context.id : undefined,
     sso_verification_type: context.type,
   };
+
+  const path = provider === 'id_vienna_saml' ? 'vienna_citizen' : provider;
+
   const urlSearchParams = stringify(omitBy(ssoParams, isNil));
-  window.location.href = `${AUTH_PATH}/${provider}?${urlSearchParams}`;
+  window.location.href = `${AUTH_PATH}/${path}?${urlSearchParams}`;
 }
