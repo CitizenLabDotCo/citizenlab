@@ -12,6 +12,7 @@ import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import { triggerPostParticipationFlow } from 'containers/Authentication/events';
@@ -84,6 +85,9 @@ const IdeationPage = ({
   const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
+  const postParticipationSignUpEnabled = useFeatureFlag({
+    name: 'post_participation_signup',
+  });
 
   const localize = useLocalize();
 
@@ -203,6 +207,10 @@ const IdeationPage = ({
 
   const isLastPage = currentPageIndex === lastPageIndex;
 
+  const showSubmissionReference = isLastPage && idea && showIdeaId;
+  const showPostParticipationSignup =
+    isLastPage && !authUser && postParticipationSignUpEnabled;
+
   return (
     <FormProvider {...methods}>
       <StyledForm id="idea-form">
@@ -284,13 +292,13 @@ const IdeationPage = ({
                           onChange={handleOnChangeAnonymousPosting}
                         />
                       )}
-                    {isLastPage && idea && showIdeaId && (
+                    {showSubmissionReference && (
                       <SubmissionReference
                         inputId={idea.data.id}
                         participationMethod={participationMethod}
                       />
                     )}
-                    {isLastPage && !authUser && (
+                    {showPostParticipationSignup && (
                       <Button
                         onClick={triggerPostParticipationFlow}
                         mt="16px"
