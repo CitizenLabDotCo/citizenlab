@@ -216,7 +216,7 @@ const SurveyPage = ({
 
   const showSubmissionReference = isLastPage && idea && showIdeaId;
   const showPostParticipationSignup =
-    isLastPage && !authUser && postParticipationSignUpEnabled;
+    isLastPage && project && !authUser && postParticipationSignUpEnabled;
 
   return (
     <FormProvider {...methods}>
@@ -286,7 +286,14 @@ const SurveyPage = ({
                       )}
                       {showPostParticipationSignup && (
                         <Button
-                          onClick={triggerPostParticipationFlow}
+                          onClick={() => {
+                            triggerPostParticipationFlow({
+                              name: 'redirectToProject',
+                              params: {
+                                projectSlug: project.data.attributes.slug,
+                              },
+                            });
+                          }}
                           mt="16px"
                           width="auto"
                         >

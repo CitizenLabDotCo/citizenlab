@@ -16,6 +16,10 @@ import {
   redirectToIdeaForm,
   RedirectToIdeaFormParams,
 } from './redirectToIdeaForm';
+import {
+  redirectToProject,
+  RedirectToProjectParams,
+} from './redirectToProject';
 import { replyToComment, ReplyToCommentParams } from './replyToComment';
 import { scrollTo, ScrollToParams } from './scrollTo';
 import { submitPoll, SubmitPollParams } from './submitPoll';
@@ -77,6 +81,11 @@ interface RedirectToIdeaAction {
   params: RedirectToIdeaParams;
 }
 
+interface RedirectToProjectAction {
+  name: 'redirectToProject';
+  params: RedirectToProjectParams;
+}
+
 export type SuccessAction =
   | RedirectToIdeaFormAction
   | ReplyToCommentAction
@@ -88,7 +97,8 @@ export type SuccessAction =
   | FollowAction
   | SubmitPollAction
   | AttendEventAction
-  | RedirectToIdeaAction;
+  | RedirectToIdeaAction
+  | RedirectToProjectAction;
 
 // https://hackernoon.com/mastering-type-safe-json-serialization-in-typescript
 type JSONPrimitive = string | number | boolean | null | undefined;
@@ -206,6 +216,11 @@ export const getAction = ({ name, params }: SuccessAction) => {
   if (name === 'redirectToIdea') {
     ensureJSONSerializable(params);
     return redirectToIdea(params);
+  }
+
+  if (name === 'redirectToProject') {
+    ensureJSONSerializable(params);
+    return redirectToProject(params);
   }
 
   ensureJSONSerializable(params);
