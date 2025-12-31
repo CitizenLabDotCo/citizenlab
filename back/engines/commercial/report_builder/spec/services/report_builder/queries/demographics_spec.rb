@@ -34,7 +34,10 @@ RSpec.describe ReportBuilder::Queries::Demographics do
           create(:user, custom_field_values: { @custom_field.key => @option1.key }, manual_groups: [@group])
         end
 
-        AppConfiguration.instance.update!(created_at: Date.new(2020, 1, 1))
+        AppConfiguration.instance.update!(
+          created_at: Date.new(2020, 1, 1),
+          platform_start_at: Date.new(2020, 1, 1)
+        )
       end
 
       it 'returns multilocs' do
@@ -136,7 +139,10 @@ RSpec.describe ReportBuilder::Queries::Demographics do
           custom_field_values: { birthyear: 1977 }
         )
 
-        AppConfiguration.instance.update!(created_at: Date.new(2020, 1, 1))
+        AppConfiguration.instance.update!(
+          created_at: Date.new(2020, 1, 1),
+          platform_start_at: Date.new(2020, 1, 1)
+        )
       end
 
       it 'returns correct series data' do

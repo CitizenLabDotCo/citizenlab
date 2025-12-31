@@ -8,7 +8,10 @@ RSpec.describe ReportBuilder::Queries::TrafficSources do
   describe '#run_query' do
     before_all do
       # Make TimeBoundariesParser work as expected
-      AppConfiguration.instance.update!(created_at: Date.new(2021, 1, 1))
+      AppConfiguration.instance.update!(
+        created_at: Date.new(2021, 1, 1),
+        platform_start_at: Date.new(2021, 1, 1)
+      )
     end
 
     it 'identifies direct traffic (referrer is empty string or nil)' do

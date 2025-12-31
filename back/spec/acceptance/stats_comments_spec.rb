@@ -56,7 +56,7 @@ resource 'Stats - Comments' do
   let!(:now) { timezone.now }
 
   before do
-    AppConfiguration.instance.update!(created_at: now - 3.months)
+    AppConfiguration.instance.update!(created_at: now - 3.months, platform_start_at: now - 3.months)
     create(:comment, publication_status: 'deleted')
   end
 
