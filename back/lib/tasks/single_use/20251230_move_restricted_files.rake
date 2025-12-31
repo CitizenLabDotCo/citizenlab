@@ -35,7 +35,7 @@ namespace :fix_existing_tenants do
         mapping.each do |old_key, new_key|
           reporter.add_change(old_key, new_key, context: { tenant: tenant.host })
         end
-        reporter.add_processed_tenant(tenant.host)
+        reporter.add_processed_tenant(tenant)
       end
     end
     reporter.report!('move_restricted_files_report.json', verbose: true)
