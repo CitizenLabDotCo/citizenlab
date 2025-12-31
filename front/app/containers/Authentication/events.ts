@@ -2,6 +2,7 @@ import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/c
 
 import eventEmitter from 'utils/eventEmitter';
 
+import { SuccessAction } from './SuccessActions/actions';
 import { AuthenticationData } from './typings';
 
 const TRIGGER_AUTHENTICATION_FLOW = 'triggerAuthenticationFlow';
@@ -47,9 +48,20 @@ export const triggerVerificationOnly$ = eventEmitter.observeEvent<undefined>(
 // Post-participation flow
 const TRIGGER_POST_PARTICIPATION_FLOW = 'triggerPostParticipationFlow';
 
-export function triggerPostParticipationFlow() {
-  eventEmitter.emit(TRIGGER_POST_PARTICIPATION_FLOW);
+export function triggerPostParticipationFlow(successAction: SuccessAction) {
+  const authenticationData: AuthenticationData = {
+    context: GLOBAL_CONTEXT,
+    successAction,
+  };
+
+  const event: Event = {
+    authenticationData,
+    flow: 'signup',
+  };
+
+  eventEmitter.emit(TRIGGER_POST_PARTICIPATION_FLOW, event);
 }
 
-export const triggerPostParticipationFlow$ =
-  eventEmitter.observeEvent<undefined>(TRIGGER_POST_PARTICIPATION_FLOW);
+export const triggerPostParticipationFlow$ = eventEmitter.observeEvent<Event>(
+  TRIGGER_POST_PARTICIPATION_FLOW
+);

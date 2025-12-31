@@ -12,6 +12,7 @@ import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import { triggerPostParticipationFlow } from 'containers/Authentication/events';
@@ -93,6 +94,9 @@ const SurveyPage = ({
   const isMapPage = page.page_layout === 'map';
   const isMobileOrSmaller = useBreakpoint('phone');
   const { data: authUser } = useAuthUser();
+  const postParticipationSignUpEnabled = useFeatureFlag({
+    name: 'post_participation_signup',
+  });
 
   const [searchParams] = useSearchParams();
   const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
@@ -210,6 +214,10 @@ const SurveyPage = ({
 
   const isLastPage = currentPageIndex === lastPageIndex;
 
+  const showSubmissionReference = isLastPage && idea && showIdeaId;
+  const showPostParticipationSignup =
+    isLastPage && project && !authUser && postParticipationSignUpEnabled;
+
   return (
     <FormProvider {...methods}>
       <StyledForm id="idea-form">
@@ -270,15 +278,22 @@ const SurveyPage = ({
                         phase={phase}
                         participationMethod={participationMethod}
                       />
-                      {isLastPage && idea && showIdeaId && (
+                      {showSubmissionReference && (
                         <SubmissionReference
                           inputId={idea.data.id}
                           participationMethod={participationMethod}
                         />
                       )}
-                      {isLastPage && !authUser && (
+                      {showPostParticipationSignup && (
                         <Button
-                          onClick={triggerPostParticipationFlow}
+                          onClick={() => {
+                            triggerPostParticipationFlow({
+                              name: 'redirectToProject',
+                              params: {
+                                projectSlug: project.data.attributes.slug,
+                              },
+                            });
+                          }}
                           mt="16px"
                           width="auto"
                         >
