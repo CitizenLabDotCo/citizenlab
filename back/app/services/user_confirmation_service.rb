@@ -133,9 +133,13 @@ class UserConfirmationService
   end
 
   def confirm_user!(user)
-    return if user.confirm!
-
-    raise ValidationError.new(:user, :confirmation, message: 'Something went wrong.')
+    if user.confirm!
+      ClaimTokenService.complete(user)
+    else
+      raise ValidationError.new(
+        :user, :confirmation, message: 'Something went wrong.'
+      )
+    end
   end
 
   def success_result(user)
