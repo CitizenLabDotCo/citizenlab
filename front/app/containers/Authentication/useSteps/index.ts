@@ -206,6 +206,7 @@ export default function useSteps() {
 
       authenticationDataRef.current = {
         context: GLOBAL_CONTEXT,
+        // successAction: {} TODO
       };
 
       updateState({ flow: 'signup' });

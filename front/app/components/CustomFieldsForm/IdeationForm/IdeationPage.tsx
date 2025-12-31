@@ -209,7 +209,7 @@ const IdeationPage = ({
 
   const showSubmissionReference = isLastPage && idea && showIdeaId;
   const showPostParticipationSignup =
-    isLastPage && !authUser && postParticipationSignUpEnabled;
+    isLastPage && idea && !authUser && postParticipationSignUpEnabled;
 
   return (
     <FormProvider {...methods}>
@@ -300,7 +300,14 @@ const IdeationPage = ({
                     )}
                     {showPostParticipationSignup && (
                       <Button
-                        onClick={triggerPostParticipationFlow}
+                        onClick={() => {
+                          triggerPostParticipationFlow({
+                            name: 'redirectToIdea',
+                            params: {
+                              ideaSlug: idea.data.attributes.slug,
+                            },
+                          });
+                        }}
                         mt="16px"
                         width="auto"
                       >
