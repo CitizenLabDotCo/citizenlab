@@ -20,6 +20,10 @@ class WebApi::V1::UsersController < ApplicationController
 
     # Filter by project participants
     if params[:project].present?
+      # Block access to project participants list if private_attributes_in_export is disabled
+      private_attributes_in_export = AppConfiguration.instance.settings['core']['private_attributes_in_export'] != false
+      raise ActiveRecord::RecordNotFound unless private_attributes_in_export
+
       project = Project.find(params[:project])
       participant_ids = ParticipantsService.new.project_participants(project).pluck(:id)
       @users = @users.where(id: participant_ids)
@@ -113,7 +117,7 @@ class WebApi::V1::UsersController < ApplicationController
 
   # To validate an email without creating a user and return which action to go to next
   def check
-    skip_authorization
+    authorize :user, :check?
     email = params[:user][:email]
 
     if User::EMAIL_REGEX.match?(email)
@@ -123,7 +127,16 @@ class WebApi::V1::UsersController < ApplicationController
       elsif @user.invite_pending?
         render json: { errors: { email: [{ error: 'taken_by_invite', value: email, inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
       elsif !@user.no_password?
-        render json: raw_json({ action: 'password' })
+        if @user.confirmation_required?
+          # If a user has a password set but still needs to confirm their email,
+          # we send them to the confirm action first.
+          # This situation only exists for legacy users that were created before
+          # we made email confirmation required before being able to set a password
+          RequestConfirmationCodeJob.perform_now(@user)
+          render json: raw_json({ action: 'confirm' })
+        else
+          render json: raw_json({ action: 'password' })
+        end
       elsif !app_configuration.feature_activated?('user_confirmation')
         render json: raw_json({ action: 'token' })
       else
