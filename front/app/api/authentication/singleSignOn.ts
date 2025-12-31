@@ -9,6 +9,8 @@ import {
   SignUpInError,
 } from 'containers/Authentication/typings';
 
+import { getClaimTokens } from 'utils/claimToken';
+
 export interface SSOProviderMap {
   azureactivedirectory: 'azureactivedirectory';
   azureactivedirectory_b2c: 'azureactivedirectory_b2c';
@@ -42,6 +44,7 @@ export interface SSOParams {
   // TODO: Refactoring + better integration of verification into new
   // registration flow when there is BE support
   verification_success?: string;
+  claim_tokens?: string[];
 }
 
 export const handleOnSSOClick = (
@@ -78,6 +81,7 @@ function setHref(
     sso_verification_action: context.action,
     sso_verification_id: isProjectContext(context) ? context.id : undefined,
     sso_verification_type: context.type,
+    claim_tokens: getClaimTokens(),
   };
 
   const path = provider === 'id_vienna_saml' ? 'vienna_citizen' : provider;
