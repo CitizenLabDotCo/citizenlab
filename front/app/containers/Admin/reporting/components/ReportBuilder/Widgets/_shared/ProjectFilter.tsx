@@ -61,6 +61,7 @@ const ProjectFilter = ({
       emptyOptionMessage={getEmptyOptionMessage()}
       onProjectFilter={handleProjectFilter}
       includeHiddenProjects
+      isClearable={isAdmin(authUser)}
     />
   );
 };

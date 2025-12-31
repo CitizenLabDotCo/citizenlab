@@ -51,6 +51,11 @@ class UserPolicy < ApplicationPolicy
     record&.invite_pending?
   end
 
+  def check?
+    app_config = AppConfiguration.instance
+    app_config.feature_activated?('password_login')
+  end
+
   def update?
     user&.active? && (record.id == user.id || user&.admin?)
   end
