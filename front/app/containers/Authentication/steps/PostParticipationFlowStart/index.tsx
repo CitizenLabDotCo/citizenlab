@@ -13,10 +13,10 @@ import Or from 'components/UI/Or';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
+import EmailForm from '../EmailFlowStart/EmailForm';
+import SSOButtons from '../EmailFlowStart/SSOButtons';
 
-import EmailForm from './EmailForm';
-import SSOButtons from './SSOButtons';
+import messages from './messages';
 
 interface Props {
   loading: boolean;
@@ -25,7 +25,7 @@ interface Props {
   onSwitchToSSO: (ssoProvider: SSOProvider) => void;
 }
 
-const EmailFlowStart = ({
+const PostParticipationFlowStart = ({
   loading,
   setError,
   onSubmit,
@@ -35,7 +35,7 @@ const EmailFlowStart = ({
   const { formatMessage } = useIntl();
 
   return (
-    <Box data-cy="email-flow-start">
+    <Box data-cy="post-participation-flow-start">
       {ssoProviders.franceconnect && (
         <>
           <FranceConnectButton
@@ -54,7 +54,7 @@ const EmailFlowStart = ({
       {passwordLoginEnabled && (
         <EmailForm
           loading={loading}
-          topText={messages.enterYourEmailAddress}
+          topText={messages.dropUsYourEmailIfYouWantToStayUpdated}
           setError={setError}
           onSubmit={onSubmit}
         />
@@ -64,4 +64,4 @@ const EmailFlowStart = ({
   );
 };
 
-export default EmailFlowStart;
+export default PostParticipationFlowStart;

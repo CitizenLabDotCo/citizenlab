@@ -4,6 +4,7 @@ import {
   AuthenticationData,
   SetError,
   State,
+  SSOProviderWithoutVienna,
 } from '../../typings';
 
 import { emailFlow } from './emailFlow';
@@ -12,6 +13,7 @@ import { missingDataFlow } from './missingDataFlow';
 import { sharedSteps } from './sharedSteps';
 import { ssoVerificationFlow } from './ssoVerificationFlow';
 import { Step } from './typings';
+import { handleSubmitEmail, handleSSOClick } from './utils';
 
 export const getStepConfig = (
   getAuthenticationData: () => AuthenticationData,
@@ -70,6 +72,36 @@ export const getStepConfig = (
 
     'verification-success': {
       CLOSE: () => setCurrentStep('closed'),
+    },
+
+    'post-participation:email': {
+      CLOSE: () => setCurrentStep('closed'),
+
+      SUBMIT_EMAIL: async (email: string) => {
+        updateState({ email });
+        handleSubmitEmail(
+          email,
+          getAuthenticationData,
+          getRequirements,
+          setCurrentStep,
+          updateState
+        );
+      },
+
+      CONTINUE_WITH_SSO: async (ssoProvider: SSOProviderWithoutVienna) => {
+        handleSSOClick(
+          ssoProvider,
+          getAuthenticationData,
+          getRequirements,
+          setCurrentStep,
+          updateState,
+          state
+        );
+      },
+      DO_NOT_ASK_AGAIN: () => {
+        // TODO set cookie / local storage?
+        setCurrentStep('closed');
+      },
     },
   };
 };
