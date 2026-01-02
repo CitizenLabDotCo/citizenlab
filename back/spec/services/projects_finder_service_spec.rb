@@ -130,13 +130,12 @@ describe ProjectsFinderService do
 
     it 'includes projects with active document annotation phase' do
       annotation_project = create(:project)
-      create(:phase, 
+      create(:phase,
         project: annotation_project,
         participation_method: 'document_annotation',
         start_at: 1.day.ago,
         end_at: 1.day.from_now,
-        document_annotation_embed_url: 'https://test.konveio.com/123456'
-      )
+        document_annotation_embed_url: 'https://test.konveio.com/123456')
 
       expect(Project.count).to eq 4
       expect(result[:projects].size).to eq 2
