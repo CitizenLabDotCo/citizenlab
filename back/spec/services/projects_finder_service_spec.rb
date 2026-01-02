@@ -127,6 +127,20 @@ describe ProjectsFinderService do
       # and we avoid getting the action descriptors again in the serializer, by passing them along.
       expect { result }.not_to exceed_query_limit(50)
     end
+
+    it 'includes projects with active document annotation phase' do
+      annotation_project = create(:project)
+      create(:phase,
+        project: annotation_project,
+        participation_method: 'document_annotation',
+        start_at: 1.day.ago,
+        end_at: 1.day.from_now,
+        document_annotation_embed_url: 'https://test.konveio.com/123456')
+
+      expect(Project.count).to eq 4
+      expect(result[:projects].size).to eq 2
+      expect(result[:projects].map(&:id)).to include(active_ideation_project.id, annotation_project.id)
+    end
   end
 
   describe 'followed_by_user' do
