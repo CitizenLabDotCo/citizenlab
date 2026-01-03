@@ -11,6 +11,10 @@ module Analysis
         0.6
       end
 
+      def family
+        'aws_anthropic'
+      end
+
       protected
 
       def model_id
