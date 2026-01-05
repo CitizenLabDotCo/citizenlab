@@ -249,7 +249,7 @@ it:
   custom_field_options:
     gender:
       male: Uomo
-      female: Femmina
+      female: Donna
       unspecified: Altro
     domicile:
       outside: Da qualche altra parte
