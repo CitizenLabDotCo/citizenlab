@@ -12,7 +12,7 @@ module Analysis
       end
 
       # Should return a family key as defined in LLMSelector::FAMILIES
-      def family
+      def self.family
         raise NotImplementedError
       end
 

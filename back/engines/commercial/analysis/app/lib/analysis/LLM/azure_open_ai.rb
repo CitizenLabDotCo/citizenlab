@@ -49,7 +49,7 @@ module Analysis
         ).responses
       end
 
-      def family
+      def self.family
         'azure_openai'
       end
 

@@ -1,8 +1,6 @@
 module Analysis
   module LLM
     class RubyLLM < Base
-      delegate :context_window, to: :model_info
-
       def chat(prompt, **params)
         chat = chat_context.chat(model:, **chat_options)
 
@@ -15,11 +13,15 @@ module Analysis
       end
 
       def chat_async(prompt, **params)
-        chat = chat_context.chat(model)
+        chat = chat_context.chat(model:, **chat_options)
 
         chat.ask(prompt, **params) do |chunk|
           yield(chunk.content)
         end
+      end
+
+      def context_window
+        chat_context.chat(model:, **chat_options).model.context_window
       end
 
       # The model ID as returned by RubyLLM.models.chat_models

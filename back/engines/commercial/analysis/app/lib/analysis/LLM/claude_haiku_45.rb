@@ -6,7 +6,7 @@ module Analysis
         'eu.anthropic.claude-haiku-4-5-20251001-v1:0'
       end
 
-      def family
+      def self.family
         'aws_anthropic'
       end
 

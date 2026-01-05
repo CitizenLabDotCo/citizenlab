@@ -6,7 +6,7 @@ module Analysis
         'eu.anthropic.claude-opus-4-5-20251101-v1:0'
       end
 
-      def family
+      def self.family
         'aws_anthropic'
       end
 

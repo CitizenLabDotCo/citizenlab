@@ -11,7 +11,7 @@ module Analysis
         0.6
       end
 
-      def family
+      def self.family
         'aws_anthropic'
       end
 

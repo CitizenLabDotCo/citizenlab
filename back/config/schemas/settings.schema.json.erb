@@ -294,7 +294,7 @@
                 "title": "<%= use_case.key %>",
                 "description": "<%= use_case.description %>",
                 "default": "auto",
-                "enum": <%= ['auto', *(llm_selector.families_for_use_case(use_case).map{|fam| fam.key })].to_json %>
+                "enum": <%= [LLMSelector::AUTO, *(llm_selector.families_for_use_case(use_case).map{|fam| fam.key })].to_json %>
               }<%= ',' unless index == llm_selector.use_cases.length - 1 %>
               <% end %>
             }

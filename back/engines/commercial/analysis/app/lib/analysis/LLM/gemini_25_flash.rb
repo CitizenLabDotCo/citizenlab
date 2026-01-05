@@ -7,7 +7,7 @@ module Analysis
         'gemini-2.5-flash'
       end
 
-      def family
+      def self.family
         'vertex_gemini'
       end
 
