@@ -48,7 +48,9 @@ module UserCustomFields
       # year: July 1st of the year of birth.
       birth_time = Time.zone.local(birthyear_int, 7, 1)
       age = (time - birth_time) / 1.year
-      age < 0 ? 0 : age # Catch negative ages for those under 6 months (extreme edge case)
+      return 0 if age < 0 # Catch negative ages for those under 6 months (extreme edge case)
+
+      age
     end
 
     def convert_to_birthyear(age, time: Time.zone.now)
