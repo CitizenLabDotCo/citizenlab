@@ -1,12 +1,15 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Button, useBreakpoint } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
+import usePhase from 'api/phases/usePhase';
 
+import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
+import messages from '../messages';
 import { getTopicColor } from '../topicsColor';
 
 import StickyNote from './StickyNote';
@@ -26,7 +29,7 @@ const NoteWrapper = styled(Box)`
   }
 `;
 
-const POSITIONS = [
+const POSITIONS_DESKTOP = [
   { left: '5%', top: '2%' },
   { left: '20%', top: '10%' },
   { left: '37%', top: '5%' },
@@ -54,18 +57,32 @@ const POSITIONS = [
   { left: '9%', top: '47%' },
 ];
 
+const POSITIONS_MOBILE = [
+  { left: '2%', top: '1%' },
+  { left: '42%', top: '4%' },
+  { left: '5%', top: '14%' },
+  { left: '45%', top: '17%' },
+  { left: '2%', top: '30%' },
+  { left: '44%', top: '33%' },
+  { left: '4%', top: '46%' },
+  { left: '42%', top: '49%' },
+];
+
 interface Props {
   phaseId: string;
   slug: string;
 }
 
 const StickyNotesPile = ({ phaseId, slug }: Props) => {
+  const isMobile = useBreakpoint('phone');
+  const { data: phase } = usePhase(phaseId);
   const { data } = useInfiniteIdeaFeedIdeas({
     phaseId,
     'page[size]': 20,
   });
 
   const flatIdeas = data?.pages.flatMap((page) => page.data);
+  const ideasCount = phase?.data.attributes.ideas_count ?? 0;
 
   const handleNoteClick = (ideaId: string) => {
     clHistory.push(
@@ -73,34 +90,50 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
     );
   };
 
-  return (
-    <PileContainer
-      position="relative"
-      width="100%"
-      height="100%"
-      minHeight="750px"
-    >
-      {flatIdeas?.map((idea, index) => {
-        const topicIds =
-          idea.relationships.topics?.data.map((topic) => topic.id) || [];
-        const topicBackgroundColor = getTopicColor(topicIds[0]);
+  const handleSeeAllClick = () => {
+    clHistory.push(`/projects/${slug}/ideas-feed?phase_id=${phaseId}`);
+  };
 
-        return (
-          <NoteWrapper
-            key={idea.id}
-            zIndex={String(index)}
-            left={POSITIONS[index % POSITIONS.length].left}
-            top={POSITIONS[index % POSITIONS.length].top}
-          >
-            <StickyNote
-              ideaId={idea.id}
-              topicBackgroundColor={topicBackgroundColor}
-              onClick={() => handleNoteClick(idea.id)}
-            />
-          </NoteWrapper>
-        );
-      })}
-    </PileContainer>
+  const positions = isMobile ? POSITIONS_MOBILE : POSITIONS_DESKTOP;
+  const displayedIdeas = isMobile
+    ? flatIdeas?.slice(0, POSITIONS_MOBILE.length)
+    : flatIdeas;
+
+  return (
+    <Box>
+      <PileContainer
+        position="relative"
+        width="100%"
+        height="100%"
+        minHeight={isMobile ? '500px' : '750px'}
+      >
+        {displayedIdeas?.map((idea, index) => {
+          const topicIds =
+            idea.relationships.topics?.data.map((topic) => topic.id) || [];
+          const topicBackgroundColor = getTopicColor(topicIds[0]);
+
+          return (
+            <NoteWrapper
+              key={idea.id}
+              zIndex={String(index)}
+              left={positions[index % positions.length].left}
+              top={positions[index % positions.length].top}
+            >
+              <StickyNote
+                ideaId={idea.id}
+                topicBackgroundColor={topicBackgroundColor}
+                onClick={() => handleNoteClick(idea.id)}
+              />
+            </NoteWrapper>
+          );
+        })}
+      </PileContainer>
+      <Box display="flex" justifyContent="center" mt="24px">
+        <Button onClick={handleSeeAllClick}>
+          <FormattedMessage {...messages.seeAllIdeas} values={{ ideasCount }} />
+        </Button>
+      </Box>
+    </Box>
   );
 };
 

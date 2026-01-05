@@ -69,7 +69,10 @@ const IdeasFeedPage = () => {
         >
           <Sidebar />
           <Box flex="4">
-            <IdeasFeed initialIdeaId={initialIdeaId} />
+            <IdeasFeed
+              initialIdeaId={initialIdeaId}
+              key={selectedTopicId || 'all'}
+            />
           </Box>
         </Box>
       </Box>

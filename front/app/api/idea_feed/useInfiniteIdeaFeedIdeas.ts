@@ -57,7 +57,6 @@ const useInfiniteIdeaFeedIdeas = (
       const pageNumber = getPageNumberFromUrl(lastPage.links.self);
       return hasNextPage && pageNumber ? pageNumber + 1 : null;
     },
-    cacheTime: 0, // Disable cache to always have fresh data
   });
 };
 
