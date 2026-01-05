@@ -1786,7 +1786,7 @@
   "app.containers.AdminPage.DashboardPage.components.PostFeedback.total": "Total",
   "app.containers.AdminPage.DashboardPage.components.editBaseData": "Editar datos base",
   "app.containers.AdminPage.DashboardPage.components.representativenessArticleLinkText2": "cómo calculamos las puntuaciones de representatividad",
-  "app.containers.AdminPage.DashboardPage.continuousType": "Continuo",
+  "app.containers.AdminPage.DashboardPage.continuousType": "Sin línea del tiempo",
   "app.containers.AdminPage.DashboardPage.cumulatedTotal": "Total acumulado",
   "app.containers.AdminPage.DashboardPage.customDateRange": "Personalizado",
   "app.containers.AdminPage.DashboardPage.day": "día",
