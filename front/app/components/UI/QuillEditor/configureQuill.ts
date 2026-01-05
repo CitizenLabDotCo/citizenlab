@@ -1,5 +1,5 @@
 import Quill from 'quill';
-import BlotFormatter from 'quill-blot-formatter/dist/BlotFormatter';
+import BlotFormatter from '@enzedonline/quill-blot-formatter2';
 
 import { isYouTubeEmbedLink } from 'utils/urlUtils';
 
@@ -14,7 +14,7 @@ export const configureQuill = () => {
   Quill.register('modules/blotFormatter', BlotFormatter);
 
   // BEGIN allow video resizing styles
-  const BaseVideoFormat = Quill.import('formats/video');
+  const BaseVideoFormat = Quill.import('formats/video') as any;
   class VideoFormat extends BaseVideoFormat {
     static create(url: string) {
       const node = super.create(url);
@@ -63,7 +63,7 @@ export const configureQuill = () => {
   // END function to detect whether urls are external
 
   // BEGIN custom link implementation
-  const Link = Quill.import('formats/link');
+  const Link = Quill.import('formats/link') as any;
 
   class CustomLink extends Link {
     static create(url: string) {
@@ -89,7 +89,7 @@ export const configureQuill = () => {
   // END custom link implementation
 
   // BEGIN custom button implementation
-  const Inline = Quill.import('blots/inline');
+  const Inline = Quill.import('blots/inline') as any;
 
   class CustomButton extends Inline {
     static create(url: string) {
