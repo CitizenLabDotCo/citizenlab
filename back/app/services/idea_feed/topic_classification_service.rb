@@ -12,7 +12,7 @@ module IdeaFeed
     # previous classifications.
     def classify_topics!(idea)
       topics = idea.project.allowed_input_topics
-      llm = LLMSelector.new.llm_claz_for_use_case('idea_feed_live_classification').new
+      llm = LLMSelector.new.llm_class_for_use_case('idea_feed_live_classification').new
 
       prompt = classification_prompt(idea, topics)
       selected_topics = RETRIES_INVALID_RESPONSE.times do |i|

@@ -6,7 +6,7 @@ module IdeaFeed
   class TopicModelingService
     def initialize(phase)
       @phase = phase
-      @llm = LLMSelector.new.llm_claz_for_use_case('idea_feed_live_topic_model').new
+      @llm = LLMSelector.new.llm_class_for_use_case('idea_feed_live_topic_model').new
     end
 
     # `rebalance_topics!` is supposed to be called periodically (every day or
@@ -53,6 +53,11 @@ module IdeaFeed
     def run_map_old_to_new_topics(old_topics, new_topics)
       prompt = topic_mapping_prompt(old_topics, new_topics)
       @llm.chat(prompt, response_schema: topic_mapping_response_schema(old_topics))
+    end
+
+    # Given the mapping, counts how many old topics map to the same new topic as the given old_topic_id
+    def in_count(mapping, new_topic_id)
+      mapping.values.count { |v| v['new_topic_id'] == new_topic_id }
     end
 
     def topic_model_response_schema
@@ -138,6 +143,9 @@ module IdeaFeed
       update_log = []
       mapping.each do |old_topic_id, v|
         next if v['new_topic_id'].blank?
+        # If multiple old topics map to the same new topic, we don't update them
+        # (but we'll remove them later)
+        next if in_count(mapping, v['new_topic_id']) != 1
 
         old_integer_id = old_topic_id.match(/^OLD-(\d+)$/)[1].to_i
         new_integer_id = v['new_topic_id'].match(/^NEW-(\d+)$/)[1].to_i
@@ -166,7 +174,7 @@ module IdeaFeed
     def create_new_topics!(mapping, new_topics)
       creation_log = []
       new_topics
-        .filter { |new_topic| mapping.values.none? { |v| v['new_topic_id'] == "NEW-#{new_topics.index(new_topic)}" } }
+        .reject { |new_topic| in_count(mapping, "NEW-#{new_topics.index(new_topic)}") == 1 }
         .each do |new_topic|
           Topic.transaction do
             topic = Topic.create!(
@@ -191,7 +199,7 @@ module IdeaFeed
     def remove_obsolete_topics!(mapping, old_topics)
       removal_log = []
       obsolete_old_topic_ids = mapping
-        .filter { |_, v| v['new_topic_id'].blank? }
+        .filter { |_, v| v['new_topic_id'].blank? || in_count(mapping, v['new_topic_id']) != 1 }
         .keys
       obsolete_old_topic_ids.each do |old_topic_id|
         old_integer_id = old_topic_id.match(/^OLD-(\d+)$/)[1].to_i
