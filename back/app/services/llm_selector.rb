@@ -73,7 +73,7 @@ class LLMSelector
     )
   ]
 
-  def llm_claz_for_use_case(use_case_key, app_configuration = AppConfiguration.instance)
+  def llm_class_for_use_case(use_case_key, app_configuration = AppConfiguration.instance)
     use_case = use_cases.find { |uc| uc.key == use_case_key }
     raise ArgumentError, "Use case not found: #{use_case_key}" unless use_case
 
