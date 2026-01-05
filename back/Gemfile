@@ -137,8 +137,6 @@ gem 'omniauth-facebook', '~> 10.0.0'
 gem 'omniauth-google-oauth2', '~> 1.2.1'
 
 # Libraries for PDF generation /reading
-gem 'prawn', '~> 2.5'
-gem 'prawn-grouping', '~> 0.2.0'
 gem 'pdf-reader'
 gem 'faraday'
 gem 'faraday-multipart'

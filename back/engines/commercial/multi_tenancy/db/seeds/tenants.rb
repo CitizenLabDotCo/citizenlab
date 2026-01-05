@@ -471,10 +471,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            html_pdfs: {
-              enabled: true,
-              allowed: true
-            },
             user_session_recording: {
               # Disable for E2E tests on localhost
               enabled: false,
