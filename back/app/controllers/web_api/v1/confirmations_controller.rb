@@ -8,7 +8,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   # This is used in the email account creation flow and when
   # logging in passwordless users
   def confirm_code_unauthenticated
-    user = User.find_by_cimail(email: confirm_code_unauthenticated_params[:email])
+    user = User.find_by_cimail(confirm_code_unauthenticated_params[:email])
 
     result = user_confirmation_service.validate_and_confirm_unauthenticated!(
       user,
