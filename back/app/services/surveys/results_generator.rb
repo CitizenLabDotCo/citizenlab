@@ -241,10 +241,11 @@ module Surveys
           user_fields.each_with_object({}) do |field, accu|
             next if responses.key?(field.id) # Field already present in input fields
 
+            user_field_key = "u_#{field.key}"
             accu[field.id] = seen_responses.map do |response|
               {
                 id: response[:id],
-                answer: response[:values][field.key]
+                answer: response[:values][user_field_key]
               }
             end
           end

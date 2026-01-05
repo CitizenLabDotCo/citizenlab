@@ -382,7 +382,6 @@ class CustomField < ApplicationRecord
     resource.project_id if resource_type == 'CustomForm'
   end
 
-
   def other_option_text_field(print_version: false)
     return unless includes_other_option?
 
@@ -434,11 +433,6 @@ class CustomField < ApplicationRecord
       options # options are by default ordered by :ordering from the association
     end
   end
-
-  # TODO: This is not really the best way, but needed for the survey results atm
-  # def key
-  #   super || id
-  # end
 
   def ordered_transformed_options
     @ordered_transformed_options ||= domicile? ? domicile_options : ordered_options

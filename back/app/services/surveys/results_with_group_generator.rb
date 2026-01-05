@@ -22,9 +22,8 @@ module Surveys
       raise "Unsupported group field type: #{group_field.input_type}" unless group_field.supports_single_selection?
 
       # Now add grouping info
-      group_field_key = group_by_user_field? ? "u_#{group_field.key}" : group_field.key
-      field_responses = select_field_answers(field.key, with_nil_answers: true)
-      group_responses = select_field_answers(group_field_key, with_nil_answers: true).to_h { |r| [r[:id], r[:answer]] }
+      field_responses = select_field_answers(field_id, with_nil_answers: true)
+      group_responses = select_field_answers(group_field_id, with_nil_answers: true).to_h { |r| [r[:id], r[:answer]] }
 
       # Base object to ensure ordering of groups is consistent
       group_keys = generate_select_answer_keys(group_field) + [nil]
