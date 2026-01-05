@@ -7,17 +7,17 @@ it:
       "comment_deleted_by_admin": Cancellazione del mio commento
       "comment_marked_as_spam": Segnalazione di spam di commenti
       "comment_on_your_comment": Una risposta al mio commento
-      "comment_on_idea_you_follow": Un commento su un'idea che segui
+      "comment_on_idea_you_follow": Un commento su un contributo che segui
       "community_monitor_report": Rapporto del barometro civico
       "cosponsor_of_your_idea": Un utente accetta il mio invito a co-sponsorizzare la mia proposta
       "event_registration_confirmation": Conferma della registrazione all'evento
       "idea_marked_as_spam": Segnalazione di spam di idee
-      "idea_published": Pubblicazione della mia idea
+      "idea_published": Pubblicazione del mio contributo
       "invitation_to_cosponsor_idea": Invito a co-sponsorizzare una proposta
       "invite_received": Invito
       "invite_reminder": Promemoria dell'invito
       "internal_comment_on_idea_assigned_to_you": Commento interno sull'input che mi è stato assegnato
-      "internal_comment_on_idea_you_commented_internally_on": Commento interno su input Ho commentato internamente su
+      "internal_comment_on_idea_you_commented_internally_on": Commento interno sul contributo che ho commentato internamente
       "internal_comment_on_idea_you_moderate": Commento interno su un input nel progetto o nella cartella che gestisco
       "internal_comment_on_unassigned_unmoderated_idea": Commento interno su un input non assegnato in un progetto non gestito
       "internal_comment_on_your_internal_comment": Commento interno sul mio commento interno
@@ -26,7 +26,7 @@ it:
       "new_comment_for_admin": Nuovo commento in un progetto che modero
       "new_idea_for_admin_published": Nuovo contributo pubblicato in un progetto che modero
       "new_idea_for_admin_prescreening": Nuovi input che richiedono l'approvazione in un progetto I moderato
-      "official_feedback_on_idea_you_follow": Aggiornamenti su un'idea che segui
+      "official_feedback_on_idea_you_follow": Aggiornamenti su un contributo che segui
       "password_reset": Ripristino della password
       "project_moderation_rights_received": Diritti di moderazione del progetto ricevuti
       "project_folder_moderation_rights_received": Diritti di gestione delle cartelle ricevuti
@@ -35,7 +35,7 @@ it:
       "project_published": Progetto pubblicato
       "project_review_request": Richiesta di revisione del progetto
       "project_review_state_change": Progetto approvato
-      "status_change_on_idea_you_follow": Cambiamento di stato di un'idea che segui
+      "status_change_on_idea_you_follow": Cambiamento di status di un contributo che segui
       "survey_submitted": Sondaggio inviato
       "threshold_reached_for_admin": La proposta ha raggiunto la soglia di voto
       "welcome": Dopo la registrazione
@@ -139,7 +139,7 @@ it:
       event_description: 'Abbiamo curato per te gli input che hanno generato il maggior numero di attività nell''ultima settimana. Scopri cosa sta succedendo sulla tua piattaforma!'
       cta_button: 'Visita la tua piattaforma'
       new_users: 'Nuovi utenti'
-      new_inputs: 'Nuovi ingressi'
+      new_inputs: 'Nuovi contributi'
       new_comments: 'Nuovi commenti'
       title_activity_past_week: 'Attività della settimana passata'
       title_no_activity_past_week: 'Non c''è stata attività nell''ultima settimana'
@@ -251,7 +251,7 @@ it:
       new_users: 'Nuovi utenti'
       new_ideas: 'Nuove idee'
       new_comments: 'Nuovi commenti'
-      title_inputs_past_week: 'Nuovi ingressi nell''ultima settimana'
+      title_inputs_past_week: 'Nuovi contributi nell''ultima settimana'
       title_no_inputs_past_week: 'Nessun nuovo ingresso nell''ultima settimana'
       title_threshold_reached: Soglia raggiunta nell'ultima settimana
       yesterday_by_author: 'Ieri da %{author}'
@@ -313,7 +313,7 @@ it:
       cta_button: 'Visualizza il commento di %{firstName}'
       event_description: '%{authorNameFull} ha commentato il tuo commento interno.'
       subject: 'Hai ricevuto un commento sul tuo commento interno su ''%{post}''.'
-      title: 'Hai ricevuto un commento sul tuo commento interno su ''%{post}''.'
+      title: 'Hai ricevuto un commento sul tuo commento interno su ''%{post}'''
       preheader: '%{authorName} ho risposto al tuo commento interno su ''%{post}''.'
     internal_comment_on_idea_assigned_to_you:
       cta_button: 'Visualizza il commento di %{firstName}'
@@ -571,7 +571,7 @@ it:
         admins_assigned_to_a_proposal: 'Amministratori assegnati a una proposta'
         all_users: 'Tutti gli utenti'
         all_users_who_uploaded_proposals: 'Tutti gli utenti che hanno caricato proposte'
-        managers: 'Dirigenti'
+        managers: 'Manager'
         managers_managing_the_project: 'Manager che gestiscono il progetto'
         new_attendee: 'Utente appena registrato'
         project_reviewers: 'Revisori di progetti e gestori di cartelle'
@@ -582,17 +582,17 @@ it:
         user_who_is_receiving_admin_rights: 'Utente che riceve i diritti di amministratore'
         user_who_is_receiving_folder_moderator_rights: 'Utente che riceve i diritti di moderatore della cartella'
         user_who_is_receiving_project_moderator_rights: 'Utente che riceve i diritti di moderatore del progetto'
-        user_who_published_the_input: 'Utente che ha pubblicato l''input'
+        user_who_published_the_input: 'Utente che ha pubblicato il contributo'
         user_who_published_the_proposal: 'Utente che ha pubblicato la proposta'
         user_who_registers: 'Utente che si registra'
-        user_who_submitted_the_input: 'Utente che ha inviato l''input'
+        user_who_submitted_the_input: 'Utente che ha inviato il contributo'
         user_who_voted: 'Utente che ha votato'
         user_who_was_invited: 'Utente invitato'
         user_with_unsubmitted_survey: 'Utente che ha iniziato ma non ha inviato il sondaggio'
         user_with_unsubmitted_votes: 'Utente che non ha inviato i propri voti'
-        users_who_engaged_but_not_voted: 'Utenti che si sono impegnati nel progetto ma non hanno votato'
+        users_who_engaged_but_not_voted: 'Utenti che hanno partecipato al progetto ma non hanno votato'
         users_who_engaged_with_the_project: 'Utenti che hanno partecipato al progetto'
-        users_who_follow_the_input: 'Gli utenti che seguono l''input'
+        users_who_follow_the_input: 'Gli utenti che seguono il contributo'
         users_who_follow_the_project: 'Utenti che seguono il progetto'
         users_who_follow_the_proposal: 'Gli utenti che seguono la proposta'
       content_type:
@@ -600,7 +600,7 @@ it:
         content_moderation: 'Moderazione dei contenuti'
         events: 'Eventi'
         general: 'Generale'
-        inputs: 'Ingressi'
+        inputs: 'Contributi'
         internal_comments: 'Commenti interni'
         permissions: 'Permessi'
         projects: 'Progetti'
@@ -617,17 +617,17 @@ it:
         initiative_resubmitted_for_review: 'Proposta ripresentata per la revisione'
         input_is_assigned: 'L''ingresso è assegnato'
         input_is_flagged_as_spam: 'L''input viene contrassegnato come spam'
-        input_is_published: 'L''input è pubblicato'
-        input_is_updated: 'L''input viene aggiornato'
-        input_status_changes: 'Cambiamento dello stato dell''ingresso'
-        internal_comment_is_posted_on_idea_assigned_to_user: 'Il commento interno è pubblicato sull''input assegnato all''utente'
+        input_is_published: 'Il contributo è pubblicato'
+        input_is_updated: 'Il contributo viene aggiornato'
+        input_status_changes: 'Cambiamento di status del contributo'
+        internal_comment_is_posted_on_idea_assigned_to_user: 'Commento interno sul contributo assegnato all''utente'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Il commento interno viene pubblicato sull''input del progetto o della cartella che l''utente gestisce'
-        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Il commento interno viene pubblicato sull''input che l''utente ha commentato internamente'
+        internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Commento interno sul contributo che l''utente ha commentato internamente'
         internal_comment_is_posted_on_idea_user_moderates: 'Il commento interno è pubblicato su input che l''utente modera'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Viene pubblicato un commento interno su un input non assegnato in un progetto non gestito'
         project_review_request: 'Il moderatore ha richiesto una revisione del progetto'
         project_review_state_change: 'Il revisore ha approvato il progetto'
-        new_input_awaits_screening: 'Un nuovo input in attesa di essere vagliato'
+        new_input_awaits_screening: 'Un nuovo contributo in attesa di essere vagliato'
         new_input_is_published: 'Viene pubblicato un nuovo input'
         new_proposal_is_posted: 'La nuova proposta è pubblicata'
         project_phase_changes: 'Cambiamenti di fase del progetto'
