@@ -130,7 +130,6 @@ class LLMSelector
   private
 
   def configured_family_key_for_use_case(use_case, app_configuration)
-    ai_providers_config = app_configuration.settings('core', 'ai_providers')
-    ai_providers_config&.dig(use_case.key)
+    app_configuration.settings('core', 'ai_providers', use_case.key)
   end
 end
