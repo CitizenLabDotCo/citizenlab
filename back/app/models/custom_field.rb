@@ -382,47 +382,45 @@ class CustomField < ApplicationRecord
     resource.project_id if resource_type == 'CustomForm'
   end
 
+
   def other_option_text_field(print_version: false)
     return unless includes_other_option?
 
-    other_field_key = "#{key}_other"
     other_option_title_multiloc = options.detect { |option| option[:other] == true }&.title_multiloc
     title_multiloc = MultilocService.new.i18n_to_multiloc(
       print_version ? 'custom_fields.ideas.other_input_field.print_title' : 'custom_fields.ideas.other_input_field.title',
       other_option: other_option_title_multiloc
     )
 
-    CustomField.new(
-      key: other_field_key,
-      input_type: 'text',
-      resource: resource,
-      title_multiloc: title_multiloc,
-      required: true,
-      enabled: true
-    )
+    additional_text_field(title_multiloc, 'other', 'text', true)
   end
 
   def follow_up_text_field
     return unless ask_follow_up?
 
-    follow_up_field_key = "#{key}_follow_up"
     title_multiloc = MultilocService.new.i18n_to_multiloc(
       'custom_fields.ideas.ask_follow_up_field.title'
     )
+    additional_text_field(title_multiloc, 'follow_up', 'multiline_text', false)
+  end
 
+  def additional_text_field(title_multiloc, key_suffix, input_type, required)
     CustomField.new(
-      key: follow_up_field_key,
-      input_type: 'multiline_text',
+      id: additional_text_question_id, # TODO: Will this break stuff?
+      key: "#{key}_#{key_suffix}",
+      input_type: input_type,
       title_multiloc: title_multiloc,
       question_category: question_category,
       ordering: ordering,
-      required: false,
+      required: required,
       enabled: true
     )
   end
 
-  def additional_text_question_key
-    other_option_text_field&.key || follow_up_text_field&.key
+  def additional_text_question_id
+    return nil unless includes_other_option? || ask_follow_up?
+
+    @additional_text_question_id ||= SecureRandom.uuid
   end
 
   def additional_text_question?
@@ -436,6 +434,11 @@ class CustomField < ApplicationRecord
       options # options are by default ordered by :ordering from the association
     end
   end
+
+  # TODO: This is not really the best way, but needed for the survey results atm
+  # def key
+  #   super || id
+  # end
 
   def ordered_transformed_options
     @ordered_transformed_options ||= domicile? ? domicile_options : ordered_options

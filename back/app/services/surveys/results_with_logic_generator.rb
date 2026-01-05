@@ -24,7 +24,7 @@ module Surveys
       add_logic_to_results results, @logic_ids
     end
 
-    def core_field_attributes(field, response_count: nil)
+    def core_field_attributes(field)
       super.merge({
         logic: {}
       })

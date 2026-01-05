@@ -24,7 +24,7 @@ module Surveys
 
     # Get the results for all survey questions
     def generate_results
-      results = input_fields.filter_map { |f| f.id ? visit(f) : nil } # Skip other/follow_up questions which have no ID
+      results = input_fields.filter_map { |f| f.additional_text_question? ? nil : visit(f) } # Skip other/follow_up questions
       if results.present?
         results = add_question_numbers_to_results results
         results = add_page_response_count_to_results results
@@ -40,10 +40,9 @@ module Surveys
     end
 
     def visit_number(field)
-      responses = base_responses(field.key).map { |r| r.except(:id) } # TODO: A lot of repetition of this pattern - refactor?
-      response_count = responses.size
+      responses = base_responses(field.id).map { |r| r.except(:id) }
 
-      core_field_attributes(field, response_count:).merge({
+      core_field_attributes(field).merge({
         numberResponses: responses
       })
     end
@@ -61,7 +60,7 @@ module Surveys
     end
 
     def visit_ranking(field)
-      responses = base_responses(field.key).pluck(:answer)
+      responses = base_responses(field.id).pluck(:answer)
       option_keys = field.options.pluck(:key)
 
       # Calculate the counts for each ranking position per option
@@ -94,10 +93,9 @@ module Surveys
     end
 
     def visit_text(field)
-      answers = get_text_responses(field.key)
-      response_count = answers.size
+      answers = get_text_responses(field.id)
 
-      core_field_attributes(field, response_count:).merge({
+      core_field_attributes(field).merge({
         textResponses: answers
       })
     end
@@ -111,7 +109,6 @@ module Surveys
     end
 
     def visit_matrix_linear_scale(field)
-      # TODO: Convert this.
       core_field_attributes(field).merge({
         multilocs: { answer: build_scaled_input_multilocs(field) },
         linear_scales: matrix_linear_scale_statements(field)
@@ -127,7 +124,7 @@ module Surveys
     end
 
     def visit_file_upload(field)
-      file_ids = base_responses(field.key).map { |a| a[:answer]['id'] } || []
+      file_ids = base_responses(field.id).map { |a| a[:answer]['id'] } || []
 
       files = ::Files::FileAttachment.where(id: file_ids).map do |attachment|
         { name: attachment.file.name, url: attachment.file.content.url }
@@ -137,7 +134,7 @@ module Surveys
         { name: file.name, url: file.file.url }
       end)
 
-      core_field_attributes(field, response_count: files.size).merge(files: files)
+      core_field_attributes(field).merge(files: files)
     end
 
     def visit_shapefile_upload(field)
@@ -157,16 +154,12 @@ module Surveys
     end
 
     def visit_page(field)
-      core_field_attributes(field, response_count: 0) # Response count gets updated later by looking at all the results
+      core_field_attributes(field) # Response count gets updated later by looking at all the results
     end
 
     private
 
     attr_reader :phase, :locales, :structure_by_category
-
-    def responses_by_field
-      @responses_by_field ||= format_responses_by_field
-    end
 
     def input_fields
       @input_fields ||= IdeaCustomFieldsService
@@ -182,83 +175,81 @@ module Surveys
       @survey_inputs ||= phase.ideas.includes(:author).supports_survey.published
     end
 
-    # TODO: Reformat to make smaller { "7c4fda2e-d552-4c27-b9a3-5ed86ce0698d" => "female" }
-    def format_responses_by_field
-      # First nest the input_fields inside pages to make logic easier
-      current_page = nil
-      pages = {}
-      input_fields.each do |field|
-        current_page = field.id if field.input_type == 'page'
-        pages[current_page] ||= []
-        pages[current_page] << field
-      end
+    def responses_by_field
+      @responses_by_field ||= begin
+        # First nest the input_fields inside pages to make logic easier
+        current_page = nil
+        pages = {}
+        input_fields.each do |field|
+          current_page = field.id if field.input_type == 'page'
+          pages[current_page] ||= []
+          pages[current_page] << field
+        end
 
-      all_page_ids = pages.keys.compact
+        all_page_ids = pages.keys.compact
 
-      # Next build the responses with an array of field IDs that were seen based on logic & values
-      seen_responses = survey_inputs.map do |input|
-        seen = []
-        if survey_has_logic?
-          next_page_id = nil
-          pages.each do |page_id, fields_on_page|
-            next unless next_page_id.nil? || page_id == next_page_id
+        # Next build the responses with an array of field IDs that were seen based on logic & values
+        seen_responses = survey_inputs.map do |input|
+          seen = []
+          if survey_has_logic?
+            next_page_id = nil
+            pages.each do |page_id, fields_on_page|
+              next unless next_page_id.nil? || page_id == next_page_id
 
-            # Define the default next page if no logic changes it
-            next_page_id = all_page_ids[all_page_ids.index(page_id) + 1]
+              # Define the default next page if no logic changes it
+              next_page_id = all_page_ids[all_page_ids.index(page_id) + 1]
 
-            fields_on_page.each do |field|
-              seen << field.key
+              fields_on_page.each do |field|
+                seen << field.id
 
-              # TODO: Not currently adding the other/follow_up input_fields in here - ie if other option selected it will have been seen
+                # TODO: Not currently adding the other/follow_up input_fields in here - ie if other option selected it will have been seen
 
-              # Is there a different next page based on logic?
-              next_logic_page_id = next_page_id_from_logic(field, input)
-              next_page_id = next_logic_page_id if next_logic_page_id
+                # Is there a different next page based on logic?
+                next_logic_page_id = next_page_id_from_logic(field, input)
+                next_page_id = next_logic_page_id if next_logic_page_id
+              end
             end
           end
+
+          {
+            id: input.id,
+            values: merge_user_custom_field_values(input),
+            seen: seen
+          }
         end
 
-        {
-          id: input.id,
-          values: merge_user_custom_field_values(input),
-          seen: seen
-        }
-      end
+        # Now build the structure removing any responses that were not seen due to logic
+        # nil values are added which means seen but not answered
+        responses = input_fields.to_h do |field|
+          [
+            field.id,
+            seen_responses.filter_map do |response|
+              next if survey_has_logic? && response[:seen].exclude?(field.id)
 
-      # Now build the structure with only those responses per question that were seen
-      # So nil values mean that they were seen but not answered
-      responses = input_fields.to_h do |field|
-        [
-          field.key,
-          seen_responses.filter_map do |response|
-            # Remove any responses that were not seen due to logic
-            next if survey_has_logic? && response[:seen].exclude?(field.key)
-
-            {
-              id: response[:id],
-              answer: response[:values][field.key]
-            }
-          end
-        ]
-      end
-
-      # Now add in the user input_fields too if not already there in the input fields - generate_fields only returns fields in the form,
-      # but when grouping we need the additional user fields in the raw responses too
-      # Logic not needed here as these fields will only be used for grouping
-      # TODO: Move to group generator? Do we only need the field that is being grouped by?
-      user_field_keys = user_fields.map { |f| "u_#{f[:key]}" }
-      responses.merge(
-        user_field_keys.each_with_object({}) do |key, accu|
-          next if responses.key?(key) # Field already present in input fields
-
-          accu[key] = seen_responses.filter_map do |response|
-            {
-              id: response[:id],
-              answer: response[:values][key]
-            }
-          end
+              {
+                id: response[:id],
+                answer: response[:values][field.key]
+              }
+            end
+          ]
         end
-      )
+
+        # Now add in the user input_fields too if not already there in the input fields - generate_fields only returns fields in the form,
+        # but when grouping we need the additional user fields in the raw responses too
+        # Logic not needed here as these fields will only be used for grouping
+        responses.merge(
+          user_fields.each_with_object({}) do |field, accu|
+            next if responses.key?(field.id) # Field already present in input fields
+
+            accu[field.id] = seen_responses.map do |response|
+              {
+                id: response[:id],
+                answer: response[:values][field.key]
+              }
+            end
+          end
+        )
+      end
     end
 
     def total_response_count
@@ -276,20 +267,16 @@ module Surveys
       field_value = input.custom_field_values[field.key]
 
       if field_value
-        # Option selected
-
-        option_next_page_id = field.logic['rules']&.find { |r| r['if'] == field_value }&.dig('goto_page_id')
-        Rails.logger.debug { "FOUND option_next_page_id: #{option_next_page_id} for field #{field.key} with value #{field_value}" } if option_next_page_id
-
+        # Individual option selected?
+        option_value = field.supports_linear_scale? ? field_value : field.options.find { |o| o.key == field_value }&.id
+        option_next_page_id = field.logic['rules']&.find { |r| r['if'] == option_value }&.dig('goto_page_id')
         return option_next_page_id if option_next_page_id
 
         # Any other answer selected?
         field.logic['rules']&.find { |r| r['if'] == 'any_other_answer' }&.dig('goto_page_id')
       else
         # Field empty
-        no_answer_next_page_id = field.logic['rules']&.find { |r| r['if'] == 'no_answer' }&.dig('goto_page_id')
-        Rails.logger.debug { "NO ANSWER next page found: #{no_answer_next_page_id} for field #{field.key}" }
-        no_answer_next_page_id
+        field.logic['rules']&.find { |r| r['if'] == 'no_answer' }&.dig('goto_page_id')
       end
     end
 
@@ -304,16 +291,16 @@ module Surveys
       @survey_has_logic ||= input_fields.any? { |field| field.logic != {} }
     end
 
-    def num_times_field_seen(field_key)
-      responses_by_field[field_key].size
+    def num_times_field_seen(field_id)
+      responses_by_field[field_id].size
     end
 
     def add_additional_attributes_to_results(results)
       results # This method is a placeholder for overriding in subclasses
     end
 
-    def core_field_attributes(field, response_count: nil)
-      response_count ||= base_responses(field.key).size
+    def core_field_attributes(field)
+      response_count = base_responses(field.id).size
       {
         inputType: field.input_type,
         question: field.title_multiloc,
@@ -322,7 +309,7 @@ module Surveys
         required: field.required,
         grouped: false,
         hidden: false,
-        totalResponseCount: num_times_field_seen(field.key), # NOTE: This is technically 'questionSeenCount' but we have to keep backwards compatibility for report builder
+        totalResponseCount: num_times_field_seen(field.id), # NOTE: This is technically 'questionSeenCount' but we have to keep backwards compatibility for report builder
         questionResponseCount: response_count, # NOTE: This is technically 'questionAnsweredCount'
         pageNumber: nil,
         questionNumber: nil,
@@ -330,15 +317,15 @@ module Surveys
       }
     end
 
-    def base_responses(field_key, with_nil_answers: false)
-      return responses_by_field[field_key] if with_nil_answers
+    def base_responses(field_id, with_nil_answers: false)
+      return responses_by_field[field_id] if with_nil_answers
 
-      responses_by_field[field_key]
+      responses_by_field[field_id]
         &.select { |r| r[:answer].present? }
     end
 
     def visit_select_base(field)
-      responses = select_field_answers(field.key)
+      responses = select_field_answers(field.id)
 
       # Count all the answers
       counts = responses.group_by { |h| h[:answer] }.transform_values(&:count)
@@ -354,9 +341,9 @@ module Surveys
       build_select_response(answers, field)
     end
 
-    def select_field_answers(field_key, with_nil_answers: false)
+    def select_field_answers(field_id, with_nil_answers: false)
       # Extract all the responses from array values (if multiselect)
-      base_responses(field_key, with_nil_answers:).flat_map do |r|
+      base_responses(field_id, with_nil_answers:).flat_map do |r|
         if r[:answer].is_a?(Array)
           r[:answer].map { |a| { id: r[:id], answer: a } }
         else
@@ -366,27 +353,25 @@ module Surveys
     end
 
     def nil_response_count(field, matrix_statement_key: nil)
-      nil_count = responses_by_field[field.key].size - base_responses(field.key).size
+      nil_count = responses_by_field[field.id].size - base_responses(field.id).size
       return nil_count unless matrix_statement_key
 
       # For matrix questions we also need to count those that did not answer the specific statement
-      nil_count + base_responses(field.key).count { |h| !h[:answer].key?(matrix_statement_key) }
+      nil_count + base_responses(field.id).count { |h| !h[:answer].key?(matrix_statement_key) }
     end
 
     def build_select_response(answers, field)
-      question_response_count = base_responses(field.key).size
-
       # Sort answers correctly
       answers = answers.sort_by { |a| -a[:count] } unless field.supports_linear_scale?
       answers = answers.sort_by { |a| a[:answer] == 'other' ? 1 : 0 } # other should always be last
 
-      attributes = core_field_attributes(field, response_count: question_response_count).merge({
+      attributes = core_field_attributes(field).merge({
         totalPickCount: answers.pluck(:count).sum,
         answers: answers,
         multilocs: get_multilocs(field)
       })
 
-      attributes[:textResponses] = get_text_responses(field.additional_text_question_key) if field.additional_text_question_key
+      attributes[:textResponses] = get_text_responses(field.additional_text_question_id) if field.additional_text_question_id
 
       attributes
     end
@@ -429,7 +414,7 @@ module Surveys
 
     def matrix_linear_scale_statements(field)
       field.matrix_statements.pluck(:key, :title_multiloc).to_h do |statement_key, statement_title_multiloc|
-        statement_counts = base_responses(field.key)
+        statement_counts = base_responses(field.id)
           .filter_map { |h| h[:answer][statement_key] }
           .group_by(&:itself)
           .transform_values(&:count)
@@ -441,6 +426,7 @@ module Surveys
         answers.each do |answer|
           answer[:percentage] = question_response_count > 0 ? (answer[:count].to_f / question_response_count) : 0.0
         end
+
         # Add count for nil answers
         answers += [{ answer: nil, count: nil_response_count(field, matrix_statement_key: statement_key) }]
         value = {
@@ -448,21 +434,22 @@ module Surveys
           questionResponseCount: question_response_count,
           answers:
         }
+
         [statement_key, value]
       end
     end
 
     def responses_to_geographic_input_type(field)
-      responses = base_responses(field.key).map { |r| r.except(:id) }
-      response_count = responses.size
-      core_field_attributes(field, response_count:).merge({
+      responses = base_responses(field.id).map { |r| r.except(:id) }
+
+      core_field_attributes(field).merge({
         mapConfigId: field&.map_config&.id, "#{field.input_type}Responses": responses
       })
     end
 
-    # Get any associated text responses - where follow-up question or other option is used
-    def get_text_responses(field_key)
-      base_responses(field_key)
+    # Get any associated text responses - for both text questions and follow-up/other question
+    def get_text_responses(field_id)
+      base_responses(field_id)
         &.map { |a| a.except(:id) }
         &.sort_by { |a| a[:answer] } || []
     end
