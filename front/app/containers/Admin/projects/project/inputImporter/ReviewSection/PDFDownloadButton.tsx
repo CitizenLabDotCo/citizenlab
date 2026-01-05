@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { Box, Button } from '@citizenlab/cl2-component-library';
 
-import { requestBlob } from 'utils/requestBlob';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 import { saveAs } from 'file-saver';
+
 import messages from 'containers/Admin/projects/project/inputImporter/ReviewSection/messages';
+
 import { FormattedMessage } from 'utils/cl-intl';
+import { requestBlob } from 'utils/requestBlob';
 
 interface Props {
   file: string;
