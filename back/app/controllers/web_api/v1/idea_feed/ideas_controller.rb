@@ -38,7 +38,7 @@ module WebApi
           [(total_count.to_f / page_size).ceil, 1].max
         end
 
-        def build_feed_links(ideas, total_count)
+        def build_feed_links(_ideas, total_count)
           last_page = total_pages(total_count)
           {
             self: build_link(page_number),

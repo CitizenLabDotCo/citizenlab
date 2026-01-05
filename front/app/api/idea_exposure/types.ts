@@ -1,9 +1,3 @@
-import { Keys } from 'utils/cl-react-query/types';
-
-import ideaExposureKeys from './keys';
-
-export type IdeaExposureKeys = Keys<typeof ideaExposureKeys>;
-
 export interface IIdeaExposureData {
   id: string;
   type: 'idea_exposure';

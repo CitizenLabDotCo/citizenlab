@@ -17,7 +17,7 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import StickyNote from './StickyNotes/StickyNote';
 import { getTopicColor } from './topicsColor';
 
-const PEEK_HEIGHT_MOBILE = 200;
+const PEEK_HEIGHT_MOBILE = 250;
 const PEEK_HEIGHT_DESKTOP = 400;
 
 const FeedContainer = styled(Box)`

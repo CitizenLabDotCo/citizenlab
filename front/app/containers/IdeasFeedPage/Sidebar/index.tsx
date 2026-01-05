@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
@@ -26,11 +26,18 @@ import TopicsContent from './TopicsContent';
 
 const Sidebar = () => {
   const { formatMessage } = useIntl();
+  const contentRef = useRef<HTMLDivElement>(null);
   const { slug } = useParams() as { slug: string };
   const [searchParams] = useSearchParams();
   const selectedTopicId = searchParams.get('topic');
   const selectedIdeaId = searchParams.get('idea_id');
   const isMobile = useBreakpoint('phone');
+
+  useEffect(() => {
+    if (selectedIdeaId && contentRef.current) {
+      contentRef.current.scrollTop = 0;
+    }
+  }, [selectedIdeaId]);
 
   const { data: project } = useProjectBySlug(slug);
   const projectId = project?.data.id;
@@ -116,6 +123,7 @@ const Sidebar = () => {
       borderRight={`1px solid ${colors.grey300}`}
       py="20px"
       overflowY="auto"
+      ref={contentRef}
     >
       {showIdeaDetail ? (
         <>
