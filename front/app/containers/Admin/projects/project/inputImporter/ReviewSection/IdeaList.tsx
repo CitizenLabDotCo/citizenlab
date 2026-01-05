@@ -43,7 +43,7 @@ interface Props {
 
 const IdeaList = ({ ideaId, ideas, onSelectIdea, onDeleteIdea }: Props) => {
   return (
-    <>
+    <Box paddingBottom="80px" id="e2e-idea-import-idea-list">
       {ideas.data.map((idea, i) => (
         <Idea
           key={idea.id}
@@ -54,7 +54,7 @@ const IdeaList = ({ ideaId, ideas, onSelectIdea, onDeleteIdea }: Props) => {
           onDeleteIdea={onDeleteIdea}
         />
       ))}
-    </>
+    </Box>
   );
 };
 
