@@ -250,6 +250,9 @@ RSpec.describe Insights::BasePhaseInsightsService do
     let(:participations) { { voting: [participation1, participation2, participation3, participation4] } }
     let(:participant_ids) { participations[:voting].pluck(:participant_id).uniq }
 
+    # Ensure consistent date as stats will be different in first six months of year vs last six months
+    before { travel_to(Date.parse('2025-10-01')) }
+
     it 'calculates demographics data correctly when no reference distribution' do
       participant_custom_field_values = service.send(:participants_custom_field_values, participations.values.flatten, participant_ids)
       result = service.send(:birthyear_demographics_data, participant_custom_field_values)

@@ -259,6 +259,7 @@ fi:
       x_days_ago_by_author: '%{x} päivää sitten, kirjoittaja %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} kommentoi:'
+      anonymous_user: Anonyymi käyttäjä
       cta_button: 'Näytä käyttäjän %{authorFirstName}kommentti'
       days_ago: '%{numberOfDays} päivää sitten'
       event_description: '%{authorName} lisäsi uuden kommentin alustallesi.'

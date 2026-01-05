@@ -963,7 +963,6 @@ GEM
     parser (3.3.6.0)
       ast (~> 2.4.1)
       racc
-    pdf-core (0.10.0)
     pdf-reader (2.14.1)
       Ascii85 (>= 1.0, < 3.0, != 2.0.0)
       afm (~> 0.2.1)
@@ -981,12 +980,6 @@ GEM
       concurrent-ruby (~> 1)
     pp (0.6.2)
       prettyprint
-    prawn (2.5.0)
-      matrix (~> 0.4)
-      pdf-core (~> 0.10.0)
-      ttfunk (~> 1.8)
-    prawn-grouping (0.2.0)
-      prawn (>= 2.0.0)
     premailer (1.19.0)
       addressable
       css_parser (>= 1.12.0)
@@ -1474,8 +1467,6 @@ DEPENDENCIES
   polls!
   positioning (~> 0.4.6)
   posthog_integration!
-  prawn (~> 2.5)
-  prawn-grouping (~> 0.2.0)
   premailer-rails (~> 1.12.0)
   pry
   pry-byebug
