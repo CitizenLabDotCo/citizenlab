@@ -465,27 +465,6 @@ class CustomField < ApplicationRecord
     @ordered_transformed_options ||= domicile? ? domicile_options : ordered_options
   end
 
-  # @deprecated New HTML PDF formatter does this in {IdeaHtmlFormExporter} instead.
-  def linear_scale_print_description(locale)
-    return nil unless linear_scale?
-
-    multiloc_service = MultilocService.new
-
-    min_text = multiloc_service.t(linear_scale_label_1_multiloc, locale)
-    min_label = "1#{min_text.present? ? " (#{min_text})" : ''}"
-
-    max_text = multiloc_service.t(nth_linear_scale_multiloc(maximum), locale)
-    max_label = maximum.to_s + (max_text.present? ? " (#{max_text})" : '')
-
-    I18n.with_locale(locale) do
-      I18n.t(
-        'form_builder.pdf_export.linear_scale_print_description',
-        min_label: min_label,
-        max_label: max_label
-      )
-    end
-  end
-
   def nth_linear_scale_multiloc(n)
     send(:"linear_scale_label_#{n}_multiloc")
   end
