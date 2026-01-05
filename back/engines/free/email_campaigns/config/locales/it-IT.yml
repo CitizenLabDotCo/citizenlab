@@ -269,10 +269,10 @@ it:
       today: Oggi
       yesterday: Ieri
     comment_on_idea_you_follow:
-      subject: 'There''s a new comment on "%{input_title}"'
+      subject: 'C''è un nuovo commento su "%{input_title}"'
       preheader: '%{authorName} ha lasciato un commento su un''idea per %{organizationName}'
       title: '%{authorName} ha commentato un input che segui'
-      event_description: '%{authorNameFull} placed a reaction on ''%{inputTitle}''. Click the button below to continue the conversation with %{authorName}.'
+      event_description: '%{authorNameFull} ha inviato una reazione a ''%{inputTitle}''. Clicca sul pulsante qui sotto per continuare la conversazione con %{authorName}.'
       cta_button: 'Rispondi a %{commentAuthor}'
       main_header:
         idea: '%{authorName} ha commentato un''idea che segui'
@@ -342,8 +342,8 @@ it:
     official_feedback_on_idea_you_follow:
       event_description: '%{feedback_author_name} ha fornito un aggiornamento su ''%{input_title}''.'
       title: 'Ci sono aggiornamenti su "%{input_title}".'
-      subject: 'Official feedback was posted on "%{input_title}"'
-      preheader: 'There''s an update on an input you follow'
+      subject: 'Il feedback ufficiale è stato pubblicato su "%{input_title}"'
+      preheader: 'C''è un aggiornamento su un contributo che segui'
       cta_button: Vai a questo ingresso
     mention_in_official_feedback:
       cta_button: 'Rispondi a %{organizationName}'
@@ -416,11 +416,11 @@ it:
       cta_button: "Vai alle impostazioni del progetto"
       preheader: '%{reviewerName} ha approvato il progetto "%{projectTitle}".'
     status_change_on_idea_you_follow:
-      status_change: 'The new status of this input is ''%{status}'''
+      status_change: 'Il nuovo status di questo contributo è ''%{status}'''
       event_description: '%{organizationName} ha aggiornato lo stato dell''input ''%{input_title}'' sulla sua piattaforma di partecipazione digitale.'
       title: 'Un input che segui ha un nuovo stato'
-      subject: 'The status of "%{input_title}" has changed'
-      preheader: 'An input you follow has a new status'
+      subject: 'Lo status di "%{input_title}" è cambiato'
+      preheader: 'Un contributo che segui ha un nuovo status'
       cta_button: Vai a questo ingresso
     user_digest:
       subject: "La tua attività sulla piattaforma di partecipazione di %{organizationName}"
