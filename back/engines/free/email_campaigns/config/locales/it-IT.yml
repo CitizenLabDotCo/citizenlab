@@ -18,8 +18,8 @@ it:
       "invite_reminder": Promemoria dell'invito
       "internal_comment_on_idea_assigned_to_you": Commento interno sull'input che mi è stato assegnato
       "internal_comment_on_idea_you_commented_internally_on": Commento interno sul contributo che ho commentato internamente
-      "internal_comment_on_idea_you_moderate": Commento interno su un input nel progetto o nella cartella che gestisco
-      "internal_comment_on_unassigned_unmoderated_idea": Commento interno su un input non assegnato in un progetto non gestito
+      "internal_comment_on_idea_you_moderate": Commento interno su un contributo nel progetto o cartella che gestisco
+      "internal_comment_on_unassigned_unmoderated_idea": Commento interno su un contributo non assegnato in un progetto non gestito
       "internal_comment_on_your_internal_comment": Commento interno sul mio commento interno
       "mention_in_official_feedback": Menzione in un aggiornamento
       "mention_in_internal_comment": Menzione in un commento interno
@@ -563,7 +563,7 @@ it:
       recipient_segment:
         admins: 'Amministratori'
         admins_and_managers: 'Amministratori e manager'
-        admins_and_managers_assigned_to_the_input: 'Amministratori e manager assegnati all''ingresso'
+        admins_and_managers_assigned_to_the_input: 'Amministratori e manager assegnati al contributo'
         admins_and_managers_managing_the_project: 'Amministratori e manager che gestiscono il progetto'
         admins_assigned_to_a_proposal: 'Amministratori assegnati a una proposta'
         all_users: 'Tutti gli utenti'
@@ -607,13 +607,13 @@ it:
         surveys: 'Sondaggi'
       trigger:
         7_days_after_invite_is_sent: '7 giorni dopo l''invio dell''invito'
-        7_days_before_the_project_changes_phase: '7 giorni prima della fase di modifica del progetto'
+        7_days_before_the_project_changes_phase: '7 giorni prima che il progetto cambi fase'
         comment_is_deleted: 'Il commento viene cancellato'
         comment_is_flagged_as_spam: 'Il commento viene segnalato come spam'
         content_gets_flagged_as_innapropiate: 'Il contenuto viene segnalato come inappropiato'
         initiative_resubmitted_for_review: 'Proposta ripresentata per la revisione'
-        input_is_assigned: 'L''ingresso è assegnato'
-        input_is_flagged_as_spam: 'L''input viene contrassegnato come spam'
+        input_is_assigned: 'Il contributo è assegnato'
+        input_is_flagged_as_spam: 'Il contributo viene segnalato come spam'
         input_is_published: 'Il contributo è pubblicato'
         input_is_updated: 'Il contributo viene aggiornato'
         input_status_changes: 'Cambiamento di status del contributo'
@@ -621,11 +621,11 @@ it:
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Il commento interno viene pubblicato sull''input del progetto o della cartella che l''utente gestisce'
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Commento interno sul contributo che l''utente ha commentato internamente'
         internal_comment_is_posted_on_idea_user_moderates: 'Il commento interno è pubblicato su input che l''utente modera'
-        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Viene pubblicato un commento interno su un input non assegnato in un progetto non gestito'
+        internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Viene pubblicato un commento interno su un contributo non assegnato in un progetto non gestito'
         project_review_request: 'Il moderatore ha richiesto una revisione del progetto'
         project_review_state_change: 'Il revisore ha approvato il progetto'
         new_input_awaits_screening: 'Un nuovo contributo in attesa di essere vagliato'
-        new_input_is_published: 'Viene pubblicato un nuovo input'
+        new_input_is_published: 'Viene pubblicato un nuovo contributo'
         new_proposal_is_posted: 'La nuova proposta è pubblicata'
         project_phase_changes: 'Cambiamenti di fase del progetto'
         project_published: 'Progetto pubblicato'
