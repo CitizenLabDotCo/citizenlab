@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 import { useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 const COLLAPSED_HEIGHT = 40;
 const DEFAULT_OFFSET = 350;
@@ -33,7 +33,7 @@ const DragHandle = styled.div`
   margin: 12px auto;
 `;
 
-const DragArea = styled.button`
+const DragArea = styled.div`
   display: block;
   width: 100%;
   padding: 8px 0;
@@ -130,15 +130,6 @@ const BottomSheet = ({
     document.addEventListener('mouseup', onUp);
   };
 
-  const toggle = () => {
-    const next: Record<SheetState, SheetState> = {
-      collapsed: 'default',
-      default: 'fullscreen',
-      fullscreen: 'collapsed',
-    };
-    setSheetState(next[sheetState]);
-  };
-
   const isDragging = dragTranslateY !== null;
   const translateY = isDragging
     ? dragTranslateY
@@ -158,7 +149,6 @@ const BottomSheet = ({
         onTouchMove={(e) => updateDrag(e.touches[0].clientY)}
         onTouchEnd={endDrag}
         onMouseDown={handleMouseDown}
-        onClick={toggle}
         aria-expanded={isExpanded}
         aria-label={isExpanded ? a11y_collapseLabel : a11y_expandLabel}
       >
