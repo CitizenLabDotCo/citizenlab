@@ -5,14 +5,17 @@ import { AuthenticationData } from 'containers/Authentication/typings';
 export const checkMissingData = (
   requirements: AuthenticationRequirements['requirements'],
   { context }: AuthenticationData,
-  flow: 'signup' | 'signin'
+  flow: 'signup' | 'signin',
+  userIsAuthenticated: boolean
 ) => {
-  if (requiredBuiltInFields(requirements)) {
-    return 'missing-data:built-in';
+  if (confirmationRequired(requirements)) {
+    return userIsAuthenticated
+      ? 'missing-data:email-confirmation'
+      : 'email:confirmation';
   }
 
-  if (confirmationRequired(requirements)) {
-    return 'missing-data:email-confirmation';
+  if (requiredBuiltInFields(requirements)) {
+    return 'missing-data:built-in';
   }
 
   if (requirements.verification) {

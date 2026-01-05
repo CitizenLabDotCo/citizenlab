@@ -39,7 +39,7 @@ const preview: Preview = {
     }
   },
   decorators: [mswDecorator, routerDecorator, contexts],
-  globals: {
+  initialGlobals: {
     locale: reactIntl.defaultLocale,
   },
 };
