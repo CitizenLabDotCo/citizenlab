@@ -35,9 +35,12 @@ const fetchIdeaFeedIdeas = ({
   });
 
 const useInfiniteIdeaFeedIdeas = (
-  params: IIdeaFeedQueryParameters & { phaseId: string }
+  params: IIdeaFeedQueryParameters & {
+    phaseId: string;
+    keepPreviousData?: boolean;
+  }
 ) => {
-  const { phaseId, ...queryParams } = params;
+  const { phaseId, keepPreviousData, ...queryParams } = params;
   return useInfiniteQuery<
     IIdeaFeedIdeas,
     CLErrors,
@@ -57,6 +60,8 @@ const useInfiniteIdeaFeedIdeas = (
       const pageNumber = getPageNumberFromUrl(lastPage.links.self);
       return hasNextPage && pageNumber ? pageNumber + 1 : null;
     },
+    keepPreviousData,
+    cacheTime: 0,
   });
 };
 

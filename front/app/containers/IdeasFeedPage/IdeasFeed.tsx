@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useCallback, useState } from 'react';
+import React, { useMemo, useRef, useCallback, useEffect } from 'react';
 
 import {
   Box,
@@ -53,17 +53,15 @@ const VirtualItem = styled.div<{ start: number; topOffset: number }>`
 `;
 
 interface Props {
-  initialIdeaId?: string;
+  topicId?: string | null;
 }
 
-const IdeasFeed = ({ initialIdeaId }: Props) => {
+const IdeasFeed = ({ topicId }: Props) => {
   const [searchParams] = useSearchParams();
   const phaseId = searchParams.get('phase_id')!;
-  const topicId = searchParams.get('topic');
+  const initialIdeaId = searchParams.get('initial_idea_id') || undefined;
 
   const parentRef = useRef<HTMLDivElement | null>(null);
-  const currentIndexRef = useRef<number>(0);
-  const [centeredIndex, setCenteredIndex] = useState<number>(0);
   const isMobile = useBreakpoint('phone');
 
   const handleIdeaSelect = useCallback((ideaId: string | null) => {
@@ -79,6 +77,7 @@ const IdeasFeed = ({ initialIdeaId }: Props) => {
       phaseId,
       topic: topicId || undefined,
       'page[size]': 20,
+      keepPreviousData: topicId ? false : true,
     });
 
   const flatIdeas = useMemo(() => {
@@ -86,22 +85,22 @@ const IdeasFeed = ({ initialIdeaId }: Props) => {
     return data.pages.flatMap((page) => page.data);
   }, [data]);
 
-  // Reorder ideas to put the clicked idea first
+  // Reorder ideas to put the initial idea first (if provided), otherwise keep original order
   const orderedIdeas = useMemo(() => {
-    if (flatIdeas.length === 0) return [];
+    if (flatIdeas.length === 0 || !initialIdeaId) return flatIdeas;
 
-    const clickedIndex = flatIdeas.findIndex(
+    const initialIndex = flatIdeas.findIndex(
       (idea) => idea.id === initialIdeaId
     );
-    if (clickedIndex === -1) return flatIdeas;
+    if (initialIndex === -1) return flatIdeas;
 
-    const clickedIdea = flatIdeas[clickedIndex];
+    const initialIdea = flatIdeas[initialIndex];
     const otherIdeas = [
-      ...flatIdeas.slice(0, clickedIndex),
-      ...flatIdeas.slice(clickedIndex + 1),
+      ...flatIdeas.slice(0, initialIndex),
+      ...flatIdeas.slice(initialIndex + 1),
     ];
 
-    return [clickedIdea, ...otherIdeas];
+    return [initialIdea, ...otherIdeas];
   }, [flatIdeas, initialIdeaId]);
 
   // Extract topic IDs for each idea
@@ -128,22 +127,27 @@ const IdeasFeed = ({ initialIdeaId }: Props) => {
 
   const virtualItems = getVirtualItems();
 
+  const centeredIdeaId =
+    searchParams.get('centered_idea_id') || orderedIdeas[0]?.id;
+
+  // Initialize centered_idea_id to the first idea if not set
+  useEffect(() => {
+    updateSearchParams({ centered_idea_id: centeredIdeaId });
+  }, [centeredIdeaId]);
+
+  const centeredIndex = centeredIdeaId
+    ? orderedIdeas.findIndex((idea) => idea.id === centeredIdeaId)
+    : 0;
+
   const handleScroll = useCallback(
     (e: React.UIEvent<HTMLElement>) => {
       const scrollTop = e.currentTarget.scrollTop;
       const newIndex = Math.round(scrollTop / itemHeight);
 
-      // Update centered index and URL
-      if (
-        newIndex !== currentIndexRef.current &&
-        newIndex >= 0 &&
-        newIndex < ideasLength
-      ) {
-        currentIndexRef.current = newIndex;
-        setCenteredIndex(newIndex);
-        const centeredIdeaId = orderedIdeas[newIndex]?.id;
-        if (centeredIdeaId) {
-          updateSearchParams({ centered_idea_id: centeredIdeaId });
+      if (newIndex >= 0 && newIndex < ideasLength) {
+        const newCenteredIdeaId = orderedIdeas[newIndex]?.id;
+        if (newCenteredIdeaId && newCenteredIdeaId !== centeredIdeaId) {
+          updateSearchParams({ centered_idea_id: newCenteredIdeaId });
         }
       }
 
@@ -163,6 +167,7 @@ const IdeasFeed = ({ initialIdeaId }: Props) => {
       itemHeight,
       ideasLength,
       orderedIdeas,
+      centeredIdeaId,
       virtualItems,
       hasNextPage,
       isFetchingNextPage,
@@ -199,7 +204,7 @@ const IdeasFeed = ({ initialIdeaId }: Props) => {
           if (isLoaderRow) {
             return (
               <VirtualItem
-                key="loader"
+                key={`loader-${virtualRow.index}`}
                 start={virtualRow.start}
                 topOffset={topPadding}
                 data-index={virtualRow.index}
@@ -219,7 +224,7 @@ const IdeasFeed = ({ initialIdeaId }: Props) => {
 
           return (
             <VirtualItem
-              key={idea.id}
+              key={`${idea.id}-${virtualRow.index}`}
               start={virtualRow.start}
               topOffset={topPadding}
               data-index={virtualRow.index}
@@ -235,6 +240,7 @@ const IdeasFeed = ({ initialIdeaId }: Props) => {
                   topicBackgroundColor={topicBackgroundColor}
                   size="large"
                   onClick={() => handleIdeaSelect(idea.id)}
+                  centeredIdeaId={centeredIdeaId || undefined}
                 />
               </NoteContainer>
             </VirtualItem>

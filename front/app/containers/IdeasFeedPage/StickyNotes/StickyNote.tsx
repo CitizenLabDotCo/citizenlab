@@ -7,7 +7,6 @@ import {
   useBreakpoint,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAddIdeaExposure from 'api/idea_exposure/useAddIdeaExposure';
@@ -43,6 +42,7 @@ interface Props {
   topicBackgroundColor: string;
   onClick?: () => void;
   size?: Size;
+  centeredIdeaId?: string;
 }
 
 type SizeStyles = { width: string; minHeight: string; padding: string };
@@ -63,9 +63,8 @@ const StickyNote: React.FC<Props> = ({
   topicBackgroundColor,
   onClick,
   size = 'small',
+  centeredIdeaId,
 }) => {
-  const [searchParams] = useSearchParams();
-  const centeredIdeaId = searchParams.get('centered_idea_id');
   const isCentered = centeredIdeaId === ideaId;
 
   const { data: idea } = useIdeaById(ideaId);

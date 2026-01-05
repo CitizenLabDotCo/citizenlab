@@ -21,7 +21,6 @@ const IdeasFeedPage = () => {
   const selectedTopicId = searchParams.get('topic');
   const phaseId = searchParams.get('phase_id');
   const isMobileOrSmaller = useBreakpoint('phone');
-  const initialIdeaId = searchParams.get('initial_idea_id') || undefined;
 
   const setSelectedTopicId = (topicId: string | null) => {
     if (topicId) {
@@ -68,11 +67,18 @@ const IdeasFeedPage = () => {
           h="100vh"
         >
           <Sidebar />
-          <Box flex="4">
-            <IdeasFeed
-              initialIdeaId={initialIdeaId}
-              key={selectedTopicId || 'all'}
-            />
+          <Box flex="4" position="relative">
+            {/* General feed - always mounted to preserve scroll position */}
+            <Box visibility={selectedTopicId ? 'hidden' : 'visible'}>
+              <IdeasFeed topicId={null} />
+            </Box>
+
+            {/* Topic-specific feed - mounted only when topic is selected */}
+            {selectedTopicId && (
+              <Box position="absolute" top="0" left="0" right="0" bottom="0">
+                <IdeasFeed topicId={selectedTopicId} />
+              </Box>
+            )}
           </Box>
         </Box>
       </Box>
