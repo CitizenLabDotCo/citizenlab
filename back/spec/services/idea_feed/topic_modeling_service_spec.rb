@@ -13,7 +13,7 @@ describe IdeaFeed::TopicModelingService do
     context 'when no topics exist yet' do
       it 'contains the project description in the prompt when not using the ContentBuilder' do
         project.update!(description_multiloc: { 'en' => 'This is a test project about urban development.' })
-        expect_any_instance_of(Analysis::LLM::Gemini25Pro).to receive(:chat) do |_, prompt|
+        expect_any_instance_of(Analysis::LLM::Gemini3Pro).to receive(:chat) do |_, prompt|
           expect(prompt).to include('This is a test project about urban development.')
           []
         end
@@ -55,7 +55,7 @@ describe IdeaFeed::TopicModelingService do
             'linkedNodes' => {}
           }
         })
-        expect_any_instance_of(Analysis::LLM::Gemini25Pro).to receive(:chat) do |_, prompt|
+        expect_any_instance_of(Analysis::LLM::Gemini3Pro).to receive(:chat) do |_, prompt|
           expect(prompt).to include('This is a ContentBuilder project description.')
           []
         end
@@ -65,7 +65,7 @@ describe IdeaFeed::TopicModelingService do
       it 'creates the returned topics' do
         create(:idea, project:, phases: [phase], title_multiloc: { 'en' => 'Finding parking is impossible' }, body_multiloc: { 'en' => "I'm getting tired of the impossible parking situation in the city center. Sometimes I have to drive around for half an hour to find a parking space near my house." })
 
-        expect_any_instance_of(Analysis::LLM::Gemini25Pro).to receive(:chat).and_return([{ 'title_multiloc' => { 'en' => 'Parking', 'fr-FR' => 'Stationnement', 'nl-NL' => 'Parkeren' }, 'description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.', 'fr-FR' => 'Contributions relatives à la disponibilité du stationnement, à la réglementation et aux infrastructures pour les véhicules.', 'nl-NL' => 'Bijdragen met betrekking tot de beschikbaarheid van parkeerplaatsen, regelgeving en infrastructuur voor voertuigen.' } }])
+        expect_any_instance_of(Analysis::LLM::Gemini3Pro).to receive(:chat).and_return([{ 'title_multiloc' => { 'en' => 'Parking', 'fr-FR' => 'Stationnement', 'nl-NL' => 'Parkeren' }, 'description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.', 'fr-FR' => 'Contributions relatives à la disponibilité du stationnement, à la réglementation et aux infrastructures pour les véhicules.', 'nl-NL' => 'Bijdragen met betrekking tot de beschikbaarheid van parkeerplaatsen, regelgeving en infrastructuur voor voertuigen.' } }])
         expect { service.rebalance_topics! }.to change(Topic, :count).from(0).to(1)
         expect(project.allowed_input_topics.count).to eq 1
       end
@@ -87,7 +87,7 @@ describe IdeaFeed::TopicModelingService do
       it 'updates changed topics, creates new topics, and removes obsolete topics' do
         create(:idea, project:, phases: [phase], title_multiloc: { 'en' => 'Finding parking is impossible' }, body_multiloc: { 'en' => "I'm getting tired of the impossible parking situation in the city center. Sometimes I have to drive around for half an hour to find a parking space near my house." })
 
-        allow_any_instance_of(Analysis::LLM::Gemini25Pro).to receive(:chat).and_return([
+        allow_any_instance_of(Analysis::LLM::Gemini3Pro).to receive(:chat).and_return([
           { 'title_multiloc' => { 'en' => 'Public Transportation' }, 'description_multiloc' => { 'en' => 'Ideas about public transportation systems and services' } },
           { 'title_multiloc' => { 'en' => 'Parking' }, 'description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.' } }
         ],
@@ -109,7 +109,7 @@ describe IdeaFeed::TopicModelingService do
       it 'when the mapping maps multiple old topics to the same new topic, removes them both and creates the new topic' do
         create(:idea, project:, phases: [phase], title_multiloc: { 'en' => 'Finding parking is impossible' }, body_multiloc: { 'en' => "I'm getting tired of the impossible parking situation in the city center. Sometimes I have to drive around for half an hour to find a parking space near my house." })
 
-        allow_any_instance_of(Analysis::LLM::Gemini25Pro).to receive(:chat).and_return([
+        allow_any_instance_of(Analysis::LLM::Gemini3Pro).to receive(:chat).and_return([
           { 'title_multiloc' => { 'en' => 'Public Transportation' }, 'description_multiloc' => { 'en' => 'Ideas about public transportation systems and services' } },
           { 'title_multiloc' => { 'en' => 'Parking' }, 'description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.' } }
         ],
@@ -132,7 +132,7 @@ describe IdeaFeed::TopicModelingService do
     end
 
     context 'simulating incremental application' do
-      it 'loads an xlsx', skip: 'Too slow and API dependent for CI, only use manual testing' do
+      it 'loads an xlsx', skip: 'Too slow and API dependent for CI, only use for manual testing' do
         raw_file = Rails.root.join('spec/fixtures/a1-tryout-ideas.xlsx')
         base_64_content = Base64.encode64(raw_file.read)
         admin = create(:admin)

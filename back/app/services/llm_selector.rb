@@ -33,46 +33,46 @@ class LLMSelector
     ::Analysis::LLM::ClaudeHaiku45,
     ::Analysis::LLM::ClaudeSonnet45,
     ::Analysis::LLM::ClaudeOpus45,
-    ::Analysis::LLM::Gemini25Pro,
-    ::Analysis::LLM::Gemini25Flash
+    ::Analysis::LLM::Gemini3Pro,
+    ::Analysis::LLM::Gemini3Flash
   ]
 
   USE_CASES = [
     LLMUseCase.new(
       key: 'sensemaking_auto_tagging',
       description: 'Automatic tagging of content in sensemaking',
-      supported_models: [::Analysis::LLM::GPT4oMini, ::Analysis::LLM::ClaudeHaiku45, ::Analysis::LLM::Gemini25Flash],
+      supported_models: [::Analysis::LLM::GPT4oMini, ::Analysis::LLM::ClaudeHaiku45, ::Analysis::LLM::Gemini3Flash],
       default_model: ::Analysis::LLM::GPT4oMini
     ),
     LLMUseCase.new(
       key: 'sensemaking_summarization',
       description: 'Summarization of content in sensemaking',
-      supported_models: [::Analysis::LLM::GPT41, ::Analysis::LLM::Gemini25Pro, ::Analysis::LLM::ClaudeOpus45],
+      supported_models: [::Analysis::LLM::GPT41, ::Analysis::LLM::Gemini3Pro, ::Analysis::LLM::ClaudeOpus45],
       default_model: ::Analysis::LLM::GPT41
     ),
     LLMUseCase.new(
       key: 'toxicity_detection',
       description: 'Detection of toxic content',
-      supported_models: [::Analysis::LLM::ClaudeHaiku45, ::Analysis::LLM::GPT4oMini, ::Analysis::LLM::Gemini25Flash],
+      supported_models: [::Analysis::LLM::ClaudeHaiku45, ::Analysis::LLM::GPT4oMini, ::Analysis::LLM::Gemini3Flash],
       default_model: ::Analysis::LLM::ClaudeHaiku45
     ),
     LLMUseCase.new(
       key: '360_input_file_description',
       description: 'Generating descriptions for 360 input files',
-      supported_models: [::Analysis::LLM::GPT4o, ::Analysis::LLM::ClaudeSonnet45, ::Analysis::LLM::Gemini25Pro],
+      supported_models: [::Analysis::LLM::GPT4o, ::Analysis::LLM::ClaudeSonnet45, ::Analysis::LLM::Gemini3Pro],
       default_model: ::Analysis::LLM::GPT4o
     ),
     LLMUseCase.new(
       key: 'idea_feed_live_topic_model',
       description: 'Automatically manage the tags in the Idea Feed constantly.',
-      supported_models: [::Analysis::LLM::ClaudeOpus45, ::Analysis::LLM::Gemini25Pro],
-      default_model: ::Analysis::LLM::Gemini25Pro
+      supported_models: [::Analysis::LLM::ClaudeOpus45, ::Analysis::LLM::Gemini3Pro],
+      default_model: ::Analysis::LLM::Gemini3Pro
     ),
     LLMUseCase.new(
       key: 'idea_feed_live_classification',
       description: 'Classify ideas into existing topics in the Idea Feed constantly.',
-      supported_models: [::Analysis::LLM::ClaudeHaiku45, ::Analysis::LLM::Gemini25Flash],
-      default_model: ::Analysis::LLM::Gemini25Flash
+      supported_models: [::Analysis::LLM::ClaudeHaiku45, ::Analysis::LLM::Gemini3Flash],
+      default_model: ::Analysis::LLM::Gemini3Flash
     )
   ]
 
@@ -126,10 +126,6 @@ class LLMSelector
 
   def families
     FAMILIES
-  end
-
-  def models
-    MODELS
   end
 
   def use_case_by_key!(use_case_key)
