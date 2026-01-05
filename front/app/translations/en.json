@@ -1402,6 +1402,7 @@
   "app.containers.IdeasFeedPage.backToProject": "Back to project",
   "app.containers.IdeasFeedPage.collapsePanel": "Collapse topics panel",
   "app.containers.IdeasFeedPage.expandPanel": "Expand topics panel",
+  "app.containers.IdeasFeedPage.seeAllIdeas": "See all {ideasCount} inputs",
   "app.containers.IdeasFeedPage.topicsPanel": "Topics panel",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "All inputs posted",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Explore all input posted on the participation platform of {orgName}.",
