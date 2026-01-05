@@ -281,6 +281,23 @@
             "type": "integer",
             "minimum": 0,
             "default": 12
+          },
+          "ai_providers": {
+            "title": "AI Providers",
+            "description": "Configuration for selecting which family of models to use for each AI use case. Leave all these on auto unless there is a specific reason to select a particular model family.",
+            "type": "object",
+            "properties": {
+              <% llm_selector = LLMSelector.new %>
+              <% llm_selector.use_cases.each_with_index do |use_case, index| %>
+              "<%= use_case.key %>": {
+                "type": "string",
+                "title": "<%= use_case.key %>",
+                "description": "<%= use_case.description %>",
+                "default": "auto",
+                "enum": <%= [LLMSelector::AUTO, *(llm_selector.families_for_use_case(use_case).map{|fam| fam.key })].to_json %>
+              }<%= ',' unless index == llm_selector.use_cases.length - 1 %>
+              <% end %>
+            }
           }
         }
       },
