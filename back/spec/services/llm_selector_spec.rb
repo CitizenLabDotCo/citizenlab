@@ -28,7 +28,7 @@ describe LLMSelector do
   it 'only lists models that specify a defined family' do
     family_keys = described_class::FAMILIES.map(&:key)
     described_class::MODELS.each do |model|
-      expect(family_keys).to include(model.new.family), "Model #{model.class} references unknown family #{model.new.family}"
+      expect(family_keys).to include(model.family), "Model #{model.class} references unknown family #{model.family}"
     end
   end
 
@@ -36,36 +36,36 @@ describe LLMSelector do
     expect(described_class::MODELS).to all(be < Analysis::LLM::Base)
   end
 
-  describe '#llm_claz_for_use_case' do
+  describe '#llm_class_for_use_case' do
     it 'raises an error for unknown use case keys' do
       expect do
-        service.llm_claz_for_use_case('non_existent_use_case')
+        service.llm_class_for_use_case('non_existent_use_case')
       end.to raise_error(ArgumentError, /Use case not found/)
     end
 
     it 'returns the default model when no family is configured' do
       use_case = described_class::USE_CASES.first
       app_configuration = instance_double(AppConfiguration)
-      allow(app_configuration).to receive(:settings).with('core', 'ai_providers').and_return({})
+      allow(app_configuration).to receive(:settings).with('core', 'ai_providers', use_case.key).and_return(nil)
 
-      selected_model = service.llm_claz_for_use_case(use_case.key, app_configuration)
+      selected_model = service.llm_class_for_use_case(use_case.key, app_configuration)
       expect(selected_model).to eq(use_case.default_model)
     end
 
     it 'returns the default model when family is configured as auto' do
       use_case = described_class::USE_CASES.first
       app_configuration = instance_double(AppConfiguration)
-      allow(app_configuration).to receive(:settings).with('core', 'ai_providers').and_return({ use_case.key => 'auto' })
-      selected_model = service.llm_claz_for_use_case(use_case.key, app_configuration)
+      allow(app_configuration).to receive(:settings).with('core', 'ai_providers', use_case.key).and_return('auto')
+      selected_model = service.llm_class_for_use_case(use_case.key, app_configuration)
       expect(selected_model).to eq(use_case.default_model)
     end
 
     it 'returns the correct model for a configured family' do
       mock_model_a = Class.new(Analysis::LLM::Base) do
-        define_method(:family) { 'family_a' }
+        define_singleton_method(:family) { 'family_a' }
       end
       mock_model_b = Class.new(Analysis::LLM::Base) do
-        define_method(:family) { 'family_b' }
+        define_singleton_method(:family) { 'family_b' }
       end
 
       mock_family_a = described_class::LLMFamily.new(key: 'family_a', name: 'Family A', description: 'Test family A')
@@ -83,19 +83,10 @@ describe LLMSelector do
       stub_const('LLMSelector::USE_CASES', [mock_use_case])
 
       app_configuration = instance_double(AppConfiguration)
-      allow(app_configuration).to receive(:settings).with('core', 'ai_providers').and_return({ 'test_use_case' => mock_family_b })
+      allow(app_configuration).to receive(:settings).with('core', 'ai_providers', 'test_use_case').and_return('family_b')
 
-      selected_model = service.llm_claz_for_use_case('test_use_case', app_configuration)
+      selected_model = service.llm_class_for_use_case('test_use_case', app_configuration)
       expect(selected_model).to eq(mock_model_b)
-    end
-
-    it 'returns the default model when ai_providers config is non existent' do
-      use_case = described_class::USE_CASES.first
-      app_configuration = instance_double(AppConfiguration)
-      allow(app_configuration).to receive(:settings).with('core', 'ai_providers').and_return(nil)
-
-      selected_model = service.llm_claz_for_use_case(use_case.key, app_configuration)
-      expect(selected_model).to eq(use_case.default_model)
     end
   end
 
