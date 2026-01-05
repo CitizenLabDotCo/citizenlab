@@ -1333,7 +1333,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Još ništa za recenziju. Kliknite \"{importFile}\" za uvoz PDF datoteke koja sadrži skenirane obrasce za unos ili Excel datoteke koja sadrži unose.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": "Još ništa za recenziju. Kliknite \"{importFile}\" za uvoz Excel datoteke koja sadrži unose.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Ulazni",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Stranica",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Nije moguće prikazati uvezenu datoteku. Pregled uvezenih datoteka dostupan je samo za uvoze PDF-a.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Faza:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Odabrana faza ne može sadržavati ulaze. Odaberite drugu.",

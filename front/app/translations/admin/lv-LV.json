@@ -1333,7 +1333,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Pagaidām nav ko pārskatīt. Noklikšķiniet uz \"{importFile}\", lai importētu PDF failu ar skenētām ievades veidlapām vai Excel failu ar ievades datiem.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": "Vēl nav ko pārskatīt. Noklikšķiniet uz \"{importFile}\", lai importētu Excel failu ar ievaddatiem.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Ieeja",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Lapa",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Nevar parādīt importēto failu. Importētā faila skatīšana ir pieejama tikai PDF importam.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Fāze:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Izvēlētajā fāzē nevar būt ievades. Lūdzu, izvēlieties citu.",

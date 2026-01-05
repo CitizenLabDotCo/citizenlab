@@ -1333,7 +1333,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Henüz incelenecek bir şey yok. Taranmış giriş formlarını içeren bir PDF dosyasını veya girişleri içeren bir Excel dosyasını içe aktarmak için \"{importFile}\" adresini tıklayın.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": "Henüz incelenecek bir şey yok. Girdileri içeren bir Excel dosyasını içe aktarmak için \"{importFile}\" adresini tıklayın.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Giriş",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Sayfa",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "İçe aktarılan dosya görüntülenemiyor. İçe aktarılan dosya görüntüleme yalnızca PDF içe aktarmaları için kullanılabilir.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Aşama:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Seçilen faz girişleri içeremez. Lütfen başka bir tane seçin.",

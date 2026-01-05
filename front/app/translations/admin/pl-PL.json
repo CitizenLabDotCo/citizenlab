@@ -1333,7 +1333,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Nie ma jeszcze nic do sprawdzenia. Kliknij \"{importFile}\", aby zaimportować plik PDF zawierający zeskanowane formularze wejściowe lub plik Excel zawierający dane wejściowe.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": "Nie ma jeszcze nic do sprawdzenia. Kliknij \"{importFile}\", aby zaimportować plik Excel zawierający dane wejściowe.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Wejście",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Strona",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Nie można wyświetlić zaimportowanego pliku. Wyświetlanie zaimportowanego pliku jest dostępne tylko w przypadku importu plików PDF.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Faza:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Wybrana faza nie może zawierać wejść. Wybierz inną fazę.",

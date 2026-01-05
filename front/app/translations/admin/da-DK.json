@@ -1333,7 +1333,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Der er ikke noget at gennemse endnu. Klik på \"{importFile}\" for at importere en PDF-fil med scannede inputformularer eller en Excel-fil med input.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": "Der er ikke noget at gennemse endnu. Klik på \"{importFile}\" for at importere en Excel-fil med input.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Input",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Side",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Kan ikke vise den importerede fil. Visning af importerede filer er kun tilgængelig for PDF-import.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Fase:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Den valgte fase kan ikke indeholde inputs. Vælg venligst en anden.",

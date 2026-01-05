@@ -1333,7 +1333,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Kol kas nėra ką peržiūrėti. Spustelėkite \"{importFile}\", jei norite importuoti PDF failą su nuskaitytomis įvesties formomis arba \"Excel\" failą su įvesties duomenimis.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": "Kol kas nėra ką peržiūrėti. Spustelėkite \"{importFile}\", kad importuotumėte \"Excel\" failą su įvesties duomenimis.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Įvestis",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Puslapis",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Nepavyksta parodyti importuoto failo. Importuoto failo peržiūra galima tik importuojant PDF failus.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Etapas:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Pasirinktoje fazėje negali būti įėjimų. Pasirinkite kitą.",

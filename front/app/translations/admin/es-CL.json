@@ -1333,7 +1333,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Todavía no hay nada que revisar. Haz clic en \"{importFile}\" para importar un archivo PDF que contenga formularios de entrada escaneados o un archivo Excel que contenga entradas.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": "Todavía no hay nada que revisar. Haz clic en \"{importFile}\" para importar un archivo Excel que contenga aportaciones.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Aportes",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Página",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "No se puede visualizar el archivo importado. La visualización del archivo importado sólo está disponible para las importaciones de PDF.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Fase:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "La fase seleccionada no puede contener entradas. Por favor, selecciona otra.",

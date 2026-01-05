@@ -1333,7 +1333,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Non c'è ancora nulla da rivedere. Clicca su \"{importFile}\" per importare un file PDF contenente i moduli di input scansionati o un file Excel contenente gli input.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": "Non c'è ancora nulla da rivedere. Clicca su \"{importFile}\" per importare un file Excel contenente gli input.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Ingresso",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Pagina",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Impossibile visualizzare il file importato. La visualizzazione del file importato è disponibile solo per le importazioni in PDF.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Fase:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "La fase selezionata non può contenere ingressi. Selezionane un'altra.",
