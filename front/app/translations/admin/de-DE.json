@@ -1333,7 +1333,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Es gibt noch nichts zu überprüfen. Klicken Sie auf \"{importFile}\", um eine PDF-Datei mit gescannten Eingabeformularen oder eine Excel-Datei mit Beiträgen zu importieren.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": "Noch nichts zu überprüfen. Klicken Sie auf \"{importFile}\", um eine Excel-Datei mit Beiträgen zu importieren.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Beitrag",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Seite",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Die importierte Datei kann nicht angezeigt werden. Die Anzeige importierter Dateien ist nur für PDF-Importe verfügbar.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Phase:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Die ausgewählte Phase kann keine Beiträge enthalten. Bitte wählen Sie eine andere.",

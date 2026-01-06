@@ -1333,7 +1333,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Ingenting å vurdere ennå. Klikk på \"{importFile}\" for å importere en PDF-fil med skannede inndataskjemaer eller en Excel-fil med inndata.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": "Ingenting å vurdere ennå. Klikk på \"{importFile}\" for å importere en Excel-fil som inneholder inndata.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Inndata",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Side",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Kan ikke vise den importerte filen. Visning av importerte filer er bare tilgjengelig for PDF-import.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Fase:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Den valgte fasen kan ikke inneholde innganger. Vennligst velg en annen.",

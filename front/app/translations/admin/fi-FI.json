@@ -1333,7 +1333,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Ei vielä mitään arvosteltavaa. Napsauta \"{importFile}\" tuodaksesi skannatut syöttölomakkeita sisältävän PDF-tiedoston tai syötteitä sisältävän Excel-tiedoston.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": "Ei vielä mitään arvosteltavaa. Napsauta \"{importFile}\" tuodaksesi syötteitä sisältävän Excel-tiedoston.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Syöte",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Sivu",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Tuotua tiedostoa ei voi näyttää. Tuotujen tiedostojen katselu on käytettävissä vain PDF-tuonnissa.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Vaihe:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Valittu vaihe ei voi sisältää tuloja. Valitse toinen.",

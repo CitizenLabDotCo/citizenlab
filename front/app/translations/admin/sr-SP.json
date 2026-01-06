@@ -1333,7 +1333,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Још нема шта да се прегледа. Кликните на „{importFile}“ да бисте увезли ПДФ датотеку која садржи скениране обрасце за унос или Екцел датотеку која садржи улазне податке.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": "Nothing to review yet. Click \"{importFile}\" to import an Excel file containing inputs.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Улазни",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Страна",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Није могуће приказати увезену датотеку. Преглед увезених датотека доступан је само за увоз ПДФ-а.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "фаза:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Изабрана фаза не може да садржи улазе. Молимо изаберите другу.",

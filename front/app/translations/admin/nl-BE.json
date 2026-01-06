@@ -1333,7 +1333,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Nog niets om te beoordelen. Klik op \"{importFile}\" om een PDF-bestand met gescande invulformulieren of een Excel-bestand met bijdragen te importeren.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": "Nog niets om te beoordelen. Klik op \"{importFile}\" om een Excel-bestand met bijdragen te importeren.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Bijdragen",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Pagina",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Kan het geïmporteerde bestand niet weergeven. Het bekijken van geïmporteerde bestanden is alleen beschikbaar voor PDF-bestanden.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Fase:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "De geselecteerde fase kan geen bijdragen bevatten. Selecteer een andere.",

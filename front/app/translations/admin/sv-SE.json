@@ -1333,7 +1333,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Inget att recensera ännu. Klicka på \"{importFile}\" för att importera en PDF-fil med skannade inmatningsformulär eller en Excel-fil med inmatningar.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": "Inget att granska ännu. Klicka på \"{importFile}\" för att importera en Excel-fil som innehåller indata.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Idé",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Sida",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Det går inte att visa den importerade filen. Visning av importerade filer är endast tillgängligt för PDF-import.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Fas:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Den valda fasen kan inte innehålla ingångar. Vänligen välj en annan.",

@@ -1333,7 +1333,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": "Rien à vérifier pour le moment. Cliquez sur \"{importFile}\" pour importer un fichier PDF ou Excel contenant les contributions.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYetNoPdf": "Aucune contribution à vérifier pour le moment. Cliquez sur « {importFile} » pour importer un fichier Excel contenant des contributions.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noTitleInputLabel": "Contribution",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.page": "Page",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Impossible d'afficher le fichier importé. La visualisation des fichiers importés n'est disponible que pour les fichiers au format PDF.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Phase :",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "La phase sélectionnée ne peut pas contenir d'idées. Veuillez en sélectionner une autre.",
