@@ -1165,7 +1165,7 @@
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Er bestaat al een account met dit e-mailadres. Je kunt je afmelden, inloggen met dit e-mailadres en je account verifiëren op de instellingenpagina.",
   "app.containers.Authentication.steps.AccessDenied.close": "Sluiten",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Je voldoet niet aan de voorwaarden om deel te nemen aan dit proces.",
-  "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Klik hier om in te loggen als admin of projectmanager",
+  "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Klik hier om in te loggen als admin of projectbeheerder",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Voer een token in",
   "app.containers.Authentication.steps.Invitation.token": "Token",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} is al bezet door een uitnodiging in afwachting. Controleer je e-mail en klik op de link om de uitnodiging te accepteren. Als je de uitnodigingsmail niet kunt vinden, klik dan op de knop hieronder om hem opnieuw te versturen. Het kan een paar minuten duren voordat de e-mail aankomt.",
