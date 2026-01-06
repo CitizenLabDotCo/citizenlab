@@ -1,10 +1,10 @@
-# Backend Implementation Plan: Split Project and Input Topics
+# Backend Implementation Plan: Split Global and Input Topics
 
 ## Overview
 
-This plan details the backend changes required to split Project topics (use case A - categorizing projects) from Input topics (use case B - tagging ideas). After this change:
+This plan details the backend changes required to split Global topics (use case A - categorizing projects) from Input topics (use case B - tagging ideas). After this change:
 
-- **Project topics** remain platform-level and are used to categorize projects
+- **Global topics** remain platform-level and are used to categorize projects (renamed from "Project topics")
 - **Input topics** become project-level (copied from "default input topics" when a project is created)
 
 ## Current State Summary
@@ -22,7 +22,7 @@ This plan details the backend changes required to split Project topics (use case
 - Projects have `topics` (through `projects_topics`) for categorization
 - Projects have `allowed_input_topics` (through `projects_allowed_input_topics`) for idea forms
 - Ideas have `topics` (through `ideas_topics`)
-- Topics have `followers` (polymorphic)
+- Topics have `followers` (polymorphic - `followable_type: 'Topic'`)
 - `Topic.defaults` scope returns topics with `is_default: true`
 
 ### Key Behaviors
@@ -35,11 +35,140 @@ This plan details the backend changes required to split Project topics (use case
 
 ## Implementation Plan
 
-### Phase 1: Create New InputTopic Model and Table
+### Phase 1: Rename Topics to GlobalTopics
 
-**Goal**: Create a new `input_topics` table where input topics are stored per-project, separate from platform-level topics.
+**Goal**: Rename the `topics` table and model to `global_topics`/`GlobalTopic` for clarity.
 
-#### 1.1 Create Migration for `input_topics` Table
+#### 1.1 Create Migration to Rename Tables
+
+**File**: `back/db/migrate/XXXXXX_rename_topics_to_global_topics.rb`
+
+```ruby
+class RenameTopicsToGlobalTopics < ActiveRecord::Migration[7.1]
+  def change
+    # Rename main table
+    rename_table :topics, :global_topics
+
+    # Rename join tables
+    rename_table :projects_topics, :projects_global_topics
+    rename_table :static_pages_topics, :static_pages_global_topics
+
+    # Update foreign key column names in join tables
+    rename_column :projects_global_topics, :topic_id, :global_topic_id
+    rename_column :static_pages_global_topics, :topic_id, :global_topic_id
+
+    # Update polymorphic followers
+    execute <<-SQL
+      UPDATE followers SET followable_type = 'GlobalTopic' WHERE followable_type = 'Topic'
+    SQL
+  end
+end
+```
+
+#### 1.2 Rename Topic Model to GlobalTopic
+
+**File**: `back/app/models/global_topic.rb` (rename from `topic.rb`)
+
+```ruby
+class GlobalTopic < ApplicationRecord
+  acts_as_list column: :ordering
+
+  has_many :projects_global_topics, dependent: :destroy
+  has_many :projects, through: :projects_global_topics
+  has_many :static_pages_global_topics, dependent: :destroy
+  has_many :static_pages, through: :static_pages_global_topics
+  has_many :followers, as: :followable, dependent: :destroy
+
+  validates :title_multiloc, presence: true, multiloc: { presence: true }
+  validates :description_multiloc, multiloc: { presence: false }
+
+  scope :order_new, -> { order(created_at: :desc) }
+  scope :order_projects_count, (proc do |direction = :desc|
+    # ... existing implementation
+  end)
+end
+```
+
+#### 1.3 Rename Join Models
+
+**File**: `back/app/models/projects_global_topic.rb` (rename from `projects_topic.rb`)
+
+```ruby
+class ProjectsGlobalTopic < ApplicationRecord
+  belongs_to :project
+  belongs_to :global_topic
+end
+```
+
+**File**: `back/app/models/static_pages_global_topic.rb` (rename from `static_pages_topic.rb`)
+
+```ruby
+class StaticPagesGlobalTopic < ApplicationRecord
+  belongs_to :static_page
+  belongs_to :global_topic
+end
+```
+
+#### 1.4 Update Project Model Associations
+
+**File**: `back/app/models/project.rb`
+
+```ruby
+has_many :projects_global_topics, dependent: :destroy
+has_many :global_topics, -> { order(:ordering) }, through: :projects_global_topics
+```
+
+#### 1.5 Update StaticPage Model Associations
+
+**File**: `back/app/models/static_page.rb`
+
+```ruby
+has_many :static_pages_global_topics, dependent: :destroy
+has_many :global_topics, -> { order(:ordering) }, through: :static_pages_global_topics
+```
+
+Update `filter_projects` method to use `global_topics`.
+
+#### 1.6 Update Controllers and Serializers
+
+Rename:
+
+- `TopicsController` → `GlobalTopicsController`
+- `TopicSerializer` → `GlobalTopicSerializer`
+- `TopicPolicy` → `GlobalTopicPolicy`
+- `SideFxTopicService` → `SideFxGlobalTopicService`
+
+Update routes accordingly.
+
+#### 1.7 Update ProjectsFinderService
+
+**File**: `back/app/services/projects_finder_service.rb`
+
+Update the `followed_by_user` method to use new table/column names:
+
+```ruby
+.joins(
+  'LEFT JOIN global_topics AS followed_global_topics ON followers.followable_type = \'GlobalTopic\' ' \
+  'AND followed_global_topics.id = followers.followable_id'
+)
+.joins('LEFT JOIN projects_global_topics ON projects_global_topics.global_topic_id = followed_global_topics.id')
+```
+
+#### 1.8 Update Notifications
+
+**File**: `back/app/models/notifications/project_published.rb`
+
+```ruby
+followers = Follower.where(followable: project.global_topics).or(Follower.where(followable: project.areas))
+```
+
+---
+
+### Phase 2: Create New InputTopic Model and Table
+
+**Goal**: Create a new `input_topics` table where input topics are stored per-project, separate from global topics.
+
+#### 2.1 Create Migration for `input_topics` Table
 
 **File**: `back/db/migrate/XXXXXX_create_input_topics.rb`
 
@@ -60,7 +189,7 @@ class CreateInputTopics < ActiveRecord::Migration[7.1]
 end
 ```
 
-#### 1.2 Create InputTopic Model
+#### 2.2 Create InputTopic Model
 
 **File**: `back/app/models/input_topic.rb`
 
@@ -77,7 +206,7 @@ class InputTopic < ApplicationRecord
 end
 ```
 
-#### 1.3 Create Migration for `ideas_input_topics` Join Table
+#### 2.3 Create Migration for `ideas_input_topics` Join Table
 
 **File**: `back/db/migrate/XXXXXX_create_ideas_input_topics.rb`
 
@@ -95,7 +224,7 @@ class CreateIdeasInputTopics < ActiveRecord::Migration[7.1]
 end
 ```
 
-#### 1.4 Create IdeasInputTopic Model
+#### 2.4 Create IdeasInputTopic Model
 
 **File**: `back/app/models/ideas_input_topic.rb`
 
@@ -108,7 +237,7 @@ class IdeasInputTopic < ApplicationRecord
 end
 ```
 
-#### 1.5 Create DefaultInputTopic Model
+#### 2.5 Create DefaultInputTopic Model
 
 For storing default input topics that are copied to new projects.
 
@@ -141,9 +270,9 @@ end
 
 ---
 
-### Phase 2: Update Project Model
+### Phase 3: Update Project Model
 
-#### 2.1 Add New Associations to Project
+#### 3.1 Add New Associations to Project
 
 **File**: `back/app/models/project.rb`
 
@@ -153,7 +282,7 @@ Add:
 has_many :input_topics, -> { order(:ordering) }, dependent: :destroy
 ```
 
-Update `set_default_topics!` method to copy DefaultInputTopics:
+Replace `set_default_topics!` method:
 
 ```ruby
 def set_default_input_topics!
@@ -168,7 +297,7 @@ def set_default_input_topics!
 end
 ```
 
-#### 2.2 Update Idea Model
+#### 3.2 Update Idea Model
 
 **File**: `back/app/models/idea.rb`
 
@@ -181,9 +310,9 @@ has_many :input_topics, through: :ideas_input_topics
 
 ---
 
-### Phase 3: Create InputTopics API
+### Phase 4: Create InputTopics API
 
-#### 3.1 Create InputTopics Controller
+#### 4.1 Create InputTopics Controller
 
 **File**: `back/app/controllers/web_api/v1/input_topics_controller.rb`
 
@@ -279,7 +408,7 @@ module WebApi
 end
 ```
 
-#### 3.2 Create InputTopic Serializer
+#### 4.2 Create InputTopic Serializer
 
 **File**: `back/app/serializers/web_api/v1/input_topic_serializer.rb`
 
@@ -295,7 +424,7 @@ module WebApi
 end
 ```
 
-#### 3.3 Create InputTopic Policy
+#### 4.3 Create InputTopic Policy
 
 **File**: `back/app/policies/input_topic_policy.rb`
 
@@ -329,7 +458,7 @@ class InputTopicPolicy < ApplicationPolicy
 end
 ```
 
-#### 3.4 Create SideFxInputTopicService
+#### 4.4 Create SideFxInputTopicService
 
 **File**: `back/app/services/side_fx_input_topic_service.rb`
 
@@ -358,7 +487,7 @@ class SideFxInputTopicService
 end
 ```
 
-#### 3.5 Add Routes
+#### 4.5 Add Routes
 
 **File**: `back/config/routes.rb`
 
@@ -374,19 +503,19 @@ end
 
 ---
 
-### Phase 4: Create DefaultInputTopics API
+### Phase 5: Create DefaultInputTopics API
 
-#### 4.1 Create DefaultInputTopics Controller
+#### 5.1 Create DefaultInputTopics Controller
 
 **File**: `back/app/controllers/web_api/v1/default_input_topics_controller.rb`
 
 Similar structure to InputTopicsController but for admin-level management of default topics.
 
-#### 4.2 Create DefaultInputTopic Serializer
+#### 5.2 Create DefaultInputTopic Serializer
 
 **File**: `back/app/serializers/web_api/v1/default_input_topic_serializer.rb`
 
-#### 4.3 Create DefaultInputTopic Policy
+#### 5.3 Create DefaultInputTopic Policy
 
 **File**: `back/app/policies/default_input_topic_policy.rb`
 
@@ -394,82 +523,112 @@ Admin-only CRUD operations.
 
 ---
 
-### Phase 5: Update Stats Controllers
+### Phase 6: Update Stats Controllers
 
-#### 5.1 Update Stats Ideas Controller
+#### 6.1 Update Stats Ideas Controller
 
 **File**: `back/app/controllers/web_api/v1/stats_ideas_controller.rb`
 
-Update `ideas_by_topic_serie` to:
-
-- When project_id is provided: group by `ideas_input_topics.input_topic_id`
-- When no project_id: either remove this endpoint or return aggregated data
+Update `ideas_by_topic_serie` to **require** project_id and use input_topics:
 
 ```ruby
 def ideas_by_topic_serie
-  if params[:project]
-    # Project-scoped: use input_topics
-    ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
-    ideas = apply_project_filter(ideas)
+  # Require project_id - no longer support global topic stats
+  return head :bad_request unless params[:project]
 
-    ideas
-      .joins(:ideas_input_topics)
-      .group('ideas_input_topics.input_topic_id')
-      .order('ideas_input_topics.input_topic_id')
-      .count
-  else
-    # Global: This should probably be removed per requirements
-    # Or return empty/aggregated differently
-    {}
-  end
+  ideas = StatIdeaPolicy::Scope.new(current_user, Idea.published).resolve
+  ideas = apply_project_filter(ideas)
+
+  ideas
+    .joins(:ideas_input_topics)
+    .group('ideas_input_topics.input_topic_id')
+    .order('ideas_input_topics.input_topic_id')
+    .count
 end
 ```
 
-#### 5.2 Update Stats Comments Controller
+#### 6.2 Update Stats Comments Controller
 
 **File**: `back/app/controllers/web_api/v1/stats_comments_controller.rb`
 
-Similar changes - use `input_topics` when project-scoped.
+Update `comments_by_topic_serie` to **require** project_id:
 
-#### 5.3 Update Stats Reactions Controller
+```ruby
+def comments_by_topic_serie
+  return head :bad_request unless params[:project]
+  # ... use input_topics
+end
+```
+
+#### 6.3 Update Stats Reactions Controller
 
 **File**: `back/app/controllers/web_api/v1/stats_reactions_controller.rb`
 
-Similar changes.
+Update `reactions_by_topic_serie` to **require** project_id:
+
+```ruby
+def reactions_by_topic_serie
+  return head :bad_request unless params[:project]
+  # ... use input_topics
+end
+```
 
 ---
 
-### Phase 6: Update Idea Submission Flow
+### Phase 7: Update Idea Submission Flow
 
-#### 6.1 Update Custom Field Handling
+#### 7.1 Update Custom Field Handling
 
 **File**: `back/app/models/custom_field.rb`
 
-The `topic_ids` field type needs to work with `input_topic_ids` instead.
+Keep the `topic_ids` field type name but change underlying behavior to work with `input_topics`:
 
-Consider:
+- When reading `topic_ids`, return the idea's `input_topic_ids`
+- When writing `topic_ids`, update the idea's `input_topics` association
 
-- Rename to `input_topic_ids` or
-- Keep as `topic_ids` but change underlying behavior
-
-#### 6.2 Update Idea Creation/Update
+#### 7.2 Update Idea Creation/Update
 
 **File**: `back/app/controllers/web_api/v1/ideas_controller.rb`
 
-Handle `input_topic_ids` parameter:
+Keep accepting `topic_ids` parameter but map to input_topics:
 
-- Validate that provided IDs are valid input_topics for the project
-- Create `ideas_input_topics` records
+```ruby
+def idea_params
+  # ... existing params
+  # topic_ids still accepted but now maps to input_topics
+end
+
+# In create/update actions:
+def assign_topics(idea, topic_ids)
+  return unless topic_ids
+
+  # Validate that provided IDs are valid input_topics for the project
+  valid_input_topics = idea.project.input_topics.where(id: topic_ids)
+  idea.input_topics = valid_input_topics
+end
+```
+
+#### 7.3 Update Idea Serializer
+
+**File**: `back/app/serializers/web_api/v1/idea_serializer.rb`
+
+Update to serialize `input_topic_ids` as `topic_ids` for backwards compatibility:
+
+```ruby
+attribute :topic_ids do |idea|
+  idea.input_topic_ids
+end
+```
 
 ---
 
-### Phase 7: Clean Up Topic Model for Project Topics Only
+### Phase 8: Clean Up GlobalTopic Model
 
-#### 7.1 Update Topic Model
+#### 8.1 Update GlobalTopic Model
 
-**File**: `back/app/models/topic.rb`
+**File**: `back/app/models/global_topic.rb`
 
-Remove `is_default` attribute handling (no longer needed for project topics).
+Remove `is_default` attribute handling (no longer needed for global topics).
 
 Remove associations:
 
@@ -478,15 +637,15 @@ Remove associations:
 
 Keep:
 
-- `has_many :projects_topics`
+- `has_many :projects_global_topics`
 - `has_many :projects`
 - `has_many :followers`
-- `has_many :static_pages_topics`
-- `include_in_onboarding` (for project topic following)
+- `has_many :static_pages_global_topics`
+- `include_in_onboarding` (for global topic following)
 
-#### 7.2 Update Topics Controller
+#### 8.2 Update GlobalTopics Controller
 
-**File**: `back/app/controllers/web_api/v1/topics_controller.rb`
+**File**: `back/app/controllers/web_api/v1/global_topics_controller.rb`
 
 Remove:
 
@@ -495,74 +654,114 @@ Remove:
 
 Keep:
 
-- CRUD for project topics
+- CRUD for global topics
 - `projects_count` sorting
 - `for_onboarding` filter
 - `for_homepage_filter` filter
 
 ---
 
-### Phase 8: Update Following and Notifications
+### Phase 9: Update Following and Notifications
 
-#### 8.1 Project Published Notifications
+#### 9.1 Project Published Notifications
 
 **File**: `back/app/models/notifications/project_published.rb`
 
-No changes needed - already uses `project.topics` (project categorization topics through `projects_topics`).
+Update to use `global_topics`:
 
-#### 8.2 Followed Projects
+```ruby
+followers = Follower.where(followable: project.global_topics).or(Follower.where(followable: project.areas))
+```
+
+#### 9.2 Followed Projects
 
 **File**: `back/app/services/projects_finder_service.rb`
 
-No changes needed - already uses `projects_topics` for topic-based project following.
+Already updated in Phase 1.7 - uses `projects_global_topics` for topic-based project following.
 
 ---
 
-### Phase 9: Update Smart Groups
+### Phase 10: Update Smart Groups
 
-#### 9.1 ParticipatedInTopic Rule
+#### 10.1 ParticipatedInTopic Rule
 
 **File**: `back/engines/commercial/smart_groups/app/lib/smart_groups/rules/participated_in_topic.rb`
 
-This needs significant changes:
-
-- Should now reference `input_topics` for participation
-- Topic dropdown should list all `input_topics` across all projects
-- Consider prefixing with project name to disambiguate
+Update the `filter` method to use `InputTopic` instead of `Topic`:
 
 ```ruby
-def self.to_json_schema
-  # List all input_topics across all projects
-  topics = InputTopic.includes(:project).all
-  {
-    title_multiloc: {},
-    type: 'array',
-    uniqueItems: true,
-    items: {
-      type: 'string',
-      enum: topics.map(&:id),
-      enumNames: topics.map { |t| "#{t.project.title_multiloc.values.first}: #{t.title_multiloc.values.first}" }
-    }
-  }
+def filter(users_scope)
+  participants_service = ParticipantsService.new
+
+  case predicate
+  when 'in'
+    participants = participants_service.input_topics_participants(InputTopic.where(id: value))
+    users_scope.where(id: participants)
+  when 'not_in'
+    participants = participants_service.input_topics_participants(InputTopic.where(id: value))
+    users_scope.where.not(id: participants)
+  # ... similar for other predicates
+  end
 end
 
-def filter(users_scope)
-  # Update to use input_topics
-  ParticipantsService.new.input_topics_participants(input_topics)
+def description_value(locale)
+  if multivalue_predicate?
+    value.map do |v|
+      InputTopic.find(v).title_multiloc[locale]
+    end.join ', '
+  else
+    InputTopic.find(value).title_multiloc[locale]
+  end
+end
+
+private
+
+def value_in_topics
+  if multivalue_predicate?
+    errors.add(:value, :has_invalid_topic) unless (value - InputTopic.ids).empty?
+  else
+    errors.add(:value, :has_invalid_topic) unless InputTopic.ids.include?(value)
+  end
 end
 ```
 
-#### 9.2 Follow Rule
+**Note**: The JSON schema remains unchanged - it will be populated with InputTopic IDs after migration. Disambiguation (showing project name) will be handled in the frontend.
+
+#### 10.2 Follow Rule
 
 **File**: `back/engines/commercial/smart_groups/app/lib/smart_groups/rules/follow.rb`
 
-No changes needed - topic following is for project topics only.
+Update to reference `GlobalTopic`:
+
+```ruby
+def followable_type
+  case predicate
+  when 'is_one_of_topics', 'is_not_topic'
+    GlobalTopic
+  # ... other cases unchanged
+  end
+end
+```
+
+#### 10.3 Update ParticipantsService
+
+**File**: `back/app/services/participants_service.rb`
+
+Add new method for input topics:
+
+```ruby
+def input_topics_participants(input_topics, options = {})
+  ideas = Idea.joins(:ideas_input_topics)
+              .where(ideas_input_topics: { input_topic_id: input_topics.pluck(:id) })
+  ideas_participants(ideas, options)
+end
+```
 
 ---
 
-### Phase 10: Update Analysis Engine
+### Phase 11: Update Analysis Engine
 
-#### 10.1 PlatformTopic Auto-Tagging
+#### 11.1 PlatformTopic Auto-Tagging
 
 **File**: `back/engines/commercial/analysis/app/lib/analysis/auto_tagging_method/platform_topic.rb`
 
@@ -582,15 +781,15 @@ end
 
 ---
 
-### Phase 11: Update Public API
+### Phase 12: Update Public API
 
-#### 11.1 Update Topics Controller
+#### 12.1 Update Topics Controller
 
 **File**: `back/engines/commercial/public_api/app/controllers/public_api/v2/topics_controller.rb`
 
-Keep as project-level topics only.
+Rename to `GlobalTopicsController` and update to use `GlobalTopic` model.
 
-#### 11.2 Add InputTopics Controller
+#### 12.2 Add InputTopics Controller
 
 **File**: `back/engines/commercial/public_api/app/controllers/public_api/v2/input_topics_controller.rb`
 
@@ -599,33 +798,33 @@ New endpoint for input topics:
 - `GET /api/v2/input_topics` - list all input topics (filterable by project_id)
 - `GET /api/v2/input_topics/:id`
 
-#### 11.3 Update IdeaTopics Controller
+#### 12.3 Update IdeaTopics Controller
 
 **File**: `back/engines/commercial/public_api/app/controllers/public_api/v2/idea_topics_controller.rb`
 
-Rename to `IdeaInputTopicsController` or update to use `ideas_input_topics`.
+Rename to `IdeaInputTopicsController` and update to use `ideas_input_topics`.
 
-#### 11.4 Update Ideas Finder
+#### 12.4 Update Ideas Finder
 
 **File**: `back/engines/commercial/public_api/app/finders/public_api/ideas_finder.rb`
 
-Update `filter_by_topic_ids` to use `input_topic_ids`:
+Update `filter_by_topic_ids` to use `input_topics`:
 
 ```ruby
-def filter_by_input_topic_ids(scope)
-  return scope unless @input_topic_ids
+def filter_by_topic_ids(scope)
+  return scope unless @topic_ids
 
   scope
     .joins(:input_topics)
-    .where(input_topics: { id: @input_topic_ids })
+    .where(input_topics: { id: @topic_ids })
     .group('ideas.id')
-    .having('COUNT(input_topics.id) = ?', @input_topic_ids.size)
+    .having('COUNT(input_topics.id) = ?', @topic_ids.size)
 end
 ```
 
 ---
 
-### Phase 12: Data Migration Rake Task
+### Phase 13: Data Migration Rake Task
 
 **File**: `back/lib/tasks/single_use/migrate_topics_to_input_topics.rake`
 
@@ -636,8 +835,11 @@ namespace :topics do
     Tenant.safe_switch_each do |tenant|
       puts "Processing tenant: #{tenant.host}"
 
+      # Track mapping from old topic IDs to new input topic IDs (per project)
+      topic_to_input_topic_map = {}
+
       # Step 1: Create default_input_topics from topics marked as default
-      Topic.where(is_default: true).find_each do |topic|
+      GlobalTopic.where(is_default: true).order(:ordering).find_each do |topic|
         DefaultInputTopic.create!(
           title_multiloc: topic.title_multiloc,
           description_multiloc: topic.description_multiloc,
@@ -645,10 +847,11 @@ namespace :topics do
           ordering: topic.ordering
         )
       end
+      puts "  Created #{DefaultInputTopic.count} default input topics"
 
       # Step 2: For each project, create input_topics from projects_allowed_input_topics
       Project.find_each do |project|
-        project.projects_allowed_input_topics.order(:ordering).each do |pait|
+        project.projects_allowed_input_topics.includes(:topic).order(:ordering).each do |pait|
           topic = pait.topic
           input_topic = project.input_topics.create!(
             title_multiloc: topic.title_multiloc,
@@ -658,38 +861,105 @@ namespace :topics do
           )
 
           # Map old topic to new input_topic for ideas migration
-          @topic_to_input_topic_map ||= {}
-          @topic_to_input_topic_map[[project.id, topic.id]] = input_topic.id
+          topic_to_input_topic_map[[project.id, topic.id]] = input_topic.id
         end
       end
+      puts "  Created input topics for #{Project.count} projects"
 
       # Step 3: Migrate ideas_topics to ideas_input_topics
+      migrated_count = 0
+      warning_count = 0
       IdeasTopic.includes(:idea).find_each do |ideas_topic|
         project_id = ideas_topic.idea.project_id
-        input_topic_id = @topic_to_input_topic_map[[project_id, ideas_topic.topic_id]]
+        input_topic_id = topic_to_input_topic_map[[project_id, ideas_topic.topic_id]]
 
         if input_topic_id
           IdeasInputTopic.create!(
             idea_id: ideas_topic.idea_id,
             input_topic_id: input_topic_id
           )
+          migrated_count += 1
         else
-          puts "Warning: No input_topic mapping for idea #{ideas_topic.idea_id}, topic #{ideas_topic.topic_id}"
+          puts "  Warning: No input_topic mapping for idea #{ideas_topic.idea_id}, topic #{ideas_topic.topic_id}"
+          warning_count += 1
+        end
+      end
+      puts "  Migrated #{migrated_count} idea-topic associations (#{warning_count} warnings)"
+
+      # Step 4: Migrate smart group rules that reference topics
+      # Smart groups store topic IDs in their rules JSON
+      Group.where(membership_type: 'rules').find_each do |group|
+        next unless group.rules.present?
+
+        rules_updated = false
+        updated_rules = group.rules.map do |rule|
+          if rule['ruleType'] == 'participated_in_topic' && rule['value'].present?
+            # Map old topic IDs to new input topic IDs
+            # For participated_in_topic, we need to find ALL input topics that match
+            # since the same topic could exist in multiple projects
+            old_values = Array(rule['value'])
+            new_values = []
+
+            old_values.each do |old_topic_id|
+              # Find all input topics created from this topic
+              matching_input_topic_ids = topic_to_input_topic_map
+                .select { |(_, topic_id), _| topic_id == old_topic_id }
+                .values
+
+              if matching_input_topic_ids.any?
+                new_values.concat(matching_input_topic_ids)
+              else
+                puts "  Warning: Smart group #{group.id} references topic #{old_topic_id} with no input topic mapping"
+              end
+            end
+
+            if new_values.any?
+              rules_updated = true
+              rule.merge('value' => new_values.uniq)
+            else
+              rule # Keep original if no mapping found
+            end
+          elsif rule['ruleType'] == 'follow' && %w[is_one_of_topics is_not_topic].include?(rule['predicate'])
+            # Follow rules reference GlobalTopic - no change needed to IDs
+            # but we should verify the topics still exist
+            rule
+          else
+            rule
+          end
+        end
+
+        if rules_updated
+          group.update!(rules: updated_rules)
+          puts "  Updated smart group #{group.id} with new input topic IDs"
         end
       end
 
-      # Step 4: For topics used in both projects_topics AND projects_allowed_input_topics,
-      # they remain as project topics. No action needed.
+      # Step 5: Migrate analysis tags that reference platform topics
+      if defined?(Analysis::Tag)
+        Analysis::Tag.where(tag_type: 'platform_topic').find_each do |tag|
+          # The tag name is the topic title, so no ID migration needed
+          # But we may want to update the tag_type or add metadata
+          # This is informational - the analysis engine will need updates
+          puts "  Note: Analysis tag '#{tag.name}' may need review"
+        end
+      end
 
-      # Step 5: Clean up topics that were only used as input topics
-      # (not in projects_topics and not in static_pages_topics)
-      Topic.left_joins(:projects_topics, :static_pages_topics)
-           .where(projects_topics: { id: nil })
-           .where(static_pages_topics: { id: nil })
-           .where(include_in_onboarding: false)
-           .destroy_all
+      # Step 6: Clean up topics that were only used as input topics
+      # (not in projects_global_topics and not in static_pages_global_topics)
+      # Note: Do NOT delete topics that are followed or used in onboarding
+      orphaned_topics = GlobalTopic
+        .left_joins(:projects_global_topics, :static_pages_global_topics, :followers)
+        .where(projects_global_topics: { id: nil })
+        .where(static_pages_global_topics: { id: nil })
+        .where(followers: { id: nil })
+        .where(include_in_onboarding: false)
+
+      orphan_count = orphaned_topics.count
+      orphaned_topics.destroy_all
+      puts "  Removed #{orphan_count} orphaned global topics"
 
       puts "Completed migration for tenant: #{tenant.host}"
+      puts "---"
     end
   end
 end
@@ -697,11 +967,11 @@ end
 
 ---
 
-### Phase 13: Deprecate Old Tables (Post-Migration)
+### Phase 14: Deprecate Old Tables (Post-Migration)
 
 After successful migration and frontend updates:
 
-#### 13.1 Create Migration to Remove Old Tables
+#### 14.1 Create Migration to Remove Old Tables
 
 **File**: `back/db/migrate/XXXXXX_remove_deprecated_topic_tables.rb`
 
@@ -714,8 +984,8 @@ class RemoveDeprecatedTopicTables < ActiveRecord::Migration[7.1]
     # Remove the ideas_topics table
     drop_table :ideas_topics
 
-    # Remove is_default from topics table
-    remove_column :topics, :is_default, :boolean
+    # Remove is_default from global_topics table
+    remove_column :global_topics, :is_default, :boolean
   end
 end
 ```
@@ -739,17 +1009,27 @@ end
 | `PATCH /default_input_topics/:id`         | PATCH  | Update default input topic (admin) |
 | `DELETE /default_input_topics/:id`        | DELETE | Delete default input topic (admin) |
 
+### Renamed Endpoints
+
+| Old Endpoint         | New Endpoint                |
+| -------------------- | --------------------------- |
+| `GET /topics`        | `GET /global_topics`        |
+| `POST /topics`       | `POST /global_topics`       |
+| `PATCH /topics/:id`  | `PATCH /global_topics/:id`  |
+| `DELETE /topics/:id` | `DELETE /global_topics/:id` |
+
 ### Modified Endpoints
 
 | Endpoint                        | Changes                                                     |
 | ------------------------------- | ----------------------------------------------------------- |
-| `GET /topics`                   | Remove `ideas_count` sorting, remove `is_default` attribute |
-| `POST /topics`                  | Remove `is_default` parameter                               |
-| `GET /stats/ideas_by_topic`     | Project-scoped only, uses input_topics                      |
-| `GET /stats/comments_by_topic`  | Project-scoped only, uses input_topics                      |
-| `GET /stats/reactions_by_topic` | Project-scoped only, uses input_topics                      |
-| `POST /ideas`                   | Change `topic_ids` to `input_topic_ids`                     |
-| `PATCH /ideas/:id`              | Change `topic_ids` to `input_topic_ids`                     |
+| `GET /global_topics`            | Remove `ideas_count` sorting, remove `is_default` attribute |
+| `POST /global_topics`           | Remove `is_default` parameter                               |
+| `GET /stats/ideas_by_topic`     | **Requires** `project` param, uses input_topics             |
+| `GET /stats/comments_by_topic`  | **Requires** `project` param, uses input_topics             |
+| `GET /stats/reactions_by_topic` | **Requires** `project` param, uses input_topics             |
+| `POST /ideas`                   | `topic_ids` param now maps to input_topics                  |
+| `PATCH /ideas/:id`              | `topic_ids` param now maps to input_topics                  |
+| `GET /ideas/:id`                | `topic_ids` response now returns input_topic IDs            |
 
 ### Deprecated Endpoints
 
@@ -770,29 +1050,33 @@ end
 2. **DefaultInputTopic model tests** - validations, ordering
 3. **IdeasInputTopic model tests** - validations, uniqueness
 4. **Project#set_default_input_topics! tests** - copying behavior
+5. **GlobalTopic model tests** - updated associations
 
 ### Controller Tests
 
 1. **InputTopicsController** - CRUD, authorization, reordering
 2. **DefaultInputTopicsController** - admin-only access
-3. **StatsControllers** - updated grouping logic
+3. **GlobalTopicsController** - renamed from TopicsController
+4. **StatsControllers** - verify project_id is required, updated grouping logic
 
 ### Integration Tests
 
-1. **Idea submission with input topics**
+1. **Idea submission with input topics** (using `topic_ids` param)
 2. **Project creation with default input topics**
 3. **Smart groups with input topics**
+4. **Following global topics for project notifications**
 
 ### Migration Tests
 
 1. **Data migration rake task** - verify all data migrated correctly
-2. **Rollback testing** - ensure safe rollback if needed
+2. **Smart group rules migration** - verify topic IDs updated
+3. **Rollback testing** - ensure safe rollback if needed
 
 ---
 
 ## Rollout Plan
 
-1. **Phase 1**: Deploy new models and tables (backwards compatible)
+1. **Phase 1**: Deploy table rename and new models (backwards compatible)
 2. **Phase 2**: Deploy new API endpoints (InputTopics, DefaultInputTopics)
 3. **Phase 3**: Run data migration rake task
 4. **Phase 4**: Frontend updates to use new endpoints
@@ -803,13 +1087,14 @@ end
 
 ## Risks and Mitigations
 
-| Risk                            | Mitigation                                                |
-| ------------------------------- | --------------------------------------------------------- |
-| Data loss during migration      | Comprehensive backup before migration, dry-run testing    |
-| Breaking existing API consumers | Maintain old endpoints during transition period           |
-| Smart groups break              | Update rules before migration, test thoroughly            |
-| Stats dashboards break          | Update controllers before frontend, test with sample data |
-| Analysis engine breaks          | Update auto-tagging method, verify with existing analyses |
+| Risk                            | Mitigation                                                  |
+| ------------------------------- | ----------------------------------------------------------- |
+| Data loss during migration      | Comprehensive backup before migration, dry-run testing      |
+| Breaking existing API consumers | Maintain `topic_ids` param name for backwards compatibility |
+| Smart groups break              | Migrate rule data as part of rake task, test thoroughly     |
+| Polymorphic followers break     | Update `followable_type` in migration                       |
+| Stats dashboards break          | Update controllers before frontend, test with sample data   |
+| Analysis engine breaks          | Update auto-tagging method, verify with existing analyses   |
 
 ---
 
@@ -817,23 +1102,33 @@ end
 
 ### New Files
 
+- `back/db/migrate/XXXXXX_rename_topics_to_global_topics.rb`
 - `back/db/migrate/XXXXXX_create_input_topics.rb`
 - `back/db/migrate/XXXXXX_create_ideas_input_topics.rb`
 - `back/db/migrate/XXXXXX_create_default_input_topics.rb`
+- `back/app/models/global_topic.rb`
+- `back/app/models/projects_global_topic.rb`
+- `back/app/models/static_pages_global_topic.rb`
 - `back/app/models/input_topic.rb`
 - `back/app/models/ideas_input_topic.rb`
 - `back/app/models/default_input_topic.rb`
+- `back/app/controllers/web_api/v1/global_topics_controller.rb`
 - `back/app/controllers/web_api/v1/input_topics_controller.rb`
 - `back/app/controllers/web_api/v1/default_input_topics_controller.rb`
+- `back/app/serializers/web_api/v1/global_topic_serializer.rb`
 - `back/app/serializers/web_api/v1/input_topic_serializer.rb`
 - `back/app/serializers/web_api/v1/default_input_topic_serializer.rb`
+- `back/app/policies/global_topic_policy.rb`
 - `back/app/policies/input_topic_policy.rb`
 - `back/app/policies/default_input_topic_policy.rb`
+- `back/app/services/side_fx_global_topic_service.rb`
 - `back/app/services/side_fx_input_topic_service.rb`
 - `back/app/services/side_fx_default_input_topic_service.rb`
 - `back/lib/tasks/single_use/migrate_topics_to_input_topics.rake`
+- `back/spec/models/global_topic_spec.rb`
 - `back/spec/models/input_topic_spec.rb`
 - `back/spec/models/default_input_topic_spec.rb`
+- `back/spec/acceptance/global_topics_spec.rb`
 - `back/spec/acceptance/input_topics_spec.rb`
 - `back/spec/acceptance/default_input_topics_spec.rb`
 
@@ -842,22 +1137,35 @@ end
 - `back/config/routes.rb`
 - `back/app/models/project.rb`
 - `back/app/models/idea.rb`
-- `back/app/models/topic.rb`
-- `back/app/controllers/web_api/v1/topics_controller.rb`
+- `back/app/models/static_page.rb`
+- `back/app/models/follower.rb` (if needed for type references)
+- `back/app/controllers/web_api/v1/ideas_controller.rb`
+- `back/app/serializers/web_api/v1/idea_serializer.rb`
 - `back/app/controllers/web_api/v1/stats_ideas_controller.rb`
 - `back/app/controllers/web_api/v1/stats_comments_controller.rb`
 - `back/app/controllers/web_api/v1/stats_reactions_controller.rb`
+- `back/app/services/projects_finder_service.rb`
 - `back/app/services/participants_service.rb`
+- `back/app/models/notifications/project_published.rb`
 - `back/engines/commercial/smart_groups/app/lib/smart_groups/rules/participated_in_topic.rb`
+- `back/engines/commercial/smart_groups/app/lib/smart_groups/rules/follow.rb`
 - `back/engines/commercial/analysis/app/lib/analysis/auto_tagging_method/platform_topic.rb`
-- `back/engines/commercial/public_api/app/controllers/public_api/v2/ideas_controller.rb`
+- `back/engines/commercial/public_api/app/controllers/public_api/v2/topics_controller.rb`
+- `back/engines/commercial/public_api/app/controllers/public_api/v2/idea_topics_controller.rb`
 - `back/engines/commercial/public_api/app/finders/public_api/ideas_finder.rb`
 
 ### Files to Eventually Remove
 
+- `back/app/models/topic.rb`
+- `back/app/models/projects_topic.rb`
+- `back/app/models/static_pages_topic.rb`
 - `back/app/models/projects_allowed_input_topic.rb`
 - `back/app/models/ideas_topic.rb`
+- `back/app/controllers/web_api/v1/topics_controller.rb`
 - `back/app/controllers/web_api/v1/projects_allowed_input_topics_controller.rb`
+- `back/app/serializers/web_api/v1/topic_serializer.rb`
 - `back/app/serializers/web_api/v1/projects_allowed_input_topic_serializer.rb`
+- `back/app/policies/topic_policy.rb`
 - `back/app/policies/projects_allowed_input_topic_policy.rb`
+- `back/app/services/side_fx_topic_service.rb`
 - `back/app/services/side_fx_projects_allowed_input_topic_service.rb`
