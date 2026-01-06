@@ -1317,6 +1317,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Zatwierdź",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Zatwierdź wszystkie dane wejściowe",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autor:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Pobierz PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "Email:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Podczas importu wystąpiły błędy i niektóre dane wejściowe nie zostały zaimportowane. Popraw błędy i ponownie zaimportuj brakujące dane wejściowe.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Nieprawidłowe dane formularza. Sprawdź powyższy formularz pod kątem błędów.",
