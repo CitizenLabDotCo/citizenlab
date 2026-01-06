@@ -1,8 +1,9 @@
 import React, { useMemo } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, fontSizes, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
+import styled from 'styled-components';
 import { string, object } from 'yup';
 
 import { SSOProvider } from 'api/authentication/singleSignOn';
@@ -25,7 +26,12 @@ import { isValidEmail } from 'utils/validate';
 
 import sharedMessages from '../messages';
 
+import messages from './messages';
 import SSOButtons from './SSOButtons';
+
+const StyledA = styled.a`
+  font-size: ${fontSizes.base}px;
+`;
 
 interface Props {
   loading: boolean;
@@ -50,7 +56,7 @@ const EmailFlowStart = ({
   onSwitchToSSO,
   onEnterFranceConnect,
 }: Props) => {
-  const { passwordLoginEnabled, ssoProviders } = useAuthConfig();
+  const { passwordLoginEnabled, ssoProviders, azureSettings } = useAuthConfig();
 
   const { formatMessage } = useIntl();
 
@@ -134,6 +140,13 @@ const EmailFlowStart = ({
         </FormProvider>
       )}
       <SSOButtons onClickSSO={onSwitchToSSO} />
+      {azureSettings?.visibility === 'link' && (
+        <Box mt="24px">
+          <StyledA href="/sign-in/admin">
+            {formatMessage(messages.clickHereToLoginAsAdminOrPM)}
+          </StyledA>
+        </Box>
+      )}
     </Box>
   );
 };

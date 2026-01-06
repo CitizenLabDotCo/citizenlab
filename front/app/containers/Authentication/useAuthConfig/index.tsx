@@ -28,7 +28,8 @@ export default function useAuthConfig() {
 
   const facebook = useFeatureFlag({ name: 'facebook_login' });
 
-  const azureVisiblity = appConfigurationSettings?.azure_ad_login?.visibility;
+  const azureSettings = appConfigurationSettings?.azure_ad_login;
+  const azureVisiblity = azureSettings?.visibility;
   const azureIsVisible = ['show', undefined].includes(azureVisiblity);
 
   const azureAd =
@@ -106,5 +107,6 @@ export default function useAuthConfig() {
     passwordLoginEnabled,
     ssoProviders,
     anySSOProviderEnabled: Object.values(ssoProviders).some((v) => v),
+    azureSettings,
   };
 }
