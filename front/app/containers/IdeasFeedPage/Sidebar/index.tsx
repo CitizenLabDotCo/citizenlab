@@ -67,7 +67,6 @@ const Sidebar = () => {
     } else {
       removeSearchParams(['topic']);
     }
-    removeSearchParams(['centered_idea_id']);
   };
 
   const handleCloseIdea = () => {

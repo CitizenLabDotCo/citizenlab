@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useCallback, useEffect } from 'react';
+import React, { useMemo, useRef, useCallback, useState } from 'react';
 
 import {
   Box,
@@ -12,7 +12,6 @@ import styled from 'styled-components';
 
 import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
 
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import StickyNote, { NOTE_HEIGHTS } from './StickyNotes/StickyNote';
@@ -154,31 +153,21 @@ const IdeasFeed = ({ topicId }: Props) => {
 
   const virtualItems = getVirtualItems();
 
-  const centeredIdeaId =
-    searchParams.get('centered_idea_id') || orderedIdeas[0]?.id;
+  const [centeredIndex, setCenteredIndex] = useState(0);
 
-  // Clean up search params on mount
-
-  useEffect(() => {
-    updateSearchParams({ centered_idea_id: centeredIdeaId });
-  }, [centeredIdeaId]);
-
-  useEffect(() => removeSearchParams(['centered_idea_id']), []);
-
-  const centeredIndex = centeredIdeaId
-    ? orderedIdeas.findIndex((idea) => idea.id === centeredIdeaId)
-    : 0;
+  const centeredIdeaId = orderedIdeas[centeredIndex]?.id;
 
   const handleScroll = useCallback(
     (e: React.UIEvent<HTMLElement>) => {
       const scrollTop = e.currentTarget.scrollTop;
       const newIndex = Math.round(scrollTop / itemHeight);
 
-      if (newIndex >= 0 && newIndex < ideasLength) {
-        const newCenteredIdeaId = orderedIdeas[newIndex]?.id;
-        if (newCenteredIdeaId && newCenteredIdeaId !== centeredIdeaId) {
-          updateSearchParams({ centered_idea_id: newCenteredIdeaId });
-        }
+      if (
+        newIndex >= 0 &&
+        newIndex < ideasLength &&
+        newIndex !== centeredIndex
+      ) {
+        setCenteredIndex(newIndex);
       }
 
       // Fetch next page when reaching the end
@@ -196,8 +185,7 @@ const IdeasFeed = ({ topicId }: Props) => {
     [
       itemHeight,
       ideasLength,
-      orderedIdeas,
-      centeredIdeaId,
+      centeredIndex,
       virtualItems,
       hasNextPage,
       isFetchingNextPage,
