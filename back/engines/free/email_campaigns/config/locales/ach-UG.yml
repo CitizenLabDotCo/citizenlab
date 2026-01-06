@@ -259,6 +259,7 @@ ach:
       x_days_ago_by_author: 'crwdns5883853:0%{x}crwdnd5883853:0%{author}crwdne5883853:0'
     new_comment_for_admin:
       commented: 'crwdns5883855:0%{authorFirstName}crwdne5883855:0'
+      anonymous_user: crwdns5885025:0crwdne5885025:0
       cta_button: 'crwdns5883857:0%{authorFirstName}crwdne5883857:0'
       days_ago: 'crwdns5883859:0%{numberOfDays}crwdne5883859:0'
       event_description: 'crwdns5883861:0%{authorName}crwdne5883861:0'
