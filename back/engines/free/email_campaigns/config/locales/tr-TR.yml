@@ -259,6 +259,7 @@ tr:
       x_days_ago_by_author: '%{author} tarafından %{x} gün önce'
     new_comment_for_admin:
       commented: '%{authorFirstName} yorum yaptı:'
+      anonymous_user: Anonim kullanıcı
       cta_button: '%{authorFirstName}''un yorumunu görüntüleyin'
       days_ago: '%{numberOfDays} gün önce'
       event_description: '%{authorName} platformunuza yeni bir yorum ekledi.'

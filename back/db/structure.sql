@@ -2065,7 +2065,8 @@ CREATE TABLE public.app_configurations (
     settings jsonb DEFAULT '{}'::jsonb,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    style jsonb DEFAULT '{}'::jsonb
+    style jsonb DEFAULT '{}'::jsonb,
+    platform_start_at timestamp(6) without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -8154,6 +8155,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20251224101437'),
 ('20251217110845'),
 ('20251209135529'),
 ('20251208163107'),
