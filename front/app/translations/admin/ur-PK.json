@@ -62,6 +62,7 @@
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "فعال ہونے پر، تمام پروجیکٹ ایونٹس کا لنک نیویگیشن بار میں شامل کر دیا جائے گا۔",
   "app.components.AdminPage.SettingsPage.eventsSection": "واقعات",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "ہوم پیج حسب ضرورت سیکشن",
+  "app.components.AnonymousPostingToggle.anonymousParticipationAutoEnabled": "لاگ ان صارفین کے لیے گمنام پوسٹنگ خود بخود فعال ہو جاتی ہے جب پوسٹنگ کی ضرورت \"کوئی نہیں\" پر سیٹ ہو جاتی ہے (کوئی رجسٹریشن کی ضرورت نہیں)۔",
   "app.components.AnonymousPostingToggle.userAnonymity": "صارف کا نام ظاہر نہ کرنا",
   "app.components.AnonymousPostingToggle.userAnonymityLabelSubtext": "صارفین دوسرے صارفین، پروجیکٹ مینیجرز اور منتظمین سے اپنی شناخت چھپا سکیں گے۔ ان شراکتوں کو اب بھی معتدل کیا جا سکتا ہے۔",
   "app.components.AnonymousPostingToggle.userAnonymityLabelText": "صارفین کو گمنامی میں حصہ لینے کی اجازت دیں۔",
