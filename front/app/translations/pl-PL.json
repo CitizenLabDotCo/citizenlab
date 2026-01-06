@@ -1165,6 +1165,7 @@
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Konto z tym adresem e-mail już istnieje. Możesz się wylogować, zalogować przy użyciu tego adresu e-mail i zweryfikować swoje konto na stronie ustawień.",
   "app.containers.Authentication.steps.AccessDenied.close": "Zamknij",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Nie spełniasz wymagań, aby wziąć udział w tym procesie.",
+  "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Kliknij tutaj, aby zalogować się jako administrator lub kierownik projektu",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Proszę wprowadzić token",
   "app.containers.Authentication.steps.Invitation.token": "Token",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} jest już zajęte przez oczekujące zaproszenie. Sprawdź swoją wiadomość e-mail i kliknij łącze, aby zaakceptować zaproszenie. Jeśli nie możesz znaleźć wiadomości e-mail z zaproszeniem, kliknij poniższy przycisk, aby wysłać ją ponownie. Dotarcie wiadomości e-mail może zająć kilka minut.",
