@@ -1165,6 +1165,7 @@
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Ένας λογαριασμός με αυτό το email υπάρχει ήδη. Μπορείτε να αποσυνδεθείτε, να συνδεθείτε με αυτή τη διεύθυνση ηλεκτρονικού ταχυδρομείου και να επαληθεύσετε το λογαριασμό σας στη σελίδα ρυθμίσεων.",
   "app.containers.Authentication.steps.AccessDenied.close": "Κλείστε το",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Δεν πληροίτε τις προϋποθέσεις για να συμμετάσχετε σε αυτή τη διαδικασία.",
+  "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Κάντε κλικ εδώ για να συνδεθείτε ως διαχειριστής ή διαχειριστής έργου",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Παρακαλούμε εισάγετε ένα διακριτικό",
   "app.containers.Authentication.steps.Invitation.token": "Token",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} είναι ήδη κατειλημμένη από μια εκκρεμούσα πρόσκληση. Παρακαλούμε ελέγξτε το email σας και κάντε κλικ στο σύνδεσμο για να αποδεχτείτε την πρόσκληση. Αν δεν μπορείτε να βρείτε το email της πρόσκλησης, κάντε κλικ στο παρακάτω κουμπί για να το στείλετε ξανά. Το email ενδέχεται να χρειαστεί μερικά λεπτά για να φτάσει.",
