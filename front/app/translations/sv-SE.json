@@ -1165,6 +1165,7 @@
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Ett konto med den här e-postadressen finns redan. Du kan logga ut, logga in med den här e-postadressen och verifiera ditt konto på inställningssidan.",
   "app.containers.Authentication.steps.AccessDenied.close": "Nära",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Du uppfyller inte kraven för att delta i denna process.",
+  "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Klicka här för att logga in som administratör eller projektledare",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Ange en token",
   "app.containers.Authentication.steps.Invitation.token": "Token",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} är redan upptagen av en väntande inbjudan. Vänligen kontrollera din e-post och klicka på länken för att acceptera inbjudan. Om du inte hittar inbjudan kan du klicka på knappen nedan för att skicka den på nytt. Det kan ta några minuter innan mejlet kommer fram.",
