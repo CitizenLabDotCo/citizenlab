@@ -1391,6 +1391,7 @@
   "app.containers.IdeasFeedPage.backToProject": "العودة إلى المشروع",
   "app.containers.IdeasFeedPage.collapsePanel": "طي لوحة المواضيع",
   "app.containers.IdeasFeedPage.expandPanel": "توسيع لوحة المواضيع",
+  "app.containers.IdeasFeedPage.seeAllIdeas": "عرض جميع المدخلات {ideasCount}",
   "app.containers.IdeasFeedPage.topicsPanel": "لوحة المواضيع",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "تم نشر كافة المدخلات",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "استكشف جميع المُدخلات التي نُشرت على منصة {orgName} للمُشاركة. ",

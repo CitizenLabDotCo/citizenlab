@@ -1391,6 +1391,7 @@
   "app.containers.IdeasFeedPage.backToProject": "Retour au projet",
   "app.containers.IdeasFeedPage.collapsePanel": "Réduire le panel de thématiques",
   "app.containers.IdeasFeedPage.expandPanel": "Élargir le panel de thématiques",
+  "app.containers.IdeasFeedPage.seeAllIdeas": "Voir toutes les entrées {ideasCount}",
   "app.containers.IdeasFeedPage.topicsPanel": "Panel de thématiques",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Toutes les contributions postées",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Explorez toutes les contributions publiées sur la plate-forme de participation de {orgName}.",
