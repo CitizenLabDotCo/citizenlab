@@ -1165,6 +1165,7 @@
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Ya existe una cuenta con este correo electrónico. Puedes cerrar sesión, iniciar sesión con esta dirección de correo electrónico y verificar tu cuenta en la página de configuración.",
   "app.containers.Authentication.steps.AccessDenied.close": "Cerrar",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "No cumples con los requisitos para participar en este proceso.",
+  "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Haz clic aquí para iniciar sesión como administrador o jefe de proyecto",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Por favor, introduzca un token",
   "app.containers.Authentication.steps.Invitation.token": "Token",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} ya está ocupado por una invitación pendiente. Por favor, comprueba tu correo electrónico y haz clic en el enlace para aceptar la invitación. Si no encuentras el correo electrónico de invitación, haz clic en el botón de abajo para reenviarlo. El correo electrónico puede tardar unos minutos en llegar.",
