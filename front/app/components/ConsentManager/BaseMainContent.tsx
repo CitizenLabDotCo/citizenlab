@@ -23,14 +23,14 @@ const BaseMainContent = ({ id, children }: Props) => {
   const localize = useLocalize();
   const { data: appConfiguration } = useAppConfiguration();
   const siteName =
-    appConfiguration?.data.attributes.settings.core.organization_name;
+    appConfiguration?.data.attributes.settings.core.organization_name || null;
 
   return (
     <CookieModalContentContainer id={id}>
       <Icon name="cookie" fill={theme.colors.tenantPrimary} />
       <Title as="h1" variant={isSmallerThanPhone ? 'h4' : 'h3'}>
-        <FormattedMessage {...messages.cookieModalTitle} />-{' '}
-        {localize(siteName)}
+        <FormattedMessage {...messages.cookieModalTitle} />
+        {siteName && <> - {localize(siteName)}</>}
       </Title>
       {children}
     </CookieModalContentContainer>
