@@ -148,7 +148,7 @@ class WebApi::V1::UsersController < ApplicationController
           # to automatically send the confirmation code.
           # If they would already have a email_confirmation_code_reset_count > 0,
           # they tried to log in previously and failed. In this case, we don't
-          # automatically resend the code, because otherwise we 
+          # automatically resend the code, because otherwise we
           # might too easily reach the retry limit. So they will
           # have to request it themselves
           RequestConfirmationCodeJob.perform_now(@user)
