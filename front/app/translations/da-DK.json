@@ -1165,6 +1165,7 @@
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Der findes allerede en konto med denne e-mailadresse. Du kan logge ud, logge ind med denne e-mailadresse og bekræfte din konto på indstillingssiden.",
   "app.containers.Authentication.steps.AccessDenied.close": "Luk",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Du opfylder ikke kravene til at deltage i denne proces.",
+  "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Klik her for at logge ind som administrator eller projektleder",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Indtast venligst et token",
   "app.containers.Authentication.steps.Invitation.token": "Token",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} er allerede optaget af en ventende invitation. Tjek venligst din e-mail og klik på linket for at acceptere invitationen. Hvis du ikke kan finde invitationsmailen, skal du klikke på knappen nedenfor for at sende den igen. Det kan tage et par minutter, før e-mailen når frem.",
