@@ -10,9 +10,9 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
+import IdeasFeed from './IdeasFeed';
 import IdeasFeedPageMeta from './IdeasFeedPageMeta';
-import StickyNotesPile from './StickyNotes';
-import TopicsSidebar from './TopicsSidebar';
+import Sidebar from './Sidebar';
 
 const IdeasFeedPage = () => {
   const { slug } = useParams() as { slug: string };
@@ -66,12 +66,19 @@ const IdeasFeedPage = () => {
           overflow="auto"
           h="100vh"
         >
-          <TopicsSidebar
-            selectedTopicId={selectedTopicId}
-            onTopicSelect={setSelectedTopicId}
-          />
-          <Box flex="4">
-            <StickyNotesPile phaseId={phaseId} maxNotes={20} />
+          <Sidebar />
+          <Box flex="4" position="relative">
+            {/* General feed - always mounted to preserve scroll position */}
+            <Box visibility={selectedTopicId ? 'hidden' : 'visible'}>
+              <IdeasFeed topicId={null} />
+            </Box>
+
+            {/* Topic-specific feed - mounted only when topic is selected */}
+            {selectedTopicId && (
+              <Box position="absolute" top="0" left="0" right="0" bottom="0">
+                <IdeasFeed topicId={selectedTopicId} />
+              </Box>
+            )}
           </Box>
         </Box>
       </Box>
