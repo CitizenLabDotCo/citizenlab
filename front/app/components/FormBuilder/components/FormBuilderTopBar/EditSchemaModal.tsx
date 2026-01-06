@@ -122,7 +122,7 @@ const EditSchemaModal = ({
         phaseId: isFormPhaseSpecific ? phase.id : undefined,
         customFields: parsed,
         customForm: {
-          saveType: 'manual',
+          saveType: 'schema',
           fieldsLastUpdatedAt:
             customForm?.data.attributes.fields_last_updated_at,
         },
