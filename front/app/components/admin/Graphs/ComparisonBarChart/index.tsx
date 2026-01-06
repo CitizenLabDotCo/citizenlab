@@ -53,6 +53,8 @@ const ComparisonBarChart = <Row,>({
   innerRef,
   onMouseOver,
   onMouseOut,
+  ariaLabel,
+  ariaDescribedBy,
 }: Props<Row>) => {
   const noData = hasNoData(data);
 
@@ -73,6 +75,10 @@ const ComparisonBarChart = <Row,>({
       gap="8px"
       width={typeof width === 'number' ? `${width}px` : width}
       height={typeof height === 'number' ? `${height}px` : height}
+      role="img"
+      aria-label={ariaLabel}
+      aria-describedby={ariaDescribedBy}
+      tabIndex={0}
     >
       {chartData.map((payload: Payload<Row>) => {
         const fill = getBarFill(payload, mapping, primaryColor);

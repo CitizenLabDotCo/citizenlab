@@ -1,6 +1,14 @@
-import { KeyOfType, BaseProps, BaseMapping, CornerRadius } from '../typings';
+import {
+  KeyOfType,
+  BaseProps,
+  BaseMapping,
+  CornerRadius,
+  AccessibilityProps,
+} from '../typings';
 
-export interface Props<Row> extends BaseProps<Row, Payload<Row>> {
+export interface Props<Row>
+  extends BaseProps<Row, Payload<Row>>,
+    AccessibilityProps {
   mapping: Mapping<Row>;
   showComparison?: boolean;
   primaryColor?: string;

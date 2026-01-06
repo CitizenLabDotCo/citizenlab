@@ -259,6 +259,7 @@ pt:
       x_days_ago_by_author: '%{x} días atrás por %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} comentado:'
+      anonymous_user: Usuário anônimo
       cta_button: 'Veja o comentário de %{authorFirstName}'
       days_ago: '%{numberOfDays} dias atrás'
       event_description: '%{authorName} escreveu um comentário sobre a sua plataforma. Não hesite em juntar-se à discussão e mantenha a conversa ativa!'

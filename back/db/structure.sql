@@ -2065,7 +2065,8 @@ CREATE TABLE public.app_configurations (
     settings jsonb DEFAULT '{}'::jsonb,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    style jsonb DEFAULT '{}'::jsonb
+    style jsonb DEFAULT '{}'::jsonb,
+    platform_start_at timestamp(6) without time zone DEFAULT now() NOT NULL
 );
 
 
@@ -2753,7 +2754,8 @@ CREATE TABLE public.idea_import_files (
     num_pages integer DEFAULT 0,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    parent_id uuid
+    parent_id uuid,
+    parsed_value jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -8153,9 +8155,11 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20251203114945'),
+('20251224101437'),
+('20251217110845'),
 ('20251209135529'),
 ('20251208163107'),
+('20251203114945'),
 ('20251127085639'),
 ('20251124000000'),
 ('20251120113747'),

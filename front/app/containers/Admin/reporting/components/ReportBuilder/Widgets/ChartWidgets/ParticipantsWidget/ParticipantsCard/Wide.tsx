@@ -6,6 +6,7 @@ import moment from 'moment';
 import Chart from 'components/admin/GraphCards/ParticipantsCard/Chart';
 import { TimeSeries } from 'components/admin/GraphCards/ParticipantsCard/useParticipants/typings';
 import { DatesStrings } from 'components/admin/GraphCards/typings';
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 import { getDaysInRange } from '../../utils';
@@ -32,8 +33,15 @@ const Wide = ({
   timeSeries,
   stats,
   currentResolution,
-}: Props) => {
+  ariaLabel,
+  ariaDescribedBy,
+}: Props & AccessibilityProps) => {
   const previousDays = getDaysInRange(startAt, endAt);
+
+  const accessibilityProps = {
+    ariaLabel,
+    ariaDescribedBy,
+  };
 
   return (
     <Box
@@ -75,6 +83,7 @@ const Wide = ({
               ? { top: 0, right: -16, bottom: 0, left: 0 }
               : undefined
           }
+          {...accessibilityProps}
         />
       </Box>
     </Box>

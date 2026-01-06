@@ -4,7 +4,11 @@ import { Dates, Resolution } from 'components/admin/GraphCards/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import LineChart from 'components/admin/Graphs/LineChart';
 import { colors } from 'components/admin/Graphs/styling';
-import { Margin, YAxisProps } from 'components/admin/Graphs/typings';
+import {
+  AccessibilityProps,
+  Margin,
+  YAxisProps,
+} from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
 import { toThreeLetterMonth } from 'utils/dateUtils';
@@ -43,8 +47,10 @@ const Chart = ({
   innerRef,
   margin,
   yaxis,
+  ariaLabel,
+  ariaDescribedBy,
   showVisitors = false,
-}: Props) => {
+}: Props & AccessibilityProps) => {
   const { formatMessage } = useIntl();
 
   const emptyData = useMemo(
@@ -85,6 +91,10 @@ const Chart = ({
   }
 
   const noData = timeSeries === null;
+  const accessibilityProps = {
+    ariaLabel,
+    ariaDescribedBy,
+  };
 
   return (
     <LineChart
@@ -106,6 +116,7 @@ const Chart = ({
         items: legendItems,
       }}
       innerRef={noData ? undefined : innerRef}
+      {...accessibilityProps}
     />
   );
 };

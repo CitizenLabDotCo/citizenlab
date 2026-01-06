@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 
-import { Box, Title, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import { useDemographics } from 'api/graph_data_units';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
@@ -10,11 +10,13 @@ import useLocalize from 'hooks/useLocalize';
 import RScore from 'containers/Admin/projects/project/insights/demographics/RScore';
 
 import ComparisonBarChart from 'components/admin/Graphs/ComparisonBarChart';
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
 
 import Card from '../../_shared/Card';
 import NoData from '../../_shared/NoData';
+import { DescriptionText } from '../_shared/DescriptionText';
 import chartWidgetMessages from '../messages';
 
 import messages from './messages';
@@ -24,12 +26,14 @@ import { transformReportBuilderDemographics } from './utils';
 
 const DemographicsWidget = ({
   title,
+  ariaLabel,
+  description,
   projectId,
   startAt,
   endAt,
   customFieldId,
   groupId,
-}: Props) => {
+}: Props & AccessibilityProps) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
@@ -63,6 +67,16 @@ const DemographicsWidget = ({
   );
   const rScore = demographicsResponse?.data.attributes.r_score;
 
+  const descriptionId = `${React.useId()}-description`;
+  const accessibilityProps = {
+    ariaLabel: ariaLabel
+      ? localize(ariaLabel)
+      : title
+      ? localize(title)
+      : undefined,
+    ariaDescribedBy: description ? descriptionId : undefined,
+  };
+
   if (isLoading) return null;
 
   if (!demographicsResponse) {
@@ -93,16 +107,18 @@ const DemographicsWidget = ({
         primaryColor="#2f478a"
         comparisonColor={colors.teal300}
         barHeight={16}
+        {...accessibilityProps}
       />
     </Box>
   );
 
   return (
     <Card pagebreak className="e2e-demographics-widget">
-      <Title variant="h4" mt="1px" mb="16px">
-        {localize(title)}
-      </Title>
       {chartElement}
+      <DescriptionText
+        description={description}
+        descriptionId={descriptionId}
+      />
     </Card>
   );
 };
@@ -110,6 +126,8 @@ const DemographicsWidget = ({
 DemographicsWidget.craft = {
   props: {
     title: undefined,
+    ariaLabel: undefined,
+    description: undefined,
     projectId: undefined,
     startAt: undefined,
     endAt: null,
