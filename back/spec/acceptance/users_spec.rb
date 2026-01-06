@@ -112,18 +112,43 @@ resource 'Users' do
         end
 
         context 'when a user exists without a password and has email confirmed', document: false do
-          before do
-            @user = create(:user_no_password, email: 'test@test.com')
-            @user.confirm
+          context 'when the user has not requested any codes yet' do
+            before do
+              @user = create(:user_no_password, email: 'test@test.com')
+              @user.confirm
+
+              allow(RequestConfirmationCodeJob).to receive(:perform_now)
+            end
+
+            let(:email) { 'test@test.com' }
+
+            example_request 'Returns "confirm"' do
+              expect(@user.password_digest).to be_nil
+              expect(@user.confirmation_required?).to be true
+              assert_status 200
+              expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+              expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(@user)
+            end
           end
 
-          let(:email) { 'test@test.com' }
+          context 'when the user has already requested a code' do
+            before do
+              @user = create(:user_no_password, email: 'test@test.com')
+              @user.confirm
+              RequestConfirmationCodeJob.perform_now @user
 
-          example_request 'Returns "confirm"' do
-            expect(@user.password_digest).to be_nil
-            expect(@user.confirmation_required?).to be false
-            assert_status 200
-            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+              allow(RequestConfirmationCodeJob).to receive(:perform_now)
+            end
+
+            let(:email) { 'test@test.com' }
+
+            example_request 'Returns "confirm"' do
+              expect(@user.password_digest).to be_nil
+              expect(@user.confirmation_required?).to be true
+              assert_status 200
+              expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+              expect(RequestConfirmationCodeJob).not_to have_received(:perform_now).with(@user)
+            end
           end
         end
 
