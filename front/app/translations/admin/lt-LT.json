@@ -62,6 +62,7 @@
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "Įjungus šią funkciją, naršymo juostoje bus pridėta nuoroda į visus projekto įvykius.",
   "app.components.AdminPage.SettingsPage.eventsSection": "Renginiai",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Pagrindinis puslapis pritaikomas skyrius",
+  "app.components.AnonymousPostingToggle.anonymousParticipationAutoEnabled": "Anoniminis skelbimas prisijungusiems naudotojams įjungiamas automatiškai, kai skelbimo reikalavimas nustatytas į \"Nėra\" (registracija nereikalinga).",
   "app.components.AnonymousPostingToggle.userAnonymity": "Vartotojo anonimiškumas",
   "app.components.AnonymousPostingToggle.userAnonymityLabelSubtext": "Naudotojai galės paslėpti savo tapatybę nuo kitų naudotojų, projektų vadovų ir administratorių. Šie įnašai vis tiek gali būti moderuojami.",
   "app.components.AnonymousPostingToggle.userAnonymityLabelText": "leisti naudotojams dalyvauti anonimiškai",
