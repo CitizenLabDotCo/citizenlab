@@ -62,6 +62,7 @@
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "Cuando se activa, se añade un enlace a todos los eventos del proyecto en la barra de navegación.",
   "app.components.AdminPage.SettingsPage.eventsSection": "Eventos",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Sección personalizada de la página de inicio",
+  "app.components.AnonymousPostingToggle.anonymousParticipationAutoEnabled": "La publicación anónima para usuarios registrados se activa automáticamente cuando el requisito de publicación se establece en \"Ninguno\" (no es necesario registrarse).",
   "app.components.AnonymousPostingToggle.userAnonymity": "Anonimato del usuario",
   "app.components.AnonymousPostingToggle.userAnonymityLabelSubtext": "Los usuarios podrán ocultar su identidad a otros usuarios, a los moderadores del proyecto y a los administradores. Estas contribuciones pueden seguir siendo moderadas.",
   "app.components.AnonymousPostingToggle.userAnonymityLabelText": "Permitir a los usuarios participar de forma anónima",
