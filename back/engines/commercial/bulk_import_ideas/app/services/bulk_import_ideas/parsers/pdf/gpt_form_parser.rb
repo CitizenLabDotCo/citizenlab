@@ -49,6 +49,8 @@ module BulkImportIdeas::Parsers::Pdf
         Return the same array of JSON objects in the same order, but with an additional 'answer' attribute for each question, according to the following rules:
         - if the question is a text question, add an attribute answer with the extracted handwritten text as value.
         - if the question is of type select or multiselect then return an attribute answer as an array of the checked or ticked options' text values. If no options were checked, return an empty array.
+        - if the question is of type select, then the options may be in one or two columns with round checkboxes next to them. You should only look in the checkbox for whether the option has been checked.
+        - if the question is of type multiselect, then the options may be in one or two columns with square checkboxes next to them. You should only look in the checkbox for whether the option has been checked.
         - if the question is of type checkbox, return the answer as 'checked' if it has been checked.
         - if the question is of type linear_scale, rating or sentiment_linear_scale, return the answer as a number.
         - if the question is of type ranking, then there will be a number written in a box next to each option indicating its rank. Return the answer as an array of option texts ordered by their rank from lowest to highest. The written numbers will not be higher than the number of options.
