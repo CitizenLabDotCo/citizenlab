@@ -130,7 +130,7 @@ it:
     open_idea_phase_title: Fase attuale
     native_survey_title: Sondaggio
     native_survey_button: Partecipa al sondaggio
-    community_monitor_title: Monitoraggio della comunità
+    community_monitor_title: Barometro civico
   events:
     council_meeting_title: Riunione del Consiglio
     council_meeting_description: >
@@ -249,7 +249,7 @@ it:
   custom_field_options:
     gender:
       male: Uomo
-      female: Femmina
+      female: Donna
       unspecified: Altro
     domicile:
       outside: Da qualche altra parte
@@ -274,7 +274,7 @@ it:
       cost: 'Costo'
       created_at: 'Presentato a'
       description: 'Descrizione'
-      dislikes_count: 'Antipatie'
+      dislikes_count: 'Non mi piace'
       email: 'Email'
       first_name: 'Nome/i'
       image_url: 'URL immagine'
@@ -283,7 +283,7 @@ it:
       input_url: 'URL'
       last_name: 'Cognome'
       latitude: 'Latitudine'
-      likes_count: 'Preferiti'
+      likes_count: 'Mi piace'
       location: 'Posizione'
       longitude: 'Longitudine'
       neutral_reactions_count: 'Incerto'
