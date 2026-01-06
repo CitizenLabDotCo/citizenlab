@@ -1303,7 +1303,7 @@
   "app.containers.EventsShow.registrantsIconAltText": "Registranti",
   "app.containers.EventsShow.socialMediaSharingMessage": "Partecipa a questo evento: {eventTitle}",
   "app.containers.EventsShow.xParticipants": "{count, plural, one {# partecipante} other {# partecipanti}}",
-  "app.containers.EventsViewer.allTime": "Per tutto il tempo",
+  "app.containers.EventsViewer.allTime": "Tutti gli eventi",
   "app.containers.EventsViewer.date": "Data",
   "app.containers.EventsViewer.thisMonth2": "Il mese prossimo",
   "app.containers.EventsViewer.thisWeek2": "Settimana prossima",
