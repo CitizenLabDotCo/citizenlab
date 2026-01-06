@@ -62,6 +62,7 @@
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "Når denne funksjonen er aktivert, legges det til en lenke til alle prosjekthendelser i navigasjonsfeltet.",
   "app.components.AdminPage.SettingsPage.eventsSection": "Arrangementer",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Hjemmesiden kan tilpasses",
+  "app.components.AnonymousPostingToggle.anonymousParticipationAutoEnabled": "Anonym publisering for innloggede brukere aktiveres automatisk når kravet til publisering er satt til \"Ingen\" (ingen registrering er nødvendig).",
   "app.components.AnonymousPostingToggle.userAnonymity": "Anonymitet for brukerne",
   "app.components.AnonymousPostingToggle.userAnonymityLabelSubtext": "Brukere vil kunne skjule identiteten sin for andre brukere, prosjektledere og administratorer. Disse bidragene kan fortsatt modereres.",
   "app.components.AnonymousPostingToggle.userAnonymityLabelText": "Tillat brukere å delta anonymt",
