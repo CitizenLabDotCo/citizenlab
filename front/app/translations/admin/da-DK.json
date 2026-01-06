@@ -62,6 +62,7 @@
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "Når den er aktiveret, tilføjes et link til alle projektbegivenheder til navigationslinjen.",
   "app.components.AdminPage.SettingsPage.eventsSection": "Begivenheder",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Hjemmeside sektion, der kan tilpasses",
+  "app.components.AnonymousPostingToggle.anonymousParticipationAutoEnabled": "Anonymt opslag for indloggede brugere aktiveres automatisk, når opslagskravet er sat til \"Ingen\" (ingen registrering nødvendig).",
   "app.components.AnonymousPostingToggle.userAnonymity": "Brugernes anonymitet",
   "app.components.AnonymousPostingToggle.userAnonymityLabelSubtext": "Brugere vil kunne skjule deres identitet for andre brugere, projektmoderatorer og administratorer. Disse bidrag kan stadig blive modereret.",
   "app.components.AnonymousPostingToggle.userAnonymityLabelText": "Giv brugerne mulighed for at deltage anonymt",
