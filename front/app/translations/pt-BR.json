@@ -1165,6 +1165,7 @@
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Já existe uma conta com este e-mail. Você pode sair, fazer login com este endereço de e-mail e verificar sua conta na página de configurações.",
   "app.containers.Authentication.steps.AccessDenied.close": "Fechar",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Você não atende aos requisitos para participar desse processo.",
+  "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Clique aqui para fazer login como administrador ou gerente de projeto",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Introduzir um token",
   "app.containers.Authentication.steps.Invitation.token": "Ficha",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} já está ocupado por um convite pendente. Verifique seu e-mail e clique no link para aceitar o convite. Se você não conseguir encontrar o e-mail de convite, clique no botão abaixo para reenviá-lo. O e-mail pode demorar alguns minutos para chegar.",
