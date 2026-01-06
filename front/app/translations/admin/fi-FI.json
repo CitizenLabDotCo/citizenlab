@@ -1317,6 +1317,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Hyväksy",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Hyväksy kaikki syötteet",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Tekijä:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Lataa PDF-tiedosto",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "Sähköposti:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Tuonnin aikana tapahtui virheitä, ja joitain syötteitä ei ole tuotu. Korjaa virheet ja tuo puuttuvat syötteet uudelleen.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Virheelliset lomaketiedot. Tarkista yllä olevasta lomakkeesta virheitä.",
