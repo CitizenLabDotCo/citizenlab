@@ -213,12 +213,14 @@ const CustomFields = ({
   ideaId,
   phase,
   participationMethod,
+  showQuestionNumbers,
 }: {
   questions: IFlatCustomField[];
   projectId?: string;
   ideaId?: string;
   phase?: IPhaseData;
   participationMethod?: ParticipationMethod;
+  showQuestionNumbers?: boolean;
 }) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -226,7 +228,7 @@ const CustomFields = ({
     <>
       {questions
         .filter((question) => question.enabled)
-        .map((question) => {
+        .map((question, index) => {
           const labelProps = {
             htmlFor: question.key,
             labelValue: localize(question.title_multiloc),
@@ -241,6 +243,7 @@ const CustomFields = ({
               </QuillEditedContent>
             ),
             subtextSupportsHtml: true,
+            questionNumber: showQuestionNumbers ? index + 1 : undefined,
           };
 
           const answerNotPublic =
