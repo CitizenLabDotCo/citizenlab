@@ -62,6 +62,7 @@
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "When enabled, a link to all project events will be added to the navigation bar.",
   "app.components.AdminPage.SettingsPage.eventsSection": "Events",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Homepage customisable section",
+  "app.components.AnonymousPostingToggle.anonymousParticipationAutoEnabled": "Anonymous posting for logged-in users is automatically enabled when the posting requirement is set to \"None\" (no registration needed).",
   "app.components.AnonymousPostingToggle.userAnonymity": "User anonymity",
   "app.components.AnonymousPostingToggle.userAnonymityLabelSubtext": "Users name and email will be hidden from all other users, project managers and admins. You can still moderate contributions but demographic data will be anonymised and not recorded.",
   "app.components.AnonymousPostingToggle.userAnonymityLabelText": "Allow users to participate anonymously",
