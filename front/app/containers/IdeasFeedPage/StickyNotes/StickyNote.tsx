@@ -4,7 +4,6 @@ import {
   Box,
   Text,
   colors,
-  useBreakpoint,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -17,7 +16,14 @@ import useLocalize from 'hooks/useLocalize';
 import Avatar from 'components/Avatar';
 import T from 'components/T';
 
+export const NOTE_HEIGHTS = {
+  small: 350,
+  large: 500,
+};
+
 const StyledNote = styled(Box)`
+  padding: 20px;
+  width: 90%;
   border-radius: ${stylingConsts.borderRadius};
   transition: all 0.3s ease;
   text-align: left;
@@ -34,42 +40,28 @@ const BodyText = styled(Text)`
   -webkit-box-orient: vertical;
 `;
 
-type Size = 'small' | 'large';
-
 interface Props {
   ideaId: string;
   rotation?: number;
   topicBackgroundColor: string;
   onClick?: () => void;
-  size?: Size;
   centeredIdeaId?: string;
+  size?: 'small' | 'large';
 }
-
-type SizeStyles = { width: string; minHeight: string; padding: string };
-
-const sizeStylesMobile: Record<Size, SizeStyles> = {
-  small: { width: '200px', minHeight: '160px', padding: '8px' },
-  large: { width: '300px', minHeight: '400px', padding: '16px' },
-};
-
-const sizeStylesDesktop: Record<Size, SizeStyles> = {
-  small: { width: '250px', minHeight: '200px', padding: '12px' },
-  large: { width: '350px', minHeight: '100%', padding: '24px' },
-};
 
 const StickyNote: React.FC<Props> = ({
   ideaId,
   rotation = 0,
   topicBackgroundColor,
   onClick,
-  size = 'small',
   centeredIdeaId,
+  size = 'large',
 }) => {
   const isCentered = centeredIdeaId === ideaId;
+  const noteHeight = NOTE_HEIGHTS[size];
 
   const { data: idea } = useIdeaById(ideaId);
   const localize = useLocalize();
-  const isMobile = useBreakpoint('phone');
   const { mutate: addIdeaExposure } = useAddIdeaExposure();
 
   // Track idea exposure when sticky note becomes centered
@@ -78,10 +70,6 @@ const StickyNote: React.FC<Props> = ({
       addIdeaExposure({ ideaId });
     }
   }, [isCentered, ideaId, addIdeaExposure]);
-
-  const sizeStyles = isMobile
-    ? sizeStylesMobile[size]
-    : sizeStylesDesktop[size];
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' || event.key === ' ') {
@@ -102,10 +90,10 @@ const StickyNote: React.FC<Props> = ({
   return (
     <StyledNote
       as="button"
-      p={sizeStyles.padding}
       borderRadius="2px"
-      w={sizeStyles.width}
-      minHeight={sizeStyles.minHeight}
+      w="100%"
+      maxWidth="350px"
+      height={`${noteHeight}px`}
       transform={`rotate(${rotation}deg)`}
       background={topicBackgroundColor || colors.teal200}
       boxShadow="0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)"

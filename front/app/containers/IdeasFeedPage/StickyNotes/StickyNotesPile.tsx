@@ -31,41 +31,57 @@ const NoteWrapper = styled(Box)`
 
 const POSITIONS_DESKTOP = [
   { left: '5%', top: '2%' },
-  { left: '20%', top: '10%' },
-  { left: '37%', top: '5%' },
-  { left: '53%', top: '12%' },
-  { left: '68%', top: '8%' },
-  { left: '10%', top: '20%' },
-  { left: '25%', top: '26%' },
-  { left: '43%', top: '23%' },
-  { left: '58%', top: '28%' },
-  { left: '73%', top: '25%' },
-  { left: '7%', top: '36%' },
-  { left: '22%', top: '41%' },
-  { left: '40%', top: '38%' },
-  { left: '55%', top: '43%' },
-  { left: '70%', top: '40%' },
-  { left: '13%', top: '50%' },
-  { left: '28%', top: '55%' },
-  { left: '45%', top: '52%' },
-  { left: '60%', top: '57%' },
-  { left: '75%', top: '54%' },
-  { left: '15%', top: '64%' },
-  { left: '33%', top: '68%' },
-  { left: '50%', top: '66%' },
-  { left: '65%', top: '70%' },
-  { left: '9%', top: '47%' },
+  { left: '20%', top: '8%' },
+  { left: '37%', top: '3%' },
+  { left: '53%', top: '10%' },
+  { left: '68%', top: '5%' },
+  { left: '10%', top: '18%' },
+  { left: '25%', top: '22%' },
+  { left: '43%', top: '19%' },
+  { left: '58%', top: '24%' },
+  { left: '73%', top: '20%' },
+  { left: '7%', top: '32%' },
+  { left: '22%', top: '36%' },
+  { left: '40%', top: '33%' },
+  { left: '55%', top: '38%' },
+  { left: '70%', top: '35%' },
+  { left: '13%', top: '46%' },
+  { left: '28%', top: '50%' },
+  { left: '45%', top: '47%' },
+  { left: '60%', top: '52%' },
+  { left: '75%', top: '49%' },
+];
+
+const POSITIONS_TABLET = [
+  { left: '5%', top: '2%' },
+  { left: '38%', top: '8%' },
+  { left: '65%', top: '1%' },
+  { left: '12%', top: '19%' },
+  { left: '42%', top: '24%' },
+  { left: '70%', top: '16%' },
+  { left: '3%', top: '38%' },
+  { left: '32%', top: '42%' },
+  { left: '62%', top: '35%' },
+  { left: '8%', top: '55%' },
+  { left: '45%', top: '58%' },
+  { left: '68%', top: '52%' },
 ];
 
 const POSITIONS_MOBILE = [
-  { left: '2%', top: '1%' },
-  { left: '42%', top: '4%' },
-  { left: '5%', top: '14%' },
-  { left: '45%', top: '17%' },
-  { left: '2%', top: '30%' },
-  { left: '44%', top: '33%' },
-  { left: '4%', top: '46%' },
-  { left: '42%', top: '49%' },
+  { left: '5%', top: '1%' },
+  { left: '48%', top: '6%' },
+  { left: '2%', top: '16%' },
+  { left: '52%', top: '20%' },
+  { left: '8%', top: '33%' },
+  { left: '46%', top: '38%' },
+  { left: '3%', top: '50%' },
+  { left: '50%', top: '54%' },
+];
+
+// Slight rotations to give a natural scattered look
+const ROTATIONS = [
+  -3, 2, -1, 4, -2, 3, -4, 1, 2, -3, 1, -2, 3, -1, 4, -3, 2, -4, 1, -2, 3, -1,
+  2, -3, 4,
 ];
 
 interface Props {
@@ -75,6 +91,7 @@ interface Props {
 
 const StickyNotesPile = ({ phaseId, slug }: Props) => {
   const isMobile = useBreakpoint('phone');
+  const isTablet = useBreakpoint('tablet');
   const { data: phase } = usePhase(phaseId);
   const { data } = useInfiniteIdeaFeedIdeas({
     phaseId,
@@ -94,10 +111,18 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
     clHistory.push(`/projects/${slug}/ideas-feed?phase_id=${phaseId}`);
   };
 
-  const positions = isMobile ? POSITIONS_MOBILE : POSITIONS_DESKTOP;
-  const displayedIdeas = isMobile
-    ? flatIdeas?.slice(0, POSITIONS_MOBILE.length)
-    : flatIdeas;
+  const getPositionsConfig = () => {
+    if (isMobile) {
+      return { positions: POSITIONS_MOBILE, count: POSITIONS_MOBILE.length };
+    }
+    if (isTablet) {
+      return { positions: POSITIONS_TABLET, count: POSITIONS_TABLET.length };
+    }
+    return { positions: POSITIONS_DESKTOP, count: POSITIONS_DESKTOP.length };
+  };
+
+  const { positions, count } = getPositionsConfig();
+  const displayedIdeas = flatIdeas?.slice(0, count);
 
   return (
     <Box>
@@ -105,7 +130,7 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
         position="relative"
         width="100%"
         height="100%"
-        minHeight={isMobile ? '500px' : '750px'}
+        minHeight="800px"
       >
         {displayedIdeas?.map((idea, index) => {
           const topicIds =
@@ -123,6 +148,8 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
                 ideaId={idea.id}
                 topicBackgroundColor={topicBackgroundColor}
                 onClick={() => handleNoteClick(idea.id)}
+                size="small"
+                rotation={ROTATIONS[index % ROTATIONS.length]}
               />
             </NoteWrapper>
           );

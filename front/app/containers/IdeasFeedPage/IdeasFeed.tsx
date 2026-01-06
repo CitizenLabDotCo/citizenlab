@@ -12,13 +12,13 @@ import styled from 'styled-components';
 
 import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
 
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
-import StickyNote from './StickyNotes/StickyNote';
+import StickyNote, { NOTE_HEIGHTS } from './StickyNotes/StickyNote';
 import { getTopicColor } from './topicsColor';
 
-const PEEK_HEIGHT_MOBILE = 250;
-const PEEK_HEIGHT_DESKTOP = 400;
+const PEEK_HEIGHT = 150;
 
 const FeedContainer = styled(Box)`
   scroll-snap-type: y mandatory;
@@ -32,16 +32,42 @@ const FeedContainer = styled(Box)`
   scrollbar-width: none;
 `;
 
-const NoteContainer = styled(Box)<{ peekHeight: number; isCentered: boolean }>`
-  scroll-snap-align: center;
-  scroll-snap-stop: always;
+const NoteContainer = styled(Box)<{
+  peekHeight: number;
+  isCentered: boolean;
+  isPrevious: boolean;
+  isNext: boolean;
+  noteHeight: number;
+}>`
+  position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
   height: calc(100vh - ${({ peekHeight }) => peekHeight}px);
-  padding: 20px;
-  transform: scale(${({ isCentered }) => (isCentered ? 1.08 : 1)});
-  transition: transform 0.3s ease;
+  padding: 30px;
+
+  > * {
+    position: absolute;
+    top: ${({ isCentered, isPrevious, isNext, peekHeight, noteHeight }) => {
+      const containerHeight = `calc(100vh - ${peekHeight}px - 40px)`;
+      if (isCentered) {
+        return `calc((${containerHeight} - ${noteHeight}px) / 2)`;
+      }
+      if (isNext) {
+        return '0px';
+      }
+      if (isPrevious) {
+        return `calc(${containerHeight} - ${noteHeight}px)`;
+      }
+      return `calc((${containerHeight} - ${noteHeight}px) / 2)`;
+    }};
+    transform: scale(${({ isCentered }) => (isCentered ? 1.08 : 1)});
+    opacity: ${({ isCentered }) => (isCentered ? 1 : 0.5)};
+    pointer-events: ${({ isCentered }) => (isCentered ? 'auto' : 'none')};
+    transition: top 0.4s ease-out, transform 0.4s ease-out,
+      opacity 0.4s ease-out;
+  }
 `;
 
 const VirtualItem = styled.div<{ start: number; topOffset: number }>`
@@ -70,7 +96,8 @@ const IdeasFeed = ({ topicId }: Props) => {
     }
   }, []);
 
-  const peekHeight = isMobile ? PEEK_HEIGHT_MOBILE : PEEK_HEIGHT_DESKTOP;
+  const noteSize = isMobile ? 'small' : 'large';
+  const noteHeight = NOTE_HEIGHTS[noteSize];
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteIdeaFeedIdeas({
@@ -116,7 +143,7 @@ const IdeasFeed = ({ topicId }: Props) => {
 
   const ideasLength = orderedIdeas.length;
 
-  const itemHeight = window.innerHeight - peekHeight;
+  const itemHeight = window.innerHeight - PEEK_HEIGHT;
 
   const { getVirtualItems, getTotalSize, measureElement } = useVirtualizer({
     count: hasNextPage ? ideasLength + 1 : ideasLength,
@@ -130,10 +157,13 @@ const IdeasFeed = ({ topicId }: Props) => {
   const centeredIdeaId =
     searchParams.get('centered_idea_id') || orderedIdeas[0]?.id;
 
-  // Initialize centered_idea_id to the first idea if not set
+  // Clean up search params on mount
+
   useEffect(() => {
     updateSearchParams({ centered_idea_id: centeredIdeaId });
   }, [centeredIdeaId]);
+
+  useEffect(() => removeSearchParams(['centered_idea_id']), []);
 
   const centeredIndex = centeredIdeaId
     ? orderedIdeas.findIndex((idea) => idea.id === centeredIdeaId)
@@ -188,7 +218,7 @@ const IdeasFeed = ({ topicId }: Props) => {
   }
 
   // Add top padding so the first note is centered (half of peek height)
-  const topPadding = peekHeight / 2;
+  const topPadding = PEEK_HEIGHT / 2;
 
   return (
     <FeedContainer ref={parentRef} onScroll={handleScroll}>
@@ -210,7 +240,13 @@ const IdeasFeed = ({ topicId }: Props) => {
                 data-index={virtualRow.index}
                 ref={measureElement}
               >
-                <NoteContainer peekHeight={peekHeight} isCentered={false}>
+                <NoteContainer
+                  peekHeight={PEEK_HEIGHT}
+                  noteHeight={noteHeight}
+                  isCentered={false}
+                  isPrevious={false}
+                  isNext={false}
+                >
                   <Spinner />
                 </NoteContainer>
               </VirtualItem>
@@ -231,16 +267,19 @@ const IdeasFeed = ({ topicId }: Props) => {
               ref={measureElement}
             >
               <NoteContainer
-                peekHeight={peekHeight}
+                peekHeight={PEEK_HEIGHT}
+                noteHeight={noteHeight}
                 bgColor={colors.grey100}
                 isCentered={virtualRow.index === centeredIndex}
+                isPrevious={virtualRow.index < centeredIndex}
+                isNext={virtualRow.index > centeredIndex}
               >
                 <StickyNote
                   ideaId={idea.id}
                   topicBackgroundColor={topicBackgroundColor}
-                  size="large"
                   onClick={() => handleIdeaSelect(idea.id)}
                   centeredIdeaId={centeredIdeaId || undefined}
+                  size={noteSize}
                 />
               </NoteContainer>
             </VirtualItem>
