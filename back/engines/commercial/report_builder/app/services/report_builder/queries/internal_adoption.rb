@@ -10,18 +10,11 @@ module ReportBuilder
     )
       validate_resolution(resolution)
 
-      start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
-
+      start_date, end_date = parse_time_boundaries(start_at, end_at)
       response = get_period_data(start_date, end_date, resolution)
 
-      # Add comparison period data if requested
-      if compare_start_at && compare_end_at
-        compare_start_date, compare_end_date = TimeBoundariesParser.new(compare_start_at, compare_end_at).parse
-        compare_data = get_period_counts(compare_start_date, compare_end_date)
-
-        response[:active_admins_compared] = compare_data[:admins]
-        response[:active_moderators_compared] = compare_data[:moderators]
-        response[:total_registered_compared] = compare_data[:total_registered_count]
+      if comparison_requested?(compare_start_at, compare_end_at)
+        merge_comparison_data!(response, compare_start_at, compare_end_at)
       end
 
       response
@@ -29,69 +22,85 @@ module ReportBuilder
 
     private
 
+    def parse_time_boundaries(start_at, end_at)
+      TimeBoundariesParser.new(start_at, end_at).parse
+    end
+
+    def comparison_requested?(compare_start_at, compare_end_at)
+      compare_start_at && compare_end_at
+    end
+
+    def merge_comparison_data!(response, compare_start_at, compare_end_at)
+      compare_start_date, compare_end_date = parse_time_boundaries(compare_start_at, compare_end_at)
+      compare_data = get_period_counts(compare_start_date, compare_end_date)
+
+      response[:active_admins_compared] = compare_data[:admins]
+      response[:active_moderators_compared] = compare_data[:moderators]
+      response[:total_registered_compared] = compare_data[:total_registered_count]
+    end
+
     def get_period_data(start_date, end_date, resolution)
-      # Get total registered admins and moderators as of the end date
-      total_registered_count = get_total_registered_count(end_date)
-
-      # Single query with GROUPING SETS to get both timeseries and overall counts
-      results = ImpactTracking::Session
-        .where(created_at: start_date..end_date)
-        .select(
-          "date_trunc('#{resolution}', created_at) as date_group,
-           COUNT(DISTINCT CASE WHEN highest_role = 'admin' THEN user_id END) as admin_count,
-           COUNT(DISTINCT CASE WHEN highest_role = 'project_moderator' THEN user_id END) as moderator_count,
-           COUNT(DISTINCT CASE WHEN highest_role IN ('admin', 'project_moderator') THEN user_id END) as total_count"
-        )
-        .group("GROUPING SETS ((date_trunc('#{resolution}', created_at)), ())")
-        .order('date_group NULLS LAST')
-
-      # Build timeseries arrays and capture overall counts
-      admins_timeseries = []
-      moderators_timeseries = []
-      total_timeseries = []
-      overall_admin_count = 0
-      overall_moderator_count = 0
-
-      results.each do |row|
-        if row.date_group.nil?
-          # This is the overall totals row (from the empty grouping set)
-          overall_admin_count = row.admin_count
-          overall_moderator_count = row.moderator_count
-        else
-          # This is a timeseries data point
-          date_group = row.date_group.to_date
-          admins_timeseries << { count: row.admin_count, date_group: date_group }
-          moderators_timeseries << { count: row.moderator_count, date_group: date_group }
-          total_timeseries << { count: row.total_count, date_group: date_group }
-        end
-      end
+      results = query_sessions_with_timeseries(start_date, end_date, resolution)
+      admins_timeseries, moderators_timeseries, overall_counts = process_timeseries_results(results)
 
       {
-        active_admins_count: overall_admin_count,
-        active_moderators_count: overall_moderator_count,
-        total_registered_count: total_registered_count,
+        active_admins_count: overall_counts[:admin_count],
+        active_moderators_count: overall_counts[:moderator_count],
+        total_registered_count: get_total_registered_count(end_date),
         active_admins_timeseries: admins_timeseries,
-        active_moderators_timeseries: moderators_timeseries,
-        total_active_timeseries: total_timeseries
+        active_moderators_timeseries: moderators_timeseries
       }
     end
 
-    def get_period_counts(start_date, end_date)
-      total_registered_count = get_total_registered_count(end_date)
+    def query_sessions_with_timeseries(start_date, end_date, resolution)
+      ImpactTracking::Session
+        .where(created_at: start_date..end_date)
+        .select(
+          "date_trunc('#{resolution}', created_at) as date_group",
+          role_count_sql('admin', 'admin_count'),
+          role_count_sql('project_moderator', 'moderator_count')
+        )
+        .group("GROUPING SETS ((date_trunc('#{resolution}', created_at)), ())")
+        .order('date_group NULLS LAST')
+    end
 
+    def process_timeseries_results(results)
+      admins_timeseries = []
+      moderators_timeseries = []
+      overall_counts = { admin_count: 0, moderator_count: 0 }
+
+      results.each do |row|
+        if row.date_group.nil?
+          overall_counts[:admin_count] = row.admin_count
+          overall_counts[:moderator_count] = row.moderator_count
+        else
+          date_group = row.date_group.to_date
+          admins_timeseries << { count: row.admin_count, date_group: date_group }
+          moderators_timeseries << { count: row.moderator_count, date_group: date_group }
+        end
+      end
+
+      [admins_timeseries, moderators_timeseries, overall_counts]
+    end
+
+    def get_period_counts(start_date, end_date)
       counts = ImpactTracking::Session
         .where(created_at: start_date..end_date)
         .select(
-          "COUNT(DISTINCT CASE WHEN highest_role = 'admin' THEN user_id END) as admin_count,
-           COUNT(DISTINCT CASE WHEN highest_role = 'project_moderator' THEN user_id END) as moderator_count"
+          role_count_sql('admin', 'admin_count'),
+          role_count_sql('project_moderator', 'moderator_count')
         )
         .take
 
       {
         admins: counts.admin_count,
         moderators: counts.moderator_count,
-        total_registered_count: total_registered_count
+        total_registered_count: get_total_registered_count(end_date)
       }
+    end
+
+    def role_count_sql(role, alias_name)
+      "COUNT(DISTINCT CASE WHEN highest_role = '#{role}' THEN user_id END) as #{alias_name}"
     end
 
     def get_total_registered_count(end_date)

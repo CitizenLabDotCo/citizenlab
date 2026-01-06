@@ -57,10 +57,6 @@ RSpec.describe ReportBuilder::Queries::InternalAdoption do
         active_moderators_timeseries: [
           { count: 1, date_group: Date.new(2022, 9, 1) },
           { count: 0, date_group: Date.new(2022, 10, 1) }
-        ],
-        total_active_timeseries: [
-          { count: 3, date_group: Date.new(2022, 9, 1) },
-          { count: 1, date_group: Date.new(2022, 10, 1) }
         ]
       })
     end
@@ -86,8 +82,7 @@ RSpec.describe ReportBuilder::Queries::InternalAdoption do
         active_moderators_count: 0,       # No sessions in period
         total_registered_count: 2,        # Both registered before end_at
         active_admins_timeseries: [],
-        active_moderators_timeseries: [],
-        total_active_timeseries: []
+        active_moderators_timeseries: []
       })
     end
 
@@ -112,8 +107,7 @@ RSpec.describe ReportBuilder::Queries::InternalAdoption do
         active_moderators_count: 0,
         total_registered_count: 0,
         active_admins_timeseries: [],
-        active_moderators_timeseries: [],
-        total_active_timeseries: []
+        active_moderators_timeseries: []
       })
     end
 
@@ -156,9 +150,6 @@ RSpec.describe ReportBuilder::Queries::InternalAdoption do
         ],
         active_moderators_timeseries: [
           { count: 1, date_group: Date.new(2022, 9, 1) }
-        ],
-        total_active_timeseries: [
-          { count: 3, date_group: Date.new(2022, 9, 1) }
         ],
         # Comparison period (October)
         active_admins_compared: 1,
