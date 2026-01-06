@@ -62,6 +62,7 @@
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "crwdns209080:0crwdne209080:0",
   "app.components.AdminPage.SettingsPage.eventsSection": "crwdns209082:0crwdne209082:0",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "crwdns209084:0crwdne209084:0",
+  "app.components.AnonymousPostingToggle.anonymousParticipationAutoEnabled": "crwdns5870819:0crwdne5870819:0",
   "app.components.AnonymousPostingToggle.userAnonymity": "crwdns604483:0crwdne604483:0",
   "app.components.AnonymousPostingToggle.userAnonymityLabelSubtext": "crwdns2400470:0crwdne2400470:0",
   "app.components.AnonymousPostingToggle.userAnonymityLabelText": "crwdns604487:0crwdne604487:0",
