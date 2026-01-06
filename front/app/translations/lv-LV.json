@@ -1391,6 +1391,7 @@
   "app.containers.IdeasFeedPage.backToProject": "Atgriezties pie projekta",
   "app.containers.IdeasFeedPage.collapsePanel": "Tēmu paneļa sabrukšana",
   "app.containers.IdeasFeedPage.expandPanel": "Paplašināt tēmu paneli",
+  "app.containers.IdeasFeedPage.seeAllIdeas": "Skatīt visus {ideasCount} ievades",
   "app.containers.IdeasFeedPage.topicsPanel": "Tēmas panelis",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Visi publicētie ievades dati",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Izpētīt visu ieguldījumu, kas publicēts {orgName} līdzdalības platformā.",
