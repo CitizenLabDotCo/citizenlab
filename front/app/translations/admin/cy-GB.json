@@ -1317,6 +1317,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Cymeradwyo",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Cymeradwyo pob mewnbwn",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Awdur:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Lawrlwytho PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "E-bost:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Digwyddodd gwallau yn ystod y mewnforio ac nid yw rhai mewnbynnau wedi'u mewnforio. Cywirwch y gwallau ac ail-fewnforiwch unrhyw fewnbynnau coll.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Data ffurf annilys. Gwiriwch y ffurflen uchod am wallau.",
