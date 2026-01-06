@@ -1165,6 +1165,7 @@
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Un compte avec cette adresse e-mail existe déjà. Vous pouvez vous déconnecter, vous connecter avec cette adresse e-mail et vérifier votre compte sur la page \"Mes réglages\".",
   "app.containers.Authentication.steps.AccessDenied.close": "Fermer",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Vous ne remplissez pas les conditions requises pour participer à ce processus.",
+  "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Cliquez ici pour vous connecter en tant qu'administrateur ou chef de projet",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Veuillez saisir le code d'invitation",
   "app.containers.Authentication.steps.Invitation.token": "Code",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "L’adresse {email} est déjà utilisée pour une invitation en attente.\nVeuillez vérifier votre boîte e-mail et cliquer sur le lien pour accepter l’invitation. Si vous ne trouvez pas l’e-mail, cliquez sur le bouton ci-dessous pour renvoyer l’invitation. Elle peut mettre quelques minutes à arriver.",
