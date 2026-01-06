@@ -62,6 +62,7 @@
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "När det är aktiverat kommer en länk till alla projektevenemang att läggas till i navigeringsfältet.",
   "app.components.AdminPage.SettingsPage.eventsSection": "Evenemang",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Anpassningsbart avsnitt för startsidan",
+  "app.components.AnonymousPostingToggle.anonymousParticipationAutoEnabled": "Anonym publicering för inloggade användare aktiveras automatiskt när publiceringskravet är inställt på \"None\" (ingen registrering krävs).",
   "app.components.AnonymousPostingToggle.userAnonymity": "Användarens anonymitet",
   "app.components.AnonymousPostingToggle.userAnonymityLabelSubtext": "Användare kommer att kunna dölja sin identitet för andra användare, projektledare och administratörer. Dessa bidrag kan fortfarande modereras.",
   "app.components.AnonymousPostingToggle.userAnonymityLabelText": "Låt användarna delta anonymt.",
