@@ -6,10 +6,13 @@ import {
   IconTooltip,
   Text,
   Title,
+  Tooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+import { v4 as uuidv4 } from 'uuid';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
 import useCustomForm from 'api/custom_form/useCustomForm';
@@ -26,7 +29,7 @@ import messages from './messages';
 const CodeTextarea = styled.textarea`
   width: 100%;
   min-height: 400px;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Courier New', Courier, monospace !important;
   font-size: 12px;
   background-color: ${colors.grey100};
   border: 1px solid ${colors.borderLight};
@@ -68,6 +71,14 @@ const EditSchemaModal = ({
 
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const { data: customForm } = useCustomForm(phase);
+  const { data: appConfig } = useAppConfiguration();
+
+  const lifecycleStage =
+    appConfig?.data.attributes.settings.core.lifecycle_stage;
+  const hasResponses = phase.attributes.ideas_count > 0;
+  const isProduction = process.env.NODE_ENV === 'production';
+  const isSaveDisabled =
+    isProduction && lifecycleStage === 'active' && hasResponses;
 
   useEffect(() => {
     if (opened) {
@@ -80,29 +91,95 @@ const EditSchemaModal = ({
     }
   }, [opened, customFields]);
 
-  const clearIds = (obj: unknown): unknown => {
-    if (Array.isArray(obj)) {
-      return obj.map(clearIds);
-    }
-    if (obj && typeof obj === 'object') {
-      const result: Record<string, unknown> = {};
-      for (const [key, value] of Object.entries(obj)) {
-        if (key === 'id') {
-          result[key] = null;
-        } else {
-          result[key] = clearIds(value);
-        }
+  const replaceIdsWithNewUuids = (fields: unknown[]): unknown[] => {
+    const idMapping: Record<string, string> = {};
+
+    // First pass: collect all IDs and generate new UUIDs
+    const collectIds = (obj: unknown): void => {
+      if (Array.isArray(obj)) {
+        obj.forEach(collectIds);
+        return;
       }
-      return result;
-    }
-    return obj;
+      if (obj && typeof obj === 'object') {
+        const record = obj as Record<string, unknown>;
+        if (typeof record.id === 'string' && record.id) {
+          idMapping[record.id] = uuidv4();
+        }
+        Object.values(record).forEach(collectIds);
+      }
+    };
+    collectIds(fields);
+
+    // Second pass: replace IDs and update logic references
+    const replaceIds = (obj: unknown): unknown => {
+      if (Array.isArray(obj)) {
+        return obj.map(replaceIds);
+      }
+      if (obj && typeof obj === 'object') {
+        const record = obj as Record<string, unknown>;
+        const result: Record<string, unknown> = {};
+
+        for (const [key, value] of Object.entries(record)) {
+          if (key === 'id' && typeof value === 'string' && value) {
+            result[key] = idMapping[value] ?? null;
+          } else if (key === 'logic' && value && typeof value === 'object') {
+            // Update logic references
+            const logic = value as Record<string, unknown>;
+            const newLogic: Record<string, unknown> = {};
+
+            if (
+              logic.next_page_id &&
+              typeof logic.next_page_id === 'string' &&
+              idMapping[logic.next_page_id]
+            ) {
+              newLogic.next_page_id = idMapping[logic.next_page_id];
+            } else if (logic.next_page_id !== undefined) {
+              newLogic.next_page_id = logic.next_page_id;
+            }
+
+            if (Array.isArray(logic.rules)) {
+              newLogic.rules = logic.rules.map((rule) => {
+                const typedRule = rule as Record<string, unknown>;
+                const newRule: Record<string, unknown> = { ...typedRule };
+
+                // Update goto_page_id
+                if (
+                  typeof typedRule.goto_page_id === 'string' &&
+                  idMapping[typedRule.goto_page_id]
+                ) {
+                  newRule.goto_page_id = idMapping[typedRule.goto_page_id];
+                }
+
+                // Update 'if' field if it's an option ID (string)
+                if (
+                  typeof typedRule.if === 'string' &&
+                  idMapping[typedRule.if]
+                ) {
+                  newRule.if = idMapping[typedRule.if];
+                }
+
+                return newRule;
+              });
+            }
+
+            result[key] = newLogic;
+          } else {
+            result[key] = replaceIds(value);
+          }
+        }
+        return result;
+      }
+      return obj;
+    };
+
+    return replaceIds(fields) as unknown[];
   };
 
   const handleCopy = () => {
     try {
       const parsed = JSON.parse(jsonText);
-      const cleared = clearIds(parsed);
-      navigator.clipboard.writeText(JSON.stringify(cleared, null, 2));
+      const withNewIds = replaceIdsWithNewUuids(parsed);
+      navigator.clipboard.writeText(JSON.stringify(withNewIds, null, 2));
       setCopied(true);
       setTimeout(() => setCopied(false), 3000);
     } catch (e) {
@@ -180,13 +257,19 @@ const EditSchemaModal = ({
               />
             </Box>
           </Button>
-          <Button
-            buttonStyle="admin-dark"
-            onClick={handleSave}
-            processing={isSaving}
+          <Tooltip
+            disabled={!isSaveDisabled}
+            content={formatMessage(messages.saveDisabledActivePlatform)}
           >
-            <FormattedMessage {...messages.saveSchema} />
-          </Button>
+            <Button
+              buttonStyle="admin-dark"
+              onClick={handleSave}
+              processing={isSaving}
+              disabled={isSaveDisabled}
+            >
+              <FormattedMessage {...messages.saveSchema} />
+            </Button>
+          </Tooltip>
         </Box>
       </Box>
     </Modal>
