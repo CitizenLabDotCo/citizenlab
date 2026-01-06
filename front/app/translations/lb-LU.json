@@ -1165,6 +1165,7 @@
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "E Kont mat dëser E-Mail gëtt et schonn. Dir kënnt Iech ausloggen, Iech mat dëser E-Mailadress aloggen an Äre Kont op der Astellungssäit verifizéieren.",
   "app.containers.Authentication.steps.AccessDenied.close": "Zoumaachen",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Dir erfëllt net den Ufuerderunge fir un dësem Prozess deelzehuelen.",
+  "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Klickt hei fir Iech als Admin oder Projetmanager anzeloggen",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Gitt w.e.g. en Token un",
   "app.containers.Authentication.steps.Invitation.token": "Token",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} ass scho vun enger ausstehender Invitatioun besat. Kuckt w.e.g. Är E-Mail a klickt op de Link fir d'Invitatioun ze akzeptéieren. Wann Dir d'Invitatiouns-E-Mail net fannt, klickt op de Knäppchen hei ënnendrënner fir se nach eng Kéier ze schécken. Et kéint e puer Minutten daueren, bis d'E-Mail ukënnt.",
