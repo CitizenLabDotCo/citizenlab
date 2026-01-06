@@ -1165,6 +1165,7 @@
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "اس ای میل کے ساتھ ایک اکاؤنٹ پہلے سے موجود ہے۔ آپ سائن آؤٹ کر سکتے ہیں، اس ای میل ایڈریس کے ساتھ لاگ ان کر سکتے ہیں اور ترتیبات کے صفحہ پر اپنے اکاؤنٹ کی تصدیق کر سکتے ہیں۔",
   "app.containers.Authentication.steps.AccessDenied.close": "بند",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "آپ اس عمل میں حصہ لینے کی ضروریات کو پورا نہیں کرتے ہیں۔",
+  "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "ایڈمن یا پروجیکٹ مینیجر کے طور پر لاگ ان ہونے کے لیے یہاں کلک کریں۔",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "براہ کرم ایک ٹوکن درج کریں۔",
   "app.containers.Authentication.steps.Invitation.token": "ٹوکن",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} پہلے ہی زیر التواء دعوت نامے کے ذریعے لیا جا چکا ہے۔ براہ کرم اپنا ای میل چیک کریں اور دعوت نامہ قبول کرنے کے لیے لنک پر کلک کریں۔ اگر آپ کو دعوت نامہ نہیں ملتا ہے تو اسے دوبارہ بھیجنے کے لیے نیچے دیئے گئے بٹن پر کلک کریں۔ ای میل کو پہنچنے میں چند منٹ لگ سکتے ہیں۔",
