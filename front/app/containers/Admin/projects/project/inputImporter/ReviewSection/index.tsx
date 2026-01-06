@@ -89,6 +89,8 @@ const ReviewSection = ({
     });
   };
 
+  const importType = ideaMetadata?.data.attributes.import_type;
+
   const handleApproveAll = () => {
     approveIdeas(phaseId, {
       onSuccess: (data) => {
@@ -226,14 +228,14 @@ const ReviewSection = ({
           <IdeaEditor ideaId={ideaId} setIdeaId={setIdeaId} />
         </Box>
         <Box w="40%">
-          {ideaMetadata && ideaId && (
+          {ideaMetadata && ideaId && importType === 'pdf' && (
             <PDFViewer
               file={ideaMetadata.data.attributes.file.url}
               ideaId={ideaId}
             />
           )}
-          {ideaMetadata?.data.attributes.import_type === 'xlsx' && (
-            <Box w="100%" h="100%" m="10px">
+          {importType === 'xlsx' && (
+            <Box w="100%" h="100%" m="16px">
               <Text>
                 <FormattedMessage {...messages.pdfNotAvailable} />
               </Text>
