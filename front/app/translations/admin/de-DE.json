@@ -62,6 +62,7 @@
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "Wenn diese Option aktiviert ist, wird ein Link zu allen Projektereignissen in der Navigationsleiste hinzugefügt.",
   "app.components.AdminPage.SettingsPage.eventsSection": "Veranstaltungen",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Startseite anpassbarer Bereich",
+  "app.components.AnonymousPostingToggle.anonymousParticipationAutoEnabled": "Anonymes Posten für angemeldete Benutzer wird automatisch aktiviert, wenn die Posting-Anforderung auf \"Keine\" (keine Registrierung erforderlich) eingestellt ist.",
   "app.components.AnonymousPostingToggle.userAnonymity": "Anonyme Beteiligung",
   "app.components.AnonymousPostingToggle.userAnonymityLabelSubtext": "Nutzer*innen können ihre Identität vor anderen Nutzer*innen, Projektmanager*innen und Admins verbergen. Diese Beiträge können weiterhin moderiert werden.",
   "app.components.AnonymousPostingToggle.userAnonymityLabelText": "Ermöglichen Sie Nutzer*innen die anonyme Teilnahme",
