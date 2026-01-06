@@ -41,14 +41,14 @@ const PDFViewer = ({ file, ideaId }: Props) => {
       >
         <Document file={fileWithHeaders} onLoadSuccess={handleLoadSuccess}>
           {pagesInDocument &&
-            Array.from({ length: pagesInDocument }, (_, i) => (
+            [...Array(pagesInDocument)].map((_, pageIndex) => (
               <Box
-                key={i + 1}
+                key={pageIndex}
                 mb="12px"
                 border={`1px ${colors.grey400} solid`}
                 display="inline-block"
               >
-                <Page key={i + 1} pageNumber={i + 1} />
+                <Page key={pageIndex} pageNumber={pageIndex + 1} />
               </Box>
             ))}
         </Document>
