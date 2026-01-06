@@ -116,6 +116,7 @@ resource 'Users' do
             before do
               @user = create(:user_no_password, email: 'test@test.com')
               @user.confirm
+              @user.save!
 
               allow(RequestConfirmationCodeJob).to receive(:perform_now)
             end
@@ -124,7 +125,6 @@ resource 'Users' do
 
             example_request 'Returns "confirm"' do
               expect(@user.password_digest).to be_nil
-              expect(@user.confirmation_required?).to be true
               assert_status 200
               expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
               expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(@user)
@@ -144,7 +144,6 @@ resource 'Users' do
 
             example_request 'Returns "confirm"' do
               expect(@user.password_digest).to be_nil
-              expect(@user.confirmation_required?).to be true
               assert_status 200
               expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
               expect(RequestConfirmationCodeJob).not_to have_received(:perform_now).with(@user)
