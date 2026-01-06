@@ -1317,6 +1317,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Aprovar",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Aprovar todas as entradas",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autor:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Baixar PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "E-mail:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Ocorreram erros durante a importação e alguns insumos não foram importados. Corrija os erros e importe novamente os insumos ausentes.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Dados de formulário inválidos. Verifique se há erros no formulário acima.",
