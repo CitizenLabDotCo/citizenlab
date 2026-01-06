@@ -62,6 +62,7 @@
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "ਜਦੋਂ ਚਾਲੂ ਕੀਤਾ ਜਾਂਦਾ ਹੈ, ਤਾਂ ਸਾਰੇ ਪ੍ਰੋਜੈਕਟ ਇਵੈਂਟਾਂ ਦਾ ਇੱਕ ਲਿੰਕ ਨੈਵੀਗੇਸ਼ਨ ਬਾਰ ਵਿੱਚ ਜੋੜਿਆ ਜਾਵੇਗਾ।",
   "app.components.AdminPage.SettingsPage.eventsSection": "ਸਮਾਗਮ",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "ਹੋਮਪੇਜ ਅਨੁਕੂਲਿਤ ਸੈਕਸ਼ਨ",
+  "app.components.AnonymousPostingToggle.anonymousParticipationAutoEnabled": "ਜਦੋਂ ਪੋਸਟਿੰਗ ਦੀ ਲੋੜ \"ਕੋਈ ਨਹੀਂ\" (ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਦੀ ਲੋੜ ਨਹੀਂ) 'ਤੇ ਸੈੱਟ ਕੀਤੀ ਜਾਂਦੀ ਹੈ ਤਾਂ ਲੌਗਇਨ ਕੀਤੇ ਉਪਭੋਗਤਾਵਾਂ ਲਈ ਅਗਿਆਤ ਪੋਸਟਿੰਗ ਆਪਣੇ ਆਪ ਹੀ ਸਮਰੱਥ ਹੋ ਜਾਂਦੀ ਹੈ।",
   "app.components.AnonymousPostingToggle.userAnonymity": "ਉਪਭੋਗਤਾ ਦੀ ਅਗਿਆਤਤਾ",
   "app.components.AnonymousPostingToggle.userAnonymityLabelSubtext": "ਉਪਭੋਗਤਾ ਆਪਣੀ ਪਛਾਣ ਦੂਜੇ ਉਪਭੋਗਤਾਵਾਂ, ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰਾਂ ਅਤੇ ਪ੍ਰਸ਼ਾਸਕਾਂ ਤੋਂ ਲੁਕਾਉਣ ਦੇ ਯੋਗ ਹੋਣਗੇ। ਇਹ ਯੋਗਦਾਨ ਅਜੇ ਵੀ ਸੰਚਾਲਿਤ ਕੀਤਾ ਜਾ ਸਕਦਾ ਹੈ।",
   "app.components.AnonymousPostingToggle.userAnonymityLabelText": "ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਅਗਿਆਤ ਰੂਪ ਵਿੱਚ ਹਿੱਸਾ ਲੈਣ ਦੀ ਆਗਿਆ ਦਿਓ",
