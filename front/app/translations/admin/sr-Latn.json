@@ -62,6 +62,7 @@
   "app.components.AdminPage.SettingsPage.eventsPageSettingDescription": "Kada je omogućeno, veza do svih projektnih događaja biće dodata na traku za navigaciju.",
   "app.components.AdminPage.SettingsPage.eventsSection": "Događaji",
   "app.components.AdminPage.SettingsPage.homePageCustomizableSection": "Prilagođena sekcija početne stranice",
+  "app.components.AnonymousPostingToggle.anonymousParticipationAutoEnabled": "Anonymous posting for logged-in users is automatically enabled when the posting requirement is set to \"None\" (no registration needed).",
   "app.components.AnonymousPostingToggle.userAnonymity": "Анонимност корисника",
   "app.components.AnonymousPostingToggle.userAnonymityLabelSubtext": "Users will be able to hide their identity from other users, project managers and admins. These contributions can still be moderated.",
   "app.components.AnonymousPostingToggle.userAnonymityLabelText": "Дозволите корисницима да учествују анонимно",
