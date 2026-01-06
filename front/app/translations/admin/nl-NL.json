@@ -1317,6 +1317,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Goedkeuren",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Alle bijdragen goedkeuren",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Auteur:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Downloaden PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "E-mail:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Er zijn fouten opgetreden tijdens het importeren en sommige bijdragen zijn niet geïmporteerd. Corrigeer de fouten en importeer de ontbrekende bijdragen opnieuw.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Ongeldige formuliergegevens. Controleer het formulier hierboven op fouten.",

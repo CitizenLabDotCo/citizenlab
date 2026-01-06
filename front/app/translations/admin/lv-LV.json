@@ -1317,6 +1317,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Apstiprināt",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Apstiprināt visus ievades datus",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autors:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Lejupielādēt PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "E-pasts:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Importa laikā ir radušās kļūdas, un daži ievades dati nav importēti. Lūdzu, izlabojiet kļūdas un atkārtoti importējiet trūkstošos ievades datus.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Nederīgi veidlapas dati. Pārbaudiet, vai iepriekš norādītajā veidlapā nav kļūdu.",

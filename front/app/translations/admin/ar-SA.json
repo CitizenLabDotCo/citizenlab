@@ -1317,6 +1317,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "يعتمد",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "الموافقة على كافة المدخلات",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "مؤلف:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "تنزيل ملف PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "بريد إلكتروني:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "حدثت أخطاء أثناء الاستيراد ولم يتم استيراد بعض المدخلات. الرجاء تصحيح الأخطاء وإعادة استيراد أي مدخلات مفقودة.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "بيانات النموذج غير صالحة. تحقق من النموذج أعلاه بحثًا عن الأخطاء.",

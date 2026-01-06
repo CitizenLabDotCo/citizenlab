@@ -1317,6 +1317,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Patvirtinti",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Patvirtinti visus įvesties duomenis",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autorius:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Atsisiųsti PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "El. paštas:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Importuojant įvyko klaidų ir kai kurie įvesties duomenys nebuvo importuoti. Ištaisykite klaidas ir iš naujo importuokite trūkstamus įvesties duomenis.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Netinkami formos duomenys. Patikrinkite, ar pirmiau pateiktoje formoje nėra klaidų.",

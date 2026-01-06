@@ -1317,6 +1317,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "منظور کرو",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "تمام ان پٹس کو منظور کریں۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "مصنف:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "پی ڈی ایف ڈاؤن لوڈ کریں۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "ای میل:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "درآمد کے دوران غلطیاں ہوئیں اور کچھ ان پٹ درآمد نہیں ہوئے ہیں۔ براہ کرم غلطیوں کو درست کریں اور کوئی گمشدہ ان پٹ دوبارہ درآمد کریں۔",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "غلط فارم ڈیٹا۔ غلطیوں کے لیے اوپر کا فارم چیک کریں۔",

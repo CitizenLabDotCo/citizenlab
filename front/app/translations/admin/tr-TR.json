@@ -1317,6 +1317,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Onaylamak",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Tüm girdileri onaylayın",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Yazar:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "İndir PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "E-posta:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "İçe aktarma sırasında hatalar oluştu ve bazı girdiler içe aktarılmadı. Lütfen hataları düzeltin ve eksik girdileri yeniden içe aktarın.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Geçersiz form verileri. Yukarıdaki formda hata olup olmadığını kontrol edin.",

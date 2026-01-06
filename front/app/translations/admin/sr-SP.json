@@ -1317,6 +1317,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Одобре",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Approve all inputs",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Аутор:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Download PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "Емаил:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Errors occurred during the import and some inputs have not imported. Please correct the errors and re-import any missing inputs.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Неважећи подаци обрасца. Проверите да ли постоје грешке у формулару изнад.",
