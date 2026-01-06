@@ -135,6 +135,8 @@ resource 'Users' do
             before do
               @user = create(:user_no_password, email: 'test@test.com')
               @user.confirm
+              @user.save!
+
               RequestConfirmationCodeJob.perform_now @user
 
               allow(RequestConfirmationCodeJob).to receive(:perform_now)
