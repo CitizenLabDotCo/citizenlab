@@ -1317,6 +1317,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Odobriti",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Odobrite sve unose",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autor:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Preuzmi PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "Email:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Došlo je do pogrešaka tijekom uvoza i neki unosi nisu uvezeni. Ispravite pogreške i ponovno uvezite unose koji nedostaju.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Nevažeći podaci obrasca. Provjerite gornji obrazac za pogreške.",
