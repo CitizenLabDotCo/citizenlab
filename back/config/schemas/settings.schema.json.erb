@@ -1573,6 +1573,18 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "ideation_accountless_posting": {
+        "type": "object",
+        "title": "Account-less posting for ideation and proposals",
+        "description": "Allow admins to enable account-less posting for ideation and proposals phases.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {
