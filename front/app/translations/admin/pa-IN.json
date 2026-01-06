@@ -1317,6 +1317,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "ਮਨਜ਼ੂਰ ਕਰੋ",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "ਸਾਰੇ ਇਨਪੁਟਸ ਨੂੰ ਮਨਜ਼ੂਰੀ ਦਿਓ",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "ਲੇਖਕ:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "PDF ਡਾਊਨਲੋਡ ਕਰੋ",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "ਈਮੇਲ:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "ਆਯਾਤ ਦੌਰਾਨ ਤਰੁੱਟੀਆਂ ਆਈਆਂ ਅਤੇ ਕੁਝ ਇਨਪੁਟਸ ਆਯਾਤ ਨਹੀਂ ਕੀਤੇ ਗਏ ਹਨ। ਕਿਰਪਾ ਕਰਕੇ ਗਲਤੀਆਂ ਨੂੰ ਠੀਕ ਕਰੋ ਅਤੇ ਕਿਸੇ ਵੀ ਗੁੰਮ ਇਨਪੁਟਸ ਨੂੰ ਮੁੜ-ਆਯਾਤ ਕਰੋ।",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "ਅਵੈਧ ਫਾਰਮ ਡੇਟਾ। ਗਲਤੀਆਂ ਲਈ ਉਪਰੋਕਤ ਫਾਰਮ ਦੀ ਜਾਂਚ ਕਰੋ।",
