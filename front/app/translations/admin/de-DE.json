@@ -1317,6 +1317,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Freigeben",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Alle Beiträge freigeben",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Autor*in:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "PDF herunterladen",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "E-Mail-Adresse:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Während des Imports sind Fehler aufgetreten und einige Beiträge wurden nicht importiert. Bitte beheben Sie die Fehler und importieren Sie die fehlenden Beiträge erneut.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Ungültige Formulardaten. Überprüfen Sie das Formular oben auf Fehler.",
