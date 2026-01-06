@@ -1317,6 +1317,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": "Godkjenne",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs": "Godkjenn alle innspill",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": "Forfatter:",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf": "Last ned PDF",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.email": "E-post:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.errorImportingLabel": "Det oppstod feil under importen, og noen inndata er ikke importert. Korriger feilene, og importer eventuelle manglende inndata på nytt.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.formDataNotValid": "Ugyldige skjemadata. Sjekk om det er feil i skjemaet ovenfor.",
