@@ -28,11 +28,12 @@ export default function useAuthConfig() {
 
   const facebook = useFeatureFlag({ name: 'facebook_login' });
 
+  const azureVisiblity = appConfigurationSettings?.azure_ad_login?.visibility;
+  const azureIsVisible = ['show', undefined].includes(azureVisiblity);
+
   const azureAd =
     useFeatureFlag({ name: 'azure_ad_login' }) &&
-    ((appConfigurationSettings?.azure_ad_login?.visibility !== 'link' &&
-      appConfigurationSettings?.azure_ad_login?.visibility !== 'hide') ||
-      showAdminOnlyMethods);
+    (azureIsVisible || showAdminOnlyMethods);
 
   const azureAdB2c = useFeatureFlag({
     name: 'azure_ad_b2c_login',
