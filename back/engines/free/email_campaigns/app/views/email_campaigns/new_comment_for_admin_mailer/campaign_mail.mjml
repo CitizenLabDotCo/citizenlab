@@ -25,7 +25,7 @@
   <mj-column border-radius="5px" background-color="#F2F6F8" padding="25px">
     <mj-text font-size="14px">
       <%= format_message('commented', values: {
-        authorFirstName: "<span style=\"font-weight:bold; color: #000;\">#{event.initiating_user_first_name.capitalize}</span>"
+        authorFirstName: "<span style=\"font-weight:bold; color: #000;\">#{event.initiating_user_first_name&.capitalize || format_message('anonymous_user')}</span>"
       }).html_safe %>
       <p style="margin: 15px 0 0;">
         <%= strip_tags(localize_for_recipient_and_truncate(event.comment_body_multiloc, 140)) %>

@@ -63,7 +63,10 @@ RSpec.describe ReportBuilder::Queries::MethodsUsed do
       )
 
       # Make TimeBoundariesParser work as expected
-      AppConfiguration.instance.update!(created_at: Date.new(2020, 12, 31))
+      AppConfiguration.instance.update!(
+        created_at: Date.new(2020, 12, 31),
+        platform_start_at: Date.new(2020, 12, 31)
+      )
     end
 
     context 'when start_at and end_at are provided' do

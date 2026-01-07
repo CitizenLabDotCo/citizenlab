@@ -166,9 +166,7 @@ RSpec/DescribeClass:
     - 'engines/commercial/id_vienna_saml/spec/requests/employee_authentication_spec.rb'
     - 'spec/requests/google_authentication_spec.rb'
     - 'engines/commercial/multi_tenancy/spec/db/seedfile_spec.rb'
-    - 'engines/commercial/multi_tenancy/spec/tasks/email_campaigns_task_spec.rb'
-    - 'engines/commercial/multi_tenancy/spec/tasks/fix_notifications_task_spec.rb'
-    - 'engines/commercial/multi_tenancy/spec/tasks/invalid_data_checker_task_spec.rb'
+    - 'engines/commercial/multi_tenancy/spec/tasks/*_task_spec.rb'
     - 'spec/tasks/single_use/*.ignore.rb'
 
 RSpec/EmptyExampleGroup:

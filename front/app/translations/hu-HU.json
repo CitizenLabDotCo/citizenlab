@@ -1391,6 +1391,7 @@
   "app.containers.IdeasFeedPage.backToProject": "Vissza a projekthez",
   "app.containers.IdeasFeedPage.collapsePanel": "Témák panel összecsukása",
   "app.containers.IdeasFeedPage.expandPanel": "Témák panel kibontása",
+  "app.containers.IdeasFeedPage.seeAllIdeas": "Tekintse meg az összes {ideasCount} bemenetet",
   "app.containers.IdeasFeedPage.topicsPanel": "Témák panel",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Minden bemenet felkerült",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Fedezze fel a {orgName}részvételi platformján közzétett összes bemenetet.",

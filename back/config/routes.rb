@@ -159,6 +159,8 @@ Rails.application.routes.draw do
       end
 
       resources :areas do
+        patch 'reorder', on: :member
+
         resources :followers, only: [:create], defaults: { followable: 'Area' }
         collection do
           get 'with_visible_projects_counts', to: 'areas#with_visible_projects_counts'

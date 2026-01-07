@@ -93,6 +93,7 @@ module BulkImportIdeas::Parsers
     end
 
     def structure_raw_fields(fields)
+      index = 0
       fields.map do |name, value|
         name = Export::Xlsx::Utils.new.remove_duplicate_column_name_suffix name
         {
@@ -100,7 +101,7 @@ module BulkImportIdeas::Parsers
           value: value,
           type: 'field',
           page: 1,
-          position: nil
+          position: index += 1 # So each field is unique even if they have the same name and value
         }
       end
     end
