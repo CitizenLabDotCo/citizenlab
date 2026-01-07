@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Text,
+  colors,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useAddIdeaExposure from 'api/idea_exposure/useAddIdeaExposure';
 import useIdeaById from 'api/ideas/useIdeaById';
 
 import useLocalize from 'hooks/useLocalize';
@@ -10,7 +16,15 @@ import useLocalize from 'hooks/useLocalize';
 import Avatar from 'components/Avatar';
 import T from 'components/T';
 
+export const NOTE_HEIGHTS = {
+  small: 350,
+  large: 500,
+};
+
 const StyledNote = styled(Box)`
+  padding: 20px;
+  width: 90%;
+  border-radius: ${stylingConsts.borderRadius};
   transition: all 0.3s ease;
   text-align: left;
   &:hover,
@@ -31,6 +45,8 @@ interface Props {
   rotation?: number;
   topicBackgroundColor: string;
   onClick?: () => void;
+  centeredIdeaId?: string;
+  size?: 'small' | 'large';
 }
 
 const StickyNote: React.FC<Props> = ({
@@ -38,9 +54,22 @@ const StickyNote: React.FC<Props> = ({
   rotation = 0,
   topicBackgroundColor,
   onClick,
+  centeredIdeaId,
+  size = 'large',
 }) => {
+  const isCentered = centeredIdeaId === ideaId;
+  const noteHeight = NOTE_HEIGHTS[size];
+
   const { data: idea } = useIdeaById(ideaId);
   const localize = useLocalize();
+  const { mutate: addIdeaExposure } = useAddIdeaExposure();
+
+  // Track idea exposure when sticky note becomes centered
+  useEffect(() => {
+    if (isCentered) {
+      addIdeaExposure({ ideaId });
+    }
+  }, [isCentered, ideaId, addIdeaExposure]);
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' || event.key === ' ') {
@@ -61,10 +90,10 @@ const StickyNote: React.FC<Props> = ({
   return (
     <StyledNote
       as="button"
-      p="12px"
       borderRadius="2px"
-      w="250px"
-      minHeight="200px"
+      w="100%"
+      maxWidth="350px"
+      height={`${noteHeight}px`}
       transform={`rotate(${rotation}deg)`}
       background={topicBackgroundColor || colors.teal200}
       boxShadow="0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)"

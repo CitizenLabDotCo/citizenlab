@@ -35,7 +35,6 @@ module BulkImportIdeas::Parsers::Pdf
     end
 
     def prompt
-      # In this message is a scanned survey form containing handwritten responses and checked options.
       <<~GPT_PROMPT
         In this message is a scanned survey form that has been filled in by hand.
   
