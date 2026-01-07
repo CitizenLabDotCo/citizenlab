@@ -1391,6 +1391,7 @@
   "app.containers.IdeasFeedPage.backToProject": "crwdns5873609:0crwdne5873609:0",
   "app.containers.IdeasFeedPage.collapsePanel": "crwdns5873611:0crwdne5873611:0",
   "app.containers.IdeasFeedPage.expandPanel": "crwdns5873613:0crwdne5873613:0",
+  "app.containers.IdeasFeedPage.seeAllIdeas": "crwdns5898757:0{ideasCount}crwdne5898757:0",
   "app.containers.IdeasFeedPage.topicsPanel": "crwdns5873615:0crwdne5873615:0",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "crwdns5873617:0crwdne5873617:0",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "crwdns5873619:0{orgName}crwdne5873619:0",
