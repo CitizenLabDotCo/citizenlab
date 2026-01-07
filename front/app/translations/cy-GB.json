@@ -1391,6 +1391,7 @@
   "app.containers.IdeasFeedPage.backToProject": "Yn ôl i'r prosiect",
   "app.containers.IdeasFeedPage.collapsePanel": "Panel pynciau wedi'i gwanhau",
   "app.containers.IdeasFeedPage.expandPanel": "Ehangu panel pynciau",
+  "app.containers.IdeasFeedPage.seeAllIdeas": "Gweld pob mewnbwn {ideasCount}",
   "app.containers.IdeasFeedPage.topicsPanel": "Panel pynciau",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Pob mewnbwn wedi'i bostio",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Archwiliwch yr holl fewnbwn a bostiwyd ar y platfform cyfranogiad o {orgName}.",
