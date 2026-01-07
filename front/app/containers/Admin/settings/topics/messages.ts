@@ -27,6 +27,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.fieldTopicTitleError',
     defaultMessage: 'Provide a tag name for all languages',
   },
+  fieldTopicDescription: {
+    id: 'app.containers.AdminPage.SettingsPage.fieldTopicDescription',
+    defaultMessage: 'Tag description',
+  },
+  fieldTopicDescriptionTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.fieldTopicDescriptionTooltip',
+    defaultMessage:
+      'Add an optional description to provide more context about this tag.',
+  },
   fieldTopicSave: {
     id: 'app.containers.AdminPage.SettingsPage.fieldTopicSave',
     defaultMessage: 'Save tag',
@@ -55,5 +64,14 @@ export default defineMessages({
   projectsSettings: {
     id: 'app.containers.AdminPage.SettingsPage.projectsSettings',
     defaultMessage: 'project settings',
+  },
+  fieldTopicDefault: {
+    id: 'app.containers.AdminPage.SettingsPage.fieldTopicDefault',
+    defaultMessage: 'Add to new projects by default',
+  },
+  fieldTopicDefaultTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.fieldTopicDefaultTooltip',
+    defaultMessage:
+      'When enabled, this topic will be automatically added to all newly created projects.',
   },
 });

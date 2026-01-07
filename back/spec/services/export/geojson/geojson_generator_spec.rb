@@ -59,35 +59,29 @@ describe Export::Geojson::GeojsonGenerator do
     end
 
     it 'includes geometry of each response to the question custom_field in focus, in each respective GeoJSON Feature' do
-      expect(parsed_json['features'].pluck('geometry')).to match_array([
-        { 'type' => 'Point', 'coordinates' => [1.1, 2.2] },
-        { 'type' => 'Point', 'coordinates' => [3.3, 4.4] }
-      ])
+      expect(parsed_json['features'].pluck('geometry')).to contain_exactly({ 'type' => 'Point', 'coordinates' => [1.1, 2.2] }, { 'type' => 'Point', 'coordinates' => [3.3, 4.4] })
     end
 
     it "includes survey responses & selected user data for each input, in each related GeoJSON Feature's properties" do
-      expect(parsed_json['features'].pluck('properties')).to match_array([
-        {
-          'id' => idea1.id,
-          'published_at' => idea1.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
-          'point_field_for_focus_of_export' => { 'type' => 'Point', 'coordinates' => [1.1, 2.2] },
-          'field_for_text_question' => 'Text answer 1',
-          'user_data__author_id' => idea1.author.id,
-          'user_data__author_email' => idea1.author.email,
-          'user_data__author_name' => idea1.author_name,
-          'user_data__field_for_registration_question' => 'Registration q answer'
-        },
-        {
-          'id' => idea2.id,
-          'published_at' => idea2.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
-          'point_field_for_focus_of_export' => { 'type' => 'Point', 'coordinates' => [3.3, 4.4] },
-          'field_for_text_question' => 'Text answer 2',
-          'user_data__author_id' => idea2.author.id,
-          'user_data__author_email' => idea2.author.email,
-          'user_data__author_name' => idea2.author_name,
-          'user_data__field_for_registration_question' => nil
-        }
-      ])
+      expect(parsed_json['features'].pluck('properties')).to contain_exactly({
+        'id' => idea1.id,
+        'published_at' => idea1.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
+        'point_field_for_focus_of_export' => { 'type' => 'Point', 'coordinates' => [1.1, 2.2] },
+        'field_for_text_question' => 'Text answer 1',
+        'user_data__author_id' => idea1.author.id,
+        'user_data__author_email' => idea1.author.email,
+        'user_data__author_name' => idea1.author_name,
+        'user_data__field_for_registration_question' => 'Registration q answer'
+      }, {
+        'id' => idea2.id,
+        'published_at' => idea2.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
+        'point_field_for_focus_of_export' => { 'type' => 'Point', 'coordinates' => [3.3, 4.4] },
+        'field_for_text_question' => 'Text answer 2',
+        'user_data__author_id' => idea2.author.id,
+        'user_data__author_email' => idea2.author.email,
+        'user_data__author_name' => idea2.author_name,
+        'user_data__field_for_registration_question' => nil
+      })
     end
   end
 

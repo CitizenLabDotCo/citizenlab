@@ -54,7 +54,19 @@ resource 'Areas' do
   end
 
   context 'when admin' do
-    before { header_token_for user }
+    before do
+      header_token_for user
+      CustomField.create!(
+        resource_type: 'User',
+        key: 'domicile',
+        title_multiloc: { 'en' => 'Domicile' },
+        input_type: 'select',
+        required: false,
+        ordering: 2,
+        enabled: true,
+        code: 'domicile'
+      )
+    end
 
     let(:user) { create(:admin) }
 
@@ -98,7 +110,6 @@ resource 'Areas' do
         parameter :title_multiloc, 'The title of the area, as a multiloc string'
         parameter :description_multiloc, 'The description of the area, as a multiloc string'
         parameter :include_in_onboarding, 'Whether or not to include the area in the list presented during onboarding, a boolean'
-        parameter :ordering, 'The position, starting from 0, where the area should be at. Areas after will move down.', required: false
       end
 
       ValidationErrorHelper.new.error_fields(self, Area)
@@ -116,40 +127,35 @@ resource 'Areas' do
         expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response.dig(:data, :attributes, :include_in_onboarding)).to be include_in_onboarding
       end
+    end
 
-      example 'Update the ordering of an area' do
+    patch 'web_api/v1/areas/:id/reorder' do
+      with_options scope: :area do
+        parameter :ordering, 'The position, starting from 0, where the area should be at. Areas after will move down.', required: true
+      end
+
+      let!(:area) { create(:area) }
+      let(:id) { area.id }
+      let(:ordering) { 1 }
+
+      example 'Reorder an area' do
         area1, area2 = create_list(:area, 2)
 
         expect(area.ordering).to eq 0
         expect(area1.ordering).to eq 1
         expect(area2.ordering).to eq 2
 
-        do_request(area: { ordering: 1 })
+        do_request
         assert_status 200
 
         expect(area.reload.ordering).to eq 1
         expect(area1.reload.ordering).to eq 0
         expect(area2.reload.ordering).to eq 2
-
-        # Check the other changes were applied as well
-        expect(area.include_in_onboarding).to eq include_in_onboarding
+        expect(area.custom_field_option.ordering).to eq 1
       end
     end
 
     delete 'web_api/v1/areas/:id' do
-      before do
-        CustomField.create!(
-          resource_type: 'User',
-          key: 'domicile',
-          title_multiloc: { 'en' => 'Domicile' },
-          input_type: 'select',
-          required: false,
-          ordering: 2,
-          enabled: true,
-          code: 'domicile'
-        )
-      end
-
       let(:area) { create(:area) }
       let!(:id) { area.id }
 

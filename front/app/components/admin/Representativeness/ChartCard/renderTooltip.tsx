@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, Text, TextProps } from '@citizenlab/cl2-component-library';
 import { Tooltip } from 'recharts';
+import { TooltipContentProps } from 'recharts/types/component/Tooltip';
 
 import TooltipOutline from 'components/admin/Graphs/_components/TooltipOutline';
 
@@ -10,7 +11,7 @@ import { RepresentativenessRow } from '../../../../hooks/parseReferenceData';
 import { formatPercentage } from './utils';
 
 interface CustomTooltipProps {
-  label?: string;
+  label: TooltipContentProps<string, string>['label'];
   payload?: {
     name: string;
     dataKey: string;
@@ -42,7 +43,7 @@ const CustomTooltip = ({ label, payload }: CustomTooltipProps) => {
   if (!payload || !label) return null;
 
   return (
-    <TooltipOutline label={label}>
+    <TooltipOutline label={String(label)}>
       {payload.map(({ name, dataKey, payload }) => {
         const {
           actualPercentage,

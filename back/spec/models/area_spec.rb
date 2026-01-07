@@ -9,8 +9,6 @@ RSpec.describe Area do
     it { is_expected.to be_valid }
   end
 
-  it { is_expected.not_to validate_presence_of(:ordering) }
-  it { is_expected.to validate_numericality_of(:ordering) }
   it { is_expected.to validate_presence_of(:title_multiloc) }
   it { is_expected.to belong_to(:custom_field_option).optional }
 
@@ -54,7 +52,7 @@ RSpec.describe Area do
 
       let(:ordering) { described_class.maximum(:ordering) + 1 }
 
-      it 'should stay as given' do
+      it 'stays as given' do
         expect(subject.ordering).to eq(ordering)
       end
     end

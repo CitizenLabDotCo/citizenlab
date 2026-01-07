@@ -17,7 +17,7 @@ namespace :cl2_back do
             'en' => 'Wonderville',
             'nl-BE' => 'Mirakelgem'
           },
-          signup_helper_text: {
+          enter_email_helper_text: {
             en: 'If you don\'t want to register, use hello@govocal.com/democrazy as email/password'
           },
           maximum_admins_number: 2,
@@ -335,6 +335,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        idea_feed: {
+          enabled: true,
+          allowed: true
+        },
         data_repository_transcription: {
           enabled: true,
           allowed: true
@@ -344,6 +348,14 @@ namespace :cl2_back do
           allowed: true
         },
         project_planning_calendar: {
+          enabled: true,
+          allowed: true
+        },
+        phase_insights: {
+          enabled: false,
+          allowed: false
+        },
+        ideation_accountless_posting: {
           enabled: true,
           allowed: true
         }

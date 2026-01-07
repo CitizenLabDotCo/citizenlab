@@ -147,6 +147,21 @@ const SSOButtonsExceptFCAndCU = ({
           />
         </WrappedAuthProviderButton>
       )}
+      {ssoProviders.acm && (
+        <WrappedAuthProviderButton
+          icon="acm"
+          showConsent={showConsent}
+          authProvider="acm"
+          onContinue={onSelectAuthProvider}
+        >
+          <FormattedMessage
+            {...parentMessages.continueWithLoginMechanism}
+            values={{
+              loginMechanismName: 'Itsme®',
+            }}
+          />
+        </WrappedAuthProviderButton>
+      )}
       {ssoProviders.viennaCitizen && (
         <ViennaSamlButton flow={flow} onContinue={onSelectAuthProvider} />
       )}

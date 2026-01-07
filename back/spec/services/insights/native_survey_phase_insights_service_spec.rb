@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Insights::NativeSurveyPhaseInsightsService do
   let(:service) { described_class.new(phase) }
-  let(:phase) { create(:native_survey_phase, start_at: 15.days.ago, end_at: 2.days.ago) }
+  let(:phase) { create(:native_survey_phase, start_at: 17.days.ago, end_at: 2.days.ago) }
 
   let(:user1) { create(:user) }
   let!(:idea1) { create(:idea, phases: [phase], created_at: 20.days.ago, submitted_at: 20.days.ago, author: user1, creation_phase_id: phase.id) } # before phase start
@@ -30,53 +30,47 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
     it 'returns the participation ideas posted data for non-transitive ideas created during phase' do
       participations_posting_idea = service.send(:participations_posting_idea)
 
-      expect(participations_posting_idea).to match_array([
-        {
-          item_id: idea2.id,
-          action: 'posting_idea',
-          acted_at: a_kind_of(Time),
-          classname: 'Idea',
-          survey_submitted_at: idea2.submitted_at,
-          participant_id: user1.id,
-          user_custom_field_values: {}
-        },
-        {
-          item_id: idea4.id,
-          action: 'posting_idea',
-          acted_at: a_kind_of(Time),
-          classname: 'Idea',
-          survey_submitted_at: idea4.submitted_at,
-          participant_id: user2.id,
-          user_custom_field_values: {}
-        },
-        {
-          item_id: idea5.id,
-          action: 'posting_idea',
-          acted_at: a_kind_of(Time),
-          classname: 'Idea',
-          survey_submitted_at: nil,
-          participant_id: user2.id,
-          user_custom_field_values: {}
-        },
-        {
-          item_id: idea6.id,
-          action: 'posting_idea',
-          acted_at: a_kind_of(Time),
-          classname: 'Idea',
-          survey_submitted_at: idea6.submitted_at,
-          participant_id: 'some_author_hash',
-          user_custom_field_values: {}
-        },
-        {
-          item_id: idea7.id,
-          action: 'posting_idea',
-          acted_at: a_kind_of(Time),
-          classname: 'Idea',
-          survey_submitted_at: idea7.submitted_at,
-          participant_id: idea7.id,
-          user_custom_field_values: {}
-        }
-      ])
+      expect(participations_posting_idea).to contain_exactly({
+        item_id: idea2.id,
+        action: 'posting_idea',
+        acted_at: a_kind_of(Time),
+        classname: 'Idea',
+        survey_submitted_at: idea2.submitted_at,
+        participant_id: user1.id,
+        user_custom_field_values: {}
+      }, {
+        item_id: idea4.id,
+        action: 'posting_idea',
+        acted_at: a_kind_of(Time),
+        classname: 'Idea',
+        survey_submitted_at: idea4.submitted_at,
+        participant_id: user2.id,
+        user_custom_field_values: {}
+      }, {
+        item_id: idea5.id,
+        action: 'posting_idea',
+        acted_at: a_kind_of(Time),
+        classname: 'Idea',
+        survey_submitted_at: nil,
+        participant_id: user2.id,
+        user_custom_field_values: {}
+      }, {
+        item_id: idea6.id,
+        action: 'posting_idea',
+        acted_at: a_kind_of(Time),
+        classname: 'Idea',
+        survey_submitted_at: idea6.submitted_at,
+        participant_id: 'some_author_hash',
+        user_custom_field_values: {}
+      }, {
+        item_id: idea7.id,
+        action: 'posting_idea',
+        acted_at: a_kind_of(Time),
+        classname: 'Idea',
+        survey_submitted_at: idea7.submitted_at,
+        participant_id: idea7.id,
+        user_custom_field_values: {}
+      })
 
       first_participation = participations_posting_idea.first
       expect(first_participation[:acted_at])
@@ -87,14 +81,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
       phase.update!(end_at: nil)
       participations_posting_idea = service.send(:participations_posting_idea)
 
-      expect(participations_posting_idea.pluck(:item_id)).to match_array([
-        idea2.id,
-        idea3.id,
-        idea4.id,
-        idea5.id,
-        idea6.id,
-        idea7.id
-      ])
+      expect(participations_posting_idea.pluck(:item_id)).to contain_exactly(idea2.id, idea3.id, idea4.id, idea5.id, idea6.id, idea7.id)
     end
 
     it 'includes draft ideas' do
@@ -122,13 +109,28 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
         posting_idea: service.send(:participations_posting_idea)
       })
 
-      expect(participations[:posting_idea].map { |p| p[:item_id] }).to match_array([
-        idea2.id,
-        idea4.id,
-        idea5.id,
-        idea6.id,
-        idea7.id
-      ])
+      expect(participations[:posting_idea].map { |p| p[:item_id] }).to contain_exactly(idea2.id, idea4.id, idea5.id, idea6.id, idea7.id)
+    end
+  end
+
+  describe 'phase_participation_method_metrics' do
+    let(:user1) { create(:user) }
+    let(:participation1) { create(:posting_idea_participation, acted_at: 10.days.ago, user: user1) }
+    let(:participation2) { create(:posting_idea_participation, acted_at: 5.days.ago, user: user1) }
+
+    it 'calculates the correct metrics' do
+      participation1[:survey_submitted_at] = 10.days.ago
+      participation2[:survey_submitted_at] = 5.days.ago
+      participations = { posting_idea: [participation1, participation2] }
+
+      metrics = service.send(:phase_participation_method_metrics, participations)
+
+      expect(metrics).to eq({
+        submitted_surveys: 2,
+        submitted_surveys_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) = 0% change
+        completion_rate: 1.0,
+        completion_rate_7_day_change: 0.0 # completion_rate_last_7_days: 1.0, completion_rate_previous_7_days: 1.0 = 0% change
+      })
     end
   end
 end

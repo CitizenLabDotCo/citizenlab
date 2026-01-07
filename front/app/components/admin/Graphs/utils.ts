@@ -4,7 +4,13 @@ import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 import { LegendDimensions } from './_components/Legend/typings';
 import { legacyColors } from './styling';
-import { Tooltip, TooltipConfig, Margin, Legend } from './typings';
+import {
+  Tooltip,
+  TooltipConfig,
+  Margin,
+  Legend,
+  RechartsAccessibilityProps,
+} from './typings';
 
 export const hasNoData = (data: any): data is NilOrError =>
   isNilOrError(data) || data.every(isEmpty) || data.length <= 0;
@@ -22,34 +28,26 @@ export const getTooltipConfig = (
     : defaultTooltipConfig;
 };
 
+// Match recharts' default in version 2.12.7 margin to preserve original visual behavior
+// https://github.com/recharts/recharts/blob/2.x/src/chart/generateCategoricalChart.tsx#L1119
+const DEFAULT_MARGIN = { top: 5, bottom: 5, left: 5, right: 5 };
+
 export const parseMargin = (
   margin: Margin | undefined,
   legend: Legend | undefined,
   legendDimensions: LegendDimensions | undefined,
-  defaultMargin: number
-): Margin | undefined => {
-  const noLegend = !legend || !legendDimensions;
+  defaultLegendMargin: number
+) => {
+  const base = { ...DEFAULT_MARGIN, ...margin };
 
-  if (noLegend) {
-    return margin;
-  }
+  if (!legend || !legendDimensions) return base;
 
-  const legendPosition = getLegendPosition(legend);
-  const legendOffset = getLegendOffset(legend, legendDimensions, defaultMargin);
+  const position = getLegendPosition(legend);
+  const offset = getLegendOffset(legend, legendDimensions, defaultLegendMargin);
 
-  if (margin) {
-    const mb = margin.bottom ?? 0;
-    const mr = margin.right ?? 0;
-
-    const bottom = legendPosition === 'bottom' ? mb + legendOffset : mb;
-    const right = legendPosition === 'right' ? mr + legendOffset : mr;
-
-    return { ...margin, bottom, right };
-  }
-
-  return legendPosition === 'right'
-    ? { right: legendOffset }
-    : { bottom: legendOffset };
+  return position === 'right'
+    ? { ...base, right: base.right + offset }
+    : { ...base, bottom: base.bottom + offset };
 };
 
 function getLegendOffset(
@@ -71,3 +69,16 @@ function getLegendPosition(legend: Legend) {
     ? 'bottom'
     : 'right';
 }
+
+export const getRechartsAccessibilityProps = (
+  ariaLabel: string | undefined,
+  ariaDescribedBy: string | undefined
+): RechartsAccessibilityProps => {
+  return {
+    accessibilityLayer: true,
+    role: 'img',
+    'aria-label': ariaLabel,
+    'aria-describedby': ariaDescribedBy,
+    tabIndex: 0,
+  };
+};

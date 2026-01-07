@@ -259,6 +259,7 @@ da:
       x_days_ago_by_author: '%{x} dage siden af %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} kommenterede:'
+      anonymous_user: Anonym bruger
       cta_button: 'Se %{authorFirstName}s kommentar'
       days_ago: '%{numberOfDays} dage siden'
       event_description: '%{authorName} skrev en kommentar til din platform. Deltag i diskussionen og hold samtalen i gang!'

@@ -2,7 +2,7 @@
 
 module BulkImportIdeas::Importers
   class IdeaImporter < BaseImporter
-    DEFAULT_MAX_IDEAS = 2000
+    DEFAULT_MAX_IDEAS = 5000
     DATE_FORMAT_REGEX = /^(0[1-9]|[1|2][0-9]|3[0|1])-(0[1-9]|1[0-2])-([0-9]{4})$/ # After https://stackoverflow.com/a/47218282/3585671
 
     def import(idea_rows)
@@ -111,7 +111,9 @@ module BulkImportIdeas::Importers
         )
       end
 
+      # Set both published_at and submitted_at to the same value
       idea_attributes[:published_at] = published_at
+      idea_attributes[:submitted_at] = published_at
     end
 
     # Add the current time to the date to ensure consistent sorting by published_at date

@@ -34,7 +34,7 @@ resource 'FileAttachments' do
       example 'List all file attachments for a specific file', document: false do
         do_request(file_id: project_attachment.file.id)
         assert_status 200
-        expect(response_ids).to match_array [project_attachment.id]
+        expect(response_ids).to contain_exactly(project_attachment.id)
       end
     end
 

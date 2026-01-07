@@ -18,4 +18,5 @@ export type Props = {
   permissionData: IPermissionData;
   onChange: (changes: Changes) => Promise<void>;
   onReset: () => void;
+  showAnyone?: boolean;
 };

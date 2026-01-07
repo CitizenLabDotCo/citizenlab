@@ -6,11 +6,10 @@ import {
   State,
 } from '../../typings';
 
-import { lightFlow } from './lightFlow';
+import { emailFlow } from './emailFlow';
+import { inviteFlow } from './inviteFlow';
 import { missingDataFlow } from './missingDataFlow';
 import { sharedSteps } from './sharedSteps';
-import { signInFlow } from './signInFlow';
-import { signUpFlow } from './signUpFlow';
 import { ssoVerificationFlow } from './ssoVerificationFlow';
 import { Step } from './typings';
 
@@ -20,16 +19,24 @@ export const getStepConfig = (
   setCurrentStep: (step: Step) => void,
   setError: SetError,
   updateState: UpdateState,
-  anySSOEnabled: boolean,
-  state: State
+  state: State,
+  userConfirmationEnabled: boolean
 ) => {
   return {
-    ...lightFlow(
+    ...emailFlow(
       getAuthenticationData,
       getRequirements,
       setCurrentStep,
       updateState,
-      state
+      state,
+      userConfirmationEnabled
+    ),
+
+    ...inviteFlow(
+      getAuthenticationData,
+      getRequirements,
+      setCurrentStep,
+      updateState
     ),
 
     ...missingDataFlow(
@@ -37,7 +44,8 @@ export const getStepConfig = (
       getRequirements,
       setCurrentStep,
       updateState,
-      state
+      state,
+      userConfirmationEnabled
     ),
 
     ...sharedSteps(
@@ -45,24 +53,7 @@ export const getStepConfig = (
       getRequirements,
       setCurrentStep,
       setError,
-      updateState,
-      anySSOEnabled
-    ),
-
-    ...signInFlow(
-      getAuthenticationData,
-      getRequirements,
-      setCurrentStep,
-      updateState,
-      anySSOEnabled
-    ),
-
-    ...signUpFlow(
-      getAuthenticationData,
-      getRequirements,
-      setCurrentStep,
-      updateState,
-      anySSOEnabled
+      updateState
     ),
 
     ...ssoVerificationFlow(
@@ -78,10 +69,6 @@ export const getStepConfig = (
     },
 
     'verification-success': {
-      CLOSE: () => setCurrentStep('closed'),
-    },
-
-    'taken-by-invite': {
       CLOSE: () => setCurrentStep('closed'),
     },
   };

@@ -259,6 +259,7 @@ ur:
       x_days_ago_by_author: '%{x} دن پہلے بذریعہ %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} نے تبصرہ کیا:'
+      anonymous_user: گمنام صارف
       cta_button: '%{authorFirstName}کا تبصرہ دیکھیں'
       days_ago: '%{numberOfDays} دن پہلے'
       event_description: '%{authorName} نے آپ کے پلیٹ فارم پر ایک نیا تبصرہ شامل کیا۔'

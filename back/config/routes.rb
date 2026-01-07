@@ -88,6 +88,7 @@ Rails.application.routes.draw do
         post :similar_ideas, on: :collection
         resources :authoring_assistance_responses, only: %i[create]
         get :as_xlsx, on: :member, action: 'show_xlsx'
+        resources :exposures, controller: 'idea_exposures', only: %i[create]
       end
 
       resources :background_jobs, only: %i[index]
@@ -105,6 +106,7 @@ Rails.application.routes.draw do
 
       # auth
       post 'user_token' => 'user_token#create'
+      post 'user_token/unconfirmed' => 'user_token#user_token_unconfirmed'
 
       resources :users, only: %i[index create update destroy] do
         get :me, on: :collection
@@ -114,12 +116,13 @@ Rails.application.routes.draw do
         post 'reset_password_email' => 'reset_password#reset_password_email', on: :collection
         post 'reset_password' => 'reset_password#reset_password', on: :collection
         post 'update_password', on: :collection
+        patch 'update_email_unconfirmed', on: :collection
         get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
         get 'by_invite/:token', on: :collection, to: 'users#by_invite'
         get 'ideas_count', on: :member
         get 'comments_count', on: :member
         get 'blocked_count', on: :collection
-        get 'check/:email', on: :collection, to: 'users#check', constraints: { email: /.*/ }
+        post 'check', on: :collection, to: 'users#check'
         scope module: 'verification' do
           get 'me/locked_attributes', on: :collection, to: 'locked_attributes#index'
         end
@@ -131,8 +134,13 @@ Rails.application.routes.draw do
       get 'users/:id', to: 'users#show', constraints: { id: /\b(?!custom_fields|me)\b\S+/ }
 
       scope path: 'user' do
-        resource :confirmation, path: :confirm, only: %i[create]
-        resource :resend_code, only: %i[create]
+        post 'request_code_unauthenticated', to: 'request_codes#request_code_unauthenticated'
+        post 'request_code_authenticated', to: 'request_codes#request_code_authenticated'
+        post 'request_code_email_change', to: 'request_codes#request_code_email_change'
+
+        post 'confirm_code_unauthenticated', to: 'confirmations#confirm_code_unauthenticated'
+        post 'confirm_code_authenticated', to: 'confirmations#confirm_code_authenticated'
+        post 'confirm_code_email_change', to: 'confirmations#confirm_code_email_change'
       end
 
       resources :topics do
@@ -142,6 +150,8 @@ Rails.application.routes.draw do
       end
 
       resources :areas do
+        patch 'reorder', on: :member
+
         resources :followers, only: [:create], defaults: { followable: 'Area' }
         collection do
           get 'with_visible_projects_counts', to: 'areas#with_visible_projects_counts'
@@ -190,6 +200,9 @@ Rails.application.routes.draw do
           get 'submission_count'
           get 'progress', action: 'show_progress'
           delete 'inputs', action: 'delete_inputs'
+          namespace :idea_feed do
+            resources :ideas, only: [:index]
+          end
         end
 
         resources :inputs, only: [], controller: 'ideas' do
@@ -198,7 +211,7 @@ Rails.application.routes.draw do
 
         resource :insights, only: [], controller: 'insights/phase_insights' do
           get '', action: 'show_insights'
-          get :voting, action: 'voting_insights'
+          get :voting, action: 'votes_with_grouping'
         end
 
         resources :files, defaults: { container_type: 'Phase' }, shallow: false

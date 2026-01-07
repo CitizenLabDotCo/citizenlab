@@ -5,6 +5,8 @@ import moment from 'moment';
 
 import { ParticipationType } from 'api/graph_data_units/requestTypes';
 
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
+
 import { formatLargeNumber, getDaysInRange } from '../../utils';
 import messages from '../messages';
 
@@ -20,10 +22,15 @@ const Narrow = ({
   timeSeries,
   hideStatistics,
   participationTypes,
-}: Props) => {
+  ariaLabel,
+  ariaDescribedBy,
+}: Props & AccessibilityProps) => {
   const previousDays = getDaysInRange(startAt, endAt);
   const show = (type: ParticipationType) => participationTypes[type];
-
+  const accessibilityProps = {
+    ariaLabel,
+    ariaDescribedBy,
+  };
   return (
     <Box height="100%" display="flex" flexDirection="column">
       {!hideStatistics && stats && (
@@ -78,6 +85,7 @@ const Narrow = ({
             tickFormatter: formatLargeNumber,
           }}
           participationTypes={participationTypes}
+          {...accessibilityProps}
         />
       </Box>
     </Box>

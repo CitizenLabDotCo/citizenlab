@@ -78,8 +78,20 @@ const ProjectAndFolderCardsInner = ({
   const noAdminPublicationsAtAll = statusCountsWithoutFilters.all === 0;
 
   const showMore = () => {
+    const cardsCountBeforeLoadMore = adminPublications.length;
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
     onLoadMore && onLoadMore();
+    if (onLoadMore) {
+      setTimeout(() => {
+        const allCards = document.querySelectorAll(
+          '.e2e-admin-publication-card'
+        );
+        const firstNewCard = allCards[cardsCountBeforeLoadMore] as
+          | HTMLElement
+          | undefined;
+        firstNewCard?.focus();
+      }, 300);
+    }
   };
 
   const handleChangeTopics = (topics: string[]) => {

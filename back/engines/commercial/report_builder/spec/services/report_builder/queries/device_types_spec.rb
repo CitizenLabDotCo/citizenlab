@@ -8,10 +8,13 @@ RSpec.describe ReportBuilder::Queries::DeviceTypes do
   describe '#run_query' do
     before_all do
       # Make TimeBoundariesParser work as expected
-      AppConfiguration.instance.update!(created_at: Date.new(2021, 1, 1))
+      AppConfiguration.instance.update!(
+        created_at: Date.new(2021, 1, 1),
+        platform_start_at: Date.new(2021, 1, 1)
+      )
     end
 
-    it 'works' do
+    it 'returns device type analytics data for given time period' do
       2.times do
         create(:session, created_at: Date.new(2023, 2, 1), device_type: 'desktop_or_other')
       end

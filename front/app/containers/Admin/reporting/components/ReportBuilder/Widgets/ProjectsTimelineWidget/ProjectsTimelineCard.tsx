@@ -13,6 +13,7 @@ import {
   ProjectSortableParam,
 } from 'api/projects_mini_admin/types';
 
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import { getStatusColor } from 'containers/Admin/projects/all/_shared/utils';
@@ -43,6 +44,8 @@ export interface ProjectsTimelineCardProps {
   participationMethods?: ParticipationMethod[];
   sort?: ProjectSortableParam;
   noOfProjects?: number;
+  excludedProjectIds?: string[];
+  excludedFolderIds?: string[];
 }
 
 const ProjectsTimelineCard = ({
@@ -58,9 +61,12 @@ const ProjectsTimelineCard = ({
   participationMethods = [],
   sort = 'phase_starting_or_ending_soon',
   noOfProjects = DEFAULT_NO_OF_PROJECTS,
+  excludedProjectIds = [],
+  excludedFolderIds = [],
 }: ProjectsTimelineCardProps) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const locale = useLocale();
   const { data, isLoading } = useProjectsTimeline({
     start_at: undefined,
     end_at: undefined,
@@ -74,7 +80,10 @@ const ProjectsTimelineCard = ({
     visibility,
     discoverability,
     sort,
+    locale,
     no_of_projects: noOfProjects,
+    excluded_project_ids: excludedProjectIds,
+    excluded_folder_ids: excludedFolderIds,
   });
 
   if (isLoading) {

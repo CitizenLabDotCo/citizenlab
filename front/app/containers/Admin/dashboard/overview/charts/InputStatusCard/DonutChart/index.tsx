@@ -33,9 +33,10 @@ const DonutChart = ({ data, innerRef }: Props) => {
           fill: () => colors.gridColor,
         }}
         pie={{ innerRadius: '85%' }}
-        centerLabel={({ viewBox: { cy } }) => (
-          <CenterLabel y={cy - 5} value="-%" label={pieCenterLabel} />
-        )}
+        centerLabel={({ viewBox }) => {
+          const cy = viewBox && 'cy' in viewBox ? viewBox.cy : 0;
+          return <CenterLabel y={cy - 5} value="-%" label={pieCenterLabel} />;
+        }}
       />
     );
   }
@@ -54,9 +55,16 @@ const DonutChart = ({ data, innerRef }: Props) => {
       pie={{
         innerRadius: '85%',
       }}
-      centerLabel={({ viewBox: { cy } }) => (
-        <CenterLabel y={cy - 5} value={pieCenterValue} label={pieCenterLabel} />
-      )}
+      centerLabel={({ viewBox }) => {
+        const cy = viewBox && 'cy' in viewBox ? viewBox.cy : 0;
+        return (
+          <CenterLabel
+            y={cy - 5}
+            value={pieCenterValue}
+            label={pieCenterLabel}
+          />
+        );
+      }}
       innerRef={innerRef}
     />
   );
