@@ -4,12 +4,13 @@ import usePhase from 'api/phases/usePhase';
 
 import FormResults from 'components/admin/FormResults';
 
-import { usePdfExportContext } from '../../PdfExportContext';
-import { MethodSpecificInsightProps } from '../types';
+interface Props {
+  phaseId: string;
+  isPdfExport?: boolean;
+}
 
-const NativeSurveyInsights = ({ phaseId }: MethodSpecificInsightProps) => {
+const NativeSurveyInsights = ({ phaseId, isPdfExport = false }: Props) => {
   const { data: phase } = usePhase(phaseId);
-  const { isPdfExport } = usePdfExportContext();
 
   if (!phase) {
     return null;

@@ -15,6 +15,7 @@ import clHistory from 'utils/cl-router/history';
 import { getAnalysisScope } from '../../components/AnalysisBanner/utils';
 
 import DemographicsSection from './demographics/DemographicsSection';
+import InsightsPdfContent from './InsightsPdfContent';
 import messages from './messages';
 import MethodSpecificInsights from './methodSpecific/MethodSpecificInsights';
 import SurveyActions from './methodSpecific/nativeSurvey/SurveyActions';
@@ -29,7 +30,21 @@ const AI_ANALYSIS_SUPPORTED_METHODS = [
   'native_survey',
 ];
 
-// Inner component that uses the PDF export context
+// Hidden container styles for PDF rendering (offscreen, but must remain "visible" for SVG rendering)
+// Note: visibility: hidden breaks Recharts SVG path rendering, so we use positioning instead
+const hiddenContainerStyle: React.CSSProperties = {
+  position: 'fixed',
+  left: '-9999px',
+  top: 0,
+  width: '800px',
+  height: 'auto',
+  minHeight: '100vh',
+  pointerEvents: 'none',
+  zIndex: -9999,
+  overflow: 'visible',
+};
+
+// Inner component that uses the PDF export context (visible UI)
 const InsightsContent = () => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -40,7 +55,6 @@ const InsightsContent = () => {
   const {
     downloadPdf,
     isDownloading: isDownloadingPdf,
-    isPdfExport,
     error: pdfError,
   } = usePdfExportContext();
 
@@ -87,105 +101,99 @@ const InsightsContent = () => {
 
   const isNativeSurvey = participationMethod === 'native_survey';
 
-  // Get phase name for PDF title
-  const phaseName =
-    Object.values(phase.data.attributes.title_multiloc)[0] || '';
-
   return (
-    <Box
-      id="insights-pdf-container"
-      background="white"
-      borderBottom="none"
-      display="flex"
-      flexDirection="column"
-      role="region"
-      aria-label="Phase Insights"
-    >
-      {isPdfExport && phaseName && (
-        <Title variant="h1" as="h1" color="textPrimary" m="0px" mb="24px">
-          {phaseName}
-        </Title>
-      )}
+    <>
+      {/* Visible UI - never changes during PDF export */}
       <Box
+        background="white"
+        borderBottom="none"
         display="flex"
-        w="100%"
-        justifyContent="space-between"
-        alignItems="center"
+        flexDirection="column"
+        role="region"
+        aria-label="Phase Insights"
       >
-        <Title
-          variant="h2"
-          as={isPdfExport ? 'h2' : 'h1'}
-          color="textPrimary"
-          m="0px"
-        >
-          <FormattedMessage {...messages.insights} />
-        </Title>
         <Box
           display="flex"
-          flexDirection="column"
-          gap="8px"
-          alignItems="flex-end"
+          w="100%"
+          justifyContent="space-between"
+          alignItems="center"
         >
-          {isNativeSurvey ? (
-            <SurveyActions phase={phase.data} />
-          ) : (
-            <Box
-              display="flex"
-              flexDirection="column"
-              gap="8px"
-              alignItems="flex-end"
-              data-pdf-exclude="true"
-            >
-              <Box display="flex" gap="8px">
-                <Button
-                  buttonStyle={supportsAiAnalysis ? 'secondary' : 'primary'}
-                  icon="download"
-                  onClick={downloadPdf}
-                  processing={isDownloadingPdf}
-                  aria-label={formatMessage(messages.downloadInsightsPdf)}
-                >
-                  <FormattedMessage {...messages.download} />
-                </Button>
-                {supportsAiAnalysis && (
+          <Title variant="h2" as="h1" color="textPrimary" m="0px">
+            <FormattedMessage {...messages.insights} />
+          </Title>
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap="8px"
+            alignItems="flex-end"
+          >
+            {isNativeSurvey ? (
+              <SurveyActions phase={phase.data} />
+            ) : (
+              <Box
+                display="flex"
+                flexDirection="column"
+                gap="8px"
+                alignItems="flex-end"
+              >
+                <Box display="flex" gap="8px">
                   <Button
-                    buttonStyle="primary"
-                    icon="stars"
-                    onClick={handleGoToAnalysis}
-                    processing={isCreatingAnalysis}
+                    buttonStyle={supportsAiAnalysis ? 'secondary' : 'primary'}
+                    icon="download"
+                    onClick={downloadPdf}
+                    processing={isDownloadingPdf}
+                    aria-label={formatMessage(messages.downloadInsightsPdf)}
                   >
-                    <FormattedMessage {...messages.aiAnalysis} />
+                    <FormattedMessage {...messages.download} />
                   </Button>
+                  {supportsAiAnalysis && (
+                    <Button
+                      buttonStyle="primary"
+                      icon="stars"
+                      onClick={handleGoToAnalysis}
+                      processing={isCreatingAnalysis}
+                    >
+                      <FormattedMessage {...messages.aiAnalysis} />
+                    </Button>
+                  )}
+                </Box>
+                {pdfError && (
+                  <Text fontSize="s" color="error" m="0px">
+                    {formatMessage(messages.errorPdfDownload)}
+                  </Text>
                 )}
               </Box>
-              {pdfError && (
-                <Text fontSize="s" color="error" m="0px">
-                  {formatMessage(messages.errorPdfDownload)}
-                </Text>
-              )}
-            </Box>
-          )}
+            )}
+          </Box>
+        </Box>
+
+        <Box display="flex" flexDirection="column" gap="16px" pt="16px">
+          <PageBreakBox>
+            <ParticipationMetrics phase={phase.data} />
+          </PageBreakBox>
+
+          <PageBreakBox>
+            <ParticipantsTimeline phaseId={phase.data.id} />
+          </PageBreakBox>
+
+          <DemographicsSection phase={phase.data} />
+
+          <PageBreakBox>
+            <MethodSpecificInsights
+              phaseId={phase.data.id}
+              participationMethod={phase.data.attributes.participation_method}
+            />
+          </PageBreakBox>
         </Box>
       </Box>
 
-      <Box display="flex" flexDirection="column" gap="16px" pt="16px">
-        <PageBreakBox>
-          <ParticipationMetrics phase={phase.data} />
-        </PageBreakBox>
-
-        <PageBreakBox>
-          <ParticipantsTimeline phaseId={phase.data.id} />
-        </PageBreakBox>
-
-        <DemographicsSection phase={phase.data} />
-
-        <PageBreakBox>
-          <MethodSpecificInsights
-            phaseId={phase.data.id}
-            participationMethod={phase.data.attributes.participation_method}
-          />
-        </PageBreakBox>
-      </Box>
-    </Box>
+      {/* Hidden container for PDF rendering - only mounted during export */}
+      {isDownloadingPdf && (
+        <div style={hiddenContainerStyle}>
+          <InsightsPdfContent phase={phase.data} />
+        </div>
+      )}
+    </>
   );
 };
 

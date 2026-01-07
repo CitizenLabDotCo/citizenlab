@@ -6,14 +6,12 @@ import messages from './messages';
 import useInsightsPdfDownload from './useInsightsPdfDownload';
 
 interface PdfExportContextValue {
-  isPdfExport: boolean;
   downloadPdf: () => Promise<void>;
   isDownloading: boolean;
   error: string | null;
 }
 
 const PdfExportContext = createContext<PdfExportContextValue>({
-  isPdfExport: false,
   downloadPdf: async () => {},
   isDownloading: false,
   error: null,
@@ -29,16 +27,13 @@ export const PdfExportProvider = ({
   filename,
 }: PdfExportProviderProps) => {
   const { formatMessage } = useIntl();
-  const { downloadPdf, isDownloading, isPdfExport, error } =
-    useInsightsPdfDownload({
-      filename,
-      errorMessage: formatMessage(messages.errorPdfDownload),
-    });
+  const { downloadPdf, isDownloading, error } = useInsightsPdfDownload({
+    filename,
+    errorMessage: formatMessage(messages.errorPdfDownload),
+  });
 
   return (
-    <PdfExportContext.Provider
-      value={{ isPdfExport, downloadPdf, isDownloading, error }}
-    >
+    <PdfExportContext.Provider value={{ downloadPdf, isDownloading, error }}>
       {children}
     </PdfExportContext.Provider>
   );

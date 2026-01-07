@@ -4,46 +4,46 @@ import { colors } from '@citizenlab/cl2-component-library';
 
 interface UseInsightsPdfDownloadOptions {
   filename?: string;
-  containerId?: string;
+  hiddenContainerId?: string;
   errorMessage: string;
 }
 
 interface UseInsightsPdfDownloadReturn {
   downloadPdf: () => Promise<void>;
   isDownloading: boolean;
-  isPdfExport: boolean;
   error: string | null;
 }
 
 /**
  * Hook for downloading insights tab content as a PDF.
- * Manages both the download state and the PDF export mode state.
+ * Uses a hidden offscreen container to render PDF-specific layout
+ * without affecting the visible UI.
  */
 export default function useInsightsPdfDownload({
   errorMessage,
   filename = 'insights',
-  containerId = 'insights-pdf-container',
+  hiddenContainerId = 'insights-pdf-hidden-container',
 }: UseInsightsPdfDownloadOptions): UseInsightsPdfDownloadReturn {
   const [isDownloading, setIsDownloading] = useState(false);
-  const [isPdfExport, setIsPdfExport] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const downloadPdf = useCallback(async () => {
     setIsDownloading(true);
-    setIsPdfExport(true);
     setError(null);
 
     try {
-      // Allow React to re-render with PDF export mode
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      // Allow React to render the hidden PDF container
+      // Recharts ResponsiveContainer needs time to measure dimensions
+      // Animation is disabled for PDF export, so we only need time for layout
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       // Lazy load html2pdf.js to reduce initial bundle size (~500KB gzipped)
       const html2pdf = (await import('html2pdf.js')).default;
 
-      const element = document.getElementById(containerId);
+      const element = document.getElementById(hiddenContainerId);
 
       if (!element) {
-        throw new Error(`Element with id "${containerId}" not found`);
+        throw new Error(`Element with id "${hiddenContainerId}" not found`);
       }
 
       // Clone the element to avoid modifying the original
@@ -109,15 +109,13 @@ export default function useInsightsPdfDownload({
       console.error('PDF download error:', err);
       setError(errorMessage);
     } finally {
-      setIsPdfExport(false);
       setIsDownloading(false);
     }
-  }, [containerId, filename, errorMessage]);
+  }, [hiddenContainerId, filename, errorMessage]);
 
   return {
     downloadPdf,
     isDownloading,
-    isPdfExport,
     error,
   };
 }

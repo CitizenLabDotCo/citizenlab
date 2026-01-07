@@ -25,9 +25,14 @@ type Props = Dates &
     margin?: Margin;
     yaxis?: YAxisProps;
     showVisitors?: boolean;
+    isAnimationActive?: boolean;
   };
 
-const getLineConfig = (noData: boolean, showVisitors: boolean) => {
+const getLineConfig = (
+  noData: boolean,
+  showVisitors: boolean,
+  isAnimationActive?: boolean
+) => {
   if (noData) {
     return { strokeWidths: showVisitors ? [0, 0] : [0] };
   }
@@ -36,6 +41,7 @@ const getLineConfig = (noData: boolean, showVisitors: boolean) => {
       ? [colors.categorical01, colors.categorical03]
       : [colors.categorical01],
     activeDot: { r: 4 },
+    isAnimationActive,
   };
 };
 
@@ -50,6 +56,7 @@ const Chart = ({
   ariaLabel,
   ariaDescribedBy,
   showVisitors = false,
+  isAnimationActive,
 }: Props & AccessibilityProps) => {
   const { formatMessage } = useIntl();
 
@@ -106,7 +113,7 @@ const Chart = ({
         y: showVisitors ? ['participants', 'visitors'] : ['participants'],
       }}
       margin={margin}
-      lines={getLineConfig(noData, showVisitors)}
+      lines={getLineConfig(noData, showVisitors, isAnimationActive)}
       grid={{ vertical: true }}
       xaxis={{ tickFormatter: formatTick }}
       yaxis={yaxis}

@@ -11,14 +11,21 @@ import VotingInsights from './voting/VotingInsights';
 interface Props {
   phaseId: string;
   participationMethod: ParticipationMethod;
+  isPdfExport?: boolean;
 }
 
-const MethodSpecificInsights = ({ phaseId, participationMethod }: Props) => {
+const MethodSpecificInsights = ({
+  phaseId,
+  participationMethod,
+  isPdfExport = false,
+}: Props) => {
   switch (participationMethod) {
     case 'common_ground':
       return <CommonGroundInsights phaseId={phaseId} />;
     case 'native_survey':
-      return <NativeSurveyInsights phaseId={phaseId} />;
+      return (
+        <NativeSurveyInsights phaseId={phaseId} isPdfExport={isPdfExport} />
+      );
     case 'ideation':
       return <IdeationInsights phaseId={phaseId} />;
     case 'proposals':

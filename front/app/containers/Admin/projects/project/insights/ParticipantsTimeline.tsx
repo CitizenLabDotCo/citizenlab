@@ -11,20 +11,19 @@ import ReportExportMenu from 'components/admin/ReportExportMenu';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import { usePdfExportContext } from './PdfExportContext';
 
 interface Props {
   phaseId: string;
+  isPdfExport?: boolean;
 }
 
 // Fixed dimensions for PDF export to fit A4 page (with 15mm margins)
 const PDF_CHART_WIDTH = 650;
 const PDF_CHART_HEIGHT = 280;
 
-const ParticipantsTimeline = ({ phaseId }: Props) => {
+const ParticipantsTimeline = ({ phaseId, isPdfExport = false }: Props) => {
   const { formatMessage } = useIntl();
   const graphRef = useRef<SVGElement>(null);
-  const { isPdfExport } = usePdfExportContext();
 
   const { data, isLoading, error } = usePhaseInsights({ phaseId });
 
@@ -99,6 +98,7 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
           resolution={resolution}
           showVisitors={true}
           innerRef={graphRef}
+          isAnimationActive={!isPdfExport}
         />
       </Box>
     </Box>
