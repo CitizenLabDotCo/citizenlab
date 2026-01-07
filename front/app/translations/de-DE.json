@@ -2112,6 +2112,7 @@
   "app.errors.confirmation_code_too_many_retries": "Sie haben es zu oft versucht. Bitte fordern Sie einen neuen Code an oder versuchen Sie, Ihre E-Mail-Adresse zu ändern.",
   "app.errors.email_already_active": "Die E-Mail-Adresse {value} in der Zeile {row} gehört bereits einem/r registrierten/m Benutzer/in.",
   "app.errors.email_already_invited": "An die E-Mail-Adresse {value} in der Zeile {row} wurde bereits eine Einladung versandt.",
+  "app.errors.email_banned": "Die in Zeile {row} gefundene E-Mail-Adresse {value} wurde gesperrt und kann nicht eingeladen werden.",
   "app.errors.email_blank": "Dies kann nicht leer sein",
   "app.errors.email_domain_blacklisted": "Bitte verwenden Sie zur Anmeldung eine andere E-Mail-Domain.",
   "app.errors.email_invalid": "Bitte verwenden Sie eine gültige E-Mail-Adresse.",
