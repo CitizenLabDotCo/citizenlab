@@ -1,4 +1,10 @@
-import React, { useMemo, useRef, useCallback, useState } from 'react';
+import React, {
+  useMemo,
+  useRef,
+  useCallback,
+  useState,
+  useEffect,
+} from 'react';
 
 import {
   Box,
@@ -102,13 +108,14 @@ const IdeasFeed = ({ topicId }: Props) => {
     useInfiniteIdeaFeedIdeas({
       phaseId,
       topic: topicId || undefined,
-      'page[size]': 20,
+      'page[size]': 10,
       keepPreviousData: topicId ? false : true,
     });
 
   const flatIdeas = useMemo(() => {
     if (!data) return [];
-    return data.pages.flatMap((page) => page.data);
+    const allIdeas = data.pages.flatMap((page) => page.data);
+    return [...new Map(allIdeas.map((idea) => [idea.id, idea])).values()]; // Remove duplicates
   }, [data]);
 
   // Reorder ideas to put the initial idea first (if provided), otherwise keep original order
@@ -142,10 +149,18 @@ const IdeasFeed = ({ topicId }: Props) => {
 
   const ideasLength = orderedIdeas.length;
 
-  const itemHeight = window.innerHeight - PEEK_HEIGHT;
+  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+
+  useEffect(() => {
+    const handleResize = () => setWindowHeight(window.innerHeight);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const itemHeight = windowHeight - PEEK_HEIGHT;
 
   const { getVirtualItems, getTotalSize, measureElement } = useVirtualizer({
-    count: hasNextPage ? ideasLength + 1 : ideasLength,
+    count: ideasLength + 1,
     getScrollElement: () => parentRef.current,
     estimateSize: () => itemHeight,
     overscan: 2,
