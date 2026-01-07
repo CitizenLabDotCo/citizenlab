@@ -552,7 +552,7 @@ describe ParticipantsService do
       idea = create(:idea, author: user)
       comment = create(:comment, author: user)
       reaction = create(:reaction, user: user)
-      basket = create(:basket, user: user)
+      basket = create(:basket, user: user, submitted_at: Time.zone.now)
       poll_response = create(:poll_response, user: user)
       volunteer = create(:volunteer, user: user)
       event_attendance = create(:event_attendance, attendee: user)
@@ -569,6 +569,32 @@ describe ParticipantsService do
 
       # Comments are soft-deleted to preserve thread structure
       expect(Comment.find(comment.id).publication_status).to eq('deleted')
+    end
+
+    it 'updates counts after destroying participation data' do
+      project = create(:project_with_active_ideation_phase)
+      ideation_phase = project.phases.first
+
+      # User's idea + other user's idea that user reacts to and comments on
+      create(:idea, author: user, project: project, phases: [ideation_phase])
+      other_idea = create(:idea, author: other_user, project: project, phases: [ideation_phase])
+      create(:comment, author: user, idea: other_idea)
+      create(:reaction, user: user, reactable: other_idea, mode: 'up')
+
+      # Budgeting phase with basket
+      budgeting_phase = create(:budgeting_phase, project: project)
+      budget_idea = create(:idea, author: other_user, phases: [budgeting_phase], budget: 100)
+      basket = create(:basket, user: user, phase: budgeting_phase)
+      create(:baskets_idea, basket: basket, idea: budget_idea)
+      Basket.update_counts(budgeting_phase)
+
+      expect { service.destroy_user_participation_data(user) }
+        .to change { project.reload.ideas_count }.from(3).to(2)
+        .and change { other_idea.reload.likes_count }.from(1).to(0)
+        .and change { other_idea.reload.comments_count }.from(1).to(0)
+        .and change { budget_idea.reload.baskets_count }.from(1).to(0)
+        .and change { budget_idea.reload.votes_count }.from(100).to(0)
+        .and change { budgeting_phase.reload.baskets_count }.from(1).to(0)
     end
 
     it 'clears project participant caches for affected projects' do
