@@ -51,11 +51,7 @@ const SSOButtons = ({ onClickSSO }: Props) => {
             />
           </Box>
         )}
-        <SSOButtonsExceptFCAndCU
-          showConsent={false}
-          flow="signin"
-          onSelectAuthProvider={onClickSSO}
-        />
+        <SSOButtonsExceptFCAndCU onSelectAuthProvider={onClickSSO} />
       </Box>
     </>
   );
