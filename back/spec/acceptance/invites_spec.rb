@@ -133,8 +133,7 @@ resource 'Invites' do
         parameter :avatar, 'The avatar of the invitee.', required: false
         parameter :locale, 'The locale of the invitee.', required: false
         parameter :claim_tokens, <<~DESC
-          Array of claim tokens from anonymous participation. When provided, the anonymous
-          participation (e.g., ideas) associated with these tokens will be claimed by the invitee.
+          Tokens used to claim anonymous participation data (e.g., ideas) created before accepting the invite.
         DESC
       end
       ValidationErrorHelper.new.error_fields(self, Invite)
