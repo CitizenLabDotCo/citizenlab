@@ -2112,6 +2112,7 @@
   "app.errors.confirmation_code_too_many_retries": "Покушали сте превише пута. Затражите нови код или покушајте да промените своју адресу е-поште.",
   "app.errors.email_already_active": "Адреса е-поште {value} која се налази у реду {row} већ припада регистрованом учеснику",
   "app.errors.email_already_invited": "Адреса е-поште {value} која се налази у реду {row} је већ позвана",
+  "app.errors.email_banned": "The email address {value} found in row {row} has been banned and cannot be invited",
   "app.errors.email_blank": "Ово не може бити празно",
   "app.errors.email_domain_blacklisted": "За регистрацију користите други домен е-поште.",
   "app.errors.email_invalid": "Молимо користите важећу адресу е-поште.",

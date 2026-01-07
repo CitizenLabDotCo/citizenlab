@@ -2112,6 +2112,7 @@
   "app.errors.confirmation_code_too_many_retries": "crwdns215872:0crwdne215872:0",
   "app.errors.email_already_active": "crwdns215874:0{value}crwdnd215874:0{row}crwdne215874:0",
   "app.errors.email_already_invited": "crwdns215876:0{value}crwdnd215876:0{row}crwdne215876:0",
+  "app.errors.email_banned": "crwdns5899071:0{value}crwdnd5899071:0{row}crwdne5899071:0",
   "app.errors.email_blank": "crwdns215878:0crwdne215878:0",
   "app.errors.email_domain_blacklisted": "crwdns215880:0crwdne215880:0",
   "app.errors.email_invalid": "crwdns215882:0crwdne215882:0",

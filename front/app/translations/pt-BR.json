@@ -2112,6 +2112,7 @@
   "app.errors.confirmation_code_too_many_retries": "Você já tentou muitas vezes. Por favor, solicite um novo código ou tente mudar o seu e-mail.",
   "app.errors.email_already_active": "O e-mail {value} encontrado na linha {row} já pertence a um usuário registrado",
   "app.errors.email_already_invited": "O e-mail {value} encontrado na linha {row} já foi convidado",
+  "app.errors.email_banned": "O endereço de e-mail {value} encontrado na linha {row} foi banido e você não pode ser convidado.",
   "app.errors.email_blank": "Não pode estar vazio",
   "app.errors.email_domain_blacklisted": "Por favor, use um domínio de e-mail diferente para registrar.",
   "app.errors.email_invalid": "Por favor, use um endereço de e-mail válido.",
