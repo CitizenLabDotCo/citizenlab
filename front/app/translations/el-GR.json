@@ -2112,6 +2112,7 @@
   "app.errors.confirmation_code_too_many_retries": "Προσπαθήσατε πάρα πολλές φορές. Παρακαλούμε ζητήστε νέο κωδικό ή δοκιμάστε να αλλάξετε το email σας.",
   "app.errors.email_already_active": "Η διεύθυνση email {value} που βρέθηκε στη σειρά {row} ανήκει ήδη σε εγγεγραμμένο συμμετέχοντα",
   "app.errors.email_already_invited": "Η διεύθυνση email {value} που βρέθηκε στη σειρά {row} έχει ήδη προσκληθεί",
+  "app.errors.email_banned": "Η διεύθυνση ηλεκτρονικού ταχυδρομείου {value} που βρέθηκε στη σειρά {row} έχει απαγορευτεί και δεν μπορεί να προσκληθεί",
   "app.errors.email_blank": "Αυτό δεν μπορεί να είναι κενό",
   "app.errors.email_domain_blacklisted": "Παρακαλούμε χρησιμοποιήστε έναν διαφορετικό τομέα ηλεκτρονικού ταχυδρομείου για να εγγραφείτε.",
   "app.errors.email_invalid": "Παρακαλούμε χρησιμοποιήστε μια έγκυρη διεύθυνση email.",
