@@ -10,20 +10,16 @@ export default defineMessages({
     defaultMessage:
       'Auto-saving is enabled by default when you open the form editor. Any time you close the field settings panel using the "X" button, it will automatically trigger a save.',
   },
-  editSchema: {
-    id: 'app.components.FormBuilder.components.FormBuilderTopBar.editSchema',
-    defaultMessage: 'Edit schema',
+  schemaEdit: {
+    id: 'app.components.FormBuilder.components.FormBuilderTopBar.schemaEdit',
+    defaultMessage: 'Edit Schema',
   },
-  editSchemaTitle: {
-    id: 'app.components.FormBuilder.components.FormBuilderTopBar.editSchemaTitle',
-    defaultMessage: 'Edit Form Schema',
-  },
-  copySchema: {
-    id: 'app.components.FormBuilder.components.FormBuilderTopBar.copySchema',
+  schemaCopy: {
+    id: 'app.components.FormBuilder.components.FormBuilderTopBar.schemaCopy',
     defaultMessage: 'Copy',
   },
-  copySchemaTooltip: {
-    id: 'app.components.FormBuilder.components.FormBuilderTopBar.copySchemaTooltip2',
+  schemaCopyTooltip: {
+    id: 'app.components.FormBuilder.components.FormBuilderTopBar.schemaCopyTooltip',
     defaultMessage:
       'The copied schema will have all IDs replaced with new UUIDs so it can be pasted into another form',
   },
@@ -31,20 +27,20 @@ export default defineMessages({
     id: 'app.components.FormBuilder.components.FormBuilderTopBar.schemaCopied',
     defaultMessage: 'Copied!',
   },
-  saveSchema: {
-    id: 'app.components.FormBuilder.components.FormBuilderTopBar.saveSchema',
+  schemaSave: {
+    id: 'app.components.FormBuilder.components.FormBuilderTopBar.schemaSave',
     defaultMessage: 'Save',
   },
-  cancelEditSchema: {
-    id: 'app.components.FormBuilder.components.FormBuilderTopBar.cancelEditSchema',
+  schemaCancelEdit: {
+    id: 'app.components.FormBuilder.components.FormBuilderTopBar.schemaCancelEdit',
     defaultMessage: 'Cancel',
   },
   schemaParseError: {
     id: 'app.components.FormBuilder.components.FormBuilderTopBar.schemaParseError',
     defaultMessage: 'Invalid JSON',
   },
-  saveDisabledActivePlatform: {
-    id: 'app.components.FormBuilder.components.FormBuilderTopBar.saveDisabledActivePlatform',
+  schemaSaveDisabled: {
+    id: 'app.components.FormBuilder.components.FormBuilderTopBar.schemaSaveDisabled',
     defaultMessage:
       'Cannot save schema on active platforms when there are survey responses',
   },

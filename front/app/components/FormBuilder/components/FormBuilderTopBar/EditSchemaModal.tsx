@@ -54,6 +54,8 @@ type Props = {
   onSaveSuccess?: () => void;
 };
 
+// NOTE: This modal allows editing the JSON of custom fields directly.
+// It should only be used by super admins (mainly for analysing and fixing issues)
 const EditSchemaModal = ({
   opened,
   onClose,
@@ -91,6 +93,7 @@ const EditSchemaModal = ({
     }
   }, [opened, customFields]);
 
+  // Function to replace all IDs with new UUIDs and update logic references
   const replaceIdsWithNewUuids = (fields: unknown[]): unknown[] => {
     const idMapping: Record<string, string> = {};
 
@@ -150,7 +153,7 @@ const EditSchemaModal = ({
                   newRule.goto_page_id = idMapping[typedRule.goto_page_id];
                 }
 
-                // Update 'if' field if it's an option ID (string)
+                // Update 'if' field if it is an option ID (string)
                 if (
                   typeof typedRule.if === 'string' &&
                   idMapping[typedRule.if]
@@ -222,7 +225,7 @@ const EditSchemaModal = ({
     <Modal opened={opened} close={onClose} width="800px">
       <Box p="24px">
         <Title variant="h3" mb="16px">
-          <FormattedMessage {...messages.editSchemaTitle} />
+          <FormattedMessage {...messages.schemaEdit} />
         </Title>
 
         <CodeTextarea
@@ -239,7 +242,7 @@ const EditSchemaModal = ({
 
         <Box display="flex" gap="12px" mt="16px" justifyContent="flex-end">
           <Button buttonStyle="secondary-outlined" onClick={onClose}>
-            <FormattedMessage {...messages.cancelEditSchema} />
+            <FormattedMessage {...messages.schemaCancelEdit} />
           </Button>
           <Button
             buttonStyle="secondary-outlined"
@@ -250,16 +253,16 @@ const EditSchemaModal = ({
               {copied ? (
                 <FormattedMessage {...messages.schemaCopied} />
               ) : (
-                <FormattedMessage {...messages.copySchema} />
+                <FormattedMessage {...messages.schemaCopy} />
               )}
               <IconTooltip
-                content={formatMessage(messages.copySchemaTooltip)}
+                content={formatMessage(messages.schemaCopyTooltip)}
               />
             </Box>
           </Button>
           <Tooltip
             disabled={!isSaveDisabled}
-            content={formatMessage(messages.saveDisabledActivePlatform)}
+            content={formatMessage(messages.schemaSaveDisabled)}
           >
             <Button
               buttonStyle="admin-dark"
@@ -267,7 +270,7 @@ const EditSchemaModal = ({
               processing={isSaving}
               disabled={isSaveDisabled}
             >
-              <FormattedMessage {...messages.saveSchema} />
+              <FormattedMessage {...messages.schemaSave} />
             </Button>
           </Tooltip>
         </Box>
