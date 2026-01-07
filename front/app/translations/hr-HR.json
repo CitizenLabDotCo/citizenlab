@@ -1391,6 +1391,7 @@
   "app.containers.IdeasFeedPage.backToProject": "Natrag na projekt",
   "app.containers.IdeasFeedPage.collapsePanel": "Sažmi ploču s temama",
   "app.containers.IdeasFeedPage.expandPanel": "Proširi ploču s temama",
+  "app.containers.IdeasFeedPage.seeAllIdeas": "Pogledajte sve {ideasCount} ulaze",
   "app.containers.IdeasFeedPage.topicsPanel": "Ploča s temama",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Svi unosi objavljeni",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Istražite sve unose koji su objavljeni na platformi za sudjelovanje organizacije {orgName}.",
