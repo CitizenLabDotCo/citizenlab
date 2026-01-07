@@ -238,8 +238,8 @@ resource 'Users' do
 
         let(:email) { 'test@test.com' }
 
-        example_request '[error] returns 401' do
-          assert_status 401
+        example_request 'it also works (necessary for ?super_admin param)' do
+          assert_status 200
         end
       end
     end
