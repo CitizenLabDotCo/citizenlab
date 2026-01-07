@@ -18,6 +18,8 @@ import AuthProviderButton, {
   Props as AuthProviderButtonProps,
 } from '../../_components/AuthProviderButton';
 import ClaveUnicaExpandedAuthProviderButton from '../../_components/ClaveUnicaExpandedAuthProviderButton';
+import sharedMessages from '../../_components/messages';
+import ViennaSamlButton from '../../_components/ViennaSamlButton';
 
 import messages from './messages';
 
@@ -123,7 +125,7 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
             onClick={onClickSSO}
           >
             <FormattedMessage
-              {...parentMessages.continueWithLoginMechanism}
+              {...sharedMessages.continueWithLoginMechanism}
               values={{
                 loginMechanismName:
                   process.env.NODE_ENV === 'development'
@@ -140,7 +142,7 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
             onClick={onClickSSO}
           >
             <FormattedMessage
-              {...parentMessages.continueWithLoginMechanism}
+              {...sharedMessages.continueWithLoginMechanism}
               values={{
                 loginMechanismName: keycloakName,
               }}
@@ -154,7 +156,7 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
             onClick={onClickSSO}
           >
             <FormattedMessage
-              {...parentMessages.continueWithLoginMechanism}
+              {...sharedMessages.continueWithLoginMechanism}
               values={{
                 loginMechanismName: 'BankID eller Freja eID+',
               }}
@@ -168,7 +170,7 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
             onClick={onClickSSO}
           >
             <FormattedMessage
-              {...parentMessages.continueWithLoginMechanism}
+              {...sharedMessages.continueWithLoginMechanism}
               values={{
                 loginMechanismName: 'Itsme®',
               }}
