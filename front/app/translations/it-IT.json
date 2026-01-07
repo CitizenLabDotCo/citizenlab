@@ -1153,7 +1153,7 @@
   "app.containers.AdminPage.Users.UsersGroup.atLeastOneRuleError": "Fornire almeno una regola",
   "app.containers.AdminPage.Users.UsersGroup.rulesError": "Alcune condizioni sono incomplete",
   "app.containers.AdminPage.Users.UsersGroup.saveGroup": "Salva gruppo",
-  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability1": "La configurazione dei gruppi intelligenti non fa parte della tua licenza attuale. Contatta il tuo GovSuccess Manager per saperne di più.",
+  "app.containers.AdminPage.Users.UsersGroup.smartGroupsAvailability1": "La configurazione dei gruppi smart non fa parte della tua licenza attuale. Contatta il tuo GovSuccess Manager per saperne di più.",
   "app.containers.AdminPage.Users.UsersGroup.titleFieldEmptyError": "Fornire un nome di gruppo",
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "La verifica è disabilitata per la tua piattaforma, rimuovi la regola di verifica o contatta il supporto.",
   "app.containers.App.appMetaDescription": "Benvenuti nella piattaforma di partecipazione online di {orgName}. \nEsplora i progetti locali e partecipa alla discussione!",
