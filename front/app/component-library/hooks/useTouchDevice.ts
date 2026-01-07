@@ -9,10 +9,7 @@ import { useMemo } from 'react';
  * the device's input method rather than viewport size.
  */
 const useTouchDevice = () => {
-  return useMemo(
-    () => 'ontouchstart' in window || navigator.maxTouchPoints > 0,
-    []
-  );
+  return useMemo(() => navigator.maxTouchPoints > 0, []);
 };
 
 export default useTouchDevice;
