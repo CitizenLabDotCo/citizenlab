@@ -2112,6 +2112,7 @@
   "app.errors.confirmation_code_too_many_retries": "آپ نے بہت بار کوشش کی ہے۔ براہ کرم ایک نئے کوڈ کی درخواست کریں یا اپنا ای میل تبدیل کرنے کی کوشش کریں۔",
   "app.errors.email_already_active": "ای میل ایڈریس {value} قطار میں پایا گیا {row} پہلے سے ہی ایک رجسٹرڈ شریک کا ہے",
   "app.errors.email_already_invited": "ای میل ایڈریس {value} قطار میں پایا گیا {row} پہلے ہی مدعو کیا گیا تھا",
+  "app.errors.email_banned": "قطار {row} میں پائے جانے والے ای میل ایڈریس {value} پر پابندی لگا دی گئی ہے اور اسے مدعو نہیں کیا جا سکتا",
   "app.errors.email_blank": "یہ خالی نہیں ہو سکتا",
   "app.errors.email_domain_blacklisted": "رجسٹر کرنے کے لیے براہ کرم ایک مختلف ای میل ڈومین استعمال کریں۔",
   "app.errors.email_invalid": "براہ کرم ایک درست ای میل ایڈریس استعمال کریں۔",

@@ -28,7 +28,6 @@ import messages from './messages';
 import SuccessfulUserBlock from './SuccessfulUserBlock';
 
 type Props = {
-  open: boolean;
   setClose: () => void;
   user: IUserData;
   /**
@@ -43,7 +42,7 @@ type FormValues = {
   reason: string;
 };
 
-const BlockUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
+const BlockUserModal = ({ setClose, user, returnFocusRef }: Props) => {
   const [success, setSuccess] = useState(false);
   const [updatedUser, setUpdatedUser] = useState<IUserData | undefined>();
   const { data: appConfiguration } = useAppConfiguration();
@@ -99,7 +98,7 @@ const BlockUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
   return (
     <Modal
       close={setClose}
-      opened={open}
+      opened={true}
       header={formatMessage(messages.header)}
       returnFocusRef={returnFocusRef}
     >

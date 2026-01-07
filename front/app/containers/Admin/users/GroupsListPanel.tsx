@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 import styled from 'styled-components';
 
 import useBlockedUsercount from 'api/blocked_users/useBlockedUsersCount';
+import useEmailBansCount from 'api/email_bans/useEmailBansCount';
 import { IGroupData } from 'api/groups/types';
 import useGroups from 'api/groups/useGroups';
 import useUsersCount from 'api/users_count/useUsersCount';
@@ -175,6 +176,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
     new Set<IGroupData['id']>()
   );
   const { data: blockedUsercount } = useBlockedUsercount();
+  const { data: bannedEmailsCount } = useEmailBansCount();
   const isUserBlockingEnabled = useFeatureFlag({
     name: 'user_blocking',
   });
@@ -247,6 +249,17 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
           )}
         </MenuLink>
       )}
+      <MenuLink
+        to="/admin/users/banned-emails"
+        data-testid="banned-emails-link"
+      >
+        <GroupName>
+          <FormattedMessage {...messages.bannedEmails} />
+        </GroupName>
+        {bannedEmailsCount && (
+          <MembersCount>{bannedEmailsCount.data.attributes.count}</MembersCount>
+        )}
+      </MenuLink>
       <Separator />
       <MenuTitle className="intercom-users-groups-sidebar-section">
         <FormattedMessage tagName="h2" {...messages.groupsTitle} />

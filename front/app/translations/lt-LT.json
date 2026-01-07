@@ -2112,6 +2112,7 @@
   "app.errors.confirmation_code_too_many_retries": "Bandėte per daug kartų. Prašykite naujo kodo arba pabandykite pakeisti el. pašto adresą.",
   "app.errors.email_already_active": "Eilutėje {row} rastas el. pašto adresas {value} jau priklauso registruotam dalyviui.",
   "app.errors.email_already_invited": "Eilutėje {row} rastas el. pašto adresas {value} jau buvo pakviestas",
+  "app.errors.email_banned": "Eilutėje {row} rastas el. pašto adresas {value} buvo uždraustas ir negali būti kviečiamas",
   "app.errors.email_blank": "Ši reikšmė negali būti tuščia",
   "app.errors.email_domain_blacklisted": "Registruodamiesi naudokite kitą el. pašto domeną.",
   "app.errors.email_invalid": "Naudokite galiojantį el. pašto adresą.",

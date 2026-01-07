@@ -2112,6 +2112,7 @@
   "app.errors.confirmation_code_too_many_retries": "Çok fazla kez denediniz. Lütfen yeni bir kod talep edin veya e-postanızı değiştirmeyi deneyin.",
   "app.errors.email_already_active": "{row} satırında bulunan {value} e-posta adresi zaten kayıtlı olan bir katılımcıya ait",
   "app.errors.email_already_invited": "{row} satırında bulunan {value} e-posta adresi zaten davet edilmiş",
+  "app.errors.email_banned": "{row} satırında bulunan {value} e-posta adresi yasaklanmıştır ve davet edilemez",
   "app.errors.email_blank": "Bu boş olamaz",
   "app.errors.email_domain_blacklisted": "Lütfen kayıt olmak için farklı bir e-posta alan adı kullanın.",
   "app.errors.email_invalid": "Lütfen geçerli bir e-posta adresi kullanın.",
