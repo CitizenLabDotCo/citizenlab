@@ -259,6 +259,7 @@ kl:
       x_days_ago_by_author: 'Ullut %{x} matuma siorna %{author}-mit'
     new_comment_for_admin:
       commented: '%{authorFirstName} oqaaseqaateqarpoq:'
+      anonymous_user: Anonymous user
       cta_button: 'View %{authorFirstName}''s comment'
       days_ago: '%{numberOfDays} ullut matuma siorna'
       event_description: '%{authorName} platforminnut oqaaseqaammik allappoq. Oqallinnermi peqataagit oqaloqatigiinnerlu ingerlatiguk!'
