@@ -193,7 +193,7 @@ const FormBuilderTopBar = ({
             mr="20px"
             onClick={() => setShowEditSchemaModal(true)}
           >
-            <FormattedMessage {...ownMessages.editSchema} />
+            <FormattedMessage {...ownMessages.schemaEdit} />
           </Button>
         )}
         <ButtonWithLink
