@@ -20,7 +20,6 @@ import WebMap from '@arcgis/core/WebMap';
 import Popup from '@arcgis/core/widgets/Popup';
 import { colors } from '@citizenlab/cl2-component-library';
 import { transparentize } from 'polished';
-import useIntl from 'react-intl/src/components/useIntl';
 import { v4 as uuidv4 } from 'uuid';
 
 import { IMapConfig } from 'api/map_config/types';
@@ -28,6 +27,7 @@ import { IMapLayerAttributes } from 'api/map_layers/types';
 
 import { Localize } from 'hooks/useLocalize';
 
+import { useIntl } from 'utils/cl-intl';
 import { hexToRGBA } from 'utils/helperUtils';
 import { projectPointToWebMercator } from 'utils/mapUtils/map';
 

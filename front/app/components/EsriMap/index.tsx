@@ -19,8 +19,6 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useLocale from 'hooks/useLocale';
 
-import { useIntl } from 'utils/cl-intl';
-
 import { configureMapView } from './config';
 import { InitialData, DefaultBasemapType } from './types';
 import {
