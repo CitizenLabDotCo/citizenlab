@@ -6,14 +6,13 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IDKeycloakMethod } from 'api/verification_methods/types';
 import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
 
-import { SignUpInFlow } from 'containers/Authentication/typings';
+import { AuthProvider } from 'containers/Authentication/typings';
 import useAuthConfig from 'containers/Authentication/useAuthConfig';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import AuthProviderButton, {
   Props as AuthProviderButtonProps,
-  TOnContinueFunction,
 } from '../AuthProviderButton';
 import parentMessages from '../messages';
 import ViennaSamlButton from '../ViennaSamlButton';
@@ -27,18 +26,12 @@ const WrappedAuthProviderButton = (props: AuthProviderButtonProps) => (
 );
 
 interface Props {
-  showConsent: boolean;
-  flow: SignUpInFlow;
-  onSelectAuthProvider: TOnContinueFunction;
+  onSelectAuthProvider: (authProvider: AuthProvider) => void;
 }
 
 // All our sso methods except FranceConnect and ClaveUnica
 // because they have weird custom rules
-const SSOButtonsExceptFCAndCU = ({
-  showConsent,
-  flow,
-  onSelectAuthProvider,
-}: Props) => {
+const SSOButtonsExceptFCAndCU = ({ onSelectAuthProvider }: Props) => {
   const { ssoProviders } = useAuthConfig();
   const { data: tenant } = useAppConfiguration();
   const { data: verificationMethods } = useVerificationMethods();
@@ -61,9 +54,8 @@ const SSOButtonsExceptFCAndCU = ({
       {ssoProviders.fakeSso && (
         <WrappedAuthProviderButton
           icon="bullseye"
-          showConsent={showConsent}
           authProvider="fake_sso"
-          onContinue={onSelectAuthProvider}
+          onClick={onSelectAuthProvider}
           id="e2e-login-with-fake-sso"
         >
           <FormattedMessage {...messages.continueWithFakeSSO} />
@@ -72,9 +64,8 @@ const SSOButtonsExceptFCAndCU = ({
       {ssoProviders.hoplr && (
         <WrappedAuthProviderButton
           icon="hoplr"
-          showConsent={showConsent}
           authProvider="hoplr"
-          onContinue={onSelectAuthProvider}
+          onClick={onSelectAuthProvider}
         >
           <FormattedMessage {...messages.continueWithHoplr} />
         </WrappedAuthProviderButton>
@@ -82,9 +73,8 @@ const SSOButtonsExceptFCAndCU = ({
       {ssoProviders.nemlogIn && (
         <WrappedAuthProviderButton
           icon="mitid"
-          showConsent={showConsent}
           authProvider="nemlog_in"
-          onContinue={onSelectAuthProvider}
+          onClick={onSelectAuthProvider}
         >
           <FormattedMessage {...messages.continueWithNemlogIn} />
         </WrappedAuthProviderButton>
@@ -92,9 +82,8 @@ const SSOButtonsExceptFCAndCU = ({
       {ssoProviders.idAustria && (
         <WrappedAuthProviderButton
           icon="idaustria"
-          showConsent={showConsent}
           authProvider="id_austria"
-          onContinue={onSelectAuthProvider}
+          onClick={onSelectAuthProvider}
         >
           <FormattedMessage {...messages.continueWithIdAustria} />
         </WrappedAuthProviderButton>
@@ -102,9 +91,8 @@ const SSOButtonsExceptFCAndCU = ({
       {ssoProviders.criipto && (
         <WrappedAuthProviderButton
           icon="mitid"
-          showConsent={showConsent}
           authProvider="criipto"
-          onContinue={onSelectAuthProvider}
+          onClick={onSelectAuthProvider}
         >
           <FormattedMessage
             {...parentMessages.continueWithLoginMechanism}
@@ -120,9 +108,8 @@ const SSOButtonsExceptFCAndCU = ({
       {ssoProviders.keycloak && keycloakIcon && keycloakName && (
         <WrappedAuthProviderButton
           icon={keycloakIcon}
-          showConsent={showConsent}
           authProvider="keycloak"
-          onContinue={onSelectAuthProvider}
+          onClick={onSelectAuthProvider}
         >
           <FormattedMessage
             {...parentMessages.continueWithLoginMechanism}
@@ -135,9 +122,8 @@ const SSOButtonsExceptFCAndCU = ({
       {ssoProviders.twoday && (
         <WrappedAuthProviderButton
           icon="bankId"
-          showConsent={showConsent}
           authProvider="twoday"
-          onContinue={onSelectAuthProvider}
+          onClick={onSelectAuthProvider}
         >
           <FormattedMessage
             {...parentMessages.continueWithLoginMechanism}
@@ -150,9 +136,8 @@ const SSOButtonsExceptFCAndCU = ({
       {ssoProviders.acm && (
         <WrappedAuthProviderButton
           icon="acm"
-          showConsent={showConsent}
           authProvider="acm"
-          onContinue={onSelectAuthProvider}
+          onClick={onSelectAuthProvider}
         >
           <FormattedMessage
             {...parentMessages.continueWithLoginMechanism}
@@ -163,14 +148,13 @@ const SSOButtonsExceptFCAndCU = ({
         </WrappedAuthProviderButton>
       )}
       {ssoProviders.viennaCitizen && (
-        <ViennaSamlButton flow={flow} onContinue={onSelectAuthProvider} />
+        <ViennaSamlButton onClick={onSelectAuthProvider} />
       )}
       {ssoProviders.google && (
         <WrappedAuthProviderButton
-          showConsent={showConsent}
           icon="google"
           authProvider="google"
-          onContinue={onSelectAuthProvider}
+          onClick={onSelectAuthProvider}
         >
           <FormattedMessage {...messages.continueWithGoogle} />
         </WrappedAuthProviderButton>
@@ -178,9 +162,8 @@ const SSOButtonsExceptFCAndCU = ({
       {ssoProviders.facebook && (
         <WrappedAuthProviderButton
           icon="facebook"
-          showConsent={showConsent}
           authProvider="facebook"
-          onContinue={onSelectAuthProvider}
+          onClick={onSelectAuthProvider}
         >
           <FormattedMessage {...messages.continueWithFacebook} />
         </WrappedAuthProviderButton>
@@ -188,9 +171,8 @@ const SSOButtonsExceptFCAndCU = ({
       {ssoProviders.azureAd && (
         <WrappedAuthProviderButton
           icon="microsoft-windows"
-          showConsent={showConsent}
           authProvider="azureactivedirectory"
-          onContinue={onSelectAuthProvider}
+          onClick={onSelectAuthProvider}
         >
           <FormattedMessage
             {...messages.continueWithAzure}
@@ -201,9 +183,8 @@ const SSOButtonsExceptFCAndCU = ({
       {ssoProviders.azureAdB2c && (
         <WrappedAuthProviderButton
           icon="microsoft-windows"
-          showConsent={showConsent}
           authProvider="azureactivedirectory_b2c"
-          onContinue={onSelectAuthProvider}
+          onClick={onSelectAuthProvider}
         >
           <FormattedMessage
             {...messages.continueWithAzure}

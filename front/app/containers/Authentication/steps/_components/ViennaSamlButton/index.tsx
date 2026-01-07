@@ -1,12 +1,10 @@
 import React from 'react';
 
-import { fontSizes, Box, Text } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import AuthProviderButton, {
-  TOnContinueFunction,
-} from 'containers/Authentication/steps/_components/AuthProviderButton';
-import { SignUpInFlow } from 'containers/Authentication/typings';
+import AuthProviderButton from 'containers/Authentication/steps/_components/AuthProviderButton';
+import { AuthProvider } from 'containers/Authentication/typings';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -24,47 +22,18 @@ const TextContainer = styled(Box)`
   flex-direction: column;
 `;
 
-const SignUpSubHeader = styled(Text)`
-  font-size: ${fontSizes.s}px;
-`;
-
 interface Props {
-  flow: SignUpInFlow;
-  onContinue: TOnContinueFunction;
+  onClick: (authProvider: AuthProvider) => void;
 }
 
-const ViennaSamlButton = ({ onContinue, flow }: Props) => {
-  const handleOnContinue = () => {
-    if (flow === 'signup') {
-      window.location.href =
-        'https://mein.wien.gv.at/Registrieren?branding=citizenlab';
-    } else {
-      onContinue('id_vienna_saml');
-    }
-  };
+const ViennaSamlButton = ({ onClick }: Props) => {
   return (
     <Box mb="18px">
-      <AuthProviderButton
-        authProvider="id_vienna_saml"
-        onContinue={handleOnContinue}
-        showConsent={flow === 'signup'}
-      >
+      <AuthProviderButton authProvider="id_vienna_saml" onClick={onClick}>
         <Container>
           <ViennaIcon />
           <TextContainer>
-            <FormattedMessage
-              {...(flow === 'signin'
-                ? messages.signInWithStandardPortal
-                : messages.signUpWithStandardPortal)}
-            />
-
-            {flow === 'signup' && (
-              <SignUpSubHeader as="span">
-                <FormattedMessage
-                  {...messages.signUpWithStandardPortalSubHeader}
-                />
-              </SignUpSubHeader>
-            )}
+            <FormattedMessage {...messages.signInWithStandardPortal} />
           </TextContainer>
         </Container>
       </AuthProviderButton>
