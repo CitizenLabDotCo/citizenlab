@@ -86,5 +86,15 @@ describe('Post Participation Signup: proposals', () => {
     enterUserInfo(cy, { firstName, lastName });
     cy.get('#e2e-signup-custom-fields-skip-btn').click();
     cy.get('#e2e-success-continue-button').find('button').click();
+
+    // Make sure we get redirected to idea
+    cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);
+
+    // Make sure that idea belongs to user
+    cy.get('.e2e-author-link').should(
+      'have.attr',
+      'href',
+      `/en/profile/${firstName}-${lastName}`
+    );
   });
 });

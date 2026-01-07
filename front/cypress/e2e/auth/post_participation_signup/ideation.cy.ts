@@ -71,6 +71,10 @@ describe('Post Participation Signup: ideation', () => {
     cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);
 
     // Make sure that idea belongs to user
-    cy.get(`a[href="/en/profile/${firstName}-${lastName}"]`).should('exist');
+    cy.get('.e2e-author-link').should(
+      'have.attr',
+      'href',
+      `/en/profile/${firstName}-${lastName}`
+    );
   });
 });
