@@ -1391,7 +1391,7 @@
   "app.containers.IdeasFeedPage.backToProject": "Terug naar project",
   "app.containers.IdeasFeedPage.collapsePanel": "Tags panel inklappen",
   "app.containers.IdeasFeedPage.expandPanel": "Tags panel uitklappen",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Bekijk alle ingangen op {ideasCount}",
+  "app.containers.IdeasFeedPage.seeAllIdeas": "Bekijk alle {ideasCount} bijdragen",
   "app.containers.IdeasFeedPage.topicsPanel": "Tags panel",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Alle geplaatste bijdragen",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Bekijk alle bijdragen die op het participatieplatform van {orgName} zijn geplaatst.",
