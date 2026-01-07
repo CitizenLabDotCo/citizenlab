@@ -207,6 +207,8 @@
   "app.components.ErrorBoundary.openFormText": "اس کا پتہ لگانے میں ہماری مدد کریں۔",
   "app.components.ErrorToast.budgetExceededError": "آپ کے پاس کافی بجٹ نہیں ہے۔",
   "app.components.ErrorToast.votesExceededError": "آپ کے پاس کافی ووٹ باقی نہیں ہیں۔",
+  "app.components.EsriMap.mapLayerListAriaLabel": "پرت کی فہرست کو ٹوگل کریں۔",
+  "app.components.EsriMap.mapLegendAriaLabel": "لیجنڈ کو ٹوگل کریں۔",
   "app.components.EventAttendanceButton.forwardToFriend": "کسی دوست کو فارورڈ کریں۔",
   "app.components.EventAttendanceButton.maxRegistrationsReached": "ایونٹ کی رجسٹریشن کی زیادہ سے زیادہ تعداد تک پہنچ گئی ہے۔ کوئی دھبہ باقی نہیں ہے۔",
   "app.components.EventAttendanceButton.register": "رجسٹر کریں۔",

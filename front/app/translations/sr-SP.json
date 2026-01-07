@@ -207,6 +207,8 @@
   "app.components.ErrorBoundary.openFormText": "помози нам да то схватимо",
   "app.components.ErrorToast.budgetExceededError": "Немате довољно буџета",
   "app.components.ErrorToast.votesExceededError": "Немате довољно гласова",
+  "app.components.EsriMap.mapLayerListAriaLabel": "Toggle layer list",
+  "app.components.EsriMap.mapLegendAriaLabel": "Toggle legend",
   "app.components.EventAttendanceButton.forwardToFriend": "Проследи пријатељу",
   "app.components.EventAttendanceButton.maxRegistrationsReached": "The maximum number of event registrations has been reached. There are no spots left.",
   "app.components.EventAttendanceButton.register": "Register",

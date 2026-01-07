@@ -207,6 +207,8 @@
   "app.components.ErrorBoundary.openFormText": "βοηθήστε μας να το λύσουμε",
   "app.components.ErrorToast.budgetExceededError": "Δεν έχετε αρκετό προϋπολογισμό",
   "app.components.ErrorToast.votesExceededError": "Δεν σας έχουν απομείνει αρκετές ψήφοι",
+  "app.components.EsriMap.mapLayerListAriaLabel": "Εναλλαγή λίστας στρώσεων",
+  "app.components.EsriMap.mapLegendAriaLabel": "Εναλλαγή του μύθου",
   "app.components.EventAttendanceButton.forwardToFriend": "Προώθηση σε ένα φίλο",
   "app.components.EventAttendanceButton.maxRegistrationsReached": "Ο μέγιστος αριθμός εγγραφών για την εκδήλωση έχει επιτευχθεί. Δεν έχουν απομείνει θέσεις.",
   "app.components.EventAttendanceButton.register": "Προσθήκη στη λίστα μου",
