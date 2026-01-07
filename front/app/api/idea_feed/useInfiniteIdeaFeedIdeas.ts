@@ -2,7 +2,6 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import ideaFeedKeys from './keys';
 import {
@@ -15,12 +14,10 @@ const defaultPageSize = 20;
 
 const fetchIdeaFeedIdeas = ({
   phaseId,
-  pageNumber,
   pageSize,
   topic,
 }: {
   phaseId: string;
-  pageNumber?: number;
   pageSize?: number;
   topic?: string;
 }) =>
@@ -28,7 +25,6 @@ const fetchIdeaFeedIdeas = ({
     path: `/phases/${phaseId}/idea_feed/ideas`,
     action: 'get',
     queryParams: {
-      'page[number]': pageNumber || 1,
       'page[size]': pageSize || defaultPageSize,
       topics: topic ? [topic] : undefined,
     },
@@ -48,18 +44,13 @@ const useInfiniteIdeaFeedIdeas = (
     IdeaFeedKeys
   >({
     queryKey: ideaFeedKeys.list({ phaseId, ...queryParams }),
-    queryFn: ({ pageParam }) =>
+    queryFn: () =>
       fetchIdeaFeedIdeas({
         phaseId,
-        pageNumber: pageParam,
         pageSize: queryParams['page[size]'],
         topic: queryParams.topic,
       }),
-    getNextPageParam: (lastPage) => {
-      const hasNextPage = lastPage.links.next;
-      const pageNumber = getPageNumberFromUrl(lastPage.links.self);
-      return hasNextPage && pageNumber ? pageNumber + 1 : null;
-    },
+    getNextPageParam: () => true,
     keepPreviousData,
     cacheTime: 0,
   });
