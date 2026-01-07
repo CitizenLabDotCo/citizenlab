@@ -224,7 +224,12 @@ const App = ({ children }: Props) => {
             locales.includes(localeInUrl) &&
             pathnameWithoutLocale === rule.path
           ) {
-            window.location.href = rule.target;
+            const queryString = location.search;
+            const separator = rule.target.includes('?') ? '&' : '?';
+            const targetUrl = queryString
+              ? `${rule.target}${separator}${queryString.slice(1)}`
+              : rule.target;
+            window.location.href = targetUrl;
           }
         });
       }
