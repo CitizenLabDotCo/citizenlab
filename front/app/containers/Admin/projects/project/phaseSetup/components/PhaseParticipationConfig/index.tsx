@@ -8,6 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
 
+import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import {
   IdeaSortMethod,
   IdeationMethod,
@@ -19,7 +20,6 @@ import {
   VoteTerm,
   VotingMethod,
 } from 'api/phases/types';
-import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -109,7 +109,7 @@ const PhaseParticipationConfig = ({
   // If posting without an account is allowed, we allow logged-in users to post
   // anonymously.
   const toggleAnonymousPostingDisabledReason =
-    permissions?.data?.find((p) => p.attributes.action === 'posting_idea')
+    permissions?.data.find((p) => p.attributes.action === 'posting_idea')
       ?.attributes.permitted_by === 'everyone'
       ? formatMessage(anonymousMessages.anonymousParticipationAutoEnabled)
       : undefined;
