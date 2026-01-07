@@ -2112,6 +2112,7 @@
   "app.errors.confirmation_code_too_many_retries": "Olet yrittänyt liian monta kertaa. Pyydä uusi koodi tai yritä vaihtaa sähköpostiosoitteesi.",
   "app.errors.email_already_active": "Riviltä {row} löytynyt sähköpostiosoite {value} kuuluu jo rekisteröityneelle osallistujalle",
   "app.errors.email_already_invited": "Sähköpostiosoite {value} löytyi riviltä {row} on jo kutsuttu",
+  "app.errors.email_banned": "Rivillä {row} oleva sähköpostiosoite {value} on estetty, eikä sitä voida kutsua.",
   "app.errors.email_blank": "Tämä ei voi olla tyhjä",
   "app.errors.email_domain_blacklisted": "Käytä rekisteröitymiseen toista sähköpostiosoitetta.",
   "app.errors.email_invalid": "Käytä kelvollista sähköpostiosoitetta.",
