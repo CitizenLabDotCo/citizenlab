@@ -238,7 +238,7 @@ resource 'Users' do
 
         let(:email) { 'test@test.com' }
 
-        example_request 'it also works' do
+        example_request 'it also works (necessary for ?super_admin param)' do
           assert_status 200
         end
       end
