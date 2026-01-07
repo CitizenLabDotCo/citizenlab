@@ -100,6 +100,7 @@ const Sidebar = () => {
             selectedIdeaId={selectedIdeaId}
             selectedIdeaProjectId={selectedIdeaProjectId}
             handleCloseIdea={handleCloseIdea}
+            isMobile={true}
           />
         ) : (
           <TopicsContent
@@ -109,7 +110,7 @@ const Sidebar = () => {
             totalIdeasCount={totalIdeasCount}
             topicCounts={topicCounts}
             slug={slug}
-            showBackButton={false}
+            isMobile={true}
           />
         )}
       </BottomSheet>
@@ -146,7 +147,6 @@ const Sidebar = () => {
           totalIdeasCount={totalIdeasCount}
           topicCounts={topicCounts}
           slug={slug}
-          showBackButton={true}
         />
       )}
     </Box>

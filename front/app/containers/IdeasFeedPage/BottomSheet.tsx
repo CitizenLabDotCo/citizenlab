@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, ClickOutside } from '@citizenlab/cl2-component-library';
+import { FocusOn } from 'react-focus-on';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -87,7 +88,6 @@ const BottomSheet = ({
   useEffect(() => {
     if (ideaId) {
       setSheetState('fullscreen');
-      contentRef.current?.focus();
       contentRef.current?.scrollTo(0, 0);
     }
   }, [ideaId]);
@@ -136,12 +136,19 @@ const BottomSheet = ({
     : getTranslateYForState(sheetState);
   const isExpanded = sheetState !== 'collapsed';
 
-  return (
+  const handleClickOutside = () => {
+    if (isExpanded) {
+      setSheetState('collapsed');
+    }
+  };
+
+  const sheetContent = (
     <Container
       ref={sheetRef}
       translateY={translateY}
       isDragging={isDragging}
-      role="region"
+      role="dialog"
+      aria-modal={isExpanded}
       aria-label={a11y_panelLabel}
     >
       <DragArea
@@ -155,17 +162,21 @@ const BottomSheet = ({
         <DragHandle aria-hidden="true" />
       </DragArea>
 
-      <Box
-        ref={contentRef}
-        tabIndex={-1}
-        px="16px"
-        pb="24px"
-        overflowY="auto"
-        h="100%"
-      >
+      <Box ref={contentRef} px="16px" py="24px" overflowY="auto" h="100%">
         {children}
       </Box>
     </Container>
+  );
+
+  return (
+    <ClickOutside
+      onClickOutside={handleClickOutside}
+      closeOnClickOutsideEnabled={isExpanded}
+    >
+      <FocusOn enabled={isExpanded} autoFocus={false} returnFocus={false}>
+        {sheetContent}
+      </FocusOn>
+    </ClickOutside>
   );
 };
 

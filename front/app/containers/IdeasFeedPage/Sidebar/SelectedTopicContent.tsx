@@ -13,28 +13,23 @@ import messages from '../messages';
 interface Props {
   topicId: string;
   onBack: () => void;
-  hideBackButton?: boolean;
+  isMobile?: boolean;
 }
 
-const SelectedTopicContent = ({
-  topicId,
-  onBack,
-  hideBackButton = false,
-}: Props) => {
+const SelectedTopicContent = ({ topicId, onBack, isMobile = false }: Props) => {
   const { data: topic } = useTopic(topicId);
   const localize = useLocalize();
 
   return (
     <>
-      {!hideBackButton && (
-        <Box mb="16px">
-          <GoBackButton
-            onClick={onBack}
-            customMessage={messages.allTopics}
-            size="s"
-          />
-        </Box>
-      )}
+      <Box mb="16px">
+        <GoBackButton
+          onClick={onBack}
+          customMessage={!isMobile ? messages.allTopics : undefined}
+          showGoBackText={!isMobile}
+          size="s"
+        />
+      </Box>
 
       <Box px="16px" mb="16px">
         <Text fontWeight="bold" variant="bodyL" mb="8px">
