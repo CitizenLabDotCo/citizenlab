@@ -52,8 +52,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def check?
-    app_config = AppConfiguration.instance
-    app_config.feature_activated?('password_login')
+    true
   end
 
   def update?
