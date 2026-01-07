@@ -2112,6 +2112,7 @@
   "app.errors.confirmation_code_too_many_retries": "Lo has intentado demasiadas veces. Por favor, vuelve a enviar un código o intenta cambiar tu correo electrónico.",
   "app.errors.email_already_active": "La direccion de correo {value} encontrada en {row} ya pertenece a un usuario registrado",
   "app.errors.email_already_invited": "El correo electrónico {value} en fila {row} ya fue invitado",
+  "app.errors.email_banned": "La dirección de correo electrónico {value} encontrada en la fila {row} ha sido bloqueada y no puede ser invitada",
   "app.errors.email_blank": "Esto no puede estar vacío",
   "app.errors.email_domain_blacklisted": "Por favor, utilice un dominio de correo electrónico diferente para registrarse.",
   "app.errors.email_invalid": "Por favor ingrese una dirección válida de correo.",
