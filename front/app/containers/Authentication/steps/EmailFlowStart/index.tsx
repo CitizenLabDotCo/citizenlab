@@ -12,6 +12,7 @@ import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Or from 'components/UI/Or';
 
 import { useIntl } from 'utils/cl-intl';
+import { keys } from 'utils/helperUtils';
 
 import messages from '../messages';
 
@@ -34,6 +35,10 @@ const EmailFlowStart = ({
   const { passwordLoginEnabled, ssoProviders } = useAuthConfig();
   const { formatMessage } = useIntl();
 
+  const anySSOProviderEnabledBesidesFC = keys(ssoProviders)
+    .filter((key) => key !== 'franceconnect')
+    .some((key) => ssoProviders[key]);
+
   return (
     <Box data-cy="email-flow-start">
       {ssoProviders.franceconnect && (
@@ -44,7 +49,7 @@ const EmailFlowStart = ({
             })}
             onClick={() => onSwitchToSSO('franceconnect')}
           />
-          {passwordLoginEnabled && (
+          {(passwordLoginEnabled || anySSOProviderEnabledBesidesFC) && (
             <Box mt="24px">
               <Or />
             </Box>
@@ -52,14 +57,23 @@ const EmailFlowStart = ({
         </>
       )}
       {passwordLoginEnabled && (
-        <EmailForm
-          loading={loading}
-          topText={messages.enterYourEmailAddress}
-          setError={setError}
-          onSubmit={onSubmit}
-        />
+        <>
+          <EmailForm
+            loading={loading}
+            topText={messages.enterYourEmailAddress}
+            setError={setError}
+            onSubmit={onSubmit}
+          />
+          {anySSOProviderEnabledBesidesFC && (
+            <Box mt="24px">
+              <Or />
+            </Box>
+          )}
+        </>
       )}
-      <SSOButtonsExceptFC onClickSSO={onSwitchToSSO} />
+      {anySSOProviderEnabledBesidesFC && (
+        <SSOButtonsExceptFC onClickSSO={onSwitchToSSO} />
+      )}
     </Box>
   );
 };

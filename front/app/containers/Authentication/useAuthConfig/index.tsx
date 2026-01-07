@@ -104,6 +104,5 @@ export default function useAuthConfig() {
   return {
     passwordLoginEnabled,
     ssoProviders,
-    anySSOProviderEnabled: Object.values(ssoProviders).some((v) => v),
   };
 }
