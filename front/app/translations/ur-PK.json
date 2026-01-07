@@ -1391,6 +1391,7 @@
   "app.containers.IdeasFeedPage.backToProject": "پروجیکٹ پر واپس جائیں۔",
   "app.containers.IdeasFeedPage.collapsePanel": "عنوانات کے پینل کو سکیڑیں۔",
   "app.containers.IdeasFeedPage.expandPanel": "عنوانات کے پینل کو پھیلائیں۔",
+  "app.containers.IdeasFeedPage.seeAllIdeas": "تمام {ideasCount} ان پٹ دیکھیں",
   "app.containers.IdeasFeedPage.topicsPanel": "عنوانات کا پینل",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "تمام ان پٹ پوسٹ کر دیے گئے۔",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "{orgName}کے شرکت کے پلیٹ فارم پر پوسٹ کیے گئے تمام ان پٹ کو دریافت کریں۔",
