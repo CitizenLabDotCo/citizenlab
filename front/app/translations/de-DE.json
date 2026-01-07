@@ -2163,8 +2163,6 @@
   "app.errors.view_name_taken": "Eine Ansicht mit diesem Namen existiert bereits",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Unangemessener Inhalt wurde automatisch in einem Beitrag oder Kommentar erkannt",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Anmelden mit Stadt Wien Konto",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Stadt Wien Konto registrieren",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Jetzt Stadt Wien Konto erstellen und ein Login für viele personalisierte digitale Services der Stadt nutzen.",
   "app.modules.id_cow.cancel": "Abbrechen",
   "app.modules.id_cow.emptyFieldError": "Dies kann nicht leer sein",
   "app.modules.id_cow.helpAltText": "Zeigt, wo die Ausweis-Seriennummer auf einem Ausweis zu finden ist",

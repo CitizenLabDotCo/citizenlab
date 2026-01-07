@@ -2163,8 +2163,6 @@
   "app.errors.view_name_taken": "Mae golygfa gyda'r enw hwn eisoes yn bodoli",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Cafodd cynnwys amhriodol ei ganfod yn awtomatig mewn postiad neu sylw",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Mewngofnodwch gyda StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Cofrestrwch gyda StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Creu Cyfrif Stadt Wien nawr a defnyddio un mewngofnodi ar gyfer llawer o wasanaethau digidol Fienna.",
   "app.modules.id_cow.cancel": "Canslo",
   "app.modules.id_cow.emptyFieldError": "Ni all y maes hwn fod yn wag.",
   "app.modules.id_cow.helpAltText": "Yn dangos ble i ddod o hyd i'r rhif cyfresol ID ar gerdyn adnabod",

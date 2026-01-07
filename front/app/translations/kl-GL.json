@@ -2163,8 +2163,6 @@
   "app.errors.view_name_taken": "Ateq taanna atorneqareerpoq",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Ilanngussami oqaaseqaammiluunniit naleqqutinngitsutut nalilerneqartoq siumorneqarpoq",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Sign in with StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Sign up with StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Create a Stadt Wien Account now and use one login for many digital services of Vienna.",
   "app.modules.id_cow.cancel": "Atorunnaarsiguk",
   "app.modules.id_cow.emptyFieldError": "Imaqanngissinnaanngilaq",
   "app.modules.id_cow.helpAltText": "Kinaassutsimut uppernarsaammi ID-serienummer sumi nanineqarsinnaanersoq takutittarpaa",

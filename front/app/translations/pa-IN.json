@@ -2163,8 +2163,6 @@
   "app.errors.view_name_taken": "ਇਸ ਨਾਮ ਨਾਲ ਇੱਕ ਦ੍ਰਿਸ਼ ਪਹਿਲਾਂ ਹੀ ਮੌਜੂਦ ਹੈ",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "ਇੱਕ ਪੋਸਟ ਜਾਂ ਟਿੱਪਣੀ ਵਿੱਚ ਅਣਉਚਿਤ ਸਮਗਰੀ ਦਾ ਸਵੈ-ਪਛਾਣ ਕੀਤਾ ਗਿਆ ਸੀ",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "ਸਟੈਂਡਰਡਪੋਰਟਲ ਨਾਲ ਸਾਈਨ ਇਨ ਕਰੋ",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "ਸਟੈਂਡਰਡਪੋਰਟਲ ਨਾਲ ਸਾਈਨ ਅੱਪ ਕਰੋ",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "ਹੁਣੇ ਇੱਕ Stadt Wien ਖਾਤਾ ਬਣਾਓ ਅਤੇ ਵਿਏਨਾ ਦੀਆਂ ਕਈ ਡਿਜੀਟਲ ਸੇਵਾਵਾਂ ਲਈ ਇੱਕ ਲੌਗਇਨ ਦੀ ਵਰਤੋਂ ਕਰੋ।",
   "app.modules.id_cow.cancel": "ਰੱਦ ਕਰੋ",
   "app.modules.id_cow.emptyFieldError": "ਇਹ ਖੇਤਰ ਖਾਲੀ ਨਹੀਂ ਹੋ ਸਕਦਾ ਹੈ।",
   "app.modules.id_cow.helpAltText": "ਇਹ ਦਿਖਾਉਂਦਾ ਹੈ ਕਿ ਪਛਾਣ ਪੱਤਰ 'ਤੇ ਆਈਡੀ ਸੀਰੀਅਲ ਨੰਬਰ ਕਿੱਥੇ ਲੱਭਣਾ ਹੈ",

@@ -2163,8 +2163,6 @@
   "app.errors.view_name_taken": "Widok o tej nazwie już istnieje",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Nieodpowiednie treści zostały automatycznie wykryte w poście lub komentarzu",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Zaloguj się za pomocą StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Zarejestruj się w StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Załóż teraz konto Stadt Wien i używaj jednego loginu do wielu usług cyfrowych Wiednia.",
   "app.modules.id_cow.cancel": "Anuluj",
   "app.modules.id_cow.emptyFieldError": "To pole nie może być puste.",
   "app.modules.id_cow.helpAltText": "Pokazuje, gdzie znaleźć numer seryjny ID na dowodzie osobistym",

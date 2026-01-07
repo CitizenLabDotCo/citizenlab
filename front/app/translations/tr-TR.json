@@ -2163,8 +2163,6 @@
   "app.errors.view_name_taken": "Bu ada sahip bir görünüm zaten var",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Bir yayın veya yorumda uygunsuz içerik otomatik olarak tespit edildi",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "StandardPortal ile oturum açın",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "StandardPortal ile kaydolun",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Şimdi bir Stadt Wien Hesabı oluşturun ve Viyana'nın birçok dijital hizmeti için tek bir giriş kullanın.",
   "app.modules.id_cow.cancel": "İptal",
   "app.modules.id_cow.emptyFieldError": "Bu alan boş bırakılamaz.",
   "app.modules.id_cow.helpAltText": "Kimlik seri numarasının kimliğin neresinde bulunacağını gösterir",

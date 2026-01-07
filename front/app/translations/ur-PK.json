@@ -2163,8 +2163,6 @@
   "app.errors.view_name_taken": "اس نام کے ساتھ ایک منظر پہلے سے موجود ہے۔",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "پوسٹ یا تبصرے میں نامناسب مواد کا خود بخود پتہ چلا",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "سٹینڈرڈ پورٹل کے ساتھ سائن ان کریں۔",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "سٹینڈرڈ پورٹل کے ساتھ سائن اپ کریں۔",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "ابھی ایک Stadt Wien اکاؤنٹ بنائیں اور ویانا کی بہت سی ڈیجیٹل سروسز کے لیے ایک لاگ ان استعمال کریں۔",
   "app.modules.id_cow.cancel": "منسوخ کریں۔",
   "app.modules.id_cow.emptyFieldError": "یہ فیلڈ خالی نہیں ہو سکتی۔",
   "app.modules.id_cow.helpAltText": "یہ دکھاتا ہے کہ شناختی کارڈ پر شناختی سیریل نمبر کہاں تلاش کرنا ہے۔",

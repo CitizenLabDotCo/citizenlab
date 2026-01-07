@@ -2163,8 +2163,6 @@
   "app.errors.view_name_taken": "Поглед са овим именом већ постоји",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Неприкладан садржај је аутоматски откривен у објави или коментару",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Пријавите се са СтандардПортал",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Пријавите се на СтандардПортал",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Креирајте сада Стадт Виен налог и користите једну пријаву за многе дигиталне услуге Беча.",
   "app.modules.id_cow.cancel": "Поништити, отказати",
   "app.modules.id_cow.emptyFieldError": "Ово поље не може бити празно.",
   "app.modules.id_cow.helpAltText": "Показује где се може пронаћи серијски број личне карте",

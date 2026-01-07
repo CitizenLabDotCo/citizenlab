@@ -2163,8 +2163,6 @@
   "app.errors.view_name_taken": "Rodinys su šiuo pavadinimu jau egzistuoja",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Įraše ar komentare automatiškai aptiktas netinkamas turinys",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Prisijunkite su \"StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Užsiregistruokite \"StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Sukurkite \"Stadt Wien\" paskyrą ir naudokite vieną prisijungimo vardą daugeliui Vienos skaitmeninių paslaugų.",
   "app.modules.id_cow.cancel": "Atšaukti",
   "app.modules.id_cow.emptyFieldError": "Šis laukas negali būti tuščias.",
   "app.modules.id_cow.helpAltText": "Parodo, kur rasti asmens tapatybės kortelės serijos numerį.",

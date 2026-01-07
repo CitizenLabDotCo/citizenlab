@@ -2163,8 +2163,6 @@
   "app.errors.view_name_taken": "Már létezik ilyen nevű nézet",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "A rendszer automatikusan észlelt nem megfelelő tartalmat egy bejegyzésben vagy megjegyzésben",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Jelentkezzen be a StandardPortal segítségével",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Regisztráljon a StandardPortal oldalon",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Hozzon létre Stadt Wien-fiókot most, és használjon egyetlen bejelentkezést Bécs számos digitális szolgáltatásához.",
   "app.modules.id_cow.cancel": "Mégsem",
   "app.modules.id_cow.emptyFieldError": "Ez a mező nem lehet üres.",
   "app.modules.id_cow.helpAltText": "Megmutatja, hol található az azonosító sorozatszáma a személyi igazolványon",

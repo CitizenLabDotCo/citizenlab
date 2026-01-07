@@ -2163,8 +2163,6 @@
   "app.errors.view_name_taken": "Já existe uma categoria com este nome",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Conteúdo inapropriado foi detectado automaticamente em uma postagem ou comentário",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Iniciar sessão com StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Iniciar sessão com StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Crie agora uma conta Stadt Wien e utilize um login para muitos serviços digitais de Viena.",
   "app.modules.id_cow.cancel": "Cancelado",
   "app.modules.id_cow.emptyFieldError": "Este campo não pode ficar vazio.",
   "app.modules.id_cow.helpAltText": "Mostrar onde encontrar o número de série de identificação no RG",
