@@ -14,7 +14,7 @@ import Or from 'components/UI/Or';
 import { useIntl } from 'utils/cl-intl';
 
 import EmailForm from '../EmailFlowStart/EmailForm';
-import SSOButtons from '../EmailFlowStart/SSOButtons';
+import SSOButtonsExceptFC from '../EmailFlowStart/SSOButtonsExceptFC';
 
 import messages from './messages';
 
@@ -59,7 +59,7 @@ const PostParticipationFlowStart = ({
           onSubmit={onSubmit}
         />
       )}
-      <SSOButtons onClickSSO={onSwitchToSSO} />
+      <SSOButtonsExceptFC onClickSSO={onSwitchToSSO} />
     </Box>
   );
 };

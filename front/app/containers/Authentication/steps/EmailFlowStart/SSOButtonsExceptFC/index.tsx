@@ -19,7 +19,7 @@ interface Props {
   onClickSSO: (ssoProvider: SSOProviderWithoutVienna) => void;
 }
 
-const SSOButtons = ({ onClickSSO }: Props) => {
+const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
   const { formatMessage } = useIntl();
   const { passwordLoginEnabled, ssoProviders, anySSOProviderEnabled } =
     useAuthConfig();
@@ -57,4 +57,4 @@ const SSOButtons = ({ onClickSSO }: Props) => {
   );
 };
 
-export default SSOButtons;
+export default SSOButtonsExceptFC;

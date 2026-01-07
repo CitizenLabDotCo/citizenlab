@@ -16,7 +16,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 import EmailForm from './EmailForm';
-import SSOButtons from './SSOButtons';
+import SSOButtonsExceptFC from './SSOButtonsExceptFC';
 
 interface Props {
   loading: boolean;
@@ -59,7 +59,7 @@ const EmailFlowStart = ({
           onSubmit={onSubmit}
         />
       )}
-      <SSOButtons onClickSSO={onSwitchToSSO} />
+      <SSOButtonsExceptFC onClickSSO={onSwitchToSSO} />
     </Box>
   );
 };
