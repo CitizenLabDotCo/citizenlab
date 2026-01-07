@@ -33,8 +33,8 @@ const useUserCustomFieldsForPermission = (
   const data: IFlatCustomField[] | undefined = result.data?.data.map(
     (customField) => {
       const optionsForCustomField = options.filter((option) => {
-        const relationshipOptionIds =
-          customField.relationships.options.data.map((option) => option.id);
+        const options = customField.relationships.options?.data ?? [];
+        const relationshipOptionIds = options.map((option) => option.id);
 
         return option.id && relationshipOptionIds.includes(option.id);
       });

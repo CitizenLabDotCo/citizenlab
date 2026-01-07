@@ -161,5 +161,167 @@ RSpec.describe ReportBuilder::Queries::ProjectsTimeline do
       expect(timeline_item[:start_date]).to be_present
       expect(timeline_item[:publication_status]).to eq(project1.admin_publication.publication_status)
     end
+
+    context 'with exclusions' do
+      let(:non_existent_project_id) { '00000000-0000-0000-0000-000000000000' }
+      let(:non_existent_folder_id) { '11111111-1111-1111-1111-111111111111' }
+
+      context 'by project IDs' do
+        it 'excludes projects by their project IDs' do
+          result = query.run_query({ excluded_project_ids: [project1.id] })
+
+          timeline_items = result[:timeline_items]
+          expect(timeline_items.map { |item| item[:id] }).not_to include(project1.id)
+          expect(timeline_items.map { |item| item[:id] }).to include(project2.id)
+        end
+
+        it 'returns all projects when excluded_project_ids is empty' do
+          result = query.run_query({ excluded_project_ids: [] })
+
+          timeline_items = result[:timeline_items]
+          expect(timeline_items.map { |item| item[:id] }).to include(project1.id, project2.id)
+        end
+
+        it 'handles non-existent project ID gracefully' do
+          result = query.run_query({ excluded_project_ids: [non_existent_project_id] })
+
+          timeline_items = result[:timeline_items]
+          expect(timeline_items.map { |item| item[:id] }).to include(project1.id, project2.id)
+        end
+
+        it 'handles mixed valid and non-existent project IDs' do
+          result = query.run_query({ excluded_project_ids: [project1.id, non_existent_project_id] })
+
+          timeline_items = result[:timeline_items]
+          expect(timeline_items.map { |item| item[:id] }).not_to include(project1.id)
+          expect(timeline_items.map { |item| item[:id] }).to include(project2.id)
+        end
+
+        it 'handles multiple project exclusions' do
+          result = query.run_query({ excluded_project_ids: [project1.id, project2.id] })
+
+          timeline_items = result[:timeline_items]
+          expect(timeline_items.map { |item| item[:id] }).not_to include(project1.id, project2.id)
+          expect(timeline_items).to be_empty
+        end
+      end
+
+      context 'by folder IDs' do
+        let!(:folder) { create(:project_folder) }
+        let!(:project_in_folder) { create(:project, folder: folder) }
+        let!(:phase_in_folder) { create(:phase, project: project_in_folder, start_at: 1.month.ago, end_at: 1.month.from_now) }
+
+        let!(:folder2) { create(:project_folder) }
+        let!(:project_in_folder2) { create(:project, folder: folder2) }
+        let!(:phase_in_folder2) { create(:phase, project: project_in_folder2, start_at: 1.month.ago, end_at: 1.month.from_now) }
+
+        before do
+          project_in_folder.admin_publication.update!(publication_status: 'published')
+          project_in_folder2.admin_publication.update!(publication_status: 'published')
+        end
+
+        it 'excludes projects within excluded folders' do
+          result = query.run_query({ excluded_folder_ids: [folder.id] })
+
+          timeline_items = result[:timeline_items]
+          expect(timeline_items.map { |item| item[:id] }).not_to include(project_in_folder.id)
+          expect(timeline_items.map { |item| item[:id] }).to include(project1.id, project2.id)
+        end
+
+        it 'returns all projects when excluded_folder_ids is empty' do
+          result = query.run_query({ excluded_folder_ids: [] })
+
+          timeline_items = result[:timeline_items]
+          expect(timeline_items.map { |item| item[:id] }).to include(project_in_folder.id, project1.id, project2.id)
+        end
+
+        it 'handles non-existent folder ID gracefully' do
+          result = query.run_query({ excluded_folder_ids: [non_existent_folder_id] })
+
+          timeline_items = result[:timeline_items]
+          expect(timeline_items.map { |item| item[:id] }).to include(project_in_folder.id, project_in_folder2.id, project1.id, project2.id)
+        end
+
+        it 'handles mixed valid and non-existent folder IDs' do
+          result = query.run_query({ excluded_folder_ids: [folder.id, non_existent_folder_id] })
+
+          timeline_items = result[:timeline_items]
+          expect(timeline_items.map { |item| item[:id] }).not_to include(project_in_folder.id)
+          expect(timeline_items.map { |item| item[:id] }).to include(project_in_folder2.id, project1.id, project2.id)
+        end
+
+        it 'handles multiple folder exclusions' do
+          result = query.run_query({ excluded_folder_ids: [folder.id, folder2.id] })
+
+          timeline_items = result[:timeline_items]
+          expect(timeline_items.map { |item| item[:id] }).not_to include(project_in_folder.id, project_in_folder2.id)
+          expect(timeline_items.map { |item| item[:id] }).to include(project1.id, project2.id)
+        end
+      end
+
+      context 'by both project and folder IDs' do
+        let!(:folder) { create(:project_folder) }
+        let!(:project_in_folder) { create(:project, folder: folder) }
+        let!(:phase_in_folder) { create(:phase, project: project_in_folder, start_at: 1.month.ago, end_at: 1.month.from_now) }
+
+        let!(:folder2) { create(:project_folder) }
+        let!(:project_in_folder2) { create(:project, folder: folder2) }
+        let!(:phase_in_folder2) { create(:phase, project: project_in_folder2, start_at: 1.month.ago, end_at: 1.month.from_now) }
+
+        before do
+          project_in_folder.admin_publication.update!(publication_status: 'published')
+          project_in_folder2.admin_publication.update!(publication_status: 'published')
+        end
+
+        it 'excludes both projects by ID and projects in folders' do
+          result = query.run_query({
+            excluded_project_ids: [project1.id],
+            excluded_folder_ids: [folder.id]
+          })
+
+          timeline_items = result[:timeline_items]
+          expect(timeline_items.map { |item| item[:id] }).not_to include(project1.id, project_in_folder.id)
+          expect(timeline_items.map { |item| item[:id] }).to include(project2.id, project_in_folder2.id)
+        end
+
+        it 'handles redundant exclusion of project and its folder' do
+          result = query.run_query({
+            excluded_project_ids: [project_in_folder.id],
+            excluded_folder_ids: [folder.id]
+          })
+
+          timeline_items = result[:timeline_items]
+          expect(timeline_items.map { |item| item[:id] }).not_to include(project_in_folder.id)
+          expect(timeline_items.map { |item| item[:id] }).to include(project1.id, project2.id, project_in_folder2.id)
+        end
+
+        it 'handles multiple projects and multiple folders exclusions simultaneously' do
+          result = query.run_query({
+            excluded_project_ids: [project1.id, project2.id],
+            excluded_folder_ids: [folder.id, folder2.id]
+          })
+
+          timeline_items = result[:timeline_items]
+          expect(timeline_items.map { |item| item[:id] }).not_to include(
+            project1.id,
+            project2.id,
+            project_in_folder.id,
+            project_in_folder2.id
+          )
+          expect(timeline_items).to be_empty
+        end
+
+        it 'handles combined exclusions with non-existent IDs' do
+          result = query.run_query({
+            excluded_project_ids: [project1.id, non_existent_project_id],
+            excluded_folder_ids: [folder.id, non_existent_folder_id]
+          })
+
+          timeline_items = result[:timeline_items]
+          expect(timeline_items.map { |item| item[:id] }).not_to include(project1.id, project_in_folder.id)
+          expect(timeline_items.map { |item| item[:id] }).to include(project2.id, project_in_folder2.id)
+        end
+      end
+    end
   end
 end

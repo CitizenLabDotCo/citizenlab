@@ -259,6 +259,7 @@ pa:
       x_days_ago_by_author: '%{x} ਦਿਨ ਪਹਿਲਾਂ %{author}ਦੁਆਰਾ'
     new_comment_for_admin:
       commented: '%{authorFirstName} ਨੇ ਟਿੱਪਣੀ ਕੀਤੀ:'
+      anonymous_user: ਅਗਿਆਤ ਵਰਤੋਂਕਾਰ
       cta_button: '%{authorFirstName}ਦੀ ਟਿੱਪਣੀ ਵੇਖੋ'
       days_ago: '%{numberOfDays} ਦਿਨ ਪਹਿਲਾਂ'
       event_description: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵੀਂ ਟਿੱਪਣੀ ਸ਼ਾਮਲ ਕੀਤੀ।'

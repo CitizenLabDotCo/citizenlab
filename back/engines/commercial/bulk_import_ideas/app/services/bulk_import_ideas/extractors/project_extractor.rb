@@ -33,7 +33,8 @@ module BulkImportIdeas::Extractors
               import_config,
               phase[:file],
               phase[:tab],
-              phase[:attributes]
+              phase[:attributes],
+              phase[:append_ideas]
             )
             returned_phase = extractor.phase
           end
@@ -95,6 +96,7 @@ module BulkImportIdeas::Extractors
           file: row.cells[5]&.value.present? ? "#{@xlsx_folder_path}/inputs/#{row.cells[5].value}" : nil,
           tab: row.cells[6]&.value,
           type: row.cells[7]&.value.presence || nil,
+          append_ideas: row.cells[9]&.value.to_s.downcase == 'yes' || false,
           attributes: {
             id: id,
             title: row.cells[1].value,

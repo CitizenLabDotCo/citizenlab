@@ -73,6 +73,9 @@ const SkipLinkStyled = styled.a`
   &:focus {
     top: 0;
   }
+  &:hover {
+    color: ${colors.teal200};
+  }
 `;
 
 interface Props {
