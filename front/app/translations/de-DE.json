@@ -1391,6 +1391,7 @@
   "app.containers.IdeasFeedPage.backToProject": "Zurück zum Projekt",
   "app.containers.IdeasFeedPage.collapsePanel": "Themenbereich ausklappen",
   "app.containers.IdeasFeedPage.expandPanel": "Themenbereich erweitern",
+  "app.containers.IdeasFeedPage.seeAllIdeas": "Alle {ideasCount} Eingänge anzeigen",
   "app.containers.IdeasFeedPage.topicsPanel": "Themenbereich",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Alle Beiträge veröffentlicht",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Entdecken Sie alle Beiträge, die auf der Beteiligungsplattform {orgName} veröffentlicht wurden.",
