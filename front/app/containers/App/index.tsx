@@ -118,19 +118,25 @@ const App = ({ children }: Props) => {
   // recommended by the Frameless accessibility auditor.
   useEffect(() => {
     if (!isSmallerThanTablet) return;
+    let timeoutId: number | undefined;
 
     const handleFocus = (e: FocusEvent) => {
       const target = e.target as HTMLElement;
       // :focus-visible for only keyboard focus
-      if (target.matches(':focus-visible')) {
-        setTimeout(() => {
-          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 100);
-      }
+      if (!target.matches(':focus-visible')) return;
+      clearTimeout(timeoutId);
+      timeoutId = window.setTimeout(() => {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
     };
 
     document.addEventListener('focusin', handleFocus, true);
-    return () => document.removeEventListener('focusin', handleFocus, true);
+    return () => {
+      document.removeEventListener('focusin', handleFocus, true);
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
   }, [isSmallerThanTablet]);
 
   useEffect(() => {
