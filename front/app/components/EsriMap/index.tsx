@@ -107,8 +107,8 @@ const EsriMap = ({
   const mapRefAvailable = !!mapRef.current;
 
   // for Accessibility: add labels to the expand buttons in the map's legend and layer list
-  const { formatMessage } = useIntl();
-  useLabelExpandButtons({ mapView, formatMessage });
+
+  useLabelExpandButtons({ mapView });
 
   useEffect(() => {
     if (!mapRefAvailable) return;

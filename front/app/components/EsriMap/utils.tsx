@@ -20,6 +20,7 @@ import WebMap from '@arcgis/core/WebMap';
 import Popup from '@arcgis/core/widgets/Popup';
 import { colors } from '@citizenlab/cl2-component-library';
 import { transparentize } from 'polished';
+import useIntl from 'react-intl/src/components/useIntl';
 import { v4 as uuidv4 } from 'uuid';
 
 import { IMapConfig } from 'api/map_config/types';
@@ -41,12 +42,11 @@ import { DefaultBasemapType } from './types';
 // For Accessibility: add (aria-labels) to the expand buttons for layer list and legend
 interface UseLabelExpandButtonsProps {
   mapView: MapView | null;
-  formatMessage: (messages: { id: string; defaultMessage: string }) => string;
 }
 export const useLabelExpandButtons = ({
   mapView,
-  formatMessage,
 }: UseLabelExpandButtonsProps) => {
+  const { formatMessage } = useIntl();
   useEffect(() => {
     if (!mapView) return;
 
