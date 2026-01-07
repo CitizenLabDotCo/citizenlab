@@ -1,7 +1,7 @@
 import { randomEmail, randomString } from './commands';
 
 const enterEmail = (cy: Cypress.Chainable, email: string = randomEmail()) => {
-  cy.dataCy('email-flow-start').get('input[type="email"]').type(email);
+  cy.get('#e2e-authentication-modal').get('input[type="email"]').type(email);
   cy.dataCy('email-flow-start-continue-button').click();
 };
 
