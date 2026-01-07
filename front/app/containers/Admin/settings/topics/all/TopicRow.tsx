@@ -4,7 +4,7 @@ import { Tooltip, colors, Box, Badge } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useCustomPages from 'api/custom_pages/useCustomPages';
-import { ITopicData } from 'api/topics/types';
+import { IGlobalTopicData } from 'api/global_topics/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -27,7 +27,7 @@ const StyledLink = styled(Link)`
 `;
 
 interface Props {
-  topic: ITopicData | Error;
+  topic: IGlobalTopicData | Error;
   isLastItem: boolean;
   handleDeleteClick?: (
     topicId: string
@@ -35,7 +35,7 @@ interface Props {
 }
 
 interface DeleteButtonProps {
-  topic: ITopicData;
+  topic: IGlobalTopicData;
   handleDeleteClick?: (
     topicId: string
   ) => (event: React.FormEvent<any>) => void;

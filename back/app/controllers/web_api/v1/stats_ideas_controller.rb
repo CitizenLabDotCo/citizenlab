@@ -24,7 +24,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
 
   def ideas_by_topic
     serie = ideas_by_topic_serie
-    topics = Topic.pluck(:id, :title_multiloc).map do |id, title_multiloc|
+    topics = GlobalTopic.pluck(:id, :title_multiloc).map do |id, title_multiloc|
       [id, { title_multiloc: title_multiloc }]
     end
     render json: raw_json({ series: { ideas: serie }, topics: topics.to_h })
@@ -33,7 +33,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_topic_as_xlsx
     serie = ideas_by_topic_serie
 
-    topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
+    topics = GlobalTopic.where(id: serie.keys).select(:id, :title_multiloc)
 
     res = serie.map do |topic_id, count|
       {

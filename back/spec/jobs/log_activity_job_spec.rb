@@ -219,7 +219,7 @@ RSpec.describe LogActivityJob do
         ProjectFile,
         ProjectImage,
         ProjectsAllowedInputTopic,
-        ProjectsTopic,
+        ProjectsGlobalTopic,
         SpamReport,
         Surveys::Response,
         Volunteering::Cause,

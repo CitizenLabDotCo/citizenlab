@@ -5,7 +5,7 @@ import { capitalize } from 'lodash-es';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { coreSettings } from 'api/app_configuration/utils';
-import useTopics from 'api/topics/useTopics';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -29,7 +29,7 @@ const SelectTopics = ({
 }: SelectTopicsProps) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const { data: topics } = useTopics({ forHomepageFilter: true });
+  const { data: topics } = useGlobalTopics({ forHomepageFilter: true });
   const { data: appConfig } = useAppConfiguration();
   const isSmallerThanTablet = useBreakpoint('tablet');
 

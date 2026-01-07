@@ -3,8 +3,8 @@ import React, { memo } from 'react';
 import { Select } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
-import { ITopicData } from 'api/topics/types';
-import useTopics from 'api/topics/useTopics';
+import { IGlobalTopicData } from 'api/global_topics/types';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -14,13 +14,13 @@ export interface Props {
 }
 
 const TopicValueSelector = memo(({ value, onChange }: Props) => {
-  const { data: topics } = useTopics();
+  const { data: topics } = useGlobalTopics();
   const localize = useLocalize();
 
   const generateOptions = (): IOption[] => {
     return !topics
       ? []
-      : topics.data.map((topic: ITopicData) => ({
+      : topics.data.map((topic: IGlobalTopicData) => ({
           value: topic.id,
           label: localize(topic.attributes.title_multiloc),
         }));

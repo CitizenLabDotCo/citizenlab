@@ -24,7 +24,7 @@ require_relative 'project_folders'
 require_relative 'projects'
 require_relative 'static_pages'
 require_relative 'tenants'
-require_relative 'topics'
+require_relative 'global_topics'
 require_relative 'unsubscription_tokens'
 require_relative 'users'
 require_relative 'volunteering_causes'
@@ -104,7 +104,7 @@ module MultiTenancy
         MultiTenancy::Seeds::ApiClients.new(runner: self).run
         MultiTenancy::Seeds::CustomFields.new(runner: self).run
         MultiTenancy::Seeds::Areas.new(runner: self).run
-        MultiTenancy::Seeds::Topics.new(runner: self).run
+        MultiTenancy::Seeds::GlobalTopics.new(runner: self).run
         MultiTenancy::Seeds::ProjectFolders.new(runner: self).run
         MultiTenancy::Seeds::Projects.new(runner: self).run
         MultiTenancy::Seeds::Ideas.new(runner: self).run

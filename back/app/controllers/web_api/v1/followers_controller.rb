@@ -56,8 +56,8 @@ class WebApi::V1::FollowersController < ApplicationController
       :project_folder_id
     when 'Idea'
       :idea_id
-    when 'Topic'
-      :topic_id
+    when 'GlobalTopic'
+      :global_topic_id
     when 'Area'
       :area_id
     else

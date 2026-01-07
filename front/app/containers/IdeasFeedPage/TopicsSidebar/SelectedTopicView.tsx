@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
-import useTopic from 'api/topics/useTopic';
+import useGlobalTopic from 'api/global_topics/useGlobalTopic';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -21,7 +21,7 @@ const SelectedTopicView = ({
   onBack,
   hideBackButton = false,
 }: Props) => {
-  const { data: topic } = useTopic(topicId);
+  const { data: topic } = useGlobalTopic(topicId);
   const localize = useLocalize();
 
   return (

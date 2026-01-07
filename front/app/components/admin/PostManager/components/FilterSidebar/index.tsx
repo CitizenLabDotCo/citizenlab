@@ -14,7 +14,7 @@ import { IIdeaStatusData } from 'api/idea_statuses/types';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
-import { ITopicData } from 'api/topics/types';
+import { IGlobalTopicData } from 'api/global_topics/types';
 
 import { ManagerType, TFilterMenu } from 'components/admin/PostManager';
 
@@ -32,7 +32,7 @@ interface Props {
   phases?: IPhaseData[];
   projects?: IProjectData[];
   statuses: IIdeaStatusData[];
-  topics: ITopicData[];
+  topics: IGlobalTopicData[];
   selectedTopics?: string[] | null;
   selectedPhase: string | undefined;
   selectedProject?: string | null;

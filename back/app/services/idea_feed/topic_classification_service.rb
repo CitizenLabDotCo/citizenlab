@@ -24,7 +24,7 @@ module IdeaFeed
 
         selected_topics = response.map { topics[it - 1] }
 
-        if selected_topics.all? { it.is_a?(Topic) }
+        if selected_topics.all? { it.is_a?(GlobalTopic) }
           break selected_topics
         else
           Rails.logger.warn("LLM response for idea classification contained invalid topic IDs. Attempt #{i + 1} Retrying...")

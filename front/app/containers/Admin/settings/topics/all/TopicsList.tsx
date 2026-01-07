@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { ITopicData } from 'api/topics/types';
+import { IGlobalTopicData } from 'api/global_topics/types';
 
 import { List } from 'components/admin/ResourceList';
 
 import TopicRow from './TopicRow';
 
 interface Props {
-  topics: ITopicData[];
+  topics: IGlobalTopicData[];
   handleDeleteClick: (topicId: string) => (event: React.FormEvent<any>) => void;
 }
 

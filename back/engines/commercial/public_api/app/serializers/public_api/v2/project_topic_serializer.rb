@@ -7,7 +7,7 @@ module PublicApi
 
       attributes(
         :project_id,
-        :topic_id,
+        :global_topic_id,
         :created_at,
         :updated_at
       )

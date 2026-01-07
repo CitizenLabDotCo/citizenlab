@@ -17,11 +17,12 @@
 # Foreign Keys
 #
 #  fk_rails_...  (idea_id => ideas.id)
-#  fk_rails_...  (topic_id => topics.id)
+#  fk_rails_...  (topic_id => global_topics.id)
 #
 class IdeasTopic < ApplicationRecord
   belongs_to :idea
-  belongs_to :topic
+  # NOTE: column is still topic_id but references GlobalTopic (renamed from Topic)
+  belongs_to :topic, class_name: 'GlobalTopic', inverse_of: :ideas_topics
 
   validates :idea, :topic, presence: true
   validates :topic_id, uniqueness: { scope: :idea_id }

@@ -4,5 +4,5 @@ class WebApi::V1::ProjectsAllowedInputTopicSerializer < WebApi::V1::BaseSerializ
   attributes :ordering
 
   has_one :project
-  has_one :topic
+  has_one :topic, serializer: WebApi::V1::GlobalTopicSerializer
 end

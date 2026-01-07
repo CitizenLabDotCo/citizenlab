@@ -23,7 +23,7 @@ module MultiTenancy
           description_multiloc: runner.rand_description_multiloc,
           slug: 'mixed-3-methods-project',
           header_bg: Rails.root.join('spec/fixtures/3-methods-project-header-bg.png').open,
-          allowed_input_topics: Topic.all
+          allowed_input_topics: GlobalTopic.all
         )
         project.phases.create!(
           title_multiloc: { 'en' => 'Past proposals phase' },
@@ -57,7 +57,7 @@ module MultiTenancy
           description_multiloc: runner.rand_description_multiloc,
           slug: 'archived-project',
           header_bg: Rails.root.join('spec/fixtures/image6.jpg').open,
-          allowed_input_topics: Topic.all,
+          allowed_input_topics: GlobalTopic.all,
           admin_publication_attributes: { publication_status: 'archived' }
         )
         project.phases.create!(
@@ -79,7 +79,7 @@ module MultiTenancy
             header_bg: rand(25) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.jpg").open,
             visible_to: %w[admins groups public public public][rand(5)],
             areas: Array.new(rand(3)) { rand(Area.count) }.uniq.map { |offset| Area.offset(offset).first },
-            allowed_input_topics: Topic.all.shuffle.take(rand(Topic.count) + 1),
+            allowed_input_topics: GlobalTopic.all.shuffle.take(rand(GlobalTopic.count) + 1),
             admin_publication_attributes: {
               parent_id: (rand(2) == 0 ? nil : AdminPublication.where(publication_type: ::ProjectFolders::Folder.name).ids.sample),
               publication_status: %w[published published published published published draft

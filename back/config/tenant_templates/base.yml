@@ -188,7 +188,7 @@ models:
       color: '#8B0000'
       description_multiloc: idea_statuses.ineligible_description
       participation_method: proposals
-  topic:
+  global_topic:
     - &topic-nature
       title_multiloc: topics.nature
       description_multiloc: topics.nature_description

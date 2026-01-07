@@ -23,7 +23,7 @@ describe 'db/seeds.rb' do
       expect(User.find_by(email: 'admin@govocal.com').id).to eq '386d255e-2ff1-4192-8e50-b3022576be50'
       expect(User.find_by(email: 'moderator@govocal.com').id).to eq '61caabce-f7e5-4804-b9df-36d7d7d73e4d'
       expect(User.find_by(email: 'user@govocal.com').id).to eq '546335a3-33b9-471c-a18a-d5b58ebf173a'
-      expect(Topic.count).to be > 0
+      expect(GlobalTopic.count).to be > 0
       expect(Area.count).to be > 0
       expect(Project.count).to be > 0
       expect(Phase.count).to be > 0
@@ -65,7 +65,7 @@ describe 'db/seeds.rb' do
       expect(Tenant.current.id).to eq '07ff8088-cc78-4307-9a1c-ebb6fb836f96'
       expect(User.count).to be 1
       expect(User.find_by(email: 'admin@govocal.com').id).to eq 'e0d698fc-5969-439f-9fe6-e74fe82b567a'
-      expect(Topic.count).to be > 0
+      expect(GlobalTopic.count).to be > 0
       expect(IdeaStatus.count).to be > 0
       expect(Area.count).to be 0
       expect(Project.count).to be 1

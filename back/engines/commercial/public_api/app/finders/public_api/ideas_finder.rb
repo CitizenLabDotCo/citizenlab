@@ -38,9 +38,9 @@ module PublicApi
 
       scope
         .joins(:topics)
-        .where(topics: { id: @topic_ids })
+        .where(global_topics: { id: @topic_ids })
         .group('ideas.id')
-        .having('COUNT(topics.id) = ?', @topic_ids.size)
+        .having('COUNT(global_topics.id) = ?', @topic_ids.size)
     end
 
     def filter_by_type(scope)

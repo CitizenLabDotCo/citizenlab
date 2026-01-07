@@ -7,7 +7,7 @@ import { IOption } from 'typings';
 import useAddProjectAllowedInputTopic from 'api/project_allowed_input_topics/useAddProjectAllowedInputTopic';
 import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
-import useTopics from 'api/topics/useTopics';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import MultipleSelect from 'components/UI/MultipleSelect';
@@ -55,7 +55,7 @@ const ProjectTopicSelector = memo(
       localize,
       params: { projectId },
     } = props;
-    const { data: topics } = useTopics();
+    const { data: topics } = useGlobalTopics();
     const { data: projectAllowedInputTopics } = useProjectAllowedInputTopics({
       projectId,
     });

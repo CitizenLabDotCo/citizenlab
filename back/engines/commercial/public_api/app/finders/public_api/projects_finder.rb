@@ -50,10 +50,10 @@ module PublicApi
       return scope unless @topic_ids
 
       scope
-        .joins(:topics)
-        .where(topics: { id: @topic_ids })
+        .joins(:global_topics)
+        .where(global_topics: { id: @topic_ids })
         .group('projects.id')
-        .having('COUNT(topics.id) = ?', @topic_ids.size)
+        .having('COUNT(global_topics.id) = ?', @topic_ids.size)
     end
 
     def filter_by_area_ids(scope)

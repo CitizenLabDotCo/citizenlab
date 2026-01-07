@@ -53,7 +53,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     input.creation_phase.reacting_threshold
   end
 
-  has_many :topics
+  has_many :topics, serializer: WebApi::V1::GlobalTopicSerializer
   has_many :idea_images, serializer: WebApi::V1::ImageSerializer
   has_many :phases
   has_many :ideas_phases

@@ -6,7 +6,7 @@ import meKeys from 'api/me/keys';
 import projectFoldersKeys from 'api/project_folders/keys';
 import projectsKeys from 'api/projects/keys';
 import miniProjectsKeys from 'api/projects_mini/keys';
-import topicsKeys from 'api/topics/keys';
+import globalTopicsKeys from 'api/global_topics/keys';
 
 import followUnfollowKeys from './keys';
 import { FollowableType } from './types';
@@ -32,7 +32,7 @@ export const invalidateFollowQueries = (
       );
       break;
     case 'topics':
-      queryClient.invalidateQueries(topicsKeys.list({}));
+      queryClient.invalidateQueries(globalTopicsKeys.list({}));
       break;
     case 'areas':
       queryClient.invalidateQueries(areasKeys.lists());

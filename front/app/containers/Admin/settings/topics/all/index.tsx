@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import useDeleteTopic from 'api/topics/useDeleteTopic';
-import useTopics from 'api/topics/useTopics';
+import useDeleteGlobalTopic from 'api/global_topics/useDeleteGlobalTopic';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import {
@@ -26,8 +26,8 @@ import TopicsList from './TopicsList';
 import TopicTermConfig from './TopicTermConfig';
 
 const AllTopics = () => {
-  const { data: topics } = useTopics({ includeStaticPages: true });
-  const { mutate: deleteTopic, isLoading } = useDeleteTopic();
+  const { data: topics } = useGlobalTopics({ includeStaticPages: true });
+  const { mutate: deleteTopic, isLoading } = useDeleteGlobalTopic();
   const [showConfirmationModal, setShowConfirmationModal] =
     useState<boolean>(false);
   const [topicIdToDelete, setTopicIdToDelete] = useState<string | null>(null);

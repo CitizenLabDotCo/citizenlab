@@ -1,6 +1,6 @@
 import { get } from 'lodash-es';
 
-import { ITopicData } from 'api/topics/types';
+import { IGlobalTopicData } from 'api/global_topics/types';
 
 import { Localize } from 'hooks/useLocalize';
 
@@ -16,7 +16,7 @@ export const scrollToTopIdeasList = () => {
 };
 
 export const getTopicsWithIdeas = (
-  topics: ITopicData[],
+  topics: IGlobalTopicData[],
   filterCounts: FilterCounts
 ) => {
   return topics.filter((topic) => {
@@ -26,7 +26,7 @@ export const getTopicsWithIdeas = (
 };
 
 export const getSelectedTopicNames = (
-  selectedTopics: ITopicData[],
+  selectedTopics: IGlobalTopicData[],
   localize: Localize
 ) => {
   return selectedTopics

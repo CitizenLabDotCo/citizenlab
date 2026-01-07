@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { ITopicAdd } from 'api/topics/types';
-import useAddTopic from 'api/topics/useAddTopic';
+import { IGlobalTopicAdd } from 'api/global_topics/types';
+import useAddGlobalTopic from 'api/global_topics/useAddGlobalTopic';
 
 import { Section, SectionTitle } from 'components/admin/Section';
 import GoBackButton from 'components/UI/GoBackButton';
@@ -13,8 +13,8 @@ import messages from '../messages';
 import TopicForm from '../TopicForm';
 
 const New = () => {
-  const { mutate: addTopic } = useAddTopic();
-  const handleSubmit = async (values: ITopicAdd) => {
+  const { mutate: addTopic } = useAddGlobalTopic();
+  const handleSubmit = async (values: IGlobalTopicAdd) => {
     addTopic(
       {
         ...values,

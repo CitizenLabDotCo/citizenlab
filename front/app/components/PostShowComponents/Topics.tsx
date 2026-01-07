@@ -9,7 +9,7 @@ import {
 import { transparentize } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
-import useTopic from 'api/topics/useTopic';
+import useGlobalTopic from 'api/global_topics/useGlobalTopic';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -64,7 +64,7 @@ const Topics = memo(({ postTopicIds, className, showTitle }: Props) => {
 });
 
 const TopicComponent = ({ topicId }: { topicId: string }) => {
-  const { data: topic } = useTopic(topicId);
+  const { data: topic } = useGlobalTopic(topicId);
   const localize = useLocalize();
 
   if (!topic) return null;

@@ -34,13 +34,13 @@ class WebApi::V1::StatsReactionsController < WebApi::V1::StatsController
 
   def reactions_by_topic
     serie = reactions_by_topic_serie
-    topics = Topic.all.select(:id, :title_multiloc)
+    topics = GlobalTopic.all.select(:id, :title_multiloc)
     render json: raw_json({ series: { total: serie }, topics: topics.to_h { |t| [t.id, t.attributes.except('id')] } })
   end
 
   def reactions_by_topic_as_xlsx
     serie = reactions_by_topic_serie
-    topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
+    topics = GlobalTopic.where(id: serie.keys).select(:id, :title_multiloc)
     res = serie.map do |topic_id, count|
       {
         'topic' => @@multiloc_service.t(topics.find(topic_id).title_multiloc, current_user&.locale),

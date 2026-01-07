@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { pull } from 'lodash-es';
 
-import useTopics from 'api/topics/useTopics';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 
 import T from 'components/T';
 
@@ -24,7 +24,7 @@ interface Props {
 
 const TopicsSelector = memo<Props>(({ selectedTopics, onUpdateTopics }) => {
   const { formatMessage } = useIntl();
-  const { data: topics } = useTopics();
+  const { data: topics } = useGlobalTopics();
   const filteredTopics = topics?.data.filter((topic) =>
     selectedTopics.includes(topic.id)
   );

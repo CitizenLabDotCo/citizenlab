@@ -4,7 +4,7 @@ import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { coreSettings } from 'api/app_configuration/utils';
-import useTopics from 'api/topics/useTopics';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -24,7 +24,7 @@ interface Props {
 
 const TopicInputs = ({ selectedTopicIds, onChange }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: availableTopics } = useTopics({});
+  const { data: availableTopics } = useGlobalTopics({});
   const { data: appConfiguration } = useAppConfiguration();
   const localize = useLocalize();
 
