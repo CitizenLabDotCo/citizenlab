@@ -2163,8 +2163,6 @@
   "app.errors.view_name_taken": "Er bestaat al een inzicht met deze naam",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Ongepaste inhoud werd automatisch gedetecteerd in een post of reactie",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Inloggen met StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Aanmelden met StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Maak nu een Stadt Wien-account en gebruik één login voor meerdere digitale diensten in Wenen.",
   "app.modules.id_cow.cancel": "Annuleren",
   "app.modules.id_cow.emptyFieldError": "Dit veld mag niet leeg zijn.",
   "app.modules.id_cow.helpAltText": "Toont waar men het serienummer-ID op een identiteitskaart vindt",

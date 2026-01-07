@@ -2165,8 +2165,6 @@
   "app.errors.view_name_taken": "A view with this name already exists",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Inappropriate content was auto-detected in a post or comment",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Sign in with StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Sign up with StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Create a Stadt Wien Account now and use one login for many digital services of Vienna.",
   "app.modules.id_cow.cancel": "Cancel",
   "app.modules.id_cow.emptyFieldError": "This field cannot be empty.",
   "app.modules.id_cow.helpAltText": "Shows where to find the ID serial number on an identity card",

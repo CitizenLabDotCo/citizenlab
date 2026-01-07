@@ -2163,8 +2163,6 @@
   "app.errors.view_name_taken": "Skats ar šādu nosaukumu jau eksistē",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Publikācijā vai komentārā tika automātiski konstatēts neatbilstošs saturs",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Pierakstīties ar StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Reģistrējieties ar StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Izveidojiet Stadt Wien kontu un izmantojiet vienu pieteikšanās vārdu daudziem Vīnes digitālajiem pakalpojumiem.",
   "app.modules.id_cow.cancel": "Atcelt",
   "app.modules.id_cow.emptyFieldError": "Šis lauks nedrīkst būt tukšs.",
   "app.modules.id_cow.helpAltText": "Rāda, kur uz identitātes kartes atrast ID sērijas numuru",

@@ -2163,8 +2163,6 @@
   "app.errors.view_name_taken": "En visning med dette navnet finnes allerede",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Upassende innhold ble automatisk oppdaget i et innlegg eller en kommentar",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Logg inn med StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Registrer deg med StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Opprett en Stadt Wien-konto nå og bruk én innlogging for mange digitale tjenester i Wien.",
   "app.modules.id_cow.cancel": "Avbryt",
   "app.modules.id_cow.emptyFieldError": "Dette feltet kan ikke være tomt.",
   "app.modules.id_cow.helpAltText": "Viser hvor du finner ID-serienummeret på et identitetskort",

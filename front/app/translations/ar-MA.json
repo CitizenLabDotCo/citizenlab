@@ -2163,8 +2163,6 @@
   "app.errors.view_name_taken": "توجد طريقة عرض بهذا الاسم فعلاً",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "يوجد محتوى غير لائق تم اكتشافه تلقائيًا في منشور أو تعليق",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "تسجيل الدخول باستخدام StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "تسجيل الاشتراك باستخدام StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "أنشئ حساب Stadt Wien الآن واستخدم حسابًا واحدًا لتسجيل دخول الكثير من خدمات Vienna الرقمية.",
   "app.modules.id_cow.cancel": "إلغاء المحاولة",
   "app.modules.id_cow.emptyFieldError": "لا يمكن أن يكون هذا الحقل فارغًا.",
   "app.modules.id_cow.helpAltText": "يعرض مكان العثور على الرقم التسلسلي الفريد في بطاقة هوية",

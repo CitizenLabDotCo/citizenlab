@@ -2163,8 +2163,6 @@
   "app.errors.view_name_taken": "Pregled sa ovim imenom već postoji",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Neprikladan sadržaj je automatski otkriven u postu ili komentaru",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Prijavi se na StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Registruj se na StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Kreirajte nalog Stadt Wien sada i upotrebite jedno prijavljivanje za više digitalnih usluga u Beču.",
   "app.modules.id_cow.cancel": "Prekid",
   "app.modules.id_cow.emptyFieldError": "Ovo polje ne može biti prazno.",
   "app.modules.id_cow.helpAltText": "Pokazuje gde se nalazi serijski broj ID na identifikacionoj kartici",

@@ -2163,8 +2163,6 @@
   "app.errors.view_name_taken": "Μια προβολή με αυτό το όνομα υπάρχει ήδη",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Το ακατάλληλο περιεχόμενο εντοπίστηκε αυτόματα σε μια δημοσίευση ή ένα σχόλιο",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Σύνδεση στο StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Εγγραφή στο StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Δημιουργήστε τώρα έναν λογαριασμό Stadt Wien και χρησιμοποιήστε μία σύνδεση για πολλές ψηφιακές υπηρεσίες της Βιέννης.",
   "app.modules.id_cow.cancel": "Ακύρωση",
   "app.modules.id_cow.emptyFieldError": "Αυτό το πεδίο δεν μπορεί να είναι κενό.",
   "app.modules.id_cow.helpAltText": "Δείχνει πού μπορείτε να βρείτε τον σειριακό αριθμό ταυτότητας σε ένα δελτίο ταυτότητας",

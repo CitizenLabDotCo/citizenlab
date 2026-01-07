@@ -2163,8 +2163,6 @@
   "app.errors.view_name_taken": "Une vue avec ce nom existe déjà",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Contenu signalé automatiquement (contribution ou commentaire)",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Se connecter avec StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "S'inscrire avec StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Créez un compte Stadt Wien maintenant et utilisez un seul identifiant pour de nombreux services numériques de Vienne.",
   "app.modules.id_cow.cancel": "Annuler",
   "app.modules.id_cow.emptyFieldError": "Ce champ ne peut pas être vide.",
   "app.modules.id_cow.helpAltText": "Indique où trouver le numéro de série de la carte d'identité",

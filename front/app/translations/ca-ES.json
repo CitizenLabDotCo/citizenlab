@@ -2163,8 +2163,6 @@
   "app.errors.view_name_taken": "Ja existeix una vista amb aquest nom",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "S'ha detectat automàticament contingut inadequat en una publicació o comentari",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Inicieu la sessió amb StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Registreu-vos amb StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Creeu un compte de Stadt Wien ara i utilitzeu un inici de sessió per a molts serveis digitals de Viena.",
   "app.modules.id_cow.cancel": "Cancel·lar",
   "app.modules.id_cow.emptyFieldError": "Aquest camp no pot estar buit.",
   "app.modules.id_cow.helpAltText": "Mostra on trobar el número de sèrie d'identificació en una targeta d'identitat",

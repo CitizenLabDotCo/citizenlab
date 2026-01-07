@@ -2163,8 +2163,6 @@
   "app.errors.view_name_taken": "Et gëtt schonn eng Usiicht mat dësem Numm",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Net ugemiessenen Inhalt gouf automatesch an engem Post oder Kommentar erkannt",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Mat StandardPortal aloggen",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Mat StandardPortal umellen",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Leet elo e Staad-Wien-Kont un a benotzt ee Login fir vill digital Servicer vu Wien.",
   "app.modules.id_cow.cancel": "Ofbriechen",
   "app.modules.id_cow.emptyFieldError": "Dëst dierf net eidel sinn",
   "app.modules.id_cow.helpAltText": "Weist, wou d’ID-Seriennummer op enger Identitéitskaart ze fannen ass",

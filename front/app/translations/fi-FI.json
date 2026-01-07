@@ -2163,8 +2163,6 @@
   "app.errors.view_name_taken": "Tämän niminen näkymä on jo olemassa",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Sopimaton sisältö tunnistettiin automaattisesti viestissä tai kommentissa",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Kirjaudu sisään StandardPortalilla",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Rekisteröidy StandardPortalilla",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Luo Stadt Wien -tili nyt ja käytä yhtä kirjautumista useisiin Wienin digitaalisiin palveluihin.",
   "app.modules.id_cow.cancel": "Peruuta",
   "app.modules.id_cow.emptyFieldError": "Tämä kenttä ei voi olla tyhjä.",
   "app.modules.id_cow.helpAltText": "Näyttää, mistä henkilökortin sarjanumero löytyy",

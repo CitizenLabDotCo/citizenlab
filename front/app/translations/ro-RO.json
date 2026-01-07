@@ -1033,8 +1033,6 @@
   "app.errors.view_name_taken": "O vizualizare cu acest nume există deja",
   "app.modules.commercial.flag_inappropriate_content.citizen.components.inappropriateContentAutoDetected": "Conținutul nepotrivit a fost detectat automat într-o postare sau comentariu",
   "app.modules.commercial.id_vienna_saml.components.signInWithStandardPortal": "Conectați-vă cu StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortal": "Înregistrați-vă cu StandardPortal",
-  "app.modules.commercial.id_vienna_saml.components.signUpWithStandardPortalSubHeader": "Creați acum un cont Stadt Wien și folosiți o singură autentificare pentru multe servicii digitale din Viena.",
   "app.modules.id_cow.cancel": "Anulare",
   "app.modules.id_cow.emptyFieldError": "Acest câmp nu poate fi gol.",
   "app.modules.id_cow.helpAltText": "Arată unde se găsește numărul de serie al cărții de identitate pe o carte de identitate",
