@@ -2111,6 +2111,7 @@
   "app.errors.confirmation_code_too_many_retries": "Ho heu intentat massa vegades. Sol·liciteu un codi nou o proveu de canviar el vostre correu electrònic.",
   "app.errors.email_already_active": "L'adreça de correu electrònic {value} que es troba a la fila {row} ja pertany a un participant registrat",
   "app.errors.email_already_invited": "L'adreça electrònica {value} que es troba a la fila {row} ja s'ha convidat",
+  "app.errors.email_banned": "L'adreça electrònica {value} que es troba a la fila {row} ha estat prohibida i no es pot convidar.",
   "app.errors.email_blank": "Això no pot estar buit",
   "app.errors.email_domain_blacklisted": "Feu servir un domini de correu electrònic diferent per registrar-vos.",
   "app.errors.email_invalid": "Utilitzeu una adreça de correu electrònic vàlida.",
