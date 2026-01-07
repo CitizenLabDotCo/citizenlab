@@ -498,7 +498,7 @@ it:
       cta_message: 'Clicca sul pulsante qui sotto per partecipare'
     native_survey_not_submitted:
       subject: '%{organizationName}Ci siamo quasi! Invia le tue risposte'
-      preheader: 'Non hai completato la risposta al sondaggio sulla piattaforma di partecipazione di %{organizationName}.'
+      preheader: 'Non hai completato le risposte al sondaggio sulla piattaforma partecipativa di %{organizationName}'
       title: 'Ci siamo quasi! Invia le tue risposte'
       event_description: 'Hai iniziato a condividere le tue risposte su %{phaseTitle} ma non le hai inviate. Clicca sul pulsante qui sotto per continuare da dove avevi interrotto.'
       cta_button: 'Riprendi la risposta al sondaggio'
