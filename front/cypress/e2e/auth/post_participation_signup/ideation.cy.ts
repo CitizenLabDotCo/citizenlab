@@ -68,9 +68,9 @@ describe('Post Participation Signup: ideation', () => {
     cy.get('#e2e-success-continue-button').find('button').click();
 
     // Make sure we get redirected to idea
-    // TODO
+    cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);
 
     // Make sure that idea belongs to user
-    // TODO
+    cy.get(`a[href="/en/profile/${firstName}-${lastName}"]`).should('exist');
   });
 });
