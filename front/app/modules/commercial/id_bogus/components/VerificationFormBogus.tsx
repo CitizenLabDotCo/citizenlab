@@ -18,7 +18,6 @@ import {
   SubmitButton,
   CancelButton,
 } from 'components/AuthProviderStyles/styles';
-
 import Error from 'components/UI/Error';
 
 import { isNilOrError } from 'utils/helperUtils';
