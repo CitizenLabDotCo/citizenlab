@@ -9,6 +9,9 @@ import ReactionsByTimeWidget, {
 import DemographicsWidget, {
   demographicsTitle,
 } from './ChartWidgets/DemographicsWidget';
+import InternalAdoptionWidget, {
+  internalAdoptionTitle,
+} from './ChartWidgets/InternalAdoptionWidget';
 import MethodsUsedWidget, {
   methodsUsedTitle,
 } from './ChartWidgets/MethodsUsedWidget';
@@ -61,6 +64,7 @@ export const WIDGETS = {
   RegistrationsWidget,
   MethodsUsedWidget,
   ParticipationWidget,
+  InternalAdoptionWidget,
   ProjectsWidget,
   // RENAMED (TODO rename in migration)
   ActiveUsersWidget: ParticipantsWidget,
@@ -103,6 +107,7 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   RegistrationsWidget: registrationsTitle,
   MethodsUsedWidget: methodsUsedTitle,
   ParticipationWidget: participationTitle,
+  InternalAdoptionWidget: internalAdoptionTitle,
   ProjectsWidget: projectsTitle,
   ParticipantsWidget: participantsTitle,
 
@@ -132,6 +137,7 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'RegistrationsWidget',
   'MethodsUsedWidget',
   'ParticipationWidget',
+  'InternalAdoptionWidget',
   'ParticipantsWidget',
 
   // RENAMED (TODO rename in migration)
