@@ -91,8 +91,7 @@ class OmniauthCallbackController < ApplicationController
           @user.save!
           SideFxUserService.new.after_update(@user, nil) # Logs 'registration_completed' activity Job`
           @invite.save!
-          SideFxInviteService.new.after_accept @invite # Logs 'accepted' activity Job
-          ClaimTokenService.claim(@user, claim_tokens)
+          SideFxInviteService.new.after_accept(@invite, claim_tokens:)
           verify_and_sign_in(auth, @user, verify, sign_up: true)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)

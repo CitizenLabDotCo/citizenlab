@@ -14,7 +14,9 @@ resource 'User Token' do
       parameter :password, required: true
       parameter :remember_me
       parameter :claim_tokens, <<~DESC
-        Tokens used to claim participation data created while not logged in. 
+        Tokens used to claim anonymous participation data (e.g., ideas) created while logged out.
+        If confirmation is required, tokens are marked as pending until confirmed.
+        Otherwise, participation data is claimed immediately.
       DESC
     end
 
