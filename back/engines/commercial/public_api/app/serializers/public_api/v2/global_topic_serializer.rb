@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PublicApi::V2::GlobalTopicSerializer < PublicApi::V2::BaseSerializer
+  type :topic
+
   attributes :id,
     :title,
     :description,
