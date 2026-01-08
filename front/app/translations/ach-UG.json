@@ -205,6 +205,8 @@
   "app.components.ErrorBoundary.openFormText": "crwdns213016:0crwdne213016:0",
   "app.components.ErrorToast.budgetExceededError": "crwdns777547:0crwdne777547:0",
   "app.components.ErrorToast.votesExceededError": "crwdns777549:0crwdne777549:0",
+  "app.components.EsriMap.mapLayerListAriaLabel": "crwdns5899073:0crwdne5899073:0",
+  "app.components.EsriMap.mapLegendAriaLabel": "crwdns5899075:0crwdne5899075:0",
   "app.components.EventAttendanceButton.forwardToFriend": "crwdns953623:0crwdne953623:0",
   "app.components.EventAttendanceButton.maxRegistrationsReached": "crwdns4902947:0crwdne4902947:0",
   "app.components.EventAttendanceButton.register": "crwdns4902949:0crwdne4902949:0",

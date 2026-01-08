@@ -205,6 +205,8 @@
   "app.components.ErrorBoundary.openFormText": "padėkite mums tai išsiaiškinti",
   "app.components.ErrorToast.budgetExceededError": "Neturite pakankamai biudžeto",
   "app.components.ErrorToast.votesExceededError": "Jums neliko pakankamai balsų",
+  "app.components.EsriMap.mapLayerListAriaLabel": "Perjungti sluoksnių sąrašą",
+  "app.components.EsriMap.mapLegendAriaLabel": "Perjungti legendą",
   "app.components.EventAttendanceButton.forwardToFriend": "Persiųsti draugui",
   "app.components.EventAttendanceButton.maxRegistrationsReached": "Pasiektas maksimalus renginio registracijų skaičius. Vietų nebėra.",
   "app.components.EventAttendanceButton.register": "Registruotis",
