@@ -31,7 +31,7 @@ export const invalidateFollowQueries = (
         projectFoldersKeys.item({ slug: followableSlug })
       );
       break;
-    case 'topics':
+    case 'global_topics':
       queryClient.invalidateQueries(globalTopicsKeys.list({}));
       break;
     case 'areas':

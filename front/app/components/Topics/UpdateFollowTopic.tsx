@@ -61,20 +61,20 @@ const UpdateFollowTopic = ({ topic }: Props) => {
       deleteFollower({
         followerId,
         followableId: topic.id,
-        followableType: 'topics',
+        followableType: 'global_topics',
       });
       trackEventByName(tracks.unfollow, {
-        followableType: 'topics',
+        followableType: 'global_topics',
         id: topic.id,
         urlPathName: pathname,
       });
     } else {
       addFollower({
-        followableType: 'topics',
+        followableType: 'global_topics',
         followableId: topic.id,
       });
       trackEventByName(tracks.follow, {
-        followableType: 'topics',
+        followableType: 'global_topics',
         id: topic.id,
         urlPathName: pathname,
       });
