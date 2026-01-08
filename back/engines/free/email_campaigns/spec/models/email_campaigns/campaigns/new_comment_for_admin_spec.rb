@@ -22,7 +22,6 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentForAdmin do
       expect(command).to match(
         event_payload: a_hash_including(
           initiating_user_first_name: 'Rea',
-          initiating_user_last_name: 'Xion',
           comment_author_name: 'Rea Xion',
           comment_body_multiloc: { 'en' => 'Example comment.' },
           comment_url: "http://example.org/en/ideas/#{comment.idea.slug}",

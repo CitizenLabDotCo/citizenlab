@@ -10,7 +10,6 @@ class WebApi::V1::IdeasController < ApplicationController
   skip_after_action :verify_authorized, only: %i[index_xlsx index_mini index_idea_markers filter_counts]
   skip_after_action :verify_authorized, only: %i[create], unless: -> { response.status == 400 }
   after_action :verify_policy_scoped, only: %i[index index_mini]
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
     ideas = IdeasFinder.new(
@@ -161,7 +160,7 @@ class WebApi::V1::IdeasController < ApplicationController
   #   Users who can moderate projects post in an active phase if no phase id is given.
   #   Users who can moderate projects post in the given phase if a phase id is given.
   def create
-    send_error and return if !phase_for_input
+    send_error and return unless phase_for_input
 
     form = phase_for_input.pmethod.custom_form
     extract_custom_field_values_from_params!(form)
@@ -463,7 +462,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def build_idea_file_attachment(idea, file_params)
-    files_file = Files::File.new(
+    files_file = Files::RestrictedFile.new( # temporary-fix-for-vienna-svg-security-issue (use Files::File.new to undo)
       content_by_content: {
         content: file_params['content'],
         name: file_params['name']
@@ -561,7 +560,17 @@ class WebApi::V1::IdeasController < ApplicationController
   # Only relevant for allow_anonymous_participation in the context of ideation
   # Not relevant for 'user_data_collection' in the context of surveys
   def anonymous_not_allowed?(phase)
+    return false if AppConfiguration.instance.feature_activated?('ideation_accountless_posting') && permitted_by_everyone?(phase)
+
     params.dig('idea', 'anonymous') && !phase.allow_anonymous_participation
+  end
+
+  def permitted_by_everyone?(phase)
+    permission = Permission.find_by(
+      permission_scope_id: phase.id,
+      action: 'posting_idea'
+    )
+    permission&.permitted_by == 'everyone'
   end
 
   def idea_status_not_allowed?(input)

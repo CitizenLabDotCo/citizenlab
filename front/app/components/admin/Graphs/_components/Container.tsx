@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { useResizeDetector } from 'react-resize-detector';
 import { ResponsiveContainer } from 'recharts';
 import { Percentage } from 'typings';
 
@@ -50,6 +51,13 @@ const Container = ({
   const rightLegend = legend?.position?.includes('right');
   const maintainGraphSize = !!legend?.maintainGraphSize;
 
+  // Measure actual dimensions when percentages are used
+  const {
+    width: measuredWidth,
+    height: measuredHeight,
+    ref,
+  } = useResizeDetector();
+
   const parsedWidth =
     rightLegend && typeof width === 'number' && maintainGraphSize
       ? width +
@@ -65,10 +73,22 @@ const Container = ({
       : height;
 
   useEffect(() => {
-    if (typeof parsedWidth === 'number' && typeof parsedHeight === 'number') {
-      onUpdateGraphDimensions?.({ width: parsedWidth, height: parsedHeight });
+    // Use measured dimensions when props are percentages
+    const finalWidth =
+      typeof parsedWidth === 'number' ? parsedWidth : measuredWidth;
+    const finalHeight =
+      typeof parsedHeight === 'number' ? parsedHeight : measuredHeight;
+
+    if (finalWidth && finalHeight) {
+      onUpdateGraphDimensions?.({ width: finalWidth, height: finalHeight });
     }
-  }, [parsedWidth, parsedHeight, onUpdateGraphDimensions]);
+  }, [
+    parsedWidth,
+    parsedHeight,
+    measuredWidth,
+    measuredHeight,
+    onUpdateGraphDimensions,
+  ]);
 
   return (
     <Box
@@ -79,11 +99,16 @@ const Container = ({
       height="100%"
     >
       <Box
+        ref={ref}
         width={
-          typeof parsedWidth === 'number' ? `${parsedWidth}px` : parsedWidth
+          typeof parsedWidth === 'number'
+            ? `${parsedWidth}px`
+            : parsedWidth ?? '100%'
         }
         height={
-          typeof parsedHeight === 'number' ? `${parsedHeight}px` : parsedHeight
+          typeof parsedHeight === 'number'
+            ? `${parsedHeight}px`
+            : parsedHeight ?? '100%'
         }
       >
         <ResponsiveContainer width="100%" height="100%">

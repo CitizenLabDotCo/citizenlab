@@ -169,6 +169,7 @@ class User < ApplicationRecord
   has_many :requested_project_reviews, class_name: 'ProjectReview', foreign_key: :requester_id, dependent: :nullify
   has_many :assigned_project_reviews, class_name: 'ProjectReview', foreign_key: :reviewer_id, dependent: :nullify
   has_many :jobs_trackers, class_name: 'Jobs::Tracker', foreign_key: :owner_id, dependent: :nullify
+  has_many :invites_imports, foreign_key: :importer_id, dependent: :destroy
 
   store_accessor :custom_field_values, :gender, :birthyear, :domicile
   store_accessor :onboarding, :topics_and_areas
@@ -196,6 +197,7 @@ class User < ApplicationRecord
   validate :validate_not_duplicate_new_email
   validate :validate_can_update_email, on: :form_submission # only called if `save` is called w/ `context: :form_submission`
   validate :validate_email_domains_blacklist, if: :email_or_new_email_changed?
+  validate :validate_emails_not_banned, if: :email_or_new_email_changed?
 
   before_destroy :remove_initiated_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
@@ -384,6 +386,20 @@ class User < ApplicationRecord
       errors.add(field, 'something_went_wrong', code: 'zrb-42')
       Rails.logger.info "Validation error! Email domain blacklisted: #{domain}" # Clearer message in the logs
     end
+  end
+
+  def validate_emails_not_banned
+    validate_email_not_banned(:email)
+    validate_email_not_banned(:new_email)
+  end
+
+  def validate_email_not_banned(field)
+    value = send(field)
+    return if value.blank?
+    return unless EmailBan.banned?(value)
+
+    errors.add(field, 'something_went_wrong', code: 'zrb-43')
+    Rails.logger.info "Validation error! Email banned: #{value.split('@')&.last}"
   end
 
   def remove_initiated_notifications

@@ -37,6 +37,9 @@ module BulkImportIdeas::Parsers
       google_parsed_idea = google_parsed_idea(google_forms_service, pdf_file)
       text_parsed_idea = text_parsed_idea(google_forms_service, pdf_file)
 
+      # Store the parsed idea for better analysis later
+      file.update!(parsed_value: { parser: 'google', value: { google_parsed: google_parsed_idea, text_parsed: text_parsed_idea } })
+
       # Merge the two types of parsed idea into one idea row
       [merge_parsed_ideas_into_idea_row(google_parsed_idea, text_parsed_idea, file)]
     end

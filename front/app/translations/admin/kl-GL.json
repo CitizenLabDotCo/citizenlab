@@ -1038,8 +1038,6 @@
   "app.containers.AdminPage.SettingsPage.sign_up_button": "\"Nalunaarsorit\"",
   "app.containers.AdminPage.SettingsPage.signed_in": "Alakkarterisunut nalunaarsorsimasunut attataasaq",
   "app.containers.AdminPage.SettingsPage.signed_out": "Alakkarterisunut nalunaarsorsimanngitsunut attataasaq",
-  "app.containers.AdminPage.SettingsPage.step1": "Killiffik mailimik isissutissamillu allaffissaq",
-  "app.containers.AdminPage.SettingsPage.step1Tooltip": "Taanna nalunaarsornissamut immersugassap quppernerani siullermi qullerpaajulluni nuisassaaq (ateq, e-mail, isissutissaq).",
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Nunami immikkoortunik qupperninni atorusutannik nassuiaagit, soorlu illoqarfiup immikkoortui nunalluunniit immikkoortui. Nunami immikkoortut taakku suliniutinut atassusersinnaavatit (quppernermi iserfissamiittartumi filtererneqarsinnaapput) imaluunniit peqataasut smart gruppiliorniarunik kiisalu iserfigisinnaasanut pisinnaatitaaffiit nassuiarniarunikkit immikkoortoq najugaqarfigisartik feltitut nalunaarfissatut atussagaat qinnuigalugit.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Inuit ingerlatseqatigiiffivit aqqa qanoq takusassaneraat aalajangeruk, qupperninni oqaatsit toqqakkit nittartakkannullu linkiliorlutit.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "Oqaasertaliussaq naqinnernik atorneqarsinnaasunik qaangiivoq (naqinnerit 90-it)",
