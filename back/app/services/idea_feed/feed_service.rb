@@ -18,6 +18,10 @@ module IdeaFeed
       DiversityService.new.generate_list(candidates, IdeaExposure.where(user:, phase:), n)
     end
 
+    def eligible_ideas_count(scope = Idea.all)
+      fetch_eligible_ideas(scope).count
+    end
+
     private
 
     def fetch_candidates_with_scores(scope)
