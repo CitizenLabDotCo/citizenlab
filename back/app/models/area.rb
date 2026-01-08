@@ -18,13 +18,14 @@
 #
 #  index_areas_on_custom_field_option_id  (custom_field_option_id)
 #  index_areas_on_include_in_onboarding   (include_in_onboarding)
+#  index_areas_on_ordering_unique         (ordering) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (custom_field_option_id => custom_field_options.id)
 #
 class Area < ApplicationRecord
-  acts_as_list column: :ordering, top_of_list: 0
+  acts_as_list column: :ordering, top_of_list: 0, sequential_updates: true
 
   has_many :areas_projects, dependent: :destroy
   has_many :projects, through: :areas_projects
@@ -47,11 +48,6 @@ class Area < ApplicationRecord
   after_create :recreate_custom_field_option
   after_update :update_custom_field_option
   before_destroy :destroy_custom_field_option
-
-  validates :ordering, numericality: {
-    only_integer: true,
-    greater_than_or_equal_to: 0
-  }, unless: ->(area) { area.ordering.nil? }
 
   scope :order_projects_count, lambda { |direction = :desc|
     safe_dir = direction == :desc ? 'DESC' : 'ASC'
@@ -97,10 +93,8 @@ class Area < ApplicationRecord
     return unless custom_field_option
     return unless ordering_previously_changed? || title_multiloc_previously_changed?
 
-    custom_field_option.update!(
-      title_multiloc: title_multiloc,
-      ordering: ordering
-    )
+    custom_field_option.update!(title_multiloc: title_multiloc)
+    custom_field_option.insert_at(ordering)
   end
 
   # The optional +domicile_field+ parameter is only there for performance
