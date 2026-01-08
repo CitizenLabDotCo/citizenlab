@@ -1,28 +1,28 @@
 import React, { useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { pdfjs, Document, Page } from 'react-pdf';
 import 'react-pdf/dist/Page/TextLayer.css';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 
 import { getJwt } from 'utils/auth/jwt';
 
+import PDFDownloadButton from './PDFDownloadButton';
+
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.mjs`;
 
 interface Props {
-  currentPageIndex: number;
   file: string;
-  pages: number[];
+  ideaId: string;
 }
 
-const PDFViewer = ({ currentPageIndex, file, pages }: Props) => {
+const PDFViewer = ({ file, ideaId }: Props) => {
   const [pagesInDocument, setPagesInDocument] = useState<number | null>(null);
 
   const handleLoadSuccess = ({ numPages }: { numPages: number }) => {
     setPagesInDocument(numPages);
   };
 
-  const currentPage = pages[currentPageIndex];
   const jwt = getJwt();
   const fileWithHeaders = {
     url: file,
@@ -31,12 +31,28 @@ const PDFViewer = ({ currentPageIndex, file, pages }: Props) => {
 
   return (
     <>
-      <Box w="100%" h="100%" overflowY="scroll">
+      <Box
+        w="100%"
+        h="100%"
+        overflowY="scroll"
+        paddingBottom="80px"
+        background={colors.grey100}
+        p="12px"
+      >
         <Document file={fileWithHeaders} onLoadSuccess={handleLoadSuccess}>
-          {currentPage && pagesInDocument && currentPage <= pagesInDocument && (
-            <Page pageNumber={currentPage} />
-          )}
+          {pagesInDocument &&
+            [...Array(pagesInDocument)].map((_, pageIndex) => (
+              <Box
+                key={pageIndex}
+                mb="12px"
+                border={`1px ${colors.grey400} solid`}
+                display="inline-block"
+              >
+                <Page key={pageIndex} pageNumber={pageIndex + 1} />
+              </Box>
+            ))}
         </Document>
+        {pagesInDocument && <PDFDownloadButton file={file} ideaId={ideaId} />}
       </Box>
     </>
   );

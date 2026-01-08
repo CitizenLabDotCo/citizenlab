@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  seeAllIdeas: {
+    id: 'app.containers.IdeasFeedPage.seeAllIdeas',
+    defaultMessage: 'See all {ideasCount} inputs',
+  },
   allTopics: {
     id: 'app.containers.IdeasFeedPage.allTopics',
     defaultMessage: 'All topics',

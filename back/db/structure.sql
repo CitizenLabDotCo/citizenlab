@@ -42,6 +42,7 @@ ALTER TABLE IF EXISTS ONLY public.ideas_input_topics DROP CONSTRAINT IF EXISTS f
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_rails_d6353758d5;
 ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS fk_rails_d1892257e3;
 ALTER TABLE IF EXISTS ONLY public.webhooks_subscriptions DROP CONSTRAINT IF EXISTS fk_rails_d182afe5ca;
+ALTER TABLE IF EXISTS ONLY public.email_bans DROP CONSTRAINT IF EXISTS fk_rails_d15949a47c;
 ALTER TABLE IF EXISTS ONLY public.jobs_trackers DROP CONSTRAINT IF EXISTS fk_rails_cfd1ddfa6b;
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_locales_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_cd2a592e7b;
 ALTER TABLE IF EXISTS ONLY public.analysis_taggings DROP CONSTRAINT IF EXISTS fk_rails_cc8b68bfb4;
@@ -387,11 +388,14 @@ DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_on_author_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_groups_on_group_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_groups_on_campaign_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaign_email_commands_on_recipient_id;
+DROP INDEX IF EXISTS public.index_email_bans_on_normalized_email_hash;
+DROP INDEX IF EXISTS public.index_email_bans_on_banned_by_id;
 DROP INDEX IF EXISTS public.index_dismissals_on_campaign_name_and_user_id;
 DROP INDEX IF EXISTS public.index_custom_forms_on_participation_context;
 DROP INDEX IF EXISTS public.index_custom_fields_on_resource_type_and_resource_id;
 DROP INDEX IF EXISTS public.index_custom_fields_on_resource_id_and_ordering_unique;
 DROP INDEX IF EXISTS public.index_custom_fields_on_ordering;
+DROP INDEX IF EXISTS public.index_custom_field_options_on_field_id_and_ordering_unique;
 DROP INDEX IF EXISTS public.index_custom_field_options_on_custom_field_id_and_key;
 DROP INDEX IF EXISTS public.index_custom_field_options_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_custom_field_option_images_on_custom_field_option_id;
@@ -421,6 +425,7 @@ DROP INDEX IF EXISTS public.index_areas_static_pages_on_area_id;
 DROP INDEX IF EXISTS public.index_areas_projects_on_project_id_and_area_id;
 DROP INDEX IF EXISTS public.index_areas_projects_on_project_id;
 DROP INDEX IF EXISTS public.index_areas_projects_on_area_id;
+DROP INDEX IF EXISTS public.index_areas_on_ordering_unique;
 DROP INDEX IF EXISTS public.index_areas_on_include_in_onboarding;
 DROP INDEX IF EXISTS public.index_areas_on_custom_field_option_id;
 DROP INDEX IF EXISTS public.index_analytics_dimension_types_on_name_and_parent;
@@ -573,6 +578,7 @@ ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns DROP CONSTRAINT IF E
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns_groups DROP CONSTRAINT IF EXISTS email_campaigns_campaigns_groups_pkey;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaign_email_commands DROP CONSTRAINT IF EXISTS email_campaigns_campaign_email_commands_pkey;
 ALTER TABLE IF EXISTS ONLY public.default_input_topics DROP CONSTRAINT IF EXISTS default_input_topics_pkey;
+ALTER TABLE IF EXISTS ONLY public.email_bans DROP CONSTRAINT IF EXISTS email_bans_pkey;
 ALTER TABLE IF EXISTS ONLY public.custom_forms DROP CONSTRAINT IF EXISTS custom_forms_pkey;
 ALTER TABLE IF EXISTS ONLY public.custom_fields DROP CONSTRAINT IF EXISTS custom_fields_pkey;
 ALTER TABLE IF EXISTS ONLY public.custom_field_options DROP CONSTRAINT IF EXISTS custom_field_options_pkey;
@@ -694,6 +700,7 @@ DROP TABLE IF EXISTS public.email_campaigns_consents;
 DROP TABLE IF EXISTS public.email_campaigns_campaigns_groups;
 DROP TABLE IF EXISTS public.email_campaigns_campaign_email_commands;
 DROP TABLE IF EXISTS public.default_input_topics;
+DROP TABLE IF EXISTS public.email_bans;
 DROP TABLE IF EXISTS public.custom_forms;
 DROP TABLE IF EXISTS public.custom_fields;
 DROP TABLE IF EXISTS public.custom_field_options;
@@ -2375,6 +2382,19 @@ CREATE TABLE public.default_input_topics (
     ordering integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: email_bans; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.email_bans (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    normalized_email_hash character varying NOT NULL,
+    reason text,
+    banned_by_id uuid,
+    created_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -4098,6 +4118,14 @@ ALTER TABLE ONLY public.default_input_topics
 
 
 --
+-- Name: email_bans email_bans_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_bans
+    ADD CONSTRAINT email_bans_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: email_campaigns_campaign_email_commands email_campaigns_campaign_email_commands_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5252,6 +5280,13 @@ CREATE INDEX index_areas_on_include_in_onboarding ON public.areas USING btree (i
 
 
 --
+-- Name: index_areas_on_ordering_unique; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_areas_on_ordering_unique ON public.areas USING btree (ordering);
+
+
+--
 -- Name: index_areas_projects_on_area_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5455,6 +5490,13 @@ CREATE UNIQUE INDEX index_custom_field_options_on_custom_field_id_and_key ON pub
 
 
 --
+-- Name: index_custom_field_options_on_field_id_and_ordering_unique; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_custom_field_options_on_field_id_and_ordering_unique ON public.custom_field_options USING btree (custom_field_id, ordering);
+
+
+--
 -- Name: index_custom_fields_on_ordering; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5487,6 +5529,20 @@ CREATE UNIQUE INDEX index_custom_forms_on_participation_context ON public.custom
 --
 
 CREATE UNIQUE INDEX index_dismissals_on_campaign_name_and_user_id ON public.onboarding_campaign_dismissals USING btree (campaign_name, user_id);
+
+
+--
+-- Name: index_email_bans_on_banned_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_email_bans_on_banned_by_id ON public.email_bans USING btree (banned_by_id);
+
+
+--
+-- Name: index_email_bans_on_normalized_email_hash; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_email_bans_on_normalized_email_hash ON public.email_bans USING btree (normalized_email_hash);
 
 
 --
@@ -8026,6 +8082,14 @@ ALTER TABLE ONLY public.jobs_trackers
 
 
 --
+-- Name: email_bans fk_rails_d15949a47c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_bans
+    ADD CONSTRAINT fk_rails_d15949a47c FOREIGN KEY (banned_by_id) REFERENCES public.users(id);
+
+
+--
 -- Name: webhooks_subscriptions fk_rails_d182afe5ca; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8300,9 +8364,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20260107115454'),
 ('20251224101437'),
 ('20251217110845'),
+('20251212135514'),
 ('20251209135529'),
 ('20251208163107'),
 ('20251203114945'),
+('20251201130137'),
 ('20251127085639'),
 ('20251124000000'),
 ('20251120113747'),
