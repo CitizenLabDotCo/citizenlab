@@ -1,7 +1,6 @@
 import { SupportedLocale } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
-import { clearClaimTokens, getClaimTokens } from 'utils/claimToken';
 
 import signIn from './sign_in_out/signIn';
 import { CreateAccountWithPasswordProperties } from './sign_up/types';
@@ -41,11 +40,9 @@ export default async function createAccountFromInvite({
       locale,
       first_name: firstName,
       last_name: lastName,
-      claim_tokens: getClaimTokens(),
     },
   };
   await triggerCreateAccountFromInvite(token, bodyData);
-  clearClaimTokens();
 
   const authenticatedUser = await signIn({ email, password });
 
