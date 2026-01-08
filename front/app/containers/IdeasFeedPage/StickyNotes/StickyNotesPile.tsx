@@ -69,13 +69,11 @@ const POSITIONS_TABLET = [
 
 const POSITIONS_MOBILE = [
   { left: '5%', top: '1%' },
-  { left: '48%', top: '6%' },
-  { left: '2%', top: '16%' },
-  { left: '52%', top: '20%' },
-  { left: '8%', top: '33%' },
-  { left: '46%', top: '38%' },
-  { left: '3%', top: '50%' },
-  { left: '50%', top: '54%' },
+  { left: '21%', top: '10%' },
+  { left: '3%', top: '24%' },
+  { left: '23%', top: '32%' },
+  { left: '7%', top: '48%' },
+  { left: '19%', top: '56%' },
 ];
 
 // Slight rotations to give a natural scattered look
@@ -123,14 +121,15 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
 
   const { positions, count } = getPositionsConfig();
   const displayedIdeas = flatIdeas?.slice(0, count);
+  const minHeight = '800px';
 
   return (
-    <Box>
+    <Box overflow="hidden">
       <PileContainer
         position="relative"
         width="100%"
         height="100%"
-        minHeight="800px"
+        minHeight={minHeight}
       >
         {displayedIdeas?.map((idea, index) => {
           const topicIds =

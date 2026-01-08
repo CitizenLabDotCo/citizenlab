@@ -94,6 +94,7 @@ const Sidebar = () => {
         a11y_panelLabel={formatMessage(messages.topicsPanel)}
         a11y_expandLabel={formatMessage(messages.expandPanel)}
         a11y_collapseLabel={formatMessage(messages.collapsePanel)}
+        expandToFullscreenOn={selectedIdeaId}
       >
         {showIdeaDetail ? (
           <IdeaContent

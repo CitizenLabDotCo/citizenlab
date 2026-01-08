@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { FocusOn } from 'react-focus-on';
-import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 const COLLAPSED_HEIGHT = 40;
@@ -63,6 +62,8 @@ interface Props {
   a11y_panelLabel: string;
   a11y_expandLabel: string;
   a11y_collapseLabel: string;
+  /** When this value changes (and is truthy), the sheet expands to fullscreen */
+  expandToFullscreenOn?: string | null;
 }
 
 type SheetState = 'collapsed' | 'default' | 'fullscreen';
@@ -72,9 +73,8 @@ const BottomSheet = ({
   a11y_panelLabel,
   a11y_expandLabel,
   a11y_collapseLabel,
+  expandToFullscreenOn,
 }: Props) => {
-  const [searchParams] = useSearchParams();
-  const ideaId = searchParams.get('idea_id');
   const [sheetState, setSheetState] = useState<SheetState>('default');
   const [dragTranslateY, setDragTranslateY] = useState<number | null>(null);
   const dragStartY = useRef(0);
@@ -96,11 +96,11 @@ const BottomSheet = ({
   };
 
   useEffect(() => {
-    if (ideaId) {
+    if (expandToFullscreenOn) {
       setSheetState('fullscreen');
       contentRef.current?.scrollTo(0, 0);
     }
-  }, [ideaId]);
+  }, [expandToFullscreenOn]);
 
   const startDrag = (startY: number) => {
     dragStartY.current = startY;
