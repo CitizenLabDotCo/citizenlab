@@ -250,7 +250,7 @@ resource 'Users' do
         parameter :email, 'E-mail address', required: true
         parameter :locale, 'Locale (must be one of the tenant locales)', required: true
         parameter :claim_tokens, <<~DESC
-          Tokens used to claim participation data created before registration.
+          Tokens used to claim anonymous participation data (e.g., ideas) created before registration.
           If confirmation is required, tokens are marked as pending until confirmed.
           Otherwise, participation data is claimed immediately.
         DESC
