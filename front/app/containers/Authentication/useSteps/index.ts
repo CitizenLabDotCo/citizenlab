@@ -198,7 +198,7 @@ export default function useSteps() {
     return () => subscription.unsubscribe();
   }, [currentStep, transition, updateState]);
 
-  // Listen for any action that triggers the authentication flow, and initialize
+  // Listen for any action that triggers the post-particpation authentication flow, and initialize
   // the flow if no flow is ongoing
   useEffect(() => {
     const subscription = triggerPostParticipationFlow$.subscribe((event) => {
