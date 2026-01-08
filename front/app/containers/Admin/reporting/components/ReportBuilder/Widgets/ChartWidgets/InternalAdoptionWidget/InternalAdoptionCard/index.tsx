@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
@@ -11,6 +12,7 @@ import { Props } from '../typings';
 import useInternalAdoption from '../useInternalAdoption';
 
 import Chart from './Chart';
+import { Statistics } from './Statistics';
 
 const InternalAdoptionCard = ({
   startAt,
@@ -32,32 +34,47 @@ const InternalAdoptionCard = ({
 
   const previousDays = getDaysInRange(startAt, endAt);
 
-  if (stats?.activeAdmins.value === 0 && stats.activeModerators.value === 0) {
+  if (
+    stats?.activeAdmins.value === 0 &&
+    stats.activeModerators.value === 0 &&
+    stats.totalRegistered.value === 0
+  ) {
     return <NoData message={chartWidgetMessages.noData} />;
   }
 
   return (
-    <Chart
-      startAtMoment={startAt ? moment(startAt) : null}
-      endAtMoment={endAt ? moment(endAt) : null}
-      resolution={currentResolution}
-      margin={{
-        left: 5,
-        right: -20,
-        top: 10,
-        bottom: 0,
-      }}
-      yaxis={{
-        orientation: 'right',
-        tickFormatter: formatLargeNumber,
-      }}
-      previousDays={previousDays}
-      hideStatistics={hideStatistics}
-      timeSeries={timeSeries}
-      stats={stats}
-      ariaLabel={ariaLabel}
-      ariaDescribedBy={ariaDescribedBy}
-    />
+    <Box className="e2e-internal-adoption-widget" height="100%">
+      {!hideStatistics && stats && (
+        <Statistics stats={stats} previousDays={previousDays} />
+      )}
+      <Box
+        flexGrow={1}
+        display="flex"
+        justifyContent="flex-start"
+        mt="28px"
+        maxWidth="800px"
+        h="240px"
+      >
+        <Chart
+          startAtMoment={startAt ? moment(startAt) : null}
+          endAtMoment={endAt ? moment(endAt) : null}
+          resolution={currentResolution}
+          margin={{
+            left: 5,
+            right: -20,
+            top: 10,
+            bottom: 0,
+          }}
+          yaxis={{
+            orientation: 'right',
+            tickFormatter: formatLargeNumber,
+          }}
+          timeSeries={timeSeries}
+          ariaLabel={ariaLabel}
+          ariaDescribedBy={ariaDescribedBy}
+        />
+      </Box>
+    </Box>
   );
 };
 
