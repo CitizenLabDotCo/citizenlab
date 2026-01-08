@@ -321,7 +321,7 @@ const FormEdit = ({
               autosaveEnabled={autosaveEnabled}
               setAutosaveEnabled={setAutosaveEnabled}
               phaseId={phaseId}
-              onSchemaUpdate={() => setIsUpdatingForm(true)}
+              onFormSave={() => setIsUpdatingForm(true)}
             />
             <DragAndDrop onDragEnd={reorderFields}>
               <Drop id="droppable" type={pageDNDType}>

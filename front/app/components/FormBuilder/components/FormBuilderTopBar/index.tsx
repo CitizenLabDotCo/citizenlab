@@ -53,7 +53,7 @@ type FormBuilderTopBarProps = {
   autosaveEnabled: boolean;
   setAutosaveEnabled: Dispatch<SetStateAction<boolean>>;
   phaseId: string;
-  onSchemaUpdate?: () => void;
+  onFormSave?: () => void;
 };
 
 const FormBuilderTopBar = ({
@@ -63,7 +63,7 @@ const FormBuilderTopBar = ({
   autosaveEnabled,
   setAutosaveEnabled,
   phaseId,
-  onSchemaUpdate,
+  onFormSave,
 }: FormBuilderTopBarProps) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -187,7 +187,7 @@ const FormBuilderTopBar = ({
           projectId={projectId}
           phase={phase.data}
           isFormPhaseSpecific={builderConfig.isFormPhaseSpecific}
-          onSaveSuccess={onSchemaUpdate}
+          onSaveSuccess={onFormSave}
         />
         <ButtonWithLink
           buttonStyle="secondary-outlined"
