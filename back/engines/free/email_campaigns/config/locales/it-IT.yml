@@ -521,7 +521,7 @@ it:
       preheader: '%{phaseTitle} risultati del voto rivelati sulla piattaforma di partecipazione di %{organizationName}'
       title: '%{phaseTitle} I risultati delle votazioni sono stati pubblicati!'
       body_1: 'I risultati sono arrivati!'
-      body_2: 'Sono stati pubblicati i risultati della votazione di %{phaseTitle} nella piattaforma %{organizationName} !'
+      body_2: 'Sono stati pubblicati i risultati della votazione del progetto %{phaseTitle} nella piattaforma partecipativa di %{organizationName}!'
       body_3: 'Ti invitiamo a esaminare i risultati e a rimanere sintonizzato per ulteriori aggiornamenti sui prossimi passi.'
       cta_button: 'Vedi i risultati nella piattaforma'
     event_registration_confirmation:
@@ -539,7 +539,7 @@ it:
       cta_add_to_calendar: 'Aggiungi al tuo calendario'
     voting_phase_started:
       subject: '%{organizationName}: La fase di voto è iniziata per %{projectName}'
-      preheader: 'La fase di votazione è iniziata per %{projectName} sulla piattaforma di partecipazione di %{organizationName}.'
+      preheader: 'La fase di votazione è iniziata per %{projectName} sulla piattaforma partecipativa di %{organizationName}'
       title: '%{projectName}'
       event_description: 'Il progetto "%{projectName}" ti chiede di votare tra le opzioni di %{numIdeas} :'
       cta_message: 'Clicca sul pulsante qui sotto per partecipare'
