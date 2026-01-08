@@ -66,7 +66,7 @@ module AdminApi
         end
       end
 
-      ideas = ideas.with_some_topics(Topic.where(id: args[:topics])) if args[:topics].present?
+      ideas = ideas.with_some_topics(GlobalTopic.where(id: args[:topics])) if args[:topics].present?
       ideas = ideas.where(project_id: args[:projects]) if args[:projects].present?
 
       ideas
