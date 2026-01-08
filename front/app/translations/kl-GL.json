@@ -205,6 +205,8 @@
   "app.components.ErrorBoundary.openFormText": "ajornartorsiut aaqqinniarlugu ikiortigut",
   "app.components.ErrorToast.budgetExceededError": "You don't have enough budget",
   "app.components.ErrorToast.votesExceededError": "You don't have enough votes left",
+  "app.components.EsriMap.mapLayerListAriaLabel": "Toggle layer list",
+  "app.components.EsriMap.mapLegendAriaLabel": "Toggle legend",
   "app.components.EventAttendanceButton.forwardToFriend": "Forward to a friend",
   "app.components.EventAttendanceButton.maxRegistrationsReached": "The maximum number of event registrations has been reached. There are no spots left.",
   "app.components.EventAttendanceButton.register": "Register",

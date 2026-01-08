@@ -205,6 +205,8 @@
   "app.components.ErrorBoundary.openFormText": "sorunu anlamamıza yardımcı olun",
   "app.components.ErrorToast.budgetExceededError": "Yeterli bütçeniz yok",
   "app.components.ErrorToast.votesExceededError": "Yeterli oyunuz kalmadı.",
+  "app.components.EsriMap.mapLayerListAriaLabel": "Katman listesini değiştir",
+  "app.components.EsriMap.mapLegendAriaLabel": "Göstergeyi değiştir",
   "app.components.EventAttendanceButton.forwardToFriend": "Bir arkadaşınıza iletin",
   "app.components.EventAttendanceButton.maxRegistrationsReached": "Etkinlik kayıtları için maksimum sayıya ulaşılmıştır. Hiç yer kalmamıştır.",
   "app.components.EventAttendanceButton.register": "Kayıt Olun",

@@ -205,6 +205,8 @@
   "app.components.ErrorBoundary.openFormText": "hjälp oss att ta reda på det",
   "app.components.ErrorToast.budgetExceededError": "Du har inte tillräckligt med budget",
   "app.components.ErrorToast.votesExceededError": "Du har inte tillräckligt med röster kvar",
+  "app.components.EsriMap.mapLayerListAriaLabel": "Växla lagerlista",
+  "app.components.EsriMap.mapLegendAriaLabel": "Växla teckenförklaring",
   "app.components.EventAttendanceButton.forwardToFriend": "Vidarebefordra till en vän",
   "app.components.EventAttendanceButton.maxRegistrationsReached": "Det maximala antalet anmälningar till evenemanget har uppnåtts. Det finns inga platser kvar.",
   "app.components.EventAttendanceButton.register": "Registrera",
