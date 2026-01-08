@@ -152,32 +152,6 @@ const BottomSheet = ({
     }
   };
 
-  const sheetContent = (
-    <Container
-      ref={sheetRef}
-      translateY={translateY}
-      isDragging={isDragging}
-      role="dialog"
-      aria-modal={isExpanded}
-      aria-label={a11y_panelLabel}
-    >
-      <DragArea
-        onTouchStart={(e) => startDrag(e.touches[0].clientY)}
-        onTouchMove={(e) => updateDrag(e.touches[0].clientY)}
-        onTouchEnd={endDrag}
-        onMouseDown={handleMouseDown}
-        aria-expanded={isExpanded}
-        aria-label={isExpanded ? a11y_collapseLabel : a11y_expandLabel}
-      >
-        <DragHandle aria-hidden="true" />
-      </DragArea>
-
-      <Box ref={contentRef} px="16px" py="24px" overflowY="auto" h="100%">
-        {children}
-      </Box>
-    </Container>
-  );
-
   return (
     <FocusOn
       enabled={isExpanded}
@@ -187,7 +161,29 @@ const BottomSheet = ({
       onClickOutside={handleClickOutside}
     >
       <Overlay isVisible={isExpanded} onClick={handleClickOutside} />
-      {sheetContent}
+      <Container
+        ref={sheetRef}
+        translateY={translateY}
+        isDragging={isDragging}
+        role="dialog"
+        aria-modal={isExpanded}
+        aria-label={a11y_panelLabel}
+      >
+        <DragArea
+          onTouchStart={(e) => startDrag(e.touches[0].clientY)}
+          onTouchMove={(e) => updateDrag(e.touches[0].clientY)}
+          onTouchEnd={endDrag}
+          onMouseDown={handleMouseDown}
+          aria-expanded={isExpanded}
+          aria-label={isExpanded ? a11y_collapseLabel : a11y_expandLabel}
+        >
+          <DragHandle aria-hidden="true" />
+        </DragArea>
+
+        <Box ref={contentRef} px="16px" py="24px" overflowY="auto" h="100%">
+          {children}
+        </Box>
+      </Container>
     </FocusOn>
   );
 };
