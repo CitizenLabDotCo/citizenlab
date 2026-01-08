@@ -121,7 +121,6 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
 
   const { positions, count } = getPositionsConfig();
   const displayedIdeas = flatIdeas?.slice(0, count);
-  const minHeight = '800px';
 
   return (
     <Box overflow="hidden">
@@ -129,7 +128,7 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
         position="relative"
         width="100%"
         height="100%"
-        minHeight={minHeight}
+        minHeight="800px"
       >
         {displayedIdeas?.map((idea, index) => {
           const topicIds =
