@@ -2,9 +2,9 @@ import React from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import { IGlobalTopicUpdate } from 'api/global_topics/types';
-import useGlobalTopic from 'api/global_topics/useGlobalTopic';
-import useUpdateGlobalTopic from 'api/global_topics/useUpdateGlobalTopic';
+import { IDefaultInputTopicUpdate } from 'api/default_input_topics/types';
+import useDefaultInputTopic from 'api/default_input_topics/useDefaultInputTopic';
+import useUpdateDefaultInputTopic from 'api/default_input_topics/useUpdateDefaultInputTopic';
 
 import { Section, SectionTitle } from 'components/admin/Section';
 import GoBackButton from 'components/UI/GoBackButton';
@@ -14,45 +14,47 @@ import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
-import TopicForm from '../TopicForm';
+
+import DefaultInputTopicForm from './DefaultInputTopicForm';
 
 const Edit = () => {
-  const { topicId } = useParams() as { topicId: string };
-  const { data: topic } = useGlobalTopic(topicId);
-  const { mutate: updateTopic } = useUpdateGlobalTopic();
+  const { defaultInputTopicId } = useParams() as {
+    defaultInputTopicId: string;
+  };
+  const { data: topic } = useDefaultInputTopic(defaultInputTopicId);
+  const { mutate: updateDefaultInputTopic } = useUpdateDefaultInputTopic();
 
-  const handleSubmit = (values: Omit<IGlobalTopicUpdate, 'id'>) => {
+  const handleSubmit = (values: Omit<IDefaultInputTopicUpdate, 'id'>) => {
     if (!topic) return;
 
-    updateTopic(
+    updateDefaultInputTopic(
       {
         id: topic.data.id,
         ...values,
       },
       {
         onSuccess: () => {
-          clHistory.push('/admin/settings/topics/platform');
+          clHistory.push('/admin/settings/topics/input');
         },
       }
     );
   };
 
   const goBack = () => {
-    clHistory.push('/admin/settings/topics/platform');
+    clHistory.push('/admin/settings/topics/input');
   };
 
   return (
     <Section>
       <GoBackButton onClick={goBack} />
       <SectionTitle>
-        <FormattedMessage {...messages.editTopicFormTitle} />
+        <FormattedMessage {...messages.editDefaultInputTopicFormTitle} />
       </SectionTitle>
       {!isNilOrError(topic) && (
-        <TopicForm
+        <DefaultInputTopicForm
           defaultValues={{
             title_multiloc: topic.data.attributes.title_multiloc,
             description_multiloc: topic.data.attributes.description_multiloc,
-            is_default: topic.data.attributes.is_default,
           }}
           onSubmit={handleSubmit}
         />
