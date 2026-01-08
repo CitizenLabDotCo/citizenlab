@@ -512,18 +512,18 @@ it:
       cta_message: 'Clicca sul pulsante sottostante per inviare le opzioni selezionate'
     voting_last_chance:
       subject: '%{organizationName}Ultima possibilità di votare per %{phaseTitle}'
-      preheader: 'Ultima possibilità di votare per %{phaseTitle} sulla piattaforma di partecipazione di %{organizationName}'
+      preheader: 'Ultima possibilità di votare per %{phaseTitle} sulla piattaforma partecipativa di %{organizationName}'
       title: 'Ultima possibilità di votare per %{phaseTitle}'
       body_1: 'La fase di votazione del progetto %{projectTitle} si concluderà domani a mezzanotte.'
       body_2: 'Il tempo sta per scadere e abbiamo notato che non hai ancora espresso il tuo voto! Agisci subito cliccando sul pulsante qui sotto per partecipare.'
       body_3: 'In questo modo avrai accesso a una serie di opzioni e avrai la possibilità di dare il tuo contributo, che è fondamentale per decidere il futuro di questo progetto.'
       cta_button: 'Vota'
     voting_results:
-      subject: '%{organizationName}: %{phaseTitle} : rivelati i risultati delle votazioni!'
+      subject: '%{organizationName}: %{phaseTitle}: rivelati i risultati delle votazioni!'
       preheader: '%{phaseTitle} risultati del voto rivelati sulla piattaforma di partecipazione di %{organizationName}'
-      title: '%{phaseTitle} I risultati delle votazioni sono stati rivelati!'
+      title: '%{phaseTitle} I risultati delle votazioni sono stati pubblicati!'
       body_1: 'I risultati sono arrivati!'
-      body_2: 'Sono stati pubblicati i risultati della votazione di %{phaseTitle} nella piattaforma %{organizationName} !'
+      body_2: 'Sono stati pubblicati i risultati della votazione del progetto %{phaseTitle} nella piattaforma partecipativa di %{organizationName}!'
       body_3: 'Ti invitiamo a esaminare i risultati e a rimanere sintonizzato per ulteriori aggiornamenti sui prossimi passi.'
       cta_button: 'Vedi i risultati nella piattaforma'
     event_registration_confirmation:
@@ -541,7 +541,7 @@ it:
       cta_add_to_calendar: 'Aggiungi al tuo calendario'
     voting_phase_started:
       subject: '%{organizationName}: La fase di voto è iniziata per %{projectName}'
-      preheader: 'La fase di votazione è iniziata per %{projectName} sulla piattaforma di partecipazione di %{organizationName}.'
+      preheader: 'La fase di votazione è iniziata per %{projectName} sulla piattaforma partecipativa di %{organizationName}'
       title: '%{projectName}'
       event_description: 'Il progetto "%{projectName}" ti chiede di votare tra le opzioni di %{numIdeas} :'
       cta_message: 'Clicca sul pulsante qui sotto per partecipare'
