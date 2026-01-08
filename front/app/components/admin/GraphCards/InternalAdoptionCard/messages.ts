@@ -2,27 +2,27 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   internalAdoption: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.internalAdoption',
+    id: 'app.components.admin.GraphCards.InternalAdoptionCard.internalAdoption',
     defaultMessage: 'Internal adoption',
   },
   activeAdmins: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.activeAdmins',
+    id: 'app.components.admin.GraphCards.InternalAdoptionCard.activeAdmins',
     defaultMessage: 'Active admins',
   },
   activeModerators: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.activeModerators',
+    id: 'app.components.admin.GraphCards.InternalAdoptionCard.activeModerators',
     defaultMessage: 'Active PMs',
   },
   totalRegistered: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.totalRegistered',
+    id: 'app.components.admin.GraphCards.InternalAdoptionCard.totalRegistered',
     defaultMessage: 'Total registered',
   },
   totalActive: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.totalActive',
+    id: 'app.components.admin.GraphCards.InternalAdoptionCard.totalActive',
     defaultMessage: 'Total active',
   },
   comparedToPreviousXDays: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.comparedToPreviousXDays',
+    id: 'app.components.admin.GraphCards.InternalAdoptionCard.comparedToPreviousXDays',
     defaultMessage: 'compared to previous {days} days',
   },
 });
