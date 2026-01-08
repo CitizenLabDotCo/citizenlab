@@ -133,7 +133,7 @@ const TopicRow = (props: Props) => {
           </Badge>
         )}
         <ButtonWithLink
-          linkTo={`/admin/settings/topics/${topic.id}/edit`}
+          linkTo={`/admin/settings/topics/platform/${topic.id}/edit`}
           buttonStyle="secondary-outlined"
           icon="edit"
           m="0px"

@@ -1,6 +1,14 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  tabPlatformTags: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.tabPlatformTags',
+    defaultMessage: 'Platform tags',
+  },
+  tabDefaultInputTags: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.tabDefaultInputTags',
+    defaultMessage: 'Default input tags',
+  },
   descriptionTopicManagerText: {
     id: 'app.containers.AdminPage.SettingsPage.descriptionTopicManagerText',
     defaultMessage:
@@ -61,9 +69,40 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.delete',
     defaultMessage: 'Delete',
   },
+  deleteButtonLabel: {
+    id: 'app.containers.AdminPage.SettingsPage.deleteTopicButtonLabel',
+    defaultMessage: 'Delete',
+  },
+  editButtonLabel: {
+    id: 'app.containers.AdminPage.SettingsPage.editTopicButtonLabel',
+    defaultMessage: 'Edit',
+  },
   projectsSettings: {
     id: 'app.containers.AdminPage.SettingsPage.projectsSettings',
     defaultMessage: 'project settings',
+  },
+  // Default Input Topics messages
+  titleDefaultInputTopicManager: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.titleDefaultInputTopicManager',
+    defaultMessage: 'Default input tag manager',
+  },
+  descriptionDefaultInputTopicManagerText: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.descriptionDefaultInputTopicManagerText',
+    defaultMessage:
+      'Default input tags are automatically added to new projects. Citizens can use these tags to categorize their inputs. You can customize tags for each project in the project settings.',
+  },
+  addDefaultInputTopicButton: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.addDefaultInputTopicButton',
+    defaultMessage: 'Add default input tag',
+  },
+  editDefaultInputTopicFormTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.editDefaultInputTopicFormTitle',
+    defaultMessage: 'Edit default input tag',
+  },
+  deleteDefaultInputTopicConfirmation: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.deleteDefaultInputTopicConfirmation',
+    defaultMessage:
+      'This will delete this default input tag. Projects that already use this tag will keep their copy.',
   },
   fieldTopicDefault: {
     id: 'app.containers.AdminPage.SettingsPage.fieldTopicDefault',

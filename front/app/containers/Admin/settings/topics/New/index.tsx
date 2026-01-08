@@ -21,14 +21,14 @@ const New = () => {
       },
       {
         onSuccess: () => {
-          clHistory.push('/admin/settings/topics');
+          clHistory.push('/admin/settings/topics/platform');
         },
       }
     );
   };
 
   const goBack = () => {
-    clHistory.push('/admin/settings/topics');
+    clHistory.push('/admin/settings/topics/platform');
   };
 
   return (
