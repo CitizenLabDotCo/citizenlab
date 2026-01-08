@@ -185,7 +185,7 @@ it:
       subject: '%{cosponsorName} ha accettato il tuo invito a co-sponsorizzare la tua proposta'
       preheader: '%{cosponsorName} ha accettato il tuo invito a co-sponsorizzare la tua proposta'
       title: '%{cosponsorName} ha accettato il tuo invito a co-sponsorizzare la tua proposta'
-      event_description: 'Congratulazioni! %{cosponsorName} ha accettato l''invito a co-sponsorizzare la tua proposta.'
+      event_description: 'Congratulazioni! %{cosponsorName} ha accettato il tuo invito a co-sponsorizzare la tua proposta.'
       cta_button: 'Visualizza la tua proposta'
     assignee_digest:
       subject: 'Idee che richiedono il vostro feedback: %{numberIdeas}'
@@ -209,7 +209,7 @@ it:
       reported_this_because: '%{reporterFirstName} ha riportato questo perché:'
     invitation_to_cosponsor_idea:
       subject: 'Sei stato invitato a co-sponsorizzare una proposta'
-      preheader: 'Sei stato invitato a sponsorizzare la proposta di %{authorName}.'
+      preheader: 'Sei stato invitato a co-sponsorizzare la proposta di %{authorName}'
       title: 'Sei stato invitato a co-sponsorizzare una proposta'
       event_description: '%{authorName} ha creato una nuova proposta e vorrebbe che tu la co-sponsorizzassi.'
       event_description_cosponsoring: 'Co-sponsorizzare una proposta significa che <strong>il tuo nome verrà visualizzato</strong> insieme a quello degli altri co-sponsor della proposta.'
