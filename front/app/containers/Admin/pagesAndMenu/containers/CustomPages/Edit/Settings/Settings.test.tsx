@@ -6,7 +6,7 @@ import { screen, render, waitFor, userEvent } from 'utils/testUtils/rtl';
 
 import EditCustomPageSettings from './';
 
-jest.mock('api/global_global_topics/global_useGlobalTopics');
+jest.mock('api/global_topics/useGlobalTopics');
 jest.mock('api/areas/useAreas');
 
 const mockCustomPage: ICustomPageData = {
