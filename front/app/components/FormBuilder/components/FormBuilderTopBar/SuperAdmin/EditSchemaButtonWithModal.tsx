@@ -18,11 +18,12 @@ import useUpdateCustomField from 'api/custom_fields/useUpdateCustomFields';
 import useCustomForm from 'api/custom_form/useCustomForm';
 import { IPhaseData } from 'api/phases/types';
 
+import useSuperAdmin from 'hooks/useSuperAdmin';
+
+import { transformFieldForSubmission } from 'components/FormBuilder/edit/utils';
 import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import { transformFieldForSubmission } from '../../edit/utils';
 
 import messages from './messages';
 
@@ -45,8 +46,6 @@ const ErrorText = styled(Text)`
 `;
 
 type Props = {
-  opened: boolean;
-  onClose: () => void;
   customFields: IFlatCustomField[];
   projectId: string;
   phase: IPhaseData;
@@ -55,10 +54,8 @@ type Props = {
 };
 
 // NOTE: This modal allows editing the JSON of custom fields directly.
-// It should only be used by super admins (mainly for analysing and fixing issues)
-const EditSchemaModal = ({
-  opened,
-  onClose,
+// It can only be used by super admins (mainly for analysing and fixing issues)
+const EditSchemaButtonWithModal = ({
   customFields,
   projectId,
   phase,
@@ -66,24 +63,19 @@ const EditSchemaModal = ({
   onSaveSuccess,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const isSuperAdmin = useSuperAdmin();
   const [jsonText, setJsonText] = useState('');
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const { data: customForm } = useCustomForm(phase);
   const { data: appConfig } = useAppConfiguration();
 
-  const lifecycleStage =
-    appConfig?.data.attributes.settings.core.lifecycle_stage;
-  const hasResponses = phase.attributes.ideas_count > 0;
-  const isProduction = process.env.NODE_ENV === 'production';
-  const isSaveDisabled =
-    isProduction && lifecycleStage === 'active' && hasResponses;
-
   useEffect(() => {
-    if (opened) {
+    if (showModal) {
       const transformed = customFields.map((field) =>
         transformFieldForSubmission(field, customFields)
       );
@@ -91,7 +83,10 @@ const EditSchemaModal = ({
       setError(null);
       setCopied(false);
     }
-  }, [opened, customFields]);
+  }, [showModal, customFields]);
+
+  // Only render if super admin
+  if (!isSuperAdmin) return null;
 
   // Function to replace all IDs with new UUIDs and update logic references
   const replaceIdsWithNewUuids = (fields: unknown[]): unknown[] => {
@@ -209,7 +204,7 @@ const EditSchemaModal = ({
       });
 
       onSaveSuccess?.();
-      onClose();
+      setShowModal(false);
     } catch (e) {
       if (e instanceof SyntaxError) {
         setError(formatMessage(messages.schemaParseError));
@@ -221,62 +216,83 @@ const EditSchemaModal = ({
     }
   };
 
+  // Determine if saving should be disabled
+  const lifecycleStage =
+    appConfig?.data.attributes.settings.core.lifecycle_stage;
+  const hasResponses = phase.attributes.ideas_count > 0;
+  const isProduction = process.env.NODE_ENV === 'production';
+  const isSaveDisabled =
+    isProduction && lifecycleStage === 'active' && hasResponses;
+
   return (
-    <Modal opened={opened} close={onClose} width="800px">
-      <Box p="24px">
-        <Title variant="h3" mb="16px">
-          <FormattedMessage {...messages.schemaEdit} />
-        </Title>
+    <>
+      <Button
+        buttonStyle="secondary-outlined"
+        icon="code"
+        mr="20px"
+        onClick={() => setShowModal(true)}
+      >
+        <FormattedMessage {...messages.schemaEdit} />
+      </Button>
+      <Modal opened={showModal} close={() => setShowModal(false)} width="800px">
+        <Box p="24px">
+          <Title variant="h3" mb="16px">
+            <FormattedMessage {...messages.schemaEdit} />
+          </Title>
 
-        <CodeTextarea
-          value={jsonText}
-          onChange={(e) => setJsonText(e.target.value)}
-          spellCheck={false}
-        />
+          <CodeTextarea
+            value={jsonText}
+            onChange={(e) => setJsonText(e.target.value)}
+            spellCheck={false}
+          />
 
-        {error && (
-          <ErrorText mt="8px" mb="0">
-            {error}
-          </ErrorText>
-        )}
+          {error && (
+            <ErrorText mt="8px" mb="0">
+              {error}
+            </ErrorText>
+          )}
 
-        <Box display="flex" gap="12px" mt="16px" justifyContent="flex-end">
-          <Button buttonStyle="secondary-outlined" onClick={onClose}>
-            <FormattedMessage {...messages.schemaCancelEdit} />
-          </Button>
-          <Button
-            buttonStyle="secondary-outlined"
-            icon={copied ? 'check' : 'copy'}
-            onClick={handleCopy}
-          >
-            <Box display="flex" alignItems="center" gap="4px">
-              {copied ? (
-                <FormattedMessage {...messages.schemaCopied} />
-              ) : (
-                <FormattedMessage {...messages.schemaCopy} />
-              )}
-              <IconTooltip
-                content={formatMessage(messages.schemaCopyTooltip)}
-              />
-            </Box>
-          </Button>
-          <Tooltip
-            disabled={!isSaveDisabled}
-            content={formatMessage(messages.schemaSaveDisabled)}
-          >
+          <Box display="flex" gap="12px" mt="16px" justifyContent="flex-end">
             <Button
-              buttonStyle="admin-dark"
-              onClick={handleSave}
-              processing={isSaving}
-              disabled={isSaveDisabled}
+              buttonStyle="secondary-outlined"
+              onClick={() => setShowModal(false)}
             >
-              <FormattedMessage {...messages.schemaSave} />
+              <FormattedMessage {...messages.schemaCancelEdit} />
             </Button>
-          </Tooltip>
+            <Button
+              buttonStyle="secondary-outlined"
+              icon={copied ? 'check' : 'copy'}
+              onClick={handleCopy}
+            >
+              <Box display="flex" alignItems="center" gap="4px">
+                {copied ? (
+                  <FormattedMessage {...messages.schemaCopied} />
+                ) : (
+                  <FormattedMessage {...messages.schemaCopy} />
+                )}
+                <IconTooltip
+                  content={formatMessage(messages.schemaCopyTooltip)}
+                />
+              </Box>
+            </Button>
+            <Tooltip
+              disabled={!isSaveDisabled}
+              content={formatMessage(messages.schemaSaveDisabled)}
+            >
+              <Button
+                buttonStyle="admin-dark"
+                onClick={handleSave}
+                processing={isSaving}
+                disabled={isSaveDisabled}
+              >
+                <FormattedMessage {...messages.schemaSave} />
+              </Button>
+            </Tooltip>
+          </Box>
         </Box>
-      </Box>
-    </Modal>
+      </Modal>
+    </>
   );
 };
 
-export default EditSchemaModal;
+export default EditSchemaButtonWithModal;
