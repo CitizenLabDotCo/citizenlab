@@ -11,8 +11,8 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import { toFullMonth } from 'utils/dateUtils';
 
-import messages from '../messages';
-import { CombinedTimeSeriesRow } from '../typings';
+import messages from './messages';
+import { CombinedTimeSeriesRow } from './typings';
 
 type MetricType = 'totalActive' | 'activeAdmins' | 'activeModerators';
 

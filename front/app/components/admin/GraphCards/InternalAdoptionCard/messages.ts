@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.totalActive',
     defaultMessage: 'Total active',
   },
+  comparedToPreviousXDays: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.comparedToPreviousXDays',
+    defaultMessage: 'compared to previous {days} days',
+  },
 });

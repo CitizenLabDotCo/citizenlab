@@ -183,6 +183,19 @@ export const useInternalAdoption = (
   );
 };
 
+export const useInternalAdoptionLive = (
+  props: InternalAdoptionProps,
+  { onSuccess }: { onSuccess?: () => void } = {}
+) => {
+  return useGraphDataUnitsLive<InternalAdoptionResponse>(
+    {
+      resolved_name: 'InternalAdoptionWidget',
+      props,
+    },
+    { onSuccess }
+  );
+};
+
 export const useReactionsByTime = (props: AnalyticsProps) => {
   return useGraphDataUnits<ReactionsByTimeResponse>({
     resolved_name: 'ReactionsByTimeWidget',
