@@ -304,7 +304,7 @@ it:
       option1: 'Opzione 1'
       option2: 'Opzione 2'
     form_end_page:
-      title_text_3: 'Grazie per aver condiviso il tuo contributo!'
+      title_text_3: 'Grazie per aver condiviso la tua opinione!'
       description_text_3: "Il tuo contributo è stato inviato con successo."
     form_user_page:
       title_text: 'Su di te'
