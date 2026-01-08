@@ -10,21 +10,15 @@ const IdeaContent = ({
   selectedIdeaId,
   selectedIdeaProjectId,
   handleCloseIdea,
-  isMobile = false,
 }: {
   selectedIdeaId: string;
   selectedIdeaProjectId: string;
   handleCloseIdea: () => void;
-  isMobile?: boolean;
 }) => {
   return (
     <>
       <Box mb="16px">
-        <GoBackButton
-          onClick={handleCloseIdea}
-          size="s"
-          showGoBackText={!isMobile}
-        />
+        <GoBackButton onClick={handleCloseIdea} size="s" />
       </Box>
       <Box flex="1" overflowY="auto">
         <IdeasShow

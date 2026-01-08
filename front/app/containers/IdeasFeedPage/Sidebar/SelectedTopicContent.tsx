@@ -16,7 +16,7 @@ interface Props {
   isMobile?: boolean;
 }
 
-const SelectedTopicContent = ({ topicId, onBack, isMobile = false }: Props) => {
+const SelectedTopicContent = ({ topicId, onBack }: Props) => {
   const { data: topic } = useTopic(topicId);
   const localize = useLocalize();
 
@@ -25,8 +25,7 @@ const SelectedTopicContent = ({ topicId, onBack, isMobile = false }: Props) => {
       <Box mb="16px">
         <GoBackButton
           onClick={onBack}
-          customMessage={!isMobile ? messages.allTopics : undefined}
-          showGoBackText={!isMobile}
+          customMessage={messages.allTopics}
           size="s"
         />
       </Box>

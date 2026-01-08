@@ -101,7 +101,6 @@ const Sidebar = () => {
             selectedIdeaId={selectedIdeaId}
             selectedIdeaProjectId={selectedIdeaProjectId}
             handleCloseIdea={handleCloseIdea}
-            isMobile={true}
           />
         ) : (
           <TopicsContent
