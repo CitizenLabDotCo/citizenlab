@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-import { Box, colors, ClickOutside } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { FocusOn } from 'react-focus-on';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -23,7 +23,7 @@ const Container = styled.div<{ translateY: number; isDragging: boolean }>`
   transition: ${({ isDragging }) =>
     isDragging ? 'none' : 'transform 0.3s ease-out'};
   height: 100vh;
-  z-index: 1020;
+  z-index: 1050;
 `;
 
 const DragHandle = styled.div`
@@ -46,6 +46,16 @@ const DragArea = styled.div`
   &:active {
     cursor: grabbing;
   }
+`;
+
+const Overlay = styled.div<{ isVisible: boolean }>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1040;
+  pointer-events: ${({ isVisible }) => (isVisible ? 'auto' : 'none')};
 `;
 
 interface Props {
@@ -169,14 +179,16 @@ const BottomSheet = ({
   );
 
   return (
-    <ClickOutside
+    <FocusOn
+      enabled={isExpanded}
+      autoFocus={true}
+      returnFocus={false}
+      scrollLock={true}
       onClickOutside={handleClickOutside}
-      closeOnClickOutsideEnabled={isExpanded}
     >
-      <FocusOn enabled={isExpanded} autoFocus={false} returnFocus={false}>
-        {sheetContent}
-      </FocusOn>
-    </ClickOutside>
+      <Overlay isVisible={isExpanded} onClick={handleClickOutside} />
+      {sheetContent}
+    </FocusOn>
   );
 };
 
