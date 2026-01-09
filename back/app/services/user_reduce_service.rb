@@ -108,7 +108,7 @@ class UserReduceService
     # Pick users who didn't participate anywhere first.
 
     project_sets.select do |project_set, participants|
-      participants.present? && (project_set & exclude).empty? && (!project_set.empty? || can_pick_empty_set)
+      participants.present? && !project_set.intersect?(exclude) && (!project_set.empty? || can_pick_empty_set)
     end.to_a.min do |l1, l2|
       set1, prtcps1 = l1
       set2, prtcps2 = l2

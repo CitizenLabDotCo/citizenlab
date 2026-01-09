@@ -287,12 +287,6 @@ Rails/WhereRange:
     - 'engines/commercial/multi_tenancy/lib/tasks/core/migrate_creation_finalized_at.rake'
     - 'spec/finders/events_finder_spec.rb'
 
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Style/ArrayIntersect:
-  Exclude:
-    - 'app/services/user_reduce_service.rb'
-
 # Offense count: 10
 Style/ClassVars:
   Exclude:
