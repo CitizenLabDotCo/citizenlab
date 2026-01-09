@@ -45,7 +45,7 @@ class StatIdeaPolicy < ApplicationPolicy
   private
 
   def show_stats?
-    return unless active?
+    return false unless active?
 
     show_stats_to_active?
   end

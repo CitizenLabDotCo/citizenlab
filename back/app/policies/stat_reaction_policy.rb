@@ -45,7 +45,7 @@ class StatReactionPolicy < ApplicationPolicy
   private
 
   def show_stats?
-    return unless user&.active?
+    return false unless user&.active?
 
     show_stats_to_active?
   end

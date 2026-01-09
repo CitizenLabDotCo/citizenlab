@@ -24,7 +24,7 @@ class StatUserPolicy < ApplicationPolicy
   end
 
   def users_count?
-    return unless active?
+    return false unless active?
 
     admin? || user.project_moderator?
   end
