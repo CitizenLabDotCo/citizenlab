@@ -139,7 +139,7 @@ module ParticipationMethod
       when 'everyone_confirmed_email'
         posting_permission.user_fields_in_form && !posting_permission.permissions_custom_fields.empty?
       else
-        if posting_permission.global_custom_fields == true
+        if posting_permission.global_custom_fields
           posting_permission.user_fields_in_form
         else
           posting_permission.user_fields_in_form && !posting_permission.permissions_custom_fields.empty?

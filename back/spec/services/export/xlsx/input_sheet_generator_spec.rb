@@ -58,7 +58,7 @@ describe Export::Xlsx::InputSheetGenerator do
       describe 'timezone handling' do
         let(:tenant_timezone) { 'America/Toronto' }
         let(:utc_time) { Time.utc(2019, 9, 9, 18, 30, 0) }
-        let(:idea) { create(:idea, project: phase.project, phases: [phase], created_at: utc_time) }
+        let(:idea) { create(:idea, project: phase.project, phases: [phase], created_at: utc_time, submitted_at: utc_time) }
         let(:inputs) { [idea] }
 
         before do

@@ -259,6 +259,7 @@ el:
       x_days_ago_by_author: '%{x} πριν από μέρες από %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} σχολίασε:'
+      anonymous_user: Ανώνυμος χρήστης
       cta_button: 'Δείτε το σχόλιο του %{authorFirstName}''s'
       days_ago: '%{numberOfDays} ημέρες πριν'
       event_description: '%{authorName} πρόσθεσε ένα νέο σχόλιο στην πλατφόρμα σας.'

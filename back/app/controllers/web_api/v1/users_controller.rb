@@ -3,7 +3,7 @@
 class WebApi::V1::UsersController < ApplicationController
   include BlockingProfanity
 
-  before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock]
+  before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock participation_stats]
   skip_before_action :authenticate_user, only: %i[create show check by_slug by_invite ideas_count comments_count]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -117,7 +117,7 @@ class WebApi::V1::UsersController < ApplicationController
 
   # To validate an email without creating a user and return which action to go to next
   def check
-    skip_authorization
+    authorize :user, :check?
     email = params[:user][:email]
 
     if User::EMAIL_REGEX.match?(email)
@@ -127,7 +127,16 @@ class WebApi::V1::UsersController < ApplicationController
       elsif @user.invite_pending?
         render json: { errors: { email: [{ error: 'taken_by_invite', value: email, inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
       elsif !@user.no_password?
-        render json: raw_json({ action: 'password' })
+        if @user.confirmation_required?
+          # If a user has a password set but still needs to confirm their email,
+          # we send them to the confirm action first.
+          # This situation only exists for legacy users that were created before
+          # we made email confirmation required before being able to set a password
+          RequestConfirmationCodeJob.perform_now(@user)
+          render json: raw_json({ action: 'confirm' })
+        else
+          render json: raw_json({ action: 'password' })
+        end
       elsif !app_configuration.feature_activated?('user_confirmation')
         render json: raw_json({ action: 'token' })
       else
@@ -175,7 +184,16 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def destroy
-    DeleteUserJob.perform_now(@user.id, current_user)
+    delete_participation_data = ActiveModel::Type::Boolean.new.cast(params[:delete_participation_data])
+    ban_email = ActiveModel::Type::Boolean.new.cast(params[:ban_email])
+
+    DeleteUserJob.perform_now(
+      @user.id,
+      current_user,
+      delete_participation_data:,
+      ban_email:,
+      ban_reason: params[:ban_reason]
+    )
     head :ok
   end
 
@@ -220,6 +238,11 @@ class WebApi::V1::UsersController < ApplicationController
   def comments_count
     count = policy_scope(@user.comments.published).count
     render json: raw_json({ count: count }), status: :ok
+  end
+
+  def participation_stats
+    stats = ParticipantsService.new.user_participation_stats(@user)
+    render json: raw_json(stats)
   end
 
   def update_password
