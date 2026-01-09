@@ -3,28 +3,21 @@
 require 'rails_helper'
 require './spec/services/surveys/shared/survey_setup'
 
-# NOTE: These tests only test the addition of logic to the results from the parent class
+# NOTE: These are additional tests that test how logic affects the generated results
 
-RSpec.describe Surveys::ResultsWithLogicGenerator do
+RSpec.describe Surveys::ResultsGenerator do
   subject(:generator) { described_class.new survey_phase }
 
   include_context 'survey_setup'
 
-  describe 'generate_result_for_field' do
-    it 'is not implemented and returns an error' do
-      generator = described_class.new(survey_phase)
-      expect { generator.generate_result_for_field('12345') }.to raise_error(NotImplementedError)
-    end
+  before_all do
+    # Update fields from survey_setup shared context with some (meaningless but valid) end_page logic
+    linear_scale_field.update!(logic: { rules: [{ if: 2, goto_page_id: last_page_field.id }, { if: 'no_answer', goto_page_id: last_page_field.id }] })
+    page_field.update!(logic: { next_page_id: last_page_field.id })
   end
 
   describe 'generate_results' do
     let(:generated_results) { generator.generate_results }
-
-    before_all do
-      # Update fields from survey_setup shared context with some (meaningless but valid) end_page logic
-      linear_scale_field.update!(logic: { rules: [{ if: 2, goto_page_id: last_page_field.id }, { if: 'no_answer', goto_page_id: last_page_field.id }] })
-      page_field.update!(logic: { next_page_id: last_page_field.id })
-    end
 
     describe 'page fields' do
       it 'returns correct logic values for a page field in full results' do
@@ -431,4 +424,70 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
       end
     end
   end
+
+  describe 'other logic tests' do
+    let_it_be(:mid_page_field1) { create(:custom_field_page, resource: form, ordering: 5) }
+    let_it_be(:mid_page_field2) { create(:custom_field_page, resource: form, ordering: 10) }
+
+    describe '#next_page_id_from_logic' do
+      let(:input) { create(:native_survey_response, project: project, phases: phases_of_inputs) }
+
+      before do
+        # Update fields from survey_setup shared context with some logic
+        linear_scale_field.update!(logic: { rules: [{ if: 2, goto_page_id: mid_page_field2.id }, { if: 'no_answer', goto_page_id: last_page_field.id }] })
+        mid_page_field1.update!(logic: { next_page_id: last_page_field.id })
+      end
+
+      it 'returns the correct next_page_id from linear scale logic' do
+        input.update!(custom_field_values: { linear_scale_field.key => 2 })
+        logic_next_page_id = generator.send(:next_page_id_from_logic, linear_scale_field, input)
+        expect(logic_next_page_id).to eq mid_page_field2.id
+      end
+
+      it 'returns the correct next_page_id from no answer logic' do
+        input.update!(custom_field_values: {})
+        logic_next_page_id = generator.send(:next_page_id_from_logic, linear_scale_field, input)
+        expect(logic_next_page_id).to eq last_page_field.id
+      end
+
+      it 'returns no next_page_id when no logic present for the answer' do
+        input.update!(custom_field_values: { linear_scale_field.key => 3 })
+        logic_next_page_id = generator.send(:next_page_id_from_logic, linear_scale_field, input)
+        expect(logic_next_page_id).to be_nil
+      end
+    end
+
+    # TODO: These are not working properly
+    describe '#generate_results' do
+      it 'returns correct response numbers based on logic - example 1' do
+        reset_survey_logic
+        mid_page_field1.update!(logic: { next_page_id: last_page_field.id })
+        linear_scale_field.update!(logic: {
+          rules: [
+            { if: 2, goto_page_id: mid_page_field2.id },
+            { if: 'no_answer', goto_page_id: last_page_field.id }
+          ]
+        })
+        generator = described_class.new(survey_phase)
+        expect(generator.generate_results[:results].pluck(:totalResponseCount)).to eq(
+                                                                                     [27, 27, 27, 27, 27, 27, 27, 27, 27, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+                                                                                   )
+      end
+
+      it 'returns correct response numbers based on logic - example 2' do
+        reset_survey_logic
+        linear_scale_field.update!(logic: {
+          rules: [
+            { if: 3, goto_page_id: last_page_field.id },
+            { if: 4, goto_page_id: last_page_field.id }
+          ]
+        })
+        generator = described_class.new(survey_phase)
+        expect(generator.generate_results[:results].pluck(:totalResponseCount)).to eq(
+                                                                                     [27, 27, 27, 27, 27, 27, 27, 27, 27, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18]
+                                                                                   )
+      end
+    end
+  end
+
 end

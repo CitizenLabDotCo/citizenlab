@@ -94,6 +94,7 @@ RSpec.describe Surveys::ResultsGenerator do
           pageNumber: nil,
           questionNumber: 1,
           questionCategory: nil,
+          logic: {},
           textResponses: [
             { answer: 'Blue' },
             { answer: 'Green' },
@@ -121,9 +122,11 @@ RSpec.describe Surveys::ResultsGenerator do
             pageNumber: nil,
             questionNumber: 7,
             questionCategory: nil,
+            logic: {},
             question: { 'en' => 'Nobody wants to answer me' },
             required: false,
             grouped: false,
+            logic: {},
             totalResponseCount: 27,
             questionResponseCount: 0,
             textResponses: []
@@ -156,6 +159,7 @@ RSpec.describe Surveys::ResultsGenerator do
             pageNumber: nil,
             questionNumber: 2,
             questionCategory: nil,
+            logic: {},
             totalResponseCount: 27,
             questionResponseCount: 0,
             textResponses: []
@@ -181,6 +185,7 @@ RSpec.describe Surveys::ResultsGenerator do
           pageNumber: nil,
           questionNumber: 3,
           questionCategory: nil,
+          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 4,
           totalPickCount: 33,
@@ -230,6 +235,7 @@ RSpec.describe Surveys::ResultsGenerator do
           pageNumber: nil,
           questionNumber: 4,
           questionCategory: nil,
+          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 22,
           totalPickCount: 27,
@@ -312,6 +318,7 @@ RSpec.describe Surveys::ResultsGenerator do
           pageNumber: nil,
           questionNumber: 16,
           questionCategory: nil,
+          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 22,
           totalPickCount: 27,
@@ -366,6 +373,7 @@ RSpec.describe Surveys::ResultsGenerator do
           pageNumber: nil,
           questionNumber: 17,
           questionCategory: nil,
+          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 25,
           totalPickCount: 27,
@@ -420,6 +428,7 @@ RSpec.describe Surveys::ResultsGenerator do
           pageNumber: nil,
           questionNumber: 15,
           questionCategory: nil,
+          logic: {},
           multilocs: {
             answer: {
               1 => { title_multiloc: { 'en' => '1 - Strongly disagree', 'fr-FR' => '1', 'nl-NL' => '1' } },
@@ -488,6 +497,7 @@ RSpec.describe Surveys::ResultsGenerator do
           pageNumber: nil,
           questionNumber: 5,
           questionCategory: nil,
+          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 6,
           totalPickCount: 27,
@@ -542,6 +552,7 @@ RSpec.describe Surveys::ResultsGenerator do
           pageNumber: nil,
           questionNumber: 14,
           questionCategory: nil,
+          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 4,
           average_rankings: {
@@ -598,6 +609,7 @@ RSpec.describe Surveys::ResultsGenerator do
           pageNumber: nil,
           questionNumber: 6,
           questionCategory: nil,
+          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 3,
           totalPickCount: 27,
@@ -649,6 +661,7 @@ RSpec.describe Surveys::ResultsGenerator do
           pageNumber: nil,
           questionNumber: 8,
           questionCategory: nil,
+          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 1,
           files: [
@@ -675,6 +688,7 @@ RSpec.describe Surveys::ResultsGenerator do
           pageNumber: nil,
           questionNumber: 9,
           questionCategory: nil,
+          logic: {},
           totalResponseCount: 27,
           questionResponseCount: 1,
           files: [
@@ -700,6 +714,7 @@ RSpec.describe Surveys::ResultsGenerator do
           pageNumber: nil,
           questionNumber: 10,
           questionCategory: nil,
+          logic: {},
           questionResponseCount: 2,
           totalResponseCount: 27,
           customFieldId: point_field.id,
@@ -728,6 +743,7 @@ RSpec.describe Surveys::ResultsGenerator do
           pageNumber: nil,
           questionNumber: 11,
           questionCategory: nil,
+          logic: {},
           questionResponseCount: 2,
           totalResponseCount: 27,
           customFieldId: line_field.id,
@@ -756,6 +772,7 @@ RSpec.describe Surveys::ResultsGenerator do
           pageNumber: nil,
           questionNumber: 12,
           questionCategory: nil,
+          logic: {},
           questionResponseCount: 2,
           totalResponseCount: 27,
           customFieldId: polygon_field.id,
@@ -784,6 +801,7 @@ RSpec.describe Surveys::ResultsGenerator do
           pageNumber: nil,
           questionNumber: 13,
           questionCategory: nil,
+          logic: {},
           questionResponseCount: 1,
           totalResponseCount: 27,
           customFieldId: number_field.id,
@@ -796,77 +814,6 @@ RSpec.describe Surveys::ResultsGenerator do
 
       it 'returns the results for a number field' do
         expect(generated_results[:results][13]).to match expected_result_number
-      end
-    end
-  end
-
-  # TODO: Add a test for number of queries run to prove 50% quicker
-
-  describe 'with logic' do
-    let_it_be(:mid_page_field1) { create(:custom_field_page, resource: form, ordering: 5) }
-    let_it_be(:mid_page_field2) { create(:custom_field_page, resource: form, ordering: 10) }
-
-    # TODO: Complete these tests
-    describe '#next_page_id_from_logic' do
-      let(:input) { create(:native_survey_response, project: project, phases: phases_of_inputs) }
-
-      before do
-        # Update fields from survey_setup shared context with some logic
-        linear_scale_field.update!(logic: { rules: [{ if: 2, goto_page_id: mid_page_field2.id }, { if: 'no_answer', goto_page_id: last_page_field.id }] })
-        mid_page_field1.update!(logic: { next_page_id: last_page_field.id })
-      end
-
-      it 'returns the correct next_page_id from linear scale logic' do
-        input.update!(custom_field_values: { linear_scale_field.key => 2 })
-        logic_next_page_id = generator.send(:next_page_id_from_logic, linear_scale_field, input)
-        expect(logic_next_page_id).to eq mid_page_field2.id
-      end
-
-      it 'returns the correct next_page_id from no answer logic' do
-        input.update!(custom_field_values: {})
-        logic_next_page_id = generator.send(:next_page_id_from_logic, linear_scale_field, input)
-        expect(logic_next_page_id).to eq last_page_field.id
-      end
-
-      it 'returns no next_page_id when no logic present for the answer' do
-        input.update!(custom_field_values: { linear_scale_field.key => 3 })
-        logic_next_page_id = generator.send(:next_page_id_from_logic, linear_scale_field, input)
-        expect(logic_next_page_id).to be_nil
-      end
-    end
-
-    describe '#generate_results' do
-      before do
-        # Reset the logic to nothing
-        linear_scale_field.update!(logic: {})
-        mid_page_field1.update!(logic: {})
-      end
-
-      it 'returns correct response numbers based on logic 1' do
-        mid_page_field1.update!(logic: { next_page_id: last_page_field.id })
-        linear_scale_field.update!(logic: {
-          rules: [
-            { if: 2, goto_page_id: mid_page_field2.id },
-            { if: 'no_answer', goto_page_id: last_page_field.id }
-          ]
-        })
-        generator = described_class.new(survey_phase)
-        expect(generator.generate_results[:results].pluck(:totalResponseCount)).to eq(
-          [27, 27, 27, 27, 27, 27, 27, 27, 27, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
-        )
-      end
-
-      it 'returns correct response numbers based on logic 2' do
-        linear_scale_field.update!(logic: {
-          rules: [
-            { if: 3, goto_page_id: last_page_field.id },
-            { if: 4, goto_page_id: last_page_field.id }
-          ]
-        })
-        generator = described_class.new(survey_phase)
-        expect(generator.generate_results[:results].pluck(:totalResponseCount)).to eq(
-          [27, 27, 27, 27, 27, 27, 27, 27, 27, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18]
-        )
       end
     end
   end

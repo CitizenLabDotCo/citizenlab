@@ -77,7 +77,7 @@ class WebApi::V1::PhasesController < ApplicationController
       Surveys::ResultsWithDateGenerator.new(@phase, structure_by_category: true, year: year, quarter: quarter).generate_results
     else
       logic_ids = params[:filter_logic_ids].presence || [] # Array of page and option IDs
-      Surveys::ResultsWithLogicGenerator.new(@phase).generate_results(logic_ids:)
+      Surveys::ResultsGenerator.new(@phase).generate_results(logic_ids:)
     end
 
     render json: raw_json(results)
