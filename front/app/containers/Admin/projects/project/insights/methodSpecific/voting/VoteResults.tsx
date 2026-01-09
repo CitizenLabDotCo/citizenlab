@@ -11,9 +11,9 @@ import {
 import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
 
+import { DemographicFieldKey } from 'api/phase_insights/voting_insights/types';
+import useVotingPhaseVotes from 'api/phase_insights/voting_insights/useVotingPhaseVotes';
 import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
-import { DemographicFieldKey } from 'api/voting_insights/types';
-import useVotingPhaseVotes from 'api/voting_insights/useVotingPhaseVotes';
 
 import useLocalize from 'hooks/useLocalize';
 

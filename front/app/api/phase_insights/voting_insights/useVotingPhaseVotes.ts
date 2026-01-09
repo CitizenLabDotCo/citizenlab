@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import { DemographicOption } from 'api/phase_insights/types';
+import { DemographicOption } from '../types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { VotingIdeaResult } from 'api/voting_insights/types';
+import { VotingIdeaResult } from 'api/phase_insights/voting_insights/types';
 
 import useLocalize from 'hooks/useLocalize';
 

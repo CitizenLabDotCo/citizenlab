@@ -1,4 +1,4 @@
-import { DemographicOption } from 'api/phase_insights/types';
+import { DemographicOption } from '../types';
 
 export interface VotingDemographicBreakdown {
   count: number;

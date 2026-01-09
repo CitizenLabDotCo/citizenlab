@@ -1,7 +1,7 @@
 import { FormatMessage } from 'typings';
 
 import { DemographicOption } from 'api/phase_insights/types';
-import { VotingIdeaResult } from 'api/voting_insights/types';
+import { VotingIdeaResult } from 'api/phase_insights/voting_insights/types';
 
 import { Localize } from 'hooks/useLocalize';
 
