@@ -334,7 +334,7 @@
   "app.components.ParticipationCTABars.VotingCTABar.minBudgetNotReached1": "Du måste spendera minst {votesMinimum} innan du kan skicka din korg.",
   "app.components.ParticipationCTABars.VotingCTABar.noVotesCast4": "Du måste välja minst ett alternativ innan du kan skicka in.",
   "app.components.ParticipationCTABars.VotingCTABar.nothingInBasket": "Du måste lägga till något i din varukorg innan du kan skicka den.",
-  "app.components.ParticipationCTABars.VotingCTABar.numberOfCreditsLeft": "{votesLeft, plural, =0 {Inga krediter kvar} other {# ut ur {totalNumberOfVotes, plural, one {1 kredit} other {# krediter}} kvar}}",
+  "app.components.ParticipationCTABars.VotingCTABar.numberOfCreditsLeft": "{votesLeft, plural, =0 {Inga procent kvar} other {# ut ur {totalNumberOfVotes, plural, one {1 procent} other {# procent}} kvar}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfPointsLeft": "{votesLeft, plural, =0 {Inga poäng kvar} other {# ut ur {totalNumberOfVotes, plural, one {1 poäng} other {# poäng}} kvar}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfTokensLeft": "{votesLeft, plural, =0 {Inga polletter kvar} other {# ur {totalNumberOfVotes, plural, one {1 pollett} other {# polletter}} kvar}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfVotesLeft": "{votesLeft, plural, =0 {Inga röster kvar} other {# utav {totalNumberOfVotes, plural, one {1 röst} other {# röster}} kvar}}",
