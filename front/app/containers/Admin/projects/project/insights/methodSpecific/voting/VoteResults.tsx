@@ -24,8 +24,8 @@ import { INSIGHTS_CHART_COLORS } from '../../constants';
 import ClusteredIdeaRow from './ClusteredIdeaRow';
 import { getStripedPattern } from './constants';
 import messages from './messages';
+import SimpleVotingRow from './SimpleVotingRow';
 import { getDemographicKeys } from './utils';
-import VotingIdeaRow from './VotingIdeaRow';
 
 interface Props {
   phaseId: string;
@@ -156,7 +156,12 @@ const VoteResults = ({ phaseId }: Props) => {
       ) : (
         <Box>
           {ideas.map((idea) => (
-            <VotingIdeaRow key={idea.id} idea={idea} />
+            <SimpleVotingRow
+              key={idea.id}
+              idea={idea}
+              title={localize(idea.title_multiloc)}
+              tooltip={formatMessage(messages.votesTooltip)}
+            />
           ))}
         </Box>
       )}
