@@ -119,13 +119,13 @@ resource 'Stats - Comments' do
 
         before do
           travel_to start_at + 1.day do
-            @topic1 = create(:topic)
-            @topic2 = create(:topic)
-            @topic3 = create(:topic)
-            project = create(:project, allowed_input_topics: [@topic1, @topic2, @topic3])
-            idea1 = create(:idea, topics: [@topic1], project: project)
-            idea2 = create(:idea, topics: [@topic2], project: project)
-            idea3 = create(:idea, topics: [@topic1, @topic2], project: project)
+            project = create(:project)
+            @input_topic1 = create(:input_topic, project: project)
+            @input_topic2 = create(:input_topic, project: project)
+            @input_topic3 = create(:input_topic, project: project)
+            idea1 = create(:idea, input_topics: [@input_topic1], project: project)
+            idea2 = create(:idea, input_topics: [@input_topic2], project: project)
+            idea3 = create(:idea, input_topics: [@input_topic1, @input_topic2], project: project)
             create(:idea)
             create(:comment, idea: idea1)
             create(:comment, idea: idea1)
@@ -141,10 +141,10 @@ resource 'Stats - Comments' do
           expect(json_response.dig(:data, :type)).to eq 'comments_by_topic'
           json_attributes = json_response.dig(:data, :attributes)
           expect(json_attributes[:series][:comments].stringify_keys).to match({
-            @topic1.id => 3,
-            @topic2.id => 2
+            @input_topic1.id => 3,
+            @input_topic2.id => 2
           })
-          expect(json_attributes[:topics].keys.map(&:to_s)).to contain_exactly(@topic1.id, @topic2.id, @topic3.id)
+          expect(json_attributes[:topics].keys.map(&:to_s)).to contain_exactly(@input_topic1.id, @input_topic2.id, @input_topic3.id)
         end
       end
 
@@ -220,13 +220,13 @@ resource 'Stats - Comments' do
 
         before do
           travel_to start_at + 1.day do
-            @topic1 = create(:topic)
-            @topic2 = create(:topic)
-            topic3 = create(:topic)
-            project = create(:project, allowed_input_topics: [@topic1, @topic2, topic3])
-            idea1 = create(:idea, topics: [@topic1], project: project)
-            idea2 = create(:idea, topics: [@topic2], project: project)
-            idea3 = create(:idea, topics: [@topic1, @topic2], project: project)
+            project = create(:project)
+            @input_topic1 = create(:input_topic, project: project)
+            @input_topic2 = create(:input_topic, project: project)
+            input_topic3 = create(:input_topic, project: project)
+            idea1 = create(:idea, input_topics: [@input_topic1], project: project)
+            idea2 = create(:idea, input_topics: [@input_topic2], project: project)
+            idea3 = create(:idea, input_topics: [@input_topic1, @input_topic2], project: project)
             create(:idea)
             create(:comment, idea: idea1)
             create(:comment, idea: idea1)
@@ -243,7 +243,7 @@ resource 'Stats - Comments' do
 
           topic_ids_col = worksheet.map { |col| col.cells[1].value }
           _header, *topic_ids = topic_ids_col
-          expect(topic_ids).to contain_exactly(@topic1.id, @topic2.id)
+          expect(topic_ids).to contain_exactly(@input_topic1.id, @input_topic2.id)
 
           amount_col = worksheet.map { |col| col.cells[2].value }
           _header, *amounts = amount_col
@@ -345,15 +345,15 @@ resource 'Stats - Comments' do
       end
 
       describe 'filtered by topic' do
-        let(:topic) { @topic.id }
+        let(:topic) { @input_topic.id }
         let(:start_at) { timezone.at(now - 1.month).beginning_of_month }
         let(:end_at) { timezone.at(now - 1.month).end_of_month }
 
         before do
           travel_to start_at + 17.days do
-            @topic = create(:topic)
-            project = create(:project, allowed_input_topics: [@topic])
-            idea1 = create(:idea, topics: [@topic], project: project)
+            project = create(:project)
+            @input_topic = create(:input_topic, project: project)
+            idea1 = create(:idea, input_topics: [@input_topic], project: project)
             idea2 = create(:idea_with_topics)
             create(:comment, idea: idea1)
             create(:comment, idea: idea2)
@@ -443,15 +443,15 @@ resource 'Stats - Comments' do
       end
 
       describe 'filtered by topic' do
-        let(:topic) { @topic.id }
+        let(:topic) { @input_topic.id }
         let(:start_at) { timezone.at(now - 1.month).beginning_of_month }
         let(:end_at) { timezone.at(now - 1.month).end_of_month }
 
         before do
           travel_to start_at + 17.days do
-            @topic = create(:topic)
-            project = create(:project, allowed_input_topics: [@topic])
-            idea1 = create(:idea, topics: [@topic], project: project)
+            project = create(:project)
+            @input_topic = create(:input_topic, project: project)
+            idea1 = create(:idea, input_topics: [@input_topic], project: project)
             idea2 = create(:idea_with_topics)
             create(:comment, idea: idea1)
             create(:comment, idea: idea2)

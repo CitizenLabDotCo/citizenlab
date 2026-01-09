@@ -28,7 +28,6 @@ const AdminAreasEdit = lazy(() => import('./areas/Edit'));
 
 // topics
 const TopicsMain = React.lazy(() => import('./topics/TopicsMain'));
-const AdminTopicsIndexComponent = lazy(() => import('./topics/all'));
 const AdminTopicsNewComponent = lazy(() => import('./topics/New'));
 const AdminTopicsEditComponent = lazy(() => import('./topics/Edit'));
 // default input topics

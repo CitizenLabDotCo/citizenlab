@@ -39,6 +39,10 @@ FactoryBot.define do
           topic = create(:topic)
           idea.project.allowed_input_topics << topic
           idea.topics << topic
+
+          # Also create InputTopic for the new system
+          input_topic = create(:input_topic, project: idea.project, title_multiloc: topic.title_multiloc)
+          idea.input_topics << input_topic
         end
       end
     end

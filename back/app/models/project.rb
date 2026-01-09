@@ -60,7 +60,10 @@ class Project < ApplicationRecord
   # Alias for backward compatibility - will be removed in Release 2
   has_many :topics, -> { order(:ordering) }, through: :projects_global_topics, source: :global_topic
 
-  # Use case B - Input topics (keep working during Release 1)
+  # Use case B - Input topics (new system)
+  has_many :input_topics, -> { order(:ordering) }, dependent: :destroy, inverse_of: :project
+
+  # Legacy input topics (to be removed in future cleanup)
   has_many :projects_allowed_input_topics, dependent: :destroy
   has_many :allowed_input_topics, through: :projects_allowed_input_topics, source: :topic
   has_many :areas_projects, dependent: :destroy
@@ -195,6 +198,16 @@ class Project < ApplicationRecord
   def set_default_topics!
     self.allowed_input_topics = GlobalTopic.defaults.order(:ordering).reverse
     save!
+  end
+
+  def set_default_input_topics!
+    DefaultInputTopic.order(:ordering).each do |default_topic|
+      input_topics.create!(
+        title_multiloc: default_topic.title_multiloc,
+        description_multiloc: default_topic.description_multiloc,
+        icon: default_topic.icon
+      )
+    end
   end
 
   def folder

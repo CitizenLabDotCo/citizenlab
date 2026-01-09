@@ -7,8 +7,6 @@ import useDeleteDefaultInputTopic from 'api/default_input_topics/useDeleteDefaul
 import useReorderDefaultInputTopic from 'api/default_input_topics/useReorderDefaultInputTopic';
 import { IDefaultInputTopicData } from 'api/default_input_topics/types';
 
-import useLocalize from 'hooks/useLocalize';
-
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { TextCell } from 'components/admin/ResourceList';
 import SortableList from 'components/admin/ResourceList/SortableList';
@@ -32,7 +30,6 @@ import { isNilOrError } from 'utils/helperUtils';
 import messages from '../messages';
 
 const DefaultInputTopics = () => {
-  const localize = useLocalize();
   const { data: defaultInputTopics } = useDefaultInputTopics();
   const { mutate: deleteDefaultInputTopic, isLoading: isDeleting } =
     useDeleteDefaultInputTopic();

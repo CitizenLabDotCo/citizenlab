@@ -91,14 +91,14 @@ resource 'Ideas' do
         before { header_token_for(resident) }
 
         let(:resident) { create(:user) }
-        let(:topic_ids) { create_list(:topic, 2, projects: [project]).map(&:id) }
+        let(:topic_ids) { create_list(:input_topic, 2, project: project).map(&:id) }
         let(:location_point_geojson) { { type: 'Point', coordinates: [51.11520776293035, 3.921154106874878] } }
         let(:location_description) { 'Stanley Road 4' }
 
         example_request 'Create an idea' do
           assert_status 201
           expect(response_data.dig(:relationships, :project, :data, :id)).to eq project_id
-          expect(response_data.dig(:relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+          expect(response_data.dig(:relationships, :input_topics, :data).pluck(:id)).to match_array topic_ids
           expect(response_data.dig(:attributes, :location_point_geojson)).to eq location_point_geojson
           expect(response_data.dig(:attributes, :location_description)).to eq location_description
 
@@ -136,7 +136,7 @@ resource 'Ideas' do
             expect(response_data.dig(:attributes, :title_multiloc, :en)).to eq 'Plant more trees'
             # proposed_budget is disabled, so its given value was ignored.
             expect(response_data.dig(:attributes, :proposed_budget)).to be_nil
-            expect(response_data.dig(:relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+            expect(response_data.dig(:relationships, :input_topics, :data).pluck(:id)).to match_array topic_ids
             expect(response_data.dig(:attributes, :location_point_geojson)).to eq location_point_geojson
             expect(response_data.dig(:attributes, :location_description)).to eq location_description
           end
@@ -223,7 +223,7 @@ resource 'Ideas' do
             do_request
             assert_status 201
             expect(response_data.dig(:relationships, :project, :data, :id)).to eq project_id
-            expect(response_data.dig(:relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+            expect(response_data.dig(:relationships, :input_topics, :data).pluck(:id)).to match_array topic_ids
             expect(response_data.dig(:attributes, :location_point_geojson)).to eq location_point_geojson
             expect(response_data.dig(:attributes, :location_description)).to eq location_description
             expect(project.reload.ideas_count).to eq 1
@@ -437,7 +437,7 @@ resource 'Ideas' do
       let(:input) { build(:proposal, project: project) }
       let(:title_multiloc) { { 'en' => 'My proposal title' } }
       let(:body_multiloc) { { 'en' => 'My proposal body' } }
-      let(:topic_ids) { [create(:topic, projects: [project]).id] }
+      let(:topic_ids) { [create(:input_topic, project: project).id] }
       let(:cosponsors) { create_list(:user, 2) }
       let(:cosponsor_ids) { cosponsors.map(&:id) }
       let!(:proposed_status) { create(:proposals_status, code: 'proposed') }
@@ -506,7 +506,7 @@ resource 'Ideas' do
 
           expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to eq title_multiloc
           expect(response_data.dig(:attributes, :body_multiloc).stringify_keys).to eq body_multiloc
-          expect(response_data.dig(:relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+          expect(response_data.dig(:relationships, :input_topics, :data).pluck(:id)).to match_array topic_ids
           expect(response_data.dig(:relationships, :cosponsors, :data).pluck(:id)).to match_array cosponsor_ids
         end
       end
