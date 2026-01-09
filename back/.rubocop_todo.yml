@@ -249,12 +249,6 @@ Rails/RootPathnameMethods:
     - 'spec/spec_helper.rb'
     - 'spec/tasks/single_use/continuous_project_migration_service_spec.ignore.rb'
 
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Rails/SelectMap:
-  Exclude:
-    - 'app/models/user.rb'
-
 # Offense count: 10
 # Configuration parameters: Include.
 # Include: db/**/*.rb
