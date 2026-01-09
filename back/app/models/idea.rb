@@ -197,6 +197,11 @@ class Idea < ApplicationRecord
     where(id: ideas)
   end)
 
+  scope :with_some_input_topics, (proc do |input_topics|
+    ideas = joins(:ideas_input_topics).where(ideas_input_topics: { input_topic: input_topics })
+    where(id: ideas)
+  end)
+
   scope :in_phase, (proc do |phase_id|
     joins(:ideas_phases)
       .where(ideas_phases: { phase_id: phase_id })

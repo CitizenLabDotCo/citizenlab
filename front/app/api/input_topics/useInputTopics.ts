@@ -16,6 +16,7 @@ const useInputTopics = (projectId: string) => {
   return useQuery<IInputTopics, CLErrors, IInputTopics, InputTopicsKeys>({
     queryKey: inputTopicsKeys.list({ projectId }),
     queryFn: () => fetchInputTopics({ projectId }),
+    enabled: !!projectId,
   });
 };
 

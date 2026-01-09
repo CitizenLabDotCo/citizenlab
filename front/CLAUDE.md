@@ -221,6 +221,14 @@ make e2e-setup
 
 ## Code Quality
 
+### Type Checking
+
+Run the TypeScript type checker after all work is complete:
+
+```bash
+npm run typecheck
+```
+
 ### Linting
 
 ```bash

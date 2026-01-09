@@ -163,6 +163,11 @@ class ParticipantsService
     ideas_participants ideas, options
   end
 
+  def input_topics_participants(input_topics, options = {})
+    ideas = Idea.with_some_input_topics(input_topics)
+    ideas_participants ideas, options
+  end
+
   def idea_statuses_participants(idea_statuses, options = {})
     ideas = Idea.where(idea_status: idea_statuses)
     ideas_participants ideas, options

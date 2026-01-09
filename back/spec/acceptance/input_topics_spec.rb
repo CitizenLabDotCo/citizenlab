@@ -32,13 +32,15 @@ resource 'InputTopics' do
     end
   end
 
-  get 'web_api/v1/projects/:project_id/input_topics/:id' do
+  # Shallow route - no project_id needed
+  get 'web_api/v1/input_topics/:id' do
     let(:input_topic) { create(:input_topic, project: project) }
     let(:id) { input_topic.id }
 
     example_request 'Get one input topic by ID' do
       assert_status(200)
       expect(response_data[:id]).to eq id
+      expect(response_data.dig(:relationships, :project, :data, :id)).to eq project.id
     end
   end
 
@@ -65,7 +67,8 @@ resource 'InputTopics' do
       end
     end
 
-    patch 'web_api/v1/projects/:project_id/input_topics/:id' do
+    # Shallow route - no project_id needed
+    patch 'web_api/v1/input_topics/:id' do
       with_options scope: :input_topic do
         parameter :title_multiloc, 'The title of the input topic, as a multiloc string'
         parameter :description_multiloc, 'The description of the input topic, as a multiloc string'
@@ -85,7 +88,8 @@ resource 'InputTopics' do
       end
     end
 
-    patch 'web_api/v1/projects/:project_id/input_topics/:id/reorder' do
+    # Shallow route - no project_id needed
+    patch 'web_api/v1/input_topics/:id/reorder' do
       with_options scope: :input_topic do
         parameter :ordering, 'The position, starting from 0, where the topic should be at.', required: true
       end
@@ -103,7 +107,8 @@ resource 'InputTopics' do
       end
     end
 
-    delete 'web_api/v1/projects/:project_id/input_topics/:id' do
+    # Shallow route - no project_id needed
+    delete 'web_api/v1/input_topics/:id' do
       let(:input_topic) { create(:input_topic, project: project) }
       let!(:id) { input_topic.id }
 
@@ -135,7 +140,8 @@ resource 'InputTopics' do
       end
     end
 
-    patch 'web_api/v1/projects/:project_id/input_topics/:id' do
+    # Shallow route - no project_id needed
+    patch 'web_api/v1/input_topics/:id' do
       with_options scope: :input_topic do
         parameter :title_multiloc, 'The title of the input topic, as a multiloc string'
       end
@@ -150,7 +156,8 @@ resource 'InputTopics' do
       end
     end
 
-    delete 'web_api/v1/projects/:project_id/input_topics/:id' do
+    # Shallow route - no project_id needed
+    delete 'web_api/v1/input_topics/:id' do
       let(:input_topic) { create(:input_topic, project: project) }
       let!(:id) { input_topic.id }
 
@@ -197,7 +204,8 @@ resource 'InputTopics' do
       end
     end
 
-    patch 'web_api/v1/projects/:project_id/input_topics/:id' do
+    # Shallow route - no project_id needed
+    patch 'web_api/v1/input_topics/:id' do
       with_options scope: :input_topic do
         parameter :title_multiloc, 'The title of the input topic, as a multiloc string'
       end
@@ -210,7 +218,8 @@ resource 'InputTopics' do
       end
     end
 
-    delete 'web_api/v1/projects/:project_id/input_topics/:id' do
+    # Shallow route - no project_id needed
+    delete 'web_api/v1/input_topics/:id' do
       let(:id) { create(:input_topic, project: project).id }
 
       example_request 'Cannot delete an input topic' do
