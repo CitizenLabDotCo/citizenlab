@@ -16,6 +16,8 @@ import ParticipationMetrics from './participationMetrics/ParticipationMetrics';
 
 interface Props {
   phase: IPhaseData;
+  timelineChartRef?: React.RefObject<SVGElement>;
+  onDemographicChartRef?: (fieldId: string, el: HTMLElement | null) => void;
 }
 
 /**
@@ -23,7 +25,11 @@ interface Props {
  * Rendered in a hidden offscreen container during PDF export.
  * Components receive isPdfExport=true to render PDF-optimized layouts.
  */
-const InsightsPdfContent = ({ phase }: Props) => {
+const InsightsPdfContent = ({
+  phase,
+  timelineChartRef,
+  onDemographicChartRef,
+}: Props) => {
   const phaseName = Object.values(phase.attributes.title_multiloc)[0] || '';
 
   return (
@@ -48,10 +54,18 @@ const InsightsPdfContent = ({ phase }: Props) => {
         </PageBreakBox>
 
         <PageBreakBox>
-          <ParticipantsTimeline phaseId={phase.id} isPdfExport />
+          <ParticipantsTimeline
+            phaseId={phase.id}
+            isPdfExport
+            chartRef={timelineChartRef}
+          />
         </PageBreakBox>
 
-        <DemographicsSection phase={phase} isPdfExport />
+        <DemographicsSection
+          phase={phase}
+          isPdfExport
+          onChartRef={onDemographicChartRef}
+        />
 
         <PageBreakBox>
           <MethodSpecificInsights

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
@@ -18,10 +18,28 @@ import { toChartData, toExcelData } from './utils';
 interface Props {
   field: DemographicField;
   showExportMenu?: boolean;
+  onChartRef?: (fieldId: string, el: HTMLElement | null) => void;
 }
 
-const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
+const DemographicFieldContent = ({
+  field,
+  showExportMenu = true,
+  onChartRef,
+}: Props) => {
   const { formatMessage } = useIntl();
+  const chartRef = useRef<HTMLElement>(null);
+
+  // Register the chart element with parent when mounted
+  useEffect(() => {
+    if (onChartRef) {
+      onChartRef(field.field_id, chartRef.current);
+    }
+    return () => {
+      if (onChartRef) {
+        onChartRef(field.field_id, null);
+      }
+    };
+  }, [field.field_id, onChartRef]);
 
   // Check if any data point has population data (reference distribution exists)
   const hasPopulationData = field.data_points.some(
@@ -92,6 +110,7 @@ const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
         showComparison={hasPopulationData}
         primaryColor={INSIGHTS_CHART_COLORS.darkBlue}
         comparisonColor={colors.teal300}
+        innerRef={chartRef}
       />
     </Box>
   );

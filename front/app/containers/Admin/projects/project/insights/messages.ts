@@ -173,6 +173,22 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.downloadInsightsPdf',
     defaultMessage: 'Download insights as PDF',
   },
+  downloadInsightsWord: {
+    id: 'app.containers.Admin.projects.project.insights.downloadInsightsWord',
+    defaultMessage: 'Download insights as Word',
+  },
+  errorWordDownload: {
+    id: 'app.containers.Admin.projects.project.insights.errorWordDownload',
+    defaultMessage: 'Failed to download Word document. Please try again.',
+  },
+  downloadPdf: {
+    id: 'app.containers.Admin.projects.project.insights.downloadPdf',
+    defaultMessage: 'Download PDF',
+  },
+  downloadWord: {
+    id: 'app.containers.Admin.projects.project.insights.downloadWord',
+    defaultMessage: 'Download Word',
+  },
   noAnswer: {
     id: 'app.containers.Admin.projects.project.insights.noAnswer',
     defaultMessage: 'No answer',

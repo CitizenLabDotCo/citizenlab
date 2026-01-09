@@ -30,4 +30,21 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.TopBar.titleTaken',
     defaultMessage: 'Title is already taken',
   },
+  downloadWord: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.TopBar.downloadWord',
+    defaultMessage: 'Download Word',
+  },
+  cannotDownload: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotDownload',
+    defaultMessage:
+      'This report contains unsaved changes. Please save before downloading.',
+  },
+  downloadingWord: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.TopBar.downloadingWord',
+    defaultMessage: 'Preparing Word document...',
+  },
+  downloadError: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.TopBar.downloadError',
+    defaultMessage: 'Failed to download Word document. Please try again.',
+  },
 });

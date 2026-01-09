@@ -79,9 +79,14 @@ const TabButton = styled.button<{ active: boolean }>`
 interface Props {
   phase?: IPhaseData;
   isPdfExport?: boolean;
+  onChartRef?: (fieldId: string, el: HTMLElement | null) => void;
 }
 
-const DemographicsSection = ({ phase, isPdfExport = false }: Props) => {
+const DemographicsSection = ({
+  phase,
+  isPdfExport = false,
+  onChartRef,
+}: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(0);
@@ -202,13 +207,21 @@ const DemographicsSection = ({ phase, isPdfExport = false }: Props) => {
                 {formatMessage(messages.demographicsAndAudience)}
               </Text>
             </Box>
-            <DemographicFieldContent field={fields[0]} showExportMenu={false} />
+            <DemographicFieldContent
+              field={fields[0]}
+              showExportMenu={false}
+              onChartRef={onChartRef}
+            />
           </Box>
         </PageBreakBox>
 
         {fields.slice(1).map((field) => (
           <PageBreakBox key={field.field_id}>
-            <DemographicFieldContent field={field} showExportMenu={false} />
+            <DemographicFieldContent
+              field={field}
+              showExportMenu={false}
+              onChartRef={onChartRef}
+            />
           </PageBreakBox>
         ))}
       </Box>

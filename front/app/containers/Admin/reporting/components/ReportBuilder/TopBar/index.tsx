@@ -15,10 +15,12 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
+import useReport from 'api/reports/useReport';
 
 import useLocalize from 'hooks/useLocalize';
 
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
+import useReportWordExport from 'containers/Admin/reporting/hooks/useReportWordExport';
 
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
@@ -76,6 +78,7 @@ const ContentBuilderTopBar = ({
   setSelectedLocale,
 }: ContentBuilderTopBarProps) => {
   const { data: appConfig } = useAppConfiguration();
+  const { data: report } = useReport(reportId);
   const [initialized, setInitialized] = useState(false);
   const [showQuitModal, setShowQuitModal] = useState(false);
   const { query } = useEditor();
@@ -87,8 +90,23 @@ const ContentBuilderTopBar = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
+  // Get report title for Word export
+  const reportTitle = report?.data.attributes.name || 'Report';
+
+  const { downloadWord, isDownloading: isDownloadingWord } =
+    useReportWordExport({
+      reportId,
+      reportTitle,
+    });
+
   const disableSave = hasPendingState || saved;
   const disablePrint = hasPendingState || !saved;
+  const disableDownload = hasPendingState || !saved || isDownloadingWord;
+
+  const handleDownloadWord = () => {
+    const nodes = query.getSerializedNodes();
+    downloadWord(nodes);
+  };
 
   const closeModal = () => {
     setShowQuitModal(false);
@@ -250,7 +268,30 @@ const ContentBuilderTopBar = ({
             <ViewPicker view={view} setView={setView} />
           </Box>
         )}
-        <Box ml="32px">
+        <Box ml="32px" display="flex" gap="8px">
+          <Tooltip
+            placement="bottom"
+            disabled={!disableDownload}
+            content={
+              <TooltipContentWrapper tippytheme="light">
+                {formatMessage(messages.cannotDownload)}
+              </TooltipContentWrapper>
+            }
+          >
+            <div>
+              <ButtonWithLink
+                icon="download"
+                buttonStyle="secondary-outlined"
+                iconColor={colors.textPrimary}
+                iconSize="16px"
+                px="12px"
+                py="8px"
+                onClick={handleDownloadWord}
+                disabled={disableDownload}
+                processing={isDownloadingWord}
+              />
+            </div>
+          </Tooltip>
           <Tooltip
             placement="bottom"
             disabled={!disablePrint}

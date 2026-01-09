@@ -33,4 +33,8 @@ export default defineMessages({
     id: 'app.components.admin.ReportExportMenu.downloadXlsx',
     defaultMessage: 'Download Excel',
   },
+  downloadDocx: {
+    id: 'app.components.admin.ReportExportMenu.downloadDocx',
+    defaultMessage: 'Download Word',
+  },
 });

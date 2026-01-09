@@ -15,15 +15,22 @@ import messages from './messages';
 interface Props {
   phaseId: string;
   isPdfExport?: boolean;
+  chartRef?: React.RefObject<SVGElement>;
 }
 
 // Fixed dimensions for PDF export to fit A4 page (with 15mm margins)
 const PDF_CHART_WIDTH = 650;
 const PDF_CHART_HEIGHT = 280;
 
-const ParticipantsTimeline = ({ phaseId, isPdfExport = false }: Props) => {
+const ParticipantsTimeline = ({
+  phaseId,
+  isPdfExport = false,
+  chartRef,
+}: Props) => {
   const { formatMessage } = useIntl();
-  const graphRef = useRef<SVGElement>(null);
+  const internalRef = useRef<SVGElement>(null);
+  // Use external ref if provided, otherwise use internal ref
+  const graphRef = chartRef || internalRef;
 
   const { data, isLoading, error } = usePhaseInsights({ phaseId });
 
