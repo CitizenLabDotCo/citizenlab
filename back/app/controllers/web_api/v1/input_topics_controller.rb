@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class WebApi::V1::InputTopicsController < ApplicationController
-  before_action :set_project
   before_action :set_input_topic, except: %i[index create]
+  before_action :set_project
   skip_before_action :authenticate_user, only: %i[index show]
 
   def index
@@ -86,7 +86,11 @@ class WebApi::V1::InputTopicsController < ApplicationController
   private
 
   def set_project
-    @project = Project.find(params[:project_id])
+    @project = if params[:project_id]
+      Project.find(params[:project_id])
+    else
+      @input_topic&.project
+    end
   end
 
   def set_input_topic
