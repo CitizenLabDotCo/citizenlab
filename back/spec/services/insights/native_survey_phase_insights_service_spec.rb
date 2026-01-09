@@ -126,8 +126,8 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
       metrics = service.send(:phase_participation_method_metrics, participations)
 
       expect(metrics).to eq({
-        submitted_surveys: 2,
-        submitted_surveys_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) = 0% change
+        surveys_submitted: 2,
+        surveys_submitted_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) = 0% change
         completion_rate: 1.0,
         completion_rate_7_day_change: 0.0 # completion_rate_last_7_days: 1.0, completion_rate_previous_7_days: 1.0 = 0% change
       })

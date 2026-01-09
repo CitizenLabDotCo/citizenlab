@@ -91,10 +91,10 @@ const MethodMetrics = ({ participationMethod, metrics, showChange }: Props) => {
         <>
           <Metric
             label={formatMessage(messages.submissions)}
-            value={surveyMetrics.submitted_surveys}
+            value={surveyMetrics.surveys_submitted}
             change={
               showChange
-                ? surveyMetrics.submitted_surveys_7_day_change
+                ? surveyMetrics.surveys_submitted_7_day_change
                 : undefined
             }
           />

@@ -49,8 +49,8 @@ export interface BudgetingMetrics extends BaseVotingMetrics {
 }
 
 export interface SurveyMetrics {
-  submitted_surveys: number;
-  submitted_surveys_7_day_change?: SevenDayChange;
+  surveys_submitted: number;
+  surveys_submitted_7_day_change?: SevenDayChange;
   completion_rate: number;
   completion_rate_7_day_change?: SevenDayChange;
 }
