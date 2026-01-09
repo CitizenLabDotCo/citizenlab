@@ -466,6 +466,7 @@ resource 'Permissions' do
           create_list(:custom_field_option, 3, custom_field: @field1)
           create_list(:custom_field_option, 2, custom_field: @field2)
 
+          # Reorder one option to test ordering
           @reordered_option = @field1.reload.options.last
           @reordered_option.insert_at(1)
         end
@@ -476,6 +477,7 @@ resource 'Permissions' do
           expect(json_response[:data]).to be_an(Array)
           expect(json_response[:data].size).to eq 5
 
+          # Test ordering
           expect(json_response[:data][1][:id]).to eq @reordered_option.id
         end
       end
