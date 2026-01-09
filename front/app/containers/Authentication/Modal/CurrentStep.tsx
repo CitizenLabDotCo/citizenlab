@@ -43,25 +43,28 @@ const CurrentStep = ({
   transition,
   setError,
 }: Props) => {
-  return (
-    <>
-      {currentStep === 'success' && (
+  switch (currentStep) {
+    case 'success':
+      return (
         <Success
           loading={loading}
           onContinue={transition(currentStep, 'CONTINUE')}
         />
-      )}
+      );
 
-      {/* email flow */}
-      {currentStep === 'email:start' && (
+    // email flow
+    case 'email:start':
+      return (
         <EmailFlowStart
           loading={loading}
           setError={setError}
           onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
           onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
         />
-      )}
-      {currentStep === 'email:policies' && (
+      );
+
+    case 'email:policies':
+      return (
         <EmailPolicies
           state={state}
           loading={loading}
@@ -69,8 +72,10 @@ const CurrentStep = ({
           onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
           goBack={transition(currentStep, 'GO_BACK')}
         />
-      )}
-      {currentStep === 'email:password' && (
+      );
+
+    case 'email:password':
+      return (
         <Password
           state={state}
           loading={loading}
@@ -78,15 +83,19 @@ const CurrentStep = ({
           onSubmit={transition(currentStep, 'SUBMIT_PASSWORD')}
           onClose={transition(currentStep, 'CLOSE')}
         />
-      )}
-      {currentStep === 'email:sso-policies' && (
+      );
+
+    case 'email:sso-policies':
+      return (
         <SSOPolicies
           state={state}
           loading={loading}
           onAccept={transition(currentStep, 'ACCEPT_POLICIES')}
         />
-      )}
-      {currentStep === 'email:confirmation' && (
+      );
+
+    case 'email:confirmation':
+      return (
         <EmailConfirmation
           state={state}
           loading={loading}
@@ -95,36 +104,44 @@ const CurrentStep = ({
           onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
           onResendCode={transition(currentStep, 'RESEND_CODE')}
         />
-      )}
+      );
 
-      {/* invite flow */}
-      {currentStep === 'invite:email-password' && (
+    // invite flow
+    case 'invite:email-password':
+      return (
         <InviteSignUp
           state={state}
           loading={loading}
           setError={setError}
           onSubmit={transition(currentStep, 'SUBMIT')}
         />
-      )}
-      {currentStep === 'invite:code' && (
+      );
+
+    case 'invite:code':
+      return (
         <Invitation
           loading={loading}
           setError={setError}
           onSubmit={transition(currentStep, 'SUBMIT')}
         />
-      )}
-      {currentStep === 'invite:taken' && <InviteTaken state={state} />}
+      );
 
-      {/* missing data flow / shared */}
-      {currentStep === 'missing-data:built-in' && (
+    case 'invite:taken':
+      return <InviteTaken state={state} />;
+
+    // missing data flow / shared
+    case 'missing-data:built-in':
+      return (
         <BuiltInFields
           loading={loading}
           authenticationData={authenticationData}
           setError={setError}
           onSubmit={transition(currentStep, 'SUBMIT')}
         />
-      )}
-      {currentStep === 'missing-data:email-confirmation' && (
+      );
+
+    case 'missing-data:email-confirmation':
+      return (
         <EmailConfirmation
           state={state}
           loading={loading}
@@ -133,17 +150,20 @@ const CurrentStep = ({
           onChangeEmail={transition(currentStep, 'CHANGE_EMAIL')}
           onResendCode={transition(currentStep, 'RESEND_CODE')}
         />
-      )}
+      );
 
-      {(currentStep === 'missing-data:verification' ||
-        currentStep === 'verification-only') && (
+    case 'missing-data:verification':
+    case 'verification-only':
+      return (
         <Verification
           setError={setError}
           onCompleted={transition(currentStep, 'CONTINUE')}
           authenticationData={authenticationData}
         />
-      )}
-      {currentStep === 'missing-data:custom-fields' && (
+      );
+
+    case 'missing-data:custom-fields':
+      return (
         <Suspense fallback={<Spinner />}>
           <CustomFields
             authenticationData={authenticationData}
@@ -153,53 +173,65 @@ const CurrentStep = ({
             onSkip={transition(currentStep, 'SKIP')}
           />
         </Suspense>
-      )}
+      );
 
-      {currentStep === 'missing-data:onboarding' && (
+    case 'missing-data:onboarding':
+      return (
         <Onboarding
           authenticationData={authenticationData}
           onSubmit={transition(currentStep, 'SUBMIT')}
           onSkip={transition(currentStep, 'SKIP')}
         />
-      )}
+      );
 
-      {currentStep === 'verification-success' && (
-        <VerificationSuccess onClose={transition(currentStep, 'CLOSE')} />
-      )}
+    case 'verification-success':
+      return <VerificationSuccess onClose={transition(currentStep, 'CLOSE')} />;
 
-      {/* sso verification flow */}
-      {currentStep === 'sso-verification:sso-providers' && (
+    // sso verification flow
+    case 'sso-verification:sso-providers':
+      return (
         <SSOVerification
           onClickSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
           onClickLogin={transition(currentStep, 'GO_TO_LOGIN')}
         />
-      )}
+      );
 
-      {currentStep === 'sso-verification:sso-providers-policies' && (
+    case 'sso-verification:sso-providers-policies':
+      return (
         <SSOVerificationPolicies
           state={state}
           loading={loading}
           onAccept={transition(currentStep, 'ACCEPT')}
         />
-      )}
+      );
 
-      {currentStep === 'access-denied' && (
+    // other
+    case 'access-denied':
+      return (
         <AccessDenied
           authenticationData={authenticationData}
           onClose={transition(currentStep, 'CLOSE')}
         />
-      )}
+      );
 
-      {currentStep === 'post-participation:email' && (
+    case 'post-participation:email':
+      return (
         <PostParticipationFlowStart
           loading={loading}
           setError={setError}
           onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
           onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
         />
-      )}
-    </>
-  );
+      );
+
+    case 'closed':
+      return null;
+
+    default: {
+      const exhaustiveCheck: never = currentStep;
+      throw new Error(`Unhandled step: ${exhaustiveCheck}`);
+    }
+  }
 };
 
 export default CurrentStep;
