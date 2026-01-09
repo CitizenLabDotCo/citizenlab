@@ -21,22 +21,13 @@ export interface IdeationMetrics {
   reactions_7_day_change?: SevenDayChange;
 }
 
-export interface ProposalsMetrics {
-  ideas_posted: number;
-  ideas_posted_7_day_change?: SevenDayChange;
+export interface ProposalsMetrics extends IdeationMetrics {
   reached_threshold: number;
   reached_threshold_7_day_change?: SevenDayChange;
-  comments_posted: number;
-  comments_posted_7_day_change?: SevenDayChange;
-  reactions: number;
-  reactions_7_day_change?: SevenDayChange;
 }
 
-export interface VotingMetrics {
+interface BaseVotingMetrics {
   voting_method: string;
-  online_votes: number;
-  online_votes_7_day_change?: SevenDayChange;
-  offline_votes: number;
   voters: number;
   voters_7_day_change?: SevenDayChange;
   associated_ideas: number;
@@ -44,16 +35,17 @@ export interface VotingMetrics {
   comments_posted_7_day_change?: SevenDayChange;
 }
 
-export interface BudgetingMetrics {
+export interface VotingMetrics extends BaseVotingMetrics {
+  online_votes: number;
+  online_votes_7_day_change?: SevenDayChange;
+  offline_votes: number;
+}
+
+export interface BudgetingMetrics extends BaseVotingMetrics {
   voting_method: 'budgeting';
   online_picks: number;
   online_picks_7_day_change?: SevenDayChange;
   offline_picks: number;
-  voters: number;
-  voters_7_day_change?: SevenDayChange;
-  associated_ideas: number;
-  comments_posted: number;
-  comments_posted_7_day_change?: SevenDayChange;
 }
 
 export interface SurveyMetrics {
@@ -68,12 +60,12 @@ export interface PollMetrics {
   responses_7_day_change?: SevenDayChange;
 }
 
-export interface CommonGroundMetrics {
+export interface CommonGroundMetrics
+  extends Omit<
+    IdeationMetrics,
+    'comments_posted' | 'comments_posted_7_day_change'
+  > {
   associated_ideas: number;
-  ideas_posted: number;
-  ideas_posted_7_day_change?: SevenDayChange;
-  reactions: number;
-  reactions_7_day_change?: SevenDayChange;
 }
 
 export interface VolunteeringMetrics {
