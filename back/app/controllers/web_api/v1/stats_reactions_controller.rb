@@ -26,21 +26,21 @@ class WebApi::V1::StatsReactionsController < WebApi::V1::StatsController
 
     reactions
       .where(created_at: @start_at..@end_at)
-      .joins('JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
-      .group('ideas_topics.topic_id')
-      .order('ideas_topics.topic_id')
+      .joins('JOIN ideas_input_topics ON ideas_input_topics.idea_id = ideas.id')
+      .group('ideas_input_topics.input_topic_id')
+      .order('ideas_input_topics.input_topic_id')
       .count
   end
 
   def reactions_by_topic
     serie = reactions_by_topic_serie
-    topics = GlobalTopic.all.select(:id, :title_multiloc)
+    topics = InputTopic.all.select(:id, :title_multiloc)
     render json: raw_json({ series: { total: serie }, topics: topics.to_h { |t| [t.id, t.attributes.except('id')] } })
   end
 
   def reactions_by_topic_as_xlsx
     serie = reactions_by_topic_serie
-    topics = GlobalTopic.where(id: serie.keys).select(:id, :title_multiloc)
+    topics = InputTopic.where(id: serie.keys).select(:id, :title_multiloc)
     res = serie.map do |topic_id, count|
       {
         'topic' => @@multiloc_service.t(topics.find(topic_id).title_multiloc, current_user&.locale),
@@ -113,8 +113,8 @@ class WebApi::V1::StatsReactionsController < WebApi::V1::StatsController
   def apply_topic_filter(reactions)
     if params[:topic]
       reactions
-        .joins('JOIN ideas_topics ON ideas.id = ideas_topics.idea_id')
-        .where(ideas_topics: { topic_id: params[:topic] })
+        .joins('JOIN ideas_input_topics ON ideas.id = ideas_input_topics.idea_id')
+        .where(ideas_input_topics: { input_topic_id: params[:topic] })
     else
       reactions
     end

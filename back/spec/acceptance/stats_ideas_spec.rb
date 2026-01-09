@@ -128,7 +128,7 @@ resource 'Stats - Ideas' do
         json_response = json_parse response_body
         expect(json_response.dig(:data, :type)).to eq 'ideas_by_topic'
         json_attributes = json_response.dig(:data, :attributes)
-        expected_topics = @ideas_with_topics.flat_map { |i| i.ideas_topics.map(&:topic_id) }.uniq
+        expected_topics = @ideas_with_topics.flat_map { |i| i.ideas_input_topics.map(&:input_topic_id) }.uniq
         expect(json_attributes[:series][:ideas].keys.map(&:to_s).uniq - expected_topics).to eq []
         expect(json_attributes[:series][:ideas].values.map(&:class).uniq).to eq [Integer]
       end
@@ -138,10 +138,10 @@ resource 'Stats - Ideas' do
       let(:project) { @project.id }
 
       before do
-        topic = create(:topic)
-        @project = create(:single_phase_ideation_project, allowed_input_topics: [topic])
+        @project = create(:single_phase_ideation_project)
+        input_topic = create(:input_topic, project: @project)
         travel_to start_at + 2.months do
-          create(:idea, project: @project, topics: [topic])
+          create(:idea, project: @project, input_topics: [input_topic])
           create(:idea)
         end
       end
@@ -183,10 +183,10 @@ resource 'Stats - Ideas' do
       let(:project) { @project.id }
 
       before do
-        topic = create(:topic)
-        @project = create(:single_phase_ideation_project, allowed_input_topics: [topic])
+        @project = create(:single_phase_ideation_project)
+        input_topic = create(:input_topic, project: @project)
         travel_to start_at + 2.months do
-          create(:idea, project: @project, topics: [topic])
+          create(:idea, project: @project, input_topics: [input_topic])
           create(:idea)
         end
       end

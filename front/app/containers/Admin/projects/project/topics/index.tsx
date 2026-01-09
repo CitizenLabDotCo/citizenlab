@@ -35,9 +35,8 @@ import messages from './messages';
 import InputTopicModal from './InputTopicModal';
 
 const ProjectInputTopics = ({ params: { projectId } }: WithRouterProps) => {
-  const localize = useLocalize();
   const { data: authUser } = useAuthUser();
-  const { data: inputTopics } = useInputTopics({ projectId });
+  const { data: inputTopics } = useInputTopics(projectId);
   const { mutate: deleteInputTopic, isLoading: isDeleting } =
     useDeleteInputTopic();
   const { mutate: reorderInputTopic } = useReorderInputTopic();

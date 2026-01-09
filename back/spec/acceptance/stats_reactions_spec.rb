@@ -66,13 +66,13 @@ resource 'Stats - Reactions' do
       let(:start_at) { now.beginning_of_week }
       let(:end_at) { now.end_of_week }
 
-      let!(:topic1) { create(:topic) }
-      let!(:topic2) { create(:topic) }
-      let!(:topic3) { create(:topic) }
-      let!(:project1) { create(:project, allowed_input_topics: [topic1, topic2, topic3]) }
-      let!(:idea1) { create(:idea, idea_status: @idea_status, topics: [topic1], project: project1) }
-      let!(:idea2) { create(:idea, idea_status: @idea_status, topics: [topic2], project: project1) }
-      let!(:idea3) { create(:idea, idea_status: @idea_status, topics: [topic1, topic2], project: project1) }
+      let!(:project1) { create(:project) }
+      let!(:input_topic1) { create(:input_topic, project: project1) }
+      let!(:input_topic2) { create(:input_topic, project: project1) }
+      let!(:input_topic3) { create(:input_topic, project: project1) }
+      let!(:idea1) { create(:idea, idea_status: @idea_status, input_topics: [input_topic1], project: project1) }
+      let!(:idea2) { create(:idea, idea_status: @idea_status, input_topics: [input_topic2], project: project1) }
+      let!(:idea3) { create(:idea, idea_status: @idea_status, input_topics: [input_topic1, input_topic2], project: project1) }
       let!(:idea4) { create(:idea, idea_status: @idea_status) }
       let!(:reaction1) { create(:reaction, reactable: idea1) }
       let!(:reaction2) { create(:reaction, reactable: idea1, mode: 'down') }
@@ -85,10 +85,10 @@ resource 'Stats - Reactions' do
         expect(json_response.dig(:data, :type)).to eq 'reactions_by_topic'
         json_attributes = json_response.dig(:data, :attributes)
         expect(json_attributes[:series][:total].stringify_keys).to match({
-          topic1.id => 3,
-          topic2.id => 2
+          input_topic1.id => 3,
+          input_topic2.id => 2
         })
-        expect(json_attributes[:topics].keys.map(&:to_s)).to eq [topic1.id, topic2.id, topic3.id]
+        expect(json_attributes[:topics].keys.map(&:to_s)).to eq [input_topic1.id, input_topic2.id, input_topic3.id]
       end
     end
 
@@ -144,13 +144,13 @@ resource 'Stats - Reactions' do
       let(:start_at) { now.beginning_of_week }
       let(:end_at) { now.end_of_week }
 
-      let!(:topic1) { create(:topic) }
-      let!(:topic2) { create(:topic) }
-      let!(:topic3) { create(:topic) }
-      let!(:project1) { create(:project, allowed_input_topics: [topic1, topic2, topic3]) }
-      let!(:idea1) { create(:idea, idea_status: @idea_status, topics: [topic1], project: project1) }
-      let!(:idea2) { create(:idea, idea_status: @idea_status, topics: [topic2], project: project1) }
-      let!(:idea3) { create(:idea, idea_status: @idea_status, topics: [topic1, topic2], project: project1) }
+      let!(:project1) { create(:project) }
+      let!(:input_topic1) { create(:input_topic, project: project1) }
+      let!(:input_topic2) { create(:input_topic, project: project1) }
+      let!(:input_topic3) { create(:input_topic, project: project1) }
+      let!(:idea1) { create(:idea, idea_status: @idea_status, input_topics: [input_topic1], project: project1) }
+      let!(:idea2) { create(:idea, idea_status: @idea_status, input_topics: [input_topic2], project: project1) }
+      let!(:idea3) { create(:idea, idea_status: @idea_status, input_topics: [input_topic1, input_topic2], project: project1) }
       let!(:idea4) { create(:idea, idea_status: @idea_status) }
       let!(:reaction1) { create(:reaction, reactable: idea1) }
       let!(:reaction2) { create(:reaction, reactable: idea1, mode: 'down') }
@@ -164,7 +164,7 @@ resource 'Stats - Reactions' do
 
         topic_ids_col = worksheet.map { |col| col.cells[1].value }
         _header, *topic_ids = topic_ids_col
-        expect(topic_ids).to contain_exactly(topic1.id, topic2.id)
+        expect(topic_ids).to contain_exactly(input_topic1.id, input_topic2.id)
 
         amount_col = worksheet.map { |col| col.cells[2].value }
         _header, *amounts = amount_col
@@ -254,9 +254,9 @@ resource 'Stats - Reactions' do
 
     describe 'filtered by topic' do
       before do
-        @topic = create(:topic)
-        project = create(:project, allowed_input_topics: [@topic])
-        idea1 = create(:idea, idea_status: @idea_status, topics: [@topic], project: project)
+        project = create(:project)
+        @input_topic = create(:input_topic, project: project)
+        idea1 = create(:idea, idea_status: @idea_status, input_topics: [@input_topic], project: project)
         idea2 = create(:idea_with_topics, idea_status: @idea_status)
         create(:reaction, reactable: idea1)
         create(:reaction, reactable: idea2)
@@ -264,7 +264,7 @@ resource 'Stats - Reactions' do
 
       let(:start_at) { now.beginning_of_month }
       let(:end_at) { now.end_of_month }
-      let(:topic) { @topic.id }
+      let(:topic) { @input_topic.id }
 
       example_request 'Reactions by project filtered by topic' do
         assert_status 200
@@ -335,9 +335,9 @@ resource 'Stats - Reactions' do
 
     describe 'filtered by topic' do
       before do
-        @topic = create(:topic)
-        project = create(:project, allowed_input_topics: [@topic])
-        idea1 = create(:idea, idea_status: @idea_status, topics: [@topic], project: project)
+        project = create(:project)
+        @input_topic = create(:input_topic, project: project)
+        idea1 = create(:idea, idea_status: @idea_status, input_topics: [@input_topic], project: project)
         idea2 = create(:idea_with_topics, idea_status: @idea_status)
         create(:reaction, reactable: idea1)
         create(:reaction, reactable: idea2)
@@ -345,7 +345,7 @@ resource 'Stats - Reactions' do
 
       let(:start_at) { now.beginning_of_month }
       let(:end_at) { now.end_of_month }
-      let(:topic) { @topic.id }
+      let(:topic) { @input_topic.id }
 
       example_request 'Reactions by project filtered by topic' do
         assert_status 200

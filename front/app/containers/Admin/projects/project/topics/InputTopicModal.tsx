@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Multiloc } from 'typings';
