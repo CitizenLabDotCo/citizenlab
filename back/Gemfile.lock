@@ -601,7 +601,7 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
-    crawler_detect (1.2.7)
+    crawler_detect (1.2.9)
       qonfig (>= 0.24)
     css_parser (1.14.0)
       addressable
