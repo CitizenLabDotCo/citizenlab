@@ -196,13 +196,13 @@ resource 'Moderators' do
 
       example_request 'Search for users and whether or not they are moderator of the project' do
         expect(status).to eq(200)
-        json_response = json_parse(response_body)
-        expect(json_response[:data].size).to be >= 4
-        expect(json_response[:data].find { |d| d[:id] == u1.id }.dig(:attributes, :is_moderator)).to be true
-        expect(json_response[:data].find { |d| d[:id] == u2.id }.dig(:attributes, :is_moderator)).to be false
-        expect(json_response[:data].find { |d| d[:id] == u3.id }.dig(:attributes, :is_moderator)).to be false
-        expect(json_response[:data].find { |d| d[:id] == u4.id }.dig(:attributes, :is_moderator)).to be true
-        expect(json_response[:data].select { |d| d[:id] == u5.id }.empty?).to be true
+        expect(response_data).not_to include(hash_including(id: u5.id))
+        expect(response_data).to include(
+          hash_including(id: u1.id, attributes: hash_including(is_moderator: true)),
+          hash_including(id: u2.id, attributes: hash_including(is_moderator: false)),
+          hash_including(id: u3.id, attributes: hash_including(is_moderator: false)),
+          hash_including(id: u4.id, attributes: hash_including(is_moderator: true))
+        )
       end
     end
   end
