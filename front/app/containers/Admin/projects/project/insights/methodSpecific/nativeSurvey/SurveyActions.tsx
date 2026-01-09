@@ -34,7 +34,7 @@ import clHistory from 'utils/cl-router/history';
 import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 
 import messages from '../../messages';
-import { usePdfExportContext } from '../../PdfExportContext';
+import { usePdfExportContext } from '../../pdf/PdfExportContext';
 
 interface Props {
   phase: IPhaseData;

@@ -15,13 +15,13 @@ import clHistory from 'utils/cl-router/history';
 import { getAnalysisScope } from '../../components/AnalysisBanner/utils';
 
 import DemographicsSection from './demographics/DemographicsSection';
-import InsightsPdfContent from './InsightsPdfContent';
 import messages from './messages';
 import MethodSpecificInsights from './methodSpecific/MethodSpecificInsights';
 import SurveyActions from './methodSpecific/nativeSurvey/SurveyActions';
 import ParticipantsTimeline from './ParticipantsTimeline';
 import ParticipationMetrics from './participationMetrics/ParticipationMetrics';
-import { PdfExportProvider, usePdfExportContext } from './PdfExportContext';
+import InsightsPdfContent from './pdf/InsightsPdfContent';
+import { PdfExportProvider, usePdfExportContext } from './pdf/PdfExportContext';
 
 const AI_ANALYSIS_SUPPORTED_METHODS = [
   'ideation',

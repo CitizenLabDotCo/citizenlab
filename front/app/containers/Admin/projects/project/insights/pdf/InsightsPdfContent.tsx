@@ -8,11 +8,11 @@ import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import DemographicsSection from './demographics/DemographicsSection';
-import messages from './messages';
-import MethodSpecificInsights from './methodSpecific/MethodSpecificInsights';
-import ParticipantsTimeline from './ParticipantsTimeline';
-import ParticipationMetrics from './participationMetrics/ParticipationMetrics';
+import DemographicsSection from '../demographics/DemographicsSection';
+import messages from '../messages';
+import MethodSpecificInsights from '../methodSpecific/MethodSpecificInsights';
+import ParticipantsTimeline from '../ParticipantsTimeline';
+import ParticipationMetrics from '../participationMetrics/ParticipationMetrics';
 
 interface Props {
   phase: IPhaseData;

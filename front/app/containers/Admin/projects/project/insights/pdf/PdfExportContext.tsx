@@ -2,7 +2,8 @@ import React, { createContext, useContext, ReactNode } from 'react';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from './messages';
+import messages from '../messages';
+
 import useInsightsPdfDownload from './useInsightsPdfDownload';
 
 interface PdfExportContextValue {
