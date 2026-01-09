@@ -13,9 +13,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.insights.voting.offline',
     defaultMessage: 'Offline',
   },
-  clusterBy: {
-    id: 'app.containers.Admin.projects.insights.voting.clusterBy',
-    defaultMessage: 'CLUSTER BY',
+  clusterBy1: {
+    id: 'app.containers.Admin.projects.insights.voting.clusterBy1',
+    defaultMessage: 'Cluster by',
   },
   none: {
     id: 'app.containers.Admin.projects.insights.voting.none',

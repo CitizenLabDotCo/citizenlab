@@ -127,7 +127,7 @@ const VoteResults = ({ phaseId }: Props) => {
               my="0px"
               style={{ textTransform: 'uppercase' }}
             >
-              {formatMessage(messages.clusterBy)}
+              {formatMessage(messages.clusterBy1)}
             </Text>
             <Select
               value={clusterBy}
