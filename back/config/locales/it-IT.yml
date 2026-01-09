@@ -71,8 +71,8 @@ it:
     technology_description: Energia e tecnologia
     economy: Lavoro, economia e turismo
     economy_description: Lavoro, economia e turismo
-    housing: Abitazioni
-    housing_description: Abitazioni
+    housing: Alloggi
+    housing_description: Alloggi
     public_space: Spazi pubblici ed edifici
     public_space_description: Spazi pubblici ed edifici
     safety: Sicurezza
@@ -175,7 +175,7 @@ it:
       title_page:
         description:
       body_page:
-        title: Dicci di più
+        title: Raccontaci di più
         description:
       uploads_page:
         title: Immagini e allegati
@@ -229,7 +229,7 @@ it:
     categories:
       main_content:
         idea:
-          title: Qual è la sua idea?
+          title: Qual è la tua idea?
         question:
           title: Qual è il suo domanda?
         contribution:
@@ -304,7 +304,7 @@ it:
       option1: 'Opzione 1'
       option2: 'Opzione 2'
     form_end_page:
-      title_text_3: 'Grazie per aver condiviso il tuo contributo!'
+      title_text_3: 'Grazie per aver condiviso la tua opinione!'
       description_text_3: "Il tuo contributo è stato inviato con successo."
     form_user_page:
       title_text: 'Su di te'

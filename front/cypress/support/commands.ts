@@ -9,7 +9,7 @@ import { ICustomFieldInputType } from '../../app/api/custom_fields/types';
 import { IGroup } from '../../app/api/groups/types';
 import { Multiloc } from '../../app/typings';
 
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { ParticipationMethod, VotingMethod } from '../../app/api/phases/types';
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace

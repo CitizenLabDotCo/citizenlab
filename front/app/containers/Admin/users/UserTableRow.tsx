@@ -13,7 +13,6 @@ import moment from 'moment';
 import styled from 'styled-components';
 
 import { IUserData } from 'api/users/types';
-import useDeleteUser from 'api/users/useDeleteUser';
 
 import useExceedsSeats from 'hooks/useExceedsSeats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -23,6 +22,7 @@ import ChangeSeatModal from 'components/admin/SeatBasedBilling/ChangeSeatModal';
 import BlockUser from 'components/admin/UserBlockModals/BlockUser';
 import blockUserMessages from 'components/admin/UserBlockModals/messages';
 import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
+import DeleteUser from 'components/admin/UserDeleteModal';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
 import Modal from 'components/UI/Modal';
@@ -98,7 +98,6 @@ const UserTableRow = ({
     name: 'user_blocking',
   });
 
-  const { mutate: deleteUser } = useDeleteUser();
   const isUserInRowAdmin = isAdmin({ data: userInRow });
   const isUserInRowModerator = !isRegularUser({ data: userInRow });
   const userInRowHasRegistered =
@@ -108,8 +107,9 @@ const UserTableRow = ({
 
   const [showBlockUserModal, setShowBlockUserModal] = useState(false);
   const [showUnblockUserModal, setShowUnblockUserModal] = useState(false);
+  const [showDeleteUserModal, setShowDeleteUserModal] = useState(false);
   const [showChangeSeatModal, setShowChangeSeatModal] = useState(false);
-  const [changingToRoleType, setChangingToRowType] =
+  const [changingToRoleType, setChangingToRoleType] =
     useState<ChangingRoleTypes>('admin');
 
   const exceedsSeatsAdmin = useExceedsSeats()({
@@ -124,34 +124,8 @@ const UserTableRow = ({
     setShowChangeSeatModal(false);
   };
 
-  const handleDeleteClick = () => {
-    const baseDeleteMessage = `${formatMessage(
-      messages.userDeletionConfirmation
-    )}`;
-
-    const deleteMessage = baseDeleteMessage;
-
-    if (window.confirm(deleteMessage)) {
-      if (userInRowIsCurrentUser) {
-        eventEmitter.emit<JSX.Element>(
-          events.userDeletionFailed,
-          <FormattedMessage {...messages.youCantDeleteYourself} />
-        );
-      } else {
-        deleteUser(userInRow.id, {
-          onError: () => {
-            eventEmitter.emit<JSX.Element>(
-              events.userDeletionFailed,
-              <FormattedMessage {...messages.userDeletionFailed} />
-            );
-          },
-        });
-      }
-    }
-  };
-
   const changeRoleHandler = (changingToRoleType: ChangingRoleTypes) => {
-    setChangingToRowType(changingToRoleType);
+    setChangingToRoleType(changingToRoleType);
     const changeToNormalUser = changingToRoleType === 'user';
 
     const showModalForAdmin =
@@ -246,7 +220,14 @@ const UserTableRow = ({
 
   const deleteUserAction = {
     handler: () => {
-      handleDeleteClick();
+      if (userInRowIsCurrentUser) {
+        eventEmitter.emit<JSX.Element>(
+          events.userDeletionFailed,
+          <FormattedMessage {...messages.youCantDeleteYourself} />
+        );
+      } else {
+        setShowDeleteUserModal(true);
+      }
     },
     label: formatMessage(messages.deleteUser),
     icon: 'delete' as const,
@@ -347,18 +328,27 @@ const UserTableRow = ({
             actions={getActions()}
           />
         </Td>
-        <BlockUser
-          user={userInRow}
-          setClose={() => setShowBlockUserModal(false)}
-          open={showBlockUserModal}
-          returnFocusRef={moreActionsButtonRef}
-        />
-        <UnblockUser
-          user={userInRow}
-          setClose={() => setShowUnblockUserModal(false)}
-          open={showUnblockUserModal}
-          returnFocusRef={moreActionsButtonRef}
-        />
+        {showBlockUserModal && (
+          <BlockUser
+            user={userInRow}
+            setClose={() => setShowBlockUserModal(false)}
+            returnFocusRef={moreActionsButtonRef}
+          />
+        )}
+        {showUnblockUserModal && (
+          <UnblockUser
+            user={userInRow}
+            setClose={() => setShowUnblockUserModal(false)}
+            returnFocusRef={moreActionsButtonRef}
+          />
+        )}
+        {showDeleteUserModal && (
+          <DeleteUser
+            user={userInRow}
+            setClose={() => setShowDeleteUserModal(false)}
+            returnFocusRef={moreActionsButtonRef}
+          />
+        )}
         <Suspense fallback={null}>
           <ChangeSeatModal
             userToChangeSeat={userInRow}
