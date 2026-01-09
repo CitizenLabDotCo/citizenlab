@@ -113,9 +113,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.areas',
     defaultMessage: 'Areas',
   },
-  representativeScore: {
-    id: 'app.containers.Admin.projects.project.insights.representativeScore',
-    defaultMessage: 'Representative score',
+  representativenessScore: {
+    id: 'app.containers.Admin.projects.project.insights.representativenessScore',
+    defaultMessage: 'Representativeness score',
   },
   totalPopulation: {
     id: 'app.containers.Admin.projects.project.insights.totalPopulation',

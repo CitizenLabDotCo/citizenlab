@@ -22,7 +22,7 @@ const RScore = ({ value }: RScoreProps) => {
         m="0px"
         style={{ lineHeight: 0 }}
       >
-        {formatMessage(messages.representativeScore)}:
+        {formatMessage(messages.representativenessScore)}:
       </Text>
       <Box display="flex" alignItems="center" style={{ lineHeight: 0 }}>
         <Text
