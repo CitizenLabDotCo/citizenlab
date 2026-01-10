@@ -353,7 +353,7 @@ it:
       preheader: '%{commentAuthor} ti ha menzionato nel feedback'
     project_moderation_rights_received:
       cta_button: 'Gestisci questo progetto'
-      event_description: 'Un amministratore della piattaforma di partecipazione di %{organizationName} ti ha appena nominato project manager del seguente progetto:'
+      event_description: 'Un amministratore della piattaforma partecipativa di %{organizationName} ti ha appena nominato project manager del seguente progetto:'
       no_ideas: 'Nessuna idea ancora'
       preheader: 'Un amministratore della piattaforma di partecipazione di %{organizationName} ti ha appena nominato project manager del seguente progetto'
       subject: 'Sei diventato un project manager sulla piattaforma di %{organizationName}'
