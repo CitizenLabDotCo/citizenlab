@@ -2728,7 +2728,7 @@
   "app.containers.AdminPage.SideBar.moderation": "Attività",
   "app.containers.AdminPage.SideBar.notifications": "Notifiche",
   "app.containers.AdminPage.SideBar.processing": "Elaborazione",
-  "app.containers.AdminPage.SideBar.productChangelog": "Il changelog del prodotto",
+  "app.containers.AdminPage.SideBar.productChangelog": "Changelog del prodotto",
   "app.containers.AdminPage.SideBar.projectManager": "Responsabile del progetto",
   "app.containers.AdminPage.SideBar.projects": "Progetti",
   "app.containers.AdminPage.SideBar.settings": "Impostazioni",
