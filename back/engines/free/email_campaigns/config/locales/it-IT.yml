@@ -7,16 +7,16 @@ it:
       "comment_deleted_by_admin": Cancellazione del mio commento
       "comment_marked_as_spam": Segnalazione di spam di commenti
       "comment_on_your_comment": Una risposta al mio commento
-      "comment_on_idea_you_follow": Un commento su un contributo che segui
-      "community_monitor_report": Rapporto del barometro civico
-      "cosponsor_of_your_idea": Un utente accetta il mio invito a co-sponsorizzare la mia proposta
+      "comment_on_idea_you_follow": Un commento su un contributo che seguo
+      "community_monitor_report": Report del barometro civico
+      "cosponsor_of_your_idea": Un utente ha accettato il mio invito a co-sponsorizzare la mia proposta
       "event_registration_confirmation": Conferma della registrazione all'evento
-      "idea_marked_as_spam": Segnalazione di spam di idee
+      "idea_marked_as_spam": Segnalazione di spam di un'idea
       "idea_published": Pubblicazione del mio contributo
       "invitation_to_cosponsor_idea": Invito a co-sponsorizzare una proposta
       "invite_received": Invito
       "invite_reminder": Promemoria dell'invito
-      "internal_comment_on_idea_assigned_to_you": Commento interno sull'input che mi è stato assegnato
+      "internal_comment_on_idea_assigned_to_you": Commento interno sul contributo che mi è stato assegnato
       "internal_comment_on_idea_you_commented_internally_on": Commento interno sul contributo che ho commentato internamente
       "internal_comment_on_idea_you_moderate": Commento interno su un contributo nel progetto o cartella che gestisco
       "internal_comment_on_unassigned_unmoderated_idea": Commento interno su un contributo non assegnato in un progetto non gestito
@@ -26,16 +26,16 @@ it:
       "new_comment_for_admin": Nuovo commento in un progetto che modero
       "new_idea_for_admin_published": Nuovo contributo pubblicato in un progetto che modero
       "new_idea_for_admin_prescreening": Nuovo contributo da approvare in un progetto che modero
-      "official_feedback_on_idea_you_follow": Aggiornamenti su un contributo che segui
+      "official_feedback_on_idea_you_follow": Aggiornamento su un contributo che seguo
       "password_reset": Ripristino della password
       "project_moderation_rights_received": Diritti di moderazione del progetto ricevuti
       "project_folder_moderation_rights_received": Diritti di gestione delle cartelle ricevuti
       "project_phase_started": Nuova fase del progetto
-      "project_phase_upcoming": Prossima nuova fase del progetto
+      "project_phase_upcoming": Nuova fase del progetto in arrivo
       "project_published": Progetto pubblicato
       "project_review_request": Richiesta di revisione del progetto
       "project_review_state_change": Progetto approvato
-      "status_change_on_idea_you_follow": Cambiamento di status di un contributo che segui
+      "status_change_on_idea_you_follow": Cambiamento di status di un contributo che seguo
       "survey_submitted": Sondaggio inviato
       "threshold_reached_for_admin": La proposta ha raggiunto la soglia di voto
       "welcome": Dopo la registrazione
@@ -77,13 +77,13 @@ it:
       cta_goto_project: 'Vai a questo progetto'
     schedules:
       weekly:
-        "0": "Settimanalmente, la domenica su %{hourOfDay}"
-        "1": "Settimanalmente, il lunedì %{hourOfDay}"
-        "2": "Settimanalmente, il martedì %{hourOfDay}"
-        "3": "Settimanalmente, il mercoledì %{hourOfDay}"
-        "4": "Settimanalmente, il giovedì %{hourOfDay}"
-        "5": "Settimanalmente, il venerdì %{hourOfDay}"
-        "6": "Settimanalmente, il sabato %{hourOfDay}"
+        "0": "Settimanalmente, la domenica ore %{hourOfDay}"
+        "1": "Settimanalmente, il lunedì ore %{hourOfDay}"
+        "2": "Settimanalmente, il martedì ore %{hourOfDay}"
+        "3": "Settimanalmente, il mercoledì ore %{hourOfDay}"
+        "4": "Settimanalmente, il giovedì ore %{hourOfDay}"
+        "5": "Settimanalmente, il venerdì ore %{hourOfDay}"
+        "6": "Settimanalmente, il sabato ore %{hourOfDay}"
       quarterly: "Trimestralmente, il primo giorno del trimestre"
     preview_data:
       author_first_name: 'Jane'
@@ -605,7 +605,7 @@ it:
         projects: 'Progetti'
         proposals: 'Proposte'
         reactions: 'Reazioni'
-        voting: 'Votazione'
+        voting: 'Votazioni'
         surveys: 'Sondaggi'
       trigger:
         7_days_after_invite_is_sent: '7 giorni dopo l''invio dell''invito'
