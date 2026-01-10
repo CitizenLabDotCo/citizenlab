@@ -841,7 +841,7 @@
   "app.components.formBuilder.logicConflicts.multipleGotoInMultiSelectAndQuestionVsPageLogic": "Questa pagina contiene una domanda a selezione multipla in cui le opzioni conducono a pagine diverse e ha una logica impostata sia a livello di pagina che di domanda. La logica della domanda avrà la precedenza e verrà mostrata la pagina più lontana. Assicurati che questo comportamento sia in linea con il flusso previsto.",
   "app.components.formBuilder.logicConflicts.questionVsPageLogic": "Questa pagina ha una logica impostata sia a livello di pagina che a livello di domanda. La logica delle domande avrà la precedenza sulla logica a livello di pagina. Assicurati che questo comportamento sia in linea con il flusso previsto.",
   "app.components.formBuilder.logicConflicts.questionVsPageLogicAndInterQuestionConflict": "Questa pagina ha una logica impostata sia a livello di pagina che di domanda e più domande rimandano a pagine diverse. La logica delle domande avrà la precedenza e verrà mostrata la pagina più lontana. Assicurati che questo comportamento sia in linea con il flusso previsto.",
-  "app.components.formBuilder.logicNoAnswer2": "Non risponde",
+  "app.components.formBuilder.logicNoAnswer2": "Nessuna risposta",
   "app.components.formBuilder.logicPanelAnyOtherAnswer": "Se la risposta è un'altra",
   "app.components.formBuilder.logicPanelNoAnswer": "Se non si risponde",
   "app.components.formBuilder.logicValidationError": "La logica non può collegarsi a pagine precedenti",
