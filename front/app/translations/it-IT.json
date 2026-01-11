@@ -774,7 +774,7 @@
   "app.components.formBuilder.displayAsDropdownTooltip": "Mostra le opzioni in un menu a discesa. Se hai molte opzioni, questa soluzione è consigliata.",
   "app.components.formBuilder.done": "Fatto",
   "app.components.formBuilder.dragAndDrop": "Per aggiungere domande, trascina e rilascia nel modulo gli elementi che trovi nel menu a sinistra.",
-  "app.components.formBuilder.drawArea": "Area di disegno",
+  "app.components.formBuilder.drawArea": "Disegna l'area",
   "app.components.formBuilder.drawRoute": "Traccia un percorso",
   "app.components.formBuilder.dropPin": "Segnaposto",
   "app.components.formBuilder.editButtonLabel": "Modifica",
