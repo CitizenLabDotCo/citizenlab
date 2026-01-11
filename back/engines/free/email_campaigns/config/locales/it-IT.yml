@@ -450,7 +450,7 @@ it:
       cta_button: 'Scopri la piattaforma'
       subject: 'Benvenuti sulla piattaforma di %{organizationName}'
       title: Benvenuti!
-      event_description: 'Congratulazioni, ti sei iscritto con successo alla piattaforma di partecipazione di %{organizationName}. Ora puoi scoprire la piattaforma e far sentire la tua voce. Puoi anche aggiungere un''immagine del profilo e una breve descrizione per dire agli altri chi sei.'
+      event_description: 'Congratulazioni, ti sei iscritto con successo alla piattaforma partecipativa di %{organizationName}. Ora puoi scoprire la piattaforma e far sentire la tua voce. Puoi anche aggiungere un''immagine del profilo e una breve descrizione per dire agli altri chi sei.'
       preheader: 'Ecco cosa potete fare sulla piattaforma di %{organizationName}'
     idea_published:
       subject: 'La tua idea è stata pubblicata'
