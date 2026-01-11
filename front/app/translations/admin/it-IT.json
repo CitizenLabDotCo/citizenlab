@@ -2317,7 +2317,7 @@
   "app.containers.AdminPage.ProjectEdit.projectCardImageTooltip": "Questa immagine fa parte della scheda del progetto; la scheda che riassume il progetto e che viene mostrata ad esempio sulla homepage.\n\n    Per maggiori informazioni sulle risoluzioni consigliate per le immagini, {supportPageLink}.",
   "app.containers.AdminPage.ProjectEdit.projectFolderSelectTitle1": "Cartella",
   "app.containers.AdminPage.ProjectEdit.projectHeaderImageTooltip": "Questa immagine viene mostrata nella parte superiore della pagina del progetto.\n\n    Per maggiori informazioni sulle risoluzioni consigliate per le immagini, {supportPageLink}.",
-  "app.containers.AdminPage.ProjectEdit.projectImageAltTextTitle1": "Testo alternativo dell'immagine del biglietto da visita del progetto",
+  "app.containers.AdminPage.ProjectEdit.projectImageAltTextTitle1": "Testo alternativo dell'immagine della scheda progetto",
   "app.containers.AdminPage.ProjectEdit.projectImageAltTextTooltip1": "Fornisci una breve descrizione dell'immagine per gli utenti ipovedenti. Questo aiuta gli screen reader a trasmettere il significato dell'immagine.",
   "app.containers.AdminPage.ProjectEdit.projectManagementTitle": "Gestione del progetto",
   "app.containers.AdminPage.ProjectEdit.projectManagerTooltipContent": "I project manager possono modificare i progetti, gestire i post e inviare e-mail ai partecipanti. Per maggiori informazioni sui diritti assegnati ai project manager {moderationInfoCenterLink}.",
