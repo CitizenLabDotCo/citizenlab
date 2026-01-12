@@ -76,12 +76,13 @@ const PageTitle = styled.h1`
  `}
 `;
 
-export default () => {
+const IdeasIndexPage = () => {
   const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as IdeaSortMethod | null;
   const searchParam = searchParams.get('search');
   const ideaStatusParam = searchParams.get('idea_status');
   const topicsParam = searchParams.get('topics');
+  debugger;
 
   const ideasQueryParameters = useMemo<IdeaQueryParameters>(
     () => ({
@@ -92,7 +93,7 @@ export default () => {
       sort: sortParam ?? 'trending',
       search: searchParam ?? undefined,
       idea_status: ideaStatusParam ?? undefined,
-      topics: topicsParam ? JSON.parse(topicsParam) : undefined,
+      input_topics: topicsParam ? JSON.parse(topicsParam) : undefined,
       transitive: true,
     }),
     [sortParam, searchParam, ideaStatusParam, topicsParam]
@@ -122,3 +123,5 @@ export default () => {
     </>
   );
 };
+
+export default IdeasIndexPage;

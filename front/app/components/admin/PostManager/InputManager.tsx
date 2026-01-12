@@ -168,7 +168,11 @@ const InputManager = ({
   };
 
   const onChangeTopics = (topics: string[]) => {
-    setQueryParameters({ ...queryParameters, 'page[number]': 1, topics });
+    setQueryParameters({
+      ...queryParameters,
+      'page[number]': 1,
+      input_topics: topics,
+    });
   };
 
   const onChangeStatus = (ideaStatus: string | undefined) => {
@@ -303,7 +307,7 @@ const InputManager = ({
               statuses={ideaStatuses?.data ?? []}
               topics={topicsData}
               selectedPhase={selectedPhaseId}
-              selectedTopics={queryParameters.topics}
+              selectedTopics={queryParameters.input_topics}
               selectedStatus={queryParameters.idea_status}
               selectedProject={selectedProjectId}
               onChangePhaseFilter={onChangePhase}

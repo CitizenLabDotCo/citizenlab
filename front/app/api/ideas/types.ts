@@ -68,7 +68,7 @@ export interface IdeaQueryParameters {
   sort: IdeaSortMethod;
   search?: string;
   idea_status?: string;
-  topics?: string[];
+  input_topics?: string[];
 }
 
 export interface IIdeaData {
@@ -234,7 +234,7 @@ export interface IIdeaQueryParameters {
   phase?: string;
   author?: string;
   search?: string;
-  topics?: string[];
+  input_topics?: string[];
   idea_status?: string;
   publication_status?: IdeaPublicationStatus;
   project_publication_status?: ProjectPublicationStatus;

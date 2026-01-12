@@ -126,7 +126,11 @@ const ProjectProposalsManager = ({
   };
 
   const onChangeTopics = (topics: string[]) => {
-    setQueryParameters({ ...queryParameters, 'page[number]': 1, topics });
+    setQueryParameters({
+      ...queryParameters,
+      'page[number]': 1,
+      input_topics: topics,
+    });
   };
 
   const onChangeStatus = (ideaStatus: string) => {
@@ -219,7 +223,7 @@ const ProjectProposalsManager = ({
               visibleFilterMenus={visibleFilterMenus}
               onChangeActiveFilterMenu={handleChangeActiveFilterMenu}
               topics={proposalTopics?.data ?? []}
-              selectedTopics={queryParameters.topics}
+              selectedTopics={queryParameters.input_topics}
               onChangeTopicsFilter={onChangeTopics}
               onChangeStatusFilter={onChangeStatus}
               statuses={ideaStatuses?.data ?? []}

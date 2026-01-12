@@ -21,7 +21,7 @@ const ResetFiltersButton = ({ ideaQueryParameters }: Props) => {
   const filtersActive = !!(
     ideaQueryParameters.search ||
     ideaQueryParameters.idea_status ||
-    ideaQueryParameters.topics
+    ideaQueryParameters.input_topics
   );
 
   const handleOnClick = () => {
@@ -29,7 +29,7 @@ const ResetFiltersButton = ({ ideaQueryParameters }: Props) => {
     updateSearchParams({
       search: undefined,
       idea_status: undefined,
-      topics: undefined,
+      input_topics: undefined,
     });
     scrollToTopIdeasList();
   };

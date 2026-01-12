@@ -8,7 +8,22 @@ class WebApi::V1::InputTopicsController < ApplicationController
   def index
     input_topics = policy_scope(InputTopic, policy_scope_class: InputTopicPolicy::Scope)
       .where(project: @project)
-      .order(:ordering)
+
+    # Get filtered ideas for ideas_count sorting
+    filter_ideas = policy_scope(Idea).where(project: @project)
+
+    input_topics =
+      case params[:sort]
+      when 'custom', nil
+        input_topics.order(:ordering)
+      when 'ideas_count'
+        input_topics.order_ideas_count(filter_ideas)
+      when '-ideas_count'
+        input_topics.order_ideas_count(filter_ideas, direction: :desc)
+      else
+        raise 'Unsupported sort method'
+      end
+
     input_topics = paginate input_topics
 
     render json: linked_json(
