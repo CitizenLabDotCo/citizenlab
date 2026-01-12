@@ -342,7 +342,7 @@ it:
     official_feedback_on_idea_you_follow:
       event_description: '%{feedback_author_name} ha fornito un aggiornamento su ''%{input_title}''.'
       title: 'Ci sono aggiornamenti su "%{input_title}".'
-      subject: 'Il feedback ufficiale è stato pubblicato su "%{input_title}"'
+      subject: 'Il riscontro ufficiale su "%{input_title}" è stato pubblicato'
       preheader: 'C''è un aggiornamento su un contributo che segui'
       cta_button: Vai a questo ingresso
     mention_in_official_feedback:
