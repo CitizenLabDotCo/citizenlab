@@ -11,7 +11,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import messages from '../messages';
 
-import SelectedTopicView from './SelectedTopicView';
+import SelectedTopicContent from './SelectedTopicContent';
 import TopicItem from './TopicItem';
 
 interface Props {
@@ -43,7 +43,7 @@ const TopicsContent = ({
   // When a topic is selected, show only that topic with a back button
   if (selectedTopicId) {
     return (
-      <SelectedTopicView
+      <SelectedTopicContent
         topicId={selectedTopicId}
         onBack={() => onTopicSelect(null)}
         hideBackButton={!showBackButton}

@@ -17,7 +17,6 @@ import useUpdateCustomForm from 'api/custom_form/useUpdateCustomForm';
 import { IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import { FormType } from 'components/FormBuilder/utils';
@@ -62,10 +61,6 @@ const PDFExportModal = ({
   onClose,
   phase,
 }: PDFExportModalProps) => {
-  const htmlPdfsActive = useFeatureFlag({
-    name: 'html_pdfs',
-  });
-
   const { formatMessage } = useIntl();
   const [loading, setLoading] = useState(false);
   const theme = useTheme();
@@ -75,20 +70,16 @@ const PDFExportModal = ({
   const phaseId = phase.id;
 
   const schema = object({
-    ...(htmlPdfsActive && {
-      print_start_multiloc: object(),
-      print_end_multiloc: object(),
-    }),
-    print_personal_data_fields: boolean(),
+    print_start_multiloc: object(),
+    print_end_multiloc: object(),
+    print_personal_data_fields: boolean().required(),
   });
 
   const methods = useForm({
     mode: 'onSubmit',
     defaultValues: {
-      ...(htmlPdfsActive && {
-        print_start_multiloc: {},
-        print_end_multiloc: {},
-      }),
+      print_start_multiloc: {},
+      print_end_multiloc: {},
       print_personal_data_fields: false,
     },
     resolver: yupResolver(schema),
@@ -97,15 +88,13 @@ const PDFExportModal = ({
   useEffect(() => {
     if (customForm) {
       methods.reset({
-        ...(htmlPdfsActive && {
-          print_start_multiloc: customForm.data.attributes.print_start_multiloc,
-          print_end_multiloc: customForm.data.attributes.print_end_multiloc,
-        }),
+        print_start_multiloc: customForm.data.attributes.print_start_multiloc,
+        print_end_multiloc: customForm.data.attributes.print_end_multiloc,
         print_personal_data_fields:
           customForm.data.attributes.print_personal_data_fields,
       });
     }
-  }, [customForm, htmlPdfsActive, methods]);
+  }, [customForm, methods]);
 
   const onExport = async ({
     print_personal_data_fields: personal_data,
@@ -126,10 +115,8 @@ const PDFExportModal = ({
 
     try {
       await updateCustomForm({
-        ...(htmlPdfsActive && {
-          printStartMultiloc: formValues.print_start_multiloc,
-          printEndMultiloc: formValues.print_end_multiloc,
-        }),
+        printStartMultiloc: formValues.print_start_multiloc,
+        printEndMultiloc: formValues.print_end_multiloc,
         printPersonalDataFields: formValues.print_personal_data_fields,
       });
       await onExport(formValues);
@@ -193,26 +180,21 @@ const PDFExportModal = ({
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(handleExport)}>
             <Feedback onlyShowErrors />
-            {htmlPdfsActive && (
-              <Box mb="24px">
-                <MultilocFieldCollapsible
-                  title={formatMessage(
-                    messages.collapsibleInstructionsStartTitle
-                  )}
-                  name="print_start_multiloc"
-                  label={formatMessage(messages.customiseStart)}
-                />
-
-                <MultilocFieldCollapsible
-                  title={formatMessage(
-                    messages.collapsibleInstructionsEndTitle
-                  )}
-                  name="print_end_multiloc"
-                  label={formatMessage(messages.customiseEnd)}
-                  mb="0"
-                />
-              </Box>
-            )}
+            <Box mb="24px">
+              <MultilocFieldCollapsible
+                title={formatMessage(
+                  messages.collapsibleInstructionsStartTitle
+                )}
+                name="print_start_multiloc"
+                label={formatMessage(messages.customiseStart)}
+              />
+              <MultilocFieldCollapsible
+                title={formatMessage(messages.collapsibleInstructionsEndTitle)}
+                name="print_end_multiloc"
+                label={formatMessage(messages.customiseEnd)}
+                mb="0"
+              />
+            </Box>
             <PersonalDataCheckbox />
             <FormActions loading={loading} />
           </form>

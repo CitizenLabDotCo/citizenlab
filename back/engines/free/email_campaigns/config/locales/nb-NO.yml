@@ -515,9 +515,7 @@ nb:
       subject: '%{organizationName}: Siste sjanse til å stemme på %{phaseTitle}'
       preheader: 'Siste sjanse til å stemme på %{phaseTitle} på medvirkningsplattformen til %{organizationName}'
       title: 'Siste sjanse til å stemme på %{phaseTitle}'
-      body_1: 'Avstemningsfasen for %{projectTitle} -prosjektet avsluttes i morgen ved midnatt.'
-      body_2: 'Tiden renner ut, og vi har lagt merke til at du ikke har avgitt din stemme ennå! Gjør det nå ved å klikke på knappen nedenfor for å delta.'
-      body_3: 'På den måten får du tilgang til en rekke alternativer og muligheten til å komme med innspill, noe som er avgjørende for prosjektets fremtid.'
+      event_description: '<p>Avstemningsfasen for %{projectTitle} -prosjektet avsluttes i morgen ved midnatt.</p><p>Tiden er i ferd med å renne ut, og vi har lagt merke til at du ikke har avgitt din stemme ennå! Gjør det nå ved å klikke på knappen nedenfor for å delta.</p><p>På den måten får du tilgang til en rekke alternativer og muligheten til å komme med innspill, noe som er avgjørende for prosjektets fremtid.</p>'
       cta_button: 'Stemme'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} avstemningsresultater avslørt!'

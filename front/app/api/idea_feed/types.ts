@@ -1,3 +1,5 @@
+import { ILinks } from 'typings';
+
 import { IIdeaData } from 'api/ideas/types';
 
 import { Keys } from 'utils/cl-react-query/types';
@@ -14,4 +16,5 @@ export interface IIdeaFeedQueryParameters {
 
 export interface IIdeaFeedIdeas {
   data: IIdeaData[];
+  links: ILinks;
 }
