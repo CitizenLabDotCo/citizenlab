@@ -27,14 +27,13 @@ module ParticipationMethod
 
     # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
     def create_default_form!
-      form = CustomForm.new(participation_context: phase)
+      form = CustomForm.create(participation_context: phase)
 
       default_fields(form).reverse_each do |field|
         field.save!
         field.move_to_top
       end
 
-      form.save!
       phase.reload
 
       form
@@ -45,8 +44,6 @@ module ParticipationMethod
     end
 
     def default_fields(custom_form)
-      return [] if custom_form.persisted?
-
       multiloc_service = MultilocService.new
       [
         start_page_field(custom_form),

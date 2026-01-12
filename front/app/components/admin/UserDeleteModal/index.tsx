@@ -13,7 +13,6 @@ import {
   Input,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import { format } from 'date-fns';
 import styled from 'styled-components';
 
 import useCheckEmailBan from 'api/email_bans/useCheckEmailBan';
@@ -28,6 +27,7 @@ import Modal from 'components/UI/Modal';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
+import { getLocalisedDateString } from 'utils/dateUtils';
 import eventEmitter from 'utils/eventEmitter';
 import { getFullName } from 'utils/textUtils';
 
@@ -113,9 +113,9 @@ const DeleteUserModal = ({ setClose, user, returnFocusRef }: Props) => {
     },
   ].filter((item) => item.count && item.count > 0);
 
-  const memberSinceDate = user.attributes.registration_completed_at
-    ? format(new Date(user.attributes.registration_completed_at), 'PPP')
-    : null;
+  const memberSinceDate = getLocalisedDateString(
+    user.attributes.registration_completed_at
+  );
 
   return (
     <Modal

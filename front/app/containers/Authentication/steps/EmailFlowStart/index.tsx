@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, fontSizes } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { SSOProvider } from 'api/authentication/singleSignOn';
 
@@ -13,10 +14,15 @@ import Or from 'components/UI/Or';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
+import sharedMessages from '../messages';
 
 import EmailForm from './EmailForm';
+import messages from './messages';
 import SSOButtons from './SSOButtons';
+
+const StyledA = styled.a`
+  font-size: ${fontSizes.base}px;
+`;
 
 interface Props {
   loading: boolean;
@@ -31,7 +37,9 @@ const EmailFlowStart = ({
   onSubmit,
   onSwitchToSSO,
 }: Props) => {
-  const { passwordLoginEnabled, ssoProviders } = useAuthConfig();
+  const { passwordLoginEnabled, ssoProviders, azureAdSettings } =
+    useAuthConfig();
+
   const { formatMessage } = useIntl();
 
   return (
@@ -54,12 +62,19 @@ const EmailFlowStart = ({
       {passwordLoginEnabled && (
         <EmailForm
           loading={loading}
-          topText={messages.enterYourEmailAddress}
+          topText={sharedMessages.enterYourEmailAddress}
           setError={setError}
           onSubmit={onSubmit}
         />
       )}
       <SSOButtons onClickSSO={onSwitchToSSO} />
+      {azureAdSettings?.visibility === 'link' && (
+        <Box mt="24px">
+          <StyledA href="/sign-in/admin">
+            {formatMessage(messages.clickHereToLoginAsAdminOrPM)}
+          </StyledA>
+        </Box>
+      )}
     </Box>
   );
 };

@@ -302,9 +302,9 @@ const IdeationPage = ({
                       <Button
                         onClick={() => {
                           triggerPostParticipationFlow({
-                            name: 'redirectToIdea',
+                            name: 'redirect',
                             params: {
-                              ideaSlug: idea.data.attributes.slug,
+                              path: `/ideas/${idea.data.attributes.slug}`,
                             },
                           });
                         }}

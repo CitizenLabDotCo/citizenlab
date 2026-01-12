@@ -91,7 +91,7 @@ const StickyNote: React.FC<Props> = ({
     <StyledNote
       as="button"
       borderRadius="2px"
-      w="100%"
+      minWidth="300px"
       maxWidth="350px"
       height={`${noteHeight}px`}
       transform={`rotate(${rotation}deg)`}
