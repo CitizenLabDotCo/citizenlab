@@ -78,6 +78,7 @@ import Title, { TitleProps } from './components/Title';
 import Toggle from './components/Toggle';
 import Tooltip, { TooltipProps } from './components/Tooltip';
 import useBreakpoint from './hooks/useBreakpoint';
+import useTouchDevice from './hooks/useTouchDevice';
 import useWindowSize from './hooks/useWindowSize';
 import ClickOutside from './utils/containers/clickOutside';
 import InputContainer from './utils/containers/InputContainer';
@@ -200,6 +201,7 @@ export {
   Box,
   useWindowSize,
   useBreakpoint,
+  useTouchDevice,
   Image,
   IconButton,
   Text,

@@ -101,14 +101,6 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
-  describe '#default_fields' do
-    it 'returns an empty list' do
-      expect(
-        participation_method.default_fields(create(:custom_form, participation_context: phase)).map(&:code)
-      ).to eq []
-    end
-  end
-
   describe '#author_in_form?' do
     it 'returns false for a moderator when idea_author_change is activated' do
       SettingsService.new.activate_feature! 'idea_author_change'

@@ -11,7 +11,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import messages from '../messages';
 
-import SelectedTopicView from './SelectedTopicView';
+import SelectedTopicContent from './SelectedTopicContent';
 import TopicItem from './TopicItem';
 
 interface Props {
@@ -21,7 +21,7 @@ interface Props {
   totalIdeasCount: number;
   topicCounts: Record<string, number>;
   slug: string;
-  showBackButton?: boolean;
+  isMobile?: boolean;
 }
 
 const TopicsContent = ({
@@ -31,7 +31,7 @@ const TopicsContent = ({
   totalIdeasCount,
   topicCounts,
   slug,
-  showBackButton = true,
+  isMobile = false,
 }: Props) => {
   const { data: project } = useProjectBySlug(slug);
   const localize = useLocalize();
@@ -43,17 +43,17 @@ const TopicsContent = ({
   // When a topic is selected, show only that topic with a back button
   if (selectedTopicId) {
     return (
-      <SelectedTopicView
+      <SelectedTopicContent
         topicId={selectedTopicId}
         onBack={() => onTopicSelect(null)}
-        hideBackButton={!showBackButton}
+        isMobile={isMobile}
       />
     );
   }
 
   return (
     <>
-      {showBackButton && (
+      {!isMobile && (
         <Box mb="24px">
           <GoBackButton
             linkTo={`/projects/${slug}`}

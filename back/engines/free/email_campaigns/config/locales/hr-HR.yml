@@ -515,9 +515,7 @@ hr:
       subject: '%{organizationName}: Zadnja prilika da glasate za %{phaseTitle}'
       preheader: 'Zadnja prilika za glasanje za %{phaseTitle} na platformi za sudjelovanje %{organizationName}'
       title: 'Posljednja prilika za glasanje za %{phaseTitle}'
-      body_1: 'Faza glasovanja za projekt %{projectTitle} završava sutra, u ponoć.'
-      body_2: 'Vrijeme curi, a primijetili smo da još niste dali svoj glas! Djelujte sada jednostavnim klikom na donji gumb za sudjelovanje.'
-      body_3: 'Čineći to, dobit ćete pristup nizu opcija i imati priliku dati svoj doprinos, što je ključno u odlučivanju o budućnosti ovog projekta.'
+      event_description: '<p>Faza glasanja za projekt %{projectTitle} završava sutra u ponoć.</p><p>Vrijeme istječe, a primijetili smo da još niste glasali! Djelujte odmah jednostavnim klikom na gumb ispod za sudjelovanje.</p><p>Time ćete dobiti pristup nizu opcija i imati priliku dati svoj doprinos, što je ključno u odlučivanju o budućnosti ovog projekta.</p>'
       cta_button: 'Glasanje'
     voting_results:
       subject: 'Objavljeni rezultati glasova %{organizationName}: %{phaseTitle}!'
