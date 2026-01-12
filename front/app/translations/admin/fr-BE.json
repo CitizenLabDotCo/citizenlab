@@ -1393,7 +1393,7 @@
   "app.containers.Admin.projects.project.insights.populationPercent": "Population (%)",
   "app.containers.Admin.projects.project.insights.questions": "Questions",
   "app.containers.Admin.projects.project.insights.reactions": "Réactions",
-  "app.containers.Admin.projects.project.insights.representativenessScore": "Score de représentativité :",
+  "app.containers.Admin.projects.project.insights.representativenessScore": "Score de représentativité",
   "app.containers.Admin.projects.project.insights.respondents": "Répondants",
   "app.containers.Admin.projects.project.insights.responses": "Réponses",
   "app.containers.Admin.projects.project.insights.responsesPerRespondent": "Réponses par répondant",
