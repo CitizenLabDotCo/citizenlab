@@ -24,7 +24,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = ideas.includes(
       :idea_images,
       :idea_trending_info,
-      :topics,
+      :input_topics,
       :phases,
       :idea_status,
       :creation_phase,
@@ -58,7 +58,7 @@ class WebApi::V1::IdeasController < ApplicationController
       current_user: current_user
     ).find_records
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
-    ideas = ideas.includes(:author, :topics, :project, :idea_status)
+    ideas = ideas.includes(:author, :input_topics, :project, :idea_status)
 
     render json: linked_json(ideas, WebApi::V1::PostMarkerSerializer, params: jsonapi_serializer_params)
   end
@@ -70,7 +70,7 @@ class WebApi::V1::IdeasController < ApplicationController
       current_user: current_user
     ).find_records
     ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
-    ideas = ideas.includes(:author, :topics, :project, :idea_status, :idea_files, :attached_files)
+    ideas = ideas.includes(:author, :input_topics, :project, :idea_status, :idea_files, :attached_files)
 
     with_cosponsors = AppConfiguration.instance.feature_activated?('input_cosponsorship')
     ideas = ideas.includes(:cosponsors) if with_cosponsors
@@ -238,7 +238,7 @@ class WebApi::V1::IdeasController < ApplicationController
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: serializer_params,
-          include: %i[author topics input_topics phases user_reaction idea_images]
+          include: %i[author input_topics phases user_reaction idea_images]
         ).serializable_hash, status: :created
       else
         render json: { errors: input.errors.details }, status: :unprocessable_entity
@@ -323,7 +323,7 @@ class WebApi::V1::IdeasController < ApplicationController
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,
-          include: %i[author topics input_topics user_reaction idea_images cosponsors]
+          include: %i[author input_topics user_reaction idea_images cosponsors]
         ).serializable_hash, status: :ok
       else
         render json: { errors: input.errors.details }, status: :unprocessable_entity
@@ -413,7 +413,7 @@ class WebApi::V1::IdeasController < ApplicationController
     render json: WebApi::V1::IdeaSerializer.new(
       input,
       params: jsonapi_serializer_params,
-      include: %i[author topics user_reaction idea_images]
+      include: %i[author input_topics user_reaction idea_images]
     ).serializable_hash
   end
 

@@ -157,7 +157,7 @@ export interface IIdeaData {
     project: {
       data: IRelationship;
     };
-    topics?: {
+    input_topics?: {
       data: IRelationship[];
     };
     user_follower: {

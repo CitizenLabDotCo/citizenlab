@@ -26,7 +26,7 @@ const IdeaTopics = ({ ideaId, compact, className }: Props) => {
 
   if (!isNilOrError(idea)) {
     const topicIds =
-      idea.data.relationships.topics?.data.map((item) => item.id) || [];
+      idea.data.relationships.input_topics?.data.map((item) => item.id) || [];
 
     if (topicIds.length > 0) {
       return (
