@@ -2374,7 +2374,7 @@
   "app.utils.votingMethodUtils.submitYourBudget": "Invia il tuo bilancio",
   "app.utils.votingMethodUtils.submittedBudgetCountText2": "una persona ha presentato il proprio bilancio online",
   "app.utils.votingMethodUtils.submittedBudgetsCountText2": "le persone hanno presentato il loro budget online",
-  "app.utils.votingMethodUtils.submittedVoteCountText2": "una persona ha espresso il proprio voto online",
+  "app.utils.votingMethodUtils.submittedVoteCountText2": "persone che hanno espresso il proprio voto online",
   "app.utils.votingMethodUtils.submittedVotesCountText2": "le persone hanno inviato i loro voti online",
   "app.utils.votingMethodUtils.voteSubmittedWithIcon": "Voto inviato 🎉",
   "app.utils.votingMethodUtils.votesCast": "Votazione registrata",
