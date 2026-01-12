@@ -259,6 +259,7 @@ lv:
       x_days_ago_by_author: 'pirms %{x} dienām %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} komentēja:'
+      anonymous_user: Anonīms lietotājs
       cta_button: 'Skatīt %{authorFirstName}''s komentārs'
       days_ago: 'pirms %{numberOfDays} dienām'
       event_description: '%{authorName} pievienoja jaunu komentāru jūsu platformā.'
@@ -514,9 +515,7 @@ lv:
       subject: '%{organizationName}: Pēdējā iespēja balsot par %{phaseTitle}'
       preheader: 'Pēdējā iespēja balsot par %{phaseTitle} %{organizationName}dalības platformā'
       title: 'Pēdējā iespēja balsot par %{phaseTitle}'
-      body_1: 'Rīt pusnaktī noslēgsies balsošana par projektu %{projectTitle} .'
-      body_2: 'Laiks iet uz beigām, un mēs pamanījām, ka jūs vēl neesat nobalsojis! Lai piedalītos balsošanā, vienkārši nospiediet zemāk redzamo pogu.'
-      body_3: 'Tādējādi jūs iegūsiet piekļuvi dažādām iespējām un iespēju sniegt savu ieguldījumu, kas ir ļoti svarīgs, lai lemtu par šī projekta nākotni.'
+      event_description: '<p>Rīt pusnaktī noslēgsies balsošana par projektu %{projectTitle} .</p><p>Laiks iet uz beigām, un mēs pamanījām, ka jūs vēl neesat nobalsojis! Lai piedalītos balsošanā, vienkārši nospiediet zemāk redzamo pogu.</p><p>Šādi rīkojoties, jūs iegūsiet piekļuvi vairākiem variantiem un iespēju sniegt savu ieguldījumu, kas ir ļoti svarīgs, lemjot par šī projekta nākotni.</p>'
       cta_button: 'Balsojums'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} atklāti balsošanas rezultāti!'

@@ -52,7 +52,10 @@ RSpec.describe ReportBuilder::Queries::Projects do
       create(:community_monitor_project)
 
       # Make TimeBoundariesParser work as expected
-      AppConfiguration.instance.update!(created_at: Date.new(2019, 12, 31))
+      AppConfiguration.instance.update!(
+        created_at: Date.new(2019, 12, 31),
+        platform_start_at: Date.new(2019, 12, 31)
+      )
 
       # Add project image
       create(:project_image, project: @project1)
