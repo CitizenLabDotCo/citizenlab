@@ -3295,6 +3295,7 @@
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrationRate": "Registreringsgrad",
   "app.containers.admin.ReportBuilder.Widgets.RegistrationsWidget.registrations": "Registreringer",
   "app.containers.admin.ReportBuilder.charts.accessibility": "Tilgængelighed",
+  "app.containers.admin.ReportBuilder.charts.accessibilityDescription": "Brug disse felter til at give en klar tekstbeskrivelse, så brugere, der er afhængige af hjælpemidler, kan forstå diagrammets betydning.",
   "app.containers.admin.ReportBuilder.charts.activeUsersTimeline": "Deltagernes tidslinje",
   "app.containers.admin.ReportBuilder.charts.adminInaccurateParticipantsWarning1": "Bemærk at deltagelsestallene måske ikke er helt nøjagtige, da nogle data indsamles i en ekstern undersøgelse, som vi ikke sporer.",
   "app.containers.admin.ReportBuilder.charts.analyticsChart": "Diagram",

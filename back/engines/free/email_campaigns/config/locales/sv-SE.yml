@@ -259,6 +259,7 @@ sv:
       x_days_ago_by_author: '%{x} dagar sedan av %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} kommenterade:'
+      anonymous_user: Anonym användare
       cta_button: 'Se %{authorFirstName}''s kommentar'
       days_ago: '%{numberOfDays} dagar sedan'
       event_description: '%{authorName} lade till en ny kommentar på din plattform.'
