@@ -106,6 +106,7 @@ interface Props {
   onChangeTab: (tab: PublicationTab) => void;
   onChangeSearch: (search: string | null) => void;
   currentlyWorkingOnText?: Multiloc;
+  searchTerm?: string | null;
 }
 
 const Header = ({
@@ -123,6 +124,7 @@ const Header = ({
   onChangeTab,
   onChangeSearch,
   currentlyWorkingOnText,
+  searchTerm,
 }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const isSmallerThanPhone = useBreakpoint('phone');
@@ -193,6 +195,9 @@ const Header = ({
 
   const shouldShowAreaAndTagFilters = !isSmallerThanPhone && displayFilters;
 
+  const filtersAppliedCount =
+    (selectedTopics.length || 0) + (selectedAreas.length || 0);
+
   return (
     <div className={className}>
       {showTitle ? (
@@ -214,6 +219,8 @@ const Header = ({
         <StyledSearchInput
           onChange={handleOnSearchChange}
           a11y_numberOfSearchResults={statusCounts.all}
+          a11y_searchQuery={searchTerm ?? ''}
+          a11y_filtersAppliedCount={filtersAppliedCount}
           setInputRef={handleSetSearchInputRef}
         />
       )}
