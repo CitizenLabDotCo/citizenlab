@@ -67,7 +67,7 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   const { data: project } = useProjectById(event.relationships.project.data.id);
   const { data: phases } = usePhases(project?.data.id);
   const currentPhase = getCurrentPhase(phases?.data);
-  const latestRelevantPhase = useMemo(
+  const lastCompletedPhase = useMemo(
     () => phases && getLatestRelevantPhase(phases.data),
     [phases]
   );
@@ -116,11 +116,11 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
             action: 'attending_event',
             id: currentPhase.id,
           } as const)
-        : latestRelevantPhase
+        : lastCompletedPhase
         ? ({
             type: 'phase',
             action: 'attending_event',
-            id: latestRelevantPhase.id,
+            id: lastCompletedPhase.id,
           } as const)
         : ({
             type: 'global',
