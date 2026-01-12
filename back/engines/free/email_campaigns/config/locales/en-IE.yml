@@ -515,9 +515,7 @@ en-IE:
       subject: '%{organizationName}: Last chance to vote for %{phaseTitle}'
       preheader: 'Last chance to vote for %{phaseTitle} on the participation platform of %{organizationName}'
       title: 'Last chance to vote for %{phaseTitle}'
-      body_1: 'The voting phase for the %{projectTitle} project is coming to a close tomorrow, at midnight.'
-      body_2: 'Time is running out, and we noticed that you haven''t cast your vote yet! Act now by simply clicking the button below to participate.'
-      body_3: 'By doing so, you''ll gain access to a range of options and have the chance to provide your input, which is crucial in deciding the future of this project.'
+      event_description: '<p>The voting phase for the %{projectTitle} project is coming to a close tomorrow, at midnight.</p><p>Time is running out, and we noticed that you haven''t cast your vote yet! Act now by simply clicking the button below to participate.</p><p>By doing so, you''ll gain access to a range of options and have the chance to provide your input, which is crucial in deciding the future of this project.</p>'
       cta_button: 'Vote'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} vote results revealed!'

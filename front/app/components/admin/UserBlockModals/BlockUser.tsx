@@ -74,7 +74,6 @@ const BlockUserModal = ({ setClose, user, returnFocusRef }: Props) => {
         },
       }
     );
-    setClose();
   };
 
   const blockingDuration =
@@ -90,6 +89,7 @@ const BlockUserModal = ({ setClose, user, returnFocusRef }: Props) => {
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         date={moment(updatedUser?.attributes.block_end_at).format('LL')}
         resetSuccess={() => setSuccess(false)}
+        setClose={setClose}
         opened={true}
       />
     );
