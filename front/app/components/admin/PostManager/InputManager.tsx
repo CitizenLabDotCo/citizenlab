@@ -110,7 +110,7 @@ const InputManager = ({
     });
   }, [visibleFilterMenus]);
 
-  if (!ideas || !topicsData) return null;
+  if (!ideas) return null;
 
   const getSelectedProject = () => {
     return Array.isArray(queryParameters.projects) &&
