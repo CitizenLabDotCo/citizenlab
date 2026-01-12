@@ -7,8 +7,8 @@ RSpec.describe ClaimToken do
 
   describe 'factory' do
     it 'is valid' do
-      # Use create because presence validation, in this case on +item_id+, does not work
-      # well with associations.
+      # Use `create` because presence validation, in this case on +item_id+, does not work
+      # well with associations if the records are not persisted.
       expect(create(:claim_token)).to be_valid
     end
   end
@@ -30,7 +30,6 @@ RSpec.describe ClaimToken do
       expect(claim_token.token).to be_present
     end
 
-    # same but freeze time
     it 'sets expiry to 24 hours from now' do
       freeze_time do
         claim_token = create(:claim_token)
@@ -49,7 +48,6 @@ RSpec.describe ClaimToken do
         expect(described_class.expired).not_to include(valid_token)
       end
     end
-
   end
 
   describe '#expired?' do
