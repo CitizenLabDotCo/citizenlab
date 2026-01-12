@@ -288,9 +288,9 @@ const SurveyPage = ({
                         <Button
                           onClick={() => {
                             triggerPostParticipationFlow({
-                              name: 'redirectToProject',
+                              name: 'redirect',
                               params: {
-                                projectSlug: project.data.attributes.slug,
+                                path: `/projects/${project.data.attributes.slug}`,
                               },
                             });
                           }}
