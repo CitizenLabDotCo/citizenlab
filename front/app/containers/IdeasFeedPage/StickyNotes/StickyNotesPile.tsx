@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Box, Button, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Spinner,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
@@ -91,7 +96,7 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
   const isMobile = useBreakpoint('phone');
   const isTablet = useBreakpoint('tablet');
   const { data: phase } = usePhase(phaseId);
-  const { data } = useInfiniteIdeaFeedIdeas({
+  const { data, isLoading } = useInfiniteIdeaFeedIdeas({
     phaseId,
     'page[size]': 20,
   });
@@ -121,6 +126,10 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
 
   const { positions, count } = getPositionsConfig();
   const displayedIdeas = flatIdeas?.slice(0, count);
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <Box overflow="hidden">
