@@ -3,9 +3,6 @@ import createAccountFromInvite, {
 } from 'api/authentication/createAccountFromInvite';
 import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 
-import { trackEventByName } from 'utils/analytics';
-
-import tracks from '../../tracks';
 import {
   AuthenticationData,
   GetRequirements,
@@ -60,7 +57,6 @@ export const inviteFlow = (
             // Go to step where user can enter invitation token again
             setCurrentStep('invite:taken');
           } else {
-            trackEventByName(tracks.signInEmailPasswordFailed);
             throw e;
           }
         }

@@ -9,12 +9,10 @@ import { AuthProvider } from 'containers/Authentication/typings';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import Consent from './Consent';
 import messages from './messages';
-import tracks from './tracks';
 
 const timeout = 300;
 
@@ -125,7 +123,6 @@ const AuthProviderButton = memo<Props>(
         if (showConsent && authProvider !== 'email') {
           setExpanded((prevExpanded) => !prevExpanded);
         } else {
-          trackEventByName(tracks.signInWithSSOClicked, { authProvider });
           onContinue(authProvider);
         }
       },
@@ -145,7 +142,6 @@ const AuthProviderButton = memo<Props>(
         (tacAccepted && privacyAccepted) ||
         authProvider === 'id_vienna_saml'
       ) {
-        trackEventByName(tracks.signUpWithSSOClicked, { authProvider });
         onContinue(authProvider);
       }
     }, [authProvider, onContinue, tacAccepted, privacyAccepted]);
