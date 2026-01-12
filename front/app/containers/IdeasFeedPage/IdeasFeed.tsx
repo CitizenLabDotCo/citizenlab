@@ -13,6 +13,7 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { useVirtualizer } from '@tanstack/react-virtual';
+import { uniqBy } from 'lodash-es';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -115,7 +116,7 @@ const IdeasFeed = ({ topicId }: Props) => {
   const flatIdeas = useMemo(() => {
     if (!data) return [];
     const allIdeas = data.pages.flatMap((page) => page.data);
-    return [...new Map(allIdeas.map((idea) => [idea.id, idea])).values()]; // Remove duplicates
+    return uniqBy(allIdeas, 'id');
   }, [data]);
 
   // Reorder ideas to put the initial idea first (if provided), otherwise keep original order
