@@ -10,7 +10,6 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { v4 as uuidv4 } from 'uuid';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -26,12 +25,12 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import { replaceIdsWithNewUuids } from './utils';
 
 const CodeTextarea = styled.textarea`
   width: 100%;
   min-height: 400px;
   font-family: 'Courier New', Courier, monospace !important;
-  font-size: 12px;
   background-color: ${colors.grey100};
   border: 1px solid ${colors.borderLight};
   border-radius: 4px;
@@ -88,94 +87,9 @@ const EditSchemaButtonWithModal = ({
   // Only render if super admin
   if (!isSuperAdmin) return null;
 
-  // Function to replace all IDs with new UUIDs and update logic references
-  const replaceIdsWithNewUuids = (fields: unknown[]): unknown[] => {
-    const idMapping: Record<string, string> = {};
-
-    // First pass: collect all IDs and generate new UUIDs
-    const collectIds = (obj: unknown): void => {
-      if (Array.isArray(obj)) {
-        obj.forEach(collectIds);
-        return;
-      }
-      if (obj && typeof obj === 'object') {
-        const record = obj as Record<string, unknown>;
-        if (typeof record.id === 'string' && record.id) {
-          idMapping[record.id] = uuidv4();
-        }
-        Object.values(record).forEach(collectIds);
-      }
-    };
-    collectIds(fields);
-
-    // Second pass: replace IDs and update logic references
-    const replaceIds = (obj: unknown): unknown => {
-      if (Array.isArray(obj)) {
-        return obj.map(replaceIds);
-      }
-      if (obj && typeof obj === 'object') {
-        const record = obj as Record<string, unknown>;
-        const result: Record<string, unknown> = {};
-
-        for (const [key, value] of Object.entries(record)) {
-          if (key === 'id' && typeof value === 'string' && value) {
-            result[key] = idMapping[value] ?? null;
-          } else if (key === 'logic' && value && typeof value === 'object') {
-            // Update logic references
-            const logic = value as Record<string, unknown>;
-            const newLogic: Record<string, unknown> = {};
-
-            if (
-              logic.next_page_id &&
-              typeof logic.next_page_id === 'string' &&
-              idMapping[logic.next_page_id]
-            ) {
-              newLogic.next_page_id = idMapping[logic.next_page_id];
-            } else if (logic.next_page_id !== undefined) {
-              newLogic.next_page_id = logic.next_page_id;
-            }
-
-            if (Array.isArray(logic.rules)) {
-              newLogic.rules = logic.rules.map((rule) => {
-                const typedRule = rule as Record<string, unknown>;
-                const newRule: Record<string, unknown> = { ...typedRule };
-
-                // Update goto_page_id
-                if (
-                  typeof typedRule.goto_page_id === 'string' &&
-                  idMapping[typedRule.goto_page_id]
-                ) {
-                  newRule.goto_page_id = idMapping[typedRule.goto_page_id];
-                }
-
-                // Update 'if' field if it is an option ID (string)
-                if (
-                  typeof typedRule.if === 'string' &&
-                  idMapping[typedRule.if]
-                ) {
-                  newRule.if = idMapping[typedRule.if];
-                }
-
-                return newRule;
-              });
-            }
-
-            result[key] = newLogic;
-          } else {
-            result[key] = replaceIds(value);
-          }
-        }
-        return result;
-      }
-      return obj;
-    };
-
-    return replaceIds(fields) as unknown[];
-  };
-
   const handleCopy = () => {
     try {
-      const parsed = JSON.parse(jsonText);
+      const parsed = JSON.parse(jsonText) as IFlatCustomField[];
       const withNewIds = replaceIdsWithNewUuids(parsed);
       navigator.clipboard.writeText(JSON.stringify(withNewIds, null, 2));
       setCopied(true);
