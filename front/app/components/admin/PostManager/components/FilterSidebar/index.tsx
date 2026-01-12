@@ -32,7 +32,7 @@ interface Props {
   phases?: IPhaseData[];
   projects?: IProjectData[];
   statuses: IIdeaStatusData[];
-  topics: IInputTopicData[];
+  topics?: IInputTopicData[];
   selectedTopics?: string[] | null;
   selectedPhase: string | undefined;
   selectedProject?: string | null;
@@ -156,7 +156,7 @@ const FilterSidebar = ({
     {
       name: tabName('topicsTab', selectedTopics, 'topics'),
       key: 'topics',
-      content: (
+      content: topics && (
         <FilterSidebarTopics
           selectableTopics={topics}
           selectedTopics={selectedTopics}
