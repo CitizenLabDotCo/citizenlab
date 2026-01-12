@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, fontSizes } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { SSOProvider } from 'api/authentication/singleSignOn';
 
@@ -14,10 +15,15 @@ import Or from 'components/UI/Or';
 import { useIntl } from 'utils/cl-intl';
 import { keys } from 'utils/helperUtils';
 
-import messages from '../messages';
+import sharedMessages from '../messages';
 
 import EmailForm from './EmailForm';
+import messages from './messages';
 import SSOButtonsExceptFC from './SSOButtonsExceptFC';
+
+const StyledA = styled.a`
+  font-size: ${fontSizes.base}px;
+`;
 
 interface Props {
   loading: boolean;
@@ -32,7 +38,9 @@ const EmailFlowStart = ({
   onSubmit,
   onSwitchToSSO,
 }: Props) => {
-  const { passwordLoginEnabled, ssoProviders } = useAuthConfig();
+  const { passwordLoginEnabled, ssoProviders, azureAdSettings } =
+    useAuthConfig();
+
   const { formatMessage } = useIntl();
 
   const anySSOProviderEnabledBesidesFC = keys(ssoProviders)
@@ -57,22 +65,22 @@ const EmailFlowStart = ({
         </>
       )}
       {passwordLoginEnabled && (
-        <>
-          <EmailForm
-            loading={loading}
-            topText={messages.enterYourEmailAddress}
-            setError={setError}
-            onSubmit={onSubmit}
-          />
-          {anySSOProviderEnabledBesidesFC && (
-            <Box mt="24px">
-              <Or />
-            </Box>
-          )}
-        </>
+        <EmailForm
+          loading={loading}
+          topText={sharedMessages.enterYourEmailAddress}
+          setError={setError}
+          onSubmit={onSubmit}
+        />
       )}
       {anySSOProviderEnabledBesidesFC && (
         <SSOButtonsExceptFC onClickSSO={onSwitchToSSO} />
+      )}
+      {azureAdSettings?.visibility === 'link' && (
+        <Box mt="24px">
+          <StyledA href="/sign-in/admin">
+            {formatMessage(messages.clickHereToLoginAsAdminOrPM)}
+          </StyledA>
+        </Box>
       )}
     </Box>
   );

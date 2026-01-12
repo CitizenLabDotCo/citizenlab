@@ -481,9 +481,7 @@ nl:
       subject: '%{organizationName}: Laatste kans om te stemmen voor %{phaseTitle}'
       preheader: 'Laatste kans om te stemmen voor %{phaseTitle} op het participatieplatform van %{organizationName}'
       title: 'Laatste kans om te stemmen voor %{phaseTitle}'
-      body_1: 'De stemfase voor het %{projectTitle} project loopt morgen om middernacht af.'
-      body_2: 'De tijd dringt en we hebben gemerkt dat je nog geen stem hebt uitgebracht! Doe nu mee door op de knop hieronder te klikken.'
-      body_3: 'Door dit te doen krijg je toegang tot een reeks opties en krijg je de kans om je inbreng te geven, wat cruciaal is bij het beslissen over de toekomst van dit project.'
+      event_description: '<p>De stemfase voor het %{projectTitle} project loopt morgen om middernacht af.</p> <p>De tijd dringt en we hebben gemerkt dat je nog geen stem hebt uitgebracht! Doe nu mee door op de knop hieronder te klikken.</p> <p>Door dit te doen krijg je toegang tot een reeks opties en krijg je de kans om je inbreng te geven, wat cruciaal is bij het beslissen over de toekomst van dit project.</p>'
       cta_button: 'Stem'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} stemresultaten bekendgemaakt!'
