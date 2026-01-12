@@ -31,7 +31,7 @@ class ClaimToken < ApplicationRecord
   attribute :expires_at, :datetime, default: -> { TOKEN_EXPIRY_HOURS.hours.from_now }
 
   belongs_to :item, polymorphic: true, inverse_of: :claim_token
-  belongs_to :pending_claimer, class_name: 'User', optional: true
+  belongs_to :pending_claimer, class_name: 'User', optional: true, inverse_of: :claim_tokens
 
   validates :token, presence: true, uniqueness: true
   validates :item_type, presence: true, inclusion: { in: %w[Idea] }
