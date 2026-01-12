@@ -28,11 +28,13 @@ export default function useAuthConfig() {
 
   const facebook = useFeatureFlag({ name: 'facebook_login' });
 
+  const azureAdSettings = appConfigurationSettings?.azure_ad_login;
+  const azureAdVisiblity = azureAdSettings?.visibility;
+  const azureAdIsVisible = ['show', undefined].includes(azureAdVisiblity);
+
   const azureAd =
     useFeatureFlag({ name: 'azure_ad_login' }) &&
-    ((appConfigurationSettings?.azure_ad_login?.visibility !== 'link' &&
-      appConfigurationSettings?.azure_ad_login?.visibility !== 'hide') ||
-      showAdminOnlyMethods);
+    (azureAdIsVisible || showAdminOnlyMethods);
 
   const azureAdB2c = useFeatureFlag({
     name: 'azure_ad_b2c_login',
@@ -105,5 +107,6 @@ export default function useAuthConfig() {
     passwordLoginEnabled,
     ssoProviders,
     anySSOProviderEnabled: Object.values(ssoProviders).some((v) => v),
+    azureAdSettings,
   };
 }
