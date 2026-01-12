@@ -157,6 +157,7 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
                 onClick={() => handleNoteClick(idea.id)}
                 size="small"
                 rotation={ROTATIONS[index % ROTATIONS.length]}
+                showReactions={false}
               />
             </NoteWrapper>
           );

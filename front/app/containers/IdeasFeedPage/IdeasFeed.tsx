@@ -284,6 +284,7 @@ const IdeasFeed = ({ topicId }: Props) => {
                   onClick={() => handleIdeaSelect(idea.id)}
                   centeredIdeaId={centeredIdeaId || undefined}
                   size={noteSize}
+                  showReactions={true}
                 />
               </NoteContainer>
             </VirtualItem>

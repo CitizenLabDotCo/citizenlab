@@ -50,6 +50,7 @@ interface Props {
   onClick?: () => void;
   centeredIdeaId?: string;
   size?: 'small' | 'large';
+  showReactions?: boolean;
 }
 
 const StickyNote: React.FC<Props> = ({
@@ -59,6 +60,7 @@ const StickyNote: React.FC<Props> = ({
   onClick,
   centeredIdeaId,
   size = 'large',
+  showReactions = true,
 }) => {
   const isCentered = centeredIdeaId === ideaId;
   const noteHeight = NOTE_HEIGHTS[size];
@@ -127,21 +129,23 @@ const StickyNote: React.FC<Props> = ({
           <T supportHtml={true} value={idea.data.attributes.body_multiloc} />
         </BodyText>
       </Box>
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        gap="8px"
-        flexShrink={0}
-      >
-        <Icon
-          name="comments"
-          fill={colors.textSecondary}
-          width="20px"
-          height="20px"
-        />
-        <ReactionControl ideaId={ideaId} size="1" styleType="compact" />
-      </Box>
+      {showReactions && (
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          gap="8px"
+          flexShrink={0}
+        >
+          <Icon
+            name="comments"
+            fill={colors.textSecondary}
+            width="20px"
+            height="20px"
+          />
+          <ReactionControl ideaId={ideaId} size="1" styleType="compact" />
+        </Box>
+      )}
     </StyledNote>
   );
 };
