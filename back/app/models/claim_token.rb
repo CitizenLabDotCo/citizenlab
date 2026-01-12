@@ -40,7 +40,6 @@ class ClaimToken < ApplicationRecord
 
   scope :expired, -> { where(expires_at: ...Time.current) }
   scope :not_expired, -> { where(expires_at: Time.current..) }
-  scope :for_user, ->(user) { where(pending_claimer_id: user.id) }
 
   def expired?
     expires_at < Time.current

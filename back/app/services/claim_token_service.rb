@@ -34,7 +34,7 @@ class ClaimTokenService
     # @param user [User] the user whose pending claims to complete
     # @return [Array<ClaimableParticipation>] items that were claimed
     def complete(user)
-      ClaimToken.for_user(user).map { |claim_token| claim_item(claim_token) }
+      user.claim_tokens.map { |claim_token| claim_item(claim_token) }
     end
 
     # Claim items for a user. Only marks tokens if the user requires confirmation.

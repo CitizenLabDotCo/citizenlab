@@ -50,18 +50,6 @@ RSpec.describe ClaimToken do
       end
     end
 
-    describe '.for_user' do
-      it 'returns pending tokens for a specific user' do
-        user = create(:user)
-        other_user = create(:user)
-        pending_for_user = create_list(:claim_token, 2, pending_claimer: user)
-        pending_for_other = create(:claim_token, pending_claimer: other_user)
-        _not_pending = create(:claim_token) # should not be included in scopes
-
-        expect(described_class.for_user(user)).to match_array(pending_for_user)
-        expect(described_class.for_user(other_user)).to contain_exactly(pending_for_other)
-      end
-    end
   end
 
   describe '#expired?' do
