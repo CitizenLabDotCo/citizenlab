@@ -2937,7 +2937,7 @@
   "app.containers.AdminPage.Users.GroupsPanel.noUserMatchesYourSearch": "Nessun utente corrisponde alla tua ricerca",
   "app.containers.AdminPage.Users.GroupsPanel.select": "Seleziona",
   "app.containers.AdminPage.Users.UsersGroup.exportAll": "Esporta tutti",
-  "app.containers.AdminPage.Users.UsersGroup.exportGroupUsers": "Esporta gli utenti del gruppo",
+  "app.containers.AdminPage.Users.UsersGroup.exportGroupUsers": "Esporta utenti del gruppo",
   "app.containers.AdminPage.Users.UsersGroup.exportSelected": "Esporta utenti selezionati",
   "app.containers.AdminPage.Users.UsersGroup.groupDeletionConfirmation": "Sei sicuro di voler eliminare questo gruppo?",
   "app.containers.AdminPage.Users.UsersGroup.membershipAddFailed": "Si è verificato un errore durante l'aggiunta di utenti ai gruppi, riprova.",
