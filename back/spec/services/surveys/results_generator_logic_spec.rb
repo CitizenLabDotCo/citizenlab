@@ -461,10 +461,11 @@ RSpec.describe Surveys::ResultsGenerator do
     let(:input) { create(:native_survey_response, project: project, phases: phases_of_inputs) }
     let(:page_ids) { [page_field.id, mid_page_field1.id, mid_page_field2.id, last_page_field.id] }
 
+    before { reset_survey_logic! }
+
     context 'linear scale and page field logic' do
       before do
         # Update fields from survey_setup shared context with some logic
-        reset_survey_logic!
         linear_scale_field.update!(logic: { rules: [{ if: 2, goto_page_id: mid_page_field2.id }, { if: 'no_answer', goto_page_id: last_page_field.id }] })
         mid_page_field1.update!(logic: { next_page_id: last_page_field.id })
       end
@@ -491,7 +492,6 @@ RSpec.describe Surveys::ResultsGenerator do
     context 'single select logic' do
       before do
         # Update fields from survey_setup shared context with logic
-        reset_survey_logic!
         select_field.update!(logic: {
           rules: [
             { if: select_field.options.first.id, goto_page_id: mid_page_field1.id },
@@ -523,7 +523,6 @@ RSpec.describe Surveys::ResultsGenerator do
     context 'multiselect logic' do
       before do
         # Update fields from survey_setup shared context with some logic
-        reset_survey_logic!
         multiselect_field.update!(logic: {
           rules: [
             { if: multiselect_field.options.first.id, goto_page_id: mid_page_field1.id },
