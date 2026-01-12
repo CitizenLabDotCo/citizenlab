@@ -32,7 +32,7 @@
   "app.components.AssignMultipleVotesControl.xCredits1": "{votes, plural, one {credito} other {crediti}}",
   "app.components.AssignMultipleVotesControl.xPoints1": "{votes, plural, one {punto} other {punti}}",
   "app.components.AssignMultipleVotesControl.xTokens1": "{votes, plural, one {gettone} other {gettoni}}",
-  "app.components.AssignMultipleVotesControl.xVotes3": "{votes, plural, one {vota} other {vota}}",
+  "app.components.AssignMultipleVotesControl.xVotes3": "{votes, plural, one {voto} other {voti}}",
   "app.components.AssignVoteControl.maxVotesReached1": "Hai distribuito tutti i tuoi voti.",
   "app.components.AssignVoteControl.phaseNotActive": "Il voto non è disponibile, poiché questa fase non è attiva.",
   "app.components.AssignVoteControl.select": "Seleziona",
