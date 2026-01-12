@@ -65,12 +65,19 @@ const EmailFlowStart = ({
         </>
       )}
       {passwordLoginEnabled && (
-        <EmailForm
-          loading={loading}
-          topText={sharedMessages.enterYourEmailAddress}
-          setError={setError}
-          onSubmit={onSubmit}
-        />
+        <>
+          <EmailForm
+            loading={loading}
+            topText={sharedMessages.enterYourEmailAddress}
+            setError={setError}
+            onSubmit={onSubmit}
+          />
+          {anySSOProviderEnabledBesidesFC && (
+            <Box mt="24px">
+              <Or />
+            </Box>
+          )}
+        </>
       )}
       {anySSOProviderEnabledBesidesFC && (
         <SSOButtonsExceptFC onClickSSO={onSwitchToSSO} />
