@@ -162,7 +162,7 @@ it:
         title: Posizione
         description:
       proposed_budget:
-        title: Bilancio proposto
+        title: Budget Proposto
         description:
       budget:
         title: Bilancio
