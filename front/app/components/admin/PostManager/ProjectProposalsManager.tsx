@@ -6,7 +6,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import { IIdeaQueryParameters, Sort } from 'api/ideas/types';
 import useIdeas from 'api/ideas/useIdeas';
-import useGlobalTopics from 'api/global_topics/useGlobalTopics';
+import useInputTopics from 'api/input_topics/useInputTopics';
 
 import Outlet from 'components/Outlet';
 import SearchInput from 'components/UI/SearchInput';
@@ -61,7 +61,7 @@ const ProjectProposalsManager = ({
   const { data: ideaStatuses } = useIdeaStatuses({
     queryParams: { participation_method: 'proposals' },
   });
-  const { data: proposalTopics } = useGlobalTopics();
+  const { data: proposalTopics } = useInputTopics(projectId);
   const [queryParameters, setQueryParameters] = useState<IIdeaQueryParameters>({
     sort: 'new',
     phase: phaseId,
@@ -85,7 +85,7 @@ const ProjectProposalsManager = ({
     });
   }, [visibleFilterMenus]);
 
-  if (!proposals || !proposalTopics) return null;
+  if (!proposals) return null;
 
   const resetSelection = () => {
     setSelection(new Set());
@@ -218,7 +218,7 @@ const ProjectProposalsManager = ({
               activeFilterMenu={activeFilterMenu}
               visibleFilterMenus={visibleFilterMenus}
               onChangeActiveFilterMenu={handleChangeActiveFilterMenu}
-              topics={proposalTopics.data}
+              topics={proposalTopics?.data ?? []}
               selectedTopics={queryParameters.topics}
               onChangeTopicsFilter={onChangeTopics}
               onChangeStatusFilter={onChangeStatus}

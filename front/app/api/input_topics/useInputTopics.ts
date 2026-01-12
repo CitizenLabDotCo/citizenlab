@@ -12,10 +12,10 @@ const fetchInputTopics = ({ projectId }: { projectId: string }) =>
     action: 'get',
   });
 
-const useInputTopics = (projectId: string) => {
+const useInputTopics = (projectId?: string) => {
   return useQuery<IInputTopics, CLErrors, IInputTopics, InputTopicsKeys>({
-    queryKey: inputTopicsKeys.list({ projectId }),
-    queryFn: () => fetchInputTopics({ projectId }),
+    queryKey: inputTopicsKeys.list({ projectId: projectId || '' }),
+    queryFn: () => fetchInputTopics({ projectId: projectId! }),
     enabled: !!projectId,
   });
 };

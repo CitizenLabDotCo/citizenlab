@@ -72,7 +72,7 @@ export const ideasData: IIdeaData[] = [
       manual_votes_amount: 0,
     },
     relationships: {
-      topics: {
+      input_topics: {
         data: [],
       },
       idea_images: { data: [] },
