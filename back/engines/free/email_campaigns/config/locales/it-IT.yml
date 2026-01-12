@@ -217,17 +217,17 @@ it:
       event_description_action: 'Clicca qui sotto per leggere la proposta.'
       cta_button: 'Co-sponsorizza questa proposta'
     invite_reminder:
-      subject: 'In attesa dell''invito per la piattaforma di partecipazione di %{organizationName}'
+      subject: 'Hai un invito in sospeso per la piattaforma partecipativa di %{organizationName}'
       preheader: '%{organizationName} ti ha inviato un invito a partecipare alla loro piattaforma di partecipazione alcuni giorni fa.'
-      title: 'Il tuo invito è in attesa'
-      cta_button: 'Accetta il tuo invito'
+      title: 'Il tuo invito è in attesa di risposta'
+      cta_button: 'Accetta l''invito'
       invitation_expiry_message: 'Questo invito scade tra circa %{expiryDaysRemaining} giorni.'
     invite_received:
       preheader: '%{organizationName} ti ha invitato alla loro piattaforma di partecipazione.'
-      subject: 'Siete invitati a partecipare alla piattaforma di %{organizationName}'
-      title: 'Sei invitato!'
-      event_description: '%{organizationName} ti ha invitato alla sua piattaforma di partecipazione.'
-      cta_button: 'Accetta il tuo invito'
+      subject: 'Sei stato invitato a partecipare alla piattaforma di %{organizationName}'
+      title: 'Sei stato invitato!'
+      event_description: '%{organizationName} ti ha invitato sulla sua piattaforma partecipativa.'
+      cta_button: 'Accetta l''invito'
       added_a_message: '%{organizationName} ha scritto il seguente messaggio:'
       invitation_expiry_message: 'Questo invito scade tra %{expiryDays} giorni.'
     mention_in_comment:
@@ -427,7 +427,7 @@ it:
       commented: "%{authorFirstName} ha commentato:"
       preheader: "Panoramica settimanale di %{organizationName}"
       title: "Scopri cosa è successo la scorsa settimana"
-      event_description: "Ecco un riassunto di ciò che è successo sulla piattaforma di partecipazione di %{organizationName}."
+      event_description: "Ecco un riassunto di ciò che è successo sulla piattaforma partecipativa di %{organizationName}."
       cta_button: "Vai alla piattaforma"
       title_no_activity_past_week: "Nessuna attività nell'ultima settimana"
       successful_proposals_title: "Raggiunta la soglia"
@@ -498,11 +498,11 @@ it:
       cta_button: 'Vedi i voti inviati'
       cta_message: 'Clicca sul pulsante qui sotto per partecipare'
     native_survey_not_submitted:
-      subject: '%{organizationName}Ci siamo quasi! Invia le tue risposte'
+      subject: '%{organizationName}: Ci siamo quasi! Invia le tue risposte'
       preheader: 'Non hai completato le risposte al sondaggio sulla piattaforma partecipativa di %{organizationName}'
       title: 'Ci siamo quasi! Invia le tue risposte'
       event_description: 'Hai iniziato a condividere le tue risposte su %{phaseTitle} ma non le hai inviate. Clicca sul pulsante qui sotto per continuare da dove avevi interrotto.'
-      cta_button: 'Riprendi la risposta al sondaggio'
+      cta_button: 'Riprendi le tue risposte al sondaggio'
       submissions_close: 'Le iscrizioni si chiuderanno su %{phaseEndDate}.'
     voting_basket_not_submitted:
       subject: '%{organizationName}Non hai inviato i tuoi voti'
