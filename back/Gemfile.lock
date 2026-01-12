@@ -605,7 +605,7 @@ GEM
       qonfig (>= 0.24)
     css_parser (1.14.0)
       addressable
-    csv (3.3.0)
+    csv (3.3.5)
     dalli (3.2.8)
     database_cleaner (2.1.0)
       database_cleaner-active_record (>= 2, < 3)
@@ -777,7 +777,7 @@ GEM
     http-cookie (1.0.8)
       domain_name (~> 0.5)
     http-form_data (2.3.0)
-    httparty (0.23.1)
+    httparty (0.24.0)
       csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
@@ -891,8 +891,8 @@ GEM
     mrml (1.7.0-x86_64-linux)
     msgpack (1.7.2)
     multi_json (1.15.0)
-    multi_xml (0.7.1)
-      bigdecimal (~> 3.1)
+    multi_xml (0.8.1)
+      bigdecimal (>= 3.1, < 5)
     multipart-post (2.4.1)
     mustache (1.1.1)
     mutex_m (0.3.0)
@@ -1361,6 +1361,7 @@ PLATFORMS
   aarch64-linux
   arm64-darwin-21
   arm64-darwin-24
+  arm64-darwin-25
   x86_64-darwin-21
   x86_64-darwin-23
   x86_64-linux
