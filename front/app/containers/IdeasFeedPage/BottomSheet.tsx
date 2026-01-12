@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { FocusOn } from 'react-focus-on';
 import styled from 'styled-components';
 
 const COLLAPSED_HEIGHT = 40;
@@ -22,7 +22,7 @@ const Container = styled.div<{ translateY: number; isDragging: boolean }>`
   transition: ${({ isDragging }) =>
     isDragging ? 'none' : 'transform 0.3s ease-out'};
   height: 100vh;
-  z-index: 1020;
+  z-index: 1050;
 `;
 
 const DragHandle = styled.div`
@@ -47,11 +47,23 @@ const DragArea = styled.div`
   }
 `;
 
+const Overlay = styled.div<{ isVisible: boolean }>`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1040;
+  pointer-events: ${({ isVisible }) => (isVisible ? 'auto' : 'none')};
+`;
+
 interface Props {
   children: React.ReactNode;
   a11y_panelLabel: string;
   a11y_expandLabel: string;
   a11y_collapseLabel: string;
+  /** When this value changes (and is truthy), the sheet expands to fullscreen */
+  expandToFullscreenOn?: string | null;
 }
 
 type SheetState = 'collapsed' | 'default' | 'fullscreen';
@@ -61,9 +73,8 @@ const BottomSheet = ({
   a11y_panelLabel,
   a11y_expandLabel,
   a11y_collapseLabel,
+  expandToFullscreenOn,
 }: Props) => {
-  const [searchParams] = useSearchParams();
-  const ideaId = searchParams.get('idea_id');
   const [sheetState, setSheetState] = useState<SheetState>('default');
   const [dragTranslateY, setDragTranslateY] = useState<number | null>(null);
   const dragStartY = useRef(0);
@@ -85,12 +96,11 @@ const BottomSheet = ({
   };
 
   useEffect(() => {
-    if (ideaId) {
+    if (expandToFullscreenOn) {
       setSheetState('fullscreen');
-      contentRef.current?.focus();
       contentRef.current?.scrollTo(0, 0);
     }
-  }, [ideaId]);
+  }, [expandToFullscreenOn]);
 
   const startDrag = (startY: number) => {
     dragStartY.current = startY;
@@ -136,36 +146,45 @@ const BottomSheet = ({
     : getTranslateYForState(sheetState);
   const isExpanded = sheetState !== 'collapsed';
 
-  return (
-    <Container
-      ref={sheetRef}
-      translateY={translateY}
-      isDragging={isDragging}
-      role="region"
-      aria-label={a11y_panelLabel}
-    >
-      <DragArea
-        onTouchStart={(e) => startDrag(e.touches[0].clientY)}
-        onTouchMove={(e) => updateDrag(e.touches[0].clientY)}
-        onTouchEnd={endDrag}
-        onMouseDown={handleMouseDown}
-        aria-expanded={isExpanded}
-        aria-label={isExpanded ? a11y_collapseLabel : a11y_expandLabel}
-      >
-        <DragHandle aria-hidden="true" />
-      </DragArea>
+  const handleClickOutside = () => {
+    if (isExpanded) {
+      setSheetState('collapsed');
+    }
+  };
 
-      <Box
-        ref={contentRef}
-        tabIndex={-1}
-        px="16px"
-        pb="24px"
-        overflowY="auto"
-        h="100%"
+  return (
+    <FocusOn
+      enabled={isExpanded}
+      autoFocus={true}
+      returnFocus={false}
+      scrollLock={true}
+      onClickOutside={handleClickOutside}
+    >
+      <Overlay isVisible={isExpanded} onClick={handleClickOutside} />
+      <Container
+        ref={sheetRef}
+        translateY={translateY}
+        isDragging={isDragging}
+        role="dialog"
+        aria-modal={isExpanded}
+        aria-label={a11y_panelLabel}
       >
-        {children}
-      </Box>
-    </Container>
+        <DragArea
+          onTouchStart={(e) => startDrag(e.touches[0].clientY)}
+          onTouchMove={(e) => updateDrag(e.touches[0].clientY)}
+          onTouchEnd={endDrag}
+          onMouseDown={handleMouseDown}
+          aria-expanded={isExpanded}
+          aria-label={isExpanded ? a11y_collapseLabel : a11y_expandLabel}
+        >
+          <DragHandle aria-hidden="true" />
+        </DragArea>
+
+        <Box ref={contentRef} px="16px" py="24px" overflowY="auto" h="100%">
+          {children}
+        </Box>
+      </Container>
+    </FocusOn>
   );
 };
 

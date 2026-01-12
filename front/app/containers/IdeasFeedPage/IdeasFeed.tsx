@@ -1,4 +1,10 @@
-import React, { useMemo, useRef, useCallback, useState } from 'react';
+import React, {
+  useMemo,
+  useRef,
+  useCallback,
+  useState,
+  useEffect,
+} from 'react';
 
 import {
   Box,
@@ -7,6 +13,7 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { useVirtualizer } from '@tanstack/react-virtual';
+import { uniqBy } from 'lodash-es';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -102,13 +109,14 @@ const IdeasFeed = ({ topicId }: Props) => {
     useInfiniteIdeaFeedIdeas({
       phaseId,
       topic: topicId || undefined,
-      'page[size]': 20,
+      'page[size]': 10,
       keepPreviousData: topicId ? false : true,
     });
 
   const flatIdeas = useMemo(() => {
     if (!data) return [];
-    return data.pages.flatMap((page) => page.data);
+    const allIdeas = data.pages.flatMap((page) => page.data);
+    return uniqBy(allIdeas, 'id');
   }, [data]);
 
   // Reorder ideas to put the initial idea first (if provided), otherwise keep original order
@@ -142,10 +150,18 @@ const IdeasFeed = ({ topicId }: Props) => {
 
   const ideasLength = orderedIdeas.length;
 
-  const itemHeight = window.innerHeight - PEEK_HEIGHT;
+  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+
+  useEffect(() => {
+    const handleResize = () => setWindowHeight(window.innerHeight);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const itemHeight = windowHeight - PEEK_HEIGHT;
 
   const { getVirtualItems, getTotalSize, measureElement } = useVirtualizer({
-    count: hasNextPage ? ideasLength + 1 : ideasLength,
+    count: ideasLength + 1,
     getScrollElement: () => parentRef.current,
     estimateSize: () => itemHeight,
     overscan: 2,
