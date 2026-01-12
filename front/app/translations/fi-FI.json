@@ -1165,6 +1165,7 @@
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Tällä sähköpostiosoitteella on jo tili. Voit kirjautua ulos, kirjautua sisään tällä sähköpostiosoitteella ja vahvistaa tilisi asetussivulla.",
   "app.containers.Authentication.steps.AccessDenied.close": "Lähellä",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Et täytä tähän prosessiin osallistumisen edellytyksiä.",
+  "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Klikkaa tästä kirjautuaksesi sisään ylläpitäjänä tai projektipäällikkönä",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Anna tunnus",
   "app.containers.Authentication.steps.Invitation.token": "Token",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} on jo varattu odottavalle kutsulle. Tarkista sähköpostisi ja hyväksy kutsu napsauttamalla linkkiä. Jos et löydä kutsusähköpostia, lähetä se uudelleen napsauttamalla alla olevaa painiketta. Sähköpostin saapuminen voi kestää muutaman minuutin.",

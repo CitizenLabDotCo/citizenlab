@@ -1165,6 +1165,7 @@
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "حساب بهذا البريد الإلكتروني موجود بالفعل. يمكنك تسجيل الخروج وتسجيل الدخول باستخدام عنوان البريد الإلكتروني هذا والتحقق من حسابك في صفحة الإعدادات.",
   "app.containers.Authentication.steps.AccessDenied.close": "يغلق",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "لا تتوفر لديك المتطلبات للمشاركة في هذه العملية.",
+  "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "انقر هنا لتسجيل الدخول كمسؤول أو مدير مشروع",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "الرجاء إدخال رمز مميز",
   "app.containers.Authentication.steps.Invitation.token": "رمز",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "تم قبول دعوة معلقة {email} . يُرجى التحقق من بريدك الإلكتروني والنقر على الرابط لقبول الدعوة. إذا لم تجد رسالة الدعوة، فانقر على الزر أدناه لإعادة إرسالها. قد يستغرق وصولها بضع دقائق.",

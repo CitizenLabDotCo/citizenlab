@@ -1165,6 +1165,7 @@
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "ਇਸ ਈਮੇਲ ਵਾਲਾ ਖਾਤਾ ਪਹਿਲਾਂ ਹੀ ਮੌਜੂਦ ਹੈ। ਤੁਸੀਂ ਸਾਈਨ ਆਉਟ ਕਰ ਸਕਦੇ ਹੋ, ਇਸ ਈਮੇਲ ਪਤੇ ਨਾਲ ਲੌਗਇਨ ਕਰ ਸਕਦੇ ਹੋ ਅਤੇ ਸੈਟਿੰਗਾਂ ਪੰਨੇ 'ਤੇ ਆਪਣੇ ਖਾਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰ ਸਕਦੇ ਹੋ।",
   "app.containers.Authentication.steps.AccessDenied.close": "ਬੰਦ ਕਰੋ",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "ਤੁਸੀਂ ਇਸ ਪ੍ਰਕਿਰਿਆ ਵਿੱਚ ਹਿੱਸਾ ਲੈਣ ਲਈ ਲੋੜਾਂ ਨੂੰ ਪੂਰਾ ਨਹੀਂ ਕਰਦੇ ਹੋ।",
+  "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "ਐਡਮਿਨ ਜਾਂ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਵਜੋਂ ਲੌਗਇਨ ਕਰਨ ਲਈ ਇੱਥੇ ਕਲਿੱਕ ਕਰੋ।",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਟੋਕਨ ਦਾਖਲ ਕਰੋ",
   "app.containers.Authentication.steps.Invitation.token": "ਟੋਕਨ",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} ਪਹਿਲਾਂ ਹੀ ਇੱਕ ਲੰਬਿਤ ਸੱਦਾ ਪ੍ਰਾਪਤ ਕਰ ਚੁੱਕਾ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੀ ਈਮੇਲ ਦੀ ਜਾਂਚ ਕਰੋ ਅਤੇ ਸੱਦਾ ਸਵੀਕਾਰ ਕਰਨ ਲਈ ਲਿੰਕ 'ਤੇ ਕਲਿੱਕ ਕਰੋ। ਜੇਕਰ ਤੁਹਾਨੂੰ ਸੱਦਾ ਈਮੇਲ ਨਹੀਂ ਮਿਲਦੀ, ਤਾਂ ਇਸਨੂੰ ਦੁਬਾਰਾ ਭੇਜਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ 'ਤੇ ਕਲਿੱਕ ਕਰੋ। ਈਮੇਲ ਆਉਣ ਵਿੱਚ ਕੁਝ ਮਿੰਟ ਲੱਗ ਸਕਦੇ ਹਨ।",

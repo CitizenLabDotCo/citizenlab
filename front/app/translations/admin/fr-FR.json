@@ -1484,7 +1484,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Templates.visitors": "Visiteurs",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.cannotPrint": "Ce rapport contient des modifications non enregistrées. Veuillez le sauvegarder avant de l'imprimer.",
   "app.containers.Admin.reporting.components.ReportBuilder.TopBar.titleTaken": "Ce titre est déjà utilisé",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.comparedToPreviousXDays": "comparé aux {days} jours précédents",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.comparedToPreviousXDays": "par rapport aux {days} jours précédents",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.hideStatistics": "Masquer les statistiques",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.participationRate": "Taux de participation",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.showComparisonLastPeriod": "Afficher la comparaison avec la période précédente",

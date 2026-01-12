@@ -1165,6 +1165,7 @@
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Paskyra su šiuo el. pašto adresu jau egzistuoja. Galite išsiregistruoti, prisijungti šiuo el. pašto adresu ir patvirtinti paskyrą nustatymų puslapyje.",
   "app.containers.Authentication.steps.AccessDenied.close": "Uždaryti",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Neatitinkate reikalavimų, kad galėtumėte dalyvauti šiame procese.",
+  "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Spustelėkite čia, jei norite prisijungti kaip administratorius arba projekto vadovas",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Įveskite simbolį",
   "app.containers.Authentication.steps.Invitation.token": "Žetonas",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} jau yra užimtas laukiamu kvietimu. Patikrinkite savo el. paštą ir spustelėkite nuorodą, kad priimtumėte kvietimą. Jei nerandate kvietimo el. laiško, spustelėkite toliau esantį mygtuką ir išsiųskite jį iš naujo. Laiško gavimas gali užtrukti kelias minutes.",

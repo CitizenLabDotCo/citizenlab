@@ -1165,6 +1165,7 @@
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Es existiert bereits ein Konto mit dieser E-Mail-Adresse. Sie können sich abmelden, mit dieser E-Mail-Adresse anmelden und Ihr Konto auf der Einstellungsseite verifizieren.",
   "app.containers.Authentication.steps.AccessDenied.close": "Schließen",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Sie erfüllen nicht die Voraussetzungen für die Teilnahme an diesem Prozess.",
+  "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Klicken Sie hier, um sich als Administrator oder Projektmanager anzumelden",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Bitte geben Sie einen Einladungscode ein",
   "app.containers.Authentication.steps.Invitation.token": "Einladungscode",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} ist bereits durch eine ausstehende Einladung belegt. Bitte prüfen Sie Ihre E-Mails und klicken Sie auf den Link, um die Einladung anzunehmen. Wenn Sie die Einladungs-E-Mail nicht finden können, klicken Sie auf den Button unten, um sie erneut zu senden. Es kann ein paar Minuten dauern, bis die E-Mail eintrifft.",

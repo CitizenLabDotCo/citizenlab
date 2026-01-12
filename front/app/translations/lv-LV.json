@@ -1165,6 +1165,7 @@
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Konts ar šo e-pasta adresi jau pastāv. Jūs varat izrakstīties, pieteikties ar šo e-pasta adresi un pārbaudīt savu kontu iestatījumu lapā.",
   "app.containers.Authentication.steps.AccessDenied.close": "Aizvērt",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Jūs neatbilstat prasībām, lai piedalītos šajā procesā.",
+  "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Noklikšķiniet šeit, lai pieteiktos kā administrators vai projekta vadītājs",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Lūdzu, ievadiet žetonu",
   "app.containers.Authentication.steps.Invitation.token": "Žetons",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} jau ir aizņemts ar gaidāmo ielūgumu. Lūdzu, pārbaudiet savu e-pastu un noklikšķiniet uz saites, lai pieņemtu ielūgumu. Ja nevarat atrast ielūguma e-pastu, noklikšķiniet uz pogas zemāk, lai to nosūtītu atkārtoti. E-pasta saņemšana var aizņemt dažas minūtes.",

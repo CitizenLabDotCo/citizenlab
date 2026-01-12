@@ -1165,6 +1165,7 @@
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Mae cyfrif gyda'r e-bost hwn eisoes yn bodoli. Gallwch allgofnodi, mewngofnodi gyda'r cyfeiriad e-bost hwn a gwirio'ch cyfrif ar y dudalen gosodiadau.",
   "app.containers.Authentication.steps.AccessDenied.close": "Cau",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Nid ydych yn bodloni'r gofynion i gymryd rhan yn y broses hon.",
+  "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Cliciwch yma i fewngofnodi fel gweinyddwr neu reolwr prosiect",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Rhowch tocyn",
   "app.containers.Authentication.steps.Invitation.token": "Tocyn",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "Mae {email} eisoes wedi'i gymryd gan wahoddiad sydd ar y gweill. Gwiriwch eich e-bost a chliciwch ar y ddolen i dderbyn y gwahoddiad. Os na allwch ddod o hyd i'r e-bost gwahoddiad, cliciwch y botwm isod i'w ail-anfon. Efallai y bydd yr e-bost yn cymryd ychydig funudau i gyrraedd.",

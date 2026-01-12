@@ -1165,6 +1165,7 @@
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Ja existeix un compte amb aquest correu electrònic. Podeu tancar la sessió, iniciar sessió amb aquesta adreça de correu electrònic i verificar el vostre compte a la pàgina de configuració.",
   "app.containers.Authentication.steps.AccessDenied.close": "Tancar",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "No compleixes els requisits per participar en aquest procés.",
+  "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Feu clic aquí per iniciar sessió com a administrador o gestor de projectes",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Introduïu un testimoni",
   "app.containers.Authentication.steps.Invitation.token": "Token",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} ja està ocupat per una invitació pendent. Si us plau, reviseu el vostre correu electrònic i feu clic a l'enllaç per acceptar la invitació. Si no trobeu el correu electrònic d'invitació, feu clic al botó següent per tornar-lo a enviar. El correu electrònic pot trigar uns minuts a arribar.",

@@ -259,7 +259,7 @@ de:
       x_days_ago_by_author: 'Vor %{x} Tagen von %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} hat kommentiert:'
-      anonymous_user: Anonymer Benutzer
+      anonymous_user: Anonymer Teilnehmer
       cta_button: 'Kommentar von %{authorFirstName} ansehen'
       days_ago: 'vor %{numberOfDays} Tagen'
       event_description: '%{authorName} hat einen neuen Kommentar zu Ihrer Plattform hinzugefügt.'

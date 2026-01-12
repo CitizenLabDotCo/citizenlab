@@ -1165,6 +1165,7 @@
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Bu e-posta adresine sahip bir hesap zaten mevcut. Oturumu kapatabilir, bu e-posta adresiyle giriş yapabilir ve ayarlar sayfasında hesabınızı doğrulayabilirsiniz.",
   "app.containers.Authentication.steps.AccessDenied.close": "Kapat",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Bu sürece katılmak için gereken şartları karşılamıyorsunuz.",
+  "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Yönetici veya proje yöneticisi olarak giriş yapmak için buraya tıklayın",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Lütfen bir belirteç girin",
   "app.containers.Authentication.steps.Invitation.token": "Jeton",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} zaten bekleyen bir davet tarafından alınmıştır. Lütfen e-postanızı kontrol edin ve daveti kabul etmek için bağlantıya tıklayın. Davet e-postasını bulamazsanız, yeniden göndermek için aşağıdaki düğmeyi tıklayın. E-postanın ulaşması birkaç dakika sürebilir.",
