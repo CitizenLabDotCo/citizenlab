@@ -2,6 +2,7 @@ import React from 'react';
 
 import useLocalize from 'hooks/useLocalize';
 
+import messages from 'components/admin/GraphCards/InternalAdoptionCard/messages';
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 import Card from '../../_shared/Card';
@@ -9,7 +10,6 @@ import { DescriptionText } from '../_shared/DescriptionText';
 
 import ChartWidgetSettings from './ChartWidgetSettings';
 import InternalAdoptionCard from './InternalAdoptionCard';
-import messages from './messages';
 import { Props } from './typings';
 
 const InternalAdoptionWidget = ({

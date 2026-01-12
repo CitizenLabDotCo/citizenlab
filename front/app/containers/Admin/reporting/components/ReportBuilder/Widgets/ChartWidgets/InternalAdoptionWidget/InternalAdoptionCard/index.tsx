@@ -3,6 +3,7 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
+import Chart from 'components/admin/GraphCards/InternalAdoptionCard/Chart';
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 import NoData from '../../../_shared/NoData';
@@ -11,7 +12,6 @@ import { formatLargeNumber, getDaysInRange } from '../../utils';
 import { Props } from '../typings';
 import useInternalAdoption from '../useInternalAdoption';
 
-import Chart from './Chart';
 import { Statistics } from './Statistics';
 
 const InternalAdoptionCard = ({

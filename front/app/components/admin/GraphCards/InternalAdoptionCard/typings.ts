@@ -8,11 +8,6 @@ export interface Props {
   resolution?: IResolution;
 }
 
-export type TimeSeriesRow = {
-  date: string;
-  count: number;
-};
-
 export type CombinedTimeSeriesRow = {
   date: string;
   activeAdmins: number;

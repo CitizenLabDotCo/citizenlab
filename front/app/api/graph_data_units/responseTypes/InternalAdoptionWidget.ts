@@ -1,6 +1,7 @@
 export interface TimeSeriesResponseRow {
   date_group: string;
-  count: number;
+  active_admins: number;
+  active_moderators: number;
 }
 
 export interface InternalAdoptionResponse {
@@ -13,8 +14,7 @@ export interface InternalAdoptionResponse {
       total_registered_count: number;
 
       // Timeseries data for the graph
-      active_admins_timeseries: TimeSeriesResponseRow[];
-      active_moderators_timeseries: TimeSeriesResponseRow[];
+      timeseries: TimeSeriesResponseRow[];
 
       // Comparison period counts (optional)
       active_admins_compared?: number;

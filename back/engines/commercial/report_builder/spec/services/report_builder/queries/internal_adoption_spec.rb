@@ -50,13 +50,9 @@ RSpec.describe ReportBuilder::Queries::InternalAdoption do
         active_admins_count: 2,           # 2 admins with sessions in period
         active_moderators_count: 1,       # 1 moderator with session in period
         total_registered_count: 4,        # 2 admins + 2 mods created before end_at
-        active_admins_timeseries: [
-          { count: 2, date_group: Date.new(2022, 9, 1) },
-          { count: 1, date_group: Date.new(2022, 10, 1) }
-        ],
-        active_moderators_timeseries: [
-          { count: 1, date_group: Date.new(2022, 9, 1) },
-          { count: 0, date_group: Date.new(2022, 10, 1) }
+        timeseries: [
+          { date_group: Date.new(2022, 9, 1), active_admins: 2, active_moderators: 1 },
+          { date_group: Date.new(2022, 10, 1), active_admins: 1, active_moderators: 0 }
         ]
       })
     end
@@ -81,8 +77,7 @@ RSpec.describe ReportBuilder::Queries::InternalAdoption do
         active_admins_count: 0,           # No sessions in period
         active_moderators_count: 0,       # No sessions in period
         total_registered_count: 2,        # Both registered before end_at
-        active_admins_timeseries: [],
-        active_moderators_timeseries: []
+        timeseries: []
       })
     end
 
@@ -106,8 +101,7 @@ RSpec.describe ReportBuilder::Queries::InternalAdoption do
         active_admins_count: 0,
         active_moderators_count: 0,
         total_registered_count: 0,
-        active_admins_timeseries: [],
-        active_moderators_timeseries: []
+        timeseries: []
       })
     end
 
@@ -145,11 +139,8 @@ RSpec.describe ReportBuilder::Queries::InternalAdoption do
         active_admins_count: 2,
         active_moderators_count: 1,
         total_registered_count: 6,
-        active_admins_timeseries: [
-          { count: 2, date_group: Date.new(2022, 9, 1) }
-        ],
-        active_moderators_timeseries: [
-          { count: 1, date_group: Date.new(2022, 9, 1) }
+        timeseries: [
+          { date_group: Date.new(2022, 9, 1), active_admins: 2, active_moderators: 1 }
         ],
         # Comparison period (October)
         active_admins_compared: 1,

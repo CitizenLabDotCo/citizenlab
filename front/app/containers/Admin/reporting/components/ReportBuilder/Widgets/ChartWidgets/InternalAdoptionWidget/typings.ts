@@ -6,11 +6,6 @@ export interface Props extends TimeSeriesWidgetProps {
   hideStatistics?: boolean;
 }
 
-export type TimeSeriesRow = {
-  date: string;
-  count: number;
-};
-
 export type CombinedTimeSeriesRow = {
   date: string;
   activeAdmins: number;

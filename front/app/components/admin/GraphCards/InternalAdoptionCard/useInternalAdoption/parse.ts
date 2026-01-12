@@ -11,21 +11,31 @@ import { IResolution } from 'components/admin/ResolutionControl';
 
 import { keys } from 'utils/helperUtils';
 
-import { Stats, TimeSeriesRow, CombinedTimeSeriesRow } from '../typings';
+import { Stats, CombinedTimeSeriesRow } from '../typings';
 
 import { Translations } from './translations';
 
-const getEmptyRow = (date: Moment): TimeSeriesRow => ({
+const getEmptyRow = (date: Moment): CombinedTimeSeriesRow => ({
   date: date.format('YYYY-MM-DD'),
-  count: 0,
+  activeAdmins: 0,
+  activeModerators: 0,
+  totalActive: 0,
 });
 
-const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
+const parseRow = (
+  date: Moment,
+  row?: TimeSeriesResponseRow
+): CombinedTimeSeriesRow => {
   if (!row) return getEmptyRow(date);
 
+  const activeAdmins = row.active_admins;
+  const activeModerators = row.active_moderators;
+
   return {
-    count: row.count,
     date: date.format('YYYY-MM-DD'),
+    activeAdmins,
+    activeModerators,
+    totalActive: activeAdmins + activeModerators,
   };
 };
 
@@ -35,64 +45,16 @@ const getDate = (row: TimeSeriesResponseRow) => {
 
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
-const parseSingleTimeSeries = (
-  responseTimeSeries: TimeSeriesResponseRow[],
-  startAtMoment: Moment | null | undefined,
-  endAtMoment: Moment | null,
-  resolution: IResolution
-): TimeSeriesRow[] | null => {
-  return _parseTimeSeries(
-    responseTimeSeries,
-    startAtMoment,
-    endAtMoment,
-    resolution
-  );
-};
-
-const combineTimeSeries = (
-  adminsTimeSeries: TimeSeriesRow[] | null,
-  moderatorsTimeSeries: TimeSeriesRow[] | null
-): CombinedTimeSeriesRow[] | null => {
-  const definedSeries = adminsTimeSeries ?? moderatorsTimeSeries;
-  if (!definedSeries) return null;
-
-  return definedSeries.map((row, i) => {
-    const activeAdmins = adminsTimeSeries?.[i].count ?? 0;
-    const activeModerators = moderatorsTimeSeries?.[i].count ?? 0;
-
-    return {
-      date: row.date,
-      activeAdmins,
-      activeModerators,
-      totalActive: activeAdmins + activeModerators,
-    };
-  });
-};
-
 export const parseTimeSeries = (
   attributes: InternalAdoptionResponse['data']['attributes'],
   startAtMoment: Moment | null,
   endAtMoment: Moment | null,
   resolution: IResolution
 ): CombinedTimeSeriesRow[] => {
-  const { active_admins_timeseries, active_moderators_timeseries } = attributes;
-
-  const parsedAdminsTimeSeries = parseSingleTimeSeries(
-    active_admins_timeseries,
-    startAtMoment,
-    endAtMoment,
-    resolution
-  );
-
-  const parsedModeratorsTimeSeries = parseSingleTimeSeries(
-    active_moderators_timeseries,
-    startAtMoment,
-    endAtMoment,
-    resolution
-  );
+  const { timeseries } = attributes;
 
   return (
-    combineTimeSeries(parsedAdminsTimeSeries, parsedModeratorsTimeSeries) ?? []
+    _parseTimeSeries(timeseries, startAtMoment, endAtMoment, resolution) ?? []
   );
 };
 

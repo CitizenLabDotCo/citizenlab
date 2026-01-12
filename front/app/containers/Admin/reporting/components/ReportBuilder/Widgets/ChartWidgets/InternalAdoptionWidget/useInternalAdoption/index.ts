@@ -5,8 +5,9 @@ import moment from 'moment';
 import { useInternalAdoption as useInternalAdoptionData } from 'api/graph_data_units';
 import { InternalAdoptionProps } from 'api/graph_data_units/requestTypes';
 
+import { parseTimeSeries } from 'components/admin/GraphCards/InternalAdoptionCard/useInternalAdoption/parse';
+
 import { parseStats } from './parseStats';
-import { parseTimeSeries } from './parseTimeSeries';
 
 export default function useInternalAdoption({
   start_at,

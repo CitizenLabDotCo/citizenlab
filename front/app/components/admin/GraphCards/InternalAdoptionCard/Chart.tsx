@@ -4,7 +4,11 @@ import { Dates, Resolution } from 'components/admin/GraphCards/typings';
 import { LegendItem } from 'components/admin/Graphs/_components/Legend/typings';
 import LineChart from 'components/admin/Graphs/LineChart';
 import { colors } from 'components/admin/Graphs/styling';
-import { Margin, YAxisProps } from 'components/admin/Graphs/typings';
+import {
+  Margin,
+  YAxisProps,
+  AccessibilityProps,
+} from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
 import { toThreeLetterMonth } from 'utils/dateUtils';
@@ -14,22 +18,21 @@ import messages from './messages';
 import renderTooltip from './renderTooltip';
 import { CombinedTimeSeriesRow } from './typings';
 
-type Props = Dates &
-  Resolution & {
-    timeSeries: CombinedTimeSeriesRow[] | null;
-    innerRef?: React.RefObject<any>;
-    margin?: Margin;
-    yaxis?: YAxisProps;
-  };
+export interface ChartProps extends Dates, Resolution, AccessibilityProps {
+  timeSeries: CombinedTimeSeriesRow[] | null;
+  innerRef?: React.RefObject<any>;
+  margin?: Margin;
+  yaxis?: YAxisProps;
+}
 
-const EMPTY_LINE_CONFIG = { strokeWidths: [0] };
+export const EMPTY_LINE_CONFIG = { strokeWidths: [0] };
 
-const LINE_CONFIG = {
+export const LINE_CONFIG = {
   strokes: [colors.categorical01, colors.categorical03, colors.categorical07],
   activeDot: { r: 4 },
 };
 
-const LEGEND_ITEMS = {
+export const LEGEND_ITEMS = {
   totalActive: {
     color: colors.categorical01,
     message: messages.totalActive,
@@ -44,11 +47,11 @@ const LEGEND_ITEMS = {
   },
 };
 
-const METRIC_TYPES: ('totalActive' | 'activeAdmins' | 'activeModerators')[] = [
+export const METRIC_TYPES = [
   'totalActive',
   'activeAdmins',
   'activeModerators',
-];
+] as const;
 
 const Chart = ({
   timeSeries,
@@ -58,7 +61,9 @@ const Chart = ({
   innerRef,
   margin,
   yaxis,
-}: Props) => {
+  ariaLabel,
+  ariaDescribedBy,
+}: ChartProps) => {
   const { formatMessage } = useIntl();
 
   const emptyData = useMemo(
@@ -95,7 +100,7 @@ const Chart = ({
       data={noData ? emptyData : timeSeries}
       mapping={{
         x: 'date',
-        y: METRIC_TYPES,
+        y: [...METRIC_TYPES],
       }}
       margin={margin}
       lines={noData ? EMPTY_LINE_CONFIG : LINE_CONFIG}
@@ -108,6 +113,8 @@ const Chart = ({
         items: legendItems,
       }}
       innerRef={noData ? undefined : innerRef}
+      ariaLabel={ariaLabel}
+      ariaDescribedBy={ariaDescribedBy}
     />
   );
 };
