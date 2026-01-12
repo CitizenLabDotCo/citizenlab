@@ -5,6 +5,7 @@ import {
   Text,
   colors,
   stylingConsts,
+  Icon,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -14,6 +15,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import useLocalize from 'hooks/useLocalize';
 
 import Avatar from 'components/Avatar';
+import ReactionControl from 'components/ReactionControl';
 import T from 'components/T';
 
 export const NOTE_HEIGHTS = {
@@ -29,8 +31,8 @@ const StyledNote = styled(Box)`
   text-align: left;
   &:hover,
   &:focus {
-    transform: translateY(-4px) rotate(0deg) !important;
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+    filter: brightness(0.9);
   }
 `;
 
@@ -38,6 +40,7 @@ const BodyText = styled(Text)`
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
+  overflow: hidden;
 `;
 
 interface Props {
@@ -107,9 +110,6 @@ const StickyNote: React.FC<Props> = ({
       onKeyDown={handleKeyDown}
       aria-label={title}
     >
-      <Text fontSize="l" fontWeight="bold" m="0px" color={'textPrimary'}>
-        {title}
-      </Text>
       {authorName && (
         <Box display="flex" alignItems="center">
           <Avatar userId={authorId} authorHash={authorHash} size={24} />
@@ -118,15 +118,30 @@ const StickyNote: React.FC<Props> = ({
           </Text>
         </Box>
       )}
-      <BodyText
-        fontSize="m"
-        color="textPrimary"
-        textOverflow="ellipsis"
-        overflow="hidden"
-        m="0px"
+      <Text fontSize="l" fontWeight="bold" m="0px" color={'textPrimary'}>
+        {title}
+      </Text>
+
+      <Box flex="1" minHeight="0" overflow="hidden">
+        <BodyText fontSize="m" color="textPrimary" m="0px">
+          <T supportHtml={true} value={idea.data.attributes.body_multiloc} />
+        </BodyText>
+      </Box>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        gap="8px"
+        flexShrink={0}
       >
-        <T supportHtml={true} value={idea.data.attributes.body_multiloc} />
-      </BodyText>
+        <Icon
+          name="comments"
+          fill={colors.textSecondary}
+          width="20px"
+          height="20px"
+        />
+        <ReactionControl ideaId={ideaId} size="1" styleType="compact" />
+      </Box>
     </StyledNote>
   );
 };
