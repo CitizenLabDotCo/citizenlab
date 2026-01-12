@@ -2897,6 +2897,7 @@
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Neapstiprināts uzaicinājums",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Kas var pievienot anotācijas dokumentam?",
   "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_subtitle": "Kurš var pieteikties dalībai pasākumā?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_tooltip": "Ja brīdī, kad lietotājs mēģina apmeklēt notikumu, nav aktīvas fāzes, sistēma izmantos pēdējā pabeigtās fāzes atļaujas.",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_inputs_subtitle": "Kas var komentēt ievades datus?",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_proposals_subtitle": "Kas var komentēt priekšlikumus?",
   "app.containers.AdminPage.groups.permissions.permissionAction_post_proposal_subtitle": "Kas var iesniegt priekšlikumu?",
