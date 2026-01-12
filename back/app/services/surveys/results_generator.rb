@@ -176,6 +176,11 @@ module Surveys
       @survey_inputs ||= phase.ideas.includes(:author).supports_survey.published
     end
 
+    # First we structure the responses by field, using logic to work out which fields were actually seen
+    #  { "CustomField.id" => [
+    #     { id: "Idea.id", answer: nil },
+    #     { id: "Idea.id", answer: ['key1', 'key2] },
+    #     { id: "Idea.id", answer: 'text' }...
     def responses_by_field
       @responses_by_field ||= begin
         # First nest the input_fields inside pages to make logic easier
@@ -203,10 +208,8 @@ module Surveys
               fields_on_page.each do |field|
                 seen << field.id
 
-                # TODO: Not currently adding the other/follow_up input_fields in here - ie if other option selected it will have been seen
-
                 # Is there a different next page based on logic?
-                next_logic_page_id = next_page_id_from_logic(field, input)
+                next_logic_page_id = next_page_id_from_logic(field, input, all_page_ids)
                 next_page_id = next_logic_page_id if next_logic_page_id
               end
             end
@@ -220,7 +223,7 @@ module Surveys
         end
 
         # Now build the structure removing any responses that were not seen due to logic
-        # nil values are added which means seen but not answered
+        # nil values are added - This translates to 'seen but not answered'
         responses = input_fields.to_h do |field|
           [
             field.id,
@@ -235,14 +238,14 @@ module Surveys
           ]
         end
 
-        # Now add in the user input_fields too if not already there in the input fields - generate_fields only returns fields in the form,
+        # Now add in the user fields too () if not already there in the input fields (from the embedded form),
         # but when grouping we need the additional user fields in the raw responses too
         # Logic not needed here as these fields will only be used for grouping
         responses.merge(
           user_fields.each_with_object({}) do |field, accu|
             next if responses.key?(field.id) # Field already present in input fields
 
-            user_field_key = "u_#{field.key}"
+            user_field_key = "u_#{field.key}" # Convert the key to same format used in idea custom_field_values
             accu[field.id] = seen_responses.map do |response|
               {
                 id: response[:id],
@@ -259,20 +262,31 @@ module Surveys
       num_times_field_seen(responses_by_field.keys.first)
     end
 
-    def next_page_id_from_logic(field, input)
+    def next_page_id_from_logic(field, input, all_page_ids)
       return if field.logic.blank?
 
       # Any page logic that will change the next page?
       return field.logic['next_page_id'] if field.page?
 
-      # Options/ Linear scale logic
+      # Options / Linear scale logic
       field_value = input.custom_field_values[field.key]
 
       if field_value
-        # Individual option selected?
-        option_value = field.supports_linear_scale? ? field_value : field.options.find { |o| o.key == field_value }&.id
-        option_next_page_id = field.logic['rules']&.find { |r| r['if'] == option_value }&.dig('goto_page_id')
-        return option_next_page_id if option_next_page_id
+        if field_value.is_a? Array
+          # Multiple options selected (multiselect - legacy support)? We find the furthest page
+          option_ids = field.options.select { |o| field_value.include?(o.key) }.map(&:id)
+          option_next_page_ids = option_ids.map do |option_id|
+            field.logic['rules']&.find { |r| r['if'] == option_id }&.dig('goto_page_id')
+          end
+          furthest_page_id = option_next_page_ids.max_by { |id| all_page_ids.index(id) }
+
+          return furthest_page_id if furthest_page_id
+        else
+          # Individual option selected (single select / linear scale)
+          option_value = field.supports_linear_scale? ? field_value : field.options.find { |o| o.key == field_value }&.id
+          option_next_page_id = field.logic['rules']&.find { |r| r['if'] == option_value }&.dig('goto_page_id')
+          return option_next_page_id if option_next_page_id
+        end
 
         # Any other answer selected?
         field.logic['rules']&.find { |r| r['if'] == 'any_other_answer' }&.dig('goto_page_id')
@@ -290,8 +304,7 @@ module Surveys
     def survey_has_logic?
       return false if structure_by_category # If structuring by category (community monitor only) then logic will not work
 
-      # TODO: Some surveys have { rules: [] }
-      @survey_has_logic ||= input_fields.any? { |field| field.logic != {} }
+      @survey_has_logic ||= input_fields.any? { |field| field.logic != {} && field.logic != { 'rules' => [] } }
     end
 
     def num_times_field_seen(field_id)
@@ -400,7 +413,7 @@ module Surveys
     end
 
     def get_option_logic(field)
-      # return {} if field.logic.blank?
+      return {} if field.logic.blank?
 
       is_linear_or_rating = field.supports_linear_scale?
       options = if is_linear_or_rating
@@ -589,7 +602,6 @@ module Surveys
       end
     end
 
-    # TODO: Refactor this to use nesting like in the survey response logic service - in fact the same logic should work
     def logic_skipped_field_ids(results, field_id, goto_page_id)
       skip = false
       skip_from_next_page = false
@@ -607,6 +619,7 @@ module Surveys
     end
 
     def supports_question_logic?(input_type)
+      # NOTE: multiselect and multiselect_image support is deprecated and will be removed in future
       %w[select multiselect linear_scale multiselect_image rating].include? input_type
     end
 

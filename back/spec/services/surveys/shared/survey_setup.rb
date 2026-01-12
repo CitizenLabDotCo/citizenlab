@@ -449,8 +449,7 @@ RSpec.shared_context 'survey_setup' do
     end
   end
 
-  def reset_survey_logic
-    # Reset any cached survey logic in the phase's participation method
+  def reset_survey_logic!
     form.custom_fields.each do |field|
       field.update!(logic: {})
     end

@@ -126,7 +126,6 @@ RSpec.describe Surveys::ResultsGenerator do
             question: { 'en' => 'Nobody wants to answer me' },
             required: false,
             grouped: false,
-            logic: {},
             totalResponseCount: 27,
             questionResponseCount: 0,
             textResponses: []
