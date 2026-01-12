@@ -259,7 +259,7 @@ de:
       x_days_ago_by_author: 'Vor %{x} Tagen von %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} hat kommentiert:'
-      anonymous_user: Anonymer Benutzer
+      anonymous_user: Anonymer Teilnehmer
       cta_button: 'Kommentar von %{authorFirstName} ansehen'
       days_ago: 'vor %{numberOfDays} Tagen'
       event_description: '%{authorName} hat einen neuen Kommentar zu Ihrer Plattform hinzugefügt.'
@@ -515,9 +515,7 @@ de:
       subject: '%{organizationName}: Letzte Chance, für %{phaseTitle} abzustimmen'
       preheader: 'Letzte Chance, für %{phaseTitle} auf der Beteiligungsplattform von %{organizationName} abzustimmen'
       title: 'Letzte Chance, für %{phaseTitle} abzustimmen'
-      body_1: 'Die Abstimmungsphase für das Projekt %{projectTitle} geht morgen um Mitternacht zu Ende.'
-      body_2: 'Die Zeit läuft ab und wir haben festgestellt, dass Sie Ihre Stimme noch nicht abgegeben haben! Klicken Sie auf den Button unten und machen Sie mit.'
-      body_3: 'Auf diese Weise erhält man Zugang zu einer Reihe von Optionen und hat die Möglichkeit, seine Stimme abzugeben, die für die Entscheidung über die Zukunft dieses Projekts entscheidend ist.'
+      event_description: '<p>Die Abstimmungsphase für das Projekt %{projectTitle} geht morgen um Mitternacht zu Ende.</p><p>Die Zeit läuft ab und wir haben festgestellt, dass Sie Ihre Stimme noch nicht abgegeben haben! Handeln Sie jetzt und klicken Sie einfach auf die Schaltfläche unten, um teilzunehmen.</p><p>Dadurch erhalten Sie Zugang zu einer Reihe von Optionen und haben die Möglichkeit, Ihren Beitrag hinzuzufügen, der für die Entscheidung über die Zukunft dieses Projekts sehr wichtig ist.</p>'
       cta_button: 'Auswählen'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} Abstimmungsergebnisse veröffentlicht!'

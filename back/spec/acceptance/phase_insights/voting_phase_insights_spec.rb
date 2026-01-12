@@ -8,7 +8,7 @@ resource 'Phase insights' do
     travel_to(Time.zone.parse('2025-12-02 12:00:00'))
   end
 
-  let!(:custom_field_gender) { create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' }) }
+  let!(:custom_field_gender) { create(:custom_field, :for_registration, key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' }) }
   let!(:custom_field_option_male) { create(:custom_field_option, custom_field: custom_field_gender, key: 'male', title_multiloc: { en: 'Male' }) }
   let!(:custom_field_option_female) { create(:custom_field_option, custom_field: custom_field_gender, key: 'female', title_multiloc: { en: 'Female' }) }
   let!(:custom_field_option_other) { create(:custom_field_option, custom_field: custom_field_gender, key: 'unspecified', title_multiloc: { en: 'Unspecified' }) }
@@ -21,7 +21,7 @@ resource 'Phase insights' do
     )
   end
 
-  let!(:custom_field_birthyear) { create(:custom_field, resource_type: 'User', key: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' }) }
+  let!(:custom_field_birthyear) { create(:custom_field, :for_registration, key: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' }) }
 
   let!(:binned_distribution) do
     create(
@@ -216,7 +216,7 @@ resource 'Phase insights' do
     end
 
     example '[Error] Returns error when group_by custom_field resource_type is not User' do
-      non_user_cf = create(:custom_field, resource_type: 'CustomForm', key: 'location_description', input_type: 'text')
+      non_user_cf = create(:custom_field, :for_custom_form, key: 'location_description', input_type: 'text')
       do_request(id: voting_phase.id, group_by: non_user_cf.key)
 
       assert_status 422
@@ -224,7 +224,7 @@ resource 'Phase insights' do
     end
 
     example '[Error] Returns error when group_by custom_field input_type is not supported' do
-      unsupported_cf = create(:custom_field, resource_type: 'User', key: 'hobby', input_type: 'text')
+      unsupported_cf = create(:custom_field, :for_registration, key: 'hobby', input_type: 'text')
       do_request(id: voting_phase.id, group_by: unsupported_cf.key)
 
       assert_status 422
@@ -232,7 +232,7 @@ resource 'Phase insights' do
     end
 
     example "[Error] Returns error when group_by custom_field input_type is number but key is not 'birthyear'" do
-      unsupported_number_cf = create(:custom_field, resource_type: 'User', key: 'number_of_cats', input_type: 'number')
+      unsupported_number_cf = create(:custom_field, :for_registration, key: 'number_of_cats', input_type: 'number')
       do_request(id: voting_phase.id, group_by: unsupported_number_cf.key)
 
       assert_status 422

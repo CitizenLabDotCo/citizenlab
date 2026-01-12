@@ -66,7 +66,10 @@ class WebApi::V1::PermissionsController < ApplicationController
   def custom_field_options
     authorize @permission
     fields = user_requirements_service.requirements_custom_fields @permission
-    options = CustomFieldOption.where(custom_field_id: fields.map(&:id))
+    options = CustomFieldOption
+      .joins(:custom_field)
+      .where(custom_field_id: fields.map(&:id))
+      .order('custom_fields.ordering ASC, custom_field_options.ordering ASC')
 
     render json: WebApi::V1::CustomFieldOptionSerializer.new(
       options,

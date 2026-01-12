@@ -515,9 +515,7 @@ hu:
       subject: '%{organizationName}: Utolsó lehetőség, hogy %{phaseTitle}-ra szavazz'
       preheader: 'Utolsó lehetőség szavazni %{phaseTitle} -ra a %{organizationName}részvételi platformján'
       title: 'Utolsó esély szavazni %{phaseTitle}-ra'
-      body_1: 'A %{projectTitle} projekt szavazási szakasza holnap, éjfélkor véget ér.'
-      body_2: 'Fogy az idő, és észrevettük, hogy még nem adtad le a szavazatodat! Cselekedjen most, egyszerűen kattintson az alábbi gombra a részvételhez.'
-      body_3: 'Ezáltal számos lehetőséghez juthat hozzá, és megadhatja véleményét, ami kulcsfontosságú a projekt jövőjének eldöntésében.'
+      event_description: '<p>A %{projectTitle} projekt szavazási szakasza holnap éjfélkor zárul.</p><p>Fogy az idő, és észrevettük, hogy még nem adtad le a szavazatodat! Cselekedj most egyszerűen az alábbi gombra kattintva a részvételhez.</p><p>Ezáltal számos lehetőséghez férhetsz hozzá, és lehetőséged lesz véleményt nyilvánítani, ami kulcsfontosságú a projekt jövőjének eldöntésében.</p>'
       cta_button: 'Szavazás'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} szavazás eredménye kiderült!'

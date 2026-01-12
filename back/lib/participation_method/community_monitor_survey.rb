@@ -13,8 +13,6 @@ module ParticipationMethod
     end
 
     def default_fields(custom_form)
-      return [] if custom_form.persisted?
-
       [
         page_field(custom_form, 'quality_of_life'),
         sentiment_field(custom_form, 'place_to_live', 'quality_of_life'),
