@@ -315,4 +315,44 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.projectFilterPlaceholder',
     defaultMessage: 'Filter by project',
   },
+  bannedEmails: {
+    id: 'app.containers.Admin.Users.BannedEmails.bannedEmails',
+    defaultMessage: 'Banned emails',
+  },
+  bannedEmailsSubtitle: {
+    id: 'app.containers.Admin.Users.BannedEmails.bannedEmailsSubtitle',
+    defaultMessage: 'Manage email addresses blocked from registration',
+  },
+  totalBannedEmails: {
+    id: 'app.containers.Admin.Users.BannedEmails.totalBannedEmails',
+    defaultMessage: 'Total banned emails',
+  },
+  checkEmailBan: {
+    id: 'app.containers.Admin.Users.BannedEmails.checkEmailBan',
+    defaultMessage: 'Check if an email is banned',
+  },
+  enterEmailPlaceholder: {
+    id: 'app.containers.Admin.Users.BannedEmails.enterEmailPlaceholder',
+    defaultMessage: 'Enter email address',
+  },
+  checkButton: {
+    id: 'app.containers.Admin.Users.BannedEmails.checkButton',
+    defaultMessage: 'Check',
+  },
+  emailIsBanned: {
+    id: 'app.containers.Admin.Users.BannedEmails.emailIsBanned',
+    defaultMessage: '{email} is banned',
+  },
+  emailNotBanned: {
+    id: 'app.containers.Admin.Users.BannedEmails.emailNotBanned',
+    defaultMessage: '{email} is not banned',
+  },
+  banReason: {
+    id: 'app.containers.Admin.Users.BannedEmails.banReason',
+    defaultMessage: 'Reason',
+  },
+  unbanButton: {
+    id: 'app.containers.Admin.Users.BannedEmails.unbanButton',
+    defaultMessage: 'Unban email',
+  },
 });

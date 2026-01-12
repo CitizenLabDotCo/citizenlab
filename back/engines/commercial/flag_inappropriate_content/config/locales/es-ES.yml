@@ -1,11 +1,11 @@
 es:
   email_campaigns:
     campaign_type_description:
-      "inappropriate_content_flagged": Marcado contenido inapropiado
+      "inappropriate_content_flagged": Contenido etiquetado como inapropiado
     admin_campaign_type_description:
-      "inappropriate_content_flagged": Marcado contenido inapropiado - administradores/as
+      "inappropriate_content_flagged": Contenido etiquetado como inapropiado - administradores/as
     inappropriate_content_flagged:
-      subject: 'Una publicación ha sido marcada para tu revisión en la plataforma'
+      subject: 'Una publicación ha sido marcada para su revisión'
       title: 'Una publicación ha sido marcada para revisión'
       author_wrote: '%{authorName} escribió:'
       preheader: 'Una publicación ha sido marcada para tu revisión en la plataforma'

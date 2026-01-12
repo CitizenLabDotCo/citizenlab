@@ -9,6 +9,7 @@ namespace :cl2back do
       Apartment::Tenant.switch(tenant.schema_name) do
         config = AppConfiguration.instance
         config.cleanup_settings
+        LLMSelector.new.clean_ai_providers!(config)
         config.save!
       end
     end

@@ -1,11 +1,11 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-const COLLAPSED_HEIGHT = 60;
-
-const SHEET_HEIGHT = 'calc(80vh - 60px)';
+const COLLAPSED_HEIGHT = 40;
+const DEFAULT_OFFSET = 350;
 
 const Container = styled.div<{ translateY: number; isDragging: boolean }>`
   position: fixed;
@@ -13,13 +13,15 @@ const Container = styled.div<{ translateY: number; isDragging: boolean }>`
   left: 0;
   right: 0;
   background: ${colors.white};
-  border-top-left-radius: 16px;
-  border-top-right-radius: 16px;
+  border-top-left-radius: ${({ translateY }) =>
+    translateY <= 0 ? '0' : '16px'};
+  border-top-right-radius: ${({ translateY }) =>
+    translateY <= 0 ? '0' : '16px'};
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
   transform: translateY(${({ translateY }) => translateY}px);
   transition: ${({ isDragging }) =>
     isDragging ? 'none' : 'transform 0.3s ease-out'};
-  height: ${SHEET_HEIGHT};
+  height: 100vh;
   z-index: 1020;
 `;
 
@@ -31,7 +33,7 @@ const DragHandle = styled.div`
   margin: 12px auto;
 `;
 
-const DragArea = styled.button`
+const DragArea = styled.div`
   display: block;
   width: 100%;
   padding: 8px 0;
@@ -52,160 +54,115 @@ interface Props {
   a11y_collapseLabel: string;
 }
 
+type SheetState = 'collapsed' | 'default' | 'fullscreen';
+
 const BottomSheet = ({
   children,
   a11y_panelLabel,
   a11y_expandLabel,
   a11y_collapseLabel,
 }: Props) => {
-  const [isExpanded, setIsExpanded] = useState(true);
-  const [isDragging, setIsDragging] = useState(false);
-  const [translateY, setTranslateY] = useState(0);
+  const [searchParams] = useSearchParams();
+  const ideaId = searchParams.get('idea_id');
+  const [sheetState, setSheetState] = useState<SheetState>('default');
+  const [dragTranslateY, setDragTranslateY] = useState<number | null>(null);
   const dragStartY = useRef(0);
   const sheetRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
-  const getSheetHeight = useCallback(() => {
-    if (sheetRef.current) {
-      return sheetRef.current.offsetHeight;
+  const getSheetHeight = () =>
+    sheetRef.current?.offsetHeight ?? window.innerHeight;
+
+  const getTranslateYForState = (state: SheetState) => {
+    switch (state) {
+      case 'fullscreen':
+        return 0;
+      case 'default':
+        return DEFAULT_OFFSET;
+      case 'collapsed':
+        return getSheetHeight() - COLLAPSED_HEIGHT;
     }
-    return 400;
-  }, []);
+  };
 
-  const handleDragStart = useCallback(
-    (clientY: number) => {
-      setIsDragging(true);
-      dragStartY.current = clientY;
-      const sheetHeight = getSheetHeight();
-      const currentTranslateY = isExpanded ? 0 : sheetHeight - COLLAPSED_HEIGHT;
-      setTranslateY(currentTranslateY);
-    },
-    [isExpanded, getSheetHeight]
-  );
-
-  const handleDragMove = useCallback(
-    (clientY: number) => {
-      if (!isDragging) return;
-
-      const deltaY = clientY - dragStartY.current;
-      const sheetHeight = getSheetHeight();
-      const baseTranslateY = isExpanded ? 0 : sheetHeight - COLLAPSED_HEIGHT;
-      const newTranslateY = Math.max(
-        0,
-        Math.min(sheetHeight - COLLAPSED_HEIGHT, baseTranslateY + deltaY)
-      );
-      setTranslateY(newTranslateY);
-    },
-    [isDragging, isExpanded, getSheetHeight]
-  );
-
-  const handleDragEnd = useCallback(() => {
-    if (!isDragging) return;
-
-    setIsDragging(false);
-    const sheetHeight = getSheetHeight();
-    const threshold = sheetHeight * 0.3;
-
-    if (isExpanded) {
-      if (translateY > threshold) {
-        setIsExpanded(false);
-        setTranslateY(sheetHeight - COLLAPSED_HEIGHT);
-      } else {
-        setTranslateY(0);
-      }
-    } else {
-      if (translateY < sheetHeight - COLLAPSED_HEIGHT - threshold) {
-        setIsExpanded(true);
-        setTranslateY(0);
-      } else {
-        setTranslateY(sheetHeight - COLLAPSED_HEIGHT);
-      }
+  useEffect(() => {
+    if (ideaId) {
+      setSheetState('fullscreen');
+      contentRef.current?.focus();
+      contentRef.current?.scrollTo(0, 0);
     }
-  }, [isDragging, isExpanded, translateY, getSheetHeight]);
+  }, [ideaId]);
 
-  const handleTouchStart = useCallback(
-    (e: React.TouchEvent) => {
-      handleDragStart(e.touches[0].clientY);
-    },
-    [handleDragStart]
-  );
+  const startDrag = (startY: number) => {
+    dragStartY.current = startY;
+    setDragTranslateY(getTranslateYForState(sheetState));
+  };
 
-  const handleTouchMove = useCallback(
-    (e: React.TouchEvent) => {
-      handleDragMove(e.touches[0].clientY);
-    },
-    [handleDragMove]
-  );
+  const updateDrag = (currentY: number) => {
+    const delta = currentY - dragStartY.current;
+    const base = getTranslateYForState(sheetState);
+    const max = getSheetHeight() - COLLAPSED_HEIGHT;
+    setDragTranslateY(Math.max(0, Math.min(max, base + delta)));
+  };
 
-  const handleMouseDown = useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault();
-      handleDragStart(e.clientY);
+  const endDrag = () => {
+    if (dragTranslateY === null) return;
+    const collapsedY = getSheetHeight() - COLLAPSED_HEIGHT;
+    const newState: SheetState =
+      dragTranslateY <= DEFAULT_OFFSET / 2
+        ? 'fullscreen'
+        : dragTranslateY <= (DEFAULT_OFFSET + collapsedY) / 2
+        ? 'default'
+        : 'collapsed';
+    setSheetState(newState);
+    setDragTranslateY(null);
+  };
 
-      const handleMouseMove = (moveEvent: MouseEvent) => {
-        handleDragMove(moveEvent.clientY);
-      };
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    startDrag(e.clientY);
+    const onMove = (ev: MouseEvent) => updateDrag(ev.clientY);
+    const onUp = () => {
+      endDrag();
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onUp);
+    };
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  };
 
-      const handleMouseUp = () => {
-        handleDragEnd();
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', handleMouseUp);
-      };
-
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-    },
-    [handleDragStart, handleDragMove, handleDragEnd]
-  );
-
-  const handleToggle = useCallback(() => {
-    const sheetHeight = getSheetHeight();
-    if (isExpanded) {
-      setTranslateY(sheetHeight - COLLAPSED_HEIGHT);
-    } else {
-      setTranslateY(0);
-    }
-    setIsExpanded(!isExpanded);
-  }, [isExpanded, getSheetHeight]);
-
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        handleToggle();
-      }
-    },
-    [handleToggle]
-  );
-
-  const sheetHeight = sheetRef.current?.offsetHeight || 400;
-  const displayTranslateY = isDragging
-    ? translateY
-    : isExpanded
-    ? 0
-    : sheetHeight - COLLAPSED_HEIGHT;
+  const isDragging = dragTranslateY !== null;
+  const translateY = isDragging
+    ? dragTranslateY
+    : getTranslateYForState(sheetState);
+  const isExpanded = sheetState !== 'collapsed';
 
   return (
     <Container
       ref={sheetRef}
-      translateY={displayTranslateY}
+      translateY={translateY}
       isDragging={isDragging}
       role="region"
       aria-label={a11y_panelLabel}
     >
       <DragArea
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleDragEnd}
+        onTouchStart={(e) => startDrag(e.touches[0].clientY)}
+        onTouchMove={(e) => updateDrag(e.touches[0].clientY)}
+        onTouchEnd={endDrag}
         onMouseDown={handleMouseDown}
-        onClick={handleToggle}
-        onKeyDown={handleKeyDown}
         aria-expanded={isExpanded}
         aria-label={isExpanded ? a11y_collapseLabel : a11y_expandLabel}
       >
         <DragHandle aria-hidden="true" />
       </DragArea>
 
-      <Box px="16px" pb="24px" overflowY="auto" h="100%">
+      <Box
+        ref={contentRef}
+        tabIndex={-1}
+        px="16px"
+        pb="24px"
+        overflowY="auto"
+        h="100%"
+      >
         {children}
       </Box>
     </Container>

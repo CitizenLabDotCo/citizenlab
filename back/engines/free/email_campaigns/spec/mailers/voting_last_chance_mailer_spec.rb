@@ -76,6 +76,7 @@ RSpec.describe EmailCampaigns::VotingLastChanceMailer do
           :voting_last_chance_campaign,
           context: create(:phase),
           subject_multiloc: { 'en' => 'Custom Context Subject - {{ projectTitle }}' },
+          intro_multiloc: { 'en' => '<b>NEW BODY TEXT</b>' },
           button_text_multiloc: { 'en' => 'CLICK THE CONTEXT BUTTON' },
           reply_to: 'noreply@govocal.com'
         )
@@ -123,6 +124,12 @@ RSpec.describe EmailCampaigns::VotingLastChanceMailer do
             with_tag 'h1' do
               with_text(/NEW TITLE FOR Example phase title/)
             end
+          end
+        end
+
+        it 'can customize the intro text' do
+          expect(body).to have_tag('b') do
+            with_text(/NEW BODY TEXT/)
           end
         end
 
