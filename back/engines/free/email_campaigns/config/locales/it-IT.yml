@@ -286,7 +286,7 @@ it:
       subject: 'È stato pubblicato un nuovo input sulla tua piattaforma'
       preheader: '%{authorName} ha pubblicato un nuovo input sulla tua piattaforma'
       title: 'È stato pubblicato un nuovo input sulla tua piattaforma'
-      event_description: '%{authorName} ha inviato un nuovo contributo sulla tua piattaforma. Scoprilo subito, dai un feedback o cambia il suo stato!'
+      event_description: '%{authorName} ha inviato un nuovo contributo sulla tua piattaforma. Guardalo subito, dai un riscontro o cambia il suo status!'
       cta_button: 'Fornisci un feedback a %{authorName}'
       days_ago: '%{numberOfDays} giorni fa'
       today: Oggi
@@ -296,7 +296,7 @@ it:
       preheader: '%{authorName} ha pubblicato un nuovo input sulla tua piattaforma'
       title: 'Un input richiede la tua revisione'
       cta_button: 'Esamina l''input'
-      event_description: '%{authorName} ha inviato un nuovo input sulla tua piattaforma.'
+      event_description: '%{authorName} ha inviato un nuovo contributo sulla tua piattaforma.'
       input_not_visible: 'L<b>''input non sarà visibile</b> finché non modificherai il suo stato.'
       days_ago: '%{numberOfDays} giorni fa'
       today: Oggi
