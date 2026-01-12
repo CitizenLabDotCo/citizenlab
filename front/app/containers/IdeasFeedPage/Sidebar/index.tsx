@@ -94,6 +94,7 @@ const Sidebar = () => {
         a11y_panelLabel={formatMessage(messages.topicsPanel)}
         a11y_expandLabel={formatMessage(messages.expandPanel)}
         a11y_collapseLabel={formatMessage(messages.collapsePanel)}
+        expandToFullscreenOn={selectedIdeaId}
       >
         {showIdeaDetail ? (
           <IdeaContent
@@ -109,7 +110,7 @@ const Sidebar = () => {
             totalIdeasCount={totalIdeasCount}
             topicCounts={topicCounts}
             slug={slug}
-            showBackButton={false}
+            isMobile={true}
           />
         )}
       </BottomSheet>
@@ -146,7 +147,6 @@ const Sidebar = () => {
           totalIdeasCount={totalIdeasCount}
           topicCounts={topicCounts}
           slug={slug}
-          showBackButton={true}
         />
       )}
     </Box>

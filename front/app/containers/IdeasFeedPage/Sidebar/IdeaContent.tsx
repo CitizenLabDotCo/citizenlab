@@ -18,9 +18,9 @@ const IdeaContent = ({
   return (
     <>
       <Box mb="16px">
-        <GoBackButton onClick={handleCloseIdea} showGoBackText={false} />
+        <GoBackButton onClick={handleCloseIdea} size="s" />
       </Box>
-      <Box flex="1" overflowY="auto" padding="24px">
+      <Box flex="1" overflowY="auto">
         <IdeasShow
           ideaId={selectedIdeaId!}
           projectId={selectedIdeaProjectId!}
