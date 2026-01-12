@@ -515,9 +515,7 @@ ach:
       subject: 'crwdns5856751:0%{organizationName}crwdnd5856751:0%{phaseTitle}crwdne5856751:0'
       preheader: 'crwdns5856753:0%{phaseTitle}crwdnd5856753:0%{organizationName}crwdne5856753:0'
       title: 'crwdns5856755:0%{phaseTitle}crwdne5856755:0'
-      body_1: 'crwdns5856757:0%{projectTitle}crwdne5856757:0'
-      body_2: 'crwdns5856759:0crwdne5856759:0'
-      body_3: 'crwdns5856761:0crwdne5856761:0'
+      event_description: 'crwdns5926777:0%{projectTitle}crwdne5926777:0'
       cta_button: 'crwdns5856763:0crwdne5856763:0'
     voting_results:
       subject: 'crwdns5856765:0%{organizationName}crwdnd5856765:0%{phaseTitle}crwdne5856765:0'
