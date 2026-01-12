@@ -56,7 +56,8 @@ const EmailFlowStart = ({
   onSwitchToSSO,
   onEnterFranceConnect,
 }: Props) => {
-  const { passwordLoginEnabled, ssoProviders, azureSettings } = useAuthConfig();
+  const { passwordLoginEnabled, ssoProviders, azureAdSettings } =
+    useAuthConfig();
 
   const { formatMessage } = useIntl();
 
@@ -140,7 +141,7 @@ const EmailFlowStart = ({
         </FormProvider>
       )}
       <SSOButtons onClickSSO={onSwitchToSSO} />
-      {azureSettings?.visibility === 'link' && (
+      {azureAdSettings?.visibility === 'link' && (
         <Box mt="24px">
           <StyledA href="/sign-in/admin">
             {formatMessage(messages.clickHereToLoginAsAdminOrPM)}
