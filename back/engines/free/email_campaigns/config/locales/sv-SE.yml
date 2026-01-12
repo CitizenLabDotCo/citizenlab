@@ -515,9 +515,7 @@ sv:
       subject: '%{organizationName}: Sista chansen att rösta på %{phaseTitle}'
       preheader: 'Sista chansen att rösta på %{phaseTitle} på deltagarplattformen för %{organizationName}'
       title: 'Sista chansen att rösta på %{phaseTitle}'
-      body_1: 'Omröstningsfasen för %{projectTitle} -projektet avslutas i morgon vid midnatt.'
-      body_2: 'Tiden rinner ut, och vi har märkt att du inte har skickat in dina val ännu.'
-      body_3: 'På så sätt får du tillgång till en rad olika alternativ och möjlighet att ge din syn på saken, vilket är avgörande för projektets framtid.'
+      event_description: '<p>Omröstningsfasen för %{projectTitle} -projektet avslutas i morgon vid midnatt.</p><p>Tiden börjar rinna ut och vi har märkt att du inte har röstat än! Agera nu genom att helt enkelt klicka på knappen nedan för att delta.</p><p>Genom att göra det får du tillgång till en rad olika alternativ och chansen att ge din input, vilket är avgörande för att besluta om framtiden för detta projekt.</p>'
       cta_button: 'Omröstning'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} omröstningsresultatet klart!'

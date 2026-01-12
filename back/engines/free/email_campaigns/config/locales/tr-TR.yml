@@ -515,9 +515,7 @@ tr:
       subject: '%{organizationName}: %{phaseTitle}adresine oy vermek için son şans'
       preheader: '%{organizationName}katılım platformunda %{phaseTitle} için oy kullanmak için son şans'
       title: 'Oy vermek için son şans %{phaseTitle}'
-      body_1: '%{projectTitle} projesi için oylama aşaması yarın gece yarısı sona eriyor.'
-      body_2: 'Zaman daralıyor ve henüz oyunuzu kullanmadığınızı fark ettik! Katılmak için aşağıdaki butona tıklayarak hemen harekete geçin.'
-      body_3: 'Bunu yaparak, bir dizi seçeneğe erişim kazanacak ve bu projenin geleceğine karar vermede çok önemli olan katkılarınızı sunma şansına sahip olacaksınız.'
+      event_description: '<p> %{projectTitle} projesi için oylama aşaması yarın gece yarısı sona eriyor.</p><p>Zaman azalıyor ve henüz oyunuzu kullanmadığınızı fark ettik! Katılmak için aşağıdaki butona tıklayarak hemen harekete geçin.</p><p>Bunu yaparak, bir dizi seçeneğe erişim kazanacak ve bu projenin geleceğine karar vermede çok önemli olan girdilerinizi sağlama şansına sahip olacaksınız.</p>'
       cta_button: 'Oylama'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} oylama sonuçları açıklandı!'

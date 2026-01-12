@@ -1,13 +1,2 @@
-<!-- Body text -->
-<mj-section padding="0 25px">
-  <mj-column>
-    <mj-text>
-      <p style="margin-top: 0px;"><%= format_message('body_1', values: { projectTitle: localize_for_recipient(event.project_title_multiloc) }) %></p>
-      <p><%= format_message('body_2', ) %></p>
-      <p><%= format_message('body_3') %></p>
-    </mj-text>
-  </mj-column>
-</mj-section>
-
 <!-- CTA button -->
 <%= render partial: 'application/cta_button', locals: { href: event.project_url, message: cta_button_text } %>

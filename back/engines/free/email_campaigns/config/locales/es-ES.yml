@@ -515,9 +515,7 @@ es:
       subject: '%{organizationName}Última oportunidad para votar a %{phaseTitle}'
       preheader: 'Última oportunidad para votar a %{phaseTitle} en la plataforma de participación de %{organizationName}'
       title: 'Última oportunidad para votar a %{phaseTitle}'
-      body_1: 'La fase de votación del proyecto %{projectTitle} finaliza mañana a medianoche.'
-      body_2: 'Se acaba el tiempo, ¡y nos hemos dado cuenta de que aún no has emitido tu voto! Actúa ahora haciendo clic en el botón de abajo para participar.'
-      body_3: 'Al hacerlo, accederás a una serie de opciones y tendrás la oportunidad de aportar tu opinión, que es crucial para decidir el futuro de este proyecto.'
+      event_description: '<p>La fase de votación para el proyecto %{projectTitle} finaliza mañana a medianoche.</p><p>El tiempo se acaba, ¡y nos hemos dado cuenta de que aún no has emitido tu voto! Actúa ahora haciendo clic en el botón de abajo para participar.</p><p>Al hacerlo, accederás a una serie de opciones y tendrás la oportunidad de aportar tu opinión, que es crucial para decidir el futuro de este proyecto.</p>'
       cta_button: 'Voto'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} ¡Revelados los resultados de la votación!'
