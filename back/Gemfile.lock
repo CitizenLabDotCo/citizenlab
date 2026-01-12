@@ -492,8 +492,8 @@ GEM
     acts_as_list (1.2.6)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
-    addressable (2.8.7)
-      public_suffix (>= 2.0.2, < 7.0)
+    addressable (2.8.8)
+      public_suffix (>= 2.0.2, < 8.0)
     aes_key_wrap (1.1.0)
     afm (0.2.2)
     akami (1.3.3)
@@ -597,7 +597,7 @@ GEM
     counter_culture (3.5.3)
       activerecord (>= 4.2)
       activesupport (>= 4.2)
-    crack (1.0.0)
+    crack (1.0.1)
       bigdecimal
       rexml
     crass (1.0.6)
@@ -764,7 +764,7 @@ GEM
     gyoku (1.4.0)
       builder (>= 2.1.2)
       rexml (~> 3.0)
-    hashdiff (1.1.0)
+    hashdiff (1.2.1)
     hashery (2.1.2)
     hashie (5.0.0)
     htmlentities (4.3.4)
@@ -1026,7 +1026,7 @@ GEM
     psych (5.2.6)
       date
       stringio
-    public_suffix (5.1.1)
+    public_suffix (6.0.1)
     puma (6.4.3)
       nio4r (~> 2.0)
     pundit (2.5.0)
@@ -1120,7 +1120,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     retriable (3.1.2)
-    rexml (3.4.2)
+    rexml (3.4.4)
     rgeo (3.0.1)
     rgeo-activerecord (8.0.0)
       activerecord (>= 7.0)
@@ -1341,7 +1341,7 @@ GEM
       activesupport
       faraday (~> 2.0)
       faraday-follow_redirects
-    webmock (3.23.1)
+    webmock (3.26.1)
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
@@ -1537,7 +1537,7 @@ DEPENDENCIES
   vcr (~> 6.2)
   volunteering!
   webhooks!
-  webmock (~> 3.23)
+  webmock (~> 3.26)
 
 RUBY VERSION
    ruby 3.4.7p58
