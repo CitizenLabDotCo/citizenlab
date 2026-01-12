@@ -30,6 +30,36 @@ resource 'InputTopics' do
       expect(response_data.dig(0, :id)).to eq @input_topics[2].id
       expect(response_data.dig(2, :id)).to eq @input_topics[0].id
     end
+
+    example 'List input topics sorted by ideas_count descending' do
+      # Create ideas with different topic counts
+      create_list(:idea, 3, project: project, input_topics: [@input_topics[0]])
+      create_list(:idea, 1, project: project, input_topics: [@input_topics[1]])
+      create_list(:idea, 2, project: project, input_topics: [@input_topics[2]])
+
+      do_request sort: '-ideas_count'
+
+      expect(response_data.size).to eq 3
+      # Most ideas first
+      expect(response_data.dig(0, :id)).to eq @input_topics[0].id # 3 ideas
+      expect(response_data.dig(1, :id)).to eq @input_topics[2].id # 2 ideas
+      expect(response_data.dig(2, :id)).to eq @input_topics[1].id # 1 idea
+    end
+
+    example 'List input topics sorted by ideas_count ascending' do
+      # Create ideas with different topic counts
+      create_list(:idea, 3, project: project, input_topics: [@input_topics[0]])
+      create_list(:idea, 1, project: project, input_topics: [@input_topics[1]])
+      create_list(:idea, 2, project: project, input_topics: [@input_topics[2]])
+
+      do_request sort: 'ideas_count'
+
+      expect(response_data.size).to eq 3
+      # Least ideas first
+      expect(response_data.dig(0, :id)).to eq @input_topics[1].id # 1 idea
+      expect(response_data.dig(1, :id)).to eq @input_topics[2].id # 2 ideas
+      expect(response_data.dig(2, :id)).to eq @input_topics[0].id # 3 ideas
+    end
   end
 
   # Shallow route - no project_id needed

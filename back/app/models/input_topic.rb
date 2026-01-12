@@ -23,6 +23,8 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class InputTopic < ApplicationRecord
+  extend OrderAsSpecified
+
   acts_as_list column: :ordering, scope: [:project_id], top_of_list: 0
 
   belongs_to :project
@@ -31,4 +33,13 @@ class InputTopic < ApplicationRecord
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false }
+
+  scope :order_ideas_count, lambda { |ideas, direction: :asc|
+    topics_counts = IdeasCountService.counts(ideas, ['input_topic_id'])['input_topic_id']
+    sorted_ids = ids.sort_by do |id|
+      count = topics_counts[id] || 0
+      direction == :desc ? -count : count
+    end
+    order_as_specified(id: sorted_ids)
+  }
 end

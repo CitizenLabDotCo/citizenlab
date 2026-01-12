@@ -122,6 +122,25 @@ describe IdeasFinder do
     end
   end
 
+  describe '#input_topics_condition' do
+    let(:project) { create(:project) }
+    let(:input_topic1) { create(:input_topic, project: project) }
+    let(:input_topic2) { create(:input_topic, project: project) }
+    let!(:idea1) { create(:idea, project: project, input_topics: [input_topic1]) }
+    let!(:idea2) { create(:idea, project: project, input_topics: [input_topic1, input_topic2]) }
+    let!(:idea3) { create(:idea, project: project, input_topics: [input_topic2]) }
+    let(:input_topic_ids) { [input_topic1.id] }
+    let(:expected_record_ids) { [idea1.id, idea2.id] }
+
+    before do
+      params[:input_topics] = input_topic_ids
+    end
+
+    it 'returns the correct records' do
+      expect(result_record_ids).to match_array expected_record_ids
+    end
+  end
+
   describe '#phase_condition' do
     let(:phase_id) { Phase.pick(:id) }
     let(:expected_record_ids) { Idea.includes(:ideas_phases).where(ideas_phases: { phase_id: phase_id }).pluck(:id) }

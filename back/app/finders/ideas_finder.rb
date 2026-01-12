@@ -44,6 +44,14 @@ class IdeasFinder < ApplicationFinder
   end
   alias topic_condition topics_condition
 
+  def input_topics_condition(input_topics)
+    return if input_topics.blank?
+
+    @records.includes(:input_topics)
+    scope(:with_some_input_topics, input_topics)
+  end
+  alias input_topic_condition input_topics_condition
+
   def phase_condition(phase)
     scope(:in_phase, phase) if phase.present?
   end
