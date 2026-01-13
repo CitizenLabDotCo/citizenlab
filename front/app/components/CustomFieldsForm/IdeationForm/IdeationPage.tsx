@@ -321,6 +321,7 @@ const IdeationPage = ({
                         }}
                         mt="16px"
                         width="auto"
+                        dataCy="post-participation-signup"
                       >
                         Sign up to stay in touch
                       </Button>
