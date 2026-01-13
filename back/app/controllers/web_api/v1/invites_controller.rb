@@ -93,7 +93,9 @@ class WebApi::V1::InvitesController < ApplicationController
           raise ClErrors::TransactionError.new(error_key: :unprocessable_invite)
         end
 
-        SideFxInviteService.new.after_accept @invite
+        claim_tokens = params.dig(:invite, :claim_tokens)
+        SideFxInviteService.new.after_accept(@invite, claim_tokens:)
+
         render json: WebApi::V1::InviteSerializer.new(
           @invite.reload,
           params: jsonapi_serializer_params,
