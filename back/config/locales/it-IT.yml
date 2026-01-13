@@ -300,7 +300,7 @@ it:
       votes_count: 'Voti'
   form_builder:
     default_select_field:
-      title: 'La vostra domanda'
+      title: 'La tua domanda'
       option1: 'Opzione 1'
       option2: 'Opzione 2'
     form_end_page:
