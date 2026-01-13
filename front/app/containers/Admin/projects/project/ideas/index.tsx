@@ -49,7 +49,7 @@ const AdminProjectIdeas = () => {
 
   return (
     <>
-      <AnalysisBanner projectId={projectId} phaseId={phaseId} scope="project" />
+      <AnalysisBanner projectId={projectId} phaseId={phaseId} />
       <Box mb="30px">
         <Box
           display="flex"

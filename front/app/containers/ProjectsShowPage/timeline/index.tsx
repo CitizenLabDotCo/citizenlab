@@ -9,6 +9,7 @@ import usePhases from 'api/phases/usePhases';
 import { getLatestRelevantPhase, hideTimelineUI } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
 import messages from 'containers/ProjectsShowPage/messages';
@@ -64,6 +65,7 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const currentLocale = useLocale();
+  const phaseInsightsEnabled = useFeatureFlag({ name: 'phase_insights' });
 
   const selectedPhase = useMemo(() => {
     if (!phases) return;
@@ -82,7 +84,13 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
 
   const selectPhase = (phase: IPhaseData) => {
     if (!phases) return;
-    setPhaseURL(phase, phases.data, project.data);
+    setPhaseURL(
+      phase,
+      phases.data,
+      project.data,
+      undefined,
+      phaseInsightsEnabled
+    );
   };
 
   if (selectedPhase) {

@@ -22,6 +22,10 @@
 class GlobalTopic < ApplicationRecord
   extend OrderAsSpecified
 
+  # Temporary fix while deploying, since Topic is a View instead of a Table, and
+  # rails can't detect the primary key automatically
+  self.primary_key = 'id'
+
   acts_as_list column: :ordering, top_of_list: 0, add_new_at: :top
 
   # Use case A - Project categorization (renamed tables)
