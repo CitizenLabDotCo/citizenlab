@@ -31,7 +31,7 @@ class ClaimToken < ApplicationRecord
   attribute :expires_at, :datetime, default: -> { TOKEN_EXPIRY_HOURS.hours.from_now }
 
   belongs_to :item, polymorphic: true, inverse_of: :claim_token
-  belongs_to :pending_claimer, class_name: 'User', optional: true
+  belongs_to :pending_claimer, class_name: 'User', optional: true, inverse_of: :claim_tokens
 
   validates :token, presence: true, uniqueness: true
   validates :item_type, presence: true, inclusion: { in: %w[Idea] }
@@ -40,7 +40,6 @@ class ClaimToken < ApplicationRecord
 
   scope :expired, -> { where(expires_at: ...Time.current) }
   scope :not_expired, -> { where(expires_at: Time.current..) }
-  scope :for_user, ->(user) { where(pending_claimer_id: user.id) }
 
   def expired?
     expires_at < Time.current
