@@ -13,12 +13,10 @@ namespace :topics do
           next
         end
 
-        now = Time.current
-
         # Step 1: Create default_input_topics from global_topics (copy IDs)
         default_topic_records = GlobalTopic.where(is_default: true).order(:ordering).pluck(
           :id, :title_multiloc, :description_multiloc, :icon, :ordering, :created_at, :updated_at
-        ).map.with_index do |(id, title, desc, icon, ordering, created_at, updated_at), index|
+        ).map.with_index do |(id, title, desc, icon, _ordering, created_at, updated_at), index|
           {
             id: id,
             title_multiloc: title,
