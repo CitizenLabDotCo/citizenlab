@@ -1167,6 +1167,7 @@
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Un account con questo indirizzo e-mail esiste già. Puoi uscire, accedere con questo indirizzo e-mail e verificare il tuo account nella pagina delle impostazioni.",
   "app.containers.Authentication.steps.AccessDenied.close": "Chiudi",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Non hai i requisiti per partecipare a questo processo.",
+  "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Clicca qui per accedere come amministratore o project manager",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Inserire un token",
   "app.containers.Authentication.steps.Invitation.token": "Gettone",
   "app.containers.Authentication.steps.InvitationResent.emailAlreadyTaken2": "{email} è già occupato da un invito in sospeso. Controlla la tua e-mail e clicca sul link per accettare l'invito. Se non riesci a trovare l'e-mail di invito, clicca sul pulsante sottostante per inviarla nuovamente. L'e-mail potrebbe impiegare qualche minuto per arrivare.",
