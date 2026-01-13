@@ -6,39 +6,17 @@ module ContentBuilder
       @layout = layout
     end
 
-    def process_file_attachments
-      return @layout.craftjs_json if @layout.craftjs_json.blank?
+    # Extracts all fileIds from FileAttachment widgets in craftjs_json
+    # Used by LayoutPolicy to authorize file attachments
+    def self.extract_file_ids(craftjs_json)
+      return [] if craftjs_json.blank?
 
-      cleanup_orphaned_attachments
-      create_attachments
-
-      @layout.craftjs_json
-    end
-
-    private
-
-    def cleanup_orphaned_attachments
-      return unless @layout.persisted?
-
-      referenced_file_ids = @layout.craftjs_json.each_value.filter_map do |node|
+      craftjs_json.each_value.filter_map do |node|
         node.dig('props', 'fileId') if file_attachment_widget?(node)
       end
-
-      ::Files::FileAttachment
-        .where(attachable: @layout)
-        .where.not(file_id: referenced_file_ids)
-        .destroy_all
     end
 
-    def create_attachments
-      @layout.craftjs_json.each_value do |node|
-        next unless file_attachment_widget?(node) && needs_file_attachment?(node)
-
-        create_file_attachment(node)
-      end
-    end
-
-    def file_attachment_widget?(node)
+    def self.file_attachment_widget?(node)
       return false unless node.is_a?(Hash)
 
       type = node['type']
@@ -46,23 +24,36 @@ module ContentBuilder
       resolved_name == 'FileAttachment'
     end
 
-    def needs_file_attachment?(node)
-      node.dig('props', 'fileId').present? && node.dig('props', 'fileAttachmentId').blank?
+    # Syncs file attachments based on fileIds referenced in craftjs_json.
+    # Creates new attachments for new fileIds and removes orphaned attachments.
+    def sync_file_attachments
+      return if @layout.craftjs_json.blank?
+
+      referenced_file_ids = self.class.extract_file_ids(@layout.craftjs_json)
+      create_missing_attachments(referenced_file_ids)
+      cleanup_orphaned_attachments(referenced_file_ids)
     end
 
-    def create_file_attachment(node)
-      file_id = node.dig('props', 'fileId')
-      return if file_id.blank?
+    private
 
-      file_attachment = ::Files::FileAttachment.find_or_create_by!(
-        file_id: file_id,
-        attachable: @layout
-      )
+    def create_missing_attachments(file_ids)
+      file_ids.each do |file_id|
+        ::Files::FileAttachment.find_or_create_by!(
+          file_id: file_id,
+          attachable: @layout
+        )
+      rescue ActiveRecord::RecordInvalid => e
+        Rails.logger.error "Failed to create file attachment for file #{file_id}: #{e.message}"
+      end
+    end
 
-      node['props']['fileAttachmentId'] = file_attachment.id
-      Rails.logger.info "FileAttachment #{file_attachment.id} for Layout #{@layout.id}"
-    rescue ActiveRecord::RecordInvalid => e
-      Rails.logger.error "Failed to create file attachment: #{e.message}"
+    def cleanup_orphaned_attachments(referenced_file_ids)
+      return unless @layout.persisted?
+
+      ::Files::FileAttachment
+        .where(attachable: @layout)
+        .where.not(file_id: referenced_file_ids)
+        .destroy_all
     end
   end
 end

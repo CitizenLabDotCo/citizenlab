@@ -93,14 +93,12 @@ module ContentBuilder
       self.craftjs_json = ContentBuilder::LayoutImageService.new.swap_data_images(craftjs_json)
     end
 
-    # Process file attachments in the craftjs_json, ensuring this happens in the same transaction
-    # as the layout save. This will:
-    # 1. Cleanup orphaned attachments (attachments no longer referenced in the JSON)
-    # 2. Create new file attachments and inject their IDs into the craftjs_json
+    # Sync file attachments based on fileIds in craftjs_json.
+    # Creates attachments for new fileIds and removes orphaned ones.
     def process_file_attachments
       return if craftjs_json.blank?
 
-      self.craftjs_json = ContentBuilder::FileAttachmentProcessorService.new(self).process_file_attachments
+      ContentBuilder::FileAttachmentProcessorService.new(self).sync_file_attachments
     end
   end
 end
