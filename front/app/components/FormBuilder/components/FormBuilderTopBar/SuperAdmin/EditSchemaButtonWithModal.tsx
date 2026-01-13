@@ -21,23 +21,18 @@ import useSuperAdmin from 'hooks/useSuperAdmin';
 
 import { transformFieldForSubmission } from 'components/FormBuilder/edit/utils';
 import Modal from 'components/UI/Modal';
+import TextArea from 'components/UI/TextArea';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import { replaceIdsWithNewUuids } from './utils';
 
-const CodeTextarea = styled.textarea`
-  width: 100%;
-  min-height: 400px;
-  font-family: 'Courier New', Courier, monospace !important;
-  background-color: ${colors.grey100};
-  border: 1px solid ${colors.borderLight};
-  border-radius: 4px;
-  padding: 12px;
-  resize: vertical;
-  white-space: pre;
-  overflow-x: auto;
+const CodeTextArea = styled(TextArea)`
+  .TextArea textarea {
+    font-family: 'Courier New', Courier, monospace !important;
+    background-color: ${colors.grey100};
+  }
 `;
 
 const ErrorText = styled(Text)`
@@ -154,10 +149,10 @@ const EditSchemaButtonWithModal = ({
             <FormattedMessage {...messages.schemaEdit} />
           </Title>
 
-          <CodeTextarea
+          <CodeTextArea
             value={jsonText}
-            onChange={(e) => setJsonText(e.target.value)}
-            spellCheck={false}
+            onChange={(value) => setJsonText(value)}
+            maxRows={20}
           />
 
           {error && (
