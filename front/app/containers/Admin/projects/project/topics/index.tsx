@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import useAuthUser from 'api/me/useAuthUser';
-import useInputTopics from 'api/input_topics/useInputTopics';
-import useDeleteInputTopic from 'api/input_topics/useDeleteInputTopic';
-import useReorderInputTopic from 'api/input_topics/useReorderInputTopic';
 import { IInputTopicData } from 'api/input_topics/types';
+import useDeleteInputTopic from 'api/input_topics/useDeleteInputTopic';
+import useInputTopics from 'api/input_topics/useInputTopics';
+import useReorderInputTopic from 'api/input_topics/useReorderInputTopic';
+import useAuthUser from 'api/me/useAuthUser';
 
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { TextCell } from 'components/admin/ResourceList';
@@ -31,8 +31,8 @@ import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 
-import messages from './messages';
 import InputTopicModal from './InputTopicModal';
+import messages from './messages';
 
 const ProjectInputTopics = ({ params: { projectId } }: WithRouterProps) => {
   const { data: authUser } = useAuthUser();

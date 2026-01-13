@@ -2,7 +2,7 @@ import React from 'react';
 
 import { screen, render, fireEvent, waitFor } from 'utils/testUtils/rtl';
 
-import TopicForm from './';
+import TopicForm from '.';
 
 const titleEN = 'en title';
 const titleNL = 'nl title';

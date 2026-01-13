@@ -11,10 +11,10 @@ import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
+import { IInputTopicData } from 'api/input_topics/types';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
-import { IInputTopicData } from 'api/input_topics/types';
 
 import { ManagerType, TFilterMenu } from 'components/admin/PostManager';
 

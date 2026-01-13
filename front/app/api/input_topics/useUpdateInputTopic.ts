@@ -6,11 +6,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import inputTopicsKeys from './keys';
 import { IInputTopic, IInputTopicUpdate } from './types';
 
-const updateInputTopic = async ({
-  projectId,
-  id,
-  ...requestBody
-}: IInputTopicUpdate) =>
+const updateInputTopic = async ({ id, ...requestBody }: IInputTopicUpdate) =>
   fetcher<IInputTopic>({
     path: `/input_topics/${id}`,
     action: 'patch',

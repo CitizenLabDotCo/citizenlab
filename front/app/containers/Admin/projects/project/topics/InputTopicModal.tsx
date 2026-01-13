@@ -73,7 +73,7 @@ const InputTopicModal = ({ projectId, topic, opened, close }: Props) => {
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
-      if (isEditing && topic) {
+      if (isEditing) {
         await updateInputTopic({
           projectId,
           id: topic.id,

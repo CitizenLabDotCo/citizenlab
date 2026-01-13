@@ -87,7 +87,7 @@ const TopicsPicker = memo(
   ({ onClick, selectedTopicIds, availableTopics, className }: Props) => {
     const localize = useLocalize();
 
-    const filteredTopics = (availableTopics as TopicData[])?.filter((topic) =>
+    const filteredTopics = (availableTopics as TopicData[]).filter((topic) =>
       selectedTopicIds.includes(topic.id)
     );
 
@@ -117,12 +117,9 @@ const TopicsPicker = memo(
     if (!isNilOrError(availableTopics)) {
       const numberOfSelectedTopics = selectedTopicIds.length;
       const selectedTopicNames = filteredTopics
-        ? filteredTopics
-            .map((topic: TopicData) =>
-              localize(topic.attributes.title_multiloc)
-            )
-            .join(', ')
-        : '';
+        .map((topic: TopicData) => localize(topic.attributes.title_multiloc))
+        .join(', ');
+
       return (
         <>
           <TopicsContainer className={`${className} e2e-topics-picker`}>

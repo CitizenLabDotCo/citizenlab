@@ -1,12 +1,12 @@
 import { QueryClient } from '@tanstack/react-query';
 
 import areasKeys from 'api/areas/keys';
+import globalTopicsKeys from 'api/global_topics/keys';
 import ideasKeys from 'api/ideas/keys';
 import meKeys from 'api/me/keys';
 import projectFoldersKeys from 'api/project_folders/keys';
 import projectsKeys from 'api/projects/keys';
 import miniProjectsKeys from 'api/projects_mini/keys';
-import globalTopicsKeys from 'api/global_topics/keys';
 
 import followUnfollowKeys from './keys';
 import { FollowableType } from './types';

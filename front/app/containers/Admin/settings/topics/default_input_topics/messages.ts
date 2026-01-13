@@ -1,0 +1,59 @@
+import { defineMessages } from 'react-intl';
+
+export default defineMessages({
+  descriptionDefaultInputTopicManagerText: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.descriptionDefaultInputTopicManagerText',
+    defaultMessage:
+      'Default input tags are automatically added to new projects. Citizens can use these tags to categorize their inputs. You can customize tags for each project in the project settings.',
+  },
+  addDefaultInputTopicButton: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.addDefaultInputTopicButton',
+    defaultMessage: 'Add default input tag',
+  },
+  editDefaultInputTopicFormTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.editDefaultInputTopicFormTitle',
+    defaultMessage: 'Edit default input tag',
+  },
+  confirmHeader: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.confirmHeader',
+    defaultMessage: 'Are you sure you want to delete this topic?',
+  },
+  deleteDefaultInputTopicConfirmation: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.deleteDefaultInputTopicConfirmation',
+    defaultMessage:
+      'This will delete this default input tag. Projects that already use this tag will keep their copy.',
+  },
+  cancel: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.cancel',
+    defaultMessage: 'Cancel',
+  },
+  deleteButtonLabel: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.deleteButtonLabel',
+    defaultMessage: 'Delete',
+  },
+  editButtonLabel: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.editButtonLabel',
+    defaultMessage: 'Edit',
+  },
+  fieldTopicTitle: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.fieldTopicTitle',
+    defaultMessage: 'Tag name',
+  },
+  fieldTopicTitleError: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.fieldTopicTitleError',
+    defaultMessage: 'Provide a tag name for all languages',
+  },
+  fieldTopicDescription: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.fieldTopicDescription',
+    defaultMessage: 'Tag description',
+  },
+  fieldTopicDescriptionTooltip: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.fieldTopicDescriptionTooltip',
+    defaultMessage:
+      'Add an optional description to provide more context about this tag.',
+  },
+  fieldTopicSave: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.fieldTopicSave',
+    defaultMessage: 'Save tag',
+  },
+});

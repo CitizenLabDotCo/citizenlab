@@ -7,7 +7,6 @@ import { ButtonWrapper } from 'components/admin/PageWrapper';
 import {
   Section,
   SectionDescription,
-  SectionTitle,
   StyledLink,
 } from 'components/admin/Section';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -20,8 +19,7 @@ import Modal, {
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-import messages from '../messages';
-
+import messages from './messages';
 import TopicsList from './TopicsList';
 import TopicTermConfig from './TopicTermConfig';
 
@@ -60,9 +58,6 @@ const AllTopics = () => {
 
   return (
     <Section>
-      <SectionTitle>
-        <FormattedMessage {...messages.titleTopicManager} />
-      </SectionTitle>
       <SectionDescription>
         <FormattedMessage
           {...messages.descriptionTopicManagerText}
@@ -113,7 +108,7 @@ const AllTopics = () => {
               processing={isLoading}
               id="e2e-custom-topic-delete-confirmation-button"
             >
-              <FormattedMessage {...messages.delete} />
+              <FormattedMessage {...messages.deleteButtonLabel} />
             </ButtonWithLink>
           </ButtonsWrapper>
         </ModalContentContainer>

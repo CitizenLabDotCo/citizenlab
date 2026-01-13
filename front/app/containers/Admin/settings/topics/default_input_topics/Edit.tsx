@@ -13,9 +13,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
 
-import messages from '../messages';
-
 import DefaultInputTopicForm from './DefaultInputTopicForm';
+import messages from './messages';
 
 const Edit = () => {
   const { defaultInputTopicId } = useParams() as {

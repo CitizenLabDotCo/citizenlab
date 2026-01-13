@@ -9,7 +9,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-const AllTopicsComponent = React.lazy(() => import('./all'));
+const AllTopicsComponent = React.lazy(() => import('./global_topics'));
 const DefaultInputTopicsComponent = React.lazy(
   () => import('./default_input_topics')
 );

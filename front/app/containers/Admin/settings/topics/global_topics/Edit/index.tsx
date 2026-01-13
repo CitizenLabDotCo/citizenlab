@@ -52,7 +52,6 @@ const Edit = () => {
           defaultValues={{
             title_multiloc: topic.data.attributes.title_multiloc,
             description_multiloc: topic.data.attributes.description_multiloc,
-            is_default: topic.data.attributes.is_default,
           }}
           onSubmit={handleSubmit}
         />

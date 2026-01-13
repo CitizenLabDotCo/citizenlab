@@ -4,9 +4,9 @@ import { CLErrors } from 'typings';
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import adminPublicationsStatusCountsKeys from 'api/admin_publications_status_counts/keys';
 import areasKeys from 'api/areas/keys';
+import globalTopicsKeys from 'api/global_topics/keys';
 import meKeys from 'api/me/keys';
 import projectsMiniAdminKeys from 'api/projects_mini_admin/keys';
-import globalTopicsKeys from 'api/global_topics/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 

@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import { DemographicOption } from '../types';
-
 import fetcher from 'utils/cl-react-query/fetcher';
+
+import { DemographicOption } from '../types';
 
 import votingInsightsKeys from './keys';
 import {
