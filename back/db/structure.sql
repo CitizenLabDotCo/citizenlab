@@ -271,6 +271,7 @@ DROP INDEX IF EXISTS public.index_nav_bar_items_on_project_folder_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_ordering;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_code;
 DROP INDEX IF EXISTS public.index_memberships_on_user_id;
+DROP INDEX IF EXISTS public.index_memberships_on_group_id_and_user_id;
 DROP INDEX IF EXISTS public.index_memberships_on_group_id;
 DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable_id;
 DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable;
@@ -330,6 +331,7 @@ DROP INDEX IF EXISTS public.index_idea_exposures_on_phase_id;
 DROP INDEX IF EXISTS public.index_idea_exposures_on_idea_id;
 DROP INDEX IF EXISTS public.index_id_id_card_lookup_id_cards_on_hashed_card_id;
 DROP INDEX IF EXISTS public.index_groups_projects_on_project_id;
+DROP INDEX IF EXISTS public.index_groups_projects_on_group_id_and_project_id;
 DROP INDEX IF EXISTS public.index_groups_projects_on_group_id;
 DROP INDEX IF EXISTS public.index_groups_permissions_on_permission_id;
 DROP INDEX IF EXISTS public.index_groups_permissions_on_group_id;
@@ -620,9 +622,11 @@ DROP TABLE IF EXISTS public.webhooks_subscriptions;
 DROP TABLE IF EXISTS public.webhooks_deliveries;
 DROP TABLE IF EXISTS public.verification_verifications;
 DROP TABLE IF EXISTS public.user_custom_fields_representativeness_ref_distributions;
+DROP VIEW IF EXISTS public.topics;
 DROP TABLE IF EXISTS public.text_images;
 DROP TABLE IF EXISTS public.tenants;
 DROP TABLE IF EXISTS public.surveys_responses;
+DROP VIEW IF EXISTS public.static_pages_topics;
 DROP TABLE IF EXISTS public.static_pages_global_topics;
 DROP TABLE IF EXISTS public.static_pages;
 DROP TABLE IF EXISTS public.static_page_files;
@@ -634,6 +638,7 @@ DROP TABLE IF EXISTS public.que_values;
 DROP TABLE IF EXISTS public.que_lockers;
 DROP SEQUENCE IF EXISTS public.que_jobs_id_seq;
 DROP TABLE IF EXISTS public.public_api_api_clients;
+DROP VIEW IF EXISTS public.projects_topics;
 DROP TABLE IF EXISTS public.projects_global_topics;
 DROP TABLE IF EXISTS public.projects_allowed_input_topics;
 DROP TABLE IF EXISTS public.project_reviews;
@@ -1380,8 +1385,8 @@ CREATE TABLE public.projects (
     baskets_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
-    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
     preview_token character varying NOT NULL,
+    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
     hidden boolean DEFAULT false NOT NULL,
     listed boolean DEFAULT true NOT NULL
 );
@@ -1498,9 +1503,9 @@ CREATE TABLE public.users (
     last_name character varying,
     locale character varying,
     bio_multiloc jsonb DEFAULT '{}'::jsonb,
+    invite_status character varying,
     custom_field_values jsonb DEFAULT '{}'::jsonb,
     registration_completed_at timestamp without time zone,
-    invite_status character varying,
     verified boolean DEFAULT false NOT NULL,
     email_confirmed_at timestamp without time zone,
     email_confirmation_code character varying,
@@ -1584,7 +1589,7 @@ CREATE VIEW public.analytics_fact_email_deliveries AS
     (ecd.sent_at)::date AS dimension_date_sent_id,
     ecd.campaign_id,
     p.id AS dimension_project_id,
-    ((ecc.type)::text <> ALL ((ARRAY['EmailCampaigns::Campaigns::Manual'::character varying, 'EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying])::text[])) AS automated
+    ((ecc.type)::text <> ALL (ARRAY[('EmailCampaigns::Campaigns::Manual'::character varying)::text, ('EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying)::text])) AS automated
    FROM ((public.email_campaigns_deliveries ecd
      JOIN public.email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)))
      LEFT JOIN public.projects p ON ((p.id = ecc.context_id)));
@@ -1770,9 +1775,9 @@ CREATE TABLE public.phases (
     manual_voters_amount integer,
     manual_voters_last_updated_by_id uuid,
     manual_voters_last_updated_at timestamp(6) without time zone,
+    survey_popup_frequency integer,
     similarity_threshold_title double precision DEFAULT 0.3,
     similarity_threshold_body double precision DEFAULT 0.4,
-    survey_popup_frequency integer,
     similarity_enabled boolean DEFAULT true NOT NULL,
     vote_term character varying DEFAULT 'vote'::character varying,
     voting_min_selected_options integer DEFAULT 1 NOT NULL,
@@ -2082,9 +2087,9 @@ CREATE TABLE public.app_configurations (
     logo character varying,
     favicon character varying,
     settings jsonb DEFAULT '{}'::jsonb,
-    style jsonb DEFAULT '{}'::jsonb,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
+    style jsonb DEFAULT '{}'::jsonb,
     platform_start_at timestamp(6) without time zone DEFAULT now() NOT NULL
 );
 
@@ -2096,8 +2101,8 @@ CREATE TABLE public.app_configurations (
 CREATE TABLE public.ar_internal_metadata (
     key character varying NOT NULL,
     value character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -2233,7 +2238,7 @@ CREATE TABLE public.content_builder_layouts (
 --
 
 CREATE TABLE public.cosponsorships (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     status character varying DEFAULT 'pending'::character varying NOT NULL,
     user_id uuid NOT NULL,
     idea_id uuid NOT NULL,
@@ -2703,11 +2708,11 @@ CREATE TABLE public.groups (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     title_multiloc jsonb DEFAULT '{}'::jsonb,
     slug character varying,
+    memberships_count integer DEFAULT 0 NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     membership_type character varying,
-    rules jsonb DEFAULT '[]'::jsonb,
-    memberships_count integer DEFAULT 0 NOT NULL
+    rules jsonb DEFAULT '[]'::jsonb
 );
 
 
@@ -3429,7 +3434,6 @@ CREATE TABLE public.project_imports (
     import_id uuid,
     log character varying[] DEFAULT '{}'::character varying[],
     locale character varying,
-    string character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     import_type character varying
@@ -3476,6 +3480,19 @@ CREATE TABLE public.projects_global_topics (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
+
+
+--
+-- Name: projects_topics; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.projects_topics AS
+ SELECT id,
+    project_id,
+    global_topic_id AS topic_id,
+    created_at,
+    updated_at
+   FROM public.projects_global_topics;
 
 
 --
@@ -3671,6 +3688,19 @@ CREATE TABLE public.static_pages_global_topics (
 
 
 --
+-- Name: static_pages_topics; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.static_pages_topics AS
+ SELECT id,
+    static_page_id,
+    global_topic_id AS topic_id,
+    created_at,
+    updated_at
+   FROM public.static_pages_global_topics;
+
+
+--
 -- Name: surveys_responses; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3722,6 +3752,24 @@ CREATE TABLE public.text_images (
     updated_at timestamp without time zone NOT NULL,
     text_reference character varying NOT NULL
 );
+
+
+--
+-- Name: topics; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.topics AS
+ SELECT id,
+    title_multiloc,
+    description_multiloc,
+    icon,
+    created_at,
+    updated_at,
+    ordering,
+    followers_count,
+    include_in_onboarding,
+    is_default
+   FROM public.global_topics;
 
 
 --
@@ -5937,6 +5985,13 @@ CREATE INDEX index_groups_projects_on_group_id ON public.groups_projects USING b
 
 
 --
+-- Name: index_groups_projects_on_group_id_and_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_groups_projects_on_group_id_and_project_id ON public.groups_projects USING btree (group_id, project_id);
+
+
+--
 -- Name: index_groups_projects_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6347,6 +6402,13 @@ CREATE UNIQUE INDEX index_maps_map_configs_on_mappable_id ON public.maps_map_con
 --
 
 CREATE INDEX index_memberships_on_group_id ON public.memberships USING btree (group_id);
+
+
+--
+-- Name: index_memberships_on_group_id_and_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_memberships_on_group_id_and_user_id ON public.memberships USING btree (group_id, user_id);
 
 
 --
@@ -8399,6 +8461,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250611110008'),
 ('20250610112901'),
 ('20250609151800'),
+('20250606074930'),
 ('20250605090517'),
 ('20250603161856'),
 ('20250528153448'),
@@ -8880,7 +8943,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171010114644'),
 ('20171010114629'),
 ('20171010091219'),
-('20171004133932'),
 ('20170918101800'),
 ('20170719172958'),
 ('20170719160834'),
