@@ -9,9 +9,9 @@ type DeleteInputTopicParams = {
   id: string;
 };
 
-const deleteInputTopic = ({ projectId, id }: DeleteInputTopicParams) =>
+const deleteInputTopic = ({ id }: DeleteInputTopicParams) =>
   fetcher({
-    path: `/projects/${projectId}/input_topics/${id}`,
+    path: `/input_topics/${id}`,
     action: 'delete',
   });
 
