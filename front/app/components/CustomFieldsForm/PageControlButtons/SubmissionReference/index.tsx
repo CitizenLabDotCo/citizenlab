@@ -16,6 +16,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import SubmissionIdContainer from './SubmissionIdContainer';
 import { getMailLink } from './utils';
 
 interface Props {
@@ -35,10 +36,11 @@ const SubmissionReference = ({ inputId }: Props) => {
       <Title variant="h4" as="h2">
         <FormattedMessage {...messages.preferToStayAnonymous} />
       </Title>
-      <Text color="textSecondary" mb="0">
+      <Text color="textSecondary" mb="12px">
         <FormattedMessage {...messages.saveThisCode} />
       </Text>
-      <Box w="100%" display="flex" alignItems="center">
+      <SubmissionIdContainer submissionId={inputId} />
+      <Box w="100%" display="flex" alignItems="center" mt="4px">
         <Icon
           name="email"
           width="16px"
