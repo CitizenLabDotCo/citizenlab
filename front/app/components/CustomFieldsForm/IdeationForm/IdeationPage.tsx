@@ -303,9 +303,6 @@ const IdeationPage = ({
                           onChange={handleOnChangeAnonymousPosting}
                         />
                       )}
-                    {showSubmissionReference && (
-                      <SubmissionReference inputId={idea.data.id} />
-                    )}
                     {showPostParticipationSignup && (
                       <Button
                         onClick={() => {
@@ -322,6 +319,9 @@ const IdeationPage = ({
                       >
                         Sign up to stay in touch
                       </Button>
+                    )}
+                    {showSubmissionReference && (
+                      <SubmissionReference inputId={idea.data.id} />
                     )}
                   </Box>
                 </Box>

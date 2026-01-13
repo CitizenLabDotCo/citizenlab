@@ -278,9 +278,6 @@ const SurveyPage = ({
                         phase={phase}
                         participationMethod={participationMethod}
                       />
-                      {showSubmissionReference && (
-                        <SubmissionReference inputId={idea.data.id} />
-                      )}
                       {showPostParticipationSignup && (
                         <Button
                           onClick={() => {
@@ -297,6 +294,9 @@ const SurveyPage = ({
                         >
                           Sign up to stay in touch
                         </Button>
+                      )}
+                      {showSubmissionReference && (
+                        <SubmissionReference inputId={idea.data.id} />
                       )}
                     </Box>
                   </Box>
