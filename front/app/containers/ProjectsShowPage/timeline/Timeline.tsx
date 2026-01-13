@@ -24,6 +24,7 @@ import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import messages from 'containers/ProjectsShowPage/messages';
@@ -296,6 +297,7 @@ const Timeline = ({
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
   const localize = useLocalize();
+  const phaseInsightsEnabled = useFeatureFlag({ name: 'phase_insights' });
   const tabsRef = useRef<HTMLButtonElement[]>([]);
   const [tooltipVisible, setTooltipVisible] = useState(false);
 
@@ -318,10 +320,16 @@ const Timeline = ({
       event.preventDefault();
 
       if (phase && phases && project) {
-        setPhaseURL(phase, phases.data, project.data, isBackoffice);
+        setPhaseURL(
+          phase,
+          phases.data,
+          project.data,
+          isBackoffice,
+          phaseInsightsEnabled
+        );
       }
     },
-    [isBackoffice, phases, project]
+    [isBackoffice, phases, project, phaseInsightsEnabled]
   );
 
   const handleTabListOnKeyDown = (e: KeyboardEvent) => {
