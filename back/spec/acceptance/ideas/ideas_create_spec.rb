@@ -517,6 +517,8 @@ resource 'Ideas' do
 
       context 'when visitor' do
         describe "native survey response when permission is 'everyone'" do
+          before { SettingsService.new.activate_feature!('ideation_accountless_posting') }
+
           let(:project) do
             create(:single_phase_native_survey_project, phase_attrs: { with_permissions: true }).tap do |project|
               project.phases.first.permissions.find_by(action: 'posting_idea').update! permitted_by: 'everyone'

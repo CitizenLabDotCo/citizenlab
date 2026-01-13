@@ -27,7 +27,7 @@ import ReactionButton from './ReactionButton';
 import ScreenReaderContent from './ScreenReaderContent';
 
 type TSize = '1' | '2' | '3' | '4';
-type TStyleType = 'border' | 'shadow';
+type TStyleType = 'border' | 'shadow' | 'compact';
 
 const Container = styled.div`
   display: flex;
