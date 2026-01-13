@@ -115,14 +115,12 @@ const IdeationPage = ({
         ? canModerateProject(project.data, authUser)
         : false;
 
-      let path: string;
-      if (returnTo === 'ideas-feed') {
-        path = `/projects/${project?.data.attributes.slug}/ideas-feed?phase_id=${phaseId}&initial_idea_id=${idea?.data.id}`;
-      } else if (userCanModerate && participationMethod === 'common_ground') {
-        path = `/admin/projects/${project?.data.id}/phases/${phase?.id}/ideas`;
-      } else {
-        path = `/ideas/${idea?.data.attributes.slug}`;
-      }
+      const path =
+        returnTo === 'ideas-feed'
+          ? `/projects/${project?.data.attributes.slug}/ideas-feed?phase_id=${phaseId}&initial_idea_id=${idea?.data.id}`
+          : userCanModerate && participationMethod === 'common_ground'
+          ? `/admin/projects/${project?.data.id}/phases/${phase?.id}/ideas`
+          : `/ideas/${idea?.data.attributes.slug}`;
 
       clHistory.push({ pathname: path });
     }
