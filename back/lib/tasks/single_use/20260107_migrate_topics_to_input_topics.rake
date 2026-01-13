@@ -16,17 +16,17 @@ namespace :topics do
         now = Time.current
 
         # Step 1: Create default_input_topics from global_topics (copy IDs)
-        default_topic_records = GlobalTopic.where(is_default: true).pluck(
-          :id, :title_multiloc, :description_multiloc, :icon, :ordering
-        ).map do |id, title, desc, icon, ordering|
+        default_topic_records = GlobalTopic.where(is_default: true).order(:ordering).pluck(
+          :id, :title_multiloc, :description_multiloc, :icon, :ordering, :created_at, :updated_at
+        ).map.with_index do |(id, title, desc, icon, ordering, created_at, updated_at), index|
           {
             id: id,
             title_multiloc: title,
             description_multiloc: desc,
             icon: icon,
-            ordering: ordering,
-            created_at: now,
-            updated_at: now
+            ordering: index,
+            created_at: created_at,
+            updated_at: updated_at
           }
         end
 
@@ -43,8 +43,10 @@ namespace :topics do
             'global_topics.title_multiloc',
             'global_topics.description_multiloc',
             'global_topics.icon',
-            'projects_allowed_input_topics.ordering'
-          ).map do |id, project_id, title, desc, icon, ordering|
+            'projects_allowed_input_topics.ordering',
+            'projects_allowed_input_topics.created_at',
+            'projects_allowed_input_topics.updated_at'
+          ).map do |id, project_id, title, desc, icon, ordering, created_at, updated_at|
             {
               id: id,
               project_id: project_id,
@@ -52,8 +54,8 @@ namespace :topics do
               description_multiloc: desc,
               icon: icon,
               ordering: ordering || 0,
-              created_at: now,
-              updated_at: now
+              created_at: created_at,
+              updated_at: updated_at
             }
           end
 
@@ -69,14 +71,16 @@ namespace :topics do
           .pluck(
             'ideas_topics.id',
             'ideas_topics.idea_id',
-            'pait.id'
-          ).map do |id, idea_id, input_topic_id|
+            'pait.id',
+            'ideas_topics.created_at',
+            'ideas_topics.updated_at'
+          ).map do |id, idea_id, input_topic_id, created_at, updated_at|
             {
               id: id,
               idea_id: idea_id,
               input_topic_id: input_topic_id,
-              created_at: now,
-              updated_at: now
+              created_at: created_at,
+              updated_at: updated_at
             }
           end
 
