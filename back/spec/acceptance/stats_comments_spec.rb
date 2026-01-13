@@ -223,7 +223,7 @@ resource 'Stats - Comments' do
             project = create(:project)
             @input_topic1 = create(:input_topic, project: project)
             @input_topic2 = create(:input_topic, project: project)
-            input_topic3 = create(:input_topic, project: project)
+            _input_topic3 = create(:input_topic, project: project)
             idea1 = create(:idea, input_topics: [@input_topic1], project: project)
             idea2 = create(:idea, input_topics: [@input_topic2], project: project)
             idea3 = create(:idea, input_topics: [@input_topic1, @input_topic2], project: project)

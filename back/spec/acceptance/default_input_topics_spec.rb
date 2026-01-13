@@ -60,7 +60,10 @@ resource 'DefaultInputTopics' do
   end
 
   context 'when admin' do
-    before { header_token_for create(:admin) }
+    before do
+      header_token_for create(:admin)
+      create_list(:default_input_topic, 3)
+    end
 
     post 'web_api/v1/default_input_topics' do
       with_options scope: :default_input_topic do
@@ -104,10 +107,6 @@ resource 'DefaultInputTopics' do
     patch 'web_api/v1/default_input_topics/:id/reorder' do
       with_options scope: :default_input_topic do
         parameter :ordering, 'The position, starting from 0, where the topic should be at.', required: true
-      end
-
-      before do
-        create_list(:default_input_topic, 3)
       end
 
       let(:id) { create(:default_input_topic).id }
