@@ -92,7 +92,7 @@ const IdeasFeedPage = () => {
           zIndex="1"
         >
           <ButtonWithLink
-            linkTo={`/projects/${slug}/ideas/new?phase_id=${phaseId}&return_to=ideas-feed`}
+            linkTo={`/projects/${slug}/ideas/new?phase_id=${phaseId}`}
             icon="plus-circle"
             buttonStyle="secondary-outlined"
             bgColor="white"
