@@ -109,13 +109,21 @@ const IdeationPage = ({
   const handleNextAndsubmit = () => {
     pageRef.current?.scrollTo(0, 0);
     if (currentPageIndex === lastPageIndex) {
+      const returnTo = searchParams.get('return_to');
+      const phaseId = searchParams.get('phase_id');
       const userCanModerate = project
         ? canModerateProject(project.data, authUser)
         : false;
-      const path =
-        userCanModerate && participationMethod === 'common_ground'
-          ? `/admin/projects/${project?.data.id}/phases/${phase?.id}/ideas`
-          : `/ideas/${idea?.data.attributes.slug}`;
+
+      let path: string;
+      if (returnTo === 'ideas-feed') {
+        path = `/projects/${project?.data.attributes.slug}/ideas-feed?phase_id=${phaseId}&initial_idea_id=${idea?.data.id}`;
+      } else if (userCanModerate && participationMethod === 'common_ground') {
+        path = `/admin/projects/${project?.data.id}/phases/${phase?.id}/ideas`;
+      } else {
+        path = `/ideas/${idea?.data.attributes.slug}`;
+      }
+
       clHistory.push({ pathname: path });
     }
     methods.handleSubmit((e) => onFormSubmit(e))();
