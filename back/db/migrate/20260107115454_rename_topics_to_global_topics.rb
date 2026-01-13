@@ -27,6 +27,41 @@ class RenameTopicsToGlobalTopics < ActiveRecord::Migration[7.2]
           SQL
         end
       end
+
+      # Create compatibility views so old code referencing original names keeps working
+      reversible do |dir|
+        dir.up do
+          # View for topics table
+          execute <<-SQL.squish
+            CREATE VIEW topics AS SELECT * FROM global_topics
+          SQL
+
+          # View for projects_topics with topic_id alias
+          execute <<-SQL.squish
+            CREATE VIEW projects_topics AS
+            SELECT id, project_id, global_topic_id AS topic_id, created_at, updated_at
+            FROM projects_global_topics
+          SQL
+
+          # View for static_pages_topics with topic_id alias
+          execute <<-SQL.squish
+            CREATE VIEW static_pages_topics AS
+            SELECT id, static_page_id, global_topic_id AS topic_id, created_at, updated_at
+            FROM static_pages_global_topics
+          SQL
+        end
+        dir.down do
+          execute <<-SQL.squish
+            DROP VIEW IF EXISTS static_pages_topics
+          SQL
+          execute <<-SQL.squish
+            DROP VIEW IF EXISTS projects_topics
+          SQL
+          execute <<-SQL.squish
+            DROP VIEW IF EXISTS topics
+          SQL
+        end
+      end
     end
   end
 end
