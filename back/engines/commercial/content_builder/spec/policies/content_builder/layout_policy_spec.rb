@@ -13,6 +13,7 @@ RSpec.describe ContentBuilder::LayoutPolicy do
 
     it { is_expected.to permit(:show) }
     it { is_expected.not_to permit(:upsert) }
+    it { is_expected.not_to permit(:update) }
     it { is_expected.not_to permit(:destroy) }
   end
 
@@ -21,6 +22,7 @@ RSpec.describe ContentBuilder::LayoutPolicy do
 
     it { is_expected.to permit(:show) }
     it { is_expected.not_to permit(:upsert) }
+    it { is_expected.not_to permit(:update) }
     it { is_expected.not_to permit(:destroy) }
   end
 
@@ -46,6 +48,11 @@ RSpec.describe ContentBuilder::LayoutPolicy do
         expect(policy).not_to permit(:upsert)
       end
 
+      it 'forbids update' do
+        expect(user_role_service).to receive(:can_moderate?)
+        expect(policy).not_to permit(:update)
+      end
+
       it 'forbids destroy' do
         expect(user_role_service).to receive(:can_moderate?)
         expect(policy).not_to permit(:destroy)
@@ -65,6 +72,59 @@ RSpec.describe ContentBuilder::LayoutPolicy do
       it 'permits destroy' do
         expect(user_role_service).to receive(:can_moderate?)
         expect(policy).to permit(:destroy)
+      end
+
+      context 'when craftjs_json has no file attachments' do
+        it 'permits update' do
+          expect(user_role_service).to receive(:can_moderate?)
+          expect(policy).to permit(:update)
+        end
+      end
+
+      context 'when craftjs_json references files' do
+        let(:file) { create(:file) }
+        let(:layout) do
+          create(:layout, craftjs_json: {
+            'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => ['node1'] },
+            'node1' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => file.id } }
+          })
+        end
+
+        context 'when user is authorized to use the file' do
+          before do
+            allow_any_instance_of(Files::FilePolicy).to receive(:update?).and_return(true)
+          end
+
+          it 'permits update' do
+            expect(user_role_service).to receive(:can_moderate?)
+            expect(policy).to permit(:update)
+          end
+        end
+
+        context 'when user is not authorized to use the file' do
+          before do
+            allow_any_instance_of(Files::FilePolicy).to receive(:update?).and_return(false)
+          end
+
+          it 'forbids update' do
+            expect(user_role_service).to receive(:can_moderate?)
+            expect(policy).not_to permit(:update)
+          end
+        end
+
+        context 'when file does not exist' do
+          let(:layout) do
+            create(:layout, craftjs_json: {
+              'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => ['node1'] },
+              'node1' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => 'non-existent-id' } }
+            })
+          end
+
+          it 'forbids update' do
+            expect(user_role_service).to receive(:can_moderate?)
+            expect(policy).not_to permit(:update)
+          end
+        end
       end
     end
   end
