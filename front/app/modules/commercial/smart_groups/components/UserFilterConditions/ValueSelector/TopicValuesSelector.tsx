@@ -21,7 +21,7 @@ const TopicValuesSelector = memo(({ value, onChange }: Props) => {
   const [selectedProjectId, setSelectedProjectId] = useState<string>('');
 
   // Look up the topics to get their project when we have existing values
-  const { data: existingTopics } = useInputTopicsById(value || []);
+  const { data: existingTopics } = useInputTopicsById(value);
 
   // Get all projects
   const { data: projectsResponse } = useProjects({

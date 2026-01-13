@@ -28,16 +28,16 @@ RSpec.describe Analysis::AutoTaggingTask do
   end
 
   describe 'PlatformTopic auto_tagging' do
-    it 'creates tags from platform topics and assigns them to ideas' do
+    it 'creates tags from input topics and assigns them to ideas' do
       analysis = create(:analysis)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'platform_topic')
       idea1 = create(:idea_with_topics, project: att.analysis.project, topics_count: 1)
-      topic1 = idea1.topics.first
+      topic1 = idea1.input_topics.first
       idea2 = create(:idea_with_topics, project: att.analysis.project, topics_count: 1)
-      topic2 = idea2.topics.first
-      shared_topic = create(:topic)
-      idea1.topics << shared_topic
-      idea2.topics << shared_topic
+      topic2 = idea2.input_topics.first
+      shared_topic = create(:input_topic, project: att.analysis.project)
+      idea1.input_topics << shared_topic
+      idea2.input_topics << shared_topic
 
       _pre_exisiting_tag = create(:tag, tag_type: 'platform_topic', analysis: analysis, name: topic1.title_multiloc.values.first)
 

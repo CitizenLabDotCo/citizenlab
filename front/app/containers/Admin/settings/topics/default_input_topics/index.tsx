@@ -2,20 +2,16 @@ import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import { IDefaultInputTopicData } from 'api/default_input_topics/types';
 import useDefaultInputTopics from 'api/default_input_topics/useDefaultInputTopics';
 import useDeleteDefaultInputTopic from 'api/default_input_topics/useDeleteDefaultInputTopic';
 import useReorderDefaultInputTopic from 'api/default_input_topics/useReorderDefaultInputTopic';
-import { IDefaultInputTopicData } from 'api/default_input_topics/types';
 
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { TextCell } from 'components/admin/ResourceList';
 import SortableList from 'components/admin/ResourceList/SortableList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
-import {
-  Section,
-  SectionDescription,
-  SectionTitle,
-} from 'components/admin/Section';
+import { Section, SectionDescription } from 'components/admin/Section';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal, {
@@ -27,7 +23,7 @@ import Modal, {
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
-import messages from '../messages';
+import messages from './messages';
 
 const DefaultInputTopics = () => {
   const { data: defaultInputTopics } = useDefaultInputTopics();
@@ -69,9 +65,6 @@ const DefaultInputTopics = () => {
 
   return (
     <Section>
-      <SectionTitle>
-        <FormattedMessage {...messages.titleDefaultInputTopicManager} />
-      </SectionTitle>
       <SectionDescription>
         <FormattedMessage
           {...messages.descriptionDefaultInputTopicManagerText}
@@ -153,7 +146,7 @@ const DefaultInputTopics = () => {
               processing={isDeleting}
               id="e2e-default-input-topic-delete-confirmation-button"
             >
-              <FormattedMessage {...messages.delete} />
+              <FormattedMessage {...messages.deleteButtonLabel} />
             </ButtonWithLink>
           </ButtonsWrapper>
         </ModalContentContainer>

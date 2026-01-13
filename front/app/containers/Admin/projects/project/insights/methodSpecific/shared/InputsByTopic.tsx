@@ -2,8 +2,8 @@ import React, { useMemo, ReactNode } from 'react';
 
 import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 
-import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import useGlobalTopics from 'api/global_topics/useGlobalTopics';
+import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
 import useLocalize from 'hooks/useLocalize';
 

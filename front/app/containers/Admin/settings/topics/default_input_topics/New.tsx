@@ -9,9 +9,8 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-import messages from '../messages';
-
 import DefaultInputTopicForm from './DefaultInputTopicForm';
+import messages from './messages';
 
 const New = () => {
   const { mutate: addDefaultInputTopic } = useAddDefaultInputTopic();

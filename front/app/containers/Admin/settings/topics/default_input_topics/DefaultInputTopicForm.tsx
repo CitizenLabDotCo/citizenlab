@@ -15,7 +15,7 @@ import { useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
-import messages from '../messages';
+import messages from './messages';
 
 export interface FormValues {
   title_multiloc: Multiloc;
@@ -61,7 +61,6 @@ const DefaultInputTopicForm = ({ onSubmit, defaultValues }: Props) => {
             <InputMultilocWithLocaleSwitcher
               name="title_multiloc"
               label={formatMessage(messages.fieldTopicTitle)}
-              labelTooltipText={formatMessage(messages.fieldTopicTitleTooltip)}
             />
           </SectionField>
           <SectionField>

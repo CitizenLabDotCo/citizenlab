@@ -82,7 +82,6 @@ const IdeasIndexPage = () => {
   const searchParam = searchParams.get('search');
   const ideaStatusParam = searchParams.get('idea_status');
   const topicsParam = searchParams.get('topics');
-  debugger;
 
   const ideasQueryParameters = useMemo<IdeaQueryParameters>(
     () => ({
