@@ -1385,8 +1385,8 @@ CREATE TABLE public.projects (
     baskets_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
-    preview_token character varying NOT NULL,
     header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
+    preview_token character varying NOT NULL,
     hidden boolean DEFAULT false NOT NULL,
     listed boolean DEFAULT true NOT NULL
 );
@@ -1589,7 +1589,7 @@ CREATE VIEW public.analytics_fact_email_deliveries AS
     (ecd.sent_at)::date AS dimension_date_sent_id,
     ecd.campaign_id,
     p.id AS dimension_project_id,
-    ((ecc.type)::text <> ALL (ARRAY[('EmailCampaigns::Campaigns::Manual'::character varying)::text, ('EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying)::text])) AS automated
+    ((ecc.type)::text <> ALL ((ARRAY['EmailCampaigns::Campaigns::Manual'::character varying, 'EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying])::text[])) AS automated
    FROM ((public.email_campaigns_deliveries ecd
      JOIN public.email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)))
      LEFT JOIN public.projects p ON ((p.id = ecc.context_id)));
@@ -1775,9 +1775,9 @@ CREATE TABLE public.phases (
     manual_voters_amount integer,
     manual_voters_last_updated_by_id uuid,
     manual_voters_last_updated_at timestamp(6) without time zone,
-    survey_popup_frequency integer,
     similarity_threshold_title double precision DEFAULT 0.3,
     similarity_threshold_body double precision DEFAULT 0.4,
+    survey_popup_frequency integer,
     similarity_enabled boolean DEFAULT true NOT NULL,
     vote_term character varying DEFAULT 'vote'::character varying,
     voting_min_selected_options integer DEFAULT 1 NOT NULL,
@@ -2238,7 +2238,7 @@ CREATE TABLE public.content_builder_layouts (
 --
 
 CREATE TABLE public.cosponsorships (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     status character varying DEFAULT 'pending'::character varying NOT NULL,
     user_id uuid NOT NULL,
     idea_id uuid NOT NULL,
@@ -3434,6 +3434,7 @@ CREATE TABLE public.project_imports (
     import_id uuid,
     log character varying[] DEFAULT '{}'::character varying[],
     locale character varying,
+    string character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     import_type character varying
@@ -8461,7 +8462,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250611110008'),
 ('20250610112901'),
 ('20250609151800'),
-('20250606074930'),
 ('20250605090517'),
 ('20250603161856'),
 ('20250528153448'),
