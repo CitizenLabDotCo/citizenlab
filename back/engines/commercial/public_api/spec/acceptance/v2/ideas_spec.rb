@@ -67,7 +67,7 @@ resource 'Posts' do
 
     parameter(
       :topic_ids,
-      'List only the ideas that have all of the specified topics',
+      'List only the ideas that have all of the specified input topics',
       required: false,
       type: :array,
       items: { type: :string },
@@ -139,13 +139,13 @@ resource 'Posts' do
 
     context 'when filtering by topic ids' do
       let(:idea) { create(:idea_with_topics, topics_count: 3) }
-      let(:topics) { idea.topics.take(2) }
+      let(:topics) { idea.input_topics.take(2) }
       let(:topic_ids) { topics.pluck(:id) }
 
       before do
         # This idea should not be returned because it only has one of the requested
         # topics.
-        create(:idea, project_id: idea.project_id).topics << topics.first
+        create(:idea, project_id: idea.project_id).input_topics << topics.first
       end
 
       example_request 'List only the ideas that have all of the specified topics' do
