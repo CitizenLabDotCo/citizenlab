@@ -61,7 +61,6 @@ describe('Post Participation Signup: survey', () => {
     // Sign up
     signUpEmailConformation(cy);
     enterUserInfo(cy, { firstName, lastName });
-    cy.get('#e2e-signup-custom-fields-skip-btn').click();
     cy.get('#e2e-success-continue-button').find('button').click();
 
     // Make sure we get redirected to project
