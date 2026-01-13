@@ -4,10 +4,10 @@ import {
   Box,
   Button,
   IconTooltip,
-  Text,
   Title,
   Tooltip,
   colors,
+  Error,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -33,10 +33,6 @@ const CodeTextArea = styled(TextArea)`
     font-family: 'Courier New', Courier, monospace !important;
     background-color: ${colors.grey100};
   }
-`;
-
-const ErrorText = styled(Text)`
-  color: ${colors.red600};
 `;
 
 type Props = {
@@ -101,19 +97,24 @@ const EditSchemaButtonWithModal = ({
     try {
       const parsed = JSON.parse(jsonText);
 
-      await updateFormCustomFields({
-        projectId,
-        phaseId: isFormPhaseSpecific ? phase.id : undefined,
-        customFields: parsed,
-        customForm: {
-          saveType: 'schema',
-          fieldsLastUpdatedAt:
-            customForm?.data.attributes.fields_last_updated_at,
+      await updateFormCustomFields(
+        {
+          projectId,
+          phaseId: isFormPhaseSpecific ? phase.id : undefined,
+          customFields: parsed,
+          customForm: {
+            saveType: 'schema',
+            fieldsLastUpdatedAt:
+              customForm?.data.attributes.fields_last_updated_at,
+          },
         },
-      });
-
-      onSaveSuccess?.();
-      setShowModal(false);
+        {
+          onSuccess: () => {
+            onSaveSuccess?.();
+            setShowModal(false);
+          },
+        }
+      );
     } catch (e) {
       if (e instanceof SyntaxError) {
         setError(formatMessage(messages.schemaParseError));
@@ -155,11 +156,7 @@ const EditSchemaButtonWithModal = ({
             maxRows={20}
           />
 
-          {error && (
-            <ErrorText mt="8px" mb="0">
-              {error}
-            </ErrorText>
-          )}
+          {error && <Error text={error} marginTop="8px" marginBottom="0" />}
 
           <Box display="flex" gap="12px" mt="16px" justifyContent="flex-end">
             <Button
