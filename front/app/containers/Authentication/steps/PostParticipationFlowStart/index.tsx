@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Box, fontSizes } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import { SSOProvider } from 'api/authentication/singleSignOn';
 
@@ -14,15 +13,10 @@ import Or from 'components/UI/Or';
 
 import { useIntl } from 'utils/cl-intl';
 
-import sharedMessages from '../messages';
+import EmailForm from '../EmailFlowStart/EmailForm';
+import SSOButtons from '../EmailFlowStart/SSOButtons';
 
-import EmailForm from './EmailForm';
 import messages from './messages';
-import SSOButtons from './SSOButtons';
-
-const StyledA = styled.a`
-  font-size: ${fontSizes.base}px;
-`;
 
 interface Props {
   loading: boolean;
@@ -31,19 +25,17 @@ interface Props {
   onSwitchToSSO: (ssoProvider: SSOProvider) => void;
 }
 
-const EmailFlowStart = ({
+const PostParticipationFlowStart = ({
   loading,
   setError,
   onSubmit,
   onSwitchToSSO,
 }: Props) => {
-  const { passwordLoginEnabled, ssoProviders, azureAdSettings } =
-    useAuthConfig();
-
+  const { passwordLoginEnabled, ssoProviders } = useAuthConfig();
   const { formatMessage } = useIntl();
 
   return (
-    <Box data-cy="email-flow-start">
+    <Box data-cy="post-participation-flow-start">
       {ssoProviders.franceconnect && (
         <>
           <FranceConnectButton
@@ -62,21 +54,14 @@ const EmailFlowStart = ({
       {passwordLoginEnabled && (
         <EmailForm
           loading={loading}
-          topText={sharedMessages.enterYourEmailAddress}
+          topText={messages.dropUsYourEmailIfYouWantToStayUpdated}
           setError={setError}
           onSubmit={onSubmit}
         />
       )}
       <SSOButtons onClickSSO={onSwitchToSSO} />
-      {azureAdSettings?.visibility === 'link' && (
-        <Box mt="24px">
-          <StyledA href="/sign-in/admin">
-            {formatMessage(messages.clickHereToLoginAsAdminOrPM)}
-          </StyledA>
-        </Box>
-      )}
     </Box>
   );
 };
 
-export default EmailFlowStart;
+export default PostParticipationFlowStart;
