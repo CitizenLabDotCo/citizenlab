@@ -23,24 +23,23 @@ import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-import messages from '../project/ideas/messages';
+import messages from '../../project/ideas/messages';
+
+import { getAnalysisScope } from './utils';
 
 type Props = {
   projectId: string;
   phaseId: string;
-  scope: 'project' | 'phase';
 };
 
-/** For ideation, the analysis is scoped on the project level, for the other
- * methods, it's scoped on the phase level. Pass the right prop, either the one
- * or the other */
-const AnalysisBanner = ({ projectId, phaseId, scope }: Props) => {
+const AnalysisBanner = ({ projectId, phaseId }: Props) => {
+  const { data: phase } = usePhase(phaseId);
+  const scope = getAnalysisScope(phase?.data.attributes.participation_method);
+
   const { data: analyses, isLoading: isLoadingAnalyses } = useAnalyses({
     projectId: scope === 'project' ? projectId : undefined,
     phaseId: scope === 'phase' ? phaseId : undefined,
   });
-
-  const { data: phase } = usePhase(phaseId);
 
   const { mutate: createAnalysis, isLoading } = useAddAnalysis();
   const { formatMessage } = useIntl();

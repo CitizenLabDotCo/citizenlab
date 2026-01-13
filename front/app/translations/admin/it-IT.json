@@ -1459,7 +1459,6 @@
   "app.containers.Admin.projects.project.survey.consentModalText4Link": "https://openai.com/api-data-privacy",
   "app.containers.Admin.projects.project.survey.consentModalText4LinkText": "qui",
   "app.containers.Admin.projects.project.survey.consentModalTitle": "Prima di continuare",
-  "app.containers.Admin.projects.project.survey.customFieldsNotPersisted3": "Non è possibile inserire l'analisi prima di aver modificato il modulo.",
   "app.containers.Admin.projects.project.survey.deleteAnalysis": "Elimina",
   "app.containers.Admin.projects.project.survey.deleteAnalysisConfirmation": "Sei sicuro di voler cancellare questa analisi? Questa azione non può essere annullata.",
   "app.containers.Admin.projects.project.survey.explore": "Esplora",

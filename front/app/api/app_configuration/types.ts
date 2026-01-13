@@ -275,6 +275,7 @@ export interface IAppConfigurationSettings {
   project_importer?: AppConfigurationFeature;
   idea_feed?: AppConfigurationFeature;
   ideation_accountless_posting?: AppConfigurationFeature;
+  phase_insights?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;
