@@ -6,17 +6,17 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IDKeycloakMethod } from 'api/verification_methods/types';
 import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
 
-import { SignUpInFlow } from 'containers/Authentication/typings';
+import { SSOProviderWithoutVienna } from 'containers/Authentication/typings';
 import useAuthConfig from 'containers/Authentication/useAuthConfig';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import AuthProviderButton, {
   Props as AuthProviderButtonProps,
-  TOnContinueFunction,
-} from '../AuthProviderButton';
-import parentMessages from '../messages';
-import ViennaSamlButton from '../ViennaSamlButton';
+} from '../../_components/AuthProviderButton';
+import ClaveUnicaExpandedAuthProviderButton from '../../_components/ClaveUnicaExpandedAuthProviderButton';
+import sharedMessages from '../../_components/messages';
+import ViennaSamlButton from '../../_components/ViennaSamlButton';
 
 import messages from './messages';
 
@@ -27,19 +27,12 @@ const WrappedAuthProviderButton = (props: AuthProviderButtonProps) => (
 );
 
 interface Props {
-  showConsent: boolean;
-  flow: SignUpInFlow;
-  onSelectAuthProvider: TOnContinueFunction;
+  onClickSSO: (ssoProvider: SSOProviderWithoutVienna) => void;
 }
 
-// All our sso methods except FranceConnect and ClaveUnica
-// because they have weird custom rules
-const SSOButtonsExceptFCAndCU = ({
-  showConsent,
-  flow,
-  onSelectAuthProvider,
-}: Props) => {
+const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
   const { ssoProviders } = useAuthConfig();
+
   const { data: tenant } = useAppConfiguration();
   const { data: verificationMethods } = useVerificationMethods();
 
@@ -58,12 +51,19 @@ const SSOButtonsExceptFCAndCU = ({
 
   return (
     <>
+      {ssoProviders.claveUnica && (
+        <Box mb="18px">
+          <ClaveUnicaExpandedAuthProviderButton
+            showConsent={true}
+            onSelectAuthProvider={() => onClickSSO('clave_unica')}
+          />
+        </Box>
+      )}
       {ssoProviders.fakeSso && (
         <WrappedAuthProviderButton
           icon="bullseye"
-          showConsent={showConsent}
           authProvider="fake_sso"
-          onContinue={onSelectAuthProvider}
+          onClick={onClickSSO}
           id="e2e-login-with-fake-sso"
         >
           <FormattedMessage {...messages.continueWithFakeSSO} />
@@ -72,9 +72,8 @@ const SSOButtonsExceptFCAndCU = ({
       {ssoProviders.hoplr && (
         <WrappedAuthProviderButton
           icon="hoplr"
-          showConsent={showConsent}
           authProvider="hoplr"
-          onContinue={onSelectAuthProvider}
+          onClick={onClickSSO}
         >
           <FormattedMessage {...messages.continueWithHoplr} />
         </WrappedAuthProviderButton>
@@ -82,9 +81,8 @@ const SSOButtonsExceptFCAndCU = ({
       {ssoProviders.nemlogIn && (
         <WrappedAuthProviderButton
           icon="mitid"
-          showConsent={showConsent}
           authProvider="nemlog_in"
-          onContinue={onSelectAuthProvider}
+          onClick={onClickSSO}
         >
           <FormattedMessage {...messages.continueWithNemlogIn} />
         </WrappedAuthProviderButton>
@@ -92,9 +90,8 @@ const SSOButtonsExceptFCAndCU = ({
       {ssoProviders.idAustria && (
         <WrappedAuthProviderButton
           icon="idaustria"
-          showConsent={showConsent}
           authProvider="id_austria"
-          onContinue={onSelectAuthProvider}
+          onClick={onClickSSO}
         >
           <FormattedMessage {...messages.continueWithIdAustria} />
         </WrappedAuthProviderButton>
@@ -102,12 +99,11 @@ const SSOButtonsExceptFCAndCU = ({
       {ssoProviders.criipto && (
         <WrappedAuthProviderButton
           icon="mitid"
-          showConsent={showConsent}
           authProvider="criipto"
-          onContinue={onSelectAuthProvider}
+          onClick={onClickSSO}
         >
           <FormattedMessage
-            {...parentMessages.continueWithLoginMechanism}
+            {...sharedMessages.continueWithLoginMechanism}
             values={{
               loginMechanismName:
                 process.env.NODE_ENV === 'development'
@@ -120,12 +116,11 @@ const SSOButtonsExceptFCAndCU = ({
       {ssoProviders.keycloak && keycloakIcon && keycloakName && (
         <WrappedAuthProviderButton
           icon={keycloakIcon}
-          showConsent={showConsent}
           authProvider="keycloak"
-          onContinue={onSelectAuthProvider}
+          onClick={onClickSSO}
         >
           <FormattedMessage
-            {...parentMessages.continueWithLoginMechanism}
+            {...sharedMessages.continueWithLoginMechanism}
             values={{
               loginMechanismName: keycloakName,
             }}
@@ -135,12 +130,11 @@ const SSOButtonsExceptFCAndCU = ({
       {ssoProviders.twoday && (
         <WrappedAuthProviderButton
           icon="bankId"
-          showConsent={showConsent}
           authProvider="twoday"
-          onContinue={onSelectAuthProvider}
+          onClick={onClickSSO}
         >
           <FormattedMessage
-            {...parentMessages.continueWithLoginMechanism}
+            {...sharedMessages.continueWithLoginMechanism}
             values={{
               loginMechanismName: 'BankID eller Freja eID+',
             }}
@@ -150,27 +144,23 @@ const SSOButtonsExceptFCAndCU = ({
       {ssoProviders.acm && (
         <WrappedAuthProviderButton
           icon="acm"
-          showConsent={showConsent}
           authProvider="acm"
-          onContinue={onSelectAuthProvider}
+          onClick={onClickSSO}
         >
           <FormattedMessage
-            {...parentMessages.continueWithLoginMechanism}
+            {...sharedMessages.continueWithLoginMechanism}
             values={{
               loginMechanismName: 'Itsme®',
             }}
           />
         </WrappedAuthProviderButton>
       )}
-      {ssoProviders.viennaCitizen && (
-        <ViennaSamlButton flow={flow} onContinue={onSelectAuthProvider} />
-      )}
+      {ssoProviders.viennaCitizen && <ViennaSamlButton onClick={onClickSSO} />}
       {ssoProviders.google && (
         <WrappedAuthProviderButton
-          showConsent={showConsent}
           icon="google"
           authProvider="google"
-          onContinue={onSelectAuthProvider}
+          onClick={onClickSSO}
         >
           <FormattedMessage {...messages.continueWithGoogle} />
         </WrappedAuthProviderButton>
@@ -178,9 +168,8 @@ const SSOButtonsExceptFCAndCU = ({
       {ssoProviders.facebook && (
         <WrappedAuthProviderButton
           icon="facebook"
-          showConsent={showConsent}
           authProvider="facebook"
-          onContinue={onSelectAuthProvider}
+          onClick={onClickSSO}
         >
           <FormattedMessage {...messages.continueWithFacebook} />
         </WrappedAuthProviderButton>
@@ -188,9 +177,8 @@ const SSOButtonsExceptFCAndCU = ({
       {ssoProviders.azureAd && (
         <WrappedAuthProviderButton
           icon="microsoft-windows"
-          showConsent={showConsent}
           authProvider="azureactivedirectory"
-          onContinue={onSelectAuthProvider}
+          onClick={onClickSSO}
         >
           <FormattedMessage
             {...messages.continueWithAzure}
@@ -201,9 +189,8 @@ const SSOButtonsExceptFCAndCU = ({
       {ssoProviders.azureAdB2c && (
         <WrappedAuthProviderButton
           icon="microsoft-windows"
-          showConsent={showConsent}
           authProvider="azureactivedirectory_b2c"
-          onContinue={onSelectAuthProvider}
+          onClick={onClickSSO}
         >
           <FormattedMessage
             {...messages.continueWithAzure}
@@ -215,4 +202,4 @@ const SSOButtonsExceptFCAndCU = ({
   );
 };
 
-export default SSOButtonsExceptFCAndCU;
+export default SSOButtonsExceptFC;
