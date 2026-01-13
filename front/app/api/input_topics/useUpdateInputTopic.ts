@@ -12,7 +12,7 @@ const updateInputTopic = async ({
   ...requestBody
 }: IInputTopicUpdate) =>
   fetcher<IInputTopic>({
-    path: `/projects/${projectId}/input_topics/${id}`,
+    path: `/input_topics/${id}`,
     action: 'patch',
     body: { input_topic: requestBody },
   });

@@ -54,7 +54,7 @@ const InputsByTopic = ({ phaseId }: Props) => {
   const topicData = useMemo((): HorizontalBarRowData[] => {
     if (!filterCounts || !topics) return [];
 
-    const countsByTopicId = filterCounts.data.attributes.topic_id;
+    const countsByTopicId = filterCounts.data.attributes.input_topic_id;
     const totalIdeas = filterCounts.data.attributes.total;
 
     return topics.data

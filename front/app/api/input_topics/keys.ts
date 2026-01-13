@@ -13,11 +13,11 @@ const inputTopicsKeys = {
     sort?: 'custom' | 'ideas_count' | '-ideas_count';
   }) => [{ ...baseKey, operation: 'list', parameters: { projectId, sort } }],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ projectId, id }: { projectId: string; id: string }) => [
+  item: ({ id }: { id: string }) => [
     {
       ...baseKey,
       operation: 'item',
-      parameters: { projectId, id },
+      parameters: { id },
     },
   ],
 } satisfies QueryKeys;
