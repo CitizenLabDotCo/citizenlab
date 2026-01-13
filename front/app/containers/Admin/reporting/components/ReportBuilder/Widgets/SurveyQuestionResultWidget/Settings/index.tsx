@@ -85,6 +85,7 @@ const Settings = () => {
     'select_image',
     'sentiment_linear_scale',
     'rating',
+    'ranking',
   ];
   const showAccessibilityInputs =
     selectedQuestion &&

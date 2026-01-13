@@ -147,7 +147,7 @@ const SurveyQuestionResult = ({
   const showTitle = !['sentiment_linear_scale'].includes(attributes.inputType);
 
   return (
-    <Box mb="8px" aria-hidden={true}>
+    <Box mb="8px">
       {showTitle && (
         <Title
           variant="h4"
@@ -164,6 +164,7 @@ const SurveyQuestionResult = ({
         required={attributes.required}
         totalSubmissions={attributes.totalResponseCount}
         totalResponses={attributes.questionResponseCount}
+        aria-hidden={true}
       />
       {renderQuestionComponent()}
     </Box>

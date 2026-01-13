@@ -35,6 +35,7 @@ const SurveyQuestionResultWidget = ({
   return (
     <PageBreakBox
       tabIndex={0}
+      role="region"
       aria-label={ariaLabelValue}
       aria-describedby={ariaDescribedBy}
     >
