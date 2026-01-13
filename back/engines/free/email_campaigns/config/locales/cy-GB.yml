@@ -515,9 +515,7 @@ cy:
       subject: '%{organizationName}: Cyfle olaf i bleidleisio dros %{phaseTitle}'
       preheader: 'Cyfle olaf i bleidleisio dros %{phaseTitle} ar lwyfan cyfranogiad %{organizationName}'
       title: 'Cyfle olaf i bleidleisio dros %{phaseTitle}'
-      body_1: 'Mae’r cyfnod pleidleisio ar gyfer y prosiect %{projectTitle} yn dod i ben yfory, am hanner nos.'
-      body_2: 'Mae amser yn mynd yn brin, a sylwon ni nad ydych chi wedi bwrw eich pleidlais eto! Gweithredwch nawr trwy glicio ar y botwm isod i gymryd rhan.'
-      body_3: 'Drwy wneud hynny, byddwch yn cael mynediad i ystod o opsiynau ac yn cael cyfle i roi eich mewnbwn, sy''n hanfodol wrth benderfynu ar ddyfodol y prosiect hwn.'
+      event_description: '<p>Mae cyfnod pleidleisio''r prosiect %{projectTitle} yn dod i ben yfory, am hanner nos.</p><p>Mae amser yn brin, ac fe wnaethon ni sylwi nad ydych chi wedi bwrw eich pleidlais eto! Gweithredwch nawr trwy glicio ar y botwm isod i gymryd rhan.</p><p>Drwy wneud hynny, byddwch chi''n cael mynediad at ystod o opsiynau a chael y cyfle i roi eich mewnbwn, sy''n hanfodol wrth benderfynu ar ddyfodol y prosiect hwn.</p>'
       cta_button: 'Pleidleisiwch'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} canlyniadau pleidlais wedi''u datgelu!'

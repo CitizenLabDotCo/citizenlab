@@ -5,13 +5,16 @@ import { useParams, useSearchParams } from 'react-router-dom';
 
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import GoBackButton from 'components/UI/GoBackButton';
 
+import { FormattedMessage } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import IdeasFeed from './IdeasFeed';
 import IdeasFeedPageMeta from './IdeasFeedPageMeta';
+import messages from './messages';
 import Sidebar from './Sidebar';
 
 const IdeasFeedPage = () => {
@@ -80,6 +83,22 @@ const IdeasFeedPage = () => {
               </Box>
             )}
           </Box>
+        </Box>
+        <Box
+          position="absolute"
+          top={isMobileOrSmaller ? '16px' : undefined}
+          bottom={isMobileOrSmaller ? undefined : '24px'}
+          right={isMobileOrSmaller ? '16px' : '24px'}
+          zIndex="1"
+        >
+          <ButtonWithLink
+            linkTo={`/projects/${slug}/ideas/new?phase_id=${phaseId}`}
+            icon="plus-circle"
+            buttonStyle="secondary-outlined"
+            bgColor="white"
+          >
+            <FormattedMessage {...messages.addYourIdea} />
+          </ButtonWithLink>
         </Box>
       </Box>
     </main>

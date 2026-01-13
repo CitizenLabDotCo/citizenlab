@@ -12,7 +12,12 @@ resource 'User Token' do
     with_options scope: :auth do
       parameter :email, required: true
       parameter :password, required: true
-      parameter :remember_me, required: false
+      parameter :remember_me
+      parameter :claim_tokens, <<~DESC
+        Tokens used to claim anonymous participation data (e.g., ideas) created while logged out.
+        If confirmation is required, tokens are marked as pending until confirmed.
+        Otherwise, participation data is claimed immediately.
+      DESC
     end
 
     context 'when user_confirmation is enabled' do
@@ -140,6 +145,22 @@ resource 'User Token' do
                 assert_status 201
               end
             end
+          end
+        end
+
+        context 'with claim_tokens' do
+          let!(:claim_token) { create(:claim_token) }
+          let(:idea) { claim_token.item }
+          let(:claim_tokens) { [claim_token.token] }
+
+          example 'claims participation data on login', document: false do
+            expect(idea.author_id).to be_nil
+
+            do_request
+            assert_status 201
+
+            expect(idea.reload.author_id).to eq(user.id)
+            expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
           end
         end
 

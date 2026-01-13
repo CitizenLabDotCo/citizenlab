@@ -22,6 +22,7 @@ const ParticipantsCard = ({
   hideStatistics = false,
   ariaLabel,
   ariaDescribedBy,
+  showVisitors = false,
 }: Props & AccessibilityProps) => {
   const { currentResolution, stats, timeSeries } = useParticipants({
     project_id: projectId,
@@ -42,6 +43,7 @@ const ParticipantsCard = ({
     startAt,
     endAt,
     hideStatistics,
+    showVisitors,
     timeSeries,
     stats,
     currentResolution,

@@ -1,4 +1,10 @@
-import React, { useMemo, useRef, useCallback, useState } from 'react';
+import React, {
+  useMemo,
+  useRef,
+  useCallback,
+  useState,
+  useEffect,
+} from 'react';
 
 import {
   Box,
@@ -7,10 +13,12 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { useVirtualizer } from '@tanstack/react-virtual';
+import { uniqBy } from 'lodash-es';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
@@ -102,17 +110,33 @@ const IdeasFeed = ({ topicId }: Props) => {
     useInfiniteIdeaFeedIdeas({
       phaseId,
       topic: topicId || undefined,
-      'page[size]': 20,
+      'page[size]': 10,
       keepPreviousData: topicId ? false : true,
     });
 
   const flatIdeas = useMemo(() => {
     if (!data) return [];
-    return data.pages.flatMap((page) => page.data);
+    const allIdeas = data.pages.flatMap((page) => page.data);
+    return uniqBy(allIdeas, 'id');
   }, [data]);
+
+  // Check if initial idea is already in the list
+  const initialIdeaInList = useMemo(() => {
+    if (!initialIdeaId) return true;
+    return flatIdeas.some((idea) => idea.id === initialIdeaId);
+  }, [flatIdeas, initialIdeaId]);
+
+  // Fetch the initial idea separately if it's not in the list
+  const { data: initialIdeaData, isFetching: isFetchingInitialIdea } =
+    useIdeaById(initialIdeaInList ? undefined : initialIdeaId);
 
   // Reorder ideas to put the initial idea first (if provided), otherwise keep original order
   const orderedIdeas = useMemo(() => {
+    // If we need to fetch the initial idea and it's loaded, prepend it
+    if (initialIdeaId && !initialIdeaInList && initialIdeaData) {
+      return [initialIdeaData.data, ...flatIdeas];
+    }
+
     if (flatIdeas.length === 0 || !initialIdeaId) return flatIdeas;
 
     const initialIndex = flatIdeas.findIndex(
@@ -127,7 +151,7 @@ const IdeasFeed = ({ topicId }: Props) => {
     ];
 
     return [initialIdea, ...otherIdeas];
-  }, [flatIdeas, initialIdeaId]);
+  }, [flatIdeas, initialIdeaId, initialIdeaInList, initialIdeaData]);
 
   // Extract topic IDs for each idea
   const ideaTopics = useMemo(() => {
@@ -142,10 +166,18 @@ const IdeasFeed = ({ topicId }: Props) => {
 
   const ideasLength = orderedIdeas.length;
 
-  const itemHeight = window.innerHeight - PEEK_HEIGHT;
+  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+
+  useEffect(() => {
+    const handleResize = () => setWindowHeight(window.innerHeight);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const itemHeight = windowHeight - PEEK_HEIGHT;
 
   const { getVirtualItems, getTotalSize, measureElement } = useVirtualizer({
-    count: hasNextPage ? ideasLength + 1 : ideasLength,
+    count: ideasLength + 1,
     getScrollElement: () => parentRef.current,
     estimateSize: () => itemHeight,
     overscan: 2,
@@ -193,7 +225,7 @@ const IdeasFeed = ({ topicId }: Props) => {
     ]
   );
 
-  if (isLoading) {
+  if (isLoading || isFetchingInitialIdea) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" h="100vh">
         <Spinner />
@@ -268,6 +300,7 @@ const IdeasFeed = ({ topicId }: Props) => {
                   onClick={() => handleIdeaSelect(idea.id)}
                   centeredIdeaId={centeredIdeaId || undefined}
                   size={noteSize}
+                  showReactions={true}
                 />
               </NoteContainer>
             </VirtualItem>

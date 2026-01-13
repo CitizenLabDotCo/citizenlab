@@ -151,6 +151,7 @@ class User < ApplicationRecord
   has_many :cosponsorships, dependent: :destroy
   has_many :cosponsored_ideas, through: :cosponsorships, source: :idea
   has_many :files, class_name: 'Files::File', foreign_key: :uploader_id, inverse_of: :uploader, dependent: :nullify
+  has_many :claim_tokens, foreign_key: :pending_claimer_id, inverse_of: :pending_claimer, dependent: :destroy
 
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :sanitize_first_name, if: :first_name_changed?

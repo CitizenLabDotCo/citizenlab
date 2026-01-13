@@ -515,9 +515,7 @@ ca:
       subject: '%{organizationName}: última oportunitat per votar %{phaseTitle}'
       preheader: 'Última oportunitat per votar %{phaseTitle} a la plataforma de participació de %{organizationName}'
       title: 'Última oportunitat per votar per %{phaseTitle}'
-      body_1: 'La fase de votació del projecte %{projectTitle} s''acaba demà, a mitjanit.'
-      body_2: 'El temps s''acaba i ens hem adonat que encara no has votat! Actua ara fent clic al botó següent per participar.'
-      body_3: 'En fer-ho, tindreu accés a una sèrie d''opcions i tindreu l''oportunitat de donar la vostra aportació, que és crucial per decidir el futur d''aquest projecte.'
+      event_description: '<p>La fase de votació per al projecte %{projectTitle} finalitza demà a mitjanit.</p><p>El temps s''acaba i hem notat que encara no heu votat! Actua ara simplement fent clic al botó següent per participar.</p><p>En fer-ho, obtindreu accés a una gamma d''opcions i tindreu l''oportunitat de donar la vostra opinió, cosa que és crucial per decidir el futur d''aquest projecte.</p>'
       cta_button: 'Vota'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} resultats de vots revelats!'
