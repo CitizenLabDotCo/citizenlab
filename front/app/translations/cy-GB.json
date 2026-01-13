@@ -205,6 +205,8 @@
   "app.components.ErrorBoundary.openFormText": "helpwch ni i ddarganfod y peth",
   "app.components.ErrorToast.budgetExceededError": "Nid oes gennych ddigon o gyllideb",
   "app.components.ErrorToast.votesExceededError": "Nid oes gennych ddigon o bleidleisiau ar ôl",
+  "app.components.EsriMap.mapLayerListAriaLabel": "Togglo rhestr haenau",
+  "app.components.EsriMap.mapLegendAriaLabel": "Togglo'r chwedl",
   "app.components.EventAttendanceButton.forwardToFriend": "Anfonwch at ffrind",
   "app.components.EventAttendanceButton.maxRegistrationsReached": "Mae'r nifer uchaf o gofrestriadau digwyddiad wedi'i gyrraedd. Nid oes lleoedd ar ôl.",
   "app.components.EventAttendanceButton.register": "Cofrestru",

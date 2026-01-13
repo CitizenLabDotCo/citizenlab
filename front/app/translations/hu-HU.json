@@ -205,6 +205,8 @@
   "app.components.ErrorBoundary.openFormText": "segítsen kitalálni",
   "app.components.ErrorToast.budgetExceededError": "Nincs elég költségvetése",
   "app.components.ErrorToast.votesExceededError": "Nincs elég szavazatod",
+  "app.components.EsriMap.mapLayerListAriaLabel": "Réteglista be- és kikapcsolása",
+  "app.components.EsriMap.mapLegendAriaLabel": "Jelmagyarázat be-/kikapcsolása",
   "app.components.EventAttendanceButton.forwardToFriend": "Továbbítás egy barátnak",
   "app.components.EventAttendanceButton.maxRegistrationsReached": "Elértük az eseményre való regisztrációk maximális számát. Nincsenek több helyek.",
   "app.components.EventAttendanceButton.register": "Nyilvántartás",

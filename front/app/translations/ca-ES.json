@@ -205,6 +205,8 @@
   "app.components.ErrorBoundary.openFormText": "ajudeu-nos a esbrinar-ho",
   "app.components.ErrorToast.budgetExceededError": "No tens prou pressupost",
   "app.components.ErrorToast.votesExceededError": "No et queden prou vots",
+  "app.components.EsriMap.mapLayerListAriaLabel": "Obre/tanca la llista de capes",
+  "app.components.EsriMap.mapLegendAriaLabel": "Activa/desactiva la llegenda",
   "app.components.EventAttendanceButton.forwardToFriend": "Reenvia a un amic",
   "app.components.EventAttendanceButton.maxRegistrationsReached": "S'ha arribat al nombre màxim d'inscripcions a l'esdeveniment. No queden places.",
   "app.components.EventAttendanceButton.register": "Registra't",

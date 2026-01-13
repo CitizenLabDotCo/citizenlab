@@ -205,6 +205,8 @@
   "app.components.ErrorBoundary.openFormText": "helfen Sie uns herauszufinden was passiert ist",
   "app.components.ErrorToast.budgetExceededError": "Ihr Budget reicht nicht aus",
   "app.components.ErrorToast.votesExceededError": "Sie haben nicht mehr genug Stimmen",
+  "app.components.EsriMap.mapLayerListAriaLabel": "Ebenenliste ein/aus",
+  "app.components.EsriMap.mapLegendAriaLabel": "Legende ein/aus",
   "app.components.EventAttendanceButton.forwardToFriend": "Weiterleiten an Freund*innen",
   "app.components.EventAttendanceButton.maxRegistrationsReached": "Die maximale Anzahl von Anmeldungen für die Veranstaltung wurde erreicht. Es sind keine Plätze mehr frei.",
   "app.components.EventAttendanceButton.register": "Anmelden",
