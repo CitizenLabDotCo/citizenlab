@@ -12,9 +12,9 @@ type IReorderInputTopic = {
   ordering: number;
 };
 
-const reorderInputTopic = ({ projectId, id, ordering }: IReorderInputTopic) =>
+const reorderInputTopic = ({ id, ordering }: IReorderInputTopic) =>
   fetcher<IInputTopic>({
-    path: `/projects/${projectId}/input_topics/${id}/reorder`,
+    path: `/input_topics/${id}/reorder`,
     action: 'patch',
     body: { input_topic: { ordering } },
   });

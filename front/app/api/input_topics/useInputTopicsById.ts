@@ -14,7 +14,7 @@ const fetchInputTopicById = (id: string) =>
 const useInputTopicsById = (ids: string[]) => {
   const results = useQueries({
     queries: ids.map((id) => ({
-      queryKey: inputTopicsKeys.item({ projectId: 'lookup', id }),
+      queryKey: inputTopicsKeys.item({ id }),
       queryFn: () => fetchInputTopicById(id),
       enabled: !!id,
     })),

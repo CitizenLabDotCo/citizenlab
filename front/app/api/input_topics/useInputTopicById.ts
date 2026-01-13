@@ -14,7 +14,7 @@ const fetchInputTopicById = (id: string) =>
 
 const useInputTopicById = (id?: string) => {
   return useQuery<IInputTopic, CLErrors, IInputTopic, InputTopicsKeys>({
-    queryKey: inputTopicsKeys.item({ projectId: 'lookup', id: id || '' }),
+    queryKey: inputTopicsKeys.item({ id: id || '' }),
     queryFn: () => fetchInputTopicById(id!),
     enabled: !!id,
   });
