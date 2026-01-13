@@ -21,7 +21,7 @@ interface Props {
   totalIdeasCount: number;
   topicCounts: Record<string, number>;
   slug: string;
-  showBackButton?: boolean;
+  isMobile?: boolean;
 }
 
 const TopicsContent = ({
@@ -31,7 +31,7 @@ const TopicsContent = ({
   totalIdeasCount,
   topicCounts,
   slug,
-  showBackButton = true,
+  isMobile = false,
 }: Props) => {
   const { data: project } = useProjectBySlug(slug);
   const localize = useLocalize();
@@ -46,14 +46,14 @@ const TopicsContent = ({
       <SelectedTopicContent
         topicId={selectedTopicId}
         onBack={() => onTopicSelect(null)}
-        hideBackButton={!showBackButton}
+        isMobile={isMobile}
       />
     );
   }
 
   return (
     <>
-      {showBackButton && (
+      {!isMobile && (
         <Box mb="24px">
           <GoBackButton
             linkTo={`/projects/${slug}`}
