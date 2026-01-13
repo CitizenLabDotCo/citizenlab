@@ -36,9 +36,11 @@ const FileAttachment = ({ fileId, fileName }: FileAttachmentProps) => {
     attachable_type: 'ContentBuilder::Layout',
   });
 
-  const attachment = attachments?.data.find(
-    (a) => a.relationships.file.data.id === fileId
-  );
+  const attachment = useMemo(() => {
+    return attachments?.data.find(
+      (a) => a.relationships.file.data.id === fileId
+    );
+  }, [attachments, fileId]);
 
   if (
     !attachment // We've changed the file
