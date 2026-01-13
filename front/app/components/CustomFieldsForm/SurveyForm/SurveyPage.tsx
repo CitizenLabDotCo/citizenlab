@@ -279,10 +279,7 @@ const SurveyPage = ({
                         participationMethod={participationMethod}
                       />
                       {showSubmissionReference && (
-                        <SubmissionReference
-                          inputId={idea.data.id}
-                          participationMethod={participationMethod}
-                        />
+                        <SubmissionReference inputId={idea.data.id} />
                       )}
                       {showPostParticipationSignup && (
                         <Button

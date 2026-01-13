@@ -1,18 +1,18 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  ifYouLaterDecide: {
-    id: 'app.utils.Promessagesjects.ifYouLaterDecide',
+  preferToStayAnonymous: {
+    id: 'app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous',
+    defaultMessage: 'Prefer to stay anonymous?',
+  },
+  saveThisCode: {
+    id: 'app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode',
     defaultMessage:
-      'If you later decide that you want your response to be removed, please contact us with the following unique identifier:',
+      'Save this code in case you want to remove your submission later.',
   },
-  sendSurveySubmission: {
-    id: 'app.utils.Projects.sendSurveySubmission',
-    defaultMessage: 'Send survey submission identifier to my email',
-  },
-  sendSubmission: {
-    id: 'app.utils.Projects.sendSubmission',
-    defaultMessage: 'Send submission identifier to my email',
+  sendThisCode: {
+    id: 'app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode',
+    defaultMessage: 'Send this code to my email',
   },
   surveySubmission: {
     id: 'app.utils.Projects.surveySubmission',

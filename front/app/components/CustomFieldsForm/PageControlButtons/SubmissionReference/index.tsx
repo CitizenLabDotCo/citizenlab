@@ -1,12 +1,17 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  stylingConsts,
+  Text,
+  Title,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
-import { ParticipationMethod } from 'api/phases/types';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
-import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -15,28 +20,32 @@ import { getMailLink } from './utils';
 
 interface Props {
   inputId: string;
-  participationMethod?: ParticipationMethod;
 }
 
-const SubmissionReference = ({ inputId, participationMethod }: Props) => {
+const SubmissionReference = ({ inputId }: Props) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
-  const isNativeSurvey = participationMethod === 'native_survey';
 
   return (
-    <Warning hideIcon>
-      <Box display="flex" flexDirection="column" alignItems="flex-start">
-        <Text mb="0" color="tenantText">
-          <FormattedMessage {...messages.ifYouLaterDecide} />
-        </Text>
-        <Text
-          color="tenantText"
-          fontWeight="bold"
-          id="idea-id-success-modal"
-          mb="0"
-        >
-          {inputId}
-        </Text>
+    <Box
+      border={stylingConsts.border}
+      borderRadius={stylingConsts.borderRadius}
+      px="12px"
+    >
+      <Title variant="h4" as="h2">
+        <FormattedMessage {...messages.preferToStayAnonymous} />
+      </Title>
+      <Text color="textSecondary" mb="0">
+        <FormattedMessage {...messages.saveThisCode} />
+      </Text>
+      <Box w="100%" display="flex" alignItems="center">
+        <Icon
+          name="email"
+          width="16px"
+          mr="4px"
+          fill={colors.textSecondary}
+          transform="translate(0,-2px)"
+        />
         <ButtonWithLink
           p="0"
           linkTo={getMailLink({
@@ -47,19 +56,13 @@ const SubmissionReference = ({ inputId, participationMethod }: Props) => {
             }),
           })}
           buttonStyle="text"
-          icon="email"
-          iconSize="20px"
         >
-          <Text fontSize="s" color="primary">
-            <FormattedMessage
-              {...(isNativeSurvey
-                ? messages.sendSurveySubmission
-                : messages.sendSubmission)}
-            />
+          <Text fontSize="s" color="textSecondary">
+            <FormattedMessage {...messages.sendThisCode} />
           </Text>
         </ButtonWithLink>
       </Box>
-    </Warning>
+    </Box>
   );
 };
 
