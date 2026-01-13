@@ -27,6 +27,11 @@ export type IFileAttachmentData = {
   type: 'file_attachment';
   attributes: {
     position: number;
+    file_name: string;
+    file_size: number;
+    file_url: string;
+    created_at: string;
+    updated_at: string;
   };
   relationships: {
     attachable: { data: IRelationship };

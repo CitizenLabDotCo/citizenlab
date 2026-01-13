@@ -7,10 +7,11 @@ import {
   Spinner,
   Text,
 } from '@citizenlab/cl2-component-library';
-import { useNode, useEditor } from '@craftjs/core';
+import { useNode } from '@craftjs/core';
 import { useParams } from 'react-router-dom';
 
-import useFileAttachmentById from 'api/file_attachments/useFileAttachmentById';
+import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
+import useFileAttachments from 'api/file_attachments/useFileAttachments';
 import useFiles from 'api/files/useFiles';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -19,24 +20,30 @@ import FileDisplay from 'components/UI/FileAttachments/FileDisplay';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import { getIsFileAlreadyUsed } from './utils';
 
 type FileAttachmentProps = {
   fileId?: string;
-  fileAttachmentId?: string;
   fileName?: string;
 };
 
-const FileAttachment = ({
-  fileAttachmentId,
-  fileName,
-}: FileAttachmentProps) => {
-  const { data: fileAttachment } = useFileAttachmentById(fileAttachmentId);
+const FileAttachment = ({ fileId, fileName }: FileAttachmentProps) => {
+  // would be better to get the layout using a context provider
+  const { projectId } = useParams();
+  const { data: layout } = useContentBuilderLayout('project', projectId || '');
 
-  if (
-    !fileAttachmentId // We've changed the file
-  ) {
-    // Show placeholder with just the file name if we haven't saved yet
+  const { data: attachments } = useFileAttachments({
+    attachable_id: layout?.data.id,
+    attachable_type: 'ContentBuilder::Layout',
+  });
+
+  const attachment = useMemo(() => {
+    return attachments?.data.find(
+      (a) => a.relationships.file.data.id === fileId
+    );
+  }, [attachments, fileId]);
+
+  // Show placeholder with just the file name if we haven't saved yet
+  if (!attachment) {
     if (fileName) {
       return (
         <Box
@@ -65,27 +72,25 @@ const FileAttachment = ({
     return null;
   }
 
+  // Saved state - show actual file
   return (
     <Box id="e2e-file-attachment" maxWidth="1200px" margin="0 auto">
-      {fileAttachment && (
-        <FileDisplay
-          file={{
-            // Transform the file data to match the current expected type structure.
-            // TODO: In the future, once we remove the old files structure/api, we can simplify this.
-            ...fileAttachment.data,
-            attributes: {
-              ordering: fileAttachment.data.attributes.position,
-              name: fileName || fileAttachment.data.attributes.file_name,
-              size: fileAttachment.data.attributes.file_size,
-              created_at: fileAttachment.data.attributes.created_at,
-              updated_at: fileAttachment.data.attributes.updated_at,
-              file: {
-                url: fileAttachment.data.attributes.file_url,
-              },
+      <FileDisplay
+        file={{
+          id: attachment.id,
+          type: 'file',
+          attributes: {
+            ordering: attachment.attributes.position,
+            name: attachment.attributes.file_name,
+            size: attachment.attributes.file_size,
+            created_at: attachment.attributes.created_at,
+            updated_at: attachment.attributes.updated_at,
+            file: {
+              url: attachment.attributes.file_url,
             },
-          }}
-        />
-      )}
+          },
+        }}
+      />
     </Box>
   );
 };
@@ -96,45 +101,21 @@ const FileAttachmentSettings = () => {
     fileId,
   } = useNode((node) => ({
     fileId: node.data.props.fileId,
-    fileAttachmentId: node.data.props.fileAttachmentId,
   }));
 
   const { formatMessage } = useIntl();
-  const { query } = useEditor();
   const { projectId } = useParams();
 
-  // Get files for project
   const { data: files, isFetching: isFetchingFiles } = useFiles({
     project: projectId ? [projectId] : [],
   });
 
-  // Get current layout state to check for duplicate files
-  const craftjsJson = useMemo(() => {
-    try {
-      return query.getSerializedNodes();
-    } catch {
-      return {};
-    }
-  }, [query]);
-
-  // Generate options for the file select dropdown with usage warnings
-  let fileOptions = useMemo(() => {
-    if (!files) return [];
-
-    return files.data.map((file) => {
-      return {
+  const fileOptions = files
+    ? files.data.map((file) => ({
         value: file.id,
         label: file.attributes.name,
-      };
-    });
-  }, [files]);
-
-  // Filter out any files already being used in the layout
-  fileOptions = fileOptions.filter((option) => {
-    if (option.value === fileId) return true; // Always include the currently selected file
-    const isFileUsed = getIsFileAlreadyUsed(craftjsJson, option.value);
-    return !isFileUsed;
-  });
+      }))
+    : [];
 
   if (isFetchingFiles) {
     return <Spinner />;
@@ -155,11 +136,8 @@ const FileAttachmentSettings = () => {
           value={fileId}
           onChange={(option) => {
             setProp((props: FileAttachmentProps) => {
-              // Set the new selected file ID & name
-              // File attachment will be created on BE when layout is saved.
               props.fileId = option.value;
               props.fileName = option.label;
-              props.fileAttachmentId = undefined; // Clear old attachment ID if changing file
             });
           }}
           placeholder={formatMessage(messages.selectFile)}
