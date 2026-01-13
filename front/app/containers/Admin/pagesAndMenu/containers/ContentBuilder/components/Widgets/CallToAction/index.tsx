@@ -151,7 +151,7 @@ const CallToAction = ({
             <Title variant="h2" color="tenantText" mt="0">
               {lоcalize(title)}
             </Title>
-            <Text color="textSecondary" m="0">
+            <Text color="tenantText" m="0">
               {lоcalize(description)}
             </Text>
           </Box>
