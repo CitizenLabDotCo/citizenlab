@@ -18,6 +18,7 @@ import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
+import useIdeaById from 'api/ideas/useIdeaById';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
@@ -119,8 +120,23 @@ const IdeasFeed = ({ topicId }: Props) => {
     return uniqBy(allIdeas, 'id');
   }, [data]);
 
+  // Check if initial idea is already in the list
+  const initialIdeaInList = useMemo(() => {
+    if (!initialIdeaId) return true;
+    return flatIdeas.some((idea) => idea.id === initialIdeaId);
+  }, [flatIdeas, initialIdeaId]);
+
+  // Fetch the initial idea separately if it's not in the list
+  const { data: initialIdeaData, isFetching: isFetchingInitialIdea } =
+    useIdeaById(initialIdeaInList ? undefined : initialIdeaId);
+
   // Reorder ideas to put the initial idea first (if provided), otherwise keep original order
   const orderedIdeas = useMemo(() => {
+    // If we need to fetch the initial idea and it's loaded, prepend it
+    if (initialIdeaId && !initialIdeaInList && initialIdeaData) {
+      return [initialIdeaData.data, ...flatIdeas];
+    }
+
     if (flatIdeas.length === 0 || !initialIdeaId) return flatIdeas;
 
     const initialIndex = flatIdeas.findIndex(
@@ -135,7 +151,7 @@ const IdeasFeed = ({ topicId }: Props) => {
     ];
 
     return [initialIdea, ...otherIdeas];
-  }, [flatIdeas, initialIdeaId]);
+  }, [flatIdeas, initialIdeaId, initialIdeaInList, initialIdeaData]);
 
   // Extract topic IDs for each idea
   const ideaTopics = useMemo(() => {
@@ -209,7 +225,7 @@ const IdeasFeed = ({ topicId }: Props) => {
     ]
   );
 
-  if (isLoading) {
+  if (isLoading || isFetchingInitialIdea) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" h="100vh">
         <Spinner />
@@ -284,6 +300,7 @@ const IdeasFeed = ({ topicId }: Props) => {
                   onClick={() => handleIdeaSelect(idea.id)}
                   centeredIdeaId={centeredIdeaId || undefined}
                   size={noteSize}
+                  showReactions={true}
                 />
               </NoteContainer>
             </VirtualItem>

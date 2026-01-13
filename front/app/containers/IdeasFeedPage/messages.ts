@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'app.containers.IdeasFeedPage.topicsPanel',
     defaultMessage: 'Topics panel',
   },
+  addYourIdea: {
+    id: 'app.containers.IdeasFeedPage.addYourIdea',
+    defaultMessage: 'Add your idea',
+  },
 });

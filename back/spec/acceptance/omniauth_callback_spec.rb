@@ -213,6 +213,57 @@ resource 'Omniauth Callback', document: false do
         expect(db_user).not_to be_nil
         expect(db_user.email_confirmed_at).to be_present
       end
+
+      context 'with claim_tokens' do
+        let!(:claim_token) { create(:claim_token) }
+        let(:idea) { claim_token.item }
+
+        before do
+          allow_any_instance_of(OmniauthCallbackController)
+            .to receive(:omniauth_params)
+            .and_return({ 'claim_tokens' => [claim_token.token] })
+        end
+
+        example 'claims participation data immediately for new user' do
+          expect(idea.author_id).to be_nil
+
+          do_request
+          expect(status).to eq(302)
+
+          user = User.find_by(email: 'billy_fixed@example.com')
+          expect(user).not_to be_nil
+          expect(idea.reload.author_id).to eq(user.id)
+          expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+
+        context 'when existing user logs in' do
+          let!(:existing_user) { create(:user, email: 'billy_fixed@example.com') }
+
+          example 'claims participation data immediately' do
+            expect(idea.author_id).to be_nil
+
+            do_request
+            expect(status).to eq(302)
+
+            expect(idea.reload.author_id).to eq(existing_user.id)
+            expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
+          end
+        end
+
+        context 'when invited user accepts via SSO' do
+          let!(:invited_user) { create(:invited_user, email: 'billy_fixed@example.com') }
+
+          example 'claims participation data immediately after invite acceptance' do
+            expect(idea.author_id).to be_nil
+
+            do_request
+            expect(status).to eq(302)
+
+            expect(idea.reload.author_id).to eq(invited_user.id)
+            expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
+          end
+        end
+      end
     end
   end
 
@@ -249,6 +300,31 @@ resource 'Omniauth Callback', document: false do
         expect(status).to eq(302) # Redirect code
         expect(response_headers['Location']).to include('authentication_error=true')
         expect(user.reload.invite_status).to eq('pending')
+      end
+
+      context 'with claim_tokens' do
+        let!(:claim_token) { create(:claim_token) }
+        let(:idea) { claim_token.item }
+
+        before do
+          SettingsService.new.activate_feature!('user_confirmation')
+          allow_any_instance_of(OmniauthCallbackController).to receive(:omniauth_params).and_return({
+            'claim_tokens' => [claim_token.token]
+          })
+        end
+
+        example 'marks claim tokens as pending for new user (not claimed until email confirmed)' do
+          expect(idea.author_id).to be_nil
+
+          do_request
+          expect(status).to eq(302)
+
+          user = User.find_by(email: 'billy_fixed@example.com')
+          expect(user).not_to be_nil
+          expect(user.email_confirmed_at).to be_nil
+          expect(claim_token.reload.pending_claimer_id).to eq(user.id)
+          expect(idea.reload.author_id).to be_nil # Not yet claimed
+        end
       end
     end
   end
