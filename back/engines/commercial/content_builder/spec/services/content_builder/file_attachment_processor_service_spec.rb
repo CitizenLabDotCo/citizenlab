@@ -17,11 +17,10 @@ describe ContentBuilder::FileAttachmentProcessorService do
         }
       end
 
-      it 'creates a file attachment and injects the ID into craftjs_json' do
-        result = service.process_file_attachments
+      it 'creates a file attachment' do
+        service.process_file_attachments
 
         expect(Files::FileAttachment.where(attachable: layout, file: file).count).to eq(1)
-        expect(result['node1']['props']['fileAttachmentId']).to be_present
       end
     end
 

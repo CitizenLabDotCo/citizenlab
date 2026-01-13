@@ -10,9 +10,10 @@ import {
 import { useNode, useEditor } from '@craftjs/core';
 import { useParams } from 'react-router-dom';
 
-import useFileAttachmentById from 'api/file_attachments/useFileAttachmentById';
+import useFileAttachments from 'api/file_attachments/useFileAttachments';
 import useFiles from 'api/files/useFiles';
 
+import { useContentBuilderLayoutContext } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import FileDisplay from 'components/UI/FileAttachments/FileDisplay';
 
@@ -27,14 +28,20 @@ type FileAttachmentProps = {
   fileName?: string;
 };
 
-const FileAttachment = ({
-  fileAttachmentId,
-  fileName,
-}: FileAttachmentProps) => {
-  const { data: fileAttachment } = useFileAttachmentById(fileAttachmentId);
+const FileAttachment = ({ fileId, fileName }: FileAttachmentProps) => {
+  const { layoutId } = useContentBuilderLayoutContext();
+
+  const { data: attachments } = useFileAttachments({
+    attachable_id: layoutId,
+    attachable_type: 'ContentBuilder::Layout',
+  });
+
+  const attachment = attachments?.data.find(
+    (a) => a.relationships.file.data.id === fileId
+  );
 
   if (
-    !fileAttachmentId // We've changed the file
+    !attachment // We've changed the file
   ) {
     // Show placeholder with just the file name if we haven't saved yet
     if (fileName) {
@@ -65,27 +72,28 @@ const FileAttachment = ({
     return null;
   }
 
+  const attachmentAttributes = attachment.attributes;
+
   return (
     <Box id="e2e-file-attachment" maxWidth="1200px" margin="0 auto">
-      {fileAttachment && (
-        <FileDisplay
-          file={{
-            // Transform the file data to match the current expected type structure.
-            // TODO: In the future, once we remove the old files structure/api, we can simplify this.
-            ...fileAttachment.data,
-            attributes: {
-              ordering: fileAttachment.data.attributes.position,
-              name: fileName || fileAttachment.data.attributes.file_name,
-              size: fileAttachment.data.attributes.file_size,
-              created_at: fileAttachment.data.attributes.created_at,
-              updated_at: fileAttachment.data.attributes.updated_at,
-              file: {
-                url: fileAttachment.data.attributes.file_url,
-              },
+      <FileDisplay
+        file={{
+          // Transform the file data to match the current expected type structure.
+          // TODO: In the future, once we remove the old files structure/api, we can simplify this.
+          id: attachment.relationships.file.data.id,
+          type: 'file',
+          attributes: {
+            ordering: 1,
+            name: fileName || attachmentAttributes.file_name,
+            size: attachmentAttributes.file_size,
+            created_at: attachmentAttributes.created_at,
+            updated_at: attachmentAttributes.updated_at,
+            file: {
+              url: attachmentAttributes.file_url,
             },
-          }}
-        />
-      )}
+          },
+        }}
+      />
     </Box>
   );
 };
@@ -96,7 +104,6 @@ const FileAttachmentSettings = () => {
     fileId,
   } = useNode((node) => ({
     fileId: node.data.props.fileId,
-    fileAttachmentId: node.data.props.fileAttachmentId,
   }));
 
   const { formatMessage } = useIntl();

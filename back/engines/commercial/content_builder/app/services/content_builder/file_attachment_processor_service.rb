@@ -47,20 +47,20 @@ module ContentBuilder
     end
 
     def needs_file_attachment?(node)
-      node.dig('props', 'fileId').present? && node.dig('props', 'fileAttachmentId').blank?
+      file_id = node.dig('props', 'fileId')
+      return false if file_id.blank?
+
+      !::Files::FileAttachment.exists?(file_id: file_id, attachable: @layout)
     end
 
     def create_file_attachment(node)
       file_id = node.dig('props', 'fileId')
       return if file_id.blank?
 
-      file_attachment = ::Files::FileAttachment.find_or_create_by!(
+      ::Files::FileAttachment.find_or_create_by!(
         file_id: file_id,
         attachable: @layout
       )
-
-      node['props']['fileAttachmentId'] = file_attachment.id
-      Rails.logger.info "FileAttachment #{file_attachment.id} for Layout #{@layout.id}"
     rescue ActiveRecord::RecordInvalid => e
       Rails.logger.error "Failed to create file attachment: #{e.message}"
     end
