@@ -104,8 +104,8 @@ it:
       event_address1: '10 Example Street, Exampleton, Exampleshire'
       event_address2: 'Camera 3a, piano superiore'
       proposal_title: 'Esempio di proposta'
-      input_status_title: 'Esempio di stato'
-      input_status_description: 'Un esempio di stato per un input (ad esempio accettato, rifiutato, implementato...)'
+      input_status_title: 'Esempio di status'
+      input_status_description: 'Un esempio di status per un contributo (ad esempio accettato, rifiutato, implementato...)'
       official_feedback_body: 'Esempio di feedback ufficiale'
     footer:
       "link_privacy_policy": "Politica sulla privacy"
@@ -398,7 +398,7 @@ it:
       subject: 'Prepara tutto per la nuova fase di %{projectName}'
       preheader: 'Una nuova fase inizierà presto per %{projectName}'
     project_published:
-      subject: 'Un nuovo progetto è stato pubblicato sulla piattaforma di %{organizationName}.'
+      subject: 'È stato pubblicato un nuovo progetto sulla piattaforma di %{organizationName}'
       title: 'È stato pubblicato un nuovo progetto'
       event_description: 'La piattaforma di partecipazione di %{organizationName} ha appena pubblicato il seguente progetto:'
       preheader: 'È stato pubblicato un nuovo progetto'
@@ -417,8 +417,8 @@ it:
       preheader: '%{reviewerName} ha approvato il progetto "%{projectTitle}".'
     status_change_on_idea_you_follow:
       status_change: 'Il nuovo status di questo contributo è ''%{status}'''
-      event_description: '%{organizationName} ha aggiornato lo stato dell''input ''%{input_title}'' sulla sua piattaforma di partecipazione digitale.'
-      title: 'Un input che segui ha un nuovo stato'
+      event_description: '%{organizationName} ha aggiornato lo status del contributo: ''%{input_title}'' sulla sua piattaforma di partecipazione digitale.'
+      title: 'Un contributo che segui ha un nuovo status'
       subject: 'Lo status di "%{input_title}" è cambiato'
       preheader: 'Un contributo che segui ha un nuovo status'
       cta_button: Vai a questo ingresso
@@ -635,7 +635,7 @@ it:
         proposal_is_published: 'La proposta viene pubblicata'
         proposal_is_updated: 'La proposta è aggiornata'
         proposal_is_upvoted_above_threshold: 'La proposta è votata oltre la soglia'
-        proposal_status_changes: 'Modifiche allo stato della proposta'
+        proposal_status_changes: 'Modifiche allo status della proposta'
         registration_to_event: 'Registrazione ad un evento'
         survey_1_day_after_draft_saved: '1 giorno dopo l''ultima volta che l''utente ha salvato il sondaggio in bozza'
         user_accepts_invitation_to_cosponsor_a_proposal: 'L''utente accetta l''invito a co-sponsorizzare una proposta'
