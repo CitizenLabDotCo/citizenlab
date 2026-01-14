@@ -6,6 +6,10 @@ module InputStrategy
       @custom_field = custom_field
     end
 
+    def supports_submission?
+      true
+    end
+
     def supports_average?
       false
     end

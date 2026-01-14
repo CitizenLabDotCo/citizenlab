@@ -39,7 +39,7 @@ class IdeaCustomFieldsService
   end
 
   def submittable_fields
-    enabled_fields.select(&:submittable?)
+    enabled_fields.select(&:supports_submission?)
   end
 
   def submittable_fields_with_other_options

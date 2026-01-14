@@ -2,6 +2,10 @@
 
 module InputStrategy
   class Page < Base
+    def supports_submission?
+      false
+    end
+
     def supports_xlsx_export?
       false
     end

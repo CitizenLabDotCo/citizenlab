@@ -52,8 +52,8 @@
 #  index_custom_fields_on_resource_type_and_resource_id    (resource_type,resource_id)
 #
 class CustomField < ApplicationRecord
-  delegate :supports_average?, :supports_options?, :supports_other_option?, :supports_option_images?, :supports_follow_up?, :supports_text?,
-    :supports_linear_scale?, :supports_linear_scale_labels?, :supports_matrix_statements?, :supports_single_selection?,
+  delegate :supports_submission?, :supports_average?, :supports_options?, :supports_other_option?, :supports_option_images?, :supports_follow_up?,
+    :supports_text?, :supports_linear_scale?, :supports_linear_scale_labels?, :supports_matrix_statements?, :supports_single_selection?,
     :supports_multiple_selection?, :supports_selection?, :supports_select_count?, :supports_dropdown_layout?, :supports_free_text_value?,
     :supports_xlsx_export?, :supports_geojson?, to: :input_strategy
 
@@ -93,7 +93,7 @@ class CustomField < ApplicationRecord
     :key,
     presence: true,
     uniqueness: { scope: %i[resource_type resource_id] }, format: { with: /\A[a-zA-Z0-9_]+\z/, message: 'only letters, numbers and underscore' },
-    if: :accepts_input?
+    if: :supports_submission?
   )
   validates :input_type, presence: true, inclusion: INPUT_TYPES
   validates :title_multiloc, presence: true, multiloc: { presence: true }, unless: :page?
@@ -218,10 +218,6 @@ class CustomField < ApplicationRecord
     false
   end
 
-  def submittable?
-    !page?
-  end
-
   def printable?
     return false unless enabled? && include_in_printed_form
 
@@ -280,10 +276,6 @@ class CustomField < ApplicationRecord
 
   def linear_scale?
     input_type == 'linear_scale'
-  end
-
-  def accepts_input?
-    !page?
   end
 
   def custom_form_type?
@@ -446,7 +438,7 @@ class CustomField < ApplicationRecord
 
   def generate_key
     return if key
-    return if !accepts_input?
+    return if !supports_submission?
 
     title = title_multiloc.values.first
     return unless title

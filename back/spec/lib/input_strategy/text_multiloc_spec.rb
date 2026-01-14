@@ -7,6 +7,7 @@ RSpec.describe InputStrategy::TextMultiloc do
 
   let(:custom_field) { build(:custom_field, input_type: 'text_multiloc') }
 
+  its(:supports_submission?) { is_expected.to be true }
   its(:supports_average?) { is_expected.to be false }
   its(:supports_options?) { is_expected.to be false }
   its(:supports_other_option?) { is_expected.to be false }
