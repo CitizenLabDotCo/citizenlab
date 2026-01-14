@@ -10,6 +10,7 @@ import {
 
 import { FormattedMessage } from 'utils/cl-intl';
 
+import BulletPoint from './BulletPoint';
 import messages from './messages';
 
 interface Props {
@@ -30,6 +31,17 @@ const PostParticipationBox = ({ onCreateAccount }: Props) => {
       <Text mb="12px">
         <FormattedMessage {...messages.createAnAccountToFollow} />
       </Text>
+      <Box display="flex" flexDirection="column" gap="8px">
+        <BulletPoint iconName="notification" message={messages.getUpdates} />
+        <BulletPoint
+          iconName="chat-bubble"
+          message={messages.joinDiscussions}
+        />
+        <BulletPoint
+          iconName="projects"
+          message={messages.participateInOtherProjects}
+        />
+      </Box>
       <Button
         onClick={onCreateAccount}
         mt="16px"

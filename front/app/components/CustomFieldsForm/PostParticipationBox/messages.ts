@@ -14,4 +14,16 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.PostParticipationBox.createAnAccount',
     defaultMessage: 'Create an account',
   },
+  getUpdates: {
+    id: 'app.components.CustomFieldsForm.PostParticipationBox.getUpdates',
+    defaultMessage: 'Get updates when there are next steps',
+  },
+  joinDiscussions: {
+    id: 'app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions',
+    defaultMessage: 'Join discussions if your input is shared publicly',
+  },
+  participateInOtherProjects: {
+    id: 'app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects',
+    defaultMessage: 'Participate in other projects and conversations',
+  },
 });
