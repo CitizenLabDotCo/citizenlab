@@ -233,7 +233,6 @@ module IdeaCustomFields
         deleted_options = options.reject { |option| given_ids.include? option.id }
         deleted_options.each { |option| delete_option! option }
         options_params.each_with_index do |option_params, option_index|
-          option_params[:ordering] = option_index # Do this instead of ordering gem .move_to_bottom method for performance reasons
           if option_params[:id] && options_by_id[option_params[:id]]
             option = options_by_id[option_params[:id]]
             next unless update_option! option, option_params, errors, field_index, option_index
@@ -242,6 +241,7 @@ module IdeaCustomFields
             next unless option
           end
           update_option_image!(option, option_params[:image_id])
+          option.move_to_bottom
         end
       end
     end
