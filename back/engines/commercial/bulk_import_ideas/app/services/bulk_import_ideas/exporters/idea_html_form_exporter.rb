@@ -225,7 +225,7 @@ module BulkImportIdeas::Exporters
 
     def field_map_url(field)
       return unless %w[point line polygon page].include? field.input_type
-      return if field.input_type == 'page' && field.page_layout != 'map'
+      return if field.structural_field? && field.page_layout != 'map'
 
       # Use map config from field > project > platform in that order
       map_config = field.map_config || @project.map_config

@@ -126,7 +126,7 @@ class CustomFieldService
   # Making pages a different data model would avoid
   # having to do this.
   def pages(fields)
-    fields.chunk_while { |_, field| field.input_type != 'page' }
+    fields.chunk_while { |_, field| !field.structural_field? }
   end
 
   private

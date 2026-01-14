@@ -52,10 +52,10 @@
 #  index_custom_fields_on_resource_type_and_resource_id    (resource_type,resource_id)
 #
 class CustomField < ApplicationRecord
-  delegate :supports_submission?, :supports_average?, :supports_options?, :supports_other_option?, :supports_option_images?, :supports_follow_up?,
-    :supports_text?, :supports_linear_scale?, :supports_linear_scale_labels?, :supports_matrix_statements?, :supports_single_selection?,
-    :supports_multiple_selection?, :supports_selection?, :supports_select_count?, :supports_dropdown_layout?, :supports_free_text_value?,
-    :supports_xlsx_export?, :supports_geojson?, to: :input_strategy
+  delegate :structural_field?, :supports_submission?, :supports_average?, :supports_options?, :supports_other_option?, :supports_option_images?,
+    :supports_follow_up?, :supports_text?, :supports_linear_scale?, :supports_linear_scale_labels?, :supports_matrix_statements?,
+    :supports_single_selection?, :supports_multiple_selection?, :supports_selection?, :supports_select_count?, :supports_dropdown_layout?,
+    :supports_free_text_value?, :supports_xlsx_export?, :supports_geojson?, to: :input_strategy
 
   acts_as_list column: :ordering, top_of_list: 0, scope: %i[resource_type resource_id], sequential_updates: true
 
@@ -96,7 +96,7 @@ class CustomField < ApplicationRecord
     if: :supports_submission?
   )
   validates :input_type, presence: true, inclusion: INPUT_TYPES
-  validates :title_multiloc, presence: true, multiloc: { presence: true }, if: -> { input_type != 'page' }
+  validates :title_multiloc, presence: true, multiloc: { presence: true }, if: -> { !structural_field? }
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :required, inclusion: { in: [true, false] }
   validates :enabled, inclusion: { in: [true, false] }
@@ -107,8 +107,8 @@ class CustomField < ApplicationRecord
   validates :minimum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :select_count_enabled_and_supported?, allow_nil: true
   validates :maximum_select_count, absence: true, unless: :select_count_enabled_and_supported?
   validates :minimum_select_count, absence: true, unless: :select_count_enabled_and_supported?
-  validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: -> { input_type == 'page' }
-  validates :page_layout, absence: true, if: -> { input_type != 'page' }
+  validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: :structural_field?
+  validates :page_layout, absence: true, if: -> { !structural_field? }
   validates :question_category, absence: true, unless: :supports_category?
   validates :question_category, inclusion: { in: QUESTION_CATEGORIES }, allow_nil: true, if: :supports_category?
   validates :maximum, presence: true, inclusion: 2..11, if: :supports_linear_scale?
@@ -212,7 +212,7 @@ class CustomField < ApplicationRecord
 
   def visible_to_public?
     return true if %w[author_id budget].include?(code)
-    return true if input_type == 'page' # It's possible that this line can be removed (but we would need to properly test to be sure)
+    return true if structural_field? # It's possible that this line can be removed (but we would need to properly test to be sure)
     return true if custom_form_type? && built_in?
 
     false
@@ -255,7 +255,7 @@ class CustomField < ApplicationRecord
   end
 
   def form_end_page?
-    input_type == 'page' && key == 'form_end'
+    structural_field? && key == 'form_end'
   end
 
   def multiselect?

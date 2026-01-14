@@ -78,7 +78,7 @@ class IdeaCustomFieldsService
     # Restructure the results to order by category with each category as a page
 
     # Remove the original pages
-    fields = enabled_fields.reject { |field| field.input_type == 'page' }
+    fields = enabled_fields.select(&:supports_submission?)
 
     # Order fields by the order of categories in custom field
     categories = CustomField::QUESTION_CATEGORIES

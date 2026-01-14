@@ -2,8 +2,8 @@
 
 module InputStrategy
   class Page < Base
-    def supports_submission?
-      false
+    def structural_field?
+      true
     end
 
     def supports_xlsx_export?

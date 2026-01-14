@@ -25,9 +25,9 @@ namespace :fix_existing_tenants do
           next if !form
 
           fields = CustomField.where(resource_id: form.id).order(:ordering)
-          next if fields.first.input_type == 'page'
+          next if fields.first.structural_field?
 
-          first_page = fields.find { |f| f.input_type == 'page' }
+          first_page = fields.find(&:structural_field?)
           if !first_page
             reporter.add_error(
               'Form has no pages!',
