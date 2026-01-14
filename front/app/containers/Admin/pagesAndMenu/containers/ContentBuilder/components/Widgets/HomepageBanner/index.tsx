@@ -22,6 +22,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
+import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 import homepageMessages from 'containers/HomePage/messages';
 import SignedInHeader from 'containers/HomePage/SignedInHeader';
 import SignedOutHeader from 'containers/HomePage/SignedOutHeader';
@@ -100,6 +101,14 @@ export interface IHomepageBannerSettings {
   banner_signed_in_header_overlay_color?: string | null;
   // Number between 0 and 100, inclusive
   banner_signed_in_header_overlay_opacity?: number | null;
+  // signed_in header heights (in pixels)
+  banner_signed_in_header_height_desktop?: number;
+  banner_signed_in_header_height_tablet?: number;
+  banner_signed_in_header_height_phone?: number;
+  // signed_out header heights (in pixels)
+  banner_signed_out_header_height_desktop?: number;
+  banner_signed_out_header_height_tablet?: number;
+  banner_signed_out_header_height_phone?: number;
   // cta_signed_in
   banner_cta_signed_in_text_multiloc: Multiloc;
   banner_cta_signed_in_type: CTASignedInType;
@@ -205,6 +214,19 @@ const HomepageBannerSettings = () => {
           .banner_signed_in_header_overlay_opacity,
       banner_signed_in_header_overlay_color:
         node.data.props.homepageSettings.banner_signed_in_header_overlay_color,
+      banner_signed_in_header_height_desktop:
+        node.data.props.homepageSettings.banner_signed_in_header_height_desktop,
+      banner_signed_in_header_height_tablet:
+        node.data.props.homepageSettings.banner_signed_in_header_height_tablet,
+      banner_signed_in_header_height_phone:
+        node.data.props.homepageSettings.banner_signed_in_header_height_phone,
+      banner_signed_out_header_height_desktop:
+        node.data.props.homepageSettings
+          .banner_signed_out_header_height_desktop,
+      banner_signed_out_header_height_tablet:
+        node.data.props.homepageSettings.banner_signed_out_header_height_tablet,
+      banner_signed_out_header_height_phone:
+        node.data.props.homepageSettings.banner_signed_out_header_height_phone,
     },
   }));
 
@@ -586,6 +608,110 @@ const HomepageBannerSettings = () => {
               </div>
             );
           })}
+          <Box mt="24px">
+            <Label>{formatMessage(messages.headerHeights)}</Label>
+            <Text m="0px 0px 12px 0px" color="textSecondary" fontSize="s">
+              Customize the signed-out header height for each device size.
+              Default for{' '}
+              {homepageSettings.banner_layout || 'full_width_banner_layout'}:
+              Desktop{' '}
+              {
+                homepageBannerLayoutHeights[
+                  homepageSettings.banner_layout || 'full_width_banner_layout'
+                ].desktop
+              }
+              px, Tablet{' '}
+              {
+                homepageBannerLayoutHeights[
+                  homepageSettings.banner_layout || 'full_width_banner_layout'
+                ].tablet
+              }
+              px, Phone{' '}
+              {
+                homepageBannerLayoutHeights[
+                  homepageSettings.banner_layout || 'full_width_banner_layout'
+                ].phone
+              }
+              px.
+            </Text>
+            <Box display="flex" flexDirection="column" gap="12px">
+              <Box>
+                <Label htmlFor="signedOutHeaderHeightDesktop">
+                  {formatMessage(messages.headerHeightDesktop)}
+                </Label>
+                <Input
+                  id="signedOutHeaderHeightDesktop"
+                  type="number"
+                  min="50"
+                  max="800"
+                  placeholder={homepageBannerLayoutHeights[
+                    homepageSettings.banner_layout || 'full_width_banner_layout'
+                  ].desktop.toString()}
+                  value={
+                    homepageSettings.banner_signed_out_header_height_desktop?.toString() ||
+                    ''
+                  }
+                  onChange={(value) => {
+                    const numValue = value ? parseInt(value, 10) : undefined;
+                    setProp((props: Props) => {
+                      props.homepageSettings.banner_signed_out_header_height_desktop =
+                        numValue;
+                    });
+                  }}
+                />
+              </Box>
+              <Box>
+                <Label htmlFor="signedOutHeaderHeightTablet">
+                  {formatMessage(messages.headerHeightTablet)}
+                </Label>
+                <Input
+                  id="signedOutHeaderHeightTablet"
+                  type="number"
+                  min="50"
+                  max="800"
+                  placeholder={homepageBannerLayoutHeights[
+                    homepageSettings.banner_layout || 'full_width_banner_layout'
+                  ].tablet.toString()}
+                  value={
+                    homepageSettings.banner_signed_out_header_height_tablet?.toString() ||
+                    ''
+                  }
+                  onChange={(value) => {
+                    const numValue = value ? parseInt(value, 10) : undefined;
+                    setProp((props: Props) => {
+                      props.homepageSettings.banner_signed_out_header_height_tablet =
+                        numValue;
+                    });
+                  }}
+                />
+              </Box>
+              <Box>
+                <Label htmlFor="signedOutHeaderHeightPhone">
+                  {formatMessage(messages.headerHeightPhone)}
+                </Label>
+                <Input
+                  id="signedOutHeaderHeightPhone"
+                  type="number"
+                  min="50"
+                  max="800"
+                  placeholder={homepageBannerLayoutHeights[
+                    homepageSettings.banner_layout || 'full_width_banner_layout'
+                  ].phone.toString()}
+                  value={
+                    homepageSettings.banner_signed_out_header_height_phone?.toString() ||
+                    ''
+                  }
+                  onChange={(value) => {
+                    const numValue = value ? parseInt(value, 10) : undefined;
+                    setProp((props: Props) => {
+                      props.homepageSettings.banner_signed_out_header_height_phone =
+                        numValue;
+                    });
+                  }}
+                />
+              </Box>
+            </Box>
+          </Box>
         </>
       )}
 
@@ -709,6 +835,84 @@ const HomepageBannerSettings = () => {
               </div>
             );
           })}
+          <Box mt="24px">
+            <Label>{formatMessage(messages.headerHeights)}</Label>
+            <Text m="0px 0px 12px 0px" color="textSecondary" fontSize="s">
+              Customize the signed-in header height for each device size.
+              Default: Desktop 200px, Tablet 250px, Phone 300px.
+            </Text>
+            <Box display="flex" flexDirection="column" gap="12px">
+              <Box>
+                <Label htmlFor="headerHeightDesktop">
+                  {formatMessage(messages.headerHeightDesktop)}
+                </Label>
+                <Input
+                  id="headerHeightDesktop"
+                  type="number"
+                  min="50"
+                  max="800"
+                  placeholder="200"
+                  value={
+                    homepageSettings.banner_signed_in_header_height_desktop?.toString() ||
+                    ''
+                  }
+                  onChange={(value) => {
+                    const numValue = value ? parseInt(value, 10) : undefined;
+                    setProp((props: Props) => {
+                      props.homepageSettings.banner_signed_in_header_height_desktop =
+                        numValue;
+                    });
+                  }}
+                />
+              </Box>
+              <Box>
+                <Label htmlFor="headerHeightTablet">
+                  {formatMessage(messages.headerHeightTablet)}
+                </Label>
+                <Input
+                  id="headerHeightTablet"
+                  type="number"
+                  min="50"
+                  max="800"
+                  placeholder="250"
+                  value={
+                    homepageSettings.banner_signed_in_header_height_tablet?.toString() ||
+                    ''
+                  }
+                  onChange={(value) => {
+                    const numValue = value ? parseInt(value, 10) : undefined;
+                    setProp((props: Props) => {
+                      props.homepageSettings.banner_signed_in_header_height_tablet =
+                        numValue;
+                    });
+                  }}
+                />
+              </Box>
+              <Box>
+                <Label htmlFor="headerHeightPhone">
+                  {formatMessage(messages.headerHeightPhone)}
+                </Label>
+                <Input
+                  id="headerHeightPhone"
+                  type="number"
+                  min="50"
+                  max="800"
+                  placeholder="300"
+                  value={
+                    homepageSettings.banner_signed_in_header_height_phone?.toString() ||
+                    ''
+                  }
+                  onChange={(value) => {
+                    const numValue = value ? parseInt(value, 10) : undefined;
+                    setProp((props: Props) => {
+                      props.homepageSettings.banner_signed_in_header_height_phone =
+                        numValue;
+                    });
+                  }}
+                />
+              </Box>
+            </Box>
+          </Box>
         </>
       )}
     </Box>

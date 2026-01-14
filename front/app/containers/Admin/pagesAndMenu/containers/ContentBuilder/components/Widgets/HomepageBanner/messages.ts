@@ -144,4 +144,20 @@ export default defineMessages({
     defaultMessage:
       'Customizing settings other than the image and text on the homepage banner is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.',
   },
+  headerHeights: {
+    id: 'app.containers.ContentBuilder.homepage.headerHeights',
+    defaultMessage: 'Header heights (in pixels)',
+  },
+  headerHeightDesktop: {
+    id: 'app.containers.ContentBuilder.homepage.headerHeightDesktop',
+    defaultMessage: 'Desktop',
+  },
+  headerHeightTablet: {
+    id: 'app.containers.ContentBuilder.homepage.headerHeightTablet',
+    defaultMessage: 'Tablet',
+  },
+  headerHeightPhone: {
+    id: 'app.containers.ContentBuilder.homepage.headerHeightPhone',
+    defaultMessage: 'Phone',
+  },
 });

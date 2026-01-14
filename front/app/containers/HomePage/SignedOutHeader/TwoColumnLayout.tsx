@@ -31,6 +31,7 @@ const TwoColumnLayout = ({ homepageSettings }: Props) => {
             isLazy={false}
             placeholderBg="transparent"
             alt=""
+            phoneHeight={homepageSettings.banner_signed_out_header_height_phone}
           />
         </HeaderImageWrapper>
       )}

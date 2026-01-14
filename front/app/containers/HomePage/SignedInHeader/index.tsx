@@ -29,15 +29,19 @@ const VerificationOnboardingStep = lazy(
 const CustomCTAStep = lazy(() => import('./CustomCTAStep'));
 const FallbackStep = lazy(() => import('./FallbackStep'));
 
-export const heights = {
+export const defaultHeights = {
   phone: 300,
   tablet: 250,
   desktop: 200,
 };
 
-const Header = styled.div`
+const Header = styled.div<{
+  desktopHeight: number;
+  tabletHeight: number;
+  phoneHeight: number;
+}>`
   width: 100%;
-  height: ${heights.desktop}px;
+  height: ${(props) => props.desktopHeight}px;
   margin: 0;
   padding: 0;
   position: relative;
@@ -47,11 +51,11 @@ const Header = styled.div`
   justify-content: center;
 
   ${media.tablet`
-    height: ${heights.tablet}px;
+    height: ${(props) => props.tabletHeight}px;
   `}
 
   ${media.phone`
-    height: ${heights.phone}px;
+    height: ${(props) => props.phoneHeight}px;
   `}
 `;
 
@@ -79,11 +83,25 @@ const SignedInHeader = ({
   const homepageSettingOpacity =
     homepageSettings.banner_signed_in_header_overlay_opacity;
 
+  // Use custom heights if provided, otherwise use defaults
+  const desktopHeight =
+    homepageSettings.banner_signed_in_header_height_desktop ??
+    defaultHeights.desktop;
+  const tabletHeight =
+    homepageSettings.banner_signed_in_header_height_tablet ??
+    defaultHeights.tablet;
+  const phoneHeight =
+    homepageSettings.banner_signed_in_header_height_phone ??
+    defaultHeights.phone;
+
   if (isInitialLoading) {
     return (
       <Skeleton
         homepageSettingColor={homepageSettingColor ?? undefined}
         homepageSettingOpacity={homepageSettingOpacity ?? undefined}
+        desktopHeight={desktopHeight}
+        tabletHeight={tabletHeight}
+        phoneHeight={phoneHeight}
       />
     );
   }
@@ -100,7 +118,12 @@ const SignedInHeader = ({
       data-cy="e2e-full-width-banner-layout-container"
       className={`e2e-signed-in-header`}
     >
-      <Header id="hook-header">
+      <Header
+        id="hook-header"
+        desktopHeight={desktopHeight}
+        tabletHeight={tabletHeight}
+        phoneHeight={phoneHeight}
+      >
         <HeaderImage id="hook-header-image">
           <HeaderImageBackground
             data-testid="full-width-banner-layout-header-image"
