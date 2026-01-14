@@ -17,9 +17,9 @@ export const Container = styled.div`
 `;
 
 export const defaultHeights = {
-  desktop: homepageBannerLayoutHeights['two_row_layout'].desktop,
-  tablet: homepageBannerLayoutHeights['two_row_layout'].tablet,
-  phone: homepageBannerLayoutHeights['two_row_layout'].phone,
+  desktop: homepageBannerLayoutHeights.two_row_layout.desktop,
+  tablet: homepageBannerLayoutHeights.two_row_layout.tablet,
+  phone: homepageBannerLayoutHeights.two_row_layout.phone,
 };
 
 export const HeaderImage = styled(Image)<{

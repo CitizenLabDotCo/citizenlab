@@ -244,6 +244,9 @@ const HomepageBannerSettings = () => {
     onlyCheckAllowed: true,
   });
 
+  const bannerLayout =
+    homepageSettings.banner_layout || 'full_width_banner_layout';
+
   useEffect(() => {
     if (image?.imageUrl && initialRender) {
       (async () => {
@@ -613,24 +616,10 @@ const HomepageBannerSettings = () => {
               <Label>{formatMessage(messages.headerHeights)}</Label>
               <Text m="0px 0px 12px 0px" color="textSecondary" fontSize="s">
                 {formatMessage(messages.signedOutHeaderHeightDescription, {
-                  layout:
-                    homepageSettings.banner_layout ||
-                    'full_width_banner_layout',
-                  desktop:
-                    homepageBannerLayoutHeights[
-                      homepageSettings.banner_layout ||
-                        'full_width_banner_layout'
-                    ].desktop,
-                  tablet:
-                    homepageBannerLayoutHeights[
-                      homepageSettings.banner_layout ||
-                        'full_width_banner_layout'
-                    ].tablet,
-                  phone:
-                    homepageBannerLayoutHeights[
-                      homepageSettings.banner_layout ||
-                        'full_width_banner_layout'
-                    ].phone,
+                  layout: bannerLayout,
+                  desktop: homepageBannerLayoutHeights[bannerLayout].desktop,
+                  tablet: homepageBannerLayoutHeights[bannerLayout].tablet,
+                  phone: homepageBannerLayoutHeights[bannerLayout].phone,
                 })}
               </Text>
               <Box display="flex" flexDirection="column" gap="12px">
@@ -644,8 +633,7 @@ const HomepageBannerSettings = () => {
                     min="50"
                     max="800"
                     placeholder={homepageBannerLayoutHeights[
-                      homepageSettings.banner_layout ||
-                        'full_width_banner_layout'
+                      bannerLayout
                     ].desktop.toString()}
                     value={
                       homepageSettings.banner_signed_out_header_height_desktop?.toString() ||
@@ -670,8 +658,7 @@ const HomepageBannerSettings = () => {
                     min="50"
                     max="800"
                     placeholder={homepageBannerLayoutHeights[
-                      homepageSettings.banner_layout ||
-                        'full_width_banner_layout'
+                      bannerLayout
                     ].tablet.toString()}
                     value={
                       homepageSettings.banner_signed_out_header_height_tablet?.toString() ||
@@ -696,8 +683,7 @@ const HomepageBannerSettings = () => {
                     min="50"
                     max="800"
                     placeholder={homepageBannerLayoutHeights[
-                      homepageSettings.banner_layout ||
-                        'full_width_banner_layout'
+                      bannerLayout
                     ].phone.toString()}
                     value={
                       homepageSettings.banner_signed_out_header_height_phone?.toString() ||
