@@ -8,7 +8,10 @@ RSpec.describe ReportBuilder::Queries::Registrations do
   describe '#run_query' do
     before_all do
       # Make TimeBoundariesParser work as expected
-      AppConfiguration.instance.update!(created_at: Date.new(2021, 1, 1))
+      AppConfiguration.instance.update!(
+        created_at: Date.new(2021, 1, 1),
+        platform_start_at: Date.new(2021, 1, 1)
+      )
 
       # Setup September data: 3 registrations, 6 unique visitors
       create_list(:user, 3, registration_completed_at: Date.new(2022, 9, 10))

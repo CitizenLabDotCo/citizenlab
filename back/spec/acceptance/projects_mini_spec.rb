@@ -44,12 +44,7 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
 
       project_ids = json_response[:data].pluck(:id)
 
-      expect(project_ids).to match_array [
-        followed_project.id,
-        project_with_followed_idea.id,
-        project_for_followed_area.id,
-        project_for_followed_topic.id
-      ]
+      expect(project_ids).to contain_exactly(followed_project.id, project_with_followed_idea.id, project_for_followed_area.id, project_for_followed_topic.id)
     end
 
     example 'Returns an empty list if the user is not signed in', document: false do
@@ -252,7 +247,7 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
 
         project_ids = json_response[:data].pluck(:id)
 
-        expect(project_ids).to match_array [finished_project1.id, unfinished_project2.id]
+        expect(project_ids).to contain_exactly(finished_project1.id, unfinished_project2.id)
       end
 
       example 'Excludes projects that are not published' do
@@ -264,7 +259,7 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
 
         project_ids = json_response[:data].pluck(:id)
 
-        expect(project_ids).to match_array [finished_project1.id, unfinished_project2.id]
+        expect(project_ids).to contain_exactly(finished_project1.id, unfinished_project2.id)
       end
 
       example 'Does not include unlisted projects' do
@@ -272,7 +267,7 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
         do_request filter_by: 'finished'
         expect(status).to eq 200
         project_ids = json_response[:data].pluck(:id)
-        expect(project_ids).to match_array [finished_project1.id, unfinished_project2.id]
+        expect(project_ids).to contain_exactly(finished_project1.id, unfinished_project2.id)
       end
     end
 
@@ -323,7 +318,7 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
         expect(status).to eq 200
 
         project_ids = json_response[:data].pluck(:id)
-        expect(project_ids).to match_array [archived_project.id, finished_project1.id, unfinished_project2.id]
+        expect(project_ids).to contain_exactly(archived_project.id, finished_project1.id, unfinished_project2.id)
       end
 
       example 'Includes correct ended_days_ago attribute value', document: false do
@@ -378,7 +373,7 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       expect(Project.count).to eq 3
 
       project_ids = json_response[:data].pluck(:id)
-      expect(project_ids).to match_array [project_with_areas.id, project_for_all_areas.id]
+      expect(project_ids).to contain_exactly(project_with_areas.id, project_for_all_areas.id)
     end
 
     example_request 'Returns projects for followed areas & for all areas when areas param is blank', document: false do
@@ -387,7 +382,7 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       do_request
       expect(status).to eq 200
 
-      expect(json_response[:data].pluck(:id)).to match_array [project_for_all_areas.id, project_with_areas.id]
+      expect(json_response[:data].pluck(:id)).to contain_exactly(project_for_all_areas.id, project_with_areas.id)
     end
   end
 
@@ -413,7 +408,7 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       expect(Project.count).to eq 2
 
       project_ids = json_response[:data].pluck(:id)
-      expect(project_ids).to match_array [project_with_topics.id]
+      expect(project_ids).to contain_exactly(project_with_topics.id)
     end
 
     example 'Orders projects by created_at DESC', document: false do
@@ -441,7 +436,7 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       expect(status).to eq 200
 
       project_ids = json_response[:data].pluck(:id)
-      expect(project_ids).to match_array [project_with_topics.id]
+      expect(project_ids).to contain_exactly(project_with_topics.id)
     end
 
     example_request 'Returns an empty list when topics parameter is nil', document: false do

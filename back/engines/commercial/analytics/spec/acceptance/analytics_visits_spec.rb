@@ -55,12 +55,12 @@ resource 'Analytics - Visits model' do
       })
       assert_status 200
       expect(response_data[:attributes])
-        .to match_array([{
+        .to contain_exactly({
           avg_duration: '200.0',
           avg_pages_visited: '2.0',
           count: 3,
           count_visitor_id: 2
-        }])
+        })
     end
 
     example 'filter visits between dates' do
@@ -103,16 +103,13 @@ resource 'Analytics - Visits model' do
       })
       assert_status 200
       expect(response_data[:attributes])
-        .to match_array([
-          {
-            'dimension_date_last_action.month': '2022-09',
-            count: 2
-          },
-          {
-            'dimension_date_last_action.month': '2022-08',
-            count: 1
-          }
-        ])
+        .to contain_exactly({
+          'dimension_date_last_action.month': '2022-09',
+          count: 2
+        }, {
+          'dimension_date_last_action.month': '2022-08',
+          count: 1
+        })
     end
 
     example 'filter visitors by project' do
@@ -131,10 +128,10 @@ resource 'Analytics - Visits model' do
       })
       assert_status 200
       expect(response_data[:attributes])
-        .to match_array([{
+        .to contain_exactly({
           count: 2,
           count_visitor_id: 1
-        }])
+        })
     end
 
     example 'group visitors by language/locale' do
@@ -180,10 +177,10 @@ resource 'Analytics - Visits model' do
       })
       assert_status 200
       expect(response_data[:attributes])
-        .to match_array([{
+        .to contain_exactly({
           count: 2,
           count_visitor_id: 1
-        }])
+        })
     end
   end
 end

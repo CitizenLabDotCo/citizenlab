@@ -27,7 +27,7 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:votes_by_user_xlsx)    }
       it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
-      it 'should index the project' do
+      it 'indexes the project' do
         expect(scope.resolve.size).to eq 1
       end
     end
@@ -46,11 +46,11 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:votes_by_user_xlsx)    }
       it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
-      it 'should index the project' do
+      it 'indexes the project' do
         expect(scope.resolve.size).to eq 1
       end
 
-      it 'should include the user in the users that have access' do
+      it 'includes the user in the users that have access' do
         expect(inverse_scope.resolve).to include(user)
       end
     end
@@ -69,11 +69,11 @@ describe ProjectPolicy do
       it { is_expected.to permit(:votes_by_user_xlsx)    }
       it { is_expected.to permit(:votes_by_input_xlsx)   }
 
-      it 'should index the project' do
+      it 'indexes the project' do
         expect(scope.resolve.size).to eq 1
       end
 
-      it 'should include the user in the users that have access' do
+      it 'includes the user in the users that have access' do
         expect(inverse_scope.resolve).to include(user)
       end
     end
@@ -141,7 +141,7 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:votes_by_user_xlsx)    }
       it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
-      it 'should not index the project'  do
+      it 'does not index the project' do
         expect(scope.resolve.size).to eq 0
       end
     end
@@ -159,11 +159,11 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:votes_by_user_xlsx)    }
       it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
-      it 'should not index the project'  do
+      it 'does not index the project' do
         expect(scope.resolve.size).to eq 0
       end
 
-      it 'should not include the user in the users that have access' do
+      it 'does not include the user in the users that have access' do
         expect(inverse_scope.resolve).not_to include(user)
       end
     end
@@ -181,11 +181,11 @@ describe ProjectPolicy do
       it { is_expected.to permit(:votes_by_user_xlsx)    }
       it { is_expected.to permit(:votes_by_input_xlsx)   }
 
-      it 'should index the project' do
+      it 'indexes the project' do
         expect(scope.resolve.size).to eq 1
       end
 
-      it 'should include the user in the users that have access' do
+      it 'includes the user in the users that have access' do
         expect(inverse_scope.resolve).to include(user)
       end
     end
@@ -205,7 +205,7 @@ describe ProjectPolicy do
     it { is_expected.not_to permit(:votes_by_user_xlsx)    }
     it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
-    it 'should not index the project'  do
+    it 'does not index the project' do
       expect(scope.resolve.size).to eq 0
     end
   end
@@ -224,11 +224,11 @@ describe ProjectPolicy do
     it { is_expected.not_to permit(:votes_by_user_xlsx)    }
     it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
-    it 'should not index the project'  do
+    it 'does not index the project' do
       expect(scope.resolve.size).to eq 0
     end
 
-    it 'should not include the user in the users that have access' do
+    it 'does not include the user in the users that have access' do
       expect(inverse_scope.resolve).not_to include(user)
     end
 
@@ -237,7 +237,7 @@ describe ProjectPolicy do
 
       it { is_expected.not_to permit(:show) }
 
-      it 'should not index the project'  do
+      it 'does not index the project' do
         expect(scope.resolve.size).to eq 0
       end
     end
@@ -257,11 +257,11 @@ describe ProjectPolicy do
     it { is_expected.not_to permit(:votes_by_user_xlsx)    }
     it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
-    it 'should index the project' do
+    it 'indexes the project' do
       expect(scope.resolve.size).to eq 1
     end
 
-    it 'should include the user in the users that have access' do
+    it 'includes the user in the users that have access' do
       expect(inverse_scope.resolve).to include(user)
     end
   end
@@ -280,11 +280,11 @@ describe ProjectPolicy do
     it { is_expected.to permit(:votes_by_user_xlsx)    }
     it { is_expected.to permit(:votes_by_input_xlsx)   }
 
-    it 'should index the project' do
+    it 'indexes the project' do
       expect(scope.resolve.size).to eq 1
     end
 
-    it 'should include the user in the users that have access' do
+    it 'includes the user in the users that have access' do
       expect(inverse_scope.resolve).to include(user)
     end
   end
@@ -305,7 +305,7 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:votes_by_user_xlsx)    }
       it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
-      it 'should not index the project'  do
+      it 'does not index the project' do
         expect(scope.resolve.size).to eq 0
       end
 
@@ -314,7 +314,7 @@ describe ProjectPolicy do
 
         it { is_expected.to permit(:show) }
 
-        it 'should index the project' do
+        it 'indexes the project' do
           expect(scope.resolve.size).to eq 1
           expect(scope.resolve).to include(project)
         end
@@ -334,11 +334,11 @@ describe ProjectPolicy do
       it { is_expected.not_to permit(:votes_by_user_xlsx)    }
       it { is_expected.not_to permit(:votes_by_input_xlsx)   }
 
-      it 'should not index the project'  do
+      it 'does not index the project' do
         expect(scope.resolve.size).to eq 0
       end
 
-      it 'should not include the user in the users that have access' do
+      it 'does not include the user in the users that have access' do
         expect(inverse_scope.resolve).not_to include(user)
       end
     end
@@ -356,11 +356,11 @@ describe ProjectPolicy do
       it { is_expected.to permit(:votes_by_user_xlsx)    }
       it { is_expected.to permit(:votes_by_input_xlsx)   }
 
-      it 'should index the project' do
+      it 'indexes the project' do
         expect(scope.resolve.size).to eq 1
       end
 
-      it 'should include the user in the users that have access' do
+      it 'includes the user in the users that have access' do
         expect(inverse_scope.resolve).to include(user)
       end
     end

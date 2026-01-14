@@ -18,7 +18,7 @@ describe GroupPolicy do
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 
-      it 'should not index the group' do
+      it 'does not index the group' do
         expect(scope.resolve.size).to eq 0
       end
     end
@@ -31,7 +31,7 @@ describe GroupPolicy do
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 
-      it 'should not index the group' do
+      it 'does not index the group' do
         expect(scope.resolve.size).to eq 0
       end
     end
@@ -44,7 +44,7 @@ describe GroupPolicy do
       it { is_expected.to    permit(:update)  }
       it { is_expected.to    permit(:destroy) }
 
-      it 'should index the group' do
+      it 'indexes the group' do
         expect(scope.resolve.size).to eq 1
       end
     end

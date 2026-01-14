@@ -23,7 +23,7 @@ describe AuthenticationService do
       end
 
       context 'when the user is confirmed' do
-        before { user.reset_confirmation_code }
+        before { user.reset_confirmation_code! }
 
         it 'preserves the user account' do
           user_id = user.id

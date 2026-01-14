@@ -185,7 +185,7 @@ describe Verification::VerificationService do
       it 'returns some locked custom field keys when the custom field exists' do
         create(:custom_field_gender)
         verification = create(:verification, method_name: 'bogus')
-        expect(service.locked_custom_fields(verification.user)).to match_array [:gender]
+        expect(service.locked_custom_fields(verification.user)).to contain_exactly(:gender)
       end
 
       it 'does not return locked custom field keys when the field does not exist' do
@@ -211,16 +211,9 @@ describe Verification::VerificationService do
 
       metadata = service.method_metadata(service.first_method_enabled_for_verified_actions)
       expect(metadata[:name]).to eq 'Fake SSO'
-      expect(metadata[:locked_attributes]).to match_array [
-        { 'en' => 'First name(s)', 'fr-FR' => 'Prénom(s)', 'nl-NL' => 'Voornamen' },
-        { 'en' => 'Last name', 'fr-FR' => 'Nom de famille', 'nl-NL' => 'Achternaam' }
-      ]
-      expect(metadata[:other_attributes]).to match_array [
-        { 'en' => 'Email', 'fr-FR' => 'E-mail', 'nl-NL' => 'E-mail' }
-      ]
-      expect(metadata[:locked_custom_fields]).to match_array [
-        { 'en' => 'gender' }, { 'en' => 'birthyear' }
-      ]
+      expect(metadata[:locked_attributes]).to contain_exactly({ 'en' => 'First name(s)', 'fr-FR' => 'Prénom(s)', 'nl-NL' => 'Voornamen' }, { 'en' => 'Last name', 'fr-FR' => 'Nom de famille', 'nl-NL' => 'Achternaam' })
+      expect(metadata[:other_attributes]).to contain_exactly({ 'en' => 'Email', 'fr-FR' => 'E-mail', 'nl-NL' => 'E-mail' })
+      expect(metadata[:locked_custom_fields]).to contain_exactly({ 'en' => 'gender' }, { 'en' => 'birthyear' })
       expect(metadata[:other_custom_fields]).to be_empty
     end
   end

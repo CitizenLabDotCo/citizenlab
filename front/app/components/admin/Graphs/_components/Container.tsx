@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { debounce, isEqual } from 'lodash-es';
+import { useResizeDetector } from 'react-resize-detector';
 import { ResponsiveContainer } from 'recharts';
 import { Percentage } from 'typings';
 
@@ -17,7 +17,6 @@ interface Props {
   width?: number | Percentage;
   height?: number | Percentage;
   legend?: Legend;
-  graphDimensions: GraphDimensions | undefined;
   legendDimensions: LegendDimensions | undefined;
   defaultLegendOffset: number;
   onUpdateGraphDimensions?: (graphDimensions: GraphDimensions) => void;
@@ -43,29 +42,21 @@ const Container = ({
   width,
   height,
   legend,
-  graphDimensions,
   legendDimensions,
   defaultLegendOffset,
   onUpdateGraphDimensions,
   onUpdateLegendDimensions,
   children,
 }: Props) => {
-  const handleResize = useMemo(
-    () =>
-      debounce((width: number, height: number) => {
-        const newGraphDimensions = { width, height };
-
-        if (!isEqual(graphDimensions, newGraphDimensions)) {
-          if (onUpdateGraphDimensions) {
-            onUpdateGraphDimensions(newGraphDimensions);
-          }
-        }
-      }, 50),
-    [graphDimensions, onUpdateGraphDimensions]
-  );
-
   const rightLegend = legend?.position?.includes('right');
   const maintainGraphSize = !!legend?.maintainGraphSize;
+
+  // Measure actual dimensions when percentages are used
+  const {
+    width: measuredWidth,
+    height: measuredHeight,
+    ref,
+  } = useResizeDetector();
 
   const parsedWidth =
     rightLegend && typeof width === 'number' && maintainGraphSize
@@ -81,6 +72,24 @@ const Container = ({
         (legend.marginTop ?? defaultLegendOffset)
       : height;
 
+  useEffect(() => {
+    // Use measured dimensions when props are percentages
+    const finalWidth =
+      typeof parsedWidth === 'number' ? parsedWidth : measuredWidth;
+    const finalHeight =
+      typeof parsedHeight === 'number' ? parsedHeight : measuredHeight;
+
+    if (finalWidth && finalHeight) {
+      onUpdateGraphDimensions?.({ width: finalWidth, height: finalHeight });
+    }
+  }, [
+    parsedWidth,
+    parsedHeight,
+    measuredWidth,
+    measuredHeight,
+    onUpdateGraphDimensions,
+  ]);
+
   return (
     <Box
       display="flex"
@@ -89,13 +98,23 @@ const Container = ({
       width="100%"
       height="100%"
     >
-      <ResponsiveContainer
-        width={parsedWidth}
-        height={parsedHeight}
-        onResize={handleResize}
+      <Box
+        ref={ref}
+        width={
+          typeof parsedWidth === 'number'
+            ? `${parsedWidth}px`
+            : parsedWidth ?? '100%'
+        }
+        height={
+          typeof parsedHeight === 'number'
+            ? `${parsedHeight}px`
+            : parsedHeight ?? '100%'
+        }
       >
-        {children}
-      </ResponsiveContainer>
+        <ResponsiveContainer width="100%" height="100%">
+          {children}
+        </ResponsiveContainer>
+      </Box>
 
       {legend && onUpdateLegendDimensions && (
         <FakeLegend

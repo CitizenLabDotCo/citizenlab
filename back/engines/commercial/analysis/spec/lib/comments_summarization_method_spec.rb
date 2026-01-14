@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Analysis::CommentsSummarizationMethod do
   describe 'Bogus summarization' do
-    it 'works' do
+    it 'generates a bogus summary from comments' do
       input = create(:idea)
       create_list(:comment, 5, idea: input)
 
@@ -23,7 +23,7 @@ RSpec.describe Analysis::CommentsSummarizationMethod do
   end
 
   describe 'OnePassLLM summarization' do
-    it 'works' do
+    it 'generates summary using LLM with streaming response' do
       input = create(:idea)
       create_list(:comment, 3, idea: input)
 

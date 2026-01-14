@@ -9,6 +9,7 @@ import bulkIdeaImportConfiguration, {
 import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
 import googleAnalyticsConfiguration from './commercial/google_analytics';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
+import idAcmConfiguration from './commercial/id_acm';
 import idAuth0Configuration from './commercial/id_auth0';
 import idBogusConfiguration from './commercial/id_bogus';
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
@@ -107,6 +108,9 @@ export default loadModules([
   },
   {
     configuration: idTwodayConfiguration,
+  },
+  {
+    configuration: idAcmConfiguration,
   },
   {
     configuration: idBogusConfiguration,

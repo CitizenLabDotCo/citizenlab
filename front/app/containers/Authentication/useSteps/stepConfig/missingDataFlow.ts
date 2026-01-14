@@ -1,7 +1,7 @@
-import getAuthUser from 'api/authentication/auth_user/getAuthUser';
-import confirmEmail from 'api/authentication/confirm_email/confirmEmail';
-import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
-import signOut from 'api/authentication/sign_in_out/signOut';
+import requirementKeys from 'api/authentication/authentication_requirements/keys';
+import { confirmEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
+import { requestEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import { updateEmailUnconfirmed } from 'api/authentication/updateEmailUnconfirmed';
 import { OnboardingType } from 'api/users/types';
 import {
   updateUser,
@@ -16,6 +16,7 @@ import {
 } from 'containers/Authentication/typings';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import { isNil } from 'utils/helperUtils';
 
 import { Step, BuiltInFieldsUpdate } from './typings';
 import {
@@ -24,35 +25,46 @@ import {
   checkMissingData,
 } from './utils';
 
+const isEmpty = (obj: Record<string, unknown>) => {
+  if (Object.keys(obj).length === 0) {
+    return true;
+  }
+
+  for (const key in obj) {
+    if (!isNil(obj[key])) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
 export const missingDataFlow = (
   getAuthenticationData: () => AuthenticationData,
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   updateState: UpdateState,
-  state: State
+  state: State,
+  userConfirmationEnabled: boolean
 ) => {
   return {
     'missing-data:email-confirmation': {
       CLOSE: () => setCurrentStep('closed'),
       CHANGE_EMAIL: async () => {
-        const authUser = await getAuthUser();
-
-        if (authUser.data.attributes.no_password) {
-          await signOut();
-          setCurrentStep('closed');
-        } else {
-          setCurrentStep('missing-data:change-email');
-        }
+        setCurrentStep('email:start');
       },
-      SUBMIT_CODE: async (code: string) => {
-        await confirmEmail({ code });
+      SUBMIT_CODE: async (_: string, code: string) => {
+        await confirmEmailConfirmationCodeChangeEmail(code);
+        await queryClient.invalidateQueries(requirementKeys.all());
+
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
         const missingDataStep = checkMissingData(
           requirements,
           authenticationData,
-          state.flow
+          state.flow,
+          true
         );
 
         if (missingDataStep) {
@@ -67,17 +79,8 @@ export const missingDataFlow = (
 
         setCurrentStep('success');
       },
-    },
-
-    'missing-data:change-email': {
-      CLOSE: () => setCurrentStep('closed'),
-      GO_BACK: () => {
-        setCurrentStep('missing-data:email-confirmation');
-      },
-      RESEND_CODE: async (newEmail: string) => {
-        updateState({ email: newEmail });
-        await resendEmailConfirmationCode(newEmail);
-        setCurrentStep('missing-data:email-confirmation');
+      RESEND_CODE: async () => {
+        await requestEmailConfirmationCodeChangeEmail();
       },
     },
 
@@ -85,9 +88,23 @@ export const missingDataFlow = (
       CLOSE: () => setCurrentStep('closed'),
       SUBMIT: async (
         userId: string,
-        builtInFieldUpdate: BuiltInFieldsUpdate
+        { email, ...restBuiltInFieldUpdate }: BuiltInFieldsUpdate
       ) => {
-        await updateUser({ userId, ...builtInFieldUpdate });
+        if (email) {
+          if (userConfirmationEnabled) {
+            await requestEmailConfirmationCodeChangeEmail(email);
+          } else {
+            await updateEmailUnconfirmed(email);
+          }
+        }
+
+        if (!isEmpty(restBuiltInFieldUpdate)) {
+          await updateUser({
+            userId,
+            ...restBuiltInFieldUpdate,
+          });
+        }
+
         invalidateCacheAfterUpdateUser(queryClient);
 
         const { requirements } = await getRequirements();
@@ -96,10 +113,15 @@ export const missingDataFlow = (
         const missingDataStep = checkMissingData(
           requirements,
           authenticationData,
-          state.flow
+          state.flow,
+          true
         );
 
         if (missingDataStep) {
+          if (missingDataStep === 'missing-data:email-confirmation' && email) {
+            updateState({ email });
+          }
+
           setCurrentStep(missingDataStep);
           return;
         }
@@ -108,6 +130,8 @@ export const missingDataFlow = (
           setCurrentStep('access-denied');
           return;
         }
+
+        setCurrentStep('success');
       },
     },
 
@@ -120,7 +144,8 @@ export const missingDataFlow = (
         const missingDataStep = checkMissingData(
           requirements,
           authenticationData,
-          state.flow
+          state.flow,
+          true
         );
 
         if (missingDataStep) {

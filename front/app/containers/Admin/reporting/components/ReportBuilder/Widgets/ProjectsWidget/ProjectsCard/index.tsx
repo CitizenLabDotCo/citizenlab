@@ -4,15 +4,29 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import { useProjects } from 'api/graph_data_units';
 
+import useLocale from 'hooks/useLocale';
+
 import { Props } from '../typings';
 
 import ProjectRow from './ProjectRow';
 
-const ProjectsCard = ({ startAt, endAt, publicationStatuses }: Props) => {
+const ProjectsCard = ({
+  startAt,
+  endAt,
+  publicationStatuses,
+  sort,
+  excludedProjectIds,
+  excludedFolderIds,
+}: Props) => {
+  const locale = useLocale();
   const { data: response } = useProjects({
     start_at: startAt,
     end_at: endAt,
     publication_statuses: publicationStatuses,
+    excluded_project_ids: excludedProjectIds,
+    excluded_folder_ids: excludedFolderIds,
+    sort,
+    locale,
   });
   if (!response) return null;
 

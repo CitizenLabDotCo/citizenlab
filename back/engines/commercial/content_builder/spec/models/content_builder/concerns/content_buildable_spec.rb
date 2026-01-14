@@ -20,7 +20,7 @@ RSpec.describe ContentBuilder::Concerns::ContentBuildable do
 
         describe '#content_builder_layouts' do
           it 'returns the layouts of the buildable model' do
-            expect(buildable.content_builder_layouts).to match_array([layout, another_layout])
+            expect(buildable.content_builder_layouts).to contain_exactly(layout, another_layout)
           end
         end
 
@@ -101,11 +101,11 @@ RSpec.describe ContentBuilder::Concerns::ContentBuildable do
           __ = create_model(factory, { alt: { 'en' => 'otheralt' } })
 
           model = model_class(factory)
-          expect(model.search_ids_by_all_including_patches('sometext')).to match_array([p1.id])
-          expect(model.search_ids_by_all_including_patches('sometitle')).to match_array([p2.id])
-          expect(model.search_ids_by_all_including_patches('someurl')).to match_array([p3.id])
-          expect(model.search_ids_by_all_including_patches('somealt')).to match_array([p4.id])
-          expect(model.search_ids_by_all_including_patches('here')).to match_array([p1.id, p2.id])
+          expect(model.search_ids_by_all_including_patches('sometext')).to contain_exactly(p1.id)
+          expect(model.search_ids_by_all_including_patches('sometitle')).to contain_exactly(p2.id)
+          expect(model.search_ids_by_all_including_patches('someurl')).to contain_exactly(p3.id)
+          expect(model.search_ids_by_all_including_patches('somealt')).to contain_exactly(p4.id)
+          expect(model.search_ids_by_all_including_patches('here')).to contain_exactly(p1.id, p2.id)
         end
 
         it "finds #{factory} by both builder content and normal description" do
@@ -115,14 +115,14 @@ RSpec.describe ContentBuilder::Concerns::ContentBuildable do
           __ = create(factory, description_multiloc: { en: 'othertext' })
 
           model = model_class(factory)
-          expect(model.search_ids_by_all_including_patches('sometext')).to match_array([p1.id, p2.id])
+          expect(model.search_ids_by_all_including_patches('sometext')).to contain_exactly(p1.id, p2.id)
         end
 
         it "does not find #{factory} by internal craftjs fields" do
           p1 = create_model(factory, { text: { 'en' => 'sometext here' } })
 
           model = model_class(factory)
-          expect(model.search_ids_by_all_including_patches('sometext')).to match_array([p1.id])
+          expect(model.search_ids_by_all_including_patches('sometext')).to contain_exactly(p1.id)
           expect(model.search_ids_by_all_including_patches('Container')).to be_empty
           expect(model.search_ids_by_all_including_patches('nodes')).to be_empty
           expect(model.search_ids_by_all_including_patches('ROOT')).to be_empty

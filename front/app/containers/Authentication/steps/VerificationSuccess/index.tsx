@@ -5,8 +5,7 @@ import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 
-import { Title } from 'containers/Authentication/steps/AuthProviders/styles';
-
+import { Title } from 'components/AuthProviderStyles/styles';
 import Avatar from 'components/Avatar';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 

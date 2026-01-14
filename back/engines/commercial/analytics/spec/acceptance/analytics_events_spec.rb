@@ -31,10 +31,7 @@ resource 'Analytics - FactEvent' do
         }
       })
       assert_status 200
-      expect(response_data[:attributes]).to match_array([
-        { 'dimension_date_start.month': '2022-09', count: 2 },
-        { 'dimension_date_start.month': '2022-10', count: 1 }
-      ])
+      expect(response_data[:attributes]).to contain_exactly({ 'dimension_date_start.month': '2022-09', count: 2 }, { 'dimension_date_start.month': '2022-10', count: 1 })
     end
 
     # example 'filter events by end date and project' do

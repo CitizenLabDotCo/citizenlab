@@ -42,7 +42,7 @@ resource 'Stats - Ideas' do
   before { admin_header_token }
 
   before_all do
-    AppConfiguration.instance.update!(created_at: now - 3.years)
+    AppConfiguration.instance.update!(created_at: now - 3.years, platform_start_at: now - 3.years)
 
     @project1 = create(:single_phase_ideation_project)
     @project2 = create(:single_phase_proposals_project)
@@ -238,7 +238,7 @@ resource 'Stats - Ideas' do
           @project1.id => 5,
           @project2.id => 1
         })
-        expect(json_attributes[:projects].keys.map(&:to_s)).to match_array [@project1.id, @project2.id]
+        expect(json_attributes[:projects].keys.map(&:to_s)).to contain_exactly(@project1.id, @project2.id)
       end
     end
 
@@ -295,15 +295,15 @@ resource 'Stats - Ideas' do
         expect(worksheet[0].cells.map(&:value)).to match %w[project project_id ideas]
         project_col = worksheet.map { |col| col.cells[1].value }
         _header, *projects = project_col
-        expect(projects).to match_array [@project1.id, @project2.id]
+        expect(projects).to contain_exactly(@project1.id, @project2.id)
 
         project_name_col = worksheet.map { |col| col.cells[0].value }
         _header, *project_names = project_name_col
-        expect(project_names).to match_array [multiloc_service.t(@project1.title_multiloc), multiloc_service.t(@project2.title_multiloc)]
+        expect(project_names).to contain_exactly(multiloc_service.t(@project1.title_multiloc), multiloc_service.t(@project2.title_multiloc))
 
         idea_col = worksheet.map { |col| col.cells[2].value }
         _header, *ideas = idea_col
-        expect(ideas).to match_array [5, 1]
+        expect(ideas).to contain_exactly(5, 1)
       end
     end
 

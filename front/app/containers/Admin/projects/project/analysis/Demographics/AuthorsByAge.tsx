@@ -128,7 +128,8 @@ const AuthorsByAge = ({ customFieldId }: Props) => {
   const filterTo = Number(filters[filterKeyTo]);
   const filterIn = filters[filterKeyIn];
 
-  const handleClick = ({ fromAge }) => {
+  const handleClick = (data: { payload?: { fromAge: number | null } }) => {
+    const fromAge = data.payload?.fromAge ?? null;
     // Handle filter for domcile unknown
     if (fromAge === null) {
       if (filterIn?.includes(null)) {

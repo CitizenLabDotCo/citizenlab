@@ -5,6 +5,8 @@ import { useLocation, useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import { ITab } from 'typings';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import ProjectTraffic from 'containers/Admin/projects/project/traffic';
 
 import NavigationTabs, { Tab } from 'components/admin/NavigationTabs';
@@ -21,24 +23,35 @@ const ProjectParticipation = () => {
   const { projectId } = useParams() as { projectId: string };
   const { pathname } = useLocation();
   const { formatMessage } = useIntl();
+  const { data: appConfiguration } = useAppConfiguration();
 
   const basePath = `/admin/projects/${projectId}/audience`;
 
+  const privateAttributesInExport =
+    appConfiguration?.data.attributes.settings.core
+      .private_attributes_in_export !== false;
+
+  const participantsTab: ITab[] = privateAttributesInExport
+    ? [
+        {
+          name: 'participants',
+          label: formatMessage(messages.participantsTab),
+          url: basePath as RouteType,
+        },
+      ]
+    : [];
+
   const tabs: ITab[] = [
-    {
-      name: 'participants',
-      label: formatMessage(messages.participantsTab),
-      url: `/admin/projects/${projectId}/audience` as RouteType,
-    },
+    ...participantsTab,
     {
       name: 'demographics',
       label: formatMessage(messages.demographicsTab),
-      url: `/admin/projects/${projectId}/audience/demographics` as RouteType,
+      url: `${basePath}/demographics` as RouteType,
     },
     {
       name: 'traffic',
       label: formatMessage(messages.trafficTab),
-      url: `/admin/projects/${projectId}/audience/traffic` as RouteType,
+      url: `${basePath}/traffic` as RouteType,
     },
   ];
 

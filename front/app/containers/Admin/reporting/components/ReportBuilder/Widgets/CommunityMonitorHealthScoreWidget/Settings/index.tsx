@@ -8,6 +8,7 @@ import { generateYearSelectOptions } from 'containers/Admin/reporting/utils/gene
 
 import { useIntl } from 'utils/cl-intl';
 
+import { AccessibilityInputs } from '../../ChartWidgets/_shared/AccessibilityInputs';
 import messages from '../messages';
 import { Props } from '../typings';
 
@@ -61,6 +62,7 @@ const Settings = () => {
         value={quarter}
         onChange={setQuarter}
       />
+      <AccessibilityInputs />
     </Box>
   );
 };

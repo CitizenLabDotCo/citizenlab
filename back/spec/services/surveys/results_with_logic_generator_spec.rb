@@ -11,7 +11,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
   include_context 'survey_setup'
 
   describe 'generate_result_for_field' do
-    it 'it is not implemented and returns an error' do
+    it 'is not implemented and returns an error' do
       generator = described_class.new(survey_phase)
       expect { generator.generate_result_for_field('12345') }.to raise_error(NotImplementedError)
     end

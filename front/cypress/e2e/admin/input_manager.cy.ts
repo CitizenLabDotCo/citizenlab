@@ -250,7 +250,6 @@ describe('Input manager', () => {
           adminUserId = newAdmin.body.data.id;
           newAdminFirstName = newAdmin.body.data.attributes.first_name;
           newAdminLastName = newAdmin.body.data.attributes.last_name;
-          cy.apiConfirmUser(email, password);
         }
       );
       cy.logout();

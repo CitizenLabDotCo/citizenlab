@@ -148,7 +148,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
       base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_12.pdf').read
       service.send(:create_files, "data:application/pdf;base64,#{base_64_content}")
       expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 7
-      expect(BulkImportIdeas::IdeaImportFile.all.pluck(:num_pages)).to match_array [2, 2, 2, 2, 2, 2, 12]
+      expect(BulkImportIdeas::IdeaImportFile.all.pluck(:num_pages)).to contain_exactly(2, 2, 2, 2, 2, 2, 12)
       expect(BulkImportIdeas::IdeaImportFile.where(parent: nil).pluck(:num_pages)).to eq [12]
     end
 
@@ -251,7 +251,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
     it 'converts multi-select custom fields' do
       expect(rows.count).to eq 2
       expect(rows[0][:custom_field_values][:multiselect_field]).to match_array %w[this that]
-      expect(rows[1][:custom_field_values][:multiselect_field]).to match_array ['that']
+      expect(rows[1][:custom_field_values][:multiselect_field]).to contain_exactly('that')
     end
 
     it 'ignores fields/options that it cannot find in the form' do
@@ -459,7 +459,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
     it 'returns an array of idea rows ready to be imported' do
       service = described_class.new create(:admin), 'en', survey_phase.id, false
       allow(service).to receive_messages(template_data: pdf_template_data, google_parsed_idea: google_form_parsed_idea, text_parsed_idea: raw_text_parsed_idea)
-      upload_file = create(:file_upload)
+      upload_file = create(:idea_import_file)
       expect(service.parse_rows(upload_file)).to eq([
         {
           id: 0,
@@ -522,12 +522,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
         'No_12.24.35' => 'unfilled_checkbox'
       }
       cleaned_idea = service.send(:structure_raw_fields, idea)
-      expect(cleaned_idea).to match_array([
-        { name: 'Title', value: 'This fine title', type: 'field', page: nil, position: nil },
-        { name: 'Yes', value: 'filled_checkbox', type: 'option', page: 1, position: 23 },
-        { name: 'No', value: 'filled_checkbox', type: 'option', page: 3, position: 46 },
-        { name: 'No', value: 'unfilled_checkbox', type: 'option', page: 12, position: 35 }
-      ])
+      expect(cleaned_idea).to contain_exactly({ name: 'Title', value: 'This fine title', type: 'field', page: nil, position: nil }, { name: 'Yes', value: 'filled_checkbox', type: 'option', page: 1, position: 23 }, { name: 'No', value: 'filled_checkbox', type: 'option', page: 3, position: 46 }, { name: 'No', value: 'unfilled_checkbox', type: 'option', page: 12, position: 35 })
     end
   end
 

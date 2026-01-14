@@ -112,12 +112,17 @@ export const addMapLegend = (
   isMobileOrSmaller: boolean,
   showLegendExpanded: boolean | undefined
 ) => {
+  // Check if legend already exists and return to prevent duplicates
+  const existingLegend = mapView.ui.find('mapLegendExpand') as Expand | null; // Esri has incorrect types here
+  if (existingLegend) return;
+
   const legend = new Expand({
     content: new Legend({
       view: mapView,
       hideLayersNotInCurrentView: false,
       style: { type: 'classic', layout: 'stack' },
     }),
+    id: 'mapLegendExpand',
     view: mapView,
     expanded:
       showLegendExpanded === undefined
@@ -133,10 +138,17 @@ export const addMapLegend = (
 // showLayerVisibilityControls
 // Description: Shows the layer visibility controls on the map
 export const showLayerVisibilityControls = (mapView: MapView) => {
+  // Check if layer list already exists and return to prevent duplicates
+  const existingLayerList = mapView.ui.find(
+    'mapLayerListExpand'
+  ) as Expand | null; // Esri has incorrect types here
+  if (existingLayerList) return;
+
   const layerList = new Expand({
     content: new LayerList({
       view: mapView,
     }),
+    id: 'mapLayerListExpand',
     view: mapView,
     expanded: false,
     mode: 'floating',

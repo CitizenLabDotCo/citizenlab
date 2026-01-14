@@ -25,7 +25,7 @@ interface Props
   ariaDescribedBy?: string;
 }
 
-const PasswordInput = ({ name, label, ...rest }: Props) => {
+const PasswordInput = ({ name, label, id, ...rest }: Props) => {
   const {
     getValues,
     formState: { errors: formContextErrors },
@@ -46,7 +46,7 @@ const PasswordInput = ({ name, label, ...rest }: Props) => {
   return (
     <>
       {label && (
-        <Label htmlFor={name}>
+        <Label htmlFor={id ?? name}>
           <span>{label}</span>
         </Label>
       )}
@@ -59,7 +59,7 @@ const PasswordInput = ({ name, label, ...rest }: Props) => {
           <PasswordInputComponent
             {...field}
             {...rest}
-            id={name}
+            id={id ?? name}
             aria-label={formatMessage(messages.passwordLabel)}
             password={getValues(name)}
             ariaInvalid={ariaInvalidId}

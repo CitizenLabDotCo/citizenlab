@@ -80,7 +80,7 @@ resource 'Analytics - FactEmailDeliveries model' do
       })
 
       assert_status 200
-      expect(response_data[:attributes]).to match_array([{ count: 2 }])
+      expect(response_data[:attributes]).to contain_exactly({ count: 2 })
     end
   end
 end

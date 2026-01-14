@@ -73,6 +73,9 @@ const SkipLinkStyled = styled.a`
   &:focus {
     top: 0;
   }
+  &:hover {
+    color: ${colors.teal200};
+  }
 `;
 
 interface Props {
@@ -109,6 +112,32 @@ const App = ({ children }: Props) => {
   const [userSuccessfullyDeleted, setUserSuccessfullyDeleted] = useState(false);
 
   const redirectsEnabled = useFeatureFlag({ name: 'redirects' });
+
+  // Scroll focused elements to center on mobile/tablet
+  // This improves accessibility for keyboard and screen reader users and has been
+  // recommended by the Frameless accessibility auditor.
+  useEffect(() => {
+    if (!isSmallerThanTablet) return;
+    let timeoutId: number | undefined;
+
+    const handleFocus = (e: FocusEvent) => {
+      const target = e.target as HTMLElement;
+      // :focus-visible for only keyboard focus
+      if (!target.matches(':focus-visible')) return;
+      clearTimeout(timeoutId);
+      timeoutId = window.setTimeout(() => {
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    };
+
+    document.addEventListener('focusin', handleFocus, true);
+    return () => {
+      document.removeEventListener('focusin', handleFocus, true);
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [isSmallerThanTablet]);
 
   useEffect(() => {
     moment.locale(momentLocale);
@@ -221,7 +250,12 @@ const App = ({ children }: Props) => {
             locales.includes(localeInUrl) &&
             pathnameWithoutLocale === rule.path
           ) {
-            window.location.href = rule.target;
+            const queryString = location.search;
+            const separator = rule.target.includes('?') ? '&' : '?';
+            const targetUrl = queryString
+              ? `${rule.target}${separator}${queryString.slice(1)}`
+              : rule.target;
+            window.location.href = targetUrl;
           }
         });
       }
@@ -283,14 +317,21 @@ const App = ({ children }: Props) => {
 
   const isAdminPage = isPage('admin', location.pathname);
   const isPagesAndMenuPage = isPage('pages_menu', location.pathname);
+  const isHomePageBuilderRoute = location.pathname.match(
+    /\/admin\/pages-menu\/homepage-builder/
+  );
   const isIdeaFormPage = isPage('idea_form', location.pathname);
   const isIdeaEditPage = isPage('idea_edit', location.pathname);
   const isEventPage = isPage('event_page', location.pathname);
   const isNativeSurveyPage = isPage('native_survey', location.pathname);
-
+  const isIdeasFeedPage = isPage('ideas_feed', location.pathname);
   const theme = getTheme(appConfiguration);
   const showFooter =
-    !isAdminPage && !isIdeaFormPage && !isIdeaEditPage && !isNativeSurveyPage;
+    !isAdminPage &&
+    !isIdeaFormPage &&
+    !isIdeaEditPage &&
+    !isNativeSurveyPage &&
+    !isIdeasFeedPage;
   const { pathname } = removeLocale(location.pathname);
   const isAuthenticationPending = authUser === undefined;
   const canAccessRoute = usePermission({
@@ -303,11 +344,18 @@ const App = ({ children }: Props) => {
 
   const showFrontOfficeNavbar = () => {
     if (isAdminPage) {
-      if (!isPagesAndMenuPage) return false;
+      if (!isPagesAndMenuPage || isHomePageBuilderRoute) return false;
     }
 
     // citizen
-    if (isNativeSurveyPage || isIdeaFormPage || isIdeaEditPage) return false;
+    if (
+      isNativeSurveyPage ||
+      isIdeaFormPage ||
+      isIdeaEditPage ||
+      isIdeasFeedPage
+    ) {
+      return false;
+    }
 
     if (isSmallerThanTablet) {
       if (isEventPage || isIdeaShowPage(urlSegments)) {

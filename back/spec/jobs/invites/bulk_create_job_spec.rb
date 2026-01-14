@@ -47,7 +47,7 @@ RSpec.describe Invites::BulkCreateJob do
 
         expect(invites_import.result.count).to eq(6)
         expect(invites_import.result.map { |h| h['email'] }).to match_array(emails)
-        expect(invites_import.result.map { |h| h['locale'] }.uniq).to match_array([locale, 'en', 'fr-FR'])
+        expect(invites_import.result.map { |h| h['locale'] }.uniq).to contain_exactly(locale, 'en', 'fr-FR')
         invites_import.result.each do |invite|
           expect(invite['roles']).to include(
             { 'type' => 'admin' },
@@ -63,8 +63,8 @@ RSpec.describe Invites::BulkCreateJob do
 
         expected_emails = emails - existing_invitee_emails
         expect(Invite.all.map { |i| i.invitee.email }).to match_array(expected_emails)
-        expect(Invite.all.map { |i| i.invitee.groups.map(&:id) }.uniq).to match_array [group_ids]
-        expect(Invite.all.map(&:invite_text).uniq).to match_array [invite_text]
+        expect(Invite.all.map { |i| i.invitee.groups.map(&:id) }.uniq).to contain_exactly(group_ids)
+        expect(Invite.all.map(&:invite_text).uniq).to contain_exactly(invite_text)
         expect(Invite.all.map { |i| i.invitee.locale }.uniq).to eq [locale]
         expect(Invite.all.map { |i| i.invitee.admin? }.uniq).to eq [true]
         expect(Invite.all.map { |i| i.invitee.project_moderator?(project.id) }.all?).to be true

@@ -216,54 +216,51 @@ resource 'Idea Custom Fields' do
         expect(json_response.keys).to eq %i[type features]
         expect(json_response[:type]).to eq('FeatureCollection')
 
-        expect(json_response[:features]).to match_array([
-          {
-            type: 'Feature',
-            geometry: { type: 'Point', coordinates: [1.1, 2.2] },
-            properties: {
-              id: idea1.id,
-              gepubliceerd_op: idea1.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
-              wat_is_uw_functie: 'Text answer',
-              wat_zijn_uw_belangrijkste_verantwoordelijkheden: 'Multiline answer',
-              selecteer_uw_favoriete_kleur: 'Optie 1',
-              selecteer_de_talen_die_u_spreekt: ['Optie 2', 'Optie 3'],
-              selecteer_de_beste_foto: ['Optie 4', 'Optie 5'],
-              beoordeel_uw_tevredenheid: 3,
-              welke_maat_schoenen_gebruik_je: 42,
-              upload_de_foto: file.file.url,
-              markeer_de_locatie_op_de_kaart: { type: 'Point', coordinates: [1.1, 2.2] },
-              teken_de_route_op_de_kaart: { type: 'LineString', coordinates: [[1.1, 2.2], [3.3, 4.4]] },
-              teken_het_gebied_op_de_kaart: {
-                type: 'Polygon',
-                coordinates: [[[1, 2], [3, 4], [5, 6], [1, 2]]]
-              },
-              gebruikersgegevens__auteur_id: idea1.author_id,
-              gebruikersgegevens__e_mail_van_auteur: idea1.author.email,
-              gebruikersgegevens__auteur_naam: idea1.author_name,
-              gebruikersgegevens__geslacht: 'Vrouw',
-              gebruikersgegevens__woonplaats: 'Bruxelles'
-            }
-          },
-          {
-            type: 'Feature',
-            geometry: { type: 'Point', coordinates: [3.3, 4.4] },
-            properties: {
-              id: idea2.id,
-              gepubliceerd_op: idea2.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
-              wat_is_uw_functie: nil,
-              wat_zijn_uw_belangrijkste_verantwoordelijkheden: nil,
-              selecteer_uw_favoriete_kleur: nil,
-              selecteer_de_talen_die_u_spreekt: nil,
-              selecteer_de_beste_foto: nil,
-              beoordeel_uw_tevredenheid: nil,
-              welke_maat_schoenen_gebruik_je: nil,
-              upload_de_foto: nil,
-              markeer_de_locatie_op_de_kaart: { type: 'Point', coordinates: [3.3, 4.4] },
-              teken_de_route_op_de_kaart: nil,
-              teken_het_gebied_op_de_kaart: nil
-            }
+        expect(json_response[:features]).to contain_exactly({
+          type: 'Feature',
+          geometry: { type: 'Point', coordinates: [1.1, 2.2] },
+          properties: {
+            id: idea1.id,
+            gepubliceerd_op: idea1.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
+            wat_is_uw_functie: 'Text answer',
+            wat_zijn_uw_belangrijkste_verantwoordelijkheden: 'Multiline answer',
+            selecteer_uw_favoriete_kleur: 'Optie 1',
+            selecteer_de_talen_die_u_spreekt: ['Optie 2', 'Optie 3'],
+            selecteer_de_beste_foto: ['Optie 4', 'Optie 5'],
+            beoordeel_uw_tevredenheid: 3,
+            welke_maat_schoenen_gebruik_je: 42,
+            upload_de_foto: file.file.url,
+            markeer_de_locatie_op_de_kaart: { type: 'Point', coordinates: [1.1, 2.2] },
+            teken_de_route_op_de_kaart: { type: 'LineString', coordinates: [[1.1, 2.2], [3.3, 4.4]] },
+            teken_het_gebied_op_de_kaart: {
+              type: 'Polygon',
+              coordinates: [[[1, 2], [3, 4], [5, 6], [1, 2]]]
+            },
+            gebruikersgegevens__auteur_id: idea1.author_id,
+            gebruikersgegevens__e_mail_van_auteur: idea1.author.email,
+            gebruikersgegevens__auteur_naam: idea1.author_name,
+            gebruikersgegevens__geslacht: 'Vrouw',
+            gebruikersgegevens__woonplaats: 'Bruxelles'
           }
-        ])
+        }, {
+          type: 'Feature',
+          geometry: { type: 'Point', coordinates: [3.3, 4.4] },
+          properties: {
+            id: idea2.id,
+            gepubliceerd_op: idea2.published_at.strftime('%m/%d/%Y %H:%M:%S').to_s,
+            wat_is_uw_functie: nil,
+            wat_zijn_uw_belangrijkste_verantwoordelijkheden: nil,
+            selecteer_uw_favoriete_kleur: nil,
+            selecteer_de_talen_die_u_spreekt: nil,
+            selecteer_de_beste_foto: nil,
+            beoordeel_uw_tevredenheid: nil,
+            welke_maat_schoenen_gebruik_je: nil,
+            upload_de_foto: nil,
+            markeer_de_locatie_op_de_kaart: { type: 'Point', coordinates: [3.3, 4.4] },
+            teken_de_route_op_de_kaart: nil,
+            teken_het_gebied_op_de_kaart: nil
+          }
+        })
       end
 
       context 'when custom field is not a geographic input type' do

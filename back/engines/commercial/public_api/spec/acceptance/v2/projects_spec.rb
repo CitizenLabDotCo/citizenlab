@@ -140,7 +140,7 @@ resource 'Projects' do
       example_request 'List only the projects that have all the specified topics' do
         assert_status 200
         expect(json_response_body[:projects].pluck(:id))
-          .to match_array [project.id]
+          .to contain_exactly(project.id)
       end
     end
 
@@ -158,7 +158,7 @@ resource 'Projects' do
       example_request 'List only the projects that are in the specified areas' do
         assert_status 200
         expect(json_response_body[:projects].pluck(:id))
-          .to match_array [project.id, project_in_all_areas.id]
+          .to contain_exactly(project.id, project_in_all_areas.id)
       end
     end
 

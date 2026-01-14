@@ -17,11 +17,11 @@ describe AdminPublicationPolicy do
 
       it { is_expected.not_to permit(:reorder) }
 
-      it 'should index the project holder' do
+      it 'indexes the project holder' do
         expect(scope.resolve.size).to eq 1
       end
 
-      it 'should not index the project holder if the project is hidden' do
+      it 'does not index the project holder if the project is hidden' do
         admin_publication.publication.update!(hidden: true)
         expect(scope.resolve.size).to eq 0
       end
@@ -32,11 +32,11 @@ describe AdminPublicationPolicy do
 
       it { is_expected.not_to permit(:reorder) }
 
-      it 'should index the project holder' do
+      it 'indexes the project holder' do
         expect(scope.resolve.size).to eq 1
       end
 
-      it 'should not index the project holder if hidden' do
+      it 'does not index the project holder if hidden' do
         admin_publication.publication.update!(hidden: true)
         expect(scope.resolve.size).to eq 0
       end
@@ -47,11 +47,11 @@ describe AdminPublicationPolicy do
 
       it { is_expected.to permit(:reorder) }
 
-      it 'should index the project holder' do
+      it 'indexes the project holder' do
         expect(scope.resolve.size).to eq 1
       end
 
-      it 'should not index the project holder if hidden' do
+      it 'does not index the project holder if hidden' do
         admin_publication.publication.update!(hidden: true)
         expect(scope.resolve.size).to eq 0
       end
@@ -66,7 +66,7 @@ describe AdminPublicationPolicy do
         expect(scope.resolve.size).to eq 2
       end
 
-      it 'should not index any projects if the publication_status is hidden' do
+      it 'does not index any projects if the publication_status is hidden' do
         admin_publication.publication.update!(hidden: true)
         expect(scope.resolve.size).to eq 1
       end
@@ -82,7 +82,7 @@ describe AdminPublicationPolicy do
 
       it { is_expected.not_to permit(:reorder) }
 
-      it 'should not index the project holder' do
+      it 'does not index the project holder' do
         expect(scope.resolve.size).to eq 0
       end
     end
@@ -92,7 +92,7 @@ describe AdminPublicationPolicy do
 
       it { is_expected.not_to permit(:reorder) }
 
-      it 'should not index the project holder' do
+      it 'does not index the project holder' do
         expect(scope.resolve.size).to eq 0
       end
     end
@@ -102,7 +102,7 @@ describe AdminPublicationPolicy do
 
       it { is_expected.to permit(:reorder) }
 
-      it 'should index the project holder' do
+      it 'indexes the project holder' do
         expect(scope.resolve.size).to eq 1
       end
     end
@@ -124,7 +124,7 @@ describe AdminPublicationPolicy do
 
     it { is_expected.not_to permit(:reorder) }
 
-    it 'should not index the project holder' do
+    it 'does not index the project holder' do
       expect(scope.resolve.size).to eq 0
     end
   end

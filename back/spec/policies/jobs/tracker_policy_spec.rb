@@ -69,7 +69,7 @@ RSpec.describe Jobs::TrackerPolicy do
     context 'for project moderator' do
       let(:user) { create(:project_moderator, projects: [@with_context.project]) }
 
-      its(:ids) { is_expected.to match_array [@with_context.id] }
+      its(:ids) { is_expected.to contain_exactly(@with_context.id) }
     end
 
     context 'for admin' do

@@ -1,9 +1,7 @@
 import React, { memo, useCallback, useState } from 'react';
 
-import { gql, useQuery } from '@apollo/client';
 import { WrappedComponentProps } from 'react-intl';
 
-import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import useLocalize from 'hooks/useLocalize';
 
 import FilterSelector, {
@@ -12,7 +10,7 @@ import FilterSelector, {
 
 import { injectIntl } from 'utils/cl-intl';
 
-import { client } from '../../utils/apolloUtils';
+import useDepartments from '../api/useDepartments';
 
 import messages from './messages';
 
@@ -23,31 +21,16 @@ interface Props {
 const DepartmentFilter = memo<Props & WrappedComponentProps>(
   ({ intl: { formatMessage }, onChange }) => {
     const localize = useLocalize();
-    const graphqlTenantLocales = useGraphqlTenantLocales();
-
-    const DEPARTMENTS_QUERY = gql`
-    {
-      departments {
-        nodes {
-          id
-          titleMultiloc {
-            ${graphqlTenantLocales}
-          }
-        }
-      }
-    }
-  `;
-
     const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
-    const { data } = useQuery(DEPARTMENTS_QUERY, { client });
+    const { data: departments } = useDepartments();
 
     let options: IFilterSelectorValue[] = [];
 
-    if (data) {
-      options = data.departments.nodes.map((node) => ({
-        value: node.id,
-        text: localize(node.titleMultiloc),
+    if (departments) {
+      options = departments.map((department) => ({
+        value: department.id,
+        text: localize(department.titleMultiloc),
       }));
     }
 

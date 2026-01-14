@@ -66,6 +66,7 @@ class Idea < ApplicationRecord
   include GeoJsonHelpers
   include AnonymousParticipation
   include Files::FileAttachable
+  include ClaimableParticipation
   extend OrderAsSpecified
 
   PUBLICATION_STATUSES = %w[draft submitted published].freeze
@@ -140,6 +141,9 @@ class Idea < ApplicationRecord
 
   has_many :idea_relations, dependent: :destroy
   has_many :related_ideas, through: :idea_relations
+
+  has_many :idea_exposures, dependent: :destroy
+  has_one :wise_voice_flag, as: :flaggable, class_name: 'WiseVoiceFlag', dependent: :destroy
 
   accepts_nested_attributes_for :text_images, :idea_images, :idea_files
 

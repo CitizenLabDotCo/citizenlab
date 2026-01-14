@@ -16,7 +16,14 @@ export type ErrorCode =
   | 'unknown'
   | 'franceconnect_merging_failed'
   | 'email_taken_and_user_can_be_verified'
-  | 'not_entitled_under_minimum_age'
+  | 'verification_under_minimum_age'
+  | 'verification_lives_outside'
+  | 'verification_no_match'
+  | 'verification_service_error'
+  | 'auth_under_minimum_age'
+  | 'auth_lives_outside'
+  | 'auth_no_match'
+  | 'auth_service_error'
   | 'verification_taken'
   | 'resending_code_failed';
 
@@ -41,12 +48,16 @@ export type Step = keyof StepConfig;
 
 export type SetError = (errorCode: ErrorCode) => void;
 
-export type SignUpInFlow = 'signup' | 'signin';
+type NotEntitledError =
+  | 'not_entitled_under_minimum_age'
+  | 'not_entitled_lives_outside'
+  | 'not_entitled_no_match'
+  | 'not_entitled_service_error';
 export type SignUpInError =
+  | NotEntitledError
   | 'general'
-  | 'franceconnect_merging_failed'
-  | 'not_entitled_under_minimum_age';
-export type VerificationError = 'not_entitled_under_minimum_age';
+  | 'franceconnect_merging_failed';
+export type VerificationError = NotEntitledError | 'taken';
 
 export interface AuthenticationData {
   context: AuthenticationContext;

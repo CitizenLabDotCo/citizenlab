@@ -162,7 +162,7 @@ describe MultiTenancy::Templates::TenantSerializer do
 
         new_timeline_project = Project.first
         new_survey_phase = new_timeline_project.phases.order(:start_at).last
-        expect(new_timeline_project.ideas.map(&:creation_phase_id)).to match_array [nil, new_survey_phase.id]
+        expect(new_timeline_project.ideas.map(&:creation_phase_id)).to contain_exactly(nil, new_survey_phase.id)
         expect(new_survey_phase.custom_form.custom_fields.pluck(:input_type)).to eq ['text']
         new_field = new_survey_phase.custom_form.custom_fields.first
         expect(new_survey_phase.ideas_count).to eq 1
@@ -293,7 +293,7 @@ describe MultiTenancy::Templates::TenantSerializer do
         MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
         expect(Basket.count).to eq 2
         expect(BasketsIdea.count).to eq 2
-        expect(BasketsIdea.all.pluck(:votes)).to match_array([1, 2])
+        expect(BasketsIdea.all.pluck(:votes)).to contain_exactly(1, 2)
       end
     end
 

@@ -20,7 +20,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 
-import { CONTENT_BUILDER_Z_INDEX } from 'components/admin/ContentBuilder/constants';
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import LocaleSelect from 'components/admin/ContentBuilder/TopBar/LocaleSelect';
@@ -255,7 +254,6 @@ const ContentBuilderTopBar = ({
           <Tooltip
             placement="bottom"
             disabled={!disablePrint}
-            zIndex={CONTENT_BUILDER_Z_INDEX.tooltip}
             content={
               <TooltipContentWrapper tippytheme="light">
                 {formatMessage(messages.cannotPrint)}

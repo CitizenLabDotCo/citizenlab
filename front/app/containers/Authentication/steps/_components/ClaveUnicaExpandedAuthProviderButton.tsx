@@ -6,12 +6,12 @@ import styled from 'styled-components';
 import { TVerificationMethodName } from 'api/verification_methods/types';
 import useVerificationMethods from 'api/verification_methods/useVerificationMethods';
 
+import { AuthProvider } from 'containers/Authentication/typings';
+
 import ClaveUnicaButton from 'components/UI/ClaveUnicaButton';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-
-import { AuthProvider } from '../AuthProviders';
 
 import Consent from './AuthProviderButton/Consent';
 import messages from './messages';

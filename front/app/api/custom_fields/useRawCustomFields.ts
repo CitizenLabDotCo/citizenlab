@@ -37,6 +37,7 @@ export const fetchCustomFields = ({
       copy,
       public_fields: publicFields,
     },
+    cacheIndividualItems: false,
   });
 };
 

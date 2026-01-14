@@ -153,6 +153,17 @@ class Project < ApplicationRecord
       .where("admin_publications.parent_id IS NULL OR parent_pubs.publication_status != 'draft'")
   }
 
+  scope :with_participation_count, lambda {
+    joins(<<~SQL.squish
+      LEFT JOIN LATERAL (
+        SELECT COUNT(DISTINCT participant_id) as participants_count
+        FROM analytics_fact_participations
+        WHERE dimension_project_id = projects.id
+      ) AS project_participants ON true
+    SQL
+         )
+  }
+
   alias project_id id
 
   delegate :published?, :ever_published?, :never_published?, to: :admin_publication, allow_nil: true

@@ -48,7 +48,8 @@ type pageKeys =
   | 'sign_up'
   | 'email-settings'
   | 'pages_menu'
-  | 'event_page';
+  | 'event_page'
+  | 'ideas_feed';
 
 export function isPage(pageKey: pageKeys, pathName: string) {
   /**
@@ -81,6 +82,8 @@ export function isPage(pageKey: pageKeys, pathName: string) {
       return pathnameWithoutLocale.includes('/admin/pages-menu');
     case 'event_page':
       return pathnameWithoutLocale.startsWith('/events/');
+    case 'ideas_feed':
+      return pathnameWithoutLocale.includes('/ideas-feed');
   }
 }
 

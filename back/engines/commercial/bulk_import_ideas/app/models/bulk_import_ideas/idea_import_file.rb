@@ -4,15 +4,16 @@
 #
 # Table name: idea_import_files
 #
-#  id          :uuid             not null, primary key
-#  project_id  :uuid
-#  file        :string
-#  name        :string
-#  import_type :string
-#  num_pages   :integer          default(0)
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  parent_id   :uuid
+#  id           :uuid             not null, primary key
+#  project_id   :uuid
+#  file         :string
+#  name         :string
+#  import_type  :string
+#  num_pages    :integer          default(0)
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  parent_id    :uuid
+#  parsed_value :jsonb
 #
 # Indexes
 #

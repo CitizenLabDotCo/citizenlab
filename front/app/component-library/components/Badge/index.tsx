@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 
 import { colors, fontSizes } from '../../utils/styleUtils';
+import Box from '../Box';
 
-export default styled.div`
+export default styled(Box)`
   color: ${(props) => props.color || colors.disabled};
   font-size: ${fontSizes.xs}px;
   line-height: 16px;

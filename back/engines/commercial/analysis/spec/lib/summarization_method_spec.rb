@@ -4,7 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Analysis::SummarizationMethod do
   describe 'Bogus summarization' do
-    it 'works' do
+    it 'generates a bogus summary from filtered ideas' do
       analysis = create(:analysis, main_custom_field: create(
         :custom_field,
         :for_custom_form,
@@ -63,7 +63,7 @@ RSpec.describe Analysis::SummarizationMethod do
       end
     end
 
-    it 'works' do
+    it 'generates a summarization plan with default parameters' do
       plan = Analysis::SummarizationMethod::OnePassLLM.new(summary).generate_plan
       expect(plan).to have_attributes({
         summarization_method_class: Analysis::SummarizationMethod::OnePassLLM,
@@ -86,7 +86,7 @@ RSpec.describe Analysis::SummarizationMethod do
         .to change { summarization_task.summary.summary }.from(nil).to('Complete summary')
         .and change { summarization_task.summary.prompt }.from(nil).to(kind_of(String))
         .and change { summarization_task.summary.accuracy }.from(nil).to(0.8)
-        .and change { summarization_task.summary.inputs_ids }.from(nil).to(match_array([inputs[1].id, inputs[2].id]))
+        .and change { summarization_task.summary.inputs_ids }.from(nil).to(contain_exactly(inputs[1].id, inputs[2].id))
 
       expect(summarization_task.reload).to have_attributes({
         state: 'succeeded',

@@ -8,6 +8,10 @@ module ParticipationMethod
       'proposals'
     end
 
+    def phase_insights_class
+      Insights::ProposalsPhaseInsightsService
+    end
+
     def assign_defaults_for_phase
       super
       phase.reacting_dislike_enabled = false

@@ -21,6 +21,10 @@
 #  fk_rails_...  (topic_id => topics.id)
 #
 class ProjectsTopic < ApplicationRecord
+  # Temporary fix while deploying, since Topic is a View instead of a Table, and
+  # rails can't detect the primary key automatically
+  self.primary_key = 'id'
+
   belongs_to :project
   belongs_to :topic
 end

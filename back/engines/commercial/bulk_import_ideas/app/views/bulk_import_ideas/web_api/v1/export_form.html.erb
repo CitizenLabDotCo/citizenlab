@@ -54,8 +54,22 @@
     h3 span.number { width: 30px; }
     h3 span.optional { font-weight: normal; }
 
-    div.ranking { display: flex; align-items: center; margin-top: -6px; font-size: 11pt; }
-    div.ranking-box { border: solid 1px #000; width: 24px; height: 24px; margin: 8px 10px 8px 2px; display: inline-block; }
+    div.ranking {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11pt;
+      margin-bottom: 8px;
+      min-height: 24px;
+    }
+    div.ranking-box {
+      border: solid 1px #000;
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      margin-right: 4px;
+      display: inline-block;
+    }
     div.field-group { page-break-inside: avoid; }
 
     #header {

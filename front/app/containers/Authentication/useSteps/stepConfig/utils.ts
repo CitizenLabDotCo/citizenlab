@@ -1,18 +1,32 @@
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
+import getUserTokenUnconfirmed from 'api/authentication/sign_in_out/getUserTokenUnconfirmed';
+import { handleOnSSOClick } from 'api/authentication/singleSignOn';
+import checkUser from 'api/users/checkUser';
 
-import { AuthenticationData } from 'containers/Authentication/typings';
+import {
+  GetRequirements,
+  UpdateState,
+  AuthenticationData,
+  SSOProviderWithoutVienna,
+  State,
+} from '../../typings';
+
+import { Step } from './typings';
 
 export const checkMissingData = (
   requirements: AuthenticationRequirements['requirements'],
   { context }: AuthenticationData,
-  flow: 'signup' | 'signin'
+  flow: 'signup' | 'signin',
+  userIsAuthenticated: boolean
 ) => {
-  if (requiredBuiltInFields(requirements)) {
-    return 'missing-data:built-in';
+  if (confirmationRequired(requirements)) {
+    return userIsAuthenticated
+      ? 'missing-data:email-confirmation'
+      : 'email:confirmation';
   }
 
-  if (confirmationRequired(requirements)) {
-    return 'missing-data:email-confirmation';
+  if (requiredBuiltInFields(requirements)) {
+    return 'missing-data:built-in';
   }
 
   if (requirements.verification) {
@@ -101,4 +115,90 @@ const requiredBuiltInFields = (
   const askPassword = missingAttributes.has('password');
 
   return askFirstName || askLastName || askEmail || askPassword;
+};
+
+export const handleSubmitEmail = async (
+  email: string,
+  getAuthenticationData: () => AuthenticationData,
+  getRequirements: GetRequirements,
+  setCurrentStep: (step: Step) => void,
+  updateState: UpdateState
+) => {
+  try {
+    const response = await checkUser(email);
+    const { action } = response.data.attributes;
+
+    if (action === 'terms') {
+      updateState({ flow: 'signup' });
+      setCurrentStep('email:policies');
+    }
+
+    if (action === 'password') {
+      updateState({ flow: 'signin' });
+      setCurrentStep('email:password');
+    }
+
+    if (action === 'confirm') {
+      updateState({ flow: 'signin' });
+      setCurrentStep('email:confirmation');
+    }
+
+    if (action === 'token') {
+      updateState({ flow: 'signin' });
+      await getUserTokenUnconfirmed(email);
+
+      const { requirements } = await getRequirements();
+      const authenticationData = getAuthenticationData();
+      const missingDataStep = checkMissingData(
+        requirements,
+        authenticationData,
+        'signin',
+        true
+      );
+
+      if (missingDataStep) {
+        setCurrentStep(missingDataStep);
+        return;
+      }
+
+      setCurrentStep('success');
+    }
+  } catch (e) {
+    if (e.errors?.email?.[0]?.error === 'taken_by_invite') {
+      setCurrentStep('invite:taken');
+    } else {
+      throw e;
+    }
+  }
+};
+
+export const handleSSOClick = async (
+  ssoProvider: SSOProviderWithoutVienna,
+  getAuthenticationData: () => AuthenticationData,
+  getRequirements: GetRequirements,
+  setCurrentStep: (step: Step) => void,
+  updateState: UpdateState,
+  state: State
+) => {
+  if (ssoProvider === 'clave_unica') {
+    // If clave unica, we always go straight to SSO login
+    handleOnSSOClick(ssoProvider, getAuthenticationData(), true, state.flow);
+  } else if (ssoProvider === 'franceconnect') {
+    const { requirements } = await getRequirements();
+
+    handleOnSSOClick(
+      'franceconnect',
+      getAuthenticationData(),
+      requirements.verification,
+      'signin'
+    );
+  } else {
+    // If other SSO provider, it depends on the flow
+    if (state.flow === 'signin') {
+      handleOnSSOClick(ssoProvider, getAuthenticationData(), true, state.flow);
+    } else {
+      updateState({ ssoProvider });
+      setCurrentStep('email:sso-policies');
+    }
+  }
 };

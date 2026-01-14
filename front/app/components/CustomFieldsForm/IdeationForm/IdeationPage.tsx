@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, Button, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -12,8 +12,10 @@ import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
+import { triggerPostParticipationFlow } from 'containers/Authentication/events';
 import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
@@ -100,17 +102,36 @@ const IdeationPage = ({
   const [postAnonymously, setPostAnonymously] = useState(
     idea?.data.attributes.anonymous || false
   );
+  const postParticipationSignUpEnabled = useFeatureFlag({
+    name: 'post_participation_signup',
+  });
+
+  // allow moderators also to edit BudgetField
+  const isAdminOrModerator =
+    isAdmin(authUser) ||
+    (project && canModerateProject(project.data, authUser));
 
   const handleNextAndsubmit = () => {
     pageRef.current?.scrollTo(0, 0);
     if (currentPageIndex === lastPageIndex) {
+      const phaseId = searchParams.get('phase_id');
       const userCanModerate = project
         ? canModerateProject(project.data, authUser)
         : false;
-      const path =
-        userCanModerate && participationMethod === 'common_ground'
-          ? `/admin/projects/${project?.data.id}/phases/${phase?.id}/ideas`
-          : `/ideas/${idea?.data.attributes.slug}`;
+
+      const shouldGoToIdeaFeed =
+        participationMethod === 'ideation' &&
+        phase?.attributes.ideation_method === 'idea_feed';
+
+      const shouldGoToInputManager =
+        userCanModerate && participationMethod === 'common_ground';
+
+      const path = shouldGoToIdeaFeed
+        ? `/projects/${project?.data.attributes.slug}/ideas-feed?phase_id=${phaseId}&initial_idea_id=${idea?.data.id}&idea_id=${idea?.data.id}`
+        : shouldGoToInputManager
+        ? `/admin/projects/${project?.data.id}/phases/${phase?.id}/ideas`
+        : `/ideas/${idea?.data.attributes.slug}`;
+
       clHistory.push({ pathname: path });
     }
     methods.handleSubmit((e) => onFormSubmit(e))();
@@ -195,6 +216,12 @@ const IdeationPage = ({
     setIsDisclaimerOpened(false);
   };
 
+  const isLastPage = currentPageIndex === lastPageIndex;
+
+  const showSubmissionReference = isLastPage && idea && showIdeaId;
+  const showPostParticipationSignup =
+    isLastPage && idea && !authUser && postParticipationSignUpEnabled;
+
   return (
     <FormProvider {...methods}>
       <StyledForm id="idea-form">
@@ -254,7 +281,7 @@ const IdeationPage = ({
                       </Box>
                     )}
                     {currentPageIndex === lastPageIndex - 1 &&
-                      isAdmin(authUser) &&
+                      isAdminOrModerator &&
                       phase?.attributes.voting_method === 'budgeting' && (
                         <Box mb="24px">
                           <BudgetField name="budget" />
@@ -276,14 +303,29 @@ const IdeationPage = ({
                           onChange={handleOnChangeAnonymousPosting}
                         />
                       )}
-                    {currentPageIndex === lastPageIndex &&
-                      idea &&
-                      showIdeaId && (
-                        <SubmissionReference
-                          inputId={idea.data.id}
-                          participationMethod={participationMethod}
-                        />
-                      )}
+                    {showSubmissionReference && (
+                      <SubmissionReference
+                        inputId={idea.data.id}
+                        participationMethod={participationMethod}
+                      />
+                    )}
+                    {showPostParticipationSignup && (
+                      <Button
+                        onClick={() => {
+                          triggerPostParticipationFlow({
+                            name: 'redirect',
+                            params: {
+                              path: `/ideas/${idea.data.attributes.slug}`,
+                            },
+                          });
+                        }}
+                        mt="16px"
+                        width="auto"
+                        dataCy="post-participation-signup"
+                      >
+                        Sign up to stay in touch
+                      </Button>
+                    )}
                   </Box>
                 </Box>
               </Box>

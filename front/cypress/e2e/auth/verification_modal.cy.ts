@@ -1,4 +1,5 @@
 import { randomString, randomEmail } from '../../support/commands';
+import { signUpEmailConformation, enterUserInfo } from '../../support/auth';
 
 describe('Verification modal', () => {
   describe('shows the additional rules', () => {
@@ -52,30 +53,10 @@ describe('Verification modal', () => {
       cy.get('.e2e-idea-button').first().find('button').should('exist');
       cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
-      // email/password sign up step
-      cy.get('#e2e-goto-signup').click();
-      cy.get('#e2e-sign-up-email-password-container');
-      const firstName = randomString();
-      const lastName = randomString();
-      const email = `charlie@${randomString()}.com`;
-      const password = randomString();
-
-      cy.get('#firstName').type(firstName);
-      cy.get('#lastName').type(lastName);
-      cy.get('#email').type(email);
-      cy.get('#password').type(password);
-      cy.get('[data-testid="termsAndConditionsAccepted"] .e2e-checkbox')
-        .click()
-        .should('have.class', 'checked');
-      cy.get('[data-testid="privacyPolicyAccepted"] .e2e-checkbox')
-        .click()
-        .should('have.class', 'checked');
-      cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
-
-      // email confirmation step
-      cy.get('#code').should('exist');
-      cy.get('#code').click().type('1234');
-      cy.get('#e2e-verify-email-button').click();
+      // The email should start with charlie, otherwise we won't be
+      // in the right group
+      signUpEmailConformation(cy, `charlie@${randomString()}.com`);
+      enterUserInfo(cy);
 
       // verification step: fill out bogus
       cy.get(
@@ -103,30 +84,10 @@ describe('Verification modal', () => {
       cy.get('.e2e-idea-button').first().find('button').should('exist');
       cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
-      // email/password sign up step
-      cy.get('#e2e-goto-signup').click();
-      cy.get('#e2e-sign-up-email-password-container');
-      const firstName = randomString();
-      const lastName = randomString();
-      const email = randomEmail();
-      const password = randomString();
-
-      cy.get('#firstName').type(firstName);
-      cy.get('#lastName').type(lastName);
-      cy.get('#email').type(email);
-      cy.get('#password').type(password);
-      cy.get('[data-testid="termsAndConditionsAccepted"] .e2e-checkbox')
-        .click()
-        .should('have.class', 'checked');
-      cy.get('[data-testid="privacyPolicyAccepted"] .e2e-checkbox')
-        .click()
-        .should('have.class', 'checked');
-      cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
-
-      // email confirmation step
-      cy.get('#code').should('exist');
-      cy.get('#code').click().type('1234');
-      cy.get('#e2e-verify-email-button').click();
+      // In this case, we just use a random email that does not start with charlie
+      // so that we're not in the right group
+      signUpEmailConformation(cy);
+      enterUserInfo(cy);
 
       // verification step: fill out bogus
       cy.get(

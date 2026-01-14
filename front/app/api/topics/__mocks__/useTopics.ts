@@ -12,11 +12,11 @@ export const topicsData: ITopicData[] = [
         en: 'Description of topic 1',
       },
       icon: 'icon-people',
-      code: 'custom',
       ordering: 1,
       static_page_ids: ['1'],
       followers_count: 2,
       include_in_onboarding: true,
+      is_default: true,
     },
     relationships: {
       static_pages: {
@@ -43,11 +43,11 @@ export const topicsData: ITopicData[] = [
         en: 'Description of topic 2',
       },
       icon: 'icon-people',
-      code: 'custom',
       ordering: 2,
       static_page_ids: ['2'],
       followers_count: 2,
       include_in_onboarding: true,
+      is_default: true,
     },
     relationships: {
       static_pages: {

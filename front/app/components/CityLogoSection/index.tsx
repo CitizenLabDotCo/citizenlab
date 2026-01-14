@@ -46,6 +46,8 @@ const CityLogoSection = () => {
           alt={localizedOrgName}
           height="100px"
           marginBottom="20px"
+          width="100%"
+          objectFit="contain"
         />
       );
 

@@ -41,20 +41,17 @@ resource 'BackgroundJob', :active_job_que_adapter, :admin_api do
         failed_job.update!(error_count: 1, last_error_message: 'BulkImportIdeas::Error: bulk_import_image_url_not_valid##https://citizenlab.co/image.doc##14')
         do_request
         expect(status).to eq 200
-        expect(response_data.pluck(:attributes)).to match_array([
-          {
-            active: true,
-            failed: false,
-            job_id: jobs[1].job_id,
-            last_error: nil
-          },
-          {
-            active: false,
-            failed: true,
-            job_id: jobs[0].job_id,
-            last_error: { error: 'bulk_import_image_url_not_valid', value: 'https://citizenlab.co/image.doc', row: '14' }
-          }
-        ])
+        expect(response_data.pluck(:attributes)).to contain_exactly({
+          active: true,
+          failed: false,
+          job_id: jobs[1].job_id,
+          last_error: nil
+        }, {
+          active: false,
+          failed: true,
+          job_id: jobs[0].job_id,
+          last_error: { error: 'bulk_import_image_url_not_valid', value: 'https://citizenlab.co/image.doc', row: '14' }
+        })
       end
 
       context 'when fetching jobs from other tenants' do

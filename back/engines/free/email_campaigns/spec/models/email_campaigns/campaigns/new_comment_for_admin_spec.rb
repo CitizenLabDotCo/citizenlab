@@ -22,7 +22,6 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentForAdmin do
       expect(command).to match(
         event_payload: a_hash_including(
           initiating_user_first_name: 'Rea',
-          initiating_user_last_name: 'Xion',
           comment_author_name: 'Rea Xion',
           comment_body_multiloc: { 'en' => 'Example comment.' },
           comment_url: "http://example.org/en/ideas/#{comment.idea.slug}",
@@ -45,7 +44,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentForAdmin do
     let!(:moderator) { create(:project_moderator, projects: [idea.project]) }
 
     it 'returns moderators only' do
-      expect(campaign.filter_recipient(User.all, activity:).ids).to match_array([admin.id, moderator.id])
+      expect(campaign.filter_recipient(User.all, activity:).ids).to contain_exactly(admin.id, moderator.id)
     end
 
     context 'when the author is a moderator' do
@@ -60,7 +59,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentForAdmin do
       let(:author) { nil }
 
       it 'returns moderators only' do
-        expect(campaign.filter_recipient(User.all, activity:).ids).to match_array([admin.id, moderator.id])
+        expect(campaign.filter_recipient(User.all, activity:).ids).to contain_exactly(admin.id, moderator.id)
       end
     end
   end
@@ -76,7 +75,7 @@ RSpec.describe EmailCampaigns::Campaigns::NewCommentForAdmin do
       admin = create(:admin)
 
       comment_created = create(:activity, item: comment, action: 'created')
-      expect(campaign.apply_recipient_filters(activity: comment_created)).to match_array([admin])
+      expect(campaign.apply_recipient_filters(activity: comment_created)).to contain_exactly(admin)
     end
 
     it 'filters out everyone if the author is admin' do

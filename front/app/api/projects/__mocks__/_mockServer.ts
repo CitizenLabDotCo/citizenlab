@@ -90,7 +90,7 @@ export const project1: IProjectData = {
     },
     avatars_count: 8,
     participants_count: 8,
-    uses_content_builder: false,
+    uses_content_builder: true,
     preview_token: 'fake-token-0123456789',
     baskets_count: 0,
     votes_count: 0,

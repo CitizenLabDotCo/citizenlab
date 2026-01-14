@@ -16,7 +16,7 @@ describe Analysis::WebApi::V1::AnalysisSerializer do
       let(:analysis) { create(:analysis, phase: phase, project: nil, main_custom_field: main_field) }
 
       it 'includes all fields of the custom form' do
-        expect(result.dig(:data, :relationships, :all_custom_fields, :data).pluck(:id)).to match_array [main_field.id, *available_fields.map(&:id)]
+        expect(result.dig(:data, :relationships, :all_custom_fields, :data).pluck(:id)).to contain_exactly(main_field.id, *available_fields.map(&:id))
       end
     end
 

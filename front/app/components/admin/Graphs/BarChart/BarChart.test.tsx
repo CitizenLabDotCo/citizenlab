@@ -14,14 +14,6 @@ const getErrorData = (): Row[] | NilOrError => new Error();
 const emptyData = getEmptyData();
 const errorData = getErrorData();
 
-class FakeResizeObserver {
-  observe() {}
-  disconnect() {}
-}
-
-// @ts-ignore
-window.ResizeObserver = FakeResizeObserver;
-
 describe('<BarChart />', () => {
   describe('Missing data', () => {
     it('renders empty state message if data is nil', () => {

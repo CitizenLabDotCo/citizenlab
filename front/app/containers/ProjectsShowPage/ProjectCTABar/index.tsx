@@ -15,6 +15,7 @@ import {
   getMethodConfig,
   getParticipationMethod,
 } from 'utils/configs/participationMethodConfig';
+import { MIN_VIEWPORT_HEIGHT_FOR_STICKY_ELEMENTS } from 'utils/styleConstants';
 
 type ProjectCTABarProps = {
   projectId: string;
@@ -22,7 +23,11 @@ type ProjectCTABarProps = {
 
 const ProjectCTABar = ({ projectId }: ProjectCTABarProps) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const sticksToBottom = isSmallerThanTablet;
+  const viewportHeight = window.innerHeight;
+  // Only stick on height over 400, to prevent a11y issues on very small viewports
+  const sticksToBottom =
+    isSmallerThanTablet &&
+    viewportHeight > MIN_VIEWPORT_HEIGHT_FOR_STICKY_ELEMENTS;
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
 

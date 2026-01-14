@@ -92,7 +92,7 @@ resource 'Taggings' do
       expect(response_status).to eq 201
       expect(Analysis::Tagging.count).to eq 2
       expect(Analysis::Tagging.pluck(:tag_id)).to all(eq(tag_id))
-      expect(Analysis::Tagging.pluck(:input_id)).to match_array([idea.id, idea2.id])
+      expect(Analysis::Tagging.pluck(:input_id)).to contain_exactly(idea.id, idea2.id)
     end
   end
 end

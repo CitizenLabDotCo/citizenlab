@@ -35,7 +35,7 @@ describe AvatarsService do
       result = service.avatars_for_project(project)
 
       expect(result[:total_count]).to eq 1
-      expect(result[:users].map(&:id)).to match_array [u1.id]
+      expect(result[:users].map(&:id)).to contain_exactly(u1.id)
     end
   end
 
@@ -67,7 +67,7 @@ describe AvatarsService do
       result = service.avatars_for_idea(idea1)
 
       expect(result[:total_count]).to eq 3
-      expect(result[:users].map(&:id)).to match_array [idea1.author.id, comment1.author.id, comment2.author.id]
+      expect(result[:users].map(&:id)).to contain_exactly(idea1.author.id, comment1.author.id, comment2.author.id)
     end
 
     it 'does not include authors from deleted comments' do
@@ -77,7 +77,7 @@ describe AvatarsService do
       result = service.avatars_for_idea(idea)
 
       expect(result[:total_count]).to eq 1
-      expect(result[:users].map(&:id)).to match_array [idea.author.id]
+      expect(result[:users].map(&:id)).to contain_exactly(idea.author.id)
     end
 
     it 'does not return the reactors' do
@@ -89,7 +89,7 @@ describe AvatarsService do
       result = service.avatars_for_idea(idea)
 
       expect(result[:total_count]).to eq 2
-      expect(result[:users].map(&:id)).to match_array [idea.author.id, comment.author.id]
+      expect(result[:users].map(&:id)).to contain_exactly(idea.author.id, comment.author.id)
     end
 
     it "doesn't return the same user twice" do
@@ -100,7 +100,7 @@ describe AvatarsService do
       result = service.avatars_for_idea(idea)
 
       expect(result[:total_count]).to eq 1
-      expect(result[:users].map(&:id)).to match_array [u1.id]
+      expect(result[:users].map(&:id)).to contain_exactly(u1.id)
     end
   end
 end

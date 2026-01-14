@@ -168,3 +168,66 @@ export const determinePreviousPageNumber = ({
   // If no history is available, return the sequential previous page
   return Math.max(0, currentPageIndex - 1);
 };
+
+/**
+ * Traces the complete valid path through the survey based on current form data
+ * following all conditional logic rules from the beginning
+ */
+export const getValidPagePath = ({
+  pages,
+  formData,
+}: {
+  pages: Pages;
+  formData?: Record<string, any>;
+}): number[] => {
+  if (pages.length === 0) return [];
+
+  const validPath: number[] = [0];
+  let currentPageIndex = 0;
+  const maxIterations = pages.length * 2; // Prevent infinite loops
+  let iterations = 0;
+
+  // Follow logic from start to end based on current form data
+  while (currentPageIndex < pages.length - 1 && iterations < maxIterations) {
+    iterations++;
+
+    const nextPageIndex = determineNextPageNumber({
+      pages,
+      currentPage: pages[currentPageIndex].page,
+      formData,
+    });
+
+    // If next page is invalid or we're going backwards (loop), stop
+    if (
+      nextPageIndex < 0 ||
+      nextPageIndex >= pages.length ||
+      nextPageIndex <= currentPageIndex
+    ) {
+      break;
+    }
+
+    validPath.push(nextPageIndex);
+    currentPageIndex = nextPageIndex;
+  }
+
+  return validPath;
+};
+
+/**
+ * Returns all page indices that are NOT in the current valid path.
+ * These are pages that have been skipped due to conditional logic.
+ */
+export const getSkippedPageIndices = ({
+  pages,
+  formData,
+}: {
+  pages: Pages;
+  formData?: Record<string, any>;
+}): number[] => {
+  const validPath = getValidPagePath({ pages, formData });
+  const validPathSet = new Set(validPath);
+
+  return pages
+    .map((_, index) => index)
+    .filter((index) => !validPathSet.has(index));
+};

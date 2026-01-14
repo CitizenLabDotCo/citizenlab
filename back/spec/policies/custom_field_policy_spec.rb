@@ -21,7 +21,7 @@ describe CustomFieldPolicy do
     end
 
     it 'indexes all fields' do
-      expect(scope.resolve).to match_array [visible_field, disabled_field, hidden_field]
+      expect(scope.resolve).to contain_exactly(visible_field, disabled_field, hidden_field)
     end
   end
 
@@ -39,7 +39,7 @@ describe CustomFieldPolicy do
     end
 
     it 'indexes only visible fields' do
-      expect(scope.resolve).to match_array [visible_field]
+      expect(scope.resolve).to contain_exactly(visible_field)
     end
   end
 

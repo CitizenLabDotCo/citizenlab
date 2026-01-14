@@ -1,5 +1,6 @@
 import moment = require('moment');
 import { randomString, randomEmail } from '../../support/commands';
+import { signUpEmailConformation, enterUserInfo } from '../../support/auth';
 
 describe('Native survey permissions', () => {
   describe('Native survey for smart group (question defining smart group asked in registration flow)', () => {
@@ -96,29 +97,8 @@ describe('Native survey permissions', () => {
       cy.get('#e2e-authentication-modal').should('exist');
 
       // Complete email sign up
-      const firstName = randomString();
-      const lastName = randomString();
-      const email = randomEmail();
-      const password = randomString();
-
-      cy.get('#e2e-goto-signup').click();
-      cy.get('#firstName').type(firstName);
-      cy.get('#lastName').type(lastName);
-      cy.get('#email').type(email);
-      cy.get('#password').type(password);
-      cy.get('[data-testid="termsAndConditionsAccepted"] .e2e-checkbox')
-
-        .click()
-        .should('have.class', 'checked');
-      cy.get('[data-testid="privacyPolicyAccepted"] .e2e-checkbox')
-        .click()
-        .should('have.class', 'checked');
-      cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
-
-      // Enter email confirmation code
-      cy.get('#code').should('exist');
-      cy.get('#code').click().type('1234');
-      cy.get('#e2e-verify-email-button').click();
+      signUpEmailConformation(cy);
+      enterUserInfo(cy);
 
       // Enter custom fields step
       cy.get('#e2e-signup-custom-fields-container');
@@ -152,28 +132,8 @@ describe('Native survey permissions', () => {
       cy.get('#e2e-authentication-modal').should('exist');
 
       // Complete email sign up
-      const firstName = randomString();
-      const lastName = randomString();
-      const email = randomEmail();
-      const password = randomString();
-
-      cy.get('#e2e-goto-signup').click();
-      cy.get('#firstName').type(firstName);
-      cy.get('#lastName').type(lastName);
-      cy.get('#email').type(email);
-      cy.get('#password').type(password);
-      cy.get('[data-testid="termsAndConditionsAccepted"] .e2e-checkbox')
-        .click()
-        .should('have.class', 'checked');
-      cy.get('[data-testid="privacyPolicyAccepted"] .e2e-checkbox')
-        .click()
-        .should('have.class', 'checked');
-      cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
-
-      // Enter email confirmation code
-      cy.get('#code').should('exist');
-      cy.get('#code').click().type('1234');
-      cy.get('#e2e-verify-email-button').click();
+      signUpEmailConformation(cy);
+      enterUserInfo(cy);
 
       // Enter custom fields step
       cy.get('#e2e-signup-custom-fields-container');

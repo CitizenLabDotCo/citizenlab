@@ -14,6 +14,7 @@ class SideFxCommentService
     LogActivityJob.perform_later(comment, 'created', user_for_activity_on_anonymizable_item(comment, user), comment.created_at.to_i)
     notify_mentioned_users(comment, user)
     create_followers(comment, user) unless comment.anonymous?
+    enqueue_wise_voice_detection_job(comment)
   end
 
   def before_update(comment, _user)
@@ -30,6 +31,7 @@ class SideFxCommentService
 
     return unless comment.body_multiloc_previously_changed?
 
+    enqueue_wise_voice_detection_job(comment)
     LogActivityJob.perform_later(comment, 'changed_body', user_for_activity_on_anonymizable_item(comment, user), comment.body_updated_at.to_i, payload: { change: comment.body_multiloc_previous_change })
     notify_updated_mentioned_users(comment, user)
   end
@@ -98,6 +100,12 @@ class SideFxCommentService
     return if !comment.idea.project.in_folder?
 
     Follower.find_or_create_by(followable: comment.idea.project.folder, user: user)
+  end
+
+  def enqueue_wise_voice_detection_job(comment)
+    return if !AppConfiguration.instance.feature_activated?('idea_feed')
+
+    WiseVoiceDetectionJob.perform_later(comment)
   end
 end
 

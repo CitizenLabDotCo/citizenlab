@@ -352,19 +352,21 @@ describe Export::Xlsx::ValueVisitor do
         create(
           :custom_field_option,
           custom_field: field,
-          image: create(:custom_field_option_image),
           key: 'cat',
           title_multiloc: { 'en' => 'Cat' }
-        )
+        ).tap do |option|
+          option.update!(image: create(:custom_field_option_image, custom_field_option: option))
+        end
       end
       let!(:field_option2) do
         create(
           :custom_field_option,
           custom_field: field,
-          image: create(:custom_field_option_image),
           key: 'dog',
           title_multiloc: { 'en' => 'Dog' }
-        )
+        ).tap do |option|
+          option.update!(image: create(:custom_field_option_image, custom_field_option: option))
+        end
       end
       let(:option_index) do
         {
@@ -636,10 +638,10 @@ describe Export::Xlsx::ValueVisitor do
       context 'when there is one topic selected' do
         let(:topics) do
           [
-            create(:topic, code: 'nature', title_multiloc: { 'en' => 'Topic 1', 'nl-NL' => 'Onderwerp 1' })
+            create(:topic, title_multiloc: { 'en' => 'Topic 1', 'nl-NL' => 'Onderwerp 1' })
           ]
         end
-        let(:value) { ['nature'] }
+        let(:value) { [topics.first.id] }
 
         it 'returns the value for the report' do
           I18n.with_locale('nl-NL') do
@@ -651,11 +653,11 @@ describe Export::Xlsx::ValueVisitor do
       context 'when there are multiple topics selected' do
         let(:topics) do
           [
-            create(:topic, code: 'nature', title_multiloc: { 'en' => 'Topic 1', 'nl-NL' => 'Onderwerp 1' }),
-            create(:topic, code: 'waste', title_multiloc: { 'en' => 'Topic 2', 'nl-NL' => 'Onderwerp 2' })
+            create(:topic, title_multiloc: { 'en' => 'Topic 1', 'nl-NL' => 'Onderwerp 1' }),
+            create(:topic, title_multiloc: { 'en' => 'Topic 2', 'nl-NL' => 'Onderwerp 2' })
           ]
         end
-        let(:value) { %w[nature waste] }
+        let(:value) { topics.map(&:id) }
 
         it 'returns the value for the report' do
           I18n.with_locale('nl-NL') do

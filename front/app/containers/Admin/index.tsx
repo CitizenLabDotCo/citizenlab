@@ -124,6 +124,21 @@ const AdminPage = memo<Props>(({ className }) => {
       /admin\/projects\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(\/(?!projects(?:\/|$))[\w-]+)*/
     ) && !isFoldersPage;
 
+  const isReportBuilderEditorRoute = pathname.match(
+    /\/admin\/reporting\/report-builder\/[\w-]+\/editor$/
+  );
+  const isHomePageBuilderRoute = pathname.match(
+    /\/admin\/pages-menu\/homepage-builder/
+  );
+  const isDescriptionBuilderRoute = pathname.match(
+    /\/admin\/description-builder/
+  );
+
+  const sidebarRendered =
+    !isHomePageBuilderRoute &&
+    !isDescriptionBuilderRoute &&
+    !isReportBuilderEditorRoute;
+
   const projectsExceptNewAndFolders =
     pathname.includes('admin/projects') &&
     !pathname.includes('admin/projects/new') &&
@@ -136,7 +151,8 @@ const AdminPage = memo<Props>(({ className }) => {
     pathname.includes('admin/settings') ||
     pathname.includes('admin/ideas') ||
     pathname.includes('admin/inspiration-hub') ||
-    isProjectPage;
+    isProjectPage ||
+    !sidebarRendered;
 
   const fullWidth =
     pathname.includes('admin/dashboard') ||
@@ -145,11 +161,12 @@ const AdminPage = memo<Props>(({ className }) => {
     pathname.includes('admin/settings') ||
     pathname.includes('admin/ideas') ||
     pathname.includes('admin/community-monitor') ||
-    isProjectPage;
+    isProjectPage ||
+    !sidebarRendered;
 
   return (
     <Container className={className}>
-      <Sidebar />
+      {sidebarRendered && <Sidebar />}
       <RightColumn
         className={`
           ${fullWidth ? 'fullWidth' : ''} 

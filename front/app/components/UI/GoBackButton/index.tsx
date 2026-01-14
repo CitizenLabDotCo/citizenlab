@@ -3,7 +3,7 @@ import React, { FormEvent } from 'react';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
-import ButtonWithLink from 'components/UI/ButtonWithLink';
+import ButtonWithLink, { ButtonProps } from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
@@ -19,6 +19,8 @@ type Props = {
   customMessage?: MessageDescriptor;
   linkTo?: RouteType;
   showGoBackText?: boolean;
+  size?: ButtonProps['size'];
+  buttonStyle?: ButtonProps['buttonStyle'];
 };
 
 const GoBackButton = ({
@@ -27,15 +29,17 @@ const GoBackButton = ({
   customMessage,
   linkTo,
   showGoBackText = true,
+  size = 'm',
+  buttonStyle = 'text',
 }: Props) => {
   return (
     <Container className={className || ''}>
       <ButtonWithLink
         id="e2e-go-back-button"
         onClick={onClick}
-        buttonStyle="text"
+        buttonStyle={buttonStyle}
         icon="arrow-left"
-        size="m"
+        size={size}
         padding="0px"
         text={
           showGoBackText ? (

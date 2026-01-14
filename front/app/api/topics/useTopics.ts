@@ -10,7 +10,7 @@ const fetchTopics = ({
   forHomepageFilter,
   forOnboarding,
   includeStaticPages,
-  excludeCode,
+
   ...queryParameters
 }: ITopicsQueryParams) =>
   fetcher<ITopics>({
@@ -20,7 +20,6 @@ const fetchTopics = ({
       ...queryParameters,
       for_homepage_filter: forHomepageFilter,
       for_onboarding: forOnboarding,
-      exclude_code: excludeCode,
       ...(includeStaticPages && {
         include: 'static_pages',
       }),

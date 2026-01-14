@@ -11,7 +11,7 @@ type CardButtonProps = {
   iconName?: IconNames;
   icon?: React.ReactNode;
   title?: string;
-  subtitle?: string;
+  subtitle?: React.ReactNode;
   disabled?: boolean;
 };
 
