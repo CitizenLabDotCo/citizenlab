@@ -3366,7 +3366,7 @@
   "app.containers.admin.ideaStatuses.all.inputStatusDeleteButtonTooltip": "Gli status attualmente assegnati ai contributi dei partecipanti non possono essere eliminati. Puoi rimuovere/modificare lo status di un contributo esistente nella pagina {manageTab}.",
   "app.containers.admin.ideaStatuses.all.lockedStatusTooltip": "Questo status non può essere eliminato o spostato.",
   "app.containers.admin.ideaStatuses.all.manage": "Modifica",
-  "app.containers.admin.ideaStatuses.all.pricingPlanUpgrade": "La configurazione di stati di input personalizzati non è inclusa nel tuo piano attuale. Parla con il tuo Government Success Manager o con l'amministratore per sbloccarla.",
+  "app.containers.admin.ideaStatuses.all.pricingPlanUpgrade": "La configurazione di status dei contributi personalizzati non è inclusa nel tuo piano attuale. Parla con il tuo Government Success Manager o con l'amministratore per sbloccarla.",
   "app.containers.admin.ideaStatuses.all.subtitleInputStatuses1": "Gestisci lo status che può essere assegnato ai contributi dei partecipanti all'interno di un progetto. Lo status è visibile pubblicamente e aiuta a tenere informati i partecipanti.",
   "app.containers.admin.ideaStatuses.all.subtitleProposalStatuses": "Gestisci lo status che può essere assegnato alle proposte all'interno di un progetto. Lo status è visibile pubblicamente e aiuta a tenere informati i partecipanti.",
   "app.containers.admin.ideaStatuses.all.titleIdeaStatuses1": "Modifica gli stati dei contributi",
