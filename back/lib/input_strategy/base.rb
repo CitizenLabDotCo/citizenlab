@@ -82,6 +82,10 @@ module InputStrategy
       true
     end
 
+    def supports_multiloc?
+      false
+    end
+
     protected
 
     attr_reader :custom_field

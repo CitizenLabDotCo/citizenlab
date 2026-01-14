@@ -25,4 +25,5 @@ RSpec.describe InputStrategy::MultiselectImage do
   its(:supports_dropdown_layout?) { is_expected.to be false }
   its(:supports_xlsx_export?) { is_expected.to be true }
   its(:supports_geojson?) { is_expected.to be true }
+  its(:supports_multiloc?) { is_expected.to be false }
 end

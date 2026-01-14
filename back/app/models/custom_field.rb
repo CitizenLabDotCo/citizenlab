@@ -55,7 +55,7 @@ class CustomField < ApplicationRecord
   delegate :structural_field?, :supports_submission?, :supports_average?, :supports_options?, :supports_other_option?, :supports_option_images?,
     :supports_follow_up?, :supports_text?, :supports_linear_scale?, :supports_linear_scale_labels?, :supports_matrix_statements?,
     :supports_single_selection?, :supports_multiple_selection?, :supports_selection?, :supports_select_count?, :supports_dropdown_layout?,
-    :supports_free_text_value?, :supports_xlsx_export?, :supports_geojson?, to: :input_strategy
+    :supports_free_text_value?, :supports_xlsx_export?, :supports_geojson?, :supports_multiloc?, to: :input_strategy
 
   acts_as_list column: :ordering, top_of_list: 0, scope: %i[resource_type resource_id], sequential_updates: true
 
@@ -290,14 +290,6 @@ class CustomField < ApplicationRecord
     else
       raise 'Unsupported resource type'
     end
-  end
-
-  def multiloc?
-    %w[
-      text_multiloc
-      multiline_text_multiloc
-      html_multiloc
-    ].include?(input_type)
   end
 
   def accept(visitor)
