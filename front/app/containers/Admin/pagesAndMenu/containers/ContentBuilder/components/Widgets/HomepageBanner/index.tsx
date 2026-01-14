@@ -612,28 +612,26 @@ const HomepageBannerSettings = () => {
             <Box mt="24px">
               <Label>{formatMessage(messages.headerHeights)}</Label>
               <Text m="0px 0px 12px 0px" color="textSecondary" fontSize="s">
-                Customize the signed-out header height for each device size.
-                Default for{' '}
-                {homepageSettings.banner_layout || 'full_width_banner_layout'}:
-                Desktop{' '}
-                {
-                  homepageBannerLayoutHeights[
-                    homepageSettings.banner_layout || 'full_width_banner_layout'
-                  ].desktop
-                }
-                px, Tablet{' '}
-                {
-                  homepageBannerLayoutHeights[
-                    homepageSettings.banner_layout || 'full_width_banner_layout'
-                  ].tablet
-                }
-                px, Phone{' '}
-                {
-                  homepageBannerLayoutHeights[
-                    homepageSettings.banner_layout || 'full_width_banner_layout'
-                  ].phone
-                }
-                px.
+                {formatMessage(messages.signedOutHeaderHeightDescription, {
+                  layout:
+                    homepageSettings.banner_layout ||
+                    'full_width_banner_layout',
+                  desktop:
+                    homepageBannerLayoutHeights[
+                      homepageSettings.banner_layout ||
+                        'full_width_banner_layout'
+                    ].desktop,
+                  tablet:
+                    homepageBannerLayoutHeights[
+                      homepageSettings.banner_layout ||
+                        'full_width_banner_layout'
+                    ].tablet,
+                  phone:
+                    homepageBannerLayoutHeights[
+                      homepageSettings.banner_layout ||
+                        'full_width_banner_layout'
+                    ].phone,
+                })}
               </Text>
               <Box display="flex" flexDirection="column" gap="12px">
                 <Box>
@@ -843,8 +841,11 @@ const HomepageBannerSettings = () => {
           <Box mt="24px">
             <Label>{formatMessage(messages.headerHeights)}</Label>
             <Text m="0px 0px 12px 0px" color="textSecondary" fontSize="s">
-              Customize the signed-in header height for each device size.
-              Default: Desktop 200px, Tablet 250px, Phone 300px.
+              {formatMessage(messages.signedInHeaderHeightDescription, {
+                desktop: 200,
+                tablet: 250,
+                phone: 300,
+              })}
             </Text>
             <Box display="flex" flexDirection="column" gap="12px">
               <Box>
