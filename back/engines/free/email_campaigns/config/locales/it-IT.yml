@@ -124,7 +124,7 @@ it:
     comment_deleted_by_admin:
       subject: 'Il tuo commento è stato eliminato dalla piattaforma di %{organizationName}'
       preheader: 'Il tuo commento è stato eliminato'
-      title: '%{organizationName} cancellato il tuo commento'
+      title: '%{organizationName} ha eliminato il tuo commento'
       event_description: '%{organizationName} ha eliminato il commento che hai scritto su un''idea.'
       cta_button: 'Visualizza questa idea'
       reason: 'Il motivo per cui il tuo commento è stato eliminato:'
