@@ -36,7 +36,7 @@ module ContentBuilder
 
     # Checks that the user is authorized to use all files referenced in craftjs_json.
     def authorized_to_attach_files?
-      file_ids = FileAttachmentProcessorService.extract_file_ids(record.craftjs_json)
+      file_ids = record.referenced_file_ids
       return true if file_ids.empty?
 
       # All referenced files must exist, and the user must be authorized to use them.
