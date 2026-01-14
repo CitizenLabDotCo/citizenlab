@@ -88,10 +88,10 @@ it:
     preview_data:
       author_first_name: 'Jane'
       author_last_name: 'Sconosciuto'
-      author_display_name: 'Sconosciuta'
-      initiator_first_name: 'Bob'
+      author_display_name: 'Maria Bianchi'
+      initiator_first_name: 'Mario'
       initiator_last_name: 'Smith'
-      initiator_display_name: 'Bob Smith'
+      initiator_display_name: 'Mario Rossi'
       project_title: 'Esempio di progetto'
       project_description_preview: 'Questo è un esempio di contenuto di fase utilizzato per l''anteprima del contenuto delle e-mail. Non si tratta di contenuti reali.'
       phase_title: 'Esempio di fase'
@@ -524,7 +524,7 @@ it:
       body_1: 'I risultati sono arrivati!'
       body_2: 'Sono stati pubblicati i risultati della votazione del progetto %{phaseTitle} nella piattaforma partecipativa di %{organizationName}!'
       body_3: 'Ti invitiamo a esaminare i risultati e a rimanere sintonizzato per ulteriori aggiornamenti sui prossimi passi.'
-      cta_button: 'Vedi i risultati nella piattaforma'
+      cta_button: 'Guarda i risultati nella piattaforma'
     event_registration_confirmation:
       subject: "Sei dentro! La tua registrazione all'evento: \"%{eventTitle}\" è confermata"
       preheader: "%{firstName}, grazie per esserti registrato su %{eventTitle}"
