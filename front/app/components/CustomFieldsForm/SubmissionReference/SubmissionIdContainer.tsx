@@ -22,10 +22,9 @@ const SubmissionIdContainer = ({ submissionId }: Props) => {
 
   return (
     <Box
-      w="338px"
       h="40px"
       display="flex"
-      justifyContent="center"
+      justifyContent="flex-start"
       alignItems="center"
     >
       <InputContainer onClick={handleCopy}>
