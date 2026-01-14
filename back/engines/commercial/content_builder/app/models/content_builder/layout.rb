@@ -123,12 +123,12 @@ module ContentBuilder
     end
 
     def create_missing_file_attachments(file_ids)
-      file_ids.each do |file_id|
-        next if file_attachments.exists?(file_id: file_id)
+      # CraftJS state is not update when referenced files are deleted. As a result,
+      # there can be references to non-existing files.
+      existing_file_ids = ::Files::File.where(id: file_ids).pluck(:id)
 
-        file_attachments.create!(file_id: file_id)
-      rescue ActiveRecord::RecordInvalid => e
-        Rails.logger.error "Failed to create file attachment for file #{file_id}: #{e.message}"
+      existing_file_ids.each do |file_id|
+        file_attachments.find_or_create_by!(file_id: file_id)
       end
     end
   end
