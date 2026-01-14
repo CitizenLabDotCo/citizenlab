@@ -24,7 +24,6 @@ import { getIsFileAlreadyUsed } from './utils';
 
 type FileAttachmentProps = {
   fileId?: string;
-  fileAttachmentId?: string;
   fileName?: string;
 };
 
@@ -168,7 +167,6 @@ const FileAttachmentSettings = () => {
               // File attachment will be created on BE when layout is saved.
               props.fileId = option.value;
               props.fileName = option.label;
-              props.fileAttachmentId = undefined; // Clear old attachment ID if changing file
             });
           }}
           placeholder={formatMessage(messages.selectFile)}
