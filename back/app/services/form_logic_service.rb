@@ -11,7 +11,7 @@ class FormLogicService
     fields.each do |field|
       next if field.logic.blank?
 
-      if field.page?
+      if field.input_type == 'page'
         replace_temp_ids_in_page_logic!(field, page_temp_ids_to_ids_mapping)
       else
         replace_temp_ids_in_field_logic!(field, page_temp_ids_to_ids_mapping, option_temp_ids_to_ids_mapping)
@@ -23,7 +23,7 @@ class FormLogicService
     fields.inject(true) do |all_valid, field|
       next all_valid unless field.logic?
 
-      field_valid = if field.page?
+      field_valid = if field.input_type == 'page'
         valid_page_logic_structure?(field) && valid_next_page?(field)
       else
         valid_field_logic_structure?(field) && valid_rules?(field)
@@ -109,7 +109,7 @@ class FormLogicService
 
   def target_is_page?(target_id, field)
     target_field = field_index[target_id]
-    return true if target_field.page?
+    return true if target_field.input_type == 'page'
 
     add_only_page_allowed_as_target_error(field, target_id)
     false
