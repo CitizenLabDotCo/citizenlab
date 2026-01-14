@@ -270,8 +270,8 @@ it:
     comment_on_idea_you_follow:
       subject: 'C''è un nuovo commento su "%{input_title}"'
       preheader: '%{authorName} ha lasciato un commento su un''idea per %{organizationName}'
-      title: '%{authorName} ha commentato un input che segui'
-      event_description: '%{authorNameFull} ha inviato una reazione a ''%{inputTitle}''. Clicca sul pulsante qui sotto per continuare la conversazione con %{authorName}.'
+      title: '%{authorName} ha commentato un contributo che segui'
+      event_description: '%{authorNameFull} ha pubblicato un commento su ''%{inputTitle}''. Clicca sul pulsante qui sotto per continuare la conversazione con %{authorName}.'
       cta_button: 'Rispondi a %{commentAuthor}'
       main_header:
         idea: '%{authorName} ha commentato un''idea che segui'
@@ -305,7 +305,7 @@ it:
       subject: 'Hai ricevuto una risposta al tuo commento sulla piattaforma di %{organizationName}'
       preheader: '%{authorName} ha risposto al tuo commento sulla piattaforma di %{organizationName}'
       title: '%{authorName} ha risposto al tuo commento'
-      event_description: '%{authorNameFull} ha scritto una risposta al tuo commento su ''%{post}'' sulla piattaforma di partecipazione. Clicca il pulsante qui sotto per continuare la conversazione con %{authorName}.'
+      event_description: '%{authorName} ha pubblicato una risposta al tuo commento su ''%{post}'' sulla piattaforma partecipativa. Clicca sul pulsante qui sotto per continuare la conversazione con %{authorFirstName}.'
       cta_button: 'Rispondi a %{authorFirstName}'
       replied: '%{authorFirstName} ha commentato:'
     internal_comment_on_your_internal_comment:
@@ -346,9 +346,9 @@ it:
       cta_button: Guarda il contributo
     mention_in_official_feedback:
       cta_button: 'Rispondi a %{organizationName}'
-      event_description: '%{organizationName} ti hanno menzionato nel loro feedback sull''idea ''%{post}''. Clicca il link qui sotto per entrare nella conversazione con %{organizationName}'
+      event_description: 'Sei stato menzionato da %{organizationName} nell''aggiornamento sull''idea ''%{post}''. Clicca il link qui sotto per unirti alla conversazione con %{organizationName}'
       title: 'Sei stato menzionato'
-      subject: '%{organizationName} ti hanno menzionato nel loro feedback'
+      subject: '%{organizationName} ti ha menzionato nel suo aggiornamento'
       preheader: '%{commentAuthor} ti ha menzionato nel feedback'
     project_moderation_rights_received:
       cta_button: 'Gestisci questo progetto'
@@ -471,8 +471,8 @@ it:
       action_add_image: '%{addImageLink} per aumentare la visibilità'
       add_image: 'Aggiungi un''immagine'
       action_share_fb: 'Fallo sapere ai tuoi amici su %{fbLink}'
-      action_share_twitter: 'Informa i tuoi seguaci su %{twitterLink}'
-      action_send_email: 'Invia ai tuoi contatti un %{sendEmailLink}'
+      action_share_twitter: 'Informa i tuoi follower su %{twitterLink}'
+      action_send_email: 'Invia ai tuoi contatti una %{sendEmailLink}'
       send_email: e-mail
       action_share_link: 'Condividilo tramite qualsiasi canale copiando il %{link}'
       link: link
@@ -490,11 +490,11 @@ it:
       subject: '"%{input_title}" sarà presto pubblicato'
       preheader: 'Attualmente si trova su %{prescreening_status_title}'
     voting_basket_submitted:
-      subject: '%{organizationName}Hai votato con successo'
-      preheader: 'Hai votato con successo sulla piattaforma di partecipazione di %{organizationName}'
+      subject: '%{organizationName}: Hai votato con successo'
+      preheader: 'Hai votato con successo sulla piattaforma partecipativa di %{organizationName}'
       title: 'Hai votato con successo'
-      event_description: 'Grazie per aver partecipato. I tuoi voti sono stati registrati. Visita la piattaforma di %{organizationName} per vedere e gestire i tuoi voti.'
-      cta_button: 'Vedi i voti inviati'
+      event_description: 'Grazie per aver partecipato. Il tuo voto è stato registrati. Visita la piattaforma di %{organizationName} per visualizzare e gestire i tuo voto.'
+      cta_button: 'Visualizza il tuo voto'
       cta_message: 'Clicca sul pulsante qui sotto per partecipare'
     native_survey_not_submitted:
       subject: '%{organizationName}: Ci siamo quasi! Invia le tue risposte'
@@ -511,7 +511,7 @@ it:
       cta_button: 'Visualizza le opzioni e vota'
       cta_message: 'Clicca sul pulsante sottostante per inviare le opzioni selezionate'
     voting_last_chance:
-      subject: '%{organizationName}Ultima possibilità di votare per %{phaseTitle}'
+      subject: '%{organizationName}: Ultima possibilità di votare per %{phaseTitle}'
       preheader: 'Ultima possibilità di votare per %{phaseTitle} sulla piattaforma partecipativa di %{organizationName}'
       title: 'Ultima possibilità di votare per %{phaseTitle}'
       body_1: 'La fase di votazione del progetto %{projectTitle} si concluderà domani a mezzanotte.'
@@ -543,7 +543,7 @@ it:
       subject: '%{organizationName}: La fase di voto è iniziata per %{projectName}'
       preheader: 'La fase di votazione è iniziata per %{projectName} sulla piattaforma partecipativa di %{organizationName}'
       title: '%{projectName}'
-      event_description: 'Il progetto "%{projectName}" ti chiede di votare tra le opzioni di %{numIdeas} :'
+      event_description: 'Il progetto "%{projectName}" ti chiede di votare tra %{numIdeas} opzioni:'
       cta_message: 'Clicca sul pulsante qui sotto per partecipare'
       cta_button: 'Vai alla piattaforma per votare'
     survey_submitted:
