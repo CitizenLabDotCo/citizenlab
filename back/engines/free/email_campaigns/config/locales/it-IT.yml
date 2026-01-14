@@ -88,10 +88,10 @@ it:
     preview_data:
       author_first_name: 'Jane'
       author_last_name: 'Sconosciuto'
-      author_display_name: 'Sconosciuta'
-      initiator_first_name: 'Bob'
+      author_display_name: 'Maria Bianchi'
+      initiator_first_name: 'Mario'
       initiator_last_name: 'Smith'
-      initiator_display_name: 'Bob Smith'
+      initiator_display_name: 'Mario Rossi'
       project_title: 'Esempio di progetto'
       project_description_preview: 'Questo è un esempio di contenuto di fase utilizzato per l''anteprima del contenuto delle e-mail. Non si tratta di contenuti reali.'
       phase_title: 'Esempio di fase'
@@ -491,11 +491,11 @@ it:
       subject: '"%{input_title}" sarà presto pubblicato'
       preheader: 'Attualmente si trova su %{prescreening_status_title}'
     voting_basket_submitted:
-      subject: '%{organizationName}Hai votato con successo'
-      preheader: 'Hai votato con successo sulla piattaforma di partecipazione di %{organizationName}'
+      subject: '%{organizationName}: Hai votato con successo'
+      preheader: 'Hai votato con successo sulla piattaforma partecipativa di %{organizationName}'
       title: 'Hai votato con successo'
-      event_description: 'Grazie per aver partecipato. I tuoi voti sono stati registrati. Visita la piattaforma di %{organizationName} per vedere e gestire i tuoi voti.'
-      cta_button: 'Vedi i voti inviati'
+      event_description: 'Grazie per aver partecipato. Il tuo voto è stato registrati. Visita la piattaforma di %{organizationName} per visualizzare e gestire i tuo voto.'
+      cta_button: 'Visualizza il tuo voto'
       cta_message: 'Clicca sul pulsante qui sotto per partecipare'
     native_survey_not_submitted:
       subject: '%{organizationName}: Ci siamo quasi! Invia le tue risposte'
@@ -512,7 +512,7 @@ it:
       cta_button: 'Visualizza le opzioni e vota'
       cta_message: 'Clicca sul pulsante sottostante per inviare le opzioni selezionate'
     voting_last_chance:
-      subject: '%{organizationName}Ultima possibilità di votare per %{phaseTitle}'
+      subject: '%{organizationName}: Ultima possibilità di votare per %{phaseTitle}'
       preheader: 'Ultima possibilità di votare per %{phaseTitle} sulla piattaforma partecipativa di %{organizationName}'
       title: 'Ultima possibilità di votare per %{phaseTitle}'
       body_1: 'La fase di votazione del progetto %{projectTitle} si concluderà domani a mezzanotte.'
@@ -526,7 +526,7 @@ it:
       body_1: 'I risultati sono arrivati!'
       body_2: 'Sono stati pubblicati i risultati della votazione del progetto %{phaseTitle} nella piattaforma partecipativa di %{organizationName}!'
       body_3: 'Ti invitiamo a esaminare i risultati e a rimanere sintonizzato per ulteriori aggiornamenti sui prossimi passi.'
-      cta_button: 'Vedi i risultati nella piattaforma'
+      cta_button: 'Guarda i risultati nella piattaforma'
     event_registration_confirmation:
       subject: "Sei dentro! La tua registrazione all'evento: \"%{eventTitle}\" è confermata"
       preheader: "%{firstName}, grazie per esserti registrato su %{eventTitle}"
@@ -544,7 +544,7 @@ it:
       subject: '%{organizationName}: La fase di voto è iniziata per %{projectName}'
       preheader: 'La fase di votazione è iniziata per %{projectName} sulla piattaforma partecipativa di %{organizationName}'
       title: '%{projectName}'
-      event_description: 'Il progetto "%{projectName}" ti chiede di votare tra le opzioni di %{numIdeas} :'
+      event_description: 'Il progetto "%{projectName}" ti chiede di votare tra %{numIdeas} opzioni:'
       cta_message: 'Clicca sul pulsante qui sotto per partecipare'
       cta_button: 'Vai alla piattaforma per votare'
     survey_submitted:
