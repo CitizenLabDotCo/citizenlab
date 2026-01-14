@@ -220,7 +220,7 @@ module BulkImportIdeas::Exporters
     end
 
     def field_has_question_number?(field)
-      !field.page? && !field.additional_text_question?
+      field.supports_submission? && !field.additional_text_question?
     end
 
     def field_map_url(field)

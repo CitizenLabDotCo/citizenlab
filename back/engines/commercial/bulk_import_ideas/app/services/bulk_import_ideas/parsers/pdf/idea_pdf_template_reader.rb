@@ -213,7 +213,7 @@ module BulkImportIdeas::Parsers::Pdf
     def full_print_title(field, question_number = nil)
       title = question_number ? "#{question_number}. " : ''
       title += field_title(field)
-      title += " #{pdf_exporter.optional_text}" unless field.required? || field.page?
+      title += " #{pdf_exporter.optional_text}" if !field.required? && field.supports_submission?
       title
     end
 
