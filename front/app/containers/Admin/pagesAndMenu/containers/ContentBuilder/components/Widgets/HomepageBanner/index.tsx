@@ -741,7 +741,7 @@ const HomepageBannerSettings = () => {
           />
           <div data-cy="e2e-signed-in-header-section">
             <InputMultilocWithLocaleSwitcher
-              label={'Header'}
+              label={formatMessage(messages.bannerText)}
               type="text"
               placeholder={formatMessage(
                 homepageMessages.defaultSignedInMessage
