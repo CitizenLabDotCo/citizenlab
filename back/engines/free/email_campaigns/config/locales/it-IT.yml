@@ -341,7 +341,7 @@ it:
       preheader: '''%{post}'' ha un nuovo commento interno'
     official_feedback_on_idea_you_follow:
       event_description: '%{feedback_author_name} ha fornito un aggiornamento su ''%{input_title}''.'
-      title: 'Ci sono aggiornamenti su "%{input_title}".'
+      title: 'C''è un aggiornamento su "%{input_title}"'
       subject: 'Il riscontro ufficiale su "%{input_title}" è stato pubblicato'
       preheader: 'C''è un aggiornamento su un contributo che segui'
       cta_button: Vai a questo ingresso
@@ -421,7 +421,7 @@ it:
       title: 'Un contributo che segui ha un nuovo status'
       subject: 'Lo status di "%{input_title}" è cambiato'
       preheader: 'Un contributo che segui ha un nuovo status'
-      cta_button: Vai a questo ingresso
+      cta_button: Guarda il contributo
     user_digest:
       subject: "La tua attività sulla piattaforma di partecipazione di %{organizationName}"
       commented: "%{authorFirstName} ha commentato:"
