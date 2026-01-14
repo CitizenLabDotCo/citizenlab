@@ -55,7 +55,8 @@ class CustomField < ApplicationRecord
   delegate :structural_field?, :supports_submission?, :supports_average?, :supports_options?, :supports_other_option?, :supports_option_images?,
     :supports_follow_up?, :supports_text?, :supports_linear_scale?, :supports_linear_scale_labels?, :supports_matrix_statements?,
     :supports_single_selection?, :supports_multiple_selection?, :supports_selection?, :supports_select_count?, :supports_dropdown_layout?,
-    :supports_free_text_value?, :supports_xlsx_export?, :supports_geojson?, :supports_multiloc?, to: :input_strategy
+    :supports_free_text_value?, :supports_xlsx_export?, :supports_geojson?, :supports_multiloc?,
+    :supports_printing?, :supports_pdf_import?, :supports_pdf_gpt_import?, :supports_xlsx_import?, to: :input_strategy
 
   acts_as_list column: :ordering, top_of_list: 0, scope: %i[resource_type resource_id], sequential_updates: true
 
@@ -216,34 +217,6 @@ class CustomField < ApplicationRecord
     return true if custom_form_type? && built_in?
 
     false
-  end
-
-  def printable?
-    return false unless enabled? && include_in_printed_form
-
-    # Support all field types that are supported in the form editor - TBC
-    built_in_types = %w[text_multiloc html_multiloc image_files files topic_ids]
-    ideation_types = ParticipationMethod::Ideation::ALLOWED_EXTRA_FIELD_TYPES
-    native_survey_types = ParticipationMethod::NativeSurvey::ALLOWED_EXTRA_FIELD_TYPES
-    user_field_types = %w[checkbox date] # Only when 'user_fields_in_form' is enabled
-    all_input_types = built_in_types + ideation_types + native_survey_types + user_field_types
-
-    all_input_types.include? input_type
-  end
-
-  def pdf_importable?
-    ignore_field_types = %w[page checkbox files topic_ids image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking matrix_linear_scale]
-    printable? && ignore_field_types.exclude?(input_type)
-  end
-
-  def pdf_gpt_importable?
-    ignore_field_types = %w[page checkbox files topic_ids image_files file_upload shapefile_upload point line polygon cosponsor_ids]
-    printable? && ignore_field_types.exclude?(input_type)
-  end
-
-  def xlsx_importable?
-    ignore_field_types = %w[page files image_files file_upload shapefile_upload point line polygon cosponsor_ids]
-    ignore_field_types.exclude? input_type
   end
 
   def domicile?

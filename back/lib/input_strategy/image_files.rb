@@ -9,5 +9,13 @@ module InputStrategy
     def supports_geojson?
       false
     end
+
+    def supports_pdf_gpt_import?
+      false
+    end
+
+    def supports_xlsx_import?
+      false
+    end
   end
 end

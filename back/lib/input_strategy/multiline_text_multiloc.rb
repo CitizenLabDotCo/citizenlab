@@ -9,5 +9,9 @@ module InputStrategy
     def supports_multiloc?
       true
     end
+
+    def supports_printing?
+      false
+    end
   end
 end

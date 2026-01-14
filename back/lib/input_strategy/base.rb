@@ -86,6 +86,22 @@ module InputStrategy
       false
     end
 
+    def supports_printing?
+      custom_field.enabled? && custom_field.include_in_printed_form
+    end
+
+    def supports_pdf_gpt_import?
+      supports_printing?
+    end
+
+    def supports_pdf_import?
+      supports_pdf_gpt_import?
+    end
+
+    def supports_xlsx_import?
+      true
+    end
+
     protected
 
     attr_reader :custom_field

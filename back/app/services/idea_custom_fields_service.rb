@@ -48,11 +48,11 @@ class IdeaCustomFieldsService
 
   # Used in the printable PDF export
   def printable_fields
-    enabled_fields_with_other_options(print_version: true).select(&:printable?)
+    enabled_fields_with_other_options(print_version: true).select(&:supports_printing?)
   end
 
   def xlsx_importable_fields
-    enabled_fields_with_other_options.select(&:xlsx_importable?)
+    enabled_fields_with_other_options.select(&:supports_xlsx_import?)
   end
 
   def enabled_fields

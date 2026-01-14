@@ -63,9 +63,9 @@ module BulkImportIdeas::Parsers::Pdf
 
       # Skip fields or options whose fields are not importable
       importable = if type == 'field'
-        @gpt_parser ? field_or_option.pdf_gpt_importable? : field_or_option.pdf_importable?
+        @gpt_parser ? field_or_option.supports_pdf_gpt_import? : field_or_option.supports_pdf_import?
       else # option
-        @gpt_parser ? field_or_option.custom_field.pdf_gpt_importable? : field_or_option.custom_field.pdf_importable?
+        @gpt_parser ? field_or_option.custom_field.supports_pdf_gpt_import? : field_or_option.custom_field.supports_pdf_import?
       end
       return unless importable
 

@@ -5,5 +5,9 @@ module InputStrategy
     def supports_select_count?
       true
     end
+
+    def supports_pdf_gpt_import?
+      false
+    end
   end
 end

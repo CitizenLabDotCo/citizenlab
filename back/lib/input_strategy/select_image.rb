@@ -13,5 +13,9 @@ module InputStrategy
     def supports_option_images?
       true
     end
+
+    def supports_printing?
+      false
+    end
   end
 end

@@ -26,4 +26,8 @@ RSpec.describe InputStrategy::MatrixLinearScale do
   its(:supports_xlsx_export?) { is_expected.to be true }
   its(:supports_geojson?) { is_expected.to be true }
   its(:supports_multiloc?) { is_expected.to be false }
+  its(:supports_printing?) { is_expected.to be true }
+  its(:supports_pdf_gpt_import?) { is_expected.to be true }
+  its(:supports_pdf_import?) { is_expected.to be false }
+  its(:supports_xlsx_import?) { is_expected.to be true }
 end
