@@ -479,7 +479,7 @@ it:
       link: link
     your_input_in_screening:
       main_header:
-        idea: 'La tua idea è in "%{prescreening_status_title}".'
+        idea: 'La tua idea è in "%{prescreening_status_title}"'
         question: 'La tua domanda è in "%{prescreening_status_title}".'
         contribution: 'Il tuo contributo è su "%{prescreening_status_title}".'
         project: 'Il tuo progetto è in "%{prescreening_status_title}".'
@@ -488,7 +488,7 @@ it:
         proposal: 'La tua proposta è su "%{prescreening_status_title}".'
         petition: 'La tua petizione è su "%{prescreening_status_title}".'
       event_description: '"%{input_title}" diventerà visibile a tutti una volta che sarà stato esaminato e approvato.'
-      subject: '"%{input_title}" è quasi pubblicato'
+      subject: '"%{input_title}" sarà presto pubblicato'
       preheader: 'Attualmente si trova su %{prescreening_status_title}'
     voting_basket_submitted:
       subject: '%{organizationName}Hai votato con successo'
