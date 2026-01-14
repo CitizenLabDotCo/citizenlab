@@ -18,4 +18,13 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.uploadFiles2',
     defaultMessage: 'Upload files to project',
   },
+  fileMissing: {
+    id: 'app.containers.admin.ContentBuilder.fileMissing',
+    defaultMessage:
+      'File attachment missing - this widget will not be displayed.',
+  },
+  selectFilePrompt: {
+    id: 'app.containers.admin.ContentBuilder.selectFilePrompt',
+    defaultMessage: 'Select a file from the settings panel',
+  },
 });

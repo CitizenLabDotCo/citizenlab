@@ -43,7 +43,7 @@ module ContentBuilder
       files = ::Files::File.where(id: file_ids).index_by(&:id)
       file_ids.all? do |file_id|
         file = files[file_id]
-        next false unless file
+        next true unless file # Skip missing files (allow saving to fix layout)
 
         # Ideally, we would check `policy_for(file_attachment).create?`, but that causes a
         # circular dependency since `FileAttachmentPolicy#create?` calls

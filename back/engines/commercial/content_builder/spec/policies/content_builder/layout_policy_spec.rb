@@ -120,9 +120,9 @@ RSpec.describe ContentBuilder::LayoutPolicy do
             })
           end
 
-          it 'forbids update' do
+          it 'permits update (allows saving to fix layout)' do
             expect(user_role_service).to receive(:can_moderate?)
-            expect(policy).not_to permit(:update)
+            expect(policy).to permit(:update)
           end
         end
       end

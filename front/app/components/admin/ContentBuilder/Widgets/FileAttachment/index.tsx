@@ -3,32 +3,124 @@ import React, { useMemo } from 'react';
 import {
   Box,
   colors,
+  fontSizes,
+  Icon,
   Select,
   Spinner,
   Text,
 } from '@citizenlab/cl2-component-library';
 import { useNode, useEditor } from '@craftjs/core';
+import { lighten } from 'polished';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
+import useFileById from 'api/files/useFileById';
 import useFiles from 'api/files/useFiles';
 
 import { useContentBuilderLayoutContext } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import FileDisplay from 'components/UI/FileAttachments/FileDisplay';
 
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import { getIsFileAlreadyUsed } from './utils';
 
-type FileAttachmentProps = {
-  fileId?: string;
-  fileName?: string;
+const PlaceholderContainer = styled.div<{ $color: string }>`
+  display: flex;
+  align-items: center;
+  color: ${({ $color }) => $color};
+  border: 1px solid ${({ $color }) => lighten(0.4, $color)};
+  border-radius: ${(props) => props.theme.borderRadius};
+  font-size: ${fontSizes.base}px;
+  line-height: 24px;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+`;
+
+const PlaceholderIcon = styled(Icon)<{ $color: string }>`
+  fill: ${({ $color }) => $color};
+  margin-right: 15px;
+  flex-shrink: 0;
+`;
+
+type FilePlaceholderProps = {
+  variant?: 'error';
+  children: React.ReactNode;
 };
 
-const FileAttachment = ({ fileId, fileName }: FileAttachmentProps) => {
+const FilePlaceholder = ({ variant, children }: FilePlaceholderProps) => {
+  const color = variant === 'error' ? colors.error : colors.textSecondary;
+  return (
+    <PlaceholderContainer $color={color}>
+      <PlaceholderIcon name="paperclip" $color={color} />
+      {children}
+    </PlaceholderContainer>
+  );
+};
+
+type FileAttachmentProps = {
+  fileId?: string;
+};
+
+const FileAttachmentEditor = ({ fileId }: { fileId?: string }) => {
+  const { data: file, isLoading } = useFileById(fileId);
+
+  if (!fileId) {
+    return (
+      <Box maxWidth="1200px" margin="0 auto">
+        <FilePlaceholder>
+          <FormattedMessage {...messages.selectFilePrompt} />
+        </FilePlaceholder>
+      </Box>
+    );
+  }
+
+  if (isLoading) {
+    return null;
+  }
+
+  if (!file) {
+    return (
+      <Box maxWidth="1200px" margin="0 auto">
+        <FilePlaceholder variant="error">
+          <FormattedMessage {...messages.fileMissing} />
+        </FilePlaceholder>
+      </Box>
+    );
+  }
+
+  return (
+    <Box
+      id="e2e-file-attachment"
+      maxWidth="1200px"
+      margin="0 auto"
+      style={{ pointerEvents: 'none' }}
+    >
+      <FileDisplay
+        file={{
+          id: file.data.id,
+          type: 'file',
+          attributes: {
+            name: file.data.attributes.name,
+            file: { url: '' },
+            ordering: null,
+            size: file.data.attributes.size,
+            created_at: '',
+            updated_at: '',
+          },
+        }}
+      />
+    </Box>
+  );
+};
+
+const FileAttachment = ({ fileId }: FileAttachmentProps) => {
   const { layoutId } = useContentBuilderLayoutContext();
+  const { enabled } = useEditor((state) => ({
+    enabled: state.options.enabled,
+  }));
 
   const { data: attachments } = useFileAttachments({
     attachable_id: layoutId,
@@ -41,62 +133,34 @@ const FileAttachment = ({ fileId, fileName }: FileAttachmentProps) => {
     );
   }, [attachments, fileId]);
 
-  if (
-    !attachment // We've changed the file
-  ) {
-    // Show placeholder with just the file name if we haven't saved yet
-    if (fileName) {
-      return (
-        <Box
-          id="e2e-file-attachment"
-          maxWidth="1200px"
-          margin="0 auto"
-          style={{ pointerEvents: 'none' }}
-        >
-          <FileDisplay
-            file={{
-              id: 'temp-id',
-              type: 'file',
-              attributes: {
-                name: fileName,
-                file: { url: '' },
-                ordering: null,
-                size: 0,
-                created_at: '',
-                updated_at: '',
+  if (attachment) {
+    const attachmentAttributes = attachment.attributes;
+    return (
+      <Box id="e2e-file-attachment" maxWidth="1200px" margin="0 auto">
+        <FileDisplay
+          file={{
+            id: attachment.relationships.file.data.id,
+            type: 'file',
+            attributes: {
+              ordering: 1,
+              name: attachmentAttributes.file_name,
+              size: attachmentAttributes.file_size,
+              created_at: attachmentAttributes.created_at,
+              updated_at: attachmentAttributes.updated_at,
+              file: {
+                url: attachmentAttributes.file_url,
               },
-            }}
-          />
-        </Box>
-      );
-    }
-    return null;
+            },
+          }}
+        />
+      </Box>
+    );
   }
 
-  const attachmentAttributes = attachment.attributes;
+  // No attachment in view mode -> hides widget
+  if (!enabled) return null;
 
-  return (
-    <Box id="e2e-file-attachment" maxWidth="1200px" margin="0 auto">
-      <FileDisplay
-        file={{
-          // Transform the file data to match the current expected type structure.
-          // TODO: In the future, once we remove the old files structure/api, we can simplify this.
-          id: attachment.relationships.file.data.id,
-          type: 'file',
-          attributes: {
-            ordering: 1,
-            name: fileName || attachmentAttributes.file_name,
-            size: attachmentAttributes.file_size,
-            created_at: attachmentAttributes.created_at,
-            updated_at: attachmentAttributes.updated_at,
-            file: {
-              url: attachmentAttributes.file_url,
-            },
-          },
-        }}
-      />
-    </Box>
-  );
+  return <FileAttachmentEditor fileId={fileId} />;
 };
 
 const FileAttachmentSettings = () => {
@@ -163,10 +227,7 @@ const FileAttachmentSettings = () => {
           value={fileId}
           onChange={(option) => {
             setProp((props: FileAttachmentProps) => {
-              // Set the new selected file ID & name
-              // File attachment will be created on BE when layout is saved.
               props.fileId = option.value;
-              props.fileName = option.label;
             });
           }}
           placeholder={formatMessage(messages.selectFile)}
