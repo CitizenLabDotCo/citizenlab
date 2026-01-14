@@ -54,7 +54,7 @@ it:
       by_author: 'da %{authorName}'
       author_wrote: '%{authorName} ha scritto:'
       cta_goto_idea: 'Vai a questa idea'
-      cta_goto_input: 'Vai a questo ingresso'
+      cta_goto_input: 'Guarda il contributo'
       cta_goto:
         idea: 'Vai a questa idea'
         question: 'Vai a questa domanda'
@@ -339,11 +339,11 @@ it:
       title: 'Nuovo commento interno su ''%{post}'''
       preheader: '''%{post}'' ha un nuovo commento interno'
     official_feedback_on_idea_you_follow:
-      event_description: '%{feedback_author_name} ha fornito un aggiornamento su ''%{input_title}''.'
-      title: 'Ci sono aggiornamenti su "%{input_title}".'
-      subject: 'Il riscontro ufficiale su "%{input_title}" è stato pubblicato'
+      event_description: '%{feedback_author_name} ha pubblicato un aggiornamento su ''%{input_title}''.'
+      title: 'C''è un aggiornamento su "%{input_title}"'
+      subject: 'Un aggiornamento ufficiale su "%{input_title}" è stato pubblicato'
       preheader: 'C''è un aggiornamento su un contributo che segui'
-      cta_button: Vai a questo ingresso
+      cta_button: Guarda il contributo
     mention_in_official_feedback:
       cta_button: 'Rispondi a %{organizationName}'
       event_description: '%{organizationName} ti hanno menzionato nel loro feedback sull''idea ''%{post}''. Clicca il link qui sotto per entrare nella conversazione con %{organizationName}'
@@ -420,7 +420,7 @@ it:
       title: 'Un contributo che segui ha un nuovo status'
       subject: 'Lo status di "%{input_title}" è cambiato'
       preheader: 'Un contributo che segui ha un nuovo status'
-      cta_button: Vai a questo ingresso
+      cta_button: Guarda il contributo
     user_digest:
       subject: "La tua attività sulla piattaforma di partecipazione di %{organizationName}"
       commented: "%{authorFirstName} ha commentato:"
@@ -455,7 +455,7 @@ it:
     idea_published:
       subject: 'La tua idea è stata pubblicata'
       preheader: '%{firstName}, complimenti per aver pubblicato la tua idea sulla piattaforma di %{organizationName}. Ora raccogliete il sostegno.'
-      title: 'Hai postato "%{input_title}"'
+      title: 'Hai pubblicato "%{input_title}"'
       input_type_subject:
         idea: 'La tua idea è stata pubblicata'
         question: 'La tua domanda è stata pubblicata'
@@ -466,10 +466,10 @@ it:
         proposal: 'La tua proposta è stata pubblicata'
         petition: 'La tua petizione è stata pubblicata'
       header_message: 'Assicuriamoci che venga letto.'
-      message_get_votes: 'Raggiungi più persone con la tua idea:'
+      message_get_votes: 'Raggiungi più persone'
       action_published_idea: 'Idea pubblicata'
       action_add_image: '%{addImageLink} per aumentare la visibilità'
-      add_image: 'Aggiungere un''immagine'
+      add_image: 'Aggiungi un''immagine'
       action_share_fb: 'Fallo sapere ai tuoi amici su %{fbLink}'
       action_share_twitter: 'Informa i tuoi seguaci su %{twitterLink}'
       action_send_email: 'Invia ai tuoi contatti un %{sendEmailLink}'
