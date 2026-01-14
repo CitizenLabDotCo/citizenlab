@@ -292,7 +292,7 @@ it:
       project: 'Progetto'
       published_at: 'Pubblicato presso'
       registration_completed_at: 'Registrazione completata presso'
-      status: 'Stato'
+      status: 'Status'
       submitted_at: 'Inviato a'
       tags: 'Tag'
       title: 'Titolo'
