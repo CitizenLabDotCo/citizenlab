@@ -57,15 +57,10 @@ class Project < ApplicationRecord
   # Use case A - Project categorization (GlobalTopics)
   has_many :projects_global_topics, dependent: :destroy
   has_many :global_topics, -> { order(:ordering) }, through: :projects_global_topics
-  # Alias for backward compatibility - will be removed in Release 2
-  has_many :topics, -> { order(:ordering) }, through: :projects_global_topics, source: :global_topic
 
-  # Use case B - Input topics (new system)
+  # Use case B - Input categorization InputTopics)
   has_many :input_topics, -> { order(:ordering) }, dependent: :destroy, inverse_of: :project
 
-  # Legacy input topics (to be removed in future cleanup)
-  has_many :projects_allowed_input_topics, dependent: :destroy
-  has_many :allowed_input_topics, through: :projects_allowed_input_topics, source: :topic
   has_many :areas_projects, dependent: :destroy
   has_many :areas, through: :areas_projects
   has_many :groups_projects, dependent: :destroy
