@@ -180,7 +180,7 @@
   "app.components.admin.PostManager.PostPreview.OfflineVoteSettings.modifiedBy": "Modificato da {name}",
   "app.components.admin.PostManager.PostPreview.assignee": "Assegnatario",
   "app.components.admin.PostManager.PostPreview.cancelEdit": "Annulla modifica",
-  "app.components.admin.PostManager.PostPreview.currentStatus": "Stato attuale",
+  "app.components.admin.PostManager.PostPreview.currentStatus": "Status attuale",
   "app.components.admin.PostManager.PostPreview.delete": "Elimina",
   "app.components.admin.PostManager.PostPreview.deleteInputConfirmation": "Sei sicuro di voler cancellare questo input? Questa azione non può essere annullata.",
   "app.components.admin.PostManager.PostPreview.deleteInputInTimelineConfirmation": "Sei sicuro di voler cancellare questo input? L'input sarà cancellato da tutte le fasi del progetto e non potrà essere recuperato.",
