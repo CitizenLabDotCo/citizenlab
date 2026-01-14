@@ -2236,7 +2236,7 @@
   "app.utils.AdminPage.ProjectEdit.findVolunteers": "Hitta personer som anmäler sig frivilligt",
   "app.utils.AdminPage.ProjectEdit.inputAndFeedback": "Samla in indata och återkoppling",
   "app.utils.AdminPage.ProjectEdit.shareInformation": "Information",
-  "app.utils.FormattedCurrency.credits": "Procent",
+  "app.utils.FormattedCurrency.credits": "procent",
   "app.utils.FormattedCurrency.tokens": "token",
   "app.utils.FormattedCurrency.xCredits": "{numberOfCredits, plural, =0 {# credits} one {# credit} other {# credits}}",
   "app.utils.FormattedCurrency.xTokens": "{numberOfTokens, plural, =0 {# tokens} one {# token} other {# tokens}}",
