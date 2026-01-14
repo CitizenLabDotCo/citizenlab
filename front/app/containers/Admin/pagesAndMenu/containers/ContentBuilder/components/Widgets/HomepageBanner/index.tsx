@@ -608,110 +608,115 @@ const HomepageBannerSettings = () => {
               </div>
             );
           })}
-          <Box mt="24px">
-            <Label>{formatMessage(messages.headerHeights)}</Label>
-            <Text m="0px 0px 12px 0px" color="textSecondary" fontSize="s">
-              Customize the signed-out header height for each device size.
-              Default for{' '}
-              {homepageSettings.banner_layout || 'full_width_banner_layout'}:
-              Desktop{' '}
-              {
-                homepageBannerLayoutHeights[
-                  homepageSettings.banner_layout || 'full_width_banner_layout'
-                ].desktop
-              }
-              px, Tablet{' '}
-              {
-                homepageBannerLayoutHeights[
-                  homepageSettings.banner_layout || 'full_width_banner_layout'
-                ].tablet
-              }
-              px, Phone{' '}
-              {
-                homepageBannerLayoutHeights[
-                  homepageSettings.banner_layout || 'full_width_banner_layout'
-                ].phone
-              }
-              px.
-            </Text>
-            <Box display="flex" flexDirection="column" gap="12px">
-              <Box>
-                <Label htmlFor="signedOutHeaderHeightDesktop">
-                  {formatMessage(messages.headerHeightDesktop)}
-                </Label>
-                <Input
-                  id="signedOutHeaderHeightDesktop"
-                  type="number"
-                  min="50"
-                  max="800"
-                  placeholder={homepageBannerLayoutHeights[
+          {homepageSettings.banner_layout !== 'fixed_ratio_layout' && (
+            <Box mt="24px">
+              <Label>{formatMessage(messages.headerHeights)}</Label>
+              <Text m="0px 0px 12px 0px" color="textSecondary" fontSize="s">
+                Customize the signed-out header height for each device size.
+                Default for{' '}
+                {homepageSettings.banner_layout || 'full_width_banner_layout'}:
+                Desktop{' '}
+                {
+                  homepageBannerLayoutHeights[
                     homepageSettings.banner_layout || 'full_width_banner_layout'
-                  ].desktop.toString()}
-                  value={
-                    homepageSettings.banner_signed_out_header_height_desktop?.toString() ||
-                    ''
-                  }
-                  onChange={(value) => {
-                    const numValue = value ? parseInt(value, 10) : undefined;
-                    setProp((props: Props) => {
-                      props.homepageSettings.banner_signed_out_header_height_desktop =
-                        numValue;
-                    });
-                  }}
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="signedOutHeaderHeightTablet">
-                  {formatMessage(messages.headerHeightTablet)}
-                </Label>
-                <Input
-                  id="signedOutHeaderHeightTablet"
-                  type="number"
-                  min="50"
-                  max="800"
-                  placeholder={homepageBannerLayoutHeights[
+                  ].desktop
+                }
+                px, Tablet{' '}
+                {
+                  homepageBannerLayoutHeights[
                     homepageSettings.banner_layout || 'full_width_banner_layout'
-                  ].tablet.toString()}
-                  value={
-                    homepageSettings.banner_signed_out_header_height_tablet?.toString() ||
-                    ''
-                  }
-                  onChange={(value) => {
-                    const numValue = value ? parseInt(value, 10) : undefined;
-                    setProp((props: Props) => {
-                      props.homepageSettings.banner_signed_out_header_height_tablet =
-                        numValue;
-                    });
-                  }}
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="signedOutHeaderHeightPhone">
-                  {formatMessage(messages.headerHeightPhone)}
-                </Label>
-                <Input
-                  id="signedOutHeaderHeightPhone"
-                  type="number"
-                  min="50"
-                  max="800"
-                  placeholder={homepageBannerLayoutHeights[
+                  ].tablet
+                }
+                px, Phone{' '}
+                {
+                  homepageBannerLayoutHeights[
                     homepageSettings.banner_layout || 'full_width_banner_layout'
-                  ].phone.toString()}
-                  value={
-                    homepageSettings.banner_signed_out_header_height_phone?.toString() ||
-                    ''
-                  }
-                  onChange={(value) => {
-                    const numValue = value ? parseInt(value, 10) : undefined;
-                    setProp((props: Props) => {
-                      props.homepageSettings.banner_signed_out_header_height_phone =
-                        numValue;
-                    });
-                  }}
-                />
+                  ].phone
+                }
+                px.
+              </Text>
+              <Box display="flex" flexDirection="column" gap="12px">
+                <Box>
+                  <Label htmlFor="signedOutHeaderHeightDesktop">
+                    {formatMessage(messages.headerHeightDesktop)}
+                  </Label>
+                  <Input
+                    id="signedOutHeaderHeightDesktop"
+                    type="number"
+                    min="50"
+                    max="800"
+                    placeholder={homepageBannerLayoutHeights[
+                      homepageSettings.banner_layout ||
+                        'full_width_banner_layout'
+                    ].desktop.toString()}
+                    value={
+                      homepageSettings.banner_signed_out_header_height_desktop?.toString() ||
+                      ''
+                    }
+                    onChange={(value) => {
+                      const numValue = value ? parseInt(value, 10) : undefined;
+                      setProp((props: Props) => {
+                        props.homepageSettings.banner_signed_out_header_height_desktop =
+                          numValue;
+                      });
+                    }}
+                  />
+                </Box>
+                <Box>
+                  <Label htmlFor="signedOutHeaderHeightTablet">
+                    {formatMessage(messages.headerHeightTablet)}
+                  </Label>
+                  <Input
+                    id="signedOutHeaderHeightTablet"
+                    type="number"
+                    min="50"
+                    max="800"
+                    placeholder={homepageBannerLayoutHeights[
+                      homepageSettings.banner_layout ||
+                        'full_width_banner_layout'
+                    ].tablet.toString()}
+                    value={
+                      homepageSettings.banner_signed_out_header_height_tablet?.toString() ||
+                      ''
+                    }
+                    onChange={(value) => {
+                      const numValue = value ? parseInt(value, 10) : undefined;
+                      setProp((props: Props) => {
+                        props.homepageSettings.banner_signed_out_header_height_tablet =
+                          numValue;
+                      });
+                    }}
+                  />
+                </Box>
+                <Box>
+                  <Label htmlFor="signedOutHeaderHeightPhone">
+                    {formatMessage(messages.headerHeightPhone)}
+                  </Label>
+                  <Input
+                    id="signedOutHeaderHeightPhone"
+                    type="number"
+                    min="50"
+                    max="800"
+                    placeholder={homepageBannerLayoutHeights[
+                      homepageSettings.banner_layout ||
+                        'full_width_banner_layout'
+                    ].phone.toString()}
+                    value={
+                      homepageSettings.banner_signed_out_header_height_phone?.toString() ||
+                      ''
+                    }
+                    onChange={(value) => {
+                      const numValue = value ? parseInt(value, 10) : undefined;
+                      setProp((props: Props) => {
+                        props.homepageSettings.banner_signed_out_header_height_phone =
+                          numValue;
+                      });
+                    }}
+                  />
+                </Box>
               </Box>
             </Box>
-          </Box>
+          )}
         </>
       )}
 
