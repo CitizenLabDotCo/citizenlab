@@ -121,9 +121,6 @@ class Idea < ApplicationRecord
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
-  has_many :ideas_topics, dependent: :destroy
-  has_many :topics, -> { order(:ordering) }, through: :ideas_topics
-
   has_many :ideas_input_topics, dependent: :destroy
   has_many :input_topics, -> { order(:ordering) }, through: :ideas_input_topics
   has_many :ideas_phases, dependent: :destroy

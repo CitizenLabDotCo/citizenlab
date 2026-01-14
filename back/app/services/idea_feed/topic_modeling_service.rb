@@ -176,16 +176,14 @@ module IdeaFeed
       new_topics
         .reject { |new_topic| in_count(mapping, "NEW-#{new_topics.index(new_topic)}") == 1 }
         .each do |new_topic|
-          GlobalTopic.transaction do
-            topic = GlobalTopic.create!(
+          InputTopic.transaction do
+            topic = InputTopic.create!(
+              project: @phase.project,
               title_multiloc: new_topic['title_multiloc'],
               description_multiloc: new_topic['description_multiloc']
             )
-            ProjectsAllowedInputTopic.create!(
-              project: @phase.project,
-              topic:
-            )
-            SideFxGlobalTopicService.new.after_create(topic, nil)
+
+            SideFxInputTopicService.new.after_create(topic, nil)
             creation_log << {
               topic_id: topic.id,
               title_multiloc: new_topic['title_multiloc'],
@@ -204,10 +202,7 @@ module IdeaFeed
       obsolete_old_topic_ids.each do |old_topic_id|
         old_integer_id = old_topic_id.match(/^OLD-(\d+)$/)[1].to_i
         old_topic = old_topics[old_integer_id]
-        GlobalTopic.transaction do
-          IdeasTopic.where(topic: old_topic, idea: @phase.project.ideas.published).destroy_all
-          ProjectsAllowedInputTopic.where(project: @phase.project, topic: old_topic).destroy_all
-        end
+        old_topic.destroy!
         removal_log << {
           topic_id: old_topic.id
         }

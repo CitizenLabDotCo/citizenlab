@@ -53,8 +53,6 @@ class StaticPage < ApplicationRecord
   has_many :static_page_files, -> { order(:ordering) }, dependent: :destroy
   has_many :static_pages_global_topics, dependent: :destroy
   has_many :global_topics, -> { order(:ordering) }, through: :static_pages_global_topics
-  # Alias for backward compatibility - will be removed in Release 2
-  has_many :topics, -> { order(:ordering) }, through: :static_pages_global_topics, source: :global_topic
 
   has_many :areas_static_pages, dependent: :destroy
   has_many :areas, through: :areas_static_pages

@@ -28,20 +28,12 @@ class GlobalTopic < ApplicationRecord
 
   acts_as_list column: :ordering, top_of_list: 0, add_new_at: :top
 
-  # Use case A - Project categorization (renamed tables)
   has_many :projects_global_topics, dependent: :destroy
   has_many :static_pages_global_topics, dependent: :restrict_with_error
   has_many :static_pages, through: :static_pages_global_topics
 
   # Followers (polymorphic)
   has_many :followers, as: :followable, dependent: :destroy
-
-  # Use case B - Input topics (keep working during Release 1 via foreign_key)
-  # These associations use the OLD tables that still have topic_id column
-  has_many :projects_allowed_input_topics, foreign_key: :topic_id, dependent: :destroy, inverse_of: :topic
-  has_many :projects, through: :projects_allowed_input_topics
-  has_many :ideas_topics, foreign_key: :topic_id, dependent: :destroy, inverse_of: :topic
-  has_many :ideas, through: :ideas_topics
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false }
@@ -58,14 +50,6 @@ class GlobalTopic < ApplicationRecord
     left_outer_joins(:projects_global_topics)
       .group(:id)
       .order("COUNT(projects_global_topics.project_id) #{safe_dir}, ordering")
-  }
-  scope :order_ideas_count, lambda { |ideas, direction: :asc|
-    topics_counts = IdeasCountService.counts(ideas, ['topic_id'])['topic_id']
-    sorted_ids = ids.sort_by do |id|
-      count = topics_counts[id] || 0
-      direction == :desc ? -count : count
-    end
-    order_as_specified(id: sorted_ids)
   }
 
   private
