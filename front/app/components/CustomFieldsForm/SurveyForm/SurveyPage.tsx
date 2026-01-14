@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 
-import { Box, Button, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -32,6 +32,7 @@ import PageFooter from '../Page/PageFooter';
 import PageTitle from '../Page/PageTitle';
 import { FormValues } from '../Page/types';
 import usePageForm from '../Page/usePageForm';
+import PostParticipationBox from '../PostParticipationBox';
 import { getFormCompletionPercentage, Pages } from '../util';
 
 import {
@@ -283,21 +284,18 @@ const SurveyPage = ({
                         participationMethod={participationMethod}
                       />
                       {showPostParticipationSignup && project && (
-                        <Button
-                          onClick={() => {
-                            triggerPostParticipationFlow({
-                              name: 'redirect',
-                              params: {
-                                path: `/projects/${project.data.attributes.slug}`,
-                              },
-                            });
-                          }}
-                          mt="16px"
-                          width="auto"
-                          dataCy="post-participation-signup"
-                        >
-                          Sign up to stay in touch
-                        </Button>
+                        <Box mb="24px">
+                          <PostParticipationBox
+                            onCreateAccount={() => {
+                              triggerPostParticipationFlow({
+                                name: 'redirect',
+                                params: {
+                                  path: `/projects/${project.data.attributes.slug}`,
+                                },
+                              });
+                            }}
+                          />
+                        </Box>
                       )}
                       {showSubmissionReference && (
                         <SubmissionReference
