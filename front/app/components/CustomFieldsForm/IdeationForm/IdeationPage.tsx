@@ -20,7 +20,7 @@ import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/Profi
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
-import SubmissionReference from 'components/CustomFieldsForm/PageControlButtons/SubmissionReference';
+import SubmissionReference from 'components/CustomFieldsForm/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
 
 import clHistory from 'utils/cl-router/history';

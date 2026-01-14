@@ -17,7 +17,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { triggerPostParticipationFlow } from 'containers/Authentication/events';
 
-import SubmissionReference from 'components/CustomFieldsForm/PageControlButtons/SubmissionReference';
+import SubmissionReference from 'components/CustomFieldsForm/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
 
 import clHistory from 'utils/cl-router/history';
