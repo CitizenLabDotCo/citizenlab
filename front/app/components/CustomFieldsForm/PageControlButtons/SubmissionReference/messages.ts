@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  submissionIdentifier: {
+    id: 'app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier',
+    defaultMessage: 'Submission identifier',
+  },
   preferToStayAnonymous: {
     id: 'app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous',
     defaultMessage: 'Prefer to stay anonymous?',

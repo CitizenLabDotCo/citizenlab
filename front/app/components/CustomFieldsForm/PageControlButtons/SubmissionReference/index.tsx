@@ -21,9 +21,13 @@ import { getMailLink } from './utils';
 
 interface Props {
   inputId: string;
+  postParticipationSignUpVisible: boolean;
 }
 
-const SubmissionReference = ({ inputId }: Props) => {
+const SubmissionReference = ({
+  inputId,
+  postParticipationSignUpVisible,
+}: Props) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
 
@@ -34,7 +38,11 @@ const SubmissionReference = ({ inputId }: Props) => {
       px="12px"
     >
       <Title variant="h4" as="h2">
-        <FormattedMessage {...messages.preferToStayAnonymous} />
+        <FormattedMessage
+          {...(postParticipationSignUpVisible
+            ? messages.preferToStayAnonymous
+            : messages.submissionIdentifier)}
+        />
       </Title>
       <Text color="textSecondary" mb="12px">
         <FormattedMessage {...messages.saveThisCode} />

@@ -215,8 +215,12 @@ const SurveyPage = ({
   const isLastPage = currentPageIndex === lastPageIndex;
 
   const showSubmissionReference = isLastPage && idea && showIdeaId;
-  const showPostParticipationSignup =
-    isLastPage && project && !authUser && postParticipationSignUpEnabled;
+  const showPostParticipationSignup = !!(
+    isLastPage &&
+    idea &&
+    !authUser &&
+    postParticipationSignUpEnabled
+  );
 
   return (
     <FormProvider {...methods}>
@@ -278,7 +282,7 @@ const SurveyPage = ({
                         phase={phase}
                         participationMethod={participationMethod}
                       />
-                      {showPostParticipationSignup && (
+                      {showPostParticipationSignup && project && (
                         <Button
                           onClick={() => {
                             triggerPostParticipationFlow({
@@ -296,7 +300,12 @@ const SurveyPage = ({
                         </Button>
                       )}
                       {showSubmissionReference && (
-                        <SubmissionReference inputId={idea.data.id} />
+                        <SubmissionReference
+                          inputId={idea.data.id}
+                          postParticipationSignUpVisible={
+                            showPostParticipationSignup
+                          }
+                        />
                       )}
                     </Box>
                   </Box>

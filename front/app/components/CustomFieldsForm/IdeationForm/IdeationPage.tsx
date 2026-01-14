@@ -219,8 +219,12 @@ const IdeationPage = ({
   const isLastPage = currentPageIndex === lastPageIndex;
 
   const showSubmissionReference = isLastPage && idea && showIdeaId;
-  const showPostParticipationSignup =
-    isLastPage && idea && !authUser && postParticipationSignUpEnabled;
+  const showPostParticipationSignup = !!(
+    isLastPage &&
+    idea &&
+    !authUser &&
+    postParticipationSignUpEnabled
+  );
 
   return (
     <FormProvider {...methods}>
@@ -321,7 +325,12 @@ const IdeationPage = ({
                       </Button>
                     )}
                     {showSubmissionReference && (
-                      <SubmissionReference inputId={idea.data.id} />
+                      <SubmissionReference
+                        inputId={idea.data.id}
+                        postParticipationSignUpVisible={
+                          showPostParticipationSignup
+                        }
+                      />
                     )}
                   </Box>
                 </Box>
