@@ -113,10 +113,10 @@ it:
       "link_unsubscribe": "Annulla iscrizione"
       "powered_by": "Alimentato da"
       "recipient_statement": "Questa e-mail ti è stata inviata da Go Vocal per conto di %{organizationName}, perché sei un utente registrato di %{organizationLink}."
-      "unsubscribe_statement": "Se non vuoi più ricevere queste e-mail in futuro, puoi scrivere a %{unsubscribeLink} ."
+      "unsubscribe_statement": "Se non vuoi più ricevere queste e-mail in futuro, %{unsubscribeLink}."
       "unsubscribe_text": "annulla iscrizione"
     follow:
-      "unfollow_here": "Hai ricevuto questa notifica a causa di un articolo che segui. <a href=\"%{unfollow_url}\">Puoi disiscriverlo qui.</a>"
+      "unfollow_here": "Hai ricevuto questa notifica a causa di un elemento che segui. <a href=\"%{unfollow_url}\">Puoi smettere di seguirlo qui.</a>"
     manual:
       preheader: 'Hai ricevuto una mail da %{organizationName}'
     manual_project_participants:
@@ -431,12 +431,12 @@ it:
       cta_button: "Vai alla piattaforma"
       title_no_activity_past_week: "Nessuna attività nell'ultima settimana"
       successful_proposals_title: "Raggiunta la soglia"
-      successful_proposals_text: "Queste proposte hanno ottenuto abbastanza sostegno per passare alla fase successiva! Clicca sulla proposta per saperne di più su cosa succede dopo."
+      successful_proposals_text: "Nell'ultima settimana, queste proposte hanno ottenuto un sostegno sufficiente per passare alla fase successiva."
       today_by_author: "Oggi da %{author}"
       yesterday_by_author: "Ieri da %{author}"
       x_days_ago_by_author: "%{x} giorni fa da %{author}"
       trending_title: "Tendenza"
-      trending_text: "Ti interessa sapere cosa sta succedendo sulla piattaforma? Ecco i tre contributi più in voga e cosa dicono gli utenti."
+      trending_text: "Ti interessa sapere cosa sta succedendo sulla piattaforma? Ecco i tre contributi più in popolari e cosa ne pensano gli utenti."
       no_notifications: "Nessuna notifica"
       one_notification: "1 notifica"
       multiple_notifications: "%{notifCount} notifiche"
@@ -449,8 +449,8 @@ it:
       preheader: 'Assicurati di fare i prossimi passi'
     welcome:
       cta_button: 'Scopri la piattaforma'
-      subject: 'Benvenuti sulla piattaforma di %{organizationName}'
-      title: Benvenuti!
+      subject: 'Ti diamo il benvenuto sulla piattaforma di %{organizationName}'
+      title: Felici di averti qui!
       event_description: 'Congratulazioni, ti sei iscritto con successo alla piattaforma partecipativa di %{organizationName}. Ora puoi scoprire la piattaforma e far sentire la tua voce. Puoi anche aggiungere un''immagine del profilo e una breve descrizione per dire agli altri chi sei.'
       preheader: 'Ecco cosa potete fare sulla piattaforma di %{organizationName}'
     idea_published:
@@ -487,7 +487,7 @@ it:
         option: 'La tua opzione è in "%{prescreening_status_title}".'
         proposal: 'La tua proposta è su "%{prescreening_status_title}".'
         petition: 'La tua petizione è su "%{prescreening_status_title}".'
-      event_description: '"%{input_title}" diventerà visibile agli altri una volta che sarà stata rivista e approvata.'
+      event_description: '"%{input_title}" diventerà visibile a tutti una volta che sarà stato esaminato e approvato.'
       subject: '"%{input_title}" è quasi pubblicato'
       preheader: 'Attualmente si trova su %{prescreening_status_title}'
     voting_basket_submitted:
@@ -503,7 +503,7 @@ it:
       title: 'Ci siamo quasi! Invia le tue risposte'
       event_description: 'Hai iniziato a condividere le tue risposte su %{phaseTitle} ma non le hai inviate. Clicca sul pulsante qui sotto per continuare da dove avevi interrotto.'
       cta_button: 'Riprendi le tue risposte al sondaggio'
-      submissions_close: 'Le iscrizioni si chiuderanno su %{phaseEndDate}.'
+      submissions_close: 'Il sondaggio si concluderà il %{phaseEndDate}.'
     voting_basket_not_submitted:
       subject: '%{organizationName}Non hai inviato i tuoi voti'
       preheader: 'Non hai inviato i tuoi voti sulla piattaforma di partecipazione di %{organizationName}.'
@@ -526,7 +526,7 @@ it:
       body_3: 'Ti invitiamo a esaminare i risultati e a rimanere sintonizzato per ulteriori aggiornamenti sui prossimi passi.'
       cta_button: 'Vedi i risultati nella piattaforma'
     event_registration_confirmation:
-      subject: "Sei dentro! La tua iscrizione a \"%{eventTitle}\" è confermata"
+      subject: "Sei dentro! La tua registrazione all'evento: \"%{eventTitle}\" è confermata"
       preheader: "%{firstName}, grazie per esserti registrato su %{eventTitle}"
       title: "%{firstName}, grazie per esserti registrato a"
       event_details:
@@ -546,13 +546,13 @@ it:
       cta_message: 'Clicca sul pulsante qui sotto per partecipare'
       cta_button: 'Vai alla piattaforma per votare'
     survey_submitted:
-      subject: '%{organizationName}Grazie per la tua risposta! 🎉'
+      subject: '%{organizationName}: Grazie per le tue risposte! 🎉'
       preheader: 'Ecco i dettagli del tuo invio.'
-      title: 'Grazie per aver condiviso i tuoi pensieri su "%{projectName}"!'
-      event_description: 'Il tuo contributo per "%{projectName}" è stato inviato con successo.'
+      title: 'Grazie per aver condiviso la tua opinione su "%{projectName}"!'
+      event_description: 'Le tue risposte per "%{projectName}" sono state inviato con successo.'
       if_you_would_like_to_review: 'Se vuoi rivedere la tua candidatura, puoi scaricare le tue risposte qui sotto.'
-      your_submission_has_id: 'Il tuo invio ha il seguente identificativo unico:'
-      you_can_use_this_id: 'Puoi utilizzare questo identificativo per contattare gli amministratori della piattaforma nel caso in cui desideri che il tuo invio venga rimosso.'
+      your_submission_has_id: 'Le tue risposte hanno il seguente identificativo unico:'
+      you_can_use_this_id: 'Puoi utilizzare questo codice identificativo per contattare gli amministratori della piattaforma nel caso in cui desideri che le tue risposte vengano rimosse.'
       cta_button: 'Scarica le tue risposte'
     admin_labels:
       recipient_role:
