@@ -74,7 +74,7 @@ module BulkImportIdeas::Parsers::Pdf
           text: f.title_multiloc[@locale.to_s]
         }
 
-        if f.support_options?
+        if f.supports_options?
           field[:options] = f.options.map do |o|
             o.title_multiloc[@locale.to_s]
           end
