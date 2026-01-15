@@ -184,7 +184,7 @@ module BulkImportIdeas
           .in_phase(phase)
           .joins(:idea_import)
           .where(project_id: @project.id, creation_phase_id: creation_phase_id)
-          .includes(%i[project idea_import author ideas_phases phases topics idea_images])
+          .includes(%i[project idea_import author ideas_phases phases input_topics idea_images])
           .includes([idea_import: :file])
           .order(:created_at)
       end
