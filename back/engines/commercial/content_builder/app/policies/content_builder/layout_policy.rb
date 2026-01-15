@@ -2,12 +2,6 @@
 
 module ContentBuilder
   class LayoutPolicy < ApplicationPolicy
-    class Scope < ApplicationPolicy::Scope
-      def resolve
-        scope.all
-      end
-    end
-
     def show?
       true
     end
@@ -39,11 +33,10 @@ module ContentBuilder
       file_ids = record.referenced_file_ids
       return true if file_ids.empty?
 
-      # All referenced files must exist, and the user must be authorized to use them.
       files = ::Files::File.where(id: file_ids).index_by(&:id)
       file_ids.all? do |file_id|
         file = files[file_id]
-        next true unless file # Skip missing files (allow saving to fix layout)
+        next true unless file # Allow saving the layout even if the file has been deleted.
 
         # Ideally, we would check `policy_for(file_attachment).create?`, but that causes a
         # circular dependency since `FileAttachmentPolicy#create?` calls
