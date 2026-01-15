@@ -292,7 +292,7 @@ it:
       project: 'Progetto'
       published_at: 'Pubblicato presso'
       registration_completed_at: 'Registrazione completata presso'
-      status: 'Stato'
+      status: 'Status'
       submitted_at: 'Inviato a'
       tags: 'Tag'
       title: 'Titolo'
@@ -351,7 +351,7 @@ it:
       preheader: 'Conferma il tuo indirizzo e-mail per %{organizationName}'
       header: "Il tuo codice di conferma"
       header_message: "Ciao %{firstName}!"
-      confirm_email_address: "Confermare l'indirizzo e-mail"
+      confirm_email_address: "Conferma l'indirizzo e-mail"
       thanks_for_signing_up1: "Grazie per la tua partecipazione. Inserisci questo codice di conferma nella finestra della piattaforma di partecipazione %{organizationName}:"
       best_regards: "Cordiali saluti,"
       ignore_email: "Se non avete richiesto un codice, potete tranquillamente ignorare questa e-mail."
