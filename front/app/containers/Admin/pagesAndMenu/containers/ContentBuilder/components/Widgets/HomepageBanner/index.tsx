@@ -10,7 +10,6 @@ import {
   Input,
   Text,
   useBreakpoint,
-  IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { useLocation, useSearchParams } from 'react-router-dom';
@@ -614,13 +613,7 @@ const HomepageBannerSettings = () => {
           })}
           {homepageSettings.banner_layout !== 'fixed_ratio_layout' && (
             <Box mt="8px">
-              <Box display="flex" alignItems="center" gap="4px">
-                <Label>{formatMessage(messages.headerHeights)}</Label>
-                <IconTooltip
-                  mb="4px"
-                  content={formatMessage(messages.headerHeightsTooltip)}
-                />
-              </Box>
+              <Label>{formatMessage(messages.headerHeights)}</Label>
               <Text m="0px 0px 12px 0px" color="textSecondary" fontSize="s">
                 {formatMessage(messages.signedOutHeaderHeightDescription, {
                   desktop: homepageBannerLayoutHeights[bannerLayout].desktop,
@@ -831,13 +824,7 @@ const HomepageBannerSettings = () => {
             );
           })}
           <Box mt="8px">
-            <Box display="flex" alignItems="center" gap="4px">
-              <Label>{formatMessage(messages.headerHeights)}</Label>
-              <IconTooltip
-                mb="4px"
-                content={formatMessage(messages.headerHeightsTooltip)}
-              />
-            </Box>
+            <Label>{formatMessage(messages.headerHeights)}</Label>
             <Text m="0px 0px 12px 0px" color="textSecondary" fontSize="s">
               {formatMessage(messages.signedInHeaderHeightDescription, {
                 desktop: 200,

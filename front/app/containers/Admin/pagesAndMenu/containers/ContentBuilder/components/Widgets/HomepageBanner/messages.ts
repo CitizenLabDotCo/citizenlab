@@ -170,9 +170,4 @@ export default defineMessages({
     defaultMessage:
       'Customize the signed-out header height for each device size. Default: Desktop {desktop}px, Tablet {tablet}px, Phone {phone}px.',
   },
-  headerHeightsTooltip: {
-    id: 'app.containers.ContentBuilder.homepage.headerHeightsTooltip',
-    defaultMessage:
-      'We recommend only changing these values if necessary, as the default values are designed to provide an optimal user experience.',
-  },
 });
