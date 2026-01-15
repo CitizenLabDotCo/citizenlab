@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module InputStrategy
+module InputTypeStrategy
   class SentimentLinearScale < Base
     def supports_average?
       true

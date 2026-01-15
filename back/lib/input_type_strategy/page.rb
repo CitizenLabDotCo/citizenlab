@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module InputStrategy
+module InputTypeStrategy
   class Page < Base
     def structural_field?
       true

@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module InputStrategy
+module InputTypeStrategy
   class MatrixLinearScale < Base
     def supports_linear_scale?
       true

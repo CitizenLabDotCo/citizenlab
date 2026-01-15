@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module InputStrategy
+module InputTypeStrategy
   class Base
     def initialize(custom_field)
       @custom_field = custom_field

@@ -57,7 +57,7 @@ class CustomField < ApplicationRecord
     :supports_single_selection?, :supports_multiple_selection?, :supports_selection?, :supports_select_count?, :supports_dropdown_layout?,
     :supports_free_text_value?, :supports_xlsx_export?, :supports_geojson?,
     :supports_printing?, :supports_pdf_import?, :supports_pdf_gpt_import?, :supports_xlsx_import?,
-    :supports_reference_distribution?, :supports_file_upload?, to: :input_strategy
+    :supports_reference_distribution?, :supports_file_upload?, to: :input_type_strategy
 
   acts_as_list column: :ordering, top_of_list: 0, scope: %i[resource_type resource_id], sequential_updates: true
 
@@ -146,8 +146,8 @@ class CustomField < ApplicationRecord
     logic.present? && logic != { 'rules' => [] }
   end
 
-  def input_strategy
-    @input_strategy ||= "InputStrategy::#{input_type.camelize}".constantize.new(self)
+  def input_type_strategy
+    @input_type_strategy ||= "InputTypeStrategy::#{input_type.camelize}".constantize.new(self)
   end
 
   def includes_other_option?

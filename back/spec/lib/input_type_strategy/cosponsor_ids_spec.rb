@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe InputStrategy::CosponsorIds do
-  subject(:input_strategy) { described_class.new(custom_field) }
+RSpec.describe InputTypeStrategy::CosponsorIds do
+  subject(:input_type_strategy) { described_class.new(custom_field) }
 
   let(:custom_field) { build(:custom_field, input_type: 'cosponsor_ids') }
 

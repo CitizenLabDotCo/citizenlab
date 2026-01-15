@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module InputStrategy
+module InputTypeStrategy
   class FileUpload < Base
     def supports_pdf_gpt_import?
       false

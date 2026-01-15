@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe InputStrategy::TextMultiloc do
-  subject(:input_strategy) { described_class.new(custom_field) }
+RSpec.describe InputTypeStrategy::TextMultiloc do
+  subject(:input_type_strategy) { described_class.new(custom_field) }
 
   let(:custom_field) { build(:custom_field, input_type: 'text_multiloc') }
 

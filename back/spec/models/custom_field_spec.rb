@@ -128,12 +128,12 @@ RSpec.describe CustomField do
     end
   end
 
-  describe '#input_strategy' do
+  describe '#input_type_strategy' do
     it 'has a strategy class for every INPUT_TYPE' do
       CustomField::INPUT_TYPES.each do |input_type|
-        strategy_class_name = "InputStrategy::#{input_type.camelize}"
+        strategy_class_name = "InputTypeStrategy::#{input_type.camelize}"
         expect { strategy_class_name.constantize }.not_to raise_error,
-          "Missing InputStrategy class for '#{input_type}'. Expected #{strategy_class_name} to exist."
+          "Missing InputTypeStrategy class for '#{input_type}'. Expected #{strategy_class_name} to exist."
       end
     end
   end

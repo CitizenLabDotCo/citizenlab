@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe InputStrategy::MultiselectImage do
-  subject(:input_strategy) { described_class.new(custom_field) }
+RSpec.describe InputTypeStrategy::MultiselectImage do
+  subject(:input_type_strategy) { described_class.new(custom_field) }
 
   let(:custom_field) { build(:custom_field_multiselect_image) }
 
