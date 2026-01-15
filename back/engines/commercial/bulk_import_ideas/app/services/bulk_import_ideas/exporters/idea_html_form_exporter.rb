@@ -334,13 +334,13 @@ module BulkImportIdeas::Exporters
     end
 
     def select_print_instructions(field)
-      return '' unless field.singleselect?
+      return '' if !field.supports_options? || !field.supports_single_selection?
 
       format_instructions("*#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.select_print_description') }}")
     end
 
     def multiselect_print_instructions(field)
-      return '' unless field.multiselect?
+      return '' if !field.supports_multiple_selection?
 
       min = field.minimum_select_count
       max = field.maximum_select_count
@@ -367,7 +367,7 @@ module BulkImportIdeas::Exporters
 
     # Should options be displayed in a grid or a list?
     def field_option_columns?(field)
-      return false unless field.multiselect? || field.singleselect?
+      return false if !field.supports_options? || !field.supports_selection?
 
       # Only use columns if there are more than 4 options
       field.options.length > 4

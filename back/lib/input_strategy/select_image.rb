@@ -14,6 +14,10 @@ module InputStrategy
       true
     end
 
+    def supports_single_selection?
+      true
+    end
+
     def supports_printing?
       false
     end

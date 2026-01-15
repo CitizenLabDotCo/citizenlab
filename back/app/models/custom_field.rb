@@ -231,16 +231,8 @@ class CustomField < ApplicationRecord
     structural_field? && key == 'form_end'
   end
 
-  def multiselect?
-    %w[multiselect multiselect_image].include?(input_type)
-  end
-
   def select_count_enabled_and_supported?
     supports_select_count? && select_count_enabled
-  end
-
-  def singleselect?
-    %w[select select_image].include?(input_type)
   end
 
   def custom_form_type?

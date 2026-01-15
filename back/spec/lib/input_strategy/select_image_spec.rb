@@ -18,9 +18,9 @@ RSpec.describe InputStrategy::SelectImage do
   its(:supports_linear_scale?) { is_expected.to be false }
   its(:supports_linear_scale_labels?) { is_expected.to be false }
   its(:supports_matrix_statements?) { is_expected.to be false }
-  its(:supports_single_selection?) { is_expected.to be false }
+  its(:supports_single_selection?) { is_expected.to be true }
   its(:supports_multiple_selection?) { is_expected.to be false }
-  its(:supports_selection?) { is_expected.to be false }
+  its(:supports_selection?) { is_expected.to be true }
   its(:supports_select_count?) { is_expected.to be false }
   its(:supports_dropdown_layout?) { is_expected.to be false }
   its(:supports_xlsx_export?) { is_expected.to be true }
