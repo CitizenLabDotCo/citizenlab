@@ -11,5 +11,7 @@ module AnonymousExposureTransfer
       request.user_agent
     )
     IdeaExposureTransferService.new.transfer(visitor_hash: visitor_hash, user: user)
+  rescue RuntimeError => e
+    Rails.logger.warn("Anonymous exposure transfer skipped: #{e.message}")
   end
 end
