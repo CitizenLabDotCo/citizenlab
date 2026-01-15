@@ -3299,6 +3299,7 @@
   "app.containers.ContentBuilder.homepage.headerHeightPhone": "Phone",
   "app.containers.ContentBuilder.homepage.headerHeightTablet": "Tablet",
   "app.containers.ContentBuilder.homepage.headerHeights": "Header heights (in pixels)",
+  "app.containers.ContentBuilder.homepage.headerHeightsTooltip": "We recommend only changing these values if necessary, as the default values are designed to provide an optimal user experience.",
   "app.containers.ContentBuilder.homepage.imageOverlayColor": "Image overlay color",
   "app.containers.ContentBuilder.homepage.imageOverlayOpacity": "Image overlay opacity",
   "app.containers.ContentBuilder.homepage.imageSupportPageURL": "https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
