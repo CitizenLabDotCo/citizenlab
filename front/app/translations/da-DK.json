@@ -17,7 +17,7 @@
   "app.components.AssignMultipleVotesControl.addVote": "Tilføj stemme",
   "app.components.AssignMultipleVotesControl.maxCreditsInTotalReached": "Du har fordelt alle dine kreditter.",
   "app.components.AssignMultipleVotesControl.maxCreditsPerInputReached": "Du har fordelt det maksimale antal kreditter for denne mulighed.",
-  "app.components.AssignMultipleVotesControl.maxPercentsInTotalReached": "Du har uddelt din maksimale procentdel.",
+  "app.components.AssignMultipleVotesControl.maxPercentsInTotalReached": "Du har fordelt din maksimale procentdel.",
   "app.components.AssignMultipleVotesControl.maxPercentsPerInputReached": "Du har fordelt den maksimale procentdel for denne mulighed.",
   "app.components.AssignMultipleVotesControl.maxPointsInTotalReached": "Du har fordelt alle dine kreditter.",
   "app.components.AssignMultipleVotesControl.maxPointsPerInputReached": "Du har fordelt det maksimale antal kreditter for denne mulighed.",
