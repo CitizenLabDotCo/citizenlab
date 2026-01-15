@@ -110,39 +110,73 @@ RSpec.describe Permission do
   end
 
   describe 'user_fields_in_form_frontend_descriptor' do
-    it 'returns locked: true and explanation if phase is not native_survey or community_monitor' do
-      permission = create(:permission)
+    it 'returns locked: true and not supported explanation if phase is not native_survey, community_monitor or ideation' do
+      phase = create(:poll_phase)
+      permission = create(:permission, action: 'taking_poll', permission_scope: phase, permitted_by: 'users')
       descriptor = permission.user_fields_in_form_frontend_descriptor
       expect(descriptor[:value]).to be_nil
       expect(descriptor[:locked]).to be_truthy
       expect(descriptor[:explanation]).to eq('user_fields_in_survey_not_supported_for_participation_method')
     end
 
-    it 'if permitted_by is everyone and data collection is anonymous: returns locked: true, value: nil and explanation' do
-      phase = create(:native_survey_phase)
-      permission = create(:permission, action: 'posting_idea', permission_scope: phase, permitted_by: 'everyone', user_data_collection: 'anonymous')
-      descriptor = permission.user_fields_in_form_frontend_descriptor
-      expect(descriptor[:value]).to be_nil
-      expect(descriptor[:locked]).to be_truthy
-      expect(descriptor[:explanation]).to eq('with_these_settings_cannot_ask_demographic_fields')
+    describe 'native survey phase phase' do
+      before do
+        @phase = create(:native_survey_phase)
+      end
+
+      it 'if permitted_by is everyone and data collection is anonymous: returns locked: true, value: nil and explanation' do
+        permission = create(:permission, action: 'posting_idea', permission_scope: @phase, permitted_by: 'everyone', user_data_collection: 'anonymous')
+        descriptor = permission.user_fields_in_form_frontend_descriptor
+        expect(descriptor[:value]).to be_nil
+        expect(descriptor[:locked]).to be_truthy
+        expect(descriptor[:explanation]).to eq('with_these_settings_cannot_ask_demographic_fields')
+      end
+
+      it 'if permitted_by is everyone and data collection is not anonymous: returns locked: true, value: true and explanation' do
+        permission = create(:permission, action: 'posting_idea', permission_scope: @phase, permitted_by: 'everyone', user_data_collection: 'all_data')
+        descriptor = permission.user_fields_in_form_frontend_descriptor
+        expect(descriptor[:value]).to be_truthy
+        expect(descriptor[:locked]).to be_truthy
+        expect(descriptor[:explanation]).to eq('cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone')
+      end
+
+      it 'if permitted_by is not everyone and data collection is anonymous: returns locked: true, value: false and explanation' do
+        permission = create(:permission, action: 'posting_idea', permission_scope: @phase, permitted_by: 'users', user_data_collection: 'anonymous')
+        descriptor = permission.user_fields_in_form_frontend_descriptor
+        expect(descriptor[:value]).to be_falsey
+        expect(descriptor[:locked]).to be_truthy
+        expect(descriptor[:explanation]).to eq('with_these_settings_can_only_ask_demographic_fields_in_registration_flow')
+      end
     end
 
-    it 'if permitted_by is everyone and data collection is not anonymous: returns locked: true, value: true and explanation' do
-      phase = create(:native_survey_phase)
-      permission = create(:permission, action: 'posting_idea', permission_scope: phase, permitted_by: 'everyone', user_data_collection: 'all_data')
-      descriptor = permission.user_fields_in_form_frontend_descriptor
-      expect(descriptor[:value]).to be_truthy
-      expect(descriptor[:locked]).to be_truthy
-      expect(descriptor[:explanation]).to eq('cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone')
-    end
+    describe 'ideation phase' do
+      before do
+        @phase = create(:single_phase_ideation_project).phases.first
+      end
 
-    it 'if permitted_by is not everyone and data collection is anonymous: returns locked: true, value: false and explanation' do
-      phase = create(:native_survey_phase)
-      permission = create(:permission, action: 'posting_idea', permission_scope: phase, permitted_by: 'users', user_data_collection: 'anonymous')
-      descriptor = permission.user_fields_in_form_frontend_descriptor
-      expect(descriptor[:value]).to be_falsey
-      expect(descriptor[:locked]).to be_truthy
-      expect(descriptor[:explanation]).to eq('with_these_settings_can_only_ask_demographic_fields_in_registration_flow')
+      it 'returns locked: true and not supported explanation if action is not posting idea' do
+        permission = create(:permission, action: 'commenting_idea', permission_scope: @phase, permitted_by: 'users')
+        descriptor = permission.user_fields_in_form_frontend_descriptor
+        expect(descriptor[:value]).to be_nil
+        expect(descriptor[:locked]).to be_truthy
+        expect(descriptor[:explanation]).to eq('user_fields_in_survey_not_supported_for_participation_method')
+      end
+
+      it 'if permitted_by is everyone: returns locked: true and value: true' do
+        permission = create(:permission, action: 'posting_idea', permission_scope: @phase, permitted_by: 'everyone', user_fields_in_form: false)
+        descriptor = permission.user_fields_in_form_frontend_descriptor
+        expect(descriptor[:value]).to be_truthy
+        expect(descriptor[:locked]).to be_truthy
+        expect(descriptor[:explanation]).to eq('cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone')
+      end
+
+      it 'if permitted_by is not everyone: returns locked: false and whatever user_fields_in_form is' do
+        permission = create(:permission, action: 'posting_idea', permission_scope: @phase, permitted_by: 'users', user_fields_in_form: false)
+        descriptor = permission.user_fields_in_form_frontend_descriptor
+        expect(descriptor[:value]).to be_falsey
+        expect(descriptor[:locked]).to be_falsey
+        expect(descriptor[:explanation]).to eq(nil)
+      end
     end
   end
 end

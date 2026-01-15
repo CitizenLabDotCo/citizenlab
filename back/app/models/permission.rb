@@ -118,9 +118,11 @@ class Permission < ApplicationRecord
     return UNSUPPORTED_DESCRIPTOR unless action == 'posting_idea'
 
     phase = permission_scope
-    has_survey_form = phase.is_a?(Phase) && phase.pmethod.supports_survey_form?
 
-    return UNSUPPORTED_DESCRIPTOR unless has_survey_form
+    is_survey_or_ideation_phase = phase.is_a?(Phase) && 
+      ['ideation', 'native_survey', 'community_monitor_survey'].include?(phase.pmethod.method_str)
+
+    return UNSUPPORTED_DESCRIPTOR unless is_survey_or_ideation_phase
 
     if permitted_by == 'everyone'
       if user_data_collection == 'anonymous'
