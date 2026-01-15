@@ -258,4 +258,34 @@ RSpec.describe ParticipationMethod::Ideation do
       expect(participation_method.send(:proposed_budget_in_form?)).to be true
     end
   end
+
+  describe 'user_fields_in_frontend_descriptor' do
+    let(:permission) { phase.permissions.find_by(action: 'posting_idea') }
+
+    it 'returns locked: true and not supported explanation if action is not posting idea' do
+      permission = phase.permissions.find_by(action: 'commenting_idea')
+      descriptor = participation_method.user_fields_in_form_frontend_descriptor
+      expect(descriptor[:value]).to be_nil
+      expect(descriptor[:locked]).to be_truthy
+      expect(descriptor[:explanation]).to eq('user_fields_in_survey_not_supported_for_participation_method')
+    end
+
+    it 'if permitted_by is everyone: returns locked: true and value: true' do
+      permission = phase.permissions.find_by(action: 'posting_idea')
+      permission.update(permitted_by: 'everyone', user_fields_in_form: false)
+      descriptor = participation_method.user_fields_in_form_frontend_descriptor
+      expect(descriptor[:value]).to be_truthy
+      expect(descriptor[:locked]).to be_truthy
+      expect(descriptor[:explanation]).to eq('cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone')
+    end
+
+    it 'if permitted_by is not everyone: returns locked: false and whatever user_fields_in_form is' do
+      permission = phase.permissions.find_by(action: 'posting_idea')
+      permission.update(permitted_by: 'users', user_fields_in_form: false)
+      descriptor = participation_method.user_fields_in_form_frontend_descriptor
+      expect(descriptor[:value]).to be_falsey
+      expect(descriptor[:locked]).to be_falsey
+      expect(descriptor[:explanation]).to eq(nil)
+    end
+  end
 end

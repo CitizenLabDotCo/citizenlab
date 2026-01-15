@@ -198,36 +198,6 @@ RSpec.describe ParticipationMethod::NativeSurvey do
       expect(descriptor[:locked]).to be_truthy
       expect(descriptor[:explanation]).to eq('with_these_settings_can_only_ask_demographic_fields_in_registration_flow')
     end
-
-    # describe 'ideation phase' do
-    #   before do
-    #     @phase = create(:single_phase_ideation_project).phases.first
-    #   end
-
-    #   it 'returns locked: true and not supported explanation if action is not posting idea' do
-    #     permission = create(:permission, action: 'commenting_idea', permission_scope: @phase, permitted_by: 'users')
-    #     descriptor = permission.user_fields_in_form_frontend_descriptor
-    #     expect(descriptor[:value]).to be_nil
-    #     expect(descriptor[:locked]).to be_truthy
-    #     expect(descriptor[:explanation]).to eq('user_fields_in_survey_not_supported_for_participation_method')
-    #   end
-
-    #   it 'if permitted_by is everyone: returns locked: true and value: true' do
-    #     permission = create(:permission, action: 'posting_idea', permission_scope: @phase, permitted_by: 'everyone', user_fields_in_form: false)
-    #     descriptor = permission.user_fields_in_form_frontend_descriptor
-    #     expect(descriptor[:value]).to be_truthy
-    #     expect(descriptor[:locked]).to be_truthy
-    #     expect(descriptor[:explanation]).to eq('cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone')
-    #   end
-
-    #   it 'if permitted_by is not everyone: returns locked: false and whatever user_fields_in_form is' do
-    #     permission = create(:permission, action: 'posting_idea', permission_scope: @phase, permitted_by: 'users', user_fields_in_form: false)
-    #     descriptor = permission.user_fields_in_form_frontend_descriptor
-    #     expect(descriptor[:value]).to be_falsey
-    #     expect(descriptor[:locked]).to be_falsey
-    #     expect(descriptor[:explanation]).to eq(nil)
-    #   end
-    # end
   end
 
   describe '#user_fields_in_form?' do
