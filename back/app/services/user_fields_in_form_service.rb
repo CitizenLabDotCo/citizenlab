@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UserFieldsInSurveyService
+class UserFieldsInFormService
   # Merge user fields from the current user into the idea's custom field values
   def self.merge_user_fields_into_idea(
     current_user,

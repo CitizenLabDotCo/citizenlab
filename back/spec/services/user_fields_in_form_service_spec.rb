@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe UserFieldsInSurveyService do
+describe UserFieldsInFormService do
   describe '#merge_user_fields_into_idea' do
     before do
       @phase = create(:native_survey_phase, with_permissions: true)
