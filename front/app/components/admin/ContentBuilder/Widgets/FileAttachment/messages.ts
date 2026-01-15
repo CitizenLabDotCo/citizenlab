@@ -20,11 +20,10 @@ export default defineMessages({
   },
   fileMissing: {
     id: 'app.containers.admin.ContentBuilder.fileMissing',
-    defaultMessage:
-      'File attachment missing - this widget will not be displayed.',
+    defaultMessage: 'File missing. Select another file or remove this widget.',
   },
   selectFilePrompt: {
     id: 'app.containers.admin.ContentBuilder.selectFilePrompt',
-    defaultMessage: 'Select a file from the settings panel',
+    defaultMessage: 'No file selected.',
   },
 });
