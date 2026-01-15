@@ -159,7 +159,7 @@ class SideFxIdeaService
   end
 
   def after_publish(idea, user)
-    update_user_profile(idea, user)
+    UserFieldsInSurveyService.merge_user_fields_from_idea_into_user(idea, user)
     log_activity_jobs_after_published(idea, user)
   end
 
@@ -251,19 +251,6 @@ class SideFxIdeaService
     return unless current_phase&.ideation_method == 'idea_feed'
 
     IdeaFeed::TopicClassificationJob.set(priority: 10).perform_later(current_phase, idea)
-  end
-
-  # update the user profile if user fields are changed as part of a survey
-  def update_user_profile(idea, user)
-    return unless user && idea.participation_method_on_creation.user_fields_in_form?
-
-    user_prefix = UserFieldsInSurveyService.prefix
-
-    user_values_from_idea = idea.custom_field_values
-      .select { |key, _value| key.start_with?(user_prefix) }
-      .transform_keys { |key| key[user_prefix.length..] }
-
-    user.update!(custom_field_values: user.custom_field_values.merge(user_values_from_idea))
   end
 end
 

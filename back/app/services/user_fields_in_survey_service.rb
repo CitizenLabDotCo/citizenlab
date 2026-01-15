@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class UserFieldsInSurveyService
+  # Merge user fields from the current user into the idea's custom field values
   def self.merge_user_fields_into_idea(
     current_user,
     phase,
@@ -27,6 +28,18 @@ class UserFieldsInSurveyService
     (user_values || {}).merge(idea_custom_field_values || {})
   end
 
+  # Update the user profile if user fields are asked as last page
+  def self.merge_user_fields_from_idea_into_user(idea, user)
+    return unless user && idea.participation_method_on_creation.user_fields_in_form?
+
+    user_values_from_idea = idea.custom_field_values
+      .select { |key, _value| key.start_with?(prefix) }
+      .transform_keys { |key| key[prefix.length..] }
+
+    user.update!(custom_field_values: user.custom_field_values.merge(user_values_from_idea))
+  end
+
+  # Append user custom fields to form
   def self.add_user_fields_to_form(fields, participation_method, custom_form)
     return fields unless participation_method.user_fields_in_form?
 
