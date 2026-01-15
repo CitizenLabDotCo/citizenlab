@@ -189,11 +189,6 @@ class Idea < ApplicationRecord
   # > it will be impossible to speed up searches with database indexes. However, it
   # > is supported as a quick way to try out cross-model searching.
 
-  scope :with_some_topics, (proc do |topics|
-    ideas = joins(:ideas_topics).where(ideas_topics: { topic: topics })
-    where(id: ideas)
-  end)
-
   scope :with_some_input_topics, (proc do |input_topics|
     ideas = joins(:ideas_input_topics).where(ideas_input_topics: { input_topic: input_topics })
     where(id: ideas)

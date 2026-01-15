@@ -504,7 +504,7 @@ describe Permissions::IdeaPermissionsService do
 
       # Load ideas with pre-loading as loaded by the controller
       ideas = Idea.includes(
-        :idea_images, :idea_trending_info, :topics,
+        :idea_images, :idea_trending_info, :input_topics,
         :idea_import,
         :phases,
         :idea_status,

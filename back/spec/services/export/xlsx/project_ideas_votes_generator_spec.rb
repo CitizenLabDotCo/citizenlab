@@ -114,12 +114,12 @@ describe Export::Xlsx::ProjectIdeasVotesGenerator do
 
     it 'contains attribute values specific to the idea detailed in a row' do
       author = create(:user)
-      topic1 = create(:topic_nature)
-      topic2 = create(:topic_sustainability)
+      topic1 = create(:input_topic_nature)
+      topic2 = create(:input_topic_sustainability)
       idea_file1 = create(:idea_file, idea: ideas[0])
       ideas[0].update!(
         author: author,
-        topics: [topic1, topic2],
+        input_topics: [topic1, topic2],
         location_point: 'POINT(1.234 5.678)',
         location_description: '489 Calista Coves',
         manual_votes_amount: 11

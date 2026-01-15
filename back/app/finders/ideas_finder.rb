@@ -36,14 +36,6 @@ class IdeasFinder < ApplicationFinder
     records.joins(:baskets).where('baskets.id': basket_id)
   end
 
-  def topics_condition(topics)
-    return if topics.blank?
-
-    @records.includes(:topics)
-    scope(:with_some_topics, topics)
-  end
-  alias topic_condition topics_condition
-
   def input_topics_condition(input_topics)
     return if input_topics.blank?
 

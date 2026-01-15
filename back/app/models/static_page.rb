@@ -137,7 +137,7 @@ class StaticPage < ApplicationRecord
       when 'areas'
         { areas: areas_static_pages.pluck(:area_id) }
       when 'global_topics'
-        { topics: static_pages_global_topics.pluck(:global_topic_id) }
+        { global_topics: static_pages_global_topics.pluck(:global_topic_id) }
       else
         {}
       end

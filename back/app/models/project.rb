@@ -190,11 +190,6 @@ class Project < ApplicationRecord
     TimelineService.new.current_phase(self)
   end
 
-  def set_default_topics!
-    self.allowed_input_topics = GlobalTopic.defaults.order(:ordering).reverse
-    save!
-  end
-
   def set_default_input_topics!
     DefaultInputTopic.order(:ordering).each do |default_topic|
       input_topics.create!(

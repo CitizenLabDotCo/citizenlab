@@ -154,7 +154,7 @@ class XlsxService
       { header: 'unsure',               f: ->(i) { i.neutral_reactions_count }, skip_sanitization: true },
       { header: 'url',                  f: ->(i) { Frontend::UrlService.new.model_to_url(i) }, skip_sanitization: true, hyperlink: true },
       { header: 'project',              f: ->(i) { multiloc_service.t(i&.project&.title_multiloc) } },
-      { header: 'topics',               f: ->(i) { i.topics.map { |t| multiloc_service.t(t.title_multiloc) }.join(',') } },
+      { header: 'topics',               f: ->(i) { i.input_topics.map { |t| multiloc_service.t(t.title_multiloc) }.join(',') } },
       { header: 'status',               f: ->(i) { multiloc_service.t(i&.idea_status&.title_multiloc) } },
       { header: 'assignee',             f: ->(i) { i.assignee&.full_name } },
       { header: 'assignee_email',       f: ->(i) { i.assignee&.email } },

@@ -55,7 +55,7 @@ module IdeaFeed
         .published
         .where.not(id: exposed_ideas)
 
-      scope = scope.with_some_topics(topic_ids) if topic_ids.present?
+      scope = scope.with_some_input_topics(topic_ids) if topic_ids.present?
 
       scope
     end
