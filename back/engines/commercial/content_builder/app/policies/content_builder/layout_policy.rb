@@ -7,7 +7,7 @@ module ContentBuilder
     end
 
     def upsert?
-      moderator?
+      moderator? && authorized_to_attach_files?
     end
 
     def update?
@@ -33,17 +33,14 @@ module ContentBuilder
       file_ids = record.referenced_file_ids
       return true if file_ids.empty?
 
-      files = ::Files::File.where(id: file_ids).index_by(&:id)
-      file_ids.all? do |file_id|
-        file = files[file_id]
-        next true unless file # Allow saving the layout even if the file has been deleted.
-
-        # Ideally, we would check `policy_for(file_attachment).create?`, but that causes a
-        # circular dependency since `FileAttachmentPolicy#create?` calls
-        # `policy_for(attachable).update?`. As a workaround, we essentially inline the
-        # relevant part of `FileAttachmentPolicy#create?` here.
-        policy_for(file).update?
-      end
+      # Ideally, we would check `policy_for(file_attachment).create?`, but that causes a
+      # circular dependency since `FileAttachmentPolicy#create?` calls
+      # `policy_for(attachable).update?`. As a workaround, we essentially inline the
+      # relevant part of `FileAttachmentPolicy#create?` here.
+      #
+      # Missing files are ignored to allow saving layouts with references to deleted files.
+      # This is handled gracefully in the front-end.
+      ::Files::File.where(id: file_ids).all? { |file| policy_for(file).update? }
     end
   end
 end
