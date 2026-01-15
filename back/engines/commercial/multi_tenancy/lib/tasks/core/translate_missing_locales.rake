@@ -15,11 +15,12 @@
 #   5. Display a summary with issue counts per model and total characters to translate
 #
 # Notes:
-#   - Translations can only be run on demo platforms (lifecycle_stage = 'demo')
+#   - Translations can only be run on demo platforms (lifecycle_stage = 'demo') or local development
 #   - Readonly records (e.g., database views) are skipped
 #   - Records where all locale values are empty are skipped
 #   - In development mode, translation just copies the source text (no API calls)
 #   - Translation prefers the main locale as source, falls back to any available locale
+#   - Also processes text values in craftjs_json field of content_builder_layouts
 
 namespace :demos do
   desc 'Audit and optionally translate missing multiloc fields for a demo tenant'
@@ -62,8 +63,8 @@ namespace :demos do
       lifecycle_stage = AppConfiguration.instance.settings('core', 'lifecycle_stage')
       is_demo = lifecycle_stage == 'demo'
 
-      # Only allow translations on demo platforms to prevent accidental changes to production data
-      if translate_missing_locales && !is_demo
+      # Only allow translations on demo platforms (or local dev) to prevent accidental changes to production data
+      if translate_missing_locales && !is_demo && !Rails.env.development?
         puts "ERROR: Translations can only be run on demo platforms (current: #{lifecycle_stage})"
         puts 'Run without the translate flag to audit only.'
         next
@@ -79,6 +80,64 @@ namespace :demos do
       translations_made = 0
       total_characters = 0
       model_summary = {}
+
+      # Helper lambda to process a multiloc value within craftjs_json
+      # Returns a hash with :has_issues, :missing_locales, :empty_locales, :characters, :translations_made
+      process_craftjs_multiloc = lambda do |multiloc|
+        missing = []
+        empty = []
+
+        locales.each do |locale|
+          if !multiloc.key?(locale)
+            missing << locale
+          elsif multiloc[locale].blank?
+            empty << locale
+          end
+        end
+
+        result = {
+          has_issues: missing.any? || empty.any?,
+          missing_locales: missing,
+          empty_locales: empty,
+          characters: 0,
+          translations_made: 0
+        }
+
+        next result unless result[:has_issues]
+
+        # Find source locale for translation
+        source_locale = if multiloc[main_locale].present?
+          main_locale
+        else
+          multiloc.find { |_, v| v.present? }&.first
+        end
+
+        next result unless source_locale
+
+        source_text = multiloc[source_locale]
+        locales_to_translate = missing + empty
+
+        result[:characters] = source_text.to_s.length * locales_to_translate.size
+
+        next result unless translate_missing_locales
+
+        locales_to_translate.each do |target_locale|
+          if Rails.env.development?
+            multiloc[target_locale] = source_text
+            result[:translations_made] += 1
+            puts "  Copied craftjs_json text from #{source_locale} to #{target_locale} (dev mode)"
+          else
+            translated_text = translation_service.translate(source_text, source_locale, target_locale)
+            multiloc[target_locale] = translated_text
+            result[:translations_made] += 1
+            puts "  Translated craftjs_json text from #{source_locale} to #{target_locale}"
+          end
+        rescue StandardError => e
+          puts "  ERROR translating craftjs_json text to #{target_locale}: #{e.message}"
+        end
+
+        result
+      end
 
       # Iterate through all models that inherit from ApplicationRecord
       ApplicationRecord.descendants.each do |model|
@@ -101,7 +160,7 @@ namespace :demos do
             value = record.send(column)
 
             # Skip nil, empty, or all-blank multilocs
-            next if value.nil? || value.empty? || value.values.all?(&:blank?)
+            next if value.blank? || value.values.all?(&:blank?)
 
             # Check which locales are missing or empty
             missing_locales = []
@@ -130,10 +189,10 @@ namespace :demos do
 
             # Find source locale for translation (prefer main locale, fallback to any available)
             source_locale = if value[main_locale].present?
-                              main_locale
-                            else
-                              value.find { |_, v| v.present? }&.first
-                            end
+              main_locale
+            else
+              value.find { |_, v| v.present? }&.first
+            end
 
             # Skip if no source content available
             next unless source_locale
@@ -186,6 +245,86 @@ namespace :demos do
           messages << "empty: #{issue[:empty_locales].join(', ')}" if issue[:empty_locales].any?
 
           puts "  ID: #{issue[:id]} | #{issue[:column]} | #{messages.join(' | ')}"
+        end
+      end
+
+      # Process craftjs_json text values in ContentBuilder::Layout records
+      # These contain nested multiloc values within TextMultiloc and AccordionMultiloc nodes
+      if defined?(ContentBuilder::Layout)
+        craftjs_issues = []
+
+        ContentBuilder::Layout.find_each do |layout|
+          craftjs_json = layout.craftjs_json
+          next if craftjs_json.blank?
+
+          layout_modified = false
+
+          craftjs_json.each do |node_key, node_value|
+            next unless node_value.is_a?(Hash)
+            next unless node_value['type'].is_a?(Hash)
+
+            resolved_name = node_value['type']['resolvedName']
+            next unless ContentBuilder::Layout::TEXT_CRAFTJS_NODE_TYPES.include?(resolved_name)
+
+            # Process 'text' prop (present in both TextMultiloc and AccordionMultiloc)
+            text_multiloc = node_value.dig('props', 'text')
+            if text_multiloc.is_a?(Hash) && text_multiloc.values.any?(&:present?)
+              result = process_craftjs_multiloc.call(text_multiloc)
+              if result[:has_issues]
+                craftjs_issues << {
+                  id: layout.id,
+                  node_key: node_key,
+                  prop: 'text',
+                  missing_locales: result[:missing_locales],
+                  empty_locales: result[:empty_locales]
+                }
+                issues_found += 1
+                total_characters += result[:characters]
+                translations_made += result[:translations_made]
+                layout_modified = true if result[:translations_made] > 0
+              end
+            end
+
+            # Process 'title' prop (only in AccordionMultiloc)
+            next unless resolved_name == 'AccordionMultiloc'
+
+            title_multiloc = node_value.dig('props', 'title')
+            next unless title_multiloc.is_a?(Hash) && title_multiloc.values.any?(&:present?)
+
+            result = process_craftjs_multiloc.call(title_multiloc)
+            next unless result[:has_issues]
+
+            craftjs_issues << {
+              id: layout.id,
+              node_key: node_key,
+              prop: 'title',
+              missing_locales: result[:missing_locales],
+              empty_locales: result[:empty_locales]
+            }
+            issues_found += 1
+            total_characters += result[:characters]
+            translations_made += result[:translations_made]
+            layout_modified = true if result[:translations_made] > 0
+          end
+
+          # Save the updated craftjs_json if any translations were made
+          layout.update_column(:craftjs_json, craftjs_json) if layout_modified
+        end
+
+        # Report craftjs_json issues
+        unless craftjs_issues.empty?
+          model_summary['ContentBuilder::Layout (craftjs_json)'] = craftjs_issues.size
+
+          puts "\nContentBuilder::Layout craftjs_json (#{craftjs_issues.size} issues)"
+          puts '-' * 40
+
+          craftjs_issues.each do |issue|
+            messages = []
+            messages << "missing: #{issue[:missing_locales].join(', ')}" if issue[:missing_locales].any?
+            messages << "empty: #{issue[:empty_locales].join(', ')}" if issue[:empty_locales].any?
+
+            puts "  ID: #{issue[:id]} | node: #{issue[:node_key]} | #{issue[:prop]} | #{messages.join(' | ')}"
+          end
         end
       end
 
