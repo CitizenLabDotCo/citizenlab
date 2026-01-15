@@ -21,5 +21,9 @@ module InputStrategy
     def supports_dropdown_layout?
       true
     end
+
+    def supports_reference_distribution?
+      true
+    end
   end
 end

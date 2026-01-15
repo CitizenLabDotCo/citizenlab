@@ -30,4 +30,5 @@ RSpec.describe InputStrategy::SelectImage do
   its(:supports_pdf_gpt_import?) { is_expected.to be false }
   its(:supports_pdf_import?) { is_expected.to be false }
   its(:supports_xlsx_import?) { is_expected.to be true }
+  its(:supports_reference_distribution?) { is_expected.to be false }
 end

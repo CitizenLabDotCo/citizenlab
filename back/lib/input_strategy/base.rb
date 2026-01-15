@@ -102,6 +102,12 @@ module InputStrategy
       true
     end
 
+    # Whether this field supports comparison against a reference population distribution
+    # for representativeness analysis. Only fields with discrete/categorical values qualify.
+    def supports_reference_distribution?
+      false
+    end
+
     protected
 
     attr_reader :custom_field

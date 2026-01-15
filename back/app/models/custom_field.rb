@@ -56,7 +56,8 @@ class CustomField < ApplicationRecord
     :supports_follow_up?, :supports_text?, :supports_linear_scale?, :supports_linear_scale_labels?, :supports_matrix_statements?,
     :supports_single_selection?, :supports_multiple_selection?, :supports_selection?, :supports_select_count?, :supports_dropdown_layout?,
     :supports_free_text_value?, :supports_xlsx_export?, :supports_geojson?, :supports_multiloc?,
-    :supports_printing?, :supports_pdf_import?, :supports_pdf_gpt_import?, :supports_xlsx_import?, to: :input_strategy
+    :supports_printing?, :supports_pdf_import?, :supports_pdf_gpt_import?, :supports_xlsx_import?,
+    :supports_reference_distribution?, to: :input_strategy
 
   acts_as_list column: :ordering, top_of_list: 0, scope: %i[resource_type resource_id], sequential_updates: true
 
@@ -147,10 +148,6 @@ class CustomField < ApplicationRecord
 
   def input_strategy
     @input_strategy ||= "InputStrategy::#{input_type.camelize}".constantize.new(self)
-  end
-
-  def support_reference_distribution?
-    %w[select checkbox multiselect].include?(input_type) || key == 'birthyear'
   end
 
   def includes_other_option?
