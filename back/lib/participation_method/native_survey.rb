@@ -128,6 +128,41 @@ module ParticipationMethod
       false
     end
 
+    def user_fields_in_form_frontend_descriptor
+      # If the permission is not about posting an idea in a native survey phase
+      # or community monitor phase,
+      # we don't support this attribute
+      return UNSUPPORTED_DESCRIPTOR unless posting_permission&.action == 'posting_idea'
+
+      if permitted_by == 'everyone'
+        if user_data_collection == 'anonymous'
+          {
+            value: nil,
+            locked: true,
+            explanation: 'with_these_settings_cannot_ask_demographic_fields'
+          }
+        else
+          {
+            value: true,
+            locked: true,
+            explanation: 'cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone'
+          }
+        end
+      elsif user_data_collection == 'anonymous'
+        {
+          value: false,
+          locked: true,
+          explanation: 'with_these_settings_can_only_ask_demographic_fields_in_registration_flow'
+        }
+      else
+        {
+          value: user_fields_in_form,
+          locked: false,
+          explanation: nil
+        }
+      end
+    end
+
     # Attribute used interally by backend to determine if user fields should be shown in the form
     def user_fields_in_form?
       return false if posting_permission.nil?

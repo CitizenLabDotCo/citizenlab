@@ -111,48 +111,6 @@ class Permission < ApplicationRecord
     permitted_by == 'everyone' && everyone_tracking_enabled
   end
 
-  def user_fields_in_form_frontend_descriptor
-    # If the permission is not about posting an idea in a native survey phase
-    # or community monitor phase,
-    # we don't support this attribute
-    return UNSUPPORTED_DESCRIPTOR unless action == 'posting_idea'
-
-    phase = permission_scope
-
-    is_survey_or_ideation_phase = phase.is_a?(Phase) && 
-      ['ideation', 'native_survey', 'community_monitor_survey'].include?(phase.pmethod.method_str)
-
-    return UNSUPPORTED_DESCRIPTOR unless is_survey_or_ideation_phase
-
-    if permitted_by == 'everyone'
-      if user_data_collection == 'anonymous'
-        {
-          value: nil,
-          locked: true,
-          explanation: 'with_these_settings_cannot_ask_demographic_fields'
-        }
-      else
-        {
-          value: true,
-          locked: true,
-          explanation: 'cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone'
-        }
-      end
-    elsif user_data_collection == 'anonymous'
-      {
-        value: false,
-        locked: true,
-        explanation: 'with_these_settings_can_only_ask_demographic_fields_in_registration_flow'
-      }
-    else
-      {
-        value: user_fields_in_form,
-        locked: false,
-        explanation: nil
-      }
-    end
-  end
-
   private
 
   def set_permitted_by_and_global_custom_fields
