@@ -55,7 +55,7 @@ class CustomField < ApplicationRecord
   delegate :structural_field?, :supports_submission?, :supports_average?, :supports_options?, :supports_other_option?, :supports_option_images?,
     :supports_follow_up?, :supports_text?, :supports_linear_scale?, :supports_linear_scale_labels?, :supports_matrix_statements?,
     :supports_single_selection?, :supports_multiple_selection?, :supports_selection?, :supports_select_count?, :supports_dropdown_layout?,
-    :supports_free_text_value?, :supports_xlsx_export?, :supports_geojson?, :supports_multiloc?,
+    :supports_free_text_value?, :supports_xlsx_export?, :supports_geojson?,
     :supports_printing?, :supports_pdf_import?, :supports_pdf_gpt_import?, :supports_xlsx_import?,
     :supports_reference_distribution?, :supports_file_upload?, to: :input_strategy
 

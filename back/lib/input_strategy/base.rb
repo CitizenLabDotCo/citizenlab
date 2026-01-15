@@ -82,10 +82,6 @@ module InputStrategy
       true
     end
 
-    def supports_multiloc?
-      false
-    end
-
     def supports_printing?
       custom_field.enabled? && custom_field.include_in_printed_form
     end

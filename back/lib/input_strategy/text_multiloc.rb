@@ -5,9 +5,5 @@ module InputStrategy
     def supports_text?
       true
     end
-
-    def supports_multiloc?
-      true
-    end
   end
 end
