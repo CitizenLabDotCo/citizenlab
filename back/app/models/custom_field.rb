@@ -98,7 +98,7 @@ class CustomField < ApplicationRecord
     if: :supports_submission?
   )
   validates :input_type, presence: true, inclusion: INPUT_TYPES
-  validates :title_multiloc, presence: true, multiloc: { presence: true }, if: -> { !structural_field? }
+  validates :title_multiloc, presence: true, multiloc: { presence: true }, unless: :structural_field?
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :required, inclusion: { in: [true, false] }
   validates :enabled, inclusion: { in: [true, false] }
@@ -110,7 +110,7 @@ class CustomField < ApplicationRecord
   validates :maximum_select_count, absence: true, unless: :select_count_enabled_and_supported?
   validates :minimum_select_count, absence: true, unless: :select_count_enabled_and_supported?
   validates :page_layout, presence: true, inclusion: { in: PAGE_LAYOUTS }, if: :structural_field?
-  validates :page_layout, absence: true, if: -> { !structural_field? }
+  validates :page_layout, absence: true, unless: :structural_field?
   validates :question_category, absence: true, unless: :supports_category?
   validates :question_category, inclusion: { in: QUESTION_CATEGORIES }, allow_nil: true, if: :supports_category?
   validates :maximum, presence: true, inclusion: 2..11, if: :supports_linear_scale?
