@@ -134,8 +134,8 @@ module ParticipationMethod
       # we don't support this attribute
       return UNSUPPORTED_DESCRIPTOR unless posting_permission&.action == 'posting_idea'
 
-      if permitted_by == 'everyone'
-        if user_data_collection == 'anonymous'
+      if posting_permission.permitted_by == 'everyone'
+        if posting_permission.user_data_collection == 'anonymous'
           {
             value: nil,
             locked: true,
@@ -148,7 +148,7 @@ module ParticipationMethod
             explanation: 'cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone'
           }
         end
-      elsif user_data_collection == 'anonymous'
+      elsif posting_permission.user_data_collection == 'anonymous'
         {
           value: false,
           locked: true,
@@ -156,7 +156,7 @@ module ParticipationMethod
         }
       else
         {
-          value: user_fields_in_form,
+          value: posting_permission.user_fields_in_form,
           locked: false,
           explanation: nil
         }
