@@ -88,10 +88,6 @@ class UserFieldsInFormService
     fields + [user_page] + user_fields + [last_page]
   end
 
-  def self.prefix
-    'u_'
-  end
-
   # This function is used to check if demographic
   # fields are collected during the registration process,
   # and if so, if we want to merge them into the idea.
@@ -129,6 +125,10 @@ class UserFieldsInFormService
     return false if idea.custom_field_values&.keys&.any? { |key| key.start_with?(prefix) }
 
     true
+  end
+
+  def self.prefix
+    'u_'
   end
 
   def self.prefix_key(key)

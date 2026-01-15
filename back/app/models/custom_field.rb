@@ -306,7 +306,8 @@ class CustomField < ApplicationRecord
   end
 
   def domicile?
-    (key == 'domicile' && code == 'domicile') || key == 'u_domicile'
+    s = UserFieldsInFormService
+    (key == 'domicile' && code == 'domicile') || s.prefix_key('domicile')
   end
 
   def file_upload?
