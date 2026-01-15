@@ -6,6 +6,8 @@ class VisitorHashService
   # anonymous exposures when a user logs in.
 
   def generate_for_visitor(ip, user_agent)
+    return nil unless salt
+
     hash([salt, ip, user_agent].join)
   end
 
@@ -16,6 +18,6 @@ class VisitorHashService
   end
 
   def salt
-    ENV.fetch('VISITOR_HASH_SALT') { raise 'VISITOR_HASH_SALT environment variable is not configured' }
+    ENV['VISITOR_HASH_SALT']
   end
 end
