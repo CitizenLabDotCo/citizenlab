@@ -243,10 +243,6 @@ class CustomField < ApplicationRecord
     %w[select select_image].include?(input_type)
   end
 
-  def linear_scale?
-    input_type == 'linear_scale'
-  end
-
   def custom_form_type?
     resource_type == 'CustomForm'
   end
