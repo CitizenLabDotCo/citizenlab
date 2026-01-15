@@ -21,6 +21,11 @@ export default defineMessages({
     defaultMessage:
       'You have {votesLeft, plural, =0 {no credits left} other {# out of {totalNumberOfVotes, plural, one {1 credit} other {# credits}} left}}.',
   },
+  numberOfPercentsLeft: {
+    id: 'app.components.VoteInputs._shared.numberOfPercentsLeft',
+    defaultMessage:
+      'You have {votesLeft, plural, =0 {no percent left} other {# out of {totalNumberOfVotes, plural, one {1 percent} other {# percent}} left}}.',
+  },
   vote: {
     id: 'app.components.ParticipationCTABars.votesCounter.vote',
     defaultMessage: 'vote',

@@ -50,6 +50,7 @@ const multipleVotingConfig: VotingMethodConfig = {
         point: messages.cumulativeVotingInstructionsTotalPoints,
         token: messages.cumulativeVotingInstructionsTotalTokens,
         credit: messages.cumulativeVotingInstructionsTotalCredits,
+        percent: messages.cumulativeVotingInstructionsTotalPercents,
       });
 
     const cumulativeVotingInstructionsMaxVotesPerIdeaMessage =
@@ -58,6 +59,7 @@ const multipleVotingConfig: VotingMethodConfig = {
         point: messages.cumulativeVotingInstructionsMaxPointsPerIdea,
         token: messages.cumulativeVotingInstructionsMaxTokensPerIdea,
         credit: messages.cumulativeVotingInstructionsMaxCreditsPerIdea,
+        percent: messages.cumulativeVotingInstructionsMaxPercentsPerIdea,
       });
     if (submissionState === 'hasNotSubmitted') {
       return (

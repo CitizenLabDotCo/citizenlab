@@ -47,6 +47,7 @@ export const getPlusButtonDisabledMessage = (
       point: messages.maxPointsInTotalReached,
       token: messages.maxTokensInTotalReached,
       credit: messages.maxCreditsInTotalReached,
+      percent: messages.maxPercentsInTotalReached,
     });
   }
   if (maxVotesPerIdeaReached) {
@@ -55,6 +56,7 @@ export const getPlusButtonDisabledMessage = (
       point: messages.maxPointsPerInputReached,
       token: messages.maxTokensPerInputReached,
       credit: messages.maxCreditsPerInputReached,
+      percent: messages.maxPercentsPerInputReached,
     });
   }
   return null;
