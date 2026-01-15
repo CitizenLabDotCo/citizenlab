@@ -110,11 +110,11 @@ it:
     footer:
       "link_privacy_policy": "Politica sulla privacy"
       "link_terms_conditions": "Termini e condizioni"
-      "link_unsubscribe": "Annulla iscrizione"
+      "link_unsubscribe": "Annulla l'iscrizione"
       "powered_by": "Alimentato da"
       "recipient_statement": "Questa e-mail ti è stata inviata da Go Vocal per conto di %{organizationName}, perché sei un utente registrato di %{organizationLink}."
       "unsubscribe_statement": "Se non vuoi più ricevere queste e-mail in futuro, %{unsubscribeLink}."
-      "unsubscribe_text": "annulla iscrizione"
+      "unsubscribe_text": "annulla l'iscrizione"
     follow:
       "unfollow_here": "Hai ricevuto questa notifica a causa di un elemento che segui. <a href=\"%{unfollow_url}\">Puoi smettere di seguirlo qui.</a>"
     manual:
