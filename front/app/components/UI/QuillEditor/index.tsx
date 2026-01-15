@@ -89,7 +89,7 @@ const QuillEditor = ({
 
   // Initialize Quill
   // https://quilljs.com/playground/react
-  // Using ref to persist across StrictMode remounts (see: https://github.com/zenoamaro/react-quill/issues/784)
+  // Using ref to persist across StrictMode remounts
   const quillRef = useRef<Quill | null>(null);
 
   useEffect(() => {
@@ -124,7 +124,6 @@ const QuillEditor = ({
 
     return () => {
       // Only cleanup in production - in dev, StrictMode double-mounts break Quill
-      // if we clear the container (see: https://github.com/zenoamaro/react-quill/issues/784)
       if (process.env.NODE_ENV !== 'development') {
         container.innerHTML = '';
       }
