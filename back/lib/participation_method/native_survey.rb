@@ -164,21 +164,12 @@ module ParticipationMethod
 
     # Attribute used interally by backend to determine if user fields should be shown in the form
     def user_fields_in_form?
-      return false if posting_permission.nil?
-      return false if posting_permission.user_data_collection == 'anonymous'
+      has_fields = !posting_permission.permissions_custom_fields.empty?
+      permitted_by = posting_permission.permitted_by
+      supports_global_fields = !(['everyone', 'everyone_confirmed_email'].include?(permitted_by))
+      has_global_fields = supports_global_fields && posting_permission.global_custom_fields
 
-      case posting_permission.permitted_by
-      when 'everyone'
-        !posting_permission.permissions_custom_fields.empty?
-      when 'everyone_confirmed_email'
-        posting_permission.user_fields_in_form && !posting_permission.permissions_custom_fields.empty?
-      else
-        if posting_permission.global_custom_fields
-          posting_permission.user_fields_in_form
-        else
-          posting_permission.user_fields_in_form && !posting_permission.permissions_custom_fields.empty?
-        end
-      end
+      user_fields_in_form_frontend_descriptor[:value] && (has_fields || has_global_fields)
     end
 
     delegate :user_data_collection, to: :posting_permission
