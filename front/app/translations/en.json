@@ -339,7 +339,7 @@
   "app.components.ParticipationCTABars.VotingCTABar.noVotesCast4": "You need to select at least one option before you can submit.",
   "app.components.ParticipationCTABars.VotingCTABar.nothingInBasket": "You need to add something to your basket before you can submit it.",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfCreditsLeft": "{votesLeft, plural, =0 {No credits left} other {# out of {totalNumberOfVotes, plural, one {1 credit} other {# credits}} left}}",
-  "app.components.ParticipationCTABars.VotingCTABar.numberOfPercentsLeft2": "{votesLeft, plural, =0 {No percent left} other {# out of {totalNumberOfVotes, plural, one {1 percent} other {# percent}} left}}",
+  "app.components.ParticipationCTABars.VotingCTABar.numberOfPercentsLeft3": "{votesLeft, plural, =0 {No percentage left} other {# out of {totalNumberOfVotes, plural, one {1 percent} other {# percent}} left}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfPointsLeft": "{votesLeft, plural, =0 {No points left} other {# out of {totalNumberOfVotes, plural, one {1 point} other {# points}} left}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfTokensLeft": "{votesLeft, plural, =0 {No tokens left} other {# out of {totalNumberOfVotes, plural, one {1 token} other {# tokens}} left}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfVotesLeft": "{votesLeft, plural, =0 {No votes left} other {# out of {totalNumberOfVotes, plural, one {1 vote} other {# votes}} left}}",
