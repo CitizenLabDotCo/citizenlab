@@ -602,7 +602,7 @@
   "app.components.VoteControl.budgetingNotVerified": "Please {verifyAccountLink} to continue.",
   "app.components.VoteInputs._shared.currencyLeft1": "You have {budgetLeft} / {totalBudget} left",
   "app.components.VoteInputs._shared.numberOfCreditsLeft": "You have {votesLeft, plural, =0 {no credits left} other {# out of {totalNumberOfVotes, plural, one {1 credit} other {# credits}} left}}.",
-  "app.components.VoteInputs._shared.numberOfPercentsLeft": "You have {votesLeft, plural, =0 {no percent left} other {# out of {totalNumberOfVotes, plural, one {1 percent} other {# percent}} left}}.",
+  "app.components.VoteInputs._shared.numberOfPercentsLeft2": "You have {votesLeft, plural, =0 {no percentage left} other {# out of {totalNumberOfVotes, plural, one {1 percent} other {# percent}} left}}.",
   "app.components.VoteInputs._shared.numberOfPointsLeft": "You have {votesLeft, plural, =0 {no points left} other {# out of {totalNumberOfVotes, plural, one {1 point} other {# points}} left}}.",
   "app.components.VoteInputs._shared.numberOfTokensLeft": "You have {votesLeft, plural, =0 {no tokens left} other {# out of {totalNumberOfVotes, plural, one {1 token} other {# tokens}} left}}.",
   "app.components.VoteInputs._shared.numberOfVotesLeft": "You have {votesLeft, plural, =0 {no votes left} other {# out of {totalNumberOfVotes, plural, one {1 vote} other {# votes}} left}}.",
