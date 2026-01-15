@@ -3,16 +3,12 @@ import React, { useMemo } from 'react';
 import {
   Box,
   colors,
-  fontSizes,
-  Icon,
   Select,
   Spinner,
   Text,
 } from '@citizenlab/cl2-component-library';
 import { useNode, useEditor } from '@craftjs/core';
-import { lighten } from 'polished';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
 
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
 import useFileById from 'api/files/useFileById';
@@ -24,41 +20,9 @@ import FileDisplay from 'components/UI/FileAttachments/FileDisplay';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
+import FilePlaceholder from './FilePlaceholder';
 import messages from './messages';
 import { getIsFileAlreadyUsed } from './utils';
-
-const PlaceholderContainer = styled.div<{ $color: string }>`
-  display: flex;
-  align-items: center;
-  color: ${({ $color }) => $color};
-  border: 1px solid ${({ $color }) => lighten(0.4, $color)};
-  border-radius: ${(props) => props.theme.borderRadius};
-  font-size: ${fontSizes.base}px;
-  line-height: 24px;
-  padding: 10px 20px;
-  margin-bottom: 10px;
-`;
-
-const PlaceholderIcon = styled(Icon)<{ $color: string }>`
-  fill: ${({ $color }) => $color};
-  margin-right: 15px;
-  flex-shrink: 0;
-`;
-
-type FilePlaceholderProps = {
-  variant?: 'error';
-  children: React.ReactNode;
-};
-
-const FilePlaceholder = ({ variant, children }: FilePlaceholderProps) => {
-  const color = variant === 'error' ? colors.error : colors.textSecondary;
-  return (
-    <PlaceholderContainer $color={color}>
-      <PlaceholderIcon name="paperclip" $color={color} />
-      {children}
-    </PlaceholderContainer>
-  );
-};
 
 type FileAttachmentProps = {
   fileId?: string;
