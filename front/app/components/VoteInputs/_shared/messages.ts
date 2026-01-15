@@ -22,9 +22,9 @@ export default defineMessages({
       'You have {votesLeft, plural, =0 {no credits left} other {# out of {totalNumberOfVotes, plural, one {1 credit} other {# credits}} left}}.',
   },
   numberOfPercentsLeft: {
-    id: 'app.components.VoteInputs._shared.numberOfPercentsLeft',
+    id: 'app.components.VoteInputs._shared.numberOfPercentsLeft2',
     defaultMessage:
-      'You have {votesLeft, plural, =0 {no percent left} other {# out of {totalNumberOfVotes, plural, one {1 percent} other {# percent}} left}}.',
+      'You have {votesLeft, plural, =0 {no percentage left} other {# out of {totalNumberOfVotes, plural, one {1 percent} other {# percent}} left}}.',
   },
   vote: {
     id: 'app.components.ParticipationCTABars.votesCounter.vote',
