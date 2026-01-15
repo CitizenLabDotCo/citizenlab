@@ -29,9 +29,10 @@ type FilePlaceholderProps = {
 
 const FilePlaceholder = ({ variant, children }: FilePlaceholderProps) => {
   const color = variant === 'error' ? colors.error : colors.textSecondary;
+  const iconName = variant === 'error' ? 'paperclip' : 'file-add';
   return (
     <PlaceholderContainer $color={color}>
-      <PlaceholderIcon name="paperclip" $color={color} />
+      <PlaceholderIcon name={iconName} $color={color} />
       {children}
     </PlaceholderContainer>
   );
