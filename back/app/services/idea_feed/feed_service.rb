@@ -1,10 +1,11 @@
 module IdeaFeed
   class FeedService
-    attr_reader :phase, :user, :topic_ids
+    attr_reader :phase, :user, :visitor_hash, :topic_ids
 
-    def initialize(phase, user, topic_ids: nil)
+    def initialize(phase, user, topic_ids: nil, visitor_hash: nil)
       @phase = phase
       @user = user
+      @visitor_hash = visitor_hash
       @topic_ids = topic_ids
     end
 
@@ -15,7 +16,7 @@ module IdeaFeed
         .order(Arel.sql('recency_score * 0.65 + engagement_score * 0.25 + wise_voice_score * 0.1 DESC'))
         .limit(n * 4)
 
-      DiversityService.new.generate_list(candidates, IdeaExposure.where(user:, phase:), n)
+      DiversityService.new.generate_list(candidates, exposures_scope, n)
     end
 
     def eligible_ideas_count(scope = Idea.all)
@@ -23,6 +24,16 @@ module IdeaFeed
     end
 
     private
+
+    def exposures_scope
+      if user
+        IdeaExposure.where(user: user, phase: phase)
+      elsif visitor_hash
+        IdeaExposure.where(visitor_hash: visitor_hash, phase: phase)
+      else
+        IdeaExposure.none
+      end
+    end
 
     def fetch_candidates_with_scores(scope)
       scope
@@ -36,7 +47,7 @@ module IdeaFeed
     end
 
     def fetch_eligible_ideas(scope)
-      exposed_ideas = IdeaExposure.where(user:, phase:).select(:idea_id).distinct
+      exposed_ideas = exposures_scope.select(:idea_id).distinct
 
       scope = scope
         .joins(:ideas_phases)

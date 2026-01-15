@@ -134,6 +134,7 @@ class OmniauthCallbackController < ApplicationController
     continue_auth = verify ? verified_for_sso?(auth, user, user_created) : true
     return unless continue_auth
 
+    transfer_anonymous_exposures(user)
     set_auth_cookie(provider: auth['provider'])
     if sign_up
       signup_success_redirect
@@ -340,5 +341,13 @@ class OmniauthCallbackController < ApplicationController
 
   def verification_service
     @verification_service ||= Verification::VerificationService.new
+  end
+
+  def transfer_anonymous_exposures(user)
+    visitor_hash = VisitorHashService.new.generate_for_visitor(
+      request.remote_ip,
+      request.user_agent
+    )
+    IdeaExposureTransferService.new.transfer(visitor_hash: visitor_hash, user: user)
   end
 end

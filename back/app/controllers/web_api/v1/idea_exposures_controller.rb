@@ -1,16 +1,28 @@
 # frozen_string_literal: true
 
 class WebApi::V1::IdeaExposuresController < ApplicationController
+  skip_before_action :authenticate_user, only: %i[create]
+  skip_after_action :verify_authorized, only: %i[create]
+
   before_action :set_idea, only: %i[create]
 
   def create
     current_phase = TimelineService.new.current_phase(@idea.project)
-    exposure = IdeaExposure.new(
-      idea: @idea,
-      user: current_user,
-      phase: current_phase
-    )
-    authorize exposure
+
+    exposure = if current_user
+      IdeaExposure.new(
+        idea: @idea,
+        user: current_user,
+        phase: current_phase
+      )
+    else
+      IdeaExposure.new(
+        idea: @idea,
+        visitor_hash: visitor_hash,
+        phase: current_phase
+      )
+    end
+
     if exposure.save
       render json: WebApi::V1::IdeaExposureSerializer.new(
         exposure,
@@ -25,5 +37,12 @@ class WebApi::V1::IdeaExposuresController < ApplicationController
 
   def set_idea
     @idea = Idea.find(params[:idea_id])
+  end
+
+  def visitor_hash
+    VisitorHashService.new.generate_for_visitor(
+      request.remote_ip,
+      request.user_agent
+    )
   end
 end

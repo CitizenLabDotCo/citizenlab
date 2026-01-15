@@ -24,6 +24,7 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
 
   def create
     ClaimTokenService.claim(entity, auth_params[:claim_tokens])
+    transfer_anonymous_exposures(entity)
     super
   end
 
@@ -51,5 +52,13 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
     return unless AppConfiguration.instance.feature_activated?('user_confirmation')
 
     raise ActiveRecord::RecordNotFound
+  end
+
+  def transfer_anonymous_exposures(user)
+    visitor_hash = VisitorHashService.new.generate_for_visitor(
+      request.remote_ip,
+      request.user_agent
+    )
+    IdeaExposureTransferService.new.transfer(visitor_hash: visitor_hash, user: user)
   end
 end
