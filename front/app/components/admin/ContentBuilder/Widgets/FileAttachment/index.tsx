@@ -28,7 +28,7 @@ type FileAttachmentProps = {
   fileId?: string;
 };
 
-const FileAttachmentEditor = ({ fileId }: { fileId?: string }) => {
+const FilePreview = ({ fileId }: { fileId?: string }) => {
   const { data: file, isLoading } = useFileById(fileId);
 
   if (!fileId) {
@@ -124,7 +124,7 @@ const FileAttachment = ({ fileId }: FileAttachmentProps) => {
   // No attachment in view mode -> hides widget
   if (!enabled) return null;
 
-  return <FileAttachmentEditor fileId={fileId} />;
+  return <FilePreview fileId={fileId} />;
 };
 
 const FileAttachmentSettings = () => {
