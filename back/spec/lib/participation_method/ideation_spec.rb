@@ -260,8 +260,6 @@ RSpec.describe ParticipationMethod::Ideation do
   end
 
   describe 'user_fields_in_frontend_descriptor' do
-    let(:permission) { phase.permissions.find_by(action: 'posting_idea') }
-
     it 'returns locked: true and not supported explanation if action is not posting idea' do
       permission = phase.permissions.find_by(action: 'commenting_idea')
       descriptor = participation_method.user_fields_in_form_frontend_descriptor
