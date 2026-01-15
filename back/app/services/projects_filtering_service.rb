@@ -24,9 +24,9 @@ class ProjectsFilteringService
   end
 
   HOMEPAGE_FILTER_PARAMS << :global_topics
-  add_filter('by_topics') do |scope, options|
-    topics = options[:global_topics]
-    topics ? scope.with_some_topics(topics) : scope
+  add_filter('by_global_topics') do |scope, options|
+    global_topics = options[:global_topics]
+    global_topics ? scope.with_some_global_topics(global_topics) : scope
   end
 
   HOMEPAGE_FILTER_PARAMS << :areas

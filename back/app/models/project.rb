@@ -124,7 +124,7 @@ class Project < ApplicationRecord
     where(id: with_dups)
   end)
 
-  scope :with_some_topics, (proc do |topic_ids|
+  scope :with_some_global_topics, (proc do |topic_ids|
     joins(:projects_global_topics).where(projects_global_topics: { global_topic_id: topic_ids })
   end)
 
