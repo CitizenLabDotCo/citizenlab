@@ -145,20 +145,6 @@ describe('Native survey permitted by: everyone', () => {
             permitted_by: 'everyone',
             user_fields_in_form: true,
             user_data_collection: 'demographics_only',
-          }).then(() => {
-            // Add one permissions custom field
-            return cy.request({
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${adminJwt}`,
-              },
-              method: 'POST',
-              url: `web_api/v1/phases/${phaseId}/permissions/posting_idea/permissions_custom_fields`,
-              body: {
-                custom_field_id: customFieldId,
-                required: true,
-              },
-            });
           });
         });
       });
@@ -258,20 +244,6 @@ describe('Native survey permitted by: everyone', () => {
             permitted_by: 'everyone',
             user_fields_in_form: true,
             user_data_collection: 'all_data',
-          }).then(() => {
-            // Add one permissions custom field
-            return cy.request({
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${adminJwt}`,
-              },
-              method: 'POST',
-              url: `web_api/v1/phases/${phaseId}/permissions/posting_idea/permissions_custom_fields`,
-              body: {
-                custom_field_id: customFieldId,
-                required: true,
-              },
-            });
           });
         });
       });
@@ -294,20 +266,6 @@ describe('Native survey permitted by: everyone', () => {
             permitted_by: 'everyone',
             user_fields_in_form: true,
             user_data_collection: 'demographics_only',
-          }).then(() => {
-            // Add one permissions custom field
-            return cy.request({
-              headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${adminJwt}`,
-              },
-              method: 'POST',
-              url: `web_api/v1/phases/${phaseId}/permissions/posting_idea/permissions_custom_fields`,
-              body: {
-                custom_field_id: customFieldId,
-                required: true,
-              },
-            });
           });
         });
       });
