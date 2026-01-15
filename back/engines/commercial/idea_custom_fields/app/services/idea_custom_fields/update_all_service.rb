@@ -133,7 +133,7 @@ module IdeaCustomFields
       end
     end
 
-    # Can be overridden by CustomMaps engine
+    # Overridden in CustomMaps::Patches::IdeaCustomFields::UpdateAllService
     def relate_map_config_to_field(_field, _field_params, _index); end
 
     def delete_field!(field)

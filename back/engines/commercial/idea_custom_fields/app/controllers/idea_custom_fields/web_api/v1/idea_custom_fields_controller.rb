@@ -83,10 +83,6 @@ module IdeaCustomFields
 
     private
 
-    def update_all_service
-      @update_all_service ||= UpdateAllService.new(@custom_form, update_all_params, current_user)
-    end
-
     # Extended by CustomMaps::Patches::IdeaCustomFields::WebApi::V1::Admin::IdeaCustomFieldsController
     def include_in_index_response
       %i[options options.image matrix_statements resource]
