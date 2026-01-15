@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
+  include AnonymousExposureTransfer
+
   TOKEN_LIFETIME = 1.day
   before_action :authenticate_user_token_unconfirmed, only: [:user_token_unconfirmed]
   skip_before_action :authenticate, only: [:user_token_unconfirmed]
@@ -18,6 +20,7 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
       )
     else
       ClaimTokenService.claim(user, nil)
+      transfer_anonymous_exposures(user)
       render json: auth_token, status: :created
     end
   end
@@ -52,13 +55,5 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
     return unless AppConfiguration.instance.feature_activated?('user_confirmation')
 
     raise ActiveRecord::RecordNotFound
-  end
-
-  def transfer_anonymous_exposures(user)
-    visitor_hash = VisitorHashService.new.generate_for_visitor(
-      request.remote_ip,
-      request.user_agent
-    )
-    IdeaExposureTransferService.new.transfer(visitor_hash: visitor_hash, user: user)
   end
 end

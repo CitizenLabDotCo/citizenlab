@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class OmniauthCallbackController < ApplicationController
+  include AnonymousExposureTransfer
+
   skip_before_action :authenticate_user
   skip_after_action :verify_authorized
 
@@ -341,13 +343,5 @@ class OmniauthCallbackController < ApplicationController
 
   def verification_service
     @verification_service ||= Verification::VerificationService.new
-  end
-
-  def transfer_anonymous_exposures(user)
-    visitor_hash = VisitorHashService.new.generate_for_visitor(
-      request.remote_ip,
-      request.user_agent
-    )
-    IdeaExposureTransferService.new.transfer(visitor_hash: visitor_hash, user: user)
   end
 end
