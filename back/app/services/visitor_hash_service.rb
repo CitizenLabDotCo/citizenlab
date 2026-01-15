@@ -18,6 +18,6 @@ class VisitorHashService
   end
 
   def salt
-    ENV['VISITOR_HASH_SALT']
+    ENV.fetch('VISITOR_HASH_SALT', nil)
   end
 end
