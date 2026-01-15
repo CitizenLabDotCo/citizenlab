@@ -22,7 +22,10 @@ class WebApi::V1::PermissionSerializer < WebApi::V1::BaseSerializer
 
   # Attribute used in frontend to render access rights UI
   attribute :user_fields_in_form_frontend_descriptor do |permission|
-    permission.user_fields_in_form_frontend_descriptor
+    phase = permission.permission_scope
+    next false unless phase.is_a?(Phase)
+
+    phase.pmethod.user_fields_in_form_frontend_descriptor
   end
 
   belongs_to :permission_scope, polymorphic: true
