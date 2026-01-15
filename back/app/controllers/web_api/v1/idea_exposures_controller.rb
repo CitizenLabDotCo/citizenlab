@@ -2,7 +2,6 @@
 
 class WebApi::V1::IdeaExposuresController < ApplicationController
   skip_before_action :authenticate_user, only: %i[create]
-  skip_after_action :verify_authorized, only: %i[create]
 
   before_action :set_idea, only: %i[create]
 
@@ -22,6 +21,8 @@ class WebApi::V1::IdeaExposuresController < ApplicationController
         phase: current_phase
       )
     end
+
+    authorize exposure
 
     if exposure.save
       render json: WebApi::V1::IdeaExposureSerializer.new(

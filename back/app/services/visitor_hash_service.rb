@@ -8,7 +8,7 @@ class VisitorHashService
   def generate_for_visitor(ip, user_agent)
     return nil unless salt
 
-    hash([salt, ip, user_agent].join)
+    hash([salt, ip, user_agent].join('|'))
   end
 
   private
