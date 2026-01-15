@@ -161,13 +161,13 @@ export default defineMessages({
     defaultMessage: 'Phone',
   },
   signedInHeaderHeightDescription: {
-    id: 'app.containers.ContentBuilder.homepage.signedInHeaderHeightDescription',
+    id: 'app.containers.ContentBuilder.homepage.signedInHeaderHeightDescription2',
     defaultMessage:
       'Customize the signed-in header height for each device size. Default: Desktop {desktop}px, Tablet {tablet}px, Phone {phone}px.',
   },
   signedOutHeaderHeightDescription: {
-    id: 'app.containers.ContentBuilder.homepage.signedOutHeaderHeightDescription',
+    id: 'app.containers.ContentBuilder.homepage.signedOutHeaderHeightDescription2',
     defaultMessage:
-      'Customize the signed-out header height for each device size. Default for {layout}: Desktop {desktop}px, Tablet {tablet}px, Phone {phone}px.',
+      'Customize the signed-out header height for each device size. Default: Desktop {desktop}px, Tablet {tablet}px, Phone {phone}px.',
   },
 });

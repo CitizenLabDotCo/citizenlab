@@ -616,7 +616,6 @@ const HomepageBannerSettings = () => {
               <Label>{formatMessage(messages.headerHeights)}</Label>
               <Text m="0px 0px 12px 0px" color="textSecondary" fontSize="s">
                 {formatMessage(messages.signedOutHeaderHeightDescription, {
-                  layout: bannerLayout,
                   desktop: homepageBannerLayoutHeights[bannerLayout].desktop,
                   tablet: homepageBannerLayoutHeights[bannerLayout].tablet,
                   phone: homepageBannerLayoutHeights[bannerLayout].phone,
