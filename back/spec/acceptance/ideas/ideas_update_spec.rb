@@ -186,11 +186,11 @@ resource 'Ideas' do
 
         describe do
           before do
-            project.update! allowed_input_topics: create_list(:topic, 2)
-            input.update! topics: project.allowed_input_topics
+            project.update! input_topics: create_list(:input_topic, 2, project:)
+            input.update! input_topics: project.input_topics
           end
 
-          let(:project_id) { create(:project, allowed_input_topics: [project.allowed_input_topics.first]).id }
+          let(:project_id) { create(:project, input_topics: [project.input_topics.first]).id }
 
           example_request 'Change the project' do
             assert_status 200

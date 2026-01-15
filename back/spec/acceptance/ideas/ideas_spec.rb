@@ -206,17 +206,17 @@ resource 'Ideas' do
     get 'web_api/v1/ideas/filter_counts' do
       describe do
         before do
-          @t1 = create(:topic)
-          @t2 = create(:topic)
-          @project = create(:single_phase_ideation_project, allowed_input_topics: [@t1, @t2])
+          @t1 = create(:input_topic)
+          @t2 = create(:input_topic)
+          @project = create(:single_phase_ideation_project, input_topics: [@t1, @t2])
 
           @s1 = create(:idea_status)
           @s2 = create(:idea_status)
-          @i1 = create(:idea, project: @project, topics: [@t1, @t2], idea_status: @s1)
-          @i2 = create(:idea, project: @project, topics: [@t1], idea_status: @s2)
-          @i3 = create(:idea, project: @project, topics: [@t2], idea_status: @s2)
-          @i4 = create(:idea, project: @project, topics: [], idea_status: @s2)
-          create(:idea, topics: [@t1, @t2], idea_status: @s1, project: create(:project, allowed_input_topics: [@t1, @t2]))
+          @i1 = create(:idea, project: @project, input_topics: [@t1, @t2], idea_status: @s1)
+          @i2 = create(:idea, project: @project, input_topics: [@t1], idea_status: @s2)
+          @i3 = create(:idea, project: @project, input_topics: [@t2], idea_status: @s2)
+          @i4 = create(:idea, project: @project, input_topics: [], idea_status: @s2)
+          create(:idea, input_topics: [@t1, @t2], idea_status: @s1, project: create(:project, input_topics: [@t1, @t2]))
 
           # a1 -> 3
           # a2 -> 1
@@ -226,7 +226,7 @@ resource 'Ideas' do
           # s2 -> 3
         end
 
-        parameter :topics, 'Filter by topics (OR)', required: false
+        parameter :input_topics, 'Filter by topics (OR)', required: false
         parameter :projects, 'Filter by projects (OR)', required: false
         parameter :phase, 'Filter by project phase', required: false
         parameter :author, 'Filter by author (user id)', required: false
@@ -247,8 +247,8 @@ resource 'Ideas' do
 
           expect(json_attributes[:idea_status_id][@s1.id.to_sym]).to eq 1
           expect(json_attributes[:idea_status_id][@s2.id.to_sym]).to eq 3
-          expect(json_attributes[:topic_id][@t1.id.to_sym]).to eq 2
-          expect(json_attributes[:topic_id][@t2.id.to_sym]).to eq 2
+          expect(json_attributes[:input_topic_id][@t1.id.to_sym]).to eq 2
+          expect(json_attributes[:input_topic_id][@t2.id.to_sym]).to eq 2
           expect(json_attributes[:total]).to eq 4
         end
 

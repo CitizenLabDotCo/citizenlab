@@ -80,28 +80,6 @@ resource 'GlobalTopics' do
       expect(response_data.pluck(:id)).to eq [@global_topics[2].id, @global_topics[0].id, @global_topics[4].id, @global_topics[3].id, @global_topics[1].id]
     end
 
-    describe do
-      before do
-        @author = create(:user)
-        create(:idea, author: @author, topics: @global_topics[1..2])
-        create(:idea, author: @author, topics: [])
-        create(:idea, author: @author, topics: @global_topics[1..1])
-        create(:idea, author: create(:user), topics: @global_topics[1..1])
-        create(:idea, author: @author, topics: @global_topics[2..3])
-      end
-
-      let(:sort) { '-ideas_count' }
-      let(:author) { @author.id }
-
-      example_request 'List all global_topics sorted by ideas count' do
-        assert_status 200
-        expect(response_data.size).to eq 3
-        # global_topics[1] and global_topics[2] are tied with 2 ideas each, global_topics[3] has 1 idea
-        expect(response_data.pluck(:id).take(2)).to contain_exactly(@global_topics[1].id, @global_topics[2].id)
-        expect(response_data.pluck(:id).last).to eq @global_topics[3].id
-      end
-    end
-
     context 'when citizen' do
       it_behaves_like 'publication filtering model', 'global_topic'
     end

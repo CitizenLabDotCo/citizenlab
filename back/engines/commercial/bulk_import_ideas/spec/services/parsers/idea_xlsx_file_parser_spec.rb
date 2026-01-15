@@ -9,8 +9,8 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
 
   before do
     # Topics for project
-    project.allowed_input_topics << create(:topic_economy)
-    project.allowed_input_topics << create(:topic_waste)
+    project.input_topics << create(:input_topic_economy, project:)
+    project.input_topics << create(:input_topic_waste, project:)
 
     # Custom fields - 1 of each type
     create(:custom_field_text, resource: custom_form, key: 'text_field', title_multiloc: { 'en' => 'Text field' })

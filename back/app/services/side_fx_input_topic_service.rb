@@ -6,13 +6,13 @@ class SideFxInputTopicService
   def before_create(input_topic, user); end
 
   def after_create(input_topic, user)
-    LogActivityJob.perform_later(input_topic, 'created', user, input_topic.created_at.to_i, project_id: input_topic.project_id)
+    LogActivityJob.perform_later(input_topic, 'created', user, input_topic.created_at.to_i)
   end
 
   def before_update(input_topic, user); end
 
   def after_update(input_topic, user)
-    LogActivityJob.perform_later(input_topic, 'changed', user, input_topic.updated_at.to_i, project_id: input_topic.project_id)
+    LogActivityJob.perform_later(input_topic, 'changed', user, input_topic.updated_at.to_i)
   end
 
   def before_destroy(input_topic, user); end

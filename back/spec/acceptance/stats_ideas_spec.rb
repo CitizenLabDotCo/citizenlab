@@ -24,7 +24,7 @@ def group_filter_parameter(s)
 end
 
 def topic_filter_parameter(s)
-  s.parameter :topic, 'Topic ID. Only count ideas that have the given topic assigned', required: false
+  s.parameter :input_topic, 'Input topic ID. Only count ideas that have the given input topic assigned', required: false
 end
 
 def feedback_needed_filter_parameter(s)
@@ -243,13 +243,13 @@ resource 'Stats - Ideas' do
     end
 
     describe 'with topic filter' do
-      let(:topic) { @topic.id }
+      let(:input_topic) { @topic.id }
 
       before do
         travel_to start_at + 4.months do
           idea = create(:idea_with_topics)
           create(:idea)
-          @topic = idea.topics.first
+          @topic = idea.input_topics.first
         end
       end
 
@@ -308,13 +308,13 @@ resource 'Stats - Ideas' do
     end
 
     describe 'with topic filter' do
-      let(:topic) { @topic.id }
+      let(:input_topic) { @topic.id }
 
       before do
         travel_to start_at + 4.months do
           idea = create(:idea_with_topics)
           create(:idea)
-          @topic = idea.topics.first
+          @topic = idea.input_topics.first
         end
       end
 

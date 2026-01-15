@@ -78,7 +78,7 @@ resource 'Topics' do
     end
 
     describe 'when filtering by topic ID' do
-      let(:topic) { create(:topic) }
+      let(:topic) { create(:input_topic) }
       let(:topic_id) { topic.id }
 
       before do
