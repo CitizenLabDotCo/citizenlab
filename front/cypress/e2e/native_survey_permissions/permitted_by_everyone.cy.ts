@@ -56,6 +56,7 @@ describe('Native survey permitted by: everyone', () => {
                 phaseId,
                 permitted_by: 'everyone',
                 user_fields_in_form: true,
+                user_data_collection: 'all_data',
               }).then(() => {
                 // Add one permissions custom field
                 return cy.request({
@@ -133,6 +134,35 @@ describe('Native survey permitted by: everyone', () => {
     });
 
     describe('Collect demographics only', () => {
+      before(() => {
+        // Set up data collection for demographics only
+        cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+          const adminJwt = response.body.jwt;
+
+          return updatePermission(cy, {
+            adminJwt,
+            phaseId,
+            permitted_by: 'everyone',
+            user_fields_in_form: true,
+            user_data_collection: 'demographics_only',
+          }).then(() => {
+            // Add one permissions custom field
+            return cy.request({
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${adminJwt}`,
+              },
+              method: 'POST',
+              url: `web_api/v1/phases/${phaseId}/permissions/posting_idea/permissions_custom_fields`,
+              body: {
+                custom_field_id: customFieldId,
+                required: true,
+              },
+            });
+          });
+        });
+      });
+
       it('works', () => {
         fieldsInSurvey();
       });
@@ -217,6 +247,35 @@ describe('Native survey permitted by: everyone', () => {
     });
 
     describe('Collect all data', () => {
+      before(() => {
+        // Set up data collection for all data
+        cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+          const adminJwt = response.body.jwt;
+
+          return updatePermission(cy, {
+            adminJwt,
+            phaseId,
+            permitted_by: 'everyone',
+            user_fields_in_form: true,
+            user_data_collection: 'all_data',
+          }).then(() => {
+            // Add one permissions custom field
+            return cy.request({
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${adminJwt}`,
+              },
+              method: 'POST',
+              url: `web_api/v1/phases/${phaseId}/permissions/posting_idea/permissions_custom_fields`,
+              body: {
+                custom_field_id: customFieldId,
+                required: true,
+              },
+            });
+          });
+        });
+      });
+
       it('works', () => {
         fieldsInSurvey();
         confirmSavedToProfile();
@@ -224,6 +283,35 @@ describe('Native survey permitted by: everyone', () => {
     });
 
     describe('Collect demographics only', () => {
+      before(() => {
+        // Set up data collection for demographics only
+        cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+          const adminJwt = response.body.jwt;
+
+          return updatePermission(cy, {
+            adminJwt,
+            phaseId,
+            permitted_by: 'everyone',
+            user_fields_in_form: true,
+            user_data_collection: 'demographics_only',
+          }).then(() => {
+            // Add one permissions custom field
+            return cy.request({
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${adminJwt}`,
+              },
+              method: 'POST',
+              url: `web_api/v1/phases/${phaseId}/permissions/posting_idea/permissions_custom_fields`,
+              body: {
+                custom_field_id: customFieldId,
+                required: true,
+              },
+            });
+          });
+        });
+      });
+
       it('works', () => {
         fieldsInSurvey();
         confirmSavedToProfile();
