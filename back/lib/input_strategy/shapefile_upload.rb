@@ -9,5 +9,9 @@ module InputStrategy
     def supports_xlsx_import?
       false
     end
+
+    def supports_file_upload?
+      true
+    end
   end
 end

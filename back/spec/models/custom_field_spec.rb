@@ -159,23 +159,6 @@ RSpec.describe CustomField do
     end
   end
 
-  describe '#file_upload?' do
-    it 'returns true when the input_type is "file_upload"' do
-      files_field = described_class.new input_type: 'file_upload'
-      expect(files_field.file_upload?).to be true
-    end
-
-    it 'returns true when the input_type is "shapefile_upload"' do
-      files_field = described_class.new input_type: 'shapefile_upload'
-      expect(files_field.file_upload?).to be true
-    end
-
-    it 'returns false otherwise' do
-      other_field = described_class.new input_type: 'something_else'
-      expect(other_field.file_upload?).to be false
-    end
-  end
-
   describe 'page_layout validation' do
     context 'for page custom_field' do
       let(:page_custom_field) { build(:custom_field_page) }

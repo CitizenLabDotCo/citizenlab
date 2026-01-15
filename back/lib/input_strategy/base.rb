@@ -108,6 +108,10 @@ module InputStrategy
       false
     end
 
+    def supports_file_upload?
+      false
+    end
+
     protected
 
     attr_reader :custom_field
