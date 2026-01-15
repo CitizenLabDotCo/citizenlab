@@ -89,9 +89,18 @@ const QuillEditor = ({
 
   // Initialize Quill
   // https://quilljs.com/playground/react
+  // Using ref to persist across StrictMode remounts (see: https://github.com/zenoamaro/react-quill/issues/784)
+  const quillRef = useRef<Quill | null>(null);
+
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+
+    // Reuse existing Quill instance (fixes React StrictMode double-mount)
+    if (quillRef.current) {
+      setEditor(quillRef.current);
+      return;
+    }
 
     const editorContainer = container.appendChild(
       container.ownerDocument.createElement('div')
@@ -109,12 +118,18 @@ const QuillEditor = ({
       onBlur: onBlurRef.current,
     });
 
+    quillRef.current = quill;
     setHTML(quill, value);
     setEditor(quill);
 
     return () => {
-      container.innerHTML = '';
+      // Only cleanup in production - in dev, StrictMode double-mounts break Quill
+      // if we clear the container (see: https://github.com/zenoamaro/react-quill/issues/784)
+      if (process.env.NODE_ENV !== 'development') {
+        container.innerHTML = '';
+      }
     };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
