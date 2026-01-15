@@ -1,5 +1,6 @@
 import moment = require('moment');
 import { randomString, randomEmail } from '../../support/commands';
+import { updatePermission } from './utils';
 
 describe('Native survey permitted by: everyone', () => {
   let customFieldId = '';
@@ -13,32 +14,6 @@ describe('Native survey permitted by: everyone', () => {
 
   const twoDaysAgo = moment().subtract(2, 'days').format('DD/MM/YYYY');
   const inTwoMonths = moment().add(2, 'month').format('DD/MM/YYYY');
-
-  const updatePermission = ({
-    adminJwt,
-    permitted_by,
-    user_fields_in_form,
-    user_data_collection,
-  }: {
-    adminJwt: string;
-    permitted_by?: string;
-    user_fields_in_form?: boolean;
-    user_data_collection?: string;
-  }) => {
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
-      },
-      method: 'PATCH',
-      url: `web_api/v1/phases/${phaseId}/permissions/posting_idea`,
-      body: {
-        permitted_by,
-        user_fields_in_form,
-        user_data_collection,
-      },
-    });
-  };
 
   before(() => {
     // Create custom field
@@ -76,8 +51,9 @@ describe('Native survey permitted by: everyone', () => {
             .then((response) => {
               const adminJwt = response.body.jwt;
 
-              return updatePermission({
+              return updatePermission(cy, {
                 adminJwt,
+                phaseId,
                 permitted_by: 'everyone',
                 user_fields_in_form: true,
               }).then(() => {
