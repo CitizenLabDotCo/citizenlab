@@ -41,11 +41,6 @@ class Permission < ApplicationRecord
     'common_ground' => %w[posting_idea reacting_idea attending_event]
   }
   SCOPE_TYPES = [nil, 'Phase'].freeze
-  UNSUPPORTED_DESCRIPTOR = {
-    value: nil,
-    locked: true,
-    explanation: 'user_fields_in_survey_not_supported_for_participation_method'
-  }
 
   scope :filter_enabled_actions, ->(permission_scope) { where(action: enabled_actions(permission_scope)) }
   scope :order_by_action, lambda { |permission_scope|

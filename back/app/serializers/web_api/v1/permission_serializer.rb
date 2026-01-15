@@ -20,7 +20,6 @@ class WebApi::V1::PermissionSerializer < WebApi::V1::BaseSerializer
     phase.pmethod.user_fields_in_form?
   end
 
-  # Attribute used in frontend to render access rights UI
   attribute :user_fields_in_form_frontend_descriptor do |permission|
     phase = permission.permission_scope
     next false unless phase.is_a?(Phase)

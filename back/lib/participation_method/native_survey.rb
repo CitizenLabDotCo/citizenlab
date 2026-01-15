@@ -128,10 +128,9 @@ module ParticipationMethod
       false
     end
 
+    # Attribute used in frontend to render access rights UI
     def user_fields_in_form_frontend_descriptor
-      # If the permission is not about posting an idea in a native survey phase
-      # or community monitor phase,
-      # we don't support this attribute
+      # Check should not be necessary but just in case
       return UNSUPPORTED_DESCRIPTOR unless posting_permission&.action == 'posting_idea'
 
       if posting_permission.permitted_by == 'everyone'
