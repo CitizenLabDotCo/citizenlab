@@ -30,7 +30,7 @@ class UserFieldsInFormService
 
   # Update the user profile if user fields are asked as last page
   def self.merge_user_fields_from_idea_into_user(idea, user)
-    return unless user && idea.participation_method_on_creation.user_fields_in_form?
+    return unless user && idea.participation_method_on_creation.user_fields_in_form_enabled?
 
     user_values_from_idea = idea.custom_field_values
       .select { |key, _value| key.start_with?(prefix) }

@@ -145,7 +145,7 @@ class WebApi::V1::IdeasController < ApplicationController
     # Merge custom field values from the user's profile
     # if user fields are presented in the idea form
     # AND the user_data_collection setting allows it
-    if phase.pmethod.user_fields_in_form?
+    if phase.pmethod.user_fields_in_form_enabled?
       draft_idea.custom_field_values = UserFieldsInFormService.merge_user_fields_into_idea(
         current_user,
         phase,
