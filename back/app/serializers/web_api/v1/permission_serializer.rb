@@ -15,7 +15,7 @@ class WebApi::V1::PermissionSerializer < WebApi::V1::BaseSerializer
 
   attribute :user_fields_in_form do |permission|
     phase = permission.permission_scope
-    next false unless phase.is_a?(Phase)
+    next pmethod.class::UNSUPPORTED_DESCRIPTOR unless phase.is_a?(Phase)
 
     phase.pmethod.user_fields_in_form?
   end
