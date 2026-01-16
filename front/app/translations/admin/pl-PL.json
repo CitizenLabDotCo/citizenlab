@@ -141,6 +141,7 @@
   "app.components.admin.ActionForm.Fields.globalRegFlow": "Włączone w globalnym przepływie rejestracji",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "globalny przepływ rejestracji",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "To pytanie jest włączone na stronie {globalRegFlowLink}. Możesz je wyłączyć dla tej akcji.",
+  "app.components.admin.ActionForm.Fields.user_fields_in_form_not_supported_for_action": "Asking demographic questions as the last page of the form is not supported for this action.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow": "Przy obecnej kombinacji ustawień \"Uwierzytelnianie\" i \"Gromadzenie danych użytkownika\" pytania demograficzne mogą być zadawane tylko w procesie rejestracji.",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Wybór sposobu zadawania pytań demograficznych uczestnikom nie ma zastosowania, ponieważ wyłączyłeś uwierzytelnianie i wybrałeś pełną anonimowość.",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "Aby dodać zawartość wewnątrz akordeonu, otwórz akordeon, naciskając symbol \">\", a następnie przeciągnij dowolne widżety do środka.",
