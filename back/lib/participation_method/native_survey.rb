@@ -131,7 +131,8 @@ module ParticipationMethod
     delegate :user_data_collection, to: :posting_permission
 
     def user_fields_in_form?
-      posting_permission&.user_fields_in_form?
+      return false if posting_permission.nil?
+      posting_permission.user_fields_in_form?
     end
 
     private
@@ -160,6 +161,9 @@ module ParticipationMethod
     end
 
     def posting_permission
+      # phase should always be defined,
+      # but for some reason it's not in some unit tests.
+      return nil if phase.nil?
       @posting_permission ||= Permission.find_by(
         permission_scope_id: phase.id,
         action: 'posting_idea'
