@@ -14,17 +14,11 @@ class WebApi::V1::PermissionSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :user_fields_in_form do |permission|
-    phase = permission.permission_scope
-    next pmethod.class::UNSUPPORTED_DESCRIPTOR unless phase.is_a?(Phase)
-
-    phase.pmethod.user_fields_in_form?
+    permission.user_fields_in_form?
   end
 
   attribute :user_fields_in_form_frontend_descriptor do |permission|
-    phase = permission.permission_scope
-    next false unless phase.is_a?(Phase)
-
-    phase.pmethod.user_fields_in_form_frontend_descriptor
+    permission.user_fields_in_form_frontend_descriptor
   end
 
   belongs_to :permission_scope, polymorphic: true
