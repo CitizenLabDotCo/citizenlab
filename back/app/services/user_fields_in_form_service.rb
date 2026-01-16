@@ -130,7 +130,7 @@ class UserFieldsInFormService
   def self.user_fields_in_form_frontend_descriptor(permission, participation_method)
     return Permission::UNSUPPORTED_DESCRIPTOR unless permission.action == 'posting_idea'
 
-    if ['native_survey', 'community_monitor_survey'].include?(participation_method)
+    if %w[native_survey community_monitor_survey].include?(participation_method)
       return user_fields_in_form_frontend_descriptor_survey(permission)
     end
 
