@@ -227,6 +227,11 @@ module ParticipationMethod
       'all_data'
     end
 
+    # Only implemented in native_survey, community monitor and ideation
+    def user_fields_in_form?
+      false
+    end
+
     def supports_multiple_phase_reports?
       false
     end
