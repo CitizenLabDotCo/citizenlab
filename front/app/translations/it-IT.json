@@ -1648,7 +1648,7 @@
   "app.containers.NotificationMenu.error": "Impossibile caricare le notifiche",
   "app.containers.NotificationMenu.internalCommentOnIdeaAssignedToYou": "{name} ha commentato internamente un input che ti è stato assegnato",
   "app.containers.NotificationMenu.internalCommentOnIdeaYouCommentedInternallyOn": "{name} ha commentato internamente un input che ha commentato internamente",
-  "app.containers.NotificationMenu.internalCommentOnIdeaYouModerate": "{name} hai commentato internamente un input in un progetto che gestisci",
+  "app.containers.NotificationMenu.internalCommentOnIdeaYouModerate": "{name} ha commentato internamente un contributo in un progetto che gestisci",
   "app.containers.NotificationMenu.internalCommentOnUnassignedUnmoderatedIdea": "{name} commentare internamente un input non assegnato in un progetto non gestito",
   "app.containers.NotificationMenu.internalCommentOnYourInternalComment": "{name} ha commentato il tuo commento interno",
   "app.containers.NotificationMenu.invitationToCosponsorContribution": "{name} ti ha invitato a co-sponsorizzare un contributo",
