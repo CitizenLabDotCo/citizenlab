@@ -2,6 +2,21 @@
 
 module ContentBuilder
   class LayoutPolicy < ApplicationPolicy
+    class Scope < ApplicationPolicy::Scope
+      def resolve
+        # Resetting the order because it interferes with +pluck+ and sometimes results in
+        # an invalid query.
+        content_buildable_types = scope.distinct.reorder(nil).pluck(:content_buildable_type).compact
+
+        scoped_layouts = content_buildable_types.map do |content_buildable_type|
+          scope.where(content_buildable_type: content_buildable_type, content_buildable_id: scope_for(content_buildable_type.constantize))
+        end.reduce(scope.none, :or)
+
+        # Homepage layouts (content_buildable_type nil) are always visible
+        scoped_layouts.or(scope.where(content_buildable_type: nil))
+      end
+    end
+
     def show?
       true
     end
