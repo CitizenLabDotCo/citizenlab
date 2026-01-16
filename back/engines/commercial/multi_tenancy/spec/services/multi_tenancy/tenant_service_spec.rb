@@ -9,8 +9,7 @@ RSpec.describe MultiTenancy::TenantService do
 
   describe '#shift_timestamps' do
     before do
-      allow(Tenant.current).to receive(:active?).and_return(false)
-      allow(Tenant.current).to receive(:churned?).and_return(false)
+      allow(Tenant.current).to receive_messages(active?: false, churned?: false)
     end
 
     it 'shifts timestamps that are more than 24 hours in the past' do
