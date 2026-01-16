@@ -106,7 +106,7 @@ it:
       proposal_title: 'Esempio di proposta'
       input_status_title: 'Esempio di status'
       input_status_description: 'Un esempio di status per un contributo (ad esempio accettato, rifiutato, implementato...)'
-      official_feedback_body: 'Esempio di feedback ufficiale'
+      official_feedback_body: 'Esempio di riscontro ufficiale'
     footer:
       "link_privacy_policy": "Politica sulla privacy"
       "link_terms_conditions": "Termini e condizioni"
@@ -329,13 +329,13 @@ it:
       preheader: '''%{post}'' ha un nuovo commento interno'
     internal_comment_on_idea_you_moderate:
       cta_button: 'Visualizza il commento di %{firstName}'
-      event_description: '%{authorNameFull} ha commentato internamente un input in un progetto o in una cartella che gestisci.'
+      event_description: '%{authorNameFull} ha commentato internamente un contributo in un progetto o in una cartella che gestisci.'
       subject: '''%{post}'' ha un nuovo commento interno'
       title: 'Nuovo commento interno su ''%{post}'''
       preheader: '''%{post}'' ha un nuovo commento interno'
     internal_comment_on_unassigned_unmoderated_idea:
       cta_button: 'Visualizza il commento di %{firstName}'
-      event_description: '%{authorNameFull} ha commentato internamente un input non assegnato in un progetto non gestito.'
+      event_description: '%{authorNameFull} ha commentato internamente un contributo non assegnato in un progetto non gestito.'
       subject: '''%{post}'' ha un nuovo commento interno'
       title: 'Nuovo commento interno su ''%{post}'''
       preheader: '''%{post}'' ha un nuovo commento interno'
@@ -480,13 +480,13 @@ it:
     your_input_in_screening:
       main_header:
         idea: 'La tua idea è in "%{prescreening_status_title}"'
-        question: 'La tua domanda è in "%{prescreening_status_title}".'
-        contribution: 'Il tuo contributo è su "%{prescreening_status_title}".'
-        project: 'Il tuo progetto è in "%{prescreening_status_title}".'
-        issue: 'Il tuo problema è in "%{prescreening_status_title}".'
-        option: 'La tua opzione è in "%{prescreening_status_title}".'
-        proposal: 'La tua proposta è su "%{prescreening_status_title}".'
-        petition: 'La tua petizione è su "%{prescreening_status_title}".'
+        question: 'La tua domanda è in "%{prescreening_status_title}"'
+        contribution: 'Il tuo contributo è in "%{prescreening_status_title}"'
+        project: 'Il tuo progetto è in "%{prescreening_status_title}"'
+        issue: 'Il tuo parere è in "%{prescreening_status_title}"'
+        option: 'La tua opzione è in "%{prescreening_status_title}"'
+        proposal: 'La tua proposta è in "%{prescreening_status_title}"'
+        petition: 'La tua petizione è in "%{prescreening_status_title}"'
       event_description: '"%{input_title}" diventerà visibile a tutti una volta che sarà stato esaminato e approvato.'
       subject: '"%{input_title}" sarà presto pubblicato'
       preheader: 'Attualmente si trova su %{prescreening_status_title}'
@@ -621,7 +621,7 @@ it:
         internal_comment_is_posted_on_idea_assigned_to_user: 'Commento interno sul contributo assegnato all''utente'
         internal_comment_is_posted_on_idea_in_project_or_folder_user_manages: 'Il commento interno viene pubblicato sull''input del progetto o della cartella che l''utente gestisce'
         internal_comment_is_posted_on_idea_user_has_commented_internally_on: 'Commento interno sul contributo che l''utente ha commentato internamente'
-        internal_comment_is_posted_on_idea_user_moderates: 'Il commento interno è pubblicato su input che l''utente modera'
+        internal_comment_is_posted_on_idea_user_moderates: 'Il commento interno è pubblicato sul contributo che l''utente modera'
         internal_comment_is_posted_on_unassigned_unmoderated_idea: 'Viene pubblicato un commento interno su un contributo non assegnato in un progetto non gestito'
         project_review_request: 'Il moderatore ha richiesto una revisione del progetto'
         project_review_state_change: 'Il revisore ha approvato il progetto'
