@@ -149,9 +149,7 @@ class UserFieldsInFormService
     "#{prefix}#{key}"
   end
 
-  private
-
-  def user_fields_in_form_frontend_descriptor_survey(permission)
+  private_class_method def self.user_fields_in_form_frontend_descriptor_survey(permission)
     if permission.permitted_by == 'everyone'
       if permission.user_data_collection == 'anonymous'
         {
@@ -181,7 +179,7 @@ class UserFieldsInFormService
     end
   end
 
-  def user_fields_in_form_frontend_descriptor_ideation(permission)
+  private_class_method def self.user_fields_in_form_frontend_descriptor_ideation(permission)
     if permission.permitted_by == 'everyone'
       {
         value: true,

@@ -117,7 +117,7 @@ class Permission < ApplicationRecord
 
     service = UserFieldsInFormService
     service.user_fields_in_form_frontend_descriptor(
-      permission, 
+      self, 
       permission_scope.participation_method
     )
   end
