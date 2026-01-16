@@ -263,7 +263,7 @@ fr-BE:
       cta_button: 'Voir le commentaire de %{authorFirstName}'
       days_ago: 'Il y a %{numberOfDays} jours'
       event_description: '%{authorName} a écrit un commentaire sur votre plateforme. N''hésitez pas à joindre à la discussion et à poursuivre la conversation !'
-      title: '%{firstName}, un nouveau commentaire a été posté sur votre plate-forme'
+      title: '%{firstName}, un nouveau commentaire a été posté sur votre plateforme'
       subject: 'Il y a un nouveau commentaire sur la plateforme de %{organizationName}'
       preheader: '%{authorName} a laissé un commentaire'
       today: Aujourd'hui
