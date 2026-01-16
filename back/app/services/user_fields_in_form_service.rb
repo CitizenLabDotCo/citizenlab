@@ -41,7 +41,7 @@ class UserFieldsInFormService
 
   # Append user custom fields to form
   def self.add_user_fields_to_form(fields, participation_method, custom_form)
-    return fields unless participation_method.user_fields_in_form?
+    return fields unless participation_method.user_fields_in_form_enabled?
 
     phase = custom_form.participation_context
     permission = phase.permissions.find_by(action: 'posting_idea')
@@ -104,18 +104,18 @@ class UserFieldsInFormService
     # Confirm that the idea belongs to the current user
     return false unless idea.author_id == current_user.id
 
+    permission = phase.permissions.find_by(action: 'posting_idea')
+
     # Confirm that user fields are asked in registration process
     # If they are asked in the form, we know that they won't be asked
     # in the registration process
-    return false if phase.pmethod.user_fields_in_form?
+    return false if permission.user_fields_in_form_enabled?
 
     # Confirm that user fields are asked at all
-    permission = phase.permissions.find_by(action: 'posting_idea')
     return false unless permission
 
     requirements = Permissions::UserRequirementsService.new.requirements(permission, nil)
     return false unless requirements[:custom_fields]
-
     return false if requirements[:custom_fields].empty?
 
     # Confirm that user_data_collection = 'all_data' or 'demographics_only'

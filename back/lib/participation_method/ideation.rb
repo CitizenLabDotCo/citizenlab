@@ -465,6 +465,11 @@ module ParticipationMethod
       %i[ideation_method].include?(attribute)
     end
 
+    def user_fields_in_form_enabled?
+      return false if posting_permission.nil?
+      posting_permission.user_fields_in_form_enabled?
+    end
+
     def user_fields_in_form?
       return false if posting_permission.nil?
       posting_permission.user_fields_in_form?

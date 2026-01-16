@@ -228,6 +228,11 @@ module ParticipationMethod
     end
 
     # Only implemented in native_survey, community monitor and ideation
+    def user_fields_in_form_enabled?
+      false
+    end
+
+    # Only implemented in native_survey, community monitor and ideation
     def user_fields_in_form?
       false
     end

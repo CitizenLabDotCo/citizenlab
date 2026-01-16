@@ -115,20 +115,27 @@ class Permission < ApplicationRecord
   def user_fields_in_form_frontend_descriptor
     return UNSUPPORTED_DESCRIPTOR unless permission_scope.is_a?(Phase)
 
-    service = UserFieldsInFormService
-    service.user_fields_in_form_frontend_descriptor(
+    UserFieldsInFormService.user_fields_in_form_frontend_descriptor(
       self,
       permission_scope.participation_method
     )
   end
 
-  # Attribute used interally by backend to determine if user fields should be shown in the form
+  # This just checks if the user fields are enabled for the form
+  # This does not guarantee that they will be added, because it is possible
+  # that there are none
+  def user_fields_in_form_enabled?
+    !!user_fields_in_form_frontend_descriptor[:value]
+  end
+
+  # This checks both if the user fields are enabled for the form
+  # AND that they will be added
   def user_fields_in_form?
     has_fields = !permissions_custom_fields.empty?
     supports_global_fields = %w[everyone everyone_confirmed_email].exclude?(permitted_by)
     has_global_fields = supports_global_fields && global_custom_fields
 
-    user_fields_in_form_frontend_descriptor[:value] && (has_fields || has_global_fields)
+    user_fields_in_form_enabled? && (has_fields || has_global_fields)
   end
 
   private
