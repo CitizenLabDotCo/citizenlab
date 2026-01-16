@@ -132,11 +132,13 @@ module ParticipationMethod
 
     def user_fields_in_form_enabled?
       return false if posting_permission.nil?
+
       posting_permission.user_fields_in_form_enabled?
     end
 
     def user_fields_in_form?
       return false if posting_permission.nil?
+
       posting_permission.user_fields_in_form?
     end
 
@@ -169,6 +171,7 @@ module ParticipationMethod
       # phase should always be defined,
       # but for some reason it's not in some unit tests.
       return nil if phase.nil?
+
       @posting_permission ||= Permission.find_by(
         permission_scope_id: phase.id,
         action: 'posting_idea'
