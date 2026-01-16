@@ -488,5 +488,12 @@ module ParticipationMethod
     def proposed_budget_in_form?
       true
     end
+
+    def posting_permission
+      @posting_permission ||= Permission.find_by(
+        permission_scope_id: phase.id,
+        action: 'posting_idea'
+      )
+    end
   end
 end
