@@ -44,7 +44,7 @@ class Permission < ApplicationRecord
   UNSUPPORTED_DESCRIPTOR = {
     value: nil,
     locked: true,
-    explanation: 'user_fields_in_survey_not_supported_for_participation_method'
+    explanation: 'user_fields_in_form_not_supported_for_action'
   }
 
   scope :filter_enabled_actions, ->(permission_scope) { where(action: enabled_actions(permission_scope)) }

@@ -115,7 +115,7 @@ RSpec.describe Permission do
       descriptor = permission.user_fields_in_form_frontend_descriptor
       expect(descriptor[:value]).to be_nil
       expect(descriptor[:locked]).to be_truthy
-      expect(descriptor[:explanation]).to eq('user_fields_in_survey_not_supported_for_participation_method')
+      expect(descriptor[:explanation]).to eq('user_fields_in_form_not_supported_for_action')
     end
 
     context 'surveys' do
@@ -170,7 +170,7 @@ RSpec.describe Permission do
         descriptor = permission.user_fields_in_form_frontend_descriptor
         expect(descriptor[:value]).to be_nil
         expect(descriptor[:locked]).to be_truthy
-        expect(descriptor[:explanation]).to eq('user_fields_in_survey_not_supported_for_participation_method')
+        expect(descriptor[:explanation]).to eq('user_fields_in_form_not_supported_for_action')
       end
     end
   end
