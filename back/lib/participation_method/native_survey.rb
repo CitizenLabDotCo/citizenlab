@@ -166,7 +166,7 @@ module ParticipationMethod
     def user_fields_in_form?
       has_fields = !posting_permission.permissions_custom_fields.empty?
       permitted_by = posting_permission.permitted_by
-      supports_global_fields = !%w[everyone everyone_confirmed_email].include?(permitted_by)
+      supports_global_fields = %w[everyone everyone_confirmed_email].exclude?(permitted_by)
       has_global_fields = supports_global_fields && posting_permission.global_custom_fields
 
       user_fields_in_form_frontend_descriptor[:value] && (has_fields || has_global_fields)

@@ -275,7 +275,7 @@ RSpec.describe ParticipationMethod::Ideation do
       descriptor = participation_method.user_fields_in_form_frontend_descriptor
       expect(descriptor[:value]).to be_falsey
       expect(descriptor[:locked]).to be_falsey
-      expect(descriptor[:explanation]).to eq(nil)
+      expect(descriptor[:explanation]).to be_nil
     end
   end
 end
