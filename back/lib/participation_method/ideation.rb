@@ -476,6 +476,7 @@ module ParticipationMethod
     end
 
     def posting_permission
+      return nil if phase.nil?
       @posting_permission ||= Permission.find_by(
         permission_scope_id: phase.id,
         action: 'posting_idea'
