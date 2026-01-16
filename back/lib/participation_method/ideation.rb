@@ -466,7 +466,7 @@ module ParticipationMethod
     end
 
     def user_fields_in_form_frontend_descriptor
-      return UNSUPPORTED_DESCRIPTOR unless posting_permission&.action == 'posting_idea'
+      return UNSUPPORTED_DESCRIPTOR unless posting_permission
 
       if posting_permission.permitted_by == 'everyone'
         {

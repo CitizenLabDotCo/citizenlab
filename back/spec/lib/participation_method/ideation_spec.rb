@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ParticipationMethod::Ideation do
   subject(:participation_method) { described_class.new phase }
 
-  let(:phase) { create(:phase) }
+  let(:phase) { create(:phase, with_permissions: true) }
 
   before_all { SettingsService.new.activate_feature!('ideation_accountless_posting') }
 
@@ -260,17 +260,9 @@ RSpec.describe ParticipationMethod::Ideation do
   end
 
   describe 'user_fields_in_frontend_descriptor' do
-    it 'returns locked: true and not supported explanation if action is not posting idea' do
-      phase.permissions.find_by(action: 'commenting_idea')
-      descriptor = participation_method.user_fields_in_form_frontend_descriptor
-      expect(descriptor[:value]).to be_nil
-      expect(descriptor[:locked]).to be_truthy
-      expect(descriptor[:explanation]).to eq('user_fields_in_survey_not_supported_for_participation_method')
-    end
-
     it 'if permitted_by is everyone: returns locked: true and value: true' do
       permission = phase.permissions.find_by(action: 'posting_idea')
-      permission.update(permitted_by: 'everyone', user_fields_in_form: false)
+      permission.update!(permitted_by: 'everyone', user_fields_in_form: false)
       descriptor = participation_method.user_fields_in_form_frontend_descriptor
       expect(descriptor[:value]).to be_truthy
       expect(descriptor[:locked]).to be_truthy
@@ -279,7 +271,7 @@ RSpec.describe ParticipationMethod::Ideation do
 
     it 'if permitted_by is not everyone: returns locked: false and whatever user_fields_in_form is' do
       permission = phase.permissions.find_by(action: 'posting_idea')
-      permission.update(permitted_by: 'users', user_fields_in_form: false)
+      permission.update!(permitted_by: 'users', user_fields_in_form: false)
       descriptor = participation_method.user_fields_in_form_frontend_descriptor
       expect(descriptor[:value]).to be_falsey
       expect(descriptor[:locked]).to be_falsey

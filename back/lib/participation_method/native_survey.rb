@@ -131,7 +131,7 @@ module ParticipationMethod
     # Attribute used in frontend to render access rights UI
     def user_fields_in_form_frontend_descriptor
       # Check should not be necessary but just in case
-      return UNSUPPORTED_DESCRIPTOR unless posting_permission&.action == 'posting_idea'
+      return UNSUPPORTED_DESCRIPTOR unless posting_permission
 
       if posting_permission.permitted_by == 'everyone'
         if posting_permission.user_data_collection == 'anonymous'
