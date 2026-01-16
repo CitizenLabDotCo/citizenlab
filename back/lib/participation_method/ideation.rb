@@ -466,7 +466,21 @@ module ParticipationMethod
     end
 
     def user_fields_in_form_frontend_descriptor
-      # TODO
+      return UNSUPPORTED_DESCRIPTOR unless posting_permission&.action == 'posting_idea'
+
+      if posting_permission.permitted_by == 'everyone'
+        {
+          value: true,
+          locked: true,
+          explanation: 'cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone'
+        }
+      else
+        {
+          value: posting_permission.user_fields_in_form,
+          locked: false,
+          explanation: nil
+        }
+      end
     end
 
     private
