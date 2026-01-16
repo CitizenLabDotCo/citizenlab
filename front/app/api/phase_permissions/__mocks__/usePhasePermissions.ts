@@ -14,7 +14,6 @@ export const phasePermissionsData: IPhasePermissionData = {
     access_denied_explanation_multiloc: {},
     everyone_tracking_enabled: false,
     user_data_collection: 'all_data',
-    user_fields_in_form: false,
     user_fields_in_form_frontend_descriptor: {
       value: null,
       locked: true,
