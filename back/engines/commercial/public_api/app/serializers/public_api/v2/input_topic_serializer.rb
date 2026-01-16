@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-class PublicApi::V2::GlobalTopicSerializer < PublicApi::V2::BaseSerializer
-  type :global_topic
+class PublicApi::V2::InputTopicSerializer < PublicApi::V2::BaseSerializer
+  type :input_topic
 
   attributes :id,
+    :project_id,
     :title,
     :description,
     :created_at,
@@ -15,11 +16,5 @@ class PublicApi::V2::GlobalTopicSerializer < PublicApi::V2::BaseSerializer
 
   def description
     multiloc_service.t(object.description_multiloc)
-  end
-
-  private
-
-  def multiloc_service
-    @multiloc_service ||= MultilocService.new
   end
 end

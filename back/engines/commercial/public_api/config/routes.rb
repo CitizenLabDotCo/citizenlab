@@ -33,7 +33,8 @@ PublicApi::Engine.routes.draw do
       route_mapper.resources :phases
       route_mapper.resources :project_folders
       route_mapper.resources :reactions, only: %i[index]
-      route_mapper.resources :topics, controller: 'global_topics'
+      route_mapper.resources :global_topics
+      route_mapper.resources :input_topics
       route_mapper.resources :areas
       route_mapper.resources :users
       route_mapper.resources :volunteering_causes
@@ -42,6 +43,11 @@ PublicApi::Engine.routes.draw do
       route_mapper.resources :projects do
         resources :phases, only: %i[index]
       end
+    end
+
+    # Deprecated: merged topics endpoint (use /global_topics or /input_topics instead)
+    resources :topics, only: %i[index show] do
+      get 'deleted', on: :collection
     end
 
     # Association endpoints
