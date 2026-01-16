@@ -339,7 +339,7 @@
   "app.components.ParticipationCTABars.VotingCTABar.noVotesCast4": "Je moet minstens één optie selecteren voordat je kunt verzenden.",
   "app.components.ParticipationCTABars.VotingCTABar.nothingInBasket": "Je moet iets aan je mandje toevoegen voordat je het kunt versturen.",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfCreditsLeft": "{votesLeft, plural, =0 {Geen credits over} other {# van {totalNumberOfVotes, plural, one {1 credit} other {# credits}} over}}",
-  "app.components.ParticipationCTABars.VotingCTABar.numberOfPercentsLeft3": "{votesLeft, plural, =0 {Geen percentage over} other {# uit {totalNumberOfVotes, plural, one {1 procent} other {# procent}} over}}",
+  "app.components.ParticipationCTABars.VotingCTABar.numberOfPercentsLeft3": "{votesLeft, plural, =0 {Geen percentage over} other {# van {totalNumberOfVotes, plural, one {1 procent} other {# procent}} over}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfPointsLeft": "{votesLeft, plural, =0 {Geen punten over} other {# van {totalNumberOfVotes, plural, one {1 punt} other {# punten}} over}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfTokensLeft": "{votesLeft, plural, =0 {Geen tokens over} other {# van {totalNumberOfVotes, plural, one {1 token} other {# tokens}} over}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfVotesLeft": "{votesLeft, plural, =0 {Geen stemmen over} other {# van {totalNumberOfVotes, plural, one {1 stem} other {# stemmen}} over}}",
