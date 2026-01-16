@@ -139,14 +139,10 @@ namespace :demos do
         result
       end
 
-      # Iterate through all models that inherit from ApplicationRecord
-      ApplicationRecord.descendants.each do |model|
-        # Skip abstract classes and models without database tables
-        next if model.abstract_class?
-        next unless model.table_exists?
-
+      # Iterate through all models
+      Cl2DataListingService.new.cl2_schema_models.each do |model|
         # Find columns that store multiloc data (JSON with locale keys)
-        multiloc_columns = model.column_names.select { |col| col.end_with?('_multiloc') }
+        multiloc_columns = data_listing_service.multiloc_attributes(model)
         next if multiloc_columns.empty?
 
         model_issues = []
