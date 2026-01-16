@@ -128,16 +128,6 @@ class Permission < ApplicationRecord
     !!user_fields_in_form_frontend_descriptor[:value]
   end
 
-  # This checks both if the user fields are enabled for the form
-  # AND that they will be added
-  def user_fields_in_form?
-    has_fields = !permissions_custom_fields.empty?
-    supports_global_fields = %w[everyone everyone_confirmed_email].exclude?(permitted_by)
-    has_global_fields = supports_global_fields && global_custom_fields
-
-    user_fields_in_form_enabled? && (has_fields || has_global_fields)
-  end
-
   private
 
   def set_permitted_by_and_global_custom_fields

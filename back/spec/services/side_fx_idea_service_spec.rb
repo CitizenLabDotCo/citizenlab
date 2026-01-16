@@ -543,7 +543,7 @@ describe SideFxIdeaService do
         expect(user.custom_field_values).to eq({ 'gender' => 'female' })
       end
 
-      it 'does not update user profile if not user_fields_in_form?' do
+      it 'does not update user profile if user_fields_in_form = false' do
         permission = Permission.find_by(
           permission_scope_id: phase.id,
           action: 'posting_idea'

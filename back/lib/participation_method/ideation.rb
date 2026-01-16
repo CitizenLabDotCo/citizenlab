@@ -471,12 +471,6 @@ module ParticipationMethod
       posting_permission.user_fields_in_form_enabled?
     end
 
-    def user_fields_in_form?
-      return false if posting_permission.nil?
-
-      posting_permission.user_fields_in_form?
-    end
-
     private
 
     def proposed_budget_in_form?

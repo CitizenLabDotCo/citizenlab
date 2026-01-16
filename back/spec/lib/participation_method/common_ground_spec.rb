@@ -93,7 +93,6 @@ RSpec.describe ParticipationMethod::CommonGround do
   its(:add_autoreaction_to_inputs?) { is_expected.to be(false) }
 
   its(:form_logic_enabled?) { is_expected.to be(false) }
-  its(:user_fields_in_form?) { is_expected.to be(false) }
   its(:supports_custom_field_categories?) { is_expected.to be(false) }
   its(:built_in_title_required?) { is_expected.to be(true) }
 
