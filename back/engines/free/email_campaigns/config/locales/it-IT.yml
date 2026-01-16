@@ -143,7 +143,7 @@ it:
       new_comments: 'Nuovi commenti'
       title_activity_past_week: 'Attività della settimana passata'
       title_no_activity_past_week: 'Non c''è stata attività nell''ultima settimana'
-      reached_threshold: 'Raggiunta la soglia'
+      reached_threshold: 'Soglia raggiunta'
       yesterday_by_author: 'Ieri da %{author}'
       today_by_author: 'Oggi da %{author}'
       x_days_ago_by_author: '%{x} giorni fa da %{author}'
@@ -400,7 +400,7 @@ it:
     project_published:
       subject: 'È stato pubblicato un nuovo progetto sulla piattaforma di %{organizationName}'
       title: 'È stato pubblicato un nuovo progetto'
-      event_description: 'La piattaforma di partecipazione di %{organizationName} ha appena pubblicato il seguente progetto:'
+      event_description: 'La piattaforma partecipativa di %{organizationName} ha appena pubblicato il seguente progetto:'
       preheader: 'È stato pubblicato un nuovo progetto'
       cta_button: 'Vai a questo progetto'
     project_review_request:
@@ -430,12 +430,12 @@ it:
       event_description: "Ecco un riassunto di ciò che è successo sulla piattaforma partecipativa di %{organizationName}."
       cta_button: "Vai alla piattaforma"
       title_no_activity_past_week: "Nessuna attività nell'ultima settimana"
-      successful_proposals_title: "Raggiunta la soglia"
+      successful_proposals_title: "Soglia raggiunta"
       successful_proposals_text: "Nell'ultima settimana, queste proposte hanno ottenuto un sostegno sufficiente per passare alla fase successiva."
       today_by_author: "Oggi da %{author}"
       yesterday_by_author: "Ieri da %{author}"
       x_days_ago_by_author: "%{x} giorni fa da %{author}"
-      trending_title: "Tendenza"
+      trending_title: "Di tendenza"
       trending_text: "Ti interessa sapere cosa sta succedendo sulla piattaforma? Ecco i tre contributi più in popolari e cosa ne pensano gli utenti."
       no_notifications: "Nessuna notifica"
       one_notification: "1 notifica"
@@ -489,7 +489,7 @@ it:
         petition: 'La tua petizione è in "%{prescreening_status_title}"'
       event_description: '"%{input_title}" diventerà visibile a tutti una volta che sarà stato esaminato e approvato.'
       subject: '"%{input_title}" sarà presto pubblicato'
-      preheader: 'Attualmente si trova su %{prescreening_status_title}'
+      preheader: 'Attualmente si trova in %{prescreening_status_title}'
     voting_basket_submitted:
       subject: '%{organizationName}: Hai votato con successo'
       preheader: 'Hai votato con successo sulla piattaforma partecipativa di %{organizationName}'
@@ -529,7 +529,7 @@ it:
       cta_button: 'Guarda i risultati nella piattaforma'
     event_registration_confirmation:
       subject: "Sei dentro! La tua registrazione all'evento: \"%{eventTitle}\" è confermata"
-      preheader: "%{firstName}, grazie per esserti registrato su %{eventTitle}"
+      preheader: "%{firstName}, grazie per la registrazione a %{eventTitle}"
       title: "%{firstName}, grazie per esserti registrato a"
       event_details:
         labels:
