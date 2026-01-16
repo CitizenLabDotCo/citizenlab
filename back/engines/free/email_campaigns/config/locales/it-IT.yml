@@ -86,9 +86,9 @@ it:
         "6": "Settimanalmente, il sabato ore %{hourOfDay}"
       quarterly: "Trimestralmente, il primo giorno del trimestre"
     preview_data:
-      author_first_name: 'Jane'
+      author_first_name: 'Laura'
       author_last_name: 'Sconosciuto'
-      author_display_name: 'Maria Bianchi'
+      author_display_name: 'Laura Bianchi'
       initiator_first_name: 'Mario'
       initiator_last_name: 'Smith'
       initiator_display_name: 'Mario Rossi'
@@ -521,9 +521,9 @@ it:
       subject: '%{organizationName}: %{phaseTitle}: rivelati i risultati delle votazioni!'
       preheader: '%{phaseTitle} risultati del voto rivelati sulla piattaforma di partecipazione di %{organizationName}'
       title: '%{phaseTitle} I risultati delle votazioni sono stati pubblicati!'
-      body_1: 'I risultati sono arrivati!'
+      body_1: 'Sono arrivati i risultati!'
       body_2: 'Sono stati pubblicati i risultati della votazione del progetto %{phaseTitle} nella piattaforma partecipativa di %{organizationName}!'
-      body_3: 'Ti invitiamo a esaminare i risultati e a rimanere sintonizzato per ulteriori aggiornamenti sui prossimi passi.'
+      body_3: 'Ti invitiamo a esaminarli e a rimanere sintonizzato per ulteriori aggiornamenti sulle prossime fasi.'
       cta_button: 'Guarda i risultati nella piattaforma'
     event_registration_confirmation:
       subject: "Sei dentro! La tua registrazione all'evento: \"%{eventTitle}\" è confermata"
