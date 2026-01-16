@@ -25,6 +25,11 @@ namespace :bulk_import do
   task :test_pdf_import, %i[fixtures_path] => [:environment] do |_t, args|
     raise 'This task can only be run in the development environment' unless Rails.env.development?
 
+    # Suppress all the database activity for clarity
+    Rails.logger.level = :fatal
+    ActiveRecord::Base.logger.level = :fatal if defined?(ActiveRecord::Base)
+    ActionView::Base.logger.level = :fatal if defined?(ActionView::Base)
+
     fixtures_base_path = args[:fixtures_path] || 'tmp/test_pdf_import'
 
     tenant = Tenant.find_by(host: 'localhost')
@@ -80,20 +85,19 @@ namespace :bulk_import do
         expected_output_path = fixtures_path.join('expected_output.json')
 
         unless File.exist?(schema_path)
-          puts "  SKIPPED: schema.json not found"
+          puts '  SKIPPED: schema.json not found'
           next
         end
 
         unless File.exist?(pdf_path)
-          puts "  SKIPPED: form.pdf not found"
+          puts '  SKIPPED: form.pdf not found'
           next
         end
 
         # Load schema and extract locale, custom_fields, and participation_method
         schema_json = JSON.parse(File.read(schema_path))
-
         unless schema_json['parse'] == true
-          puts "  SKIPPED: parse is not true in schema.json"
+          puts '  SKIPPED: parse is not true in schema.json'
           next
         end
 
@@ -109,9 +113,39 @@ namespace :bulk_import do
         puts "  Locale: #{locale}"
         puts "  Participation method: #{participation_method}"
 
+        # Load existing log to check if all parsers already tested
+        log_path = fixtures_path.join('log.json')
+        existing_log = File.exist?(log_path) ? JSON.parse(File.read(log_path)) : []
+
+        # Check if all parsers have already been tested for their current versions
+        all_parsers_tested = parsers.all? do |parser_info|
+          parser_version = parser_info[:class].respond_to?(:version) ? parser_info[:class].version : 'N/A'
+          existing_log.any? do |entry|
+            entry['parser_class'] == parser_info[:class].name &&
+              entry['parser_version'] == parser_version
+          end
+        end
+
+        if all_parsers_tested
+          puts '  All parsers already tested - loading results from log'
+          # Add all existing log entries to grand_results
+          existing_log.each do |entry|
+            entry_data = entry.deep_symbolize_keys.merge(example: example_name, locale: locale)
+            grand_results << entry_data
+          end
+          next
+        end
+
+        # Add all existing log entries to grand_results (for versions not being tested)
+        existing_log.each do |entry|
+          entry_data = entry.deep_symbolize_keys.merge(example: example_name, locale: locale)
+          grand_results << entry_data
+          puts "  Loaded from log: #{entry['parser']} v#{entry['parser_version']} - Score: #{entry['score']&.round(2)}%"
+        end
+
         # Create a project and phase for this example
         project = Project.create!(
-          title_multiloc: { locale => "PDF Import Test - #{example_name}" },
+          title_multiloc: { locale => "PDF Import Test - #{example_name}" }
           # admin_publication_attributes: { publication_status: 'published' }
         )
 
@@ -134,11 +168,8 @@ namespace :bulk_import do
         custom_form = CustomForm.create!(participation_context:)
         puts "  Created project/phase/form for #{example_name}"
 
-        # Transform the custom fields
-        custom_fields_params = BulkImportPdfTestHelpers.transform_schema_to_params(custom_fields_data)
-
         # Import the custom fields using UpdateAllService
-        params = ActionController::Parameters.new(custom_fields: custom_fields_params).permit!
+        params = ActionController::Parameters.new(custom_fields: custom_fields_data).permit!
         service = IdeaCustomFields::UpdateAllService.new(custom_form, params, admin_user)
         result = service.update_all
 
@@ -148,7 +179,7 @@ namespace :bulk_import do
           next
         end
 
-        puts "Imported #{result.fields.count} custom fields"
+        puts "  Imported #{result.fields.count} custom fields"
 
         # Create an IdeaImportFile with the PDF content
         pdf_content = File.read(pdf_path)
@@ -165,30 +196,33 @@ namespace :bulk_import do
         # Check if expected_output.json exists - if not, generate it from first parser
         generate_expected_output = !File.exist?(expected_output_path)
         if generate_expected_output
-          puts "  expected_output.json not found - will generate from first parser"
+          puts '  expected_output.json not found - will generate from first parser'
           first_parser = parsers.first
           file_parser = first_parser[:class].new(admin_user, locale, phase.id, false)
           idea_rows = file_parser.parse_rows(idea_import_file)
           idea = idea_rows.first
 
           if idea.nil?
-            puts "  ERROR: No idea parsed from PDF - cannot generate expected_output.json"
+            puts '  ERROR: No idea parsed from PDF - cannot generate expected_output.json'
             project.destroy!
             next
           end
 
           # Create expected_output.json from parsed idea
-          # TODO: Change this template for ideation
           expected_output_data = {
             user_first_name: idea[:user_first_name],
             user_last_name: idea[:user_last_name],
             user_email: idea[:user_email],
             custom_field_values: idea[:custom_field_values] || {}
           }
+          if participation_method == 'ideation'
+            expected_output_data[:title_multiloc] = idea[:title_multiloc] || { locale => '' }
+            expected_output_data[:body_multiloc] = idea[:body_multiloc] || { locale => '' }
+          end
 
           File.write(expected_output_path, JSON.pretty_generate(expected_output_data))
           puts "  Generated expected_output.json from #{first_parser[:name]}"
-          puts "  SKIPPED comparisons - please review and edit expected_output.json manually"
+          puts '  SKIPPED comparisons - please review and edit expected_output.json manually'
 
           project.destroy!
           next
@@ -200,16 +234,13 @@ namespace :bulk_import do
         # Build lookup hash of custom fields by key for display names
         custom_fields_by_key = custom_form.custom_fields.index_by(&:key)
 
-        # Load existing log and add ALL entries to grand_results for averaging
-        log_path = fixtures_path.join('log.json')
-        existing_log = File.exist?(log_path) ? JSON.parse(File.read(log_path)) : []
+        # TODO: Different match methods for different input types
+        # multiselect - partial if one found out of many - no match if more found than are selected
+        # matrix - partial if some statements match - as a percentage of the total statements
+        # ranking - values must match exactly including order
 
-        # Add all existing log entries to grand_results (for all versions)
-        existing_log.each do |entry|
-          entry_data = entry.deep_symbolize_keys.merge(example: example_name, locale: locale)
-          grand_results << entry_data
-          puts "  Loaded from log: #{entry['parser']} v#{entry['parser_version']} - Score: #{entry['score']&.round(2)}%"
-        end
+        # Match scores for comparison
+        match_scores = { exact: 1, partial: 0.5, none: 0 }
 
         # Run test for each parser
         parsers.each do |parser_info|
@@ -227,7 +258,7 @@ namespace :bulk_import do
           end
 
           puts "\n  PARSER: #{parser_info[:name]}"
-          puts '  ' + ('-' * 40)
+          puts "  #{'-' * 40}"
 
           begin
             # Parse the PDF file
@@ -238,7 +269,7 @@ namespace :bulk_import do
 
             idea = idea_rows.first
             if idea.nil?
-              puts "    ERROR: No idea parsed from PDF"
+              puts '    ERROR: No idea parsed from PDF'
               grand_results << {
                 example: example_name,
                 locale: locale,
@@ -273,24 +304,40 @@ namespace :bulk_import do
             expected_output[:custom_field_values].each do |field_key, expected_value|
               actual_value = idea[:custom_field_values]&.[](field_key)
               field_key_str = field_key.to_s
+              custom_field = custom_fields_by_key[field_key_str]
 
               # Handle _other fields - use parent field's title and 'text' input type
               if field_key_str.end_with?('_other')
                 parent_key = field_key_str.sub(/_other$/, '')
                 parent_field = custom_fields_by_key[parent_key]
                 display_name = parent_field ? "#{parent_field.title_multiloc[locale] || parent_key} (Other)" : field_key_str
-                input_type = 'text'
+                input_type = 'select_other'
               else
-                custom_field = custom_fields_by_key[field_key_str]
                 display_name = custom_field ? (custom_field.title_multiloc[locale] || field_key_str) : field_key_str
                 input_type = custom_field&.input_type || 'unknown'
               end
 
+              # Calculate match: :exact, :partial, or :none
+              match_type = :none
               if actual_value == expected_value
-                num_correct += 1
-              else
-                incorrect_fields << { field: display_name, key: field_key, input_type: input_type, expected: expected_value, actual: actual_value }
-                puts "    [FAIL] #{display_name}: expected '#{expected_value}', got '#{actual_value}'"
+                match_type = :exact
+              elsif input_type == 'select_other' || custom_field&.support_text?
+                # For text fields consider it a partial match if fuzzy match
+                stripped_actual = actual_value.to_s.strip.downcase.gsub(/[[:punct:]]/, '')
+                stripped_expected = expected_value.to_s.strip.downcase.gsub(/[[:punct:]]/, '')
+                if stripped_actual == stripped_expected ||
+                   (stripped_actual.present? && stripped_expected.present? &&
+                    (stripped_actual.length - stripped_expected.length).abs <= 5)
+                  match_type = :partial
+                end
+              end
+
+              match_score = match_scores[match_type]
+              num_correct += match_score
+              if match_type != :exact
+                match_label = match_type == :partial ? 'PARTIAL' : 'FAIL'
+                incorrect_fields << { field: display_name, key: field_key, input_type: input_type, expected: expected_value, actual: actual_value, match_type: match_label }
+                puts "    [#{match_label}] #{display_name}: expected '#{expected_value}', got '#{actual_value}'"
               end
             end
 
@@ -334,19 +381,19 @@ namespace :bulk_import do
         example_results = grand_results.select { |r| r[:example] == example_name }
         new_results_added = false
 
-        example_results.each do |result|
+        example_results.each do |example_result|
           # Skip if this parser class + version already exists in the log
           already_in_log = existing_log.any? do |entry|
-            entry['parser_class'] == result[:parser_class] &&
-              entry['parser_version'] == result[:parser_version]
+            entry['parser_class'] == example_result[:parser_class] &&
+              entry['parser_version'] == example_result[:parser_version]
           end
           next if already_in_log
 
-          log_entry = result.except(:example).merge(tested_at: Time.current.iso8601)
+          log_entry = example_result.except(:example).merge(tested_at: Time.current.iso8601)
           log_entry = log_entry.transform_keys(&:to_s)
           existing_log << log_entry
           new_results_added = true
-          puts "    Logged result for #{result[:parser]} v#{result[:parser_version]}"
+          puts "    Logged result for #{example_result[:parser]} v#{example_result[:parser_version]}"
         end
 
         File.write(log_path, JSON.pretty_generate(existing_log)) if new_results_added
@@ -391,7 +438,7 @@ namespace :bulk_import do
         }
 
         puts format('  %-25s v%-10s | %9.2f%% | %11.2fs | %d/%d (%d examples)',
-                    parser_name, version, avg_score, avg_time, total_correct, total_fields, results.count)
+          parser_name, version, avg_score, avg_time, total_correct, total_fields, results.count)
       end
       puts '=' * 105
 
@@ -424,16 +471,17 @@ namespace :bulk_import do
 
       # Incorrect fields sheet
       workbook.add_worksheet(name: 'Incorrect Fields') do |sheet|
-        sheet.add_row ['Example', 'Parser', 'Field', 'Key', 'Input Type', 'Expected', 'Actual']
+        sheet.add_row ['Example', 'Parser', 'Match', 'Field', 'Key', 'Input Type', 'Expected', 'Actual']
 
         grand_results.each do |r|
-          next unless r[:incorrect_fields].present?
+          next if r[:incorrect_fields].blank?
 
           r[:incorrect_fields].each do |field|
             field = field.transform_keys(&:to_sym) if field.is_a?(Hash)
             sheet.add_row [
               r[:example],
               r[:parser],
+              field[:match_type] || 'FAIL',
               field[:field],
               field[:key],
               field[:input_type],
@@ -464,31 +512,6 @@ namespace :bulk_import do
 
       package.serialize(xlsx_path.to_s)
       puts "\nResults saved to: #{xlsx_path}"
-    end
-  end
-end
-
-# Helper module for the rake task
-module BulkImportPdfTestHelpers
-  module_function
-
-  def transform_schema_to_params(schema)
-    schema.each_with_index.map do |field, index|
-      field_params = field.except('id').merge('temp_id' => "temp-#{index}")
-
-      if field['options'].present?
-        field_params['options'] = field['options'].each_with_index.map do |option, opt_index|
-          option.except('id').merge('temp_id' => "temp-opt-#{index}-#{opt_index}")
-        end
-      end
-
-      if field['matrix_statements'].present?
-        field_params['matrix_statements'] = field['matrix_statements'].map do |statement|
-          statement.except('id')
-        end
-      end
-
-      field_params
     end
   end
 end
