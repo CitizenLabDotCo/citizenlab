@@ -208,7 +208,7 @@ module MultiTenancy
           project.input_topics.create!(
             title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
             description_multiloc: runner.rand_description_multiloc
-          ).first
+          )
         end
       end
     end
