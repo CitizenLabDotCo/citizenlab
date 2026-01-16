@@ -120,8 +120,12 @@ module MultiTenancy
         # timestamps to remain in the future (e.g. future timeline phases, expiration
         # date etc.)
         timestamp_attrs.each do |atr|
-          instances = claz.where("#{atr} > NOW()")
-            .where("(#{atr} - (:num_days * INTERVAL '1 day')) < NOW()", num_days: num_days)
+          # Use CURRENT_DATE for date columns to avoid time-of-day comparison issues.
+          # Date columns cast to midnight when compared with NOW(), making "today"
+          # appear to be in the past. CURRENT_DATE ensures correct date-only comparison.
+          now_func = claz.columns_hash[atr].type == :date ? 'CURRENT_DATE' : 'NOW()'
+          instances = claz.where("#{atr} > #{now_func}")
+            .where("(#{atr} - (:num_days * INTERVAL '1 day')) < #{now_func}", num_days: num_days)
           query = "#{atr} = (#{atr} - (:num_days * INTERVAL '1 day'))"
           instances.update_all [query, { num_days: num_days }]
         end
