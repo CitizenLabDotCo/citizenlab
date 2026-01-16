@@ -261,7 +261,7 @@ RSpec.describe ParticipationMethod::Ideation do
 
   describe 'user_fields_in_frontend_descriptor' do
     it 'returns locked: true and not supported explanation if action is not posting idea' do
-      permission = phase.permissions.find_by(action: 'commenting_idea')
+      phase.permissions.find_by(action: 'commenting_idea')
       descriptor = participation_method.user_fields_in_form_frontend_descriptor
       expect(descriptor[:value]).to be_nil
       expect(descriptor[:locked]).to be_truthy
