@@ -59,7 +59,6 @@ const FilePreview = ({ fileId }: { fileId?: string }) => {
     <Box
       id="e2e-file-attachment"
       maxWidth="1200px"
-      margin="0 auto"
       style={{ pointerEvents: 'none' }}
     >
       <FileDisplay
@@ -100,7 +99,7 @@ const FileAttachment = ({ fileId }: FileAttachmentProps) => {
   if (attachment) {
     const attachmentAttributes = attachment.attributes;
     return (
-      <Box id="e2e-file-attachment" maxWidth="1200px" margin="0 auto">
+      <Box id="e2e-file-attachment" maxWidth="1200px">
         <FileDisplay
           file={{
             id: attachment.relationships.file.data.id,
