@@ -129,7 +129,10 @@ module ParticipationMethod
     end
 
     delegate :user_data_collection, to: :posting_permission
-    delegate :user_fields_in_form?, to: :posting_permission
+    
+    def user_fields_in_form?
+      posting_permission&.user_fields_in_form?
+    end
 
     private
 

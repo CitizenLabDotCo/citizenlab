@@ -465,7 +465,9 @@ module ParticipationMethod
       %i[ideation_method].include?(attribute)
     end
 
-    delegate :user_fields_in_form?, to: :posting_permission
+    def user_fields_in_form?
+      posting_permission&.user_fields_in_form?
+    end
 
     private
 
