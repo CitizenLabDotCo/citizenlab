@@ -24,6 +24,8 @@ module ParticipationMethod
       @phase = phase
     end
 
+    attr_reader :phase
+
     def additional_export_columns
       []
     end
@@ -258,8 +260,6 @@ module ParticipationMethod
     end
 
     private
-
-    attr_reader :phase
 
     def proposed_budget_in_form?
       false

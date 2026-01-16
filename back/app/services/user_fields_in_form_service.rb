@@ -43,7 +43,7 @@ class UserFieldsInFormService
   def self.add_user_fields_to_form(fields, participation_method, custom_form)
     return fields unless participation_method.user_fields_in_form_enabled?
 
-    phase = custom_form.participation_context
+    phase = participation_method.phase
     permission = phase.permissions.find_by(action: 'posting_idea')
     user_fields = Permissions::UserRequirementsService.new.requirements_custom_fields(permission)
 
