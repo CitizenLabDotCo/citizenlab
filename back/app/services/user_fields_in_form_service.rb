@@ -105,14 +105,12 @@ class UserFieldsInFormService
     return false unless idea.author_id == current_user.id
 
     permission = phase.permissions.find_by(action: 'posting_idea')
+    return false unless permission
 
     # Confirm that user fields are asked in registration process
     # If they are asked in the form, we know that they won't be asked
     # in the registration process
     return false if permission.user_fields_in_form_enabled?
-
-    # Confirm that user fields are asked at all
-    return false unless permission
 
     requirements = Permissions::UserRequirementsService.new.requirements(permission, nil)
     return false unless requirements[:custom_fields]
