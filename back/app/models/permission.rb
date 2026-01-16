@@ -41,6 +41,11 @@ class Permission < ApplicationRecord
     'common_ground' => %w[posting_idea reacting_idea attending_event]
   }
   SCOPE_TYPES = [nil, 'Phase'].freeze
+  UNSUPPORTED_DESCRIPTOR = {
+    value: nil,
+    locked: true,
+    explanation: 'user_fields_in_survey_not_supported_for_participation_method'
+  }
 
   scope :filter_enabled_actions, ->(permission_scope) { where(action: enabled_actions(permission_scope)) }
   scope :order_by_action, lambda { |permission_scope|
@@ -104,6 +109,23 @@ class Permission < ApplicationRecord
 
   def everyone_tracking_enabled?
     permitted_by == 'everyone' && everyone_tracking_enabled
+  end
+
+  # Attribute used in frontend to render access rights UI
+  def user_fields_in_form_frontend_descriptor
+    return UNSUPPORTED_DESCRIPTOR unless permission_scope.is_a?(Phase)
+
+    service = UserFieldsInFormService
+    service.user_fields_in_form_frontend_descriptor(permission, permission_scope)
+  end
+
+  # Attribute used interally by backend to determine if user fields should be shown in the form
+  def user_fields_in_form?
+    has_fields = !permissions_custom_fields.empty?
+    supports_global_fields = %w[everyone everyone_confirmed_email].exclude?(permitted_by)
+    has_global_fields = supports_global_fields && global_custom_fields
+
+    user_fields_in_form_frontend_descriptor[:value] && (has_fields || has_global_fields)
   end
 
   private

@@ -3,11 +3,6 @@
 module ParticipationMethod
   class Base
     SUPPORTED_REACTION_MODES = [].freeze
-    UNSUPPORTED_DESCRIPTOR = {
-      value: nil,
-      locked: true,
-      explanation: 'user_fields_in_survey_not_supported_for_participation_method'
-    }
 
     def self.all_methods
       [
@@ -224,16 +219,6 @@ module ParticipationMethod
     end
 
     def supports_custom_field_categories?
-      false
-    end
-
-    # Attribute used in frontend to render access rights UI
-    def user_fields_in_form_frontend_descriptor
-      UNSUPPORTED_DESCRIPTOR
-    end
-
-    # Attribute used interally by backend to determine if user fields should be shown in the form
-    def user_fields_in_form?
       false
     end
 

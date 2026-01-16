@@ -127,11 +127,73 @@ class UserFieldsInFormService
     true
   end
 
+  def self.user_fields_in_form_frontend_descriptor(permission, participation_method)
+    return Permission::UNSUPPORTED_DESCRIPTOR unless permission.action == 'posting_idea'
+
+    if ['native_survey', 'community_monitor_survey'].include?(participation_method)
+      return user_fields_in_form_frontend_descriptor_survey(permission)
+    end
+
+    if participation_method == 'ideation'
+      return user_fields_in_form_frontend_descriptor_ideation(permission)
+    end
+
+    Permission::UNSUPPORTED_DESCRIPTOR
+  end
+
   def self.prefix
     'u_'
   end
 
   def self.prefix_key(key)
     "#{prefix}#{key}"
+  end
+
+  private
+
+  def user_fields_in_form_frontend_descriptor_survey(permission)
+    if posting_permission.permitted_by == 'everyone'
+      if posting_permission.user_data_collection == 'anonymous'
+        {
+          value: nil,
+          locked: true,
+          explanation: 'with_these_settings_cannot_ask_demographic_fields'
+        }
+      else
+        {
+          value: true,
+          locked: true,
+          explanation: 'cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone'
+        }
+      end
+    elsif posting_permission.user_data_collection == 'anonymous'
+      {
+        value: false,
+        locked: true,
+        explanation: 'with_these_settings_can_only_ask_demographic_fields_in_registration_flow'
+      }
+    else
+      {
+        value: posting_permission.user_fields_in_form,
+        locked: false,
+        explanation: nil
+      }
+    end
+  end
+
+  def user_fields_in_form_frontend_descriptor_ideation(permission)
+    if posting_permission.permitted_by == 'everyone'
+      {
+        value: true,
+        locked: true,
+        explanation: 'cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone'
+      }
+    else
+      {
+        value: posting_permission.user_fields_in_form,
+        locked: false,
+        explanation: nil
+      }
+    end
   end
 end

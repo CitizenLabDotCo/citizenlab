@@ -128,50 +128,6 @@ module ParticipationMethod
       false
     end
 
-    # Attribute used in frontend to render access rights UI
-    def user_fields_in_form_frontend_descriptor
-      # Check should not be necessary but just in case
-      return UNSUPPORTED_DESCRIPTOR unless posting_permission
-
-      if posting_permission.permitted_by == 'everyone'
-        if posting_permission.user_data_collection == 'anonymous'
-          {
-            value: nil,
-            locked: true,
-            explanation: 'with_these_settings_cannot_ask_demographic_fields'
-          }
-        else
-          {
-            value: true,
-            locked: true,
-            explanation: 'cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone'
-          }
-        end
-      elsif posting_permission.user_data_collection == 'anonymous'
-        {
-          value: false,
-          locked: true,
-          explanation: 'with_these_settings_can_only_ask_demographic_fields_in_registration_flow'
-        }
-      else
-        {
-          value: posting_permission.user_fields_in_form,
-          locked: false,
-          explanation: nil
-        }
-      end
-    end
-
-    # Attribute used interally by backend to determine if user fields should be shown in the form
-    def user_fields_in_form?
-      has_fields = !posting_permission.permissions_custom_fields.empty?
-      permitted_by = posting_permission.permitted_by
-      supports_global_fields = %w[everyone everyone_confirmed_email].exclude?(permitted_by)
-      has_global_fields = supports_global_fields && posting_permission.global_custom_fields
-
-      user_fields_in_form_frontend_descriptor[:value] && (has_fields || has_global_fields)
-    end
-
     delegate :user_data_collection, to: :posting_permission
 
     private
