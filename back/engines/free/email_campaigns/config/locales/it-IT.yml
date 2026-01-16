@@ -93,7 +93,7 @@ it:
       initiator_last_name: 'Smith'
       initiator_display_name: 'Mario Rossi'
       project_title: 'Esempio di progetto'
-      project_description_preview: 'Questo è un esempio di contenuto di fase utilizzato per l''anteprima del contenuto delle e-mail. Non si tratta di contenuti reali.'
+      project_description_preview: 'Questo è un esempio di contenuto di una fase utilizzato per l''anteprima del contenuto delle e-mail. Non si tratta di contenuti reali.'
       phase_title: 'Esempio di fase'
       folder_title: 'Esempio di cartella'
       comment_body: 'Questo è un esempio di commento utilizzato per visualizzare l''anteprima del contenuto delle e-mail. Non si tratta di un contenuto reale.'
@@ -191,9 +191,9 @@ it:
       subject: 'Contributi che richiedono un riscontro: %{numberIdeas}'
       preheader: 'Messaggi Amministrazione di %{organizationName}'
       title: '%{firstName}, i contributi dei cittadini sono in attesa di un tuo riscontro'
-      cta_button: 'Gestisci i tuoi input'
+      cta_button: 'Gestione contributi'
       x_inputs_need_your_feedback: 'contributi hanno bisogno del tuo riscontro'
-      title_assignment_past_week: 'Le ultime idee che ti sono state assegnate'
+      title_assignment_past_week: 'Gli ultimi contributi che ti sono stati assegnati'
       title_no_assignment_past_week: 'Nessuna nuova idea assegnata la settimana scorsa'
       yesterday_by_author: 'Ieri da %{author}'
       today_by_author: 'Oggi da %{author}'
@@ -262,9 +262,9 @@ it:
       anonymous_user: Utente anonimo
       cta_button: 'Visualizza il commento di %{authorFirstName}'
       days_ago: '%{numberOfDays} giorni fa'
-      event_description: '%{authorName} ha aggiunto un nuovo commento sulla tua piattaforma.'
+      event_description: '%{authorName} ha aggiunto un nuovo commento sulla piattaforma.'
       title: '%{firstName}, è stato pubblicato un nuovo commento sulla tua piattaforma'
-      subject: 'Un nuovo commento è stato inserito sulla piattaforma di %{organizationName}'
+      subject: 'È stato pubblicato un nuovo commento sulla piattaforma di %{organizationName}'
       preheader: '%{authorName} ha lasciato un commento'
       today: Oggi
       yesterday: Ieri
@@ -279,7 +279,7 @@ it:
         question: '%{authorName} ha commentato una domanda che segui'
         contribution: '%{authorName} ha commentato un contributo che segui'
         project: '%{authorName} ha commentato un progetto che segui'
-        issue: '%{authorName} ha commentato un argomento che segue'
+        issue: '%{authorName} ha commentato un parere che segui'
         option: '%{authorName} ha commentato un''opzione che segui'
         proposal: '%{authorName} ha commentato una proposta che segui'
         petition: '%{authorName} ha commentato una petizione che segui'
@@ -390,9 +390,9 @@ it:
       subject: '%{projectName} è entrato in una nuova fase'
       preheader: 'Una nuova fase è stata avviata per %{projectName}'
     project_phase_upcoming:
-      cta_button: 'Imposta questa nuova fase'
-      event_description: 'Il progetto ''%{projectName}'' entrerà presto in una nuova fase. Assicurati che tutto sia impostato per questa fase: C''è una descrizione adeguata? Le idee selezionate sono trasferite a questa fase? Vuoi informare i tuoi cittadini sulle specifiche di questa fase attraverso una campagna email personalizzata?'
-      title: '%{firstName}Il progetto entrerà presto in una nuova fase'
+      cta_button: 'Imposta la nuova fase'
+      event_description: 'Il progetto ''%{projectName}'' entrerà presto in una nuova fase. Assicurati che tutto sia pronto per questa fase: C''è una descrizione adeguata? Le idee selezionate sono state trasferite alla nuova fase? Vuoi informare i tuoi cittadini sui dettagli di questa fase attraverso una campagna email personalizzata?'
+      title: '%{firstName}, un progetto entrerà presto in una nuova fase'
       subtitle: 'Informazioni su ''%{projectName}'''
       new_phase: 'Il progetto entrerà nella fase ''%{phaseTitle}'''
       subject: 'Prepara tutto per la nuova fase di %{projectName}'
@@ -405,16 +405,16 @@ it:
       cta_button: 'Vai a questo progetto'
     project_review_request:
       subject: 'Richiesta di revisione: Un progetto è in attesa di approvazione.'
-      title: '%{requesterName} ti ha invitato a visionare il progetto "%{projectTitle}".'
+      title: '%{requesterName} ti ha invitato a esaminare il progetto "%{projectTitle}"'
       event_description: "Attualmente il progetto è in modalità bozza e non è visibile agli utenti. Una volta che l'avrai rivisto e approvato, il moderatore potrà pubblicarlo."
-      cta_button: "Rivedere il progetto"
-      preheader: '%{requesterName} ti ha invitato a visionare il progetto "%{projectTitle}".'
+      cta_button: "Esamina progetto"
+      preheader: '%{requesterName} ti ha invitato a esaminare il progetto "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" è stato approvato'
-      title: '%{reviewerName} ha approvato il progetto "%{projectTitle}".'
+      title: '%{reviewerName} ha approvato il progetto "%{projectTitle}"'
       event_description: "Il progetto è ora pronto per essere pubblicato. Puoi pubblicarlo quando sei pronto!"
       cta_button: "Vai alle impostazioni del progetto"
-      preheader: '%{reviewerName} ha approvato il progetto "%{projectTitle}".'
+      preheader: '%{reviewerName} ha approvato il progetto "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'Il nuovo status di questo contributo è ''%{status}'''
       event_description: '%{organizationName} ha aggiornato lo status del contributo: ''%{input_title}'' sulla sua piattaforma di partecipazione digitale.'
@@ -443,9 +443,9 @@ it:
       no_unread_notifications: "Non hai notifiche non lette. Visita la piattaforma per contribuire con il tuo contributo e generare nuove notifiche!"
       unread_notifications: "Hai delle notifiche non lette. Visita la piattaforma per scoprire cosa sta succedendo!"
     threshold_reached_for_admin:
-      cta_button: 'Porta questa proposta alle fasi successive'
+      cta_button: 'Porta questa proposta alla fase successiva'
       title: 'Una proposta ha raggiunto la soglia di voto!'
-      subject: 'Un''iniziativa ha raggiunto la soglia di voto sulla tua piattaforma'
+      subject: '"%{input_title}" ha raggiunto la soglia di voto'
       preheader: 'Assicurati di fare i prossimi passi'
     welcome:
       cta_button: 'Scopri la piattaforma'
