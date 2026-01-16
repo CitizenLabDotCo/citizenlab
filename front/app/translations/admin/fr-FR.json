@@ -1818,7 +1818,7 @@
   "app.containers.AdminPage.DashboardPage.components.PostFeedback.averageTime": "Temps de réponse moyen : {days} jours",
   "app.containers.AdminPage.DashboardPage.components.PostFeedback.averageTimeColumnName": "Nombre moyen de jours pour répondre",
   "app.containers.AdminPage.DashboardPage.components.PostFeedback.feedbackGiven": "feedback donné",
-  "app.containers.AdminPage.DashboardPage.components.PostFeedback.inputStatus": "Statut de l'entrée",
+  "app.containers.AdminPage.DashboardPage.components.PostFeedback.inputStatus": "Statut des contributions",
   "app.containers.AdminPage.DashboardPage.components.PostFeedback.inputsByStatus": "Entrées par statut",
   "app.containers.AdminPage.DashboardPage.components.PostFeedback.numberOfInputs": "Nombre d'entrées",
   "app.containers.AdminPage.DashboardPage.components.PostFeedback.officialUpdate": "Mise à jour officielle",
