@@ -152,8 +152,8 @@ class UserFieldsInFormService
   private
 
   def user_fields_in_form_frontend_descriptor_survey(permission)
-    if posting_permission.permitted_by == 'everyone'
-      if posting_permission.user_data_collection == 'anonymous'
+    if permission.permitted_by == 'everyone'
+      if permission.user_data_collection == 'anonymous'
         {
           value: nil,
           locked: true,
@@ -166,7 +166,7 @@ class UserFieldsInFormService
           explanation: 'cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone'
         }
       end
-    elsif posting_permission.user_data_collection == 'anonymous'
+    elsif permission.user_data_collection == 'anonymous'
       {
         value: false,
         locked: true,
@@ -174,7 +174,7 @@ class UserFieldsInFormService
       }
     else
       {
-        value: posting_permission.user_fields_in_form,
+        value: permission.user_fields_in_form,
         locked: false,
         explanation: nil
       }
@@ -182,7 +182,7 @@ class UserFieldsInFormService
   end
 
   def user_fields_in_form_frontend_descriptor_ideation(permission)
-    if posting_permission.permitted_by == 'everyone'
+    if permission.permitted_by == 'everyone'
       {
         value: true,
         locked: true,
@@ -190,7 +190,7 @@ class UserFieldsInFormService
       }
     else
       {
-        value: posting_permission.user_fields_in_form,
+        value: permission.user_fields_in_form,
         locked: false,
         explanation: nil
       }

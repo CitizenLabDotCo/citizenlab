@@ -116,7 +116,10 @@ class Permission < ApplicationRecord
     return UNSUPPORTED_DESCRIPTOR unless permission_scope.is_a?(Phase)
 
     service = UserFieldsInFormService
-    service.user_fields_in_form_frontend_descriptor(permission, permission_scope)
+    service.user_fields_in_form_frontend_descriptor(
+      permission, 
+      permission_scope.participation_method
+    )
   end
 
   # Attribute used interally by backend to determine if user fields should be shown in the form
