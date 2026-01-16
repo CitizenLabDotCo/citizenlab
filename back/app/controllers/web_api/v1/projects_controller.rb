@@ -151,7 +151,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = ProjectsListedScopeService.new.remove_unlisted_projects(projects)
     projects = projects
       .not_draft
-      .with_some_topics(params[:topics])
+      .with_some_global_topics(params[:topics])
       .order(created_at: :desc)
 
     @projects = paginate projects
