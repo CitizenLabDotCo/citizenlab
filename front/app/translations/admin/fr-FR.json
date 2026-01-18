@@ -1382,7 +1382,7 @@
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Chargement des données démographiques...",
   "app.containers.Admin.projects.project.insights.newSubmission": "Nouvelle réponse",
   "app.containers.Admin.projects.project.insights.noAnswer": "Non spécifié",
-  "app.containers.Admin.projects.project.insights.noComparisonData": "Pas de données de comparaison",
+  "app.containers.Admin.projects.project.insights.noComparisonData": "Comparaison indisponible",
   "app.containers.Admin.projects.project.insights.noDemographicData": "Aucune donnée démographique disponible pour cette phase.",
   "app.containers.Admin.projects.project.insights.noInputsSubmitted": "Aucune contribution n'a encore été soumise.",
   "app.containers.Admin.projects.project.insights.openForResponses": "Ouvert aux réponses",
