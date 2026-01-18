@@ -67,7 +67,7 @@ const FormBuilderSettings = ({
     const isMultiselectWithLogic =
       ['multiselect', 'multiselect_image'].includes(fieldType) &&
       fieldHasLogic &&
-      field.created_at < '2026-01-10';
+      field.created_at < '2026-01-18';
 
     const isFormEndPage = fieldType === 'page' && field.key === 'form_end';
 
