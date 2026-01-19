@@ -180,7 +180,7 @@ it:
       title: 'È disponibile un nuovo report del barometro civico'
       event_description: 'È stato creato un report del barometro civico per il trimestre precedente. Puoi accedervi cliccando sul pulsante qui sotto ed effettuando il login.'
       cta_button: 'Vedi report'
-      report_name: 'Rapporto del barometro civico'
+      report_name: 'Report del Barometro Civico'
     cosponsor_of_your_idea:
       subject: '%{cosponsorName} ha accettato il tuo invito a co-sponsorizzare la tua proposta'
       preheader: '%{cosponsorName} ha accettato il tuo invito a co-sponsorizzare la tua proposta'
@@ -201,7 +201,7 @@ it:
       title_successful_past_week: 'Assegnati a te che hanno raggiunto la soglia'
     idea_marked_as_spam:
       subject: 'Hai una segnalazione di spam sulla piattaforma di %{organizationName}'
-      preheader: 'Agire su questo rapporto di spam'
+      preheader: 'Agisci su questa segnalazione di spam'
       title: '%{firstName} %{lastName} ha segnalato uno spam'
       cta_button: 'Esamina'
       report_inappropriate_offensive_content: 'Trovo questo contenuto inappropriato o offensivo.'
