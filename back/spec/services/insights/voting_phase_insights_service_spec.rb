@@ -419,7 +419,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
 
         user.update!(custom_field_values: { 'birthyear' => Date.current.year - 30 }) # Age 30
 
-        result = service.vote_counts_with_user_custom_field_grouping(custom_field)
+        result = service.cached_vote_counts_by_demographic(custom_field)
 
         expect(result[:online_votes]).to eq(47)
         expect(result[:offline_votes]).to eq(10)
