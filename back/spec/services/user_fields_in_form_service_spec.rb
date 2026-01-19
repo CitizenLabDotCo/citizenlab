@@ -107,20 +107,34 @@ describe UserFieldsInFormService do
   end
 
   describe '#should_merge_user_fields_into_idea?' do
-    it 'returns true when all conditions are met' do
-      user = build(:user, { custom_field_values: { age: 30 } })
-      project = create(:single_phase_native_survey_project, phase_attrs: {
-        with_permissions: true
-      })
-      phase = project.phases.first
+    context 'native survey' do
+      before do
+        @user = create(:user, { custom_field_values: { age: 30 } })
+        @project = create(:single_phase_native_survey_project, phase_attrs: {
+          with_permissions: true
+        })
+        @phase = @project.phases.first
 
-      idea = build(:idea, author: user, custom_field_values: {})
+        @permission = @phase.permissions.find_by(action: 'posting_idea')
+        @permission.update!(global_custom_fields: false, user_fields_in_form: false, user_data_collection: 'all_data')
+        create(:permissions_custom_field, permission: @permission, custom_field: create(:custom_field, key: 'age'))
+      end
 
-      permission = phase.permissions.find_by(action: 'posting_idea')
-      permission.update!(global_custom_fields: false, user_fields_in_form: false, user_data_collection: 'all_data')
-      create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field, key: 'age'))
+      it 'returns true when all conditions are met' do
+        idea = create(:idea, author: @user, custom_field_values: {})
+        expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, idea)).to be true
+      end
 
-      expect(described_class.should_merge_user_fields_into_idea?(user, phase, idea)).to be true
+      it 'returns false if user is not the author of the idea' do
+        idea = create(:idea, author: create(:user), custom_field_values: {})
+        expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, idea)).to be false
+      end
+
+      it 'returns false if user_data_collection is set to anonymous' do
+        @permission.update!(user_data_collection: 'anonymous')
+        idea = create(:idea, author: @user, custom_field_values: {})
+        expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, idea)).to be false
+      end
     end
   end
 end
