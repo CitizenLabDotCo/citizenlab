@@ -106,7 +106,7 @@ it:
       proposal_title: 'Esempio di proposta'
       input_status_title: 'Esempio di status'
       input_status_description: 'Un esempio di status per un contributo (ad esempio accettato, rifiutato, implementato...)'
-      official_feedback_body: 'Esempio di riscontro ufficiale'
+      official_feedback_body: 'Esempio di aggiornamento ufficiale'
     footer:
       "link_privacy_policy": "Politica sulla privacy"
       "link_terms_conditions": "Termini e condizioni"
@@ -314,7 +314,7 @@ it:
       event_description: '%{authorNameFull} ha commentato il tuo commento interno.'
       subject: 'Hai ricevuto un commento sul tuo commento interno su ''%{post}''.'
       title: 'Hai ricevuto un commento sul tuo commento interno su ''%{post}'''
-      preheader: '%{authorName} ho risposto al tuo commento interno su ''%{post}''.'
+      preheader: '%{authorNameFull} ha risposto al tuo commento interno su ''%{post}'''
     internal_comment_on_idea_assigned_to_you:
       cta_button: 'Visualizza il commento di %{firstName}'
       event_description: '%{authorNameFull} ha commentato internamente un contributo che ti è stato assegnato.'
@@ -519,7 +519,7 @@ it:
       cta_button: 'Vota'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle}: rivelati i risultati delle votazioni!'
-      preheader: '%{phaseTitle} risultati del voto rivelati sulla piattaforma di partecipazione di %{organizationName}'
+      preheader: 'I risultati del voto di %{phaseTitle} sono stati pubblicati sulla piattaforma partecipativa di %{organizationName}'
       title: '%{phaseTitle} I risultati delle votazioni sono stati pubblicati!'
       body_1: 'Sono arrivati i risultati!'
       body_2: 'Sono stati pubblicati i risultati della votazione del progetto %{phaseTitle} nella piattaforma partecipativa di %{organizationName}!'
