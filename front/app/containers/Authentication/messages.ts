@@ -107,4 +107,8 @@ export default defineMessages({
     id: 'app.containers.NewAuthModal.youCantParticipate',
     defaultMessage: "You can't participate",
   },
+  stayInTouch: {
+    id: 'app.containers.Authentication.stayInTouch',
+    defaultMessage: 'Stay in touch',
+  },
 });

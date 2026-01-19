@@ -118,6 +118,21 @@ RSpec.describe UserConfirmationService do
         expect(result.errors.details).to eq(user: [{ error: :has_new_email }])
       end
     end
+
+    context 'with pending claim tokens' do
+      let!(:claim_token) { create(:claim_token, pending_claimer: user) }
+      let(:idea) { claim_token.item }
+
+      it 'completes pending claim tokens on successful confirmation' do
+        expect(idea.author_id).to be_nil
+
+        result = service.validate_and_confirm_unauthenticated!(user, user.email_confirmation_code)
+
+        expect(result.success?).to be true
+        expect(idea.reload.author_id).to eq(user.id)
+        expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
   end
 
   describe '#validate_and_confirm_email_change!' do
