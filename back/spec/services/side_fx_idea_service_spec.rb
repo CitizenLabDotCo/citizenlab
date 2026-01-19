@@ -88,7 +88,13 @@ describe SideFxIdeaService do
       end
 
       it 'creates only creates project and folder followers for native_survey responses' do
-        idea.update!(creation_phase: create(:native_survey_phase, project: project, with_permissions: true))
+        project = create(:project)
+        folder = create(:project_folder, projects: [project])
+        idea = create(
+          :idea,
+          creation_phase: create(:native_survey_phase, with_permissions: true, project:),
+          project:
+        )
         expect do
           service.after_create(idea.reload, user, idea.creation_phase)
         end.to change(Follower, :count).from(0).to(2)
