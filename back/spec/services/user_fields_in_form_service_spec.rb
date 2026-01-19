@@ -155,6 +155,16 @@ describe UserFieldsInFormService do
       it 'returns true when all conditions are met' do
         expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, @idea)).to be true
       end
+
+      it 'returns false if user is not the author of the idea' do
+        idea = create(:idea, author: create(:user), custom_field_values: {})
+        expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, idea)).to be false
+      end
+
+      it 'returns true if user_data_collection is set to anonymous (attribute should be ignored)' do
+        @permission.update!(user_data_collection: 'anonymous')
+        expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, @idea)).to be true
+      end
     end
   end
 end
