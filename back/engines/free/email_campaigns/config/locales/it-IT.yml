@@ -90,7 +90,7 @@ it:
       author_last_name: 'Sconosciuto'
       author_display_name: 'Laura Bianchi'
       initiator_first_name: 'Mario'
-      initiator_last_name: 'Smith'
+      initiator_last_name: 'Rossi'
       initiator_display_name: 'Mario Rossi'
       project_title: 'Esempio di progetto'
       project_description_preview: 'Questo è un esempio di contenuto di una fase utilizzato per l''anteprima del contenuto delle e-mail. Non si tratta di contenuti reali.'
@@ -168,7 +168,7 @@ it:
       by_author: 'da %{authorName}'
       commented: '%{authorName} ha commentato:'
       days_ago: '%{numberOfDays} giorni fa da'
-      event_description: 'Il seguente commento pubblicato su <strong>''%{post}''</strong> è stato riportato:'
+      event_description: 'Il seguente commento pubblicato su <strong>''%{post}''</strong> è stato segnalato:'
       inappropriate_content: 'Il commento è inappropriato o offensivo.'
       reported_this_because: '%{reporterFirstName} ha segnalato questo contenuto perché:'
       today: Oggi
