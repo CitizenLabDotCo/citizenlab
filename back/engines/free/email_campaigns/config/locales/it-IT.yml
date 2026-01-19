@@ -461,7 +461,7 @@ it:
         question: 'La tua domanda è stata pubblicata'
         contribution: 'Il tuo contributo è stato pubblicato'
         project: 'Il tuo progetto è stato pubblicato'
-        issue: 'Il tuo numero è stato pubblicato'
+        issue: 'Il tuo parere è stato pubblicato'
         option: 'La tua opzione è stata pubblicata'
         proposal: 'La tua proposta è stata pubblicata'
         petition: 'La tua petizione è stata pubblicata'
