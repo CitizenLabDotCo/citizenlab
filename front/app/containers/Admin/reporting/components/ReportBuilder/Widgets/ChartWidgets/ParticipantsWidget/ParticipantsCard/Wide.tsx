@@ -20,6 +20,7 @@ import {
 export interface Props extends DatesStrings {
   timeSeries: TimeSeries | null;
   hideStatistics: boolean;
+  showVisitors?: boolean;
   stats: Stats;
   currentResolution: IResolution;
 }
@@ -28,6 +29,7 @@ const Wide = ({
   startAt,
   endAt,
   hideStatistics,
+  showVisitors = false,
   timeSeries,
   stats,
   currentResolution,
@@ -74,6 +76,7 @@ const Wide = ({
           startAtMoment={startAt ? moment(startAt) : null}
           endAtMoment={endAt ? moment(endAt) : null}
           resolution={currentResolution}
+          showVisitors={showVisitors}
           yaxis={hideStatistics ? { orientation: 'right' } : undefined}
           margin={
             hideStatistics

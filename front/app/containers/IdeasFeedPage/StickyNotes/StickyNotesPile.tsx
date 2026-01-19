@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Box, Button, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Spinner,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
@@ -69,13 +74,11 @@ const POSITIONS_TABLET = [
 
 const POSITIONS_MOBILE = [
   { left: '5%', top: '1%' },
-  { left: '48%', top: '6%' },
-  { left: '2%', top: '16%' },
-  { left: '52%', top: '20%' },
-  { left: '8%', top: '33%' },
-  { left: '46%', top: '38%' },
-  { left: '3%', top: '50%' },
-  { left: '50%', top: '54%' },
+  { left: '21%', top: '10%' },
+  { left: '3%', top: '24%' },
+  { left: '23%', top: '32%' },
+  { left: '7%', top: '48%' },
+  { left: '19%', top: '56%' },
 ];
 
 // Slight rotations to give a natural scattered look
@@ -93,7 +96,7 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
   const isMobile = useBreakpoint('phone');
   const isTablet = useBreakpoint('tablet');
   const { data: phase } = usePhase(phaseId);
-  const { data } = useInfiniteIdeaFeedIdeas({
+  const { data, isLoading } = useInfiniteIdeaFeedIdeas({
     phaseId,
     'page[size]': 20,
   });
@@ -124,8 +127,12 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
   const { positions, count } = getPositionsConfig();
   const displayedIdeas = flatIdeas?.slice(0, count);
 
+  if (isLoading) {
+    return <Spinner />;
+  }
+
   return (
-    <Box>
+    <Box overflow="hidden">
       <PileContainer
         position="relative"
         width="100%"
@@ -150,6 +157,7 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
                 onClick={() => handleNoteClick(idea.id)}
                 size="small"
                 rotation={ROTATIONS[index % ROTATIONS.length]}
+                showReactions={false}
               />
             </NoteWrapper>
           );
