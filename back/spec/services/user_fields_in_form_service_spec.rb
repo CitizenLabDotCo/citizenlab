@@ -136,5 +136,25 @@ describe UserFieldsInFormService do
         expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, @idea)).to be false
       end
     end
+
+    context 'ideation' do
+      before do
+        @user = create(:user, { custom_field_values: { age: 30 } })
+        @project = create(:single_phase_ideation_project, phase_attrs: {
+          with_permissions: true
+        })
+        @phase = @project.phases.first
+
+        @permission = @phase.permissions.find_by(action: 'posting_idea')
+        @permission.update!(global_custom_fields: false, user_fields_in_form: false, user_data_collection: 'all_data')
+        create(:permissions_custom_field, permission: @permission, custom_field: create(:custom_field, key: 'age'))
+
+        @idea = create(:idea, author: @user, custom_field_values: {})
+      end
+
+      it 'returns true when all conditions are met' do
+        # TODO
+      end
+    end
   end
 end

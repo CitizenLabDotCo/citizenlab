@@ -99,7 +99,8 @@ class UserFieldsInFormService
     return false unless current_user
 
     # Confirm that phase is survey phase
-    return false unless phase&.participation_method == 'native_survey'
+    pmethod = phase&.participation_method
+    return false unless pmethod == 'native_survey'
 
     # Confirm that the idea belongs to the current user
     return false unless idea.author_id == current_user.id
@@ -117,7 +118,7 @@ class UserFieldsInFormService
     return false if requirements[:custom_fields].empty?
 
     # Confirm that user_data_collection = 'all_data' or 'demographics_only'
-    return false if permission.user_data_collection == 'anonymous'
+    return false if pmethod == 'native_survey' && permission.user_data_collection == 'anonymous'
 
     # Finally, confirm that the idea doesn't already have user fields
     return false if idea.custom_field_values&.keys&.any? { |key| key.start_with?(prefix) }
