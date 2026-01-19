@@ -3,4 +3,5 @@
  */
 export interface MethodSpecificInsightProps {
   phaseId: string;
+  isPdfExport?: boolean;
 }
