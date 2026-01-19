@@ -100,7 +100,7 @@ class UserFieldsInFormService
 
     # Confirm that phase is survey phase
     pmethod = phase&.participation_method
-    return false unless pmethod == 'native_survey'
+    return false unless ['native_survey', 'ideation'].include?(pmethod)
 
     # Confirm that the idea belongs to the current user
     return false unless idea.author_id == current_user.id
