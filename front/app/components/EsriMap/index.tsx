@@ -333,6 +333,10 @@ const EsriMap = ({
         width={width ? `${width}` : '100%'}
         height={height ? `${height}` : '400px'}
         basemapType={getDefaultBasemapType(globalMapSettings.tile_provider)}
+        style={{
+          maxHeight: height || '400px',
+          overflow: 'hidden',
+        }}
       />
     </>
   );
