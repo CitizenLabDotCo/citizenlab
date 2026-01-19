@@ -218,6 +218,7 @@ resource 'Posts' do
     end
 
     let(:project_id) { @project.id }
+    let(:phase) { create(:phase, project:) }
     let(:title_multiloc) { { 'en' => 'My great idea', 'nl-NL' => 'Mijn geweldige idee' } }
     let(:body_multiloc) { { 'en' => 'This is a detailed description of my idea', 'nl-NL' => 'Dit is een gedetailleerde beschrijving van mijn idee' } }
 
