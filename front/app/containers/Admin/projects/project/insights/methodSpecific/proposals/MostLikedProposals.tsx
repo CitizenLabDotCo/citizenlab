@@ -27,11 +27,15 @@ const MostLikedProposals = ({ phaseId }: MethodSpecificInsightProps) => {
 
   if (isLoading) {
     return (
-      <Box mt="24px" p="24px" bg="white" borderRadius="3px">
-        <Box display="flex" alignItems="center" gap="8px">
-          <Spinner size="24px" />
-          <Text m="0">{formatMessage(messages.loading)}</Text>
-        </Box>
+      <Box
+        p="24px"
+        bg="white"
+        borderRadius="3px"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Spinner size="24px" />
       </Box>
     );
   }
