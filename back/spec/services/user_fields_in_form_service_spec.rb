@@ -189,6 +189,10 @@ describe UserFieldsInFormService do
         expect(described_class.should_merge_user_fields_from_idea_into_user?(@idea, @user)).to be false
       end
     end
+
+    context 'ideation' do
+
+    end
   end
 
   describe '#add_user_fields_to_form' do
