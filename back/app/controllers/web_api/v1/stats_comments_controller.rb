@@ -96,11 +96,11 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   end
 
   def apply_topic_filter(comments)
-    if params[:topic]
+    if params[:input_topic]
       comments
         .joins('INNER JOIN ideas ON ideas.id = comments.idea_id')
         .joins('INNER JOIN ideas_input_topics ON ideas_input_topics.idea_id = ideas.id')
-        .where(ideas_input_topics: { input_topic_id: params[:topic] })
+        .where(ideas_input_topics: { input_topic_id: params[:input_topic] })
     else
       comments
     end

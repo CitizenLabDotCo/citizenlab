@@ -24,7 +24,7 @@ def group_filter_parameter(s)
 end
 
 def topic_filter_parameter(s)
-  s.parameter :topic, 'Topic ID. Only count comments on ideas that have the given topic assigned', required: false
+  s.parameter :input_topic, 'Topic ID. Only count comments on ideas that have the given topic assigned', required: false
 end
 
 resource 'Stats - Comments' do

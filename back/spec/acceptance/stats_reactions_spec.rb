@@ -22,7 +22,7 @@ def group_filter_parameter(s)
 end
 
 def topic_filter_parameter(s)
-  s.parameter :topic, 'Topic ID. Only count reactions on ideas that have the given topic assigned', required: false
+  s.parameter :input_topic, 'Topic ID. Only count reactions on ideas that have the given topic assigned', required: false
 end
 
 resource 'Stats - Reactions' do
@@ -264,7 +264,7 @@ resource 'Stats - Reactions' do
 
       let(:start_at) { now.beginning_of_month }
       let(:end_at) { now.end_of_month }
-      let(:topic) { @input_topic.id }
+      let(:input_topic) { @input_topic.id }
 
       example_request 'Reactions by project filtered by topic' do
         assert_status 200
@@ -345,7 +345,7 @@ resource 'Stats - Reactions' do
 
       let(:start_at) { now.beginning_of_month }
       let(:end_at) { now.end_of_month }
-      let(:topic) { @input_topic.id }
+      let(:input_topic) { @input_topic.id }
 
       example_request 'Reactions by project filtered by topic' do
         assert_status 200

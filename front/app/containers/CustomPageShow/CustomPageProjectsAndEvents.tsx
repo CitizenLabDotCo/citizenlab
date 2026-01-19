@@ -71,7 +71,7 @@ const CustomPageProjectsAndEvents = ({
     isFetchingNextPage,
   } = useAdminPublications({
     pageSize: 6,
-    topicIds,
+    globalTopicIds: topicIds,
     areaIds,
     publicationStatusFilter: getPublicationStatuses(currentTab),
     rootLevelOnly: false,
@@ -139,7 +139,7 @@ const CustomPageProjectsAndEventsWrapper = ({ page }: Props) => {
 
   const { data: statusCountsWithoutFilters } = useAdminPublicationsStatusCounts(
     {
-      topicIds,
+      globalTopicIds: topicIds,
       areaIds,
       publicationStatusFilter: PUBLICATION_STATUSES,
       rootLevelOnly: false,
