@@ -90,7 +90,8 @@ class UserFieldsInFormService
     # Confirm that user fields are asked in form
     return false unless permission.user_fields_in_form_enabled?
 
-    # TODO?
+    # If pmethod is native_survey: only allow this if user_data_collection = 'all_data'
+    return false if pmethod == 'native_survey' && permission.user_data_collection != 'all_data'
 
     true
   end

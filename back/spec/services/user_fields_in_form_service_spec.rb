@@ -183,6 +183,11 @@ describe UserFieldsInFormService do
         @permission.update!(user_data_collection: 'anonymous')
         expect(described_class.should_merge_user_fields_from_idea_into_user?(@idea, @user)).to be false
       end
+
+      it 'returns false if user_data_collection is set to demographics_only' do
+        @permission.update!(user_data_collection: 'demographics_only')
+        expect(described_class.should_merge_user_fields_from_idea_into_user?(@idea, @user)).to be false
+      end
     end
   end
 
