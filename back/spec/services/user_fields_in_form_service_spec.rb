@@ -118,11 +118,12 @@ describe UserFieldsInFormService do
         @permission = @phase.permissions.find_by(action: 'posting_idea')
         @permission.update!(global_custom_fields: false, user_fields_in_form: false, user_data_collection: 'all_data')
         create(:permissions_custom_field, permission: @permission, custom_field: create(:custom_field, key: 'age'))
+
+        @idea = create(:idea, author: @user, custom_field_values: {})
       end
 
       it 'returns true when all conditions are met' do
-        idea = create(:idea, author: @user, custom_field_values: {})
-        expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, idea)).to be true
+        expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, @idea)).to be true
       end
 
       it 'returns false if user is not the author of the idea' do
@@ -132,8 +133,7 @@ describe UserFieldsInFormService do
 
       it 'returns false if user_data_collection is set to anonymous' do
         @permission.update!(user_data_collection: 'anonymous')
-        idea = create(:idea, author: @user, custom_field_values: {})
-        expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, idea)).to be false
+        expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, @idea)).to be false
       end
     end
   end
