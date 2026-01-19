@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UserFieldsInFormService
-  SUPPORTED_METHODS = ['native_survey', 'community_monitor_survey', 'ideation']
+  SUPPORTED_METHODS = %w[native_survey community_monitor_survey ideation]
 
   # This function is used to check if demographic
   # fields are collected during the registration process (I.E. NOT in the form),
@@ -43,7 +43,7 @@ class UserFieldsInFormService
   end
 
   # Related to function above:
-  # Actually merge user fields from the current user into 
+  # Actually merge user fields from the current user into
   # the idea's custom field values
   def self.merge_user_fields_into_idea(
     current_user,
