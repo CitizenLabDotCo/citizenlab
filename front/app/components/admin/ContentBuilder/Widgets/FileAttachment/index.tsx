@@ -11,25 +11,79 @@ import { useNode, useEditor } from '@craftjs/core';
 import { useParams } from 'react-router-dom';
 
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
+import useFileById from 'api/files/useFileById';
 import useFiles from 'api/files/useFiles';
 
 import { useContentBuilderLayoutContext } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import FileDisplay from 'components/UI/FileAttachments/FileDisplay';
 
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
+import FilePlaceholder from './FilePlaceholder';
 import messages from './messages';
 import { getIsFileAlreadyUsed } from './utils';
 
 type FileAttachmentProps = {
   fileId?: string;
-  fileAttachmentId?: string;
-  fileName?: string;
 };
 
-const FileAttachment = ({ fileId, fileName }: FileAttachmentProps) => {
+const FilePreview = ({ fileId }: { fileId?: string }) => {
+  const { data: file, isLoading } = useFileById(fileId);
+
+  if (!fileId) {
+    return (
+      <Box maxWidth="1200px" margin="0 auto">
+        <FilePlaceholder>
+          <FormattedMessage {...messages.selectFilePrompt} />
+        </FilePlaceholder>
+      </Box>
+    );
+  }
+
+  if (isLoading) {
+    return null;
+  }
+
+  if (!file) {
+    return (
+      <Box maxWidth="1200px" margin="0 auto">
+        <FilePlaceholder variant="error">
+          <FormattedMessage {...messages.fileMissing} />
+        </FilePlaceholder>
+      </Box>
+    );
+  }
+
+  return (
+    <Box
+      id="e2e-file-attachment"
+      maxWidth="1200px"
+      style={{ pointerEvents: 'none' }}
+    >
+      <FileDisplay
+        file={{
+          id: file.data.id,
+          type: 'file',
+          attributes: {
+            name: file.data.attributes.name,
+            file: { url: '' },
+            ordering: null,
+            size: file.data.attributes.size,
+            created_at: '',
+            updated_at: '',
+          },
+        }}
+      />
+    </Box>
+  );
+};
+
+const FileAttachment = ({ fileId }: FileAttachmentProps) => {
   const { layoutId } = useContentBuilderLayoutContext();
+  const { enabled } = useEditor((state) => ({
+    enabled: state.options.enabled,
+  }));
 
   const { data: attachments } = useFileAttachments({
     attachable_id: layoutId,
@@ -42,62 +96,34 @@ const FileAttachment = ({ fileId, fileName }: FileAttachmentProps) => {
     );
   }, [attachments, fileId]);
 
-  if (
-    !attachment // We've changed the file
-  ) {
-    // Show placeholder with just the file name if we haven't saved yet
-    if (fileName) {
-      return (
-        <Box
-          id="e2e-file-attachment"
-          maxWidth="1200px"
-          margin="0 auto"
-          style={{ pointerEvents: 'none' }}
-        >
-          <FileDisplay
-            file={{
-              id: 'temp-id',
-              type: 'file',
-              attributes: {
-                name: fileName,
-                file: { url: '' },
-                ordering: null,
-                size: 0,
-                created_at: '',
-                updated_at: '',
+  if (attachment) {
+    const attachmentAttributes = attachment.attributes;
+    return (
+      <Box id="e2e-file-attachment" maxWidth="1200px">
+        <FileDisplay
+          file={{
+            id: attachment.relationships.file.data.id,
+            type: 'file',
+            attributes: {
+              ordering: 1,
+              name: attachmentAttributes.file_name,
+              size: attachmentAttributes.file_size,
+              created_at: attachmentAttributes.created_at,
+              updated_at: attachmentAttributes.updated_at,
+              file: {
+                url: attachmentAttributes.file_url,
               },
-            }}
-          />
-        </Box>
-      );
-    }
-    return null;
+            },
+          }}
+        />
+      </Box>
+    );
   }
 
-  const attachmentAttributes = attachment.attributes;
+  // No attachment in view mode -> hides widget
+  if (!enabled) return null;
 
-  return (
-    <Box id="e2e-file-attachment" maxWidth="1200px" margin="0 auto">
-      <FileDisplay
-        file={{
-          // Transform the file data to match the current expected type structure.
-          // TODO: In the future, once we remove the old files structure/api, we can simplify this.
-          id: attachment.relationships.file.data.id,
-          type: 'file',
-          attributes: {
-            ordering: 1,
-            name: fileName || attachmentAttributes.file_name,
-            size: attachmentAttributes.file_size,
-            created_at: attachmentAttributes.created_at,
-            updated_at: attachmentAttributes.updated_at,
-            file: {
-              url: attachmentAttributes.file_url,
-            },
-          },
-        }}
-      />
-    </Box>
-  );
+  return <FilePreview fileId={fileId} />;
 };
 
 const FileAttachmentSettings = () => {
@@ -164,11 +190,7 @@ const FileAttachmentSettings = () => {
           value={fileId}
           onChange={(option) => {
             setProp((props: FileAttachmentProps) => {
-              // Set the new selected file ID & name
-              // File attachment will be created on BE when layout is saved.
               props.fileId = option.value;
-              props.fileName = option.label;
-              props.fileAttachmentId = undefined; // Clear old attachment ID if changing file
             });
           }}
           placeholder={formatMessage(messages.selectFile)}
