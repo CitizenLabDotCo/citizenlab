@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class UserFieldsInFormService
-  SUPPORTED_METHODS = ['native_survey', 'ideation']
+  SUPPORTED_METHODS = ['native_survey', 'community_monitor_survey', 'ideation']
 
   # This function is used to check if demographic
   # fields are collected during the registration process (I.E. NOT in the form),
