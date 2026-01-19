@@ -39,25 +39,25 @@ it:
     prescreening: pre-screening
     prescreening_description: Questo contributo è attualmente in fase di revisione da parte del responsabile del progetto e non è ancora visibile al pubblico.
     proposed: proposto
-    proposed_description: Questa idea è stata proposta alla città
+    proposed_description: Questo contributo è stato presentato ed è ora aperto al sostegno dell'opinione pubblica. Puoi votarlo per aiutarlo a passare alla fase successiva.
     viewed: visto
-    viewed_description: Questa idea è stata vista da qualcuno della città
+    viewed_description: Questo contributo è stato visto dal responsabile del progetto.
     under_consideration: in considerazione
-    under_consideration_description: Questa idea è stata presa in considerazione dalla città
+    under_consideration_description: Questo contributo è stato preso in considerazione dal responsabile del progetto.
     accepted: accettato
-    accepted_description: Questa idea è stata accettata e sarà attuata dalla città
+    accepted_description: Questo contributo è stato accettato e sarà implementato dal responsabile del progetto.
     implemented: implementato
-    implemented_description: Questa idea è stata proposta alla città
+    implemented_description: Questo contributo è stato implementato dal responsabile del progetto.
     rejected: rifiutato
-    rejected_description: Questa idea è stata respinta
+    rejected_description: Questo contributo è stato respinto.
     expired: scaduto
-    expired_description: scaduto
+    expired_description: Questo contributo non è più attivo ed è stato chiuso a causa di limiti di tempo o di inattività.
     threshold_reached: soglia raggiunta
-    threshold_reached_description: soglia raggiunta
+    threshold_reached_description: Questo contributo ha raggiunto la soglia di supporto richiesta e sarà ora preso in considerazione.
     answered: ha risposto
-    answered_description: ha risposto
+    answered_description: Il responsabile del progetto ha pubblicato un aggiornamento ufficiale su questo contributo.
     ineligible: non ammissibile
-    ineligible_description: non ammissibile
+    ineligible_description: Questo contributo è stato esaminato e, purtroppo, respinto. È stato fornito un aggiornamento ufficiale con maggiori dettagli.
   topics:
     nature: Natura e biodiversità
     nature_description: Natura e biodiversità
