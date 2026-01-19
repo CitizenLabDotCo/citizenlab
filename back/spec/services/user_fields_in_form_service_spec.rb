@@ -28,6 +28,11 @@ describe UserFieldsInFormService do
         expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, idea)).to be false
       end
 
+      it 'returns false if user fields are in form' do
+        @permission.update!(user_fields_in_form: true)
+        expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, @idea)).to be false
+      end
+
       it 'returns false if user_data_collection is set to anonymous' do
         @permission.update!(user_data_collection: 'anonymous')
         expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, @idea)).to be false
@@ -129,6 +134,43 @@ describe UserFieldsInFormService do
         'u_age' => 30,
         'u_city' => 'New York'
       })
+    end
+  end
+
+  describe '#should_merge_user_fields_from_idea_into_user?' do
+    context 'native survey' do
+      before do
+        @user = create(:user, { custom_field_values: { age: 30 } })
+        @project = create(:single_phase_native_survey_project, phase_attrs: {
+          with_permissions: true
+        })
+        @phase = @project.phases.first
+
+        @permission = @phase.permissions.find_by(action: 'posting_idea')
+        @permission.update!(global_custom_fields: false, user_fields_in_form: true, user_data_collection: 'all_data')
+        create(:permissions_custom_field, permission: @permission, custom_field: create(:custom_field, key: 'age'))
+
+        @idea = create(:idea, author: @user, custom_field_values: {})
+      end
+
+      it 'returns true when all conditions are met' do
+        expect(described_class.should_merge_user_fields_from_idea_into_user?(@idea, @user)).to be true
+      end
+
+      it 'returns false if user is not the author of the idea' do
+        idea = create(:idea, author: create(:user), custom_field_values: {})
+        expect(described_class.should_merge_user_fields_from_idea_into_user?(@idea, @user)).to be false
+      end
+
+      it 'returns false if user fields are in not form' do
+        @permission.update!(user_fields_in_form: false)
+        expect(described_class.should_merge_user_fields_into_idea?(@idea, @user)).to be false
+      end
+
+      it 'returns false if user_data_collection is set to anonymous' do
+        @permission.update!(user_data_collection: 'anonymous')
+        expect(described_class.should_merge_user_fields_from_idea_into_user?(@idea, @user)).to be false
+      end
     end
   end
 
