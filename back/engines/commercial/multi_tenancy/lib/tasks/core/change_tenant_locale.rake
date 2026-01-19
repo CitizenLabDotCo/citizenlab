@@ -7,12 +7,13 @@
 #   rake 'core:change_tenant_locale[hostname.com,en-GB,en]'
 #
 # The task will:
-#   1. Update User.locale for all users with the current locale
-#   2. Update the locale in AppConfiguration settings
+#   1. Add the new locale to AppConfiguration settings (alongside the current locale)
+#   2. Update User.locale for all users with the current locale
 #   3. Find all models with multiloc columns (columns ending in '_multiloc')
 #   4. Rename the locale key from current_locale to new_locale in each multiloc field
 #   5. Rename locale keys in craftjs_json text nodes (ContentBuilder::Layout)
-#   6. Display a summary of changes made
+#   6. Remove the old locale from AppConfiguration settings
+#   7. Display a summary of changes made
 #
 # Notes:
 #   - This is a destructive operation
@@ -21,7 +22,6 @@
 namespace :core do
   desc 'Change tenant locale by renaming locale keys in settings, multilocs, and craftjs_json'
   task :change_tenant_locale, %i[host current_locale new_locale] => :environment do |_t, args|
-    # Validate parameters
     if args[:host].blank?
       puts 'Host parameter is required. Usage: rake core:change_tenant_locale[host,current_locale,new_locale]'
       next
@@ -53,7 +53,6 @@ namespace :core do
       puts "Changing locale: #{current_locale} -> #{new_locale}"
       puts '=' * 80
 
-      # Get current configured locales
       app_config = AppConfiguration.instance
       current_locales = app_config.settings('core', 'locales') || []
 
@@ -67,125 +66,164 @@ namespace :core do
         next
       end
 
-      # Initialize counters
-      records_updated = 0
-      fields_updated = 0
-      model_summary = {}
+      ChangeTenantLocale.run(current_locale, new_locale)
+    end
+  end
+end
 
-      # Update user locales first (before changing settings to avoid validation errors)
+# rubocop:disable Metrics/ModuleLength
+module ChangeTenantLocale
+  class << self
+    attr_accessor :current_locale, :new_locale, :records_updated, :fields_updated, :model_summary
+
+    def run(current_locale, new_locale)
+      @current_locale = current_locale
+      @new_locale = new_locale
+      @records_updated = 0
+      @fields_updated = 0
+      @model_summary = {}
+
+      add_new_locale
+      update_user_locales
+      update_multilocs
+      update_craftjs_layouts
+      remove_old_locale
+      print_summary
+    end
+
+    private
+
+    def add_new_locale
+      puts "\nAdding new locale to AppConfiguration settings..."
+      app_config = AppConfiguration.instance
+      current_locales = app_config.settings('core', 'locales') || []
+      current_locale_index = current_locales.index(current_locale)
+
+      locales_with_new = current_locales.dup
+      locales_with_new.insert(current_locale_index, new_locale)
+
+      app_config.settings['core']['locales'] = locales_with_new
+      app_config.update_column(:settings, app_config.settings)
+      puts "  Added #{new_locale}: #{locales_with_new.join(', ')}"
+    end
+
+    def update_user_locales
       puts "\nUpdating User locales..."
       users_updated = User.where(locale: current_locale).update_all(locale: new_locale)
       puts "  Updated #{users_updated} users from #{current_locale} to #{new_locale}"
-      model_summary['User (locale)'] = users_updated if users_updated > 0
-      records_updated += users_updated
 
-      # Update settings (use update_column to bypass schema validations for legacy properties)
-      puts "\nUpdating AppConfiguration settings..."
-      new_locales = current_locales.map { |l| l == current_locale ? new_locale : l }
-      app_config.settings['core']['locales'] = new_locales
-      app_config.update_column(:settings, app_config.settings)
-      puts "  Updated locales: #{current_locales.join(', ')} -> #{new_locales.join(', ')}"
+      model_summary['User (locale)'] = users_updated if users_updated.positive?
+      @records_updated += users_updated
+    end
 
-      # Helper lambda to rename locale key in a multiloc hash
-      # Returns false if no change needed, true if key was renamed
-      rename_locale_key = lambda do |multiloc|
-        return false unless multiloc.is_a?(Hash) && multiloc.key?(current_locale)
-        return false if multiloc.key?(new_locale) # Don't overwrite existing target locale
-
-        multiloc[new_locale] = multiloc.delete(current_locale)
-        true
-      end
-
-      # Iterate through all models
+    def update_multilocs
+      puts "\nUpdating multiloc fields..."
       data_listing_service = Cl2DataListingService.new
+
       data_listing_service.cl2_schema_models.each do |model|
-        # Find columns that store multiloc data (JSON with locale keys)
         multiloc_columns = data_listing_service.multiloc_attributes(model)
         next if multiloc_columns.empty?
 
-        # Process each record in batches
-        model_updates = 0
-        model.find_each do |record|
-          record_modified = false
+        model_updates = process_model_multilocs(model, multiloc_columns)
+        model_summary[model.name] = model_updates if model_updates.positive?
+      end
+    end
 
-          multiloc_columns.each do |column|
-            # Use read_attribute to get raw value without triggering custom methods
-            value = record.read_attribute(column)
+    def process_model_multilocs(model, multiloc_columns)
+      model_updates = 0
 
-            # Skip nil or empty multilocs
-            next if value.blank?
+      model.find_each do |record|
+        record_modified = false
 
-            # Rename the locale key if it exists
-            next unless rename_locale_key.call(value)
+        multiloc_columns.each do |column|
+          value = record.read_attribute(column)
+          next if value.blank?
+          next unless rename_locale_key(value)
 
-            # Save the updated multiloc (bypasses validations/callbacks)
-            record.update_column(column, value)
-            record_modified = true
-            fields_updated += 1
-          end
-
-          if record_modified
-            records_updated += 1
-            model_updates += 1
-          end
+          record.update_column(column, value)
+          record_modified = true
+          @fields_updated += 1
         end
 
-        # Track updates per model for summary
-        model_summary[model.name] = model_updates if model_updates > 0
+        if record_modified
+          @records_updated += 1
+          model_updates += 1
+        end
       end
 
-      # Process craftjs_json text values in ContentBuilder::Layout records
-      if defined?(ContentBuilder::Layout)
-        craftjs_updates = 0
+      model_updates
+    end
 
-        ContentBuilder::Layout.find_each do |layout|
-          craftjs_json = layout.craftjs_json
-          next if craftjs_json.blank?
+    def update_craftjs_layouts
+      return unless defined?(ContentBuilder::Layout)
 
-          layout_modified = false
+      puts "\nUpdating ContentBuilder layouts..."
+      craftjs_updates = 0
 
-          craftjs_json.each_value do |node_value|
-            next unless node_value.is_a?(Hash)
-            next unless node_value['type'].is_a?(Hash)
+      ContentBuilder::Layout.find_each do |layout|
+        craftjs_json = layout.craftjs_json
+        next if craftjs_json.blank?
 
-            resolved_name = node_value['type']['resolvedName']
-            next unless ContentBuilder::Layout::TEXT_CRAFTJS_NODE_TYPES.include?(resolved_name)
+        layout_modified = process_craftjs_nodes(craftjs_json)
 
-            # Process 'text' prop (present in both TextMultiloc and AccordionMultiloc)
-            text_multiloc = node_value.dig('props', 'text')
-            if text_multiloc.is_a?(Hash) && rename_locale_key.call(text_multiloc)
-              layout_modified = true
-              fields_updated += 1
-            end
+        if layout_modified
+          layout.update_column(:craftjs_json, craftjs_json)
+          @records_updated += 1
+          craftjs_updates += 1
+        end
+      end
 
-            # Process 'title' prop (only in AccordionMultiloc)
-            next unless resolved_name == 'AccordionMultiloc'
+      model_summary['ContentBuilder::Layout (craftjs_json)'] = craftjs_updates if craftjs_updates.positive?
+    end
 
-            title_multiloc = node_value.dig('props', 'title')
-            next unless title_multiloc.is_a?(Hash) && rename_locale_key.call(title_multiloc)
+    def process_craftjs_nodes(craftjs_json)
+      layout_modified = false
 
-            layout_modified = true
-            fields_updated += 1
-          end
+      craftjs_json.each_value do |node_value|
+        next unless node_value.is_a?(Hash)
+        next unless node_value['type'].is_a?(Hash)
 
-          if layout_modified
-            layout.update_column(:craftjs_json, craftjs_json)
-            records_updated += 1
-            craftjs_updates += 1
-          end
+        resolved_name = node_value['type']['resolvedName']
+        next unless ContentBuilder::Layout::TEXT_CRAFTJS_NODE_TYPES.include?(resolved_name)
+
+        # Process 'text' prop (present in both TextMultiloc and AccordionMultiloc)
+        text_multiloc = node_value.dig('props', 'text')
+        if text_multiloc.is_a?(Hash) && rename_locale_key(text_multiloc)
+          layout_modified = true
+          @fields_updated += 1
         end
 
-        model_summary['ContentBuilder::Layout (craftjs_json)'] = craftjs_updates if craftjs_updates > 0
+        # Process 'title' prop (only in AccordionMultiloc)
+        next unless resolved_name == 'AccordionMultiloc'
+
+        title_multiloc = node_value.dig('props', 'title')
+        if title_multiloc.is_a?(Hash) && rename_locale_key(title_multiloc)
+          layout_modified = true
+          @fields_updated += 1
+        end
       end
 
-      # Print summary
-      puts "SUMMARY FOR #{tenant.host}"
+      layout_modified
+    end
+
+    def remove_old_locale
+      puts "\nRemoving old locale from AppConfiguration settings..."
+      app_config = AppConfiguration.instance
+      final_locales = app_config.settings['core']['locales'].reject { |l| l == current_locale }
+
+      app_config.settings['core']['locales'] = final_locales
+      app_config.update_column(:settings, app_config.settings)
+      puts "  Removed #{current_locale}: #{final_locales.join(', ')}"
+    end
+
+    def print_summary
+      puts "\n#{'=' * 80}"
+      puts 'SUMMARY'
       puts '=' * 80
 
       if model_summary.empty?
         puts 'No multiloc fields found with the current locale.'
       else
-        # Print update counts per model, sorted by count descending
         puts "\n#{'Model'.ljust(50)} | Records Updated"
         puts '-' * 70
 
@@ -200,5 +238,14 @@ namespace :core do
 
       puts "\nLocale change complete: #{current_locale} -> #{new_locale}"
     end
+
+    def rename_locale_key(multiloc)
+      return false unless multiloc.is_a?(Hash) && multiloc.key?(current_locale)
+      return false if multiloc.key?(new_locale) # Don't overwrite existing target locale
+
+      multiloc[new_locale] = multiloc.delete(current_locale)
+      true
+    end
   end
 end
+# rubocop:enable Metrics/ModuleLength
