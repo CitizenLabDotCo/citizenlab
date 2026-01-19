@@ -208,12 +208,29 @@ namespace :bulk_import do
             next
           end
 
+          # Build lookup of custom fields by key for select/multiselect option replacement
+          fields_by_key = custom_form.custom_fields.includes(:options).index_by(&:key)
+          select_input_types = %w[select multiselect]
+
+          # Create custom_field_values with select/multiselect replaced by all option keys
+          custom_field_values = {}
+          (idea[:custom_field_values] || {}).each do |field_key, value|
+            field = fields_by_key[field_key.to_s]
+
+            custom_field_values[field_key] = if field && select_input_types.include?(field.input_type)
+              # Replace with array of all option keys to make it easier to edit expected output
+              field.options.map(&:key)
+            else
+              value
+            end
+          end
+
           # Create expected_output.json from parsed idea
           expected_output_data = {
             user_first_name: idea[:user_first_name],
             user_last_name: idea[:user_last_name],
             user_email: idea[:user_email],
-            custom_field_values: idea[:custom_field_values] || {}
+            custom_field_values: custom_field_values
           }
           if participation_method == 'ideation'
             expected_output_data[:title_multiloc] = idea[:title_multiloc] || { locale => '' }
