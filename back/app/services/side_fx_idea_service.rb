@@ -52,7 +52,7 @@ class SideFxIdeaService
 
     after_submission idea, user if just_submitted
     if just_published
-      after_publish(idea, user, idea.current_phase)
+      after_publish(idea, user, idea.creation_phase)
     elsif idea.published?
       change = idea.saved_changes
       payload = { idea: serialize_idea(idea) }
