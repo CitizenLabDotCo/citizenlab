@@ -804,7 +804,7 @@ function getSelectedTopicIds(
   if (projectAttributesDiff.topic_ids) return projectAttributesDiff.topic_ids;
 
   if (project) {
-    return project.relationships.topics.data.map((topic) => topic.id);
+    return project.relationships.global_topics.data.map((topic) => topic.id);
   }
 
   return [];

@@ -129,7 +129,7 @@ export interface IProjectData {
     avatars?: {
       data?: IRelationship[];
     };
-    topics: {
+    global_topics: {
       data: IRelationship[];
     };
     current_phase?: {
