@@ -32,7 +32,7 @@
   "app.components.AssignMultipleVotesControl.votesSubmitted1": "Vous avez déjà soumis votre vote. Pour le modifier, cliquez sur « Modifier votre soumission ».",
   "app.components.AssignMultipleVotesControl.votesSubmittedIdeaPage1": "Vous avez déjà soumis votre vote. Pour le modifier, retournez à la page du projet et cliquez sur « Modifier votre soumission ».",
   "app.components.AssignMultipleVotesControl.xCredits1": "{votes, plural, one {crédit} other {crédits}}",
-  "app.components.AssignMultipleVotesControl.xPercents": "{votes, plural, one {pourcentage} other {pourcentage}}",
+  "app.components.AssignMultipleVotesControl.xPercents": "{votes, plural, one {pourcent} other {pourcents}}",
   "app.components.AssignMultipleVotesControl.xPoints1": "{votes, plural, one {point} other {points}}",
   "app.components.AssignMultipleVotesControl.xTokens1": "{votes, plural, one {jeton} other {jetons}}",
   "app.components.AssignMultipleVotesControl.xVotes3": "{votes, plural, one {vote} other {votes}}",
