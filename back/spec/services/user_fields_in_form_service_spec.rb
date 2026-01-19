@@ -160,7 +160,7 @@ describe UserFieldsInFormService do
       end
 
       it 'returns true when all conditions are met' do
-        expect(described_class.should_merge_user_fields_from_idea_into_user?(@idea, @user)).to be true
+        expect(described_class.should_merge_user_fields_from_idea_into_user?(@idea, @user, @phase)).to be true
       end
 
       it 'returns false if user is not the author of the idea' do
@@ -171,22 +171,22 @@ describe UserFieldsInFormService do
           project: @project,
           creation_phase: @phase
         )
-        expect(described_class.should_merge_user_fields_from_idea_into_user?(idea, @user)).to be false
+        expect(described_class.should_merge_user_fields_from_idea_into_user?(idea, @user, @phase)).to be false
       end
 
       it 'returns false if user fields are in not form' do
         @permission.update!(user_fields_in_form: false)
-        expect(described_class.should_merge_user_fields_from_idea_into_user?(@idea, @user)).to be false
+        expect(described_class.should_merge_user_fields_from_idea_into_user?(@idea, @user, @phase)).to be false
       end
 
       it 'returns false if user_data_collection is set to anonymous' do
         @permission.update!(user_data_collection: 'anonymous')
-        expect(described_class.should_merge_user_fields_from_idea_into_user?(@idea, @user)).to be false
+        expect(described_class.should_merge_user_fields_from_idea_into_user?(@idea, @user, @phase)).to be false
       end
 
       it 'returns false if user_data_collection is set to demographics_only' do
         @permission.update!(user_data_collection: 'demographics_only')
-        expect(described_class.should_merge_user_fields_from_idea_into_user?(@idea, @user)).to be false
+        expect(described_class.should_merge_user_fields_from_idea_into_user?(@idea, @user, @phase)).to be false
       end
     end
 
@@ -206,13 +206,12 @@ describe UserFieldsInFormService do
           :idea, 
           author: @user, 
           custom_field_values: {},
-          project: @project,
-          creation_phase: @phase
+          project: @project
         )
       end
 
       it 'returns true when all conditions are met' do
-        expect(described_class.should_merge_user_fields_into_idea?(@idea, @user, @phase)).to be true
+        expect(described_class.should_merge_user_fields_from_idea_into_user?(@idea, @user, @phase)).to be true
       end
     end
   end
