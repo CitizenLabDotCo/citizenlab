@@ -90,7 +90,7 @@ it:
       author_last_name: 'Sconosciuto'
       author_display_name: 'Laura Bianchi'
       initiator_first_name: 'Mario'
-      initiator_last_name: 'Smith'
+      initiator_last_name: 'Rossi'
       initiator_display_name: 'Mario Rossi'
       project_title: 'Esempio di progetto'
       project_description_preview: 'Questo è un esempio di contenuto di una fase utilizzato per l''anteprima del contenuto delle e-mail. Non si tratta di contenuti reali.'
@@ -168,7 +168,7 @@ it:
       by_author: 'da %{authorName}'
       commented: '%{authorName} ha commentato:'
       days_ago: '%{numberOfDays} giorni fa da'
-      event_description: 'Il seguente commento pubblicato su <strong>''%{post}''</strong> è stato riportato:'
+      event_description: 'Il seguente commento pubblicato su <strong>''%{post}''</strong> è stato segnalato:'
       inappropriate_content: 'Il commento è inappropriato o offensivo.'
       reported_this_because: '%{reporterFirstName} ha segnalato questo contenuto perché:'
       today: Oggi
@@ -180,7 +180,7 @@ it:
       title: 'È disponibile un nuovo report del barometro civico'
       event_description: 'È stato creato un report del barometro civico per il trimestre precedente. Puoi accedervi cliccando sul pulsante qui sotto ed effettuando il login.'
       cta_button: 'Vedi report'
-      report_name: 'Rapporto del barometro civico'
+      report_name: 'Report del Barometro Civico'
     cosponsor_of_your_idea:
       subject: '%{cosponsorName} ha accettato il tuo invito a co-sponsorizzare la tua proposta'
       preheader: '%{cosponsorName} ha accettato il tuo invito a co-sponsorizzare la tua proposta'
@@ -201,7 +201,7 @@ it:
       title_successful_past_week: 'Assegnati a te che hanno raggiunto la soglia'
     idea_marked_as_spam:
       subject: 'Hai una segnalazione di spam sulla piattaforma di %{organizationName}'
-      preheader: 'Agire su questo rapporto di spam'
+      preheader: 'Agisci su questa segnalazione di spam'
       title: '%{firstName} %{lastName} ha segnalato uno spam'
       cta_button: 'Esamina'
       report_inappropriate_offensive_content: 'Trovo questo contenuto inappropriato o offensivo.'
