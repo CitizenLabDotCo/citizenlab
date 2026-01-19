@@ -127,7 +127,7 @@ module Insights
     def participations_voting
       @phase.baskets
         .where.not(submitted_at: nil)
-        .includes(:user, :baskets_ideas)
+        .includes(:user, :baskets_ideas, :ideas)
         .map do |basket|
           basket_ideas = basket.baskets_ideas
           total_votes = basket_ideas.to_a.sum(&:votes)
