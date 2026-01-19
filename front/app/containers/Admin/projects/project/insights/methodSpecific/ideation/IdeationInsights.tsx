@@ -9,7 +9,22 @@ import { MethodSpecificInsightProps } from '../types';
 import AiSummary from './AiSummary';
 import MostLikedIdeas from './MostLikedIdeas';
 
-const IdeationInsights = ({ phaseId }: MethodSpecificInsightProps) => {
+const IdeationInsights = ({
+  phaseId,
+  isPdfExport = false,
+}: MethodSpecificInsightProps) => {
+  // For PDF export, use single-column layout so content spans full width
+  if (isPdfExport) {
+    return (
+      <Box mt="16px" display="flex" flexDirection="column" gap="24px">
+        <AiSummary phaseId={phaseId} />
+        <InputsByTopic phaseId={phaseId} />
+        <MostLikedIdeas phaseId={phaseId} />
+        <StatusBreakdown phaseId={phaseId} participationMethod="ideation" />
+      </Box>
+    );
+  }
+
   return (
     <Box mt="16px" gap="24px">
       <Box display="flex" gap="16px" w="100%">
