@@ -73,11 +73,10 @@ class UserFieldsInFormService
 
   # This function is used to check if user fields are asked on the last
   # page of the form, and if so, if they should be merged into the user.
-  def self.should_merge_user_fields_from_idea_into_user?(idea, user)
+  def self.should_merge_user_fields_from_idea_into_user?(idea, user, phase)
     return false unless user
 
     # Confirm that phase is survey or ideation phase
-    phase = idea.creation_phase
     pmethod = phase&.participation_method
     return false unless SUPPORTED_METHODS.include?(pmethod)
 

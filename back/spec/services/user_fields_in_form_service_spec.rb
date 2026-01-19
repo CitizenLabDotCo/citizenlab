@@ -212,7 +212,7 @@ describe UserFieldsInFormService do
       end
 
       it 'returns true when all conditions are met' do
-        expect(described_class.should_merge_user_fields_into_idea?(@idea, @user)).to be true
+        expect(described_class.should_merge_user_fields_into_idea?(@idea, @user, @phase)).to be true
       end
     end
   end

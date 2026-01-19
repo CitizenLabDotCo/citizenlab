@@ -225,7 +225,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ActiveRecord::Base.transaction do
       if input.save(**save_options)
         update_file_upload_fields input, form, params_for_create
-        sidefx.after_create(input, current_user)
+        sidefx.after_create(input, current_user, phase_for_input)
         write_everyone_tracking_cookie input
 
         ClaimTokenService.generate(input) unless input.author_id

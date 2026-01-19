@@ -13,7 +13,7 @@ class SideFxIdeaService
     before_publish_or_submit idea, user if idea.submitted_or_published?
   end
 
-  def after_create(idea, user)
+  def after_create(idea, user, phase)
     idea.phases.each(&:update_manual_votes_count!) if idea.manual_votes_amount.present?
 
     LogActivityJob.perform_later(
@@ -25,7 +25,7 @@ class SideFxIdeaService
     )
 
     after_submission idea, user if idea.submitted_or_published?
-    after_publish idea, user if idea.published?
+    after_publish(idea, user, phase) if idea.published?
     enqueue_embeddings_job(idea)
 
     log_activities_if_cosponsors_added(idea, user)
@@ -52,7 +52,7 @@ class SideFxIdeaService
 
     after_submission idea, user if just_submitted
     if just_published
-      after_publish idea, user
+      after_publish(idea, user, idea.current_phase)
     elsif idea.published?
       change = idea.saved_changes
       payload = { idea: serialize_idea(idea) }
@@ -158,8 +158,8 @@ class SideFxIdeaService
     LogActivityJob.set(wait: 20.seconds).perform_later(idea, 'submitted', user_for_activity_on_anonymizable_item(idea, user), idea.submitted_at.to_i)
   end
 
-  def after_publish(idea, user)
-    if UserFieldsInFormService.should_merge_user_fields_from_idea_into_user?(idea, user)
+  def after_publish(idea, user, phase)
+    if UserFieldsInFormService.should_merge_user_fields_from_idea_into_user?(idea, user, phase)
       UserFieldsInFormService.merge_user_fields_from_idea_into_user!(idea, user)
     end
     log_activity_jobs_after_published(idea, user)
