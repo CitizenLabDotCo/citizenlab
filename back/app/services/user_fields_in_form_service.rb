@@ -73,7 +73,7 @@ class UserFieldsInFormService
 
   # This function is used to check if user fields are asked on the last
   # page of the form, and if so, if they should be merged into the user.
-  def should_merge_user_fields_from_idea_into_user?(idea, user)
+  def self.should_merge_user_fields_from_idea_into_user?(idea, user)
     return false unless user
 
     # Confirm that phase is survey or ideation phase
@@ -82,18 +82,13 @@ class UserFieldsInFormService
     return false unless SUPPORTED_METHODS.include?(pmethod)
 
     # Confirm that the idea belongs to the current user
-    return false unless idea.author_id == current_user.id
+    return false unless idea.author_id == user.id
 
     permission = phase.permissions.find_by(action: 'posting_idea')
     return false unless permission
 
     # Confirm that user fields are asked in form
-    return false unless idea.participation_method_on_creation.user_fields_in_form_enabled?
-
-    # Make sure there are fields to be asked
-    requirements = Permissions::UserRequirementsService.new.requirements(permission, nil)
-    return false unless requirements[:custom_fields]
-    return false if requirements[:custom_fields].empty?
+    return false unless permission.user_fields_in_form_enabled?
 
     # TODO?
 
