@@ -17,7 +17,7 @@ const IdeationInsights = ({
   if (isPdfExport) {
     return (
       <Box mt="16px" display="flex" flexDirection="column" gap="24px">
-        <AiSummary phaseId={phaseId} />
+        <AiSummary phaseId={phaseId} isPdfExport />
         <InputsByTopic phaseId={phaseId} />
         <MostLikedIdeas phaseId={phaseId} />
         <StatusBreakdown phaseId={phaseId} participationMethod="ideation" />
