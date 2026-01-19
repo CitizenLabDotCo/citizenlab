@@ -14,13 +14,6 @@ module BulkImportIdeas
         # Log a user 'create' activity - when the idea has been published
         LogActivityJob.perform_later(idea.author, 'created', current_user, idea.author.created_at.to_i, payload: { flow: 'importer' })
       end
-
-      private
-
-      def log_activity_jobs_after_published(idea, user)
-        super
-        after_import(idea, user)
-      end
     end
   end
 end
