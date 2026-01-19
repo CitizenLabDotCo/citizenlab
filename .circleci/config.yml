@@ -718,7 +718,7 @@ jobs:
   # E2E TESTS
   e2e-setup-db:
     docker:
-      - image: cimg/base:2024.08
+      - image: cimg/base:2026.01
     working_directory: ~/citizenlab
     resource_class: medium
     parameters:
@@ -751,7 +751,7 @@ jobs:
 
   e2e-setup-front:
     docker:
-      - image: cimg/base:2024.08
+      - image: cimg/base:2026.01
     resource_class: large
     parameters:
       docker_layer_caching:
@@ -778,7 +778,7 @@ jobs:
             - build
   e2e-tests:
     docker:
-      - image: cimg/base:2024.08
+      - image: cimg/base:2026.01
     parameters:
       parallelism:
         type: integer
