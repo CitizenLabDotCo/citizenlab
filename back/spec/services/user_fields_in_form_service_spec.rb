@@ -162,6 +162,10 @@ describe UserFieldsInFormService do
       end
 
       it 'returns true if user_data_collection is set to anonymous (attribute should be ignored)' do
+        # This attribute is only used in surveys and should always be `all_data` in ideation.
+        # However, since we support changing participation methods, it might be that someone
+        # switched from a survey with user_data_collection: 'anonymous' or whatever. 
+        # So just adding this check to be sure it really gets ignored.
         @permission.update!(user_data_collection: 'anonymous')
         expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, @idea)).to be true
       end
