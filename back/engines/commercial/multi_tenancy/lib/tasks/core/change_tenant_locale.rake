@@ -4,7 +4,7 @@
 # and craftjs_json content.
 #
 # Usage:
-#   rake 'core:change_tenant_locale[hostname.com,en,en-GB]'
+#   rake 'core:change_tenant_locale[hostname.com,en-GB,en]'
 #
 # The task will:
 #   1. Update User.locale for all users with the current locale
@@ -15,16 +15,12 @@
 #   6. Display a summary of changes made
 #
 # Notes:
-#   - This is a destructive operation - backup your database first
+#   - This is a destructive operation
 #   - The task will skip records where the current_locale key doesn't exist
-#   - Readonly records (e.g., database views) are skipped
 
 namespace :core do
   desc 'Change tenant locale by renaming locale keys in settings, multilocs, and craftjs_json'
   task :change_tenant_locale, %i[host current_locale new_locale] => :environment do |_t, args|
-    # Load all models including those in engines
-    Zeitwerk::Loader.eager_load_all
-
     # Validate parameters
     if args[:host].blank?
       puts 'Host parameter is required. Usage: rake core:change_tenant_locale[host,current_locale,new_locale]'
@@ -183,7 +179,6 @@ namespace :core do
       end
 
       # Print summary
-      puts "\n#{'=' * 80}"
       puts "SUMMARY FOR #{tenant.host}"
       puts '=' * 80
 
