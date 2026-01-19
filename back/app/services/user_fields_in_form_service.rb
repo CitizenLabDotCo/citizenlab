@@ -102,7 +102,7 @@ class UserFieldsInFormService
 
   # Related to function above:
   # Update the user profile if user fields are asked as last page
-  def self.merge_user_fields_from_idea_into_user(idea, user)
+  def self.merge_user_fields_from_idea_into_user!(idea, user)
     return unless user
 
     user_values_from_idea = idea.custom_field_values
