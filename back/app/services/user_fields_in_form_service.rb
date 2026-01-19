@@ -1,7 +1,50 @@
 # frozen_string_literal: true
 
 class UserFieldsInFormService
-  # Merge user fields from the current user into the idea's custom field values
+  SUPPORTED_METHODS = ['native_survey', 'ideation']
+
+  # This function is used to check if demographic
+  # fields are collected during the registration process (I.E. NOT in the form),
+  # and if so, if they should be merged into the idea.
+  def self.should_merge_user_fields_into_idea?(
+    current_user,
+    phase,
+    idea
+  )
+    return false unless current_user
+
+    # Confirm that phase is survey or ideation phase
+    pmethod = phase&.participation_method
+    return false unless SUPPORTED_METHODS.include?(pmethod)
+
+    # Confirm that the idea belongs to the current user
+    return false unless idea.author_id == current_user.id
+
+    permission = phase.permissions.find_by(action: 'posting_idea')
+    return false unless permission
+
+    # Confirm that user fields are asked in registration process
+    # If they are asked in the form, we know that they won't be asked
+    # in the registration process
+    return false if permission.user_fields_in_form_enabled?
+
+    # Make sure there are fields to be asked
+    requirements = Permissions::UserRequirementsService.new.requirements(permission, nil)
+    return false unless requirements[:custom_fields]
+    return false if requirements[:custom_fields].empty?
+
+    # Confirm that user_data_collection = 'all_data' or 'demographics_only'
+    return false if pmethod == 'native_survey' && permission.user_data_collection == 'anonymous'
+
+    # Finally, confirm that the idea doesn't already have user fields
+    return false if idea.custom_field_values&.keys&.any? { |key| key.start_with?(prefix) }
+
+    true
+  end
+
+  # Related to function above:
+  # Actually merge user fields from the current user into 
+  # the idea's custom field values
   def self.merge_user_fields_into_idea(
     current_user,
     phase,
@@ -28,9 +71,39 @@ class UserFieldsInFormService
     (user_values || {}).merge(idea_custom_field_values || {})
   end
 
+  # This function is used to check if user fields are asked on the last
+  # page of the form, and if so, if they should be merged into the user.
+  def should_merge_user_fields_from_idea_into_user?(idea, user)
+    return false unless user
+
+    # Confirm that phase is survey or ideation phase
+    phase = idea.creation_phase
+    pmethod = phase&.participation_method
+    return false unless SUPPORTED_METHODS.include?(pmethod)
+
+    # Confirm that the idea belongs to the current user
+    return false unless idea.author_id == current_user.id
+
+    permission = phase.permissions.find_by(action: 'posting_idea')
+    return false unless permission
+
+    # Confirm that user fields are asked in form
+    return false unless idea.participation_method_on_creation.user_fields_in_form_enabled?
+
+    # Make sure there are fields to be asked
+    requirements = Permissions::UserRequirementsService.new.requirements(permission, nil)
+    return false unless requirements[:custom_fields]
+    return false if requirements[:custom_fields].empty?
+
+    # TODO?
+
+    true
+  end
+
+  # Related to function above:
   # Update the user profile if user fields are asked as last page
   def self.merge_user_fields_from_idea_into_user(idea, user)
-    return unless user && idea.participation_method_on_creation.user_fields_in_form_enabled?
+    return unless user
 
     user_values_from_idea = idea.custom_field_values
       .select { |key, _value| key.start_with?(prefix) }
@@ -86,44 +159,6 @@ class UserFieldsInFormService
     end
 
     fields + [user_page] + user_fields + [last_page]
-  end
-
-  # This function is used to check if demographic
-  # fields are collected during the registration process,
-  # and if so, if we want to merge them into the idea.
-  def self.should_merge_user_fields_into_idea?(
-    current_user,
-    phase,
-    idea
-  )
-    return false unless current_user
-
-    # Confirm that phase is survey phase
-    pmethod = phase&.participation_method
-    return false unless ['native_survey', 'ideation'].include?(pmethod)
-
-    # Confirm that the idea belongs to the current user
-    return false unless idea.author_id == current_user.id
-
-    permission = phase.permissions.find_by(action: 'posting_idea')
-    return false unless permission
-
-    # Confirm that user fields are asked in registration process
-    # If they are asked in the form, we know that they won't be asked
-    # in the registration process
-    return false if permission.user_fields_in_form_enabled?
-
-    requirements = Permissions::UserRequirementsService.new.requirements(permission, nil)
-    return false unless requirements[:custom_fields]
-    return false if requirements[:custom_fields].empty?
-
-    # Confirm that user_data_collection = 'all_data' or 'demographics_only'
-    return false if pmethod == 'native_survey' && permission.user_data_collection == 'anonymous'
-
-    # Finally, confirm that the idea doesn't already have user fields
-    return false if idea.custom_field_values&.keys&.any? { |key| key.start_with?(prefix) }
-
-    true
   end
 
   def self.user_fields_in_form_frontend_descriptor(permission, participation_method)
