@@ -2739,7 +2739,6 @@
   "app.containers.AdminPage.SettingsPage.colorsTitle": "Colori",
   "app.containers.AdminPage.SettingsPage.completeYourProfileStep": "\"Completa il tuo profilo\"",
   "app.containers.AdminPage.SettingsPage.completeYourProfileStepTooltip3": "Questo testo viene mostrato nella fase \"Completa il tuo profilo\" del processo di registrazione.",
-  "app.containers.AdminPage.SettingsPage.confirmHeader": "Sei sicuro di voler eliminare questo tag?",
   "app.containers.AdminPage.SettingsPage.contentModeration": "Moderazione dei contenuti",
   "app.containers.AdminPage.SettingsPage.ctaHeader": "Pulsanti",
   "app.containers.AdminPage.SettingsPage.customPageMetaTitle": "Intestazione della pagina personalizzata | {orgName}",
