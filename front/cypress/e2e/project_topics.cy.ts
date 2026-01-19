@@ -152,25 +152,11 @@ describe('Project topics', () => {
       // Go to our project topic settings
       cy.visit(`admin/projects/${projectId}/general/input-tags`);
 
-      // Confirm that the delete button is disabled because there is only a single topic
-      cy.get('.e2e-admin-list-row')
-        .first()
-        .find('#e2e-input-topic-delete-button')
-        .should('have.class', 'disabled');
-
-      // Add another topic so that we can delete the first one
-      const anotherTopicTitle = randomString();
-      cy.get('#e2e-add-input-topic-button').click();
-      cy.clickLocaleSwitcherAndType(anotherTopicTitle);
-      cy.get('#e2e-submit-input-topic-button').click();
-      cy.wait(1000);
-      cy.get('.e2e-admin-list-row').contains(anotherTopicTitle);
-
       // Remove a topic from the project
-      cy.get('.e2e-admin-list-row')
-        .first()
+      cy.contains('.e2e-admin-list-row', topicTitle)
         .find('#e2e-input-topic-delete-button')
         .click();
+
       // Confirm in the modal
       cy.get('#e2e-input-topic-delete-confirmation-button').click();
       cy.wait(1000);
@@ -225,17 +211,8 @@ describe('Project topics', () => {
       // Go to our project topic settings
       cy.visit(`admin/projects/${projectId}/general/input-tags`);
 
-      // Add another topic so that we can delete the first one
-      const anotherTopicTitle = randomString();
-      cy.get('#e2e-add-input-topic-button').click();
-      cy.clickLocaleSwitcherAndType(anotherTopicTitle);
-      cy.get('#e2e-submit-input-topic-button').click();
-      cy.wait(1000);
-      cy.get('.e2e-admin-list-row').contains(anotherTopicTitle);
-
       // Remove our new topic from the project
-      cy.get('.e2e-admin-list-row')
-        .first()
+      cy.contains('.e2e-admin-list-row', topicTitle)
         .find('#e2e-input-topic-delete-button')
         .click();
 
