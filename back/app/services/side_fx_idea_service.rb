@@ -159,7 +159,9 @@ class SideFxIdeaService
   end
 
   def after_publish(idea, user)
-    UserFieldsInFormService.merge_user_fields_from_idea_into_user(idea, user)
+    if UserFieldsInFormService.should_merge_user_fields_from_idea_into_user?(idea, user)
+      UserFieldsInFormService.merge_user_fields_from_idea_into_user(idea, user)
+    end
     log_activity_jobs_after_published(idea, user)
   end
 
