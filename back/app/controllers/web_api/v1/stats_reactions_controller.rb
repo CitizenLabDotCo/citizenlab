@@ -111,10 +111,10 @@ class WebApi::V1::StatsReactionsController < WebApi::V1::StatsController
   end
 
   def apply_topic_filter(reactions)
-    if params[:topic]
+    if params[:input_topic]
       reactions
         .joins('JOIN ideas_input_topics ON ideas.id = ideas_input_topics.idea_id')
-        .where(ideas_input_topics: { input_topic_id: params[:topic] })
+        .where(ideas_input_topics: { input_topic_id: params[:input_topic] })
     else
       reactions
     end

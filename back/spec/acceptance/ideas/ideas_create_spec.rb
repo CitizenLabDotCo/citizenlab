@@ -8,7 +8,7 @@ end
 def public_input_params(context)
   define_title_multiloc_param(context)
   context.parameter :body_multiloc, 'Multi-locale field with the idea body', scope: :idea, extra: 'Required if not draft'
-  context.parameter :topic_ids, 'Array of ids of the associated topics', scope: :idea
+  context.parameter :topic_ids, 'Array of ids of the associated input topics', scope: :idea
   context.parameter :cosponsor_ids, 'Array of ids of the desired cosponsors', scope: :idea
   context.parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to', scope: :idea
   context.parameter :location_description, 'A human readable description of the location the idea applies to', scope: :idea
