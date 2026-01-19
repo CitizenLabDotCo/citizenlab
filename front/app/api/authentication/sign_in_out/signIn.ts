@@ -2,6 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 
 import { getJwt, setJwt } from 'utils/auth/jwt';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import { getClaimTokens, clearClaimTokens } from 'utils/claimToken';
 
 import getAuthUser from '../auth_user/getAuthUser';
 
@@ -9,7 +10,7 @@ import signOut from './signOut';
 
 interface Parameters {
   email: string;
-  password?: string;
+  password: string;
   rememberMe?: boolean;
   tokenLifetime?: number;
 }
@@ -29,15 +30,21 @@ export default async function signIn(parameters: Parameters) {
   }
 }
 
-export async function getAndSetToken({
+async function getAndSetToken({
   email,
-  password = '',
+  password,
   rememberMe = false,
   tokenLifetime,
 }: Parameters) {
-  const bodyData = { auth: { email, password, remember_me: rememberMe } };
+  const bodyData = {
+    auth: {
+      email,
+      password,
+      remember_me: rememberMe,
+      claim_tokens: getClaimTokens(),
+    },
+  };
 
-  // TODO: Replace with fetcher after the backend is updated
   const jwt = getJwt();
   return await fetch(`${API_PATH}/user_token`, {
     method: 'POST',
@@ -50,6 +57,7 @@ export async function getAndSetToken({
     .then((response) => response.json())
     .then((data) => {
       setJwt(data.jwt, rememberMe, tokenLifetime);
+      clearClaimTokens();
     });
 }
 

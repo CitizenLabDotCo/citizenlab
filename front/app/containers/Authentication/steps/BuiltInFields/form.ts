@@ -3,10 +3,7 @@ import { string, object } from 'yup';
 
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
 
-import {
-  getEmailSchema,
-  getPasswordSchema,
-} from '../EmailAndPasswordSignUp/form';
+import { getEmailSchema, getPasswordSchema } from '../InviteSignUp/form';
 import sharedMessages from '../messages';
 
 export const DEFAULT_VALUES = {

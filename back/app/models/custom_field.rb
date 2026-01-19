@@ -52,7 +52,7 @@
 #  index_custom_fields_on_resource_type_and_resource_id    (resource_type,resource_id)
 #
 class CustomField < ApplicationRecord
-  acts_as_list column: :ordering, top_of_list: 0, scope: [:resource_id]
+  acts_as_list column: :ordering, top_of_list: 0, scope: %i[resource_type resource_id], sequential_updates: true
 
   has_many_text_images from: :description_multiloc, as: :text_images
   accepts_nested_attributes_for :text_images
@@ -115,6 +115,7 @@ class CustomField < ApplicationRecord
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
   before_validation :sanitize_description_multiloc
+  before_validation :clear_logic_unless_supported
   after_create(if: :domicile?) { Area.recreate_custom_field_options }
 
   scope :registration, -> { where(resource_type: 'User') }
@@ -137,6 +138,10 @@ class CustomField < ApplicationRecord
 
   def logic?
     logic.present? && logic != { 'rules' => [] }
+  end
+
+  def support_logic?
+    %w[page select linear_scale ranking].include?(input_type)
   end
 
   def support_options?
@@ -290,16 +295,13 @@ class CustomField < ApplicationRecord
     all_input_types.include? input_type
   end
 
-  # This supports the deprecated prawn based PDF export/import that did not support all field types
-  def printable_legacy?
-    return false if key&.start_with?('u_') # NOTE: User fields from 'user_fields_in_form' are not supported
-
-    ignore_field_types = %w[page date files image_files point file_upload shapefile_upload topic_ids cosponsor_ids ranking matrix_linear_scale]
-    ignore_field_types.exclude? input_type
-  end
-
   def pdf_importable?
     ignore_field_types = %w[page checkbox files topic_ids image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking matrix_linear_scale]
+    printable? && ignore_field_types.exclude?(input_type)
+  end
+
+  def pdf_gpt_importable?
+    ignore_field_types = %w[page checkbox files topic_ids image_files file_upload shapefile_upload point line polygon cosponsor_ids]
     printable? && ignore_field_types.exclude?(input_type)
   end
 
@@ -468,27 +470,6 @@ class CustomField < ApplicationRecord
     @ordered_transformed_options ||= domicile? ? domicile_options : ordered_options
   end
 
-  # @deprecated New HTML PDF formatter does this in {IdeaHtmlFormExporter} instead.
-  def linear_scale_print_description(locale)
-    return nil unless linear_scale?
-
-    multiloc_service = MultilocService.new
-
-    min_text = multiloc_service.t(linear_scale_label_1_multiloc, locale)
-    min_label = "1#{min_text.present? ? " (#{min_text})" : ''}"
-
-    max_text = multiloc_service.t(nth_linear_scale_multiloc(maximum), locale)
-    max_label = maximum.to_s + (max_text.present? ? " (#{max_text})" : '')
-
-    I18n.with_locale(locale) do
-      I18n.t(
-        'form_builder.pdf_export.linear_scale_print_description',
-        min_label: min_label,
-        max_label: max_label
-      )
-    end
-  end
-
   def nth_linear_scale_multiloc(n)
     send(:"linear_scale_label_#{n}_multiloc")
   end
@@ -577,6 +558,10 @@ class CustomField < ApplicationRecord
       option.title_multiloc = area_id_map.dig(option.id, :title) || MultilocService.new.i18n_to_multiloc('custom_field_options.domicile.outside')
       option
     end
+  end
+
+  def clear_logic_unless_supported
+    self.logic = {} unless support_logic?
   end
 end
 

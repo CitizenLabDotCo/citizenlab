@@ -9,4 +9,6 @@ export interface Props {
   endAt?: string | null;
   publicationStatuses?: ProjectReportsPublicationStatus[];
   sort?: ProjectSortableParam;
+  excludedProjectIds?: string[];
+  excludedFolderIds?: string[];
 }

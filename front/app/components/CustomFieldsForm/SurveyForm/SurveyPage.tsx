@@ -1,17 +1,21 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, Button, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
+
+import { triggerPostParticipationFlow } from 'containers/Authentication/events';
 
 import SubmissionReference from 'components/CustomFieldsForm/PageControlButtons/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
@@ -30,7 +34,11 @@ import { FormValues } from '../Page/types';
 import usePageForm from '../Page/usePageForm';
 import { getFormCompletionPercentage, Pages } from '../util';
 
-import { determineNextPageNumber, determinePreviousPageNumber } from './logic';
+import {
+  determineNextPageNumber,
+  determinePreviousPageNumber,
+  getSkippedPageIndices,
+} from './logic';
 
 const StyledForm = styled.form`
   height: 100%;
@@ -85,6 +93,10 @@ const SurveyPage = ({
   const isAdminPage = isPage('admin', pathname);
   const isMapPage = page.page_layout === 'map';
   const isMobileOrSmaller = useBreakpoint('phone');
+  const { data: authUser } = useAuthUser();
+  const postParticipationSignUpEnabled = useFeatureFlag({
+    name: 'post_participation_signup',
+  });
 
   const [searchParams] = useSearchParams();
   const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
@@ -115,6 +127,35 @@ const SurveyPage = ({
     currentPage: page,
     formData: methods.watch(),
   });
+
+  // Clear values from skipped pages when form data changes
+  // This ensures that if a user changes an answer that affects conditional logic,
+  // any previously filled values from now-skipped pages are removed
+  useEffect(() => {
+    const subscription = methods.watch((formData) => {
+      const skippedPageIndices = getSkippedPageIndices({
+        pages,
+        formData,
+      });
+
+      // Clear all field values from skipped pages
+      skippedPageIndices.forEach((skippedPageIndex) => {
+        const skippedPage = pages[skippedPageIndex];
+        skippedPage.pageQuestions.forEach((question) => {
+          const currentValue = methods.getValues(question.key);
+          // Only clear if there's actually a value to clear
+          if (currentValue !== undefined && currentValue !== null) {
+            methods.setValue(question.key, undefined, {
+              shouldValidate: false,
+              shouldDirty: false,
+            });
+          }
+        });
+      });
+    });
+
+    return () => subscription.unsubscribe();
+  }, [methods, pages]);
 
   const onFormSubmit = async (formValues: FormValues) => {
     // Go to the project page if this is the last page
@@ -170,6 +211,12 @@ const SurveyPage = ({
     setUserNavigationHistory((history) => history.slice(0, -1));
     setCurrentPageIndex(previousPageNumber);
   };
+
+  const isLastPage = currentPageIndex === lastPageIndex;
+
+  const showSubmissionReference = isLastPage && idea && showIdeaId;
+  const showPostParticipationSignup =
+    isLastPage && project && !authUser && postParticipationSignUpEnabled;
 
   return (
     <FormProvider {...methods}>
@@ -231,14 +278,29 @@ const SurveyPage = ({
                         phase={phase}
                         participationMethod={participationMethod}
                       />
-                      {currentPageIndex === lastPageIndex &&
-                        idea &&
-                        showIdeaId && (
-                          <SubmissionReference
-                            inputId={idea.data.id}
-                            participationMethod={participationMethod}
-                          />
-                        )}
+                      {showSubmissionReference && (
+                        <SubmissionReference
+                          inputId={idea.data.id}
+                          participationMethod={participationMethod}
+                        />
+                      )}
+                      {showPostParticipationSignup && (
+                        <Button
+                          onClick={() => {
+                            triggerPostParticipationFlow({
+                              name: 'redirect',
+                              params: {
+                                path: `/projects/${project.data.attributes.slug}`,
+                              },
+                            });
+                          }}
+                          mt="16px"
+                          width="auto"
+                          dataCy="post-participation-signup"
+                        >
+                          Sign up to stay in touch
+                        </Button>
+                      )}
                     </Box>
                   </Box>
                 </Box>

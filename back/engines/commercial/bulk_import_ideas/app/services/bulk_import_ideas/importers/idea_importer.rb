@@ -111,7 +111,9 @@ module BulkImportIdeas::Importers
         )
       end
 
+      # Set both published_at and submitted_at to the same value
       idea_attributes[:published_at] = published_at
+      idea_attributes[:submitted_at] = published_at
     end
 
     # Add the current time to the date to ensure consistent sorting by published_at date

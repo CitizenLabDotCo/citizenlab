@@ -393,7 +393,7 @@ resource 'Ideas' do
       let(:phase) do
         phase = create(:native_survey_phase, with_permissions: true)
         permission = phase.permissions.find_by(action: 'posting_idea')
-        permission.global_custom_fields = false
+        permission.update!(global_custom_fields: false)
         permission.permissions_custom_fields = [
           create(:permissions_custom_field, custom_field: create(:custom_field, key: 'gender'))
         ]
@@ -401,6 +401,31 @@ resource 'Ideas' do
         phase
       end
       let(:phase_id) { phase.id }
+
+      context 'for a native survey with global_custom_fields (default state)' do
+        let(:phase) { create(:native_survey_phase, with_permissions: true) }
+        let(:phase_id) { phase.id }
+
+        before do
+          create(:custom_field, resource_type: 'User', key: 'city', enabled: true, hidden: false)
+          create(:custom_field, resource_type: 'User', key: 'age', enabled: true, hidden: false)
+
+          # Enable user_fields_in_form so the controller tries to pre-populate
+          permission = phase.permissions.find_by(action: 'posting_idea')
+          permission.update!(user_fields_in_form: true)
+
+          @user.update!(custom_field_values: { 'city' => 'New York', 'age' => 30 })
+        end
+
+        example_request 'Pre-populates user fields when using default global_custom_fields=true' do
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          attributes = json_response.dig(:data, :attributes)
+
+          expect(attributes[:u_city]).to eq('New York')
+          expect(attributes[:u_age]).to eq(30)
+        end
+      end
 
       context 'idea authored by user' do
         let!(:idea) do

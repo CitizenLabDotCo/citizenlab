@@ -1,14 +1,10 @@
+import { enterUserInfo, signUpEmailConformation } from '../support/auth';
 import { randomString, randomEmail } from '../support/commands';
 
 // OS-133
 describe('Idea reacting permissions', () => {
   describe('a project that requires verification to reaction', () => {
     it('sends non-registered user to sign up, verifies the user and reactions successfully', () => {
-      const firstName = randomString();
-      const lastName = randomString();
-      const email = randomEmail();
-      const password = randomString();
-
       // try to reaction while not signed in
       cy.visit('projects/verified-ideation');
       cy.location('pathname').should('eq', '/en/projects/verified-ideation');
@@ -16,25 +12,9 @@ describe('Idea reacting permissions', () => {
       cy.wait(1000);
       cy.get('.e2e-ideacard-like-button').click({ force: true });
 
-      // sign up modal check
-      cy.get('#e2e-authentication-modal').should('exist');
-      cy.get('#e2e-goto-signup').click();
-      cy.get('#firstName').type(firstName);
-      cy.get('#lastName').type(lastName);
-      cy.get('#email').type(email);
-      cy.get('#password').type(password);
-      cy.get('[data-testid="termsAndConditionsAccepted"] .e2e-checkbox')
-        .click()
-        .should('have.class', 'checked');
-      cy.get('[data-testid="privacyPolicyAccepted"] .e2e-checkbox')
-        .click()
-        .should('have.class', 'checked');
-      cy.get('#e2e-signup-password-submit-button').click();
-
-      // enter confirmation code
-      cy.get('#code').should('exist');
-      cy.get('#code').type('1234');
-      cy.get('#e2e-verify-email-button').click();
+      // sign up modal
+      signUpEmailConformation(cy);
+      enterUserInfo(cy);
 
       // verification step check
       cy.get(
@@ -130,35 +110,14 @@ describe('Idea reacting permissions', () => {
 
   describe('a project that does not require verification', () => {
     it("sends signed out user to log in and doesn't ask for verification", () => {
-      const firstName = randomString();
-      const lastName = randomString();
-      const email = randomEmail();
-      const password = randomString();
-
       // Go to an ideation project that doesn't require verification
       // and try to react
       cy.visit('/projects/an-idea-bring-it-to-your-council');
       cy.get('.e2e-ideacard-like-button').first().click();
 
       // Sign up flow
-      cy.get('#e2e-authentication-modal');
-      cy.get('#e2e-goto-signup').click();
-      cy.get('#firstName').type(firstName);
-      cy.get('#lastName').type(lastName);
-      cy.get('#email').type(email);
-      cy.get('#password').type(password);
-      cy.get('[data-testid="termsAndConditionsAccepted"] .e2e-checkbox')
-        .click()
-        .should('have.class', 'checked');
-      cy.get('[data-testid="privacyPolicyAccepted"] .e2e-checkbox')
-        .click()
-        .should('have.class', 'checked');
-      cy.get('#e2e-signup-password-submit-button').click();
-
-      // enter confirmation code
-      cy.get('#code').should('exist');
-      cy.get('#code').click().type('1234');
-      cy.get('#e2e-verify-email-button').click();
+      signUpEmailConformation(cy);
+      enterUserInfo(cy);
 
       // verification step check
       cy.get(

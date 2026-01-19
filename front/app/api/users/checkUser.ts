@@ -4,8 +4,9 @@ import { UserCheckResponse } from './types';
 
 const checkUser = (email: string) => {
   return fetcher<UserCheckResponse>({
-    path: `/users/check/${email}`,
-    action: 'get',
+    path: '/users/check',
+    action: 'post',
+    body: { user: { email } },
   });
 };
 

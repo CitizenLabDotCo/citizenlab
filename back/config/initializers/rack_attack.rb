@@ -63,6 +63,23 @@ class Rack::Attack
     end
   end
 
+  # Unconfirmed user token endpoint
+  throttle('user_token_unconfirmed/ip', limit: 10, period: 20.seconds) do |req|
+    if req.path == '/web_api/v1/user_token/unconfirmed' && req.post?
+      req.remote_ip
+    end
+  end
+
+  throttle('user_token_unconfirmed/email', limit: 10, period: 20.seconds) do |req|
+    if req.path == '/web_api/v1/user_token/unconfirmed' && req.post?
+      begin
+        JSON.parse(req.body.string).dig('auth', 'email').to_s.downcase.strip.presence
+      rescue JSON::ParserError
+        # do nothing
+      end
+    end
+  end
+
   # Account creation by IP.
   throttle('signup/ip', limit: 10, period: 20.seconds) do |req|
     if req.path == '/web_api/v1/users' && req.post?
@@ -111,26 +128,43 @@ class Rack::Attack
   end
 
   # Resend code by IP.
-  throttle('resend_code/ip', limit: 10, period: 5.minutes) do |req|
-    if req.path == '/web_api/v1/user/resend_code' && req.post?
+  throttle('request_code_unauthenticated/ip', limit: 10, period: 5.minutes) do |req|
+    if req.path == '/web_api/v1/user/request_code_unauthenticated' && req.post?
       req.remote_ip
     end
   end
 
   # Confirm by IP.
-  throttle('confirm/ip', limit: 5, period: 20.seconds) do |req|
-    if req.path == '/web_api/v1/user/confirm' && req.post?
+  throttle('confirm_code_unauthenticated/ip', limit: 5, period: 20.seconds) do |req|
+    if req.path == '/web_api/v1/user/confirm_code_unauthenticated' && req.post?
       req.remote_ip
     end
   end
 
   # Confirm by user ID from JWT.
-  throttle('confirm/id', limit: 10, period: 24.hours) do |req|
-    if req.path == '/web_api/v1/user/confirm' && req.post?
+  throttle('confirm_code_authenticated/id', limit: 10, period: 24.hours) do |req|
+    if req.path == '/web_api/v1/user/confirm_code_authenticated' && req.post?
       begin
         jwt = req.env['HTTP_AUTHORIZATION']&.split&.last
         JWT.decode(jwt, nil, false, algorithm: 'RS256').first['sub'] # sub is the user ID
       rescue JWT::DecodeError
+        # do nothing
+      end
+    end
+  end
+
+  # User check endpoint
+  throttle('user_check/ip', limit: 5, period: 2.minutes) do |req|
+    if req.path == '/web_api/v1/users/check' && req.post?
+      req.remote_ip
+    end
+  end
+
+  throttle('user_check/email', limit: 5, period: 5.minutes) do |req|
+    if req.path == '/web_api/v1/users/check' && req.post?
+      begin
+        JSON.parse(req.body.string).dig('user', 'email')&.to_s&.downcase&.gsub(/\s+/, '')&.presence
+      rescue JSON::ParserError
         # do nothing
       end
     end

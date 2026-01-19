@@ -4,6 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
 import Chart from 'components/admin/GraphCards/ParticipantsCard/Chart';
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 import { getDaysInRange } from '../../utils';
 
@@ -17,12 +18,19 @@ const Narrow = ({
   startAt,
   endAt,
   hideStatistics,
+  showVisitors = false,
   timeSeries,
   stats,
   currentResolution,
-}: Props) => {
+  ariaLabel,
+  ariaDescribedBy,
+}: Props & AccessibilityProps) => {
   const previousDays = getDaysInRange(startAt, endAt);
 
+  const accessibilityProps = {
+    ariaLabel,
+    ariaDescribedBy,
+  };
   return (
     <Box
       w="100%"
@@ -49,6 +57,7 @@ const Narrow = ({
           startAtMoment={startAt ? moment(startAt) : null}
           endAtMoment={endAt ? moment(endAt) : null}
           resolution={currentResolution}
+          showVisitors={showVisitors}
           margin={{
             left: 5,
             right: -20,
@@ -56,6 +65,7 @@ const Narrow = ({
             bottom: 0,
           }}
           yaxis={{ orientation: 'right' }}
+          {...accessibilityProps}
         />
       </Box>
     </Box>

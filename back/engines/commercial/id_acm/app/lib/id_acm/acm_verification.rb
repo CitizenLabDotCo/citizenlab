@@ -45,6 +45,11 @@ module IdAcm
           type: 'string',
           private: true
         },
+        rrn_result_custom_field_key: {
+          private: true,
+          type: 'string',
+          description: 'The `key` attribute of the select custom field where the result of RRN validation should be stored. Leave empty to not qualify using the RRN API. If it\'s set, the field will be locked for verified users.'
+        },
         enabled_for_verified_actions: {
           private: true,
           type: 'boolean',
@@ -77,39 +82,30 @@ module IdAcm
     end
 
     def updateable_user_attrs
-      super + %i[first_name last_name]
+      super + %i[first_name last_name custom_field_values]
     end
 
     def ui_method_name
       config[:ui_method_name] || name
     end
 
-    def check_entitled_on_sso?
-      true
-    end
-
-    def entitled?(auth)
-      return true if config[:rrn_api_key].blank?
-
-      rrn = auth.extra.raw_info.rrn
-      validate_rrn!(rrn)
-    end
-
     private
 
-    def validate_rrn!(rrn)
+    def rnn_verification_result(rrn)
+      return nil if config[:rrn_api_key].blank? || config[:rrn_environment].blank?
+
       api = IdOostendeRrn::WijkBudgetApi.new(api_key: config[:rrn_api_key], environment: config[:rrn_environment])
       response = api.verificatie(rrn)
-      raise Verification::VerificationService::NotEntitledError, 'service_error' unless response.success?
+      return 'service_error' unless response.success?
 
       body = response.parsed_response
       reason = body.dig('verificatieResultaat', 'redenNietGeldig')
-      raise Verification::VerificationService::NotEntitledError, 'no_match' if reason&.include? 'ERR10'
-      raise Verification::VerificationService::NotEntitledError, 'lives_outside' if reason&.include? 'ERR11'
-      raise Verification::VerificationService::NotEntitledError, 'under_minimum_age' if reason&.include? 'ERR12'
-      raise Verification::VerificationService::NotEntitledError, 'no_match' unless body.dig('verificatieResultaat', 'geldig')
+      return 'no_match' if reason&.include? 'ERR10'
+      return 'lives_outside' if reason&.include? 'ERR11'
+      return 'under_minimum_age' if reason&.include? 'ERR12'
+      return 'no_match' unless body.dig('verificatieResultaat', 'geldig')
 
-      true
+      'valid'
     end
   end
 end

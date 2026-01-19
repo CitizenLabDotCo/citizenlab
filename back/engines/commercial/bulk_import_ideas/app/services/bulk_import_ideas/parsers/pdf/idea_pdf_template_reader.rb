@@ -2,10 +2,11 @@
 
 module BulkImportIdeas::Parsers::Pdf
   class IdeaPdfTemplateReader
-    def initialize(phase, locale, personal_data_enabled)
+    def initialize(phase, locale, personal_data_enabled, gpt_parser: false)
       @phase = phase
       @locale = locale
       @personal_data_enabled = personal_data_enabled
+      @gpt_parser = gpt_parser
     end
 
     # Extract the text from the template PDF so we understand how each field is laid out in the PDF
@@ -59,8 +60,14 @@ module BulkImportIdeas::Parsers::Pdf
 
     def import_config_for_field(field_or_option, pdf_pages, latest_question_number: nil, question_number_printed: false, next_field: nil)
       type = field_or_option.is_a?(CustomField) ? 'field' : 'option'
-      return if type == 'field' && !field_or_option.pdf_importable? # Skip fields that are not importable
-      return if type == 'option' && !field_or_option.custom_field.pdf_importable? # Skip options whose fields are not importable
+
+      # Skip fields or options whose fields are not importable
+      importable = if type == 'field'
+        @gpt_parser ? field_or_option.pdf_gpt_importable? : field_or_option.pdf_importable?
+      else # option
+        @gpt_parser ? field_or_option.custom_field.pdf_gpt_importable? : field_or_option.custom_field.pdf_importable?
+      end
+      return unless importable
 
       print_title = if type == 'field'
         full_print_title(field_or_option, question_number_printed ? latest_question_number : nil)

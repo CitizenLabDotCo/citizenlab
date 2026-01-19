@@ -6,6 +6,7 @@ import moment from 'moment';
 import Chart from 'components/admin/GraphCards/VisitorsCard/Chart';
 import visitorsCardMessages from 'components/admin/GraphCards/VisitorsCard/messages';
 import { TimeSeries } from 'components/admin/GraphCards/VisitorsCard/useVisitors/typings';
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
 import { IResolution } from 'components/admin/ResolutionControl';
 
 import { formatLargeNumber, getDaysInRange } from '../../utils';
@@ -34,9 +35,14 @@ const Wide = ({
   stats,
   timeSeries,
   hideStatistics,
-}: Props) => {
+  ariaLabel,
+  ariaDescribedBy,
+}: Props & AccessibilityProps) => {
   const previousDays = getDaysInRange(startAt, endAt);
-
+  const accessibilityProps = {
+    ariaLabel,
+    ariaDescribedBy,
+  };
   return (
     <Box
       width="100%"
@@ -81,7 +87,6 @@ const Wide = ({
           </Box>
         </Box>
       )}
-
       <Box
         flexGrow={1}
         display="flex"
@@ -100,6 +105,7 @@ const Wide = ({
             tickFormatter: formatLargeNumber,
           }}
           margin={{ top: 0, right: -16, bottom: 0, left: 0 }}
+          {...accessibilityProps}
         />
       </Box>
     </Box>

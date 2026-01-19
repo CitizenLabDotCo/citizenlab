@@ -5,25 +5,37 @@ import { useParams, useSearchParams } from 'react-router-dom';
 
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 import GoBackButton from 'components/UI/GoBackButton';
 
+import { FormattedMessage } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+
+import IdeasFeed from './IdeasFeed';
 import IdeasFeedPageMeta from './IdeasFeedPageMeta';
-import TopicsSidebar from './TopicsSidebar';
+import messages from './messages';
+import Sidebar from './Sidebar';
 
 const IdeasFeedPage = () => {
   const { slug } = useParams() as { slug: string };
   const { data: project } = useProjectBySlug(slug);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const selectedTopicId = searchParams.get('topic');
-  const isMobile = useBreakpoint('phone');
+  const phaseId = searchParams.get('phase_id');
+  const isMobileOrSmaller = useBreakpoint('phone');
 
   const setSelectedTopicId = (topicId: string | null) => {
     if (topicId) {
-      setSearchParams({ topic: topicId });
+      updateSearchParams({ topic: topicId });
     } else {
-      setSearchParams({});
+      removeSearchParams(['topic']);
     }
   };
+
+  if (!phaseId) {
+    return null;
+  }
 
   return (
     <main id="e2e-project-ideas-page">
@@ -38,7 +50,7 @@ const IdeasFeedPage = () => {
         zIndex="1010"
         overflow="hidden"
       >
-        {isMobile && (
+        {isMobileOrSmaller && (
           <Box position="absolute" top="16px" left="16px" zIndex="1">
             <GoBackButton
               linkTo={selectedTopicId ? undefined : `/projects/${slug}`}
@@ -57,11 +69,36 @@ const IdeasFeedPage = () => {
           overflow="auto"
           h="100vh"
         >
-          <TopicsSidebar
-            selectedTopicId={selectedTopicId}
-            onTopicSelect={setSelectedTopicId}
-          />
-          <Box flex="4">Sticky notes will be placed here</Box>
+          <Sidebar />
+          <Box flex="4" position="relative">
+            {/* General feed - always mounted to preserve scroll position */}
+            <Box visibility={selectedTopicId ? 'hidden' : 'visible'}>
+              <IdeasFeed topicId={null} />
+            </Box>
+
+            {/* Topic-specific feed - mounted only when topic is selected */}
+            {selectedTopicId && (
+              <Box position="absolute" top="0" left="0" right="0" bottom="0">
+                <IdeasFeed topicId={selectedTopicId} />
+              </Box>
+            )}
+          </Box>
+        </Box>
+        <Box
+          position="absolute"
+          top={isMobileOrSmaller ? '16px' : undefined}
+          bottom={isMobileOrSmaller ? undefined : '24px'}
+          right={isMobileOrSmaller ? '16px' : '24px'}
+          zIndex="1"
+        >
+          <ButtonWithLink
+            linkTo={`/projects/${slug}/ideas/new?phase_id=${phaseId}`}
+            icon="plus-circle"
+            buttonStyle="secondary-outlined"
+            bgColor="white"
+          >
+            <FormattedMessage {...messages.addYourIdea} />
+          </ButtonWithLink>
         </Box>
       </Box>
     </main>

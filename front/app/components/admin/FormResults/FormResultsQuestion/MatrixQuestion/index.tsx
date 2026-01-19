@@ -22,7 +22,6 @@ import {
   getPrimaryColourByPercentage,
   getLinearScaleLabelsArray,
   getPercentage,
-  getPercentageTextBorder,
   getStatementsWithResultsArray,
   StickyTd,
   StyledTd,
@@ -100,7 +99,6 @@ const MatrixQuestion = ({ result }: Props) => {
                             my="auto"
                             fontSize="s"
                             color={percentage >= 75 ? 'white' : 'textPrimary'}
-                            textShadow={getPercentageTextBorder(percentage)}
                             fontWeight="semi-bold"
                           >
                             {`${percentage}%`}

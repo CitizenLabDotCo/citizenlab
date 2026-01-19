@@ -30,6 +30,7 @@ import CommunityMonitorHealthScoreWidget, {
 } from './CommunityMonitorHealthScoreWidget';
 import IframeMultiloc, { iframeMultilocTitle } from './IframeMultiloc';
 import ImageMultiloc, { imageMultilocTitle } from './ImageMultiloc';
+import messages from './messages';
 import MostReactedIdeasWidget, {
   mostReactedIdeasTitle,
 } from './MostReactedIdeasWidget';
@@ -71,6 +72,20 @@ export const WIDGETS = {
 };
 
 type WidgetName = keyof typeof WIDGETS;
+
+// For the Platform Report Template, we want to use specific
+// titles for some widgets.
+export const CUSTOM_TEMPLATE_WIDGET_TITLES: Record<string, MessageDescriptor> =
+  {
+    VisitorsWidgetFromStart: messages.visitorsWidgetFromStart,
+    TrafficSourcesWidgetFromStart: messages.trafficSourcesWidgetFromStart,
+    TrafficSourcesWidgetSince: messages.trafficSourcesWidgetSince,
+    VisitorsWidgetSince: messages.visitorsWidgetSince,
+    RegistrationsWidgetFromStart: messages.registrationWidgetFromStart,
+    RegistrationsWidgetSince: messages.registrationWidgetSince,
+    ParticipantsWidgetFromStart: messages.participantsWidgetFromStart,
+    ParticipantsWidgetSince: messages.participantsWidgetSince,
+  };
 
 export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   WhiteSpace: whiteSpaceMessages.whiteSpace,

@@ -27,6 +27,8 @@ module ReportBuilder
         discoverability: params[:discoverability] || [],
         sort: params[:sort] || 'recently_created_desc',
         no_of_projects: params[:no_of_projects],
+        excluded_project_ids: params[:excluded_project_ids] || [],
+        excluded_folder_ids: params[:excluded_folder_ids] || [],
         locale: params[:locale] || 'en'
       }
     end

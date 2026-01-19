@@ -43,7 +43,7 @@ interface Props {
 
 const IdeaList = ({ ideaId, ideas, onSelectIdea, onDeleteIdea }: Props) => {
   return (
-    <>
+    <Box paddingBottom="80px">
       {ideas.data.map((idea, i) => (
         <Idea
           key={idea.id}
@@ -54,7 +54,7 @@ const IdeaList = ({ ideaId, ideas, onSelectIdea, onDeleteIdea }: Props) => {
           onDeleteIdea={onDeleteIdea}
         />
       ))}
-    </>
+    </Box>
   );
 };
 
@@ -116,7 +116,7 @@ const Idea = ({
           : `${formatMessage(messages.noTitleInputLabel)} ${ideaNumber}`}
       </Text>
       <Text m="0" mt="3px" fontSize="s" color="grey600">
-        {moment(idea.attributes.created_at).format('YYYY-MM-DD')}
+        {moment(idea.attributes.created_at).format('YYYY-MM-DD HH:mm:ss')}
       </Text>
 
       <Box

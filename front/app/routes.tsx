@@ -7,6 +7,7 @@ import userProfileRoutes, {
   userShowPageRouteTypes,
 } from 'containers/UsersShowPage/routes';
 
+import PageNotFound from 'components/PageNotFound';
 import PageLoading from 'components/UI/PageLoading';
 
 const HomePage = lazy(() => import('containers/HomePage'));
@@ -413,6 +414,14 @@ export default function createRoutes() {
           ),
         },
         ...moduleConfiguration.routes.citizen,
+        {
+          path: '*',
+          element: (
+            <PageLoading>
+              <PageNotFound />
+            </PageLoading>
+          ),
+        },
       ],
     },
   ];

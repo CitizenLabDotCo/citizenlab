@@ -658,4 +658,19 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
       end
     end
   end
+
+  describe 'performance' do
+    before { survey_phase.touch } # To ensure the phase creation is excluded from the query count
+
+    it 'does not run too many SQL queries when generating a single result' do
+      expect do
+        generator = described_class.new(
+          survey_phase,
+          group_mode: 'user_field',
+          group_field_id: gender_user_custom_field.id
+        )
+        generator.generate_result_for_field(select_field.id)
+      end.not_to exceed_query_limit(17)
+    end
+  end
 end

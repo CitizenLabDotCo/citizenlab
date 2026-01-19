@@ -6,6 +6,8 @@ import { IResolution } from 'components/admin/ResolutionControl';
 
 export interface ChartWidgetProps {
   title?: Multiloc;
+  ariaLabel?: Multiloc;
+  description?: Multiloc;
   projectId?: string | undefined;
   startAt?: string;
   endAt?: string | null;

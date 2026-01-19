@@ -83,8 +83,7 @@ resource 'BulkImportIdeasImportIdeas' do
           let(:file) { create_project_bulk_import_ideas_pdf 1 }
 
           before do
-            # Enable HTML PDFs & stub the external export and import APIs
-            SettingsService.new.activate_feature! 'html_pdfs'
+            # Enable stub the external export and import APIs
             stub_external_apis
           end
 
@@ -191,7 +190,7 @@ resource 'BulkImportIdeasImportIdeas' do
         example_request 'Get the import meta data for an idea' do
           assert_status 200
           expect(response_data[:type]).to eq 'idea_import'
-          expect(response_data[:attributes].keys).to eq %i[user_created user_consent page_range locale created_at updated_at file import_type]
+          expect(response_data[:attributes].keys).to eq %i[user_created user_consent page_range locale created_at updated_at file import_type parsed_value]
         end
       end
 

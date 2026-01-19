@@ -70,6 +70,7 @@ const AdminCustomMapConfigComponent = lazy(
 
 const AdminProjectAnalysis = lazy(() => import('./project/analysis'));
 const ReportTab = lazy(() => import('./project/information/ReportTab'));
+const AdminPhaseInsights = lazy(() => import('./project/insights'));
 
 const AdminProjectProposals = lazy(() => import('./project/proposals'));
 
@@ -123,6 +124,7 @@ export enum projectsRoutes {
   projectPhaseVolunteeringCause = ':phaseId/volunteering/causes/:causeId',
   projectPhaseInputImporter = ':phaseId/input-importer',
   projectPhaseReport = ':phaseId/report',
+  projectPhaseInsights = ':phaseId/insights',
   projectAnalysis = 'analysis/:analysisId',
 }
 
@@ -160,15 +162,16 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/form`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/map`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/results`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/new`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/new`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/form/edit`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/results`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form/edit`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form/edit?${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/${string}`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/emails`>
+  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/insights`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/analysis/${string}`>;
 
 const createAdminProjectsRoutes = () => {
@@ -552,6 +555,14 @@ const createAdminProjectsRoutes = () => {
                 element: (
                   <PageLoading>
                     <ReportTab />
+                  </PageLoading>
+                ),
+              },
+              {
+                path: projectsRoutes.projectPhaseInsights,
+                element: (
+                  <PageLoading>
+                    <AdminPhaseInsights />
                   </PageLoading>
                 ),
               },

@@ -11,7 +11,6 @@ import { Multiloc } from 'typings';
 import useLocalize from 'hooks/useLocalize';
 
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
-
 interface SharedProps {
   pagebreak?: boolean;
   'data-testid'?: string;
@@ -26,6 +25,8 @@ interface ContainerProps extends SharedProps {
 
 interface Props extends SharedProps {
   title?: Multiloc;
+  ariaLabel?: Multiloc;
+  description?: Multiloc;
   infoTooltipContent?: React.ReactNode;
 }
 

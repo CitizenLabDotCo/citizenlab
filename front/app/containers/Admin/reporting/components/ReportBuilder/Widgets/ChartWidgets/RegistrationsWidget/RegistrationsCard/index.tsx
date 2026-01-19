@@ -2,6 +2,8 @@ import React from 'react';
 
 import useLayout from 'containers/Admin/reporting/hooks/useLayout';
 
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
+
 import NoData from '../../../_shared/NoData';
 import chartWidgetMessages from '../../messages';
 import { Props } from '../typings';
@@ -17,7 +19,9 @@ const RegistrationsCard = ({
   compareStartAt,
   compareEndAt,
   hideStatistics = false,
-}: Props) => {
+  ariaLabel,
+  ariaDescribedBy,
+}: Props & AccessibilityProps) => {
   const { currentResolution, stats, timeSeries } = useRegistrations({
     start_at: startAt,
     end_at: endAt,
@@ -39,6 +43,8 @@ const RegistrationsCard = ({
     timeSeries,
     stats,
     currentResolution,
+    ariaLabel,
+    ariaDescribedBy,
   };
 
   return layout === 'wide' ? <Wide {...props} /> : <Narrow {...props} />;

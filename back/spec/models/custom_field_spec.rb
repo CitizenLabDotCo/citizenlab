@@ -149,6 +149,24 @@ RSpec.describe CustomField do
     end
   end
 
+  describe '#clear_logic_unless_supported' do
+    let(:field) { create(:custom_field, resource: create(:custom_form)) }
+
+    it 'saves logic when the field supports logic' do
+      field.input_type = 'select'
+      field.logic = { 'rules' => [{ 'if' => 2, 'goto_page_id' => 'some_page_id' }] }
+      field.save!
+      expect(field.logic).to eq({ 'rules' => [{ 'if' => 2, 'goto_page_id' => 'some_page_id' }] })
+    end
+
+    it 'does not save logic when the field does not support logic' do
+      field.input_type = 'multiselect'
+      field.logic = { 'rules' => [{ 'if' => 2, 'goto_page_id' => 'some_page_id' }] }
+      field.save!
+      expect(field.logic).to eq({})
+    end
+  end
+
   describe '#file_upload?' do
     it 'returns true when the input_type is "file_upload"' do
       files_field = described_class.new input_type: 'file_upload'
@@ -588,44 +606,6 @@ RSpec.describe CustomField do
 
     it 'returns nil otherwise' do
       expect(field.other_option_text_field).to be_nil
-    end
-  end
-
-  describe '#linear_scale_print_description' do
-    let(:field) do
-      create(
-        :custom_field_linear_scale,
-        maximum: 3,
-        linear_scale_label_1_multiloc: { en: 'Bad', 'fr-FR': 'Mauvais' },
-        linear_scale_label_2_multiloc: { en: 'Neutral', 'fr-FR': 'Neutre' },
-        linear_scale_label_3_multiloc: { en: 'Good', 'fr-FR': 'Bon' },
-        linear_scale_label_4_multiloc: {
-          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
-        },
-        linear_scale_label_5_multiloc: {
-          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
-        },
-        linear_scale_label_6_multiloc: {
-          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
-        },
-        linear_scale_label_7_multiloc: {
-          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
-        }
-      )
-    end
-
-    it 'returns the linear scale print description for the specified locale' do
-      expect(field.linear_scale_print_description('en')).to eq 'Please write a number between 1 (Bad) and 3 (Good) only'
-      expect(field.linear_scale_print_description('fr-FR'))
-        .to eq 'Veuillez écrire un nombre entre 1 (Mauvais) et 3 (Bon) uniquement'
-    end
-
-    it 'returns default copy if the locale values is/are not specified' do
-      field.linear_scale_label_1_multiloc = { en: '' }
-      field.linear_scale_label_3_multiloc = { en: '' }
-
-      expect(field.linear_scale_print_description('en')).to eq 'Please write a number between 1 and 3 only'
-      expect(field.linear_scale_print_description('fr-FR')).to eq 'Veuillez écrire un nombre entre 1 et 3 uniquement'
     end
   end
 

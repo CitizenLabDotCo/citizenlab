@@ -8,8 +8,9 @@ module WebApi
         before_action :set_phase, only: [:index]
 
         def index
-          feed_service = ::IdeaFeed::FeedService.new(@phase, current_user)
-          ideas = feed_service.top_n(5, policy_scope(Idea))
+          scope = policy_scope(Idea)
+          feed_service = ::IdeaFeed::FeedService.new(@phase, current_user, topic_ids: params[:topics])
+          ideas = feed_service.top_n(page_size, scope)
 
           render json: WebApi::V1::IdeaSerializer.new(ideas, params: jsonapi_serializer_params).serializable_hash
         end
@@ -19,6 +20,10 @@ module WebApi
         def set_phase
           @phase = Phase.find(params[:id])
           authorize @phase, :show?
+        end
+
+        def page_size
+          params.dig(:page, :size)&.to_i || 20
         end
       end
     end

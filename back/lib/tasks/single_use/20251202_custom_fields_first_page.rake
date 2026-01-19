@@ -1,8 +1,13 @@
 namespace :fix_existing_tenants do
   desc 'Fix custom fields by making sure the first field is a page.'
-  task :custom_fields_first_page, [] => [:environment] do
+  task :custom_fields_first_page, %i[hosts] => [:environment] do |_, args|
     reporter = ScriptReporter.new
-    Tenant.all.each do |tenant|
+    tenants = if args[:hosts].present?
+      Tenant.where(host: args[:hosts].split(';').map(&:strip))
+    else
+      Tenant.all
+    end
+    tenants.each do |tenant|
       tenant.switch do
         CustomForm.all.each do |form|
           first_field = CustomField.find_by(ordering: 0, resource_id: form.id)

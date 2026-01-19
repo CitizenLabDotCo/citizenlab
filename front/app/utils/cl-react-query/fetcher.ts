@@ -55,7 +55,7 @@ interface Delete {
 
 type FetcherArgs = Get | Patch | Put | Post | Delete;
 
-type BaseData = { id?: string; type: string };
+export type BaseData = { id?: string; type: string };
 
 export type BaseResponseData =
   | { data: BaseData; included?: BaseData[] }
@@ -63,9 +63,7 @@ export type BaseResponseData =
 
 function fetcher<TResponseData extends BaseResponseData>(
   args: FetcherArgs
-): FetcherArgs['action'] extends 'delete'
-  ? null
-  : Promise<Omit<TResponseData, 'included'>>;
+): FetcherArgs['action'] extends 'delete' ? null : Promise<TResponseData>;
 
 /**
  * @param cacheIndividualItems : When set to true, if the API response returns an array of items, these items will individually be added to the cache in addition to the whole request.
@@ -226,9 +224,7 @@ async function fetcher({
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!data) return null;
-
-  const { included: _included, ...rest } = data;
-  return rest as Omit<BaseResponseData, 'included'>;
+  return data;
 }
 
 export default fetcher;

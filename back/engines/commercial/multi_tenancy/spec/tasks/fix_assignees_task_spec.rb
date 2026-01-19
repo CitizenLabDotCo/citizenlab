@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'rake fix_existing_tenants' do # rubocop:disable RSpec/DescribeClass
+describe 'rake fix_existing_tenants' do
   before { load_rake_tasks_if_not_loaded }
 
   let(:task) { Rake::Task[task_name] }

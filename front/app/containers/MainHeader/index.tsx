@@ -3,6 +3,8 @@ import React, { useRef, useEffect, useState } from 'react';
 import { media, isRtl, useBreakpoint } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { MIN_VIEWPORT_HEIGHT_FOR_STICKY_ELEMENTS } from 'utils/styleConstants';
+
 import DesktopNavItems from './Components/DesktopNavItems';
 import DesktopNavbarContent from './Components/NavbarContent/DesktopNavbarContent';
 import MobileNavbarContent from './Components/NavbarContent/MobileNavbarContent';
@@ -91,6 +93,13 @@ const MainHeader = () => {
     function onScroll() {
       // Positive value means we've scrolled down
       const currentPosition = document.documentElement.scrollTop;
+
+      // If the viewport is shorter than 400px, don't show the sticky nav
+      // This helps prevent a11y issues on very small viewports
+      if (window.innerHeight < MIN_VIEWPORT_HEIGHT_FOR_STICKY_ELEMENTS) {
+        setShowMobileStickyNav(false);
+        return;
+      }
 
       // not scrolled yet/still at the top or downscroll
       if (currentPosition <= 0 || currentPosition > lastScrollTop) {

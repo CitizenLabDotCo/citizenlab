@@ -1,13 +1,13 @@
 import React, { lazy, Suspense, useMemo } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 
 import { IdeaSortMethod, IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
-import useProjectById from 'api/projects/useProjectById';
 
+import StickyNotesPile from 'containers/IdeasFeedPage/StickyNotes/StickyNotesPile';
 import messages from 'containers/ProjectsShowPage/messages';
 
 const IdeasWithFiltersSidebar = lazy(
@@ -17,11 +17,10 @@ const IdeasWithFiltersSidebar = lazy(
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 import { Props as WithFiltersProps } from 'components/IdeaCards/IdeasWithFiltersSidebar';
 import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 
-import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+
 interface InnerProps {
   projectId: string;
   phase: IPhaseData;
@@ -42,7 +41,7 @@ interface QueryParameters {
 }
 
 const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
-  const { data: project } = useProjectById(projectId);
+  const { slug } = useParams() as { slug: string };
   const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as IdeaSortMethod | null;
   const searchParam = searchParams.get('search');
@@ -94,12 +93,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       className={`e2e-timeline-project-idea-cards ${className || ''}`}
     >
       {showIdeasFeedLink ? (
-        <ButtonWithLink
-          linkTo={`/projects/${project?.data.attributes.slug}/ideas-feed`}
-          mb="16px"
-        >
-          <FormattedMessage {...messages.seeTheIdeas} />
-        </ButtonWithLink>
+        <StickyNotesPile phaseId={phase.id} slug={slug} />
       ) : (
         <>
           {sidebarFiltersEnabled ? (

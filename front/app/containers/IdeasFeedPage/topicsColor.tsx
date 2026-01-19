@@ -1,9 +1,4 @@
 import { colors } from '@citizenlab/cl2-component-library';
-
-/**
- * Topic color palette with light pastel colors for backgrounds
- * and slightly darker versions for progress bars (better contrast)
- */
 export interface TopicColorPair {
   background: string;
   progressBar: string;
@@ -28,65 +23,20 @@ const TOPIC_COLOR_PALETTE: TopicColorPair[] = [
   { background: '#F0E68C', progressBar: '#D4C96E' }, // Khaki
 ];
 
-// Hash function to get a consistent index for a topic ID
-const getTopicColorIndex = (topicId: string): number => {
-  let hash = 0;
-  for (let i = 0; i < topicId.length; i++) {
-    hash = topicId.charCodeAt(i) + ((hash << 5) - hash);
-  }
+const getTopicColorIndex = (topicId?: string): number => {
+  const hash = [...(topicId || '')].reduce(
+    (acc, char) => char.charCodeAt(0) + ((acc << 5) - acc),
+    0
+  );
   return Math.abs(hash) % TOPIC_COLOR_PALETTE.length;
 };
 
-// // Function to get the background color for a topic ID
-// export const getTopicColor = (topicId: string): string => {
-//   const index = getTopicColorIndex(topicId);
-//   return TOPIC_COLOR_PALETTE[index].background;
-// };
+export const getTopicColor = (topicId: string): string => {
+  const index = getTopicColorIndex(topicId);
+  return TOPIC_COLOR_PALETTE[index].background;
+};
 
-// Function to get the progress bar color for a topic ID (slightly darker for better contrast)
 export const getTopicProgressBarColor = (topicId: string): string => {
   const index = getTopicColorIndex(topicId);
   return TOPIC_COLOR_PALETTE[index].progressBar;
 };
-
-// Function to get both colors for a topic ID
-// export const getTopicColors = (topicId: string): TopicColorPair => {
-//   const index = getTopicColorIndex(topicId);
-//   return TOPIC_COLOR_PALETTE[index];
-// };
-
-// // Create a map of topic IDs to color pairs for multiple topics
-// export const createTopicColorMap = (
-//   topicIds: string[]
-// ): Map<string, TopicColorPair> => {
-//   const colorMap = new Map<string, TopicColorPair>();
-
-//   topicIds.forEach((topicId) => {
-//     colorMap.set(topicId, getTopicColors(topicId));
-//   });
-
-//   return colorMap;
-// };
-
-// // Get the primary topic colors for an idea (uses first topic if multiple)
-// export const getPrimaryTopicColor = (
-//   topicIds: string[]
-// ): { background: string; progressBar: string; text: string } => {
-//   if (topicIds.length === 0) {
-//     // Default to teal if no topics
-//     return {
-//       background: colors.teal200,
-//       progressBar: '#5CB8C2',
-//       text: colors.grey800,
-//     };
-//   }
-
-//   const primaryTopicId = topicIds[0];
-//   const topicColors = getTopicColors(primaryTopicId);
-
-//   return {
-//     background: topicColors.background,
-//     progressBar: topicColors.progressBar,
-//     text: colors.grey800,
-//   };
-// };

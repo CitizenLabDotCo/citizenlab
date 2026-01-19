@@ -13,13 +13,13 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.confirmYourEmail',
     defaultMessage: 'Confirm your email',
   },
+  enterNameLastNameAndPassword: {
+    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameAndPassword',
+    defaultMessage: 'Enter name, last name, and password',
+  },
   completeTheDemographicQuestionsAbove: {
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.completeTheDemographicQuestionsAbove',
     defaultMessage: 'Complete the demographic questions above',
-  },
-  enterNameLastNameEmailAndPassword: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.enterNameLastNameEmailAndPassword1',
-    defaultMessage: 'Enter first name, last name, email and password',
   },
   authenticateWithVerificationProvider: {
     id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.FlowVisualization.authenticateWithVerificationProvider2',

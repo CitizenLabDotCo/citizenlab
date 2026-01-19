@@ -39,6 +39,7 @@ interface Props {
   similarity_threshold_title: number | null | undefined;
   similarity_threshold_body: number | null | undefined;
   allow_anonymous_participation: boolean | null | undefined;
+  toggleAnonymousPostingDisabledReason?: string;
   noLikingLimitError?: string;
   reacting_dislike_enabled: boolean | null | undefined;
   reacting_dislike_method: 'unlimited' | 'limited' | null | undefined;
@@ -86,6 +87,7 @@ const IdeationInputs = ({
   reacting_like_method,
   reacting_dislike_method,
   allow_anonymous_participation,
+  toggleAnonymousPostingDisabledReason,
   reacting_like_limited_max,
   reacting_dislike_limited_max,
   reacting_dislike_enabled,
@@ -133,6 +135,7 @@ const IdeationInputs = ({
         handleAllowAnonymousParticipationOnChange={
           handleAllowAnonymousParticipationOnChange
         }
+        disabledReason={toggleAnonymousPostingDisabledReason}
       />
       <CustomFieldPicker
         input_term={input_term}

@@ -104,7 +104,7 @@ module BulkImportIdeas::Importers
 
         # Create each phase (if there are any)
         project_data[:phases]&.each do |phase_data|
-          phase = find_or_create_phase(project, phase_data.except(:idea_rows, :idea_custom_fields, :user_custom_fields))
+          phase = find_or_create_phase(project, phase_data.except(:idea_rows, :idea_custom_fields, :user_custom_fields, :append_ideas))
           next unless phase
           next if phase_data[:idea_rows].blank? # No ideas means no form or fields either
 
@@ -113,7 +113,7 @@ module BulkImportIdeas::Importers
 
           # Import the ideas
           idea_rows = phase_data[:idea_rows].map { |row| row.transform_keys(&:to_s) } # Ensure keys are strings - when stored in jobs they get changed to symbols
-          import_ideas(phase, idea_rows)
+          import_ideas(phase, idea_rows, phase_data[:append_ideas])
         end
 
         # Remove the idea import records for this project - not needed via this import
@@ -296,13 +296,15 @@ module BulkImportIdeas::Importers
       end
     end
 
-    def import_ideas(phase, phase_idea_rows)
+    def import_ideas(phase, phase_idea_rows, append_ideas)
       log "Importing ideas for phase: '#{phase.title_multiloc[@locale.to_s]}'"
 
-      # If the phase already has ideas, we skip the import
-      if phase.ideas.any?
-        log "FOUND existing ideas for phase: '#{phase.title_multiloc[@locale.to_s]}'. Skipping idea import."
+      # If the phase already has ideas, we skip the import unless we specify that we want to append ideas
+      if !append_ideas && phase.ideas.any?
+        log "FOUND existing ideas for phase and 'AppendIdeas' is false: '#{phase.title_multiloc[@locale.to_s]}'. Skipping idea import."
         return
+      elsif append_ideas && phase.ideas.any?
+        log 'Appending ideas to existing ideas for phase'
       end
 
       begin

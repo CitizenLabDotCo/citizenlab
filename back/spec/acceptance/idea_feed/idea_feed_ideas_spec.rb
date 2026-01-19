@@ -12,6 +12,7 @@ resource 'Idea feed ideas' do
       parameter :number, 'Page number'
       parameter :size, 'Number of ideas per page'
     end
+    parameter :topics, 'Filter by topic IDs', required: false
 
     let(:phase) { create(:idea_feed_phase) }
     let(:phase_id) { phase.id }
@@ -22,6 +23,23 @@ resource 'Idea feed ideas' do
       expect(status).to eq(200)
       json_response = json_parse(response_body)
       expect(json_response[:data].size).to eq(2)
+    end
+
+    describe 'filtering by topic' do
+      let(:topic) { create(:topic) }
+      let(:topics) { [topic.id] }
+      let!(:idea_with_topic) { create(:idea, project: phase.project, phases: [phase], topics: [topic]) }
+
+      before do
+        phase.project.allowed_input_topics << topic
+      end
+
+      example_request 'List ideas filtered by topic' do
+        expect(status).to eq(200)
+        json_response = json_parse(response_body)
+        expect(json_response[:data].size).to eq(1)
+        expect(json_response[:data][0][:id]).to eq(idea_with_topic.id)
+      end
     end
   end
 end

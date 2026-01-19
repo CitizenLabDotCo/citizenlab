@@ -1,0 +1,153 @@
+import React, { useEffect } from 'react';
+
+import {
+  Box,
+  Text,
+  colors,
+  stylingConsts,
+  Icon,
+} from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+import useAddIdeaExposure from 'api/idea_exposure/useAddIdeaExposure';
+import useIdeaById from 'api/ideas/useIdeaById';
+
+import useLocalize from 'hooks/useLocalize';
+
+import Avatar from 'components/Avatar';
+import ReactionControl from 'components/ReactionControl';
+import T from 'components/T';
+
+export const NOTE_HEIGHTS = {
+  small: 350,
+  large: 500,
+};
+
+const StyledNote = styled(Box)`
+  padding: 20px;
+  width: 90%;
+  border-radius: ${stylingConsts.borderRadius};
+  transition: all 0.3s ease;
+  text-align: left;
+  &:hover,
+  &:focus {
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+    filter: brightness(0.9);
+  }
+`;
+
+const BodyText = styled(Text)`
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+`;
+
+interface Props {
+  ideaId: string;
+  rotation?: number;
+  topicBackgroundColor: string;
+  onClick?: () => void;
+  centeredIdeaId?: string;
+  size?: 'small' | 'large';
+  showReactions?: boolean;
+}
+
+const StickyNote: React.FC<Props> = ({
+  ideaId,
+  rotation = 0,
+  topicBackgroundColor,
+  onClick,
+  centeredIdeaId,
+  size = 'large',
+  showReactions = true,
+}) => {
+  const isCentered = centeredIdeaId === ideaId;
+  const noteHeight = NOTE_HEIGHTS[size];
+
+  const { data: idea } = useIdeaById(ideaId);
+  const localize = useLocalize();
+  const { mutate: addIdeaExposure } = useAddIdeaExposure();
+
+  // Track idea exposure when sticky note becomes centered
+  useEffect(() => {
+    if (isCentered) {
+      addIdeaExposure({ ideaId });
+    }
+  }, [isCentered, ideaId, addIdeaExposure]);
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      onClick?.();
+    }
+  };
+
+  if (!idea) {
+    return null;
+  }
+
+  const title = localize(idea.data.attributes.title_multiloc);
+  const authorName = idea.data.attributes.author_name;
+  const authorId = idea.data.relationships.author?.data?.id || null;
+  const authorHash = idea.data.attributes.author_hash;
+
+  return (
+    <StyledNote
+      as="button"
+      borderRadius="2px"
+      minWidth="300px"
+      maxWidth="350px"
+      height={`${noteHeight}px`}
+      transform={`rotate(${rotation}deg)`}
+      background={topicBackgroundColor || colors.teal200}
+      boxShadow="0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)"
+      cursor="pointer"
+      position="relative"
+      display="flex"
+      flexDirection="column"
+      gap="8px"
+      border="none"
+      onClick={onClick}
+      onKeyDown={handleKeyDown}
+      aria-label={title}
+    >
+      {authorName && (
+        <Box display="flex" alignItems="center">
+          <Avatar userId={authorId} authorHash={authorHash} size={24} />
+          <Text fontSize="s" fontWeight="semi-bold" color="textPrimary" m="0px">
+            {authorName}
+          </Text>
+        </Box>
+      )}
+      <Text fontSize="l" fontWeight="bold" m="0px" color={'textPrimary'}>
+        {title}
+      </Text>
+
+      <Box flex="1" minHeight="0" overflow="hidden">
+        <BodyText fontSize="m" color="textPrimary" m="0px">
+          <T supportHtml={true} value={idea.data.attributes.body_multiloc} />
+        </BodyText>
+      </Box>
+      {showReactions && (
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          gap="8px"
+          flexShrink={0}
+        >
+          <Icon
+            name="comments"
+            fill={colors.textSecondary}
+            width="20px"
+            height="20px"
+          />
+          <ReactionControl ideaId={ideaId} size="1" styleType="compact" />
+        </Box>
+      )}
+    </StyledNote>
+  );
+};
+
+export default StickyNote;
