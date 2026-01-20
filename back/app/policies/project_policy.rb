@@ -163,6 +163,11 @@ class ProjectPolicy < ApplicationPolicy
     if AppConfiguration.instance.feature_activated? 'disable_disliking'
       shared += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]
     end
+
+    if AppConfiguration.instance.feature_activated? 'participation_location_tracking'
+      shared += %i[track_participation_location]
+    end
+
     shared
   end
 

@@ -25,6 +25,7 @@
 #  header_bg_alt_text_multiloc  :jsonb
 #  hidden                       :boolean          default(FALSE), not null
 #  listed                       :boolean          default(TRUE), not null
+#  track_participation_location :boolean          default(FALSE), not null
 #
 # Indexes
 #
