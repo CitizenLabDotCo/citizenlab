@@ -18,13 +18,12 @@ const MultipleSelect = ({ name, scrollErrorIntoView, ...rest }: Props) => {
   const {
     trigger,
     setValue,
-    formState: { errors: formContextErrors },
+    formState: { errors: formContextErrors, isSubmitted },
     control,
   } = useFormContext();
 
   const errors = formContextErrors[name] as RHFErrors;
-  const validationError = errors?.message;
-
+  const validationError = isSubmitted ? errors?.message : undefined;
   const apiError = errors?.error && ([errors] as CLError[]);
 
   return (
@@ -54,6 +53,7 @@ const MultipleSelect = ({ name, scrollErrorIntoView, ...rest }: Props) => {
       />
       {validationError && (
         <Error
+          id={`${name}-error`}
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
@@ -62,6 +62,7 @@ const MultipleSelect = ({ name, scrollErrorIntoView, ...rest }: Props) => {
       )}
       {apiError && (
         <Error
+          id={`${name}-error`}
           fieldName={name as TFieldName}
           apiErrors={apiError}
           marginTop="8px"

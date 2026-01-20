@@ -40,11 +40,11 @@ const CheckboxMultiSelect = ({
     trigger,
     watch,
     setValue,
-    formState: { errors: formContextErrors },
+    formState: { errors: formContextErrors, isSubmitted },
     control,
   } = useFormContext();
   const errors = get(formContextErrors, name) as RHFErrors;
-  const validationError = errors?.message;
+  const validationError = isSubmitted ? errors?.message : undefined;
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError = errors?.error && ([errors] as CLError[]);
@@ -108,6 +108,7 @@ const CheckboxMultiSelect = ({
       />
       {validationError && (
         <Error
+          id={`${name}-error`}
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
@@ -116,6 +117,7 @@ const CheckboxMultiSelect = ({
       )}
       {apiError && (
         <Error
+          id={`${name}-error`}
           fieldName={name as TFieldName}
           apiErrors={apiError}
           marginTop="8px"

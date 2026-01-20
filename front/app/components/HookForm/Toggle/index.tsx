@@ -17,7 +17,7 @@ export interface ToggleProps {
 
 const Toggle = ({ name, ...rest }: ToggleProps) => {
   const {
-    formState: { errors: formContextErrors },
+    formState: { errors: formContextErrors, isSubmitted },
     control,
     watch,
     setValue,
@@ -26,7 +26,7 @@ const Toggle = ({ name, ...rest }: ToggleProps) => {
   const defaultValue = false;
 
   const errors = get(formContextErrors, name) as RHFErrors;
-  const validationError = errors?.message;
+  const validationError = isSubmitted ? errors?.message : undefined;
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError = errors?.error && ([errors] as CLError[]);
@@ -54,6 +54,7 @@ const Toggle = ({ name, ...rest }: ToggleProps) => {
       />
       {validationError && (
         <Error
+          id={`${name}-error`}
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
@@ -62,6 +63,7 @@ const Toggle = ({ name, ...rest }: ToggleProps) => {
       )}
       {apiError && (
         <Error
+          id={`${name}-error`}
           fieldName={name as TFieldName}
           apiErrors={apiError}
           marginTop="8px"

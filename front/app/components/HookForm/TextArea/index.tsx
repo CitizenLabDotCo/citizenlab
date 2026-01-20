@@ -15,7 +15,7 @@ interface Props extends TextAreaProps {
 
 const TextArea = ({ name, scrollErrorIntoView, ...rest }: Props) => {
   const {
-    formState: { errors: formContextErrors },
+    formState: { errors: formContextErrors, isSubmitted },
     control,
     trigger,
   } = useFormContext();
@@ -23,7 +23,7 @@ const TextArea = ({ name, scrollErrorIntoView, ...rest }: Props) => {
   const defaultValue = '';
 
   const errors = get(formContextErrors, name) as RHFErrors;
-  const validationError = errors?.message;
+  const validationError = isSubmitted ? errors?.message : undefined;
 
   // If an API error with a matching name has been returned from the API response, apiError is set to an array with the error message as the only item
   const apiError = errors?.error && ([errors] as CLError[]);
@@ -47,6 +47,7 @@ const TextArea = ({ name, scrollErrorIntoView, ...rest }: Props) => {
       />
       {validationError && (
         <Error
+          id={`${name}-error`}
           marginTop="8px"
           marginBottom="8px"
           text={validationError}
@@ -55,6 +56,7 @@ const TextArea = ({ name, scrollErrorIntoView, ...rest }: Props) => {
       )}
       {apiError && (
         <Error
+          id={`${name}-error`}
           fieldName={name as TFieldName}
           apiErrors={apiError}
           marginTop="8px"
