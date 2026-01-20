@@ -6,7 +6,7 @@ class TimeBoundariesParser
 
   def parse
     timezone = AppConfiguration.timezone
-    platform_range = AppConfiguration.instance.created_at..timezone.now.end_of_day
+    platform_range = AppConfiguration.instance.platform_start_at..timezone.now.end_of_day
     start_range = @start_at.present? ? @start_at.to_datetime.in_time_zone(timezone).beginning_of_day : platform_range.begin
     end_range = @end_at.present? ? @end_at.to_datetime.in_time_zone(timezone).end_of_day : platform_range.end
     requested_range = start_range...end_range

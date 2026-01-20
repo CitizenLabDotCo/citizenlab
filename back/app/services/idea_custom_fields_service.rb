@@ -51,11 +51,6 @@ class IdeaCustomFieldsService
     enabled_fields_with_other_options(print_version: true).select(&:printable?)
   end
 
-  # This supports the deprecated prawn based PDF export/import that did not support all field types
-  def printable_fields_legacy
-    enabled_fields_with_other_options.select(&:printable_legacy?)
-  end
-
   def xlsx_importable_fields
     enabled_fields_with_other_options.select(&:xlsx_importable?)
   end

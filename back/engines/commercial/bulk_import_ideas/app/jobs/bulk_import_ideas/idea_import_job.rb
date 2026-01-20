@@ -31,7 +31,7 @@ module BulkImportIdeas
     private
 
     def idea_rows_with_corrected_texts(phase, idea_rows, file_parser_class)
-      return idea_rows unless [BulkImportIdeas::Parsers::IdeaPdfFileParser, BulkImportIdeas::Legacy::IdeaPdfFileParser].include?(file_parser_class)
+      return idea_rows unless file_parser_class == BulkImportIdeas::Parsers::IdeaPdfFileParser
 
       corrector = BulkImportIdeas::Parsers::Pdf::GPTTextCorrector.new(phase, idea_rows)
       corrector.correct

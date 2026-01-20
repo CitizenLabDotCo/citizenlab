@@ -47,7 +47,10 @@ resource 'Graph data units' do
     )
 
     # Make TimeBoundariesParser work as expected
-    AppConfiguration.instance.update!(created_at: filtered_date - 2.days)
+    AppConfiguration.instance.update!(
+      created_at: filtered_date - 2.days,
+      platform_start_at: filtered_date - 2.days
+    )
 
     # This is used if the data query is implemented with Analytics API
     # create(:dimension_date, date: filtered_date)

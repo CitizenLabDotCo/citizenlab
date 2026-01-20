@@ -42,7 +42,7 @@ resource 'Stats - Ideas' do
   before { admin_header_token }
 
   before_all do
-    AppConfiguration.instance.update!(created_at: now - 3.years)
+    AppConfiguration.instance.update!(created_at: now - 3.years, platform_start_at: now - 3.years)
 
     @project1 = create(:single_phase_ideation_project)
     @project2 = create(:single_phase_proposals_project)

@@ -7,7 +7,6 @@ import ideaFeedKeys from './keys';
 export type IdeaFeedKeys = Keys<typeof ideaFeedKeys>;
 
 export interface IIdeaFeedQueryParameters {
-  'page[number]'?: number;
   'page[size]'?: number;
   topic?: string;
 }

@@ -23,11 +23,11 @@ const TOPIC_COLOR_PALETTE: TopicColorPair[] = [
   { background: '#F0E68C', progressBar: '#D4C96E' }, // Khaki
 ];
 
-const getTopicColorIndex = (topicId: string): number => {
-  let hash = 0;
-  for (let i = 0; i < topicId.length; i++) {
-    hash = topicId.charCodeAt(i) + ((hash << 5) - hash);
-  }
+const getTopicColorIndex = (topicId?: string): number => {
+  const hash = [...(topicId || '')].reduce(
+    (acc, char) => char.charCodeAt(0) + ((acc << 5) - acc),
+    0
+  );
   return Math.abs(hash) % TOPIC_COLOR_PALETTE.length;
 };
 

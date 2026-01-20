@@ -1,5 +1,7 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 
+import mockModules from './mockModules';
+
 const APP_FOLDER_ALIASES = [
   'api',
   'assets',
@@ -55,9 +57,14 @@ const config: StorybookConfig = {
     // Merge custom configuration into the default config
     const { mergeConfig } = await import('vite');
 
+    const mockModuleAliases = Object.entries(mockModules).map(
+      ([find, replacement]) => ({ find, replacement })
+    );
+
     return mergeConfig(config, {
       resolve: {
         alias: [
+          ...mockModuleAliases,
           ...APP_FOLDER_ALIASES,
           COMPONENT_LIBRARY_ALIAS,
           CONSTANTS_ALIAS
