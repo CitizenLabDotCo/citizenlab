@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
-import useTopics from 'api/topics/useTopics';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -31,7 +31,7 @@ const TopicFilterDropdown = ({
   });
 
   const topicIds = getTopicIds(allowedInputTopics?.data);
-  const { data: topics } = useTopics();
+  const { data: topics } = useGlobalTopics();
 
   const filteredTopics = useMemo(() => {
     if (!topics) return [];

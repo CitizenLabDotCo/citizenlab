@@ -44,11 +44,11 @@ resource 'Events' do
     end
 
     context 'passing static page id' do
-      let(:static_page_id) { create(:static_page, projects_filter_type: 'topics', topics: [topic]).id }
+      let(:static_page_id) { create(:static_page, projects_filter_type: 'topics', global_topics: [topic]).id }
 
-      let(:topic) { create(:topic) }
+      let(:topic) { create(:global_topic) }
 
-      before { @project.update!(topics: [topic]) }
+      before { @project.update!(global_topics: [topic]) }
 
       example_request 'List all events of a page' do
         assert_status 200

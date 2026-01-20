@@ -2,9 +2,9 @@ import React from 'react';
 
 import { useParams } from 'react-router-dom';
 
-import { ITopicUpdate } from 'api/topics/types';
-import useTopic from 'api/topics/useTopic';
-import useUpdateTopic from 'api/topics/useUpdateTopic';
+import { IGlobalTopicUpdate } from 'api/global_topics/types';
+import useGlobalTopic from 'api/global_topics/useGlobalTopic';
+import useUpdateGlobalTopic from 'api/global_topics/useUpdateGlobalTopic';
 
 import { Section, SectionTitle } from 'components/admin/Section';
 import GoBackButton from 'components/UI/GoBackButton';
@@ -18,10 +18,10 @@ import TopicForm from '../TopicForm';
 
 const Edit = () => {
   const { topicId } = useParams() as { topicId: string };
-  const { data: topic } = useTopic(topicId);
-  const { mutate: updateTopic } = useUpdateTopic();
+  const { data: topic } = useGlobalTopic(topicId);
+  const { mutate: updateTopic } = useUpdateGlobalTopic();
 
-  const handleSubmit = (values: Omit<ITopicUpdate, 'id'>) => {
+  const handleSubmit = (values: Omit<IGlobalTopicUpdate, 'id'>) => {
     if (!topic) return;
 
     updateTopic(

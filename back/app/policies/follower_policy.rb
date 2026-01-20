@@ -35,8 +35,8 @@ class FollowerPolicy < ApplicationPolicy
         ProjectFolders::FolderPolicy
       when 'Idea'
         IdeaPolicy
-      when 'Topic'
-        TopicPolicy
+      when 'GlobalTopic'
+        GlobalTopicPolicy
       when 'Area'
         AreaPolicy
       else
