@@ -21,11 +21,11 @@ resource 'Ideas' do
             permitted_by: 'everyone',
             global_custom_fields: false
           )
-          
+
           @permission = @project.phases.first.permissions.find_by(action: 'posting_idea')
           @custom_form = create(:custom_form, :with_default_fields, participation_context: @project.phases.first)
           @custom_field = @custom_form.custom_fields.find_by(input_type: 'select')
-                    
+
           # Create registration (demographic) question and
           # add to permission
           @user_select_field = create(
@@ -52,7 +52,7 @@ resource 'Ideas' do
           assert_status 201
           expect(Idea.count).to eq 1
           expect(Idea.first.custom_field_values).to eq({
-             @custom_field.key => 'option2'
+            @custom_field.key => 'option2'
           })
         end
 
@@ -69,7 +69,7 @@ resource 'Ideas' do
           assert_status 201
           expect(Idea.count).to eq 1
           expect(Idea.first.custom_field_values).to eq({
-             @custom_field.key => 'option2'
+            @custom_field.key => 'option2'
           })
         end
 
@@ -86,7 +86,7 @@ resource 'Ideas' do
           assert_status 201
           expect(Idea.count).to eq 1
           expect(Idea.first.custom_field_values).to eq({
-             @custom_field.key => 'option2'
+            @custom_field.key => 'option2'
           })
         end
 
@@ -103,7 +103,7 @@ resource 'Ideas' do
           assert_status 201
           expect(Idea.count).to eq 1
           expect(Idea.first.custom_field_values).to eq({
-             @custom_field.key => 'option2',
+            @custom_field.key => 'option2',
             'u_select_field' => 'option1'
           })
         end

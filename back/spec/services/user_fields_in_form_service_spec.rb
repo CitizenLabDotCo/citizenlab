@@ -243,7 +243,7 @@ describe UserFieldsInFormService do
   describe '#merge_user_fields_from_idea_into_user!' do
     it 'merges user fields from idea into user' do
       user = build(:user, custom_field_values: { 'city' => 'New York' })
-      idea = build(:idea, custom_field_values: { 'satisfaction' => 'high', 'u_age' => 30, })
+      idea = build(:idea, custom_field_values: { 'satisfaction' => 'high', 'u_age' => 30 })
 
       described_class.merge_user_fields_from_idea_into_user!(idea, user)
       expect(user.custom_field_values).to include('city' => 'New York', 'age' => 30)
@@ -251,7 +251,7 @@ describe UserFieldsInFormService do
 
     it 'overwrites user fields if they already exist' do
       user = build(:user, custom_field_values: { 'age' => 25 })
-      idea = build(:idea, custom_field_values: { 'satisfaction' => 'high', 'u_age' => 30, })
+      idea = build(:idea, custom_field_values: { 'satisfaction' => 'high', 'u_age' => 30 })
 
       described_class.merge_user_fields_from_idea_into_user!(idea, user)
       expect(user.custom_field_values).to include('age' => 30)
