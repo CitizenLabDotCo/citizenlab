@@ -1,13 +1,13 @@
 ach:
   email_campaigns:
     campaign_type_description:
-      "idea_assigned_to_you": crwdns208040:0crwdne208040:0
+      "idea_assigned_to_you": crwdns6040629:0crwdne6040629:0
     admin_campaign_type_description:
-      "idea_assigned_to_you": crwdns208042:0crwdne208042:0
+      "idea_assigned_to_you": crwdns6040631:0crwdne6040631:0
     idea_assigned_to_you:
-      by_author: 'crwdns208044:0%{authorName}crwdne208044:0'
-      cta_button: 'crwdns5184335:0%{authorName}crwdne5184335:0'
-      event_description: 'crwdns5184337:0crwdne5184337:0'
-      title: 'crwdns5184339:0%{firstName}crwdne5184339:0'
-      subject: 'crwdns208052:0%{organizationName}crwdne208052:0'
-      preheader: 'crwdns5621231:0%{authorName}crwdne5621231:0'
+      by_author: 'crwdns6040633:0%{authorName}crwdne6040633:0'
+      cta_button: 'crwdns6040635:0%{authorName}crwdne6040635:0'
+      event_description: 'crwdns6040637:0crwdne6040637:0'
+      title: 'crwdns6040639:0%{firstName}crwdne6040639:0'
+      subject: 'crwdns6040641:0%{organizationName}crwdne6040641:0'
+      preheader: 'crwdns6040643:0%{authorName}crwdne6040643:0'
