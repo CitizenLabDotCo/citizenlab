@@ -24,6 +24,7 @@ const useTouchDevice = () => {
   return useMemo(() => {
     // 0. Check screen size first - large screens should always show non-touch UI
     // Even if they have touch capability, navigation buttons are more useful on large screens
+    // and this is more the intention of this hook
     if (isLargeScreen) {
       return false;
     }
