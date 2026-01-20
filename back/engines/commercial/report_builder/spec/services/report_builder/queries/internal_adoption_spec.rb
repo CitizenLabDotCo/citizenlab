@@ -81,7 +81,7 @@ RSpec.describe ReportBuilder::Queries::InternalAdoption do
       })
     end
 
-    it 'does not count users registered after end_date in total_registered' do
+    it 'does not count users registered after end_date in total_admin_pm' do
       project = create(:project)
 
       # Users registered AFTER the query period
@@ -145,7 +145,7 @@ RSpec.describe ReportBuilder::Queries::InternalAdoption do
         # Comparison period (October)
         active_admins_compared: 1,
         active_moderators_compared: 2,
-        total_registered_compared: 6
+        total_admin_pm_compared: 6
       })
     end
   end
