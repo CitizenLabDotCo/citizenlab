@@ -358,9 +358,6 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         yml_phase['autoshare_results_enabled'] = phase.autoshare_results_enabled
       end
 
-      if yml_phase['participation_method'] == 'ideation'
-        yml_phase['ideation_method'] = phase.ideation_method
-      end
       if yml_phase['participation_method'] == 'survey'
         yml_phase['survey_embed_url'] = phase.survey_embed_url
         yml_phase['survey_service'] = phase.survey_service

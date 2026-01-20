@@ -39,7 +39,6 @@ module ParticipationMethod
       phase.input_term ||= default_input_term if supports_input_term?
       phase.similarity_threshold_title ||= 0.3
       phase.similarity_threshold_body ||= 0.4
-      phase.ideation_method ||= 'base'
     end
 
     def author_in_form?(user)
@@ -461,8 +460,8 @@ module ParticipationMethod
       true
     end
 
-    def supports_serializing?(attribute)
-      %i[ideation_method].include?(attribute)
+    def supports_serializing?(_attribute)
+      false
     end
 
     private

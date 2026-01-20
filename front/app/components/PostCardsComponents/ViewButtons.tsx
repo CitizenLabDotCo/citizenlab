@@ -17,6 +17,10 @@ import {
 import { darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
+import { PresentationMode } from 'api/phases/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -75,16 +79,19 @@ const ViewButton = styled.button<{ active: boolean }>`
 
 interface Props {
   className?: string;
-  selectedView: 'card' | 'map';
-  onClick: (selectedView: 'card' | 'map') => void;
+  selectedView: PresentationMode;
+  onClick: (selectedView: PresentationMode) => void;
 }
 
 const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
   const theme = useTheme();
+  const ideaFeedEnabled = useFeatureFlag({ name: 'idea_feed' });
   const isListViewSelected = selectedView === 'card';
   const isMapViewSelected = selectedView === 'map';
+  const isFeedViewSelected = selectedView === 'feed';
   const listButtonRef = useRef<HTMLButtonElement | null>(null);
   const mapButtonRef = useRef<HTMLButtonElement | null>(null);
+  const feedButtonRef = useRef<HTMLButtonElement | null>(null);
 
   const [viewChanged, setViewChanged] = useState<boolean | null>(null);
 
@@ -93,14 +100,18 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
     // Otherwise we end up setting focus when the page loads (which leads an
     // issue where the user is incorrectly scrolled down to the idea section on page load).
     if (viewChanged) {
-      selectedView === 'map'
-        ? mapButtonRef.current?.focus()
-        : listButtonRef.current?.focus();
+      if (selectedView === 'map') {
+        mapButtonRef.current?.focus();
+      } else if (selectedView === 'feed') {
+        feedButtonRef.current?.focus();
+      } else {
+        listButtonRef.current?.focus();
+      }
     }
   }, [selectedView, viewChanged]);
 
   const handleOnClick =
-    (selectedView: 'card' | 'map') => (event: FormEvent) => {
+    (selectedView: PresentationMode) => (event: FormEvent) => {
       event.preventDefault();
       setViewChanged(true);
       onClick(selectedView);
@@ -116,7 +127,14 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
 
     if (arrowLeftPressed || arrowRightPressed) {
       setViewChanged(true);
-      onClick(selectedView === 'card' ? 'map' : 'card');
+      const views: PresentationMode[] = ideaFeedEnabled
+        ? ['card', 'map', 'feed']
+        : ['card', 'map'];
+      const currentIndex = views.indexOf(selectedView);
+      const nextIndex = arrowRightPressed
+        ? (currentIndex + 1) % views.length
+        : (currentIndex - 1 + views.length) % views.length;
+      onClick(views[nextIndex]);
     }
   };
 
@@ -160,6 +178,22 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
         <StyledIcon name="map" />
         <FormattedMessage {...messages.map} />
       </ViewButton>
+      {ideaFeedEnabled && (
+        <ViewButton
+          role="tab"
+          aria-selected={isFeedViewSelected}
+          tabIndex={isFeedViewSelected ? 0 : -1}
+          id="view-tab-3"
+          aria-controls="view-panel-3"
+          onClick={handleOnClick('feed')}
+          ref={(el) => (feedButtonRef.current = el)}
+          onKeyDown={handleTabListOnKeyDown}
+          active={isFeedViewSelected}
+        >
+          <StyledIcon name="idea" />
+          <FormattedMessage {...messages.feed} />
+        </ViewButton>
+      )}
     </Box>
   );
 });

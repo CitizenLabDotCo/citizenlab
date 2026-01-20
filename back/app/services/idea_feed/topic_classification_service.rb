@@ -1,5 +1,5 @@
 module IdeaFeed
-  # Service used by the IdeaFeed ideation_method to classify ideas into topics.
+  # Service used by IdeaFeed (presentation_mode='feed') to classify ideas into topics.
   class TopicClassificationService
     class InvalidLLMResponse < StandardError; end
     RETRIES_INVALID_RESPONSE = 3

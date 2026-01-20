@@ -320,6 +320,7 @@ DROP INDEX IF EXISTS public.index_idea_import_files_on_parent_id;
 DROP INDEX IF EXISTS public.index_idea_images_on_idea_id;
 DROP INDEX IF EXISTS public.index_idea_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_idea_files_on_idea_id;
+DROP INDEX IF EXISTS public.index_idea_exposures_on_visitor_hash;
 DROP INDEX IF EXISTS public.index_idea_exposures_on_user_id;
 DROP INDEX IF EXISTS public.index_idea_exposures_on_phase_id;
 DROP INDEX IF EXISTS public.index_idea_exposures_on_idea_id;
@@ -1771,8 +1772,7 @@ CREATE TABLE public.phases (
     similarity_enabled boolean DEFAULT true NOT NULL,
     vote_term character varying DEFAULT 'vote'::character varying,
     voting_min_selected_options integer DEFAULT 1 NOT NULL,
-    voting_filtering_enabled boolean DEFAULT false NOT NULL,
-    ideation_method character varying
+    voting_filtering_enabled boolean DEFAULT false NOT NULL
 );
 
 
@@ -2731,11 +2731,12 @@ CREATE TABLE public.id_id_card_lookup_id_cards (
 
 CREATE TABLE public.idea_exposures (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
-    user_id uuid NOT NULL,
+    user_id uuid,
     idea_id uuid NOT NULL,
     phase_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    visitor_hash character varying
 );
 
 
@@ -5950,6 +5951,13 @@ CREATE INDEX index_idea_exposures_on_user_id ON public.idea_exposures USING btre
 
 
 --
+-- Name: index_idea_exposures_on_visitor_hash; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_idea_exposures_on_visitor_hash ON public.idea_exposures USING btree (visitor_hash);
+
+
+--
 -- Name: index_idea_files_on_idea_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8286,6 +8294,8 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260120123325'),
+('20260115115438'),
 ('20251224101437'),
 ('20251217110845'),
 ('20251212135514'),

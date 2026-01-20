@@ -85,7 +85,7 @@ export interface Props {
   phaseId?: string;
   showViewToggle?: boolean | undefined;
   defaultSortingMethod?: IdeaSortMethod;
-  defaultView?: 'card' | 'map';
+  defaultView?: 'card' | 'map' | 'feed';
   className?: string;
   allowProjectsFilter?: boolean;
   showSearchbar: boolean;

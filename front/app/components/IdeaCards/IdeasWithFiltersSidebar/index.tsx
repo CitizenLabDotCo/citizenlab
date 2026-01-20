@@ -33,6 +33,7 @@ import ButtonWithFiltersModal from './ButtonWithFiltersModal';
 import ContentRight from './ContentRight';
 import { InputFiltersProps } from './InputFilters';
 import { getInputCountMessage } from './utils';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 export const gapWidth = 35;
 
@@ -81,6 +82,7 @@ export interface Props {
   defaultView?: PresentationMode;
   projectId?: string;
   phaseId?: string;
+  projectSlug?: string;
   inputTerm?: InputTerm;
 }
 
@@ -88,6 +90,7 @@ const IdeasWithFiltersSidebar = ({
   ideaQueryParameters,
   projectId,
   phaseId,
+  projectSlug,
   defaultView = 'card',
   onUpdateQuery,
   showViewToggle,
@@ -97,6 +100,7 @@ const IdeasWithFiltersSidebar = ({
   const [searchParams] = useSearchParams();
   const smallerThanPhone = useBreakpoint('phone');
   const biggerThanLargeTablet = !useBreakpoint('tablet');
+  const isIdeasFeedEnabled = useFeatureFlag({ name: 'idea_feed' });
 
   // Get data from searchParams
   const selectedIdeaMarkerId = searchParams.get('idea_map_id');
@@ -124,7 +128,8 @@ const IdeasWithFiltersSidebar = ({
     (field) => field.key === 'location_description'
   )?.enabled;
 
-  const showViewButtons = !!(locationEnabled && showViewToggle);
+  const showViewButtons =
+    !!(locationEnabled && showViewToggle) || isIdeasFeedEnabled;
   const loadIdeaMarkers = locationEnabled && selectedView === 'map';
   const { data: ideaMarkers } = useIdeaMarkers(
     {
@@ -227,7 +232,9 @@ const IdeasWithFiltersSidebar = ({
 
       {list && (
         <>
-          <ButtonWithFiltersModal {...inputFiltersProps} />
+          {!isIdeasFeedEnabled && (
+            <ButtonWithFiltersModal {...inputFiltersProps} />
+          )}
           {/* 
             If we have an inputTerm (are on the project page), we don't need this because the number of results is displayed next to the heading (see above). This fallback is used on the /ideas page, where we have no inputTerm. 
             TO DO: refactor this component so we can add it to the page instead to this general component.
@@ -258,6 +265,7 @@ const IdeasWithFiltersSidebar = ({
                 view={selectedView}
                 hasMoreThanOneView={false}
                 projectId={projectId}
+                projectSlug={projectSlug}
                 hasFilterSidebar={true}
                 phaseId={phaseId}
                 ideaMarkers={ideaMarkers}
