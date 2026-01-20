@@ -24,6 +24,8 @@ export interface DemographicChartRow {
   count: number;
 }
 
+const BLANK_KEY = '_blank';
+
 export const transformDemographicsToChartRows = (
   data: DemographicsSeriesData,
   customFieldCode: string | undefined,
@@ -40,12 +42,10 @@ export const transformDemographicsToChartRows = (
     return transformBirthyearData(series, blankLabel, population_distribution);
   }
 
-  // If options is undefined but it's not birthyear, it's an unsupported number field
   if (options === undefined) {
     return [];
   }
 
-  // Standard select field: transform with options
   return transformSelectFieldData(
     series,
     options,
@@ -55,25 +55,62 @@ export const transformDemographicsToChartRows = (
   );
 };
 
+/**
+ * Checks if the series contains individual birth years (e.g., "1990", "1985")
+ * vs pre-binned age ranges (e.g., "15-19", "20-24", "85+")
+ */
+const isIndividualBirthYears = (series: Record<string, number>): boolean => {
+  const keys = Object.keys(series).filter((key) => key !== BLANK_KEY);
+  // Individual birth years are 4-digit numbers (e.g., "1990")
+  // Pre-binned ranges contain "-" or "+" (e.g., "15-19", "85+")
+  return keys.length > 0 && keys.every((key) => /^\d{4}$/.test(key));
+};
+
+/**
+ * Transforms birthyear data into chart rows.
+ * Handles two formats:
+ * 1. Individual birth years (e.g., "1990", "1985") - needs binning via binAge
+ * 2. Pre-binned age ranges (e.g., "15-19", "20-24") - used directly
+ */
 const transformBirthyearData = (
   series: Record<string, number>,
   blankLabel: string,
-  population_distribution?: Record<string, number>
+  populationDistribution?: Record<string, number>
 ): DemographicChartRow[] => {
-  const bins = binAge(series, {
-    missingBin: blankLabel,
-  });
+  if (isIndividualBirthYears(series)) {
+    return transformIndividualBirthYears(
+      series,
+      blankLabel,
+      populationDistribution
+    );
+  }
+  return transformPreBinnedAgeRanges(
+    series,
+    blankLabel,
+    populationDistribution
+  );
+};
 
+/**
+ * Transforms individual birth years using binAge to group into age ranges.
+ */
+const transformIndividualBirthYears = (
+  series: Record<string, number>,
+  blankLabel: string,
+  populationDistribution?: Record<string, number>
+): DemographicChartRow[] => {
+  const bins = binAge(series, { missingBin: blankLabel });
   const values = bins.map((bin) => bin.value);
   const percentages = roundPercentages(values);
 
-  let populationPercentages: (number | undefined)[] | undefined;
-  if (population_distribution) {
-    const populationBins = binAge(population_distribution, {
+  let populationPercentages: number[] | undefined;
+  if (populationDistribution) {
+    const populationBins = binAge(populationDistribution, {
       missingBin: blankLabel,
     });
-    const populationValues = populationBins.map((bin) => bin.value);
-    populationPercentages = roundPercentages(populationValues);
+    populationPercentages = roundPercentages(
+      populationBins.map((bin) => bin.value)
+    );
   }
 
   return bins.map((bin, index) => ({
@@ -82,6 +119,21 @@ const transformBirthyearData = (
     population: populationPercentages?.[index],
     count: bin.value,
   }));
+};
+
+const transformPreBinnedAgeRanges = (
+  series: Record<string, number>,
+  blankLabel: string,
+  populationDistribution?: Record<string, number>
+): DemographicChartRow[] => {
+  const keys = Object.keys(series).filter((key) => key !== BLANK_KEY);
+
+  const hasBlank = (series[BLANK_KEY] ?? 0) > 0;
+  if (hasBlank) {
+    keys.push(BLANK_KEY);
+  }
+
+  return buildChartRows(keys, series, blankLabel, populationDistribution);
 };
 
 const transformSelectFieldData = (
@@ -95,41 +147,56 @@ const transformSelectFieldData = (
   >,
   blankLabel: string,
   localizeOption: (key: string, multiloc?: Record<string, string>) => string,
-  population_distribution?: Record<string, number>
+  populationDistribution?: Record<string, number>
 ): DemographicChartRow[] => {
-  const columnsWithoutBlank = Object.keys(options).sort(
+  const sortedKeys = Object.keys(options).sort(
     (a, b) => options[a].ordering - options[b].ordering
   );
 
-  const hasBlank = (series['_blank'] ?? 0) > 0;
-  const columns = hasBlank
-    ? [...columnsWithoutBlank, '_blank']
-    : columnsWithoutBlank;
+  const hasBlank = (series[BLANK_KEY] ?? 0) > 0;
+  const keys = hasBlank ? [...sortedKeys, BLANK_KEY] : sortedKeys;
 
-  const values = columns.map((column) => series[column] || 0);
+  const getCategoryLabel = (key: string) =>
+    key === BLANK_KEY
+      ? blankLabel
+      : localizeOption(key, options[key].title_multiloc);
+
+  return buildChartRows(
+    keys,
+    series,
+    blankLabel,
+    populationDistribution,
+    getCategoryLabel
+  );
+};
+
+/**
+ * Builds chart rows from series data with percentages and optional population comparison.
+ */
+const buildChartRows = (
+  keys: string[],
+  series: Record<string, number>,
+  blankLabel: string,
+  populationDistribution?: Record<string, number>,
+  getCategoryLabel?: (key: string) => string
+): DemographicChartRow[] => {
+  const values = keys.map((key) => series[key] ?? 0);
   const percentages = roundPercentages(values);
 
-  let populationPercentages: (number | undefined)[] | undefined;
-  if (population_distribution) {
-    const populationValues = columns.map(
-      (column) => population_distribution[column] || 0
-    );
-    populationPercentages = roundPercentages(populationValues);
-  }
+  const populationPercentages = populationDistribution
+    ? roundPercentages(keys.map((key) => populationDistribution[key] ?? 0))
+    : undefined;
 
-  return columns.map((column, index) => {
-    const category =
-      column === '_blank'
-        ? blankLabel
-        : localizeOption(column, options[column].title_multiloc);
-
-    return {
-      category,
-      participants: percentages[index],
-      population: populationPercentages?.[index],
-      count: series[column] || 0,
-    };
-  });
+  return keys.map((key, index) => ({
+    category: getCategoryLabel
+      ? getCategoryLabel(key)
+      : key === BLANK_KEY
+      ? blankLabel
+      : key,
+    participants: percentages[index],
+    population: populationPercentages?.[index],
+    count: series[key] ?? 0,
+  }));
 };
 
 export const transformReportBuilderDemographics = (
