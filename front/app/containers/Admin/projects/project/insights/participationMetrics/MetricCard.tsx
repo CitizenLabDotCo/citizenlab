@@ -33,10 +33,7 @@ const MetricCard = ({ label, value, icon, change }: Props) => {
       display="flex"
       flexDirection="column"
       gap="4px"
-      style={{
-        boxShadow:
-          '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-      }}
+      boxShadow="0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
     >
       <Box
         display="flex"
@@ -51,15 +48,16 @@ const MetricCard = ({ label, value, icon, change }: Props) => {
       <Text
         as="span"
         color="primary"
+        fontSize="xxxxl"
         fontWeight="bold"
+        lineHeight="1.1"
         m="0"
         mt="8px"
         mb="4px"
-        style={{ fontSize: '36px', lineHeight: 1.1 }}
       >
         {formattedValue}
       </Text>
-      {change && <MetricTrend change={change} />}
+      {change !== undefined && <MetricTrend change={change} />}
     </Box>
   );
 };
