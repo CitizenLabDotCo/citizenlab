@@ -6,6 +6,8 @@
 # Usage:
 #   rake 'core:change_tenant_locale[hostname.com,en-GB,en]'
 #
+#   NOTE: This must be run with 'rake' and not 'rails' to ensure all models are loaded.
+#
 # The task will:
 #   1. Add the new locale to AppConfiguration settings (alongside the current locale)
 #   2. Update User.locale for all users with the current locale
