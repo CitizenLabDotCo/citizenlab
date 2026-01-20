@@ -1,27 +1,18 @@
 import React from 'react';
 
-import { Box, Text, Icon, colors } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import {
+  Box,
+  Text,
+  Icon,
+  colors,
+  Color,
+} from '@citizenlab/cl2-component-library';
 
 import { SevenDayChange } from 'api/phase_insights/types';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
-
-const TrendValue = styled.span<{ $isPositive: boolean; $isNeutral: boolean }>`
-  font-size: 13px;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
-  color: ${({ $isPositive, $isNeutral }) =>
-    $isNeutral
-      ? colors.textSecondary
-      : $isPositive
-      ? colors.green500
-      : colors.red500};
-`;
 
 interface Props {
   change: SevenDayChange;
@@ -55,26 +46,33 @@ const MetricTrend = ({ change }: Props) => {
     ? undefined
     : 'arrow-down';
   const trendLabel = `${isPositive ? '+' : ''}${Math.round(change)}%`;
+  const trendColor: Color = isNeutral
+    ? 'textSecondary'
+    : isPositive
+    ? 'green500'
+    : 'red500';
 
   return (
     <Box display="flex" alignItems="center" gap="6px" flexWrap="wrap">
-      <TrendValue $isPositive={isPositive} $isNeutral={isNeutral}>
+      <Box display="flex" alignItems="center" gap="2px">
         {trendIcon && (
           <Icon
             name={trendIcon}
             width="12px"
             height="12px"
-            fill={
-              isNeutral
-                ? colors.textSecondary
-                : isPositive
-                ? colors.green500
-                : colors.red500
-            }
+            fill={colors[trendColor]}
           />
         )}
-        {trendLabel}
-      </TrendValue>
+        <Text
+          as="span"
+          fontSize="xs"
+          fontWeight="bold"
+          color={trendColor}
+          m="0"
+        >
+          {trendLabel}
+        </Text>
+      </Box>
       <Text as="span" fontSize="s" color="coolGrey500" m="0">
         {formatMessage(messages.vsLast7Days)}
       </Text>
