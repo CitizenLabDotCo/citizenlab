@@ -4,7 +4,7 @@ class UserFieldsInFormService
   SUPPORTED_METHODS = %w[native_survey community_monitor_survey ideation]
 
   # This function is used to check if demographic
-  # fields are collected during the registration process (I.E. NOT in the form),
+  # fields are collected during the reg flow (I.E. NOT in the form),
   # and if so, if they should be merged into the idea.
   def self.should_merge_user_fields_into_idea?(
     current_user,
@@ -44,7 +44,7 @@ class UserFieldsInFormService
 
   # Related to function above:
   # Actually merge user fields from the current user into
-  # the idea's custom field values
+  # the idea's custom field values if fields were asked in reg flow.
   def self.merge_user_fields_into_idea(
     current_user,
     phase,
@@ -96,7 +96,7 @@ class UserFieldsInFormService
   end
 
   # Related to function above:
-  # Update the user profile if user fields are asked as last page
+  # Actually update the user profile if user fields are asked as last page
   def self.merge_user_fields_from_idea_into_user!(idea, user)
     return unless user
 
