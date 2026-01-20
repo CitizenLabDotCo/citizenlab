@@ -60,7 +60,7 @@ namespace :fix_existing_tenants do
 
         # Check if any ideas match this hash
         matching_ideas = ideas_by_hash[user_author_hash]
-        next unless matching_ideas.present?
+        next if matching_ideas.blank?
 
         matching_ideas.each do |idea|
           # Generate the non-anonymous author_hash for this user
