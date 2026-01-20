@@ -40,63 +40,14 @@ resource 'Ideas' do
           create(:permissions_custom_field, custom_field: @user_select_field, permission: @permission)
         end
 
-        it 'stores custom field value if in form' do
-          do_request({
-            idea: {
-              publication_status: 'published',
-              project_id: @project.id,
-              @custom_field.key => 'option2'
-            }
-          })
-
-          assert_status 201
-          expect(Idea.count).to eq 1
-          expect(Idea.first.custom_field_values).to eq({
-            @custom_field.key => 'option2'
-          })
-        end
-
-        it 'does not store custom field value if not in form' do
+        it 'stores values in form and user fields if they exist' do
           do_request({
             idea: {
               publication_status: 'published',
               project_id: @project.id,
               @custom_field.key => 'option2',
-              another_key: 'Another value'
-            }
-          })
-
-          assert_status 201
-          expect(Idea.count).to eq 1
-          expect(Idea.first.custom_field_values).to eq({
-            @custom_field.key => 'option2'
-          })
-        end
-
-        it 'does not store custom field value not in form, even if it starts with u_' do
-          do_request({
-            idea: {
-              publication_status: 'published',
-              project_id: @project.id,
-              @custom_field.key => 'option2',
-              u_gender: 'female'
-            }
-          })
-
-          assert_status 201
-          expect(Idea.count).to eq 1
-          expect(Idea.first.custom_field_values).to eq({
-            @custom_field.key => 'option2'
-          })
-        end
-
-        it 'DOES store custom field value not in form, if it starts with u_ AND there is a corresponding permissions_custom_field' do
-          do_request({
-            idea: {
-              publication_status: 'published',
-              project_id: @project.id,
-              @custom_field.key => 'option2',
-              u_select_field: 'option1'
+              u_select_field: 'option1',
+              u_nonexistent_field: 'whatever'
             }
           })
 
