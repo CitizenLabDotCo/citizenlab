@@ -20,6 +20,7 @@ class UserFieldsInFormService
 
     # Confirm that the idea belongs to the current user
     return false unless idea.author_id == current_user.id
+    # return false if idea.anonymous
 
     permission = phase.permissions.find_by(action: 'posting_idea')
     return false unless permission
