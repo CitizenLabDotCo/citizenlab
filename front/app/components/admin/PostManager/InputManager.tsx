@@ -11,7 +11,7 @@ import { TPhases } from 'api/phases/types';
 import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
 import { IProjectData } from 'api/projects/types';
-import useTopics from 'api/topics/useTopics';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 
 import PostPreview from 'components/admin/PostManager/components/PostPreview';
 import Outlet from 'components/Outlet';
@@ -75,7 +75,7 @@ const InputManager = ({
   const { data: ideaStatuses } = useIdeaStatuses({
     queryParams: { participation_method: 'ideation' },
   });
-  const { data: ideaTopics } = useTopics();
+  const { data: ideaTopics } = useGlobalTopics();
   const { data: projectAllowedInputTopics } = useProjectAllowedInputTopics({
     projectId:
       type === 'ProjectIdeas' && typeof projectId === 'string'

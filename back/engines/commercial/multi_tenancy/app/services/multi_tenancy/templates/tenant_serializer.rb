@@ -62,10 +62,10 @@ module MultiTenancy
           ProjectImage => serialize_records(ProjectImage),
           ProjectsAllowedInputTopic => serialize_records(ProjectsAllowedInputTopic),
           ReportBuilder::Report => serialize_records(ReportBuilder::Report),
-          StaticPagesTopic => serialize_records(StaticPagesTopic),
+          StaticPagesGlobalTopic => serialize_records(StaticPagesGlobalTopic),
           StaticPage => serialize_records(StaticPage),
           StaticPageFile => serialize_records(StaticPageFile),
-          Topic => serialize_records(Topic),
+          GlobalTopic => serialize_records(GlobalTopic),
 
           # It is not necessary to serialize the CustomFieldOption records for the
           # 'domicile' custom field because they will be created automatically from

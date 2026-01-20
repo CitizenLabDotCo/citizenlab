@@ -108,7 +108,7 @@ describe IdeasFinder do
   end
 
   describe '#topics_condition' do
-    let(:topic_ids) { Topic.first(2).pluck(:id) }
+    let(:topic_ids) { GlobalTopic.first(2).pluck(:id) }
     let(:expected_record_ids) do
       Idea.includes(:ideas_topics).where(ideas_topics: { topic_id: topic_ids }).distinct.pluck(:id)
     end

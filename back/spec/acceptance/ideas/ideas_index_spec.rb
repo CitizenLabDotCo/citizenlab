@@ -106,7 +106,7 @@ resource 'Ideas' do
         t1 = create(:topic)
 
         i1 = @ideas.first
-        i1.project.update!(allowed_input_topics: Topic.all)
+        i1.project.update!(allowed_input_topics: GlobalTopic.all)
         i1.topics << t1
         i1.save!
 
@@ -120,7 +120,7 @@ resource 'Ideas' do
         t1 = create(:topic)
 
         i1 = @ideas.first
-        i1.project.update!(allowed_input_topics: Topic.all)
+        i1.project.update!(allowed_input_topics: GlobalTopic.all)
         i1.topics << t1
         i1.save!
 
@@ -134,15 +134,15 @@ resource 'Ideas' do
         t3 = create(:topic)
 
         i1 = @ideas[0]
-        i1.project.update!(allowed_input_topics: Topic.all)
+        i1.project.update!(allowed_input_topics: GlobalTopic.all)
         i1.topics = [t1, t3]
         i1.save!
         i2 = @ideas[1]
-        i2.project.update!(allowed_input_topics: Topic.all)
+        i2.project.update!(allowed_input_topics: GlobalTopic.all)
         i2.topics = [t2]
         i2.save!
         i3 = @ideas[3]
-        i3.project.update!(allowed_input_topics: Topic.all)
+        i3.project.update!(allowed_input_topics: GlobalTopic.all)
         i3.topics = [t3, t1, t2]
         i3.save!
 
