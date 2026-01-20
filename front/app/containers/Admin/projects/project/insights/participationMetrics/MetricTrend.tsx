@@ -23,14 +23,19 @@ const MetricTrend = ({ change }: Props) => {
 
   if (change === null || change === 'last_7_days_compared_with_zero') {
     return (
-      <Box display="flex" alignItems="center" gap="6px" flexWrap="wrap">
+      <Box
+        display="flex"
+        alignItems="center"
+        gap="6px"
+        flexWrap="wrap"
+        opacity={0.6}
+      >
         <Text
           as="span"
           fontSize="s"
           color="textSecondary"
           fontStyle="italic"
           m="0"
-          style={{ opacity: 0.6 }}
         >
           {formatMessage(messages.noComparisonData)}
         </Text>
