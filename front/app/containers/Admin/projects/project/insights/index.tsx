@@ -9,7 +9,6 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
@@ -31,12 +30,6 @@ import ParticipantsTimeline from './ParticipantsTimeline';
 import ParticipationMetrics from './participationMetrics/ParticipationMetrics';
 import InsightsPdfContent from './pdf/InsightsPdfContent';
 import { PdfExportProvider, usePdfExportContext } from './pdf/PdfExportContext';
-
-const HeaderSubtitle = styled(Text)`
-  color: ${colors.textSecondary};
-  margin: 0;
-  margin-top: 4px;
-`;
 
 const AI_ANALYSIS_SUPPORTED_METHODS = [
   'ideation',
@@ -150,9 +143,9 @@ const InsightsContent = () => {
                 </Box>
               )}
             </Box>
-            <HeaderSubtitle fontSize="s">
+            <Text fontSize="s" color="textSecondary" m="0" mt="4px">
               <FormattedMessage {...messages.insightsSubtitle} />
-            </HeaderSubtitle>
+            </Text>
           </Box>
           <Box
             display="flex"
