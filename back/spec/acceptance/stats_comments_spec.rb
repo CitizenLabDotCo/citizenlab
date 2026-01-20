@@ -345,7 +345,7 @@ resource 'Stats - Comments' do
       end
 
       describe 'filtered by topic' do
-        let(:topic) { @input_topic.id }
+        let(:input_topic) { @input_topic.id }
         let(:start_at) { timezone.at(now - 1.month).beginning_of_month }
         let(:end_at) { timezone.at(now - 1.month).end_of_month }
 
@@ -443,7 +443,7 @@ resource 'Stats - Comments' do
       end
 
       describe 'filtered by topic' do
-        let(:topic) { @input_topic.id }
+        let(:input_topic) { @input_topic.id }
         let(:start_at) { timezone.at(now - 1.month).beginning_of_month }
         let(:end_at) { timezone.at(now - 1.month).end_of_month }
 
