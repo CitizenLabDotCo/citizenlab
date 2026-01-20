@@ -71,6 +71,11 @@ describe UserFieldsInFormService do
         @permission.update!(user_data_collection: 'anonymous')
         expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, @idea)).to be true
       end
+
+      it 'returns false if user is anonymous' do
+        @idea.update!(anonymous: true)
+        expect(described_class.should_merge_user_fields_into_idea?(@user, @phase, @idea)).to be false
+      end
     end
   end
 
