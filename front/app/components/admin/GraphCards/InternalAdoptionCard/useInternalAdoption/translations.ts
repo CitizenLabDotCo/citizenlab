@@ -15,7 +15,7 @@ export interface Translations {
   total: string;
   activeAdmins: string;
   activeModerators: string;
-  totalRegistered: string;
+  totalAdminPm: string;
   totalActive: string;
   last30Days: string;
   last7Days: string;
@@ -32,7 +32,7 @@ export const getTranslations = (
   total: formatMessage(moduleMessages.total),
   activeAdmins: formatMessage(cardMessages.activeAdmins),
   activeModerators: formatMessage(cardMessages.activeModerators),
-  totalRegistered: formatMessage(cardMessages.totalRegistered),
+  totalAdminPm: formatMessage(cardMessages.totalAdminPm),
   totalActive: formatMessage(cardMessages.totalActive),
   ...getTimePeriodTranslations(formatMessage),
 });

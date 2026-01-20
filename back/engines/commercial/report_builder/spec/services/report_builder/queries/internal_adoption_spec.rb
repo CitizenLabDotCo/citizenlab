@@ -49,7 +49,7 @@ RSpec.describe ReportBuilder::Queries::InternalAdoption do
       expect(query.run_query(**params)).to eq({
         active_admins_count: 2,           # 2 admins with sessions in period
         active_moderators_count: 1,       # 1 moderator with session in period
-        total_registered_count: 4,        # 2 admins + 2 mods created before end_at
+        total_admin_pm_count: 4,          # 2 admins + 2 mods created before end_at
         timeseries: [
           { date_group: Date.new(2022, 9, 1), active_admins: 2, active_moderators: 1 },
           { date_group: Date.new(2022, 10, 1), active_admins: 1, active_moderators: 0 }
@@ -76,7 +76,7 @@ RSpec.describe ReportBuilder::Queries::InternalAdoption do
       expect(query.run_query(**params)).to eq({
         active_admins_count: 0,           # No sessions in period
         active_moderators_count: 0,       # No sessions in period
-        total_registered_count: 2,        # Both registered before end_at
+        total_admin_pm_count: 2,          # Both registered before end_at
         timeseries: []
       })
     end
@@ -100,7 +100,7 @@ RSpec.describe ReportBuilder::Queries::InternalAdoption do
       expect(query.run_query(**params)).to eq({
         active_admins_count: 0,
         active_moderators_count: 0,
-        total_registered_count: 0,
+        total_admin_pm_count: 0,
         timeseries: []
       })
     end
@@ -138,7 +138,7 @@ RSpec.describe ReportBuilder::Queries::InternalAdoption do
         # Main period (September)
         active_admins_count: 2,
         active_moderators_count: 1,
-        total_registered_count: 6,
+        total_admin_pm_count: 6,
         timeseries: [
           { date_group: Date.new(2022, 9, 1), active_admins: 2, active_moderators: 1 }
         ],

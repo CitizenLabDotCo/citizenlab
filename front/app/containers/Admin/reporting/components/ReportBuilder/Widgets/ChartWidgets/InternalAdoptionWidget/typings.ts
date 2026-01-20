@@ -14,5 +14,5 @@ export type Stat = {
 export type Stats = {
   activeAdmins: Stat;
   activeModerators: Stat;
-  totalRegistered: Stat;
+  totalAdminPm: Stat;
 };

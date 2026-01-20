@@ -37,7 +37,7 @@ module ReportBuilder
       response.merge(
         active_admins_compared: compare_data[:admins_count],
         active_moderators_compared: compare_data[:moderators_count],
-        total_registered_compared: compare_data[:total_registered_count]
+        total_admin_pm_compared: compare_data[:total_admin_pm_count]
       )
     end
 
@@ -48,7 +48,7 @@ module ReportBuilder
       {
         active_admins_count: counts[:admins_count],
         active_moderators_count: counts[:moderators_count],
-        total_registered_count: counts[:total_registered_count],
+        total_admin_pm_count: counts[:total_admin_pm_count],
         timeseries: timeseries
       }
     end
@@ -84,7 +84,7 @@ module ReportBuilder
       {
         admins_count: counts.admins_count,
         moderators_count: counts.moderators_count,
-        total_registered_count: get_total_registered_count(end_date)
+        total_admin_pm_count: get_total_admin_pm_count(end_date)
       }
     end
 
@@ -92,7 +92,7 @@ module ReportBuilder
       "COUNT(DISTINCT CASE WHEN highest_role = '#{role}' THEN user_id END) as #{alias_name}"
     end
 
-    def get_total_registered_count(end_date)
+    def get_total_admin_pm_count(end_date)
       User.admin_or_moderator.not_super_admins
         .where(created_at: ..end_date)
         .count

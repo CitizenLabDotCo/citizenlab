@@ -11,7 +11,7 @@ export interface InternalAdoptionResponse {
       // Current period counts
       active_admins_count: number;
       active_moderators_count: number;
-      total_registered_count: number;
+      total_admin_pm_count: number;
 
       // Timeseries data for the graph
       timeseries: TimeSeriesResponseRow[];
@@ -19,7 +19,7 @@ export interface InternalAdoptionResponse {
       // Comparison period counts (optional)
       active_admins_compared?: number;
       active_moderators_compared?: number;
-      total_registered_compared?: number;
+      total_admin_pm_compared?: number;
     };
   };
 }

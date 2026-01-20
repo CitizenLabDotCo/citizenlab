@@ -75,9 +75,9 @@ export const Statistics = ({ stats, previousDays }: StatisticsProps) => {
         previousDays={previousDays}
       />
       <Statistic
-        nameMessage={messages.totalRegistered}
-        value={stats.totalRegistered.value}
-        delta={stats.totalRegistered.change}
+        nameMessage={messages.totalAdminPm}
+        value={stats.totalAdminPm.value}
+        delta={stats.totalAdminPm.change}
         previousDays={previousDays}
       />
     </Box>

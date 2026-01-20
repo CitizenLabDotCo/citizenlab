@@ -37,7 +37,7 @@ const InternalAdoptionCard = ({
   if (
     stats?.activeAdmins.value === 0 &&
     stats.activeModerators.value === 0 &&
-    stats.totalRegistered.value === 0
+    stats.totalAdminPm.value === 0
   ) {
     return <NoData message={chartWidgetMessages.noData} />;
   }

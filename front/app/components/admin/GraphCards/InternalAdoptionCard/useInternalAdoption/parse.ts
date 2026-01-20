@@ -64,10 +64,10 @@ export const parseStats = (
   const {
     active_admins_count,
     active_moderators_count,
-    total_registered_count,
+    total_admin_pm_count,
     active_admins_compared,
     active_moderators_compared,
-    total_registered_compared,
+    total_admin_pm_compared,
   } = attributes;
 
   return {
@@ -79,9 +79,9 @@ export const parseStats = (
       value: active_moderators_count,
       lastPeriod: active_moderators_compared,
     },
-    totalRegistered: {
-      value: total_registered_count,
-      lastPeriod: total_registered_compared,
+    totalAdminPm: {
+      value: total_admin_pm_count,
+      lastPeriod: total_admin_pm_compared,
     },
   };
 };

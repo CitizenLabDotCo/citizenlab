@@ -13,7 +13,7 @@ export default defineMessages({
     id: 'app.components.admin.GraphCards.InternalAdoptionCard.activeModerators',
     defaultMessage: 'Active PMs',
   },
-  totalRegistered: {
+  totalAdminPm: {
     id: 'app.components.admin.GraphCards.InternalAdoptionCard.totalRegistered',
     defaultMessage: 'Total registered',
   },

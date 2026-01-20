@@ -71,12 +71,10 @@ const InternalAdoptionCard = ({
             }
           />
           <Statistic
-            name={formatMessage(messages.totalRegistered)}
-            value={stats.totalRegistered.value}
+            name={formatMessage(messages.totalAdminPm)}
+            value={stats.totalAdminPm.value}
             bottomLabel={bottomLabel}
-            bottomLabelValue={
-              stats.totalRegistered.lastPeriod?.toString() ?? '-'
-            }
+            bottomLabelValue={stats.totalAdminPm.lastPeriod?.toString() ?? '-'}
           />
         </Box>
       )}
