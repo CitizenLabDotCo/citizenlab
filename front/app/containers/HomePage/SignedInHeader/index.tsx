@@ -8,6 +8,7 @@ import useCurrentOnboardingCampaign from 'api/onboarding_campaigns/useCurrentOnb
 import useDismissOnboardingCampaign from 'api/onboarding_campaigns/useDismissOnboardingCampaign';
 
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
+import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 
 import {
   Container,
@@ -83,16 +84,32 @@ const SignedInHeader = ({
   const homepageSettingOpacity =
     homepageSettings.banner_signed_in_header_overlay_opacity;
 
-  // Use custom heights if provided, otherwise use defaults
+  // When consistent height is enabled, use signed-out heights for signed-in banner
+  const useConsistentHeight =
+    homepageSettings.banner_use_consistent_height !== false;
+
+  // Get layout-specific defaults for signed-out banner
+  const bannerLayout =
+    homepageSettings.banner_layout || 'full_width_banner_layout';
+  const layoutDefaults = homepageBannerLayoutHeights[bannerLayout];
+
   const desktopHeight =
-    homepageSettings.banner_signed_in_header_height_desktop ??
-    defaultHeights.desktop;
+    (useConsistentHeight
+      ? homepageSettings.banner_signed_out_header_height_desktop
+      : homepageSettings.banner_signed_in_header_height_desktop) ??
+    (useConsistentHeight ? layoutDefaults.desktop : defaultHeights.desktop);
+
   const tabletHeight =
-    homepageSettings.banner_signed_in_header_height_tablet ??
-    defaultHeights.tablet;
+    (useConsistentHeight
+      ? homepageSettings.banner_signed_out_header_height_tablet
+      : homepageSettings.banner_signed_in_header_height_tablet) ??
+    (useConsistentHeight ? layoutDefaults.tablet : defaultHeights.tablet);
+
   const phoneHeight =
-    homepageSettings.banner_signed_in_header_height_phone ??
-    defaultHeights.phone;
+    (useConsistentHeight
+      ? homepageSettings.banner_signed_out_header_height_phone
+      : homepageSettings.banner_signed_in_header_height_phone) ??
+    (useConsistentHeight ? layoutDefaults.phone : defaultHeights.phone);
 
   if (isInitialLoading) {
     return (

@@ -170,4 +170,44 @@ export default defineMessages({
     defaultMessage:
       'Customize the signed-out header height for each device size. Default: Desktop {desktop}px, Tablet {tablet}px, Phone {phone}px.',
   },
+  useConsistentBannerHeight: {
+    id: 'app.containers.ContentBuilder.homepage.useConsistentBannerHeight',
+    defaultMessage: 'Use consistent banner height',
+  },
+  useConsistentBannerHeightDescription: {
+    id: 'app.containers.ContentBuilder.homepage.useConsistentBannerHeightDescription',
+    defaultMessage:
+      'When enabled, registered and non-registered users see the same full banner dimensions.',
+  },
+  advancedHeightCustomization: {
+    id: 'app.containers.ContentBuilder.homepage.advancedHeightCustomization',
+    defaultMessage: 'Advanced height customization',
+  },
+  advancedHeightCustomizationInfo: {
+    id: 'app.containers.ContentBuilder.homepage.advancedHeightCustomizationInfo',
+    defaultMessage:
+      'These settings customize the banner height specifically for <bold>non-registered users</bold> (when the sign-up overlay is visible). Registered users will see a shorter banner without the overlay.',
+  },
+  advancedHeightCustomizationInfoSignedIn: {
+    id: 'app.containers.ContentBuilder.homepage.advancedHeightCustomizationInfoSignedIn',
+    defaultMessage:
+      'These settings customize the banner height specifically for <bold>registered users</bold>. Non-registered users will see a taller banner with the sign-up overlay.',
+  },
+  disableConsistentHeightInfo: {
+    id: 'app.containers.ContentBuilder.homepage.disableConsistentHeightInfo2',
+    defaultMessage:
+      "Disable 'Use consistent banner height' to edit these values.",
+  },
+  desktopHeightPx: {
+    id: 'app.containers.ContentBuilder.homepage.desktopHeightPx',
+    defaultMessage: 'Desktop height (px)',
+  },
+  tabletHeightPx: {
+    id: 'app.containers.ContentBuilder.homepage.tabletHeightPx',
+    defaultMessage: 'Tablet height (px)',
+  },
+  phoneHeightPx: {
+    id: 'app.containers.ContentBuilder.homepage.phoneHeightPx',
+    defaultMessage: 'Phone height (px)',
+  },
 });

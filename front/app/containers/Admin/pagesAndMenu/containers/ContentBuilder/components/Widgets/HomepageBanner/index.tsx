@@ -10,6 +10,7 @@ import {
   Input,
   Text,
   useBreakpoint,
+  Divider,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { useLocation, useSearchParams } from 'react-router-dom';
@@ -44,6 +45,7 @@ import { isValidUrl } from 'utils/validate';
 
 import { DEFAULT_Y_PADDING } from '../constants';
 
+import BannerHeightSettings from './BannerHeightSettings';
 import LayoutSettingField from './LayoutSettingField';
 import messages from './messages';
 import OverlayControls from './OverlayControls';
@@ -109,6 +111,8 @@ export interface IHomepageBannerSettings {
   banner_signed_out_header_height_desktop?: number;
   banner_signed_out_header_height_tablet?: number;
   banner_signed_out_header_height_phone?: number;
+  // consistent banner height
+  banner_use_consistent_height?: boolean;
   // cta_signed_in
   banner_cta_signed_in_text_multiloc: Multiloc;
   banner_cta_signed_in_type: CTASignedInType;
@@ -227,6 +231,8 @@ const HomepageBannerSettings = () => {
         node.data.props.homepageSettings.banner_signed_out_header_height_tablet,
       banner_signed_out_header_height_phone:
         node.data.props.homepageSettings.banner_signed_out_header_height_phone,
+      banner_use_consistent_height:
+        node.data.props.homepageSettings.banner_use_consistent_height,
     },
   }));
 
@@ -612,93 +618,58 @@ const HomepageBannerSettings = () => {
             );
           })}
           {homepageSettings.banner_layout !== 'fixed_ratio_layout' && (
-            <Box mt="8px">
-              <Label>{formatMessage(messages.headerHeights)}</Label>
-              <Text m="0px 0px 12px 0px" color="textSecondary" fontSize="s">
-                {formatMessage(messages.signedOutHeaderHeightDescription, {
-                  desktop: homepageBannerLayoutHeights[bannerLayout].desktop,
-                  tablet: homepageBannerLayoutHeights[bannerLayout].tablet,
-                  phone: homepageBannerLayoutHeights[bannerLayout].phone,
-                })}
-              </Text>
-              <Box display="flex" flexDirection="column" gap="12px">
-                <Box>
-                  <Label htmlFor="signedOutHeaderHeightDesktop">
-                    {formatMessage(messages.headerHeightDesktop)}
-                  </Label>
-                  <Input
-                    id="signedOutHeaderHeightDesktop"
-                    type="number"
-                    min="50"
-                    max="800"
-                    placeholder={homepageBannerLayoutHeights[
-                      bannerLayout
-                    ].desktop.toString()}
-                    value={
-                      homepageSettings.banner_signed_out_header_height_desktop?.toString() ||
-                      ''
-                    }
-                    onChange={(value) => {
-                      const numValue = value ? parseInt(value, 10) : undefined;
-                      setProp((props: Props) => {
-                        props.homepageSettings.banner_signed_out_header_height_desktop =
-                          numValue;
-                      });
-                    }}
-                  />
-                </Box>
-                <Box>
-                  <Label htmlFor="signedOutHeaderHeightTablet">
-                    {formatMessage(messages.headerHeightTablet)}
-                  </Label>
-                  <Input
-                    id="signedOutHeaderHeightTablet"
-                    type="number"
-                    min="50"
-                    max="800"
-                    placeholder={homepageBannerLayoutHeights[
-                      bannerLayout
-                    ].tablet.toString()}
-                    value={
-                      homepageSettings.banner_signed_out_header_height_tablet?.toString() ||
-                      ''
-                    }
-                    onChange={(value) => {
-                      const numValue = value ? parseInt(value, 10) : undefined;
-                      setProp((props: Props) => {
-                        props.homepageSettings.banner_signed_out_header_height_tablet =
-                          numValue;
-                      });
-                    }}
-                  />
-                </Box>
-                <Box>
-                  <Label htmlFor="signedOutHeaderHeightPhone">
-                    {formatMessage(messages.headerHeightPhone)}
-                  </Label>
-                  <Input
-                    id="signedOutHeaderHeightPhone"
-                    type="number"
-                    min="50"
-                    max="800"
-                    placeholder={homepageBannerLayoutHeights[
-                      bannerLayout
-                    ].phone.toString()}
-                    value={
-                      homepageSettings.banner_signed_out_header_height_phone?.toString() ||
-                      ''
-                    }
-                    onChange={(value) => {
-                      const numValue = value ? parseInt(value, 10) : undefined;
-                      setProp((props: Props) => {
-                        props.homepageSettings.banner_signed_out_header_height_phone =
-                          numValue;
-                      });
-                    }}
-                  />
-                </Box>
-              </Box>
-            </Box>
+            <>
+              <Divider m="0px" />
+              <BannerHeightSettings
+                useConsistentHeight={
+                  homepageSettings.banner_use_consistent_height !== false
+                }
+                onToggleConsistentHeight={() => {
+                  setProp((props: Props) => {
+                    props.homepageSettings.banner_use_consistent_height =
+                      !homepageSettings.banner_use_consistent_height;
+                  });
+                }}
+                desktopHeight={
+                  homepageSettings.banner_signed_out_header_height_desktop
+                }
+                tabletHeight={
+                  homepageSettings.banner_signed_out_header_height_tablet
+                }
+                phoneHeight={
+                  homepageSettings.banner_signed_out_header_height_phone
+                }
+                onDesktopHeightChange={(value) => {
+                  setProp((props: Props) => {
+                    props.homepageSettings.banner_signed_out_header_height_desktop =
+                      value;
+                  });
+                }}
+                onTabletHeightChange={(value) => {
+                  setProp((props: Props) => {
+                    props.homepageSettings.banner_signed_out_header_height_tablet =
+                      value;
+                  });
+                }}
+                onPhoneHeightChange={(value) => {
+                  setProp((props: Props) => {
+                    props.homepageSettings.banner_signed_out_header_height_phone =
+                      value;
+                  });
+                }}
+                desktopPlaceholder={homepageBannerLayoutHeights[
+                  bannerLayout
+                ].desktop.toString()}
+                tabletPlaceholder={homepageBannerLayoutHeights[
+                  bannerLayout
+                ].tablet.toString()}
+                phonePlaceholder={homepageBannerLayoutHeights[
+                  bannerLayout
+                ].phone.toString()}
+                disabled={!customHomepageBannerAllowed}
+                isSignedIn={false}
+              />
+            </>
           )}
         </>
       )}
@@ -823,87 +794,48 @@ const HomepageBannerSettings = () => {
               </div>
             );
           })}
-          <Box mt="8px">
-            <Label>{formatMessage(messages.headerHeights)}</Label>
-            <Text m="0px 0px 12px 0px" color="textSecondary" fontSize="s">
-              {formatMessage(messages.signedInHeaderHeightDescription, {
-                desktop: 200,
-                tablet: 250,
-                phone: 300,
-              })}
-            </Text>
-            <Box display="flex" flexDirection="column" gap="12px">
-              <Box>
-                <Label htmlFor="headerHeightDesktop">
-                  {formatMessage(messages.headerHeightDesktop)}
-                </Label>
-                <Input
-                  id="headerHeightDesktop"
-                  type="number"
-                  min="50"
-                  max="800"
-                  placeholder="200"
-                  value={
-                    homepageSettings.banner_signed_in_header_height_desktop?.toString() ||
-                    ''
-                  }
-                  onChange={(value) => {
-                    const numValue = value ? parseInt(value, 10) : undefined;
-                    setProp((props: Props) => {
-                      props.homepageSettings.banner_signed_in_header_height_desktop =
-                        numValue;
-                    });
-                  }}
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="headerHeightTablet">
-                  {formatMessage(messages.headerHeightTablet)}
-                </Label>
-                <Input
-                  id="headerHeightTablet"
-                  type="number"
-                  min="50"
-                  max="800"
-                  placeholder="250"
-                  value={
-                    homepageSettings.banner_signed_in_header_height_tablet?.toString() ||
-                    ''
-                  }
-                  onChange={(value) => {
-                    const numValue = value ? parseInt(value, 10) : undefined;
-                    setProp((props: Props) => {
-                      props.homepageSettings.banner_signed_in_header_height_tablet =
-                        numValue;
-                    });
-                  }}
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="headerHeightPhone">
-                  {formatMessage(messages.headerHeightPhone)}
-                </Label>
-                <Input
-                  id="headerHeightPhone"
-                  type="number"
-                  min="50"
-                  max="800"
-                  placeholder="300"
-                  value={
-                    homepageSettings.banner_signed_in_header_height_phone?.toString() ||
-                    ''
-                  }
-                  onChange={(value) => {
-                    const numValue = value ? parseInt(value, 10) : undefined;
-                    setProp((props: Props) => {
-                      props.homepageSettings.banner_signed_in_header_height_phone =
-                        numValue;
-                    });
-                  }}
-                />
-              </Box>
-            </Box>
-          </Box>
+          <Divider m="0px" />
+          <BannerHeightSettings
+            useConsistentHeight={
+              homepageSettings.banner_use_consistent_height !== false
+            }
+            onToggleConsistentHeight={() => {
+              setProp((props: Props) => {
+                props.homepageSettings.banner_use_consistent_height =
+                  !homepageSettings.banner_use_consistent_height;
+              });
+            }}
+            desktopHeight={
+              homepageSettings.banner_signed_in_header_height_desktop
+            }
+            tabletHeight={
+              homepageSettings.banner_signed_in_header_height_tablet
+            }
+            phoneHeight={homepageSettings.banner_signed_in_header_height_phone}
+            onDesktopHeightChange={(value) => {
+              setProp((props: Props) => {
+                props.homepageSettings.banner_signed_in_header_height_desktop =
+                  value;
+              });
+            }}
+            onTabletHeightChange={(value) => {
+              setProp((props: Props) => {
+                props.homepageSettings.banner_signed_in_header_height_tablet =
+                  value;
+              });
+            }}
+            onPhoneHeightChange={(value) => {
+              setProp((props: Props) => {
+                props.homepageSettings.banner_signed_in_header_height_phone =
+                  value;
+              });
+            }}
+            desktopPlaceholder="200"
+            tabletPlaceholder="250"
+            phonePlaceholder="300"
+            disabled={!customHomepageBannerAllowed}
+            isSignedIn={true}
+          />
         </>
       )}
     </Box>
