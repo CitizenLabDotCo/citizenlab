@@ -7,6 +7,6 @@ export default defineMessages({
   },
   tabDefaultInputTags: {
     id: 'app.containers.AdminPage.SettingsPage.Topics.tabDefaultInputTags',
-    defaultMessage: 'Default input tags',
+    defaultMessage: 'Input tags (default)',
   },
 });

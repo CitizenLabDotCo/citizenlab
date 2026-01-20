@@ -4,7 +4,7 @@ export default defineMessages({
   descriptionTopicManagerText: {
     id: 'app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.descriptionTopicManagerText',
     defaultMessage:
-      'Global topics are used to categorize projects, for example on the homepage. You can add the topics to specific projects in the {adminProjectsLink}.',
+      'Platform tags are used to categorize projects, for example on the homepage. You can add the tags to specific projects in the {adminProjectsLink}.',
   },
   projectsSettings: {
     id: 'app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.projectsSettings',
@@ -12,20 +12,20 @@ export default defineMessages({
   },
   addTopicButton: {
     id: 'app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.addTopicButton',
-    defaultMessage: 'Add topic',
+    defaultMessage: 'Add platform tag',
   },
   editTopicFormTitle: {
     id: 'app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.editTopicFormTitle',
-    defaultMessage: 'Edit topic',
+    defaultMessage: 'Edit platform tag',
   },
   confirmHeader: {
     id: 'app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.confirmHeader',
-    defaultMessage: 'Are you sure you want to delete this topic?',
+    defaultMessage: 'Are you sure you want to delete this platform tag?',
   },
   deleteTopicConfirmation: {
     id: 'app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.deleteTopicConfirmation',
     defaultMessage:
-      'This will delete the topic, including from all existing projects.',
+      'This will delete the platform tag, including from all existing projects.',
   },
   cancel: {
     id: 'app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.cancel',
@@ -41,12 +41,12 @@ export default defineMessages({
   },
   fieldTopicTitle: {
     id: 'app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.fieldTopicTitle',
-    defaultMessage: 'Topic name',
+    defaultMessage: 'Tag name',
   },
   fieldTopicTitleTooltip: {
     id: 'app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.fieldTopicTitleTooltip',
     defaultMessage:
-      'The name you choose for each topic will be visible for citizens during signup and when filtering projects.',
+      'The name you choose for each tag will be visible for citizens during signup and when filtering projects.',
   },
   fieldTopicTitleError: {
     id: 'app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.fieldTopicTitleError',
