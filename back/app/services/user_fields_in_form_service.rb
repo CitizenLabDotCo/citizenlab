@@ -110,6 +110,7 @@ class UserFieldsInFormService
 
   # Append user custom fields to form
   def self.add_user_fields_to_form(fields, participation_method, custom_form)
+    binding.pry
     return fields unless participation_method.user_fields_in_form_enabled?
 
     phase = participation_method.phase

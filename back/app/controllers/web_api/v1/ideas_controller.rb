@@ -550,7 +550,12 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def submittable_custom_fields(custom_form)
-    IdeaCustomFieldsService.new(custom_form).submittable_fields_with_other_options
+    @submittable_custom_fields ||= {}
+    
+    cache_key = custom_form&.id || :no_form
+    @submittable_custom_fields[cache_key] ||= begin
+      IdeaCustomFieldsService.new(custom_form).submittable_fields_with_other_options
+    end
   end
 
   def authorize_project_or_ideas
