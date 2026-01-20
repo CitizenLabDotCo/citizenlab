@@ -23,6 +23,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Reaction < ApplicationRecord
+  include LocationTrackableParticipation
   # Neutral mode is only valid for ideas. Also, currently, it only makes sense the context
   # of "Common Ground" participation. However, we don't make it a hard constraint, since
   # the participation method can be changed and this could result to invalid reactions.
@@ -68,9 +69,7 @@ class Reaction < ApplicationRecord
     mode == 'neutral'
   end
 
-  def project_id
-    reactable.try(:project_id)
-  end
+  delegate :project_id, :project, to: :reactable, allow_nil: true
 
   private
 
