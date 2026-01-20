@@ -151,7 +151,7 @@ const OptionList = ({
                 m="0"
                 onBlur={() => {
                   onBlur();
-                  trigger();
+                  trigger(name);
                 }}
               >
                 <SectionField>
