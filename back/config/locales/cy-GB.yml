@@ -333,7 +333,7 @@ cy:
       page: 'Tudalen'
       date_published: 'Dyddiad Cyhoeddi (dd-mm-bbbb)'
       instructions: 'Cyfarwyddiadau'
-      write_as_clearly: "Ysgrifennwch mor glir ag y gallwch – efallai y bydd y ffurflenni hyn yn cael eu sganio\n\n"
+      write_as_clearly: 'Ysgrifennwch </b>mor glir</b> ag y gallwch - efallai y bydd y ffurflenni hyn yn cael eu sganio'
       write_in_language: 'Ysgrifennwch eich atebion yn yr un iaith â''r ffurflen hon'
       linear_scale_print_description: 'Ysgrifennwch rif rhwng %{min_label} a %{max_label} yn unig'
       unsupported_field: 'Ni ellir cwblhau''r maes hwn ar bapur. Defnyddiwch y fersiwn ar-lein o''r ffurflen hon yn lle hynny.'
