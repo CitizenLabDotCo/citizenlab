@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
-  include AnonymousExposureTransfer
-
   TOKEN_LIFETIME = 1.day
   before_action :authenticate_user_token_unconfirmed, only: [:user_token_unconfirmed]
   skip_before_action :authenticate, only: [:user_token_unconfirmed]
@@ -20,14 +18,14 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
       )
     else
       ClaimTokenService.claim(user, nil)
-      transfer_anonymous_exposures(user)
+      IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
       render json: auth_token, status: :created
     end
   end
 
   def create
     ClaimTokenService.claim(entity, auth_params[:claim_tokens])
-    transfer_anonymous_exposures(entity)
+    IdeaExposureTransferService.new.transfer_from_request(user: entity, request: request)
     super
   end
 

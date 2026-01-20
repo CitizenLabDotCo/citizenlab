@@ -9,12 +9,11 @@ module WebApi
 
         def index
           scope = policy_scope(Idea)
-          vh = current_user ? nil : visitor_hash
           feed_service = ::IdeaFeed::FeedService.new(
             @phase,
-            current_user,
+            user: current_user,
             topic_ids: params[:topics],
-            visitor_hash: vh
+            visitor_hash: VisitorHashService.new.generate_for_request(request)
           )
           ideas = feed_service.top_n(page_size, scope)
 
@@ -30,13 +29,6 @@ module WebApi
 
         def page_size
           params.dig(:page, :size)&.to_i || 20
-        end
-
-        def visitor_hash
-          VisitorHashService.new.generate_for_visitor(
-            request.remote_ip,
-            request.user_agent
-          )
         end
       end
     end

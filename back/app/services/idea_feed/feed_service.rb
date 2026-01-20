@@ -2,7 +2,9 @@ module IdeaFeed
   class FeedService
     attr_reader :phase, :user, :visitor_hash, :topic_ids
 
-    def initialize(phase, user, topic_ids: nil, visitor_hash: nil)
+    def initialize(phase, user: nil, topic_ids: nil, visitor_hash: nil)
+      raise ArgumentError, 'Either user or visitor_hash must be provided' if user.nil? && visitor_hash.nil?
+
       @phase = phase
       @user = user
       @visitor_hash = visitor_hash
@@ -28,10 +30,8 @@ module IdeaFeed
     def exposures_scope
       if user
         IdeaExposure.where(user: user, phase: phase)
-      elsif visitor_hash
-        IdeaExposure.where(visitor_hash: visitor_hash, phase: phase)
       else
-        IdeaExposure.none
+        IdeaExposure.where(visitor_hash: visitor_hash, phase: phase)
       end
     end
 

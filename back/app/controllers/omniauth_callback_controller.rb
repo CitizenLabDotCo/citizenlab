@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class OmniauthCallbackController < ApplicationController
-  include AnonymousExposureTransfer
-
   skip_before_action :authenticate_user
   skip_after_action :verify_authorized
 
@@ -136,7 +134,7 @@ class OmniauthCallbackController < ApplicationController
     continue_auth = verify ? verified_for_sso?(auth, user, user_created) : true
     return unless continue_auth
 
-    transfer_anonymous_exposures(user)
+    IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
     set_auth_cookie(provider: auth['provider'])
     if sign_up
       signup_success_redirect

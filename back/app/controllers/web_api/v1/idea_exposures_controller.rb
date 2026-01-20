@@ -17,7 +17,7 @@ class WebApi::V1::IdeaExposuresController < ApplicationController
     else
       IdeaExposure.new(
         idea: @idea,
-        visitor_hash: visitor_hash,
+        visitor_hash: VisitorHashService.new.generate_for_request(request),
         phase: current_phase
       )
     end
@@ -38,12 +38,5 @@ class WebApi::V1::IdeaExposuresController < ApplicationController
 
   def set_idea
     @idea = Idea.find(params[:idea_id])
-  end
-
-  def visitor_hash
-    VisitorHashService.new.generate_for_visitor(
-      request.remote_ip,
-      request.user_agent
-    )
   end
 end

@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ConfirmationsController < ApplicationController
-  include AnonymousExposureTransfer
-
   skip_before_action :authenticate_user, only: %i[confirm_code_unauthenticated]
   skip_after_action :verify_authorized
 
@@ -19,7 +17,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
 
     if result.success?
       SideFxUserService.new.after_update(user, user)
-      transfer_anonymous_exposures(user)
+      IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
 
       payload = user.to_token_payload
       auth_token = AuthToken::AuthToken.new payload: payload

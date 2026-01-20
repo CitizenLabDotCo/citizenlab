@@ -5,6 +5,10 @@ class VisitorHashService
   # Uses a persistent (non-rotating) salt to allow transferring all historical
   # anonymous exposures when a user logs in.
 
+  def generate_for_request(request)
+    generate_for_visitor(request.remote_ip, request.user_agent)
+  end
+
   def generate_for_visitor(ip, user_agent)
     hash([salt, ip, user_agent].join('|'))
   end
