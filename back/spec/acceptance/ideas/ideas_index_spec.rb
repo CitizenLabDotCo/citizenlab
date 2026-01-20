@@ -11,7 +11,7 @@ resource 'Ideas' do
       parameter :number, 'Page number'
       parameter :size, 'Number of ideas per page'
     end
-    parameter :topics, 'Filter by topics (OR)', required: false
+    parameter :input_topics, 'Filter by topics (OR)', required: false
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :basket_id, 'Filter by basket', required: false

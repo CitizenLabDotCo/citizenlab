@@ -4,7 +4,7 @@ export default defineMessages({
   descriptionDefaultInputTopicManagerText: {
     id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.descriptionDefaultInputTopicManagerText',
     defaultMessage:
-      'Default input tags are automatically added to new projects. Citizens can use these tags to categorize their inputs. You can customize tags for each project in the project settings.',
+      'Input tags are used to categorize inputs within projects, typically chosen by the author. The inputs tags available to authors can be configured per project. Here you can configure the defaults for new projects. Changes to these defaults will not affect existing projects.',
   },
   addDefaultInputTopicButton: {
     id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.addDefaultInputTopicButton',
@@ -16,7 +16,7 @@ export default defineMessages({
   },
   confirmHeader: {
     id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.confirmHeader',
-    defaultMessage: 'Are you sure you want to delete this topic?',
+    defaultMessage: 'Are you sure you want to delete this default input tag?',
   },
   deleteDefaultInputTopicConfirmation: {
     id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.deleteDefaultInputTopicConfirmation',
