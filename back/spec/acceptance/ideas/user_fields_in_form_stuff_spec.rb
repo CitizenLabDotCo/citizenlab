@@ -38,7 +38,7 @@ resource 'Ideas' do
           create(:permissions_custom_field, custom_field: @user_select_field, permission: @permission)
         end
 
-        it 'stores values in form and user fields if they exist' do
+        it 'stores values that have corresponding custom field in form' do
           do_request({
             idea: {
               publication_status: 'published',
@@ -60,53 +60,66 @@ resource 'Ideas' do
     end
 
     context 'in an ideation phase' do
-      context 'when visitor' do
+      before do
+        SettingsService.new.activate_feature!('ideation_accountless_posting')
+
+        # Create project with form
+        @project = create(:single_phase_ideation_project, phase_attrs: { with_permissions: true })
+        @project.phases.first.permissions.find_by(action: 'posting_idea').update!(
+          global_custom_fields: false
+        )
+
+        @permission = @project.phases.first.permissions.find_by(action: 'posting_idea')
+        @custom_form = create(:custom_form, :with_default_fields, participation_context: @project.phases.first)
+
+        # Create registration (demographic) question and
+        # add to permission
+        @user_select_field = create(
+          :custom_field_select,
+          :for_registration,
+          :with_options,
+          key: 'select_field',
+          enabled: true,
+        )
+        create(:permissions_custom_field, custom_field: @user_select_field, permission: @permission)
+      end
+
+      context 'permission: everyone' do
         before do
-          SettingsService.new.activate_feature!('ideation_accountless_posting')
-
-          # Create project with form
-          @project = create(:single_phase_ideation_project, phase_attrs: { with_permissions: true })
-          @project.phases.first.permissions.find_by(action: 'posting_idea').update!(
-            permitted_by: 'everyone',
-            global_custom_fields: false
-          )
-
-          @permission = @project.phases.first.permissions.find_by(action: 'posting_idea')
-          @custom_form = create(:custom_form, :with_default_fields, participation_context: @project.phases.first)
-
-          # Create registration (demographic) question and
-          # add to permission
-          @user_select_field = create(
-            :custom_field_select,
-            :for_registration,
-            :with_options,
-            key: 'select_field',
-            enabled: true,
-          )
-          create(:permissions_custom_field, custom_field: @user_select_field, permission: @permission)
+          @permission.update!(permitted_by: 'everyone')
         end
 
-        it 'stores values in form and user fields if they exist' do
-          do_request({
-            idea: {
-              publication_status: 'published',
-              project_id: @project.id,
-              title_multiloc: { 'en' => 'My Idea Title' },
-              body_multiloc: { 'en' => 'My Idea Body' },
-              u_select_field: 'option1',
-              u_nonexistent_field: 'whatever'
-            }
-          })
+        context 'when visitor' do
+          it 'stores values that have corresponding custom field in form' do
+            do_request({
+              idea: {
+                publication_status: 'published',
+                project_id: @project.id,
+                title_multiloc: { 'en' => 'My Idea Title' },
+                body_multiloc: { 'en' => 'My Idea Body' },
+                u_select_field: 'option1',
+                u_nonexistent_field: 'whatever'
+              }
+            })
 
-          assert_status 201
-          expect(Idea.count).to eq 1
-          idea = Idea.first
-          expect(idea.custom_field_values).to eq({
-            'u_select_field' => 'option1'
-          })
-          expect(idea.title_multiloc).to eq({ 'en' => 'My Idea Title' })
-          expect(idea.body_multiloc).to eq({ 'en' => 'My Idea Body' })
+            assert_status 201
+            expect(Idea.count).to eq 1
+            idea = Idea.first
+            expect(idea.custom_field_values).to eq({
+              'u_select_field' => 'option1'
+            })
+            expect(idea.title_multiloc).to eq({ 'en' => 'My Idea Title' })
+            expect(idea.body_multiloc).to eq({ 'en' => 'My Idea Body' })
+          end
         end
+
+        # context 'when logged in' do
+        #   # TODO
+        # end
+
+        # context 'when logged in but anonymous' do
+        #   # TODO
+        # end
       end
     end
   end
