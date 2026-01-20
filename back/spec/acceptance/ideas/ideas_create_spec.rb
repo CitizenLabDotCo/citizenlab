@@ -89,8 +89,9 @@ resource 'Ideas' do
             do_request({ idea: { 
               title_multiloc: idea.title_multiloc,
               body_multiloc: idea.body_multiloc,
-              custom_field_values: { 'u_age' => 30 } } 
-            })
+              publication_status: 'published',
+              'u_age' => 30
+            } })
             assert_status 201
 
             idea = Idea.find(response_data[:id])
