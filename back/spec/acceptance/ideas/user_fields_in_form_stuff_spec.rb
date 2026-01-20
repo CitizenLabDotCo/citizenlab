@@ -22,17 +22,9 @@ resource 'Ideas' do
           )
           
           @permission = @project.phases.first.permissions.find_by(action: 'posting_idea')
-          @custom_form = create(:custom_form, participation_context: @project.phases.first)
-          
-          @text_field = create(
-            :custom_field,
-            resource: @custom_form,
-            key: 'text_field',
-            enabled: true,
-            title_multiloc: { 'en' => 'What is your favourite pet?' },
-            description_multiloc: { 'en' => 'Enter one pet.' }
-          )
-          
+          @custom_form = create(:custom_form, :with_default_fields, participation_context: @project.phases.first)
+          @custom_field = @custom_form.custom_fields.find_by(input_type: 'select')
+                    
           @user_select_field = create(
             :custom_field_select,
             :for_registration,
@@ -50,14 +42,14 @@ resource 'Ideas' do
             idea: {
               publication_status: 'published',
               project_id: @project.id,
-              @text_field.key => 'Test value'
+              @custom_field.key => 'option2'
             }
           })
 
           assert_status 201
           expect(Idea.count).to eq 1
           expect(Idea.first.custom_field_values).to eq({
-            'text_field' => 'Test value'
+             @custom_field.key => 'option2'
           })
         end
 
@@ -66,7 +58,7 @@ resource 'Ideas' do
             idea: {
               publication_status: 'published',
               project_id: @project.id,
-              @text_field.key => 'Test value',
+              @custom_field.key => 'option2',
               another_key: 'Another value'
             }
           })
@@ -74,7 +66,7 @@ resource 'Ideas' do
           assert_status 201
           expect(Idea.count).to eq 1
           expect(Idea.first.custom_field_values).to eq({
-            'text_field' => 'Test value'
+             @custom_field.key => 'option2'
           })
         end
 
@@ -83,7 +75,7 @@ resource 'Ideas' do
             idea: {
               publication_status: 'published',
               project_id: @project.id,
-              @text_field.key => 'Test value',
+              @custom_field.key => 'option2',
               u_gender: 'female'
             }
           })
@@ -91,7 +83,7 @@ resource 'Ideas' do
           assert_status 201
           expect(Idea.count).to eq 1
           expect(Idea.first.custom_field_values).to eq({
-            'text_field' => 'Test value'
+             @custom_field.key => 'option2'
           })
         end
 
@@ -100,15 +92,15 @@ resource 'Ideas' do
             idea: {
               publication_status: 'published',
               project_id: @project.id,
-              @text_field.key => 'Test value',
-              u_select_field: 'female'
+              @custom_field.key => 'option2',
+              u_select_field: 'option1'
             }
           })
 
           assert_status 201
           expect(Idea.count).to eq 1
           expect(Idea.first.custom_field_values).to eq({
-            'text_field' => 'Test value',
+             @custom_field.key => 'option2',
             'u_select_field' => 'option1'
           })
         end
