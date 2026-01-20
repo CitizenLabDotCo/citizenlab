@@ -34,7 +34,7 @@ class IdeaExposure < ApplicationRecord
 
   def user_xor_visitor_hash
     unless user_id.present? ^ visitor_hash.present?
-	    errors.add(:base, :user_and_visitor_hash_both_present_or_unpresent)
+      errors.add(:base, :user_and_visitor_hash_both_present_or_unpresent)
     end
   end
 end
