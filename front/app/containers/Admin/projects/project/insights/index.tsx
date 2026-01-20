@@ -1,7 +1,15 @@
 import React from 'react';
 
-import { Box, Title, Button, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Title,
+  Button,
+  Text,
+  Badge,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
@@ -11,6 +19,7 @@ import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 import { getAnalysisScope } from '../../components/AnalysisBanner/utils';
 
@@ -22,6 +31,12 @@ import ParticipantsTimeline from './ParticipantsTimeline';
 import ParticipationMetrics from './participationMetrics/ParticipationMetrics';
 import InsightsPdfContent from './pdf/InsightsPdfContent';
 import { PdfExportProvider, usePdfExportContext } from './pdf/PdfExportContext';
+
+const HeaderSubtitle = styled(Text)`
+  color: ${colors.textSecondary};
+  margin: 0;
+  margin-top: 4px;
+`;
 
 const AI_ANALYSIS_SUPPORTED_METHODS = [
   'ideation',
@@ -59,6 +74,10 @@ const InsightsContent = () => {
   } = usePdfExportContext();
 
   const participationMethod = phase?.data.attributes.participation_method;
+  const { start_at, end_at } = phase?.data.attributes || {};
+  const isCurrentPhase = start_at
+    ? pastPresentOrFuture([start_at, end_at ?? null]) === 'present'
+    : false;
   const supportsAiAnalysis =
     participationMethod &&
     AI_ANALYSIS_SUPPORTED_METHODS.includes(participationMethod);
@@ -116,11 +135,25 @@ const InsightsContent = () => {
           display="flex"
           w="100%"
           justifyContent="space-between"
-          alignItems="center"
+          alignItems="flex-start"
         >
-          <Title variant="h2" as="h1" color="textPrimary" m="0px">
-            <FormattedMessage {...messages.insights} />
-          </Title>
+          <Box>
+            <Box display="flex" alignItems="center">
+              <Title variant="h2" as="h1" color="textPrimary" m="0px">
+                <FormattedMessage {...messages.insights} />
+              </Title>
+              {isCurrentPhase && (
+                <Box ml="12px">
+                  <Badge className="inverse" color={colors.primary}>
+                    <FormattedMessage {...messages.liveData} />
+                  </Badge>
+                </Box>
+              )}
+            </Box>
+            <HeaderSubtitle fontSize="s">
+              <FormattedMessage {...messages.insightsSubtitle} />
+            </HeaderSubtitle>
+          </Box>
           <Box
             display="flex"
             flexDirection="column"
