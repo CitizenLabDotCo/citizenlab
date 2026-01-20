@@ -138,8 +138,6 @@ module Insights
     end
 
     def demographics_data(participations, participant_ids)
-      return [] if participant_ids.empty?
-
       participant_custom_field_values = participants_custom_field_values(participations, participant_ids)
       permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
 

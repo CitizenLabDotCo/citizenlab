@@ -111,10 +111,10 @@ RSpec.describe Insights::BasePhaseInsightsService do
     end
 
     it 'includes base custom_field attributes' do
-      create(:custom_field, resource_type: 'User', key: 'birthyear', code: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' })
-      create(:custom_field, resource_type: 'User', key: 'single_select', code: nil, input_type: 'select', title_multiloc: { en: 'Single Select' })
-      create(:custom_field, resource_type: 'User', key: 'multi_select', code: nil, input_type: 'multiselect', title_multiloc: { en: 'Multi Select' })
-      create(:custom_field, resource_type: 'User', key: 'checkbox', code: nil, input_type: 'checkbox', title_multiloc: { en: 'Checkbox' })
+      birthyear_field = create(:custom_field, resource_type: 'User', key: 'birthyear', code: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' })
+      single_select_field = create(:custom_field, resource_type: 'User', key: 'single_select', code: nil, input_type: 'select', title_multiloc: { en: 'Single Select' })
+      multi_select_field = create(:custom_field, resource_type: 'User', key: 'multi_select', code: nil, input_type: 'multiselect', title_multiloc: { en: 'Multi Select' })
+      checkbox_field = create(:custom_field, resource_type: 'User', key: 'checkbox', code: nil, input_type: 'checkbox', title_multiloc: { en: 'Checkbox' })
 
       participation = create(:basket_participation)
 
@@ -123,10 +123,28 @@ RSpec.describe Insights::BasePhaseInsightsService do
       result = service.send(:demographics_data, flattened_participations, participant_ids)
 
       expect(result).to contain_exactly(
-        hash_including(key: 'birthyear', code: 'birthyear', input_type: 'number', title_multiloc: { 'en' => 'Birthyear' }),
-        hash_including(key: 'single_select', code: nil, input_type: 'select', title_multiloc: { 'en' => 'Single Select' }),
-        hash_including(key: 'multi_select', code: nil, input_type: 'multiselect', title_multiloc: { 'en' => 'Multi Select' }),
-        hash_including(key: 'checkbox', code: nil, input_type: 'checkbox', title_multiloc: { 'en' => 'Checkbox' })
+        hash_including(id: birthyear_field.id, key: 'birthyear', code: 'birthyear', input_type: 'number', title_multiloc: { 'en' => 'Birthyear' }),
+        hash_including(id: single_select_field.id, key: 'single_select', code: nil, input_type: 'select', title_multiloc: { 'en' => 'Single Select' }),
+        hash_including(id: multi_select_field.id, key: 'multi_select', code: nil, input_type: 'multiselect', title_multiloc: { 'en' => 'Multi Select' }),
+        hash_including(id: checkbox_field.id, key: 'checkbox', code: nil, input_type: 'checkbox', title_multiloc: { 'en' => 'Checkbox' })
+      )
+    end
+
+    it 'includes base custom_field attributes even when no participations' do
+      birthyear_field = create(:custom_field, resource_type: 'User', key: 'birthyear', code: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' })
+      single_select_field = create(:custom_field, resource_type: 'User', key: 'single_select', code: nil, input_type: 'select', title_multiloc: { en: 'Single Select' })
+      multi_select_field = create(:custom_field, resource_type: 'User', key: 'multi_select', code: nil, input_type: 'multiselect', title_multiloc: { en: 'Multi Select' })
+      checkbox_field = create(:custom_field, resource_type: 'User', key: 'checkbox', code: nil, input_type: 'checkbox', title_multiloc: { en: 'Checkbox' })
+
+      flattened_participations = []
+      participant_ids = []
+      result = service.send(:demographics_data, flattened_participations, participant_ids)
+
+      expect(result).to contain_exactly(
+        hash_including(id: birthyear_field.id, key: 'birthyear', code: 'birthyear', input_type: 'number', title_multiloc: { 'en' => 'Birthyear' }),
+        hash_including(id: single_select_field.id, key: 'single_select', code: nil, input_type: 'select', title_multiloc: { 'en' => 'Single Select' }),
+        hash_including(id: multi_select_field.id, key: 'multi_select', code: nil, input_type: 'multiselect', title_multiloc: { 'en' => 'Multi Select' }),
+        hash_including(id: checkbox_field.id, key: 'checkbox', code: nil, input_type: 'checkbox', title_multiloc: { 'en' => 'Checkbox' })
       )
     end
 
