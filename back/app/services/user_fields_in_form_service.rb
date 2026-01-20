@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class UserFieldsInFormService
-  SUPPORTED_METHODS = %w[native_survey community_monitor_survey ideation]
+  NATIVE_SURVEYLIKE_METHODS = %w[native_survey community_monitor_survey]
+  SUPPORTED_METHODS = NATIVE_SURVEYLIKE_METHODS + ['ideation']
 
   # This function is used to check if demographic
   # fields are collected during the reg flow (I.E. NOT in the form),
@@ -33,8 +34,8 @@ class UserFieldsInFormService
     return false unless requirements[:custom_fields]
     return false if requirements[:custom_fields].empty?
 
-    # Confirm that user_data_collection = 'all_data' or 'demographics_only'
-    return false if pmethod == 'native_survey' && permission.user_data_collection == 'anonymous'
+    # If pmethod is native survey-like: confirm that user_data_collection = 'all_data' or 'demographics_only'
+    return false if NATIVE_SURVEYLIKE_METHODS.include?(pmethod) && permission.user_data_collection == 'anonymous'
 
     # Finally, confirm that the idea doesn't already have user fields
     return false if idea.custom_field_values&.keys&.any? { |key| key.start_with?(prefix) }
@@ -89,8 +90,8 @@ class UserFieldsInFormService
     # Confirm that user fields are asked in form
     return false unless permission.user_fields_in_form_enabled?
 
-    # If pmethod is native_survey: only allow this if user_data_collection = 'all_data'
-    return false if pmethod == 'native_survey' && permission.user_data_collection != 'all_data'
+    # If pmethod is native survey-like: only allow this if user_data_collection = 'all_data'
+    return false if NATIVE_SURVEYLIKE_METHODS.include?(pmethod) && permission.user_data_collection != 'all_data'
 
     true
   end
