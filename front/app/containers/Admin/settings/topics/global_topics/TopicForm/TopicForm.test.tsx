@@ -29,7 +29,7 @@ describe('TopicForm', () => {
     const { container } = render(<TopicForm {...defaultProps} />);
 
     // Get the title input specifically by its name
-    const titleInput = screen.getByRole('textbox', { name: /topic name/i });
+    const titleInput = screen.getByRole('textbox', { name: /tag name/i });
 
     fireEvent.change(titleInput, {
       target: {
