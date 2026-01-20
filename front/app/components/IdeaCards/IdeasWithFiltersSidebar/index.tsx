@@ -19,6 +19,8 @@ import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import { PresentationMode, IdeaSortMethod, InputTerm } from 'api/phases/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
 import { trackEventByName } from 'utils/analytics';
@@ -33,7 +35,6 @@ import ButtonWithFiltersModal from './ButtonWithFiltersModal';
 import ContentRight from './ContentRight';
 import { InputFiltersProps } from './InputFilters';
 import { getInputCountMessage } from './utils';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 export const gapWidth = 35;
 
@@ -232,7 +233,7 @@ const IdeasWithFiltersSidebar = ({
 
       {list && (
         <>
-          {!isIdeasFeedEnabled && (
+          {selectedView !== 'feed' && (
             <ButtonWithFiltersModal {...inputFiltersProps} />
           )}
           {/* 
