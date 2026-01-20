@@ -36,7 +36,7 @@ resource 'Ideas' do
           :for_registration,
           :with_options,
           key: 'select_field',
-          enabled: true,
+          enabled: true
         )
         create(:permissions_custom_field, custom_field: @user_select_field, permission: @permission)
       end

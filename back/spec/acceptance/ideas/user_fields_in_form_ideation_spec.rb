@@ -32,7 +32,7 @@ resource 'Ideas' do
         :for_registration,
         :with_options,
         key: 'select_field',
-        enabled: true,
+        enabled: true
       )
       create(:permissions_custom_field, custom_field: @user_select_field, permission: @permission)
     end
@@ -135,7 +135,7 @@ resource 'Ideas' do
           expect(idea.body_multiloc).to eq({ 'en' => 'My Idea Body' })
 
           # Make sure user id is not linked to idea
-          expect(idea.author_id).to be(nil)
+          expect(idea.author_id).to be_nil
 
           # Make sure not stored in user profile
           user = User.find(@user.id)
@@ -169,7 +169,7 @@ resource 'Ideas' do
         before do
           @permission.update!(user_fields_in_form: false)
         end
-        
+
         context 'when logged in' do
           before do
             @user = create(:user, custom_field_values: { select_field: 'option2' })
@@ -182,7 +182,7 @@ resource 'Ideas' do
                 publication_status: 'published',
                 project_id: @project.id,
                 title_multiloc: { 'en' => 'My Idea Title' },
-                body_multiloc: { 'en' => 'My Idea Body' },
+                body_multiloc: { 'en' => 'My Idea Body' }
               }
             })
 
@@ -226,7 +226,7 @@ resource 'Ideas' do
             expect(idea.body_multiloc).to eq({ 'en' => 'My Idea Body' })
 
             # Make sure user id is not linked to idea
-            expect(idea.author_id).to be(nil)
+            expect(idea.author_id).to be_nil
           end
         end
       end
@@ -304,7 +304,7 @@ resource 'Ideas' do
             expect(idea.body_multiloc).to eq({ 'en' => 'My Idea Body' })
 
             # Make sure user id is not linked to idea
-            expect(idea.author_id).to be(nil)
+            expect(idea.author_id).to be_nil
 
             # Make sure not stored in user profile
             user = User.find(@user.id)
