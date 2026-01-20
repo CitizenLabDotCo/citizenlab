@@ -395,6 +395,7 @@
   "app.components.PasswordInput.strength3Password": "Medium",
   "app.components.PasswordInput.strength4Password": "Strong",
   "app.components.PasswordInput.strength5Password": "Very strong",
+  "app.components.PostCardsComponents.feed": "Feed",
   "app.components.PostCardsComponents.list": "List",
   "app.components.PostCardsComponents.map": "Map",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Add an official update",
