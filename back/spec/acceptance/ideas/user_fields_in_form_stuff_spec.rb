@@ -18,7 +18,8 @@ resource 'Ideas' do
           # Create project with form
           @project = create(:single_phase_native_survey_project, phase_attrs: { with_permissions: true })
           @project.phases.first.permissions.find_by(action: 'posting_idea').update!(
-            permitted_by: 'everyone'
+            permitted_by: 'everyone',
+            global_custom_fields: false
           )
           
           @permission = @project.phases.first.permissions.find_by(action: 'posting_idea')

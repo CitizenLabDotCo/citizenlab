@@ -107,11 +107,6 @@ class Permission < ApplicationRecord
     false
   end
 
-  def global_custom_fields?
-    return false unless allow_global_custom_fields?
-    global_custom_fields
-  end
-
   def everyone_tracking_enabled?
     permitted_by == 'everyone' && everyone_tracking_enabled
   end

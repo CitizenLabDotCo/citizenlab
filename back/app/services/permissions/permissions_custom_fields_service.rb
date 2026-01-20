@@ -6,7 +6,7 @@ module Permissions
       # We do not support user fields for 'everyone' unless the participation method supports it and it is turned on
       return [] if permission.permitted_by == 'everyone' && permission.user_fields_in_form_enabled? == false
 
-      fields = if permission.global_custom_fields?
+      fields = if permission.global_custom_fields
         default_fields(permission)
       else
         permission.permissions_custom_fields.to_a
