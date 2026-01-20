@@ -160,6 +160,7 @@ class SideFxIdeaService
 
   def after_publish(idea, user)
     update_user_profile(idea, user)
+    clear_survey_results_cache(idea)
     log_activity_jobs_after_published(idea, user)
   end
 
@@ -264,6 +265,17 @@ class SideFxIdeaService
       .transform_keys { |key| key[user_prefix.length..] }
 
     user.update!(custom_field_values: user.custom_field_values.merge(user_values_from_idea))
+  end
+
+  def clear_survey_results_cache(idea)
+    return unless idea.participation_method_on_creation.supports_survey_form?
+
+    # We clear two caches, one for overall results and one for results that will include the date of this idea
+    Surveys::ResultsGenerator.new(@phase).clear_cache
+
+    year = idea.submitted_at.year
+    quarter = ((idea.submitted_at.month - 1) / 3) + 1
+    Surveys::ResultsWithDateGenerator.new(@phase, year:, quarter:).clear_cache
   end
 end
 

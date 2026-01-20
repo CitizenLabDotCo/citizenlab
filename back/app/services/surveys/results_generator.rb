@@ -6,10 +6,11 @@
 
 module Surveys
   class ResultsGenerator < FieldVisitorService
-    def initialize(phase, structure_by_category: false)
+
+    def initialize(phase)
       super()
       @phase = phase
-      @structure_by_category = structure_by_category
+      @structure_by_category = false
       @locales = AppConfiguration.instance.settings('core', 'locales')
     end
 
@@ -36,6 +37,12 @@ module Surveys
         results: results,
         totalSubmissions: total_response_count
       }
+    end
+
+    # Clear all result caches for this phase
+    # Triggered when a new response is added
+    def clear_cache
+      Rails.cache.delete(cache_key)
     end
 
     def visit_number(field)
@@ -162,6 +169,11 @@ module Surveys
 
     attr_reader :phase, :locales, :structure_by_category
 
+    def cache_key
+      # NOTE: @year and @quarter will be nil for this root class - they may be set in the subclasses
+      "survey_results/#{phase.id}/#{structure_by_category}/#{@year}/#{@quarter}"
+    end
+
     def input_fields
       @input_fields ||= IdeaCustomFieldsService
         .new(phase.custom_form || CustomForm.new(participation_context: phase))
@@ -176,13 +188,17 @@ module Surveys
       @survey_inputs ||= phase.ideas.includes(:author).supports_survey.published
     end
 
+
     # First we structure the responses by field, using logic to work out which fields were actually seen
     #  { "CustomField.id" => [
     #     { id: "Idea.id", answer: nil },
     #     { id: "Idea.id", answer: ['key1', 'key2] },
     #     { id: "Idea.id", answer: 'text' }...
+    #
+    # We cache this object from which all the results are built to improve performance
+    # Cache is cleared daily or when additional responses come in
     def responses_by_field
-      @responses_by_field ||= begin
+      @responses_by_field ||= Rails.cache.fetch(cache_key, expires_in: 1.day) do
         # First nest the input_fields inside pages to make logic easier
         current_page = nil
         pages = {}

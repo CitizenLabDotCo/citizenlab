@@ -2,8 +2,9 @@
 
 module Surveys
   class ResultsWithDateGenerator < ResultsGenerator
-    def initialize(phase, structure_by_category: false, year: nil, quarter: nil)
-      super(phase, structure_by_category: structure_by_category)
+    def initialize(phase, year: nil, quarter: nil)
+      super(phase)
+      @structure_by_category = phase.pmethod.class.method_str == 'community_monitor_survey'
       @year = year&.to_i
       @quarter = quarter&.to_i
     end
