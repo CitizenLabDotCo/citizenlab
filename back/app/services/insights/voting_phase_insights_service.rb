@@ -126,7 +126,7 @@ module Insights
 
     def participations_voting
       @phase.baskets
-        .where.not(submitted_at: nil)
+        .submitted
         .includes(:user, :baskets_ideas, :ideas)
         .map do |basket|
           basket_ideas = basket.baskets_ideas
