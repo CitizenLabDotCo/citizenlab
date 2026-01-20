@@ -125,27 +125,30 @@ module Insights
     end
 
     def participations_voting
-      @phase.baskets.includes(:user, :baskets_ideas).map do |basket|
-        basket_ideas = basket.baskets_ideas
-        total_votes = basket_ideas.to_a.sum(&:votes)
-        votes_per_idea = if @phase.voting_method == 'budgeting'
-          basket_ideas.to_h { |bi| [bi.idea_id, 1] }
-        else
-          basket_ideas.to_h { |bi| [bi.idea_id, bi.votes] }
-        end
+      @phase.baskets
+        .submitted
+        .includes(:user, :baskets_ideas, :ideas)
+        .map do |basket|
+          basket_ideas = basket.baskets_ideas
+          total_votes = basket_ideas.to_a.sum(&:votes)
+          votes_per_idea = if @phase.voting_method == 'budgeting'
+            basket_ideas.to_h { |bi| [bi.idea_id, 1] }
+          else
+            basket_ideas.to_h { |bi| [bi.idea_id, bi.votes] }
+          end
 
-        {
-          item_id: basket.id,
-          action: 'voting',
-          acted_at: basket.submitted_at,
-          classname: 'Basket',
-          participant_id: participant_id(basket.id, basket.user_id),
-          user_custom_field_values: basket&.user&.custom_field_values || {},
-          total_votes: total_votes,
-          ideas_count: basket.ideas.count,
-          votes_per_idea: votes_per_idea
-        }
-      end
+          {
+            item_id: basket.id,
+            action: 'voting',
+            acted_at: basket.submitted_at,
+            classname: 'Basket',
+            participant_id: participant_id(basket.id, basket.user_id),
+            user_custom_field_values: basket&.user&.custom_field_values || {},
+            total_votes: total_votes,
+            ideas_count: basket.ideas.count,
+            votes_per_idea: votes_per_idea
+          }
+        end
     end
 
     def phase_participation_method_metrics(participations)

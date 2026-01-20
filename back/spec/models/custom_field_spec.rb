@@ -149,6 +149,24 @@ RSpec.describe CustomField do
     end
   end
 
+  describe '#clear_logic_unless_supported' do
+    let(:field) { create(:custom_field, resource: create(:custom_form)) }
+
+    it 'saves logic when the field supports logic' do
+      field.input_type = 'select'
+      field.logic = { 'rules' => [{ 'if' => 2, 'goto_page_id' => 'some_page_id' }] }
+      field.save!
+      expect(field.logic).to eq({ 'rules' => [{ 'if' => 2, 'goto_page_id' => 'some_page_id' }] })
+    end
+
+    it 'does not save logic when the field does not support logic' do
+      field.input_type = 'multiselect'
+      field.logic = { 'rules' => [{ 'if' => 2, 'goto_page_id' => 'some_page_id' }] }
+      field.save!
+      expect(field.logic).to eq({})
+    end
+  end
+
   describe '#file_upload?' do
     it 'returns true when the input_type is "file_upload"' do
       files_field = described_class.new input_type: 'file_upload'
