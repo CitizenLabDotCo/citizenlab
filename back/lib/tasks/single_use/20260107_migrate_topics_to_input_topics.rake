@@ -69,16 +69,12 @@ namespace :topics do
           .pluck(
             'ideas_topics.id',
             'ideas_topics.idea_id',
-            'pait.id',
-            'ideas_topics.created_at',
-            'ideas_topics.updated_at'
-          ).map do |id, idea_id, input_topic_id, created_at, updated_at|
+            'pait.id'
+          ).map do |id, idea_id, input_topic_id|
             {
               id: id,
               idea_id: idea_id,
               input_topic_id: input_topic_id,
-              created_at: created_at,
-              updated_at: updated_at
             }
           end
 
@@ -124,10 +120,10 @@ namespace :topics do
 
       puts "Completed tenant: #{tenant.host}"
       puts '---'
-    rescue StandardError => e
-      puts "  Error processing tenant #{tenant.host}: #{e.message}"
-      puts e.backtrace.first(5).join("\n")
-      puts '---'
+    # rescue StandardError => e
+    #   puts "  Error processing tenant #{tenant.host}: #{e.message}"
+    #   puts e.backtrace.first(5).join("\n")
+    #   puts '---'
     end
   end
 
