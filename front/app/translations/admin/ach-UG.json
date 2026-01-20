@@ -1391,6 +1391,8 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "crwdns5940703:0crwdne5940703:0",
   "app.containers.Admin.projects.project.insights.participationRate": "crwdns5940705:0crwdne5940705:0",
   "app.containers.Admin.projects.project.insights.populationPercent": "crwdns5940707:0crwdne5940707:0",
+  "app.containers.Admin.projects.project.insights.proposals.mostLiked": "crwdns6019993:0crwdne6019993:0",
+  "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "crwdns6019995:0crwdne6019995:0",
   "app.containers.Admin.projects.project.insights.questions": "crwdns5940709:0crwdne5940709:0",
   "app.containers.Admin.projects.project.insights.reactions": "crwdns5940711:0crwdne5940711:0",
   "app.containers.Admin.projects.project.insights.representativenessScore": "crwdns5940713:0crwdne5940713:0",
