@@ -172,7 +172,7 @@ resource 'Ideas' do
         
         context 'when logged in' do
           before do
-            @user = create(:user, custom_field_values: { gender: 'female' })
+            @user = create(:user, custom_field_values: { select_field: 'option2' })
             header_token_for @user
           end
 
@@ -190,7 +190,7 @@ resource 'Ideas' do
             expect(Idea.count).to eq 1
             idea = Idea.first
             expect(idea.custom_field_values).to eq({
-              'u_gender' => 'female'
+              'u_select_field' => 'option2'
             })
             expect(idea.title_multiloc).to eq({ 'en' => 'My Idea Title' })
             expect(idea.body_multiloc).to eq({ 'en' => 'My Idea Body' })
@@ -202,7 +202,7 @@ resource 'Ideas' do
 
         context 'when logged in but anonymous' do
           before do
-            @user = create(:user)
+            @user = create(:user, custom_field_values: { select_field: 'option2' })
             header_token_for @user
             @phase.update!(allow_anonymous_participation: true)
           end
