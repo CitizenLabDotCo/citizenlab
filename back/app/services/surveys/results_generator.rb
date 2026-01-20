@@ -39,10 +39,16 @@ module Surveys
       }
     end
 
-    # Clear all result caches for this phase
+    # Clear all caches of the base object for this phase
     # Triggered when a new response is added
-    def clear_cache
+    # We clear two caches,
+    # - one for overall results and
+    # - one for any results filtered by date that will include the date of the response
+    def clear_cache(response_date)
+      year = response_date.year
+      quarter = ((response_date.month - 1) / 3) + 1
       Rails.cache.delete(cache_key)
+      Rails.cache.delete(cache_key, year:, quarter:)
     end
 
     def visit_number(field)
@@ -169,9 +175,9 @@ module Surveys
 
     attr_reader :phase, :locales, :structure_by_category
 
-    def cache_key
+    def cache_key(year: @year, quarter: @quarter)
       # NOTE: @year and @quarter will be nil for this root class - they may be set in the subclasses
-      "survey_results/#{phase.id}/#{structure_by_category}/#{@year}/#{@quarter}"
+      "survey_results/#{phase.id}/#{structure_by_category}/#{year}/#{quarter}"
     end
 
     def input_fields

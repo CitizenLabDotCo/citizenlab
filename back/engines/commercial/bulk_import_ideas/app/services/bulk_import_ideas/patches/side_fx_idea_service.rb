@@ -9,6 +9,9 @@ module BulkImportIdeas
         # Apply user custom field values from the idea to the author's user profile (if any)
         update_user_profile(idea, idea.author)
 
+        # Clear survey results cache for the idea's phase
+        clear_survey_results_cache(idea)
+
         return unless idea.idea_import&.user_created
 
         # Log a user 'create' activity - when the idea has been published

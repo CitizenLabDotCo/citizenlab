@@ -270,12 +270,7 @@ class SideFxIdeaService
   def clear_survey_results_cache(idea)
     return unless idea.participation_method_on_creation.supports_survey_form?
 
-    # We clear two caches, one for overall results and one for results that will include the date of this idea
-    Surveys::ResultsGenerator.new(@phase).clear_cache
-
-    year = idea.submitted_at.year
-    quarter = ((idea.submitted_at.month - 1) / 3) + 1
-    Surveys::ResultsWithDateGenerator.new(@phase, year:, quarter:).clear_cache
+    Surveys::ResultsGenerator.new(@phase).clear_cache(idea.submitted_at)
   end
 end
 

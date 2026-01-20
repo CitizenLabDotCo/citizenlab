@@ -135,6 +135,9 @@ module SeedNativeSurveyResponses
         end
       end
 
+      # Clear the survey cache
+      Surveys::ResultsGenerator.new(@phase).clear_cache(now)
+
       puts "\n\nCreated #{responses_created} survey responses"
       puts "Created #{users_created} users" unless anonymous
     end
