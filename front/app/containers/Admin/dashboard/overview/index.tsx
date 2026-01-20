@@ -233,11 +233,14 @@ const OverviewDashboard = () => {
               endAtMoment={endAtMoment}
               resolution={resolution}
             />
-            <InternalAdoptionCard
-              startAtMoment={startAtMoment}
-              endAtMoment={endAtMoment}
-              resolution={resolution}
-            />
+            {/* Internal adoption data is hidden when a specific project is selected because it aggregates data across all projects */}
+            {!currentProjectFilter && (
+              <InternalAdoptionCard
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={resolution}
+              />
+            )}
           </Column>
         </>
       </GraphsContainer>
