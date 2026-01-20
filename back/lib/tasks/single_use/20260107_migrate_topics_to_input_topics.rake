@@ -74,7 +74,7 @@ namespace :topics do
             {
               id: id,
               idea_id: idea_id,
-              input_topic_id: input_topic_id,
+              input_topic_id: input_topic_id
             }
           end
 
@@ -120,10 +120,10 @@ namespace :topics do
 
       puts "Completed tenant: #{tenant.host}"
       puts '---'
-    # rescue StandardError => e
-    #   puts "  Error processing tenant #{tenant.host}: #{e.message}"
-    #   puts e.backtrace.first(5).join("\n")
-    #   puts '---'
+      # rescue StandardError => e
+      #   puts "  Error processing tenant #{tenant.host}: #{e.message}"
+      #   puts e.backtrace.first(5).join("\n")
+      #   puts '---'
     end
   end
 
