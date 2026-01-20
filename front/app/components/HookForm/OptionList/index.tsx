@@ -219,7 +219,7 @@ const OptionList = ({
                                     buttonStyle="text"
                                     onClick={() => {
                                       handleRemoveOption(options, name, index);
-                                      trigger();
+                                      trigger(name);
                                     }}
                                   >
                                     <Icon
