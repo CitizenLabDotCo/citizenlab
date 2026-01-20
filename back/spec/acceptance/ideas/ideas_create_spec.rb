@@ -84,6 +84,18 @@ resource 'Ideas' do
             expect(response_data.dig(:attributes, :claim_token)).to be_present.and eq(idea.claim_token.token)
             expect(response_data.dig(:attributes, :claim_token_expires_at)).to eq(idea.claim_token.expires_at.iso8601(3))
           end
+
+          example 'Stores user fields in idea', document: false do
+            do_request({ idea: { 
+              title_multiloc: idea.title_multiloc,
+              body_multiloc: idea.body_multiloc,
+              custom_field_values: { 'u_age' => 30 } } 
+            })
+            assert_status 201
+
+            idea = Idea.find(response_data[:id])
+            expect(idea.custom_field_values).to include('u_age' => 30)
+          end
         end
       end
 
