@@ -622,7 +622,7 @@ const HomepageBannerSettings = () => {
               <Divider m="0px" />
               <BannerHeightSettings
                 useConsistentHeight={
-                  homepageSettings.banner_use_consistent_height !== false
+                  homepageSettings.banner_use_consistent_height === true
                 }
                 onToggleConsistentHeight={() => {
                   setProp((props: Props) => {
@@ -797,7 +797,7 @@ const HomepageBannerSettings = () => {
           <Divider m="0px" />
           <BannerHeightSettings
             useConsistentHeight={
-              homepageSettings.banner_use_consistent_height !== false
+              homepageSettings.banner_use_consistent_height === true
             }
             onToggleConsistentHeight={() => {
               setProp((props: Props) => {

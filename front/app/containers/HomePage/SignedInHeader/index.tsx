@@ -86,7 +86,7 @@ const SignedInHeader = ({
 
   // When consistent height is enabled, use signed-out heights for signed-in banner
   const useConsistentHeight =
-    homepageSettings.banner_use_consistent_height !== false;
+    homepageSettings.banner_use_consistent_height === true;
 
   // Get layout-specific defaults for signed-out banner
   const bannerLayout =
