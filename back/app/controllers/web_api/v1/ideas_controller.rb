@@ -208,18 +208,18 @@ class WebApi::V1::IdeasController < ApplicationController
 
     if publication_status == 'published'
       save_options[:context] = :publication
+    end
 
-      if UserFieldsInFormService.should_merge_user_fields_into_idea?(
+    if input.publication_status == 'published' && UserFieldsInFormService.should_merge_user_fields_into_idea?(
+      current_user,
+      phase_for_input,
+      input
+    )
+      input.custom_field_values = UserFieldsInFormService.merge_user_fields_into_idea(
         current_user,
         phase_for_input,
-        input
+        input.custom_field_values
       )
-        input.custom_field_values = UserFieldsInFormService.merge_user_fields_into_idea(
-          current_user,
-          phase_for_input,
-          input.custom_field_values
-        )
-      end
     end
 
     ActiveRecord::Base.transaction do
