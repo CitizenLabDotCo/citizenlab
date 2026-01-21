@@ -121,6 +121,7 @@ resource 'Stats - Ideas' do
     project_filter_parameter self
     group_filter_parameter self
     feedback_needed_filter_parameter self
+    parameter :limit, 'Limit the number of topics returned to the given number, ordered by idea count descending', required: false
 
     describe 'with time filters only' do
       example_request 'Ideas by topic' do
@@ -169,6 +170,26 @@ resource 'Stats - Ideas' do
         json_response = json_parse response_body
         expect(json_response.dig(:data, :type)).to eq 'ideas_by_topic'
         expect(json_response.dig(:data, :attributes, :series, :ideas).values.sum).to eq 2
+      end
+    end
+
+    describe 'with limit' do
+      let(:limit) { 2 }
+
+      before do
+        travel_to(start_at + 2.months) do
+          create(:idea, input_topics: @ideas_with_topics.first.input_topics.take(1))
+        end
+      end
+
+      example_request 'Ideas by topic with a limit' do
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_by_topic'
+        json_attributes = json_response.dig(:data, :attributes)
+        expect(json_attributes[:series][:ideas].length).to eq 2
+        # Expect descending values
+        expect(json_attributes[:series][:ideas].values).to eq json_attributes[:series][:ideas].values.sort.reverse
       end
     end
   end

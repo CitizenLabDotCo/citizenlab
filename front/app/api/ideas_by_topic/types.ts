@@ -29,4 +29,5 @@ export interface IIdeasByTopicParams {
   end_at?: string | null;
   group?: string;
   project?: string;
+  limit?: number;
 }

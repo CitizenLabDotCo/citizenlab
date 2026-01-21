@@ -54,6 +54,7 @@ const SelectableResourceByTopicChart = ({
     end_at: endAt,
     project: otherProps.currentProjectFilter,
     enabled: currentResourceByTopic === 'ideas',
+    limit: 20,
   });
 
   const { data: commentsByTopic } = useCommentsByTopic({

@@ -10,7 +10,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     render json: raw_json({ count: result.count })
   end
 
-  def ideas_by_topic_serie
+  def ideas_by_topic_serie(limit = nil)
     ideas = policy_scope(Idea.published, policy_scope_class: StatIdeaPolicy::Scope)
     ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
 
@@ -18,13 +18,14 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
       .where(published_at: @start_at..@end_at)
       .joins(:ideas_input_topics)
       .group('ideas_input_topics.input_topic_id')
-      .order('ideas_input_topics.input_topic_id')
-      .count
+      .order('count_id DESC')
+      .limit(limit)
+      .count('id')
   end
 
   def ideas_by_topic
-    serie = ideas_by_topic_serie
-    topics = InputTopic.pluck(:id, :title_multiloc).map do |id, title_multiloc|
+    serie = ideas_by_topic_serie(params[:limit])
+    topics = InputTopic.where(id: serie.keys).pluck(:id, :title_multiloc).map do |id, title_multiloc|
       [id, { title_multiloc: title_multiloc }]
     end
     render json: raw_json({ series: { ideas: serie }, topics: topics.to_h })
