@@ -1466,7 +1466,7 @@
   "app.containers.Admin.projects.project.survey.explore": "Explorer",
   "app.containers.Admin.projects.project.survey.followUpResponses": "Réponses de suivi",
   "app.containers.Admin.projects.project.survey.formResults.averageRank": "<b>#{averageRank}</b> en moyenne",
-  "app.containers.Admin.projects.project.survey.formResults.averageRankAccessible": "#{averageRank} en moyenne",
+  "app.containers.Admin.projects.project.survey.formResults.averageRankAccessible": "rang #{averageRank} en moyenne",
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSON": "Exporter au format GeoJSON",
   "app.containers.Admin.projects.project.survey.formResults.exportGeoJSONTooltip2": "Exportez les réponses à cette question dans un fichier GeoJSON. Chaque réponse apparaîtra sous la forme d'une entité GeoJSON. Pour chaque entité, toutes les autres réponses de cette personne aux autres questions de l'enquête seront aussi listées dans l'objet \"properties\" de cette entité.",
   "app.containers.Admin.projects.project.survey.formResults.hideDetails": "Masquer les détails",
