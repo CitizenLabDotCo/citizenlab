@@ -69,7 +69,7 @@ namespace :fix_existing_tenants do
           puts "\nMatched idea '#{idea.title_multiloc.values.first}' (#{idea.id}) to user #{user.email} (#{user.id})"
 
           unless dry_run
-            idea.update_columns(
+            idea.update!(
               author_id: user.id,
               anonymous: false,
               author_hash: non_anonymous_hash
