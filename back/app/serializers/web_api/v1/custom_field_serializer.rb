@@ -19,7 +19,7 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   }
 
   attribute :page_layout, if: proc { |object, _params|
-    object.input_type == 'page'
+    object.page?
   }
 
   attribute :page_button_link, if: proc { |object, _params|
@@ -31,11 +31,11 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   }
 
   attribute :dropdown_layout, if: proc { |object, _params|
-    object.dropdown_layout_type?
+    object.supports_dropdown_layout?
   }
 
   attribute :ask_follow_up, if: proc { |object, _params|
-    object.input_type == 'sentiment_linear_scale'
+    object.supports_follow_up?
   }
 
   attribute :constraints do |object, params|
@@ -72,7 +72,7 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   }
 
   attributes :min_characters, :max_characters, if: proc { |object, _params|
-    object.support_text?
+    object.supports_text?
   }
 
   has_many :options, record_type: :custom_field_option, serializer: ::WebApi::V1::CustomFieldOptionSerializer
