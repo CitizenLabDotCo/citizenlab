@@ -10,6 +10,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.addDefaultInputTopicButton',
     defaultMessage: 'Add default input tag',
   },
+  addSubtopicButton: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.addSubtopicButton',
+    defaultMessage: 'Add subtag',
+  },
   editDefaultInputTopicFormTitle: {
     id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.editDefaultInputTopicFormTitle',
     defaultMessage: 'Edit default input tag',
@@ -22,6 +26,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.deleteDefaultInputTopicConfirmation',
     defaultMessage:
       'This will delete this default input tag. Projects that already use this tag will keep their copy.',
+  },
+  deleteDefaultInputTopicWithChildrenConfirmation: {
+    id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.deleteDefaultInputTopicWithChildrenConfirmation',
+    defaultMessage:
+      'This tag has subtags. Deleting it will also delete all its subtags. Projects that already use these tags will keep their copies.',
   },
   cancel: {
     id: 'app.containers.AdminPage.SettingsPage.Topics.DefaultInputTopics.cancel',

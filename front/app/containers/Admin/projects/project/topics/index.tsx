@@ -1,17 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
 import { IInputTopicData } from 'api/input_topics/types';
 import useDeleteInputTopic from 'api/input_topics/useDeleteInputTopic';
 import useInputTopics from 'api/input_topics/useInputTopics';
-import useReorderInputTopic from 'api/input_topics/useReorderInputTopic';
 import useAuthUser from 'api/me/useAuthUser';
 
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import { TextCell } from 'components/admin/ResourceList';
-import SortableList from 'components/admin/ResourceList/SortableList';
-import SortableRow from 'components/admin/ResourceList/SortableRow';
+import { TextCell, Row } from 'components/admin/ResourceList';
 import {
   SectionTitle,
   SectionDescription,
@@ -34,71 +31,118 @@ import { isAdmin } from 'utils/permissions/roles';
 import InputTopicModal from './InputTopicModal';
 import messages from './messages';
 
+// Flatten the tree structure for display, preserving parent-child order
+const flattenTopics = (
+  topics: IInputTopicData[],
+  included: IInputTopicData[] | undefined
+): IInputTopicData[] => {
+  const includedMap = new Map<string, IInputTopicData>();
+  included?.forEach((topic) => includedMap.set(topic.id, topic));
+
+  const result: IInputTopicData[] = [];
+
+  topics.forEach((topic) => {
+    result.push(topic);
+    // Add children from included array
+    const childIds = topic.relationships?.children?.data || [];
+    childIds.forEach((childRef) => {
+      const child = includedMap.get(childRef.id);
+      if (child) {
+        result.push(child);
+      }
+    });
+  });
+
+  return result;
+};
+
 const ProjectInputTopics = ({ params: { projectId } }: WithRouterProps) => {
   const { data: authUser } = useAuthUser();
   const { data: inputTopics } = useInputTopics(projectId);
   const { mutate: deleteInputTopic, isLoading: isDeleting } =
     useDeleteInputTopic();
-  const { mutate: reorderInputTopic } = useReorderInputTopic();
 
   const [showConfirmationModal, setShowConfirmationModal] =
     useState<boolean>(false);
-  const [topicIdToDelete, setTopicIdToDelete] = useState<string | null>(null);
+  const [topicToDelete, setTopicToDelete] = useState<IInputTopicData | null>(
+    null
+  );
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const [topicToEdit, setTopicToEdit] = useState<IInputTopicData | null>(null);
+  const [parentIdForNewTopic, setParentIdForNewTopic] = useState<
+    string | undefined
+  >(undefined);
+
+  const flattenedTopics = useMemo(() => {
+    if (isNilOrError(inputTopics)) return [];
+    return flattenTopics(inputTopics.data, inputTopics.included);
+  }, [inputTopics]);
 
   if (!authUser || isNilOrError(inputTopics)) return null;
 
   const canAccessPlatformTopicsSettingsRoute = isAdmin(authUser);
 
   const handleDeleteClick =
-    (topicId: string) => (event: React.FormEvent<any>) => {
+    (topic: IInputTopicData) => (event: React.FormEvent<any>) => {
       event.preventDefault();
       setShowConfirmationModal(true);
-      setTopicIdToDelete(topicId);
+      setTopicToDelete(topic);
     };
 
   const closeSendConfirmationModal = () => {
     setShowConfirmationModal(false);
-    setTopicIdToDelete(null);
+    setTopicToDelete(null);
   };
 
   const handleTopicDeletionConfirm = () => {
-    if (topicIdToDelete) {
+    if (topicToDelete) {
       deleteInputTopic(
-        { projectId, id: topicIdToDelete },
+        { projectId, id: topicToDelete.id },
         {
           onSuccess: () => {
             setShowConfirmationModal(false);
-            setTopicIdToDelete(null);
+            setTopicToDelete(null);
           },
         }
       );
     }
   };
 
-  const handleReorder = (id: string, ordering: number) => {
-    reorderInputTopic({ projectId, id, ordering });
-  };
-
   const handleEditClick =
     (topic: IInputTopicData) => (event: React.FormEvent<any>) => {
       event.preventDefault();
       setTopicToEdit(topic);
+      setParentIdForNewTopic(undefined);
       setShowEditModal(true);
     };
 
   const handleAddClick = () => {
     setTopicToEdit(null);
+    setParentIdForNewTopic(undefined);
     setShowEditModal(true);
   };
+
+  const handleAddSubtopicClick =
+    (parentId: string) => (event: React.FormEvent<any>) => {
+      event.preventDefault();
+      setTopicToEdit(null);
+      setParentIdForNewTopic(parentId);
+      setShowEditModal(true);
+    };
 
   const closeEditModal = () => {
     setShowEditModal(false);
     setTopicToEdit(null);
+    setParentIdForNewTopic(undefined);
   };
 
-  const isLastTopic = inputTopics.data.length === 1;
+  // Count only root topics for the last topic check
+  const rootTopicsCount = inputTopics.data.length;
+  const isLastRootTopic = rootTopicsCount === 1;
+
+  const hasChildren = topicToDelete?.attributes.children_count
+    ? topicToDelete.attributes.children_count > 0
+    : false;
 
   return (
     <Box minHeight="80vh" mb="40px">
@@ -137,52 +181,64 @@ const ProjectInputTopics = ({ params: { projectId } }: WithRouterProps) => {
         </ButtonWithLink>
       </ButtonWrapper>
 
-      {isLastTopic && (
+      {isLastRootTopic && (
         <Warning>
           <FormattedMessage {...messages.lastTopicWarning} />
         </Warning>
       )}
 
-      <SortableList items={inputTopics.data} onReorder={handleReorder}>
-        {({ itemsList, handleDragRow, handleDropRow }) => (
-          <>
-            {itemsList.map((topic: IInputTopicData, index: number) => (
-              <SortableRow
-                key={topic.id}
-                id={topic.id}
-                index={index}
-                isLastItem={index === itemsList.length - 1}
-                moveRow={handleDragRow}
-                dropRow={handleDropRow}
-              >
-                <TextCell className="expand">
+      <Box>
+        {flattenedTopics.map((topic: IInputTopicData, index: number) => {
+          const isSubtopic = topic.attributes.depth > 0;
+          const isRootTopic = topic.attributes.depth === 0;
+          // Only prevent deleting if it's the last root topic
+          const canDelete = !(isRootTopic && isLastRootTopic);
+
+          return (
+            <Row
+              key={topic.id}
+              isLastItem={index === flattenedTopics.length - 1}
+            >
+              <TextCell className="expand">
+                <Box ml={isSubtopic ? '32px' : '0px'}>
                   <T value={topic.attributes.title_multiloc} />
-                </TextCell>
-                <Box display="flex" alignItems="center" gap="16px">
-                  <ButtonWithLink
-                    onClick={handleEditClick(topic)}
-                    buttonStyle="secondary-outlined"
-                    icon="edit"
-                    m="0px"
-                    id="e2e-input-topic-edit-button"
-                  >
-                    <FormattedMessage {...messages.edit} />
-                  </ButtonWithLink>
-                  <ButtonWithLink
-                    onClick={handleDeleteClick(topic.id)}
-                    buttonStyle="text"
-                    icon="delete"
-                    disabled={isLastTopic}
-                    id="e2e-input-topic-delete-button"
-                  >
-                    <FormattedMessage {...messages.delete} />
-                  </ButtonWithLink>
                 </Box>
-              </SortableRow>
-            ))}
-          </>
-        )}
-      </SortableList>
+              </TextCell>
+              <Box display="flex" alignItems="center" gap="16px">
+                {isRootTopic && (
+                  <ButtonWithLink
+                    onClick={handleAddSubtopicClick(topic.id)}
+                    buttonStyle="secondary-outlined"
+                    icon="plus-circle"
+                    m="0px"
+                    id="e2e-add-subtopic-button"
+                  >
+                    <FormattedMessage {...messages.addSubtopic} />
+                  </ButtonWithLink>
+                )}
+                <ButtonWithLink
+                  onClick={handleEditClick(topic)}
+                  buttonStyle="secondary-outlined"
+                  icon="edit"
+                  m="0px"
+                  id="e2e-input-topic-edit-button"
+                >
+                  <FormattedMessage {...messages.edit} />
+                </ButtonWithLink>
+                <ButtonWithLink
+                  onClick={handleDeleteClick(topic)}
+                  buttonStyle="text"
+                  icon="delete"
+                  disabled={!canDelete}
+                  id="e2e-input-topic-delete-button"
+                >
+                  <FormattedMessage {...messages.delete} />
+                </ButtonWithLink>
+              </Box>
+            </Row>
+          );
+        })}
+      </Box>
 
       <Modal
         opened={showConfirmationModal}
@@ -191,7 +247,11 @@ const ProjectInputTopics = ({ params: { projectId } }: WithRouterProps) => {
       >
         <ModalContentContainer>
           <Content>
-            <FormattedMessage {...messages.deleteInputTopicConfirmation} />
+            <FormattedMessage
+              {...(hasChildren
+                ? messages.deleteInputTopicWithChildrenConfirmation
+                : messages.deleteInputTopicConfirmation)}
+            />
           </Content>
           <ButtonsWrapper>
             <ButtonWithLink
@@ -215,6 +275,7 @@ const ProjectInputTopics = ({ params: { projectId } }: WithRouterProps) => {
       <InputTopicModal
         projectId={projectId}
         topic={topicToEdit}
+        parentId={parentIdForNewTopic}
         opened={showEditModal}
         close={closeEditModal}
       />

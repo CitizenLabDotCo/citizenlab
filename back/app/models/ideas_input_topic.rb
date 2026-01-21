@@ -26,4 +26,16 @@ class IdeasInputTopic < ApplicationRecord
   belongs_to :input_topic
 
   validates :input_topic_id, uniqueness: { scope: :idea_id }
+
+  after_create :remove_parent_topic_assignment
+
+  private
+
+  # When assigning an idea to a subtopic, remove the assignment to the parent topic
+  def remove_parent_topic_assignment
+    parent_topic = input_topic.parent
+    return if parent_topic.blank?
+
+    IdeasInputTopic.where(idea_id: idea_id, input_topic_id: parent_topic.id).destroy_all
+  end
 end

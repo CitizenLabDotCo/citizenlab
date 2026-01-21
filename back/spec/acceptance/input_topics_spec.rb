@@ -20,15 +20,13 @@ resource 'InputTopics' do
       expect(response_data.size).to eq 3
     end
 
-    example 'List input topics sorted by custom ordering' do
-      @input_topics[2].insert_at!(0)
-      @input_topics[0].insert_at!(2)
+    example 'List input topics sorted by tree order (lft)' do
+      @input_topics[2].move_to_left_of(@input_topics[0])
 
       do_request
 
       expect(response_data.size).to eq 3
       expect(response_data.dig(0, :id)).to eq @input_topics[2].id
-      expect(response_data.dig(2, :id)).to eq @input_topics[0].id
     end
 
     example 'List input topics sorted by ideas_count descending' do
@@ -122,17 +120,20 @@ resource 'InputTopics' do
     end
 
     # Shallow route - no project_id needed
-    patch 'web_api/v1/input_topics/:id/reorder' do
+    patch 'web_api/v1/input_topics/:id/move' do
       with_options scope: :input_topic do
-        parameter :ordering, 'The position, starting from 0, where the topic should be at.', required: true
+        parameter :position, 'The position to move to: child, left, right, or root', required: true
+        parameter :target_id, 'The target topic ID for child/left/right positions'
       end
 
-      let(:id) { create(:input_topic, project: project).id }
-      let(:ordering) { 1 }
+      let(:input_topics) { create_list(:input_topic, 3, project: project) }
+      let(:id) { input_topics.last.id }
+      let(:position) { 'left' }
+      let(:target_id) { input_topics.first.id }
 
-      example_request 'Reorder an input topic' do
+      example_request 'Move an input topic to a new position' do
         assert_status(200)
-        expect(response_data.dig(:attributes, :ordering)).to eq ordering
+        expect(input_topics.last.reload.lft).to be < input_topics.first.reload.lft
       end
     end
 

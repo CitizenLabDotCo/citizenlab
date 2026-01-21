@@ -117,7 +117,12 @@ const TopicsPicker = memo(
     if (!isNilOrError(availableTopics)) {
       const numberOfSelectedTopics = selectedTopicIds.length;
       const selectedTopicNames = filteredTopics
-        .map((topic: TopicData) => localize(topic.attributes.title_multiloc))
+        .map((topic: TopicData) =>
+          localize(
+            (topic.attributes as IInputTopicData['attributes'])
+              .full_title_multiloc || topic.attributes.title_multiloc
+          )
+        )
         .join(', ');
 
       return (
@@ -125,8 +130,12 @@ const TopicsPicker = memo(
           <TopicsContainer className={`${className} e2e-topics-picker`}>
             {availableTopics.map((topic) => {
               const topicId = topic.id || topic.const;
-              const topicTitle = topic?.attributes?.title_multiloc ? (
-                <T value={topic.attributes.title_multiloc} />
+              // Use full_title_multiloc if available (includes parent prefix), fall back to title_multiloc
+              const titleMultiloc =
+                (topic?.attributes as IInputTopicData['attributes'] | undefined)
+                  ?.full_title_multiloc || topic?.attributes?.title_multiloc;
+              const topicTitle = titleMultiloc ? (
+                <T value={titleMultiloc} />
               ) : (
                 topic.title
               );

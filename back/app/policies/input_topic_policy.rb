@@ -19,6 +19,10 @@ class InputTopicPolicy < ApplicationPolicy
     update?
   end
 
+  def move?
+    update?
+  end
+
   def destroy?
     update?
   end
@@ -30,6 +34,7 @@ class InputTopicPolicy < ApplicationPolicy
   def permitted_attributes_for_create
     [
       :icon,
+      :parent_id,
       { title_multiloc: CL2_SUPPORTED_LOCALES },
       { description_multiloc: CL2_SUPPORTED_LOCALES }
     ]
@@ -41,5 +46,9 @@ class InputTopicPolicy < ApplicationPolicy
 
   def permitted_attributes_for_reorder
     [:ordering]
+  end
+
+  def permitted_attributes_for_move
+    %i[position target_id]
   end
 end

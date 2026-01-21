@@ -1,16 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
 import { IDefaultInputTopicData } from 'api/default_input_topics/types';
 import useDefaultInputTopics from 'api/default_input_topics/useDefaultInputTopics';
 import useDeleteDefaultInputTopic from 'api/default_input_topics/useDeleteDefaultInputTopic';
-import useReorderDefaultInputTopic from 'api/default_input_topics/useReorderDefaultInputTopic';
 
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import { TextCell } from 'components/admin/ResourceList';
-import SortableList from 'components/admin/ResourceList/SortableList';
-import SortableRow from 'components/admin/ResourceList/SortableRow';
+import { TextCell, Row } from 'components/admin/ResourceList';
 import { Section, SectionDescription } from 'components/admin/Section';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -25,43 +22,73 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 
+// Flatten the tree structure for display, preserving parent-child order
+const flattenTopics = (
+  topics: IDefaultInputTopicData[],
+  included: IDefaultInputTopicData[] | undefined
+): IDefaultInputTopicData[] => {
+  const includedMap = new Map<string, IDefaultInputTopicData>();
+  included?.forEach((topic) => includedMap.set(topic.id, topic));
+
+  const result: IDefaultInputTopicData[] = [];
+
+  topics.forEach((topic) => {
+    result.push(topic);
+    // Add children from included array
+    const childIds = topic.relationships?.children?.data || [];
+    childIds.forEach((childRef) => {
+      const child = includedMap.get(childRef.id);
+      if (child) {
+        result.push(child);
+      }
+    });
+  });
+
+  return result;
+};
+
 const DefaultInputTopics = () => {
   const { data: defaultInputTopics } = useDefaultInputTopics();
   const { mutate: deleteDefaultInputTopic, isLoading: isDeleting } =
     useDeleteDefaultInputTopic();
-  const { mutate: reorderDefaultInputTopic } = useReorderDefaultInputTopic();
   const [showConfirmationModal, setShowConfirmationModal] =
     useState<boolean>(false);
-  const [topicIdToDelete, setTopicIdToDelete] = useState<string | null>(null);
+  const [topicToDelete, setTopicToDelete] =
+    useState<IDefaultInputTopicData | null>(null);
+
+  const flattenedTopics = useMemo(() => {
+    if (isNilOrError(defaultInputTopics)) return [];
+    return flattenTopics(defaultInputTopics.data, defaultInputTopics.included);
+  }, [defaultInputTopics]);
 
   if (isNilOrError(defaultInputTopics)) return null;
 
   const handleDeleteClick =
-    (topicId: string) => (event: React.FormEvent<any>) => {
+    (topic: IDefaultInputTopicData) => (event: React.FormEvent<any>) => {
       event.preventDefault();
       setShowConfirmationModal(true);
-      setTopicIdToDelete(topicId);
+      setTopicToDelete(topic);
     };
 
   const closeSendConfirmationModal = () => {
     setShowConfirmationModal(false);
-    setTopicIdToDelete(null);
+    setTopicToDelete(null);
   };
 
   const handleTopicDeletionConfirm = () => {
-    if (topicIdToDelete) {
-      deleteDefaultInputTopic(topicIdToDelete, {
+    if (topicToDelete) {
+      deleteDefaultInputTopic(topicToDelete.id, {
         onSuccess: () => {
           setShowConfirmationModal(false);
-          setTopicIdToDelete(null);
+          setTopicToDelete(null);
         },
       });
     }
   };
 
-  const handleReorder = (id: string, ordering: number) => {
-    reorderDefaultInputTopic({ id, ordering });
-  };
+  const hasChildren = topicToDelete?.attributes.children_count
+    ? topicToDelete.attributes.children_count > 0
+    : false;
 
   return (
     <Section>
@@ -82,45 +109,55 @@ const DefaultInputTopics = () => {
         </ButtonWithLink>
       </ButtonWrapper>
 
-      <SortableList items={defaultInputTopics.data} onReorder={handleReorder}>
-        {({ itemsList, handleDragRow, handleDropRow }) => (
-          <>
-            {itemsList.map((topic: IDefaultInputTopicData, index: number) => (
-              <SortableRow
-                key={topic.id}
-                id={topic.id}
-                index={index}
-                isLastItem={index === itemsList.length - 1}
-                moveRow={handleDragRow}
-                dropRow={handleDropRow}
-              >
-                <TextCell className="expand">
+      <Box>
+        {flattenedTopics.map((topic: IDefaultInputTopicData, index: number) => {
+          const isSubtopic = topic.attributes.depth > 0;
+          const isRootTopic = topic.attributes.depth === 0;
+
+          return (
+            <Row
+              key={topic.id}
+              isLastItem={index === flattenedTopics.length - 1}
+            >
+              <TextCell className="expand">
+                <Box ml={isSubtopic ? '32px' : '0px'}>
                   <T value={topic.attributes.title_multiloc} />
-                </TextCell>
-                <Box display="flex" alignItems="center" gap="16px">
-                  <ButtonWithLink
-                    linkTo={`/admin/settings/topics/input/${topic.id}/edit`}
-                    buttonStyle="secondary-outlined"
-                    icon="edit"
-                    m="0px"
-                    id="e2e-default-input-topic-edit-button"
-                  >
-                    <FormattedMessage {...messages.editButtonLabel} />
-                  </ButtonWithLink>
-                  <ButtonWithLink
-                    onClick={handleDeleteClick(topic.id)}
-                    buttonStyle="text"
-                    icon="delete"
-                    id="e2e-default-input-topic-delete-button"
-                  >
-                    <FormattedMessage {...messages.deleteButtonLabel} />
-                  </ButtonWithLink>
                 </Box>
-              </SortableRow>
-            ))}
-          </>
-        )}
-      </SortableList>
+              </TextCell>
+              <Box display="flex" alignItems="center" gap="16px">
+                {isRootTopic && (
+                  <ButtonWithLink
+                    linkTo={`/admin/settings/topics/input/new?parent_id=${topic.id}`}
+                    buttonStyle="secondary-outlined"
+                    icon="plus-circle"
+                    m="0px"
+                    id="e2e-add-subtopic-button"
+                  >
+                    <FormattedMessage {...messages.addSubtopicButton} />
+                  </ButtonWithLink>
+                )}
+                <ButtonWithLink
+                  linkTo={`/admin/settings/topics/input/${topic.id}/edit`}
+                  buttonStyle="secondary-outlined"
+                  icon="edit"
+                  m="0px"
+                  id="e2e-default-input-topic-edit-button"
+                >
+                  <FormattedMessage {...messages.editButtonLabel} />
+                </ButtonWithLink>
+                <ButtonWithLink
+                  onClick={handleDeleteClick(topic)}
+                  buttonStyle="text"
+                  icon="delete"
+                  id="e2e-default-input-topic-delete-button"
+                >
+                  <FormattedMessage {...messages.deleteButtonLabel} />
+                </ButtonWithLink>
+              </Box>
+            </Row>
+          );
+        })}
+      </Box>
 
       <Modal
         opened={showConfirmationModal}
@@ -130,7 +167,9 @@ const DefaultInputTopics = () => {
         <ModalContentContainer>
           <Content>
             <FormattedMessage
-              {...messages.deleteDefaultInputTopicConfirmation}
+              {...(hasChildren
+                ? messages.deleteDefaultInputTopicWithChildrenConfirmation
+                : messages.deleteDefaultInputTopicConfirmation)}
             />
           </Content>
           <ButtonsWrapper>

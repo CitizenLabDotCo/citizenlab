@@ -160,6 +160,7 @@ Rails.application.routes.draw do
 
       resources :default_input_topics do
         patch 'reorder', on: :member
+        patch 'move', on: :member
       end
 
       resources :areas do
@@ -244,6 +245,7 @@ Rails.application.routes.draw do
         resources :projects_allowed_input_topics, only: [:index]
         resources :input_topics, shallow: true do
           patch 'reorder', on: :member
+          patch 'move', on: :member
         end
         resources :phases, only: %i[index new create]
         resources :images, defaults: { container_type: 'Project' }
