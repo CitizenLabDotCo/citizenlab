@@ -206,6 +206,7 @@ resource 'Ideas' do
           })
 
           assert_status 200
+          idea = Idea.find(id)
           expect(idea.reload.custom_field_values).to eq({
             @custom_field.key => 'option2',
             'u_user_select_field' => 'option1'
