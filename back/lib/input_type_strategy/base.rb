@@ -6,12 +6,12 @@ module InputTypeStrategy
       @custom_field = custom_field
     end
 
-    def structural_field?
+    def page?
       false
     end
 
     def supports_submission?
-      !structural_field?
+      !page?
     end
 
     def supports_average?

@@ -15,7 +15,7 @@ class CustomFieldsValidationService
   end
 
   def validate_first_page(fields)
-    return if fields.first.structural_field?
+    return if fields.first.page?
 
     { form: [{ error: 'no_first_page' }] }
   end

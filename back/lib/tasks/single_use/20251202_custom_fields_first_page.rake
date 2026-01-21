@@ -11,9 +11,9 @@ namespace :fix_existing_tenants do
       tenant.switch do
         CustomForm.all.each do |form|
           first_field = CustomField.find_by(ordering: 0, resource_id: form.id)
-          next if first_field&.structural_field?
+          next if first_field&.page?
 
-          first_page = CustomField.where(resource_id: form.id).order(:ordering).find(&:structural_field?)
+          first_page = CustomField.where(resource_id: form.id).order(:ordering).find(&:page?)
           if !first_page
             reporter.add_error(
               'Form has no pages!',

@@ -69,7 +69,7 @@ namespace :single_use do
         custom_fields.each do |field|
           original_field = field.deep_dup
 
-          if field.structural_field?
+          if field.page?
             if field.logic['next_page_id'] == 'form_end'
               field.logic['next_page_id'] = last_page.id
               save_field_and_report(original_field, field, reporter, tenant)

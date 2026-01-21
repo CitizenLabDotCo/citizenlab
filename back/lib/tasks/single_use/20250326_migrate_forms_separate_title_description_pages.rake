@@ -27,7 +27,7 @@ namespace :migrate_custom_forms do
           next if !body_field # This should not be possible, but just in case.
 
           field_before_body = fields_per_page[body_page].find { |field| field.ordering == (body_field.ordering - 1) } || body_page
-          if field_before_body.structural_field? && !field_before_body.code
+          if field_before_body.page? && !field_before_body.code
             # If the previous field is a page, we turn it into the body page, instead of adding a second page.
             rake_20250326_turn_into_body_and_report_page(field_before_body, reporter, 'add_body_page')
           end
@@ -57,7 +57,7 @@ namespace :migrate_custom_forms do
               # Move the existing title page to right before the title field and replace it by a normal page, if the next field is not a page.
               next_real_title_page_field = form.custom_fields.find_by(ordering: (real_title_page.ordering + 1))
               prev_ordering = rake_20250326_reorder_and_report_field(real_title_page, title_field.ordering, reporter, 'add_title_page')
-              if !next_real_title_page_field.structural_field?
+              if !next_real_title_page_field.page?
                 rake_20250326_create_and_report_page(rake_20250326_new_normal_page(form), prev_ordering, reporter, 'add_title_page')
               end
             end
@@ -90,7 +90,7 @@ def rake_20250326_group_field_by_page(custom_fields)
   fields_per_page = {}
   prev_page = nil
   custom_fields.each do |field|
-    if field.structural_field?
+    if field.page?
       break if title_page && body_page
 
       prev_page = field

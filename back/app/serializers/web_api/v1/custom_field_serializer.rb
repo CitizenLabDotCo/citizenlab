@@ -19,7 +19,7 @@ class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   }
 
   attribute :page_layout, if: proc { |object, _params|
-    object.structural_field?
+    object.page?
   }
 
   attribute :page_button_link, if: proc { |object, _params|

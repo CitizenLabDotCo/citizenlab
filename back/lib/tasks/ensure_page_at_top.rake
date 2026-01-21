@@ -8,7 +8,7 @@ namespace :fix_existing_tenants do
       tenant.switch do
         pc_ids = Project.where(participation_method: 'native_survey').ids + Phase.where(participation_method: 'native_survey').ids
         CustomForm.where(participation_context_id: pc_ids).each do |form|
-          next if form.custom_fields.empty? || form.custom_fields.first.structural_field?
+          next if form.custom_fields.empty? || form.custom_fields.first.page?
 
           puts "  Adding first page to form #{form.id}"
           CustomField.create!(

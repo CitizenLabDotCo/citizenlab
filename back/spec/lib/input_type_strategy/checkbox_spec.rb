@@ -7,7 +7,7 @@ RSpec.describe InputTypeStrategy::Checkbox do
 
   let(:custom_field) { build(:custom_field, input_type: 'checkbox') }
 
-  its(:structural_field?) { is_expected.to be false }
+  its(:page?) { is_expected.to be false }
   its(:supports_submission?) { is_expected.to be true }
   its(:supports_average?) { is_expected.to be false }
   its(:supports_options?) { is_expected.to be false }

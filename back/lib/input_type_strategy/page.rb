@@ -2,7 +2,7 @@
 
 module InputTypeStrategy
   class Page < Base
-    def structural_field?
+    def page?
       true
     end
 
