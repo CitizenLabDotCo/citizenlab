@@ -61,7 +61,12 @@ const TopicsSelector = memo<Props>(
                   fontSize="xs"
                   color="teal"
                 >
-                  <T value={topic.attributes.title_multiloc} />
+                  <T
+                    value={
+                      topic.attributes.full_title_multiloc ||
+                      topic.attributes.title_multiloc
+                    }
+                  />
                 </Text>
                 <IconButton
                   iconName="close"

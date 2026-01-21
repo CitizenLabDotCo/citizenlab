@@ -236,7 +236,12 @@ const ProjectInputTopics = ({ params: { projectId } }: WithRouterProps) => {
                 >
                   <TextCell className="expand">
                     <Box ml={isSubtopic ? '32px' : '0px'}>
-                      <T value={topic.attributes.title_multiloc} />
+                      <T
+                        value={
+                          topic.attributes.full_title_multiloc ||
+                          topic.attributes.title_multiloc
+                        }
+                      />
                     </Box>
                   </TextCell>
                   <Box display="flex" alignItems="center" gap="16px">
