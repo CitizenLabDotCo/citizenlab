@@ -1392,7 +1392,7 @@
   "app.containers.Admin.projects.project.insights.participationRate": "Tasso di partecipazione",
   "app.containers.Admin.projects.project.insights.populationPercent": "Popolazione (%)",
   "app.containers.Admin.projects.project.insights.proposals.mostLiked": "I più apprezzati",
-  "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "These proposals got the most traction",
+  "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "Queste proposte hanno avuto il maggior successo",
   "app.containers.Admin.projects.project.insights.questions": "Domande",
   "app.containers.Admin.projects.project.insights.reactions": "Reazioni",
   "app.containers.Admin.projects.project.insights.representativenessScore": "Punteggio di rappresentatività",
