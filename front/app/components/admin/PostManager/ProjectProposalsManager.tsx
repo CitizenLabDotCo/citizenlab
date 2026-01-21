@@ -6,7 +6,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import { IIdeaQueryParameters, Sort } from 'api/ideas/types';
 import useIdeas from 'api/ideas/useIdeas';
-import useTopics from 'api/topics/useTopics';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 
 import Outlet from 'components/Outlet';
 import SearchInput from 'components/UI/SearchInput';
@@ -61,7 +61,7 @@ const ProjectProposalsManager = ({
   const { data: ideaStatuses } = useIdeaStatuses({
     queryParams: { participation_method: 'proposals' },
   });
-  const { data: proposalTopics } = useTopics();
+  const { data: proposalTopics } = useGlobalTopics();
   const [queryParameters, setQueryParameters] = useState<IIdeaQueryParameters>({
     sort: 'new',
     phase: phaseId,
