@@ -1391,6 +1391,8 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Participatioun am Laf vun der Zäit",
   "app.containers.Admin.projects.project.insights.participationRate": "Participatiounsquote",
   "app.containers.Admin.projects.project.insights.populationPercent": "Bevëlkerung (%)",
+  "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Most liked",
+  "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "These proposals got the most traction",
   "app.containers.Admin.projects.project.insights.questions": "Froen",
   "app.containers.Admin.projects.project.insights.reactions": "Reaktiounen",
   "app.containers.Admin.projects.project.insights.representativenessScore": "Representativitéitsscore",
