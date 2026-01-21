@@ -1,5 +1,5 @@
 import moment = require('moment');
-import { randomEmail, randomString } from '../support/commands';
+import { randomEmail, randomString } from '../../support/commands';
 
 describe('Timeline ideation with anonymous participation allowed', () => {
   const projectTitle = randomString(5);
