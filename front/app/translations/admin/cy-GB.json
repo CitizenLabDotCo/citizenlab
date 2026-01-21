@@ -1391,6 +1391,8 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Cyfranogiad dros amser",
   "app.containers.Admin.projects.project.insights.participationRate": "Cyfradd cyfranogiad",
   "app.containers.Admin.projects.project.insights.populationPercent": "Poblogaeth (%)",
+  "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Mwyaf poblogaidd",
+  "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "Y cynigion hyn a gafodd y sylw mwyaf",
   "app.containers.Admin.projects.project.insights.questions": "Cwestiynau",
   "app.containers.Admin.projects.project.insights.reactions": "Adweithiau",
   "app.containers.Admin.projects.project.insights.representativenessScore": "Sgôr cynrychiolaeth",
