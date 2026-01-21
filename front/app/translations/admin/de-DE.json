@@ -2897,7 +2897,7 @@
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Ausstehende Einladung",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Wer kann das Dokument mit Anmerkungen versehen?",
   "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_subtitle": "Wer kann sich für die Veranstaltung anmelden?",
-  "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_tooltip": "Wenn es keine aktive Phase gibt, wenn ein Benutzer versucht, an einer Veranstaltung teilzunehmen, verwendet das System die Berechtigungen aus der zuletzt abgeschlossenen Phase.",
+  "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_tooltip": "Wenn es keine aktive Phase gibt, wenn ein Benutzer oder eine Benutzerin versucht, an einer Veranstaltung teilzunehmen, verwendet das System die Berechtigungen aus der zuletzt abgeschlossenen Phase.",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_inputs_subtitle": "Wer kann Beiträgen kommentieren?",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_proposals_subtitle": "Wer kann Vorschläge kommentieren?",
   "app.containers.AdminPage.groups.permissions.permissionAction_post_proposal_subtitle": "Wer kann einen Vorschlag einreichen?",
