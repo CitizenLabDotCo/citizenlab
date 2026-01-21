@@ -23,7 +23,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import StickyNote, { NOTE_HEIGHTS } from './StickyNotes/StickyNote';
-import { getTopicColor, getTopicProgressBarColor } from './topicsColor';
+import { getTopicColor } from './topicsColor';
 
 const PEEK_HEIGHT = 150;
 
@@ -277,9 +277,6 @@ const IdeasFeed = ({ topicId }: Props) => {
           const topicBackgroundColor = topicId
             ? getTopicColor(topicId)
             : getTopicColor(topicIds[0]);
-          const topicProgressBarColor = topicId
-            ? getTopicProgressBarColor(topicId)
-            : getTopicProgressBarColor(topicIds[0]);
 
           return (
             <VirtualItem
@@ -300,7 +297,6 @@ const IdeasFeed = ({ topicId }: Props) => {
                 <StickyNote
                   ideaId={idea.id}
                   topicBackgroundColor={topicBackgroundColor}
-                  topicProgressBarColor={topicProgressBarColor}
                   onClick={() => handleIdeaSelect(idea.id)}
                   centeredIdeaId={centeredIdeaId || undefined}
                   size={noteSize}

@@ -13,7 +13,7 @@ import useGlobalTopic from 'api/global_topics/useGlobalTopic';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { getTopicProgressBarColor } from '../topicsColor';
+import { getTopicColor, getTopicProgressBarColor } from '../topicsColor';
 
 interface Props {
   topicId: string;
@@ -41,6 +41,7 @@ const TopicItem = ({
   const percentage =
     totalIdeasCount > 0 ? (topicCount / totalIdeasCount) * 100 : 0;
   const topicColor = getTopicProgressBarColor(topicId);
+  const topicBackgroundColor = getTopicColor(topicId);
 
   return (
     <>
@@ -51,9 +52,33 @@ const TopicItem = ({
         onClick={() => onTopicSelect(topicId)}
         borderColor="transparent"
         justify="left"
+        pt="16px"
+        pb="28px"
       >
-        <Text mb="0px">{localize(topic?.data.attributes.title_multiloc)}</Text>
-        <Text m="0px" variant="bodyS">
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          w="100%"
+        >
+          <Text mb="0px" fontWeight="bold" variant="bodyL">
+            {localize(topic?.data.attributes.title_multiloc)}
+          </Text>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            minWidth="40px"
+            height="40px"
+            borderRadius="50%"
+            background={topicBackgroundColor}
+          >
+            <Text m="0px" fontWeight="bold" variant="bodyS">
+              {topicCount}
+            </Text>
+          </Box>
+        </Box>
+        <Text m="0px" variant="bodyM">
           {localize(topic?.data.attributes.description_multiloc)}
         </Text>
         <Box mt="8px" w="100%">
@@ -74,10 +99,6 @@ const TopicItem = ({
               }}
             />
           </Box>
-
-          <Text variant="bodyS">
-            {topicCount} {topicCount === 1 ? 'idea' : 'ideas'}
-          </Text>
         </Box>
       </Box>
 
