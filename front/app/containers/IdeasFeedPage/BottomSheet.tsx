@@ -1,11 +1,23 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  Icon,
+  Text,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
 import { FocusOn } from 'react-focus-on';
 import styled from 'styled-components';
 
+import { useIntl } from 'utils/cl-intl';
+
+import messages from './messages';
+
 const COLLAPSED_HEIGHT = 40;
 const DEFAULT_OFFSET = 350;
+const NUDGE_DELAY_MS = 15000;
+const DRAG_AREA_HEIGHT = 28; // DragHandle height + padding
 
 const Container = styled.div<{ translateY: number; isDragging: boolean }>`
   position: fixed;
@@ -34,6 +46,7 @@ const DragHandle = styled.div`
 `;
 
 const DragArea = styled.div`
+  position: relative;
   display: block;
   width: 100%;
   padding: 8px 0;
@@ -75,11 +88,28 @@ const BottomSheet = ({
   a11y_collapseLabel,
   expandToFullscreenOn,
 }: Props) => {
-  const [sheetState, setSheetState] = useState<SheetState>('default');
+  const { formatMessage } = useIntl();
+  const [sheetState, setSheetState] = useState<SheetState>('collapsed');
   const [dragTranslateY, setDragTranslateY] = useState<number | null>(null);
+  const [showNudge, setShowNudge] = useState(false);
   const dragStartY = useRef(0);
   const sheetRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
+
+  // Show nudge after 15 seconds if still collapsed
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowNudge((prev) => {
+        // Only show if not already shown and sheet is collapsed
+        if (!prev && sheetState === 'collapsed') {
+          return true;
+        }
+        return prev;
+      });
+    }, NUDGE_DELAY_MS);
+
+    return () => clearTimeout(timer);
+  }, [sheetState]);
 
   const getSheetHeight = () =>
     sheetRef.current?.offsetHeight ?? window.innerHeight;
@@ -177,10 +207,30 @@ const BottomSheet = ({
           aria-expanded={isExpanded}
           aria-label={isExpanded ? a11y_collapseLabel : a11y_expandLabel}
         >
-          <DragHandle aria-hidden="true" />
+          <Tooltip
+            content={
+              <Box display="flex" alignItems="center" gap="8px">
+                <Icon name="stars" fill={colors.orange500} />
+                <Text color="tenantPrimary" fontSize="s" m="0px">
+                  {formatMessage(messages.exploreTopicsNudge)}
+                </Text>
+              </Box>
+            }
+            placement="top"
+            visible={showNudge}
+            onClickOutside={() => setShowNudge(false)}
+          >
+            <DragHandle aria-hidden="true" />
+          </Tooltip>
         </DragArea>
 
-        <Box ref={contentRef} px="16px" py="24px" overflowY="auto" h="100%">
+        <Box
+          ref={contentRef}
+          px="16px"
+          py="24px"
+          overflowY="auto"
+          h={`calc(100svh - ${translateY + DRAG_AREA_HEIGHT}px)`}
+        >
           {children}
         </Box>
       </Container>

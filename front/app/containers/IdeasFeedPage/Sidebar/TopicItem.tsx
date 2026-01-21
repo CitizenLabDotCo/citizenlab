@@ -21,6 +21,7 @@ interface Props {
   totalIdeasCount: number;
   topicCount: number;
   onTopicSelect: (topicId: string) => void;
+  isLast?: boolean;
 }
 
 const StyledButton = styled(Button)`
@@ -35,6 +36,7 @@ const TopicItem = ({
   totalIdeasCount,
   topicCount,
   onTopicSelect,
+  isLast = false,
 }: Props) => {
   const { data: topic } = useGlobalTopic(topicId);
   const localize = useLocalize();
@@ -42,7 +44,6 @@ const TopicItem = ({
     totalIdeasCount > 0 ? (topicCount / totalIdeasCount) * 100 : 0;
   const topicColor = getTopicProgressBarColor(topicId);
   const topicBackgroundColor = getTopicColor(topicId);
-
   return (
     <>
       <Box
@@ -102,7 +103,7 @@ const TopicItem = ({
         </Box>
       </Box>
 
-      <Divider m="0px" />
+      {!isLast && <Divider m="0px" />}
     </>
   );
 };
