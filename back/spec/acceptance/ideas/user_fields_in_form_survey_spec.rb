@@ -195,7 +195,7 @@ resource 'Ideas' do
         end
         let(:id) { idea.id }
 
-        it 'updates the user profile with the provided custom field values' do
+        it 'updates the user profile with the provided custom field values and author_id' do
           idea = create(:idea, custom_field_values: { @custom_field.key => 'option2' })
           do_request({
             idea: {
@@ -212,6 +212,49 @@ resource 'Ideas' do
             'u_user_select_field' => 'option1'
           })
           expect(idea.author_id).to eq(@user.id)
+          user = User.find(@user.id)
+          expect(user.reload.custom_field_values).to eq({
+            'user_select_field' => 'option1'
+          })
+        end
+      end
+
+      context 'when user_data_collection is demographics_only' do
+        before do
+          @permission.update!(
+            user_data_collection: 'demographics_only'
+          )
+        end
+
+        let(:idea) do 
+          create(
+            :idea,
+            project: @project,
+            creation_phase: @phase,
+            phases: [@phase],
+            custom_field_values: { @custom_field.key => 'option2' },
+            publication_status: 'draft'
+          )
+        end
+        let(:id) { idea.id }
+
+        it 'updates the user profile with the provided custom field values but not author_id' do
+          idea = create(:idea, custom_field_values: { @custom_field.key => 'option2' })
+          do_request({
+            idea: {
+              publication_status: 'published',
+              'u_user_select_field' => 'option1',
+              @custom_field.key => 'option2',
+            }
+          })
+
+          assert_status 200
+          idea = Idea.find(id)
+          expect(idea.reload.custom_field_values).to eq({
+            @custom_field.key => 'option2',
+            'u_user_select_field' => 'option1'
+          })
+          expect(idea.author_id).to be(nil)
           user = User.find(@user.id)
           expect(user.reload.custom_field_values).to eq({
             'user_select_field' => 'option1'
