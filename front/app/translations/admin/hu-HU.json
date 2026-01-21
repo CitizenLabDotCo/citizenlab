@@ -1391,6 +1391,8 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Részvétel időbeli lefolyása",
   "app.containers.Admin.projects.project.insights.participationRate": "Részvételi arány",
   "app.containers.Admin.projects.project.insights.populationPercent": "Népesség (%)",
+  "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Most liked",
+  "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "These proposals got the most traction",
   "app.containers.Admin.projects.project.insights.questions": "Kérdések",
   "app.containers.Admin.projects.project.insights.reactions": "Reakciók",
   "app.containers.Admin.projects.project.insights.representativenessScore": "Reprezentativitási pontszám",
