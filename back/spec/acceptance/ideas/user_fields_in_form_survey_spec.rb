@@ -195,7 +195,7 @@ resource 'Ideas' do
         end
         let(:id) { idea.id }
 
-        it 'updates the idea with the provided custom field values' do
+        it 'updates the user profile with the provided custom field values' do
           idea = create(:idea, custom_field_values: { @custom_field.key => 'option2' })
           do_request({
             idea: {
@@ -205,13 +205,12 @@ resource 'Ideas' do
           })
 
           assert_status 200
-          idea.reload
-          expect(idea.custom_field_values).to eq({
+          expect(idea.reload.custom_field_values).to eq({
             @custom_field.key => 'option2',
             'u_user_select_field' => 'option1'
           })
           expect(idea.author_id).to eq(@user.id)
-          expect(@user.custom_field_values).to eq({
+          expect(@user.reload.custom_field_values).to eq({
             'user_select_field' => 'option1'
           })
         end
