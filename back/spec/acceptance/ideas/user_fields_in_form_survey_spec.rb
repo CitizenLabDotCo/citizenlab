@@ -162,4 +162,55 @@ resource 'Ideas' do
       end
     end
   end
+
+  patch 'web_api/v1/ideas/:id' do
+    context 'when logged in and permitted_by is users and user_fields_in_form is true' do
+      before do
+        @permission.update!(
+          permitted_by: 'users',
+          user_fields_in_form: true
+        )
+        @user = create(:user)
+        header_token_for @user
+      end
+
+      context 'when user_data_collection is all_data' do
+        before do
+          @permission.update!(
+            user_data_collection: 'all_data'
+          )
+        end
+
+        let(:idea) do 
+          create(
+            :idea,
+            author: @user, 
+            custom_field_values: { @custom_field.key => 'option2' }
+          )
+        end
+        let(:id) { idea.id }
+
+        it 'updates the idea with the provided custom field values' do
+          idea = create(:idea, custom_field_values: { @custom_field.key => 'option2' })
+          do_request({
+            idea: {
+              publication_status: 'published',
+              'u_user_select_field' => 'option1'
+            }
+          })
+
+          assert_status 200
+          idea.reload
+          expect(idea.custom_field_values).to eq({
+            @custom_field.key => 'option2',
+            'u_user_select_field' => 'option1'
+          })
+          expect(idea.author_id).to eq(@user.id)
+          expect(@user.custom_field_values).to eq({
+            'user_select_field' => 'option1'
+          })
+        end
+      end
+    end
+  end
 end
