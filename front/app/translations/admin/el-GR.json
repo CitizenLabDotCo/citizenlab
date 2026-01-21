@@ -1391,6 +1391,8 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Συμμετοχή με την πάροδο του χρόνου",
   "app.containers.Admin.projects.project.insights.participationRate": "Ποσοστό συμμετοχής",
   "app.containers.Admin.projects.project.insights.populationPercent": "Πληθυσμός (%)",
+  "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Most liked",
+  "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "These proposals got the most traction",
   "app.containers.Admin.projects.project.insights.questions": "Ερωτήσεις",
   "app.containers.Admin.projects.project.insights.reactions": "Αντιδράσεις",
   "app.containers.Admin.projects.project.insights.representativenessScore": "Βαθμολογία αντιπροσωπευτικότητας",
