@@ -4,8 +4,8 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 
 import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
-import { ITopicData } from 'api/topics/types';
-import useTopics from 'api/topics/useTopics';
+import { IGlobalTopicData } from 'api/global_topics/types';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 
 import Error, { TFieldName } from 'components/UI/Error';
 import TopicsPicker, {
@@ -37,14 +37,14 @@ const Topics = ({ name, projectId, scrollErrorIntoView, ...rest }: Props) => {
   const apiError = errors?.error && ([errors] as CLError[]);
 
   const { data: allowedTopics } = useProjectAllowedInputTopics({ projectId });
-  const { data: topics } = useTopics();
+  const { data: topics } = useGlobalTopics();
   const getAllowedTopics = () => {
     if (!allowedTopics || !topics) return [];
     return allowedTopics.data.map((allowedTopic) =>
       topics.data.find(
         (topic) => allowedTopic.relationships.topic.data.id === topic.id
       )
-    ) as ITopicData[];
+    ) as IGlobalTopicData[];
   };
 
   return (

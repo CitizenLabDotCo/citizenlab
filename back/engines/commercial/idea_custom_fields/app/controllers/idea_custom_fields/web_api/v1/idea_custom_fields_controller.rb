@@ -233,7 +233,6 @@ module IdeaCustomFields
         deleted_options = options.reject { |option| given_ids.include? option.id }
         deleted_options.each { |option| delete_option! option }
         options_params.each_with_index do |option_params, option_index|
-          option_params[:ordering] = option_index # Do this instead of ordering gem .move_to_bottom method for performance reasons
           if option_params[:id] && options_by_id[option_params[:id]]
             option = options_by_id[option_params[:id]]
             next unless update_option! option, option_params, errors, field_index, option_index
@@ -242,6 +241,7 @@ module IdeaCustomFields
             next unless option
           end
           update_option_image!(option, option_params[:image_id])
+          option.move_to_bottom
         end
       end
     end
@@ -314,13 +314,13 @@ module IdeaCustomFields
       deleted_statements = statements.reject { |statement| given_ids.include? statement.id }
       deleted_statements.each { |statement| delete_statement! statement }
       statements_params.each_with_index do |statement_params, statement_index|
-        statement_params[:ordering] = statement_index # Do this instead of ordering gem .move_to_bottom method for performance reasons
         if statement_params[:id] && statements_by_id[statement_params[:id]]
           statement = statements_by_id[statement_params[:id]]
           update_statement! statement, statement_params, errors, field_index, statement_index
         else
-          create_statement! statement_params, field, errors, field_index, statement_index
+          statement = create_statement! statement_params, field, errors, field_index, statement_index
         end
+        statement&.move_to_bottom
       end
     end
 
@@ -331,6 +331,7 @@ module IdeaCustomFields
       else
         add_statements_errors statement.errors.details, errors, field_index, statement_index
       end
+      statement
     end
 
     def update_statement!(statement, statement_params, errors, field_index, statement_index)

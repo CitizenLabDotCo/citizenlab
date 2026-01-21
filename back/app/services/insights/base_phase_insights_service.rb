@@ -138,8 +138,6 @@ module Insights
     end
 
     def demographics_data(participations, participant_ids)
-      return [] if participant_ids.empty?
-
       participant_custom_field_values = participants_custom_field_values(participations, participant_ids)
       permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
 
@@ -273,6 +271,10 @@ module Insights
 
     def calculate_r_score(counts, reference_distribution)
       return nil if reference_distribution.blank?
+
+      # Return 0.0 if all counts are zero. Avoids NaN from RScore computation.
+      values = counts.respond_to?(:values) ? counts.values : counts
+      return 0.0 if values.all?(&:zero?)
 
       UserCustomFields::Representativeness::RScore.compute_scores(counts, reference_distribution)[:min_max_p_ratio]
     end

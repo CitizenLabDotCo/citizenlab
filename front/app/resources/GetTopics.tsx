@@ -1,19 +1,22 @@
-import { ITopicData, ITopicsQueryParams } from 'api/topics/types';
-import useTopics from 'api/topics/useTopics';
+import {
+  IGlobalTopicData,
+  IGlobalTopicsQueryParams,
+} from 'api/global_topics/types';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 
 import { NilOrError } from 'utils/helperUtils';
 
 type children = (renderProps: GetTopicsChildProps) => JSX.Element | null;
 
-type Props = ITopicsQueryParams & {
+type Props = IGlobalTopicsQueryParams & {
   topicIds?: string[];
   children?: children;
 };
 
-export type GetTopicsChildProps = ITopicData[] | NilOrError;
+export type GetTopicsChildProps = IGlobalTopicData[] | NilOrError;
 
 const GetTopics = ({ topicIds, children, ...queryParameters }: Props) => {
-  const { data: topicsData } = useTopics(queryParameters);
+  const { data: topicsData } = useGlobalTopics(queryParameters);
 
   const topics = topicIds
     ? topicsData?.data.filter((topic) => topicIds.includes(topic.id))

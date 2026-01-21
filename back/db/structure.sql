@@ -22,7 +22,7 @@ ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.custom_field_bins DROP CONSTRAINT IF EXISTS fk_rails_f09b1bc4cd;
 ALTER TABLE IF EXISTS ONLY public.file_attachments DROP CONSTRAINT IF EXISTS fk_rails_f06e641e03;
 ALTER TABLE IF EXISTS ONLY public.project_imports DROP CONSTRAINT IF EXISTS fk_rails_efff220342;
-ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_edc8786515;
+ALTER TABLE IF EXISTS ONLY public.static_pages_global_topics DROP CONSTRAINT IF EXISTS fk_rails_edc8786515;
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_e871bf6e26;
 ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_e8076fb9f6;
 ALTER TABLE IF EXISTS ONLY public.custom_field_bins DROP CONSTRAINT IF EXISTS fk_rails_e6f48b841d;
@@ -36,8 +36,9 @@ ALTER TABLE IF EXISTS ONLY public.official_feedbacks DROP CONSTRAINT IF EXISTS f
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS fk_rails_dd3b2cc184;
 ALTER TABLE IF EXISTS ONLY public.project_folders_images DROP CONSTRAINT IF EXISTS fk_rails_dcbc962cfe;
 ALTER TABLE IF EXISTS ONLY public.analysis_summaries DROP CONSTRAINT IF EXISTS fk_rails_dbd13460f0;
-ALTER TABLE IF EXISTS ONLY public.projects_topics DROP CONSTRAINT IF EXISTS fk_rails_db7813bfef;
+ALTER TABLE IF EXISTS ONLY public.projects_global_topics DROP CONSTRAINT IF EXISTS fk_rails_db7813bfef;
 ALTER TABLE IF EXISTS ONLY public.projects_allowed_input_topics DROP CONSTRAINT IF EXISTS fk_rails_db7813bfef;
+ALTER TABLE IF EXISTS ONLY public.ideas_input_topics DROP CONSTRAINT IF EXISTS fk_rails_d68de6da88;
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_rails_d6353758d5;
 ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS fk_rails_d1892257e3;
 ALTER TABLE IF EXISTS ONLY public.webhooks_subscriptions DROP CONSTRAINT IF EXISTS fk_rails_d182afe5ca;
@@ -90,7 +91,7 @@ ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.areas DROP CONSTRAINT IF EXISTS fk_rails_901fc7a65b;
 ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS fk_rails_8fb43a173d;
 ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS fk_rails_8f9b3b56d6;
-ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS fk_rails_8e3f01dacd;
+ALTER TABLE IF EXISTS ONLY public.static_pages_global_topics DROP CONSTRAINT IF EXISTS fk_rails_8e3f01dacd;
 ALTER TABLE IF EXISTS ONLY public.user_custom_fields_representativeness_ref_distributions DROP CONSTRAINT IF EXISTS fk_rails_8cabeff294;
 ALTER TABLE IF EXISTS ONLY public.idea_relations DROP CONSTRAINT IF EXISTS fk_rails_8a385cdad7;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns DROP CONSTRAINT IF EXISTS fk_rails_87e592c9f5;
@@ -99,7 +100,7 @@ ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rails_845d7ca944;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS fk_rails_82dc979276;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_81c11ef894;
-ALTER TABLE IF EXISTS ONLY public.projects_topics DROP CONSTRAINT IF EXISTS fk_rails_812b6d9149;
+ALTER TABLE IF EXISTS ONLY public.projects_global_topics DROP CONSTRAINT IF EXISTS fk_rails_812b6d9149;
 ALTER TABLE IF EXISTS ONLY public.projects_allowed_input_topics DROP CONSTRAINT IF EXISTS fk_rails_812b6d9149;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS fk_rails_81137213da;
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_80d00e60ae;
@@ -115,6 +116,7 @@ ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_r
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_730408dafc;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns_groups DROP CONSTRAINT IF EXISTS fk_rails_712f4ad915;
 ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS fk_rails_6fa6389d80;
+ALTER TABLE IF EXISTS ONLY public.ideas_input_topics DROP CONSTRAINT IF EXISTS fk_rails_6f51315d9b;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_6c9ab6d4f8;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS fk_rails_6988c9886e;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_67f00886f9;
@@ -152,6 +154,7 @@ ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS f
 ALTER TABLE IF EXISTS ONLY public.idea_import_files DROP CONSTRAINT IF EXISTS fk_rails_229b6de93f;
 ALTER TABLE IF EXISTS ONLY public.project_images DROP CONSTRAINT IF EXISTS fk_rails_2119c24213;
 ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS fk_rails_1fc601f42c;
+ALTER TABLE IF EXISTS ONLY public.input_topics DROP CONSTRAINT IF EXISTS fk_rails_1843964cdc;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_16b3d1e637;
 ALTER TABLE IF EXISTS ONLY public.spam_reports DROP CONSTRAINT IF EXISTS fk_rails_121f3a2011;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_0e5b472696;
@@ -193,16 +196,15 @@ DROP INDEX IF EXISTS public.index_users_on_slug;
 DROP INDEX IF EXISTS public.index_users_on_registration_completed_at;
 DROP INDEX IF EXISTS public.index_users_on_email;
 DROP INDEX IF EXISTS public.index_ucf_representativeness_ref_distributions_on_custom_field;
-DROP INDEX IF EXISTS public.index_topics_on_include_in_onboarding;
 DROP INDEX IF EXISTS public.index_tenants_on_host;
 DROP INDEX IF EXISTS public.index_tenants_on_deleted_at;
 DROP INDEX IF EXISTS public.index_tenants_on_creation_finalized_at;
 DROP INDEX IF EXISTS public.index_surveys_responses_on_user_id;
 DROP INDEX IF EXISTS public.index_surveys_responses_on_phase_id;
-DROP INDEX IF EXISTS public.index_static_pages_topics_on_topic_id;
-DROP INDEX IF EXISTS public.index_static_pages_topics_on_static_page_id;
 DROP INDEX IF EXISTS public.index_static_pages_on_slug;
 DROP INDEX IF EXISTS public.index_static_pages_on_code;
+DROP INDEX IF EXISTS public.index_static_pages_global_topics_on_static_page_id;
+DROP INDEX IF EXISTS public.index_static_pages_global_topics_on_global_topic_id;
 DROP INDEX IF EXISTS public.index_static_page_files_on_static_page_id;
 DROP INDEX IF EXISTS public.index_static_page_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_user_id;
@@ -214,9 +216,9 @@ DROP INDEX IF EXISTS public.index_report_builder_reports_on_name;
 DROP INDEX IF EXISTS public.index_reactions_on_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id_and_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id;
-DROP INDEX IF EXISTS public.index_projects_topics_on_topic_id;
-DROP INDEX IF EXISTS public.index_projects_topics_on_project_id;
 DROP INDEX IF EXISTS public.index_projects_on_slug;
+DROP INDEX IF EXISTS public.index_projects_global_topics_on_project_id;
+DROP INDEX IF EXISTS public.index_projects_global_topics_on_global_topic_id;
 DROP INDEX IF EXISTS public.index_projects_allowed_input_topics_on_topic_id_and_project_id;
 DROP INDEX IF EXISTS public.index_projects_allowed_input_topics_on_project_id;
 DROP INDEX IF EXISTS public.index_project_reviews_on_reviewer_id;
@@ -291,6 +293,8 @@ DROP INDEX IF EXISTS public.index_internal_comments_on_lft;
 DROP INDEX IF EXISTS public.index_internal_comments_on_idea_id;
 DROP INDEX IF EXISTS public.index_internal_comments_on_created_at;
 DROP INDEX IF EXISTS public.index_internal_comments_on_author_id;
+DROP INDEX IF EXISTS public.index_input_topics_on_project_id_and_ordering;
+DROP INDEX IF EXISTS public.index_input_topics_on_project_id;
 DROP INDEX IF EXISTS public.index_impact_tracking_sessions_on_monthly_user_hash;
 DROP INDEX IF EXISTS public.index_identities_on_user_id;
 DROP INDEX IF EXISTS public.index_ideas_topics_on_topic_id;
@@ -309,6 +313,9 @@ DROP INDEX IF EXISTS public.index_ideas_on_idea_status_id;
 DROP INDEX IF EXISTS public.index_ideas_on_body_multiloc;
 DROP INDEX IF EXISTS public.index_ideas_on_author_id;
 DROP INDEX IF EXISTS public.index_ideas_on_author_hash;
+DROP INDEX IF EXISTS public.index_ideas_input_topics_on_input_topic_id;
+DROP INDEX IF EXISTS public.index_ideas_input_topics_on_idea_id_and_input_topic_id;
+DROP INDEX IF EXISTS public.index_ideas_input_topics_on_idea_id;
 DROP INDEX IF EXISTS public.index_idea_relations_on_related_idea_id;
 DROP INDEX IF EXISTS public.index_idea_relations_on_idea_id_and_related_idea_id;
 DROP INDEX IF EXISTS public.index_idea_relations_on_idea_id;
@@ -320,6 +327,7 @@ DROP INDEX IF EXISTS public.index_idea_import_files_on_parent_id;
 DROP INDEX IF EXISTS public.index_idea_images_on_idea_id;
 DROP INDEX IF EXISTS public.index_idea_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_idea_files_on_idea_id;
+DROP INDEX IF EXISTS public.index_idea_exposures_on_visitor_hash;
 DROP INDEX IF EXISTS public.index_idea_exposures_on_user_id;
 DROP INDEX IF EXISTS public.index_idea_exposures_on_phase_id;
 DROP INDEX IF EXISTS public.index_idea_exposures_on_idea_id;
@@ -330,6 +338,7 @@ DROP INDEX IF EXISTS public.index_groups_projects_on_group_id;
 DROP INDEX IF EXISTS public.index_groups_permissions_on_permission_id;
 DROP INDEX IF EXISTS public.index_groups_permissions_on_group_id;
 DROP INDEX IF EXISTS public.index_groups_on_slug;
+DROP INDEX IF EXISTS public.index_global_topics_on_include_in_onboarding;
 DROP INDEX IF EXISTS public.index_followers_on_user_id;
 DROP INDEX IF EXISTS public.index_followers_on_followable_id_and_followable_type;
 DROP INDEX IF EXISTS public.index_followers_on_followable;
@@ -487,11 +496,10 @@ ALTER TABLE IF EXISTS ONLY public.verification_verifications DROP CONSTRAINT IF 
 ALTER TABLE IF EXISTS ONLY public.id_id_card_lookup_id_cards DROP CONSTRAINT IF EXISTS verification_id_cards_pkey;
 ALTER TABLE IF EXISTS ONLY public.users DROP CONSTRAINT IF EXISTS users_pkey;
 ALTER TABLE IF EXISTS ONLY public.user_custom_fields_representativeness_ref_distributions DROP CONSTRAINT IF EXISTS user_custom_fields_representativeness_ref_distributions_pkey;
-ALTER TABLE IF EXISTS ONLY public.topics DROP CONSTRAINT IF EXISTS topics_pkey;
 ALTER TABLE IF EXISTS ONLY public.text_images DROP CONSTRAINT IF EXISTS text_images_pkey;
 ALTER TABLE IF EXISTS ONLY public.tenants DROP CONSTRAINT IF EXISTS tenants_pkey;
 ALTER TABLE IF EXISTS ONLY public.surveys_responses DROP CONSTRAINT IF EXISTS surveys_responses_pkey;
-ALTER TABLE IF EXISTS ONLY public.static_pages_topics DROP CONSTRAINT IF EXISTS static_pages_topics_pkey;
+ALTER TABLE IF EXISTS ONLY public.static_pages_global_topics DROP CONSTRAINT IF EXISTS static_pages_global_topics_pkey;
 ALTER TABLE IF EXISTS ONLY public.spam_reports DROP CONSTRAINT IF EXISTS spam_reports_pkey;
 ALTER TABLE IF EXISTS ONLY public.schema_migrations DROP CONSTRAINT IF EXISTS schema_migrations_pkey;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS report_builder_reports_pkey;
@@ -500,8 +508,8 @@ ALTER TABLE IF EXISTS ONLY public.que_values DROP CONSTRAINT IF EXISTS que_value
 ALTER TABLE IF EXISTS ONLY public.que_lockers DROP CONSTRAINT IF EXISTS que_lockers_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_jobs DROP CONSTRAINT IF EXISTS que_jobs_pkey;
 ALTER TABLE IF EXISTS ONLY public.public_api_api_clients DROP CONSTRAINT IF EXISTS public_api_api_clients_pkey;
-ALTER TABLE IF EXISTS ONLY public.projects_topics DROP CONSTRAINT IF EXISTS projects_topics_pkey;
 ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS projects_pkey;
+ALTER TABLE IF EXISTS ONLY public.projects_global_topics DROP CONSTRAINT IF EXISTS projects_global_topics_pkey;
 ALTER TABLE IF EXISTS ONLY public.projects_allowed_input_topics DROP CONSTRAINT IF EXISTS projects_allowed_input_topics_pkey;
 ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS project_reviews_pkey;
 ALTER TABLE IF EXISTS ONLY public.project_imports DROP CONSTRAINT IF EXISTS project_imports_pkey;
@@ -534,6 +542,7 @@ ALTER TABLE IF EXISTS ONLY public.jobs_trackers DROP CONSTRAINT IF EXISTS jobs_t
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS invites_pkey;
 ALTER TABLE IF EXISTS ONLY public.invites_imports DROP CONSTRAINT IF EXISTS invites_imports_pkey;
 ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS internal_comments_pkey;
+ALTER TABLE IF EXISTS ONLY public.input_topics DROP CONSTRAINT IF EXISTS input_topics_pkey;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_sessions DROP CONSTRAINT IF EXISTS impact_tracking_sessions_pkey;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_salts DROP CONSTRAINT IF EXISTS impact_tracking_salts_pkey;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS impact_tracking_pageviews_pkey;
@@ -541,6 +550,7 @@ ALTER TABLE IF EXISTS ONLY public.identities DROP CONSTRAINT IF EXISTS identitie
 ALTER TABLE IF EXISTS ONLY public.ideas_topics DROP CONSTRAINT IF EXISTS ideas_topics_pkey;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS ideas_pkey;
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS ideas_phases_pkey;
+ALTER TABLE IF EXISTS ONLY public.ideas_input_topics DROP CONSTRAINT IF EXISTS ideas_input_topics_pkey;
 ALTER TABLE IF EXISTS ONLY public.idea_statuses DROP CONSTRAINT IF EXISTS idea_statuses_pkey;
 ALTER TABLE IF EXISTS ONLY public.idea_relations DROP CONSTRAINT IF EXISTS idea_relations_pkey;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS idea_imports_pkey;
@@ -551,6 +561,7 @@ ALTER TABLE IF EXISTS ONLY public.idea_exposures DROP CONSTRAINT IF EXISTS idea_
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS groups_projects_pkey;
 ALTER TABLE IF EXISTS ONLY public.groups DROP CONSTRAINT IF EXISTS groups_pkey;
 ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS groups_permissions_pkey;
+ALTER TABLE IF EXISTS ONLY public.global_topics DROP CONSTRAINT IF EXISTS global_topics_pkey;
 ALTER TABLE IF EXISTS ONLY public.followers DROP CONSTRAINT IF EXISTS followers_pkey;
 ALTER TABLE IF EXISTS ONLY public.flag_inappropriate_content_inappropriate_content_flags DROP CONSTRAINT IF EXISTS flag_inappropriate_content_inappropriate_content_flags_pkey;
 ALTER TABLE IF EXISTS ONLY public.files_transcripts DROP CONSTRAINT IF EXISTS files_transcripts_pkey;
@@ -573,6 +584,7 @@ ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns DROP CONSTRAINT IF E
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns_groups DROP CONSTRAINT IF EXISTS email_campaigns_campaigns_groups_pkey;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaign_email_commands DROP CONSTRAINT IF EXISTS email_campaigns_campaign_email_commands_pkey;
 ALTER TABLE IF EXISTS ONLY public.email_bans DROP CONSTRAINT IF EXISTS email_bans_pkey;
+ALTER TABLE IF EXISTS ONLY public.default_input_topics DROP CONSTRAINT IF EXISTS default_input_topics_pkey;
 ALTER TABLE IF EXISTS ONLY public.custom_forms DROP CONSTRAINT IF EXISTS custom_forms_pkey;
 ALTER TABLE IF EXISTS ONLY public.custom_fields DROP CONSTRAINT IF EXISTS custom_fields_pkey;
 ALTER TABLE IF EXISTS ONLY public.custom_field_options DROP CONSTRAINT IF EXISTS custom_field_options_pkey;
@@ -617,11 +629,12 @@ DROP TABLE IF EXISTS public.webhooks_subscriptions;
 DROP TABLE IF EXISTS public.webhooks_deliveries;
 DROP TABLE IF EXISTS public.verification_verifications;
 DROP TABLE IF EXISTS public.user_custom_fields_representativeness_ref_distributions;
-DROP TABLE IF EXISTS public.topics;
+DROP VIEW IF EXISTS public.topics;
 DROP TABLE IF EXISTS public.text_images;
 DROP TABLE IF EXISTS public.tenants;
 DROP TABLE IF EXISTS public.surveys_responses;
-DROP TABLE IF EXISTS public.static_pages_topics;
+DROP VIEW IF EXISTS public.static_pages_topics;
+DROP TABLE IF EXISTS public.static_pages_global_topics;
 DROP TABLE IF EXISTS public.static_pages;
 DROP TABLE IF EXISTS public.static_page_files;
 DROP TABLE IF EXISTS public.spam_reports;
@@ -632,7 +645,8 @@ DROP TABLE IF EXISTS public.que_values;
 DROP TABLE IF EXISTS public.que_lockers;
 DROP SEQUENCE IF EXISTS public.que_jobs_id_seq;
 DROP TABLE IF EXISTS public.public_api_api_clients;
-DROP TABLE IF EXISTS public.projects_topics;
+DROP VIEW IF EXISTS public.projects_topics;
+DROP TABLE IF EXISTS public.projects_global_topics;
 DROP TABLE IF EXISTS public.projects_allowed_input_topics;
 DROP TABLE IF EXISTS public.project_reviews;
 DROP TABLE IF EXISTS public.project_imports;
@@ -659,11 +673,13 @@ DROP TABLE IF EXISTS public.machine_translations_machine_translations;
 DROP TABLE IF EXISTS public.jobs_trackers;
 DROP TABLE IF EXISTS public.invites_imports;
 DROP TABLE IF EXISTS public.internal_comments;
+DROP TABLE IF EXISTS public.input_topics;
 DROP TABLE IF EXISTS public.impact_tracking_salts;
 DROP TABLE IF EXISTS public.impact_tracking_pageviews;
 DROP TABLE IF EXISTS public.identities;
 DROP TABLE IF EXISTS public.ideas_topics;
 DROP TABLE IF EXISTS public.ideas_phases;
+DROP TABLE IF EXISTS public.ideas_input_topics;
 DROP VIEW IF EXISTS public.idea_trending_infos;
 DROP TABLE IF EXISTS public.idea_relations;
 DROP TABLE IF EXISTS public.idea_imports;
@@ -675,6 +691,7 @@ DROP TABLE IF EXISTS public.id_id_card_lookup_id_cards;
 DROP TABLE IF EXISTS public.groups_projects;
 DROP TABLE IF EXISTS public.groups_permissions;
 DROP TABLE IF EXISTS public.groups;
+DROP TABLE IF EXISTS public.global_topics;
 DROP TABLE IF EXISTS public.followers;
 DROP TABLE IF EXISTS public.flag_inappropriate_content_inappropriate_content_flags;
 DROP TABLE IF EXISTS public.files_transcripts;
@@ -693,6 +710,7 @@ DROP TABLE IF EXISTS public.email_campaigns_consents;
 DROP TABLE IF EXISTS public.email_campaigns_campaigns_groups;
 DROP TABLE IF EXISTS public.email_campaigns_campaign_email_commands;
 DROP TABLE IF EXISTS public.email_bans;
+DROP TABLE IF EXISTS public.default_input_topics;
 DROP TABLE IF EXISTS public.custom_forms;
 DROP TABLE IF EXISTS public.custom_fields;
 DROP TABLE IF EXISTS public.custom_field_options;
@@ -1375,8 +1393,8 @@ CREATE TABLE public.projects (
     baskets_count integer DEFAULT 0 NOT NULL,
     votes_count integer DEFAULT 0 NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
-    preview_token character varying NOT NULL,
     header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
+    preview_token character varying NOT NULL,
     hidden boolean DEFAULT false NOT NULL,
     listed boolean DEFAULT true NOT NULL
 );
@@ -1579,7 +1597,7 @@ CREATE VIEW public.analytics_fact_email_deliveries AS
     (ecd.sent_at)::date AS dimension_date_sent_id,
     ecd.campaign_id,
     p.id AS dimension_project_id,
-    ((ecc.type)::text <> ALL (ARRAY[('EmailCampaigns::Campaigns::Manual'::character varying)::text, ('EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying)::text])) AS automated
+    ((ecc.type)::text <> ALL ((ARRAY['EmailCampaigns::Campaigns::Manual'::character varying, 'EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying])::text[])) AS automated
    FROM ((public.email_campaigns_deliveries ecd
      JOIN public.email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)))
      LEFT JOIN public.projects p ON ((p.id = ecc.context_id)));
@@ -1765,9 +1783,9 @@ CREATE TABLE public.phases (
     manual_voters_amount integer,
     manual_voters_last_updated_by_id uuid,
     manual_voters_last_updated_at timestamp(6) without time zone,
-    survey_popup_frequency integer,
     similarity_threshold_title double precision DEFAULT 0.3,
     similarity_threshold_body double precision DEFAULT 0.4,
+    survey_popup_frequency integer,
     similarity_enabled boolean DEFAULT true NOT NULL,
     vote_term character varying DEFAULT 'vote'::character varying,
     voting_min_selected_options integer DEFAULT 1 NOT NULL,
@@ -2244,7 +2262,7 @@ CREATE TABLE public.content_builder_layouts (
 --
 
 CREATE TABLE public.cosponsorships (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
     status character varying DEFAULT 'pending'::character varying NOT NULL,
     user_id uuid NOT NULL,
     idea_id uuid NOT NULL,
@@ -2376,6 +2394,21 @@ CREATE TABLE public.custom_forms (
     print_start_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     print_end_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     print_personal_data_fields boolean DEFAULT false NOT NULL
+);
+
+
+--
+-- Name: default_input_topics; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.default_input_topics (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    description_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    icon character varying,
+    ordering integer DEFAULT 0 NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -2674,6 +2707,24 @@ CREATE TABLE public.followers (
 
 
 --
+-- Name: global_topics; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.global_topics (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    title_multiloc jsonb DEFAULT '{}'::jsonb,
+    description_multiloc jsonb DEFAULT '{}'::jsonb,
+    icon character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    ordering integer,
+    followers_count integer DEFAULT 0 NOT NULL,
+    include_in_onboarding boolean DEFAULT false NOT NULL,
+    is_default boolean DEFAULT false NOT NULL
+);
+
+
+--
 -- Name: groups; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2731,11 +2782,12 @@ CREATE TABLE public.id_id_card_lookup_id_cards (
 
 CREATE TABLE public.idea_exposures (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
-    user_id uuid NOT NULL,
+    user_id uuid,
     idea_id uuid NOT NULL,
     phase_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    visitor_hash character varying
 );
 
 
@@ -2862,6 +2914,19 @@ CREATE VIEW public.idea_trending_infos AS
 
 
 --
+-- Name: ideas_input_topics; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ideas_input_topics (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    idea_id uuid NOT NULL,
+    input_topic_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: ideas_phases; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2923,6 +2988,22 @@ CREATE TABLE public.impact_tracking_pageviews (
 CREATE TABLE public.impact_tracking_salts (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     salt character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: input_topics; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.input_topics (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    project_id uuid NOT NULL,
+    title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    description_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    icon character varying,
+    ordering integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -3378,6 +3459,7 @@ CREATE TABLE public.project_imports (
     import_id uuid,
     log character varying[] DEFAULT '{}'::character varying[],
     locale character varying,
+    string character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     import_type character varying
@@ -3414,16 +3496,29 @@ CREATE TABLE public.projects_allowed_input_topics (
 
 
 --
--- Name: projects_topics; Type: TABLE; Schema: public; Owner: -
+-- Name: projects_global_topics; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.projects_topics (
+CREATE TABLE public.projects_global_topics (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    topic_id uuid NOT NULL,
+    global_topic_id uuid NOT NULL,
     project_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
+
+
+--
+-- Name: projects_topics; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.projects_topics AS
+ SELECT id,
+    project_id,
+    global_topic_id AS topic_id,
+    created_at,
+    updated_at
+   FROM public.projects_global_topics;
 
 
 --
@@ -3606,16 +3701,29 @@ CREATE TABLE public.static_pages (
 
 
 --
--- Name: static_pages_topics; Type: TABLE; Schema: public; Owner: -
+-- Name: static_pages_global_topics; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.static_pages_topics (
+CREATE TABLE public.static_pages_global_topics (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    topic_id uuid NOT NULL,
+    global_topic_id uuid NOT NULL,
     static_page_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
+
+
+--
+-- Name: static_pages_topics; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.static_pages_topics AS
+ SELECT id,
+    static_page_id,
+    global_topic_id AS topic_id,
+    created_at,
+    updated_at
+   FROM public.static_pages_global_topics;
 
 
 --
@@ -3673,21 +3781,21 @@ CREATE TABLE public.text_images (
 
 
 --
--- Name: topics; Type: TABLE; Schema: public; Owner: -
+-- Name: topics; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE TABLE public.topics (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    title_multiloc jsonb DEFAULT '{}'::jsonb,
-    description_multiloc jsonb DEFAULT '{}'::jsonb,
-    icon character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    ordering integer,
-    followers_count integer DEFAULT 0 NOT NULL,
-    include_in_onboarding boolean DEFAULT false NOT NULL,
-    is_default boolean DEFAULT false NOT NULL
-);
+CREATE VIEW public.topics AS
+ SELECT id,
+    title_multiloc,
+    description_multiloc,
+    icon,
+    created_at,
+    updated_at,
+    ordering,
+    followers_count,
+    include_in_onboarding,
+    is_default
+   FROM public.global_topics;
 
 
 --
@@ -4083,6 +4191,14 @@ ALTER TABLE ONLY public.custom_forms
 
 
 --
+-- Name: default_input_topics default_input_topics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.default_input_topics
+    ADD CONSTRAINT default_input_topics_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: email_bans email_bans_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4259,6 +4375,14 @@ ALTER TABLE ONLY public.followers
 
 
 --
+-- Name: global_topics global_topics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.global_topics
+    ADD CONSTRAINT global_topics_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: groups_permissions groups_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4339,6 +4463,14 @@ ALTER TABLE ONLY public.idea_statuses
 
 
 --
+-- Name: ideas_input_topics ideas_input_topics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ideas_input_topics
+    ADD CONSTRAINT ideas_input_topics_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: ideas_phases ideas_phases_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4392,6 +4524,14 @@ ALTER TABLE ONLY public.impact_tracking_salts
 
 ALTER TABLE ONLY public.impact_tracking_sessions
     ADD CONSTRAINT impact_tracking_sessions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: input_topics input_topics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.input_topics
+    ADD CONSTRAINT input_topics_pkey PRIMARY KEY (id);
 
 
 --
@@ -4651,19 +4791,19 @@ ALTER TABLE ONLY public.projects_allowed_input_topics
 
 
 --
+-- Name: projects_global_topics projects_global_topics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.projects_global_topics
+    ADD CONSTRAINT projects_global_topics_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: projects projects_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.projects
     ADD CONSTRAINT projects_pkey PRIMARY KEY (id);
-
-
---
--- Name: projects_topics projects_topics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.projects_topics
-    ADD CONSTRAINT projects_topics_pkey PRIMARY KEY (id);
 
 
 --
@@ -4731,11 +4871,11 @@ ALTER TABLE ONLY public.spam_reports
 
 
 --
--- Name: static_pages_topics static_pages_topics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: static_pages_global_topics static_pages_global_topics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.static_pages_topics
-    ADD CONSTRAINT static_pages_topics_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.static_pages_global_topics
+    ADD CONSTRAINT static_pages_global_topics_pkey PRIMARY KEY (id);
 
 
 --
@@ -4760,14 +4900,6 @@ ALTER TABLE ONLY public.tenants
 
 ALTER TABLE ONLY public.text_images
     ADD CONSTRAINT text_images_pkey PRIMARY KEY (id);
-
-
---
--- Name: topics topics_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.topics
-    ADD CONSTRAINT topics_pkey PRIMARY KEY (id);
 
 
 --
@@ -5880,6 +6012,13 @@ CREATE INDEX index_followers_on_user_id ON public.followers USING btree (user_id
 
 
 --
+-- Name: index_global_topics_on_include_in_onboarding; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_global_topics_on_include_in_onboarding ON public.global_topics USING btree (include_in_onboarding);
+
+
+--
 -- Name: index_groups_on_slug; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5947,6 +6086,13 @@ CREATE INDEX index_idea_exposures_on_phase_id ON public.idea_exposures USING btr
 --
 
 CREATE INDEX index_idea_exposures_on_user_id ON public.idea_exposures USING btree (user_id);
+
+
+--
+-- Name: index_idea_exposures_on_visitor_hash; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_idea_exposures_on_visitor_hash ON public.idea_exposures USING btree (visitor_hash);
 
 
 --
@@ -6024,6 +6170,27 @@ CREATE UNIQUE INDEX index_idea_relations_on_idea_id_and_related_idea_id ON publi
 --
 
 CREATE INDEX index_idea_relations_on_related_idea_id ON public.idea_relations USING btree (related_idea_id);
+
+
+--
+-- Name: index_ideas_input_topics_on_idea_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ideas_input_topics_on_idea_id ON public.ideas_input_topics USING btree (idea_id);
+
+
+--
+-- Name: index_ideas_input_topics_on_idea_id_and_input_topic_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_ideas_input_topics_on_idea_id_and_input_topic_id ON public.ideas_input_topics USING btree (idea_id, input_topic_id);
+
+
+--
+-- Name: index_ideas_input_topics_on_input_topic_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ideas_input_topics_on_input_topic_id ON public.ideas_input_topics USING btree (input_topic_id);
 
 
 --
@@ -6150,6 +6317,20 @@ CREATE INDEX index_identities_on_user_id ON public.identities USING btree (user_
 --
 
 CREATE INDEX index_impact_tracking_sessions_on_monthly_user_hash ON public.impact_tracking_sessions USING btree (monthly_user_hash);
+
+
+--
+-- Name: index_input_topics_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_input_topics_on_project_id ON public.input_topics USING btree (project_id);
+
+
+--
+-- Name: index_input_topics_on_project_id_and_ordering; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_input_topics_on_project_id_and_ordering ON public.input_topics USING btree (project_id, ordering);
 
 
 --
@@ -6671,24 +6852,24 @@ CREATE UNIQUE INDEX index_projects_allowed_input_topics_on_topic_id_and_project_
 
 
 --
+-- Name: index_projects_global_topics_on_global_topic_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_projects_global_topics_on_global_topic_id ON public.projects_global_topics USING btree (global_topic_id);
+
+
+--
+-- Name: index_projects_global_topics_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_projects_global_topics_on_project_id ON public.projects_global_topics USING btree (project_id);
+
+
+--
 -- Name: index_projects_on_slug; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_projects_on_slug ON public.projects USING btree (slug);
-
-
---
--- Name: index_projects_topics_on_project_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_projects_topics_on_project_id ON public.projects_topics USING btree (project_id);
-
-
---
--- Name: index_projects_topics_on_topic_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_projects_topics_on_topic_id ON public.projects_topics USING btree (topic_id);
 
 
 --
@@ -6769,6 +6950,20 @@ CREATE INDEX index_static_page_files_on_static_page_id ON public.static_page_fil
 
 
 --
+-- Name: index_static_pages_global_topics_on_global_topic_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_static_pages_global_topics_on_global_topic_id ON public.static_pages_global_topics USING btree (global_topic_id);
+
+
+--
+-- Name: index_static_pages_global_topics_on_static_page_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_static_pages_global_topics_on_static_page_id ON public.static_pages_global_topics USING btree (static_page_id);
+
+
+--
 -- Name: index_static_pages_on_code; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6780,20 +6975,6 @@ CREATE INDEX index_static_pages_on_code ON public.static_pages USING btree (code
 --
 
 CREATE UNIQUE INDEX index_static_pages_on_slug ON public.static_pages USING btree (slug);
-
-
---
--- Name: index_static_pages_topics_on_static_page_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_static_pages_topics_on_static_page_id ON public.static_pages_topics USING btree (static_page_id);
-
-
---
--- Name: index_static_pages_topics_on_topic_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_static_pages_topics_on_topic_id ON public.static_pages_topics USING btree (topic_id);
 
 
 --
@@ -6829,13 +7010,6 @@ CREATE INDEX index_tenants_on_deleted_at ON public.tenants USING btree (deleted_
 --
 
 CREATE INDEX index_tenants_on_host ON public.tenants USING btree (host);
-
-
---
--- Name: index_topics_on_include_in_onboarding; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_topics_on_include_in_onboarding ON public.topics USING btree (include_in_onboarding);
 
 
 --
@@ -7136,6 +7310,14 @@ ALTER TABLE ONLY public.analysis_analyses
 
 
 --
+-- Name: input_topics fk_rails_1843964cdc; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.input_topics
+    ADD CONSTRAINT fk_rails_1843964cdc FOREIGN KEY (project_id) REFERENCES public.projects(id);
+
+
+--
 -- Name: areas_static_pages fk_rails_1fc601f42c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7432,6 +7614,14 @@ ALTER TABLE ONLY public.ideas
 
 
 --
+-- Name: ideas_input_topics fk_rails_6f51315d9b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ideas_input_topics
+    ADD CONSTRAINT fk_rails_6f51315d9b FOREIGN KEY (idea_id) REFERENCES public.ideas(id);
+
+
+--
 -- Name: groups_permissions fk_rails_6fa6389d80; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7552,10 +7742,10 @@ ALTER TABLE ONLY public.projects_allowed_input_topics
 
 
 --
--- Name: projects_topics fk_rails_812b6d9149; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: projects_global_topics fk_rails_812b6d9149; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.projects_topics
+ALTER TABLE ONLY public.projects_global_topics
     ADD CONSTRAINT fk_rails_812b6d9149 FOREIGN KEY (project_id) REFERENCES public.projects(id);
 
 
@@ -7624,10 +7814,10 @@ ALTER TABLE ONLY public.user_custom_fields_representativeness_ref_distributions
 
 
 --
--- Name: static_pages_topics fk_rails_8e3f01dacd; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: static_pages_global_topics fk_rails_8e3f01dacd; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.static_pages_topics
+ALTER TABLE ONLY public.static_pages_global_topics
     ADD CONSTRAINT fk_rails_8e3f01dacd FOREIGN KEY (static_page_id) REFERENCES public.static_pages(id);
 
 
@@ -8048,19 +8238,27 @@ ALTER TABLE ONLY public.groups_projects
 
 
 --
+-- Name: ideas_input_topics fk_rails_d68de6da88; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ideas_input_topics
+    ADD CONSTRAINT fk_rails_d68de6da88 FOREIGN KEY (input_topic_id) REFERENCES public.input_topics(id);
+
+
+--
 -- Name: projects_allowed_input_topics fk_rails_db7813bfef; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.projects_allowed_input_topics
-    ADD CONSTRAINT fk_rails_db7813bfef FOREIGN KEY (topic_id) REFERENCES public.topics(id);
+    ADD CONSTRAINT fk_rails_db7813bfef FOREIGN KEY (topic_id) REFERENCES public.global_topics(id);
 
 
 --
--- Name: projects_topics fk_rails_db7813bfef; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: projects_global_topics fk_rails_db7813bfef; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.projects_topics
-    ADD CONSTRAINT fk_rails_db7813bfef FOREIGN KEY (topic_id) REFERENCES public.topics(id);
+ALTER TABLE ONLY public.projects_global_topics
+    ADD CONSTRAINT fk_rails_db7813bfef FOREIGN KEY (global_topic_id) REFERENCES public.global_topics(id);
 
 
 --
@@ -8168,11 +8366,11 @@ ALTER TABLE ONLY public.polls_response_options
 
 
 --
--- Name: static_pages_topics fk_rails_edc8786515; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: static_pages_global_topics fk_rails_edc8786515; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.static_pages_topics
-    ADD CONSTRAINT fk_rails_edc8786515 FOREIGN KEY (topic_id) REFERENCES public.topics(id);
+ALTER TABLE ONLY public.static_pages_global_topics
+    ADD CONSTRAINT fk_rails_edc8786515 FOREIGN KEY (global_topic_id) REFERENCES public.global_topics(id);
 
 
 --
@@ -8276,7 +8474,7 @@ ALTER TABLE ONLY public.project_reviews
 --
 
 ALTER TABLE ONLY public.ideas_topics
-    ADD CONSTRAINT fk_rails_ff1788eb50 FOREIGN KEY (topic_id) REFERENCES public.topics(id);
+    ADD CONSTRAINT fk_rails_ff1788eb50 FOREIGN KEY (topic_id) REFERENCES public.global_topics(id);
 
 
 --
@@ -8286,6 +8484,9 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260107121024'),
+('20260107115454'),
+('20260115115438'),
 ('20251224101437'),
 ('20251217110845'),
 ('20251212135514'),
@@ -8339,7 +8540,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20250611110008'),
 ('20250610112901'),
 ('20250609151800'),
-('20250606074930'),
 ('20250605090517'),
 ('20250603161856'),
 ('20250528153448'),

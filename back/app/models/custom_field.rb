@@ -122,6 +122,7 @@ class CustomField < ApplicationRecord
   before_validation :set_default_enabled
   before_validation :generate_key, on: :create
   before_validation :sanitize_description_multiloc
+  before_validation :clear_logic_unless_supported
   after_create(if: :domicile?) { Area.recreate_custom_field_options }
 
   scope :registration, -> { where(resource_type: 'User') }
@@ -148,6 +149,10 @@ class CustomField < ApplicationRecord
 
   def input_type_strategy
     @input_type_strategy ||= "InputTypeStrategy::#{input_type.camelize}".constantize.new(self)
+  end
+
+  def support_logic?
+    %w[page select linear_scale ranking].include?(input_type)
   end
 
   def includes_other_option?
@@ -412,6 +417,10 @@ class CustomField < ApplicationRecord
       option.title_multiloc = area_id_map.dig(option.id, :title) || MultilocService.new.i18n_to_multiloc('custom_field_options.domicile.outside')
       option
     end
+  end
+
+  def clear_logic_unless_supported
+    self.logic = {} unless support_logic?
   end
 end
 

@@ -12,7 +12,7 @@ resource 'Topics' do
 
   include_context 'common_auth'
 
-  let!(:topics) { create_list(:topic, 5) }
+  let!(:topics) { create_list(:global_topic, 5) }
 
   get '/api/v2/topics/' do
     route_summary 'List topics'
@@ -42,7 +42,7 @@ resource 'Topics' do
     # in a nested context to limit the scope of the `around` block.
     it_behaves_like 'filtering_by_date', :topic, :updated_at do
       around do |example|
-        Topic.acts_as_list_no_update { example.run }
+        GlobalTopic.acts_as_list_no_update { example.run }
       end
     end
   end
@@ -83,5 +83,5 @@ resource 'Topics' do
     end
   end
 
-  include_examples '/api/v2/.../deleted', :topics
+  include_examples '/api/v2/.../deleted', :topics, item_type: 'GlobalTopic'
 end
