@@ -12,7 +12,7 @@ module Insights
         end_time = @phase.end_at ? @phase.end_at.end_of_day : Time.current.end_of_day
         @phase.ideas
           .transitive(false)
-          .where('ideas.created_at >= ? AND ideas.created_at <= ?', @phase.start_at.beginning_of_day, end_time)
+          .where(created_at: @phase.start_at.beginning_of_day..end_time)
       end
     end
 
@@ -59,8 +59,8 @@ module Insights
 
       return result unless phase_has_run_more_than_14_days?
 
-      ideas_last_7_days_count = ideas_in_phase.where('ideas.created_at >= ?', 7.days.ago).count
-      ideas_previous_7_days_count = ideas_in_phase.where('ideas.created_at < ? AND ideas.created_at >= ?', 7.days.ago, 14.days.ago).count
+      ideas_last_7_days_count = ideas_in_phase.where(created_at: 7.days.ago..).count
+      ideas_previous_7_days_count = ideas_in_phase.where(created_at: 14.days.ago...7.days.ago).count
 
       submitted_survey_participations = participations[:posting_idea].select { |p| p[:survey_submitted_at].present? }
 

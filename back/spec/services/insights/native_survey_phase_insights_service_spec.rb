@@ -6,11 +6,11 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
 
   let(:user1) { create(:user) }
   let!(:idea1) { create(:idea, phases: [phase], created_at: 20.days.ago, submitted_at: 20.days.ago, author: user1, creation_phase_id: phase.id) } # before phase start
-  let!(:idea2) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: user1, creation_phase_id: phase.id) } # during phase
+  let!(:idea2) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: user1, creation_phase_id: phase.id) } # during phase, in week before last
   let!(:idea3) { create(:idea, phases: [phase], created_at: 1.day.ago, submitted_at: 1.day.ago, author: user1, creation_phase_id: phase.id) } # after phase end
 
   let(:user2) { create(:user) }
-  let!(:idea4) { create(:idea, phases: [phase], created_at: 10.days.ago, submitted_at: 10.days.ago, author: user2, creation_phase_id: phase.id) } # during phase
+  let!(:idea4) { create(:idea, phases: [phase], created_at: 5.days.ago, submitted_at: 5.days.ago, author: user2, creation_phase_id: phase.id) } # during phase, in last 7 days
   let!(:idea5) do
     create(
       :idea,
@@ -114,22 +114,16 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
   end
 
   describe 'phase_participation_method_metrics' do
-    let(:user1) { create(:user) }
-    let(:participation1) { create(:posting_idea_participation, acted_at: 10.days.ago, user: user1) }
-    let(:participation2) { create(:posting_idea_participation, acted_at: 5.days.ago, user: user1) }
-
     it 'calculates the correct metrics' do
-      participation1[:survey_submitted_at] = 10.days.ago
-      participation2[:survey_submitted_at] = 5.days.ago
-      participations = { posting_idea: [participation1, participation2] }
+      participations = service.send(:phase_participations)
 
       metrics = service.send(:phase_participation_method_metrics, participations)
 
       expect(metrics).to eq({
-        surveys_submitted: 2,
-        surveys_submitted_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) = 0% change
-        completion_rate: 1.0,
-        completion_rate_7_day_change: 0.0 # completion_rate_last_7_days: 1.0, completion_rate_previous_7_days: 1.0 = 0% change
+        surveys_submitted: 4,
+        surveys_submitted_7_day_change: -66.7, # from 3 (in week before last) to 1 (in last 7 days) = -66.7% change
+        completion_rate: 0.8, # 4 submitted surveys out of 5 ideas created during phase
+        completion_rate_7_day_change: 33.3 # completion_rate_last_7_days: 1.0, completion_rate_previous_7_days: 0.75 = 33.3% change
       })
     end
   end
