@@ -1391,6 +1391,8 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Participació al llarg del temps",
   "app.containers.Admin.projects.project.insights.participationRate": "Taxa de participació",
   "app.containers.Admin.projects.project.insights.populationPercent": "Població (%)",
+  "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Most liked",
+  "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "These proposals got the most traction",
   "app.containers.Admin.projects.project.insights.questions": "Preguntes",
   "app.containers.Admin.projects.project.insights.reactions": "Reaccions",
   "app.containers.Admin.projects.project.insights.representativenessScore": "Puntuació de representativitat",
