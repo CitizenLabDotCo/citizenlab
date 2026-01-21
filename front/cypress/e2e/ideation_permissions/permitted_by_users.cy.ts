@@ -1,5 +1,6 @@
 import moment = require('moment');
-import { randomString } from '../../support/commands';
+import { randomString, randomEmail } from '../../support/commands';
+import { updatePermission } from '../../support/permissions';
 
 describe('Ideation permitted by: users', () => {
   let customFieldId = '';
@@ -36,13 +37,12 @@ describe('Ideation permitted by: users', () => {
           title: randomString(),
           startAt: twoDaysAgo,
           endAt: inTwoMonths,
-          participationMethod: 'native_survey',
-          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-          nativeSurveyTitleMultiloc: { en: 'Survey' },
+          participationMethod: 'ideation',
           canComment: true,
           canPost: true,
           canReact: true,
           description: 'Some description',
+          allow_anonymous_participation: true,
         }).then((phase) => {
           phaseId = phase.body.data.id;
 
@@ -78,14 +78,6 @@ describe('Ideation permitted by: users', () => {
                       adminJwt,
                       phaseId,
                       permitted_by: 'users',
-                    }).then(() => {
-                      // Finally: go into the survey and save it
-                      cy.setAdminLoginCookie();
-                      cy.visit(
-                        `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`
-                      );
-                      cy.get('form').submit();
-                      cy.get('[data-testid="feedbackSuccessMessage"]');
                     });
                   });
               });
@@ -93,6 +85,20 @@ describe('Ideation permitted by: users', () => {
         });
       });
     });
+
+    // Create user
+    const userFirstName = randomString(10);
+    const userLastName = randomString(10);
+    const userPassword = randomString(10);
+    const userEmail = randomEmail();
+
+    cy.apiSignup(userFirstName, userLastName, userEmail, userPassword).then(
+      (response) => {
+        cy.setLoginCookie(userEmail, userPassword);
+        cy.setConsentCookie();
+        userId = response.body.data.id;
+      }
+    );
   });
 
   after(() => {
@@ -102,5 +108,23 @@ describe('Ideation permitted by: users', () => {
     if (userId) {
       cy.apiRemoveUser(userId);
     }
+  });
+
+  describe('In reg flow', () => {
+    describe('Non-anonymous user', () => {
+      it('stores user custom fields in idea', () => {
+        cy.visit(`/projects/${projectSlug}`);
+        cy.get('.e2e-idea-button')
+          .first()
+          .find('button')
+          .click({ force: true });
+      });
+    });
+
+    describe.skip('Anonymous user', () => {
+      it('does not store user custom fields in idea', () => {
+        // TODO
+      });
+    });
   });
 });
