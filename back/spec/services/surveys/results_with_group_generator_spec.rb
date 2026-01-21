@@ -5,7 +5,7 @@ require './spec/services/surveys/shared/survey_setup'
 
 # NOTE: This spec tests only the grouping functionality that is overridden from the parent class.
 
-RSpec.describe Surveys::ResultsWithGroupGenerator do
+RSpec.describe Surveys::ResultsWithGroupGenerator, :clear_cache do
   subject(:generator) { described_class.new survey_phase }
 
   include_context 'survey_setup'

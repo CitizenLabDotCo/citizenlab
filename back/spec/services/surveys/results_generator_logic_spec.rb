@@ -5,7 +5,7 @@ require './spec/services/surveys/shared/survey_setup'
 
 # NOTE: These are additional tests that test how logic affects the generated results
 
-RSpec.describe Surveys::ResultsGenerator do
+RSpec.describe Surveys::ResultsGenerator, :clear_cache do
   subject(:generator) { described_class.new survey_phase }
 
   include_context 'survey_setup'

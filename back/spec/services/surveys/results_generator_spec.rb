@@ -11,7 +11,7 @@ require './spec/services/surveys/shared/survey_setup'
 #   * Results for one field are ordered in descending order.
 #   * Result generation is supported for phases only.
 
-RSpec.describe Surveys::ResultsGenerator do
+RSpec.describe Surveys::ResultsGenerator, :clear_cache do
   subject(:generator) { described_class.new survey_phase }
 
   include_context 'survey_setup'

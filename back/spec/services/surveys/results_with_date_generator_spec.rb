@@ -5,7 +5,7 @@ require './spec/services/surveys/shared/survey_setup'
 
 # NOTE: These tests only test the addition of filtering by year & quarter to results
 
-RSpec.describe Surveys::ResultsWithDateGenerator do
+RSpec.describe Surveys::ResultsWithDateGenerator, :clear_cache do
   subject(:generator) { described_class.new survey_phase, year: year, quarter: quarter }
 
   include_context 'survey_setup'
