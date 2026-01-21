@@ -278,6 +278,7 @@ resource 'Ideas' do
           it 'stores values in idea but not profile, does not add author_id' do
             do_request({
               idea: {
+                publication_status: 'published',
                 project_id: @project.id,
                 title_multiloc: { 'en' => 'My Idea Title' },
                 body_multiloc: { 'en' => 'My Idea Body' },

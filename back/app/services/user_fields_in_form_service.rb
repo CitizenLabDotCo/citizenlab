@@ -21,8 +21,6 @@ class UserFieldsInFormService
     # Confirm that the idea belongs to the current user
     return false unless idea.author_id == current_user.id
 
-    return false if pmethod === 'ideation' && idea.anonymous
-
     permission = phase.permissions.find_by(action: 'posting_idea')
     return false unless permission
 
@@ -33,6 +31,9 @@ class UserFieldsInFormService
 
     # If pmethod is native survey-like: confirm that user_data_collection = 'all_data' or 'demographics_only'
     return false if NATIVE_SURVEYLIKE_METHODS.include?(pmethod) && permission.user_data_collection == 'anonymous'
+
+    # If pmethod is ideation: confirm that idea is not anonymosu
+    return false if pmethod === 'ideation' && idea.anonymous
 
     # Finally, confirm that the idea doesn't already have user fields
     return false if idea.custom_field_values&.keys&.any? { |key| key.start_with?(prefix) }
