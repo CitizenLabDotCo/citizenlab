@@ -13,7 +13,14 @@ export interface IDecodedJwt {
 
 export function getJwt() {
   try {
-    return get(COOKIE_NAME);
+    const jwt = get(COOKIE_NAME);
+
+    if (!jwt || jwt === 'undefined') {
+      removeJwt();
+      return null;
+    }
+
+    return jwt;
   } catch (error) {
     return null;
   }

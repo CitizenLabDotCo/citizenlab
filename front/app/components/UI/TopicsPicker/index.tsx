@@ -4,8 +4,8 @@ import { colors, fontSizes, isRtl } from '@citizenlab/cl2-component-library';
 import { darken, lighten } from 'polished';
 import styled from 'styled-components';
 
-import { ITopicData } from 'api/topics/types';
-import useTopics from 'api/topics/useTopics';
+import { IGlobalTopicData } from 'api/global_topics/types';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -78,12 +78,12 @@ export interface Props {
   selectedTopicIds: string[];
   id?: string;
   className?: string;
-  availableTopics: ITopicData[] | { const: string; title: string }[];
+  availableTopics: IGlobalTopicData[] | { const: string; title: string }[];
 }
 
 const TopicsPicker = memo(
   ({ onClick, selectedTopicIds, availableTopics, className }: Props) => {
-    const { data: topics } = useTopics();
+    const { data: topics } = useGlobalTopics();
     const localize = useLocalize();
 
     const filteredTopics = topics?.data.filter((topic) =>
@@ -117,7 +117,7 @@ const TopicsPicker = memo(
       const numberOfSelectedTopics = selectedTopicIds.length;
       const selectedTopicNames = filteredTopics
         ? filteredTopics
-            .map((topic: ITopicData) =>
+            .map((topic: IGlobalTopicData) =>
               localize(topic.attributes.title_multiloc)
             )
             .join(', ')

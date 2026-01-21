@@ -14,7 +14,7 @@ namespace :single_use do
       proposals_custom_forms.each do |custom_form|
         fields = custom_form.custom_fields
         fields.each do |field|
-          if field.input_type == 'page' && field.key == 'form_end'
+          if field.form_end_page?
             puts "Removing last page from form #{custom_form.id}"
 
             if field.destroy

@@ -111,21 +111,11 @@ module MultiTenancy
         end
         next if timestamp_attrs.blank?
 
-        query = timestamp_attrs.map do |timestamp_attr|
-          "#{timestamp_attr} = (#{timestamp_attr} + (:num_days * INTERVAL '1 day'))"
-        end.join(', ')
-        claz.update_all [query, { num_days: num_days }]
-
-        # We want to avoid timestamps to go to the future, while allowing future
-        # timestamps to remain in the future (e.g. future timeline phases, expiration
-        # date etc.)
-        timestamp_attrs.each do |atr|
-          instances = claz.where("#{atr} > NOW()")
-            .where("(#{atr} - (:num_days * INTERVAL '1 day')) < NOW()", num_days: num_days)
-          query = "#{atr} = (#{atr} - (:num_days * INTERVAL '1 day'))"
-          instances.update_all [query, { num_days: num_days }]
+        timestamp_attrs.each do |attr|
+          shift_keeping_past_in_past(claz, attr, num_days)
         end
       end
+
       LogActivityJob.perform_later(
         Tenant.current, 'timestamps_shifted', nil, Time.now.to_i, payload: { days_shifted: num_days }
       )
@@ -138,6 +128,16 @@ module MultiTenancy
     end
 
     private
+
+    def shift_keeping_past_in_past(model_class, attr, num_days)
+      interval = ":num_days * INTERVAL '1 day'"
+      # Use CURRENT_DATE for date columns to avoid time-of-day comparison issues
+      now_func = model_class.columns_hash[attr].type == :date ? 'CURRENT_DATE' : 'NOW()'
+
+      model_class
+        .where.not("#{attr} < #{now_func} AND (#{attr} + (#{interval})) >= #{now_func}", num_days: num_days)
+        .update_all ["#{attr} = #{attr} + (#{interval})", { num_days: num_days }]
+    end
 
     # @param [String] template_name
     # @param [Enumerable<String>] config_locales

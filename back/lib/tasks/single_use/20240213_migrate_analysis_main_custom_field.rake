@@ -33,7 +33,7 @@ namespace :migrate_analysis do
             .order(:created_at)
             .includes(:custom_field)
             .map(&:custom_field)
-            .find(&:support_free_text_value?)
+            .find(&:supports_free_text_value?)
           if !main_field
             no_main_field[tenant.host] ||= []
             no_main_field[tenant.host] << analysis.id
