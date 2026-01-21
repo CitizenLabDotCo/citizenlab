@@ -1391,6 +1391,8 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Osallistuminen ajan kuluessa",
   "app.containers.Admin.projects.project.insights.participationRate": "Osallistumisprosentti",
   "app.containers.Admin.projects.project.insights.populationPercent": "Väkiluku (%)",
+  "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Eniten tykätty",
+  "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "Nämä ehdotukset saivat eniten kannatusta",
   "app.containers.Admin.projects.project.insights.questions": "Kysymykset",
   "app.containers.Admin.projects.project.insights.reactions": "Reaktiot",
   "app.containers.Admin.projects.project.insights.representativenessScore": "Edustavuuspisteet",
