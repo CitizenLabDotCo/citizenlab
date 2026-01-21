@@ -200,7 +200,8 @@ resource 'Ideas' do
           do_request({
             idea: {
               publication_status: 'published',
-              'u_user_select_field' => 'option1'
+              'u_user_select_field' => 'option1',
+              @custom_field.key => 'option2',
             }
           })
 
