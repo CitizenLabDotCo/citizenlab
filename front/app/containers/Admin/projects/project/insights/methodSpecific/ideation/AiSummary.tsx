@@ -33,9 +33,10 @@ const MIN_INPUTS_FOR_SUMMARY = 10;
 
 interface Props {
   phaseId: string;
+  isPdfExport?: boolean;
 }
 
-const AiSummary = ({ phaseId }: Props) => {
+const AiSummary = ({ phaseId, isPdfExport = false }: Props) => {
   const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
   const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
@@ -203,7 +204,7 @@ const AiSummary = ({ phaseId }: Props) => {
         borderLeft={`3px solid ${colors.primary}`}
         display="flex"
         flexDirection="column"
-        h="400px"
+        h={isPdfExport ? 'auto' : '400px'}
       >
         <Box
           display="flex"
@@ -213,15 +214,17 @@ const AiSummary = ({ phaseId }: Props) => {
           flexShrink={0}
         >
           <SummaryHeader showAiWarning={false} />
-          <Button
-            buttonStyle="text"
-            icon="refresh"
-            onClick={handleRefresh}
-            processing={isRegenerating}
-            padding="0"
-          >
-            {formatMessage(messages.refresh)}
-          </Button>
+          {!isPdfExport && (
+            <Button
+              buttonStyle="text"
+              icon="refresh"
+              onClick={handleRefresh}
+              processing={isRegenerating}
+              padding="0"
+            >
+              {formatMessage(messages.refresh)}
+            </Button>
+          )}
         </Box>
 
         <Box
@@ -229,9 +232,9 @@ const AiSummary = ({ phaseId }: Props) => {
           flexDirection="column"
           gap="8px"
           flex="1"
-          overflow="hidden"
+          overflow={isPdfExport ? 'visible' : 'hidden'}
         >
-          <Box flex="1" overflow="auto">
+          <Box flex="1" overflow={isPdfExport ? 'visible' : 'auto'}>
             <InsightBody
               text={summary}
               filters={filters}
@@ -242,40 +245,42 @@ const AiSummary = ({ phaseId }: Props) => {
             />
           </Box>
 
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            flexShrink={0}
-          >
-            <Box display="flex" flexDirection="column" gap="4px">
-              <Text m="0" fontSize="s" color="textSecondary">
-                {missingInputsCount} / {inputCount}
-              </Text>
-              <Box display="flex" alignItems="center" gap="4px">
-                <Box
-                  w="8px"
-                  h="8px"
-                  borderRadius="50%"
-                  bgColor={colors.primary}
-                />
-                <Text m="0" fontSize="s" color="textSecondary">
-                  {formatMessage(messages.newResponses, {
-                    count: missingInputsCount,
-                  })}
-                </Text>
-              </Box>
-            </Box>
-
-            <Button
-              buttonStyle="secondary-outlined"
-              icon="eye"
-              onClick={handleExplore}
-              size="s"
+          {!isPdfExport && (
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              flexShrink={0}
             >
-              {formatMessage(messages.explore)}
-            </Button>
-          </Box>
+              <Box display="flex" flexDirection="column" gap="4px">
+                <Text m="0" fontSize="s" color="textSecondary">
+                  {missingInputsCount} / {inputCount}
+                </Text>
+                <Box display="flex" alignItems="center" gap="4px">
+                  <Box
+                    w="8px"
+                    h="8px"
+                    borderRadius="50%"
+                    bgColor={colors.primary}
+                  />
+                  <Text m="0" fontSize="s" color="textSecondary">
+                    {formatMessage(messages.newResponses, {
+                      count: missingInputsCount,
+                    })}
+                  </Text>
+                </Box>
+              </Box>
+
+              <Button
+                buttonStyle="secondary-outlined"
+                icon="eye"
+                onClick={handleExplore}
+                size="s"
+              >
+                {formatMessage(messages.explore)}
+              </Button>
+            </Box>
+          )}
         </Box>
       </Box>
     </Box>

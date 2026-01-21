@@ -27,9 +27,9 @@ const MethodSpecificInsights = ({
         <NativeSurveyInsights phaseId={phaseId} isPdfExport={isPdfExport} />
       );
     case 'ideation':
-      return <IdeationInsights phaseId={phaseId} />;
+      return <IdeationInsights phaseId={phaseId} isPdfExport={isPdfExport} />;
     case 'proposals':
-      return <ProposalsInsights phaseId={phaseId} />;
+      return <ProposalsInsights phaseId={phaseId} isPdfExport={isPdfExport} />;
     case 'voting':
       return <VotingInsights phaseId={phaseId} />;
     default:

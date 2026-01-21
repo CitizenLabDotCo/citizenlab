@@ -134,6 +134,7 @@ class OmniauthCallbackController < ApplicationController
     continue_auth = verify ? verified_for_sso?(auth, user, user_created) : true
     return unless continue_auth
 
+    IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
     set_auth_cookie(provider: auth['provider'])
     if sign_up
       signup_success_redirect

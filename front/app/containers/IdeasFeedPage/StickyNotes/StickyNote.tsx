@@ -32,7 +32,6 @@ const StyledNote = styled(Box)`
   &:hover,
   &:focus {
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
-    filter: brightness(0.9);
   }
 `;
 
