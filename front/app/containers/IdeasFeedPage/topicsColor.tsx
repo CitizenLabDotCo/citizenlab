@@ -31,9 +31,9 @@ const getTopicColorIndex = (topicId?: string): number => {
   return Math.abs(hash) % TOPIC_COLOR_PALETTE.length;
 };
 
-export const getTopicColor = (topicId: string): string => {
+export const getTopicColor = (topicId?: string): string => {
   const index = getTopicColorIndex(topicId);
-  return TOPIC_COLOR_PALETTE[index].background;
+  return topicId ? TOPIC_COLOR_PALETTE[index].background : colors.white;
 };
 
 export const getTopicProgressBarColor = (topicId: string): string => {
