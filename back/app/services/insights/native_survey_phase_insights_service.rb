@@ -7,15 +7,17 @@ module Insights
       { posting_idea: participations_posting_idea }
     end
 
-    def participations_posting_idea
-      end_time = @phase.end_at ? @phase.end_at.end_of_day : Time.current.end_of_day
-      ideas = @phase.ideas
-        .transitive(false)
-        .where(<<~SQL.squish, @phase.start_at.beginning_of_day, end_time)
-          ideas.created_at >= ? AND ideas.created_at <= ?
-        SQL
+    def ideas_in_phase
+      @ideas_in_phase ||= begin
+        end_time = @phase.end_at ? @phase.end_at.end_of_day : Time.current.end_of_day
+        @phase.ideas
+          .transitive(false)
+          .where('ideas.created_at >= ? AND ideas.created_at <= ?', @phase.start_at.beginning_of_day, end_time)
+      end
+    end
 
-      ideas.map do |idea|
+    def participations_posting_idea
+      ideas_in_phase.map do |idea|
         {
           item_id: idea.id,
           action: 'posting_idea',
@@ -57,10 +59,8 @@ module Insights
 
       return result unless phase_has_run_more_than_14_days?
 
-      ideas_last_7_days_count = participations[:posting_idea].count { |p| p[:acted_at] >= 7.days.ago }
-      ideas_previous_7_days_count = participations[:posting_idea].count do |p|
-        p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
-      end
+      ideas_last_7_days_count = ideas_in_phase.where('ideas.created_at >= ?', 7.days.ago).count
+      ideas_previous_7_days_count = ideas_in_phase.where('ideas.created_at < ? AND ideas.created_at >= ?', 7.days.ago, 14.days.ago).count
 
       submitted_survey_participations = participations[:posting_idea].select { |p| p[:survey_submitted_at].present? }
 
@@ -71,6 +71,9 @@ module Insights
 
       completion_rate_last_7_days = completion_rate(ideas_last_7_days_count, submitted_last_7_days_count)
       completion_rate_previous_7_days = completion_rate(ideas_previous_7_days_count, submitted_previous_7_days_count)
+
+      # puts "Last 7 days - Ideas: #{ideas_last_7_days_count}, Submitted: #{submitted_last_7_days_count}, Completion Rate: #{completion_rate_last_7_days}"
+      # puts "Previous 7 days - Ideas: #{ideas_previous_7_days_count}, Submitted: #{submitted_previous_7_days_count}, Completion Rate: #{completion_rate_previous_7_days}"
 
       result[:surveys_submitted_7_day_change] = percentage_change(submitted_previous_7_days_count, submitted_last_7_days_count)
       result[:completion_rate_7_day_change] = percentage_change(completion_rate_previous_7_days, completion_rate_last_7_days)
