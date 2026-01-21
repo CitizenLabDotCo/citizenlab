@@ -35,7 +35,7 @@ class InputTopic < ApplicationRecord
   acts_as_nested_set scope: [:project_id], dependent: :destroy, counter_cache: :children_count
 
   belongs_to :project
-  belongs_to :parent, class_name: 'InputTopic', optional: true
+  belongs_to :parent, class_name: 'InputTopic', optional: true, counter_cache: :children_count
   has_many :children, class_name: 'InputTopic', foreign_key: :parent_id, dependent: :destroy, inverse_of: :parent
 
   has_many :ideas_input_topics, dependent: :destroy

@@ -83,6 +83,7 @@ resource 'InputTopics' do
         parameter :title_multiloc, 'The title of the input topic, as a multiloc string', required: true
         parameter :description_multiloc, 'The description of the input topic, as a multiloc string', required: false
         parameter :icon, 'The icon name', required: false
+        parameter :parent_id, 'The parent topic ID (for creating subtopics)', required: false
       end
       ValidationErrorHelper.new.error_fields(self, InputTopic)
 
@@ -95,6 +96,19 @@ resource 'InputTopics' do
         expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to match title_multiloc
         expect(response_data.dig(:attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(response_data.dig(:relationships, :project, :data, :id)).to eq project.id
+      end
+
+      describe 'creating a subtopic' do
+        let(:parent_topic) { create(:input_topic, project: project) }
+        let(:parent_id) { parent_topic.id }
+        let(:title_multiloc) { { 'en' => 'Subtopic title' } }
+
+        example_request 'Create a subtopic under a parent topic' do
+          assert_status(201)
+          expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to match title_multiloc
+          expect(response_data.dig(:attributes, :depth)).to eq 1
+          expect(response_data.dig(:relationships, :parent, :data, :id)).to eq parent_topic.id
+        end
       end
     end
 
