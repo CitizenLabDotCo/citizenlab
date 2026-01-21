@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -9,6 +9,8 @@ import {
   IIdeaFeedQueryParameters,
   IdeaFeedKeys,
 } from './types';
+
+const defaultPageSize = 20;
 
 const fetchIdeaFeedIdeas = ({
   phaseId,
@@ -23,16 +25,24 @@ const fetchIdeaFeedIdeas = ({
     path: `/phases/${phaseId}/idea_feed/ideas`,
     action: 'get',
     queryParams: {
-      'page[size]': pageSize,
+      'page[size]': pageSize || defaultPageSize,
       topics: topic ? [topic] : undefined,
     },
   });
 
-const useIdeaFeedIdeas = (
-  params: IIdeaFeedQueryParameters & { phaseId: string }
+const useInfiniteIdeaFeedIdeas = (
+  params: IIdeaFeedQueryParameters & {
+    phaseId: string;
+    keepPreviousData?: boolean;
+  }
 ) => {
-  const { phaseId, ...queryParams } = params;
-  return useQuery<IIdeaFeedIdeas, CLErrors, IIdeaFeedIdeas, IdeaFeedKeys>({
+  const { phaseId, keepPreviousData, ...queryParams } = params;
+  return useInfiniteQuery<
+    IIdeaFeedIdeas,
+    CLErrors,
+    IIdeaFeedIdeas,
+    IdeaFeedKeys
+  >({
     queryKey: ideaFeedKeys.list({ phaseId, ...queryParams }),
     queryFn: () =>
       fetchIdeaFeedIdeas({
@@ -40,7 +50,10 @@ const useIdeaFeedIdeas = (
         pageSize: queryParams['page[size]'],
         topic: queryParams.topic,
       }),
+    getNextPageParam: () => true,
+    keepPreviousData,
+    cacheTime: 0,
   });
 };
 
-export default useIdeaFeedIdeas;
+export default useInfiniteIdeaFeedIdeas;

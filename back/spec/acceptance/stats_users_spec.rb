@@ -17,7 +17,7 @@ resource 'Stats - Users' do
 
   before do
     admin_header_token
-    AppConfiguration.instance.update!(created_at: now - 2.years)
+    AppConfiguration.instance.update!(created_at: now - 2.years, platform_start_at: now - 2.years)
     begin_of_last_month = (now - 1.month).beginning_of_month
 
     travel_to(begin_of_last_month - 1.day) do

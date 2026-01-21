@@ -10,7 +10,6 @@ class WebApi::V1::IdeasController < ApplicationController
   skip_after_action :verify_authorized, only: %i[index_xlsx index_mini index_idea_markers filter_counts]
   skip_after_action :verify_authorized, only: %i[create], unless: -> { response.status == 400 }
   after_action :verify_policy_scoped, only: %i[index index_mini]
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
     ideas = IdeasFinder.new(
@@ -161,7 +160,7 @@ class WebApi::V1::IdeasController < ApplicationController
   #   Users who can moderate projects post in an active phase if no phase id is given.
   #   Users who can moderate projects post in the given phase if a phase id is given.
   def create
-    send_error and return if !phase_for_input
+    send_error and return unless phase_for_input
 
     form = phase_for_input.pmethod.custom_form
     extract_custom_field_values_from_params!(form)
@@ -228,9 +227,13 @@ class WebApi::V1::IdeasController < ApplicationController
         update_file_upload_fields input, form, params_for_create
         sidefx.after_create(input, current_user)
         write_everyone_tracking_cookie input
+
+        ClaimTokenService.generate(input) unless input.author_id
+        serializer_params = jsonapi_serializer_params.merge(include_claim_token: true)
+
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
-          params: jsonapi_serializer_params,
+          params: serializer_params,
           include: %i[author topics phases user_reaction idea_images]
         ).serializable_hash, status: :created
       else
@@ -420,7 +423,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def extract_params_for_file_upload_fields(custom_form, params)
     return {} if params['custom_field_values'].blank?
 
-    file_upload_field_keys = IdeaCustomFieldsService.new(custom_form).all_fields.select(&:file_upload?).map(&:key)
+    file_upload_field_keys = IdeaCustomFieldsService.new(custom_form).all_fields.select(&:supports_file_upload?).map(&:key)
     params['custom_field_values'].extract!(*file_upload_field_keys)
   end
 
@@ -561,7 +564,17 @@ class WebApi::V1::IdeasController < ApplicationController
   # Only relevant for allow_anonymous_participation in the context of ideation
   # Not relevant for 'user_data_collection' in the context of surveys
   def anonymous_not_allowed?(phase)
+    return false if AppConfiguration.instance.feature_activated?('ideation_accountless_posting') && permitted_by_everyone?(phase)
+
     params.dig('idea', 'anonymous') && !phase.allow_anonymous_participation
+  end
+
+  def permitted_by_everyone?(phase)
+    permission = Permission.find_by(
+      permission_scope_id: phase.id,
+      action: 'posting_idea'
+    )
+    permission&.permitted_by == 'everyone'
   end
 
   def idea_status_not_allowed?(input)

@@ -62,6 +62,33 @@ describe SideFxUserService do
 
       expect(user.follows.pluck(:followable_id)).to contain_exactly area.id
     end
+
+    describe 'claim_tokens' do
+      let!(:claim_token) { create(:claim_token) }
+      let(:idea) { claim_token.item }
+
+      context 'when confirmation is not required' do
+        it 'claims items immediately' do
+          service.after_create(user, current_user, claim_tokens: [claim_token.token])
+
+          expect(idea.reload.author_id).to eq(user.id)
+          expect { claim_token.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+      end
+
+      context 'when confirmation is required' do
+        before { SettingsService.new.activate_feature!('user_confirmation') }
+
+        let(:user) { create(:user_with_confirmation) }
+
+        it 'marks tokens as pending' do
+          service.after_create(user, current_user, claim_tokens: [claim_token.token])
+
+          expect(claim_token.reload.pending_claimer_id).to eq(user.id)
+          expect(idea.reload.author_id).to be_nil
+        end
+      end
+    end
   end
 
   describe 'after_update' do

@@ -8,7 +8,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
   # This is used in the email account creation flow and when
   # logging in passwordless users
   def confirm_code_unauthenticated
-    user = User.find_by(email: confirm_code_unauthenticated_params[:email])
+    user = User.find_by_cimail(confirm_code_unauthenticated_params[:email])
 
     result = user_confirmation_service.validate_and_confirm_unauthenticated!(
       user,
@@ -17,6 +17,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
 
     if result.success?
       SideFxUserService.new.after_update(user, user)
+      IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
 
       payload = user.to_token_payload
       auth_token = AuthToken::AuthToken.new payload: payload

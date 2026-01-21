@@ -150,6 +150,7 @@ resource 'User Custom Fields' do
       end
 
       describe 'Invalid custom fields' do
+        let(:input_type) { 'text' }
         let(:key) { 'No spaces allowed' }
         let(:title_multiloc) { { 'en' => '' } }
 

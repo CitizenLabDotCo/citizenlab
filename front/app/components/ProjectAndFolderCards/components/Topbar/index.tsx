@@ -15,7 +15,7 @@ import { Multiloc } from 'typings';
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAreas from 'api/areas/useAreas';
-import useTopics from 'api/topics/useTopics';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -127,7 +127,7 @@ const Header = ({
   const { data: appConfiguration } = useAppConfiguration();
   const isSmallerThanPhone = useBreakpoint('phone');
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const { data: topics } = useTopics({ forHomepageFilter: true });
+  const { data: topics } = useGlobalTopics({ forHomepageFilter: true });
   const { data: areas } = useAreas({ forHomepageFilter: true });
   const localize = useLocalize();
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);

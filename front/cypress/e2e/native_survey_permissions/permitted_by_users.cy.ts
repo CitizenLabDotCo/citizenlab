@@ -1,5 +1,6 @@
 import moment = require('moment');
 import { randomString, randomEmail } from '../../support/commands';
+import { updatePermission } from './utils';
 
 describe('Native survey permitted by: users', () => {
   let customFieldId = '';
@@ -15,32 +16,6 @@ describe('Native survey permitted by: users', () => {
 
   const twoDaysAgo = moment().subtract(2, 'days').format('DD/MM/YYYY');
   const inTwoMonths = moment().add(2, 'month').format('DD/MM/YYYY');
-
-  const updatePermission = ({
-    adminJwt,
-    permitted_by,
-    user_fields_in_form,
-    user_data_collection,
-  }: {
-    adminJwt: string;
-    permitted_by?: string;
-    user_fields_in_form?: boolean;
-    user_data_collection?: string;
-  }) => {
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
-      },
-      method: 'PATCH',
-      url: `web_api/v1/phases/${phaseId}/permissions/posting_idea`,
-      body: {
-        permitted_by,
-        user_fields_in_form,
-        user_data_collection,
-      },
-    });
-  };
 
   before(() => {
     // Create custom field
@@ -79,8 +54,9 @@ describe('Native survey permitted by: users', () => {
             .then((response) => {
               const adminJwt = response.body.jwt;
 
-              return updatePermission({
+              return updatePermission(cy, {
                 adminJwt,
+                phaseId,
                 permitted_by: 'everyone_confirmed_email',
               }).then(() => {
                 // Add one permissions custom field
@@ -99,8 +75,9 @@ describe('Native survey permitted by: users', () => {
                   })
                   .then(() => {
                     // Set permission back to users
-                    return updatePermission({
+                    return updatePermission(cy, {
                       adminJwt,
+                      phaseId,
                       permitted_by: 'users',
                     }).then(() => {
                       // Finally: go into the survey and save it
@@ -248,8 +225,9 @@ describe('Native survey permitted by: users', () => {
         cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
           const adminJwt = response.body.jwt;
 
-          return updatePermission({
+          return updatePermission(cy, {
             adminJwt,
+            phaseId,
             user_fields_in_form: true,
           });
         });
@@ -308,8 +286,9 @@ describe('Native survey permitted by: users', () => {
         cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
           const adminJwt = response.body.jwt;
 
-          return updatePermission({
+          return updatePermission(cy, {
             adminJwt,
+            phaseId,
             user_fields_in_form: false,
             user_data_collection: 'demographics_only',
           });
@@ -328,8 +307,9 @@ describe('Native survey permitted by: users', () => {
         cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
           const adminJwt = response.body.jwt;
 
-          return updatePermission({
+          return updatePermission(cy, {
             adminJwt,
+            phaseId,
             user_fields_in_form: true,
           });
         });
@@ -385,8 +365,9 @@ describe('Native survey permitted by: users', () => {
         cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
           const adminJwt = response.body.jwt;
 
-          return updatePermission({
+          return updatePermission(cy, {
             adminJwt,
+            phaseId,
             user_fields_in_form: false,
             user_data_collection: 'anonymous',
           });

@@ -10,10 +10,12 @@ class UserFieldsInSurveyService
     return idea_custom_field_values if phase.blank?
 
     permission = phase.permissions.find_by(action: 'posting_idea')
-    permissions_custom_fields = permission.permissions_custom_fields
-    custom_fields = CustomField.where(id: permissions_custom_fields.select(:custom_field_id))
 
-    allowed_keys = custom_fields.pluck(:key).uniq
+    # Use PermissionsCustomFieldsService to get fields, which handles both persisted and non-persisted (global) fields
+    permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
+    permissions_custom_fields = permissions_custom_fields_service.fields_for_permission(permission)
+
+    allowed_keys = permissions_custom_fields.map { |pcf| pcf.custom_field.key }.uniq
 
     user_values = current_user
       .custom_field_values
@@ -43,7 +45,7 @@ class UserFieldsInSurveyService
 
     # Transform the user fields to pretend to be idea fields
     user_fields.each do |field|
-      field.dropdown_layout = true if field.dropdown_layout_type?
+      field.dropdown_layout = true if field.supports_dropdown_layout?
       field.code = nil # Remove the code so it doesn't appear as built in
       field.key = prefix_key(field.key) # Change the key so we cans clearly identify user data in the saved data
       field.resource = custom_form # User field pretend to be part of the form

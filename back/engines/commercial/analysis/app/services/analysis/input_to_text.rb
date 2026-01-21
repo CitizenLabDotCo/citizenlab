@@ -28,7 +28,7 @@ module Analysis
       @custom_fields.each do |field|
         add_cf_to_result.call(field)
         add_cf_to_result.call(field.other_option_text_field) if field.other_option_text_field
-        add_cf_to_result.call(field.follow_up_text_field) if field.sentiment_linear_scale? && field.follow_up_text_field
+        add_cf_to_result.call(field.follow_up_text_field) if field.supports_follow_up? && field.follow_up_text_field
       end
 
       result

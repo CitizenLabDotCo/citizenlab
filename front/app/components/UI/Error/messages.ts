@@ -126,6 +126,11 @@ export default defineMessages({
     defaultMessage:
       'One or more duplicate values for the email address {value} were found in the following row(s): {rows}',
   },
+  email_banned: {
+    id: 'app.errors.email_banned',
+    defaultMessage:
+      'The email address {value} found in row {row} has been banned and cannot be invited',
+  },
   is_not_timeline_project: {
     id: 'app.errors.is_not_timeline_project',
     defaultMessage: 'The current project does not support phases.',

@@ -27,10 +27,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.email',
     defaultMessage: 'Email:',
   },
-  page: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.page',
-    defaultMessage: 'Page',
-  },
   phaseNotAllowed: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2',
     defaultMessage:
@@ -83,5 +79,9 @@ export default defineMessages({
   approveAllInputs: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.approveAllInputs',
     defaultMessage: 'Approve all inputs',
+  },
+  downloadPdf: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf',
+    defaultMessage: 'Download PDF',
   },
 });

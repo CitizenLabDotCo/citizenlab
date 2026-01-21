@@ -28,14 +28,12 @@ class UserPolicy < ApplicationPolicy
   end
 
   def index_xlsx?
-    user&.active? && user.admin?
+    active_admin?
   end
 
   def create?
     app_config = AppConfiguration.instance
-
     allow_signup = app_config.feature_activated?('password_login') && app_config.settings('password_login', 'enable_signup')
-
     allow_signup || active_admin?
   end
 
@@ -51,20 +49,24 @@ class UserPolicy < ApplicationPolicy
     record&.invite_pending?
   end
 
+  def check?
+    true
+  end
+
   def update?
     user&.active? && (record.id == user.id || user&.admin?)
   end
 
   def destroy?
-    record.id == user&.id || (user&.active? && user.admin?)
+    record.id == user&.id || active_admin?
   end
 
   def block?
-    user&.active? && user.admin?
+    active_admin?
   end
 
   def unblock?
-    user&.active? && user.admin?
+    active_admin?
   end
 
   def blocked_count?
@@ -77,6 +79,12 @@ class UserPolicy < ApplicationPolicy
 
   def comments_count?
     true
+  end
+
+  def participation_stats?
+    # Currently, participation_stats is only used in the delete user modal, so only admin
+    # users should have access (self is not even used).
+    record.id == user&.id || active_admin?
   end
 
   def update_password?

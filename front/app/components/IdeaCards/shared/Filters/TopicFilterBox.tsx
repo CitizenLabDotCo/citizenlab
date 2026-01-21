@@ -4,7 +4,7 @@ import { omit } from 'lodash-es';
 
 import { IIdeasFilterCountsQueryParameters } from 'api/ideas_filter_counts/types';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
-import useTopics from 'api/topics/useTopics';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 
 import TopicsFilter from 'components/FilterBoxes/TopicsFilter';
 
@@ -19,7 +19,7 @@ const TopicFilterBox = memo<Props>(
   ({ selectedTopicIds, ideaQueryParameters, onChange, className }) => {
     const ideaFiltersWithoutTopics = omit(ideaQueryParameters, 'topics');
 
-    const { data: topics } = useTopics({
+    const { data: topics } = useGlobalTopics({
       sort: '-ideas_count',
       ideas: ideaFiltersWithoutTopics,
     });

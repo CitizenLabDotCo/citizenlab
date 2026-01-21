@@ -54,8 +54,13 @@ class Project < ApplicationRecord
   has_many :ideas, dependent: :destroy
   has_many :reactions, through: :ideas
 
-  has_many :projects_topics, dependent: :destroy
-  has_many :topics, -> { order(:ordering) }, through: :projects_topics
+  # Use case A - Project categorization (GlobalTopics)
+  has_many :projects_global_topics, dependent: :destroy
+  has_many :global_topics, -> { order(:ordering) }, through: :projects_global_topics
+  # Alias for backward compatibility - will be removed in Release 2
+  has_many :topics, -> { order(:ordering) }, through: :projects_global_topics, source: :global_topic
+
+  # Use case B - Input topics (keep working during Release 1)
   has_many :projects_allowed_input_topics, dependent: :destroy
   has_many :allowed_input_topics, through: :projects_allowed_input_topics, source: :topic
   has_many :areas_projects, dependent: :destroy
@@ -122,7 +127,7 @@ class Project < ApplicationRecord
   end)
 
   scope :with_some_topics, (proc do |topic_ids|
-    joins(:projects_topics).where(projects_topics: { topic_id: topic_ids })
+    joins(:projects_global_topics).where(projects_global_topics: { global_topic_id: topic_ids })
   end)
 
   scope :ordered, lambda {
@@ -188,7 +193,7 @@ class Project < ApplicationRecord
   end
 
   def set_default_topics!
-    self.allowed_input_topics = Topic.defaults.order(:ordering).reverse
+    self.allowed_input_topics = GlobalTopic.defaults.order(:ordering).reverse
     save!
   end
 

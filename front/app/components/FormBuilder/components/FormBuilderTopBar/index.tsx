@@ -15,6 +15,7 @@ import { useParams } from 'react-router-dom';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
+import { IFlatCustomField } from 'api/custom_fields/types';
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
 import useSubmissionsCount from 'api/submission_count/useSubmissionCount';
@@ -38,6 +39,7 @@ import messages from '../messages';
 import tracks from '../tracks';
 
 import ownMessages from './messages';
+import EditSchemaButtonWithModal from './SuperAdmin/EditSchemaButtonWithModal';
 
 const StyledStatusLabel = styled(StatusLabel)`
   height: 20px;
@@ -51,6 +53,7 @@ type FormBuilderTopBarProps = {
   autosaveEnabled: boolean;
   setAutosaveEnabled: Dispatch<SetStateAction<boolean>>;
   phaseId: string;
+  onFormSave?: () => void;
 };
 
 const FormBuilderTopBar = ({
@@ -60,12 +63,14 @@ const FormBuilderTopBar = ({
   autosaveEnabled,
   setAutosaveEnabled,
   phaseId,
+  onFormSave,
 }: FormBuilderTopBarProps) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { projectId } = useParams() as {
     projectId: string;
   };
+
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
   const { data: submissionCount } = useSubmissionsCount({
@@ -73,7 +78,9 @@ const FormBuilderTopBar = ({
   });
   const {
     formState: { isDirty },
+    watch,
   } = useFormContext();
+  const customFields = watch('customFields') as IFlatCustomField[];
   const [showLeaveModal, setShowLeaveModal] = useState(false);
 
   const closeModal = () => {
@@ -174,6 +181,13 @@ const FormBuilderTopBar = ({
           mr="20px"
           formType={builderConfig.type}
           phaseId={phaseId}
+        />
+        <EditSchemaButtonWithModal
+          customFields={customFields}
+          projectId={projectId}
+          phase={phase.data}
+          isFormPhaseSpecific={builderConfig.isFormPhaseSpecific}
+          onSaveSuccess={onFormSave}
         />
         <ButtonWithLink
           buttonStyle="secondary-outlined"
