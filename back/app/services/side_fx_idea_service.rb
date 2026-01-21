@@ -270,7 +270,7 @@ class SideFxIdeaService
   def clear_survey_results_cache(idea)
     return unless idea.participation_method_on_creation.supports_survey_form?
 
-    Surveys::ResultsGenerator.new(@phase).clear_cache(idea.submitted_at)
+    Surveys::ResultsGenerator.new(idea.creation_phase).clear_cache(idea.submitted_at)
   end
 end
 
