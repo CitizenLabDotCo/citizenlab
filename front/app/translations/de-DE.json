@@ -2353,7 +2353,7 @@
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsOnceYouAreDone": "Am Ende auf \"Senden\" klicken, um seine Stimme abzugeben.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsPreferredOptions2": "Bevorzugte Optionen, indem man auf \"Auswählen\" klickt.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalCredits2": "Man hat insgesamt <b>{totalVotes, plural, one {# Guthaben} other {# Guthaben}} zum Aufteilen auf {optionCount, plural, one {# Optionen} other {# Optionen}}</b>.",
-  "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalPercents": "You have <b>{totalVotes, plural, one {# percent} other {# percent}} to distribute between {optionCount, plural, one {# option} other {# options}}</b>.",
+  "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalPercents": "Man hat insgesamt <b>{totalVotes, plural, one {# Punkt} other {# Punkte}} zum Verteilen auf {optionCount, plural, one {# Option} other {# Optionen}}</b>.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalPoints2": "Man hat insgesamt <b>{totalVotes, plural, one {# Punkt} other {# Punkte}} zum Verteilen auf {optionCount, plural, one {# Optionen} other {# Optionen}}</b>.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalTokens2": "Man hat insgesamt <b>{totalVotes, plural, one {# Token} other {# Token}} zum Verteilen auf {optionCount, plural, one {# Option} other {# Optionen}}</b>.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalVotes3": "Man hat insgesamt <b>{totalVotes, plural, one {# Stimme} other {# Stimmen}}, die man auf {optionCount, plural, one {# Optionen} other {# Optionen}}</b> verteilen kann.",
