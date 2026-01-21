@@ -9,7 +9,7 @@ const DEFAULT_OFFSET = 350;
 
 const Container = styled.div<{ translateY: number; isDragging: boolean }>`
   position: fixed;
-  bottom: 0;
+  top: 0;
   left: 0;
   right: 0;
   background: ${colors.white};
@@ -21,7 +21,7 @@ const Container = styled.div<{ translateY: number; isDragging: boolean }>`
   transform: translateY(${({ translateY }) => translateY}px);
   transition: ${({ isDragging }) =>
     isDragging ? 'none' : 'transform 0.3s ease-out'};
-  height: 100vh;
+  height: 100svh;
   z-index: 1050;
 `;
 
@@ -52,7 +52,7 @@ const Overlay = styled.div<{ isVisible: boolean }>`
   top: 0;
   left: 0;
   right: 0;
-  bottom: 0;
+  height: 100svh;
   z-index: 1040;
   pointer-events: ${({ isVisible }) => (isVisible ? 'auto' : 'none')};
 `;
