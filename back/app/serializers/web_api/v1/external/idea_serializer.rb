@@ -3,7 +3,7 @@
 class WebApi::V1::External::IdeaSerializer < ActiveModel::Serializer
   attributes :id, :slug, :url, :title_multiloc, :body_multiloc, :author_id, :author_name, :likes_count, :dislikes_count, :published_at, :latitude, :longitude, :project_id, :budget, :proposed_budget
 
-  has_many :topics
+  has_many :input_topics
   has_many :idea_images, serializer: WebApi::V1::External::ImageSerializer
 
   def url

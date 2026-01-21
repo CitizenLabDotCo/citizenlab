@@ -158,7 +158,7 @@ const IdeasFeed = ({ topicId }: Props) => {
     const map = new Map<string, string[]>();
     orderedIdeas.forEach((idea) => {
       const topicIds =
-        idea.relationships.topics?.data.map((topic) => topic.id) || [];
+        idea.relationships.input_topics?.data.map((topic) => topic.id) || [];
       map.set(idea.id, topicIds);
     });
     return map;

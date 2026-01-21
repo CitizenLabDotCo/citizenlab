@@ -39,7 +39,11 @@ describe('useIdeaMarkers', () => {
 
   it('returns data correctly', async () => {
     const { result } = renderHook(
-      () => useIdeaMarkers({ projectIds: ['projectId'], topics: ['topicId'] }),
+      () =>
+        useIdeaMarkers({
+          projectIds: ['projectId'],
+          input_topics: ['topicId'],
+        }),
       {
         wrapper: createQueryClientWrapper(),
       }
@@ -61,7 +65,11 @@ describe('useIdeaMarkers', () => {
     );
 
     const { result } = renderHook(
-      () => useIdeaMarkers({ projectIds: ['projectId'], topics: ['topicId'] }),
+      () =>
+        useIdeaMarkers({
+          projectIds: ['projectId'],
+          input_topics: ['topicId'],
+        }),
       {
         wrapper: createQueryClientWrapper(),
       }

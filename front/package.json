@@ -26,6 +26,7 @@
     "start:images": "cross-env NODE_ENV=production node server/images",
     "visualize-bundle": "vite-bundle-visualizer",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx app --color --max-warnings=0 --fix",
+    "typecheck": "tsc --noEmit -p app/tsconfig.json",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",

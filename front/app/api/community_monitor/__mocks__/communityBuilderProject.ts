@@ -117,7 +117,7 @@ export const project: IProjectData = {
     areas: {
       data: [],
     },
-    topics: {
+    global_topics: {
       data: [],
     },
     avatars: {
