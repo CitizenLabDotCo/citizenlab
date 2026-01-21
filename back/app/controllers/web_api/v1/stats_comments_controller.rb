@@ -12,7 +12,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
     render json: raw_json({ count: count })
   end
 
-  def comments_by_topic_serie
+  def comments_by_topic_serie(limit = nil)
     comments = policy_scope(Comment.published, policy_scope_class: StatCommentPolicy::Scope)
     comments = apply_project_filter(comments)
     comments = apply_group_filter(comments)
@@ -22,13 +22,14 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
       .joins('INNER JOIN ideas ON ideas.id = comments.idea_id')
       .joins('INNER JOIN ideas_input_topics ON ideas_input_topics.idea_id = ideas.id')
       .group('ideas_input_topics.input_topic_id')
-      .order('ideas_input_topics.input_topic_id')
-      .count
+      .order('count_id DESC')
+      .limit(limit)
+      .count('id')
   end
 
   def comments_by_topic
-    serie = comments_by_topic_serie
-    topics = InputTopic.pluck(:id, :title_multiloc).map do |id, title_multiloc|
+    serie = comments_by_topic_serie(params[:limit])
+    topics = InputTopic.where(id: serie.keys).pluck(:id, :title_multiloc).map do |id, title_multiloc|
       [id, { title_multiloc: title_multiloc }]
     end
     render json: raw_json({ series: { comments: serie }, topics: topics.to_h })

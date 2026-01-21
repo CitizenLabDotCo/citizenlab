@@ -102,6 +102,7 @@ resource 'Stats - Comments' do
     time_boundary_parameters self
     project_filter_parameter self
     group_filter_parameter self
+    parameter :limit, 'Limit the number of topics returned to the given number, ordered by comment count descending', required: false
 
     context 'when admin' do
       before { admin_header_token }
@@ -144,7 +145,7 @@ resource 'Stats - Comments' do
             @input_topic1.id => 3,
             @input_topic2.id => 2
           })
-          expect(json_attributes[:topics].keys.map(&:to_s)).to contain_exactly(@input_topic1.id, @input_topic2.id, @input_topic3.id)
+          expect(json_attributes[:topics].keys.map(&:to_s)).to contain_exactly(@input_topic1.id, @input_topic2.id)
         end
       end
 
@@ -192,6 +193,37 @@ resource 'Stats - Comments' do
           expect(json_response.dig(:data, :type)).to eq 'comments_by_topic'
           json_attributes = json_response.dig(:data, :attributes)
           expect(json_attributes[:series][:comments].values.sum).to eq 2
+        end
+      end
+
+      describe 'with limit' do
+        let(:start_at) { timezone.at(now - 1.month).beginning_of_month }
+        let(:end_at) { timezone.at(now - 1.month).end_of_month }
+        let(:limit) { 2 }
+
+        before do
+          travel_to start_at + 5.days do
+            project = create(:project)
+            @input_topic1 = create(:input_topic, project: project)
+            @input_topic2 = create(:input_topic, project: project)
+            @input_topic3 = create(:input_topic, project: project)
+            idea1 = create(:idea, input_topics: [@input_topic1], project: project)
+            idea2 = create(:idea, input_topics: [@input_topic2], project: project)
+            idea3 = create(:idea, input_topics: [@input_topic3], project: project)
+            create_list(:comment, 3, idea: idea1)
+            create_list(:comment, 2, idea: idea2)
+            create(:comment, idea: idea3)
+          end
+        end
+
+        example_request 'Comments by topic with a limit' do
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :type)).to eq 'comments_by_topic'
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:comments].length).to eq 2
+          # Expect descending values
+          expect(json_attributes[:series][:comments].values).to eq json_attributes[:series][:comments].values.sort.reverse
         end
       end
     end

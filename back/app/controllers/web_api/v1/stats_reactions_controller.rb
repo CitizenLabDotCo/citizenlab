@@ -16,7 +16,7 @@ class WebApi::V1::StatsReactionsController < WebApi::V1::StatsController
     }
   end
 
-  def reactions_by_topic_serie
+  def reactions_by_topic_serie(limit = nil)
     reactions = policy_scope(Reaction, policy_scope_class: StatReactionPolicy::Scope)
       .where(reactable_type: 'Idea')
       .joins('JOIN ideas ON ideas.id = reactions.reactable_id')
@@ -28,13 +28,14 @@ class WebApi::V1::StatsReactionsController < WebApi::V1::StatsController
       .where(created_at: @start_at..@end_at)
       .joins('JOIN ideas_input_topics ON ideas_input_topics.idea_id = ideas.id')
       .group('ideas_input_topics.input_topic_id')
-      .order('ideas_input_topics.input_topic_id')
-      .count
+      .order('count_id DESC')
+      .limit(limit)
+      .count('id')
   end
 
   def reactions_by_topic
-    serie = reactions_by_topic_serie
-    topics = InputTopic.all.select(:id, :title_multiloc)
+    serie = reactions_by_topic_serie(params[:limit])
+    topics = InputTopic.where(id: serie.keys).select(:id, :title_multiloc)
     render json: raw_json({ series: { total: serie }, topics: topics.to_h { |t| [t.id, t.attributes.except('id')] } })
   end
 
