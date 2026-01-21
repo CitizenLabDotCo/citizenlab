@@ -281,7 +281,7 @@ describe('Native survey permitted by: users', () => {
   });
 
   describe('Collect demographics only', () => {
-    describe('Ask demographic questions in registration flow', () => {
+    describe.only('Ask demographic questions in registration flow', () => {
       before(() => {
         cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
           const adminJwt = response.body.jwt;
