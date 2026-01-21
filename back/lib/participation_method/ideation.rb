@@ -460,10 +460,6 @@ module ParticipationMethod
       true
     end
 
-    def supports_serializing?(_attribute)
-      false
-    end
-
     private
 
     def proposed_budget_in_form?
