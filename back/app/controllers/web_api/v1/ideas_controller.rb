@@ -179,10 +179,16 @@ class WebApi::V1::IdeasController < ApplicationController
     # Non persisted attribute needed by policy & anonymous_participation concern for 'everyone' participation only
     input.request = request if phase_for_input.pmethod.everyone_tracking_enabled?
 
-    # If native survey or community monitor:
+    # If native survey or community monitor, and we are publishing this survey:
     # Do not store user ID if user_data_collection it set to "anonymous" or "demographics_only"
     # (anonymous = true on the input just means "do not store user ID")
-    if phase_for_input.pmethod.supports_survey_form? && phase_for_input.pmethod.user_data_collection != 'all_data'
+    # If we are NOT publishing this survey: we need to store the author_id
+    # because otherwise we cannot PATCH it because only the author can
+    published = params_for_create[:publication_status] == 'published'
+    surveylike = phase_for_input.pmethod.supports_survey_form?
+    not_all_data = phase_for_input.pmethod.user_data_collection != 'all_data'
+
+    if published && surveylike && not_all_data
       input.anonymous = true
     end
 

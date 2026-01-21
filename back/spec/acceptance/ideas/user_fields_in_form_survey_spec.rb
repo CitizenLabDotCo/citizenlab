@@ -229,6 +229,7 @@ resource 'Ideas' do
         let(:idea) do 
           create(
             :idea,
+            author: @user,
             project: @project,
             creation_phase: @phase,
             phases: [@phase],
