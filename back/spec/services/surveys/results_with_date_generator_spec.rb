@@ -85,6 +85,28 @@ RSpec.describe Surveys::ResultsWithDateGenerator do
           expect { single_result }.to raise_error(ArgumentError, 'Invalid date format')
         end
       end
+
+      context 'boundary day inclusion' do
+        context 'Q1 last day (March 31)' do
+          let(:year) { 2025 }
+          let(:quarter) { 1 }
+
+          before do
+            create(
+              :native_survey_response,
+              project: project,
+              phases: phases_of_inputs,
+              custom_field_values: { linear_scale_field.key => 5 },
+              created_at: Time.zone.local(2025, 3, 31, 23, 59, 0)
+            )
+          end
+
+          it 'includes responses created at end of day on the last day of Q1' do
+            # Q1 existing has 23 submissions (from survey_setup.rb)
+            expect(generated_results[:totalSubmissions]).to eq 24
+          end
+        end
+      end
     end
   end
 end

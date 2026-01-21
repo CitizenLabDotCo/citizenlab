@@ -55,7 +55,8 @@ module Surveys
         raise ArgumentError, 'Invalid quarter format'
       end
 
-      start_date..end_date
+      # Use end_of_day to include all records from the last day of the quarter.
+      start_date..end_date.end_of_day
     end
 
     def format_quarter(year, quarter)
