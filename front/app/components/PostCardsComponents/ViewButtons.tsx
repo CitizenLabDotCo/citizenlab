@@ -1,11 +1,4 @@
-import React, {
-  memo,
-  FormEvent,
-  useRef,
-  KeyboardEvent,
-  useEffect,
-  useState,
-} from 'react';
+import React, { FormEvent, useRef, KeyboardEvent } from 'react';
 
 import {
   Icon,
@@ -81,39 +74,33 @@ interface Props {
   className?: string;
   selectedView: PresentationMode;
   onClick: (selectedView: PresentationMode) => void;
+  locationEnabled?: boolean;
+  defaultView?: PresentationMode;
 }
 
-const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
+const ViewButtons = ({
+  className,
+  selectedView,
+  onClick,
+  locationEnabled,
+  defaultView,
+}: Props) => {
   const theme = useTheme();
   const ideaFeedEnabled = useFeatureFlag({ name: 'idea_feed' });
-  const isListViewSelected = selectedView === 'card';
-  const isMapViewSelected = selectedView === 'map';
-  const isFeedViewSelected = selectedView === 'feed';
   const listButtonRef = useRef<HTMLButtonElement | null>(null);
   const mapButtonRef = useRef<HTMLButtonElement | null>(null);
   const feedButtonRef = useRef<HTMLButtonElement | null>(null);
 
-  const [viewChanged, setViewChanged] = useState<boolean | null>(null);
+  const showMapButton = !!locationEnabled;
+  const showFeedButton = ideaFeedEnabled && defaultView === 'feed';
 
-  useEffect(() => {
-    // We only want to update this focus if the user clicks/selects the tabs.
-    // Otherwise we end up setting focus when the page loads (which leads an
-    // issue where the user is incorrectly scrolled down to the idea section on page load).
-    if (viewChanged) {
-      if (selectedView === 'map') {
-        mapButtonRef.current?.focus();
-      } else if (selectedView === 'feed') {
-        feedButtonRef.current?.focus();
-      } else {
-        listButtonRef.current?.focus();
-      }
-    }
-  }, [selectedView, viewChanged]);
+  if (!showMapButton && !showFeedButton) {
+    return null;
+  }
 
   const handleOnClick =
     (selectedView: PresentationMode) => (event: FormEvent) => {
       event.preventDefault();
-      setViewChanged(true);
       onClick(selectedView);
       trackEventByName(tracks.toggleDisplay, {
         locationButtonWasClicked: location.pathname,
@@ -126,10 +113,11 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
     const arrowRightPressed = e.key === 'ArrowRight';
 
     if (arrowLeftPressed || arrowRightPressed) {
-      setViewChanged(true);
-      const views: PresentationMode[] = ideaFeedEnabled
-        ? ['card', 'map', 'feed']
-        : ['card', 'map'];
+      const views: PresentationMode[] = [
+        'card',
+        ...(showMapButton ? ['map' as const] : []),
+        ...(showFeedButton ? ['feed' as const] : []),
+      ];
       const currentIndex = views.indexOf(selectedView);
       const nextIndex = arrowRightPressed
         ? (currentIndex + 1) % views.length
@@ -152,43 +140,45 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
     >
       <ViewButton
         role="tab"
-        aria-selected={isListViewSelected}
-        tabIndex={isListViewSelected ? 0 : -1}
+        aria-selected={selectedView === 'card'}
+        tabIndex={selectedView === 'card' ? 0 : -1}
         id="view-tab-1"
         aria-controls="view-panel-1"
         onClick={handleOnClick('card')}
-        ref={(el) => (listButtonRef.current = el)}
+        ref={listButtonRef}
         onKeyDown={handleTabListOnKeyDown}
-        active={isListViewSelected}
+        active={selectedView === 'card'}
       >
         <StyledIcon name="menu" />
         <FormattedMessage {...messages.list} />
       </ViewButton>
-      <ViewButton
-        role="tab"
-        aria-selected={isMapViewSelected}
-        tabIndex={isMapViewSelected ? 0 : -1}
-        id="view-tab-2"
-        aria-controls="view-panel-2"
-        onClick={handleOnClick('map')}
-        ref={(el) => (mapButtonRef.current = el)}
-        onKeyDown={handleTabListOnKeyDown}
-        active={isMapViewSelected}
-      >
-        <StyledIcon name="map" />
-        <FormattedMessage {...messages.map} />
-      </ViewButton>
-      {ideaFeedEnabled && (
+      {showMapButton && (
         <ViewButton
           role="tab"
-          aria-selected={isFeedViewSelected}
-          tabIndex={isFeedViewSelected ? 0 : -1}
+          aria-selected={selectedView === 'map'}
+          tabIndex={selectedView === 'map' ? 0 : -1}
+          id="view-tab-2"
+          aria-controls="view-panel-2"
+          onClick={handleOnClick('map')}
+          ref={mapButtonRef}
+          onKeyDown={handleTabListOnKeyDown}
+          active={selectedView === 'map'}
+        >
+          <StyledIcon name="map" />
+          <FormattedMessage {...messages.map} />
+        </ViewButton>
+      )}
+      {showFeedButton && (
+        <ViewButton
+          role="tab"
+          aria-selected={selectedView === 'feed'}
+          tabIndex={selectedView === 'feed' ? 0 : -1}
           id="view-tab-3"
           aria-controls="view-panel-3"
           onClick={handleOnClick('feed')}
-          ref={(el) => (feedButtonRef.current = el)}
+          ref={feedButtonRef}
           onKeyDown={handleTabListOnKeyDown}
-          active={isFeedViewSelected}
+          active={selectedView === 'feed'}
         >
           <StyledIcon name="idea" />
           <FormattedMessage {...messages.feed} />
@@ -196,6 +186,6 @@ const ViewButtons = memo<Props>(({ className, selectedView, onClick }) => {
       )}
     </Box>
   );
-});
+};
 
 export default ViewButtons;

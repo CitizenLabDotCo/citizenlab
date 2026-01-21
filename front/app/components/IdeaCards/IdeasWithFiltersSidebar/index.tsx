@@ -19,8 +19,6 @@ import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import { PresentationMode, IdeaSortMethod, InputTerm } from 'api/phases/types';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
 import { trackEventByName } from 'utils/analytics';
@@ -79,7 +77,6 @@ export interface QueryParametersUpdate {
 export interface Props {
   ideaQueryParameters: IdeaQueryParameters;
   onUpdateQuery: (newParams: QueryParametersUpdate) => void;
-  showViewToggle?: boolean;
   defaultView?: PresentationMode;
   projectId?: string;
   phaseId?: string;
@@ -94,14 +91,12 @@ const IdeasWithFiltersSidebar = ({
   projectSlug,
   defaultView = 'card',
   onUpdateQuery,
-  showViewToggle,
   inputTerm,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
   const smallerThanPhone = useBreakpoint('phone');
   const biggerThanLargeTablet = !useBreakpoint('tablet');
-  const isIdeasFeedEnabled = useFeatureFlag({ name: 'idea_feed' });
 
   // Get data from searchParams
   const selectedIdeaMarkerId = searchParams.get('idea_map_id');
@@ -129,8 +124,6 @@ const IdeasWithFiltersSidebar = ({
     (field) => field.key === 'location_description'
   )?.enabled;
 
-  const showViewButtons =
-    !!(locationEnabled && showViewToggle) || isIdeasFeedEnabled;
   const loadIdeaMarkers = locationEnabled && selectedView === 'map';
   const { data: ideaMarkers } = useIdeaMarkers(
     {
@@ -201,11 +194,7 @@ const IdeasWithFiltersSidebar = ({
 
   return (
     <Container id="e2e-ideas-container">
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        mb={showViewButtons ? '8px' : '16px'}
-      >
+      <Box display="flex" justifyContent="space-between" mb="8px">
         {inputTerm && (
           <Title
             variant="h5"
@@ -220,9 +209,12 @@ const IdeasWithFiltersSidebar = ({
           </Title>
         )}
 
-        {showViewButtons && (
-          <ViewButtons selectedView={selectedView} onClick={setSelectedView} />
-        )}
+        <ViewButtons
+          selectedView={selectedView}
+          onClick={setSelectedView}
+          locationEnabled={locationEnabled}
+          defaultView={defaultView}
+        />
       </Box>
 
       {list === undefined && (

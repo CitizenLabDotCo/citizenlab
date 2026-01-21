@@ -82,7 +82,6 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
     projectId,
     phaseId: phase.id,
     projectSlug: slug,
-    showViewToggle: true,
     defaultView: phase.attributes.presentation_mode,
   };
   const sidebarFiltersEnabled = config.showIdeaFilters === true;
