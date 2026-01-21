@@ -18,8 +18,8 @@ export default defineMessages({
     defaultMessage: '{votes, plural, one {credit} other {credits}}',
   },
   xPercents: {
-    id: 'app.components.AssignMultipleVotesControl.xPercents',
-    defaultMessage: '{votes, plural, one {percent} other {percent}}',
+    id: 'app.components.AssignMultipleVotesControl.xPercents2',
+    defaultMessage: '{votes, plural, one {%} other {%}}',
   },
   numberManualVotes: {
     id: 'app.components.AssignMultipleVotesControl.numberManualVotes2',
@@ -60,9 +60,8 @@ export default defineMessages({
       'You have distributed the maximum number of credits for this option.',
   },
   maxPercentsPerInputReached: {
-    id: 'app.components.AssignMultipleVotesControl.maxPercentsPerInputReached',
-    defaultMessage:
-      'You have distributed the maximum percentage for this option.',
+    id: 'app.components.AssignMultipleVotesControl.maxPercentsPerInputReached2',
+    defaultMessage: 'You have distributed the maximum % for this option.',
   },
   maxVotesInTotalReached: {
     id: 'app.components.AssignMultipleVotesControl.maxVotesInTotalReached',
@@ -81,8 +80,8 @@ export default defineMessages({
     defaultMessage: 'You have distributed all of your credits.',
   },
   maxPercentsInTotalReached: {
-    id: 'app.components.AssignMultipleVotesControl.maxPercentsInTotalReached',
-    defaultMessage: 'You have distributed your maximum percentage.',
+    id: 'app.components.AssignMultipleVotesControl.maxPercentsInTotalReached2',
+    defaultMessage: 'You have distributed the maximum %.',
   },
   votesSubmitted1: {
     id: 'app.components.AssignMultipleVotesControl.votesSubmitted1',
