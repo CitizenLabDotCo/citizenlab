@@ -19,13 +19,14 @@
 # Foreign Keys
 #
 #  fk_rails_...  (project_id => projects.id)
-#  fk_rails_...  (topic_id => topics.id)
+#  fk_rails_...  (topic_id => global_topics.id)
 #
 class ProjectsAllowedInputTopic < ApplicationRecord
   acts_as_list column: :ordering, scope: [:project_id], top_of_list: 0, add_new_at: :top
 
   belongs_to :project
-  belongs_to :topic
+  # NOTE: column is still topic_id but references GlobalTopic (renamed from Topic)
+  belongs_to :topic, class_name: 'GlobalTopic', inverse_of: :projects_allowed_input_topics
 
   validates :project, :topic, presence: true
   validates :topic_id, uniqueness: { scope: :project_id }

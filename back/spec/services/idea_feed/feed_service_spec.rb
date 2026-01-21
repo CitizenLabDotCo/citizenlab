@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe IdeaFeed::FeedService do
-  subject(:service) { described_class.new(phase, user) }
+  subject(:service) { described_class.new(phase, user: user) }
 
   let(:phase) { create(:idea_feed_phase) }
   let(:user) { create(:user) }

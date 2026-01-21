@@ -24,7 +24,17 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class IdeaExposure < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, optional: true
   belongs_to :idea
   belongs_to :phase
+
+  validate :user_xor_visitor_hash
+
+  private
+
+  def user_xor_visitor_hash
+    unless user_id.present? ^ visitor_hash.present?
+      errors.add(:base, :user_and_visitor_hash_both_present_or_unpresent)
+    end
+  end
 end

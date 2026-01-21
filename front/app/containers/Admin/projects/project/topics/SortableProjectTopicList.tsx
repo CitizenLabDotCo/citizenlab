@@ -8,7 +8,7 @@ import useDeleteAllowedProjectInputTopic from 'api/project_allowed_input_topics/
 import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
 import useReorderProjectAllowedInputTopics from 'api/project_allowed_input_topics/useReorderProjectAllowedInputTopics';
 import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
-import useTopics from 'api/topics/useTopics';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 
 import SortableList from 'components/admin/ResourceList/SortableList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
@@ -63,7 +63,7 @@ const SortableProjectTopicList = memo(
       [allowedInputTopics]
     );
 
-    const { data: topics } = useTopics();
+    const { data: topics } = useGlobalTopics();
 
     const topicsById = useMemo(() => {
       const filteredTopics =

@@ -15,14 +15,17 @@ RSpec.describe Insights::VotingPhaseInsightsService do
   let!(:basket2) { create(:basket, phase: phase, user: nil, submitted_at: phase.start_at + 1.day) }
   let!(:baskets_idea3) { create(:baskets_idea, basket: basket2, idea: idea2, votes: 42) }
 
+  let!(:basket3) { create(:basket, phase: phase, user: nil, submitted_at: nil) }
+  let!(:baskets_idea4) { create(:baskets_idea, basket: basket3, idea: idea2, votes: 999) }
+
   let!(:comment1) { create(:comment, idea: idea1, created_at: 20.days.ago, author: user) } # before phase start
   let!(:comment2) { create(:comment, idea: idea1, created_at: 10.days.ago, author: user) } # during phase
   let!(:comment3) { create(:comment, idea: idea1, created_at: 1.day.ago, author: user) } # after phase end
 
-  # Update votes_count after creating baskets_ideas
+  # Manually update votes_count for each idea to reflect only votes from submitted baskets, mimicking production behavior
   before do
-    idea1.update_column(:votes_count, idea1.baskets_ideas.sum(:votes))
-    idea2.update_column(:votes_count, idea2.baskets_ideas.sum(:votes))
+    idea1.update_column(:votes_count, idea1.baskets_ideas.joins(:basket).where.not(baskets: { submitted_at: nil }).sum(:votes))
+    idea2.update_column(:votes_count, idea2.baskets_ideas.joins(:basket).where.not(baskets: { submitted_at: nil }).sum(:votes))
   end
 
   describe '#participations_voting' do
