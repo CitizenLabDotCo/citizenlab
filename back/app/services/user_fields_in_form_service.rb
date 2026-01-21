@@ -30,11 +30,6 @@ class UserFieldsInFormService
     # in the registration process
     return false if permission.user_fields_in_form_enabled?
 
-    # Make sure there are fields to be asked
-    requirements = Permissions::UserRequirementsService.new.requirements(permission, nil)
-    return false unless requirements[:custom_fields]
-    return false if requirements[:custom_fields].empty?
-
     # If pmethod is native survey-like: confirm that user_data_collection = 'all_data' or 'demographics_only'
     return false if NATIVE_SURVEYLIKE_METHODS.include?(pmethod) && permission.user_data_collection == 'anonymous'
 
