@@ -1,13 +1,11 @@
 import React, { useMemo } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, Title } from '@citizenlab/cl2-component-library';
 
 import { useDemographics } from 'api/graph_data_units';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 
 import useLocalize from 'hooks/useLocalize';
-
-import RScore from 'containers/Admin/projects/project/insights/demographics/RScore';
 
 import ComparisonBarChart from 'components/admin/Graphs/ComparisonBarChart';
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
@@ -65,7 +63,6 @@ const DemographicsWidget = ({
   const hasComparisonData = chartData.some(
     (row) => row.population !== undefined
   );
-  const rScore = demographicsResponse?.data.attributes.r_score;
 
   const descriptionId = `${React.useId()}-description`;
   const accessibilityProps = {
@@ -87,34 +84,29 @@ const DemographicsWidget = ({
     );
   }
 
-  const chartElement = (
-    <Box>
-      {rScore !== undefined && (
-        <Box mb="8px">
-          <RScore value={rScore} />
-        </Box>
-      )}
-
-      <ComparisonBarChart
-        data={chartData}
-        mapping={{
-          category: 'category',
-          primaryValue: 'participants',
-          comparisonValue: 'population',
-          count: 'count',
-        }}
-        showComparison={hasComparisonData}
-        primaryColor="#2f478a"
-        comparisonColor={colors.teal300}
-        barHeight={16}
-        {...accessibilityProps}
-      />
-    </Box>
-  );
-
   return (
     <Card pagebreak className="e2e-demographics-widget">
-      {chartElement}
+      {title && (
+        <Title variant="h4" mt="1px" mb="16px">
+          {localize(title)}
+        </Title>
+      )}
+      <Box>
+        <ComparisonBarChart
+          data={chartData}
+          mapping={{
+            category: 'category',
+            primaryValue: 'participants',
+            comparisonValue: 'population',
+            count: 'count',
+          }}
+          showComparison={hasComparisonData}
+          primaryColor="#2f478a"
+          comparisonColor={colors.teal300}
+          barHeight={16}
+          {...accessibilityProps}
+        />
+      </Box>
       <DescriptionText
         description={description}
         descriptionId={descriptionId}

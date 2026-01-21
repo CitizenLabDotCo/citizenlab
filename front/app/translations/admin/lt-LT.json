@@ -1390,6 +1390,8 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Dalyvavimas laikui bėgant",
   "app.containers.Admin.projects.project.insights.participationRate": "Dalyvavimo lygis",
   "app.containers.Admin.projects.project.insights.populationPercent": "Gyventojų skaičius (%)",
+  "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Most liked",
+  "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "These proposals got the most traction",
   "app.containers.Admin.projects.project.insights.questions": "Klausimai",
   "app.containers.Admin.projects.project.insights.reactions": "Reakcijos",
   "app.containers.Admin.projects.project.insights.representativenessScore": "Reprezentatyvumo balas",

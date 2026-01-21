@@ -46,7 +46,7 @@ module Analysis
 
       custom_fields = IdeaCustomFieldsService.new(analysis.participation_context.custom_form).all_fields
       # custom fields can be an array or a scope
-      custom_fields.filter(&:support_free_text_value?).map(&:id)
+      custom_fields.filter(&:supports_free_text_value?).map(&:id)
     end
   end
 end

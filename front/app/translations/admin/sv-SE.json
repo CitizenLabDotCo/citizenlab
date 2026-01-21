@@ -1390,6 +1390,8 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Deltagande över tid",
   "app.containers.Admin.projects.project.insights.participationRate": "Deltagandegrad",
   "app.containers.Admin.projects.project.insights.populationPercent": "Befolkning (%)",
+  "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Mest omtyckt",
+  "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "These proposals got the most traction",
   "app.containers.Admin.projects.project.insights.questions": "Frågor och svar",
   "app.containers.Admin.projects.project.insights.reactions": "Reaktioner",
   "app.containers.Admin.projects.project.insights.representativenessScore": "Poäng för representativitet",

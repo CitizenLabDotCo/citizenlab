@@ -1390,6 +1390,8 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "وقت کے ساتھ شرکت",
   "app.containers.Admin.projects.project.insights.participationRate": "شرکت کی شرح",
   "app.containers.Admin.projects.project.insights.populationPercent": "آبادی (%)",
+  "app.containers.Admin.projects.project.insights.proposals.mostLiked": "سب سے زیادہ پسند کیا۔",
+  "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "ان تجاویز کو سب سے زیادہ پذیرائی ملی",
   "app.containers.Admin.projects.project.insights.questions": "سوالات",
   "app.containers.Admin.projects.project.insights.reactions": "رد عمل",
   "app.containers.Admin.projects.project.insights.representativenessScore": "نمائندہ اسکور",

@@ -1390,6 +1390,8 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Dalība laika gaitā",
   "app.containers.Admin.projects.project.insights.participationRate": "Līdzdalības līmenis",
   "app.containers.Admin.projects.project.insights.populationPercent": "Iedzīvotāju skaits (%)",
+  "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Visvairāk patika",
+  "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "These proposals got the most traction",
   "app.containers.Admin.projects.project.insights.questions": "Jautājumi",
   "app.containers.Admin.projects.project.insights.reactions": "Reakcijas",
   "app.containers.Admin.projects.project.insights.representativenessScore": "Reprezentativitātes rādītājs",

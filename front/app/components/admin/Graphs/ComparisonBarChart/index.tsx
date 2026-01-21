@@ -102,14 +102,18 @@ const ComparisonBarChart = <Row,>({
                 {payload.category}
               </Text>
               <Box display="flex" gap="12px" alignItems="center">
-                <Text fontSize="s" color="coolGrey700" m="0px">
-                  {payload.primaryValue}%
-                </Text>
-                {showComparison && payload.comparisonValue && (
+                {payload.primaryValue > 0 && (
                   <Text fontSize="s" color="coolGrey700" m="0px">
-                    {payload.comparisonValue}%
+                    {payload.primaryValue}%
                   </Text>
                 )}
+                {showComparison &&
+                  payload.comparisonValue !== undefined &&
+                  payload.comparisonValue > 0 && (
+                    <Text fontSize="s" color="coolGrey700" m="0px">
+                      {payload.comparisonValue}%
+                    </Text>
+                  )}
               </Box>
             </Box>
 
@@ -123,15 +127,17 @@ const ComparisonBarChart = <Row,>({
                     isFullHeight={!showComparison}
                   />
                 </BarRow>
-                {showComparison && payload.comparisonValue && (
-                  <BarRow>
-                    <BarFill
-                      percentage={payload.comparisonValue}
-                      color={comparisonColor}
-                      opacity={1}
-                    />
-                  </BarRow>
-                )}
+                {showComparison &&
+                  payload.comparisonValue !== undefined &&
+                  payload.comparisonValue > 0 && (
+                    <BarRow>
+                      <BarFill
+                        percentage={payload.comparisonValue}
+                        color={comparisonColor}
+                        opacity={1}
+                      />
+                    </BarRow>
+                  )}
               </Box>
             </BarContainer>
           </Box>

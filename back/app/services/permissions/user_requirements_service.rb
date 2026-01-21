@@ -165,7 +165,7 @@ class Permissions::UserRequirementsService
   def onboarding_possible?
     return @onboarding_possible unless @onboarding_possible.nil?
 
-    @onboarding_possible = app_configuration.settings.dig('core', 'onboarding') && (!Topic.where(include_in_onboarding: true).empty? || !Area.where(include_in_onboarding: true).empty?)
+    @onboarding_possible = app_configuration.settings.dig('core', 'onboarding') && (!GlobalTopic.where(include_in_onboarding: true).empty? || !Area.where(include_in_onboarding: true).empty?)
   end
 
   def ignore_password_for_sso!(requirements, user)
