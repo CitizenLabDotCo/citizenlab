@@ -6,7 +6,6 @@
 
 module Surveys
   class ResultsGenerator < FieldVisitorService
-
     def initialize(phase)
       super()
       @phase = phase
@@ -193,7 +192,6 @@ module Surveys
     def survey_inputs
       @survey_inputs ||= phase.ideas.includes(:author).supports_survey.published
     end
-
 
     # First we structure the responses by field, using logic to work out which fields were actually seen
     #  { "CustomField.id" => [

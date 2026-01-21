@@ -523,7 +523,8 @@ RSpec.describe Surveys::ResultsGenerator, :clear_cache do
     context 'multiselect logic' do
       before do
         # Update fields from survey_setup shared context with some logic
-        multiselect_field.update!(logic: {
+        # NOTE: This is only supported on legacy surveys so we use update_columns to bypass validations
+        multiselect_field.update_columns(logic: {
           rules: [
             { if: multiselect_field.options.first.id, goto_page_id: mid_page_field1.id },
             { if: multiselect_field.options.second.id, goto_page_id: mid_page_field2.id },
