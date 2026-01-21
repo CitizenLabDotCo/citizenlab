@@ -12,12 +12,13 @@ resource 'Ideas' do
 
     # Create project with form
     @project = create(:single_phase_native_survey_project, phase_attrs: { with_permissions: true })
-    @permission = @project.phases.first.permissions.find_by(action: 'posting_idea')
+    @phase = @project.phases.first
+    @permission = @phase.permissions.find_by(action: 'posting_idea')
     @permission.update!(
       global_custom_fields: false
     )
 
-    @custom_form = create(:custom_form, :with_default_fields, participation_context: @project.phases.first)
+    @custom_form = create(:custom_form, :with_default_fields, participation_context: @phase)
     @custom_field = @custom_form.custom_fields.find_by(input_type: 'select')
 
     # Create registration (demographic) question and
@@ -184,8 +185,12 @@ resource 'Ideas' do
         let(:idea) do 
           create(
             :idea,
-            author: @user, 
-            custom_field_values: { @custom_field.key => 'option2' }
+            author: @user,
+            project: @project,
+            creation_phase: @phase,
+            phases: [@phase],
+            custom_field_values: { @custom_field.key => 'option2' },
+            publication_status: 'draft'
           )
         end
         let(:id) { idea.id }
