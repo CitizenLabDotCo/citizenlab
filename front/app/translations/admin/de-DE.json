@@ -1391,6 +1391,8 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Teilnahme im Laufe der Zeit",
   "app.containers.Admin.projects.project.insights.participationRate": "Beteiligungsrate",
   "app.containers.Admin.projects.project.insights.populationPercent": "Bevölkerung (%)",
+  "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Meiste Reaktionen",
+  "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "Diese Vorschläge fanden die größte Zustimmung",
   "app.containers.Admin.projects.project.insights.questions": "Fragen",
   "app.containers.Admin.projects.project.insights.reactions": "Reaktionen",
   "app.containers.Admin.projects.project.insights.representativenessScore": "Repräsentativitätswert",
