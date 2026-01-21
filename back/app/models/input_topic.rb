@@ -36,7 +36,7 @@ class InputTopic < ApplicationRecord
 
   belongs_to :project
   belongs_to :parent, class_name: 'InputTopic', optional: true, counter_cache: :children_count
-  has_many :children, class_name: 'InputTopic', foreign_key: :parent_id, dependent: :destroy, inverse_of: :parent
+  has_many :children, -> { order(:lft) }, class_name: 'InputTopic', foreign_key: :parent_id, dependent: :destroy, inverse_of: :parent
 
   has_many :ideas_input_topics, dependent: :destroy
   has_many :ideas, through: :ideas_input_topics

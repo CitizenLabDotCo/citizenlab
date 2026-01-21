@@ -117,6 +117,31 @@ resource 'DefaultInputTopics' do
         assert_status(200)
         expect(default_input_topics.last.reload.lft).to be < default_input_topics.first.reload.lft
       end
+
+      describe 'moving subtopics' do
+        let(:parent_topic) { create(:default_input_topic) }
+        let!(:subtopic1) { create(:default_input_topic, parent: parent_topic, title_multiloc: { en: 'Subtopic 1' }) }
+        let!(:subtopic2) { create(:default_input_topic, parent: parent_topic, title_multiloc: { en: 'Subtopic 2' }) }
+        let!(:subtopic3) { create(:default_input_topic, parent: parent_topic, title_multiloc: { en: 'Subtopic 3' }) }
+        let(:id) { subtopic3.id }
+        let(:position) { 'left' }
+        let(:target_id) { subtopic1.id }
+
+        example 'Move a subtopic to a new position within its parent' do
+          # subtopic3 should be last initially
+          expect(subtopic3.reload.lft).to be > subtopic2.reload.lft
+          expect(subtopic3.reload.lft).to be > subtopic1.reload.lft
+
+          do_request
+
+          assert_status(200)
+          # After moving left of subtopic1, subtopic3 should be first
+          expect(subtopic3.reload.lft).to be < subtopic1.reload.lft
+          expect(subtopic3.reload.lft).to be < subtopic2.reload.lft
+          # Should still have the same parent
+          expect(subtopic3.reload.parent_id).to eq parent_topic.id
+        end
+      end
     end
 
     delete 'web_api/v1/default_input_topics/:id' do

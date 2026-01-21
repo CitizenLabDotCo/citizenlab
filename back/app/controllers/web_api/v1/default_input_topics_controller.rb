@@ -5,8 +5,8 @@ class WebApi::V1::DefaultInputTopicsController < ApplicationController
   skip_before_action :authenticate_user, only: %i[index show]
 
   def index
-    # Return tree structure - roots first, ordered by lft
-    default_input_topics = policy_scope(DefaultInputTopic).roots.order(:lft)
+    # Return tree structure - ordered by lft
+    default_input_topics = policy_scope(DefaultInputTopic).order(:lft)
     default_input_topics = paginate default_input_topics
 
     render json: linked_json(

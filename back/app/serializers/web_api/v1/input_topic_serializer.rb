@@ -2,7 +2,7 @@
 
 class WebApi::V1::InputTopicSerializer < WebApi::V1::BaseSerializer
   attributes :title_multiloc, :description_multiloc, :ordering, :icon,
-    :full_title_multiloc, :depth, :children_count
+    :full_title_multiloc, :depth, :children_count, :lft, :rgt
 
   belongs_to :project
   belongs_to :parent, serializer: WebApi::V1::InputTopicSerializer, record_type: :input_topic

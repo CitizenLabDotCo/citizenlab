@@ -26,7 +26,7 @@ class DefaultInputTopic < ApplicationRecord
   acts_as_nested_set dependent: :destroy, counter_cache: :children_count
 
   belongs_to :parent, class_name: 'DefaultInputTopic', optional: true, counter_cache: :children_count
-  has_many :children, class_name: 'DefaultInputTopic', foreign_key: :parent_id, dependent: :destroy, inverse_of: :parent
+  has_many :children, -> { order(:lft) }, class_name: 'DefaultInputTopic', foreign_key: :parent_id, dependent: :destroy, inverse_of: :parent
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false }

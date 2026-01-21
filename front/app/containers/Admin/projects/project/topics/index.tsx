@@ -5,10 +5,13 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { IInputTopicData } from 'api/input_topics/types';
 import useDeleteInputTopic from 'api/input_topics/useDeleteInputTopic';
 import useInputTopics from 'api/input_topics/useInputTopics';
+import useMoveInputTopic from 'api/input_topics/useMoveInputTopic';
 import useAuthUser from 'api/me/useAuthUser';
 
 import { ButtonWrapper } from 'components/admin/PageWrapper';
-import { TextCell, Row } from 'components/admin/ResourceList';
+import { TextCell } from 'components/admin/ResourceList';
+import SortableList from 'components/admin/ResourceList/SortableList';
+import SortableRow from 'components/admin/ResourceList/SortableRow';
 import {
   SectionTitle,
   SectionDescription,
@@ -31,36 +34,12 @@ import { isAdmin } from 'utils/permissions/roles';
 import InputTopicModal from './InputTopicModal';
 import messages from './messages';
 
-// Flatten the tree structure for display, preserving parent-child order
-const flattenTopics = (
-  topics: IInputTopicData[],
-  included: IInputTopicData[] | undefined
-): IInputTopicData[] => {
-  const includedMap = new Map<string, IInputTopicData>();
-  included?.forEach((topic) => includedMap.set(topic.id, topic));
-
-  const result: IInputTopicData[] = [];
-
-  topics.forEach((topic) => {
-    result.push(topic);
-    // Add children from included array
-    const childIds = topic.relationships?.children?.data || [];
-    childIds.forEach((childRef) => {
-      const child = includedMap.get(childRef.id);
-      if (child) {
-        result.push(child);
-      }
-    });
-  });
-
-  return result;
-};
-
 const ProjectInputTopics = ({ params: { projectId } }: WithRouterProps) => {
   const { data: authUser } = useAuthUser();
   const { data: inputTopics } = useInputTopics(projectId);
   const { mutate: deleteInputTopic, isLoading: isDeleting } =
     useDeleteInputTopic();
+  const { mutate: moveInputTopic } = useMoveInputTopic();
 
   const [showConfirmationModal, setShowConfirmationModal] =
     useState<boolean>(false);
@@ -73,10 +52,60 @@ const ProjectInputTopics = ({ params: { projectId } }: WithRouterProps) => {
     string | undefined
   >(undefined);
 
-  const flattenedTopics = useMemo(() => {
+  // Convert flattened list to sortable items with ordering attribute
+  const sortableItems = useMemo(() => {
     if (isNilOrError(inputTopics)) return [];
-    return flattenTopics(inputTopics.data, inputTopics.included);
+    return inputTopics.data.map((topic, index) => ({
+      ...topic,
+      attributes: {
+        ...topic.attributes,
+        ordering: index,
+      },
+    }));
   }, [inputTopics]);
+
+  const handleReorder = (topicId: string, newIndex: number) => {
+    const currentIndex = sortableItems.findIndex((t) => t.id === topicId);
+    if (currentIndex === -1 || currentIndex === newIndex) return;
+
+    const upOrDown = newIndex < currentIndex ? 'up' : 'down';
+    const newAbove = upOrDown === 'up' ? newIndex - 1 : newIndex;
+    const newUnder = upOrDown === 'up' ? newIndex : newIndex + 1;
+
+    const newAboveTopic = sortableItems[newAbove];
+    const movedTopic = sortableItems[currentIndex];
+    const newUnderTopic = sortableItems[newUnder];
+
+    const aboveDepth = newAboveTopic ? newAboveTopic.attributes.depth : -1;
+    const currentDepth = movedTopic.attributes.depth;
+    const underDepth = newUnderTopic ? newUnderTopic.attributes.depth : -1;
+
+    let position;
+    let targetId;
+
+    if (aboveDepth === currentDepth) {
+      position = 'right';
+      targetId = newAboveTopic.id;
+    } else if (underDepth === currentDepth) {
+      position = 'left';
+      targetId = newUnderTopic.id;
+    } else if (aboveDepth < currentDepth) {
+      position = 'child';
+      targetId = newAboveTopic.id;
+    } else if (aboveDepth > currentDepth) {
+      position = 'right';
+      targetId = newAboveTopic.relationships.parent?.data?.id;
+    }
+
+    if (position && targetId) {
+      moveInputTopic({
+        projectId,
+        id: topicId,
+        position,
+        target_id: targetId,
+      });
+    }
+  };
 
   if (!authUser || isNilOrError(inputTopics)) return null;
 
@@ -187,58 +216,66 @@ const ProjectInputTopics = ({ params: { projectId } }: WithRouterProps) => {
         </Warning>
       )}
 
-      <Box>
-        {flattenedTopics.map((topic: IInputTopicData, index: number) => {
-          const isSubtopic = topic.attributes.depth > 0;
-          const isRootTopic = topic.attributes.depth === 0;
-          // Only prevent deleting if it's the last root topic
-          const canDelete = !(isRootTopic && isLastRootTopic);
+      <SortableList items={sortableItems} onReorder={handleReorder}>
+        {({ itemsList, handleDragRow, handleDropRow }) => (
+          <>
+            {itemsList.map((topic: IInputTopicData, index: number) => {
+              const isSubtopic = topic.attributes.depth > 0;
+              const isRootTopic = topic.attributes.depth === 0;
+              // Only prevent deleting if it's the last root topic
+              const canDelete = !(isRootTopic && isLastRootTopic);
 
-          return (
-            <Row
-              key={topic.id}
-              isLastItem={index === flattenedTopics.length - 1}
-            >
-              <TextCell className="expand">
-                <Box ml={isSubtopic ? '32px' : '0px'}>
-                  <T value={topic.attributes.title_multiloc} />
-                </Box>
-              </TextCell>
-              <Box display="flex" alignItems="center" gap="16px">
-                {isRootTopic && (
-                  <ButtonWithLink
-                    onClick={handleAddSubtopicClick(topic.id)}
-                    buttonStyle="secondary-outlined"
-                    icon="plus-circle"
-                    m="0px"
-                    id="e2e-add-subtopic-button"
-                  >
-                    <FormattedMessage {...messages.addSubtopic} />
-                  </ButtonWithLink>
-                )}
-                <ButtonWithLink
-                  onClick={handleEditClick(topic)}
-                  buttonStyle="secondary-outlined"
-                  icon="edit"
-                  m="0px"
-                  id="e2e-input-topic-edit-button"
+              return (
+                <SortableRow
+                  key={topic.id}
+                  id={topic.id}
+                  index={index}
+                  isLastItem={index === itemsList.length - 1}
+                  moveRow={handleDragRow}
+                  dropRow={handleDropRow}
                 >
-                  <FormattedMessage {...messages.edit} />
-                </ButtonWithLink>
-                <ButtonWithLink
-                  onClick={handleDeleteClick(topic)}
-                  buttonStyle="text"
-                  icon="delete"
-                  disabled={!canDelete}
-                  id="e2e-input-topic-delete-button"
-                >
-                  <FormattedMessage {...messages.delete} />
-                </ButtonWithLink>
-              </Box>
-            </Row>
-          );
-        })}
-      </Box>
+                  <TextCell className="expand">
+                    <Box ml={isSubtopic ? '32px' : '0px'}>
+                      <T value={topic.attributes.title_multiloc} />
+                    </Box>
+                  </TextCell>
+                  <Box display="flex" alignItems="center" gap="16px">
+                    {isRootTopic && (
+                      <ButtonWithLink
+                        onClick={handleAddSubtopicClick(topic.id)}
+                        buttonStyle="text"
+                        icon="plus-circle"
+                        m="0px"
+                        id="e2e-add-subtopic-button"
+                      >
+                        <FormattedMessage {...messages.addSubtopic} />
+                      </ButtonWithLink>
+                    )}
+                    <ButtonWithLink
+                      onClick={handleEditClick(topic)}
+                      buttonStyle="secondary-outlined"
+                      icon="edit"
+                      m="0px"
+                      id="e2e-input-topic-edit-button"
+                    >
+                      <FormattedMessage {...messages.edit} />
+                    </ButtonWithLink>
+                    <ButtonWithLink
+                      onClick={handleDeleteClick(topic)}
+                      buttonStyle="text"
+                      icon="delete"
+                      disabled={!canDelete}
+                      id="e2e-input-topic-delete-button"
+                    >
+                      <FormattedMessage {...messages.delete} />
+                    </ButtonWithLink>
+                  </Box>
+                </SortableRow>
+              );
+            })}
+          </>
+        )}
+      </SortableList>
 
       <Modal
         opened={showConfirmationModal}

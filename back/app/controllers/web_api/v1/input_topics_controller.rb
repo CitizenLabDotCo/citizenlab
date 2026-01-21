@@ -16,7 +16,7 @@ class WebApi::V1::InputTopicsController < ApplicationController
       case params[:sort]
       when 'custom', nil
         # Return tree structure - roots first, ordered by lft
-        input_topics.roots.order(:lft)
+        input_topics.order(:lft)
       when 'ideas_count'
         input_topics.order_ideas_count(filter_ideas)
       when '-ideas_count'
