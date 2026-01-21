@@ -212,7 +212,8 @@ resource 'Ideas' do
             'u_user_select_field' => 'option1'
           })
           expect(idea.author_id).to eq(@user.id)
-          expect(@user.reload.custom_field_values).to eq({
+          user = User.find(@user.id)
+          expect(user.reload.custom_field_values).to eq({
             'user_select_field' => 'option1'
           })
         end
