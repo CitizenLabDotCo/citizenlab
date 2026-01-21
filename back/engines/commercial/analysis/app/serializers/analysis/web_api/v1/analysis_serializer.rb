@@ -17,7 +17,7 @@ class Analysis::WebApi::V1::AnalysisSerializer < WebApi::V1::BaseSerializer
       analysis.participation_context.reload
     end
 
-    IdeaCustomFieldsService.new(analysis.participation_context.custom_form).all_fields.filter(&:accepts_input?)
+    IdeaCustomFieldsService.new(analysis.participation_context.custom_form).all_fields.filter(&:supports_submission?)
   end
 
   has_many :insightables do |analysis|

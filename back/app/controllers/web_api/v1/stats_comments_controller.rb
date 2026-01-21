@@ -28,7 +28,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
   def comments_by_topic
     serie = comments_by_topic_serie
-    topics = Topic.pluck(:id, :title_multiloc).map do |id, title_multiloc|
+    topics = GlobalTopic.pluck(:id, :title_multiloc).map do |id, title_multiloc|
       [id, { title_multiloc: title_multiloc }]
     end
     render json: raw_json({ series: { comments: serie }, topics: topics.to_h })
@@ -36,7 +36,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
   def comments_by_topic_as_xlsx
     serie = comments_by_topic_serie
-    topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
+    topics = GlobalTopic.where(id: serie.keys).select(:id, :title_multiloc)
     res = serie.map do |topic_id, count|
       {
         'topic' => @@multiloc_service.t(topics.find(topic_id).title_multiloc, current_user&.locale),

@@ -12,7 +12,6 @@ import { useIntl } from 'utils/cl-intl';
 import { INSIGHTS_CHART_COLORS } from '../constants';
 import messages from '../messages';
 
-import RScore from './RScore';
 import { toChartData, toExcelData } from './utils';
 
 interface Props {
@@ -46,12 +45,6 @@ const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
           />
         )}
       </Box>
-
-      {hasPopulationData && field.r_score !== undefined && (
-        <Box mb="8px">
-          <RScore value={field.r_score} />
-        </Box>
-      )}
 
       <Box display="flex" gap="24px" mb="12px">
         <Box display="flex" gap="8px" alignItems="center">

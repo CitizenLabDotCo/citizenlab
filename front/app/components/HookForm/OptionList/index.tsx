@@ -151,7 +151,7 @@ const OptionList = ({
                 m="0"
                 onBlur={() => {
                   onBlur();
-                  trigger();
+                  trigger(name);
                 }}
               >
                 <SectionField>
@@ -219,7 +219,7 @@ const OptionList = ({
                                     buttonStyle="text"
                                     onClick={() => {
                                       handleRemoveOption(options, name, index);
-                                      trigger();
+                                      trigger(name);
                                     }}
                                   >
                                     <Icon
