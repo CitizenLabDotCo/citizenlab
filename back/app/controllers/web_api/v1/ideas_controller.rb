@@ -313,6 +313,7 @@ class WebApi::V1::IdeasController < ApplicationController
       if input.save(**save_options)
         sidefx.after_update(input, current_user)
         update_file_upload_fields input, input.custom_form, update_params
+        binding.pry
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,
