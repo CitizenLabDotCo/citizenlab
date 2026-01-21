@@ -160,17 +160,15 @@ RSpec.describe CustomField do
   end
 
   describe '#clear_logic_unless_supported' do
-    let(:field) { create(:custom_field, resource: create(:custom_form)) }
-
     it 'saves logic when the field supports logic' do
-      field.input_type = 'select'
+      field = create(:custom_field, resource: create(:custom_form), input_type: 'select')
       field.logic = { 'rules' => [{ 'if' => 2, 'goto_page_id' => 'some_page_id' }] }
       field.save!
       expect(field.logic).to eq({ 'rules' => [{ 'if' => 2, 'goto_page_id' => 'some_page_id' }] })
     end
 
     it 'does not save logic when the field does not support logic' do
-      field.input_type = 'multiselect'
+      field = create(:custom_field, resource: create(:custom_form), input_type: 'multiselect')
       field.logic = { 'rules' => [{ 'if' => 2, 'goto_page_id' => 'some_page_id' }] }
       field.save!
       expect(field.logic).to eq({})
