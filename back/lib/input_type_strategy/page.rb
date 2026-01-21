@@ -21,5 +21,9 @@ module InputTypeStrategy
     def supports_xlsx_import?
       false
     end
+
+    def supports_logic?
+      true
+    end
   end
 end

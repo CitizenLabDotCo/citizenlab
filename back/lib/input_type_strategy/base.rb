@@ -108,6 +108,10 @@ module InputTypeStrategy
       false
     end
 
+    def supports_logic?
+      false
+    end
+
     protected
 
     attr_reader :custom_field

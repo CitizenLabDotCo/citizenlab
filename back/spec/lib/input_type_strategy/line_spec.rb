@@ -31,4 +31,5 @@ RSpec.describe InputTypeStrategy::Line do
   its(:supports_xlsx_import?) { is_expected.to be false }
   its(:supports_reference_distribution?) { is_expected.to be false }
   its(:supports_file_upload?) { is_expected.to be false }
+  its(:supports_logic?) { is_expected.to be false }
 end

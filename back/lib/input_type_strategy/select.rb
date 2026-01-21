@@ -21,5 +21,9 @@ module InputTypeStrategy
     def supports_reference_distribution?
       true
     end
+
+    def supports_logic?
+      true
+    end
   end
 end

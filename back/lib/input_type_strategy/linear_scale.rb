@@ -13,5 +13,9 @@ module InputTypeStrategy
     def supports_single_selection?
       true
     end
+
+    def supports_logic?
+      true
+    end
   end
 end

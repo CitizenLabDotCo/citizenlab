@@ -57,7 +57,7 @@ class CustomField < ApplicationRecord
     :supports_single_selection?, :supports_multiple_selection?, :supports_selection?, :supports_select_count?, :supports_dropdown_layout?,
     :supports_free_text_value?, :supports_xlsx_export?, :supports_geojson?,
     :supports_printing?, :supports_pdf_import?, :supports_pdf_gpt_import?, :supports_xlsx_import?,
-    :supports_reference_distribution?, :supports_file_upload?, to: :input_type_strategy
+    :supports_reference_distribution?, :supports_file_upload?, :supports_logic?, to: :input_type_strategy
 
   acts_as_list column: :ordering, top_of_list: 0, scope: %i[resource_type resource_id], sequential_updates: true
 
@@ -149,10 +149,6 @@ class CustomField < ApplicationRecord
 
   def input_type_strategy
     @input_type_strategy ||= "InputTypeStrategy::#{input_type.camelize}".constantize.new(self)
-  end
-
-  def support_logic?
-    %w[page select linear_scale ranking].include?(input_type)
   end
 
   def includes_other_option?
@@ -420,7 +416,7 @@ class CustomField < ApplicationRecord
   end
 
   def clear_logic_unless_supported
-    self.logic = {} unless support_logic?
+    self.logic = {} if !supports_logic?
   end
 end
 
