@@ -76,6 +76,18 @@ describe Analysis::InputsFinder do
       @params = { published_at_from: '2020-01-01', published_at_to: '2021-01-01' }
       expect(output).to contain_exactly(idea2, idea3)
     end
+
+    context 'boundary day inclusion' do
+      it 'includes inputs published on the end date day' do
+        idea = create(
+          :idea,
+          project: analysis.source_project,
+          published_at: Time.zone.local(2021, 1, 15, 15, 30, 0)
+        )
+        @params = { published_at_to: '2021-01-15' }
+        expect(output).to include(idea)
+      end
+    end
   end
 
   describe 'reactions' do
