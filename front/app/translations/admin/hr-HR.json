@@ -1391,6 +1391,8 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Sudjelovanje tijekom vremena",
   "app.containers.Admin.projects.project.insights.participationRate": "Stopa sudjelovanja",
   "app.containers.Admin.projects.project.insights.populationPercent": "Broj stanovnika (%)",
+  "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Najsviđanije",
+  "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "Ovi prijedlozi su dobili najviše podrške",
   "app.containers.Admin.projects.project.insights.questions": "Pitanja",
   "app.containers.Admin.projects.project.insights.reactions": "Reakcije",
   "app.containers.Admin.projects.project.insights.representativenessScore": "Rezultat reprezentativnosti",
