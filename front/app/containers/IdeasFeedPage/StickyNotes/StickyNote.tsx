@@ -16,7 +16,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import Avatar from 'components/Avatar';
 import ReactionControl from 'components/ReactionControl';
-import T from 'components/T';
+
+import { stripHtml } from 'utils/textUtils';
 
 export const NOTE_HEIGHTS = {
   small: 350,
@@ -37,9 +38,12 @@ const StyledNote = styled(Box)`
 
 const BodyText = styled(Text)`
   display: -webkit-box;
-  -webkit-line-clamp: 4;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+  line-clamp: 3;
   overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-word;
 `;
 
 interface Props {
@@ -87,6 +91,7 @@ const StickyNote: React.FC<Props> = ({
   }
 
   const title = localize(idea.data.attributes.title_multiloc);
+  const bodyText = stripHtml(localize(idea.data.attributes.body_multiloc));
   const authorName = idea.data.attributes.author_name;
   const authorId = idea.data.relationships.author?.data?.id || null;
   const authorHash = idea.data.attributes.author_hash;
@@ -126,7 +131,7 @@ const StickyNote: React.FC<Props> = ({
 
       <Box flex="1" minHeight="0" overflow="hidden">
         <BodyText fontSize="m" color="textPrimary" m="0px">
-          <T supportHtml={true} value={idea.data.attributes.body_multiloc} />
+          {bodyText}
         </BodyText>
       </Box>
       {showReactions && (
