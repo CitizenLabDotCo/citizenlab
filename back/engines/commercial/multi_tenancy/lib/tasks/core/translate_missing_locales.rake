@@ -25,14 +25,6 @@
 namespace :demos do
   desc 'Audit and optionally translate missing multiloc fields for a demo tenant'
   task :translate_missing_locales, %i[host translate] => :environment do |_t, args|
-    # Load all models including those in engines
-    Zeitwerk::Loader.eager_load_all
-
-    # Parse arguments
-    translate_missing_locales = args[:translate].to_s.downcase == 'true'
-    translation_service = MachineTranslations::MachineTranslationService.new if translate_missing_locales
-
-    # Validate host parameter (required to prevent accidental runs on all tenants)
     if args[:host].blank?
       puts 'Host parameter is required. Usage: rake demos:translate_missing_locales[host,translate]'
       next
@@ -45,309 +37,335 @@ namespace :demos do
       next
     end
 
-    # Switch to tenant context
     tenant.switch do
-      puts "\n#{'=' * 80}"
-      puts "Tenant: #{tenant.host}"
-      puts '=' * 80
+      translate_missing = args[:translate].to_s.downcase == 'true'
+      TranslateMissingLocales.run(tenant, translate_missing)
+    end
+  end
+end
 
-      # Get configured locales for this tenant
-      locales = AppConfiguration.instance.settings('core', 'locales')
+# rubocop:disable Metrics/ModuleLength
+module TranslateMissingLocales
+  class << self
+    attr_accessor :tenant, :translate_missing, :locales, :main_locale, :translation_service,
+      :issues_found, :translations_made, :total_characters, :model_summary
+
+    def run(tenant, translate_missing)
+      @tenant = tenant
+      @translate_missing = translate_missing
+      @issues_found = 0
+      @translations_made = 0
+      @total_characters = 0
+      @model_summary = {}
+
+      return unless validate_configuration
+
+      print_header
+      process_all_models
+      process_craftjs_layouts
+      print_summary
+    end
+
+    private
+
+    def validate_configuration
+      @locales = AppConfiguration.instance.settings('core', 'locales')
 
       if locales.blank?
         puts 'No locales configured in settings. Skipping.'
-        next
+        return false
       end
 
-      main_locale = locales.first
+      @main_locale = locales.first
       lifecycle_stage = AppConfiguration.instance.settings('core', 'lifecycle_stage')
       is_demo = lifecycle_stage == 'demo'
 
-      # Only allow translations on demo platforms (or local dev) to prevent accidental changes to production data
-      if translate_missing_locales && !is_demo && !Rails.env.development?
+      if translate_missing && !is_demo && !Rails.env.development?
         puts "ERROR: Translations can only be run on demo platforms (current: #{lifecycle_stage})"
         puts 'Run without the translate flag to audit only.'
-        next
+        return false
       end
 
+      @translation_service = MachineTranslations::MachineTranslationService.new if translate_missing
+
+      true
+    end
+
+    def print_header
+      puts "\n#{'=' * 80}"
+      puts "Tenant: #{tenant.host}"
+      puts '=' * 80
       puts "Configured locales: #{locales.join(', ')} (main: #{main_locale})"
-      puts "Lifecycle stage: #{lifecycle_stage}"
-      puts "Translate missing: #{translate_missing_locales}"
+      puts "Lifecycle stage: #{AppConfiguration.instance.settings('core', 'lifecycle_stage')}"
+      puts "Translate missing: #{translate_missing}"
       puts '-' * 80
+    end
 
-      # Initialize counters
-      issues_found = 0
-      translations_made = 0
-      total_characters = 0
-      model_summary = {}
+    def process_all_models
+      data_listing_service = Cl2DataListingService.new
 
-      # Helper lambda to process a multiloc value within craftjs_json
-      # Returns a hash with :has_issues, :missing_locales, :empty_locales, :characters, :translations_made
-      process_craftjs_multiloc = lambda do |multiloc|
-        missing = []
-        empty = []
-
-        locales.each do |locale|
-          if !multiloc.key?(locale)
-            missing << locale
-          elsif multiloc[locale].blank?
-            empty << locale
-          end
-        end
-
-        result = {
-          has_issues: missing.any? || empty.any?,
-          missing_locales: missing,
-          empty_locales: empty,
-          characters: 0,
-          translations_made: 0
-        }
-
-        next result unless result[:has_issues]
-
-        # Find source locale for translation
-        source_locale = if multiloc[main_locale].present?
-          main_locale
-        else
-          multiloc.find { |_, v| v.present? }&.first
-        end
-
-        next result unless source_locale
-
-        source_text = multiloc[source_locale]
-        locales_to_translate = missing + empty
-
-        result[:characters] = source_text.to_s.length * locales_to_translate.size
-
-        next result unless translate_missing_locales
-
-        locales_to_translate.each do |target_locale|
-          if Rails.env.development?
-            multiloc[target_locale] = source_text
-            result[:translations_made] += 1
-            puts "  Copied craftjs_json text from #{source_locale} to #{target_locale} (dev mode)"
-          else
-            translated_text = translation_service.translate(source_text, source_locale, target_locale)
-            multiloc[target_locale] = translated_text
-            result[:translations_made] += 1
-            puts "  Translated craftjs_json text from #{source_locale} to #{target_locale}"
-          end
-        rescue StandardError => e
-          puts "  ERROR translating craftjs_json text to #{target_locale}: #{e.message}"
-        end
-
-        result
-      end
-
-      # Iterate through all models
-      Cl2DataListingService.new.cl2_schema_models.each do |model|
-        # Find columns that store multiloc data (JSON with locale keys)
+      data_listing_service.cl2_schema_models.each do |model|
         multiloc_columns = data_listing_service.multiloc_attributes(model)
         next if multiloc_columns.empty?
 
-        model_issues = []
+        model_issues = process_model(model, multiloc_columns)
+        report_model_issues(model, model_issues) if model_issues.any?
+      end
+    end
 
-        # Process each record in batches
-        model.find_each do |record|
-          # Skip readonly records (e.g., database views like Moderation::Moderation)
-          next if record.readonly?
+    def process_model(model, multiloc_columns)
+      model_issues = []
 
-          multiloc_columns.each do |column|
-            value = record.send(column)
+      model.find_each do |record|
+        next if record.readonly?
 
-            # Skip nil, empty, or all-blank multilocs
-            next if value.blank? || value.values.all?(&:blank?)
-
-            # Check which locales are missing or empty
-            missing_locales = []
-            empty_locales = []
-
-            locales.each do |locale|
-              if !value.key?(locale)
-                missing_locales << locale
-              elsif value[locale].blank?
-                empty_locales << locale
-              end
-            end
-
-            # Skip if all configured locales have content
-            next if missing_locales.empty? && empty_locales.empty?
-
-            # Record the issue
-            issue = {
-              id: record.id,
-              column: column,
-              missing_locales: missing_locales,
-              empty_locales: empty_locales
-            }
-            model_issues << issue
-            issues_found += 1
-
-            # Find source locale for translation (prefer main locale, fallback to any available)
-            source_locale = if value[main_locale].present?
-              main_locale
-            else
-              value.find { |_, v| v.present? }&.first
-            end
-
-            # Skip if no source content available
-            next unless source_locale
-
-            source_text = value[source_locale]
-            locales_to_translate = missing_locales + empty_locales
-
-            # Count characters for cost estimation (source length × number of target locales)
-            total_characters += source_text.to_s.length * locales_to_translate.size
-
-            # Skip actual translation if not requested
-            next unless translate_missing_locales
-
-            # Translate to each missing/empty locale
-            locales_to_translate.each do |target_locale|
-              if Rails.env.development?
-                # In development, just copy the source text (no API calls)
-                value[target_locale] = source_text
-                translations_made += 1
-                puts "  Copied #{model.name}##{record.id}.#{column} from #{source_locale} to #{target_locale} (dev mode)"
-              else
-                # In production/staging, use Google Translate
-                translated_text = translation_service.translate(source_text, source_locale, target_locale)
-                value[target_locale] = translated_text
-                translations_made += 1
-                puts "  Translated #{model.name}##{record.id}.#{column} from #{source_locale} to #{target_locale}"
-              end
-            rescue StandardError => e
-              puts "  ERROR translating #{model.name}##{record.id}.#{column} to #{target_locale}: #{e.message}"
-            end
-
-            # Save the updated multiloc (bypasses validations/callbacks)
-            record.update_column(column, value)
-          end
-        end
-
-        # Skip models with no issues
-        next if model_issues.empty?
-
-        # Track issues per model for summary
-        model_summary[model.name] = model_issues.size
-
-        # Print detailed issues for this model
-        puts "\n#{model.name} (#{model_issues.size} issues)"
-        puts '-' * 40
-
-        model_issues.each do |issue|
-          messages = []
-          messages << "missing: #{issue[:missing_locales].join(', ')}" if issue[:missing_locales].any?
-          messages << "empty: #{issue[:empty_locales].join(', ')}" if issue[:empty_locales].any?
-
-          puts "  ID: #{issue[:id]} | #{issue[:column]} | #{messages.join(' | ')}"
+        multiloc_columns.each do |column|
+          issue = process_multiloc_field(model, record, column)
+          model_issues << issue if issue
         end
       end
 
-      # Process craftjs_json text values in ContentBuilder::Layout records
-      # These contain nested multiloc values within TextMultiloc and AccordionMultiloc nodes
-      if defined?(ContentBuilder::Layout)
-        craftjs_issues = []
+      model_issues
+    end
 
-        ContentBuilder::Layout.find_each do |layout|
-          craftjs_json = layout.craftjs_json
-          next if craftjs_json.blank?
+    def process_multiloc_field(model, record, column)
+      value = record.send(column)
+      return nil if value.blank? || value.values.all?(&:blank?)
 
-          layout_modified = false
+      missing_locales, empty_locales = find_missing_locales(value)
+      return nil if missing_locales.empty? && empty_locales.empty?
 
-          craftjs_json.each do |node_key, node_value|
-            next unless node_value.is_a?(Hash)
-            next unless node_value['type'].is_a?(Hash)
+      @issues_found += 1
 
-            resolved_name = node_value['type']['resolvedName']
-            next unless ContentBuilder::Layout::TEXT_CRAFTJS_NODE_TYPES.include?(resolved_name)
+      issue = {
+        id: record.id,
+        column: column,
+        missing_locales: missing_locales,
+        empty_locales: empty_locales
+      }
 
-            # Process 'text' prop (present in both TextMultiloc and AccordionMultiloc)
-            text_multiloc = node_value.dig('props', 'text')
-            if text_multiloc.is_a?(Hash) && text_multiloc.values.any?(&:present?)
-              result = process_craftjs_multiloc.call(text_multiloc)
-              if result[:has_issues]
-                craftjs_issues << {
-                  id: layout.id,
-                  node_key: node_key,
-                  prop: 'text',
-                  missing_locales: result[:missing_locales],
-                  empty_locales: result[:empty_locales]
-                }
-                issues_found += 1
-                total_characters += result[:characters]
-                translations_made += result[:translations_made]
-                layout_modified = true if result[:translations_made] > 0
-              end
-            end
+      translate_multiloc_field(model, record, column, value, missing_locales + empty_locales)
 
-            # Process 'title' prop (only in AccordionMultiloc)
-            next unless resolved_name == 'AccordionMultiloc'
+      issue
+    end
 
-            title_multiloc = node_value.dig('props', 'title')
-            next unless title_multiloc.is_a?(Hash) && title_multiloc.values.any?(&:present?)
+    def find_missing_locales(value)
+      missing_locales = []
+      empty_locales = []
 
-            result = process_craftjs_multiloc.call(title_multiloc)
-            next unless result[:has_issues]
-
-            craftjs_issues << {
-              id: layout.id,
-              node_key: node_key,
-              prop: 'title',
-              missing_locales: result[:missing_locales],
-              empty_locales: result[:empty_locales]
-            }
-            issues_found += 1
-            total_characters += result[:characters]
-            translations_made += result[:translations_made]
-            layout_modified = true if result[:translations_made] > 0
-          end
-
-          # Save the updated craftjs_json if any translations were made
-          layout.update_column(:craftjs_json, craftjs_json) if layout_modified
-        end
-
-        # Report craftjs_json issues
-        unless craftjs_issues.empty?
-          model_summary['ContentBuilder::Layout (craftjs_json)'] = craftjs_issues.size
-
-          puts "\nContentBuilder::Layout craftjs_json (#{craftjs_issues.size} issues)"
-          puts '-' * 40
-
-          craftjs_issues.each do |issue|
-            messages = []
-            messages << "missing: #{issue[:missing_locales].join(', ')}" if issue[:missing_locales].any?
-            messages << "empty: #{issue[:empty_locales].join(', ')}" if issue[:empty_locales].any?
-
-            puts "  ID: #{issue[:id]} | node: #{issue[:node_key]} | #{issue[:prop]} | #{messages.join(' | ')}"
-          end
+      locales.each do |locale|
+        if !value.key?(locale)
+          missing_locales << locale
+        elsif value[locale].blank?
+          empty_locales << locale
         end
       end
 
-      # Print summary
+      [missing_locales, empty_locales]
+    end
+
+    def translate_multiloc_field(model, record, column, value, locales_to_translate)
+      source_locale = find_source_locale(value)
+      return unless source_locale
+
+      source_text = value[source_locale]
+      @total_characters += source_text.to_s.length * locales_to_translate.size
+
+      return unless translate_missing
+
+      locales_to_translate.each do |target_locale|
+        translate_to_locale(model, record, column, value, source_locale, target_locale, source_text)
+      end
+
+      record.update_column(column, value)
+    end
+
+    def find_source_locale(value)
+      return main_locale if value[main_locale].present?
+
+      value.find { |_, v| v.present? }&.first
+    end
+
+    def translate_to_locale(model, record, column, value, source_locale, target_locale, source_text)
+      if Rails.env.development?
+        value[target_locale] = source_text
+        @translations_made += 1
+        puts "  Copied #{model.name}##{record.id}.#{column} from #{source_locale} to #{target_locale} (dev mode)"
+      else
+        translated_text = translation_service.translate(source_text, source_locale, target_locale)
+        value[target_locale] = translated_text
+        @translations_made += 1
+        puts "  Translated #{model.name}##{record.id}.#{column} from #{source_locale} to #{target_locale}"
+      end
+    rescue StandardError => e
+      puts "  ERROR translating #{model.name}##{record.id}.#{column} to #{target_locale}: #{e.message}"
+    end
+
+    def report_model_issues(model, model_issues)
+      model_summary[model.name] = model_issues.size
+
+      puts "\n#{model.name} (#{model_issues.size} issues)"
+      puts '-' * 40
+
+      model_issues.each do |issue|
+        messages = []
+        messages << "missing: #{issue[:missing_locales].join(', ')}" if issue[:missing_locales].any?
+        messages << "empty: #{issue[:empty_locales].join(', ')}" if issue[:empty_locales].any?
+
+        puts "  ID: #{issue[:id]} | #{issue[:column]} | #{messages.join(' | ')}"
+      end
+    end
+
+    def process_craftjs_layouts
+      return unless defined?(ContentBuilder::Layout)
+
+      craftjs_issues = []
+
+      ContentBuilder::Layout.find_each do |layout|
+        layout_issues, layout_modified = process_craftjs_layout(layout)
+        craftjs_issues.concat(layout_issues)
+        layout.update_column(:craftjs_json, layout.craftjs_json) if layout_modified
+      end
+
+      report_craftjs_issues(craftjs_issues) if craftjs_issues.any?
+    end
+
+    def process_craftjs_layout(layout)
+      craftjs_json = layout.craftjs_json
+      return [[], false] if craftjs_json.blank?
+
+      issues = []
+      layout_modified = false
+
+      craftjs_json.each do |node_key, node_value|
+        node_issues, node_modified = process_craftjs_node(layout, node_key, node_value)
+        issues.concat(node_issues)
+        layout_modified ||= node_modified
+      end
+
+      [issues, layout_modified]
+    end
+
+    def process_craftjs_node(layout, node_key, node_value)
+      return [[], false] unless node_value.is_a?(Hash)
+      return [[], false] unless node_value['type'].is_a?(Hash)
+
+      resolved_name = node_value['type']['resolvedName']
+      return [[], false] unless ContentBuilder::Layout::TEXT_CRAFTJS_NODE_TYPES.include?(resolved_name)
+
+      issues = []
+      node_modified = false
+
+      # Process 'text' prop
+      text_result = process_craftjs_multiloc(layout, node_key, 'text', node_value.dig('props', 'text'))
+      if text_result
+        issues << text_result[:issue]
+        node_modified ||= text_result[:modified]
+      end
+
+      # Process 'title' prop (only in AccordionMultiloc)
+      if resolved_name == 'AccordionMultiloc'
+        title_result = process_craftjs_multiloc(layout, node_key, 'title', node_value.dig('props', 'title'))
+        if title_result
+          issues << title_result[:issue]
+          node_modified ||= title_result[:modified]
+        end
+      end
+
+      [issues, node_modified]
+    end
+
+    def process_craftjs_multiloc(layout, node_key, prop, multiloc)
+      return nil unless multiloc.is_a?(Hash) && multiloc.values.any?(&:present?)
+
+      missing_locales, empty_locales = find_missing_locales(multiloc)
+      return nil if missing_locales.empty? && empty_locales.empty?
+
+      @issues_found += 1
+
+      issue = {
+        id: layout.id,
+        node_key: node_key,
+        prop: prop,
+        missing_locales: missing_locales,
+        empty_locales: empty_locales
+      }
+
+      modified = translate_craftjs_multiloc(multiloc, missing_locales + empty_locales)
+
+      { issue: issue, modified: modified }
+    end
+
+    def translate_craftjs_multiloc(multiloc, locales_to_translate)
+      source_locale = find_source_locale(multiloc)
+      return false unless source_locale
+
+      source_text = multiloc[source_locale]
+      @total_characters += source_text.to_s.length * locales_to_translate.size
+
+      return false unless translate_missing
+
+      modified = false
+
+      locales_to_translate.each do |target_locale|
+        if Rails.env.development?
+          multiloc[target_locale] = source_text
+          @translations_made += 1
+          modified = true
+          puts "  Copied craftjs_json text from #{source_locale} to #{target_locale} (dev mode)"
+        else
+          translated_text = translation_service.translate(source_text, source_locale, target_locale)
+          multiloc[target_locale] = translated_text
+          @translations_made += 1
+          modified = true
+          puts "  Translated craftjs_json text from #{source_locale} to #{target_locale}"
+        end
+      rescue StandardError => e
+        puts "  ERROR translating craftjs_json text to #{target_locale}: #{e.message}"
+      end
+
+      modified
+    end
+
+    def report_craftjs_issues(craftjs_issues)
+      model_summary['ContentBuilder::Layout (craftjs_json)'] = craftjs_issues.size
+
+      puts "\nContentBuilder::Layout craftjs_json (#{craftjs_issues.size} issues)"
+      puts '-' * 40
+
+      craftjs_issues.each do |issue|
+        messages = []
+        messages << "missing: #{issue[:missing_locales].join(', ')}" if issue[:missing_locales].any?
+        messages << "empty: #{issue[:empty_locales].join(', ')}" if issue[:empty_locales].any?
+
+        puts "  ID: #{issue[:id]} | node: #{issue[:node_key]} | #{issue[:prop]} | #{messages.join(' | ')}"
+      end
+    end
+
+    def print_summary
       puts "\n#{'=' * 80}"
       puts "SUMMARY FOR #{tenant.host}"
       puts '=' * 80
 
       if model_summary.empty?
         puts 'No issues found.'
-      else
-        # Print issue counts per model, sorted by count descending
-        puts "\n#{'Model'.ljust(40)} | Count"
-        puts '-' * 50
-
-        model_summary.sort_by { |_, count| -count }.each do |model_name, count|
-          puts "#{model_name.ljust(40)} | #{count}"
-        end
-
-        puts '-' * 50
-        puts "#{'Total'.ljust(40)} | #{issues_found}"
-
-        # Print character count (useful for estimating translation costs)
-        formatted_chars = total_characters.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
-        puts "\nCharacters #{translate_missing_locales ? 'translated' : 'to translate'}: #{formatted_chars}"
-        puts "Translations made: #{translations_made}" if translate_missing_locales
+        return
       end
+
+      puts "\n#{'Model'.ljust(40)} | Count"
+      puts '-' * 50
+
+      model_summary.sort_by { |_, count| -count }.each do |model_name, count|
+        puts "#{model_name.ljust(40)} | #{count}"
+      end
+
+      puts '-' * 50
+      puts "#{'Total'.ljust(40)} | #{issues_found}"
+
+      formatted_chars = total_characters.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+      puts "\nCharacters #{translate_missing ? 'translated' : 'to translate'}: #{formatted_chars}"
+      puts "Translations made: #{translations_made}" if translate_missing
     end
   end
 end
+# rubocop:enable Metrics/ModuleLength
