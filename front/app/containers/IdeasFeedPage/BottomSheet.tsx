@@ -54,13 +54,6 @@ const DragArea = styled.div`
   padding: 8px 0;
 `;
 
-const Overlay = styled.div<{ $isVisible: boolean }>`
-  position: fixed;
-  inset: 0;
-  z-index: 1040;
-  pointer-events: ${({ $isVisible }) => ($isVisible ? 'auto' : 'none')};
-`;
-
 const ContentArea = styled(Box)<{ $scrollable: boolean }>`
   overflow-y: ${({ $scrollable }) => ($scrollable ? 'auto' : 'hidden')};
 `;
@@ -164,8 +157,6 @@ const BottomSheet = ({
     document.addEventListener('mouseup', onUp);
   };
 
-  const handleCollapse = () => setIsFullscreen(false);
-
   const baseTranslateY = isFullscreen ? 0 : getCollapsedY();
   const translateY = baseTranslateY + (dragOffset ?? 0);
   const isDragging = dragOffset !== null;
@@ -176,9 +167,7 @@ const BottomSheet = ({
       autoFocus={true}
       returnFocus={false}
       scrollLock={true}
-      onClickOutside={handleCollapse}
     >
-      <Overlay $isVisible={isFullscreen} onClick={handleCollapse} />
       <Container
         ref={sheetRef}
         $translateY={translateY}
