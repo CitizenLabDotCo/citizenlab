@@ -293,6 +293,16 @@ class WebApi::V1::IdeasController < ApplicationController
       )
     end
 
+    # If native survey or community monitor, and we are publishing this survey:
+    # Do not store user ID if user_data_collection it set to "anonymous" or "demographics_only"
+    # (anonymous = true on the input just means "do not store user ID")
+    # we can only anonymize it after publishing because before that it might
+    # still receive other PATCHes
+    published = update_params[:publication_status] == 'published'
+    surveylike = creation_phase.pmethod.supports_survey_form?
+    not_all_data = creation_phase.pmethod.user_data_collection != 'all_data'
+    anonymize_user_at_the_end = published && surveylike && not_all_data
+
     update_errors = nil
     ActiveRecord::Base.transaction do # Assigning relationships cause database changes
       input.assign_attributes(update_params)
@@ -319,6 +329,12 @@ class WebApi::V1::IdeasController < ApplicationController
       if input.save(**save_options)
         sidefx.after_update(input, current_user)
         update_file_upload_fields input, input.custom_form, update_params
+
+        if anonymize_user_at_the_end
+          input.author_id = nil
+          input.save!
+        end
+
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,
