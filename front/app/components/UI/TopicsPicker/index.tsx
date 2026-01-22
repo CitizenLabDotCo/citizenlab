@@ -120,7 +120,7 @@ const TopicsPicker = memo(
         .map((topic: TopicData) =>
           localize(
             (topic.attributes as IInputTopicData['attributes'])
-              .full_title_multiloc || topic.attributes.title_multiloc
+              .full_title_multiloc
           )
         )
         .join(', ');
@@ -131,9 +131,9 @@ const TopicsPicker = memo(
             {availableTopics.map((topic) => {
               const topicId = topic.id || topic.const;
               // Use full_title_multiloc if available (includes parent prefix), fall back to title_multiloc
-              const titleMultiloc =
-                (topic?.attributes as IInputTopicData['attributes'] | undefined)
-                  ?.full_title_multiloc || topic?.attributes?.title_multiloc;
+              const titleMultiloc = (
+                topic?.attributes as IInputTopicData['attributes'] | undefined
+              )?.full_title_multiloc;
               const topicTitle = titleMultiloc ? (
                 <T value={titleMultiloc} />
               ) : (

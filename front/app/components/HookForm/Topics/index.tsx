@@ -49,9 +49,7 @@ const Topics = ({
     if (!inputTopics?.data) return [];
     return inputTopics.data.map((topic) => ({
       value: topic.id,
-      label: localize(
-        topic.attributes.full_title_multiloc || topic.attributes.title_multiloc
-      ),
+      label: localize(topic.attributes.full_title_multiloc),
     }));
   }, [inputTopics, localize]);
 

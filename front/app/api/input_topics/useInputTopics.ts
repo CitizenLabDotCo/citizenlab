@@ -28,7 +28,7 @@ const fetchInputTopics = ({
     queryParams: {
       sort,
       parent_id: parentId,
-      depth: depth,
+      depth,
     },
   });
 

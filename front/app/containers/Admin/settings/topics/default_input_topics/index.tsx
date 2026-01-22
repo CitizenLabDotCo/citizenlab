@@ -54,9 +54,9 @@ const DefaultInputTopics = () => {
     const newAbove = upOrDown === 'up' ? newIndex - 1 : newIndex;
     const newUnder = upOrDown === 'up' ? newIndex : newIndex + 1;
 
-    const newAboveTopic = sortableItems[newAbove];
+    const newAboveTopic = sortableItems.at(newAbove);
     const movedTopic = sortableItems[currentIndex];
-    const newUnderTopic = sortableItems[newUnder];
+    const newUnderTopic = sortableItems.at(newUnder);
 
     const aboveDepth = newAboveTopic ? newAboveTopic.attributes.depth : -1;
     const currentDepth = movedTopic.attributes.depth;
@@ -67,16 +67,16 @@ const DefaultInputTopics = () => {
 
     if (aboveDepth === currentDepth) {
       position = 'right';
-      targetId = newAboveTopic.id;
+      targetId = newAboveTopic?.id;
     } else if (underDepth === currentDepth) {
       position = 'left';
-      targetId = newUnderTopic.id;
+      targetId = newUnderTopic?.id;
     } else if (aboveDepth < currentDepth) {
       position = 'child';
-      targetId = newAboveTopic.id;
+      targetId = newAboveTopic?.id;
     } else if (aboveDepth > currentDepth) {
       position = 'right';
-      targetId = newAboveTopic.relationships?.parent?.data?.id;
+      targetId = newAboveTopic?.relationships?.parent?.data?.id;
     }
 
     if (position && targetId) {

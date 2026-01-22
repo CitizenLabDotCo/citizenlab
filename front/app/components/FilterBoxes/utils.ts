@@ -32,11 +32,7 @@ export const getSelectedTopicNames = (
   return selectedTopics
     .map((topic) => {
       return (
-        !isNilOrError(topic) &&
-        localize(
-          topic.attributes.full_title_multiloc ||
-            topic.attributes.title_multiloc
-        )
+        !isNilOrError(topic) && localize(topic.attributes.full_title_multiloc)
       );
     })
     .join(', ');
