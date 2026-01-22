@@ -7,6 +7,8 @@ import useDefaultInputTopics from 'api/default_input_topics/useDefaultInputTopic
 import useDeleteDefaultInputTopic from 'api/default_input_topics/useDeleteDefaultInputTopic';
 import useMoveDefaultInputTopic from 'api/default_input_topics/useMoveDefaultInputTopic';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { TextCell } from 'components/admin/ResourceList';
 import SortableList from 'components/admin/ResourceList/SortableList';
@@ -26,6 +28,9 @@ import { isNilOrError } from 'utils/helperUtils';
 import messages from './messages';
 
 const DefaultInputTopics = () => {
+  const nestedInputTopicsActive = useFeatureFlag({
+    name: 'nested_input_topics',
+  });
   const { data: defaultInputTopics } = useDefaultInputTopics();
   const { mutate: deleteDefaultInputTopic, isLoading: isDeleting } =
     useDeleteDefaultInputTopic();
@@ -158,7 +163,7 @@ const DefaultInputTopics = () => {
                     </Box>
                   </TextCell>
                   <Box display="flex" alignItems="center" gap="16px">
-                    {isRootTopic && (
+                    {nestedInputTopicsActive && isRootTopic && (
                       <ButtonWithLink
                         linkTo={`/admin/settings/topics/input/new?parent_id=${topic.id}`}
                         buttonStyle="secondary-outlined"

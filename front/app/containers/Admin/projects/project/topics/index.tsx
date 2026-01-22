@@ -1,12 +1,15 @@
 import React, { useState, useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
 
 import { IInputTopicData } from 'api/input_topics/types';
 import useDeleteInputTopic from 'api/input_topics/useDeleteInputTopic';
 import useInputTopics from 'api/input_topics/useInputTopics';
 import useMoveInputTopic from 'api/input_topics/useMoveInputTopic';
 import useAuthUser from 'api/me/useAuthUser';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { TextCell } from 'components/admin/ResourceList';
@@ -27,14 +30,18 @@ import Modal, {
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 
 import InputTopicModal from './InputTopicModal';
 import messages from './messages';
 
-const ProjectInputTopics = ({ params: { projectId } }: WithRouterProps) => {
+const ProjectInputTopics = () => {
+  const { projectId } = useParams() as { projectId: string };
+  const nestedInputTopicsActive = useFeatureFlag({
+    name: 'nested_input_topics',
+  });
+
   const { data: authUser } = useAuthUser();
   const { data: inputTopics } = useInputTopics(projectId);
   const { mutate: deleteInputTopic, isLoading: isDeleting } =
@@ -240,7 +247,7 @@ const ProjectInputTopics = ({ params: { projectId } }: WithRouterProps) => {
                     </Box>
                   </TextCell>
                   <Box display="flex" alignItems="center" gap="16px">
-                    {isRootTopic && (
+                    {nestedInputTopicsActive && isRootTopic && (
                       <ButtonWithLink
                         onClick={handleAddSubtopicClick(topic.id)}
                         buttonStyle="text"
@@ -320,4 +327,4 @@ const ProjectInputTopics = ({ params: { projectId } }: WithRouterProps) => {
   );
 };
 
-export default withRouter(ProjectInputTopics);
+export default ProjectInputTopics;
