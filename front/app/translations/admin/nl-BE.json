@@ -1392,7 +1392,7 @@
   "app.containers.Admin.projects.project.insights.participationRate": "Deelnameratio",
   "app.containers.Admin.projects.project.insights.populationPercent": "Bevolking (%)",
   "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Meest geliket",
-  "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "These proposals got the most traction",
+  "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "Deze voorstellen kregen de meeste tractie",
   "app.containers.Admin.projects.project.insights.questions": "Vragen",
   "app.containers.Admin.projects.project.insights.reactions": "Likes/dislikes",
   "app.containers.Admin.projects.project.insights.representativenessScore": "Representativiteitsscore",
