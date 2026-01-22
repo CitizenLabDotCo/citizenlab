@@ -86,8 +86,14 @@ describe('Ideation permitted by: users', () => {
         });
       });
     });
+  });
 
-    // Create user
+  const createUser = () => {
+    if (userId) {
+      cy.logout();
+      cy.apiRemoveUser(userId);
+    }
+
     const userFirstName = randomString(10);
     const userLastName = randomString(10);
     const userPassword = randomString(10);
@@ -100,6 +106,10 @@ describe('Ideation permitted by: users', () => {
         userId = response.body.data.id;
       }
     );
+  };
+
+  beforeEach(() => {
+    createUser();
   });
 
   after(() => {
@@ -166,7 +176,7 @@ describe('Ideation permitted by: users', () => {
             .then((response) => {
               // Make sure data was saved
               const attributes = response.body.data.attributes;
-              expect(attributes[customFieldKey]).to.eq(answer);
+              expect(attributes[`u_${customFieldKey}`]).to.eq(answer);
 
               // Make sure user is also linked
               expect(response.body.data.relationships.author?.data?.id).to.eq(
@@ -212,7 +222,7 @@ describe('Ideation permitted by: users', () => {
               // Make it clear the idea has no demographic data saved,
               // since anonymity was selected
               const attributes = response.body.data.attributes;
-              expect(attributes[customFieldKey]).to.eq(undefined);
+              expect(attributes[`u_${customFieldKey}`]).to.eq(undefined);
 
               // And of course there should also be no user linked
               expect(response.body.data.relationships.author?.data?.id).to.eq(
