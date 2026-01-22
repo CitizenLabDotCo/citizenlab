@@ -34,46 +34,48 @@ const NoteWrapper = styled(Box)`
   }
 `;
 
+// Desktop positions use pixel values for consistent centering
 const POSITIONS_DESKTOP = [
-  { left: '5%', top: '2%' },
-  { left: '20%', top: '8%' },
-  { left: '37%', top: '3%' },
-  { left: '53%', top: '10%' },
-  { left: '68%', top: '5%' },
-  { left: '10%', top: '18%' },
-  { left: '25%', top: '22%' },
-  { left: '43%', top: '19%' },
-  { left: '58%', top: '24%' },
-  { left: '73%', top: '20%' },
-  { left: '7%', top: '32%' },
-  { left: '22%', top: '36%' },
-  { left: '40%', top: '33%' },
-  { left: '55%', top: '38%' },
-  { left: '70%', top: '35%' },
+  { left: '60px', top: '2%' },
+  { left: '240px', top: '8%' },
+  { left: '444px', top: '3%' },
+  { left: '636px', top: '10%' },
+  { left: '816px', top: '5%' },
+  { left: '120px', top: '18%' },
+  { left: '300px', top: '22%' },
+  { left: '516px', top: '19%' },
+  { left: '696px', top: '24%' },
+  { left: '876px', top: '20%' },
+  { left: '84px', top: '32%' },
+  { left: '264px', top: '36%' },
+  { left: '480px', top: '33%' },
+  { left: '660px', top: '38%' },
+  { left: '840px', top: '35%' },
 ];
 
+// Tablet positions use pixel values for consistent centering
 const POSITIONS_TABLET = [
-  { left: '5%', top: '2%' },
-  { left: '38%', top: '8%' },
-  { left: '65%', top: '1%' },
-  { left: '12%', top: '19%' },
-  { left: '42%', top: '24%' },
-  { left: '70%', top: '16%' },
-  { left: '3%', top: '38%' },
-  { left: '32%', top: '42%' },
-  { left: '62%', top: '35%' },
-  { left: '8%', top: '55%' },
-  { left: '45%', top: '58%' },
-  { left: '68%', top: '52%' },
+  { left: '30px', top: '2%' },
+  { left: '250px', top: '8%' },
+  { left: '450px', top: '1%' },
+  { left: '80px', top: '19%' },
+  { left: '280px', top: '24%' },
+  { left: '490px', top: '16%' },
+  { left: '20px', top: '38%' },
+  { left: '210px', top: '42%' },
+  { left: '430px', top: '35%' },
+  { left: '50px', top: '55%' },
+  { left: '300px', top: '58%' },
+  { left: '470px', top: '52%' },
 ];
 
+// Mobile positions use pixel values for consistent centering
 const POSITIONS_MOBILE = [
-  { left: '5%', top: '1%' },
-  { left: '21%', top: '10%' },
-  { left: '3%', top: '24%' },
-  { left: '23%', top: '32%' },
-  { left: '7%', top: '48%' },
-  { left: '19%', top: '56%' },
+  { left: '10px', top: '1%' },
+  { left: '25px', top: '14%' },
+  { left: '5px', top: '30%' },
+  { left: '30px', top: '43%' },
+  { left: '15px', top: '58%' },
 ];
 
 // Slight rotations to give a natural scattered look
@@ -126,39 +128,53 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
     return <Spinner />;
   }
 
+  // Use fixed width containers that center the pile
+  const mobileContainerWidth = 340;
+  const tabletContainerWidth = 800;
+  const desktopContainerWidth = 1200;
+
   return (
     <Box overflow="hidden">
-      <PileContainer
-        position="relative"
-        width="100%"
-        height="100%"
-        minHeight="800px"
-      >
-        {displayedIdeas?.map((idea, index) => {
-          const topicIds =
-            idea.relationships.input_topics?.data.map((topic) => topic.id) ||
-            [];
-          const topicBackgroundColor = getTopicColor(topicIds[0]);
+      <Box display="flex" justifyContent="center" width="100%">
+        <PileContainer
+          position="relative"
+          width="100%"
+          maxWidth={
+            isMobile
+              ? `${mobileContainerWidth}px`
+              : isTablet
+              ? `${tabletContainerWidth}px`
+              : `${desktopContainerWidth}px`
+          }
+          height="100%"
+          minHeight={isMobile || isTablet ? '800px' : '650px'}
+        >
+          {displayedIdeas?.map((idea, index) => {
+            const topicIds =
+              idea.relationships.input_topics?.data.map((topic) => topic.id) ||
+              [];
+            const topicBackgroundColor = getTopicColor(topicIds[0]);
 
-          return (
-            <NoteWrapper
-              key={idea.id}
-              zIndex={String(index)}
-              left={positions[index % positions.length].left}
-              top={positions[index % positions.length].top}
-            >
-              <StickyNote
-                ideaId={idea.id}
-                topicBackgroundColor={topicBackgroundColor}
-                onClick={() => handleNoteClick(idea.id)}
-                size="small"
-                rotation={ROTATIONS[index % ROTATIONS.length]}
-                showReactions={false}
-              />
-            </NoteWrapper>
-          );
-        })}
-      </PileContainer>
+            return (
+              <NoteWrapper
+                key={idea.id}
+                zIndex={String(index)}
+                left={positions[index % positions.length].left}
+                top={positions[index % positions.length].top}
+              >
+                <StickyNote
+                  ideaId={idea.id}
+                  topicBackgroundColor={topicBackgroundColor}
+                  onClick={() => handleNoteClick(idea.id)}
+                  size="small"
+                  rotation={ROTATIONS[index % ROTATIONS.length]}
+                  showReactions={false}
+                />
+              </NoteWrapper>
+            );
+          })}
+        </PileContainer>
+      </Box>
       <Box display="flex" justifyContent="center" mt="24px">
         <Button onClick={handleSeeAllClick}>
           <FormattedMessage {...messages.seeAllIdeas} values={{ ideasCount }} />
