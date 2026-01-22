@@ -31,6 +31,7 @@ module GemExtensions
           super
         rescue JSON::JWK::Set::KidNotFound => e
           Rails.logger.warn("[OmniAuth OpenIDConnect] KidNotFound error for provider '#{name}', refreshing JWKS cache and retrying: #{e.message}")
+          ErrorReporter.report(e) # Log the error for monitoring how often this happens
 
           # Clear both cached values to force a fresh JWKS fetch on retry.
           # The gem memoizes: @config (discovery config) and @public_key (JWKS keyset).
