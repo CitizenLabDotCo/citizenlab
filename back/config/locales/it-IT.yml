@@ -39,25 +39,25 @@ it:
     prescreening: pre-screening
     prescreening_description: Questo contributo è attualmente in fase di revisione da parte del responsabile del progetto e non è ancora visibile al pubblico.
     proposed: proposto
-    proposed_description: Questa idea è stata proposta alla città
+    proposed_description: Questo contributo è stato presentato ed è ora aperto al sostegno dell'opinione pubblica. Puoi votarlo per aiutarlo a passare alla fase successiva.
     viewed: visto
-    viewed_description: Questa idea è stata vista da qualcuno della città
+    viewed_description: Questo contributo è stato visto dal responsabile del progetto.
     under_consideration: in considerazione
-    under_consideration_description: Questa idea è stata presa in considerazione dalla città
+    under_consideration_description: Questo contributo è stato preso in considerazione dal responsabile del progetto.
     accepted: accettato
-    accepted_description: Questa idea è stata accettata e sarà attuata dalla città
+    accepted_description: Questo contributo è stato accettato e sarà implementato dal responsabile del progetto.
     implemented: implementato
-    implemented_description: Questa idea è stata proposta alla città
+    implemented_description: Questo contributo è stato implementato dal responsabile del progetto.
     rejected: rifiutato
-    rejected_description: Questa idea è stata respinta
+    rejected_description: Questo contributo è stato respinto.
     expired: scaduto
-    expired_description: scaduto
+    expired_description: Questo contributo non è più attivo ed è stato chiuso a causa di limiti di tempo o di inattività.
     threshold_reached: soglia raggiunta
-    threshold_reached_description: soglia raggiunta
+    threshold_reached_description: Questo contributo ha raggiunto la soglia di supporto richiesta e sarà ora preso in considerazione.
     answered: ha risposto
-    answered_description: ha risposto
+    answered_description: Il responsabile del progetto ha pubblicato un aggiornamento ufficiale su questo contributo.
     ineligible: non ammissibile
-    ineligible_description: non ammissibile
+    ineligible_description: Questo contributo è stato esaminato e, purtroppo, respinto. È stato fornito un aggiornamento ufficiale con maggiori dettagli.
   topics:
     nature: Natura e biodiversità
     nature_description: Natura e biodiversità
@@ -239,7 +239,7 @@ it:
         issue:
           title: Qual è il suo commento?
         option:
-          title: Qual è la sua opzione?
+          title: Qual è la tua opzione?
         proposal:
           title: Qual è la tua proposta?
         initiative:
@@ -266,13 +266,13 @@ it:
       assignee_fullname: 'Assegnatario'
       assignee_email: 'Email del destinatario'
       attachments: 'Allegati'
-      author_email: 'Email dell''autore'
+      author_email: 'Email autore'
       author_fullname: 'Nome dell''autore'
       author_id: 'ID autore'
       budget: 'Bilancio'
       comments_count: 'Commenti'
       cost: 'Costo'
-      created_at: 'Presentato a'
+      created_at: 'Presentato il'
       description: 'Descrizione'
       dislikes_count: 'Non mi piace'
       email: 'Email'
@@ -288,19 +288,19 @@ it:
       longitude: 'Longitudine'
       neutral_reactions_count: 'Incerto'
       participants: 'Partecipanti'
-      picks: 'Plettri'
+      picks: 'Voti'
       project: 'Progetto'
-      published_at: 'Pubblicato presso'
-      registration_completed_at: 'Registrazione completata presso'
-      status: 'Stato'
-      submitted_at: 'Inviato a'
+      published_at: 'Pubblicato il'
+      registration_completed_at: 'Registrazione completata il'
+      status: 'Status'
+      submitted_at: 'Inviato il'
       tags: 'Tag'
       title: 'Titolo'
       user_data: 'Dati utente'
       votes_count: 'Voti'
   form_builder:
     default_select_field:
-      title: 'La vostra domanda'
+      title: 'La tua domanda'
       option1: 'Opzione 1'
       option2: 'Opzione 2'
     form_end_page:
@@ -351,7 +351,7 @@ it:
       preheader: 'Conferma il tuo indirizzo e-mail per %{organizationName}'
       header: "Il tuo codice di conferma"
       header_message: "Ciao %{firstName}!"
-      confirm_email_address: "Confermare l'indirizzo e-mail"
+      confirm_email_address: "Conferma l'indirizzo e-mail"
       thanks_for_signing_up1: "Grazie per la tua partecipazione. Inserisci questo codice di conferma nella finestra della piattaforma di partecipazione %{organizationName}:"
       best_regards: "Cordiali saluti,"
       ignore_email: "Se non avete richiesto un codice, potete tranquillamente ignorare questa e-mail."
