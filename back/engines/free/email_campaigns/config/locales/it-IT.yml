@@ -223,7 +223,7 @@ it:
       cta_button: 'Accetta l''invito'
       invitation_expiry_message: 'Questo invito scade tra circa %{expiryDaysRemaining} giorni.'
     invite_received:
-      preheader: '%{organizationName} ti ha invitato alla loro piattaforma di partecipazione.'
+      preheader: '%{organizationName} ti ha invitato sulla sua piattaforma partecipativa.'
       subject: 'Sei stato invitato a partecipare alla piattaforma di %{organizationName}'
       title: 'Sei stato invitato!'
       event_description: '%{organizationName} ti ha invitato sulla sua piattaforma partecipativa.'
@@ -547,7 +547,7 @@ it:
       cta_button: 'Vai alla piattaforma per votare'
     survey_submitted:
       subject: '%{organizationName}: Grazie per le tue risposte! 🎉'
-      preheader: 'Ecco i dettagli del tuo invio.'
+      preheader: 'Ecco i dettagli delle tue risposte.'
       title: 'Grazie per aver condiviso la tua opinione su "%{projectName}"!'
       event_description: 'Le tue risposte per "%{projectName}" sono state inviato con successo.'
       if_you_would_like_to_review: 'Se vuoi rivedere la tua candidatura, puoi scaricare le tue risposte qui sotto.'
