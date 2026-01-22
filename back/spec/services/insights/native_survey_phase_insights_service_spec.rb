@@ -35,7 +35,6 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
         action: 'submitting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
-        survey_submitted_at: idea1.submitted_at,
         participant_id: user1.id,
         user_custom_field_values: {}
       }, {
@@ -43,7 +42,6 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
         action: 'submitting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
-        survey_submitted_at: idea2.submitted_at,
         participant_id: user1.id,
         user_custom_field_values: {}
       }, {
@@ -51,7 +49,6 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
         action: 'submitting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
-        survey_submitted_at: idea3.submitted_at,
         participant_id: user1.id,
         user_custom_field_values: {}
       }, {
@@ -59,7 +56,6 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
         action: 'submitting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
-        survey_submitted_at: idea4.submitted_at,
         participant_id: user2.id,
         user_custom_field_values: {}
       }, {
@@ -67,7 +63,6 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
         action: 'submitting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
-        survey_submitted_at: idea6.submitted_at,
         participant_id: 'some_author_hash',
         user_custom_field_values: {}
       }, {
@@ -75,7 +70,6 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
         action: 'submitting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
-        survey_submitted_at: idea7.submitted_at,
         participant_id: idea7.id,
         user_custom_field_values: {}
       })

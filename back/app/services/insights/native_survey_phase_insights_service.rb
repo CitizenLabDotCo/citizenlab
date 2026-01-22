@@ -16,9 +16,8 @@ module Insights
         {
           item_id: idea.id,
           action: 'submitting_idea',
-          acted_at: idea.created_at,
+          acted_at: idea.submitted_at,
           classname: 'Idea',
-          survey_submitted_at: idea&.submitted_at,
           participant_id: participant_id(idea.id, idea.author_id, idea.author_hash),
           user_custom_field_values: idea&.custom_field_values || {}
         }
@@ -56,9 +55,9 @@ module Insights
       ideas_last_7_days_count = phase_ideas.where(created_at: 7.days.ago..).count
       ideas_previous_7_days_count = phase_ideas.where(created_at: 14.days.ago...7.days.ago).count
 
-      submitted_last_7_days_count = participations[:submitting_idea].count { |p| p[:survey_submitted_at] >= 7.days.ago }
+      submitted_last_7_days_count = participations[:submitting_idea].count { |p| p[:acted_at] >= 7.days.ago }
       submitted_previous_7_days_count = participations[:submitting_idea].count do |p|
-        p[:survey_submitted_at] < 7.days.ago && p[:survey_submitted_at] >= 14.days.ago
+        p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
       end
 
       completion_rate_last_7_days = completion_rate(ideas_last_7_days_count, submitted_last_7_days_count)
