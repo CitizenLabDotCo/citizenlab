@@ -2735,7 +2735,7 @@
   "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.fieldTopicTitleTooltip": "The name you choose for each tag will be visible for citizens during signup and when filtering projects.",
   "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.projectsSettings": "projektindstillinger",
   "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.subtitleTerminology": "Terminologi (forsidefilter)",
-  "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.tagIsLinkedToStaticPage": "Dette tag kan ikke slettes, fordi det bruges til at vise projekter på følgende flere brugerdefinerede sider. ",
+  "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.tagIsLinkedToStaticPage": "Dette tag kan ikke slettes, fordi det bruges til at vise projekter på følgende flere brugerdefinerede side(r). Du skal fjerne tagget fra siden eller slette siden, før du kan slette tagget.",
   "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.terminologyTooltip": "Vælg, hvilke 'tags' der henvises til på hjemmesidens projektfilter, f.eks. emner, kategorier, afdelinger osv. Du skal angive både ental og flertal.",
   "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.topicTerm": "Betegnelse for et tag (ental)",
   "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.topicTermPlaceholder": "Tag",
