@@ -1789,7 +1789,8 @@ CREATE TABLE public.phases (
     similarity_enabled boolean DEFAULT true NOT NULL,
     vote_term character varying DEFAULT 'vote'::character varying,
     voting_min_selected_options integer DEFAULT 1 NOT NULL,
-    voting_filtering_enabled boolean DEFAULT false NOT NULL
+    voting_filtering_enabled boolean DEFAULT false NOT NULL,
+    ideation_method character varying
 );
 
 

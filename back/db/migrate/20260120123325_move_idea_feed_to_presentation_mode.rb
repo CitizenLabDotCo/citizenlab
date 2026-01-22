@@ -15,7 +15,5 @@ class MoveIdeaFeedToPresentationMode < ActiveRecord::Migration[7.1]
         end
       end
     end
-
-    safety_assured { remove_column :phases, :ideation_method, :string }
   end
 end
