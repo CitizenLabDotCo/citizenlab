@@ -5,7 +5,7 @@ import { VolunteeringMetrics as VolunteeringMetricsType } from 'api/phase_insigh
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
-import Metric from '../Metric';
+import MetricCard from '../MetricCard';
 
 interface Props {
   metrics: VolunteeringMetricsType;
@@ -16,9 +16,10 @@ const VolunteeringMetrics = ({ metrics, showChange }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Metric
+    <MetricCard
       label={formatMessage(messages.volunteerings)}
       value={metrics.volunteerings}
+      icon="user-check"
       change={showChange ? metrics.volunteerings_7_day_change : undefined}
     />
   );

@@ -27,7 +27,7 @@ interface Props {
 const IdeasCount = ({ project, queryParameters }: Props) => {
   const { data: ideasCount } = useIdeasCount({
     phase: queryParameters.phase,
-    topics: queryParameters.topics,
+    input_topics: queryParameters.input_topics,
     search: queryParameters.search,
     assignee: queryParameters.assignee,
     feedback_needed: queryParameters.feedback_needed,

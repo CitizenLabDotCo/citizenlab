@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
-import useGlobalTopic from 'api/global_topics/useGlobalTopic';
+import useInputTopicById from 'api/input_topics/useInputTopicById';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -17,7 +17,7 @@ interface Props {
 }
 
 const SelectedTopicContent = ({ topicId, onBack }: Props) => {
-  const { data: topic } = useGlobalTopic(topicId);
+  const { data: topic } = useInputTopicById(topicId);
   const localize = useLocalize();
 
   return (

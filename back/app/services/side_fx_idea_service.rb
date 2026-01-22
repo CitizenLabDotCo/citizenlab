@@ -243,14 +243,14 @@ class SideFxIdeaService
 
   def enqueue_wise_voice_detection_job(idea)
     current_phase = TimelineService.new.current_phase(idea.project)
-    return unless current_phase&.ideation_method == 'idea_feed'
+    return unless current_phase&.presentation_mode == 'feed'
 
     WiseVoiceDetectionJob.perform_later(idea)
   end
 
   def enqueue_topic_classification_job(idea)
     current_phase = TimelineService.new.current_phase(idea.project)
-    return unless current_phase&.ideation_method == 'idea_feed'
+    return unless current_phase&.presentation_mode == 'feed'
 
     IdeaFeed::TopicClassificationJob.set(priority: 10).perform_later(current_phase, idea)
   end

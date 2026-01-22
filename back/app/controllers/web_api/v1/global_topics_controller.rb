@@ -7,15 +7,6 @@ class WebApi::V1::GlobalTopicsController < ApplicationController
   def index
     global_topics = policy_scope(GlobalTopic)
     global_topics = TopicsFilteringService.new.filter(global_topics, params: params, current_user: current_user)
-    filter_ideas = Idea
-    if params.key? :ideas
-      filter_ideas = IdeasFinder.new(
-        params.delete(:ideas),
-        scope: policy_scope(Idea),
-        current_user: current_user
-      ).find_records
-      global_topics = GlobalTopic.where(id: global_topics.includes(:ideas_topics).where(ideas_topics: { idea_id: filter_ideas }))
-    end
 
     global_topics =
       case params[:sort]
@@ -29,10 +20,6 @@ class WebApi::V1::GlobalTopicsController < ApplicationController
         global_topics.order_projects_count
       when '-projects_count'
         global_topics.order_projects_count(:asc)
-      when 'ideas_count'
-        global_topics.order_ideas_count(filter_ideas)
-      when '-ideas_count'
-        global_topics.order_ideas_count(filter_ideas, direction: :desc)
       else
         raise 'Unsupported sort method'
       end

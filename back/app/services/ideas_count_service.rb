@@ -1,9 +1,10 @@
 module IdeasCountService
   ATTRIBUTE_JOIN_TABLES = {
-    'topic_id' => 'ideas_topics'
+    'topic_id' => 'ideas_topics',
+    'input_topic_id' => 'ideas_input_topics'
   }
 
-  def self.counts(ideas_scope, attributes = %w[idea_status_id topic_id])
+  def self.counts(ideas_scope, attributes = %w[idea_status_id input_topic_id])
     result = attributes.index_with { {} }
 
     attributes.each do |attribute|

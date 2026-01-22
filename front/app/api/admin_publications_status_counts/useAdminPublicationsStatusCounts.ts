@@ -13,7 +13,7 @@ export const fetchStatusCounts = ({
   removeNotAllowedParents,
   publicationStatusFilter,
   childrenOfId,
-  topicIds,
+  globalTopicIds: topicIds,
   areaIds,
   onlyProjects,
   ...queryParameters

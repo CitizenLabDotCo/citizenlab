@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import {
   Box,
@@ -6,6 +6,7 @@ import {
   Icon,
   Spinner,
   colors,
+  IconButton,
 } from '@citizenlab/cl2-component-library';
 
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -24,12 +25,21 @@ import tracks from './tracks';
 
 interface IdeaDetailViewProps {
   ideaId: string | null;
+  onClose: () => void;
 }
 
-const IdeaDetailView = ({ ideaId }: IdeaDetailViewProps) => {
+const IdeaDetailView = ({ ideaId, onClose }: IdeaDetailViewProps) => {
   const isInputIQEnabled = useFeatureFlag({ name: 'input_iq' });
   const { data: idea, isLoading } = useIdeaById(ideaId ? ideaId : undefined);
   const { formatMessage } = useIntl();
+  const sidebarRef = useRef<HTMLDivElement>(null);
+
+  // focus on sidebar when it opens
+  useEffect(() => {
+    if (ideaId && sidebarRef.current) {
+      sidebarRef.current.focus();
+    }
+  }, [ideaId]);
 
   if (isLoading) return <Spinner />;
 
@@ -46,46 +56,77 @@ const IdeaDetailView = ({ ideaId }: IdeaDetailViewProps) => {
     comments_count,
   } = idea.data.attributes;
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      onClose();
+    }
+  };
+
   return (
-    <Box p="16px 24px">
-      <Box display="flex" alignItems="center" gap="8px">
-        <Icon
-          name="user-circle"
-          width="16px"
-          height="16px"
-          fill={colors.black}
-        />
-        <Text variant="bodyS" color="grey700" my="0px">
-          {author_name}
-        </Text>
-        <Box flex="1" />
-        <Box display="flex" gap="16px">
-          <Box display="flex" alignItems="center" gap="4px">
-            <Icon
-              name="thumb-up"
-              width="16px"
-              height="16px"
-              fill={colors.grey700}
-            />
-            <Text variant="bodyS">{likes_count}</Text>
-          </Box>
-          <Box display="flex" alignItems="center" gap="4px">
-            <Icon
-              name="thumb-down"
-              width="16px"
-              height="16px"
-              fill={colors.grey700}
-            />
-            <Text variant="bodyS">{dislikes_count}</Text>
-          </Box>
-          <Box display="flex" alignItems="center" gap="4px">
-            <Icon
-              name="chat-bubble"
-              width="16px"
-              height="16px"
-              fill={colors.grey700}
-            />
-            <Text variant="bodyS">{comments_count}</Text>
+    <Box
+      ref={sidebarRef}
+      p="16px 24px"
+      pt="46px"
+      role="complementary"
+      tabIndex={0}
+      aria-label={formatMessage(messages.similarIdeaDetails)}
+      onKeyDown={handleKeyDown}
+      position="relative"
+    >
+      <Box
+        tabIndex={0}
+        aria-label={formatMessage(messages.ideaAuthorStats, {
+          author_name: author_name || '',
+          likes_count,
+          dislikes_count,
+          comments_count,
+        })}
+      >
+        <Box
+          aria-hidden="true"
+          display="flex"
+          alignItems="center"
+          gap="8px"
+          mb="16px"
+        >
+          <Icon
+            name="user-circle"
+            width="16px"
+            height="16px"
+            fill={colors.black}
+          />
+          <Text variant="bodyS" color="grey700" my="0px">
+            {author_name}
+          </Text>
+          <Box flex="1" />
+          <Box display="flex" gap="16px">
+            <Box display="flex" alignItems="center" gap="4px">
+              <Icon
+                name="thumb-up"
+                width="16px"
+                height="16px"
+                fill={colors.grey700}
+              />
+              <Text variant="bodyS">{likes_count}</Text>
+            </Box>
+            <Box display="flex" alignItems="center" gap="4px">
+              <Icon
+                name="thumb-down"
+                width="16px"
+                height="16px"
+                fill={colors.grey700}
+              />
+              <Text variant="bodyS">{dislikes_count}</Text>
+            </Box>
+            <Box display="flex" alignItems="center" gap="4px">
+              <Icon
+                name="chat-bubble"
+                width="16px"
+                height="16px"
+                fill={colors.grey700}
+              />
+              <Text variant="bodyS">{comments_count}</Text>
+            </Box>
           </Box>
         </Box>
       </Box>
@@ -96,6 +137,9 @@ const IdeaDetailView = ({ ideaId }: IdeaDetailViewProps) => {
         color="textPrimary"
         mt="0px"
         mb="8px"
+        tabIndex={0}
+        role="heading"
+        aria-level={2}
       >
         <T value={title_multiloc} />
       </Text>
@@ -117,6 +161,16 @@ const IdeaDetailView = ({ ideaId }: IdeaDetailViewProps) => {
         >
           {formatMessage(messages.engageHere)}
         </ButtonWithLink>
+      </Box>
+      <Box position="absolute" top="16px" right="16px">
+        <IconButton
+          iconName="close"
+          onClick={onClose}
+          aria-label={formatMessage(messages.closeSidebar)}
+          iconColor={colors.textSecondary}
+          iconColorOnHover={colors.textPrimary}
+          a11y_buttonActionMessage={formatMessage(messages.closeSidebar)}
+        />
       </Box>
     </Box>
   );

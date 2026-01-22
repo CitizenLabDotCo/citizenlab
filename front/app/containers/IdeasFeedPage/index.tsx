@@ -33,17 +33,17 @@ const IdeasFeedPage = () => {
     }
   };
 
-  if (!phaseId) {
+  if (!phaseId || !project) {
     return null;
   }
 
   return (
     <main id="e2e-project-ideas-page">
-      {project && <IdeasFeedPageMeta project={project.data} />}
+      <IdeasFeedPageMeta project={project.data} />
       <Box
         w="100%"
         bgColor={colors.grey100}
-        h="100vh"
+        h="100svh"
         position="absolute"
         top="0"
         right="0"
@@ -67,9 +67,9 @@ const IdeasFeedPage = () => {
           position="relative"
           display="flex"
           overflow="auto"
-          h="100vh"
+          h="100svh"
         >
-          <Sidebar />
+          <Sidebar projectId={project.data.id} />
           <Box flex="4" position="relative">
             {/* General feed - always mounted to preserve scroll position */}
             <Box visibility={selectedTopicId ? 'hidden' : 'visible'}>

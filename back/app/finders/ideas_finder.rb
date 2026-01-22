@@ -36,13 +36,13 @@ class IdeasFinder < ApplicationFinder
     records.joins(:baskets).where('baskets.id': basket_id)
   end
 
-  def topics_condition(topics)
-    return if topics.blank?
+  def input_topics_condition(input_topics)
+    return if input_topics.blank?
 
-    @records.includes(:topics)
-    scope(:with_some_topics, topics)
+    @records.includes(:input_topics)
+    scope(:with_some_input_topics, input_topics)
   end
-  alias topic_condition topics_condition
+  alias input_topic_condition input_topics_condition
 
   def phase_condition(phase)
     scope(:in_phase, phase) if phase.present?

@@ -52,26 +52,33 @@ module PublicApi
     end
 
     def create_params
-      params.require(:idea).permit(
+      result = params.require(:idea).permit(
         :project_id,
         :assignee_id,
         :idea_status_id,
         title_multiloc: {},
         body_multiloc: {},
         topic_ids: [],
+        input_topic_ids: [],
         phase_ids: []
       )
+      result[:input_topic_ids] = result.delete(:topic_ids) if result.key?(:topic_ids)
+      result
     end
 
     def update_params
-      params.require(:idea).permit(
+      result = params.require(:idea).permit(
         :assignee_id,
         :idea_status_id,
         title_multiloc: {},
         body_multiloc: {},
         topic_ids: [],
+        input_topic_ids: [],
         phase_ids: []
       )
+
+      result[:input_topic_ids] = result.delete(:topic_ids) if result.key?(:topic_ids)
+      result
     end
 
     def side_fx

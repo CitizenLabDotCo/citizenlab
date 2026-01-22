@@ -88,7 +88,7 @@ const ProjectAndFolderCards = ({
     publicationStatusFilter: getPublicationStatuses(currentTab),
     rootLevelOnly,
     removeNotAllowedParents: true,
-    topicIds,
+    globalTopicIds: topicIds,
     areaIds,
     search,
     include_publications: true,
@@ -123,6 +123,7 @@ const ProjectAndFolderCards = ({
       loadingInitial={isInitialLoading}
       hasMore={hasNextPage}
       loadingMore={isFetchingNextPage}
+      searchTerm={search}
       {...otherProps}
       onChangeTopics={setTopicsIds}
       onChangeAreas={setAreasIds}
