@@ -2732,7 +2732,7 @@
   "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.fieldTopicSave": "Enregistrer",
   "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.fieldTopicTitle": "Nom",
   "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.fieldTopicTitleError": "Veuillez renseigner le nom de l'étiquette pour chaque langue",
-  "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.fieldTopicTitleTooltip": "Les noms d'étiquettes sont visibles par les citoyens dans certains filtres et à l'inscription.",
+  "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.fieldTopicTitleTooltip": "Les noms d'étiquettes sont visibles par les citoyens dans certains filtres et lors de l'inscription.",
   "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.projectsSettings": "paramètres du projet",
   "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.subtitleTerminology": "Terminologie",
   "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.tagIsLinkedToStaticPage": "Cette étiquette ne peut pas être supprimée car elle sert de filtre pour les projets affichés sur les pages personnalisées suivantes. Modifiez ou supprimez ces pages pour pouvoir la supprimer.",
