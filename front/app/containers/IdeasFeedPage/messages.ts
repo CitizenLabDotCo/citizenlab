@@ -29,4 +29,8 @@ export default defineMessages({
     id: 'app.containers.IdeasFeedPage.addYourIdea',
     defaultMessage: 'Add your idea',
   },
+  exploreTopicsNudge: {
+    id: 'app.containers.IdeasFeedPage.exploreTopicsNudge',
+    defaultMessage: 'Swipe up to explore the topics',
+  },
 });

@@ -64,7 +64,7 @@ const TopicsContent = ({
       )}
 
       <Box px="16px" mb="16px">
-        <Title fontWeight="bold" variant="h4" as="h1" mb="8px">
+        <Title fontWeight="bold" variant="h2" as="h1">
           {projectTitle}
         </Title>
         {projectId && (
@@ -75,16 +75,22 @@ const TopicsContent = ({
         )}
       </Box>
       <Divider mb="0px" />
-      {topicIds.map((topicId) => (
-        <TopicItem
-          key={topicId}
-          topicId={topicId}
-          isActive={selectedTopicId === topicId}
-          totalIdeasCount={totalIdeasCount}
-          topicCount={topicCounts[topicId] || 0}
-          onTopicSelect={onTopicSelect}
-        />
-      ))}
+      {topicIds
+        .sort(
+          (topic1, topic2) =>
+            (topicCounts[topic2] || 0) - (topicCounts[topic1] || 0)
+        )
+        .map((topicId, index, sortedArray) => (
+          <TopicItem
+            key={topicId}
+            topicId={topicId}
+            isActive={selectedTopicId === topicId}
+            totalIdeasCount={totalIdeasCount}
+            topicCount={topicCounts[topicId] || 0}
+            onTopicSelect={onTopicSelect}
+            isLast={index === sortedArray.length - 1}
+          />
+        ))}
     </>
   );
 };

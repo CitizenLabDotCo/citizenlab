@@ -1,7 +1,7 @@
 module IdeaFeed
-  # Service used by the IdeaFeed ideation_method to automatically update the
-  # Topics. The service is intended to be run periodically (e.g. every hour) to
-  # keep the topics up to date with the latest ideas. It tries to strike a
+  # Service used by IdeaFeed (presentation_mode='feed') to automatically update
+  # the Topics. The service is intended to be run periodically (e.g. every hour)
+  # to keep the topics up to date with the latest ideas. It tries to strike a
   # balance between accuracy and stability of the clusters.
   class TopicModelingService
     def initialize(phase)

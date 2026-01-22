@@ -122,7 +122,7 @@ const IdeationPage = ({
 
       const shouldGoToIdeaFeed =
         participationMethod === 'ideation' &&
-        phase?.attributes.ideation_method === 'idea_feed';
+        phase?.attributes.presentation_mode === 'feed';
 
       const shouldGoToInputManager =
         userCanModerate && participationMethod === 'common_ground';

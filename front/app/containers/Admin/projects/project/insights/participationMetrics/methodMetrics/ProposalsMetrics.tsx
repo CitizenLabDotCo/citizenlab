@@ -5,7 +5,7 @@ import { ProposalsMetrics as ProposalsMetricsType } from 'api/phase_insights/typ
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
-import Metric from '../Metric';
+import MetricCard from '../MetricCard';
 
 interface Props {
   metrics: ProposalsMetricsType;
@@ -17,19 +17,22 @@ const ProposalsMetrics = ({ metrics, showChange }: Props) => {
 
   return (
     <>
-      <Metric
+      <MetricCard
         label={formatMessage(messages.inputs)}
         value={metrics.ideas_posted}
+        icon="sidebar-proposals"
         change={showChange ? metrics.ideas_posted_7_day_change : undefined}
       />
-      <Metric
+      <MetricCard
         label={formatMessage(messages.comments)}
         value={metrics.comments_posted}
+        icon="chat-bubble"
         change={showChange ? metrics.comments_posted_7_day_change : undefined}
       />
-      <Metric
+      <MetricCard
         label={formatMessage(messages.reactions)}
         value={metrics.reactions}
+        icon="thumb-up"
         change={showChange ? metrics.reactions_7_day_change : undefined}
       />
     </>
