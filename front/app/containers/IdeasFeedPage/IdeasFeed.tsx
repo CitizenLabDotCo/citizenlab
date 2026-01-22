@@ -42,23 +42,46 @@ const FeedContainer = styled(Box)`
 const NoteContainer = styled(Box)<{
   peekHeight: number;
   isCentered: boolean;
+  isPrevious: boolean;
+  isNext: boolean;
   noteHeight: number;
 }>`
   position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
   scroll-snap-align: center;
   scroll-snap-stop: always;
   height: calc(100svh - ${({ peekHeight }) => peekHeight}px);
   padding: 30px;
 
   > * {
-    transform: scale(${({ isCentered }) => (isCentered ? 1.08 : 1)});
+    position: absolute;
+    top: 50%;
+    transform: ${({
+      isCentered,
+      isPrevious,
+      isNext,
+      peekHeight,
+      noteHeight,
+    }) => {
+      const scale = isCentered ? 1.08 : 1;
+      const containerHeight = `calc(100svh - ${peekHeight}px - 60px)`;
+      if (isCentered) {
+        return `translateY(-50%) scale(${scale})`;
+      }
+      if (isNext) {
+        // Move to top of container
+        return `translateY(calc(-50% - (${containerHeight} - ${noteHeight}px) / 2)) scale(${scale})`;
+      }
+      if (isPrevious) {
+        // Move to bottom of container
+        return `translateY(calc(-50% + (${containerHeight} - ${noteHeight}px) / 2 + 40px)) scale(${scale})`;
+      }
+      return `translateY(-50%) scale(${scale})`;
+    }};
     opacity: ${({ isCentered }) => (isCentered ? 1 : 0.5)};
     pointer-events: ${({ isCentered }) => (isCentered ? 'auto' : 'none')};
-    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
-      opacity 0.3s ease-out;
+    transition: transform 0.4s ease-out, opacity 0.3s ease-out;
   }
 `;
 
@@ -249,6 +272,8 @@ const IdeasFeed = ({ topicId }: Props) => {
                   peekHeight={PEEK_HEIGHT}
                   noteHeight={noteHeight}
                   isCentered={false}
+                  isPrevious={false}
+                  isNext={false}
                 >
                   <Spinner />
                 </NoteContainer>
@@ -274,6 +299,8 @@ const IdeasFeed = ({ topicId }: Props) => {
                 noteHeight={noteHeight}
                 bgColor={colors.grey100}
                 isCentered={virtualRow.index === centeredIndex}
+                isPrevious={virtualRow.index < centeredIndex}
+                isNext={virtualRow.index > centeredIndex}
               >
                 <StickyNote
                   ideaId={idea.id}
