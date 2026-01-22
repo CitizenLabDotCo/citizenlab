@@ -237,16 +237,16 @@ namespace :single_use do
         puts "  Areas merged: #{stats[:areas_merged]}"
         puts "  Areas not found: #{stats[:areas_not_found]}"
         puts "  Custom field options updated: #{stats[:options_updated]}"
-        
+
         if stats[:errors].any?
           puts "\n⚠ Errors encountered:"
           stats[:errors].each do |error|
             puts "  - #{error}"
           end
         end
-        
+
         puts '-' * 80
-        
+
         if stats[:errors].any?
           puts '⚠ Completed with errors - review above'
         else

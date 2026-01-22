@@ -188,7 +188,7 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
       # Create an invalid state that will cause an error
       allow_any_instance_of(Area).to receive(:save).and_raise(StandardError.new('Test error'))
 
-      _initial_area_count = Area.count
+      initial_area_count = Area.count
       initial_option_count = domicile_field.options.count
 
       expect do
@@ -196,7 +196,7 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
       end.to raise_error(StandardError)
 
       # Everything should be rolled back
-      expect(Area.count).to eq(_initial_area_count)
+      expect(Area.count).to eq(initial_area_count)
       expect(domicile_field.options.count).to eq(initial_option_count)
     end
   end
@@ -208,12 +208,12 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
     let!(:area_paal) { create(:area, title_multiloc: { 'en' => 'Paal' }) }
 
     it 'still updates areas without custom field options' do
-      _initial_count = Area.count
+      initial_count = Area.count
 
       Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, csv_path)
 
       # Paal should be merged into Graauw
-      expect(Area.count).to eq(_initial_count - 1)
+      expect(Area.count).to eq(initial_count - 1)
       expect { area_graauw.reload }.not_to raise_error
       expect(area_graauw.title_multiloc['en']).to eq('Graauw')
       expect { area_paal.reload }.to raise_error(ActiveRecord::RecordNotFound)
@@ -226,7 +226,7 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
     # Area 'Paal' is in CSV but doesn't exist in database
 
     it 'continues processing and reports missing areas' do
-      initial_count = Area.count
+      _initial_count = Area.count
 
       # Should not raise error, just continue
       expect do
