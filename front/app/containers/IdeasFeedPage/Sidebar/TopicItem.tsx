@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import useGlobalTopic from 'api/global_topics/useGlobalTopic';
+import useInputTopicById from 'api/input_topics/useInputTopicById';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -36,7 +36,7 @@ const TopicItem = ({
   topicCount,
   onTopicSelect,
 }: Props) => {
-  const { data: topic } = useGlobalTopic(topicId);
+  const { data: topic } = useInputTopicById(topicId);
   const localize = useLocalize();
   const percentage =
     totalIdeasCount > 0 ? (topicCount / totalIdeasCount) * 100 : 0;
