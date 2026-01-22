@@ -19,8 +19,9 @@ const DEFAULT_OFFSET = 350;
 const NUDGE_DELAY_MS = 15000;
 const DRAG_AREA_HEIGHT = 28; // DragHandle height + padding
 const SWIPE_THRESHOLD = 50; // Minimum swipe distance to trigger state change
+const LONG_SWIPE_THRESHOLD = 200; // Swipe distance to skip intermediate state
 
-const Container = styled.div<{ translateY: number }>`
+const Container = styled.div<{ translateY: number; isDragging: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -32,7 +33,8 @@ const Container = styled.div<{ translateY: number }>`
     translateY <= 0 ? '0' : '16px'};
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
   transform: translateY(${({ translateY }) => translateY}px);
-  transition: transform 0.3s ease-out;
+  transition: ${({ isDragging }) =>
+    isDragging ? 'none' : 'transform 0.3s ease-out'};
   height: 100svh;
   z-index: 1050;
   touch-action: none;
@@ -87,15 +89,18 @@ type SheetState = 'collapsed' | 'default' | 'fullscreen';
 
 const getNextState = (
   currentState: SheetState,
-  direction: 'up' | 'down'
+  direction: 'up' | 'down',
+  isLongSwipe: boolean
 ): SheetState => {
   if (direction === 'up') {
-    if (currentState === 'collapsed') return 'default';
-    if (currentState === 'default') return 'fullscreen';
+    if (currentState === 'collapsed') {
+      return isLongSwipe ? 'fullscreen' : 'default';
+    }
     return 'fullscreen';
   } else {
-    if (currentState === 'fullscreen') return 'default';
-    if (currentState === 'default') return 'collapsed';
+    if (currentState === 'fullscreen') {
+      return isLongSwipe ? 'collapsed' : 'default';
+    }
     return 'collapsed';
   }
 };
@@ -110,9 +115,11 @@ const BottomSheet = ({
   const { formatMessage } = useIntl();
   const [sheetState, setSheetState] = useState<SheetState>('collapsed');
   const [showNudge, setShowNudge] = useState(false);
+  const [dragOffset, setDragOffset] = useState<number | null>(null);
   const dragStartY = useRef<number | null>(null);
   const dragStartScrollTop = useRef<number>(0);
   const dragStartedInHandle = useRef<boolean>(false);
+  const isDraggingContent = useRef<boolean>(false);
   const sheetRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const dragAreaRef = useRef<HTMLDivElement>(null);
@@ -158,8 +165,66 @@ const BottomSheet = ({
     return dragAreaRef.current.contains(target as Node);
   };
 
-  const handleSwipeEnd = (startY: number, endY: number) => {
-    const delta = endY - startY;
+  const shouldAllowDrag = (direction: 'up' | 'down') => {
+    // When fullscreen and drag didn't start in handle, check if user is scrolling content
+    if (sheetState === 'fullscreen' && !dragStartedInHandle.current) {
+      const currentScrollTop = contentRef.current?.scrollTop ?? 0;
+
+      // If content was scrolled at start, user is scrolling content
+      if (dragStartScrollTop.current > 0) {
+        return false;
+      }
+
+      // If swiping down and content is scrolled, user is scrolling
+      if (direction === 'down' && currentScrollTop > 0) {
+        return false;
+      }
+
+      // If swiping up and there's scrollable content, let content scroll
+      if (direction === 'up') {
+        const content = contentRef.current;
+        if (content && content.scrollHeight > content.clientHeight) {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
+  const handleDragMove = (currentY: number) => {
+    if (dragStartY.current === null) return;
+    if (isDraggingContent.current) return;
+
+    const delta = currentY - dragStartY.current;
+    const direction = delta < 0 ? 'up' : 'down';
+
+    // Check if we should allow dragging the sheet
+    if (!shouldAllowDrag(direction)) {
+      isDraggingContent.current = true;
+      return;
+    }
+
+    const baseY = getTranslateYForState(sheetState);
+    const maxY = getSheetHeight() - COLLAPSED_HEIGHT;
+    const newOffset = Math.max(-baseY, Math.min(maxY - baseY, delta));
+    setDragOffset(newOffset);
+  };
+
+  const handleDragEnd = (endY: number) => {
+    if (dragStartY.current === null) return;
+
+    const delta = endY - dragStartY.current;
+
+    // Reset drag state
+    setDragOffset(null);
+    const wasDraggingContent = isDraggingContent.current;
+    isDraggingContent.current = false;
+    dragStartY.current = null;
+
+    // If user was scrolling content, don't change sheet state
+    if (wasDraggingContent) {
+      return;
+    }
 
     // Only trigger state change if swipe exceeds threshold
     if (Math.abs(delta) < SWIPE_THRESHOLD) {
@@ -167,26 +232,8 @@ const BottomSheet = ({
     }
 
     const direction = delta < 0 ? 'up' : 'down';
-
-    // When fullscreen and swipe didn't start in drag handle, check if user was scrolling
-    if (sheetState === 'fullscreen' && !dragStartedInHandle.current) {
-      const currentScrollTop = contentRef.current?.scrollTop ?? 0;
-
-      // If content was scrolled at start or is scrolled now, user is scrolling content
-      if (dragStartScrollTop.current > 0 || currentScrollTop > 0) {
-        return;
-      }
-
-      // If swiping up and there's scrollable content, don't change state
-      if (direction === 'up') {
-        const content = contentRef.current;
-        if (content && content.scrollHeight > content.clientHeight) {
-          return;
-        }
-      }
-    }
-
-    const newState = getNextState(sheetState, direction);
+    const isLongSwipe = Math.abs(delta) >= LONG_SWIPE_THRESHOLD;
+    const newState = getNextState(sheetState, direction, isLongSwipe);
     setSheetState(newState);
 
     if (newState === 'fullscreen') {
@@ -198,13 +245,15 @@ const BottomSheet = ({
     dragStartY.current = e.touches[0].clientY;
     dragStartScrollTop.current = contentRef.current?.scrollTop ?? 0;
     dragStartedInHandle.current = isEventInDragArea(e.target);
+    isDraggingContent.current = false;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    handleDragMove(e.touches[0].clientY);
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    if (dragStartY.current === null) return;
-    const endY = e.changedTouches[0].clientY;
-    handleSwipeEnd(dragStartY.current, endY);
-    dragStartY.current = null;
+    handleDragEnd(e.changedTouches[0].clientY);
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -213,19 +262,25 @@ const BottomSheet = ({
     dragStartY.current = e.clientY;
     dragStartScrollTop.current = contentRef.current?.scrollTop ?? 0;
     dragStartedInHandle.current = isEventInDragArea(e.target);
+    isDraggingContent.current = false;
+
+    const onMove = (ev: MouseEvent) => {
+      handleDragMove(ev.clientY);
+    };
 
     const onUp = (ev: MouseEvent) => {
-      if (dragStartY.current !== null) {
-        handleSwipeEnd(dragStartY.current, ev.clientY);
-        dragStartY.current = null;
-      }
+      handleDragEnd(ev.clientY);
+      document.removeEventListener('mousemove', onMove);
       document.removeEventListener('mouseup', onUp);
     };
 
+    document.addEventListener('mousemove', onMove);
     document.addEventListener('mouseup', onUp);
   };
 
-  const translateY = getTranslateYForState(sheetState);
+  const baseTranslateY = getTranslateYForState(sheetState);
+  const translateY = baseTranslateY + (dragOffset ?? 0);
+  const isDragging = dragOffset !== null;
   const isExpanded = sheetState !== 'collapsed';
   const isFullscreen = sheetState === 'fullscreen';
 
@@ -247,10 +302,12 @@ const BottomSheet = ({
       <Container
         ref={sheetRef}
         translateY={translateY}
+        isDragging={isDragging}
         role="dialog"
         aria-modal={isExpanded}
         aria-label={a11y_panelLabel}
         onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         onMouseDown={handleMouseDown}
       >
