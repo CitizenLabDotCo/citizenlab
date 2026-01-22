@@ -4,8 +4,6 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Ideas' do
-  explanation 'A new file because the other ones are impossible to work with.'
-
   before do
     header 'Content-Type', 'application/json'
     create(:idea_status_proposed)
