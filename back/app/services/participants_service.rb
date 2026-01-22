@@ -158,8 +158,8 @@ class ParticipantsService
     participants
   end
 
-  def topics_participants(topics, options = {})
-    ideas = Idea.with_some_topics(topics)
+  def input_topics_participants(input_topics, options = {})
+    ideas = Idea.with_some_input_topics(input_topics)
     ideas_participants ideas, options
   end
 

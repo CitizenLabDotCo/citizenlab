@@ -72,21 +72,21 @@ const MapIdeasList = memo<Props>(
       IdeaSortMethodFallback;
     const search = searchParams.get('search');
     const topicsParam = searchParams.get('topics');
-    const topics: string[] = topicsParam ? JSON.parse(topicsParam) : [];
+    const input_topics: string[] = topicsParam ? JSON.parse(topicsParam) : [];
 
     const { data: ideaMarkers } = useIdeaMarkers({
       projectIds: [projectId],
       phaseId,
       sort,
       search,
-      topics,
+      input_topics,
     });
 
     const handleSearchOnChange = useCallback((search: string | null) => {
       updateSearchParams({ search });
     }, []);
 
-    const isFiltered = (search && search.length > 0) || topics.length > 0;
+    const isFiltered = (search && search.length > 0) || input_topics.length > 0;
 
     const methodConfig =
       // TODO: Fix this the next time the file is edited.
@@ -129,6 +129,7 @@ const MapIdeasList = memo<Props>(
               onClose={() => {
                 setShowFilters(false);
               }}
+              projectId={projectId}
             />
           </>
         )}

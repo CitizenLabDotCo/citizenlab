@@ -27,7 +27,7 @@ module BulkImportIdeas::Exporters
         when 'multiselect', 'multiselect_image', 'ranking'
           field.options.map { |o| custom_field_service.handle_title(o, @locale) }.join '; '
         when 'topic_ids'
-          @project.allowed_input_topics.map { |t| t.title_multiloc[@locale] }.join '; '
+          @project.input_topics.map { |t| t.title_multiloc[@locale] }.join '; '
         when 'number', 'linear_scale', 'rating'
           field.maximum || 3
         when 'checkbox'

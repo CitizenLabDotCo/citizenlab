@@ -190,6 +190,7 @@ const IdeasWithFiltersSidebar = ({
     onChangeTopics: handleTopicsOnChange,
     handleSortOnChange,
     phaseId,
+    projectId,
   };
 
   return (

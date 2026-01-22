@@ -26,11 +26,11 @@ RSpec.describe Project do
 
   describe 'Factory with topics' do
     it 'is valid' do
-      expect(create(:project_with_allowed_input_topics)).to be_valid
+      expect(create(:project_with_input_topics)).to be_valid
     end
 
     it 'has topics' do
-      expect(create(:project_with_allowed_input_topics).allowed_input_topics).not_to be_empty
+      expect(create(:project_with_input_topics).input_topics).not_to be_empty
     end
   end
 
@@ -98,13 +98,6 @@ RSpec.describe Project do
       create(:pageview, session_id: session.id, project_id: project.id)
 
       expect { project.destroy }.not_to raise_error
-    end
-  end
-
-  describe 'allowed_input_topics' do
-    it 'cannot have duplicate topics' do
-      project = create(:project_with_allowed_input_topics)
-      expect(project.projects_allowed_input_topics.create(topic: project.allowed_input_topics.first)).not_to be_valid
     end
   end
 

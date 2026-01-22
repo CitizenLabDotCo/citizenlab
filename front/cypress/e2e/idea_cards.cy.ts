@@ -94,7 +94,7 @@ describe('Idea cards without filter sidebar sorting and filtering', () => {
 
   it('lets you filter the ideas by topic', () => {
     cy.get('#e2e-topics-filters').within(() => {
-      cy.contains('waste').click();
+      cy.contains('Public space').click();
     });
 
     cy.get('#e2e-ideas-container')

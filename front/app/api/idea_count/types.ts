@@ -7,7 +7,7 @@ export type IdeasCountKeys = Keys<typeof ideasCountKeys>;
 export interface IQueryParameters {
   projects?: string[];
   phase?: string;
-  topics?: string[];
+  input_topics?: string[];
   idea_status_id?: string;
   feedback_needed?: boolean;
   assignee?: string;

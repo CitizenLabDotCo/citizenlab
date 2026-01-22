@@ -35,7 +35,7 @@ const IdeasTab = () => {
           </Box>
         )}
         <InputManager
-          visibleFilterMenus={['projects', 'topics', 'statuses']}
+          visibleFilterMenus={['projects', 'statuses']}
           defaultFilterMenu="projects"
           projects={projects?.data}
         />

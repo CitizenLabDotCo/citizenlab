@@ -11,14 +11,14 @@ module MultiTenancy
           project = runner.rand_instance Project.all
           phases = project.phases.select { |phase| phase.pmethod.transitive? }.sample([rand(project.phases.size), 1].max)
           offsets = Array.new(rand(3)) do
-            rand(project.allowed_input_topics.count)
+            rand(project.input_topics.count)
           end
-          topics = offsets.uniq.map { |offset| project.allowed_input_topics.offset(offset).first }
+          topics = offsets.uniq.map { |offset| project.input_topics.offset(offset).first }
           idea = Idea.create!({
             title_multiloc: runner.create_for_some_locales { Faker::Lorem.sentence[0...80] },
             body_multiloc: runner.rand_description_multiloc,
             idea_status: runner.rand_instance(IdeaStatus.for_public_posts),
-            topics: topics,
+            input_topics: topics,
             author: runner.rand_instance(User.all),
             project: project,
             phases: phases,

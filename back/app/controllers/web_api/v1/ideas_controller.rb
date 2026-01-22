@@ -24,7 +24,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = ideas.includes(
       :idea_images,
       :idea_trending_info,
-      :topics,
+      :input_topics,
       :phases,
       :idea_status,
       :creation_phase,
@@ -58,7 +58,7 @@ class WebApi::V1::IdeasController < ApplicationController
       current_user: current_user
     ).find_records
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
-    ideas = ideas.includes(:author, :topics, :project, :idea_status)
+    ideas = ideas.includes(:author, :input_topics, :project, :idea_status)
 
     render json: linked_json(ideas, WebApi::V1::PostMarkerSerializer, params: jsonapi_serializer_params)
   end
@@ -70,7 +70,7 @@ class WebApi::V1::IdeasController < ApplicationController
       current_user: current_user
     ).find_records
     ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
-    ideas = ideas.includes(:author, :topics, :project, :idea_status, :idea_files, :attached_files)
+    ideas = ideas.includes(:author, :input_topics, :project, :idea_status, :idea_files, :attached_files)
 
     with_cosponsors = AppConfiguration.instance.feature_activated?('input_cosponsorship')
     ideas = ideas.includes(:cosponsors) if with_cosponsors
@@ -164,6 +164,10 @@ class WebApi::V1::IdeasController < ApplicationController
 
     form = phase_for_input.pmethod.custom_form
     extract_custom_field_values_from_params!(form)
+    # Map topic_ids to input_topic_ids for the new InputTopics system
+    if params[:idea].key?(:topic_ids)
+      params[:idea][:input_topic_ids] = params[:idea].delete(:topic_ids) || []
+    end
     params_for_create = idea_params form
     files_params = extract_file_params(params_for_create)
 
@@ -234,7 +238,7 @@ class WebApi::V1::IdeasController < ApplicationController
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: serializer_params,
-          include: %i[author topics phases user_reaction idea_images]
+          include: %i[author input_topics phases user_reaction idea_images]
         ).serializable_hash, status: :created
       else
         render json: { errors: input.errors.details }, status: :unprocessable_entity
@@ -253,7 +257,10 @@ class WebApi::V1::IdeasController < ApplicationController
     end
 
     extract_custom_field_values_from_params!(input.custom_form)
-    params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
+    # Map topic_ids to input_topic_ids for the new InputTopics system
+    if params[:idea].key?(:topic_ids)
+      params[:idea][:input_topic_ids] = params[:idea].delete(:topic_ids) || []
+    end
     params[:idea][:cosponsor_ids] ||= [] if params[:idea].key?(:cosponsor_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
     params_service.mark_custom_field_values_to_clear!(input.custom_field_values, params[:idea][:custom_field_values])
@@ -316,7 +323,7 @@ class WebApi::V1::IdeasController < ApplicationController
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,
-          include: %i[author topics user_reaction idea_images cosponsors]
+          include: %i[author input_topics user_reaction idea_images cosponsors]
         ).serializable_hash, status: :ok
       else
         render json: { errors: input.errors.details }, status: :unprocessable_entity
@@ -406,7 +413,7 @@ class WebApi::V1::IdeasController < ApplicationController
     render json: WebApi::V1::IdeaSerializer.new(
       input,
       params: jsonapi_serializer_params,
-      include: %i[author topics user_reaction idea_images]
+      include: %i[author input_topics user_reaction idea_images]
     ).serializable_hash
   end
 
@@ -535,7 +542,8 @@ class WebApi::V1::IdeasController < ApplicationController
     end
 
     if submittable_field_keys.include?(:topic_ids)
-      complex_attributes[:topic_ids] = []
+      # topic_ids is mapped to input_topic_ids for the InputTopics system
+      complex_attributes[:input_topic_ids] = []
     end
 
     if submittable_field_keys.include?(:cosponsor_ids)

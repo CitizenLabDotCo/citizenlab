@@ -30,7 +30,7 @@ const PEEK_HEIGHT = 150;
 const FeedContainer = styled(Box)`
   scroll-snap-type: y mandatory;
   overflow-y: auto;
-  height: 100vh;
+  height: 100svh;
 
   ::-webkit-scrollbar {
     display: none;
@@ -51,13 +51,13 @@ const NoteContainer = styled(Box)<{
   justify-content: center;
   scroll-snap-align: center;
   scroll-snap-stop: always;
-  height: calc(100vh - ${({ peekHeight }) => peekHeight}px);
+  height: calc(100svh - ${({ peekHeight }) => peekHeight}px);
   padding: 30px;
 
   > * {
     position: absolute;
     top: ${({ isCentered, isPrevious, isNext, peekHeight, noteHeight }) => {
-      const containerHeight = `calc(100vh - ${peekHeight}px - 40px)`;
+      const containerHeight = `calc(100svh - ${peekHeight}px - 40px)`;
       if (isCentered) {
         return `calc((${containerHeight} - ${noteHeight}px) / 2)`;
       }
@@ -158,7 +158,7 @@ const IdeasFeed = ({ topicId }: Props) => {
     const map = new Map<string, string[]>();
     orderedIdeas.forEach((idea) => {
       const topicIds =
-        idea.relationships.topics?.data.map((topic) => topic.id) || [];
+        idea.relationships.input_topics?.data.map((topic) => topic.id) || [];
       map.set(idea.id, topicIds);
     });
     return map;

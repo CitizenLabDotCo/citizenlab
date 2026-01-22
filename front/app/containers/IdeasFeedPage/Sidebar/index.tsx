@@ -5,9 +5,9 @@ import { useParams, useSearchParams } from 'react-router-dom';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
+import useInputTopics from 'api/input_topics/useInputTopics';
 import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
-import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import IdeasShow from 'containers/IdeasShow';
@@ -42,8 +42,7 @@ const Sidebar = () => {
   const { data: project } = useProjectBySlug(slug);
   const projectId = project?.data.id;
 
-  const { data: topics, isLoading: topicsLoading } =
-    useProjectAllowedInputTopics({ projectId });
+  const { data: topics, isLoading: topicsLoading } = useInputTopics(projectId);
 
   const { data: phases } = usePhases(projectId);
   const currentPhase = getCurrentPhase(phases?.data);
@@ -59,7 +58,7 @@ const Sidebar = () => {
     selectedIdea?.data.relationships.project.data.id;
 
   const totalIdeasCount = filterCounts?.data.attributes.total || 0;
-  const topicCounts = filterCounts?.data.attributes.topic_id || {};
+  const topicCounts = filterCounts?.data.attributes.input_topic_id || {};
 
   const setSelectedTopicId = (topicId: string | null) => {
     if (topicId) {
@@ -81,9 +80,7 @@ const Sidebar = () => {
     return null;
   }
 
-  const topicIds = topics.data.map(
-    (topic) => topic.relationships.topic.data.id
-  );
+  const topicIds = topics.data.map((topic) => topic.id);
 
   const showIdeaDetail =
     selectedIdeaId && selectedIdea && selectedIdeaProjectId;

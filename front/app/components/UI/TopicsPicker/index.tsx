@@ -5,7 +5,7 @@ import { darken, lighten } from 'polished';
 import styled from 'styled-components';
 
 import { IGlobalTopicData } from 'api/global_topics/types';
-import useGlobalTopics from 'api/global_topics/useGlobalTopics';
+import { IInputTopicData } from 'api/input_topics/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -73,20 +73,21 @@ const TopicSwitch = styled.button`
   }
 `;
 
+export type TopicData = IGlobalTopicData | IInputTopicData;
+
 export interface Props {
   onClick: (tocisIds: string[]) => void;
   selectedTopicIds: string[];
   id?: string;
   className?: string;
-  availableTopics: IGlobalTopicData[] | { const: string; title: string }[];
+  availableTopics: TopicData[] | { const: string; title: string }[];
 }
 
 const TopicsPicker = memo(
   ({ onClick, selectedTopicIds, availableTopics, className }: Props) => {
-    const { data: topics } = useGlobalTopics();
     const localize = useLocalize();
 
-    const filteredTopics = topics?.data.filter((topic) =>
+    const filteredTopics = (availableTopics as TopicData[]).filter((topic) =>
       selectedTopicIds.includes(topic.id)
     );
 
@@ -116,12 +117,9 @@ const TopicsPicker = memo(
     if (!isNilOrError(availableTopics)) {
       const numberOfSelectedTopics = selectedTopicIds.length;
       const selectedTopicNames = filteredTopics
-        ? filteredTopics
-            .map((topic: IGlobalTopicData) =>
-              localize(topic.attributes.title_multiloc)
-            )
-            .join(', ')
-        : '';
+        .map((topic: TopicData) => localize(topic.attributes.title_multiloc))
+        .join(', ');
+
       return (
         <>
           <TopicsContainer className={`${className} e2e-topics-picker`}>
