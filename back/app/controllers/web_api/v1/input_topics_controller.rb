@@ -9,6 +9,9 @@ class WebApi::V1::InputTopicsController < ApplicationController
     input_topics = policy_scope(InputTopic, policy_scope_class: InputTopicPolicy::Scope)
       .where(project: @project)
 
+    input_topics = input_topics.where(parent_id: params[:parent_id]) if params.key?(:parent_id)
+    input_topics = input_topics.where(depth: params[:depth]) if params.key?(:depth)
+
     # Get filtered ideas for ideas_count sorting
     filter_ideas = policy_scope(Idea).where(project: @project)
 

@@ -11,13 +11,25 @@ type SortMethod = 'custom' | 'ideas_count' | '-ideas_count';
 interface InputTopicsParams {
   projectId: string;
   sort?: SortMethod;
+  parentId?: string;
+  /** Filter by depth in the hierarchy. 0 are root topics, 1 are child topics */
+  depth?: number;
 }
 
-const fetchInputTopics = ({ projectId, sort }: InputTopicsParams) =>
+const fetchInputTopics = ({
+  projectId,
+  sort,
+  parentId,
+  depth,
+}: InputTopicsParams) =>
   fetcher<IInputTopics>({
     path: `/projects/${projectId}/input_topics`,
     action: 'get',
-    queryParams: sort ? { sort } : undefined,
+    queryParams: {
+      sort,
+      parent_id: parentId,
+      depth: depth,
+    },
   });
 
 const useInputTopics = (projectId?: string, sort?: SortMethod) => {

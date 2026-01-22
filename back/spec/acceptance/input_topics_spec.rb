@@ -11,6 +11,10 @@ resource 'InputTopics' do
   let(:project_id) { project.id }
 
   get 'web_api/v1/projects/:project_id/input_topics' do
+    parameter :parent_id, 'Filter input topics to only those that are children of the specified parent topic ID', required: false
+    parameter :depth, 'Filter input topics to only those at the specified depth (0 for root topics)', required: false
+    parameter :sort, 'Sort method: "custom" (default, tree order), "ideas_count" (ascending), "-ideas_count" (descending)', required: false
+
     before do
       @input_topics = create_list(:input_topic, 3, project: project)
     end
@@ -18,6 +22,29 @@ resource 'InputTopics' do
     example_request 'List all input topics for a project' do
       assert_status(200)
       expect(response_data.size).to eq 3
+    end
+
+    example 'List inputs topics that are the children of a specific parent topic' do
+      parent_topic = create(:input_topic, project: project)
+      child_topic1 = create(:input_topic, project: project, parent: parent_topic)
+      child_topic2 = create(:input_topic, project: project, parent: parent_topic)
+
+      do_request(parent_id: parent_topic.id)
+      assert_status(200)
+      expect(response_data.size).to eq 2
+      expect(response_data.pluck(:id)).to contain_exactly(child_topic1.id, child_topic2.id)
+    end
+
+    example 'List only root inputs topics' do
+      subtopic = create(:input_topic, project: project)
+      create(:input_topic, project: project, parent: subtopic)
+
+      do_request(depth: 0)
+      assert_status(200)
+      expect(response_data.size).to eq 4 # 3 from before + 1 new root
+      response_data.each do |topic|
+        expect(topic.dig(:attributes, :depth)).to eq 0
+      end
     end
 
     example 'List input topics sorted by tree order (lft)' do
