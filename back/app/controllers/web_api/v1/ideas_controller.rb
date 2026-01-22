@@ -298,10 +298,15 @@ class WebApi::V1::IdeasController < ApplicationController
     # (anonymous = true on the input just means "do not store user ID")
     # we can only anonymize it after publishing because before that it might
     # still receive other PATCHes
-    published = update_params[:publication_status] == 'published'
-    surveylike = creation_phase.pmethod.supports_survey_form?
-    not_all_data = creation_phase.pmethod.user_data_collection != 'all_data'
-    anonymize_user_at_the_end = published && surveylike && not_all_data
+    anonymize_user_at_the_end = if creation_phase
+      published = update_params[:publication_status] == 'published'
+      surveylike = creation_phase.pmethod.supports_survey_form?
+      not_all_data = creation_phase.pmethod.user_data_collection != 'all_data'
+
+      published && surveylike && not_all_data
+    else
+      false
+    end
 
     update_errors = nil
     ActiveRecord::Base.transaction do # Assigning relationships cause database changes
