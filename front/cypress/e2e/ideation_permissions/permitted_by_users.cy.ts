@@ -312,6 +312,10 @@ describe('Ideation permitted by: users', () => {
         answer = randomString(10);
         cy.get('form').find('input').first().type(answer);
 
+        // set to anonymous
+        cy.get('[data-testid="e2e-post-idea-anonymously-checkbox"]').click();
+        cy.get('#e2e-continue-anonymous-participation-btn').click();
+
         // Intercept submit request
         cy.intercept('POST', '/web_api/v1/ideas').as('submitIdea');
 
