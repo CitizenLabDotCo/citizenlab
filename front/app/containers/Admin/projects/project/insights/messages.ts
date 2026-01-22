@@ -5,6 +5,14 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights',
     defaultMessage: 'Insights',
   },
+  liveData: {
+    id: 'app.containers.Admin.projects.project.insights.liveData',
+    defaultMessage: 'Live data',
+  },
+  insightsSubtitle: {
+    id: 'app.containers.Admin.projects.project.insights.insightsSubtitle',
+    defaultMessage: 'Track engagement and community impact in real-time',
+  },
   download: {
     id: 'app.containers.Admin.projects.project.insights.download',
     defaultMessage: 'Download',
