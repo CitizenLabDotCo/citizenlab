@@ -248,7 +248,7 @@ class WebApi::V1::IdeasController < ApplicationController
     end
   end
 
-  def update
+  def update # rubocop:disable Metrics/MethodLength
     input = Idea.find params[:id]
 
     authorize input

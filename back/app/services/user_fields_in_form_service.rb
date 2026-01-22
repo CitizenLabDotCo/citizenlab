@@ -33,7 +33,7 @@ class UserFieldsInFormService
     return false if NATIVE_SURVEYLIKE_METHODS.include?(pmethod) && permission.user_data_collection == 'anonymous'
 
     # If pmethod is ideation: confirm that idea is not anonymosu
-    return false if pmethod === 'ideation' && idea.anonymous
+    return false if pmethod == 'ideation' && idea.anonymous
 
     # Finally, confirm that the idea doesn't already have user fields
     return false if idea.custom_field_values&.keys&.any? { |key| key.start_with?(prefix) }
