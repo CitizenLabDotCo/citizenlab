@@ -96,7 +96,9 @@ describe('Ideation permitted by: everyone', () => {
 
       fillOutTitleAndBody(cy, { title, body });
 
-      // Go to the next page of the idea form
+      // Skip to demographic question page
+      cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+      cy.wait(1000);
       cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
       // Confirm we are on demographic question page
