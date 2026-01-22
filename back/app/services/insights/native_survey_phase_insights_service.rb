@@ -4,7 +4,7 @@ module Insights
 
     def phase_participations
       # Events are not associated with phase, so attending_event not included at phase-level.
-      { posting_idea: participations_posting_idea }
+      { posting_idea: participations_submitting_idea }
     end
 
     def ideas_in_phase
@@ -16,7 +16,7 @@ module Insights
       end
     end
 
-    def participations_posting_idea
+    def participations_submitting_idea
       ideas_in_phase.map do |idea|
         {
           item_id: idea.id,
