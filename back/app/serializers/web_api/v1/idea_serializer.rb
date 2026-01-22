@@ -53,7 +53,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     input.creation_phase.reacting_threshold
   end
 
-  has_many :topics
+  has_many :input_topics, serializer: WebApi::V1::InputTopicSerializer
   has_many :idea_images, serializer: WebApi::V1::ImageSerializer
   has_many :phases
   has_many :ideas_phases
@@ -126,6 +126,14 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   attribute :manual_votes_last_updated_at, if: proc { |idea, params|
     can_moderate?(idea, params)
   }
+
+  attribute :claim_token, if: ->(_idea, params) { params[:include_claim_token] } do |idea|
+    idea.claim_token&.token
+  end
+
+  attribute :claim_token_expires_at, if: ->(_idea, params) { params[:include_claim_token] } do |idea|
+    idea.claim_token&.expires_at
+  end
 
   has_one :manual_votes_last_updated_by, record_type: :user, serializer: WebApi::V1::UserSerializer, if: proc { |idea, params|
     can_moderate?(idea, params)

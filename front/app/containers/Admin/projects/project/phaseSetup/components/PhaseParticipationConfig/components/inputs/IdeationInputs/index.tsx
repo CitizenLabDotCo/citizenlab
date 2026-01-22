@@ -3,7 +3,7 @@ import React from 'react';
 import { Radio, IconTooltip, IOption } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
-import { IdeaSortMethod, IdeationMethod, InputTerm } from 'api/phases/types';
+import { IdeaSortMethod, InputTerm, PresentationMode } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -23,11 +23,7 @@ import PrescreeningToggle from '../_shared/PrescreeningToggle';
 import SortingPicker from '../_shared/SortingPicker';
 import UserActions from '../_shared/UserActions';
 
-import IdeationMethodSelector from './IdeationMethodSelector';
-
 interface Props {
-  ideation_method: IdeationMethod | null | undefined;
-  handleIdeationMethodOnChange: (ideation_method: IdeationMethod) => void;
   input_term: InputTerm | undefined;
   handleInputTermChange: (option: IOption) => void;
   submission_enabled?: boolean | null;
@@ -39,6 +35,7 @@ interface Props {
   similarity_threshold_title: number | null | undefined;
   similarity_threshold_body: number | null | undefined;
   allow_anonymous_participation: boolean | null | undefined;
+  toggleAnonymousPostingDisabledReason?: string;
   noLikingLimitError?: string;
   reacting_dislike_enabled: boolean | null | undefined;
   reacting_dislike_method: 'unlimited' | 'limited' | null | undefined;
@@ -62,8 +59,8 @@ interface Props {
   handleAllowAnonymousParticipationOnChange: (
     allow_anonymous_participation: boolean
   ) => void;
-  presentation_mode: 'card' | 'map' | null | undefined;
-  handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
+  presentation_mode: PresentationMode | null | undefined;
+  handleIdeasDisplayChange: (presentation_mode: PresentationMode) => void;
   ideas_order: IdeaSortMethod | undefined;
   handleIdeaDefaultSortMethodChange: (ideas_order: IdeaSortMethod) => void;
   prescreening_enabled: boolean | null | undefined;
@@ -76,8 +73,6 @@ interface Props {
 }
 
 const IdeationInputs = ({
-  ideation_method,
-  handleIdeationMethodOnChange,
   input_term,
   handleInputTermChange,
   submission_enabled,
@@ -86,6 +81,7 @@ const IdeationInputs = ({
   reacting_like_method,
   reacting_dislike_method,
   allow_anonymous_participation,
+  toggleAnonymousPostingDisabledReason,
   reacting_like_limited_max,
   reacting_dislike_limited_max,
   reacting_dislike_enabled,
@@ -116,23 +112,15 @@ const IdeationInputs = ({
   const prescreeningIdeationEnabled = useFeatureFlag({
     name: 'prescreening_ideation',
   });
-  const ideaFeedEnabled = useFeatureFlag({
-    name: 'idea_feed',
-  });
 
   return (
     <>
-      {ideaFeedEnabled && (
-        <IdeationMethodSelector
-          ideation_method={ideation_method}
-          handleIdeationMethodOnChange={handleIdeationMethodOnChange}
-        />
-      )}
       <AnonymousPostingToggle
         allow_anonymous_participation={allow_anonymous_participation}
         handleAllowAnonymousParticipationOnChange={
           handleAllowAnonymousParticipationOnChange
         }
+        disabledReason={toggleAnonymousPostingDisabledReason}
       />
       <CustomFieldPicker
         input_term={input_term}

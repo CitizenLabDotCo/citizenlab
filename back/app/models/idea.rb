@@ -66,6 +66,7 @@ class Idea < ApplicationRecord
   include GeoJsonHelpers
   include AnonymousParticipation
   include Files::FileAttachable
+  include ClaimableParticipation
   extend OrderAsSpecified
 
   PUBLICATION_STATUSES = %w[draft submitted published].freeze
@@ -120,8 +121,8 @@ class Idea < ApplicationRecord
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
-  has_many :ideas_topics, dependent: :destroy
-  has_many :topics, -> { order(:ordering) }, through: :ideas_topics
+  has_many :ideas_input_topics, dependent: :destroy
+  has_many :input_topics, -> { order(:ordering) }, through: :ideas_input_topics
   has_many :ideas_phases, dependent: :destroy
   has_many :phases, through: :ideas_phases, after_add: :update_phase_counts, after_remove: :update_phase_counts
   has_many :baskets_ideas, dependent: :destroy
@@ -188,8 +189,8 @@ class Idea < ApplicationRecord
   # > it will be impossible to speed up searches with database indexes. However, it
   # > is supported as a quick way to try out cross-model searching.
 
-  scope :with_some_topics, (proc do |topics|
-    ideas = joins(:ideas_topics).where(ideas_topics: { topic: topics })
+  scope :with_some_input_topics, (proc do |input_topics|
+    ideas = joins(:ideas_input_topics).where(ideas_input_topics: { input_topic: input_topics })
     where(id: ideas)
   end)
 

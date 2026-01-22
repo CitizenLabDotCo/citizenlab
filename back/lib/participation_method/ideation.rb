@@ -39,7 +39,6 @@ module ParticipationMethod
       phase.input_term ||= default_input_term if supports_input_term?
       phase.similarity_threshold_title ||= 0.3
       phase.similarity_threshold_body ||= 0.4
-      phase.ideation_method ||= 'base'
     end
 
     def author_in_form?(user)
@@ -426,7 +425,11 @@ module ParticipationMethod
     end
 
     def supports_inputs_without_author?
-      false
+      AppConfiguration.instance.feature_activated?('ideation_accountless_posting')
+    end
+
+    def supports_permitted_by_everyone?
+      AppConfiguration.instance.feature_activated?('ideation_accountless_posting')
     end
 
     def supports_public_visibility?
@@ -455,10 +458,6 @@ module ParticipationMethod
 
     def add_autoreaction_to_inputs?
       true
-    end
-
-    def supports_serializing?(attribute)
-      %i[ideation_method].include?(attribute)
     end
 
     private

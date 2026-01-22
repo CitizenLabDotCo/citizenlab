@@ -20,7 +20,8 @@ export type ResolvedName =
   | 'ParticipationWidget'
   | 'ProjectsWidget'
   | 'ProjectsTimelineWidget'
-  | 'DeviceTypesWidget';
+  | 'DeviceTypesWidget'
+  | 'InternalAdoptionWidget';
 
 export interface BaseParams {
   resolved_name: ResolvedName;
@@ -42,7 +43,8 @@ export type ParametersLive =
   | ParticipationParams
   | ProjectsParams
   | ProjectsTimelineParams
-  | DeviceTypesParams;
+  | DeviceTypesParams
+  | InternalAdoptionParams;
 
 export type GroupMode = 'user_field' | 'survey_question';
 type ExcludeRoles = 'exclude_admins_and_moderators';
@@ -214,6 +216,15 @@ export interface DeviceTypesProps extends DateProps, ProjectId {
 export interface DeviceTypesParams extends BaseParams {
   resolved_name: 'DeviceTypesWidget';
   props: DeviceTypesProps;
+}
+
+export interface InternalAdoptionProps
+  extends Omit<AnalyticsProps, 'project_id'>,
+    CompareProps {}
+
+export interface InternalAdoptionParams extends BaseParams {
+  resolved_name: 'InternalAdoptionWidget';
+  props: InternalAdoptionProps;
 }
 
 // published

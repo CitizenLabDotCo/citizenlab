@@ -111,11 +111,39 @@ resource 'Confirmations' do
 
       include_examples 'confirmation code validation'
 
-      example 'does not allow confirming a user with password' do
+      example 'transfers anonymous exposures to the user upon successful confirmation', document: false do
+        phase = create(:phase)
+        visitor_hash = VisitorHashService.new.generate_for_visitor('192.168.1.1', 'Test Browser')
+        anonymous_exposure = create(:idea_exposure, :anonymous, visitor_hash: visitor_hash, phase: phase)
+
+        header 'X-Forwarded-For', '192.168.1.1'
+        header 'User-Agent', 'Test Browser'
+        do_request(confirmation: { email: user.email, code: user.email_confirmation_code })
+
+        assert_status 200
+        anonymous_exposure.reload
+        expect(anonymous_exposure.user_id).to eq user.id
+        expect(anonymous_exposure.visitor_hash).to be_nil
+      end
+
+      example 'does not allow confirming a user with password that is already confirmed' do
         user_with_password = create(:user_with_confirmation, password: 'password123')
+        user_with_password.confirm
+        expect(user_with_password).not_to be_confirmation_required
+
         code = user_with_password.email_confirmation_code
         do_request(confirmation: { email: user_with_password.email, code: })
         assert_status 422
+      end
+
+      example 'allows confirming a user with password that requires confirmation' do
+        user_with_password = create(:user_with_confirmation, password: 'password123')
+        RequestConfirmationCodeJob.perform_now user_with_password
+        expect(user_with_password).to be_confirmation_required
+
+        code = user_with_password.email_confirmation_code
+        do_request(confirmation: { email: user_with_password.email, code: })
+        assert_status 200
       end
     end
   end

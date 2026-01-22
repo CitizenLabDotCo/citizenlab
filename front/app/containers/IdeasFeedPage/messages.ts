@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  seeAllIdeas: {
+    id: 'app.containers.IdeasFeedPage.seeAllIdeas',
+    defaultMessage: 'See all {ideasCount} inputs',
+  },
   allTopics: {
     id: 'app.containers.IdeasFeedPage.allTopics',
     defaultMessage: 'All topics',
@@ -20,5 +24,13 @@ export default defineMessages({
   topicsPanel: {
     id: 'app.containers.IdeasFeedPage.topicsPanel',
     defaultMessage: 'Topics panel',
+  },
+  addYourIdea: {
+    id: 'app.containers.IdeasFeedPage.addYourIdea',
+    defaultMessage: 'Add your idea',
+  },
+  exploreTopicsNudge: {
+    id: 'app.containers.IdeasFeedPage.exploreTopicsNudge',
+    defaultMessage: 'Swipe up to explore the topics',
   },
 });

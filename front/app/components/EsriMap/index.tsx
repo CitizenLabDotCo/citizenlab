@@ -26,6 +26,7 @@ import {
   getDefaultBasemap,
   handleWebMapReferenceLayers,
   createUserLocationGraphic,
+  useLabelExpandButtons,
 } from './utils';
 
 // Custom Esri styles
@@ -102,6 +103,10 @@ const EsriMap = ({
   const [initialized, setInitialized] = useState(false);
 
   const mapRefAvailable = !!mapRef.current;
+
+  // for Accessibility: add labels to the expand buttons in the map's legend and layer list
+
+  useLabelExpandButtons({ mapView });
 
   useEffect(() => {
     if (!mapRefAvailable) return;
@@ -328,6 +333,10 @@ const EsriMap = ({
         width={width ? `${width}` : '100%'}
         height={height ? `${height}` : '400px'}
         basemapType={getDefaultBasemapType(globalMapSettings.tile_provider)}
+        style={{
+          maxHeight: height || '400px',
+          overflow: 'hidden',
+        }}
       />
     </>
   );

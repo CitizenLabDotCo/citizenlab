@@ -30,6 +30,7 @@ interface Props {
   reacting_like_method: 'unlimited' | 'limited' | null | undefined;
   reacting_like_limited_max: number | null | undefined;
   allow_anonymous_participation: boolean | null | undefined;
+  toggleAnonymousPostingDisabledReason?: string;
   noLikingLimitError?: string;
   expire_days_limit: number | null | undefined;
   expireDateLimitError?: string;
@@ -46,7 +47,7 @@ interface Props {
   handleAllowAnonymousParticipationOnChange: (
     allow_anonymous_participation: boolean
   ) => void;
-  presentation_mode: 'card' | 'map' | null | undefined;
+  presentation_mode: 'card' | 'map' | 'feed' | null | undefined;
   handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
   ideas_order: IdeaSortMethod | undefined;
   handleIdeaDefaultSortMethodChange: (ideas_order: IdeaSortMethod) => void;
@@ -72,6 +73,7 @@ const ProposalsInputs = ({
   reacting_enabled,
   reacting_like_method,
   allow_anonymous_participation,
+  toggleAnonymousPostingDisabledReason,
   reacting_like_limited_max,
   noLikingLimitError,
   expire_days_limit,
@@ -148,6 +150,7 @@ const ProposalsInputs = ({
         handleAllowAnonymousParticipationOnChange={
           handleAllowAnonymousParticipationOnChange
         }
+        disabledReason={toggleAnonymousPostingDisabledReason}
       />
       {prescreeningFeatureEnabled && (
         <PrescreeningToggle

@@ -206,17 +206,17 @@ resource 'Ideas' do
     get 'web_api/v1/ideas/filter_counts' do
       describe do
         before do
-          @t1 = create(:topic)
-          @t2 = create(:topic)
-          @project = create(:single_phase_ideation_project, allowed_input_topics: [@t1, @t2])
+          @t1 = create(:input_topic)
+          @t2 = create(:input_topic)
+          @project = create(:single_phase_ideation_project, input_topics: [@t1, @t2])
 
           @s1 = create(:idea_status)
           @s2 = create(:idea_status)
-          @i1 = create(:idea, project: @project, topics: [@t1, @t2], idea_status: @s1)
-          @i2 = create(:idea, project: @project, topics: [@t1], idea_status: @s2)
-          @i3 = create(:idea, project: @project, topics: [@t2], idea_status: @s2)
-          @i4 = create(:idea, project: @project, topics: [], idea_status: @s2)
-          create(:idea, topics: [@t1, @t2], idea_status: @s1, project: create(:project, allowed_input_topics: [@t1, @t2]))
+          @i1 = create(:idea, project: @project, input_topics: [@t1, @t2], idea_status: @s1)
+          @i2 = create(:idea, project: @project, input_topics: [@t1], idea_status: @s2)
+          @i3 = create(:idea, project: @project, input_topics: [@t2], idea_status: @s2)
+          @i4 = create(:idea, project: @project, input_topics: [], idea_status: @s2)
+          create(:idea, input_topics: [@t1, @t2], idea_status: @s1, project: create(:project, input_topics: [@t1, @t2]))
 
           # a1 -> 3
           # a2 -> 1
@@ -226,7 +226,7 @@ resource 'Ideas' do
           # s2 -> 3
         end
 
-        parameter :topics, 'Filter by topics (OR)', required: false
+        parameter :input_topics, 'Filter by topics (OR)', required: false
         parameter :projects, 'Filter by projects (OR)', required: false
         parameter :phase, 'Filter by project phase', required: false
         parameter :author, 'Filter by author (user id)', required: false
@@ -247,8 +247,8 @@ resource 'Ideas' do
 
           expect(json_attributes[:idea_status_id][@s1.id.to_sym]).to eq 1
           expect(json_attributes[:idea_status_id][@s2.id.to_sym]).to eq 3
-          expect(json_attributes[:topic_id][@t1.id.to_sym]).to eq 2
-          expect(json_attributes[:topic_id][@t2.id.to_sym]).to eq 2
+          expect(json_attributes[:input_topic_id][@t1.id.to_sym]).to eq 2
+          expect(json_attributes[:input_topic_id][@t2.id.to_sym]).to eq 2
           expect(json_attributes[:total]).to eq 4
         end
 
@@ -268,7 +268,7 @@ resource 'Ideas' do
       let(:project) { create(:single_phase_budgeting_project) }
       let(:idea) { create(:idea, project: project, phases: project.phases) }
       let!(:baskets) { create_list(:basket, 2, ideas: [idea], phase: project.phases.first) }
-      let!(:topic) { create(:topic, ideas: [idea], projects: [idea.project]) }
+      let!(:input_topic) { create(:input_topic, project: project, ideas: [idea]) }
       let!(:user_reaction) { create(:reaction, user: @user, reactable: idea) }
       let!(:cosponsorship) { create(:cosponsorship, idea: idea, user: @user) }
       let(:id) { idea.id }
@@ -321,8 +321,8 @@ resource 'Ideas' do
           }
         )
         expect(json_response.dig(:data, :relationships)).to include(
-          topics: {
-            data: [{ id: topic.id, type: 'topic' }]
+          input_topics: {
+            data: [{ id: input_topic.id, type: 'input_topic' }]
           },
           author: { data: { id: idea.author_id, type: 'user' } },
           idea_status: { data: { id: idea.idea_status_id, type: 'idea_status' } },
@@ -393,7 +393,7 @@ resource 'Ideas' do
       let(:phase) do
         phase = create(:native_survey_phase, with_permissions: true)
         permission = phase.permissions.find_by(action: 'posting_idea')
-        permission.global_custom_fields = false
+        permission.update!(global_custom_fields: false)
         permission.permissions_custom_fields = [
           create(:permissions_custom_field, custom_field: create(:custom_field, key: 'gender'))
         ]
@@ -401,6 +401,31 @@ resource 'Ideas' do
         phase
       end
       let(:phase_id) { phase.id }
+
+      context 'for a native survey with global_custom_fields (default state)' do
+        let(:phase) { create(:native_survey_phase, with_permissions: true) }
+        let(:phase_id) { phase.id }
+
+        before do
+          create(:custom_field, resource_type: 'User', key: 'city', enabled: true, hidden: false)
+          create(:custom_field, resource_type: 'User', key: 'age', enabled: true, hidden: false)
+
+          # Enable user_fields_in_form so the controller tries to pre-populate
+          permission = phase.permissions.find_by(action: 'posting_idea')
+          permission.update!(user_fields_in_form: true)
+
+          @user.update!(custom_field_values: { 'city' => 'New York', 'age' => 30 })
+        end
+
+        example_request 'Pre-populates user fields when using default global_custom_fields=true' do
+          expect(status).to eq 200
+          json_response = json_parse(response_body)
+          attributes = json_response.dig(:data, :attributes)
+
+          expect(attributes[:u_city]).to eq('New York')
+          expect(attributes[:u_age]).to eq(30)
+        end
+      end
 
       context 'idea authored by user' do
         let!(:idea) do

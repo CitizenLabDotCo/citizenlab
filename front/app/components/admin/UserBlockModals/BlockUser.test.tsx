@@ -28,7 +28,7 @@ it('Block a user with a reason', async () => {
   const reason = 'Blocking reason.';
 
   const { container } = render(
-    <BlockUserModal open={true} setClose={() => {}} user={user.data} />
+    <BlockUserModal setClose={() => {}} user={user.data} />
   );
 
   fireEvent.input(container.querySelector('textarea'), {

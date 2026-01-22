@@ -128,6 +128,16 @@ RSpec.describe CustomField do
     end
   end
 
+  describe '#input_type_strategy' do
+    it 'has a strategy class for every INPUT_TYPE' do
+      CustomField::INPUT_TYPES.each do |input_type|
+        strategy_class_name = "InputTypeStrategy::#{input_type.camelize}"
+        expect { strategy_class_name.constantize }.not_to raise_error,
+          "Missing InputTypeStrategy class for '#{input_type}'. Expected #{strategy_class_name} to exist."
+      end
+    end
+  end
+
   describe '#logic?' do
     it 'returns true when there is logic' do
       field.logic = { 'rules' => [{ if: 2, goto_page_id: 'some_page_id' }] }
@@ -149,54 +159,19 @@ RSpec.describe CustomField do
     end
   end
 
-  describe '#file_upload?' do
-    it 'returns true when the input_type is "file_upload"' do
-      files_field = described_class.new input_type: 'file_upload'
-      expect(files_field.file_upload?).to be true
+  describe '#clear_logic_unless_supported' do
+    it 'saves logic when the field supports logic' do
+      field = create(:custom_field, resource: create(:custom_form), input_type: 'select')
+      field.logic = { 'rules' => [{ 'if' => 2, 'goto_page_id' => 'some_page_id' }] }
+      field.save!
+      expect(field.logic).to eq({ 'rules' => [{ 'if' => 2, 'goto_page_id' => 'some_page_id' }] })
     end
 
-    it 'returns true when the input_type is "shapefile_upload"' do
-      files_field = described_class.new input_type: 'shapefile_upload'
-      expect(files_field.file_upload?).to be true
-    end
-
-    it 'returns false otherwise' do
-      other_field = described_class.new input_type: 'something_else'
-      expect(other_field.file_upload?).to be false
-    end
-  end
-
-  describe '#multiloc?' do
-    it 'returns true when the input_type is "text_multiloc"' do
-      files_field = described_class.new input_type: 'text_multiloc'
-      expect(files_field.multiloc?).to be true
-    end
-
-    it 'returns true when the input_type is "multiline_text_multiloc"' do
-      files_field = described_class.new input_type: 'multiline_text_multiloc'
-      expect(files_field.multiloc?).to be true
-    end
-
-    it 'returns true when the input_type is "html_multiloc"' do
-      files_field = described_class.new input_type: 'html_multiloc'
-      expect(files_field.multiloc?).to be true
-    end
-
-    it 'returns false otherwise' do
-      other_field = described_class.new input_type: 'something_else'
-      expect(other_field.multiloc?).to be false
-    end
-  end
-
-  describe '#page?' do
-    it 'returns true when the input_type is "page"' do
-      page_field = described_class.new input_type: 'page'
-      expect(page_field.page?).to be true
-    end
-
-    it 'returns false otherwise' do
-      other_field = described_class.new input_type: 'something_else'
-      expect(other_field.page?).to be false
+    it 'does not save logic when the field does not support logic' do
+      field = create(:custom_field, resource: create(:custom_form), input_type: 'multiselect')
+      field.logic = { 'rules' => [{ 'if' => 2, 'goto_page_id' => 'some_page_id' }] }
+      field.save!
+      expect(field.logic).to eq({})
     end
   end
 
@@ -588,44 +563,6 @@ RSpec.describe CustomField do
 
     it 'returns nil otherwise' do
       expect(field.other_option_text_field).to be_nil
-    end
-  end
-
-  describe '#linear_scale_print_description' do
-    let(:field) do
-      create(
-        :custom_field_linear_scale,
-        maximum: 3,
-        linear_scale_label_1_multiloc: { en: 'Bad', 'fr-FR': 'Mauvais' },
-        linear_scale_label_2_multiloc: { en: 'Neutral', 'fr-FR': 'Neutre' },
-        linear_scale_label_3_multiloc: { en: 'Good', 'fr-FR': 'Bon' },
-        linear_scale_label_4_multiloc: {
-          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
-        },
-        linear_scale_label_5_multiloc: {
-          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
-        },
-        linear_scale_label_6_multiloc: {
-          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
-        },
-        linear_scale_label_7_multiloc: {
-          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
-        }
-      )
-    end
-
-    it 'returns the linear scale print description for the specified locale' do
-      expect(field.linear_scale_print_description('en')).to eq 'Please write a number between 1 (Bad) and 3 (Good) only'
-      expect(field.linear_scale_print_description('fr-FR'))
-        .to eq 'Veuillez écrire un nombre entre 1 (Mauvais) et 3 (Bon) uniquement'
-    end
-
-    it 'returns default copy if the locale values is/are not specified' do
-      field.linear_scale_label_1_multiloc = { en: '' }
-      field.linear_scale_label_3_multiloc = { en: '' }
-
-      expect(field.linear_scale_print_description('en')).to eq 'Please write a number between 1 and 3 only'
-      expect(field.linear_scale_print_description('fr-FR')).to eq 'Veuillez écrire un nombre entre 1 et 3 uniquement'
     end
   end
 

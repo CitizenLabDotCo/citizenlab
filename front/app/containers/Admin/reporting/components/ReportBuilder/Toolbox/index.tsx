@@ -45,6 +45,7 @@ import {
 import Analysis from '../Analysis';
 import { WIDGET_TITLES } from '../Widgets';
 import DemographicsWidget from '../Widgets/ChartWidgets/DemographicsWidget';
+import InternalAdoptionWidget from '../Widgets/ChartWidgets/InternalAdoptionWidget';
 import MethodsUsedWidget from '../Widgets/ChartWidgets/MethodsUsedWidget';
 import ParticipantsWidget from '../Widgets/ChartWidgets/ParticipantsWidget';
 import ParticipationWidget from '../Widgets/ChartWidgets/ParticipationWidget';
@@ -289,6 +290,7 @@ const ReportBuilderToolbox = ({
                 <VisitorsWidget
                   title={toMultiloc(WIDGET_TITLES.VisitorsWidget)}
                   startAt={undefined}
+                  projectId={selectedProjectId}
                   endAt={chartEndDate}
                 />
               }
@@ -308,18 +310,20 @@ const ReportBuilderToolbox = ({
               icon="chart-bar"
               label={formatMessage(WIDGET_TITLES.ParticipantsWidget)}
             />
-            <DraggableElement
-              id="e2e-draggable-registrations-widget"
-              component={
-                <RegistrationsWidget
-                  title={toMultiloc(WIDGET_TITLES.RegistrationsWidget)}
-                  startAt={undefined}
-                  endAt={chartEndDate}
-                />
-              }
-              icon="chart-bar"
-              label={formatMessage(WIDGET_TITLES.RegistrationsWidget)}
-            />
+            {isUserAdmin && (
+              <DraggableElement
+                id="e2e-draggable-registrations-widget"
+                component={
+                  <RegistrationsWidget
+                    title={toMultiloc(WIDGET_TITLES.RegistrationsWidget)}
+                    startAt={undefined}
+                    endAt={chartEndDate}
+                  />
+                }
+                icon="chart-bar"
+                label={formatMessage(WIDGET_TITLES.RegistrationsWidget)}
+              />
+            )}
             <DraggableElement
               id="e2e-draggable-visitors-traffic-sources-widget"
               component={
@@ -365,18 +369,34 @@ const ReportBuilderToolbox = ({
               icon="chart-bar"
               label={formatMessage(WIDGET_TITLES.ParticipationWidget)}
             />
-            <DraggableElement
-              id="e2e-draggable-methods-used-widget"
-              component={
-                <MethodsUsedWidget
-                  title={toMultiloc(WIDGET_TITLES.MethodsUsedWidget)}
-                  startAt={undefined}
-                  endAt={chartEndDate}
-                />
-              }
-              icon="chart-bar"
-              label={formatMessage(WIDGET_TITLES.MethodsUsedWidget)}
-            />
+            {isUserAdmin && (
+              <DraggableElement
+                id="e2e-draggable-methods-used-widget"
+                component={
+                  <MethodsUsedWidget
+                    title={toMultiloc(WIDGET_TITLES.MethodsUsedWidget)}
+                    startAt={undefined}
+                    endAt={chartEndDate}
+                  />
+                }
+                icon="chart-bar"
+                label={formatMessage(WIDGET_TITLES.MethodsUsedWidget)}
+              />
+            )}
+            {isUserAdmin && (
+              <DraggableElement
+                id="e2e-draggable-internal-adoption-widget"
+                component={
+                  <InternalAdoptionWidget
+                    title={toMultiloc(WIDGET_TITLES.InternalAdoptionWidget)}
+                    startAt={undefined}
+                    endAt={chartEndDate}
+                  />
+                }
+                icon="chart-bar"
+                label={formatMessage(WIDGET_TITLES.InternalAdoptionWidget)}
+              />
+            )}
             {/* Only show Projects Widget for admins, not for project moderators */}
             {isUserAdmin && (
               <DraggableElement

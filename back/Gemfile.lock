@@ -1,3 +1,19 @@
+GIT
+  remote: https://github.com/NielsKSchjoedt/ruby_llm.git
+  revision: 9a3e9699c866872f0afa6ac4bab30f4a7dc154be
+  branch: main
+  specs:
+    ruby_llm (1.9.1)
+      base64
+      event_stream_parser (~> 1)
+      faraday (>= 1.10.0)
+      faraday-multipart (>= 1)
+      faraday-net_http (>= 1)
+      faraday-retry (>= 1)
+      marcel (~> 1.0)
+      ruby_llm-schema (~> 0.2.1)
+      zeitwerk (~> 2)
+
 PATH
   remote: engines/commercial/admin_api
   specs:
@@ -585,7 +601,7 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
-    crawler_detect (1.2.7)
+    crawler_detect (1.2.9)
       qonfig (>= 0.24)
     css_parser (1.14.0)
       addressable
@@ -622,7 +638,7 @@ GEM
       railties (>= 5.0.0)
     faker (3.5.1)
       i18n (>= 1.8.11, < 2)
-    faraday (2.12.2)
+    faraday (2.14.0)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
@@ -761,7 +777,7 @@ GEM
     http-cookie (1.0.8)
       domain_name (~> 0.5)
     http-form_data (2.3.0)
-    httparty (0.23.1)
+    httparty (0.24.0)
       csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
@@ -875,8 +891,8 @@ GEM
     mrml (1.7.0-x86_64-linux)
     msgpack (1.7.2)
     multi_json (1.15.0)
-    multi_xml (0.7.1)
-      bigdecimal (~> 3.1)
+    multi_xml (0.8.1)
+      bigdecimal (>= 3.1, < 5)
     multipart-post (2.4.1)
     mustache (1.1.1)
     mutex_m (0.3.0)
@@ -963,7 +979,6 @@ GEM
     parser (3.3.6.0)
       ast (~> 2.4.1)
       racc
-    pdf-core (0.10.0)
     pdf-reader (2.14.1)
       Ascii85 (>= 1.0, < 3.0, != 2.0.0)
       afm (~> 0.2.1)
@@ -981,12 +996,6 @@ GEM
       concurrent-ruby (~> 1)
     pp (0.6.2)
       prettyprint
-    prawn (2.5.0)
-      matrix (~> 0.4)
-      pdf-core (~> 0.10.0)
-      ttfunk (~> 1.8)
-    prawn-grouping (0.2.0)
-      prawn (>= 2.0.0)
     premailer (1.19.0)
       addressable
       css_parser (>= 1.12.0)
@@ -1221,15 +1230,7 @@ GEM
     rubyXL (3.4.27)
       nokogiri (>= 1.10.8)
       rubyzip (>= 1.3.0)
-    ruby_llm (1.8.2)
-      base64
-      event_stream_parser (~> 1)
-      faraday (>= 1.10.0)
-      faraday-multipart (>= 1)
-      faraday-net_http (>= 1)
-      faraday-retry (>= 1)
-      marcel (~> 1.0)
-      zeitwerk (~> 2)
+    ruby_llm-schema (0.2.5)
     rubyzip (1.3.0)
     saharspec (0.0.10)
       ruby2_keywords
@@ -1405,7 +1406,7 @@ DEPENDENCIES
   email_campaigns!
   factory_bot_rails
   faker
-  faraday
+  faraday (~> 2.14.0)
   faraday-jwt (~> 0.1.0)
   faraday-multipart
   flag_inappropriate_content!
@@ -1474,8 +1475,6 @@ DEPENDENCIES
   polls!
   positioning (~> 0.4.6)
   posthog_integration!
-  prawn (~> 2.5)
-  prawn-grouping (~> 0.2.0)
   premailer-rails (~> 1.12.0)
   pry
   pry-byebug
@@ -1512,7 +1511,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec
   rubyXL (~> 3.4.27)
-  ruby_llm (~> 1.8.2)
+  ruby_llm (~> 1.9.1)!
   rubyzip (~> 1.3.0)
   saharspec
   scenic

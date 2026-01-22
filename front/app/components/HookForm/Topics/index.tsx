@@ -3,9 +3,7 @@ import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { CLError, RHFErrors } from 'typings';
 
-import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
-import { ITopicData } from 'api/topics/types';
-import useTopics from 'api/topics/useTopics';
+import useInputTopics from 'api/input_topics/useInputTopics';
 
 import Error, { TFieldName } from 'components/UI/Error';
 import TopicsPicker, {
@@ -36,16 +34,7 @@ const Topics = ({ name, projectId, scrollErrorIntoView, ...rest }: Props) => {
 
   const apiError = errors?.error && ([errors] as CLError[]);
 
-  const { data: allowedTopics } = useProjectAllowedInputTopics({ projectId });
-  const { data: topics } = useTopics();
-  const getAllowedTopics = () => {
-    if (!allowedTopics || !topics) return [];
-    return allowedTopics.data.map((allowedTopic) =>
-      topics.data.find(
-        (topic) => allowedTopic.relationships.topic.data.id === topic.id
-      )
-    ) as ITopicData[];
-  };
+  const { data: inputTopics } = useInputTopics(projectId || '');
 
   return (
     <>
@@ -58,7 +47,7 @@ const Topics = ({ name, projectId, scrollErrorIntoView, ...rest }: Props) => {
               {...field}
               {...rest}
               selectedTopicIds={getValues(name) || []}
-              availableTopics={getAllowedTopics()}
+              availableTopics={inputTopics?.data || []}
               onClick={(topicIds: string[]) => {
                 setValue(name, topicIds);
                 trigger(name);

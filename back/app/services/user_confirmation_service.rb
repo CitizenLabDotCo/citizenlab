@@ -40,7 +40,6 @@ class UserConfirmationService
     validate_password_login_enabled!
     validate_user!(user)
     validate_email!(user.email)
-    validate_user_has_no_password!(user)
     validate_user_has_no_new_email!(user)
     validate_and_confirm!(user, code)
 
@@ -89,10 +88,6 @@ class UserConfirmationService
     raise ValidationError.new(:user, :no_email) if email.blank?
   end
 
-  def validate_user_has_no_password!(user)
-    raise ValidationError.new(:user, :has_password) if user.password_digest?
-  end
-
   def validate_retry_count!(user, code)
     return if user.email_confirmation_code == code # don't increment unless code is wrong
 
@@ -138,9 +133,13 @@ class UserConfirmationService
   end
 
   def confirm_user!(user)
-    return if user.confirm!
-
-    raise ValidationError.new(:user, :confirmation, message: 'Something went wrong.')
+    if user.confirm!
+      ClaimTokenService.complete(user)
+    else
+      raise ValidationError.new(
+        :user, :confirmation, message: 'Something went wrong.'
+      )
+    end
   end
 
   def success_result(user)

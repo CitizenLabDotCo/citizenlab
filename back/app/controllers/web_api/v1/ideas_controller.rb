@@ -10,7 +10,6 @@ class WebApi::V1::IdeasController < ApplicationController
   skip_after_action :verify_authorized, only: %i[index_xlsx index_mini index_idea_markers filter_counts]
   skip_after_action :verify_authorized, only: %i[create], unless: -> { response.status == 400 }
   after_action :verify_policy_scoped, only: %i[index index_mini]
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def index
     ideas = IdeasFinder.new(
@@ -25,7 +24,7 @@ class WebApi::V1::IdeasController < ApplicationController
     ideas = ideas.includes(
       :idea_images,
       :idea_trending_info,
-      :topics,
+      :input_topics,
       :phases,
       :idea_status,
       :creation_phase,
@@ -59,7 +58,7 @@ class WebApi::V1::IdeasController < ApplicationController
       current_user: current_user
     ).find_records
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
-    ideas = ideas.includes(:author, :topics, :project, :idea_status)
+    ideas = ideas.includes(:author, :input_topics, :project, :idea_status)
 
     render json: linked_json(ideas, WebApi::V1::PostMarkerSerializer, params: jsonapi_serializer_params)
   end
@@ -71,7 +70,7 @@ class WebApi::V1::IdeasController < ApplicationController
       current_user: current_user
     ).find_records
     ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
-    ideas = ideas.includes(:author, :topics, :project, :idea_status, :idea_files, :attached_files)
+    ideas = ideas.includes(:author, :input_topics, :project, :idea_status, :idea_files, :attached_files)
 
     with_cosponsors = AppConfiguration.instance.feature_activated?('input_cosponsorship')
     ideas = ideas.includes(:cosponsors) if with_cosponsors
@@ -161,10 +160,14 @@ class WebApi::V1::IdeasController < ApplicationController
   #   Users who can moderate projects post in an active phase if no phase id is given.
   #   Users who can moderate projects post in the given phase if a phase id is given.
   def create
-    send_error and return if !phase_for_input
+    send_error and return unless phase_for_input
 
     form = phase_for_input.pmethod.custom_form
     extract_custom_field_values_from_params!(form)
+    # Map topic_ids to input_topic_ids for the new InputTopics system
+    if params[:idea].key?(:topic_ids)
+      params[:idea][:input_topic_ids] = params[:idea].delete(:topic_ids) || []
+    end
     params_for_create = idea_params form
     files_params = extract_file_params(params_for_create)
 
@@ -228,10 +231,14 @@ class WebApi::V1::IdeasController < ApplicationController
         update_file_upload_fields input, form, params_for_create
         sidefx.after_create(input, current_user)
         write_everyone_tracking_cookie input
+
+        ClaimTokenService.generate(input) unless input.author_id
+        serializer_params = jsonapi_serializer_params.merge(include_claim_token: true)
+
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
-          params: jsonapi_serializer_params,
-          include: %i[author topics phases user_reaction idea_images]
+          params: serializer_params,
+          include: %i[author input_topics phases user_reaction idea_images]
         ).serializable_hash, status: :created
       else
         render json: { errors: input.errors.details }, status: :unprocessable_entity
@@ -250,7 +257,10 @@ class WebApi::V1::IdeasController < ApplicationController
     end
 
     extract_custom_field_values_from_params!(input.custom_form)
-    params[:idea][:topic_ids] ||= [] if params[:idea].key?(:topic_ids)
+    # Map topic_ids to input_topic_ids for the new InputTopics system
+    if params[:idea].key?(:topic_ids)
+      params[:idea][:input_topic_ids] = params[:idea].delete(:topic_ids) || []
+    end
     params[:idea][:cosponsor_ids] ||= [] if params[:idea].key?(:cosponsor_ids)
     params[:idea][:phase_ids] ||= [] if params[:idea].key?(:phase_ids)
     params_service.mark_custom_field_values_to_clear!(input.custom_field_values, params[:idea][:custom_field_values])
@@ -313,7 +323,7 @@ class WebApi::V1::IdeasController < ApplicationController
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,
-          include: %i[author topics user_reaction idea_images cosponsors]
+          include: %i[author input_topics user_reaction idea_images cosponsors]
         ).serializable_hash, status: :ok
       else
         render json: { errors: input.errors.details }, status: :unprocessable_entity
@@ -403,7 +413,7 @@ class WebApi::V1::IdeasController < ApplicationController
     render json: WebApi::V1::IdeaSerializer.new(
       input,
       params: jsonapi_serializer_params,
-      include: %i[author topics user_reaction idea_images]
+      include: %i[author input_topics user_reaction idea_images]
     ).serializable_hash
   end
 
@@ -420,7 +430,7 @@ class WebApi::V1::IdeasController < ApplicationController
   def extract_params_for_file_upload_fields(custom_form, params)
     return {} if params['custom_field_values'].blank?
 
-    file_upload_field_keys = IdeaCustomFieldsService.new(custom_form).all_fields.select(&:file_upload?).map(&:key)
+    file_upload_field_keys = IdeaCustomFieldsService.new(custom_form).all_fields.select(&:supports_file_upload?).map(&:key)
     params['custom_field_values'].extract!(*file_upload_field_keys)
   end
 
@@ -532,7 +542,8 @@ class WebApi::V1::IdeasController < ApplicationController
     end
 
     if submittable_field_keys.include?(:topic_ids)
-      complex_attributes[:topic_ids] = []
+      # topic_ids is mapped to input_topic_ids for the InputTopics system
+      complex_attributes[:input_topic_ids] = []
     end
 
     if submittable_field_keys.include?(:cosponsor_ids)
@@ -561,7 +572,17 @@ class WebApi::V1::IdeasController < ApplicationController
   # Only relevant for allow_anonymous_participation in the context of ideation
   # Not relevant for 'user_data_collection' in the context of surveys
   def anonymous_not_allowed?(phase)
+    return false if AppConfiguration.instance.feature_activated?('ideation_accountless_posting') && permitted_by_everyone?(phase)
+
     params.dig('idea', 'anonymous') && !phase.allow_anonymous_participation
+  end
+
+  def permitted_by_everyone?(phase)
+    permission = Permission.find_by(
+      permission_scope_id: phase.id,
+      action: 'posting_idea'
+    )
+    permission&.permitted_by == 'everyone'
   end
 
   def idea_status_not_allowed?(input)

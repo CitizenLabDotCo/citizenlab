@@ -471,10 +471,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            html_pdfs: {
-              enabled: true,
-              allowed: true
-            },
             user_session_recording: {
               # Disable for E2E tests on localhost
               enabled: false,
@@ -505,10 +501,6 @@ module MultiTenancy
               allowed: true
             },
             customisable_homepage_banner: {
-              enabled: true,
-              allowed: true
-            },
-            proposals_participation_method: {
               enabled: true,
               allowed: true
             },
@@ -585,6 +577,14 @@ module MultiTenancy
             phase_insights: {
               enabled: false,
               allowed: false
+            },
+            ideation_accountless_posting: {
+              enabled: true,
+              allowed: true
+            },
+            post_participation_signup: {
+              enabled: true,
+              allowed: true
             }
           })
         )

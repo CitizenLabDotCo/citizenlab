@@ -1,10 +1,13 @@
 module IdeaFeed
   class FeedService
-    attr_reader :phase, :user, :topic_ids
+    attr_reader :phase, :user, :visitor_hash, :topic_ids
 
-    def initialize(phase, user, topic_ids: nil)
+    def initialize(phase, user: nil, topic_ids: nil, visitor_hash: nil)
+      raise ArgumentError, 'Either user or visitor_hash must be provided' if user.nil? && visitor_hash.nil?
+
       @phase = phase
       @user = user
+      @visitor_hash = visitor_hash
       @topic_ids = topic_ids
     end
 
@@ -15,10 +18,22 @@ module IdeaFeed
         .order(Arel.sql('recency_score * 0.65 + engagement_score * 0.25 + wise_voice_score * 0.1 DESC'))
         .limit(n * 4)
 
-      DiversityService.new.generate_list(candidates, IdeaExposure.where(user:, phase:), n)
+      DiversityService.new.generate_list(candidates, exposures_scope, n)
+    end
+
+    def eligible_ideas_count(scope = Idea.all)
+      fetch_eligible_ideas(scope).count
     end
 
     private
+
+    def exposures_scope
+      if user
+        IdeaExposure.where(user: user, phase: phase)
+      else
+        IdeaExposure.where(visitor_hash: visitor_hash, phase: phase)
+      end
+    end
 
     def fetch_candidates_with_scores(scope)
       scope
@@ -32,7 +47,7 @@ module IdeaFeed
     end
 
     def fetch_eligible_ideas(scope)
-      exposed_ideas = IdeaExposure.where(user:, phase:).select(:idea_id).distinct
+      exposed_ideas = exposures_scope.select(:idea_id).distinct
 
       scope = scope
         .joins(:ideas_phases)
@@ -40,7 +55,7 @@ module IdeaFeed
         .published
         .where.not(id: exposed_ideas)
 
-      scope = scope.with_some_topics(topic_ids) if topic_ids.present?
+      scope = scope.with_some_input_topics(topic_ids) if topic_ids.present?
 
       scope
     end

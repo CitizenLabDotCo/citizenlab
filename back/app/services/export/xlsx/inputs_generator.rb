@@ -46,8 +46,8 @@ module Export
         inputs.includes(
           :project,
           :author,
-          :ideas_topics,
-          :topics,
+          :ideas_input_topics,
+          :input_topics,
           :idea_files,
           :file_attachments,
           :attached_files,

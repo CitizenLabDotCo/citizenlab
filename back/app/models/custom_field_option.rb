@@ -15,8 +15,9 @@
 #
 # Indexes
 #
-#  index_custom_field_options_on_custom_field_id          (custom_field_id)
-#  index_custom_field_options_on_custom_field_id_and_key  (custom_field_id,key) UNIQUE
+#  index_custom_field_options_on_custom_field_id               (custom_field_id)
+#  index_custom_field_options_on_custom_field_id_and_key       (custom_field_id,key) UNIQUE
+#  index_custom_field_options_on_field_id_and_ordering_unique  (custom_field_id,ordering) UNIQUE
 #
 # Foreign Keys
 #
@@ -26,7 +27,7 @@ class CustomFieldOption < ApplicationRecord
   # non-persisted attribute to enable form copying
   attribute :temp_id, :string, default: nil
 
-  acts_as_list column: :ordering, top_of_list: 0, scope: :custom_field
+  acts_as_list column: :ordering, top_of_list: 0, scope: :custom_field, sequential_updates: true
 
   belongs_to :custom_field
 
@@ -42,7 +43,6 @@ class CustomFieldOption < ApplicationRecord
   # The two associated resources are kept in sync: changes to the
   # area are reflected in the option, and vice versa.
   has_one :area, dependent: :nullify
-  after_update :update_area
 
   has_one :image, dependent: :destroy, class_name: 'CustomFieldOptionImage', inverse_of: :custom_field_option
   has_many :custom_field_bins, dependent: :destroy, class_name: 'CustomFieldBins::OptionBin', inverse_of: :custom_field_option
@@ -52,22 +52,12 @@ class CustomFieldOption < ApplicationRecord
   private
 
   def belongs_to_select_field
-    return unless custom_field && !custom_field.support_options?
+    return unless custom_field && !custom_field.supports_options?
 
     errors.add(
       :base,
       :option_on_non_select_field,
       message: 'The custom field option you\'re specifying does not belong to a custom field that supports options'
-    )
-  end
-
-  def update_area
-    return unless area
-    return unless ordering_previously_changed? || title_multiloc_previously_changed?
-
-    area.update!(
-      ordering: ordering,
-      title_multiloc: title_multiloc
     )
   end
 

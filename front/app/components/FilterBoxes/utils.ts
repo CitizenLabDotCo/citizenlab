@@ -1,6 +1,6 @@
 import { get } from 'lodash-es';
 
-import { ITopicData } from 'api/topics/types';
+import { IInputTopicData } from 'api/input_topics/types';
 
 import { Localize } from 'hooks/useLocalize';
 
@@ -16,17 +16,17 @@ export const scrollToTopIdeasList = () => {
 };
 
 export const getTopicsWithIdeas = (
-  topics: ITopicData[],
+  topics: IInputTopicData[],
   filterCounts: FilterCounts
 ) => {
   return topics.filter((topic) => {
-    const filterPostCount = get(filterCounts, `topic_id.${topic.id}`, 0);
+    const filterPostCount = get(filterCounts, `input_topic_id.${topic.id}`, 0);
     return filterPostCount > 0;
   });
 };
 
 export const getSelectedTopicNames = (
-  selectedTopics: ITopicData[],
+  selectedTopics: IInputTopicData[],
   localize: Localize
 ) => {
   return selectedTopics

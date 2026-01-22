@@ -4,11 +4,12 @@ import { omit } from 'lodash-es';
 
 import { IIdeasFilterCountsQueryParameters } from 'api/ideas_filter_counts/types';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
-import useTopics from 'api/topics/useTopics';
+import useInputTopics from 'api/input_topics/useInputTopics';
 
 import TopicsFilter from 'components/FilterBoxes/TopicsFilter';
 
 interface Props {
+  projectId: string;
   ideaQueryParameters: IIdeasFilterCountsQueryParameters;
   selectedTopicIds: string[] | null | undefined;
   onChange: (arg: string[] | null) => void;
@@ -16,13 +17,16 @@ interface Props {
 }
 
 const TopicFilterBox = memo<Props>(
-  ({ selectedTopicIds, ideaQueryParameters, onChange, className }) => {
+  ({
+    projectId,
+    selectedTopicIds,
+    ideaQueryParameters,
+    onChange,
+    className,
+  }) => {
     const ideaFiltersWithoutTopics = omit(ideaQueryParameters, 'topics');
 
-    const { data: topics } = useTopics({
-      sort: '-ideas_count',
-      ideas: ideaFiltersWithoutTopics,
-    });
+    const { data: topics } = useInputTopics(projectId, '-ideas_count');
 
     const { data: ideasFilterCounts } = useIdeasFilterCounts({
       ...ideaFiltersWithoutTopics,

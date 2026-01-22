@@ -8,13 +8,14 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
 
+import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import {
   IdeaSortMethod,
-  IdeationMethod,
   InputTerm,
   IPhase,
   IUpdatedPhaseProperties,
   ParticipationMethod,
+  PresentationMode,
   TSurveyService,
   VoteTerm,
   VotingMethod,
@@ -24,6 +25,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
+import anonymousMessages from 'components/admin/AnonymousPostingToggle/messages';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
@@ -94,8 +96,23 @@ const PhaseParticipationConfig = ({
   });
 
   const project_library_enabled = useFeatureFlag({ name: 'project_library' });
+  const ideationAccountlessPostingEnabled = useFeatureFlag({
+    name: 'ideation_accountless_posting',
+  });
 
   const { formatMessage } = useIntl();
+
+  const { data: permissions } = usePhasePermissions({
+    phaseId: ideationAccountlessPostingEnabled ? phase?.data.id : undefined,
+  });
+
+  // If posting without an account is allowed, we allow logged-in users to post
+  // anonymously.
+  const toggleAnonymousPostingDisabledReason =
+    permissions?.data.find((p) => p.attributes.action === 'posting_idea')
+      ?.attributes.permitted_by === 'everyone'
+      ? formatMessage(anonymousMessages.anonymousParticipationAutoEnabled)
+      : undefined;
 
   const updateFormData = (fn: SetFn) => {
     const updatedFormData = fn(formData);
@@ -228,13 +245,6 @@ const PhaseParticipationConfig = ({
     }));
   };
 
-  const handleIdeationMethodOnChange = (ideation_method: IdeationMethod) => {
-    updateFormData((state) => ({
-      ...state,
-      ideation_method,
-    }));
-  };
-
   const handleReactingDislikeMethodOnChange = (
     reacting_dislike_method: 'unlimited' | 'limited'
   ) => {
@@ -259,7 +269,7 @@ const PhaseParticipationConfig = ({
     }));
   };
 
-  const handleIdeasDisplayChange = (presentation_mode: 'map' | 'card') => {
+  const handleIdeasDisplayChange = (presentation_mode: PresentationMode) => {
     updateFormData((state) => ({
       ...state,
       presentation_mode,
@@ -434,7 +444,6 @@ const PhaseParticipationConfig = ({
     reacting_dislike_limited_max,
     allow_anonymous_participation,
     voting_method,
-    ideation_method,
     voting_min_total,
     voting_max_total,
     voting_min_selected_options,
@@ -543,8 +552,6 @@ const PhaseParticipationConfig = ({
 
         {participation_method === 'ideation' && (
           <IdeationInputs
-            ideation_method={ideation_method}
-            handleIdeationMethodOnChange={handleIdeationMethodOnChange}
             input_term={input_term}
             handleInputTermChange={handleInputTermChange}
             submission_enabled={submission_enabled}
@@ -558,6 +565,9 @@ const PhaseParticipationConfig = ({
             noLikingLimitError={validationErrors.noLikingLimitError}
             noDislikingLimitError={validationErrors.noDislikingLimitError}
             allow_anonymous_participation={allow_anonymous_participation}
+            toggleAnonymousPostingDisabledReason={
+              toggleAnonymousPostingDisabledReason
+            }
             apiErrors={apiErrors}
             togglePostingEnabled={togglePostingEnabled}
             toggleCommentingEnabled={toggleCommentingEnabled}
@@ -601,6 +611,9 @@ const PhaseParticipationConfig = ({
             reacting_like_limited_max={reacting_like_limited_max}
             noLikingLimitError={validationErrors.noLikingLimitError}
             allow_anonymous_participation={allow_anonymous_participation}
+            toggleAnonymousPostingDisabledReason={
+              toggleAnonymousPostingDisabledReason
+            }
             apiErrors={apiErrors}
             togglePostingEnabled={togglePostingEnabled}
             toggleCommentingEnabled={toggleCommentingEnabled}

@@ -47,3 +47,12 @@ export const getProjects = ({
 
   return `<li><b>${projects}</b>: ${` ${projectsNumber} ${published}`}</li>`;
 };
+
+export const getDateLastReport = ({
+  formatMessage,
+}: {
+  formatMessage: FormatMessage;
+}) => {
+  const dateLastReport = formatMessage(messages.dateLastReport);
+  return `<li><b>${dateLastReport}</b>: </li>`;
+};

@@ -6,7 +6,11 @@ class RequestCodePolicy < ApplicationPolicy
     return false unless correct_feature_flags_enabled?
     return false if record.nil?
     return false if record.email.blank?
-    return false if record.password_digest?
+
+    if record.password_digest? && !record.confirmation_required?
+      return false
+    end
+
     return false if record.new_email.present?
     return false if record.email_confirmation_code_reset_count >= max_retries - 1
 

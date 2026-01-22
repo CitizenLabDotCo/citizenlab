@@ -310,7 +310,7 @@ const IdeaRow = ({
           : [item.id];
 
         if (dropResult.type === 'topic') {
-          const currentTopics = idea.relationships.topics?.data.map(
+          const currentTopics = idea.relationships.input_topics?.data.map(
             (d) => d.id
           );
           const newTopics = uniq(currentTopics?.concat(dropResult.id));
@@ -366,7 +366,7 @@ const IdeaRow = ({
   });
 
   const selectedPhases = idea.relationships.phases.data.map((p) => p.id);
-  const selectedTopics = idea.relationships.topics?.data.map((p) => p.id);
+  const selectedTopics = idea.relationships.input_topics?.data.map((p) => p.id);
   const active = selection.has(idea.id);
   const projectId = idea.relationships.project.data.id;
   const selectedStatus = idea.relationships.idea_status.data?.id;

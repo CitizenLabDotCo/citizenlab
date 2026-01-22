@@ -325,6 +325,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.mapDisplay',
     defaultMessage: 'Map',
   },
+  feedDisplay: {
+    id: 'app.containers.AdminPage.ProjectEdit.feedDisplay',
+    defaultMessage: 'Feed',
+  },
   trendingSortingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.trendingSortingMethod',
     defaultMessage: 'Trending',
@@ -596,6 +600,10 @@ export default defineMessages({
   reportTab: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.report',
     defaultMessage: 'Report',
+  },
+  insightsTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.insights',
+    defaultMessage: 'Insights',
   },
   lockedTooltip: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.lockedTooltip',

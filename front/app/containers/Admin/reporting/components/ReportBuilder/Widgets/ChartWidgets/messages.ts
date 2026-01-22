@@ -63,6 +63,10 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.hideStatistics',
     defaultMessage: 'Hide statistics',
   },
+  showVisitors: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipantsWidget.ChartWidgetSettings.showVisitors',
+    defaultMessage: 'Show visitors',
+  },
   youNeedToSelectADateRange: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.youNeedToSelectADateRange',
     defaultMessage: 'You need to select a date range first.',
@@ -104,5 +108,10 @@ export default defineMessages({
   archivedLabel: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.MethodsUsedWidget.ChartWidgetSettings.archivedLabel',
     defaultMessage: 'Archived',
+  },
+  accessibilityDescription: {
+    id: 'app.containers.admin.ReportBuilder.charts.accessibilityDescription',
+    defaultMessage:
+      'Use these fields to provide a clear text description so users who rely on assistive technologies can understand the chart’s meaning.',
   },
 });

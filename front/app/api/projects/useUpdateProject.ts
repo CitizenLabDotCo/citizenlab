@@ -4,8 +4,8 @@ import { CLErrorsWrapper } from 'typings';
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import adminPublicationsStatusCountsKeys from 'api/admin_publications_status_counts/keys';
 import areasKeys from 'api/areas/keys';
+import globalTopicsKeys from 'api/global_topics/keys';
 import meKeys from 'api/me/keys';
-import topicsKeys from 'api/topics/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -28,7 +28,7 @@ const useUpdateProject = () => {
     mutationFn: updateProject,
     onSuccess: async (_data) => {
       queryClient.invalidateQueries({ queryKey: projectsKeys.lists() });
-      queryClient.invalidateQueries({ queryKey: topicsKeys.lists() });
+      queryClient.invalidateQueries({ queryKey: globalTopicsKeys.lists() });
       queryClient.invalidateQueries({ queryKey: areasKeys.lists() });
       queryClient.invalidateQueries({ queryKey: meKeys.all() });
       queryClient.invalidateQueries({

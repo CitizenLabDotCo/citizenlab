@@ -48,7 +48,6 @@ export type Step = keyof StepConfig;
 
 export type SetError = (errorCode: ErrorCode) => void;
 
-export type SignUpInFlow = 'signup' | 'signin';
 type NotEntitledError =
   | 'not_entitled_under_minimum_age'
   | 'not_entitled_lives_outside'

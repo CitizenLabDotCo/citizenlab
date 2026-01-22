@@ -4,6 +4,10 @@ import { Radio, IconTooltip } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import { CLErrors } from 'typings';
 
+import { PresentationMode } from 'api/phases/types';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
@@ -13,9 +17,9 @@ import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 import messages from '../../../../../messages';
 
 interface Props {
-  presentation_mode: 'card' | 'map' | null | undefined;
+  presentation_mode: PresentationMode | null | undefined;
   apiErrors: CLErrors | null | undefined;
-  handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
+  handleIdeasDisplayChange: (presentation_mode: PresentationMode) => void;
   title?: MessageDescriptor;
 }
 
@@ -29,6 +33,7 @@ export default ({
     projectId: string;
     phaseId: string;
   }>();
+  const ideaFeedEnabled = useFeatureFlag({ name: 'idea_feed' });
 
   const inputFormUrl = `/admin/projects/${projectId}/phases/${phaseId}/form/edit`;
 
@@ -38,9 +43,15 @@ export default ({
     </a>
   );
 
-  const displayOptions = [
+  const displayOptions: {
+    value: PresentationMode;
+    label: MessageDescriptor;
+  }[] = [
     { value: 'card', label: messages.cardDisplay },
     { value: 'map', label: messages.mapDisplay },
+    ...(ideaFeedEnabled
+      ? [{ value: 'feed' as const, label: messages.feedDisplay }]
+      : []),
   ];
 
   return (
@@ -63,7 +74,7 @@ export default ({
         />
       ))}
       <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
-      {projectId && phaseId && (
+      {projectId && phaseId && presentation_mode !== 'feed' && (
         <Warning>
           <FormattedMessage
             {...messages.locationFieldWarning}
