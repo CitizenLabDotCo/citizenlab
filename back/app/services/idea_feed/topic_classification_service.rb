@@ -11,7 +11,7 @@ module IdeaFeed
     # Given an idea, classifies it into one or more topics, overwriting any
     # previous classifications.
     def classify_topics!(idea)
-      topics = idea.project.allowed_input_topics
+      topics = @phase.project.input_topics
       llm = LLMSelector.new.llm_class_for_use_case('idea_feed_live_classification').new
 
       prompt = classification_prompt(idea, topics)
@@ -24,7 +24,7 @@ module IdeaFeed
 
         selected_topics = response.map { topics[it - 1] }
 
-        if selected_topics.all? { it.is_a?(Topic) }
+        if selected_topics.all? { it.is_a?(InputTopic) }
           break selected_topics
         else
           Rails.logger.warn("LLM response for idea classification contained invalid topic IDs. Attempt #{i + 1} Retrying...")
@@ -34,7 +34,7 @@ module IdeaFeed
         Rails.logger.warn("LLM response for idea classification was not valid. Attempt #{i + 1}/#{RETRIES_INVALID_RESPONSE} Retrying...")
       end
 
-      idea.update!(topics: selected_topics)
+      idea.update!(input_topics: selected_topics)
 
       selected_topics
     end

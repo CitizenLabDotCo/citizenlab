@@ -50,11 +50,6 @@ const POSITIONS_DESKTOP = [
   { left: '40%', top: '33%' },
   { left: '55%', top: '38%' },
   { left: '70%', top: '35%' },
-  { left: '13%', top: '46%' },
-  { left: '28%', top: '50%' },
-  { left: '45%', top: '47%' },
-  { left: '60%', top: '52%' },
-  { left: '75%', top: '49%' },
 ];
 
 const POSITIONS_TABLET = [
@@ -98,7 +93,7 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
   const { data: phase } = usePhase(phaseId);
   const { data, isLoading } = useInfiniteIdeaFeedIdeas({
     phaseId,
-    'page[size]': 20,
+    'page[size]': 15,
   });
 
   const flatIdeas = data?.pages.flatMap((page) => page.data);
@@ -141,7 +136,8 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
       >
         {displayedIdeas?.map((idea, index) => {
           const topicIds =
-            idea.relationships.topics?.data.map((topic) => topic.id) || [];
+            idea.relationships.input_topics?.data.map((topic) => topic.id) ||
+            [];
           const topicBackgroundColor = getTopicColor(topicIds[0]);
 
           return (

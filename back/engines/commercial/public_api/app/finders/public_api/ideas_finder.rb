@@ -32,15 +32,15 @@ module PublicApi
       scope.where(project_id: @project_id)
     end
 
-    # Select only ideas that have all the topics
+    # Select only ideas that have all the input topics
     def filter_by_topic_ids(scope)
       return scope unless @topic_ids
 
       scope
-        .joins(:topics)
-        .where(topics: { id: @topic_ids })
+        .joins(:input_topics)
+        .where(input_topics: { id: @topic_ids })
         .group('ideas.id')
-        .having('COUNT(topics.id) = ?', @topic_ids.size)
+        .having('COUNT(input_topics.id) = ?', @topic_ids.size)
     end
 
     def filter_by_type(scope)

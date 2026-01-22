@@ -128,7 +128,7 @@ module Analysis
     end
 
     def filtered_inputs
-      @filtered_inputs ||= InputsFinder.new(analysis, task.filters.symbolize_keys).execute.includes(:topics)
+      @filtered_inputs ||= InputsFinder.new(analysis, task.filters.symbolize_keys).execute.includes(:input_topics)
     end
 
     def find_or_create_tagging!(input_id:, tag_id:)

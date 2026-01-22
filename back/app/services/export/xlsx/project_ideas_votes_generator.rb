@@ -19,7 +19,7 @@ module Export
 
       def generate_phase_ideas_votes_sheet(workbook, sheet_name, phase)
         url_service = Frontend::UrlService.new
-        ideas = phase.ideas.includes(:author, :idea_status, :topics, :idea_files, :attached_files, :project, :ideas_phases, [baskets_ideas: :basket])
+        ideas = phase.ideas.includes(:author, :idea_status, :input_topics, :idea_files, :attached_files, :project, :ideas_phases, [baskets_ideas: :basket])
         t_scope = 'xlsx_export.column_headers'
         utils = Utils.new
 
@@ -40,7 +40,7 @@ module Export
         columns += [
           { header: I18n.t('input_url', scope: t_scope),       f: ->(i) { url_service.model_to_url(i) }, skip_sanitization: true },
           { header: I18n.t('attachments', scope: t_scope),     f: ->(i) { get_attachments_urls.call(i).join("\n") }, skip_sanitization: true, width: 2 },
-          { header: I18n.t('tags', scope: t_scope),            f: ->(i) { i.topics.map { |t| multiloc_service.t(t.title_multiloc) }.join(',') }, skip_sanitization: true },
+          { header: I18n.t('tags', scope: t_scope),            f: ->(i) { i.input_topics.map { |t| multiloc_service.t(t.title_multiloc) }.join(',') }, skip_sanitization: true },
           { header: I18n.t('latitude', scope: t_scope),        f: ->(i) { i.location_point&.coordinates&.last }, skip_sanitization: true },
           { header: I18n.t('longitude', scope: t_scope),       f: ->(i) { i.location_point&.coordinates&.first }, skip_sanitization: true },
           { header: I18n.t('location', scope: t_scope),        f: ->(i) { i.location_description } },

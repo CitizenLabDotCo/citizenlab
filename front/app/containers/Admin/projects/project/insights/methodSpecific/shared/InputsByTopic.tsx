@@ -2,8 +2,8 @@ import React, { useMemo, ReactNode } from 'react';
 
 import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
-import useTopics from 'api/topics/useTopics';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -49,12 +49,12 @@ const InputsByTopic = ({ phaseId }: Props) => {
       phase: phaseId,
     });
 
-  const { data: topics, isLoading: isLoadingTopics } = useTopics();
+  const { data: topics, isLoading: isLoadingTopics } = useGlobalTopics();
 
   const topicData = useMemo((): HorizontalBarRowData[] => {
     if (!filterCounts || !topics) return [];
 
-    const countsByTopicId = filterCounts.data.attributes.topic_id;
+    const countsByTopicId = filterCounts.data.attributes.input_topic_id;
     const totalIdeas = filterCounts.data.attributes.total;
 
     return topics.data

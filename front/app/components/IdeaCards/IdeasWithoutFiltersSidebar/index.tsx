@@ -241,7 +241,7 @@ const IdeasWithoutFiltersSidebar = ({
                 {topicsEnabled && !isNilOrError(project) && projectId && (
                   <TopicFilterDropdown
                     projectId={projectId}
-                    selectedTopicIds={ideaQueryParameters.topics ?? []}
+                    selectedTopicIds={ideaQueryParameters.input_topics ?? []}
                     onChange={handleTopicsOnChange}
                     alignment={smallerThanTablet ? 'right' : 'left'}
                   />

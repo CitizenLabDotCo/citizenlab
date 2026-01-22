@@ -7,7 +7,14 @@ module MultiTenancy
     class Topics < Base
       def run
         3.times do
-          Topic.create!({
+          GlobalTopic.create!({
+            title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.word },
+            description_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence }
+          })
+        end
+
+        5.times do
+          DefaultInputTopic.create!({
             title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.word },
             description_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence }
           })

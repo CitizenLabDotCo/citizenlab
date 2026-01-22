@@ -2,14 +2,14 @@ import React from 'react';
 
 import { useDrop } from 'react-dnd';
 
-import { ITopicData } from 'api/topics/types';
+import { IInputTopicData } from 'api/input_topics/types';
 
 import T from 'components/T';
 
 import FilterRadioButton from '../FilterRadioButton';
 
 interface Props {
-  topic: ITopicData;
+  topic: IInputTopicData;
   active: boolean;
   onClick: any;
   name: string;

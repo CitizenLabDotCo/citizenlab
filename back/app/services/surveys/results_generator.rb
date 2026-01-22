@@ -233,7 +233,7 @@ module Surveys
 
       field.ordered_transformed_options.each_with_object({}) do |option, accu|
         option_detail = { title_multiloc: option.title_multiloc }
-        option_detail[:image] = option.image&.image&.versions&.transform_values(&:url) if field.support_option_images?
+        option_detail[:image] = option.image&.image&.versions&.transform_values(&:url) if field.supports_option_images?
         accu[option.key] = option_detail
       end
     end

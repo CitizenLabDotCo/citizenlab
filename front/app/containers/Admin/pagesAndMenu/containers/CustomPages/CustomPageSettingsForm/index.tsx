@@ -17,8 +17,8 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IAreaData } from 'api/areas/types';
 import useAreas from 'api/areas/useAreas';
 import { ProjectsFilterTypes } from 'api/custom_pages/types';
-import { ITopicData } from 'api/topics/types';
-import useTopics from 'api/topics/useTopics';
+import { IGlobalTopicData } from 'api/global_topics/types';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -101,7 +101,7 @@ const CustomPageSettingsForm = ({
   const { data: appConfig } = useAppConfiguration();
   const locale = useLocale();
   const configuredLocales = useAppConfigurationLocales();
-  const { data: topics } = useTopics();
+  const { data: topics } = useGlobalTopics();
   const { formatMessage } = useIntl();
 
   const hasMultipleConfiguredLocales = !isNilOrError(configuredLocales)
@@ -170,7 +170,9 @@ const CustomPageSettingsForm = ({
     }
   };
 
-  const mapFilterEntityToOptions = (input: IAreaData[] | ITopicData[]) => {
+  const mapFilterEntityToOptions = (
+    input: IAreaData[] | IGlobalTopicData[]
+  ) => {
     return input.map((entity) => {
       return {
         value: entity.id,
