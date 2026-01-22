@@ -63,9 +63,6 @@ module Insights
       completion_rate_last_7_days = completion_rate(ideas_last_7_days_count, submitted_last_7_days_count)
       completion_rate_previous_7_days = completion_rate(ideas_previous_7_days_count, submitted_previous_7_days_count)
 
-      # puts "Last 7 days - Ideas: #{ideas_last_7_days_count}, Submitted: #{submitted_last_7_days_count}, Completion Rate: #{completion_rate_last_7_days}"
-      # puts "Previous 7 days - Ideas: #{ideas_previous_7_days_count}, Submitted: #{submitted_previous_7_days_count}, Completion Rate: #{completion_rate_previous_7_days}"
-
       result[:surveys_submitted_7_day_change] = percentage_change(submitted_previous_7_days_count, submitted_last_7_days_count)
       result[:completion_rate_7_day_change] = percentage_change(completion_rate_previous_7_days, completion_rate_last_7_days)
 
