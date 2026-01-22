@@ -104,7 +104,6 @@ describe('Ideation permitted by: everyone', () => {
       inForm();
 
       // Skip to demographic question page
-      cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
       cy.wait(1000);
       cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
@@ -177,8 +176,6 @@ describe('Ideation permitted by: everyone', () => {
         // Go to the next page of the idea form
         cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
-        // TODO anonymous and next page
-
         // Confirm we are on demographic question page
         cy.get('form').contains(fieldName);
 
@@ -197,6 +194,33 @@ describe('Ideation permitted by: everyone', () => {
       });
     });
 
-    describe('Anonymous user', () => {});
+    describe('Anonymous user', () => {
+      it('does not store custom fields in profile', () => {
+        inForm();
+
+        // Go to the next page of the idea form
+        cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+        // Confirm we are on demographic question page
+        cy.get('form').contains(fieldName);
+
+        // Fill in demographic question
+        answer = randomString(10);
+        cy.get('form').find('input').first().type(answer);
+
+        // set to anonymous
+        cy.get('[data-testid="e2e-post-idea-anonymously-checkbox"]').click();
+        cy.get('#e2e-continue-anonymous-participation-btn').click();
+
+        // Intercept submit request
+        cy.intercept('POST', '/web_api/v1/ideas').as('submitIdea');
+
+        // Submit survey
+        cy.dataCy('e2e-submit-form').click();
+        cy.wait('@submitIdea');
+
+        confirmSavedToProfile(undefined);
+      });
+    });
   });
 });
