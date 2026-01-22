@@ -140,12 +140,11 @@ namespace :single_use do
 
             puts "⚡ Merging #{sorted_areas.size} areas into '#{target_name}':"
             puts "  ├─ KEEP: '#{area_to_keep.title_multiloc[default_locale]}' (ID: #{area_to_keep.id})"
-            areas_to_merge.each do |area|
-              puts "  ├─ MERGE: '#{area.title_multiloc[default_locale]}' (ID: #{area.id})"
-            end
 
             # Merge all associations from areas_to_merge to area_to_keep
             areas_to_merge.each do |area_to_merge|
+              puts "  ├─ MERGE: '#{area_to_merge.title_multiloc[default_locale]}' (ID: #{area_to_merge.id})"
+
               # Update projects associations
               AreasProject.where(area_id: area_to_merge.id).each do |areas_project|
                 # Check if association already exists
