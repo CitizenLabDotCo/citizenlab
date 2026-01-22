@@ -7,17 +7,12 @@ module Insights
       { posting_idea: participations_submitting_idea }
     end
 
-    def ideas_in_phase
-      @ideas_in_phase ||= begin
-        end_time = @phase.end_at ? @phase.end_at.end_of_day : Time.current.end_of_day
-        @phase.ideas
-          .transitive(false)
-          .where(created_at: @phase.start_at.beginning_of_day..end_time)
-      end
+    def phase_ideas
+      @phase_ideas ||= @phase.ideas.transitive(false)
     end
 
     def participations_submitting_idea
-      ideas_in_phase.map do |idea|
+      phase_ideas.published.map do |idea|
         {
           item_id: idea.id,
           action: 'posting_idea',
@@ -31,7 +26,7 @@ module Insights
     end
 
     def phase_participation_method_metrics(participations)
-      posted_ideas_count = participations[:posting_idea].count
+      posted_ideas_count = phase_ideas.count
       submitted_survey_participations = participations[:posting_idea].select { |p| p[:survey_submitted_at].present? }
       total_submitted_surveys = submitted_survey_participations.count
       completion_rate = completion_rate(posted_ideas_count, total_submitted_surveys)
@@ -59,8 +54,8 @@ module Insights
 
       return result unless phase_has_run_more_than_14_days?
 
-      ideas_last_7_days_count = ideas_in_phase.where(created_at: 7.days.ago..).count
-      ideas_previous_7_days_count = ideas_in_phase.where(created_at: 14.days.ago...7.days.ago).count
+      ideas_last_7_days_count = phase_ideas.where(created_at: 7.days.ago..).count
+      ideas_previous_7_days_count = phase_ideas.where(created_at: 14.days.ago...7.days.ago).count
 
       submitted_survey_participations = participations[:posting_idea].select { |p| p[:survey_submitted_at].present? }
 
