@@ -34,7 +34,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
 
       expect(participations_submitting_idea).to contain_exactly({
         item_id: idea1.id,
-        action: 'posting_idea',
+        action: 'submitting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
         survey_submitted_at: idea1.submitted_at,
@@ -42,7 +42,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
         user_custom_field_values: {}
       }, {
         item_id: idea2.id,
-        action: 'posting_idea',
+        action: 'submitting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
         survey_submitted_at: idea2.submitted_at,
@@ -50,7 +50,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
         user_custom_field_values: {}
       }, {
         item_id: idea3.id,
-        action: 'posting_idea',
+        action: 'submitting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
         survey_submitted_at: idea3.submitted_at,
@@ -58,7 +58,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
         user_custom_field_values: {}
       }, {
         item_id: idea4.id,
-        action: 'posting_idea',
+        action: 'submitting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
         survey_submitted_at: idea4.submitted_at,
@@ -66,7 +66,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
         user_custom_field_values: {}
       }, {
         item_id: idea6.id,
-        action: 'posting_idea',
+        action: 'submitting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
         survey_submitted_at: idea6.submitted_at,
@@ -74,7 +74,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
         user_custom_field_values: {}
       }, {
         item_id: idea7.id,
-        action: 'posting_idea',
+        action: 'submitting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
         survey_submitted_at: idea7.submitted_at,
@@ -116,10 +116,10 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
       participations = service.send(:phase_participations)
 
       expect(participations).to eq({
-        posting_idea: service.send(:participations_submitting_idea)
+        submitting_idea: service.send(:participations_submitting_idea)
       })
 
-      expect(participations[:posting_idea].map { |p| p[:item_id] }).to contain_exactly(idea1.id, idea2.id, idea3.id, idea4.id, idea6.id, idea7.id)
+      expect(participations[:submitting_idea].map { |p| p[:item_id] }).to contain_exactly(idea1.id, idea2.id, idea3.id, idea4.id, idea6.id, idea7.id)
     end
   end
 

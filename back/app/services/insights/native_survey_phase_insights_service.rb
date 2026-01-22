@@ -4,7 +4,7 @@ module Insights
 
     def phase_participations
       # Events are not associated with phase, so attending_event not included at phase-level.
-      { posting_idea: participations_submitting_idea }
+      { submitting_idea: participations_submitting_idea }
     end
 
     def phase_ideas
@@ -15,7 +15,7 @@ module Insights
       phase_ideas.published.map do |idea|
         {
           item_id: idea.id,
-          action: 'posting_idea',
+          action: 'submitting_idea',
           acted_at: idea.created_at,
           classname: 'Idea',
           survey_submitted_at: idea&.submitted_at,
@@ -27,7 +27,7 @@ module Insights
 
     def phase_participation_method_metrics(participations)
       posted_ideas_count = phase_ideas.count
-      submitted_survey_participations = participations[:posting_idea].select { |p| p[:survey_submitted_at].present? }
+      submitted_survey_participations = participations[:submitting_idea].select { |p| p[:survey_submitted_at].present? }
       total_submitted_surveys = submitted_survey_participations.count
       completion_rate = completion_rate(posted_ideas_count, total_submitted_surveys)
       rolling_7_day_changes = rolling_7_day_changes(participations)
@@ -57,7 +57,7 @@ module Insights
       ideas_last_7_days_count = phase_ideas.where(created_at: 7.days.ago..).count
       ideas_previous_7_days_count = phase_ideas.where(created_at: 14.days.ago...7.days.ago).count
 
-      submitted_survey_participations = participations[:posting_idea].select { |p| p[:survey_submitted_at].present? }
+      submitted_survey_participations = participations[:submitting_idea].select { |p| p[:survey_submitted_at].present? }
 
       submitted_last_7_days_count = submitted_survey_participations.count { |p| p[:survey_submitted_at] >= 7.days.ago }
       submitted_previous_7_days_count = submitted_survey_participations.count do |p|
