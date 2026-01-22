@@ -141,7 +141,8 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
       >
         {displayedIdeas?.map((idea, index) => {
           const topicIds =
-            idea.relationships.topics?.data.map((topic) => topic.id) || [];
+            idea.relationships.input_topics?.data.map((topic) => topic.id) ||
+            [];
           const topicBackgroundColor = getTopicColor(topicIds[0]);
 
           return (

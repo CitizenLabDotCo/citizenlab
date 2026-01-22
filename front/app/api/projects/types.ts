@@ -129,7 +129,7 @@ export interface IProjectData {
     avatars?: {
       data?: IRelationship[];
     };
-    topics: {
+    global_topics: {
       data: IRelationship[];
     };
     current_phase?: {
@@ -201,7 +201,7 @@ export interface IUpdatedProjectProperties {
   ideas_order?: IdeaSortMethod;
   input_term?: InputTerm;
   slug?: string;
-  topic_ids?: string[];
+  global_topic_ids?: string[];
   include_all_areas?: boolean;
   folder_id?: string | null;
   listed?: boolean;

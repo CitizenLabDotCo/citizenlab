@@ -3,8 +3,8 @@ import React from 'react';
 import { Box, Title, Accordion } from '@citizenlab/cl2-component-library';
 
 import useAreas from 'api/areas/useAreas';
-import useAuthUser from 'api/me/useAuthUser';
 import useGlobalTopics from 'api/global_topics/useGlobalTopics';
+import useAuthUser from 'api/me/useAuthUser';
 import { OnboardingType } from 'api/users/types';
 
 import Areas from 'components/Areas';

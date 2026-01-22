@@ -88,7 +88,7 @@ const ProjectAndFolderCards = ({
     publicationStatusFilter: getPublicationStatuses(currentTab),
     rootLevelOnly,
     removeNotAllowedParents: true,
-    topicIds,
+    globalTopicIds: topicIds,
     areaIds,
     search,
     include_publications: true,

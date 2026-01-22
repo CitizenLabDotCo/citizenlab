@@ -4,8 +4,8 @@ import { CLErrorsWrapper } from 'typings';
 import adminPublicationsKeys from 'api/admin_publications/keys';
 import adminPublicationsStatusCountsKeys from 'api/admin_publications_status_counts/keys';
 import areasKeys from 'api/areas/keys';
-import meKeys from 'api/me/keys';
 import globalTopicsKeys from 'api/global_topics/keys';
+import meKeys from 'api/me/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 

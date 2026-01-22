@@ -379,20 +379,20 @@ describe ParticipantsService do
     end
   end
 
-  describe 'topics_participants' do
-    it 'returns participants of given topics' do
-      t1, t2, t3 = create_list(:topic, 3)
-      project = create(:project, allowed_input_topics: [t1, t2, t3])
+  describe 'input_topics_participants' do
+    it 'returns participants of given input topics' do
+      t1, t2, t3 = create_list(:input_topic, 3)
+      project = create(:project, input_topics: [t1, t2, t3])
       participants = create_list(:user, 3)
       pp1, pp2, pp3 = participants
       others = create_list(:user, 3)
-      i1 = create(:idea, topics: [t1], author: pp1, project: project)
-      create(:idea, topics: [t2, t3], author: pp2, project: project)
-      create(:idea, topics: [t3], author: pp1, project: project)
-      create(:idea, topics: [], author: others.first, project: project)
+      i1 = create(:idea, input_topics: [t1], author: pp1, project: project)
+      create(:idea, input_topics: [t2, t3], author: pp2, project: project)
+      create(:idea, input_topics: [t3], author: pp1, project: project)
+      create(:idea, input_topics: [], author: others.first, project: project)
       create(:comment, idea: i1, author: pp3)
 
-      expect(service.topics_participants([t1, t2]).map(&:id)).to match_array participants.map(&:id)
+      expect(service.input_topics_participants([t1, t2]).map(&:id)).to match_array participants.map(&:id)
     end
   end
 

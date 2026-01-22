@@ -13,7 +13,7 @@ module IdeaFeed
     # few days) to update the topics. It tries to keep the topics stable to some
     # extent, but also reshuffles them if needed.
     def rebalance_topics!
-      old_topics = @phase.project.allowed_input_topics
+      old_topics = @phase.project.input_topics
 
       # Run the topic model from scratch on the current set of inputs
       new_topics = run_topic_model
@@ -149,8 +149,8 @@ module IdeaFeed
 
         old_integer_id = old_topic_id.match(/^OLD-(\d+)$/)[1].to_i
         new_integer_id = v['new_topic_id'].match(/^NEW-(\d+)$/)[1].to_i
-        old_topic = old_topics[old_integer_id]
-        new_topic = new_topics[new_integer_id]
+        old_topic = old_topics[old_integer_id - 1]
+        new_topic = new_topics[new_integer_id - 1]
 
         new_title_multiloc = v['adjusted_topic_title_multiloc'] || new_topic['title_multiloc']
         new_description_multiloc = v['adjusted_topic_description_multiloc'] || new_topic['description_multiloc']
@@ -174,18 +174,16 @@ module IdeaFeed
     def create_new_topics!(mapping, new_topics)
       creation_log = []
       new_topics
-        .reject { |new_topic| in_count(mapping, "NEW-#{new_topics.index(new_topic)}") == 1 }
+        .reject { |new_topic| in_count(mapping, "NEW-#{new_topics.index(new_topic) + 1}") == 1 }
         .each do |new_topic|
-          GlobalTopic.transaction do
-            topic = GlobalTopic.create!(
+          InputTopic.transaction do
+            topic = InputTopic.create!(
+              project: @phase.project,
               title_multiloc: new_topic['title_multiloc'],
               description_multiloc: new_topic['description_multiloc']
             )
-            ProjectsAllowedInputTopic.create!(
-              project: @phase.project,
-              topic:
-            )
-            SideFxGlobalTopicService.new.after_create(topic, nil)
+
+            SideFxInputTopicService.new.after_create(topic, nil)
             creation_log << {
               topic_id: topic.id,
               title_multiloc: new_topic['title_multiloc'],
@@ -198,16 +196,14 @@ module IdeaFeed
 
     def remove_obsolete_topics!(mapping, old_topics)
       removal_log = []
+
       obsolete_old_topic_ids = mapping
         .filter { |_, v| v['new_topic_id'].blank? || in_count(mapping, v['new_topic_id']) != 1 }
         .keys
-      obsolete_old_topic_ids.each do |old_topic_id|
+      obsolete_old_topic_ids.uniq.each do |old_topic_id|
         old_integer_id = old_topic_id.match(/^OLD-(\d+)$/)[1].to_i
-        old_topic = old_topics[old_integer_id]
-        GlobalTopic.transaction do
-          IdeasTopic.where(topic: old_topic, idea: @phase.project.ideas.published).destroy_all
-          ProjectsAllowedInputTopic.where(project: @phase.project, topic: old_topic).destroy_all
-        end
+        old_topic = old_topics[old_integer_id - 1]
+        old_topic.destroy!
         removal_log << {
           topic_id: old_topic.id
         }

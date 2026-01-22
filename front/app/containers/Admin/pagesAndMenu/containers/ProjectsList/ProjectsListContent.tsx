@@ -33,7 +33,7 @@ const ProjectsListContent = ({ customPage }: Props) => {
   // Comment reference to find it easily: 881dd218.
 
   const { data } = useAdminPublications({
-    topicIds,
+    globalTopicIds: topicIds,
     areaIds,
     publicationStatusFilter: ['published', 'archived'],
     onlyProjects: true,

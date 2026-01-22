@@ -26,12 +26,12 @@ resource 'Idea feed ideas' do
     end
 
     describe 'filtering by topic' do
-      let(:topic) { create(:topic) }
+      let(:topic) { create(:input_topic, project: phase.project) }
       let(:topics) { [topic.id] }
-      let!(:idea_with_topic) { create(:idea, project: phase.project, phases: [phase], topics: [topic]) }
+      let!(:idea_with_topic) { create(:idea, project: phase.project, phases: [phase], input_topics: [topic]) }
 
       before do
-        phase.project.allowed_input_topics << topic
+        phase.project.input_topics << topic
       end
 
       example_request 'List ideas filtered by topic' do

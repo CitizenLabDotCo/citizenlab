@@ -36,7 +36,7 @@ interface QueryParameters {
   // filters
   search?: string;
   sort: IdeaSortMethod;
-  topics?: string[];
+  input_topics?: string[];
   idea_status?: string;
 }
 
@@ -59,7 +59,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       phase: phase.id,
       sort: sortParam ?? phase.attributes.ideas_order ?? IdeaSortMethodFallback,
       search: searchParam ?? undefined,
-      topics: topicsParam ? JSON.parse(topicsParam) : undefined,
+      input_topics: topicsParam ? JSON.parse(topicsParam) : undefined,
       idea_status: ideaStatusParam ?? undefined,
     }),
     [
