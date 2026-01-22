@@ -38,7 +38,7 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
       project = create(:project)
       area_graauw.projects << project
       area_paal.projects << project
-      
+
       user1 = create(:user, custom_field_values: { 'domicile' => area_paal.id })
       user2 = create(:user, custom_field_values: { 'domicile' => area_zandberg.id })
 
@@ -51,7 +51,7 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
       # Graauw keeps its ID, Paal and Zandberg are deleted
       expect(Area.count).to eq(initial_area_count - 2)
       expect(domicile_field.options.count).to eq(initial_option_count - 2)
-      
+
       # Graauw should exist and have the updated name
       expect { area_graauw.reload }.not_to raise_error
       expect(area_graauw.title_multiloc['en']).to eq('Graauw')
@@ -77,7 +77,7 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
 
       # Kloosterzande exists, Kruispolderhaven and Kruisdorp merged into it
       expect(Area.count).to eq(initial_count - 5) # Paal, Zandberg, Kruispolderhaven, Kruisdorp, and 3 Ossenisse merges
-      
+
       area_kloosterzande.reload
       expect(area_kloosterzande.title_multiloc['en']).to eq('Kloosterzande')
       expect { area_kruispolderhaven.reload }.to raise_error(ActiveRecord::RecordNotFound)
@@ -100,7 +100,7 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
       Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, csv_path)
 
       area_graauw.reload
-      
+
       # Should have 3 unique followers (user1, user2, user3)
       expect(area_graauw.followers.count).to eq(3)
       expect(area_graauw.followers.pluck(:user_id)).to contain_exactly(user1.id, user2.id, user3.id)
@@ -109,14 +109,14 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
 
     it 'handles static page associations during merge' do
       static_page = create(:static_page)
-      
+
       create(:areas_static_page, area: area_ossenisse, static_page: static_page)
       create(:areas_static_page, area: area_zeedorp, static_page: static_page)
 
       Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, csv_path)
 
       area_ossenisse.reload
-      
+
       # Should have one static page association (duplicates removed)
       expect(area_ossenisse.static_pages).to include(static_page)
       expect(AreasStaticPage.where(area_id: area_ossenisse.id, static_page_id: static_page.id).count).to eq(1)
@@ -125,18 +125,18 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
     it 'handles project associations during merge and removes duplicates' do
       project1 = create(:project)
       project2 = create(:project)
-      
+
       # Both areas in project1 (should result in one association)
       create(:areas_project, area: area_ossenisse, project: project1)
       create(:areas_project, area: area_zeedorp, project: project1)
-      
+
       # Only Zeedorp in project2
       create(:areas_project, area: area_zeedorp, project: project2)
 
       Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, csv_path)
 
       area_ossenisse.reload
-      
+
       # Should have both projects, no duplicates
       expect(area_ossenisse.projects).to contain_exactly(project1, project2)
       expect(AreasProject.where(area_id: area_ossenisse.id).count).to eq(2)
@@ -152,19 +152,19 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
       # The kept option should maintain its ordering
       expect(kept_option.reload.ordering).to eq(original_ordering)
       expect(kept_option.title_multiloc['en']).to eq('Graauw')
-      
+
       # Verify custom field options are in sync with areas
       domicile_field.reload
       area_ids = Area.order(:ordering).pluck(:custom_field_option_id)
       option_ids = domicile_field.options.order(:ordering).pluck(:id)
-      
+
       # All area custom_field_option_ids should be in the domicile field options
       expect(option_ids).to include(*area_ids.compact)
     end
 
     it 'handles case-insensitive matching' do
       area_uppercase = create(:area, title_multiloc: { 'en' => 'HULST' })
-      
+
       Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, csv_path)
 
       # Should match case-insensitively
@@ -188,7 +188,7 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
       # Create an invalid state that will cause an error
       allow_any_instance_of(Area).to receive(:save).and_raise(StandardError.new('Test error'))
 
-      initial_area_count = Area.count
+      _initial_area_count = Area.count
       initial_option_count = domicile_field.options.count
 
       expect do
@@ -196,7 +196,7 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
       end.to raise_error(StandardError)
 
       # Everything should be rolled back
-      expect(Area.count).to eq(initial_area_count)
+      expect(Area.count).to eq(_initial_area_count)
       expect(domicile_field.options.count).to eq(initial_option_count)
     end
   end
@@ -208,12 +208,12 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
     let!(:area_paal) { create(:area, title_multiloc: { 'en' => 'Paal' }) }
 
     it 'still updates areas without custom field options' do
-      initial_count = Area.count
+      _initial_count = Area.count
 
       Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, csv_path)
 
       # Paal should be merged into Graauw
-      expect(Area.count).to eq(initial_count - 1)
+      expect(Area.count).to eq(_initial_count - 1)
       expect { area_graauw.reload }.not_to raise_error
       expect(area_graauw.title_multiloc['en']).to eq('Graauw')
       expect { area_paal.reload }.to raise_error(ActiveRecord::RecordNotFound)

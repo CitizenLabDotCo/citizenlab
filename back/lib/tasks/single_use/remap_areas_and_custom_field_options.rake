@@ -6,7 +6,7 @@ namespace :single_use do
   desc 'Remap areas and their corresponding custom field options based on CSV mapping file'
   # Usage:
   # rails "single_use:remap_areas_and_custom_field_options[doemee.inulst,/path/to/mapping.csv]"
-  # 
+  #
   # CSV file should have two columns: OLD and NEW
   # OLD column contains the current area names
   # NEW column contains the target area names to map to
@@ -36,7 +36,7 @@ namespace :single_use do
     tenant.switch do
       # Read CSV file
       csv = CSV.read(args[:csv_path], headers: true)
-      
+
       # Validate CSV format
       unless csv.headers.include?('OLD') && csv.headers.include?('NEW')
         raise 'CSV must have OLD and NEW columns'
@@ -47,9 +47,9 @@ namespace :single_use do
       csv.each do |row|
         old_name = row['OLD']&.strip
         new_name = row['NEW']&.strip
-        
+
         next if old_name.blank? || new_name.blank?
-        
+
         mapping[old_name] = new_name
       end
 
@@ -59,17 +59,17 @@ namespace :single_use do
 
       # Get domicile custom field if it exists
       domicile_field = CustomField.find_by(key: 'domicile')
-      
+
       if domicile_field
         puts "✓ Found domicile custom field with #{domicile_field.options.count} options"
       else
-        puts "⚠ No domicile custom field found - only areas will be updated"
+        puts '⚠ No domicile custom field found - only areas will be updated'
       end
       puts '-' * 80
 
       # Group mappings by target name to find merges
       target_groups = mapping.group_by { |_old, new| new }
-      
+
       # Track statistics
       stats = {
         areas_renamed: 0,
@@ -82,7 +82,7 @@ namespace :single_use do
       ActiveRecord::Base.transaction do
         target_groups.each do |target_name, old_new_pairs|
           old_names = old_new_pairs.map(&:first)
-          
+
           # Find all areas with the old names (case-insensitive match on default locale)
           default_locale = I18n.default_locale.to_s
           matching_areas = Area.all.select do |area|
@@ -102,7 +102,7 @@ namespace :single_use do
             # Simple rename - just one area to update
             area = matching_areas.first
             old_name_display = area.title_multiloc[default_locale]
-            
+
             # Skip if already has the target name
             if area.title_multiloc[default_locale]&.strip&.casecmp?(target_name)
               puts "→ '#{old_name_display}' already has target name '#{target_name}' - skipping"
@@ -111,16 +111,16 @@ namespace :single_use do
 
             # Update area title
             new_title_multiloc = area.title_multiloc.dup
-            area.title_multiloc.keys.each do |locale|
+            area.title_multiloc.each_key do |locale|
               new_title_multiloc[locale] = target_name
             end
-            
+
             area.title_multiloc = new_title_multiloc
-            
+
             if area.save
               stats[:areas_renamed] += 1
               puts "✓ Renamed area: '#{old_name_display}' → '#{target_name}' (ID: #{area.id})"
-              
+
               # Custom field option is automatically updated via Area's after_update callback
               if area.custom_field_option
                 stats[:options_updated] += 1
@@ -137,8 +137,7 @@ namespace :single_use do
             sorted_areas = matching_areas.sort_by { |a| a.title_multiloc[default_locale] || '' }
             area_to_keep = sorted_areas.first
             areas_to_merge = sorted_areas[1..]
-            
-            old_name_display = area_to_keep.title_multiloc[default_locale]
+
             puts "⚡ Merging #{sorted_areas.size} areas into '#{target_name}':"
             puts "  ├─ KEEP: '#{area_to_keep.title_multiloc[default_locale]}' (ID: #{area_to_keep.id})"
             areas_to_merge.each do |area|
@@ -202,16 +201,16 @@ namespace :single_use do
 
             # Now update the kept area's name
             new_title_multiloc = area_to_keep.title_multiloc.dup
-            area_to_keep.title_multiloc.keys.each do |locale|
+            area_to_keep.title_multiloc.each_key do |locale|
               new_title_multiloc[locale] = target_name
             end
-            
+
             area_to_keep.title_multiloc = new_title_multiloc
-            
+
             if area_to_keep.save
               stats[:areas_renamed] += 1
               puts "  └─ ✓ Renamed kept area to '#{target_name}'"
-              
+
               # Custom field option is automatically updated via Area's after_update callback
               if area_to_keep.custom_field_option
                 stats[:options_updated] += 1
