@@ -42,7 +42,7 @@ resource 'Ideas' do
   # 3. The user is logged in and the survey has exactly 1 page.
   #   In this case, the survey is submitted in one POST request and published immediately at
   #   after filling out the first page.
-  # 
+  #
   # In this POST block, we are going to focus on 1 and 3. Below, we will tackle 2
   post 'web_api/v1/ideas' do
     context 'when visitor and permitted_by is everyone' do
@@ -78,7 +78,7 @@ resource 'Ideas' do
           permitted_by: 'users',
           user_fields_in_form: false
         )
-        @user = create(:user, custom_field_values: { @user_select_field.key => 'option1' } )
+        @user = create(:user, custom_field_values: { @user_select_field.key => 'option1' })
         header_token_for @user
       end
 
@@ -94,7 +94,7 @@ resource 'Ideas' do
             idea: {
               publication_status: 'published',
               project_id: @project.id,
-              @custom_field.key => 'option2',
+              @custom_field.key => 'option2'
             }
           })
 
@@ -121,7 +121,7 @@ resource 'Ideas' do
             idea: {
               publication_status: 'published',
               project_id: @project.id,
-              @custom_field.key => 'option2',
+              @custom_field.key => 'option2'
             }
           })
 
@@ -132,7 +132,7 @@ resource 'Ideas' do
             @custom_field.key => 'option2',
             'u_user_select_field' => 'option1'
           })
-          expect(idea.author_id).to be(nil)
+          expect(idea.author_id).to be_nil
         end
       end
 
@@ -148,7 +148,7 @@ resource 'Ideas' do
             idea: {
               publication_status: 'published',
               project_id: @project.id,
-              @custom_field.key => 'option2',
+              @custom_field.key => 'option2'
             }
           })
 
@@ -158,7 +158,7 @@ resource 'Ideas' do
           expect(idea.custom_field_values).to eq({
             @custom_field.key => 'option2'
           })
-          expect(idea.author_id).to be(nil)
+          expect(idea.author_id).to be_nil
         end
       end
     end
@@ -182,7 +182,7 @@ resource 'Ideas' do
           )
         end
 
-        let(:idea) do 
+        let(:idea) do
           create(
             :idea,
             author: @user,
@@ -196,12 +196,12 @@ resource 'Ideas' do
         let(:id) { idea.id }
 
         it 'updates the user profile with the provided custom field values and author_id' do
-          idea = create(:idea, custom_field_values: { @custom_field.key => 'option2' })
+          create(:idea, custom_field_values: { @custom_field.key => 'option2' })
           do_request({
             idea: {
               publication_status: 'published',
               'u_user_select_field' => 'option1',
-              @custom_field.key => 'option2',
+              @custom_field.key => 'option2'
             }
           })
 
@@ -226,7 +226,7 @@ resource 'Ideas' do
           )
         end
 
-        let(:idea) do 
+        let(:idea) do
           create(
             :idea,
             author: @user,
@@ -240,12 +240,12 @@ resource 'Ideas' do
         let(:id) { idea.id }
 
         it 'updates the user profile with the provided custom field values but not author_id' do
-          idea = create(:idea, custom_field_values: { @custom_field.key => 'option2' })
+          create(:idea, custom_field_values: { @custom_field.key => 'option2' })
           do_request({
             idea: {
               publication_status: 'published',
               'u_user_select_field' => 'option1',
-              @custom_field.key => 'option2',
+              @custom_field.key => 'option2'
             }
           })
 
@@ -255,7 +255,7 @@ resource 'Ideas' do
             @custom_field.key => 'option2',
             'u_user_select_field' => 'option1'
           })
-          expect(idea.author_id).to be(nil)
+          expect(idea.author_id).to be_nil
           user = User.find(@user.id)
           expect(user.reload.custom_field_values).to eq({
             'user_select_field' => 'option1'
