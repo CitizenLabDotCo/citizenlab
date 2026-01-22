@@ -127,7 +127,7 @@ resource 'Phase insights' do
           { participants: 0, visitors: 1, date_group: '2025-11-17' },
           { participants: 1, visitors: 2, date_group: '2025-11-20' },
           { participants: 1, visitors: 1, date_group: '2025-11-27' },
-          { participants: 1, visitors: 0, date_group: '2025-11-30' },
+          { participants: 1, visitors: 0, date_group: '2025-11-30' }
         ]
       })
     end

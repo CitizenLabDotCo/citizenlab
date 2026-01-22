@@ -48,7 +48,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
         survey_submitted_at: idea2.submitted_at,
         participant_id: user1.id,
         user_custom_field_values: {}
-      } , {
+      }, {
         item_id: idea3.id,
         action: 'posting_idea',
         acted_at: a_kind_of(Time),
