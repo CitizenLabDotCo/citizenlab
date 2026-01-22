@@ -253,10 +253,10 @@ namespace :single_use do
           puts '✓ Migration completed successfully!'
         end
 
-        reporter.report_success('Area remapping completed')
+        reporter.add_processed_tenant(tenant)
       end
     rescue StandardError => e
-      reporter.report_failure(e)
+      reporter.add_error(e.message, context: { backtrace: e.backtrace.first(5) })
       puts "\n✗ Migration failed: #{e.message}"
       puts e.backtrace.first(5).join("\n")
       raise

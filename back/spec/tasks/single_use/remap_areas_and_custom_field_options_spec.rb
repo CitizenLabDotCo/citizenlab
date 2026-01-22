@@ -110,8 +110,8 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
     it 'handles static page associations during merge' do
       static_page = create(:static_page)
 
-      create(:areas_static_page, area: area_ossenisse, static_page: static_page)
-      create(:areas_static_page, area: area_zeedorp, static_page: static_page)
+      AreasStaticPage.create!(area: area_ossenisse, static_page: static_page)
+      AreasStaticPage.create!(area: area_zeedorp, static_page: static_page)
 
       Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, csv_path)
 
