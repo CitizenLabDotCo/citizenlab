@@ -49,8 +49,9 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
 
       # Should have merged Paal and Zandberg into Graauw
       # Graauw keeps its ID, Paal and Zandberg are deleted
-      expect(Area.count).to eq(initial_area_count - 2)
-      expect(domicile_field.options.count).to eq(initial_option_count - 2)
+      # Note: CSV also merges other areas, so total deletions are higher
+      expect(Area.count).to eq(initial_area_count - 7)
+      expect(domicile_field.options.count).to eq(initial_option_count - 7)
 
       # Graauw should exist and have the updated name
       expect { area_graauw.reload }.not_to raise_error
@@ -76,7 +77,7 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
       Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, csv_path)
 
       # Kloosterzande exists, Kruispolderhaven and Kruisdorp merged into it
-      expect(Area.count).to eq(initial_count - 5) # Paal, Zandberg, Kruispolderhaven, Kruisdorp, and 3 Ossenisse merges
+      expect(Area.count).to eq(initial_count - 7) # 2 into Graauw, 2 into Kloosterzande, 3 into Ossenisse
 
       area_kloosterzande.reload
       expect(area_kloosterzande.title_multiloc['en']).to eq('Kloosterzande')
@@ -115,11 +116,13 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
 
       Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, csv_path)
 
-      area_ossenisse.reload
+      # Kreverhille is kept (alphabetically first) and renamed to Ossenisse
+      area_kreverhille.reload
+      expect(area_kreverhille.title_multiloc['en']).to eq('Ossenisse')
 
       # Should have one static page association (duplicates removed)
-      expect(area_ossenisse.static_pages).to include(static_page)
-      expect(AreasStaticPage.where(area_id: area_ossenisse.id, static_page_id: static_page.id).count).to eq(1)
+      expect(area_kreverhille.static_pages).to include(static_page)
+      expect(AreasStaticPage.where(area_id: area_kreverhille.id, static_page_id: static_page.id).count).to eq(1)
     end
 
     it 'handles project associations during merge and removes duplicates' do
@@ -135,11 +138,13 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
 
       Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, csv_path)
 
-      area_ossenisse.reload
+      # Kreverhille is kept (alphabetically first) and renamed to Ossenisse
+      area_kreverhille.reload
+      expect(area_kreverhille.title_multiloc['en']).to eq('Ossenisse')
 
       # Should have both projects, no duplicates
-      expect(area_ossenisse.projects).to contain_exactly(project1, project2)
-      expect(AreasProject.where(area_id: area_ossenisse.id).count).to eq(2)
+      expect(area_kreverhille.projects).to contain_exactly(project1, project2)
+      expect(AreasProject.where(area_id: area_kreverhille.id).count).to eq(2)
     end
 
     it 'updates custom field options ordering correctly' do
@@ -173,15 +178,16 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
     end
 
     it 'preserves multiloc values across all locales' do
-      area_multiloc = create(:area, title_multiloc: { 'en' => 'Hulst', 'nl-NL' => 'Hulst Nederlands', 'fr-FR' => 'Hulst Français' })
+      # Use Sint Jansteen which maps to itself, not Hulst which would cause a merge
+      area_multiloc = create(:area, title_multiloc: { 'en' => 'Sint Jansteen', 'nl-NL' => 'Sint Jansteen Nederlands', 'fr-FR' => 'Sint Jansteen Français' })
 
       Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, csv_path)
 
       area_multiloc.reload
       # All locales should be updated to the new name
-      expect(area_multiloc.title_multiloc['en']).to eq('Hulst')
-      expect(area_multiloc.title_multiloc['nl-NL']).to eq('Hulst')
-      expect(area_multiloc.title_multiloc['fr-FR']).to eq('Hulst')
+      expect(area_multiloc.title_multiloc['en']).to eq('Sint Jansteen')
+      expect(area_multiloc.title_multiloc['nl-NL']).to eq('Sint Jansteen')
+      expect(area_multiloc.title_multiloc['fr-FR']).to eq('Sint Jansteen')
     end
 
     it 'uses a database transaction that rolls back on error' do
