@@ -1,6 +1,7 @@
 import moment = require('moment');
 import { randomString, randomEmail } from '../../support/commands';
-import { updatePermission } from '../../support/permissions';
+import { updatePermission } from '../../support/permitted_by_utils';
+import { fillOutTitleAndBody } from './_utils';
 
 describe('Ideation permitted by: users', () => {
   let customFieldId = '';
@@ -110,19 +111,56 @@ describe('Ideation permitted by: users', () => {
     }
   });
 
+  const inRegFlow = () => {
+    cy.visit(`/projects/${projectSlug}`);
+
+    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+
+    // Modal should show demographic question
+    cy.get('#e2e-authentication-modal').contains(fieldName);
+
+    // Fill in demographic question
+    answer = randomString(10);
+    cy.get('#e2e-authentication-modal').find('input').first().type(answer);
+
+    // Click submit and 'continue'
+    cy.get('#e2e-signup-custom-fields-submit-btn').click();
+    cy.get('#e2e-success-continue-button').click();
+
+    const title = randomString(11);
+    const body = randomString(40);
+
+    fillOutTitleAndBody(cy, { title, body });
+
+    // Go to the next page of the idea form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+  };
+
   describe('In reg flow', () => {
     describe('Non-anonymous user', () => {
       it('stores user custom fields in idea', () => {
-        cy.visit(`/projects/${projectSlug}`);
-        cy.get('.e2e-idea-button')
-          .first()
-          .find('button')
-          .click({ force: true });
+        inRegFlow();
+
+        // submit
+        // TODO
+
+        // check if custom field value is stored in idea
+        // TODO
       });
     });
 
     describe.skip('Anonymous user', () => {
       it('does not store user custom fields in idea', () => {
+        inRegFlow();
+
+        // set to anonymous
+        cy.get('[data-testid="e2e-post-idea-anonymously-checkbox"]').click();
+        cy.get('#e2e-continue-anonymous-participation-btn').click();
+
+        // submit
+        // TODO
+
+        // make sure custom field value is not stored in idea
         // TODO
       });
     });

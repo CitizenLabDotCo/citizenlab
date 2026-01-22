@@ -1,6 +1,6 @@
 import moment = require('moment');
 import { randomString, randomEmail } from '../../support/commands';
-import { updatePermission } from '../../support/permissions';
+import { updatePermission } from '../../support/permitted_by_utils';
 
 describe('Native survey permitted by: users', () => {
   let customFieldId = '';
