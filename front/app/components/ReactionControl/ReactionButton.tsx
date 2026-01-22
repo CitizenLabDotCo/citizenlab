@@ -213,7 +213,7 @@ const ReactionCount = styled.div<{
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-left: ${({ styleType }) => (styleType === 'shadow' ? '4px' : '0px')};
+  margin-left: ${({ styleType }) => (styleType === 'shadow' ? '4px' : '2px')};
   margin-top: 2px;
   transition: all 100ms ease-out;
 
