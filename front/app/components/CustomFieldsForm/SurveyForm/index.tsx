@@ -102,6 +102,7 @@ const SurveyForm = ({
         idea_id: isSubmitPage ? draftIdea.data.id : undefined,
       });
     }
+
     clearDraftIdea(phaseId);
     if (isSubmitPage) {
       trackEventByName(tracks.surveyFormSubmitted);
