@@ -189,9 +189,9 @@ describe UserFieldsInFormService do
         expect(described_class.should_merge_user_fields_from_idea_into_user?(@idea, @user, @phase)).to be false
       end
 
-      it 'returns false if user_data_collection is set to demographics_only' do
+      it 'returns true if user_data_collection is set to demographics_only' do
         @permission.update!(user_data_collection: 'demographics_only')
-        expect(described_class.should_merge_user_fields_from_idea_into_user?(@idea, @user, @phase)).to be false
+        expect(described_class.should_merge_user_fields_from_idea_into_user?(@idea, @user, @phase)).to be true
       end
     end
 
