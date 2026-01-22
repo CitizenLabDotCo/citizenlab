@@ -30,8 +30,6 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
     it 'returns the participation ideas posted data for non-transitive ideas created during phase' do
       participations_submitting_idea = service.send(:participations_submitting_idea)
 
-      pp idea1
-
       expect(participations_submitting_idea).to contain_exactly({
         item_id: idea1.id,
         action: 'submitting_idea',

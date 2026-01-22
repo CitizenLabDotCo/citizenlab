@@ -27,8 +27,7 @@ module Insights
 
     def phase_participation_method_metrics(participations)
       posted_ideas_count = phase_ideas.count
-      submitted_survey_participations = participations[:submitting_idea].select { |p| p[:survey_submitted_at].present? }
-      total_submitted_surveys = submitted_survey_participations.count
+      total_submitted_surveys = participations[:submitting_idea].count
       completion_rate = completion_rate(posted_ideas_count, total_submitted_surveys)
       rolling_7_day_changes = rolling_7_day_changes(participations)
 
@@ -57,10 +56,8 @@ module Insights
       ideas_last_7_days_count = phase_ideas.where(created_at: 7.days.ago..).count
       ideas_previous_7_days_count = phase_ideas.where(created_at: 14.days.ago...7.days.ago).count
 
-      submitted_survey_participations = participations[:submitting_idea].select { |p| p[:survey_submitted_at].present? }
-
-      submitted_last_7_days_count = submitted_survey_participations.count { |p| p[:survey_submitted_at] >= 7.days.ago }
-      submitted_previous_7_days_count = submitted_survey_participations.count do |p|
+      submitted_last_7_days_count = participations[:submitting_idea].count { |p| p[:survey_submitted_at] >= 7.days.ago }
+      submitted_previous_7_days_count = participations[:submitting_idea].count do |p|
         p[:survey_submitted_at] < 7.days.ago && p[:survey_submitted_at] >= 14.days.ago
       end
 
