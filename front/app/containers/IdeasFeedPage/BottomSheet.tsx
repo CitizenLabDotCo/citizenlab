@@ -103,6 +103,7 @@ const BottomSheet = ({
   const handleDragStart = (y: number) => {
     dragStartY.current = y;
     dragStartScrollTop.current = contentRef.current?.scrollTop ?? 0;
+    setShowNudge(false);
   };
 
   const handleDragMove = (currentY: number) => {
@@ -188,7 +189,7 @@ const BottomSheet = ({
             content={
               <Box display="flex" alignItems="center" gap="8px">
                 <Icon name="stars" fill={colors.orange500} />
-                <Text color="tenantPrimary" fontSize="s" m="0px">
+                <Text color="textPrimary" fontSize="s" m="0px">
                   {formatMessage(messages.exploreTopicsNudge)}
                 </Text>
               </Box>
