@@ -33,12 +33,6 @@ const Container = styled.div<{ $translateY: number; $isDragging: boolean }>`
   transition: ${({ $isDragging }) =>
     $isDragging ? 'none' : 'transform 0.3s ease-out'};
   z-index: 1050;
-  touch-action: none;
-  cursor: grab;
-
-  &:active {
-    cursor: grabbing;
-  }
 `;
 
 const DragHandle = styled.div`
@@ -52,6 +46,12 @@ const DragHandle = styled.div`
 const DragArea = styled.div`
   width: 100%;
   padding: 8px 0;
+  touch-action: none;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
 `;
 
 const ContentArea = styled(Box)<{ $scrollable: boolean }>`
@@ -79,9 +79,7 @@ const BottomSheet = ({
   const [dragOffset, setDragOffset] = useState<number | null>(null);
 
   const sheetRef = useRef<HTMLDivElement>(null);
-  const contentRef = useRef<HTMLDivElement>(null);
   const dragStartY = useRef<number | null>(null);
-  const dragStartScrollTop = useRef(0);
 
   useEffect(() => {
     if (isFullscreen) return;
@@ -93,7 +91,6 @@ const BottomSheet = ({
   useEffect(() => {
     if (expandToFullscreenOn) {
       setIsFullscreen(true);
-      contentRef.current?.scrollTo(0, 0);
     }
   }, [expandToFullscreenOn]);
 
@@ -102,15 +99,11 @@ const BottomSheet = ({
 
   const handleDragStart = (y: number) => {
     dragStartY.current = y;
-    dragStartScrollTop.current = contentRef.current?.scrollTop ?? 0;
     setShowNudge(false);
   };
 
   const handleDragMove = (currentY: number) => {
     if (dragStartY.current === null) return;
-
-    const scrollTop = contentRef.current?.scrollTop ?? 0;
-    if (dragStartScrollTop.current > 0 || scrollTop > 0) return;
 
     const delta = currentY - dragStartY.current;
     const baseY = isFullscreen ? 0 : getCollapsedY();
@@ -128,11 +121,7 @@ const BottomSheet = ({
     dragStartY.current = null;
 
     if (hadOffset && Math.abs(delta) >= SWIPE_THRESHOLD) {
-      const newIsFullscreen = delta < 0;
-      setIsFullscreen(newIsFullscreen);
-      if (newIsFullscreen) {
-        contentRef.current?.scrollTo(0, 0);
-      }
+      setIsFullscreen(delta < 0);
     }
   };
 
@@ -176,14 +165,14 @@ const BottomSheet = ({
         role="dialog"
         aria-modal={isFullscreen}
         aria-label={a11y_panelLabel}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
-        onMouseDown={handleMouseDown}
       >
         <DragArea
           aria-expanded={isFullscreen}
           aria-label={isFullscreen ? a11y_collapseLabel : a11y_expandLabel}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+          onMouseDown={handleMouseDown}
         >
           <Tooltip
             content={
@@ -203,7 +192,6 @@ const BottomSheet = ({
         </DragArea>
 
         <ContentArea
-          ref={contentRef}
           px="16px"
           py="24px"
           $scrollable={isFullscreen}
