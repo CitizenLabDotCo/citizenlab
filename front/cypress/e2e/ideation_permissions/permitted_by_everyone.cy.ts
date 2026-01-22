@@ -86,15 +86,22 @@ describe('Ideation permitted by: everyone', () => {
     }
   });
 
-  describe.only('As a visitor', () => {
+  const inForm = () => {
+    cy.visit(`/projects/${projectSlug}`);
+    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+
+    const title = randomString(11);
+    const body = randomString(40);
+
+    fillOutTitleAndBody(cy, { title, body });
+
+    // Go to the next page of the idea form
+    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+  };
+
+  describe('As a visitor', () => {
     it('works', () => {
-      cy.visit(`/projects/${projectSlug}`);
-      cy.get('.e2e-idea-button').first().find('button').click({ force: true });
-
-      const title = randomString(11);
-      const body = randomString(40);
-
-      fillOutTitleAndBody(cy, { title, body });
+      inForm();
 
       // Skip to demographic question page
       cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
@@ -149,5 +156,47 @@ describe('Ideation permitted by: everyone', () => {
     beforeEach(() => {
       createUser();
     });
+
+    const confirmSavedToProfile = (expectedAnswer: string | undefined) => {
+      cy.intercept('GET', `/web_api/v1/users/me`).as('getMe');
+      cy.visit('/');
+      cy.wait('@getMe').then((interception) => {
+        expect(interception.response?.statusCode).to.equal(200);
+        expect(
+          interception.response?.body.data.attributes.custom_field_values[
+            customFieldKey
+          ]
+        ).to.eq(expectedAnswer);
+      });
+    };
+
+    describe('Non-anonymous user', () => {
+      it('stores custom fields in profile', () => {
+        inForm();
+
+        // Go to the next page of the idea form
+        cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+
+        // TODO anonymous and next page
+
+        // Confirm we are on demographic question page
+        cy.get('form').contains(fieldName);
+
+        // Fill in demographic question
+        answer = randomString(10);
+        cy.get('form').find('input').first().type(answer);
+
+        // Intercept submit request
+        cy.intercept('POST', '/web_api/v1/ideas').as('submitIdea');
+
+        // Submit survey
+        cy.dataCy('e2e-submit-form').click();
+        cy.wait('@submitIdea');
+
+        confirmSavedToProfile(answer);
+      });
+    });
+
+    describe('Anonymous user', () => {});
   });
 });

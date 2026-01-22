@@ -269,7 +269,7 @@ describe('Ideation permitted by: users', () => {
           interception.response?.body.data.attributes.custom_field_values[
             customFieldKey
           ]
-        ).to.eq(answer);
+        ).to.eq(expectedAnswer);
       });
     };
 
