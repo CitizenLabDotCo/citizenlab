@@ -159,7 +159,7 @@ class WebApi::V1::IdeasController < ApplicationController
   #   Normal users always post in an active phase. They should never provide a phase id.
   #   Users who can moderate projects post in an active phase if no phase id is given.
   #   Users who can moderate projects post in the given phase if a phase id is given.
-  def create
+  def create # rubocop:disable Metrics/MethodLength
     send_error and return unless phase_for_input
 
     form = phase_for_input.pmethod.custom_form
