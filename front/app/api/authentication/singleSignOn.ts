@@ -84,8 +84,12 @@ function setHref(
     claim_tokens: getClaimTokens(),
   };
 
-  const path = provider === 'id_vienna_saml' ? 'vienna_citizen' : provider;
-
-  const urlSearchParams = stringify(omitBy(ssoParams, isNil));
-  window.location.href = `${AUTH_PATH}/${path}?${urlSearchParams}`;
+  // NOTE: SSO passthru params are not currently called for Vienna SAML login
+  // This may mean that some flows (eg post participation registration) do not work as expected
+  if (provider === 'id_vienna_saml') {
+    window.location.href = `${AUTH_PATH}/vienna_citizen`;
+  } else {
+    const urlSearchParams = stringify(omitBy(ssoParams, isNil));
+    window.location.href = `${AUTH_PATH}/${provider}?${urlSearchParams}`;
+  }
 }
