@@ -5,9 +5,6 @@ import {
   SetError,
 } from 'containers/Authentication/typings';
 
-import { trackEventByName } from 'utils/analytics';
-
-import tracks from './tracks';
 import VerificationSteps from './VerificationSteps';
 
 interface Props {
@@ -22,12 +19,10 @@ const VerificationSignUpStep = ({
   authenticationData,
 }: Props) => {
   const handleOnCompleted = () => {
-    trackEventByName(tracks.signUpVerificationStepCompleted);
     onCompleted();
   };
 
   const handleOnError = () => {
-    trackEventByName(tracks.signUpVerificationStepFailed);
     setError('unknown');
   };
 
