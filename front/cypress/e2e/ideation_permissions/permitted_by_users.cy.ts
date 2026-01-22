@@ -141,15 +141,43 @@ describe('Ideation permitted by: users', () => {
       it('stores user custom fields in idea', () => {
         inRegFlow();
 
-        // submit
-        // TODO
+        // Intercept submit request
+        cy.intercept('POST', '/web_api/v1/ideas').as('submitIdea');
 
-        // check if custom field value is stored in idea
-        // TODO
+        // Submit form
+        cy.dataCy('e2e-submit-form').click();
+        cy.wait('@submitIdea').then((interception) => {
+          ideaId = interception.response?.body.data.id;
+        });
+
+        // make sure custom field value is stored in idea
+        cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+          const adminJwt = response.body.jwt;
+
+          return cy
+            .request({
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${adminJwt}`,
+              },
+              method: 'GET',
+              url: `web_api/v1/ideas/${ideaId}`,
+            })
+            .then((response) => {
+              // Make sure data was saved
+              const attributes = response.body.data.attributes;
+              expect(attributes[customFieldKey]).to.eq(answer);
+
+              // Make sure user is also linked
+              expect(response.body.data.relationships.author?.data?.id).to.eq(
+                userId
+              );
+            });
+        });
       });
     });
 
-    describe.skip('Anonymous user', () => {
+    describe('Anonymous user', () => {
       it('does not store user custom fields in idea', () => {
         inRegFlow();
 
@@ -157,11 +185,41 @@ describe('Ideation permitted by: users', () => {
         cy.get('[data-testid="e2e-post-idea-anonymously-checkbox"]').click();
         cy.get('#e2e-continue-anonymous-participation-btn').click();
 
-        // submit
-        // TODO
+        // Intercept submit request
+        cy.intercept('POST', '/web_api/v1/ideas').as('submitIdea');
+
+        // Submit idea
+        cy.dataCy('e2e-submit-form').click();
+        cy.wait('@submitIdea').then((interception) => {
+          ideaId = interception.response?.body.data.id;
+        });
 
         // make sure custom field value is not stored in idea
-        // TODO
+        // check if custom field value is stored in idea
+        cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+          const adminJwt = response.body.jwt;
+
+          return cy
+            .request({
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${adminJwt}`,
+              },
+              method: 'GET',
+              url: `web_api/v1/ideas/${ideaId}`,
+            })
+            .then((response) => {
+              // Make it clear the idea has no demographic data saved,
+              // since anonymity was selected
+              const attributes = response.body.data.attributes;
+              expect(attributes[customFieldKey]).to.eq(undefined);
+
+              // And of course there should also be no user linked
+              expect(response.body.data.relationships.author?.data?.id).to.eq(
+                undefined
+              );
+            });
+        });
       });
     });
   });
