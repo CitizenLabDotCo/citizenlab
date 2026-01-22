@@ -30,7 +30,6 @@ export const defaultParticipationConfig: IUpdatedPhaseProperties = {
 export const ideationDefaultConfig: IUpdatedPhaseProperties = {
   ...defaultParticipationConfig,
   participation_method: 'ideation',
-  ideation_method: 'base',
   submission_enabled: true,
   commenting_enabled: true,
   reacting_enabled: true,
