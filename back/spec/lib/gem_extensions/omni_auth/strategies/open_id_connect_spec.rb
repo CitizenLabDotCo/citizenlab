@@ -2,10 +2,26 @@
 
 require 'rails_helper'
 
+# Mock decoded token response for testing
+module GemExtensions
+  module OmniAuth
+    module Strategies
+      module OpenIdConnectSpec
+        DecodedToken = Struct.new(:raw_attributes, keyword_init: true)
+      end
+    end
+  end
+end
+
 RSpec.describe GemExtensions::OmniAuth::Strategies::OpenIdConnect do
+  let(:decoded_token_class) { GemExtensions::OmniAuth::Strategies::OpenIdConnectSpec::DecodedToken }
+
   let(:strategy_class) do
+    token_class = decoded_token_class
     Class.new do
       attr_accessor :config, :name
+
+      define_method(:token_class) { token_class }
 
       def initialize
         @name = 'test_provider'
@@ -15,14 +31,14 @@ RSpec.describe GemExtensions::OmniAuth::Strategies::OpenIdConnect do
       # Track how many times the original decode_id_token is called
       attr_reader :decode_call_count
 
-      def decode_id_token_original(id_token)
+      def decode_id_token_original(_id_token)
         @decode_call_count += 1
         # Simulate successful decode
-        OpenStruct.new(raw_attributes: { sub: '123' })
+        token_class.new(raw_attributes: { sub: '123' })
       end
 
       # This will be overridden by prepend
-      alias decode_id_token decode_id_token_original
+      alias_method :decode_id_token, :decode_id_token_original
 
       prepend GemExtensions::OmniAuth::Strategies::OpenIdConnect
     end
@@ -45,8 +61,11 @@ RSpec.describe GemExtensions::OmniAuth::Strategies::OpenIdConnect do
 
     context 'when KidNotFound error occurs' do
       let(:strategy_class_with_kid_error) do
+        token_class = decoded_token_class
         Class.new do
-          attr_accessor :config, :name
+          attr_accessor :config, :public_key, :name
+
+          define_method(:token_class) { token_class }
 
           def initialize
             @name = 'test_provider'
@@ -62,11 +81,11 @@ RSpec.describe GemExtensions::OmniAuth::Strategies::OpenIdConnect do
               raise JSON::JWK::Set::KidNotFound, 'Key with kid xyz not found'
             else
               # Second call succeeds (after cache refresh)
-              OpenStruct.new(raw_attributes: { sub: '123' })
+              token_class.new(raw_attributes: { sub: '123' })
             end
           end
 
-          alias decode_id_token decode_id_token_original
+          alias_method :decode_id_token, :decode_id_token_original
 
           prepend GemExtensions::OmniAuth::Strategies::OpenIdConnect
         end
@@ -74,14 +93,16 @@ RSpec.describe GemExtensions::OmniAuth::Strategies::OpenIdConnect do
 
       let(:strategy_with_error) { strategy_class_with_kid_error.new }
 
-      it 'clears the config cache and retries' do
+      it 'clears the config and public_key caches and retries' do
         strategy_with_error.config = { cached: true }
+        strategy_with_error.public_key = 'cached_key'
 
         result = strategy_with_error.decode_id_token('token_with_new_kid')
 
         expect(result.raw_attributes[:sub]).to eq('123')
         expect(strategy_with_error.decode_call_count).to eq(2)
         expect(strategy_with_error.config).to be_nil
+        expect(strategy_with_error.public_key).to be_nil
       end
 
       it 'logs a warning about the cache refresh' do
@@ -110,7 +131,7 @@ RSpec.describe GemExtensions::OmniAuth::Strategies::OpenIdConnect do
             raise JSON::JWK::Set::KidNotFound, 'Key with kid xyz not found'
           end
 
-          alias decode_id_token decode_id_token_original
+          alias_method :decode_id_token, :decode_id_token_original
 
           prepend GemExtensions::OmniAuth::Strategies::OpenIdConnect
         end
