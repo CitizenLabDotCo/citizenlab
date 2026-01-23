@@ -87,7 +87,7 @@ const ParticipationMetrics = ({ phase }: Props) => {
 
       <MetricCard
         label={formatMessage(messages.participationRate)}
-        value={`${(metrics.participation_rate * 100).toFixed(1)}%`}
+        value={`${metrics.participation_rate_as_percent.toFixed(1)}%`}
         icon="chart-bar"
         change={
           isCurrentPhase

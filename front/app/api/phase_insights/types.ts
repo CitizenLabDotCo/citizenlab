@@ -78,7 +78,7 @@ export interface PhaseInsightsParticipationMetrics {
   visitors_7_day_percent_change?: SevenDayChange;
   participants: number;
   participants_7_day_percent_change?: SevenDayChange;
-  participation_rate: number;
+  participation_rate_as_percent: number;
   participation_rate_7_day_percent_change?: SevenDayChange;
   ideation?: IdeationMetrics;
   proposals?: ProposalsMetrics;
