@@ -25,7 +25,7 @@ RSpec.describe InputTopic do
     let_it_be(:idea3) { create(:idea, project:, input_topics: [input_topics[0], input_topics[5]]) }
     let_it_be(:idea4) { create(:idea, project:, input_topics: [input_topics[2], input_topics[4], input_topics[5]]) }
     let_it_be(:idea5) { create(:idea, project:, input_topics: [input_topics[2], input_topics[4], input_topics[5]]) }
-    let_it_be(:idea6) { create(:idea, project:, input_topics: [input_topics[0], input_topics[3]]) }
+    let_it_be(:idea6) { create(:idea, project:, input_topics: [input_topics[0]]) }
 
     it 'sorts from fewest ideas to most ideas when asking asc' do
       sorted_topics = described_class.order_ideas_count(Idea.where(id: [idea2.id, idea3.id, idea4.id, idea5.id, idea6.id]), direction: :asc)
