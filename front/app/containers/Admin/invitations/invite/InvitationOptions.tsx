@@ -126,7 +126,7 @@ const InvitationOptions = ({
             values={{
               supportPageLink: (
                 <a
-                  href={formatMessage(messages.invitesSupportPageURL)}
+                  href={formatMessage(messages.invitesSupportPageURL2)}
                   target="_blank"
                   rel="noreferrer"
                 >

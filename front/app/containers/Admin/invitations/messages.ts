@@ -186,10 +186,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Invitations.unknownError',
     defaultMessage: 'Something went wrong. Please try again later.',
   },
-  invitesSupportPageURL: {
-    id: 'app.containers.Admin.Invitations.invitesSupportPageURL',
-    defaultMessage:
-      'http://support.govocal.com/en/articles/1771605-invite-people-to-the-platform',
+  invitesSupportPageURL2: {
+    id: 'app.containers.Admin.Invitations.invitesSupportPageURL2',
+    defaultMessage: 'https://support.govocal.com/articles/527647',
   },
   tabInviteUsers: {
     id: 'app.containers.Admin.Invitations.tabInviteUsers',
