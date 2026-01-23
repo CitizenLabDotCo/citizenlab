@@ -46,6 +46,8 @@ const TopicsContent = ({
       <SelectedTopicContent
         projectId={projectId}
         topicId={selectedTopicId}
+        topicCount={topicCounts[selectedTopicId] || 0}
+        topicCounts={topicCounts}
         onBack={() => onTopicSelect(null)}
         isMobile={isMobile}
       />
