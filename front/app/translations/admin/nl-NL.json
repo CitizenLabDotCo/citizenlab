@@ -1386,6 +1386,7 @@
   "app.containers.Admin.projects.project.insights.ideation.whatArePeopleSaying": "Wat zeggen de mensen?",
   "app.containers.Admin.projects.project.insights.import": "Importeren",
   "app.containers.Admin.projects.project.insights.inputs": "Bijdragen",
+  "app.containers.Admin.projects.project.insights.insightsSubtitle1": "Betrokkenheid in real-time volgen",
   "app.containers.Admin.projects.project.insights.last7Days": "Laatste 7 dagen",
   "app.containers.Admin.projects.project.insights.liveData": "Live data",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Demografische gegevens worden geladen...",
