@@ -75,7 +75,7 @@ export interface VolunteeringMetrics {
 
 export interface PhaseInsightsParticipationMetrics {
   visitors: number;
-  visitors_7_day_change?: SevenDayChange;
+  visitors_7_day_percent_change?: SevenDayChange;
   participants: number;
   participants_7_day_change?: SevenDayChange;
   participation_rate: number;

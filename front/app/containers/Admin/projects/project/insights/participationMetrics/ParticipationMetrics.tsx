@@ -66,7 +66,9 @@ const ParticipationMetrics = ({ phase }: Props) => {
         label={formatMessage(messages.visitors)}
         value={metrics.visitors}
         icon="user-circle"
-        change={isCurrentPhase ? metrics.visitors_7_day_change : undefined}
+        change={
+          isCurrentPhase ? metrics.visitors_7_day_percent_change : undefined
+        }
       />
       <MetricCard
         label={formatMessage(messages.participants)}

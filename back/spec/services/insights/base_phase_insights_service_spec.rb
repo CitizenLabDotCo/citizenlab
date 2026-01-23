@@ -54,7 +54,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
       expect(result).to eq(
         {
           visitors: 4,
-          visitors_7_day_change: 0.0, # From 3 (7 to 14 days ago) to 3 (last 7-day period) unique visitors = 0% change
+          visitors_7_day_percent_change: 0.0, # From 3 (7 to 14 days ago) to 3 (last 7-day period) unique visitors = 0% change
           participants: 3,
           participants_7_day_change: 50.0, # From 2 (7 to 14 days ago) to 3 (last 7-day period) unique participants = 50% increase
           participation_rate: 0.75,
