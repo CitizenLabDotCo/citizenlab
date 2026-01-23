@@ -568,7 +568,7 @@ export default defineMessages({
   googleFormsTooltip: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip',
     defaultMessage:
-      'More information on how to embed a link for Google Forms can be found in {googleFormsTooltipLink}.',
+      'More information on how to embed a link for Google Forms can be found in {googleFormsTooltipLink2}.',
   },
   googleFormsTooltipLink2: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink2',
