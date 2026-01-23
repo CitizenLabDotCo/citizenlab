@@ -12,7 +12,7 @@ interface InputTopicsParams {
   projectId: string;
   filters?: {
     sort?: SortMethod;
-    parentId?: string;
+    parent_id?: string;
     depth?: number;
   };
 }

@@ -3,10 +3,10 @@ import React from 'react';
 import {
   Box,
   Button,
+  colors,
   Divider,
   Text,
   Title,
-  colors,
 } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -50,7 +50,7 @@ const SelectedTopicContent = ({
 
   const { data: topic } = useInputTopicById(topicId);
   const { data: subtopics } = useInputTopics(projectId, {
-    parentId: topicId,
+    parent_id: topicId,
     depth: 1,
   });
 
@@ -109,7 +109,7 @@ const SelectedTopicContent = ({
             <Box
               as={StyledButton}
               buttonStyle="secondary-outlined"
-              background={isActive ? colors.teal100 : 'transparent'}
+              bgColor={isActive ? colors.grey100 : 'transparent'}
               onClick={() => handleSubtopicClick(subtopic.id)}
               borderColor="transparent"
               justify="left"

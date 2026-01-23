@@ -77,13 +77,16 @@ const IdeasFeedPage = () => {
           <Box flex="4" position="relative">
             {/* General feed - always mounted to preserve scroll position */}
             <Box visibility={activeTopicFilter ? 'hidden' : 'visible'}>
-              <IdeasFeed topicId={null} />
+              <IdeasFeed topicId={null} parentTopicId={null} />
             </Box>
 
             {/* Topic/subtopic-specific feed - mounted only when topic or subtopic is selected */}
             {activeTopicFilter && (
               <Box position="absolute" top="0" left="0" right="0" bottom="0">
-                <IdeasFeed topicId={activeTopicFilter} />
+                <IdeasFeed
+                  topicId={activeTopicFilter}
+                  parentTopicId={selectedTopicId}
+                />
               </Box>
             )}
           </Box>

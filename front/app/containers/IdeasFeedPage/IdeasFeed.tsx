@@ -88,9 +88,10 @@ const VirtualItem = styled.div<{ start: number; topOffset: number }>`
 
 interface Props {
   topicId?: string | null;
+  parentTopicId?: string | null;
 }
 
-const IdeasFeed = ({ topicId }: Props) => {
+const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
   const [searchParams] = useSearchParams();
   const phaseId = searchParams.get('phase_id')!;
   const initialIdeaId = searchParams.get('initial_idea_id') || undefined;
@@ -282,9 +283,9 @@ const IdeasFeed = ({ topicId }: Props) => {
           }
 
           const topicIds = ideaTopics.get(idea.id) || [];
-          const topicBackgroundColor = topicId
-            ? getTopicColor(topicId)
-            : getTopicColor(topicIds[0]);
+          // Use parentTopicId for color when filtering by subtopic, otherwise use the first topic
+          const colorTopicId = parentTopicId || topicId || topicIds[0];
+          const topicBackgroundColor = getTopicColor(colorTopicId);
 
           return (
             <VirtualItem
