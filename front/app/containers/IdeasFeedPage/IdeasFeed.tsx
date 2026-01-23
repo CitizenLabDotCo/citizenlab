@@ -9,6 +9,7 @@ import React, {
 import {
   Box,
   Spinner,
+  Text,
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
@@ -20,9 +21,11 @@ import styled from 'styled-components';
 import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
 import useIdeaById from 'api/ideas/useIdeaById';
 
+import { FormattedMessage } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
+import messages from './messages';
 import StickyNote, { NOTE_HEIGHTS } from './StickyNotes/StickyNote';
 import { getTopicColor } from './topicsColor';
 
@@ -243,7 +246,13 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
   }
 
   if (orderedIdeas.length === 0) {
-    return null;
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" h="100vh">
+        <Text color="coolGrey600">
+          <FormattedMessage {...messages.noIdeasForTopic} />
+        </Text>
+      </Box>
+    );
   }
 
   // Add top padding so the first note is centered (half of peek height)
