@@ -1386,7 +1386,6 @@
   "app.containers.Admin.projects.project.insights.ideation.whatArePeopleSaying": "İnsanlar ne diyor?",
   "app.containers.Admin.projects.project.insights.import": "İthalat",
   "app.containers.Admin.projects.project.insights.inputs": "Girişler",
-  "app.containers.Admin.projects.project.insights.insightsSubtitle": "Katılımı ve topluluk etkisini gerçek zamanlı olarak takip edin",
   "app.containers.Admin.projects.project.insights.last7Days": "Son 7 gün",
   "app.containers.Admin.projects.project.insights.liveData": "Canlı veri",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Demografik bilgiler yükleniyor...",
