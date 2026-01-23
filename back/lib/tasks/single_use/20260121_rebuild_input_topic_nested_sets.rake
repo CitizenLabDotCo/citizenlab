@@ -6,16 +6,37 @@ namespace :single_use do
     Tenant.safe_switch_each do |tenant|
       puts "Processing tenant: #{tenant.host}"
 
-      # Temporarily set order_column to preserve existing ordering during rebuild
-      InputTopic.acts_as_nested_set_options[:order_column] = :ordering
-      InputTopic.rebuild!
-      puts "  - Rebuilt #{InputTopic.count} InputTopics"
+      # Normally we'd use InputTopic.rebuild! for this, but we can't make this
+      # respect the (now obsolete) :ordering column. Because of this, we're setting
+      # the nested set columns manually here, since it's pretty trivial when coming from a list.
 
-      DefaultInputTopic.acts_as_nested_set_options[:order_column] = :ordering
-      DefaultInputTopic.rebuild!
-      puts "  - Rebuilt #{DefaultInputTopic.count} DefaultInputTopics"
+      InputTopic.transaction do
+        Project.find_each do |project|
+          project.input_topics.order(:ordering).each.with_index do |topic, i|
+            topic.update_columns(
+              lft: (2 * i) + 1,
+              rgt: (2 * i) + 2,
+              depth: 0,
+              children_count: 0,
+              parent_id: nil
+            )
+          end
+        end
+      end
+
+      DefaultInputTopic.transaction do
+        DefaultInputTopic.order(:ordering).each.with_index do |topic, i|
+          topic.update_columns(
+            lft: (2 * i) + 1,
+            rgt: (2 * i) + 2,
+            depth: 0,
+            children_count: 0,
+            parent_id: nil
+          )
+        end
+      end
+
+      puts 'Done!'
     end
-
-    puts 'Done!'
   end
 end
