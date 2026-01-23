@@ -6,11 +6,12 @@ namespace :single_use do
     Tenant.safe_switch_each do |tenant|
       puts "Processing tenant: #{tenant.host}"
 
-      # Rebuild InputTopic nested set per project
+      # Temporarily set order_column to preserve existing ordering during rebuild
+      InputTopic.acts_as_nested_set_options[:order_column] = :ordering
       InputTopic.rebuild!
       puts "  - Rebuilt #{InputTopic.count} InputTopics"
 
-      # Rebuild DefaultInputTopic nested set
+      DefaultInputTopic.acts_as_nested_set_options[:order_column] = :ordering
       DefaultInputTopic.rebuild!
       puts "  - Rebuilt #{DefaultInputTopic.count} DefaultInputTopics"
     end

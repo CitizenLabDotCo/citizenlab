@@ -79,9 +79,9 @@ const ProjectInputTopics = () => {
     const newAbove = upOrDown === 'up' ? newIndex - 1 : newIndex;
     const newUnder = upOrDown === 'up' ? newIndex : newIndex + 1;
 
-    const newAboveTopic = sortableItems.at(newAbove);
+    const newAboveTopic: IInputTopicData | undefined = sortableItems[newAbove];
     const movedTopic = sortableItems[currentIndex];
-    const newUnderTopic = sortableItems.at(newUnder);
+    const newUnderTopic: IInputTopicData | undefined = sortableItems[newUnder];
 
     const aboveDepth = newAboveTopic ? newAboveTopic.attributes.depth : -1;
     const currentDepth = movedTopic.attributes.depth;
