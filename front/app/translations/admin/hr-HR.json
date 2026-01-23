@@ -1386,6 +1386,7 @@
   "app.containers.Admin.projects.project.insights.ideation.whatArePeopleSaying": "Što ljudi govore?",
   "app.containers.Admin.projects.project.insights.import": "Uvoz",
   "app.containers.Admin.projects.project.insights.inputs": "Ulazi",
+  "app.containers.Admin.projects.project.insights.insightsSubtitle1": "Pratite angažman u stvarnom vremenu",
   "app.containers.Admin.projects.project.insights.last7Days": "Posljednjih 7 dana",
   "app.containers.Admin.projects.project.insights.liveData": "Podaci uživo",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Učitavanje demografskih podataka...",
