@@ -240,7 +240,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
         permission = phase_for_input.permissions.find_by(action: 'posting_idea')
 
-        if permission.permitted_by === 'everyone' && current_user.nil?
+        if permission&.permitted_by === 'everyone' && current_user.nil?
           ClaimTokenService.generate(input)
         end
 
