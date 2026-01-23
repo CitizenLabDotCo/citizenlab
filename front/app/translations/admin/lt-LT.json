@@ -1386,7 +1386,7 @@
   "app.containers.Admin.projects.project.insights.ideation.whatArePeopleSaying": "Ką sako žmonės?",
   "app.containers.Admin.projects.project.insights.import": "Importas",
   "app.containers.Admin.projects.project.insights.inputs": "Įėjimai",
-  "app.containers.Admin.projects.project.insights.insightsSubtitle": "Stebėkite įsitraukimą ir bendruomenės poveikį realiuoju laiku",
+  "app.containers.Admin.projects.project.insights.insightsSubtitle1": "Stebėkite įsitraukimą realiuoju laiku",
   "app.containers.Admin.projects.project.insights.last7Days": "Paskutinės 7 dienos",
   "app.containers.Admin.projects.project.insights.liveData": "Tiesioginiai duomenys",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Demografinių duomenų įkėlimas...",
