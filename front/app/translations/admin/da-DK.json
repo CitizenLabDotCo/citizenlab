@@ -68,7 +68,6 @@
   "app.components.AnonymousPostingToggle.userAnonymityLabelTooltip2": "Brugere kan stadig vælge at deltage med deres rigtige navn, men de vil have muligheden for at indsende bidrag anonymt, hvis de vælger at gøre det. Alle brugere skal stadig overholde de krav, der er angivet i fanen Adgangsrettigheder, for at deres bidrag kan gå igennem. Brugerprofildata vil ikke være tilgængelige ved eksport af deltagelsesdata.",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltip": "Læs mere om brugeranonymitet i vores {supportArticle}.",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkText": "support artikel",
-  "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Når der tilføjes flere pladser, vil din fakturering blive forhøjet. Kontakt Søren Kielgast på soren@govocal.dk for at få mere at vide om det.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Tak, fordi du gennemførte undersøgelsen! Du er velkommen til at tage den igen næste kvartal.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Download som pdf",

@@ -68,7 +68,6 @@
   "app.components.AnonymousPostingToggle.userAnonymityLabelTooltip2": "Käyttäjät voivat silti halutessaan osallistua oikealla nimellä, mutta he voivat halutessaan lähettää lahjoituksia nimettömästi. Kaikkien käyttäjien on silti täytettävä Käyttöoikeudet-välilehdellä asetetut vaatimukset, jotta heidän panoksensa voidaan suorittaa. Käyttäjäprofiilitiedot eivät ole käytettävissä osallistumistietojen viennissä.",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltip": "Lisätietoja käyttäjien nimettömyydestä on {supportArticle}.",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkText": "tukiartikkeli",
-  "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Kun lisää paikkoja on lisätty, laskutustasi korotetaan. Ota yhteyttä GovSuccess Manageriin saadaksesi lisätietoja siitä.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Kiitos kyselyn täyttämisestä! Voit ottaa sen uudelleen ensi vuosineljänneksellä.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Lataa pdf-tiedostona",

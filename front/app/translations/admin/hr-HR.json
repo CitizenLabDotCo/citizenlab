@@ -68,7 +68,6 @@
   "app.components.AnonymousPostingToggle.userAnonymityLabelTooltip2": "Korisnici i dalje mogu odlučiti sudjelovati pod svojim pravim imenom, ali će imati opciju anonimnog slanja doprinosa ako to odluče. Svi će korisnici i dalje morati ispunjavati zahtjeve postavljene na kartici Prava pristupa kako bi njihovi doprinosi prošli. Podaci o korisničkom profilu neće biti dostupni u izvozu podataka o sudjelovanju.",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltip": "Saznajte više o anonimnosti korisnika u našem {supportArticle}.",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkText": "članak podrške",
-  "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Nakon što se dodaju dodatna mjesta, vaša naplata će se povećati. Obratite se svom GovSuccess Manageru da saznate više o tome.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Hvala što ste ispunili anketu! Slobodno ga ponovite sljedećeg kvartala.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Preuzmi kao pdf",

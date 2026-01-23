@@ -68,7 +68,6 @@
   "app.components.AnonymousPostingToggle.userAnonymityLabelTooltip2": "Los usuarios podrán seguir optando por participar con su nombre real, pero tendrán la opción de enviar contribuciones de forma anónima si así lo desean. Todos los usuarios deberán seguir cumpliendo con los requisitos establecidos en la pestaña Derechos de Acceso para que sus aportes sean aceptados. Los datos del perfil del usuario que decida publicar de manera anónima no estarán disponibles cuando exporte los datos de participación.",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltip": "Obtén más información sobre cómo funciona la opción de permitir que los usuarios participen de manera anónima en esta página {supportArticle}.",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkText": "artículo de apoyo",
-  "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Una vez que se añadan plazas adicionales, se incrementará su facturación. Póngase en contacto con su gestor de GovSuccess para obtener más información.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "¡Gracias por completar la encuesta! Te invitamos a volver a hacerla el próximo trimestre.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Descargar como pdf",

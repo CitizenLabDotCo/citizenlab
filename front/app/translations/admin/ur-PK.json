@@ -68,7 +68,6 @@
   "app.components.AnonymousPostingToggle.userAnonymityLabelTooltip2": "صارفین اب بھی اپنے اصلی نام کے ساتھ حصہ لینے کا انتخاب کر سکتے ہیں، لیکن اگر وہ ایسا کرنے کا انتخاب کرتے ہیں تو ان کے پاس گمنام طور پر شراکت جمع کرانے کا اختیار ہوگا۔ تمام صارفین کو اب بھی رسائی کے حقوق کے ٹیب میں مقرر کردہ تقاضوں کی تعمیل کرنے کی ضرورت ہوگی تاکہ ان کی شراکتیں گزر سکیں۔ شرکت کے ڈیٹا ایکسپورٹ پر صارف کا پروفائل ڈیٹا دستیاب نہیں ہوگا۔",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltip": "ہمارے {supportArticle}میں صارف کی گمنامی کے بارے میں مزید جانیں۔",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkText": "سپورٹ مضمون",
-  "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "ایک بار اضافی سیٹیں شامل ہونے کے بعد، آپ کی بلنگ میں اضافہ ہو جائے گا۔ اس کے بارے میں مزید جاننے کے لیے اپنے GovSuccess مینیجر سے رابطہ کریں۔",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "سروے مکمل کرنے کے لیے آپ کا شکریہ! اگلی سہ ماہی میں اسے دوبارہ لینے کے لیے آپ کا استقبال ہے۔",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "پی ڈی ایف کے طور پر ڈاؤن لوڈ کریں۔",

@@ -68,7 +68,6 @@
   "app.components.AnonymousPostingToggle.userAnonymityLabelTooltip2": "ਉਪਭੋਗਤਾ ਅਜੇ ਵੀ ਆਪਣੇ ਅਸਲੀ ਨਾਮ ਨਾਲ ਹਿੱਸਾ ਲੈਣ ਦੀ ਚੋਣ ਕਰ ਸਕਦੇ ਹਨ, ਪਰ ਜੇਕਰ ਉਹ ਅਜਿਹਾ ਕਰਨ ਦੀ ਚੋਣ ਕਰਦੇ ਹਨ ਤਾਂ ਉਹਨਾਂ ਕੋਲ ਗੁਮਨਾਮ ਰੂਪ ਵਿੱਚ ਯੋਗਦਾਨ ਜਮ੍ਹਾਂ ਕਰਾਉਣ ਦਾ ਵਿਕਲਪ ਹੋਵੇਗਾ। ਸਾਰੇ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਅਜੇ ਵੀ ਉਹਨਾਂ ਦੇ ਯੋਗਦਾਨਾਂ ਨੂੰ ਪੂਰਾ ਕਰਨ ਲਈ ਪਹੁੰਚ ਅਧਿਕਾਰ ਟੈਬ ਵਿੱਚ ਨਿਰਧਾਰਤ ਲੋੜਾਂ ਦੀ ਪਾਲਣਾ ਕਰਨ ਦੀ ਲੋੜ ਹੋਵੇਗੀ। ਭਾਗੀਦਾਰੀ ਡੇਟਾ ਨਿਰਯਾਤ 'ਤੇ ਉਪਭੋਗਤਾ ਪ੍ਰੋਫਾਈਲ ਡੇਟਾ ਉਪਲਬਧ ਨਹੀਂ ਹੋਵੇਗਾ।",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltip": "ਸਾਡੇ {supportArticle}ਵਿੱਚ ਉਪਭੋਗਤਾ ਦੀ ਅਗਿਆਤਤਾ ਬਾਰੇ ਹੋਰ ਜਾਣੋ।",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkText": "ਸਹਾਇਤਾ ਲੇਖ",
-  "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "ਇੱਕ ਵਾਰ ਵਾਧੂ ਸੀਟਾਂ ਜੋੜਨ ਤੋਂ ਬਾਅਦ, ਤੁਹਾਡੀ ਬਿਲਿੰਗ ਵਧਾਈ ਜਾਵੇਗੀ। ਇਸ ਬਾਰੇ ਹੋਰ ਜਾਣਨ ਲਈ ਆਪਣੇ GovSuccess ਮੈਨੇਜਰ ਨਾਲ ਸੰਪਰਕ ਕਰੋ।",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "ਸਰਵੇਖਣ ਨੂੰ ਪੂਰਾ ਕਰਨ ਲਈ ਤੁਹਾਡਾ ਧੰਨਵਾਦ! ਅਗਲੀ ਤਿਮਾਹੀ ਵਿੱਚ ਇਸਨੂੰ ਦੁਬਾਰਾ ਲੈਣ ਲਈ ਤੁਹਾਡਾ ਸਵਾਗਤ ਹੈ।",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "ਪੀਡੀਐਫ ਦੇ ਤੌਰ ਤੇ ਡਾਊਨਲੋਡ ਕਰੋ",

@@ -68,7 +68,6 @@
   "app.components.AnonymousPostingToggle.userAnonymityLabelTooltip2": "Vartotojai ir toliau gali dalyvauti naudodami savo tikrąjį vardą ir pavardę, tačiau, jei norės, galės pateikti anoniminę informaciją. Visi naudotojai vis tiek turės atitikti skirtuke \"Prieigos teisės\" nustatytus reikalavimus, kad jų įnašai būtų priimami. Naudotojo profilio duomenų nebus galima rasti eksportuojant dalyvavimo duomenis.",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltip": "Daugiau informacijos apie naudotojo anonimiškumą rasite mūsų svetainėje {supportArticle}.",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkText": "paramos straipsnis",
-  "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Pridėjus papildomų vietų, jūsų sąskaita bus padidinta. Susisiekite su savo \"GovSuccess\" vadybininku ir sužinokite apie tai daugiau.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Dėkojame, kad užpildėte apklausą! Kitą ketvirtį kviečiame ją atlikti dar kartą.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Atsisiųsti kaip pdf",

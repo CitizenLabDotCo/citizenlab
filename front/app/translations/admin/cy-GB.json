@@ -68,7 +68,6 @@
   "app.components.AnonymousPostingToggle.userAnonymityLabelTooltip2": "Gall defnyddwyr barhau i ddewis cymryd rhan gyda'u henw iawn, ond bydd ganddynt yr opsiwn i gyflwyno cyfraniadau yn ddienw os ydynt yn dewis gwneud hynny. Bydd angen i bob defnyddiwr gydymffurfio â'r gofynion a osodwyd yn y tab Hawliau Mynediad o hyd er mwyn i'w cyfraniadau fynd drwodd. Ni fydd data proffil defnyddiwr ar gael ar yr allforiad data cyfranogiad.",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltip": "Dysgwch fwy am anhysbysrwydd defnyddwyr yn ein {supportArticle}.",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkText": "erthygl cefnogi",
-  "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Unwaith y bydd seddi ychwanegol yn cael eu hychwanegu, bydd eich biliau yn cynyddu. Cysylltwch â'ch Rheolwr GovSuccess i ddysgu mwy amdano.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Diolch am gwblhau'r arolwg! Mae croeso i chi fynd ag e eto'r chwarter nesaf.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Lawrlwytho fel pdf",

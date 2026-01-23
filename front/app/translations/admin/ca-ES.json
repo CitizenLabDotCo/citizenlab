@@ -11,7 +11,6 @@
   "app.components.AnonymousPostingToggle.userAnonymityLabelTooltip2": "Els usuaris encara poden optar per participar amb el seu nom real, però tindran l'opció d'enviar contribucions de manera anònima si ho decideixen. Tots els usuaris encara hauran de complir els requisits establerts a la pestanya Drets d'accés perquè les seves contribucions puguin passar. Les dades del perfil d'usuari no estaran disponibles a l'exportació de dades de participació.",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltip": "Obteniu més informació sobre l'anonimat dels usuaris al nostre {supportArticle}.",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkText": "article de suport",
-  "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enbling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Once additional seats are added, your billing will be increased. Reach out to your GovSuccess Manager to learn more about it.",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Crear projecte",

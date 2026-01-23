@@ -11,7 +11,6 @@
   "app.components.AnonymousPostingToggle.userAnonymityLabelTooltip2": "Οι χρήστες μπορούν να εξακολουθούν να επιλέγουν να συμμετέχουν με το πραγματικό τους όνομα, αλλά θα έχουν τη δυνατότητα να υποβάλλουν τις συνεισφορές τους ανώνυμα, αν το επιλέξουν. Όλοι οι χρήστες θα εξακολουθούν να πρέπει να συμμορφώνονται με τις απαιτήσεις που ορίζονται στην καρτέλα Δικαιώματα πρόσβασης για να περάσουν οι συνεισφορές τους. Τα δεδομένα του προφίλ του χρήστη δεν θα είναι διαθέσιμα στην εξαγωγή δεδομένων συμμετοχής.",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltip": "Μάθετε περισσότερα για την ανωνυμία των χρηστών στο {supportArticle}.",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkText": "άρθρο υποστήριξης",
-  "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Once additional seats are added, your billing will be increased. Reach out to your GovSuccess Manager to learn more about it.",
   "app.components.ProjectTemplatePreview.close": "Close",
   "app.components.ProjectTemplatePreview.createProject": "Δημιουργία έργου",

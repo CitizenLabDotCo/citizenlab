@@ -68,7 +68,6 @@
   "app.components.AnonymousPostingToggle.userAnonymityLabelTooltip2": "Gli utenti potranno ancora scegliere di partecipare con il loro vero nome, ma avranno la possibilità di inviare contributi in forma anonima se lo desiderano. Tutti gli utenti dovranno comunque rispettare i requisiti stabiliti nella scheda Diritti di accesso affinché i loro contributi vengano accettati. I dati del profilo utente non saranno disponibili nell'esportazione dei dati di partecipazione.",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltip": "Per saperne di più sull'anonimato degli utenti, consulta il nostro {supportArticle}.",
   "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkText": "articolo di supporto",
-  "app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl": "https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation",
   "app.components.BillingWarning.billingWarning": "Una volta aggiunti altri posti, la tua fatturazione aumenterà. Contatta il tuo GovSuccess Manager per saperne di più.",
   "app.components.CommunityMonitorModal.surveyCompletedUntilNextQuarter": "Grazie per aver completato il sondaggio! Potrai compilarne uno nuovo il prossimo trimestre.",
   "app.components.FormBuilder.components.FormBuilderTopBar.downloadPDF": "Scarica come pdf",
