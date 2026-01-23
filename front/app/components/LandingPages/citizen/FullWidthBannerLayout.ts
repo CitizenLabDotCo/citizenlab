@@ -10,19 +10,13 @@ export const Container = styled.div`
   background-color: ${colors.background};
 `;
 
-export const defaultHeights = {
-  desktop: homepageBannerLayoutHeights.full_width_banner_layout.desktop,
-  tablet: homepageBannerLayoutHeights.full_width_banner_layout.tablet,
-  phone: homepageBannerLayoutHeights.full_width_banner_layout.phone,
-};
-
 export const Header = styled.div<{
   desktopHeight?: number;
   tabletHeight?: number;
   phoneHeight?: number;
 }>`
   width: 100%;
-  height: ${(props) => props.desktopHeight ?? defaultHeights.desktop}px;
+  height: ${homepageBannerLayoutHeights.full_width_banner_layout.desktop}px;
   margin: 0;
   padding: 0;
   position: relative;
@@ -32,11 +26,11 @@ export const Header = styled.div<{
   justify-content: center;
 
   ${media.tablet`
-    height: ${(props) => props.tabletHeight ?? defaultHeights.tablet}px;
+    height: ${homepageBannerLayoutHeights.full_width_banner_layout.tablet}px;
   `}
 
   ${media.phone`
-    height: ${(props) => props.phoneHeight ?? defaultHeights.phone}px;
+    height: ${homepageBannerLayoutHeights.full_width_banner_layout.phone}px;
   `}
 `;
 
