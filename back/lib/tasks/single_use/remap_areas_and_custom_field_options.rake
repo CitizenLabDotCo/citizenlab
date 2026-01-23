@@ -108,7 +108,7 @@ namespace :single_use do
             # Simple rename - just one area to update and target doesn't exist
             area = matching_areas.first
             old_name_display = area.title_multiloc[default_locale]
-            
+
             # Skip if already has the target name
             if area.title_multiloc[default_locale]&.strip&.casecmp?(target_name)
               puts "→ '#{old_name_display}' already has target name '#{target_name}' - skipping"
@@ -120,9 +120,9 @@ namespace :single_use do
             area.title_multiloc.each_key do |locale|
               new_title_multiloc[locale] = target_name
             end
-            
+
             area.title_multiloc = new_title_multiloc
-            
+
             if area.save
               stats[:areas_renamed] += 1
               puts "✓ Renamed area: '#{old_name_display}' → '#{target_name}' (ID: #{area.id})"
@@ -142,7 +142,7 @@ namespace :single_use do
             # If a target area exists, use it as the keeper; otherwise use the first alphabetically
             all_areas_to_process = existing_target_area ? [existing_target_area] + matching_areas : matching_areas
             sorted_areas = all_areas_to_process.sort_by { |a| a.title_multiloc[default_locale] || '' }
-            
+
             # If target exists, make it the keeper; otherwise use first alphabetically
             area_to_keep = existing_target_area || sorted_areas.first
             areas_to_merge = sorted_areas.reject { |a| a.id == area_to_keep.id }
