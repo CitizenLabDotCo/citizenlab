@@ -113,9 +113,9 @@ resource 'Phase insights' do
         participation_rate_7_day_percent_change: 300.0, # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 1.0 = 0% change
         native_survey: {
           surveys_submitted: 4,
-          surveys_submitted_7_day_change: 100.0, # from 1 (in week before last) to 2 (in last 7 days) = +100% change
+          surveys_submitted_7_day_percent_change: 100.0, # from 1 (in week before last) to 2 (in last 7 days) = +100% change
           completion_rate_as_percent: 80.0, # 4 submitted surveys out of 5 ideas
-          completion_rate_7_day_change: 100.0 # completion_rate_last_7_days: 1.0, completion_rate_previous_7_days: 0.5 = (((1.0 - 0.5).to_f / 0.5) * 100.0).round(1) = +100% change
+          completion_rate_7_day_percent_change: 100.0 # completion_rate_last_7_days: 1.0, completion_rate_previous_7_days: 0.5 = (((1.0 - 0.5).to_f / 0.5) * 100.0).round(1) = +100% change
         }
       })
 
