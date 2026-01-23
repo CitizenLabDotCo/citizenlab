@@ -107,6 +107,7 @@ module Insights
     end
 
     def percentage_change(old_value, new_value)
+      return nil unless phase_has_run_more_than_14_days?
       return 0.0 if old_value == new_value # Includes case where both are zero
       return 'last_7_days_compared_with_zero' if old_value.zero? # Infinite percentage change (avoid division by zero)
 
