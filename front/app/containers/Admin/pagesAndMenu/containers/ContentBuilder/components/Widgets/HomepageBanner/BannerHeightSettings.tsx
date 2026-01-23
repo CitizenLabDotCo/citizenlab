@@ -24,9 +24,6 @@ interface Props {
   onDesktopHeightChange: (value?: number) => void;
   onTabletHeightChange: (value?: number) => void;
   onPhoneHeightChange: (value?: number) => void;
-  desktopPlaceholder: string;
-  tabletPlaceholder: string;
-  phonePlaceholder: string;
   disabled: boolean;
 }
 
@@ -39,9 +36,6 @@ const BannerHeightSettings = ({
   onDesktopHeightChange,
   onTabletHeightChange,
   onPhoneHeightChange,
-  desktopPlaceholder,
-  tabletPlaceholder,
-  phonePlaceholder,
   disabled,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -94,7 +88,7 @@ const BannerHeightSettings = ({
                   type="number"
                   min="50"
                   max="800"
-                  placeholder={desktopPlaceholder}
+                  placeholder={'200'}
                   value={desktopHeight?.toString() || ''}
                   onChange={(value) => {
                     const numValue = value ? parseInt(value, 10) : undefined;
@@ -112,7 +106,7 @@ const BannerHeightSettings = ({
                   type="number"
                   min="50"
                   max="800"
-                  placeholder={tabletPlaceholder}
+                  placeholder={'250'}
                   value={tabletHeight?.toString() || ''}
                   onChange={(value) => {
                     const numValue = value ? parseInt(value, 10) : undefined;
@@ -130,7 +124,7 @@ const BannerHeightSettings = ({
                   type="number"
                   min="50"
                   max="800"
-                  placeholder={phonePlaceholder}
+                  placeholder={'300'}
                   value={phoneHeight?.toString() || ''}
                   onChange={(value) => {
                     const numValue = value ? parseInt(value, 10) : undefined;
