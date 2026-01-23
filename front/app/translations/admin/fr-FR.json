@@ -108,7 +108,6 @@
   "app.components.SeatInfo.managerSeatsTooltip": "Les gestionnaires de dossiers/projets peuvent gérer un nombre illimité de dossiers/projets. Vous pouvez {visitHelpCenter} pour en savoir plus sur les différents rôles.",
   "app.components.SeatInfo.managersIncludedText": "{managerSeats} sièges gestionnaires",
   "app.components.SeatInfo.remainingSeats": "Sièges restants",
-  "app.components.SeatInfo.rolesSupportPage": "https://support.govocal.com/en/articles/2672884-what-are-the-different-roles-on-the-platform",
   "app.components.SeatInfo.totalSeats": "Nombre total de sièges",
   "app.components.SeatInfo.totalSeatsTooltip": "Ceci correspond à la somme des sièges de votre plan et des sièges supplémentaires que vous avez achetés.",
   "app.components.SeatInfo.usedSeats": "Sièges utilisés",

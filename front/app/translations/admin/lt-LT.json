@@ -108,7 +108,6 @@
   "app.components.SeatInfo.managerSeatsTooltip": "Aplankų / projektų tvarkytojai gali tvarkyti neribotą aplankų / projektų skaičių. Norėdami sužinoti daugiau apie skirtingus vaidmenis, galite {visitHelpCenter} .",
   "app.components.SeatInfo.managersIncludedText": "{managerSeats} įtrauktos vadybininko sėdynės",
   "app.components.SeatInfo.remainingSeats": "Likusios vietos",
-  "app.components.SeatInfo.rolesSupportPage": "https://support.govocal.com/en/articles/2672884-what-are-the-different-roles-on-the-platform",
   "app.components.SeatInfo.totalSeats": "Iš viso vietų",
   "app.components.SeatInfo.totalSeatsTooltip": "Čia rodomas bendras jūsų plano vietų skaičius ir papildomai įsigytų vietų skaičius.",
   "app.components.SeatInfo.usedSeats": "Naudotos sėdynės",

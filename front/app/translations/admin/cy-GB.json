@@ -108,7 +108,6 @@
   "app.components.SeatInfo.managerSeatsTooltip": "Gall rheolwyr ffolderi/prosiectau reoli nifer digyfyngiad o ffolderi/prosiectau. Gallwch {visitHelpCenter} ddysgu mwy am y gwahanol rolau.",
   "app.components.SeatInfo.managersIncludedText": "{managerSeats} seddi rheolwyr wedi'u cynnwys",
   "app.components.SeatInfo.remainingSeats": "Seddi sy'n weddill",
-  "app.components.SeatInfo.rolesSupportPage": "https://support.govocal.com/en/articles/2672884-what-are-the-different-roles-on-the-platform",
   "app.components.SeatInfo.totalSeats": "Cyfanswm y seddi",
   "app.components.SeatInfo.totalSeatsTooltip": "Mae hwn yn dangos y nifer cryno o seddi yn eich cynllun a'r seddi ychwanegol rydych chi wedi'u prynu.",
   "app.components.SeatInfo.usedSeats": "Seddi a ddefnyddir",

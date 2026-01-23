@@ -108,7 +108,6 @@
   "app.components.SeatInfo.managerSeatsTooltip": "Менаџери фасцикли/пројеката могу управљати неограниченим бројем фасцикли/пројеката. Можете {visitHelpCenter} да сазнате више о различитим улогама.",
   "app.components.SeatInfo.managersIncludedText": "Укључено {managerSeats} менаџерских места",
   "app.components.SeatInfo.remainingSeats": "Преостала места",
-  "app.components.SeatInfo.rolesSupportPage": "хттпс://суппорт.цитизенлаб.цо/ен/артицлес/2672884-вхат-аре-тхе-дифферент-ролес-он-тхе-платформ",
   "app.components.SeatInfo.totalSeats": "Укупно места",
   "app.components.SeatInfo.totalSeatsTooltip": "Ово показује збир седишта у оквиру вашег плана и додатних места која сте купили.",
   "app.components.SeatInfo.usedSeats": "Половна седишта",

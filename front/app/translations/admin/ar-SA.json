@@ -108,7 +108,6 @@
   "app.components.SeatInfo.managerSeatsTooltip": "يمكن لمديري المجلدات / المشاريع إدارة عدد غير محدود من المجلدات / المشاريع. يمكنك {visitHelpCenter} لمعرفة المزيد عن الأدوار المختلفة.",
   "app.components.SeatInfo.managersIncludedText": "{managerSeats} مقاعد مدير متضمنة",
   "app.components.SeatInfo.remainingSeats": "المقاعد المتبقية",
-  "app.components.SeatInfo.rolesSupportPage": "https://support.govocal.com/en/articles/2672884-what-are-the-different-roles-on-the-platform",
   "app.components.SeatInfo.totalSeats": "مجموع المقاعد",
   "app.components.SeatInfo.totalSeatsTooltip": "يعرض هذا العدد الإجمالي للمقاعد في خطتك والمقاعد الإضافية التي اشتريتها.",
   "app.components.SeatInfo.usedSeats": "مقاعد مستعملة",

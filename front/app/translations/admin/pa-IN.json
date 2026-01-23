@@ -108,7 +108,6 @@
   "app.components.SeatInfo.managerSeatsTooltip": "ਫੋਲਡਰ/ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਅਸੀਮਤ ਗਿਣਤੀ ਵਿੱਚ ਫੋਲਡਰਾਂ/ਪ੍ਰੋਜੈਕਟਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰ ਸਕਦੇ ਹਨ। ਤੁਸੀਂ ਵੱਖ-ਵੱਖ ਭੂਮਿਕਾਵਾਂ ਬਾਰੇ ਹੋਰ ਜਾਣਨ ਲਈ {visitHelpCenter} ਕਰ ਸਕਦੇ ਹੋ।",
   "app.components.SeatInfo.managersIncludedText": "{managerSeats} ਪ੍ਰਬੰਧਕ ਸੀਟਾਂ ਸ਼ਾਮਲ ਹਨ",
   "app.components.SeatInfo.remainingSeats": "ਬਾਕੀ ਸੀਟਾਂ",
-  "app.components.SeatInfo.rolesSupportPage": "https://support.cizenlab.co/en/articles/2672884-what-are-the-different-roles-on-the-platform",
   "app.components.SeatInfo.totalSeats": "ਕੁੱਲ ਸੀਟਾਂ",
   "app.components.SeatInfo.totalSeatsTooltip": "ਇਹ ਤੁਹਾਡੀ ਯੋਜਨਾ ਦੇ ਅੰਦਰ ਸੀਟਾਂ ਦੀ ਸੰਖਿਆ ਅਤੇ ਤੁਹਾਡੇ ਦੁਆਰਾ ਖਰੀਦੀਆਂ ਗਈਆਂ ਵਾਧੂ ਸੀਟਾਂ ਨੂੰ ਦਰਸਾਉਂਦਾ ਹੈ।",
   "app.components.SeatInfo.usedSeats": "ਵਰਤੀਆਂ ਗਈਆਂ ਸੀਟਾਂ",

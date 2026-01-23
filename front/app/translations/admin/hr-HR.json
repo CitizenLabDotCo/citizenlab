@@ -108,7 +108,6 @@
   "app.components.SeatInfo.managerSeatsTooltip": "Upravitelji mapa/projekata mogu upravljati neograničenim brojem mapa/projekata. Možete {visitHelpCenter} saznati više o različitim ulogama.",
   "app.components.SeatInfo.managersIncludedText": "Uključeno je {managerSeats} menadžerskih mjesta",
   "app.components.SeatInfo.remainingSeats": "Preostala mjesta",
-  "app.components.SeatInfo.rolesSupportPage": "https://support.govocal.com/en/articles/2672884-what-are-the-different-roles-on-the-platform",
   "app.components.SeatInfo.totalSeats": "Ukupno mjesta",
   "app.components.SeatInfo.totalSeatsTooltip": "Ovo pokazuje zbroj mjesta unutar vašeg plana i dodatnih mjesta koja ste kupili.",
   "app.components.SeatInfo.usedSeats": "Rabljena sjedala",

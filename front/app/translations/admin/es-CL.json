@@ -108,7 +108,6 @@
   "app.components.SeatInfo.managerSeatsTooltip": "Los gestores de carpetas/proyectos pueden gestionar un número ilimitado de carpetas/proyectos. Puedes {visitHelpCenter} para obtener más información sobre las distintas funciones.",
   "app.components.SeatInfo.managersIncludedText": "{managerSeats} asientos para gestores incluidos",
   "app.components.SeatInfo.remainingSeats": "Plazas restantes",
-  "app.components.SeatInfo.rolesSupportPage": "https://support.govocal.com/en/articles/2672884-what-are-the-different-roles-on-the-platform",
   "app.components.SeatInfo.totalSeats": "Número total de plazas",
   "app.components.SeatInfo.totalSeatsTooltip": "Muestra el número total de plazas de su plan y las plazas adicionales que ha adquirido.",
   "app.components.SeatInfo.usedSeats": "Plazas utilizadas",

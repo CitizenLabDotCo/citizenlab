@@ -108,7 +108,6 @@
   "app.components.SeatInfo.managerSeatsTooltip": "Kansio-/projektipäälliköt voivat hallita rajoittamattoman määrän kansioita/projekteja. Voit {visitHelpCenter} oppia lisää eri rooleista.",
   "app.components.SeatInfo.managersIncludedText": "{managerSeats} manageripaikkaa mukana",
   "app.components.SeatInfo.remainingSeats": "Jäljellä olevat istuimet",
-  "app.components.SeatInfo.rolesSupportPage": "https://support.govocal.com/en/articles/2672884-what-are-the-different-roles-on-the-platform",
   "app.components.SeatInfo.totalSeats": "Istumapaikkoja yhteensä",
   "app.components.SeatInfo.totalSeatsTooltip": "Tämä näyttää suunnitelmasi ja ostamiesi lisäpaikkojen yhteenlasketun määrän.",
   "app.components.SeatInfo.usedSeats": "Käytetyt istuimet",

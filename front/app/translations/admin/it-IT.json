@@ -108,7 +108,6 @@
   "app.components.SeatInfo.managerSeatsTooltip": "I manager di cartelle/progetti possono gestire un numero illimitato di cartelle/progetti. Puoi visitare il sito {visitHelpCenter} per saperne di più sui diversi ruoli.",
   "app.components.SeatInfo.managersIncludedText": "{managerSeats} Posti manager inclusi",
   "app.components.SeatInfo.remainingSeats": "Posti rimanenti",
-  "app.components.SeatInfo.rolesSupportPage": "https://support.govocal.com/en/articles/2672884-what-are-the-different-roles-on-the-platform",
   "app.components.SeatInfo.totalSeats": "Numero totale di posti",
   "app.components.SeatInfo.totalSeatsTooltip": "Qui viene visualizzato il numero totale di posti inclusi nel tuo piano e dei posti aggiuntivi che hai acquistato.",
   "app.components.SeatInfo.usedSeats": "Posti utilizzati",

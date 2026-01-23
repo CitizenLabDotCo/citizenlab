@@ -108,7 +108,6 @@
   "app.components.SeatInfo.managerSeatsTooltip": "Mapju/projektu pārvaldnieki var pārvaldīt neierobežotu skaitu mapju/projektu. Lai uzzinātu vairāk par dažādām lomām, varat {visitHelpCenter} .",
   "app.components.SeatInfo.managersIncludedText": "{managerSeats} iekļauti menedžeru sēdekļi",
   "app.components.SeatInfo.remainingSeats": "Atlikušās vietas",
-  "app.components.SeatInfo.rolesSupportPage": "https://support.govocal.com/en/articles/2672884-what-are-the-different-roles-on-the-platform",
   "app.components.SeatInfo.totalSeats": "Kopējais vietu skaits",
   "app.components.SeatInfo.totalSeatsTooltip": "Šajā rādītājā ir redzams jūsu plāna sēdvietu un papildus iegādāto sēdvietu kopējais skaits.",
   "app.components.SeatInfo.usedSeats": "Lietoti sēdekļi",

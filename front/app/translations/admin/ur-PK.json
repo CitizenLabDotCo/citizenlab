@@ -108,7 +108,6 @@
   "app.components.SeatInfo.managerSeatsTooltip": "فولڈر/پروجیکٹ مینیجر لامحدود تعداد میں فولڈرز/پروجیکٹس کا انتظام کر سکتے ہیں۔ مختلف کرداروں کے بارے میں مزید جاننے کے لیے آپ {visitHelpCenter} کر سکتے ہیں۔",
   "app.components.SeatInfo.managersIncludedText": "{managerSeats} مینیجر سیٹیں شامل ہیں۔",
   "app.components.SeatInfo.remainingSeats": "باقی نشستیں۔",
-  "app.components.SeatInfo.rolesSupportPage": "https://support.cizenlab.co/en/articles/2672884-what-are-the-different-roles-on-the-platform",
   "app.components.SeatInfo.totalSeats": "کل سیٹیں۔",
   "app.components.SeatInfo.totalSeatsTooltip": "یہ آپ کے پلان میں سیٹوں کی مجموعی تعداد اور آپ کی خریدی ہوئی اضافی سیٹوں کو دکھاتا ہے۔",
   "app.components.SeatInfo.usedSeats": "استعمال شدہ نشستیں۔",

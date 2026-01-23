@@ -108,7 +108,6 @@
   "app.components.SeatInfo.managerSeatsTooltip": "Os gestores de pastas/projetos podem gerenciar um número ilimitado de pastas/projetos. Você pode {visitHelpCenter} para aprender mais sobre as diferentes funções.",
   "app.components.SeatInfo.managersIncludedText": "{managerSeats} licenças de gestores incluídas",
   "app.components.SeatInfo.remainingSeats": "Licenças restantes",
-  "app.components.SeatInfo.rolesSupportPage": "https://support.govocal.com/en/articles/2672884-what-are-the-different-roles-on-the-platform",
   "app.components.SeatInfo.totalSeats": "Total de licenças",
   "app.components.SeatInfo.totalSeatsTooltip": "Isso mostra o número somado de licenças em seu plano e licenças adicionais que você comprou.",
   "app.components.SeatInfo.usedSeats": "Licenças usadas",

@@ -108,7 +108,6 @@
   "app.components.SeatInfo.managerSeatsTooltip": "Klasör/proje yöneticileri sınırsız sayıda klasörü/projeyi yönetebilir. Farklı roller hakkında daha fazla bilgi edinmek için {visitHelpCenter} adresini ziyaret edebilirsiniz.",
   "app.components.SeatInfo.managersIncludedText": "{managerSeats} yönetici koltukları dahil",
   "app.components.SeatInfo.remainingSeats": "Kalan koltuklar",
-  "app.components.SeatInfo.rolesSupportPage": "https://support.govocal.com/en/articles/2672884-what-are-the-different-roles-on-the-platform",
   "app.components.SeatInfo.totalSeats": "Toplam koltuk sayısı",
   "app.components.SeatInfo.totalSeatsTooltip": "Bu, planınızdaki toplam koltuk sayısını ve satın aldığınız ek koltukları gösterir.",
   "app.components.SeatInfo.usedSeats": "Kullanılmış koltuklar",

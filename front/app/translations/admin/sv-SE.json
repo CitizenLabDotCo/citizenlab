@@ -108,7 +108,6 @@
   "app.components.SeatInfo.managerSeatsTooltip": "Mapp-/projektansvariga kan hantera ett obegränsat antal mappar/projekt. På {visitHelpCenter} kan du läsa mer om de olika rollerna.",
   "app.components.SeatInfo.managersIncludedText": "{managerSeats} Föreståndarsäten ingår.",
   "app.components.SeatInfo.remainingSeats": "Återstående platser",
-  "app.components.SeatInfo.rolesSupportPage": "https://support.govocal.com/en/articles/2672884-what-are-the-different-roles-on-the-platform",
   "app.components.SeatInfo.totalSeats": "Totalt antal platser",
   "app.components.SeatInfo.totalSeatsTooltip": "Här visas det sammanlagda antalet platser i din plan och ytterligare platser som du har köpt.",
   "app.components.SeatInfo.usedSeats": "Begagnade säten",

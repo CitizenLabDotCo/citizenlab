@@ -108,7 +108,6 @@
   "app.components.SeatInfo.managerSeatsTooltip": "Mappe-/prosjektledere kan administrere et ubegrenset antall mapper/prosjekter. Du kan gå til {visitHelpCenter} for å lære mer om de ulike rollene.",
   "app.components.SeatInfo.managersIncludedText": "{managerSeats} Lederseter inkludert",
   "app.components.SeatInfo.remainingSeats": "Gjenværende seter",
-  "app.components.SeatInfo.rolesSupportPage": "https://support.govocal.com/en/articles/2672884-what-are-the-different-roles-on-the-platform",
   "app.components.SeatInfo.totalSeats": "Totalt antall seter",
   "app.components.SeatInfo.totalSeatsTooltip": "Dette viser det samlede antallet seter i abonnementet ditt og ekstra seter du har kjøpt.",
   "app.components.SeatInfo.usedSeats": "Brukte seter",

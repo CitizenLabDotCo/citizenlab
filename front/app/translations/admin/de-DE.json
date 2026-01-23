@@ -108,7 +108,6 @@
   "app.components.SeatInfo.managerSeatsTooltip": "Ordner-/Projektmanager*innen können eine unbegrenzte Anzahl von Ordnern/Projekten verwalten. Sie können {visitHelpCenter} besuchen, um mehr über die verschiedenen Rollen zu erfahren.",
   "app.components.SeatInfo.managersIncludedText": "{managerSeats} enthaltene Ordner- und Projektmanagement-Zugänge",
   "app.components.SeatInfo.remainingSeats": "Verbleibende Zugänge",
-  "app.components.SeatInfo.rolesSupportPage": "https://support.govocal.com/de/articles/2672884-was-sind-die-verschiedenen-rollen-auf-der-plattform",
   "app.components.SeatInfo.totalSeats": "Zugänge insgesamt",
   "app.components.SeatInfo.totalSeatsTooltip": "Hier wird die Gesamtzahl der Nutzungsrechte in Ihrer Lizenz und der von Ihnen zusätzlich erworbenen Zugänge angezeigt.",
   "app.components.SeatInfo.usedSeats": "Verwendete Zugänge",

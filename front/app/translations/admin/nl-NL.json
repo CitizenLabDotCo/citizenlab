@@ -108,7 +108,6 @@
   "app.components.SeatInfo.managerSeatsTooltip": "Map- en projectbeheerders kunnen een onbeperkt aantal mappen/projecten beheren, {visitHelpCenter} voor meer informatie over de verschillende rollen.",
   "app.components.SeatInfo.managersIncludedText": "{managerSeats} accounts voor map- en projectbeheerders inbegrepen",
   "app.components.SeatInfo.remainingSeats": "Beschikbare accounts",
-  "app.components.SeatInfo.rolesSupportPage": "https://support.govocal.com/nl/articles/2672884-wat-zijn-de-verschillende-rollen-op-het-platform",
   "app.components.SeatInfo.totalSeats": "Accounts binnen het abonnement",
   "app.components.SeatInfo.totalSeatsTooltip": "Dit toont het opgetelde aantal accounts binnen jullie abonnement en extra accounts die jullie hebben gekocht.",
   "app.components.SeatInfo.usedSeats": "Accounts in gebruik",

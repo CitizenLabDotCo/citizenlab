@@ -108,7 +108,6 @@
   "app.components.SeatInfo.managerSeatsTooltip": "Menedżerowie folderów/projektów mogą zarządzać nieograniczoną liczbą folderów/projektów. Możesz {visitHelpCenter} , aby dowiedzieć się więcej o różnych rolach.",
   "app.components.SeatInfo.managersIncludedText": "{managerSeats} w zestawie fotele menedżerskie",
   "app.components.SeatInfo.remainingSeats": "Pozostałe miejsca",
-  "app.components.SeatInfo.rolesSupportPage": "https://support.govocal.com/en/articles/2672884-what-are-the-different-roles-on-the-platform",
   "app.components.SeatInfo.totalSeats": "Miejsca ogółem",
   "app.components.SeatInfo.totalSeatsTooltip": "Pokazuje on zsumowaną liczbę miejsc w ramach Twojego planu oraz dodatkowe miejsca, które zakupiłeś.",
   "app.components.SeatInfo.usedSeats": "Siedzenia używane",
