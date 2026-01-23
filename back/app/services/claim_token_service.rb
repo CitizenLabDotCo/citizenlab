@@ -58,6 +58,18 @@ class ClaimTokenService
       ClaimToken.expired.delete_all
     end
 
+    # Gets the last created claim token. Then
+    # takes the associated item. If this item
+    # contains demographic data: we copy it into the user's profile.
+    def sync_demographics!(user)
+      lastly_created_claim_token = user.claim_tokens.order(created_at: :desc).first
+      return unless lastly_created_claim_token
+
+      item = lastly_created_claim_token.item
+
+      # TODO
+    end
+
     private
 
     def item_has_owner?(item)
