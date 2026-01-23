@@ -43,10 +43,11 @@ const IdeasFeedPage = () => {
       <Box
         w="100%"
         bgColor={colors.grey100}
-        h="100dvh"
-        position="absolute"
+        position="fixed"
         top="0"
+        left="0"
         right="0"
+        bottom="0"
         zIndex="1010"
         overflow="hidden"
       >
