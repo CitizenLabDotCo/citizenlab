@@ -88,7 +88,9 @@ const ParticipationMetrics = ({ phase }: Props) => {
         value={`${(metrics.participation_rate * 100).toFixed(1)}%`}
         icon="chart-bar"
         change={
-          isCurrentPhase ? metrics.participation_rate_7_day_change : undefined
+          isCurrentPhase
+            ? metrics.participation_rate_7_day_percent_change
+            : undefined
         }
       />
     </Box>

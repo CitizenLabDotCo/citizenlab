@@ -55,7 +55,7 @@ module Insights
         participants: participants_count,
         participants_7_day_change: base_7_day_changes[:participants_7_day_change],
         participation_rate: visitors_count > 0 ? (participants_count.to_f / visitors_count).round(3) : 0,
-        participation_rate_7_day_change: base_7_day_changes[:participation_rate_7_day_change]
+        participation_rate_7_day_percent_change: base_7_day_changes[:participation_rate_7_day_percent_change]
       }
     end
 
@@ -84,7 +84,7 @@ module Insights
       {
         visitors_7_day_percent_change: percentage_change(visitors_previous_7_days_count, visitors_last_7_days_count),
         participants_7_day_change: percentage_change(participants_previous_7_days_count, participants_last_7_days_count),
-        participation_rate_7_day_change: percentage_change(participation_rate_previous_7_days, participation_rate_last_7_days)
+        participation_rate_7_day_percent_change: percentage_change(participation_rate_previous_7_days, participation_rate_last_7_days)
       }
     end
 
