@@ -240,8 +240,8 @@ class WebApi::V1::IdeasController < ApplicationController
 
         permission = phase_for_input.permissions.find_by(action: 'posting_idea')
 
-        if permission.permitted_by === 'everyone' && input.author_id.nil?
-          ClaimTokenService.generate(input) unless input.author_id
+        if permission.permitted_by === 'everyone' && current_user.nil?
+          ClaimTokenService.generate(input)
         end
 
         serializer_params = jsonapi_serializer_params.merge(include_claim_token: true)
