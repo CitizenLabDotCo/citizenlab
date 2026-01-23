@@ -2,7 +2,8 @@ import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 
-import useGlobalTopic from 'api/global_topics/useGlobalTopic';
+import useInputTopicById from 'api/input_topics/useInputTopicById';
+import useInputTopics from 'api/input_topics/useInputTopics';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -11,15 +12,20 @@ import GoBackButton from 'components/UI/GoBackButton';
 import messages from '../messages';
 
 interface Props {
+  projectId: string;
   topicId: string;
   onBack: () => void;
   isMobile?: boolean;
 }
 
-const SelectedTopicContent = ({ topicId, onBack }: Props) => {
-  const { data: topic } = useGlobalTopic(topicId);
+const SelectedTopicContent = ({ projectId, topicId, onBack }: Props) => {
+  const { data: topic } = useInputTopicById(topicId);
+  const { data: subtopics } = useInputTopics(projectId, {
+    parentId: topicId,
+    depth: 1,
+  });
   const localize = useLocalize();
-
+  console.log('subtopics', subtopics);
   return (
     <>
       <Box mb="16px">
