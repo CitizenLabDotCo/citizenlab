@@ -241,7 +241,7 @@ module MultiTenancy
                       else
                         translate_logs[:strings] += 1
                         translate_logs[:chars] += source_text.length
-                        translator.translate source_text, source_locale, locale, retries: 10 
+                        translator.translate source_text, source_locale, locale, retries: 10
                       end
                     rescue StandardError => e
                       ErrorReporter.report(e, extra: { model: model_name, field: field_name, from: source_locale, to: locale, text: source_text })
