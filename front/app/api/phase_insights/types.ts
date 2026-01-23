@@ -37,7 +37,7 @@ interface BaseVotingMetrics {
 
 export interface VotingMetrics extends BaseVotingMetrics {
   online_votes: number;
-  online_votes_7_day_change?: SevenDayChange;
+  online_votes_7_day_percent_change?: SevenDayChange;
   offline_votes: number;
 }
 

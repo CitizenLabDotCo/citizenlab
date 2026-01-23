@@ -104,7 +104,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         voting_method: phase.voting_method,
         associated_ideas: 2,
         online_votes: 5,
-        online_votes_7_day_change: 50.0, # from 2 (in week before last) to 3 (in last 7 days) = 50% increase
+        online_votes_7_day_percent_change: 50.0, # from 2 (in week before last) to 3 (in last 7 days) = 50% increase
         offline_votes: phase.manual_votes_count,
         voters: 1,
         voters_7_day_percent_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) = 0% change

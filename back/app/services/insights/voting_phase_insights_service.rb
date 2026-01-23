@@ -174,7 +174,7 @@ module Insights
           voting_method: @phase.voting_method,
           associated_ideas: associated_published_ideas_count,
           online_votes: participations[:voting].sum { |p| p[:total_votes] },
-          online_votes_7_day_change: online_votes_7_day_change(participations),
+          online_votes_7_day_percent_change: online_votes_7_day_percent_change(participations),
           offline_votes: @phase.manual_votes_count,
           voters: participations[:voting].pluck(:participant_id).uniq.count,
           voters_7_day_percent_change: common_7_day_changes[:voters_7_day_percent_change],
@@ -225,7 +225,7 @@ module Insights
       percentage_change(online_picks_previous_7_days, online_picks_last_7_days)
     end
 
-    def online_votes_7_day_change(participations)
+    def online_votes_7_day_percent_change(participations)
       return nil unless phase_has_run_more_than_14_days?
 
       voting_participations = participations[:voting]
