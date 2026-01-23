@@ -4,6 +4,7 @@ module Insights
 
     def initialize(phase)
       @phase = phase
+      @cache_expires_in = 5.minutes
     end
 
     # --- TEMPLATE METHOD (Instance Method) ---
@@ -13,16 +14,26 @@ module Insights
       cached_insights_data(participations)
     end
 
-    # TODO: Implement caching, as intention is to resue cached participations in various places
+    # Using @phase.updated_at in cache key to help catch case where phase start_at or end_at changes
     def cached_phase_participations
-      # Imagine some caching stuff is here ;-)
-      phase_participations
+      cache_key = "phase_participations/#{@phase.id}/#{@phase.updated_at.to_i}"
+
+      Rails.cache.fetch(cache_key, expires_in: @cache_expires_in) do
+        phase_participations
+      end
     end
 
     private
 
-    # TODO: Implement caching? (may not be needed if performance good enough)
     def cached_insights_data(participations)
+      cache_key = "phase_insights_data/#{@phase.id}/#{@phase.updated_at.to_i}"
+
+      Rails.cache.fetch(cache_key, expires_in: @cache_expires_in) do
+        insights_data(participations)
+      end
+    end
+
+    def insights_data(participations)
       visits = VisitsService.new.phase_visits(@phase)
       flattened_participations = participations.values.flatten
       participant_ids = flattened_participations.pluck(:participant_id).uniq
