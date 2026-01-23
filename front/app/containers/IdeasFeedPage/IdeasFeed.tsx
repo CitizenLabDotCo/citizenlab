@@ -249,7 +249,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" h="100vh">
         <Text color="coolGrey600">
-          <FormattedMessage {...messages.noIdeasForTopic} />
+          <FormattedMessage {...messages.noIdeasForTag} />
         </Text>
       </Box>
     );

@@ -33,8 +33,8 @@ export default defineMessages({
     id: 'app.containers.IdeasFeedPage.exploreTopicsNudge',
     defaultMessage: 'Swipe up to explore the topics',
   },
-  noIdeasForTopic: {
-    id: 'app.containers.IdeasFeedPage.noIdeasForTopic',
-    defaultMessage: 'No ideas for this topic yet.',
+  noIdeasForTag: {
+    id: 'app.containers.IdeasFeedPage.noIdeasForTag',
+    defaultMessage: 'No ideas for this tag yet.',
   },
 });
