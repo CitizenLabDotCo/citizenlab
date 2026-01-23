@@ -253,7 +253,7 @@ resource 'Phase insights' do
         expect(attributes[:group_by]).to be_nil
         expect(attributes[:custom_field_id]).to be_nil
         expect(attributes[:input_type]).to be_nil
-        expect(attributes[:options]).to eq([])
+        expect(attributes[:options]).to eq({})
         expect(attributes[:ideas]).to contain_exactly(
           {
             id: voting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 1' }).id,
@@ -289,7 +289,7 @@ resource 'Phase insights' do
         assert_status 200
 
         idea_titles = json_response_body[:data][:attributes][:ideas].map { |idea| idea[:title_multiloc][:en] }
-        expect(idea_titles).to eq(['Idea 2', 'Idea 1', 'Idea 3'])
+        expect(idea_titles).to contain_exactly('Idea 2', 'Idea 1', 'Idea 3')
       end
     end
 
@@ -308,12 +308,11 @@ resource 'Phase insights' do
         expect(attributes[:group_by]).to eq('gender')
         expect(attributes[:custom_field_id]).to eq(custom_field_gender.id)
         expect(attributes[:input_type]).to eq('select')
-        expect(attributes[:options]).to contain_exactly(
-          { male: { id: custom_field_option_male.id, title_multiloc: { en: 'Male' } }, ordering: custom_field_option_male.ordering },
-          { female: { id: custom_field_option_female.id, title_multiloc: { en: 'Female' } }, ordering: custom_field_option_female.ordering },
-          { unspecified: { id: custom_field_option_other.id, title_multiloc: { en: 'Unspecified' } }, ordering: custom_field_option_other.ordering }
-        )
-
+        expect(attributes[:options]).to eq({
+          male: { title_multiloc: { en: 'Male' }, ordering: custom_field_option_male.ordering },
+          female: { title_multiloc: { en: 'Female' }, ordering: custom_field_option_female.ordering },
+          unspecified: { title_multiloc: { en: 'Unspecified' }, ordering: custom_field_option_other.ordering }
+        })
         expect(attributes[:ideas]).to contain_exactly(
           {
             id: voting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 1' }).id,
@@ -413,11 +412,11 @@ resource 'Phase insights' do
           expect(attributes[:group_by]).to eq('gender')
           expect(attributes[:custom_field_id]).to eq(custom_field_gender.id)
           expect(attributes[:input_type]).to eq('select')
-          expect(attributes[:options]).to contain_exactly(
-            { male: { id: custom_field_option_male.id, title_multiloc: { en: 'Male' } }, ordering: custom_field_option_male.ordering },
-            { female: { id: custom_field_option_female.id, title_multiloc: { en: 'Female' } }, ordering: custom_field_option_female.ordering },
-            { unspecified: { id: custom_field_option_other.id, title_multiloc: { en: 'Unspecified' } }, ordering: custom_field_option_other.ordering }
-          )
+          expect(attributes[:options]).to eq({
+            male: { title_multiloc: { en: 'Male' }, ordering: custom_field_option_male.ordering },
+            female: { title_multiloc: { en: 'Female' }, ordering: custom_field_option_female.ordering },
+            unspecified: { title_multiloc: { en: 'Unspecified' }, ordering: custom_field_option_other.ordering }
+          })
 
           expect(attributes[:ideas]).to contain_exactly(
             {

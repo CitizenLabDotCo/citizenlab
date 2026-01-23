@@ -1386,7 +1386,7 @@
   "app.containers.Admin.projects.project.insights.ideation.whatArePeopleSaying": "Ko cilvēki saka?",
   "app.containers.Admin.projects.project.insights.import": "Importēt",
   "app.containers.Admin.projects.project.insights.inputs": "Ieejas",
-  "app.containers.Admin.projects.project.insights.insightsSubtitle": "Reāllaika iesaistīšanās un kopienas ietekmes izsekošana",
+  "app.containers.Admin.projects.project.insights.insightsSubtitle1": "Reāllaika iesaistes izsekošana",
   "app.containers.Admin.projects.project.insights.last7Days": "Pēdējās 7 dienas",
   "app.containers.Admin.projects.project.insights.liveData": "Tiešraides dati",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Demogrāfisko datu ielāde...",

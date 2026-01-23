@@ -43,7 +43,7 @@ const IdeasFeedPage = () => {
       <Box
         w="100%"
         bgColor={colors.grey100}
-        h="100svh"
+        h="100dvh"
         position="absolute"
         top="0"
         right="0"
@@ -67,7 +67,7 @@ const IdeasFeedPage = () => {
           position="relative"
           display="flex"
           overflow="auto"
-          h="100svh"
+          h="100dvh"
         >
           <Sidebar projectId={project.data.id} />
           <Box flex="4" position="relative">
