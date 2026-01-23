@@ -7,7 +7,6 @@ import { IdeaSortMethod, IPhaseData } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
 
-import StickyNotesPile from 'containers/IdeasFeedPage/StickyNotes/StickyNotesPile';
 import messages from 'containers/ProjectsShowPage/messages';
 
 const IdeasWithFiltersSidebar = lazy(
@@ -50,7 +49,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   const config = getMethodConfig(phase.attributes.participation_method, {
     showIdeaFilters: phase.attributes.voting_filtering_enabled,
   });
-  const showIdeasFeedLink = phase.attributes.ideation_method === 'idea_feed';
+  // Feed view is now handled through the view switcher in IdeasView
   const ideaQueryParameters = useMemo<QueryParameters>(
     () => ({
       'page[number]': 1,
@@ -82,7 +81,7 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
     onUpdateQuery: updateSearchParams,
     projectId,
     phaseId: phase.id,
-    showViewToggle: true,
+    projectSlug: slug,
     defaultView: phase.attributes.presentation_mode,
   };
   const sidebarFiltersEnabled = config.showIdeaFilters === true;
@@ -92,30 +91,21 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       id="project-ideas"
       className={`e2e-timeline-project-idea-cards ${className || ''}`}
     >
-      {showIdeasFeedLink ? (
-        <StickyNotesPile phaseId={phase.id} slug={slug} />
-      ) : (
+      {sidebarFiltersEnabled ? (
         <>
-          {sidebarFiltersEnabled ? (
-            <>
-              <IdeaListScrollAnchor />
-              <Suspense fallback={<Spinner />}>
-                <IdeasWithFiltersSidebar
-                  inputTerm={inputTerm}
-                  {...sharedProps}
-                />
-              </Suspense>
-            </>
-          ) : (
-            <IdeaCardsWithoutFiltersSidebar
-              defaultSortingMethod={ideaQueryParameters.sort}
-              invisibleTitleMessage={messages.a11y_titleInputsPhase}
-              showDropdownFilters={config.showIdeaFilters ?? false}
-              showSearchbar={participationMethod !== 'voting'}
-              {...sharedProps}
-            />
-          )}
+          <IdeaListScrollAnchor />
+          <Suspense fallback={<Spinner />}>
+            <IdeasWithFiltersSidebar inputTerm={inputTerm} {...sharedProps} />
+          </Suspense>
         </>
+      ) : (
+        <IdeaCardsWithoutFiltersSidebar
+          defaultSortingMethod={ideaQueryParameters.sort}
+          invisibleTitleMessage={messages.a11y_titleInputsPhase}
+          showDropdownFilters={config.showIdeaFilters ?? false}
+          showSearchbar={participationMethod !== 'voting'}
+          {...sharedProps}
+        />
       )}
     </Box>
   );

@@ -1793,8 +1793,7 @@ CREATE TABLE public.phases (
     similarity_enabled boolean DEFAULT true NOT NULL,
     vote_term character varying DEFAULT 'vote'::character varying,
     voting_min_selected_options integer DEFAULT 1 NOT NULL,
-    voting_filtering_enabled boolean DEFAULT false NOT NULL,
-    ideation_method character varying
+    voting_filtering_enabled boolean DEFAULT false NOT NULL
 );
 
 
@@ -8526,7 +8525,9 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260122100950'),
 ('20260121111117'),
+('20260120123325'),
 ('20260115115438'),
 ('20260107121024'),
 ('20260107115454'),

@@ -128,6 +128,16 @@ RSpec.describe CustomField do
     end
   end
 
+  describe '#input_type_strategy' do
+    it 'has a strategy class for every INPUT_TYPE' do
+      CustomField::INPUT_TYPES.each do |input_type|
+        strategy_class_name = "InputTypeStrategy::#{input_type.camelize}"
+        expect { strategy_class_name.constantize }.not_to raise_error,
+          "Missing InputTypeStrategy class for '#{input_type}'. Expected #{strategy_class_name} to exist."
+      end
+    end
+  end
+
   describe '#logic?' do
     it 'returns true when there is logic' do
       field.logic = { 'rules' => [{ if: 2, goto_page_id: 'some_page_id' }] }
@@ -150,71 +160,18 @@ RSpec.describe CustomField do
   end
 
   describe '#clear_logic_unless_supported' do
-    let(:field) { create(:custom_field, resource: create(:custom_form)) }
-
     it 'saves logic when the field supports logic' do
-      field.input_type = 'select'
+      field = create(:custom_field, resource: create(:custom_form), input_type: 'select')
       field.logic = { 'rules' => [{ 'if' => 2, 'goto_page_id' => 'some_page_id' }] }
       field.save!
       expect(field.logic).to eq({ 'rules' => [{ 'if' => 2, 'goto_page_id' => 'some_page_id' }] })
     end
 
     it 'does not save logic when the field does not support logic' do
-      field.input_type = 'multiselect'
+      field = create(:custom_field, resource: create(:custom_form), input_type: 'multiselect')
       field.logic = { 'rules' => [{ 'if' => 2, 'goto_page_id' => 'some_page_id' }] }
       field.save!
       expect(field.logic).to eq({})
-    end
-  end
-
-  describe '#file_upload?' do
-    it 'returns true when the input_type is "file_upload"' do
-      files_field = described_class.new input_type: 'file_upload'
-      expect(files_field.file_upload?).to be true
-    end
-
-    it 'returns true when the input_type is "shapefile_upload"' do
-      files_field = described_class.new input_type: 'shapefile_upload'
-      expect(files_field.file_upload?).to be true
-    end
-
-    it 'returns false otherwise' do
-      other_field = described_class.new input_type: 'something_else'
-      expect(other_field.file_upload?).to be false
-    end
-  end
-
-  describe '#multiloc?' do
-    it 'returns true when the input_type is "text_multiloc"' do
-      files_field = described_class.new input_type: 'text_multiloc'
-      expect(files_field.multiloc?).to be true
-    end
-
-    it 'returns true when the input_type is "multiline_text_multiloc"' do
-      files_field = described_class.new input_type: 'multiline_text_multiloc'
-      expect(files_field.multiloc?).to be true
-    end
-
-    it 'returns true when the input_type is "html_multiloc"' do
-      files_field = described_class.new input_type: 'html_multiloc'
-      expect(files_field.multiloc?).to be true
-    end
-
-    it 'returns false otherwise' do
-      other_field = described_class.new input_type: 'something_else'
-      expect(other_field.multiloc?).to be false
-    end
-  end
-
-  describe '#page?' do
-    it 'returns true when the input_type is "page"' do
-      page_field = described_class.new input_type: 'page'
-      expect(page_field.page?).to be true
-    end
-
-    it 'returns false otherwise' do
-      other_field = described_class.new input_type: 'something_else'
-      expect(other_field.page?).to be false
     end
   end
 

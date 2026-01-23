@@ -48,7 +48,7 @@ module IdeaCustomFields
       else
         service.all_fields.select { |field| IdeaCustomFieldPolicy.new(pundit_user, field).show? }
       end
-      fields = fields.filter(&:support_free_text_value?) if params[:support_free_text_value].present?
+      fields = fields.filter(&:supports_free_text_value?) if params[:support_free_text_value].present?
       fields = fields.filter { |field| params[:input_types].include?(field.input_type) } if params[:input_types].present?
 
       render json: ::WebApi::V1::CustomFieldSerializer.new(

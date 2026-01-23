@@ -90,6 +90,7 @@ const StickyNote: React.FC<Props> = ({
   const authorName = idea.data.attributes.author_name;
   const authorId = idea.data.relationships.author?.data?.id || null;
   const authorHash = idea.data.attributes.author_hash;
+  const commentsCount = idea.data.attributes.comments_count;
 
   return (
     <StyledNote
@@ -136,12 +137,18 @@ const StickyNote: React.FC<Props> = ({
           gap="8px"
           flexShrink={0}
         >
-          <Icon
-            name="comments"
-            fill={colors.textSecondary}
-            width="20px"
-            height="20px"
-          />
+          <Box display="flex" alignItems="center" gap="4px">
+            <Icon
+              name="comments"
+              fill={colors.textSecondary}
+              width="20px"
+              height="20px"
+            />
+            <Text fontSize="m" color="textSecondary" m="0px" ml="4px">
+              {commentsCount}
+            </Text>
+          </Box>
+
           <ReactionControl ideaId={ideaId} size="1" styleType="compact" />
         </Box>
       )}
