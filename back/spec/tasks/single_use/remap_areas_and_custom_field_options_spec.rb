@@ -178,16 +178,16 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
     end
 
     it 'preserves multiloc values across all locales' do
-      # Use Sint Jansteen which maps to itself, not Hulst which would cause a merge
-      area_multiloc = create(:area, title_multiloc: { 'en' => 'Sint Jansteen', 'nl-NL' => 'Sint Jansteen Nederlands', 'fr-FR' => 'Sint Jansteen Français' })
+      # Test on existing area_hulst which maps to itself
+      area_hulst.update!(title_multiloc: { 'en' => 'Hulst', 'nl-NL' => 'Hulst Nederlands', 'fr-FR' => 'Hulst Français' })
 
       Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, csv_path)
 
-      area_multiloc.reload
+      area_hulst.reload
       # All locales should be updated to the new name
-      expect(area_multiloc.title_multiloc['en']).to eq('Sint Jansteen')
-      expect(area_multiloc.title_multiloc['nl-NL']).to eq('Sint Jansteen')
-      expect(area_multiloc.title_multiloc['fr-FR']).to eq('Sint Jansteen')
+      expect(area_hulst.title_multiloc['en']).to eq('Hulst')
+      expect(area_hulst.title_multiloc['nl-NL']).to eq('Hulst')
+      expect(area_hulst.title_multiloc['fr-FR']).to eq('Hulst')
     end
 
     it 'uses a database transaction that rolls back on error' do
