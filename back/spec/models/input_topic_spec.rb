@@ -25,7 +25,7 @@ RSpec.describe InputTopic do
     let_it_be(:idea3) { create(:idea, project:, input_topics: [input_topics[0], input_topics[5]]) }
     let_it_be(:idea4) { create(:idea, project:, input_topics: [input_topics[2], input_topics[4], input_topics[5]]) }
     let_it_be(:idea5) { create(:idea, project:, input_topics: [input_topics[2], input_topics[4], input_topics[5]]) }
-    let_it_be(:idea6) { create(:idea, project:, input_topics: [input_topics[0]]) }
+    let_it_be(:idea6) { create(:idea, project:, input_topics: [input_topics[0], input_topics[3]]) }
 
     it 'sorts from fewest ideas to most ideas when asking asc' do
       sorted_topics = described_class.order_ideas_count(Idea.where(id: [idea2.id, idea3.id, idea4.id, idea5.id, idea6.id]), direction: :asc)
@@ -39,7 +39,8 @@ RSpec.describe InputTopic do
     it 'sorts from most ideas to fewest ideas when asking desc' do
       sorted_topics = described_class.order_ideas_count(Idea.where(id: [idea1.id, idea3.id, idea6.id]), direction: :desc)
       expect(sorted_topics.size).to eq 6
-      expect(sorted_topics.map(&:id).take(3)).to eq [input_topics[0].id, input_topics[5].id, input_topics[2].id]
+      expect(sorted_topics.map(&:id).take(2)).to eq [input_topics[0].id, input_topics[5].id]
+      expect([input_topics[2].id, input_topics[3].id]).to include(sorted_topics.map(&:id)[2]) # either topic 2 or 3 (tied with 1 idea each)
     end
   end
 end
