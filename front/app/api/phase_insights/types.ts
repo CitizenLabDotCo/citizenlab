@@ -14,11 +14,11 @@ export type SevenDayChange = number | null | 'last_7_days_compared_with_zero';
  */
 export interface IdeationMetrics {
   ideas_posted: number;
-  ideas_posted_7_day_change?: SevenDayChange;
+  ideas_posted_7_day_percent_change?: SevenDayChange;
   comments_posted: number;
-  comments_posted_7_day_change?: SevenDayChange;
+  comments_posted_7_day_percent_change?: SevenDayChange;
   reactions: number;
-  reactions_7_day_change?: SevenDayChange;
+  reactions_7_day_percent_change?: SevenDayChange;
 }
 
 export interface ProposalsMetrics extends IdeationMetrics {
@@ -32,7 +32,7 @@ interface BaseVotingMetrics {
   voters_7_day_change?: SevenDayChange;
   associated_ideas: number;
   comments_posted: number;
-  comments_posted_7_day_change?: SevenDayChange;
+  comments_posted_7_day_percent_change?: SevenDayChange;
 }
 
 export interface VotingMetrics extends BaseVotingMetrics {
@@ -63,7 +63,7 @@ export interface PollMetrics {
 export interface CommonGroundMetrics
   extends Omit<
     IdeationMetrics,
-    'comments_posted' | 'comments_posted_7_day_change'
+    'comments_posted' | 'comments_posted_7_day_percent_change'
   > {
   associated_ideas: number;
 }

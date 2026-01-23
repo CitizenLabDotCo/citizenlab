@@ -167,7 +167,7 @@ module Insights
           voters: participations[:voting].pluck(:participant_id).uniq.count,
           voters_7_day_change: common_7_day_changes[:voters_7_day_change],
           comments_posted: participations[:commenting_idea].count,
-          comments_posted_7_day_change: common_7_day_changes[:comments_posted_7_day_change]
+          comments_posted_7_day_percent_change: common_7_day_changes[:comments_posted_7_day_percent_change]
         }
       else
         {
@@ -179,7 +179,7 @@ module Insights
           voters: participations[:voting].pluck(:participant_id).uniq.count,
           voters_7_day_change: common_7_day_changes[:voters_7_day_change],
           comments_posted: participations[:commenting_idea].count,
-          comments_posted_7_day_change: common_7_day_changes[:comments_posted_7_day_change]
+          comments_posted_7_day_percent_change: common_7_day_changes[:comments_posted_7_day_percent_change]
         }
       end
     end
@@ -187,7 +187,7 @@ module Insights
     def common_7_day_changes(participations)
       result = {
         voters_7_day_change: nil,
-        comments_posted_7_day_change: nil
+        comments_posted_7_day_percent_change: nil
       }
 
       return result unless phase_has_run_more_than_14_days?
@@ -205,7 +205,7 @@ module Insights
       end
 
       result[:voters_7_day_change] = percentage_change(voters_previous_7_days, voters_last_7_days)
-      result[:comments_posted_7_day_change] = percentage_change(comments_previous_7_days, comments_last_7_days)
+      result[:comments_posted_7_day_percent_change] = percentage_change(comments_previous_7_days, comments_last_7_days)
 
       result
     end
