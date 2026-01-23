@@ -17,9 +17,6 @@ export const Container = styled.div`
   `}
 `;
 
-export const defaultPhoneHeight =
-  homepageBannerLayoutHeights.two_column_layout.phone;
-
 export const HeaderImageWrapper = styled.div`
   width: 50%;
   overflow: hidden;
@@ -29,13 +26,13 @@ export const HeaderImageWrapper = styled.div`
   `}
 `;
 
-export const HeaderImage = styled(Image)<{ phoneHeight?: number }>`
+export const HeaderImage = styled(Image)`
   width: 100%;
   height: 100%;
   object-fit: cover;
 
   ${media.phone`
-    height: ${(props) => props.phoneHeight ?? defaultPhoneHeight}px;
+    height: ${homepageBannerLayoutHeights.two_column_layout.phone}px;
   `}
 `;
 
