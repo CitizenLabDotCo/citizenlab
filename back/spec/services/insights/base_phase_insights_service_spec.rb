@@ -680,6 +680,12 @@ RSpec.describe Insights::BasePhaseInsightsService do
       expect(service.send(:percentage_change, 100, 0)).to eq(-100.0)
     end
 
+    it 'returns null when phase less than 14 days old' do
+      phase.update(start_at: 10.days.ago)
+
+      expect(service.send(:percentage_change, 100, 150)).to be_nil
+    end
+
     it 'rounds percentage change to one decimal place' do
       expect(service.send(:percentage_change, 3, 4)).to eq(33.3)
       expect(service.send(:percentage_change, 7, 5)).to eq(-28.6)
