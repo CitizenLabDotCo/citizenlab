@@ -480,18 +480,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals',
     defaultMessage: 'Manage proposals, give feedback and assign topics.',
   },
-  hiddenFieldsTip: {
-    id: 'app.components.admin.PostManager.hiddenFieldsTip',
+  hiddenFieldsTip2: {
+    id: 'app.components.admin.PostManager.hiddenFieldsTip2',
     defaultMessage:
-      'Tip: add {hiddenFieldsLink} when setting up your Typeform survey to keep track of who has responded to your survey.',
-  },
-  hiddenFieldsLinkText: {
-    id: 'app.components.admin.PostManager.hiddenFieldsLink',
-    defaultMessage: 'hidden fields',
-  },
-  hiddenFieldsSupportArticleUrl: {
-    id: 'app.components.admin.PostManager.hiddenFieldsSupportArticleUrl',
-    defaultMessage: '',
+      'Tip: add hidden fields when setting up your Typeform survey to keep track of who has responded to your survey.',
   },
   // #input_term_copy
   ideaTerm: {

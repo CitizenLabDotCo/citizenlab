@@ -103,24 +103,7 @@ const SurveyInputs = ({
                         </Box>
                         <IconTooltip
                           content={
-                            <FormattedMessage
-                              {...messages.hiddenFieldsTip}
-                              values={{
-                                hiddenFieldsLink: (
-                                  <a
-                                    href={formatMessage(
-                                      messages.hiddenFieldsSupportArticleUrl
-                                    )}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                  >
-                                    {formatMessage(
-                                      messages.hiddenFieldsLinkText
-                                    )}
-                                  </a>
-                                ),
-                              }}
-                            />
+                            <FormattedMessage {...messages.hiddenFieldsTip2} />
                           }
                         />
                       </Box>
