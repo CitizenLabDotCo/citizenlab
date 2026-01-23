@@ -16,26 +16,16 @@ export const Container = styled.div`
   `}
 `;
 
-export const defaultHeights = {
-  desktop: homepageBannerLayoutHeights.two_row_layout.desktop,
-  tablet: homepageBannerLayoutHeights.two_row_layout.tablet,
-  phone: homepageBannerLayoutHeights.two_row_layout.phone,
-};
-
-export const HeaderImage = styled(Image)<{
-  desktopHeight?: number;
-  tabletHeight?: number;
-  phoneHeight?: number;
-}>`
+export const HeaderImage = styled(Image)`
   width: 100%;
-  height: ${(props) => props.desktopHeight ?? defaultHeights.desktop}px;
+  height: ${homepageBannerLayoutHeights.two_row_layout.desktop}px;
   overflow: hidden;
 
   ${media.tablet`
-    height: ${(props) => props.tabletHeight ?? defaultHeights.tablet}px;
+    height: ${homepageBannerLayoutHeights.two_row_layout.tablet}px;
   `}
 
   ${media.phone`
-    height: ${(props) => props.phoneHeight ?? defaultHeights.phone}px;
+    height: ${homepageBannerLayoutHeights.two_row_layout.phone}px;
   `}
 `;
