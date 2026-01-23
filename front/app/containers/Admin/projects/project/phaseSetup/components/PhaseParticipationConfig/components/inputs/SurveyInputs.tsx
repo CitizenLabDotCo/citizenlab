@@ -80,7 +80,7 @@ const SurveyInputs = ({
                                 googleFormsTooltipLink: (
                                   <StyledA
                                     href={formatMessage(
-                                      messages.googleFormsTooltipLink
+                                      messages.googleFormsTooltipLink2
                                     )}
                                     target="_blank"
                                     rel="noopener noreferrer"

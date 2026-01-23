@@ -491,7 +491,7 @@ export default defineMessages({
   },
   hiddenFieldsSupportArticleUrl: {
     id: 'app.components.admin.PostManager.hiddenFieldsSupportArticleUrl',
-    defaultMessage: 'https://support.govocal.com/en/articles/1641202',
+    defaultMessage: '',
   },
   // #input_term_copy
   ideaTerm: {
@@ -570,10 +570,10 @@ export default defineMessages({
     defaultMessage:
       'More information on how to embed a link for Google Forms can be found in {googleFormsTooltipLink}.',
   },
-  googleFormsTooltipLink: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink',
+  googleFormsTooltipLink2: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/5050525-how-to-embed-your-google-forms-survey-in-a-project-phase',
+      'https://support.govocal.com/en/articles/527596-creating-an-external-survey-project',
   },
   googleFormsTooltipLinkText: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText',
