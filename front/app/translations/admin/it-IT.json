@@ -1894,7 +1894,7 @@
   "app.containers.AdminPage.DashboardPage.commentsByTimeTitle": "Commenti",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.baseDatasetExplanation1": "Per misurare la rappresentatività degli utenti della piattaforma è necessario inserire un set di dati di base.",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.comingSoon": "Prossimamente",
-  "app.containers.AdminPage.DashboardPage.components.ChartCard.comingSoonDescription": "Stiamo lavorando alla dashboard di {fieldName} , che sarà disponibile a breve.",
+  "app.containers.AdminPage.DashboardPage.components.ChartCard.comingSoonDescription": "Stiamo lavorando al cruscotto di {fieldName}, che sarà disponibile a breve",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.dataHiddenWarning": "{numberOfHiddenItems, plural, one {# elemento è} other {# elementi sono}} nascosti in questo grafico. Passa a {tableViewLink} per visualizzare tutti i dati.",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.forUserRegistation": "{requiredOrOptional} nella registrazione degli utenti",
   "app.containers.AdminPage.DashboardPage.components.ChartCard.includedUsersMessage2": "{known} su {total} utenti inclusi ({percentage})",
