@@ -30,7 +30,7 @@ const PEEK_HEIGHT = 150;
 const FeedContainer = styled(Box)`
   scroll-snap-type: y mandatory;
   overflow-y: auto;
-  height: 100svh;
+  height: 100dvh;
 
   ::-webkit-scrollbar {
     display: none;
@@ -51,7 +51,7 @@ const NoteContainer = styled(Box)<{
   justify-content: center;
   scroll-snap-align: center;
   scroll-snap-stop: always;
-  height: calc(100svh - ${({ peekHeight }) => peekHeight}px);
+  height: calc(100dvh - ${({ peekHeight }) => peekHeight}px);
   padding: 30px;
 
   > * {
@@ -65,7 +65,7 @@ const NoteContainer = styled(Box)<{
       noteHeight,
     }) => {
       const scale = isCentered ? 1.08 : 1;
-      const containerHeight = `calc(100svh - ${peekHeight}px - 60px)`;
+      const containerHeight = `calc(100dvh - ${peekHeight}px - 60px)`;
       if (isCentered) {
         return `translateY(-50%) scale(${scale})`;
       }
