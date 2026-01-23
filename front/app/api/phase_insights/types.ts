@@ -23,13 +23,13 @@ export interface IdeationMetrics {
 
 export interface ProposalsMetrics extends IdeationMetrics {
   reached_threshold: number;
-  reached_threshold_7_day_change?: SevenDayChange;
+  reached_threshold_7_day_percent_change?: SevenDayChange;
 }
 
 interface BaseVotingMetrics {
   voting_method: string;
   voters: number;
-  voters_7_day_change?: SevenDayChange;
+  voters_7_day_percent_change?: SevenDayChange;
   associated_ideas: number;
   comments_posted: number;
   comments_posted_7_day_percent_change?: SevenDayChange;
@@ -44,7 +44,7 @@ export interface VotingMetrics extends BaseVotingMetrics {
 export interface BudgetingMetrics extends BaseVotingMetrics {
   voting_method: 'budgeting';
   online_picks: number;
-  online_picks_7_day_change?: SevenDayChange;
+  online_picks_7_day_percent_change?: SevenDayChange;
   offline_picks: number;
 }
 
@@ -57,7 +57,7 @@ export interface SurveyMetrics {
 
 export interface PollMetrics {
   responses: number;
-  responses_7_day_change?: SevenDayChange;
+  responses_7_day_percent_change?: SevenDayChange;
 }
 
 export interface CommonGroundMetrics
@@ -70,7 +70,7 @@ export interface CommonGroundMetrics
 
 export interface VolunteeringMetrics {
   volunteerings: number;
-  volunteerings_7_day_change?: SevenDayChange;
+  volunteerings_7_day_percent_change?: SevenDayChange;
 }
 
 export interface PhaseInsightsParticipationMetrics {
