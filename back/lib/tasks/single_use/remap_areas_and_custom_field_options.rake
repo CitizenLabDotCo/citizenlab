@@ -101,7 +101,7 @@ namespace :single_use do
           # Check if an area with the target name already exists (but isn't in the matching_areas)
           existing_target_area = Area.all.find do |area|
             area_name = area.title_multiloc[default_locale]&.strip
-            area_name&.casecmp?(target_name) && !matching_areas.include?(area)
+            area_name&.casecmp?(target_name) && matching_areas.exclude?(area)
           end
 
           if matching_areas.size == 1 && existing_target_area.nil?
