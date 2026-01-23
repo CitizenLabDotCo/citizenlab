@@ -13,11 +13,14 @@ module Insights
       total_votes = online_votes + offline_votes
 
       options = if custom_field&.options&.any?
-        custom_field.options.map do |opt|
-          { "#{opt.key}": { id: opt.id, title_multiloc: opt.title_multiloc }, ordering: opt.ordering }
+        custom_field.options.index_by(&:key).transform_values do |opt|
+          {
+            title_multiloc: opt.title_multiloc,
+            ordering: opt.ordering
+          }
         end
       else
-        []
+        {}
       end
 
       {
