@@ -42,7 +42,10 @@ const Sidebar = () => {
   const { data: project } = useProjectBySlug(slug);
   const projectId = project?.data.id;
 
-  const { data: topics, isLoading: topicsLoading } = useInputTopics(projectId);
+  const { data: topics, isLoading: topicsLoading } = useInputTopics(projectId, {
+    sort: '-ideas_count',
+    depth: 0,
+  });
 
   const { data: phases } = usePhases(projectId);
   const currentPhase = getCurrentPhase(phases?.data);
@@ -64,7 +67,7 @@ const Sidebar = () => {
     if (topicId) {
       updateSearchParams({ topic: topicId });
     } else {
-      removeSearchParams(['topic']);
+      removeSearchParams(['topic', 'subtopic']);
     }
   };
 
