@@ -178,17 +178,13 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
     end
 
     it 'updates all locale values to the target name' do
-      # Use Graauw which gets renamed: starts as 'Graauw', CSV maps to 'Graauw'
-      # But we'll test with Paal which gets renamed to Graauw
-      area_paal.update!(title_multiloc: { 'en' => 'Paal', 'nl-NL' => 'Paal Nederlands', 'fr-FR' => 'Paal Français' })
+      # Set up area_graauw with multiple locales
+      area_graauw.update!(title_multiloc: { 'en' => 'Graauw', 'nl-NL' => 'Graauw Nederlands', 'fr-FR' => 'Graauw Français' })
 
       Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, csv_path)
 
-      # Paal gets merged into Graauw, but since Graauw comes first alphabetically,
-      # Graauw is kept and Paal is deleted. So we can't check area_paal.
-      # Let's check area_graauw instead
       area_graauw.reload
-      # The rake task updates all locales to the target name from CSV
+      # The rake task updates all existing locales to the target name from CSV
       expect(area_graauw.title_multiloc['en']).to eq('Graauw')
       expect(area_graauw.title_multiloc['nl-NL']).to eq('Graauw')
       expect(area_graauw.title_multiloc['fr-FR']).to eq('Graauw')
