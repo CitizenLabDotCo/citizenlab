@@ -218,7 +218,7 @@
   "app.components.admin.PostManager.components.PostTable.Row.theVotesAssociated": "I voti associati a questa idea andranno persi",
   "app.components.admin.PostManager.components.goToInputManager": "Vai alla gestione dei contributi",
   "app.components.admin.PostManager.components.goToProposalManager": "Vai al gestore delle proposte",
-  "app.components.admin.PostManager.contributionFormTitle": "Modifica del contributo",
+  "app.components.admin.PostManager.contributionFormTitle": "Modifica contributo",
   "app.components.admin.PostManager.cost": "Costo",
   "app.components.admin.PostManager.createInput": "Crea l'input",
   "app.components.admin.PostManager.createInputsDescription": "Crea un nuovo insieme di contributi da un progetto passato",
