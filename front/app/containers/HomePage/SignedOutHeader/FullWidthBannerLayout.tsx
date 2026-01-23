@@ -30,12 +30,7 @@ const FullWidthBannerLayout = ({ className, homepageSettings }: Props) => {
       data-cy="e2e-full-width-banner-layout-container"
       className={`e2e-signed-out-header ${className}`}
     >
-      <Header
-        id="hook-header"
-        desktopHeight={homepageSettings.banner_signed_out_header_height_desktop}
-        tabletHeight={homepageSettings.banner_signed_out_header_height_tablet}
-        phoneHeight={homepageSettings.banner_signed_out_header_height_phone}
-      >
+      <Header id="hook-header">
         <HeaderImage id="hook-header-image">
           <HeaderImageBackground
             data-testid="full-width-banner-layout-header-image"

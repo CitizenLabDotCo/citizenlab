@@ -34,13 +34,6 @@ const TwoRowLayout = ({ homepageSettings }: Props) => {
             isLazy={false}
             placeholderBg="transparent"
             alt=""
-            desktopHeight={
-              homepageSettings.banner_signed_out_header_height_desktop
-            }
-            tabletHeight={
-              homepageSettings.banner_signed_out_header_height_tablet
-            }
-            phoneHeight={homepageSettings.banner_signed_out_header_height_phone}
           />
         </Box>
       )}

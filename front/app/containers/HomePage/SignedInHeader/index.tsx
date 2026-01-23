@@ -84,31 +84,25 @@ const SignedInHeader = ({
   const homepageSettingOpacity =
     homepageSettings.banner_signed_in_header_overlay_opacity;
 
-  // When consistent height is enabled, use signed-out heights for signed-in banner
+  // When consistent height is enabled, use layout defaults for signed-in banner
   const useConsistentHeight =
     homepageSettings.banner_use_consistent_height === true;
 
-  // Get layout-specific defaults for signed-out banner
+  // Get layout-specific defaults
   const bannerLayout =
     homepageSettings.banner_layout || 'full_width_banner_layout';
   const layoutDefaults = homepageBannerLayoutHeights[bannerLayout];
 
   const desktopHeight =
-    (useConsistentHeight
-      ? homepageSettings.banner_signed_out_header_height_desktop
-      : homepageSettings.banner_signed_in_header_height_desktop) ??
+    homepageSettings.banner_signed_in_header_height_desktop ??
     (useConsistentHeight ? layoutDefaults.desktop : defaultHeights.desktop);
 
   const tabletHeight =
-    (useConsistentHeight
-      ? homepageSettings.banner_signed_out_header_height_tablet
-      : homepageSettings.banner_signed_in_header_height_tablet) ??
+    homepageSettings.banner_signed_in_header_height_tablet ??
     (useConsistentHeight ? layoutDefaults.tablet : defaultHeights.tablet);
 
   const phoneHeight =
-    (useConsistentHeight
-      ? homepageSettings.banner_signed_out_header_height_phone
-      : homepageSettings.banner_signed_in_header_height_phone) ??
+    homepageSettings.banner_signed_in_header_height_phone ??
     (useConsistentHeight ? layoutDefaults.phone : defaultHeights.phone);
 
   if (isInitialLoading) {

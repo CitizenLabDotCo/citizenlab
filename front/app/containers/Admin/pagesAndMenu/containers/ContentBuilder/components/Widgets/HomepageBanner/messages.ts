@@ -160,38 +160,23 @@ export default defineMessages({
     id: 'app.containers.ContentBuilder.homepage.headerHeightPhone',
     defaultMessage: 'Phone',
   },
-  signedInHeaderHeightDescription: {
-    id: 'app.containers.ContentBuilder.homepage.signedInHeaderHeightDescription2',
-    defaultMessage:
-      'Customize the signed-in header height for each device size. Default: Desktop {desktop}px, Tablet {tablet}px, Phone {phone}px.',
-  },
-  signedOutHeaderHeightDescription: {
-    id: 'app.containers.ContentBuilder.homepage.signedOutHeaderHeightDescription2',
-    defaultMessage:
-      'Customize the signed-out header height for each device size. Default: Desktop {desktop}px, Tablet {tablet}px, Phone {phone}px.',
-  },
   useConsistentBannerHeight: {
     id: 'app.containers.ContentBuilder.homepage.useConsistentBannerHeight',
     defaultMessage: 'Use consistent banner height',
   },
   useConsistentBannerHeightDescription: {
-    id: 'app.containers.ContentBuilder.homepage.useConsistentBannerHeightDescription',
+    id: 'app.containers.ContentBuilder.homepage.useConsistentBannerHeightDescription3',
     defaultMessage:
-      'When enabled, registered and non-registered users see the same full banner dimensions.',
+      'When enabled, the banner for registered users will use the same default height as the banner for non-registered users (based on the selected layout).',
   },
   advancedHeightCustomization: {
     id: 'app.containers.ContentBuilder.homepage.advancedHeightCustomization',
     defaultMessage: 'Advanced height customization',
   },
-  advancedHeightCustomizationInfo: {
-    id: 'app.containers.ContentBuilder.homepage.advancedHeightCustomizationInfo',
-    defaultMessage:
-      'These settings customize the banner height specifically for <bold>non-registered users</bold> (when the sign-up overlay is visible). Registered users will see a shorter banner without the overlay.',
-  },
   advancedHeightCustomizationInfoSignedIn: {
-    id: 'app.containers.ContentBuilder.homepage.advancedHeightCustomizationInfoSignedIn',
+    id: 'app.containers.ContentBuilder.homepage.advancedHeightCustomizationInfoSignedIn2',
     defaultMessage:
-      'These settings customize the banner height specifically for <bold>registered users</bold>. Non-registered users will see a taller banner with the sign-up overlay.',
+      'These settings customize the banner height specifically for <bold>registered users</bold>.',
   },
   disableConsistentHeightInfo: {
     id: 'app.containers.ContentBuilder.homepage.disableConsistentHeightInfo2',

@@ -28,7 +28,6 @@ interface Props {
   tabletPlaceholder: string;
   phonePlaceholder: string;
   disabled: boolean;
-  isSignedIn?: boolean;
 }
 
 const BannerHeightSettings = ({
@@ -44,7 +43,6 @@ const BannerHeightSettings = ({
   tabletPlaceholder,
   phonePlaceholder,
   disabled,
-  isSignedIn = false,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -80,9 +78,7 @@ const BannerHeightSettings = ({
           <Box>
             <Text mt="0px" mb="8px" fontSize="s" color="textSecondary">
               <FormattedMessage
-                {...(isSignedIn
-                  ? messages.advancedHeightCustomizationInfoSignedIn
-                  : messages.advancedHeightCustomizationInfo)}
+                {...messages.advancedHeightCustomizationInfoSignedIn}
                 values={{
                   bold: (chunks) => <strong>{chunks}</strong>,
                 }}

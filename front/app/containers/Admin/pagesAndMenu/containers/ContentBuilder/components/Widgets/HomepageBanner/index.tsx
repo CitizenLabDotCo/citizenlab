@@ -10,7 +10,6 @@ import {
   Input,
   Text,
   useBreakpoint,
-  Divider,
 } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { useLocation, useSearchParams } from 'react-router-dom';
@@ -23,7 +22,6 @@ import useAuthUser from 'api/me/useAuthUser';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 import homepageMessages from 'containers/HomePage/messages';
 import SignedInHeader from 'containers/HomePage/SignedInHeader';
 import SignedOutHeader from 'containers/HomePage/SignedOutHeader';
@@ -107,10 +105,6 @@ export interface IHomepageBannerSettings {
   banner_signed_in_header_height_desktop?: number;
   banner_signed_in_header_height_tablet?: number;
   banner_signed_in_header_height_phone?: number;
-  // signed_out header heights (in pixels)
-  banner_signed_out_header_height_desktop?: number;
-  banner_signed_out_header_height_tablet?: number;
-  banner_signed_out_header_height_phone?: number;
   // consistent banner height
   banner_use_consistent_height?: boolean;
   // cta_signed_in
@@ -224,13 +218,6 @@ const HomepageBannerSettings = () => {
         node.data.props.homepageSettings.banner_signed_in_header_height_tablet,
       banner_signed_in_header_height_phone:
         node.data.props.homepageSettings.banner_signed_in_header_height_phone,
-      banner_signed_out_header_height_desktop:
-        node.data.props.homepageSettings
-          .banner_signed_out_header_height_desktop,
-      banner_signed_out_header_height_tablet:
-        node.data.props.homepageSettings.banner_signed_out_header_height_tablet,
-      banner_signed_out_header_height_phone:
-        node.data.props.homepageSettings.banner_signed_out_header_height_phone,
       banner_use_consistent_height:
         node.data.props.homepageSettings.banner_use_consistent_height,
     },
@@ -249,9 +236,6 @@ const HomepageBannerSettings = () => {
     name: 'customisable_homepage_banner',
     onlyCheckAllowed: true,
   });
-
-  const bannerLayout =
-    homepageSettings.banner_layout || 'full_width_banner_layout';
 
   useEffect(() => {
     if (image?.imageUrl && initialRender) {
@@ -422,21 +406,67 @@ const HomepageBannerSettings = () => {
             onRemove={handleOnRemove}
           />
         ) : (
-          <ImagesDropzone
-            id="bannerImage"
-            images={imageFiles}
-            imagePreviewRatio={1 / 2}
-            maxImagePreviewWidth="360px"
-            objectFit="contain"
-            acceptedFileTypes={{
-              'image/*': ['.jpg', '.jpeg', '.png'],
-            }}
-            onAdd={(images) => {
-              setImageFiles(images);
-              handleOnAdd(images[0].base64);
-            }}
-            onRemove={handleOnRemove}
-          />
+          <>
+            <ImagesDropzone
+              id="bannerImage"
+              images={imageFiles}
+              imagePreviewRatio={1 / 2}
+              maxImagePreviewWidth="360px"
+              objectFit="contain"
+              acceptedFileTypes={{
+                'image/*': ['.jpg', '.jpeg', '.png'],
+              }}
+              onAdd={(images) => {
+                setImageFiles(images);
+                handleOnAdd(images[0].base64);
+              }}
+              onRemove={handleOnRemove}
+            />
+            {search.get('variant') !== 'signedOut' && (
+              <BannerHeightSettings
+                useConsistentHeight={
+                  homepageSettings.banner_use_consistent_height === true
+                }
+                onToggleConsistentHeight={() => {
+                  setProp((props: Props) => {
+                    props.homepageSettings.banner_use_consistent_height =
+                      !homepageSettings.banner_use_consistent_height;
+                  });
+                }}
+                desktopHeight={
+                  homepageSettings.banner_signed_in_header_height_desktop
+                }
+                tabletHeight={
+                  homepageSettings.banner_signed_in_header_height_tablet
+                }
+                phoneHeight={
+                  homepageSettings.banner_signed_in_header_height_phone
+                }
+                onDesktopHeightChange={(value) => {
+                  setProp((props: Props) => {
+                    props.homepageSettings.banner_signed_in_header_height_desktop =
+                      value;
+                  });
+                }}
+                onTabletHeightChange={(value) => {
+                  setProp((props: Props) => {
+                    props.homepageSettings.banner_signed_in_header_height_tablet =
+                      value;
+                  });
+                }}
+                onPhoneHeightChange={(value) => {
+                  setProp((props: Props) => {
+                    props.homepageSettings.banner_signed_in_header_height_phone =
+                      value;
+                  });
+                }}
+                desktopPlaceholder="200"
+                tabletPlaceholder="250"
+                phonePlaceholder="300"
+                disabled={!customHomepageBannerAllowed}
+              />
+            )}
+          </>
         )}
       </>
 
@@ -617,60 +647,6 @@ const HomepageBannerSettings = () => {
               </div>
             );
           })}
-          {homepageSettings.banner_layout !== 'fixed_ratio_layout' && (
-            <>
-              <Divider m="0px" />
-              <BannerHeightSettings
-                useConsistentHeight={
-                  homepageSettings.banner_use_consistent_height === true
-                }
-                onToggleConsistentHeight={() => {
-                  setProp((props: Props) => {
-                    props.homepageSettings.banner_use_consistent_height =
-                      !homepageSettings.banner_use_consistent_height;
-                  });
-                }}
-                desktopHeight={
-                  homepageSettings.banner_signed_out_header_height_desktop
-                }
-                tabletHeight={
-                  homepageSettings.banner_signed_out_header_height_tablet
-                }
-                phoneHeight={
-                  homepageSettings.banner_signed_out_header_height_phone
-                }
-                onDesktopHeightChange={(value) => {
-                  setProp((props: Props) => {
-                    props.homepageSettings.banner_signed_out_header_height_desktop =
-                      value;
-                  });
-                }}
-                onTabletHeightChange={(value) => {
-                  setProp((props: Props) => {
-                    props.homepageSettings.banner_signed_out_header_height_tablet =
-                      value;
-                  });
-                }}
-                onPhoneHeightChange={(value) => {
-                  setProp((props: Props) => {
-                    props.homepageSettings.banner_signed_out_header_height_phone =
-                      value;
-                  });
-                }}
-                desktopPlaceholder={homepageBannerLayoutHeights[
-                  bannerLayout
-                ].desktop.toString()}
-                tabletPlaceholder={homepageBannerLayoutHeights[
-                  bannerLayout
-                ].tablet.toString()}
-                phonePlaceholder={homepageBannerLayoutHeights[
-                  bannerLayout
-                ].phone.toString()}
-                disabled={!customHomepageBannerAllowed}
-                isSignedIn={false}
-              />
-            </>
-          )}
         </>
       )}
 
@@ -679,6 +655,7 @@ const HomepageBannerSettings = () => {
           <Text m={'0px'} color="textSecondary">
             {formatMessage(messages.signedInDescription)}
           </Text>
+
           <OverlayControls
             bannerOverlayColor={
               homepageSettings.banner_signed_in_header_overlay_color
@@ -794,48 +771,6 @@ const HomepageBannerSettings = () => {
               </div>
             );
           })}
-          <Divider m="0px" />
-          <BannerHeightSettings
-            useConsistentHeight={
-              homepageSettings.banner_use_consistent_height === true
-            }
-            onToggleConsistentHeight={() => {
-              setProp((props: Props) => {
-                props.homepageSettings.banner_use_consistent_height =
-                  !homepageSettings.banner_use_consistent_height;
-              });
-            }}
-            desktopHeight={
-              homepageSettings.banner_signed_in_header_height_desktop
-            }
-            tabletHeight={
-              homepageSettings.banner_signed_in_header_height_tablet
-            }
-            phoneHeight={homepageSettings.banner_signed_in_header_height_phone}
-            onDesktopHeightChange={(value) => {
-              setProp((props: Props) => {
-                props.homepageSettings.banner_signed_in_header_height_desktop =
-                  value;
-              });
-            }}
-            onTabletHeightChange={(value) => {
-              setProp((props: Props) => {
-                props.homepageSettings.banner_signed_in_header_height_tablet =
-                  value;
-              });
-            }}
-            onPhoneHeightChange={(value) => {
-              setProp((props: Props) => {
-                props.homepageSettings.banner_signed_in_header_height_phone =
-                  value;
-              });
-            }}
-            desktopPlaceholder="200"
-            tabletPlaceholder="250"
-            phonePlaceholder="300"
-            disabled={!customHomepageBannerAllowed}
-            isSignedIn={true}
-          />
         </>
       )}
     </Box>
