@@ -74,7 +74,9 @@ const ParticipationMetrics = ({ phase }: Props) => {
         label={formatMessage(messages.participants)}
         value={metrics.participants}
         icon="sidebar-users"
-        change={isCurrentPhase ? metrics.participants_7_day_change : undefined}
+        change={
+          isCurrentPhase ? metrics.participants_7_day_percent_change : undefined
+        }
       />
 
       <MethodMetrics

@@ -128,7 +128,7 @@ resource 'Phase insights' do
         visitors: 6,
         visitors_7_day_percent_change: 25.0, # from 4 (in week before last) to 5 unique visitors (in last 7 days) = 25% increase
         participants: 5,
-        participants_7_day_change: 50.0, # from 3 (in week before last) to 5 unique participants (in last 7 days) = 50% increase
+        participants_7_day_percent_change: 50.0, # from 3 (in week before last) to 5 unique participants (in last 7 days) = 50% increase
         participation_rate: 0.833,
         participation_rate_7_day_percent_change: 20.0, # participation_rate_last_7_days: 0.6, participation_rate_previous_7_days: 0.5 = (((0.6 - 0.5).to_f / 0.5) * 100.0).round(1)
         voting: {
@@ -163,7 +163,7 @@ resource 'Phase insights' do
           visitors: 6,
           visitors_7_day_percent_change: 25.0, # from 4 (in week before last) to 5 unique visitors (in last 7 days) = 25% increase
           participants: 5,
-          participants_7_day_change: 50.0, # from 3 (in week before last) to 5 unique participants (in last 7 days) = 50% increase
+          participants_7_day_percent_change: 50.0, # from 3 (in week before last) to 5 unique participants (in last 7 days) = 50% increase
           participation_rate: 0.833,
           participation_rate_7_day_percent_change: 20.0, # participation_rate_last_7_days: 0.6, participation_rate_previous_7_days: 0.5 = (((0.6 - 0.5).to_f / 0.5) * 100.0).round(1)
           voting: {
