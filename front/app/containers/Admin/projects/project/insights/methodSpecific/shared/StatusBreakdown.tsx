@@ -10,10 +10,14 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
-import HorizontalBarRow, { HorizontalBarRowData } from './HorizontalBarRow';
+import BreakdownBar from './BreakdownBar';
 import messages from './messages';
 
-interface StatusBarData extends HorizontalBarRowData {
+interface StatusBarData {
+  id: string;
+  name: string;
+  count: number;
+  color: string;
   ordering: number;
 }
 
@@ -58,7 +62,7 @@ const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
       })
       .map((status) => ({
         id: status.id,
-        title: localize(status.attributes.title_multiloc),
+        name: localize(status.attributes.title_multiloc),
         count: countsByStatusId[status.id] || 0,
         color: status.attributes.color,
         ordering: status.attributes.ordering,
@@ -107,9 +111,16 @@ const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
       <Text m="0" mb="24px" fontWeight="semi-bold" fontSize="m" color="primary">
         {formatMessage(messages.statusBreakdown)}
       </Text>
-      <Box display="flex" flexDirection="column" gap="16px">
+      <Box display="flex" flexDirection="column" gap="4px">
         {statusData.map((status) => (
-          <HorizontalBarRow key={status.id} data={status} maxCount={maxCount} />
+          <BreakdownBar
+            key={status.id}
+            name={status.name}
+            count={status.count}
+            maxCount={maxCount}
+            barColor={status.color}
+            showBadge={false}
+          />
         ))}
       </Box>
     </StatusCard>
