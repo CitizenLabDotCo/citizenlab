@@ -10,11 +10,7 @@ export const Container = styled.div`
   background-color: ${colors.background};
 `;
 
-export const Header = styled.div<{
-  desktopHeight?: number;
-  tabletHeight?: number;
-  phoneHeight?: number;
-}>`
+export const Header = styled.div`
   width: 100%;
   height: ${homepageBannerLayoutHeights.full_width_banner_layout.desktop}px;
   margin: 0;
