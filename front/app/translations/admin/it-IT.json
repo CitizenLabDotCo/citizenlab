@@ -1386,7 +1386,7 @@
   "app.containers.Admin.projects.project.insights.ideation.whatArePeopleSaying": "Cosa dice la gente?",
   "app.containers.Admin.projects.project.insights.import": "Importa",
   "app.containers.Admin.projects.project.insights.inputs": "Contributi",
-  "app.containers.Admin.projects.project.insights.insightsSubtitle": "Traccia l'impegno e l'impatto della comunità in tempo reale",
+  "app.containers.Admin.projects.project.insights.insightsSubtitle1": "Traccia il coinvolgimento in tempo reale",
   "app.containers.Admin.projects.project.insights.last7Days": "Ultimi 7 giorni",
   "app.containers.Admin.projects.project.insights.liveData": "Dati in tempo reale",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Caricamento dei dati demografici...",
