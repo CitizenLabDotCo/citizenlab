@@ -177,7 +177,7 @@ const InvitationOptions = ({
                       moderatorLabelTooltipLink: (
                         <a
                           href={formatMessage(
-                            messages.moderatorLabelTooltipLink
+                            messages.moderatorLabelTooltipLink2
                           )}
                           target="_blank"
                           rel="noreferrer"
