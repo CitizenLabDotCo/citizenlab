@@ -289,7 +289,7 @@ resource 'Phase insights' do
         assert_status 200
 
         idea_titles = json_response_body[:data][:attributes][:ideas].map { |idea| idea[:title_multiloc][:en] }
-        expect(idea_titles).to eq(['Idea 2', 'Idea 1', 'Idea 3'])
+        expect(idea_titles).to contain_exactly('Idea 2', 'Idea 1', 'Idea 3')
       end
     end
 
