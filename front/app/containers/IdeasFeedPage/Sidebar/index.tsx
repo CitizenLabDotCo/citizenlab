@@ -67,7 +67,7 @@ const Sidebar = () => {
     if (topicId) {
       updateSearchParams({ topic: topicId });
     } else {
-      removeSearchParams(['topic']);
+      removeSearchParams(['topic', 'subtopic']);
     }
   };
 

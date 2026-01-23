@@ -20,6 +20,7 @@ import styled from 'styled-components';
 import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
 import useIdeaById from 'api/ideas/useIdeaById';
 
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import StickyNote, { NOTE_HEIGHTS } from './StickyNotes/StickyNote';
@@ -152,6 +153,13 @@ const IdeasFeed = ({ topicId }: Props) => {
 
     return [initialIdea, ...otherIdeas];
   }, [flatIdeas, initialIdeaId, initialIdeaInList, initialIdeaData]);
+
+  // Remove initial_idea_id from URL once the feed has loaded with the initial idea
+  useEffect(() => {
+    if (initialIdeaId && orderedIdeas.length > 0 && !isLoading) {
+      removeSearchParams(['initial_idea_id']);
+    }
+  }, [initialIdeaId, orderedIdeas.length, isLoading]);
 
   // Extract topic IDs for each idea
   const ideaTopics = useMemo(() => {
