@@ -460,9 +460,6 @@ const HomepageBannerSettings = () => {
                       value;
                   });
                 }}
-                desktopPlaceholder="200"
-                tabletPlaceholder="250"
-                phonePlaceholder="300"
                 disabled={!customHomepageBannerAllowed}
               />
             )}
