@@ -60,7 +60,6 @@ module Insights
     end
 
     def base_7_day_changes(participations, visits)
-      puts "participations: #{participations.inspect}"
       flattened_participations = participations.values.flatten
 
       participants_last_7_days_count = flattened_participations.select do |p|
@@ -70,9 +69,6 @@ module Insights
       participants_previous_7_days_count = flattened_participations.select do |p|
         p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
       end.pluck(:participant_id).uniq.count
-
-      puts "participants_last_7_days_count: #{participants_last_7_days_count}"
-      puts "participants_previous_7_days_count: #{participants_previous_7_days_count}"
 
       visitors_last_7_days_count = visits.select do |v|
         v[:acted_at] >= 7.days.ago
