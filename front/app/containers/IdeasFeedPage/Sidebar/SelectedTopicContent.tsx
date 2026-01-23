@@ -80,7 +80,7 @@ const SelectedTopicContent = ({
           mb="8px"
         >
           <Title as="h1" variant="h3" mb="0px">
-            <T value={topic?.data.attributes.title_multiloc} supportHtml />
+            <T value={topic?.data.attributes.title_multiloc} />
           </Title>
           <Box
             display="flex"
