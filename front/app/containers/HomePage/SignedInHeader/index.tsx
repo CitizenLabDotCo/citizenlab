@@ -93,17 +93,27 @@ const SignedInHeader = ({
     homepageSettings.banner_layout || 'full_width_banner_layout';
   const layoutDefaults = homepageBannerLayoutHeights[bannerLayout];
 
-  const desktopHeight =
-    homepageSettings.banner_signed_in_header_height_desktop ??
-    (useConsistentHeight ? layoutDefaults.desktop : defaultHeights.desktop);
+  let desktopHeight: number;
+  let tabletHeight: number;
+  let phoneHeight: number;
 
-  const tabletHeight =
-    homepageSettings.banner_signed_in_header_height_tablet ??
-    (useConsistentHeight ? layoutDefaults.tablet : defaultHeights.tablet);
-
-  const phoneHeight =
-    homepageSettings.banner_signed_in_header_height_phone ??
-    (useConsistentHeight ? layoutDefaults.phone : defaultHeights.phone);
+  if (useConsistentHeight) {
+    // Use the same height as the signed-out banner for this layout type
+    desktopHeight = layoutDefaults.desktop;
+    tabletHeight = layoutDefaults.tablet;
+    phoneHeight = layoutDefaults.phone;
+  } else {
+    // Use the custom signed-in heights, or fall back to default heights
+    desktopHeight =
+      homepageSettings.banner_signed_in_header_height_desktop ??
+      defaultHeights.desktop;
+    tabletHeight =
+      homepageSettings.banner_signed_in_header_height_tablet ??
+      defaultHeights.tablet;
+    phoneHeight =
+      homepageSettings.banner_signed_in_header_height_phone ??
+      defaultHeights.phone;
+  }
 
   if (isInitialLoading) {
     return (
