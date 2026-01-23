@@ -712,7 +712,7 @@
   "app.containers.Admin.PagesAndMenu.viewButton": "Anzeigen",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.admins": "Admins",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.age": "Alter",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.comments": "Kommentare",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.comments": "Kommentar",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.community": "Community",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.dateLastReport2": "Datum des letzten Berichts",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.deviceTypeFromStart2": "Gerätetypen seit Beginn",
