@@ -105,10 +105,10 @@ export default defineMessages({
     id: 'app.containers.ContentBuilder.homepage.fixedRatioBannerTooltipLink',
     defaultMessage: 'knowledge base',
   },
-  imageSupportPageURL: {
-    id: 'app.containers.ContentBuilder.homepage.imageSupportPageURL',
+  imageSupportPageURL2: {
+    id: 'app.containers.ContentBuilder.homepage.imageSupportPageURL2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
+      'https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
   },
   overlayToggleLabel: {
     id: 'app.containers.ContentBuilder.homepage.overlayToggleLabel',

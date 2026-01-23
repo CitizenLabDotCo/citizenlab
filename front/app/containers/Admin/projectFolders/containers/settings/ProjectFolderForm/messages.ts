@@ -1,10 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  imageSupportPageURL: {
-    id: 'app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL',
+  imageSupportPageURL2: {
+    id: 'app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
+      'https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
   },
   supportPageLinkText: {
     id: 'app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText',
