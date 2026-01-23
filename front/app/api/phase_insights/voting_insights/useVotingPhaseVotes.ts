@@ -3,8 +3,6 @@ import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
-import { DemographicOption } from '../types';
-
 import votingInsightsKeys from './keys';
 import { VotingPhaseVotes, DemographicFieldKey } from './types';
 
