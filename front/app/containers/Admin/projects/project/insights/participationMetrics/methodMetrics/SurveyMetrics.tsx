@@ -25,7 +25,7 @@ const SurveyMetrics = ({ metrics, showChange }: Props) => {
       />
       <MetricCard
         label={formatMessage(messages.completionRate)}
-        value={`${(metrics.completion_rate * 100).toFixed(1)}%`}
+        value={`${metrics.completion_rate_as_percent.toFixed(1)}%`}
         icon="chart-bar"
         change={showChange ? metrics.completion_rate_7_day_change : undefined}
       />

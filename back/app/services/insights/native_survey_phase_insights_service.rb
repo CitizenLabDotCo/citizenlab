@@ -27,21 +27,21 @@ module Insights
     def phase_participation_method_metrics(participations)
       posted_ideas_count = phase_ideas.count
       total_submitted_surveys = participations[:submitting_idea].count
-      completion_rate = completion_rate(posted_ideas_count, total_submitted_surveys)
+      completion_rate_as_percent = completion_rate_as_percent(posted_ideas_count, total_submitted_surveys)
       rolling_7_day_changes = rolling_7_day_changes(participations)
 
       {
         surveys_submitted: total_submitted_surveys,
         surveys_submitted_7_day_change: rolling_7_day_changes[:surveys_submitted_7_day_change],
-        completion_rate: completion_rate,
+        completion_rate_as_percent: completion_rate_as_percent,
         completion_rate_7_day_change: rolling_7_day_changes[:completion_rate_7_day_change]
       }
     end
 
-    def completion_rate(all, submitted)
+    def completion_rate_as_percent(all, submitted)
       return 0 if all == 0
 
-      (submitted.to_f / all).round(3)
+      ((submitted.to_f / all) * 100).round(1)
     end
 
     def rolling_7_day_changes(participations)
@@ -60,8 +60,8 @@ module Insights
         p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
       end
 
-      completion_rate_last_7_days = completion_rate(ideas_last_7_days_count, submitted_last_7_days_count)
-      completion_rate_previous_7_days = completion_rate(ideas_previous_7_days_count, submitted_previous_7_days_count)
+      completion_rate_last_7_days = completion_rate_as_percent(ideas_last_7_days_count, submitted_last_7_days_count)
+      completion_rate_previous_7_days = completion_rate_as_percent(ideas_previous_7_days_count, submitted_previous_7_days_count)
 
       result[:surveys_submitted_7_day_change] = percentage_change(submitted_previous_7_days_count, submitted_last_7_days_count)
       result[:completion_rate_7_day_change] = percentage_change(completion_rate_previous_7_days, completion_rate_last_7_days)

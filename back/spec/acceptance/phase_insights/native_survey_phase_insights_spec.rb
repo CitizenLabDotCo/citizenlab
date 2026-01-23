@@ -114,7 +114,7 @@ resource 'Phase insights' do
         native_survey: {
           surveys_submitted: 4,
           surveys_submitted_7_day_change: 100.0, # from 1 (in week before last) to 2 (in last 7 days) = +100% change
-          completion_rate: 0.8, # 4 submitted surveys out of 5 ideas
+          completion_rate_as_percent: 0.8, # 4 submitted surveys out of 5 ideas
           completion_rate_7_day_change: 100.0 # completion_rate_last_7_days: 1.0, completion_rate_previous_7_days: 0.5 = (((1.0 - 0.5).to_f / 0.5) * 100.0).round(1) = +100% change
         }
       })
