@@ -15,7 +15,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 const COLLAPSED_HEIGHT = 40;
-const NUDGE_DELAY_MS = 15000;
+const NUDGE_DELAY_MS = 5000;
 const DRAG_AREA_HEIGHT = 28;
 const SWIPE_THRESHOLD = 50;
 
@@ -24,7 +24,7 @@ const Container = styled.div<{ $translateY: number; $isDragging: boolean }>`
   top: 0;
   left: 0;
   right: 0;
-  height: 100svh;
+  height: 100dvh;
   background: ${colors.white};
   border-radius: ${({ $translateY }) =>
     $translateY <= 0 ? '0' : '16px 16px 0 0'};
@@ -195,7 +195,7 @@ const BottomSheet = ({
           px="16px"
           py="24px"
           $scrollable={isFullscreen}
-          h={`calc(100svh - ${translateY + DRAG_AREA_HEIGHT}px)`}
+          h={`calc(100dvh - ${translateY + DRAG_AREA_HEIGHT}px)`}
         >
           {children}
         </ContentArea>
