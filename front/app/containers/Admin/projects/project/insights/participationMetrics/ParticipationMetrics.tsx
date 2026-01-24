@@ -11,7 +11,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import messages from '../messages';
 
 import MethodMetrics from './MethodMetrics';
-import Metric from './Metric';
+import MetricCard from './MetricCard';
 
 interface Props {
   phase: IPhaseData;
@@ -61,21 +61,17 @@ const ParticipationMetrics = ({ phase }: Props) => {
   const isCurrentPhase = pastPresentOrFuture([start_at, end_at]) === 'present';
 
   return (
-    <Box
-      display="flex"
-      flexWrap="wrap"
-      alignContent="center"
-      gap="24px"
-      flexGrow={1}
-    >
-      <Metric
+    <Box display="flex" flexWrap="wrap" gap="16px" w="100%">
+      <MetricCard
         label={formatMessage(messages.visitors)}
         value={metrics.visitors}
+        icon="user-circle"
         change={isCurrentPhase ? metrics.visitors_7_day_change : undefined}
       />
-      <Metric
+      <MetricCard
         label={formatMessage(messages.participants)}
         value={metrics.participants}
+        icon="sidebar-users"
         change={isCurrentPhase ? metrics.participants_7_day_change : undefined}
       />
 
@@ -85,9 +81,10 @@ const ParticipationMetrics = ({ phase }: Props) => {
         showChange={isCurrentPhase}
       />
 
-      <Metric
+      <MetricCard
         label={formatMessage(messages.participationRate)}
         value={`${(metrics.participation_rate * 100).toFixed(1)}%`}
+        icon="chart-bar"
         change={
           isCurrentPhase ? metrics.participation_rate_7_day_change : undefined
         }

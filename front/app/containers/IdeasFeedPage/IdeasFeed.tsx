@@ -34,7 +34,7 @@ const PEEK_HEIGHT = 150;
 const FeedContainer = styled(Box)`
   scroll-snap-type: y mandatory;
   overflow-y: auto;
-  height: 100svh;
+  height: 100dvh;
 
   ::-webkit-scrollbar {
     display: none;
@@ -55,29 +55,37 @@ const NoteContainer = styled(Box)<{
   justify-content: center;
   scroll-snap-align: center;
   scroll-snap-stop: always;
-  height: calc(100svh - ${({ peekHeight }) => peekHeight}px);
+  height: calc(100dvh - ${({ peekHeight }) => peekHeight}px);
   padding: 30px;
 
   > * {
     position: absolute;
-    top: ${({ isCentered, isPrevious, isNext, peekHeight, noteHeight }) => {
-      const containerHeight = `calc(100svh - ${peekHeight}px - 40px)`;
+    top: 50%;
+    transform: ${({
+      isCentered,
+      isPrevious,
+      isNext,
+      peekHeight,
+      noteHeight,
+    }) => {
+      const scale = isCentered ? 1.08 : 1;
+      const containerHeight = `calc(100dvh - ${peekHeight}px - 60px)`;
       if (isCentered) {
-        return `calc((${containerHeight} - ${noteHeight}px) / 2)`;
+        return `translateY(-50%) scale(${scale})`;
       }
       if (isNext) {
-        return '0px';
+        // Move to top of container
+        return `translateY(calc(-50% - (${containerHeight} - ${noteHeight}px) / 2)) scale(${scale})`;
       }
       if (isPrevious) {
-        return `calc(${containerHeight} - ${noteHeight}px)`;
+        // Move to bottom of container
+        return `translateY(calc(-50% + (${containerHeight} - ${noteHeight}px) / 2 + 40px)) scale(${scale})`;
       }
-      return `calc((${containerHeight} - ${noteHeight}px) / 2)`;
+      return `translateY(-50%) scale(${scale})`;
     }};
-    transform: scale(${({ isCentered }) => (isCentered ? 1.08 : 1)});
     opacity: ${({ isCentered }) => (isCentered ? 1 : 0.5)};
     pointer-events: ${({ isCentered }) => (isCentered ? 'auto' : 'none')};
-    transition: top 0.4s ease-out, transform 0.4s ease-out,
-      opacity 0.4s ease-out;
+    transition: transform 0.4s ease-out, opacity 0.3s ease-out;
   }
 `;
 

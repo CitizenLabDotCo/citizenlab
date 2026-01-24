@@ -1,6 +1,13 @@
 import React from 'react';
 
-import { Box, Title, Button, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Title,
+  Button,
+  Text,
+  Badge,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
@@ -11,6 +18,7 @@ import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { pastPresentOrFuture } from 'utils/dateUtils';
 
 import { getAnalysisScope } from '../../components/AnalysisBanner/utils';
 
@@ -59,6 +67,10 @@ const InsightsContent = () => {
   } = usePdfExportContext();
 
   const participationMethod = phase?.data.attributes.participation_method;
+  const { start_at, end_at } = phase?.data.attributes || {};
+  const isCurrentPhase = start_at
+    ? pastPresentOrFuture([start_at, end_at ?? null]) === 'present'
+    : false;
   const supportsAiAnalysis =
     participationMethod &&
     AI_ANALYSIS_SUPPORTED_METHODS.includes(participationMethod);
@@ -116,11 +128,25 @@ const InsightsContent = () => {
           display="flex"
           w="100%"
           justifyContent="space-between"
-          alignItems="center"
+          alignItems="flex-start"
         >
-          <Title variant="h2" as="h1" color="textPrimary" m="0px">
-            <FormattedMessage {...messages.insights} />
-          </Title>
+          <Box>
+            <Box display="flex" alignItems="center">
+              <Title variant="h2" as="h1" color="textPrimary" m="0px">
+                <FormattedMessage {...messages.insights} />
+              </Title>
+              {isCurrentPhase && (
+                <Box ml="12px">
+                  <Badge className="inverse" color={colors.primary}>
+                    <FormattedMessage {...messages.liveData} />
+                  </Badge>
+                </Box>
+              )}
+            </Box>
+            <Text fontSize="s" color="textSecondary" m="0" mt="4px">
+              <FormattedMessage {...messages.insightsSubtitle1} />
+            </Text>
+          </Box>
           <Box
             display="flex"
             flexDirection="column"
