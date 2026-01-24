@@ -428,6 +428,7 @@ resource 'Stats - Comments' do
 
       describe 'filtered by parent topic includes child topic ideas' do
         let(:start_at) { timezone.at(now - 1.month).beginning_of_month }
+        let(:input_topic) { @parent_topic.id }
         let(:end_at) { timezone.at(now - 1.month).end_of_month }
 
         before do
@@ -439,8 +440,6 @@ resource 'Stats - Comments' do
             create(:comment, idea: idea_child)
           end
         end
-
-        let(:input_topic) { @parent_topic.id }
 
         example 'Comments by project filtered by parent topic includes child topic ideas' do
           do_request

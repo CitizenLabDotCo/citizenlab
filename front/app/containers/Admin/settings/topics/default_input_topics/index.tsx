@@ -59,11 +59,13 @@ const DefaultInputTopics = () => {
     const newAbove = upOrDown === 'up' ? newIndex - 1 : newIndex;
     const newUnder = upOrDown === 'up' ? newIndex : newIndex + 1;
 
-    const newAboveTopic: IDefaultInputTopicData | undefined =
-      sortableItems[newAbove];
+    const newAboveTopic = sortableItems[newAbove] as
+      | IDefaultInputTopicData
+      | undefined;
     const movedTopic = sortableItems[currentIndex];
-    const newUnderTopic: IDefaultInputTopicData | undefined =
-      sortableItems[newUnder];
+    const newUnderTopic = sortableItems[newUnder] as
+      | IDefaultInputTopicData
+      | undefined;
 
     const aboveDepth = newAboveTopic ? newAboveTopic.attributes.depth : -1;
     const currentDepth = movedTopic.attributes.depth;

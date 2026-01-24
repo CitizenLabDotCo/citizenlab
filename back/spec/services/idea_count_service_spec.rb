@@ -28,7 +28,7 @@ describe IdeasCountService do
       parent_topic = create(:input_topic, project: project)
       child_topic = create(:input_topic, project: project, parent: parent_topic)
 
-      idea3 = create(:idea, project: project, input_topics: [child_topic])
+      create(:idea, project: project, input_topics: [child_topic])
 
       result = described_class.counts(Idea.all, ['input_topic_id'])
 
