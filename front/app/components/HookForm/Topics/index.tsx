@@ -9,6 +9,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import Error, { TFieldName } from 'components/UI/Error';
 import MultipleSelect from 'components/UI/MultipleSelect';
+import TopicsPicker from 'components/UI/TopicsPicker';
 
 interface Props {
   name: string;
@@ -45,6 +46,12 @@ const Topics = ({
 
   const { data: inputTopics } = useInputTopics(projectId || '');
 
+  const topics = inputTopics?.data ?? [];
+
+  // Use dropdown when there are child topics (depth > 0) or more than 20 topics
+  const hasChildTopics = topics.some((topic) => topic.attributes.depth > 0);
+  const useDropdown = hasChildTopics || topics.length > 20;
+
   const options: IOption[] = useMemo(() => {
     if (!inputTopics?.data) return [];
     return inputTopics.data.map((topic) => ({
@@ -59,6 +66,11 @@ const Topics = ({
     trigger(name);
   };
 
+  const handlePickerChange = (topicIds: string[]) => {
+    setValue(name, topicIds);
+    trigger(name);
+  };
+
   return (
     <>
       <Controller
@@ -66,16 +78,27 @@ const Topics = ({
         control={control}
         render={() => {
           const selectedTopicIds: string[] = getValues(name) || [];
+          if (useDropdown) {
+            return (
+              <MultipleSelect
+                id={id}
+                inputId={id ? `${id}-input` : undefined}
+                className={className}
+                value={selectedTopicIds}
+                options={options}
+                onChange={handleChange}
+                placeholder={placeholder}
+                label={label}
+              />
+            );
+          }
           return (
-            <MultipleSelect
+            <TopicsPicker
               id={id}
-              inputId={id ? `${id}-input` : undefined}
               className={className}
-              value={selectedTopicIds}
-              options={options}
-              onChange={handleChange}
-              placeholder={placeholder}
-              label={label}
+              selectedTopicIds={selectedTopicIds}
+              availableTopics={topics}
+              onClick={handlePickerChange}
             />
           );
         }}
