@@ -16,9 +16,6 @@ import SortableRow from 'components/admin/ResourceList/SortableRow';
 import { Section, SectionDescription } from 'components/admin/Section';
 import styled from 'styled-components';
 
-const IndentedSortableRow = styled(SortableRow)<{ depth: number }>`
-  padding-left: ${(props) => props.depth * 32}px;
-`;
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal, {
@@ -31,6 +28,10 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
+
+const IndentedSortableRow = styled(SortableRow)<{ depth: number }>`
+  padding-left: ${(props) => props.depth * 32}px;
+`;
 
 const DefaultInputTopics = () => {
   const nestedInputTopicsActive = useFeatureFlag({
