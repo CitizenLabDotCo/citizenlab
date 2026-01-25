@@ -251,8 +251,6 @@ class Project < ApplicationRecord
     )
   end
 
-  def
-
   def refresh_preview_token
     self.preview_token = self.class.generate_preview_token
   end
