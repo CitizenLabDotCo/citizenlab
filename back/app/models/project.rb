@@ -247,7 +247,7 @@ class Project < ApplicationRecord
     # The following mimics the same behaviour now that participation method is not available on the project
     # This defaults to Ideation as pmethod is only needed when dealing with custom forms for Ideation phases
     @pmethod ||= ParticipationMethod::Ideation.new(
-      TimelineService.new.current_or_backup_transitive_phase(self)
+      TimelineService.new.current_or_backup_transitive_phase(self) || phases.first
     )
   end
 
