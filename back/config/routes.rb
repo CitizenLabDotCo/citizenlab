@@ -159,7 +159,6 @@ Rails.application.routes.draw do
       end
 
       resources :default_input_topics do
-        patch 'reorder', on: :member
         patch 'move', on: :member
       end
 
@@ -244,7 +243,6 @@ Rails.application.routes.draw do
         resources :events, only: %i[new create]
         resources :projects_allowed_input_topics, only: [:index]
         resources :input_topics, shallow: true do
-          patch 'reorder', on: :member
           patch 'move', on: :member
         end
         resources :phases, only: %i[index new create]

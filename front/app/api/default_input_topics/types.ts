@@ -14,7 +14,6 @@ export interface IDefaultInputTopicData {
     description_multiloc: Multiloc;
     full_title_multiloc: Multiloc;
     icon: string | null;
-    ordering: number;
     depth: number;
     children_count: number;
   };

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::InputTopicSerializer < WebApi::V1::BaseSerializer
-  attributes :title_multiloc, :description_multiloc, :ordering, :icon,
+  attributes :title_multiloc, :description_multiloc, :icon,
     :full_title_multiloc, :depth, :children_count, :lft, :rgt
 
   belongs_to :project

@@ -14,6 +14,11 @@ import { TextCell } from 'components/admin/ResourceList';
 import SortableList from 'components/admin/ResourceList/SortableList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import { Section, SectionDescription } from 'components/admin/Section';
+import styled from 'styled-components';
+
+const IndentedSortableRow = styled(SortableRow)<{ depth: number }>`
+  padding-left: ${(props) => props.depth * 32}px;
+`;
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal, {
@@ -148,23 +153,22 @@ const DefaultInputTopics = () => {
       <SortableList items={sortableItems} onReorder={handleReorder}>
         {({ itemsList, handleDragRow, handleDropRow }) => (
           <>
-            {itemsList.map((topic: IDefaultInputTopicData, index: number) => {
-              const isSubtopic = topic.attributes.depth > 0;
+            {itemsList.map((item, index) => {
+              const topic = item as unknown as IDefaultInputTopicData;
               const isRootTopic = topic.attributes.depth === 0;
 
               return (
-                <SortableRow
+                <IndentedSortableRow
                   key={topic.id}
                   id={topic.id}
+                  depth={topic.attributes.depth}
                   index={index}
                   isLastItem={index === itemsList.length - 1}
                   moveRow={handleDragRow}
                   dropRow={handleDropRow}
                 >
                   <TextCell className="expand">
-                    <Box ml={isSubtopic ? '32px' : '0px'}>
-                      <T value={topic.attributes.title_multiloc} />
-                    </Box>
+                    <T value={topic.attributes.title_multiloc} />
                   </TextCell>
                   <Box display="flex" alignItems="center" gap="16px">
                     {nestedInputTopicsActive && isRootTopic && (
@@ -196,7 +200,7 @@ const DefaultInputTopics = () => {
                       <FormattedMessage {...messages.deleteButtonLabel} />
                     </ButtonWithLink>
                   </Box>
-                </SortableRow>
+                </IndentedSortableRow>
               );
             })}
           </>

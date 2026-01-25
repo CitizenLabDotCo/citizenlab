@@ -35,6 +35,11 @@ import { isAdmin } from 'utils/permissions/roles';
 
 import InputTopicModal from './InputTopicModal';
 import messages from './messages';
+import styled from 'styled-components';
+
+const IndentedSortableRow = styled(SortableRow)<{ depth: number }>`
+  padding-left: ${(props) => props.depth * 32}px;
+`;
 
 const ProjectInputTopics = () => {
   const { projectId } = useParams() as { projectId: string };
@@ -230,25 +235,24 @@ const ProjectInputTopics = () => {
       <SortableList items={sortableItems} onReorder={handleReorder}>
         {({ itemsList, handleDragRow, handleDropRow }) => (
           <>
-            {itemsList.map((topic: IInputTopicData, index: number) => {
-              const isSubtopic = topic.attributes.depth > 0;
+            {itemsList.map((item, index) => {
+              const topic = item as unknown as IInputTopicData;
               const isRootTopic = topic.attributes.depth === 0;
               // Only prevent deleting if it's the last root topic
               const canDelete = !(isRootTopic && isLastRootTopic);
 
               return (
-                <SortableRow
+                <IndentedSortableRow
                   key={topic.id}
                   id={topic.id}
+                  depth={topic.attributes.depth}
                   index={index}
                   isLastItem={index === itemsList.length - 1}
                   moveRow={handleDragRow}
                   dropRow={handleDropRow}
                 >
                   <TextCell className="expand">
-                    <Box ml={isSubtopic ? '32px' : '0px'}>
-                      <T value={topic.attributes.title_multiloc} />
-                    </Box>
+                    <T value={topic.attributes.title_multiloc} />
                   </TextCell>
                   <Box display="flex" alignItems="center" gap="16px">
                     {nestedInputTopicsActive && isRootTopic && (
@@ -281,7 +285,7 @@ const ProjectInputTopics = () => {
                       <FormattedMessage {...messages.delete} />
                     </ButtonWithLink>
                   </Box>
-                </SortableRow>
+                </IndentedSortableRow>
               );
             })}
           </>

@@ -60,21 +60,6 @@ class WebApi::V1::DefaultInputTopicsController < ApplicationController
     end
   end
 
-  def reorder
-    SideFxDefaultInputTopicService.new.before_update(@default_input_topic, current_user)
-    ordering = permitted_attributes(@default_input_topic)[:ordering]
-    if ordering && @default_input_topic.insert_at(ordering)
-      SideFxDefaultInputTopicService.new.after_update(@default_input_topic, current_user)
-      render json: WebApi::V1::DefaultInputTopicSerializer.new(
-        @default_input_topic.reload,
-        params: jsonapi_serializer_params,
-        include: [:children]
-      ).serializable_hash, status: :ok
-    else
-      render json: { errors: @default_input_topic.errors.details }, status: :unprocessable_entity
-    end
-  end
-
   # Move topic within the tree
   # position: 'child' (make child of target), 'left' (move before target), 'right' (move after target), 'root' (make root)
   def move

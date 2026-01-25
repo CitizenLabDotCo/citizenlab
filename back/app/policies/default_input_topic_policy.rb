@@ -15,10 +15,6 @@ class DefaultInputTopicPolicy < ApplicationPolicy
     user&.active? && user.admin?
   end
 
-  def reorder?
-    update?
-  end
-
   def move?
     update?
   end
@@ -42,10 +38,6 @@ class DefaultInputTopicPolicy < ApplicationPolicy
 
   def permitted_attributes_for_update
     permitted_attributes_for_create
-  end
-
-  def permitted_attributes_for_reorder
-    [:ordering]
   end
 
   def permitted_attributes_for_move
