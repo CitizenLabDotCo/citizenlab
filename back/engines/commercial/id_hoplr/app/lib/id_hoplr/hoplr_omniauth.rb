@@ -41,7 +41,8 @@ module IdHoplr
       options[:nonce] = true
       options[:send_scope_to_token_endpoint] = false
       options[:issuer] = issuer
-      options[:client_options] = {
+
+      client_options = {
         identifier: feature['client_id'],
         secret: feature['client_secret'],
         port: 443,
@@ -49,6 +50,11 @@ module IdHoplr
         host: host,
         redirect_uri: "#{configuration.base_backend_uri}/auth/hoplr/callback"
       }
+      options[:client_options] = client_options
+
+      # Also store in env for request-local access (prevents race conditions with concurrent requests)
+      env['omniauth.hoplr.client_options'] = client_options
+      env['omniauth.hoplr.issuer'] = issuer
     end
 
     def host

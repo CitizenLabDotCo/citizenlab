@@ -34,9 +34,14 @@ export default defineConfig(({ mode }) => {
   const DEV_LIBRARY_PORT = process.env.DEV_LIBRARY_PORT || '5005';
 
   // Determine if HTTPS should be used based on the presence of a HTTPS_HOST
-  const HTTPS_HOST = process.env.HTTPS_HOST;
-  const USE_HTTPS = HTTPS_HOST !== undefined;
-  if (USE_HTTPS) console.log(`\nSecure local dev URL: https://${HTTPS_HOST}`);
+  // Split HTTP_HOST by commas so value is an array (usually just one)
+  const HTTPS_HOST_ARRAY = process.env.HTTPS_HOST?.split(',');
+  const USE_HTTPS = !!HTTPS_HOST_ARRAY;
+  if (USE_HTTPS) {
+    HTTPS_HOST_ARRAY.forEach((host) => {
+      console.log(`\nSecure local dev URL: https://${host}`);
+    });
+  }
 
   return {
     root: path.resolve(__dirname, 'app'), // Root directory
@@ -97,7 +102,7 @@ export default defineConfig(({ mode }) => {
               name: process.env.CIRCLE_BUILD_NUM,
             },
           }),
-        USE_HTTPS && mkcert({ hosts: [HTTPS_HOST] }), // HTTPS in development
+        USE_HTTPS && mkcert({ hosts: HTTPS_HOST_ARRAY }), // HTTPS in development
       ],
     ],
     build: {

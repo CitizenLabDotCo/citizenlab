@@ -168,11 +168,14 @@ class AppConfiguration < ApplicationRecord
   end
 
   def base_frontend_uri
-    base_uri(ENV['BASE_DEV_URI'].presence || 'http://localhost:3000')
+    "https://#{AppConfiguration.instance.host}"
+    # base_uri(ENV['BASE_DEV_URI'].presence || 'http://localhost:3000')
   end
 
   def base_backend_uri
-    base_uri(ENV['BASE_DEV_URI'].presence || 'http://localhost:4000')
+    "https://#{AppConfiguration.instance.host}"
+    # https_dev_uri = ENV['HTTPS_IN_DEV'] == 'true' ? "https://#{AppConfiguration.instance.host}" : 'http://localhost:4000'
+    # base_uri(ENV['BASE_DEV_URI'].presence || https_dev_uri)
   end
 
   def base_asset_host_uri
