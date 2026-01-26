@@ -10,9 +10,11 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     :reacting_enabled, :reacting_like_method, :reacting_like_limited_max,
     :reacting_dislike_enabled, :reacting_dislike_method, :reacting_dislike_limited_max,
     :presentation_mode, :ideas_order, :input_term, :vote_term,
-    :prescreening_enabled, :prescreening_mode, :manual_voters_amount, :manual_votes_count,
+    :prescreening_mode, :manual_voters_amount, :manual_votes_count,
     :similarity_enabled, :similarity_threshold_title, :similarity_threshold_body,
     :survey_popup_frequency
+
+  attribute :prescreening_enabled, &:prescreening_enabled?
 
   %i[
     voting_method voting_max_total voting_min_total

@@ -268,6 +268,10 @@ class Phase < ApplicationRecord
     participation_method == 'ideation'
   end
 
+  def prescreening_enabled?
+    prescreening_mode.present?
+  end
+
   def pmethod
     @pmethod = case participation_method
     when 'information'

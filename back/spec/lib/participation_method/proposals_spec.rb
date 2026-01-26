@@ -24,7 +24,7 @@ RSpec.describe ParticipationMethod::Proposals do
       let!(:custom_status) { create(:proposals_status) }
 
       context 'when the creation phase has reviewing enabled' do
-        let(:phase) { create(:proposals_phase, prescreening_enabled: true) }
+        let(:phase) { create(:proposals_phase, prescreening_mode: 'all') }
 
         it 'assignes the default "prescreening" status if not set' do
           proposal = build(:proposal, idea_status: nil, creation_phase: phase, project: phase.project)
@@ -40,7 +40,7 @@ RSpec.describe ParticipationMethod::Proposals do
       end
 
       context 'when the creation phase does not have reviewing enabled' do
-        let(:phase) { create(:proposals_phase, prescreening_enabled: false) }
+        let(:phase) { create(:proposals_phase, prescreening_mode: nil) }
 
         it 'assigns the default "proposed" status if not set' do
           proposal = build(:proposal, idea_status: nil, creation_phase: phase, project: phase.project)
@@ -93,18 +93,18 @@ RSpec.describe ParticipationMethod::Proposals do
     describe 'when prescreening is deactivated' do
       before { SettingsService.new.deactivate_feature! 'prescreening' }
 
-      it 'does not set prescreening_enabled' do
+      it 'does not set prescreening_mode' do
         participation_method.assign_defaults_for_phase
-        expect(phase.prescreening_enabled).to be false
+        expect(phase.prescreening_mode).to be_nil
       end
     end
 
     describe 'when prescreening is activated' do
       before { SettingsService.new.activate_feature! 'prescreening' }
 
-      it 'sets prescreening_enabled to false' do
+      it 'does not set prescreening_mode' do
         participation_method.assign_defaults_for_phase
-        expect(phase.prescreening_enabled).to be false
+        expect(phase.prescreening_mode).to be_nil
       end
     end
   end
