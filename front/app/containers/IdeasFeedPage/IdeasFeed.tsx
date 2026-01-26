@@ -9,6 +9,7 @@ import React, {
 import {
   Box,
   Spinner,
+  Text,
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
@@ -21,7 +22,9 @@ import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
 import useIdeaById from 'api/ideas/useIdeaById';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useIntl } from 'utils/cl-intl';
 
+import messages from './messages';
 import StickyNote, { NOTE_HEIGHTS } from './StickyNotes/StickyNote';
 import { getTopicColor } from './topicsColor';
 
@@ -98,6 +101,7 @@ interface Props {
 }
 
 const IdeasFeed = ({ topicId }: Props) => {
+  const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
   const phaseId = searchParams.get('phase_id')!;
   const initialIdeaId = searchParams.get('initial_idea_id') || undefined;
@@ -275,7 +279,13 @@ const IdeasFeed = ({ topicId }: Props) => {
                   isPrevious={false}
                   isNext={false}
                 >
-                  <Spinner />
+                  {hasNextPage ? (
+                    <Spinner />
+                  ) : (
+                    <Text fontWeight="bold" mt="-200px">
+                      {formatMessage(messages.endOfFeed)}
+                    </Text>
+                  )}
                 </NoteContainer>
               </VirtualItem>
             );

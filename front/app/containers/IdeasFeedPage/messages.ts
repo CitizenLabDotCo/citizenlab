@@ -33,4 +33,8 @@ export default defineMessages({
     id: 'app.containers.IdeasFeedPage.exploreTopicsNudge',
     defaultMessage: 'Swipe up to explore the topics',
   },
+  endOfFeed: {
+    id: 'app.containers.IdeasFeedPage.endOfFeed',
+    defaultMessage: 'You have reached the end of this feed.',
+  },
 });
