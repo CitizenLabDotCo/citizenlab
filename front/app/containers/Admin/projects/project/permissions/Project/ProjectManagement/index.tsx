@@ -48,7 +48,7 @@ const ProjectManagement = ({ projectId }: Props) => {
               values={{
                 moderationInfoCenterLink: (
                   <StyledA
-                    href={formatMessage(messages.moreInfoModeratorLink)}
+                    href={formatMessage(messages.moreInfoModeratorLink2)}
                     target="_blank"
                   >
                     <FormattedMessage

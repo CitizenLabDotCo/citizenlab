@@ -24,7 +24,7 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   viewFormLinkCopy: messages.viewSurvey,
   toolboxTitle: messages.addSurveyContent,
   formSavedSuccessMessage: messages.successMessage,
-  supportArticleLink: messages.supportArticleLink,
+  supportArticleLink: messages.supportArticleLinkSurvey,
   formEndPageLogicOption: messages.surveyEnd,
   pagesLogicHelperText: messages.pagesLogicHelperText,
 

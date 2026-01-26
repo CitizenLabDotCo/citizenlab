@@ -150,7 +150,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
       onEditLayer(layerId);
     };
 
-    const supportArticleUrl = formatMessage(messages.supportArticleUrl);
+    const supportArticleUrl = formatMessage(messages.supportArticleUrl3);
 
     const supportArticleLink = (
       <a href={supportArticleUrl} target="_blank" rel="noreferrer">
