@@ -141,7 +141,6 @@
   "app.components.admin.ActionForm.Fields.globalRegFlow": "Enabled in global registration flow",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "global registration flow",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "This question is enabled in the {globalRegFlowLink}. You can disable it for this action.",
-  "app.components.admin.ActionForm.Fields.user_fields_in_survey_not_supported_for_participation_method": "Asking demographic questions as the last page of the survey is not supported for the selected participation method.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow": "With the current combination of \"Authentication\" and \"User data collection\" settings, demographic questions can only be asked in the registration flow.",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Choosing how demographic questions are asked to participants is not applicable as you have disabled authentication and selected full anonymity",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "To add content inside the accordion, open the accordion by pressing on the symbol \">\", then drag any widgets inside.",

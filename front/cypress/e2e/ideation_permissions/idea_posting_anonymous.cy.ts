@@ -1,5 +1,6 @@
 import moment = require('moment');
-import { randomEmail, randomString } from '../support/commands';
+import { randomEmail, randomString } from '../../support/commands';
+import { fillOutTitleAndBody } from './_utils';
 
 describe('Timeline ideation with anonymous participation allowed', () => {
   const projectTitle = randomString(5);
@@ -38,21 +39,13 @@ describe('Timeline ideation with anonymous participation allowed', () => {
   });
 
   it('admin can submit anonymous idea', () => {
-    const ideaTitle = randomString(11);
-    const ideaContent = randomString(40);
+    const title = randomString(11);
+    const body = randomString(40);
 
     cy.setAdminLoginCookie();
     cy.visit(`/projects/${projectSlug}/ideas/new`);
 
-    // add a title and description
-    cy.get('#title_multiloc ').click().type(ideaTitle, { delay: 0 });
-
-    cy.dataCy('e2e-next-page').should('be.visible').click();
-
-    cy.get('#body_multiloc .ql-editor').type(ideaContent);
-
-    // Go to the next page of the idea form
-    cy.dataCy('e2e-next-page').should('be.visible').click();
+    fillOutTitleAndBody(cy, { title, body });
 
     // Go to the next page of the idea form
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
@@ -69,30 +62,21 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     cy.dataCy('e2e-after-submission').click();
 
     // verify the content of the newly created idea page
-    cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);
-    cy.get('#e2e-idea-title').contains(ideaTitle);
+    cy.location('pathname').should('eq', `/en/ideas/${title}`);
+    cy.get('#e2e-idea-title').contains(title);
 
     // verify that the author is anonymous
     cy.get('#e2e-anonymous-username').should('exist');
   });
 
   it('resident can submit anonymous idea', () => {
-    const ideaTitle = randomString(11);
-    const ideaContent = randomString(40);
+    const title = randomString(11);
+    const body = randomString(40);
 
     cy.setLoginCookie(email, password);
     cy.visit(`/projects/${projectSlug}/ideas/new`);
 
-    // Add a title
-    cy.get('#title_multiloc ').click().type(ideaTitle, { delay: 0 });
-
-    cy.dataCy('e2e-next-page').should('be.visible').click();
-
-    // Add a description
-    cy.get('#body_multiloc .ql-editor').type(ideaContent);
-
-    // Go to the next page of the idea form
-    cy.dataCy('e2e-next-page').should('be.visible').click();
+    fillOutTitleAndBody(cy, { title, body });
 
     cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
 
@@ -108,8 +92,8 @@ describe('Timeline ideation with anonymous participation allowed', () => {
     cy.dataCy('e2e-after-submission').click();
 
     // verify the content of the newly created idea page
-    cy.location('pathname').should('eq', `/en/ideas/${ideaTitle}`);
-    cy.get('#e2e-idea-title').contains(ideaTitle);
+    cy.location('pathname').should('eq', `/en/ideas/${title}`);
+    cy.get('#e2e-idea-title').contains(title);
 
     // verify that the author is anonymous
     cy.get('#e2e-anonymous-username').should('exist');

@@ -460,14 +460,13 @@ resource 'Ideas' do
 
         context 'when permitted_by is \'everyone\'' do
           example 'Get a single draft idea by phase including user data' do
-            phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: false)
-
             permission = Permission.find_by(
               permission_scope_id: phase.id,
               action: 'posting_idea'
             )
 
             permission.permitted_by = 'everyone'
+            permission.user_fields_in_form = false # should not matter since permitted by is everyone
             permission.save!
 
             @user.update!(custom_field_values: { 'gender' => 'male' })

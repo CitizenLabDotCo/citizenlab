@@ -145,8 +145,8 @@ class WebApi::V1::IdeasController < ApplicationController
     # Merge custom field values from the user's profile
     # if user fields are presented in the idea form
     # AND the user_data_collection setting allows it
-    if phase.pmethod.user_fields_in_form?
-      draft_idea.custom_field_values = UserFieldsInSurveyService.merge_user_fields_into_idea(
+    if phase.pmethod.user_fields_in_form_enabled?
+      draft_idea.custom_field_values = UserFieldsInFormService.merge_user_fields_into_idea(
         current_user,
         phase,
         draft_idea.custom_field_values
@@ -159,7 +159,7 @@ class WebApi::V1::IdeasController < ApplicationController
   #   Normal users always post in an active phase. They should never provide a phase id.
   #   Users who can moderate projects post in an active phase if no phase id is given.
   #   Users who can moderate projects post in the given phase if a phase id is given.
-  def create
+  def create # rubocop:disable Metrics/MethodLength
     send_error and return unless phase_for_input
 
     form = phase_for_input.pmethod.custom_form
@@ -183,10 +183,16 @@ class WebApi::V1::IdeasController < ApplicationController
     # Non persisted attribute needed by policy & anonymous_participation concern for 'everyone' participation only
     input.request = request if phase_for_input.pmethod.everyone_tracking_enabled?
 
-    # If native survey or community monitor:
+    # If native survey or community monitor, and we are publishing this survey:
     # Do not store user ID if user_data_collection it set to "anonymous" or "demographics_only"
     # (anonymous = true on the input just means "do not store user ID")
-    if phase_for_input.pmethod.supports_survey_form? && phase_for_input.pmethod.user_data_collection != 'all_data'
+    # If we are NOT publishing this survey: we need to store the author_id
+    # because otherwise we cannot PATCH it because only the author can
+    published = params_for_create[:publication_status] == 'published'
+    surveylike = phase_for_input.pmethod.supports_survey_form?
+    not_all_data = phase_for_input.pmethod.user_data_collection != 'all_data'
+
+    if published && surveylike && not_all_data
       input.anonymous = true
     end
 
@@ -212,24 +218,24 @@ class WebApi::V1::IdeasController < ApplicationController
 
     if publication_status == 'published'
       save_options[:context] = :publication
+    end
 
-      if UserFieldsInSurveyService.should_merge_user_fields_into_idea?(
+    if input.publication_status == 'published' && UserFieldsInFormService.should_merge_user_fields_into_idea?(
+      current_user,
+      phase_for_input,
+      input
+    )
+      input.custom_field_values = UserFieldsInFormService.merge_user_fields_into_idea(
         current_user,
         phase_for_input,
-        input
+        input.custom_field_values
       )
-        input.custom_field_values = UserFieldsInSurveyService.merge_user_fields_into_idea(
-          current_user,
-          phase_for_input,
-          input.custom_field_values
-        )
-      end
     end
 
     ActiveRecord::Base.transaction do
       if input.save(**save_options)
         update_file_upload_fields input, form, params_for_create
-        sidefx.after_create(input, current_user)
+        sidefx.after_create(input, current_user, phase_for_input)
         write_everyone_tracking_cookie input
 
         ClaimTokenService.generate(input) unless input.author_id
@@ -246,7 +252,7 @@ class WebApi::V1::IdeasController < ApplicationController
     end
   end
 
-  def update
+  def update # rubocop:disable Metrics/MethodLength
     input = Idea.find params[:id]
 
     authorize input
@@ -282,16 +288,31 @@ class WebApi::V1::IdeasController < ApplicationController
 
     creation_phase = input.creation_phase
 
-    if (input.publication_status == 'published' || update_params[:publication_status] == 'published') && UserFieldsInSurveyService.should_merge_user_fields_into_idea?(
+    if (input.publication_status == 'published' || update_params[:publication_status] == 'published') && UserFieldsInFormService.should_merge_user_fields_into_idea?(
       current_user,
       creation_phase,
       input
     )
-      update_params[:custom_field_values] = UserFieldsInSurveyService.merge_user_fields_into_idea(
+      update_params[:custom_field_values] = UserFieldsInFormService.merge_user_fields_into_idea(
         current_user,
         creation_phase,
         update_params[:custom_field_values]
       )
+    end
+
+    # If native survey or community monitor, and we are publishing this survey:
+    # Do not store user ID if user_data_collection it set to "anonymous" or "demographics_only"
+    # (anonymous = true on the input just means "do not store user ID")
+    # we can only anonymize it after publishing because before that it might
+    # still receive other PATCHes
+    anonymize_user_at_the_end = if creation_phase
+      published = update_params[:publication_status] == 'published'
+      surveylike = creation_phase.pmethod.supports_survey_form?
+      not_all_data = creation_phase.pmethod.user_data_collection != 'all_data'
+
+      published && surveylike && not_all_data
+    else
+      false
     end
 
     update_errors = nil
@@ -320,6 +341,12 @@ class WebApi::V1::IdeasController < ApplicationController
       if input.save(**save_options)
         sidefx.after_update(input, current_user)
         update_file_upload_fields input, input.custom_form, update_params
+
+        if anonymize_user_at_the_end
+          input.author_id = nil
+          input.save!
+        end
+
         render json: WebApi::V1::IdeaSerializer.new(
           input.reload,
           params: jsonapi_serializer_params,
@@ -558,7 +585,10 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def submittable_custom_fields(custom_form)
-    IdeaCustomFieldsService.new(custom_form).submittable_fields_with_other_options
+    @submittable_custom_fields ||= {}
+
+    cache_key = custom_form&.id || :no_form
+    @submittable_custom_fields[cache_key] ||= IdeaCustomFieldsService.new(custom_form).submittable_fields_with_other_options
   end
 
   def authorize_project_or_ideas
