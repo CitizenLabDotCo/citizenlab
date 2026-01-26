@@ -122,17 +122,17 @@ RSpec.describe Project do
     # Still messy as hell and extremely confusing but at least now it is tested
     it 'returns correct pmethod' do
       project = create(:project)
-      survey_phase = create(
+      create(
         :native_survey_phase,
-        start_at: 3.weeks.ago, 
-        end_at: 2.weeks.ago, 
+        start_at: 3.weeks.ago,
+        end_at: 2.weeks.ago,
         project: project
       )
       ideation_phase = create(
-        :phase, 
-        start_at: 1.week.ago, 
+        :phase,
+        start_at: 1.week.ago,
         end_at: 3.weeks.from_now,
-        participation_method: 'ideation', 
+        participation_method: 'ideation',
         project: project
       )
 
