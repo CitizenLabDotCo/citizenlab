@@ -141,7 +141,7 @@
   "app.components.admin.ActionForm.Fields.globalRegFlow": "Ieslēgts globālajā reģistrācijas plūsmā",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "globālā reģistrācijas plūsma",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "Šis jautājums ir iespējots vietnē {globalRegFlowLink}. Šai darbībai to var atspējot.",
-  "app.components.admin.ActionForm.Fields.user_fields_in_survey_not_supported_for_participation_method": "Demogrāfisko jautājumu uzdošana aptaujas pēdējā lappusē izvēlētajā dalības metodē nav atbalstīta.",
+  "app.components.admin.ActionForm.Fields.user_fields_in_form_not_supported_for_action": "Asking demographic questions as the last page of the form is not supported for this action.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow": "Izmantojot pašreizējo iestatījumu \"Autentifikācija\" un \"Lietotāja datu vākšana\" kombināciju, demogrāfiskos jautājumus var uzdot tikai reģistrācijas plūsmā.",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Demogrāfisko jautājumu uzdošana dalībniekiem nav piemērojama, jo esat atspējojis autentifikāciju un izvēlējies pilnīgu anonimitāti.",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "Lai pievienotu saturu akordeona iekšpusē, atveriet akordeonu, nospiežot simbolu \">\", pēc tam velciet iekšā visus logrīkus.",
