@@ -141,7 +141,7 @@
   "app.components.admin.ActionForm.Fields.globalRegFlow": "Ingeschakeld in globale registratie-proces",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "globale registratie-proces",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "Deze vraag is ingeschakeld in het {globalRegFlowLink}. Je kunt de vraag voor deze actie uitschakelen.",
-  "app.components.admin.ActionForm.Fields.user_fields_in_survey_not_supported_for_participation_method": "Het stellen van demografische vragen op de laatste pagina van de vragenlijst wordt niet ondersteund voor de geselecteerde deelnamemethode.",
+  "app.components.admin.ActionForm.Fields.user_fields_in_form_not_supported_for_action": "Het stellen van demografische vragen op de laatste pagina van de vragenlijst wordt niet ondersteund voor de geselecteerde deelnamemethode.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow": "Met de huidige combinatie van instellingen voor \"Authenticatie\" en \"Verzamelen van gebruikersgegevens\" kunnen demografische vragen alleen worden gesteld in het registratieproces.",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Kiezen hoe demografische vragen aan deelnemers worden gesteld is niet van toepassing omdat je authenticatie hebt uitgeschakeld en volledige anonimiteit hebt geselecteerd.",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "Om inhoud in de accordeon toe te voegen, open je de accordeon door op het symbool \">\" te drukken en vervolgens widgets er in te slepen.",
