@@ -42,11 +42,7 @@ resource 'Input Topics' do
     # Temporarily disable acts_as_list callbacks because they modify the updated_at
     # attribute and break the tests. We use `it_behaves_like` to include the tests
     # in a nested context to limit the scope of the `around` block.
-    it_behaves_like 'filtering_by_date', :input_topic, :updated_at do
-      around do |example|
-        InputTopic.acts_as_list_no_update { example.run }
-      end
-    end
+    it_behaves_like 'filtering_by_date', :input_topic, :updated_at
   end
 
   get '/api/v2/input_topics/:id' do

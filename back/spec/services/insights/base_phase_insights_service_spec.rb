@@ -54,11 +54,11 @@ RSpec.describe Insights::BasePhaseInsightsService do
       expect(result).to eq(
         {
           visitors: 4,
-          visitors_7_day_change: 0.0, # From 3 (7 to 14 days ago) to 3 (last 7-day period) unique visitors = 0% change
+          visitors_7_day_percent_change: 0.0, # From 3 (7 to 14 days ago) to 3 (last 7-day period) unique visitors = 0% change
           participants: 3,
-          participants_7_day_change: 50.0, # From 2 (7 to 14 days ago) to 3 (last 7-day period) unique participants = 50% increase
-          participation_rate: 0.75,
-          participation_rate_7_day_change: 49.9 # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 0.667 = (((1 - 0.667).to_f / 0.667) * 100.0).round(1)
+          participants_7_day_percent_change: 50.0, # From 2 (7 to 14 days ago) to 3 (last 7-day period) unique participants = 50% increase
+          participation_rate_as_percent: 75.0,
+          participation_rate_7_day_percent_change: 49.9 # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 0.667 = (((1 - 0.667).to_f / 0.667) * 100.0).round(1)
         }
       )
     end
@@ -166,7 +166,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
           expect(result).to include(
             hash_including(
               key: 'single_select',
-              r_score: nil, # No reference distribution set
               options: {
                 'a' => { 'title_multiloc' => { 'en' => 'Option A' }, 'ordering' => 0 },
                 'b' => { 'title_multiloc' => { 'en' => 'Option B' }, 'ordering' => 1 }
@@ -183,7 +182,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
           expect(result).to include(
             hash_including(
               key: 'single_select',
-              r_score: nil, # No reference distribution set
               options: {
                 'a' => { 'title_multiloc' => { 'en' => 'Option A' }, 'ordering' => 0 },
                 'b' => { 'title_multiloc' => { 'en' => 'Option B' }, 'ordering' => 1 }
@@ -210,7 +208,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
           expect(result).to include(
             hash_including(
               key: 'single_select',
-              r_score: 0.9411764705882353,
               options: {
                 'a' => { 'title_multiloc' => { 'en' => 'Option A' }, 'ordering' => 0 },
                 'b' => { 'title_multiloc' => { 'en' => 'Option B' }, 'ordering' => 1 }
@@ -227,7 +224,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
           expect(result).to include(
             hash_including(
               key: 'single_select',
-              r_score: 0.0,
               options: {
                 'a' => { 'title_multiloc' => { 'en' => 'Option A' }, 'ordering' => 0 },
                 'b' => { 'title_multiloc' => { 'en' => 'Option B' }, 'ordering' => 1 }
@@ -256,7 +252,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
         expect(result).to include(
           hash_including(
             key: 'multi_select',
-            r_score: nil, # No reference distribution can be set for multiselect fields
             options: {
               'x' => { 'title_multiloc' => { 'en' => 'Option X' }, 'ordering' => 0 },
               'y' => { 'title_multiloc' => { 'en' => 'Option Y' }, 'ordering' => 1 }
@@ -273,7 +268,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
         expect(result).to include(
           hash_including(
             key: 'multi_select',
-            r_score: nil, # No reference distribution can be set for multiselect fields
             options: {
               'x' => { 'title_multiloc' => { 'en' => 'Option X' }, 'ordering' => 0 },
               'y' => { 'title_multiloc' => { 'en' => 'Option Y' }, 'ordering' => 1 }
@@ -299,7 +293,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
         expect(result).to include(
           hash_including(
             key: 'checkbox',
-            r_score: nil, # # No reference distribution can be set for checkbox fields
             series: { true => 1, false => 1, '_blank' => 0 },
             reference_distribution: nil # No reference distribution can be set for checkbox fields
           )
@@ -312,7 +305,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
         expect(result).to include(
           hash_including(
             key: 'checkbox',
-            r_score: nil, # # No reference distribution can be set for checkbox fields
             series: { true => 0, false => 0, '_blank' => 0 },
             reference_distribution: nil # No reference distribution can be set for checkbox fields
           )
@@ -341,7 +333,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
         result = service.send(:birthyear_demographics_data, participant_custom_field_values)
 
         expect(result).to match({
-          r_score: nil,
           series: {
             '0-9' => 0,
             '10-19' => 0,
@@ -364,7 +355,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
         result = service.send(:birthyear_demographics_data, participant_custom_field_values)
 
         expect(result).to match({
-          r_score: nil,
           series: {
             '0-9' => 0,
             '10-19' => 0,
@@ -398,7 +388,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
         result = service.send(:birthyear_demographics_data, participant_custom_field_values)
 
         expect(result).to match({
-          r_score: 0.0,
           series: { '18-24' => 0, '25-34' => 2, '35-44' => 1, '45-54' => 0, '55-64' => 0, '65+' => 0, '_blank' => 1 },
           reference_distribution: { '18-24' => 50, '25-34' => 200, '35-44' => 400, '45-54' => 300, '55-64' => 50, '65+' => 700 }
         })
@@ -409,7 +398,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
         result = service.send(:birthyear_demographics_data, participant_custom_field_values)
 
         expect(result).to match({
-          r_score: 0.0,
           series: { '18-24' => 0, '25-34' => 0, '35-44' => 0, '45-54' => 0, '55-64' => 0, '65+' => 0, '_blank' => 0 },
           reference_distribution: { '18-24' => 50, '25-34' => 200, '35-44' => 400, '45-54' => 300, '55-64' => 50, '65+' => 700 }
         })
@@ -436,7 +424,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
         result = service.send(:select_or_checkbox_field_demographics_data, participant_custom_field_values, custom_field_single_select)
 
         expect(result).to match({
-          r_score: nil,
           series: { 'a' => 2, 'b' => 1, '_blank' => 1 },
           reference_distribution: nil,
           options: {
@@ -457,7 +444,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
         result = service.send(:select_or_checkbox_field_demographics_data, participant_custom_field_values, custom_field_single_select)
 
         expect(result).to match({
-          r_score: 0.47058823529411764,
           series: { 'a' => 2, 'b' => 1, '_blank' => 1 },
           reference_distribution: { 'a' => 480, 'b' => 510 },
           options: {
@@ -485,7 +471,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
         result = service.send(:select_or_checkbox_field_demographics_data, participant_custom_field_values, custom_field_multi_select)
 
         expect(result).to match({
-          r_score: nil,
           series: { 'a' => 2, 'b' => 2, '_blank' => 1 },
           reference_distribution: nil,
           options: {
@@ -511,7 +496,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
         result = service.send(:select_or_checkbox_field_demographics_data, participant_custom_field_values, custom_field_checkbox)
 
         expect(result).to match({
-          r_score: nil,
           series: { true => 0, false => 2, '_blank' => 2 },
           reference_distribution: nil,
           options: nil
@@ -680,6 +664,12 @@ RSpec.describe Insights::BasePhaseInsightsService do
       expect(service.send(:percentage_change, 100, 0)).to eq(-100.0)
     end
 
+    it 'returns null when phase less than 14 days old' do
+      phase.update(start_at: 10.days.ago)
+
+      expect(service.send(:percentage_change, 100, 150)).to be_nil
+    end
+
     it 'rounds percentage change to one decimal place' do
       expect(service.send(:percentage_change, 3, 4)).to eq(33.3)
       expect(service.send(:percentage_change, 7, 5)).to eq(-28.6)
@@ -716,27 +706,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
       # Unique participants in last 7 days: user_1, user_3, user_4 => 3
       expect(service.send(:participations_7_day_change, participations)).to eq(50.0)
-    end
-  end
-
-  describe '#calculate_r_score' do
-    it 'returns nil when reference_distribution is nil' do
-      expect(service.send(:calculate_r_score, {}, nil)).to be_nil
-    end
-
-    it 'returns nil when reference_distribution is empty' do
-      expect(service.send(:calculate_r_score, {}, {})).to be_nil
-      expect(service.send(:calculate_r_score, {}, [])).to be_nil
-    end
-
-    it 'returns 0.0 when all counts are zero' do
-      reference_distribution = { 'a' => 100, 'b' => 200 }
-
-      counts = { 'a' => 0, 'b' => 0 }
-      expect(service.send(:calculate_r_score, counts, reference_distribution)).to eq(0.0)
-
-      counts = [0, 0, 0]
-      expect(service.send(:calculate_r_score, counts, reference_distribution)).to eq(0.0)
     end
   end
 end

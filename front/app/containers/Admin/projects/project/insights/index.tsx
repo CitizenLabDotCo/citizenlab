@@ -144,7 +144,7 @@ const InsightsContent = () => {
               )}
             </Box>
             <Text fontSize="s" color="textSecondary" m="0" mt="4px">
-              <FormattedMessage {...messages.insightsSubtitle} />
+              <FormattedMessage {...messages.insightsSubtitle1} />
             </Text>
           </Box>
           <Box

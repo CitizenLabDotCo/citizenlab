@@ -20,7 +20,9 @@ const VolunteeringMetrics = ({ metrics, showChange }: Props) => {
       label={formatMessage(messages.volunteerings)}
       value={metrics.volunteerings}
       icon="user-check"
-      change={showChange ? metrics.volunteerings_7_day_change : undefined}
+      change={
+        showChange ? metrics.volunteerings_7_day_percent_change : undefined
+      }
     />
   );
 };
