@@ -141,7 +141,7 @@
   "app.components.admin.ActionForm.Fields.globalRegFlow": "Global kayıt akışında etkinleştirildi",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "küresel kayit akişi",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "Bu soru {globalRegFlowLink}adresinde etkinleştirilmiştir. Bu eylem için devre dışı bırakabilirsiniz.",
-  "app.components.admin.ActionForm.Fields.user_fields_in_survey_not_supported_for_participation_method": "Demografik soruların anketin son sayfası olarak sorulması seçilen katılım yöntemi için desteklenmemektedir.",
+  "app.components.admin.ActionForm.Fields.user_fields_in_form_not_supported_for_action": "Asking demographic questions as the last page of the form is not supported for this action.",
   "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow": "\"Kimlik Doğrulama\" ve \"Kullanıcı verileri toplama\" ayarlarının mevcut kombinasyonu ile demografik sorular yalnızca kayıt akışında sorulabilir.",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "Kimlik doğrulamayı devre dışı bıraktığınız ve tam anonimliği seçtiğiniz için katılımcılara demografik soruların nasıl sorulacağını seçmek geçerli değildir",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "Akordeonun içine içerik eklemek için \">\" sembolüne basarak akordeonu açın, ardından tüm widget'ları içine sürükleyin.",
