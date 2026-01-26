@@ -2736,7 +2736,7 @@
   "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.projectsSettings": "paramètres du projet",
   "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.subtitleTerminology": "Terminologie",
   "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.tagIsLinkedToStaticPage": "Cette étiquette ne peut pas être supprimée car elle sert de filtre pour les projets affichés sur les pages personnalisées suivantes. Modifiez ou supprimez ces pages pour pouvoir la supprimer.",
-  "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.terminologyTooltip": "Choisissez le terme employé pour désigner les « étiquettes » dans le filtre de la page d'accueil (ex.\\u00A0: thèmes, catégories, services).",
+  "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.terminologyTooltip": "Choisissez le terme employé pour désigner les « étiquettes » dans le filtre de la page d'accueil (ex. : thèmes, catégories, services).",
   "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.topicTerm": "Terme au singulier",
   "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.topicTermPlaceholder": "Étiquette",
   "app.containers.AdminPage.SettingsPage.Topics.GlobalTopics.topicsTerm": "Terme au pluriel",
