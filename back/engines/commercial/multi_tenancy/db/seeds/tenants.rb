@@ -585,10 +585,6 @@ module MultiTenancy
             ideation_accountless_posting: {
               enabled: true,
               allowed: true
-            },
-            post_participation_signup: {
-              enabled: true,
-              allowed: true
             }
           })
         )
