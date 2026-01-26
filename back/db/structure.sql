@@ -293,8 +293,10 @@ DROP INDEX IF EXISTS public.index_internal_comments_on_lft;
 DROP INDEX IF EXISTS public.index_internal_comments_on_idea_id;
 DROP INDEX IF EXISTS public.index_internal_comments_on_created_at;
 DROP INDEX IF EXISTS public.index_internal_comments_on_author_id;
+DROP INDEX IF EXISTS public.index_input_topics_on_rgt;
 DROP INDEX IF EXISTS public.index_input_topics_on_project_id_and_ordering;
 DROP INDEX IF EXISTS public.index_input_topics_on_project_id;
+DROP INDEX IF EXISTS public.index_input_topics_on_parent_id;
 DROP INDEX IF EXISTS public.index_impact_tracking_sessions_on_monthly_user_hash;
 DROP INDEX IF EXISTS public.index_identities_on_user_id;
 DROP INDEX IF EXISTS public.index_ideas_topics_on_topic_id;
@@ -393,6 +395,8 @@ DROP INDEX IF EXISTS public.index_email_campaigns_campaign_email_commands_on_rec
 DROP INDEX IF EXISTS public.index_email_bans_on_normalized_email_hash;
 DROP INDEX IF EXISTS public.index_email_bans_on_banned_by_id;
 DROP INDEX IF EXISTS public.index_dismissals_on_campaign_name_and_user_id;
+DROP INDEX IF EXISTS public.index_default_input_topics_on_rgt;
+DROP INDEX IF EXISTS public.index_default_input_topics_on_parent_id;
 DROP INDEX IF EXISTS public.index_custom_forms_on_participation_context;
 DROP INDEX IF EXISTS public.index_custom_fields_on_resource_type_and_resource_id;
 DROP INDEX IF EXISTS public.index_custom_fields_on_resource_id_and_ordering_unique;
@@ -2408,7 +2412,12 @@ CREATE TABLE public.default_input_topics (
     icon character varying,
     ordering integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    parent_id uuid,
+    lft integer,
+    rgt integer,
+    depth integer DEFAULT 0,
+    children_count integer DEFAULT 0
 );
 
 
@@ -3005,7 +3014,12 @@ CREATE TABLE public.input_topics (
     icon character varying,
     ordering integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    parent_id uuid,
+    lft integer,
+    rgt integer,
+    depth integer DEFAULT 0,
+    children_count integer DEFAULT 0
 );
 
 
@@ -5634,6 +5648,20 @@ CREATE UNIQUE INDEX index_custom_forms_on_participation_context ON public.custom
 
 
 --
+-- Name: index_default_input_topics_on_parent_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_default_input_topics_on_parent_id ON public.default_input_topics USING btree (parent_id);
+
+
+--
+-- Name: index_default_input_topics_on_rgt; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_default_input_topics_on_rgt ON public.default_input_topics USING btree (rgt);
+
+
+--
 -- Name: index_dismissals_on_campaign_name_and_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6320,6 +6348,13 @@ CREATE INDEX index_impact_tracking_sessions_on_monthly_user_hash ON public.impac
 
 
 --
+-- Name: index_input_topics_on_parent_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_input_topics_on_parent_id ON public.input_topics USING btree (parent_id);
+
+
+--
 -- Name: index_input_topics_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6331,6 +6366,13 @@ CREATE INDEX index_input_topics_on_project_id ON public.input_topics USING btree
 --
 
 CREATE INDEX index_input_topics_on_project_id_and_ordering ON public.input_topics USING btree (project_id, ordering);
+
+
+--
+-- Name: index_input_topics_on_rgt; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_input_topics_on_rgt ON public.input_topics USING btree (rgt);
 
 
 --
@@ -8484,6 +8526,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260121111117'),
 ('20260120123325'),
 ('20260115115438'),
 ('20260107121024'),
