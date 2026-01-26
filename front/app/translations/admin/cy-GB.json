@@ -2999,6 +2999,7 @@
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Gwahoddiad yn aros",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Pwy all anodi'r ddogfen?",
   "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_subtitle": "Pwy all gofrestru i fynychu digwyddiad?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_tooltip": "Os nad oes cyfnod gweithredol pan fydd defnyddiwr yn ceisio mynychu digwyddiad, bydd y system yn defnyddio'r caniatâd o'r cyfnod a gwblhawyd fwyaf diweddar.",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_inputs_subtitle": "Pwy all roi sylwadau ar fewnbynnau?",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_proposals_subtitle": "Pwy all roi sylwadau ar gynigion?",
   "app.containers.AdminPage.groups.permissions.permissionAction_post_proposal_subtitle": "Pwy all bostio cynnig?",
