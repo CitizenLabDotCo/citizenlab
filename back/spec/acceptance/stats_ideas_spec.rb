@@ -192,6 +192,27 @@ resource 'Stats - Ideas' do
         expect(json_attributes[:series][:ideas].values).to eq json_attributes[:series][:ideas].values.sort.reverse
       end
     end
+
+    describe 'with subtopics' do
+      before do
+        travel_to start_at + 2.months do
+          @project = create(:project)
+          @parent_topic = create(:input_topic, project: @project)
+          @child_topic = create(:input_topic, project: @project, parent: @parent_topic)
+          create(:idea, project: @project, input_topics: [@parent_topic])
+          create(:idea, project: @project, input_topics: [@child_topic])
+        end
+      end
+
+      example 'Ideas by topic aggregates child counts into parent' do
+        do_request
+        assert_status 200
+        json_attributes = json_parse(response_body).dig(:data, :attributes)
+        # Parent should include its own count (1) + child count (1) = 2
+        expect(json_attributes[:series][:ideas][@parent_topic.id.to_sym]).to eq 2
+        expect(json_attributes[:series][:ideas][@child_topic.id.to_sym]).to eq 1
+      end
+    end
   end
 
   get 'web_api/v1/stats/ideas_by_topic_as_xlsx' do

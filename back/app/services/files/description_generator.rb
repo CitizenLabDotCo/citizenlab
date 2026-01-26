@@ -81,8 +81,8 @@ module Files
       # These are not full model IDs, but substrings used to find the corresponding model
       # ID, since model IDs can vary depending on the Bedrock region.
       preferred_models = %w[
-        anthropic.claude-sonnet-4
-        anthropic.claude-3-7-sonnet
+        .anthropic.claude-sonnet-4
+        .anthropic.claude-3-7-sonnet
       ]
 
       preferred_models.each do |substring|

@@ -1419,6 +1419,7 @@
   "app.containers.IdeasFeedPage.allTopics": "Alle tags",
   "app.containers.IdeasFeedPage.backToProject": "Terug naar project",
   "app.containers.IdeasFeedPage.collapsePanel": "Tags panel inklappen",
+  "app.containers.IdeasFeedPage.endOfFeed": "Je hebt het einde van deze feed bereikt.",
   "app.containers.IdeasFeedPage.expandPanel": "Tags panel uitklappen",
   "app.containers.IdeasFeedPage.exploreTopicsNudge": "Veeg omhoog om de onderwerpen te verkennen",
   "app.containers.IdeasFeedPage.seeAllIdeas": "Bekijk alle {ideasCount} bijdragen",

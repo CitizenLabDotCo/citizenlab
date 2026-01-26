@@ -2999,6 +2999,7 @@
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Laukiama kvietimo",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Kas gali komentuoti dokumentą?",
   "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_subtitle": "Kas gali užsiregistruoti į renginį?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_tooltip": "Jei naudotojui bandant dalyvauti įvykyje nėra aktyvaus etapo, sistema naudos paskutinio užbaigto etapo leidimus.",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_inputs_subtitle": "Kas gali komentuoti įvesties duomenis?",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_proposals_subtitle": "Kas gali teikti pastabas dėl pasiūlymų?",
   "app.containers.AdminPage.groups.permissions.permissionAction_post_proposal_subtitle": "Kas gali pateikti pasiūlymą?",

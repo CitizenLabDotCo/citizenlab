@@ -95,6 +95,8 @@ const BottomSheet = ({
   useEffect(() => {
     if (expandToFullscreenOn) {
       setIsFullscreen(true);
+    } else {
+      setIsFullscreen(false);
     }
   }, [expandToFullscreenOn]);
 

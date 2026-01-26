@@ -1419,6 +1419,7 @@
   "app.containers.IdeasFeedPage.allTopics": "Alle emner",
   "app.containers.IdeasFeedPage.backToProject": "Tilbake til prosjektet",
   "app.containers.IdeasFeedPage.collapsePanel": "Skjul emnepanelet",
+  "app.containers.IdeasFeedPage.endOfFeed": "Du har kommet til slutten av denne feeden.",
   "app.containers.IdeasFeedPage.expandPanel": "Utvid emnepanelet",
   "app.containers.IdeasFeedPage.exploreTopicsNudge": "Sveip opp for å utforske temaene",
   "app.containers.IdeasFeedPage.seeAllIdeas": "Se alle {ideasCount} innganger",

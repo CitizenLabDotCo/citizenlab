@@ -71,7 +71,7 @@ const TopicComponent = ({ topicId }: { topicId: string }) => {
 
   return (
     <Topic className={`e2e-idea-topic`}>
-      {localize(topic.data.attributes.title_multiloc)}
+      {localize(topic.data.attributes.full_title_multiloc)}
     </Topic>
   );
 };

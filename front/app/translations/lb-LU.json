@@ -1419,6 +1419,7 @@
   "app.containers.IdeasFeedPage.allTopics": "All Themen",
   "app.containers.IdeasFeedPage.backToProject": "Zréck zum Projet",
   "app.containers.IdeasFeedPage.collapsePanel": "Themenpanel zesummeklappen",
+  "app.containers.IdeasFeedPage.endOfFeed": "Dir sidd um Enn vun dësem Feed ukomm.",
   "app.containers.IdeasFeedPage.expandPanel": "Themenpanel ausklappen",
   "app.containers.IdeasFeedPage.exploreTopicsNudge": "Swipe no uewen fir d'Themen z'entdecken",
   "app.containers.IdeasFeedPage.seeAllIdeas": "All {ideasCount} Entréeën ukucken",

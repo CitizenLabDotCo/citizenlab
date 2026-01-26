@@ -2999,6 +2999,7 @@
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "زیر التواء دعوت",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "کون دستاویز کی تشریح کر سکتا ہے؟",
   "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_subtitle": "ایک تقریب میں شرکت کے لیے کون سائن اپ کر سکتا ہے؟",
+  "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_tooltip": "اگر کوئی فعال مرحلہ نہیں ہے جب کوئی صارف کسی تقریب میں شرکت کرنے کی کوشش کرتا ہے، تو سسٹم حال ہی میں مکمل ہونے والے مرحلے سے اجازتیں استعمال کرے گا۔",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_inputs_subtitle": "ان پٹ پر کون تبصرہ کر سکتا ہے؟",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_proposals_subtitle": "تجاویز پر کون تبصرہ کر سکتا ہے؟",
   "app.containers.AdminPage.groups.permissions.permissionAction_post_proposal_subtitle": "کون ایک تجویز پوسٹ کر سکتا ہے؟",
