@@ -3402,7 +3402,7 @@
   "app.containers.admin.import.importNoLongerAvailable3": "Questa funzione non è più disponibile in questa pagina. Per importare contributi in una fase di ideazione, vai nella fase e seleziona \"Importa\".",
   "app.containers.admin.inviteUsersWithSeatsModal.additionalAdminAndManagerSeats1": "{adminSeats, plural, one {1 posto di amministratore aggiuntivo} other {# posti di amministratore aggiuntivi}} e {managerSeats, plural, one {1 posto manager aggiuntivo} other {# posti manager aggiuntivi}} saranno aggiunti oltre il limite.",
   "app.containers.admin.inviteUsersWithSeatsModal.additionalAdminSeats1": "{seats, plural, one {1 posto amministratore aggiuntivo sarà aggiunto oltre il limite} other {# ulteriori posti amministratore saranno aggiunti oltre il limite}}.",
-  "app.containers.admin.inviteUsersWithSeatsModal.additionalManagerSeats1": "{seats, plural, one {1 posto da manager aggiuntivo sarà aggiunto oltre il limite} other {# Ulteriori posti da manager saranno aggiunti oltre il limite}}.",
+  "app.containers.admin.inviteUsersWithSeatsModal.additionalManagerSeats1": "{seats, plural, one {1 posto manager aggiuntivo sarà aggiunto oltre il limite} other {# ulteriori posti manager saranno aggiunti oltre il limite}}.",
   "app.containers.admin.inviteUsersWithSeatsModal.confirmButtonText": "Conferma e invia gli inviti",
   "app.containers.admin.inviteUsersWithSeatsModal.confirmSeatUsageChange": "Confermare l'impatto sull'utilizzo dei sedili",
   "app.containers.admin.inviteUsersWithSeatsModal.infoMessage2": "Hai raggiunto il limite di posti disponibili per la tua licenza.",
