@@ -93,18 +93,18 @@ resource 'Phase insights' do
       metrics = json_response_body.dig(:data, :attributes, :metrics)
       expect(metrics).to eq({
         visitors: 4,
-        visitors_7_day_change: 100.0, # from 1 (in week before last) to 2 unique visitors (in last 7 days) = 100% increase
+        visitors_7_day_percent_change: 100.0, # from 1 (in week before last) to 2 unique visitors (in last 7 days) = 100% increase
         participants: 3,
-        participants_7_day_change: 100.0, # from 1 (in week before last) to 2 unique participants (in last 7 days) = 100% increase
-        participation_rate: 0.75,
-        participation_rate_7_day_change: 0.0, # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 1.0 = 0% change
+        participants_7_day_percent_change: 100.0, # from 1 (in week before last) to 2 unique participants (in last 7 days) = 100% increase
+        participation_rate_as_percent: 75.0,
+        participation_rate_7_day_percent_change: 0.0, # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 1.0 = 0% change
         ideation: {
           ideas_posted: 2,
-          ideas_posted_7_day_change: 'last_7_days_compared_with_zero', # from 0 (in week before last) to 1 (in last 7 days) => avoid division by zero
+          ideas_posted_7_day_percent_change: 'last_7_days_compared_with_zero', # from 0 (in week before last) to 1 (in last 7 days) => avoid division by zero
           comments_posted: 1,
-          comments_posted_7_day_change: -100.0, # from 1 (in week before last) to 0 (in last 7 days) = -100% decrease
+          comments_posted_7_day_percent_change: -100.0, # from 1 (in week before last) to 0 (in last 7 days) = -100% decrease
           reactions: 1,
-          reactions_7_day_change: 'last_7_days_compared_with_zero' # from 0 (in week before last) to 1 (in last 7 days) => avoid division by zero
+          reactions_7_day_percent_change: 'last_7_days_compared_with_zero' # from 0 (in week before last) to 1 (in last 7 days) => avoid division by zero
         }
       })
 

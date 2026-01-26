@@ -39,13 +39,13 @@ module Insights
 
       {
         ideas_posted: participations[:posting_idea].count,
-        ideas_posted_7_day_change: participations_7_day_change(participations[:posting_idea]),
+        ideas_posted_7_day_percent_change: participations_7_day_change(participations[:posting_idea]),
         reached_threshold: proposals_reached_threshold.count,
-        reached_threshold_7_day_change: participations_7_day_change(proposals_reached_threshold),
+        reached_threshold_7_day_percent_change: participations_7_day_change(proposals_reached_threshold),
         comments_posted: participations[:commenting_idea].count,
-        comments_posted_7_day_change: participations_7_day_change(participations[:commenting_idea]),
+        comments_posted_7_day_percent_change: participations_7_day_change(participations[:commenting_idea]),
         reactions: participations[:reacting_idea].count,
-        reactions_7_day_change: participations_7_day_change(participations[:reacting_idea])
+        reactions_7_day_percent_change: participations_7_day_change(participations[:reacting_idea])
       }
     end
 
