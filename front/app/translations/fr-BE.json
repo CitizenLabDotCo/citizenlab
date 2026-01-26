@@ -1419,6 +1419,7 @@
   "app.containers.IdeasFeedPage.allTopics": "Toutes les thèmes",
   "app.containers.IdeasFeedPage.backToProject": "Retour au projet",
   "app.containers.IdeasFeedPage.collapsePanel": "Réduire le panel de thématiques",
+  "app.containers.IdeasFeedPage.endOfFeed": "Vous avez atteint la fin de ce flux.",
   "app.containers.IdeasFeedPage.expandPanel": "Élargir le panel de thématiques",
   "app.containers.IdeasFeedPage.exploreTopicsNudge": "Balayez vers le haut pour explorer les sujets",
   "app.containers.IdeasFeedPage.seeAllIdeas": "Voir toutes les entrées {ideasCount}",
