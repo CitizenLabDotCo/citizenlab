@@ -1422,6 +1422,7 @@
   "app.containers.IdeasFeedPage.endOfFeed": "Du har kommet til slutten av denne feeden.",
   "app.containers.IdeasFeedPage.expandPanel": "Utvid emnepanelet",
   "app.containers.IdeasFeedPage.exploreTopicsNudge": "Sveip opp for å utforske temaene",
+  "app.containers.IdeasFeedPage.noIdeasForTag": "Ingen ideer til denne taggen ennå.",
   "app.containers.IdeasFeedPage.seeAllIdeas": "Se alle {ideasCount} innganger",
   "app.containers.IdeasFeedPage.topicsPanel": "Emnepanel",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Alle innganger lagt ut",
