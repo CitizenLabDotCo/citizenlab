@@ -54,11 +54,11 @@ RSpec.describe Insights::BasePhaseInsightsService do
       expect(result).to eq(
         {
           visitors: 4,
-          visitors_7_day_change: 0.0, # From 3 (7 to 14 days ago) to 3 (last 7-day period) unique visitors = 0% change
+          visitors_7_day_percent_change: 0.0, # From 3 (7 to 14 days ago) to 3 (last 7-day period) unique visitors = 0% change
           participants: 3,
-          participants_7_day_change: 50.0, # From 2 (7 to 14 days ago) to 3 (last 7-day period) unique participants = 50% increase
-          participation_rate: 0.75,
-          participation_rate_7_day_change: 49.9 # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 0.667 = (((1 - 0.667).to_f / 0.667) * 100.0).round(1)
+          participants_7_day_percent_change: 50.0, # From 2 (7 to 14 days ago) to 3 (last 7-day period) unique participants = 50% increase
+          participation_rate_as_percent: 75.0,
+          participation_rate_7_day_percent_change: 49.9 # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 0.667 = (((1 - 0.667).to_f / 0.667) * 100.0).round(1)
         }
       )
     end
@@ -678,6 +678,12 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
     it 'returns -100.0 when new value is zero' do
       expect(service.send(:percentage_change, 100, 0)).to eq(-100.0)
+    end
+
+    it 'returns null when phase less than 14 days old' do
+      phase.update(start_at: 10.days.ago)
+
+      expect(service.send(:percentage_change, 100, 150)).to be_nil
     end
 
     it 'rounds percentage change to one decimal place' do

@@ -1419,6 +1419,7 @@
   "app.containers.IdeasFeedPage.allTopics": "All topics",
   "app.containers.IdeasFeedPage.backToProject": "Back to project",
   "app.containers.IdeasFeedPage.collapsePanel": "Collapse topics panel",
+  "app.containers.IdeasFeedPage.endOfFeed": "You have reached the end of this feed.",
   "app.containers.IdeasFeedPage.expandPanel": "Expand topics panel",
   "app.containers.IdeasFeedPage.exploreTopicsNudge": "Swipe up to explore the topics",
   "app.containers.IdeasFeedPage.noIdeasForTag": "No ideas for this tag yet.",

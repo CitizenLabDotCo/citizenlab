@@ -24,6 +24,7 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import { FormattedMessage } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import StickyNote, { NOTE_HEIGHTS } from './StickyNotes/StickyNote';
@@ -103,6 +104,7 @@ interface Props {
 }
 
 const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
+  const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
   const phaseId = searchParams.get('phase_id')!;
   const initialIdeaId = searchParams.get('initial_idea_id') || undefined;
@@ -293,7 +295,13 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
                   isPrevious={false}
                   isNext={false}
                 >
-                  <Spinner />
+                  {hasNextPage ? (
+                    <Spinner />
+                  ) : (
+                    <Text fontWeight="bold" mt="-200px">
+                      {formatMessage(messages.endOfFeed)}
+                    </Text>
+                  )}
                 </NoteContainer>
               </VirtualItem>
             );

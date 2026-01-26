@@ -16,6 +16,16 @@
 #  children_count       :integer          default(0)
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
+#  parent_id            :uuid
+#  lft                  :integer
+#  rgt                  :integer
+#  depth                :integer          default(0)
+#  children_count       :integer          default(0)
+#
+# Indexes
+#
+#  index_default_input_topics_on_parent_id  (parent_id)
+#  index_default_input_topics_on_rgt        (rgt)
 #
 # Indexes
 #
