@@ -357,15 +357,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.surveyService',
     defaultMessage: 'Survey Service',
   },
-  surveyServiceTooltipLink: {
-    id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink1',
+  surveyServiceTooltipLink2: {
+    id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/7025887-creating-an-external-survey-project',
+      'https://support.govocal.com/en/articles/527596-creating-an-external-survey-project',
   },
   surveyServiceTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltip',
     defaultMessage:
-      'Choose what survey tool you want to embed. All information can be found {surveyServiceTooltipLink}.',
+      'Choose what survey tool you want to embed. All information can be found {surveyServiceTooltipLink2}.',
   },
   surveyServiceTooltipLinkText: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText',

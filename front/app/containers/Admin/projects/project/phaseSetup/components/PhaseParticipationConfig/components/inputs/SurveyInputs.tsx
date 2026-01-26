@@ -44,7 +44,7 @@ const SurveyInputs = ({
             values={{
               surveyServiceTooltipLink: (
                 <StyledA
-                  href={formatMessage(messages.surveyServiceTooltipLink)}
+                  href={formatMessage(messages.surveyServiceTooltipLink2)}
                   target="_blank"
                   rel="noopener noreferrer"
                 >

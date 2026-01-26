@@ -109,10 +109,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEvents.attendanceSupportArticleLinkText',
     defaultMessage: 'See the support article',
   },
-  attendanceSupportArticleLink: {
-    id: 'app.containers.AdminPage.ProjectEvents.attendanceSupportArticleLink',
+  attendanceSupportArticleLink2: {
+    id: 'app.containers.AdminPage.ProjectEvents.attendanceSupportArticleLink2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/5481527-adding-events-to-your-platform',
+      'https://support.govocal.com/en/articles/527627-adding-events-to-your-platform',
   },
   refineOnMapInstructions: {
     id: 'app.containers.AdminPage.ProjectEvents.refineOnMapInstructions',
