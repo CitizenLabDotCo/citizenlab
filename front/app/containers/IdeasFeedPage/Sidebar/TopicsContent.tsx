@@ -41,10 +41,13 @@ const TopicsContent = ({
   const projectId = project?.data.id;
 
   // When a topic is selected, show only that topic with a back button
-  if (selectedTopicId) {
+  if (selectedTopicId && projectId) {
     return (
       <SelectedTopicContent
+        projectId={projectId}
         topicId={selectedTopicId}
+        topicCount={topicCounts[selectedTopicId] || 0}
+        topicCounts={topicCounts}
         onBack={() => onTopicSelect(null)}
         isMobile={isMobile}
       />

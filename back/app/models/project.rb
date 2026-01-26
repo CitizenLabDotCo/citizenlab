@@ -59,7 +59,7 @@ class Project < ApplicationRecord
   has_many :global_topics, -> { order(:ordering) }, through: :projects_global_topics
 
   # Use case B - Input categorization InputTopics)
-  has_many :input_topics, -> { order(:ordering) }, dependent: :destroy, inverse_of: :project
+  has_many :input_topics, -> { order(:lft) }, dependent: :destroy, inverse_of: :project
 
   has_many :areas_projects, dependent: :destroy
   has_many :areas, through: :areas_projects
@@ -191,12 +191,23 @@ class Project < ApplicationRecord
   end
 
   def set_default_input_topics!
-    DefaultInputTopic.order(:ordering).each do |default_topic|
-      input_topics.create!(
-        title_multiloc: default_topic.title_multiloc,
-        description_multiloc: default_topic.description_multiloc,
-        icon: default_topic.icon
-      )
+    # First create root topics, then children
+    DefaultInputTopic.roots.order(:lft).each do |default_topic|
+      copy_default_input_topic_tree(default_topic)
+    end
+  end
+
+  def copy_default_input_topic_tree(default_topic, parent_input_topic = nil)
+    input_topic = input_topics.create!(
+      title_multiloc: default_topic.title_multiloc,
+      description_multiloc: default_topic.description_multiloc,
+      icon: default_topic.icon,
+      parent: parent_input_topic
+    )
+
+    # Recursively create children
+    default_topic.children.order(:lft).each do |child_default_topic|
+      copy_default_input_topic_tree(child_default_topic, input_topic)
     end
   end
 

@@ -11,7 +11,7 @@ module IdeaFeed
     # Given an idea, classifies it into one or more topics, overwriting any
     # previous classifications.
     def classify_topics!(idea)
-      topics = @phase.project.input_topics
+      topics = @phase.project.input_topics.where(depth: 0).order(:lft).includes(:children)
       llm = LLMSelector.new.llm_class_for_use_case('idea_feed_live_classification').new
 
       prompt = classification_prompt(idea, topics)
@@ -20,9 +20,16 @@ module IdeaFeed
 
         # The prompt passes integer IDs (1-based) to the LLM, so we need to
         # convert them back to topics
-        raise InvalidLLMResponse unless response.is_a?(Array) && response.all? { |it| it.is_a?(Integer) && it.between?(1, topics.length) }
+        raise InvalidLLMResponse unless response.is_a?(Array) && response.all? { |it| it.is_a?(String) && it.match?(/\A\d+(\.\d+)?\z/) }
 
-        selected_topics = response.map { topics[it - 1] }
+        selected_topics = response.map do |id|
+          if id.include?('.')
+            parent_index, child_index = id.split('.').map(&:to_i)
+            topics[parent_index - 1].children[child_index - 1]
+          else
+            topics[id.to_i - 1]
+          end
+        end
 
         if selected_topics.all? { it.is_a?(InputTopic) }
           break selected_topics
@@ -31,7 +38,7 @@ module IdeaFeed
         end
       rescue InvalidLLMResponse
         # Retry once if the response is not valid JSON
-        Rails.logger.warn("LLM response for idea classification was not valid. Attempt #{i + 1}/#{RETRIES_INVALID_RESPONSE} Retrying...")
+        Rails.logger.warn("LLM response `#{response}`for idea classification was not valid. Attempt #{i + 1}/#{RETRIES_INVALID_RESPONSE} Retrying...")
       end
 
       idea.update!(input_topics: selected_topics)
@@ -69,7 +76,7 @@ module IdeaFeed
     def classification_response_schema
       {
         type: 'array',
-        items: { type: 'number', description: 'The ID of a topic (1-based index)' }
+        items: { type: 'string', description: 'The ID of a (sub)topic (e.g., "1" for a topic or "1.2" for a subtopic)' }
       }
     end
   end
