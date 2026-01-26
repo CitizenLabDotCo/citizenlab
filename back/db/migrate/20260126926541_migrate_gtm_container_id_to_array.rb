@@ -16,20 +16,9 @@ class MigrateGtmContainerIdToArray < ActiveRecord::Migration[7.2]
     settings = app_config.settings
     return unless settings['google_tag_manager']
 
-    reversible do |dir|
-      dir.up do
-        if settings.dig('google_tag_manager', 'container_id').present?
-          settings['google_tag_manager']['container_ids'] = [settings['google_tag_manager'].delete('container_id')]
-          app_config.update!(settings: settings)
-        end
-      end
-
-      dir.down do
-        if settings.dig('google_tag_manager', 'container_ids').present?
-          settings['google_tag_manager']['container_id'] = settings['google_tag_manager'].delete('container_ids').first
-          app_config.update!(settings: settings)
-        end
-      end
+    if settings.dig('google_tag_manager', 'container_id').present?
+      settings['google_tag_manager']['container_ids'] = [settings['google_tag_manager'].delete('container_id')]
+      app_config.update!(settings: settings)
     end
   end
 end
