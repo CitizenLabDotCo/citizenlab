@@ -335,7 +335,7 @@ it:
       unsupported_field: 'Questo campo non può essere completato su carta. Si prega di utilizzare la versione online di questo modulo.'
       ranking_print_description: 'Scrivi un numero da 1 (opzione preferita) a %{max_rank} (opzione meno preferita) in ogni casella. Usa ogni numero esattamente una volta.'
       matrix_print_description: 'Per ogni riga, segna un''opzione con una croce per indicare la tua preferenza.'
-      rating_print_description: 'Valuta questo aspetto scrivendo un numero compreso tra 1 (peggiore) e %{max_stars} (migliore).'
+      rating_print_description: 'Dai una valutazione scrivendo un numero compreso tra 1 (peggiore) e %{max_stars} (migliore).'
       sentiment_linear_scale_print_description: 'Scrivi un numero compreso tra 1 e 5.'
       sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
       point_print_description: 'Per indicare la posizione, traccia una X sulla mappa sottostante oppure scrivi l''indirizzo.'
