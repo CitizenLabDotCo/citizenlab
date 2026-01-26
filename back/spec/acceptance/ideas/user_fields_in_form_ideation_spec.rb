@@ -330,6 +330,6 @@ describe 'bug related to extremely weird custom form behavior' do
       project: project
     )
 
-    expect(project.pmethod).to eq(ideation_phase.pmethod)
+    expect(project.pmethod.phase).to eq(ideation_phase)
   end
 end
