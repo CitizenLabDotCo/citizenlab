@@ -205,7 +205,7 @@ export interface IAppConfigurationSettings {
   };
   google_tag_manager?: AppConfigurationFeature & {
     destinations: string;
-    container_id: string;
+    container_ids: string[];
     category: TCategory;
   };
   matomo?: AppConfigurationFeature & {

@@ -45,24 +45,24 @@ const configuration: ModuleConfiguration = {
     ]).subscribe(([tenant, _]) => {
       if (isNilOrError(tenant)) return;
 
-      (function (w, d, s, l, i) {
-        w[l] = w[l] || [];
-        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
-        const f = d.getElementsByTagName(s)[0];
-        const j = d.createElement(s) as HTMLScriptElement;
-        const dl = l !== 'dataLayer' ? `&l=${l}` : '';
-        j.async = true;
-        j.src = `https://www.googletagmanager.com/gtm.js?id=${i}${dl}`;
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        f?.parentNode?.insertBefore(j, f);
-      })(
-        window,
-        document,
-        'script',
-        'dataLayer',
-        tenant.data.attributes.settings.google_tag_manager?.container_id
-      );
+      const containerIds =
+        tenant.data.attributes.settings.google_tag_manager?.container_ids || [];
+
+      // Initialize GTM for each container ID
+      containerIds.forEach((containerId: string) => {
+        (function (w, d, s, l, i) {
+          w[l] = w[l] || [];
+          w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+          const f = d.getElementsByTagName(s)[0];
+          const j = d.createElement(s) as HTMLScriptElement;
+          const dl = l !== 'dataLayer' ? `&l=${l}` : '';
+          j.async = true;
+          j.src = `https://www.googletagmanager.com/gtm.js?id=${i}${dl}`;
+          // TODO: Fix this the next time the file is edited.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          f?.parentNode?.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', containerId);
+      });
     });
 
     registerDestination(destinationConfig);

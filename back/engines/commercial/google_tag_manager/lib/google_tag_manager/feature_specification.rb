@@ -27,11 +27,14 @@ module GoogleTagManager
       type: 'string',
       description: 'As more tools can be activated through GTM, here you can specify them using comma separated text, shown in the cookie consent'
     }
-    add_setting 'container_id', schema: {
-      type: 'string',
-      description: 'The unique ID of your GTM workspace, format GTM-XXXXXXX',
-      pattern: '^GTM-[A-Z0-9]{1,7}$',
-      default: ENV.fetch('DEFAULT_GTM_CONTAINER_ID', '')
+    add_setting 'container_ids', schema: {
+      type: 'array',
+      description: 'One or more GTM container IDs, format GTM-XXXXXXX',
+      items: {
+        type: 'string',
+        pattern: '^GTM-[A-Z0-9]{1,7}$'
+      },
+      default: ENV.fetch('DEFAULT_GTM_CONTAINER_ID', '').present? ? [ENV.fetch('DEFAULT_GTM_CONTAINER_ID', '')] : []
     }
     add_setting 'category', schema: {
       type: 'string',
