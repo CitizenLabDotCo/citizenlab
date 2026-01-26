@@ -26,7 +26,7 @@ module Insights
     def phase_participation_method_metrics(participations)
       {
         volunteerings: participations[:volunteering].count,
-        volunteerings_7_day_change: participations_7_day_change(participations[:volunteering])
+        volunteerings_7_day_percent_change: participations_7_day_change(participations[:volunteering])
       }
     end
   end
