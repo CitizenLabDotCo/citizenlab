@@ -45,8 +45,14 @@ const configuration: ModuleConfiguration = {
     ]).subscribe(([tenant, _]) => {
       if (isNilOrError(tenant)) return;
 
-      const containerIds =
-        tenant.data.attributes.settings.google_tag_manager?.container_ids || [];
+      const containerIdString =
+        tenant.data.attributes.settings.google_tag_manager?.container_id || '';
+
+      // Split by comma to support multiple container IDs
+      const containerIds = containerIdString
+        .split(',')
+        .map((id) => id.trim())
+        .filter((id) => id.length > 0);
 
       // Initialize GTM for each container ID
       containerIds.forEach((containerId: string) => {
