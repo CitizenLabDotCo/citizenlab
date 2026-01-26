@@ -2999,6 +2999,7 @@
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Pozivnica na čekanju",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Tko može označiti dokument?",
   "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_subtitle": "Tko se može prijaviti za sudjelovanje na događaju?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_tooltip": "Ako nema aktivne faze kada korisnik pokuša prisustvovati događaju, sustav će koristiti dozvole iz najnovije završene faze.",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_inputs_subtitle": "Tko može komentirati unose?",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_proposals_subtitle": "Tko može komentirati prijedloge?",
   "app.containers.AdminPage.groups.permissions.permissionAction_post_proposal_subtitle": "Tko može objaviti prijedlog?",
