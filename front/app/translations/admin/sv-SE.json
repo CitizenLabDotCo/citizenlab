@@ -2999,6 +2999,7 @@
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Väntande inbjudan",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Vem kan kommentera dokumentet?",
   "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_subtitle": "Vem kan anmäla sig för att delta i ett evenemang?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_tooltip": "Om det inte finns någon aktiv fas när en användare försöker delta i ett evenemang kommer systemet att använda behörigheterna från den senast avslutade fasen.",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_inputs_subtitle": "Vem kan kommentera input?",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_proposals_subtitle": "Vem kan kommentera förslagen?",
   "app.containers.AdminPage.groups.permissions.permissionAction_post_proposal_subtitle": "Vem kan lägga upp ett förslag?",
