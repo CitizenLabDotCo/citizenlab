@@ -157,19 +157,16 @@ module Insights
           key: custom_field.key,
           code: custom_field.code,
           input_type: custom_field.input_type,
-          r_score: nil, # May be set below (or null if no ref distribution).
           title_multiloc: custom_field.title_multiloc,
           series: nil # Will be set below
         }
 
         if custom_field.key == 'birthyear'
           birthyear_data = birthyear_demographics_data(participant_custom_field_values)
-          result[:r_score] = birthyear_data[:r_score]
           result[:series] = birthyear_data[:series]
           reference_distribution = birthyear_data[:reference_distribution]
         elsif custom_field.supports_reference_distribution?
           select_or_checkbox_data = select_or_checkbox_field_demographics_data(participant_custom_field_values, custom_field)
-          result[:r_score] = select_or_checkbox_data[:r_score]
           result[:series] = select_or_checkbox_data[:series]
           result[:options] = select_or_checkbox_data[:options] if select_or_checkbox_data[:options]
           reference_distribution = select_or_checkbox_data[:reference_distribution]
@@ -193,7 +190,6 @@ module Insights
     def birthyear_demographics_data(participant_custom_field_values)
       age_stats = UserCustomFields::AgeStats.calculate(participant_custom_field_values)
       reference_distribution = nil
-      r_score = nil
 
       if age_stats.reference_distribution.present?
         distribution_data = age_stats.reference_distribution.distribution
@@ -202,14 +198,12 @@ module Insights
           distribution_counts = distribution_data['counts']
           formatted_data = age_stats.format_in_ranges
           reference_distribution = formatted_data[:ranged_reference_distribution]
-          r_score = calculate_r_score(age_stats.binned_counts, distribution_counts)
         end
       end
 
       formatted_data = age_stats.format_in_ranges
 
       {
-        r_score: r_score,
         series: formatted_data[:ranged_series],
         reference_distribution: reference_distribution
       }
@@ -218,7 +212,6 @@ module Insights
     def select_or_checkbox_field_demographics_data(participant_custom_field_values, custom_field)
       counts = select_or_checkbox_counts_for_field(participant_custom_field_values, custom_field)
       reference_distribution = calculate_reference_distribution(custom_field)
-      r_score = calculate_r_score(counts, reference_distribution)
 
       options = nil
       if custom_field.options.present?
@@ -228,7 +221,6 @@ module Insights
       end
 
       {
-        r_score: r_score,
         series: counts,
         reference_distribution: reference_distribution,
         options: options
@@ -268,16 +260,6 @@ module Insights
       return if (ref_distribution = custom_field.current_ref_distribution).blank?
 
       ref_distribution.distribution_by_option_key
-    end
-
-    def calculate_r_score(counts, reference_distribution)
-      return nil if reference_distribution.blank?
-
-      # Return 0.0 if all counts are zero. Avoids NaN from RScore computation.
-      values = counts.respond_to?(:values) ? counts.values : counts
-      return 0.0 if values.all?(&:zero?)
-
-      UserCustomFields::Representativeness::RScore.compute_scores(counts, reference_distribution)[:min_max_p_ratio]
     end
 
     def participants_and_visitors_chart_data(flattened_participations, visits)
