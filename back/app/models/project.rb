@@ -59,7 +59,7 @@ class Project < ApplicationRecord
   has_many :global_topics, -> { order(:ordering) }, through: :projects_global_topics
 
   # Use case B - Input categorization InputTopics)
-  has_many :input_topics, -> { order(:ordering) }, dependent: :destroy, inverse_of: :project
+  has_many :input_topics, -> { order(:lft) }, dependent: :destroy, inverse_of: :project
 
   has_many :areas_projects, dependent: :destroy
   has_many :areas, through: :areas_projects

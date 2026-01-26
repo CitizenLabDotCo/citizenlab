@@ -184,7 +184,6 @@ describe IdeaFeed::TopicModelingService do
           create(:idea, project: phase.project, phases: [phase], title_multiloc: row[:title_multiloc], body_multiloc: row[:body_multiloc], created_at: row[:created_at], published_at: row[:published_at])
         end
         activity = service.rebalance_topics!
-        debugger
         pp activity
       end
     end
