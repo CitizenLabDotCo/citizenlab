@@ -16,13 +16,13 @@ import {
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { uniqBy } from 'lodash-es';
 import { useSearchParams } from 'react-router-dom';
-import { useIntl } from 'react-intl';
 import styled from 'styled-components';
 
 import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
 import useIdeaById from 'api/ideas/useIdeaById';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import StickyNote, { NOTE_HEIGHTS } from './StickyNotes/StickyNote';
