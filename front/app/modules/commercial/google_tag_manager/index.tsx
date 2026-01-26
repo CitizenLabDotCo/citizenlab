@@ -49,6 +49,8 @@ const configuration: ModuleConfiguration = {
         tenant.data.attributes.settings.google_tag_manager?.container_id || '';
 
       // Split by comma to support multiple container IDs
+      // if provided in a comma-separated format (not recommended
+      // but supported for specific cases)
       const containerIds = containerIdString
         .split(',')
         .map((id) => id.trim())
