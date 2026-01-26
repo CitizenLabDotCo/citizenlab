@@ -358,10 +358,6 @@ namespace :cl2_back do
         phase_insights: {
           enabled: false,
           allowed: false
-        },
-        ideation_accountless_posting: {
-          enabled: true,
-          allowed: true
         }
       }
     )

@@ -274,7 +274,6 @@ export interface IAppConfigurationSettings {
   idea_feed?: AppConfigurationFeature;
   nested_input_topics?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
-  ideation_accountless_posting?: AppConfigurationFeature;
   phase_insights?: AppConfigurationFeature;
 }
 

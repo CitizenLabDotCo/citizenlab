@@ -581,10 +581,6 @@ module MultiTenancy
             phase_insights: {
               enabled: false,
               allowed: false
-            },
-            ideation_accountless_posting: {
-              enabled: true,
-              allowed: true
             }
           })
         )
