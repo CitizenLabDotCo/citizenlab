@@ -617,6 +617,7 @@ resource 'Phases' do
         expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq presentation_mode
         expect(json_response.dig(:data, :attributes, :allow_anonymous_participation)).to eq allow_anonymous_participation
         expect(json_response.dig(:data, :attributes, :prescreening_enabled)).to eq prescreening_enabled
+        expect(json_response.dig(:data, :attributes, :prescreening_mode)).to eq 'all' # synced from prescreening_enabled
         expect(json_response.dig(:data, :attributes, :similarity_enabled)).to eq similarity_enabled
         expect(json_response.dig(:data, :attributes, :similarity_threshold_body)).to eq similarity_threshold_body
       end

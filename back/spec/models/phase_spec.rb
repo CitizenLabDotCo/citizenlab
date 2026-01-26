@@ -489,4 +489,38 @@ RSpec.describe Phase do
       expect(phase.reacting_dislike_enabled).to be true
     end
   end
+
+  describe 'prescreening_mode sync' do
+    it 'sets prescreening_mode to "all" when prescreening_enabled is set to true' do
+      phase = create(:phase, prescreening_enabled: false)
+      expect(phase.prescreening_mode).to be_nil
+
+      phase.update!(prescreening_enabled: true)
+      expect(phase.prescreening_mode).to eq('all')
+    end
+
+    it 'sets prescreening_mode to nil when prescreening_enabled is set to false' do
+      phase = create(:phase, prescreening_enabled: true)
+      expect(phase.prescreening_mode).to eq('all')
+
+      phase.update!(prescreening_enabled: false)
+      expect(phase.prescreening_mode).to be_nil
+    end
+
+    it 'sets prescreening_enabled to true when prescreening_mode is set to "all"' do
+      phase = create(:phase, prescreening_enabled: false)
+      expect(phase.prescreening_enabled).to be false
+
+      phase.update!(prescreening_mode: 'all')
+      expect(phase.prescreening_enabled).to be true
+    end
+
+    it 'sets prescreening_enabled to false when prescreening_mode is set to nil' do
+      phase = create(:phase, prescreening_enabled: true)
+      expect(phase.prescreening_enabled).to be true
+
+      phase.update!(prescreening_mode: nil)
+      expect(phase.prescreening_enabled).to be false
+    end
+  end
 end

@@ -25,6 +25,7 @@ module MultiTenancy
           baskets_count
           votes_count
           prescreening_enabled
+          prescreening_mode
           expire_days_limit
           reacting_threshold
           vote_term
