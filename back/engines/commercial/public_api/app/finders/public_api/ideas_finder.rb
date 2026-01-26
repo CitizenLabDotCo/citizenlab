@@ -32,15 +32,23 @@ module PublicApi
       scope.where(project_id: @project_id)
     end
 
-    # Select only ideas that have all the input topics
+    # Select only ideas that have all the input topics (including children)
+    # For each requested topic, the idea must have that topic OR any of its children
     def filter_by_topic_ids(scope)
       return scope unless @topic_ids
 
+      @topic_ids.each do |topic_id|
+        topic_with_children_ids = InputTopic.where(id: topic_id)
+          .or(InputTopic.where(parent_id: topic_id))
+          .pluck(:id)
+
+        scope = scope.where(
+          'EXISTS (SELECT 1 FROM ideas_input_topics WHERE ideas_input_topics.idea_id = ideas.id AND ideas_input_topics.input_topic_id IN (?))',
+          topic_with_children_ids
+        )
+      end
+
       scope
-        .joins(:input_topics)
-        .where(input_topics: { id: @topic_ids })
-        .group('ideas.id')
-        .having('COUNT(input_topics.id) = ?', @topic_ids.size)
     end
 
     def filter_by_type(scope)

@@ -1419,6 +1419,7 @@
   "app.containers.IdeasFeedPage.allTopics": "Wszystkie tematy",
   "app.containers.IdeasFeedPage.backToProject": "Powrót do projektu",
   "app.containers.IdeasFeedPage.collapsePanel": "Zwiń panel tematów",
+  "app.containers.IdeasFeedPage.endOfFeed": "Dotarłeś do końca tego kanału.",
   "app.containers.IdeasFeedPage.expandPanel": "Rozwiń panel tematów",
   "app.containers.IdeasFeedPage.exploreTopicsNudge": "Przesuń palcem w górę, aby poznać tematy",
   "app.containers.IdeasFeedPage.seeAllIdeas": "Zobacz wszystkie wejścia {ideasCount}",
