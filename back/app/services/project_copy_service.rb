@@ -41,7 +41,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     new_publication_status: nil
   )
     include_ideas = false if local_copy
-    max_ideas = max_ideas&.to_i
+    max_ideas = max_ideas.presence&.to_i
     @include_ideas = include_ideas
     @local_copy = local_copy
     @project = project
