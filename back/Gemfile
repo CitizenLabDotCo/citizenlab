@@ -67,7 +67,7 @@ end
 
 group :test do
   gem 'shoulda-matchers', '~> 6.2.0'
-  gem 'webmock', '~> 3.23'
+  gem 'webmock', '~> 3.26'
 
   # Adds rspec matchers and helpers for testing html structure and styling.
   gem 'capybara', '~> 3.40'
