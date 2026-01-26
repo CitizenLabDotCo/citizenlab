@@ -576,8 +576,8 @@ GEM
     combine_pdf (1.0.26)
       matrix
       ruby-rc4 (>= 0.1.5)
-    concurrent-ruby (1.3.5)
-    connection_pool (2.5.4)
+    concurrent-ruby (1.3.6)
+    connection_pool (3.0.2)
     counter_culture (3.5.3)
       activerecord (>= 4.2)
       activesupport (>= 4.2)
@@ -731,8 +731,8 @@ GEM
       base64
       fiber-storage
       logger
-    groupdate (6.5.1)
-      activesupport (>= 7)
+    groupdate (6.7.0)
+      activesupport (>= 7.1)
     grpc (1.75.0-aarch64-linux-gnu)
       google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
@@ -772,7 +772,7 @@ GEM
       mutex_m
       nkf
       rack (< 3)
-    i18n (1.14.7)
+    i18n (1.14.8)
       concurrent-ruby (~> 1.0)
     icalendar (2.10.1)
       ice_cube (~> 0.16)
@@ -867,7 +867,8 @@ GEM
       rake
     mini_magick (4.13.2)
     mini_mime (1.1.5)
-    minitest (5.26.0)
+    minitest (6.0.1)
+      prism (~> 1.5)
     mjml-rails (4.11.0)
     mrml (1.7.0-aarch64-linux)
     mrml (1.7.0-arm64-darwin)
@@ -992,6 +993,7 @@ GEM
     prime (0.1.4)
       forwardable
       singleton
+    prism (1.7.0)
     proc_to_ast (0.1.0)
       coderay
       parser
@@ -1408,7 +1410,7 @@ DEPENDENCIES
   frontend!
   google-cloud-document_ai (~> 1.4)
   google_tag_manager!
-  groupdate (~> 6.5)
+  groupdate (~> 6.7)
   icalendar (~> 2.10)
   ice_cube (~> 0.17)
   id_acm!
