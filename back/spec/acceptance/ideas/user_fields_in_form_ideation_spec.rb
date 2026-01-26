@@ -21,7 +21,7 @@ resource 'Ideas' do
       )
 
       @permission = @phase.permissions.find_by(action: 'posting_idea')
-      @custom_form = create(:custom_form, :with_default_fields, participation_context: @phase)
+      @custom_form = create(:custom_form, :with_default_fields, participation_context: @project)
 
       # Create registration (demographic) question and
       # add to permission
