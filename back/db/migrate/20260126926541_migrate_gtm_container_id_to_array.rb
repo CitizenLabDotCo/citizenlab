@@ -3,6 +3,10 @@
 class MigrateGtmContainerIdToArray < ActiveRecord::Migration[7.2]
   class AppConfiguration < ::ApplicationRecord
     self.table_name = 'app_configurations'
+
+    def self.instance
+      first
+    end
   end
 
   def change
