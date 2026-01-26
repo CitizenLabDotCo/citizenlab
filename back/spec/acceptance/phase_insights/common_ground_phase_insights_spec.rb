@@ -86,17 +86,17 @@ resource 'Phase insights' do
       metrics = json_response_body.dig(:data, :attributes, :metrics)
       expect(metrics).to eq({
         visitors: 3,
-        visitors_7_day_change: 0.0, # from 2 (in week before last) to 2 unique visitors (in last 7 days) = 0% change
+        visitors_7_day_percent_change: 0.0, # from 2 (in week before last) to 2 unique visitors (in last 7 days) = 0% change
         participants: 2,
-        participants_7_day_change: 100.0, # from 1 (in week before last) to 2 unique participants (in last 7 days) = 100% increase
-        participation_rate: 0.667,
-        participation_rate_7_day_change: 100.0, # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 0.5 = (((1.0 - 0.5).to_f / 0.5) * 100.0).round(1)
+        participants_7_day_percent_change: 100.0, # from 1 (in week before last) to 2 unique participants (in last 7 days) = 100% increase
+        participation_rate_as_percent: 66.7,
+        participation_rate_7_day_percent_change: 100.0, # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 0.5 = (((1.0 - 0.5).to_f / 0.5) * 100.0).round(1)
         common_ground: {
           associated_ideas: 4,
           ideas_posted: 2,
-          ideas_posted_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) = 0% change
+          ideas_posted_7_day_percent_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) = 0% change
           reactions: 1,
-          reactions_7_day_change: 'last_7_days_compared_with_zero' # from 0 (in week before last) to 1 (in last 7 days) => avoid division by zero
+          reactions_7_day_percent_change: 'last_7_days_compared_with_zero' # from 0 (in week before last) to 1 (in last 7 days) => avoid division by zero
         }
       })
 
