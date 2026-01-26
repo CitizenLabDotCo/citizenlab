@@ -2999,6 +2999,7 @@
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Bekleyen davetiye",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Belgeye kim açıklama ekleyebilir?",
   "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_subtitle": "Bir etkinliğe katılmak için kimler kaydolabilir?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_tooltip": "Bir kullanıcı bir etkinliğe katılmaya çalıştığında aktif bir aşama yoksa, sistem en son tamamlanan aşamadaki izinleri kullanacaktır.",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_inputs_subtitle": "Girdiler hakkında kim yorum yapabilir?",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_proposals_subtitle": "Teklifler hakkında kimler yorum yapabilir?",
   "app.containers.AdminPage.groups.permissions.permissionAction_post_proposal_subtitle": "Kimler teklif gönderebilir?",

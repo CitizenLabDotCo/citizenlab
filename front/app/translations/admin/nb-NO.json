@@ -2999,6 +2999,7 @@
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Avventer invitasjon",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Hvem kan kommentere dokumentet?",
   "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_subtitle": "Hvem kan melde seg på et arrangement?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_tooltip": "Hvis det ikke finnes noen aktiv fase når en bruker prøver å delta på et arrangement, vil systemet bruke tillatelsene fra den sist fullførte fasen.",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_inputs_subtitle": "Hvem kan kommentere innspill?",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_proposals_subtitle": "Hvem kan kommentere forslag?",
   "app.containers.AdminPage.groups.permissions.permissionAction_post_proposal_subtitle": "Hvem kan legge ut et forslag?",

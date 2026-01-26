@@ -1419,6 +1419,7 @@
   "app.containers.IdeasFeedPage.allTopics": "جميع المواضيع",
   "app.containers.IdeasFeedPage.backToProject": "العودة إلى المشروع",
   "app.containers.IdeasFeedPage.collapsePanel": "طي لوحة المواضيع",
+  "app.containers.IdeasFeedPage.endOfFeed": "لقد وصلت إلى نهاية هذه الصفحة.",
   "app.containers.IdeasFeedPage.expandPanel": "توسيع لوحة المواضيع",
   "app.containers.IdeasFeedPage.exploreTopicsNudge": "اسحب لأعلى لاستكشاف المواضيع",
   "app.containers.IdeasFeedPage.seeAllIdeas": "عرض جميع المدخلات {ideasCount}",
