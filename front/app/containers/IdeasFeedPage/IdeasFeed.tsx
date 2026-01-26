@@ -106,7 +106,11 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
   const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
   const phaseId = searchParams.get('phase_id')!;
-  const initialIdeaId = searchParams.get('initial_idea_id') || undefined;
+  const initialIdeaIdFromUrl = searchParams.get('initial_idea_id') || undefined;
+
+  // Store the initial idea ID in a ref so it persists after being removed from URL
+  const initialIdeaIdRef = useRef(initialIdeaIdFromUrl);
+  const initialIdeaId = initialIdeaIdRef.current;
 
   const parentRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useBreakpoint('phone');
