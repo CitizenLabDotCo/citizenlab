@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Title, Box, Accordion } from '@citizenlab/cl2-component-library';
+import {
+  Title,
+  Box,
+  Accordion,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import useResetPhasePermission from 'api/phase_permissions/useResetPhasePermission';
@@ -9,16 +14,18 @@ import usePhase from 'api/phases/usePhase';
 
 import ActionForm from 'components/admin/ActionForm';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
 import { getPermissionActionSectionSubtitle } from './utils';
+import utilMessages from './utils/messages';
 
 type Props = {
   phaseId: string;
 };
 
 const ActionForms = ({ phaseId }: Props) => {
+  const { formatMessage } = useIntl();
   const { data: phase } = usePhase(phaseId);
   const { data: permissions } = usePhasePermissions({ phaseId });
   const { mutateAsync: updatePhasePermission } = useUpdatePhasePermission();
@@ -40,14 +47,23 @@ const ActionForms = ({ phaseId }: Props) => {
     const permissionAction = permission.attributes.action;
     return (
       <Box>
-        <Title variant="h3" color="primary">
-          <FormattedMessage
-            {...getPermissionActionSectionSubtitle({
-              permissionAction,
-              participationMethod,
-            })}
-          />
-        </Title>
+        <Box display="flex" alignItems="center">
+          <Title variant="h3" color="primary">
+            <FormattedMessage
+              {...getPermissionActionSectionSubtitle({
+                permissionAction,
+                participationMethod,
+              })}
+            />
+          </Title>
+          {permissionAction === 'attending_event' && (
+            <IconTooltip
+              content={formatMessage(
+                utilMessages.permissionAction_attending_event_tooltip
+              )}
+            />
+          )}
+        </Box>
         <ActionForm
           phaseId={phaseId}
           permissionData={permission}
@@ -84,19 +100,28 @@ const ActionForms = ({ phaseId }: Props) => {
             transitionHeightPx={1700}
             isOpenByDefault={false}
             title={
-              <Title
-                variant="h3"
-                color="primary"
-                my="20px"
-                style={{ fontWeight: 500 }}
-              >
-                <FormattedMessage
-                  {...getPermissionActionSectionSubtitle({
-                    permissionAction,
-                    participationMethod,
-                  })}
-                />
-              </Title>
+              <Box display="flex" alignItems="center" gap="8px">
+                <Title
+                  variant="h3"
+                  color="primary"
+                  my="20px"
+                  style={{ fontWeight: 500 }}
+                >
+                  <FormattedMessage
+                    {...getPermissionActionSectionSubtitle({
+                      permissionAction,
+                      participationMethod,
+                    })}
+                  />
+                </Title>
+                {permissionAction === 'attending_event' && (
+                  <IconTooltip
+                    content={formatMessage(
+                      utilMessages.permissionAction_attending_event_tooltip
+                    )}
+                  />
+                )}
+              </Box>
             }
           >
             <ActionForm

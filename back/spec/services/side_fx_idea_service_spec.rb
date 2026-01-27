@@ -5,12 +5,13 @@ require 'rails_helper'
 describe SideFxIdeaService do
   let(:service) { described_class.new }
   let(:user) { create(:user) }
+  let(:phase) { create(:phase) }
 
   describe 'after_create' do
     it "logs a 'created' action activity job" do
       idea = create(:idea, author: user)
 
-      expect { service.after_create(idea, user) }
+      expect { service.after_create(idea, user, phase) }
         .to enqueue_job(LogActivityJob)
         .with(
           idea,
@@ -26,7 +27,7 @@ describe SideFxIdeaService do
     it "logs a 'submitted' action job when the publication_status is submitted" do
       idea = create(:idea, publication_status: 'submitted', author: user)
 
-      expect { service.after_create(idea, user) }
+      expect { service.after_create(idea, user, phase) }
         .to enqueue_job(LogActivityJob)
         .with(idea, 'submitted', user, idea.submitted_at.to_i, project_id: idea.project_id)
         .exactly(1).times
@@ -35,7 +36,7 @@ describe SideFxIdeaService do
     it "logs a 'submitted' action job when the publication_status is published" do
       idea = create(:idea, publication_status: 'published', author: user)
 
-      expect { service.after_create(idea, user) }
+      expect { service.after_create(idea, user, phase) }
         .to enqueue_job(LogActivityJob)
         .with(idea, 'submitted', user, idea.submitted_at.to_i, project_id: idea.project_id)
         .exactly(1).times
@@ -44,7 +45,7 @@ describe SideFxIdeaService do
     it "logs a 'published' action job when the publication_status is published" do
       idea = create(:idea, publication_status: 'published', author: user)
 
-      expect { service.after_create(idea, user) }
+      expect { service.after_create(idea, user, phase) }
         .to enqueue_job(LogActivityJob)
         .with(idea, 'published', user, idea.published_at.to_i, project_id: idea.project_id)
         .exactly(1).times
@@ -53,14 +54,14 @@ describe SideFxIdeaService do
 
     it "doesn't log a 'submitted' action job when the publication_status is draft" do
       idea = create(:idea, publication_status: 'draft')
-      expect { service.after_create(idea, user) }
+      expect { service.after_create(idea, user, phase) }
         .not_to enqueue_job(LogActivityJob)
         .with(idea, 'submitted', any_args)
     end
 
     it "doesn't log a 'published' action job when the publication_status is draft" do
       idea = create(:idea, publication_status: 'draft')
-      expect { service.after_create(idea, user) }
+      expect { service.after_create(idea, user, phase) }
         .not_to enqueue_job(LogActivityJob)
         .with(idea, 'published', any_args)
     end
@@ -69,10 +70,11 @@ describe SideFxIdeaService do
       let!(:project) { create(:project) }
       let!(:folder) { create(:project_folder, projects: [project]) }
       let!(:idea) { create(:idea, project: project) }
+      let!(:phase) { create(:phase, project: project) }
 
       it 'creates idea, project and folder followers' do
         expect do
-          service.after_create idea.reload, user
+          service.after_create(idea.reload, user, phase)
         end.to change(Follower, :count).from(0).to(3)
 
         expect(user.follows.pluck(:followable_id)).to contain_exactly idea.id, project.id, folder.id
@@ -81,14 +83,20 @@ describe SideFxIdeaService do
       it 'does not create followers if the project is hidden' do
         project.update!(hidden: true)
         expect do
-          service.after_create idea.reload, user
+          service.after_create(idea.reload, user, phase)
         end.not_to change(Follower, :count)
       end
 
       it 'creates only creates project and folder followers for native_survey responses' do
-        idea.update!(creation_phase: create(:native_survey_phase, project: project, with_permissions: true))
+        project = create(:project)
+        folder = create(:project_folder, projects: [project])
+        idea = create(
+          :idea,
+          creation_phase: create(:native_survey_phase, with_permissions: true, project:),
+          project:
+        )
         expect do
-          service.after_create idea.reload, user
+          service.after_create(idea.reload, user, idea.creation_phase)
         end.to change(Follower, :count).from(0).to(2)
 
         expect(user.follows.pluck(:followable_id)).to contain_exactly project.id, folder.id
@@ -99,7 +107,7 @@ describe SideFxIdeaService do
       cosponsor = create(:user)
       idea = create(:idea, cosponsor_ids: [cosponsor.id])
 
-      expect { service.after_create idea.reload, user }
+      expect { service.after_create(idea.reload, user, phase) }
         .to enqueue_job(LogActivityJob)
         .with(
           idea.cosponsorships.first,
@@ -116,7 +124,7 @@ describe SideFxIdeaService do
       create(:idea, manual_votes_amount: 2, project: project, phases: [phase1])
       phase1.update_manual_votes_count!
       idea = create(:idea, manual_votes_amount: 3, project: project, phases: [phase1, phase2])
-      service.after_create(idea, user)
+      service.after_create(idea, user, phase1)
 
       expect(phase1.reload.manual_votes_count).to eq 5
       expect(phase2.reload.manual_votes_count).to eq 3
@@ -125,7 +133,7 @@ describe SideFxIdeaService do
     it 'enqueues an upsert embedding job when the input_iq feature is turned on' do
       SettingsService.new.activate_feature! 'input_iq'
       idea = create(:idea, author: user)
-      expect { service.after_create(idea, user) }
+      expect { service.after_create(idea, user, phase) }
         .to enqueue_job(UpsertEmbeddingJob)
         .with(idea)
         .exactly(1).times
@@ -133,7 +141,7 @@ describe SideFxIdeaService do
 
     it "doesn't enqueue an upsert embedding job when the input_iq feature is turned off" do
       idea = create(:idea, author: user)
-      expect { service.after_create(idea, user) }
+      expect { service.after_create(idea, user, phase) }
         .not_to enqueue_job(UpsertEmbeddingJob)
         .with(idea)
     end
@@ -150,38 +158,38 @@ describe SideFxIdeaService do
         project: phase.project
       )
 
-      expect { service.after_create(idea, user) }
+      expect { service.after_create(idea, user, phase) }
         .not_to enqueue_job(UpsertEmbeddingJob)
         .with(idea)
     end
 
-    it 'enqueues a wise voice detection job if the ideation_method is idea_feed' do
+    it 'enqueues a wise voice detection job if the presentation_mode is feed' do
       idea = create(:idea)
-      idea.phases.first.update!(ideation_method: 'idea_feed')
-      expect { service.after_create(idea, user) }
+      idea.phases.first.update!(presentation_mode: 'feed')
+      expect { service.after_create(idea, user, phase) }
         .to enqueue_job(WiseVoiceDetectionJob)
         .with(idea)
         .exactly(1).times
     end
 
-    it "doesn't enqueue a wise voice detection job if the ideation_method is not idea_feed" do
+    it "doesn't enqueue a wise voice detection job if the presentation_mode is not feed" do
       idea = create(:idea)
-      expect { service.after_create(idea, user) }
+      expect { service.after_create(idea, user, phase) }
         .not_to enqueue_job(WiseVoiceDetectionJob)
     end
 
-    it 'enqueues an IdeaFeed::TopicClassificationJob if the ideation_method is idea_feed' do
+    it 'enqueues an IdeaFeed::TopicClassificationJob if the presentation_mode is feed' do
       idea = create(:idea)
-      idea.phases.first.update!(ideation_method: 'idea_feed')
-      expect { service.after_create(idea, user) }
+      idea.phases.first.update!(presentation_mode: 'feed')
+      expect { service.after_create(idea, user, phase) }
         .to enqueue_job(IdeaFeed::TopicClassificationJob)
         .with(idea.phases.first, idea)
         .exactly(1).times
     end
 
-    it "doesn't enqueue an IdeaFeed::TopicClassificationJob if the ideation_method is not idea_feed" do
+    it "doesn't enqueue an IdeaFeed::TopicClassificationJob if the presentation_mode is not feed" do
       idea = create(:idea)
-      expect { service.after_create(idea, user) }
+      expect { service.after_create(idea, user, phase) }
         .not_to enqueue_job(IdeaFeed::TopicClassificationJob)
     end
   end
@@ -436,9 +444,9 @@ describe SideFxIdeaService do
         .with(idea)
     end
 
-    it 'enqueues a wise voice detection job when ideation_method is idea_feed and title or body changed' do
+    it 'enqueues a wise voice detection job when presentation_mode is feed and title or body changed' do
       idea = create(:idea)
-      idea.phases.first.update!(ideation_method: 'idea_feed')
+      idea.phases.first.update!(presentation_mode: 'feed')
       idea.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
         .to enqueue_job(WiseVoiceDetectionJob)
@@ -446,7 +454,7 @@ describe SideFxIdeaService do
         .exactly(1).times
     end
 
-    it 'does not enqueue a wise voice detection job when ideation_method is not idea_feed' do
+    it 'does not enqueue a wise voice detection job when presentation_mode is not feed' do
       idea = create(:idea)
       idea.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
@@ -454,17 +462,17 @@ describe SideFxIdeaService do
         .with(idea)
     end
 
-    it 'does not enqueue a wise voice detection job when ideation_method is idea_feed but title and body did not change' do
+    it 'does not enqueue a wise voice detection job when presentation_mode is feed but title and body did not change' do
       idea = create(:idea).reload
-      idea.phases.first.update!(ideation_method: 'idea_feed')
+      idea.phases.first.update!(presentation_mode: 'feed')
       expect { service.after_update(idea, user) }
         .not_to enqueue_job(WiseVoiceDetectionJob)
         .with(idea)
     end
 
-    it 'enqueues an IdeaFeed::TopicClassificationJob when ideation_method is idea_feed and title or body changed' do
+    it 'enqueues an IdeaFeed::TopicClassificationJob when presentation_mode is feed and title or body changed' do
       idea = create(:idea)
-      idea.phases.first.update!(ideation_method: 'idea_feed')
+      idea.phases.first.update!(presentation_mode: 'feed')
       idea.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
         .to enqueue_job(IdeaFeed::TopicClassificationJob)
@@ -472,7 +480,7 @@ describe SideFxIdeaService do
         .exactly(1).times
     end
 
-    it 'does not enqueue an IdeaFeed::TopicClassificationJob when ideation_method is not idea_feed' do
+    it 'does not enqueue an IdeaFeed::TopicClassificationJob when presentation_mode is not feed' do
       idea = create(:idea)
       idea.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
@@ -543,7 +551,7 @@ describe SideFxIdeaService do
         expect(user.custom_field_values).to eq({ 'gender' => 'female' })
       end
 
-      it 'does not update user profile if not user_fields_in_form?' do
+      it 'does not update user profile if user_fields_in_form = false' do
         permission = Permission.find_by(
           permission_scope_id: phase.id,
           action: 'posting_idea'

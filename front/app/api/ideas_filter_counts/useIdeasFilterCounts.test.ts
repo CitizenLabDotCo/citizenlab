@@ -20,7 +20,7 @@ export const data: IIdeasFilterCounts = {
         '23918a1c-c3b4-424c-b7ac-6aae738f16a8': 1,
         '3916fe24-83e4-428b-8926-335e74dac9fc': 1,
       },
-      topic_id: {
+      input_topic_id: {
         '0f34479a-de63-4df4-a0cc-b165751a1ae4': 1,
         '32e9b529-c821-49d6-b86c-1a4ff62317fc': 1,
         'b77ad2ff-16a0-4721-a9cc-be27efd1f717': 1,

@@ -66,8 +66,10 @@ export interface VotingInputsProps {
   toggleAutoshareResultsEnabled: () => void;
   apiErrors: CLErrors | null | undefined;
   validationErrors: ValidationErrors;
-  presentation_mode: 'card' | 'map' | null | undefined;
-  handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
+  presentation_mode: 'card' | 'map' | 'feed' | null | undefined;
+  handleIdeasDisplayChange: (
+    presentation_mode: 'map' | 'card' | 'feed'
+  ) => void;
   handleVotingMethodOnChange: (voting_method: VotingMethod) => void;
   similarity_enabled?: boolean | null;
   similarity_threshold_title: number | null | undefined;

@@ -53,9 +53,10 @@ const SubRow = ({
             onUpdatePhases={onUpdatePhases}
           />
         )}
-        {activeFilterMenu === 'topics' && (
+        {activeFilterMenu === 'topics' && projectId && (
           <TopicsSelector
             selectedTopics={selectedTopics || []}
+            projectId={projectId}
             onUpdateTopics={onUpdateTopics}
           />
         )}

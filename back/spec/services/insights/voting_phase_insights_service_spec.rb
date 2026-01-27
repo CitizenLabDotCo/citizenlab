@@ -15,14 +15,17 @@ RSpec.describe Insights::VotingPhaseInsightsService do
   let!(:basket2) { create(:basket, phase: phase, user: nil, submitted_at: phase.start_at + 1.day) }
   let!(:baskets_idea3) { create(:baskets_idea, basket: basket2, idea: idea2, votes: 42) }
 
+  let!(:basket3) { create(:basket, phase: phase, user: nil, submitted_at: nil) }
+  let!(:baskets_idea4) { create(:baskets_idea, basket: basket3, idea: idea2, votes: 999) }
+
   let!(:comment1) { create(:comment, idea: idea1, created_at: 20.days.ago, author: user) } # before phase start
   let!(:comment2) { create(:comment, idea: idea1, created_at: 10.days.ago, author: user) } # during phase
   let!(:comment3) { create(:comment, idea: idea1, created_at: 1.day.ago, author: user) } # after phase end
 
-  # Update votes_count after creating baskets_ideas
+  # Manually update votes_count for each idea to reflect only votes from submitted baskets, mimicking production behavior
   before do
-    idea1.update_column(:votes_count, idea1.baskets_ideas.sum(:votes))
-    idea2.update_column(:votes_count, idea2.baskets_ideas.sum(:votes))
+    idea1.update_column(:votes_count, idea1.baskets_ideas.joins(:basket).where.not(baskets: { submitted_at: nil }).sum(:votes))
+    idea2.update_column(:votes_count, idea2.baskets_ideas.joins(:basket).where.not(baskets: { submitted_at: nil }).sum(:votes))
   end
 
   describe '#participations_voting' do
@@ -101,12 +104,12 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         voting_method: phase.voting_method,
         associated_ideas: 2,
         online_votes: 5,
-        online_votes_7_day_change: 50.0, # from 2 (in week before last) to 3 (in last 7 days) = 50% increase
+        online_votes_7_day_percent_change: 50.0, # from 2 (in week before last) to 3 (in last 7 days) = 50% increase
         offline_votes: phase.manual_votes_count,
         voters: 1,
-        voters_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) = 0% change
+        voters_7_day_percent_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) = 0% change
         comments_posted: 2,
-        comments_posted_7_day_change: 0.0 # from 1 (in week before last) to 1 (in last 7 days) = 0% change
+        comments_posted_7_day_percent_change: 0.0 # from 1 (in week before last) to 1 (in last 7 days) = 0% change
       })
     end
   end
@@ -235,7 +238,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       expect(result[:group_by]).to be_nil
       expect(result[:custom_field_id]).to be_nil
       expect(result[:input_type]).to be_nil
-      expect(result[:options]).to eq([])
+      expect(result[:options]).to eq({})
 
       expect(result[:ideas]).to contain_exactly(
         {
@@ -273,11 +276,11 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       expect(result[:group_by]).to eq('gender')
       expect(result[:custom_field_id]).to eq(custom_field.id)
       expect(result[:input_type]).to eq('select')
-      expect(result[:options]).to eq([
-        { male: { id: custom_field.options.find_by(key: 'male').id, title_multiloc: { 'en' => 'Male' } }, ordering: 0 },
-        { female: { id: custom_field.options.find_by(key: 'female').id, title_multiloc: { 'en' => 'Female' } }, ordering: 1 },
-        { unspecified: { id: custom_field.options.find_by(key: 'unspecified').id, title_multiloc: { 'en' => 'Unspecified' } }, ordering: 2 }
-      ])
+      expect(result[:options]).to eq({
+        'male' => { title_multiloc: { 'en' => 'Male' }, ordering: 0 },
+        'female' => { title_multiloc: { 'en' => 'Female' }, ordering: 1 },
+        'unspecified' => { title_multiloc: { 'en' => 'Unspecified' }, ordering: 2 }
+      })
 
       expect(result[:ideas]).to contain_exactly(
         {
@@ -326,10 +329,10 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       expect(result[:group_by]).to eq('multiselect')
       expect(result[:custom_field_id]).to eq(custom_field.id)
       expect(result[:input_type]).to eq('multiselect')
-      expect(result[:options]).to eq([
-        { option_a: { id: custom_field.options.find_by(key: 'option_a').id, title_multiloc: { 'en' => 'Option A' } }, ordering: 0 },
-        { option_b: { id: custom_field.options.find_by(key: 'option_b').id, title_multiloc: { 'en' => 'Option B' } }, ordering: 1 }
-      ])
+      expect(result[:options]).to eq({
+        'option_a' => { title_multiloc: { 'en' => 'Option A' }, ordering: 0 },
+        'option_b' => { title_multiloc: { 'en' => 'Option B' }, ordering: 1 }
+      })
 
       expect(result[:ideas]).to contain_exactly(
         {
@@ -373,7 +376,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       expect(result[:group_by]).to eq('checkbox')
       expect(result[:custom_field_id]).to eq(custom_field.id)
       expect(result[:input_type]).to eq('checkbox')
-      expect(result[:options]).to eq([])
+      expect(result[:options]).to eq({})
 
       expect(result[:ideas]).to contain_exactly(
         {
@@ -427,7 +430,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         expect(result[:group_by]).to eq('birthyear')
         expect(result[:custom_field_id]).to eq(custom_field.id)
         expect(result[:input_type]).to eq('number')
-        expect(result[:options]).to eq([])
+        expect(result[:options]).to eq({})
 
         expect(result[:ideas]).to contain_exactly(
           {

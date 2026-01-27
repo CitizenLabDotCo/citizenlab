@@ -29,4 +29,16 @@ export default defineMessages({
     id: 'app.containers.IdeasFeedPage.addYourIdea',
     defaultMessage: 'Add your idea',
   },
+  exploreTopicsNudge: {
+    id: 'app.containers.IdeasFeedPage.exploreTopicsNudge',
+    defaultMessage: 'Swipe up to explore the topics',
+  },
+  noIdeasForTag: {
+    id: 'app.containers.IdeasFeedPage.noIdeasForTag',
+    defaultMessage: 'No ideas for this tag yet.',
+  },
+  endOfFeed: {
+    id: 'app.containers.IdeasFeedPage.endOfFeed',
+    defaultMessage: 'You have reached the end of this feed.',
+  },
 });

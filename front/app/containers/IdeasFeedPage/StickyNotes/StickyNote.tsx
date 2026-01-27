@@ -16,7 +16,15 @@ import useLocalize from 'hooks/useLocalize';
 
 import Avatar from 'components/Avatar';
 import ReactionControl from 'components/ReactionControl';
-import T from 'components/T';
+
+import { stripHtml } from 'utils/textUtils';
+
+const truncateText = (text: string, maxLength: number) => {
+  if (text.length <= maxLength) return text;
+  const nextSpace = text.indexOf(' ', maxLength);
+  const cutoff = nextSpace === -1 ? text.length : nextSpace;
+  return `${text.slice(0, cutoff)}...`;
+};
 
 export const NOTE_HEIGHTS = {
   small: 350,
@@ -32,15 +40,13 @@ const StyledNote = styled(Box)`
   &:hover,
   &:focus {
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
-    filter: brightness(0.9);
   }
 `;
 
 const BodyText = styled(Text)`
-  display: -webkit-box;
-  -webkit-line-clamp: 4;
-  -webkit-box-orient: vertical;
   overflow: hidden;
+  word-break: break-word;
+  height: 100%;
 `;
 
 interface Props {
@@ -88,9 +94,11 @@ const StickyNote: React.FC<Props> = ({
   }
 
   const title = localize(idea.data.attributes.title_multiloc);
+  const bodyText = stripHtml(localize(idea.data.attributes.body_multiloc));
   const authorName = idea.data.attributes.author_name;
   const authorId = idea.data.relationships.author?.data?.id || null;
   const authorHash = idea.data.attributes.author_hash;
+  const commentsCount = idea.data.attributes.comments_count;
 
   return (
     <StyledNote
@@ -121,12 +129,12 @@ const StickyNote: React.FC<Props> = ({
         </Box>
       )}
       <Text fontSize="l" fontWeight="bold" m="0px" color={'textPrimary'}>
-        {title}
+        {truncateText(title, size === 'small' ? 45 : 100)}
       </Text>
 
       <Box flex="1" minHeight="0" overflow="hidden">
         <BodyText fontSize="m" color="textPrimary" m="0px">
-          <T supportHtml={true} value={idea.data.attributes.body_multiloc} />
+          {truncateText(bodyText, size === 'small' ? 230 : 400)}
         </BodyText>
       </Box>
       {showReactions && (
@@ -137,12 +145,18 @@ const StickyNote: React.FC<Props> = ({
           gap="8px"
           flexShrink={0}
         >
-          <Icon
-            name="comments"
-            fill={colors.textSecondary}
-            width="20px"
-            height="20px"
-          />
+          <Box display="flex" alignItems="center" gap="4px">
+            <Icon
+              name="comments"
+              fill={colors.textSecondary}
+              width="20px"
+              height="20px"
+            />
+            <Text fontSize="m" color="textSecondary" m="0px" ml="4px">
+              {commentsCount}
+            </Text>
+          </Box>
+
           <ReactionControl ideaId={ideaId} size="1" styleType="compact" />
         </Box>
       )}

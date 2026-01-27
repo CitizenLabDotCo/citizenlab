@@ -7,6 +7,8 @@ import { IIdeaData } from 'api/ideas/types';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 import { IdeaSortMethod } from 'api/phases/types';
 
+import StickyNotesPile from 'containers/IdeasFeedPage/StickyNotes/StickyNotesPile';
+
 import IdeasMap from 'components/IdeasMap';
 
 import { InputFiltersProps } from '../../IdeasWithFiltersSidebar/InputFilters';
@@ -14,7 +16,7 @@ import { InputFiltersProps } from '../../IdeasWithFiltersSidebar/InputFilters';
 import IdeasList from './IdeasList';
 
 interface Props {
-  view: 'card' | 'map';
+  view: 'card' | 'map' | 'feed';
   // This prop is used to set the aria-labelledby attribute. Set this to false if only one view is shown all the time. That is when the tabs are hidden.
   hasMoreThanOneView?: boolean;
   defaultSortingMethod?: IdeaSortMethod;
@@ -23,6 +25,7 @@ interface Props {
   hideIdeaStatus: boolean;
   projectId?: string;
   phaseId?: string;
+  projectSlug?: string;
   list: IIdeaData[];
   querying: boolean;
   hasMore: boolean;
@@ -40,6 +43,7 @@ const IdeasView = ({
   hideIdeaStatus,
   projectId,
   phaseId,
+  projectSlug,
   list,
   querying,
   hasMore,
@@ -86,6 +90,11 @@ const IdeasView = ({
             ideaMarkers={ideaMarkers}
             inputFiltersProps={inputFiltersProps}
           />
+        </Box>
+      )}
+      {view === 'feed' && phaseId && projectSlug && (
+        <Box aria-label={'view-tab-3'} id={'view-panel-3'}>
+          <StickyNotesPile phaseId={phaseId} slug={projectSlug} />
         </Box>
       )}
     </>

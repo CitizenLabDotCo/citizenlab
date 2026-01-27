@@ -32,7 +32,10 @@ const UserFieldsInFormNotice = ({
     (permission) => permission.attributes.action === 'posting_idea'
   );
 
-  if (!postingPermission || !postingPermission.attributes.user_fields_in_form) {
+  if (
+    !postingPermission ||
+    !postingPermission.attributes.user_fields_in_form_frontend_descriptor.value
+  ) {
     return null;
   }
 

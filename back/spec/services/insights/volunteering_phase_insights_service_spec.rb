@@ -73,7 +73,7 @@ RSpec.describe Insights::VolunteeringPhaseInsightsService do
 
       expect(metrics).to eq({
         volunteerings: 2,
-        volunteerings_7_day_change: 0.0 # from 1 (in week before last) to 1 (in last 7 days) = 0% change
+        volunteerings_7_day_percent_change: 0.0 # from 1 (in week before last) to 1 (in last 7 days) = 0% change
       })
     end
   end

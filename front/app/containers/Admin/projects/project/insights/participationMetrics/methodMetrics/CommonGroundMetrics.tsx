@@ -5,7 +5,7 @@ import { CommonGroundMetrics as CommonGroundMetricsType } from 'api/phase_insigh
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
-import Metric from '../Metric';
+import MetricCard from '../MetricCard';
 
 interface Props {
   metrics: CommonGroundMetricsType;
@@ -17,19 +17,24 @@ const CommonGroundMetrics = ({ metrics, showChange }: Props) => {
 
   return (
     <>
-      <Metric
+      <MetricCard
         label={formatMessage(messages.ideasPosted)}
         value={metrics.ideas_posted}
-        change={showChange ? metrics.ideas_posted_7_day_change : undefined}
+        icon="blank-paper"
+        change={
+          showChange ? metrics.ideas_posted_7_day_percent_change : undefined
+        }
       />
-      <Metric
+      <MetricCard
         label={formatMessage(messages.associatedIdeas)}
         value={metrics.associated_ideas}
+        icon="sidebar-folder"
       />
-      <Metric
+      <MetricCard
         label={formatMessage(messages.reactions)}
         value={metrics.reactions}
-        change={showChange ? metrics.reactions_7_day_change : undefined}
+        icon="thumb-up"
+        change={showChange ? metrics.reactions_7_day_percent_change : undefined}
       />
     </>
   );

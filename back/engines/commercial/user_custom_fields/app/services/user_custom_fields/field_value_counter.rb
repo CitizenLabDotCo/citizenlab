@@ -72,7 +72,7 @@ module UserCustomFields
     # Custom fields with multiple values (e.g. multiselect) are returned as multiple rows.
     # If the custom field has no value for a given user or idea, the resulting row contains NULL.
     private_class_method def self.select_field_values(records, custom_field, record_type)
-      field_key = record_type == 'ideas' ? UserFieldsInSurveyService.prefix_key(custom_field.key) : custom_field.key
+      field_key = record_type == 'ideas' ? UserFieldsInFormService.prefix_key(custom_field.key) : custom_field.key
       case custom_field.input_type
       when 'select', 'checkbox', 'number'
         records.select("custom_field_values->'#{field_key}' as field_value")
