@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { IDefaultInputTopicData } from 'api/default_input_topics/types';
 import useDefaultInputTopics from 'api/default_input_topics/useDefaultInputTopics';
@@ -14,8 +15,6 @@ import { TextCell } from 'components/admin/ResourceList';
 import SortableList from 'components/admin/ResourceList/SortableList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import { Section, SectionDescription } from 'components/admin/Section';
-import styled from 'styled-components';
-
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal, {

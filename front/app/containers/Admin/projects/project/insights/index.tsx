@@ -71,6 +71,9 @@ const InsightsContent = () => {
   const isCurrentPhase = start_at
     ? pastPresentOrFuture([start_at, end_at ?? null]) === 'present'
     : false;
+  const isFuturePhase = start_at
+    ? pastPresentOrFuture([start_at, end_at ?? null]) === 'future'
+    : false;
   const supportsAiAnalysis =
     participationMethod &&
     AI_ANALYSIS_SUPPORTED_METHODS.includes(participationMethod);
@@ -117,7 +120,6 @@ const InsightsContent = () => {
     <>
       {/* Visible UI - never changes during PDF export */}
       <Box
-        background="white"
         borderBottom="none"
         display="flex"
         flexDirection="column"
@@ -198,18 +200,24 @@ const InsightsContent = () => {
             <ParticipationMetrics phase={phase.data} />
           </PageBreakBox>
 
-          <PageBreakBox>
-            <ParticipantsTimeline phaseId={phase.data.id} />
-          </PageBreakBox>
+          {!isFuturePhase && (
+            <>
+              <PageBreakBox>
+                <ParticipantsTimeline phaseId={phase.data.id} />
+              </PageBreakBox>
 
-          <DemographicsSection phase={phase.data} />
+              <DemographicsSection phase={phase.data} />
 
-          <PageBreakBox>
-            <MethodSpecificInsights
-              phaseId={phase.data.id}
-              participationMethod={phase.data.attributes.participation_method}
-            />
-          </PageBreakBox>
+              <PageBreakBox>
+                <MethodSpecificInsights
+                  phaseId={phase.data.id}
+                  participationMethod={
+                    phase.data.attributes.participation_method
+                  }
+                />
+              </PageBreakBox>
+            </>
+          )}
         </Box>
       </Box>
 
