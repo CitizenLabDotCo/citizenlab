@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import fileAttachmentsKeys from 'api/file_attachments/keys';
 import foldersKeys from 'api/project_folders/keys';
 import projectsKeys from 'api/projects/keys';
 
@@ -30,10 +31,18 @@ const useAddContentBuilderLayout = () => {
   return useMutation<IContentBuilderLayout, CLErrors, IAddContentBuilderLayout>(
     {
       mutationFn: addContentBuilderLayout,
-      onSuccess: (_data, variables) => {
+      onSuccess: (data, variables) => {
         queryClient.invalidateQueries({
           queryKey: contentBuilderKeys.item({
             contentBuildableId: variables.contentBuildableId,
+          }),
+        });
+
+        // Invalidate file attachments cache for this specific layout
+        queryClient.invalidateQueries({
+          queryKey: fileAttachmentsKeys.list({
+            attachable_id: data.data.id,
+            attachable_type: 'ContentBuilder::Layout',
           }),
         });
 

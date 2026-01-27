@@ -47,7 +47,7 @@ resource 'Phase insights' do
       ns_user5 = create(:user)
 
       # Ideas
-      create(:idea, phases: [phase], created_at: 25.days.ago, author: ns_user1, creation_phase_id: phase.id) # created & published before phase (not counted)
+      create(:idea, phases: [phase], created_at: 25.days.ago, submitted_at: 25.days.ago, author: ns_user1, creation_phase_id: phase.id) # created & published before phase (still counted)
 
       # created and submitted during native survey phase (in week before last)
       create(
@@ -61,7 +61,7 @@ resource 'Phase insights' do
       )
 
       create(:idea, phases: [phase], created_at: 5.days.ago, submitted_at: 5.days.ago, author: ns_user2, creation_phase_id: phase.id) # created during phase, and in last 7 days
-      create(:idea, phases: [phase], created_at: 2.days.ago, submitted_at: 2.days.ago, author: ns_user3, creation_phase_id: phase.id) # created & published after phase (not counted)
+      create(:idea, phases: [phase], created_at: 2.days.ago, submitted_at: 2.days.ago, author: ns_user3, creation_phase_id: phase.id, custom_field_values: { gender: 'male', birthyear: 1990 }) # created & published after phase (still counted), and in last 7 days
 
       # created during native survey phase (in week before last), not submitted (considered incomplete, affecting completion rate)
       create(
@@ -106,16 +106,16 @@ resource 'Phase insights' do
       metrics = json_response_body.dig(:data, :attributes, :metrics)
       expect(metrics).to eq({
         visitors: 3,
-        visitors_7_day_change: -50.0, # from 2 (in week before last) to 1 unique visitor (in last 7 days) = -50% decrease
-        participants: 2,
-        participants_7_day_change: -50.0, # from 2 (in week before last) to 1 unique participant (in last 7 days) = -50% decrease
-        participation_rate: 0.667,
-        participation_rate_7_day_change: 0.0, # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 1.0 = 0% change
+        visitors_7_day_percent_change: -50.0, # from 2 (in week before last) to 1 unique visitor (in last 7 days) = -50% decrease
+        participants: 3,
+        participants_7_day_percent_change: 100.0, # from 1 (in week before last) to 2 unique participants (in last 7 days) = 100% increase
+        participation_rate_as_percent: 100.0,
+        participation_rate_7_day_percent_change: 300.0, # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 1.0 = 0% change
         native_survey: {
-          surveys_submitted: 2,
-          surveys_submitted_7_day_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) = 0% change
-          completion_rate: 0.667,
-          completion_rate_7_day_change: 100.0 # completion_rate_last_7_days: 1.0, completion_rate_previous_7_days: 0.5 = (((1.0 - 0.5).to_f / 0.5) * 100.0).round(1)
+          surveys_submitted: 4,
+          surveys_submitted_7_day_percent_change: 100.0, # from 1 (in week before last) to 2 (in last 7 days) = +100% change
+          completion_rate_as_percent: 80.0, # 4 submitted surveys out of 5 ideas
+          completion_rate_7_day_percent_change: 100.0 # completion_rate_last_7_days: 1.0, completion_rate_previous_7_days: 0.5 = (((1.0 - 0.5).to_f / 0.5) * 100.0).round(1) = +100% change
         }
       })
 
@@ -123,15 +123,17 @@ resource 'Phase insights' do
       expect(participants_and_visitors_chart_data).to eq({
         resolution: 'day',
         timeseries: [
+          { participants: 1, visitors: 0, date_group: '2025-11-07' },
           { participants: 0, visitors: 1, date_group: '2025-11-17' },
-          { participants: 2, visitors: 2, date_group: '2025-11-20' },
-          { participants: 1, visitors: 1, date_group: '2025-11-27' }
+          { participants: 1, visitors: 2, date_group: '2025-11-20' },
+          { participants: 1, visitors: 1, date_group: '2025-11-27' },
+          { participants: 1, visitors: 0, date_group: '2025-11-30' }
         ]
       })
     end
 
     include_examples 'phase insights demographics',
-      gender_blank: 0,
-      birthyear_blank: 0
+      gender_blank: 1,
+      birthyear_blank: 1
   end
 end

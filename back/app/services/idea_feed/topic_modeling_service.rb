@@ -1,7 +1,7 @@
 module IdeaFeed
-  # Service used by the IdeaFeed ideation_method to automatically update the
-  # Topics. The service is intended to be run periodically (e.g. every hour) to
-  # keep the topics up to date with the latest ideas. It tries to strike a
+  # Service used by IdeaFeed (presentation_mode='feed') to automatically update
+  # the Topics. The service is intended to be run periodically (e.g. every hour)
+  # to keep the topics up to date with the latest ideas. It tries to strike a
   # balance between accuracy and stability of the clusters.
   class TopicModelingService
     def initialize(phase)
@@ -20,7 +20,12 @@ module IdeaFeed
 
       # Compare the new topics with the existing topics to find matches
       if old_topics.any?
-        mapping = run_map_old_to_new_topics(old_topics, new_topics)
+        # TO DO: Update the mapping to deal with subtopics as well. For now, we
+        # fake not mapping anything.
+        # mapping = run_map_old_to_new_topics(old_topics, new_topics)
+        mapping = old_topics.each_with_index.with_object({}) do |(_topic, i), hash|
+          hash["OLD-#{i + 1}"] = { 'new_topic_id' => nil }
+        end
 
         update_log = update_changed_topics!(mapping, old_topics, new_topics)
         creation_log = create_new_topics!(mapping, new_topics)
@@ -79,9 +84,36 @@ module IdeaFeed
               description: "A short description of the topic in #{locales.join(', ')}",
               properties: locales.index_with { |locale| { type: 'string', description: "The description in #{locale}" } },
               additionalProperties: false
+            },
+            icon: {
+              type: 'string',
+              description: 'An emoji representing the topic'
+            },
+            problems: {
+              type: 'array',
+              description: 'A list of mined problems or challenges that fall under this main topic.',
+              items: {
+                type: 'object',
+                properties: {
+                  title_multiloc: {
+                    type: 'object',
+                    description:
+                    "The title of the problem in #{locales.join(', ')}. A very short problem statement.",
+                    properties: locales.index_with { |locale| { type: 'string', description: "The title in #{locale}" } },
+                    additionalProperties: false
+                  },
+                  description_multiloc: {
+                    type: 'object',
+                    description: "A short description of the problem in #{locales.join(', ')}. An open question that invites further exploration, without leading the respondent.",
+                    properties: locales.index_with { |locale| { type: 'string', description: "The description in #{locale}" } },
+                    additionalProperties: false
+                  }
+                },
+                required: %w[title_multiloc description_multiloc]
+              }
             }
           },
-          required: %w[title_multiloc description_multiloc],
+          required: %w[title_multiloc description_multiloc icon],
           additionalProperties: false
         }
       }
@@ -115,7 +147,7 @@ module IdeaFeed
         description: 'A mapping from old topic IDs to new topic IDs',
         additionalProperties: false,
         properties: old_topics.each_with_object({}).with_index do |(_old_topic, hash), i|
-          hash["OLD-#{i}"] = {
+          hash["OLD-#{i + 1}"] = {
             type: 'object',
             additionalProperties: false,
             properties: {
@@ -129,7 +161,7 @@ module IdeaFeed
               adjusted_topic_description_multiloc: {
                 type: 'object',
                 description: "An adjusted description of the old topic, incorporating any new nuance from the new topic. Only make a change if it is really necessary. In languages #{locales.join(', ')}",
-                properties: locales.index_with { |locale| { type: 'string', description: "The title in #{locale}" } },
+                properties: locales.index_with { |locale| { type: 'string', description: "The description in #{locale}" } },
                 additionalProperties: false
               }
             },
@@ -180,15 +212,32 @@ module IdeaFeed
             topic = InputTopic.create!(
               project: @phase.project,
               title_multiloc: new_topic['title_multiloc'],
-              description_multiloc: new_topic['description_multiloc']
+              description_multiloc: new_topic['description_multiloc'],
+              icon: new_topic['icon']
             )
 
             SideFxInputTopicService.new.after_create(topic, nil)
             creation_log << {
               topic_id: topic.id,
               title_multiloc: new_topic['title_multiloc'],
-              description_multiloc: new_topic['description_multiloc']
+              description_multiloc: new_topic['description_multiloc'],
+              icon: new_topic['icon']
             }
+
+            (new_topic['problems'] || []).each do |subtopic|
+              subtopic_record = InputTopic.create!(
+                project: @phase.project,
+                parent: topic,
+                title_multiloc: subtopic['title_multiloc'],
+                description_multiloc: subtopic['description_multiloc']
+              )
+              SideFxInputTopicService.new.after_create(subtopic_record, nil)
+              creation_log << {
+                topic_id: subtopic_record.id,
+                title_multiloc: subtopic['title_multiloc'],
+                description_multiloc: subtopic['description_multiloc']
+              }
+            end
           end
         end
       creation_log

@@ -1,6 +1,6 @@
 import moment = require('moment');
 import { randomString, randomEmail } from '../../support/commands';
-import { updatePermission } from './utils';
+import { updatePermission } from '../../support/permitted_by_utils';
 
 describe('Native survey permitted by: users', () => {
   let customFieldId = '';
@@ -168,6 +168,46 @@ describe('Native survey permitted by: users', () => {
     cy.dataCy('e2e-after-submission').should('exist');
   };
 
+  const fieldsInForm = () => {
+    cy.visit(`/projects/${projectSlug}`);
+
+    // Click take survey button
+    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+
+    // Confirm we're in the survey now
+    cy.location('pathname').should(
+      'eq',
+      `/en/projects/${projectSlug}/surveys/new`
+    );
+
+    // Answer question and go to next page
+    cy.get('fieldset').first().find('input').first().check({ force: true });
+    cy.intercept('GET', '/web_api/v1/ideas/draft/**').as('getDraftIdea');
+    cy.dataCy('e2e-next-page').click();
+
+    // Wait for draft idea request to complete
+    cy.wait('@getDraftIdea');
+
+    // Confirm we are on demographic question page
+    cy.get('form').contains(fieldName);
+
+    // Fill in demographic question
+    answer = randomString(10);
+    cy.get('form').find('input').first().type(answer);
+
+    // Intercept submit request
+    cy.intercept('PATCH', '/web_api/v1/ideas/**').as('submitSurvey');
+
+    // Submit survey
+    cy.dataCy('e2e-submit-form').click();
+    cy.wait('@submitSurvey').then((interception) => {
+      ideaId = interception.response?.body.data.id;
+    });
+
+    // Now we should be on last page
+    cy.dataCy('e2e-after-submission').should('exist');
+  };
+
   const confirmSavedToProfile = () => {
     cy.intercept('GET', `/web_api/v1/users/me`).as('getMe');
     cy.visit('/');
@@ -234,46 +274,7 @@ describe('Native survey permitted by: users', () => {
       });
 
       it('works', () => {
-        cy.visit(`/projects/${projectSlug}`);
-
-        // Click take survey button
-        cy.get('.e2e-idea-button')
-          .first()
-          .find('button')
-          .click({ force: true });
-
-        // Confirm we're in the survey now
-        cy.location('pathname').should(
-          'eq',
-          `/en/projects/${projectSlug}/surveys/new`
-        );
-
-        // Answer question and go to next page
-        cy.get('fieldset').first().find('input').first().check({ force: true });
-        cy.intercept('GET', '/web_api/v1/ideas/draft/**').as('getDraftIdea');
-        cy.dataCy('e2e-next-page').click();
-
-        // Wait for draft idea request to complete
-        cy.wait('@getDraftIdea');
-
-        // Confirm we are on demographic question page
-        cy.get('form').contains(fieldName);
-
-        // Fill in demographic question
-        answer = randomString(10);
-        cy.get('form').find('input').first().type(answer);
-
-        // Intercept submit request
-        cy.intercept('PATCH', '/web_api/v1/ideas/**').as('submitSurvey');
-
-        // Submit survey
-        cy.dataCy('e2e-submit-form').click();
-        cy.wait('@submitSurvey').then((interception) => {
-          ideaId = interception.response?.body.data.id;
-        });
-
-        // Now we should be on last page
-        cy.dataCy('e2e-after-submission').should('exist');
+        fieldsInForm();
         confirmSavedToProfile();
         confirmSavedToIdea({ expectUserId: true });
       });
@@ -316,43 +317,7 @@ describe('Native survey permitted by: users', () => {
       });
 
       it('works', () => {
-        cy.visit(`/projects/${projectSlug}`);
-
-        // Click take survey button
-        cy.get('.e2e-idea-button')
-          .first()
-          .find('button')
-          .click({ force: true });
-
-        // Confirm we're in the survey now
-        cy.location('pathname').should(
-          'eq',
-          `/en/projects/${projectSlug}/surveys/new`
-        );
-
-        // Answer question and go to next page
-        cy.get('fieldset').first().find('input').first().check({ force: true });
-        cy.dataCy('e2e-next-page').click();
-
-        // Confirm we are on demographic question page
-        cy.get('form').contains(fieldName);
-
-        // Fill in demographic question
-        answer = randomString(10);
-        cy.get('form').find('input').first().type(answer);
-
-        // Intercept submit request
-        // (in this case it's a POST because we never created a draft idea)
-        cy.intercept('POST', '/web_api/v1/ideas').as('submitSurvey');
-
-        // Submit survey
-        cy.dataCy('e2e-submit-form').click();
-        cy.wait('@submitSurvey').then((interception) => {
-          ideaId = interception.response?.body.data.id;
-        });
-
-        // Now we should be on last page
-        cy.dataCy('e2e-after-submission').should('exist');
+        fieldsInForm();
         confirmSavedToProfile();
         confirmSavedToIdea({ expectUserId: false });
       });

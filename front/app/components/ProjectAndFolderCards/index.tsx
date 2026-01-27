@@ -123,6 +123,7 @@ const ProjectAndFolderCards = ({
       loadingInitial={isInitialLoading}
       hasMore={hasNextPage}
       loadingMore={isFetchingNextPage}
+      searchTerm={search}
       {...otherProps}
       onChangeTopics={setTopicsIds}
       onChangeAreas={setAreasIds}
