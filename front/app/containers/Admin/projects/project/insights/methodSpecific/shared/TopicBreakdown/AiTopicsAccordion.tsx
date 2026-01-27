@@ -11,7 +11,7 @@ import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 
-import BreakdownBar from '../BreakdownBar';
+import DistributionBar from '../DistributionBar';
 import messages from '../messages';
 
 import { TopicData } from './useTopicBreakdownData';
@@ -61,8 +61,10 @@ const AiTopicsAccordion = ({
             </Text>
           </Box>
           <Text m="0" fontSize="s" color="textSecondary" mr="8px">
-            {totalInputs} {formatMessage(messages.ideas)} · {aiTopics.length}{' '}
-            {formatMessage(messages.topics)}
+            {formatMessage(messages.aiTopicsSummary, {
+              inputsCount: totalInputs,
+              topicsCount: aiTopics.length,
+            })}
           </Text>
         </Box>
       }
@@ -90,7 +92,7 @@ const AiTopicsAccordion = ({
 
         {aiTopics.length > 0 ? (
           aiTopics.map((topic) => (
-            <BreakdownBar
+            <DistributionBar
               key={topic.id}
               name={topic.name}
               count={topic.count}

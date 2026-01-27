@@ -99,7 +99,6 @@ const TopicBreakdown = ({ phaseId }: Props) => {
           totalInputs={totalInputs}
           taggedInputs={taggedInputs}
           maxManualTopicCount={maxManualTopicCount}
-          variant="full"
         />
       </Box>
     </Box>
