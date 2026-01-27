@@ -9,12 +9,6 @@
 #  title_multiloc       :jsonb            not null
 #  description_multiloc :jsonb            not null
 #  icon                 :string
-#  ordering             :integer          default(0), not null
-#  parent_id            :uuid
-#  lft                  :integer
-#  rgt                  :integer
-#  depth                :integer          default(0)
-#  children_count       :integer          default(0)
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  parent_id            :uuid
@@ -25,11 +19,9 @@
 #
 # Indexes
 #
-#  index_input_topics_on_parent_id                (parent_id)
-#  index_input_topics_on_project_id               (project_id)
-#  index_input_topics_on_project_id_and_ordering  (project_id,ordering)
-#  index_input_topics_on_parent_id                (parent_id)
-#  index_input_topics_on_rgt                      (rgt)
+#  index_input_topics_on_parent_id   (parent_id)
+#  index_input_topics_on_project_id  (project_id)
+#  index_input_topics_on_rgt         (rgt)
 #
 # Foreign Keys
 #
