@@ -9,7 +9,7 @@ module Surveys
 
     def generate_results(logic_ids: [])
       results = super()
-      results[:results] = add_logic_to_results results[:results], logic_ids
+      results[:results] = add_logic_to_results results[:results], logic_ids if survey_has_logic?
       results
     end
 

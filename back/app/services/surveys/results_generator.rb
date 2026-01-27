@@ -243,7 +243,6 @@ module Surveys
       }
     end
 
-
     # Pre-filters inputs based on logic if there is any logic
     def inputs(field)
       return @all_inputs unless survey_has_logic?
@@ -292,8 +291,12 @@ module Surveys
     end
 
     def build_select_response(answers, field)
-      # NOTE: This is an additional query for selects so impacts performance slightly
-      question_response_count = inputs(field).where("custom_field_values->'#{field.key}' IS NOT NULL").count
+      # NOTE: This is an additional query needed for multi-selects only which impacts performance slightly
+      question_response_count = if field.supports_multiple_selection?
+        inputs(field).where("custom_field_values->'#{field.key}' IS NOT NULL").count
+      else
+        answers.reject { |a| a[:answer].nil? }.pluck(:count).sum
+      end
 
       # Sort answers correctly
       answers = answers.sort_by { |a| -a[:count] } unless field.supports_linear_scale?

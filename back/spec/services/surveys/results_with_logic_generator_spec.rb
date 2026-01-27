@@ -17,6 +17,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
     end
   end
 
+  # TODO: We need tests for the numbers where there is logic in place
   describe 'generate_results' do
     let(:generated_results) { generator.generate_results }
 

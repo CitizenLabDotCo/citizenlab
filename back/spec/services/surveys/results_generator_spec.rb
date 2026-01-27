@@ -814,14 +814,14 @@ RSpec.describe Surveys::ResultsGenerator do
       expect do
         generator = described_class.new survey_phase
         generator.generate_results
-      end.not_to exceed_query_limit(51)
+      end.not_to exceed_query_limit(46)
     end
 
     it 'does not run too many SQL queries when generating a single result' do
       expect do
         generator = described_class.new survey_phase
         generator.generate_result_for_field(select_field.id)
-      end.not_to exceed_query_limit(14)
+      end.not_to exceed_query_limit(13)
     end
   end
 end
