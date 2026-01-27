@@ -217,4 +217,21 @@ RSpec.describe ClaimTokenService do
       expect(ClaimToken.find_by(id: valid.id)).to be_present
     end
   end
+
+  describe '.sync_demographics!' do
+    it 'syncs user demographics' do
+      user = create(:user)
+      token = create(:claim_token, pending_claimer: user)
+      token.item.update!(custom_field_values: {
+        field: 'value',
+        u_gender: 'female'
+      })
+
+      described_class.sync_demographics!(user)
+
+      expect(user.reload.custom_field_values).to eq({
+        gender: 'female'
+      })
+    end
+  end
 end
