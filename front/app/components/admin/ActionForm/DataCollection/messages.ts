@@ -31,13 +31,13 @@ export default defineMessages({
       'For this option, registered users will not be able to retrieve their submitted response from their profile.',
   },
   demographicsOnlyWarning: {
-    id: 'app.components.admin.ActionForm.DataCollection.demographicsOnlyWarning',
+    id: 'app.components.admin.ActionForm.DataCollection.demographicsOnlyWarning2',
     defaultMessage:
-      'By selecting this option, you are choosing to not collect any personal identifiable information. You cannot recover this information later by changing this setting!',
+      'By selecting this option, you are choosing to not collect any personally identifiable information. You cannot recover this information later by changing this setting!',
   },
   anonymousWarning: {
-    id: 'app.components.admin.ActionForm.DataCollection.anonymousWarning',
+    id: 'app.components.admin.ActionForm.DataCollection.anonymousWarning2',
     defaultMessage:
-      'By selecting this option, you are choosing to not collect any personal identifiable information or demographic data. You cannot recover this information later by changing this setting!',
+      'By selecting this option, you are choosing to not collect any personally identifiable information or demographic data. You cannot recover this information later by changing this setting!',
   },
 });
