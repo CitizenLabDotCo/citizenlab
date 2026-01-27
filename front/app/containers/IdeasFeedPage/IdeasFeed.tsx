@@ -146,8 +146,20 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
   // Reorder ideas to put the initial idea first (if provided), otherwise keep original order
   const orderedIdeas = useMemo(() => {
     // If we need to fetch the initial idea and it's loaded, prepend it
+    // But only if no topic filter is active, or the idea has the selected topic
     if (initialIdeaId && !initialIdeaInList && initialIdeaData) {
-      return [initialIdeaData.data, ...flatIdeas];
+      const initialIdeaTopics =
+        initialIdeaData.data.relationships.input_topics?.data.map(
+          (topic) => topic.id
+        ) || [];
+      const initialIdeaHasSelectedTopic =
+        !topicId || initialIdeaTopics.includes(topicId);
+
+      if (initialIdeaHasSelectedTopic) {
+        return [initialIdeaData.data, ...flatIdeas];
+      }
+      // If the initial idea doesn't have the selected topic, don't add it
+      return flatIdeas;
     }
 
     if (flatIdeas.length === 0 || !initialIdeaId) return flatIdeas;
@@ -164,7 +176,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
     ];
 
     return [initialIdea, ...otherIdeas];
-  }, [flatIdeas, initialIdeaId, initialIdeaInList, initialIdeaData]);
+  }, [flatIdeas, initialIdeaId, initialIdeaInList, initialIdeaData, topicId]);
 
   // Extract topic IDs for each idea
   const ideaTopics = useMemo(() => {

@@ -64,6 +64,10 @@ const Sidebar = ({ projectId }: { projectId: string }) => {
     removeSearchParams(['idea_id']);
   };
 
+  const handleUnauthenticatedCommentClick = () => {
+    updateSearchParams({ initial_idea_id: selectedIdeaId });
+  };
+
   if (topicsLoading || !projectId) {
     return null;
   }
@@ -90,6 +94,7 @@ const Sidebar = ({ projectId }: { projectId: string }) => {
             selectedIdeaId={selectedIdeaId}
             selectedIdeaProjectId={selectedIdeaProjectId}
             handleCloseIdea={handleCloseIdea}
+            onUnauthenticatedCommentClick={handleUnauthenticatedCommentClick}
           />
         ) : (
           <TopicsContent
@@ -125,6 +130,7 @@ const Sidebar = ({ projectId }: { projectId: string }) => {
               ideaId={selectedIdeaId}
               projectId={selectedIdeaProjectId}
               compact={true}
+              onUnauthenticatedCommentClick={handleUnauthenticatedCommentClick}
             />
           </Box>
         </>

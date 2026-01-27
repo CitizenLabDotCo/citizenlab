@@ -55,6 +55,7 @@ interface Props {
   setRef?: (element: HTMLDivElement) => void;
   compact: boolean;
   className?: string;
+  onUnauthenticatedCommentClick?: () => void;
 }
 
 export const IdeasShow = ({
@@ -63,6 +64,7 @@ export const IdeasShow = ({
   compact,
   ideaId,
   setRef,
+  onUnauthenticatedCommentClick,
 }: Props) => {
   const { data: ideaImages, isLoading: isLoadingIdeaImages } =
     useIdeaImages(ideaId);
@@ -191,6 +193,7 @@ export const IdeasShow = ({
                   participationContext?.attributes.allow_anonymous_participation
                 }
                 postId={ideaId}
+                onUnauthenticatedCommentClick={onUnauthenticatedCommentClick}
               />
             </Suspense>
           </Box>
