@@ -19,7 +19,6 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     voting_max_votes_per_idea baskets_count voting_min_selected_options
     native_survey_title_multiloc native_survey_button_multiloc
     expire_days_limit reacting_threshold autoshare_results_enabled voting_filtering_enabled
-    ideation_method
   ].each do |attribute_name|
     attribute attribute_name, if: proc { |phase|
       phase.pmethod.supports_serializing?(attribute_name)

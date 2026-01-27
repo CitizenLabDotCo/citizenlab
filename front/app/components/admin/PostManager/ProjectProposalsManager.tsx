@@ -6,7 +6,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import { IIdeaQueryParameters, Sort } from 'api/ideas/types';
 import useIdeas from 'api/ideas/useIdeas';
-import useTopics from 'api/topics/useTopics';
+import useInputTopics from 'api/input_topics/useInputTopics';
 
 import Outlet from 'components/Outlet';
 import SearchInput from 'components/UI/SearchInput';
@@ -61,7 +61,7 @@ const ProjectProposalsManager = ({
   const { data: ideaStatuses } = useIdeaStatuses({
     queryParams: { participation_method: 'proposals' },
   });
-  const { data: proposalTopics } = useTopics();
+  const { data: proposalTopics } = useInputTopics(projectId);
   const [queryParameters, setQueryParameters] = useState<IIdeaQueryParameters>({
     sort: 'new',
     phase: phaseId,
@@ -85,7 +85,7 @@ const ProjectProposalsManager = ({
     });
   }, [visibleFilterMenus]);
 
-  if (!proposals || !proposalTopics) return null;
+  if (!proposals) return null;
 
   const resetSelection = () => {
     setSelection(new Set());
@@ -126,7 +126,11 @@ const ProjectProposalsManager = ({
   };
 
   const onChangeTopics = (topics: string[]) => {
-    setQueryParameters({ ...queryParameters, 'page[number]': 1, topics });
+    setQueryParameters({
+      ...queryParameters,
+      'page[number]': 1,
+      input_topics: topics,
+    });
   };
 
   const onChangeStatus = (ideaStatus: string) => {
@@ -218,8 +222,8 @@ const ProjectProposalsManager = ({
               activeFilterMenu={activeFilterMenu}
               visibleFilterMenus={visibleFilterMenus}
               onChangeActiveFilterMenu={handleChangeActiveFilterMenu}
-              topics={proposalTopics.data}
-              selectedTopics={queryParameters.topics}
+              topics={proposalTopics?.data ?? []}
+              selectedTopics={queryParameters.input_topics}
               onChangeTopicsFilter={onChangeTopics}
               onChangeStatusFilter={onChangeStatus}
               statuses={ideaStatuses?.data ?? []}

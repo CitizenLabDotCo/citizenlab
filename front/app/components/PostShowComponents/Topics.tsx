@@ -9,7 +9,7 @@ import {
 import { transparentize } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
-import useTopic from 'api/topics/useTopic';
+import useInputTopicById from 'api/input_topics/useInputTopicById';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -64,14 +64,14 @@ const Topics = memo(({ postTopicIds, className, showTitle }: Props) => {
 });
 
 const TopicComponent = ({ topicId }: { topicId: string }) => {
-  const { data: topic } = useTopic(topicId);
+  const { data: topic } = useInputTopicById(topicId);
   const localize = useLocalize();
 
   if (!topic) return null;
 
   return (
     <Topic className={`e2e-idea-topic`}>
-      {localize(topic.data.attributes.title_multiloc)}
+      {localize(topic.data.attributes.full_title_multiloc)}
     </Topic>
   );
 };

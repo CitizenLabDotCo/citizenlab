@@ -13,11 +13,14 @@ module Insights
       total_votes = online_votes + offline_votes
 
       options = if custom_field&.options&.any?
-        custom_field.options.map do |opt|
-          { "#{opt.key}": { id: opt.id, title_multiloc: opt.title_multiloc }, ordering: opt.ordering }
+        custom_field.options.index_by(&:key).transform_values do |opt|
+          {
+            title_multiloc: opt.title_multiloc,
+            ordering: opt.ordering
+          }
         end
       else
-        []
+        {}
       end
 
       {
@@ -125,27 +128,30 @@ module Insights
     end
 
     def participations_voting
-      @phase.baskets.includes(:user, :baskets_ideas).map do |basket|
-        basket_ideas = basket.baskets_ideas
-        total_votes = basket_ideas.to_a.sum(&:votes)
-        votes_per_idea = if @phase.voting_method == 'budgeting'
-          basket_ideas.to_h { |bi| [bi.idea_id, 1] }
-        else
-          basket_ideas.to_h { |bi| [bi.idea_id, bi.votes] }
-        end
+      @phase.baskets
+        .submitted
+        .includes(:user, :baskets_ideas, :ideas)
+        .map do |basket|
+          basket_ideas = basket.baskets_ideas
+          total_votes = basket_ideas.to_a.sum(&:votes)
+          votes_per_idea = if @phase.voting_method == 'budgeting'
+            basket_ideas.to_h { |bi| [bi.idea_id, 1] }
+          else
+            basket_ideas.to_h { |bi| [bi.idea_id, bi.votes] }
+          end
 
-        {
-          item_id: basket.id,
-          action: 'voting',
-          acted_at: basket.submitted_at,
-          classname: 'Basket',
-          participant_id: participant_id(basket.id, basket.user_id),
-          user_custom_field_values: basket&.user&.custom_field_values || {},
-          total_votes: total_votes,
-          ideas_count: basket.ideas.count,
-          votes_per_idea: votes_per_idea
-        }
-      end
+          {
+            item_id: basket.id,
+            action: 'voting',
+            acted_at: basket.submitted_at,
+            classname: 'Basket',
+            participant_id: participant_id(basket.id, basket.user_id),
+            user_custom_field_values: basket&.user&.custom_field_values || {},
+            total_votes: total_votes,
+            ideas_count: basket.ideas.count,
+            votes_per_idea: votes_per_idea
+          }
+        end
     end
 
     def phase_participation_method_metrics(participations)
@@ -156,32 +162,32 @@ module Insights
           voting_method: 'budgeting',
           associated_ideas: associated_published_ideas_count,
           online_picks: participations[:voting].sum { |p| p[:ideas_count] },
-          online_picks_7_day_change: online_picks_7_day_change(participations),
+          online_picks_7_day_percent_change: online_picks_7_day_percent_change(participations),
           offline_picks: @phase.manual_votes_count,
           voters: participations[:voting].pluck(:participant_id).uniq.count,
-          voters_7_day_change: common_7_day_changes[:voters_7_day_change],
+          voters_7_day_percent_change: common_7_day_changes[:voters_7_day_percent_change],
           comments_posted: participations[:commenting_idea].count,
-          comments_posted_7_day_change: common_7_day_changes[:comments_posted_7_day_change]
+          comments_posted_7_day_percent_change: common_7_day_changes[:comments_posted_7_day_percent_change]
         }
       else
         {
           voting_method: @phase.voting_method,
           associated_ideas: associated_published_ideas_count,
           online_votes: participations[:voting].sum { |p| p[:total_votes] },
-          online_votes_7_day_change: online_votes_7_day_change(participations),
+          online_votes_7_day_percent_change: online_votes_7_day_percent_change(participations),
           offline_votes: @phase.manual_votes_count,
           voters: participations[:voting].pluck(:participant_id).uniq.count,
-          voters_7_day_change: common_7_day_changes[:voters_7_day_change],
+          voters_7_day_percent_change: common_7_day_changes[:voters_7_day_percent_change],
           comments_posted: participations[:commenting_idea].count,
-          comments_posted_7_day_change: common_7_day_changes[:comments_posted_7_day_change]
+          comments_posted_7_day_percent_change: common_7_day_changes[:comments_posted_7_day_percent_change]
         }
       end
     end
 
     def common_7_day_changes(participations)
       result = {
-        voters_7_day_change: nil,
-        comments_posted_7_day_change: nil
+        voters_7_day_percent_change: nil,
+        comments_posted_7_day_percent_change: nil
       }
 
       return result unless phase_has_run_more_than_14_days?
@@ -198,13 +204,13 @@ module Insights
         p[:acted_at] >= 14.days.ago && p[:acted_at] < 7.days.ago
       end
 
-      result[:voters_7_day_change] = percentage_change(voters_previous_7_days, voters_last_7_days)
-      result[:comments_posted_7_day_change] = percentage_change(comments_previous_7_days, comments_last_7_days)
+      result[:voters_7_day_percent_change] = percentage_change(voters_previous_7_days, voters_last_7_days)
+      result[:comments_posted_7_day_percent_change] = percentage_change(comments_previous_7_days, comments_last_7_days)
 
       result
     end
 
-    def online_picks_7_day_change(participations)
+    def online_picks_7_day_percent_change(participations)
       return nil unless phase_has_run_more_than_14_days?
 
       voting_participations = participations[:voting]
@@ -219,7 +225,7 @@ module Insights
       percentage_change(online_picks_previous_7_days, online_picks_last_7_days)
     end
 
-    def online_votes_7_day_change(participations)
+    def online_votes_7_day_percent_change(participations)
       return nil unless phase_has_run_more_than_14_days?
 
       voting_participations = participations[:voting]

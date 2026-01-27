@@ -58,7 +58,9 @@ const CustomPageProjectsAndEvents = ({
 
   // There will be either topic or area ids if this component renders.
   // To enable it, the page needs either a topic or area associated with it.
-  const topicIds = page.relationships.topics.data.map((topic) => topic.id);
+  const topicIds = page.relationships.global_topics.data.map(
+    (topic) => topic.id
+  );
   const areaIds = page.relationships.areas.data.map((area) => area.id);
 
   const {
@@ -69,7 +71,7 @@ const CustomPageProjectsAndEvents = ({
     isFetchingNextPage,
   } = useAdminPublications({
     pageSize: 6,
-    topicIds,
+    globalTopicIds: topicIds,
     areaIds,
     publicationStatusFilter: getPublicationStatuses(currentTab),
     rootLevelOnly: false,
@@ -130,12 +132,14 @@ const CustomPageProjectsAndEvents = ({
 const CustomPageProjectsAndEventsWrapper = ({ page }: Props) => {
   // There will be either topic or area ids if this component renders.
   // To enable it, the page needs either a topic or area associated with it.
-  const topicIds = page.relationships.topics.data.map((topic) => topic.id);
+  const topicIds = page.relationships.global_topics.data.map(
+    (topic) => topic.id
+  );
   const areaIds = page.relationships.areas.data.map((area) => area.id);
 
   const { data: statusCountsWithoutFilters } = useAdminPublicationsStatusCounts(
     {
-      topicIds,
+      globalTopicIds: topicIds,
       areaIds,
       publicationStatusFilter: PUBLICATION_STATUSES,
       rootLevelOnly: false,

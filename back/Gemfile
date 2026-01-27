@@ -142,8 +142,7 @@ gem 'faraday', '~>  2.14.0'
 gem 'faraday-multipart'
 
 # AI
-# Fork to support global endpoints with Vertex AI. Can be removed when https://github.com/crmne/ruby_llm/pull/553 is merged and released.
-gem 'ruby_llm', '~> 1.9.1', github: 'NielsKSchjoedt/ruby_llm', branch: 'main'
+gem 'ruby_llm', '~> 1.11.0'
 
 # Also required here to be able to initialize Mailgun in
 # e.g. production.rb, which would otherwise result in an

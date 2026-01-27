@@ -91,34 +91,34 @@ module SmartGroups::Rules
 
       case predicate
       when 'in'
-        participants = participants_service.topics_participants(Topic.where(id: value))
+        participants = participants_service.input_topics_participants(InputTopic.where(id: value))
         users_scope.where(id: participants)
       when 'not_in'
-        participants = participants_service.topics_participants(Topic.where(id: value))
+        participants = participants_service.input_topics_participants(InputTopic.where(id: value))
         users_scope.where.not(id: participants)
       when 'posted_in'
-        participants = participants_service.topics_participants(Topic.where(id: value), actions: [:posting])
+        participants = participants_service.input_topics_participants(InputTopic.where(id: value), actions: [:posting])
         users_scope.where(id: participants)
       when 'not_posted_in'
-        participants = participants_service.topics_participants(Topic.where(id: value), actions: [:posting])
+        participants = participants_service.input_topics_participants(InputTopic.where(id: value), actions: [:posting])
         users_scope.where.not(id: participants)
       when 'commented_in'
-        participants = participants_service.topics_participants(Topic.where(id: value), actions: [:commenting])
+        participants = participants_service.input_topics_participants(InputTopic.where(id: value), actions: [:commenting])
         users_scope.where(id: participants)
       when 'not_commented_in'
-        participants = participants_service.topics_participants(Topic.where(id: value), actions: [:commenting])
+        participants = participants_service.input_topics_participants(InputTopic.where(id: value), actions: [:commenting])
         users_scope.where.not(id: participants)
       when 'reacted_idea_in'
-        participants = participants_service.topics_participants(Topic.where(id: value), actions: [:idea_reacting])
+        participants = participants_service.input_topics_participants(InputTopic.where(id: value), actions: [:idea_reacting])
         users_scope.where(id: participants)
       when 'not_reacted_idea_in'
-        participants = participants_service.topics_participants(Topic.where(id: value), actions: [:idea_reacting])
+        participants = participants_service.input_topics_participants(InputTopic.where(id: value), actions: [:idea_reacting])
         users_scope.where.not(id: participants)
       when 'reacted_comment_in'
-        participants = participants_service.topics_participants(Topic.where(id: value), actions: [:comment_reacting])
+        participants = participants_service.input_topics_participants(InputTopic.where(id: value), actions: [:comment_reacting])
         users_scope.where(id: participants)
       when 'not_reacted_comment_in'
-        participants = participants_service.topics_participants(Topic.where(id: value), actions: [:comment_reacting])
+        participants = participants_service.input_topics_participants(InputTopic.where(id: value), actions: [:comment_reacting])
         users_scope.where.not(id: participants)
       else
         raise "Unsupported predicate #{predicate}"
@@ -128,10 +128,10 @@ module SmartGroups::Rules
     def description_value(locale)
       if multivalue_predicate?
         value.map do |v|
-          Topic.find(v).title_multiloc[locale]
+          InputTopic.find(v).title_multiloc[locale]
         end.join ', '
       else
-        Topic.find(value).title_multiloc[locale]
+        InputTopic.find(value).title_multiloc[locale]
       end
     end
 
@@ -139,9 +139,9 @@ module SmartGroups::Rules
 
     def value_in_topics
       if multivalue_predicate?
-        errors.add(:value, :has_invalid_topic) unless (value - Topic.ids).empty?
+        errors.add(:value, :has_invalid_topic) unless (value - InputTopic.ids).empty?
       else
-        errors.add(:value, :has_invalid_topic) unless Topic.ids.include?(value)
+        errors.add(:value, :has_invalid_topic) unless InputTopic.ids.include?(value)
       end
     end
   end

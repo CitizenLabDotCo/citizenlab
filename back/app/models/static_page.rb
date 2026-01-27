@@ -42,7 +42,7 @@ class StaticPage < ApplicationRecord
 
   slug from: proc { |page| page.title_multiloc&.values&.find(&:present?) }, except: RESERVED_SLUGS
 
-  enum :projects_filter_type, { no_filter: 'no_filter', areas: 'areas', topics: 'topics' }
+  enum :projects_filter_type, { no_filter: 'no_filter', areas: 'areas', global_topics: 'topics' }
 
   has_many_text_images from: :top_info_section_multiloc, as: :top_info_section_text_images
   has_many_text_images from: :bottom_info_section_multiloc, as: :bottom_info_section_text_images
@@ -51,8 +51,8 @@ class StaticPage < ApplicationRecord
 
   has_one :nav_bar_item, dependent: :destroy
   has_many :static_page_files, -> { order(:ordering) }, dependent: :destroy
-  has_many :static_pages_topics, dependent: :destroy
-  has_many :topics, -> { order(:ordering) }, through: :static_pages_topics
+  has_many :static_pages_global_topics, dependent: :destroy
+  has_many :global_topics, -> { order(:ordering) }, through: :static_pages_global_topics
 
   has_many :areas_static_pages, dependent: :destroy
   has_many :areas, through: :areas_static_pages
@@ -104,18 +104,18 @@ class StaticPage < ApplicationRecord
       # tenant template, AreasStaticPage records are created after StaticPage records
       # because of their `belongs_to :static_page` association that references StaticPage
       # records.)
-      projects_filter_type == self.class.projects_filter_types.fetch(:areas) && !Current.loading_tenant_template
+      areas? && !Current.loading_tenant_template
     end
   )
   validates(
-    :topics, length: { minimum: 1 },
+    :global_topics, length: { minimum: 1 },
     if: lambda do
       # The validation is skipped when loading a tenant template because it assumes the
-      # existence of StaticPagesTopics records that are not created yet. (When loading a
-      # tenant template, StaticPagesTopics records are created after StaticPage records
+      # existence of StaticPagesGlobalTopics records that are not created yet. (When loading a
+      # tenant template, StaticPagesGlobalTopics records are created after StaticPage records
       # because of their `belongs_to :static_page` association that references StaticPage
       # records.)
-      projects_filter_type == self.class.projects_filter_types.fetch(:topics) && !Current.loading_tenant_template
+      global_topics? && !Current.loading_tenant_template
     end
   )
 
@@ -123,8 +123,7 @@ class StaticPage < ApplicationRecord
 
   class << self
     def associations_project_filter_types
-      no_filter = projects_filter_types.fetch(:no_filter)
-      projects_filter_types.except(no_filter)
+      projects_filter_types.except(:no_filter)
     end
   end
 
@@ -135,10 +134,10 @@ class StaticPage < ApplicationRecord
   def filter_projects(projects_scope)
     options =
       case projects_filter_type
-      when self.class.projects_filter_types.fetch(:areas)
+      when 'areas'
         { areas: areas_static_pages.pluck(:area_id) }
-      when self.class.projects_filter_types.fetch(:topics)
-        { topics: static_pages_topics.pluck(:topic_id) }
+      when 'global_topics'
+        { global_topics: static_pages_global_topics.pluck(:global_topic_id) }
       else
         {}
       end
@@ -196,7 +195,10 @@ class StaticPage < ApplicationRecord
   end
 
   def destroy_obsolete_associations
-    (self.class.associations_project_filter_types.values - [projects_filter_type]).each do |association|
+    # Get enum keys (which match association names like :areas, :global_topics) except for the current filter type
+    # projects_filter_type returns the key as a string, and .keys also returns strings
+    current_key = projects_filter_type
+    (self.class.associations_project_filter_types.keys - [current_key]).each do |association|
       public_send(association).destroy_all
     end
   end

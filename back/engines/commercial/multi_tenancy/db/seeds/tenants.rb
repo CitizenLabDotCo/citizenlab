@@ -504,10 +504,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            proposals_participation_method: {
-              enabled: true,
-              allowed: true
-            },
             input_cosponsorship: {
               enabled: true,
               allowed: true
@@ -551,6 +547,10 @@ module MultiTenancy
               allowed: true
             },
             idea_feed: {
+              enabled: true,
+              allowed: true
+            },
+            nested_input_topics: {
               enabled: true,
               allowed: true
             },

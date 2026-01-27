@@ -40,7 +40,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     @projects = @projects.preload(
       :project_images,
       :areas,
-      :topics,
+      :global_topics,
       :content_builder_layouts, # Defined in ContentBuilder engine
       phases: [:report, { permissions: [:groups] }],
       admin_publication: [:children]
@@ -151,7 +151,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = ProjectsListedScopeService.new.remove_unlisted_projects(projects)
     projects = projects
       .not_draft
-      .with_some_topics(params[:topics])
+      .with_some_global_topics(params[:topics])
       .order(created_at: :desc)
 
     @projects = paginate projects
@@ -274,7 +274,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def update
     params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
-    params[:project][:topic_ids] ||= [] if params[:project].key?(:topic_ids)
+    params[:project][:global_topic_ids] ||= [] if params[:project].key?(:global_topic_ids)
 
     project_params = permitted_attributes(@project)
 
@@ -422,7 +422,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def check_publication_inconsistencies!
     # This code is meant to be temporary to find the cause of the disappearing admin publication bugs
-    Project.all.each do |project|
+    Project.includes(:admin_publication).each do |project|
       next if project.valid?
 
       errors = project&.errors&.details

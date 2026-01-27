@@ -111,6 +111,21 @@ resource 'Confirmations' do
 
       include_examples 'confirmation code validation'
 
+      example 'transfers anonymous exposures to the user upon successful confirmation', document: false do
+        phase = create(:phase)
+        visitor_hash = VisitorHashService.new.generate_for_visitor('192.168.1.1', 'Test Browser')
+        anonymous_exposure = create(:idea_exposure, :anonymous, visitor_hash: visitor_hash, phase: phase)
+
+        header 'X-Forwarded-For', '192.168.1.1'
+        header 'User-Agent', 'Test Browser'
+        do_request(confirmation: { email: user.email, code: user.email_confirmation_code })
+
+        assert_status 200
+        anonymous_exposure.reload
+        expect(anonymous_exposure.user_id).to eq user.id
+        expect(anonymous_exposure.visitor_hash).to be_nil
+      end
+
       example 'does not allow confirming a user with password that is already confirmed' do
         user_with_password = create(:user_with_confirmation, password: 'password123')
         user_with_password.confirm

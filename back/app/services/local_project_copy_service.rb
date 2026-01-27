@@ -20,8 +20,7 @@ class LocalProjectCopyService < ProjectCopyService
     copy_project_visibility_permission_groups(source_project, copied_project)
     copy_project_and_phases_actions_groups_permissions(source_project, copied_project)
 
-    source_project.projects_allowed_input_topics.each { |p_a_i_t| p_a_i_t.dup.update!(project_id: copied_project.id) }
-    source_project.projects_topics.each { |projects_topic| projects_topic.dup.update!(project_id: copied_project.id) }
+    source_project.projects_global_topics.each { |projects_global_topic| projects_global_topic.dup.update!(project_id: copied_project.id) }
     source_project.areas_projects.each { |areas_project| areas_project.dup.update!(project_id: copied_project.id) }
 
     copied_project

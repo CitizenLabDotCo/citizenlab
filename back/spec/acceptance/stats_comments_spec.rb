@@ -24,7 +24,7 @@ def group_filter_parameter(s)
 end
 
 def topic_filter_parameter(s)
-  s.parameter :topic, 'Topic ID. Only count comments on ideas that have the given topic assigned', required: false
+  s.parameter :input_topic, 'Topic ID. Only count comments on ideas that have the given topic assigned', required: false
 end
 
 resource 'Stats - Comments' do
@@ -102,6 +102,7 @@ resource 'Stats - Comments' do
     time_boundary_parameters self
     project_filter_parameter self
     group_filter_parameter self
+    parameter :limit, 'Limit the number of topics returned to the given number, ordered by comment count descending', required: false
 
     context 'when admin' do
       before { admin_header_token }
@@ -119,13 +120,13 @@ resource 'Stats - Comments' do
 
         before do
           travel_to start_at + 1.day do
-            @topic1 = create(:topic)
-            @topic2 = create(:topic)
-            @topic3 = create(:topic)
-            project = create(:project, allowed_input_topics: [@topic1, @topic2, @topic3])
-            idea1 = create(:idea, topics: [@topic1], project: project)
-            idea2 = create(:idea, topics: [@topic2], project: project)
-            idea3 = create(:idea, topics: [@topic1, @topic2], project: project)
+            project = create(:project)
+            @input_topic1 = create(:input_topic, project: project)
+            @input_topic2 = create(:input_topic, project: project)
+            @input_topic3 = create(:input_topic, project: project)
+            idea1 = create(:idea, input_topics: [@input_topic1], project: project)
+            idea2 = create(:idea, input_topics: [@input_topic2], project: project)
+            idea3 = create(:idea, input_topics: [@input_topic1, @input_topic2], project: project)
             create(:idea)
             create(:comment, idea: idea1)
             create(:comment, idea: idea1)
@@ -141,10 +142,10 @@ resource 'Stats - Comments' do
           expect(json_response.dig(:data, :type)).to eq 'comments_by_topic'
           json_attributes = json_response.dig(:data, :attributes)
           expect(json_attributes[:series][:comments].stringify_keys).to match({
-            @topic1.id => 3,
-            @topic2.id => 2
+            @input_topic1.id => 3,
+            @input_topic2.id => 2
           })
-          expect(json_attributes[:topics].keys.map(&:to_s)).to contain_exactly(@topic1.id, @topic2.id, @topic3.id)
+          expect(json_attributes[:topics].keys.map(&:to_s)).to contain_exactly(@input_topic1.id, @input_topic2.id)
         end
       end
 
@@ -194,6 +195,62 @@ resource 'Stats - Comments' do
           expect(json_attributes[:series][:comments].values.sum).to eq 2
         end
       end
+
+      describe 'with limit' do
+        let(:start_at) { timezone.at(now - 1.month).beginning_of_month }
+        let(:end_at) { timezone.at(now - 1.month).end_of_month }
+        let(:limit) { 2 }
+
+        before do
+          travel_to start_at + 5.days do
+            project = create(:project)
+            @input_topic1 = create(:input_topic, project: project)
+            @input_topic2 = create(:input_topic, project: project)
+            @input_topic3 = create(:input_topic, project: project)
+            idea1 = create(:idea, input_topics: [@input_topic1], project: project)
+            idea2 = create(:idea, input_topics: [@input_topic2], project: project)
+            idea3 = create(:idea, input_topics: [@input_topic3], project: project)
+            create_list(:comment, 3, idea: idea1)
+            create_list(:comment, 2, idea: idea2)
+            create(:comment, idea: idea3)
+          end
+        end
+
+        example_request 'Comments by topic with a limit' do
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :type)).to eq 'comments_by_topic'
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:comments].length).to eq 2
+          # Expect descending values
+          expect(json_attributes[:series][:comments].values).to eq json_attributes[:series][:comments].values.sort.reverse
+        end
+      end
+
+      describe 'with subtopics' do
+        let(:start_at) { timezone.at(now - 1.month).beginning_of_month }
+        let(:end_at) { timezone.at(now - 1.month).end_of_month }
+
+        before do
+          travel_to start_at + 5.days do
+            project = create(:project)
+            @parent_topic = create(:input_topic, project: project)
+            @child_topic = create(:input_topic, project: project, parent: @parent_topic)
+            idea_parent = create(:idea, input_topics: [@parent_topic], project: project)
+            idea_child = create(:idea, input_topics: [@child_topic], project: project)
+            create(:comment, idea: idea_parent)
+            create(:comment, idea: idea_child)
+          end
+        end
+
+        example 'Comments by topic aggregates child counts into parent' do
+          do_request
+          assert_status 200
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:comments][@parent_topic.id.to_sym]).to eq 2
+          expect(json_attributes[:series][:comments][@child_topic.id.to_sym]).to eq 1
+        end
+      end
     end
 
     include_examples 'unauthorized requests'
@@ -220,13 +277,13 @@ resource 'Stats - Comments' do
 
         before do
           travel_to start_at + 1.day do
-            @topic1 = create(:topic)
-            @topic2 = create(:topic)
-            topic3 = create(:topic)
-            project = create(:project, allowed_input_topics: [@topic1, @topic2, topic3])
-            idea1 = create(:idea, topics: [@topic1], project: project)
-            idea2 = create(:idea, topics: [@topic2], project: project)
-            idea3 = create(:idea, topics: [@topic1, @topic2], project: project)
+            project = create(:project)
+            @input_topic1 = create(:input_topic, project: project)
+            @input_topic2 = create(:input_topic, project: project)
+            _input_topic3 = create(:input_topic, project: project)
+            idea1 = create(:idea, input_topics: [@input_topic1], project: project)
+            idea2 = create(:idea, input_topics: [@input_topic2], project: project)
+            idea3 = create(:idea, input_topics: [@input_topic1, @input_topic2], project: project)
             create(:idea)
             create(:comment, idea: idea1)
             create(:comment, idea: idea1)
@@ -243,7 +300,7 @@ resource 'Stats - Comments' do
 
           topic_ids_col = worksheet.map { |col| col.cells[1].value }
           _header, *topic_ids = topic_ids_col
-          expect(topic_ids).to contain_exactly(@topic1.id, @topic2.id)
+          expect(topic_ids).to contain_exactly(@input_topic1.id, @input_topic2.id)
 
           amount_col = worksheet.map { |col| col.cells[2].value }
           _header, *amounts = amount_col
@@ -345,15 +402,15 @@ resource 'Stats - Comments' do
       end
 
       describe 'filtered by topic' do
-        let(:topic) { @topic.id }
+        let(:input_topic) { @input_topic.id }
         let(:start_at) { timezone.at(now - 1.month).beginning_of_month }
         let(:end_at) { timezone.at(now - 1.month).end_of_month }
 
         before do
           travel_to start_at + 17.days do
-            @topic = create(:topic)
-            project = create(:project, allowed_input_topics: [@topic])
-            idea1 = create(:idea, topics: [@topic], project: project)
+            project = create(:project)
+            @input_topic = create(:input_topic, project: project)
+            idea1 = create(:idea, input_topics: [@input_topic], project: project)
             idea2 = create(:idea_with_topics)
             create(:comment, idea: idea1)
             create(:comment, idea: idea2)
@@ -364,6 +421,29 @@ resource 'Stats - Comments' do
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :type)).to eq 'comments_by_project'
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:comments].values.sum).to eq 1
+        end
+      end
+
+      describe 'filtered by parent topic includes child topic ideas' do
+        let(:start_at) { timezone.at(now - 1.month).beginning_of_month }
+        let(:input_topic) { @parent_topic.id }
+        let(:end_at) { timezone.at(now - 1.month).end_of_month }
+
+        before do
+          travel_to start_at + 17.days do
+            project = create(:project)
+            @parent_topic = create(:input_topic, project: project)
+            @child_topic = create(:input_topic, project: project, parent: @parent_topic)
+            idea_child = create(:idea, input_topics: [@child_topic], project: project)
+            create(:comment, idea: idea_child)
+          end
+        end
+
+        example 'Comments by project filtered by parent topic includes child topic ideas' do
+          do_request
+          assert_status 200
           json_attributes = json_response.dig(:data, :attributes)
           expect(json_attributes[:series][:comments].values.sum).to eq 1
         end
@@ -443,15 +523,15 @@ resource 'Stats - Comments' do
       end
 
       describe 'filtered by topic' do
-        let(:topic) { @topic.id }
+        let(:input_topic) { @input_topic.id }
         let(:start_at) { timezone.at(now - 1.month).beginning_of_month }
         let(:end_at) { timezone.at(now - 1.month).end_of_month }
 
         before do
           travel_to start_at + 17.days do
-            @topic = create(:topic)
-            project = create(:project, allowed_input_topics: [@topic])
-            idea1 = create(:idea, topics: [@topic], project: project)
+            project = create(:project)
+            @input_topic = create(:input_topic, project: project)
+            idea1 = create(:idea, input_topics: [@input_topic], project: project)
             idea2 = create(:idea_with_topics)
             create(:comment, idea: idea1)
             create(:comment, idea: idea2)

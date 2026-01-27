@@ -10,11 +10,16 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
-import HorizontalBarRow, { HorizontalBarRowData } from './HorizontalBarRow';
+import DistributionBar from './DistributionBar';
 import messages from './messages';
 
-interface StatusBarData extends HorizontalBarRowData {
+interface StatusBarData {
+  id: string;
+  name: string;
+  count: number;
+  color: string;
   ordering: number;
+  percentage: number;
 }
 
 const StatusCard = ({ children }: { children: ReactNode }) => (
@@ -51,18 +56,28 @@ const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
 
     const countsByStatusId = filterCounts.data.attributes.idea_status_id;
 
+    const totalCount = Object.values(countsByStatusId).reduce(
+      (sum, count) => sum + count,
+      0
+    );
+
     return statuses.data
       .filter((status) => {
         const count = countsByStatusId[status.id] || 0;
         return count > 0;
       })
-      .map((status) => ({
-        id: status.id,
-        title: localize(status.attributes.title_multiloc),
-        count: countsByStatusId[status.id] || 0,
-        color: status.attributes.color,
-        ordering: status.attributes.ordering,
-      }))
+      .map((status) => {
+        const count = countsByStatusId[status.id] || 0;
+        return {
+          id: status.id,
+          name: localize(status.attributes.title_multiloc),
+          count,
+          color: status.attributes.color,
+          ordering: status.attributes.ordering,
+          percentage:
+            totalCount > 0 ? Math.round((count / totalCount) * 100) : 0,
+        };
+      })
       .sort((a, b) => a.ordering - b.ordering);
   }, [filterCounts, statuses, localize]);
 
@@ -107,9 +122,17 @@ const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
       <Text m="0" mb="24px" fontWeight="semi-bold" fontSize="m" color="primary">
         {formatMessage(messages.statusBreakdown)}
       </Text>
-      <Box display="flex" flexDirection="column" gap="16px">
+      <Box display="flex" flexDirection="column" gap="4px">
         {statusData.map((status) => (
-          <HorizontalBarRow key={status.id} data={status} maxCount={maxCount} />
+          <DistributionBar
+            key={status.id}
+            name={status.name}
+            count={status.count}
+            percentage={status.percentage}
+            maxCount={maxCount}
+            barColor={status.color}
+            showBadge={false}
+          />
         ))}
       </Box>
     </StatusCard>
