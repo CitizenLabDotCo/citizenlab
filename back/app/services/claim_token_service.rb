@@ -60,6 +60,8 @@ class ClaimTokenService
 
     # Gets the lastly created item. If this item
     # contains demographic data: we copy it into the user's profile.
+    # @param user [User] the user to claim items for
+    # @param items [Array<ClaimableParticipation>, nil] claimed items, or nil if pending confirmation
     def sync_demographics!(user, items)
       lastly_created_item = items.filter(&:present?).max_by(&:created_at)
       return unless lastly_created_item
