@@ -1417,7 +1417,6 @@
   "app.containers.Admin.projects.project.insights.shared.aiTopicDistribution": "Tekoälyn aiheiden jakauma",
   "app.containers.Admin.projects.project.insights.shared.aiTopicsSummary": "{inputsCount} syötteet · {topicsCount} aiheet",
   "app.containers.Admin.projects.project.insights.shared.manualTagsByParticipants": "Osallistujien manuaaliset tunnisteet",
-  "app.containers.Admin.projects.project.insights.shared.manualTagsCoverage1": "{tagged} / {total} syötettä tägättiin manuaalisesti osallistujien toimesta ({percentage}% kattavuus)",
   "app.containers.Admin.projects.project.insights.shared.manualTagsSummary": "{taggedCount} syötteet · {topicsCount} aiheet",
   "app.containers.Admin.projects.project.insights.shared.noAiTopics": "Ei vielä luotuja tekoälyaiheita",
   "app.containers.Admin.projects.project.insights.shared.noManualTags": "Ei vielä manuaalisesti määritettyjä tageja",
