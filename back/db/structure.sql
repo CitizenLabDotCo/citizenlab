@@ -1777,7 +1777,6 @@ CREATE TABLE public.phases (
     native_survey_button_multiloc jsonb DEFAULT '{}'::jsonb,
     expire_days_limit integer,
     reacting_threshold integer,
-    prescreening_enabled boolean DEFAULT false NOT NULL,
     autoshare_results_enabled boolean DEFAULT true NOT NULL,
     manual_votes_count integer DEFAULT 0 NOT NULL,
     manual_voters_amount integer,
@@ -8485,6 +8484,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260127092840'),
 ('20260126154950'),
 ('20260126104246'),
 ('20260120123325'),
