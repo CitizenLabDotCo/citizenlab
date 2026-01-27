@@ -74,7 +74,7 @@ const ProjectHeader = ({ projectId }: Props) => {
   const { listed } = project.data.attributes;
 
   return (
-    <NavigationTabs position="static" paddingLeft="24px">
+    <NavigationTabs position="relative" paddingLeft="24px" zIndex={1001}>
       <Box
         display="flex"
         flexDirection="column"
