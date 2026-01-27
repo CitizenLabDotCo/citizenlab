@@ -42,7 +42,7 @@ const AiUpsellBanner = () => {
                   icon="arrow-right"
                   iconPos="right"
                 >
-                  {formatMessage(messages.upgradeToPro)}
+                  {formatMessage(messages.upgradeYourPlan)}
                 </Button>
               </a>
             </Box>
