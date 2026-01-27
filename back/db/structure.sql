@@ -2392,7 +2392,6 @@ CREATE TABLE public.default_input_topics (
     title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     description_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     icon character varying,
-    ordering integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     parent_id uuid,
