@@ -18,7 +18,7 @@ const IdeationInsights = ({
     return (
       <Box mt="16px" display="flex" flexDirection="column" gap="24px">
         <AiSummary phaseId={phaseId} isPdfExport />
-        <TopicBreakdown phaseId={phaseId} />
+        <TopicBreakdown phaseId={phaseId} isPdfExport />
         <MostLikedIdeas phaseId={phaseId} />
         <StatusBreakdown phaseId={phaseId} participationMethod="ideation" />
       </Box>
@@ -32,7 +32,7 @@ const IdeationInsights = ({
           <AiSummary phaseId={phaseId} />
         </Box>
         <Box w="100%">
-          <TopicBreakdown phaseId={phaseId} />
+          <TopicBreakdown phaseId={phaseId} isPdfExport={false} />
         </Box>
       </Box>
       <Box display="flex" gap="16px" w="100%" flexDirection="row">

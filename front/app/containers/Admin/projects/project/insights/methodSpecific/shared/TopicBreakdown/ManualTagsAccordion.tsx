@@ -31,6 +31,7 @@ interface Props {
   totalInputs: number;
   taggedInputs: number;
   maxManualTopicCount: number;
+  isPdfExport?: boolean;
 }
 
 const ManualTagsAccordion = ({
@@ -38,6 +39,7 @@ const ManualTagsAccordion = ({
   totalInputs,
   taggedInputs,
   maxManualTopicCount,
+  isPdfExport = false,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -48,7 +50,7 @@ const ManualTagsAccordion = ({
 
   return (
     <StyledAccordion
-      isOpenByDefault={false}
+      isOpenByDefault={isPdfExport}
       title={
         <Box
           display="flex"

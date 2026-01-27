@@ -30,18 +30,20 @@ interface Props {
   aiTopics: TopicData[];
   totalInputs: number;
   maxAiTopicCount: number;
+  isPdfExport?: boolean;
 }
 
 const AiTopicsAccordion = ({
   aiTopics,
   totalInputs,
   maxAiTopicCount,
+  isPdfExport = false,
 }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
     <StyledAccordion
-      isOpenByDefault={false}
+      isOpenByDefault={isPdfExport}
       title={
         <Box
           display="flex"

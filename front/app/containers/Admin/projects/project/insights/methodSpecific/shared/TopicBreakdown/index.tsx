@@ -19,9 +19,10 @@ import useTopicBreakdownData from './useTopicBreakdownData';
 
 interface Props {
   phaseId: string;
+  isPdfExport?: boolean;
 }
 
-const TopicBreakdown = ({ phaseId }: Props) => {
+const TopicBreakdown = ({ phaseId, isPdfExport = false }: Props) => {
   const { formatMessage } = useIntl();
 
   const {
@@ -88,6 +89,7 @@ const TopicBreakdown = ({ phaseId }: Props) => {
           aiTopics={aiTopics}
           totalInputs={totalInputs}
           maxAiTopicCount={maxAiTopicCount}
+          isPdfExport={isPdfExport}
         />
       ) : (
         <AiUpsellBanner />
@@ -99,6 +101,7 @@ const TopicBreakdown = ({ phaseId }: Props) => {
           totalInputs={totalInputs}
           taggedInputs={taggedInputs}
           maxManualTopicCount={maxManualTopicCount}
+          isPdfExport={isPdfExport}
         />
       </Box>
     </Box>

@@ -17,7 +17,7 @@ const ProposalsInsights = ({
     return (
       <Box mt="16px" display="flex" flexDirection="column" gap="24px">
         <AiSummary phaseId={phaseId} isPdfExport />
-        <TopicBreakdown phaseId={phaseId} />
+        <TopicBreakdown phaseId={phaseId} isPdfExport />
         <MostLikedProposals phaseId={phaseId} />
         <StatusBreakdown phaseId={phaseId} participationMethod="proposals" />
       </Box>
@@ -31,7 +31,7 @@ const ProposalsInsights = ({
           <AiSummary phaseId={phaseId} />
         </Box>
         <Box w="100%">
-          <TopicBreakdown phaseId={phaseId} />
+          <TopicBreakdown phaseId={phaseId} isPdfExport={false} />
         </Box>
       </Box>
       <Box display="flex" gap="16px" w="100%" flexDirection="row">
