@@ -237,8 +237,4 @@ RSpec.describe ClaimTokenService do
       expect(ClaimToken.find_by(id: valid.id)).to be_present
     end
   end
-
-  describe '.sync_demographics!' do
-    
-  end
 end
