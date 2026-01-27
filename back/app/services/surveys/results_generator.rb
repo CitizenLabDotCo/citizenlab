@@ -14,6 +14,7 @@ module Surveys
       @fields = IdeaCustomFieldsService.new(form).survey_results_fields(structure_by_category:)
       @locales = AppConfiguration.instance.settings('core', 'locales')
       @all_inputs = phase.ideas.supports_survey.published
+      @structure_by_category = structure_by_category
     end
 
     # Get the results for a single survey question
@@ -142,8 +143,7 @@ module Surveys
     attr_reader :phase, :fields, :locales
 
     def survey_has_logic?
-      # TODO: bring structure by category here?
-      # return false if structure_by_category # If structuring by category (community monitor only) then logic will not work
+      return false if @structure_by_category # If structuring by category (community monitor only) then logic will never work
 
       @survey_has_logic ||= fields.any? { |field| field.logic != {} && field.logic != { 'rules' => [] } }
     end
@@ -434,10 +434,6 @@ module Surveys
         end
       end
       results[current_page_index][:questionResponseCount] = max_response_count unless current_page_index.nil?
-      results
-    end
-
-    def add_additional_fields_to_results(results)
       results
     end
 
