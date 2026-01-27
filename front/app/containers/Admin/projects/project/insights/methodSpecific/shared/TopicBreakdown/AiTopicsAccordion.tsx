@@ -61,8 +61,10 @@ const AiTopicsAccordion = ({
             </Text>
           </Box>
           <Text m="0" fontSize="s" color="textSecondary" mr="8px">
-            {totalInputs} {formatMessage(messages.ideas)} · {aiTopics.length}{' '}
-            {formatMessage(messages.topics)}
+            {formatMessage(messages.aiTopicsSummary, {
+              inputsCount: totalInputs,
+              topicsCount: aiTopics.length,
+            })}
           </Text>
         </Box>
       }
