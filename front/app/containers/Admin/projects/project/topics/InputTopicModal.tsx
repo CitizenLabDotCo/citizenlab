@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import { Button } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { FormProvider, useForm } from 'react-hook-form';
 import { Multiloc } from 'typings';
@@ -131,10 +131,18 @@ const InputTopicModal = ({
           >
             <SectionField>
               <Feedback />
-              <InputMultilocWithLocaleSwitcher
-                name="title_multiloc"
-                label={formatMessage(messages.fieldTopicTitle)}
-              />
+              <Box display="flex" gap="16px" alignItems="flex-end">
+                <InputMultilocWithLocaleSwitcher
+                  name="title_multiloc"
+                  label={formatMessage(messages.fieldTopicTitle)}
+                />
+                {!isSubtopic && (
+                  <EmojiPicker
+                    name="icon"
+                    label={formatMessage(messages.fieldTopicEmoji)}
+                  />
+                )}
+              </Box>
             </SectionField>
             <SectionField>
               <QuillMultilocWithLocaleSwitcher
@@ -147,14 +155,7 @@ const InputTopicModal = ({
                 limitedTextFormatting
               />
             </SectionField>
-            {!isSubtopic && (
-              <SectionField>
-                <EmojiPicker
-                  name="icon"
-                  label={formatMessage(messages.fieldTopicEmoji)}
-                />
-              </SectionField>
-            )}
+
             <ButtonsWrapper>
               <Button buttonStyle="secondary-outlined" onClick={close}>
                 <FormattedMessage {...messages.cancel} />

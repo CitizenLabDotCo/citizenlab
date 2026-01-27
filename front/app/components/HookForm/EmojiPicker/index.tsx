@@ -7,8 +7,15 @@ import { Controller, useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 import { CLError, RHFErrors } from 'typings';
 
+import useLocale from 'hooks/useLocale';
+
 import Emoji from 'components/UI/Emoji';
 import Error, { TFieldName } from 'components/UI/Error';
+
+import { useIntl } from 'utils/cl-intl';
+
+import { getEmojiMartLocale } from './localeMapping';
+import messages from './messages';
 
 const PickerContainer = styled.div`
   position: relative;
@@ -17,14 +24,15 @@ const PickerContainer = styled.div`
 const EmojiButton = styled.button<{ hasValue: boolean }>`
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   padding: 8px 16px;
-  border: 1px solid ${colors.grey400};
+  border: 1px solid ${colors.borderDark};
   border-radius: 3px;
   background: ${colors.white};
   cursor: pointer;
   min-height: 48px;
-  min-width: 120px;
+  width: 80px;
 
   &:hover {
     border-color: ${colors.grey600};
@@ -53,7 +61,7 @@ const ClearButton = styled.button`
 const PopoverContainer = styled.div`
   position: absolute;
   top: 56px;
-  left: 0;
+  right: 0;
   z-index: 1000;
 `;
 
@@ -63,6 +71,8 @@ interface Props {
 }
 
 const EmojiPicker = ({ name, label }: Props) => {
+  const { formatMessage } = useIntl();
+  const locale = useLocale();
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const {
@@ -113,8 +123,8 @@ const EmojiPicker = ({ name, label }: Props) => {
                 {value ? (
                   <Emoji emoji={value} size="24px" />
                 ) : (
-                  <Text color="coolGrey600" m="0px">
-                    Select emoji
+                  <Text color="coolGrey500" m="0px" fontSize="xl">
+                    +
                   </Text>
                 )}
               </EmojiButton>
@@ -122,9 +132,9 @@ const EmojiPicker = ({ name, label }: Props) => {
                 <ClearButton
                   type="button"
                   onClick={() => onChange(null)}
-                  aria-label="Clear emoji"
+                  aria-label={formatMessage(messages.clearEmoji)}
                 >
-                  Clear
+                  {formatMessage(messages.clearEmoji)}
                 </ClearButton>
               )}
             </Box>
@@ -132,6 +142,7 @@ const EmojiPicker = ({ name, label }: Props) => {
               <PopoverContainer>
                 <Picker
                   data={data}
+                  locale={getEmojiMartLocale(locale)}
                   onEmojiSelect={(emoji: { native: string }) => {
                     onChange(emoji.native);
                     setIsOpen(false);
