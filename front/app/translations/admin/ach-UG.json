@@ -1417,7 +1417,6 @@
   "app.containers.Admin.projects.project.insights.shared.aiTopicDistribution": "crwdns6055395:0crwdne6055395:0",
   "app.containers.Admin.projects.project.insights.shared.aiTopicsSummary": "crwdns6055397:0{inputsCount}crwdnd6055397:0{topicsCount}crwdne6055397:0",
   "app.containers.Admin.projects.project.insights.shared.manualTagsByParticipants": "crwdns6055399:0crwdne6055399:0",
-  "app.containers.Admin.projects.project.insights.shared.manualTagsCoverage1": "crwdns6055401:0{tagged}crwdnd6055401:0{total}crwdnd6055401:0{percentage}crwdne6055401:0",
   "app.containers.Admin.projects.project.insights.shared.manualTagsSummary": "crwdns6055403:0{taggedCount}crwdnd6055403:0{topicsCount}crwdne6055403:0",
   "app.containers.Admin.projects.project.insights.shared.noAiTopics": "crwdns6055405:0crwdne6055405:0",
   "app.containers.Admin.projects.project.insights.shared.noManualTags": "crwdns6055407:0crwdne6055407:0",
