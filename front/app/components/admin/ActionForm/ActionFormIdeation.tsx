@@ -6,8 +6,6 @@ import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields
 import { isPhasePermission } from 'api/phase_permissions/utils';
 import usePhase from 'api/phases/usePhase';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import AccessRestrictions from '../ActionForm/AccessRestrictions';
 import Fields from '../ActionForm/Fields';
 import FlowVisualization from '../ActionForm/FlowVisualization';
@@ -27,10 +25,6 @@ const ActionFormIdeation = ({
   const { data: permissionsCustomFields } = usePermissionsPhaseCustomFields({
     phaseId,
     action: permissionData.attributes.action,
-  });
-
-  const ideationAccountlessPostingEnabled = useFeatureFlag({
-    name: 'ideation_accountless_posting',
   });
 
   if (!isPhasePermission(permissionData)) {
@@ -59,7 +53,7 @@ const ActionFormIdeation = ({
   return (
     <form className={`e2e-action-form-${action}`}>
       <AccessRestrictions
-        showAnyone={ideationAccountlessPostingEnabled}
+        showAnyone
         permissionData={permissionData}
         onChange={onChange}
       />
