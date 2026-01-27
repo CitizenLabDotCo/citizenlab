@@ -58,16 +58,13 @@ class ClaimTokenService
       ClaimToken.expired.delete_all
     end
 
-    # Gets the last created claim token. Then
-    # takes the associated item. If this item
+    # Gets the lastly created item. If this item
     # contains demographic data: we copy it into the user's profile.
-    def sync_demographics!(user)
-      lastly_created_claim_token = user.claim_tokens.order(created_at: :desc).first
-      return unless lastly_created_claim_token
+    def sync_demographics!(user, items)
+      lastly_created_item = items.filter(&:present?).max_by(&:created_at)
+      return unless lastly_created_item
 
-      item = lastly_created_claim_token.item
-
-      # TODO
+      UserFieldsInFormService.merge_user_fields_from_idea_into_user!(lastly_created_item, user)
     end
 
     private
