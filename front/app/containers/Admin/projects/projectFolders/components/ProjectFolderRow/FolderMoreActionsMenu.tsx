@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
@@ -6,6 +6,8 @@ import useAuthUser from 'api/me/useAuthUser';
 import useDeleteProjectFolder from 'api/project_folders/useDeleteProjectFolder';
 
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+import TypedConfirmationModal from 'components/UI/TypedConfirmationModal';
+import typedConfirmationMessages from 'components/UI/TypedConfirmationModal/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -32,6 +34,8 @@ const FolderMoreActionsMenu = ({
   } = useDeleteProjectFolder();
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
   if (isNilOrError(authUser)) return null;
   const userCanDeleteProject = isAdmin(authUser);
 
@@ -41,22 +45,7 @@ const FolderMoreActionsMenu = ({
     if (userCanDeleteProject) {
       actions.push({
         handler: async () => {
-          if (
-            window.confirm(formatMessage(messages.deleteFolderConfirmation))
-          ) {
-            setIsRunningAction && setIsRunningAction(true);
-            deleteProjectFolder(
-              { projectFolderId: folderId },
-              {
-                onError: () => {
-                  setError(formatMessage(messages.deleteFolderError));
-                },
-              }
-            );
-            if (!isDeleteProjectFolderLoading) {
-              setIsRunningAction && setIsRunningAction(false);
-            }
-          }
+          setShowDeleteModal(true);
         },
         label: formatMessage(messages.deleteFolderButton),
         icon: 'delete' as const,
@@ -71,18 +60,55 @@ const FolderMoreActionsMenu = ({
     return null;
   };
 
+  const handleDeleteFolder = () => {
+    setIsRunningAction && setIsRunningAction(true);
+    deleteProjectFolder(
+      { projectFolderId: folderId },
+      {
+        onSuccess: () => {
+          setIsRunningAction && setIsRunningAction(false);
+          setShowDeleteModal(false);
+        },
+        onError: () => {
+          setError(formatMessage(messages.deleteFolderError));
+          setIsRunningAction && setIsRunningAction(false);
+          setShowDeleteModal(false);
+        },
+      }
+    );
+  };
+
+  const handleCloseDeleteModal = () => {
+    if (!isDeleteProjectFolderLoading) {
+      setShowDeleteModal(false);
+    }
+  };
+
   const actions = createActions();
 
   if (actions) {
     return (
-      <Box
-        display="flex"
-        alignItems="center"
-        ml="1rem"
-        data-testid="folderMoreActionsMenu"
-      >
-        <MoreActionsMenu showLabel={false} actions={actions} color={color} />
-      </Box>
+      <>
+        <Box
+          display="flex"
+          alignItems="center"
+          ml="1rem"
+          data-testid="folderMoreActionsMenu"
+        >
+          <MoreActionsMenu showLabel={false} actions={actions} color={color} />
+        </Box>
+        <TypedConfirmationModal
+          opened={showDeleteModal}
+          onClose={handleCloseDeleteModal}
+          onConfirm={handleDeleteFolder}
+          title={messages.deleteFolderModalTitle}
+          mainWarning={messages.deleteFolderModalWarning}
+          confirmationWord={typedConfirmationMessages.confirmationWordDelete}
+          deleteButtonText={messages.deleteFolderButton}
+          isDeleting={isDeleteProjectFolderLoading}
+          data-testid="delete-folder-modal"
+        />
+      </>
     );
   }
 

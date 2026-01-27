@@ -23,7 +23,8 @@ import useDeletePhase from 'api/phases/useDeletePhase';
 import useLocalize from 'hooks/useLocalize';
 
 import { Tab } from 'components/admin/NavigationTabs';
-import Modal from 'components/UI/Modal';
+import TypedConfirmationModal from 'components/UI/TypedConfirmationModal';
+import typedConfirmationMessages from 'components/UI/TypedConfirmationModal/messages';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -243,42 +244,16 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
           ))}
         </Box>
       </Container>
-      <Modal opened={showDeleteModal} close={closeModal}>
-        <Box display="flex" flexDirection="column" width="100%" p="20px">
-          <Box mb="40px">
-            <Title variant="h3" color="primary">
-              {formatMessage(messages.deletePhaseConfirmationQuestion)}
-            </Title>
-            <Text color="primary" fontSize="l">
-              {formatMessage(messages.deletePhaseInfo)}
-            </Text>
-          </Box>
-          <Box
-            display="flex"
-            flexDirection="row"
-            width="100%"
-            alignItems="center"
-          >
-            <Button
-              icon="delete"
-              data-cy={`e2e-confirm-delete-phase-${phase.id}`}
-              buttonStyle="delete"
-              width="auto"
-              mr="20px"
-              onClick={handleDeletePhase}
-            >
-              {formatMessage(messages.deletePhaseButtonText)}
-            </Button>
-            <Button
-              buttonStyle="secondary-outlined"
-              width="auto"
-              onClick={closeModal}
-            >
-              {formatMessage(messages.cancelDeletePhaseText)}
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
+      <TypedConfirmationModal
+        opened={showDeleteModal}
+        onClose={closeModal}
+        onConfirm={handleDeletePhase}
+        title={messages.deletePhaseModalTitle}
+        mainWarning={messages.deletePhaseModalWarning}
+        confirmationWord={typedConfirmationMessages.confirmationWordDelete}
+        deleteButtonText={messages.deletePhaseButtonText}
+        data-testid={`e2e-confirm-delete-phase-${phase.id}`}
+      />
     </>
   );
 };
