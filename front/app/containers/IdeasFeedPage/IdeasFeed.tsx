@@ -332,11 +332,10 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
           // Use parentTopicId for color when filtering by subtopic, otherwise use the first topic
           const colorTopicId = parentTopicId || topicId || topicIds[0];
           const topicBackgroundColor = getTopicColor(colorTopicId);
-          // Get emoji from the parent topic (root topic)
-          const emojiTopicId = parentTopicId || topicIds[0];
-          const topicEmoji = emojiTopicId
-            ? topicEmojis.get(emojiTopicId)
-            : null;
+          // Get emojis from all root topics associated with this idea
+          const emojis = topicIds
+            .map((id) => topicEmojis.get(id))
+            .filter((emoji): emoji is string => emoji != null);
 
           return (
             <VirtualItem
@@ -357,7 +356,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
                 <StickyNote
                   ideaId={idea.id}
                   topicBackgroundColor={topicBackgroundColor}
-                  topicEmoji={topicEmoji}
+                  topicEmojis={emojis}
                   onClick={() => handleIdeaSelect(idea.id)}
                   centeredIdeaId={centeredIdeaId || undefined}
                   size={noteSize}

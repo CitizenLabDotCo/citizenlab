@@ -54,7 +54,7 @@ interface Props {
   ideaId: string;
   rotation?: number;
   topicBackgroundColor: string;
-  topicEmoji?: string | null;
+  topicEmojis?: string[];
   onClick?: () => void;
   centeredIdeaId?: string;
   size?: 'small' | 'large';
@@ -65,7 +65,7 @@ const StickyNote: React.FC<Props> = ({
   ideaId,
   rotation = 0,
   topicBackgroundColor,
-  topicEmoji,
+  topicEmojis = [],
   onClick,
   centeredIdeaId,
   size = 'large',
@@ -123,9 +123,27 @@ const StickyNote: React.FC<Props> = ({
       onKeyDown={handleKeyDown}
       aria-label={title}
     >
-      {topicEmoji && (
-        <Box position="absolute" top="12px" right="12px">
-          <Emoji emoji={topicEmoji} size="28px" />
+      {topicEmojis.length > 0 && (
+        <Box
+          position="absolute"
+          top="12px"
+          right="12px"
+          display="flex"
+          gap="4px"
+        >
+          {topicEmojis.map((emoji, index) => (
+            <Box
+              key={index}
+              background={colors.white}
+              borderRadius="50%"
+              p="8px"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Emoji emoji={emoji} size="28px" />
+            </Box>
+          ))}
         </Box>
       )}
       {authorName && (

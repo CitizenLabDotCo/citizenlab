@@ -167,9 +167,10 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
               idea.relationships.input_topics?.data.map((topic) => topic.id) ||
               [];
             const topicBackgroundColor = getTopicColor(topicIds[0]);
-            const topicEmoji = topicIds[0]
-              ? topicEmojis.get(topicIds[0])
-              : null;
+            // Get emojis from all root topics associated with this idea
+            const emojis = topicIds
+              .map((id) => topicEmojis.get(id))
+              .filter((emoji): emoji is string => emoji != null);
 
             return (
               <NoteWrapper
@@ -181,7 +182,7 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
                 <StickyNote
                   ideaId={idea.id}
                   topicBackgroundColor={topicBackgroundColor}
-                  topicEmoji={topicEmoji}
+                  topicEmojis={emojis}
                   onClick={() => handleNoteClick(idea.id)}
                   size="small"
                   rotation={ROTATIONS[index % ROTATIONS.length]}
