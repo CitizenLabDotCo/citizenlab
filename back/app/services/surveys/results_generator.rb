@@ -7,9 +7,11 @@
 
 module Surveys
   class ResultsGenerator < FieldVisitorService
-    def initialize(phase, structure_by_category: false)
+    # sort: 'count' (default) sorts by count descending, 'original' preserves option order
+    def initialize(phase, structure_by_category: false, sort: 'count')
       super()
       @phase = phase
+      @sort = sort
       form = phase.custom_form || CustomForm.new(participation_context: phase)
       @fields = IdeaCustomFieldsService.new(form).survey_results_fields(structure_by_category:)
       @locales = AppConfiguration.instance.settings('core', 'locales')
@@ -208,7 +210,9 @@ module Surveys
       question_response_count = inputs.where("custom_field_values->'#{field.key}' IS NOT NULL").count
 
       # Sort answers correctly
-      answers = answers.sort_by { |a| -a[:count] } unless field.supports_linear_scale?
+      if @sort == 'count' && !field.supports_linear_scale?
+        answers = answers.sort_by { |a| -a[:count] }
+      end
       answers = answers.sort_by { |a| a[:answer] == 'other' ? 1 : 0 } # other should always be last
 
       attributes = core_field_attributes(field, response_count: question_response_count).merge({

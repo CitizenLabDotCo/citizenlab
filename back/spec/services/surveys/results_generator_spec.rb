@@ -529,6 +529,16 @@ RSpec.describe Surveys::ResultsGenerator do
         expect(answers.pluck(:count)).to eq [21, 2, 1, 3]
       end
 
+      context "when sort is 'original'" do
+        subject(:generator) { described_class.new(survey_phase, sort: 'original') }
+
+        it 'returns select answers in original field option order, with other always last' do
+          results = generator.generate_results
+          answers = results[:results][5][:answers]
+          expect(answers.pluck(:answer)).to eq ['la', 'ny', nil, 'other']
+        end
+      end
+
       it 'returns a single result for a select field' do
         expect(generator.generate_result_for_field(select_field.id)).to match expected_result_select
       end

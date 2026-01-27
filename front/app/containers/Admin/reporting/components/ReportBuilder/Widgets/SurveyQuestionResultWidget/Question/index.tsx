@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import { Title, Box } from '@citizenlab/cl2-component-library';
 
 import { useSurveyQuestionResult } from 'api/graph_data_units';
-import { GroupMode } from 'api/graph_data_units/requestTypes';
+import { GroupMode, Sort } from 'api/graph_data_units/requestTypes';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -32,6 +32,7 @@ interface Props {
   year?: number;
   quarter?: number;
   heatmap?: boolean;
+  sort?: Sort;
 }
 
 const SurveyQuestionResult = ({
@@ -43,6 +44,7 @@ const SurveyQuestionResult = ({
   heatmap,
   year,
   quarter,
+  sort,
 }: Props) => {
   const { data, error } = useSurveyQuestionResult({
     phase_id: phaseId,
@@ -51,6 +53,7 @@ const SurveyQuestionResult = ({
     group_field_id: groupFieldId,
     year: year?.toString(),
     quarter: quarter?.toString(),
+    sort,
   });
 
   const localize = useLocalize();
