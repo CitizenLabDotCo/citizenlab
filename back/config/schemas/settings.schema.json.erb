@@ -1464,6 +1464,18 @@
         }
       },
 
+      "nested_input_topics": {
+        "type": "object",
+        "title": "Nested input topics",
+        "description": "Nested input topics allow for hierarchical organization (topics and subtopics) of the input topics within a project.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "data_repository_transcription": {
         "type": "object",
         "title": "Data repository transcription",

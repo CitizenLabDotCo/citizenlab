@@ -460,10 +460,27 @@ module ParticipationMethod
       true
     end
 
+    def user_fields_in_form_enabled?
+      return false if posting_permission.nil?
+
+      posting_permission.user_fields_in_form_enabled?
+    end
+
     private
 
     def proposed_budget_in_form?
       true
+    end
+
+    def posting_permission
+      # phase should always be defined,
+      # but for some reason it's not in some unit tests.
+      return nil if phase.nil?
+
+      @posting_permission ||= Permission.find_by(
+        permission_scope_id: phase.id,
+        action: 'posting_idea'
+      )
     end
   end
 end

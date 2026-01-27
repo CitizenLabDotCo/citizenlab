@@ -1,5 +1,5 @@
-import { logIn } from '../support/auth';
-import { randomString, randomEmail } from '../support/commands';
+import { logIn } from '../../support/auth';
+import { randomString, randomEmail } from '../../support/commands';
 
 describe('Idea posting permissions', () => {
   const unverifiedFirstName = randomString();

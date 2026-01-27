@@ -49,7 +49,7 @@ module MultiTenancy
           EventImage => serialize_records(EventImage),
           Events::Attendance => serialize_records(Events::Attendance),
           IdeaStatus => serialize_records(IdeaStatus),
-          InputTopic => serialize_records(InputTopic),
+          InputTopic => serialize_input_topics,
           NavBarItem => serialize_records(NavBarItem),
           Permission => serialize_records(Permission),
           PermissionsCustomField => serialize_records(PermissionsCustomField),
@@ -255,6 +255,22 @@ module MultiTenancy
 
       def serialize_followers(users)
         serialize_records(Follower.where(user: users))
+      end
+
+      def serialize_input_topics
+        input_topics = serialize_records(InputTopic)
+
+        # The parent topics must be listed before their children since the
+        # children topics reference their parent.
+        child_to_parent = input_topics.transform_values do |attributes|
+          Array.wrap(attributes[:parent_ref]&.id)
+        end
+
+        each_node = ->(&block) { child_to_parent.each_key(&block) }
+        each_child = ->(node, &block) { child_to_parent[node].each(&block) }
+        ordered_ids = TSort.tsort(each_node, each_child)
+
+        input_topics.slice(*ordered_ids)
       end
     end
   end

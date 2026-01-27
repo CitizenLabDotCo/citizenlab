@@ -65,7 +65,7 @@ const AdminProjectPhaseIndex = ({
     : [];
 
   return (
-    <>
+    <Box display="flex" flexDirection="column" flexGrow={1}>
       <Box mt="16px" px="24px">
         <Timeline
           projectId={project.id}
@@ -74,16 +74,25 @@ const AdminProjectPhaseIndex = ({
           isBackoffice
         />
       </Box>
-      <Box p="8px 24px 24px 24px">
+      <Box
+        p="8px 24px 24px 24px"
+        display="flex"
+        flexDirection="column"
+        flexGrow={1}
+      >
         {!isNewPhaseLink && selectedPhase && (
           <PhaseHeader phase={selectedPhase} tabs={tabs} />
         )}
 
-        <Box p={`${defaultAdminCardPadding}px`} background={colors.white}>
+        <Box
+          p={`${defaultAdminCardPadding}px`}
+          background={colors.white}
+          flexGrow={1}
+        >
           <RouterOutlet />
         </Box>
       </Box>
-    </>
+    </Box>
   );
 };
 

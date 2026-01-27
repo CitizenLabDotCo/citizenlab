@@ -5,20 +5,23 @@ class WebApi::V1::DefaultInputTopicsController < ApplicationController
   skip_before_action :authenticate_user, only: %i[index show]
 
   def index
-    default_input_topics = policy_scope(DefaultInputTopic).order(:ordering)
+    # Return tree structure - ordered by lft
+    default_input_topics = policy_scope(DefaultInputTopic).order(:lft)
     default_input_topics = paginate default_input_topics
 
     render json: linked_json(
       default_input_topics,
       WebApi::V1::DefaultInputTopicSerializer,
-      params: jsonapi_serializer_params
+      params: jsonapi_serializer_params,
+      include: [:children]
     )
   end
 
   def show
     render json: WebApi::V1::DefaultInputTopicSerializer.new(
       @default_input_topic,
-      params: jsonapi_serializer_params
+      params: jsonapi_serializer_params,
+      include: [:children]
     ).serializable_hash
   end
 
@@ -32,7 +35,8 @@ class WebApi::V1::DefaultInputTopicsController < ApplicationController
       SideFxDefaultInputTopicService.new.after_create(@default_input_topic, current_user)
       render json: WebApi::V1::DefaultInputTopicSerializer.new(
         @default_input_topic,
-        params: jsonapi_serializer_params
+        params: jsonapi_serializer_params,
+        include: [:children]
       ).serializable_hash, status: :created
     else
       render json: { errors: @default_input_topic.errors.details }, status: :unprocessable_entity
@@ -48,21 +52,45 @@ class WebApi::V1::DefaultInputTopicsController < ApplicationController
       SideFxDefaultInputTopicService.new.after_update(@default_input_topic, current_user)
       render json: WebApi::V1::DefaultInputTopicSerializer.new(
         @default_input_topic,
-        params: jsonapi_serializer_params
+        params: jsonapi_serializer_params,
+        include: [:children]
       ).serializable_hash, status: :ok
     else
       render json: { errors: @default_input_topic.errors.details }, status: :unprocessable_entity
     end
   end
 
-  def reorder
+  # Move topic within the tree
+  # position: 'child' (make child of target), 'left' (move before target), 'right' (move after target), 'root' (make root)
+  def move
     SideFxDefaultInputTopicService.new.before_update(@default_input_topic, current_user)
-    ordering = permitted_attributes(@default_input_topic)[:ordering]
-    if ordering && @default_input_topic.insert_at(ordering)
+
+    move_params = permitted_attributes(@default_input_topic)
+    position = move_params[:position]
+    target_id = move_params[:target_id]
+
+    success = case position
+    when 'child'
+      target = DefaultInputTopic.find(target_id)
+      @default_input_topic.move_to_child_of(target)
+    when 'left'
+      target = DefaultInputTopic.find(target_id)
+      @default_input_topic.move_to_left_of(target)
+    when 'right'
+      target = DefaultInputTopic.find(target_id)
+      @default_input_topic.move_to_right_of(target)
+    when 'root'
+      @default_input_topic.move_to_root
+    else
+      false
+    end
+
+    if success
       SideFxDefaultInputTopicService.new.after_update(@default_input_topic, current_user)
       render json: WebApi::V1::DefaultInputTopicSerializer.new(
         @default_input_topic.reload,
-        params: jsonapi_serializer_params
+        params: jsonapi_serializer_params,
+        include: [:children]
       ).serializable_hash, status: :ok
     else
       render json: { errors: @default_input_topic.errors.details }, status: :unprocessable_entity

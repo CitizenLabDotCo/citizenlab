@@ -163,6 +163,29 @@ resource 'Stats - Reactions' do
         expect(json_attributes[:series][:total].values).to eq json_attributes[:series][:total].values.sort.reverse
       end
     end
+
+    describe 'with subtopics' do
+      let(:start_at) { now.beginning_of_month }
+      let(:end_at) { now.end_of_month }
+
+      before do
+        project = create(:project)
+        @parent_topic = create(:input_topic, project: project)
+        @child_topic = create(:input_topic, project: project, parent: @parent_topic)
+        idea_parent = create(:idea, idea_status: @idea_status, input_topics: [@parent_topic], project: project)
+        idea_child = create(:idea, idea_status: @idea_status, input_topics: [@child_topic], project: project)
+        create(:reaction, reactable: idea_parent)
+        create(:reaction, reactable: idea_child)
+      end
+
+      example 'Reactions by topic aggregates child counts into parent' do
+        do_request
+        assert_status 200
+        json_attributes = json_parse(response_body).dig(:data, :attributes)
+        expect(json_attributes[:series][:total][@parent_topic.id.to_sym]).to eq 2
+        expect(json_attributes[:series][:total][@child_topic.id.to_sym]).to eq 1
+      end
+    end
   end
 
   get 'web_api/v1/stats/reactions_by_topic_as_xlsx' do
@@ -301,6 +324,27 @@ resource 'Stats - Reactions' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :type)).to eq 'reactions_by_project'
         json_attributes = json_response.dig(:data, :attributes)
+        expect(json_attributes[:series][:total].values.sum).to eq 1
+      end
+    end
+
+    describe 'filtered by parent topic includes child topic ideas' do
+      before do
+        project = create(:project)
+        @parent_topic = create(:input_topic, project: project)
+        @child_topic = create(:input_topic, project: project, parent: @parent_topic)
+        idea_child = create(:idea, idea_status: @idea_status, input_topics: [@child_topic], project: project)
+        create(:reaction, reactable: idea_child)
+      end
+
+      let(:start_at) { now.beginning_of_month }
+      let(:end_at) { now.end_of_month }
+      let(:input_topic) { @parent_topic.id }
+
+      example 'Reactions by project filtered by parent topic includes child topic ideas' do
+        do_request
+        assert_status 200
+        json_attributes = json_parse(response_body).dig(:data, :attributes)
         expect(json_attributes[:series][:total].values.sum).to eq 1
       end
     end

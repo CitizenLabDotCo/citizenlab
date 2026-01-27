@@ -13,6 +13,8 @@ module IdeaFeed
 
     def top_n(n = 5, scope = Idea.all)
       eligible_ideas = fetch_eligible_ideas(scope)
+      eligible_ideas = fetch_all_ideas(scope) if eligible_ideas.none?
+
       candidates = fetch_candidates_with_scores(eligible_ideas)
       candidates = Idea.from(candidates, :ideas)
         .order(Arel.sql('recency_score * 0.65 + engagement_score * 0.25 + wise_voice_score * 0.1 DESC'))
@@ -54,6 +56,17 @@ module IdeaFeed
         .where(ideas_phases: { phase_id: phase.id })
         .published
         .where.not(id: exposed_ideas)
+
+      scope = scope.with_some_input_topics(topic_ids) if topic_ids.present?
+
+      scope
+    end
+
+    def fetch_all_ideas(scope)
+      scope = scope
+        .joins(:ideas_phases)
+        .where(ideas_phases: { phase_id: phase.id })
+        .published
 
       scope = scope.with_some_input_topics(topic_ids) if topic_ids.present?
 

@@ -37,7 +37,6 @@ ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF E
 ALTER TABLE IF EXISTS ONLY public.project_folders_images DROP CONSTRAINT IF EXISTS fk_rails_dcbc962cfe;
 ALTER TABLE IF EXISTS ONLY public.analysis_summaries DROP CONSTRAINT IF EXISTS fk_rails_dbd13460f0;
 ALTER TABLE IF EXISTS ONLY public.projects_global_topics DROP CONSTRAINT IF EXISTS fk_rails_db7813bfef;
-ALTER TABLE IF EXISTS ONLY public.projects_allowed_input_topics DROP CONSTRAINT IF EXISTS fk_rails_db7813bfef;
 ALTER TABLE IF EXISTS ONLY public.ideas_input_topics DROP CONSTRAINT IF EXISTS fk_rails_d68de6da88;
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_rails_d6353758d5;
 ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS fk_rails_d1892257e3;
@@ -101,7 +100,6 @@ ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rail
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS fk_rails_82dc979276;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_81c11ef894;
 ALTER TABLE IF EXISTS ONLY public.projects_global_topics DROP CONSTRAINT IF EXISTS fk_rails_812b6d9149;
-ALTER TABLE IF EXISTS ONLY public.projects_allowed_input_topics DROP CONSTRAINT IF EXISTS fk_rails_812b6d9149;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS fk_rails_81137213da;
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_80d00e60ae;
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_7fbb3b1416;
@@ -293,8 +291,10 @@ DROP INDEX IF EXISTS public.index_internal_comments_on_lft;
 DROP INDEX IF EXISTS public.index_internal_comments_on_idea_id;
 DROP INDEX IF EXISTS public.index_internal_comments_on_created_at;
 DROP INDEX IF EXISTS public.index_internal_comments_on_author_id;
+DROP INDEX IF EXISTS public.index_input_topics_on_rgt;
 DROP INDEX IF EXISTS public.index_input_topics_on_project_id_and_ordering;
 DROP INDEX IF EXISTS public.index_input_topics_on_project_id;
+DROP INDEX IF EXISTS public.index_input_topics_on_parent_id;
 DROP INDEX IF EXISTS public.index_impact_tracking_sessions_on_monthly_user_hash;
 DROP INDEX IF EXISTS public.index_identities_on_user_id;
 DROP INDEX IF EXISTS public.index_ideas_topics_on_topic_id;
@@ -393,6 +393,8 @@ DROP INDEX IF EXISTS public.index_email_campaigns_campaign_email_commands_on_rec
 DROP INDEX IF EXISTS public.index_email_bans_on_normalized_email_hash;
 DROP INDEX IF EXISTS public.index_email_bans_on_banned_by_id;
 DROP INDEX IF EXISTS public.index_dismissals_on_campaign_name_and_user_id;
+DROP INDEX IF EXISTS public.index_default_input_topics_on_rgt;
+DROP INDEX IF EXISTS public.index_default_input_topics_on_parent_id;
 DROP INDEX IF EXISTS public.index_custom_forms_on_participation_context;
 DROP INDEX IF EXISTS public.index_custom_fields_on_resource_type_and_resource_id;
 DROP INDEX IF EXISTS public.index_custom_fields_on_resource_id_and_ordering_unique;
@@ -1789,8 +1791,7 @@ CREATE TABLE public.phases (
     similarity_enabled boolean DEFAULT true NOT NULL,
     vote_term character varying DEFAULT 'vote'::character varying,
     voting_min_selected_options integer DEFAULT 1 NOT NULL,
-    voting_filtering_enabled boolean DEFAULT false NOT NULL,
-    ideation_method character varying
+    voting_filtering_enabled boolean DEFAULT false NOT NULL
 );
 
 
@@ -2408,7 +2409,12 @@ CREATE TABLE public.default_input_topics (
     icon character varying,
     ordering integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    parent_id uuid,
+    lft integer,
+    rgt integer,
+    depth integer DEFAULT 0,
+    children_count integer DEFAULT 0
 );
 
 
@@ -3005,7 +3011,12 @@ CREATE TABLE public.input_topics (
     icon character varying,
     ordering integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    parent_id uuid,
+    lft integer,
+    rgt integer,
+    depth integer DEFAULT 0,
+    children_count integer DEFAULT 0
 );
 
 
@@ -5634,6 +5645,20 @@ CREATE UNIQUE INDEX index_custom_forms_on_participation_context ON public.custom
 
 
 --
+-- Name: index_default_input_topics_on_parent_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_default_input_topics_on_parent_id ON public.default_input_topics USING btree (parent_id);
+
+
+--
+-- Name: index_default_input_topics_on_rgt; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_default_input_topics_on_rgt ON public.default_input_topics USING btree (rgt);
+
+
+--
 -- Name: index_dismissals_on_campaign_name_and_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6320,6 +6345,13 @@ CREATE INDEX index_impact_tracking_sessions_on_monthly_user_hash ON public.impac
 
 
 --
+-- Name: index_input_topics_on_parent_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_input_topics_on_parent_id ON public.input_topics USING btree (parent_id);
+
+
+--
 -- Name: index_input_topics_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6331,6 +6363,13 @@ CREATE INDEX index_input_topics_on_project_id ON public.input_topics USING btree
 --
 
 CREATE INDEX index_input_topics_on_project_id_and_ordering ON public.input_topics USING btree (project_id, ordering);
+
+
+--
+-- Name: index_input_topics_on_rgt; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_input_topics_on_rgt ON public.input_topics USING btree (rgt);
 
 
 --
@@ -7734,14 +7773,6 @@ ALTER TABLE ONLY public.report_builder_reports
 
 
 --
--- Name: projects_allowed_input_topics fk_rails_812b6d9149; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.projects_allowed_input_topics
-    ADD CONSTRAINT fk_rails_812b6d9149 FOREIGN KEY (project_id) REFERENCES public.projects(id);
-
-
---
 -- Name: projects_global_topics fk_rails_812b6d9149; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8246,14 +8277,6 @@ ALTER TABLE ONLY public.ideas_input_topics
 
 
 --
--- Name: projects_allowed_input_topics fk_rails_db7813bfef; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.projects_allowed_input_topics
-    ADD CONSTRAINT fk_rails_db7813bfef FOREIGN KEY (topic_id) REFERENCES public.global_topics(id);
-
-
---
 -- Name: projects_global_topics fk_rails_db7813bfef; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8484,6 +8507,9 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260127090030'),
+('20260122100950'),
+('20260121111117'),
 ('20260120123325'),
 ('20260115115438'),
 ('20260107121024'),
