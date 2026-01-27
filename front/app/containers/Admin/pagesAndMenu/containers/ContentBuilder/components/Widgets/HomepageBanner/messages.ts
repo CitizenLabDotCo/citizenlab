@@ -170,8 +170,8 @@ export default defineMessages({
       'When enabled, the banner for registered users will use the same heights as the banner for non-registered users.',
   },
   advancedHeightCustomization: {
-    id: 'app.containers.ContentBuilder.homepage.advancedHeightCustomization2',
-    defaultMessage: 'Advanced height customization (non-registered users)',
+    id: 'app.containers.ContentBuilder.homepage.advancedHeightCustomization',
+    defaultMessage: 'Advanced height customization',
   },
   advancedHeightCustomizationInfoSignedIn: {
     id: 'app.containers.ContentBuilder.homepage.advancedHeightCustomizationInfoSignedIn2',
