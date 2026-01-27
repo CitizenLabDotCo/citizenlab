@@ -166,8 +166,36 @@ const AiSummary = ({ phaseId, isPdfExport = false }: Props) => {
     );
   }
 
-  if (!analysisId || inputCount < MIN_INPUTS_FOR_SUMMARY) {
-    return null;
+  if (inputCount < MIN_INPUTS_FOR_SUMMARY) {
+    return (
+      <Box
+        pt="8px"
+        pb="24px"
+        px="24px"
+        bgColor="rgba(4, 77, 108, 0.05)"
+        borderRadius="4px"
+        borderLeft={`3px solid ${colors.primary}`}
+        display="flex"
+        flexDirection="column"
+      >
+        <Title variant="h3" m="0" mb="16px">
+          {formatMessage(messages.whatArePeopleSaying)}
+        </Title>
+        <Box
+          p="24px"
+          bgColor="white"
+          borderRadius="8px"
+          boxShadow="0px 1px 2px 0px rgba(0,0,0,0.05)"
+        >
+          <Text m="0" color="textSecondary">
+            {formatMessage(messages.notEnoughInputs, {
+              minInputs: MIN_INPUTS_FOR_SUMMARY,
+              count: inputCount,
+            })}
+          </Text>
+        </Box>
+      </Box>
+    );
   }
 
   if (isPreChecking || isAddingSummary) {
@@ -181,7 +209,7 @@ const AiSummary = ({ phaseId, isPdfExport = false }: Props) => {
     );
   }
 
-  if (!summaryData) {
+  if (!summaryData || !analysisId) {
     return null;
   }
 
