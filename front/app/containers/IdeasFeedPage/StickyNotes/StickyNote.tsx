@@ -17,6 +17,7 @@ import useLocalize from 'hooks/useLocalize';
 import Avatar from 'components/Avatar';
 import ReactionControl from 'components/ReactionControl';
 
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { stripHtml } from 'utils/textUtils';
 
 const truncateText = (text: string, maxLength: number) => {
@@ -89,6 +90,12 @@ const StickyNote: React.FC<Props> = ({
     }
   };
 
+  // When an unauthenticated user clicks a reaction, set this idea as the initial
+  // idea so it stays centered after the auth flow completes
+  const handleUnauthenticatedReactionClick = () => {
+    updateSearchParams({ initial_idea_id: ideaId });
+  };
+
   if (!idea) {
     return null;
   }
@@ -157,7 +164,12 @@ const StickyNote: React.FC<Props> = ({
             </Text>
           </Box>
 
-          <ReactionControl ideaId={ideaId} size="1" styleType="compact" />
+          <ReactionControl
+            ideaId={ideaId}
+            size="1"
+            styleType="compact"
+            unauthenticatedReactionClick={handleUnauthenticatedReactionClick}
+          />
         </Box>
       )}
     </StyledNote>

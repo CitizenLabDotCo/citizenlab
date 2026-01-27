@@ -212,6 +212,15 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
 
   const [centeredIndex, setCenteredIndex] = useState(0);
 
+  // Reset scroll position and centered index when initialIdeaId changes
+  // This ensures the initial idea is centered after authentication flow
+  useEffect(() => {
+    if (parentRef.current) {
+      parentRef.current.scrollTo({ top: 0 });
+      setCenteredIndex(0);
+    }
+  }, [initialIdeaId]);
+
   const centeredIdeaId = orderedIdeas[centeredIndex]?.id;
 
   const handleScroll = useCallback(

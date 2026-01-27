@@ -61,6 +61,7 @@ const ReactionControl = ({
   size,
   className,
   styleType,
+  unauthenticatedReactionClick,
   disabledReactionClick,
   variant = 'icon',
 }: Props) => {
@@ -250,6 +251,7 @@ const ReactionControl = ({
         !reactingEnabled &&
         isFixableByAuthentication(reactingDisabledReason)
       ) {
+        unauthenticatedReactionClick?.(reactionMode);
         triggerAuthenticationFlow({ context, successAction });
       } else if (reactingDisabledReason) {
         disabledReactionClick?.(reactingDisabledReason);
