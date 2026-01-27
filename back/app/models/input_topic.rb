@@ -50,6 +50,7 @@ class InputTopic < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false }
   validate :max_depth_validation
+  validate :icon_only_for_root_topics
 
   scope :order_ideas_count, lambda { |ideas, direction: :asc|
     topics_counts = IdeasCountService.counts(ideas, ['input_topic_id'])['input_topic_id']
@@ -76,5 +77,11 @@ class InputTopic < ApplicationRecord
     return if parent.blank?
 
     errors.add(:parent_id, :too_deep) if parent.depth >= 1
+  end
+
+  def icon_only_for_root_topics
+    return if icon.blank?
+
+    errors.add(:icon, :not_allowed_for_subtopics) if depth.present? && depth >= 1
   end
 end

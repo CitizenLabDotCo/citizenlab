@@ -11,6 +11,7 @@ import useAddInputTopic from 'api/input_topics/useAddInputTopic';
 import useUpdateInputTopic from 'api/input_topics/useUpdateInputTopic';
 
 import { SectionField } from 'components/admin/Section';
+import EmojiPicker from 'components/HookForm/EmojiPicker';
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
@@ -28,6 +29,7 @@ import messages from './messages';
 interface FormValues {
   title_multiloc: Multiloc;
   description_multiloc?: Multiloc;
+  icon?: string | null;
 }
 
 interface Props {
@@ -51,6 +53,8 @@ const InputTopicModal = ({
 
   const isEditing = topic !== null;
   const isAddingSubtopic = !isEditing && parentId !== undefined;
+  const isEditingSubtopic = isEditing && (topic?.attributes.depth ?? 0) >= 1;
+  const isSubtopic = isAddingSubtopic || isEditingSubtopic;
 
   const schema = object({
     title_multiloc: validateMultilocForEveryLocale(
@@ -69,11 +73,13 @@ const InputTopicModal = ({
         methods.reset({
           title_multiloc: topic.attributes.title_multiloc,
           description_multiloc: topic.attributes.description_multiloc,
+          icon: topic.attributes.icon,
         });
       } else {
         methods.reset({
           title_multiloc: {},
           description_multiloc: {},
+          icon: null,
         });
       }
     }
@@ -85,13 +91,17 @@ const InputTopicModal = ({
         await updateInputTopic({
           projectId,
           id: topic.id,
-          ...formValues,
+          title_multiloc: formValues.title_multiloc,
+          description_multiloc: formValues.description_multiloc,
+          // Only send icon for root topics
+          ...(isSubtopic ? {} : { icon: formValues.icon }),
         });
       } else {
         await addInputTopic({
           projectId,
           title_multiloc: formValues.title_multiloc,
           description_multiloc: formValues.description_multiloc || {},
+          icon: isSubtopic ? undefined : formValues.icon,
           parent_id: parentId,
         });
       }
@@ -137,6 +147,14 @@ const InputTopicModal = ({
                 limitedTextFormatting
               />
             </SectionField>
+            {!isSubtopic && (
+              <SectionField>
+                <EmojiPicker
+                  name="icon"
+                  label={formatMessage(messages.fieldTopicEmoji)}
+                />
+              </SectionField>
+            )}
             <ButtonsWrapper>
               <Button buttonStyle="secondary-outlined" onClick={close}>
                 <FormattedMessage {...messages.cancel} />

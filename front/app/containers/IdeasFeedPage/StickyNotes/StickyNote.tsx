@@ -16,6 +16,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import Avatar from 'components/Avatar';
 import ReactionControl from 'components/ReactionControl';
+import Emoji from 'components/UI/Emoji';
 
 import { stripHtml } from 'utils/textUtils';
 
@@ -53,6 +54,7 @@ interface Props {
   ideaId: string;
   rotation?: number;
   topicBackgroundColor: string;
+  topicEmoji?: string | null;
   onClick?: () => void;
   centeredIdeaId?: string;
   size?: 'small' | 'large';
@@ -63,6 +65,7 @@ const StickyNote: React.FC<Props> = ({
   ideaId,
   rotation = 0,
   topicBackgroundColor,
+  topicEmoji,
   onClick,
   centeredIdeaId,
   size = 'large',
@@ -120,6 +123,11 @@ const StickyNote: React.FC<Props> = ({
       onKeyDown={handleKeyDown}
       aria-label={title}
     >
+      {topicEmoji && (
+        <Box position="absolute" top="12px" right="12px">
+          <Emoji emoji={topicEmoji} size="28px" />
+        </Box>
+      )}
       {authorName && (
         <Box display="flex" alignItems="center">
           <Avatar userId={authorId} authorHash={authorHash} size={24} />
