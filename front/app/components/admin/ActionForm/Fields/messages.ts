@@ -74,7 +74,7 @@ export default defineMessages({
   with_these_settings_can_only_ask_demographic_fields_in_registration_flow: {
     id: 'app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow2',
     defaultMessage:
-      'With the current combination of "Authentication" and "User data collection" settings, demographic questions can only be asked in the registration flow. HOWEVER: because you selected "full anonymity" in the "User data collection" section, THIS DATA WILL NOT BE LINKED TO THE RESPONSE! It will only be used to update the user\'s profile, but you will not have ANY information about who participated.',
+      'Because you selected "Full anonymity" in "User data collection", you can only ask demographic questions before participation. HOWEVER: THIS DATA WILL NOT BE LINKED TO THE RESPONSE! It will only be used to update the user\'s profile, but you will not have ANY information about who participated.',
   },
   askDemographicQuestionsBeforeUserParticipates: {
     id: 'app.components.admin.ActionForm.Fields.askDemographicQuestionsBeforeUserParticipates',
