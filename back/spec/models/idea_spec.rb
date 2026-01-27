@@ -10,6 +10,7 @@ RSpec.describe Idea do
   end
 
   it_behaves_like 'claimable_participation'
+  it_behaves_like 'location_trackable_participation'
 
   describe 'title validation' do
     it 'requires title_multiloc when title_multiloc_required? is true' do
