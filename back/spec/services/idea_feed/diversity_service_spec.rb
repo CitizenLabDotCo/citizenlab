@@ -53,5 +53,16 @@ describe IdeaFeed::DiversityService do
       expect(result[-2]).to eq(idea_without_embedding2)
       expect(result[-1]).to eq(idea_without_embedding1)
     end
+
+    it 'handles the case when seen ideas have no embeddings' do
+      idea_without_embedding = create(:idea)
+      create(:idea_exposure, idea: idea_without_embedding, user:)
+
+      previous_exposures = IdeaExposure.where(user:)
+      candidates = Idea.where.not(id: idea_without_embedding.id)
+      result = service.generate_list(candidates, previous_exposures)
+
+      expect(result).not_to be_empty
+    end
   end
 end
