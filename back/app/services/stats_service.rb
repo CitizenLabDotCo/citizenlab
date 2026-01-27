@@ -27,16 +27,4 @@ class StatsService
     end
     serie
   end
-
-  def filter_users_by_topic(users_scope, topic_id)
-    ideas = Idea
-      .joins(:ideas_topics)
-      .where(ideas_topics: { topic_id: topic_id })
-
-    idea_authors = ideas.pluck(:author_id)
-    comment_authors = Comment.where(post_id: ideas).pluck(:author_id)
-    reactors = Reaction.where(reactable_type: 'Idea', reactable_id: ideas).pluck(:user_id)
-
-    users_scope.where(id: idea_authors + comment_authors + reactors)
-  end
 end
