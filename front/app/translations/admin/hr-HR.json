@@ -1417,7 +1417,6 @@
   "app.containers.Admin.projects.project.insights.shared.aiTopicDistribution": "Raspodjela tema umjetne inteligencije",
   "app.containers.Admin.projects.project.insights.shared.aiTopicsSummary": "{inputsCount} unosi · {topicsCount} teme",
   "app.containers.Admin.projects.project.insights.shared.manualTagsByParticipants": "Ručne oznake od strane sudionika",
-  "app.containers.Admin.projects.project.insights.shared.manualTagsCoverage1": "Sudionici su ručno označili {tagged} od {total} unosa ({percentage}% pokrivenosti)",
   "app.containers.Admin.projects.project.insights.shared.manualTagsSummary": "{taggedCount} unosi · {topicsCount} teme",
   "app.containers.Admin.projects.project.insights.shared.noAiTopics": "Još nije generirana nijedna AI tema",
   "app.containers.Admin.projects.project.insights.shared.noManualTags": "Još nema ručno dodijeljenih oznaka",
