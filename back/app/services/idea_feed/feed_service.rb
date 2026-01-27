@@ -13,11 +13,12 @@ module IdeaFeed
 
     def top_n(n = 5, scope = Idea.all)
       eligible_ideas = fetch_eligible_ideas(scope)
-      eligible_ideas = fetch_all_ideas(scope) if eligible_ideas.none?
+      all_exposed = eligible_ideas.none?
+      eligible_ideas = fetch_all_ideas(scope) if all_exposed
 
-      candidates = fetch_candidates_with_scores(eligible_ideas)
+      candidates = fetch_candidates_with_scores(eligible_ideas, penalize_exposures: all_exposed)
       candidates = Idea.from(candidates, :ideas)
-        .order(Arel.sql('recency_score * 0.65 + engagement_score * 0.25 + wise_voice_score * 0.1 DESC'))
+        .order(Arel.sql('recency_score * 0.65 + engagement_score * 0.25 + wise_voice_score * 0.1 - exposure_penalty DESC'))
         .limit(n * 4)
 
       DiversityService.new.generate_list(candidates, exposures_scope, n)
@@ -37,13 +38,20 @@ module IdeaFeed
       end
     end
 
-    def fetch_candidates_with_scores(scope)
+    def fetch_candidates_with_scores(scope, penalize_exposures: false)
+      exposure_counts_sql = exposures_scope
+        .group(:idea_id)
+        .select(:idea_id, 'COUNT(*) as exposure_count')
+        .to_sql
+
       scope
         .left_joins(:wise_voice_flag)
+        .joins("LEFT JOIN (#{exposure_counts_sql}) AS exposure_counts ON exposure_counts.idea_id = ideas.id")
         .select("
           EXP(-EXTRACT(EPOCH FROM (NOW() - ideas.published_at)) / (30 * 86400)) as recency_score,
           (LN(1 + ideas.comments_count + ideas.likes_count * 0.5)) as engagement_score,
           CASE WHEN wise_voice_flags.id IS NULL THEN 0 ELSE 1 END as wise_voice_score,
+          #{penalize_exposures ? 'COALESCE(exposure_counts.exposure_count, 0)' : '0'} as exposure_penalty,
           ideas.*
         ")
     end
