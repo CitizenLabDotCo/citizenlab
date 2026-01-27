@@ -205,14 +205,14 @@ resource 'Ideas' do
           input.update! publication_status: 'published'
           do_request idea: { author_id: nil }
           assert_status 200
-          expect(json_response_body[:data][:attributes][:author_id]).to be(nil)
+          expect(json_response_body[:data][:attributes][:author_id]).to be_nil
         end
 
         example 'Publishing an idea without author', document: false do
           input.update! publication_status: 'draft', author: nil
           do_request idea: { publication_status: 'published' }
           assert_status 200
-          expect(json_response_body[:data][:attributes][:author_id]).to be(nil)
+          expect(json_response_body[:data][:attributes][:author_id]).to be_nil
         end
 
         describe 'draft ideas' do
