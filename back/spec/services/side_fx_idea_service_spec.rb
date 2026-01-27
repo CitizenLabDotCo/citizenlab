@@ -178,19 +178,19 @@ describe SideFxIdeaService do
         .not_to enqueue_job(WiseVoiceDetectionJob)
     end
 
-    it 'enqueues an IdeaFeed::TopicClassificationJob if the presentation_mode is feed' do
+    it 'enqueues an IdeaFeed::BatchTopicClassificationJob if the presentation_mode is feed' do
       idea = create(:idea)
       idea.phases.first.update!(presentation_mode: 'feed')
       expect { service.after_create(idea, user, phase) }
-        .to enqueue_job(IdeaFeed::TopicClassificationJob)
-        .with(idea.phases.first, idea)
+        .to enqueue_job(IdeaFeed::BatchTopicClassificationJob)
+        .with(idea.phases.first, [idea.id])
         .exactly(1).times
     end
 
-    it "doesn't enqueue an IdeaFeed::TopicClassificationJob if the presentation_mode is not feed" do
+    it "doesn't enqueue an IdeaFeed::BatchTopicClassificationJob if the presentation_mode is not feed" do
       idea = create(:idea)
       expect { service.after_create(idea, user, phase) }
-        .not_to enqueue_job(IdeaFeed::TopicClassificationJob)
+        .not_to enqueue_job(IdeaFeed::BatchTopicClassificationJob)
     end
   end
 
@@ -470,22 +470,21 @@ describe SideFxIdeaService do
         .with(idea)
     end
 
-    it 'enqueues an IdeaFeed::TopicClassificationJob when presentation_mode is feed and title or body changed' do
+    it 'enqueues an IdeaFeed::BatchTopicClassificationJob when presentation_mode is feed and title or body changed' do
       idea = create(:idea)
       idea.phases.first.update!(presentation_mode: 'feed')
       idea.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
-        .to enqueue_job(IdeaFeed::TopicClassificationJob)
-        .with(idea.phases.first, idea)
+        .to enqueue_job(IdeaFeed::BatchTopicClassificationJob)
+        .with(idea.phases.first, [idea.id])
         .exactly(1).times
     end
 
-    it 'does not enqueue an IdeaFeed::TopicClassificationJob when presentation_mode is not feed' do
+    it 'does not enqueue an IdeaFeed::BatchTopicClassificationJob when presentation_mode is not feed' do
       idea = create(:idea)
       idea.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
-        .not_to enqueue_job(IdeaFeed::TopicClassificationJob)
-        .with(idea)
+        .not_to enqueue_job(IdeaFeed::BatchTopicClassificationJob)
     end
 
     context 'user fields in survey form' do

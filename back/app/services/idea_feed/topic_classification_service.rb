@@ -52,9 +52,12 @@ module IdeaFeed
       results.to_h
     end
 
+    BATCH_SIZE = 24
+
     def classify_all_inputs_in_background!
-      classification_jobs = @phase.ideas.published.find_each.map do |input|
-        TopicClassificationJob.new(@phase, input)
+      idea_ids = @phase.ideas.published.pluck(:id)
+      classification_jobs = idea_ids.each_slice(BATCH_SIZE).map do |batch_ids|
+        BatchTopicClassificationJob.new(@phase, batch_ids)
       end
       ActiveJob.perform_all_later(classification_jobs)
     end
