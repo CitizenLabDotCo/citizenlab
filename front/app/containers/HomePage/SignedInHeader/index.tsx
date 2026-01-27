@@ -98,10 +98,16 @@ const SignedInHeader = ({
   let phoneHeight: number;
 
   if (useConsistentHeight) {
-    // Use the same height as the signed-out banner for this layout type
-    desktopHeight = layoutDefaults.desktop;
-    tabletHeight = layoutDefaults.tablet;
-    phoneHeight = layoutDefaults.phone;
+    // Use the same height as the signed-out banner (custom values if set, otherwise layout defaults)
+    desktopHeight =
+      homepageSettings.banner_signed_out_header_height_desktop ??
+      layoutDefaults.desktop;
+    tabletHeight =
+      homepageSettings.banner_signed_out_header_height_tablet ??
+      layoutDefaults.tablet;
+    phoneHeight =
+      homepageSettings.banner_signed_out_header_height_phone ??
+      layoutDefaults.phone;
   } else {
     // Use the custom signed-in heights, or fall back to default heights
     desktopHeight =

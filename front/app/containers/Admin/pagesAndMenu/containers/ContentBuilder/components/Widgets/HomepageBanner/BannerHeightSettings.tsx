@@ -24,7 +24,12 @@ interface Props {
   onDesktopHeightChange: (value?: number) => void;
   onTabletHeightChange: (value?: number) => void;
   onPhoneHeightChange: (value?: number) => void;
+  desktopPlaceholder: string;
+  tabletPlaceholder: string;
+  phonePlaceholder: string;
   disabled: boolean;
+  showToggle?: boolean;
+  bannerVersion?: 'signedIn' | 'signedOut';
 }
 
 const BannerHeightSettings = ({
@@ -36,29 +41,35 @@ const BannerHeightSettings = ({
   onDesktopHeightChange,
   onTabletHeightChange,
   onPhoneHeightChange,
+  desktopPlaceholder,
+  tabletPlaceholder,
+  phonePlaceholder,
   disabled,
+  showToggle = true,
+  bannerVersion = 'signedIn',
 }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box mt="8px">
-      <Toggle
-        disabled={disabled}
-        label={
-          <Box>
-            <Text m={'0px'} color="primary">
-              {formatMessage(messages.useConsistentBannerHeight)}
-            </Text>
-            <Text m={'0px'} color="textSecondary" fontSize="s">
-              {formatMessage(messages.useConsistentBannerHeightDescription)}
-            </Text>
-          </Box>
-        }
-        checked={useConsistentHeight}
-        onChange={onToggleConsistentHeight}
-      />
+    <Box>
+      {showToggle && (
+        <Toggle
+          label={
+            <Box>
+              <Text m={'0px'} color="primary">
+                {formatMessage(messages.useSameHeight)}
+              </Text>
+              <Text m={'0px'} color="textSecondary" fontSize="s">
+                {formatMessage(messages.useSameHeightDescription)}
+              </Text>
+            </Box>
+          }
+          checked={useConsistentHeight}
+          onChange={onToggleConsistentHeight}
+        />
+      )}
 
-      <Box>
+      <Box mb="18px">
         <Accordion
           mt="12px"
           p="8px"
@@ -72,7 +83,9 @@ const BannerHeightSettings = ({
           <Box>
             <Text mt="0px" mb="8px" fontSize="s" color="textSecondary">
               <FormattedMessage
-                {...messages.advancedHeightCustomizationInfoSignedIn}
+                {...(bannerVersion === 'signedIn'
+                  ? messages.advancedHeightCustomizationInfoSignedIn
+                  : messages.advancedHeightCustomizationInfoSignedOut)}
                 values={{
                   bold: (chunks) => <strong>{chunks}</strong>,
                 }}
@@ -88,13 +101,13 @@ const BannerHeightSettings = ({
                   type="number"
                   min="50"
                   max="800"
-                  placeholder={'200'}
+                  placeholder={desktopPlaceholder}
                   value={desktopHeight?.toString() || ''}
                   onChange={(value) => {
                     const numValue = value ? parseInt(value, 10) : undefined;
                     onDesktopHeightChange(numValue);
                   }}
-                  disabled={disabled || useConsistentHeight}
+                  disabled={disabled}
                 />
               </Box>
               <Box>
@@ -106,13 +119,13 @@ const BannerHeightSettings = ({
                   type="number"
                   min="50"
                   max="800"
-                  placeholder={'250'}
+                  placeholder={tabletPlaceholder}
                   value={tabletHeight?.toString() || ''}
                   onChange={(value) => {
                     const numValue = value ? parseInt(value, 10) : undefined;
                     onTabletHeightChange(numValue);
                   }}
-                  disabled={disabled || useConsistentHeight}
+                  disabled={disabled}
                 />
               </Box>
               <Box>
@@ -124,21 +137,21 @@ const BannerHeightSettings = ({
                   type="number"
                   min="50"
                   max="800"
-                  placeholder={'300'}
+                  placeholder={phonePlaceholder}
                   value={phoneHeight?.toString() || ''}
                   onChange={(value) => {
                     const numValue = value ? parseInt(value, 10) : undefined;
                     onPhoneHeightChange(numValue);
                   }}
-                  disabled={disabled || useConsistentHeight}
+                  disabled={disabled}
                 />
               </Box>
             </Box>
           </Box>
-          {useConsistentHeight && (
+          {disabled && (
             <Warning mt="12px">
               <Text m="0px" fontSize="s" color="teal700">
-                <FormattedMessage {...messages.disableConsistentHeightInfo} />
+                <FormattedMessage {...messages.disableSameHeightInfo} />
               </Text>
             </Warning>
           )}

@@ -22,6 +22,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
+import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 import homepageMessages from 'containers/HomePage/messages';
 import SignedInHeader from 'containers/HomePage/SignedInHeader';
 import SignedOutHeader from 'containers/HomePage/SignedOutHeader';
@@ -105,7 +106,11 @@ export interface IHomepageBannerSettings {
   banner_signed_in_header_height_desktop?: number;
   banner_signed_in_header_height_tablet?: number;
   banner_signed_in_header_height_phone?: number;
-  // consistent banner height
+  // signed_out header heights (in pixels)
+  banner_signed_out_header_height_desktop?: number;
+  banner_signed_out_header_height_tablet?: number;
+  banner_signed_out_header_height_phone?: number;
+  // use same height for both banners
   banner_use_consistent_height?: boolean;
   // cta_signed_in
   banner_cta_signed_in_text_multiloc: Multiloc;
@@ -218,6 +223,13 @@ const HomepageBannerSettings = () => {
         node.data.props.homepageSettings.banner_signed_in_header_height_tablet,
       banner_signed_in_header_height_phone:
         node.data.props.homepageSettings.banner_signed_in_header_height_phone,
+      banner_signed_out_header_height_desktop:
+        node.data.props.homepageSettings
+          .banner_signed_out_header_height_desktop,
+      banner_signed_out_header_height_tablet:
+        node.data.props.homepageSettings.banner_signed_out_header_height_tablet,
+      banner_signed_out_header_height_phone:
+        node.data.props.homepageSettings.banner_signed_out_header_height_phone,
       banner_use_consistent_height:
         node.data.props.homepageSettings.banner_use_consistent_height,
     },
@@ -384,11 +396,23 @@ const HomepageBannerSettings = () => {
       <LayoutSettingField
         bannerLayout={homepageSettings.banner_layout}
         onChange={(value) => {
-          setProp(
-            (props: Props) =>
-              (props.homepageSettings.banner_layout =
-                value as THomepageBannerLayout)
-          );
+          setProp((props: Props) => {
+            props.homepageSettings.banner_layout =
+              value as THomepageBannerLayout;
+            // Clear custom height values when layout changes so defaults for new layout are used
+            props.homepageSettings.banner_signed_in_header_height_desktop =
+              undefined;
+            props.homepageSettings.banner_signed_in_header_height_tablet =
+              undefined;
+            props.homepageSettings.banner_signed_in_header_height_phone =
+              undefined;
+            props.homepageSettings.banner_signed_out_header_height_desktop =
+              undefined;
+            props.homepageSettings.banner_signed_out_header_height_tablet =
+              undefined;
+            props.homepageSettings.banner_signed_out_header_height_phone =
+              undefined;
+          });
         }}
       />
 
@@ -422,47 +446,6 @@ const HomepageBannerSettings = () => {
               }}
               onRemove={handleOnRemove}
             />
-            {search.get('variant') !== 'signedOut' && (
-              <BannerHeightSettings
-                useConsistentHeight={
-                  homepageSettings.banner_use_consistent_height === true
-                }
-                onToggleConsistentHeight={() => {
-                  setProp((props: Props) => {
-                    props.homepageSettings.banner_use_consistent_height =
-                      !homepageSettings.banner_use_consistent_height;
-                  });
-                }}
-                desktopHeight={
-                  homepageSettings.banner_signed_in_header_height_desktop
-                }
-                tabletHeight={
-                  homepageSettings.banner_signed_in_header_height_tablet
-                }
-                phoneHeight={
-                  homepageSettings.banner_signed_in_header_height_phone
-                }
-                onDesktopHeightChange={(value) => {
-                  setProp((props: Props) => {
-                    props.homepageSettings.banner_signed_in_header_height_desktop =
-                      value;
-                  });
-                }}
-                onTabletHeightChange={(value) => {
-                  setProp((props: Props) => {
-                    props.homepageSettings.banner_signed_in_header_height_tablet =
-                      value;
-                  });
-                }}
-                onPhoneHeightChange={(value) => {
-                  setProp((props: Props) => {
-                    props.homepageSettings.banner_signed_in_header_height_phone =
-                      value;
-                  });
-                }}
-                disabled={!customHomepageBannerAllowed}
-              />
-            )}
           </>
         )}
       </>
@@ -503,6 +486,53 @@ const HomepageBannerSettings = () => {
           <Text m={'0px'} color="textSecondary">
             {formatMessage(messages.signedOutDescription)}
           </Text>
+
+          {homepageSettings.banner_layout !== 'fixed_ratio_layout' && (
+            <BannerHeightSettings
+              useConsistentHeight={false}
+              onToggleConsistentHeight={() => {}}
+              desktopHeight={
+                homepageSettings.banner_signed_out_header_height_desktop
+              }
+              tabletHeight={
+                homepageSettings.banner_signed_out_header_height_tablet
+              }
+              phoneHeight={
+                homepageSettings.banner_signed_out_header_height_phone
+              }
+              onDesktopHeightChange={(value) => {
+                setProp((props: Props) => {
+                  props.homepageSettings.banner_signed_out_header_height_desktop =
+                    value;
+                });
+              }}
+              onTabletHeightChange={(value) => {
+                setProp((props: Props) => {
+                  props.homepageSettings.banner_signed_out_header_height_tablet =
+                    value;
+                });
+              }}
+              onPhoneHeightChange={(value) => {
+                setProp((props: Props) => {
+                  props.homepageSettings.banner_signed_out_header_height_phone =
+                    value;
+                });
+              }}
+              desktopPlaceholder={homepageBannerLayoutHeights[
+                homepageSettings.banner_layout
+              ].desktop.toString()}
+              tabletPlaceholder={homepageBannerLayoutHeights[
+                homepageSettings.banner_layout
+              ].tablet.toString()}
+              phonePlaceholder={homepageBannerLayoutHeights[
+                homepageSettings.banner_layout
+              ].phone.toString()}
+              disabled={!customHomepageBannerAllowed}
+              showToggle={false}
+              bannerVersion="signedOut"
+            />
+          )}
+
           {homepageSettings.banner_layout !== 'two_row_layout' && (
             <OverlayControls
               bannerOverlayColor={
@@ -652,6 +682,83 @@ const HomepageBannerSettings = () => {
           <Text m={'0px'} color="textSecondary">
             {formatMessage(messages.signedInDescription)}
           </Text>
+
+          {homepageSettings.banner_layout !== 'fixed_ratio_layout' && (
+            <BannerHeightSettings
+              useConsistentHeight={
+                homepageSettings.banner_use_consistent_height === true
+              }
+              onToggleConsistentHeight={() => {
+                setProp((props: Props) => {
+                  props.homepageSettings.banner_use_consistent_height =
+                    !homepageSettings.banner_use_consistent_height;
+                });
+              }}
+              desktopHeight={
+                homepageSettings.banner_signed_in_header_height_desktop
+              }
+              tabletHeight={
+                homepageSettings.banner_signed_in_header_height_tablet
+              }
+              phoneHeight={
+                homepageSettings.banner_signed_in_header_height_phone
+              }
+              onDesktopHeightChange={(value) => {
+                setProp((props: Props) => {
+                  props.homepageSettings.banner_signed_in_header_height_desktop =
+                    value;
+                });
+              }}
+              onTabletHeightChange={(value) => {
+                setProp((props: Props) => {
+                  props.homepageSettings.banner_signed_in_header_height_tablet =
+                    value;
+                });
+              }}
+              onPhoneHeightChange={(value) => {
+                setProp((props: Props) => {
+                  props.homepageSettings.banner_signed_in_header_height_phone =
+                    value;
+                });
+              }}
+              desktopPlaceholder={
+                homepageSettings.banner_use_consistent_height === true
+                  ? (
+                      homepageSettings.banner_signed_out_header_height_desktop ??
+                      homepageBannerLayoutHeights[
+                        homepageSettings.banner_layout
+                      ].desktop
+                    ).toString()
+                  : '200'
+              }
+              tabletPlaceholder={
+                homepageSettings.banner_use_consistent_height === true
+                  ? (
+                      homepageSettings.banner_signed_out_header_height_tablet ??
+                      homepageBannerLayoutHeights[
+                        homepageSettings.banner_layout
+                      ].tablet
+                    ).toString()
+                  : '250'
+              }
+              phonePlaceholder={
+                homepageSettings.banner_use_consistent_height === true
+                  ? (
+                      homepageSettings.banner_signed_out_header_height_phone ??
+                      homepageBannerLayoutHeights[
+                        homepageSettings.banner_layout
+                      ].phone
+                    ).toString()
+                  : '300'
+              }
+              disabled={
+                !customHomepageBannerAllowed ||
+                homepageSettings.banner_use_consistent_height === true
+              }
+              showToggle={true}
+              bannerVersion="signedIn"
+            />
+          )}
 
           <OverlayControls
             bannerOverlayColor={

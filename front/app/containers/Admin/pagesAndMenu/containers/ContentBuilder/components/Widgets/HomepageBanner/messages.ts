@@ -160,28 +160,33 @@ export default defineMessages({
     id: 'app.containers.ContentBuilder.homepage.headerHeightPhone',
     defaultMessage: 'Phone',
   },
-  useConsistentBannerHeight: {
-    id: 'app.containers.ContentBuilder.homepage.useConsistentBannerHeight',
-    defaultMessage: 'Use consistent banner height',
+  useSameHeight: {
+    id: 'app.containers.ContentBuilder.homepage.useSameHeight',
+    defaultMessage: 'Use same height as non-registered banner',
   },
-  useConsistentBannerHeightDescription: {
-    id: 'app.containers.ContentBuilder.homepage.useConsistentBannerHeightDescription3',
+  useSameHeightDescription: {
+    id: 'app.containers.ContentBuilder.homepage.useSameHeightDescription',
     defaultMessage:
-      'When enabled, the banner for registered users will use the same default height as the banner for non-registered users (based on the selected layout).',
+      'When enabled, the banner for registered users will use the same heights as the banner for non-registered users.',
   },
   advancedHeightCustomization: {
-    id: 'app.containers.ContentBuilder.homepage.advancedHeightCustomization',
-    defaultMessage: 'Advanced height customization',
+    id: 'app.containers.ContentBuilder.homepage.advancedHeightCustomization2',
+    defaultMessage: 'Advanced height customization (non-registered users)',
   },
   advancedHeightCustomizationInfoSignedIn: {
     id: 'app.containers.ContentBuilder.homepage.advancedHeightCustomizationInfoSignedIn2',
     defaultMessage:
       'These settings customize the banner height specifically for <bold>registered users</bold>.',
   },
-  disableConsistentHeightInfo: {
-    id: 'app.containers.ContentBuilder.homepage.disableConsistentHeightInfo2',
+  advancedHeightCustomizationInfoSignedOut: {
+    id: 'app.containers.ContentBuilder.homepage.advancedHeightCustomizationInfoSignedOut',
     defaultMessage:
-      "Disable 'Use consistent banner height' to edit these values.",
+      'These settings customize the banner height specifically for <bold>non-registered users</bold>.',
+  },
+  disableSameHeightInfo: {
+    id: 'app.containers.ContentBuilder.homepage.disableSameHeightInfo',
+    defaultMessage:
+      "Disable 'Use same height as non-registered banner' to edit these values.",
   },
   desktopHeightPx: {
     id: 'app.containers.ContentBuilder.homepage.desktopHeightPx',
