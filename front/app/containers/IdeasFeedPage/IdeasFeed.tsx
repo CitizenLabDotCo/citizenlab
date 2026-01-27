@@ -140,8 +140,9 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
   }, [flatIdeas, initialIdeaId]);
 
   // Fetch the initial idea separately if it's not in the list
-  const { data: initialIdeaData, isFetching: isFetchingInitialIdea } =
-    useIdeaById(initialIdeaInList ? undefined : initialIdeaId);
+  const { data: initialIdeaData } = useIdeaById(
+    initialIdeaInList ? undefined : initialIdeaId
+  );
 
   // Reorder ideas to put the initial idea first (if provided), otherwise keep original order
   const orderedIdeas = useMemo(() => {
@@ -250,7 +251,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
     ]
   );
 
-  if (isLoading || isFetchingInitialIdea) {
+  if (isLoading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" h="100vh">
         <Spinner />
