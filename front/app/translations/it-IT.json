@@ -1612,7 +1612,7 @@
   "app.containers.NewAuthModal.steps.Password.rememberMe": "Ricordati di me",
   "app.containers.NewAuthModal.steps.Password.rememberMeTooltip": "Non selezionare se si utilizza un computer pubblico",
   "app.containers.NewAuthModal.steps.Success.allDone": "Completato",
-  "app.containers.NewAuthModal.steps.Success.nowContinueYourParticipation": "Ora continuate a partecipare.",
+  "app.containers.NewAuthModal.steps.Success.nowContinueYourParticipation": "Ora puoi continuare a partecipare.",
   "app.containers.NewAuthModal.steps.VerificationSuccess.userVerifiedSubtitle": "La tua identità è stata verificata. Ora sei un membro a pieno titolo della comunità di questa piattaforma.",
   "app.containers.NewAuthModal.steps.VerificationSuccess.userVerifiedTitle": "Ora sei verificato!",
   "app.containers.NewAuthModal.steps.close": "Chiudere",
