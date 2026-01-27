@@ -52,7 +52,7 @@ function createAnswersTable(
       let answerText: string;
       if (result.multilocs?.answer && answer.answer !== null) {
         const multiloc =
-          result.multilocs.answer[String(answer.answer)]?.title_multiloc;
+          result.multilocs.answer[String(answer.answer)].title_multiloc;
         answerText = localize(multiloc) || String(answer.answer);
       } else {
         answerText = answer.answer !== null ? String(answer.answer) : '-';
@@ -107,14 +107,10 @@ function createAnswersTable(
 
     for (const [optionId, avgRank] of entries) {
       // Get localized option text
-      let optionText: string;
-      if (result.multilocs?.answer && result.multilocs.answer[optionId]) {
-        optionText =
-          localize(result.multilocs.answer[optionId]?.title_multiloc) ||
-          optionId;
-      } else {
-        optionText = optionId;
-      }
+      const answerMultiloc = result.multilocs?.answer[optionId];
+      const optionText = answerMultiloc
+        ? localize(answerMultiloc.title_multiloc) || optionId
+        : optionId;
 
       rows.push([optionText, `#${avgRank}`]);
     }

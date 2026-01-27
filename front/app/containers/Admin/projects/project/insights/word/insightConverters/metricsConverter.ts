@@ -70,7 +70,7 @@ export function createMetricsSection(
       formatMessage(messages.visitors),
       formatNumber(metrics.visitors),
       showChanges
-        ? formatChange(metrics.visitors_7_day_change, formatMessage)
+        ? formatChange(metrics.visitors_7_day_percent_change, formatMessage)
         : undefined
     )
   );
@@ -80,7 +80,7 @@ export function createMetricsSection(
       formatMessage(messages.participants),
       formatNumber(metrics.participants),
       showChanges
-        ? formatChange(metrics.participants_7_day_change, formatMessage)
+        ? formatChange(metrics.participants_7_day_percent_change, formatMessage)
         : undefined
     )
   );
@@ -88,9 +88,12 @@ export function createMetricsSection(
   rows.push(
     createMetricRow(
       formatMessage(messages.participationRate),
-      formatPercent(metrics.participation_rate),
+      formatPercent(metrics.participation_rate_as_percent),
       showChanges
-        ? formatChange(metrics.participation_rate_7_day_change, formatMessage)
+        ? formatChange(
+            metrics.participation_rate_7_day_percent_change,
+            formatMessage
+          )
         : undefined
     )
   );
@@ -103,7 +106,7 @@ export function createMetricsSection(
         formatNumber(metrics.ideation.ideas_posted),
         showChanges
           ? formatChange(
-              metrics.ideation.ideas_posted_7_day_change,
+              metrics.ideation.ideas_posted_7_day_percent_change,
               formatMessage
             )
           : undefined
@@ -115,7 +118,7 @@ export function createMetricsSection(
         formatNumber(metrics.ideation.comments_posted),
         showChanges
           ? formatChange(
-              metrics.ideation.comments_posted_7_day_change,
+              metrics.ideation.comments_posted_7_day_percent_change,
               formatMessage
             )
           : undefined
@@ -126,7 +129,10 @@ export function createMetricsSection(
         formatMessage(messages.reactions),
         formatNumber(metrics.ideation.reactions),
         showChanges
-          ? formatChange(metrics.ideation.reactions_7_day_change, formatMessage)
+          ? formatChange(
+              metrics.ideation.reactions_7_day_percent_change,
+              formatMessage
+            )
           : undefined
       )
     );
@@ -139,7 +145,7 @@ export function createMetricsSection(
         formatNumber(metrics.proposals.ideas_posted),
         showChanges
           ? formatChange(
-              metrics.proposals.ideas_posted_7_day_change,
+              metrics.proposals.ideas_posted_7_day_percent_change,
               formatMessage
             )
           : undefined
@@ -151,7 +157,7 @@ export function createMetricsSection(
         formatNumber(metrics.proposals.reached_threshold),
         showChanges
           ? formatChange(
-              metrics.proposals.reached_threshold_7_day_change,
+              metrics.proposals.reached_threshold_7_day_percent_change,
               formatMessage
             )
           : undefined
@@ -163,7 +169,7 @@ export function createMetricsSection(
         formatNumber(metrics.proposals.comments_posted),
         showChanges
           ? formatChange(
-              metrics.proposals.comments_posted_7_day_change,
+              metrics.proposals.comments_posted_7_day_percent_change,
               formatMessage
             )
           : undefined
@@ -178,7 +184,7 @@ export function createMetricsSection(
         formatNumber(metrics.native_survey.surveys_submitted),
         showChanges
           ? formatChange(
-              metrics.native_survey.surveys_submitted_7_day_change,
+              metrics.native_survey.surveys_submitted_7_day_percent_change,
               formatMessage
             )
           : undefined
@@ -187,10 +193,10 @@ export function createMetricsSection(
     rows.push(
       createMetricRow(
         formatMessage(messages.completionRate),
-        formatPercent(metrics.native_survey.completion_rate),
+        formatPercent(metrics.native_survey.completion_rate_as_percent),
         showChanges
           ? formatChange(
-              metrics.native_survey.completion_rate_7_day_change,
+              metrics.native_survey.completion_rate_7_day_percent_change,
               formatMessage
             )
           : undefined
@@ -204,7 +210,10 @@ export function createMetricsSection(
         formatMessage(messages.voters),
         formatNumber(metrics.voting.voters),
         showChanges
-          ? formatChange(metrics.voting.voters_7_day_change, formatMessage)
+          ? formatChange(
+              metrics.voting.voters_7_day_percent_change,
+              formatMessage
+            )
           : undefined
       )
     );
@@ -216,7 +225,7 @@ export function createMetricsSection(
         ),
         showChanges
           ? formatChange(
-              metrics.voting.online_votes_7_day_change,
+              metrics.voting.online_votes_7_day_percent_change,
               formatMessage
             )
           : undefined

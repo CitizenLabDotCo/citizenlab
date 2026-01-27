@@ -15,7 +15,6 @@ import {
   WORD_FONTS,
   WORD_FONT_SIZES,
   WORD_COLORS,
-  WORD_SPACING,
 } from '../utils/styleConstants';
 
 import { createHeading } from './textConverter';
@@ -321,60 +320,4 @@ function createCellBorders() {
       color: WORD_TABLE_STYLES.borderColor,
     },
   };
-}
-
-/**
- * Creates a simple list-style breakdown without visual bars.
- * Useful for simpler representations.
- */
-export function createSimpleBreakdownList(
-  items: BreakdownItem[],
-  options: { title?: string; maxItems?: number } = {}
-): Paragraph[] {
-  const { title, maxItems } = options;
-  const displayItems = maxItems ? items.slice(0, maxItems) : items;
-
-  const result: Paragraph[] = [];
-
-  if (title) {
-    result.push(createHeading(title, 3));
-  }
-
-  displayItems.forEach((item) => {
-    result.push(
-      new Paragraph({
-        children: [
-          new TextRun({
-            text: `${item.name}: `,
-            font: WORD_FONTS.body,
-            size: WORD_FONT_SIZES.body,
-            color: WORD_COLORS.textPrimary,
-            bold: true,
-          }),
-          new TextRun({
-            text: `${item.count}`,
-            font: WORD_FONTS.body,
-            size: WORD_FONT_SIZES.body,
-            color: WORD_COLORS.textSecondary,
-          }),
-          ...(item.percentage !== undefined
-            ? [
-                new TextRun({
-                  text: ` (${Math.round(item.percentage)}%)`,
-                  font: WORD_FONTS.body,
-                  size: WORD_FONT_SIZES.body,
-                  color: WORD_COLORS.textSecondary,
-                }),
-              ]
-            : []),
-        ],
-        spacing: {
-          before: WORD_SPACING.paragraphBefore / 2,
-          after: WORD_SPACING.paragraphAfter / 2,
-        },
-      })
-    );
-  });
-
-  return result;
 }

@@ -49,17 +49,3 @@ export async function htmlToImageBuffer(
     );
   });
 }
-
-/**
- * Gets the dimensions of an HTML element.
- * Useful for calculating aspect ratios.
- */
-export function getElementDimensions(element: HTMLElement): {
-  width: number;
-  height: number;
-} {
-  return {
-    width: element.offsetWidth || element.clientWidth || 800,
-    height: element.offsetHeight || element.clientHeight || 400,
-  };
-}

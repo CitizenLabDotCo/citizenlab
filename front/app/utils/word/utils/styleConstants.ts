@@ -1,5 +1,5 @@
 import { colors } from '@citizenlab/cl2-component-library';
-import { AlignmentType, HeadingLevel, convertInchesToTwip } from 'docx';
+import { convertInchesToTwip } from 'docx';
 
 // Word document styling constants
 // Designed for reuse across insights export and report builder
@@ -76,14 +76,6 @@ export const WORD_TABLE_STYLES = {
   },
 };
 
-// Chart/image dimensions
-export const WORD_IMAGE_DIMENSIONS = {
-  fullWidth: convertInchesToTwip(6.5), // Full content width
-  halfWidth: convertInchesToTwip(3), // Half width for side-by-side
-  chartHeight: convertInchesToTwip(3), // Standard chart height
-  thumbnailSize: convertInchesToTwip(1), // Small thumbnail
-};
-
 // Common text run styles
 export const TEXT_STYLES = {
   title: {
@@ -126,20 +118,4 @@ export const TEXT_STYLES = {
     color: WORD_COLORS.textSecondary,
     italics: true,
   },
-};
-
-// Paragraph alignment helpers
-export const PARAGRAPH_ALIGNMENT = {
-  left: AlignmentType.LEFT,
-  center: AlignmentType.CENTER,
-  right: AlignmentType.RIGHT,
-  justified: AlignmentType.JUSTIFIED,
-};
-
-// Heading levels for document outline
-export const HEADING_LEVELS = {
-  title: HeadingLevel.TITLE,
-  heading1: HeadingLevel.HEADING_1,
-  heading2: HeadingLevel.HEADING_2,
-  heading3: HeadingLevel.HEADING_3,
 };
