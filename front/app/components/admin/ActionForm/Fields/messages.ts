@@ -76,30 +76,24 @@ export default defineMessages({
     defaultMessage:
       'With the current combination of "Authentication" and "User data collection" settings, demographic questions can only be asked in the registration flow.',
   },
-  appendDemographicAnswers: {
-    id: 'app.components.admin.ActionForm.Fields.appendDemographicAnswers',
-    defaultMessage:
-      'Automatically append demographic answers from registered user profiles to the results',
+  askDemographicQuestionsBeforeUserParticipates: {
+    id: 'app.components.admin.ActionForm.Fields.askDemographicQuestionsBeforeUserParticipates',
+    defaultMessage: 'Ask demographic questions before user participates',
   },
-  appendDemographicAnswersTooltip: {
-    id: 'app.components.admin.ActionForm.Fields.appendDemographicAnswersTooltip',
+  askDemographicQuestionsBeforeUserParticipatesTooltip: {
+    id: 'app.components.admin.ActionForm.Fields.askDemographicQuestionsBeforeUserParticipatesTooltip',
     defaultMessage:
-      "If this information is not yet in the user's profile, the user will be prompted to fill it out before the survey.",
+      "If the user has already answered these questions, they won't be asked.",
   },
   collectDemographicsByAddingNewPage: {
     id: 'app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage',
     defaultMessage:
       'Collect demographic questions by adding a new page to the end of the survey',
   },
-  collectDemographicsByAddingNewPageTooltip1: {
-    id: 'app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPageTooltip1',
+  collectDemographicsByAddingNewPageTooltip: {
+    id: 'app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPageTooltip',
     defaultMessage:
       "If this information is already in the user's profile, it will be used to pre-fill these questions.",
-  },
-  collectDemographicsByAddingNewPageTooltip2: {
-    id: 'app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPageTooltip2',
-    defaultMessage:
-      'Besides being stored in the survey, the answers will be used to update the profile of registered users.',
   },
   globalRegFlow: {
     id: 'app.components.admin.ActionForm.Fields.globalRegFlow',
