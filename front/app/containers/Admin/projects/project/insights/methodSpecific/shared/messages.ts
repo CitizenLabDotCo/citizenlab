@@ -63,9 +63,9 @@ export default defineMessages({
     defaultMessage:
       "Automatically organize all inputs into meaningful themes, even when participants don't tag them.",
   },
-  upgradeToPro: {
-    id: 'app.containers.Admin.projects.project.insights.shared.upgradeToPro',
-    defaultMessage: 'Upgrade to Pro',
+  upgradeYourPlan: {
+    id: 'app.containers.Admin.projects.project.insights.shared.upgradeYourPlan',
+    defaultMessage: 'Upgrade your plan',
   },
   manualTagsSummary: {
     id: 'app.containers.Admin.projects.project.insights.shared.manualTagsSummary',
