@@ -1417,7 +1417,7 @@
   "app.containers.Admin.projects.project.insights.shared.aiTopicDistribution": "AI Topic Distribution",
   "app.containers.Admin.projects.project.insights.shared.aiTopicsSummary": "{inputsCount} inputs · {topicsCount} topics",
   "app.containers.Admin.projects.project.insights.shared.manualTagsByParticipants": "Manual Tags by Participants",
-  "app.containers.Admin.projects.project.insights.shared.manualTagsCoverage1": "{tagged} of {total} inputs were manually tagged by participants ({percentage}% coverage)",
+  "app.containers.Admin.projects.project.insights.shared.manualTagsCoverage1": "Els participants han etiquetat manualment {tagged} de {total} entrades ({percentage}% de cobertura)",
   "app.containers.Admin.projects.project.insights.shared.manualTagsSummary": "{taggedCount} inputs · {topicsCount} topics",
   "app.containers.Admin.projects.project.insights.shared.noAiTopics": "No AI topics generated yet",
   "app.containers.Admin.projects.project.insights.shared.noManualTags": "No manual tags assigned yet",
