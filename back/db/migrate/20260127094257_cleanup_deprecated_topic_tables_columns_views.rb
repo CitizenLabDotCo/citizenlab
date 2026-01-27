@@ -18,6 +18,7 @@ class CleanupDeprecatedTopicTablesColumnsViews < ActiveRecord::Migration[7.2]
 
       # Remove deprecated columns
       remove_column :input_topics, :ordering, if_exists: true
+      remove_column :default_input_topics, :ordering, if_exists: true
       remove_column :global_topics, :is_default, if_exists: true
     end
   end
@@ -26,7 +27,7 @@ class CleanupDeprecatedTopicTablesColumnsViews < ActiveRecord::Migration[7.2]
     # Recreate columns
     add_column :global_topics, :is_default, :boolean, default: false, null: false unless column_exists?(:global_topics, :is_default)
     add_column :input_topics, :ordering, :integer, default: 0, null: false unless column_exists?(:input_topics, :ordering)
-
+    add_column :default_input_topics, :ordering, :integer, default: 0, null: false unless column_exists?(:default_input_topics, :ordering)
     # Recreate projects_allowed_input_topics table
     unless table_exists?(:projects_allowed_input_topics)
       create_table :projects_allowed_input_topics, id: :uuid do |t|
