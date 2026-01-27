@@ -61,9 +61,9 @@ class ClaimTokenService
     # Gets the lastly created item. If this item
     # contains demographic data: we copy it into the user's profile.
     # @param user [User] the user to claim items for
-    # @param items [Array<ClaimableParticipation>, nil] claimed items, or nil if pending confirmation
+    # @param items [Array<ClaimableParticipation>] claimed items
     def sync_demographics!(user, items)
-      lastly_created_item = items.filter(&:present?).max_by(&:created_at)
+      lastly_created_item = items.max_by(&:created_at)
       return unless lastly_created_item
 
       UserFieldsInFormService.merge_user_fields_from_idea_into_user!(lastly_created_item, user)
