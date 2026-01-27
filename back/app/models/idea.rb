@@ -194,6 +194,16 @@ class Idea < ApplicationRecord
     where(id: ideas)
   end)
 
+  # Same as with_some_input_topics, but also includes ideas assigned to child topics
+  scope :with_some_input_topics_and_children, (proc do |input_topics|
+    input_topics = Array(input_topics)
+    input_topic_ids = InputTopic.where(id: input_topics).or(
+      InputTopic.where(parent_id: input_topics)
+    ).pluck(:id)
+    ideas = joins(:ideas_input_topics).where(ideas_input_topics: { input_topic_id: input_topic_ids })
+    where(id: ideas)
+  end)
+
   scope :in_phase, (proc do |phase_id|
     joins(:ideas_phases)
       .where(ideas_phases: { phase_id: phase_id })

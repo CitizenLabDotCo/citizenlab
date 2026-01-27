@@ -4,25 +4,23 @@ import { CLErrors } from 'typings';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import inputTopicsKeys from './keys';
-import { IInputTopic } from './types';
+import { IInputTopic, IInputTopicMove, MovePosition } from './types';
 
-type IReorderInputTopic = {
+type IMoveInputTopicParams = IInputTopicMove & {
   projectId: string;
-  id: string;
-  ordering: number;
 };
 
-const reorderInputTopic = ({ id, ordering }: IReorderInputTopic) =>
+const moveInputTopic = ({ id, position, target_id }: IMoveInputTopicParams) =>
   fetcher<IInputTopic>({
-    path: `/input_topics/${id}/reorder`,
+    path: `/input_topics/${id}/move`,
     action: 'patch',
-    body: { input_topic: { ordering } },
+    body: { input_topic: { position, target_id } },
   });
 
-const useReorderInputTopic = () => {
+const useMoveInputTopic = () => {
   const queryClient = useQueryClient();
-  return useMutation<IInputTopic, CLErrors, IReorderInputTopic>({
-    mutationFn: reorderInputTopic,
+  return useMutation<IInputTopic, CLErrors, IMoveInputTopicParams>({
+    mutationFn: moveInputTopic,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: inputTopicsKeys.list({ projectId: variables.projectId }),
@@ -31,4 +29,6 @@ const useReorderInputTopic = () => {
   });
 };
 
-export default useReorderInputTopic;
+export default useMoveInputTopic;
+
+export type { MovePosition };

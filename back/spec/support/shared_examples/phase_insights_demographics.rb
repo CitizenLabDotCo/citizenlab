@@ -7,7 +7,6 @@ RSpec.shared_examples 'phase insights demographics' do |gender_blank:, birthyear
       key: 'gender',
       code: nil,
       input_type: 'select',
-      r_score: 0.0,
       title_multiloc: { en: 'Gender' },
       series: { male: 1, female: 1, unspecified: 0, _blank: gender_blank },
       options: {
@@ -21,7 +20,6 @@ RSpec.shared_examples 'phase insights demographics' do |gender_blank:, birthyear
       key: 'birthyear',
       code: nil,
       input_type: 'number',
-      r_score: 0.0,
       title_multiloc: { en: 'Birthyear' },
       series: { '18-24': 0, '25-34': 0, '35-44': 1, '45-54': 1, '55-64': 0, '65+': 0, _blank: birthyear_blank },
       reference_distribution: { '18-24': 50, '25-34': 200, '35-44': 400, '45-54': 300, '55-64': 50, '65+': 700 }
