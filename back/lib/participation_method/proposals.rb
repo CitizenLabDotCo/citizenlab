@@ -62,14 +62,6 @@ module ParticipationMethod
       'proposal'
     end
 
-    def supports_inputs_without_author?
-      false
-    end
-
-    def supports_permitted_by_everyone?
-      false
-    end
-
     private
 
     def proposed_budget_in_form?
