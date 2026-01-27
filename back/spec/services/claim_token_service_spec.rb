@@ -136,6 +136,26 @@ RSpec.describe ClaimTokenService do
       described_class.complete(user)
       expect(idea.reload.author_id).to eq(user.id)
     end
+
+    it 'syncs user demographics by most recently created idea' do
+      user = create(:user)
+      idea1 = create(:idea, author: user, created_at: 2.hours.ago, custom_field_values: {
+        field: 'value',
+        u_gender: 'male'
+      })
+      idea2 = create(:idea, author: user, created_at: 1.hour.ago, custom_field_values: {
+        field: 'value',
+        u_gender: 'female'
+      })
+      create(:claim_token, item: idea1, pending_claimer: user)
+      create(:claim_token, item: idea2, pending_claimer: user)
+
+      described_class.complete(user)
+
+      expect(user.reload.custom_field_values).to eq({
+        'gender' => 'female'
+      })
+    end
   end
 
   describe '.claim' do
@@ -219,22 +239,6 @@ RSpec.describe ClaimTokenService do
   end
 
   describe '.sync_demographics!' do
-    it 'syncs user demographics by most recently created idea' do
-      user = create(:user)
-      idea1 = create(:idea, author: user, created_at: 2.hours.ago, custom_field_values: {
-        field: 'value',
-        u_gender: 'male'
-      })
-      idea2 = create(:idea, author: user, created_at: 1.hour.ago, custom_field_values: {
-        field: 'value',
-        u_gender: 'female'
-      })
-
-      described_class.sync_demographics!(user, [idea1, nil, idea2])
-
-      expect(user.reload.custom_field_values).to eq({
-        'gender' => 'female'
-      })
-    end
+    
   end
 end
