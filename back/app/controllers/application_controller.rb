@@ -16,6 +16,7 @@ class ApplicationController < ActionController::API
 
   before_action :authenticate_user
   before_action :set_policy_context
+  before_action :set_current_location_headers
 
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
@@ -199,6 +200,10 @@ class ApplicationController < ActionController::API
     if project_preview_token && AppConfiguration.instance.feature_activated?('project_preview_link')
       policy_context[:project_preview_token] = project_preview_token
     end
+  end
+
+  def set_current_location_headers
+    Current.location_headers = ParticipationLocationService.extract_location_headers(request.headers)
   end
 end
 

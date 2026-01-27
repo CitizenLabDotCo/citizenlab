@@ -2,6 +2,7 @@
 
 class Current < ActiveSupport::CurrentAttributes
   attribute :tenant, :app_configuration
+  attribute :location_headers
   private :tenant=, :app_configuration=
 
   def app_configuration
