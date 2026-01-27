@@ -155,6 +155,19 @@ resource 'Posts' do
       end
     end
 
+    context 'when filtering by parent topic id' do
+      let(:project) { create(:project) }
+      let(:parent_topic) { create(:input_topic, project: project) }
+      let(:child_topic) { create(:input_topic, project: project, parent: parent_topic) }
+      let!(:idea_with_child) { create(:idea, project: project, input_topics: [child_topic]) }
+      let(:topic_ids) { [parent_topic.id] }
+
+      example_request 'List ideas with child topic when filtering by parent topic' do
+        assert_status 200
+        expect(json_response_body[:ideas].pluck(:id)).to include(idea_with_child.id)
+      end
+    end
+
     include_examples 'filtering_by_date', :idea, :created_at
     include_examples 'filtering_by_date', :idea, :updated_at
   end
@@ -219,6 +232,7 @@ resource 'Posts' do
     end
 
     let(:project_id) { @project.id }
+    let(:phase) { create(:phase, project:) }
     let(:title_multiloc) { { 'en' => 'My great idea', 'nl-NL' => 'Mijn geweldige idee' } }
     let(:body_multiloc) { { 'en' => 'This is a detailed description of my idea', 'nl-NL' => 'Dit is een gedetailleerde beschrijving van mijn idee' } }
     let(:input_topic_ids) { create_list(:input_topic, 2, project: @project).map(&:id) }

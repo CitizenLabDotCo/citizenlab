@@ -20,7 +20,7 @@ const PollMetrics = ({ metrics, showChange }: Props) => {
       label={formatMessage(messages.responses)}
       value={metrics.responses}
       icon="vote-ballot"
-      change={showChange ? metrics.responses_7_day_change : undefined}
+      change={showChange ? metrics.responses_7_day_percent_change : undefined}
     />
   );
 };

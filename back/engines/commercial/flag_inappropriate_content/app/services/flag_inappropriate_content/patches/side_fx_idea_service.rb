@@ -5,7 +5,7 @@ module FlagInappropriateContent
     module SideFxIdeaService
       SUPPORTED_ATTRS = %i[title_multiloc body_multiloc location_description].freeze
 
-      def after_create(idea, user)
+      def after_create(idea, user, phase)
         super
         return unless idea.participation_method_on_creation.supports_toxicity_detection?
 
