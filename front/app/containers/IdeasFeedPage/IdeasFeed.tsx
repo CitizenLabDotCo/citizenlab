@@ -22,7 +22,6 @@ import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
 import useIdeaById from 'api/ideas/useIdeaById';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import messages from './messages';
@@ -106,11 +105,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
   const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
   const phaseId = searchParams.get('phase_id')!;
-  const initialIdeaIdFromUrl = searchParams.get('initial_idea_id') || undefined;
-
-  // Store the initial idea ID in a ref so it persists after being removed from URL
-  const initialIdeaIdRef = useRef(initialIdeaIdFromUrl);
-  const initialIdeaId = initialIdeaIdRef.current;
+  const initialIdeaId = searchParams.get('initial_idea_id') || undefined;
 
   const parentRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useBreakpoint('phone');
@@ -171,13 +166,6 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
     return [initialIdea, ...otherIdeas];
   }, [flatIdeas, initialIdeaId, initialIdeaInList, initialIdeaData]);
 
-  // Remove initial_idea_id from URL once the feed has loaded with the initial idea
-  useEffect(() => {
-    if (initialIdeaId && orderedIdeas.length > 0 && !isLoading) {
-      removeSearchParams(['initial_idea_id']);
-    }
-  }, [initialIdeaId, orderedIdeas.length, isLoading]);
-
   // Extract topic IDs for each idea
   const ideaTopics = useMemo(() => {
     const map = new Map<string, string[]>();
@@ -211,15 +199,6 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
   const virtualItems = getVirtualItems();
 
   const [centeredIndex, setCenteredIndex] = useState(0);
-
-  // Reset scroll position and centered index when initialIdeaId changes
-  // This ensures the initial idea is centered after authentication flow
-  useEffect(() => {
-    if (parentRef.current) {
-      parentRef.current.scrollTo({ top: 0 });
-      setCenteredIndex(0);
-    }
-  }, [initialIdeaId]);
 
   const centeredIdeaId = orderedIdeas[centeredIndex]?.id;
 
