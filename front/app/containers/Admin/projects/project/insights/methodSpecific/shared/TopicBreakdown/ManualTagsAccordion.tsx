@@ -90,7 +90,7 @@ const ManualTagsAccordion = ({
             fill={colors.textSecondary}
           />
           <Text m="0" fontSize="xs" color="textSecondary">
-            {formatMessage(messages.manualTagsCoverage, {
+            {formatMessage(messages.manualTagsCoverage1, {
               tagged: taggedInputs,
               total: totalInputs,
               percentage:

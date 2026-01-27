@@ -25,7 +25,7 @@ const AiUpsellBanner = () => {
             {formatMessage(messages.unlockAiTopicClustering)}
           </Text>
           <Text m="0" mb="16px" fontSize="s">
-            {formatMessage(messages.aiTopicClusteringDescription)}
+            {formatMessage(messages.aiTopicClusteringDescription1)}
           </Text>
           <Tooltip
             content={<p>{formatMessage(messages.upsellTooltipMessage)}</p>}
