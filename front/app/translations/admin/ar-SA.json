@@ -1417,7 +1417,6 @@
   "app.containers.Admin.projects.project.insights.shared.aiTopicDistribution": "توزيع مواضيع الذكاء الاصطناعي",
   "app.containers.Admin.projects.project.insights.shared.aiTopicsSummary": "{inputsCount} المدخلات · {topicsCount} المواضيع",
   "app.containers.Admin.projects.project.insights.shared.manualTagsByParticipants": "وضع العلامات اليدوية من قبل المشاركين",
-  "app.containers.Admin.projects.project.insights.shared.manualTagsCoverage1": "تم تصنيف {tagged} من {total} مدخلات يدويًا بواسطة المشاركين ({percentage}% تغطية)",
   "app.containers.Admin.projects.project.insights.shared.manualTagsSummary": "{taggedCount} المدخلات · {topicsCount} المواضيع",
   "app.containers.Admin.projects.project.insights.shared.noAiTopics": "لم يتم إنشاء أي مواضيع متعلقة بالذكاء الاصطناعي حتى الآن",
   "app.containers.Admin.projects.project.insights.shared.noManualTags": "لم يتم تعيين أي علامات يدوية بعد",
