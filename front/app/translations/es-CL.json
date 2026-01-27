@@ -357,7 +357,7 @@
   "app.components.ParticipationCTABars.VotingCTABar.noVotesCast4": "Tienes que seleccionar al menos una opción antes de poder enviar.",
   "app.components.ParticipationCTABars.VotingCTABar.nothingInBasket": "Tienes que añadir algo a tu cesta antes de poder enviarla.",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfCreditsLeft": "{votesLeft, plural, =0 {No quedan créditos} other {# de {totalNumberOfVotes, plural, one {1 crédito} other {# créditos}} quedan}}",
-  "app.components.ParticipationCTABars.VotingCTABar.numberOfPercentsLeft4": "{votesLeft, plural, =0 {No % izquierda} other {#% izquierda}}",
+  "app.components.ParticipationCTABars.VotingCTABar.numberOfPercentsLeft4": "{votesLeft, plural, =0 {No % pendiente} other {#% pendientes}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfPointsLeft": "{votesLeft, plural, =0 {No quedan puntos} other {# de {totalNumberOfVotes, plural, one {1 punto} other {# puntos}} quedan}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfTokensLeft": "{votesLeft, plural, =0 {No quedan fichas} other {# de {totalNumberOfVotes, plural, one {1 ficha} other {# fichas}} restantes}}",
   "app.components.ParticipationCTABars.VotingCTABar.numberOfVotesLeft": "{votesLeft, plural, =0 {No quedan votos} other {# de {totalNumberOfVotes, plural, one {1 voto} other {# votos}} quedan}}",
