@@ -275,6 +275,7 @@ export interface IAppConfigurationSettings {
   nested_input_topics?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
   phase_insights?: AppConfigurationFeature;
+  participation_location_tracking?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

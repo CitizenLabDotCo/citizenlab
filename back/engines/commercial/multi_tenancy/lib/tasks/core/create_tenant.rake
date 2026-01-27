@@ -358,6 +358,10 @@ namespace :cl2_back do
         phase_insights: {
           enabled: false,
           allowed: false
+        },
+        participation_location_tracking: {
+          enabled: false,
+          allowed: false
         }
       }
     )
