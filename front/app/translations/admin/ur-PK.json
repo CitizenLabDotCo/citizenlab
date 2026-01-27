@@ -1417,7 +1417,6 @@
   "app.containers.Admin.projects.project.insights.shared.aiTopicDistribution": "AI موضوع کی تقسیم",
   "app.containers.Admin.projects.project.insights.shared.aiTopicsSummary": "{inputsCount} ان پٹس · {topicsCount} موضوعات",
   "app.containers.Admin.projects.project.insights.shared.manualTagsByParticipants": "شرکاء کے ذریعہ دستی ٹیگز",
-  "app.containers.Admin.projects.project.insights.shared.manualTagsCoverage1": "{tagged} میں سے {total} ان پٹس کو شرکاء کے ذریعہ دستی طور پر ٹیگ کیا گیا تھا ({percentage}% کوریج)",
   "app.containers.Admin.projects.project.insights.shared.manualTagsSummary": "{taggedCount} ان پٹس · {topicsCount} موضوعات",
   "app.containers.Admin.projects.project.insights.shared.noAiTopics": "ابھی تک کوئی AI عنوانات تیار نہیں ہوئے۔",
   "app.containers.Admin.projects.project.insights.shared.noManualTags": "ابھی تک کوئی دستی ٹیگ تفویض نہیں کیے گئے ہیں۔",
