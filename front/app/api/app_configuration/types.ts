@@ -275,6 +275,7 @@ export interface IAppConfigurationSettings {
   nested_input_topics?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
   ideation_accountless_posting?: AppConfigurationFeature;
+  participation_location_tracking?: AppConfigurationFeature;
   post_participation_signup?: AppConfigurationFeature;
   phase_insights?: AppConfigurationFeature;
 }
