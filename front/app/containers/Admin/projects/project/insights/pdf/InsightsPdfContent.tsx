@@ -48,16 +48,15 @@ const InsightsPdfContent = ({ phase }: Props) => {
         </PageBreakBox>
 
         <PageBreakBox>
-          <ParticipantsTimeline phaseId={phase.id} isPdfExport />
+          <ParticipantsTimeline phaseId={phase.id} />
         </PageBreakBox>
 
-        <DemographicsSection phase={phase} isPdfExport />
+        <DemographicsSection phase={phase} />
 
         <PageBreakBox>
           <MethodSpecificInsights
             phaseId={phase.id}
             participationMethod={phase.attributes.participation_method}
-            isPdfExport
           />
         </PageBreakBox>
       </Box>

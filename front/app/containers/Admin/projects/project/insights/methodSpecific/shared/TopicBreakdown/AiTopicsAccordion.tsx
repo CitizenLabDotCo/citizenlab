@@ -11,6 +11,7 @@ import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { usePdfExportContext } from '../../../pdf/PdfExportContext';
 import DistributionBar from '../DistributionBar';
 import messages from '../messages';
 
@@ -30,20 +31,19 @@ interface Props {
   aiTopics: TopicData[];
   totalInputs: number;
   maxAiTopicCount: number;
-  isPdfExport?: boolean;
 }
 
 const AiTopicsAccordion = ({
   aiTopics,
   totalInputs,
   maxAiTopicCount,
-  isPdfExport = false,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const { isPdfRenderMode } = usePdfExportContext();
 
   return (
     <StyledAccordion
-      isOpenByDefault={isPdfExport}
+      isOpenByDefault={isPdfRenderMode}
       title={
         <Box
           display="flex"

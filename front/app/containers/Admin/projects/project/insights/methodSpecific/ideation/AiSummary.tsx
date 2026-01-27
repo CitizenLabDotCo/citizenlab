@@ -27,17 +27,19 @@ import SummaryHeader from 'containers/Admin/projects/project/analysis/Insights/S
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
+import { usePdfExportContext } from '../../pdf/PdfExportContext';
+
 import messages from './messages';
 
 const MIN_INPUTS_FOR_SUMMARY = 10;
 
 interface Props {
   phaseId: string;
-  isPdfExport?: boolean;
 }
 
-const AiSummary = ({ phaseId, isPdfExport = false }: Props) => {
+const AiSummary = ({ phaseId }: Props) => {
   const { formatMessage } = useIntl();
+  const { isPdfRenderMode } = usePdfExportContext();
   const { projectId } = useParams() as { projectId: string };
   const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
   const [analysisCreationAttempted, setAnalysisCreationAttempted] =
@@ -232,7 +234,7 @@ const AiSummary = ({ phaseId, isPdfExport = false }: Props) => {
         borderLeft={`3px solid ${colors.primary}`}
         display="flex"
         flexDirection="column"
-        h={isPdfExport ? 'auto' : '400px'}
+        h={isPdfRenderMode ? 'auto' : '400px'}
       >
         <Box
           display="flex"
@@ -242,7 +244,7 @@ const AiSummary = ({ phaseId, isPdfExport = false }: Props) => {
           flexShrink={0}
         >
           <SummaryHeader showAiWarning={false} />
-          {!isPdfExport && (
+          {!isPdfRenderMode && (
             <Button
               buttonStyle="text"
               icon="refresh"
@@ -260,9 +262,9 @@ const AiSummary = ({ phaseId, isPdfExport = false }: Props) => {
           flexDirection="column"
           gap="8px"
           flex="1"
-          overflow={isPdfExport ? 'visible' : 'hidden'}
+          overflow={isPdfRenderMode ? 'visible' : 'hidden'}
         >
-          <Box flex="1" overflow={isPdfExport ? 'visible' : 'auto'}>
+          <Box flex="1" overflow={isPdfRenderMode ? 'visible' : 'auto'}>
             <InsightBody
               text={summary}
               filters={filters}
@@ -273,7 +275,7 @@ const AiSummary = ({ phaseId, isPdfExport = false }: Props) => {
             />
           </Box>
 
-          {!isPdfExport && (
+          {!isPdfRenderMode && (
             <Box
               display="flex"
               justifyContent="space-between"

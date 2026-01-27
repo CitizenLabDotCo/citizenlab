@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import { usePdfExportContext } from '../../pdf/PdfExportContext';
 import AiSummary from '../ideation/AiSummary';
 import StatusBreakdown from '../shared/StatusBreakdown';
 import TopicBreakdown from '../shared/TopicBreakdown';
@@ -9,15 +10,14 @@ import { MethodSpecificInsightProps } from '../types';
 
 import MostLikedProposals from './MostLikedProposals';
 
-const ProposalsInsights = ({
-  phaseId,
-  isPdfExport = false,
-}: MethodSpecificInsightProps) => {
-  if (isPdfExport) {
+const ProposalsInsights = ({ phaseId }: MethodSpecificInsightProps) => {
+  const { isPdfRenderMode } = usePdfExportContext();
+
+  if (isPdfRenderMode) {
     return (
       <Box mt="16px" display="flex" flexDirection="column" gap="24px">
-        <AiSummary phaseId={phaseId} isPdfExport />
-        <TopicBreakdown phaseId={phaseId} isPdfExport />
+        <AiSummary phaseId={phaseId} />
+        <TopicBreakdown phaseId={phaseId} />
         <MostLikedProposals phaseId={phaseId} />
         <StatusBreakdown phaseId={phaseId} participationMethod="proposals" />
       </Box>
@@ -31,7 +31,7 @@ const ProposalsInsights = ({
           <AiSummary phaseId={phaseId} />
         </Box>
         <Box w="100%">
-          <TopicBreakdown phaseId={phaseId} isPdfExport={false} />
+          <TopicBreakdown phaseId={phaseId} />
         </Box>
       </Box>
       <Box display="flex" gap="16px" w="100%" flexDirection="row">
