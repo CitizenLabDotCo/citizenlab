@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
-interface BreakdownBarProps {
+interface DistributionBarProps {
   name: string;
   count: number;
   maxCount: number;
@@ -15,7 +15,7 @@ interface BreakdownBarProps {
   showBadge?: boolean;
 }
 
-const BreakdownBar = ({
+const DistributionBar = ({
   name,
   count,
   maxCount,
@@ -23,7 +23,7 @@ const BreakdownBar = ({
   badgeColor,
   percentage,
   showBadge = true,
-}: BreakdownBarProps) => {
+}: DistributionBarProps) => {
   const barWidthPercent = maxCount > 0 ? (count / maxCount) * 100 : 0;
   const countColor = badgeColor || barColor;
 
@@ -85,4 +85,4 @@ const BreakdownBar = ({
   );
 };
 
-export default BreakdownBar;
+export default DistributionBar;

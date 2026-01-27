@@ -10,7 +10,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
-import BreakdownBar from './BreakdownBar';
+import DistributionBar from './DistributionBar';
 import messages from './messages';
 
 interface StatusBarData {
@@ -113,7 +113,7 @@ const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
       </Text>
       <Box display="flex" flexDirection="column" gap="4px">
         {statusData.map((status) => (
-          <BreakdownBar
+          <DistributionBar
             key={status.id}
             name={status.name}
             count={status.count}
