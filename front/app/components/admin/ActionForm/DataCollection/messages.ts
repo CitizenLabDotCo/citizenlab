@@ -30,4 +30,14 @@ export default defineMessages({
     defaultMessage:
       'For this option, registered users will not be able to retrieve their submitted response from their profile.',
   },
+  demographicsOnlyWarning: {
+    id: 'app.components.admin.ActionForm.DataCollection.demographicsOnlyWarning',
+    defaultMessage:
+      'By selecting this option, you are choosing to not collect any personal identifiable information. You cannot recover this information later by changing this setting!',
+  },
+  anonymousWarning: {
+    id: 'app.components.admin.ActionForm.DataCollection.anonymousWarning',
+    defaultMessage:
+      'By selecting this option, you are choosing to not collect any personal identifiable information or demographic data. You cannot recover this information later by changing this setting!',
+  },
 });
