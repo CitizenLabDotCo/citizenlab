@@ -430,23 +430,21 @@ const HomepageBannerSettings = () => {
             onRemove={handleOnRemove}
           />
         ) : (
-          <>
-            <ImagesDropzone
-              id="bannerImage"
-              images={imageFiles}
-              imagePreviewRatio={1 / 2}
-              maxImagePreviewWidth="360px"
-              objectFit="contain"
-              acceptedFileTypes={{
-                'image/*': ['.jpg', '.jpeg', '.png'],
-              }}
-              onAdd={(images) => {
-                setImageFiles(images);
-                handleOnAdd(images[0].base64);
-              }}
-              onRemove={handleOnRemove}
-            />
-          </>
+          <ImagesDropzone
+            id="bannerImage"
+            images={imageFiles}
+            imagePreviewRatio={1 / 2}
+            maxImagePreviewWidth="360px"
+            objectFit="contain"
+            acceptedFileTypes={{
+              'image/*': ['.jpg', '.jpeg', '.png'],
+            }}
+            onAdd={(images) => {
+              setImageFiles(images);
+              handleOnAdd(images[0].base64);
+            }}
+            onRemove={handleOnRemove}
+          />
         )}
       </>
 
@@ -489,8 +487,15 @@ const HomepageBannerSettings = () => {
 
           {homepageSettings.banner_layout !== 'fixed_ratio_layout' && (
             <BannerHeightSettings
-              useConsistentHeight={false}
-              onToggleConsistentHeight={() => {}}
+              useConsistentHeight={
+                !!homepageSettings.banner_use_consistent_height
+              }
+              onToggleConsistentHeight={() => {
+                setProp((props: Props) => {
+                  props.homepageSettings.banner_use_consistent_height =
+                    !homepageSettings.banner_use_consistent_height;
+                });
+              }}
               desktopHeight={
                 homepageSettings.banner_signed_out_header_height_desktop
               }
@@ -722,7 +727,7 @@ const HomepageBannerSettings = () => {
                 });
               }}
               desktopPlaceholder={
-                homepageSettings.banner_use_consistent_height === true
+                homepageSettings.banner_use_consistent_height
                   ? (
                       homepageSettings.banner_signed_out_header_height_desktop ??
                       homepageBannerLayoutHeights[
@@ -732,7 +737,7 @@ const HomepageBannerSettings = () => {
                   : '200'
               }
               tabletPlaceholder={
-                homepageSettings.banner_use_consistent_height === true
+                homepageSettings.banner_use_consistent_height
                   ? (
                       homepageSettings.banner_signed_out_header_height_tablet ??
                       homepageBannerLayoutHeights[
@@ -742,7 +747,7 @@ const HomepageBannerSettings = () => {
                   : '250'
               }
               phonePlaceholder={
-                homepageSettings.banner_use_consistent_height === true
+                homepageSettings.banner_use_consistent_height
                   ? (
                       homepageSettings.banner_signed_out_header_height_phone ??
                       homepageBannerLayoutHeights[
@@ -753,7 +758,7 @@ const HomepageBannerSettings = () => {
               }
               disabled={
                 !customHomepageBannerAllowed ||
-                homepageSettings.banner_use_consistent_height === true
+                !!homepageSettings.banner_use_consistent_height
               }
               showToggle={true}
               bannerVersion="signedIn"
