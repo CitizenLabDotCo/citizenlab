@@ -122,7 +122,6 @@ const useTopicBreakdownData = ({ phaseId }: UseTopicBreakdownDataProps) => {
 
   const aggregates = useMemo(() => {
     return {
-      taggedInputs: manualTopics.reduce((sum, t) => sum + t.count, 0),
       maxAiTopicCount:
         aiTopics.length > 0 ? Math.max(...aiTopics.map((t) => t.count)) : 0,
       maxManualTopicCount:
