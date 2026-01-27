@@ -100,7 +100,7 @@ const FileDisplay = ({ file, className }: Props) => {
           {name}
         </FileDownloadLink>
         <Spacer />
-        {size && <FileSize>({returnFileSize(size)})</FileSize>}
+        {size > 0 && <FileSize>({returnFileSize(size)})</FileSize>}
       </Container>
     );
   }

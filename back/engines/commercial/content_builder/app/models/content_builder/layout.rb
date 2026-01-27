@@ -26,6 +26,7 @@ module ContentBuilder
 
     before_validation :swap_data_images, on: :create
     before_validation :set_craftjs_json, :sanitize_craftjs_json
+    after_save :sync_file_attachments
 
     validates :code, presence: true
     validate :validate_iframe_urls
@@ -60,7 +61,32 @@ module ContentBuilder
       end
     end
 
+    # Returns file IDs referenced by FileAttachment widgets in craftjs_json.
+    def referenced_file_ids
+      return [] if craftjs_json.blank?
+
+      craftjs_json.each_value.filter_map do |node|
+        node.dig('props', 'fileId') if file_attachment_widget?(node)
+      end
+    end
+
+    # Syncs file attachments based on fileIds referenced in craftjs_json.
+    # Creates new attachments for new fileIds and removes orphaned ones.
+    def sync_file_attachments
+      file_ids = referenced_file_ids
+      cleanup_orphaned_file_attachments(file_ids)
+      create_missing_file_attachments(file_ids)
+    end
+
     private
+
+    def file_attachment_widget?(node)
+      return false unless node.is_a?(Hash)
+
+      type = node['type']
+      resolved_name = type.is_a?(Hash) ? type['resolvedName'] : type
+      resolved_name == 'FileAttachment'
+    end
 
     def validate_iframe_urls
       url_starts = %w[http:// https://]
@@ -90,6 +116,20 @@ module ContentBuilder
       return if code != 'homepage' || craftjs_json.blank?
 
       self.craftjs_json = ContentBuilder::LayoutImageService.new.swap_data_images(craftjs_json)
+    end
+
+    def cleanup_orphaned_file_attachments(referenced_file_ids)
+      file_attachments.where.not(file_id: referenced_file_ids).destroy_all
+    end
+
+    def create_missing_file_attachments(file_ids)
+      # CraftJS state is not update when referenced files are deleted. As a result,
+      # there can be references to non-existing files.
+      existing_file_ids = ::Files::File.where(id: file_ids).pluck(:id)
+
+      existing_file_ids.each do |file_id|
+        file_attachments.find_or_create_by!(file_id: file_id)
+      end
     end
   end
 end

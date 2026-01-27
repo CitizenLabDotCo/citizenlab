@@ -220,6 +220,53 @@ RSpec.describe ContentBuilder::Layout do
     end
   end
 
+  describe '#referenced_file_ids' do
+    it 'returns fileIds from FileAttachment widgets' do
+      layout = build(:layout, craftjs_json: {
+        'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => %w[node1 node2] },
+        'node1' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => 'file-123' } },
+        'node2' => { 'type' => { 'resolvedName' => 'TextMultiloc' }, 'props' => {} }
+      })
+
+      expect(layout.referenced_file_ids).to eq(['file-123'])
+    end
+
+    it 'returns empty array for blank craftjs_json' do
+      layout = build(:layout, craftjs_json: nil)
+      expect(layout.referenced_file_ids).to eq([])
+
+      layout.craftjs_json = {}
+      expect(layout.referenced_file_ids).to eq([])
+    end
+  end
+
+  describe 'file attachment sync on save' do
+    let(:file) { create(:file) }
+    let(:another_file) { create(:file) }
+
+    it 'creates missing file attachments' do
+      layout = create(:layout, craftjs_json: {
+        'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => ['node1'] },
+        'node1' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => file.id } }
+      })
+
+      expect(layout.file_attachments.where(file: file).count).to eq(1)
+    end
+
+    it 'deletes attachments no longer referenced' do
+      layout = create(:layout, craftjs_json: {
+        'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => ['node1'] },
+        'node1' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => file.id } }
+      })
+
+      orphaned_attachment = create(:file_attachment, file: another_file, attachable: layout)
+      layout.save!
+
+      expect { orphaned_attachment.reload }.to raise_error ActiveRecord::RecordNotFound
+      expect(layout.file_attachments.where(file: file).count).to eq(1)
+    end
+  end
+
   def craftjson_with_iframe_url(url)
     {
       'ROOT' => {

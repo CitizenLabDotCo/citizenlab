@@ -198,6 +198,11 @@ export const generateTemporaryFileAttachment = ({
     id: `TEMP-${uuidv4()}`, // Temporary ID, to mark it as a newly added file attachment.
     attributes: {
       position,
+      file_name: '',
+      file_size: 0,
+      file_url: '',
+      created_at: '',
+      updated_at: '',
     },
     relationships: {
       attachable: {
