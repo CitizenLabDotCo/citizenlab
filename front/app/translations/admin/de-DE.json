@@ -1426,7 +1426,7 @@
   "app.containers.Admin.projects.project.insights.shared.topicsAutoDetected": "Themen werden automatisch von einer KI aus Ideeninhalten generiert",
   "app.containers.Admin.projects.project.insights.shared.unlockAiTopicClustering": "KI-Themenclustering freischalten",
   "app.containers.Admin.projects.project.insights.shared.unlockTopicClustering": "Themencluster freischalten",
-  "app.containers.Admin.projects.project.insights.shared.upgradeToPro": "Upgrade to Pro",
+  "app.containers.Admin.projects.project.insights.shared.upgradeYourPlan": "Lizenz upgraden",
   "app.containers.Admin.projects.project.insights.shared.upsellTooltipMessage": "Diese Funktion ist in Ihrer aktuellen Lizenz nicht enthalten. Sprechen Sie mit Ihrer Kundenbetreuerin oder Ihrem Admin, um sie freizuschalten.",
   "app.containers.Admin.projects.project.insights.statements": "Aussagen",
   "app.containers.Admin.projects.project.insights.statusBreakdown": "Status Aufschlüsselung",
