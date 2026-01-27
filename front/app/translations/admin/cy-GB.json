@@ -1417,7 +1417,6 @@
   "app.containers.Admin.projects.project.insights.shared.aiTopicDistribution": "Dosbarthu Pynciau AI",
   "app.containers.Admin.projects.project.insights.shared.aiTopicsSummary": "mewnbynnau {inputsCount} · pynciau {topicsCount}",
   "app.containers.Admin.projects.project.insights.shared.manualTagsByParticipants": "Tagiau â llaw gan gyfranogwyr",
-  "app.containers.Admin.projects.project.insights.shared.manualTagsCoverage1": "Cafodd {tagged} o {total} mewnbynnau eu tagio â llaw gan gyfranogwyr ({percentage}% o orchudd)",
   "app.containers.Admin.projects.project.insights.shared.manualTagsSummary": "mewnbynnau {taggedCount} · pynciau {topicsCount}",
   "app.containers.Admin.projects.project.insights.shared.noAiTopics": "Dim pynciau AI wedi'u creu eto",
   "app.containers.Admin.projects.project.insights.shared.noManualTags": "Dim tagiau â llaw wedi'u haseinio eto",
