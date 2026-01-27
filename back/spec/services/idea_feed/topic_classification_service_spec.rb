@@ -106,4 +106,84 @@ describe IdeaFeed::TopicClassificationService do
       end.to have_enqueued_job(IdeaFeed::TopicClassificationJob).exactly(3).times
     end
   end
+
+  describe '#classify_parallel_batch' do
+    let_it_be(:project) { create(:project) }
+    let_it_be(:phase) { create(:idea_feed_phase, project:) }
+    let_it_be(:topics) do
+      [
+        create(:input_topic, title_multiloc: { 'en' => 'Transportation' }, description_multiloc: { 'en' => 'Ideas about transportation' }, project:),
+        create(:input_topic, title_multiloc: { 'en' => 'Housing' }, description_multiloc: { 'en' => 'Ideas about housing' }, project:),
+        create(:input_topic, title_multiloc: { 'en' => 'Education' }, description_multiloc: { 'en' => 'Ideas about education' }, project:)
+      ]
+    end
+    let_it_be(:subtopics) do
+      [
+        create(:input_topic, title_multiloc: { 'en' => 'Sidewalks' }, description_multiloc: { 'en' => 'Ideas about sidewalks' }, parent: topics[0], project:),
+        create(:input_topic, title_multiloc: { 'en' => 'Public transport' }, description_multiloc: { 'en' => 'Ideas about public transport' }, parent: topics[0], project:)
+      ]
+    end
+    let_it_be(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
+
+    it 'classifies multiple ideas in parallel and returns a hash of results' do
+      idea1 = create(:idea, phases: [phase], title_multiloc: { 'en' => 'Bike lanes' }, body_multiloc: { 'en' => 'We need more bike lanes.' }, input_topics: [])
+      idea2 = create(:idea, phases: [phase], title_multiloc: { 'en' => 'Affordable housing' }, body_multiloc: { 'en' => 'Housing is too expensive.' }, input_topics: [])
+      idea3 = create(:idea, phases: [phase], title_multiloc: { 'en' => 'Better schools' }, body_multiloc: { 'en' => 'Schools need more funding.' }, input_topics: [])
+
+      llm_instance = instance_double(Analysis::LLM::Gemini3Flash)
+      expect(Analysis::LLM::Gemini3Flash).to receive(:new).and_return(llm_instance)
+      expect(llm_instance).to receive(:chat).and_return(['1.1'], ['2'], ['3'])
+
+      result = service.classify_parallel_batch([idea1, idea2, idea3], n_threads: 2)
+
+      expect(result).to be_a(Hash)
+      expect(result.keys).to contain_exactly(idea1, idea2, idea3)
+      expect(idea1.reload.input_topics).to contain_exactly(subtopics[0])
+      expect(idea2.reload.input_topics).to contain_exactly(topics[1])
+      expect(idea3.reload.input_topics).to contain_exactly(topics[2])
+    end
+
+    it 'returns an empty hash for empty input' do
+      result = service.classify_parallel_batch([])
+
+      expect(result).to eq({})
+    end
+
+    it 'handles ActiveRecord::Relation input' do
+      idea = create(:idea, phases: [phase], title_multiloc: { 'en' => 'Bike lanes' }, body_multiloc: { 'en' => 'We need more bike lanes.' }, input_topics: [])
+
+      llm_instance = instance_double(Analysis::LLM::Gemini3Flash)
+      expect(Analysis::LLM::Gemini3Flash).to receive(:new).and_return(llm_instance)
+      expect(llm_instance).to receive(:chat).and_return(['1'])
+
+      result = service.classify_parallel_batch(Idea.where(id: idea.id))
+
+      expect(result.keys).to contain_exactly(idea)
+      expect(idea.reload.input_topics).to contain_exactly(topics[0])
+    end
+
+    it 'retries on invalid LLM responses' do
+      idea = create(:idea, phases: [phase], title_multiloc: { 'en' => 'Bike lanes' }, body_multiloc: { 'en' => 'We need more bike lanes.' }, input_topics: [])
+
+      llm_instance = instance_double(Analysis::LLM::Gemini3Flash)
+      expect(Analysis::LLM::Gemini3Flash).to receive(:new).and_return(llm_instance)
+      expect(llm_instance).to receive(:chat).and_return(%w[invalid response], ['1'])
+
+      service.classify_parallel_batch([idea])
+
+      expect(idea.reload.input_topics).to contain_exactly(topics[0])
+    end
+
+    it 'assigns empty topics if all retries fail' do
+      idea = create(:idea, phases: [phase], title_multiloc: { 'en' => 'Bike lanes' }, body_multiloc: { 'en' => 'We need more bike lanes.' }, input_topics: [topics[0]])
+
+      llm_instance = instance_double(Analysis::LLM::Gemini3Flash)
+      expect(Analysis::LLM::Gemini3Flash).to receive(:new).and_return(llm_instance)
+      expect(llm_instance).to receive(:chat).and_return(%w[invalid response]).exactly(3).times
+
+      service.classify_parallel_batch([idea])
+
+      expect(idea.reload.input_topics).to be_empty
+    end
+  end
 end
