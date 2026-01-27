@@ -18,7 +18,7 @@ describe IdeaPolicy do
       it do
         is_expected.to permit(:show)
         is_expected.to permit(:by_slug)
-        is_expected.not_to permit(:create)
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
         is_expected.not_to permit(:update)
         expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
@@ -53,7 +53,7 @@ describe IdeaPolicy do
       it do
         is_expected.to     permit(:show)
         is_expected.to     permit(:by_slug)
-        is_expected.not_to permit(:create)
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
         is_expected.not_to permit(:update)
         expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
@@ -308,7 +308,7 @@ describe IdeaPolicy do
       it do
         is_expected.not_to permit(:show)
         is_expected.not_to permit(:by_slug)
-        is_expected.not_to permit(:create)
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
         is_expected.not_to permit(:update)
         expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
@@ -374,7 +374,7 @@ describe IdeaPolicy do
     it do
       is_expected.not_to permit(:show)
       is_expected.not_to permit(:by_slug)
-      is_expected.not_to permit(:create)
+      expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
       is_expected.not_to permit(:update)
       expect(editing_idea_disabled_reason).to be_present
       is_expected.not_to permit(:destroy)
@@ -449,7 +449,7 @@ describe IdeaPolicy do
       it do
         is_expected.not_to permit(:show)
         is_expected.not_to permit(:by_slug)
-        is_expected.not_to permit(:create)
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
         is_expected.not_to permit(:update)
         expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
@@ -503,7 +503,7 @@ describe IdeaPolicy do
       it do
         is_expected.to permit(:show)
         is_expected.to permit(:by_slug)
-        is_expected.not_to permit(:create)
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
         is_expected.not_to permit(:update)
         expect(editing_idea_disabled_reason).to be_present
 
@@ -553,7 +553,7 @@ describe IdeaPolicy do
       end.reload
     end
     let(:author) { create(:user) }
-    let!(:idea) { build(:idea, project: project, author: author, phases: project.phases) }
+    let!(:idea) { create(:idea, project: project, author: author, phases: project.phases) }
 
     context 'for a visitor' do
       let(:user) { nil }
@@ -561,7 +561,7 @@ describe IdeaPolicy do
       it do
         is_expected.to permit(:show)
         is_expected.to permit(:by_slug)
-        is_expected.not_to permit(:create)
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
         is_expected.not_to permit(:update)
         expect(editing_idea_disabled_reason).to be_present
 
