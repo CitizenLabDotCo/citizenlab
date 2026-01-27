@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 
 import { Box, Toggle, Select } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
@@ -98,13 +98,10 @@ const Settings = () => {
     selectedQuestion &&
     FieldsWithSortOption.includes(selectedQuestion.attributes.input_type);
 
-  const sortOptions = useMemo(
-    () => [
-      { value: 'count', label: formatMessage(messages.sortByCount) },
-      { value: 'original', label: formatMessage(messages.sortByOriginal) },
-    ],
-    [formatMessage]
-  );
+  const sortOptions = [
+    { value: 'count', label: formatMessage(messages.sortByCount) },
+    { value: 'original', label: formatMessage(messages.sortByOriginal) },
+  ];
 
   const handleProjectFilter = useCallback(
     ({ value }: IOption) => {
