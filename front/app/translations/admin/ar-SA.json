@@ -1426,7 +1426,6 @@
   "app.containers.Admin.projects.project.insights.shared.topicsAutoDetected": "مواضيع يتم إنشاؤها تلقائيًا بواسطة الذكاء الاصطناعي من محتوى الأفكار",
   "app.containers.Admin.projects.project.insights.shared.unlockAiTopicClustering": "تفعيل تجميع المواضيع باستخدام الذكاء الاصطناعي",
   "app.containers.Admin.projects.project.insights.shared.unlockTopicClustering": "فتح تجميع المواضيع",
-  "app.containers.Admin.projects.project.insights.shared.upgradeToPro": "قم بالترقية إلى الإصدار الاحترافي",
   "app.containers.Admin.projects.project.insights.shared.upsellTooltipMessage": "هذه الميزة غير مشمولة في خطتك الحالية. تواصل مع مدير نجاحك الحكومي أو المسؤول لتفعيلها.",
   "app.containers.Admin.projects.project.insights.statements": "البيانات",
   "app.containers.Admin.projects.project.insights.statusBreakdown": "تفصيل الحالة",
