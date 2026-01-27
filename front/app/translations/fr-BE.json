@@ -2367,7 +2367,7 @@
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsOnceYouAreDone": "Une fois que vous avez terminé, cliquez sur \"Soumettre\" pour voter.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsPreferredOptions2": "Choisissez vos options préférées en cliquant sur « Sélectionner ».",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalCredits2": "Vous disposez d'un total de <b>{totalVotes, plural, one {# crédit} other {# crédits}} à répartir entre {optionCount, plural, one {# option} other {# options}}</b>.",
-  "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalPercents2": "You have <b>{totalVotes, plural, one {#%} other {#%}} to distribute between {optionCount, plural, one {# option} other {# options}}</b>.",
+  "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalPercents2": "Attribuez un <b>pourcentage</b> {optionCount, plural, one {à l'<b>option</b>} other {à chacune des <b># options</b>}}.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalPoints2": "Vous disposez d'un total de <b>{totalVotes, plural, one {# point} other {# points}} à répartir entre {optionCount, plural, one {# option} other {# options}}</b>.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalTokens2": "Vous disposez d'un total de <b>{totalVotes, plural, one {# jeton} other {# jetons}} à répartir entre {optionCount, plural, one {# option} other {# options}}</b>.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsTotalVotes3": "Vous disposez d'un total de <b>{totalVotes, plural, one {# vote} other {# votes}} à répartir entre {optionCount, plural, one {# option} other {# options}}</b>.",
