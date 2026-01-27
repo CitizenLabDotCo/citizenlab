@@ -2871,7 +2871,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Określ podziały geograficzne swojego terytorium.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Wybierz, jak wyświetlana będzie Twoja nazwa, wybierz języki Twojej platformy i link do Twojej strony.",
   "app.containers.AdminPage.SettingsPage.subtitleBullet1": "Pytanie to zostanie zadane w globalnym procesie rejestracji (np. po kliknięciu przycisku \"Zarejestruj się\" na stronie głównej).",
-  "app.containers.AdminPage.SettingsPage.subtitleBullet2": "Pytanie to będzie zadawane <b>domyślnie</b>, gdy użytkownicy zarejestrują się do konkretnej fazy lub wydarzenia. Jednakże: <b>administratorzy i moderatorzy projektu mogą to zmienić dla każdej fazy -</b> zobacz zakładkę \"Dostęp do fazy i dane użytkownika\" na każdej fazie.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "Podany podtytuł przekracza maksymalny limit znaków wynoszący 90",
   "app.containers.AdminPage.SettingsPage.subtitleRegistration1": "Zarządzaj pytaniami demograficznymi używanymi na tej platformie. Włączenie pytania w tym miejscu spowoduje dwie rzeczy:",
   "app.containers.AdminPage.SettingsPage.subtitleRegistration2": "To samo dotyczy ustawienia \"wymagane\", które widzisz po kliknięciu przycisku \"Edytuj\" na pytaniu.",

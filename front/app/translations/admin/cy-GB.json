@@ -2871,7 +2871,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Diffiniwch yr ardaloedd daearyddol yr hoffech eu defnyddio ar gyfer eich platfform, fel cymdogaethau, bwrdeistrefi neu ardaloedd. Gallwch gysylltu'r ardaloedd daearyddol hyn â phrosiectau (gellir eu hidlo ar y dudalen lanio) neu ofyn i gyfranogwyr ddewis eu hardal breswyl fel maes cofrestru i greu Grwpiau Clyfar a diffinio hawliau mynediad.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Dewiswch sut y bydd pobl yn gweld enw eich sefydliad, dewiswch ieithoedd eich platfform a dolen i'ch gwefan.",
   "app.containers.AdminPage.SettingsPage.subtitleBullet1": "Gofynnir y cwestiwn yn y broses gofrestru fyd-eang (e.e. pan fydd pobl yn clicio \"Cofrestru\" ar yr hafan).",
-  "app.containers.AdminPage.SettingsPage.subtitleBullet2": "Gofynnir y cwestiwn <b>yn ddiofyn</b> pan fydd pobl yn cofrestru ar gyfer cam neu ddigwyddiad penodol. Fodd bynnag: <b>gall gweinyddwyr a chymedrolwyr prosiect ddiystyru hyn fesul cam</b>- gweler y tab \"Mynediad i gam a data defnyddwyr\" ar bob cam.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "Mae'r is-deitl a ddarperir yn fwy na'r terfyn nodau uchaf a ganiateir (90 nod)",
   "app.containers.AdminPage.SettingsPage.subtitleRegistration1": "Rheoli'r cwestiynau demograffig a ddefnyddir ar y platfform hwn. Bydd galluogi cwestiwn yma yn gwneud dau beth:",
   "app.containers.AdminPage.SettingsPage.subtitleRegistration2": "Mae'r un peth yn berthnasol i'r gosodiad \"angenrheidiol\" a welwch pan gliciwch \"Golygu\" ar gwestiwn.",

@@ -2871,7 +2871,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Дефинишите географске области које желите да користите за своју платформу, као што су четврти, општине или окрузи. Можете да повежете ове географске области са пројектима (који се могу филтрирати на одредишној страници) или замолити учеснике да изаберу своју област становања као поље за регистрацију за креирање паметних група и дефинисање права приступа.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Одаберите како ће људи видети име ваше организације, изаберите језике ваше платформе и везу до ваше веб странице.",
   "app.containers.AdminPage.SettingsPage.subtitleBullet1": "The question will be asked in the global sign-up process (e.g. when people click \"Sign up\" on the homepage).",
-  "app.containers.AdminPage.SettingsPage.subtitleBullet2": "The question will be asked <b>by default</b> when people sign up for a specific phase or event. However: <b>admins and project moderators can override this per phase</b>- see the \"Phase access and user data\" tab on each phase.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "Наведени титл премашује максимално дозвољено ограничење знакова (90 знакова)",
   "app.containers.AdminPage.SettingsPage.subtitleRegistration1": "Manage the demographic questions used on this platform. Enabling a question here will do two things:",
   "app.containers.AdminPage.SettingsPage.subtitleRegistration2": "The same applies to the \"required\" setting that you see when you click \"Edit\" on a question.",

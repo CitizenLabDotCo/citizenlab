@@ -2871,7 +2871,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Definir las áreas geográficas: los barrios, regiones,... Las áreas pueden ser vinculadas a proyectos y pueden utilizarse para crear grupos inteligentes y definir permisos de acceso del proyecto.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Agregue el nombre de su organización o ciudad, una dirección url de su sitio de Internet y los idiomas en que esta plataforma debe ponerse a disposición.",
   "app.containers.AdminPage.SettingsPage.subtitleBullet1": "La pregunta se formulará en el proceso de registro global (por ejemplo, cuando la gente haga clic en \"Registrarse\" en la página de inicio).",
-  "app.containers.AdminPage.SettingsPage.subtitleBullet2": "La pregunta se hará por <b>defecto</b> cuando la gente se inscriba en una fase o evento específico. Sin embargo: <b>los administradores y moderadores del proyecto pueden anular esto por fase -</b> consulta la pestaña \"Acceso a la fase y datos del usuario\" en cada fase.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "El subtítulo excede el límite de máximo de 90 caracteres",
   "app.containers.AdminPage.SettingsPage.subtitleRegistration1": "Gestiona las preguntas demográficas utilizadas en esta plataforma. Habilitar una pregunta aquí hará dos cosas:",
   "app.containers.AdminPage.SettingsPage.subtitleRegistration2": "Lo mismo ocurre con el ajuste \"obligatorio\" que ves cuando haces clic en \"Editar\" en una pregunta.",

@@ -2871,7 +2871,6 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "Defina as subdivisões geográficas de seu território.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "Escolha como as pessoas verão seu nome, selecione os idiomas de sua plataforma e crie um link para seu site.",
   "app.containers.AdminPage.SettingsPage.subtitleBullet1": "A pergunta será feita no processo global de inscrição (por exemplo, quando as pessoas clicarem em \"Inscrever-se\" na página inicial).",
-  "app.containers.AdminPage.SettingsPage.subtitleBullet2": "A pergunta será feita <b>por padrão</b> quando as pessoas se inscreverem em uma fase ou evento específico. No entanto: <b>os administradores e moderadores do projeto podem substituir isso por fase -</b> consulte a guia \"Acesso à fase e dados do usuário\" em cada fase.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "A legenda fornecida excede o limite máximo de 90 caracteres permitido",
   "app.containers.AdminPage.SettingsPage.subtitleRegistration1": "Gerencie as perguntas demográficas usadas nesta plataforma. Ao habilitar uma pergunta aqui, você fará duas coisas:",
   "app.containers.AdminPage.SettingsPage.subtitleRegistration2": "O mesmo se aplica à configuração \"obrigatório\" que você vê quando clica em \"Editar\" em uma pergunta.",
