@@ -40,7 +40,7 @@ const useTopicBreakdownData = ({ phaseId }: UseTopicBreakdownDataProps) => {
     phaseId,
   });
 
-  const analysisId = analyses?.data?.[0]?.id;
+  const analysisId = analyses?.data[0]?.id;
 
   // 2. Fetch AI Topics (Dependent on analysisId)
   const {
@@ -100,7 +100,7 @@ const useTopicBreakdownData = ({ phaseId }: UseTopicBreakdownDataProps) => {
   const manualTopics = useMemo((): TopicData[] => {
     if (!filterCounts?.data || !topics?.data) return [];
 
-    const countsByTopicId = filterCounts.data.attributes.input_topic_id || {};
+    const countsByTopicId = filterCounts.data.attributes.input_topic_id;
     const totalIdeas = filterCounts.data.attributes.total || 0;
 
     return topics.data
@@ -118,7 +118,7 @@ const useTopicBreakdownData = ({ phaseId }: UseTopicBreakdownDataProps) => {
       .sort((a, b) => b.count - a.count);
   }, [filterCounts, topics, localize]);
 
-  const totalInputs = filterCounts?.data?.attributes?.total || 0;
+  const totalInputs = filterCounts?.data.attributes.total || 0;
 
   const aggregates = useMemo(() => {
     return {

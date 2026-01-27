@@ -226,4 +226,16 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.addBaseData',
     defaultMessage: 'Add base data',
   },
+  downloadPdf: {
+    id: 'app.containers.Admin.projects.project.insights.downloadPdf',
+    defaultMessage: 'Download as PDF',
+  },
+  downloadWord: {
+    id: 'app.containers.Admin.projects.project.insights.downloadWord',
+    defaultMessage: 'Download as Word',
+  },
+  errorWordDownload: {
+    id: 'app.containers.Admin.projects.project.insights.errorWordDownload',
+    defaultMessage: 'Failed to download Word document. Please try again.',
+  },
 });

@@ -112,7 +112,6 @@ const DemographicsSection = ({ phase, isPdfExport = false }: Props) => {
     () => demographicsData?.fields || [],
     [demographicsData]
   );
-  const selectedField = fields[selectedFieldIndex];
 
   if (isLoading) {
     return (
@@ -224,6 +223,7 @@ const DemographicsSection = ({ phase, isPdfExport = false }: Props) => {
       gap="24px"
       role="region"
       aria-label={formatMessage(messages.demographicsAndAudience)}
+      position="relative"
     >
       <Box display="flex" alignItems="center" justifyContent="space-between">
         <Text fontSize="m" fontWeight="bold" m="0px">
@@ -246,7 +246,32 @@ const DemographicsSection = ({ phase, isPdfExport = false }: Props) => {
         ))}
       </TabsContainer>
 
-      <DemographicFieldContent field={selectedField} showExportMenu={true} />
+      {/* Render all fields for Word export capture, but only show the selected one */}
+      {/* Non-selected fields use opacity: 0 so html2canvas can still capture them */}
+      <Box position="relative">
+        {fields.map((field, index) => {
+          const isSelected = index === selectedFieldIndex;
+          return (
+            <Box
+              key={field.field_id}
+              position={isSelected ? 'relative' : 'absolute'}
+              top={isSelected ? undefined : '0'}
+              left={isSelected ? undefined : '0'}
+              width="100%"
+              style={{
+                opacity: isSelected ? 1 : 0,
+                pointerEvents: isSelected ? 'auto' : 'none',
+              }}
+              aria-hidden={!isSelected}
+            >
+              <DemographicFieldContent
+                field={field}
+                showExportMenu={isSelected}
+              />
+            </Box>
+          );
+        })}
+      </Box>
     </Box>
   );
 };
