@@ -1417,7 +1417,6 @@
   "app.containers.Admin.projects.project.insights.shared.aiTopicDistribution": "Distribuzione degli argomenti AI",
   "app.containers.Admin.projects.project.insights.shared.aiTopicsSummary": "{inputsCount} contributi · {topicsCount} argomenti",
   "app.containers.Admin.projects.project.insights.shared.manualTagsByParticipants": "Tag manuali dei partecipanti",
-  "app.containers.Admin.projects.project.insights.shared.manualTagsCoverage1": "{tagged} di {total} contributi sono stati taggati manualmente dai partecipanti (copertura{percentage}%)",
   "app.containers.Admin.projects.project.insights.shared.manualTagsSummary": "{taggedCount} contributi · {topicsCount} argomenti",
   "app.containers.Admin.projects.project.insights.shared.noAiTopics": "Nessun argomento AI generato ancora",
   "app.containers.Admin.projects.project.insights.shared.noManualTags": "Nessun tag manuale assegnato ancora",
