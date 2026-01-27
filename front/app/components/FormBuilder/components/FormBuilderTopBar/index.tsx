@@ -203,6 +203,7 @@ const FormBuilderTopBar = ({
         <ButtonWithLink
           buttonStyle="admin-dark"
           processing={isSubmitting}
+          disabled={isSubmitting}
           type="submit"
         >
           <FormattedMessage {...messages.save} />
