@@ -6,56 +6,223 @@ require './spec/services/surveys/shared/survey_setup'
 # NOTE: These tests only test the addition of logic to the results from the parent class
 
 RSpec.describe Surveys::ResultsWithLogicGenerator do
-  subject(:generator) { described_class.new survey_phase }
-
   include_context 'survey_setup'
+
+  let(:generator) { described_class.new survey_phase }
 
   describe 'generate_result_for_field' do
     it 'is not implemented and returns an error' do
-      generator = described_class.new(survey_phase)
       expect { generator.generate_result_for_field('12345') }.to raise_error(NotImplementedError)
     end
   end
 
-  # TODO: We need tests for the numbers where there is logic in place
   describe 'generate_results' do
-    let(:generated_results) { generator.generate_results }
-
-    before_all do
-      # Update fields from survey_setup shared context with some (meaningless but valid) end_page logic
-      linear_scale_field.update!(logic: { rules: [{ if: 2, goto_page_id: last_page_field.id }, { if: 'no_answer', goto_page_id: last_page_field.id }] })
-      page_field.update!(logic: { next_page_id: last_page_field.id })
+    before do
+      reset_survey_logic!
     end
 
     describe 'page fields' do
       it 'returns correct logic values for a page field in full results' do
-        page_result = generated_results[:results][0]
+        page_field.update!(logic: { next_page_id: last_page_field.id })
+        page_result = generator.generate_results[:results][result_index(page_field)]
         expect(page_result[:inputType]).to eq 'page'
-        expect(page_result[:logic]).to eq({ nextPageNumber: 2, numQuestionsSkipped: 0 })
+        expect(page_result[:logic]).to eq({ nextPageNumber: 4, numQuestionsSkipped: 13 })
       end
     end
 
     describe 'linear scale fields' do
-      it 'returns the correct logic values in results for a linear scale field' do
-        result = generated_results[:results][4]
-        expect(result[:inputType]).to eq 'linear_scale'
-        expect(result[:logic]).to match({
+      it 'returns correct response numbers based on linear scale and page logic - example 1' do
+        mid_page_field1.update!(logic: { next_page_id: last_page_field.id })
+        linear_scale_field.update!(logic: {
+          rules: [
+            { if: 2, goto_page_id: mid_page_field2.id },
+            { if: 'no_answer', goto_page_id: last_page_field.id }
+          ]
+        })
+
+        results = generator.generate_results[:results]
+
+        # Page logic
+        expect(results[result_index(mid_page_field1)][:logic]).to eq({ nextPageNumber: 4, numQuestionsSkipped: 10 })
+
+        # Linear scale logic
+        expect(results[result_index(linear_scale_field)][:logic]).to eq({
           answer: {
-            2 => {
-              id: "#{linear_scale_field.id}_2",
-              nextPageNumber: 2,
-              numQuestionsSkipped: 0
-            },
-            'no_answer' => {
-              id: "#{linear_scale_field.id}_no_answer",
-              nextPageNumber: 2,
-              numQuestionsSkipped: 0
-            }
+            'no_answer' => { id: "#{linear_scale_field.id}_no_answer", nextPageNumber: 4, numQuestionsSkipped: 13 },
+            2 => { id: "#{linear_scale_field.id}_2", nextPageNumber: 3, numQuestionsSkipped: 3 }
           }
         })
+
+        # Correct response counts
+        expect(results.pluck(:totalResponseCount)).to eq(
+          [27, 27, 27, 27, 27, 17, 17, 17, 17, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+        )
+      end
+
+      it 'returns correct response numbers based on linear scale logic - example 2' do
+        linear_scale_field.update!(logic: {
+          rules: [
+            { if: 3, goto_page_id: mid_page_field2.id },
+            { if: 4, goto_page_id: last_page_field.id }
+          ]
+        })
+
+        results = generator.generate_results[:results]
+
+        # Linear scale logic
+        expect(results[result_index(linear_scale_field)][:logic]).to eq({
+          answer: {
+            3 => { id: "#{linear_scale_field.id}_3", nextPageNumber: 3, numQuestionsSkipped: 3 },
+            4 => { id: "#{linear_scale_field.id}_4", nextPageNumber: 4, numQuestionsSkipped: 13 }
+          }
+        })
+
+        # Correct response counts
+        expect(results.pluck(:totalResponseCount)).to eq(
+          [27, 27, 27, 27, 27, 18, 18, 18, 18, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26]
+        )
+      end
+    end
+
+    describe 'select fields' do
+      it 'returns correct response numbers based on select field logic' do
+        select_field.update!(logic: {
+          rules: [
+            { if: select_field.options.first.id, goto_page_id: last_page_field.id },
+            { if: select_field.options.second.id, goto_page_id: mid_page_field1.id }
+          ]
+        })
+
+        results = generator.generate_results[:results]
+
+        # Select logic
+        expect(results[result_index(select_field)][:logic]).to eq({
+          answer: {
+            'la' => { id: select_field.options[0].id, nextPageNumber: 4, numQuestionsSkipped: 10 },
+            'ny' => { id: select_field.options[1].id, nextPageNumber: 2, numQuestionsSkipped: 10 }
+          }
+        })
+
+        # Correct response counts
+        expect(results.pluck(:totalResponseCount)).to eq(
+          [27, 27, 27, 27, 27, 27, 27, 27, 27, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24]
+        )
       end
     end
   end
+
+  # Test the private methods that use logic in results
+  describe '#next_page_id_from_logic' do
+    let(:input) { create(:native_survey_response, project: project, phases: phases_of_inputs) }
+    let(:page_ids) { [page_field.id, mid_page_field1.id, mid_page_field2.id, last_page_field.id] }
+
+    before { reset_survey_logic! }
+
+    context 'linear scale and page field logic' do
+      before do
+        # Update fields from survey_setup shared context with some logic
+        linear_scale_field.update!(logic: {
+          rules: [
+            { if: 2, goto_page_id: mid_page_field2.id },
+            { if: 'no_answer', goto_page_id: last_page_field.id }
+          ]
+        })
+        mid_page_field1.update!(logic: {
+          next_page_id: last_page_field.id
+        })
+      end
+
+      it 'returns the correct next_page_id from linear scale logic' do
+        input.update!(custom_field_values: { linear_scale_field.key => 2 })
+        logic_next_page_id = generator.send(:next_page_id_from_logic, linear_scale_field, input, page_ids)
+        expect(logic_next_page_id).to eq mid_page_field2.id
+      end
+
+      it 'returns the correct next_page_id from no answer logic' do
+        input.update!(custom_field_values: {})
+        logic_next_page_id = generator.send(:next_page_id_from_logic, linear_scale_field, input, page_ids)
+        expect(logic_next_page_id).to eq last_page_field.id
+      end
+
+      it 'returns no next_page_id when no logic present for the answer' do
+        input.update!(custom_field_values: { linear_scale_field.key => 3 })
+        logic_next_page_id = generator.send(:next_page_id_from_logic, linear_scale_field, input, page_ids)
+        expect(logic_next_page_id).to be_nil
+      end
+    end
+
+    context 'single select logic' do
+      before do
+        # Update fields from survey_setup shared context with logic
+        select_field.update!(logic: {
+          rules: [
+            { if: select_field.options.first.id, goto_page_id: mid_page_field1.id },
+            { if: 'any_other_answer', goto_page_id: mid_page_field2.id },
+            { if: 'no_answer', goto_page_id: last_page_field.id }
+          ]
+        })
+      end
+
+      it 'returns the correct next_page_id from a single selection' do
+        input.update!(custom_field_values: { select_field.key => 'la' })
+        logic_next_page_id = generator.send(:next_page_id_from_logic, select_field, input, page_ids)
+        expect(logic_next_page_id).to eq mid_page_field1.id
+      end
+
+      it 'returns the correct next_page_id when there is no answer' do
+        input.update!(custom_field_values: {})
+        logic_next_page_id = generator.send(:next_page_id_from_logic, select_field, input, page_ids)
+        expect(logic_next_page_id).to eq last_page_field.id
+      end
+
+      it 'returns the correct next_page_id for any other answer' do
+        input.update!(custom_field_values: { select_field.key => 'ny' })
+        logic_next_page_id = generator.send(:next_page_id_from_logic, select_field, input, page_ids)
+        expect(logic_next_page_id).to eq mid_page_field2.id
+      end
+    end
+
+    context 'multiselect logic' do
+      before do
+        # Update fields from survey_setup shared context with some logic
+        # Uses update column to bypass validations as logic is no longer allowed to be set when saving multiselect fields
+        multiselect_field.update_columns(logic: {
+          rules: [
+            { if: multiselect_field.options.first.id, goto_page_id: mid_page_field1.id },
+            { if: multiselect_field.options.second.id, goto_page_id: mid_page_field2.id },
+            { if: 'no_answer', goto_page_id: last_page_field.id }
+          ]
+        })
+      end
+
+      it 'returns the correct next_page_id from a single selection' do
+        input.update!(custom_field_values: { multiselect_field.key => ['cat'] })
+        logic_next_page_id = generator.send(:next_page_id_from_logic, multiselect_field, input, page_ids)
+        expect(logic_next_page_id).to eq mid_page_field1.id
+      end
+
+      it 'returns the correct next_page_id from a multiple selection' do
+        input.update!(custom_field_values: { multiselect_field.key => %w[cat dog] })
+        logic_next_page_id = generator.send(:next_page_id_from_logic, multiselect_field, input, page_ids)
+        expect(logic_next_page_id).to eq mid_page_field2.id
+      end
+
+      it 'returns the correct next_page_id when there is no answer' do
+        input.update!(custom_field_values: {})
+        logic_next_page_id = generator.send(:next_page_id_from_logic, multiselect_field, input, page_ids)
+        expect(logic_next_page_id).to eq last_page_field.id
+      end
+
+      it 'returns no next_page_id when no logic present for the answer' do
+        input.update!(custom_field_values: { multiselect_field.key => ['cow'] })
+        logic_next_page_id = generator.send(:next_page_id_from_logic, multiselect_field, input, page_ids)
+        expect(logic_next_page_id).to be_nil
+      end
+    end
+  end
+
+  # TODO: Add tests for seen_field_responses when logic is present
+  # Define new data here, not using the existing stuff so we can be clearer
 
   describe 'add_logic_to_results' do
     # NOTE: Most of the object below is not needed for the tests, but it's included for completeness

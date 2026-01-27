@@ -222,7 +222,7 @@ module Surveys
     def field_seen_count(field)
       return @all_inputs.size unless survey_has_logic?
 
-      seen_field_responses[field.id]
+      seen_field_responses[field.id]&.count || 0
     end
 
     def core_field_attributes(field, response_count: nil)
