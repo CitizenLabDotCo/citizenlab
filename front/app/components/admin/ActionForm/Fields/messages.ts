@@ -72,9 +72,9 @@ export default defineMessages({
         'When "Authentication" is set to "None", demographic questions can only be asked as the last page of the survey.',
     },
   with_these_settings_can_only_ask_demographic_fields_in_registration_flow: {
-    id: 'app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow',
+    id: 'app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow2',
     defaultMessage:
-      'With the current combination of "Authentication" and "User data collection" settings, demographic questions can only be asked in the registration flow.',
+      'With the current combination of "Authentication" and "User data collection" settings, demographic questions can only be asked in the registration flow. HOWEVER: because you selected "anonymous" in the "User data collection" section, THIS DATA WILL NOT BE LINKED TO THE RESPONSE! It will only be used to update the user\'s profile, but you will not have ANY information about who participated.',
   },
   askDemographicQuestionsBeforeUserParticipates: {
     id: 'app.components.admin.ActionForm.Fields.askDemographicQuestionsBeforeUserParticipates',
