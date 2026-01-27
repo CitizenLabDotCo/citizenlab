@@ -143,7 +143,7 @@
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "تدفق التسجيل العالمي",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "هذا السؤال مُفعّل في {globalRegFlowLink}. يمكنك تعطيله لهذا الإجراء.",
   "app.components.admin.ActionForm.Fields.user_fields_in_form_not_supported_for_action": "لا يدعم هذا الإجراء طرح أسئلة ديموغرافية في الصفحة الأخيرة من النموذج.",
-  "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow2": "مع الإعدادات الحالية لـ \"التحقق من الهوية\" و\"جمع بيانات المستخدم\"، لا يمكن طرح الأسئلة الديموغرافية إلا أثناء عملية التسجيل. مع ذلك، ولأنك اخترت \"إخفاء الهوية الكامل\" في قسم \"جمع بيانات المستخدم\"، فلن يتم ربط هذه البيانات بالرد! سيتم استخدامها فقط لتحديث ملف تعريف المستخدم، ولن تتوفر لديك أي معلومات عن هوية المشاركين.",
+  "app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow3": "لأنك اخترتَ \"إخفاء الهوية الكامل\" في \"جمع بيانات المستخدم\"، يمكنك فقط طرح أسئلة ديموغرافية قبل المشاركة. مع ذلك: لن يتم ربط هذه البيانات بالإجابة! سيتم استخدامها فقط لتحديث ملف تعريف المستخدم، ولن يكون لديك أي معلومات عن هوية المشاركين.",
   "app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2": "لا ينطبق اختيار كيفية طرح الأسئلة الديموغرافية على المشاركين لأنك قمت بتعطيل المصادقة واخترت عدم الكشف عن هويتك بالكامل",
   "app.components.admin.ContentBuilder.Widgets.AccordionMultiloc.accordionInstructions3": "لإضافة محتوى داخل الأكورديون، افتح الأكورديون بالضغط على الرمز \">\"، ثم اسحب أي عناصر واجهة مستخدم إلى الداخل.",
   "app.components.admin.ContentBuilder.Widgets.SurveyQuestionResultWidget.emptyField": "لم يتم تحديد أي سؤال. الرجاء تحديد سؤال أولاً.",
