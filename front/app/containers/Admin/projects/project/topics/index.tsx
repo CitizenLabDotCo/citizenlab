@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { IInputTopicData } from 'api/input_topics/types';
 import useDeleteInputTopic from 'api/input_topics/useDeleteInputTopic';
@@ -35,7 +36,6 @@ import { isAdmin } from 'utils/permissions/roles';
 
 import InputTopicModal from './InputTopicModal';
 import messages from './messages';
-import styled from 'styled-components';
 
 const IndentedSortableRow = styled(SortableRow)<{ depth: number }>`
   padding-left: ${(props) => props.depth * 32}px;

@@ -1,5 +1,8 @@
 module ReportBuilder
   class Queries::InternalAdoption < ReportBuilder::Queries::Base
+    ADMIN_ROLES = %w[admin].freeze
+    MODERATOR_ROLES = %w[project_moderator project_folder_moderator].freeze
+
     def run_query(
       start_at: nil,
       end_at: nil,
@@ -58,8 +61,8 @@ module ReportBuilder
         .where(created_at: start_date..end_date)
         .select(
           "date_trunc('#{resolution}', created_at)::date as date_group",
-          role_count_sql('admin', 'admins_count'),
-          role_count_sql('project_moderator', 'moderators_count')
+          role_count_sql(ADMIN_ROLES, 'admins_count'),
+          role_count_sql(MODERATOR_ROLES, 'moderators_count')
         )
         .group("date_trunc('#{resolution}', created_at)")
         .order('date_group')
@@ -76,8 +79,8 @@ module ReportBuilder
       counts = ImpactTracking::Session
         .where(created_at: start_date..end_date)
         .select(
-          role_count_sql('admin', 'admins_count'),
-          role_count_sql('project_moderator', 'moderators_count')
+          role_count_sql(ADMIN_ROLES, 'admins_count'),
+          role_count_sql(MODERATOR_ROLES, 'moderators_count')
         )
         .take
 
@@ -88,8 +91,9 @@ module ReportBuilder
       }
     end
 
-    def role_count_sql(role, alias_name)
-      "COUNT(DISTINCT CASE WHEN highest_role = '#{role}' THEN user_id END) as #{alias_name}"
+    def role_count_sql(roles, alias_name)
+      quoted = roles.map { |r| "'#{r}'" }.join(', ')
+      "COUNT(DISTINCT CASE WHEN highest_role IN (#{quoted}) THEN user_id END) as #{alias_name}"
     end
 
     def get_total_admin_pm_count(end_date)

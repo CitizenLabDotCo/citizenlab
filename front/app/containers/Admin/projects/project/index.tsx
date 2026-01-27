@@ -29,7 +29,12 @@ const AdminProjectsProjectIndex = () => {
       .private_attributes_in_export !== false;
 
   return (
-    <div data-cy="e2e-admin-projects-project-index">
+    <Box
+      data-cy="e2e-admin-projects-project-index"
+      display="flex"
+      flexDirection="column"
+      flexGrow={1}
+    >
       <ProjectHeader projectId={projectId} />
       <NavigationTabs position="relative">
         <Tab
@@ -80,7 +85,7 @@ const AdminProjectsProjectIndex = () => {
         />
       </NavigationTabs>
       <RouterOutlet />
-    </div>
+    </Box>
   );
 };
 
