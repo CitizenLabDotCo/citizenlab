@@ -1417,7 +1417,6 @@
   "app.containers.Admin.projects.project.insights.shared.aiTopicDistribution": "ਏਆਈ ਵਿਸ਼ਾ ਵੰਡ",
   "app.containers.Admin.projects.project.insights.shared.aiTopicsSummary": "{inputsCount} ਇਨਪੁਟ · {topicsCount} ਵਿਸ਼ੇ",
   "app.containers.Admin.projects.project.insights.shared.manualTagsByParticipants": "ਭਾਗੀਦਾਰਾਂ ਦੁਆਰਾ ਦਸਤੀ ਟੈਗ",
-  "app.containers.Admin.projects.project.insights.shared.manualTagsCoverage1": "ਭਾਗੀਦਾਰਾਂ ਦੁਆਰਾ {tagged} {total} ਇਨਪੁਟਸ ਨੂੰ ਹੱਥੀਂ ਟੈਗ ਕੀਤਾ ਗਿਆ ਸੀ ({percentage}% ਕਵਰੇਜ)",
   "app.containers.Admin.projects.project.insights.shared.manualTagsSummary": "{taggedCount} ਇਨਪੁਟ · {topicsCount} ਵਿਸ਼ੇ",
   "app.containers.Admin.projects.project.insights.shared.noAiTopics": "ਅਜੇ ਤੱਕ ਕੋਈ AI ਵਿਸ਼ੇ ਤਿਆਰ ਨਹੀਂ ਕੀਤੇ ਗਏ ਹਨ।",
   "app.containers.Admin.projects.project.insights.shared.noManualTags": "ਹਾਲੇ ਤੱਕ ਕੋਈ ਮੈਨੂਅਲ ਟੈਗ ਨਿਰਧਾਰਤ ਨਹੀਂ ਕੀਤੇ ਗਏ",
