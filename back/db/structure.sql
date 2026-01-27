@@ -37,7 +37,6 @@ ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF E
 ALTER TABLE IF EXISTS ONLY public.project_folders_images DROP CONSTRAINT IF EXISTS fk_rails_dcbc962cfe;
 ALTER TABLE IF EXISTS ONLY public.analysis_summaries DROP CONSTRAINT IF EXISTS fk_rails_dbd13460f0;
 ALTER TABLE IF EXISTS ONLY public.projects_global_topics DROP CONSTRAINT IF EXISTS fk_rails_db7813bfef;
-ALTER TABLE IF EXISTS ONLY public.projects_allowed_input_topics DROP CONSTRAINT IF EXISTS fk_rails_db7813bfef;
 ALTER TABLE IF EXISTS ONLY public.ideas_input_topics DROP CONSTRAINT IF EXISTS fk_rails_d68de6da88;
 ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_rails_d6353758d5;
 ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS fk_rails_d1892257e3;
@@ -101,7 +100,6 @@ ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rail
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS fk_rails_82dc979276;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_81c11ef894;
 ALTER TABLE IF EXISTS ONLY public.projects_global_topics DROP CONSTRAINT IF EXISTS fk_rails_812b6d9149;
-ALTER TABLE IF EXISTS ONLY public.projects_allowed_input_topics DROP CONSTRAINT IF EXISTS fk_rails_812b6d9149;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS fk_rails_81137213da;
 ALTER TABLE IF EXISTS ONLY public.polls_response_options DROP CONSTRAINT IF EXISTS fk_rails_80d00e60ae;
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS fk_rails_7fbb3b1416;
@@ -7775,14 +7773,6 @@ ALTER TABLE ONLY public.report_builder_reports
 
 
 --
--- Name: projects_allowed_input_topics fk_rails_812b6d9149; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.projects_allowed_input_topics
-    ADD CONSTRAINT fk_rails_812b6d9149 FOREIGN KEY (project_id) REFERENCES public.projects(id);
-
-
---
 -- Name: projects_global_topics fk_rails_812b6d9149; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8287,14 +8277,6 @@ ALTER TABLE ONLY public.ideas_input_topics
 
 
 --
--- Name: projects_allowed_input_topics fk_rails_db7813bfef; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.projects_allowed_input_topics
-    ADD CONSTRAINT fk_rails_db7813bfef FOREIGN KEY (topic_id) REFERENCES public.global_topics(id);
-
-
---
 -- Name: projects_global_topics fk_rails_db7813bfef; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8525,6 +8507,7 @@ ALTER TABLE ONLY public.ideas_topics
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260127090030'),
 ('20260122100950'),
 ('20260121111117'),
 ('20260120123325'),
