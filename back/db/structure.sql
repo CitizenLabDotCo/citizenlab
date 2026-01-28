@@ -1795,7 +1795,8 @@ CREATE TABLE public.phases (
     similarity_enabled boolean DEFAULT true NOT NULL,
     vote_term character varying DEFAULT 'vote'::character varying,
     voting_min_selected_options integer DEFAULT 1 NOT NULL,
-    voting_filtering_enabled boolean DEFAULT false NOT NULL
+    voting_filtering_enabled boolean DEFAULT false NOT NULL,
+    prescreening_mode character varying
 );
 
 
@@ -8547,6 +8548,7 @@ SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20260127090030'),
+('20260126104246'),
 ('20260122100950'),
 ('20260121111117'),
 ('20260120123325'),

@@ -105,4 +105,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.Voting.creditTerm',
     defaultMessage: 'Credit',
   },
+  percentTerm: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.percentTerm',
+    defaultMessage: 'Percent',
+  },
 });
