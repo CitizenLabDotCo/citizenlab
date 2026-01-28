@@ -147,7 +147,6 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Spara den här koden om du vill ta bort din inlämning senare.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Skicka denna kod till min e-post",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Identifierare för inlämning",
-  "app.components.CustomFieldsForm.PostParticipationBox.createAnAccount": "Skapa ett konto",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountToFollow": "Skapa ett konto för att följa vad som händer härnäst och delta i andra konversationer.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Få uppdateringar när det finns nästa steg",
   "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Delta i diskussioner om dina synpunkter delas offentligt",

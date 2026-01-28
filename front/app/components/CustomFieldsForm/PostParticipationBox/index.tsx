@@ -24,6 +24,7 @@ const PostParticipationBox = ({ onCreateAccount }: Props) => {
       borderRadius={stylingConsts.borderRadius}
       px="12px"
       pb="12px"
+      mb="16px"
     >
       <Title variant="h4" as="h2">
         <FormattedMessage {...messages.stayConnected} />
@@ -47,7 +48,7 @@ const PostParticipationBox = ({ onCreateAccount }: Props) => {
         mt="16px"
         dataCy="post-participation-signup"
       >
-        <FormattedMessage {...messages.createAnAccount} />
+        <FormattedMessage {...messages.createAnAccountOrLogIn} />
       </Button>
     </Box>
   );

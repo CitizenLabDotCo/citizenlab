@@ -147,7 +147,6 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Spremite ovaj kod u slučaju da kasnije želite ukloniti svoju prijavu.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Pošalji ovaj kod na moju e-mail adresu",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Identifikator podneska",
-  "app.components.CustomFieldsForm.PostParticipationBox.createAnAccount": "Izradi račun",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountToFollow": "Izradite račun kako biste pratili što se događa sljedeće i sudjelovali u drugim razgovorima.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Primajte ažuriranja kada budu dostupni sljedeći koraci",
   "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Pridružite se raspravama ako se vaš doprinos javno dijeli",

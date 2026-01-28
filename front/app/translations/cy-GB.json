@@ -147,7 +147,6 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Cadwch y cod hwn rhag ofn eich bod am ddileu eich cyflwyniad yn ddiweddarach.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Anfonwch y cod hwn i'm e-bost",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Dynodwr cyflwyniad",
-  "app.components.CustomFieldsForm.PostParticipationBox.createAnAccount": "Creu cyfrif",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountToFollow": "Crëwch gyfrif i ddilyn beth sy'n digwydd nesaf a chymryd rhan mewn sgyrsiau eraill.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Derbyniwch y wybodaeth ddiweddaraf pan fydd camau nesaf",
   "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Ymunwch â thrafodaethau os yw eich mewnbwn yn cael ei rannu'n gyhoeddus",

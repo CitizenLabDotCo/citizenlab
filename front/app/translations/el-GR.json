@@ -147,7 +147,6 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Αποθηκεύστε αυτόν τον κωδικό σε περίπτωση που θελήσετε να αφαιρέσετε την υποβολή σας αργότερα.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Στείλτε αυτόν τον κωδικό στο email μου",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Αναγνωριστικό υποβολής",
-  "app.components.CustomFieldsForm.PostParticipationBox.createAnAccount": "Δημιουργία λογαριασμού",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountToFollow": "Δημιουργήστε έναν λογαριασμό για να παρακολουθείτε τι θα συμβεί στη συνέχεια και να συμμετέχετε σε άλλες συζητήσεις.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Λάβετε ενημερώσεις όταν υπάρχουν επόμενα βήματα",
   "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Συμμετέχετε σε συζητήσεις εάν η συνεισφορά σας κοινοποιείται δημόσια",
