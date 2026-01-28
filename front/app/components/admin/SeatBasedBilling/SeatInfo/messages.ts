@@ -98,10 +98,10 @@ export default defineMessages({
     defaultMessage:
       'Folder/project managers can manage an unlimited number of folders/projects. You can {visitHelpCenter} to learn more about the different roles.',
   },
-  rolesSupportPage: {
-    id: 'app.components.SeatInfo.rolesSupportPage',
+  rolesSupportPage2: {
+    id: 'app.components.SeatInfo.rolesSupportPage2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/2672884-what-are-the-different-roles-on-the-platform',
+      'https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform',
   },
   visitHelpCenter: {
     id: 'app.components.SeatInfo.visitHelpCenter',

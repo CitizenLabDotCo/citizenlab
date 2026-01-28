@@ -17,7 +17,7 @@ const ImageInfoTooltip = () => {
           values={{
             supportPageLink: (
               <a
-                href={formatMessage(messages.imageSupportPageURL)}
+                href={formatMessage(messages.imageSupportPageURL2)}
                 target="_blank"
                 rel="noreferrer"
               >

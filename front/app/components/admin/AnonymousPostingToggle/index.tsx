@@ -53,7 +53,7 @@ const AnonymousPostingToggle = ({
                 supportArticle: (
                   <a
                     href={formatMessage(
-                      messages.userAnonymitySupportTooltipLinkUrl
+                      messages.userAnonymitySupportTooltipLinkUrl2
                     )}
                     target="_blank"
                     rel="noreferrer"

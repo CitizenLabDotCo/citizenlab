@@ -166,10 +166,10 @@ export default defineMessages({
     defaultMessage: `
     This image is part of the project card; the card that summarizes the project and is shown on the homepage for example. For more information on recommended image resolutions, {supportPageLink}.`,
   },
-  imageSupportPageURL: {
-    id: 'app.containers.AdminPage.ProjectEdit.imageSupportPageURL',
+  imageSupportPageURL2: {
+    id: 'app.containers.AdminPage.ProjectEdit.imageSupportPageURL2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
+      'https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
   },
   supportPageLinkText: {
     id: 'app.containers.AdminPage.ProjectEdit.supportPageLinkText',

@@ -22,9 +22,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.communityMonitor.successMessage2',
     defaultMessage: 'Survey successfully saved',
   },
-  supportArticleLink: {
-    id: 'app.containers.AdminPage.ProjectEdit.communityMonitor.supportArticleLink2',
+  supportArticleLinkSurvey: {
+    id: 'app.containers.AdminPage.ProjectEdit.communityMonitor.supportArticleLinkSurvey',
     defaultMessage:
-      'https://support.govocal.com/en/articles/6673873-creating-an-in-platform-survey',
+      'https://support.govocal.com/en/articles/527602-creating-an-in-platform-survey',
   },
 });

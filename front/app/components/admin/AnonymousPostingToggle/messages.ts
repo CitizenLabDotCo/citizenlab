@@ -27,10 +27,10 @@ export default defineMessages({
     id: 'app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkText',
     defaultMessage: 'support article',
   },
-  userAnonymitySupportTooltipLinkUrl: {
-    id: 'app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl',
+  userAnonymitySupportTooltipLinkUrl2: {
+    id: 'app.components.AnonymousPostingToggle.userAnonymitySupportTooltipLinkUrl2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/7946486-enabling-anonymous-participation',
+      'https://support.govocal.com/en/articles/527583-enabling-anonymous-participation',
   },
   anonymousParticipationAutoEnabled: {
     id: 'app.components.AnonymousPostingToggle.anonymousParticipationAutoEnabled',

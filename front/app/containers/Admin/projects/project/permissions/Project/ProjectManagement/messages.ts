@@ -14,10 +14,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.moderationInfoCenterLinkText',
     defaultMessage: 'visit our Help Center',
   },
-  moreInfoModeratorLink: {
-    id: 'app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink',
+  moreInfoModeratorLink2: {
+    id: 'app.containers.AdminPage.ProjectEdit.moreInfoModeratorLink2',
     defaultMessage:
-      'http://support.govocal.com/en-your-citizenlab-platform-step-by-step/set-up/pointing-out-the-right-project-moderators',
+      'https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform',
   },
   moderatorSearchFieldLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.moderatorSearchFieldLabel1',

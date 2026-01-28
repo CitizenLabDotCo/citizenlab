@@ -177,9 +177,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.overlayToggleLabel',
     defaultMessage: 'Enable overlay',
   },
-  imageSupportPageURL: {
-    id: 'app.containers.AdminPage.SettingsPage.imageSupportPageURL',
+  imageSupportPageURL2: {
+    id: 'app.containers.AdminPage.SettingsPage.imageSupportPageURL2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
+      'https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
   },
 });

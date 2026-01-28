@@ -130,7 +130,7 @@ const SeatInfo = ({ seatType }: SeatInfoProps) => {
               values={{
                 visitHelpCenter: (
                   <a
-                    href={formatMessage(messages.rolesSupportPage)}
+                    href={formatMessage(messages.rolesSupportPage2)}
                     target="_blank"
                     rel="noreferrer"
                   >

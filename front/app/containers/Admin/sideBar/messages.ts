@@ -73,10 +73,9 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SideBar.linkToSupport2',
     defaultMessage: 'https://support.govocal.com',
   },
-  linkToChangelog: {
-    id: 'app.containers.AdminPage.SideBar.linkToChangelog',
-    defaultMessage:
-      'https://support.govocal.com/en/articles/12082845-changelog',
+  linkToChangelog2: {
+    id: 'app.containers.AdminPage.SideBar.linkToChangelog2',
+    defaultMessage: 'https://support.govocal.com/en/articles/527549-changelog',
   },
   toPlatform: {
     id: 'app.containers.AdminPage.SideBar.toPlatform',

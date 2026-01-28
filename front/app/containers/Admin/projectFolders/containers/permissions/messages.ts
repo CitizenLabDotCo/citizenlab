@@ -6,10 +6,10 @@ export default defineMessages({
     defaultMessage:
       'Folder managers can edit the folder description, create new projects within the folder, and have project management rights over all projects within the folder. They cannot delete projects and they do not have access to projects that are not within their folder. You can {projectManagementInfoCenterLink} to find more information on project management rights.',
   },
-  moreInfoFolderManagerLink: {
-    id: 'app.containers.AdminPage.FolderPermissions.moreInfoFolderManagerLink',
+  moreInfoFolderManagerLink2: {
+    id: 'app.containers.AdminPage.FolderPermissions.moreInfoFolderManagerLink2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/4648650-assign-the-right-project-managers',
+      'https://support.govocal.com/en/articles/527547-creating-and-managing-folders',
   },
   projectManagementInfoCenterLinkText: {
     id: 'app.containers.AdminPage.FolderPermissions.projectManagementInfoCenterLinkText',

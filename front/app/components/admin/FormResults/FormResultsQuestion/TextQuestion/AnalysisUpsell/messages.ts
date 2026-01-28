@@ -26,10 +26,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.survey.upsell.supportArticle',
     defaultMessage: 'support article',
   },
-  supportArticleLink: {
-    id: 'app.containers.Admin.projects.project.survey.upsell.supportArticleLink',
+  supportArticleLink2: {
+    id: 'app.containers.Admin.projects.project.survey.upsell.supportArticleLink2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/8316692-ai-analysis',
+      'https://support.govocal.com/en/articles/527580-ai-analysis',
   },
   button: {
     id: 'app.containers.Admin.projects.project.survey.upsell.button',

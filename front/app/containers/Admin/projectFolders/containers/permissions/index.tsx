@@ -113,7 +113,7 @@ const FolderPermissions = () => {
                 values={{
                   projectManagementInfoCenterLink: (
                     <StyledA
-                      href={formatMessage(messages.moreInfoFolderManagerLink)}
+                      href={formatMessage(messages.moreInfoFolderManagerLink2)}
                       target="_blank"
                     >
                       <FormattedMessage
