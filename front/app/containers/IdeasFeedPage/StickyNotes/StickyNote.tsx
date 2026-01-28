@@ -147,7 +147,8 @@ const StickyNote: React.FC<Props> = ({
           flexShrink={0}
         >
           <Box display="flex" alignItems="center" gap="4px">
-            {
+            {idea.data.attributes.action_descriptors.commenting_idea
+              .enabled && (
               <>
                 <Icon
                   name="comments"
@@ -159,10 +160,11 @@ const StickyNote: React.FC<Props> = ({
                   {commentsCount}
                 </Text>
               </>
-            }
+            )}
           </Box>
-
-          <ReactionControl ideaId={ideaId} size="1" styleType="compact" />
+          {idea.data.attributes.action_descriptors.reacting_idea.enabled && (
+            <ReactionControl ideaId={ideaId} size="1" styleType="compact" />
+          )}
         </Box>
       )}
     </StyledNote>
