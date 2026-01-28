@@ -22,6 +22,11 @@ const GlobalStyle = createGlobalStyle`
     &:not(.focus-visible) {
       outline: none;
     }
+
+  *:focus {
+    outline: 4px solid #000000  ;
+    outline-offset: 2px ;
+    box-shadow: 0 0 0 4px #F9F9F9 ;
   }
 
   html,
