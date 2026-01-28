@@ -22,6 +22,7 @@ const IdeasFeedPage = () => {
   const selectedTopicId = searchParams.get('topic');
   const selectedSubtopicId = searchParams.get('subtopic');
   const phaseId = searchParams.get('phase_id');
+  const initialIdeaId = searchParams.get('initial_idea_id');
   const isMobileOrSmaller = useBreakpoint('phone');
 
   // Use subtopic if selected, otherwise use topic
@@ -76,13 +77,18 @@ const IdeasFeedPage = () => {
           <Box flex="4" position="relative">
             {/* General feed - always mounted to preserve scroll position */}
             <Box visibility={activeTopicFilter ? 'hidden' : 'visible'}>
-              <IdeasFeed topicId={null} parentTopicId={null} />
+              <IdeasFeed
+                key={initialIdeaId || 'default'}
+                topicId={null}
+                parentTopicId={null}
+              />
             </Box>
 
             {/* Topic/subtopic-specific feed - mounted only when topic or subtopic is selected */}
             {activeTopicFilter && (
               <Box position="absolute" top="0" left="0" right="0" bottom="0">
                 <IdeasFeed
+                  key={`${activeTopicFilter}-${initialIdeaId}`}
                   topicId={activeTopicFilter}
                   parentTopicId={selectedTopicId}
                 />
