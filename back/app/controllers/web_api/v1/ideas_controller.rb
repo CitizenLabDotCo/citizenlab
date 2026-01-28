@@ -238,12 +238,7 @@ class WebApi::V1::IdeasController < ApplicationController
         sidefx.after_create(input, current_user, phase_for_input)
         write_everyone_tracking_cookie input
 
-        permission = phase_for_input.permissions.find_by(action: 'posting_idea')
-
-        if permission&.permitted_by === 'everyone' && current_user.nil?
-          ClaimTokenService.generate(input)
-        end
-
+        ClaimTokenService.generate(input) unless input.author_id
         serializer_params = jsonapi_serializer_params.merge(include_claim_token: true)
 
         render json: WebApi::V1::IdeaSerializer.new(
