@@ -33,16 +33,24 @@ interface FormValues {
 interface Props {
   projectId: string;
   topic: IInputTopicData | null;
+  parentId?: string;
   opened: boolean;
   close: () => void;
 }
 
-const InputTopicModal = ({ projectId, topic, opened, close }: Props) => {
+const InputTopicModal = ({
+  projectId,
+  topic,
+  parentId,
+  opened,
+  close,
+}: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: addInputTopic } = useAddInputTopic();
   const { mutateAsync: updateInputTopic } = useUpdateInputTopic();
 
   const isEditing = topic !== null;
+  const isAddingSubtopic = !isEditing && parentId !== undefined;
 
   const schema = object({
     title_multiloc: validateMultilocForEveryLocale(
@@ -84,6 +92,7 @@ const InputTopicModal = ({ projectId, topic, opened, close }: Props) => {
           projectId,
           title_multiloc: formValues.title_multiloc,
           description_multiloc: formValues.description_multiloc || {},
+          parent_id: parentId,
         });
       }
       close();
@@ -92,18 +101,18 @@ const InputTopicModal = ({ projectId, topic, opened, close }: Props) => {
     }
   };
 
+  const getHeaderMessage = () => {
+    if (isEditing) {
+      return <FormattedMessage {...messages.editInputTopic} />;
+    }
+    if (isAddingSubtopic) {
+      return <FormattedMessage {...messages.addSubtopic} />;
+    }
+    return <FormattedMessage {...messages.addInputTopic} />;
+  };
+
   return (
-    <Modal
-      opened={opened}
-      close={close}
-      header={
-        isEditing ? (
-          <FormattedMessage {...messages.editInputTopic} />
-        ) : (
-          <FormattedMessage {...messages.addInputTopic} />
-        )
-      }
-    >
+    <Modal opened={opened} close={close} header={getHeaderMessage()}>
       <ModalContentContainer>
         <FormProvider {...methods}>
           <form

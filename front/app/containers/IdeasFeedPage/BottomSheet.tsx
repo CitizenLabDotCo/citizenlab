@@ -80,17 +80,23 @@ const BottomSheet = ({
 
   const sheetRef = useRef<HTMLDivElement>(null);
   const dragStartY = useRef<number | null>(null);
+  const hasShownNudge = useRef(false);
 
   useEffect(() => {
-    if (isFullscreen) return;
+    if (isFullscreen || hasShownNudge.current) return;
 
-    const timer = setTimeout(() => setShowNudge(true), NUDGE_DELAY_MS);
+    const timer = setTimeout(() => {
+      setShowNudge(true);
+      hasShownNudge.current = true;
+    }, NUDGE_DELAY_MS);
     return () => clearTimeout(timer);
   }, [isFullscreen]);
 
   useEffect(() => {
     if (expandToFullscreenOn) {
       setIsFullscreen(true);
+    } else {
+      setIsFullscreen(false);
     }
   }, [expandToFullscreenOn]);
 

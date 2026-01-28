@@ -22,14 +22,18 @@ const IdeasFeedPage = () => {
   const { data: project } = useProjectBySlug(slug);
   const [searchParams] = useSearchParams();
   const selectedTopicId = searchParams.get('topic');
+  const selectedSubtopicId = searchParams.get('subtopic');
   const phaseId = searchParams.get('phase_id');
   const isMobileOrSmaller = useBreakpoint('phone');
+
+  // Use subtopic if selected, otherwise use topic
+  const activeTopicFilter = selectedSubtopicId || selectedTopicId;
 
   const setSelectedTopicId = (topicId: string | null) => {
     if (topicId) {
       updateSearchParams({ topic: topicId });
     } else {
-      removeSearchParams(['topic']);
+      removeSearchParams(['topic', 'subtopic']);
     }
   };
 
@@ -43,10 +47,11 @@ const IdeasFeedPage = () => {
       <Box
         w="100%"
         bgColor={colors.grey100}
-        h="100dvh"
-        position="absolute"
+        position="fixed"
         top="0"
+        left="0"
         right="0"
+        bottom="0"
         zIndex="1010"
         overflow="hidden"
       >
@@ -72,14 +77,17 @@ const IdeasFeedPage = () => {
           <Sidebar projectId={project.data.id} />
           <Box flex="4" position="relative">
             {/* General feed - always mounted to preserve scroll position */}
-            <Box visibility={selectedTopicId ? 'hidden' : 'visible'}>
-              <IdeasFeed topicId={null} />
+            <Box visibility={activeTopicFilter ? 'hidden' : 'visible'}>
+              <IdeasFeed topicId={null} parentTopicId={null} />
             </Box>
 
-            {/* Topic-specific feed - mounted only when topic is selected */}
-            {selectedTopicId && (
+            {/* Topic/subtopic-specific feed - mounted only when topic or subtopic is selected */}
+            {activeTopicFilter && (
               <Box position="absolute" top="0" left="0" right="0" bottom="0">
-                <IdeasFeed topicId={selectedTopicId} />
+                <IdeasFeed
+                  topicId={activeTopicFilter}
+                  parentTopicId={selectedTopicId}
+                />
               </Box>
             )}
           </Box>

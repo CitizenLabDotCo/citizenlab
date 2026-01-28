@@ -39,7 +39,8 @@ RSpec.describe InputTopic do
     it 'sorts from most ideas to fewest ideas when asking desc' do
       sorted_topics = described_class.order_ideas_count(Idea.where(id: [idea1.id, idea3.id, idea6.id]), direction: :desc)
       expect(sorted_topics.size).to eq 6
-      expect(sorted_topics.map(&:id).take(3)).to eq [input_topics[0].id, input_topics[5].id, input_topics[2].id]
+      expect(sorted_topics.map(&:id).take(2)).to eq [input_topics[0].id, input_topics[5].id]
+      expect([input_topics[2].id, input_topics[3].id]).to include(sorted_topics.map(&:id)[2]) # either topic 2 or 3 (tied with 1 idea each)
     end
   end
 end

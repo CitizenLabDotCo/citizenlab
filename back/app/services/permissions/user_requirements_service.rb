@@ -72,7 +72,7 @@ class Permissions::UserRequirementsService
       group_membership: @check_groups_and_verification && permission.groups.any?
     }
 
-    unless permission.permission_scope&.pmethod&.user_fields_in_form?
+    unless permission.user_fields_in_form_enabled?
       users_requirements[:custom_fields] = requirements_custom_fields(permission).to_h { |field| [field.key, (field.required ? 'required' : 'optional')] }
     end
 

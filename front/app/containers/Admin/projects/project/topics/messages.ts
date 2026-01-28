@@ -23,6 +23,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Topics.addInputTopic',
     defaultMessage: 'Add input tag',
   },
+  addSubtopic: {
+    id: 'app.containers.AdminPage.Topics.addSubtopic',
+    defaultMessage: 'Add subtag',
+  },
   editInputTopic: {
     id: 'app.containers.AdminPage.Topics.editInputTopic',
     defaultMessage: 'Edit input tag',
@@ -51,6 +55,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Topics.deleteInputTopicConfirmation',
     defaultMessage:
       'This tag will be removed from all inputs in this project. This action cannot be undone.',
+  },
+  deleteInputTopicWithChildrenConfirmation: {
+    id: 'app.containers.AdminPage.Topics.deleteInputTopicWithChildrenConfirmation',
+    defaultMessage:
+      'This tag has subtags. Deleting it will also delete all its subtags. Inputs assigned to these tags will be updated. This action cannot be undone.',
   },
   lastTopicWarning: {
     id: 'app.containers.AdminPage.Topics.lastTopicWarning3',

@@ -21,7 +21,9 @@ const CommonGroundMetrics = ({ metrics, showChange }: Props) => {
         label={formatMessage(messages.ideasPosted)}
         value={metrics.ideas_posted}
         icon="blank-paper"
-        change={showChange ? metrics.ideas_posted_7_day_change : undefined}
+        change={
+          showChange ? metrics.ideas_posted_7_day_percent_change : undefined
+        }
       />
       <MetricCard
         label={formatMessage(messages.associatedIdeas)}
@@ -32,7 +34,7 @@ const CommonGroundMetrics = ({ metrics, showChange }: Props) => {
         label={formatMessage(messages.reactions)}
         value={metrics.reactions}
         icon="thumb-up"
-        change={showChange ? metrics.reactions_7_day_change : undefined}
+        change={showChange ? metrics.reactions_7_day_percent_change : undefined}
       />
     </>
   );

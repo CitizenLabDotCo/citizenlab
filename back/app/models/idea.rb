@@ -67,6 +67,7 @@ class Idea < ApplicationRecord
   include AnonymousParticipation
   include Files::FileAttachable
   include ClaimableParticipation
+  include LocationTrackableParticipation
   extend OrderAsSpecified
 
   PUBLICATION_STATUSES = %w[draft submitted published].freeze
@@ -191,6 +192,16 @@ class Idea < ApplicationRecord
 
   scope :with_some_input_topics, (proc do |input_topics|
     ideas = joins(:ideas_input_topics).where(ideas_input_topics: { input_topic: input_topics })
+    where(id: ideas)
+  end)
+
+  # Same as with_some_input_topics, but also includes ideas assigned to child topics
+  scope :with_some_input_topics_and_children, (proc do |input_topics|
+    input_topics = Array(input_topics)
+    input_topic_ids = InputTopic.where(id: input_topics).or(
+      InputTopic.where(parent_id: input_topics)
+    ).pluck(:id)
+    ideas = joins(:ideas_input_topics).where(ideas_input_topics: { input_topic_id: input_topic_ids })
     where(id: ideas)
   end)
 

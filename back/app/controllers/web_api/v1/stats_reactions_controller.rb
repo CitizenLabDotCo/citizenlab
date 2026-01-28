@@ -24,13 +24,15 @@ class WebApi::V1::StatsReactionsController < WebApi::V1::StatsController
     reactions = apply_group_filter(reactions)
     reactions = apply_project_filter(reactions)
 
-    reactions
+    serie = reactions
       .where(created_at: @start_at..@end_at)
       .joins('JOIN ideas_input_topics ON ideas_input_topics.idea_id = ideas.id')
       .group('ideas_input_topics.input_topic_id')
       .order('count_id DESC')
       .limit(limit)
       .count('id')
+
+    IdeasCountService.aggregate_child_input_topic_counts(serie)
   end
 
   def reactions_by_topic
@@ -113,9 +115,12 @@ class WebApi::V1::StatsReactionsController < WebApi::V1::StatsController
 
   def apply_topic_filter(reactions)
     if params[:input_topic]
+      topic_ids = InputTopic.where(id: params[:input_topic])
+        .or(InputTopic.where(parent_id: params[:input_topic]))
+        .pluck(:id)
       reactions
         .joins('JOIN ideas_input_topics ON ideas.id = ideas_input_topics.idea_id')
-        .where(ideas_input_topics: { input_topic_id: params[:input_topic] })
+        .where(ideas_input_topics: { input_topic_id: topic_ids })
     else
       reactions
     end

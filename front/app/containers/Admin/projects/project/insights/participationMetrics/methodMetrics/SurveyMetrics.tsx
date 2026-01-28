@@ -21,13 +21,19 @@ const SurveyMetrics = ({ metrics, showChange }: Props) => {
         label={formatMessage(messages.submissions)}
         value={metrics.surveys_submitted}
         icon="check-circle"
-        change={showChange ? metrics.surveys_submitted_7_day_change : undefined}
+        change={
+          showChange
+            ? metrics.surveys_submitted_7_day_percent_change
+            : undefined
+        }
       />
       <MetricCard
         label={formatMessage(messages.completionRate)}
-        value={`${(metrics.completion_rate * 100).toFixed(1)}%`}
+        value={`${metrics.completion_rate_as_percent.toFixed(1)}%`}
         icon="chart-bar"
-        change={showChange ? metrics.completion_rate_7_day_change : undefined}
+        change={
+          showChange ? metrics.completion_rate_7_day_percent_change : undefined
+        }
       />
     </>
   );
