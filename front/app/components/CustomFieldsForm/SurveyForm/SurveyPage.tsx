@@ -12,7 +12,6 @@ import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import { triggerPostParticipationFlow } from 'containers/Authentication/events';
@@ -95,9 +94,6 @@ const SurveyPage = ({
   const isMapPage = page.page_layout === 'map';
   const isMobileOrSmaller = useBreakpoint('phone');
   const { data: authUser } = useAuthUser();
-  const postParticipationSignUpEnabled = useFeatureFlag({
-    name: 'post_participation_signup',
-  });
 
   const [searchParams] = useSearchParams();
   const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
@@ -216,12 +212,7 @@ const SurveyPage = ({
   const isLastPage = currentPageIndex === lastPageIndex;
 
   const showSubmissionReference = isLastPage && idea && showIdeaId;
-  const showPostParticipationSignup = !!(
-    isLastPage &&
-    idea &&
-    !authUser &&
-    postParticipationSignUpEnabled
-  );
+  const showPostParticipationSignup = !!(isLastPage && idea && !authUser);
 
   return (
     <FormProvider {...methods}>

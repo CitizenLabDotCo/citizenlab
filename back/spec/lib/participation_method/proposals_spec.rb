@@ -5,8 +5,6 @@ require 'rails_helper'
 RSpec.describe ParticipationMethod::Proposals do
   subject(:participation_method) { described_class.new phase }
 
-  before_all { SettingsService.new.activate_feature!('ideation_accountless_posting') }
-
   let(:phase) { create(:proposals_phase) }
   let(:proposal) { create(:proposal, project: phase.project) }
 

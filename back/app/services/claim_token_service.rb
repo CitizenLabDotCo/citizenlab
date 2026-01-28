@@ -6,11 +6,6 @@ class ClaimTokenService
     # @param item [ClaimableParticipation] the item to generate a token for
     # @return [ClaimToken, nil] the created token, or nil if item has an author
     def generate(item)
-      # Temporarily feature-flagging the participation-claiming feature for a smoother
-      # release, (opportunistically using the `ideation_accountless_posting` feature flag
-      # instead of adding a new one.) This feature will likely be enabled for all tenants
-      # in the future; otherwise, we should consider adding a dedicated feature flag.
-      return nil unless AppConfiguration.instance.feature_activated?('ideation_accountless_posting')
       return nil if item_has_owner?(item)
 
       ClaimToken.find_or_create_by!(item: item)
