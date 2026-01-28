@@ -17,7 +17,7 @@ const DateSinglePicker = ({
   startMonth,
   endMonth,
   defaultMonth,
-  placement = 'bottom',
+  placement,
   onChange,
 }: Props) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
