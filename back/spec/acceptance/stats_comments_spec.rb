@@ -226,6 +226,31 @@ resource 'Stats - Comments' do
           expect(json_attributes[:series][:comments].values).to eq json_attributes[:series][:comments].values.sort.reverse
         end
       end
+
+      describe 'with subtopics' do
+        let(:start_at) { timezone.at(now - 1.month).beginning_of_month }
+        let(:end_at) { timezone.at(now - 1.month).end_of_month }
+
+        before do
+          travel_to start_at + 5.days do
+            project = create(:project)
+            @parent_topic = create(:input_topic, project: project)
+            @child_topic = create(:input_topic, project: project, parent: @parent_topic)
+            idea_parent = create(:idea, input_topics: [@parent_topic], project: project)
+            idea_child = create(:idea, input_topics: [@child_topic], project: project)
+            create(:comment, idea: idea_parent)
+            create(:comment, idea: idea_child)
+          end
+        end
+
+        example 'Comments by topic aggregates child counts into parent' do
+          do_request
+          assert_status 200
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:comments][@parent_topic.id.to_sym]).to eq 2
+          expect(json_attributes[:series][:comments][@child_topic.id.to_sym]).to eq 1
+        end
+      end
     end
 
     include_examples 'unauthorized requests'
@@ -396,6 +421,29 @@ resource 'Stats - Comments' do
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :type)).to eq 'comments_by_project'
+          json_attributes = json_response.dig(:data, :attributes)
+          expect(json_attributes[:series][:comments].values.sum).to eq 1
+        end
+      end
+
+      describe 'filtered by parent topic includes child topic ideas' do
+        let(:start_at) { timezone.at(now - 1.month).beginning_of_month }
+        let(:input_topic) { @parent_topic.id }
+        let(:end_at) { timezone.at(now - 1.month).end_of_month }
+
+        before do
+          travel_to start_at + 17.days do
+            project = create(:project)
+            @parent_topic = create(:input_topic, project: project)
+            @child_topic = create(:input_topic, project: project, parent: @parent_topic)
+            idea_child = create(:idea, input_topics: [@child_topic], project: project)
+            create(:comment, idea: idea_child)
+          end
+        end
+
+        example 'Comments by project filtered by parent topic includes child topic ideas' do
+          do_request
+          assert_status 200
           json_attributes = json_response.dig(:data, :attributes)
           expect(json_attributes[:series][:comments].values.sum).to eq 1
         end

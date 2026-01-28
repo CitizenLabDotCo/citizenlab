@@ -124,6 +124,19 @@ describe LocalProjectCopyService do
         .to match_array(open_ended_project.input_topics.map { it.as_json(except: %i[id project_id created_at updated_at]) })
     end
 
+    it 'copies nested associated input_topics preserving hierarchy' do
+      parent_topic = create(:input_topic, project_id: open_ended_project.id)
+      child_topic1 = create(:input_topic, parent: parent_topic, project_id: open_ended_project.id)
+      child_topic2 = create(:input_topic, parent: parent_topic, project_id: open_ended_project.id)
+      copied_project = service.copy(open_ended_project)
+      copied_parent_topic = copied_project.input_topics.find_by(title_multiloc: parent_topic.title_multiloc)
+      copied_child_topic1 = copied_project.input_topics.find_by(title_multiloc: child_topic1.title_multiloc)
+      copied_child_topic2 = copied_project.input_topics.find_by(title_multiloc: child_topic2
+        .title_multiloc)
+      expect(copied_child_topic1.parent_id).to eq copied_parent_topic.id
+      expect(copied_child_topic2.parent_id).to eq copied_parent_topic.id
+    end
+
     it 'copies associated maps configs and layers' do
       map_config = create(:map_config, mappable: open_ended_project, tile_provider: 'https://groovy_map_tiles')
 

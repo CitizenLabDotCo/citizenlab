@@ -14,6 +14,7 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
+import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import { StyledRightColumn } from 'components/admin/ContentBuilder/Frame/FrameWrapper';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
@@ -132,57 +133,59 @@ const DescriptionBuilderPage = ({
   };
 
   return (
-    <FullscreenContentBuilder
-      onErrors={handleErrors}
-      onDeleteElement={handleDeleteElement}
-      onUploadImage={setImageUploading}
-    >
-      <Editor isPreview={false} onNodesChange={handleEditorChange}>
-        <DescriptionBuilderTopBar
-          hasError={hasError}
-          hasPendingState={imageUploading}
-          previewEnabled={previewEnabled}
-          setPreviewEnabled={setPreviewEnabled}
-          selectedLocale={selectedLocale}
-          onSelectLocale={handleSelectedLocaleChange}
-          contentBuildableId={contentBuildableId}
-          contentBuildableType={contentBuildableType}
-          backPath={backPath}
-          previewPath={previewPath}
-          titleMultiloc={titleMultiloc}
-        />
-        <Box
-          mt={`${stylingConsts.menuHeight}px`}
-          display={previewEnabled ? 'none' : 'flex'}
-          id="e2e-project-description-content-builder-page"
-        >
-          <DescriptionBuilderToolbox
-            contentBuildableType={contentBuildableType}
+    <ContentBuilderLayoutProvider layoutId={descriptionBuilderLayout.data.id}>
+      <FullscreenContentBuilder
+        onErrors={handleErrors}
+        onDeleteElement={handleDeleteElement}
+        onUploadImage={setImageUploading}
+      >
+        <Editor isPreview={false} onNodesChange={handleEditorChange}>
+          <DescriptionBuilderTopBar
+            hasError={hasError}
+            hasPendingState={imageUploading}
+            previewEnabled={previewEnabled}
+            setPreviewEnabled={setPreviewEnabled}
+            selectedLocale={selectedLocale}
+            onSelectLocale={handleSelectedLocaleChange}
             contentBuildableId={contentBuildableId}
+            contentBuildableType={contentBuildableType}
+            backPath={backPath}
+            previewPath={previewPath}
+            titleMultiloc={titleMultiloc}
+          />
+          <Box
+            mt={`${stylingConsts.menuHeight}px`}
+            display={previewEnabled ? 'none' : 'flex'}
+            id="e2e-project-description-content-builder-page"
+          >
+            <DescriptionBuilderToolbox
+              contentBuildableType={contentBuildableType}
+              contentBuildableId={contentBuildableId}
+              selectedLocale={selectedLocale}
+            />
+            <LanguageProvider
+              contentBuilderLocale={selectedLocale}
+              platformLocale={locale}
+            >
+              <StyledRightColumn>
+                <Box width="1000px">
+                  <ContentBuilderFrame editorData={getEditorData()} />
+                </Box>
+              </StyledRightColumn>
+            </LanguageProvider>
+            <ContentBuilderSettings />
+          </Box>
+        </Editor>
+        <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
+          <DescriptionBuilderEditModePreview
+            contentBuildableId={contentBuildableId}
+            contentBuildableType={contentBuildableType}
+            ref={iframeRef}
             selectedLocale={selectedLocale}
           />
-          <LanguageProvider
-            contentBuilderLocale={selectedLocale}
-            platformLocale={locale}
-          >
-            <StyledRightColumn>
-              <Box width="1000px">
-                <ContentBuilderFrame editorData={getEditorData()} />
-              </Box>
-            </StyledRightColumn>
-          </LanguageProvider>
-          <ContentBuilderSettings />
         </Box>
-      </Editor>
-      <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>
-        <DescriptionBuilderEditModePreview
-          contentBuildableId={contentBuildableId}
-          contentBuildableType={contentBuildableType}
-          ref={iframeRef}
-          selectedLocale={selectedLocale}
-        />
-      </Box>
-    </FullscreenContentBuilder>
+      </FullscreenContentBuilder>
+    </ContentBuilderLayoutProvider>
   );
 };
 

@@ -23,7 +23,7 @@ module PublicApi
 
       side_fx.before_create(idea, nil)
       if idea.save
-        side_fx.after_create(idea, nil)
+        side_fx.after_create(idea, nil, nil)
         show_item idea, V2::IdeaSerializer, status: :created
       else
         render json: { errors: idea.errors.details }, status: :unprocessable_entity

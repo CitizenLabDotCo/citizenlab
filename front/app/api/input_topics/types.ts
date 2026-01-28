@@ -12,22 +12,32 @@ export interface IInputTopicData {
   attributes: {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
+    full_title_multiloc: Multiloc;
     icon: string | null;
-    ordering: number;
+    depth: number;
+    children_count: number;
   };
   relationships: {
     project: {
       data: IRelationship;
+    };
+    parent?: {
+      data: IRelationship | null;
+    };
+    children?: {
+      data: IRelationship[];
     };
   };
 }
 
 export interface IInputTopic {
   data: IInputTopicData;
+  included?: IInputTopicData[];
 }
 
 export interface IInputTopics {
   data: IInputTopicData[];
+  included?: IInputTopicData[];
 }
 
 export interface IInputTopicAdd {
@@ -35,6 +45,7 @@ export interface IInputTopicAdd {
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
   icon?: string;
+  parent_id?: string;
 }
 
 export interface IInputTopicUpdate {
@@ -43,4 +54,12 @@ export interface IInputTopicUpdate {
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   icon?: string;
+}
+
+export type MovePosition = 'child' | 'left' | 'right' | 'root';
+
+export interface IInputTopicMove {
+  id: string;
+  position: MovePosition;
+  target_id?: string;
 }

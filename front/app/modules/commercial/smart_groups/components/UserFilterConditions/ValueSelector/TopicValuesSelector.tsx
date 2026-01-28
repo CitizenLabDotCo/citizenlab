@@ -52,7 +52,7 @@ const TopicValuesSelector = memo(({ value, onChange }: Props) => {
     if (!topicsResponse?.data) return [];
     return topicsResponse.data.map((topic) => ({
       value: topic.id,
-      label: localize(topic.attributes.title_multiloc),
+      label: localize(topic.attributes.full_title_multiloc),
     }));
   };
 

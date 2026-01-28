@@ -11,6 +11,10 @@ resource 'InputTopics' do
   let(:project_id) { project.id }
 
   get 'web_api/v1/projects/:project_id/input_topics' do
+    parameter :parent_id, 'Filter input topics to only those that are children of the specified parent topic ID', required: false
+    parameter :depth, 'Filter input topics to only those at the specified depth (0 for root topics)', required: false
+    parameter :sort, 'Sort method: "custom" (default, tree order), "ideas_count" (ascending), "-ideas_count" (descending)', required: false
+
     before do
       @input_topics = create_list(:input_topic, 3, project: project)
     end
@@ -20,15 +24,36 @@ resource 'InputTopics' do
       expect(response_data.size).to eq 3
     end
 
-    example 'List input topics sorted by custom ordering' do
-      @input_topics[2].insert_at!(0)
-      @input_topics[0].insert_at!(2)
+    example 'List inputs topics that are the children of a specific parent topic' do
+      parent_topic = create(:input_topic, project: project)
+      child_topic1 = create(:input_topic, project: project, parent: parent_topic)
+      child_topic2 = create(:input_topic, project: project, parent: parent_topic)
+
+      do_request(parent_id: parent_topic.id)
+      assert_status(200)
+      expect(response_data.size).to eq 2
+      expect(response_data.pluck(:id)).to contain_exactly(child_topic1.id, child_topic2.id)
+    end
+
+    example 'List only root inputs topics' do
+      subtopic = create(:input_topic, project: project)
+      create(:input_topic, project: project, parent: subtopic)
+
+      do_request(depth: 0)
+      assert_status(200)
+      expect(response_data.size).to eq 4 # 3 from before + 1 new root
+      response_data.each do |topic|
+        expect(topic.dig(:attributes, :depth)).to eq 0
+      end
+    end
+
+    example 'List input topics sorted by tree order (lft)' do
+      @input_topics[2].move_to_left_of(@input_topics[0])
 
       do_request
 
       expect(response_data.size).to eq 3
       expect(response_data.dig(0, :id)).to eq @input_topics[2].id
-      expect(response_data.dig(2, :id)).to eq @input_topics[0].id
     end
 
     example 'List input topics sorted by ideas_count descending' do
@@ -85,6 +110,7 @@ resource 'InputTopics' do
         parameter :title_multiloc, 'The title of the input topic, as a multiloc string', required: true
         parameter :description_multiloc, 'The description of the input topic, as a multiloc string', required: false
         parameter :icon, 'The icon name', required: false
+        parameter :parent_id, 'The parent topic ID (for creating subtopics)', required: false
       end
       ValidationErrorHelper.new.error_fields(self, InputTopic)
 
@@ -97,6 +123,19 @@ resource 'InputTopics' do
         expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to match title_multiloc
         expect(response_data.dig(:attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(response_data.dig(:relationships, :project, :data, :id)).to eq project.id
+      end
+
+      describe 'creating a subtopic' do
+        let(:parent_topic) { create(:input_topic, project: project) }
+        let(:parent_id) { parent_topic.id }
+        let(:title_multiloc) { { 'en' => 'Subtopic title' } }
+
+        example_request 'Create a subtopic under a parent topic' do
+          assert_status(201)
+          expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to match title_multiloc
+          expect(response_data.dig(:attributes, :depth)).to eq 1
+          expect(response_data.dig(:relationships, :parent, :data, :id)).to eq parent_topic.id
+        end
       end
     end
 
@@ -122,17 +161,45 @@ resource 'InputTopics' do
     end
 
     # Shallow route - no project_id needed
-    patch 'web_api/v1/input_topics/:id/reorder' do
+    patch 'web_api/v1/input_topics/:id/move' do
       with_options scope: :input_topic do
-        parameter :ordering, 'The position, starting from 0, where the topic should be at.', required: true
+        parameter :position, 'The position to move to: child, left, right, or root', required: true
+        parameter :target_id, 'The target topic ID for child/left/right positions'
       end
 
-      let(:id) { create(:input_topic, project: project).id }
-      let(:ordering) { 1 }
+      let(:input_topics) { create_list(:input_topic, 3, project: project) }
+      let(:id) { input_topics.last.id }
+      let(:position) { 'left' }
+      let(:target_id) { input_topics.first.id }
 
-      example_request 'Reorder an input topic' do
+      example_request 'Move an input topic to a new position' do
         assert_status(200)
-        expect(response_data.dig(:attributes, :ordering)).to eq ordering
+        expect(input_topics.last.reload.lft).to be < input_topics.first.reload.lft
+      end
+
+      describe 'moving subtopics' do
+        let(:parent_topic) { create(:input_topic, project: project) }
+        let!(:subtopic1) { create(:input_topic, project: project, parent: parent_topic, title_multiloc: { en: 'Subtopic 1' }) }
+        let!(:subtopic2) { create(:input_topic, project: project, parent: parent_topic, title_multiloc: { en: 'Subtopic 2' }) }
+        let!(:subtopic3) { create(:input_topic, project: project, parent: parent_topic, title_multiloc: { en: 'Subtopic 3' }) }
+        let(:id) { subtopic3.id }
+        let(:position) { 'left' }
+        let(:target_id) { subtopic1.id }
+
+        example 'Move a subtopic to a new position within its parent' do
+          # subtopic3 should be last initially
+          expect(subtopic3.reload.lft).to be > subtopic2.reload.lft
+          expect(subtopic3.reload.lft).to be > subtopic1.reload.lft
+
+          do_request
+
+          assert_status(200)
+          # After moving left of subtopic1, subtopic3 should be first
+          expect(subtopic3.reload.lft).to be < subtopic1.reload.lft
+          expect(subtopic3.reload.lft).to be < subtopic2.reload.lft
+          # Should still have the same parent
+          expect(subtopic3.reload.parent_id).to eq parent_topic.id
+        end
       end
     end
 

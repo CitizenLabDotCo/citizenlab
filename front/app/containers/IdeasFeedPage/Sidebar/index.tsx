@@ -36,7 +36,10 @@ const Sidebar = ({ projectId }: { projectId: string }) => {
     }
   }, [selectedIdeaId]);
 
-  const { data: topics, isLoading: topicsLoading } = useInputTopics(projectId);
+  const { data: topics, isLoading: topicsLoading } = useInputTopics(projectId, {
+    sort: '-ideas_count',
+    depth: 0,
+  });
 
   const { data: filterCounts } = useIdeasFilterCounts({
     projects: [projectId],
@@ -53,7 +56,7 @@ const Sidebar = ({ projectId }: { projectId: string }) => {
     if (topicId) {
       updateSearchParams({ topic: topicId });
     } else {
-      removeSearchParams(['topic']);
+      removeSearchParams(['topic', 'subtopic']);
     }
   };
 

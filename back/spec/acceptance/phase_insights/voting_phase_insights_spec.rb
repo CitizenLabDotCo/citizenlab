@@ -126,21 +126,21 @@ resource 'Phase insights' do
       metrics = json_response_body.dig(:data, :attributes, :metrics)
       expect(metrics).to eq({
         visitors: 6,
-        visitors_7_day_change: 25.0, # from 4 (in week before last) to 5 unique visitors (in last 7 days) = 25% increase
+        visitors_7_day_percent_change: 25.0, # from 4 (in week before last) to 5 unique visitors (in last 7 days) = 25% increase
         participants: 5,
-        participants_7_day_change: 50.0, # from 3 (in week before last) to 5 unique participants (in last 7 days) = 50% increase
-        participation_rate: 0.833,
-        participation_rate_7_day_change: 20.0, # participation_rate_last_7_days: 0.6, participation_rate_previous_7_days: 0.5 = (((0.6 - 0.5).to_f / 0.5) * 100.0).round(1)
+        participants_7_day_percent_change: 50.0, # from 3 (in week before last) to 5 unique participants (in last 7 days) = 50% increase
+        participation_rate_as_percent: 83.3,
+        participation_rate_7_day_percent_change: 20.0, # participation_rate_last_7_days: 0.6, participation_rate_previous_7_days: 0.5 = (((0.6 - 0.5).to_f / 0.5) * 100.0).round(1)
         voting: {
           voting_method: 'multiple_voting',
           associated_ideas: 3,
           online_votes: 6,
-          online_votes_7_day_change: 0.0, # from 3 (in week before last) to 3 (in last 7 days) = 0% change
+          online_votes_7_day_percent_change: 0.0, # from 3 (in week before last) to 3 (in last 7 days) = 0% change
           offline_votes: 3,
           voters: 3,
-          voters_7_day_change: 0.0, # from 2 (in week before last) to 2 unique voters (in last 7 days) = 0% change
+          voters_7_day_percent_change: 0.0, # from 2 (in week before last) to 2 unique voters (in last 7 days) = 0% change
           comments_posted: 3,
-          comments_posted_7_day_change: 100.0 # from 1 (in week before last) to 2 (in last 7 days) = 100% increase
+          comments_posted_7_day_percent_change: 100.0 # from 1 (in week before last) to 2 (in last 7 days) = 100% increase
         }
       })
     end
@@ -161,21 +161,21 @@ resource 'Phase insights' do
         metrics = json_response_body.dig(:data, :attributes, :metrics)
         expect(metrics).to eq({
           visitors: 6,
-          visitors_7_day_change: 25.0, # from 4 (in week before last) to 5 unique visitors (in last 7 days) = 25% increase
+          visitors_7_day_percent_change: 25.0, # from 4 (in week before last) to 5 unique visitors (in last 7 days) = 25% increase
           participants: 5,
-          participants_7_day_change: 50.0, # from 3 (in week before last) to 5 unique participants (in last 7 days) = 50% increase
-          participation_rate: 0.833,
-          participation_rate_7_day_change: 20.0, # participation_rate_last_7_days: 0.6, participation_rate_previous_7_days: 0.5 = (((0.6 - 0.5).to_f / 0.5) * 100.0).round(1)
+          participants_7_day_percent_change: 50.0, # from 3 (in week before last) to 5 unique participants (in last 7 days) = 50% increase
+          participation_rate_as_percent: 83.3,
+          participation_rate_7_day_percent_change: 20.0, # participation_rate_last_7_days: 0.6, participation_rate_previous_7_days: 0.5 = (((0.6 - 0.5).to_f / 0.5) * 100.0).round(1)
           voting: {
             voting_method: 'budgeting',
             associated_ideas: 3,
             online_picks: 4,
-            online_picks_7_day_change: 0.0, # from 2 (in week before last) to 2 (in last 7 days) = 0% change
+            online_picks_7_day_percent_change: 0.0, # from 2 (in week before last) to 2 (in last 7 days) = 0% change
             offline_picks: 3,
             voters: 3,
-            voters_7_day_change: 0.0, # from 2 (in week before last) to 2 unique voters (in last 7 days) = 0% change
+            voters_7_day_percent_change: 0.0, # from 2 (in week before last) to 2 unique voters (in last 7 days) = 0% change
             comments_posted: 3,
-            comments_posted_7_day_change: 100.0 # from 1 (in week before last) to 2 (in last 7 days) = 100% increase
+            comments_posted_7_day_percent_change: 100.0 # from 1 (in week before last) to 2 (in last 7 days) = 100% increase
           }
         })
 
@@ -253,7 +253,7 @@ resource 'Phase insights' do
         expect(attributes[:group_by]).to be_nil
         expect(attributes[:custom_field_id]).to be_nil
         expect(attributes[:input_type]).to be_nil
-        expect(attributes[:options]).to eq([])
+        expect(attributes[:options]).to eq({})
         expect(attributes[:ideas]).to contain_exactly(
           {
             id: voting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 1' }).id,
@@ -289,7 +289,7 @@ resource 'Phase insights' do
         assert_status 200
 
         idea_titles = json_response_body[:data][:attributes][:ideas].map { |idea| idea[:title_multiloc][:en] }
-        expect(idea_titles).to eq(['Idea 2', 'Idea 1', 'Idea 3'])
+        expect(idea_titles).to contain_exactly('Idea 2', 'Idea 1', 'Idea 3')
       end
     end
 
@@ -308,12 +308,11 @@ resource 'Phase insights' do
         expect(attributes[:group_by]).to eq('gender')
         expect(attributes[:custom_field_id]).to eq(custom_field_gender.id)
         expect(attributes[:input_type]).to eq('select')
-        expect(attributes[:options]).to contain_exactly(
-          { male: { id: custom_field_option_male.id, title_multiloc: { en: 'Male' } }, ordering: custom_field_option_male.ordering },
-          { female: { id: custom_field_option_female.id, title_multiloc: { en: 'Female' } }, ordering: custom_field_option_female.ordering },
-          { unspecified: { id: custom_field_option_other.id, title_multiloc: { en: 'Unspecified' } }, ordering: custom_field_option_other.ordering }
-        )
-
+        expect(attributes[:options]).to eq({
+          male: { title_multiloc: { en: 'Male' }, ordering: custom_field_option_male.ordering },
+          female: { title_multiloc: { en: 'Female' }, ordering: custom_field_option_female.ordering },
+          unspecified: { title_multiloc: { en: 'Unspecified' }, ordering: custom_field_option_other.ordering }
+        })
         expect(attributes[:ideas]).to contain_exactly(
           {
             id: voting_phase.project.ideas.find_by(title_multiloc: { en: 'Idea 1' }).id,
@@ -413,11 +412,11 @@ resource 'Phase insights' do
           expect(attributes[:group_by]).to eq('gender')
           expect(attributes[:custom_field_id]).to eq(custom_field_gender.id)
           expect(attributes[:input_type]).to eq('select')
-          expect(attributes[:options]).to contain_exactly(
-            { male: { id: custom_field_option_male.id, title_multiloc: { en: 'Male' } }, ordering: custom_field_option_male.ordering },
-            { female: { id: custom_field_option_female.id, title_multiloc: { en: 'Female' } }, ordering: custom_field_option_female.ordering },
-            { unspecified: { id: custom_field_option_other.id, title_multiloc: { en: 'Unspecified' } }, ordering: custom_field_option_other.ordering }
-          )
+          expect(attributes[:options]).to eq({
+            male: { title_multiloc: { en: 'Male' }, ordering: custom_field_option_male.ordering },
+            female: { title_multiloc: { en: 'Female' }, ordering: custom_field_option_female.ordering },
+            unspecified: { title_multiloc: { en: 'Unspecified' }, ordering: custom_field_option_other.ordering }
+          })
 
           expect(attributes[:ideas]).to contain_exactly(
             {

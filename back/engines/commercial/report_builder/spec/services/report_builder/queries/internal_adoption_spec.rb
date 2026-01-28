@@ -24,9 +24,11 @@ RSpec.describe ReportBuilder::Queries::InternalAdoption do
       create(:session, created_at: @date_september, highest_role: 'admin', user_id: admin2.id)
       create(:session, created_at: @date_october, highest_role: 'admin', user_id: admin1.id)
 
-      # 1 moderator with session in period (active)
+      # 2 moderator with session in period (active)
       mod = create(:project_moderator, projects: [project], created_at: @date_september - 10.days)
       create(:session, created_at: @date_september, highest_role: 'project_moderator', user_id: mod.id)
+      folder_mod = create(:project_moderator, projects: [project], created_at: @date_september - 10.days)
+      create(:session, created_at: @date_september, highest_role: 'project_folder_moderator', user_id: folder_mod.id)
 
       # 1 moderator without sessions (registered but NOT active)
       create(:project_moderator, projects: [project], created_at: @date_september)
@@ -48,10 +50,10 @@ RSpec.describe ReportBuilder::Queries::InternalAdoption do
 
       expect(query.run_query(**params)).to eq({
         active_admins_count: 2,           # 2 admins with sessions in period
-        active_moderators_count: 1,       # 1 moderator with session in period
-        total_admin_pm_count: 4,          # 2 admins + 2 mods created before end_at
+        active_moderators_count: 2,       # 2 moderators with sessions in period
+        total_admin_pm_count: 5,          # 2 admins + 3 mods created before end_at
         timeseries: [
-          { date_group: Date.new(2022, 9, 1), active_admins: 2, active_moderators: 1 },
+          { date_group: Date.new(2022, 9, 1), active_admins: 2, active_moderators: 2 },
           { date_group: Date.new(2022, 10, 1), active_admins: 1, active_moderators: 0 }
         ]
       })
