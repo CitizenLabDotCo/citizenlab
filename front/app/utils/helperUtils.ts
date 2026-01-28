@@ -193,16 +193,6 @@ export const keys = <T extends object>(obj: T) =>
 
 export const get = <T, K extends keyof T>(obj: T, key: K) => obj[key];
 
-interface ObjectWithId {
-  id: string;
-}
-
-export const byId = (array: ObjectWithId[]) =>
-  array.reduce((acc, curr) => {
-    acc[curr.id] = curr;
-    return acc;
-  }, {});
-
 export const indices = (n: number) => [...Array(n)].map((_, i) => i);
 
 export const isObject = (

@@ -622,7 +622,7 @@ describe Export::Xlsx::ValueVisitor do
 
     describe '#visit_topic_ids' do
       let(:input_type) { 'topic_ids' }
-      let(:model) { create(:idea, topics: topics, custom_field_values: { field_key => value }) }
+      let(:model) { create(:idea, input_topics: topics, custom_field_values: { field_key => value }) }
 
       context 'when there are no topics selected' do
         let(:topics) { [] }
@@ -638,7 +638,7 @@ describe Export::Xlsx::ValueVisitor do
       context 'when there is one topic selected' do
         let(:topics) do
           [
-            create(:topic, title_multiloc: { 'en' => 'Topic 1', 'nl-NL' => 'Onderwerp 1' })
+            create(:input_topic, title_multiloc: { 'en' => 'Topic 1', 'nl-NL' => 'Onderwerp 1' })
           ]
         end
         let(:value) { [topics.first.id] }
@@ -653,8 +653,8 @@ describe Export::Xlsx::ValueVisitor do
       context 'when there are multiple topics selected' do
         let(:topics) do
           [
-            create(:topic, title_multiloc: { 'en' => 'Topic 1', 'nl-NL' => 'Onderwerp 1' }),
-            create(:topic, title_multiloc: { 'en' => 'Topic 2', 'nl-NL' => 'Onderwerp 2' })
+            create(:input_topic, title_multiloc: { 'en' => 'Topic 1', 'nl-NL' => 'Onderwerp 1' }),
+            create(:input_topic, title_multiloc: { 'en' => 'Topic 2', 'nl-NL' => 'Onderwerp 2' })
           ]
         end
         let(:value) { topics.map(&:id) }

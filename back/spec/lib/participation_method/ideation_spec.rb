@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ParticipationMethod::Ideation do
   subject(:participation_method) { described_class.new phase }
 
-  let(:phase) { create(:phase) }
+  let(:phase) { create(:phase, with_permissions: true) }
 
   before_all { SettingsService.new.activate_feature!('ideation_accountless_posting') }
 
@@ -243,7 +243,6 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:form_logic_enabled?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be true }
   its(:supports_custom_field_categories?) { is_expected.to be false }
-  its(:user_fields_in_form?) { is_expected.to be false }
   its(:supports_multiple_phase_reports?) { is_expected.to be false }
   its(:add_autoreaction_to_inputs?) { is_expected.to be(true) }
   its(:everyone_tracking_enabled?) { is_expected.to be false }

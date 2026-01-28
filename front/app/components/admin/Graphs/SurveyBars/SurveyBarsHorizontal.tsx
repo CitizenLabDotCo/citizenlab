@@ -46,6 +46,8 @@ const SurveyBarsHorizontal = ({
       className={`e2e-survey-question-${
         questionResult.grouped ? 'grouped' : 'ungrouped'
       }-bars`}
+      role="list"
+      aria-label={formatMessage(messages.surveyResults)}
     >
       {answers.map(
         (
@@ -58,15 +60,16 @@ const SurveyBarsHorizontal = ({
             display="flex"
             alignItems="flex-end"
             justifyContent="center"
+            role="listitem"
+            tabIndex={0}
+            aria-label={`${label}: ${formatMessage(messages.choiceCount, {
+              choiceCount: count,
+              percentage,
+            })}`}
           >
             {image?.small && (
               <Box mr="12px">
-                <Image
-                  width="48px"
-                  height="48px"
-                  src={image.small}
-                  alt={label}
-                />
+                <Image width="48px" height="48px" src={image.small} alt="" />
               </Box>
             )}
             <Box width="100%">

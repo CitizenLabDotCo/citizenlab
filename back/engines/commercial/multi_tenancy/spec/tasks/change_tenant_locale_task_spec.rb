@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-describe 'core:change_tenant_locale rake task' do
-  let(:task) { Rake::Task['core:change_tenant_locale'] }
+describe 'fix_existing_tenants:change_tenant_locale rake task' do
+  let(:task) { Rake::Task['fix_existing_tenants:change_tenant_locale'] }
   let(:host) { 'example.localhost' }
   let(:current_locale) { 'en' }
   let(:new_locale) { 'en-GB' }

@@ -70,8 +70,7 @@ class Phase < ApplicationRecord
 
   PARTICIPATION_METHODS = ParticipationMethod::Base.all_methods.map(&:method_str).freeze
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
-  IDEATION_METHODS      = %w[base idea_feed].freeze
-  PRESENTATION_MODES    = %w[card map].freeze
+  PRESENTATION_MODES    = %w[card map feed].freeze
   REACTING_METHODS      = %w[unlimited limited].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition].freeze
   FALLBACK_INPUT_TERM   = 'idea'
@@ -174,11 +173,6 @@ class Phase < ApplicationRecord
   with_options if: :voting? do
     validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
     validates :autoshare_results_enabled, inclusion: { in: [true, false] }
-  end
-
-  # ideation?
-  with_options if: :ideation? do
-    validates :ideation_method, presence: true, inclusion: { in: IDEATION_METHODS }
   end
 
   validates :voting_min_total,

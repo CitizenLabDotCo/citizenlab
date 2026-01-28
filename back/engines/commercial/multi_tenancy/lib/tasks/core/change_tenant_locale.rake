@@ -19,7 +19,7 @@
 #   - This is a destructive operation
 #   - The task will skip records where the current_locale key doesn't exist
 
-namespace :core do
+namespace :fix_existing_tenants do
   desc 'Change tenant locale by renaming locale keys in settings, multilocs, and craftjs_json'
   task :change_tenant_locale, %i[host current_locale new_locale] => :environment do |_t, args|
     if args[:host].blank?

@@ -130,7 +130,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   ideation_response1.title_multiloc['en'],
                   'It would improve the air quality!', # html tags are removed
                   %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\Z},
-                  "#{ideation_response1.topics[0].title_multiloc['en']};#{ideation_response1.topics[1].title_multiloc['en']}",
+                  "#{ideation_response1.input_topics[0].title_multiloc['en']};#{ideation_response1.input_topics[1].title_multiloc['en']}",
                   ideation_response1.location_point.coordinates.last,
                   ideation_response1.location_point.coordinates.first,
                   ideation_response1.location_description,
@@ -220,7 +220,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   ideation_response1.title_multiloc['en'],
                   'It would improve the air quality!', # html tags are removed
                   %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}\Z},
-                  "#{ideation_response1.topics[0].title_multiloc['en']};#{ideation_response1.topics[1].title_multiloc['en']}",
+                  "#{ideation_response1.input_topics[0].title_multiloc['en']};#{ideation_response1.input_topics[1].title_multiloc['en']}",
                   ideation_response1.location_point.coordinates.last,
                   ideation_response1.location_point.coordinates.first,
                   ideation_response1.location_description,
@@ -862,7 +862,7 @@ describe Export::Xlsx::InputSheetGenerator do
                   ideation_response1.title_multiloc['en'],
                   'It would improve the air quality!', # html tags are removed
                   %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\Z},
-                  "#{ideation_response1.topics[0].title_multiloc['en']};#{ideation_response1.topics[1].title_multiloc['en']}",
+                  "#{ideation_response1.input_topics[0].title_multiloc['en']};#{ideation_response1.input_topics[1].title_multiloc['en']}",
                   ideation_response1.location_point.coordinates.last,
                   ideation_response1.location_point.coordinates.first,
                   ideation_response1.location_description,
@@ -964,7 +964,7 @@ describe Export::Xlsx::InputSheetGenerator do
                     ideation_response1.title_multiloc['en'],
                     'It would improve the air quality!', # html tags are removed
                     %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}\Z},
-                    "#{ideation_response1.topics[0].title_multiloc['en']};#{ideation_response1.topics[1].title_multiloc['en']}",
+                    "#{ideation_response1.input_topics[0].title_multiloc['en']};#{ideation_response1.input_topics[1].title_multiloc['en']}",
                     ideation_response1.location_point.coordinates.last,
                     ideation_response1.location_point.coordinates.first,
                     ideation_response1.location_description,
@@ -1028,7 +1028,7 @@ describe Export::Xlsx::InputSheetGenerator do
                     ideation_response1.title_multiloc['en'],
                     'It would improve the air quality!', # html tags are removed
                     %r{\A/uploads/.+/idea_file/file/#{attachment1.id}/#{attachment1.name}\n/uploads/.+/idea_file/file/#{attachment2.id}/#{attachment2.name}\Z},
-                    "#{ideation_response1.topics[0].title_multiloc['en']};#{ideation_response1.topics[1].title_multiloc['en']}",
+                    "#{ideation_response1.input_topics[0].title_multiloc['en']};#{ideation_response1.input_topics[1].title_multiloc['en']}",
                     ideation_response1.location_point.coordinates.last,
                     ideation_response1.location_point.coordinates.first,
                     ideation_response1.location_description,

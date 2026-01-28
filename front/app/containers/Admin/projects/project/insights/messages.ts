@@ -5,6 +5,14 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights',
     defaultMessage: 'Insights',
   },
+  liveData: {
+    id: 'app.containers.Admin.projects.project.insights.liveData',
+    defaultMessage: 'Live data',
+  },
+  insightsSubtitle1: {
+    id: 'app.containers.Admin.projects.project.insights.insightsSubtitle1',
+    defaultMessage: 'Track engagement in real-time',
+  },
   download: {
     id: 'app.containers.Admin.projects.project.insights.download',
     defaultMessage: 'Download',
@@ -208,5 +216,14 @@ export default defineMessages({
   firstActivityWithinLast7Days: {
     id: 'app.containers.Admin.projects.project.insights.firstActivityWithinLast7Days',
     defaultMessage: 'First activity started within the last 7 days',
+  },
+  noReferenceData: {
+    id: 'app.containers.Admin.projects.project.insights.noReferenceData',
+    defaultMessage:
+      'No reference data yet. {addBaseDataLink} for this demographic to enable representativeness.',
+  },
+  addBaseData: {
+    id: 'app.containers.Admin.projects.project.insights.addBaseData',
+    defaultMessage: 'Add base data',
   },
 });

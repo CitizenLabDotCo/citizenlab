@@ -155,7 +155,7 @@ class ProjectPolicy < ApplicationPolicy
         description_multiloc: CL2_SUPPORTED_LOCALES,
         description_preview_multiloc: CL2_SUPPORTED_LOCALES,
         area_ids: [],
-        topic_ids: [],
+        global_topic_ids: [],
         header_bg_alt_text_multiloc: CL2_SUPPORTED_LOCALES
       }
     ]

@@ -13,7 +13,7 @@ import { darken } from 'polished';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { ITopicData } from 'api/topics/types';
+import { IInputTopicData } from 'api/input_topics/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -79,7 +79,7 @@ const Count = styled.span`
 `;
 
 interface Props {
-  topics?: ITopicData[];
+  topics?: IInputTopicData[];
   selectedTopicIds: string[] | null | undefined;
   onChange: (arg: string[] | null) => void;
   className?: string;
@@ -148,10 +148,10 @@ const TopicsFilter = memo<Props>(
             >
               {topicsWithIdeas
                 .slice(0, showFullList ? undefined : 5) // We show only 5 topics by default with a "Show all" button.
-                .map((topic: ITopicData) => {
+                .map((topic: IInputTopicData) => {
                   const postCount = get(
                     filterCounts,
-                    `topic_id.${topic.id}`,
+                    `input_topic_id.${topic.id}`,
                     0
                   );
 
@@ -167,7 +167,7 @@ const TopicsFilter = memo<Props>(
                       selected={topicSelected}
                     >
                       <Box as="span" mr="8px">
-                        {localize(topic.attributes.title_multiloc)}
+                        {localize(topic.attributes.full_title_multiloc)}
                       </Box>
                       <Count aria-hidden>{postCount}</Count>
                       <ScreenReaderOnly>

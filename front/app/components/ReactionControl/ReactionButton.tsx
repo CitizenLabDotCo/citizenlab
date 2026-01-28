@@ -205,6 +205,7 @@ const ReactionCount = styled.div<{
   reactingEnabled: boolean | null;
   buttonReactionMode: TReactionMode;
   buttonReactionModeIsActive: boolean;
+  styleType: TStyleType;
 }>`
   color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
@@ -212,7 +213,8 @@ const ReactionCount = styled.div<{
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-left: 5px;
+  margin-left: ${({ styleType }) => (styleType === 'shadow' ? '4px' : '2px')};
+  margin-top: 2px;
   transition: all 100ms ease-out;
 
   ${({ buttonReactionMode, reactingEnabled }) => {
@@ -299,7 +301,7 @@ const Button = styled.button<{
   border: none;
   background: none;
   margin-right: ${({ styleType }) =>
-    styleType === 'compact' ? '4px' : '15px'};
+    styleType === 'compact' ? '4px' : '16px'};
 
   ${isRtl`
     flex-direction: row-reverse;
@@ -513,16 +515,15 @@ const ReactionButton = ({
                   />
                 </ScreenReaderOnly>
               </ReactionIconContainer>
-              {styleType !== 'compact' && (
-                <ReactionCount
-                  reactingEnabled={buttonEnabled}
-                  buttonReactionMode={buttonReactionMode}
-                  buttonReactionModeIsActive={buttonReactionModeIsActive}
-                  aria-hidden
-                >
-                  {reactionsCount}
-                </ReactionCount>
-              )}
+              <ReactionCount
+                reactingEnabled={buttonEnabled}
+                buttonReactionMode={buttonReactionMode}
+                buttonReactionModeIsActive={buttonReactionModeIsActive}
+                styleType={styleType}
+                aria-hidden
+              >
+                {reactionsCount}
+              </ReactionCount>
             </Button>
           )}
           {describedById && disabledMessage && (

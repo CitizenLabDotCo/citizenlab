@@ -325,6 +325,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.mapDisplay',
     defaultMessage: 'Map',
   },
+  feedDisplay: {
+    id: 'app.containers.AdminPage.ProjectEdit.feedDisplay',
+    defaultMessage: 'Feed',
+  },
   trendingSortingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.trendingSortingMethod',
     defaultMessage: 'Trending',

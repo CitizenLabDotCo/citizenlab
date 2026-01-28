@@ -26,7 +26,7 @@ module Export
     end
 
     def hyperlink?
-      custom_field.file_upload?
+      custom_field.supports_file_upload?
     end
 
     private

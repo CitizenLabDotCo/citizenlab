@@ -82,7 +82,6 @@ export interface IPhaseAttributes {
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
   user_data_collection: UserDataCollection;
-  ideation_method?: IdeationMethod | null;
 }
 
 export interface IPhases {
@@ -113,7 +112,7 @@ export interface IUpdatedPhaseProperties {
   reacting_dislike_enabled?: boolean | null;
   reacting_dislike_limited_max?: number | null;
   reacting_threshold?: number | null;
-  presentation_mode?: 'card' | 'map' | null;
+  presentation_mode?: 'card' | 'map' | 'feed' | null;
   voting_min_total?: number | null;
   voting_max_total?: number | null;
   voting_max_votes_per_idea?: number | null;
@@ -134,7 +133,6 @@ export interface IUpdatedPhaseProperties {
   similarity_enabled?: boolean | null;
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
-  ideation_method?: IdeationMethod | null;
 }
 
 export interface AddPhaseObject extends IUpdatedPhaseProperties {
@@ -194,4 +192,4 @@ export type InputTerm =
   | 'initiative'
   | 'petition';
 
-export type PresentationMode = 'card' | 'map';
+export type PresentationMode = 'card' | 'map' | 'feed';

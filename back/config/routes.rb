@@ -152,10 +152,14 @@ Rails.application.routes.draw do
         post 'confirm_code_email_change', to: 'confirmations#confirm_code_email_change'
       end
 
-      resources :topics do
+      resources :global_topics do
         patch 'reorder', on: :member
 
-        resources :followers, only: [:create], defaults: { followable: 'Topic' }
+        resources :followers, only: [:create], defaults: { followable: 'GlobalTopic' }
+      end
+
+      resources :default_input_topics do
+        patch 'move', on: :member
       end
 
       resources :areas do
@@ -238,6 +242,9 @@ Rails.application.routes.draw do
 
         resources :events, only: %i[new create]
         resources :projects_allowed_input_topics, only: [:index]
+        resources :input_topics, shallow: true do
+          patch 'move', on: :member
+        end
         resources :phases, only: %i[index new create]
         resources :images, defaults: { container_type: 'Project' }
         resources :files, defaults: { container_type: 'Project' }

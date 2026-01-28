@@ -33,8 +33,8 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
     let!(:_follower3) { create(:follower, followable: area, user: @user) }
 
     let!(:project_for_followed_topic) { create(:project) }
-    let!(:topic) { create(:topic) }
-    let!(:_projects_topic) { create(:projects_topic, project: project_for_followed_topic, topic: topic) }
+    let!(:topic) { create(:global_topic) }
+    let!(:_projects_topic) { create(:projects_global_topic, project: project_for_followed_topic, global_topic: topic) }
     let!(:_follower4) { create(:follower, followable: topic, user: @user) }
 
     let!(:_unfollowed_project) { create(:project) }
@@ -393,11 +393,11 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       parameter :topics, 'Array of topic IDs', required: false
     end
 
-    let!(:topic1) { create(:topic) }
-    let!(:topic2) { create(:topic) }
+    let!(:topic1) { create(:global_topic) }
+    let!(:topic2) { create(:global_topic) }
     let!(:project_with_topics) { create(:project) }
-    let!(:_projects_topic1) { create(:projects_topic, project: project_with_topics, topic: topic1) }
-    let!(:_projects_topic2) { create(:projects_topic, project: project_with_topics, topic: topic2) }
+    let!(:_projects_topic1) { create(:projects_global_topic, project: project_with_topics, global_topic: topic1) }
+    let!(:_projects_topic2) { create(:projects_global_topic, project: project_with_topics, global_topic: topic2) }
 
     let!(:_project_without_topic) { create(:project) }
 
@@ -415,9 +415,9 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       project2 = create(:project)
       project3 = create(:project)
       project4 = create(:project)
-      create(:projects_topic, project: project2, topic: topic1)
-      create(:projects_topic, project: project3, topic: topic1)
-      create(:projects_topic, project: project4, topic: topic1)
+      create(:projects_global_topic, project: project2, global_topic: topic1)
+      create(:projects_global_topic, project: project3, global_topic: topic1)
+      create(:projects_global_topic, project: project4, global_topic: topic1)
 
       project_with_topics.update!(created_at: 4.days.ago)
       project2.update!(created_at: 1.day.ago)

@@ -50,7 +50,7 @@ module WebApi
             { group_by: [{ error: 'custom_field not found with the key provided' }] }
           elsif custom_field.resource_type != 'User'
             { group_by: [{ error: 'Invalid custom_field resource_type for grouping' }] }
-          elsif !custom_field.support_reference_distribution? && custom_field.key != 'birthyear'
+          elsif !custom_field.supports_reference_distribution?
             { group_by: [{ error: 'Custom field input_type or key not supported for grouping' }] }
           end
         end

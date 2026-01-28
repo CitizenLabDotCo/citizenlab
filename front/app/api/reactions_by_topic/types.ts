@@ -30,4 +30,5 @@ export interface IReactionsByTopicParams {
   group?: string;
   project?: string;
   topic?: string;
+  limit?: number;
 }

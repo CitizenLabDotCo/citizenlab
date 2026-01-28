@@ -76,7 +76,7 @@ module Notifications
 
       return [] unless project.listed?
 
-      followers = Follower.where(followable: project.topics).or(Follower.where(followable: project.areas))
+      followers = Follower.where(followable: project.global_topics).or(Follower.where(followable: project.areas))
       followers = followers.or(Follower.where(followable: project.folder)) if project.in_folder?
       ProjectPolicy::InverseScope.new(
         project, User.from_follows(followers).where.not(id: initiator_id)

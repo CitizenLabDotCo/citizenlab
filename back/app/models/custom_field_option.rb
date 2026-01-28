@@ -52,7 +52,7 @@ class CustomFieldOption < ApplicationRecord
   private
 
   def belongs_to_select_field
-    return unless custom_field && !custom_field.support_options?
+    return unless custom_field && !custom_field.supports_options?
 
     errors.add(
       :base,

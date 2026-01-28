@@ -206,7 +206,7 @@ models:
       color: '#8B0000'
       description_multiloc: idea_statuses.ineligible_description
       participation_method: proposals
-  topic:
+  global_topic:
     - &topic-nature
       title_multiloc: topics.nature
       description_multiloc: topics.nature_description
@@ -303,6 +303,71 @@ models:
       ordering: 15
       include_in_onboarding: true
       is_default: true
+  default_input_topic:
+    -
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
+      ordering: 0
+    -
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
+      ordering: 1
+    -
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
+      ordering: 2
+    -
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
+      ordering: 3
+    -
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
+      ordering: 4
+    -
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
+      ordering: 5
+    -
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
+      ordering: 6
+    -
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
+      ordering: 7
+    -
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
+      ordering: 8
+    -
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
+      ordering: 9
+    -
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
+      ordering: 10
+    -
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
+      ordering: 11
+    -
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
+      ordering: 12
+    -
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
+      ordering: 13
+    -
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
+      ordering: 14
+    -
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
+      ordering: 15
   static_page:
   - &information-page
     code: about
@@ -1074,918 +1139,1223 @@ models:
     updated_at: 2019-01-14 13:46:54 UTC
     name: 20190110_rueil_intermediaire.pdf
     remote_file_url: https://cl2-tenants-production-benelux.s3.amazonaws.com/uploads/5641ddcd-0590-49f6-aa93-7c29f917ec9b/project_file/file/600a9dd5-52d9-49fa-9791-e63e63341cbd/20190110_rueil_intermediaire.pdf
-  projects_allowed_input_topic:
+  input_topics:
     - project_ref: *project1
-      topic_ref: *topic-nature
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
       ordering: 0
     - project_ref: *project1
-      topic_ref: *topic-waste
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
       ordering: 1
     - project_ref: *project1
-      topic_ref: *topic-sustainability
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
       ordering: 2
     - project_ref: *project1
-      topic_ref: *topic-mobility
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
       ordering: 3
     - project_ref: *project1
-      topic_ref: *topic-technology
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
       ordering: 4
     - project_ref: *project1
-      topic_ref: *topic-economy
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
       ordering: 5
     - project_ref: *project1
-      topic_ref: *topic-housing
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
       ordering: 6
     - project_ref: *project1
-      topic_ref: *topic-public_space
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
       ordering: 7
     - project_ref: *project1
-      topic_ref: *topic-safety
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
       ordering: 8
     - project_ref: *project1
-      topic_ref: *topic-education
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
       ordering: 9
     - project_ref: *project1
-      topic_ref: *topic-culture
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
       ordering: 10
     - project_ref: *project1
-      topic_ref: *topic-health
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
       ordering: 11
     - project_ref: *project1
-      topic_ref: *topic-inclusion
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
       ordering: 12
     - project_ref: *project1
-      topic_ref: *topic-community
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
       ordering: 13
     - project_ref: *project1
-      topic_ref: *topic-services
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
       ordering: 14
     - project_ref: *project1
-      topic_ref: *topic-other
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
       ordering: 15
     - project_ref: *Pb
-      topic_ref: *topic-nature
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
       ordering: 0
     - project_ref: *Pb
-      topic_ref: *topic-waste
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
       ordering: 1
     - project_ref: *Pb
-      topic_ref: *topic-sustainability
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
       ordering: 2
     - project_ref: *Pb
-      topic_ref: *topic-mobility
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
       ordering: 3
     - project_ref: *Pb
-      topic_ref: *topic-technology
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
       ordering: 4
     - project_ref: *Pb
-      topic_ref: *topic-economy
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
       ordering: 5
     - project_ref: *Pb
-      topic_ref: *topic-housing
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
       ordering: 6
     - project_ref: *Pb
-      topic_ref: *topic-public_space
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
       ordering: 7
     - project_ref: *Pb
-      topic_ref: *topic-safety
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
       ordering: 8
     - project_ref: *Pb
-      topic_ref: *topic-education
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
       ordering: 9
     - project_ref: *Pb
-      topic_ref: *topic-culture
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
       ordering: 10
     - project_ref: *Pb
-      topic_ref: *topic-health
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
       ordering: 11
     - project_ref: *Pb
-      topic_ref: *topic-inclusion
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
       ordering: 12
     - project_ref: *Pb
-      topic_ref: *topic-community
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
       ordering: 13
     - project_ref: *Pb
-      topic_ref: *topic-services
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
       ordering: 14
     - project_ref: *Pb
-      topic_ref: *topic-other
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
       ordering: 15
     - project_ref: *charliesPb
-      topic_ref: *topic-nature
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
       ordering: 0
     - project_ref: *charliesPb
-      topic_ref: *topic-waste
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
       ordering: 1
     - project_ref: *charliesPb
-      topic_ref: *topic-sustainability
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
       ordering: 2
     - project_ref: *charliesPb
-      topic_ref: *topic-mobility
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
       ordering: 3
     - project_ref: *charliesPb
-      topic_ref: *topic-technology
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
       ordering: 4
     - project_ref: *charliesPb
-      topic_ref: *topic-economy
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
       ordering: 5
     - project_ref: *charliesPb
-      topic_ref: *topic-housing
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
       ordering: 6
     - project_ref: *charliesPb
-      topic_ref: *topic-public_space
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
       ordering: 7
     - project_ref: *charliesPb
-      topic_ref: *topic-safety
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
       ordering: 8
     - project_ref: *charliesPb
-      topic_ref: *topic-education
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
       ordering: 9
     - project_ref: *charliesPb
-      topic_ref: *topic-culture
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
       ordering: 10
     - project_ref: *charliesPb
-      topic_ref: *topic-health
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
       ordering: 11
     - project_ref: *charliesPb
-      topic_ref: *topic-inclusion
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
       ordering: 12
     - project_ref: *charliesPb
-      topic_ref: *topic-community
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
       ordering: 13
     - project_ref: *charliesPb
-      topic_ref: *topic-services
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
       ordering: 14
     - project_ref: *charliesPb
-      topic_ref: *topic-other
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
       ordering: 15
     - project_ref: *verifiedPb
-      topic_ref: *topic-nature
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
       ordering: 0
     - project_ref: *verifiedPb
-      topic_ref: *topic-waste
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
       ordering: 1
     - project_ref: *verifiedPb
-      topic_ref: *topic-sustainability
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
       ordering: 2
     - project_ref: *verifiedPb
-      topic_ref: *topic-mobility
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
       ordering: 3
     - project_ref: *verifiedPb
-      topic_ref: *topic-technology
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
       ordering: 4
     - project_ref: *verifiedPb
-      topic_ref: *topic-economy
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
       ordering: 5
     - project_ref: *verifiedPb
-      topic_ref: *topic-housing
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
       ordering: 6
     - project_ref: *verifiedPb
-      topic_ref: *topic-public_space
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
       ordering: 7
     - project_ref: *verifiedPb
-      topic_ref: *topic-safety
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
       ordering: 8
     - project_ref: *verifiedPb
-      topic_ref: *topic-education
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
       ordering: 9
     - project_ref: *verifiedPb
-      topic_ref: *topic-culture
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
       ordering: 10
     - project_ref: *verifiedPb
-      topic_ref: *topic-health
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
       ordering: 11
     - project_ref: *verifiedPb
-      topic_ref: *topic-inclusion
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
       ordering: 12
     - project_ref: *verifiedPb
-      topic_ref: *topic-community
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
       ordering: 13
     - project_ref: *verifiedPb
-      topic_ref: *topic-services
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
       ordering: 14
     - project_ref: *verifiedPb
-      topic_ref: *topic-other
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
       ordering: 15
     - project_ref: *project2
-      topic_ref: *topic-nature
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
       ordering: 0
     - project_ref: *project2
-      topic_ref: *topic-waste
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
       ordering: 1
     - project_ref: *project2
-      topic_ref: *topic-sustainability
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
       ordering: 2
     - project_ref: *project2
-      topic_ref: *topic-mobility
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
       ordering: 3
     - project_ref: *project2
-      topic_ref: *topic-technology
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
       ordering: 4
     - project_ref: *project2
-      topic_ref: *topic-economy
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
       ordering: 5
     - project_ref: *project2
-      topic_ref: *topic-housing
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
       ordering: 6
     - project_ref: *project2
-      topic_ref: *topic-public_space
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
       ordering: 7
     - project_ref: *project2
-      topic_ref: *topic-safety
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
       ordering: 8
     - project_ref: *project2
-      topic_ref: *topic-education
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
       ordering: 9
     - project_ref: *project2
-      topic_ref: *topic-culture
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
       ordering: 10
     - project_ref: *project2
-      topic_ref: *topic-health
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
       ordering: 11
     - project_ref: *project2
-      topic_ref: *topic-inclusion
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
       ordering: 12
     - project_ref: *project2
-      topic_ref: *topic-community
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
       ordering: 13
     - project_ref: *project2
-      topic_ref: *topic-services
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
       ordering: 14
     - project_ref: *project2
-      topic_ref: *topic-other
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
       ordering: 15
     - project_ref: *76
-      topic_ref: *topic-nature
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
       ordering: 0
     - project_ref: *76
-      topic_ref: *topic-waste
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
       ordering: 1
     - project_ref: *76
-      topic_ref: *topic-sustainability
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
       ordering: 2
     - project_ref: *76
-      topic_ref: *topic-mobility
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
       ordering: 3
     - project_ref: *76
-      topic_ref: *topic-technology
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
       ordering: 4
     - project_ref: *76
-      topic_ref: *topic-economy
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
       ordering: 5
     - project_ref: *76
-      topic_ref: *topic-housing
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
       ordering: 6
-    - project_ref: *76
-      topic_ref: *topic-public_space
+    - &input_topic_76_public_space
+      project_ref: *76
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
       ordering: 7
     - project_ref: *76
-      topic_ref: *topic-safety
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
       ordering: 8
     - project_ref: *76
-      topic_ref: *topic-education
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
       ordering: 9
     - project_ref: *76
-      topic_ref: *topic-culture
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
       ordering: 10
     - project_ref: *76
-      topic_ref: *topic-health
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
       ordering: 11
     - project_ref: *76
-      topic_ref: *topic-inclusion
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
       ordering: 12
     - project_ref: *76
-      topic_ref: *topic-community
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
       ordering: 13
     - project_ref: *76
-      topic_ref: *topic-services
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
       ordering: 14
     - project_ref: *76
-      topic_ref: *topic-other
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
       ordering: 15
     - project_ref: *121
-      topic_ref: *topic-nature
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
       ordering: 0
     - project_ref: *121
-      topic_ref: *topic-waste
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
       ordering: 1
     - project_ref: *121
-      topic_ref: *topic-sustainability
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
       ordering: 2
     - project_ref: *121
-      topic_ref: *topic-mobility
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
       ordering: 3
     - project_ref: *121
-      topic_ref: *topic-technology
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
       ordering: 4
     - project_ref: *121
-      topic_ref: *topic-economy
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
       ordering: 5
     - project_ref: *121
-      topic_ref: *topic-housing
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
       ordering: 6
     - project_ref: *121
-      topic_ref: *topic-public_space
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
       ordering: 7
     - project_ref: *121
-      topic_ref: *topic-safety
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
       ordering: 8
     - project_ref: *121
-      topic_ref: *topic-education
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
       ordering: 9
     - project_ref: *121
-      topic_ref: *topic-culture
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
       ordering: 10
     - project_ref: *121
-      topic_ref: *topic-health
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
       ordering: 11
     - project_ref: *121
-      topic_ref: *topic-inclusion
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
       ordering: 12
     - project_ref: *121
-      topic_ref: *topic-community
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
       ordering: 13
     - project_ref: *121
-      topic_ref: *topic-services
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
       ordering: 14
     - project_ref: *121
-      topic_ref: *topic-other
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
       ordering: 15
     - project_ref: *charliesVerifiedPPlproject
-      topic_ref: *topic-nature
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
       ordering: 0
     - project_ref: *charliesVerifiedPPlproject
-      topic_ref: *topic-waste
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
       ordering: 1
     - project_ref: *charliesVerifiedPPlproject
-      topic_ref: *topic-sustainability
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
       ordering: 2
     - project_ref: *charliesVerifiedPPlproject
-      topic_ref: *topic-mobility
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
       ordering: 3
     - project_ref: *charliesVerifiedPPlproject
-      topic_ref: *topic-technology
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
       ordering: 4
     - project_ref: *charliesVerifiedPPlproject
-      topic_ref: *topic-economy
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
       ordering: 5
     - project_ref: *charliesVerifiedPPlproject
-      topic_ref: *topic-housing
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
       ordering: 6
     - project_ref: *charliesVerifiedPPlproject
-      topic_ref: *topic-public_space
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
       ordering: 7
     - project_ref: *charliesVerifiedPPlproject
-      topic_ref: *topic-safety
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
       ordering: 8
     - project_ref: *charliesVerifiedPPlproject
-      topic_ref: *topic-education
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
       ordering: 9
     - project_ref: *charliesVerifiedPPlproject
-      topic_ref: *topic-culture
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
       ordering: 10
     - project_ref: *charliesVerifiedPPlproject
-      topic_ref: *topic-health
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
       ordering: 11
     - project_ref: *charliesVerifiedPPlproject
-      topic_ref: *topic-inclusion
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
       ordering: 12
     - project_ref: *charliesVerifiedPPlproject
-      topic_ref: *topic-community
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
       ordering: 13
     - project_ref: *charliesVerifiedPPlproject
-      topic_ref: *topic-services
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
       ordering: 14
     - project_ref: *charliesVerifiedPPlproject
-      topic_ref: *topic-other
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
       ordering: 15
     - project_ref: *verifiedIdeation
-      topic_ref: *topic-nature
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
       ordering: 0
     - project_ref: *verifiedIdeation
-      topic_ref: *topic-waste
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
       ordering: 1
     - project_ref: *verifiedIdeation
-      topic_ref: *topic-sustainability
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
       ordering: 2
     - project_ref: *verifiedIdeation
-      topic_ref: *topic-mobility
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
       ordering: 3
     - project_ref: *verifiedIdeation
-      topic_ref: *topic-technology
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
       ordering: 4
     - project_ref: *verifiedIdeation
-      topic_ref: *topic-economy
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
       ordering: 5
     - project_ref: *verifiedIdeation
-      topic_ref: *topic-housing
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
       ordering: 6
     - project_ref: *verifiedIdeation
-      topic_ref: *topic-public_space
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
       ordering: 7
     - project_ref: *verifiedIdeation
-      topic_ref: *topic-safety
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
       ordering: 8
     - project_ref: *verifiedIdeation
-      topic_ref: *topic-education
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
       ordering: 9
     - project_ref: *verifiedIdeation
-      topic_ref: *topic-culture
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
       ordering: 10
     - project_ref: *verifiedIdeation
-      topic_ref: *topic-health
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
       ordering: 11
     - project_ref: *verifiedIdeation
-      topic_ref: *topic-inclusion
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
       ordering: 12
     - project_ref: *verifiedIdeation
-      topic_ref: *topic-community
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
       ordering: 13
     - project_ref: *verifiedIdeation
-      topic_ref: *topic-services
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
       ordering: 14
     - project_ref: *verifiedIdeation
-      topic_ref: *topic-other
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
       ordering: 15
     - project_ref: *charliesIdeation
-      topic_ref: *topic-nature
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
       ordering: 0
     - project_ref: *charliesIdeation
-      topic_ref: *topic-waste
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
       ordering: 1
     - project_ref: *charliesIdeation
-      topic_ref: *topic-sustainability
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
       ordering: 2
     - project_ref: *charliesIdeation
-      topic_ref: *topic-mobility
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
       ordering: 3
     - project_ref: *charliesIdeation
-      topic_ref: *topic-technology
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
       ordering: 4
     - project_ref: *charliesIdeation
-      topic_ref: *topic-economy
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
       ordering: 5
     - project_ref: *charliesIdeation
-      topic_ref: *topic-housing
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
       ordering: 6
     - project_ref: *charliesIdeation
-      topic_ref: *topic-public_space
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
       ordering: 7
     - project_ref: *charliesIdeation
-      topic_ref: *topic-safety
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
       ordering: 8
     - project_ref: *charliesIdeation
-      topic_ref: *topic-education
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
       ordering: 9
     - project_ref: *charliesIdeation
-      topic_ref: *topic-culture
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
       ordering: 10
     - project_ref: *charliesIdeation
-      topic_ref: *topic-health
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
       ordering: 11
     - project_ref: *charliesIdeation
-      topic_ref: *topic-inclusion
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
       ordering: 12
     - project_ref: *charliesIdeation
-      topic_ref: *topic-community
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
       ordering: 13
     - project_ref: *charliesIdeation
-      topic_ref: *topic-services
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
       ordering: 14
     - project_ref: *charliesIdeation
-      topic_ref: *topic-other
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
       ordering: 15
     - project_ref: *contsurv
-      topic_ref: *topic-nature
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
       ordering: 0
     - project_ref: *contsurv
-      topic_ref: *topic-waste
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
       ordering: 1
     - project_ref: *contsurv
-      topic_ref: *topic-sustainability
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
       ordering: 2
     - project_ref: *contsurv
-      topic_ref: *topic-mobility
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
       ordering: 3
     - project_ref: *contsurv
-      topic_ref: *topic-technology
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
       ordering: 4
     - project_ref: *contsurv
-      topic_ref: *topic-economy
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
       ordering: 5
     - project_ref: *contsurv
-      topic_ref: *topic-housing
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
       ordering: 6
     - project_ref: *contsurv
-      topic_ref: *topic-public_space
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
       ordering: 7
     - project_ref: *contsurv
-      topic_ref: *topic-safety
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
       ordering: 8
     - project_ref: *contsurv
-      topic_ref: *topic-education
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
       ordering: 9
     - project_ref: *contsurv
-      topic_ref: *topic-culture
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
       ordering: 10
     - project_ref: *contsurv
-      topic_ref: *topic-health
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
       ordering: 11
     - project_ref: *contsurv
-      topic_ref: *topic-inclusion
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
       ordering: 12
     - project_ref: *contsurv
-      topic_ref: *topic-community
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
       ordering: 13
     - project_ref: *contsurv
-      topic_ref: *topic-services
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
       ordering: 14
     - project_ref: *contsurv
-      topic_ref: *topic-other
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
       ordering: 15
     - project_ref: *verifiedSurvey
-      topic_ref: *topic-nature
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
       ordering: 0
     - project_ref: *verifiedSurvey
-      topic_ref: *topic-waste
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
       ordering: 1
     - project_ref: *verifiedSurvey
-      topic_ref: *topic-sustainability
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
       ordering: 2
     - project_ref: *verifiedSurvey
-      topic_ref: *topic-mobility
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
       ordering: 3
     - project_ref: *verifiedSurvey
-      topic_ref: *topic-technology
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
       ordering: 4
     - project_ref: *verifiedSurvey
-      topic_ref: *topic-economy
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
       ordering: 5
     - project_ref: *verifiedSurvey
-      topic_ref: *topic-housing
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
       ordering: 6
     - project_ref: *verifiedSurvey
-      topic_ref: *topic-public_space
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
       ordering: 7
     - project_ref: *verifiedSurvey
-      topic_ref: *topic-safety
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
       ordering: 8
     - project_ref: *verifiedSurvey
-      topic_ref: *topic-education
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
       ordering: 9
     - project_ref: *verifiedSurvey
-      topic_ref: *topic-culture
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
       ordering: 10
     - project_ref: *verifiedSurvey
-      topic_ref: *topic-health
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
       ordering: 11
     - project_ref: *verifiedSurvey
-      topic_ref: *topic-inclusion
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
       ordering: 12
     - project_ref: *verifiedSurvey
-      topic_ref: *topic-community
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
       ordering: 13
     - project_ref: *verifiedSurvey
-      topic_ref: *topic-services
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
       ordering: 14
     - project_ref: *verifiedSurvey
-      topic_ref: *topic-other
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
       ordering: 15
     - project_ref: *polling
-      topic_ref: *topic-nature
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
       ordering: 0
     - project_ref: *polling
-      topic_ref: *topic-waste
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
       ordering: 1
     - project_ref: *polling
-      topic_ref: *topic-sustainability
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
       ordering: 2
     - project_ref: *polling
-      topic_ref: *topic-mobility
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
       ordering: 3
     - project_ref: *polling
-      topic_ref: *topic-technology
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
       ordering: 4
     - project_ref: *polling
-      topic_ref: *topic-economy
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
       ordering: 5
     - project_ref: *polling
-      topic_ref: *topic-housing
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
       ordering: 6
     - project_ref: *polling
-      topic_ref: *topic-public_space
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
       ordering: 7
     - project_ref: *polling
-      topic_ref: *topic-safety
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
       ordering: 8
     - project_ref: *polling
-      topic_ref: *topic-education
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
       ordering: 9
     - project_ref: *polling
-      topic_ref: *topic-culture
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
       ordering: 10
     - project_ref: *polling
-      topic_ref: *topic-health
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
       ordering: 11
     - project_ref: *polling
-      topic_ref: *topic-inclusion
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
       ordering: 12
     - project_ref: *polling
-      topic_ref: *topic-community
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
       ordering: 13
     - project_ref: *polling
-      topic_ref: *topic-services
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
       ordering: 14
     - project_ref: *polling
-      topic_ref: *topic-other
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
       ordering: 15
     - project_ref: *verifiedPoll
-      topic_ref: *topic-nature
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
       ordering: 0
     - project_ref: *verifiedPoll
-      topic_ref: *topic-waste
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
       ordering: 1
     - project_ref: *verifiedPoll
-      topic_ref: *topic-sustainability
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
       ordering: 2
     - project_ref: *verifiedPoll
-      topic_ref: *topic-mobility
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
       ordering: 3
     - project_ref: *verifiedPoll
-      topic_ref: *topic-technology
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
       ordering: 4
     - project_ref: *verifiedPoll
-      topic_ref: *topic-economy
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
       ordering: 5
     - project_ref: *verifiedPoll
-      topic_ref: *topic-housing
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
       ordering: 6
     - project_ref: *verifiedPoll
-      topic_ref: *topic-public_space
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
       ordering: 7
     - project_ref: *verifiedPoll
-      topic_ref: *topic-safety
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
       ordering: 8
     - project_ref: *verifiedPoll
-      topic_ref: *topic-education
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
       ordering: 9
     - project_ref: *verifiedPoll
-      topic_ref: *topic-culture
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
       ordering: 10
     - project_ref: *verifiedPoll
-      topic_ref: *topic-health
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
       ordering: 11
     - project_ref: *verifiedPoll
-      topic_ref: *topic-inclusion
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
       ordering: 12
     - project_ref: *verifiedPoll
-      topic_ref: *topic-community
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
       ordering: 13
     - project_ref: *verifiedPoll
-      topic_ref: *topic-services
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
       ordering: 14
     - project_ref: *verifiedPoll
-      topic_ref: *topic-other
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
       ordering: 15
     - project_ref: *charliesSurvey
-      topic_ref: *topic-nature
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
       ordering: 0
     - project_ref: *charliesSurvey
-      topic_ref: *topic-waste
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
       ordering: 1
     - project_ref: *charliesSurvey
-      topic_ref: *topic-sustainability
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
       ordering: 2
     - project_ref: *charliesSurvey
-      topic_ref: *topic-mobility
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
       ordering: 3
     - project_ref: *charliesSurvey
-      topic_ref: *topic-technology
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
       ordering: 4
     - project_ref: *charliesSurvey
-      topic_ref: *topic-economy
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
       ordering: 5
     - project_ref: *charliesSurvey
-      topic_ref: *topic-housing
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
       ordering: 6
     - project_ref: *charliesSurvey
-      topic_ref: *topic-public_space
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
       ordering: 7
     - project_ref: *charliesSurvey
-      topic_ref: *topic-safety
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
       ordering: 8
     - project_ref: *charliesSurvey
-      topic_ref: *topic-education
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
       ordering: 9
     - project_ref: *charliesSurvey
-      topic_ref: *topic-culture
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
       ordering: 10
     - project_ref: *charliesSurvey
-      topic_ref: *topic-health
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
       ordering: 11
     - project_ref: *charliesSurvey
-      topic_ref: *topic-inclusion
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
       ordering: 12
     - project_ref: *charliesSurvey
-      topic_ref: *topic-community
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
       ordering: 13
     - project_ref: *charliesSurvey
-      topic_ref: *topic-services
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
       ordering: 14
     - project_ref: *charliesSurvey
-      topic_ref: *topic-other
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
       ordering: 15
     - project_ref: *charliesPoll
-      topic_ref: *topic-nature
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
       ordering: 0
     - project_ref: *charliesPoll
-      topic_ref: *topic-waste
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
       ordering: 1
     - project_ref: *charliesPoll
-      topic_ref: *topic-sustainability
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
       ordering: 2
     - project_ref: *charliesPoll
-      topic_ref: *topic-mobility
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
       ordering: 3
     - project_ref: *charliesPoll
-      topic_ref: *topic-technology
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
       ordering: 4
     - project_ref: *charliesPoll
-      topic_ref: *topic-economy
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
       ordering: 5
     - project_ref: *charliesPoll
-      topic_ref: *topic-housing
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
       ordering: 6
     - project_ref: *charliesPoll
-      topic_ref: *topic-public_space
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
       ordering: 7
     - project_ref: *charliesPoll
-      topic_ref: *topic-safety
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
       ordering: 8
     - project_ref: *charliesPoll
-      topic_ref: *topic-education
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
       ordering: 9
     - project_ref: *charliesPoll
-      topic_ref: *topic-culture
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
       ordering: 10
     - project_ref: *charliesPoll
-      topic_ref: *topic-health
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
       ordering: 11
     - project_ref: *charliesPoll
-      topic_ref: *topic-inclusion
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
       ordering: 12
     - project_ref: *charliesPoll
-      topic_ref: *topic-community
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
       ordering: 13
     - project_ref: *charliesPoll
-      topic_ref: *topic-services
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
       ordering: 14
     - project_ref: *charliesPoll
-      topic_ref: *topic-other
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
       ordering: 15
     - project_ref: *90
-      topic_ref: *topic-nature
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
       ordering: 0
     - project_ref: *90
-      topic_ref: *topic-waste
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
       ordering: 1
     - project_ref: *90
-      topic_ref: *topic-sustainability
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
       ordering: 2
     - project_ref: *90
-      topic_ref: *topic-mobility
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
       ordering: 3
     - project_ref: *90
-      topic_ref: *topic-technology
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
       ordering: 4
     - project_ref: *90
-      topic_ref: *topic-economy
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
       ordering: 5
     - project_ref: *90
-      topic_ref: *topic-housing
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
       ordering: 6
     - project_ref: *90
-      topic_ref: *topic-public_space
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
       ordering: 7
     - project_ref: *90
-      topic_ref: *topic-safety
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
       ordering: 8
     - project_ref: *90
-      topic_ref: *topic-education
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
       ordering: 9
     - project_ref: *90
-      topic_ref: *topic-culture
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
       ordering: 10
     - project_ref: *90
-      topic_ref: *topic-health
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
       ordering: 11
     - project_ref: *90
-      topic_ref: *topic-inclusion
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
       ordering: 12
     - project_ref: *90
-      topic_ref: *topic-community
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
       ordering: 13
     - project_ref: *90
-      topic_ref: *topic-services
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
       ordering: 14
     - project_ref: *90
-      topic_ref: *topic-other
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
       ordering: 15
     - project_ref: *85
-      topic_ref: *topic-nature
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
       ordering: 0
     - project_ref: *85
-      topic_ref: *topic-waste
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
       ordering: 1
     - project_ref: *85
-      topic_ref: *topic-sustainability
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
       ordering: 2
     - project_ref: *85
-      topic_ref: *topic-mobility
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
       ordering: 3
     - project_ref: *85
-      topic_ref: *topic-technology
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
       ordering: 4
     - project_ref: *85
-      topic_ref: *topic-economy
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
       ordering: 5
     - project_ref: *85
-      topic_ref: *topic-housing
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
       ordering: 6
     - project_ref: *85
-      topic_ref: *topic-public_space
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
       ordering: 7
     - project_ref: *85
-      topic_ref: *topic-safety
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
       ordering: 8
     - project_ref: *85
-      topic_ref: *topic-education
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
       ordering: 9
     - project_ref: *85
-      topic_ref: *topic-culture
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
       ordering: 10
     - project_ref: *85
-      topic_ref: *topic-health
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
       ordering: 11
     - project_ref: *85
-      topic_ref: *topic-inclusion
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
       ordering: 12
     - project_ref: *85
-      topic_ref: *topic-community
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
       ordering: 13
     - project_ref: *85
-      topic_ref: *topic-services
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
       ordering: 14
     - project_ref: *85
-      topic_ref: *topic-other
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
       ordering: 15
     - project_ref: *66
-      topic_ref: *topic-nature
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
       ordering: 0
     - project_ref: *66
-      topic_ref: *topic-waste
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
       ordering: 1
     - project_ref: *66
-      topic_ref: *topic-sustainability
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
       ordering: 2
     - project_ref: *66
-      topic_ref: *topic-mobility
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
       ordering: 3
     - project_ref: *66
-      topic_ref: *topic-technology
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
       ordering: 4
     - project_ref: *66
-      topic_ref: *topic-economy
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
       ordering: 5
     - project_ref: *66
-      topic_ref: *topic-housing
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
       ordering: 6
     - project_ref: *66
-      topic_ref: *topic-public_space
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
       ordering: 7
     - project_ref: *66
-      topic_ref: *topic-safety
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
       ordering: 8
     - project_ref: *66
-      topic_ref: *topic-education
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
       ordering: 9
     - project_ref: *66
-      topic_ref: *topic-culture
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
       ordering: 10
     - project_ref: *66
-      topic_ref: *topic-health
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
       ordering: 11
     - project_ref: *66
-      topic_ref: *topic-inclusion
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
       ordering: 12
     - project_ref: *66
-      topic_ref: *topic-community
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
       ordering: 13
     - project_ref: *66
-      topic_ref: *topic-services
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
       ordering: 14
     - project_ref: *66
-      topic_ref: *topic-other
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
       ordering: 15
   idea:
   - &controversial_idea
@@ -8044,9 +8414,9 @@ models:
   polls/response_option:
     - response_ref: *jordan-response
       option_ref: *kicker-yes
-  ideas_topic:
+  ideas_input_topic:
   - idea_ref: *topic_idea
-    topic_ref: *topic-waste
+    input_topic_ref: *input_topic_76_public_space
   ideas_phase:
   - idea_ref: *234
     phase_ref: *project1pastIdeation

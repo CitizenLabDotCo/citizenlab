@@ -87,10 +87,10 @@ class ProjectsFinderService
       )
       .joins('LEFT JOIN areas_projects ON areas_projects.area_id = followed_areas.id')
       .joins(
-        'LEFT JOIN topics AS followed_topics ON followers.followable_type = \'Topic\' ' \
-        'AND followed_topics.id = followers.followable_id'
+        'LEFT JOIN global_topics AS followed_global_topics ON followers.followable_type = \'GlobalTopic\' ' \
+        'AND followed_global_topics.id = followers.followable_id'
       )
-      .joins('LEFT JOIN projects_topics ON projects_topics.topic_id = followed_topics.id')
+      .joins('LEFT JOIN projects_global_topics ON projects_global_topics.global_topic_id = followed_global_topics.id')
       .joins(
         'LEFT JOIN ideas AS followed_ideas ON followers.followable_type = \'Idea\' ' \
         'AND followed_ideas.id = followers.followable_id'
@@ -104,7 +104,7 @@ class ProjectsFinderService
         'INNER JOIN projects ON ' \
         '(followers.followable_type = \'Project\' AND followers.followable_id = projects.id) ' \
         'OR (areas_projects.project_id = projects.id) ' \
-        'OR (projects_topics.project_id = projects.id) ' \
+        'OR (projects_global_topics.project_id = projects.id) ' \
         'OR (followed_ideas.project_id = projects.id)' \
         'OR (children.publication_id = projects.id)'
       )

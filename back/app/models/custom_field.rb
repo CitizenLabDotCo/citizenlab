@@ -52,6 +52,13 @@
 #  index_custom_fields_on_resource_type_and_resource_id    (resource_type,resource_id)
 #
 class CustomField < ApplicationRecord
+  delegate :page?, :supports_submission?, :supports_average?, :supports_options?, :supports_other_option?, :supports_option_images?,
+    :supports_follow_up?, :supports_text?, :supports_linear_scale?, :supports_linear_scale_labels?, :supports_matrix_statements?,
+    :supports_single_selection?, :supports_multiple_selection?, :supports_selection?, :supports_select_count?, :supports_dropdown_layout?,
+    :supports_free_text_value?, :supports_xlsx_export?, :supports_geojson?,
+    :supports_printing?, :supports_pdf_import?, :supports_pdf_gpt_import?, :supports_xlsx_import?,
+    :supports_reference_distribution?, :supports_file_upload?, :supports_logic?, to: :input_type_strategy
+
   acts_as_list column: :ordering, top_of_list: 0, scope: %i[resource_type resource_id], sequential_updates: true
 
   has_many_text_images from: :description_multiloc, as: :text_images
@@ -88,7 +95,7 @@ class CustomField < ApplicationRecord
     :key,
     presence: true,
     uniqueness: { scope: %i[resource_type resource_id] }, format: { with: /\A[a-zA-Z0-9_]+\z/, message: 'only letters, numbers and underscore' },
-    if: :accepts_input?
+    if: :supports_submission?
   )
   validates :input_type, presence: true, inclusion: INPUT_TYPES
   validates :title_multiloc, presence: true, multiloc: { presence: true }, unless: :page?
@@ -107,9 +114,9 @@ class CustomField < ApplicationRecord
   validates :question_category, absence: true, unless: :supports_category?
   validates :question_category, inclusion: { in: QUESTION_CATEGORIES }, allow_nil: true, if: :supports_category?
   validates :maximum, presence: true, inclusion: 2..11, if: :supports_linear_scale?
-  validates :min_characters, comparison: { greater_than_or_equal_to: 0 }, if: :support_text?, allow_nil: true
-  validates :max_characters, comparison: { greater_than: 0 }, if: :support_text?, allow_nil: true
-  validate :max_characters_greater_than_min_characters, if: :support_text?
+  validates :min_characters, comparison: { greater_than_or_equal_to: 0 }, if: :supports_text?, allow_nil: true
+  validates :max_characters, comparison: { greater_than: 0 }, if: :supports_text?, allow_nil: true
+  validate :max_characters_greater_than_min_characters, if: :supports_text?
   validate :maximum_select_count_greater_than_or_equal_to_minimum, if: :select_count_enabled_and_supported?
 
   before_validation :set_default_enabled
@@ -140,16 +147,8 @@ class CustomField < ApplicationRecord
     logic.present? && logic != { 'rules' => [] }
   end
 
-  def support_logic?
-    %w[page select linear_scale ranking].include?(input_type)
-  end
-
-  def support_options?
-    %w[select multiselect select_image multiselect_image ranking].include?(input_type)
-  end
-
-  def support_reference_distribution?
-    %w[select checkbox multiselect].include?(input_type) || key == 'birthyear'
+  def input_type_strategy
+    @input_type_strategy ||= "InputTypeStrategy::#{input_type.camelize}".constantize.new(self)
   end
 
   def includes_other_option?
@@ -158,66 +157,6 @@ class CustomField < ApplicationRecord
 
   def ask_follow_up?
     ask_follow_up
-  end
-
-  def support_other_option?
-    %(select multiselect select_image multiselect_image).include?(input_type)
-  end
-
-  def support_follow_up?
-    %w[sentiment_linear_scale].include?(input_type)
-  end
-
-  def support_free_text_value?
-    support_text? || (support_options? && includes_other_option?) || support_follow_up?
-  end
-
-  def support_text?
-    %w[text multiline_text text_multiloc multiline_text_multiloc html_multiloc].include?(input_type)
-  end
-
-  def support_option_images?
-    %w[select_image multiselect_image].include?(input_type)
-  end
-
-  def supports_xlsx_export?
-    return false if code == 'idea_images_attributes' # Is this still applicable?
-
-    !page?
-  end
-
-  def supports_geojson?
-    return false if code == 'idea_images_attributes' # Is this still applicable?
-
-    !page?
-  end
-
-  def supports_linear_scale?
-    %w[linear_scale matrix_linear_scale sentiment_linear_scale rating].include?(input_type)
-  end
-
-  def supports_matrix_statements?
-    input_type == 'matrix_linear_scale'
-  end
-
-  def supports_linear_scale_labels?
-    %w[linear_scale matrix_linear_scale sentiment_linear_scale].include?(input_type)
-  end
-
-  def supports_average?
-    %w[linear_scale sentiment_linear_scale rating number].include?(input_type)
-  end
-
-  def supports_single_selection?
-    %w[select linear_scale sentiment_linear_scale rating].include?(input_type)
-  end
-
-  def supports_multiple_selection?
-    %w[multiselect multiselect_image].include?(input_type)
-  end
-
-  def supports_selection?
-    supports_single_selection? || supports_multiple_selection?
   end
 
   def average_rankings(scope)
@@ -278,92 +217,17 @@ class CustomField < ApplicationRecord
     false
   end
 
-  def submittable?
-    !page?
-  end
-
-  def printable?
-    return false unless enabled? && include_in_printed_form
-
-    # Support all field types that are supported in the form editor - TBC
-    built_in_types = %w[text_multiloc html_multiloc image_files files topic_ids]
-    ideation_types = ParticipationMethod::Ideation::ALLOWED_EXTRA_FIELD_TYPES
-    native_survey_types = ParticipationMethod::NativeSurvey::ALLOWED_EXTRA_FIELD_TYPES
-    user_field_types = %w[checkbox date] # Only when 'user_fields_in_form' is enabled
-    all_input_types = built_in_types + ideation_types + native_survey_types + user_field_types
-
-    all_input_types.include? input_type
-  end
-
-  def pdf_importable?
-    ignore_field_types = %w[page checkbox files topic_ids image_files file_upload shapefile_upload point line polygon cosponsor_ids ranking matrix_linear_scale]
-    printable? && ignore_field_types.exclude?(input_type)
-  end
-
-  def pdf_gpt_importable?
-    ignore_field_types = %w[page checkbox files topic_ids image_files file_upload shapefile_upload point line polygon cosponsor_ids]
-    printable? && ignore_field_types.exclude?(input_type)
-  end
-
-  def xlsx_importable?
-    ignore_field_types = %w[page files image_files file_upload shapefile_upload point line polygon cosponsor_ids]
-    ignore_field_types.exclude? input_type
-  end
-
   def domicile?
-    (key == 'domicile' && code == 'domicile') || key == 'u_domicile'
-  end
-
-  def file_upload?
-    input_type == 'file_upload' || input_type == 'shapefile_upload'
-  end
-
-  def page?
-    input_type == 'page'
+    s = UserFieldsInFormService
+    (key == 'domicile' && code == 'domicile') || key == s.prefix_key('domicile')
   end
 
   def form_end_page?
     page? && key == 'form_end'
   end
 
-  def multiselect?
-    %w[multiselect multiselect_image].include?(input_type)
-  end
-
-  def supports_select_count?
-    %w[multiselect multiselect_image topic_ids].include?(input_type)
-  end
-
   def select_count_enabled_and_supported?
     supports_select_count? && select_count_enabled
-  end
-
-  def singleselect?
-    %w[select select_image].include?(input_type)
-  end
-
-  def linear_scale?
-    input_type == 'linear_scale'
-  end
-
-  def sentiment_linear_scale?
-    input_type == 'sentiment_linear_scale'
-  end
-
-  def rating?
-    input_type == 'rating'
-  end
-
-  def checkbox?
-    input_type == 'checkbox'
-  end
-
-  def dropdown_layout_type?
-    %w[multiselect select].include?(input_type)
-  end
-
-  def accepts_input?
-    !page?
   end
 
   def custom_form_type?
@@ -382,14 +246,6 @@ class CustomField < ApplicationRecord
     else
       raise 'Unsupported resource type'
     end
-  end
-
-  def multiloc?
-    %w[
-      text_multiloc
-      multiline_text_multiloc
-      html_multiloc
-    ].include?(input_type)
   end
 
   def accept(visitor)
@@ -526,7 +382,7 @@ class CustomField < ApplicationRecord
 
   def generate_key
     return if key
-    return if !accepts_input?
+    return if !supports_submission?
 
     title = title_multiloc.values.first
     return unless title
@@ -561,7 +417,7 @@ class CustomField < ApplicationRecord
   end
 
   def clear_logic_unless_supported
-    self.logic = {} unless support_logic?
+    self.logic = {} if !supports_logic?
   end
 end
 

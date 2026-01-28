@@ -6,6 +6,7 @@ import usePhase from 'api/phases/usePhase';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import ActionFormDefault from './ActionFormDefault';
+import ActionFormIdeation from './ActionFormIdeation';
 import ActionFormSurvey from './ActionFormSurvey';
 import { Props } from './types';
 
@@ -31,6 +32,19 @@ const ActionForm = ({ permissionData, phaseId, ...props }: Props) => {
   if (showSurveyForm) {
     return (
       <ActionFormSurvey
+        permissionData={permissionData}
+        phaseId={phaseId}
+        {...props}
+      />
+    );
+  }
+
+  const showIdeationForm =
+    participation_method === 'ideation' && action === 'posting_idea';
+
+  if (showIdeationForm) {
+    return (
+      <ActionFormIdeation
         permissionData={permissionData}
         phaseId={phaseId}
         {...props}

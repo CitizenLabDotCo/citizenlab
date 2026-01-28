@@ -1297,18 +1297,6 @@
         }
       },
 
-      "proposals_participation_method": {
-        "type": "object",
-        "title": "Proposals participation method",
-        "description": "Enables the ability to choose proposals as a participation method for a project.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": true }
-        }
-      },
-
       "input_cosponsorship": {
         "type": "object",
         "title": "Input co-sponsorship",
@@ -1468,6 +1456,18 @@
         "type": "object",
         "title": "Idea feed",
         "description": "Idea Feed is a participation method very similar to ideation, but ideas are presented one-by-one in a scrollable feed, there is a stronger emphasis on clustering. Optimized for larger projects, initially built with America One.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "nested_input_topics": {
+        "type": "object",
+        "title": "Nested input topics",
+        "description": "Nested input topics allow for hierarchical organization (topics and subtopics) of the input topics within a project.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
