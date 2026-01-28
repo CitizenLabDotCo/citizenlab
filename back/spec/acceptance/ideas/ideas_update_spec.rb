@@ -212,7 +212,7 @@ resource 'Ideas' do
           input.update! publication_status: 'draft', author: nil
           do_request idea: { publication_status: 'published' }
           assert_status 200
-          expect(json_response_body[:data][:attributes][:author_id]).to be_nil
+          expect(response_data.dig(:attributes, :author_id)).to be_nil
         end
 
         describe 'draft ideas' do
