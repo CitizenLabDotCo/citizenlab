@@ -46,9 +46,9 @@ class InvalidDataChecker
   def validation_errors(object)
     return object.errors.details unless object.valid?
 
-    if object.instance_of?(User) && !object.custom_field_values.values.select do |v|
-         v.instance_of?(Array) ? v.include?(nil) : v.nil?
-       end.empty?
+    if object.instance_of?(User) && object.custom_field_values.values.any? do |v|
+         v.nil? || (v.is_a?(Array) && v.include?(nil))
+       end
       { custom_field_values: [{ error: 'Contains null values', value: object.custom_field_values }] }
     end
   end

@@ -34,13 +34,13 @@ module ProjectFolders
     end
 
     def create?
-      return unless user&.active?
+      return false unless user&.active?
 
       user.admin?
     end
 
     def update?
-      return unless user&.active?
+      return false unless user&.active?
 
       create? || user&.project_folder_moderator?(record.id)
     end
