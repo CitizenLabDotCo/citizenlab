@@ -48,7 +48,7 @@ const PostParticipationBox = ({ onCreateAccount }: Props) => {
         mt="16px"
         dataCy="post-participation-signup"
       >
-        <FormattedMessage {...messages.createAnAccount} />
+        <FormattedMessage {...messages.createAnAccountOrLogIn} />
       </Button>
     </Box>
   );
