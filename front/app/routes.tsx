@@ -7,7 +7,6 @@ import userProfileRoutes, {
   userShowPageRouteTypes,
 } from 'containers/UsersShowPage/routes';
 
-import PageNotFound from 'components/PageNotFound';
 import PageLoading from 'components/UI/PageLoading';
 
 const HomePage = lazy(() => import('containers/HomePage'));
@@ -51,6 +50,8 @@ const DisabledAccount = lazy(() => import('containers/DisabledAccount'));
 const ProjectPreviewToken = lazy(
   () => import('containers/Admin/projects/project/previewToken')
 );
+
+const PageNotFound = lazy(() => import('components/PageNotFound'));
 
 export type RouteType =
   | AdminRouteTypes
@@ -414,15 +415,15 @@ export default function createRoutes() {
           ),
         },
         ...moduleConfiguration.routes.citizen,
-        {
-          path: '*',
-          element: (
-            <PageLoading>
-              <PageNotFound />
-            </PageLoading>
-          ),
-        },
       ],
+    },
+    {
+      path: '*',
+      element: (
+        <PageLoading>
+          <PageNotFound />
+        </PageLoading>
+      ),
     },
   ];
 }
