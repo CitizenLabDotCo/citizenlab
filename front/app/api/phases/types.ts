@@ -169,8 +169,6 @@ export type ParticipationMethod =
 
 export type VotingMethod = 'budgeting' | 'multiple_voting' | 'single_voting';
 
-export type IdeationMethod = 'base' | 'idea_feed';
-
 export type VoteTerm = 'vote' | 'point' | 'token' | 'credit' | 'percent';
 
 export type IdeaSortMethod =
