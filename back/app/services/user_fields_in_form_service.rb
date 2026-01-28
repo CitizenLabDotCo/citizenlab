@@ -29,8 +29,8 @@ class UserFieldsInFormService
     pmethod = phase&.participation_method
     return false if NATIVE_SURVEYLIKE_METHODS.include?(pmethod) && permission.user_data_collection == 'anonymous'
 
-    # If pmethod is ideation: confirm that idea is not anonymosu
-    return false if pmethod == 'ideation' && idea.anonymous
+    # If pmethod is ideation-like: confirm that idea is not anonymosu
+    return false if IDEATIONLIKE_METHODS.include?(pmethod) && idea.anonymous
 
     # Finally, confirm that the idea doesn't already have user fields
     return false if idea.custom_field_values&.keys&.any? { |key| key.start_with?(prefix) }
