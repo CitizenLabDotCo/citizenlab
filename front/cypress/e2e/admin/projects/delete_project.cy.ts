@@ -33,7 +33,9 @@ describe('Admin: delete project', () => {
       cy.contains('Delete project').should('exist');
       cy.contains('Delete project').click();
 
-      cy.on('window:confirm', () => true);
+      // Type confirmation word in the modal
+      cy.dataCy('e2e-typed-confirmation-input').type('DELETE');
+      cy.dataCy('e2e-typed-confirmation-delete-button').click();
 
       cy.wait('@deleteProject');
       cy.wait('@getProjectsForAdmin');
@@ -64,7 +66,9 @@ describe('Admin: delete project', () => {
       cy.contains('Delete folder').should('exist');
       cy.contains('Delete folder').click();
 
-      cy.on('window:confirm', () => true);
+      // Type confirmation word in the modal
+      cy.dataCy('e2e-typed-confirmation-input').type('DELETE');
+      cy.dataCy('e2e-typed-confirmation-delete-button').click();
 
       cy.wait('@deleteFolder');
       cy.wait('@getFoldersForAdmin');

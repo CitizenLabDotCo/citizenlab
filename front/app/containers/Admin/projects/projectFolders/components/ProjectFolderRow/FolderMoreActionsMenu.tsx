@@ -106,7 +106,6 @@ const FolderMoreActionsMenu = ({
           confirmationWord={typedConfirmationMessages.confirmationWordDelete}
           deleteButtonText={messages.deleteFolderButton}
           isDeleting={isDeleteProjectFolderLoading}
-          data-testid="delete-folder-modal"
         />
       </>
     );

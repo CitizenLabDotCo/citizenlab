@@ -252,7 +252,6 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
         mainWarning={messages.deletePhaseModalWarning}
         confirmationWord={typedConfirmationMessages.confirmationWordDelete}
         deleteButtonText={messages.deletePhaseButtonText}
-        data-testid={`e2e-confirm-delete-phase-${phase.id}`}
       />
     </>
   );

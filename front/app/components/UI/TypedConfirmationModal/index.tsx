@@ -25,8 +25,6 @@ export interface Props {
   confirmationWord: MessageDescriptor;
   deleteButtonText: MessageDescriptor;
   isDeleting?: boolean;
-  /** Optional test id for e2e tests */
-  'data-testid'?: string;
 }
 
 const TypedConfirmationModal = ({
@@ -38,7 +36,6 @@ const TypedConfirmationModal = ({
   confirmationWord,
   deleteButtonText,
   isDeleting = false,
-  'data-testid': dataTestId,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [inputValue, setInputValue] = useState('');
@@ -77,7 +74,6 @@ const TypedConfirmationModal = ({
     <Modal
       opened={opened}
       close={onClose}
-      data-testid={dataTestId}
       width={500}
       closeOnClickOutside={!isDeleting}
     >
@@ -124,7 +120,7 @@ const TypedConfirmationModal = ({
         placeholder={confirmationText}
         disabled={isDeleting}
         autoFocus
-        data-testid="typed-confirmation-input"
+        data-cy="e2e-typed-confirmation-input"
       />
 
       <Box display="flex" gap="12px" mt="24px">
@@ -134,7 +130,7 @@ const TypedConfirmationModal = ({
           onClick={handleConfirm}
           disabled={!isConfirmationValid || isDeleting}
           processing={isDeleting}
-          data-testid="typed-confirmation-delete-button"
+          data-cy="e2e-typed-confirmation-delete-button"
         >
           {formatMessage(deleteButtonText)}
         </Button>

@@ -168,7 +168,6 @@ const ProjectMoreActionsMenu = ({
           confirmationWord={typedConfirmationMessages.confirmationWordDelete}
           deleteButtonText={messages.deleteProjectButtonFull}
           isDeleting={isDeleting}
-          data-testid="delete-project-modal"
         />
       </>
     );

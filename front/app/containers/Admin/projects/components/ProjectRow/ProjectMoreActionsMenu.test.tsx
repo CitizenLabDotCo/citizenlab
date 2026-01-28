@@ -107,14 +107,12 @@ describe('ProjectMoreActionsMenu', () => {
 
     await user.click(deleteProjectButton);
 
-    const confirmationInput = await screen.findByTestId(
-      'typed-confirmation-input'
-    );
+    const confirmationInput = await screen.findByPlaceholderText('DELETE');
     await user.type(confirmationInput, 'DELETE');
 
-    const confirmDeleteButton = screen.getByTestId(
-      'typed-confirmation-delete-button'
-    );
+    const confirmDeleteButton = await screen.findByRole('button', {
+      name: 'Delete project',
+    });
     await user.click(confirmDeleteButton);
 
     await waitFor(() => {
