@@ -72,6 +72,7 @@ class UserFieldsInFormService
   # page of the form, and if so, if they should be merged into the user.
   def self.should_merge_user_fields_from_idea_into_user?(idea, user, phase)
     return false unless user
+    return false unless phase
 
     # Confirm that the idea belongs to the current user
     return false unless idea.author_id == user.id
