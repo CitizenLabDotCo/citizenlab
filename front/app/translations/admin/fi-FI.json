@@ -2897,6 +2897,7 @@
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Odottaa kutsua",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Kuka voi merkitä asiakirjaan?",
   "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_subtitle": "Kuka voi ilmoittautua tapahtumaan?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_tooltip": "Jos käyttäjä yrittää osallistua tapahtumaan aktiivisena olevan vaiheen ulkopuolella, järjestelmä käyttää viimeksi päättyneen vaiheen oikeuksia.",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_inputs_subtitle": "Kuka voi kommentoida syötteitä?",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_proposals_subtitle": "Kuka voi kommentoida ehdotuksia?",
   "app.containers.AdminPage.groups.permissions.permissionAction_post_proposal_subtitle": "Kuka voi lähettää ehdotuksen?",

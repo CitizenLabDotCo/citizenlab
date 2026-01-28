@@ -8,13 +8,13 @@ it:
       range_min: "%{min} o più"
       range_max: "%{max} o meno"
       tag_vs_bin:
-        inputs: "Le persone che rispondono '%{answer}' a '%{question}' postano %{percent_more_less} in '%{tag}' rispetto alla media."
-        likes: "Le persone che rispondono '%{answer}' a '%{question}' gradiscono %{percent_more_less} ingressi in '%{tag}' rispetto alla media."
-        dislikes: "Le persone che rispondono '%{answer}' a '%{question}' non amano %{percent_more_less} ingressi in '%{tag}' rispetto alla media."
-        participants: "Le persone che rispondono '%{answer}' a '%{question}' partecipano %{percent_more_less} a '%{tag}' rispetto alla media."
+        inputs: "Le persone che corrispondono a '%{answer}' in '%{question}' postano il %{percent_more_less} in '%{tag}' rispetto alla media."
+        likes: "Le persone che corrispondono a '%{answer}' in '%{question}' apprezzano il %{percent_more_less} dei contributi in '%{tag}' rispetto alla media."
+        dislikes: "Le persone che corrispondono a '%{answer}' in '%{question}' disapprovano il %{percent_more_less} dei contributi in '%{tag}' rispetto alla media."
+        participants: "Le persone che corrispondono a '%{answer}' in '%{question}' partecipano il %{percent_more_less} in '%{tag}' rispetto alla media."
       bin_vs_bin:
-        inputs: "Le persone che rispondono '%{answer1}' a '%{question1}' rispondono '%{answer2}' a '%{question2}' %{percent_more_less} rispetto alla media."
-        likes: "Le persone che rispondono '%{answer1}' a '%{question1}' apprezzano gli input di %{percent_more_less} quando rispondono '%{answer2}' a '%{question2}' rispetto alla media."
-        dislikes: "Le persone che rispondono '%{answer1}' a '%{question1}' non amano gli input di %{percent_more_less} quando rispondono '%{answer2}' a '%{question2}' rispetto alla media."
-        participants: "Le persone che rispondono '%{answer1}' a '%{question1}' partecipano %{percent_more_less} quando rispondono '%{answer2}' a '%{question2}' rispetto alla media."
+        inputs: "Le persone che corrispondono a '%{answer1}' in '%{question1}' rispondono '%{answer2}' in '%{question2}' il %{percent_more_less} rispetto alla media."
+        likes: "Le persone che corrispondono a '%{answer1}' in '%{question1}' apprezzano il %{percent_more_less} dei contributi rispetto alla media quando corrispondono a '%{answer2}' in '%{question2}'."
+        dislikes: "Le persone che corrispondono a '%{answer1}' in '%{question1}' disapprovano il %{percent_more_less} dei contributi rispetto alla media quando corrispondono a '%{answer2}' in '%{question2}'."
+        participants: "Le persone che corrispondono a '%{answer1}' in '%{question1}' partecipano il %{percent_more_less} rispetto alla media quando corrispondono a '%{answer2}' in '%{question2}'."
 

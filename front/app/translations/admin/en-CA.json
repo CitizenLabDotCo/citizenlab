@@ -2897,6 +2897,7 @@
   "app.containers.AdminPage.groups.permissions.pendingInvitation": "Pending invitation",
   "app.containers.AdminPage.groups.permissions.permissionAction_annotating_document_subtitle": "Who can annotate the document?",
   "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_subtitle": "Who can sign up to attend an event?",
+  "app.containers.AdminPage.groups.permissions.permissionAction_attending_event_tooltip": "If there is no active phase when a user tries to attend an event, the system will use the permissions from the most recently completed phase.",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_inputs_subtitle": "Who can comment on inputs?",
   "app.containers.AdminPage.groups.permissions.permissionAction_comment_proposals_subtitle": "Who can comment on proposals?",
   "app.containers.AdminPage.groups.permissions.permissionAction_post_proposal_subtitle": "Who can post a proposal?",
