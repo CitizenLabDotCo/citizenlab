@@ -7,6 +7,7 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import CommentsByTimeCard from 'components/admin/GraphCards/CommentsByTimeCard';
 import InputsByTimeCard from 'components/admin/GraphCards/InputsByTimeCard';
+import InternalAdoptionCard from 'components/admin/GraphCards/InternalAdoptionCard';
 import ParticipantsCard from 'components/admin/GraphCards/ParticipantsCard';
 import ReactionsByTimeCard from 'components/admin/GraphCards/ReactionsByTimeCard';
 import RegistrationsCard from 'components/admin/GraphCards/RegistrationsCard';
@@ -232,6 +233,14 @@ const OverviewDashboard = () => {
               endAtMoment={endAtMoment}
               resolution={resolution}
             />
+            {/* Internal adoption data is hidden when a specific project is selected because it aggregates data across all projects */}
+            {!currentProjectFilter && (
+              <InternalAdoptionCard
+                startAtMoment={startAtMoment}
+                endAtMoment={endAtMoment}
+                resolution={resolution}
+              />
+            )}
           </Column>
         </>
       </GraphsContainer>

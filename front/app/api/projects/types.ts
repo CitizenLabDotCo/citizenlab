@@ -154,7 +154,7 @@ export interface IProjectData {
 }
 
 export type Visibility = 'public' | 'groups' | 'admins';
-type PresentationMode = 'map' | 'card';
+type PresentationMode = 'map' | 'card' | 'feed';
 
 interface ProjectHeaderBgImageSizes {
   large: string | null;

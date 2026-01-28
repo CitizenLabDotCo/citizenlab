@@ -6,9 +6,6 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import useInputTopics from 'api/input_topics/useInputTopics';
-import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
-import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import IdeasShow from 'containers/IdeasShow';
 
@@ -24,7 +21,7 @@ import messages from '../messages';
 import IdeaContent from './IdeaContent';
 import TopicsContent from './TopicsContent';
 
-const Sidebar = () => {
+const Sidebar = ({ projectId }: { projectId: string }) => {
   const { formatMessage } = useIntl();
   const contentRef = useRef<HTMLDivElement>(null);
   const { slug } = useParams() as { slug: string };
@@ -39,18 +36,13 @@ const Sidebar = () => {
     }
   }, [selectedIdeaId]);
 
-  const { data: project } = useProjectBySlug(slug);
-  const projectId = project?.data.id;
-
-  const { data: topics, isLoading: topicsLoading } = useInputTopics(projectId);
-
-  const { data: phases } = usePhases(projectId);
-  const currentPhase = getCurrentPhase(phases?.data);
-  const phaseId = currentPhase?.id;
+  const { data: topics, isLoading: topicsLoading } = useInputTopics(projectId, {
+    sort: '-ideas_count',
+    depth: 0,
+  });
 
   const { data: filterCounts } = useIdeasFilterCounts({
-    projects: projectId ? [projectId] : undefined,
-    phase: phaseId,
+    projects: [projectId],
   });
 
   const { data: selectedIdea } = useIdeaById(selectedIdeaId ?? undefined);
@@ -64,7 +56,7 @@ const Sidebar = () => {
     if (topicId) {
       updateSearchParams({ topic: topicId });
     } else {
-      removeSearchParams(['topic']);
+      removeSearchParams(['topic', 'subtopic']);
     }
   };
 

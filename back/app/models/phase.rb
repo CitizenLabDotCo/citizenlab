@@ -70,12 +70,12 @@ class Phase < ApplicationRecord
 
   PARTICIPATION_METHODS = ParticipationMethod::Base.all_methods.map(&:method_str).freeze
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
-  IDEATION_METHODS      = %w[base idea_feed].freeze
-  PRESENTATION_MODES    = %w[card map].freeze
+  PRESENTATION_MODES    = %w[card map feed].freeze
   REACTING_METHODS      = %w[unlimited limited].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition].freeze
   FALLBACK_INPUT_TERM   = 'idea'
   VOTE_TERMS            = %w[vote point token credit]
+  PRESCREENING_MODES    = %w[all].freeze
 
   attribute :reacting_dislike_enabled, :boolean, default: -> { disliking_enabled_default }
 
@@ -100,6 +100,7 @@ class Phase < ApplicationRecord
   before_validation :set_participation_method_defaults, on: :create
   before_validation :set_participation_method_defaults_on_method_change, on: :update
   before_validation :set_presentation_mode, on: :create
+  before_save :sync_prescreening_columns # scaffold for migrating from prescreening_enabled to prescreening_mode
 
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
@@ -109,6 +110,7 @@ class Phase < ApplicationRecord
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :start_at, presence: true
   validates :prescreening_enabled, inclusion: { in: [true, false] }
+  validates :prescreening_mode, inclusion: { in: PRESCREENING_MODES }, allow_nil: true
   validate :validate_end_at
   validate :validate_previous_blank_end_at
   validate :validate_start_at_before_end_at # Also enforced by the phases_start_before_end check constraint
@@ -174,11 +176,6 @@ class Phase < ApplicationRecord
   with_options if: :voting? do
     validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
     validates :autoshare_results_enabled, inclusion: { in: [true, false] }
-  end
-
-  # ideation?
-  with_options if: :ideation? do
-    validates :ideation_method, presence: true, inclusion: { in: IDEATION_METHODS }
   end
 
   validates :voting_min_total,
@@ -399,6 +396,15 @@ class Phase < ApplicationRecord
   # Delegate any rules specific to a method to the participation method itself
   def validate_phase_participation_method
     pmethod.validate_phase
+  end
+
+  # Sync prescreening_mode and prescreening_enabled columns bidirectionally
+  def sync_prescreening_columns
+    if prescreening_mode_changed?
+      self.prescreening_enabled = prescreening_mode.present?
+    elsif prescreening_enabled_changed?
+      self.prescreening_mode = prescreening_enabled ? 'all' : nil
+    end
   end
 end
 

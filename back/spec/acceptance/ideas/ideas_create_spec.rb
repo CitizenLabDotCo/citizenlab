@@ -548,6 +548,7 @@ resource 'Ideas' do
         before { header_token_for(resident) }
 
         let(:resident) { create(:user, custom_field_values: { age: 30 }) }
+        let(:publication_status) { 'published' }
 
         example 'does not assign anyone to the created idea', document: false do
           do_request
@@ -724,6 +725,7 @@ resource 'Ideas' do
 
       context 'when resident' do
         let(:resident) { create(:user) }
+        let(:publication_status) { 'published' }
 
         before { header_token_for(resident) }
 

@@ -13,14 +13,6 @@ class WebApi::V1::PermissionSerializer < WebApi::V1::BaseSerializer
     object.everyone_tracking_enabled?
   end
 
-  attribute :user_fields_in_form do |permission|
-    phase = permission.permission_scope
-    next false unless phase.is_a?(Phase)
-
-    phase.pmethod.user_fields_in_form?
-  end
-
-  # Attribute used in frontend to render access rights UI
   attribute :user_fields_in_form_frontend_descriptor do |permission|
     permission.user_fields_in_form_frontend_descriptor
   end

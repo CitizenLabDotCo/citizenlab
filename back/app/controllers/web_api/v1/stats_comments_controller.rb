@@ -17,7 +17,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
     comments = apply_project_filter(comments)
     comments = apply_group_filter(comments)
 
-    comments
+    serie = comments
       .where(created_at: @start_at..@end_at)
       .joins('INNER JOIN ideas ON ideas.id = comments.idea_id')
       .joins('INNER JOIN ideas_input_topics ON ideas_input_topics.idea_id = ideas.id')
@@ -25,6 +25,8 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
       .order('count_id DESC')
       .limit(limit)
       .count('id')
+
+    IdeasCountService.aggregate_child_input_topic_counts(serie)
   end
 
   def comments_by_topic
@@ -98,10 +100,13 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
   def apply_topic_filter(comments)
     if params[:input_topic]
+      topic_ids = InputTopic.where(id: params[:input_topic])
+        .or(InputTopic.where(parent_id: params[:input_topic]))
+        .pluck(:id)
       comments
         .joins('INNER JOIN ideas ON ideas.id = comments.idea_id')
         .joins('INNER JOIN ideas_input_topics ON ideas_input_topics.idea_id = ideas.id')
-        .where(ideas_input_topics: { input_topic_id: params[:input_topic] })
+        .where(ideas_input_topics: { input_topic_id: topic_ids })
     else
       comments
     end

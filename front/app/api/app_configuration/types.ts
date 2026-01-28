@@ -272,7 +272,10 @@ export interface IAppConfigurationSettings {
   customised_automated_context_emails?: AppConfigurationFeature;
   project_importer?: AppConfigurationFeature;
   idea_feed?: AppConfigurationFeature;
+  nested_input_topics?: AppConfigurationFeature;
+  workshops?: AppConfigurationFeature;
   ideation_accountless_posting?: AppConfigurationFeature;
+  participation_location_tracking?: AppConfigurationFeature;
   post_participation_signup?: AppConfigurationFeature;
   phase_insights?: AppConfigurationFeature;
 }

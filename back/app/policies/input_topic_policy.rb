@@ -15,7 +15,7 @@ class InputTopicPolicy < ApplicationPolicy
     user&.active? && (user.admin? || user.project_moderator?(record.project_id))
   end
 
-  def reorder?
+  def move?
     update?
   end
 
@@ -30,6 +30,7 @@ class InputTopicPolicy < ApplicationPolicy
   def permitted_attributes_for_create
     [
       :icon,
+      :parent_id,
       { title_multiloc: CL2_SUPPORTED_LOCALES },
       { description_multiloc: CL2_SUPPORTED_LOCALES }
     ]
@@ -39,7 +40,7 @@ class InputTopicPolicy < ApplicationPolicy
     permitted_attributes_for_create
   end
 
-  def permitted_attributes_for_reorder
-    [:ordering]
+  def permitted_attributes_for_move
+    %i[position target_id]
   end
 end

@@ -25,7 +25,7 @@ module Insights
     def phase_participation_method_metrics(participations)
       {
         responses: participations[:taking_poll].count,
-        responses_7_day_change: participations_7_day_change(participations[:taking_poll])
+        responses_7_day_percent_change: participations_7_day_change(participations[:taking_poll])
       }
     end
   end

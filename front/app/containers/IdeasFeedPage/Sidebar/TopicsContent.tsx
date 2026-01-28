@@ -1,12 +1,13 @@
 import React from 'react';
 
-import { Box, Divider, Title } from '@citizenlab/cl2-component-library';
+import { Box, Divider, Title, Text } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 
+import usePhase from 'api/phases/usePhase';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
-import useLocalize from 'hooks/useLocalize';
-
 import AvatarBubbles from 'components/AvatarBubbles';
+import T from 'components/T';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import messages from '../messages';
@@ -34,17 +35,19 @@ const TopicsContent = ({
   isMobile = false,
 }: Props) => {
   const { data: project } = useProjectBySlug(slug);
-  const localize = useLocalize();
+  const [searchParams] = useSearchParams();
+  const phaseId = searchParams.get('phase_id');
+  const { data: phase } = usePhase(phaseId);
   const projectId = project?.data.id;
-  const projectTitle = project
-    ? localize(project.data.attributes.title_multiloc)
-    : '';
 
   // When a topic is selected, show only that topic with a back button
-  if (selectedTopicId) {
+  if (selectedTopicId && projectId) {
     return (
       <SelectedTopicContent
+        projectId={projectId}
         topicId={selectedTopicId}
+        topicCount={topicCounts[selectedTopicId] || 0}
+        topicCounts={topicCounts}
         onBack={() => onTopicSelect(null)}
         isMobile={isMobile}
       />
@@ -65,8 +68,11 @@ const TopicsContent = ({
 
       <Box px="16px" mb="16px">
         <Title fontWeight="bold" variant="h2" as="h1">
-          {projectTitle}
+          <T value={phase?.data.attributes.title_multiloc} />
         </Title>
+        <Text>
+          <T value={phase?.data.attributes.description_multiloc} supportHtml />
+        </Text>
         {projectId && (
           <AvatarBubbles
             context={{ type: 'project', id: projectId }}

@@ -10,7 +10,7 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     :reacting_enabled, :reacting_like_method, :reacting_like_limited_max,
     :reacting_dislike_enabled, :reacting_dislike_method, :reacting_dislike_limited_max,
     :presentation_mode, :ideas_order, :input_term, :vote_term,
-    :prescreening_enabled, :manual_voters_amount, :manual_votes_count,
+    :prescreening_enabled, :prescreening_mode, :manual_voters_amount, :manual_votes_count,
     :similarity_enabled, :similarity_threshold_title, :similarity_threshold_body,
     :survey_popup_frequency
 
@@ -19,7 +19,6 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     voting_max_votes_per_idea baskets_count voting_min_selected_options
     native_survey_title_multiloc native_survey_button_multiloc
     expire_days_limit reacting_threshold autoshare_results_enabled voting_filtering_enabled
-    ideation_method
   ].each do |attribute_name|
     attribute attribute_name, if: proc { |phase|
       phase.pmethod.supports_serializing?(attribute_name)
