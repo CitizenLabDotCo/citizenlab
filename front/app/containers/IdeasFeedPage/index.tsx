@@ -3,6 +3,8 @@ import React from 'react';
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
 
+import usePhases from 'api/phases/usePhases';
+import { getInputTerm } from 'api/phases/utils';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -11,6 +13,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { FormattedMessage } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { getInputTermMessage } from 'utils/i18n';
 
 import IdeasFeed from './IdeasFeed';
 import IdeasFeedPageMeta from './IdeasFeedPageMeta';
@@ -20,6 +23,7 @@ import Sidebar from './Sidebar';
 const IdeasFeedPage = () => {
   const { slug } = useParams() as { slug: string };
   const { data: project } = useProjectBySlug(slug);
+  const { data: phases } = usePhases(project?.data.id);
   const [searchParams] = useSearchParams();
   const selectedTopicId = searchParams.get('topic');
   const selectedSubtopicId = searchParams.get('subtopic');
@@ -102,10 +106,21 @@ const IdeasFeedPage = () => {
           <ButtonWithLink
             linkTo={`/projects/${slug}/ideas/new?phase_id=${phaseId}`}
             icon="plus-circle"
-            buttonStyle="secondary-outlined"
-            bgColor="white"
+            buttonStyle="primary"
           >
-            <FormattedMessage {...messages.addYourIdea} />
+            <FormattedMessage
+              {...getInputTermMessage(getInputTerm(phases?.data), {
+                idea: messages.addYourIdea,
+                option: messages.addAnOption,
+                project: messages.addAProject,
+                question: messages.addAQuestion,
+                issue: messages.addAnIssue,
+                contribution: messages.addAContribution,
+                proposal: messages.addAProposal,
+                initiative: messages.addAnInitiative,
+                petition: messages.addAPetition,
+              })}
+            />
           </ButtonWithLink>
         </Box>
       </Box>

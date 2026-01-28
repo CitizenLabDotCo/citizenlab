@@ -57,6 +57,7 @@ interface Props {
   centeredIdeaId?: string;
   size?: 'small' | 'large';
   showReactions?: boolean;
+  commentsAllowed?: boolean;
 }
 
 const StickyNote: React.FC<Props> = ({
@@ -146,15 +147,19 @@ const StickyNote: React.FC<Props> = ({
           flexShrink={0}
         >
           <Box display="flex" alignItems="center" gap="4px">
-            <Icon
-              name="comments"
-              fill={colors.textSecondary}
-              width="20px"
-              height="20px"
-            />
-            <Text fontSize="m" color="textSecondary" m="0px" ml="4px">
-              {commentsCount}
-            </Text>
+            {
+              <>
+                <Icon
+                  name="comments"
+                  fill={colors.textSecondary}
+                  width="20px"
+                  height="20px"
+                />
+                <Text fontSize="m" color="textSecondary" m="0px" ml="4px">
+                  {commentsCount}
+                </Text>
+              </>
+            }
           </Box>
 
           <ReactionControl ideaId={ideaId} size="1" styleType="compact" />
