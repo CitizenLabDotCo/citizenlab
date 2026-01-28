@@ -1,3 +1,4 @@
+import { randomString } from '../../../support/commands';
 import { signUpEmailConformation, enterUserInfo } from '../../../support/auth';
 
 describe('Post Participation Signup: ideation', () => {
