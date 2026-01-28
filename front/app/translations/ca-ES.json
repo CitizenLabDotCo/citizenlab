@@ -144,7 +144,6 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Desa aquest codi en cas que vulguis eliminar l'enviament més endavant.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Envia aquest codi al meu correu electrònic",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Identificador de la presentació",
-  "app.components.CustomFieldsForm.PostParticipationBox.createAnAccount": "Crea un compte",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountToFollow": "Crea un compte per seguir què passa a continuació i participar en altres converses.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Rep actualitzacions quan hi hagi els passos següents",
   "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Uneix-te a les discussions si la teva aportació es comparteix públicament",

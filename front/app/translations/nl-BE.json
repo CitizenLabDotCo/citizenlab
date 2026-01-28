@@ -144,7 +144,6 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Bewaar deze code voor het geval je je inzending later wilt verwijderen.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Stuur deze code naar mijn e-mail",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Identificatiecode voor inzending",
-  "app.components.CustomFieldsForm.PostParticipationBox.createAnAccount": "Registreren",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountToFollow": "Maak een account aan om te volgen wat er verder gebeurt en deel te nemen aan andere gesprekken.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Krijg updates als er volgende stappen zijn",
   "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Doe mee aan discussies als je bijdrage openbaar wordt gedeeld",

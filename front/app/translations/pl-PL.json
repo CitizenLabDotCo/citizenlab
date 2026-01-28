@@ -144,7 +144,6 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Zapisz ten kod na wypadek, gdybyś chciał później usunąć swoje zgłoszenie.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Wyślij ten kod na mój adres e-mail",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Identyfikator zgłoszenia",
-  "app.components.CustomFieldsForm.PostParticipationBox.createAnAccount": "Utwórz konto",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountToFollow": "Utwórz konto, aby śledzić dalsze wydarzenia i brać udział w innych rozmowach.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Otrzymuj powiadomienia o kolejnych krokach",
   "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Dołącz do dyskusji, jeśli Twój wkład jest udostępniany publicznie",

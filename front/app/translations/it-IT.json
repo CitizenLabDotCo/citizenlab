@@ -144,7 +144,6 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Salva questo codice nel caso in cui volessi rimuovere il tuo invio in un secondo momento.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Invia questo codice alla mia e-mail",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Identificatore di invio",
-  "app.components.CustomFieldsForm.PostParticipationBox.createAnAccount": "Crea un account",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountToFollow": "Crea un account per seguire gli sviluppi successivi e partecipare ad altre conversazioni.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Ricevi aggiornamenti sui prossimi passi da compiere",
   "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Partecipa alle discussioni se il tuo contributo viene condiviso pubblicamente",
