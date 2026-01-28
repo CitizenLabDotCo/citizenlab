@@ -40,7 +40,7 @@ const useTopicBreakdownData = ({ phaseId }: UseTopicBreakdownDataProps) => {
     phaseId,
   });
 
-  const analysisId = analyses?.data[0].id;
+  const analysisId = analyses?.data[0]?.id;
 
   // 2. Fetch AI Topics (Dependent on analysisId)
   const {
