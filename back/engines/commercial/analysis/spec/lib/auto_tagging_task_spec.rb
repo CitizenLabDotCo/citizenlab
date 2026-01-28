@@ -49,10 +49,10 @@ RSpec.describe Analysis::AutoTaggingTask do
         state: 'succeeded',
         progress: nil
       })
-      expect(idea1.tags).to include(Analysis::Tag.find_by(name: shared_topic.title_multiloc.values))
+      expect(idea1.tags).to include(Analysis::Tag.find_by(name: shared_topic.full_title_multiloc.values))
       expect(idea1.taggings.first.background_task).to eq att
-      expect(idea1.tags).to include(Analysis::Tag.find_by(name: topic1.title_multiloc.values))
-      expect(idea1.tags).not_to include(Analysis::Tag.find_by(name: topic2.title_multiloc.values))
+      expect(idea1.tags).to include(Analysis::Tag.find_by(name: topic1.full_title_multiloc.values))
+      expect(idea1.tags).not_to include(Analysis::Tag.find_by(name: topic2.full_title_multiloc.values))
     end
   end
 

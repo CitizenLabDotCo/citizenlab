@@ -66,13 +66,17 @@ const ParticipationMetrics = ({ phase }: Props) => {
         label={formatMessage(messages.visitors)}
         value={metrics.visitors}
         icon="user-circle"
-        change={isCurrentPhase ? metrics.visitors_7_day_change : undefined}
+        change={
+          isCurrentPhase ? metrics.visitors_7_day_percent_change : undefined
+        }
       />
       <MetricCard
         label={formatMessage(messages.participants)}
         value={metrics.participants}
         icon="sidebar-users"
-        change={isCurrentPhase ? metrics.participants_7_day_change : undefined}
+        change={
+          isCurrentPhase ? metrics.participants_7_day_percent_change : undefined
+        }
       />
 
       <MethodMetrics
@@ -83,10 +87,12 @@ const ParticipationMetrics = ({ phase }: Props) => {
 
       <MetricCard
         label={formatMessage(messages.participationRate)}
-        value={`${(metrics.participation_rate * 100).toFixed(1)}%`}
+        value={`${metrics.participation_rate_as_percent.toFixed(1)}%`}
         icon="chart-bar"
         change={
-          isCurrentPhase ? metrics.participation_rate_7_day_change : undefined
+          isCurrentPhase
+            ? metrics.participation_rate_7_day_percent_change
+            : undefined
         }
       />
     </Box>

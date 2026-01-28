@@ -14,72 +14,72 @@ export type SevenDayChange = number | null | 'last_7_days_compared_with_zero';
  */
 export interface IdeationMetrics {
   ideas_posted: number;
-  ideas_posted_7_day_change?: SevenDayChange;
+  ideas_posted_7_day_percent_change?: SevenDayChange;
   comments_posted: number;
-  comments_posted_7_day_change?: SevenDayChange;
+  comments_posted_7_day_percent_change?: SevenDayChange;
   reactions: number;
-  reactions_7_day_change?: SevenDayChange;
+  reactions_7_day_percent_change?: SevenDayChange;
 }
 
 export interface ProposalsMetrics extends IdeationMetrics {
   reached_threshold: number;
-  reached_threshold_7_day_change?: SevenDayChange;
+  reached_threshold_7_day_percent_change?: SevenDayChange;
 }
 
 interface BaseVotingMetrics {
   voting_method: string;
   voters: number;
-  voters_7_day_change?: SevenDayChange;
+  voters_7_day_percent_change?: SevenDayChange;
   associated_ideas: number;
   comments_posted: number;
-  comments_posted_7_day_change?: SevenDayChange;
+  comments_posted_7_day_percent_change?: SevenDayChange;
 }
 
 export interface VotingMetrics extends BaseVotingMetrics {
   online_votes: number;
-  online_votes_7_day_change?: SevenDayChange;
+  online_votes_7_day_percent_change?: SevenDayChange;
   offline_votes: number;
 }
 
 export interface BudgetingMetrics extends BaseVotingMetrics {
   voting_method: 'budgeting';
   online_picks: number;
-  online_picks_7_day_change?: SevenDayChange;
+  online_picks_7_day_percent_change?: SevenDayChange;
   offline_picks: number;
 }
 
 export interface SurveyMetrics {
   surveys_submitted: number;
-  surveys_submitted_7_day_change?: SevenDayChange;
-  completion_rate: number;
-  completion_rate_7_day_change?: SevenDayChange;
+  surveys_submitted_7_day_percent_change?: SevenDayChange;
+  completion_rate_as_percent: number;
+  completion_rate_7_day_percent_change?: SevenDayChange;
 }
 
 export interface PollMetrics {
   responses: number;
-  responses_7_day_change?: SevenDayChange;
+  responses_7_day_percent_change?: SevenDayChange;
 }
 
 export interface CommonGroundMetrics
   extends Omit<
     IdeationMetrics,
-    'comments_posted' | 'comments_posted_7_day_change'
+    'comments_posted' | 'comments_posted_7_day_percent_change'
   > {
   associated_ideas: number;
 }
 
 export interface VolunteeringMetrics {
   volunteerings: number;
-  volunteerings_7_day_change?: SevenDayChange;
+  volunteerings_7_day_percent_change?: SevenDayChange;
 }
 
 export interface PhaseInsightsParticipationMetrics {
   visitors: number;
-  visitors_7_day_change?: SevenDayChange;
+  visitors_7_day_percent_change?: SevenDayChange;
   participants: number;
-  participants_7_day_change?: SevenDayChange;
-  participation_rate: number;
-  participation_rate_7_day_change?: SevenDayChange;
+  participants_7_day_percent_change?: SevenDayChange;
+  participation_rate_as_percent: number;
+  participation_rate_7_day_percent_change?: SevenDayChange;
   ideation?: IdeationMetrics;
   proposals?: ProposalsMetrics;
   voting?: VotingMetrics;

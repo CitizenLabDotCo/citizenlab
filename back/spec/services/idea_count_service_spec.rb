@@ -23,5 +23,17 @@ describe IdeasCountService do
         }
       })
     end
+
+    it 'aggregates child input topic counts to parent topics' do
+      parent_topic = create(:input_topic, project: project)
+      child_topic = create(:input_topic, project: project, parent: parent_topic)
+
+      create(:idea, project: project, input_topics: [child_topic])
+
+      result = described_class.counts(Idea.all, ['input_topic_id'])
+
+      expect(result['input_topic_id'][child_topic.id]).to eq(1)
+      expect(result['input_topic_id'][parent_topic.id]).to eq(1)
+    end
   end
 end

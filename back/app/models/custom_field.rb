@@ -218,7 +218,8 @@ class CustomField < ApplicationRecord
   end
 
   def domicile?
-    (key == 'domicile' && code == 'domicile') || key == 'u_domicile'
+    s = UserFieldsInFormService
+    (key == 'domicile' && code == 'domicile') || key == s.prefix_key('domicile')
   end
 
   def form_end_page?

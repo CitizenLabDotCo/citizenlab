@@ -9,6 +9,7 @@ import React, {
 import {
   Box,
   Spinner,
+  Text,
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
@@ -20,8 +21,11 @@ import styled from 'styled-components';
 import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
 import useIdeaById from 'api/ideas/useIdeaById';
 
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
+import messages from './messages';
 import StickyNote, { NOTE_HEIGHTS } from './StickyNotes/StickyNote';
 import { getTopicColor } from './topicsColor';
 
@@ -95,12 +99,18 @@ const VirtualItem = styled.div<{ start: number; topOffset: number }>`
 
 interface Props {
   topicId?: string | null;
+  parentTopicId?: string | null;
 }
 
-const IdeasFeed = ({ topicId }: Props) => {
+const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
+  const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
   const phaseId = searchParams.get('phase_id')!;
-  const initialIdeaId = searchParams.get('initial_idea_id') || undefined;
+  const initialIdeaIdFromUrl = searchParams.get('initial_idea_id') || undefined;
+
+  // Store the initial idea ID in a ref so it persists after being removed from URL
+  const initialIdeaIdRef = useRef(initialIdeaIdFromUrl);
+  const initialIdeaId = initialIdeaIdRef.current;
 
   const parentRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useBreakpoint('phone');
@@ -160,6 +170,13 @@ const IdeasFeed = ({ topicId }: Props) => {
 
     return [initialIdea, ...otherIdeas];
   }, [flatIdeas, initialIdeaId, initialIdeaInList, initialIdeaData]);
+
+  // Remove initial_idea_id from URL once the feed has loaded with the initial idea
+  useEffect(() => {
+    if (initialIdeaId && orderedIdeas.length > 0 && !isLoading) {
+      removeSearchParams(['initial_idea_id']);
+    }
+  }, [initialIdeaId, orderedIdeas.length, isLoading]);
 
   // Extract topic IDs for each idea
   const ideaTopics = useMemo(() => {
@@ -242,7 +259,13 @@ const IdeasFeed = ({ topicId }: Props) => {
   }
 
   if (orderedIdeas.length === 0) {
-    return null;
+    return (
+      <Box display="flex" justifyContent="center" alignItems="center" h="100vh">
+        <Text color="coolGrey600">
+          <FormattedMessage {...messages.noIdeasForTag} />
+        </Text>
+      </Box>
+    );
   }
 
   // Add top padding so the first note is centered (half of peek height)
@@ -275,16 +298,22 @@ const IdeasFeed = ({ topicId }: Props) => {
                   isPrevious={false}
                   isNext={false}
                 >
-                  <Spinner />
+                  {hasNextPage ? (
+                    <Spinner />
+                  ) : (
+                    <Text fontWeight="bold" mt="-200px">
+                      {formatMessage(messages.endOfFeed)}
+                    </Text>
+                  )}
                 </NoteContainer>
               </VirtualItem>
             );
           }
 
           const topicIds = ideaTopics.get(idea.id) || [];
-          const topicBackgroundColor = topicId
-            ? getTopicColor(topicId)
-            : getTopicColor(topicIds[0]);
+          // Use parentTopicId for color when filtering by subtopic, otherwise use the first topic
+          const colorTopicId = parentTopicId || topicId || topicIds[0];
+          const topicBackgroundColor = getTopicColor(colorTopicId);
 
           return (
             <VirtualItem

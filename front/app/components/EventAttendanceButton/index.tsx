@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 
 import {
   Button,
@@ -13,7 +13,7 @@ import useEventsByUserId from 'api/events/useEventsByUserId';
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
+import { getCurrentPhase, getLatestRelevantPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 import { IUserData } from 'api/users/types';
 
@@ -67,6 +67,10 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
   const { data: project } = useProjectById(event.relationships.project.data.id);
   const { data: phases } = usePhases(project?.data.id);
   const currentPhase = getCurrentPhase(phases?.data);
+  const lastCompletedPhase = useMemo(
+    () => phases && getLatestRelevantPhase(phases.data),
+    [phases]
+  );
 
   const handleEventAttendanceEvent = useCallback(
     (eventEmitterEvent) => {
@@ -104,12 +108,19 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
 
     if (disabled_reason && isFixableByAuthentication(disabled_reason)) {
       // If no current phase, we cannot use the phase context and get specific requirements for the phase
-      // BUT we still allow event registration by using the global context and triggering the default flow
+      // So we fall back to the latest relevant phase and if that doesn't exist either,
+      // We still allow event registration by using the global context and triggering the default flow
       const context = currentPhase
         ? ({
             type: 'phase',
             action: 'attending_event',
             id: currentPhase.id,
+          } as const)
+        : lastCompletedPhase
+        ? ({
+            type: 'phase',
+            action: 'attending_event',
+            id: lastCompletedPhase.id,
           } as const)
         : ({
             type: 'global',

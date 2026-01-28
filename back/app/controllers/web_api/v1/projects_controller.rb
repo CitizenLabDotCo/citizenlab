@@ -422,7 +422,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def check_publication_inconsistencies!
     # This code is meant to be temporary to find the cause of the disappearing admin publication bugs
-    Project.all.each do |project|
+    Project.includes(:admin_publication).each do |project|
       next if project.valid?
 
       errors = project&.errors&.details

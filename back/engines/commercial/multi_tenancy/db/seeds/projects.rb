@@ -52,9 +52,24 @@ module MultiTenancy
           title_multiloc: { 'en' => 'Environment' },
           description_multiloc: { 'en' => 'Ideas about the environment' }
         )
-        project.input_topics.create!(
+        transportation = project.input_topics.create!(
           title_multiloc: { 'en' => 'Transportation' },
           description_multiloc: { 'en' => 'Ideas about transportation' }
+        )
+        transportation.children.create!(
+          title_multiloc: { 'en' => 'Public transport' },
+          description_multiloc: { 'en' => 'Ideas about public transport' },
+          project: project
+        )
+        transportation.children.create!(
+          title_multiloc: { 'en' => 'Biking' },
+          description_multiloc: { 'en' => 'Ideas about biking' },
+          project: project
+        )
+        transportation.children.create!(
+          title_multiloc: { 'en' => 'Walking' },
+          description_multiloc: { 'en' => 'Ideas about walking' },
+          project: project
         )
         project.input_topics.create!(
           title_multiloc: { 'en' => 'Housing' },
@@ -205,10 +220,17 @@ module MultiTenancy
 
       def configure_random_input_topics_for(project)
         rand(1..3).times do
-          project.input_topics.create!(
+          parent = project.input_topics.create!(
             title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
             description_multiloc: runner.rand_description_multiloc
           )
+          rand(0..2).times do
+            project.input_topics.create!(
+              title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
+              description_multiloc: runner.rand_description_multiloc,
+              parent: parent
+            )
+          end
         end
       end
     end

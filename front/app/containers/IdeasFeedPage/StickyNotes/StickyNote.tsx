@@ -19,6 +19,13 @@ import ReactionControl from 'components/ReactionControl';
 
 import { stripHtml } from 'utils/textUtils';
 
+const truncateText = (text: string, maxLength: number) => {
+  if (text.length <= maxLength) return text;
+  const nextSpace = text.indexOf(' ', maxLength);
+  const cutoff = nextSpace === -1 ? text.length : nextSpace;
+  return `${text.slice(0, cutoff)}...`;
+};
+
 export const NOTE_HEIGHTS = {
   small: 350,
   large: 500,
@@ -37,13 +44,9 @@ const StyledNote = styled(Box)`
 `;
 
 const BodyText = styled(Text)`
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  line-clamp: 3;
   overflow: hidden;
-  text-overflow: ellipsis;
   word-break: break-word;
+  height: 100%;
 `;
 
 interface Props {
@@ -126,12 +129,12 @@ const StickyNote: React.FC<Props> = ({
         </Box>
       )}
       <Text fontSize="l" fontWeight="bold" m="0px" color={'textPrimary'}>
-        {title}
+        {truncateText(title, size === 'small' ? 45 : 100)}
       </Text>
 
       <Box flex="1" minHeight="0" overflow="hidden">
         <BodyText fontSize="m" color="textPrimary" m="0px">
-          {bodyText}
+          {truncateText(bodyText, size === 'small' ? 230 : 400)}
         </BodyText>
       </Box>
       {showReactions && (

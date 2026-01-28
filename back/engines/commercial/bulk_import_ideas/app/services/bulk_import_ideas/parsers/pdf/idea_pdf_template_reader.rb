@@ -108,7 +108,9 @@ module BulkImportIdeas::Parsers::Pdf
 
       # Domicile options (when user fields in form enabled) need different keys
       key = field_or_option.key
-      if type == 'option' && field_or_option.custom_field.key == 'u_domicile'
+      s = UserFieldsInFormService
+
+      if type == 'option' && field_or_option.custom_field.key == s.prefix_key('domicile')
         key = field_or_option.area&.id || 'outside'
       end
 

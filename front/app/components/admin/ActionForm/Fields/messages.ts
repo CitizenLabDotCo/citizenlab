@@ -55,10 +55,10 @@ export default defineMessages({
     defaultMessage:
       "No demographic questions have been added yet. Click 'Add a question' to add one.",
   },
-  user_fields_in_survey_not_supported_for_participation_method: {
-    id: 'app.components.admin.ActionForm.Fields.user_fields_in_survey_not_supported_for_participation_method',
+  user_fields_in_form_not_supported_for_action: {
+    id: 'app.components.admin.ActionForm.Fields.user_fields_in_form_not_supported_for_action',
     defaultMessage:
-      'Asking demographic questions as the last page of the survey is not supported for the selected participation method.',
+      'Asking demographic questions as the last page of the form is not supported for this action.',
   },
   with_these_settings_cannot_ask_demographic_fields: {
     id: 'app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2',
