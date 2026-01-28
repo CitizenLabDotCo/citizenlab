@@ -38,6 +38,11 @@ const BarFill = styled(Box)<{
   width: calc(${({ percentage }) => percentage}% - 2px);
   background: ${({ color }) => color};
   opacity: ${({ opacity }) => opacity};
+
+  @media print {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 `;
 
 const ComparisonBarChart = <Row,>({

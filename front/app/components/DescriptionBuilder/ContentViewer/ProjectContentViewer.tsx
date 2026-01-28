@@ -13,6 +13,7 @@ import useLocalize from 'hooks/useLocalize';
 import ProjectInfo from 'containers/ProjectsShowPage/shared/header/ProjectInfo';
 
 import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
+import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import Editor from 'components/DescriptionBuilder/Editor';
 import FileAttachments from 'components/UI/FileAttachments';
@@ -64,12 +65,16 @@ const ProjectContentViewer = ({
             {localize(projectTitle)}
           </Title>
           <Box id={`project-description-${projectId}`}>
-            <Editor isPreview={true}>
-              <ContentBuilderFrame
-                editorData={editorData}
-                onLoadImages={handleLoadImages}
-              />
-            </Editor>
+            <ContentBuilderLayoutProvider
+              layoutId={descriptionBuilderLayout.data.id}
+            >
+              <Editor isPreview={true}>
+                <ContentBuilderFrame
+                  editorData={editorData}
+                  onLoadImages={handleLoadImages}
+                />
+              </Editor>
+            </ContentBuilderLayoutProvider>
           </Box>
 
           {projectFiles && (
