@@ -59,7 +59,6 @@ interface Props {
   centeredIdeaId?: string;
   size?: 'small' | 'large';
   showReactions?: boolean;
-  commentsAllowed?: boolean;
 }
 
 const StickyNote: React.FC<Props> = ({
