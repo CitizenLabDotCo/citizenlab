@@ -1420,7 +1420,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "Modifica domanda",
   "app.containers.IdeasEditPage.save": "Salva",
   "app.containers.IdeasEditPage.submitApiError": "C'è stato un problema nell'invio del modulo. Si prega di controllare eventuali errori e riprovare.",
-  "app.containers.IdeasFeedPage.addYourIdea": "Aggiungi la tua idea",
   "app.containers.IdeasFeedPage.allTopics": "Tutti gli argomenti",
   "app.containers.IdeasFeedPage.backToProject": "Torna al progetto",
   "app.containers.IdeasFeedPage.collapsePanel": "Pannello degli argomenti a rischio",

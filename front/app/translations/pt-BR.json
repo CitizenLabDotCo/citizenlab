@@ -1420,7 +1420,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "Editar pergunta",
   "app.containers.IdeasEditPage.save": "Salvo!",
   "app.containers.IdeasEditPage.submitApiError": "Houve um problema com o envio do formulário. Por favor, verifique se há algum erro e tente novamente.",
-  "app.containers.IdeasFeedPage.addYourIdea": "Adicione sua ideia",
   "app.containers.IdeasFeedPage.allTopics": "Todos os tópicos",
   "app.containers.IdeasFeedPage.backToProject": "Voltar ao projeto",
   "app.containers.IdeasFeedPage.collapsePanel": "Recolher o painel de tópicos",

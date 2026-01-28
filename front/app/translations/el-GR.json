@@ -1420,7 +1420,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "Επεξεργασία ερώτησης",
   "app.containers.IdeasEditPage.save": "Αποθήκευση",
   "app.containers.IdeasEditPage.submitApiError": "Υπήρξε πρόβλημα με την υποβολή της φόρμας. Ελέγξτε για τυχόν σφάλματα και προσπαθήστε ξανά.",
-  "app.containers.IdeasFeedPage.addYourIdea": "Προσθέστε την ιδέα σας",
   "app.containers.IdeasFeedPage.allTopics": "Όλα τα θέματα",
   "app.containers.IdeasFeedPage.backToProject": "Πίσω στο έργο",
   "app.containers.IdeasFeedPage.collapsePanel": "Πίνακας θεμάτων κατάρρευσης",

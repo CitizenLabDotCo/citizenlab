@@ -1420,7 +1420,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "Fro beaarbechten",
   "app.containers.IdeasEditPage.save": "Späicheren",
   "app.containers.IdeasEditPage.submitApiError": "Et gouf e Problem beim Ofschécken vum Formulaire. Préift wgl. ob et e Feeler gëtt a probéiert et nach eng Kéier.",
-  "app.containers.IdeasFeedPage.addYourIdea": "Füügt Är Iddi derbäi",
   "app.containers.IdeasFeedPage.allTopics": "All Themen",
   "app.containers.IdeasFeedPage.backToProject": "Zréck zum Projet",
   "app.containers.IdeasFeedPage.collapsePanel": "Themenpanel zesummeklappen",

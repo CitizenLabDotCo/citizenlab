@@ -1420,7 +1420,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "Frage bearbeiten\n",
   "app.containers.IdeasEditPage.save": "Speichern",
   "app.containers.IdeasEditPage.submitApiError": "Es gab ein Problem beim Absenden des Formulars. Bitte prüfe auf Fehler und versuche es erneut.",
-  "app.containers.IdeasFeedPage.addYourIdea": "Idee hinzufügen",
   "app.containers.IdeasFeedPage.allTopics": "Alle Themen",
   "app.containers.IdeasFeedPage.backToProject": "Zurück zum Projekt",
   "app.containers.IdeasFeedPage.collapsePanel": "Themenbereich ausklappen",

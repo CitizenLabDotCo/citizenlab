@@ -1420,7 +1420,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "سوال میں ترمیم کریں۔",
   "app.containers.IdeasEditPage.save": "محفوظ کریں۔",
   "app.containers.IdeasEditPage.submitApiError": "فارم جمع کرانے میں ایک مسئلہ تھا۔ براہ کرم کسی بھی خرابی کی جانچ کریں اور دوبارہ کوشش کریں۔",
-  "app.containers.IdeasFeedPage.addYourIdea": "اپنا خیال شامل کریں۔",
   "app.containers.IdeasFeedPage.allTopics": "تمام موضوعات",
   "app.containers.IdeasFeedPage.backToProject": "پروجیکٹ پر واپس جائیں۔",
   "app.containers.IdeasFeedPage.collapsePanel": "عنوانات کے پینل کو سکیڑیں۔",

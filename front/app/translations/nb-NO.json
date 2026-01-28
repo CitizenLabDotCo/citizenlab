@@ -1420,7 +1420,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "Rediger spørsmål",
   "app.containers.IdeasEditPage.save": "Lagre",
   "app.containers.IdeasEditPage.submitApiError": "Det oppstod et problem med å sende inn skjemaet. Vennligst se etter eventuelle feil og prøv igjen.",
-  "app.containers.IdeasFeedPage.addYourIdea": "Legg til din idé",
   "app.containers.IdeasFeedPage.allTopics": "Alle emner",
   "app.containers.IdeasFeedPage.backToProject": "Tilbake til prosjektet",
   "app.containers.IdeasFeedPage.collapsePanel": "Skjul emnepanelet",

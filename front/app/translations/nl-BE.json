@@ -1420,7 +1420,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "Bewerk deze vraag",
   "app.containers.IdeasEditPage.save": "Opslaan",
   "app.containers.IdeasEditPage.submitApiError": "Er was een probleem met het verzenden van het formulier. Controleer op eventuele fouten en probeer het opnieuw.",
-  "app.containers.IdeasFeedPage.addYourIdea": "Voeg je idee toe",
   "app.containers.IdeasFeedPage.allTopics": "Alle tags",
   "app.containers.IdeasFeedPage.backToProject": "Terug naar project",
   "app.containers.IdeasFeedPage.collapsePanel": "Tags panel inklappen",

@@ -1420,7 +1420,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "Apeqqut aaqqiissuteqarfigiuk",
   "app.containers.IdeasEditPage.save": "Toqqoruk",
   "app.containers.IdeasEditPage.submitApiError": "Immersukkavit nassiunniarnissaanut ajalusoortoqarpoq. Kukkuneqarnersoq misissoriarlugu misileqqiguk.",
-  "app.containers.IdeasFeedPage.addYourIdea": "Add your idea",
   "app.containers.IdeasFeedPage.allTopics": "All topics",
   "app.containers.IdeasFeedPage.backToProject": "Back to project",
   "app.containers.IdeasFeedPage.collapsePanel": "Collapse topics panel",

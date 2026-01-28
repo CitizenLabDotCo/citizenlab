@@ -1420,7 +1420,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "Modifiez la question",
   "app.containers.IdeasEditPage.save": "Enregistrer",
   "app.containers.IdeasEditPage.submitApiError": "Un problème est survenu lors de la soumission du formulaire. Veuillez vérifier s'il y a des erreurs et réessayer.",
-  "app.containers.IdeasFeedPage.addYourIdea": "Ajoutez votre idée",
   "app.containers.IdeasFeedPage.allTopics": "Toutes les thèmes",
   "app.containers.IdeasFeedPage.backToProject": "Retour au projet",
   "app.containers.IdeasFeedPage.collapsePanel": "Réduire le panel de thématiques",

@@ -1420,7 +1420,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "Kérdés szerkesztése",
   "app.containers.IdeasEditPage.save": "Megtakarítás",
   "app.containers.IdeasEditPage.submitApiError": "Hiba történt az űrlap elküldésekor. Kérjük, ellenőrizze az esetleges hibákat, és próbálja újra.",
-  "app.containers.IdeasFeedPage.addYourIdea": "Add hozzá az ötleted",
   "app.containers.IdeasFeedPage.allTopics": "Minden téma",
   "app.containers.IdeasFeedPage.backToProject": "Vissza a projekthez",
   "app.containers.IdeasFeedPage.collapsePanel": "Témák panel összecsukása",

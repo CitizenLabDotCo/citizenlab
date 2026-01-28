@@ -1420,7 +1420,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "ਸਵਾਲ ਦਾ ਸੰਪਾਦਨ ਕਰੋ",
   "app.containers.IdeasEditPage.save": "ਸੇਵ ਕਰੋ",
   "app.containers.IdeasEditPage.submitApiError": "ਫਾਰਮ ਸਪੁਰਦ ਕਰਨ ਵਿੱਚ ਇੱਕ ਸਮੱਸਿਆ ਆਈ ਸੀ। ਕਿਰਪਾ ਕਰਕੇ ਕਿਸੇ ਵੀ ਤਰੁੱਟੀ ਦੀ ਜਾਂਚ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
-  "app.containers.IdeasFeedPage.addYourIdea": "ਆਪਣਾ ਵਿਚਾਰ ਸ਼ਾਮਲ ਕਰੋ",
   "app.containers.IdeasFeedPage.allTopics": "ਸਾਰੇ ਵਿਸ਼ੇ",
   "app.containers.IdeasFeedPage.backToProject": "ਪ੍ਰੋਜੈਕਟ ਤੇ ਵਾਪਸ ਜਾਓ",
   "app.containers.IdeasFeedPage.collapsePanel": "ਵਿਸ਼ੇ ਪੈਨਲ ਨੂੰ ਸਮੇਟੋ",
