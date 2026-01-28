@@ -217,13 +217,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.firstActivityWithinLast7Days',
     defaultMessage: 'First activity started within the last 7 days',
   },
-  noReferenceData: {
-    id: 'app.containers.Admin.projects.project.insights.noReferenceData',
+  noReferenceDataMessage: {
+    id: 'app.containers.Admin.projects.project.insights.noReferenceDataMessage',
     defaultMessage:
-      'No reference data yet. {addBaseDataLink} for this demographic to enable representativeness.',
-  },
-  addBaseData: {
-    id: 'app.containers.Admin.projects.project.insights.addBaseData',
-    defaultMessage: 'Add base data',
+      'No reference census data is available yet for this demographic dimension. <link>Add it here</link> to understand how representative your data is.',
   },
 });
