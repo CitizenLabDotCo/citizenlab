@@ -148,6 +148,8 @@ module Surveys
       @survey_has_logic ||= fields.any? { |field| field.logic != {} && field.logic != { 'rules' => [] } }
     end
 
+    # Build a hash of field IDs to an array of input IDs that will have actually seen field based on logic
+    # This enables us to accurately calculate the totalResponseCount for each field
     def seen_field_responses
       @seen_field_responses ||= begin
         # First nest the input_fields inside pages to make logic easier to process
