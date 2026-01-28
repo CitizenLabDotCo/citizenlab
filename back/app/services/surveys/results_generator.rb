@@ -165,23 +165,22 @@ module Surveys
 
         # Next build the responses with an array of input IDs that were seen for each field based on logic & values
         @all_inputs.each_with_object({}) do |input, seen|
+          next_page_id = nil
+          pages.each do |page_id, fields_on_page|
+            next unless next_page_id.nil? || page_id == next_page_id
 
-            next_page_id = nil
-            pages.each do |page_id, fields_on_page|
-              next unless next_page_id.nil? || page_id == next_page_id
+            # Define the default next page if no logic changes it
+            next_page_id = all_page_ids[all_page_ids.index(page_id) + 1]
 
-              # Define the default next page if no logic changes it
-              next_page_id = all_page_ids[all_page_ids.index(page_id) + 1]
+            fields_on_page.each do |field|
+              seen[field.id] ||= []
+              seen[field.id] << input.id
 
-              fields_on_page.each do |field|
-                seen[field.id] ||= []
-                seen[field.id] << input.id
-
-                # Is there a different next page based on logic?
-                next_logic_page_id = next_page_id_from_logic(field, input, all_page_ids)
-                next_page_id = next_logic_page_id if next_logic_page_id
-              end
+              # Is there a different next page based on logic?
+              next_logic_page_id = next_page_id_from_logic(field, input, all_page_ids)
+              next_page_id = next_logic_page_id if next_logic_page_id
             end
+          end
         end
       end
     end

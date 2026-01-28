@@ -18,7 +18,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
 
   # TODO: there are no tests for logic_ids being supplied
 
-  describe 'generate_results' do
+  describe '#generate_results' do
     before do
       reset_survey_logic!
     end
@@ -295,45 +295,43 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
     end
   end
 
-
-  describe 'seen_field_responses' do
+  describe '#seen_field_responses' do
     # NOTE: We define new data here, so we are not always using the same survey structure
 
     # Set-up custom form
     let_it_be(:new_survey) { create(:native_survey_phase) }
     let_it_be(:new_form) { create(:custom_form, participation_context: new_survey) }
-    let_it_be(:page_1) { create(:custom_field_page, resource: new_form) }
-    let_it_be(:page_1_select) do
+    let_it_be(:page1) { create(:custom_field_page, resource: new_form) }
+    let_it_be(:page1_select) do
       create(
         :custom_field_select,
         resource: new_form,
-        key: 'page_1_select',
+        key: 'page1_select',
         options: [
           create(:custom_field_option, key: 'first'),
           create(:custom_field_option, key: 'second')
         ]
       )
     end
-    let_it_be(:page_2) { create(:custom_field_page, resource: new_form) }
-    let_it_be(:page_2_linear_scale) do
+    let_it_be(:page2) { create(:custom_field_page, resource: new_form) }
+    let_it_be(:page2_linear_scale) do
       create(
         :custom_field_linear_scale,
         resource: new_form,
-        key: 'page_2_linear_scale',
+        key: 'page2_linear_scale',
         maximum: 5
       )
     end
-    let_it_be(:page_3) { create(:custom_field_page, resource: new_form) }
-    let_it_be(:page_3_text) { create(:custom_field, resource: new_form) }
-    let_it_be(:page_4) { create(:custom_field_page, resource: new_form) }
-    let_it_be(:page_4_text) { create(:custom_field, resource: new_form) }
-    let_it_be(:page_5) { create(:custom_field_page, resource: new_form) }
+    let_it_be(:page3) { create(:custom_field_page, resource: new_form) }
+    let_it_be(:page3_text) { create(:custom_field, resource: new_form) }
+    let_it_be(:page4) { create(:custom_field_page, resource: new_form) }
+    let_it_be(:page4_text) { create(:custom_field, resource: new_form) }
+    let_it_be(:page5) { create(:custom_field_page, resource: new_form) }
 
     # Add some responses that will influence logic
-    let_it_be(:response1) { create(:native_survey_response, project: new_survey.project, creation_phase: new_survey, custom_field_values: { 'page_1_select': 'first', page_2_linear_scale: 1} )}
-    let_it_be(:response2) { create(:native_survey_response, project: new_survey.project, creation_phase: new_survey, custom_field_values: { 'page_1_select': 'second', page_2_linear_scale: 1} )}
-    let_it_be(:response3) { create(:native_survey_response, project: new_survey.project, creation_phase: new_survey, custom_field_values: { 'page_1_select': 'first', page_2_linear_scale: 2} )}
-
+    let_it_be(:response1) { create(:native_survey_response, project: new_survey.project, creation_phase: new_survey, custom_field_values: { page1_select: 'first', page2_linear_scale: 1 }) }
+    let_it_be(:response2) { create(:native_survey_response, project: new_survey.project, creation_phase: new_survey, custom_field_values: { page1_select: 'second', page2_linear_scale: 1 }) }
+    let_it_be(:response3) { create(:native_survey_response, project: new_survey.project, creation_phase: new_survey, custom_field_values: { page1_select: 'first', page2_linear_scale: 2 }) }
 
     let(:generator) { described_class.new new_survey }
 
@@ -341,67 +339,92 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
       responses = generator.send(:seen_field_responses)
       expect(responses.count).to eq 9
       expect(responses).to match({
-        page_1.id => [response1.id, response2.id, response3.id],
-        page_1_select.id => [response1.id, response2.id, response3.id],
-        page_2.id => [response1.id, response2.id, response3.id],
-        page_2_linear_scale.id => [response1.id, response2.id, response3.id],
-        page_3.id => [response1.id, response2.id, response3.id],
-        page_3_text.id => [response1.id, response2.id, response3.id],
-        page_4.id => [response1.id, response2.id, response3.id],
-        page_4_text.id => [response1.id, response2.id, response3.id],
-        page_5.id => [response1.id, response2.id, response3.id],
+        page1.id => [response1.id, response2.id, response3.id],
+        page1_select.id => [response1.id, response2.id, response3.id],
+        page2.id => [response1.id, response2.id, response3.id],
+        page2_linear_scale.id => [response1.id, response2.id, response3.id],
+        page3.id => [response1.id, response2.id, response3.id],
+        page3_text.id => [response1.id, response2.id, response3.id],
+        page4.id => [response1.id, response2.id, response3.id],
+        page4_text.id => [response1.id, response2.id, response3.id],
+        page5.id => [response1.id, response2.id, response3.id]
       })
     end
 
     it 'identifies which fields were seen per response when there is select logic' do
-      page_1_select.update!(logic: {
+      page1_select.update!(logic: {
         rules: [
-          { if: page_1_select.options.first.id, goto_page_id: page_5.id }
+          { if: page1_select.options.first.id, goto_page_id: page5.id }
         ]
       })
+      page2_linear_scale.update!(logic: {})
 
       responses = generator.send(:seen_field_responses)
       expect(responses.count).to eq 9
-
       expect(responses).to match({
-                                   page_1.id => [response1.id, response2.id, response3.id],
-                                   page_1_select.id => [response1.id, response2.id, response3.id],
-                                   page_2.id => [response2.id],
-                                   page_2_linear_scale.id => [response2.id],
-                                   page_3.id => [response2.id],
-                                   page_3_text.id => [response2.id],
-                                   page_4.id => [response2.id],
-                                   page_4_text.id => [response2.id],
-                                   page_5.id => [response1.id, response2.id, response3.id],
-                                 })
+        page1.id => [response1.id, response2.id, response3.id],
+        page1_select.id => [response1.id, response2.id, response3.id],
+        page2.id => [response2.id],
+        page2_linear_scale.id => [response2.id],
+        page3.id => [response2.id],
+        page3_text.id => [response2.id],
+        page4.id => [response2.id],
+        page4_text.id => [response2.id],
+        page5.id => [response1.id, response2.id, response3.id]
+      })
     end
 
     it 'identifies which fields were seen per response when there is linear scale logic' do
-      page_2_linear_scale.update!(logic: {
+      page1_select.update!(logic: {})
+      page2_linear_scale.update!(logic: {
         rules: [
-          { if: 1, goto_page_id: page_4.id }
+          { if: 1, goto_page_id: page4.id }
         ]
       })
 
       responses = generator.send(:seen_field_responses)
       expect(responses.count).to eq 9
-
       expect(responses).to match({
-                                   page_1.id => [response1.id, response2.id, response3.id],
-                                   page_1_select.id => [response1.id, response2.id, response3.id],
-                                   page_2.id => [response2.id],
-                                   page_2_linear_scale.id => [response2.id],
-                                   page_3.id => [response2.id],
-                                   page_3_text.id => [response2.id],
-                                   page_4.id => [response2.id],
-                                   page_4_text.id => [response2.id],
-                                   page_5.id => [response1.id, response2.id, response3.id],
-                                 })
+        page1.id => [response1.id, response2.id, response3.id],
+        page1_select.id => [response1.id, response2.id, response3.id],
+        page2.id => [response1.id, response2.id, response3.id],
+        page2_linear_scale.id => [response1.id, response2.id, response3.id],
+        page3.id => [response3.id],
+        page3_text.id => [response3.id],
+        page4.id => [response1.id, response2.id, response3.id],
+        page4_text.id => [response1.id, response2.id, response3.id],
+        page5.id => [response1.id, response2.id, response3.id]
+      })
     end
 
+    it 'identifies which fields were seen per response when there are multiple logic rules' do
+      page1_select.update!(logic: {
+        rules: [
+          { if: page1_select.options.last.id, goto_page_id: page4.id }
+        ]
+      })
+      page2_linear_scale.update!(logic: {
+        rules: [
+          { if: 'any_other_answer', goto_page_id: page5.id }
+        ]
+      })
+
+      # NOTE: For this test some fields are not seen at all so the fields do not appear in the object
+      responses = generator.send(:seen_field_responses)
+      expect(responses.count).to eq 7
+      expect(responses).to match({
+        page1.id => [response1.id, response2.id, response3.id],
+        page1_select.id => [response1.id, response2.id, response3.id],
+        page2.id => [response1.id, response3.id],
+        page2_linear_scale.id => [response1.id, response3.id],
+        page4.id => [response2.id],
+        page4_text.id => [response2.id],
+        page5.id => [response1.id, response2.id, response3.id]
+      })
+    end
   end
 
-  describe 'add_logic_to_results' do
+  describe '#add_logic_to_results' do
     # NOTE: Most of the object below is not needed for the tests, but it's included for completeness
     # Field IDs & Page IDs that would be uuids normally are replaced here for readability
     let_it_be(:results_without_logic) do
