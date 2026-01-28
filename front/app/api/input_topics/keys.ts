@@ -5,13 +5,7 @@ const baseKey = { type: 'input_topic' };
 const inputTopicsKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: ({
-    projectId,
-    sort,
-  }: {
-    projectId: string;
-    sort?: 'custom' | 'ideas_count' | '-ideas_count';
-  }) => [{ ...baseKey, operation: 'list', parameters: { projectId, sort } }],
+  list: (filters) => [{ ...baseKey, operation: 'list', parameters: filters }],
   items: () => [{ ...baseKey, operation: 'item' }],
   item: ({ id }: { id: string }) => [
     {

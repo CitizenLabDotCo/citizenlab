@@ -25,6 +25,7 @@
 #  header_bg_alt_text_multiloc  :jsonb
 #  hidden                       :boolean          default(FALSE), not null
 #  listed                       :boolean          default(TRUE), not null
+#  track_participation_location :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -59,7 +60,7 @@ class Project < ApplicationRecord
   has_many :global_topics, -> { order(:ordering) }, through: :projects_global_topics
 
   # Use case B - Input categorization InputTopics)
-  has_many :input_topics, -> { order(:ordering) }, dependent: :destroy, inverse_of: :project
+  has_many :input_topics, -> { order(:lft) }, dependent: :destroy, inverse_of: :project
 
   has_many :areas_projects, dependent: :destroy
   has_many :areas, through: :areas_projects
@@ -191,12 +192,23 @@ class Project < ApplicationRecord
   end
 
   def set_default_input_topics!
-    DefaultInputTopic.order(:ordering).each do |default_topic|
-      input_topics.create!(
-        title_multiloc: default_topic.title_multiloc,
-        description_multiloc: default_topic.description_multiloc,
-        icon: default_topic.icon
-      )
+    # First create root topics, then children
+    DefaultInputTopic.roots.order(:lft).each do |default_topic|
+      copy_default_input_topic_tree(default_topic)
+    end
+  end
+
+  def copy_default_input_topic_tree(default_topic, parent_input_topic = nil)
+    input_topic = input_topics.create!(
+      title_multiloc: default_topic.title_multiloc,
+      description_multiloc: default_topic.description_multiloc,
+      icon: default_topic.icon,
+      parent: parent_input_topic
+    )
+
+    # Recursively create children
+    default_topic.children.order(:lft).each do |child_default_topic|
+      copy_default_input_topic_tree(child_default_topic, input_topic)
     end
   end
 
@@ -248,8 +260,10 @@ class Project < ApplicationRecord
     # NOTE: if a project is passed to this method, timeline projects used to always return 'Ideation'
     # as it was never set and defaulted to this when the participation_method was available on the project
     # The following mimics the same behaviour now that participation method is not available on the project
-    # TODO: Maybe change to find phase with ideation or voting where created date between start and end date?
-    @pmethod ||= ParticipationMethod::Ideation.new(phases.first)
+    # This defaults to Ideation as pmethod is only needed when dealing with custom forms for Ideation phases
+    @pmethod ||= ParticipationMethod::Ideation.new(
+      TimelineService.new.current_or_backup_transitive_phase(self) || phases.first
+    )
   end
 
   def refresh_preview_token

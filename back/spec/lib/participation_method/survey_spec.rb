@@ -120,7 +120,7 @@ RSpec.describe ParticipationMethod::Survey do
   its(:form_logic_enabled?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be false }
   its(:supports_custom_field_categories?) { is_expected.to be false }
-  its(:user_fields_in_form?) { is_expected.to be false }
+  its(:user_fields_in_form_enabled?) { is_expected.to be false }
   its(:supports_multiple_phase_reports?) { is_expected.to be false }
   its(:add_autoreaction_to_inputs?) { is_expected.to be(false) }
   its(:everyone_tracking_enabled?) { is_expected.to be false }

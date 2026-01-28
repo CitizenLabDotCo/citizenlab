@@ -14,13 +14,15 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
     ideas = policy_scope(Idea.published, policy_scope_class: StatIdeaPolicy::Scope)
     ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
 
-    ideas
+    serie = ideas
       .where(published_at: @start_at..@end_at)
       .joins(:ideas_input_topics)
       .group('ideas_input_topics.input_topic_id')
       .order('count_id DESC')
       .limit(limit)
       .count('id')
+
+    IdeasCountService.aggregate_child_input_topic_counts(serie)
   end
 
   def ideas_by_topic

@@ -164,6 +164,7 @@ const SurveyQuestionResult = ({
         required={attributes.required}
         totalSubmissions={attributes.totalResponseCount}
         totalResponses={attributes.questionResponseCount}
+        aria-hidden={true}
       />
       {renderQuestionComponent()}
     </Box>

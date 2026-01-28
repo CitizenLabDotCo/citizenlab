@@ -7,19 +7,12 @@ module BulkImportIdeas
         return unless idea.author
 
         # Apply user custom field values from the idea to the author's user profile (if any)
-        update_user_profile(idea, idea.author)
+        UserFieldsInFormService.merge_user_fields_from_idea_into_user!(idea, idea.author)
 
         return unless idea.idea_import&.user_created
 
         # Log a user 'create' activity - when the idea has been published
         LogActivityJob.perform_later(idea.author, 'created', current_user, idea.author.created_at.to_i, payload: { flow: 'importer' })
-      end
-
-      private
-
-      def log_activity_jobs_after_published(idea, user)
-        super
-        after_import(idea, user)
       end
     end
   end

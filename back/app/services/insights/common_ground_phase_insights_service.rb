@@ -37,9 +37,9 @@ module Insights
       {
         associated_ideas: associated_published_ideas_count,
         ideas_posted: participations[:posting_idea].count,
-        ideas_posted_7_day_change: participations_7_day_change(participations[:posting_idea]),
+        ideas_posted_7_day_percent_change: participations_7_day_change(participations[:posting_idea]),
         reactions: participations[:reacting_idea].count,
-        reactions_7_day_change: participations_7_day_change(participations[:reacting_idea])
+        reactions_7_day_percent_change: participations_7_day_change(participations[:reacting_idea])
       }
     end
   end

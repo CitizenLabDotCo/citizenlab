@@ -49,7 +49,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     @template = { 'models' => {} }
     new_slug = SlugService.new.generate_slug(nil, new_slug) if new_slug
 
-    # TODO: deal with linking idea_statuses, topics, custom field values and maybe areas and groups
+    # TODO: deal with linking idea_statuses, custom field values and maybe areas and groups
     @template['models']['project']                       = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, shift_timestamps: shift_timestamps
     @template['models']['project_file']                  = yml_project_files shift_timestamps: shift_timestamps
     @template['models']['project_image']                 = yml_project_images shift_timestamps: shift_timestamps
@@ -66,6 +66,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     @template['models']['volunteering/cause']            = yml_volunteering_causes shift_timestamps: shift_timestamps
     @template['models']['custom_maps/map_config']        = yml_maps_map_configs shift_timestamps: shift_timestamps
     @template['models']['custom_maps/layer']             = yml_maps_layers shift_timestamps: shift_timestamps
+    @template['models']['input_topic']                   = yml_input_topics(shift_timestamps: shift_timestamps)
 
     @template['models']['content_builder/layout'], layout_images_mapping = yml_content_builder_layouts shift_timestamps: shift_timestamps
     @template['models']['content_builder/layout_image'] = yml_content_builder_layout_images layout_images_mapping, shift_timestamps: shift_timestamps
@@ -345,6 +346,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'baskets_count' => @local_copy || !@include_ideas ? 0 : phase.baskets_count,
         'votes_count' => @local_copy || !@include_ideas ? 0 : phase.votes_count,
         'prescreening_enabled' => phase.prescreening_enabled,
+        'prescreening_mode' => phase.prescreening_mode,
         'expire_days_limit' => phase.expire_days_limit,
         'reacting_threshold' => phase.reacting_threshold
       }
@@ -471,6 +473,22 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'updated_at' => shift_timestamp(layer.updated_at, shift_timestamps)&.iso8601
       }
       yml_layer
+    end
+  end
+
+  def yml_input_topics(shift_timestamps: 0)
+    @project.input_topics.order(:lft).map do |topic|
+      yml_topic = {
+        'project_ref' => lookup_ref(topic.project_id, :project),
+        'parent_ref' => lookup_ref(topic.parent_id, :input_topic),
+        'title_multiloc' => topic.title_multiloc,
+        'description_multiloc' => topic.description_multiloc,
+        'icon' => topic.icon,
+        'created_at' => shift_timestamp(topic.created_at, shift_timestamps)&.iso8601,
+        'updated_at' => shift_timestamp(topic.updated_at, shift_timestamps)&.iso8601
+      }
+      store_ref yml_topic, topic.id, :input_topic
+      yml_topic
     end
   end
 

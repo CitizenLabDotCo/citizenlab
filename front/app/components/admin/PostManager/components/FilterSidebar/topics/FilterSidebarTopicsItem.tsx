@@ -33,7 +33,7 @@ const FilterSidebarTopicsItem = ({ topic, active, onClick, name }: Props) => {
       <FilterRadioButton
         id={topic.id}
         name={name}
-        labelContent={<T value={topic.attributes.title_multiloc} />}
+        labelContent={<T value={topic.attributes.full_title_multiloc} />}
         isSelected={active || (isOver && canDrop)}
         onChange={onClick}
       />
