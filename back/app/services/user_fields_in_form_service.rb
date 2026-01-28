@@ -2,7 +2,7 @@
 
 class UserFieldsInFormService
   NATIVE_SURVEYLIKE_METHODS = %w[native_survey community_monitor_survey]
-  SUPPORTED_METHODS = NATIVE_SURVEYLIKE_METHODS + ['ideation']
+  IDEATIONLIKE_METHODS = %w[ideation proposals]
 
   # This function is used to check if demographic
   # fields are collected during the reg flow (I.E. NOT in the form),
@@ -13,10 +13,6 @@ class UserFieldsInFormService
     idea
   )
     return false unless current_user
-
-    # Confirm that phase is survey or ideation phase
-    pmethod = phase&.participation_method
-    return false unless SUPPORTED_METHODS.include?(pmethod)
 
     # Confirm that the idea belongs to the current user
     return false unless idea.author_id == current_user.id
@@ -30,6 +26,7 @@ class UserFieldsInFormService
     return false if permission.user_fields_in_form_enabled?
 
     # If pmethod is native survey-like: confirm that user_data_collection = 'all_data' or 'demographics_only'
+    pmethod = phase&.participation_method
     return false if NATIVE_SURVEYLIKE_METHODS.include?(pmethod) && permission.user_data_collection == 'anonymous'
 
     # If pmethod is ideation: confirm that idea is not anonymosu
@@ -75,10 +72,6 @@ class UserFieldsInFormService
   def self.should_merge_user_fields_from_idea_into_user?(idea, user, phase)
     return false unless user
 
-    # Confirm that phase is survey or ideation phase
-    pmethod = phase&.participation_method
-    return false unless SUPPORTED_METHODS.include?(pmethod)
-
     # Confirm that the idea belongs to the current user
     return false unless idea.author_id == user.id
 
@@ -89,6 +82,7 @@ class UserFieldsInFormService
     return false unless permission.user_fields_in_form_enabled?
 
     # If pmethod is native survey-like: only allow this if user_data_collection = 'all_data' or 'demographics_only'
+    pmethod = phase&.participation_method
     return false if NATIVE_SURVEYLIKE_METHODS.include?(pmethod) && permission.user_data_collection == 'anonymous'
 
     true
@@ -158,12 +152,12 @@ class UserFieldsInFormService
   def self.user_fields_in_form_frontend_descriptor(permission, participation_method)
     return Permission::UNSUPPORTED_DESCRIPTOR unless permission.action == 'posting_idea'
 
-    if %w[native_survey community_monitor_survey].include?(participation_method)
-      return user_fields_in_form_frontend_descriptor_survey(permission)
+    if NATIVE_SURVEYLIKE_METHODS.include?(participation_method)
+      return user_fields_in_form_frontend_descriptor_surveylike(permission)
     end
 
-    if participation_method == 'ideation'
-      return user_fields_in_form_frontend_descriptor_ideation(permission)
+    if IDEATIONLIKE_METHODS.include?(participation_method)
+      return user_fields_in_form_frontend_descriptor_ideationlike(permission)
     end
 
     Permission::UNSUPPORTED_DESCRIPTOR
@@ -177,7 +171,7 @@ class UserFieldsInFormService
     "#{prefix}#{key}"
   end
 
-  private_class_method def self.user_fields_in_form_frontend_descriptor_survey(permission)
+  private_class_method def self.user_fields_in_form_frontend_descriptor_surveylike(permission)
     if permission.permitted_by == 'everyone'
       if permission.user_data_collection == 'anonymous'
         {
@@ -207,7 +201,7 @@ class UserFieldsInFormService
     end
   end
 
-  private_class_method def self.user_fields_in_form_frontend_descriptor_ideation(permission)
+  private_class_method def self.user_fields_in_form_frontend_descriptor_ideationlike(permission)
     if permission.permitted_by == 'everyone'
       {
         value: true,
