@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import {
   Box,
@@ -9,6 +9,7 @@ import {
 import styled from 'styled-components';
 
 import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
+import useInputTopics from 'api/input_topics/useInputTopics';
 import usePhase from 'api/phases/usePhase';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -98,6 +99,18 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
     'page[size]': 15,
   });
 
+  const projectId = phase?.data.relationships.project.data.id;
+  const { data: topicsData } = useInputTopics(projectId, { depth: 0 });
+
+  // Create emoji lookup map from topics
+  const topicEmojis = useMemo(() => {
+    const map = new Map<string, string | null>();
+    topicsData?.data.forEach((topic) => {
+      map.set(topic.id, topic.attributes.icon);
+    });
+    return map;
+  }, [topicsData]);
+
   const flatIdeas = data?.pages.flatMap((page) => page.data);
   const ideasCount = phase?.data.attributes.ideas_count ?? 0;
 
@@ -154,6 +167,10 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
               idea.relationships.input_topics?.data.map((topic) => topic.id) ||
               [];
             const topicBackgroundColor = getTopicColor(topicIds[0]);
+            // Get emojis from all root topics associated with this idea
+            const emojis = topicIds
+              .map((id) => topicEmojis.get(id))
+              .filter((emoji): emoji is string => emoji != null);
 
             return (
               <NoteWrapper
@@ -165,6 +182,7 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
                 <StickyNote
                   ideaId={idea.id}
                   topicBackgroundColor={topicBackgroundColor}
+                  topicEmojis={emojis}
                   onClick={() => handleNoteClick(idea.id)}
                   size="small"
                   rotation={ROTATIONS[index % ROTATIONS.length]}

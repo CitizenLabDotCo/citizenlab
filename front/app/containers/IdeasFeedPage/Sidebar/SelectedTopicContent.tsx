@@ -15,6 +15,7 @@ import useInputTopicById from 'api/input_topics/useInputTopicById';
 import useInputTopics from 'api/input_topics/useInputTopics';
 
 import T from 'components/T';
+import Emoji from 'components/UI/Emoji';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -79,9 +80,14 @@ const SelectedTopicContent = ({
           alignItems="center"
           mb="8px"
         >
-          <Title as="h1" variant="h3" mb="0px">
-            <T value={topic?.data.attributes.title_multiloc} />
-          </Title>
+          <Box display="flex" alignItems="center" gap="8px">
+            {topic?.data.attributes.icon && (
+              <Emoji emoji={topic.data.attributes.icon} size="28px" />
+            )}
+            <Title as="h1" variant="h3" mb="0px">
+              <T value={topic?.data.attributes.title_multiloc} />
+            </Title>
+          </Box>
           <Box
             display="flex"
             alignItems="center"
