@@ -6,7 +6,8 @@ require 'rspec_api_documentation/dsl'
 resource 'Ideas' do
   before do
     header 'Content-Type', 'application/json'
-    create(:idea_status_proposed)
+    # create(:idea_status_proposed)
+    create(:proposals_status, code: 'proposed')
   end
 
   post 'web_api/v1/ideas' do
