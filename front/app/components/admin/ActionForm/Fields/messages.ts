@@ -72,9 +72,9 @@ export default defineMessages({
         'When "Authentication" is set to "None", demographic questions can only be asked as the last page of the survey.',
     },
   with_these_settings_can_only_ask_demographic_fields_in_registration_flow: {
-    id: 'app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow3',
+    id: 'app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow4',
     defaultMessage:
-      'Because you selected "Full anonymity" in "User data collection", you can only ask demographic questions before participation. HOWEVER: THIS DATA WILL NOT BE LINKED TO THE RESPONSE! It will only be used to update the user\'s profile, but you will not have ANY information about who participated.',
+      'Because you selected "Full anonymity" in "User data collection", the answers to the demographic questions asked before participation WILL NOT BE STORED IN THE RESULTS. The answers will only be used to update the user\'s profile, but this profile is not linked to the response. To collect demographic data and store it in the results please choose another option under "User data collection".',
   },
   askDemographicQuestionsBeforeUserParticipates: {
     id: 'app.components.admin.ActionForm.Fields.askDemographicQuestionsBeforeUserParticipates',
