@@ -120,26 +120,26 @@ const TypedConfirmationModal = ({
         placeholder={confirmationText}
         disabled={isDeleting}
         autoFocus
-        data-cy="e2e-typed-confirmation-input"
+        data-cy="typed-confirmation-input"
       />
 
       <Box display="flex" gap="12px" mt="24px">
-        <Button
-          icon="delete"
-          buttonStyle="delete"
-          onClick={handleConfirm}
-          disabled={!isConfirmationValid || isDeleting}
-          processing={isDeleting}
-          data-cy="e2e-typed-confirmation-delete-button"
-        >
-          {formatMessage(deleteButtonText)}
-        </Button>
         <Button
           buttonStyle="secondary-outlined"
           onClick={onClose}
           disabled={isDeleting}
         >
           {formatMessage(messages.cancel)}
+        </Button>
+        <Button
+          icon="delete"
+          buttonStyle="delete"
+          onClick={handleConfirm}
+          disabled={!isConfirmationValid || isDeleting}
+          processing={isDeleting}
+          data-cy="typed-confirmation-delete-button"
+        >
+          {formatMessage(deleteButtonText)}
         </Button>
       </Box>
     </Modal>
