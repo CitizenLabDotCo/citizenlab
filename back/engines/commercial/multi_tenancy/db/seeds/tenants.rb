@@ -586,6 +586,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            participation_location_tracking: {
+              enabled: false,
+              allowed: false
+            },
             post_participation_signup: {
               enabled: true,
               allowed: true

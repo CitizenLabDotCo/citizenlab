@@ -13,20 +13,7 @@ resource 'GlobalTopics' do
       parameter :number, 'Page number'
       parameter :size, 'Number of global_topics per page'
     end
-    parameter :sort, 'Either custom, new, -new, projects_count, -projects_count, ideas_count or -ideas_count. Defaults to custom.'
-    with_options scope: :ideas do
-      parameter :input_topics, 'Filter by topics (OR)', required: false
-      parameter :projects, 'Filter by projects (OR)', required: false
-      parameter :phase, 'Filter by project phase', required: false
-      parameter :author, 'Filter by author (user id)', required: false
-      parameter :idea_status, 'Filter by status (idea status id)', required: false
-      parameter :search, 'Filter by searching in title and body', required: false
-      parameter :publication_status, 'Return only ideas with the specified publication status; returns all published ideas by default', required: false
-      parameter :bounding_box, 'Given an [x1,y1,x2,y2] array of doubles (x being latitude and y being longitude), the idea markers are filtered to only retain those within the (x1,y1)-(x2,y2) box.', required: false
-      parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(', ')}", required: false
-      parameter :feedback_needed, 'Filter out ideas that need feedback', required: false
-      parameter :filter_trending, 'Filter out truly trending ideas', required: false
-    end
+    parameter :sort, 'Either custom, new, -new, projects_count, -projects_count. Defaults to custom.'
 
     before do
       @global_topics = create_list(:global_topic, 2) + create_list(:global_topic, 3, include_in_onboarding: true)

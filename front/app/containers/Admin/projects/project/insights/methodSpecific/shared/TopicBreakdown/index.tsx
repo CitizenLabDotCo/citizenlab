@@ -29,7 +29,6 @@ const TopicBreakdown = ({ phaseId }: Props) => {
     aiTopics,
     manualTopics,
     totalInputs,
-    taggedInputs,
     maxAiTopicCount,
     maxManualTopicCount,
     isLoading,
@@ -96,8 +95,6 @@ const TopicBreakdown = ({ phaseId }: Props) => {
       <Box borderTop={`1px solid ${colors.divider}`} mt="8px" pt="8px">
         <ManualTagsAccordion
           manualTopics={manualTopics}
-          totalInputs={totalInputs}
-          taggedInputs={taggedInputs}
           maxManualTopicCount={maxManualTopicCount}
         />
       </Box>

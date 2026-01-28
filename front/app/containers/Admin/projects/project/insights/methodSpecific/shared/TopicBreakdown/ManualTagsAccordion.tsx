@@ -11,6 +11,7 @@ import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { usePdfExportContext } from '../../../pdf/PdfExportContext';
 import DistributionBar from '../DistributionBar';
 import messages from '../messages';
 
@@ -28,27 +29,21 @@ const StyledAccordion = styled(Accordion)`
 
 interface Props {
   manualTopics: TopicData[];
-  totalInputs: number;
-  taggedInputs: number;
   maxManualTopicCount: number;
 }
 
-const ManualTagsAccordion = ({
-  manualTopics,
-  totalInputs,
-  taggedInputs,
-  maxManualTopicCount,
-}: Props) => {
+const ManualTagsAccordion = ({ manualTopics, maxManualTopicCount }: Props) => {
   const { formatMessage } = useIntl();
+  const { isPdfRenderMode } = usePdfExportContext();
 
   const summaryText = formatMessage(messages.manualTagsSummary, {
-    taggedCount: taggedInputs,
+    taggedCount: manualTopics.reduce((sum, t) => sum + t.count, 0),
     topicsCount: manualTopics.length,
   });
 
   return (
     <StyledAccordion
-      isOpenByDefault={false}
+      isOpenByDefault={isPdfRenderMode}
       title={
         <Box
           display="flex"
@@ -74,33 +69,6 @@ const ManualTagsAccordion = ({
       }
     >
       <Box>
-        <Box
-          bgColor={colors.grey100}
-          borderRadius="4px"
-          p="8px"
-          mb="12px"
-          display="flex"
-          alignItems="center"
-          gap="6px"
-        >
-          <Icon
-            name="info-outline"
-            width="14px"
-            height="14px"
-            fill={colors.textSecondary}
-          />
-          <Text m="0" fontSize="xs" color="textSecondary">
-            {formatMessage(messages.manualTagsCoverage1, {
-              tagged: taggedInputs,
-              total: totalInputs,
-              percentage:
-                totalInputs > 0
-                  ? Math.round((taggedInputs / totalInputs) * 100)
-                  : 0,
-            })}
-          </Text>
-        </Box>
-
         {manualTopics.length > 0 ? (
           manualTopics.map((topic) => (
             <DistributionBar

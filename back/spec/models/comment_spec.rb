@@ -3,6 +3,8 @@
 require 'rails_helper'
 
 RSpec.describe Comment do
+  it_behaves_like 'location_trackable_participation'
+
   describe 'Default factory' do
     it 'is valid' do
       expect(build(:comment)).to be_valid

@@ -5,13 +5,15 @@ import usePhase from 'api/phases/usePhase';
 import FormResults from 'components/admin/FormResults';
 import SurveyResultsPdfExport from 'components/admin/FormResults/PdfExport/SurveyResultsPdfExport';
 
+import { usePdfExportContext } from '../../pdf/PdfExportContext';
+
 interface Props {
   phaseId: string;
-  isPdfExport?: boolean;
 }
 
-const NativeSurveyInsights = ({ phaseId, isPdfExport = false }: Props) => {
+const NativeSurveyInsights = ({ phaseId }: Props) => {
   const { data: phase } = usePhase(phaseId);
+  const { isPdfRenderMode } = usePdfExportContext();
 
   if (!phase) {
     return null;
@@ -20,7 +22,7 @@ const NativeSurveyInsights = ({ phaseId, isPdfExport = false }: Props) => {
   const projectId = phase.data.relationships.project.data.id;
   const phaseDataId = phase.data.id;
 
-  if (isPdfExport) {
+  if (isPdfRenderMode) {
     return (
       <SurveyResultsPdfExport projectId={projectId} phaseId={phaseDataId} />
     );

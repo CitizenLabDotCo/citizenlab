@@ -1117,6 +1117,18 @@
         }
       },
 
+      "participation_location_tracking": {
+        "type": "object",
+        "title": "Participation location tracking",
+        "description": "Tracks the geographic location of participants when they submit ideas, comments, reactions, or votes. Only the city, country, and coordinates are stored. IP addresses are not collected.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "anonymous_participation": {
         "type": "object",
         "title": "Anonymous participation",
