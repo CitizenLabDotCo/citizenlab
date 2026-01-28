@@ -55,7 +55,7 @@ const InputTopicModal = ({
 
   const isEditing = topic !== null;
   const isAddingSubtopic = !isEditing && parentId !== undefined;
-  const isEditingSubtopic = isEditing && (topic?.attributes.depth ?? 0) >= 1;
+  const isEditingSubtopic = isEditing && (topic?.attributes.depth || 0) >= 1;
   const isSubtopic = isAddingSubtopic || isEditingSubtopic;
 
   const schema = object({

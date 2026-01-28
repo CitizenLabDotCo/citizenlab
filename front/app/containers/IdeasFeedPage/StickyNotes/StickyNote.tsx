@@ -7,10 +7,12 @@ import {
   stylingConsts,
   Icon,
 } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAddIdeaExposure from 'api/idea_exposure/useAddIdeaExposure';
 import useIdeaById from 'api/ideas/useIdeaById';
+import usePhase from 'api/phases/usePhase';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -18,6 +20,7 @@ import Avatar from 'components/Avatar';
 import ReactionControl from 'components/ReactionControl';
 import Emoji from 'components/UI/Emoji';
 
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { stripHtml } from 'utils/textUtils';
 
 const truncateText = (text: string, maxLength: number) => {
@@ -71,6 +74,10 @@ const StickyNote: React.FC<Props> = ({
   size = 'large',
   showReactions = true,
 }) => {
+  const [searchParams] = useSearchParams();
+  const phaseId = searchParams.get('phase_id') || undefined;
+  const { data: phase } = usePhase(phaseId);
+
   const isCentered = centeredIdeaId === ideaId;
   const noteHeight = NOTE_HEIGHTS[size];
 
@@ -92,6 +99,12 @@ const StickyNote: React.FC<Props> = ({
     }
   };
 
+  // When an unauthenticated user clicks a reaction, set this idea as the initial
+  // idea so it stays centered after the auth flow completes
+  const handleUnauthenticatedReactionClick = () => {
+    updateSearchParams({ initial_idea_id: ideaId });
+  };
+
   if (!idea) {
     return null;
   }
@@ -102,6 +115,8 @@ const StickyNote: React.FC<Props> = ({
   const authorId = idea.data.relationships.author?.data?.id || null;
   const authorHash = idea.data.attributes.author_hash;
   const commentsCount = idea.data.attributes.comments_count;
+  const showCommentIcon =
+    phase?.data.attributes.commenting_enabled || commentsCount > 0;
 
   return (
     <StyledNote
@@ -184,18 +199,28 @@ const StickyNote: React.FC<Props> = ({
           flexShrink={0}
         >
           <Box display="flex" alignItems="center" gap="4px">
-            <Icon
-              name="comments"
-              fill={colors.textSecondary}
-              width="20px"
-              height="20px"
-            />
-            <Text fontSize="m" color="textSecondary" m="0px" ml="4px">
-              {commentsCount}
-            </Text>
+            {showCommentIcon && (
+              <>
+                <Icon
+                  name="comments"
+                  fill={colors.textSecondary}
+                  width="20px"
+                  height="20px"
+                />
+                <Text fontSize="m" color="textSecondary" m="0px" ml="4px">
+                  {commentsCount}
+                </Text>
+              </>
+            )}
           </Box>
-
-          <ReactionControl ideaId={ideaId} size="1" styleType="compact" />
+          {phase?.data.attributes.reacting_enabled && (
+            <ReactionControl
+              ideaId={ideaId}
+              size="1"
+              styleType="compact"
+              unauthenticatedReactionClick={handleUnauthenticatedReactionClick}
+            />
+          )}
         </Box>
       )}
     </StyledNote>

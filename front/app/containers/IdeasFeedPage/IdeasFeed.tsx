@@ -1,9 +1,9 @@
 import React, {
   useMemo,
-  useRef,
   useCallback,
   useState,
   useEffect,
+  useRef,
 } from 'react';
 
 import {
@@ -24,7 +24,6 @@ import useInputTopics from 'api/input_topics/useInputTopics';
 import usePhase from 'api/phases/usePhase';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import messages from './messages';
@@ -108,7 +107,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
   const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
   const phaseId = searchParams.get('phase_id')!;
-  const initialIdeaIdFromUrl = searchParams.get('initial_idea_id') || undefined;
+  const initialIdeaId = searchParams.get('initial_idea_id') || undefined;
 
   // Get project ID from phase to fetch topics
   const { data: phase } = usePhase(phaseId);
@@ -116,10 +115,6 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
 
   // Fetch topics to get emojis
   const { data: topicsData } = useInputTopics(projectId, { depth: 0 });
-
-  // Store the initial idea ID in a ref so it persists after being removed from URL
-  const initialIdeaIdRef = useRef(initialIdeaIdFromUrl);
-  const initialIdeaId = initialIdeaIdRef.current;
 
   const parentRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useBreakpoint('phone');
@@ -154,14 +149,27 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
   }, [flatIdeas, initialIdeaId]);
 
   // Fetch the initial idea separately if it's not in the list
-  const { data: initialIdeaData, isFetching: isFetchingInitialIdea } =
-    useIdeaById(initialIdeaInList ? undefined : initialIdeaId);
+  const { data: initialIdeaData } = useIdeaById(
+    initialIdeaInList ? undefined : initialIdeaId
+  );
 
   // Reorder ideas to put the initial idea first (if provided), otherwise keep original order
   const orderedIdeas = useMemo(() => {
     // If we need to fetch the initial idea and it's loaded, prepend it
+    // But only if no topic filter is active, or the idea has the selected topic
     if (initialIdeaId && !initialIdeaInList && initialIdeaData) {
-      return [initialIdeaData.data, ...flatIdeas];
+      const initialIdeaTopics =
+        initialIdeaData.data.relationships.input_topics?.data.map(
+          (topic) => topic.id
+        ) || [];
+      const initialIdeaHasSelectedTopic =
+        !topicId || initialIdeaTopics.includes(topicId);
+
+      if (initialIdeaHasSelectedTopic) {
+        return [initialIdeaData.data, ...flatIdeas];
+      }
+      // If the initial idea doesn't have the selected topic, don't add it
+      return flatIdeas;
     }
 
     if (flatIdeas.length === 0 || !initialIdeaId) return flatIdeas;
@@ -178,14 +186,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
     ];
 
     return [initialIdea, ...otherIdeas];
-  }, [flatIdeas, initialIdeaId, initialIdeaInList, initialIdeaData]);
-
-  // Remove initial_idea_id from URL once the feed has loaded with the initial idea
-  useEffect(() => {
-    if (initialIdeaId && orderedIdeas.length > 0 && !isLoading) {
-      removeSearchParams(['initial_idea_id']);
-    }
-  }, [initialIdeaId, orderedIdeas.length, isLoading]);
+  }, [flatIdeas, initialIdeaId, initialIdeaInList, initialIdeaData, topicId]);
 
   // Extract topic IDs for each idea
   const ideaTopics = useMemo(() => {
@@ -268,7 +269,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
     ]
   );
 
-  if (isLoading || isFetchingInitialIdea) {
+  if (isLoading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" h="100vh">
         <Spinner />
