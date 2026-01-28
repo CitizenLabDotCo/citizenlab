@@ -346,6 +346,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'baskets_count' => @local_copy || !@include_ideas ? 0 : phase.baskets_count,
         'votes_count' => @local_copy || !@include_ideas ? 0 : phase.votes_count,
         'prescreening_enabled' => phase.prescreening_enabled,
+        'prescreening_mode' => phase.prescreening_mode,
         'expire_days_limit' => phase.expire_days_limit,
         'reacting_threshold' => phase.reacting_threshold
       }
