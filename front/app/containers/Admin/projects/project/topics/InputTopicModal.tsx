@@ -25,6 +25,7 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 import messages from './messages';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 interface FormValues {
   title_multiloc: Multiloc;
@@ -50,6 +51,7 @@ const InputTopicModal = ({
   const { formatMessage } = useIntl();
   const { mutateAsync: addInputTopic } = useAddInputTopic();
   const { mutateAsync: updateInputTopic } = useUpdateInputTopic();
+  const nestedTopicsEnabled = useFeatureFlag({ name: 'nested_input_topics' });
 
   const isEditing = topic !== null;
   const isAddingSubtopic = !isEditing && parentId !== undefined;
@@ -136,7 +138,7 @@ const InputTopicModal = ({
                   name="title_multiloc"
                   label={formatMessage(messages.fieldTopicTitle)}
                 />
-                {!isSubtopic && (
+                {!isSubtopic && nestedTopicsEnabled && (
                   <EmojiPicker
                     name="icon"
                     label={formatMessage(messages.fieldTopicEmoji)}
