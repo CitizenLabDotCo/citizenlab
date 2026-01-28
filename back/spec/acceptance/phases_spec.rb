@@ -607,18 +607,22 @@ resource 'Phases' do
 
       example_request 'Update a phase' do
         expect(response_status).to eq 200
-        expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
-        expect(json_response.dig(:data, :attributes, :participation_method)).to eq participation_method
-        expect(json_response.dig(:data, :attributes, :submission_enabled)).to eq submission_enabled
-        expect(json_response.dig(:data, :attributes, :commenting_enabled)).to eq commenting_enabled
-        expect(json_response.dig(:data, :attributes, :reacting_enabled)).to eq reacting_enabled
-        expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq reacting_like_method
-        expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq reacting_like_limited_max
-        expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq presentation_mode
-        expect(json_response.dig(:data, :attributes, :allow_anonymous_participation)).to eq allow_anonymous_participation
-        expect(json_response.dig(:data, :attributes, :prescreening_enabled)).to eq prescreening_enabled
-        expect(json_response.dig(:data, :attributes, :similarity_enabled)).to eq similarity_enabled
-        expect(json_response.dig(:data, :attributes, :similarity_threshold_body)).to eq similarity_threshold_body
+
+        expect(response_data[:attributes]).to include(
+          description_multiloc: description_multiloc.symbolize_keys,
+          participation_method: participation_method,
+          submission_enabled: submission_enabled,
+          commenting_enabled: commenting_enabled,
+          reacting_enabled: reacting_enabled,
+          reacting_like_method: reacting_like_method,
+          reacting_like_limited_max: reacting_like_limited_max,
+          presentation_mode: presentation_mode,
+          allow_anonymous_participation: allow_anonymous_participation,
+          prescreening_enabled: prescreening_enabled,
+          prescreening_mode: 'all',
+          similarity_enabled: similarity_enabled,
+          similarity_threshold_body: similarity_threshold_body
+        )
       end
 
       context 'when description_multiloc contains images' do

@@ -11,6 +11,7 @@ import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { usePdfExportContext } from '../../../pdf/PdfExportContext';
 import DistributionBar from '../DistributionBar';
 import messages from '../messages';
 
@@ -33,6 +34,7 @@ interface Props {
 
 const ManualTagsAccordion = ({ manualTopics, maxManualTopicCount }: Props) => {
   const { formatMessage } = useIntl();
+  const { isPdfRenderMode } = usePdfExportContext();
 
   const summaryText = formatMessage(messages.manualTagsSummary, {
     taggedCount: manualTopics.reduce((sum, t) => sum + t.count, 0),
@@ -41,7 +43,7 @@ const ManualTagsAccordion = ({ manualTopics, maxManualTopicCount }: Props) => {
 
   return (
     <StyledAccordion
-      isOpenByDefault={false}
+      isOpenByDefault={isPdfRenderMode}
       title={
         <Box
           display="flex"
