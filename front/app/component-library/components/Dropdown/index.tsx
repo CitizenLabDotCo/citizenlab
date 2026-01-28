@@ -145,7 +145,7 @@ interface Props {
   content: JSX.Element;
   footer?: JSX.Element;
   zIndex?: string;
-  onClickOutside?: (event: FormEvent) => void;
+  onClickOutside?: (event: FormEvent | KeyboardEvent) => void;
   id?: string;
   className?: string;
 }
@@ -202,23 +202,38 @@ const Dropdown: React.FC<Props> = ({
       const focusableElements = getFocusableElements();
       if (focusableElements.length === 0) return;
 
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
+      const currentIndex = focusableElements.indexOf(
+        document.activeElement as HTMLElement
+      );
+      const totalItems = focusableElements.length;
+      const key = event.key;
 
-      if (event.key === 'Tab') {
-        if (event.shiftKey) {
-          // Shift + Tab: Focus last element if on the first
-          if (document.activeElement === firstElement) {
-            event.preventDefault();
-            lastElement.focus();
+      switch (key) {
+        case 'ArrowDown':
+          event.preventDefault();
+          if (currentIndex >= 0 && currentIndex < totalItems - 1) {
+            focusableElements[currentIndex + 1]?.focus();
+          } else {
+            focusableElements[0]?.focus();
           }
-        } else {
-          // Tab: Focus first element if on the last
-          if (document.activeElement === lastElement) {
-            event.preventDefault();
-            firstElement.focus();
+          break;
+
+        case 'ArrowUp':
+          event.preventDefault();
+          if (currentIndex > 0) {
+            focusableElements[currentIndex - 1]?.focus();
+          } else {
+            focusableElements[totalItems - 1]?.focus();
           }
-        }
+          break;
+
+        case 'Tab':
+          onClickOutside?.(event);
+          break;
+
+        case 'Escape':
+          onClickOutside?.(event);
+          break;
       }
     };
 
@@ -241,7 +256,7 @@ const Dropdown: React.FC<Props> = ({
       document.removeEventListener('keydown', handleKeyDown);
       dropdownContent?.removeEventListener('wheel', handleScroll);
     };
-  }, [opened, footer]);
+  }, [opened, footer, onClickOutside]);
 
   useEffect(() => {
     if (opened) {
