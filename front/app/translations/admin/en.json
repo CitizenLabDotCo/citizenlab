@@ -1371,6 +1371,7 @@
   "app.containers.Admin.projects.project.insights.errorLoadingDemographics": "Error loading demographics data",
   "app.containers.Admin.projects.project.insights.errorLoadingMetrics": "Error loading participation metrics",
   "app.containers.Admin.projects.project.insights.errorPdfDownload": "Failed to download PDF. Please try again.",
+  "app.containers.Admin.projects.project.insights.errorWordDownload": "Failed to download Word document. Please try again.",
   "app.containers.Admin.projects.project.insights.gender": "Gender",
   "app.containers.Admin.projects.project.insights.ideasPosted": "Ideas posted",
   "app.containers.Admin.projects.project.insights.ideation.explore": "Explore",
