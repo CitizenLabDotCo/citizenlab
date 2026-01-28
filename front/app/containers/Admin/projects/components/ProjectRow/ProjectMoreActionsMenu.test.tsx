@@ -107,6 +107,14 @@ describe('ProjectMoreActionsMenu', () => {
 
     await user.click(deleteProjectButton);
 
+    const confirmationInput = await screen.findByPlaceholderText('DELETE');
+    await user.type(confirmationInput, 'DELETE');
+
+    const confirmDeleteButton = await screen.findByRole('button', {
+      name: 'Delete project',
+    });
+    await user.click(confirmDeleteButton);
+
     await waitFor(() => {
       expect(setErrorFn).toHaveBeenLastCalledWith(
         'There was an error deleting this project, please try again later.'
