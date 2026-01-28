@@ -13,13 +13,12 @@ module IdeaFeed
 
     def top_n(n = 5, scope = Idea.all)
       eligible_ideas = fetch_eligible_ideas(scope)
-      all_exposed = eligible_ideas.none?
-      eligible_ideas = fetch_all_ideas(scope) if all_exposed
 
-      candidates = fetch_candidates_with_scores(eligible_ideas, penalize_exposures: all_exposed)
-      candidates = Idea.from(candidates, :ideas)
-        .order(Arel.sql('recency_score * 0.65 + engagement_score * 0.25 + wise_voice_score * 0.1 - exposure_penalty DESC'))
-        .limit(n * 4)
+      if eligible_ideas.none?
+        candidates = fetch_least_exposed_candidates(fetch_all_ideas(scope), n * 4)
+      else
+        candidates = fetch_scored_candidates(eligible_ideas, n * 4)
+      end
 
       DiversityService.new.generate_list(candidates, exposures_scope, n)
     end
@@ -38,22 +37,31 @@ module IdeaFeed
       end
     end
 
-    def fetch_candidates_with_scores(scope, penalize_exposures: false)
+    def fetch_scored_candidates(scope, limit)
+      scored = scope
+        .left_joins(:wise_voice_flag)
+        .select("
+          EXP(-EXTRACT(EPOCH FROM (NOW() - ideas.published_at)) / (30 * 86400)) as recency_score,
+          (LN(1 + ideas.comments_count + ideas.likes_count * 0.5)) as engagement_score,
+          CASE WHEN wise_voice_flags.id IS NULL THEN 0 ELSE 1 END as wise_voice_score,
+          ideas.*
+        ")
+
+      Idea.from(scored, :ideas)
+        .order(Arel.sql('recency_score * 0.65 + engagement_score * 0.25 + wise_voice_score * 0.1 DESC'))
+        .limit(limit)
+    end
+
+    def fetch_least_exposed_candidates(scope, limit)
       exposure_counts_sql = exposures_scope
         .group(:idea_id)
         .select(:idea_id, 'COUNT(*) as exposure_count')
         .to_sql
 
       scope
-        .left_joins(:wise_voice_flag)
         .joins("LEFT JOIN (#{exposure_counts_sql}) AS exposure_counts ON exposure_counts.idea_id = ideas.id")
-        .select("
-          EXP(-EXTRACT(EPOCH FROM (NOW() - ideas.published_at)) / (30 * 86400)) as recency_score,
-          (LN(1 + ideas.comments_count + ideas.likes_count * 0.5)) as engagement_score,
-          CASE WHEN wise_voice_flags.id IS NULL THEN 0 ELSE 1 END as wise_voice_score,
-          #{penalize_exposures ? 'COALESCE(exposure_counts.exposure_count, 0)' : '0'} as exposure_penalty,
-          ideas.*
-        ")
+        .order(Arel.sql('COALESCE(exposure_counts.exposure_count, 0) ASC'))
+        .limit(limit)
     end
 
     def fetch_eligible_ideas(scope)
