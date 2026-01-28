@@ -26,7 +26,7 @@ const MetricTrend = ({ change }: Props) => {
     const tooltipMessage =
       change === null
         ? messages.insufficientComparisonDataPhaseTooNew
-        : messages.insufficientComparisonDataZeroPreviousPeriod;
+        : messages.insufficientComparisonDataNoPriorActivity;
 
     return (
       <Tooltip content={formatMessage(tooltipMessage)} placement="top">
