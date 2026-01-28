@@ -86,9 +86,9 @@ export default defineMessages({
       "If the user has already answered these questions, they won't be asked.",
   },
   collectDemographicsByAddingNewPage: {
-    id: 'app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage',
+    id: 'app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage2',
     defaultMessage:
-      'Collect demographic questions by adding a new page to the end of the survey',
+      'Collect demographic questions by adding a new page to the end of the form',
   },
   collectDemographicsByAddingNewPageTooltip: {
     id: 'app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPageTooltip',
