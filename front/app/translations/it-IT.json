@@ -1388,7 +1388,7 @@
   "app.containers.IdeaCards.statusesTitle": "Status",
   "app.containers.IdeaCards.topics": "Argomenti",
   "app.containers.IdeaCards.topicsTitle": "Argomenti",
-  "app.containers.IdeaCards.trending": "Trending",
+  "app.containers.IdeaCards.trending": "Di tendenza",
   "app.containers.IdeaCards.tryDifferentFilters": "Nessun risultato trovato. Prova a utilizzare un altro filtro o termine di ricerca.",
   "app.containers.IdeaCards.xComments3": "{ideasCount, plural, no {{ideasCount} commenti} one {{ideasCount} commento} other {{ideasCount} commenti}}",
   "app.containers.IdeaCards.xContributions2": "{ideasCount, plural, no {{ideasCount} contributi} one {{ideasCount} contributo} other {{ideasCount} contributi}}",
