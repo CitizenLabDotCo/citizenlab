@@ -133,7 +133,6 @@
   "app.components.admin.ActionForm.DataCollection.userDataCollection": "Kullanıcı veri toplama",
   "app.components.admin.ActionForm.DataCollection.userDataCollectionDescription2": "Kişisel olarak tanımlanabilir bilgiler (örn. ad, e-posta) ve demografik veriler, kullanıcı tarafından sağlandığı durumlarda kullanıcı profilleriyle ilişkilendirilir. Anket sonuçlarına kişisel olarak tanımlanabilir verileri dahil etmeyi veya hariç tutmayı seçebilirsiniz. Ayrıca anket sonuçlarına demografik verileri dahil etmeyi veya hariç tutmayı da seçebilirsiniz.",
   "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone": "\"Kimlik Doğrulama\" \"Yok\" olarak ayarlandığında, demografik sorular yalnızca anketin son sayfası olarak sorulabilir.",
-  "app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage": "Anketin sonuna yeni bir sayfa ekleyerek demografik soruları toplayın",
   "app.components.admin.ActionForm.Fields.globalRegFlow": "Global kayıt akışında etkinleştirildi",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "küresel kayit akişi",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "Bu soru {globalRegFlowLink}adresinde etkinleştirilmiştir. Bu eylem için devre dışı bırakabilirsiniz.",

@@ -133,7 +133,6 @@
   "app.components.admin.ActionForm.DataCollection.userDataCollection": "Recogida de datos del usuario",
   "app.components.admin.ActionForm.DataCollection.userDataCollectionDescription2": "La información personal identificable (por ejemplo, nombre, correo electrónico) y los datos demográficos se asocian a los perfiles de usuario, cuando han sido facilitados por éste. Puedes elegir incluir o excluir los datos de identificación personal en los resultados de la encuesta. También puedes elegir incluir o excluir los datos demográficos en los resultados de la encuesta.",
   "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone": "Cuando la \"Autenticación\" está configurada como \"Ninguna\", las preguntas demográficas sólo pueden hacerse en la última página de la encuesta.",
-  "app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage": "Recoger preguntas demográficas añadiendo una nueva página al final de la encuesta",
   "app.components.admin.ActionForm.Fields.globalRegFlow": "Activado en el flujo de registro global",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "flujo de registro global",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "Esta pregunta está activada en {globalRegFlowLink}. Puedes desactivarla para esta acción.",

@@ -133,7 +133,6 @@
   "app.components.admin.ActionForm.DataCollection.userDataCollection": "Prikupljanje korisničkih podataka",
   "app.components.admin.ActionForm.DataCollection.userDataCollectionDescription2": "Osobni podaci (npr. ime, e-pošta) i demografski podaci povezani su s korisničkim profilima, ako ih je korisnik naveo. Možete odabrati želite li uključiti ili isključiti osobne podatke iz rezultata ankete. Također možete odabrati uključiti ili isključiti demografske podatke iz rezultata ankete.",
   "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone": "Kada je \"Autentifikacija\" postavljena na \"Ništa\", demografska pitanja mogu se postavljati samo na posljednjoj stranici ankete.",
-  "app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage": "Prikupite demografska pitanja dodavanjem nove stranice na kraj ankete",
   "app.components.admin.ActionForm.Fields.globalRegFlow": "Omogućeno u globalnom toku registracije",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "globalni tijek registracije",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "Ovo pitanje je omogućeno u {globalRegFlowLink}. Možete ga onemogućiti za ovu radnju.",

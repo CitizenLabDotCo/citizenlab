@@ -133,7 +133,6 @@
   "app.components.admin.ActionForm.DataCollection.userDataCollection": "Lietotāja datu vākšana",
   "app.components.admin.ActionForm.DataCollection.userDataCollectionDescription2": "Personu identificējoša informācija (piemēram, vārds, e-pasta adrese) un demogrāfiskie dati ir saistīti ar lietotāju profiliem, ja lietotājs tos ir sniedzis. Jūs varat izvēlēties iekļaut vai neiekļaut personiski identificējamos datus aptaujas rezultātos. Jūs varat arī izvēlēties iekļaut vai izslēgt demogrāfiskos datus aptaujas rezultātos.",
   "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone": "Ja \"Autentifikācija\" ir iestatīta uz \"Nav\", demogrāfiskos jautājumus var uzdot tikai kā aptaujas pēdējo lapu.",
-  "app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage": "Apkopot demogrāfiskos jautājumus, pievienojot jaunu lapu aptaujas beigās.",
   "app.components.admin.ActionForm.Fields.globalRegFlow": "Ieslēgts globālajā reģistrācijas plūsmā",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "globālā reģistrācijas plūsma",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "Šis jautājums ir iespējots vietnē {globalRegFlowLink}. Šai darbībai to var atspējot.",

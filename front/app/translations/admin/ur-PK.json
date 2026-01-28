@@ -133,7 +133,6 @@
   "app.components.admin.ActionForm.DataCollection.userDataCollection": "صارف کا ڈیٹا اکٹھا کرنا",
   "app.components.admin.ActionForm.DataCollection.userDataCollectionDescription2": "ذاتی طور پر قابل شناخت معلومات (مثلاً نام، ای میل) اور آبادیاتی ڈیٹا صارف کے پروفائلز سے وابستہ ہیں، جہاں یہ صارف کی طرف سے فراہم کی گئی ہے۔ آپ سروے کے نتائج میں ذاتی طور پر قابل شناخت ڈیٹا کو شامل یا خارج کرنے کا انتخاب کر سکتے ہیں۔ آپ سروے کے نتائج میں آبادیاتی ڈیٹا کو شامل یا خارج کرنے کا انتخاب بھی کر سکتے ہیں۔",
   "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone": "جب \"توثیق\" کو \"کوئی نہیں\" پر سیٹ کیا جاتا ہے، تو آبادیاتی سوالات صرف سروے کے آخری صفحہ کے طور پر پوچھے جا سکتے ہیں۔",
-  "app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage": "سروے کے آخر میں ایک نیا صفحہ شامل کرکے آبادیاتی سوالات جمع کریں۔",
   "app.components.admin.ActionForm.Fields.globalRegFlow": "عالمی رجسٹریشن کے بہاؤ میں فعال",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "عالمی رجسٹریشن کا بہاؤ",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "یہ سوال {globalRegFlowLink}میں فعال ہے۔ آپ اسے اس کارروائی کے لیے غیر فعال کر سکتے ہیں۔",

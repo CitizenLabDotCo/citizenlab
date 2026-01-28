@@ -133,7 +133,6 @@
   "app.components.admin.ActionForm.DataCollection.userDataCollection": "Käyttäjätietojen kerääminen",
   "app.components.admin.ActionForm.DataCollection.userDataCollectionDescription2": "Henkilökohtaisesti tunnistettavat tiedot (esim. nimi, sähköpostiosoite) ja demografiset tiedot liitetään käyttäjäprofiileihin, jos käyttäjä on ne antanut. Voit valita, sisällytetäänkö henkilötiedot kyselyn tuloksiin vai jätetäänkö ne pois. Voit myös valita, sisällytetäänkö demografiset tiedot kyselyn tuloksiin vai jätetäänkö ne pois.",
   "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone": "Kun \"Todennus\"-asetuksena on \"Ei mitään\", demografisia kysymyksiä voi esittää vain kyselyn viimeisellä sivulla.",
-  "app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage": "Kerää demografisia kysymyksiä lisäämällä uusi sivu kyselyn loppuun",
   "app.components.admin.ActionForm.Fields.globalRegFlow": "Käytössä globaalissa rekisteröintiprosessissa",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "globaali rekisteröintiprosessi",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "Tämä kysymys on käytössä {globalRegFlowLink}-kohdassa. Voit poistaa sen käytöstä tälle toiminnolle.",

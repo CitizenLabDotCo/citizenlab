@@ -133,7 +133,6 @@
   "app.components.admin.ActionForm.DataCollection.userDataCollection": "Raccolta dati utente",
   "app.components.admin.ActionForm.DataCollection.userDataCollectionDescription2": "Le informazioni di identificazione personale (ad es. nome, e-mail) e i dati demografici sono associati ai profili degli utenti, qualora siano stati forniti da questi ultimi. Puoi scegliere di includere o escludere i dati di identificazione personale dai risultati del sondaggio. Puoi anche scegliere di includere o escludere i dati demografici dai risultati del sondaggio.",
   "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone": "Quando l'opzione \"Autenticazione\" è impostata su \"Nessuna\", le domande demografiche possono essere poste solo nell'ultima pagina del sondaggio.",
-  "app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage": "Raccogli le domande demografiche aggiungendo una nuova pagina alla fine del sondaggio",
   "app.components.admin.ActionForm.Fields.globalRegFlow": "Abilitata nella registrazione globale",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "registrazione globale",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "Questa domanda è abilitata nella pagina {globalRegFlowLink}. Puoi disabilitarla per questa azione.",
