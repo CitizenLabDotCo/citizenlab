@@ -2265,6 +2265,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.numberVotesPerUser": "Kullanıcı başına oy sayısı",
   "app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText": "Seçenek analizine genel bakış",
   "app.containers.AdminPage.ProjectEdit.Voting.optionsToVoteOn": "Oylanacak seçenekler",
+  "app.containers.AdminPage.ProjectEdit.Voting.percentTerm": "Yüzde",
   "app.containers.AdminPage.ProjectEdit.Voting.pointTerm": "Nokta",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotePerOption2": "seçenek başına tek oy",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodSubtitle": "Kullanıcılar seçeneklerden herhangi birini onaylamayı seçebilir",

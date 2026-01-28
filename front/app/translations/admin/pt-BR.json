@@ -2265,6 +2265,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.numberVotesPerUser": "Número de votos por utilizador",
   "app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText": "Síntese da análise de opções",
   "app.containers.AdminPage.ProjectEdit.Voting.optionsToVoteOn": "Opções para votar",
+  "app.containers.AdminPage.ProjectEdit.Voting.percentTerm": "Porcentagem",
   "app.containers.AdminPage.ProjectEdit.Voting.pointTerm": "Ponto",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotePerOption2": "voto único por opção",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodSubtitle": "Os utilizadores podem optar por aprovar qualquer uma das opções",
