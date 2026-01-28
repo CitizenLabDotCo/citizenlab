@@ -106,6 +106,8 @@ const StickyNote: React.FC<Props> = ({
   const authorId = idea.data.relationships.author?.data?.id || null;
   const authorHash = idea.data.attributes.author_hash;
   const commentsCount = idea.data.attributes.comments_count;
+  const showCommentIcon =
+    phase?.data.attributes.commenting_enabled || commentsCount > 0;
 
   return (
     <StyledNote
@@ -153,7 +155,7 @@ const StickyNote: React.FC<Props> = ({
           flexShrink={0}
         >
           <Box display="flex" alignItems="center" gap="4px">
-            {phase?.data.attributes.commenting_enabled && (
+            {showCommentIcon && (
               <>
                 <Icon
                   name="comments"
