@@ -2265,6 +2265,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.numberVotesPerUser": "Äänten määrä käyttäjää kohden",
   "app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText": "Vaihtoehtoanalyysin yleiskatsaus",
   "app.containers.AdminPage.ProjectEdit.Voting.optionsToVoteOn": "Äänestysvaihtoehdot",
+  "app.containers.AdminPage.ProjectEdit.Voting.percentTerm": "Prosentti",
   "app.containers.AdminPage.ProjectEdit.Voting.pointTerm": "Kohta",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotePerOption2": "yksi ääni vaihtoehtoa kohden",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodSubtitle": "Käyttäjät voivat hyväksyä minkä tahansa vaihtoehdon",
