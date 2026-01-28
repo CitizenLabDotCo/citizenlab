@@ -133,7 +133,6 @@
   "app.components.admin.ActionForm.DataCollection.userDataCollection": "Coleta de dados do usuário",
   "app.components.admin.ActionForm.DataCollection.userDataCollectionDescription2": "As informações de identificação pessoal (por exemplo, nome, e-mail) e os dados demográficos são associados aos perfis de usuário, quando fornecidos pelo usuário. Você pode optar por incluir ou excluir os dados de identificação pessoal nos resultados da pesquisa. Você também pode optar por incluir ou excluir dados demográficos nos resultados da pesquisa.",
   "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone": "Quando \"Authentication\" (Autenticação) é definida como \"None\" (Nenhuma), as perguntas demográficas só podem ser feitas na última página do questionário.",
-  "app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage": "Colete perguntas demográficas adicionando uma nova página ao final do questionário",
   "app.components.admin.ActionForm.Fields.globalRegFlow": "Ativado no fluxo de registro global",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "fluxo de registro global",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "Essa pergunta está ativada no site {globalRegFlowLink}. Você pode desativá-la para esta ação.",

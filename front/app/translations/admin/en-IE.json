@@ -133,7 +133,6 @@
   "app.components.admin.ActionForm.DataCollection.userDataCollection": "User data collection",
   "app.components.admin.ActionForm.DataCollection.userDataCollectionDescription2": "Personally identifiable information (e.g. name, email) and demographic data are associated with user profiles, where it has been provided by the user. You can choose to include or exclude the personally identifiable data in the survey results. You can also choose include or exclude demographic data in the survey results.",
   "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone": "When \"Authentication\" is set to \"None\", demographic questions can only be asked as the last page of the survey.",
-  "app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage": "Collect demographic questions by adding a new page to the end of the survey",
   "app.components.admin.ActionForm.Fields.globalRegFlow": "Enabled in global registration flow",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "global registration flow",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "This question is enabled in the {globalRegFlowLink}. You can disable it for this action.",

@@ -133,7 +133,6 @@
   "app.components.admin.ActionForm.DataCollection.userDataCollection": "جمع بيانات المستخدم",
   "app.components.admin.ActionForm.DataCollection.userDataCollectionDescription2": "تُربط معلومات التعريف الشخصية (مثل الاسم والبريد الإلكتروني) والبيانات الديموغرافية بملفات تعريف المستخدم، إذا قدّمها المستخدم. يمكنك اختيار تضمين أو استبعاد بيانات التعريف الشخصية من نتائج الاستبيان. كما يمكنك اختيار تضمين أو استبعاد البيانات الديموغرافية من نتائج الاستبيان.",
   "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone": "عندما يتم تعيين \"المصادقة\" على \"لا شيء\"، لا يمكن طرح الأسئلة الديموغرافية إلا في الصفحة الأخيرة من الاستطلاع.",
-  "app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage": "جمع الأسئلة الديموغرافية عن طريق إضافة صفحة جديدة إلى نهاية الاستبيان",
   "app.components.admin.ActionForm.Fields.globalRegFlow": "مُمكّن في تدفق التسجيل العالمي",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "تدفق التسجيل العالمي",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "هذا السؤال مُفعّل في {globalRegFlowLink}. يمكنك تعطيله لهذا الإجراء.",

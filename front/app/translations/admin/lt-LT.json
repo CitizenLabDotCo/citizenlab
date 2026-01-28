@@ -133,7 +133,6 @@
   "app.components.admin.ActionForm.DataCollection.userDataCollection": "Naudotojo duomenų rinkimas",
   "app.components.admin.ActionForm.DataCollection.userDataCollectionDescription2": "Asmenį identifikuojanti informacija (pvz., vardas, el. pašto adresas) ir demografiniai duomenys yra susieti su naudotojų profiliais, jei naudotojas juos pateikė. Galite pasirinkti, ar į apklausos rezultatus įtraukti asmenį identifikuojančius duomenis, ar jų neįtraukti. Taip pat galite pasirinkti į apklausos rezultatus įtraukti arba neįtraukti demografinius duomenis.",
   "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone": "Kai \"Autentiškumo nustatymas\" yra \"Nėra\", demografiniai klausimai gali būti užduodami tik paskutiniame apklausos puslapyje.",
-  "app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage": "Rinkti demografinius klausimus apklausos pabaigoje pridedant naują puslapį.",
   "app.components.admin.ActionForm.Fields.globalRegFlow": "Įjungta bendrame registracijos sraute",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "visuotinės registracijos srautas",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "Šis klausimas įjungtas {globalRegFlowLink}. Šiam veiksmui jį galite išjungti.",

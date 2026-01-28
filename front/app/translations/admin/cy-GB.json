@@ -133,7 +133,6 @@
   "app.components.admin.ActionForm.DataCollection.userDataCollection": "Casglu data defnyddwyr",
   "app.components.admin.ActionForm.DataCollection.userDataCollectionDescription2": "Mae gwybodaeth bersonol adnabyddadwy (e.e. enw, e-bost) a data demograffig yn gysylltiedig â phroffiliau defnyddwyr, lle mae wedi'i ddarparu gan y defnyddiwr. Gallwch ddewis cynnwys neu eithrio'r data personol adnabyddadwy yng nghanlyniadau'r arolwg. Gallwch hefyd ddewis cynnwys neu eithrio data demograffig yng nghanlyniadau'r arolwg.",
   "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone": "Pan fydd \"Dilysu\" wedi'i osod i \"Dim\", dim ond fel tudalen olaf yr arolwg y gellir gofyn cwestiynau demograffig.",
-  "app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage": "Casglwch gwestiynau demograffig drwy ychwanegu tudalen newydd at ddiwedd yr arolwg",
   "app.components.admin.ActionForm.Fields.globalRegFlow": "Wedi'i alluogi yn y llif cofrestru byd-eang",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "llif cofrestru byd-eang",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "Mae'r cwestiwn hwn wedi'i alluogi yn y {globalRegFlowLink}. Gallwch ei analluogi ar gyfer y weithred hon.",

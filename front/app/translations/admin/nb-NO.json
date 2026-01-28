@@ -133,7 +133,6 @@
   "app.components.admin.ActionForm.DataCollection.userDataCollection": "Innsamling av brukerdata",
   "app.components.admin.ActionForm.DataCollection.userDataCollectionDescription2": "Personlig identifiserbar informasjon (f.eks. navn, e-postadresse) og demografiske data er knyttet til brukerprofiler, der brukeren har oppgitt dem. Du kan velge å inkludere eller ekskludere personlig identifiserbare data i undersøkelsesresultatene. Du kan også velge å inkludere eller ekskludere demografiske data i undersøkelsesresultatene.",
   "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone": "Når \"Autentisering\" er satt til \"Ingen\", kan demografiske spørsmål bare stilles på den siste siden i undersøkelsen.",
-  "app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage": "Samle inn demografiske spørsmål ved å legge til en ny side på slutten av undersøkelsen",
   "app.components.admin.ActionForm.Fields.globalRegFlow": "Aktivert i global registreringsflyt",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "global registreringsflyt",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "Dette spørsmålet er aktivert i {globalRegFlowLink}. Du kan deaktivere det for denne handlingen.",

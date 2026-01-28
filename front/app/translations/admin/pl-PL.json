@@ -133,7 +133,6 @@
   "app.components.admin.ActionForm.DataCollection.userDataCollection": "Gromadzenie danych użytkownika",
   "app.components.admin.ActionForm.DataCollection.userDataCollectionDescription2": "Dane osobowe (np. imię i nazwisko, adres e-mail) oraz dane demograficzne są powiązane z profilami użytkowników, jeśli zostały one podane przez użytkownika. Możesz uwzględnić lub wykluczyć dane osobowe w wynikach ankiety. Możesz także uwzględnić lub wykluczyć dane demograficzne w wynikach ankiety.",
   "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone": "Gdy opcja \"Uwierzytelnianie\" jest ustawiona na \"Brak\", pytania demograficzne mogą być zadawane tylko na ostatniej stronie ankiety.",
-  "app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage": "Zbierz pytania demograficzne, dodając nową stronę na końcu ankiety.",
   "app.components.admin.ActionForm.Fields.globalRegFlow": "Włączone w globalnym przepływie rejestracji",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "globalny przepływ rejestracji",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "To pytanie jest włączone na stronie {globalRegFlowLink}. Możesz je wyłączyć dla tej akcji.",

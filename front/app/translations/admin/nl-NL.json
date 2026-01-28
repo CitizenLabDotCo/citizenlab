@@ -133,7 +133,6 @@
   "app.components.admin.ActionForm.DataCollection.userDataCollection": "Verzamelen van gebruikersgegevens",
   "app.components.admin.ActionForm.DataCollection.userDataCollectionDescription2": "Persoonlijk identificeerbare gegevens (bijv. naam, e-mail) en demografische gegevens worden gekoppeld aan gebruikersprofielen, indien deze door de gebruiker zijn verstrekt. Je kunt ervoor kiezen om persoonlijk identificeerbare gegevens wel of niet op te nemen in de vragenlijstresultaten. Je kunt er ook voor kiezen om demografische gegevens wel of niet op te nemen in de vragenlijstresultaten.",
   "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone": "Als \"Authenticatie\" is ingesteld op \"Geen\", kunnen demografische vragen alleen worden gesteld op de laatste pagina van de vragenlijst.",
-  "app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage": "Verzamel demografische vragen door een nieuwe pagina toe te voegen aan het einde van de vragenlijst",
   "app.components.admin.ActionForm.Fields.globalRegFlow": "Ingeschakeld in globale registratie-proces",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "globale registratie-proces",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "Deze vraag is ingeschakeld in het {globalRegFlowLink}. Je kunt de vraag voor deze actie uitschakelen.",

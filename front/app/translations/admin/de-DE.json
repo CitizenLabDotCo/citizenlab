@@ -133,7 +133,6 @@
   "app.components.admin.ActionForm.DataCollection.userDataCollection": "Nutzerdatenerfassung",
   "app.components.admin.ActionForm.DataCollection.userDataCollectionDescription2": "Persönlich identifizierbare Informationen (z.B. Name, E-Mail-Adresse) und demografische Daten werden mit Benutzerprofilen verknüpft, sofern sie von den Nutzer*innen bereitgestellt wurden. Sie können wählen, ob Sie die personenbezogenen Daten in die Umfrageergebnisse aufnehmen oder ausschließen möchten. Sie können auch wählen, ob demografische Daten in die Umfrageergebnisse aufgenommen oder ausgeschlossen werden sollen.",
   "app.components.admin.ActionForm.Fields.cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone": "Wenn \"Authentifizierung\" auf \"Keine\" eingestellt ist, können demografische Fragen nur auf der letzten Seite der Umfrage gestellt werden.",
-  "app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage": "Demografische Fragen erfassen, indem eine neue Seite am Ende der Umfrage hinzugefügt wird",
   "app.components.admin.ActionForm.Fields.globalRegFlow": "Aktiviert im plattformweiten Registrierungsprozess",
   "app.components.admin.ActionForm.Fields.globalRegFlowLink": "Plattformweiter Registrierungsprozess",
   "app.components.admin.ActionForm.Fields.globalRegFlowTooltip": "Diese Frage ist im {globalRegFlowLink} aktiviert. Sie können ihn für diese Aktion deaktivieren.",
