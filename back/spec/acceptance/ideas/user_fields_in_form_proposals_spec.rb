@@ -12,14 +12,14 @@ resource 'Ideas' do
   post 'web_api/v1/ideas' do
     before do
       # Create project with form
-      @project = create(:single_phase_ideation_project, phase_attrs: { with_permissions: true })
+      @project = create(:single_phase_proposals_project, phase_attrs: { with_permissions: true })
       @phase = @project.phases.first
       @phase.permissions.find_by(action: 'posting_idea').update!(
         global_custom_fields: false
       )
 
       @permission = @phase.permissions.find_by(action: 'posting_idea')
-      @custom_form = create(:custom_form, :with_default_fields, participation_context: @project)
+      @custom_form = create(:custom_form, :with_default_fields, participation_context: @phase)
 
       # Create registration (demographic) question and
       # add to permission
@@ -44,8 +44,8 @@ resource 'Ideas' do
           do_request({
             idea: {
               project_id: @project.id,
-              title_multiloc: { 'en' => 'My Idea Title' },
-              body_multiloc: { 'en' => 'My Idea Body' },
+              title_multiloc: { 'en' => 'My Proposal Title' },
+              body_multiloc: { 'en' => 'My Proposal Body' },
               u_select_field: 'option1',
               u_nonexistent_field: 'whatever'
             }
@@ -57,8 +57,8 @@ resource 'Ideas' do
           expect(idea.custom_field_values).to eq({
             'u_select_field' => 'option1'
           })
-          expect(idea.title_multiloc).to eq({ 'en' => 'My Idea Title' })
-          expect(idea.body_multiloc).to eq({ 'en' => 'My Idea Body' })
+          expect(idea.title_multiloc).to eq({ 'en' => 'My Proposal Title' })
+          expect(idea.body_multiloc).to eq({ 'en' => 'My Proposal Body' })
         end
       end
 
@@ -72,8 +72,8 @@ resource 'Ideas' do
           do_request({
             idea: {
               project_id: @project.id,
-              title_multiloc: { 'en' => 'My Idea Title' },
-              body_multiloc: { 'en' => 'My Idea Body' },
+              title_multiloc: { 'en' => 'My Proposal Title' },
+              body_multiloc: { 'en' => 'My Proposal Body' },
               u_select_field: 'option1',
               u_nonexistent_field: 'whatever'
             }
@@ -85,8 +85,8 @@ resource 'Ideas' do
           expect(idea.custom_field_values).to eq({
             'u_select_field' => 'option1'
           })
-          expect(idea.title_multiloc).to eq({ 'en' => 'My Idea Title' })
-          expect(idea.body_multiloc).to eq({ 'en' => 'My Idea Body' })
+          expect(idea.title_multiloc).to eq({ 'en' => 'My Proposal Title' })
+          expect(idea.body_multiloc).to eq({ 'en' => 'My Proposal Body' })
 
           # Make sure user id is linked to idea
           expect(idea.author_id).to eq(@user.id)
@@ -110,8 +110,8 @@ resource 'Ideas' do
           do_request({
             idea: {
               project_id: @project.id,
-              title_multiloc: { 'en' => 'My Idea Title' },
-              body_multiloc: { 'en' => 'My Idea Body' },
+              title_multiloc: { 'en' => 'My Proposal Title' },
+              body_multiloc: { 'en' => 'My Proposal Body' },
               u_select_field: 'option1',
               u_nonexistent_field: 'whatever',
               anonymous: true
@@ -124,8 +124,8 @@ resource 'Ideas' do
           expect(idea.custom_field_values).to eq({
             'u_select_field' => 'option1'
           })
-          expect(idea.title_multiloc).to eq({ 'en' => 'My Idea Title' })
-          expect(idea.body_multiloc).to eq({ 'en' => 'My Idea Body' })
+          expect(idea.title_multiloc).to eq({ 'en' => 'My Proposal Title' })
+          expect(idea.body_multiloc).to eq({ 'en' => 'My Proposal Body' })
 
           # Make sure user id is not linked to idea
           expect(idea.author_id).to be_nil
@@ -157,8 +157,8 @@ resource 'Ideas' do
             do_request({
               idea: {
                 project_id: @project.id,
-                title_multiloc: { 'en' => 'My Idea Title' },
-                body_multiloc: { 'en' => 'My Idea Body' }
+                title_multiloc: { 'en' => 'My Proposal Title' },
+                body_multiloc: { 'en' => 'My Proposal Body' },
               }
             })
 
@@ -168,8 +168,8 @@ resource 'Ideas' do
             expect(idea.custom_field_values).to eq({
               'u_select_field' => 'option2'
             })
-            expect(idea.title_multiloc).to eq({ 'en' => 'My Idea Title' })
-            expect(idea.body_multiloc).to eq({ 'en' => 'My Idea Body' })
+            expect(idea.title_multiloc).to eq({ 'en' => 'My Proposal Title' })
+            expect(idea.body_multiloc).to eq({ 'en' => 'My Proposal Body' })
 
             # Make sure user id is linked to idea
             expect(idea.author_id).to eq(@user.id)
@@ -187,8 +187,8 @@ resource 'Ideas' do
             do_request({
               idea: {
                 project_id: @project.id,
-                title_multiloc: { 'en' => 'My Idea Title' },
-                body_multiloc: { 'en' => 'My Idea Body' },
+                title_multiloc: { 'en' => 'My Proposal Title' },
+                body_multiloc: { 'en' => 'My Proposal Body' },
                 anonymous: true
               }
             })
@@ -197,8 +197,8 @@ resource 'Ideas' do
             expect(Idea.count).to eq 1
             idea = Idea.first
             expect(idea.custom_field_values).to eq({})
-            expect(idea.title_multiloc).to eq({ 'en' => 'My Idea Title' })
-            expect(idea.body_multiloc).to eq({ 'en' => 'My Idea Body' })
+            expect(idea.title_multiloc).to eq({ 'en' => 'My Proposal Title' })
+            expect(idea.body_multiloc).to eq({ 'en' => 'My Proposal Body' })
 
             # Make sure user id is not linked to idea
             expect(idea.author_id).to be_nil
@@ -221,8 +221,8 @@ resource 'Ideas' do
             do_request({
               idea: {
                 project_id: @project.id,
-                title_multiloc: { 'en' => 'My Idea Title' },
-                body_multiloc: { 'en' => 'My Idea Body' },
+                title_multiloc: { 'en' => 'My Proposal Title' },
+                body_multiloc: { 'en' => 'My Proposal Body' },
                 u_select_field: 'option1',
                 u_nonexistent_field: 'whatever'
               }
@@ -234,8 +234,8 @@ resource 'Ideas' do
             expect(idea.custom_field_values).to eq({
               'u_select_field' => 'option1'
             })
-            expect(idea.title_multiloc).to eq({ 'en' => 'My Idea Title' })
-            expect(idea.body_multiloc).to eq({ 'en' => 'My Idea Body' })
+            expect(idea.title_multiloc).to eq({ 'en' => 'My Proposal Title' })
+            expect(idea.body_multiloc).to eq({ 'en' => 'My Proposal Body' })
 
             # Make sure user id is linked to idea
             expect(idea.author_id).to eq(@user.id)
@@ -260,8 +260,8 @@ resource 'Ideas' do
               idea: {
                 publication_status: 'published',
                 project_id: @project.id,
-                title_multiloc: { 'en' => 'My Idea Title' },
-                body_multiloc: { 'en' => 'My Idea Body' },
+                title_multiloc: { 'en' => 'My Proposal Title' },
+                body_multiloc: { 'en' => 'My Proposal Body' },
                 u_select_field: 'option1',
                 u_nonexistent_field: 'whatever',
                 anonymous: true
@@ -274,8 +274,8 @@ resource 'Ideas' do
             expect(idea.custom_field_values).to eq({
               'u_select_field' => 'option1'
             })
-            expect(idea.title_multiloc).to eq({ 'en' => 'My Idea Title' })
-            expect(idea.body_multiloc).to eq({ 'en' => 'My Idea Body' })
+            expect(idea.title_multiloc).to eq({ 'en' => 'My Proposal Title' })
+            expect(idea.body_multiloc).to eq({ 'en' => 'My Proposal Body' })
 
             # Make sure user id is not linked to idea
             expect(idea.author_id).to be_nil
