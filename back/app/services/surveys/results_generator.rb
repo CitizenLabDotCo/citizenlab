@@ -225,6 +225,14 @@ module Surveys
       seen_field_responses[field.id]&.count || 0
     end
 
+    # Pre-filters inputs based on logic if there is any logic
+    def inputs(field)
+      return @all_inputs unless survey_has_logic?
+
+      input_ids = seen_field_responses[field.id]
+      @all_inputs.where(id: input_ids)
+    end
+
     def core_field_attributes(field, response_count: nil)
       response_count ||= base_responses(field).size
       {
@@ -241,14 +249,6 @@ module Surveys
         questionNumber: nil,
         questionCategory: field.question_category
       }
-    end
-
-    # Pre-filters inputs based on logic if there is any logic
-    def inputs(field)
-      return @all_inputs unless survey_has_logic?
-
-      input_ids = seen_field_responses[field.id]
-      @all_inputs.where(id: input_ids)
     end
 
     def base_responses(field)
