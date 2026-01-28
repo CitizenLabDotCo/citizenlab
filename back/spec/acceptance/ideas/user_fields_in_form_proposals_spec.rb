@@ -7,20 +7,20 @@ require_relative 'shared_examples/user_fields_in_form_for_ideationlike_methods'
 resource 'Ideas' do
   before do
     header 'Content-Type', 'application/json'
-    create(:idea_status_proposed)
+    create(:proposals_status, code: 'proposed')
   end
 
   post 'web_api/v1/ideas' do
     before do
       # Create project with form
-      @project = create(:single_phase_ideation_project, phase_attrs: { with_permissions: true })
+      @project = create(:single_phase_proposals_project, phase_attrs: { with_permissions: true })
       @phase = @project.phases.first
       @phase.permissions.find_by(action: 'posting_idea').update!(
         global_custom_fields: false
       )
 
       @permission = @phase.permissions.find_by(action: 'posting_idea')
-      @custom_form = create(:custom_form, :with_default_fields, participation_context: @project)
+      @custom_form = create(:custom_form, :with_default_fields, participation_context: @phase)
 
       # Create registration (demographic) question and
       # add to permission
