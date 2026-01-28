@@ -35,6 +35,7 @@ import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 
 import messages from '../../messages';
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
+import { useWordExportContext } from '../../word/WordExportContext';
 
 interface Props {
   phase: IPhaseData;
@@ -48,6 +49,8 @@ const SurveyActions = ({ phase }: Props) => {
 
   const { downloadPdf, isDownloading: isDownloadingPdf } =
     usePdfExportContext();
+  const { downloadWord, isDownloading: isDownloadingWord } =
+    useWordExportContext();
 
   const { data: project } = useProjectById(projectId);
   const { mutate: updatePhase } = useUpdatePhase();
@@ -68,7 +71,10 @@ const SurveyActions = ({ phase }: Props) => {
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDropdownOpened, setDropdownOpened] = useState(false);
+  const [isExportDropdownOpened, setExportDropdownOpened] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
+
+  const isExporting = isDownloadingPdf || isDownloadingWord;
 
   if (!project || !submissionCount) {
     return null;
@@ -242,15 +248,45 @@ const SurveyActions = ({ phase }: Props) => {
             }
           />
         </Box>
-        <Button
-          buttonStyle="text"
-          onClick={downloadPdf}
-          processing={isDownloadingPdf}
-          aria-label={formatMessage(messages.downloadInsightsPdf)}
-          data-pdf-exclude="true"
-        >
-          {formatMessage(messages.download)}
-        </Button>
+        <Box position="relative">
+          <Button
+            buttonStyle="text"
+            icon="download"
+            onClick={() => setExportDropdownOpened(!isExportDropdownOpened)}
+            processing={isExporting}
+            aria-label={formatMessage(messages.downloadInsightsPdf)}
+            data-pdf-exclude="true"
+          >
+            {formatMessage(messages.download)}
+          </Button>
+          <Dropdown
+            opened={isExportDropdownOpened}
+            onClickOutside={() => setExportDropdownOpened(false)}
+            width="180px"
+            right="0px"
+            top="42px"
+            content={
+              <Box p="8px" display="flex" flexDirection="column" gap="4px">
+                <DropdownListItem
+                  onClick={() => {
+                    setExportDropdownOpened(false);
+                    downloadPdf();
+                  }}
+                >
+                  {formatMessage(messages.downloadPdf)}
+                </DropdownListItem>
+                <DropdownListItem
+                  onClick={() => {
+                    setExportDropdownOpened(false);
+                    downloadWord();
+                  }}
+                >
+                  {formatMessage(messages.downloadWord)}
+                </DropdownListItem>
+              </Box>
+            }
+          />
+        </Box>
         <ButtonWithLink
           linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phaseId}`}
           buttonStyle="text"

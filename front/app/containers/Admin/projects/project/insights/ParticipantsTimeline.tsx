@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
@@ -12,6 +12,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import { usePdfExportContext } from './pdf/PdfExportContext';
+import { useWordExportContext } from './word/WordExportContext';
 
 interface Props {
   phaseId: string;
@@ -25,8 +26,20 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
   const { isPdfRenderMode } = usePdfExportContext();
   const { formatMessage } = useIntl();
   const graphRef = useRef<SVGElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { registerTimelineRef } = useWordExportContext();
 
   const { data, isLoading, error } = usePhaseInsights({ phaseId });
+
+  // Register the container ref with WordExportContext for chart capture (using html2canvas)
+  useEffect(() => {
+    if (containerRef.current) {
+      registerTimelineRef(containerRef.current);
+    }
+    return () => {
+      registerTimelineRef(null);
+    };
+  }, [registerTimelineRef, data]); // Re-register when data loads to ensure chart is rendered
 
   if (isLoading) {
     return (
@@ -89,6 +102,7 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
       </Box>
 
       <Box
+        ref={containerRef}
         height={isPdfRenderMode ? `${PDF_CHART_HEIGHT}px` : '249px'}
         width={isPdfRenderMode ? `${PDF_CHART_WIDTH}px` : undefined}
       >
