@@ -13,6 +13,7 @@ class UserFieldsInFormService
     idea
   )
     return false unless current_user
+    return false unless phase
 
     # Confirm that the idea belongs to the current user
     return false unless idea.author_id == current_user.id
