@@ -165,7 +165,7 @@ module Surveys
 
         # Next build the responses with an array of input IDs that were seen for each field based on logic & values
         @all_inputs.each_with_object({}) do |input, seen|
-          if survey_has_logic?
+
             next_page_id = nil
             pages.each do |page_id, fields_on_page|
               next unless next_page_id.nil? || page_id == next_page_id
@@ -182,7 +182,6 @@ module Surveys
                 next_page_id = next_logic_page_id if next_logic_page_id
               end
             end
-          end
         end
       end
     end
