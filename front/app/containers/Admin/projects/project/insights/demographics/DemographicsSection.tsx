@@ -26,6 +26,7 @@ import {
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
+import { usePdfExportContext } from '../pdf/PdfExportContext';
 
 import DemographicFieldContent from './DemographicFieldContent';
 
@@ -78,11 +79,11 @@ const TabButton = styled.button<{ active: boolean }>`
 
 interface Props {
   phase?: IPhaseData;
-  isPdfExport?: boolean;
 }
 
-const DemographicsSection = ({ phase, isPdfExport = false }: Props) => {
+const DemographicsSection = ({ phase }: Props) => {
   const { formatMessage } = useIntl();
+  const { isPdfRenderMode } = usePdfExportContext();
   const localize = useLocalize();
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(0);
 
@@ -179,7 +180,7 @@ const DemographicsSection = ({ phase, isPdfExport = false }: Props) => {
     );
   }
 
-  if (isPdfExport) {
+  if (isPdfRenderMode) {
     return (
       <Box
         background="white"

@@ -303,7 +303,9 @@ const InsightsContent = () => {
       {/* Hidden container for PDF rendering - only mounted during export */}
       {isDownloadingPdf && (
         <div style={hiddenContainerStyle}>
-          <InsightsPdfContent phase={phase.data} />
+          <PdfExportProvider isPdfRenderMode>
+            <InsightsPdfContent phase={phase.data} />
+          </PdfExportProvider>
         </div>
       )}
     </>

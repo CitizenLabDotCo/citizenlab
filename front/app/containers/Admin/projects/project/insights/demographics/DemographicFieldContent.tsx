@@ -64,11 +64,11 @@ const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
         <Box mb="16px">
           <Warning>
             <FormattedMessage
-              {...messages.noReferenceData}
+              {...messages.noReferenceDataMessage}
               values={{
-                addBaseDataLink: (
+                link: (chunks) => (
                   <a href="/admin/dashboard/representation/edit-base-data">
-                    <FormattedMessage {...messages.addBaseData} />
+                    {chunks}
                   </a>
                 ),
               }}

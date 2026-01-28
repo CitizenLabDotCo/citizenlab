@@ -43,6 +43,7 @@ const useInfiniteAnalysisInputs = ({
       const pageNumber = getPageNumberFromUrl(lastPage.links.self);
       return hasNextPage && pageNumber ? pageNumber + 1 : null;
     },
+    enabled: !!analysisId,
     keepPreviousData: true,
   });
 };
