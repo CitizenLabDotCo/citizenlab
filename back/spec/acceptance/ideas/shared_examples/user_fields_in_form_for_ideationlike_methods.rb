@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # filepath: /Users/work/cl/citizenlab/back/spec/acceptance/ideas/shared_examples/user_fields_in_form_for_input_methods.rb
 
 RSpec.shared_examples 'user fields in form for input methods' do
