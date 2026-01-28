@@ -1415,7 +1415,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "Muokkaa kysymystä",
   "app.containers.IdeasEditPage.save": "Tallenna",
   "app.containers.IdeasEditPage.submitApiError": "Lomakkeen lähettämisessä oli ongelma. Tarkista mahdolliset virheet ja yritä uudelleen.",
-  "app.containers.IdeasFeedPage.addYourIdea": "Lisää ideasi",
   "app.containers.IdeasFeedPage.allTopics": "Kaikki aiheet",
   "app.containers.IdeasFeedPage.backToProject": "Takaisin projektiin",
   "app.containers.IdeasFeedPage.collapsePanel": "Pienennä aihepaneelia",

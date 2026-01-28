@@ -1415,7 +1415,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "Soruyu düzenleyin",
   "app.containers.IdeasEditPage.save": "Kaydet",
   "app.containers.IdeasEditPage.submitApiError": "Form gönderilirken bir sorun oluştu. Lütfen olası hataları düzeltip tekrar deneyin.",
-  "app.containers.IdeasFeedPage.addYourIdea": "Fikrinizi ekleyin",
   "app.containers.IdeasFeedPage.allTopics": "Tüm konular",
   "app.containers.IdeasFeedPage.backToProject": "Projeye geri dön",
   "app.containers.IdeasFeedPage.collapsePanel": "Konuları daralt paneli",

@@ -1415,7 +1415,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "Izmenite pitanje",
   "app.containers.IdeasEditPage.save": "Sačuvajte",
   "app.containers.IdeasEditPage.submitApiError": "Došlo je do problema prilikom slanja forme. Molimo vas da proverite greške i pokušate ponovo.",
-  "app.containers.IdeasFeedPage.addYourIdea": "Add your idea",
   "app.containers.IdeasFeedPage.allTopics": "All topics",
   "app.containers.IdeasFeedPage.backToProject": "Back to project",
   "app.containers.IdeasFeedPage.collapsePanel": "Collapse topics panel",

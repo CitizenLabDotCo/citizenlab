@@ -1415,7 +1415,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "Editar pregunta",
   "app.containers.IdeasEditPage.save": "Guardar",
   "app.containers.IdeasEditPage.submitApiError": "Ha habido un problema al enviar el formulario. Por favor, compruebe si hay algún error y vuelva a intentarlo.",
-  "app.containers.IdeasFeedPage.addYourIdea": "Añade tu idea",
   "app.containers.IdeasFeedPage.allTopics": "Todos los temas",
   "app.containers.IdeasFeedPage.backToProject": "Volver al proyecto",
   "app.containers.IdeasFeedPage.collapsePanel": "Contraer panel de temas",

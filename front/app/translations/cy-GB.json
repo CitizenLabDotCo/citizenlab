@@ -1415,7 +1415,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "Golygu cwestiwn",
   "app.containers.IdeasEditPage.save": "Arbed",
   "app.containers.IdeasEditPage.submitApiError": "Roedd problem wrth gyflwyno'r ffurflen. Gwiriwch am unrhyw wallau a cheisiwch eto.",
-  "app.containers.IdeasFeedPage.addYourIdea": "Ychwanegwch eich syniad",
   "app.containers.IdeasFeedPage.allTopics": "Pob pwnc",
   "app.containers.IdeasFeedPage.backToProject": "Yn ôl i'r prosiect",
   "app.containers.IdeasFeedPage.collapsePanel": "Panel pynciau wedi'i gwanhau",

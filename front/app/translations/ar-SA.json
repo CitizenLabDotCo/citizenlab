@@ -1415,7 +1415,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "تعديل السؤال",
   "app.containers.IdeasEditPage.save": "حفظ",
   "app.containers.IdeasEditPage.submitApiError": "حدثت مشكلة أثناء إرسال النموذج. يرجى التحقق بحثًا عن أي أخطاء وإعادة المحاولة.",
-  "app.containers.IdeasFeedPage.addYourIdea": "أضف فكرتك",
   "app.containers.IdeasFeedPage.allTopics": "جميع المواضيع",
   "app.containers.IdeasFeedPage.backToProject": "العودة إلى المشروع",
   "app.containers.IdeasFeedPage.collapsePanel": "طي لوحة المواضيع",

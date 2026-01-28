@@ -1415,7 +1415,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "Redigera fråga",
   "app.containers.IdeasEditPage.save": "Spara",
   "app.containers.IdeasEditPage.submitApiError": "Det fanns ett problem med att skicka in formuläret. Vänligen kontrollera om det finns några fel och försök igen.",
-  "app.containers.IdeasFeedPage.addYourIdea": "Lägg till din idé",
   "app.containers.IdeasFeedPage.allTopics": "Alla ämnen",
   "app.containers.IdeasFeedPage.backToProject": "Tillbaka till projektet",
   "app.containers.IdeasFeedPage.collapsePanel": "Dölj panelen för ämnen",

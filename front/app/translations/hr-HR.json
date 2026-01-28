@@ -1415,7 +1415,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "Uredi pitanje",
   "app.containers.IdeasEditPage.save": "Spremi",
   "app.containers.IdeasEditPage.submitApiError": "Došlo je do problema prilikom slanja obrasca. Molimo vas da provjerite pogreške i pokušate ponovo.",
-  "app.containers.IdeasFeedPage.addYourIdea": "Dodajte svoju ideju",
   "app.containers.IdeasFeedPage.allTopics": "Sve teme",
   "app.containers.IdeasFeedPage.backToProject": "Natrag na projekt",
   "app.containers.IdeasFeedPage.collapsePanel": "Sažmi ploču s temama",

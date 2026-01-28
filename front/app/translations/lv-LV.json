@@ -1415,7 +1415,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "Rediģēt jautājumu",
   "app.containers.IdeasEditPage.save": "Saglabāt",
   "app.containers.IdeasEditPage.submitApiError": "Iesniedzot veidlapu, radās kļūda. Lūdzu, pārbaudiet, vai nav kļūdu, un mēģiniet vēlreiz.",
-  "app.containers.IdeasFeedPage.addYourIdea": "Pievienojiet savu ideju",
   "app.containers.IdeasFeedPage.allTopics": "Visas tēmas",
   "app.containers.IdeasFeedPage.backToProject": "Atgriezties pie projekta",
   "app.containers.IdeasFeedPage.collapsePanel": "Tēmu paneļa sabrukšana",

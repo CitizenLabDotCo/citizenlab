@@ -1415,7 +1415,6 @@
   "app.containers.IdeasEditPage.questionFormTitle": "Editar la pregunta",
   "app.containers.IdeasEditPage.save": "Desar",
   "app.containers.IdeasEditPage.submitApiError": "Hi ha hagut un problema en enviar el formulari. Comproveu si hi ha errors i torneu-ho a provar.",
-  "app.containers.IdeasFeedPage.addYourIdea": "Afegeix la teva idea",
   "app.containers.IdeasFeedPage.allTopics": "Tots els temes",
   "app.containers.IdeasFeedPage.backToProject": "Torna al projecte",
   "app.containers.IdeasFeedPage.collapsePanel": "Replega el panell de temes",
