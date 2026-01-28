@@ -205,17 +205,19 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.vsLast7Days',
     defaultMessage: 'vs last 7 days',
   },
-  noComparisonData: {
-    id: 'app.containers.Admin.projects.project.insights.noComparisonData',
-    defaultMessage: 'No comparison data',
+  insufficientComparisonData: {
+    id: 'app.containers.Admin.projects.project.insights.insufficientComparisonData',
+    defaultMessage: 'Insufficient comparison data',
   },
-  comparisonAvailableAfter14Days: {
-    id: 'app.containers.Admin.projects.project.insights.comparisonAvailableAfter14Days',
-    defaultMessage: 'Comparison available after 14 days',
+  insufficientComparisonDataPhaseTooNew: {
+    id: 'app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew',
+    defaultMessage:
+      'Cannot calculate 7 day change when phase has run for less than 14 days',
   },
-  firstActivityWithinLast7Days: {
-    id: 'app.containers.Admin.projects.project.insights.firstActivityWithinLast7Days',
-    defaultMessage: 'First activity started within the last 7 days',
+  insufficientComparisonDataZeroPreviousPeriod: {
+    id: 'app.containers.Admin.projects.project.insights.insufficientComparisonDataZeroPreviousPeriod',
+    defaultMessage:
+      'The previous 7 day period had no activity to compare against (which would give an infinite value)',
   },
   noReferenceDataMessage: {
     id: 'app.containers.Admin.projects.project.insights.noReferenceDataMessage',
