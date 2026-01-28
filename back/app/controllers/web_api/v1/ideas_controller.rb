@@ -211,6 +211,7 @@ class WebApi::V1::IdeasController < ApplicationController
       render json: { errors: { idea_status_id: [{ error: 'Cannot manually assign inputs to an automatic status', value: input.idea_status_id }] } }, status: :unprocessable_entity
       return
     end
+    verify_profanity input
 
     save_options = {}
     publication_status = params.dig(:idea, :publication_status)
