@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
   Box,
@@ -51,24 +51,21 @@ const TypedConfirmationModal = ({
     }
   }, [opened]);
 
-  const handleInputChange = useCallback((value: string) => {
+  const handleInputChange = (value: string) => {
     setInputValue(value);
-  }, []);
+  };
 
-  const handleConfirm = useCallback(() => {
+  const handleConfirm = () => {
     if (isConfirmationValid && !isDeleting) {
       onConfirm();
     }
-  }, [isConfirmationValid, isDeleting, onConfirm]);
+  };
 
-  const handleKeyDown = useCallback(
-    (event: React.KeyboardEvent) => {
-      if (event.key === 'Enter' && isConfirmationValid && !isDeleting) {
-        handleConfirm();
-      }
-    },
-    [isConfirmationValid, isDeleting, handleConfirm]
-  );
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' && isConfirmationValid && !isDeleting) {
+      onConfirm();
+    }
+  };
 
   return (
     <Modal
