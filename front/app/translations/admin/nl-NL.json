@@ -2265,6 +2265,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.numberVotesPerUser": "Aantal stemmen per gebruiker",
   "app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText": "supportartikel",
   "app.containers.AdminPage.ProjectEdit.Voting.optionsToVoteOn": "Opties om op te stemmen",
+  "app.containers.AdminPage.ProjectEdit.Voting.percentTerm": "Procent",
   "app.containers.AdminPage.ProjectEdit.Voting.pointTerm": "Punt",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotePerOption2": "één stem per optie",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodSubtitle": "Gebruikers kunnen ervoor kiezen om een van de opties goed te keuren",

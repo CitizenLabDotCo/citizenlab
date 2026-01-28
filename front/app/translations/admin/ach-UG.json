@@ -2265,6 +2265,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.numberVotesPerUser": "crwdns777267:0crwdne777267:0",
   "app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText": "crwdns777269:0crwdne777269:0",
   "app.containers.AdminPage.ProjectEdit.Voting.optionsToVoteOn": "crwdns777271:0crwdne777271:0",
+  "app.containers.AdminPage.ProjectEdit.Voting.percentTerm": "crwdns6126559:0crwdne6126559:0",
   "app.containers.AdminPage.ProjectEdit.Voting.pointTerm": "crwdns4916071:0crwdne4916071:0",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotePerOption2": "crwdns777273:0crwdne777273:0",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodSubtitle": "crwdns777275:0crwdne777275:0",

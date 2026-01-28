@@ -19,7 +19,7 @@ module Insights
           acted_at: idea.submitted_at,
           classname: 'Idea',
           participant_id: participant_id(idea.id, idea.author_id, idea.author_hash),
-          user_custom_field_values: idea&.custom_field_values || {}
+          user_custom_field_values: (idea&.custom_field_values || {}).transform_keys { |key| key.start_with?('u_') ? key.sub(/^u_/, '') : key }
         }
       end
     end

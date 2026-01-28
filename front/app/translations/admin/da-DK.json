@@ -2265,6 +2265,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.numberVotesPerUser": "Antal stemmer pr. bruger",
   "app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText": "Oversigt over analyse af muligheder",
   "app.containers.AdminPage.ProjectEdit.Voting.optionsToVoteOn": "Muligheder at stemme om",
+  "app.containers.AdminPage.ProjectEdit.Voting.percentTerm": "Procent",
   "app.containers.AdminPage.ProjectEdit.Voting.pointTerm": "Punkt",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotePerOption2": "én stemme pr. valgmulighed",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodSubtitle": "Brugere kan vælge at godkende en af mulighederne",
