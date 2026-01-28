@@ -14,10 +14,10 @@ module IdeaFeed
     def top_n(n = 5, scope = Idea.all)
       eligible_ideas = fetch_eligible_ideas(scope)
 
-      if eligible_ideas.none?
-        candidates = fetch_least_exposed_candidates(fetch_all_ideas(scope), n * 4)
+      candidates = if eligible_ideas.none?
+        fetch_least_exposed_candidates(fetch_all_ideas(scope), n * 4)
       else
-        candidates = fetch_scored_candidates(eligible_ideas, n * 4)
+        fetch_scored_candidates(eligible_ideas, n * 4)
       end
 
       DiversityService.new.generate_list(candidates, exposures_scope, n)
