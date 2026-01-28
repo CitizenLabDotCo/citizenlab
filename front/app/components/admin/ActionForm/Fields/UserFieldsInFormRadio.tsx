@@ -40,13 +40,15 @@ const UserFieldsInFormRadio = ({
           label={
             <Box display="flex" alignItems="center">
               <Text color="primary" m="0">
-                <FormattedMessage {...messages.appendDemographicAnswers} />
+                <FormattedMessage
+                  {...messages.askDemographicQuestionsBeforeUserParticipates}
+                />
               </Text>
               <IconTooltip
                 ml="4px"
                 content={
                   <FormattedMessage
-                    {...messages.appendDemographicAnswersTooltip}
+                    {...messages.askDemographicQuestionsBeforeUserParticipatesTooltip}
                   />
                 }
               />
@@ -69,18 +71,9 @@ const UserFieldsInFormRadio = ({
               <IconTooltip
                 ml="4px"
                 content={
-                  <ul>
-                    <li>
-                      <FormattedMessage
-                        {...messages.collectDemographicsByAddingNewPageTooltip1}
-                      />
-                    </li>
-                    <li>
-                      <FormattedMessage
-                        {...messages.collectDemographicsByAddingNewPageTooltip2}
-                      />
-                    </li>
-                  </ul>
+                  <FormattedMessage
+                    {...messages.collectDemographicsByAddingNewPageTooltip}
+                  />
                 }
               />
             </Box>
