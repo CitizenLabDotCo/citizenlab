@@ -68,12 +68,8 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :allow_anonymous_participation do |phase|
-    if AppConfiguration.instance.feature_activated?('ideation_accountless_posting')
-      posting_permission = phase.permissions.find_by(action: 'posting_idea')
-      posting_permission&.permitted_by == 'everyone' || phase.allow_anonymous_participation
-    else
-      phase.allow_anonymous_participation
-    end
+    posting_permission = phase.permissions.find_by(action: 'posting_idea')
+    posting_permission&.permitted_by == 'everyone' || phase.allow_anonymous_participation
   end
 
   belongs_to :project

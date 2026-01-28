@@ -11,8 +11,6 @@ resource 'Ideas' do
 
   post 'web_api/v1/ideas' do
     before do
-      SettingsService.new.activate_feature!('ideation_accountless_posting')
-
       # Create project with form
       @project = create(:single_phase_ideation_project, phase_attrs: { with_permissions: true })
       @phase = @project.phases.first
