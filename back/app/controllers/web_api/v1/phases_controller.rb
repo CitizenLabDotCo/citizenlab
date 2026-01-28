@@ -175,7 +175,6 @@ class WebApi::V1::PhasesController < ApplicationController
       :ideas_order,
       :input_term,
       :vote_term,
-      :prescreening_enabled,
       :prescreening_mode,
       :reacting_threshold,
       :expire_days_limit,
@@ -196,7 +195,9 @@ class WebApi::V1::PhasesController < ApplicationController
       permitted += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]
     end
 
-    params.require(:phase).permit(permitted)
+    params.require(:phase).permit(permitted).tap do |p|
+      p[:prescreening_mode] ||= 'all' if params.dig(:phase, :prescreening_enabled)
+    end
   end
 
   def detect_invalid_timeline_changes

@@ -692,7 +692,7 @@ describe IdeaPolicy do
   end
 
   context 'on a proposal that is in pre-screening' do
-    let(:project) { create(:single_phase_proposals_project, phase_attrs: { prescreening_enabled: true }) }
+    let(:project) { create(:single_phase_proposals_project, phase_attrs: { prescreening_mode: 'all' }) }
     let(:idea) { create(:proposal, project: project, publication_status: 'submitted', idea_status: create(:proposals_status, code: 'prescreening')) }
     let!(:cosponsorship) { create(:cosponsorship, idea:, status: 'pending') }
 
