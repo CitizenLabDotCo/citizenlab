@@ -7,10 +7,12 @@ import {
   stylingConsts,
   Icon,
 } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAddIdeaExposure from 'api/idea_exposure/useAddIdeaExposure';
 import useIdeaById from 'api/ideas/useIdeaById';
+import usePhase from 'api/phases/usePhase';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -69,6 +71,10 @@ const StickyNote: React.FC<Props> = ({
   size = 'large',
   showReactions = true,
 }) => {
+  const [searchParams] = useSearchParams();
+  const phaseId = searchParams.get('phase_id') || undefined;
+  const { data: phase } = usePhase(phaseId);
+
   const isCentered = centeredIdeaId === ideaId;
   const noteHeight = NOTE_HEIGHTS[size];
 
@@ -147,8 +153,7 @@ const StickyNote: React.FC<Props> = ({
           flexShrink={0}
         >
           <Box display="flex" alignItems="center" gap="4px">
-            {idea.data.attributes.action_descriptors.commenting_idea
-              .enabled && (
+            {phase?.data.attributes.commenting_enabled && (
               <>
                 <Icon
                   name="comments"
@@ -162,7 +167,7 @@ const StickyNote: React.FC<Props> = ({
               </>
             )}
           </Box>
-          {idea.data.attributes.action_descriptors.reacting_idea.enabled && (
+          {phase?.data.attributes.reacting_enabled && (
             <ReactionControl ideaId={ideaId} size="1" styleType="compact" />
           )}
         </Box>

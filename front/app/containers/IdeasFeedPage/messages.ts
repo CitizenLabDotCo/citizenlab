@@ -26,9 +26,9 @@ export default defineMessages({
     defaultMessage: 'Topics panel',
   },
   // #input_term_copy
-  addYourIdea: {
-    id: 'app.containers.IdeasFeedPage.addYourIdea',
-    defaultMessage: 'Add your idea',
+  addAnIdea: {
+    id: 'app.containers.IdeasFeedPage.addAnIdea',
+    defaultMessage: 'Add an idea',
   },
   addAnOption: {
     id: 'app.containers.IdeasFeedPage.addAnOption',

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Button from 'component-library/components/Button';
+
 import useAuthUser from 'api/me/useAuthUser';
 import usePhase from 'api/phases/usePhase';
 import { getInputTerm } from 'api/phases/utils';
@@ -7,8 +9,6 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
-
-import Button from 'component-library/components/Button';
 
 import { getIdeaPostingRules } from 'utils/actionTakingRules';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -78,7 +78,7 @@ const AddIdeaButton = ({ projectSlug, phaseId }: Props) => {
     <Button icon="plus-circle" onClick={handleClick}>
       <FormattedMessage
         {...getInputTermMessage(getInputTerm([phase.data]), {
-          idea: messages.addYourIdea,
+          idea: messages.addAnIdea,
           option: messages.addAnOption,
           project: messages.addAProject,
           question: messages.addAQuestion,
