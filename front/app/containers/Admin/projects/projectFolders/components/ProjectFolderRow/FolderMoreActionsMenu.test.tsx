@@ -78,6 +78,15 @@ describe('FolderMoreActionsMenu', () => {
       name: 'Delete folder',
     });
     await user.click(deleteFolderButton);
+
+    const confirmationInput = await screen.findByPlaceholderText('DELETE');
+    await user.type(confirmationInput, 'DELETE');
+
+    const confirmDeleteButton = await screen.findByRole('button', {
+      name: 'Delete folder',
+    });
+    await user.click(confirmDeleteButton);
+
     await waitFor(() => {
       expect(setErrorFn).toHaveBeenLastCalledWith(
         'There was an issue removing this folder. Please try again.'
