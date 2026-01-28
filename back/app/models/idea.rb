@@ -67,6 +67,7 @@ class Idea < ApplicationRecord
   include AnonymousParticipation
   include Files::FileAttachable
   include ClaimableParticipation
+  include LocationTrackableParticipation
   extend OrderAsSpecified
 
   PUBLICATION_STATUSES = %w[draft submitted published].freeze
