@@ -74,7 +74,7 @@ class Phase < ApplicationRecord
   REACTING_METHODS      = %w[unlimited limited].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition].freeze
   FALLBACK_INPUT_TERM   = 'idea'
-  VOTE_TERMS            = %w[vote point token credit]
+  VOTE_TERMS            = %w[vote point token credit percent]
   PRESCREENING_MODES    = %w[all].freeze
 
   attribute :reacting_dislike_enabled, :boolean, default: -> { disliking_enabled_default }
