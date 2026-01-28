@@ -30,6 +30,25 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
         expect(page_result[:inputType]).to eq 'page'
         expect(page_result[:logic]).to eq({ nextPageNumber: 4, numQuestionsSkipped: 13 })
       end
+
+      it 'uses the logic IDs correctly to flag hidden fields' do
+        page_field.update!(logic: { next_page_id: mid_page_field2.id })
+
+        logic_ids = [page_field.id]
+        results_with_logic_ids = generator.generate_results(logic_ids: logic_ids)
+        results = results_with_logic_ids[:results]
+
+        # Fields that should be hidden when select option 1 is selected
+        hidden_field_ids = results.select { |r| r[:hidden] == true }.pluck(:customFieldId)
+        expect(hidden_field_ids).to eq(
+          [
+            mid_page_field1.id,
+            select_field.id,
+            multiselect_image_field.id,
+            unanswered_text_field.id
+          ]
+        )
+      end
     end
 
     describe 'linear scale fields' do
@@ -84,6 +103,29 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
           [27, 27, 27, 27, 27, 18, 18, 18, 18, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26]
         )
       end
+
+      it 'uses the logic IDs correctly to flag hidden fields' do
+        linear_scale_field.update!(logic: {
+          rules: [
+            { if: 3, goto_page_id: mid_page_field2.id }
+          ]
+        })
+
+        logic_ids = ["#{linear_scale_field.id}_3"]
+        results_with_logic_ids = generator.generate_results(logic_ids: logic_ids)
+        results = results_with_logic_ids[:results]
+
+        # Fields that should be hidden when select option 1 is selected
+        hidden_field_ids = results.select { |r| r[:hidden] == true }.pluck(:customFieldId)
+        expect(hidden_field_ids).to eq(
+          [
+            mid_page_field1.id,
+            select_field.id,
+            multiselect_image_field.id,
+            unanswered_text_field.id
+          ]
+        )
+      end
     end
 
     describe 'select fields' do
@@ -108,6 +150,36 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
         # Correct response counts
         expect(results.pluck(:totalResponseCount)).to eq(
           [27, 27, 27, 27, 27, 27, 27, 27, 27, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24]
+        )
+      end
+
+      it 'uses the logic IDs correctly to flag hidden fields' do
+        select_field.update!(logic: {
+          rules: [
+            { if: select_field.options.first.id, goto_page_id: last_page_field.id }
+          ]
+        })
+
+        logic_ids = [select_field.options.first.id]
+        results_with_logic_ids = generator.generate_results(logic_ids: logic_ids)
+        results = results_with_logic_ids[:results]
+
+        # Fields that should be hidden when select option 1 is selected
+        hidden_field_ids = results.select { |r| r[:hidden] == true }.pluck(:customFieldId)
+        expect(hidden_field_ids).to eq(
+          [
+            mid_page_field2.id,
+            file_upload_field.id,
+            shapefile_upload_field.id,
+            point_field.id,
+            line_field.id,
+            polygon_field.id,
+            number_field.id,
+            ranking_field.id,
+            matrix_linear_scale_field.id,
+            rating_field.id,
+            sentiment_linear_scale_field.id
+          ]
         )
       end
     end
