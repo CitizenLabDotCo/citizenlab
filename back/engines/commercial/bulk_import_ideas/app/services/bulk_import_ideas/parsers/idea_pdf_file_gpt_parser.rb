@@ -2,6 +2,11 @@
 
 module BulkImportIdeas::Parsers
   class IdeaPdfFileGPTParser < IdeaPdfFileParser
+    # Version used to compare results when updating and testing the parser
+    def self.version
+      1.0
+    end
+
     # NEW VERSION USING GPT
     # Returns an array of idea rows compatible with IdeaImporter
     # Only one row ever returned as only one PDF per idea is parsed by this service
