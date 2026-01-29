@@ -2307,6 +2307,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.numberVotesPerUser": "Broj glasova po korisniku",
   "app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText": "Pregled analize opcija",
   "app.containers.AdminPage.ProjectEdit.Voting.optionsToVoteOn": "Opcije za glasanje",
+  "app.containers.AdminPage.ProjectEdit.Voting.percentTerm": "Postotak",
   "app.containers.AdminPage.ProjectEdit.Voting.pointTerm": "Točka",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotePerOption2": "jedan glas po opciji",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodSubtitle": "Korisnici mogu odlučiti odobriti bilo koju od opcija",
