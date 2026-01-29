@@ -2307,6 +2307,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.numberVotesPerUser": "فی صارف ووٹوں کی تعداد",
   "app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText": "اختیاری تجزیہ کا جائزہ",
   "app.containers.AdminPage.ProjectEdit.Voting.optionsToVoteOn": "ووٹ دینے کے اختیارات",
+  "app.containers.AdminPage.ProjectEdit.Voting.percentTerm": "فیصد",
   "app.containers.AdminPage.ProjectEdit.Voting.pointTerm": "نقطہ",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotePerOption2": "ایک ووٹ فی آپشن",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodSubtitle": "صارفین کسی بھی آپشن کو منظور کرنے کا انتخاب کر سکتے ہیں۔",
