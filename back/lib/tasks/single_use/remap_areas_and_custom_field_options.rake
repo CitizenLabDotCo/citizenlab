@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'csv'
-
+namespace :single_use do
 namespace :single_use do
   desc 'Remap areas and their corresponding custom field options based on CSV mapping file'
   # Usage:
@@ -25,6 +25,7 @@ namespace :single_use do
   # Zandberg,Graauw
   # Schuddebeurs,Hulst
   task :remap_areas_and_custom_field_options, %i[host csv_path] => :environment do |_task, args|
+
     raise 'Please provide host argument' if args[:host].blank?
     raise 'Please provide csv_path argument' if args[:csv_path].blank?
     raise "CSV file not found: #{args[:csv_path]}" unless File.exist?(args[:csv_path])
@@ -81,9 +82,9 @@ def build_mapping_from_csv(csv)
   mapping
 end
 
-def print_domicile_field_status(domicile_field)
-  if domicile_field
-    puts "✓ Found domicile custom field with #{domicile_field.options.count} options"
+def print_domicile_field_status(_domicile_field)
+  if _domicile_field
+    puts "✓ Found domicile custom field with #{_domicile_field.options.count} options"
   else
     puts '⚠ No domicile custom field found - only areas will be updated'
   end
@@ -111,6 +112,7 @@ def process_target_group(target_name, old_new_pairs, domicile_field, stats)
       stats[:areas_not_found] += 1
       puts "⚠ Area not found: '#{old_name}'"
     end
+
     return
   end
   existing_target_area = Area.all.find do |area|
@@ -203,8 +205,8 @@ def update_static_pages(area_to_keep, area_to_merge)
   end
 end
 
-def update_user_domicile(area_to_keep, area_to_merge, domicile_field)
-  return unless domicile_field
+def update_user_domicile(area_to_keep, area_to_merge, _domicile_field)
+  return unless _domicile_field
   User.where("custom_field_values->>'domicile' = ?", area_to_merge.id).each do |user|
     user.custom_field_values['domicile'] = area_to_keep.id
     user.save(validate: false)
