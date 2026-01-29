@@ -285,6 +285,7 @@
   "app.components.GanttChart.today": "Haut",
   "app.components.GoBackButton.group.edit.goBack": "Zeréck",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Gitt zréck op déi virdrun Säit",
+  "app.components.HookForm.EmojiPicker.clearEmoji": "Kloer",
   "app.components.HookForm.Feedback.errorTitle": "Et gëtt e Problem.",
   "app.components.HookForm.Feedback.submissionError": "Probéiert et nach eng Kéier. Wann de Problem weiderbesteet, kontaktéiert eis",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Et gouf e Problem op eiser Säit, pardon.",
