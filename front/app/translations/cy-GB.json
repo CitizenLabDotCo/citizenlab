@@ -285,6 +285,7 @@
   "app.components.GanttChart.today": "Heddiw",
   "app.components.GoBackButton.group.edit.goBack": "Mynd yn ôl",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Ewch yn ôl i'r dudalen flaenorol",
+  "app.components.HookForm.EmojiPicker.clearEmoji": "Clirio",
   "app.components.HookForm.Feedback.errorTitle": "Mae yna broblem",
   "app.components.HookForm.Feedback.submissionError": "Ceisio eto. Os bydd y mater yn parhau, cysylltwch â ni",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Roedd problem ar ein diwedd, sori",
