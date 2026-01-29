@@ -2307,6 +2307,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.numberVotesPerUser": "Nifer y pleidleisiau fesul defnyddiwr",
   "app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText": "Trosolwg dadansoddi opsiynau",
   "app.containers.AdminPage.ProjectEdit.Voting.optionsToVoteOn": "Opsiynau i bleidleisio arnynt",
+  "app.containers.AdminPage.ProjectEdit.Voting.percentTerm": "Canran",
   "app.containers.AdminPage.ProjectEdit.Voting.pointTerm": "Pwynt",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotePerOption2": "pleidlais sengl fesul opsiwn",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodSubtitle": "Gall defnyddwyr ddewis cymeradwyo unrhyw un o'r opsiynau",
