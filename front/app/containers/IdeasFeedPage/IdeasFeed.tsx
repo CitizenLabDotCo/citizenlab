@@ -1,9 +1,9 @@
 import React, {
   useMemo,
-  useRef,
   useCallback,
   useState,
   useEffect,
+  useRef,
 } from 'react';
 
 import {
@@ -20,6 +20,8 @@ import styled from 'styled-components';
 
 import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useInputTopics from 'api/input_topics/useInputTopics';
+import usePhase from 'api/phases/usePhase';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -107,6 +109,13 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
   const phaseId = searchParams.get('phase_id')!;
   const initialIdeaId = searchParams.get('initial_idea_id') || undefined;
 
+  // Get project ID from phase to fetch topics
+  const { data: phase } = usePhase(phaseId);
+  const projectId = phase?.data.relationships.project.data.id;
+
+  // Fetch topics to get emojis
+  const { data: topicsData } = useInputTopics(projectId, { depth: 0 });
+
   const parentRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useBreakpoint('phone');
 
@@ -189,6 +198,15 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
     });
     return map;
   }, [orderedIdeas]);
+
+  // Create emoji lookup map from topics
+  const topicEmojis = useMemo(() => {
+    const map = new Map<string, string | null>();
+    topicsData?.data.forEach((topic) => {
+      map.set(topic.id, topic.attributes.icon);
+    });
+    return map;
+  }, [topicsData]);
 
   const ideasLength = orderedIdeas.length;
 
@@ -315,6 +333,10 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
           // Use parentTopicId for color when filtering by subtopic, otherwise use the first topic
           const colorTopicId = parentTopicId || topicId || topicIds[0];
           const topicBackgroundColor = getTopicColor(colorTopicId);
+          // Get emojis from all root topics associated with this idea
+          const emojis = topicIds
+            .map((id) => topicEmojis.get(id))
+            .filter((emoji): emoji is string => emoji != null);
 
           return (
             <VirtualItem
@@ -335,6 +357,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
                 <StickyNote
                   ideaId={idea.id}
                   topicBackgroundColor={topicBackgroundColor}
+                  topicEmojis={emojis}
                   onClick={() => handleIdeaSelect(idea.id)}
                   centeredIdeaId={centeredIdeaId || undefined}
                   size={noteSize}
