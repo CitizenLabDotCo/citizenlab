@@ -2953,6 +2953,7 @@
   "app.containers.AdminPage.Topics.edit": "Bewerk",
   "app.containers.AdminPage.Topics.editInputTopic": "Bewerk bijdrage-tag",
   "app.containers.AdminPage.Topics.fieldTopicDescription": "Beschrijving (optioneel)",
+  "app.containers.AdminPage.Topics.fieldTopicEmoji": "Emoji (optioneel)",
   "app.containers.AdminPage.Topics.fieldTopicTitle": "Naam tag",
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Voer voor elke taal een tagnaam in",
   "app.containers.AdminPage.Topics.inputTags": "Tags voor bijdragen",
