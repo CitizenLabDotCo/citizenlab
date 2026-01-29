@@ -265,6 +265,7 @@ const Settings = () => {
             options={sortOptions}
             value={sort || 'count'}
             onChange={handleSort}
+            dataCy="sort-select"
           />
         </Box>
       )}
