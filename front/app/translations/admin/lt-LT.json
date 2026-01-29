@@ -2307,6 +2307,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.numberVotesPerUser": "Vieno naudotojo balsų skaičius",
   "app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText": "Galimybių analizės apžvalga",
   "app.containers.AdminPage.ProjectEdit.Voting.optionsToVoteOn": "Galimybės balsuoti",
+  "app.containers.AdminPage.ProjectEdit.Voting.percentTerm": "Procentai",
   "app.containers.AdminPage.ProjectEdit.Voting.pointTerm": "Taškas",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotePerOption2": "vienas balsas už vieną variantą",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodSubtitle": "Vartotojai gali pasirinkti patvirtinti bet kurią iš šių parinkčių",
