@@ -2248,7 +2248,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodSubtitle": "Tilldela en budget till alternativen och be deltagarna att välja de alternativ som de föredrar och som ryms inom den totala budgeten.",
   "app.containers.AdminPage.ProjectEdit.Voting.budgetingVotingMethodTitle2": "Tilldelning av budgetmedel",
   "app.containers.AdminPage.ProjectEdit.Voting.commentingBias": "Att tillåta användare att kommentera kan snedvrida omröstningsprocessen.",
-  "app.containers.AdminPage.ProjectEdit.Voting.creditTerm": "Procent",
+  "app.containers.AdminPage.ProjectEdit.Voting.creditTerm": "Kredit",
   "app.containers.AdminPage.ProjectEdit.Voting.defaultViewOptions": "Standardvy av alternativ",
   "app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForUsers": "Åtgärder för användare",
   "app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForUsersDescription": "Välj vilka ytterligare åtgärder användarna kan vidta.",
