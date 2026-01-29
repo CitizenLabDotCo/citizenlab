@@ -157,6 +157,7 @@ export const getVotesCounter = (
       point: messages.numberOfPointsLeft,
       token: messages.numberOfTokensLeft,
       credit: messages.numberOfCreditsLeft,
+      percent: messages.numberOfPercentsLeft,
     });
 
     return formatMessage(votesLeftMessage, {

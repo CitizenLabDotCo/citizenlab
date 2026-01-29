@@ -415,15 +415,15 @@ export default function createRoutes() {
           ),
         },
         ...moduleConfiguration.routes.citizen,
+        {
+          path: '*',
+          element: (
+            <PageLoading>
+              <PageNotFound />
+            </PageLoading>
+          ),
+        },
       ],
-    },
-    {
-      path: '*',
-      element: (
-        <PageLoading>
-          <PageNotFound />
-        </PageLoading>
-      ),
     },
   ];
 }

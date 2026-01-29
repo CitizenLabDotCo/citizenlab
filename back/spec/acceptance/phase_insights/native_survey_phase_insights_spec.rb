@@ -61,7 +61,7 @@ resource 'Phase insights' do
       )
 
       create(:idea, phases: [phase], created_at: 5.days.ago, submitted_at: 5.days.ago, author: ns_user2, creation_phase_id: phase.id) # created during phase, and in last 7 days
-      create(:idea, phases: [phase], created_at: 2.days.ago, submitted_at: 2.days.ago, author: ns_user3, creation_phase_id: phase.id, custom_field_values: { gender: 'male', birthyear: 1990 }) # created & published after phase (still counted), and in last 7 days
+      create(:idea, phases: [phase], created_at: 2.days.ago, submitted_at: 2.days.ago, author: ns_user3, creation_phase_id: phase.id, custom_field_values: { u_gender: 'male', u_birthyear: 1990 }) # created & published after phase (still counted), and in last 7 days
 
       # created during native survey phase (in week before last), not submitted (considered incomplete, affecting completion rate)
       create(
@@ -72,7 +72,7 @@ resource 'Phase insights' do
         submitted_at: nil,
         author: ns_user4,
         creation_phase_id: phase.id,
-        custom_field_values: { gender: 'male', birthyear: 1990 }
+        custom_field_values: { u_gender: 'male', u_birthyear: 1990 }
       )
 
       # Pageviews and sessions
