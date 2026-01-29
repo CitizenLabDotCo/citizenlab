@@ -17,8 +17,8 @@ const IdeationInsights = ({ phaseId }: MethodSpecificInsightProps) => {
   if (isPdfRenderMode) {
     return (
       <Box mt="16px" display="flex" flexDirection="column" gap="24px">
-        <AiSummary phaseId={phaseId} />
-        <TopicBreakdown phaseId={phaseId} />
+        <AiSummary phaseId={phaseId} participationMethod="ideation" />
+        <TopicBreakdown phaseId={phaseId} participationMethod="ideation" />
         <MostLikedIdeas phaseId={phaseId} />
         <StatusBreakdown phaseId={phaseId} participationMethod="ideation" />
       </Box>
@@ -29,10 +29,10 @@ const IdeationInsights = ({ phaseId }: MethodSpecificInsightProps) => {
     <Box mt="16px" gap="24px">
       <Box display="flex" gap="16px" w="100%">
         <Box w="100%">
-          <AiSummary phaseId={phaseId} />
+          <AiSummary phaseId={phaseId} participationMethod="ideation" />
         </Box>
         <Box w="100%">
-          <TopicBreakdown phaseId={phaseId} />
+          <TopicBreakdown phaseId={phaseId} participationMethod="ideation" />
         </Box>
       </Box>
       <Box display="flex" gap="16px" w="100%" flexDirection="row">
