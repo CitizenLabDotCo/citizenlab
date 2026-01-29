@@ -25,7 +25,6 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
     let!(:area_kreverhille) { create(:area, title_multiloc: { 'en' => 'Kreverhille' }) }
     let!(:area_strooienstad) { create(:area, title_multiloc: { 'en' => 'Strooienstad' }) }
 
-
     it 'merges, renames, and updates all associations and multiloc values' do
       # Setup associations and multiloc
       project = create(:project)

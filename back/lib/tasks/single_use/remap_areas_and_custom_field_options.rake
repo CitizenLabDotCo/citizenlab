@@ -2,7 +2,6 @@
 
 require 'csv'
 namespace :single_use do
-namespace :single_use do
   desc 'Remap areas and their corresponding custom field options based on CSV mapping file'
   # Usage:
   # rails "single_use:remap_areas_and_custom_field_options[doemee.inulst,/path/to/mapping.csv]"
