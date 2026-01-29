@@ -2307,6 +2307,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.numberVotesPerUser": "Antall stemmer per bruker",
   "app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText": "Oversikt over opsjonsanalyser",
   "app.containers.AdminPage.ProjectEdit.Voting.optionsToVoteOn": "Alternativer å stemme på",
+  "app.containers.AdminPage.ProjectEdit.Voting.percentTerm": "Prosent",
   "app.containers.AdminPage.ProjectEdit.Voting.pointTerm": "Punkt",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotePerOption2": "én stemme per alternativ",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodSubtitle": "Brukerne kan velge å godkjenne hvilket som helst av alternativene",
