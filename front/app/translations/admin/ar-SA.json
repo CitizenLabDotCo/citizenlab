@@ -2877,7 +2877,7 @@
   "app.containers.AdminPage.SettingsPage.subtitleAreas": "حدد التقسيمات الفرعية الجغرافية لمنطقتك.",
   "app.containers.AdminPage.SettingsPage.subtitleBasic": "اختر كيفية رؤية الناس لاسمك، وحدّد لغات منصتك واربطها بموقعك الإلكتروني.",
   "app.containers.AdminPage.SettingsPage.subtitleBullet1": "سيتم طرح السؤال أثناء عملية التسجيل العالمية (على سبيل المثال عندما ينقر الأشخاص على \"التسجيل\" على الصفحة الرئيسية).",
-  "app.containers.AdminPage.SettingsPage.subtitleBullet2": "The question will be asked <b>by default</b> when people sign up for a specific phase or event. However: <b>admins and project moderators can override this per phase</b>- see the \"Phase access and user data\" tab on each phase.",
+  "app.containers.AdminPage.SettingsPage.subtitleBullet2": "سيُطرح السؤال <b>افتراضيًا</b> عند تسجيل الأشخاص في مرحلة أو فعالية معينة. مع ذلك: <b>يمكن للمسؤولين ومشرفي المشاريع تجاوز هذا الإعداد لكل مرحلة</b>- راجع علامة التبويب \"الوصول إلى المرحلة وبيانات المستخدم\" في كل مرحلة.",
   "app.containers.AdminPage.SettingsPage.subtitleMaxCharError": "يتجاوز النص الحد الأقصى المسموح به لعدد الأحرف وهو 90 حرفًا",
   "app.containers.AdminPage.SettingsPage.subtitleRegistration1": "إدارة الأسئلة الديموغرافية المستخدمة على هذه المنصة. تفعيل سؤال هنا سيؤدي إلى أمرين:",
   "app.containers.AdminPage.SettingsPage.subtitleRegistration2": "وينطبق الأمر نفسه على الإعداد \"المطلوب\" الذي تراه عند النقر فوق \"تحرير\" في سؤال ما.",
