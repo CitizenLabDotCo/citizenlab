@@ -285,6 +285,7 @@
   "app.components.GanttChart.today": "Danas",
   "app.components.GoBackButton.group.edit.goBack": "Idi natrag",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Povratak na prethodnu stranicu",
+  "app.components.HookForm.EmojiPicker.clearEmoji": "Jasan",
   "app.components.HookForm.Feedback.errorTitle": "Došlo je do problema",
   "app.components.HookForm.Feedback.submissionError": "Pokušajte ponovno. Ako se problem ne riješi, obratite nam se",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Ispričavamo se, došlo je do problema s naše strane",
