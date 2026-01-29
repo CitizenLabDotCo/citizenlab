@@ -2953,6 +2953,7 @@
   "app.containers.AdminPage.Topics.edit": "Golygu",
   "app.containers.AdminPage.Topics.editInputTopic": "Golygu tag mewnbwn",
   "app.containers.AdminPage.Topics.fieldTopicDescription": "Disgrifiad y tag (dewisol)",
+  "app.containers.AdminPage.Topics.fieldTopicEmoji": "Emoji (dewisol)",
   "app.containers.AdminPage.Topics.fieldTopicTitle": "Enw'r tag",
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Darparwch enw tag ar gyfer pob iaith",
   "app.containers.AdminPage.Topics.inputTags": "Tagiau mewnbwn",
