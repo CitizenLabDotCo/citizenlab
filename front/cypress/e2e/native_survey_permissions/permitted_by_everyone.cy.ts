@@ -87,6 +87,19 @@ describe('Native survey permitted by: everyone', () => {
     }
   });
 
+  const confirmSavedToProfile = () => {
+    cy.intercept('GET', `/web_api/v1/users/me`).as('getMe');
+    cy.visit('/');
+    cy.wait('@getMe').then((interception) => {
+      expect(interception.response?.statusCode).to.equal(200);
+      expect(
+        interception.response?.body.data.attributes.custom_field_values[
+          customFieldKey
+        ]
+      ).to.be.a('string');
+    });
+  };
+
   describe('As a visitor', () => {
     const fieldsInSurvey = () => {
       cy.visit(`/projects/${projectSlug}`);
@@ -193,6 +206,7 @@ describe('Native survey permitted by: everyone', () => {
 
       // Now we should be on last page
       cy.dataCy('e2e-after-submission').should('exist');
+      confirmSavedToProfile();
     };
 
     const createUser = () => {
@@ -213,19 +227,6 @@ describe('Native survey permitted by: everyone', () => {
           userId = response.body.data.id;
         }
       );
-    };
-
-    const confirmSavedToProfile = () => {
-      cy.intercept('GET', `/web_api/v1/users/me`).as('getMe');
-      cy.visit('/');
-      cy.wait('@getMe').then((interception) => {
-        expect(interception.response?.statusCode).to.equal(200);
-        expect(
-          interception.response?.body.data.attributes.custom_field_values[
-            customFieldKey
-          ]
-        ).to.be.a('string');
-      });
     };
 
     beforeEach(() => {
