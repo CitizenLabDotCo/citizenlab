@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-import { Title, Text, media } from '@citizenlab/cl2-component-library';
+import { Title, Text, media, Spinner } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+import Centerer from 'components/UI/Centerer';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -25,6 +26,25 @@ const PageNotFoundWrapper = styled.div`
 
 const PageNotFound = () => {
   const { formatMessage } = useIntl();
+  const [showContent, setShowContent] = useState(false);
+  // show spinner for 3 seconds before showing content to avoid redirect 404 page flash
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowContent(true);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!showContent) {
+    return (
+      <main>
+        <Centerer h="500px">
+          <Spinner />
+        </Centerer>
+      </main>
+    );
+  }
 
   return (
     <main>
