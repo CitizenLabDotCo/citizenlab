@@ -175,7 +175,7 @@ const StickyNote: React.FC<Props> = ({
                 alignItems="center"
                 justifyContent="center"
               >
-                <Emoji emoji={emoji} size="28px" />
+                <Emoji emoji={emoji} size="24px" />
               </Box>
             ))}
           </Box>
