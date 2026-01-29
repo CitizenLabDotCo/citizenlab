@@ -2953,6 +2953,7 @@
   "app.containers.AdminPage.Topics.edit": "Rediger",
   "app.containers.AdminPage.Topics.editInputTopic": "Edit input tag",
   "app.containers.AdminPage.Topics.fieldTopicDescription": "Tag description (optional)",
+  "app.containers.AdminPage.Topics.fieldTopicEmoji": "Emoji (valgfrit)",
   "app.containers.AdminPage.Topics.fieldTopicTitle": "Tag-navn",
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Angiv et tag-navn for alle sprog",
   "app.containers.AdminPage.Topics.inputTags": "Input-tags",

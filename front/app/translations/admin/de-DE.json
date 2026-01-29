@@ -2953,6 +2953,7 @@
   "app.containers.AdminPage.Topics.edit": "Bearbeiten",
   "app.containers.AdminPage.Topics.editInputTopic": "Eingabe-Tag bearbeiten",
   "app.containers.AdminPage.Topics.fieldTopicDescription": "Tag-Beschreibung (optional)",
+  "app.containers.AdminPage.Topics.fieldTopicEmoji": "Emoji (optional)",
   "app.containers.AdminPage.Topics.fieldTopicTitle": "Name des Themen-Tags",
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Geben Sie einen Themen-Namen für alle Sprachen an",
   "app.containers.AdminPage.Topics.inputTags": "Beitrags-Tags",

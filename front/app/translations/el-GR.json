@@ -285,6 +285,7 @@
   "app.components.GanttChart.today": "Σήμερα",
   "app.components.GoBackButton.group.edit.goBack": "Επιστροφή",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Επιστροφή στην προηγούμενη σελίδα",
+  "app.components.HookForm.EmojiPicker.clearEmoji": "Σαφής",
   "app.components.HookForm.Feedback.errorTitle": "Υπάρχει ένα πρόβλημα",
   "app.components.HookForm.Feedback.submissionError": "Δοκιμάστε ξανά. Εάν το πρόβλημα παραμένει, επικοινωνήστε μαζί μας",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Υπήρξε ένα πρόβλημα από την πλευρά μας, συγγνώμη",

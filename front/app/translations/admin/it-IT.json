@@ -2953,6 +2953,7 @@
   "app.containers.AdminPage.Topics.edit": "Modifica",
   "app.containers.AdminPage.Topics.editInputTopic": "Modifica tag contributi",
   "app.containers.AdminPage.Topics.fieldTopicDescription": "Descrizione tag (opzionale)",
+  "app.containers.AdminPage.Topics.fieldTopicEmoji": "Emoji (opzionale)",
   "app.containers.AdminPage.Topics.fieldTopicTitle": "Nome tag",
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Fornisci un nome tag per tutte le lingue",
   "app.containers.AdminPage.Topics.inputTags": "Tag dei contributi",

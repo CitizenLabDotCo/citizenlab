@@ -285,6 +285,7 @@
   "app.components.GanttChart.today": "Today",
   "app.components.GoBackButton.group.edit.goBack": "Uterit",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Go back to previous page",
+  "app.components.HookForm.EmojiPicker.clearEmoji": "Clear",
   "app.components.HookForm.Feedback.errorTitle": "Ajornartorsiuteqarpoq",
   "app.components.HookForm.Feedback.submissionError": "Misileeqqigit, ajornartorsiut aaqqinngippat, attavigitigut",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Uatsinni ajornartorsiuteqarpoq, utoqqatserpugut",

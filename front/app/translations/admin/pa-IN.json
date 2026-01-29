@@ -2953,6 +2953,7 @@
   "app.containers.AdminPage.Topics.edit": "ਸੋਧੋ",
   "app.containers.AdminPage.Topics.editInputTopic": "ਇਨਪੁੱਟ ਟੈਗ ਸੰਪਾਦਿਤ ਕਰੋ",
   "app.containers.AdminPage.Topics.fieldTopicDescription": "ਟੈਗ ਵਰਣਨ (ਵਿਕਲਪਿਕ)",
+  "app.containers.AdminPage.Topics.fieldTopicEmoji": "ਇਮੋਜੀ (ਵਿਕਲਪਿਕ)",
   "app.containers.AdminPage.Topics.fieldTopicTitle": "ਟੈਗ ਨਾਮ",
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "ਸਾਰੀਆਂ ਭਾਸ਼ਾਵਾਂ ਲਈ ਇੱਕ ਟੈਗ ਨਾਮ ਪ੍ਰਦਾਨ ਕਰੋ",
   "app.containers.AdminPage.Topics.inputTags": "ਇਨਪੁੱਟ ਟੈਗ",
