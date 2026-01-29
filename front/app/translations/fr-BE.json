@@ -147,7 +147,7 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Conservez ce code. Il vous permettra de supprimer votre contribution si vous le souhaitez.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Envoyer ce code par e-mail",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Code de référence",
-  "app.components.CustomFieldsForm.PostParticipationBox.createAnAccount": "Créer un compte",
+  "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Créez un compte ou connectez-vous",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountToFollow": "Créez un compte pour suivre les prochaines étapes et participer à d'autres discussions.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Recevez des mises à jour lors des prochaines étapes",
   "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Participez aux échanges sur votre contribution si elle est publique",
