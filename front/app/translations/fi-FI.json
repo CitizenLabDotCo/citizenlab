@@ -147,7 +147,7 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Tallenna tämä koodi siltä varalta, että haluat poistaa lähetyksesi myöhemmin.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Lähetä tämä koodi sähköpostiini",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Lähetyksen tunniste",
-  "app.components.CustomFieldsForm.PostParticipationBox.createAnAccount": "Luo tili",
+  "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Luo tili tai kirjaudu sisään",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountToFollow": "Luo tili seurataksesi tapahtumia ja osallistuaksesi muihin keskusteluihin.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Saat päivityksiä, kun seuraavat vaiheet ovat olemassa",
   "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Liity keskusteluihin, jos panoksesi on jaettu julkisesti",
