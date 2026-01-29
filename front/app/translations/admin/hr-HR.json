@@ -2953,6 +2953,7 @@
   "app.containers.AdminPage.Topics.edit": "Uredi",
   "app.containers.AdminPage.Topics.editInputTopic": "Uredi oznaku unosa",
   "app.containers.AdminPage.Topics.fieldTopicDescription": "Opis oznake (neobavezno)",
+  "app.containers.AdminPage.Topics.fieldTopicEmoji": "Emoji (nije obavezno)",
   "app.containers.AdminPage.Topics.fieldTopicTitle": "Naziv oznake",
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Navedite naziv oznake za sve jezike",
   "app.containers.AdminPage.Topics.inputTags": "Ulazne oznake",
