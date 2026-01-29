@@ -24,7 +24,6 @@ namespace :single_use do
   # Zandberg,Graauw
   # Schuddebeurs,Hulst
   task :remap_areas_and_custom_field_options, %i[host csv_path] => :environment do |_task, args|
-
     raise 'Please provide host argument' if args[:host].blank?
     raise 'Please provide csv_path argument' if args[:csv_path].blank?
     raise "CSV file not found: #{args[:csv_path]}" unless File.exist?(args[:csv_path])
@@ -32,7 +31,6 @@ namespace :single_use do
     reporter = ScriptReporter.new
     tenant = Tenant.find_by(host: args[:host])
     raise "Tenant not found: #{args[:host]}" unless tenant
-
 
     tenant.switch do
       csv = CSV.read(args[:csv_path], headers: true)
@@ -81,9 +79,9 @@ def build_mapping_from_csv(csv)
   mapping
 end
 
-def print_domicile_field_status(_domicile_field)
-  if _domicile_field
-    puts "✓ Found domicile custom field with #{_domicile_field.options.count} options"
+def print_domicile_field_status(domicile_field)
+  if domicile_field
+    puts "✓ Found domicile custom field with #{domicile_field.options.count} options"
   else
     puts '⚠ No domicile custom field found - only areas will be updated'
   end
@@ -99,7 +97,7 @@ def init_stats
   }
 end
 
-def process_target_group(target_name, old_new_pairs, domicile_field, stats)
+def process_target_group(target_name, old_new_pairs, _domicile_field, stats)
   old_names = old_new_pairs.map(&:first)
   default_locale = I18n.default_locale.to_s
   matching_areas = Area.all.select do |area|
@@ -119,9 +117,9 @@ def process_target_group(target_name, old_new_pairs, domicile_field, stats)
     area_name&.casecmp?(target_name) && matching_areas.exclude?(area)
   end
   if matching_areas.size == 1 && existing_target_area.nil?
-    process_simple_rename(matching_areas.first, target_name, domicile_field, stats)
+    process_simple_rename(matching_areas.first, target_name, _domicile_field, stats)
   else
-    process_merge(target_name, matching_areas, existing_target_area, domicile_field, stats)
+    process_merge(target_name, matching_areas, existing_target_area, _domicile_field, stats)
   end
 end
 
@@ -204,8 +202,9 @@ def update_static_pages(area_to_keep, area_to_merge)
   end
 end
 
-def update_user_domicile(area_to_keep, area_to_merge, _domicile_field)
-  return unless _domicile_field
+def update_user_domicile(area_to_keep, area_to_merge, domicile_field)
+  return unless domicile_field
+
   User.where("custom_field_values->>'domicile' = ?", area_to_merge.id).each do |user|
     user.custom_field_values['domicile'] = area_to_keep.id
     user.save(validate: false)
