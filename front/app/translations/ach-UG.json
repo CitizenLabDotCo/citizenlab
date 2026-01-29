@@ -147,7 +147,7 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "crwdns6019951:0crwdne6019951:0",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "crwdns6019953:0crwdne6019953:0",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "crwdns6019955:0crwdne6019955:0",
-  "app.components.CustomFieldsForm.PostParticipationBox.createAnAccount": "crwdns6019957:0crwdne6019957:0",
+  "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "crwdns6126643:0crwdne6126643:0",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountToFollow": "crwdns6019959:0crwdne6019959:0",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "crwdns6019961:0crwdne6019961:0",
   "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "crwdns6019963:0crwdne6019963:0",
