@@ -70,7 +70,7 @@ const IdeasShowPage = () => {
   const [searchParams] = useSearchParams();
   const phaseContext = searchParams.get('phase_context');
 
-  if (!project) return null;
+  if (!project) return <PageNotFound />;
 
   if (status === 'loading') {
     return (
