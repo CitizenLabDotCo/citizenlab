@@ -2953,6 +2953,7 @@
   "app.containers.AdminPage.Topics.edit": "Modifier",
   "app.containers.AdminPage.Topics.editInputTopic": "Modifier l'étiquette",
   "app.containers.AdminPage.Topics.fieldTopicDescription": "Description (facultatif)",
+  "app.containers.AdminPage.Topics.fieldTopicEmoji": "Emoji (facultatif)",
   "app.containers.AdminPage.Topics.fieldTopicTitle": "Nom",
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Veuillez renseigner le nom de l'étiquette pour chaque langue",
   "app.containers.AdminPage.Topics.inputTags": "Étiquettes",
