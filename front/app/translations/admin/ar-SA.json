@@ -2953,6 +2953,7 @@
   "app.containers.AdminPage.Topics.edit": "يحرر",
   "app.containers.AdminPage.Topics.editInputTopic": "علامة إدخال التحرير",
   "app.containers.AdminPage.Topics.fieldTopicDescription": "وصف العلامة (اختياري)",
+  "app.containers.AdminPage.Topics.fieldTopicEmoji": "الرموز التعبيرية (اختياري)",
   "app.containers.AdminPage.Topics.fieldTopicTitle": "اسم العلامة",
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "قم بتوفير اسم علامة لجميع اللغات",
   "app.containers.AdminPage.Topics.inputTags": "علامات الإدخال",
