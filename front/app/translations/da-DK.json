@@ -285,6 +285,7 @@
   "app.components.GanttChart.today": "I dag",
   "app.components.GoBackButton.group.edit.goBack": "Gå tilbage",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Gå tilbage til forrige side",
+  "app.components.HookForm.EmojiPicker.clearEmoji": "Klar",
   "app.components.HookForm.Feedback.errorTitle": "Der er et problem",
   "app.components.HookForm.Feedback.submissionError": "Prøv igen. Hvis problemet fortsætter, skal du kontakte os",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Der var et problem i vores ende, beklager",
