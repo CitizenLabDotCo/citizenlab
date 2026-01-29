@@ -285,6 +285,7 @@
   "app.components.GanttChart.today": "Vandaag",
   "app.components.GoBackButton.group.edit.goBack": "Ga terug",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Ga terug naar de vorige pagina",
+  "app.components.HookForm.EmojiPicker.clearEmoji": "Leegmaken",
   "app.components.HookForm.Feedback.errorTitle": "Er gaat iets mis",
   "app.components.HookForm.Feedback.submissionError": "Probeer het nog eens. Neem contact met ons op als het probleem zich blijft voordoen",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Er ging iets mis aan onze kant, excuses",

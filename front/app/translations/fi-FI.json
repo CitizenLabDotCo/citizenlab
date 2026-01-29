@@ -285,6 +285,7 @@
   "app.components.GanttChart.today": "Tänään",
   "app.components.GoBackButton.group.edit.goBack": "Mene takaisin",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Palaa edelliselle sivulle",
+  "app.components.HookForm.EmojiPicker.clearEmoji": "Tyhjennä",
   "app.components.HookForm.Feedback.errorTitle": "On ongelma",
   "app.components.HookForm.Feedback.submissionError": "Yritä uudelleen. Jos ongelma jatkuu, ota meihin yhteyttä",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Meillä oli ongelma, pahoittelut",

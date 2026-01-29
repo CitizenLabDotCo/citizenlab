@@ -285,6 +285,7 @@
   "app.components.GanttChart.today": "اليوم",
   "app.components.GoBackButton.group.edit.goBack": "العودة",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "عد إلى الصفحة السابقة",
+  "app.components.HookForm.EmojiPicker.clearEmoji": "واضح",
   "app.components.HookForm.Feedback.errorTitle": "توجد مشكلة",
   "app.components.HookForm.Feedback.submissionError": "أعد المحاولة. إذا استمرت المشكلة، فتواصل معنا",
   "app.components.HookForm.Feedback.submissionErrorTitle": "عذرًا، حدثت مشكلة من جانبنا.",

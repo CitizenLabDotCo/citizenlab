@@ -2953,6 +2953,7 @@
   "app.containers.AdminPage.Topics.edit": "ترمیم کریں۔",
   "app.containers.AdminPage.Topics.editInputTopic": "ان پٹ ٹیگ میں ترمیم کریں۔",
   "app.containers.AdminPage.Topics.fieldTopicDescription": "ٹیگ کی تفصیل (اختیاری)",
+  "app.containers.AdminPage.Topics.fieldTopicEmoji": "ایموجی (اختیاری)",
   "app.containers.AdminPage.Topics.fieldTopicTitle": "ٹیگ کا نام",
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "تمام زبانوں کے لیے ٹیگ کا نام فراہم کریں۔",
   "app.containers.AdminPage.Topics.inputTags": "ان پٹ ٹیگز",

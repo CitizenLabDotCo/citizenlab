@@ -2953,6 +2953,7 @@
   "app.containers.AdminPage.Topics.edit": "Editar",
   "app.containers.AdminPage.Topics.editInputTopic": "Editar etiqueta de aporte",
   "app.containers.AdminPage.Topics.fieldTopicDescription": "Descripción de la etiqueta (opcional)",
+  "app.containers.AdminPage.Topics.fieldTopicEmoji": "Emoji (opcional)",
   "app.containers.AdminPage.Topics.fieldTopicTitle": "Nombre de la etiqueta",
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Proporcionar un nombre de etiqueta para todos los idiomas",
   "app.containers.AdminPage.Topics.inputTags": "Etiquetas de entradas",
