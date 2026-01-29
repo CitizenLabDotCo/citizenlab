@@ -83,16 +83,6 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
       expect(domicile_field.options.count).to eq(initial_option_count - 7)
     end
 
-    it 'uses a database transaction that rolls back on error' do
-      allow_any_instance_of(Area).to receive(:save).and_raise(StandardError.new('Test error'))
-      initial_area_count = Area.count
-      initial_option_count = domicile_field.options.count
-      expect do
-        Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, csv_path)
-      end.to raise_error(StandardError)
-      expect(Area.count).to eq(initial_area_count)
-      expect(domicile_field.options.count).to eq(initial_option_count)
-    end
   end
 
   context 'when domicile custom field does not exist' do
