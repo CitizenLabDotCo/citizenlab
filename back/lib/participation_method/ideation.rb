@@ -425,11 +425,11 @@ module ParticipationMethod
     end
 
     def supports_inputs_without_author?
-      AppConfiguration.instance.feature_activated?('ideation_accountless_posting')
+      true
     end
 
     def supports_permitted_by_everyone?
-      AppConfiguration.instance.feature_activated?('ideation_accountless_posting')
+      true
     end
 
     def supports_public_visibility?
