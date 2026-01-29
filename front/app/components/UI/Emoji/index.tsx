@@ -25,7 +25,7 @@ const Emoji: React.FC<Props> = ({ emoji, size = '1em', className }) => {
   const parsed = twemoji.parse(emoji, {
     folder: 'svg',
     ext: '.svg',
-    base: 'https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/',
+    base: '/twemoji/',
   });
 
   return (
