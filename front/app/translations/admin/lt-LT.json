@@ -2953,6 +2953,7 @@
   "app.containers.AdminPage.Topics.edit": "Edit",
   "app.containers.AdminPage.Topics.editInputTopic": "Edit input tag",
   "app.containers.AdminPage.Topics.fieldTopicDescription": "Tag description (optional)",
+  "app.containers.AdminPage.Topics.fieldTopicEmoji": "Emocijos (neprivaloma)",
   "app.containers.AdminPage.Topics.fieldTopicTitle": "Tag name",
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Provide a tag name for all languages",
   "app.containers.AdminPage.Topics.inputTags": "Įvesties žymos",
