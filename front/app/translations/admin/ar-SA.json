@@ -2307,6 +2307,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.numberVotesPerUser": "عدد الأصوات لكل مستخدم",
   "app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText": "نظرة عامة على تحليل الخيار",
   "app.containers.AdminPage.ProjectEdit.Voting.optionsToVoteOn": "خيارات للتصويت عليها",
+  "app.containers.AdminPage.ProjectEdit.Voting.percentTerm": "النسبة المئوية",
   "app.containers.AdminPage.ProjectEdit.Voting.pointTerm": "نقطة",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotePerOption2": "صوت واحد لكل خيار",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodSubtitle": "يمكن للمستخدمين اختيار الموافقة على أي من الخيارات",
