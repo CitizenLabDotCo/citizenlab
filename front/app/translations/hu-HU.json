@@ -285,6 +285,7 @@
   "app.components.GanttChart.today": "Ma",
   "app.components.GoBackButton.group.edit.goBack": "Menj vissza",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Vissza az előző oldalra",
+  "app.components.HookForm.EmojiPicker.clearEmoji": "Világos",
   "app.components.HookForm.Feedback.errorTitle": "Van egy probléma",
   "app.components.HookForm.Feedback.submissionError": "Próbáld újra. Ha a probléma továbbra is fennáll, lépjen kapcsolatba velünk",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Probléma volt a mi oldalunkon, elnézést",
