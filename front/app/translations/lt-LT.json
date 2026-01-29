@@ -285,6 +285,7 @@
   "app.components.GanttChart.today": "Šiandien",
   "app.components.GoBackButton.group.edit.goBack": "Grįžti atgal",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Grįžti į ankstesnį puslapį",
+  "app.components.HookForm.EmojiPicker.clearEmoji": "Skaidrus",
   "app.components.HookForm.Feedback.errorTitle": "Yra problema",
   "app.components.HookForm.Feedback.submissionError": "Pabandykite dar kartą. Jei problema išlieka, susisiekite su mumis",
   "app.components.HookForm.Feedback.submissionErrorTitle": "Mūsų pusėje kilo problema, atsiprašome",
