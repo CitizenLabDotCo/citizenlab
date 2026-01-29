@@ -2953,6 +2953,7 @@
   "app.containers.AdminPage.Topics.edit": "Muokata",
   "app.containers.AdminPage.Topics.editInputTopic": "Muokkaa syöttötunnistetta",
   "app.containers.AdminPage.Topics.fieldTopicDescription": "Tagin kuvaus (valinnainen)",
+  "app.containers.AdminPage.Topics.fieldTopicEmoji": "Emoji (valinnainen)",
   "app.containers.AdminPage.Topics.fieldTopicTitle": "Tagin nimi",
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Anna tagin nimi kaikille kielille",
   "app.containers.AdminPage.Topics.inputTags": "Syöttötagit",
