@@ -80,7 +80,7 @@ def build_mapping_from_csv(csv)
   mapping
 end
 
-def print_domicile_field_status(_domicile_field)
+def print_domicile_field_status(domicile_field)
   if domicile_field
     puts "✓ Found domicile custom field with #{domicile_field.options.count} options"
   else
