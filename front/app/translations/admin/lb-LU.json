@@ -2307,6 +2307,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.numberVotesPerUser": "Zuel vun de Stëmmen pro Benotzer",
   "app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText": "Optioun Analyse Iwwersiicht",
   "app.containers.AdminPage.ProjectEdit.Voting.optionsToVoteOn": "Optiounen fir ze stëmmen",
+  "app.containers.AdminPage.ProjectEdit.Voting.percentTerm": "Prozent",
   "app.containers.AdminPage.ProjectEdit.Voting.pointTerm": "Punkt",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotePerOption2": "eenzege Vote pro Optioun",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodSubtitle": "D'Benotzer kënne wielen fir eng vun den Optiounen ze stëmmen",
