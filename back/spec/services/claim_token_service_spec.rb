@@ -4,21 +4,8 @@ require 'rails_helper'
 
 RSpec.describe ClaimTokenService do
   describe '.generate' do
-    context 'when ideation_accountless_posting is disabled' do
-      let(:idea) { create(:idea, author: nil) }
-
-      before { SettingsService.new.deactivate_feature!('ideation_accountless_posting') }
-
-      it 'returns nil without creating a token' do
-        expect { described_class.generate(idea) }.not_to change(ClaimToken, :count)
-        expect(described_class.generate(idea)).to be_nil
-      end
-    end
-
     context 'when item has no owner' do
       let(:idea) { create(:idea, author: nil) }
-
-      before { SettingsService.new.activate_feature!('ideation_accountless_posting') }
 
       it 'creates a claim token for the item' do
         token = nil
@@ -37,8 +24,6 @@ RSpec.describe ClaimTokenService do
 
     context 'when item has an owner' do
       let(:idea) { create(:idea) }
-
-      before { SettingsService.new.activate_feature!('ideation_accountless_posting') }
 
       it 'does not create a claim token' do
         token = nil

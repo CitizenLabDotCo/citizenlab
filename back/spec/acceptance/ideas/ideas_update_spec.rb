@@ -201,18 +201,18 @@ resource 'Ideas' do
           end
         end
 
-        example '[error] Removing the author of a published idea', document: false do
+        example 'Removing the author of a published idea', document: false do
           input.update! publication_status: 'published'
           do_request idea: { author_id: nil }
-          assert_status 422
-          expect(json_response_body).to include_response_error(:author, 'blank')
+          assert_status 200
+          expect(response_data.dig(:attributes, :author_id)).to be_nil
         end
 
-        example '[error] Publishing an idea without author', document: false do
+        example 'Publishing an idea without author', document: false do
           input.update! publication_status: 'draft', author: nil
           do_request idea: { publication_status: 'published' }
-          assert_status 422
-          expect(json_response_body).to include_response_error(:author, 'blank')
+          assert_status 200
+          expect(response_data.dig(:attributes, :author_id)).to be_nil
         end
 
         describe 'draft ideas' do
