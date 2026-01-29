@@ -74,12 +74,13 @@ def build_mapping_from_csv(csv)
     old_name = row['OLD']&.strip
     new_name = row['NEW']&.strip
     next if old_name.blank? || new_name.blank?
+
     mapping[old_name] = new_name
   end
   mapping
 end
 
-def print_domicile_field_status(domicile_field)
+def print_domicile_field_status(_domicile_field)
   if domicile_field
     puts "✓ Found domicile custom field with #{domicile_field.options.count} options"
   else
@@ -97,7 +98,7 @@ def init_stats
   }
 end
 
-def process_target_group(target_name, old_new_pairs, _domicile_field, stats)
+def process_target_group(target_name, old_new_pairs, domicile_field, stats)
   old_names = old_new_pairs.map(&:first)
   default_locale = I18n.default_locale.to_s
   matching_areas = Area.all.select do |area|
@@ -117,13 +118,13 @@ def process_target_group(target_name, old_new_pairs, _domicile_field, stats)
     area_name&.casecmp?(target_name) && matching_areas.exclude?(area)
   end
   if matching_areas.size == 1 && existing_target_area.nil?
-    process_simple_rename(matching_areas.first, target_name, _domicile_field, stats)
+    process_simple_rename(matching_areas.first, target_name, stats)
   else
-    process_merge(target_name, matching_areas, existing_target_area, _domicile_field, stats)
+    process_merge(target_name, matching_areas, existing_target_area, domicile_field, stats)
   end
 end
 
-def process_simple_rename(area, target_name, domicile_field, stats)
+def process_simple_rename(area, target_name, stats)
   default_locale = I18n.default_locale.to_s
   old_name_display = area.title_multiloc[default_locale]
   if area.title_multiloc[default_locale]&.strip&.casecmp?(target_name)
