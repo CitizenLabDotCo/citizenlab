@@ -147,7 +147,6 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Saglabājiet šo kodu, ja vēlāk vēlaties dzēst iesniegumu.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Nosūtiet šo kodu uz manu e-pastu",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Iesniegšanas identifikators",
-  "app.components.CustomFieldsForm.PostParticipationBox.createAnAccount": "Izveidot kontu",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountToFollow": "Izveidojiet kontu, lai sekotu līdzi turpmākajiem notikumiem un piedalītos citās sarunās.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Saņemiet atjauninājumus par nākamajiem soļiem",
   "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Pievienojieties diskusijām, ja jūsu ieguldījums tiek kopīgots publiski",

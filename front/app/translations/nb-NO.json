@@ -147,7 +147,6 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Lagre denne koden i tilfelle du ønsker å fjerne innsendingen din senere.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Send denne koden til min e-post",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Innleveringsidentifikator",
-  "app.components.CustomFieldsForm.PostParticipationBox.createAnAccount": "Opprett en konto",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountToFollow": "Opprett en konto for å følge med på hva som skjer videre og delta i andre samtaler.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Få oppdateringer når det er neste skritt",
   "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Delta i diskusjoner hvis innspillene dine deles offentlig",

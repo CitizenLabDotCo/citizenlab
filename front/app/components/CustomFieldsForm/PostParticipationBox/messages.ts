@@ -10,9 +10,9 @@ export default defineMessages({
     defaultMessage:
       'Create an account to follow what happens next and take part in other conversations.',
   },
-  createAnAccount: {
-    id: 'app.components.CustomFieldsForm.PostParticipationBox.createAnAccount',
-    defaultMessage: 'Create an account',
+  createAnAccountOrLogIn: {
+    id: 'app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn',
+    defaultMessage: 'Create an account or log in',
   },
   getUpdates: {
     id: 'app.components.CustomFieldsForm.PostParticipationBox.getUpdates',

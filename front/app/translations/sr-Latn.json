@@ -147,7 +147,6 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Save this code in case you want to remove your submission later.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Send this code to my email",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Submission identifier",
-  "app.components.CustomFieldsForm.PostParticipationBox.createAnAccount": "Create an account",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountToFollow": "Create an account to follow what happens next and take part in other conversations.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Get updates when there are next steps",
   "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Join discussions if your input is shared publicly",

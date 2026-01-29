@@ -34,7 +34,10 @@ class ClaimTokenService
     # @param user [User] the user whose pending claims to complete
     # @return [Array<ClaimableParticipation>] items that were claimed
     def complete(user)
-      user.claim_tokens.map { |claim_token| claim_item(claim_token) }
+      claimed_items = user.claim_tokens.map { |claim_token| claim_item(claim_token) }
+      sync_demographics!(user, claimed_items)
+
+      claimed_items
     end
 
     # Claim items for a user. Only marks tokens if the user requires confirmation.
@@ -74,6 +77,17 @@ class ClaimTokenService
       end
 
       item
+    end
+
+    # Gets the lastly created item. If this item
+    # contains demographic data: we copy it into the user's profile.
+    # @param user [User] the user to claim items for
+    # @param items [Array<ClaimableParticipation>] claimed items
+    def sync_demographics!(user, items)
+      lastly_created_item = items.max_by(&:created_at)
+      return unless lastly_created_item
+
+      UserFieldsInFormService.merge_user_fields_from_idea_into_user!(lastly_created_item, user)
     end
   end
 end

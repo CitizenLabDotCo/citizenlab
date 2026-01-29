@@ -147,7 +147,6 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Mentsd el ezt a kódot, arra az esetre, ha később el szeretnéd távolítani a beküldött anyagot.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Küldd el ezt a kódot az e-mail címemre",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Beküldés azonosítója",
-  "app.components.CustomFieldsForm.PostParticipationBox.createAnAccount": "Fiók létrehozása",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountToFollow": "Hozz létre egy fiókot, hogy kövesd a további eseményeket és részt vehess más beszélgetésekben.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Értesülj a következő lépésekről",
   "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Csatlakozz a beszélgetésekhez, ha a hozzászólásod nyilvánosan meg van osztva",
