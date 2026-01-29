@@ -2307,6 +2307,7 @@
   "app.containers.AdminPage.ProjectEdit.Voting.numberVotesPerUser": "Number of votes per user",
   "app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText": "Option analysis overview",
   "app.containers.AdminPage.ProjectEdit.Voting.optionsToVoteOn": "Options to vote on",
+  "app.containers.AdminPage.ProjectEdit.Voting.percentTerm": "Százalékos",
   "app.containers.AdminPage.ProjectEdit.Voting.pointTerm": "Pont",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotePerOption2": "single vote per option",
   "app.containers.AdminPage.ProjectEdit.Voting.singleVotingMethodSubtitle": "Users can chose to approve any of the options",
