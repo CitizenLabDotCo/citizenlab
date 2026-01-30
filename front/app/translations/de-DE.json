@@ -147,7 +147,7 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": "Speichern Sie diesen Code, wenn Sie Ihren Beitrag später entfernen möchten.",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Diesen Code an meine E-Mail schicken",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Kennung des Beitrags",
-  "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Erstellen Sie ein Konto oder melden Sie sich an",
+  "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Ein Konto erstellen oder anmelden",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountToFollow": "Erstellen Sie ein Konto, um zu verfolgen, wie es weitergeht, und nehmen Sie an weiteren Projekten teil.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Updates erhalten, wenn es nächste Schritte gibt",
   "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Beteiligen Sie sich an Diskussionen, wenn Ihr Beitrag öffentlich geteilt wird",
