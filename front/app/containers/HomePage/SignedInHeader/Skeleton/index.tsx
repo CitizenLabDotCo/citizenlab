@@ -6,21 +6,28 @@ import {
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 
-import { heights } from '..';
-
 interface Props {
   homepageSettingColor?: string;
   homepageSettingOpacity?: number;
+  desktopHeight: number;
+  tabletHeight: number;
+  phoneHeight: number;
 }
 
-const Skeleton = ({ homepageSettingColor, homepageSettingOpacity }: Props) => {
+const Skeleton = ({
+  homepageSettingColor,
+  homepageSettingOpacity,
+  desktopHeight,
+  tabletHeight,
+  phoneHeight,
+}: Props) => {
   const smallerThanPhone = useBreakpoint('phone');
   const smallerThanTablet = useBreakpoint('tablet');
 
   const getHeight = () => {
-    if (smallerThanPhone) return heights.phone;
-    if (smallerThanTablet) return heights.tablet;
-    return heights.desktop;
+    if (smallerThanPhone) return phoneHeight;
+    if (smallerThanTablet) return tabletHeight;
+    return desktopHeight;
   };
 
   const getColor = () => {
