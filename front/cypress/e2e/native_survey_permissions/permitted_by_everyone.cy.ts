@@ -1,6 +1,9 @@
 import moment = require('moment');
 import { randomString, randomEmail } from '../../support/commands';
-import { updatePermission } from '../../support/permitted_by_utils';
+import {
+  updatePermission,
+  confirmUserCustomFieldHasValue,
+} from '../../support/permitted_by_utils';
 
 describe('Native survey permitted by: everyone', () => {
   let customFieldId = '';
@@ -9,6 +12,7 @@ describe('Native survey permitted by: everyone', () => {
   let projectSlug = '';
   let phaseId = '';
   let userId: string | undefined;
+  let answer: string | undefined;
 
   const fieldName = randomString(10);
 
@@ -88,16 +92,7 @@ describe('Native survey permitted by: everyone', () => {
   });
 
   const confirmSavedToProfile = () => {
-    cy.intercept('GET', `/web_api/v1/users/me`).as('getMe');
-    cy.visit('/');
-    cy.wait('@getMe').then((interception) => {
-      expect(interception.response?.statusCode).to.equal(200);
-      expect(
-        interception.response?.body.data.attributes.custom_field_values[
-          customFieldKey
-        ]
-      ).to.be.a('string');
-    });
+    confirmUserCustomFieldHasValue(cy, { key: customFieldKey, value: answer });
   };
 
   describe('As a visitor', () => {
@@ -189,7 +184,7 @@ describe('Native survey permitted by: everyone', () => {
       cy.get('form').contains(fieldName);
 
       // Fill in demographic question
-      const answer = randomString(10);
+      answer = randomString(10);
       cy.get('form').find('input').first().type(answer);
 
       // Intercept submit request
