@@ -576,7 +576,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "Odabrani {numberOfSelectedTopics, plural, =0 {nula oznaka} one {jedna oznaka} other {# oznaka}}. {selectedTopicNames}",
   "app.components.TypedConfirmationModal.cancel": "Otkazati",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "IZBRISATI",
-  "app.components.TypedConfirmationModal.typeToConfirm": "Za potvrdu upišite {confirmationWord} ispod:",
+  "app.components.TypedConfirmationModal.typeToConfirm1": "Za potvrdu brisanja {entityName}upišite {confirmationWord} ispod:",
   "app.components.TypedConfirmationModal.warning": "Ova radnja je trajna i ne može se poništiti.",
   "app.components.UI.FullscreenImage.expandImage": "Proširi sliku",
   "app.components.UI.MoreActionsMenu.moreOptions": "Više mogućnosti",
