@@ -68,7 +68,7 @@ const configuration: ModuleConfiguration = {
             const s = d.createElement('script');
             s.type = 'text/javascript';
             s.async = true;
-            s.src = `https://widget.intercom.io/widget/'${INTERCOM_APP_ID}`;
+            s.src = `https://widget.intercom.io/widget/${INTERCOM_APP_ID}`;
             const x = d.getElementsByTagName('script')[0];
             // TODO: Fix this the next time the file is edited.
             // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -88,7 +88,7 @@ const configuration: ModuleConfiguration = {
         window.Intercom &&
         window.Intercom('boot', {
           app_id: INTERCOM_APP_ID,
-          api_base: 'https://api-iam.intercom.io',
+          api_base: 'https://api-iam.eu.intercom.io',
           region: 'eu',
           ...(!isNilOrError(user)
             ? {
