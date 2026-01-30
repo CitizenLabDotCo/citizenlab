@@ -138,7 +138,8 @@ module Insights
       @phase.ideas.where(publication_status: 'published').count
     end
 
-    def item_or_user_custom_field_values(item, participant)
+    # Parses user custom_field_values from either the item (if values) or the participant (user).
+    def parse_user_custom_field_values(item, participant)
       if item.respond_to?(:custom_field_values) && item.custom_field_values.present?
         prefix = @user_fields_prefix ||= UserFieldsInFormService.prefix
 

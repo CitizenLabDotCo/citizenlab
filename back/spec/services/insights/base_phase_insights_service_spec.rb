@@ -713,12 +713,12 @@ RSpec.describe Insights::BasePhaseInsightsService do
     it 'returns the item.custom_field_values if present' do
       item = create(:idea, custom_field_values: { 'key1' => 'value1' })
 
-      result = service.send(:item_or_user_custom_field_values, item, nil)
+      result = service.send(:parse_user_custom_field_values, item, nil)
       expect(result).to eq({ 'key1' => 'value1' })
 
       user = create(:user, custom_field_values: { 'key2' => 'value2' })
 
-      result = service.send(:item_or_user_custom_field_values, item, user)
+      result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({ 'key1' => 'value1' })
     end
 
@@ -727,7 +727,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
       user = create(:user, custom_field_values: { 'key2' => 'value2' })
 
-      result = service.send(:item_or_user_custom_field_values, item, user)
+      result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({ 'key2' => 'value2' })
     end
 
@@ -735,7 +735,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
       item = create(:idea, custom_field_values: {})
       user = create(:user, custom_field_values: {})
 
-      result = service.send(:item_or_user_custom_field_values, item, user)
+      result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({})
     end
   end
