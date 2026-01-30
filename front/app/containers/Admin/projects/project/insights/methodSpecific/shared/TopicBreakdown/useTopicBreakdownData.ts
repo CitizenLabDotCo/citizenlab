@@ -6,9 +6,12 @@ import useAnalyses from 'api/analyses/useAnalyses';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import useInputTopics from 'api/input_topics/useInputTopics';
+import { ParticipationMethod } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
+
+import { getAnalysisScope } from 'containers/Admin/projects/components/AnalysisBanner/utils';
 
 export interface TopicData {
   id: string;
@@ -19,9 +22,13 @@ export interface TopicData {
 
 interface UseTopicBreakdownDataProps {
   phaseId: string;
+  participationMethod?: ParticipationMethod;
 }
 
-const useTopicBreakdownData = ({ phaseId }: UseTopicBreakdownDataProps) => {
+const useTopicBreakdownData = ({
+  phaseId,
+  participationMethod,
+}: UseTopicBreakdownDataProps) => {
   const localize = useLocalize();
   const { projectId } = useParams() as { projectId: string };
 
@@ -30,15 +37,15 @@ const useTopicBreakdownData = ({ phaseId }: UseTopicBreakdownDataProps) => {
     onlyCheckAllowed: true,
   });
 
-  // 1. Fetch Analysis (to get analysisId)
+  // Determine the correct scope based on participation method
+  const scope = getAnalysisScope(participationMethod);
+
+  // 1. Fetch Analysis with correct scope (projectId for ideation/voting, phaseId for others)
   const {
     data: analyses,
     isLoading: isLoadingAnalyses,
     error: errorAnalyses,
-  } = useAnalyses({
-    projectId,
-    phaseId,
-  });
+  } = useAnalyses(scope === 'project' ? { projectId } : { phaseId });
 
   const analysisId = analyses?.data[0]?.id;
 
