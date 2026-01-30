@@ -576,7 +576,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "Izvēlēts {numberOfSelectedTopics, plural, =0 {zero tags} one {one tag} other {# tags}}. {selectedTopicNames}",
   "app.components.TypedConfirmationModal.cancel": "Atcelt",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "DELETE",
-  "app.components.TypedConfirmationModal.typeToConfirm": "Lai apstiprinātu, tālāk ievadiet {confirmationWord} :",
+  "app.components.TypedConfirmationModal.typeToConfirm1": "Lai apstiprinātu {entityName}dzēšanu, tālāk ievadiet {confirmationWord} :",
   "app.components.TypedConfirmationModal.warning": "Šī darbība ir neatgriezeniska un nav atceļama.",
   "app.components.UI.FullscreenImage.expandImage": "Izvērst attēlu",
   "app.components.UI.MoreActionsMenu.moreOptions": "Vairāk iespēju",
