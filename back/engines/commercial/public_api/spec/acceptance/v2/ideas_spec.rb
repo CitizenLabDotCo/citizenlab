@@ -37,6 +37,17 @@ resource 'Posts' do
     )
   end
 
+  # 1 proposal
+  let!(:proposals_timeline) do
+    project = create(:single_phase_proposals_project)
+    create(
+      :idea,
+      created_at: '2020-01-01',
+      project: project,
+      creation_phase: project.phases.first
+    )
+  end
+
   # TODO: How do we get the format etc of response fields out into the spec? This doesn't seem to work
   response_field :created_at, 'Date the resource was created at'
 
@@ -133,6 +144,16 @@ resource 'Posts' do
           assert_status 200
           expect(json_response_body[:ideas].size).to eq(3)
           expect(json_response_body[:ideas].pluck(:type)).to all eq 'idea'
+        end
+      end
+
+      context 'proposals' do
+        let(:type) { 'proposal' }
+
+        example_request 'List only proposals' do
+          assert_status 200
+          expect(json_response_body[:ideas].size).to eq(1)
+          expect(json_response_body[:ideas].pluck(:type)).to all eq 'proposal'
         end
       end
     end
