@@ -616,7 +616,7 @@ describe('Survey question widget', () => {
       });
     });
 
-    it.only('allows sorting by original order or count', () => {
+    it('allows sorting by original order or count', () => {
       cy.setAdminLoginCookie();
       if (currentReportId) {
         cy.apiRemoveReportBuilder(currentReportId);
@@ -638,12 +638,20 @@ describe('Survey question widget', () => {
 
         cy.wait(1000);
 
-        // Select project, phase and question (multiselect)
+        // Select project, phase and question (single select)
         cy.selectReactSelectOption(
           '#e2e-report-builder-project-filter-box',
           projectTitle
         );
         cy.get('#e2e-phase-filter').select(surveyPhaseId);
+        cy.get('.e2e-question-select select')
+          .first()
+          .select(surveyCustomFields.data[1].id);
+
+        // Verify sort dropdown is visible for single select question
+        cy.dataCy('sort-select').should('be.visible');
+
+        // Select multiselect question
         cy.get('.e2e-question-select select')
           .first()
           .select(surveyCustomFields.data[2].id);
