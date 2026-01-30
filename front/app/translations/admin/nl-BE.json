@@ -1397,7 +1397,7 @@
   "app.containers.Admin.projects.project.insights.noComparisonData": "Geen gegevens om te vergelijken",
   "app.containers.Admin.projects.project.insights.noDemographicData": "Geen demografische gegevens beschikbaar voor deze fase.",
   "app.containers.Admin.projects.project.insights.noInputsSubmitted": "Er zijn nog geen bijdragen ingestuurd.",
-  "app.containers.Admin.projects.project.insights.noReferenceData": "Nog geen referentiegegevens. {addBaseDataLink} voor deze bevolkingsgroep om representativiteit mogelijk te maken.",
+  "app.containers.Admin.projects.project.insights.noReferenceData": "Nog geen referentiegegevens beschikbaar. {addBaseDataLink} voor deze demografische groep om representativiteit mogelijk te maken.",
   "app.containers.Admin.projects.project.insights.openForResponses": "Open voor reacties",
   "app.containers.Admin.projects.project.insights.participants": "Deelnemers",
   "app.containers.Admin.projects.project.insights.participantsPercent": "Deelnemers (%)",
