@@ -576,7 +576,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "S'han seleccionat {numberOfSelectedTopics, plural, =0 {zero etiquetes} one {una etiqueta} other {# etiquetes}}. {selectedTopicNames}",
   "app.components.TypedConfirmationModal.cancel": "Cancel·la",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "ELIMINAR",
-  "app.components.TypedConfirmationModal.typeToConfirm": "Per confirmar, escriviu {confirmationWord} a continuació:",
+  "app.components.TypedConfirmationModal.typeToConfirm1": "Per confirmar l'eliminació de {entityName}, escriviu {confirmationWord} a continuació:",
   "app.components.TypedConfirmationModal.warning": "Aquesta acció és permanent i no es pot desfer.",
   "app.components.UI.FullscreenImage.expandImage": "Amplia la imatge",
   "app.components.UI.MoreActionsMenu.moreOptions": "Més opcions",
