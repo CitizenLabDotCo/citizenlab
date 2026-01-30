@@ -37,18 +37,15 @@ export const updatePermission = ({
     });
 };
 
-export const addPermissionsCustomField = (
-  cy: any,
-  {
-    adminJwt,
-    phaseId,
-    customFieldId,
-  }: {
-    adminJwt?: string;
-    phaseId: string;
-    customFieldId: string;
-  }
-) => {
+export const addPermissionsCustomField = ({
+  adminJwt,
+  phaseId,
+  customFieldId,
+}: {
+  adminJwt?: string;
+  phaseId: string;
+  customFieldId: string;
+}) => {
   const makeRequest = (adminJwt: string) => {
     return cy.request({
       headers: {
@@ -74,10 +71,13 @@ export const addPermissionsCustomField = (
     });
 };
 
-export const confirmUserCustomFieldHasValue = (
-  cy: any,
-  { key, value }: { key: string; value?: string }
-) => {
+export const confirmUserCustomFieldHasValue = ({
+  key,
+  value,
+}: {
+  key: string;
+  value?: string;
+}) => {
   cy.intercept('GET', `/web_api/v1/users/me`).as('getMe');
   cy.visit('/');
   cy.wait('@getMe').then((interception: any) => {

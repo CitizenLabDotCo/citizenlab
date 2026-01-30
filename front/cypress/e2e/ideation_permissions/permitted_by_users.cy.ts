@@ -64,7 +64,7 @@ describe('Ideation permitted by: users', () => {
                 permitted_by: 'everyone_confirmed_email',
               }).then(() => {
                 // Add one permissions custom field
-                return addPermissionsCustomField(cy, {
+                return addPermissionsCustomField({
                   adminJwt,
                   phaseId,
                   customFieldId,
@@ -256,7 +256,7 @@ describe('Ideation permitted by: users', () => {
     };
 
     const confirmSavedToProfile = (expectedAnswer: string | undefined) => {
-      confirmUserCustomFieldHasValue(cy, {
+      confirmUserCustomFieldHasValue({
         key: customFieldKey,
         value: expectedAnswer,
       });

@@ -61,7 +61,7 @@ describe('Ideation permitted by: everyone', () => {
                 phaseId,
                 permitted_by: 'everyone',
               }).then(() => {
-                return addPermissionsCustomField(cy, {
+                return addPermissionsCustomField({
                   adminJwt,
                   phaseId,
                   customFieldId,
@@ -153,7 +153,7 @@ describe('Ideation permitted by: everyone', () => {
     });
 
     const confirmSavedToProfile = (expectedAnswer: string | undefined) => {
-      confirmUserCustomFieldHasValue(cy, {
+      confirmUserCustomFieldHasValue({
         key: customFieldKey,
         value: expectedAnswer,
       });

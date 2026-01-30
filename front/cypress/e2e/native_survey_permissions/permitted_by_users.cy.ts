@@ -64,7 +64,7 @@ describe('Native survey permitted by: users', () => {
                 permitted_by: 'everyone_confirmed_email',
               }).then(() => {
                 // Add one permissions custom field
-                return addPermissionsCustomField(cy, {
+                return addPermissionsCustomField({
                   adminJwt,
                   phaseId,
                   customFieldId,
@@ -204,7 +204,7 @@ describe('Native survey permitted by: users', () => {
   };
 
   const confirmSavedToProfile = () => {
-    confirmUserCustomFieldHasValue(cy, { key: customFieldKey, value: answer });
+    confirmUserCustomFieldHasValue({ key: customFieldKey, value: answer });
   };
 
   const confirmSavedToIdea = ({ expectUserId }: { expectUserId: boolean }) => {

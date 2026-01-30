@@ -64,7 +64,7 @@ describe('Native survey permitted by: everyone', () => {
                 user_data_collection: 'all_data',
               }).then(() => {
                 // Add one permissions custom field
-                return addPermissionsCustomField(cy, {
+                return addPermissionsCustomField({
                   adminJwt,
                   phaseId,
                   customFieldId,
@@ -86,7 +86,7 @@ describe('Native survey permitted by: everyone', () => {
   });
 
   const confirmSavedToProfile = () => {
-    confirmUserCustomFieldHasValue(cy, { key: customFieldKey, value: answer });
+    confirmUserCustomFieldHasValue({ key: customFieldKey, value: answer });
   };
 
   describe('As a visitor', () => {
