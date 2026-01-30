@@ -2,6 +2,8 @@ const withAdminJwt = (
   makeRequest: (adminJwt: string) => any,
   adminJwt?: string
 ) => {
+  if (adminJwt) return makeRequest(adminJwt);
+
   return cy
     .apiLogin('admin@govocal.com', 'democracy2.0')
     .then((response: any) => {
