@@ -4,7 +4,7 @@ require 'csv'
 namespace :single_use do
   desc 'Remap areas and their corresponding custom field options based on CSV mapping file'
   # Usage:
-  # rails "single_use:remap_areas_and_custom_field_options[doemee.inulst,/path/to/mapping.csv]"
+  # rails "single_use:remap_areas_and_custom_field_options[doemee.inulst,/path/to/mapping.csv,nl-NL]"
   #
   # CSV file should have two columns: OLD and NEW
   # OLD column contains the current area names
@@ -23,7 +23,7 @@ namespace :single_use do
   # Paal,Graauw
   # Zandberg,Graauw
   # Schuddebeurs,Hulst
-  task :remap_areas_and_custom_field_options, %i[host csv_path] => :environment do |_task, args|
+  task :remap_areas_and_custom_field_options, %i[host csv_path locale] => :environment do |_task, args|
     raise 'Please provide host argument' if args[:host].blank?
     raise 'Please provide csv_path argument' if args[:csv_path].blank?
     raise "CSV file not found: #{args[:csv_path]}" unless File.exist?(args[:csv_path])
@@ -32,7 +32,11 @@ namespace :single_use do
     tenant = Tenant.find_by(host: args[:host])
     raise "Tenant not found: #{args[:host]}" unless tenant
 
+    locale = args[:locale].presence || 'en'
+
     tenant.switch do
+      I18n.default_locale = locale.to_sym
+      puts "Using locale: #{I18n.default_locale}"
       csv = CSV.read(args[:csv_path], headers: true)
       validate_csv_headers!(csv)
       mapping = build_mapping_from_csv(csv)

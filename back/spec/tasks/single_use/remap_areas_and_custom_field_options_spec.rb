@@ -46,7 +46,7 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
       initial_area_count = Area.count
       initial_option_count = domicile_field.options.count
 
-      Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, csv_path)
+      Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, csv_path, 'en')
 
       # Graauw should exist and have the updated name and multiloc
       area_graauw.reload
@@ -93,7 +93,7 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
 
     it 'still updates and merges areas without custom field options' do
       initial_count = Area.count
-      Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, csv_path)
+      Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, csv_path, 'en')
       expect(Area.count).to eq(initial_count - 1)
       expect { area_graauw.reload }.not_to raise_error
       expect(area_graauw.title_multiloc['en']).to eq('Graauw')
@@ -111,7 +111,7 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
 
       # Should not raise error, just continue
       expect do
-        Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, csv_path)
+        Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, csv_path, 'en')
       end.not_to raise_error
 
       # Hulst should still be processed
@@ -125,7 +125,7 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
 
     it 'raises an error for missing OLD/NEW columns' do
       expect do
-        Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, invalid_csv_path)
+        Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, invalid_csv_path, 'en')
       end.to raise_error(/CSV must have OLD and NEW columns/)
     end
   end
@@ -133,25 +133,25 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
   context 'with invalid arguments' do
     it 'raises an error when host is missing' do
       expect do
-        Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(nil, csv_path)
+        Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(nil, csv_path, 'en')
       end.to raise_error(/Please provide host argument/)
     end
 
     it 'raises an error when csv_path is missing' do
       expect do
-        Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, nil)
+        Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, nil, 'en')
       end.to raise_error(/Please provide csv_path argument/)
     end
 
     it 'raises an error when CSV file does not exist' do
       expect do
-        Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, '/nonexistent/file.csv')
+        Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke(tenant.host, '/nonexistent/file.csv', 'en')
       end.to raise_error(/CSV file not found/)
     end
 
     it 'raises an error when tenant does not exist' do
       expect do
-        Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke('nonexistent.tenant', csv_path)
+        Rake::Task['single_use:remap_areas_and_custom_field_options'].invoke('nonexistent.tenant', csv_path, 'en')
       end.to raise_error(/Tenant not found/)
     end
   end
