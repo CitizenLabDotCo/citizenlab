@@ -708,4 +708,35 @@ RSpec.describe Insights::BasePhaseInsightsService do
       expect(service.send(:participations_7_day_change, participations)).to eq(50.0)
     end
   end
+
+  describe '#participants_custom_field_values' do
+    it 'returns the item.custom_field_values if present' do
+      item = create(:idea, custom_field_values: { 'key1' => 'value1' })
+
+      result = service.send(:item_or_user_custom_field_values, item, nil)
+      expect(result).to eq({ 'key1' => 'value1' })
+
+      user = create(:user, custom_field_values: { 'key2' => 'value2' })
+
+      result = service.send(:item_or_user_custom_field_values, item, user)
+      expect(result).to eq({ 'key1' => 'value1' })
+    end
+
+    it 'returns the user.custom_field_values if item.custom_field_values is not present' do
+      item = create(:idea, custom_field_values: {})
+
+      user = create(:user, custom_field_values: { 'key2' => 'value2' })
+
+      result = service.send(:item_or_user_custom_field_values, item, user)
+      expect(result).to eq({ 'key2' => 'value2' })
+    end
+
+    it 'returns an empty hash if neither item nor user have custom_field_values' do
+      item = create(:idea, custom_field_values: {})
+      user = create(:user, custom_field_values: {})
+
+      result = service.send(:item_or_user_custom_field_values, item, user)
+      expect(result).to eq({})
+    end
+  end
 end
