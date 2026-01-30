@@ -576,7 +576,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "منتخب کردہ {numberOfSelectedTopics, plural, =0 {صفر ٹیگز} one {ایک ٹیگ} other {# ٹیگز}}۔ {selectedTopicNames}",
   "app.components.TypedConfirmationModal.cancel": "منسوخ کریں۔",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "حذف کریں۔",
-  "app.components.TypedConfirmationModal.typeToConfirm": "تصدیق کرنے کے لیے، نیچے {confirmationWord} ٹائپ کریں:",
+  "app.components.TypedConfirmationModal.typeToConfirm1": "{entityName}کو حذف کرنے کی تصدیق کرنے کے لیے، نیچے {confirmationWord} ٹائپ کریں:",
   "app.components.TypedConfirmationModal.warning": "یہ عمل مستقل ہے اور اسے کالعدم نہیں کیا جا سکتا۔",
   "app.components.UI.FullscreenImage.expandImage": "تصویر کو پھیلائیں۔",
   "app.components.UI.MoreActionsMenu.moreOptions": "مزید اختیارات",
