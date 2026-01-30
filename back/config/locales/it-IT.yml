@@ -187,7 +187,7 @@ it:
         title: Scrivi la tua risposta
         print_title: Se la risposta è '%{other_option}', si prega di specificare
       ask_follow_up_field:
-        title: Dicci perché
+        title: Raccontaci perché
     community_monitor:
       questions:
         place_to_live:
