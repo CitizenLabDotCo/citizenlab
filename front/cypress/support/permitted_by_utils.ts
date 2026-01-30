@@ -40,6 +40,43 @@ export const updatePermission = (
     });
 };
 
+export const addPermissionsCustomField = (
+  cy: any,
+  {
+    adminJwt,
+    phaseId,
+    customFieldId,
+  }: {
+    adminJwt?: string;
+    phaseId: string;
+    customFieldId: string;
+  }
+) => {
+  const makeRequest = (adminJwt: string) => {
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/phases/${phaseId}/permissions/posting_idea/permissions_custom_fields`,
+      body: {
+        custom_field_id: customFieldId,
+        required: true,
+      },
+    });
+  };
+
+  if (adminJwt) return makeRequest(adminJwt);
+
+  return cy
+    .apiLogin('admin@govocal.com', 'democracy2.0')
+    .then((response: any) => {
+      const adminJwt = response.body.jwt;
+      return makeRequest(adminJwt);
+    });
+};
+
 export const confirmUserCustomFieldHasValue = (
   cy: any,
   { key, value }: { key: string; value?: string }

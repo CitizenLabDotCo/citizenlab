@@ -3,6 +3,7 @@ import { randomString, randomEmail } from '../../support/commands';
 import {
   updatePermission,
   confirmUserCustomFieldHasValue,
+  addPermissionsCustomField,
 } from '../../support/permitted_by_utils';
 
 describe('Native survey permitted by: everyone', () => {
@@ -63,17 +64,10 @@ describe('Native survey permitted by: everyone', () => {
                 user_data_collection: 'all_data',
               }).then(() => {
                 // Add one permissions custom field
-                return cy.request({
-                  headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${adminJwt}`,
-                  },
-                  method: 'POST',
-                  url: `web_api/v1/phases/${phaseId}/permissions/posting_idea/permissions_custom_fields`,
-                  body: {
-                    custom_field_id: customFieldId,
-                    required: true,
-                  },
+                return addPermissionsCustomField(cy, {
+                  adminJwt,
+                  phaseId,
+                  customFieldId,
                 });
               });
             });

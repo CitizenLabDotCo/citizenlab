@@ -3,6 +3,7 @@ import { randomString, randomEmail } from '../../support/commands';
 import {
   updatePermission,
   confirmUserCustomFieldHasValue,
+  addPermissionsCustomField,
 } from '../../support/permitted_by_utils';
 
 describe('Native survey permitted by: users', () => {
@@ -63,35 +64,26 @@ describe('Native survey permitted by: users', () => {
                 permitted_by: 'everyone_confirmed_email',
               }).then(() => {
                 // Add one permissions custom field
-                return cy
-                  .request({
-                    headers: {
-                      'Content-Type': 'application/json',
-                      Authorization: `Bearer ${adminJwt}`,
-                    },
-                    method: 'POST',
-                    url: `web_api/v1/phases/${phaseId}/permissions/posting_idea/permissions_custom_fields`,
-                    body: {
-                      custom_field_id: customFieldId,
-                      required: true,
-                    },
-                  })
-                  .then(() => {
-                    // Set permission back to users
-                    return updatePermission(cy, {
-                      adminJwt,
-                      phaseId,
-                      permitted_by: 'users',
-                    }).then(() => {
-                      // Finally: go into the survey and save it
-                      cy.setAdminLoginCookie();
-                      cy.visit(
-                        `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`
-                      );
-                      cy.get('form').submit();
-                      cy.get('[data-testid="feedbackSuccessMessage"]');
-                    });
+                return addPermissionsCustomField(cy, {
+                  adminJwt,
+                  phaseId,
+                  customFieldId,
+                }).then(() => {
+                  // Set permission back to users
+                  return updatePermission(cy, {
+                    adminJwt,
+                    phaseId,
+                    permitted_by: 'users',
+                  }).then(() => {
+                    // Finally: go into the survey and save it
+                    cy.setAdminLoginCookie();
+                    cy.visit(
+                      `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`
+                    );
+                    cy.get('form').submit();
+                    cy.get('[data-testid="feedbackSuccessMessage"]');
                   });
+                });
               });
             });
         });
