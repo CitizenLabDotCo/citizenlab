@@ -576,7 +576,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "crwdns6127973:0numberOfSelectedTopics={numberOfSelectedTopics}crwdnd6127973:0selectedTopicNames={selectedTopicNames}crwdne6127973:0",
   "app.components.TypedConfirmationModal.cancel": "crwdns6127975:0crwdne6127975:0",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "crwdns6127977:0crwdne6127977:0",
-  "app.components.TypedConfirmationModal.typeToConfirm": "crwdns6127979:0{confirmationWord}crwdne6127979:0",
+  "app.components.TypedConfirmationModal.typeToConfirm1": "crwdns6140939:0{entityName}crwdnd6140939:0{confirmationWord}crwdne6140939:0",
   "app.components.TypedConfirmationModal.warning": "crwdns6127981:0crwdne6127981:0",
   "app.components.UI.FullscreenImage.expandImage": "crwdns6127983:0crwdne6127983:0",
   "app.components.UI.MoreActionsMenu.moreOptions": "crwdns6127985:0crwdne6127985:0",
