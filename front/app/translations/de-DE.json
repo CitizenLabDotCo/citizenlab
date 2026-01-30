@@ -576,7 +576,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "Ausgewählt {numberOfSelectedTopics, plural, =0 {keine Tags} one {ein Tag} other {# Tags}}. {selectedTopicNames}",
   "app.components.TypedConfirmationModal.cancel": "Abbrechen",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "LÖSCHEN",
-  "app.components.TypedConfirmationModal.typeToConfirm": "Geben Sie zur Bestätigung {confirmationWord} ein:",
+  "app.components.TypedConfirmationModal.typeToConfirm1": "Um die Löschung von {entityName}zu bestätigen, geben Sie {confirmationWord} ein:",
   "app.components.TypedConfirmationModal.warning": "Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden.",
   "app.components.UI.FullscreenImage.expandImage": "Bild vergrößern",
   "app.components.UI.MoreActionsMenu.moreOptions": "Weitere Optionen",
