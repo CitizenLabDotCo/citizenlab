@@ -1,6 +1,6 @@
-import { signUpEmailConformation, enterUserInfo } from '../../../support/auth';
-import { randomString } from '../../../support/commands';
-import { updatePermission } from '../../../support/permitted_by_utils';
+import { signUpEmailConformation, enterUserInfo } from '../../support/auth';
+import { randomString } from '../../support/commands';
+import { updatePermission } from '../../support/permitted_by_utils';
 
 describe('Post Participation Signup: survey', () => {
   let projectId: string;

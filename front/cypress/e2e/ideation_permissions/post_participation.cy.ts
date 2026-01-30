@@ -1,6 +1,6 @@
-import { randomString } from '../../../support/commands';
-import { signUpEmailConformation, enterUserInfo } from '../../../support/auth';
-import { updatePermission } from '../../../support/permitted_by_utils';
+import { randomString } from '../../support/commands';
+import { signUpEmailConformation, enterUserInfo } from '../../support/auth';
+import { updatePermission } from '../../support/permitted_by_utils';
 
 describe('Post Participation Signup: ideation', () => {
   let projectId: string;
