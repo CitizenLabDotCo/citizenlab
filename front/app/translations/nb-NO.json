@@ -576,7 +576,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "Valgt {numberOfSelectedTopics, plural, =0 {null tagger} one {én tagg} other {# tagger}}. {selectedTopicNames}",
   "app.components.TypedConfirmationModal.cancel": "Avbryt",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "SLETT",
-  "app.components.TypedConfirmationModal.typeToConfirm": "For å bekrefte, skriv {confirmationWord} nedenfor:",
+  "app.components.TypedConfirmationModal.typeToConfirm1": "For å bekrefte slettingen av {entityName}, skriv inn {confirmationWord} nedenfor:",
   "app.components.TypedConfirmationModal.warning": "Denne handlingen er permanent og kan ikke gjøres ugjort.",
   "app.components.UI.FullscreenImage.expandImage": "Utvid bildet",
   "app.components.UI.MoreActionsMenu.moreOptions": "Flere alternativer",
