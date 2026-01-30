@@ -576,7 +576,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "{numberOfSelectedTopics, plural, =0 {Sıfır etiket} one {bir etiket} other {# etiket}} seçildi. {selectedTopicNames}",
   "app.components.TypedConfirmationModal.cancel": "İptal",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "SİL",
-  "app.components.TypedConfirmationModal.typeToConfirm": "Onaylamak için aşağıya {confirmationWord} yazın:",
+  "app.components.TypedConfirmationModal.typeToConfirm1": "{entityName}adresinin silinmesini onaylamak için aşağıya {confirmationWord} yazın:",
   "app.components.TypedConfirmationModal.warning": "Bu işlem kalıcıdır ve geri alınamaz.",
   "app.components.UI.FullscreenImage.expandImage": "Resmi genişlet",
   "app.components.UI.MoreActionsMenu.moreOptions": "Daha fazla seçenek",
