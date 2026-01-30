@@ -576,7 +576,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "Valitut {numberOfSelectedTopics, plural, =0 {nolla tagia} one {yksi tunniste} other {# tagia}}. {selectedTopicNames}",
   "app.components.TypedConfirmationModal.cancel": "Peruuttaa",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "POISTAA",
-  "app.components.TypedConfirmationModal.typeToConfirm": "Vahvista kirjoittamalla {confirmationWord} alla olevaan kenttään:",
+  "app.components.TypedConfirmationModal.typeToConfirm1": "Vahvista {entityName}:n poisto kirjoittamalla {confirmationWord} alla olevaan kenttään:",
   "app.components.TypedConfirmationModal.warning": "Tämä toiminto on pysyvä eikä sitä voi perua.",
   "app.components.UI.FullscreenImage.expandImage": "Laajenna kuva",
   "app.components.UI.MoreActionsMenu.moreOptions": "Lisää vaihtoehtoja",
