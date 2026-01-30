@@ -1,3 +1,15 @@
+const withAdminJwt = (
+  makeRequest: (adminJwt: string) => any,
+  adminJwt?: string
+) => {
+  return cy
+    .apiLogin('admin@govocal.com', 'democracy2.0')
+    .then((response: any) => {
+      const adminJwt = response.body.jwt;
+      return makeRequest(adminJwt);
+    });
+};
+
 export const updatePermission = ({
   adminJwt,
   phaseId,
@@ -27,14 +39,7 @@ export const updatePermission = ({
     });
   };
 
-  if (adminJwt) return makeRequest(adminJwt);
-
-  return cy
-    .apiLogin('admin@govocal.com', 'democracy2.0')
-    .then((response: any) => {
-      const adminJwt = response.body.jwt;
-      return makeRequest(adminJwt);
-    });
+  return withAdminJwt(makeRequest, adminJwt);
 };
 
 export const addPermissionsCustomField = ({
@@ -61,14 +66,7 @@ export const addPermissionsCustomField = ({
     });
   };
 
-  if (adminJwt) return makeRequest(adminJwt);
-
-  return cy
-    .apiLogin('admin@govocal.com', 'democracy2.0')
-    .then((response: any) => {
-      const adminJwt = response.body.jwt;
-      return makeRequest(adminJwt);
-    });
+  return withAdminJwt(makeRequest, adminJwt);
 };
 
 export const confirmUserCustomFieldHasValue = ({
