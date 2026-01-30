@@ -14,9 +14,9 @@ export default defineMessages({
     defaultMessage: 'Delete this phase permanently?',
   },
   deletePhaseModalWarning: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.deletePhaseModalWarning',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.deletePhaseModalWarning1',
     defaultMessage:
-      'This will permanently delete this phase and its configuration, including survey responses, poll results, and volunteering data.',
+      'This will permanently delete this phase and all of its associated data, such as survey responses, poll results, and volunteering data.',
   },
   deletePhaseButtonText: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.deletePhaseButtonText',

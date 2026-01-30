@@ -19,8 +19,8 @@ export default defineMessages({
     defaultMessage: 'Delete this folder permanently?',
   },
   deleteFolderModalWarning: {
-    id: 'app.containers.Admin.projects.all.deleteFolderModalWarning',
+    id: 'app.containers.Admin.projects.all.deleteFolderModalWarning1',
     defaultMessage:
-      'This will permanently delete this folder and ALL projects within it, including all their ideas, comments, votes, and survey responses.',
+      'This will permanently delete this folder and ALL projects within it, along with any associated data such as ideas, comments, votes, and survey responses.',
   },
 });

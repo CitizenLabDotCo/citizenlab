@@ -14,9 +14,9 @@ export default defineMessages({
     defaultMessage: 'Delete this project permanently?',
   },
   deleteProjectModalWarning: {
-    id: 'app.containers.Admin.projects.all.deleteProjectModalWarning',
+    id: 'app.containers.Admin.projects.all.deleteProjectModalWarning1',
     defaultMessage:
-      'This will permanently delete this project and all of its data, including all ideas, comments, votes, and survey responses.',
+      'This will permanently delete this project and all of its associated data, such as ideas, comments, votes, and survey responses.',
   },
   deleteProjectError: {
     id: 'app.containers.Admin.projects.all.deleteProjectError',
