@@ -44,7 +44,7 @@ export interface IInputTopicAdd {
   projectId: string;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
-  icon?: string;
+  icon?: string | null;
   parent_id?: string;
 }
 
@@ -53,7 +53,7 @@ export interface IInputTopicUpdate {
   id: string;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
-  icon?: string;
+  icon?: string | null;
 }
 
 export type MovePosition = 'child' | 'left' | 'right' | 'root';

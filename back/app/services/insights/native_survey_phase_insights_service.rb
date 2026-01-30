@@ -12,6 +12,8 @@ module Insights
     end
 
     def participations_submitting_idea
+      prefix = UserFieldsInFormService.prefix
+
       phase_ideas.published.map do |idea|
         {
           item_id: idea.id,
@@ -19,7 +21,10 @@ module Insights
           acted_at: idea.submitted_at,
           classname: 'Idea',
           participant_id: participant_id(idea.id, idea.author_id, idea.author_hash),
-          user_custom_field_values: idea&.custom_field_values || {}
+          user_custom_field_values: (idea&.custom_field_values || {}).transform_keys do |key|
+            key_str = key.to_s
+            key_str.start_with?(prefix) ? key_str.sub(/^#{prefix}/, '') : key_str
+          end
         }
       end
     end
