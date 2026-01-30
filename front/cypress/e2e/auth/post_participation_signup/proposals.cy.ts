@@ -1,5 +1,6 @@
 import { randomString } from '../../../support/commands';
 import { signUpEmailConformation, enterUserInfo } from '../../../support/auth';
+import { updatePermission } from '../../../support/permitted_by_utils';
 
 describe('Post Participation Signup: proposals', () => {
   let projectId: string;
@@ -31,25 +32,7 @@ describe('Post Participation Signup: proposals', () => {
         })
         .then((response) => {
           phaseId = response.body.data.id;
-
-          return cy
-            .apiLogin('admin@govocal.com', 'democracy2.0')
-            .then((response) => {
-              const adminJwt = response.body.jwt;
-
-              // Set authentication requirement to 'everyone'
-              return cy.request({
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${adminJwt}`,
-                },
-                method: 'PATCH',
-                url: `web_api/v1/phases/${phaseId}/permissions/posting_idea`,
-                body: {
-                  permitted_by: 'everyone',
-                },
-              });
-            });
+          return updatePermission(cy, { phaseId, permitted_by: 'everyone' });
         });
     });
   });
