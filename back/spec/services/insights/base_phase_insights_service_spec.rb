@@ -710,8 +710,9 @@ RSpec.describe Insights::BasePhaseInsightsService do
   end
 
   describe '#participants_custom_field_values' do
-    it 'returns the item.custom_field_values if present' do
-      item = create(:idea, custom_field_values: { 'key1' => 'value1' })
+    it 'returns the filtered item.custom_field_values if present' do
+      prefix = UserFieldsInFormService.prefix
+      item = create(:idea, custom_field_values: { "#{prefix}key1" => 'value1', 'other_key' => 'other_value' })
 
       result = service.send(:parse_user_custom_field_values, item, nil)
       expect(result).to eq({ 'key1' => 'value1' })

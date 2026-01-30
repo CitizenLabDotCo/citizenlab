@@ -143,9 +143,11 @@ module Insights
       if item.respond_to?(:custom_field_values) && item.custom_field_values.present?
         prefix = @user_fields_prefix ||= UserFieldsInFormService.prefix
 
-        item.custom_field_values.transform_keys do |key|
+        item.custom_field_values.each_with_object({}) do |(key, value), hash|
           key_str = key.to_s
-          key_str.start_with?(prefix) ? key_str.sub(/^#{prefix}/, '') : key_str
+          if key_str.start_with?(prefix)
+            hash[key_str.sub(/^#{prefix}/, '')] = value
+          end
         end
       elsif participant && participant.custom_field_values.present?
         participant.custom_field_values
