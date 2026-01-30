@@ -576,7 +576,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "تم تحديد {numberOfSelectedTopics, plural, =0 {لا يوجد موضوعات} one {موضوع واحد} other {# موضوعات}}. {selectedTopicNames}",
   "app.components.TypedConfirmationModal.cancel": "يلغي",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "يمسح",
-  "app.components.TypedConfirmationModal.typeToConfirm": "للتأكيد، اكتب {confirmationWord} أدناه:",
+  "app.components.TypedConfirmationModal.typeToConfirm1": "لتأكيد حذف {entityName}، اكتب {confirmationWord} أدناه:",
   "app.components.TypedConfirmationModal.warning": "هذا الإجراء دائم ولا يمكن التراجع عنه.",
   "app.components.UI.FullscreenImage.expandImage": "توسيع الصورة",
   "app.components.UI.MoreActionsMenu.moreOptions": "المزيد من الخيارات",
