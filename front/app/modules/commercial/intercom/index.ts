@@ -88,6 +88,7 @@ const configuration: ModuleConfiguration = {
         window.Intercom &&
         window.Intercom('boot', {
           app_id: INTERCOM_APP_ID,
+          region: 'eu',
           ...(!isNilOrError(user)
             ? {
                 email: user.data.attributes.email,
