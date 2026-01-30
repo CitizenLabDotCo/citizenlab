@@ -576,7 +576,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "Ausgewielt {numberOfSelectedTopics, plural, =0 {null Sujeten} one {ee Sujet} other {# Sujet'en}}. {selectedTopicNames}",
   "app.components.TypedConfirmationModal.cancel": "Ofbriechen",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "LÄSCHEN",
-  "app.components.TypedConfirmationModal.typeToConfirm": "Fir ze bestätegen, gitt {confirmationWord} hei ënnendrënner an:",
+  "app.components.TypedConfirmationModal.typeToConfirm1": "Fir d'Läschung vun {entityName}ze bestätegen, gitt {confirmationWord} hei ënnendrënner an:",
   "app.components.TypedConfirmationModal.warning": "Dës Aktioun ass permanent a kann net réckgängeg gemaach ginn.",
   "app.components.UI.FullscreenImage.expandImage": "Bild erweideren",
   "app.components.UI.MoreActionsMenu.moreOptions": "Méi Optiounen",
