@@ -1,3 +1,6 @@
+import moment = require('moment');
+import { randomString } from './commands';
+
 const withAdminJwt = (
   makeRequest: (adminJwt: string) => any,
   adminJwt?: string
@@ -9,6 +12,61 @@ const withAdminJwt = (
     .then((response: any) => {
       const adminJwt = response.body.jwt;
       return makeRequest(adminJwt);
+    });
+};
+
+export const setupProject = () => {
+  let customFieldId: string;
+  let customFieldKey: string;
+  let projectId: string;
+  let projectSlug: string;
+  let phaseId: string;
+  const fieldName = randomString();
+
+  const twoDaysAgo = moment().subtract(2, 'days').format('DD/MM/YYYY');
+  const inTwoMonths = moment().add(2, 'month').format('DD/MM/YYYY');
+
+  // Create custom field
+  return cy
+    .apiCreateCustomField(fieldName, true, false)
+    .then((response) => {
+      customFieldId = response.body.data.id;
+      customFieldKey = response.body.data.attributes.key;
+
+      return cy.apiCreateProject({
+        title: randomString(),
+        descriptionPreview: randomString(),
+        description: randomString(),
+        publicationStatus: 'published',
+      });
+    })
+    .then((project) => {
+      projectId = project.body.data.id;
+      projectSlug = project.body.data.attributes.slug;
+
+      return cy.apiCreatePhase({
+        projectId,
+        title: randomString(),
+        startAt: twoDaysAgo,
+        endAt: inTwoMonths,
+        participationMethod: 'ideation',
+        canComment: true,
+        canPost: true,
+        canReact: true,
+        description: 'Some description',
+        allow_anonymous_participation: true,
+      });
+    })
+    .then((phaseResponse) => {
+      phaseId = phaseResponse.body.data.id;
+      return {
+        customFieldId,
+        customFieldKey,
+        projectId,
+        projectSlug,
+        phaseId,
+        fieldName,
+      };
     });
 };
 

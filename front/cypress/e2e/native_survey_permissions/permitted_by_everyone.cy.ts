@@ -4,6 +4,7 @@ import {
   updatePermission,
   confirmUserCustomFieldHasValue,
   addPermissionsCustomField,
+  setupProject,
 } from '../../support/permitted_by_utils';
 
 describe('Native survey permitted by: everyone', () => {
@@ -12,67 +13,39 @@ describe('Native survey permitted by: everyone', () => {
   let projectId = '';
   let projectSlug = '';
   let phaseId = '';
+  let fieldName = '';
   let userId: string | undefined;
   let answer: string | undefined;
 
-  const fieldName = randomString(10);
-
-  const twoDaysAgo = moment().subtract(2, 'days').format('DD/MM/YYYY');
-  const inTwoMonths = moment().add(2, 'month').format('DD/MM/YYYY');
-
   before(() => {
-    // Create custom field
-    cy.apiCreateCustomField(fieldName, true, false).then((response) => {
-      customFieldId = response.body.data.id;
-      customFieldKey = response.body.data.attributes.key;
+    setupProject().then((data) => {
+      customFieldId = data.customFieldId;
+      customFieldKey = data.customFieldKey;
+      projectId = data.projectId;
+      projectSlug = data.projectSlug;
+      phaseId = data.phaseId;
+      fieldName = data.fieldName;
 
-      // Create project with active native survey phase
-      cy.apiCreateProject({
-        title: randomString(),
-        descriptionPreview: randomString(),
-        description: randomString(),
-        publicationStatus: 'published',
-      }).then((project) => {
-        projectId = project.body.data.id;
-        projectSlug = project.body.data.attributes.slug;
-        cy.apiCreatePhase({
-          projectId,
-          title: randomString(),
-          startAt: twoDaysAgo,
-          endAt: inTwoMonths,
-          participationMethod: 'native_survey',
-          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-          nativeSurveyTitleMultiloc: { en: 'Survey' },
-          canComment: true,
-          canPost: true,
-          canReact: true,
-          description: 'Some description',
-        }).then((phase) => {
-          phaseId = phase.body.data.id;
+      return cy
+        .apiLogin('admin@govocal.com', 'democracy2.0')
+        .then((response) => {
+          const adminJwt = response.body.jwt;
 
-          // Set permission to everyone
-          return cy
-            .apiLogin('admin@govocal.com', 'democracy2.0')
-            .then((response) => {
-              const adminJwt = response.body.jwt;
-
-              return updatePermission({
-                adminJwt,
-                phaseId,
-                permitted_by: 'everyone',
-                user_fields_in_form: true,
-                user_data_collection: 'all_data',
-              }).then(() => {
-                // Add one permissions custom field
-                return addPermissionsCustomField({
-                  adminJwt,
-                  phaseId,
-                  customFieldId,
-                });
-              });
+          return updatePermission({
+            adminJwt,
+            phaseId,
+            permitted_by: 'everyone',
+            user_fields_in_form: true,
+            user_data_collection: 'all_data',
+          }).then(() => {
+            // Add one permissions custom field
+            return addPermissionsCustomField({
+              adminJwt,
+              phaseId,
+              customFieldId,
             });
+          });
         });
-      });
     });
   });
 
