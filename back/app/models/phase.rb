@@ -75,7 +75,15 @@ class Phase < ApplicationRecord
   INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition].freeze
   FALLBACK_INPUT_TERM   = 'idea'
   VOTE_TERMS            = %w[vote point token credit]
-  PRESCREENING_MODES    = %w[all].freeze
+
+  # Don’t generate the enum scopes, since we don’t need them, and the generated negated
+  # scopes don’t work well with `nil`/`NULL` values.
+  enum :prescreening_mode,
+    { flagged_only: 'flagged_only', all: 'all' },
+    prefix: 'prescreening', scopes: false
+
+  def prescreening_disabled? = prescreening_mode.blank?
+  def prescreening_enabled? = prescreening_mode.present?
 
   attribute :reacting_dislike_enabled, :boolean, default: -> { disliking_enabled_default }
 
@@ -107,7 +115,6 @@ class Phase < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :start_at, presence: true
-  validates :prescreening_mode, inclusion: { in: PRESCREENING_MODES }, allow_nil: true
   validate :validate_end_at
   validate :validate_previous_blank_end_at
   validate :validate_start_at_before_end_at # Also enforced by the phases_start_before_end check constraint
@@ -263,10 +270,6 @@ class Phase < ApplicationRecord
 
   def ideation?
     participation_method == 'ideation'
-  end
-
-  def prescreening_enabled?
-    prescreening_mode.present?
   end
 
   def pmethod
