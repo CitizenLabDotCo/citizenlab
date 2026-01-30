@@ -576,7 +576,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "Επιλεγμένα {numberOfSelectedTopics, plural, =0 {μηδενικές ετικέτες} one {μια ετικέτα} other {# ετικέτες}}. {selectedTopicNames}",
   "app.components.TypedConfirmationModal.cancel": "Ακύρωση",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "DELETE",
-  "app.components.TypedConfirmationModal.typeToConfirm": "Για επιβεβαίωση, πληκτρολογήστε {confirmationWord} παρακάτω:",
+  "app.components.TypedConfirmationModal.typeToConfirm1": "Για να επιβεβαιώσετε τη διαγραφή του {entityName}, πληκτρολογήστε {confirmationWord} παρακάτω:",
   "app.components.TypedConfirmationModal.warning": "Αυτή η ενέργεια είναι μόνιμη και δεν μπορεί να αναιρεθεί.",
   "app.components.UI.FullscreenImage.expandImage": "Αναπτύξτε την εικόνα",
   "app.components.UI.MoreActionsMenu.moreOptions": "Περισσότερες επιλογές",
