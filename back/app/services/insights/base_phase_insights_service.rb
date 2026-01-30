@@ -138,6 +138,24 @@ module Insights
       @phase.ideas.where(publication_status: 'published').count
     end
 
+    # Parses user custom_field_values from either the item (if values) or the participant (user).
+    def parse_user_custom_field_values(item, participant)
+      if item.respond_to?(:custom_field_values) && item.custom_field_values.present?
+        prefix = @user_fields_prefix ||= UserFieldsInFormService.prefix
+
+        item.custom_field_values.each_with_object({}) do |(key, value), hash|
+          key_str = key.to_s
+          if key_str.start_with?(prefix)
+            hash[key_str.sub(/^#{prefix}/, '')] = value
+          end
+        end
+      elsif participant && participant.custom_field_values.present?
+        participant.custom_field_values
+      else
+        {}
+      end
+    end
+
     def demographics_data(participations, participant_ids)
       participant_custom_field_values = participants_custom_field_values(participations, participant_ids)
       permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
