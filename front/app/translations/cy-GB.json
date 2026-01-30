@@ -576,7 +576,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "{numberOfSelectedTopics, plural, =0 {sero tagiau} one {un tag} other {# tagiau}}. {selectedTopicNames}",
   "app.components.TypedConfirmationModal.cancel": "Canslo",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "DILEU",
-  "app.components.TypedConfirmationModal.typeToConfirm": "I gadarnhau, teipiwch {confirmationWord} isod:",
+  "app.components.TypedConfirmationModal.typeToConfirm1": "I gadarnhau dileu {entityName}, teipiwch {confirmationWord} isod:",
   "app.components.TypedConfirmationModal.warning": "Mae'r weithred hon yn barhaol ac ni ellir ei dadwneud.",
   "app.components.UI.FullscreenImage.expandImage": "Ehangu delwedd",
   "app.components.UI.MoreActionsMenu.moreOptions": "Mwy o opsiynau",
