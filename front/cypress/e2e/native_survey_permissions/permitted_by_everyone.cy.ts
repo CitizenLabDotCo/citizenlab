@@ -56,7 +56,7 @@ describe('Native survey permitted by: everyone', () => {
             .then((response) => {
               const adminJwt = response.body.jwt;
 
-              return updatePermission(cy, {
+              return updatePermission({
                 adminJwt,
                 phaseId,
                 permitted_by: 'everyone',
@@ -141,7 +141,7 @@ describe('Native survey permitted by: everyone', () => {
         cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
           const adminJwt = response.body.jwt;
 
-          return updatePermission(cy, {
+          return updatePermission({
             adminJwt,
             phaseId,
             permitted_by: 'everyone',
@@ -228,7 +228,7 @@ describe('Native survey permitted by: everyone', () => {
         cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
           const adminJwt = response.body.jwt;
 
-          return updatePermission(cy, {
+          return updatePermission({
             adminJwt,
             phaseId,
             permitted_by: 'everyone',
@@ -250,7 +250,7 @@ describe('Native survey permitted by: everyone', () => {
         cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
           const adminJwt = response.body.jwt;
 
-          return updatePermission(cy, {
+          return updatePermission({
             adminJwt,
             phaseId,
             permitted_by: 'everyone',

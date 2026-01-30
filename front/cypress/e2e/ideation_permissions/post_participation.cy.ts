@@ -15,7 +15,7 @@ describe('Post Participation Signup: ideation', () => {
       projectSlug = result.projectSlug;
       phaseId = result.phaseId;
 
-      return updatePermission(cy, { phaseId, permitted_by: 'everyone' });
+      return updatePermission({ phaseId, permitted_by: 'everyone' });
     });
   });
 

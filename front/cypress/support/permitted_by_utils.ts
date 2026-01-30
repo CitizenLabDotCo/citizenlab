@@ -1,19 +1,16 @@
-export const updatePermission = (
-  cy: any,
-  {
-    adminJwt,
-    phaseId,
-    permitted_by,
-    user_fields_in_form,
-    user_data_collection,
-  }: {
-    adminJwt?: string;
-    phaseId: string;
-    permitted_by?: string;
-    user_fields_in_form?: boolean;
-    user_data_collection?: string;
-  }
-) => {
+export const updatePermission = ({
+  adminJwt,
+  phaseId,
+  permitted_by,
+  user_fields_in_form,
+  user_data_collection,
+}: {
+  adminJwt?: string;
+  phaseId: string;
+  permitted_by?: string;
+  user_fields_in_form?: boolean;
+  user_data_collection?: string;
+}) => {
   const makeRequest = (adminJwt: string) => {
     return cy.request({
       headers: {

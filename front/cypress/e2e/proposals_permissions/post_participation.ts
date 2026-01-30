@@ -32,7 +32,7 @@ describe('Post Participation Signup: proposals', () => {
         })
         .then((response) => {
           phaseId = response.body.data.id;
-          return updatePermission(cy, { phaseId, permitted_by: 'everyone' });
+          return updatePermission({ phaseId, permitted_by: 'everyone' });
         });
     });
   });

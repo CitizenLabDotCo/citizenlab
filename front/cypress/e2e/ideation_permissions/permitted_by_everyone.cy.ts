@@ -56,7 +56,7 @@ describe('Ideation permitted by: everyone', () => {
             .then((response) => {
               const adminJwt = response.body.jwt;
 
-              return updatePermission(cy, {
+              return updatePermission({
                 adminJwt,
                 phaseId,
                 permitted_by: 'everyone',

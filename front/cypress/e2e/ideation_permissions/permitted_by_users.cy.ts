@@ -58,7 +58,7 @@ describe('Ideation permitted by: users', () => {
             .then((response) => {
               const adminJwt = response.body.jwt;
 
-              return updatePermission(cy, {
+              return updatePermission({
                 adminJwt,
                 phaseId,
                 permitted_by: 'everyone_confirmed_email',
@@ -70,7 +70,7 @@ describe('Ideation permitted by: users', () => {
                   customFieldId,
                 }).then(() => {
                   // Set permission back to users
-                  return updatePermission(cy, {
+                  return updatePermission({
                     adminJwt,
                     phaseId,
                     permitted_by: 'users',
@@ -234,7 +234,7 @@ describe('Ideation permitted by: users', () => {
       cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
         const adminJwt = response.body.jwt;
 
-        return updatePermission(cy, {
+        return updatePermission({
           adminJwt,
           phaseId,
           user_fields_in_form: true,

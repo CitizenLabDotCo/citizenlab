@@ -58,7 +58,7 @@ describe('Native survey permitted by: users', () => {
             .then((response) => {
               const adminJwt = response.body.jwt;
 
-              return updatePermission(cy, {
+              return updatePermission({
                 adminJwt,
                 phaseId,
                 permitted_by: 'everyone_confirmed_email',
@@ -70,7 +70,7 @@ describe('Native survey permitted by: users', () => {
                   customFieldId,
                 }).then(() => {
                   // Set permission back to users
-                  return updatePermission(cy, {
+                  return updatePermission({
                     adminJwt,
                     phaseId,
                     permitted_by: 'users',
@@ -251,7 +251,7 @@ describe('Native survey permitted by: users', () => {
         cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
           const adminJwt = response.body.jwt;
 
-          return updatePermission(cy, {
+          return updatePermission({
             adminJwt,
             phaseId,
             user_fields_in_form: true,
@@ -273,7 +273,7 @@ describe('Native survey permitted by: users', () => {
         cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
           const adminJwt = response.body.jwt;
 
-          return updatePermission(cy, {
+          return updatePermission({
             adminJwt,
             phaseId,
             user_fields_in_form: false,
@@ -294,7 +294,7 @@ describe('Native survey permitted by: users', () => {
         cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
           const adminJwt = response.body.jwt;
 
-          return updatePermission(cy, {
+          return updatePermission({
             adminJwt,
             phaseId,
             user_fields_in_form: true,
@@ -316,7 +316,7 @@ describe('Native survey permitted by: users', () => {
         cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
           const adminJwt = response.body.jwt;
 
-          return updatePermission(cy, {
+          return updatePermission({
             adminJwt,
             phaseId,
             user_fields_in_form: false,
