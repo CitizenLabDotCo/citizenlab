@@ -576,7 +576,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "A kiválasztott {numberOfSelectedTopics, plural, =0 {nulla címke} one {egy címke} other {# címke}}. {selectedTopicNames}",
   "app.components.TypedConfirmationModal.cancel": "Mégsem",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "TÖRÖL",
-  "app.components.TypedConfirmationModal.typeToConfirm": "A megerősítéshez írja be a {confirmationWord} kódot alább:",
+  "app.components.TypedConfirmationModal.typeToConfirm1": "A {entityName}törlésének megerősítéséhez írja be: {confirmationWord} alább:",
   "app.components.TypedConfirmationModal.warning": "Ez a művelet végleges és nem vonható vissza.",
   "app.components.UI.FullscreenImage.expandImage": "Kép kibontása",
   "app.components.UI.MoreActionsMenu.moreOptions": "További lehetőségek",
