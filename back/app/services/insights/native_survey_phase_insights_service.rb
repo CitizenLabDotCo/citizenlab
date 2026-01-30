@@ -12,8 +12,6 @@ module Insights
     end
 
     def participations_submitting_idea
-      prefix = UserFieldsInFormService.prefix
-
       phase_ideas.published.map do |idea|
         {
           item_id: idea.id,

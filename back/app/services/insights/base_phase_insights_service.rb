@@ -147,7 +147,7 @@ module Insights
           key_str.start_with?(prefix) ? key_str.sub(/^#{prefix}/, '') : key_str
         end
       elsif participant && participant.custom_field_values.present?
-          participant.custom_field_values
+        participant.custom_field_values
       else
         {}
       end
