@@ -18,9 +18,11 @@ import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary'
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 import useRegenerateAnalysisSummary from 'api/analysis_summaries/useRegenerateAnalysisSummary';
 import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
+import { ParticipationMethod } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { getAnalysisScope } from 'containers/Admin/projects/components/AnalysisBanner/utils';
 import InsightBody from 'containers/Admin/projects/project/analysis/Insights/InsightBody';
 import SummaryHeader from 'containers/Admin/projects/project/analysis/Insights/SummaryHeader';
 
@@ -35,9 +37,10 @@ const MIN_INPUTS_FOR_SUMMARY = 10;
 
 interface Props {
   phaseId: string;
+  participationMethod: ParticipationMethod;
 }
 
-const AiSummary = ({ phaseId }: Props) => {
+const AiSummary = ({ phaseId, participationMethod }: Props) => {
   const { formatMessage } = useIntl();
   const { isPdfRenderMode } = usePdfExportContext();
   const { projectId } = useParams() as { projectId: string };
@@ -50,9 +53,13 @@ const AiSummary = ({ phaseId }: Props) => {
     onlyCheckAllowed: true,
   });
 
-  const { data: analyses, isLoading: isLoadingAnalyses } = useAnalyses({
-    projectId,
-  });
+  // Determine the correct scope based on participation method
+  const scope = getAnalysisScope(participationMethod);
+
+  // Query analyses with correct scope (projectId for ideation/voting, phaseId for others)
+  const { data: analyses, isLoading: isLoadingAnalyses } = useAnalyses(
+    scope === 'project' ? { projectId } : { phaseId }
+  );
   const analysis = analyses?.data[0];
   const analysisId = analysis?.id;
 
@@ -96,11 +103,14 @@ const AiSummary = ({ phaseId }: Props) => {
       !analysisCreationAttempted
     ) {
       setAnalysisCreationAttempted(true);
-      addAnalysis({ projectId });
+      // Create analysis with correct scope (projectId for ideation/voting, phaseId for others)
+      addAnalysis(scope === 'project' ? { projectId } : { phaseId });
     }
   }, [
     analyses,
     projectId,
+    phaseId,
+    scope,
     addAnalysis,
     isCreatingAnalysis,
     analysisCreationAttempted,
