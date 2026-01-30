@@ -576,7 +576,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "Selecionado {numberOfSelectedTopics, plural, =0 {zero tópicos} one {um tópico} other {# tópicos}}. {selectedTopicNames}",
   "app.components.TypedConfirmationModal.cancel": "Cancelar",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "DELETE",
-  "app.components.TypedConfirmationModal.typeToConfirm": "Para confirmar, digite {confirmationWord} abaixo:",
+  "app.components.TypedConfirmationModal.typeToConfirm1": "Para confirmar a exclusão de {entityName}, digite {confirmationWord} abaixo:",
   "app.components.TypedConfirmationModal.warning": "Essa ação é permanente e não pode ser desfeita.",
   "app.components.UI.FullscreenImage.expandImage": "Expandir imagem",
   "app.components.UI.MoreActionsMenu.moreOptions": "Mais opções",
