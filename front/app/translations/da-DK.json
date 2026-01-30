@@ -576,7 +576,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "Valgt {numberOfSelectedTopics, plural, =0 {zero topics} et {zero topics} andet {# topics}}.{selectedTopicNames}",
   "app.components.TypedConfirmationModal.cancel": "Afbryd",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "SLET",
-  "app.components.TypedConfirmationModal.typeToConfirm": "Skriv {confirmationWord} nedenfor for at bekræfte:",
+  "app.components.TypedConfirmationModal.typeToConfirm1": "For at bekræfte sletningen af {entityName}skal du skrive {confirmationWord} nedenfor:",
   "app.components.TypedConfirmationModal.warning": "Denne handling er permanent og kan ikke fortrydes.",
   "app.components.UI.FullscreenImage.expandImage": "Udvid billede",
   "app.components.UI.MoreActionsMenu.moreOptions": "Flere valgmuligheder",
