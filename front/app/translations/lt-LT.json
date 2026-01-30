@@ -576,7 +576,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "Pasirinkta {numberOfSelectedTopics, plural, =0 {nulis žymų} one {viena žyma} other {# žymų}}. {selectedTopicNames}",
   "app.components.TypedConfirmationModal.cancel": "Atšaukti",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "DELETE",
-  "app.components.TypedConfirmationModal.typeToConfirm": "Norėdami patvirtinti, toliau įveskite {confirmationWord} :",
+  "app.components.TypedConfirmationModal.typeToConfirm1": "Norėdami patvirtinti {entityName}ištrynimą, toliau įveskite {confirmationWord} :",
   "app.components.TypedConfirmationModal.warning": "Šis veiksmas yra nuolatinis ir negali būti atšauktas.",
   "app.components.UI.FullscreenImage.expandImage": "Išplėsti vaizdą",
   "app.components.UI.MoreActionsMenu.moreOptions": "Daugiau galimybių",
