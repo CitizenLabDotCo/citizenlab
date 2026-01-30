@@ -82,7 +82,6 @@ describe 'rake single_use:remap_areas_and_custom_field_options' do # rubocop:dis
       expect(Area.count).to eq(initial_area_count - 7)
       expect(domicile_field.options.count).to eq(initial_option_count - 7)
     end
-
   end
 
   context 'when domicile custom field does not exist' do
