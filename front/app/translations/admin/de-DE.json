@@ -412,7 +412,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.deletePhase": "Phase löschen",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.deletePhaseButtonText": "Ja, diese Phase löschen",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.deletePhaseModalTitle": "Diese Phase dauerhaft löschen?",
-  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.deletePhaseModalWarning1": "Dadurch werden diese Phase und alle damit verbundenen Daten, wie z.B. Umfrageantworten, Umfrageergebnisse und Freiwilligendaten, dauerhaft gelöscht.",
+  "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.deletePhaseModalWarning1": "Dadurch werden diese Phase und alle damit verbundenen Daten, wie z. B. Umfrageantworten und andere Daten, dauerhaft gelöscht.",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.documentPhase": "Phase für Annotation von Dokumenten",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.everyone": "Alle",
   "app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.externalSurveyPhase": "Phase für externe Umfrage",
