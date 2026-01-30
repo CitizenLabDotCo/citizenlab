@@ -14,6 +14,8 @@ import {
   RowButton,
 } from 'containers/Admin/projects/components/StyledComponents';
 
+import useLocalize from 'hooks/useLocalize';
+
 import Error from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -62,6 +64,7 @@ export interface Props {
 const ProjectFolderRow = memo<Props>(
   ({ publication, toggleFolder, isFolderOpen, hasProjects }) => {
     const { data: authUser } = useAuthUser();
+    const localize = useLocalize();
 
     const [folderDeletionError, setFolderDeletionError] = useState<
       string | null
@@ -151,6 +154,9 @@ const ProjectFolderRow = memo<Props>(
               </FolderRowContent>
               <FolderMoreActionsMenu
                 folderId={publication.relationships.publication.data.id}
+                folderName={localize(
+                  publication.attributes.publication_title_multiloc
+                )}
                 setError={setFolderDeletionError}
                 setIsRunningAction={setIsBeingDeleted}
               />
