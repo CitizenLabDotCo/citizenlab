@@ -576,7 +576,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "Valde {numberOfSelectedTopics, plural, =0 {noll ämnen} one {ett ämne} other {# ämnen}}. {selectedTopicNames}",
   "app.components.TypedConfirmationModal.cancel": "Avbryt",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "RADERA",
-  "app.components.TypedConfirmationModal.typeToConfirm": "För att bekräfta, skriv {confirmationWord} nedan:",
+  "app.components.TypedConfirmationModal.typeToConfirm1": "För att bekräfta borttagningen av {entityName}, skriv {confirmationWord} nedan:",
   "app.components.TypedConfirmationModal.warning": "Denna åtgärd är permanent och kan inte ångras.",
   "app.components.UI.FullscreenImage.expandImage": "Expandera bilden",
   "app.components.UI.MoreActionsMenu.moreOptions": "Fler alternativ",
