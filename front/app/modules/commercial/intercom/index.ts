@@ -88,6 +88,8 @@ const configuration: ModuleConfiguration = {
         window.Intercom &&
         window.Intercom('boot', {
           app_id: INTERCOM_APP_ID,
+          api_base: 'https://api-iam.intercom.io',
+          region: 'eu',
           ...(!isNilOrError(user)
             ? {
                 email: user.data.attributes.email,

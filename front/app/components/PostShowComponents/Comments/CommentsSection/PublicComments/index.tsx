@@ -49,12 +49,14 @@ export interface Props {
   postId: string;
   className?: string;
   allowAnonymousParticipation?: boolean;
+  onUnauthenticatedCommentClick?: () => void;
 }
 
 const PublicComments = ({
   postId,
   className,
   allowAnonymousParticipation,
+  onUnauthenticatedCommentClick,
 }: Props) => {
   const { ref: loadMoreRef, inView } = useInView({
     rootMargin: '200px',
@@ -136,7 +138,11 @@ const PublicComments = ({
             {showCommentCount && <CommentCount>({commentCount})</CommentCount>}
           </Title>
 
-          <CommentingIdeaDisabled idea={idea} phaseId={phaseId} />
+          <CommentingIdeaDisabled
+            idea={idea}
+            phaseId={phaseId}
+            onUnauthenticatedClick={onUnauthenticatedCommentClick}
+          />
 
           {hasComments && (
             <Box ml="auto" mb="24px">

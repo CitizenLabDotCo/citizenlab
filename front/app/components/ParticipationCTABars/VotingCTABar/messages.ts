@@ -67,6 +67,10 @@ export default defineMessages({
     defaultMessage:
       '{votesLeft, plural, =0 {No credits left} other {# out of {totalNumberOfVotes, plural, one {1 credit} other {# credits}} left}}',
   },
+  numberOfPercentsLeft: {
+    id: 'app.components.ParticipationCTABars.VotingCTABar.numberOfPercentsLeft4',
+    defaultMessage: '{votesLeft, plural, =0 {No % left} other {#% left}}',
+  },
   // Only used for single voting (no vote term config available)
   votesCast: {
     id: 'app.components.ParticipationCTABars.VotingCTABar.votesCast',
