@@ -576,7 +576,7 @@
   "app.components.TopicsPicker.numberOfSelectedTopics": "Sélectionné {numberOfSelectedTopics, plural, =0 {zéro sujet} one {un sujet} other {# topics}}. {selectedTopicNames}> <notr",
   "app.components.TypedConfirmationModal.cancel": "Annuler",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "SUPPRIMER",
-  "app.components.TypedConfirmationModal.typeToConfirm": "Pour confirmer, tapez {confirmationWord} ci-dessous :",
+  "app.components.TypedConfirmationModal.typeToConfirm1": "Pour confirmer la suppression de {entityName}, tapez {confirmationWord} ci-dessous :",
   "app.components.TypedConfirmationModal.warning": "Cette action est permanente et ne peut être annulée.",
   "app.components.UI.FullscreenImage.expandImage": "Agrandir l'image",
   "app.components.UI.MoreActionsMenu.moreOptions": "Plus d’options",
