@@ -48,7 +48,7 @@ module CustomFieldBins
       # achieving statistically significant auto-insights at the expense of
       # detail
       [0, 20, 40, 60, 80, nil].each_cons(2) do |low, high|
-        create!(custom_field:, range: low...high)
+        find_or_create_by!(custom_field:, range: low...high)
       end
     end
 
