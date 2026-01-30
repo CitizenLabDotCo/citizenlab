@@ -21,6 +21,7 @@ export type ActionType = 'deleting' | 'copying';
 
 export interface Props {
   projectId: string;
+  projectName: string;
   firstPublishedAt: string | null;
   folderId?: string;
   color?: string;
@@ -30,6 +31,7 @@ export interface Props {
 
 const ProjectMoreActionsMenu = ({
   projectId,
+  projectName,
   firstPublishedAt,
   folderId,
   color,
@@ -164,6 +166,7 @@ const ProjectMoreActionsMenu = ({
           onClose={handleCloseDeleteModal}
           onConfirm={handleDeleteProject}
           title={messages.deleteProjectModalTitle}
+          entityName={projectName}
           mainWarning={messages.deleteProjectModalWarning}
           confirmationWord={typedConfirmationMessages.confirmationWordDelete}
           deleteButtonText={messages.deleteProjectButtonFull}

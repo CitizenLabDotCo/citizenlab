@@ -11,6 +11,7 @@ import ProjectMoreActionsMenu, { Props } from './ProjectMoreActionsMenu';
 
 const defaultProps: Props = {
   projectId: 'projectId',
+  projectName: 'Test Project',
   firstPublishedAt: '2019-05-11T17:04:13.090Z',
   setError: jest.fn(),
 };
@@ -68,6 +69,7 @@ describe('ProjectMoreActionsMenu', () => {
     const setErrorFn = jest.fn();
     const props: Props = {
       projectId: 'projectId',
+      projectName: 'Test Project',
       firstPublishedAt: '2019-05-11T17:04:13.090Z',
       setError: setErrorFn,
     };

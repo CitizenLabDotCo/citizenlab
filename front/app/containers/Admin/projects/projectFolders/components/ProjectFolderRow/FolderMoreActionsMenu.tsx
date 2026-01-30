@@ -17,6 +17,7 @@ import messages from './messages';
 
 export interface Props {
   folderId: string;
+  folderName: string;
   color?: string;
   setError: (error: string | null) => void;
   setIsRunningAction?: (isLoading: boolean) => void;
@@ -24,6 +25,7 @@ export interface Props {
 
 const FolderMoreActionsMenu = ({
   folderId,
+  folderName,
   color,
   setError,
   setIsRunningAction,
@@ -102,6 +104,7 @@ const FolderMoreActionsMenu = ({
           onClose={handleCloseDeleteModal}
           onConfirm={handleDeleteFolder}
           title={messages.deleteFolderModalTitle}
+          entityName={folderName}
           mainWarning={messages.deleteFolderModalWarning}
           confirmationWord={typedConfirmationMessages.confirmationWordDelete}
           deleteButtonText={messages.deleteFolderButton}

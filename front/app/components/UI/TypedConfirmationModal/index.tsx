@@ -21,6 +21,7 @@ export interface Props {
   onClose: () => void;
   onConfirm: () => void;
   title: MessageDescriptor;
+  entityName?: string;
   mainWarning: MessageDescriptor;
   confirmationWord: MessageDescriptor;
   deleteButtonText: MessageDescriptor;
@@ -32,6 +33,7 @@ const TypedConfirmationModal = ({
   onClose,
   onConfirm,
   title,
+  entityName,
   mainWarning,
   confirmationWord,
   deleteButtonText,
@@ -100,6 +102,11 @@ const TypedConfirmationModal = ({
         <FormattedMessage
           {...messages.typeToConfirm}
           values={{
+            entityName: (
+              <Text as="span" color="primary" fontWeight="bold">
+                &ldquo;{entityName}&rdquo;
+              </Text>
+            ),
             confirmationWord: (
               <Text as="span" fontWeight="bold" color="red600">
                 {confirmationText}

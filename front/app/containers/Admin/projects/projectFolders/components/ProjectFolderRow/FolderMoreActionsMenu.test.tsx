@@ -11,6 +11,7 @@ import FolderMoreActionsMenu, { Props } from './FolderMoreActionsMenu';
 
 const props: Props = {
   folderId: 'folderId',
+  folderName: 'Test Folder',
   setError: jest.fn(),
 };
 
@@ -66,6 +67,7 @@ describe('FolderMoreActionsMenu', () => {
     const setErrorFn = jest.fn();
     const customProps: Props = {
       folderId: 'folderId',
+      folderName: 'Test Folder',
       setError: setErrorFn,
     };
     render(<FolderMoreActionsMenu {...customProps} />);

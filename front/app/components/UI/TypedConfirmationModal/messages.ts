@@ -6,8 +6,9 @@ export default defineMessages({
     defaultMessage: 'This action is permanent and cannot be undone.',
   },
   typeToConfirm: {
-    id: 'app.components.TypedConfirmationModal.typeToConfirm',
-    defaultMessage: 'To confirm, type {confirmationWord} below:',
+    id: 'app.components.TypedConfirmationModal.typeToConfirm1',
+    defaultMessage:
+      'To confirm the deletion of {entityName}, type {confirmationWord} below:',
   },
   cancel: {
     id: 'app.components.TypedConfirmationModal.cancel',

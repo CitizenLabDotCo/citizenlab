@@ -249,6 +249,7 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
         onClose={closeModal}
         onConfirm={handleDeletePhase}
         title={messages.deletePhaseModalTitle}
+        entityName={localize(phase.attributes.title_multiloc)}
         mainWarning={messages.deletePhaseModalWarning}
         confirmationWord={typedConfirmationMessages.confirmationWordDelete}
         deleteButtonText={messages.deletePhaseButtonText}
