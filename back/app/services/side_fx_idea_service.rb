@@ -252,7 +252,7 @@ class SideFxIdeaService
     current_phase = TimelineService.new.current_phase(idea.project)
     return unless current_phase&.presentation_mode == 'feed'
 
-    IdeaFeed::TopicClassificationJob.set(priority: 10).perform_later(current_phase, idea)
+    IdeaFeed::BatchTopicClassificationJob.set(priority: 10).perform_later(current_phase, [idea.id])
   end
 end
 
