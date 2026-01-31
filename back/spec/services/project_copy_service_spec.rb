@@ -32,6 +32,27 @@ describe ProjectCopyService do
       end
     end
 
+    describe 'new_slug' do
+      let(:new_slug) { 'custom-project-slug' }
+
+      it 'preserves the slug if possible' do
+        template = create(:tenant).switch do
+          service.export create(:project), new_slug:
+        end
+        service.import template
+        expect(Project.find_by(slug: 'custom-project-slug')).to be_present
+      end
+
+      it 'generates a unique variation of the slug if a project with the slug already exists' do
+        template = create(:tenant).switch do
+          service.export create(:project), new_slug:
+        end
+        create(:project, slug: 'custom-project-slug')
+        service.import template
+        expect(Project.find_by(slug: 'custom-project-slug')).to be_present
+      end
+    end
+
     it 'successfully copies over native surveys and responses' do
       create(:idea_status_proposed)
 

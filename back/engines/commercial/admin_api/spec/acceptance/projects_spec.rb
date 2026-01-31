@@ -45,6 +45,8 @@ resource 'Project', admin_api: true do
 
     let(:tenant_id) { Tenant.current.id }
     let(:project) { create(:project_xl, phases_count: 8) }
+    let(:include_ideas) { true }
+    let(:max_ideas) { '' } # This is how Admin HQ currently calls the endpoint when max_ideas is not set
     let(:new_slug) { 'awesome-project' }
     let(:new_publication_status) { 'draft' }
     let(:id) { project.id }
@@ -53,13 +55,15 @@ resource 'Project', admin_api: true do
       example_request 'it exports a project' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
-        template = YAML.load(json_response[:template_yaml], aliases: true)
+        template = YAML.unsafe_load(json_response[:template_yaml])
 
         expect(template['models']['project'].first.dig('title_multiloc', 'en')).to eq project.title_multiloc['en']
         expect(template['models']['phase'].size).to eq project.phases.count
         expect(template['models']['phase'].pluck('start_at')).to match(project.phases.map { |x| x.start_at.iso8601 })
         expect(template['models']['project_image'].pluck('remote_image_url')).to match project.project_images.map(&:image_url)
         expect(template['models']['project'].first.dig('admin_publication_attributes', 'publication_status')).to eq 'draft'
+        expect(template['models']['project'].first['slug']).to eq 'awesome-project'
+        expect(template['models']['idea'].size).to eq 10
       end
     end
   end
