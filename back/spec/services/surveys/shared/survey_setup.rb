@@ -102,6 +102,7 @@ RSpec.shared_context 'survey_setup' do
       required: true
     )
   end
+  let_it_be(:mid_page_field1) { create(:custom_field_page, resource: form) }
   let_it_be(:select_field) do
     create(
       :custom_field_select,
@@ -155,6 +156,7 @@ RSpec.shared_context 'survey_setup' do
       description_multiloc: {}
     )
   end
+  let_it_be(:mid_page_field2) { create(:custom_field_page, resource: form) }
   let_it_be(:file_upload_field) do
     create(
       :custom_field,
@@ -446,6 +448,17 @@ RSpec.shared_context 'survey_setup' do
           created_at: '2025-02-25'
         )
       end
+    end
+  end
+
+  # Helper methods
+  def result_index(field)
+    form.custom_fields.enabled.index(field)
+  end
+
+  def reset_survey_logic!
+    form.custom_fields.each do |field|
+      field.update!(logic: {})
     end
   end
 end
