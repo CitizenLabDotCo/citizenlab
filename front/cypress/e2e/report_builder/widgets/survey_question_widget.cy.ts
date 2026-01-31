@@ -616,6 +616,64 @@ describe('Survey question widget', () => {
       });
     });
 
+    it('allows sorting by original order or count', () => {
+      cy.setAdminLoginCookie();
+      if (currentReportId) {
+        cy.apiRemoveReportBuilder(currentReportId);
+        currentReportId = undefined;
+      }
+
+      cy.apiCreateReportBuilder(informationPhaseId).then((report) => {
+        const reportId = report.body.data.id;
+        currentReportId = reportId;
+
+        cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
+
+        cy.get('#e2e-draggable-survey-question-result-widget').dragAndDrop(
+          '#e2e-content-builder-frame',
+          {
+            position: 'inside',
+          }
+        );
+
+        cy.wait(1000);
+
+        // Select project, phase and question (single select)
+        cy.selectReactSelectOption(
+          '#e2e-report-builder-project-filter-box',
+          projectTitle
+        );
+        cy.get('#e2e-phase-filter').select(surveyPhaseId);
+        cy.get('.e2e-question-select select')
+          .first()
+          .select(surveyCustomFields.data[1].id);
+
+        // Verify sort dropdown is visible for single select question
+        cy.dataCy('sort-select').should('be.visible');
+
+        // Select multiselect question
+        cy.get('.e2e-question-select select')
+          .first()
+          .select(surveyCustomFields.data[2].id);
+
+        // Verify sort dropdown is visible for multiselect question
+        cy.dataCy('sort-select').should('be.visible');
+
+        // Default should be 'count'
+        cy.dataCy('sort-select').should('have.value', 'count');
+
+        // Change to original order
+        cy.dataCy('sort-select').select('original');
+        cy.dataCy('sort-select').should('have.value', 'original');
+
+        // Verify sort dropdown is not visible for linear_scale question
+        cy.get('.e2e-question-select select')
+          .first()
+          .select(surveyCustomFields.data[3].id);
+        cy.dataCy('sort-select').should('not.exist');
+      });
+    });
+
     it('removes last report', () => {
       if (currentReportId) {
         cy.apiRemoveReportBuilder(currentReportId);

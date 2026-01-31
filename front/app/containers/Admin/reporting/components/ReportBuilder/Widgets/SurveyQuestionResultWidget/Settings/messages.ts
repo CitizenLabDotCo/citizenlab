@@ -52,4 +52,16 @@ export default defineMessages({
     defaultMessage:
       'Use the ☰ icon to drag and drop AI content into your report.',
   },
+  sort: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sort',
+    defaultMessage: 'Sort by',
+  },
+  sortByCount: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sortByCount',
+    defaultMessage: 'Response count',
+  },
+  sortByOriginal: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sortByOriginal',
+    defaultMessage: 'Original order',
+  },
 });
