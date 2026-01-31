@@ -407,7 +407,6 @@ class WebApi::V1::ProjectsController < ApplicationController
           # The project must be saved before performing the authorization because it requires
           # the admin publication to be created.
           authorize(project)
-          check_publication_inconsistencies!
         else
           skip_authorization
         end
@@ -432,8 +431,16 @@ class WebApi::V1::ProjectsController < ApplicationController
       assignee_error_only = errors == { default_assignee_id: [{ error: :assignee_can_not_moderate_project }] }
       next if assignee_error_only && moved_folder
 
-      # Validation errors will appear in the Sentry error 'Additional Data'
-      ErrorReporter.report_msg("Project change would lead to inconsistencies! (id: #{project.id})", extra: errors || {})
+      # Enhanced Sentry reporting: include project and admin_publication attributes
+      extra_context = {
+        errors: errors,
+        project_attributes: project.attributes,
+        admin_publication_attributes: project.admin_publication&.attributes
+      }
+      ErrorReporter.report_msg(
+        "Project change would lead to inconsistencies! (id: #{project.id})",
+        extra: extra_context
+      )
     end
   end
 
