@@ -59,22 +59,20 @@ RSpec.describe Insights::CommonGroundPhaseInsightsService do
     end
 
     it 'adds user custom field values as expected' do
-      user1.update!(custom_field_values: { 'field_1' => 'value_1', 'field_2' => 'value_2' })
+      user1.update!(custom_field_values: { 'field_1' => 'value_1u', 'field_2' => 'value_2u' })
 
-      participations_posting_idea = service.send(:participations_posting_idea)
-      idea2_participation = participations_posting_idea.find { |p| p[:item_id] == idea2.id }
-
-      expect(idea2_participation[:user_custom_field_values]).to eq({ 'field_1' => 'value_1', 'field_2' => 'value_2' })
-
-      # If both idea and user have custom field values,
-      # we prefer to parse the user field values from the idea's custom_field_values.
       prefix = UserFieldsInFormService.prefix
-      idea2.update!(custom_field_values: { 'field_3' => 'value_3', "#{prefix}field_4" => 'value_4' })
+      idea2.update!(custom_field_values: { "#{prefix}field_1" => 'value_1i', 'field_3' => 'value_3i', "#{prefix}field_4" => 'value_4i', })
 
       participations_posting_idea = service.send(:participations_posting_idea)
       idea2_participation = participations_posting_idea.find { |p| p[:item_id] == idea2.id }
-
-      expect(idea2_participation[:user_custom_field_values]).to eq({ 'field_4' => 'value_4' })
+      
+      # We expect that:
+      # - field_1 value comes from idea2 (item), preferred over value from user1, which collides after removing key prefix
+      # - field_2 comes from user1 custom_field_values (not present in idea2)
+      # - field_3 comes from idea2 (item) custom_field_values
+      # - field_4 comes from idea2 (item) custom_field_values, with key prefix removed
+      expect(idea2_participation[:user_custom_field_values]).to eq({ 'field_1' => 'value_1i', 'field_2' => 'value_2u', 'field_3' => 'value_3i', 'field_4' => 'value_4i' })
     end
 
     it 'correctly handles phases with no end date' do
