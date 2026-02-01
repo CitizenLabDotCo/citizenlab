@@ -138,21 +138,23 @@ module Insights
       @phase.ideas.where(publication_status: 'published').count
     end
 
-    # Parses user custom_field_values from either the item (if values) or the participant (user).
+    # Parses user custom_field_values from both the item (if values) and/or the participant (user).
+    # Item values take precedence over participant values in case of key collisions,
+    # to prefer demographics at the time of participation.
     def parse_user_custom_field_values(item, participant)
+      user_cfvs = participant&.custom_field_values&.presence || {}
+      
       if item.respond_to?(:custom_field_values) && item.custom_field_values.present?
         prefix = @user_fields_prefix ||= UserFieldsInFormService.prefix
 
-        item.custom_field_values.each_with_object({}) do |(key, value), hash|
+        item_cfvs = item.custom_field_values.transform_keys do |key|
           key_str = key.to_s
-          if key_str.start_with?(prefix)
-            hash[key_str.sub(/^#{prefix}/, '')] = value
-          end
+          key_str.start_with?(prefix) ? key_str.sub(/^#{prefix}/, '') : key_str
         end
-      elsif participant && participant.custom_field_values.present?
-        participant.custom_field_values
+        
+        user_cfvs.merge(item_cfvs)
       else
-        {}
+        user_cfvs
       end
     end
 
