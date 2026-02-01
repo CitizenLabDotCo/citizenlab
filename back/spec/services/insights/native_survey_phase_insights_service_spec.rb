@@ -83,11 +83,11 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
       user1.update!(custom_field_values: { 'field_1' => 'value_1u', 'field_2' => 'value_2u' })
 
       prefix = UserFieldsInFormService.prefix
-      idea2.update!(custom_field_values: { "#{prefix}field_1" => 'value_1i', 'field_3' => 'value_3i', "#{prefix}field_4" => 'value_4i', })
+      idea2.update!(custom_field_values: { "#{prefix}field_1" => 'value_1i', 'field_3' => 'value_3i', "#{prefix}field_4" => 'value_4i' })
 
       participations_submitting_idea = service.send(:participations_submitting_idea)
       idea2_participation = participations_submitting_idea.find { |p| p[:item_id] == idea2.id }
-      
+
       # We expect that:
       # - field_1 value comes from idea2 (item), preferred over value from user1, which collides after removing key prefix
       # - field_2 comes from user1 custom_field_values (not present in idea2)

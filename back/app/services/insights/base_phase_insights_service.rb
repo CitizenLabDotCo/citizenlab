@@ -142,7 +142,7 @@ module Insights
     # Item values take precedence over participant values in case of key collisions,
     # to prefer demographics at the time of participation.
     def parse_user_custom_field_values(item, participant)
-      user_cfvs = participant.custom_field_values.presence || {}
+      user_cfvs = participant&.custom_field_values.presence || {}
 
       if item.respond_to?(:custom_field_values) && item.custom_field_values.present?
         prefix = @user_fields_prefix ||= UserFieldsInFormService.prefix
