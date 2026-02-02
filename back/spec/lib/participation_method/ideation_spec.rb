@@ -7,8 +7,6 @@ RSpec.describe ParticipationMethod::Ideation do
 
   let(:phase) { create(:phase, with_permissions: true) }
 
-  before_all { SettingsService.new.activate_feature!('ideation_accountless_posting') }
-
   describe '#method_str' do
     it 'returns ideation' do
       expect(described_class.method_str).to eq 'ideation'

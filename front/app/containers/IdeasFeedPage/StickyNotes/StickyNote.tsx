@@ -18,6 +18,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import Avatar from 'components/Avatar';
 import ReactionControl from 'components/ReactionControl';
+import Emoji from 'components/UI/Emoji';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { stripHtml } from 'utils/textUtils';
@@ -56,6 +57,7 @@ interface Props {
   ideaId: string;
   rotation?: number;
   topicBackgroundColor: string;
+  topicEmojis?: string[];
   onClick?: () => void;
   centeredIdeaId?: string;
   size?: 'small' | 'large';
@@ -66,6 +68,7 @@ const StickyNote: React.FC<Props> = ({
   ideaId,
   rotation = 0,
   topicBackgroundColor,
+  topicEmojis = [],
   onClick,
   centeredIdeaId,
   size = 'large',
@@ -135,14 +138,49 @@ const StickyNote: React.FC<Props> = ({
       onKeyDown={handleKeyDown}
       aria-label={title}
     >
-      {authorName && (
-        <Box display="flex" alignItems="center">
-          <Avatar userId={authorId} authorHash={authorHash} size={24} />
-          <Text fontSize="s" fontWeight="semi-bold" color="textPrimary" m="0px">
-            {authorName}
-          </Text>
-        </Box>
-      )}
+      <Box
+        display="flex"
+        flexWrap="wrap"
+        justifyContent="space-between"
+        alignItems="flex-start"
+      >
+        {authorName && (
+          <Box display="flex" alignItems="center">
+            <Avatar userId={authorId} authorHash={authorHash} size={24} />
+            <Text
+              fontSize="s"
+              fontWeight="semi-bold"
+              color="textPrimary"
+              m="0px"
+            >
+              {authorName}
+            </Text>
+          </Box>
+        )}
+        {topicEmojis.length > 0 && (
+          <Box
+            display="flex"
+            flexWrap="wrap"
+            gap="4px"
+            justifyContent="flex-end"
+            ml="auto"
+          >
+            {topicEmojis.map((emoji, index) => (
+              <Box
+                key={index}
+                background={colors.white}
+                borderRadius="50%"
+                p="8px"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Emoji emoji={emoji} size="24px" />
+              </Box>
+            ))}
+          </Box>
+        )}
+      </Box>
       <Text fontSize="l" fontWeight="bold" m="0px" color={'textPrimary'}>
         {truncateText(title, size === 'small' ? 45 : 100)}
       </Text>

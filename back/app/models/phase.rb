@@ -68,8 +68,6 @@ class Phase < ApplicationRecord
   include DocumentAnnotation::DocumentAnnotationPhase
   include Files::FileAttachable
 
-  self.ignored_columns += [:prescreening_enabled]
-
   PARTICIPATION_METHODS = ParticipationMethod::Base.all_methods.map(&:method_str).freeze
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
   PRESENTATION_MODES    = %w[card map feed].freeze

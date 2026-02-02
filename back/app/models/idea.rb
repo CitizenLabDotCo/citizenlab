@@ -265,6 +265,8 @@ class Idea < ApplicationRecord
 
   # Equivalent to pmethod.supports_survey_form?
   scope :supports_survey, -> { where(creation_phase: Phase.where(participation_method: %w[native_survey community_monitor_survey])) }
+  scope :supports_proposal, -> { where(creation_phase: Phase.where(participation_method: %w[proposals])) }
+  scope :supports_idea, -> { where(creation_phase: nil) }
 
   # Filters out all the ideas for which the ParticipationMethod responds truety
   # to the given block. The block receives the ParticipationMethod object as an

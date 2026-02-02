@@ -69,7 +69,7 @@ const ShareResultsToggle = ({
           link: (
             <a
               href={formatMessage(
-                messages.autoshareResultSupportArticleLinkUrl
+                messages.autoshareResultSupportArticleLinkUrl3
               )}
               style={{ color: colors.teal500 }}
             >

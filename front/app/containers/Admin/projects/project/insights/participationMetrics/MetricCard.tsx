@@ -10,6 +10,8 @@ import {
 
 import { SevenDayChange } from 'api/phase_insights/types';
 
+import { useIntl } from 'utils/cl-intl';
+
 import MetricTrend from './MetricTrend';
 
 interface Props {
@@ -20,8 +22,9 @@ interface Props {
 }
 
 const MetricCard = ({ label, value, icon, change }: Props) => {
+  const { formatNumber } = useIntl();
   const formattedValue =
-    typeof value === 'number' ? value.toLocaleString() : value;
+    typeof value === 'number' ? formatNumber(value) : value;
 
   return (
     <Box

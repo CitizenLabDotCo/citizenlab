@@ -241,10 +241,10 @@ export default defineMessages({
     id: 'app.containers.Admin.emails.supportButtonLabel',
     defaultMessage: 'See examples on our support page',
   },
-  supportButtonLink: {
-    id: 'app.containers.Admin.emails.supportButtonLink2',
+  supportButtonLink3: {
+    id: 'app.containers.Admin.emails.supportButtonLink3',
     defaultMessage:
-      'https://support.govocal.com/en/articles/7042664-changing-the-settings-of-the-automated-email-notifications',
+      'https://support.govocal.com/en/articles/527592-changing-the-settings-of-the-automated-email-notifications',
   },
   sentToUsers: {
     id: 'app.containers.Admin.emails.sentToUsers',
