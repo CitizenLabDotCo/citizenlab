@@ -138,6 +138,7 @@ class User < ApplicationRecord
   end)
 
   has_many :ideas, -> { order(:project_id) }, foreign_key: :author_id, dependent: :nullify
+  has_many :idea_exposures, dependent: :destroy
   has_many :idea_imports, class_name: 'BulkImportIdeas::IdeaImport', foreign_key: :import_user_id, dependent: :nullify
   has_many :manual_votes_last_updated_ideas, class_name: 'Idea', foreign_key: :manual_votes_last_updated_by_id, dependent: :nullify
   has_many :manual_voters_last_updated_phases, class_name: 'Phase', foreign_key: :manual_voters_last_updated_by_id, dependent: :nullify
