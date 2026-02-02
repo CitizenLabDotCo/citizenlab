@@ -37,10 +37,6 @@ class WebApi::V1::PhasesController < ApplicationController
       sidefx.after_create(@phase, current_user)
       render json: WebApi::V1::PhaseSerializer.new(@phase, params: jsonapi_serializer_params).serializable_hash, status: :created
     else
-      puts "=" * 20
-      puts "frejsoirtjiponmiptjytpshijrpny"
-      puts @phase.errors.details
-      puts "=" * 20
       render json: { errors: @phase.errors.details }, status: :unprocessable_entity
     end
   end
