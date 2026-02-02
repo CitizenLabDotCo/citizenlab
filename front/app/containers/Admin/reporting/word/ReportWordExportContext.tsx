@@ -74,8 +74,8 @@ const CONTAINER_NODES = new Set([
 type SerializedNodeWithProps = SerializedNodes[string] & {
   type?: string | { resolvedName?: string };
   props?: Record<string, any>;
-  nodes?: string[];
-  linkedNodes?: Record<string, string>;
+  nodes: string[];
+  linkedNodes: Record<string, string>;
 };
 
 const getTextFromMultiloc = (
@@ -92,17 +92,16 @@ const buildExportNodes = (
   locale: SupportedLocale | undefined,
   tenantLocales: SupportedLocale[] | undefined
 ) => {
-  const rootNode = nodes.ROOT;
-  const rootChildren = rootNode?.nodes || [];
+  const rootChildren = nodes.ROOT.nodes;
 
   const walkNode = (nodeId: string): ExportNode[] => {
     const node = nodes[nodeId] as SerializedNodeWithProps | undefined;
     if (!node) return [];
 
     const nodeName =
-      typeof node.type === 'object' ? node.type?.resolvedName : node.type;
+      typeof node.type === 'object' ? node.type.resolvedName : node.type;
     const children = Array.from(
-      new Set([...(node.nodes || []), ...Object.values(node.linkedNodes || {})])
+      new Set([...node.nodes, ...Object.values(node.linkedNodes)])
     );
 
     if (!nodeName) {
