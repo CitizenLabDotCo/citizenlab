@@ -1,6 +1,7 @@
 import moment = require('moment');
 import { randomString } from './commands';
 import { ParticipationMethod } from '../../app/api/phases/types';
+import { IPhasePermissionAction } from '../../app/api/phase_permissions/types';
 
 const withAdminJwt = (
   makeRequest: (adminJwt: string) => any,
@@ -98,7 +99,7 @@ export const updatePermission = ({
   permitted_by?: string;
   user_fields_in_form?: boolean;
   user_data_collection?: string;
-  permission?: string;
+  permission?: IPhasePermissionAction;
 }) => {
   const makeRequest = (adminJwt: string) => {
     return cy.request({
@@ -128,7 +129,7 @@ export const addPermissionsCustomField = ({
   adminJwt?: string;
   phaseId: string;
   customFieldId: string;
-  permission?: string;
+  permission?: IPhasePermissionAction;
 }) => {
   const makeRequest = (adminJwt: string) => {
     return cy.request({

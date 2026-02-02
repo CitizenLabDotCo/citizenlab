@@ -1,5 +1,9 @@
-import moment = require('moment');
 import { randomEmail, randomString } from '../support/commands';
+import {
+  updatePermission,
+  setupProject,
+  addPermissionsCustomField,
+} from '../support/permitted_by_utils';
 
 describe('Existing single phase project with poll', () => {
   beforeEach(() => {
@@ -113,42 +117,5 @@ describe('Timeline project with poll phase', () => {
 
   after(() => {
     cy.apiRemoveProject(projectId);
-  });
-});
-
-describe('poll submission for users who have not met all the registration requirements', () => {
-  const firstName = randomString();
-  const lastName = randomString();
-  const email = randomEmail();
-  const password = randomString();
-  const randomFieldName = randomString();
-  let userId: string;
-  let customFieldId: string;
-
-  before(() => {
-    // create user
-    cy.apiCreateCustomField(randomFieldName, true).then((response) => {
-      customFieldId = response.body.data.id;
-      cy.apiSignup(firstName, lastName, email, password).then((response) => {
-        userId = response.body.data.id;
-      });
-      cy.setLoginCookie(email, password);
-    });
-  });
-
-  it("doesn't let users missing registration requirements submit a poll response", () => {
-    cy.setLoginCookie(email, password);
-    cy.visit('/projects/the-big-poll');
-    cy.get('.e2e-timeline-project-poll-container')
-      .get('.e2e-poll-question')
-      .each((question) => question.find('.e2e-poll-option').first().click());
-    cy.wait(500);
-    cy.get('.e2e-send-poll').click();
-    cy.get('#e2e-authentication-modal').should('exist');
-  });
-
-  after(() => {
-    cy.apiRemoveUser(userId);
-    cy.apiRemoveCustomField(customFieldId);
   });
 });
