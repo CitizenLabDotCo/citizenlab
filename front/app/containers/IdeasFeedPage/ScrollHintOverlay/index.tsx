@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import Lottie from 'lottie-react';
@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import scrollHintAnimation from './animations/scroll-hint.json';
 
 const SCROLL_HINT_SEEN_KEY = 'ideas_feed_scroll_hint_seen';
+const SWIPE_THRESHOLD = 30;
 
 const Overlay = styled(Box)<{ isVisible: boolean }>`
   position: fixed;
@@ -58,9 +59,35 @@ export const useScrollHint = () => {
 
 const ScrollHintOverlay = () => {
   const { isVisible, dismiss } = useScrollHint();
+  const touchStartY = useRef<number | null>(null);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartY.current = e.touches[0].clientY;
+  }, []);
+
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      if (touchStartY.current === null) return;
+
+      const touchEndY = e.changedTouches[0].clientY;
+      const delta = Math.abs(touchEndY - touchStartY.current);
+
+      if (delta >= SWIPE_THRESHOLD) {
+        dismiss();
+      }
+
+      touchStartY.current = null;
+    },
+    [dismiss]
+  );
 
   return (
-    <Overlay isVisible={isVisible} onClick={dismiss}>
+    <Overlay
+      isVisible={isVisible}
+      onClick={dismiss}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
       <AnimationContainer>
         <Lottie animationData={scrollHintAnimation} loop={true} />
       </AnimationContainer>
