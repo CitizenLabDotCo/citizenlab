@@ -4,7 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import Lottie from 'lottie-react';
 import styled from 'styled-components';
 
-import scrollHintAnimation from './animations/scroll-hint.json';
+const scrollHintAnimation = require('./animations/scroll-hint.json');
 
 const SCROLL_HINT_SEEN_KEY = 'ideas_feed_scroll_hint_seen';
 const SWIPE_THRESHOLD = 30;
