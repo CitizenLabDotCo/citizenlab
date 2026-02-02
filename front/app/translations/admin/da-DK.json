@@ -1804,7 +1804,7 @@
   "app.containers.Admin.reporting.word.reportFallbackTitle": "Rapport",
   "app.containers.Admin.reporting.word.wordExportCaptureFailed": "En af rapportens widgets kunne ikke indfanges til eksport.",
   "app.containers.Admin.reporting.word.wordExportFailed": "Kunne ikke eksportere Word-dokument.",
-  "app.containers.Admin.reporting.word.wordExportMissingWidget": "En af rapportwidgets kunne ikke findes under eksport.",
+  "app.containers.Admin.reporting.word.wordExportMissingWidget": "En af rapportens widgets kunne ikke findes under eksport.",
   "app.containers.Admin.surveyFormTab.downloads": "Downloads",
   "app.containers.Admin.surveyFormTab.duplicateAnotherSurvey1": "Kopier en anden survey",
   "app.containers.Admin.surveyFormTab.editSurveyForm": "Rediger surveyformular",
