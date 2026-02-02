@@ -211,7 +211,8 @@ const BottomSheet = ({
 
         <ContentArea
           px="16px"
-          py="24px"
+          pt="24px"
+          pb={isFullscreen ? '100px' : '24px'}
           $scrollable={isFullscreen}
           h={`calc(100dvh - ${translateY + DRAG_AREA_HEIGHT}px)`}
         >
