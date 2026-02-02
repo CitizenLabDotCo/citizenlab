@@ -18,7 +18,7 @@ interface Props {
 }
 
 const ParticipationMetrics = ({ phase }: Props) => {
-  const { formatMessage } = useIntl();
+  const { formatMessage, formatNumber } = useIntl();
   const { start_at, end_at, participation_method } = phase.attributes;
   const {
     data: response,
@@ -87,7 +87,11 @@ const ParticipationMetrics = ({ phase }: Props) => {
 
       <MetricCard
         label={formatMessage(messages.participationRate)}
-        value={`${metrics.participation_rate_as_percent.toFixed(1)}%`}
+        value={formatNumber(metrics.participation_rate_as_percent / 100, {
+          style: 'percent',
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        })}
         icon="chart-bar"
         change={
           isCurrentPhase
