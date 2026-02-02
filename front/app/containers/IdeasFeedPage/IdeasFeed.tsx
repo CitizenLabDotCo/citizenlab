@@ -28,15 +28,20 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import messages from './messages';
 import ScrollHintOverlay from './ScrollHintOverlay';
-import StickyNote, { NOTE_HEIGHTS } from './StickyNotes/StickyNote';
+import StickyNote, {
+  NOTE_WIDTHS,
+  NOTE_ASPECT_RATIOS,
+} from './StickyNotes/StickyNote';
 import { getTopicColor } from './topicsColor';
 
 const PEEK_HEIGHT = 200;
 
-const FeedContainer = styled(Box)`
+const FeedContainer = styled.div`
   scroll-snap-type: y mandatory;
   overflow-y: auto;
   height: 100dvh;
+  background: white
+    url("data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1.5' fill='%23e5e5e5'/%3E%3C/svg%3E");
 
   ::-webkit-scrollbar {
     display: none;
@@ -81,7 +86,7 @@ const NoteContainer = styled(Box)<{
       }
       if (isPrevious) {
         // Move to bottom of container
-        return `translateY(calc(-50% + (${containerHeight} - ${noteHeight}px) / 2 + 40px)) scale(${scale})`;
+        return `translateY(calc(-50% + (${containerHeight} - ${noteHeight}px) / 2)) scale(${scale})`;
       }
       return `translateY(-50%) scale(${scale})`;
     }};
@@ -126,7 +131,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
   }, []);
 
   const noteSize = isMobile ? 'small' : 'large';
-  const noteHeight = NOTE_HEIGHTS[noteSize];
+  const noteHeight = NOTE_WIDTHS[noteSize] / NOTE_ASPECT_RATIOS[noteSize];
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteIdeaFeedIdeas({
@@ -350,7 +355,6 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
               <NoteContainer
                 peekHeight={PEEK_HEIGHT}
                 noteHeight={noteHeight}
-                bgColor={colors.grey100}
                 isCentered={virtualRow.index === centeredIndex}
                 isPrevious={virtualRow.index < centeredIndex}
                 isNext={virtualRow.index > centeredIndex}
