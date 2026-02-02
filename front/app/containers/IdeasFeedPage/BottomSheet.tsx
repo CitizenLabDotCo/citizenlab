@@ -39,6 +39,7 @@ const DragHandle = styled.div`
 `;
 
 const DragArea = styled.div`
+  position: relative;
   width: 100%;
   padding: 8px 0;
   touch-action: none;
@@ -46,6 +47,15 @@ const DragArea = styled.div`
 
   &:active {
     cursor: grabbing;
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -32px;
+    left: 0;
+    right: 0;
+    bottom: -32px;
   }
 `;
 
@@ -133,6 +143,9 @@ const BottomSheet = ({
 
     if (hadDragged && Math.abs(delta) >= SWIPE_THRESHOLD) {
       setIsFullscreen(delta < 0);
+    } else if (!hadDragged) {
+      // Tap detected - toggle state
+      setIsFullscreen((prev) => !prev);
     }
   };
 
