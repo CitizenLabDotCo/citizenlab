@@ -27,6 +27,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import messages from './messages';
+import ScrollHintOverlay from './ScrollHintOverlay';
 import StickyNote, { NOTE_HEIGHTS } from './StickyNotes/StickyNote';
 import { getTopicColor } from './topicsColor';
 
@@ -292,6 +293,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
 
   return (
     <FeedContainer ref={parentRef} onScroll={handleScroll}>
+      {isMobile && <ScrollHintOverlay />}
       <Box
         height={`${getTotalSize() + topPadding}px`}
         width="100%"

@@ -5,8 +5,8 @@ import { FocusOn } from 'react-focus-on';
 import styled from 'styled-components';
 
 const COLLAPSED_HEIGHT = 40;
-const PEEK_DELAY_MS = 5000;
-const PEEK_DURATION_MS = 2000;
+const PEEK_DELAY_MS = 10000;
+const PEEK_DURATION_MS = 1000;
 const DRAG_AREA_HEIGHT = 28;
 const SWIPE_THRESHOLD = 50;
 
