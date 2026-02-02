@@ -2110,7 +2110,7 @@
   "app.containers.landing.userDeletionFailed": "Si è verificato un errore durante l'eliminazione del tuo account, siamo stati informati del problema e faremo del nostro meglio per risolverlo. Si prega di riprovare più tardi.",
   "app.containers.landing.verifyNow": "Verifica ora",
   "app.containers.landing.verifyYourIdentity": "Verifica la tua identità",
-  "app.containers.landing.viewAllEventsText": "Visualizza tutti gli eventi",
+  "app.containers.landing.viewAllEventsText": "Vedi tutti gli eventi",
   "app.containers.projectsShowPage.folderGoBackButton.backToFolder": "Torna alla cartella",
   "app.errors.after_end_at": "La data di inizio avviene dopo la data di fine",
   "app.errors.avatar_carrierwave_download_error": "Impossibile scaricare il file dell'avatar.",
