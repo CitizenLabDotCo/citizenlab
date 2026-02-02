@@ -1640,7 +1640,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.participationRate": "Beteiligungsrate",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.showComparisonLastPeriod": "Vergleich mit vorheriger Periode anzeigen",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.youNeedToSelectADateRange": "Sie müssen zunächst einen Datumsbereich auswählen.",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.ChartWidgetSettings.showActiveStats": "Aktive Benutzer anzeigen",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.ChartWidgetSettings.showActiveStats": "Aktive Nutzer*innen anzeigen",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.MethodsUsedWidget.ChartWidgetSettings.archivedLabel": "Archiviert",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.MethodsUsedWidget.ChartWidgetSettings.projectPublicationStatusLabel": "Projektveröffentlichungsstatus",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.MethodsUsedWidget.ChartWidgetSettings.publishedLabel": "Veröffentlicht",
