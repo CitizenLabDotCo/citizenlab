@@ -164,7 +164,7 @@
   "app.components.admin.GraphCards.InternalAdoptionCard.admins": "Administratorer",
   "app.components.admin.GraphCards.InternalAdoptionCard.comparedToPreviousXDays": "sammenlignet med tidligere {days} dage",
   "app.components.admin.GraphCards.InternalAdoptionCard.internalAdoption": "Intern anvendelse",
-  "app.components.admin.GraphCards.InternalAdoptionCard.moderators": "PM'er",
+  "app.components.admin.GraphCards.InternalAdoptionCard.moderators": "Projektledere",
   "app.components.admin.GraphCards.InternalAdoptionCard.registered": "Registreret",
   "app.components.admin.GraphCards.InternalAdoptionCard.timeSeries": "Intern adoption over tid",
   "app.components.admin.GraphCards.InternalAdoptionCard.total": "I alt",
