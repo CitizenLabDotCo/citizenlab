@@ -26,7 +26,8 @@ const MetricTrend = ({ change }: Props) => {
     null: messages.insufficientComparisonDataPhaseTooNew,
     last_7_days_compared_with_zero:
       messages.insufficientComparisonDataNoPriorActivity,
-    no_visits_in_one_or_both_periods: messages.cannotCalculateNoVisitsInPeriod,
+    no_visitors_in_one_or_both_periods:
+      messages.cannotCalculateNoVisitsInPeriod,
     no_new_survey_responses_in_one_or_both_periods:
       messages.cannotCalculateNoNewSurveyResponsesInPeriod,
   };

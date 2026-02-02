@@ -32,21 +32,15 @@ module Insights
     def phase_participation_method_metrics(participations)
       posted_ideas_count = phase_ideas.count
       total_submitted_surveys = participations[:submitting_idea].count
-      completion_rate_as_percent = posted_ideas_count > 0 ? completion_rate_as_percent(posted_ideas_count, total_submitted_surveys) : 'submitted_count_compared_with_zero_ideas'
+      completion_rate_as_percent = posted_ideas_count > 0 ? (total_submitted_surveys.to_f / posted_ideas_count * 100).round(1) : 'submitted_count_compared_with_zero_ideas'
       rolling_7_day_changes = rolling_7_day_changes(participations)
 
       {
         surveys_submitted: total_submitted_surveys,
         surveys_submitted_7_day_percent_change: rolling_7_day_changes[:surveys_submitted_7_day_percent_change],
         completion_rate_as_percent: completion_rate_as_percent,
-        completion_rate_7_day_percent_change: posted_ideas_count > 0 ? rolling_7_day_changes[:completion_rate_7_day_percent_change] : 'last_7_days_compared_with_zero'
+        completion_rate_7_day_percent_change: rolling_7_day_changes[:completion_rate_7_day_percent_change]
       }
-    end
-
-    def completion_rate_as_percent(all, submitted)
-      return 0 if all == 0
-
-      ((submitted.to_f / all) * 100).round(1)
     end
 
     def rolling_7_day_changes(participations)
@@ -66,8 +60,8 @@ module Insights
       end
 
       completion_rate_7_day_percent_change = if ideas_last_7_days_count > 0 && ideas_previous_7_days_count > 0
-        completion_rate_last_7_days = completion_rate_as_percent(ideas_last_7_days_count, submitted_last_7_days_count)
-        completion_rate_previous_7_days = completion_rate_as_percent(ideas_previous_7_days_count, submitted_previous_7_days_count)
+        completion_rate_last_7_days = submitted_last_7_days_count.to_f / ideas_last_7_days_count
+        completion_rate_previous_7_days = submitted_previous_7_days_count.to_f / ideas_previous_7_days_count
         percentage_change(completion_rate_previous_7_days, completion_rate_last_7_days)
       else
         'no_new_survey_responses_in_one_or_both_periods'
