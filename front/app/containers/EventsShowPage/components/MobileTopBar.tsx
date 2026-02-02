@@ -22,10 +22,6 @@ const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;
   height: ${(props) => props.theme.mobileTopBarHeight}px;
   background-color: #fff;
-  border-bottom: solid 1px ${colors.coolGrey300};
-  position: sticky;
-  top: 0;
-  z-index: 2000;
 `;
 
 const TopBarInner = styled.div`

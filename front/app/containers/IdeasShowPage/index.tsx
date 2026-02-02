@@ -29,14 +29,6 @@ import { isUnauthorizedRQ } from 'utils/errorUtils';
 import DesktopTopBar from './DesktopTopBar';
 import IdeaShowPageTopBar from './IdeaShowPageTopBar';
 
-const StyledIdeaShowPageTopBar = styled(IdeaShowPageTopBar)`
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-`;
-
 // note: StyledIdeasShow styles defined here should match that in PostPageFullscreenModal!
 const StyledIdeasShow = styled(IdeasShow)`
   min-height: calc(
@@ -105,20 +97,14 @@ const IdeasShowPage = () => {
       >
         <Box background={colors.white}>
           {isSmallerThanTablet ? (
-            <StyledIdeaShowPageTopBar idea={idea.data} phase={phase} />
+            <IdeaShowPageTopBar idea={idea.data} phase={phase} />
           ) : (
             // 64px is the height of the CTA bar (see ParticipationCTAContent)
             <Box mt={showCTABar ? '64px' : undefined}>
               <DesktopTopBar project={project.data} />
             </Box>
           )}
-          <Box
-            mt={
-              // If we show IdeaShowPageTopBar on mobile, we need to push down main
-              isSmallerThanTablet ? `${theme.mobileTopBarHeight}px` : undefined
-            }
-            mb="8px"
-          >
+          <Box mb="8px">
             <main id="e2e-idea-show">
               <StyledIdeasShow
                 ideaId={idea.data.id}
