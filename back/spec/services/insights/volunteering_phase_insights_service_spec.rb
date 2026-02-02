@@ -24,21 +24,21 @@ RSpec.describe Insights::VolunteeringPhaseInsightsService do
         acted_at: volunteering1.created_at,
         classname: 'Volunteer',
         participant_id: user1.id,
-        user_custom_field_values: {}
+        custom_field_values: {}
       }, {
         item_id: volunteering2.id,
         action: 'volunteering',
         acted_at: volunteering2.created_at,
         classname: 'Volunteer',
         participant_id: user1.id,
-        user_custom_field_values: {}
+        custom_field_values: {}
       }, {
         item_id: volunteering3.id,
         action: 'volunteering',
         acted_at: volunteering3.created_at,
         classname: 'Volunteer',
         participant_id: user2.id,
-        user_custom_field_values: {}
+        custom_field_values: {}
       })
 
       first_participation = participations_volunteering.first

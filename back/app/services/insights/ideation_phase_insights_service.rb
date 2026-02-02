@@ -29,7 +29,7 @@ module Insights
           acted_at: idea.created_at,
           classname: 'Idea',
           participant_id: participant_id(idea.id, idea.author_id, idea.author_hash),
-          user_custom_field_values: parse_participation_custom_field_values(idea, idea&.author)
+          custom_field_values: parse_participation_custom_field_values(idea, idea&.author)
         }
       end
     end
@@ -51,7 +51,7 @@ module Insights
           acted_at: comment.created_at,
           classname: 'Comment',
           participant_id: participant_id(comment.id, comment.author_id, comment.author_hash),
-          user_custom_field_values: comment&.author&.custom_field_values || {}
+          custom_field_values: comment&.author&.custom_field_values || {}
         }
       end
     end
@@ -71,7 +71,7 @@ module Insights
           acted_at: reaction.created_at,
           classname: 'Reaction',
           participant_id: participant_id(reaction.id, reaction.user_id),
-          user_custom_field_values: reaction&.user&.custom_field_values || {}
+          custom_field_values: reaction&.user&.custom_field_values || {}
         }
       end
     end

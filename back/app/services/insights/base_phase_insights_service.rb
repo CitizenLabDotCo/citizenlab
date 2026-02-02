@@ -267,8 +267,8 @@ module Insights
       # Get first participation's custom field values for each unique user
       participant_ids.map do |participant_id|
         participation_by_user[participant_id]
-          .find { |p| p[:user_custom_field_values].present? }
-          &.dig(:user_custom_field_values) || {}
+          .find { |p| p[:custom_field_values].present? }
+          &.dig(:custom_field_values) || {}
       end
     end
 

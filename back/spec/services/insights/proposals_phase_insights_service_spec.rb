@@ -44,7 +44,7 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
         classname: 'Idea',
         threshold_reached_at: nil,
         participant_id: user1.id,
-        user_custom_field_values: {}
+        custom_field_values: {}
       }, {
         item_id: idea4.id,
         action: 'posting_idea',
@@ -52,7 +52,7 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
         classname: 'Idea',
         threshold_reached_at: nil,
         participant_id: user2.id,
-        user_custom_field_values: {}
+        custom_field_values: {}
       }, {
         item_id: idea6.id,
         action: 'posting_idea',
@@ -60,7 +60,7 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
         classname: 'Idea',
         threshold_reached_at: nil,
         participant_id: 'some_author_hash',
-        user_custom_field_values: {}
+        custom_field_values: {}
       }, {
         item_id: idea7.id,
         action: 'posting_idea',
@@ -68,7 +68,7 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
         classname: 'Idea',
         threshold_reached_at: nil,
         participant_id: idea7.id,
-        user_custom_field_values: {}
+        custom_field_values: {}
       })
 
       first_participation = participations_posting_idea.first
@@ -90,7 +90,8 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
       # - field_2 comes from user1 custom_field_values (not present in idea2)
       # - field_3 comes from idea2 (item) custom_field_values
       # - field_4 comes from idea2 (item) custom_field_values, with key prefix removed
-      expect(idea2_participation[:user_custom_field_values]).to eq({ 'field_1' => 'value_1i', 'field_2' => 'value_2u', 'field_3' => 'value_3i', 'field_4' => 'value_4i' })
+      expect(idea2_participation[:custom_field_values])
+        .to eq({ 'field_1' => 'value_1i', 'field_2' => 'value_2u', 'field_3' => 'value_3i', 'field_4' => 'value_4i' })
     end
 
     it 'correctly handles phases with no end date' do
