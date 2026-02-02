@@ -8,7 +8,7 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
-import styled, { useTheme } from 'styled-components';
+import styled from 'styled-components';
 
 import { VotingContext } from 'api/baskets_ideas/useVoting';
 import useIdeaBySlug from 'api/ideas/useIdeaBySlug';
@@ -50,7 +50,6 @@ const StyledIdeasShow = styled(IdeasShow)`
 `;
 
 const IdeasShowPage = () => {
-  const theme = useTheme();
   const { slug } = useParams() as { slug: string };
   const { data: idea, status, error } = useIdeaBySlug(slug);
   const isSmallerThanTablet = useBreakpoint('tablet');
