@@ -83,12 +83,20 @@ const BottomSheet = ({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isPeeking, setIsPeeking] = useState(false);
   const [dragOffset, setDragOffset] = useState<number | null>(null);
+  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
 
   const sheetRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const dragStartY = useRef<number | null>(null);
   const hasPeeked = useRef(false);
   const hasDragged = useRef(false);
+
+  // Update windowHeight on resize to keep handle position consistent
+  useEffect(() => {
+    const handleResize = () => setWindowHeight(window.innerHeight);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (isFullscreen || hasPeeked.current) return;
@@ -119,10 +127,9 @@ const BottomSheet = ({
     }
   }, [isFullscreen]);
 
-  const getCollapsedY = () =>
-    (sheetRef.current?.offsetHeight ?? window.innerHeight) - COLLAPSED_HEIGHT;
+  const getCollapsedY = () => windowHeight - COLLAPSED_HEIGHT;
 
-  const getPeekY = () => window.innerHeight * 0.5;
+  const getPeekY = () => windowHeight * 0.5;
 
   const handleDragStart = (y: number) => {
     dragStartY.current = y;
