@@ -12,10 +12,13 @@ export interface Translations {
   timeSeries: string;
   date: string;
   statistic: string;
+  registered: string;
+  active: string;
+  admins: string;
+  moderators: string;
   total: string;
   activeAdmins: string;
   activeModerators: string;
-  totalAdminPm: string;
   totalActive: string;
   last30Days: string;
   last7Days: string;
@@ -29,10 +32,13 @@ export const getTranslations = (
   timeSeries: formatMessage(messages.timeSeries),
   date: formatMessage(moduleMessages.date),
   statistic: formatMessage(moduleMessages.statistic),
-  total: formatMessage(moduleMessages.total),
+  registered: formatMessage(cardMessages.registered),
+  active: formatMessage(cardMessages.active),
+  admins: formatMessage(cardMessages.admins),
+  moderators: formatMessage(cardMessages.moderators),
+  total: formatMessage(cardMessages.total),
   activeAdmins: formatMessage(cardMessages.activeAdmins),
   activeModerators: formatMessage(cardMessages.activeModerators),
-  totalAdminPm: formatMessage(cardMessages.totalAdminPm),
   totalActive: formatMessage(cardMessages.totalActive),
   ...getTimePeriodTranslations(formatMessage),
 });
