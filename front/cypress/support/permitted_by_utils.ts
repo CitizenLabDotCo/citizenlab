@@ -58,8 +58,8 @@ export const setupProject = ({
               canReact: true,
             }
           : {
-              native_survey_title_multiloc: { en: 'bla' },
-              native_survey_button_multiloc: { en: 'bla' },
+              nativeSurveyButtonMultiloc: { en: 'bla' },
+              nativeSurveyTitleMultiloc: { en: 'bla' },
             };
 
       return cy.apiCreatePhase({
