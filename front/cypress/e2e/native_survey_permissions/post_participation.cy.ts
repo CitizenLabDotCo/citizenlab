@@ -1,14 +1,13 @@
-import { randomString } from '../../support/commands';
 import { signUpEmailConformation, enterUserInfo } from '../../support/auth';
+import { randomString } from '../../support/commands';
 import {
   updatePermission,
   setupProject,
   addPermissionsCustomField,
   confirmUserCustomFieldHasValue,
 } from '../../support/permitted_by_utils';
-import { fillOutTitleAndBody } from './_utils';
 
-describe('Post Participation Signup: ideation', () => {
+describe('Post Participation Signup: survey', () => {
   let customFieldId = '';
   let customFieldKey = '';
   let projectId = '';
@@ -19,7 +18,7 @@ describe('Post Participation Signup: ideation', () => {
 
   before(() => {
     // Create custom field
-    setupProject({ participationMethod: 'ideation' }).then((data) => {
+    setupProject({ participationMethod: 'native_survey' }).then((data) => {
       customFieldId = data.customFieldId;
       customFieldKey = data.customFieldKey;
       projectId = data.projectId;
@@ -57,19 +56,19 @@ describe('Post Participation Signup: ideation', () => {
   });
 
   it('Allows claiming participation by post-participation signup', () => {
-    cy.visit(`projects/${projectSlug}/ideas/new`);
+    cy.visit(`/projects/${projectSlug}`);
 
-    // add a title and description
-    const title = randomString(11);
-    const body = randomString(40);
-    fillOutTitleAndBody(cy, { title, body });
+    // Click take survey button
+    cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
-    // Skip page with files
-    cy.dataCy('e2e-next-page').should('be.visible').click();
+    // Confirm we're in the survey now
+    cy.location('pathname').should(
+      'eq',
+      `/en/projects/${projectSlug}/surveys/new`
+    );
 
-    // Skip to demographic question page
-    cy.wait(1000);
-    cy.get('[data-cy="e2e-next-page"]').should('be.visible').click();
+    // Answer question
+    cy.get('fieldset').first().find('input').first().check({ force: true });
 
     // Confirm we are on demographic question page
     cy.get('form').contains(fieldName);
@@ -79,7 +78,7 @@ describe('Post Participation Signup: ideation', () => {
     cy.get('form').find('input').first().type(answer);
 
     // Intercept submit request
-    cy.intercept('POST', '/web_api/v1/ideas').as('submitSurvey');
+    cy.intercept('PATCH', '/web_api/v1/ideas/**').as('submitSurvey');
 
     // Submit survey
     cy.dataCy('e2e-submit-form').click();
@@ -100,15 +99,12 @@ describe('Post Participation Signup: ideation', () => {
     enterUserInfo(cy, { firstName, lastName });
     cy.get('#e2e-success-continue-button').find('button').click();
 
-    // Make sure we get redirected to idea
-    cy.location('pathname').should('eq', `/en/ideas/${title}`);
+    // Make sure we get redirected to project
+    cy.location('pathname').should('eq', `/en/projects/${projectSlug}`);
 
-    // Make sure that idea belongs to user
-    cy.get('.e2e-author-link').should(
-      'have.attr',
-      'href',
-      `/en/profile/${firstName}-${lastName}`
-    );
+    // Check and confirm that user has submission
+    cy.visit(`/en/profile/${firstName}-${lastName}/surveys`);
+    cy.get(`a[href="/en/projects/${projectSlug}"]`).should('exist');
 
     // Confirm user's profile has been updated with correct custom field values
     confirmUserCustomFieldHasValue({
