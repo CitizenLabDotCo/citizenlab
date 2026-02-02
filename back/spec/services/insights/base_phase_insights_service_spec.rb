@@ -80,6 +80,77 @@ RSpec.describe Insights::BasePhaseInsightsService do
     end
   end
 
+  describe '#base_7_day_changes' do
+    it 'calculates 7 day changes correctly' do
+      participations = {
+        voting: [
+          create(:basket_participation, acted_at: 10.days.ago),
+          create(:basket_participation, acted_at: 5.days.ago),
+          create(:basket_participation, acted_at: 4.days.ago)
+        ]
+      }
+
+      visits = [
+        { acted_at: 10.days.ago, visitor_id: SecureRandom.uuid },
+        { acted_at: 5.days.ago, visitor_id: SecureRandom.uuid },
+        { acted_at: 4.days.ago, visitor_id: SecureRandom.uuid }
+      ]
+
+      result = service.send(:base_7_day_changes, participations, visits)
+
+      expect(result).to eq(
+        {
+          visitors_7_day_percent_change: 100.0, # from 1 (in week before last) to 2 (in last 7 days) = 100% increase
+          participants_7_day_percent_change: 100.0, # from 1 (in week before last) to 2 (in last 7 days) = 100% increase
+          participation_rate_7_day_percent_change: 0.0 # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 1.0 = 0% change
+        }
+      )
+    end
+
+    it 'handles zero visitors in either of last two 7-day periods as expected' do
+      participations = {
+        voting: [
+          create(:basket_participation, acted_at: 10.days.ago),
+          create(:basket_participation, acted_at: 5.days.ago),
+          create(:basket_participation, acted_at: 4.days.ago)
+        ]
+      }
+
+      visits = [ { acted_at: 5.days.ago, visitor_id: SecureRandom.uuid } ] # No visits in week before last
+      result = service.send(:base_7_day_changes, participations, visits)
+
+      expect(result).to eq(
+        {
+          visitors_7_day_percent_change: 'last_7_days_compared_with_zero',
+          participants_7_day_percent_change: 100.0,
+          participation_rate_7_day_percent_change: 'no_visitors_in_one_or_both_periods'
+        }
+      )
+
+      visits = [ { acted_at: 10.days.ago, visitor_id: SecureRandom.uuid } ] # No visits in last 7 days
+      result = service.send(:base_7_day_changes, participations, visits)
+
+      expect(result).to eq(
+        {
+          visitors_7_day_percent_change: -100.0,
+          participants_7_day_percent_change: 100.0,
+          participation_rate_7_day_percent_change: 'no_visitors_in_one_or_both_periods'
+        }
+      )
+
+      visits = [] # No visits in either period
+      result = service.send(:base_7_day_changes, participations, visits)
+
+      expect(result).to eq(
+        {
+          visitors_7_day_percent_change: 0.0, # Note: This will be overriden as 'last_7_days_compared_with_zero' if no visitors to phase at all
+          participants_7_day_percent_change: 100.0,
+          participation_rate_7_day_percent_change: 'no_visitors_in_one_or_both_periods'
+        }
+      )
+    end
+  end
+
   describe '#demographics_data' do
     it 'only includes data related to fields used in phase-level action permissions' do
       permission1.update!(global_custom_fields: false)
