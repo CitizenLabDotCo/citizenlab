@@ -20,7 +20,7 @@ interface Props {
 }
 
 const MetricTrend = ({ change }: Props) => {
-  const { formatMessage } = useIntl();
+  const { formatMessage, formatNumber } = useIntl();
 
   if (change === null || change === 'last_7_days_compared_with_zero') {
     const tooltipMessage =
@@ -58,7 +58,14 @@ const MetricTrend = ({ change }: Props) => {
     : isNeutral
     ? undefined
     : 'arrow-down';
-  const trendLabel = `${isPositive ? '+' : ''}${Math.round(change)}%`;
+  const formattedPercentage = formatNumber(Math.round(change) / 100, {
+    style: 'percent',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+  const trendLabel = isPositive
+    ? `+${formattedPercentage}`
+    : formattedPercentage;
   const trendColor: Color = isNeutral
     ? 'textSecondary'
     : isPositive

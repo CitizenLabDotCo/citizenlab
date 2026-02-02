@@ -64,10 +64,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.supportArticle',
     defaultMessage: 'support article',
   },
-  supportArticleUrl: {
-    id: 'app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl2',
+  supportArticleUrl3: {
+    id: 'app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl3',
     defaultMessage:
-      'https://support.govocal.com/en/articles/7022129-collecting-input-and-feedback-list-and-map-view',
+      'https://support.govocal.com/en/articles/527600-collecting-input-and-feedback-list-and-map-view',
   },
   layersTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.MapTab.layersTooltip',
