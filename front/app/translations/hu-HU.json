@@ -1435,7 +1435,6 @@
   "app.containers.IdeasFeedPage.collapsePanel": "Témák panel összecsukása",
   "app.containers.IdeasFeedPage.endOfFeed": "Elérted a hírfolyam végét.",
   "app.containers.IdeasFeedPage.expandPanel": "Témák panel kibontása",
-  "app.containers.IdeasFeedPage.exploreTopicsNudge": "Húzza felfelé az ujját a témák felfedezéséhez",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Még nincsenek ötletek ehhez a címkéhez.",
   "app.containers.IdeasFeedPage.seeAllIdeas": "Tekintse meg az összes {ideasCount} bemenetet",
   "app.containers.IdeasFeedPage.topicsPanel": "Témák panel",

@@ -6,6 +6,8 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import useInputTopics from 'api/input_topics/useInputTopics';
+import usePhase from 'api/phases/usePhase';
+import { getInputTerm } from 'api/phases/utils';
 
 import IdeasShow from 'containers/IdeasShow';
 
@@ -28,6 +30,7 @@ const Sidebar = ({ projectId }: { projectId: string }) => {
   const [searchParams] = useSearchParams();
   const selectedTopicId = searchParams.get('topic');
   const selectedIdeaId = searchParams.get('idea_id');
+  const phaseId = searchParams.get('phase_id');
   const isMobile = useBreakpoint('phone');
 
   useEffect(() => {
@@ -44,6 +47,9 @@ const Sidebar = ({ projectId }: { projectId: string }) => {
   const { data: filterCounts } = useIdeasFilterCounts({
     projects: [projectId],
   });
+
+  const { data: phase } = usePhase(phaseId);
+  const inputTerm = phase ? getInputTerm([phase.data]) : 'idea';
 
   const { data: selectedIdea } = useIdeaById(selectedIdeaId ?? undefined);
   const selectedIdeaProjectId =
@@ -88,6 +94,7 @@ const Sidebar = ({ projectId }: { projectId: string }) => {
         a11y_expandLabel={formatMessage(messages.expandPanel)}
         a11y_collapseLabel={formatMessage(messages.collapsePanel)}
         expandToFullscreenOn={selectedIdeaId}
+        inputTerm={inputTerm}
       >
         {showIdeaDetail ? (
           <IdeaContent

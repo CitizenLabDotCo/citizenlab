@@ -53,6 +53,7 @@ const SelectedTopicContent = ({
   const { data: subtopics } = useInputTopics(projectId, {
     parent_id: topicId,
     depth: 1,
+    sort: '-ideas_count',
   });
 
   const handleSubtopicClick = (subtopicId: string) => {
