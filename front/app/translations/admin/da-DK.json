@@ -2167,7 +2167,7 @@
   "app.containers.AdminPage.ProjectEdit.MapTab.save": "Gem",
   "app.containers.AdminPage.ProjectEdit.MapTab.saveZoom": "Gem zoom",
   "app.containers.AdminPage.ProjectEdit.MapTab.supportArticle": "støtteartikel",
-  "app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl3": "https://support.govocal.com/en/articles/527600-collecting-input-and-feedback-list-and-map-view",
+  "app.containers.AdminPage.ProjectEdit.MapTab.supportArticleUrl3": "https://support.govocal.com/da/articles/527600-indsamling-af-input-og-feedback-liste-og-kortvisning",
   "app.containers.AdminPage.ProjectEdit.MapTab.unnamedLayer": "Ikke navngivet lag",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabel": "Kortets zoomniveau",
   "app.containers.AdminPage.ProjectEdit.MapTab.zoomLabelTooltip": "Standardzoomniveauet for kortet. Accepterer en værdi mellem 1 og 17, hvor 1 er fuldt udzoomet (hele verden er synlig) og 17 er fuldt indzoomet (blokke og bygninger er synlige)",
