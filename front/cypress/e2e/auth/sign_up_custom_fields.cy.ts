@@ -7,7 +7,7 @@ describe('Sign up - custom fields step', () => {
     let customFieldId: string;
 
     before(() => {
-      cy.apiCreateCustomField(randomFieldName, true, false).then((response) => {
+      cy.apiCreateCustomField(randomFieldName, false).then((response) => {
         customFieldId = response.body.data.id;
       });
     });
@@ -38,7 +38,7 @@ describe('Sign up - custom fields step', () => {
     let customFieldName: string;
 
     before(() => {
-      cy.apiCreateCustomField(randomFieldName, true, true).then((response) => {
+      cy.apiCreateCustomField(randomFieldName, true).then((response) => {
         customFieldId = response.body.data.id;
         customFieldName = response.body.data.attributes.title_multiloc.en;
         cy.apiSignup(firstName, lastName, email, password);

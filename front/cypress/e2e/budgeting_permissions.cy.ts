@@ -10,7 +10,7 @@ describe('Idea budgeting permissions test with non active users', () => {
   let customFieldId: string;
 
   before(() => {
-    cy.apiCreateCustomField(randomFieldName, true, false).then((response) => {
+    cy.apiCreateCustomField(randomFieldName, false).then((response) => {
       customFieldId = response.body.data.id;
       cy.apiSignup(firstName, lastName, email, password).then((response) => {
         userId = response.body.data.id;

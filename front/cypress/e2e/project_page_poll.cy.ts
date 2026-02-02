@@ -127,7 +127,7 @@ describe('poll submission for users who have not met all the registration requir
 
   before(() => {
     // create user
-    cy.apiCreateCustomField(randomFieldName, true, true).then((response) => {
+    cy.apiCreateCustomField(randomFieldName, true).then((response) => {
       customFieldId = response.body.data.id;
       cy.apiSignup(firstName, lastName, email, password).then((response) => {
         userId = response.body.data.id;

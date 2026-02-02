@@ -33,7 +33,7 @@ export const setupProject = ({
 
   // Create custom field
   return cy
-    .apiCreateCustomField(fieldName, true, false)
+    .apiCreateCustomField(fieldName, false)
     .then((response) => {
       customFieldId = response.body.data.id;
       customFieldKey = response.body.data.attributes.key;
