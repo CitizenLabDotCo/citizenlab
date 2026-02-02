@@ -219,6 +219,11 @@ export default defineMessages({
     defaultMessage:
       'The 7 day period before last had no activity to compare against (which would give an infinite value)',
   },
+  cannotCalculateNoVisitsInPeriod: {
+    id: 'app.containers.Admin.projects.project.insights.cannotCalulateNoVisitsInPeriod',
+    defaultMessage:
+      'Cannot calculate participation rate change with zero visitors in a comparison period',
+  },
   noReferenceDataMessage: {
     id: 'app.containers.Admin.projects.project.insights.noReferenceDataMessage',
     defaultMessage:

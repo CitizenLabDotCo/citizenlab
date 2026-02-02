@@ -22,11 +22,16 @@ interface Props {
 const MetricTrend = ({ change }: Props) => {
   const { formatMessage, formatNumber } = useIntl();
 
-  if (change === null || change === 'last_7_days_compared_with_zero') {
+  const insufficientDataMessages = {
+    null: messages.insufficientComparisonDataPhaseTooNew,
+    last_7_days_compared_with_zero:
+      messages.insufficientComparisonDataNoPriorActivity,
+    no_visits_in_one_or_both_periods: messages.cannotCalculateNoVisitsInPeriod,
+  };
+
+  if (change === null || typeof change === 'string') {
     const tooltipMessage =
-      change === null
-        ? messages.insufficientComparisonDataPhaseTooNew
-        : messages.insufficientComparisonDataNoPriorActivity;
+      insufficientDataMessages[change as keyof typeof insufficientDataMessages];
 
     return (
       <Tooltip content={formatMessage(tooltipMessage)} placement="top">
