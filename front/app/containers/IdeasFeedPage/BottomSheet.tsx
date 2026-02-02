@@ -16,6 +16,7 @@ import messages from './messages';
 
 const COLLAPSED_HEIGHT = 40;
 const NUDGE_DELAY_MS = 5000;
+const PEEK_DURATION_MS = 3000;
 const DRAG_AREA_HEIGHT = 28;
 const SWIPE_THRESHOLD = 50;
 
@@ -76,6 +77,7 @@ const BottomSheet = ({
   const { formatMessage } = useIntl();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [showNudge, setShowNudge] = useState(false);
+  const [isPeeking, setIsPeeking] = useState(false);
   const [dragOffset, setDragOffset] = useState<number | null>(null);
 
   const sheetRef = useRef<HTMLDivElement>(null);
@@ -87,7 +89,12 @@ const BottomSheet = ({
 
     const timer = setTimeout(() => {
       setShowNudge(true);
+      setIsPeeking(true);
       hasShownNudge.current = true;
+
+      setTimeout(() => {
+        setIsPeeking(false);
+      }, PEEK_DURATION_MS);
     }, NUDGE_DELAY_MS);
     return () => clearTimeout(timer);
   }, [isFullscreen]);
@@ -102,6 +109,8 @@ const BottomSheet = ({
 
   const getCollapsedY = () =>
     (sheetRef.current?.offsetHeight ?? window.innerHeight) - COLLAPSED_HEIGHT;
+
+  const getPeekY = () => window.innerHeight * 0.5;
 
   const handleDragStart = (y: number) => {
     dragStartY.current = y;
@@ -153,7 +162,11 @@ const BottomSheet = ({
     document.addEventListener('mouseup', onUp);
   };
 
-  const baseTranslateY = isFullscreen ? 0 : getCollapsedY();
+  const baseTranslateY = isFullscreen
+    ? 0
+    : isPeeking
+    ? getPeekY()
+    : getCollapsedY();
   const translateY = baseTranslateY + (dragOffset ?? 0);
   const isDragging = dragOffset !== null;
 
