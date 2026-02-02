@@ -31,7 +31,7 @@ import ScrollHintOverlay from './ScrollHintOverlay';
 import StickyNote, { NOTE_HEIGHTS } from './StickyNotes/StickyNote';
 import { getTopicColor } from './topicsColor';
 
-const PEEK_HEIGHT = 150;
+const PEEK_HEIGHT = 200;
 
 const FeedContainer = styled(Box)`
   scroll-snap-type: y mandatory;
@@ -85,7 +85,6 @@ const NoteContainer = styled(Box)<{
       }
       return `translateY(-50%) scale(${scale})`;
     }};
-    opacity: ${({ isCentered }) => (isCentered ? 1 : 0.5)};
     pointer-events: ${({ isCentered }) => (isCentered ? 'auto' : 'none')};
     transition: transform 0.4s ease-out, opacity 0.3s ease-out;
   }
