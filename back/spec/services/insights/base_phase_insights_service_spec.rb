@@ -709,18 +709,18 @@ RSpec.describe Insights::BasePhaseInsightsService do
     end
   end
 
-  describe '#parse_user_custom_field_values' do
+  describe '#parse_participation_custom_field_values' do
     let(:prefix) { UserFieldsInFormService.prefix }
 
     it 'preferentially merges the parsed item.custom_field_values if present' do
       item = create(:idea, custom_field_values: { "#{prefix}key1" => 'value1', 'other_key' => 'other_value' })
 
-      result = service.send(:parse_user_custom_field_values, item, nil)
+      result = service.send(:parse_participation_custom_field_values, item, nil)
       expect(result).to eq({ 'key1' => 'value1', 'other_key' => 'other_value' })
 
       user = create(:user, custom_field_values: { 'key1' => 'value2' })
 
-      result = service.send(:parse_user_custom_field_values, item, user)
+      result = service.send(:parse_participation_custom_field_values, item, user)
       expect(result).to eq({ 'key1' => 'value1', 'other_key' => 'other_value' })
     end
 
@@ -728,7 +728,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
       item = create(:idea, custom_field_values: { "#{prefix}key1" => 'value1', 'other_key' => 'other_value' })
       user = create(:user, custom_field_values: { 'key2' => 'value2' })
 
-      result = service.send(:parse_user_custom_field_values, item, user)
+      result = service.send(:parse_participation_custom_field_values, item, user)
       expect(result).to eq({ 'key1' => 'value1', 'key2' => 'value2', 'other_key' => 'other_value' })
     end
 
@@ -736,7 +736,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
       item = create(:idea, custom_field_values: {})
       user = create(:user, custom_field_values: { 'key2' => 'value2' })
 
-      result = service.send(:parse_user_custom_field_values, item, user)
+      result = service.send(:parse_participation_custom_field_values, item, user)
       expect(result).to eq({ 'key2' => 'value2' })
     end
 
@@ -744,7 +744,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
       item = create(:idea, custom_field_values: {})
       user = create(:user, custom_field_values: {})
 
-      result = service.send(:parse_user_custom_field_values, item, user)
+      result = service.send(:parse_participation_custom_field_values, item, user)
       expect(result).to eq({})
     end
   end
