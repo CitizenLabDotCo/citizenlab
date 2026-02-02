@@ -32,14 +32,14 @@ module Insights
     def phase_participation_method_metrics(participations)
       posted_ideas_count = phase_ideas.count
       total_submitted_surveys = participations[:submitting_idea].count
-      completion_rate_as_percent = completion_rate_as_percent(posted_ideas_count, total_submitted_surveys)
+      completion_rate_as_percent = posted_ideas_count > 0 ? completion_rate_as_percent(posted_ideas_count, total_submitted_surveys) : 'submitted_count_compared_with_zero_ideas'
       rolling_7_day_changes = rolling_7_day_changes(participations)
 
       {
         surveys_submitted: total_submitted_surveys,
         surveys_submitted_7_day_percent_change: rolling_7_day_changes[:surveys_submitted_7_day_percent_change],
         completion_rate_as_percent: completion_rate_as_percent,
-        completion_rate_7_day_percent_change: rolling_7_day_changes[:completion_rate_7_day_percent_change]
+        completion_rate_7_day_percent_change: posted_ideas_count > 0 ? rolling_7_day_changes[:completion_rate_7_day_percent_change] : 'last_7_days_compared_with_zero'
       }
     end
 
