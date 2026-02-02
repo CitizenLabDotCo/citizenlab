@@ -20,26 +20,19 @@ const BarContainer = styled(Box)`
   position: relative;
 `;
 
-const BarRow = styled(Box)<{ isFullHeight?: boolean }>`
-  height: ${({ isFullHeight }) => (isFullHeight ? '100%' : '50%')};
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-`;
-
 const BarFill = styled(Box)<{
   percentage: number;
   color: string;
   opacity: number;
-  isFullHeight?: boolean;
 }>`
   position: absolute;
-  left: 1px;
-  top: 1px;
-  height: ${({ isFullHeight }) => (isFullHeight ? '14px' : '7px')};
-  width: calc(${({ percentage }) => percentage}% - 2px);
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: ${({ percentage }) => percentage}%;
   background: ${({ color }) => color};
   opacity: ${({ opacity }) => opacity};
+  border-radius: 3px;
 
   @media print {
     -webkit-print-color-adjust: exact;
@@ -95,7 +88,7 @@ const ComparisonBarChart = <Row,>({
       ref={innerRef}
       display="flex"
       flexDirection="column"
-      gap="8px"
+      gap="16px"
       width={typeof width === 'number' ? `${width}px` : width}
       height={typeof height === 'number' ? `${height}px` : height}
       role="img"
@@ -142,24 +135,27 @@ const ComparisonBarChart = <Row,>({
 
             <BarContainer style={{ height: `${barHeight}px` }}>
               <Box display="flex" flexDirection="column" h="100%">
-                <BarRow isFullHeight={!showComparison}>
+                <Box
+                  h={showComparison ? '50%' : '100%'}
+                  w="100%"
+                  position="relative"
+                >
                   <BarFill
                     percentage={payload.primaryValue}
                     color={fill}
                     opacity={opacity}
-                    isFullHeight={!showComparison}
                   />
-                </BarRow>
+                </Box>
                 {showComparison &&
                   payload.comparisonValue !== undefined &&
                   payload.comparisonValue > 0 && (
-                    <BarRow>
+                    <Box h="50%" w="100%" position="relative">
                       <BarFill
                         percentage={payload.comparisonValue}
                         color={comparisonColor}
                         opacity={1}
                       />
-                    </BarRow>
+                    </Box>
                   )}
               </Box>
             </BarContainer>
