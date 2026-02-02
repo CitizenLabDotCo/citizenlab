@@ -2,6 +2,7 @@
 
 class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   def import(template, folder: nil, local_copy: false)
+    fix_project_slugs_in_template!(template)
     # No translation required if it's a local copy
     template, translate_logs = MultiTenancy::Templates::Utils.translate_and_fix_locales(template) unless local_copy
 
@@ -10,10 +11,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     end
 
     project = Project.find(created_objects_ids['Project'].first)
-    unless local_copy
-      project.update!(slug: SlugService.new.generate_slug(project, project.slug))
-      project.set_default_input_topics!
-    end
+    project.set_default_input_topics! if !local_copy
     project.update! folder: folder if folder
 
     # Log to a project import if this is a copy from another platform
@@ -41,7 +39,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     new_publication_status: nil
   )
     include_ideas = false if local_copy
-    max_ideas = max_ideas&.to_i
+    max_ideas = max_ideas.presence&.to_i
     @include_ideas = include_ideas
     @local_copy = local_copy
     @project = project
@@ -831,5 +829,12 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
           mappable: CustomField.where(resource: CustomForm.where(participation_context: [@project, *@project.phases]))
         )
       )
+  end
+
+  def fix_project_slugs_in_template!(template)
+    projects = template.dig('models', 'project')
+    projects.each do |project|
+      project['slug'] = SlugService.new.generate_slug(Project.new, project['slug'])
+    end
   end
 end
