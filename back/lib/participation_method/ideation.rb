@@ -29,7 +29,7 @@ module ParticipationMethod
     end
 
     def assign_defaults(input)
-      input_status_code = phase&.prescreening_enabled ? 'prescreening' : 'proposed'
+      input_status_code = phase&.prescreening_enabled? ? 'prescreening' : 'proposed'
       input.idea_status ||= IdeaStatus.find_by!(code: input_status_code, participation_method: idea_status_method)
       input.publication_status ||= input.idea_status.public_post? ? 'published' : 'submitted'
     end
@@ -425,11 +425,11 @@ module ParticipationMethod
     end
 
     def supports_inputs_without_author?
-      AppConfiguration.instance.feature_activated?('ideation_accountless_posting')
+      true
     end
 
     def supports_permitted_by_everyone?
-      AppConfiguration.instance.feature_activated?('ideation_accountless_posting')
+      true
     end
 
     def supports_public_visibility?

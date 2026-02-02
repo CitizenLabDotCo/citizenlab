@@ -274,10 +274,8 @@ export interface IAppConfigurationSettings {
   idea_feed?: AppConfigurationFeature;
   nested_input_topics?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
-  ideation_accountless_posting?: AppConfigurationFeature;
-  participation_location_tracking?: AppConfigurationFeature;
-  post_participation_signup?: AppConfigurationFeature;
   phase_insights?: AppConfigurationFeature;
+  participation_location_tracking?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

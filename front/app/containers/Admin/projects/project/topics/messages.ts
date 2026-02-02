@@ -78,4 +78,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Topics.fieldTopicDescription',
     defaultMessage: 'Tag description (optional)',
   },
+  fieldTopicEmoji: {
+    id: 'app.containers.AdminPage.Topics.fieldTopicEmoji',
+    defaultMessage: 'Emoji (optional)',
+  },
 });

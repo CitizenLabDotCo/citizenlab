@@ -96,14 +96,11 @@ const PhaseParticipationConfig = ({
   });
 
   const project_library_enabled = useFeatureFlag({ name: 'project_library' });
-  const ideationAccountlessPostingEnabled = useFeatureFlag({
-    name: 'ideation_accountless_posting',
-  });
 
   const { formatMessage } = useIntl();
 
   const { data: permissions } = usePhasePermissions({
-    phaseId: ideationAccountlessPostingEnabled ? phase?.data.id : undefined,
+    phaseId: phase?.data.id,
   });
 
   // If posting without an account is allowed, we allow logged-in users to post
@@ -668,7 +665,7 @@ const PhaseParticipationConfig = ({
                     values={{
                       supportArticleLink: (
                         <a
-                          href={formatMessage(messages.konveioSupportPageURL)}
+                          href={formatMessage(messages.konveioSupportPageURL2)}
                           target="_blank"
                           rel="noreferrer"
                         >

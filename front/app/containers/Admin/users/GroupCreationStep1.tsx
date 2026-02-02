@@ -90,7 +90,7 @@ export interface Props {
 
 const GroupCreationStep1 = memo(
   ({ intl, onOpenStep2 }: Props & WrappedComponentProps) => {
-    const formattedLink = intl.formatMessage(messages.readMoreLink2);
+    const formattedLink = intl.formatMessage(messages.readMoreArticalLink);
 
     const createStep2Handler = (groupType: MembershipType) => () => {
       onOpenStep2(groupType);
