@@ -116,7 +116,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
         ]
       }
 
-      visits = [ { acted_at: 5.days.ago, visitor_id: SecureRandom.uuid } ] # No visits in week before last
+      visits = [{ acted_at: 5.days.ago, visitor_id: SecureRandom.uuid }] # No visits in week before last
       result = service.send(:base_7_day_changes, participations, visits)
 
       expect(result).to eq(
@@ -127,7 +127,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
         }
       )
 
-      visits = [ { acted_at: 10.days.ago, visitor_id: SecureRandom.uuid } ] # No visits in last 7 days
+      visits = [{ acted_at: 10.days.ago, visitor_id: SecureRandom.uuid }] # No visits in last 7 days
       result = service.send(:base_7_day_changes, participations, visits)
 
       expect(result).to eq(
@@ -143,7 +143,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
       expect(result).to eq(
         {
-          visitors_7_day_percent_change: 0.0, # Note: This will be overriden as 'last_7_days_compared_with_zero' if no visitors to phase at all
+          visitors_7_day_percent_change: 0.0, # NOTE: This will be overriden as 'last_7_days_compared_with_zero' if no visitors to phase at all
           participants_7_day_percent_change: 100.0,
           participation_rate_7_day_percent_change: 'no_visitors_in_one_or_both_periods'
         }
