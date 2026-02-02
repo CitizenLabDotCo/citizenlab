@@ -15,8 +15,7 @@ export type IPhasePermissionAction =
   | 'voting'
   | 'annotating_document'
   | 'attending_event'
-  | 'volunteering'
-  | 'reacting_idea';
+  | 'volunteering';
 
 export type UserDataCollection = 'all_data' | 'demographics_only' | 'anonymous';
 

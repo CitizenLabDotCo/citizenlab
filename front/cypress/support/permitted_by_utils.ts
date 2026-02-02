@@ -91,12 +91,14 @@ export const updatePermission = ({
   permitted_by,
   user_fields_in_form,
   user_data_collection,
+  permission = 'posting_idea',
 }: {
   adminJwt?: string;
   phaseId: string;
   permitted_by?: string;
   user_fields_in_form?: boolean;
   user_data_collection?: string;
+  permission?: string;
 }) => {
   const makeRequest = (adminJwt: string) => {
     return cy.request({
@@ -105,7 +107,7 @@ export const updatePermission = ({
         Authorization: `Bearer ${adminJwt}`,
       },
       method: 'PATCH',
-      url: `web_api/v1/phases/${phaseId}/permissions/posting_idea`,
+      url: `web_api/v1/phases/${phaseId}/permissions/${permission}`,
       body: {
         permitted_by,
         user_fields_in_form,
@@ -121,10 +123,12 @@ export const addPermissionsCustomField = ({
   adminJwt,
   phaseId,
   customFieldId,
+  permission = 'posting_idea',
 }: {
   adminJwt?: string;
   phaseId: string;
   customFieldId: string;
+  permission?: string;
 }) => {
   const makeRequest = (adminJwt: string) => {
     return cy.request({
@@ -133,7 +137,7 @@ export const addPermissionsCustomField = ({
         Authorization: `Bearer ${adminJwt}`,
       },
       method: 'POST',
-      url: `web_api/v1/phases/${phaseId}/permissions/posting_idea/permissions_custom_fields`,
+      url: `web_api/v1/phases/${phaseId}/permissions/${permission}/permissions_custom_fields`,
       body: {
         custom_field_id: customFieldId,
         required: true,
