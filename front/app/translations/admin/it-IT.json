@@ -2949,7 +2949,7 @@
   "app.containers.AdminPage.Topics.defaultInputTopicsSettings": "impostazioni piattaforma",
   "app.containers.AdminPage.Topics.delete": "Elimina",
   "app.containers.AdminPage.Topics.deleteInputTopicConfirmation": "Questo tag verrà rimosso da tutti i contributi in questo progetto. Questa azione non può essere annullata.",
-  "app.containers.AdminPage.Topics.deleteInputTopicWithChildrenConfirmation": "Questo tag ha dei sottotag. Se viene eliminato, verranno eliminati anche tutti i suoi sotto-tag. Gli ingressi assegnati a questi tag verranno aggiornati. Questa azione non può essere annullata.",
+  "app.containers.AdminPage.Topics.deleteInputTopicWithChildrenConfirmation": "Questo tag ha dei sotto-tag. Se viene eliminato, verranno eliminati anche tutti i suoi sotto-tag. Gli ingressi assegnati a questi tag verranno aggiornati. Questa azione non può essere annullata.",
   "app.containers.AdminPage.Topics.edit": "Modifica",
   "app.containers.AdminPage.Topics.editInputTopic": "Modifica tag contributi",
   "app.containers.AdminPage.Topics.fieldTopicDescription": "Descrizione tag (opzionale)",
