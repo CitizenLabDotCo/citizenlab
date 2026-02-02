@@ -65,11 +65,16 @@ module Insights
         p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
       end
 
-      completion_rate_last_7_days = completion_rate_as_percent(ideas_last_7_days_count, submitted_last_7_days_count)
-      completion_rate_previous_7_days = completion_rate_as_percent(ideas_previous_7_days_count, submitted_previous_7_days_count)
+      completion_rate_7_day_percent_change = if ideas_last_7_days_count > 0 && ideas_previous_7_days_count > 0
+        completion_rate_last_7_days = completion_rate_as_percent(ideas_last_7_days_count, submitted_last_7_days_count)
+        completion_rate_previous_7_days = completion_rate_as_percent(ideas_previous_7_days_count, submitted_previous_7_days_count)
+        percentage_change(completion_rate_previous_7_days, completion_rate_last_7_days)
+      else
+        'no_new_survey_responses_in_one_or_both_periods'
+      end
 
       result[:surveys_submitted_7_day_percent_change] = percentage_change(submitted_previous_7_days_count, submitted_last_7_days_count)
-      result[:completion_rate_7_day_percent_change] = percentage_change(completion_rate_previous_7_days, completion_rate_last_7_days)
+      result[:completion_rate_7_day_percent_change] = completion_rate_7_day_percent_change
 
       result
     end

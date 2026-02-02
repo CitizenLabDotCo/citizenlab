@@ -224,6 +224,11 @@ export default defineMessages({
     defaultMessage:
       'Cannot calculate participation rate change with zero visitors in a comparison period',
   },
+  cannotCalculateNoNewSurveyResponsesInPeriod: {
+    id: 'app.containers.Admin.projects.project.insights.cannotCalculateNoNewSurveyResponsesInPeriod',
+    defaultMessage:
+      'Cannot calculate completion rate change with zero new survey responses in a comparison period',
+  },
   noReferenceDataMessage: {
     id: 'app.containers.Admin.projects.project.insights.noReferenceDataMessage',
     defaultMessage:
