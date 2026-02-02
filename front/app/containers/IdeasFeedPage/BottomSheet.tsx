@@ -1,22 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-import {
-  Box,
-  colors,
-  Icon,
-  Text,
-  Tooltip,
-} from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { FocusOn } from 'react-focus-on';
 import styled from 'styled-components';
 
-import { useIntl } from 'utils/cl-intl';
-
-import messages from './messages';
-
 const COLLAPSED_HEIGHT = 40;
-const NUDGE_DELAY_MS = 5000;
-const PEEK_DURATION_MS = 3000;
+const PEEK_DELAY_MS = 5000;
+const PEEK_DURATION_MS = 2000;
 const DRAG_AREA_HEIGHT = 28;
 const SWIPE_THRESHOLD = 50;
 
@@ -74,28 +64,26 @@ const BottomSheet = ({
   a11y_collapseLabel,
   expandToFullscreenOn,
 }: Props) => {
-  const { formatMessage } = useIntl();
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [showNudge, setShowNudge] = useState(false);
   const [isPeeking, setIsPeeking] = useState(false);
   const [dragOffset, setDragOffset] = useState<number | null>(null);
 
   const sheetRef = useRef<HTMLDivElement>(null);
   const dragStartY = useRef<number | null>(null);
-  const hasShownNudge = useRef(false);
+  const hasPeeked = useRef(false);
+  const hasDragged = useRef(false);
 
   useEffect(() => {
-    if (isFullscreen || hasShownNudge.current) return;
+    if (isFullscreen || hasPeeked.current) return;
 
     const timer = setTimeout(() => {
-      setShowNudge(true);
       setIsPeeking(true);
-      hasShownNudge.current = true;
+      hasPeeked.current = true;
 
       setTimeout(() => {
         setIsPeeking(false);
       }, PEEK_DURATION_MS);
-    }, NUDGE_DELAY_MS);
+    }, PEEK_DELAY_MS);
     return () => clearTimeout(timer);
   }, [isFullscreen]);
 
@@ -114,12 +102,13 @@ const BottomSheet = ({
 
   const handleDragStart = (y: number) => {
     dragStartY.current = y;
-    setShowNudge(false);
+    hasDragged.current = false;
   };
 
   const handleDragMove = (currentY: number) => {
     if (dragStartY.current === null) return;
 
+    hasDragged.current = true;
     const delta = currentY - dragStartY.current;
     const baseY = isFullscreen ? 0 : getCollapsedY();
     const maxY = getCollapsedY();
@@ -130,12 +119,13 @@ const BottomSheet = ({
     if (dragStartY.current === null) return;
 
     const delta = endY - dragStartY.current;
-    const hadOffset = dragOffset !== null;
+    const hadDragged = hasDragged.current;
 
     setDragOffset(null);
     dragStartY.current = null;
+    hasDragged.current = false;
 
-    if (hadOffset && Math.abs(delta) >= SWIPE_THRESHOLD) {
+    if (hadDragged && Math.abs(delta) >= SWIPE_THRESHOLD) {
       setIsFullscreen(delta < 0);
     }
   };
@@ -193,21 +183,7 @@ const BottomSheet = ({
           onTouchEnd={handleTouchEnd}
           onMouseDown={handleMouseDown}
         >
-          <Tooltip
-            content={
-              <Box display="flex" alignItems="center" gap="8px">
-                <Icon name="stars" fill={colors.orange500} />
-                <Text color="textPrimary" fontSize="s" m="0px">
-                  {formatMessage(messages.exploreTopicsNudge)}
-                </Text>
-              </Box>
-            }
-            placement="top"
-            visible={showNudge}
-            onClickOutside={() => setShowNudge(false)}
-          >
-            <DragHandle aria-hidden="true" />
-          </Tooltip>
+          <DragHandle aria-hidden="true" />
         </DragArea>
 
         <ContentArea

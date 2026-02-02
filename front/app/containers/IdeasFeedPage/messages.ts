@@ -62,10 +62,6 @@ export default defineMessages({
     id: 'app.containers.IdeasFeedPage.addAPetition',
     defaultMessage: 'Add a petition',
   },
-  exploreTopicsNudge: {
-    id: 'app.containers.IdeasFeedPage.exploreTopicsNudge',
-    defaultMessage: 'Swipe up to explore the topics',
-  },
   noIdeasForTag: {
     id: 'app.containers.IdeasFeedPage.noIdeasForTag',
     defaultMessage: 'No ideas for this tag yet.',
