@@ -20,7 +20,7 @@ describe('Ideation permitted by: users', () => {
   let answer: string | undefined;
 
   before(() => {
-    setupProject().then((data) => {
+    setupProject({ participationMethod: 'ideation' }).then((data) => {
       customFieldId = data.customFieldId;
       customFieldKey = data.customFieldKey;
       projectId = data.projectId;

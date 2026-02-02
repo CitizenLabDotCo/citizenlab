@@ -1,5 +1,6 @@
 import moment = require('moment');
 import { randomString } from './commands';
+import { ParticipationMethod } from '../../app/api/phases/types';
 
 const withAdminJwt = (
   makeRequest: (adminJwt: string) => any,
@@ -15,7 +16,11 @@ const withAdminJwt = (
     });
 };
 
-export const setupProject = () => {
+export const setupProject = ({
+  participationMethod,
+}: {
+  participationMethod: ParticipationMethod;
+}) => {
   let customFieldId: string;
   let customFieldKey: string;
   let projectId: string;
@@ -49,7 +54,7 @@ export const setupProject = () => {
         title: randomString(),
         startAt: twoDaysAgo,
         endAt: inTwoMonths,
-        participationMethod: 'ideation',
+        participationMethod,
         canComment: true,
         canPost: true,
         canReact: true,

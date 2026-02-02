@@ -18,7 +18,7 @@ describe('Native survey permitted by: everyone', () => {
   let answer: string | undefined;
 
   before(() => {
-    setupProject().then((data) => {
+    setupProject({ participationMethod: 'native_survey' }).then((data) => {
       customFieldId = data.customFieldId;
       customFieldKey = data.customFieldKey;
       projectId = data.projectId;

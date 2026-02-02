@@ -20,7 +20,7 @@ describe('Ideation permitted by: everyone', () => {
 
   before(() => {
     // Create custom field
-    setupProject().then((data) => {
+    setupProject({ participationMethod: 'ideation' }).then((data) => {
       customFieldId = data.customFieldId;
       customFieldKey = data.customFieldKey;
       projectId = data.projectId;
