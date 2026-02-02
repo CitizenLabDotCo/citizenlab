@@ -161,7 +161,6 @@
   "app.components.admin.GraphCards.InternalAdoptionCard.internalAdoption": "Sisäinen käyttöönotto",
   "app.components.admin.GraphCards.InternalAdoptionCard.timeSeries": "Sisäinen käyttöönotto ajan kuluessa",
   "app.components.admin.GraphCards.InternalAdoptionCard.totalActive": "Aktiivisten kokonaismäärä",
-  "app.components.admin.GraphCards.InternalAdoptionCard.totalRegistered": "Yhteensä rekisteröityjä",
   "app.components.admin.Graphs": "Tietoja ei ole saatavilla nykyisillä suodattimilla.",
   "app.components.admin.Graphs.SurveyBars.surveyResults": "Kyselyn tulokset",
   "app.components.admin.Graphs.noDataShort": "Tietoja ei ole saatavilla.",

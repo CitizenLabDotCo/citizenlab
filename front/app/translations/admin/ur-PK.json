@@ -161,7 +161,6 @@
   "app.components.admin.GraphCards.InternalAdoptionCard.internalAdoption": "اندرونی گود لینا",
   "app.components.admin.GraphCards.InternalAdoptionCard.timeSeries": "وقت کے ساتھ اندرونی گود لینا",
   "app.components.admin.GraphCards.InternalAdoptionCard.totalActive": "مکمل فعال",
-  "app.components.admin.GraphCards.InternalAdoptionCard.totalRegistered": "کل رجسٹرڈ",
   "app.components.admin.Graphs": "موجودہ فلٹرز کے ساتھ کوئی ڈیٹا دستیاب نہیں ہے۔",
   "app.components.admin.Graphs.SurveyBars.surveyResults": "سروے کے نتائج",
   "app.components.admin.Graphs.noDataShort": "کوئی ڈیٹا دستیاب نہیں ہے۔",

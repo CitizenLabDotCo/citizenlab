@@ -161,7 +161,6 @@
   "app.components.admin.GraphCards.InternalAdoptionCard.internalAdoption": "Internt antagande",
   "app.components.admin.GraphCards.InternalAdoptionCard.timeSeries": "Internt införande över tid",
   "app.components.admin.GraphCards.InternalAdoptionCard.totalActive": "Totalt aktiva",
-  "app.components.admin.GraphCards.InternalAdoptionCard.totalRegistered": "Totalt registrerade",
   "app.components.admin.Graphs": "Ingen data tillgänglig med de aktuella filtren.",
   "app.components.admin.Graphs.SurveyBars.surveyResults": "Resultat av undersökningen",
   "app.components.admin.Graphs.noDataShort": "Ingen data tillgänglig.",

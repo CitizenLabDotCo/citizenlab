@@ -161,7 +161,6 @@
   "app.components.admin.GraphCards.InternalAdoptionCard.internalAdoption": "Mabwysiadu mewnol",
   "app.components.admin.GraphCards.InternalAdoptionCard.timeSeries": "Mabwysiadu mewnol dros amser",
   "app.components.admin.GraphCards.InternalAdoptionCard.totalActive": "Cyfanswm gweithredol",
-  "app.components.admin.GraphCards.InternalAdoptionCard.totalRegistered": "Cyfanswm wedi'i gofrestru",
   "app.components.admin.Graphs": "Dim data ar gael gyda'r hidlwyr cyfredol.",
   "app.components.admin.Graphs.SurveyBars.surveyResults": "Canlyniadau'r arolwg",
   "app.components.admin.Graphs.noDataShort": "Dim data ar gael.",

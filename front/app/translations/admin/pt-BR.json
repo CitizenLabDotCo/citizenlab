@@ -161,7 +161,6 @@
   "app.components.admin.GraphCards.InternalAdoptionCard.internalAdoption": "Adoção interna",
   "app.components.admin.GraphCards.InternalAdoptionCard.timeSeries": "Adoção interna ao longo do tempo",
   "app.components.admin.GraphCards.InternalAdoptionCard.totalActive": "Total de ativos",
-  "app.components.admin.GraphCards.InternalAdoptionCard.totalRegistered": "Total registrado",
   "app.components.admin.Graphs": "Não há dados disponíveis com os filtros atuais.",
   "app.components.admin.Graphs.SurveyBars.surveyResults": "Resultados da pesquisa",
   "app.components.admin.Graphs.noDataShort": "Não há dados disponíveis.",

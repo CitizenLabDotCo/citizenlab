@@ -161,7 +161,6 @@
   "app.components.admin.GraphCards.InternalAdoptionCard.internalAdoption": "ਅੰਦਰੂਨੀ ਗੋਦ ਲੈਣਾ",
   "app.components.admin.GraphCards.InternalAdoptionCard.timeSeries": "ਸਮੇਂ ਦੇ ਨਾਲ ਅੰਦਰੂਨੀ ਗੋਦ ਲੈਣਾ",
   "app.components.admin.GraphCards.InternalAdoptionCard.totalActive": "ਕੁੱਲ ਕਿਰਿਆਸ਼ੀਲ",
-  "app.components.admin.GraphCards.InternalAdoptionCard.totalRegistered": "ਕੁੱਲ ਰਜਿਸਟਰਡ",
   "app.components.admin.Graphs": "ਮੌਜੂਦਾ ਫਿਲਟਰਾਂ ਨਾਲ ਕੋਈ ਡਾਟਾ ਉਪਲਬਧ ਨਹੀਂ ਹੈ।",
   "app.components.admin.Graphs.SurveyBars.surveyResults": "ਸਰਵੇਖਣ ਦੇ ਨਤੀਜੇ",
   "app.components.admin.Graphs.noDataShort": "ਕੋਈ ਡਾਟਾ ਉਪਲਬਧ ਨਹੀਂ ਹੈ।",

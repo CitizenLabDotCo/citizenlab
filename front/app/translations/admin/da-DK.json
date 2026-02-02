@@ -161,7 +161,6 @@
   "app.components.admin.GraphCards.InternalAdoptionCard.internalAdoption": "Intern anvendelse",
   "app.components.admin.GraphCards.InternalAdoptionCard.timeSeries": "Intern adoption over tid",
   "app.components.admin.GraphCards.InternalAdoptionCard.totalActive": "Totalt antal aktive",
-  "app.components.admin.GraphCards.InternalAdoptionCard.totalRegistered": "I alt registreret",
   "app.components.admin.Graphs": "Ingen data tilgængelige med de nuværende filtre.",
   "app.components.admin.Graphs.SurveyBars.surveyResults": "Resultater af undersøgelsen",
   "app.components.admin.Graphs.noDataShort": "Ingen data tilgængelige.",
