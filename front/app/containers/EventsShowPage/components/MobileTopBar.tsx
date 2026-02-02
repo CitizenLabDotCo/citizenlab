@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  useBreakpoint,
-  Box,
-  media,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { useBreakpoint, Box, media } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
