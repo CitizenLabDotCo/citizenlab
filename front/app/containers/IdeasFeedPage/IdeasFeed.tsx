@@ -28,8 +28,8 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import messages from './messages';
 import ScrollHintOverlay from './ScrollHintOverlay';
 import StickyNote, {
-  NOTE_WIDTHS,
-  NOTE_ASPECT_RATIOS,
+  NOTE_WIDTH,
+  NOTE_ASPECT_RATIO,
 } from './StickyNotes/StickyNote';
 import { getTopicColor } from './topicsColor';
 
@@ -129,8 +129,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
     }
   }, []);
 
-  const noteSize = isMobile ? 'small' : 'large';
-  const noteHeight = NOTE_WIDTHS[noteSize] / NOTE_ASPECT_RATIOS[noteSize];
+  const noteHeight = NOTE_WIDTH / NOTE_ASPECT_RATIO;
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteIdeaFeedIdeas({
@@ -364,7 +363,6 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
                   topicEmojis={emojis}
                   onClick={() => handleIdeaSelect(idea.id)}
                   centeredIdeaId={centeredIdeaId || undefined}
-                  size={noteSize}
                   showReactions={true}
                 />
               </NoteContainer>

@@ -30,15 +30,10 @@ const truncateText = (text: string, maxLength: number) => {
   return `${text.slice(0, cutoff)}...`;
 };
 
-export const NOTE_ASPECT_RATIOS = {
-  small: 300 / 350,
-  large: 400 / 500,
-};
+export const NOTE_ASPECT_RATIO = 4 / 5;
+export const NOTE_ASPECT_RATIO_COMPACT = 0.95;
 
-export const NOTE_WIDTHS = {
-  small: 320,
-  large: 320,
-};
+export const NOTE_WIDTH = 320;
 
 const StyledNote = styled(Box)<{ $aspectRatio: number }>`
   padding: 20px;
@@ -46,6 +41,7 @@ const StyledNote = styled(Box)<{ $aspectRatio: number }>`
   transition: all 0.3s ease;
   text-align: left;
   aspect-ratio: ${({ $aspectRatio }) => $aspectRatio};
+  overflow: hidden;
   &:hover,
   &:focus {
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -65,7 +61,6 @@ interface Props {
   topicEmojis?: string[];
   onClick?: () => void;
   centeredIdeaId?: string;
-  size?: 'small' | 'large';
   showReactions?: boolean;
 }
 
@@ -76,7 +71,6 @@ const StickyNote: React.FC<Props> = ({
   topicEmojis = [],
   onClick,
   centeredIdeaId,
-  size = 'large',
   showReactions = true,
 }) => {
   const [searchParams] = useSearchParams();
@@ -84,8 +78,10 @@ const StickyNote: React.FC<Props> = ({
   const { data: phase } = usePhase(phaseId);
 
   const isCentered = centeredIdeaId === ideaId;
-  const noteWidth = NOTE_WIDTHS[size];
-  const noteAspectRatio = NOTE_ASPECT_RATIOS[size];
+  const noteWidth = NOTE_WIDTH;
+  const noteAspectRatio = showReactions
+    ? NOTE_ASPECT_RATIO
+    : NOTE_ASPECT_RATIO_COMPACT;
 
   const { data: idea } = useIdeaById(ideaId);
   const localize = useLocalize();
@@ -186,7 +182,7 @@ const StickyNote: React.FC<Props> = ({
           </Box>
         )}
       </Box>
-      <Box flex="1" />
+      {showReactions && <Box flex="1" />}
       <Text fontSize="xxl" fontWeight="bold" m="0px" color={'textPrimary'}>
         {truncateText(title, 100)}
       </Text>

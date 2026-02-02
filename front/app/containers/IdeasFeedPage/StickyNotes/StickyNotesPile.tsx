@@ -195,7 +195,6 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
                   topicBackgroundColor={topicBackgroundColor}
                   topicEmojis={emojis}
                   onClick={() => handleNoteClick(idea.id)}
-                  size="small"
                   rotation={ROTATIONS[index % ROTATIONS.length]}
                   showReactions={false}
                 />
