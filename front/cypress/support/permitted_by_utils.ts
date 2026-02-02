@@ -49,17 +49,27 @@ export const setupProject = ({
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
 
+      const extra =
+        participationMethod === 'ideation'
+          ? {
+              allow_anonymous_participation: true,
+              canComment: true,
+              canPost: true,
+              canReact: true,
+            }
+          : {
+              native_survey_title_multiloc: { en: 'bla' },
+              native_survey_button_multiloc: { en: 'bla' },
+            };
+
       return cy.apiCreatePhase({
         projectId,
         title: randomString(),
         startAt: twoDaysAgo,
         endAt: inTwoMonths,
         participationMethod,
-        canComment: true,
-        canPost: true,
-        canReact: true,
         description: 'Some description',
-        allow_anonymous_participation: true,
+        ...extra,
       });
     })
     .then((phaseResponse) => {
