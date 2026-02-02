@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
@@ -14,6 +15,18 @@ import AddIdeaButton from './AddIdeaButton';
 import IdeasFeed from './IdeasFeed';
 import IdeasFeedPageMeta from './IdeasFeedPageMeta';
 import Sidebar from './Sidebar';
+
+const PageContainer = styled.div`
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1010;
+  overflow: hidden;
+  background-color: ${colors.white};
+`;
 
 const IdeasFeedPage = () => {
   const { slug } = useParams() as { slug: string };
@@ -43,17 +56,7 @@ const IdeasFeedPage = () => {
   return (
     <main id="e2e-project-ideas-page">
       <IdeasFeedPageMeta project={project.data} />
-      <Box
-        w="100%"
-        bgColor={colors.grey100}
-        position="fixed"
-        top="0"
-        left="0"
-        right="0"
-        bottom="0"
-        zIndex="1010"
-        overflow="hidden"
-      >
+      <PageContainer>
         {isMobileOrSmaller && (
           <Box position="absolute" top="16px" left="16px" zIndex="1">
             <GoBackButton
@@ -105,7 +108,7 @@ const IdeasFeedPage = () => {
         >
           <AddIdeaButton projectSlug={slug} phaseId={phaseId} />
         </Box>
-      </Box>
+      </PageContainer>
     </main>
   );
 };

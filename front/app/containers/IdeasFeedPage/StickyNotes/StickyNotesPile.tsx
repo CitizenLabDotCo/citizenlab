@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Spinner,
+  Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -141,6 +142,16 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
     return <Spinner />;
   }
 
+  if (!displayedIdeas || displayedIdeas.length === 0) {
+    return (
+      <Box display="flex" justifyContent="center" py="64px">
+        <Text color="textSecondary">
+          <FormattedMessage {...messages.nothingToShowYet} />
+        </Text>
+      </Box>
+    );
+  }
+
   // Use fixed width containers that center the pile
   const mobileContainerWidth = 340;
   const tabletContainerWidth = 800;
@@ -184,7 +195,6 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
                   topicBackgroundColor={topicBackgroundColor}
                   topicEmojis={emojis}
                   onClick={() => handleNoteClick(idea.id)}
-                  size="small"
                   rotation={ROTATIONS[index % ROTATIONS.length]}
                   showReactions={false}
                 />
