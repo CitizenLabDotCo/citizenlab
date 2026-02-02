@@ -218,7 +218,7 @@ describe('idea reacting permissions for non-active users', () => {
     }
   });
 
-  it.only("doesn't let non-active users reaction", () => {
+  it("doesn't let non-active users reaction", () => {
     cy.setLoginCookie(email, password);
     cy.visit(`projects/${projectSlug}`);
     cy.get('#e2e-ideas-container').should('exist');
