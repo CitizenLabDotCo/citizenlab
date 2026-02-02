@@ -3,6 +3,8 @@ import React, { useMemo } from 'react';
 import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import { useIntl } from 'utils/cl-intl';
+
 import EmptyState from '../_components/EmptyState';
 import { hasNoData } from '../utils';
 
@@ -45,6 +47,13 @@ const BarFill = styled(Box)<{
   }
 `;
 
+const PercentageLabel = styled.span<{ color: string }>`
+  font-size: 14px;
+  line-height: 1.5;
+  color: ${({ color }) => color};
+  margin: 0;
+`;
+
 const ComparisonBarChart = <Row,>({
   data,
   mapping,
@@ -61,7 +70,16 @@ const ComparisonBarChart = <Row,>({
   ariaLabel,
   ariaDescribedBy,
 }: Props<Row>) => {
+  const { formatNumber } = useIntl();
   const noData = hasNoData(data);
+
+  const formatPercentageValue = (value: number) => {
+    return formatNumber(value / 100, {
+      style: 'percent',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 1,
+    });
+  };
 
   const chartData = useMemo(() => {
     if (noData) return [];
@@ -108,16 +126,16 @@ const ComparisonBarChart = <Row,>({
               </Text>
               <Box display="flex" gap="12px" alignItems="center">
                 {payload.primaryValue > 0 && (
-                  <Text fontSize="s" color="coolGrey700" m="0px">
-                    {payload.primaryValue}%
-                  </Text>
+                  <PercentageLabel color={fill}>
+                    {formatPercentageValue(payload.primaryValue)}
+                  </PercentageLabel>
                 )}
                 {showComparison &&
                   payload.comparisonValue !== undefined &&
                   payload.comparisonValue > 0 && (
-                    <Text fontSize="s" color="coolGrey700" m="0px">
-                      {payload.comparisonValue}%
-                    </Text>
+                    <PercentageLabel color={comparisonColor}>
+                      {formatPercentageValue(payload.comparisonValue)}
+                    </PercentageLabel>
                   )}
               </Box>
             </Box>
