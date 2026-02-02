@@ -1985,7 +1985,6 @@ function createProjectWithNativeSurveyPhase({
   description,
   nativeSurveyButtonMultiloc = { en: 'Take the survey' },
   nativeSurveyTitleMultiloc = { en: 'Survey' },
-  allow_anonymous_participation,
   presentation_mode,
 }: {
   projectTitle?: string;
@@ -2027,7 +2026,6 @@ function createProjectWithNativeSurveyPhase({
           description,
           nativeSurveyButtonMultiloc,
           nativeSurveyTitleMultiloc,
-          allow_anonymous_participation,
           presentation_mode,
         })
         .then((phase) => {
