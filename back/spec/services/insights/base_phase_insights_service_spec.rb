@@ -62,6 +62,22 @@ RSpec.describe Insights::BasePhaseInsightsService do
         }
       )
     end
+
+    it 'handles zero visitors as expected' do
+      visits = []
+      result = service.send(:base_metrics, participations, participant_ids, visits)
+
+      expect(result).to eq(
+        {
+          visitors: 0,
+          visitors_7_day_percent_change: 0.0, # From 0 (7 to 14 days ago) to 0 (last 7-day period) unique visitors = 0% change
+          participants: 3,
+          participants_7_day_percent_change: 50.0,
+          participation_rate_as_percent: 'participant_count_compared_with_zero_visitors',
+          participation_rate_7_day_percent_change: 'no_visitors_in_one_or_both_periods'
+        }
+      )
+    end
   end
 
   describe '#demographics_data' do
