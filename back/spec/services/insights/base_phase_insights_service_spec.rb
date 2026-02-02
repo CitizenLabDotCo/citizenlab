@@ -709,7 +709,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
     end
   end
 
-  describe '#participants_custom_field_values' do
+  describe '#parse_user_custom_field_values' do
     let(:prefix) { UserFieldsInFormService.prefix }
 
     it 'preferentially merges the parsed item.custom_field_values if present' do
