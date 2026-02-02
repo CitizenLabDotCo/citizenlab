@@ -14,19 +14,19 @@ const PEEK_DURATION_MS = 1000;
 const DRAG_AREA_HEIGHT = 28;
 const SWIPE_THRESHOLD = 50;
 
-const Container = styled.div<{ $translateY: number; $isDragging: boolean }>`
+const Container = styled.div<{ translateY: number; isDragging: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   height: 100dvh;
   background: ${colors.white};
-  border-radius: ${({ $translateY }) =>
-    $translateY <= 0 ? '0' : '16px 16px 0 0'};
+  border-radius: ${({ translateY }) =>
+    translateY <= 0 ? '0' : '16px 16px 0 0'};
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
-  transform: translateY(${({ $translateY }) => $translateY}px);
-  transition: ${({ $isDragging }) =>
-    $isDragging ? 'none' : 'transform 0.3s ease-out'};
+  transform: translateY(${({ translateY }) => translateY}px);
+  transition: ${({ isDragging }) =>
+    isDragging ? 'none' : 'transform 0.3s ease-out'};
   z-index: 1050;
 `;
 
@@ -59,8 +59,8 @@ const DragArea = styled.div`
   }
 `;
 
-const ContentArea = styled(Box)<{ $scrollable: boolean }>`
-  overflow-y: ${({ $scrollable }) => ($scrollable ? 'auto' : 'hidden')};
+const ContentArea = styled(Box)<{ scrollable: boolean }>`
+  overflow-y: ${({ scrollable }) => (scrollable ? 'auto' : 'hidden')};
 `;
 
 interface Props {
@@ -85,6 +85,7 @@ const BottomSheet = ({
   const [dragOffset, setDragOffset] = useState<number | null>(null);
 
   const sheetRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const dragStartY = useRef<number | null>(null);
   const hasPeeked = useRef(false);
   const hasDragged = useRef(false);
@@ -110,6 +111,13 @@ const BottomSheet = ({
       setIsFullscreen(false);
     }
   }, [expandToFullscreenOn]);
+
+  // Reset scroll position when sheet opens to fullscreen
+  useEffect(() => {
+    if (isFullscreen && contentRef.current) {
+      contentRef.current.scrollTop = 0;
+    }
+  }, [isFullscreen]);
 
   const getCollapsedY = () =>
     (sheetRef.current?.offsetHeight ?? window.innerHeight) - COLLAPSED_HEIGHT;
@@ -192,8 +200,8 @@ const BottomSheet = ({
     >
       <Container
         ref={sheetRef}
-        $translateY={translateY}
-        $isDragging={isDragging}
+        translateY={translateY}
+        isDragging={isDragging}
         role="dialog"
         aria-modal={isFullscreen}
         aria-label={a11y_panelLabel}
@@ -210,10 +218,11 @@ const BottomSheet = ({
         </DragArea>
 
         <ContentArea
+          ref={contentRef}
           px="16px"
           pt="24px"
           pb={isFullscreen ? '100px' : '24px'}
-          $scrollable={isFullscreen}
+          scrollable={isFullscreen}
           h={`calc(100dvh - ${translateY + DRAG_AREA_HEIGHT}px)`}
         >
           {children}
