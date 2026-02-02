@@ -69,6 +69,7 @@ describe('Post Participation Signup: survey', () => {
 
     // Answer question
     cy.get('fieldset').first().find('input').first().check({ force: true });
+    cy.dataCy('e2e-next-page').should('be.visible').click();
 
     // Confirm we are on demographic question page
     cy.get('form').contains(fieldName);
@@ -78,7 +79,7 @@ describe('Post Participation Signup: survey', () => {
     cy.get('form').find('input').first().type(answer);
 
     // Intercept submit request
-    cy.intercept('PATCH', '/web_api/v1/ideas/**').as('submitSurvey');
+    cy.intercept('POST', '/web_api/v1/ideas').as('submitSurvey');
 
     // Submit survey
     cy.dataCy('e2e-submit-form').click();
