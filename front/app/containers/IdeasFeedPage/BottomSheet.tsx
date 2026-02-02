@@ -4,6 +4,10 @@ import { Box, colors } from '@citizenlab/cl2-component-library';
 import { FocusOn } from 'react-focus-on';
 import styled from 'styled-components';
 
+import { InputTerm } from 'api/phases/types';
+
+import SeeAllButton from './BottomSheet/SeeAllButton';
+
 const COLLAPSED_HEIGHT = 40;
 const PEEK_DELAY_MS = 10000;
 const PEEK_DURATION_MS = 1000;
@@ -55,6 +59,7 @@ interface Props {
   a11y_expandLabel: string;
   a11y_collapseLabel: string;
   expandToFullscreenOn?: string | null;
+  inputTerm: InputTerm;
 }
 
 const BottomSheet = ({
@@ -63,6 +68,7 @@ const BottomSheet = ({
   a11y_expandLabel,
   a11y_collapseLabel,
   expandToFullscreenOn,
+  inputTerm,
 }: Props) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isPeeking, setIsPeeking] = useState(false);
@@ -152,6 +158,10 @@ const BottomSheet = ({
     document.addEventListener('mouseup', onUp);
   };
 
+  const handleCollapse = () => {
+    setIsFullscreen(false);
+  };
+
   const baseTranslateY = isFullscreen
     ? 0
     : isPeeking
@@ -193,6 +203,9 @@ const BottomSheet = ({
           h={`calc(100dvh - ${translateY + DRAG_AREA_HEIGHT}px)`}
         >
           {children}
+          {isFullscreen && (
+            <SeeAllButton inputTerm={inputTerm} onClose={handleCollapse} />
+          )}
         </ContentArea>
       </Container>
     </FocusOn>

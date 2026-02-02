@@ -1,9 +1,42 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  // #input_term_copy
   seeAllIdeas: {
     id: 'app.containers.IdeasFeedPage.seeAllIdeas',
-    defaultMessage: 'See all {ideasCount} inputs',
+    defaultMessage: 'See all ideas',
+  },
+  seeAllOptions: {
+    id: 'app.containers.IdeasFeedPage.seeAllOptions',
+    defaultMessage: 'See all options',
+  },
+  seeAllProjects: {
+    id: 'app.containers.IdeasFeedPage.seeAllProjects',
+    defaultMessage: 'See all projects',
+  },
+  seeAllQuestions: {
+    id: 'app.containers.IdeasFeedPage.seeAllQuestions',
+    defaultMessage: 'See all questions',
+  },
+  seeAllIssues: {
+    id: 'app.containers.IdeasFeedPage.seeAllIssues',
+    defaultMessage: 'See all issues',
+  },
+  seeAllContributions: {
+    id: 'app.containers.IdeasFeedPage.seeAllContributions',
+    defaultMessage: 'See all contributions',
+  },
+  seeAllProposals: {
+    id: 'app.containers.IdeasFeedPage.seeAllProposals',
+    defaultMessage: 'See all proposals',
+  },
+  seeAllInitiatives: {
+    id: 'app.containers.IdeasFeedPage.seeAllInitiatives',
+    defaultMessage: 'See all initiatives',
+  },
+  seeAllPetitions: {
+    id: 'app.containers.IdeasFeedPage.seeAllPetitions',
+    defaultMessage: 'See all petitions',
   },
   allTopics: {
     id: 'app.containers.IdeasFeedPage.allTopics',
