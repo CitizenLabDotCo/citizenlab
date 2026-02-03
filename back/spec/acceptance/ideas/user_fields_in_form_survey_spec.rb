@@ -46,7 +46,8 @@ resource 'Ideas' do
     context 'when visitor and permitted_by is everyone' do
       before do
         @permission.update!(
-          permitted_by: 'everyone'
+          permitted_by: 'everyone',
+          user_data_collection: 'all_data'
         )
       end
 
@@ -67,6 +68,44 @@ resource 'Ideas' do
           @custom_field.key => 'option2',
           'u_user_select_field' => 'option1'
         })
+      end
+
+      it 'issues claim token' do
+        do_request({
+          idea: {
+            publication_status: 'published',
+            project_id: @project.id,
+            @custom_field.key => 'option2',
+            u_user_select_field: 'option1',
+          }
+        })
+
+        assert_status 201
+        expect(Idea.count).to eq 1
+        expect(response_data[:attributes][:claim_token]).to eq(Idea.first.claim_token.token)
+      end
+
+      context 'user_data_collection = anonymous' do
+        before do
+          @permission.update!(
+            user_data_collection: 'anonymous'
+          )
+        end
+
+        it 'does not issue claim token' do
+          do_request({
+            idea: {
+              publication_status: 'published',
+              project_id: @project.id,
+              @custom_field.key => 'option2',
+              u_user_select_field: 'option1',
+            }
+          })
+
+          assert_status 201
+          expect(Idea.count).to eq 1
+          expect(response_data[:attributes][:claim_token]).to be(nil)
+        end
       end
     end
 
