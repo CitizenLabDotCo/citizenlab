@@ -244,10 +244,50 @@ export const WordExportProvider = ({
   // Capture all registered components as images
   const captureAllComponents = useCallback(async () => {
     const capturedImages: Map<
-      ExportId,
+      string,
       { image: Uint8Array; width: number; height: number }
     > = new Map();
     const expectedIds = getExpectedComponents(participationMethod);
+
+    const captureElement = async (exportId: string, element: HTMLElement) => {
+      // Store original styles (elements may be hidden with opacity: 0)
+      const originalOpacity = element.style.opacity;
+      const originalPointerEvents = element.style.pointerEvents;
+      const parentElement = element.parentElement;
+      const originalParentOpacity = parentElement?.style.opacity;
+      const originalParentPointerEvents = parentElement?.style.pointerEvents;
+
+      // Temporarily make visible for capture
+      element.style.opacity = '1';
+      element.style.pointerEvents = 'auto';
+      if (parentElement) {
+        parentElement.style.opacity = '1';
+        parentElement.style.pointerEvents = 'auto';
+      }
+
+      // Scroll into view to ensure proper rendering
+      element.scrollIntoView({ block: 'center' });
+      const { width, height } = element.getBoundingClientRect();
+
+      const imageBuffer = await htmlToImageBuffer(element, {
+        scale: 2,
+        backgroundColor: '#FFFFFF',
+      });
+
+      capturedImages.set(exportId, {
+        image: imageBuffer,
+        width: Math.round(width),
+        height: Math.round(height),
+      });
+
+      // Restore original styles
+      element.style.opacity = originalOpacity;
+      element.style.pointerEvents = originalPointerEvents;
+      if (parentElement) {
+        parentElement.style.opacity = originalParentOpacity || '';
+        parentElement.style.pointerEvents = originalParentPointerEvents || '';
+      }
+    };
 
     for (const exportId of expectedIds) {
       if (!shouldCaptureAsImage(exportId)) continue;
@@ -269,45 +309,33 @@ export const WordExportProvider = ({
       }
 
       try {
-        // Store original styles (elements may be hidden with opacity: 0)
-        const originalOpacity = element.style.opacity;
-        const originalPointerEvents = element.style.pointerEvents;
-        const parentElement = element.parentElement;
-        const originalParentOpacity = parentElement?.style.opacity;
-        const originalParentPointerEvents = parentElement?.style.pointerEvents;
-
-        // Temporarily make visible for capture
-        element.style.opacity = '1';
-        element.style.pointerEvents = 'auto';
-        if (parentElement) {
-          parentElement.style.opacity = '1';
-          parentElement.style.pointerEvents = 'auto';
-        }
-
-        // Scroll into view to ensure proper rendering
-        element.scrollIntoView({ block: 'center' });
-        const { width, height } = element.getBoundingClientRect();
-
-        const imageBuffer = await htmlToImageBuffer(element, {
-          scale: 2,
-          backgroundColor: '#FFFFFF',
-        });
-
-        capturedImages.set(exportId, {
-          image: imageBuffer,
-          width: Math.round(width),
-          height: Math.round(height),
-        });
-
-        // Restore original styles
-        element.style.opacity = originalOpacity;
-        element.style.pointerEvents = originalPointerEvents;
-        if (parentElement) {
-          parentElement.style.opacity = originalParentOpacity || '';
-          parentElement.style.pointerEvents = originalParentPointerEvents || '';
-        }
+        await captureElement(exportId, element);
       } catch (err) {
         console.error(`Failed to capture component ${exportId}:`, err);
+      }
+    }
+
+    // Capture survey results items (page headers + questions) for per-item images
+    const surveyItems = Array.from(
+      document.querySelectorAll('[data-export-id^="survey-results-item-"]')
+    ) as HTMLElement[];
+    if (surveyItems.length > 0) {
+      const sortedItems = surveyItems
+        .map((element) => {
+          const exportId = element.getAttribute('data-export-id') || '';
+          const indexText = exportId.replace('survey-results-item-', '');
+          const index = Number.parseInt(indexText, 10);
+          return { element, exportId, index };
+        })
+        .filter(({ exportId, index }) => exportId && Number.isFinite(index))
+        .sort((a, b) => a.index - b.index);
+
+      for (const { element, exportId } of sortedItems) {
+        try {
+          await captureElement(exportId, element);
+        } catch (err) {
+          console.error(`Failed to capture component ${exportId}:`, err);
+        }
       }
     }
 
