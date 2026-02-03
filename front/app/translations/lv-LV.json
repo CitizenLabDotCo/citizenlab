@@ -1438,7 +1438,6 @@
   "app.containers.IdeasFeedPage.noIdeasForTag": "Ideju par šo birku vēl nav.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Pagaidām vēl nekas nav redzams.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Skatīt visus ieguldījumus",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Skatīt visus {ideasCount} ievades",
   "app.containers.IdeasFeedPage.seeAllInitiatives": "Skatīt visas iniciatīvas",
   "app.containers.IdeasFeedPage.seeAllIssues": "Skatīt visus numurus",
   "app.containers.IdeasFeedPage.seeAllOptions": "Skatīt visas iespējas",

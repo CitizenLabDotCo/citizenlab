@@ -1438,7 +1438,6 @@
   "app.containers.IdeasFeedPage.noIdeasForTag": "اس ٹیگ کے لیے ابھی تک کوئی آئیڈیاز نہیں ہیں۔",
   "app.containers.IdeasFeedPage.nothingToShowYet": "ابھی دکھانے کے لیے کچھ نہیں ہے۔",
   "app.containers.IdeasFeedPage.seeAllContributions": "تمام شراکتیں دیکھیں",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "تمام {ideasCount} ان پٹ دیکھیں",
   "app.containers.IdeasFeedPage.seeAllInitiatives": "تمام اقدامات دیکھیں",
   "app.containers.IdeasFeedPage.seeAllIssues": "تمام مسائل دیکھیں",
   "app.containers.IdeasFeedPage.seeAllOptions": "تمام اختیارات دیکھیں",
