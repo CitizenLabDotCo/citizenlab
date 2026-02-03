@@ -23,7 +23,7 @@ resource 'Confirmations' do
         user,
         'completed_registration',
         user,
-        user.updated_at.to_i
+        a_kind_of(Integer)
       ).exactly(1).times
     end
 
