@@ -31,6 +31,11 @@ import { getAnalysisScope } from '../../../components/AnalysisBanner/utils';
 import { isIdeaBasedMethod } from '../config/sectionConfig';
 import useTopicBreakdownData from '../methodSpecific/shared/TopicBreakdown/useTopicBreakdownData';
 
+import {
+  ExportId,
+  getExpectedComponents,
+  shouldCaptureAsImage,
+} from './exportRegistry';
 import messages from './messages';
 import useInsightsWordDownload, {
   InsightsWordData,
@@ -40,7 +45,11 @@ interface WordExportContextValue {
   downloadWord: () => Promise<void>;
   isDownloading: boolean;
   error: string | null;
-  // Ref registration functions
+  // Generic ref registration (new pattern)
+  registerExportRef: (exportId: ExportId, ref: HTMLElement) => void;
+  unregisterExportRef: (exportId: ExportId) => void;
+  getMissingComponents: () => ExportId[];
+  // Legacy ref registration functions (kept for backward compatibility)
   registerTimelineRef: (ref: HTMLElement | null) => void;
   registerDemographicRef: (fieldName: string, ref: HTMLElement | null) => void;
 }
@@ -49,6 +58,9 @@ const WordExportContext = createContext<WordExportContextValue>({
   downloadWord: async () => {},
   isDownloading: false,
   error: null,
+  registerExportRef: () => {},
+  unregisterExportRef: () => {},
+  getMissingComponents: () => [],
   registerTimelineRef: () => {},
   registerDemographicRef: () => {},
 });
@@ -73,6 +85,9 @@ export const WordExportProvider = ({
   // Refs for chart capture
   const timelineRef = useRef<HTMLElement | null>(null);
   const demographicsRefs = useRef<Map<string, HTMLElement>>(new Map());
+
+  // Generic export refs (new pattern)
+  const exportRefs = useRef<Map<ExportId, HTMLElement>>(new Map());
 
   // Phase data
   const { data: phase } = usePhase(phaseId);
@@ -181,7 +196,7 @@ export const WordExportProvider = ({
     return transformed.fields;
   }, [insightsData, localize, formatMessage]);
 
-  // Ref registration functions
+  // Ref registration functions (legacy)
   const registerTimelineRef = useCallback((ref: HTMLElement | null) => {
     timelineRef.current = ref;
   }, []);
@@ -197,7 +212,109 @@ export const WordExportProvider = ({
     []
   );
 
-  // Capture charts and convert to images
+  // Generic ref registration (new pattern)
+  const registerExportRef = useCallback(
+    (exportId: ExportId, ref: HTMLElement) => {
+      exportRefs.current.set(exportId, ref);
+    },
+    []
+  );
+
+  const unregisterExportRef = useCallback((exportId: ExportId) => {
+    exportRefs.current.delete(exportId);
+  }, []);
+
+  // Validation: check which expected components are missing
+  const getMissingComponents = useCallback((): ExportId[] => {
+    const expectedIds = getExpectedComponents(participationMethod);
+    const registeredIds = new Set(exportRefs.current.keys());
+
+    // Also check DOM for data-export-id attributes (fallback)
+    const domIds = new Set(
+      Array.from(document.querySelectorAll('[data-export-id]'))
+        .map((el) => el.getAttribute('data-export-id'))
+        .filter((id): id is ExportId => id !== null)
+    );
+
+    return expectedIds.filter(
+      (id) => !registeredIds.has(id) && !domIds.has(id)
+    );
+  }, [participationMethod]);
+
+  // Capture all registered components as images
+  const captureAllComponents = useCallback(async () => {
+    const capturedImages: Map<
+      ExportId,
+      { image: Uint8Array; width: number; height: number }
+    > = new Map();
+    const expectedIds = getExpectedComponents(participationMethod);
+
+    for (const exportId of expectedIds) {
+      if (!shouldCaptureAsImage(exportId)) continue;
+
+      // Try registered ref first, then fallback to DOM query
+      let element: HTMLElement | undefined = exportRefs.current.get(exportId);
+      if (!element) {
+        element =
+          (document.querySelector(
+            `[data-export-id="${exportId}"]`
+          ) as HTMLElement | null) ?? undefined;
+      }
+
+      if (!element) {
+        if (process.env.NODE_ENV === 'development') {
+          console.warn(`[Word Export] Component not found: ${exportId}`);
+        }
+        continue;
+      }
+
+      try {
+        // Store original styles (elements may be hidden with opacity: 0)
+        const originalOpacity = element.style.opacity;
+        const originalPointerEvents = element.style.pointerEvents;
+        const parentElement = element.parentElement;
+        const originalParentOpacity = parentElement?.style.opacity;
+        const originalParentPointerEvents = parentElement?.style.pointerEvents;
+
+        // Temporarily make visible for capture
+        element.style.opacity = '1';
+        element.style.pointerEvents = 'auto';
+        if (parentElement) {
+          parentElement.style.opacity = '1';
+          parentElement.style.pointerEvents = 'auto';
+        }
+
+        // Scroll into view to ensure proper rendering
+        element.scrollIntoView({ block: 'center' });
+        const { width, height } = element.getBoundingClientRect();
+
+        const imageBuffer = await htmlToImageBuffer(element, {
+          scale: 2,
+          backgroundColor: '#FFFFFF',
+        });
+
+        capturedImages.set(exportId, {
+          image: imageBuffer,
+          width: Math.round(width),
+          height: Math.round(height),
+        });
+
+        // Restore original styles
+        element.style.opacity = originalOpacity;
+        element.style.pointerEvents = originalPointerEvents;
+        if (parentElement) {
+          parentElement.style.opacity = originalParentOpacity || '';
+          parentElement.style.pointerEvents = originalParentPointerEvents || '';
+        }
+      } catch (err) {
+        console.error(`Failed to capture component ${exportId}:`, err);
+      }
+    }
+
+    return capturedImages;
+  }, [participationMethod]);
+
+  // Capture charts and convert to images (legacy method, kept for backward compatibility)
   const captureCharts = useCallback(async () => {
     let timelineImage: Uint8Array | undefined;
     const demographicImages: Map<string, Uint8Array> = new Map();
@@ -271,8 +388,9 @@ export const WordExportProvider = ({
       const phaseTitle = phase.data.attributes.title_multiloc;
       const phaseName = Object.values(phaseTitle)[0] || `Phase ${phaseId}`;
 
-      // Capture chart images from visible components
-      const { timelineImage, demographicImages } = await captureCharts();
+      // Capture chart images from visible components (using both new and legacy methods)
+      const [capturedImages, { timelineImage, demographicImages }] =
+        await Promise.all([captureAllComponents(), captureCharts()]);
 
       const data: InsightsWordData = {
         phaseName,
@@ -293,6 +411,8 @@ export const WordExportProvider = ({
         },
         timelineImage,
         demographicImages,
+        // New: captured images by export ID
+        capturedImages,
         // Survey-specific data
         surveyResults: surveyResultsData?.data.attributes.results,
         surveyTotalSubmissions:
@@ -321,6 +441,7 @@ export const WordExportProvider = ({
     localize,
     downloadWordDoc,
     captureCharts,
+    captureAllComponents,
     formatMessage,
   ]);
 
@@ -329,6 +450,9 @@ export const WordExportProvider = ({
       downloadWord,
       isDownloading,
       error,
+      registerExportRef,
+      unregisterExportRef,
+      getMissingComponents,
       registerTimelineRef,
       registerDemographicRef,
     }),
@@ -336,6 +460,9 @@ export const WordExportProvider = ({
       downloadWord,
       isDownloading,
       error,
+      registerExportRef,
+      unregisterExportRef,
+      getMissingComponents,
       registerTimelineRef,
       registerDemographicRef,
     ]
