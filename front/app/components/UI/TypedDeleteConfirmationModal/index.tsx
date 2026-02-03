@@ -28,7 +28,7 @@ export interface Props {
   isDeleting?: boolean;
 }
 
-const TypedConfirmationModal = ({
+const TypedDeleteConfirmationModal = ({
   opened,
   onClose,
   onConfirm,
@@ -150,4 +150,4 @@ const TypedConfirmationModal = ({
   );
 };
 
-export default TypedConfirmationModal;
+export default TypedDeleteConfirmationModal;

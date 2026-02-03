@@ -7,8 +7,8 @@ import useCopyProject from 'api/projects/useCopyProject';
 import useDeleteProject from 'api/projects/useDeleteProject';
 
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import TypedConfirmationModal from 'components/UI/TypedConfirmationModal';
-import typedConfirmationMessages from 'components/UI/TypedConfirmationModal/messages';
+import TypedDeleteConfirmationModal from 'components/UI/TypedDeleteConfirmationModal';
+import typedDeleteConfirmationMessages from 'components/UI/TypedDeleteConfirmationModal/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
@@ -161,14 +161,16 @@ const ProjectMoreActionsMenu = ({
         >
           <MoreActionsMenu showLabel={false} actions={actions} color={color} />
         </Box>
-        <TypedConfirmationModal
+        <TypedDeleteConfirmationModal
           opened={showDeleteModal}
           onClose={handleCloseDeleteModal}
           onConfirm={handleDeleteProject}
           title={messages.deleteProjectModalTitle}
           entityName={projectName}
           mainWarning={messages.deleteProjectModalWarning}
-          confirmationWord={typedConfirmationMessages.confirmationWordDelete}
+          confirmationWord={
+            typedDeleteConfirmationMessages.confirmationWordDelete
+          }
           deleteButtonText={messages.deleteProjectButtonFull}
           isDeleting={isDeleting}
         />

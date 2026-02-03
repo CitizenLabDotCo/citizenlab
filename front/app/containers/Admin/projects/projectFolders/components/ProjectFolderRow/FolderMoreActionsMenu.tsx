@@ -6,8 +6,8 @@ import useAuthUser from 'api/me/useAuthUser';
 import useDeleteProjectFolder from 'api/project_folders/useDeleteProjectFolder';
 
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
-import TypedConfirmationModal from 'components/UI/TypedConfirmationModal';
-import typedConfirmationMessages from 'components/UI/TypedConfirmationModal/messages';
+import TypedDeleteConfirmationModal from 'components/UI/TypedDeleteConfirmationModal';
+import typedDeleteConfirmationMessages from 'components/UI/TypedDeleteConfirmationModal/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -99,14 +99,16 @@ const FolderMoreActionsMenu = ({
         >
           <MoreActionsMenu showLabel={false} actions={actions} color={color} />
         </Box>
-        <TypedConfirmationModal
+        <TypedDeleteConfirmationModal
           opened={showDeleteModal}
           onClose={handleCloseDeleteModal}
           onConfirm={handleDeleteFolder}
           title={messages.deleteFolderModalTitle}
           entityName={folderName}
           mainWarning={messages.deleteFolderModalWarning}
-          confirmationWord={typedConfirmationMessages.confirmationWordDelete}
+          confirmationWord={
+            typedDeleteConfirmationMessages.confirmationWordDelete
+          }
           deleteButtonText={messages.deleteFolderButton}
           isDeleting={isDeleteProjectFolderLoading}
         />

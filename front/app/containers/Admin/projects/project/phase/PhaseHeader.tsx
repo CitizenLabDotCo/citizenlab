@@ -23,8 +23,8 @@ import useDeletePhase from 'api/phases/useDeletePhase';
 import useLocalize from 'hooks/useLocalize';
 
 import { Tab } from 'components/admin/NavigationTabs';
-import TypedConfirmationModal from 'components/UI/TypedConfirmationModal';
-import typedConfirmationMessages from 'components/UI/TypedConfirmationModal/messages';
+import TypedDeleteConfirmationModal from 'components/UI/TypedDeleteConfirmationModal';
+import typedDeleteConfirmationMessages from 'components/UI/TypedDeleteConfirmationModal/messages';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -244,14 +244,16 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
           ))}
         </Box>
       </Container>
-      <TypedConfirmationModal
+      <TypedDeleteConfirmationModal
         opened={showDeleteModal}
         onClose={closeModal}
         onConfirm={handleDeletePhase}
         title={messages.deletePhaseModalTitle}
         entityName={localize(phase.attributes.title_multiloc)}
         mainWarning={messages.deletePhaseModalWarning}
-        confirmationWord={typedConfirmationMessages.confirmationWordDelete}
+        confirmationWord={
+          typedDeleteConfirmationMessages.confirmationWordDelete
+        }
         deleteButtonText={messages.deletePhaseButtonText}
       />
     </>
