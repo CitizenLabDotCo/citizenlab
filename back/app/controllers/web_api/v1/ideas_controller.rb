@@ -142,17 +142,6 @@ class WebApi::V1::IdeasController < ApplicationController
       (current_user && Idea.find_by(creation_phase_id: params[:phase_id], author: current_user, publication_status: 'draft')) ||
       Idea.new(project: phase.project, author: current_user, publication_status: 'draft')
 
-    # Merge custom field values from the user's profile
-    # if user fields are presented in the idea form
-    # AND the user_data_collection setting allows it
-    if phase.pmethod.user_fields_in_form_enabled?
-      draft_idea.custom_field_values = UserFieldsInFormService.merge_user_fields_into_idea(
-        current_user,
-        phase,
-        draft_idea.custom_field_values
-      )
-    end
-
     render_show draft_idea, check_auth: false
   end
 
