@@ -1435,7 +1435,6 @@
   "app.containers.IdeasFeedPage.collapsePanel": "Themenbereich ausklappen",
   "app.containers.IdeasFeedPage.endOfFeed": "Sie haben das Ende dieses Feeds erreicht.",
   "app.containers.IdeasFeedPage.expandPanel": "Themenbereich erweitern",
-  "app.containers.IdeasFeedPage.exploreTopicsNudge": "Nach oben wischen, um die Themen zu erkunden",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Noch keine Ideen für diesen Tag.",
   "app.containers.IdeasFeedPage.seeAllIdeas": "Alle {ideasCount} Beiträge anzeigen",
   "app.containers.IdeasFeedPage.topicsPanel": "Themenbereich",

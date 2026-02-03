@@ -1435,7 +1435,6 @@
   "app.containers.IdeasFeedPage.collapsePanel": "Panel pynciau wedi'i gwanhau",
   "app.containers.IdeasFeedPage.endOfFeed": "Rydych chi wedi cyrraedd diwedd y ffrwd hon.",
   "app.containers.IdeasFeedPage.expandPanel": "Ehangu panel pynciau",
-  "app.containers.IdeasFeedPage.exploreTopicsNudge": "Sweipiwch i fyny i archwilio'r pynciau",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Dim syniadau ar gyfer y tag hwn eto.",
   "app.containers.IdeasFeedPage.seeAllIdeas": "Gweld pob mewnbwn {ideasCount}",
   "app.containers.IdeasFeedPage.topicsPanel": "Panel pynciau",

@@ -30,17 +30,18 @@ const truncateText = (text: string, maxLength: number) => {
   return `${text.slice(0, cutoff)}...`;
 };
 
-export const NOTE_HEIGHTS = {
-  small: 350,
-  large: 500,
-};
+export const NOTE_ASPECT_RATIO = 4 / 5;
+export const NOTE_ASPECT_RATIO_COMPACT = 0.95;
 
-const StyledNote = styled(Box)`
+export const NOTE_WIDTH = 320;
+
+const StyledNote = styled(Box)<{ $aspectRatio: number }>`
   padding: 20px;
-  width: 90%;
   border-radius: ${stylingConsts.borderRadius};
   transition: all 0.3s ease;
   text-align: left;
+  aspect-ratio: ${({ $aspectRatio }) => $aspectRatio};
+  overflow: hidden;
   &:hover,
   &:focus {
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -60,7 +61,6 @@ interface Props {
   topicEmojis?: string[];
   onClick?: () => void;
   centeredIdeaId?: string;
-  size?: 'small' | 'large';
   showReactions?: boolean;
 }
 
@@ -71,7 +71,6 @@ const StickyNote: React.FC<Props> = ({
   topicEmojis = [],
   onClick,
   centeredIdeaId,
-  size = 'large',
   showReactions = true,
 }) => {
   const [searchParams] = useSearchParams();
@@ -79,7 +78,10 @@ const StickyNote: React.FC<Props> = ({
   const { data: phase } = usePhase(phaseId);
 
   const isCentered = centeredIdeaId === ideaId;
-  const noteHeight = NOTE_HEIGHTS[size];
+  const noteWidth = NOTE_WIDTH;
+  const noteAspectRatio = showReactions
+    ? NOTE_ASPECT_RATIO
+    : NOTE_ASPECT_RATIO_COMPACT;
 
   const { data: idea } = useIdeaById(ideaId);
   const localize = useLocalize();
@@ -122,9 +124,8 @@ const StickyNote: React.FC<Props> = ({
     <StyledNote
       as="button"
       borderRadius="2px"
-      minWidth="300px"
-      maxWidth="350px"
-      height={`${noteHeight}px`}
+      width={`${noteWidth}px`}
+      $aspectRatio={noteAspectRatio}
       transform={`rotate(${rotation}deg)`}
       background={topicBackgroundColor || colors.teal200}
       boxShadow="0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)"
@@ -181,13 +182,14 @@ const StickyNote: React.FC<Props> = ({
           </Box>
         )}
       </Box>
-      <Text fontSize="l" fontWeight="bold" m="0px" color={'textPrimary'}>
-        {truncateText(title, size === 'small' ? 45 : 100)}
+      {showReactions && <Box flex="1" />}
+      <Text fontSize="xxl" fontWeight="bold" m="0px" color={'textPrimary'}>
+        {truncateText(title, 100)}
       </Text>
 
-      <Box flex="1" minHeight="0" overflow="hidden">
-        <BodyText fontSize="m" color="textPrimary" m="0px">
-          {truncateText(bodyText, size === 'small' ? 230 : 400)}
+      <Box minHeight="0" overflow="hidden">
+        <BodyText fontSize="m" color="textPrimary" m="0px" pb="16px">
+          {truncateText(bodyText, 100)}
         </BodyText>
       </Box>
       {showReactions && (

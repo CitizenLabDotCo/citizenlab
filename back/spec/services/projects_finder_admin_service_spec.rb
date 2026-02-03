@@ -57,6 +57,11 @@ describe ProjectsFinderAdminService do
       result = described_class.filter_moderatable(Project.all, user)
       expect(result.pluck(:id)).to contain_exactly(project_without_folder.id, project_in_folder1.id)
     end
+
+    it 'returns empty scope if there is no user' do
+      result = described_class.filter_moderatable(Project.all, nil)
+      expect(result.count).to eq 0
+    end
   end
 
   describe 'self.filter_status' do

@@ -1435,7 +1435,6 @@
   "app.containers.IdeasFeedPage.collapsePanel": "Réduire le panel de thématiques",
   "app.containers.IdeasFeedPage.endOfFeed": "Vous avez atteint la fin de ce flux.",
   "app.containers.IdeasFeedPage.expandPanel": "Élargir le panel de thématiques",
-  "app.containers.IdeasFeedPage.exploreTopicsNudge": "Balayez vers le haut pour explorer les sujets",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Pas encore d'idées pour ce tag.",
   "app.containers.IdeasFeedPage.seeAllIdeas": "Voir toutes les entrées {ideasCount}",
   "app.containers.IdeasFeedPage.topicsPanel": "Panel de thématiques",

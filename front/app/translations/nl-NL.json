@@ -1435,7 +1435,6 @@
   "app.containers.IdeasFeedPage.collapsePanel": "Tags panel inklappen",
   "app.containers.IdeasFeedPage.endOfFeed": "Je hebt het einde van deze feed bereikt.",
   "app.containers.IdeasFeedPage.expandPanel": "Tags panel uitklappen",
-  "app.containers.IdeasFeedPage.exploreTopicsNudge": "Veeg omhoog om de onderwerpen te verkennen",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Nog geen ideeën voor deze tag.",
   "app.containers.IdeasFeedPage.seeAllIdeas": "Bekijk alle {ideasCount} bijdragen",
   "app.containers.IdeasFeedPage.topicsPanel": "Tags panel",
