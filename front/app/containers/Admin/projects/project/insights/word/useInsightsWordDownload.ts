@@ -79,9 +79,14 @@ export interface InsightsWordData {
   mostLikedIdeas?: IIdeaData[];
   participationMethod?: ParticipationMethod;
   intl: WordExportIntl;
-  // Chart images
+  // Chart images (legacy)
   timelineImage?: Uint8Array;
   demographicImages?: Map<string, Uint8Array>;
+  // Captured images by export ID (new pattern)
+  capturedImages?: Map<
+    string,
+    { image: Uint8Array; width: number; height: number }
+  >;
   // Survey-specific data
   surveyResults?: ResultUngrouped[];
   surveyTotalSubmissions?: number;
@@ -119,12 +124,30 @@ export default function useInsightsWordDownload({
           intl,
           timelineImage,
           demographicImages,
+          capturedImages,
           surveyResults,
           surveyTotalSubmissions,
         } = data;
 
         // Import ImageRun and Paragraph for chart images
         const { ImageRun, Paragraph } = await import('docx');
+
+        const getImageTransform = (
+          width: number,
+          height: number,
+          maxWidth = 600,
+          maxHeight = 400
+        ) => {
+          if (width <= 0 || height <= 0) {
+            return { width: maxWidth, height: Math.round(maxWidth * 0.6) };
+          }
+
+          const scale = Math.min(maxWidth / width, maxHeight / height);
+          return {
+            width: Math.round(width * scale),
+            height: Math.round(height * scale),
+          };
+        };
 
         // Build document sections
         const children = [
@@ -139,8 +162,50 @@ export default function useInsightsWordDownload({
 
         const { formatMessage } = intl;
 
+        const appendCapturedSection = (
+          exportId: string,
+          heading: MessageDescriptor,
+          maxWidth = 600,
+          maxHeight = 400
+        ) => {
+          const imageData = capturedImages?.get(exportId);
+          if (!imageData) return false;
+
+          const { width, height } = getImageTransform(
+            imageData.width,
+            imageData.height,
+            maxWidth,
+            maxHeight
+          );
+
+          children.push(
+            createHeading(formatMessage(heading), 2),
+            new Paragraph({
+              children: [
+                new ImageRun({
+                  data: imageData.image,
+                  transformation: {
+                    width,
+                    height,
+                  },
+                  type: 'png',
+                }),
+              ],
+            }),
+            createEmptyParagraph()
+          );
+
+          return true;
+        };
+
         // Participation Over Time Chart (Timeline)
-        if (timelineImage) {
+        const timelineCaptured = appendCapturedSection(
+          'participation-timeline',
+          messages.participationOverTime,
+          600,
+          260
+        );
+        if (!timelineCaptured && timelineImage) {
           children.push(
             createHeading(formatMessage(messages.participationOverTime), 2),
             new Paragraph({
@@ -159,8 +224,18 @@ export default function useInsightsWordDownload({
           );
         }
 
-        // Demographics Section - use images if available, otherwise fall back to tables
-        if (demographicImages && demographicImages.size > 0) {
+        // Demographics Section - use captured section image if available
+        const demographicsCaptured = appendCapturedSection(
+          'demographics',
+          messages.demographics,
+          600,
+          400
+        );
+        if (
+          !demographicsCaptured &&
+          demographicImages &&
+          demographicImages.size > 0
+        ) {
           children.push(createHeading(formatMessage(messages.demographics), 2));
 
           for (const [fieldName, imageData] of demographicImages.entries()) {
@@ -181,7 +256,11 @@ export default function useInsightsWordDownload({
               createEmptyParagraph()
             );
           }
-        } else if (demographics && demographics.length > 0) {
+        } else if (
+          !demographicsCaptured &&
+          demographics &&
+          demographics.length > 0
+        ) {
           // Fall back to table-based demographics if no images available
           children.push(
             ...createDemographicsSection(demographics, intl),
@@ -190,7 +269,19 @@ export default function useInsightsWordDownload({
         }
 
         // Survey Results (only for native_survey)
-        if (participationMethod === 'native_survey' && surveyResults) {
+        const surveyCaptured =
+          participationMethod === 'native_survey' &&
+          appendCapturedSection(
+            'survey-results',
+            messages.surveyResults,
+            600,
+            800
+          );
+        if (
+          !surveyCaptured &&
+          participationMethod === 'native_survey' &&
+          surveyResults
+        ) {
           children.push(
             ...createSurveyResultsSection(
               surveyResults,
@@ -205,66 +296,131 @@ export default function useInsightsWordDownload({
         const showIdeaSections = isIdeaBasedMethod(participationMethod);
 
         // AI Summary
-        if (showIdeaSections && aiSummary) {
-          children.push(...createAiSummarySection(aiSummary, intl));
+        if (showIdeaSections) {
+          const aiSummaryCaptured = appendCapturedSection(
+            'ai-summary',
+            messages.aiSummary,
+            600,
+            500
+          );
+          if (!aiSummaryCaptured && aiSummary) {
+            children.push(...createAiSummarySection(aiSummary, intl));
+          }
         }
 
         // Topic Breakdown
-        if (showIdeaSections && topicBreakdown) {
-          if (topicBreakdown.aiTopics.length > 0) {
-            children.push(
-              ...createBreakdownTable(
-                topicBreakdown.aiTopics.map((t) => ({
-                  id: t.id,
-                  name: t.name,
-                  count: t.count,
-                  percentage: t.percentage,
-                })),
-                { title: 'AI-Detected Topics' }
-              ),
-              createEmptyParagraph()
-            );
-          }
+        if (showIdeaSections) {
+          const topicBreakdownCaptured = appendCapturedSection(
+            'topic-breakdown',
+            messages.topicBreakdown,
+            600,
+            500
+          );
+          if (!topicBreakdownCaptured && topicBreakdown) {
+            if (topicBreakdown.aiTopics.length > 0) {
+              children.push(
+                ...createBreakdownTable(
+                  topicBreakdown.aiTopics.map((t) => ({
+                    id: t.id,
+                    name: t.name,
+                    count: t.count,
+                    percentage: t.percentage,
+                  })),
+                  { title: 'AI-Detected Topics' }
+                ),
+                createEmptyParagraph()
+              );
+            }
 
-          if (topicBreakdown.manualTopics.length > 0) {
-            children.push(
-              ...createBreakdownTable(
-                topicBreakdown.manualTopics.map((t) => ({
-                  id: t.id,
-                  name: t.name,
-                  count: t.count,
-                  percentage: t.percentage,
-                })),
-                { title: 'Manual Tags' }
-              ),
-              createEmptyParagraph()
-            );
+            if (topicBreakdown.manualTopics.length > 0) {
+              children.push(
+                ...createBreakdownTable(
+                  topicBreakdown.manualTopics.map((t) => ({
+                    id: t.id,
+                    name: t.name,
+                    count: t.count,
+                    percentage: t.percentage,
+                  })),
+                  { title: 'Manual Tags' }
+                ),
+                createEmptyParagraph()
+              );
+            }
           }
         }
 
         // Status Breakdown
-        if (showIdeaSections && statusBreakdown && statusBreakdown.length > 0) {
-          const maxCount = Math.max(...statusBreakdown.map((s) => s.count));
-          children.push(
-            ...createBreakdownTable(
-              statusBreakdown.map((s) => ({
-                id: s.id,
-                name: s.name,
-                count: s.count,
-                color: s.color.replace('#', ''),
-                percentage: (s.count / maxCount) * 100,
-              })),
-              { title: 'Status Breakdown', showPercentage: false }
-            ),
-            createEmptyParagraph()
+        if (showIdeaSections) {
+          const statusBreakdownCaptured = appendCapturedSection(
+            'status-breakdown',
+            messages.statusBreakdown,
+            600,
+            400
           );
+          if (
+            !statusBreakdownCaptured &&
+            statusBreakdown &&
+            statusBreakdown.length > 0
+          ) {
+            const maxCount = Math.max(...statusBreakdown.map((s) => s.count));
+            children.push(
+              ...createBreakdownTable(
+                statusBreakdown.map((s) => ({
+                  id: s.id,
+                  name: s.name,
+                  count: s.count,
+                  color: s.color.replace('#', ''),
+                  percentage: (s.count / maxCount) * 100,
+                })),
+                { title: 'Status Breakdown', showPercentage: false }
+              ),
+              createEmptyParagraph()
+            );
+          }
         }
 
         // Most Liked Ideas/Proposals
-        if (showIdeaSections && mostLikedIdeas && mostLikedIdeas.length > 0) {
-          const type =
-            participationMethod === 'proposals' ? 'proposals' : 'ideas';
-          children.push(...createMostLikedSection(mostLikedIdeas, intl, type));
+        if (showIdeaSections) {
+          const mostLikedExportId =
+            participationMethod === 'proposals'
+              ? 'most-liked-proposals'
+              : 'most-liked-ideas';
+          const mostLikedHeading =
+            participationMethod === 'proposals'
+              ? messages.mostLikedProposals
+              : messages.mostLikedIdeas;
+          const mostLikedCaptured = appendCapturedSection(
+            mostLikedExportId,
+            mostLikedHeading,
+            600,
+            500
+          );
+          if (
+            !mostLikedCaptured &&
+            mostLikedIdeas &&
+            mostLikedIdeas.length > 0
+          ) {
+            const type =
+              participationMethod === 'proposals' ? 'proposals' : 'ideas';
+            children.push(
+              ...createMostLikedSection(mostLikedIdeas, intl, type)
+            );
+          }
+        }
+
+        // Vote Results (captured as image)
+        if (participationMethod === 'voting') {
+          appendCapturedSection('vote-results', messages.voteResults, 600, 400);
+        }
+
+        // Common Ground Results (captured as image)
+        if (participationMethod === 'common_ground') {
+          appendCapturedSection(
+            'common-ground-results',
+            messages.commonGroundResults,
+            600,
+            400
+          );
         }
 
         // Create the document
