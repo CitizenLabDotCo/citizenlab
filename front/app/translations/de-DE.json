@@ -1438,7 +1438,6 @@
   "app.containers.IdeasFeedPage.noIdeasForTag": "Noch keine Ideen für diesen Tag.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Noch nichts zu sehen.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Alle Beiträge anzeigen",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Alle {ideasCount} Beiträge anzeigen",
   "app.containers.IdeasFeedPage.seeAllInitiatives": "Alle Initiativen anzeigen",
   "app.containers.IdeasFeedPage.seeAllIssues": "Alle Probleme anzeigen",
   "app.containers.IdeasFeedPage.seeAllOptions": "Alle Optionen anzeigen",

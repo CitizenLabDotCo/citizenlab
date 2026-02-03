@@ -1438,7 +1438,6 @@
   "app.containers.IdeasFeedPage.noIdeasForTag": "Kol kas nėra idėjų šiai žymei.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Kol kas nieko nerodo.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Žiūrėti visus įnašus",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Žr. visus {ideasCount} įėjimus",
   "app.containers.IdeasFeedPage.seeAllInitiatives": "Žiūrėti visas iniciatyvas",
   "app.containers.IdeasFeedPage.seeAllIssues": "Žiūrėti visus numerius",
   "app.containers.IdeasFeedPage.seeAllOptions": "Žiūrėti visas parinktis",

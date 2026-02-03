@@ -1438,7 +1438,6 @@
   "app.containers.IdeasFeedPage.noIdeasForTag": "Dim syniadau ar gyfer y tag hwn eto.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Dim byd i'w ddangos eto.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Gweld yr holl gyfraniadau",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Gweld pob mewnbwn {ideasCount}",
   "app.containers.IdeasFeedPage.seeAllInitiatives": "Gweld yr holl fentrau",
   "app.containers.IdeasFeedPage.seeAllIssues": "Gweld pob mater",
   "app.containers.IdeasFeedPage.seeAllOptions": "Gweld yr holl opsiynau",

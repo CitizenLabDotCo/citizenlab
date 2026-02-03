@@ -1438,7 +1438,6 @@
   "app.containers.IdeasFeedPage.noIdeasForTag": "Inga idéer för denna tagg ännu.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Inget att visa ännu.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Se alla bidrag",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Se alla {ideasCount} ingångar",
   "app.containers.IdeasFeedPage.seeAllInitiatives": "Se alla initiativ",
   "app.containers.IdeasFeedPage.seeAllIssues": "Se alla utgåvor",
   "app.containers.IdeasFeedPage.seeAllOptions": "Se alla alternativ",

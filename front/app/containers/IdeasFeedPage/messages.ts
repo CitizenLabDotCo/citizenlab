@@ -2,41 +2,78 @@ import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   // #input_term_copy
+  showAllIdeas: {
+    id: 'app.containers.IdeasFeedPage.showAllIdeas',
+    defaultMessage: 'Show ideas',
+  },
+  showAllOptions: {
+    id: 'app.containers.IdeasFeedPage.showAllOptions',
+    defaultMessage: 'Show options',
+  },
+  showAllProjects: {
+    id: 'app.containers.IdeasFeedPage.showAllProjects',
+    defaultMessage: 'Show projects',
+  },
+  showAllQuestions: {
+    id: 'app.containers.IdeasFeedPage.showAllQuestions',
+    defaultMessage: 'Show questions',
+  },
+  showAllIssues: {
+    id: 'app.containers.IdeasFeedPage.showAllIssues',
+    defaultMessage: 'Show issues',
+  },
+  showAllContributions: {
+    id: 'app.containers.IdeasFeedPage.showAllContributions',
+    defaultMessage: 'Show contributions',
+  },
+  showAllProposals: {
+    id: 'app.containers.IdeasFeedPage.showAllProposals',
+    defaultMessage: 'Show proposals',
+  },
+  showAllInitiatives: {
+    id: 'app.containers.IdeasFeedPage.showAllInitiatives',
+    defaultMessage: 'Show initiatives',
+  },
+  showAllPetitions: {
+    id: 'app.containers.IdeasFeedPage.showAllPetitions',
+    defaultMessage: 'Show petitions',
+  },
+  // #input_term_copy
   seeAllIdeas: {
-    id: 'app.containers.IdeasFeedPage.seeAllIdeas',
-    defaultMessage: 'See all ideas',
+    id: 'app.containers.IdeasFeedPage.seeAllIdeas2',
+    defaultMessage: 'See all {ideasCount} ideas',
   },
   seeAllOptions: {
     id: 'app.containers.IdeasFeedPage.seeAllOptions',
-    defaultMessage: 'See all options',
+    defaultMessage: 'See all {ideasCount} options',
   },
   seeAllProjects: {
     id: 'app.containers.IdeasFeedPage.seeAllProjects',
-    defaultMessage: 'See all projects',
+    defaultMessage: 'See all {ideasCount} projects',
   },
   seeAllQuestions: {
     id: 'app.containers.IdeasFeedPage.seeAllQuestions',
-    defaultMessage: 'See all questions',
+    defaultMessage: 'See all {ideasCount} questions',
   },
   seeAllIssues: {
     id: 'app.containers.IdeasFeedPage.seeAllIssues',
-    defaultMessage: 'See all issues',
+    defaultMessage: 'See all {ideasCount} issues',
   },
   seeAllContributions: {
     id: 'app.containers.IdeasFeedPage.seeAllContributions',
-    defaultMessage: 'See all contributions',
+    defaultMessage: 'See all {ideasCount} contributions',
   },
   seeAllProposals: {
     id: 'app.containers.IdeasFeedPage.seeAllProposals',
-    defaultMessage: 'See all proposals',
+    defaultMessage: 'See all {ideasCount} proposals',
   },
   seeAllInitiatives: {
     id: 'app.containers.IdeasFeedPage.seeAllInitiatives',
-    defaultMessage: 'See all initiatives',
+    defaultMessage: 'See all {ideasCount} initiatives',
   },
   seeAllPetitions: {
     id: 'app.containers.IdeasFeedPage.seeAllPetitions',
-    defaultMessage: 'See all petitions',
+    defaultMessage: 'See all {ideasCount} petitions',
   },
   allTopics: {
     id: 'app.containers.IdeasFeedPage.allTopics',

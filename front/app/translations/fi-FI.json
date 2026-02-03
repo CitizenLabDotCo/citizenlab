@@ -1438,7 +1438,6 @@
   "app.containers.IdeasFeedPage.noIdeasForTag": "Ei vielä ideoita tälle tagille.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Ei vielä mitään näytettävää.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Katso kaikki osuudet",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Katso kaikki {ideasCount} syötteet",
   "app.containers.IdeasFeedPage.seeAllInitiatives": "Katso kaikki aloitteet",
   "app.containers.IdeasFeedPage.seeAllIssues": "Näytä kaikki numerot",
   "app.containers.IdeasFeedPage.seeAllOptions": "Katso kaikki vaihtoehdot",

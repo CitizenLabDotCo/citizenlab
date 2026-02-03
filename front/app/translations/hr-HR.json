@@ -1438,7 +1438,6 @@
   "app.containers.IdeasFeedPage.noIdeasForTag": "Još nema ideja za ovu oznaku.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Još nema ništa za pokazati.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Pogledajte sve doprinose",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Pogledajte sve {ideasCount} ulaze",
   "app.containers.IdeasFeedPage.seeAllInitiatives": "Pogledajte sve inicijative",
   "app.containers.IdeasFeedPage.seeAllIssues": "Prikaži sve probleme",
   "app.containers.IdeasFeedPage.seeAllOptions": "Pogledajte sve opcije",
