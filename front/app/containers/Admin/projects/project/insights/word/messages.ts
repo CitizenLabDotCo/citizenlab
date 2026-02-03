@@ -65,6 +65,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.word.mostLikedProposals',
     defaultMessage: 'Most Liked Proposals',
   },
+  surveyResults: {
+    id: 'app.containers.Admin.projects.project.insights.word.surveyResults',
+    defaultMessage: 'Survey Results',
+  },
   noDataAvailable: {
     id: 'app.containers.Admin.projects.project.insights.word.noDataAvailable',
     defaultMessage: 'No data available',
@@ -156,5 +160,13 @@ export default defineMessages({
   responses: {
     id: 'app.containers.Admin.projects.project.insights.word.responses',
     defaultMessage: 'Responses',
+  },
+  voteResults: {
+    id: 'app.containers.Admin.projects.project.insights.word.voteResults',
+    defaultMessage: 'Vote Results',
+  },
+  commonGroundResults: {
+    id: 'app.containers.Admin.projects.project.insights.word.commonGroundResults',
+    defaultMessage: 'Common Ground Results',
   },
 });
