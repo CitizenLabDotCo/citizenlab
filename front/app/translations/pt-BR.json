@@ -1436,7 +1436,6 @@
   "app.containers.IdeasFeedPage.endOfFeed": "Você chegou ao final deste feed.",
   "app.containers.IdeasFeedPage.expandPanel": "Expandir o painel de tópicos",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Ainda não há ideias para essa tag.",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Veja todas as entradas do site {ideasCount}",
   "app.containers.IdeasFeedPage.topicsPanel": "Painel de tópicos",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Todas as entradas publicadas",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Explore todas as entradas publicadas na plataforma de participação de {orgName}.",

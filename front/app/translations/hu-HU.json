@@ -1436,7 +1436,6 @@
   "app.containers.IdeasFeedPage.endOfFeed": "Elérted a hírfolyam végét.",
   "app.containers.IdeasFeedPage.expandPanel": "Témák panel kibontása",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Még nincsenek ötletek ehhez a címkéhez.",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Tekintse meg az összes {ideasCount} bemenetet",
   "app.containers.IdeasFeedPage.topicsPanel": "Témák panel",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Minden bemenet felkerült",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Fedezze fel a {orgName}részvételi platformján közzétett összes bemenetet.",

@@ -1436,7 +1436,6 @@
   "app.containers.IdeasFeedPage.endOfFeed": "Sie haben das Ende dieses Feeds erreicht.",
   "app.containers.IdeasFeedPage.expandPanel": "Themenbereich erweitern",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Noch keine Ideen für diesen Tag.",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Alle {ideasCount} Beiträge anzeigen",
   "app.containers.IdeasFeedPage.topicsPanel": "Themenbereich",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Alle Beiträge veröffentlicht",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Entdecken Sie alle Beiträge, die auf der Beteiligungsplattform {orgName} veröffentlicht wurden.",

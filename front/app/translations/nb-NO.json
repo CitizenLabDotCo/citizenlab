@@ -1436,7 +1436,6 @@
   "app.containers.IdeasFeedPage.endOfFeed": "Du har kommet til slutten av denne feeden.",
   "app.containers.IdeasFeedPage.expandPanel": "Utvid emnepanelet",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Ingen ideer til denne taggen ennå.",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Se alle {ideasCount} innganger",
   "app.containers.IdeasFeedPage.topicsPanel": "Emnepanel",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Alle innganger lagt ut",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Utforsk alle innspillene som er lagt ut på medvirkningsplattformen {orgName}.",

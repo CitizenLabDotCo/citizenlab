@@ -1436,7 +1436,6 @@
   "app.containers.IdeasFeedPage.endOfFeed": "Dir sidd um Enn vun dësem Feed ukomm.",
   "app.containers.IdeasFeedPage.expandPanel": "Themenpanel ausklappen",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Nach keng Iddien fir dësen Tag.",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "All {ideasCount} Entréeën ukucken",
   "app.containers.IdeasFeedPage.topicsPanel": "Themenpanel",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "All Input verëffentlecht",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Entdeckt all d'Bäiträg déi op der participativer Plattform {orgName} gepost goufen. ",

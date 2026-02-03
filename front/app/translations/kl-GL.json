@@ -1436,7 +1436,6 @@
   "app.containers.IdeasFeedPage.endOfFeed": "You have reached the end of this feed.",
   "app.containers.IdeasFeedPage.expandPanel": "Expand topics panel",
   "app.containers.IdeasFeedPage.noIdeasForTag": "No ideas for this tag yet.",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "See all {ideasCount} inputs",
   "app.containers.IdeasFeedPage.topicsPanel": "Topics panel",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "All inputs posted",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Ilanngussat {orgName} -imit peqataatitsinermut nittartakkamut iliorarsimasut misissuivigikkit",

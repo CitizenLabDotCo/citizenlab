@@ -1436,7 +1436,6 @@
   "app.containers.IdeasFeedPage.endOfFeed": "آپ اس فیڈ کے اختتام پر پہنچ گئے ہیں۔",
   "app.containers.IdeasFeedPage.expandPanel": "عنوانات کے پینل کو پھیلائیں۔",
   "app.containers.IdeasFeedPage.noIdeasForTag": "اس ٹیگ کے لیے ابھی تک کوئی آئیڈیاز نہیں ہیں۔",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "تمام {ideasCount} ان پٹ دیکھیں",
   "app.containers.IdeasFeedPage.topicsPanel": "عنوانات کا پینل",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "تمام ان پٹ پوسٹ کر دیے گئے۔",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "{orgName}کے شرکت کے پلیٹ فارم پر پوسٹ کیے گئے تمام ان پٹ کو دریافت کریں۔",

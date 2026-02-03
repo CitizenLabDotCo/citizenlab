@@ -1436,7 +1436,6 @@
   "app.containers.IdeasFeedPage.endOfFeed": "Du har kommit till slutet av detta flöde.",
   "app.containers.IdeasFeedPage.expandPanel": "Utöka ämnespanelen",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Inga idéer för denna tagg ännu.",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Se alla {ideasCount} ingångar",
   "app.containers.IdeasFeedPage.topicsPanel": "Ämnespanel",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Alla inmatningar publicerade",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Utforska alla indata som har publicerats på plattformen för deltagande för {orgName}.",

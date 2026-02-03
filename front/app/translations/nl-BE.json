@@ -1436,7 +1436,6 @@
   "app.containers.IdeasFeedPage.endOfFeed": "Je hebt het einde van deze feed bereikt.",
   "app.containers.IdeasFeedPage.expandPanel": "Tags panel uitklappen",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Nog geen ideeën voor deze tag.",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Bekijk alle {ideasCount} bijdragen",
   "app.containers.IdeasFeedPage.topicsPanel": "Tags panel",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Alle geplaatste bijdragen",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Bekijk alle bijdragen die op het participatieplatform van {orgName} zijn geplaatst.",
