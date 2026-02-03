@@ -38,6 +38,43 @@ export default defineMessages({
     id: 'app.containers.IdeasFeedPage.showAllPetitions',
     defaultMessage: 'Show petitions',
   },
+  // #input_term_copy
+  seeAllIdeas: {
+    id: 'app.containers.IdeasFeedPage.seeAllIdeas2',
+    defaultMessage: 'See all {ideasCount} ideas',
+  },
+  seeAllOptions: {
+    id: 'app.containers.IdeasFeedPage.seeAllOptions',
+    defaultMessage: 'See all {ideasCount} options',
+  },
+  seeAllProjects: {
+    id: 'app.containers.IdeasFeedPage.seeAllProjects',
+    defaultMessage: 'See all {ideasCount} projects',
+  },
+  seeAllQuestions: {
+    id: 'app.containers.IdeasFeedPage.seeAllQuestions',
+    defaultMessage: 'See all {ideasCount} questions',
+  },
+  seeAllIssues: {
+    id: 'app.containers.IdeasFeedPage.seeAllIssues',
+    defaultMessage: 'See all {ideasCount} issues',
+  },
+  seeAllContributions: {
+    id: 'app.containers.IdeasFeedPage.seeAllContributions',
+    defaultMessage: 'See all {ideasCount} contributions',
+  },
+  seeAllProposals: {
+    id: 'app.containers.IdeasFeedPage.seeAllProposals',
+    defaultMessage: 'See all {ideasCount} proposals',
+  },
+  seeAllInitiatives: {
+    id: 'app.containers.IdeasFeedPage.seeAllInitiatives',
+    defaultMessage: 'See all {ideasCount} initiatives',
+  },
+  seeAllPetitions: {
+    id: 'app.containers.IdeasFeedPage.seeAllPetitions',
+    defaultMessage: 'See all {ideasCount} petitions',
+  },
   allTopics: {
     id: 'app.containers.IdeasFeedPage.allTopics',
     defaultMessage: 'All topics',

@@ -15,6 +15,7 @@ import usePhase from 'api/phases/usePhase';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { getInputTermMessage } from 'utils/i18n';
 
 import messages from '../messages';
 import { getTopicColor } from '../topicsColor';
@@ -115,6 +116,7 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
 
   const flatIdeas = data?.pages.flatMap((page) => page.data);
   const ideasCount = phase?.data.attributes.ideas_count ?? 0;
+  const inputTerm = phase?.data.attributes.input_term ?? 'idea';
 
   const handleNoteClick = (ideaId: string) => {
     clHistory.push(
@@ -206,7 +208,20 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
       </Box>
       <Box display="flex" justifyContent="center" mt="24px">
         <Button onClick={handleSeeAllClick}>
-          <FormattedMessage {...messages.seeAllIdeas} values={{ ideasCount }} />
+          <FormattedMessage
+            {...getInputTermMessage(inputTerm, {
+              idea: messages.seeAllIdeas,
+              option: messages.seeAllOptions,
+              project: messages.seeAllProjects,
+              question: messages.seeAllQuestions,
+              issue: messages.seeAllIssues,
+              contribution: messages.seeAllContributions,
+              proposal: messages.seeAllProposals,
+              initiative: messages.seeAllInitiatives,
+              petition: messages.seeAllPetitions,
+            })}
+            values={{ ideasCount }}
+          />
         </Button>
       </Box>
     </Box>
