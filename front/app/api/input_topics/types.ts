@@ -16,6 +16,8 @@ export interface IInputTopicData {
     icon: string | null;
     parent_icon: string | null;
     depth: number;
+    lft: number;
+    rgt: number;
     children_count: number;
   };
   relationships: {
