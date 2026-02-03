@@ -147,7 +147,7 @@ RSpec.describe ClaimTokenService do
         @project = create(:single_phase_native_survey_project, phase_attrs: { with_permissions: true })
         @phase = @project.phases.first
         @permission = @phase.permissions.find_by(action: 'posting_idea')
-        @idea = create(:idea, author: nil, custom_field_values: {
+        @idea = create(:idea, author: nil, project: @project, creation_phase: @phase, custom_field_values: {
           field: 'value',
           u_gender: 'male'
         })
