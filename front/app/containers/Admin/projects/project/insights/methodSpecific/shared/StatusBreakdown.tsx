@@ -10,6 +10,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
+import ExportableInsight from '../../word/ExportableInsight';
 import DistributionBar from './DistributionBar';
 import messages from './messages';
 
@@ -90,52 +91,64 @@ const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
 
   if (isLoading) {
     return (
-      <StatusCard>
-        <Box display="flex" alignItems="center" gap="8px">
-          <Spinner size="24px" />
-        </Box>
-      </StatusCard>
+      <ExportableInsight exportId="status-breakdown">
+        <StatusCard>
+          <Box display="flex" alignItems="center" gap="8px">
+            <Spinner size="24px" />
+          </Box>
+        </StatusCard>
+      </ExportableInsight>
     );
   }
 
   if (statusData.length === 0) {
     return (
+      <ExportableInsight exportId="status-breakdown">
+        <StatusCard>
+          <Text
+            m="0"
+            mb="16px"
+            fontWeight="semi-bold"
+            fontSize="m"
+            color="primary"
+          >
+            {formatMessage(messages.statusBreakdown)}
+          </Text>
+          <Text m="0" color="textSecondary">
+            {formatMessage(messages.noInputsSubmitted)}
+          </Text>
+        </StatusCard>
+      </ExportableInsight>
+    );
+  }
+
+  return (
+    <ExportableInsight exportId="status-breakdown">
       <StatusCard>
         <Text
           m="0"
-          mb="16px"
+          mb="24px"
           fontWeight="semi-bold"
           fontSize="m"
           color="primary"
         >
           {formatMessage(messages.statusBreakdown)}
         </Text>
-        <Text m="0" color="textSecondary">
-          {formatMessage(messages.noInputsSubmitted)}
-        </Text>
+        <Box display="flex" flexDirection="column" gap="4px">
+          {statusData.map((status) => (
+            <DistributionBar
+              key={status.id}
+              name={status.name}
+              count={status.count}
+              percentage={status.percentage}
+              maxCount={maxCount}
+              barColor={status.color}
+              showBadge={false}
+            />
+          ))}
+        </Box>
       </StatusCard>
-    );
-  }
-
-  return (
-    <StatusCard>
-      <Text m="0" mb="24px" fontWeight="semi-bold" fontSize="m" color="primary">
-        {formatMessage(messages.statusBreakdown)}
-      </Text>
-      <Box display="flex" flexDirection="column" gap="4px">
-        {statusData.map((status) => (
-          <DistributionBar
-            key={status.id}
-            name={status.name}
-            count={status.count}
-            percentage={status.percentage}
-            maxCount={maxCount}
-            barColor={status.color}
-            showBadge={false}
-          />
-        ))}
-      </Box>
-    </StatusCard>
+    </ExportableInsight>
   );
 };
 
