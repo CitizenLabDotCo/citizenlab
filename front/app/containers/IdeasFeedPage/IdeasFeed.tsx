@@ -118,7 +118,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
   const projectId = phase?.data.relationships.project.data.id;
 
   // Fetch topics to get emojis
-  const { data: topicsData } = useInputTopics(projectId, { depth: 0 });
+  const { data: topicsData } = useInputTopics(projectId);
 
   const parentRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useBreakpoint('phone');
@@ -202,11 +202,12 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
     return map;
   }, [orderedIdeas]);
 
-  // Create emoji lookup map from topics
+  // Create emoji lookup map from topics, using parent_icon as fallback for subtopics
   const topicEmojis = useMemo(() => {
     const map = new Map<string, string | null>();
     topicsData?.data.forEach((topic) => {
-      map.set(topic.id, topic.attributes.icon);
+      const emoji = topic.attributes.icon || topic.attributes.parent_icon;
+      map.set(topic.id, emoji);
     });
     return map;
   }, [topicsData]);

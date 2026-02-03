@@ -38,21 +38,21 @@ const NoteWrapper = styled(Box)`
 
 // Desktop positions use pixel values for consistent centering
 const POSITIONS_DESKTOP = [
-  { left: '60px', top: '2%' },
-  { left: '240px', top: '8%' },
-  { left: '444px', top: '3%' },
-  { left: '636px', top: '10%' },
-  { left: '816px', top: '5%' },
-  { left: '120px', top: '18%' },
-  { left: '300px', top: '22%' },
-  { left: '516px', top: '19%' },
-  { left: '696px', top: '24%' },
-  { left: '876px', top: '20%' },
-  { left: '84px', top: '32%' },
-  { left: '264px', top: '36%' },
-  { left: '480px', top: '33%' },
-  { left: '660px', top: '38%' },
-  { left: '840px', top: '35%' },
+  { left: '0px', top: '2%' },
+  { left: '180px', top: '8%' },
+  { left: '384px', top: '3%' },
+  { left: '576px', top: '10%' },
+  { left: '756px', top: '5%' },
+  { left: '60px', top: '18%' },
+  { left: '240px', top: '22%' },
+  { left: '456px', top: '19%' },
+  { left: '636px', top: '24%' },
+  { left: '816px', top: '20%' },
+  { left: '24px', top: '32%' },
+  { left: '204px', top: '36%' },
+  { left: '420px', top: '33%' },
+  { left: '600px', top: '38%' },
+  { left: '780px', top: '35%' },
 ];
 
 // Tablet positions use pixel values for consistent centering
@@ -101,13 +101,14 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
   });
 
   const projectId = phase?.data.relationships.project.data.id;
-  const { data: topicsData } = useInputTopics(projectId, { depth: 0 });
+  const { data: topicsData } = useInputTopics(projectId);
 
-  // Create emoji lookup map from topics
+  // Create emoji lookup map from topics, using parent_icon as fallback for subtopics
   const topicEmojis = useMemo(() => {
     const map = new Map<string, string | null>();
     topicsData?.data.forEach((topic) => {
-      map.set(topic.id, topic.attributes.icon);
+      const emoji = topic.attributes.icon || topic.attributes.parent_icon;
+      map.set(topic.id, emoji);
     });
     return map;
   }, [topicsData]);
