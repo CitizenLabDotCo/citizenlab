@@ -22,12 +22,14 @@ type FormResultsPageProps = {
   result: ResultUngrouped;
   totalSubmissions: number;
   logicConfig: LogicConfig;
+  exportId?: string;
 };
 
 const FormResultsPage = ({
   result,
   totalSubmissions,
   logicConfig,
+  exportId,
 }: FormResultsPageProps) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -61,6 +63,7 @@ const FormResultsPage = ({
   return (
     <Box
       data-cy={`e2e-survey-result-page-${pageNumber}`}
+      data-export-id={exportId}
       mb="24px"
       pl="12px"
       borderLeft={`4px solid ${theme.colors.tenantPrimary}`}
