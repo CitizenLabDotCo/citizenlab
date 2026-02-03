@@ -11,7 +11,7 @@ export interface ExportableComponent {
 }
 
 // Registry of all exportable insight components
-export const INSIGHT_EXPORT_REGISTRY = {
+export const INSIGHT_EXPORT_REGISTRY: Record<string, ExportableComponent> = {
   // Universal components (all participation methods)
   'participation-metrics': {
     id: 'participation-metrics',
@@ -76,7 +76,7 @@ export const INSIGHT_EXPORT_REGISTRY = {
     displayName: 'Survey Results',
     exportType: 'hybrid' as const,
   },
-} satisfies Record<string, ExportableComponent>;
+};
 
 export type ExportId = keyof typeof INSIGHT_EXPORT_REGISTRY;
 
