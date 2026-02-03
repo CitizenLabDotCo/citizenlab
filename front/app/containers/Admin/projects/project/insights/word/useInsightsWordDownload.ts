@@ -136,13 +136,15 @@ export default function useInsightsWordDownload({
           width: number,
           height: number,
           maxWidth = 600,
-          maxHeight = 400
+          maxHeight?: number
         ) => {
           if (width <= 0 || height <= 0) {
             return { width: maxWidth, height: Math.round(maxWidth * 0.6) };
           }
 
-          const scale = Math.min(maxWidth / width, maxHeight / height);
+          const heightScale =
+            typeof maxHeight === 'number' ? maxHeight / height : Infinity;
+          const scale = Math.min(maxWidth / width, heightScale);
           return {
             width: Math.round(width * scale),
             height: Math.round(height * scale),
@@ -166,7 +168,7 @@ export default function useInsightsWordDownload({
           exportId: string,
           heading: MessageDescriptor,
           maxWidth = 600,
-          maxHeight = 400
+          maxHeight?: number
         ) => {
           const imageData = capturedImages?.get(exportId);
           if (!imageData) return false;
@@ -269,16 +271,60 @@ export default function useInsightsWordDownload({
         }
 
         // Survey Results (only for native_survey)
+        const surveyItemKeys =
+          participationMethod === 'native_survey'
+            ? Array.from(capturedImages?.keys() || []).filter((key) =>
+                key.startsWith('survey-results-item-')
+              )
+            : [];
+        const surveyItemsCaptured =
+          participationMethod === 'native_survey' && surveyItemKeys.length > 0;
+
+        if (surveyItemsCaptured) {
+          const sortedSurveyKeys = surveyItemKeys
+            .map((key) => {
+              const indexText = key.replace('survey-results-item-', '');
+              const index = Number.parseInt(indexText, 10);
+              return { key, index };
+            })
+            .filter(({ index }) => Number.isFinite(index))
+            .sort((a, b) => a.index - b.index)
+            .map(({ key }) => key);
+
+          children.push(
+            createHeading(formatMessage(messages.surveyResults), 2)
+          );
+
+          sortedSurveyKeys.forEach((key) => {
+            const imageData = capturedImages?.get(key);
+            if (!imageData) return;
+            const { width, height } = getImageTransform(
+              imageData.width,
+              imageData.height,
+              600
+            );
+            children.push(
+              new Paragraph({
+                children: [
+                  new ImageRun({
+                    data: imageData.image,
+                    transformation: { width, height },
+                    type: 'png',
+                  }),
+                ],
+              }),
+              createEmptyParagraph()
+            );
+          });
+        }
+
         const surveyCaptured =
           participationMethod === 'native_survey' &&
-          appendCapturedSection(
-            'survey-results',
-            messages.surveyResults,
-            600,
-            800
-          );
+          !surveyItemsCaptured &&
+          appendCapturedSection('survey-results', messages.surveyResults, 600);
         if (
           !surveyCaptured &&
+          !surveyItemsCaptured &&
           participationMethod === 'native_survey' &&
           surveyResults
         ) {
