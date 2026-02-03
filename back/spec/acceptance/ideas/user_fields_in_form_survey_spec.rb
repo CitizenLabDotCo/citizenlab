@@ -31,7 +31,7 @@ resource 'Ideas' do
     create(:permissions_custom_field, custom_field: @user_select_field, permission: @permission)
   end
 
-  # This endpoint is used in the context of ideation in 3 situations:
+  # This endpoint is used in the context of surveys in 3 situations:
   # 1. The user is a visitor and permitted_by is everyone.
   #   In this case, the whole survey gets submitted at once at the end in one POST request.
   # 2. The user is logged in and the survey has >1 page.
