@@ -36,42 +36,42 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
         acted_at: a_kind_of(Time),
         classname: 'Idea',
         participant_id: user1.id,
-        custom_field_values: {}
+        user_custom_field_values: {}
       }, {
         item_id: idea2.id,
         action: 'submitting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
         participant_id: user1.id,
-        custom_field_values: {}
+        user_custom_field_values: {}
       }, {
         item_id: idea3.id,
         action: 'submitting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
         participant_id: user1.id,
-        custom_field_values: {}
+        user_custom_field_values: {}
       }, {
         item_id: idea4.id,
         action: 'submitting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
         participant_id: user2.id,
-        custom_field_values: {}
+        user_custom_field_values: {}
       }, {
         item_id: idea6.id,
         action: 'submitting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
         participant_id: 'some_author_hash',
-        custom_field_values: {}
+        user_custom_field_values: {}
       }, {
         item_id: idea7.id,
         action: 'submitting_idea',
         acted_at: a_kind_of(Time),
         classname: 'Idea',
         participant_id: idea7.id,
-        custom_field_values: {}
+        user_custom_field_values: {}
       })
 
       first_participation = participations_submitting_idea.first
@@ -93,7 +93,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
       # - field_2 comes from user1 custom_field_values (not present in idea2)
       # - field_3 filtered from idea2 (item) custom_field_values (no prefix)
       # - field_4 comes from idea2 (item) custom_field_values, with key prefix removed
-      expect(idea2_participation[:custom_field_values]).to eq({ 'field_1' => 'value_1i', 'field_2' => 'value_2u', 'field_4' => 'value_4i' })
+      expect(idea2_participation[:user_custom_field_values]).to eq({ 'field_1' => 'value_1i', 'field_2' => 'value_2u', 'field_4' => 'value_4i' })
     end
 
     it 'correctly handles phases with no end date' do

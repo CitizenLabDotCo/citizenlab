@@ -153,8 +153,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
       let!(:option_a) { create(:custom_field_option, custom_field: single_select_field, key: 'a', title_multiloc: { en: 'Option A' }) }
       let!(:option_b) { create(:custom_field_option, custom_field: single_select_field, key: 'b', title_multiloc: { en: 'Option B' }) }
 
-      let(:participation1) { create(:basket_participation, user: create(:user), custom_field_values: { 'single_select' => 'a' }) }
-      let(:participation2) { create(:basket_participation, user: create(:user), custom_field_values: { 'single_select' => 'b' }) }
+      let(:participation1) { create(:basket_participation, user: create(:user), user_custom_field_values: { 'single_select' => 'a' }) }
+      let(:participation2) { create(:basket_participation, user: create(:user), user_custom_field_values: { 'single_select' => 'b' }) }
 
       let(:flattened_participations) { [participation1, participation2] }
       let(:participant_ids) { flattened_participations.pluck(:participant_id).uniq }
@@ -241,8 +241,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
       let!(:option_x) { create(:custom_field_option, custom_field: multi_select_field, key: 'x', title_multiloc: { en: 'Option X' }) }
       let!(:option_y) { create(:custom_field_option, custom_field: multi_select_field, key: 'y', title_multiloc: { en: 'Option Y' }) }
 
-      let(:participation1) { create(:basket_participation, custom_field_values: { 'multi_select' => ['x'] }) }
-      let(:participation2) { create(:basket_participation, custom_field_values: { 'multi_select' => %w[x y] }) }
+      let(:participation1) { create(:basket_participation, user_custom_field_values: { 'multi_select' => ['x'] }) }
+      let(:participation2) { create(:basket_participation, user_custom_field_values: { 'multi_select' => %w[x y] }) }
       let(:flattened_participations) { [participation1, participation2] }
       let(:participant_ids) { flattened_participations.pluck(:participant_id).uniq }
 
@@ -282,8 +282,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
     context 'checkbox field' do
       let!(:checkbox_field) { create(:custom_field, resource_type: 'User', key: 'checkbox', input_type: 'checkbox', title_multiloc: { en: 'Check if you agree' }) }
 
-      let(:participation1) { create(:basket_participation, custom_field_values: { 'checkbox' => true }) }
-      let(:participation2) { create(:basket_participation, custom_field_values: { 'checkbox' => false }) }
+      let(:participation1) { create(:basket_participation, user_custom_field_values: { 'checkbox' => true }) }
+      let(:participation2) { create(:basket_participation, user_custom_field_values: { 'checkbox' => false }) }
       let(:flattened_participations) { [participation1, participation2] }
       let(:participant_ids) { flattened_participations.pluck(:participant_id).uniq }
 
@@ -316,10 +316,10 @@ RSpec.describe Insights::BasePhaseInsightsService do
   describe '#birthyear_demographics_data' do
     let!(:custom_field_birthyear) { create(:custom_field, resource_type: 'User', key: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' }) }
 
-    let(:participation1) { create(:basket_participation, custom_field_values: { 'birthyear' => Date.current.year - 25 }) }
-    let(:participation2) { create(:basket_participation, custom_field_values: { 'birthyear' => Date.current.year - 25 }) }
-    let(:participation3) { create(:basket_participation, custom_field_values: { 'birthyear' => Date.current.year - 35 }) }
-    let(:participation4) { create(:basket_participation, custom_field_values: {}) }
+    let(:participation1) { create(:basket_participation, user_custom_field_values: { 'birthyear' => Date.current.year - 25 }) }
+    let(:participation2) { create(:basket_participation, user_custom_field_values: { 'birthyear' => Date.current.year - 25 }) }
+    let(:participation3) { create(:basket_participation, user_custom_field_values: { 'birthyear' => Date.current.year - 35 }) }
+    let(:participation4) { create(:basket_participation, user_custom_field_values: {}) }
 
     let(:participations) { { voting: [participation1, participation2, participation3, participation4] } }
     let(:participant_ids) { participations[:voting].pluck(:participant_id).uniq }
@@ -414,10 +414,10 @@ RSpec.describe Insights::BasePhaseInsightsService do
       let!(:option_a) { create(:custom_field_option, custom_field: custom_field_single_select, key: 'a', title_multiloc: { en: 'Option A' }) }
       let!(:option_b) { create(:custom_field_option, custom_field: custom_field_single_select, key: 'b', title_multiloc: { en: 'Option B' }) }
 
-      let(:participation1) { create(:basket_participation, custom_field_values: { 'single_select' => 'a' }) }
-      let(:participation2) { create(:basket_participation, custom_field_values: { 'single_select' => 'a' }) }
-      let(:participation3) { create(:basket_participation, custom_field_values: { 'single_select' => 'b' }) }
-      let(:participation4) { create(:basket_participation, custom_field_values: {}) }
+      let(:participation1) { create(:basket_participation, user_custom_field_values: { 'single_select' => 'a' }) }
+      let(:participation2) { create(:basket_participation, user_custom_field_values: { 'single_select' => 'a' }) }
+      let(:participation3) { create(:basket_participation, user_custom_field_values: { 'single_select' => 'b' }) }
+      let(:participation4) { create(:basket_participation, user_custom_field_values: {}) }
 
       it 'calculates demographics data correctly when no reference distribution' do
         participant_custom_field_values = service.send(:participants_custom_field_values, participations.values.flatten, participant_ids)
@@ -459,10 +459,10 @@ RSpec.describe Insights::BasePhaseInsightsService do
       let!(:option_a) { create(:custom_field_option, custom_field: custom_field_multi_select, key: 'a', title_multiloc: { en: 'Option A' }) }
       let!(:option_b) { create(:custom_field_option, custom_field: custom_field_multi_select, key: 'b', title_multiloc: { en: 'Option B' }) }
 
-      let(:participation1) { create(:basket_participation, custom_field_values: { 'multi_select' => ['a'] }) }
-      let(:participation2) { create(:basket_participation, custom_field_values: { 'multi_select' => %w[a b] }) }
-      let(:participation3) { create(:basket_participation, custom_field_values: { 'multi_select' => ['b'] }) }
-      let(:participation4) { create(:basket_participation, custom_field_values: {}) }
+      let(:participation1) { create(:basket_participation, user_custom_field_values: { 'multi_select' => ['a'] }) }
+      let(:participation2) { create(:basket_participation, user_custom_field_values: { 'multi_select' => %w[a b] }) }
+      let(:participation3) { create(:basket_participation, user_custom_field_values: { 'multi_select' => ['b'] }) }
+      let(:participation4) { create(:basket_participation, user_custom_field_values: {}) }
 
       # We currently do not support the creation of reference distributions for multiselect fields in the front-end,
       # nor would our existing back-end implementation make sense for multiselect fields.
@@ -484,11 +484,10 @@ RSpec.describe Insights::BasePhaseInsightsService do
     context 'with checkbox field' do
       let!(:custom_field_checkbox) { create(:custom_field, resource_type: 'User', key: 'checkbox', input_type: 'checkbox', title_multiloc: { en: 'Check if you agree' }) }
 
-      let(:participation1) { create(:basket_participation, custom_field_values: { 'checkbox' => false }) }
-      let(:participation2) { create(:basket_participation, custom_field_values: { 'checkbox' => false }) }
-      let(:participation3) { create(:basket_participation, custom_field_values: {}) }
-      let(:participation4) { create(:basket_participation, custom_field_values: {}) }
-
+      let(:participation1) { create(:basket_participation, user_custom_field_values: { 'checkbox' => false }) }
+      let(:participation2) { create(:basket_participation, user_custom_field_values: { 'checkbox' => false }) }
+      let(:participation3) { create(:basket_participation, user_custom_field_values: {}) }
+      let(:participation4) { create(:basket_participation, user_custom_field_values: {}) }
       # We currently do not support the creation of reference distributions for checkbox fields in the front-end,
       # and the back-end currently only supports categorical distributions for select fields.
       it 'calculates demographics data correctly' do

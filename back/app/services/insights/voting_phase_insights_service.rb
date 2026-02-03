@@ -81,8 +81,8 @@ module Insights
     def idea_ids_to_user_custom_field_values(voting_participations)
       grouped_data = voting_participations.flat_map do |participation|
         participation[:votes_per_idea].flat_map do |idea_id, vote_count|
-          # Duplicate the custom_field_values hash 'vote_count' times
-          Array.new(vote_count) { [idea_id, participation[:custom_field_values]] }
+          # Duplicate the user_custom_field_values hash 'vote_count' times
+          Array.new(vote_count) { [idea_id, participation[:user_custom_field_values]] }
         end
       end
 
@@ -146,7 +146,7 @@ module Insights
             acted_at: basket.submitted_at,
             classname: 'Basket',
             participant_id: participant_id(basket.id, basket.user_id),
-            custom_field_values: basket&.user&.custom_field_values || {},
+            user_custom_field_values: basket&.user&.custom_field_values || {},
             total_votes: total_votes,
             ideas_count: basket.ideas.count,
             votes_per_idea: votes_per_idea

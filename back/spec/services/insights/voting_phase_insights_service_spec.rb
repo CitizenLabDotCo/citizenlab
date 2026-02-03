@@ -39,7 +39,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           acted_at: basket1.submitted_at,
           classname: 'Basket',
           participant_id: user.id,
-          custom_field_values: { 'gender' => 'male' },
+          user_custom_field_values: { 'gender' => 'male' },
           total_votes: 5,
           ideas_count: 2,
           votes_per_idea: {
@@ -53,7 +53,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           acted_at: basket2.submitted_at,
           classname: 'Basket',
           participant_id: basket2.id,
-          custom_field_values: {},
+          user_custom_field_values: {},
           total_votes: 42,
           ideas_count: 1,
           votes_per_idea: {
@@ -117,8 +117,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
   describe '#idea_ids_to_user_custom_field_values' do
     it 'returns a mapping of idea IDs to user custom field values from the participations' do
       participations = [
-        create(:basket_participation, user: user, custom_field_values: { 'gender' => 'female' }, votes_per_idea: { idea1.id => 1, idea2.id => 1 }),
-        create(:basket_participation, user: user, custom_field_values: { 'gender' => 'male' }, votes_per_idea: { idea2.id => 2 })
+        create(:basket_participation, user: user, user_custom_field_values: { 'gender' => 'female' }, votes_per_idea: { idea1.id => 1, idea2.id => 1 }),
+        create(:basket_participation, user: user, user_custom_field_values: { 'gender' => 'male' }, votes_per_idea: { idea2.id => 2 })
       ]
 
       mapping = service.send(:idea_ids_to_user_custom_field_values, participations)
@@ -143,8 +143,8 @@ RSpec.describe Insights::VotingPhaseInsightsService do
     let!(:custom_field_option_unspecified) { create(:custom_field_option, custom_field: custom_field, key: 'unspecified', title_multiloc: { en: 'Unspecified' }) }
 
     it 'returns the correct vote counts data per idea for a given custom field' do
-      participations[0][:custom_field_values] = { 'gender' => 'female' }
-      participations[1][:custom_field_values] = { 'gender' => 'male' }
+      participations[0][:user_custom_field_values] = { 'gender' => 'female' }
+      participations[1][:user_custom_field_values] = { 'gender' => 'male' }
 
       phase_total_votes = 57
       data = service.send(:idea_vote_counts_data, participations, custom_field, phase_total_votes)
