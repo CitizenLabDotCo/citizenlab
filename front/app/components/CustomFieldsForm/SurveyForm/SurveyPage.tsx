@@ -279,8 +279,9 @@ const SurveyPage = ({
                           <PostParticipationBox
                             onCreateAccount={() => {
                               triggerPostParticipationFlow({
-                                name: 'redirect',
+                                name: 'followProjectAndRedirect',
                                 params: {
+                                  projectId: project.data.id,
                                   path: `/projects/${project.data.attributes.slug}`,
                                 },
                               });
