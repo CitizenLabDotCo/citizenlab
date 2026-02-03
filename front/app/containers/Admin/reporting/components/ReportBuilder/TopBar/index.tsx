@@ -317,6 +317,7 @@ const ContentBuilderTopBar = ({
             width="200px"
             top="35px"
             right="0"
+            zIndex="1000002"
             opened={downloadMenuOpened}
             onClickOutside={toggleDownloadMenu(false)}
             content={
