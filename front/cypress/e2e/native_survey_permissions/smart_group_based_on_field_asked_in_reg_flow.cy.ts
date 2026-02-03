@@ -18,69 +18,67 @@ describe('Native survey permissions', () => {
 
     before(() => {
       // Create custom field
-      cy.apiCreateCustomField(fieldName, true, false, 'select').then(
-        (response) => {
-          customFieldId = response.body.data.id;
+      cy.apiCreateCustomField(fieldName, false, 'select').then((response) => {
+        customFieldId = response.body.data.id;
 
-          // Create custom field options
-          cy.apiCreateCustomFieldOption('Option A', customFieldId).then(
-            (response) => {
-              customFieldOptionId = response.body.data.id;
+        // Create custom field options
+        cy.apiCreateCustomFieldOption('Option A', customFieldId).then(
+          (response) => {
+            customFieldOptionId = response.body.data.id;
 
-              cy.apiCreateCustomFieldOption('Option B', customFieldId).then(
-                () => {
-                  // Create smart group based on custom field
-                  cy.apiCreateSmartGroupCustomField(
-                    'Option A people',
-                    customFieldId,
-                    customFieldOptionId
-                  ).then((response) => {
-                    smartGroupId = response.body.data.id;
+            cy.apiCreateCustomFieldOption('Option B', customFieldId).then(
+              () => {
+                // Create smart group based on custom field
+                cy.apiCreateSmartGroupCustomField(
+                  'Option A people',
+                  customFieldId,
+                  customFieldOptionId
+                ).then((response) => {
+                  smartGroupId = response.body.data.id;
 
-                    // Create project with active native survey phase
-                    cy.apiCreateProject({
+                  // Create project with active native survey phase
+                  cy.apiCreateProject({
+                    title: randomString(),
+                    descriptionPreview: randomString(),
+                    description: randomString(),
+                    publicationStatus: 'published',
+                  }).then((project) => {
+                    projectId = project.body.data.id;
+                    projectSlug = project.body.data.attributes.slug;
+                    cy.apiCreatePhase({
+                      projectId,
                       title: randomString(),
-                      descriptionPreview: randomString(),
-                      description: randomString(),
-                      publicationStatus: 'published',
-                    }).then((project) => {
-                      projectId = project.body.data.id;
-                      projectSlug = project.body.data.attributes.slug;
-                      cy.apiCreatePhase({
-                        projectId,
-                        title: randomString(),
-                        startAt: twoDaysAgo,
-                        endAt: inTwoMonths,
-                        participationMethod: 'native_survey',
-                        nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-                        nativeSurveyTitleMultiloc: { en: 'Survey' },
-                        canComment: true,
-                        canPost: true,
-                        canReact: true,
-                        description: 'Some description',
-                      }).then((phase) => {
-                        phaseId = phase.body.data.id;
+                      startAt: twoDaysAgo,
+                      endAt: inTwoMonths,
+                      participationMethod: 'native_survey',
+                      nativeSurveyButtonMultiloc: { en: 'Take the survey' },
+                      nativeSurveyTitleMultiloc: { en: 'Survey' },
+                      canComment: true,
+                      canPost: true,
+                      canReact: true,
+                      description: 'Some description',
+                    }).then((phase) => {
+                      phaseId = phase.body.data.id;
 
-                        // Set permission to smart group
-                        cy.apiSetPhasePermission({
-                          phaseId,
-                          action: 'posting_idea',
-                          permissionBody: {
-                            permission: {
-                              permitted_by: 'users',
-                              group_ids: [smartGroupId],
-                            },
+                      // Set permission to smart group
+                      cy.apiSetPhasePermission({
+                        phaseId,
+                        action: 'posting_idea',
+                        permissionBody: {
+                          permission: {
+                            permitted_by: 'users',
+                            group_ids: [smartGroupId],
                           },
-                        });
+                        },
                       });
                     });
                   });
-                }
-              );
-            }
-          );
-        }
-      );
+                });
+              }
+            );
+          }
+        );
+      });
     });
 
     after(() => {
