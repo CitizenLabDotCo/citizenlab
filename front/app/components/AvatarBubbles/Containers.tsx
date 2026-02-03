@@ -47,19 +47,21 @@ export const BubbleContainer = ({
   const containerHeight = bubbleSize + 2;
 
   return (
-    <Box
-      display="flex"
-      style={{
-        position: 'relative',
-        width: `${
-          bubbleSize + (avatarImagesCount - 1) * (bubbleSize - overlap)
-        }px`,
-        minWidth: `${bubbleSize}px`,
-        height: `${containerHeight}px`,
-      }}
-      alignItems="center"
-    >
-      {children}
+    <Box style={{ display: ' inline-block' }}>
+      <Box
+        display="flex"
+        style={{
+          position: 'relative',
+          width: `${
+            bubbleSize + (avatarImagesCount - 1) * (bubbleSize - overlap)
+          }px`,
+          minWidth: `${bubbleSize}px`,
+          height: `${containerHeight}px`,
+        }}
+        alignItems="center"
+      >
+        {children}
+      </Box>
     </Box>
   );
 };

@@ -3,6 +3,7 @@ import { SupportedLocale } from 'typings';
 import { IUser } from 'api/users/types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
+import { clearClaimTokens, getClaimTokens } from 'utils/claimToken';
 
 import { CreateEmailOnlyAccountProperties } from './types';
 
@@ -31,7 +32,11 @@ export default async function createEmailOnlyAccount({
   locale,
 }: Parameters) {
   const bodyData = {
-    user: { email, locale },
+    user: {
+      email,
+      locale,
+      claim_tokens: getClaimTokens(),
+    },
   };
 
   const response = await triggerCreateEmailOnlyAccount(bodyData);
@@ -39,6 +44,7 @@ export default async function createEmailOnlyAccount({
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (response.data) {
+    clearClaimTokens();
     return 'account_created_successfully';
   }
 

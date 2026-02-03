@@ -12,23 +12,26 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
     render json: raw_json({ count: count })
   end
 
-  def comments_by_topic_serie
+  def comments_by_topic_serie(limit = nil)
     comments = policy_scope(Comment.published, policy_scope_class: StatCommentPolicy::Scope)
     comments = apply_project_filter(comments)
     comments = apply_group_filter(comments)
 
-    comments
+    serie = comments
       .where(created_at: @start_at..@end_at)
       .joins('INNER JOIN ideas ON ideas.id = comments.idea_id')
-      .joins('INNER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
-      .group('ideas_topics.topic_id')
-      .order('ideas_topics.topic_id')
-      .count
+      .joins('INNER JOIN ideas_input_topics ON ideas_input_topics.idea_id = ideas.id')
+      .group('ideas_input_topics.input_topic_id')
+      .order('count_id DESC')
+      .limit(limit)
+      .count('id')
+
+    IdeasCountService.aggregate_child_input_topic_counts(serie)
   end
 
   def comments_by_topic
-    serie = comments_by_topic_serie
-    topics = Topic.pluck(:id, :title_multiloc).map do |id, title_multiloc|
+    serie = comments_by_topic_serie(params[:limit])
+    topics = InputTopic.where(id: serie.keys).pluck(:id, :title_multiloc).map do |id, title_multiloc|
       [id, { title_multiloc: title_multiloc }]
     end
     render json: raw_json({ series: { comments: serie }, topics: topics.to_h })
@@ -36,7 +39,7 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
 
   def comments_by_topic_as_xlsx
     serie = comments_by_topic_serie
-    topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
+    topics = InputTopic.where(id: serie.keys).select(:id, :title_multiloc)
     res = serie.map do |topic_id, count|
       {
         'topic' => @@multiloc_service.t(topics.find(topic_id).title_multiloc, current_user&.locale),
@@ -96,11 +99,14 @@ class WebApi::V1::StatsCommentsController < WebApi::V1::StatsController
   end
 
   def apply_topic_filter(comments)
-    if params[:topic]
+    if params[:input_topic]
+      topic_ids = InputTopic.where(id: params[:input_topic])
+        .or(InputTopic.where(parent_id: params[:input_topic]))
+        .pluck(:id)
       comments
         .joins('INNER JOIN ideas ON ideas.id = comments.idea_id')
-        .joins('INNER JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
-        .where(ideas: { ideas_topics: { topic_id: params[:topic] } })
+        .joins('INNER JOIN ideas_input_topics ON ideas_input_topics.idea_id = ideas.id')
+        .where(ideas_input_topics: { input_topic_id: topic_ids })
     else
       comments
     end

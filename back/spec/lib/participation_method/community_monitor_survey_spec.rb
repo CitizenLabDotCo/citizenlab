@@ -59,12 +59,7 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
   end
 
   describe '#default_fields' do
-    it 'returns an empty list if form is persisted' do
-      form = create(:custom_form, participation_context: phase)
-      expect(participation_method.default_fields(form)).to eq []
-    end
-
-    it 'returns the default fields if the form is not persisted' do
+    it 'returns the default fields' do
       form = build(:custom_form, participation_context: phase)
       expect(participation_method.default_fields(form).count).to eq 15
       expect(participation_method.default_fields(form).pluck(:key)).to eq(%w[
@@ -170,41 +165,6 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
 
     it 'returns true if the setting is not present' do
       expect(participation_method.supports_private_attributes_in_export?).to be true
-    end
-  end
-
-  describe '#user_fields_in_form?' do
-    it 'returns false when not enabled' do
-      phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: false)
-      expect(participation_method.user_fields_in_form?).to be false
-    end
-
-    it 'returns true when enabled' do
-      phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
-      expect(participation_method.user_fields_in_form?).to be true
-    end
-
-    context 'when permission permitted_by is \'everyone\' and there is at least one demographic field' do
-      before do
-        permission = Permission.find_by(
-          permission_scope_id: phase.id,
-          action: 'posting_idea'
-        )
-
-        permission.permitted_by = 'everyone'
-        permission.permissions_custom_fields = [create(:permissions_custom_field)]
-        permission.save!
-      end
-
-      it 'returns true even when not enabled' do
-        phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: false)
-        expect(participation_method.user_fields_in_form?).to be true
-      end
-
-      it 'returns true when enabled' do
-        phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
-        expect(participation_method.user_fields_in_form?).to be true
-      end
     end
   end
 

@@ -16,9 +16,10 @@ import { formatPercentage } from '../../_utils/format';
 import { Translations } from './translations';
 import { TimeSeries, TimeSeriesRow, Stats } from './typings';
 
-export const getEmptyRow = (date: Moment) => ({
+export const getEmptyRow = (date: Moment): TimeSeriesRow => ({
   date: date.format('YYYY-MM-DD'),
   participants: 0,
+  visitors: 0,
 });
 
 const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
@@ -26,6 +27,7 @@ const parseRow = (date: Moment, row?: TimeSeriesResponseRow): TimeSeriesRow => {
 
   return {
     participants: row.participants,
+    visitors: row.visitors ?? 0,
     date: date.format('YYYY-MM-DD'),
   };
 };

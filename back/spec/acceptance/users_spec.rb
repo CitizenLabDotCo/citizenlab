@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
+require 'test_prof/recipes/rspec/factory_default'
 
 resource 'Users' do
   explanation 'Citizens and city administrators.'
@@ -112,18 +113,44 @@ resource 'Users' do
         end
 
         context 'when a user exists without a password and has email confirmed', document: false do
-          before do
-            @user = create(:user_no_password, email: 'test@test.com')
-            @user.confirm
+          context 'when the user has not requested any codes yet' do
+            before do
+              @user = create(:user_no_password, email: 'test@test.com')
+              @user.confirm
+              @user.save!
+
+              allow(RequestConfirmationCodeJob).to receive(:perform_now)
+            end
+
+            let(:email) { 'test@test.com' }
+
+            example_request 'Returns "confirm"' do
+              expect(@user.password_digest).to be_nil
+              assert_status 200
+              expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+              expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(@user)
+            end
           end
 
-          let(:email) { 'test@test.com' }
+          context 'when the user has already requested a code' do
+            before do
+              @user = create(:user_no_password, email: 'test@test.com')
+              @user.confirm
+              @user.save!
 
-          example_request 'Returns "confirm"' do
-            expect(@user.password_digest).to be_nil
-            expect(@user.confirmation_required?).to be false
-            assert_status 200
-            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+              RequestConfirmationCodeJob.perform_now @user
+
+              allow(RequestConfirmationCodeJob).to receive(:perform_now)
+            end
+
+            let(:email) { 'test@test.com' }
+
+            example_request 'Returns "confirm"' do
+              expect(@user.password_digest).to be_nil
+              assert_status 200
+              expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+              expect(RequestConfirmationCodeJob).not_to have_received(:perform_now).with(@user)
+            end
           end
         end
 
@@ -238,8 +265,8 @@ resource 'Users' do
 
         let(:email) { 'test@test.com' }
 
-        example_request '[error] returns 401' do
-          assert_status 401
+        example_request 'it also works (necessary for ?super_admin param)' do
+          assert_status 200
         end
       end
     end
@@ -247,8 +274,14 @@ resource 'Users' do
     post 'web_api/v1/users' do
       with_options scope: 'user' do
         parameter :email, 'E-mail address', required: true
-        parameter :locale, 'Locale. Should be one of the tenants locales', required: true
+        parameter :locale, 'Locale (must be one of the tenant locales)', required: true
+        parameter :claim_tokens, <<~DESC
+          Tokens used to claim anonymous participation data (e.g., ideas) created before registration.
+          If confirmation is required, tokens are marked as pending until confirmed.
+          Otherwise, participation data is claimed immediately.
+        DESC
       end
+
       ValidationErrorHelper.new.error_fields(self, User)
 
       context 'when confirmation is turned on' do
@@ -272,6 +305,22 @@ resource 'Users' do
           example_request 'Registration is not completed by default' do
             assert_status 201
             expect(response_data.dig(:attributes, :registration_completed_at)).to be_nil
+          end
+
+          context 'with claim_tokens' do
+            let!(:claim_token) { create(:claim_token) }
+            let(:idea) { claim_token.item }
+            let(:claim_tokens) { [claim_token.token] }
+
+            example 'marks claim tokens as pending for the new user', document: false do
+              do_request
+              assert_status 201
+
+              user = User.find(response_data[:id])
+
+              expect(claim_token.reload.pending_claimer_id).to eq(user.id)
+              expect(idea.reload.author_id).to be_nil # Not yet claimed
+            end
           end
         end
 
@@ -1189,6 +1238,49 @@ resource 'Users' do
           end
         end
       end
+
+      get 'web_api/v1/users/:id/participation_stats' do
+        let(:target_user) { create(:user) }
+        let(:id) { target_user.id }
+
+        example 'Get participation stats for a user' do
+          # Optimization: Eliminates cascades partially
+          create_default(:single_phase_ideation_project)
+          create_default(:idea_status)
+
+          ideas = create_list(:idea, 3, author: target_user, publication_status: 'published')
+          ideas.each { |idea| create(:reaction, user: target_user, reactable: idea) }
+          create_list(:comment, 2, author: target_user, publication_status: 'published')
+          create(:basket, user: target_user, submitted_at: Time.current)
+          create(:poll_response, user: target_user)
+          create(:volunteer, user: target_user)
+          create(:event_attendance, attendee: target_user)
+
+          do_request
+
+          assert_status 200
+          expect(json_parse(response_body).dig(:data, :attributes)).to include(
+            ideas_count: 3,
+            comments_count: 2,
+            reactions_count: 3,
+            baskets_count: 1,
+            poll_responses_count: 1,
+            volunteers_count: 1,
+            event_attendances_count: 1
+          )
+        end
+
+        example 'Does not count unpublished ideas' do
+          create(:idea, author: target_user, publication_status: 'published')
+          create(:idea, author: target_user, publication_status: 'draft')
+
+          do_request
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :ideas_count)).to eq 1
+        end
+      end
     end
 
     context 'when non-admin' do
@@ -1301,6 +1393,15 @@ resource 'Users' do
       get 'web_api/v1/users/blocked_count' do
         example_request 'Get count of blocked users' do
           expect(status).to eq 401
+        end
+      end
+
+      get 'web_api/v1/users/:id/participation_stats' do
+        let(:other_user) { create(:user) }
+        let(:id) { other_user.id }
+
+        example_request "[error] cannot access another user's participation stats" do
+          assert_status :unauthorized
         end
       end
 
@@ -1626,6 +1727,15 @@ resource 'Users' do
       end
 
       delete 'web_api/v1/users/:id' do
+        parameter :delete_participation_data, <<~DESC.squish, required: false
+          When true, permanently deletes all participation data associated with the user
+          instead of anonymizing it (default: false).
+        DESC
+        parameter :ban_email, <<~DESC.squish, required: false
+          When true, bans the user's email address from future registrations (default: false).
+        DESC
+        parameter :ban_reason, 'Reason for banning the email (optional, only used when ban_email is true)', required: false
+
         before do
           @user.update!(roles: [{ type: 'admin' }])
           @subject_user = create(:admin)
@@ -1636,6 +1746,42 @@ resource 'Users' do
         example_request 'Delete a user' do
           expect(response_status).to eq 200
           expect { User.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+
+        describe 'with delete_participation_data parameter' do
+          example 'Delete a user and their participation data' do
+            idea = create(:idea, author: @subject_user)
+            comment = create(:comment, author: @subject_user)
+            reaction = create(:reaction, user: @subject_user)
+            event_attendee = create(:event_attendance, attendee: @subject_user)
+            basket = create(:basket, user: @subject_user)
+            volunteer = create(:volunteer, user: @subject_user)
+            poll_response = create(:poll_response, user: @subject_user)
+
+            do_request(delete_participation_data: true)
+
+            expect(response_status).to eq 200
+
+            expect { User.find(id) }.to raise_error(ActiveRecord::RecordNotFound)
+            expect { Idea.find(idea.id) }.to raise_error(ActiveRecord::RecordNotFound)
+            expect { Reaction.find(reaction.id) }.to raise_error(ActiveRecord::RecordNotFound)
+            expect { Events::Attendance.find(event_attendee.id) }.to raise_error(ActiveRecord::RecordNotFound)
+            expect { Basket.find(basket.id) }.to raise_error(ActiveRecord::RecordNotFound)
+            expect { Volunteering::Volunteer.find(volunteer.id) }.to raise_error(ActiveRecord::RecordNotFound)
+            expect { Polls::Response.find(poll_response.id) }.to raise_error(ActiveRecord::RecordNotFound)
+
+            # Comments are soft-deleted to preserve thread structure
+            expect(Comment.find(comment.id).publication_status).to eq('deleted')
+          end
+        end
+
+        describe 'with ban_email parameter' do
+          example 'Delete a user and ban their email' do
+            do_request(ban_email: true, ban_reason: 'Spam account')
+
+            expect(response_status).to eq 200
+            expect(EmailBan.banned?(@subject_user.email)).to be true
+          end
         end
       end
 
@@ -1668,6 +1814,20 @@ resource 'Users' do
           expect(status).to eq 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :count)).to eq 2
+        end
+      end
+
+      get 'web_api/v1/users/:id/participation_stats' do
+        let(:id) { @user.id }
+
+        example 'User can see their own participation stats' do
+          create(:idea, author: @user, publication_status: 'published')
+
+          do_request
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :ideas_count)).to eq 1
         end
       end
     end

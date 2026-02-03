@@ -76,6 +76,8 @@ ParticipantsWidget.craft = {
     compareStartAt: undefined,
     compareEndAt: undefined,
     hideStatistics: undefined,
+    showVisitors: undefined,
+    phaseId: undefined,
   },
   related: {
     settings: ChartWidgetSettings,

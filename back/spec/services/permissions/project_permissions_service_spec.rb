@@ -976,7 +976,7 @@ describe Permissions::ProjectPermissionsService do
       projects = Project.preload(
         :project_images,
         :areas,
-        :topics,
+        :input_topics,
         :content_builder_layouts,
         phases: [:report, { permissions: [:groups] }], # :permissions
         admin_publication: [:children]
@@ -1008,7 +1008,7 @@ describe Permissions::ProjectPermissionsService do
       projects = Project.preload(
         :project_images,
         :areas,
-        :topics,
+        :input_topics,
         :content_builder_layouts,
         phases: [:report, { permissions: [:groups] }], # :permissions
         admin_publication: [:children]

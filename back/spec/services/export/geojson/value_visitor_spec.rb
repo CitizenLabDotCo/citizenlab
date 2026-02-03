@@ -256,19 +256,21 @@ describe Export::Geojson::ValueVisitor do
         create(
           :custom_field_option,
           custom_field: field,
-          image: create(:custom_field_option_image),
           key: 'cat',
           title_multiloc: { 'en' => 'Cat' }
-        )
+        ).tap do |option|
+          option.update!(image: create(:custom_field_option_image, custom_field_option: option))
+        end
       end
       let!(:field_option2) do
         create(
           :custom_field_option,
           custom_field: field,
-          image: create(:custom_field_option_image),
           key: 'dog',
           title_multiloc: { 'en' => 'Dog' }
-        )
+        ).tap do |option|
+          option.update!(image: create(:custom_field_option_image, custom_field_option: option))
+        end
       end
       let(:option_index) do
         {

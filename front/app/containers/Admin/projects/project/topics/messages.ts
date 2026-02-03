@@ -5,59 +5,81 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Topics.inputTags',
     defaultMessage: 'Input tags',
   },
-  browseTopics: {
-    id: 'app.containers.AdminPage.Topics.browseTopics',
-    defaultMessage: 'Browse topics',
+  projectTopicsDescription: {
+    id: 'app.containers.AdminPage.Topics.projectTopicsDescription2',
+    defaultMessage:
+      'Create and manage the tags that citizens can use to categorize their inputs in this project.',
   },
-  addTopics: {
-    id: 'app.containers.AdminPage.Topics.addTopics',
-    defaultMessage: 'Add',
+  defaultInputTopicsInfo: {
+    id: 'app.containers.AdminPage.Topics.defaultInputTopicsInfo',
+    defaultMessage:
+      'Default tags for new projects can be configured in the {settingsLink}.',
   },
-  deleteTopicLabel: {
-    id: 'app.containers.AdminPage.Topics.deleteTopicLabel',
-    defaultMessage: 'Delete',
+  defaultInputTopicsSettings: {
+    id: 'app.containers.AdminPage.Topics.defaultInputTopicsSettings',
+    defaultMessage: 'platform settings',
   },
-  remove: {
-    id: 'app.containers.AdminPage.Topics.remove',
-    defaultMessage: 'Remove',
+  addInputTopic: {
+    id: 'app.containers.AdminPage.Topics.addInputTopic',
+    defaultMessage: 'Add input tag',
   },
-  confirmHeader: {
-    id: 'app.containers.AdminPage.Topics.confirmHeader1',
-    defaultMessage: 'Are you sure you want to delete this project tag?',
+  addSubtopic: {
+    id: 'app.containers.AdminPage.Topics.addSubtopic',
+    defaultMessage: 'Add subtag',
   },
-  generalTopicDeletionWarning: {
-    id: 'app.containers.AdminPage.Topics.generalTopicDeletionWarning1',
-    defaultMessage: 'This tag will no longer be able to used in projects.',
+  editInputTopic: {
+    id: 'app.containers.AdminPage.Topics.editInputTopic',
+    defaultMessage: 'Edit input tag',
   },
-  cancel: {
-    id: 'app.containers.AdminPage.Topics.cancel',
-    defaultMessage: 'Cancel',
+  edit: {
+    id: 'app.containers.AdminPage.Topics.edit',
+    defaultMessage: 'Edit',
   },
   delete: {
     id: 'app.containers.AdminPage.Topics.delete',
     defaultMessage: 'Delete',
   },
-  topicManagerInfo: {
-    id: 'app.containers.AdminPage.Topics.tagManagerInfo1',
-    defaultMessage:
-      'If you would like to add additional project tags, you can do so in the {topicManagerLink}.',
+  cancel: {
+    id: 'app.containers.AdminPage.Topics.cancel',
+    defaultMessage: 'Cancel',
   },
-  projectTopicsDescription: {
-    id: 'app.containers.AdminPage.Topics.projectTopicsDescription1',
-    defaultMessage:
-      'You can add and delete the tags that can be assigned to inputs in this project.',
+  save: {
+    id: 'app.containers.AdminPage.Topics.save',
+    defaultMessage: 'Save',
   },
-  topicManager: {
-    id: 'app.containers.AdminPage.Topics.topicManager1',
-    defaultMessage: 'Tag Manager',
+  confirmHeader: {
+    id: 'app.containers.AdminPage.Topics.confirmHeader2',
+    defaultMessage: 'Are you sure you want to delete this input tag?',
+  },
+  deleteInputTopicConfirmation: {
+    id: 'app.containers.AdminPage.Topics.deleteInputTopicConfirmation',
+    defaultMessage:
+      'This tag will be removed from all inputs in this project. This action cannot be undone.',
+  },
+  deleteInputTopicWithChildrenConfirmation: {
+    id: 'app.containers.AdminPage.Topics.deleteInputTopicWithChildrenConfirmation',
+    defaultMessage:
+      'This tag has subtags. Deleting it will also delete all its subtags. Inputs assigned to these tags will be updated. This action cannot be undone.',
   },
   lastTopicWarning: {
     id: 'app.containers.AdminPage.Topics.lastTopicWarning3',
     defaultMessage:
-      'At least one tag is required. If you do not wish to use tags, the ‘Tags’ item can be deleted from any phase’s input form (if present).',
+      "At least one tag is required. If you do not wish to use tags, the Tags item can be deleted from any phase's input form (if present).",
   },
-  inputForm: {
-    id: 'app.containers.AdminPage.Topics.inputForm',
-    defaultMessage: 'Input form',
+  fieldTopicTitle: {
+    id: 'app.containers.AdminPage.Topics.fieldTopicTitle',
+    defaultMessage: 'Tag name',
+  },
+  fieldTopicTitleError: {
+    id: 'app.containers.AdminPage.Topics.fieldTopicTitleError',
+    defaultMessage: 'Provide a tag name for all languages',
+  },
+  fieldTopicDescription: {
+    id: 'app.containers.AdminPage.Topics.fieldTopicDescription',
+    defaultMessage: 'Tag description (optional)',
+  },
+  fieldTopicEmoji: {
+    id: 'app.containers.AdminPage.Topics.fieldTopicEmoji',
+    defaultMessage: 'Emoji (optional)',
   },
 });

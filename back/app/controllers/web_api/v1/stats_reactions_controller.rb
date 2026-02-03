@@ -16,7 +16,7 @@ class WebApi::V1::StatsReactionsController < WebApi::V1::StatsController
     }
   end
 
-  def reactions_by_topic_serie
+  def reactions_by_topic_serie(limit = nil)
     reactions = policy_scope(Reaction, policy_scope_class: StatReactionPolicy::Scope)
       .where(reactable_type: 'Idea')
       .joins('JOIN ideas ON ideas.id = reactions.reactable_id')
@@ -24,23 +24,26 @@ class WebApi::V1::StatsReactionsController < WebApi::V1::StatsController
     reactions = apply_group_filter(reactions)
     reactions = apply_project_filter(reactions)
 
-    reactions
+    serie = reactions
       .where(created_at: @start_at..@end_at)
-      .joins('JOIN ideas_topics ON ideas_topics.idea_id = ideas.id')
-      .group('ideas_topics.topic_id')
-      .order('ideas_topics.topic_id')
-      .count
+      .joins('JOIN ideas_input_topics ON ideas_input_topics.idea_id = ideas.id')
+      .group('ideas_input_topics.input_topic_id')
+      .order('count_id DESC')
+      .limit(limit)
+      .count('id')
+
+    IdeasCountService.aggregate_child_input_topic_counts(serie)
   end
 
   def reactions_by_topic
-    serie = reactions_by_topic_serie
-    topics = Topic.all.select(:id, :title_multiloc)
+    serie = reactions_by_topic_serie(params[:limit])
+    topics = InputTopic.where(id: serie.keys).select(:id, :title_multiloc)
     render json: raw_json({ series: { total: serie }, topics: topics.to_h { |t| [t.id, t.attributes.except('id')] } })
   end
 
   def reactions_by_topic_as_xlsx
     serie = reactions_by_topic_serie
-    topics = Topic.where(id: serie.keys).select(:id, :title_multiloc)
+    topics = InputTopic.where(id: serie.keys).select(:id, :title_multiloc)
     res = serie.map do |topic_id, count|
       {
         'topic' => @@multiloc_service.t(topics.find(topic_id).title_multiloc, current_user&.locale),
@@ -111,10 +114,13 @@ class WebApi::V1::StatsReactionsController < WebApi::V1::StatsController
   end
 
   def apply_topic_filter(reactions)
-    if params[:topic]
+    if params[:input_topic]
+      topic_ids = InputTopic.where(id: params[:input_topic])
+        .or(InputTopic.where(parent_id: params[:input_topic]))
+        .pluck(:id)
       reactions
-        .joins('JOIN ideas_topics ON ideas.id = ideas_topics.idea_id')
-        .where(ideas_topics: { topic_id: params[:topic] })
+        .joins('JOIN ideas_input_topics ON ideas.id = ideas_input_topics.idea_id')
+        .where(ideas_input_topics: { input_topic_id: topic_ids })
     else
       reactions
     end

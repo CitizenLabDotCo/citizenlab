@@ -1,9 +1,7 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm, FormProvider } from 'react-hook-form';
-import { string, object } from 'yup';
+import { Box, fontSizes } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { SSOProvider } from 'api/authentication/singleSignOn';
 
@@ -11,82 +9,43 @@ import oldMessages from 'containers/Authentication/steps/_components/AuthProvide
 import { SetError } from 'containers/Authentication/typings';
 import useAuthConfig from 'containers/Authentication/useAuthConfig';
 
-import Input from 'components/HookForm/Input';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 import FranceConnectButton from 'components/UI/FranceConnectButton';
 import Or from 'components/UI/Or';
 
 import { useIntl } from 'utils/cl-intl';
-import {
-  isCLErrorsWrapper,
-  handleHookFormSubmissionError,
-} from 'utils/errorUtils';
-import { isValidEmail } from 'utils/validate';
+import { keys } from 'utils/helperUtils';
 
 import sharedMessages from '../messages';
 
-import SSOButtons from './SSOButtons';
+import EmailForm from './EmailForm';
+import messages from './messages';
+import SSOButtonsExceptFC from './SSOButtonsExceptFC';
+
+const StyledA = styled.a`
+  font-size: ${fontSizes.base}px;
+`;
 
 interface Props {
   loading: boolean;
   setError: SetError;
   onSubmit: (email: string) => void;
   onSwitchToSSO: (ssoProvider: SSOProvider) => void;
-  onEnterFranceConnect: () => void;
 }
-
-interface FormValues {
-  email: string;
-}
-
-const DEFAULT_VALUES: Partial<FormValues> = {
-  email: undefined,
-};
 
 const EmailFlowStart = ({
   loading,
   setError,
   onSubmit,
   onSwitchToSSO,
-  onEnterFranceConnect,
 }: Props) => {
-  const { passwordLoginEnabled, ssoProviders } = useAuthConfig();
+  const { passwordLoginEnabled, ssoProviders, azureAdSettings } =
+    useAuthConfig();
 
   const { formatMessage } = useIntl();
 
-  const schema = useMemo(
-    () =>
-      object({
-        email: string()
-          .email(formatMessage(sharedMessages.emailFormatError))
-          .required(formatMessage(sharedMessages.emailMissingError))
-          .test(
-            '',
-            formatMessage(sharedMessages.emailFormatError),
-            isValidEmail
-          ),
-      }),
-    [formatMessage]
-  );
-
-  const methods = useForm<FormValues>({
-    mode: 'onSubmit',
-    defaultValues: DEFAULT_VALUES,
-    resolver: yupResolver(schema),
-  });
-
-  const handleSubmit = async ({ email }: FormValues) => {
-    try {
-      await onSubmit(email);
-    } catch (e) {
-      if (isCLErrorsWrapper(e)) {
-        handleHookFormSubmissionError(e, methods.setError);
-        return;
-      }
-
-      setError('unknown');
-    }
-  };
+  const anySSOProviderEnabledBesidesFC = keys(ssoProviders)
+    .filter((key) => key !== 'franceconnect')
+    .some((key) => ssoProviders[key]);
 
   return (
     <Box data-cy="email-flow-start">
@@ -96,9 +55,9 @@ const EmailFlowStart = ({
             logoAlt={formatMessage(oldMessages.signUpButtonAltText, {
               loginMechanismName: 'FranceConnect',
             })}
-            onClick={onEnterFranceConnect}
+            onClick={() => onSwitchToSSO('franceconnect')}
           />
-          {passwordLoginEnabled && (
+          {(passwordLoginEnabled || anySSOProviderEnabledBesidesFC) && (
             <Box mt="24px">
               <Or />
             </Box>
@@ -106,34 +65,30 @@ const EmailFlowStart = ({
         </>
       )}
       {passwordLoginEnabled && (
-        <FormProvider {...methods}>
-          <form onSubmit={methods.handleSubmit(handleSubmit)}>
-            <Text mt="0px" mb="32px" color="tenantText">
-              {formatMessage(sharedMessages.enterYourEmailAddress)}
-            </Text>
-            <Box data-cy="email-flow-start-email-input">
-              <Input
-                name="email"
-                type="email"
-                autocomplete="email"
-                label={formatMessage(sharedMessages.email)}
-              />
+        <>
+          <EmailForm
+            loading={loading}
+            topText={sharedMessages.enterYourEmailAddress}
+            setError={setError}
+            onSubmit={onSubmit}
+          />
+          {anySSOProviderEnabledBesidesFC && (
+            <Box mt="24px">
+              <Or />
             </Box>
-            <Box w="100%" display="flex" mt="32px">
-              <ButtonWithLink
-                dataCy="email-flow-start-continue-button"
-                type="submit"
-                width="100%"
-                disabled={loading}
-                processing={loading}
-              >
-                {formatMessage(sharedMessages.continue)}
-              </ButtonWithLink>
-            </Box>
-          </form>
-        </FormProvider>
+          )}
+        </>
       )}
-      <SSOButtons onClickSSO={onSwitchToSSO} />
+      {anySSOProviderEnabledBesidesFC && (
+        <SSOButtonsExceptFC onClickSSO={onSwitchToSSO} />
+      )}
+      {azureAdSettings?.visibility === 'link' && (
+        <Box mt="24px">
+          <StyledA href="/sign-in/admin">
+            {formatMessage(messages.clickHereToLoginAsAdminOrPM)}
+          </StyledA>
+        </Box>
+      )}
     </Box>
   );
 };

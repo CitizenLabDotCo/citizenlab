@@ -515,9 +515,7 @@ lt:
       subject: '%{organizationName}: Paskutinė galimybė balsuoti už %{phaseTitle}'
       preheader: 'Paskutinė galimybė balsuoti už %{phaseTitle} dalyvavimo platformoje %{organizationName}'
       title: 'Paskutinė galimybė balsuoti už %{phaseTitle}'
-      body_1: 'Rytoj, vidurnaktį, baigsis projekto %{projectTitle} balsavimo etapas.'
-      body_2: 'Laikas bėga, o mes pastebėjome, kad dar nebalsavote! Dalyvaukite dabar, tiesiog spustelėdami toliau esantį mygtuką.'
-      body_3: 'Tokiu būdu galėsite susipažinti su įvairiomis galimybėmis ir pareikšti savo nuomonę, kuri yra labai svarbi priimant sprendimus dėl šio projekto ateities.'
+      event_description: '<p>Rytoj, vidurnaktį, baigsis projekto %{projectTitle} balsavimo etapas.</p><p>Laikas bėga, o mes pastebėjome, kad jūs dar nebalsavote! Veikite dabar - tiesiog spustelėkite toliau esantį mygtuką ir dalyvaukite.</p><p>Tai padarę gausite galimybę susipažinti su įvairiomis galimybėmis ir galėsite pareikšti savo nuomonę, kuri yra labai svarbi sprendžiant šio projekto ateitį.</p>'
       cta_button: 'Balsuoti'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} atskleisti balsavimo rezultatai!'

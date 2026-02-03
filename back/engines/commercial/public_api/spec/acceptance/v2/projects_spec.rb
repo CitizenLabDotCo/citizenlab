@@ -124,17 +124,17 @@ resource 'Projects' do
     end
 
     context "when filtering by 'topic_ids'" do
-      let(:topics) { create_list(:topic, 2) }
+      let(:topics) { create_list(:global_topic, 2) }
       let(:topic_ids) { topics.pluck(:id) }
 
       let!(:project) do
-        create(:project).tap { |project| project.topics << topics }
+        create(:project).tap { |project| project.global_topics << topics }
       end
 
       before do
         # This project should not be returned because it only has one of the requested
         # topics.
-        create(:project).tap { |project| project.topics << topics.first }
+        create(:project).tap { |project| project.global_topics << topics.first }
       end
 
       example_request 'List only the projects that have all the specified topics' do

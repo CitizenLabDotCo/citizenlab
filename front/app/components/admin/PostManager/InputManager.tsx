@@ -7,11 +7,9 @@ import { useSearchParams } from 'react-router-dom';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import { IIdeaQueryParameters, Sort } from 'api/ideas/types';
 import useIdeas from 'api/ideas/useIdeas';
+import useInputTopics from 'api/input_topics/useInputTopics';
 import { TPhases } from 'api/phases/types';
-import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
-import { getTopicIds } from 'api/project_allowed_input_topics/util/getProjectTopicsIds';
 import { IProjectData } from 'api/projects/types';
-import useTopics from 'api/topics/useTopics';
 
 import PostPreview from 'components/admin/PostManager/components/PostPreview';
 import Outlet from 'components/Outlet';
@@ -75,30 +73,14 @@ const InputManager = ({
   const { data: ideaStatuses } = useIdeaStatuses({
     queryParams: { participation_method: 'ideation' },
   });
-  const { data: ideaTopics } = useTopics();
-  const { data: projectAllowedInputTopics } = useProjectAllowedInputTopics({
-    projectId:
-      type === 'ProjectIdeas' && typeof projectId === 'string'
-        ? projectId
-        : undefined,
-  });
+  // Input topics are project-specific, so we only load them when viewing a specific project
+  const { data: inputTopics } = useInputTopics(
+    type === 'ProjectIdeas' && typeof projectId === 'string'
+      ? projectId
+      : undefined
+  );
 
-  const getTopicsData = () => {
-    const topicIds = getTopicIds(projectAllowedInputTopics?.data);
-    // getTopicIds always returns an array atm, so important to check for length
-    // otherwise the if condition will always pass.
-    const topicIdsSet = topicIds.length > 0 ? new Set(topicIds) : undefined;
-
-    if (topicIdsSet) {
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      return ideaTopics?.data.filter((topic) => topicIdsSet?.has(topic.id));
-    }
-
-    return ideaTopics?.data;
-  };
-
-  const topicsData = getTopicsData();
+  const topicsData = inputTopics?.data;
   const [search] = useSearchParams();
   const [selection, setSelection] = useState<Set<string>>(new Set());
 
@@ -128,7 +110,7 @@ const InputManager = ({
     });
   }, [visibleFilterMenus]);
 
-  if (!ideas || !topicsData) return null;
+  if (!ideas) return null;
 
   const getSelectedProject = () => {
     return Array.isArray(queryParameters.projects) &&
@@ -186,7 +168,11 @@ const InputManager = ({
   };
 
   const onChangeTopics = (topics: string[]) => {
-    setQueryParameters({ ...queryParameters, 'page[number]': 1, topics });
+    setQueryParameters({
+      ...queryParameters,
+      'page[number]': 1,
+      input_topics: topics,
+    });
   };
 
   const onChangeStatus = (ideaStatus: string | undefined) => {
@@ -321,7 +307,7 @@ const InputManager = ({
               statuses={ideaStatuses?.data ?? []}
               topics={topicsData}
               selectedPhase={selectedPhaseId}
-              selectedTopics={queryParameters.topics}
+              selectedTopics={queryParameters.input_topics}
               selectedStatus={queryParameters.idea_status}
               selectedProject={selectedProjectId}
               onChangePhaseFilter={onChangePhase}

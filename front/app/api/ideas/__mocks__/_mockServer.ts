@@ -81,11 +81,11 @@ export const ideaDataWithVotes: IIdeaData[] = [
       manual_votes_amount: 0,
     },
     relationships: {
-      topics: {
+      input_topics: {
         data: [
           {
             id: '1732cff1-b2a0-4e60-9924-9d3fb76861e3',
-            type: 'topics',
+            type: 'input_topic',
           },
         ],
       },
@@ -200,11 +200,11 @@ export const ideaDataWithVotes: IIdeaData[] = [
       manual_votes_amount: 0,
     },
     relationships: {
-      topics: {
+      input_topics: {
         data: [
           {
             id: '1732cff1-b2a0-4e60-9924-9d3fb76861e3',
-            type: 'topics',
+            type: 'input_topic',
           },
         ],
       },
@@ -313,11 +313,11 @@ export const ideaData: IIdeaData[] = [
       manual_votes_amount: 0,
     },
     relationships: {
-      topics: {
+      input_topics: {
         data: [
           {
             id: '1732cff1-b2a0-4e60-9924-9d3fb76861e3',
-            type: 'topics',
+            type: 'input_topic',
           },
         ],
       },
@@ -432,11 +432,11 @@ export const ideaData: IIdeaData[] = [
       manual_votes_amount: 0,
     },
     relationships: {
-      topics: {
+      input_topics: {
         data: [
           {
             id: '1732cff1-b2a0-4e60-9924-9d3fb76861e3',
-            type: 'topics',
+            type: 'input_topic',
           },
         ],
       },

@@ -9,6 +9,9 @@ RSpec.describe Idea do
     it { is_expected.to have_many(:related_ideas).through(:idea_relations) }
   end
 
+  it_behaves_like 'claimable_participation'
+  it_behaves_like 'location_trackable_participation'
+
   describe 'title validation' do
     it 'requires title_multiloc when title_multiloc_required? is true' do
       idea = build(:idea, publication_status: 'published')

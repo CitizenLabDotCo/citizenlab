@@ -18,6 +18,7 @@ const Narrow = ({
   startAt,
   endAt,
   hideStatistics,
+  showVisitors = false,
   timeSeries,
   stats,
   currentResolution,
@@ -56,6 +57,7 @@ const Narrow = ({
           startAtMoment={startAt ? moment(startAt) : null}
           endAtMoment={endAt ? moment(endAt) : null}
           resolution={currentResolution}
+          showVisitors={showVisitors}
           margin={{
             left: 5,
             right: -20,

@@ -27,14 +27,13 @@ module ParticipationMethod
 
     # NOTE: This is only ever used by the analyses controller - otherwise the front-end always persists the form
     def create_default_form!
-      form = CustomForm.new(participation_context: phase)
+      form = CustomForm.create(participation_context: phase)
 
       default_fields(form).reverse_each do |field|
         field.save!
         field.move_to_top
       end
 
-      form.save!
       phase.reload
 
       form
@@ -45,8 +44,6 @@ module ParticipationMethod
     end
 
     def default_fields(custom_form)
-      return [] if custom_form.persisted?
-
       multiloc_service = MultilocService.new
       [
         start_page_field(custom_form),
@@ -131,26 +128,13 @@ module ParticipationMethod
       false
     end
 
-    # Attribute used interally by backend to determine if user fields should be shown in the form
-    def user_fields_in_form?
-      return false if posting_permission.nil?
-      return false if posting_permission.user_data_collection == 'anonymous'
-
-      case posting_permission.permitted_by
-      when 'everyone'
-        !posting_permission.permissions_custom_fields.empty?
-      when 'everyone_confirmed_email'
-        posting_permission.user_fields_in_form && !posting_permission.permissions_custom_fields.empty?
-      else
-        if posting_permission.global_custom_fields
-          posting_permission.user_fields_in_form
-        else
-          posting_permission.user_fields_in_form && !posting_permission.permissions_custom_fields.empty?
-        end
-      end
-    end
-
     delegate :user_data_collection, to: :posting_permission
+
+    def user_fields_in_form_enabled?
+      return false if posting_permission.nil?
+
+      posting_permission.user_fields_in_form_enabled?
+    end
 
     private
 
@@ -178,6 +162,10 @@ module ParticipationMethod
     end
 
     def posting_permission
+      # phase should always be defined,
+      # but for some reason it's not in some unit tests.
+      return nil if phase.nil?
+
       @posting_permission ||= Permission.find_by(
         permission_scope_id: phase.id,
         action: 'posting_idea'

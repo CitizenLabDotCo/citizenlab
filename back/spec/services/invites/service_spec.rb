@@ -464,6 +464,25 @@ describe Invites::Service do
       end
     end
 
+    context 'with a banned email' do
+      before { EmailBan.ban!('banned.user@gmail.com') }
+
+      let(:hash_array) do
+        [
+          { email: 'john@john.son' },
+          { email: 'banned.user+alias@gmail.com' }
+        ]
+      end
+
+      it 'fails with email_banned error' do
+        expect { service.bulk_create_xlsx(xlsx, {}) }.to raise_error(Invites::FailedError)
+
+        error = service_errors.sole
+        expect(error.error_key).to eq Invites::ErrorStorage::INVITE_ERRORS[:email_banned]
+        expect(error.row).to eq 3
+      end
+    end
+
     context 'with an email that is already used by an active user (case insensitive)' do
       before { create(:user, email: 'someUser@somedomain.com') }
 

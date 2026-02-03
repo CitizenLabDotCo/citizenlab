@@ -107,4 +107,8 @@ export default defineMessages({
     id: 'app.containers.NewAuthModal.youCantParticipate',
     defaultMessage: "You can't participate",
   },
+  createAnAccount: {
+    id: 'app.containers.Authentication.createAnAccount',
+    defaultMessage: 'Create an account',
+  },
 });

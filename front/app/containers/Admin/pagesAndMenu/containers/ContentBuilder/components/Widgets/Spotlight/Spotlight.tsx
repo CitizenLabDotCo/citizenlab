@@ -10,6 +10,7 @@ import {
   colors,
   Shimmer,
 } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import { CARD_IMAGE_ASPECT_RATIO_STR } from 'api/project_images/useProjectImages';
 
@@ -46,6 +47,7 @@ const Spotlight = ({
 }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
   const craftComponentDefaultPadding = useCraftComponentDefaultPadding();
+  const theme = useTheme();
 
   return (
     <Box
@@ -73,7 +75,7 @@ const Spotlight = ({
           </Title>
           {description && (
             <Text as="span">
-              <QuillEditedContent textColor={colors.textSecondary}>
+              <QuillEditedContent textColor={theme.colors.tenantText}>
                 <div dangerouslySetInnerHTML={{ __html: description }} />
               </QuillEditedContent>
             </Text>

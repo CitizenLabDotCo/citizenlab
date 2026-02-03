@@ -91,7 +91,7 @@ class OmniauthCallbackController < ApplicationController
           @user.save!
           SideFxUserService.new.after_update(@user, nil) # Logs 'registration_completed' activity Job`
           @invite.save!
-          SideFxInviteService.new.after_accept @invite # Logs 'accepted' activity Job
+          SideFxInviteService.new.after_accept(@invite, claim_tokens:)
           verify_and_sign_in(auth, @user, verify, sign_up: true)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
@@ -103,6 +103,7 @@ class OmniauthCallbackController < ApplicationController
           update_user!(auth, @user, authver_method)
           update_identity!(auth, @identity, authver_method)
           SideFxUserService.new.after_update(@user, nil)
+          ClaimTokenService.claim(@user, claim_tokens)
         rescue ActiveRecord::RecordInvalid => e
           ErrorReporter.report(e)
           signin_failure_redirect
@@ -120,7 +121,7 @@ class OmniauthCallbackController < ApplicationController
       @user.identities << @identity
       begin
         @user.save!
-        SideFxUserService.new.after_create(@user, nil)
+        SideFxUserService.new.after_create(@user, nil, claim_tokens:)
         verify_and_sign_in(auth, @user, verify, sign_up: true, user_created: true)
       rescue ActiveRecord::RecordInvalid => e
         Rails.logger.info "Social signup failed: #{e.message}"
@@ -133,6 +134,7 @@ class OmniauthCallbackController < ApplicationController
     continue_auth = verify ? verified_for_sso?(auth, user, user_created) : true
     return unless continue_auth
 
+    IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
     set_auth_cookie(provider: auth['provider'])
     if sign_up
       signup_success_redirect
@@ -177,6 +179,10 @@ class OmniauthCallbackController < ApplicationController
 
   def sso_redirect_path
     omniauth_params&.dig('sso_pathname') || '/'
+  end
+
+  def claim_tokens
+    omniauth_params&.dig('claim_tokens')
   end
 
   # Reject any parameters we don't need to be passed to the frontend in the URL
@@ -234,8 +240,6 @@ class OmniauthCallbackController < ApplicationController
 
   # Updates the auth_hash in a users identity to ensure tokens are up to date for logout (mainly for FranceConnect)
   def update_identity!(auth, identity, authver_method)
-    return if authver_method.instance_of? ::IdHoplr::HoplrOmniauth # Temp fix for Hoplr not being able to log back in
-
     identity.update_auth_hash!(auth, authver_method)
   end
 

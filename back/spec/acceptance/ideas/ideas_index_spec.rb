@@ -11,7 +11,7 @@ resource 'Ideas' do
       parameter :number, 'Page number'
       parameter :size, 'Number of ideas per page'
     end
-    parameter :topics, 'Filter by topics (OR)', required: false
+    parameter :input_topics, 'Filter by topics (OR)', required: false
     parameter :projects, 'Filter by projects (OR)', required: false
     parameter :phase, 'Filter by project phase', required: false
     parameter :basket_id, 'Filter by basket', required: false
@@ -103,50 +103,48 @@ resource 'Ideas' do
       end
 
       example 'List all ideas for a topic' do
-        t1 = create(:topic)
-
         i1 = @ideas.first
-        i1.project.update!(allowed_input_topics: Topic.all)
-        i1.topics << t1
+        t1 = create(:input_topic, project: i1.project)
+        i1.project.update!(input_topics: [t1])
+        i1.input_topics << t1
         i1.save!
 
-        do_request topics: [t1.id]
+        do_request input_topics: [t1.id]
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 1
         expect(json_response[:data][0][:id]).to eq i1.id
       end
 
       example 'List all ideas for a topic with other filters enabled', document: false do
-        t1 = create(:topic)
-
         i1 = @ideas.first
-        i1.project.update!(allowed_input_topics: Topic.all)
-        i1.topics << t1
+        t1 = create(:input_topic, project: i1.project)
+        i1.project.update!(input_topics: [t1])
+        i1.input_topics << t1
         i1.save!
 
-        do_request topics: [t1.id], sort: 'random'
+        do_request input_topics: [t1.id], sort: 'random'
         expect(status).to eq(200)
       end
 
       example 'List all ideas which match one of the given topics', document: false do
-        t1 = create(:topic)
-        t2 = create(:topic)
-        t3 = create(:topic)
+        t1 = create(:input_topic)
+        t2 = create(:input_topic)
+        t3 = create(:input_topic)
 
         i1 = @ideas[0]
-        i1.project.update!(allowed_input_topics: Topic.all)
-        i1.topics = [t1, t3]
+        i1.project.update!(input_topics: [t1, t2, t3])
+        i1.input_topics = [t1, t3]
         i1.save!
         i2 = @ideas[1]
-        i2.project.update!(allowed_input_topics: Topic.all)
-        i2.topics = [t2]
+        i2.project.update!(input_topics: [t1, t2, t3])
+        i2.input_topics = [t2]
         i2.save!
         i3 = @ideas[3]
-        i3.project.update!(allowed_input_topics: Topic.all)
-        i3.topics = [t3, t1, t2]
+        i3.project.update!(input_topics: [t1, t2, t3])
+        i3.input_topics = [t3, t1, t2]
         i3.save!
 
-        do_request topics: [t1.id, t2.id]
+        do_request input_topics: [t1.id, t2.id]
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 3
         expect(json_response[:data].pluck(:id)).to contain_exactly(i1.id, i2.id, i3.id)

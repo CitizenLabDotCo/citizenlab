@@ -54,11 +54,11 @@ RSpec.describe Insights::BasePhaseInsightsService do
       expect(result).to eq(
         {
           visitors: 4,
-          visitors_7_day_change: 0.0, # From 3 (7 to 14 days ago) to 3 (last 7-day period) unique visitors = 0% change
+          visitors_7_day_percent_change: 0.0, # From 3 (7 to 14 days ago) to 3 (last 7-day period) unique visitors = 0% change
           participants: 3,
-          participants_7_day_change: 50.0, # From 2 (7 to 14 days ago) to 3 (last 7-day period) unique participants = 50% increase
-          participation_rate: 0.75,
-          participation_rate_7_day_change: 49.9 # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 0.667 = (((1 - 0.667).to_f / 0.667) * 100.0).round(1)
+          participants_7_day_percent_change: 50.0, # From 2 (7 to 14 days ago) to 3 (last 7-day period) unique participants = 50% increase
+          participation_rate_as_percent: 75.0,
+          participation_rate_7_day_percent_change: 49.9 # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 0.667 = (((1 - 0.667).to_f / 0.667) * 100.0).round(1)
         }
       )
     end
@@ -111,10 +111,10 @@ RSpec.describe Insights::BasePhaseInsightsService do
     end
 
     it 'includes base custom_field attributes' do
-      create(:custom_field, resource_type: 'User', key: 'birthyear', code: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' })
-      create(:custom_field, resource_type: 'User', key: 'single_select', code: nil, input_type: 'select', title_multiloc: { en: 'Single Select' })
-      create(:custom_field, resource_type: 'User', key: 'multi_select', code: nil, input_type: 'multiselect', title_multiloc: { en: 'Multi Select' })
-      create(:custom_field, resource_type: 'User', key: 'checkbox', code: nil, input_type: 'checkbox', title_multiloc: { en: 'Checkbox' })
+      birthyear_field = create(:custom_field, resource_type: 'User', key: 'birthyear', code: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' })
+      single_select_field = create(:custom_field, resource_type: 'User', key: 'single_select', code: nil, input_type: 'select', title_multiloc: { en: 'Single Select' })
+      multi_select_field = create(:custom_field, resource_type: 'User', key: 'multi_select', code: nil, input_type: 'multiselect', title_multiloc: { en: 'Multi Select' })
+      checkbox_field = create(:custom_field, resource_type: 'User', key: 'checkbox', code: nil, input_type: 'checkbox', title_multiloc: { en: 'Checkbox' })
 
       participation = create(:basket_participation)
 
@@ -123,10 +123,28 @@ RSpec.describe Insights::BasePhaseInsightsService do
       result = service.send(:demographics_data, flattened_participations, participant_ids)
 
       expect(result).to contain_exactly(
-        hash_including(key: 'birthyear', code: 'birthyear', input_type: 'number', title_multiloc: { 'en' => 'Birthyear' }),
-        hash_including(key: 'single_select', code: nil, input_type: 'select', title_multiloc: { 'en' => 'Single Select' }),
-        hash_including(key: 'multi_select', code: nil, input_type: 'multiselect', title_multiloc: { 'en' => 'Multi Select' }),
-        hash_including(key: 'checkbox', code: nil, input_type: 'checkbox', title_multiloc: { 'en' => 'Checkbox' })
+        hash_including(id: birthyear_field.id, key: 'birthyear', code: 'birthyear', input_type: 'number', title_multiloc: { 'en' => 'Birthyear' }),
+        hash_including(id: single_select_field.id, key: 'single_select', code: nil, input_type: 'select', title_multiloc: { 'en' => 'Single Select' }),
+        hash_including(id: multi_select_field.id, key: 'multi_select', code: nil, input_type: 'multiselect', title_multiloc: { 'en' => 'Multi Select' }),
+        hash_including(id: checkbox_field.id, key: 'checkbox', code: nil, input_type: 'checkbox', title_multiloc: { 'en' => 'Checkbox' })
+      )
+    end
+
+    it 'includes base custom_field attributes even when no participations' do
+      birthyear_field = create(:custom_field, resource_type: 'User', key: 'birthyear', code: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' })
+      single_select_field = create(:custom_field, resource_type: 'User', key: 'single_select', code: nil, input_type: 'select', title_multiloc: { en: 'Single Select' })
+      multi_select_field = create(:custom_field, resource_type: 'User', key: 'multi_select', code: nil, input_type: 'multiselect', title_multiloc: { en: 'Multi Select' })
+      checkbox_field = create(:custom_field, resource_type: 'User', key: 'checkbox', code: nil, input_type: 'checkbox', title_multiloc: { en: 'Checkbox' })
+
+      flattened_participations = []
+      participant_ids = []
+      result = service.send(:demographics_data, flattened_participations, participant_ids)
+
+      expect(result).to contain_exactly(
+        hash_including(id: birthyear_field.id, key: 'birthyear', code: 'birthyear', input_type: 'number', title_multiloc: { 'en' => 'Birthyear' }),
+        hash_including(id: single_select_field.id, key: 'single_select', code: nil, input_type: 'select', title_multiloc: { 'en' => 'Single Select' }),
+        hash_including(id: multi_select_field.id, key: 'multi_select', code: nil, input_type: 'multiselect', title_multiloc: { 'en' => 'Multi Select' }),
+        hash_including(id: checkbox_field.id, key: 'checkbox', code: nil, input_type: 'checkbox', title_multiloc: { 'en' => 'Checkbox' })
       )
     end
 
@@ -135,8 +153,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
       let!(:option_a) { create(:custom_field_option, custom_field: single_select_field, key: 'a', title_multiloc: { en: 'Option A' }) }
       let!(:option_b) { create(:custom_field_option, custom_field: single_select_field, key: 'b', title_multiloc: { en: 'Option B' }) }
 
-      let(:participation1) { create(:basket_participation, user_custom_field_values: { 'single_select' => 'a' }) }
-      let(:participation2) { create(:basket_participation, user_custom_field_values: { 'single_select' => 'b' }) }
+      let(:participation1) { create(:basket_participation, user: create(:user), user_custom_field_values: { 'single_select' => 'a' }) }
+      let(:participation2) { create(:basket_participation, user: create(:user), user_custom_field_values: { 'single_select' => 'b' }) }
 
       let(:flattened_participations) { [participation1, participation2] }
       let(:participant_ids) { flattened_participations.pluck(:participant_id).uniq }
@@ -148,12 +166,27 @@ RSpec.describe Insights::BasePhaseInsightsService do
           expect(result).to include(
             hash_including(
               key: 'single_select',
-              r_score: nil, # No reference distribution set
               options: {
                 'a' => { 'title_multiloc' => { 'en' => 'Option A' }, 'ordering' => 0 },
                 'b' => { 'title_multiloc' => { 'en' => 'Option B' }, 'ordering' => 1 }
               },
               series: { 'a' => 1, 'b' => 1, '_blank' => 0 },
+              reference_distribution: nil # No reference distribution set
+            )
+          )
+        end
+
+        it 'performs as expected when no participations' do
+          result = service.send(:demographics_data, [], [])
+
+          expect(result).to include(
+            hash_including(
+              key: 'single_select',
+              options: {
+                'a' => { 'title_multiloc' => { 'en' => 'Option A' }, 'ordering' => 0 },
+                'b' => { 'title_multiloc' => { 'en' => 'Option B' }, 'ordering' => 1 }
+              },
+              series: { 'a' => 0, 'b' => 0, '_blank' => 0 },
               reference_distribution: nil # No reference distribution set
             )
           )
@@ -175,12 +208,27 @@ RSpec.describe Insights::BasePhaseInsightsService do
           expect(result).to include(
             hash_including(
               key: 'single_select',
-              r_score: 0.9411764705882353,
               options: {
                 'a' => { 'title_multiloc' => { 'en' => 'Option A' }, 'ordering' => 0 },
                 'b' => { 'title_multiloc' => { 'en' => 'Option B' }, 'ordering' => 1 }
               },
               series: { 'a' => 1, 'b' => 1, '_blank' => 0 },
+              reference_distribution: { 'a' => 480, 'b' => 510 }
+            )
+          )
+        end
+
+        it 'performs as expected when no participations' do
+          result = service.send(:demographics_data, [], [])
+
+          expect(result).to include(
+            hash_including(
+              key: 'single_select',
+              options: {
+                'a' => { 'title_multiloc' => { 'en' => 'Option A' }, 'ordering' => 0 },
+                'b' => { 'title_multiloc' => { 'en' => 'Option B' }, 'ordering' => 1 }
+              },
+              series: { 'a' => 0, 'b' => 0, '_blank' => 0 },
               reference_distribution: { 'a' => 480, 'b' => 510 }
             )
           )
@@ -204,12 +252,27 @@ RSpec.describe Insights::BasePhaseInsightsService do
         expect(result).to include(
           hash_including(
             key: 'multi_select',
-            r_score: nil, # No reference distribution can be set for multiselect fields
             options: {
               'x' => { 'title_multiloc' => { 'en' => 'Option X' }, 'ordering' => 0 },
               'y' => { 'title_multiloc' => { 'en' => 'Option Y' }, 'ordering' => 1 }
             },
             series: { 'x' => 2, 'y' => 1, '_blank' => 0 },
+            reference_distribution: nil # No reference distribution can be set for multiselect fields
+          )
+        )
+      end
+
+      it 'performs as expected when no participations' do
+        result = service.send(:demographics_data, [], [])
+
+        expect(result).to include(
+          hash_including(
+            key: 'multi_select',
+            options: {
+              'x' => { 'title_multiloc' => { 'en' => 'Option X' }, 'ordering' => 0 },
+              'y' => { 'title_multiloc' => { 'en' => 'Option Y' }, 'ordering' => 1 }
+            },
+            series: { 'x' => 0, 'y' => 0, '_blank' => 0 },
             reference_distribution: nil # No reference distribution can be set for multiselect fields
           )
         )
@@ -230,8 +293,19 @@ RSpec.describe Insights::BasePhaseInsightsService do
         expect(result).to include(
           hash_including(
             key: 'checkbox',
-            r_score: nil, # # No reference distribution can be set for checkbox fields
             series: { true => 1, false => 1, '_blank' => 0 },
+            reference_distribution: nil # No reference distribution can be set for checkbox fields
+          )
+        )
+      end
+
+      it 'performs as expected when no participations' do
+        result = service.send(:demographics_data, [], [])
+
+        expect(result).to include(
+          hash_including(
+            key: 'checkbox',
+            series: { true => 0, false => 0, '_blank' => 0 },
             reference_distribution: nil # No reference distribution can be set for checkbox fields
           )
         )
@@ -253,45 +327,81 @@ RSpec.describe Insights::BasePhaseInsightsService do
     # Ensure consistent date as stats will be different in first six months of year vs last six months
     before { travel_to(Date.parse('2025-10-01')) }
 
-    it 'calculates demographics data correctly when no reference distribution' do
-      participant_custom_field_values = service.send(:participants_custom_field_values, participations.values.flatten, participant_ids)
-      result = service.send(:birthyear_demographics_data, participant_custom_field_values)
+    context 'without reference distribution' do
+      it 'calculates demographics data correctly' do
+        participant_custom_field_values = service.send(:participants_custom_field_values, participations.values.flatten, participant_ids)
+        result = service.send(:birthyear_demographics_data, participant_custom_field_values)
 
-      expect(result).to match({
-        r_score: nil,
-        series: {
-          '0-9' => 0,
-          '10-19' => 0,
-          '20-29' => 2,
-          '30-39' => 1,
-          '40-49' => 0,
-          '50-59' => 0,
-          '60-69' => 0,
-          '70-79' => 0,
-          '80-89' => 0,
-          '90+' => 0,
-          '_blank' => 1
-        },
-        reference_distribution: nil
-      })
+        expect(result).to match({
+          series: {
+            '0-9' => 0,
+            '10-19' => 0,
+            '20-29' => 2,
+            '30-39' => 1,
+            '40-49' => 0,
+            '50-59' => 0,
+            '60-69' => 0,
+            '70-79' => 0,
+            '80-89' => 0,
+            '90+' => 0,
+            '_blank' => 1
+          },
+          reference_distribution: nil
+        })
+      end
+
+      it 'performs as expected when no participations' do
+        participant_custom_field_values = service.send(:participants_custom_field_values, [], [])
+        result = service.send(:birthyear_demographics_data, participant_custom_field_values)
+
+        expect(result).to match({
+          series: {
+            '0-9' => 0,
+            '10-19' => 0,
+            '20-29' => 0,
+            '30-39' => 0,
+            '40-49' => 0,
+            '50-59' => 0,
+            '60-69' => 0,
+            '70-79' => 0,
+            '80-89' => 0,
+            '90+' => 0,
+            '_blank' => 0
+          },
+          reference_distribution: nil
+        })
+      end
     end
 
-    it 'calculates demographics data correctly when reference distribution is present' do
-      create(
-        :binned_distribution,
-        custom_field: custom_field_birthyear,
-        bins: [18, 25, 35, 45, 55, 65, nil], # Age ranges: <18, 18-25, 25-35, 35-45, 45-65, >65
-        counts: [50, 200, 400, 300, 50, 700] # Population in each bin
-      )
+    context 'with reference distribution' do
+      before do
+        create(
+          :binned_distribution,
+          custom_field: custom_field_birthyear,
+          bins: [18, 25, 35, 45, 55, 65, nil], # Age ranges: <18, 18-25, 25-35, 35-45, 45-65, >65
+          counts: [50, 200, 400, 300, 50, 700] # Population in each bin
+        )
+      end
 
-      participant_custom_field_values = service.send(:participants_custom_field_values, participations.values.flatten, participant_ids)
-      result = service.send(:birthyear_demographics_data, participant_custom_field_values)
+      it 'calculates demographics data correctly' do
+        participant_custom_field_values = service.send(:participants_custom_field_values, participations.values.flatten, participant_ids)
+        result = service.send(:birthyear_demographics_data, participant_custom_field_values)
 
-      expect(result).to match({
-        r_score: 0.0,
-        series: { '18-24' => 0, '25-34' => 2, '35-44' => 1, '45-54' => 0, '55-64' => 0, '65+' => 0, '_blank' => 1 },
-        reference_distribution: { '18-24' => 50, '25-34' => 200, '35-44' => 400, '45-54' => 300, '55-64' => 50, '65+' => 700 }
-      })
+        expect(result).to match({
+          series: { '18-24' => 0, '25-34' => 2, '35-44' => 1, '45-54' => 0, '55-64' => 0, '65+' => 0, '_blank' => 1 },
+          reference_distribution: { '18-24' => 50, '25-34' => 200, '35-44' => 400, '45-54' => 300, '55-64' => 50, '65+' => 700 }
+        })
+      end
+
+      it 'performs as expected when no participations' do
+        participant_custom_field_values = service.send(:participants_custom_field_values, [], [])
+        result = service.send(:birthyear_demographics_data, participant_custom_field_values)
+
+        expect(result).to match({
+          series: { '18-24' => 0, '25-34' => 0, '35-44' => 0, '45-54' => 0, '55-64' => 0, '65+' => 0, '_blank' => 0 },
+          reference_distribution: { '18-24' => 50, '25-34' => 200, '35-44' => 400, '45-54' => 300, '55-64' => 50, '65+' => 700 }
+        })
+      end
     end
   end
 
@@ -314,7 +424,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
         result = service.send(:select_or_checkbox_field_demographics_data, participant_custom_field_values, custom_field_single_select)
 
         expect(result).to match({
-          r_score: nil,
           series: { 'a' => 2, 'b' => 1, '_blank' => 1 },
           reference_distribution: nil,
           options: {
@@ -335,7 +444,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
         result = service.send(:select_or_checkbox_field_demographics_data, participant_custom_field_values, custom_field_single_select)
 
         expect(result).to match({
-          r_score: 0.47058823529411764,
           series: { 'a' => 2, 'b' => 1, '_blank' => 1 },
           reference_distribution: { 'a' => 480, 'b' => 510 },
           options: {
@@ -363,7 +471,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
         result = service.send(:select_or_checkbox_field_demographics_data, participant_custom_field_values, custom_field_multi_select)
 
         expect(result).to match({
-          r_score: nil,
           series: { 'a' => 2, 'b' => 2, '_blank' => 1 },
           reference_distribution: nil,
           options: {
@@ -389,7 +496,6 @@ RSpec.describe Insights::BasePhaseInsightsService do
         result = service.send(:select_or_checkbox_field_demographics_data, participant_custom_field_values, custom_field_checkbox)
 
         expect(result).to match({
-          r_score: nil,
           series: { true => 0, false => 2, '_blank' => 2 },
           reference_distribution: nil,
           options: nil
@@ -558,6 +664,12 @@ RSpec.describe Insights::BasePhaseInsightsService do
       expect(service.send(:percentage_change, 100, 0)).to eq(-100.0)
     end
 
+    it 'returns null when phase less than 14 days old' do
+      phase.update(start_at: 10.days.ago)
+
+      expect(service.send(:percentage_change, 100, 150)).to be_nil
+    end
+
     it 'rounds percentage change to one decimal place' do
       expect(service.send(:percentage_change, 3, 4)).to eq(33.3)
       expect(service.send(:percentage_change, 7, 5)).to eq(-28.6)
@@ -594,6 +706,54 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
       # Unique participants in last 7 days: user_1, user_3, user_4 => 3
       expect(service.send(:participations_7_day_change, participations)).to eq(50.0)
+    end
+  end
+
+  describe '#parse_user_custom_field_values' do
+    let(:prefix) { UserFieldsInFormService.prefix }
+
+    it 'preferentially merges the parsed item.custom_field_values if present' do
+      item = create(:idea, custom_field_values: { "#{prefix}key1" => 'value1', 'other_key' => 'other_value' })
+
+      result = service.send(:parse_user_custom_field_values, item, nil)
+      expect(result).to eq({ 'key1' => 'value1' })
+
+      user = create(:user, custom_field_values: { 'key1' => 'value2' })
+
+      result = service.send(:parse_user_custom_field_values, item, user)
+      expect(result).to eq({ 'key1' => 'value1' })
+    end
+
+    it 'merges user.custom_field_values not parsed from item.custom_field_values' do
+      item = create(:idea, custom_field_values: { "#{prefix}key1" => 'value1', 'other_key' => 'other_value' })
+      user = create(:user, custom_field_values: { 'key2' => 'value2' })
+
+      result = service.send(:parse_user_custom_field_values, item, user)
+      expect(result).to eq({ 'key1' => 'value1', 'key2' => 'value2' })
+    end
+
+    it 'avoids collisions with similar keys in idea custom_field_values' do
+      item = create(:idea, custom_field_values: { "#{prefix}key" => 'value1', 'key' => 'value2' })
+      user = create(:user, custom_field_values: { 'key' => 'value3' })
+
+      result = service.send(:parse_user_custom_field_values, item, user)
+      expect(result).to eq({ 'key' => 'value1' })
+    end
+
+    it 'returns the user.custom_field_values if item.custom_field_values is not present' do
+      item = create(:idea, custom_field_values: {})
+      user = create(:user, custom_field_values: { 'key2' => 'value2' })
+
+      result = service.send(:parse_user_custom_field_values, item, user)
+      expect(result).to eq({ 'key2' => 'value2' })
+    end
+
+    it 'returns an empty hash if neither item nor user have custom_field_values' do
+      item = create(:idea, custom_field_values: {})
+      user = create(:user, custom_field_values: {})
+
+      result = service.send(:parse_user_custom_field_values, item, user)
+      expect(result).to eq({})
     end
   end
 end

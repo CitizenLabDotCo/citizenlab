@@ -8,6 +8,7 @@ import { LogicConfig, ResultUngrouped } from 'api/survey_results/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
@@ -32,12 +33,14 @@ type FormResultsQuestionProps = {
   result: ResultUngrouped;
   totalSubmissions: number;
   logicConfig: LogicConfig;
+  isPdfExport?: boolean;
 };
 
 const FormResultsQuestion = ({
   result,
   totalSubmissions,
   logicConfig,
+  isPdfExport,
 }: FormResultsQuestionProps) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -66,9 +69,9 @@ const FormResultsQuestion = ({
     );
   }
 
-  return (
+  const content = (
     <Box
-      border="1px solid #e0e0e0"
+      border={isPdfExport ? 'none' : '1px solid #e0e0e0'}
       borderRadius="4px"
       p="10px 20px 10px 20px"
       mb="20px"
@@ -108,6 +111,13 @@ const FormResultsQuestion = ({
       </Box>
     </Box>
   );
+
+  // Wrap in PageBreakBox for PDF export to prevent content splitting across pages
+  if (isPdfExport) {
+    return <PageBreakBox>{content}</PageBreakBox>;
+  }
+
+  return content;
 };
 
 export default FormResultsQuestion;

@@ -16,7 +16,7 @@ module MultiTenancy
         service = CommunityMonitorService.new
         @project = service.project || service.create_and_set_project
         @phase = @project.phases.first
-        @fields = @phase.custom_form.custom_fields.reject(&:page?)
+        @fields = @phase.custom_form.custom_fields.select(&:supports_submission?)
         @num_quarters.times do |num_quarters_ago| # NOTE: 0 = current quarter
           runner.num_ideas.times do |index|
             create_survey_response((3 * num_quarters_ago).months.ago, index)

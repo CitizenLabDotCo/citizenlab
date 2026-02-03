@@ -19,6 +19,7 @@ export type SvgProps = {
   title?: string | JSX.Element;
   viewBox?: string;
   fill?: string;
+  stroke?: string;
   ariaHidden?: boolean;
   height?: string;
   width?: string;

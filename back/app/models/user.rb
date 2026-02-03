@@ -138,6 +138,7 @@ class User < ApplicationRecord
   end)
 
   has_many :ideas, -> { order(:project_id) }, foreign_key: :author_id, dependent: :nullify
+  has_many :idea_exposures, dependent: :destroy
   has_many :idea_imports, class_name: 'BulkImportIdeas::IdeaImport', foreign_key: :import_user_id, dependent: :nullify
   has_many :manual_votes_last_updated_ideas, class_name: 'Idea', foreign_key: :manual_votes_last_updated_by_id, dependent: :nullify
   has_many :manual_voters_last_updated_phases, class_name: 'Phase', foreign_key: :manual_voters_last_updated_by_id, dependent: :nullify
@@ -151,6 +152,7 @@ class User < ApplicationRecord
   has_many :cosponsorships, dependent: :destroy
   has_many :cosponsored_ideas, through: :cosponsorships, source: :idea
   has_many :files, class_name: 'Files::File', foreign_key: :uploader_id, inverse_of: :uploader, dependent: :nullify
+  has_many :claim_tokens, foreign_key: :pending_claimer_id, inverse_of: :pending_claimer, dependent: :destroy
 
   before_validation :sanitize_bio_multiloc, if: :bio_multiloc
   before_validation :sanitize_first_name, if: :first_name_changed?
@@ -197,6 +199,7 @@ class User < ApplicationRecord
   validate :validate_not_duplicate_new_email
   validate :validate_can_update_email, on: :form_submission # only called if `save` is called w/ `context: :form_submission`
   validate :validate_email_domains_blacklist, if: :email_or_new_email_changed?
+  validate :validate_emails_not_banned, if: :email_or_new_email_changed?
 
   before_destroy :remove_initiated_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, foreign_key: :recipient_id, dependent: :destroy
@@ -385,6 +388,20 @@ class User < ApplicationRecord
       errors.add(field, 'something_went_wrong', code: 'zrb-42')
       Rails.logger.info "Validation error! Email domain blacklisted: #{domain}" # Clearer message in the logs
     end
+  end
+
+  def validate_emails_not_banned
+    validate_email_not_banned(:email)
+    validate_email_not_banned(:new_email)
+  end
+
+  def validate_email_not_banned(field)
+    value = send(field)
+    return if value.blank?
+    return unless EmailBan.banned?(value)
+
+    errors.add(field, 'something_went_wrong', code: 'zrb-43')
+    Rails.logger.info "Validation error! Email banned: #{value.split('@')&.last}"
   end
 
   def remove_initiated_notifications

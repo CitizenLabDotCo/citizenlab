@@ -1,6 +1,7 @@
 export interface TimeSeriesResponseRow {
   date_group: string;
   participants: number;
+  visitors?: number;
 }
 
 export interface ParticipantsResponse {

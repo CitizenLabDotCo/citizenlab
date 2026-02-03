@@ -6,6 +6,7 @@ import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
 import { trackEventByName } from 'utils/analytics';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import { clearClaimTokens } from 'utils/claimToken';
 
 import tracks from '../../tracks';
 import {
@@ -58,6 +59,7 @@ export const sharedSteps = (
 
       // When the user returns from SSO
       RESUME_FLOW_AFTER_SSO: async (flow: 'signup' | 'signin') => {
+        clearClaimTokens();
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
@@ -169,6 +171,10 @@ export const sharedSteps = (
         } else {
           setError('unknown');
         }
+      },
+
+      TRIGGER_POST_PARTICIPATION_FLOW: async () => {
+        setCurrentStep('post-participation:email');
       },
     },
 

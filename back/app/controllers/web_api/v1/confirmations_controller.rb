@@ -17,6 +17,7 @@ class WebApi::V1::ConfirmationsController < ApplicationController
 
     if result.success?
       SideFxUserService.new.after_update(user, user)
+      IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
 
       payload = user.to_token_payload
       auth_token = AuthToken::AuthToken.new payload: payload

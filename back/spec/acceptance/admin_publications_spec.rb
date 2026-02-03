@@ -34,7 +34,7 @@ resource 'AdminPublication' do
         parameter :number, 'Page number'
         parameter :size, 'Number of projects per page'
       end
-      parameter :topics, 'Filter by topics (AND)', required: false
+      parameter :global_topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :depth, 'Filter by depth', required: false
       parameter :search, 'Search text of title, description, preview, and slug', required: false
@@ -238,15 +238,15 @@ resource 'AdminPublication' do
 
       example 'List all admin publications with all specified model filters' do
         # add more model filters in this spec and change the next expect if it fails (it means the constant was changed)
-        expect(ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS).to eq(%i[topics areas])
+        expect(ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS).to eq(%i[global_topics areas])
 
-        topic = create(:topic)
+        topic = create(:global_topic)
         area = create(:area)
-        published_projects[0].update!(topics: [topic], areas: [area])
-        published_projects[1].update!(topics: [topic])
+        published_projects[0].update!(global_topics: [topic], areas: [area])
+        published_projects[1].update!(global_topics: [topic])
         published_projects[2].update!(areas: [area])
 
-        do_request({ topics: [topic.id], areas: [area.id] })
+        do_request({ global_topics: [topic.id], areas: [area.id] })
         expect(publication_ids).to contain_exactly(published_projects[0].id, custom_folder.id)
       end
 
@@ -459,7 +459,7 @@ resource 'AdminPublication' do
         parameter :number, 'Page number'
         parameter :size, 'Number of projects per page'
       end
-      parameter :topics, 'Filter by topics (AND)', required: false
+      parameter :global_topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :remove_not_allowed_parents, 'Filter out folders with no visible children for the current user', required: false
       parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default', required: false
@@ -559,8 +559,8 @@ resource 'AdminPublication' do
         end
 
         example 'searching with query and filtering by topic', document: false do
-          topic = create(:topic)
-          project_with_topic = create(:project, topics: [topic],
+          topic = create(:global_topic)
+          project_with_topic = create(:project, global_topics: [topic],
             admin_publication_attributes: { publication_status: 'published' },
             title_multiloc: {
               en: 'fancy title'
@@ -696,7 +696,7 @@ resource 'AdminPublication' do
         parameter :number, 'Page number'
         parameter :size, 'Number of projects per page'
       end
-      parameter :topics, 'Filter by topics (AND)', required: false
+      parameter :global_topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :depth, 'Filter by depth', required: false
       parameter :search, 'Search text of title, description, preview, and slug', required: false
@@ -790,7 +790,7 @@ resource 'AdminPublication' do
         parameter :number, 'Page number'
         parameter :size, 'Number of projects per page'
       end
-      parameter :topics, 'Filter by topics (AND)', required: false
+      parameter :global_topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :depth, 'Filter by depth', required: false
       parameter :search, 'Search text of title, description, preview, and slug', required: false

@@ -20,7 +20,7 @@ If the new topic is very similar, but slightly diverges, propose a new title and
 These are the old topics:
 <topics>
   <% old_topics.each_with_index do |old_topic, index| %>
-    <topic id="OLD-<%= index %>">
+    <topic id="OLD-<%= index + 1 %>">
       <title><%= multiloc_service.t(old_topic.title_multiloc) %></title>
       <description><%= multiloc_service.t(old_topic.description_multiloc) %></description>
     </topic>

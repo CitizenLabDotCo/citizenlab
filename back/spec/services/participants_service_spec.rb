@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'test_prof/recipes/rspec/factory_default'
 
 describe ParticipantsService do
   let(:service) { described_class.new }
@@ -378,20 +379,20 @@ describe ParticipantsService do
     end
   end
 
-  describe 'topics_participants' do
-    it 'returns participants of given topics' do
-      t1, t2, t3 = create_list(:topic, 3)
-      project = create(:project, allowed_input_topics: [t1, t2, t3])
+  describe 'input_topics_participants' do
+    it 'returns participants of given input topics' do
+      t1, t2, t3 = create_list(:input_topic, 3)
+      project = create(:project, input_topics: [t1, t2, t3])
       participants = create_list(:user, 3)
       pp1, pp2, pp3 = participants
       others = create_list(:user, 3)
-      i1 = create(:idea, topics: [t1], author: pp1, project: project)
-      create(:idea, topics: [t2, t3], author: pp2, project: project)
-      create(:idea, topics: [t3], author: pp1, project: project)
-      create(:idea, topics: [], author: others.first, project: project)
+      i1 = create(:idea, input_topics: [t1], author: pp1, project: project)
+      create(:idea, input_topics: [t2, t3], author: pp2, project: project)
+      create(:idea, input_topics: [t3], author: pp1, project: project)
+      create(:idea, input_topics: [], author: others.first, project: project)
       create(:comment, idea: i1, author: pp3)
 
-      expect(service.topics_participants([t1, t2]).map(&:id)).to match_array participants.map(&:id)
+      expect(service.input_topics_participants([t1, t2]).map(&:id)).to match_array participants.map(&:id)
     end
   end
 
@@ -479,6 +480,144 @@ describe ParticipantsService do
 
       expect(Idea.where(id: idea.id)).to exist
       expect(Idea.where(id: idea_in_voting_phase.id)).to exist
+    end
+  end
+
+  describe 'user_participation_stats' do
+    let(:user) { create(:user) }
+
+    it 'returns counts for all participation types' do
+      # Optimization: Eliminates cascades partially
+      create_default(:single_phase_ideation_project)
+      create_default(:idea_status)
+      create_default(:idea)
+
+      create(:idea, author: user, publication_status: 'published')
+      create(:reaction, user: user)
+      create(:comment, author: user, publication_status: 'published')
+      create(:basket, user: user, submitted_at: Time.current)
+      create(:poll_response, user: user)
+      create(:event_attendance, attendee: user)
+      create_list(:volunteer, 2, user: user)
+
+      # The following records should not be counted
+      create(:idea, author: user, publication_status: 'draft')
+      create(:comment, author: user, publication_status: 'deleted')
+      create(:basket, user: user, submitted_at: nil)
+
+      expect(service.user_participation_stats(user)).to eq(
+        ideas_count: 1,
+        proposals_count: 0,
+        survey_responses_count: 0,
+        comments_count: 1,
+        reactions_count: 1,
+        baskets_count: 1,
+        poll_responses_count: 1,
+        event_attendances_count: 1,
+        volunteers_count: 2
+      )
+    end
+
+    it 'returns zero counts when user has no participation' do
+      expect(service.user_participation_stats(user).values).to all(eq 0)
+    end
+
+    it 'counts ideas, proposals, and survey responses separately' do
+      create_default(:idea_status)
+      create_default(:single_phase_native_survey_project)
+      create_default(:single_phase_proposals_project)
+
+      create(:idea_status_proposed)
+      create(:idea, author: user, publication_status: 'published')
+      create_list(:proposal, 2, author: user, publication_status: 'published')
+      create_list(:native_survey_response, 3, author: user, publication_status: 'published')
+
+      stats = service.user_participation_stats(user)
+
+      expect(stats[:ideas_count]).to eq(1)
+      expect(stats[:proposals_count]).to eq(2)
+      expect(stats[:survey_responses_count]).to eq(3)
+    end
+  end
+
+  describe 'destroy_user_participation_data' do
+    before_all do
+      Analytics::PopulateDimensionsService.populate_types
+    end
+
+    let(:user) { create(:user) }
+    let(:other_user) { create(:user) }
+
+    it 'destroys all participation data for the user' do
+      idea = create(:idea, author: user)
+      comment = create(:comment, author: user)
+      reaction = create(:reaction, user: user)
+      basket = create(:basket, user: user, submitted_at: Time.zone.now)
+      poll_response = create(:poll_response, user: user)
+      volunteer = create(:volunteer, user: user)
+      event_attendance = create(:event_attendance, attendee: user)
+
+      service.destroy_user_participation_data(user)
+
+      # Hard-deleted participation types
+      expect { Idea.find(idea.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { Reaction.find(reaction.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { Basket.find(basket.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { Polls::Response.find(poll_response.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { Volunteering::Volunteer.find(volunteer.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { Events::Attendance.find(event_attendance.id) }.to raise_error(ActiveRecord::RecordNotFound)
+
+      # Comments are soft-deleted to preserve thread structure
+      expect(Comment.find(comment.id).publication_status).to eq('deleted')
+    end
+
+    it 'updates counts after destroying participation data' do
+      project = create(:project_with_active_ideation_phase)
+      ideation_phase = project.phases.first
+
+      # User's idea + other user's idea that user reacts to and comments on
+      create(:idea, author: user, project: project, phases: [ideation_phase])
+      other_idea = create(:idea, author: other_user, project: project, phases: [ideation_phase])
+      create(:comment, author: user, idea: other_idea)
+      create(:reaction, user: user, reactable: other_idea, mode: 'up')
+
+      # Budgeting phase with basket
+      budgeting_phase = create(:budgeting_phase, project: project)
+      budget_idea = create(:idea, author: other_user, phases: [budgeting_phase], budget: 100)
+      basket = create(:basket, user: user, phase: budgeting_phase)
+      create(:baskets_idea, basket: basket, idea: budget_idea)
+      Basket.update_counts(budgeting_phase)
+
+      expect { service.destroy_user_participation_data(user) }
+        .to change { project.reload.ideas_count }.from(3).to(2)
+        .and change { other_idea.reload.likes_count }.from(1).to(0)
+        .and change { other_idea.reload.comments_count }.from(1).to(0)
+        .and change { budget_idea.reload.baskets_count }.from(1).to(0)
+        .and change { budget_idea.reload.votes_count }.from(100).to(0)
+        .and change { budgeting_phase.reload.baskets_count }.from(1).to(0)
+    end
+
+    it 'clears project participant caches for affected projects' do
+      project1, project2 = create_list(:project, 2)
+      create(:idea, author: user, project: project1)
+      create(:comment, author: user, idea: create(:idea, project: project2))
+
+      expect(service).to receive(:clear_project_participants_count_cache).with(project1)
+      expect(service).to receive(:clear_project_participants_count_cache).with(project2)
+
+      service.destroy_user_participation_data(user)
+    end
+
+    it 'does not delete other users participation data' do
+      idea = create(:idea, author: other_user)
+      comment = create(:comment, author: other_user)
+      reaction = create(:reaction, user: other_user)
+
+      service.destroy_user_participation_data(user)
+
+      expect(Idea.find(idea.id)).to be_present
+      expect(Comment.find(comment.id).publication_status).to eq('published')
+      expect(Reaction.find(reaction.id)).to be_present
     end
   end
 end

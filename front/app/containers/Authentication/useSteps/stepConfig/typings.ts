@@ -31,7 +31,10 @@ export type Step =
 
   // sso verification flow
   | 'sso-verification:sso-providers'
-  | 'sso-verification:sso-providers-policies';
+  | 'sso-verification:sso-providers-policies'
+
+  // post-participation flow (sign up after participation)
+  | 'post-participation:email';
 
 export interface BuiltInFieldsUpdate {
   first_name?: string;

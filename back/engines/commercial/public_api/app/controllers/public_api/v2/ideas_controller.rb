@@ -10,7 +10,7 @@ module PublicApi
         **finder_params
       ).execute
 
-      list_items(ideas, V2::IdeaSerializer, includes: %i[idea_images project idea_status])
+      list_items(ideas, V2::IdeaSerializer, includes: %i[idea_images project creation_phase idea_status])
     end
 
     def show
@@ -23,7 +23,7 @@ module PublicApi
 
       side_fx.before_create(idea, nil)
       if idea.save
-        side_fx.after_create(idea, nil)
+        side_fx.after_create(idea, nil, nil)
         show_item idea, V2::IdeaSerializer, status: :created
       else
         render json: { errors: idea.errors.details }, status: :unprocessable_entity
@@ -52,26 +52,33 @@ module PublicApi
     end
 
     def create_params
-      params.require(:idea).permit(
+      result = params.require(:idea).permit(
         :project_id,
         :assignee_id,
         :idea_status_id,
         title_multiloc: {},
         body_multiloc: {},
         topic_ids: [],
+        input_topic_ids: [],
         phase_ids: []
       )
+      result[:input_topic_ids] = result.delete(:topic_ids) if result.key?(:topic_ids)
+      result
     end
 
     def update_params
-      params.require(:idea).permit(
+      result = params.require(:idea).permit(
         :assignee_id,
         :idea_status_id,
         title_multiloc: {},
         body_multiloc: {},
         topic_ids: [],
+        input_topic_ids: [],
         phase_ids: []
       )
+
+      result[:input_topic_ids] = result.delete(:topic_ids) if result.key?(:topic_ids)
+      result
     end
 
     def side_fx

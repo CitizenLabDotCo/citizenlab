@@ -14,11 +14,12 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { triggerPostParticipationFlow } from 'containers/Authentication/events';
 import ProfileVisiblity from 'containers/IdeasNewPage/IdeasNewIdeationForm/ProfileVisibility';
 
 import AnonymousParticipationConfirmationModal from 'components/AnonymousParticipationConfirmationModal';
 import ContentUploadDisclaimer from 'components/ContentUploadDisclaimer';
-import SubmissionReference from 'components/CustomFieldsForm/PageControlButtons/SubmissionReference';
+import SubmissionReference from 'components/CustomFieldsForm/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
 
 import clHistory from 'utils/cl-router/history';
@@ -37,6 +38,7 @@ import PageFooter from '../Page/PageFooter';
 import PageTitle from '../Page/PageTitle';
 import { FormValues } from '../Page/types';
 import usePageForm from '../Page/usePageForm';
+import PostParticipationBox from '../PostParticipationBox';
 import { getFormCompletionPercentage } from '../util';
 
 const StyledForm = styled.form`
@@ -109,13 +111,24 @@ const IdeationPage = ({
   const handleNextAndsubmit = () => {
     pageRef.current?.scrollTo(0, 0);
     if (currentPageIndex === lastPageIndex) {
+      const phaseId = searchParams.get('phase_id');
       const userCanModerate = project
         ? canModerateProject(project.data, authUser)
         : false;
-      const path =
-        userCanModerate && participationMethod === 'common_ground'
-          ? `/admin/projects/${project?.data.id}/phases/${phase?.id}/ideas`
-          : `/ideas/${idea?.data.attributes.slug}`;
+
+      const shouldGoToIdeaFeed =
+        participationMethod === 'ideation' &&
+        phase?.attributes.presentation_mode === 'feed';
+
+      const shouldGoToInputManager =
+        userCanModerate && participationMethod === 'common_ground';
+
+      const path = shouldGoToIdeaFeed
+        ? `/projects/${project?.data.attributes.slug}/ideas-feed?phase_id=${phaseId}&initial_idea_id=${idea?.data.id}&idea_id=${idea?.data.id}`
+        : shouldGoToInputManager
+        ? `/admin/projects/${project?.data.id}/phases/${phase?.id}/ideas`
+        : `/ideas/${idea?.data.attributes.slug}`;
+
       clHistory.push({ pathname: path });
     }
     methods.handleSubmit((e) => onFormSubmit(e))();
@@ -200,6 +213,11 @@ const IdeationPage = ({
     setIsDisclaimerOpened(false);
   };
 
+  const isLastPage = currentPageIndex === lastPageIndex;
+
+  const showSubmissionReference = isLastPage && idea && showIdeaId;
+  const showPostParticipationSignup = !!(isLastPage && idea && !authUser);
+
   return (
     <FormProvider {...methods}>
       <StyledForm id="idea-form">
@@ -281,14 +299,26 @@ const IdeationPage = ({
                           onChange={handleOnChangeAnonymousPosting}
                         />
                       )}
-                    {currentPageIndex === lastPageIndex &&
-                      idea &&
-                      showIdeaId && (
-                        <SubmissionReference
-                          inputId={idea.data.id}
-                          participationMethod={participationMethod}
-                        />
-                      )}
+                    {showPostParticipationSignup && (
+                      <PostParticipationBox
+                        onCreateAccount={() => {
+                          triggerPostParticipationFlow({
+                            name: 'redirect',
+                            params: {
+                              path: `/ideas/${idea.data.attributes.slug}`,
+                            },
+                          });
+                        }}
+                      />
+                    )}
+                    {showSubmissionReference && (
+                      <SubmissionReference
+                        inputId={idea.data.id}
+                        postParticipationSignUpVisible={
+                          showPostParticipationSignup
+                        }
+                      />
+                    )}
                   </Box>
                 </Box>
               </Box>

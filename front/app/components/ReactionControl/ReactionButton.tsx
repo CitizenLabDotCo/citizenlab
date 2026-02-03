@@ -32,7 +32,7 @@ import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import messages from './messages';
 
 type TSize = '1' | '2' | '3' | '4';
-type TStyleType = 'border' | 'shadow';
+type TStyleType = 'border' | 'shadow' | 'compact';
 
 const reactionKeyframeAnimation = keyframes`
   from {
@@ -65,13 +65,20 @@ const ReactionIconContainer = styled.div<{
   background-color: white;
 
   ${({ styleType }) => {
-    return (
-      styleType === 'border' &&
-      `
-      padding: 8px;
-      border: solid 1px ${lighten(0.2, colors.textSecondary)};
-      `
-    );
+    if (styleType === 'border') {
+      return `
+        padding: 8px;
+        border: solid 1px ${lighten(0.2, colors.textSecondary)};
+      `;
+    }
+    if (styleType === 'compact') {
+      return `
+        background: none;
+        box-shadow: none;
+        border: none;
+      `;
+    }
+    return;
   }}
 
   ${({
@@ -198,6 +205,7 @@ const ReactionCount = styled.div<{
   reactingEnabled: boolean | null;
   buttonReactionMode: TReactionMode;
   buttonReactionModeIsActive: boolean;
+  styleType: TStyleType;
 }>`
   color: ${colors.textSecondary};
   font-size: ${fontSizes.base}px;
@@ -205,7 +213,8 @@ const ReactionCount = styled.div<{
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-left: 5px;
+  margin-left: ${({ styleType }) => (styleType === 'shadow' ? '4px' : '2px')};
+  margin-top: 2px;
   transition: all 100ms ease-out;
 
   ${({ buttonReactionMode, reactingEnabled }) => {
@@ -229,11 +238,12 @@ const ReactionIcon = styled(Icon)<{
   buttonReactionModeIsActive: boolean;
   buttonReactionMode: TReactionMode;
   disabledReason: IdeaReactingDisabledReason | null;
+  styleType: TStyleType;
 }>`
   fill: ${colors.textSecondary};
   transition: all 100ms ease-out;
-  width: 16px;
-  height: 16px;
+  width: ${({ styleType }) => (styleType === 'compact' ? '20px' : '16px')};
+  height: ${({ styleType }) => (styleType === 'compact' ? '20px' : '16px')};
 
   ${({ reactingEnabled, buttonReactionModeIsActive }) =>
     !reactingEnabled &&
@@ -281,6 +291,7 @@ const Button = styled.button<{
   buttonReactionModeIsActive: boolean;
   reactingEnabled: boolean | null;
   buttonReactionMode: TReactionMode;
+  styleType: TStyleType;
 }>`
   display: flex;
   align-items: center;
@@ -288,7 +299,9 @@ const Button = styled.button<{
   margin: 0;
   cursor: pointer;
   border: none;
-  margin-right: 15px;
+  background: none;
+  margin-right: ${({ styleType }) =>
+    styleType === 'compact' ? '4px' : '16px'};
 
   ${isRtl`
     flex-direction: row-reverse;
@@ -465,6 +478,7 @@ const ReactionButton = ({
               buttonReactionMode={buttonReactionMode}
               buttonReactionModeIsActive={buttonReactionModeIsActive}
               reactingEnabled={buttonEnabled}
+              styleType={styleType}
               onMouseDown={removeFocusAfterMouseClick}
               onClick={onClick}
               className={[
@@ -491,6 +505,7 @@ const ReactionButton = ({
                   buttonReactionModeIsActive={buttonReactionModeIsActive}
                   buttonReactionMode={buttonReactionMode}
                   disabledReason={disabledReason}
+                  styleType={styleType}
                 />
                 <ScreenReaderOnly>
                   <FormattedMessage
@@ -504,6 +519,7 @@ const ReactionButton = ({
                 reactingEnabled={buttonEnabled}
                 buttonReactionMode={buttonReactionMode}
                 buttonReactionModeIsActive={buttonReactionModeIsActive}
+                styleType={styleType}
                 aria-hidden
               >
                 {reactionsCount}

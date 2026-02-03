@@ -24,6 +24,8 @@ RSpec.describe User do
     it { is_expected.to have_many(:assigned_project_reviews).class_name('ProjectReview').with_foreign_key('reviewer_id').dependent(:nullify) }
     it { is_expected.to have_many(:jobs_trackers).class_name('Jobs::Tracker').with_foreign_key('owner_id').dependent(:nullify) }
     it { is_expected.to have_many(:files).class_name('Files::File').with_foreign_key('uploader_id').dependent(:nullify) }
+    it { is_expected.to have_many(:claim_tokens).with_foreign_key('pending_claimer_id').dependent(:destroy) }
+    it { is_expected.to have_many(:idea_exposures).dependent(:destroy) }
 
     it 'nullifies idea import association' do
       idea_import = create(:idea_import, import_user: user)
@@ -41,6 +43,15 @@ RSpec.describe User do
       phase = create(:phase, manual_voters_last_updated_by: user)
       expect { user.destroy }.not_to raise_error
       expect(phase.reload.manual_voters_last_updated_by).to be_nil
+    end
+
+    it 'destroys idea_exposures when user is deleted' do
+      user.save!
+      phase = create(:phase)
+      idea = create(:idea, phases: [phase])
+      idea_exposure = create(:idea_exposure, user: user, idea: idea, phase: phase)
+      expect { user.destroy }.not_to raise_error
+      expect { idea_exposure.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 
@@ -238,6 +249,32 @@ RSpec.describe User do
       expect(user).to be_valid
     end
 
+    it 'is invalid when new record and the email is banned' do
+      EmailBan.ban!('banned.user+test@gmail.com')
+      user = build(:user, email: 'banneduser@gmail.com') # normalized match
+
+      expect(user).to be_invalid
+      expect(user.errors.details[:email]).to eq [{ error: 'something_went_wrong', code: 'zrb-43' }]
+    end
+
+    it 'is invalid when existing record and the email is updated to a banned email' do
+      EmailBan.ban!('banned@example.com')
+      user = create(:user, email: 'allowed@domain.com')
+      user.email = 'banned@example.com'
+
+      expect(user).to be_invalid
+      expect(user.errors.details[:email]).to eq [{ error: 'something_went_wrong', code: 'zrb-43' }]
+    end
+
+    it 'is valid if email is banned but are updating other user attributes' do
+      user = create(:user)
+      user.update_column(:email, 'now_banned@example.com') # bypasses validations
+      EmailBan.ban!('now_banned@example.com')
+
+      user.first_name = 'UpdatedName'
+      expect(user).to be_valid
+    end
+
     it 'is required when a unique code is not present' do
       u1 = build(:user, email: nil)
       expect(u1).to be_invalid
@@ -282,6 +319,23 @@ RSpec.describe User do
       expect(EmailDomainBlacklist::WHITELISTED_DOMAINS).to include('yopmail.com')
 
       user = build(:user, new_email: 'someone@yopmail.com')
+      expect(user).to be_valid
+    end
+
+    it 'is invalid when the new_email is banned' do
+      EmailBan.ban!('banned.user+test@gmail.com')
+      user = build(:user, new_email: 'banneduser@gmail.com') # normalized match
+
+      expect(user).to be_invalid
+      expect(user.errors.details[:new_email]).to eq [{ error: 'something_went_wrong', code: 'zrb-43' }]
+    end
+
+    it 'is valid if new_email is banned but are updating other user attributes' do
+      user = create(:user)
+      user.update_column(:new_email, 'now_banned@example.com') # bypasses validations
+      EmailBan.ban!('now_banned@example.com')
+
+      user.first_name = 'UpdatedName'
       expect(user).to be_valid
     end
 

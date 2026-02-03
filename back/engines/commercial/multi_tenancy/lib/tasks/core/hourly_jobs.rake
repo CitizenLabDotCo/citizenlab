@@ -10,6 +10,7 @@ namespace :cl2back do
         CreatePeriodicActivitiesJob.perform_later now.to_i
         CreateHeatmapGenerationJob.perform_later now.to_i
         DeleteInvitesJob.perform_later
+        CleanupExpiredClaimTokensJob.perform_later
       end
     end
   end

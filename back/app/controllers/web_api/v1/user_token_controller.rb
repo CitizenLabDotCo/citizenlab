@@ -17,8 +17,16 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
         status: :unprocessable_entity
       )
     else
+      ClaimTokenService.claim(user, nil)
+      IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
       render json: auth_token, status: :created
     end
+  end
+
+  def create
+    ClaimTokenService.claim(entity, auth_params[:claim_tokens])
+    IdeaExposureTransferService.new.transfer_from_request(user: entity, request: request)
+    super
   end
 
   private
@@ -34,7 +42,7 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
   end
 
   def extra_params
-    [:remember_me]
+    [:remember_me, { claim_tokens: [] }]
   end
 
   def user_token_unconfirmed_params

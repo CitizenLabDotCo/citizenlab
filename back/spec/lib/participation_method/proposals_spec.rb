@@ -5,8 +5,6 @@ require 'rails_helper'
 RSpec.describe ParticipationMethod::Proposals do
   subject(:participation_method) { described_class.new phase }
 
-  before_all { SettingsService.new.activate_feature!('ideation_accountless_posting') }
-
   let(:phase) { create(:proposals_phase) }
   let(:proposal) { create(:proposal, project: phase.project) }
 
@@ -24,7 +22,7 @@ RSpec.describe ParticipationMethod::Proposals do
       let!(:custom_status) { create(:proposals_status) }
 
       context 'when the creation phase has reviewing enabled' do
-        let(:phase) { create(:proposals_phase, prescreening_enabled: true) }
+        let(:phase) { create(:proposals_phase, prescreening_mode: 'all') }
 
         it 'assignes the default "prescreening" status if not set' do
           proposal = build(:proposal, idea_status: nil, creation_phase: phase, project: phase.project)
@@ -40,7 +38,7 @@ RSpec.describe ParticipationMethod::Proposals do
       end
 
       context 'when the creation phase does not have reviewing enabled' do
-        let(:phase) { create(:proposals_phase, prescreening_enabled: false) }
+        let(:phase) { create(:proposals_phase, prescreening_mode: nil) }
 
         it 'assigns the default "proposed" status if not set' do
           proposal = build(:proposal, idea_status: nil, creation_phase: phase, project: phase.project)
@@ -93,18 +91,18 @@ RSpec.describe ParticipationMethod::Proposals do
     describe 'when prescreening is deactivated' do
       before { SettingsService.new.deactivate_feature! 'prescreening' }
 
-      it 'does not set prescreening_enabled' do
+      it 'does not set prescreening_mode' do
         participation_method.assign_defaults_for_phase
-        expect(phase.prescreening_enabled).to be false
+        expect(phase.prescreening_mode).to be_nil
       end
     end
 
     describe 'when prescreening is activated' do
       before { SettingsService.new.activate_feature! 'prescreening' }
 
-      it 'sets prescreening_enabled to false' do
+      it 'does not set prescreening_mode' do
         participation_method.assign_defaults_for_phase
-        expect(phase.prescreening_enabled).to be false
+        expect(phase.prescreening_mode).to be_nil
       end
     end
   end
@@ -244,7 +242,7 @@ RSpec.describe ParticipationMethod::Proposals do
   its(:form_logic_enabled?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be true }
   its(:supports_custom_field_categories?) { is_expected.to be false }
-  its(:user_fields_in_form?) { is_expected.to be false }
+  its(:user_fields_in_form_enabled?) { is_expected.to be false }
   its(:supports_multiple_phase_reports?) { is_expected.to be false }
   its(:add_autoreaction_to_inputs?) { is_expected.to be(true) }
   its(:everyone_tracking_enabled?) { is_expected.to be false }

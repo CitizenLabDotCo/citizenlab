@@ -2,6 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 
 import { getJwt, setJwt } from 'utils/auth/jwt';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
+import { getClaimTokens, clearClaimTokens } from 'utils/claimToken';
 
 import getAuthUser from '../auth_user/getAuthUser';
 
@@ -35,9 +36,15 @@ async function getAndSetToken({
   rememberMe = false,
   tokenLifetime,
 }: Parameters) {
-  const bodyData = { auth: { email, password, remember_me: rememberMe } };
+  const bodyData = {
+    auth: {
+      email,
+      password,
+      remember_me: rememberMe,
+      claim_tokens: getClaimTokens(),
+    },
+  };
 
-  // TODO: Replace with fetcher after the backend is updated
   const jwt = getJwt();
   return await fetch(`${API_PATH}/user_token`, {
     method: 'POST',
@@ -50,6 +57,7 @@ async function getAndSetToken({
     .then((response) => response.json())
     .then((data) => {
       setJwt(data.jwt, rememberMe, tokenLifetime);
+      clearClaimTokens();
     });
 }
 

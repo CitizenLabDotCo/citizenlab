@@ -24,8 +24,12 @@ export const DescriptionText = ({
   const localizedDescription = localize(description);
 
   return (
-    <Text color="grey700" fontSize="s" id={descriptionId}>
-      {formatMessage(messages.description)} {localizedDescription}
-    </Text>
+    <>
+      {localizedDescription && (
+        <Text color="grey700" fontSize="s" id={descriptionId}>
+          {formatMessage(messages.description)} {localizedDescription}
+        </Text>
+      )}
+    </>
   );
 };

@@ -107,7 +107,9 @@ const IdeationForm = ({
         cosponsor_ids: idea.relationships.cosponsors?.data?.map(
           (cosponsor) => cosponsor.id
         ),
-        topic_ids: idea.relationships.topics?.data.map((topic) => topic.id),
+        topic_ids: idea.relationships.input_topics?.data.map(
+          (topic) => topic.id
+        ),
       }
     : undefined;
 

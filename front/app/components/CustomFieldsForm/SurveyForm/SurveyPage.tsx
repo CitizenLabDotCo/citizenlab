@@ -7,13 +7,16 @@ import styled from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
-import SubmissionReference from 'components/CustomFieldsForm/PageControlButtons/SubmissionReference';
+import { triggerPostParticipationFlow } from 'containers/Authentication/events';
+
+import SubmissionReference from 'components/CustomFieldsForm/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
 
 import clHistory from 'utils/cl-router/history';
@@ -28,6 +31,7 @@ import PageFooter from '../Page/PageFooter';
 import PageTitle from '../Page/PageTitle';
 import { FormValues } from '../Page/types';
 import usePageForm from '../Page/usePageForm';
+import PostParticipationBox from '../PostParticipationBox';
 import { getFormCompletionPercentage, Pages } from '../util';
 
 import {
@@ -89,6 +93,7 @@ const SurveyPage = ({
   const isAdminPage = isPage('admin', pathname);
   const isMapPage = page.page_layout === 'map';
   const isMobileOrSmaller = useBreakpoint('phone');
+  const { data: authUser } = useAuthUser();
 
   const [searchParams] = useSearchParams();
   const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
@@ -204,6 +209,11 @@ const SurveyPage = ({
     setCurrentPageIndex(previousPageNumber);
   };
 
+  const isLastPage = currentPageIndex === lastPageIndex;
+
+  const showSubmissionReference = isLastPage && idea && showIdeaId;
+  const showPostParticipationSignup = !!(isLastPage && idea && !authUser);
+
   return (
     <FormProvider {...methods}>
       <StyledForm id="idea-form">
@@ -264,14 +274,28 @@ const SurveyPage = ({
                         phase={phase}
                         participationMethod={participationMethod}
                       />
-                      {currentPageIndex === lastPageIndex &&
-                        idea &&
-                        showIdeaId && (
-                          <SubmissionReference
-                            inputId={idea.data.id}
-                            participationMethod={participationMethod}
+                      {showPostParticipationSignup && project && (
+                        <Box mb="24px">
+                          <PostParticipationBox
+                            onCreateAccount={() => {
+                              triggerPostParticipationFlow({
+                                name: 'redirect',
+                                params: {
+                                  path: `/projects/${project.data.attributes.slug}`,
+                                },
+                              });
+                            }}
                           />
-                        )}
+                        </Box>
+                      )}
+                      {showSubmissionReference && (
+                        <SubmissionReference
+                          inputId={idea.data.id}
+                          postParticipationSignUpVisible={
+                            showPostParticipationSignup
+                          }
+                        />
+                      )}
                     </Box>
                   </Box>
                 </Box>

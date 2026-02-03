@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, useTouchDevice } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 
 import { CARD_GAP } from '../constants';
@@ -46,11 +46,11 @@ const ScrollableCarrousel = ({
     setNextButtonShouldDisappearAfterMouseMove,
   ] = useState(false);
 
-  const isSmallerThanPhone = useBreakpoint('phone');
+  const isTouchDevice = useTouchDevice();
 
   const handleButtonVisiblity = useCallback(
     (ref: HTMLDivElement, hasMore: boolean) => {
-      if (isSmallerThanPhone) return;
+      if (isTouchDevice) return;
       const { showNextButton, showPreviousButton } = getUpdatedButtonVisibility(
         ref,
         hasMore
@@ -71,7 +71,7 @@ const ScrollableCarrousel = ({
       setShowPreviousGradient(showPreviousButton);
       setShowNextGradient(showNextButton);
     },
-    [isSmallerThanPhone, mouseOverPreviousButton, mouseOverNextButton]
+    [isTouchDevice, mouseOverPreviousButton, mouseOverNextButton]
   );
 
   // Set button visiblity on scroll
@@ -105,7 +105,7 @@ const ScrollableCarrousel = ({
       >
         {children}
       </HorizontalScroll>
-      {!isSmallerThanPhone && (
+      {!isTouchDevice && (
         <>
           {showPreviousButton && (
             <ScrollButton
@@ -127,7 +127,7 @@ const ScrollableCarrousel = ({
           {showPreviousGradient && <Gradient variant="left" />}
         </>
       )}
-      {!isSmallerThanPhone && (
+      {!isTouchDevice && (
         <>
           {showNextButton && (
             <ScrollButton

@@ -119,7 +119,7 @@ export const project1: IProjectData = {
     areas: {
       data: [],
     },
-    topics: {
+    global_topics: {
       data: [],
     },
     avatars: {
@@ -259,7 +259,7 @@ export const project2: IProjectData = {
     areas: {
       data: [],
     },
-    topics: {
+    global_topics: {
       data: [],
     },
     avatars: {
@@ -399,7 +399,7 @@ const votingProject: IProject = {
       areas: {
         data: [],
       },
-      topics: {
+      global_topics: {
         data: [],
       },
       avatars: {

@@ -3,9 +3,8 @@ import React from 'react';
 import { ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import ActionFormDefault from './ActionFormDefault';
+import ActionFormIdeation from './ActionFormIdeation';
 import ActionFormSurvey from './ActionFormSurvey';
 import { Props } from './types';
 
@@ -17,9 +16,6 @@ const SURVEY_METHODS: ParticipationMethod[] = [
 const ActionForm = ({ permissionData, phaseId, ...props }: Props) => {
   const { data: phase } = usePhase(phaseId);
   const participation_method = phase?.data.attributes.participation_method;
-  const ideationAccountlessPostingEnabled = useFeatureFlag({
-    name: 'ideation_accountless_posting',
-  });
 
   if (!participation_method) return null;
 
@@ -38,16 +34,24 @@ const ActionForm = ({ permissionData, phaseId, ...props }: Props) => {
     );
   }
 
-  const showAnyone =
-    ideationAccountlessPostingEnabled &&
+  const showIdeationForm =
     ['ideation', 'proposals'].includes(participation_method) &&
     action === 'posting_idea';
+
+  if (showIdeationForm) {
+    return (
+      <ActionFormIdeation
+        permissionData={permissionData}
+        phaseId={phaseId}
+        {...props}
+      />
+    );
+  }
 
   return (
     <ActionFormDefault
       permissionData={permissionData}
       phaseId={phaseId}
-      showAnyone={showAnyone}
       {...props}
     />
   );

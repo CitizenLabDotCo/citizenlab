@@ -515,9 +515,7 @@ fi:
       subject: '%{organizationName}: Viimeinen mahdollisuus äänestää %{phaseTitle}'
       preheader: 'Viimeinen mahdollisuus äänestää %{phaseTitle} osallistumisalustalla %{organizationName}'
       title: 'Viimeinen mahdollisuus äänestää %{phaseTitle}'
-      body_1: '%{projectTitle} -projektin äänestysvaihe päättyy huomenna keskiyöllä.'
-      body_2: 'Aika on loppumassa, ja huomasimme, että et ole vielä äänestänyt! Toimi nyt klikkaamalla alla olevaa painiketta osallistuaksesi.'
-      body_3: 'Näin toimimalla saat käyttöösi useita vaihtoehtoja ja sinulla on mahdollisuus antaa mielipiteesi, mikä on ratkaisevan tärkeää tämän projektin tulevaisuudesta päätettäessä.'
+      event_description: '<p> %{projectTitle} -projektin äänestysvaihe päättyy huomenna keskiyöllä.</p><p>Aika on loppumassa, ja huomasimme, ettet ole vielä äänestänyt! Toimi nyt napsauttamalla alla olevaa painiketta osallistuaksesi.</p><p>Näin saat käyttöösi useita vaihtoehtoja ja sinulla on mahdollisuus antaa mielipiteesi, mikä on ratkaisevan tärkeää tämän projektin tulevaisuuden päättämisessä.</p>'
       cta_button: 'Äänestää'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} äänestystulokset paljastettiin!'

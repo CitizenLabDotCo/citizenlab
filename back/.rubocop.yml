@@ -87,6 +87,11 @@ Layout/EndAlignment:
 Layout/TrailingWhitespace:
   AllowInHeredoc: true
 
+# rspec-parameterized uses a DSL that overrides the `|` operator.
+Lint/BinaryOperatorWithIdenticalOperands:
+  Exclude:
+    - 'spec/**/*'
+
 Lint/AmbiguousBlockAssociation:
   AllowedPatterns:
     - change

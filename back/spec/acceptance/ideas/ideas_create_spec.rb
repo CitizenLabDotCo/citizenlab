@@ -8,7 +8,7 @@ end
 def public_input_params(context)
   define_title_multiloc_param(context)
   context.parameter :body_multiloc, 'Multi-locale field with the idea body', scope: :idea, extra: 'Required if not draft'
-  context.parameter :topic_ids, 'Array of ids of the associated topics', scope: :idea
+  context.parameter :topic_ids, 'Array of ids of the associated input topics', scope: :idea
   context.parameter :cosponsor_ids, 'Array of ids of the desired cosponsors', scope: :idea
   context.parameter :location_point_geojson, 'A GeoJSON point that situates the location the idea applies to', scope: :idea
   context.parameter :location_description, 'A human readable description of the location the idea applies to', scope: :idea
@@ -62,22 +62,48 @@ resource 'Ideas' do
             assert_status 401
           end
         end
+
+        describe 'with everyone permission (accountless posting)' do
+          let(:project) do
+            create(:single_phase_ideation_project, phase_attrs: { with_permissions: true }).tap do |project|
+              project
+                .phases.sole
+                .permissions.find_by(action: 'posting_idea')
+                .update!(permitted_by: 'everyone')
+            end
+          end
+
+          example 'Create an idea and receive claim_token', document: false do
+            do_request
+            assert_status 201
+
+            idea = Idea.find(response_data[:id])
+            expect(idea.claim_token).to be_present
+            expect(response_data.dig(:attributes, :claim_token)).to be_present.and eq(idea.claim_token.token)
+            expect(response_data.dig(:attributes, :claim_token_expires_at)).to eq(idea.claim_token.expires_at.iso8601(3))
+          end
+        end
       end
 
       context 'when resident' do
         before { header_token_for(resident) }
 
         let(:resident) { create(:user) }
-        let(:topic_ids) { create_list(:topic, 2, projects: [project]).map(&:id) }
+        let(:topic_ids) { create_list(:input_topic, 2, project: project).map(&:id) }
         let(:location_point_geojson) { { type: 'Point', coordinates: [51.11520776293035, 3.921154106874878] } }
         let(:location_description) { 'Stanley Road 4' }
 
         example_request 'Create an idea' do
           assert_status 201
           expect(response_data.dig(:relationships, :project, :data, :id)).to eq project_id
-          expect(response_data.dig(:relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+          expect(response_data.dig(:relationships, :input_topics, :data).pluck(:id)).to match_array topic_ids
           expect(response_data.dig(:attributes, :location_point_geojson)).to eq location_point_geojson
           expect(response_data.dig(:attributes, :location_description)).to eq location_description
+
+          expect(response_data[:attributes].keys).to include(:claim_token, :claim_token_expires_at)
+          expect(response_data.dig(:attributes, :claim_token)).to be_nil
+          expect(response_data.dig(:attributes, :claim_token_expires_at)).to be_nil
+
           expect(project.reload.ideas_count).to eq 1
         end
 
@@ -108,7 +134,7 @@ resource 'Ideas' do
             expect(response_data.dig(:attributes, :title_multiloc, :en)).to eq 'Plant more trees'
             # proposed_budget is disabled, so its given value was ignored.
             expect(response_data.dig(:attributes, :proposed_budget)).to be_nil
-            expect(response_data.dig(:relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+            expect(response_data.dig(:relationships, :input_topics, :data).pluck(:id)).to match_array topic_ids
             expect(response_data.dig(:attributes, :location_point_geojson)).to eq location_point_geojson
             expect(response_data.dig(:attributes, :location_description)).to eq location_description
           end
@@ -136,8 +162,8 @@ resource 'Ideas' do
             do_request
 
             assert_status 201
-            json_response = json_parse response_body
-            idea = Idea.find(json_response.dig(:data, :id))
+
+            idea = Idea.find(response_data[:id])
             expect(idea.creation_phase).to be_nil
           end
         end
@@ -168,8 +194,7 @@ resource 'Ideas' do
 
             example_request 'Rejects the anonymous parameter' do
               assert_status 422
-              json_response = json_parse response_body
-              expect(json_response).to include_response_error(:base, 'anonymous_participation_not_allowed')
+              expect(json_response_body).to include_response_error(:base, 'anonymous_participation_not_allowed')
             end
           end
 
@@ -195,11 +220,10 @@ resource 'Ideas' do
           example 'Creates an idea', document: false do
             do_request
             assert_status 201
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :relationships, :project, :data, :id)).to eq project_id
-            expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-            expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
-            expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
+            expect(response_data.dig(:relationships, :project, :data, :id)).to eq project_id
+            expect(response_data.dig(:relationships, :input_topics, :data).pluck(:id)).to match_array topic_ids
+            expect(response_data.dig(:attributes, :location_point_geojson)).to eq location_point_geojson
+            expect(response_data.dig(:attributes, :location_description)).to eq location_description
             expect(project.reload.ideas_count).to eq 1
           end
         end
@@ -210,8 +234,8 @@ resource 'Ideas' do
 
             example_request '[error] Creating an invalid idea' do
               assert_status 422
-              json_response = json_parse response_body
-              expect(json_response).to include_response_error(:publication_status, 'inclusion', value: 'fake_status')
+              expect(json_response_body)
+                .to include_response_error(:publication_status, 'inclusion', value: 'fake_status')
             end
           end
 
@@ -221,8 +245,7 @@ resource 'Ideas' do
 
             example_request 'Create an idea with an image' do
               assert_status 201
-              json_response = json_parse(response_body)
-              expect(json_response.dig(:data, :relationships, :idea_images)).to be_present
+              expect(response_data.dig(:relationships, :idea_images)).to be_present
             end
           end
 
@@ -257,8 +280,7 @@ resource 'Ideas' do
 
             example_request '[error] Creating an idea in a project with an active information phase' do
               assert_status 401
-              json_response = json_parse(response_body)
-              expect(json_response.dig(:errors, :base).first[:error]).to eq 'posting_not_supported'
+              expect(json_response_body.dig(:errors, :base).first[:error]).to eq('posting_not_supported')
             end
           end
 
@@ -277,7 +299,7 @@ resource 'Ideas' do
             do_request
 
             assert_status 401
-            expect(json_parse(response_body)).to include_response_error(:base, 'i_dont_like_you')
+            expect(json_response_body).to include_response_error(:base, 'i_dont_like_you')
           end
         end
 
@@ -310,8 +332,7 @@ resource 'Ideas' do
 
           example_request '[error] Create an idea with blocked words' do
             assert_status 422
-            json_response = json_parse(response_body)
-            blocked_error = json_response.dig(:errors, :base)&.select { |err| err[:error] == 'includes_banned_words' }&.first
+            blocked_error = json_response_body.dig(:errors, :base)&.select { |err| err[:error] == 'includes_banned_words' }&.first
             expect(blocked_error).to be_present
             expect(blocked_error[:blocked_words].pluck(:attribute).uniq).to include('title_multiloc', 'body_multiloc')
           end
@@ -332,8 +353,7 @@ resource 'Ideas' do
 
           example_request 'Creating an idea in specific (inactive) phases' do
             assert_status 201
-            json_response = json_parse(response_body)
-            expect(json_response.dig(:data, :relationships, :phases, :data).pluck(:id)).to match_array phase_ids
+            expect(response_data.dig(:relationships, :phases, :data).pluck(:id)).to match_array phase_ids
           end
         end
 
@@ -358,19 +378,20 @@ resource 'Ideas' do
             do_request
 
             assert_status 201
-            json_response = json_parse response_body
+            attributes = response_data[:attributes]
+
             # Enabled fields have a value
-            expect(json_response.dig(:data, :attributes, :title_multiloc)).to eq({ 'nl-BE': 'An idea with a proposed budget' })
-            expect(json_response.dig(:data, :attributes, :body_multiloc)).to eq({ 'nl-BE': 'An idea with a proposed budget for testing' })
-            expect(json_response.dig(:data, :attributes, :proposed_budget)).to eq proposed_budget
+            expect(attributes[:title_multiloc]).to eq({ 'nl-BE': 'An idea with a proposed budget' })
+            expect(attributes[:body_multiloc]).to eq({ 'nl-BE': 'An idea with a proposed budget for testing' })
+            expect(attributes[:proposed_budget]).to eq proposed_budget
             # Disabled fields do not have a value
-            expect(json_response.dig(:data, :attributes, :budget)).to be_nil
-            expect(json_response.dig(:data, :attributes, :location_description)).to be_nil
-            expect(json_response.dig(:data, :attributes)).not_to have_key :topic_ids
-            expect(json_response.dig(:data, :attributes)).not_to have_key :idea_images_attributes
-            expect(json_response.dig(:data, :attributes)).not_to have_key :idea_files_attributes
+            expect(attributes[:budget]).to be_nil
+            expect(attributes[:location_description]).to be_nil
+            expect(attributes).not_to have_key :topic_ids
+            expect(attributes).not_to have_key :idea_images_attributes
+            expect(attributes).not_to have_key :idea_files_attributes
             # location_point_geojson is not a field and cannot be disabled, so it has a value
-            expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
+            expect(attributes[:location_point_geojson]).to eq location_point_geojson
           end
         end
 
@@ -381,8 +402,7 @@ resource 'Ideas' do
           example 'Post an idea in an ideation phase', document: false do
             do_request
             assert_status 201
-            json_response = json_parse response_body
-            idea = Idea.find(json_response.dig(:data, :id))
+            idea = Idea.find(response_data[:id])
             expect(idea.creation_phase).to be_nil
           end
         end
@@ -395,8 +415,7 @@ resource 'Ideas' do
             do_request
 
             assert_status 422
-            json_response = json_parse response_body
-            expect(json_response).to include_response_error(:ideas_phases, 'invalid')
+            expect(json_response_body).to include_response_error(:ideas_phases, 'invalid')
           end
         end
       end
@@ -416,7 +435,7 @@ resource 'Ideas' do
       let(:input) { build(:proposal, project: project) }
       let(:title_multiloc) { { 'en' => 'My proposal title' } }
       let(:body_multiloc) { { 'en' => 'My proposal body' } }
-      let(:topic_ids) { [create(:topic, projects: [project]).id] }
+      let(:topic_ids) { [create(:input_topic, project: project).id] }
       let(:cosponsors) { create_list(:user, 2) }
       let(:cosponsor_ids) { cosponsors.map(&:id) }
       let!(:proposed_status) { create(:proposals_status, code: 'proposed') }
@@ -446,19 +465,19 @@ resource 'Ideas' do
           do_request
 
           assert_status 201
-          input = Idea.find json_parse(response_body).dig(:data, :id)
+          input = Idea.find(response_data[:id])
           expect(input.reload.idea_status).to eq proposed_status
           expect(input.publication_status).to eq 'published'
           expect(input.published_at).to be_present
         end
 
         describe 'when reviewing is enabled' do
-          before { phase.update!(prescreening_enabled: true) }
+          before { phase.update!(prescreening_mode: 'all') }
 
           example 'Submit a proposal in prescreening', document: false do
             do_request
             assert_status 201
-            input = Idea.find json_parse(response_body).dig(:data, :id)
+            input = Idea.find(response_data[:id])
             expect(input.reload.idea_status).to eq prescreening_status
             expect(input.publication_status).to eq 'submitted'
             expect(input.submitted_at).to be_present
@@ -482,19 +501,17 @@ resource 'Ideas' do
 
         example_request 'Create a proposal' do
           assert_status 201
-          json_response = json_parse(response_body)
 
-          expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to eq title_multiloc
-          expect(json_response.dig(:data, :attributes, :body_multiloc).stringify_keys).to eq body_multiloc
-          expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
-          expect(json_response.dig(:data, :relationships, :cosponsors, :data).pluck(:id)).to match_array cosponsor_ids
+          expect(response_data.dig(:attributes, :title_multiloc).stringify_keys).to eq title_multiloc
+          expect(response_data.dig(:attributes, :body_multiloc).stringify_keys).to eq body_multiloc
+          expect(response_data.dig(:relationships, :input_topics, :data).pluck(:id)).to match_array topic_ids
+          expect(response_data.dig(:relationships, :cosponsors, :data).pluck(:id)).to match_array cosponsor_ids
         end
       end
     end
 
     context 'in a native survey phase' do
       let(:project) { create(:single_phase_native_survey_project, default_assignee_id: create(:admin).id) }
-      let(:idea) { build(:native_survey_response, project: project) }
 
       context 'when visitor' do
         describe "native survey response when permission is 'everyone'" do
@@ -511,12 +528,14 @@ resource 'Ideas' do
 
           example_request 'Create a native survey response without author' do
             assert_status 201
-            json_response = json_parse response_body
-            idea_from_db = Idea.find(json_response[:data][:id])
-            expect(idea_from_db.author_id).to be_nil
-            expect(idea_from_db.custom_field_values.to_h).to eq({
-              extra_field_name => 'test value'
-            })
+
+            idea = Idea.find(response_data[:id])
+            expect(idea.author_id).to be_nil
+            expect(idea.custom_field_values.to_h).to eq(extra_field_name => 'test value')
+
+            expect(idea.claim_token).to be_present
+            expect(response_data.dig(:attributes, :claim_token)).to be_present.and eq(idea.claim_token.token)
+            expect(response_data.dig(:attributes, :claim_token_expires_at)).to eq(idea.claim_token.expires_at.iso8601(3))
           end
         end
       end
@@ -525,11 +544,12 @@ resource 'Ideas' do
         before { header_token_for(resident) }
 
         let(:resident) { create(:user, custom_field_values: { age: 30 }) }
+        let(:publication_status) { 'published' }
 
         example 'does not assign anyone to the created idea', document: false do
           do_request
           assert_status 201
-          idea = Idea.find(json_parse(response_body).dig(:data, :id))
+          idea = Idea.find(response_data[:id])
           expect(idea.assignee_id).to be_nil
           expect(idea.assigned_at).to be_nil
         end
@@ -540,7 +560,7 @@ resource 'Ideas' do
           example 'sets the publication status to draft' do
             do_request
             assert_status 201
-            idea = Idea.find(json_parse(response_body).dig(:data, :id))
+            idea = Idea.find(response_data[:id])
             expect(idea.publication_status).to eq 'draft'
           end
         end
@@ -701,6 +721,7 @@ resource 'Ideas' do
 
       context 'when resident' do
         let(:resident) { create(:user) }
+        let(:publication_status) { 'published' }
 
         before { header_token_for(resident) }
 

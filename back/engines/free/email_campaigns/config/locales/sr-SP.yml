@@ -515,9 +515,7 @@ sr-Cyrl:
       subject: '%{organizationName}: Последња прилика да гласате за %{phaseTitle}'
       preheader: 'Последња прилика да гласате за %{phaseTitle} на платформи за учешће од %{organizationName}'
       title: 'Last chance to vote for %{phaseTitle}'
-      body_1: 'Фаза гласања за пројекат %{projectTitle} завршава се сутра, у поноћ.'
-      body_2: 'Време истиче, а приметили смо да још нисте дали свој глас! Делујте сада једноставним кликом на дугме испод да бисте учествовали.'
-      body_3: 'На тај начин ћете добити приступ низу опција и имати прилику да дате свој допринос, што је кључно за одлучивање о будућности овог пројекта.'
+      event_description: '<p>The voting phase for the %{projectTitle} project is coming to a close tomorrow, at midnight.</p><p>Time is running out, and we noticed that you haven''t cast your vote yet! Act now by simply clicking the button below to participate.</p><p>By doing so, you''ll gain access to a range of options and have the chance to provide your input, which is crucial in deciding the future of this project.</p>'
       cta_button: 'Vote'
     voting_results:
       subject: 'Откривени резултати гласања %{organizationName}: %{phaseTitle}!'

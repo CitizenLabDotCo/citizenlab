@@ -33,8 +33,6 @@ export type IAppConfigurationSettingsCore = {
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
   google_search_console_meta_attribute?: string | null;
-  login_helper_text?: Multiloc | null; // DEPRECATED
-  signup_helper_text?: Multiloc | null; // DEPRECATED
   enter_email_helper_text?: Multiloc | null;
   enter_password_helper_text?: Multiloc | null;
   complete_your_profile_helper_text?: Multiloc | null;
@@ -274,7 +272,10 @@ export interface IAppConfigurationSettings {
   customised_automated_context_emails?: AppConfigurationFeature;
   project_importer?: AppConfigurationFeature;
   idea_feed?: AppConfigurationFeature;
-  ideation_accountless_posting?: AppConfigurationFeature;
+  nested_input_topics?: AppConfigurationFeature;
+  workshops?: AppConfigurationFeature;
+  phase_insights?: AppConfigurationFeature;
+  participation_location_tracking?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

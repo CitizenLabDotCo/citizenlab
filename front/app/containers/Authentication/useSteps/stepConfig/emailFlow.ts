@@ -6,7 +6,6 @@ import getUserTokenUnconfirmed from 'api/authentication/sign_in_out/getUserToken
 import signIn from 'api/authentication/sign_in_out/signIn';
 import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAccount';
 import { handleOnSSOClick } from 'api/authentication/singleSignOn';
-import checkUser from 'api/users/checkUser';
 
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
@@ -19,7 +18,12 @@ import {
 } from '../../typings';
 
 import { Step } from './typings';
-import { doesNotMeetGroupCriteria, checkMissingData } from './utils';
+import {
+  doesNotMeetGroupCriteria,
+  checkMissingData,
+  handleSubmitEmail,
+  handleSSOClick,
+} from './utils';
 
 export const emailFlow = (
   getAuthenticationData: () => AuthenticationData,
@@ -35,88 +39,23 @@ export const emailFlow = (
 
       SUBMIT_EMAIL: async (email: string) => {
         updateState({ email });
-
-        try {
-          const response = await checkUser(email);
-          const { action } = response.data.attributes;
-
-          if (action === 'terms') {
-            updateState({ flow: 'signup' });
-            setCurrentStep('email:policies');
-          }
-
-          if (action === 'password') {
-            updateState({ flow: 'signin' });
-            setCurrentStep('email:password');
-          }
-
-          if (action === 'confirm') {
-            updateState({ flow: 'signin' });
-            setCurrentStep('email:confirmation');
-          }
-
-          if (action === 'token') {
-            updateState({ flow: 'signin' });
-            await getUserTokenUnconfirmed(email);
-
-            const { requirements } = await getRequirements();
-            const authenticationData = getAuthenticationData();
-            const missingDataStep = checkMissingData(
-              requirements,
-              authenticationData,
-              'signin',
-              true
-            );
-
-            if (missingDataStep) {
-              setCurrentStep(missingDataStep);
-              return;
-            }
-
-            setCurrentStep('success');
-          }
-        } catch (e) {
-          if (e.errors?.email?.[0]?.error === 'taken_by_invite') {
-            setCurrentStep('invite:taken');
-          } else {
-            throw e;
-          }
-        }
+        handleSubmitEmail(
+          email,
+          getAuthenticationData,
+          getRequirements,
+          setCurrentStep,
+          updateState
+        );
       },
 
-      CONTINUE_WITH_SSO: (ssoProvider: SSOProviderWithoutVienna) => {
-        if (ssoProvider === 'clave_unica') {
-          // If clave unica, we always go straight to SSO login
-          handleOnSSOClick(
-            ssoProvider,
-            getAuthenticationData(),
-            true,
-            state.flow
-          );
-        } else {
-          // If other SSO provider, it depends on the flow
-          if (state.flow === 'signin') {
-            handleOnSSOClick(
-              ssoProvider,
-              getAuthenticationData(),
-              true,
-              state.flow
-            );
-          } else {
-            updateState({ ssoProvider });
-            setCurrentStep('email:sso-policies');
-          }
-        }
-      },
-
-      ENTER_FRANCE_CONNECT: async () => {
-        const { requirements } = await getRequirements();
-
-        handleOnSSOClick(
-          'franceconnect',
-          getAuthenticationData(),
-          requirements.verification,
-          'signin'
+      CONTINUE_WITH_SSO: async (ssoProvider: SSOProviderWithoutVienna) => {
+        handleSSOClick(
+          ssoProvider,
+          getAuthenticationData,
+          getRequirements,
+          setCurrentStep,
+          updateState,
+          state
         );
       },
     },

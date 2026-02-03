@@ -23,7 +23,7 @@ export interface ICustomPageData {
     nav_bar_item: {
       data: IRelationship | null;
     };
-    topics: {
+    global_topics: {
       data: IRelationship[];
     };
     areas: {
