@@ -488,6 +488,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
       let(:participation2) { create(:basket_participation, user_custom_field_values: { 'checkbox' => false }) }
       let(:participation3) { create(:basket_participation, user_custom_field_values: {}) }
       let(:participation4) { create(:basket_participation, user_custom_field_values: {}) }
+
       # We currently do not support the creation of reference distributions for checkbox fields in the front-end,
       # and the back-end currently only supports categorical distributions for select fields.
       it 'calculates demographics data correctly' do
