@@ -16,13 +16,19 @@ const useIdeasFeedData = ({
   topicId,
   initialIdeaId,
 }: UseIdeasFeedDataParams) => {
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-    useInfiniteIdeaFeedIdeas({
-      phaseId,
-      topic: topicId || undefined,
-      'page[size]': 10,
-      keepPreviousData: topicId ? false : true,
-    });
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    refetch,
+  } = useInfiniteIdeaFeedIdeas({
+    phaseId,
+    topic: topicId || undefined,
+    'page[size]': 10,
+    keepPreviousData: topicId ? false : true,
+  });
 
   const flatIdeas = useMemo(() => {
     if (!data) return [];
@@ -94,6 +100,7 @@ const useIdeasFeedData = ({
     hasNextPage,
     isFetchingNextPage,
     isLoading,
+    refetch,
   };
 };
 

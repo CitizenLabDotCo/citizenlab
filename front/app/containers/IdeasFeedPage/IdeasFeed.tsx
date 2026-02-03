@@ -124,6 +124,16 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
   const noteHeight = NOTE_WIDTH / NOTE_ASPECT_RATIO;
   const ideasLength = orderedIdeas.length;
 
+  const handleHeightResize = useCallback(
+    (currentCenteredIndex: number) => {
+      const currentCenteredIdeaId = orderedIdeas[currentCenteredIndex]?.id;
+      if (currentCenteredIdeaId && currentCenteredIdeaId !== initialIdeaId) {
+        updateSearchParams({ initial_idea_id: currentCenteredIdeaId });
+      }
+    },
+    [orderedIdeas, initialIdeaId]
+  );
+
   // Virtual scroll setup
   const {
     parentRef,
@@ -135,6 +145,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
   } = useVirtualScroll({
     itemCount: ideasLength + 1, // +1 for loader row
     peekHeight: PEEK_HEIGHT,
+    onHeightResize: handleHeightResize,
   });
 
   const centeredIdeaId = orderedIdeas[centeredIndex]?.id;

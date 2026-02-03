@@ -6,6 +6,7 @@ interface UseVirtualScrollParams {
   itemCount: number;
   peekHeight: number;
   overscan?: number;
+  onHeightResize?: (centeredIndex: number) => void;
 }
 
 interface UseVirtualScrollReturn {
@@ -30,16 +31,33 @@ const useVirtualScroll = ({
   itemCount,
   peekHeight,
   overscan = 2,
+  onHeightResize,
 }: UseVirtualScrollParams): UseVirtualScrollReturn => {
   const parentRef = useRef<HTMLDivElement>(null);
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const [centeredIndex, setCenteredIndex] = useState(0);
+  const centeredIndexRef = useRef(centeredIndex);
 
   useEffect(() => {
-    const handleResize = () => setWindowHeight(window.innerHeight);
+    centeredIndexRef.current = centeredIndex;
+  }, [centeredIndex]);
+
+  useEffect(() => {
+    let previousHeight = window.innerHeight;
+
+    const handleResize = () => {
+      const currentHeight = window.innerHeight;
+      setWindowHeight(currentHeight);
+
+      if (currentHeight !== previousHeight) {
+        previousHeight = currentHeight;
+        onHeightResize?.(centeredIndexRef.current);
+      }
+    };
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [onHeightResize]);
 
   const itemHeight = windowHeight - peekHeight;
 
