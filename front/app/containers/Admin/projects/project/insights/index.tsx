@@ -34,6 +34,7 @@ import ParticipantsTimeline from './ParticipantsTimeline';
 import ParticipationMetrics from './participationMetrics/ParticipationMetrics';
 import InsightsPdfContent from './pdf/InsightsPdfContent';
 import { PdfExportProvider, usePdfExportContext } from './pdf/PdfExportContext';
+import ExportValidation from './word/ExportValidation';
 import {
   WordExportProvider,
   useWordExportContext,
@@ -336,6 +337,7 @@ const AdminPhaseInsights = () => {
     <PdfExportProvider filename={sanitizedPhaseName}>
       <WordExportProvider filename={sanitizedPhaseName}>
         <InsightsContent />
+        <ExportValidation />
       </WordExportProvider>
     </PdfExportProvider>
   );
