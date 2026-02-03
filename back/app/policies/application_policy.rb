@@ -3,7 +3,9 @@
 class ApplicationPolicy
   module Helpers
     def raise_not_authorized(reason)
-      raise Pundit::NotAuthorizedErrorWithReason, reason: reason
+      raise Pundit::NotAuthorizedErrorWithReason,
+        reason: reason,
+        message: "not allowed to perform this action because: #{reason}"
     end
 
     private

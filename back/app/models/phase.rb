@@ -74,7 +74,8 @@ class Phase < ApplicationRecord
   REACTING_METHODS      = %w[unlimited limited].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition].freeze
   FALLBACK_INPUT_TERM   = 'idea'
-  VOTE_TERMS            = %w[vote point token credit]
+  VOTE_TERMS            = %w[vote point token credit percent]
+  PRESCREENING_MODES    = %w[all].freeze
 
   attribute :reacting_dislike_enabled, :boolean, default: -> { disliking_enabled_default }
 
@@ -99,7 +100,6 @@ class Phase < ApplicationRecord
   before_validation :set_participation_method_defaults, on: :create
   before_validation :set_participation_method_defaults_on_method_change, on: :update
   before_validation :set_presentation_mode, on: :create
-
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
@@ -107,7 +107,7 @@ class Phase < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :start_at, presence: true
-  validates :prescreening_enabled, inclusion: { in: [true, false] }
+  validates :prescreening_mode, inclusion: { in: PRESCREENING_MODES }, allow_nil: true
   validate :validate_end_at
   validate :validate_previous_blank_end_at
   validate :validate_start_at_before_end_at # Also enforced by the phases_start_before_end check constraint
@@ -263,6 +263,10 @@ class Phase < ApplicationRecord
 
   def ideation?
     participation_method == 'ideation'
+  end
+
+  def prescreening_enabled?
+    prescreening_mode.present?
   end
 
   def pmethod

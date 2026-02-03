@@ -8,6 +8,8 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
+import { ParticipationMethod } from 'api/phases/types';
+
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
@@ -19,9 +21,10 @@ import useTopicBreakdownData from './useTopicBreakdownData';
 
 interface Props {
   phaseId: string;
+  participationMethod?: ParticipationMethod;
 }
 
-const TopicBreakdown = ({ phaseId }: Props) => {
+const TopicBreakdown = ({ phaseId, participationMethod }: Props) => {
   const { formatMessage } = useIntl();
 
   const {
@@ -29,11 +32,10 @@ const TopicBreakdown = ({ phaseId }: Props) => {
     aiTopics,
     manualTopics,
     totalInputs,
-    taggedInputs,
     maxAiTopicCount,
     maxManualTopicCount,
     isLoading,
-  } = useTopicBreakdownData({ phaseId });
+  } = useTopicBreakdownData({ phaseId, participationMethod });
 
   if (isLoading) {
     return (
@@ -96,8 +98,6 @@ const TopicBreakdown = ({ phaseId }: Props) => {
       <Box borderTop={`1px solid ${colors.divider}`} mt="8px" pt="8px">
         <ManualTagsAccordion
           manualTopics={manualTopics}
-          totalInputs={totalInputs}
-          taggedInputs={taggedInputs}
           maxManualTopicCount={maxManualTopicCount}
         />
       </Box>

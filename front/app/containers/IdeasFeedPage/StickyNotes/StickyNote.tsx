@@ -7,16 +7,20 @@ import {
   stylingConsts,
   Icon,
 } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAddIdeaExposure from 'api/idea_exposure/useAddIdeaExposure';
 import useIdeaById from 'api/ideas/useIdeaById';
+import usePhase from 'api/phases/usePhase';
 
 import useLocalize from 'hooks/useLocalize';
 
 import Avatar from 'components/Avatar';
 import ReactionControl from 'components/ReactionControl';
+import Emoji from 'components/UI/Emoji';
 
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { stripHtml } from 'utils/textUtils';
 
 const truncateText = (text: string, maxLength: number) => {
@@ -26,17 +30,18 @@ const truncateText = (text: string, maxLength: number) => {
   return `${text.slice(0, cutoff)}...`;
 };
 
-export const NOTE_HEIGHTS = {
-  small: 350,
-  large: 500,
-};
+export const NOTE_ASPECT_RATIO = 4 / 5;
+export const NOTE_ASPECT_RATIO_COMPACT = 0.95;
 
-const StyledNote = styled(Box)`
+export const NOTE_WIDTH = 320;
+
+const StyledNote = styled(Box)<{ $aspectRatio: number }>`
   padding: 20px;
-  width: 90%;
   border-radius: ${stylingConsts.borderRadius};
   transition: all 0.3s ease;
   text-align: left;
+  aspect-ratio: ${({ $aspectRatio }) => $aspectRatio};
+  overflow: hidden;
   &:hover,
   &:focus {
     box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -53,9 +58,9 @@ interface Props {
   ideaId: string;
   rotation?: number;
   topicBackgroundColor: string;
+  topicEmojis?: string[];
   onClick?: () => void;
   centeredIdeaId?: string;
-  size?: 'small' | 'large';
   showReactions?: boolean;
 }
 
@@ -63,13 +68,20 @@ const StickyNote: React.FC<Props> = ({
   ideaId,
   rotation = 0,
   topicBackgroundColor,
+  topicEmojis = [],
   onClick,
   centeredIdeaId,
-  size = 'large',
   showReactions = true,
 }) => {
+  const [searchParams] = useSearchParams();
+  const phaseId = searchParams.get('phase_id') || undefined;
+  const { data: phase } = usePhase(phaseId);
+
   const isCentered = centeredIdeaId === ideaId;
-  const noteHeight = NOTE_HEIGHTS[size];
+  const noteWidth = NOTE_WIDTH;
+  const noteAspectRatio = showReactions
+    ? NOTE_ASPECT_RATIO
+    : NOTE_ASPECT_RATIO_COMPACT;
 
   const { data: idea } = useIdeaById(ideaId);
   const localize = useLocalize();
@@ -89,6 +101,12 @@ const StickyNote: React.FC<Props> = ({
     }
   };
 
+  // When an unauthenticated user clicks a reaction, set this idea as the initial
+  // idea so it stays centered after the auth flow completes
+  const handleUnauthenticatedReactionClick = () => {
+    updateSearchParams({ initial_idea_id: ideaId });
+  };
+
   if (!idea) {
     return null;
   }
@@ -99,14 +117,15 @@ const StickyNote: React.FC<Props> = ({
   const authorId = idea.data.relationships.author?.data?.id || null;
   const authorHash = idea.data.attributes.author_hash;
   const commentsCount = idea.data.attributes.comments_count;
+  const showCommentIcon =
+    phase?.data.attributes.commenting_enabled || commentsCount > 0;
 
   return (
     <StyledNote
       as="button"
       borderRadius="2px"
-      minWidth="300px"
-      maxWidth="350px"
-      height={`${noteHeight}px`}
+      width={`${noteWidth}px`}
+      $aspectRatio={noteAspectRatio}
       transform={`rotate(${rotation}deg)`}
       background={topicBackgroundColor || colors.teal200}
       boxShadow="0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)"
@@ -120,21 +139,57 @@ const StickyNote: React.FC<Props> = ({
       onKeyDown={handleKeyDown}
       aria-label={title}
     >
-      {authorName && (
-        <Box display="flex" alignItems="center">
-          <Avatar userId={authorId} authorHash={authorHash} size={24} />
-          <Text fontSize="s" fontWeight="semi-bold" color="textPrimary" m="0px">
-            {authorName}
-          </Text>
-        </Box>
-      )}
-      <Text fontSize="l" fontWeight="bold" m="0px" color={'textPrimary'}>
-        {truncateText(title, size === 'small' ? 45 : 100)}
+      <Box
+        display="flex"
+        flexWrap="wrap"
+        justifyContent="space-between"
+        alignItems="flex-start"
+      >
+        {authorName && (
+          <Box display="flex" alignItems="center">
+            <Avatar userId={authorId} authorHash={authorHash} size={24} />
+            <Text
+              fontSize="s"
+              fontWeight="semi-bold"
+              color="textPrimary"
+              m="0px"
+            >
+              {authorName}
+            </Text>
+          </Box>
+        )}
+        {topicEmojis.length > 0 && (
+          <Box
+            display="flex"
+            flexWrap="wrap"
+            gap="4px"
+            justifyContent="flex-end"
+            ml="auto"
+          >
+            {topicEmojis.map((emoji, index) => (
+              <Box
+                key={index}
+                background={colors.white}
+                borderRadius="50%"
+                p="8px"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Emoji emoji={emoji} size="24px" />
+              </Box>
+            ))}
+          </Box>
+        )}
+      </Box>
+      {showReactions && <Box flex="1" />}
+      <Text fontSize="xxl" fontWeight="bold" m="0px" color={'textPrimary'}>
+        {truncateText(title, 100)}
       </Text>
 
-      <Box flex="1" minHeight="0" overflow="hidden">
-        <BodyText fontSize="m" color="textPrimary" m="0px">
-          {truncateText(bodyText, size === 'small' ? 230 : 400)}
+      <Box minHeight="0" overflow="hidden">
+        <BodyText fontSize="m" color="textPrimary" m="0px" pb="16px">
+          {truncateText(bodyText, 100)}
         </BodyText>
       </Box>
       {showReactions && (
@@ -146,18 +201,28 @@ const StickyNote: React.FC<Props> = ({
           flexShrink={0}
         >
           <Box display="flex" alignItems="center" gap="4px">
-            <Icon
-              name="comments"
-              fill={colors.textSecondary}
-              width="20px"
-              height="20px"
-            />
-            <Text fontSize="m" color="textSecondary" m="0px" ml="4px">
-              {commentsCount}
-            </Text>
+            {showCommentIcon && (
+              <>
+                <Icon
+                  name="comments"
+                  fill={colors.textSecondary}
+                  width="20px"
+                  height="20px"
+                />
+                <Text fontSize="m" color="textSecondary" m="0px" ml="4px">
+                  {commentsCount}
+                </Text>
+              </>
+            )}
           </Box>
-
-          <ReactionControl ideaId={ideaId} size="1" styleType="compact" />
+          {phase?.data.attributes.reacting_enabled && (
+            <ReactionControl
+              ideaId={ideaId}
+              size="1"
+              styleType="compact"
+              unauthenticatedReactionClick={handleUnauthenticatedReactionClick}
+            />
+          )}
         </Box>
       )}
     </StyledNote>

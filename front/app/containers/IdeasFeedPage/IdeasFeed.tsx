@@ -1,16 +1,15 @@
 import React, {
   useMemo,
-  useRef,
   useCallback,
   useState,
   useEffect,
+  useRef,
 } from 'react';
 
 import {
   Box,
   Spinner,
   Text,
-  colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import { useVirtualizer } from '@tanstack/react-virtual';
@@ -20,21 +19,28 @@ import styled from 'styled-components';
 
 import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useInputTopics from 'api/input_topics/useInputTopics';
+import usePhase from 'api/phases/usePhase';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import messages from './messages';
-import StickyNote, { NOTE_HEIGHTS } from './StickyNotes/StickyNote';
+import ScrollHintOverlay from './ScrollHintOverlay';
+import StickyNote, {
+  NOTE_WIDTH,
+  NOTE_ASPECT_RATIO,
+} from './StickyNotes/StickyNote';
 import { getTopicColor } from './topicsColor';
 
-const PEEK_HEIGHT = 150;
+const PEEK_HEIGHT = 200;
 
-const FeedContainer = styled(Box)`
+const FeedContainer = styled.div`
   scroll-snap-type: y mandatory;
   overflow-y: auto;
   height: 100dvh;
+  background: white
+    url("data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1.5' fill='%23e5e5e5'/%3E%3C/svg%3E");
 
   ::-webkit-scrollbar {
     display: none;
@@ -79,11 +85,10 @@ const NoteContainer = styled(Box)<{
       }
       if (isPrevious) {
         // Move to bottom of container
-        return `translateY(calc(-50% + (${containerHeight} - ${noteHeight}px) / 2 + 40px)) scale(${scale})`;
+        return `translateY(calc(-50% + (${containerHeight} - ${noteHeight}px) / 2)) scale(${scale})`;
       }
       return `translateY(-50%) scale(${scale})`;
     }};
-    opacity: ${({ isCentered }) => (isCentered ? 1 : 0.5)};
     pointer-events: ${({ isCentered }) => (isCentered ? 'auto' : 'none')};
     transition: transform 0.4s ease-out, opacity 0.3s ease-out;
   }
@@ -106,11 +111,14 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
   const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
   const phaseId = searchParams.get('phase_id')!;
-  const initialIdeaIdFromUrl = searchParams.get('initial_idea_id') || undefined;
+  const initialIdeaId = searchParams.get('initial_idea_id') || undefined;
 
-  // Store the initial idea ID in a ref so it persists after being removed from URL
-  const initialIdeaIdRef = useRef(initialIdeaIdFromUrl);
-  const initialIdeaId = initialIdeaIdRef.current;
+  // Get project ID from phase to fetch topics
+  const { data: phase } = usePhase(phaseId);
+  const projectId = phase?.data.relationships.project.data.id;
+
+  // Fetch topics to get emojis
+  const { data: topicsData } = useInputTopics(projectId);
 
   const parentRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useBreakpoint('phone');
@@ -121,8 +129,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
     }
   }, []);
 
-  const noteSize = isMobile ? 'small' : 'large';
-  const noteHeight = NOTE_HEIGHTS[noteSize];
+  const noteHeight = NOTE_WIDTH / NOTE_ASPECT_RATIO;
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteIdeaFeedIdeas({
@@ -145,14 +152,27 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
   }, [flatIdeas, initialIdeaId]);
 
   // Fetch the initial idea separately if it's not in the list
-  const { data: initialIdeaData, isFetching: isFetchingInitialIdea } =
-    useIdeaById(initialIdeaInList ? undefined : initialIdeaId);
+  const { data: initialIdeaData } = useIdeaById(
+    initialIdeaInList ? undefined : initialIdeaId
+  );
 
   // Reorder ideas to put the initial idea first (if provided), otherwise keep original order
   const orderedIdeas = useMemo(() => {
     // If we need to fetch the initial idea and it's loaded, prepend it
+    // But only if no topic filter is active, or the idea has the selected topic
     if (initialIdeaId && !initialIdeaInList && initialIdeaData) {
-      return [initialIdeaData.data, ...flatIdeas];
+      const initialIdeaTopics =
+        initialIdeaData.data.relationships.input_topics?.data.map(
+          (topic) => topic.id
+        ) || [];
+      const initialIdeaHasSelectedTopic =
+        !topicId || initialIdeaTopics.includes(topicId);
+
+      if (initialIdeaHasSelectedTopic) {
+        return [initialIdeaData.data, ...flatIdeas];
+      }
+      // If the initial idea doesn't have the selected topic, don't add it
+      return flatIdeas;
     }
 
     if (flatIdeas.length === 0 || !initialIdeaId) return flatIdeas;
@@ -169,14 +189,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
     ];
 
     return [initialIdea, ...otherIdeas];
-  }, [flatIdeas, initialIdeaId, initialIdeaInList, initialIdeaData]);
-
-  // Remove initial_idea_id from URL once the feed has loaded with the initial idea
-  useEffect(() => {
-    if (initialIdeaId && orderedIdeas.length > 0 && !isLoading) {
-      removeSearchParams(['initial_idea_id']);
-    }
-  }, [initialIdeaId, orderedIdeas.length, isLoading]);
+  }, [flatIdeas, initialIdeaId, initialIdeaInList, initialIdeaData, topicId]);
 
   // Extract topic IDs for each idea
   const ideaTopics = useMemo(() => {
@@ -188,6 +201,16 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
     });
     return map;
   }, [orderedIdeas]);
+
+  // Create emoji lookup map from topics, using parent_icon as fallback for subtopics
+  const topicEmojis = useMemo(() => {
+    const map = new Map<string, string | null>();
+    topicsData?.data.forEach((topic) => {
+      const emoji = topic.attributes.icon || topic.attributes.parent_icon;
+      map.set(topic.id, emoji);
+    });
+    return map;
+  }, [topicsData]);
 
   const ideasLength = orderedIdeas.length;
 
@@ -250,7 +273,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
     ]
   );
 
-  if (isLoading || isFetchingInitialIdea) {
+  if (isLoading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" h="100vh">
         <Spinner />
@@ -273,6 +296,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
 
   return (
     <FeedContainer ref={parentRef} onScroll={handleScroll}>
+      {isMobile && <ScrollHintOverlay />}
       <Box
         height={`${getTotalSize() + topPadding}px`}
         width="100%"
@@ -314,6 +338,10 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
           // Use parentTopicId for color when filtering by subtopic, otherwise use the first topic
           const colorTopicId = parentTopicId || topicId || topicIds[0];
           const topicBackgroundColor = getTopicColor(colorTopicId);
+          // Get emojis from all root topics associated with this idea
+          const emojis = topicIds
+            .map((id) => topicEmojis.get(id))
+            .filter((emoji): emoji is string => emoji != null);
 
           return (
             <VirtualItem
@@ -326,7 +354,6 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
               <NoteContainer
                 peekHeight={PEEK_HEIGHT}
                 noteHeight={noteHeight}
-                bgColor={colors.grey100}
                 isCentered={virtualRow.index === centeredIndex}
                 isPrevious={virtualRow.index < centeredIndex}
                 isNext={virtualRow.index > centeredIndex}
@@ -334,9 +361,9 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
                 <StickyNote
                   ideaId={idea.id}
                   topicBackgroundColor={topicBackgroundColor}
+                  topicEmojis={emojis}
                   onClick={() => handleIdeaSelect(idea.id)}
                   centeredIdeaId={centeredIdeaId || undefined}
-                  size={noteSize}
                   showReactions={true}
                 />
               </NoteContainer>

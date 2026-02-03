@@ -15,6 +15,7 @@ import useInputTopicById from 'api/input_topics/useInputTopicById';
 import useInputTopics from 'api/input_topics/useInputTopics';
 
 import T from 'components/T';
+import Emoji from 'components/UI/Emoji';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -52,6 +53,7 @@ const SelectedTopicContent = ({
   const { data: subtopics } = useInputTopics(projectId, {
     parent_id: topicId,
     depth: 1,
+    sort: '-ideas_count',
   });
 
   const handleSubtopicClick = (subtopicId: string) => {
@@ -79,9 +81,14 @@ const SelectedTopicContent = ({
           alignItems="center"
           mb="8px"
         >
-          <Title as="h1" variant="h3" mb="0px">
-            <T value={topic?.data.attributes.title_multiloc} />
-          </Title>
+          <Box display="flex" alignItems="center" gap="8px">
+            {topic?.data.attributes.icon && (
+              <Emoji emoji={topic.data.attributes.icon} size="28px" />
+            )}
+            <Title as="h1" variant="h3" mb="0px">
+              <T value={topic?.data.attributes.title_multiloc} />
+            </Title>
+          </Box>
           <Box
             display="flex"
             alignItems="center"
@@ -103,6 +110,8 @@ const SelectedTopicContent = ({
 
       {subtopics?.data.map((subtopic) => {
         const isActive = selectedSubtopicId === subtopic.id;
+        const subtopicEmoji =
+          subtopic.attributes.icon || subtopic.attributes.parent_icon;
         return (
           <React.Fragment key={subtopic.id}>
             <Divider m="0px" />
@@ -123,9 +132,12 @@ const SelectedTopicContent = ({
                 mb="4px"
                 w="100%"
               >
-                <Text fontWeight="bold" variant="bodyM" mb="0px">
-                  <T value={subtopic.attributes.title_multiloc} supportHtml />
-                </Text>
+                <Box display="flex" alignItems="center" gap="8px">
+                  {subtopicEmoji && <Emoji emoji={subtopicEmoji} size="20px" />}
+                  <Text fontWeight="bold" variant="bodyM" mb="0px">
+                    <T value={subtopic.attributes.title_multiloc} />
+                  </Text>
+                </Box>
                 <Box
                   display="flex"
                   alignItems="center"

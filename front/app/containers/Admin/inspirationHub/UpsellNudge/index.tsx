@@ -60,7 +60,7 @@ const UpsellNudge = () => {
             <ButtonWithLink
               buttonStyle="text"
               textColor={theme.colors.tenantPrimary}
-              linkTo={formatMessage(messages.inspirationHubSupportArticle)}
+              linkTo={formatMessage(messages.inspirationHubSupportArticle2)}
               openLinkInNewTab
             >
               {formatMessage(messages.learnMore)}

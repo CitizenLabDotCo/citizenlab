@@ -39,12 +39,7 @@ export interface IGlobalTopics {
 }
 
 export interface IGlobalTopicsQueryParams {
-  sort?:
-    | 'new'
-    | 'custom'
-    | 'projects_count'
-    | '-projects_count'
-    | '-ideas_count';
+  sort?: 'new' | 'custom' | 'projects_count' | '-projects_count';
   forHomepageFilter?: boolean;
   forOnboarding?: boolean;
   includeStaticPages?: boolean;

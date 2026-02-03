@@ -22,6 +22,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Basket < ApplicationRecord
+  include LocationTrackableParticipation
   belongs_to :phase
 
   belongs_to :user, optional: true
@@ -36,7 +37,7 @@ class Basket < ApplicationRecord
   scope :submitted, -> { where.not(submitted_at: nil) }
   scope :not_submitted, -> { where(submitted_at: nil) }
 
-  delegate :project_id, to: :phase
+  delegate :project_id, :project, to: :phase
 
   def submitted?
     !!submitted_at

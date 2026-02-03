@@ -85,12 +85,12 @@ export default defineMessages({
   moderatorLabelTooltip: {
     id: 'app.containers.Admin.Invitations.moderatorLabelTooltip',
     defaultMessage:
-      'When toggled on, people receiving and accepting your invitation will also have moderator rights to one or multiple projects. More info on the project moderator role {moderatorLabelTooltipLink}.',
+      'When toggled on, people receiving and accepting your invitation will also have moderator rights to one or multiple projects. More info on the project moderator role {moderatorLabelTooltipLink2}.',
   },
-  moderatorLabelTooltipLink: {
-    id: 'app.containers.Admin.Invitations.moderatorLabelTooltipLink',
+  moderatorLabelTooltipLink2: {
+    id: 'app.containers.Admin.Invitations.moderatorLabelTooltipLink2',
     defaultMessage:
-      'http://support.govocal.com/en-your-citizenlab-platform-step-by-step/set-up/pointing-out-the-right-project-moderators',
+      'https://support.govocal.com/en/articles/527642-what-are-the-different-roles-on-the-platform',
   },
   moderatorLabelTooltipLinkText: {
     id: 'app.containers.Admin.Invitations.moderatorLabelTooltipLinkText',
@@ -186,10 +186,9 @@ export default defineMessages({
     id: 'app.containers.Admin.Invitations.unknownError',
     defaultMessage: 'Something went wrong. Please try again later.',
   },
-  invitesSupportPageURL: {
-    id: 'app.containers.Admin.Invitations.invitesSupportPageURL',
-    defaultMessage:
-      'http://support.govocal.com/en/articles/1771605-invite-people-to-the-platform',
+  invitesSupportPageURL2: {
+    id: 'app.containers.Admin.Invitations.invitesSupportPageURL2',
+    defaultMessage: 'https://support.govocal.com/articles/527647',
   },
   tabInviteUsers: {
     id: 'app.containers.Admin.Invitations.tabInviteUsers',

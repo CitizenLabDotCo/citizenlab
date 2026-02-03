@@ -1,18 +1,21 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import {
   Box,
   Button,
   Spinner,
+  Text,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
+import useInputTopics from 'api/input_topics/useInputTopics';
 import usePhase from 'api/phases/usePhase';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { getInputTermMessage } from 'utils/i18n';
 
 import messages from '../messages';
 import { getTopicColor } from '../topicsColor';
@@ -36,21 +39,21 @@ const NoteWrapper = styled(Box)`
 
 // Desktop positions use pixel values for consistent centering
 const POSITIONS_DESKTOP = [
-  { left: '60px', top: '2%' },
-  { left: '240px', top: '8%' },
-  { left: '444px', top: '3%' },
-  { left: '636px', top: '10%' },
-  { left: '816px', top: '5%' },
-  { left: '120px', top: '18%' },
-  { left: '300px', top: '22%' },
-  { left: '516px', top: '19%' },
-  { left: '696px', top: '24%' },
-  { left: '876px', top: '20%' },
-  { left: '84px', top: '32%' },
-  { left: '264px', top: '36%' },
-  { left: '480px', top: '33%' },
-  { left: '660px', top: '38%' },
-  { left: '840px', top: '35%' },
+  { left: '0px', top: '2%' },
+  { left: '180px', top: '8%' },
+  { left: '384px', top: '3%' },
+  { left: '576px', top: '10%' },
+  { left: '756px', top: '5%' },
+  { left: '60px', top: '18%' },
+  { left: '240px', top: '22%' },
+  { left: '456px', top: '19%' },
+  { left: '636px', top: '24%' },
+  { left: '816px', top: '20%' },
+  { left: '24px', top: '32%' },
+  { left: '204px', top: '36%' },
+  { left: '420px', top: '33%' },
+  { left: '600px', top: '38%' },
+  { left: '780px', top: '35%' },
 ];
 
 // Tablet positions use pixel values for consistent centering
@@ -98,8 +101,22 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
     'page[size]': 15,
   });
 
+  const projectId = phase?.data.relationships.project.data.id;
+  const { data: topicsData } = useInputTopics(projectId);
+
+  // Create emoji lookup map from topics, using parent_icon as fallback for subtopics
+  const topicEmojis = useMemo(() => {
+    const map = new Map<string, string | null>();
+    topicsData?.data.forEach((topic) => {
+      const emoji = topic.attributes.icon || topic.attributes.parent_icon;
+      map.set(topic.id, emoji);
+    });
+    return map;
+  }, [topicsData]);
+
   const flatIdeas = data?.pages.flatMap((page) => page.data);
   const ideasCount = phase?.data.attributes.ideas_count ?? 0;
+  const inputTerm = phase?.data.attributes.input_term ?? 'idea';
 
   const handleNoteClick = (ideaId: string) => {
     clHistory.push(
@@ -128,6 +145,16 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
     return <Spinner />;
   }
 
+  if (!displayedIdeas || displayedIdeas.length === 0) {
+    return (
+      <Box display="flex" justifyContent="center" py="64px">
+        <Text color="textSecondary">
+          <FormattedMessage {...messages.nothingToShowYet} />
+        </Text>
+      </Box>
+    );
+  }
+
   // Use fixed width containers that center the pile
   const mobileContainerWidth = 340;
   const tabletContainerWidth = 800;
@@ -154,6 +181,10 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
               idea.relationships.input_topics?.data.map((topic) => topic.id) ||
               [];
             const topicBackgroundColor = getTopicColor(topicIds[0]);
+            // Get emojis from all root topics associated with this idea
+            const emojis = topicIds
+              .map((id) => topicEmojis.get(id))
+              .filter((emoji): emoji is string => emoji != null);
 
             return (
               <NoteWrapper
@@ -165,8 +196,8 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
                 <StickyNote
                   ideaId={idea.id}
                   topicBackgroundColor={topicBackgroundColor}
+                  topicEmojis={emojis}
                   onClick={() => handleNoteClick(idea.id)}
-                  size="small"
                   rotation={ROTATIONS[index % ROTATIONS.length]}
                   showReactions={false}
                 />
@@ -177,7 +208,20 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
       </Box>
       <Box display="flex" justifyContent="center" mt="24px">
         <Button onClick={handleSeeAllClick}>
-          <FormattedMessage {...messages.seeAllIdeas} values={{ ideasCount }} />
+          <FormattedMessage
+            {...getInputTermMessage(inputTerm, {
+              idea: messages.seeAllIdeas,
+              option: messages.seeAllOptions,
+              project: messages.seeAllProjects,
+              question: messages.seeAllQuestions,
+              issue: messages.seeAllIssues,
+              contribution: messages.seeAllContributions,
+              proposal: messages.seeAllProposals,
+              initiative: messages.seeAllInitiatives,
+              petition: messages.seeAllPetitions,
+            })}
+            values={{ ideasCount }}
+          />
         </Button>
       </Box>
     </Box>

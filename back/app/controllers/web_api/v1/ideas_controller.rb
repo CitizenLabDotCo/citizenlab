@@ -238,7 +238,13 @@ class WebApi::V1::IdeasController < ApplicationController
         sidefx.after_create(input, current_user, phase_for_input)
         write_everyone_tracking_cookie input
 
-        ClaimTokenService.generate(input) unless input.author_id
+        permission = phase_for_input.permissions.find_by(action: 'posting_idea')
+        generate_claim_token = permission && permission.permitted_by == 'everyone' && permission.user_data_collection != 'anonymous' && current_user.nil?
+
+        if generate_claim_token
+          ClaimTokenService.generate(input)
+        end
+
         serializer_params = jsonapi_serializer_params.merge(include_claim_token: true)
 
         render json: WebApi::V1::IdeaSerializer.new(
@@ -602,7 +608,7 @@ class WebApi::V1::IdeasController < ApplicationController
   # Only relevant for allow_anonymous_participation in the context of ideation
   # Not relevant for 'user_data_collection' in the context of surveys
   def anonymous_not_allowed?(phase)
-    return false if AppConfiguration.instance.feature_activated?('ideation_accountless_posting') && permitted_by_everyone?(phase)
+    return false if permitted_by_everyone?(phase)
 
     params.dig('idea', 'anonymous') && !phase.allow_anonymous_participation
   end

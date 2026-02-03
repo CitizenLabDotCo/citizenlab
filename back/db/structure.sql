@@ -243,6 +243,7 @@ DROP INDEX IF EXISTS public.index_permissions_on_action;
 DROP INDEX IF EXISTS public.index_permissions_custom_fields_on_permission_id;
 DROP INDEX IF EXISTS public.index_permissions_custom_fields_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_permission_field;
+DROP INDEX IF EXISTS public.index_participation_locations_on_trackable;
 DROP INDEX IF EXISTS public.index_onboarding_campaign_dismissals_on_user_id;
 DROP INDEX IF EXISTS public.index_official_feedbacks_on_user_id;
 DROP INDEX IF EXISTS public.index_official_feedbacks_on_idea_id;
@@ -520,6 +521,7 @@ ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS phases_pkey;
 ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS phase_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.permissions DROP CONSTRAINT IF EXISTS permissions_pkey;
 ALTER TABLE IF EXISTS ONLY public.permissions_custom_fields DROP CONSTRAINT IF EXISTS permissions_custom_fields_pkey;
+ALTER TABLE IF EXISTS ONLY public.participation_locations DROP CONSTRAINT IF EXISTS participation_locations_pkey;
 ALTER TABLE IF EXISTS ONLY public.static_pages DROP CONSTRAINT IF EXISTS pages_pkey;
 ALTER TABLE IF EXISTS ONLY public.static_page_files DROP CONSTRAINT IF EXISTS page_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.onboarding_campaign_dismissals DROP CONSTRAINT IF EXISTS onboarding_campaign_dismissals_pkey;
@@ -649,6 +651,7 @@ DROP TABLE IF EXISTS public.polls_options;
 DROP TABLE IF EXISTS public.phase_files;
 DROP TABLE IF EXISTS public.permissions_custom_fields;
 DROP TABLE IF EXISTS public.permissions;
+DROP TABLE IF EXISTS public.participation_locations;
 DROP TABLE IF EXISTS public.onboarding_campaign_dismissals;
 DROP TABLE IF EXISTS public.notifications;
 DROP TABLE IF EXISTS public.nav_bar_items;
@@ -1383,7 +1386,8 @@ CREATE TABLE public.projects (
     header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
     preview_token character varying NOT NULL,
     hidden boolean DEFAULT false NOT NULL,
-    listed boolean DEFAULT true NOT NULL
+    listed boolean DEFAULT true NOT NULL,
+    track_participation_location boolean DEFAULT false NOT NULL
 );
 
 
@@ -1764,7 +1768,6 @@ CREATE TABLE public.phases (
     native_survey_button_multiloc jsonb DEFAULT '{}'::jsonb,
     expire_days_limit integer,
     reacting_threshold integer,
-    prescreening_enabled boolean DEFAULT false NOT NULL,
     autoshare_results_enabled boolean DEFAULT true NOT NULL,
     manual_votes_count integer DEFAULT 0 NOT NULL,
     manual_voters_amount integer,
@@ -1776,7 +1779,8 @@ CREATE TABLE public.phases (
     similarity_enabled boolean DEFAULT true NOT NULL,
     vote_term character varying DEFAULT 'vote'::character varying,
     voting_min_selected_options integer DEFAULT 1 NOT NULL,
-    voting_filtering_enabled boolean DEFAULT false NOT NULL
+    voting_filtering_enabled boolean DEFAULT false NOT NULL,
+    prescreening_mode character varying
 );
 
 
@@ -3232,6 +3236,26 @@ CREATE TABLE public.onboarding_campaign_dismissals (
 
 
 --
+-- Name: participation_locations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.participation_locations (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    trackable_type character varying NOT NULL,
+    trackable_id uuid NOT NULL,
+    country_code character varying(2),
+    country_name character varying,
+    city character varying,
+    region character varying,
+    latitude numeric(9,6),
+    longitude numeric(9,6),
+    asn integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: permissions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -4568,6 +4592,14 @@ ALTER TABLE ONLY public.static_page_files
 
 ALTER TABLE ONLY public.static_pages
     ADD CONSTRAINT pages_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: participation_locations participation_locations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.participation_locations
+    ADD CONSTRAINT participation_locations_pkey PRIMARY KEY (id);
 
 
 --
@@ -6550,6 +6582,13 @@ CREATE INDEX index_onboarding_campaign_dismissals_on_user_id ON public.onboardin
 
 
 --
+-- Name: index_participation_locations_on_trackable; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_participation_locations_on_trackable ON public.participation_locations USING btree (trackable_type, trackable_id);
+
+
+--
 -- Name: index_permission_field; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8347,7 +8386,10 @@ SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20260127094257'),
+('20260127092840'),
 ('20260127090030'),
+('20260126154950'),
+('20260126104246'),
 ('20260122100950'),
 ('20260121111117'),
 ('20260120123325'),
@@ -8355,6 +8397,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20260107121024'),
 ('20260107115454'),
 ('20251224101437'),
+('20251222000002'),
+('20251222000001'),
 ('20251217110845'),
 ('20251212135514'),
 ('20251209135529'),

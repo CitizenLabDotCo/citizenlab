@@ -2,6 +2,12 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Phase insights' do
+  # Helper to prefix demographics custom field keys as stored in ideas
+  def prefixed_custom_field_values(values)
+    prefix = UserFieldsInFormService.prefix
+    values.transform_keys { |k| "#{prefix}#{k}" }
+  end
+
   before do
     admin_header_token
     # This reference time means we can expect exact dates in the chart data
@@ -57,12 +63,11 @@ resource 'Phase insights' do
         submitted_at: 12.days.ago,
         author: ns_user2,
         creation_phase_id: phase.id,
-        custom_field_values: { gender: 'female', birthyear: 1980 }
+        custom_field_values: prefixed_custom_field_values(gender: 'female', birthyear: 1980)
       )
 
       create(:idea, phases: [phase], created_at: 5.days.ago, submitted_at: 5.days.ago, author: ns_user2, creation_phase_id: phase.id) # created during phase, and in last 7 days
-      create(:idea, phases: [phase], created_at: 2.days.ago, submitted_at: 2.days.ago, author: ns_user3, creation_phase_id: phase.id, custom_field_values: { gender: 'male', birthyear: 1990 }) # created & published after phase (still counted), and in last 7 days
-
+      create(:idea, phases: [phase], created_at: 2.days.ago, submitted_at: 2.days.ago, author: ns_user3, creation_phase_id: phase.id, custom_field_values: prefixed_custom_field_values(gender: 'male', birthyear: 1990)) # created & published after phase (still counted), and in last 7 days
       # created during native survey phase (in week before last), not submitted (considered incomplete, affecting completion rate)
       create(
         :idea,
@@ -72,7 +77,7 @@ resource 'Phase insights' do
         submitted_at: nil,
         author: ns_user4,
         creation_phase_id: phase.id,
-        custom_field_values: { gender: 'male', birthyear: 1990 }
+        custom_field_values: prefixed_custom_field_values(gender: 'male', birthyear: 1990)
       )
 
       # Pageviews and sessions
