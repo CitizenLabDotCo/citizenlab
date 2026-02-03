@@ -135,7 +135,7 @@ const SelectedTopicContent = ({
                 <Box display="flex" alignItems="center" gap="8px">
                   {subtopicEmoji && <Emoji emoji={subtopicEmoji} size="20px" />}
                   <Text fontWeight="bold" variant="bodyM" mb="0px">
-                    <T value={subtopic.attributes.title_multiloc} supportHtml />
+                    <T value={subtopic.attributes.title_multiloc} />
                   </Text>
                 </Box>
                 <Box
