@@ -10,7 +10,7 @@ it:
       author_wrote: '%{authorName} ha scritto:'
       preheader: 'Un post sulla tua piattaforma è stato segnalato per una revisione'
       automatically_flagged: >
-        Questo post è stato rilevato automaticamente come potenzialmente contenente contenuti inappropriati. Ti inviamo questa notifica affinché tu possa rivedere il post secondo le tue linee guida di moderazione.
+        Questo post è stato segnalato automaticamente poiché potrebbe contenere contenuti inappropriati. Ti inviamo questa notifica affinché tu possa esaminare il post in conformità con le tue linee guida di moderazione.
       how_to_review: >
         Se il post non contiene contenuti inappropriati, puoi rimuovere l'avviso tramite la tua piattaforma nella scheda Attività del pannello di amministrazione.
       cta_button: 'Review'
