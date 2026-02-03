@@ -8,6 +8,7 @@ import { IPhaseData } from 'api/phases/types';
 import { useIntl } from 'utils/cl-intl';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
+import ExportableInsight from '../word/ExportableInsight';
 import messages from '../messages';
 
 import MethodMetrics from './MethodMetrics';
@@ -61,45 +62,49 @@ const ParticipationMetrics = ({ phase }: Props) => {
   const isCurrentPhase = pastPresentOrFuture([start_at, end_at]) === 'present';
 
   return (
-    <Box display="flex" flexWrap="wrap" gap="16px" w="100%">
-      <MetricCard
-        label={formatMessage(messages.visitors)}
-        value={metrics.visitors}
-        icon="user-circle"
-        change={
-          isCurrentPhase ? metrics.visitors_7_day_percent_change : undefined
-        }
-      />
-      <MetricCard
-        label={formatMessage(messages.participants)}
-        value={metrics.participants}
-        icon="sidebar-users"
-        change={
-          isCurrentPhase ? metrics.participants_7_day_percent_change : undefined
-        }
-      />
+    <ExportableInsight exportId="participation-metrics">
+      <Box display="flex" flexWrap="wrap" gap="16px" w="100%">
+        <MetricCard
+          label={formatMessage(messages.visitors)}
+          value={metrics.visitors}
+          icon="user-circle"
+          change={
+            isCurrentPhase ? metrics.visitors_7_day_percent_change : undefined
+          }
+        />
+        <MetricCard
+          label={formatMessage(messages.participants)}
+          value={metrics.participants}
+          icon="sidebar-users"
+          change={
+            isCurrentPhase
+              ? metrics.participants_7_day_percent_change
+              : undefined
+          }
+        />
 
-      <MethodMetrics
-        participationMethod={participation_method}
-        metrics={metrics}
-        showChange={isCurrentPhase}
-      />
+        <MethodMetrics
+          participationMethod={participation_method}
+          metrics={metrics}
+          showChange={isCurrentPhase}
+        />
 
-      <MetricCard
-        label={formatMessage(messages.participationRate)}
-        value={formatNumber(metrics.participation_rate_as_percent / 100, {
-          style: 'percent',
-          minimumFractionDigits: 1,
-          maximumFractionDigits: 1,
-        })}
-        icon="chart-bar"
-        change={
-          isCurrentPhase
-            ? metrics.participation_rate_7_day_percent_change
-            : undefined
-        }
-      />
-    </Box>
+        <MetricCard
+          label={formatMessage(messages.participationRate)}
+          value={formatNumber(metrics.participation_rate_as_percent / 100, {
+            style: 'percent',
+            minimumFractionDigits: 1,
+            maximumFractionDigits: 1,
+          })}
+          icon="chart-bar"
+          change={
+            isCurrentPhase
+              ? metrics.participation_rate_7_day_percent_change
+              : undefined
+          }
+        />
+      </Box>
+    </ExportableInsight>
   );
 };
 
