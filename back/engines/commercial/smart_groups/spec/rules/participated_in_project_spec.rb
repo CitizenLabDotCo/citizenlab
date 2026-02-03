@@ -28,7 +28,7 @@ describe SmartGroups::Rules::ParticipatedInProject do
     it 'rejects a rule with a mutli-value predicate and a single value' do
       rule = valid_json_rule.tap do |r|
         r['predicate'] = 'in'
-        r['value'] = Project.first.id
+        r['value'] = Project.order(:created_at).first.id
       end
       expect(build(:smart_group, rules: [rule])).to be_invalid
     end
@@ -36,7 +36,7 @@ describe SmartGroups::Rules::ParticipatedInProject do
     it 'accepts a rule with a single-value predicate and a single value' do
       rule = valid_json_rule.tap do |r|
         r['predicate'] = 'not_in'
-        r['value'] = Project.first.id
+        r['value'] = Project.order(:created_at).first.id
       end
       expect(described_class.from_json(rule)).to be_valid
       expect(build(:smart_group, rules: [rule])).to be_valid
@@ -56,7 +56,7 @@ describe SmartGroups::Rules::ParticipatedInProject do
     let_it_be(:user3) { create(:user) }
     let_it_be(:user4) { create(:user) }
     let_it_be(:idea1) { create(:idea, project: project1, author: user1) }
-    let_it_be(:propsal1) { create(:proposal, project: project1, author: user4, creation_phase: create(:proposals_phase, project: project1)) }
+    let_it_be(:propsal1) { create(:proposal, project: project1, author: user4, creation_phase: project1.phases.first) }
     let_it_be(:reaction) { create(:reaction, reactable: idea1, user: user2) }
     let_it_be(:comment) { create(:comment, idea: idea1, author: user3) }
     let_it_be(:idea2) { create(:idea, project: project2, author: user3) }
