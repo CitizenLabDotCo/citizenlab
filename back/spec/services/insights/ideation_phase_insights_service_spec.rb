@@ -84,9 +84,9 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
       # We expect that:
       # - field_1 value comes from idea2 (item), preferred over value from user1, which collides after removing key prefix
       # - field_2 comes from user1 custom_field_values (not present in idea2)
-      # - field_3 comes from idea2 (item) custom_field_values
+      # - field_3 filtered from idea2 (item) custom_field_values (no prefix)
       # - field_4 comes from idea2 (item) custom_field_values, with key prefix removed
-      expect(idea2_participation[:custom_field_values]).to eq({ 'field_1' => 'value_1i', 'field_2' => 'value_2u', 'field_3' => 'value_3i', 'field_4' => 'value_4i' })
+      expect(idea2_participation[:custom_field_values]).to eq({ 'field_1' => 'value_1i', 'field_2' => 'value_2u', 'field_4' => 'value_4i' })
     end
 
     it 'correctly handles phases with no end date' do

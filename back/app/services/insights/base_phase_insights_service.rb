@@ -142,17 +142,16 @@ module Insights
     # and/or the participant (user) referenced in each participation.
     # Item values take precedence over participant values in case of key collisions,
     # to prefer demographics at the time of participation.
-    def parse_participation_custom_field_values(item, participant)
+    def parse_user_custom_field_values(item, participant)
       user_cfvs = participant&.custom_field_values || {}
 
       return user_cfvs if !item.respond_to?(:custom_field_values) || item.custom_field_values.blank?
 
       prefix = @user_fields_prefix ||= UserFieldsInFormService.prefix
 
-      item_cfvs = item.custom_field_values.transform_keys do |key|
-        key_str = key.to_s
-        key_str.start_with?(prefix) ? key_str.delete_prefix(prefix) : key_str
-      end
+      item_cfvs = item.custom_field_values
+        .select { |key, _| key.to_s.start_with?(prefix) }
+        .transform_keys { |key| key.to_s.delete_prefix(prefix) }
 
       user_cfvs.merge(item_cfvs)
     end

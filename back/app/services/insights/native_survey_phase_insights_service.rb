@@ -19,7 +19,7 @@ module Insights
           acted_at: idea.submitted_at,
           classname: 'Idea',
           participant_id: participant_id(idea.id, idea.author_id, idea.author_hash),
-          custom_field_values: parse_participation_custom_field_values(idea, idea&.author)
+          custom_field_values: parse_user_custom_field_values(idea, idea&.author)
         }
       end
     end

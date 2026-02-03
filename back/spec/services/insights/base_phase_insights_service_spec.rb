@@ -709,34 +709,42 @@ RSpec.describe Insights::BasePhaseInsightsService do
     end
   end
 
-  describe '#parse_participation_custom_field_values' do
+  describe '#parse_user_custom_field_values' do
     let(:prefix) { UserFieldsInFormService.prefix }
 
     it 'preferentially merges the parsed item.custom_field_values if present' do
       item = create(:idea, custom_field_values: { "#{prefix}key1" => 'value1', 'other_key' => 'other_value' })
 
-      result = service.send(:parse_participation_custom_field_values, item, nil)
-      expect(result).to eq({ 'key1' => 'value1', 'other_key' => 'other_value' })
+      result = service.send(:parse_user_custom_field_values, item, nil)
+      expect(result).to eq({ 'key1' => 'value1' })
 
       user = create(:user, custom_field_values: { 'key1' => 'value2' })
 
-      result = service.send(:parse_participation_custom_field_values, item, user)
-      expect(result).to eq({ 'key1' => 'value1', 'other_key' => 'other_value' })
+      result = service.send(:parse_user_custom_field_values, item, user)
+      expect(result).to eq({ 'key1' => 'value1' })
     end
 
     it 'merges user.custom_field_values not parsed from item.custom_field_values' do
       item = create(:idea, custom_field_values: { "#{prefix}key1" => 'value1', 'other_key' => 'other_value' })
       user = create(:user, custom_field_values: { 'key2' => 'value2' })
 
-      result = service.send(:parse_participation_custom_field_values, item, user)
-      expect(result).to eq({ 'key1' => 'value1', 'key2' => 'value2', 'other_key' => 'other_value' })
+      result = service.send(:parse_user_custom_field_values, item, user)
+      expect(result).to eq({ 'key1' => 'value1', 'key2' => 'value2' })
+    end
+
+    it 'avoids collisions with similar keys in idea custom_field_values' do
+      item = create(:idea, custom_field_values: { "#{prefix}key" => 'value1', 'key' => 'value2' })
+      user = create(:user, custom_field_values: { 'key' => 'value3' })
+
+      result = service.send(:parse_user_custom_field_values, item, user)
+      expect(result).to eq({ 'key' => 'value1' })
     end
 
     it 'returns the user.custom_field_values if item.custom_field_values is not present' do
       item = create(:idea, custom_field_values: {})
       user = create(:user, custom_field_values: { 'key2' => 'value2' })
 
-      result = service.send(:parse_participation_custom_field_values, item, user)
+      result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({ 'key2' => 'value2' })
     end
 
@@ -744,7 +752,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
       item = create(:idea, custom_field_values: {})
       user = create(:user, custom_field_values: {})
 
-      result = service.send(:parse_participation_custom_field_values, item, user)
+      result = service.send(:parse_user_custom_field_values, item, user)
       expect(result).to eq({})
     end
   end
