@@ -173,7 +173,7 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
           height="100%"
           minHeight={isMobile || isTablet ? '800px' : '650px'}
         >
-          {displayedIdeas?.map((idea, index) => {
+          {displayedIdeas.map((idea, index) => {
             const topicIds =
               idea.relationships.input_topics?.data.map((topic) => topic.id) ||
               [];
