@@ -147,7 +147,10 @@ RSpec.describe ClaimTokenService do
         @project = create(:single_phase_native_survey_project, phase_attrs: { with_permissions: true })
         @phase = @project.phases.first
         @permission = @phase.permissions.find_by(action: 'posting_idea')
-        @idea = create(:idea, author: nil)
+        @idea = create(:idea, author: nil, custom_field_values: {
+          field: 'value',
+          u_gender: 'male'
+        })
         @user = create(:user)
         @claim_token = create(:claim_token, item: @idea, pending_claimer: @user)
       end
@@ -155,7 +158,11 @@ RSpec.describe ClaimTokenService do
       context 'when user_data_collection = all_data' do
         it 'syncs user demographics and sets author_id' do
           expect(@permission.user_data_collection).to eq('all_data')
-          # TODO
+          described_class.complete(@user)
+          expect(@user.reload.custom_field_values).to eq({
+            'gender' => 'male'
+          })
+          expect(@idea.reload.author_id).to eq(@user.id)
         end
       end
 
@@ -167,7 +174,11 @@ RSpec.describe ClaimTokenService do
         end
 
         it 'syncs user demographics but DOES NOT set author_id' do
-          # TODO
+          described_class.complete(@user)
+          expect(@user.reload.custom_field_values).to eq({
+            'gender' => 'male'
+          })
+          expect(@idea.reload.author_id).to eq(nil)
         end
       end
     end
