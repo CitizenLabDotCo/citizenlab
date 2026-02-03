@@ -178,7 +178,7 @@ RSpec.describe ClaimTokenService do
           expect(@user.reload.custom_field_values).to eq({
             'gender' => 'male'
           })
-          expect(@idea.reload.author_id).to eq(nil)
+          expect(@idea.reload.author_id).to be_nil
         end
       end
     end

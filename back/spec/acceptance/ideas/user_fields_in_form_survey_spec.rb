@@ -76,7 +76,7 @@ resource 'Ideas' do
             publication_status: 'published',
             project_id: @project.id,
             @custom_field.key => 'option2',
-            u_user_select_field: 'option1',
+            u_user_select_field: 'option1'
           }
         })
 
@@ -98,13 +98,13 @@ resource 'Ideas' do
               publication_status: 'published',
               project_id: @project.id,
               @custom_field.key => 'option2',
-              u_user_select_field: 'option1',
+              u_user_select_field: 'option1'
             }
           })
 
           assert_status 201
           expect(Idea.count).to eq 1
-          expect(response_data[:attributes][:claim_token]).to be(nil)
+          expect(response_data[:attributes][:claim_token]).to be_nil
         end
       end
     end
