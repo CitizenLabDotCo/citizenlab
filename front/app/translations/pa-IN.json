@@ -1436,7 +1436,6 @@
   "app.containers.IdeasFeedPage.endOfFeed": "ਤੁਸੀਂ ਇਸ ਫੀਡ ਦੇ ਅੰਤ 'ਤੇ ਪਹੁੰਚ ਗਏ ਹੋ।",
   "app.containers.IdeasFeedPage.expandPanel": "ਵਿਸ਼ੇ ਪੈਨਲ ਦਾ ਵਿਸਤਾਰ ਕਰੋ",
   "app.containers.IdeasFeedPage.noIdeasForTag": "ਇਸ ਟੈਗ ਲਈ ਅਜੇ ਕੋਈ ਵਿਚਾਰ ਨਹੀਂ ਹੈ।",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "ਸਾਰੇ {ideasCount} ਇਨਪੁੱਟ ਵੇਖੋ",
   "app.containers.IdeasFeedPage.topicsPanel": "ਵਿਸ਼ੇ ਪੈਨਲ",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "ਸਾਰੇ ਇਨਪੁਟਸ ਪੋਸਟ ਕੀਤੇ ਗਏ ਹਨ",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "{orgName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ 'ਤੇ ਪੋਸਟ ਕੀਤੇ ਸਾਰੇ ਇਨਪੁਟ ਦੀ ਪੜਚੋਲ ਕਰੋ।",

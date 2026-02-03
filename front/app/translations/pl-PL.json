@@ -1436,7 +1436,6 @@
   "app.containers.IdeasFeedPage.endOfFeed": "Dotarłeś do końca tego kanału.",
   "app.containers.IdeasFeedPage.expandPanel": "Rozwiń panel tematów",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Nie masz jeszcze pomysłów na ten tag.",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Zobacz wszystkie wejścia {ideasCount}",
   "app.containers.IdeasFeedPage.topicsPanel": "Panel tematyczny",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Wszystkie opublikowane dane wejściowe",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Poznaj wszystkie inicjatywy zamieszczone na platformie uczestnictwa {orgName}.",

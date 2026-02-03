@@ -1436,7 +1436,6 @@
   "app.containers.IdeasFeedPage.endOfFeed": "Bu beslemenin sonuna ulaştınız.",
   "app.containers.IdeasFeedPage.expandPanel": "Konu panelini genişletin",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Bu etiket için henüz bir fikir yok.",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Tüm {ideasCount} girişlerini görün",
   "app.containers.IdeasFeedPage.topicsPanel": "Konular panel",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Tüm girdiler gönderildi",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "{orgName} katılım platformunda yayınlanan tüm girdileri inceleyin.",

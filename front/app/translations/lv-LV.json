@@ -1436,7 +1436,6 @@
   "app.containers.IdeasFeedPage.endOfFeed": "Jūs esat sasnieguši šīs plūsmas beigas.",
   "app.containers.IdeasFeedPage.expandPanel": "Paplašināt tēmu paneli",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Ideju par šo birku vēl nav.",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Skatīt visus {ideasCount} ievades",
   "app.containers.IdeasFeedPage.topicsPanel": "Tēmas panelis",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Visi publicētie ievades dati",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Izpētīt visu ieguldījumu, kas publicēts {orgName} līdzdalības platformā.",

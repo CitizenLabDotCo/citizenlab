@@ -1436,7 +1436,6 @@
   "app.containers.IdeasFeedPage.endOfFeed": "Olet saavuttanut tämän syötteen lopun.",
   "app.containers.IdeasFeedPage.expandPanel": "Laajenna aihepaneeli",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Ei vielä ideoita tälle tagille.",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Katso kaikki {ideasCount} syötteet",
   "app.containers.IdeasFeedPage.topicsPanel": "Aiheet-paneeli",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Kaikki syötteet lähetetty",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Tutustu kaikkiin {orgName}osallistumisalustalle julkaistuihin tuloksiin.",

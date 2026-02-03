@@ -1436,7 +1436,6 @@
   "app.containers.IdeasFeedPage.endOfFeed": "Du er nået til slutningen af dette feed.",
   "app.containers.IdeasFeedPage.expandPanel": "Udvid emnepanelet",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Ingen ideer til dette tag endnu.",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Se alle {ideasCount} input",
   "app.containers.IdeasFeedPage.topicsPanel": "Panel af emner",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Alle input sendt",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Udforsk alle input, der er blevet posted på bogerinddragelsesplatformen for {orgName}.",

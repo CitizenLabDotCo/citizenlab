@@ -1436,7 +1436,6 @@
   "app.containers.IdeasFeedPage.endOfFeed": "لقد وصلت إلى نهاية هذه الصفحة.",
   "app.containers.IdeasFeedPage.expandPanel": "توسيع لوحة المواضيع",
   "app.containers.IdeasFeedPage.noIdeasForTag": "لا توجد أفكار لهذا الوسم حتى الآن.",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "عرض جميع المدخلات {ideasCount}",
   "app.containers.IdeasFeedPage.topicsPanel": "لوحة المواضيع",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "تم نشر كافة المدخلات",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "استكشف جميع المُدخلات التي نُشرت على منصة {orgName} للمُشاركة.",

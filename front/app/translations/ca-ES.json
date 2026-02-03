@@ -1436,7 +1436,6 @@
   "app.containers.IdeasFeedPage.endOfFeed": "Has arribat al final d'aquest feed.",
   "app.containers.IdeasFeedPage.expandPanel": "Desplega el panell de temes",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Encara no hi ha idees per a aquesta etiqueta.",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Veure totes les entrades {ideasCount}",
   "app.containers.IdeasFeedPage.topicsPanel": "Panell de temes",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Totes les entrades publicades",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Exploreu totes les aportacions publicades a la plataforma de participació de {orgName}.",

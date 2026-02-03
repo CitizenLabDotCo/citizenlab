@@ -1436,7 +1436,6 @@
   "app.containers.IdeasFeedPage.endOfFeed": "Έχετε φτάσει στο τέλος αυτής της τροφοδοσίας.",
   "app.containers.IdeasFeedPage.expandPanel": "Επεκτείνετε το πάνελ θεμάτων",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Δεν υπάρχουν ακόμα ιδέες για αυτή την ετικέτα.",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Δείτε όλες τις εισόδους {ideasCount}",
   "app.containers.IdeasFeedPage.topicsPanel": "Πάνελ θεμάτων",
   "app.containers.IdeasIndexPage.a11y_IdeasListTitle1": "Όλες οι εισροές αναρτήθηκαν",
   "app.containers.IdeasIndexPage.inputsIndexMetaDescription": "Εξερευνήστε όλες τις εισηγήσεις που έχουν δημοσιευθεί στην πλατφόρμα συμμετοχής του {orgName}.",
