@@ -947,7 +947,6 @@
   "app.components.ideas.similarIdeas.noSimilarSubmissions": "لم يتم العثور على أي إرساليات مماثلة.",
   "app.components.ideas.similarIdeas.openToSeeDetails": "افتح للاطلاع على التفاصيل",
   "app.components.ideas.similarIdeas.similarIdeaDetails": "تفاصيل الفكرة المشابهة",
-  "app.components.ideas.similarIdeas.similarSubmissionsDescription": "لقد وجدنا إرساليات مماثلة - والتفاعل معها يمكن أن يساعد في جعلها أقوى!",
   "app.components.ideas.similarIdeas.similarSubmissionsList": "قائمة أفكار مماثلة للمشاركات",
   "app.components.ideas.similarIdeas.similarSubmissionsPosted": "تم نشر مشاركات مماثلة بالفعل:",
   "app.components.ideas.similarIdeas.similarSubmissionsSearch": "أبحث عن مقترحات مماثلة ...",

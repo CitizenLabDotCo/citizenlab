@@ -947,7 +947,6 @@
   "app.components.ideas.similarIdeas.noSimilarSubmissions": "Non sono stati trovati contributi simili.",
   "app.components.ideas.similarIdeas.openToSeeDetails": "Apri per vedere i dettagli",
   "app.components.ideas.similarIdeas.similarIdeaDetails": "Dettagli di un'idea simile",
-  "app.components.ideas.similarIdeas.similarSubmissionsDescription": "Abbiamo trovato contributi simili: interagire con essi può aiutare a dargli maggiore risonanza!",
   "app.components.ideas.similarIdeas.similarSubmissionsList": "Elenco di idee per invii simili",
   "app.components.ideas.similarIdeas.similarSubmissionsPosted": "Contributi simili già pubblicati:",
   "app.components.ideas.similarIdeas.similarSubmissionsSearch": "Cercate invii simili ...",

@@ -947,7 +947,6 @@
   "app.components.ideas.similarIdeas.noSimilarSubmissions": "Vastaavia lähetyksiä ei löytynyt.",
   "app.components.ideas.similarIdeas.openToSeeDetails": "Avaa nähdäksesi yksityiskohdat",
   "app.components.ideas.similarIdeas.similarIdeaDetails": "Samankaltaisia ideoita koskevat tiedot",
-  "app.components.ideas.similarIdeas.similarSubmissionsDescription": "Löysimme samanlaisia ehdotuksia – niiden kanssa tekeminen voi auttaa vahvistamaan niitä!",
   "app.components.ideas.similarIdeas.similarSubmissionsList": "Samankaltaisten lähetysideoiden luettelo",
   "app.components.ideas.similarIdeas.similarSubmissionsPosted": "Samanlaisia lähetyksiä jo lähetetty:",
   "app.components.ideas.similarIdeas.similarSubmissionsSearch": "Etsitään vastaavia esityksiä...",

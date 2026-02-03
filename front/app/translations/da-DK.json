@@ -947,7 +947,6 @@
   "app.components.ideas.similarIdeas.noSimilarSubmissions": "Ingen lignende indlæg fundet.",
   "app.components.ideas.similarIdeas.openToSeeDetails": "Åben for at se detaljer",
   "app.components.ideas.similarIdeas.similarIdeaDetails": "Lignende idé detaljer",
-  "app.components.ideas.similarIdeas.similarSubmissionsDescription": "Vi fandt lignende bidrag - at engagere sig i dem, kan hjælpe med at gøre dem stærkere!",
   "app.components.ideas.similarIdeas.similarSubmissionsList": "Liste over lignende idéer",
   "app.components.ideas.similarIdeas.similarSubmissionsPosted": "Lignende indlæg er allerede indsendt:",
   "app.components.ideas.similarIdeas.similarSubmissionsSearch": "Leder efter lignende indlæg ...",

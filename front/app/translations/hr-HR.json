@@ -947,7 +947,6 @@
   "app.components.ideas.similarIdeas.noSimilarSubmissions": "Nema sličnih podnesaka.",
   "app.components.ideas.similarIdeas.openToSeeDetails": "Otvorite za pregled detalja",
   "app.components.ideas.similarIdeas.similarIdeaDetails": "Slične pojedinosti o ideji",
-  "app.components.ideas.similarIdeas.similarSubmissionsDescription": "Pronašli smo slične podneske - interakcija s njima može pomoći da ojačaju!",
   "app.components.ideas.similarIdeas.similarSubmissionsList": "Popis sličnih ideja za podnošenje",
   "app.components.ideas.similarIdeas.similarSubmissionsPosted": "Slični podnesci već su objavljeni:",
   "app.components.ideas.similarIdeas.similarSubmissionsSearch": "Traženje sličnih prijava...",
