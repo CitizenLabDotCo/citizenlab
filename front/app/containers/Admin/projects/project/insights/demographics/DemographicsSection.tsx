@@ -3,6 +3,7 @@ import React, { useMemo, useState } from 'react';
 import {
   Box,
   Text,
+  Title,
   Spinner,
   colors,
   fontSizes,
@@ -125,9 +126,9 @@ const DemographicsSection = ({ phase }: Props) => {
         gap="24px"
       >
         <Box display="flex" alignItems="center" gap="8px">
-          <Text fontSize="m" fontWeight="bold" m="0px">
+          <Title variant="h3" m="0">
             {formatMessage(messages.demographicsAndAudience)}
-          </Text>
+          </Title>
         </Box>
         <Box display="flex" alignItems="center" gap="8px">
           <Spinner size="24px" />
@@ -149,9 +150,9 @@ const DemographicsSection = ({ phase }: Props) => {
         gap="24px"
       >
         <Box display="flex" alignItems="center" gap="8px">
-          <Text fontSize="m" fontWeight="bold" m="0px">
+          <Title variant="h3" m="0">
             {formatMessage(messages.demographicsAndAudience)}
-          </Text>
+          </Title>
         </Box>
         <Text color="error">
           {formatMessage(messages.errorLoadingDemographics)}
@@ -170,9 +171,9 @@ const DemographicsSection = ({ phase }: Props) => {
         gap="24px"
       >
         <Box display="flex" alignItems="center" gap="8px">
-          <Text fontSize="m" fontWeight="bold" m="0px">
+          <Title variant="h3" m="0">
             {formatMessage(messages.demographicsAndAudience)}
-          </Text>
+          </Title>
         </Box>
         <Text color="textSecondary">
           {formatMessage(messages.noDemographicData)}
@@ -199,9 +200,9 @@ const DemographicsSection = ({ phase }: Props) => {
               alignItems="center"
               justifyContent="space-between"
             >
-              <Text fontSize="m" fontWeight="bold" m="0px">
+              <Title variant="h3" m="0">
                 {formatMessage(messages.demographicsAndAudience)}
-              </Text>
+              </Title>
             </Box>
             <DemographicFieldContent field={fields[0]} showExportMenu={false} />
           </Box>
@@ -227,9 +228,9 @@ const DemographicsSection = ({ phase }: Props) => {
       aria-label={formatMessage(messages.demographicsAndAudience)}
     >
       <Box display="flex" alignItems="center" justifyContent="space-between">
-        <Text fontSize="m" fontWeight="bold" m="0px">
+        <Title variant="h3" m="0">
           {formatMessage(messages.demographicsAndAudience)}
-        </Text>
+        </Title>
       </Box>
 
       <TabsContainer data-pdf-exclude="true">
