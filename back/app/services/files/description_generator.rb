@@ -6,6 +6,8 @@ module Files
   # @example Basic usage
   #   Files::DescriptionGenerator.new.generate_descriptions!(file)
   class DescriptionGenerator
+    SONNET_MODEL_ID = ENV.fetch('BEDROCK_SONNET_MODEL', 'eu.anthropic.claude-sonnet-4-5-20250929-v1:0')
+
     delegate :generate_descriptions?, to: :class
 
     # Generate and update the descriptions for the given file
@@ -40,8 +42,7 @@ module Files
     # @param locales [Array<String>] Array of locale codes
     # @return [Hash] Hash with locale keys and description values
     def generate_descriptions(file, locales)
-      model_id = ENV.fetch('BEDROCK_SONNET_MODEL', 'eu.anthropic.claude-sonnet-4-5-20250929-v1:0')
-      chat = RubyLLM.chat(model: model_id, provider: :bedrock, assume_model_exists: true)
+      chat = RubyLLM.chat(model: SONNET_MODEL_ID, provider: :bedrock, assume_model_exists: true)
       prompt = build_prompt(file.name, locales)
       prefill_msg = '{' # Prefill the response to encourage the LLM to respond with a JSON object
 
