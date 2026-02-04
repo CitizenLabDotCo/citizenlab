@@ -30,7 +30,9 @@ namespace :bulk_import do
     ActiveRecord::Base.logger.level = :fatal if defined?(ActiveRecord::Base)
     ActionView::Base.logger.level = :fatal if defined?(ActionView::Base)
 
-    test_data_base_path = args[:test_data_path] || 'tmp/form_sync_test_data'
+    # NOTE: The default path is created by passing in the test data repo as a volume when running the task via docker
+    # eg docker compose run -v /path/to/local/formsync_test_data:/formsync_test_data --rm web rails bulk_import:test_pdf_import
+    test_data_base_path = args[:test_data_path] || '/formsync_test_data'
 
     tenant = Tenant.find_by(host: 'localhost')
     raise 'Tenant not found for host: localhost' unless tenant
