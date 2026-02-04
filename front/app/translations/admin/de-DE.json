@@ -726,7 +726,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.deviceTypeFromStart2": "Gerätetypen seit Beginn",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.deviceTypeSince": "Gerätetyp seit {date}",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.emailsFromStart2": "E-Mails seit Beginn",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.emailsSince": "Emails seit {date}",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.emailsSince": "E-Mails seit {date}",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.ending": "Ende",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.executiveSummary": "Zusammenfassung",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.goals": "Ziele",
