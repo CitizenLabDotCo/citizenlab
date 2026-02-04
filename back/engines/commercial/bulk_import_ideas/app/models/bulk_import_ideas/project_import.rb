@@ -10,7 +10,6 @@
 #  import_id      :uuid
 #  log            :string           default([]), is an Array
 #  locale         :string
-#  string         :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  import_type    :string

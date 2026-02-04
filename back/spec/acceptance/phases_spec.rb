@@ -241,7 +241,10 @@ resource 'Phases' do
   end
 
   context 'when admin' do
-    before { admin_header_token }
+    before do
+      admin_header_token
+      SettingsService.new.activate_feature!('prescreening_ideation')
+    end
 
     post 'web_api/v1/projects/:project_id/phases' do
       with_options scope: :phase do
@@ -274,7 +277,7 @@ resource 'Phases' do
         parameter :vote_term, "The term used to describe the concept of a vote (noun). One of #{Phase::VOTE_TERMS.join(', ')}. Defaults to 'vote'.", required: false
         parameter :native_survey_title_multiloc, 'A title for the native survey.'
         parameter :native_survey_button_multiloc, 'Text for native survey call to action button.'
-        parameter :prescreening_enabled, 'Do inputs need to go through pre-screening before being published? Defaults to false', required: false
+        parameter :prescreening_mode, "The pre-screening mode. Either null, 'all', or 'flagged_only'.", required: false
         parameter :similarity_enabled, 'Enable searching for similar inputs during submission. Defaults to false.', required: false
         parameter :similarity_threshold_title, 'The similarity threshold for the title of the input. Defaults to 0.3', required: false
         parameter :similarity_threshold_body, 'The similarity threshold for the body of the input. Defaults to 0.4', required: false
@@ -581,7 +584,7 @@ resource 'Phases' do
         parameter :end_at, 'The end date of the phase'
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
         parameter :ideas_order, 'The default order of ideas.'
-        parameter :prescreening_enabled, 'Do inputs need to go through pre-screening before being published?', required: false
+        parameter :prescreening_mode, "The pre-screening mode. Either nil, 'all', or 'flagged_only'.", required: false
         parameter :similarity_enabled, 'Enable searching for similar inputs during submission.', required: false
         parameter :similarity_threshold_title, 'The similarity threshold for the title of the input.', required: false
         parameter :similarity_threshold_body, 'The similarity threshold for the body of the input.', required: false
@@ -601,7 +604,7 @@ resource 'Phases' do
       let(:reacting_like_limited_max) { 6 }
       let(:presentation_mode) { 'map' }
       let(:allow_anonymous_participation) { true }
-      let(:prescreening_enabled) { true }
+      let(:prescreening_mode) { 'all' }
       let(:similarity_enabled) { true }
       let(:similarity_threshold_body) { 0.2 }
 
@@ -618,8 +621,8 @@ resource 'Phases' do
           reacting_like_limited_max: reacting_like_limited_max,
           presentation_mode: presentation_mode,
           allow_anonymous_participation: allow_anonymous_participation,
-          prescreening_enabled: prescreening_enabled,
-          prescreening_mode: 'all',
+          prescreening_enabled: true,
+          prescreening_mode: prescreening_mode,
           similarity_enabled: similarity_enabled,
           similarity_threshold_body: similarity_threshold_body
         )
