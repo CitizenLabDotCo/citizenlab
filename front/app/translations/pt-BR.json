@@ -1438,7 +1438,6 @@
   "app.containers.IdeasFeedPage.noIdeasForTag": "Ainda não há ideias para essa tag.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Ainda não há nada para mostrar.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Ver todas as contribuições",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Veja todas as entradas do site {ideasCount}",
   "app.containers.IdeasFeedPage.seeAllInitiatives": "Ver todas as iniciativas",
   "app.containers.IdeasFeedPage.seeAllIssues": "Ver todas as edições",
   "app.containers.IdeasFeedPage.seeAllOptions": "Ver todas as opções",

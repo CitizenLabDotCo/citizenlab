@@ -239,8 +239,9 @@ class WebApi::V1::IdeasController < ApplicationController
         write_everyone_tracking_cookie input
 
         permission = phase_for_input.permissions.find_by(action: 'posting_idea')
+        generate_claim_token = permission && permission.permitted_by == 'everyone' && permission.user_data_collection != 'anonymous' && current_user.nil?
 
-        if permission&.permitted_by == 'everyone' && current_user.nil?
+        if generate_claim_token
           ClaimTokenService.generate(input)
         end
 

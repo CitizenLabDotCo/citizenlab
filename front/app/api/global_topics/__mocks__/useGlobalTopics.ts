@@ -16,7 +16,6 @@ export const globalTopicsData: IGlobalTopicData[] = [
       static_page_ids: ['1'],
       followers_count: 2,
       include_in_onboarding: true,
-      is_default: true,
     },
     relationships: {
       static_pages: {
@@ -47,7 +46,6 @@ export const globalTopicsData: IGlobalTopicData[] = [
       static_page_ids: ['2'],
       followers_count: 2,
       include_in_onboarding: true,
-      is_default: true,
     },
     relationships: {
       static_pages: {

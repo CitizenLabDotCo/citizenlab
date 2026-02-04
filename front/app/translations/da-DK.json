@@ -1438,7 +1438,6 @@
   "app.containers.IdeasFeedPage.noIdeasForTag": "Ingen ideer til dette tag endnu.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Der er ikke noget at vise endnu.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Se alle bidrag",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Se alle {ideasCount} input",
   "app.containers.IdeasFeedPage.seeAllInitiatives": "Se alle initiativer",
   "app.containers.IdeasFeedPage.seeAllIssues": "Se alle udgaver",
   "app.containers.IdeasFeedPage.seeAllOptions": "Se alle muligheder",

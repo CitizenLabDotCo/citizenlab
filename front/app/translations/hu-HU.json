@@ -1438,7 +1438,6 @@
   "app.containers.IdeasFeedPage.noIdeasForTag": "Még nincsenek ötletek ehhez a címkéhez.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Még nincs mit mutatni.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Az összes hozzájárulás megtekintése",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Tekintse meg az összes {ideasCount} bemenetet",
   "app.containers.IdeasFeedPage.seeAllInitiatives": "Az összes kezdeményezés megtekintése",
   "app.containers.IdeasFeedPage.seeAllIssues": "Az összes probléma megtekintése",
   "app.containers.IdeasFeedPage.seeAllOptions": "Összes lehetőség megtekintése",

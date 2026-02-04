@@ -1438,7 +1438,6 @@
   "app.containers.IdeasFeedPage.noIdeasForTag": "Nog geen ideeën voor deze tag.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Nog niets om te laten zien.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Bekijk alle bijdragen",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Bekijk alle {ideasCount} bijdragen",
   "app.containers.IdeasFeedPage.seeAllInitiatives": "Bekijk alle initiatieven",
   "app.containers.IdeasFeedPage.seeAllIssues": "Bekijk alle stellingen",
   "app.containers.IdeasFeedPage.seeAllOptions": "Bekijk alle opties",

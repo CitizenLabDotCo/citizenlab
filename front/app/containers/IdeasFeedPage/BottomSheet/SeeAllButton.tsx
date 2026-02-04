@@ -30,15 +30,15 @@ const SeeAllButton = ({ inputTerm, onClose }: Props) => {
       <Button width="100%" buttonStyle="secondary-outlined" onClick={onClose}>
         <FormattedMessage
           {...getInputTermMessage(inputTerm, {
-            idea: messages.seeAllIdeas,
-            option: messages.seeAllOptions,
-            project: messages.seeAllProjects,
-            question: messages.seeAllQuestions,
-            issue: messages.seeAllIssues,
-            contribution: messages.seeAllContributions,
-            proposal: messages.seeAllProposals,
-            initiative: messages.seeAllInitiatives,
-            petition: messages.seeAllPetitions,
+            idea: messages.showAllIdeas,
+            option: messages.showAllOptions,
+            project: messages.showAllProjects,
+            question: messages.showAllQuestions,
+            issue: messages.showAllIssues,
+            contribution: messages.showAllContributions,
+            proposal: messages.showAllProposals,
+            initiative: messages.showAllInitiatives,
+            petition: messages.showAllPetitions,
           })}
         />
       </Button>

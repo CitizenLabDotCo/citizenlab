@@ -1438,7 +1438,6 @@
   "app.containers.IdeasFeedPage.noIdeasForTag": "Δεν υπάρχουν ακόμα ιδέες για αυτή την ετικέτα.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Τίποτα που να μπορεί να παρουσιαστεί ακόμα.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Δείτε όλες τις συνεισφορές",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Δείτε όλες τις εισόδους {ideasCount}",
   "app.containers.IdeasFeedPage.seeAllInitiatives": "Δείτε όλες τις πρωτοβουλίες",
   "app.containers.IdeasFeedPage.seeAllIssues": "Δείτε όλα τα θέματα",
   "app.containers.IdeasFeedPage.seeAllOptions": "Δείτε όλες τις επιλογές",

@@ -1438,7 +1438,6 @@
   "app.containers.IdeasFeedPage.noIdeasForTag": "Ingen ideer til denne taggen ennå.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Ingenting å vise frem ennå.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Se alle bidragene",
-  "app.containers.IdeasFeedPage.seeAllIdeas": "Se alle {ideasCount} innganger",
   "app.containers.IdeasFeedPage.seeAllInitiatives": "Se alle initiativer",
   "app.containers.IdeasFeedPage.seeAllIssues": "Se alle utgaver",
   "app.containers.IdeasFeedPage.seeAllOptions": "Se alle alternativer",
