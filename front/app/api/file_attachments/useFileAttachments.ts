@@ -23,7 +23,7 @@ const useFileAttachments = ({
   attachable_type,
 }: {
   attachable_id?: string;
-  attachable_type?: AttachableType;
+  attachable_type: AttachableType;
 }) => {
   const queryParameters: QueryParameters = {
     attachable_id,
