@@ -22,4 +22,12 @@ export default defineMessages({
     defaultMessage:
       '{numberChoices, plural, no {{numberChoices} choices} one {{numberChoices} choice} other {{numberChoices} choices}}',
   },
+  rankingResults: {
+    id: 'app.containers.Admin.projects.project.survey.formResults.rankingResults',
+    defaultMessage: 'Ranking results',
+  },
+  averageRankAccessible: {
+    id: 'app.containers.Admin.projects.project.survey.formResults.averageRankAccessible',
+    defaultMessage: '#{averageRank} average',
+  },
 });

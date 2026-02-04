@@ -5,9 +5,7 @@ require 'rails_helper'
 RSpec.describe ParticipationMethod::Ideation do
   subject(:participation_method) { described_class.new phase }
 
-  let(:phase) { create(:phase) }
-
-  before_all { SettingsService.new.activate_feature!('ideation_accountless_posting') }
+  let(:phase) { create(:phase, with_permissions: true) }
 
   describe '#method_str' do
     it 'returns ideation' do
@@ -62,9 +60,9 @@ RSpec.describe ParticipationMethod::Ideation do
     describe 'when prescreening is activated' do
       before { SettingsService.new.activate_feature! 'prescreening' }
 
-      it 'sets prescreening_enabled to false' do
+      it 'does not set prescreening_mode' do
         participation_method.assign_defaults_for_phase
-        expect(phase.prescreening_enabled).to be false
+        expect(phase.prescreening_mode).to be_nil
       end
     end
   end
@@ -243,7 +241,6 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:form_logic_enabled?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be true }
   its(:supports_custom_field_categories?) { is_expected.to be false }
-  its(:user_fields_in_form?) { is_expected.to be false }
   its(:supports_multiple_phase_reports?) { is_expected.to be false }
   its(:add_autoreaction_to_inputs?) { is_expected.to be(true) }
   its(:everyone_tracking_enabled?) { is_expected.to be false }

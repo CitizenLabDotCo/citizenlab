@@ -19,7 +19,7 @@ const editedTitleNL = 'edited title nl';
 // Slug computation takes primary title as base
 const slug = 'title-en';
 
-jest.mock('api/topics/useTopics');
+jest.mock('api/global_topics/useGlobalTopics');
 jest.mock('api/areas/useAreas');
 
 jest.mock('hooks/useAppConfigurationLocales', () =>

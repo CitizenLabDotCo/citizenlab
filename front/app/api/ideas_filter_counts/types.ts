@@ -16,7 +16,7 @@ export interface IIdeasFilterCounts {
       area_id: {
         [key: string]: number;
       };
-      topic_id: {
+      input_topic_id: {
         [key: string]: number;
       };
       total: number;

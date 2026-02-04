@@ -17,7 +17,9 @@ module ReportBuilder
       'ProjectsWidget' => Queries::Projects,
       'ProjectsTimelineWidget' => Queries::ProjectsTimeline,
       'DeviceTypesWidget' => Queries::DeviceTypes,
-      'VisitorsLanguagesWidget' => Queries::VisitorsLanguages
+      'VisitorsLanguagesWidget' => Queries::VisitorsLanguages,
+      'InternalAdoptionWidget' => Queries::InternalAdoption
+
     }.freeze
 
     def initialize(current_user)

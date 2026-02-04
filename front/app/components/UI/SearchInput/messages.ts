@@ -26,4 +26,18 @@ export default defineMessages({
     defaultMessage:
       '{numberOfSearchResults, plural, =0 {# search results have loaded} one {# search result has loaded} other {# search results have loaded}}.',
   },
+  a11y_projectsAvailable: {
+    id: 'app.containers.SearchInput.a11y_projectsAvailable',
+    defaultMessage:
+      '{numberOfProjects, plural, =0 {There are no projects available} one {There is # project available} other {There are # projects available}}.',
+  },
+  a11y_searchQuery: {
+    id: 'app.containers.SearchInput.a11y_searchQuery',
+    defaultMessage: 'Searching for {searchTerm}.',
+  },
+  a11y_filtersAppliedCount: {
+    id: 'app.containers.SearchInput.a11y_filtersAppliedCount',
+    defaultMessage:
+      '{numberOfFilters, plural, =0 {No filters applied} one {# filter applied} other {# filters applied}}.',
+  },
 });

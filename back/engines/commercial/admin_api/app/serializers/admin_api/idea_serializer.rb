@@ -11,10 +11,10 @@ module AdminApi
       :created_at,
       :updated_at
 
-    has_many :topics
+    has_many :input_topics
     belongs_to :author
 
-    class TopicSerializer < ActiveModel::Serializer
+    class InputTopicSerializer < ActiveModel::Serializer
       attributes :id
     end
 

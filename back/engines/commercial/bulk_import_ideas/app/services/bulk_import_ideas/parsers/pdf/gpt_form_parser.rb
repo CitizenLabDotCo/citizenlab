@@ -66,7 +66,7 @@ module BulkImportIdeas::Parsers::Pdf
     def form_schema
       field_num = 0
       fields = printable_form_fields.map do |f|
-        next if f.page?
+        next if !f.supports_submission?
 
         field = {
           id: field_num += 1,
@@ -74,7 +74,7 @@ module BulkImportIdeas::Parsers::Pdf
           text: f.title_multiloc[@locale.to_s]
         }
 
-        if f.support_options?
+        if f.supports_options?
           field[:options] = f.options.map do |o|
             o.title_multiloc[@locale.to_s]
           end

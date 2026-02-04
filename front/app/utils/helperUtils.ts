@@ -87,19 +87,6 @@ export function isPage(pageKey: pageKeys, pathName: string) {
   }
 }
 
-export const isIdeaShowPage = (urlSegments: string[]) => {
-  const firstUrlSegment = urlSegments[0];
-  const secondUrlSegment = urlSegments[1];
-  const lastUrlSegment = urlSegments[urlSegments.length - 1];
-
-  return (
-    urlSegments.length === 3 &&
-    locales.includes(firstUrlSegment) &&
-    secondUrlSegment === 'ideas' &&
-    lastUrlSegment !== 'new'
-  );
-};
-
 export const initiativeShowPageSlug = (urlSegments: string[]) => {
   const firstUrlSegment = urlSegments[0];
   const secondUrlSegment = urlSegments[1];
@@ -192,16 +179,6 @@ export const keys = <T extends object>(obj: T) =>
   obj && (Object.keys(obj) as Array<keyof T>);
 
 export const get = <T, K extends keyof T>(obj: T, key: K) => obj[key];
-
-interface ObjectWithId {
-  id: string;
-}
-
-export const byId = (array: ObjectWithId[]) =>
-  array.reduce((acc, curr) => {
-    acc[curr.id] = curr;
-    return acc;
-  }, {});
 
 export const indices = (n: number) => [...Array(n)].map((_, i) => i);
 

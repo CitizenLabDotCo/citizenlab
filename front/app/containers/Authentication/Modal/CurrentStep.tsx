@@ -13,7 +13,6 @@ import Onboarding from '../steps/Onboarding';
 import Password from '../steps/Password';
 import EmailPolicies from '../steps/Policies/EmailPolicies';
 import SSOPolicies from '../steps/Policies/SSOPolicies';
-import PostParticipationFlowStart from '../steps/PostParticipationFlowStart';
 import SSOVerification from '../steps/SSOVerification';
 import SSOVerificationPolicies from '../steps/SSOVerificationPolicies';
 import Success from '../steps/Success';
@@ -54,6 +53,7 @@ const CurrentStep = ({
 
     // email flow
     case 'email:start':
+    case 'post-participation:email':
       return (
         <EmailFlowStart
           loading={loading}
@@ -211,16 +211,6 @@ const CurrentStep = ({
         <AccessDenied
           authenticationData={authenticationData}
           onClose={transition(currentStep, 'CLOSE')}
-        />
-      );
-
-    case 'post-participation:email':
-      return (
-        <PostParticipationFlowStart
-          loading={loading}
-          setError={setError}
-          onSubmit={transition(currentStep, 'SUBMIT_EMAIL')}
-          onSwitchToSSO={transition(currentStep, 'CONTINUE_WITH_SSO')}
         />
       );
 

@@ -51,6 +51,8 @@ const ProjectPreviewToken = lazy(
   () => import('containers/Admin/projects/project/previewToken')
 );
 
+const PageNotFound = lazy(() => import('components/PageNotFound'));
+
 export type RouteType =
   | AdminRouteTypes
   | moduleRouteTypes
@@ -413,6 +415,14 @@ export default function createRoutes() {
           ),
         },
         ...moduleConfiguration.routes.citizen,
+        {
+          path: '*',
+          element: (
+            <PageLoading>
+              <PageNotFound />
+            </PageLoading>
+          ),
+        },
       ],
     },
   ];

@@ -10,11 +10,16 @@ const IdeaContent = ({
   selectedIdeaId,
   selectedIdeaProjectId,
   handleCloseIdea,
+  onUnauthenticatedCommentClick,
 }: {
   selectedIdeaId: string;
   selectedIdeaProjectId: string;
   handleCloseIdea: () => void;
+  onUnauthenticatedCommentClick: () => void;
 }) => {
+  // When an unauthenticated user tries to comment, set this idea as the initial
+  // idea so it stays selected after the auth flow completes
+
   return (
     <>
       <Box mb="16px">
@@ -25,6 +30,7 @@ const IdeaContent = ({
           ideaId={selectedIdeaId!}
           projectId={selectedIdeaProjectId!}
           compact={true}
+          onUnauthenticatedCommentClick={onUnauthenticatedCommentClick}
         />
       </Box>
     </>

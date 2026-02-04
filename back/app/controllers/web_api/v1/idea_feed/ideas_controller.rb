@@ -9,7 +9,12 @@ module WebApi
 
         def index
           scope = policy_scope(Idea)
-          feed_service = ::IdeaFeed::FeedService.new(@phase, current_user, topic_ids: params[:topics])
+          feed_service = ::IdeaFeed::FeedService.new(
+            @phase,
+            user: current_user,
+            topic_ids: params[:topics],
+            visitor_hash: VisitorHashService.new.generate_for_request(request)
+          )
           ideas = feed_service.top_n(page_size, scope)
 
           render json: WebApi::V1::IdeaSerializer.new(ideas, params: jsonapi_serializer_params).serializable_hash

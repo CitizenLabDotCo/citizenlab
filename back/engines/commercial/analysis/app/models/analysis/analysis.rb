@@ -108,7 +108,7 @@ module Analysis
     end
 
     def main_field_is_textual
-      if main_custom_field_id.present? && !main_custom_field.support_free_text_value?
+      if main_custom_field_id.present? && !main_custom_field.supports_free_text_value?
         errors.add(:base, :main_custom_field_not_textual, message: 'The main custom field should be a textual custom field')
       end
     end

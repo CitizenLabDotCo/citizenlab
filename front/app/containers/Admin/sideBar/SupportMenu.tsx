@@ -100,7 +100,7 @@ export const SupportMenu = () => {
               </Box>
             </ItemMenu>
             <ItemMenu
-              linkTo={formatMessage(messages.linkToChangelog) as RouteType}
+              linkTo={formatMessage(messages.linkToChangelog2) as RouteType}
               buttonStyle="text"
               openLinkInNewTab
             >

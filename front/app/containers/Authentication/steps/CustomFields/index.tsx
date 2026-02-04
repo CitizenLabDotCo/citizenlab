@@ -78,6 +78,7 @@ const CustomFields = ({
     >
       <UserCustomFieldsForm
         authenticationContext={authenticationData.context}
+        formData={authUser.data.attributes.custom_field_values}
         onChange={setFormData}
         triggerValidation={triggerCustomFieldsValidation}
         onValidationResult={handleCustomFieldsValidation}

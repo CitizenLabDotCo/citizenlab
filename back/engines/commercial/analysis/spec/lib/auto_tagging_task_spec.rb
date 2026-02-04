@@ -28,16 +28,16 @@ RSpec.describe Analysis::AutoTaggingTask do
   end
 
   describe 'PlatformTopic auto_tagging' do
-    it 'creates tags from platform topics and assigns them to ideas' do
+    it 'creates tags from input topics and assigns them to ideas' do
       analysis = create(:analysis)
       att = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'platform_topic')
       idea1 = create(:idea_with_topics, project: att.analysis.project, topics_count: 1)
-      topic1 = idea1.topics.first
+      topic1 = idea1.input_topics.first
       idea2 = create(:idea_with_topics, project: att.analysis.project, topics_count: 1)
-      topic2 = idea2.topics.first
-      shared_topic = create(:topic)
-      idea1.topics << shared_topic
-      idea2.topics << shared_topic
+      topic2 = idea2.input_topics.first
+      shared_topic = create(:input_topic, project: att.analysis.project)
+      idea1.input_topics << shared_topic
+      idea2.input_topics << shared_topic
 
       _pre_exisiting_tag = create(:tag, tag_type: 'platform_topic', analysis: analysis, name: topic1.title_multiloc.values.first)
 
@@ -49,10 +49,10 @@ RSpec.describe Analysis::AutoTaggingTask do
         state: 'succeeded',
         progress: nil
       })
-      expect(idea1.tags).to include(Analysis::Tag.find_by(name: shared_topic.title_multiloc.values))
+      expect(idea1.tags).to include(Analysis::Tag.find_by(name: shared_topic.full_title_multiloc.values))
       expect(idea1.taggings.first.background_task).to eq att
-      expect(idea1.tags).to include(Analysis::Tag.find_by(name: topic1.title_multiloc.values))
-      expect(idea1.tags).not_to include(Analysis::Tag.find_by(name: topic2.title_multiloc.values))
+      expect(idea1.tags).to include(Analysis::Tag.find_by(name: topic1.full_title_multiloc.values))
+      expect(idea1.tags).not_to include(Analysis::Tag.find_by(name: topic2.full_title_multiloc.values))
     end
   end
 
@@ -231,13 +231,13 @@ RSpec.describe Analysis::AutoTaggingTask do
     end
 
     it 'includes the topics field for ideation' do
-      topic = create(:topic, title_multiloc: { 'en' => 'Bananas' })
+      topic = create(:input_topic, title_multiloc: { 'en' => 'Bananas' })
       project = create(:single_phase_ideation_project)
       custom_form = create(:custom_form, :with_default_fields, participation_context: project)
       analysis = create(:analysis, main_custom_field: nil, additional_custom_fields: custom_form.custom_fields, project: project)
       tags = create_list(:tag, 3, analysis: analysis)
       task = create(:auto_tagging_task, analysis: analysis, state: 'queued', auto_tagging_method: 'label_classification', tags_ids: [tags[0].id, tags[1].id])
-      create(:idea, project: project, topics: [topic])
+      create(:idea, project: project, input_topics: [topic])
 
       expect_any_instance_of(Analysis::AutoTaggingMethod::Base)
         .to receive(:classify_input_text).with(/Bananas/, anything).and_return(tags.first.name)

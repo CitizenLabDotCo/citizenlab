@@ -168,41 +168,6 @@ RSpec.describe ParticipationMethod::CommunityMonitorSurvey do
     end
   end
 
-  describe '#user_fields_in_form?' do
-    it 'returns false when not enabled' do
-      phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: false)
-      expect(participation_method.user_fields_in_form?).to be false
-    end
-
-    it 'returns true when enabled' do
-      phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
-      expect(participation_method.user_fields_in_form?).to be true
-    end
-
-    context 'when permission permitted_by is \'everyone\' and there is at least one demographic field' do
-      before do
-        permission = Permission.find_by(
-          permission_scope_id: phase.id,
-          action: 'posting_idea'
-        )
-
-        permission.permitted_by = 'everyone'
-        permission.permissions_custom_fields = [create(:permissions_custom_field)]
-        permission.save!
-      end
-
-      it 'returns true even when not enabled' do
-        phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: false)
-        expect(participation_method.user_fields_in_form?).to be true
-      end
-
-      it 'returns true when enabled' do
-        phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
-        expect(participation_method.user_fields_in_form?).to be true
-      end
-    end
-  end
-
   describe '#everyone_tracking_enabled?' do
     let(:phase) { create(:community_monitor_survey_phase, with_permissions: true) }
 

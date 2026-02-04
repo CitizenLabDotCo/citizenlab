@@ -1,21 +1,26 @@
 module IdeaFeed
   class FeedService
-    attr_reader :phase, :user, :topic_ids
+    attr_reader :phase, :user, :visitor_hash, :topic_ids
 
-    def initialize(phase, user, topic_ids: nil)
+    def initialize(phase, user: nil, topic_ids: nil, visitor_hash: nil)
+      raise ArgumentError, 'Either user or visitor_hash must be provided' if user.nil? && visitor_hash.nil?
+
       @phase = phase
       @user = user
+      @visitor_hash = visitor_hash
       @topic_ids = topic_ids
     end
 
     def top_n(n = 5, scope = Idea.all)
       eligible_ideas = fetch_eligible_ideas(scope)
-      candidates = fetch_candidates_with_scores(eligible_ideas)
-      candidates = Idea.from(candidates, :ideas)
-        .order(Arel.sql('recency_score * 0.65 + engagement_score * 0.25 + wise_voice_score * 0.1 DESC'))
-        .limit(n * 4)
 
-      DiversityService.new.generate_list(candidates, IdeaExposure.where(user:, phase:), n)
+      candidates = if eligible_ideas.none?
+        fetch_least_exposed_candidates(fetch_all_ideas(scope), n * 4)
+      else
+        fetch_scored_candidates(eligible_ideas, n * 4)
+      end
+
+      DiversityService.new.generate_list(candidates, exposures_scope, n)
     end
 
     def eligible_ideas_count(scope = Idea.all)
@@ -24,8 +29,16 @@ module IdeaFeed
 
     private
 
-    def fetch_candidates_with_scores(scope)
-      scope
+    def exposures_scope
+      if user
+        IdeaExposure.where(user: user, phase: phase)
+      else
+        IdeaExposure.where(visitor_hash: visitor_hash, phase: phase)
+      end
+    end
+
+    def fetch_scored_candidates(scope, limit)
+      scored = scope
         .left_joins(:wise_voice_flag)
         .select("
           EXP(-EXTRACT(EPOCH FROM (NOW() - ideas.published_at)) / (30 * 86400)) as recency_score,
@@ -33,10 +46,26 @@ module IdeaFeed
           CASE WHEN wise_voice_flags.id IS NULL THEN 0 ELSE 1 END as wise_voice_score,
           ideas.*
         ")
+
+      Idea.from(scored, :ideas)
+        .order(Arel.sql('recency_score * 0.65 + engagement_score * 0.25 + wise_voice_score * 0.1 DESC'))
+        .limit(limit)
+    end
+
+    def fetch_least_exposed_candidates(scope, limit)
+      exposure_counts_sql = exposures_scope
+        .group(:idea_id)
+        .select(:idea_id, 'COUNT(*) as exposure_count')
+        .to_sql
+
+      scope
+        .joins("LEFT JOIN (#{exposure_counts_sql}) AS exposure_counts ON exposure_counts.idea_id = ideas.id")
+        .order(Arel.sql('COALESCE(exposure_counts.exposure_count, 0) ASC'))
+        .limit(limit)
     end
 
     def fetch_eligible_ideas(scope)
-      exposed_ideas = IdeaExposure.where(user:, phase:).select(:idea_id).distinct
+      exposed_ideas = exposures_scope.select(:idea_id).distinct
 
       scope = scope
         .joins(:ideas_phases)
@@ -44,7 +73,18 @@ module IdeaFeed
         .published
         .where.not(id: exposed_ideas)
 
-      scope = scope.with_some_topics(topic_ids) if topic_ids.present?
+      scope = scope.with_some_input_topics(topic_ids) if topic_ids.present?
+
+      scope
+    end
+
+    def fetch_all_ideas(scope)
+      scope = scope
+        .joins(:ideas_phases)
+        .where(ideas_phases: { phase_id: phase.id })
+        .published
+
+      scope = scope.with_some_input_topics(topic_ids) if topic_ids.present?
 
       scope
     end

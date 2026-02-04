@@ -339,6 +339,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        nested_input_topics: {
+          enabled: true,
+          allowed: true
+        },
         data_repository_transcription: {
           enabled: true,
           allowed: true
@@ -355,13 +359,9 @@ namespace :cl2_back do
           enabled: false,
           allowed: false
         },
-        ideation_accountless_posting: {
-          enabled: true,
-          allowed: true
-        },
-        post_participation_signup: {
-          enabled: true,
-          allowed: true
+        participation_location_tracking: {
+          enabled: false,
+          allowed: false
         }
       }
     )

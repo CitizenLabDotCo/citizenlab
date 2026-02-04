@@ -53,7 +53,7 @@ module IdeaFeed
     def find_closest_idea(ideas, centroid)
       ideas.max_by do |idea|
         idea_embedding = idea.embeddings_similarities.first&.embedding
-        next -Float::INFINITY if idea_embedding.nil?
+        next -Float::INFINITY if idea_embedding.nil? || centroid.nil?
 
         cosine_similarity(centroid, idea_embedding)
       end
@@ -62,7 +62,7 @@ module IdeaFeed
     def find_most_distant_idea(ideas, centroid)
       ideas.min_by do |idea|
         idea_embedding = idea.embeddings_similarities.first&.embedding
-        next Float::INFINITY if idea_embedding.nil?
+        next Float::INFINITY if idea_embedding.nil? || centroid.nil?
 
         cosine_similarity(centroid, idea_embedding)
       end

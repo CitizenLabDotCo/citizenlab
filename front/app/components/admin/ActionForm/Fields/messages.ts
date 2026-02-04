@@ -55,10 +55,10 @@ export default defineMessages({
     defaultMessage:
       "No demographic questions have been added yet. Click 'Add a question' to add one.",
   },
-  user_fields_in_survey_not_supported_for_participation_method: {
-    id: 'app.components.admin.ActionForm.Fields.user_fields_in_survey_not_supported_for_participation_method',
+  user_fields_in_form_not_supported_for_action: {
+    id: 'app.components.admin.ActionForm.Fields.user_fields_in_form_not_supported_for_action',
     defaultMessage:
-      'Asking demographic questions as the last page of the survey is not supported for the selected participation method.',
+      'Asking demographic questions as the last page of the form is not supported for this action.',
   },
   with_these_settings_cannot_ask_demographic_fields: {
     id: 'app.components.admin.ActionForm.Fields.with_these_settings_cannot_ask_demographic_fields2',
@@ -72,34 +72,28 @@ export default defineMessages({
         'When "Authentication" is set to "None", demographic questions can only be asked as the last page of the survey.',
     },
   with_these_settings_can_only_ask_demographic_fields_in_registration_flow: {
-    id: 'app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow',
+    id: 'app.components.admin.ActionForm.Fields.with_these_settings_can_only_ask_demographic_fields_in_registration_flow4',
     defaultMessage:
-      'With the current combination of "Authentication" and "User data collection" settings, demographic questions can only be asked in the registration flow.',
+      'Because you selected "Full anonymity" in "User data collection", the answers to the demographic questions asked before participation WILL NOT BE STORED IN THE RESULTS. The answers will only be used to update the user\'s profile, but this profile is not linked to the response. To collect demographic data and store it in the results please choose another option under "User data collection".',
   },
-  appendDemographicAnswers: {
-    id: 'app.components.admin.ActionForm.Fields.appendDemographicAnswers',
-    defaultMessage:
-      'Automatically append demographic answers from registered user profiles to the results',
+  askDemographicQuestionsBeforeUserParticipates: {
+    id: 'app.components.admin.ActionForm.Fields.askDemographicQuestionsBeforeUserParticipates',
+    defaultMessage: 'Ask demographic questions before user participates',
   },
-  appendDemographicAnswersTooltip: {
-    id: 'app.components.admin.ActionForm.Fields.appendDemographicAnswersTooltip',
+  askDemographicQuestionsBeforeUserParticipatesTooltip: {
+    id: 'app.components.admin.ActionForm.Fields.askDemographicQuestionsBeforeUserParticipatesTooltip',
     defaultMessage:
-      "If this information is not yet in the user's profile, the user will be prompted to fill it out before the survey.",
+      "If the user has already answered these questions, they won't be asked.",
   },
   collectDemographicsByAddingNewPage: {
-    id: 'app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage',
+    id: 'app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPage2',
     defaultMessage:
-      'Collect demographic questions by adding a new page to the end of the survey',
+      'Collect demographic questions by adding a new page to the end of the form',
   },
-  collectDemographicsByAddingNewPageTooltip1: {
-    id: 'app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPageTooltip1',
+  collectDemographicsByAddingNewPageTooltip: {
+    id: 'app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPageTooltip',
     defaultMessage:
       "If this information is already in the user's profile, it will be used to pre-fill these questions.",
-  },
-  collectDemographicsByAddingNewPageTooltip2: {
-    id: 'app.components.admin.ActionForm.Fields.collectDemographicsByAddingNewPageTooltip2',
-    defaultMessage:
-      'Besides being stored in the survey, the answers will be used to update the profile of registered users.',
   },
   globalRegFlow: {
     id: 'app.components.admin.ActionForm.Fields.globalRegFlow',

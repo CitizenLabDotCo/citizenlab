@@ -21,7 +21,7 @@ resource 'Ideas' do
       parameter :publication_status, 'Publication status', required: true, extra: "One of #{Idea::PUBLICATION_STATUSES.join(',')}"
       parameter :title_multiloc, 'Multi-locale field with the idea title', required: true, extra: 'Maximum 100 characters'
       parameter :body_multiloc, 'Multi-locale field with the idea body', extra: 'Required if not draft'
-      parameter :topic_ids, 'Array of ids of the associated topics'
+      parameter :input_topic_ids, 'Array of ids of the associated input topics'
       parameter :area_ids, 'Array of ids of the associated areas'
       parameter :custom_field_name1, 'A value for one custom field'
     end
@@ -32,7 +32,7 @@ resource 'Ideas' do
     let(:publication_status) { 'published' }
     let(:title_multiloc) { idea.title_multiloc }
     let(:body_multiloc) { idea.body_multiloc }
-    let(:topic_ids) { create_list(:topic, 2, projects: [project]).map(&:id) }
+    let(:input_topic_ids) { create_list(:input_topic, 2, project:).map(&:id) }
     let(:area_ids) { create_list(:area, 2).map(&:id) }
     let(:extra_field_name) { 'custom_field_name1' }
 

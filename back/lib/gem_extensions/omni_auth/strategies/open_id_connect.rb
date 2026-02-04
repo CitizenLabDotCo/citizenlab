@@ -4,7 +4,9 @@ module GemExtensions
   module OmniAuth
     module Strategies
       module OpenIdConnect
-        # Patch +OmniAuth::Strategies::OpenIdConnect+ to allow dynamic specification of the issuer.
+        # Patch +OmniAuth::Strategies::OpenIdConnect+
+
+        # Patched to allow dynamic specification of the issuer.
         def issuer
           return options.issuer.call(env) if options.issuer.respond_to?(:call)
 

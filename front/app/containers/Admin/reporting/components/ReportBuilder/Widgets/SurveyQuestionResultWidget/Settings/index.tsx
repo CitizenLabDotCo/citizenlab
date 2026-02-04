@@ -25,6 +25,7 @@ import {
 } from '../../../constants';
 import ProjectFilter from '../../_shared/ProjectFilter';
 import QuestionSelect from '../../_shared/QuestionSelect';
+import { AccessibilityInputs } from '../../ChartWidgets/_shared/AccessibilityInputs';
 import widgetMessages from '../../messages';
 import { Props } from '../typings';
 
@@ -76,6 +77,19 @@ const Settings = () => {
     questionId &&
     selectedQuestion &&
     selectedQuestion.attributes.input_type === 'point';
+  const questionTypesWithCharts = [
+    'linear_scale',
+    'multiselect',
+    'select',
+    'multiselect_image',
+    'select_image',
+    'sentiment_linear_scale',
+    'rating',
+    'ranking',
+  ];
+  const showAccessibilityInputs =
+    selectedQuestion &&
+    questionTypesWithCharts.includes(selectedQuestion.attributes.input_type);
 
   const handleProjectFilter = useCallback(
     ({ value }: IOption) => {
@@ -232,6 +246,7 @@ const Settings = () => {
           />
         </Box>
       )}
+      {showAccessibilityInputs && <AccessibilityInputs />}
     </Box>
   );
 };

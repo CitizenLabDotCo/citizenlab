@@ -24,6 +24,8 @@ module ParticipationMethod
       @phase = phase
     end
 
+    attr_reader :phase
+
     def additional_export_columns
       []
     end
@@ -222,14 +224,14 @@ module ParticipationMethod
       false
     end
 
-    # Attribute used interally by backend to determine if user fields should be shown in the form
-    def user_fields_in_form?
-      false
-    end
-
     # Only implemented in native_survey and community monitor
     def user_data_collection
       'all_data'
+    end
+
+    # Only implemented in native_survey, community monitor and ideation
+    def user_fields_in_form_enabled?
+      false
     end
 
     def supports_multiple_phase_reports?
@@ -253,8 +255,6 @@ module ParticipationMethod
     end
 
     private
-
-    attr_reader :phase
 
     def proposed_budget_in_form?
       false

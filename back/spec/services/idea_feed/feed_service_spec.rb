@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe IdeaFeed::FeedService do
-  subject(:service) { described_class.new(phase, user) }
+  subject(:service) { described_class.new(phase, user: user) }
 
   let(:phase) { create(:idea_feed_phase) }
   let(:user) { create(:user) }
@@ -58,6 +58,19 @@ describe IdeaFeed::FeedService do
 
       top_3_ideas = service.top_n(3)
       expect(top_3_ideas.first).to eq(ideas[1])
+    end
+
+    context 'when all ideas have been exposed' do
+      let!(:ideas) { [] }
+      let!(:other_idea) { create(:idea) }
+      let!(:exposed_idea) { create(:idea, project: phase.project, phases: [phase]) }
+      let!(:idea_exposure) { create(:idea_exposure, idea: exposed_idea, user:, phase:) }
+
+      it 'returns all ideas in the phase regardless of exposure' do
+        top_ideas = service.top_n(5)
+        expect(top_ideas).to contain_exactly(exposed_idea)
+        expect(top_ideas).not_to include(other_idea)
+      end
     end
   end
 end
