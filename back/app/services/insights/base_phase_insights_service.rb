@@ -92,7 +92,7 @@ module Insights
       time_now = Time.current.to_date
       phase_end_date = @phase.end_at || time_now
 
-      # Check if the phase duration (start to end or current date) is more than 14 days
+      # Check if the phase duration (start to end or current date) is less than 14 days
       # Add 1 to include both start and end dates (inclusive counting)
       phase_duration_days = (phase_end_date - @phase.start_at).to_i + 1
 
