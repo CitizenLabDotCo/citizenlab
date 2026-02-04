@@ -45,7 +45,7 @@ describe Insights::VisitsService do
     describe 'edge cases for phase date boundaries' do
       let(:phase2) { create(:single_voting_phase, start_at: Date.new(2026, 1, 15), end_at: Date.new(2026, 2, 2)) }
       let(:session) { create(:session, user_id: user1.id) }
-      
+
       it 'excludes a visit before the phase start date' do
         create(:pageview, session: session, created_at: Time.zone.parse('2026-01-14 23:59:59'), project_id: phase2.project.id) # before phase start
         visits = service.phase_visits(phase2)
