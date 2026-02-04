@@ -230,10 +230,10 @@ describe UserRoleService do
       create(:project_moderator, projects: [p3])
       m4 = create(:project_moderator, projects: [p3, p2])
 
-      expect(service.moderators_per_project([p1.id, p2.id])).to eq({
-        p1.id => [m1],
-        p2.id => [m1, m2, m4]
-      })
+      result = service.moderators_per_project([p1.id, p2.id])
+      expect(result.keys).to match_array([p1.id, p2.id])
+      expect(result[p1.id]).to match_array([m1])
+      expect(result[p2.id]).to match_array([m1, m2, m4])
     end
 
     it 'does not crash if empty array is passed' do
@@ -255,11 +255,11 @@ describe UserRoleService do
       create(:project_folder_moderator, project_folders: [f4])
       m5 = create(:project_folder_moderator, project_folders: [f4, f3])
 
-      expect(service.moderators_per_folder([f1.id, f2.id, f3.id])).to eq({
-        f1.id => [m1],
-        f2.id => [m1, m2],
-        f3.id => [m3, m5]
-      })
+      result = service.moderators_per_folder([f1.id, f2.id, f3.id])
+      expect(result.keys).to match_array([f1.id, f2.id, f3.id])
+      expect(result[f1.id]).to match_array([m1])
+      expect(result[f2.id]).to match_array([m1, m2])
+      expect(result[f3.id]).to match_array([m3, m5])
     end
 
     it 'does not crash if empty array is passed' do
