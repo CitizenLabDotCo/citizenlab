@@ -45,7 +45,7 @@ namespace :bulk_import do
 
       # Define parsers to test
       parsers = [
-        { name: 'GPT Parser', class: BulkImportIdeas::Parsers::IdeaPdfFileGPTParser },
+        { name: 'GPT Parser', class: BulkImportIdeas::Parsers::IdeaPdfFileLLMParser },
         { name: 'Google Document AI Parser', class: BulkImportIdeas::Parsers::IdeaPdfFileParser }
       ]
 
@@ -198,7 +198,7 @@ namespace :bulk_import do
         if generate_expected_output
           puts '  expected_output.json not found - will generate from first parser'
           first_parser = parsers.first
-          file_parser = first_parser[:class].new(admin_user, locale, phase.id, false)
+          file_parser = first_parser[:class].new(admin_user, locale, phase.id, false, llm: first_parser[:llm])
           idea_rows = file_parser.parse_rows(idea_import_file)
           idea = idea_rows.first
 

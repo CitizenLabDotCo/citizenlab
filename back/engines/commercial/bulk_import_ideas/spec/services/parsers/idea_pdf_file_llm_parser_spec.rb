@@ -3,7 +3,7 @@
 require 'rails_helper'
 require_relative 'shared/pdf_parser_data_setup'
 
-describe BulkImportIdeas::Parsers::IdeaPdfFileGPTParser do
+describe BulkImportIdeas::Parsers::IdeaPdfFileLLMParser do
   let(:phase) { create(:native_survey_phase) }
   let(:custom_form) { create(:custom_form, participation_context: phase) }
   let(:service) { described_class.new(nil, 'en', phase.id, false) }
@@ -18,7 +18,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileGPTParser do
       )
     end
 
-    it 'reformats the matrix value from the raw GPT parsed field' do
+    it 'reformats the matrix value from the raw LLM parsed field' do
       raw_field = {
         key: 'matrix_field',
         value: {
@@ -126,7 +126,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileGPTParser do
     end
 
     # Mock template data to avoid external dependencies on Gotenberg service
-    # NOTE: This template data will not be required when we move to using only the GPT parsing
+    # NOTE: This template data will not be required when we move to using only the LLM parsing
     before do
       allow(service).to receive(:template_data).and_return(
         { page_count: 2,
@@ -212,11 +212,11 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileGPTParser do
       )
     end
 
-    it 'converts the GPT parser output into an idea' do
+    it 'converts the LLM parser output into an idea' do
       # NOTE: Enable the following lines locally to test the actual LLM parsing - sample_survey.pdf matches the form created above
       # file = Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/sample_survey.pdf')
-      # gpt_parser = BulkImportIdeas::Parsers::Pdf::GPTFormParser.new(phase, 'en')
-      # puts "SENDING FILE TO GPT FOR PARSING: #{file}"
+      # parser = BulkImportIdeas::Parsers::Pdf::LLMFormParser.new(phase, 'en')
+      # puts "SENDING FILE TO LLM FOR PARSING: #{file}"
       # raw_result = parser.send(:parse, file)
       # parse_idea_result = parser.send(:parse_idea, file, 3)
 
@@ -237,7 +237,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileGPTParser do
         }
       }
 
-      expect_any_instance_of(BulkImportIdeas::Parsers::Pdf::GPTFormParser).to receive(:parse_idea).and_return(parse_idea_result)
+      expect_any_instance_of(BulkImportIdeas::Parsers::Pdf::LLMFormParser).to receive(:parse_idea).and_return(parse_idea_result)
 
       # Test the conversion to idea_rows
       import_file = create(:idea_import_file)

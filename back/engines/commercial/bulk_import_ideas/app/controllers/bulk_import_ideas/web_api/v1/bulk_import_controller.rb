@@ -23,7 +23,7 @@ module BulkImportIdeas
         # Alpha feature for GPT based PDF form parser
         'gpt_pdf' => {
           exporter_class: Exporters::IdeaPdfFormExporter,
-          parser_class: Parsers::IdeaPdfFileGPTParser
+          parser_class: Parsers::IdeaPdfFileLLMParser
         }
       }
     }
@@ -158,7 +158,7 @@ module BulkImportIdeas
       CONSTANTIZER.fetch(model).fetch(format)[class_type]
     end
 
-    # Allows gpt_parser to be enabled (currently in alpha) via ?gpt_form_parser=true in importer url
+    # Allows llm_parser to be enabled (currently in alpha) via ?gpt_form_parser=true in importer url
     def use_gpt_form_parser?
       params[:import] ? bulk_create_params[:parser] == 'gpt' : false
     end
