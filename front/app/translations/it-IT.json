@@ -1188,7 +1188,7 @@
   "app.containers.AdminPage.Users.UsersGroup.verificationDisabled": "La verifica è disabilitata per la tua piattaforma, rimuovi la regola di verifica o contatta il supporto.",
   "app.containers.App.appMetaDescription": "Benvenuti nella piattaforma di partecipazione online di {orgName}. \nEsplora i progetti locali e partecipa alla discussione!",
   "app.containers.App.loading": "Caricamento...",
-  "app.containers.App.metaTitle1": "Piattaforma di coinvolgimento dei cittadini | {orgName}",
+  "app.containers.App.metaTitle1": "Piattaforma partecipativa | {orgName}",
   "app.containers.App.skipLinkText": "Vai al contenuto principale",
   "app.containers.AreaTerms.areaTerm": "area",
   "app.containers.AreaTerms.areasTerm": "aree",
