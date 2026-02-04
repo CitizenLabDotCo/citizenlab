@@ -6,6 +6,11 @@ RSpec.describe AdminApi::CopyProjectJob do
   subject(:job) { described_class.new }
 
   describe '#perform' do
+    # Ensure no DefaultInputTopics exist, as they would be added to imported projects
+    # via set_default_input_topics!, causing model counts to differ from the template.
+    before_all { DefaultInputTopic.delete_all }
+    before { DefaultInputTopic.delete_all }
+
     let_it_be(:template) do
       # No images, nor files because their URLs won't be available
       project = create(:project_xl, phases_count: 3, images_count: 0, files_count: 0)
