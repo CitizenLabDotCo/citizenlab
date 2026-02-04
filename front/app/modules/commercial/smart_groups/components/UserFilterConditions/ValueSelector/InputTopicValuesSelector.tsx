@@ -16,7 +16,7 @@ export interface Props {
   onChange: (value: string[]) => void;
 }
 
-const TopicValuesSelector = memo(({ value, onChange }: Props) => {
+const InputTopicValuesSelector = memo(({ value, onChange }: Props) => {
   const localize = useLocalize();
   const [selectedProjectId, setSelectedProjectId] = useState<string>('');
 
@@ -86,4 +86,4 @@ const TopicValuesSelector = memo(({ value, onChange }: Props) => {
   );
 });
 
-export default TopicValuesSelector;
+export default InputTopicValuesSelector;
