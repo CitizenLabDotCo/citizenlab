@@ -3,7 +3,12 @@ import React from 'react';
 import { Radio, IconTooltip, IOption } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
-import { IdeaSortMethod, InputTerm, PresentationMode } from 'api/phases/types';
+import {
+  IdeaSortMethod,
+  InputTerm,
+  PresentationMode,
+  PrescreeningMode,
+} from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -19,7 +24,7 @@ import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import { ReactingLimitInput } from '../../shared/styling';
-import PrescreeningToggle from '../_shared/PrescreeningToggle';
+import PrescreeningModeSelector from '../_shared/PrescreeningModeSelector';
 import SortingPicker from '../_shared/SortingPicker';
 import UserActions from '../_shared/UserActions';
 
@@ -63,8 +68,8 @@ interface Props {
   handleIdeasDisplayChange: (presentation_mode: PresentationMode) => void;
   ideas_order: IdeaSortMethod | undefined;
   handleIdeaDefaultSortMethodChange: (ideas_order: IdeaSortMethod) => void;
-  prescreening_enabled: boolean | null | undefined;
-  togglePrescreeningEnabled: (prescreening_enabled: boolean) => void;
+  prescreening_mode: PrescreeningMode | null | undefined;
+  onPrescreeningModeChange: (mode: PrescreeningMode | null) => void;
   handleSimilarityEnabledChange: (value: boolean) => void;
   handleThresholdChange: (
     field: 'similarity_threshold_title' | 'similarity_threshold_body',
@@ -101,8 +106,8 @@ const IdeationInputs = ({
   handleIdeasDisplayChange,
   ideas_order,
   handleIdeaDefaultSortMethodChange,
-  prescreening_enabled,
-  togglePrescreeningEnabled,
+  prescreening_mode,
+  onPrescreeningModeChange,
   similarity_enabled,
   similarity_threshold_title,
   similarity_threshold_body,
@@ -127,9 +132,9 @@ const IdeationInputs = ({
         handleInputTermChange={handleInputTermChange}
       />
       {prescreeningIdeationEnabled && (
-        <PrescreeningToggle
-          prescreening_enabled={prescreening_enabled}
-          togglePrescreeningEnabled={togglePrescreeningEnabled}
+        <PrescreeningModeSelector
+          prescreening_mode={prescreening_mode}
+          onPrescreeningModeChange={onPrescreeningModeChange}
         />
       )}
       <UserActions
