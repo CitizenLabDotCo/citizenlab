@@ -41,5 +41,34 @@ describe Insights::VisitsService do
         { acted_at: pageview6.created_at, visitor_id: 'anonymous_user_hash' }
       )
     end
+
+    describe 'edge cases for phase date boundaries' do
+      let(:phase2) { create(:single_voting_phase, start_at: Date.new(2026, 1, 15), end_at: Date.new(2026, 2, 2)) }
+      let(:session) { create(:session, user_id: user1.id) }
+      
+      it 'excludes a visit before the phase start date' do
+        create(:pageview, session: session, created_at: Time.zone.parse('2026-01-14 23:59:59'), project_id: phase2.project.id) # before phase start
+        visits = service.phase_visits(phase2)
+        expect(visits).to be_empty
+      end
+
+      it 'includes a visit on the phase start date' do
+        pageview = create(:pageview, session: session, created_at: Time.zone.parse('2026-01-15 00:00:00'), project_id: phase2.project.id) # on phase start
+        visits = service.phase_visits(phase2)
+        expect(visits).to contain_exactly({ acted_at: pageview.created_at, visitor_id: user1.id })
+      end
+
+      it 'includes a visit on the phase end date' do
+        pageview = create(:pageview, session: session, created_at: Time.zone.parse('2026-02-02 23:59:59'), project_id: phase2.project.id) # on phase end
+        visits = service.phase_visits(phase2)
+        expect(visits).to contain_exactly({ acted_at: pageview.created_at, visitor_id: user1.id })
+      end
+
+      it 'excludes a visit after the phase end date' do
+        create(:pageview, session: session, created_at: Time.zone.parse('2026-02-03 00:00:00'), project_id: phase2.project.id) # after phase end
+        visits = service.phase_visits(phase2)
+        expect(visits).to be_empty
+      end
+    end
   end
 end
