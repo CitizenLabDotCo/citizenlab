@@ -1535,7 +1535,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingDescription": "Šī funkcija, analizējot IP adreses un ierīces datus, palīdz novērst atkārtotu apsekojumu iesniegšanu no izrakstītiem lietotājiem. Lai gan tā nav tik precīza kā pieteikšanās prasība, tā var palīdzēt samazināt atkārtotu atbilžu skaitu.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingNote": "Piezīme: koplietošanas tīklos (piemēram, birojos vai publiskos Wi-Fi tīklos) pastāv neliela iespēja, ka dažādi lietotāji var tikt atzīmēti kā dublētāji.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingToggle": "Iespējot uzlaboto surogātpasta atklāšanu",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.none": "Nav",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.noneSubtitle": "Piedalīties var ikviens bez reģistrēšanās vai pieteikšanās.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.resetDemographicQuestionsAndGroups": "Demogrāfisko jautājumu un grupu atiestatīšana",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.restrictParticipation": "Ierobežot dalību tikai lietotāju grupai(-ām)",

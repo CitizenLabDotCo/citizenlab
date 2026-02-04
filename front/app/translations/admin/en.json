@@ -1535,7 +1535,7 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingDescription": "This feature helps prevent duplicate survey submissions from logged-out users by analyzing IP addresses and device data. While not as precise as requiring login, it can help to reduce the number of duplicate responses.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingNote": "Note: On shared networks (like offices or public Wi-Fi), there is a small chance that different users could be flagged as duplicates.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingToggle": "Enable advanced spam detection",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.none": "None",
+  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.none2": "None",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.noneSubtitle": "Anyone can participate without signing up or logging in.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.resetDemographicQuestionsAndGroups": "Reset demographic questions and groups",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.restrictParticipation": "Restrict participation to user group(s)",

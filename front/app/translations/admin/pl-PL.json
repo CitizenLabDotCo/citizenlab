@@ -1535,7 +1535,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingDescription": "Ta funkcja pomaga zapobiegać duplikowaniu ankiet od wylogowanych użytkowników poprzez analizę adresów IP i danych urządzenia. Chociaż nie jest to tak precyzyjne, jak wymaganie logowania, może pomóc zmniejszyć liczbę zduplikowanych odpowiedzi.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingNote": "Uwaga: W sieciach współdzielonych (takich jak biura lub publiczne Wi-Fi) istnieje niewielka szansa, że różni użytkownicy mogą zostać oznaczeni jako duplikaty.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingToggle": "Włącz zaawansowane wykrywanie spamu",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.none": "Brak",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.noneSubtitle": "Każdy może wziąć udział bez rejestracji lub logowania.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.resetDemographicQuestionsAndGroups": "Zresetuj pytania i grupy demograficzne",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.restrictParticipation": "Ogranicz uczestnictwo do grup użytkowników",

@@ -1535,7 +1535,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingDescription": "Ova značajka pomaže spriječiti dvostruka podnošenja ankete od odjavljenih korisnika analizom IP adresa i podataka uređaja. Iako nije tako precizan kao zahtijevanje prijave, može pomoći u smanjenju broja dvostrukih odgovora.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingNote": "Napomena: Na zajedničkim mrežama (kao što su uredi ili javni Wi-Fi), postoji mala vjerojatnost da različiti korisnici mogu biti označeni kao duplikati.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingToggle": "Omogući napredno otkrivanje neželjene pošte",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.none": "Nijedan",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.noneSubtitle": "Svatko može sudjelovati bez registracije ili prijave.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.resetDemographicQuestionsAndGroups": "Poništi demografska pitanja i grupe",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.restrictParticipation": "Ograniči sudjelovanje na grupe korisnika",

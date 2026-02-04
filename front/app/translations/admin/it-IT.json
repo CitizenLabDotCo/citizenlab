@@ -1535,7 +1535,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingDescription": "Questa funzione aiuta a prevenire l'invio di risposte duplicate ai sondaggi da parte di utenti non autenticati, analizzando gli indirizzi IP e i dati dei dispositivi. Sebbene non sia precisa quanto richiedere il login, può aiutare a ridurre il numero di risposte duplicate.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingNote": "Nota: su reti condivise (come uffici o Wi-Fi pubblici), c'è una piccola possibilità che utenti diversi vengano segnalati come duplicati.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingToggle": "Abilita il rilevamento avanzato dello spam",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.none": "Nessuna",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.noneSubtitle": "Chiunque può partecipare senza registrarsi o effettuare il login.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.resetDemographicQuestionsAndGroups": "Resetta le domande e i gruppi demografici",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.restrictParticipation": "Limita la partecipazione a gruppi di utenti",

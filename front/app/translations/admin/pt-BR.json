@@ -1535,7 +1535,6 @@
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingDescription": "Esse recurso ajuda a evitar envios duplicados de questionários de usuários desconectados, analisando endereços IP e dados de dispositivos. Embora não seja tão preciso quanto exigir login, ele pode ajudar a reduzir o número de respostas duplicadas.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingNote": "Observação: Em redes compartilhadas (como escritórios ou Wi-Fi público), há uma pequena chance de que diferentes usuários possam ser marcados como duplicatas.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingToggle": "Ativar a detecção avançada de spam",
-  "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.none": "Nenhum",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.noneSubtitle": "Qualquer pessoa pode participar sem se inscrever ou fazer login.",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.resetDemographicQuestionsAndGroups": "Redefinir perguntas e grupos demográficos",
   "app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.restrictParticipation": "Restringir a participação a grupo(s) de usuários",
