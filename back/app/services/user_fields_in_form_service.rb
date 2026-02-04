@@ -50,17 +50,8 @@ class UserFieldsInFormService
     return idea_custom_field_values unless current_user
     return idea_custom_field_values if phase.blank?
 
-    permission = phase.permissions.find_by(action: 'posting_idea')
-
-    # Use PermissionsCustomFieldsService to get fields, which handles both persisted and non-persisted (global) fields
-    permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
-    permissions_custom_fields = permissions_custom_fields_service.fields_for_permission(permission)
-
-    allowed_keys = permissions_custom_fields.map { |pcf| pcf.custom_field.key }.uniq
-
     user_values = current_user
       .custom_field_values
-      .select { |key, _value| allowed_keys.include?(key) }
       .transform_keys do |key|
         prefix_key(key)
       end
