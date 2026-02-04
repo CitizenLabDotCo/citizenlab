@@ -1195,7 +1195,6 @@
   "app.containers.AreaTerms.areaTerm": "Gebiet",
   "app.containers.AreaTerms.areasTerm": "Gebiete",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Es existiert bereits ein Konto mit dieser E-Mail-Adresse. Sie können sich abmelden, mit dieser E-Mail-Adresse anmelden und Ihr Konto auf der Einstellungsseite verifizieren.",
-  "app.containers.Authentication.createAnAccount": "Registrieren",
   "app.containers.Authentication.steps.AccessDenied.close": "Schließen",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Sie erfüllen nicht die Voraussetzungen für die Teilnahme an diesem Prozess.",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Hier klicken, um sich als Admin oder Projektmanager*in anzumelden",

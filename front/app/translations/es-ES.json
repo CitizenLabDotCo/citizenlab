@@ -1195,7 +1195,6 @@
   "app.containers.AreaTerms.areaTerm": "Localidad/barrio/zona",
   "app.containers.AreaTerms.areasTerm": "Localidades/barrios/zonas",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Ya existe una cuenta con este correo electrónico. Puedes cerrar sesión, iniciar sesión con esta dirección de correo electrónico y verificar tu cuenta en la página de configuración.",
-  "app.containers.Authentication.createAnAccount": "Crear una cuenta",
   "app.containers.Authentication.steps.AccessDenied.close": "Cerrar",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "No cumples con los requisitos para participar en este proceso.",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Haz clic aquí para iniciar sesión como administrador o jefe de proyecto",

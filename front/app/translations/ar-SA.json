@@ -1195,7 +1195,6 @@
   "app.containers.AreaTerms.areaTerm": "منطقة",
   "app.containers.AreaTerms.areasTerm": "المناطق",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "حساب بهذا البريد الإلكتروني موجود بالفعل. يمكنك تسجيل الخروج وتسجيل الدخول باستخدام عنوان البريد الإلكتروني هذا والتحقق من حسابك في صفحة الإعدادات.",
-  "app.containers.Authentication.createAnAccount": "إنشاء حساب",
   "app.containers.Authentication.steps.AccessDenied.close": "يغلق",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "لا تتوفر لديك المتطلبات للمشاركة في هذه العملية.",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "انقر هنا لتسجيل الدخول كمسؤول أو مدير مشروع",
