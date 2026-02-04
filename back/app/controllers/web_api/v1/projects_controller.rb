@@ -407,6 +407,7 @@ class WebApi::V1::ProjectsController < ApplicationController
           # The project must be saved before performing the authorization because it requires
           # the admin publication to be created.
           authorize(project)
+          CheckProjectPublicationConsistencyJob.perform_later(project.id)
         else
           skip_authorization
         end
@@ -419,30 +420,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     authorize @project
   end
 
-  def check_publication_inconsistencies!
-    # This code is meant to be temporary to find the cause of the disappearing admin publication bugs
-    Project.includes(:admin_publication).each do |project|
-      next if project.valid?
 
-      errors = project&.errors&.details
-
-      # Skip a known case where we expect project to be invalid at this point
-      moved_folder = project.admin_publication&.parent_id_was == project.folder_id
-      assignee_error_only = errors == { default_assignee_id: [{ error: :assignee_can_not_moderate_project }] }
-      next if assignee_error_only && moved_folder
-
-      # Enhanced Sentry reporting: include project and admin_publication attributes
-      extra_context = {
-        errors: errors,
-        project_attributes: project.attributes,
-        admin_publication_attributes: project.admin_publication&.attributes
-      }
-      ErrorReporter.report_msg(
-        "Project change would lead to inconsistencies! (id: #{project.id})",
-        extra: extra_context
-      )
-    end
-  end
 
   def base_render_mini_index
     render json: linked_json(
