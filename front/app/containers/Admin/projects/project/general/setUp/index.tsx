@@ -759,7 +759,7 @@ const AdminProjectsProjectGeneral = () => {
               fileAttachments={projectFileAttachments}
               enableDragAndDrop
               apiErrors={apiErrors}
-              maxSizeMb={10}
+              maxSizeMb={50}
               isUploadingFile={isAddingFile}
             />
           </StyledSectionField>
