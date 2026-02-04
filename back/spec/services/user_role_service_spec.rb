@@ -231,9 +231,9 @@ describe UserRoleService do
       m4 = create(:project_moderator, projects: [p3, p2])
 
       result = service.moderators_per_project([p1.id, p2.id])
-      expect(result.keys).to match_array([p1.id, p2.id])
-      expect(result[p1.id]).to match_array([m1])
-      expect(result[p2.id]).to match_array([m1, m2, m4])
+      expect(result.keys).to contain_exactly(p1.id, p2.id)
+      expect(result[p1.id]).to contain_exactly(m1)
+      expect(result[p2.id]).to contain_exactly(m1, m2, m4)
     end
 
     it 'does not crash if empty array is passed' do
@@ -256,10 +256,10 @@ describe UserRoleService do
       m5 = create(:project_folder_moderator, project_folders: [f4, f3])
 
       result = service.moderators_per_folder([f1.id, f2.id, f3.id])
-      expect(result.keys).to match_array([f1.id, f2.id, f3.id])
-      expect(result[f1.id]).to match_array([m1])
-      expect(result[f2.id]).to match_array([m1, m2])
-      expect(result[f3.id]).to match_array([m3, m5])
+      expect(result.keys).to contain_exactly(f1.id, f2.id, f3.id)
+      expect(result[f1.id]).to contain_exactly(m1)
+      expect(result[f2.id]).to contain_exactly(m1, m2)
+      expect(result[f3.id]).to contain_exactly(m3, m5)
     end
 
     it 'does not crash if empty array is passed' do
