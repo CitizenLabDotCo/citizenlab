@@ -87,7 +87,6 @@ const FileAttachment = ({ fileId }: FileAttachmentProps) => {
 
   const { data: attachments } = useFileAttachments({
     attachable_id: layoutId,
-    attachable_type: 'ContentBuilder::Layout',
   });
 
   const attachment = useMemo(() => {
