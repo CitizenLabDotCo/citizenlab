@@ -9,6 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled, { css } from 'styled-components';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { transformDemographicsResponse } from 'api/phase_insights/transformDemographics';
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
 import { IPhaseData } from 'api/phases/types';
@@ -86,6 +87,11 @@ const DemographicsSection = ({ phase }: Props) => {
   const { isPdfRenderMode } = usePdfExportContext();
   const localize = useLocalize();
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(0);
+  const { data: appConfiguration } = useAppConfiguration();
+
+  const privateAttributesInExport =
+    appConfiguration?.data.attributes.settings.core
+      .private_attributes_in_export !== false;
 
   const userDataCollection =
     phase?.attributes.user_data_collection || 'anonymous';
@@ -114,6 +120,11 @@ const DemographicsSection = ({ phase }: Props) => {
     [demographicsData]
   );
   const selectedField = fields[selectedFieldIndex];
+
+  // Hide demographics when private attributes export is disabled
+  if (!privateAttributesInExport) {
+    return null;
+  }
 
   if (isLoading) {
     return (
