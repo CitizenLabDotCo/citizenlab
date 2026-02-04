@@ -82,6 +82,7 @@ export interface IPhaseAttributes {
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
   user_data_collection: UserDataCollection;
+  user_fields_in_form_enabled: boolean;
 }
 
 export interface IPhases {
