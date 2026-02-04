@@ -14,7 +14,7 @@ module InputTypeStrategy
       false
     end
 
-    def supports_pdf_gpt_import?
+    def supports_pdf_llm_import?
       false
     end
 

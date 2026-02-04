@@ -36,7 +36,7 @@ module BulkImportIdeas::Parsers::Pdf
     end
 
     def prompt
-      <<~GPT_PROMPT
+      <<~LLM_PROMPT
         In this message is a scanned survey form that has been filled in by hand.
   
         Your task is to extract the text and checked options based on the questions in the JSON form schema below.
@@ -60,7 +60,7 @@ module BulkImportIdeas::Parsers::Pdf
   
         JSON form schema:
         #{personal_data_schema + form_schema}
-      GPT_PROMPT
+      LLM_PROMPT
     end
 
     # Return a simple schema to send to GPT

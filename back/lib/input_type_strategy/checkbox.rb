@@ -2,7 +2,7 @@
 
 module InputTypeStrategy
   class Checkbox < Base
-    def supports_pdf_gpt_import?
+    def supports_pdf_llm_import?
       false
     end
 
