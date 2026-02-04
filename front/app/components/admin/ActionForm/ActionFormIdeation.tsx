@@ -37,7 +37,7 @@ const ActionFormIdeation = ({
       action,
       verification_enabled,
       verification_expiry,
-      user_fields_in_form_frontend_descriptor,
+      user_fields_in_form_descriptor,
     },
     relationships,
   } = permissionData;
@@ -47,8 +47,8 @@ const ActionFormIdeation = ({
   if (!permissionsCustomFields) return null;
   if (!phase) return null;
 
-  const userFieldsInForm = user_fields_in_form_frontend_descriptor.value;
-  const { explanation } = user_fields_in_form_frontend_descriptor;
+  const userFieldsInForm = user_fields_in_form_descriptor.value;
+  const { explanation } = user_fields_in_form_descriptor;
 
   return (
     <form className={`e2e-action-form-${action}`}>
@@ -64,9 +64,7 @@ const ActionFormIdeation = ({
               phaseId={phaseId}
               action={action}
               allowAddingFields={allowAddingFields(explanation)}
-              user_fields_in_form_frontend_descriptor={
-                user_fields_in_form_frontend_descriptor
-              }
+              user_fields_in_form_descriptor={user_fields_in_form_descriptor}
               permitted_by={permitted_by}
               onChangeUserFieldsInForm={(user_fields_in_form) => {
                 onChange({ user_fields_in_form });

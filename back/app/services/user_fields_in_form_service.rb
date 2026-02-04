@@ -142,15 +142,15 @@ class UserFieldsInFormService
     fields + [user_page] + user_fields + [last_page]
   end
 
-  def self.user_fields_in_form_frontend_descriptor(permission, participation_method)
+  def self.user_fields_in_form_descriptor(permission, participation_method)
     return Permission::UNSUPPORTED_DESCRIPTOR unless permission.action == 'posting_idea'
 
     if NATIVE_SURVEYLIKE_METHODS.include?(participation_method)
-      return user_fields_in_form_frontend_descriptor_surveylike(permission)
+      return user_fields_in_form_descriptor_surveylike(permission)
     end
 
     if IDEATIONLIKE_METHODS.include?(participation_method)
-      return user_fields_in_form_frontend_descriptor_ideationlike(permission)
+      return user_fields_in_form_descriptor_ideationlike(permission)
     end
 
     Permission::UNSUPPORTED_DESCRIPTOR
@@ -164,7 +164,7 @@ class UserFieldsInFormService
     "#{prefix}#{key}"
   end
 
-  private_class_method def self.user_fields_in_form_frontend_descriptor_surveylike(permission)
+  private_class_method def self.user_fields_in_form_descriptor_surveylike(permission)
     if permission.permitted_by == 'everyone'
       if permission.user_data_collection == 'anonymous'
         {
@@ -194,7 +194,7 @@ class UserFieldsInFormService
     end
   end
 
-  private_class_method def self.user_fields_in_form_frontend_descriptor_ideationlike(permission)
+  private_class_method def self.user_fields_in_form_descriptor_ideationlike(permission)
     if permission.permitted_by == 'everyone'
       {
         value: true,
