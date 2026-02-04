@@ -5,8 +5,8 @@ require 'rails_helper'
 RSpec.describe Notifications::ProjectPublished do
   describe 'make_notifications_on' do
     it 'generates exactly one notification for each follower of the idea' do
-      topic = create(:topic)
-      project = create(:project, topics: [topic])
+      topic = create(:global_topic)
+      project = create(:project, global_topics: [topic])
       folder = create(:project_folder, projects: [project])
       project.reload
       follower1 = create(:follower, followable: folder)
@@ -20,8 +20,8 @@ RSpec.describe Notifications::ProjectPublished do
     end
 
     it "doesn't generate notifications for the initiating user" do
-      topic = create(:topic)
-      project = create(:project, topics: [topic])
+      topic = create(:global_topic)
+      project = create(:project, global_topics: [topic])
       follower = create(:follower, followable: topic)
 
       activity = create(:activity, item: project, action: 'published', user: follower.user)

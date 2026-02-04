@@ -2,12 +2,16 @@
 
 module IdeaCustomFields
   class UpdateAllService
-    attr_reader :custom_form, :params, :current_user, :errors
+    attr_reader :custom_form, :custom_fields_params, :current_user, :errors
 
-    def initialize(custom_form, params, current_user)
+    def initialize(custom_form, current_user, custom_fields:, fields_last_updated_at: nil, form_save_type: nil, form_opened_at: nil, params_size: nil)
       @custom_form = custom_form
-      @params = params
       @current_user = current_user
+      @custom_fields_from_params = custom_fields || []
+      @fields_last_updated_at = fields_last_updated_at
+      @form_save_type = form_save_type
+      @form_opened_at = form_opened_at
+      @params_size = params_size
       @errors = {}
       @page_count = 0
       @field_count = 0
@@ -34,7 +38,7 @@ module IdeaCustomFields
 
     def validate
       validate_stale_form_data!
-      fields = params.fetch(:custom_fields, []).map do |field|
+      fields = @custom_fields_from_params.map do |field|
         CustomField.new(
           field.slice(:code, :key, :input_type, :title_multiloc, :description_multiloc, :required, :enabled, :ordering)
         ).tap(&:readonly!)
@@ -45,9 +49,9 @@ module IdeaCustomFields
     # To try and avoid forms being overwritten with stale data, we check if the form has been updated since the form editor last loaded it
     # But ONLY if the FE sends the fields_last_updated_at param
     def validate_stale_form_data!
-      return unless params[:fields_last_updated_at].present? &&
+      return unless @fields_last_updated_at.present? &&
                     @custom_form.persisted? &&
-                    @custom_form.fields_last_updated_at.to_i > params[:fields_last_updated_at].to_datetime.to_i
+                    @custom_form.fields_last_updated_at.to_i > @fields_last_updated_at.to_datetime.to_i
 
       raise UpdateAllFailedError, { form: [{ error: 'stale_data' }] }
     end
@@ -56,7 +60,7 @@ module IdeaCustomFields
       idea_custom_fields_service = IdeaCustomFieldsService.new(@custom_form)
       fields = idea_custom_fields_service.all_fields
       fields_by_id = fields.index_by(&:id)
-      given_fields = params.fetch(:custom_fields, [])
+      given_fields = @custom_fields_from_params
       given_field_ids = given_fields.pluck(:id)
 
       ActiveRecord::Base.transaction do
@@ -295,15 +299,15 @@ module IdeaCustomFields
       return unless @custom_form.persisted?
 
       @custom_form.fields_updated!
-      update_payload = {
-        save_type: params[:form_save_type],
+      activity_payload = {
+        save_type: @form_save_type,
         pages: @page_count,
         fields: @field_count,
-        params_size: params.to_s.size,
-        form_opened_at: params[:form_opened_at]&.to_datetime,
+        params_size: @params_size,
+        form_opened_at: @form_opened_at&.to_datetime,
         form_updated_at: @custom_form.updated_at&.to_datetime
       }
-      SideFxCustomFormService.new.after_update(@custom_form, @current_user, update_payload)
+      SideFxCustomFormService.new.after_update(@custom_form, @current_user, activity_payload)
     end
 
     def count_fields(field)

@@ -26,7 +26,7 @@ const IdeaFeedbackToggle = ({
     assignee: queryParameters.assignee,
     projects: project ? [project] : undefined,
     phase: queryParameters.phase,
-    topics: queryParameters.topics,
+    input_topics: queryParameters.input_topics,
     idea_status_id: queryParameters.idea_status,
     search: queryParameters.search,
     transitive: queryParameters.transitive,

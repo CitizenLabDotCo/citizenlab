@@ -36,7 +36,7 @@ namespace :single_use do
         # Get the last field of the survey, check if it's already the correct last page.
         # If so, skip this form
         last_field = custom_fields.last
-        next if last_field.input_type == 'page' && last_field.key == 'form_end'
+        next if last_field.form_end_page?
 
         # Create the new last page
         multiloc_service = MultilocService.new
@@ -69,7 +69,7 @@ namespace :single_use do
         custom_fields.each do |field|
           original_field = field.deep_dup
 
-          if field.input_type == 'page'
+          if field.page?
             if field.logic['next_page_id'] == 'form_end'
               field.logic['next_page_id'] = last_page.id
               save_field_and_report(original_field, field, reporter, tenant)

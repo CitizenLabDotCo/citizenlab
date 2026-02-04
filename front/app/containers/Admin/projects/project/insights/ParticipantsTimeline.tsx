@@ -11,17 +11,18 @@ import ReportExportMenu from 'components/admin/ReportExportMenu';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import { usePdfExportContext } from './pdf/PdfExportContext';
 
 interface Props {
   phaseId: string;
-  isPdfExport?: boolean;
 }
 
 // Fixed dimensions for PDF export to fit A4 page (with 15mm margins)
 const PDF_CHART_WIDTH = 650;
 const PDF_CHART_HEIGHT = 280;
 
-const ParticipantsTimeline = ({ phaseId, isPdfExport = false }: Props) => {
+const ParticipantsTimeline = ({ phaseId }: Props) => {
+  const { isPdfRenderMode } = usePdfExportContext();
   const { formatMessage } = useIntl();
   const graphRef = useRef<SVGElement>(null);
 
@@ -88,8 +89,8 @@ const ParticipantsTimeline = ({ phaseId, isPdfExport = false }: Props) => {
       </Box>
 
       <Box
-        height={isPdfExport ? `${PDF_CHART_HEIGHT}px` : '249px'}
-        width={isPdfExport ? `${PDF_CHART_WIDTH}px` : undefined}
+        height={isPdfRenderMode ? `${PDF_CHART_HEIGHT}px` : '249px'}
+        width={isPdfRenderMode ? `${PDF_CHART_WIDTH}px` : undefined}
       >
         <Chart
           timeSeries={chartData}
@@ -98,7 +99,7 @@ const ParticipantsTimeline = ({ phaseId, isPdfExport = false }: Props) => {
           resolution={resolution}
           showVisitors={true}
           innerRef={graphRef}
-          isAnimationActive={!isPdfExport}
+          isAnimationActive={!isPdfRenderMode}
         />
       </Box>
     </Box>

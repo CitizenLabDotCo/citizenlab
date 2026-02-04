@@ -193,10 +193,10 @@ describe ProjectsFinderService do
         .to contain_exactly(followed_project, project_for_followed_area)
     end
 
-    it 'includes projects for a Topic the user follows' do
+    it 'includes projects for a GlobalTopic the user follows' do
       project_for_followed_topic = create(:project)
-      topic = create(:topic)
-      create(:projects_topic, project: project_for_followed_topic, topic: topic)
+      topic = create(:global_topic)
+      create(:projects_global_topic, project: project_for_followed_topic, global_topic: topic)
       create(:follower, followable: topic, user: user)
 
       expect(service.new(Project.all, user).followed_by_user)

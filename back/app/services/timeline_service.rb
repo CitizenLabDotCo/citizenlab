@@ -28,6 +28,15 @@ class TimelineService
     current_phase project, time
   end
 
+  def current_phase_or_last_completed_not_archived(project, time = Time.now)
+    return nil if project.admin_publication.archived?
+
+    phase = current_phase(project, time)
+    return phase if phase
+
+    past_phases(project, time).max_by(&:end_at)
+  end
+
   def phase_is_complete?(phase, time = Time.now)
     date = tenant_timezone.at(time).to_date
     phase.end_at.present? && phase.end_at <= date

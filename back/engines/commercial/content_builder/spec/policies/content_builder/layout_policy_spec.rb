@@ -13,6 +13,7 @@ RSpec.describe ContentBuilder::LayoutPolicy do
 
     it { is_expected.to permit(:show) }
     it { is_expected.not_to permit(:upsert) }
+    it { is_expected.not_to permit(:update) }
     it { is_expected.not_to permit(:destroy) }
   end
 
@@ -21,6 +22,7 @@ RSpec.describe ContentBuilder::LayoutPolicy do
 
     it { is_expected.to permit(:show) }
     it { is_expected.not_to permit(:upsert) }
+    it { is_expected.not_to permit(:update) }
     it { is_expected.not_to permit(:destroy) }
   end
 
@@ -28,43 +30,69 @@ RSpec.describe ContentBuilder::LayoutPolicy do
     let(:user) { instance_double User, active?: true }
 
     before do
-      allow(user_role_service).to receive(
-        :can_moderate?
-      ).with(
-        layout.content_buildable,
-        user
-      ).and_return can_moderate
+      allow(user_role_service)
+        .to receive(:can_moderate?)
+        .with(layout.content_buildable, user)
+        .and_return can_moderate
     end
 
     context 'for non-moderators' do
       let(:can_moderate) { false }
 
       it { is_expected.to permit(:show) }
-
-      it 'forbids upsert' do
-        expect(user_role_service).to receive(:can_moderate?)
-        expect(policy).not_to permit(:upsert)
-      end
-
-      it 'forbids destroy' do
-        expect(user_role_service).to receive(:can_moderate?)
-        expect(policy).not_to permit(:destroy)
-      end
+      it { is_expected.not_to permit(:upsert) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.not_to permit(:destroy) }
     end
 
     context 'for moderators' do
       let(:can_moderate) { true }
 
       it { is_expected.to permit(:show) }
+      it { is_expected.to permit(:upsert) }
+      it { is_expected.to permit(:update) }
+      it { is_expected.to permit(:destroy) }
 
-      it 'permits upsert' do
-        expect(user_role_service).to receive(:can_moderate?)
-        expect(policy).to permit(:upsert)
-      end
+      context 'when craftjs_json references files' do
+        let(:file) { create(:file) }
+        let(:layout) do
+          create(:layout, craftjs_json: {
+            'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => ['node1'] },
+            'node1' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => file.id } }
+          })
+        end
 
-      it 'permits destroy' do
-        expect(user_role_service).to receive(:can_moderate?)
-        expect(policy).to permit(:destroy)
+        context 'when user is authorized to use the file' do
+          before do
+            allow_any_instance_of(Files::FilePolicy).to receive(:update?).and_return(true)
+          end
+
+          it { is_expected.to permit(:upsert) }
+          it { is_expected.to permit(:update) }
+        end
+
+        context 'when user is not authorized to use the file' do
+          before do
+            allow_any_instance_of(Files::FilePolicy).to receive(:update?).and_return(false)
+          end
+
+          it { is_expected.not_to permit(:upsert) }
+          it { is_expected.not_to permit(:update) }
+        end
+
+        context 'when file does not exist' do
+          let(:layout) do
+            create(:layout, craftjs_json: {
+              'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => ['node1'] },
+              'node1' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => 'non-existent-id' } }
+            })
+          end
+
+          it 'permits update (allows saving to fix layout)' do
+            expect(user_role_service).to receive(:can_moderate?)
+            expect(policy).to permit(:update)
+          end
+        end
       end
     end
   end

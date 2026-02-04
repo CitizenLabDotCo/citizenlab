@@ -47,7 +47,7 @@ interface Props {
   handleAllowAnonymousParticipationOnChange: (
     allow_anonymous_participation: boolean
   ) => void;
-  presentation_mode: 'card' | 'map' | null | undefined;
+  presentation_mode: 'card' | 'map' | 'feed' | null | undefined;
   handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
   ideas_order: IdeaSortMethod | undefined;
   handleIdeaDefaultSortMethodChange: (ideas_order: IdeaSortMethod) => void;

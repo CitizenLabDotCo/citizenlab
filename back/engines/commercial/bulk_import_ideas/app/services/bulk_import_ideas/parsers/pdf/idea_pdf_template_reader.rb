@@ -63,9 +63,9 @@ module BulkImportIdeas::Parsers::Pdf
 
       # Skip fields or options whose fields are not importable
       importable = if type == 'field'
-        @llm_parser ? field_or_option.pdf_gpt_importable? : field_or_option.pdf_importable?
+        @llm_parser ? field_or_option.supports_pdf_gpt_import? : field_or_option.supports_pdf_import?
       else # option
-        @llm_parser ? field_or_option.custom_field.pdf_gpt_importable? : field_or_option.custom_field.pdf_importable?
+        @llm_parser ? field_or_option.custom_field.supports_pdf_gpt_import? : field_or_option.custom_field.supports_pdf_import?
       end
       return unless importable
 
@@ -108,7 +108,9 @@ module BulkImportIdeas::Parsers::Pdf
 
       # Domicile options (when user fields in form enabled) need different keys
       key = field_or_option.key
-      if type == 'option' && field_or_option.custom_field.key == 'u_domicile'
+      s = UserFieldsInFormService
+
+      if type == 'option' && field_or_option.custom_field.key == s.prefix_key('domicile')
         key = field_or_option.area&.id || 'outside'
       end
 
@@ -170,7 +172,7 @@ module BulkImportIdeas::Parsers::Pdf
       end
 
       {
-        start: field.support_options? ? current_line : page_text[start_line_index], # Select fields use just the current line as start is less important
+        start: field.supports_options? ? current_line : page_text[start_line_index], # Select fields use just the current line as start is less important
         end: page_text[next_line_index] ? page_text[next_line_index].strip : next_question_title&.slice(0, 50)&.strip # truncated next_question_title will be used if this is the last field on the page
       }
     end
@@ -213,7 +215,7 @@ module BulkImportIdeas::Parsers::Pdf
     def full_print_title(field, question_number = nil)
       title = question_number ? "#{question_number}. " : ''
       title += field_title(field)
-      title += " #{pdf_exporter.optional_text}" unless field.required? || field.page?
+      title += " #{pdf_exporter.optional_text}" if !field.required? && field.supports_submission?
       title
     end
 

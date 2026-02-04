@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   SearchInput,
@@ -22,6 +22,8 @@ export interface Props {
   // This prop will ensure that screen readers
   // get notified when the number of results have changed.
   a11y_numberOfSearchResults: number;
+  a11y_searchQuery?: string | null;
+  a11y_filtersAppliedCount?: number;
   setInputRef?: (ref: HTMLInputElement | null) => void;
   hideLabel?: boolean;
   dataCy?: string;
@@ -40,8 +42,44 @@ const SearchInputWrapper = ({
   labelColor,
   hideLabel,
   dataCy,
+  a11y_searchQuery,
+  a11y_filtersAppliedCount,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const [announcement, setAnnouncement] = useState('');
+  useEffect(() => {
+    const announcementParts: string[] = [];
+
+    announcementParts.push(
+      formatMessage(messages.a11y_projectsAvailable, {
+        numberOfProjects: a11y_numberOfSearchResults,
+      })
+    );
+
+    if (a11y_searchQuery?.trim()) {
+      announcementParts.push(
+        formatMessage(messages.a11y_searchQuery, {
+          searchTerm: a11y_searchQuery.trim(),
+        })
+      );
+    }
+
+    if (a11y_filtersAppliedCount) {
+      announcementParts.push(
+        formatMessage(messages.a11y_filtersAppliedCount, {
+          numberOfFilters: a11y_filtersAppliedCount,
+        })
+      );
+    }
+
+    setAnnouncement(announcementParts.join(' '));
+  }, [
+    a11y_numberOfSearchResults,
+    a11y_searchQuery,
+    a11y_filtersAppliedCount,
+    formatMessage,
+  ]);
+
   return (
     <>
       <SearchInput
@@ -59,11 +97,7 @@ const SearchInputWrapper = ({
         hideLabel={hideLabel}
         dataCy={dataCy}
       />
-      <ScreenReaderOnly aria-live="assertive">
-        {formatMessage(messages.a11y_searchResultsHaveChanged1, {
-          numberOfSearchResults: a11y_numberOfSearchResults,
-        })}
-      </ScreenReaderOnly>
+      <ScreenReaderOnly aria-live="polite">{announcement}</ScreenReaderOnly>
     </>
   );
 };

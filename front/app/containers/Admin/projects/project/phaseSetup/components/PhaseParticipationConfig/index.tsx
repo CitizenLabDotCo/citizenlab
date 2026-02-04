@@ -11,11 +11,11 @@ import { CLErrors, Multiloc } from 'typings';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import {
   IdeaSortMethod,
-  IdeationMethod,
   InputTerm,
   IPhase,
   IUpdatedPhaseProperties,
   ParticipationMethod,
+  PresentationMode,
   TSurveyService,
   VoteTerm,
   VotingMethod,
@@ -96,14 +96,11 @@ const PhaseParticipationConfig = ({
   });
 
   const project_library_enabled = useFeatureFlag({ name: 'project_library' });
-  const ideationAccountlessPostingEnabled = useFeatureFlag({
-    name: 'ideation_accountless_posting',
-  });
 
   const { formatMessage } = useIntl();
 
   const { data: permissions } = usePhasePermissions({
-    phaseId: ideationAccountlessPostingEnabled ? phase?.data.id : undefined,
+    phaseId: phase?.data.id,
   });
 
   // If posting without an account is allowed, we allow logged-in users to post
@@ -245,13 +242,6 @@ const PhaseParticipationConfig = ({
     }));
   };
 
-  const handleIdeationMethodOnChange = (ideation_method: IdeationMethod) => {
-    updateFormData((state) => ({
-      ...state,
-      ideation_method,
-    }));
-  };
-
   const handleReactingDislikeMethodOnChange = (
     reacting_dislike_method: 'unlimited' | 'limited'
   ) => {
@@ -276,7 +266,7 @@ const PhaseParticipationConfig = ({
     }));
   };
 
-  const handleIdeasDisplayChange = (presentation_mode: 'map' | 'card') => {
+  const handleIdeasDisplayChange = (presentation_mode: PresentationMode) => {
     updateFormData((state) => ({
       ...state,
       presentation_mode,
@@ -451,7 +441,6 @@ const PhaseParticipationConfig = ({
     reacting_dislike_limited_max,
     allow_anonymous_participation,
     voting_method,
-    ideation_method,
     voting_min_total,
     voting_max_total,
     voting_min_selected_options,
@@ -560,8 +549,6 @@ const PhaseParticipationConfig = ({
 
         {participation_method === 'ideation' && (
           <IdeationInputs
-            ideation_method={ideation_method}
-            handleIdeationMethodOnChange={handleIdeationMethodOnChange}
             input_term={input_term}
             handleInputTermChange={handleInputTermChange}
             submission_enabled={submission_enabled}
@@ -678,7 +665,7 @@ const PhaseParticipationConfig = ({
                     values={{
                       supportArticleLink: (
                         <a
-                          href={formatMessage(messages.konveioSupportPageURL)}
+                          href={formatMessage(messages.konveioSupportPageURL2)}
                           target="_blank"
                           rel="noreferrer"
                         >

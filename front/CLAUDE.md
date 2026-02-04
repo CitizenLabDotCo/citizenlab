@@ -155,7 +155,13 @@ const title = localize(title_multiloc);
 
 ### Component Library
 
-Reusable components are in `app/component-library/`:
+Reusable components are in `app/component-library/`.
+
+**IMPORTANT**: Always prefer using component library components (Box, Text, Icon, Button, etc.) over creating styled components. Use component props for styling whenever possible:
+
+- Use `Box` with props like `display`, `flexDirection`, `gap`, `p`, `m`, `background`, `border`, `borderRadius`, `boxShadow` instead of creating styled divs
+- Use `Text` with props like `fontSize`, `fontWeight`, `color`, `lineHeight`, `fontStyle` instead of creating styled spans/paragraphs
+- Only create styled components when the component library doesn't support the required styling (e.g., dynamic styles based on props that can't be computed inline)
 
 ### Styling
 
@@ -220,6 +226,14 @@ make e2e-setup
 ```
 
 ## Code Quality
+
+### Type Checking
+
+Run the TypeScript type checker after all work is complete:
+
+```bash
+npm run typecheck
+```
 
 ### Linting
 

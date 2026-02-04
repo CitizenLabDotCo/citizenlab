@@ -36,7 +36,7 @@ module IdeaCustomFields
       else
         service.all_fields.select { |field| IdeaCustomFieldPolicy.new(pundit_user, field).show? }
       end
-      fields = fields.filter(&:support_free_text_value?) if params[:support_free_text_value].present?
+      fields = fields.filter(&:supports_free_text_value?) if params[:support_free_text_value].present?
       fields = fields.filter { |field| params[:input_types].include?(field.input_type) } if params[:input_types].present?
 
       render json: ::WebApi::V1::CustomFieldSerializer.new(
@@ -68,7 +68,15 @@ module IdeaCustomFields
     def update_all
       authorize CustomField.new(resource: @custom_form), :update_all?, policy_class: IdeaCustomFieldPolicy
 
-      update_all_service = UpdateAllService.new(@custom_form, update_all_params, current_user)
+      update_all_service = UpdateAllService.new(
+        @custom_form,
+        current_user,
+        custom_fields: update_all_params[:custom_fields],
+        fields_last_updated_at: update_all_params[:fields_last_updated_at],
+        form_save_type: update_all_params[:form_save_type],
+        form_opened_at: update_all_params[:form_opened_at],
+        params_size: update_all_params.to_s.size
+      )
       result = update_all_service.update_all
       if result.success?
         render json: ::WebApi::V1::CustomFieldSerializer.new(

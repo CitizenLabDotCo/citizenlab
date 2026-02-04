@@ -23,7 +23,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Follower < ApplicationRecord
-  FOLLOWABLE_TYPES = %w[Project ProjectFolders::Folder Idea Topic Area]
+  FOLLOWABLE_TYPES = %w[Project ProjectFolders::Folder Idea GlobalTopic Area]
 
   belongs_to :user
   belongs_to :followable, polymorphic: true

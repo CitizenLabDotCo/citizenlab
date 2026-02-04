@@ -39,6 +39,7 @@ const IdeaForm = ({
   const { data: customFields } = useCustomFields({
     projectId,
     phaseId: participationMethod === 'native_survey' ? phaseId : undefined,
+    publicFields: true,
   });
 
   const questions = customFields?.filter(

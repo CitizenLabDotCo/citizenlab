@@ -66,8 +66,10 @@ export interface VotingInputsProps {
   toggleAutoshareResultsEnabled: () => void;
   apiErrors: CLErrors | null | undefined;
   validationErrors: ValidationErrors;
-  presentation_mode: 'card' | 'map' | null | undefined;
-  handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
+  presentation_mode: 'card' | 'map' | 'feed' | null | undefined;
+  handleIdeasDisplayChange: (
+    presentation_mode: 'map' | 'card' | 'feed'
+  ) => void;
   handleVotingMethodOnChange: (voting_method: VotingMethod) => void;
   similarity_enabled?: boolean | null;
   similarity_threshold_title: number | null | undefined;
@@ -145,7 +147,7 @@ const VotingInputs = ({
                 voteTypeDescription: getVoteTypeDescription(),
                 optionAnalysisArticleLink: (
                   <a
-                    href="https://support.govocal.com/en/articles/8124630-voting-and-prioritization-methods-for-enhanced-decision-making"
+                    href="https://support.govocal.com/en/articles/527581-voting-and-prioritization-methods-for-enhanced-decision-making"
                     target="_blank"
                     rel="noreferrer"
                   >

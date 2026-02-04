@@ -181,7 +181,7 @@ class FormLogicService
       allowed_if_values = field.options.pluck(:id)
       allowed_if_values << 'any_other_answer'
       allowed_if_values << 'no_answer' unless field.required?
-      if field.support_options? && allowed_if_values.exclude?(rule['if'])
+      if field.supports_options? && allowed_if_values.exclude?(rule['if'])
         rules.delete(rule)
       end
     end
