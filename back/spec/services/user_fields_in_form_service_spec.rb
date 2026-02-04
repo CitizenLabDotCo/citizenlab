@@ -278,7 +278,8 @@ describe UserFieldsInFormService do
       )
 
       keys = updated_fields.pluck(:key)
-      expect(keys.slice(keys.length - 3, keys.length)).to eq(%w[
+      last_three_field_keys = keys.slice(keys.length - 3, keys.length)
+      expect(last_three_field_keys).to eq(%w[
         user_page
         u_age
         form_end
