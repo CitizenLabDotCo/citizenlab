@@ -9,14 +9,12 @@ module ContentBuilder
         content_buildable_types = scope.distinct.reorder(nil).pluck(:content_buildable_type).compact
 
         scoped_layouts = content_buildable_types.filter_map do |content_buildable_type|
-          begin
-            scope.where(content_buildable_type: content_buildable_type, content_buildable_id: scope_for(content_buildable_type.constantize))
-          rescue Pundit::NotAuthorizedError
-            # When scope_for is called for a resource type (e.g., Project) that raises NotAuthorizedError
-            # for the current user, we filter out those layouts rather than failing the entire query.
-            # This allows the query to return layouts the user CAN access while excluding unauthorized ones.
-            nil
-          end
+          scope.where(content_buildable_type: content_buildable_type, content_buildable_id: scope_for(content_buildable_type.constantize))
+        rescue Pundit::NotAuthorizedError
+          # When scope_for is called for a resource type (e.g., Project) that raises NotAuthorizedError
+          # for the current user, we filter out those layouts rather than failing the entire query.
+          # This allows the query to return layouts the user CAN access while excluding unauthorized ones.
+          nil
         end.reduce(scope.none, :or)
 
         # Homepage layouts (content_buildable_type nil) are always visible
