@@ -7,11 +7,6 @@ module BulkImportIdeas::Parsers
     MAX_TOTAL_PAGES = 100
     TEXT_FIELD_TYPES = %w[text multiline_text text_multiloc html_multiloc]
 
-    # Version used to compare results when updating and testing the parser
-    def self.version
-      1.0
-    end
-
     # Synchronous version not implemented for PDFs
     def parse_file(file_content)
       raise NotImplementedError, 'This method is not implemented for PDFs'

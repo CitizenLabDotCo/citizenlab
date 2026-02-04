@@ -2,8 +2,13 @@
 
 module BulkImportIdeas::Parsers
   class IdeaPdfFileLLMParser < IdeaPdfFileParser
-    def initialize(current_user, locale, phase_id, personal_data_enabled, llm_model_class: Analysis::LLM::GPT41)
-      @llm_model_class = llm_model_class # Defaults to GPT-4.1, but can be overridden
+    def initialize(current_user, locale, phase_id, personal_data_enabled, llm_parser_model: 'gpt')
+      @llm_model_class = case llm_parser_model
+      when 'gpt'
+        Analysis::LLM::GPT41
+      when 'gemini'
+        Analysis::LLM::Gemini1V
+      end
       super(current_user, locale, phase_id, personal_data_enabled)
     end
 

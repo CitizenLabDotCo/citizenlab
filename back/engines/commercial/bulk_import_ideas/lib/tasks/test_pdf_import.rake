@@ -22,7 +22,7 @@
 
 namespace :bulk_import do
   desc 'Test PDF import parsing accuracy against expected output'
-  task :test_pdf_import, %i[fixtures_path] => [:environment] do |_t, args|
+  task :test_pdf_import, %i[test_data_path] => [:environment] do |_t, args|
     raise 'This task can only be run in the development environment' unless Rails.env.development?
 
     # Suppress all the database activity for clarity
@@ -30,23 +30,24 @@ namespace :bulk_import do
     ActiveRecord::Base.logger.level = :fatal if defined?(ActiveRecord::Base)
     ActionView::Base.logger.level = :fatal if defined?(ActionView::Base)
 
-    fixtures_base_path = args[:fixtures_path] || 'tmp/test_pdf_import'
+    test_data_base_path = args[:test_data_path] || 'tmp/form_sync_test_data'
 
     tenant = Tenant.find_by(host: 'localhost')
     raise 'Tenant not found for host: localhost' unless tenant
 
     puts "Running PDF import test on tenant: #{tenant.host}"
-    puts "Fixtures path: #{fixtures_base_path}"
+    puts "Fixtures path: #{test_data_base_path}"
     puts '=' * 80
 
     tenant.switch do
       # Use the first admin user for the import
       admin_user = User.admin.order(:created_at).first
 
-      # Define parsers to test
+      # Define parsers to test with versions - increment version when parser logic changes
       parsers = [
-        { name: 'GPT Parser', class: BulkImportIdeas::Parsers::IdeaPdfFileLLMParser },
-        { name: 'Google Document AI Parser', class: BulkImportIdeas::Parsers::IdeaPdfFileParser }
+        { name: 'GPT Parser', class: BulkImportIdeas::Parsers::IdeaPdfFileLLMParser, llm: 'gpt', version: 'gpt_v1' },
+        # { name: 'Gemini Parser', class: BulkImportIdeas::Parsers::IdeaPdfFileLLMParser, llm: 'gemini', version: 'gemini_v1' },
+        { name: 'Google Document AI Parser', class: BulkImportIdeas::Parsers::IdeaPdfFileParser, version: 'document_ai_v1' }
       ]
 
       # User fields to check
@@ -57,11 +58,11 @@ namespace :bulk_import do
       ]
 
       # Find all example folders in the fixtures path
-      fixtures_root = Rails.root.join(fixtures_base_path)
-      example_folders = Dir.glob(fixtures_root.join('*')).select { |f| File.directory?(f) }.sort
+      data_root = Rails.root.join("#{test_data_base_path}/test_data")
+      example_folders = Dir.glob(data_root.join('*')).select { |f| File.directory?(f) }.sort
 
       if example_folders.empty?
-        puts "No example folders found in #{fixtures_root}"
+        puts "No example folders found in #{data_root}"
         next
       end
 
@@ -119,10 +120,9 @@ namespace :bulk_import do
 
         # Check if all parsers have already been tested for their current versions
         all_parsers_tested = parsers.all? do |parser_info|
-          parser_version = parser_info[:class].respond_to?(:version) ? parser_info[:class].version : 'N/A'
           existing_log.any? do |entry|
             entry['parser_class'] == parser_info[:class].name &&
-              entry['parser_version'] == parser_version
+              entry['parser_version'] == parser_info[:version]
           end
         end
 
@@ -140,7 +140,7 @@ namespace :bulk_import do
         existing_log.each do |entry|
           entry_data = entry.deep_symbolize_keys.merge(example: example_name, locale: locale)
           grand_results << entry_data
-          puts "  Loaded from log: #{entry['parser']} v#{entry['parser_version']} - Score: #{entry['score']&.round(2)}%"
+          puts "  Loaded from log: #{entry['parser']} #{entry['parser_version']} - Score: #{entry['score']&.round(2)}%"
         end
 
         # Create a project and phase for this example
@@ -169,8 +169,9 @@ namespace :bulk_import do
         puts "  Created project/phase/form for #{example_name}"
 
         # Import the custom fields using UpdateAllService
+        # Need to shape them as though they came from params or we get errors
         params = ActionController::Parameters.new(custom_fields: custom_fields_data).permit!
-        service = IdeaCustomFields::UpdateAllService.new(custom_form, params, admin_user)
+        service = IdeaCustomFields::UpdateAllService.new(custom_form, admin_user, custom_fields: params[:custom_fields])
         result = service.update_all
 
         unless result.success?
@@ -261,16 +262,14 @@ namespace :bulk_import do
 
         # Run test for each parser
         parsers.each do |parser_info|
-          parser_version = parser_info[:class].respond_to?(:version) ? parser_info[:class].version : 'N/A'
-
           # Skip if already tested this parser class and version
           already_tested = existing_log.any? do |entry|
             entry['parser_class'] == parser_info[:class].name &&
-              entry['parser_version'] == parser_version
+              entry['parser_version'] == parser_info[:version]
           end
 
           if already_tested
-            puts "\n  PARSER: #{parser_info[:name]} v#{parser_version} - SKIPPED (already in log)"
+            puts "\n  PARSER: #{parser_info[:name]} #{parser_info[:version]} - SKIPPED (already in log)"
             next
           end
 
@@ -292,7 +291,7 @@ namespace :bulk_import do
                 locale: locale,
                 parser: parser_info[:name],
                 parser_class: parser_info[:class].name,
-                parser_version: parser_version,
+                parser_version: parser_info[:version],
                 score: 0,
                 parse_time: parse_duration,
                 error: 'No idea parsed'
@@ -338,7 +337,7 @@ namespace :bulk_import do
               match_type = :none
               if actual_value == expected_value
                 match_type = :exact
-              elsif input_type == 'select_other' || custom_field&.support_text?
+              elsif input_type == 'select_other' || custom_field&.supports_text?
                 # For text fields consider it a partial match if fuzzy match
                 stripped_actual = actual_value.to_s.strip.downcase.gsub(/[[:punct:]]/, '')
                 stripped_expected = expected_value.to_s.strip.downcase.gsub(/[[:punct:]]/, '')
@@ -366,7 +365,7 @@ namespace :bulk_import do
               locale: locale,
               parser: parser_info[:name],
               parser_class: parser_info[:class].name,
-              parser_version: parser_version,
+              parser_version: parser_info[:version],
               score: score,
               parse_time: parse_duration,
               correct: num_correct,
@@ -383,7 +382,7 @@ namespace :bulk_import do
               locale: locale,
               parser: parser_info[:name],
               parser_class: parser_info[:class].name,
-              parser_version: parser_version,
+              parser_version: parser_info[:version],
               score: 0,
               parse_time: parse_duration || 0,
               error: e.message
@@ -410,7 +409,7 @@ namespace :bulk_import do
           log_entry = log_entry.transform_keys(&:to_s)
           existing_log << log_entry
           new_results_added = true
-          puts "    Logged result for #{example_result[:parser]} v#{example_result[:parser_version]}"
+          puts "    Logged result for #{example_result[:parser]} #{example_result[:parser_version]}"
         end
 
         File.write(log_path, JSON.pretty_generate(existing_log)) if new_results_added
@@ -454,13 +453,13 @@ namespace :bulk_import do
           example_count: results.count
         }
 
-        puts format('  %-25s v%-10s | %9.2f%% | %11.2fs | %d/%d (%d examples)',
+        puts format('  %-25s %-10s | %9.2f%% | %11.2fs | %d/%d (%d examples)',
           parser_name, version, avg_score, avg_time, total_correct, total_fields, results.count)
       end
       puts '=' * 105
 
       # Create xlsx file from all results
-      xlsx_path = fixtures_root.join('results.xlsx')
+      xlsx_path = Rails.root.join("#{test_data_base_path}/results.xlsx")
       package = Axlsx::Package.new
       workbook = package.workbook
 

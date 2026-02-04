@@ -20,8 +20,8 @@ module BulkImportIdeas
           exporter_class: Exporters::IdeaPdfFormExporter,
           parser_class: Parsers::IdeaPdfFileParser
         },
-        # Alpha feature for GPT based PDF form parser
-        'gpt_pdf' => {
+        # Alpha feature for LLM based PDF form parser
+        'llm_pdf' => {
           exporter_class: Exporters::IdeaPdfFormExporter,
           parser_class: Parsers::IdeaPdfFileLLMParser
         }
@@ -139,7 +139,11 @@ module BulkImportIdeas
       phase_id = params[:id]
 
       service = find_class(:parser_class)
-      @file_parser_service ||= service.new(current_user, locale, phase_id, personal_data_enabled)
+      @file_parser_service ||= if llm_parser_model
+        service.new(current_user, locale, phase_id, personal_data_enabled, llm_parser_model: llm_parser_model)
+      else
+        service.new(current_user, locale, phase_id, personal_data_enabled)
+      end
     end
 
     def form_exporter_service
@@ -153,14 +157,14 @@ module BulkImportIdeas
 
       return CONSTANTIZER.fetch(model)[class_type] if class_type == :serializer_class
 
-      format = 'gpt_pdf' if format == 'pdf' && use_gpt_form_parser?
+      format = 'llm_pdf' if format == 'pdf' && llm_parser_model.present?
 
       CONSTANTIZER.fetch(model).fetch(format)[class_type]
     end
 
-    # Allows llm_parser to be enabled (currently in alpha) via ?gpt_form_parser=true in importer url
-    def use_gpt_form_parser?
-      params[:import] ? bulk_create_params[:parser] == 'gpt' : false
+    # Allows llm_parser to be enabled (currently in alpha) via ?parser=gpt|gemini in importer url
+    def llm_parser_model
+      params[:import] ? bulk_create_params[:parser] : nil
     end
 
     def serializer
