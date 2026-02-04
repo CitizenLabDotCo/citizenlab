@@ -1195,7 +1195,6 @@
   "app.containers.AreaTerms.areaTerm": "område",
   "app.containers.AreaTerms.areasTerm": "områden",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Ett konto med den här e-postadressen finns redan. Du kan logga ut, logga in med den här e-postadressen och verifiera ditt konto på inställningssidan.",
-  "app.containers.Authentication.createAnAccount": "Skapa ett konto",
   "app.containers.Authentication.steps.AccessDenied.close": "Nära",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Du uppfyller inte kraven för att delta i denna process.",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Klicka här för att logga in som administratör eller projektledare",

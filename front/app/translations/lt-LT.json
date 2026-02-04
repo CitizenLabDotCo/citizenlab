@@ -1195,7 +1195,6 @@
   "app.containers.AreaTerms.areaTerm": "sritis",
   "app.containers.AreaTerms.areasTerm": "sritys",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Paskyra su šiuo el. pašto adresu jau egzistuoja. Galite išsiregistruoti, prisijungti šiuo el. pašto adresu ir patvirtinti paskyrą nustatymų puslapyje.",
-  "app.containers.Authentication.createAnAccount": "Sukurti paskyrą",
   "app.containers.Authentication.steps.AccessDenied.close": "Uždaryti",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Neatitinkate reikalavimų, kad galėtumėte dalyvauti šiame procese.",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Spustelėkite čia, jei norite prisijungti kaip administratorius arba projekto vadovas",
