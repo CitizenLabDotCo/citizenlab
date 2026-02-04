@@ -1445,7 +1445,7 @@
   "app.containers.Admin.projects.project.insights.word.category": "Tag",
   "app.containers.Admin.projects.project.insights.word.change": "7-daagse verandering",
   "app.containers.Admin.projects.project.insights.word.commentsPosted": "Reacties geplaatst",
-  "app.containers.Admin.projects.project.insights.word.commonGroundResults": "Resultaten op gemeenschappelijke grond",
+  "app.containers.Admin.projects.project.insights.word.commonGroundResults": "Resultaten van raakvlakkenmethode",
   "app.containers.Admin.projects.project.insights.word.completionRate": "Voltooiingspercentage",
   "app.containers.Admin.projects.project.insights.word.count": "Aantal",
   "app.containers.Admin.projects.project.insights.word.demographics": "Demografie",
