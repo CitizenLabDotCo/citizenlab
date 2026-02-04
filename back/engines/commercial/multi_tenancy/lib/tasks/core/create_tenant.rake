@@ -242,6 +242,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        prescreening_flagged_only: {
+          enabled: false,
+          allowed: false
+        },
         disable_disliking: {
           enabled: true,
           allowed: true
