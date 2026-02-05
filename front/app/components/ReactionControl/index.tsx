@@ -54,6 +54,7 @@ interface Props {
   className?: string;
   styleType: TStyleType;
   variant?: 'text' | 'icon';
+  disableTooltip?: boolean;
 }
 
 const ReactionControl = ({

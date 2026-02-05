@@ -189,6 +189,7 @@ const StickyNote: React.FC<Props> = ({
         )}
         {topics.length > 0 && (
           <Tooltip
+            disabled={!showReactions}
             placement="top"
             content={
               <Box as="ul" m="0px" p="4px">
