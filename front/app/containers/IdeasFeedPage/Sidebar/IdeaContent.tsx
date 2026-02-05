@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import IdeasShow from 'containers/IdeasShow';
 
@@ -29,6 +29,9 @@ const IdeaContent = ({
           onClick={handleCloseIdea}
           size="s"
           customMessage={messages.back}
+          iconSize="20px"
+          iconColor={colors.textPrimary}
+          textColor={colors.textPrimary}
         />
       </Box>
       <Box flex="1" overflowY="auto">

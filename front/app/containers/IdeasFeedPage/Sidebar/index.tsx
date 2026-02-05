@@ -138,10 +138,16 @@ const Sidebar = ({ projectId, onSheetCollapse, onSheetExpand }: Props) => {
     >
       {showIdeaDetail ? (
         <>
-          <Box mb="16px">
-            <GoBackButton onClick={handleCloseIdea} showGoBackText={false} />
-          </Box>
-          <Box flex="1" overflowY="auto" padding="24px">
+          <Box flex="1" overflowY="auto" px="16px" pb="16px">
+            <GoBackButton
+              onClick={handleCloseIdea}
+              size="s"
+              iconSize="20px"
+              iconColor={colors.textPrimary}
+              textColor={colors.textPrimary}
+              customMessage={messages.back}
+              pb="16px"
+            />
             <IdeasShow
               ideaId={selectedIdeaId}
               projectId={selectedIdeaProjectId}
