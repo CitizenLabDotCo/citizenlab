@@ -205,6 +205,11 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.vsLast7Days',
     defaultMessage: 'vs last 7 days',
   },
+  participationRateExplanationTooltip: {
+    id: 'app.containers.Admin.projects.project.insights.participationRateExplanationTooltip',
+    defaultMessage:
+      'The number of participants divided by the number of visitors, expressed as a percentage.',
+  },
   insufficientComparisonData: {
     id: 'app.containers.Admin.projects.project.insights.insufficientComparisonData',
     defaultMessage: 'Insufficient comparison data',

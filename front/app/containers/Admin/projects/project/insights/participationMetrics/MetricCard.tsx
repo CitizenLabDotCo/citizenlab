@@ -21,6 +21,7 @@ interface Props {
   icon: IconNames;
   change?: SevenDayChange;
   valueTooltip?: string;
+  labelTooltip?: string;
 }
 
 const ValueText = ({ value }: { value: string }) => (
@@ -38,7 +39,14 @@ const ValueText = ({ value }: { value: string }) => (
   </Text>
 );
 
-const MetricCard = ({ label, value, icon, change, valueTooltip }: Props) => {
+const MetricCard = ({
+  label,
+  value,
+  icon,
+  change,
+  labelTooltip,
+  valueTooltip,
+}: Props) => {
   const { formatNumber } = useIntl();
   const formattedValue =
     typeof value === 'number' ? formatNumber(value) : value;
@@ -55,16 +63,18 @@ const MetricCard = ({ label, value, icon, change, valueTooltip }: Props) => {
       gap="4px"
       boxShadow="0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
     >
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="flex-start"
-      >
-        <Text fontSize="s" color="coolGrey600" m="0">
-          {label}
-        </Text>
-        <Icon name={icon} width="20px" height="20px" fill={colors.primary} />
-      </Box>
+      <Tooltip content={labelTooltip} width="100%">
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="flex-start"
+        >
+          <Text fontSize="s" color="coolGrey600" m="0">
+            {label}
+          </Text>
+          <Icon name={icon} width="20px" height="20px" fill={colors.primary} />
+        </Box>
+      </Tooltip>
       {valueTooltip ? (
         <Tooltip content={valueTooltip} placement="top">
           <ValueText value={formattedValue} />

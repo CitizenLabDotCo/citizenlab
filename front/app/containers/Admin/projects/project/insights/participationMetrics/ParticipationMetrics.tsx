@@ -105,6 +105,9 @@ const ParticipationMetrics = ({ phase }: Props) => {
             ? metrics.participation_rate_7_day_percent_change
             : undefined
         }
+        labelTooltip={formatMessage(
+          messages.participationRateExplanationTooltip
+        )}
         valueTooltip={
           participation_rate_as_percent ===
           'participant_count_compared_with_zero_visitors'
