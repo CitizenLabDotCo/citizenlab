@@ -2,20 +2,29 @@ import { useMemo } from 'react';
 
 import useInputTopics from 'api/input_topics/useInputTopics';
 
-const useTopicEmojis = (projectId: string | undefined) => {
-  const { data: topicsData } = useInputTopics(projectId);
+import useLocalize from 'hooks/useLocalize';
 
-  // Create emoji lookup map from topics, using parent_icon as fallback for subtopics
-  const topicEmojis = useMemo(() => {
-    const map = new Map<string, string | null>();
+export interface TopicData {
+  emoji: string | null;
+  name: string;
+}
+
+const useTopicData = (projectId: string | undefined) => {
+  const { data: topicsData } = useInputTopics(projectId);
+  const localize = useLocalize();
+
+  // Create topic data lookup map with emoji and name
+  const topicDataMap = useMemo(() => {
+    const map = new Map<string, TopicData>();
     topicsData?.data.forEach((topic) => {
       const emoji = topic.attributes.icon || topic.attributes.parent_icon;
-      map.set(topic.id, emoji);
+      const name = localize(topic.attributes.title_multiloc);
+      map.set(topic.id, { emoji, name });
     });
     return map;
-  }, [topicsData]);
+  }, [topicsData, localize]);
 
-  return topicEmojis;
+  return topicDataMap;
 };
 
-export default useTopicEmojis;
+export default useTopicData;

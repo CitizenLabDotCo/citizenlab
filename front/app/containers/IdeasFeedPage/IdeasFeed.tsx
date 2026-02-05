@@ -17,7 +17,7 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import IdeaNoteRow from './components/IdeaNoteRow';
 import LoaderRow from './components/LoaderRow';
 import useIdeasFeedData from './hooks/useIdeasFeedData';
-import useTopicEmojis from './hooks/useTopicEmojis';
+import useTopicData from './hooks/useTopicEmojis';
 import useVirtualScroll from './hooks/useVirtualScroll';
 import messages from './messages';
 import ScrollHintOverlay from './ScrollHintOverlay';
@@ -118,8 +118,8 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
     isLoading,
   } = useIdeasFeedData({ phaseId, topicId, initialIdeaId });
 
-  // Fetch topic emojis
-  const topicEmojis = useTopicEmojis(projectId);
+  // Fetch topic data (emoji + name)
+  const topicDataMap = useTopicData(projectId);
 
   const noteHeight = NOTE_WIDTH / NOTE_ASPECT_RATIO;
   const ideasLength = orderedIdeas.length;
@@ -242,7 +242,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
                 <IdeaNoteRow
                   ideaId={idea.id}
                   topicIds={topicIds}
-                  topicEmojis={topicEmojis}
+                  topicDataMap={topicDataMap}
                   topicId={topicId}
                   parentTopicId={parentTopicId}
                   centeredIdeaId={centeredIdeaId}

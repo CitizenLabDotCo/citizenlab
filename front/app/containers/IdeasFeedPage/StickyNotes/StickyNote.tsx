@@ -6,8 +6,8 @@ import {
   colors,
   stylingConsts,
   Icon,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { uniq } from 'lodash-es';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -73,21 +73,28 @@ const BodyContainer = styled(Box)<{ fadeColor: string }>`
   }
 `;
 
+export interface TopicInfo {
+  emoji: string;
+  name: string;
+}
+
 interface Props {
   ideaId: string;
   rotation?: number;
   topicBackgroundColor: string;
-  topicEmojis?: string[];
+  topics?: TopicInfo[];
   onClick?: () => void;
   centeredIdeaId?: string;
   showReactions?: boolean;
 }
 
+const MAX_VISIBLE_TOPICS = 2;
+
 const StickyNote: React.FC<Props> = ({
   ideaId,
   rotation = 0,
   topicBackgroundColor,
-  topicEmojis = [],
+  topics = [],
   onClick,
   centeredIdeaId,
   showReactions = true,
@@ -152,7 +159,6 @@ const StickyNote: React.FC<Props> = ({
       position="relative"
       display="flex"
       flexDirection="column"
-      gap="8px"
       border="none"
       onClick={onClick}
       onKeyDown={handleKeyDown}
@@ -160,59 +166,103 @@ const StickyNote: React.FC<Props> = ({
     >
       <Box
         display="flex"
-        flexWrap="wrap"
         justifyContent="space-between"
-        alignItems="flex-start"
+        alignItems="flex-end"
+        gap="8px"
+        mb="24px"
       >
         {authorName && (
-          <Box display="flex" alignItems="center">
+          <Box display="flex" alignItems="center" minWidth="0" flex="1 1 auto">
             <Avatar userId={authorId} authorHash={authorHash} size={24} />
             <Text
               fontSize="s"
               fontWeight="semi-bold"
               color="textPrimary"
               m="0px"
+              overflow="hidden"
+              textOverflow="ellipsis"
+              whiteSpace="nowrap"
             >
               {authorName}
             </Text>
           </Box>
         )}
-        {topicEmojis.length > 0 && (
-          <Box
-            display="flex"
-            flexWrap="wrap"
-            gap="4px"
-            justifyContent="flex-end"
-            ml="auto"
-          >
-            {uniq(topicEmojis).map((emoji, index) => (
-              <Box
-                key={index}
-                background={colors.white}
-                borderRadius={stylingConsts.borderRadius}
-                p="8px"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Emoji emoji={emoji} size="20px" />
+        {topics.length > 0 && (
+          <Tooltip
+            placement="top"
+            content={
+              <Box as="ul" m="0px" p="4px">
+                {topics.map((topic, index) => (
+                  <Box
+                    key={index}
+                    as="li"
+                    display="flex"
+                    alignItems="center"
+                    gap="8px"
+                    py="2px"
+                  >
+                    <Emoji emoji={topic.emoji} size="16px" />
+                    <Text fontSize="s" color="white" m="0px">
+                      {topic.name}
+                    </Text>
+                  </Box>
+                ))}
               </Box>
-            ))}
-          </Box>
+            }
+            theme="dark"
+          >
+            <Box display="flex" alignItems="center" gap="4px" flexShrink={0}>
+              {topics.slice(0, MAX_VISIBLE_TOPICS).map((topic, index) => (
+                <Box
+                  key={index}
+                  background={colors.white}
+                  borderRadius={stylingConsts.borderRadius}
+                  width="24px"
+                  height="24px"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <Emoji emoji={topic.emoji} size="16px" />
+                </Box>
+              ))}
+              {topics.length > MAX_VISIBLE_TOPICS && (
+                <Text
+                  fontSize="s"
+                  fontWeight="semi-bold"
+                  color="textPrimary"
+                  m="0px"
+                >
+                  +{topics.length - MAX_VISIBLE_TOPICS}
+                </Text>
+              )}
+            </Box>
+          </Tooltip>
         )}
       </Box>
-      <Text fontSize="xxl" fontWeight="bold" m="0px" color={'textPrimary'}>
-        {title}
-      </Text>
-
-      <BodyContainer
-        fadeColor={topicBackgroundColor || colors.teal200}
-        pb="8px"
+      <Box
+        flex="1"
+        display="flex"
+        flexDirection="column"
+        justifyContent="flex-end"
+        minHeight="0"
       >
-        <BodyText fontSize="m" color="textPrimary" m="0px">
-          {bodyText}
-        </BodyText>
-      </BodyContainer>
+        <Text
+          fontSize="xl"
+          fontWeight="bold"
+          m="0px"
+          mb="8px"
+          color={'textPrimary'}
+        >
+          {title}
+        </Text>
+
+        <BodyContainer fadeColor={topicBackgroundColor || colors.teal200}>
+          <BodyText fontSize="s" color="textPrimary" m="0px">
+            {bodyText}
+          </BodyText>
+        </BodyContainer>
+      </Box>
       {showReactions && (
         <Box
           display="flex"
@@ -220,6 +270,7 @@ const StickyNote: React.FC<Props> = ({
           alignItems="center"
           gap="8px"
           flexShrink={0}
+          mt="8px"
         >
           <Box display="flex" alignItems="center" gap="4px">
             {showCommentIcon && (
