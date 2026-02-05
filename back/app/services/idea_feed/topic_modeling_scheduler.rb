@@ -10,7 +10,7 @@ module IdeaFeed
   class TopicModelingScheduler
     MINIMUM_INPUT_INCREASE = 0.1 # 10%
     INSTANT_INPUT_INCREASE = 0.3 # 30%
-    DAILY_SCHEDULE_HOUR = 3 # 3 AM
+    DAILY_SCHEDULE_HOUR = 4 # 4 AM
     MINIMUM_INPUTS = 10
     MINIMUM_INTERVAL_BETWEEN_RUNS = 20.minutes
 
@@ -21,7 +21,8 @@ module IdeaFeed
     end
 
     def on_every_hour
-      return nil unless might_run?
+      return nil unless shared_conditions_for_scheduling_met?
+
       return nil unless Time.current.in_time_zone(AppConfiguration.timezone).hour == DAILY_SCHEDULE_HOUR
       return nil if input_increase_since_last_run < MINIMUM_INPUT_INCREASE
 
@@ -29,7 +30,8 @@ module IdeaFeed
     end
 
     def on_new_input
-      return nil unless might_run?
+      return nil unless shared_conditions_for_scheduling_met?
+
       return nil if input_increase_since_last_run < INSTANT_INPUT_INCREASE
 
       schedule_job!
@@ -37,10 +39,9 @@ module IdeaFeed
 
     private
 
-    # This defines the shared conditions for both the hourly and the new input trigger
-    def might_run?
+    def shared_conditions_for_scheduling_met?
       return false if phase.ideas.published.count < MINIMUM_INPUTS
-      return false if last_run_activity && Time.current - last_run_activity.acted_at < MINIMUM_INTERVAL_BETWEEN_RUNS
+      return false if time_since_last_run < MINIMUM_INTERVAL_BETWEEN_RUNS
 
       true
     end
@@ -61,6 +62,12 @@ module IdeaFeed
       inputs_now = phase.ideas.published.count
 
       (inputs_now - inputs_at_last_run) / inputs_at_last_run.to_f
+    end
+
+    def time_since_last_run
+      return Float::INFINITY unless last_run_activity
+
+      Time.current - last_run_activity.acted_at
     end
 
     def schedule_job!

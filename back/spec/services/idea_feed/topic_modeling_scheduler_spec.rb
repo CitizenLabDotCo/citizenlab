@@ -24,7 +24,7 @@ describe IdeaFeed::TopicModelingScheduler do
       end
 
       it 'returns nil' do
-        travel_to time_at_hour(3) do
+        travel_to time_at_hour(4) do
           expect(scheduler.on_every_hour).to be_nil
         end
       end
@@ -33,26 +33,26 @@ describe IdeaFeed::TopicModelingScheduler do
     context 'when a recent run happened less than MINIMUM_INTERVAL_BETWEEN_RUNS ago' do
       it 'returns nil' do
         create_list(:idea, 5, project:, phases: [phase])
-        travel_to time_at_hour(3) do
+        travel_to time_at_hour(4) do
           create(:activity, item: phase, action: 'topics_rebalanced', acted_at: 10.minutes.ago, payload: { 'input_count' => 3 })
           expect(scheduler.on_every_hour).to be_nil
         end
       end
     end
 
-    context 'when current hour is not DAILY_SCHEDULE_HOUR (3 AM)' do
+    context 'when current hour is not DAILY_SCHEDULE_HOUR (4 AM)' do
       before do
         create_list(:idea, 5, project:, phases: [phase])
       end
 
-      it 'returns nil when it is 2 AM' do
-        travel_to time_at_hour(2) do
+      it 'returns nil when it is 3 AM' do
+        travel_to time_at_hour(3) do
           expect(scheduler.on_every_hour).to be_nil
         end
       end
 
-      it 'returns nil when it is 4 AM' do
-        travel_to time_at_hour(4) do
+      it 'returns nil when it is 5 AM' do
+        travel_to time_at_hour(5) do
           expect(scheduler.on_every_hour).to be_nil
         end
       end
@@ -61,7 +61,7 @@ describe IdeaFeed::TopicModelingScheduler do
     context 'when input increase since last run is less than MINIMUM_INPUT_INCREASE (10%)' do
       it 'returns nil' do
         create_list(:idea, 10, project:, phases: [phase])
-        travel_to time_at_hour(3) do
+        travel_to time_at_hour(4) do
           create(:activity, item: phase, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 10 })
           expect(scheduler.on_every_hour).to be_nil
         end
@@ -71,7 +71,7 @@ describe IdeaFeed::TopicModelingScheduler do
     context 'when all conditions are met' do
       it 'enqueues TopicModelingJob when input increase is >= 10%' do
         create_list(:idea, 6, project:, phases: [phase])
-        travel_to time_at_hour(3) do
+        travel_to time_at_hour(4) do
           create(:activity, item: phase, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 5 })
           expect { scheduler.on_every_hour }.to have_enqueued_job(IdeaFeed::TopicModelingJob).with(phase)
         end
@@ -84,7 +84,7 @@ describe IdeaFeed::TopicModelingScheduler do
       end
 
       it 'enqueues TopicModelingJob' do
-        travel_to time_at_hour(3) do
+        travel_to time_at_hour(4) do
           expect { scheduler.on_every_hour }.to have_enqueued_job(IdeaFeed::TopicModelingJob).with(phase)
         end
       end
@@ -93,7 +93,7 @@ describe IdeaFeed::TopicModelingScheduler do
     context 'when previous run had 0 inputs' do
       it 'enqueues TopicModelingJob' do
         create_list(:idea, 3, project:, phases: [phase])
-        travel_to time_at_hour(3) do
+        travel_to time_at_hour(4) do
           create(:activity, item: phase, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 0 })
           expect { scheduler.on_every_hour }.to have_enqueued_job(IdeaFeed::TopicModelingJob).with(phase)
         end
@@ -171,7 +171,7 @@ describe IdeaFeed::TopicModelingScheduler do
     context 'when exactly at MINIMUM_INPUT_INCREASE boundary (10%)' do
       it 'enqueues job via on_every_hour' do
         create_list(:idea, 10, project:, phases: [phase])
-        travel_to time_at_hour(3) do
+        travel_to time_at_hour(4) do
           # 10 ideas now, 9 at last run = 11.1% increase (just over 10%)
           create(:activity, item: phase, action: 'topics_rebalanced', acted_at: 1.day.ago, payload: { 'input_count' => 9 })
           expect { scheduler.on_every_hour }.to have_enqueued_job(IdeaFeed::TopicModelingJob)

@@ -21,11 +21,12 @@
 #  baskets_count                :integer          default(0), not null
 #  votes_count                  :integer          default(0), not null
 #  followers_count              :integer          default(0), not null
-#  preview_token                :string           not null
 #  header_bg_alt_text_multiloc  :jsonb
+#  preview_token                :string           not null
 #  hidden                       :boolean          default(FALSE), not null
 #  listed                       :boolean          default(TRUE), not null
 #  track_participation_location :boolean          default(FALSE), not null
+#  live_auto_topics             :boolean
 #
 # Indexes
 #

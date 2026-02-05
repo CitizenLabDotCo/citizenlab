@@ -13,7 +13,6 @@
 #  ordering              :integer
 #  followers_count       :integer          default(0), not null
 #  include_in_onboarding :boolean          default(FALSE), not null
-#  is_default            :boolean          default(FALSE), not null
 #
 # Indexes
 #
