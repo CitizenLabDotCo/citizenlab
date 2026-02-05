@@ -164,7 +164,7 @@
   "app.components.admin.GraphCards.InternalAdoptionCard.admins": "Administrateurs",
   "app.components.admin.GraphCards.InternalAdoptionCard.comparedToPreviousXDays": "par rapport aux {days} jours précédents",
   "app.components.admin.GraphCards.InternalAdoptionCard.internalAdoption": "Adoption interne",
-  "app.components.admin.GraphCards.InternalAdoptionCard.moderators": "MP",
+  "app.components.admin.GraphCards.InternalAdoptionCard.moderators": "GDP",
   "app.components.admin.GraphCards.InternalAdoptionCard.registered": "Inscrit(e)",
   "app.components.admin.GraphCards.InternalAdoptionCard.timeSeries": "Évolution de l'adoption interne",
   "app.components.admin.GraphCards.InternalAdoptionCard.total": "Total",
