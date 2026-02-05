@@ -192,7 +192,7 @@ const StickyNote: React.FC<Props> = ({
             disabled={!showReactions}
             placement="top"
             content={
-              <Box as="ul" m="0px" p="4px" maxWidth="280px">
+              <Box as="ul" m="0px" p="4px" maxWidth="240px">
                 {topics.map((topic, index) => (
                   <Box
                     key={index}

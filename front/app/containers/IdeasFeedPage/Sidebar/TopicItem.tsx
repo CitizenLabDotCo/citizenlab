@@ -63,6 +63,7 @@ const TopicItem = ({
           justifyContent="space-between"
           alignItems="center"
           w="100%"
+          gap="8px"
         >
           <Box display="flex" alignItems="center" gap="8px">
             {topic?.data.attributes.icon && (
