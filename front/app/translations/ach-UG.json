@@ -1195,7 +1195,7 @@
   "app.containers.AreaTerms.areaTerm": "crwdns6184213:0crwdne6184213:0",
   "app.containers.AreaTerms.areasTerm": "crwdns6184215:0crwdne6184215:0",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "crwdns6184217:0crwdne6184217:0",
-  "app.containers.Authentication.createAnAccount": "crwdns6184219:0crwdne6184219:0",
+  "app.containers.Authentication.signUpOrLogIn": "crwdns6238407:0crwdne6238407:0",
   "app.containers.Authentication.steps.AccessDenied.close": "crwdns6184221:0crwdne6184221:0",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "crwdns6184223:0crwdne6184223:0",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "crwdns6184225:0crwdne6184225:0",
