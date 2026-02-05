@@ -226,6 +226,10 @@ class Phase < ApplicationRecord
     )
   }
 
+  scope :current, lambda {
+    where('start_at <= ? AND (end_at IS NULL OR end_at >= ?)', Time.zone.now, Time.zone.now)
+  }
+
   def ends_before?(date)
     return false if end_at.blank?
 
