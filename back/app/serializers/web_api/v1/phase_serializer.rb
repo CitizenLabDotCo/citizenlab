@@ -69,6 +69,10 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     phase.pmethod.user_data_collection
   end
 
+  attribute :user_fields_in_form_enabled do |phase|
+    phase.pmethod.user_fields_in_form_enabled?
+  end
+
   attribute :allow_anonymous_participation do |phase|
     posting_permission = phase.permissions.find_by(action: 'posting_idea')
     posting_permission&.permitted_by == 'everyone' || phase.allow_anonymous_participation

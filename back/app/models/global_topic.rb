@@ -37,9 +37,6 @@ class GlobalTopic < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false }
   validates :include_in_onboarding, inclusion: { in: [true, false] }
-  validates :is_default, inclusion: { in: [true, false] }
-
-  scope :defaults, -> { where(is_default: true) }
 
   before_validation :strip_title
 

@@ -3,6 +3,7 @@ import React from 'react';
 import {
   Box,
   Text,
+  Title,
   Spinner,
   Icon,
   colors,
@@ -66,9 +67,9 @@ const TopicBreakdown = ({ phaseId, participationMethod }: Props) => {
         alignItems="center"
         mb="16px"
       >
-        <Text m="0" fontWeight="semi-bold" fontSize="m">
+        <Title variant="h3" m="0">
           {formatMessage(messages.topicBreakdown)}
-        </Text>
+        </Title>
         <Box
           display="inline-flex"
           alignItems="center"

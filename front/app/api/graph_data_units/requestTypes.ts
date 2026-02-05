@@ -48,6 +48,7 @@ export type ParametersLive =
 
 export type GroupMode = 'user_field' | 'survey_question';
 type ExcludeRoles = 'exclude_admins_and_moderators';
+export type Sort = 'count' | 'original';
 
 export interface SurveyQuestionResultProps {
   phase_id: string;
@@ -56,6 +57,7 @@ export interface SurveyQuestionResultProps {
   group_field_id?: string;
   year?: string;
   quarter?: string;
+  sort?: Sort;
 }
 
 export interface SurveyQuestionResultParams extends BaseParams {

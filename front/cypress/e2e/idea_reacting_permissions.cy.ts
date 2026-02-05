@@ -1,5 +1,10 @@
 import { enterUserInfo, signUpEmailConformation } from '../support/auth';
 import { randomString, randomEmail } from '../support/commands';
+import {
+  updatePermission,
+  setupProject,
+  addPermissionsCustomField,
+} from '../support/permitted_by_utils';
 
 // OS-133
 describe('Idea reacting permissions', () => {
@@ -143,32 +148,82 @@ describe('idea reacting permissions for non-active users', () => {
   const lastName = randomString();
   const email = randomEmail();
   const password = randomString();
-  const randomFieldName = randomString();
-  let userId: string;
-  let customFieldId: string;
+  let customFieldId = '';
+  let customFieldKey = '';
+  let projectId = '';
+  let projectSlug = '';
+  let phaseId = '';
+  let fieldName = '';
+  let userId: string | undefined;
 
   before(() => {
-    // create user
-    cy.apiCreateCustomField(randomFieldName, true, true).then((response) => {
-      customFieldId = response.body.data.id;
-      cy.apiSignup(firstName, lastName, email, password).then((response) => {
-        userId = response.body.data.id;
-      });
-      cy.setLoginCookie(email, password);
+    setupProject({ participationMethod: 'ideation' }).then((data) => {
+      customFieldId = data.customFieldId;
+      customFieldKey = data.customFieldKey;
+      projectId = data.projectId;
+      projectSlug = data.projectSlug;
+      phaseId = data.phaseId;
+      fieldName = data.fieldName;
+
+      // Temporarily set permission to everyone_confirmed_email
+      // to make sure we clear out the global settings
+      return cy
+        .apiLogin('admin@govocal.com', 'democracy2.0')
+        .then((response) => {
+          const adminJwt = response.body.jwt;
+
+          return updatePermission({
+            adminJwt,
+            phaseId,
+            permitted_by: 'everyone_confirmed_email',
+          }).then(() => {
+            // Add one permissions custom field
+            return addPermissionsCustomField({
+              adminJwt,
+              phaseId,
+              customFieldId,
+              permission: 'reacting_idea',
+            }).then(() => {
+              // Set permission back to users
+              return updatePermission({
+                adminJwt,
+                phaseId,
+                permitted_by: 'users',
+                permission: 'reacting_idea',
+              }).then(() => {
+                return cy
+                  .apiSignup(firstName, lastName, email, password)
+                  .then((response) => {
+                    userId = response.body.data.id;
+
+                    return cy.apiCreateIdea({
+                      projectId,
+                      ideaTitle: randomString(),
+                      ideaContent: randomString(),
+                    });
+                  });
+              });
+            });
+          });
+        });
     });
+  });
+
+  after(() => {
+    cy.apiRemoveProject(projectId);
+    cy.apiRemoveCustomField(customFieldId);
+
+    if (userId) {
+      cy.apiRemoveUser(userId);
+    }
   });
 
   it("doesn't let non-active users reaction", () => {
     cy.setLoginCookie(email, password);
-    cy.visit('projects/an-idea-bring-it-to-your-council');
+    cy.visit(`projects/${projectSlug}`);
     cy.get('#e2e-ideas-container').should('exist');
     cy.get('.e2e-ideacard-like-button').should('exist');
     cy.get('.e2e-ideacard-like-button').first().click();
     cy.get('#e2e-authentication-modal').should('exist');
-  });
-
-  after(() => {
-    cy.apiRemoveUser(userId);
-    cy.apiRemoveCustomField(customFieldId);
   });
 });
