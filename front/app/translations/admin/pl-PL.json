@@ -1353,6 +1353,8 @@
   "app.containers.Admin.projects.project.insights.aiAnalysis": "Analiza AI",
   "app.containers.Admin.projects.project.insights.areas": "Obszary",
   "app.containers.Admin.projects.project.insights.associatedIdeas": "Powiązane pomysły",
+  "app.containers.Admin.projects.project.insights.cannotCalculateNoNewSurveyResponsesInPeriod": "Nie można obliczyć zmiany wskaźnika ukończenia przy zerowej liczbie nowych odpowiedzi w okresie porównawczym.",
+  "app.containers.Admin.projects.project.insights.cannotCalulateNoVisitsInPeriod": "Nie można obliczyć zmiany wskaźnika uczestnictwa przy zerowej liczbie odwiedzających w okresie porównawczym.",
   "app.containers.Admin.projects.project.insights.category": "Kategoria",
   "app.containers.Admin.projects.project.insights.comments": "Komentarze",
   "app.containers.Admin.projects.project.insights.commonGroundStatements": "Oświadczenia",
