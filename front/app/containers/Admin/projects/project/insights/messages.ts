@@ -49,6 +49,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.votes',
     defaultMessage: 'Votes',
   },
+  voters: {
+    id: 'app.containers.Admin.projects.project.insights.voters',
+    defaultMessage: 'Voters',
+  },
   submissions: {
     id: 'app.containers.Admin.projects.project.insights.submissions',
     defaultMessage: 'Submissions',
