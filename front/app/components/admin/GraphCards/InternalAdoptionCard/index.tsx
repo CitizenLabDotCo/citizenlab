@@ -72,19 +72,19 @@ const InternalAdoptionCard = ({
             name={formatMessage(messages.admins)}
             value={registeredAdmins}
             bottomLabel={activeBottomLabel}
-            bottomLabelValue={stats.admins.active.toString()}
+            bottomLabelValue={stats.admins.activeLastPeriod.toString()}
           />
           <Statistic
             name={formatMessage(messages.moderators)}
             value={registeredModerators}
             bottomLabel={activeBottomLabel}
-            bottomLabelValue={stats.moderators.active.toString()}
+            bottomLabelValue={stats.moderators.activeLastPeriod.toString()}
           />
           <Statistic
             name={formatMessage(messages.total)}
             value={totalRegistered}
             bottomLabel={activeBottomLabel}
-            bottomLabelValue={stats.total.active.toString()}
+            bottomLabelValue={stats.total.activeLastPeriod.toString()}
           />
         </Box>
       )}

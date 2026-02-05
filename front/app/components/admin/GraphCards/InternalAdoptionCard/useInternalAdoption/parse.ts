@@ -60,20 +60,31 @@ export const parseTimeSeries = (
 export const parseStats = (
   attributes: InternalAdoptionResponse['data']['attributes']
 ): Stats => {
-  const { admin_counts, moderator_counts } = attributes;
+  const {
+    admin_counts,
+    moderator_counts,
+    admin_counts_compared,
+    moderator_counts_compared,
+  } = attributes;
+
+  const adminActiveLastPeriod = admin_counts_compared?.active ?? 0;
+  const moderatorActiveLastPeriod = moderator_counts_compared?.active ?? 0;
 
   return {
     admins: {
       registered: admin_counts.registered,
       active: admin_counts.active,
+      activeLastPeriod: adminActiveLastPeriod,
     },
     moderators: {
       registered: moderator_counts.registered,
       active: moderator_counts.active,
+      activeLastPeriod: moderatorActiveLastPeriod,
     },
     total: {
       registered: admin_counts.registered + moderator_counts.registered,
       active: admin_counts.active + moderator_counts.active,
+      activeLastPeriod: adminActiveLastPeriod + moderatorActiveLastPeriod,
     },
   };
 };
