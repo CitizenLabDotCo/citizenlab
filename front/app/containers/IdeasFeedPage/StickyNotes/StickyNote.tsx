@@ -171,13 +171,13 @@ const StickyNote: React.FC<Props> = ({
               <Box
                 key={index}
                 background={colors.white}
-                borderRadius="50%"
+                borderRadius={stylingConsts.borderRadius}
                 p="8px"
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
               >
-                <Emoji emoji={emoji} size="24px" />
+                <Emoji emoji={emoji} size="20px" />
               </Box>
             ))}
           </Box>
