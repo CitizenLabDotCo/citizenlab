@@ -32,6 +32,7 @@ export const getTabs = (
       label: formatMessage(messages.setup),
       url: 'setup',
       name: 'setup',
+      className: 'setup',
     },
     getMethodConfig(phase.attributes.participation_method).showInputManager && {
       label: formatMessage(messages.inputManagerTab),
@@ -45,6 +46,7 @@ export const getTabs = (
       label: formatMessage(messages.inputFormTab),
       url: 'form',
       name: 'form',
+      className: 'form',
     },
     (phase.attributes.participation_method === 'ideation' ||
       phase.attributes.participation_method === 'voting' ||
@@ -52,12 +54,14 @@ export const getTabs = (
       label: formatMessage(messages.mapTab),
       url: 'map',
       name: 'map',
+      className: 'map',
     },
     phase.attributes.participation_method === 'poll' && {
       label: formatMessage(messages.pollTab),
       url: 'polls',
       feature: 'polls',
       name: 'poll',
+      className: 'poll',
     },
     // Show Results tab for native_survey when phase_insights is disabled (old behavior)
     phase.attributes.participation_method === 'native_survey' &&
@@ -65,11 +69,13 @@ export const getTabs = (
         label: formatMessage(messages.resultsTab),
         url: 'results',
         name: 'results',
+        className: 'results',
       },
     phase.attributes.participation_method === 'native_survey' && {
       label: formatMessage(messages.surveyFormTab),
       url: 'survey-form',
       name: 'survey-form',
+      className: 'survey-form',
     },
     phase.attributes.participation_method === 'survey' &&
       surveys_enabled &&
@@ -79,16 +85,19 @@ export const getTabs = (
         label: formatMessage(messages.surveyResultsTab),
         url: 'survey-results',
         name: 'survey-results',
+        className: 'survey-results',
       },
     phase.attributes.participation_method === 'volunteering' && {
       label: formatMessage(messages.volunteeringTab),
       url: 'volunteering',
       name: 'volunteering',
+      className: 'volunteering',
     },
     phase.attributes.participation_method === 'information' && {
       label: formatMessage(messages.reportTab),
       url: 'report',
       name: 'report',
+      className: 'report',
       disabledTooltipText: report_builder_enabled
         ? undefined
         : formatMessage(messages.lockedTooltip),
@@ -99,16 +108,19 @@ export const getTabs = (
         label: formatMessage(messages.insightsTab),
         url: 'insights',
         name: 'insights',
+        className: 'insights',
       },
     {
       label: formatMessage(messages.phaseAccessRights),
       url: 'access-rights',
       name: 'access-rights',
+      className: 'phase-access-and-user-data',
     },
     {
       label: formatMessage(messages.phaseEmails),
       url: 'emails',
       name: 'emails',
+      className: 'notifications',
     },
   ].filter((tab) => typeof tab === 'object') as IPhaseTab[];
 };

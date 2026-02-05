@@ -88,6 +88,7 @@ const Tab = ({
   badge,
   handleClick,
   disabledTooltipText,
+  className,
   ...props
 }: TabProps) => (
   <Tooltip
@@ -102,7 +103,11 @@ const Tab = ({
     }
   >
     <Container disable={!!disabledTooltipText} {...props}>
-      <Link to={url} onClick={handleClick}>
+      <Link
+        to={url}
+        onClick={handleClick}
+        className={className ? `intercom-phase-${className}-tab` : ' '}
+      >
         {label}
         {badge && <>{badge}</>}
       </Link>
