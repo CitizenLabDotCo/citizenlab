@@ -1405,6 +1405,7 @@
   "app.containers.Admin.projects.project.insights.participantsPercent": "Participants (%)",
   "app.containers.Admin.projects.project.insights.participationOverTime": "Participation over time",
   "app.containers.Admin.projects.project.insights.participationRate": "Participation rate",
+  "app.containers.Admin.projects.project.insights.participationRateExplanationTooltip": "The number of participants divided by the number of visitors, expressed as a percentage.",
   "app.containers.Admin.projects.project.insights.populationPercent": "Population (%)",
   "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Most liked",
   "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "These proposals got the most traction",
