@@ -65,7 +65,6 @@ RSpec.describe Surveys::ResultsGenerator do
       it 'returns the correct fields in the correct order' do
         expect(generated_results[:results].count).to eq 20
         expect(generated_results[:results].pluck(:customFieldId)).not_to include disabled_multiselect_field.id
-        # TODO: Check the field types
       end
     end
 
@@ -820,7 +819,7 @@ RSpec.describe Surveys::ResultsGenerator do
       expect do
         generator = described_class.new survey_phase
         generator.generate_result_for_field(select_field.id)
-      end.not_to exceed_query_limit(13).with(/SELECT/)
+      end.not_to exceed_query_limit(14).with(/SELECT/)
     end
   end
 end

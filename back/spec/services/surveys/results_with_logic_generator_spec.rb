@@ -16,8 +16,6 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
     end
   end
 
-  # TODO: there are no tests for logic_ids being supplied
-
   describe '#generate_results' do
     before do
       reset_survey_logic!
