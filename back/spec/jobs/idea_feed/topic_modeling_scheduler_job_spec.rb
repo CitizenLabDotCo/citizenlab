@@ -16,7 +16,7 @@ describe IdeaFeed::TopicModelingSchedulerJob do
     end
 
     it 'skips phases where the participation method does not support input topics' do
-      phase = create(:phase, participation_method: 'ideation', start_at: 1.day.ago, end_at: 1.day.from_now)
+      phase = create(:phase, participation_method: 'common_ground', start_at: 1.day.ago, end_at: 1.day.from_now)
       phase.project.update!(live_auto_input_topics_enabled: true)
 
       expect(IdeaFeed::TopicModelingScheduler).not_to receive(:new)
