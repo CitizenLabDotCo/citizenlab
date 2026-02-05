@@ -1353,6 +1353,8 @@
   "app.containers.Admin.projects.project.insights.aiAnalysis": "AI analizė",
   "app.containers.Admin.projects.project.insights.areas": "Sritys",
   "app.containers.Admin.projects.project.insights.associatedIdeas": "Susijusios idėjos",
+  "app.containers.Admin.projects.project.insights.cannotCalculateNoNewSurveyResponsesInPeriod": "Negalima apskaičiuoti užbaigimo rodiklio pokyčio, jei lyginamuoju laikotarpiu nėra naujų apklausos atsakymų.",
+  "app.containers.Admin.projects.project.insights.cannotCalulateNoVisitsInPeriod": "Negalima apskaičiuoti dalyvavimo lygio pokyčio, jei lyginamuoju laikotarpiu lankytojų skaičius yra lygus nuliui",
   "app.containers.Admin.projects.project.insights.category": "Kategorija",
   "app.containers.Admin.projects.project.insights.comments": "Komentarai",
   "app.containers.Admin.projects.project.insights.commonGroundStatements": "Pareiškimai",
