@@ -192,7 +192,7 @@ const StickyNote: React.FC<Props> = ({
             disabled={!showReactions}
             placement="top"
             content={
-              <Box as="ul" m="0px" p="4px">
+              <Box as="ul" m="0px" p="4px" maxWidth="280px">
                 {topics.map((topic, index) => (
                   <Box
                     key={index}
@@ -219,30 +219,41 @@ const StickyNote: React.FC<Props> = ({
               flexShrink={0}
               onClick={(e) => e.stopPropagation()}
             >
-              {topics.slice(0, MAX_VISIBLE_TOPICS).map((topic, index) => (
-                <Box
-                  key={index}
-                  background={colors.white}
-                  borderRadius={stylingConsts.borderRadius}
-                  width="24px"
-                  height="24px"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Emoji emoji={topic.emoji} size="16px" />
-                </Box>
-              ))}
-              {topics.length > MAX_VISIBLE_TOPICS && (
-                <Text
-                  fontSize="s"
-                  fontWeight="semi-bold"
-                  color="textPrimary"
-                  m="0px"
-                >
-                  +{topics.length - MAX_VISIBLE_TOPICS}
-                </Text>
-              )}
+              {(() => {
+                const uniqueEmojis = [
+                  ...new Set(topics.map((t) => t.emoji)),
+                ].slice(0, MAX_VISIBLE_TOPICS);
+                const remainingCount = topics.length - uniqueEmojis.length;
+
+                return (
+                  <>
+                    {uniqueEmojis.map((emoji, index) => (
+                      <Box
+                        key={index}
+                        background={colors.white}
+                        borderRadius={stylingConsts.borderRadius}
+                        width="24px"
+                        height="24px"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        <Emoji emoji={emoji} size="16px" />
+                      </Box>
+                    ))}
+                    {remainingCount > 0 && (
+                      <Text
+                        fontSize="s"
+                        fontWeight="semi-bold"
+                        color="textPrimary"
+                        m="0px"
+                      >
+                        +{remainingCount}
+                      </Text>
+                    )}
+                  </>
+                );
+              })()}
             </Box>
           </Tooltip>
         )}
