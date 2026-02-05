@@ -1353,6 +1353,8 @@
   "app.containers.Admin.projects.project.insights.aiAnalysis": "Análisis de IA",
   "app.containers.Admin.projects.project.insights.areas": "Zonas",
   "app.containers.Admin.projects.project.insights.associatedIdeas": "Ideas asociadas",
+  "app.containers.Admin.projects.project.insights.cannotCalculateNoNewSurveyResponsesInPeriod": "No se puede calcular el cambio en la tasa de finalización con cero respuestas nuevas a la encuesta en un periodo de comparación",
+  "app.containers.Admin.projects.project.insights.cannotCalulateNoVisitsInPeriod": "No se puede calcular el cambio en la tasa de participación con cero visitantes en un periodo de comparación",
   "app.containers.Admin.projects.project.insights.category": "Categoría",
   "app.containers.Admin.projects.project.insights.comments": "Respuesta",
   "app.containers.Admin.projects.project.insights.commonGroundStatements": "Oraciones",
