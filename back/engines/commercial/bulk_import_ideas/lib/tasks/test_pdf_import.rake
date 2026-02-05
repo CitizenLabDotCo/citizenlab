@@ -45,10 +45,11 @@ namespace :bulk_import do
       # Use the first admin user for the import
       admin_user = User.admin.order(:created_at).first
 
-      # Define parsers to test with versions - increment version when parser logic changes
+      # Define parsers to test with versions
+      # increment version when parser logic changes to test examples with new version
       parsers = [
         { name: 'GPT Parser', class: BulkImportIdeas::Parsers::IdeaPdfFileLLMParser, llm: 'gpt', version: 'gpt_v1' },
-        # { name: 'Gemini Parser', class: BulkImportIdeas::Parsers::IdeaPdfFileLLMParser, llm: 'gemini', version: 'gemini_v1' },
+        { name: 'Gemini Parser', class: BulkImportIdeas::Parsers::IdeaPdfFileLLMParser, llm: 'gemini', version: 'gemini_v1' },
         { name: 'Google Document AI Parser', class: BulkImportIdeas::Parsers::IdeaPdfFileParser, version: 'document_ai_v1' }
       ]
 
