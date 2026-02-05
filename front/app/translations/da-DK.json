@@ -1431,7 +1431,6 @@
   "app.containers.IdeasFeedPage.addAnIssue": "Tilføj nyt input",
   "app.containers.IdeasFeedPage.addAnOption": "Tilføj mulighed",
   "app.containers.IdeasFeedPage.allTopics": "Alle emner",
-  "app.containers.IdeasFeedPage.backToProject": "Tilbage til projektet",
   "app.containers.IdeasFeedPage.collapsePanel": "Skjul panelet med emner",
   "app.containers.IdeasFeedPage.endOfFeed": "Du er nået til slutningen af dette feed.",
   "app.containers.IdeasFeedPage.expandPanel": "Udvid emnepanelet",

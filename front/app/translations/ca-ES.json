@@ -1431,7 +1431,6 @@
   "app.containers.IdeasFeedPage.addAnIssue": "Afegeix un problema",
   "app.containers.IdeasFeedPage.addAnOption": "Afegeix una opció",
   "app.containers.IdeasFeedPage.allTopics": "Tots els temes",
-  "app.containers.IdeasFeedPage.backToProject": "Torna al projecte",
   "app.containers.IdeasFeedPage.collapsePanel": "Replega el panell de temes",
   "app.containers.IdeasFeedPage.endOfFeed": "Has arribat al final d'aquest feed.",
   "app.containers.IdeasFeedPage.expandPanel": "Desplega el panell de temes",
