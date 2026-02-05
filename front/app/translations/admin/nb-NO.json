@@ -1353,6 +1353,8 @@
   "app.containers.Admin.projects.project.insights.aiAnalysis": "AI-analyse",
   "app.containers.Admin.projects.project.insights.areas": "Områder",
   "app.containers.Admin.projects.project.insights.associatedIdeas": "Tilknyttede ideer",
+  "app.containers.Admin.projects.project.insights.cannotCalculateNoNewSurveyResponsesInPeriod": "Det er ikke mulig å beregne endring i fullføringsgrad med null nye svar i en sammenligningsperiode",
+  "app.containers.Admin.projects.project.insights.cannotCalulateNoVisitsInPeriod": "Kan ikke beregne endring i deltakelsesprosent med null besøkende i en sammenligningsperiode",
   "app.containers.Admin.projects.project.insights.category": "Kategori",
   "app.containers.Admin.projects.project.insights.comments": "Kommentarer",
   "app.containers.Admin.projects.project.insights.commonGroundStatements": "Uttalelser",
