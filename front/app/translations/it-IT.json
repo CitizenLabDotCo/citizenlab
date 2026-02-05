@@ -1730,7 +1730,7 @@
   "app.containers.PasswordReset.passwordLabel": "Password",
   "app.containers.PasswordReset.passwordPlaceholder": "Nuova password",
   "app.containers.PasswordReset.passwordUpdatedSuccessMessage": "La password è stata aggiornata con successo.",
-  "app.containers.PasswordReset.pleaseLogInMessage": "Effettuare il login con la nuova password.",
+  "app.containers.PasswordReset.pleaseLogInMessage": "Effettua il login con la nuova password.",
   "app.containers.PasswordReset.requestNewPasswordReset": "Richiedere una nuova reimpostazione della password",
   "app.containers.PasswordReset.submitError": "Qualcosa è andato storto. Si prega di riprovare più tardi.",
   "app.containers.PasswordReset.title": "Ripristina la tua password",
