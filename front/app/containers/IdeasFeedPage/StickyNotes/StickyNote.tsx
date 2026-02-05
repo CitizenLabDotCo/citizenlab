@@ -171,92 +171,94 @@ const StickyNote: React.FC<Props> = ({
         gap="8px"
         mb="24px"
       >
-        {authorName && (
-          <Box display="flex" alignItems="center" minWidth="0" flex="1 1 auto">
-            <Avatar userId={authorId} authorHash={authorHash} size={24} />
-            <Text
-              fontSize="s"
-              fontWeight="semi-bold"
-              color="textPrimary"
-              m="0px"
-              overflow="hidden"
-              textOverflow="ellipsis"
-              whiteSpace="nowrap"
-            >
-              {authorName}
-            </Text>
-          </Box>
-        )}
-        {topics.length > 0 && (
-          <Tooltip
-            disabled={!showReactions}
-            placement="top"
-            content={
-              <Box as="ul" m="0px" p="4px" maxWidth="240px">
-                {topics.map((topic, index) => (
-                  <Box
-                    key={index}
-                    as="li"
-                    display="flex"
-                    alignItems="center"
-                    gap="8px"
-                    py="2px"
-                  >
-                    <Emoji emoji={topic.emoji} size="16px" />
-                    <Text fontSize="s" color="white" m="0px">
-                      {topic.name}
-                    </Text>
-                  </Box>
-                ))}
-              </Box>
-            }
-            theme="dark"
-          >
-            <Box
-              display="flex"
-              alignItems="center"
-              gap="4px"
-              flexShrink={0}
-              onClick={(e) => e.stopPropagation()}
-            >
-              {(() => {
-                const uniqueEmojis = [
-                  ...new Set(topics.map((t) => t.emoji)),
-                ].slice(0, MAX_VISIBLE_TOPICS);
-                const remainingCount = topics.length - uniqueEmojis.length;
-
-                return (
-                  <>
-                    {uniqueEmojis.map((emoji, index) => (
-                      <Box
-                        key={index}
-                        background={colors.white}
-                        borderRadius={stylingConsts.borderRadius}
-                        width="24px"
-                        height="24px"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        <Emoji emoji={emoji} size="16px" />
-                      </Box>
-                    ))}
-                    {remainingCount > 0 && (
-                      <Text
-                        fontSize="s"
-                        fontWeight="semi-bold"
-                        color="textPrimary"
-                        m="0px"
-                      >
-                        +{remainingCount}
+        <Box display="flex" alignItems="center" minWidth="0" flex="1 1 auto">
+          {authorName && (
+            <>
+              <Avatar userId={authorId} authorHash={authorHash} size={24} />
+              <Text
+                fontSize="s"
+                fontWeight="semi-bold"
+                color="textPrimary"
+                m="0px"
+                overflow="hidden"
+                textOverflow="ellipsis"
+                whiteSpace="nowrap"
+              >
+                {authorName}
+              </Text>
+            </>
+          )}
+        </Box>
+        <Box display="flex" alignItems="center" flexShrink={0} h="100%">
+          {topics.length > 0 && (
+            <Tooltip
+              disabled={!showReactions}
+              placement="top"
+              content={
+                <Box m="0px" maxWidth="240px">
+                  {topics.map((topic, index) => (
+                    <Box
+                      key={index}
+                      display="flex"
+                      alignItems="center"
+                      gap="8px"
+                    >
+                      <Emoji emoji={topic.emoji} size="16px" />
+                      <Text fontSize="s" color="white" m="0px">
+                        {topic.name}
                       </Text>
-                    )}
-                  </>
-                );
-              })()}
-            </Box>
-          </Tooltip>
-        )}
+                    </Box>
+                  ))}
+                </Box>
+              }
+              theme="dark"
+            >
+              <Box
+                display="flex"
+                alignItems="center"
+                gap="4px"
+                flexShrink={0}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {(() => {
+                  const uniqueEmojis = [
+                    ...new Set(topics.map((t) => t.emoji)),
+                  ].slice(0, MAX_VISIBLE_TOPICS);
+                  const remainingCount = topics.length - uniqueEmojis.length;
+
+                  return (
+                    <>
+                      {uniqueEmojis.map((emoji, index) => (
+                        <Box
+                          key={index}
+                          background={colors.white}
+                          borderRadius={stylingConsts.borderRadius}
+                          width="24px"
+                          height="24px"
+                          display="flex"
+                          alignItems="center"
+                          justifyContent="center"
+                        >
+                          <Emoji emoji={emoji} size="16px" />
+                        </Box>
+                      ))}
+                      {remainingCount > 0 && (
+                        <Text
+                          fontSize="s"
+                          fontWeight="semi-bold"
+                          color="textPrimary"
+                          m="0px"
+                        >
+                          +{remainingCount}
+                        </Text>
+                      )}
+                    </>
+                  );
+                })()}
+              </Box>
+            </Tooltip>
+          )}
+        </Box>
       </Box>
       <Box
         flex="1"
