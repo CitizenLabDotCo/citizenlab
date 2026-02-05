@@ -1353,6 +1353,8 @@
   "app.containers.Admin.projects.project.insights.aiAnalysis": "Analiza umjetne inteligencije",
   "app.containers.Admin.projects.project.insights.areas": "Područja",
   "app.containers.Admin.projects.project.insights.associatedIdeas": "Povezane ideje",
+  "app.containers.Admin.projects.project.insights.cannotCalculateNoNewSurveyResponsesInPeriod": "Nije moguće izračunati promjenu stope dovršetka s nula novih odgovora na anketu u razdoblju usporedbe",
+  "app.containers.Admin.projects.project.insights.cannotCalulateNoVisitsInPeriod": "Nije moguće izračunati promjenu stope sudjelovanja s nula posjetitelja u razdoblju usporedbe",
   "app.containers.Admin.projects.project.insights.category": "Kategorija",
   "app.containers.Admin.projects.project.insights.comments": "Komentari",
   "app.containers.Admin.projects.project.insights.commonGroundStatements": "Izjave",
