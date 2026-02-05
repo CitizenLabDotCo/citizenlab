@@ -16,7 +16,7 @@ module Surveys
 
       raise ArgumentError, 'Invalid date format' unless valid_quarter?
 
-      @inputs = @inputs.where(created_at: quarter_to_date_range(@year, @quarter))
+      @all_inputs = @all_inputs.where(created_at: quarter_to_date_range(@year, @quarter))
     end
 
     def add_averages(results)
