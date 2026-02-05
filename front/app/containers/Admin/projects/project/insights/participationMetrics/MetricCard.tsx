@@ -5,6 +5,7 @@ import {
   Text,
   Icon,
   IconNames,
+  Tooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
 
@@ -19,9 +20,25 @@ interface Props {
   value: number | string;
   icon: IconNames;
   change?: SevenDayChange;
+  valueTooltip?: string;
 }
 
-const MetricCard = ({ label, value, icon, change }: Props) => {
+const ValueText = ({ value }: { value: string }) => (
+  <Text
+    as="span"
+    color="primary"
+    fontSize="xxxxl"
+    fontWeight="bold"
+    lineHeight="1.1"
+    m="0"
+    mt="8px"
+    mb="4px"
+  >
+    {value}
+  </Text>
+);
+
+const MetricCard = ({ label, value, icon, change, valueTooltip }: Props) => {
   const { formatNumber } = useIntl();
   const formattedValue =
     typeof value === 'number' ? formatNumber(value) : value;
@@ -48,18 +65,13 @@ const MetricCard = ({ label, value, icon, change }: Props) => {
         </Text>
         <Icon name={icon} width="20px" height="20px" fill={colors.primary} />
       </Box>
-      <Text
-        as="span"
-        color="primary"
-        fontSize="xxxxl"
-        fontWeight="bold"
-        lineHeight="1.1"
-        m="0"
-        mt="8px"
-        mb="4px"
-      >
-        {formattedValue}
-      </Text>
+      {valueTooltip ? (
+        <Tooltip content={valueTooltip} placement="top">
+          <ValueText value={formattedValue} />
+        </Tooltip>
+      ) : (
+        <ValueText value={formattedValue} />
+      )}
       {change !== undefined && <MetricTrend change={change} />}
     </Box>
   );
