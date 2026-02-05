@@ -24,24 +24,17 @@ import Emoji from 'components/UI/Emoji';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { stripHtml } from 'utils/textUtils';
 
-const truncateText = (text: string, maxLength: number) => {
-  if (text.length <= maxLength) return text;
-  const nextSpace = text.indexOf(' ', maxLength);
-  const cutoff = nextSpace === -1 ? text.length : nextSpace;
-  return `${text.slice(0, cutoff)}...`;
-};
-
 export const NOTE_ASPECT_RATIO = 4 / 5;
 export const NOTE_ASPECT_RATIO_COMPACT = 0.95;
 
 export const NOTE_WIDTH = 320;
 
-const StyledNote = styled(Box)<{ $aspectRatio: number }>`
+const StyledNote = styled(Box)<{ noteAspectRatio: number }>`
   padding: 20px;
   border-radius: ${stylingConsts.borderRadius};
   transition: all 0.3s ease;
   text-align: left;
-  aspect-ratio: ${({ $aspectRatio }) => $aspectRatio};
+  aspect-ratio: ${({ noteAspectRatio }) => noteAspectRatio};
   overflow: hidden;
   &:hover,
   &:focus {
@@ -53,6 +46,29 @@ const BodyText = styled(Text)`
   overflow: hidden;
   word-break: break-word;
   height: 100%;
+`;
+
+const BodyContainer = styled(Box)<{ fadeColor: string }>`
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  flex: 1;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 36px;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      ${({ fadeColor }) => fadeColor}80 50%,
+      ${({ fadeColor }) => fadeColor} 100%
+    );
+    pointer-events: none;
+  }
 `;
 
 interface Props {
@@ -126,7 +142,7 @@ const StickyNote: React.FC<Props> = ({
       as="button"
       borderRadius="2px"
       width={`${noteWidth}px`}
-      $aspectRatio={noteAspectRatio}
+      noteAspectRatio={noteAspectRatio}
       transform={`rotate(${rotation}deg)`}
       background={topicBackgroundColor || colors.teal200}
       boxShadow="0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)"
@@ -183,16 +199,18 @@ const StickyNote: React.FC<Props> = ({
           </Box>
         )}
       </Box>
-      {showReactions && <Box flex="1" />}
       <Text fontSize="xxl" fontWeight="bold" m="0px" color={'textPrimary'}>
-        {truncateText(title, 100)}
+        {title}
       </Text>
 
-      <Box minHeight="0" overflow="hidden">
-        <BodyText fontSize="m" color="textPrimary" m="0px" pb="16px">
-          {truncateText(bodyText, 100)}
+      <BodyContainer
+        fadeColor={topicBackgroundColor || colors.teal200}
+        pb="8px"
+      >
+        <BodyText fontSize="m" color="textPrimary" m="0px">
+          {bodyText}
         </BodyText>
-      </Box>
+      </BodyContainer>
       {showReactions && (
         <Box
           display="flex"
