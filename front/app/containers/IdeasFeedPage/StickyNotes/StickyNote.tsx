@@ -211,7 +211,13 @@ const StickyNote: React.FC<Props> = ({
             }
             theme="dark"
           >
-            <Box display="flex" alignItems="center" gap="4px" flexShrink={0}>
+            <Box
+              display="flex"
+              alignItems="center"
+              gap="4px"
+              flexShrink={0}
+              onClick={(e) => e.stopPropagation()}
+            >
               {topics.slice(0, MAX_VISIBLE_TOPICS).map((topic, index) => (
                 <Box
                   key={index}
