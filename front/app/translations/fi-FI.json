@@ -1195,7 +1195,7 @@
   "app.containers.AreaTerms.areaTerm": "alueella",
   "app.containers.AreaTerms.areasTerm": "alueilla",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Tällä sähköpostiosoitteella on jo tili. Voit kirjautua ulos, kirjautua sisään tällä sähköpostiosoitteella ja vahvistaa tilisi asetussivulla.",
-  "app.containers.Authentication.createAnAccount": "Luo tili",
+  "app.containers.Authentication.signUpOrLogIn": "Sign up or log in",
   "app.containers.Authentication.steps.AccessDenied.close": "Lähellä",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Et täytä tähän prosessiin osallistumisen edellytyksiä.",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Klikkaa tästä kirjautuaksesi sisään ylläpitäjänä tai projektipäällikkönä",
