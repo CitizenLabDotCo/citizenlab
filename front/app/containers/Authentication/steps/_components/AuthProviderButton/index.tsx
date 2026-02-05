@@ -27,6 +27,7 @@ const Container = styled.div`
 export interface Props {
   id?: string;
   icon?: IconNames;
+  imageUrl?: string;
   authProvider: AuthProvider;
   onClick: (authProvider: AuthProvider) => void;
   children: React.ReactNode;
@@ -35,6 +36,7 @@ export interface Props {
 const AuthProviderButton = ({
   id,
   icon,
+  imageUrl,
   authProvider,
   onClick,
   children,
@@ -48,7 +50,7 @@ const AuthProviderButton = ({
   return (
     <Container id={id}>
       <ButtonWithLink
-        icon={icon}
+        icon={imageUrl ? undefined : icon}
         iconSize="22px"
         iconColor={
           authProvider === 'facebook'
@@ -63,6 +65,13 @@ const AuthProviderButton = ({
         padding="10px 18px"
         textColor={theme.colors.tenantText}
       >
+        {imageUrl && (
+          <img
+            src={imageUrl}
+            alt=""
+            style={{ width: '22px', height: '22px', marginRight: '8px' }}
+          />
+        )}
         {children}
       </ButtonWithLink>
     </Container>
