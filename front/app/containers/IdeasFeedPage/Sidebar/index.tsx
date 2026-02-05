@@ -23,7 +23,13 @@ import messages from '../messages';
 import IdeaContent from './IdeaContent';
 import TopicsContent from './TopicsContent';
 
-const Sidebar = ({ projectId }: { projectId: string }) => {
+interface Props {
+  projectId: string;
+  onSheetCollapse?: () => void;
+  onSheetExpand?: () => void;
+}
+
+const Sidebar = ({ projectId, onSheetCollapse, onSheetExpand }: Props) => {
   const { formatMessage } = useIntl();
   const contentRef = useRef<HTMLDivElement>(null);
   const { slug } = useParams() as { slug: string };
@@ -31,6 +37,7 @@ const Sidebar = ({ projectId }: { projectId: string }) => {
   const selectedTopicId = searchParams.get('topic');
   const selectedIdeaId = searchParams.get('idea_id');
   const phaseId = searchParams.get('phase_id');
+  const sheetOpen = searchParams.get('sheet_open');
   const isMobile = useBreakpoint('phone');
 
   useEffect(() => {
@@ -67,7 +74,7 @@ const Sidebar = ({ projectId }: { projectId: string }) => {
   };
 
   const handleCloseIdea = () => {
-    removeSearchParams(['idea_id']);
+    removeSearchParams(['idea_id', 'sheet_open']);
   };
 
   const handleUnauthenticatedCommentClick = () => {
@@ -93,8 +100,10 @@ const Sidebar = ({ projectId }: { projectId: string }) => {
         a11y_panelLabel={formatMessage(messages.topicsPanel)}
         a11y_expandLabel={formatMessage(messages.expandPanel)}
         a11y_collapseLabel={formatMessage(messages.collapsePanel)}
-        expandToFullscreenOn={selectedIdeaId}
+        expandToFullscreenOn={sheetOpen}
         inputTerm={inputTerm}
+        onCollapse={onSheetCollapse}
+        onExpand={onSheetExpand}
       >
         {showIdeaDetail ? (
           <IdeaContent

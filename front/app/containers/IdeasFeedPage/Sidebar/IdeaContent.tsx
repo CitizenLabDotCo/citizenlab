@@ -6,6 +6,8 @@ import IdeasShow from 'containers/IdeasShow';
 
 import GoBackButton from 'components/UI/GoBackButton';
 
+import messages from '../messages';
+
 const IdeaContent = ({
   selectedIdeaId,
   selectedIdeaProjectId,
@@ -23,7 +25,11 @@ const IdeaContent = ({
   return (
     <>
       <Box mb="16px">
-        <GoBackButton onClick={handleCloseIdea} size="s" />
+        <GoBackButton
+          onClick={handleCloseIdea}
+          size="s"
+          customMessage={messages.back}
+        />
       </Box>
       <Box flex="1" overflowY="auto">
         <IdeasShow

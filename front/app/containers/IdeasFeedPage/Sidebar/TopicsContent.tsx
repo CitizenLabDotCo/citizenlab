@@ -56,15 +56,13 @@ const TopicsContent = ({
 
   return (
     <>
-      {!isMobile && (
-        <Box mb="24px">
-          <GoBackButton
-            linkTo={`/projects/${slug}`}
-            size="s"
-            customMessage={messages.backToProject}
-          />
-        </Box>
-      )}
+      <Box mb={isMobile ? '16px' : '24px'}>
+        <GoBackButton
+          linkTo={`/projects/${slug}`}
+          size="s"
+          customMessage={messages.back}
+        />
+      </Box>
 
       <Box px="16px" mb="16px">
         <Title fontWeight="bold" variant="h2" as="h1">

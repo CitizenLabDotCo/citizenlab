@@ -151,7 +151,7 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
   const centeredIdeaId = orderedIdeas[centeredIndex]?.id;
 
   const handleIdeaSelect = useCallback((ideaId: string) => {
-    updateSearchParams({ idea_id: ideaId });
+    updateSearchParams({ idea_id: ideaId, sheet_open: 'true' });
   }, []);
 
   const onScroll = useCallback(

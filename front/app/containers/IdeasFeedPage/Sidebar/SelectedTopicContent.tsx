@@ -58,8 +58,9 @@ const SelectedTopicContent = ({
 
   const handleSubtopicClick = (subtopicId: string) => {
     if (selectedSubtopicId === subtopicId) {
-      removeSearchParams(['subtopic']);
+      removeSearchParams(['subtopic', 'sheet_open']);
     } else {
+      removeSearchParams(['sheet_open']);
       updateSearchParams({ subtopic: subtopicId });
     }
   };
@@ -67,11 +68,7 @@ const SelectedTopicContent = ({
   return (
     <>
       <Box mb="16px">
-        <GoBackButton
-          onClick={onBack}
-          customMessage={messages.allTopics}
-          size="s"
-        />
+        <GoBackButton onClick={onBack} customMessage={messages.back} size="s" />
       </Box>
 
       <Box px="16px" mb="16px">
