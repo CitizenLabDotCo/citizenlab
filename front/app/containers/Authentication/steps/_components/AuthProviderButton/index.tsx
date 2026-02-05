@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IconNames, colors } from '@citizenlab/cl2-component-library';
+import { IconNames, Image, colors } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
@@ -66,11 +66,7 @@ const AuthProviderButton = ({
         textColor={theme.colors.tenantText}
       >
         {imageUrl && (
-          <img
-            src={imageUrl}
-            alt=""
-            style={{ width: '22px', height: '22px', marginRight: '8px' }}
-          />
+          <Image width="22px" height="22px" mr="8px" src={imageUrl} alt="" />
         )}
         {children}
       </ButtonWithLink>
