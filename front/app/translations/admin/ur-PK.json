@@ -1353,6 +1353,8 @@
   "app.containers.Admin.projects.project.insights.aiAnalysis": "AI تجزیہ",
   "app.containers.Admin.projects.project.insights.areas": "علاقے",
   "app.containers.Admin.projects.project.insights.associatedIdeas": "وابستہ خیالات",
+  "app.containers.Admin.projects.project.insights.cannotCalculateNoNewSurveyResponsesInPeriod": "مقابلے کی مدت میں صفر نئے سروے کے جوابات کے ساتھ تکمیل کی شرح میں تبدیلی کا حساب نہیں لگا سکتا",
+  "app.containers.Admin.projects.project.insights.cannotCalulateNoVisitsInPeriod": "مقابلے کی مدت میں صفر زائرین کے ساتھ شرکت کی شرح میں تبدیلی کا حساب نہیں لگا سکتا",
   "app.containers.Admin.projects.project.insights.category": "زمرہ",
   "app.containers.Admin.projects.project.insights.comments": "تبصرے",
   "app.containers.Admin.projects.project.insights.commonGroundStatements": "بیانات",
