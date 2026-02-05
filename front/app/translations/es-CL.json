@@ -1431,7 +1431,6 @@
   "app.containers.IdeasFeedPage.addAnIssue": "Agregar un problema",
   "app.containers.IdeasFeedPage.addAnOption": "Añadir una opción",
   "app.containers.IdeasFeedPage.allTopics": "Todos los temas",
-  "app.containers.IdeasFeedPage.backToProject": "Volver al proyecto",
   "app.containers.IdeasFeedPage.collapsePanel": "Contraer panel de temas",
   "app.containers.IdeasFeedPage.endOfFeed": "Has llegado al final de este feed.",
   "app.containers.IdeasFeedPage.expandPanel": "Ampliar el panel de temas",

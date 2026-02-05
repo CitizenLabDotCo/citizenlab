@@ -1431,7 +1431,6 @@
   "app.containers.IdeasFeedPage.addAnIssue": "Lägg till en fråga",
   "app.containers.IdeasFeedPage.addAnOption": "Lägg till ett alternativ",
   "app.containers.IdeasFeedPage.allTopics": "Alla ämnen",
-  "app.containers.IdeasFeedPage.backToProject": "Tillbaka till projektet",
   "app.containers.IdeasFeedPage.collapsePanel": "Dölj panelen för ämnen",
   "app.containers.IdeasFeedPage.endOfFeed": "Du har kommit till slutet av detta flöde.",
   "app.containers.IdeasFeedPage.expandPanel": "Utöka ämnespanelen",

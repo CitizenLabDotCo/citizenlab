@@ -1431,7 +1431,6 @@
   "app.containers.IdeasFeedPage.addAnIssue": "Probléma hozzáadása",
   "app.containers.IdeasFeedPage.addAnOption": "Opció hozzáadása",
   "app.containers.IdeasFeedPage.allTopics": "Minden téma",
-  "app.containers.IdeasFeedPage.backToProject": "Vissza a projekthez",
   "app.containers.IdeasFeedPage.collapsePanel": "Témák panel összecsukása",
   "app.containers.IdeasFeedPage.endOfFeed": "Elérted a hírfolyam végét.",
   "app.containers.IdeasFeedPage.expandPanel": "Témák panel kibontása",
