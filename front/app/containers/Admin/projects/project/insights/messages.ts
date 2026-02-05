@@ -210,6 +210,11 @@ export default defineMessages({
     defaultMessage:
       'The number of participants divided by the number of visitors, expressed as a percentage.',
   },
+  completionRateExplanationTooltip: {
+    id: 'app.containers.Admin.projects.project.insights.completionRateExplanationTooltip',
+    defaultMessage:
+      "The number of submitted survey responses divided by the total number of survey responses (including 'draft', unsubmitted responses), expressed as a percentage.",
+  },
   insufficientComparisonData: {
     id: 'app.containers.Admin.projects.project.insights.insufficientComparisonData',
     defaultMessage: 'Insufficient comparison data',

@@ -45,6 +45,7 @@ const SurveyMetrics = ({ metrics, showChange }: Props) => {
         change={
           showChange ? metrics.completion_rate_7_day_percent_change : undefined
         }
+        labelTooltip={formatMessage(messages.completionRateExplanationTooltip)}
         valueTooltip={
           completion_rate_as_percent ===
           'submitted_count_compared_with_zero_ideas'
