@@ -161,7 +161,6 @@
   "app.components.admin.GraphCards.InternalAdoptionCard.internalAdoption": "Vidinis priėmimas",
   "app.components.admin.GraphCards.InternalAdoptionCard.timeSeries": "Vidinis priėmimas laikui bėgant",
   "app.components.admin.GraphCards.InternalAdoptionCard.totalActive": "Iš viso aktyvių",
-  "app.components.admin.GraphCards.InternalAdoptionCard.totalRegistered": "Iš viso užregistruota",
   "app.components.admin.Graphs": "Nėra duomenų apie dabartinius filtrus.",
   "app.components.admin.Graphs.SurveyBars.surveyResults": "Apklausos rezultatai",
   "app.components.admin.Graphs.noDataShort": "Duomenų nėra.",

@@ -161,7 +161,6 @@
   "app.components.admin.GraphCards.InternalAdoptionCard.internalAdoption": "Dahili evlat edinme",
   "app.components.admin.GraphCards.InternalAdoptionCard.timeSeries": "Zaman içinde dahili benimseme",
   "app.components.admin.GraphCards.InternalAdoptionCard.totalActive": "Toplam aktif",
-  "app.components.admin.GraphCards.InternalAdoptionCard.totalRegistered": "Toplam kayıtlı",
   "app.components.admin.Graphs": "Mevcut filtrelerle ilgili veri yok.",
   "app.components.admin.Graphs.SurveyBars.surveyResults": "Anket sonuçları",
   "app.components.admin.Graphs.noDataShort": "Veri mevcut değil.",

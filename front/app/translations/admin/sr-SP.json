@@ -161,7 +161,6 @@
   "app.components.admin.GraphCards.InternalAdoptionCard.internalAdoption": "Internal adoption",
   "app.components.admin.GraphCards.InternalAdoptionCard.timeSeries": "Internal adoption over time",
   "app.components.admin.GraphCards.InternalAdoptionCard.totalActive": "Total active",
-  "app.components.admin.GraphCards.InternalAdoptionCard.totalRegistered": "Total registered",
   "app.components.admin.Graphs": "Нема доступних података са тренутним филтерима.",
   "app.components.admin.Graphs.SurveyBars.surveyResults": "Survey results",
   "app.components.admin.Graphs.noDataShort": "Нема расположивих података.",
