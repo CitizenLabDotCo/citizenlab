@@ -34,21 +34,25 @@ const General = () => {
       label: formatMessage(messages.setUp),
       name: 'set-up',
       url: `/admin/projects/${projectId}/general` as const,
+      className: 'intercom-product-tour-project-general-tab-set-up',
     },
     {
       label: formatMessage(messages.inputTags),
       name: 'input-tags',
       url: `/admin/projects/${projectId}/general/input-tags` as const,
+      className: 'intercom-product-tour-project-general-tab-input-tags',
     },
     {
       label: formatMessage(messages.accessRights),
       name: 'access-rights',
       url: `/admin/projects/${projectId}/general/access-rights` as const,
+      className: 'intercom-product-tour-project-general-tab-access-rights',
     },
     {
       label: formatMessage(messages.data),
       name: 'data',
       url: `/admin/projects/${projectId}/general/data` as const,
+      className: 'intercom-product-tour-project-general-tab-data',
     },
   ];
 
