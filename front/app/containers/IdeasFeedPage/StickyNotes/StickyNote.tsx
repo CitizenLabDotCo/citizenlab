@@ -7,6 +7,7 @@ import {
   stylingConsts,
   Icon,
 } from '@citizenlab/cl2-component-library';
+import { uniq } from 'lodash-es';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -166,7 +167,7 @@ const StickyNote: React.FC<Props> = ({
             justifyContent="flex-end"
             ml="auto"
           >
-            {topicEmojis.map((emoji, index) => (
+            {uniq(topicEmojis).map((emoji, index) => (
               <Box
                 key={index}
                 background={colors.white}
