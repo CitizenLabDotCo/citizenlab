@@ -1361,6 +1361,7 @@
   "app.containers.Admin.projects.project.insights.comments": "Comments",
   "app.containers.Admin.projects.project.insights.commonGroundStatements": "Statements",
   "app.containers.Admin.projects.project.insights.completionRate": "Completion rate",
+  "app.containers.Admin.projects.project.insights.completionRateExplanationTooltip": "The number of submitted survey responses divided by the total number of survey responses (including 'draft', unsubmitted responses), expressed as a percentage.",
   "app.containers.Admin.projects.project.insights.count": "Count",
   "app.containers.Admin.projects.project.insights.deleteSurveyResults": "Delete survey results",
   "app.containers.Admin.projects.project.insights.demographicsAndAudience": "Demographics & Audience",
