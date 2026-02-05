@@ -1353,6 +1353,8 @@
   "app.containers.Admin.projects.project.insights.aiAnalysis": "Tekoälyanalyysi",
   "app.containers.Admin.projects.project.insights.areas": "Alueet",
   "app.containers.Admin.projects.project.insights.associatedIdeas": "Liittyvät ideat",
+  "app.containers.Admin.projects.project.insights.cannotCalculateNoNewSurveyResponsesInPeriod": "Suoritusasteen muutosta ei voida laskea, jos vertailujaksolla ei ole uusia kyselyvastauksia.",
+  "app.containers.Admin.projects.project.insights.cannotCalulateNoVisitsInPeriod": "Osallistumisasteen muutosta ei voida laskea, jos vertailujaksolla ei ole kävijöitä",
   "app.containers.Admin.projects.project.insights.category": "Kategoria",
   "app.containers.Admin.projects.project.insights.comments": "Kommentit",
   "app.containers.Admin.projects.project.insights.commonGroundStatements": "Lausunnot",
