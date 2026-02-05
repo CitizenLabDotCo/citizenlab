@@ -135,6 +135,7 @@ const Sidebar = ({ projectId, onSheetCollapse, onSheetExpand }: Props) => {
       py="20px"
       overflowY="auto"
       ref={contentRef}
+      maxWidth="450px"
     >
       {showIdeaDetail ? (
         <>

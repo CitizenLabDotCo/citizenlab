@@ -112,8 +112,6 @@ const SelectedTopicContent = ({
 
       {subtopics?.data.map((subtopic) => {
         const isActive = selectedSubtopicId === subtopic.id;
-        const subtopicEmoji =
-          subtopic.attributes.icon || subtopic.attributes.parent_icon;
         return (
           <React.Fragment key={subtopic.id}>
             <Divider m="0px" />
@@ -135,7 +133,6 @@ const SelectedTopicContent = ({
                 w="100%"
               >
                 <Box display="flex" alignItems="center" gap="8px">
-                  {subtopicEmoji && <Emoji emoji={subtopicEmoji} size="20px" />}
                   <Text fontWeight="bold" variant="bodyM" mb="0px">
                     <T value={subtopic.attributes.title_multiloc} />
                   </Text>
