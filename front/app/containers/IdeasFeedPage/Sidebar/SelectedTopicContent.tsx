@@ -58,23 +58,25 @@ const SelectedTopicContent = ({
 
   const handleSubtopicClick = (subtopicId: string) => {
     if (selectedSubtopicId === subtopicId) {
-      removeSearchParams(['subtopic']);
+      removeSearchParams(['subtopic', 'sheet_open']);
     } else {
+      removeSearchParams(['sheet_open']);
       updateSearchParams({ subtopic: subtopicId });
     }
   };
 
   return (
     <>
-      <Box mb="16px">
+      <Box px="16px" mb="16px">
         <GoBackButton
           onClick={onBack}
-          customMessage={messages.allTopics}
+          customMessage={messages.back}
           size="s"
+          iconSize="20px"
+          iconColor={colors.textPrimary}
+          textColor={colors.textPrimary}
+          mb="16px"
         />
-      </Box>
-
-      <Box px="16px" mb="16px">
         <Box
           display="flex"
           justifyContent="space-between"
@@ -85,7 +87,7 @@ const SelectedTopicContent = ({
             {topic?.data.attributes.icon && (
               <Emoji emoji={topic.data.attributes.icon} size="28px" />
             )}
-            <Title as="h1" variant="h3" mb="0px">
+            <Title as="h1" variant="h3" m="0px">
               <T value={topic?.data.attributes.title_multiloc} />
             </Title>
           </Box>

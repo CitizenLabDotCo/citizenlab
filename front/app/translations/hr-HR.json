@@ -1430,7 +1430,6 @@
   "app.containers.IdeasFeedPage.addAnIssue": "Dodaj problem",
   "app.containers.IdeasFeedPage.addAnOption": "Dodaj opciju",
   "app.containers.IdeasFeedPage.allTopics": "Sve teme",
-  "app.containers.IdeasFeedPage.backToProject": "Natrag na projekt",
   "app.containers.IdeasFeedPage.collapsePanel": "Sažmi ploču s temama",
   "app.containers.IdeasFeedPage.endOfFeed": "Došli ste do kraja ovog feeda.",
   "app.containers.IdeasFeedPage.expandPanel": "Proširi ploču s temama",

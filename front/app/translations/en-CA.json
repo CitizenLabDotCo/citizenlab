@@ -1430,7 +1430,6 @@
   "app.containers.IdeasFeedPage.addAnIssue": "Add an issue",
   "app.containers.IdeasFeedPage.addAnOption": "Add an option",
   "app.containers.IdeasFeedPage.allTopics": "All topics",
-  "app.containers.IdeasFeedPage.backToProject": "Back to project",
   "app.containers.IdeasFeedPage.collapsePanel": "Collapse topics panel",
   "app.containers.IdeasFeedPage.endOfFeed": "You have reached the end of this feed.",
   "app.containers.IdeasFeedPage.expandPanel": "Expand topics panel",

@@ -70,6 +70,8 @@ interface Props {
   a11y_collapseLabel: string;
   expandToFullscreenOn?: string | null;
   inputTerm: InputTerm;
+  onCollapse?: () => void;
+  onExpand?: () => void;
 }
 
 const BottomSheet = ({
@@ -79,6 +81,8 @@ const BottomSheet = ({
   a11y_collapseLabel,
   expandToFullscreenOn,
   inputTerm,
+  onCollapse,
+  onExpand,
 }: Props) => {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isPeeking, setIsPeeking] = useState(false);
@@ -157,10 +161,24 @@ const BottomSheet = ({
     hasDragged.current = false;
 
     if (hadDragged && Math.abs(delta) >= SWIPE_THRESHOLD) {
-      setIsFullscreen(delta < 0);
+      const willBeFullscreen = delta < 0;
+      setIsFullscreen(willBeFullscreen);
+      if (willBeFullscreen) {
+        onExpand?.();
+      } else {
+        onCollapse?.();
+      }
     } else if (!hadDragged) {
       // Tap detected - toggle state
-      setIsFullscreen((prev) => !prev);
+      setIsFullscreen((prev) => {
+        const newValue = !prev;
+        if (newValue) {
+          onExpand?.();
+        } else {
+          onCollapse?.();
+        }
+        return newValue;
+      });
     }
   };
 
@@ -188,6 +206,7 @@ const BottomSheet = ({
 
   const handleCollapse = () => {
     setIsFullscreen(false);
+    onCollapse?.();
   };
 
   const baseTranslateY = isFullscreen
