@@ -1353,6 +1353,8 @@
   "app.containers.Admin.projects.project.insights.aiAnalysis": "Dadansoddiad AI",
   "app.containers.Admin.projects.project.insights.areas": "Ardaloedd",
   "app.containers.Admin.projects.project.insights.associatedIdeas": "Syniadau cysylltiedig",
+  "app.containers.Admin.projects.project.insights.cannotCalculateNoNewSurveyResponsesInPeriod": "Ni ellir cyfrifo'r newid yn y gyfradd gwblhau heb unrhyw ymatebion newydd i'r arolwg mewn cyfnod cymharu.",
+  "app.containers.Admin.projects.project.insights.cannotCalulateNoVisitsInPeriod": "Ni ellir cyfrifo newid cyfradd cyfranogiad gyda dim ymwelwyr mewn cyfnod cymharu",
   "app.containers.Admin.projects.project.insights.category": "Categori",
   "app.containers.Admin.projects.project.insights.comments": "Sylwadau",
   "app.containers.Admin.projects.project.insights.commonGroundStatements": "Datganiadau",
