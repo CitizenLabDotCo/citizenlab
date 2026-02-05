@@ -154,6 +154,7 @@ class SideFxIdeaService
     create_followers(idea, user) unless idea.anonymous?
     enqueue_wise_voice_detection_job(idea)
     enqueue_topic_classification_job(idea)
+    notify_topic_modeling_scheduler(idea)
 
     LogActivityJob.set(wait: 20.seconds).perform_later(idea, 'submitted', user_for_activity_on_anonymizable_item(idea, user), idea.submitted_at.to_i)
   end
@@ -248,9 +249,20 @@ class SideFxIdeaService
     WiseVoiceDetectionJob.perform_later(idea)
   end
 
-  def enqueue_topic_classification_job(idea)
+  def notify_topic_modeling_scheduler(idea)
+    return unless idea.project.live_auto_input_topics_enabled
+
     current_phase = TimelineService.new.current_phase(idea.project)
-    return unless current_phase&.presentation_mode == 'feed'
+    return unless current_phase.pmethod.supports_input_topics?
+
+    IdeaFeed::TopicModelingScheduler.new(current_phase).on_new_input
+  end
+
+  def enqueue_topic_classification_job(idea)
+    return unless idea.project.live_auto_input_topics_enabled
+
+    current_phase = TimelineService.new.current_phase(idea.project)
+    return unless current_phase.pmethod.supports_input_topics?
 
     IdeaFeed::BatchTopicClassificationJob.set(priority: 10).perform_later(current_phase, [idea.id])
   end

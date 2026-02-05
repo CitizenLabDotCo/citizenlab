@@ -178,9 +178,9 @@ describe SideFxIdeaService do
         .not_to enqueue_job(WiseVoiceDetectionJob)
     end
 
-    it 'enqueues an IdeaFeed::BatchTopicClassificationJob if the presentation_mode is feed' do
+    it 'enqueues an IdeaFeed::BatchTopicClassificationJob if live_input_topics_enabled is true' do
       idea = create(:idea)
-      idea.phases.first.update!(presentation_mode: 'feed')
+      idea.project.update!(live_auto_input_topics_enabled: true)
       expect { service.after_create(idea, user, phase) }
         .to enqueue_job(IdeaFeed::BatchTopicClassificationJob)
         .with(idea.phases.first, [idea.id])
@@ -462,17 +462,17 @@ describe SideFxIdeaService do
         .with(idea)
     end
 
-    it 'does not enqueue a wise voice detection job when presentation_mode is feed but title and body did not change' do
+    it 'does not enqueue a wise voice detection job when live_auto_input_topics_enabled is true but title and body did not change' do
       idea = create(:idea).reload
-      idea.phases.first.update!(presentation_mode: 'feed')
+      idea.project.update!(live_auto_input_topics_enabled: true)
       expect { service.after_update(idea, user) }
         .not_to enqueue_job(WiseVoiceDetectionJob)
         .with(idea)
     end
 
-    it 'enqueues an IdeaFeed::BatchTopicClassificationJob when presentation_mode is feed and title or body changed' do
+    it 'enqueues an IdeaFeed::BatchTopicClassificationJob when live_auto_input_topics_enabled is true and title or body changed' do
       idea = create(:idea)
-      idea.phases.first.update!(presentation_mode: 'feed')
+      idea.project.update!(live_auto_input_topics_enabled: true)
       idea.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
         .to enqueue_job(IdeaFeed::BatchTopicClassificationJob)
