@@ -60,11 +60,13 @@ const BodyContainer = styled(Box)<{ fadeColor: string }>`
     bottom: 0;
     left: 0;
     right: 0;
-    height: 36px;
+    height: 60px;
     background: linear-gradient(
       to bottom,
       transparent 0%,
-      ${({ fadeColor }) => fadeColor}80 50%,
+      ${({ fadeColor }) => fadeColor}20 25%,
+      ${({ fadeColor }) => fadeColor}60 50%,
+      ${({ fadeColor }) => fadeColor}cc 75%,
       ${({ fadeColor }) => fadeColor} 100%
     );
     pointer-events: none;
