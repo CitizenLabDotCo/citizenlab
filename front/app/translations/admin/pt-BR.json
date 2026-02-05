@@ -1353,6 +1353,8 @@
   "app.containers.Admin.projects.project.insights.aiAnalysis": "Análise de IA",
   "app.containers.Admin.projects.project.insights.areas": "Áreas",
   "app.containers.Admin.projects.project.insights.associatedIdeas": "Ideias associadas",
+  "app.containers.Admin.projects.project.insights.cannotCalculateNoNewSurveyResponsesInPeriod": "Não é possível calcular a alteração da taxa de conclusão com zero novas respostas à pesquisa em um período de comparação",
+  "app.containers.Admin.projects.project.insights.cannotCalulateNoVisitsInPeriod": "Não é possível calcular a alteração da taxa de participação com zero visitantes em um período de comparação",
   "app.containers.Admin.projects.project.insights.category": "Categoria",
   "app.containers.Admin.projects.project.insights.comments": "Comentários",
   "app.containers.Admin.projects.project.insights.commonGroundStatements": "Declarações",
