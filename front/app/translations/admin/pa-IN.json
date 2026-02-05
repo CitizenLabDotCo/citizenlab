@@ -1353,6 +1353,8 @@
   "app.containers.Admin.projects.project.insights.aiAnalysis": "ਏਆਈ ਵਿਸ਼ਲੇਸ਼ਣ",
   "app.containers.Admin.projects.project.insights.areas": "ਖੇਤਰ",
   "app.containers.Admin.projects.project.insights.associatedIdeas": "ਸੰਬੰਧਿਤ ਵਿਚਾਰ",
+  "app.containers.Admin.projects.project.insights.cannotCalculateNoNewSurveyResponsesInPeriod": "ਤੁਲਨਾਤਮਕ ਮਿਆਦ ਵਿੱਚ ਜ਼ੀਰੋ ਨਵੇਂ ਸਰਵੇਖਣ ਜਵਾਬਾਂ ਨਾਲ ਸੰਪੂਰਨਤਾ ਦਰ ਵਿੱਚ ਬਦਲਾਅ ਦੀ ਗਣਨਾ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕਦੀ",
+  "app.containers.Admin.projects.project.insights.cannotCalulateNoVisitsInPeriod": "ਤੁਲਨਾਤਮਕ ਮਿਆਦ ਵਿੱਚ ਜ਼ੀਰੋ ਸੈਲਾਨੀਆਂ ਨਾਲ ਭਾਗੀਦਾਰੀ ਦਰ ਵਿੱਚ ਬਦਲਾਅ ਦੀ ਗਣਨਾ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕਦੀ",
   "app.containers.Admin.projects.project.insights.category": "ਸ਼੍ਰੇਣੀ",
   "app.containers.Admin.projects.project.insights.comments": "ਟਿੱਪਣੀਆਂ",
   "app.containers.Admin.projects.project.insights.commonGroundStatements": "ਬਿਆਨ",
