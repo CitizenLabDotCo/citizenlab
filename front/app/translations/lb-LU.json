@@ -1195,7 +1195,7 @@
   "app.containers.AreaTerms.areaTerm": "Beräich",
   "app.containers.AreaTerms.areasTerm": "Beräicher",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "E Kont mat dëser E-Mail gëtt et schonn. Dir kënnt Iech ausloggen, Iech mat dëser E-Mailadress aloggen an Äre Kont op der Astellungssäit verifizéieren.",
-  "app.containers.Authentication.createAnAccount": "E Kont erstellen",
+  "app.containers.Authentication.signUpOrLogIn": "Mellt Iech un oder loggt Iech an",
   "app.containers.Authentication.steps.AccessDenied.close": "Zoumaachen",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Dir erfëllt net den Ufuerderunge fir un dësem Prozess deelzehuelen.",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Klickt hei fir Iech als Admin oder Projetmanager anzeloggen",
