@@ -1195,7 +1195,7 @@
   "app.containers.AreaTerms.areaTerm": "gebied",
   "app.containers.AreaTerms.areasTerm": "gebieden",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Er bestaat al een account met dit e-mailadres. Je kunt je afmelden, inloggen met dit e-mailadres en je account verifiëren op de instellingenpagina.",
-  "app.containers.Authentication.createAnAccount": "Registreren",
+  "app.containers.Authentication.signUpOrLogIn": "Sign up or log in",
   "app.containers.Authentication.steps.AccessDenied.close": "Sluiten",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Je voldoet niet aan de voorwaarden om deel te nemen aan dit proces.",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Klik hier om in te loggen als admin of projectbeheerder",
