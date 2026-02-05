@@ -15,6 +15,8 @@ interface Props {
 const SurveyMetrics = ({ metrics, showChange }: Props) => {
   const { formatMessage, formatNumber } = useIntl();
 
+  const { completion_rate_as_percent } = metrics;
+
   return (
     <>
       <MetricCard
@@ -29,14 +31,27 @@ const SurveyMetrics = ({ metrics, showChange }: Props) => {
       />
       <MetricCard
         label={formatMessage(messages.completionRate)}
-        value={formatNumber(metrics.completion_rate_as_percent / 100, {
-          style: 'percent',
-          minimumFractionDigits: 1,
-          maximumFractionDigits: 1,
-        })}
+        value={
+          completion_rate_as_percent ===
+          'submitted_count_compared_with_zero_ideas'
+            ? '-'
+            : formatNumber(completion_rate_as_percent / 100, {
+                style: 'percent',
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1,
+              })
+        }
         icon="chart-bar"
         change={
           showChange ? metrics.completion_rate_7_day_percent_change : undefined
+        }
+        valueTooltip={
+          completion_rate_as_percent ===
+          'submitted_count_compared_with_zero_ideas'
+            ? formatMessage(
+                messages.cannotCalculateCompletionRateNoSurveyResponses
+              )
+            : undefined
         }
       />
     </>
