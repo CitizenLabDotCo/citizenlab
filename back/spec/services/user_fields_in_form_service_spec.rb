@@ -86,7 +86,7 @@ describe UserFieldsInFormService do
       permission.update!(global_custom_fields: false)
       create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field, key: 'age'))
       create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field, key: 'city'))
-      create(:custom_field, key: 'favorite_color')
+      create(:custom_field, key: 'favorite_color', enabled: true)
     end
 
     it 'merges user custom fields into idea custom fields with prefixed keys' do
