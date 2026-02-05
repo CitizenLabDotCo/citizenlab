@@ -1,0 +1,30 @@
+<%# Renders a project row with screening count and review button %>
+<%# locals: project (hash with :title_multiloc, :screening_count, :screening_url) %>
+
+<mj-wrapper padding="0 25px 15px">
+  <mj-section padding="0">
+    <mj-column>
+      <mj-table cellpadding="0">
+        <tr>
+          <th colspan="2" style="padding: 15px; background-color: #044D6C; font-size: 16px; font-weight: 400; border-radius: 5px 5px 0 0; text-align: left;">
+            <a href="<%= project[:screening_url] %>" style="color: #FFFFFF; text-decoration: none;">
+              <%= localize_for_recipient(project[:title_multiloc])&.first(80) %>
+            </a>
+          </th>
+        </tr>
+        <tr style="border: 1px solid #ecedee; border-top: none; background-color: #FFFFFF;">
+          <td style="padding: 15px; text-align: left;">
+            <span style="font-size: 14px; color: rgb(111, 119, 125);">
+              <%= format_message('x_inputs_to_review', values: { count: project[:screening_count] }) %>
+            </span>
+          </td>
+          <td style="padding: 15px; text-align: right;">
+            <a href="<%= project[:screening_url] %>" style="background-color: #044D6C; color: #FFFFFF; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-size: 14px;">
+              <%= format_message('review_inputs') %>
+            </a>
+          </td>
+        </tr>
+      </mj-table>
+    </mj-column>
+  </mj-section>
+</mj-wrapper>

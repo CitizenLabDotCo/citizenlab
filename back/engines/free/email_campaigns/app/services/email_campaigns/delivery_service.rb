@@ -48,6 +48,7 @@ module EmailCampaigns
       Campaigns::VotingLastChance,
       Campaigns::VotingPhaseStarted,
       Campaigns::VotingResults,
+      Campaigns::ScreeningDigest,
       Campaigns::Welcome,
       Campaigns::YourInputInScreening
     ].freeze
