@@ -947,7 +947,6 @@
   "app.components.ideas.similarIdeas.noSimilarSubmissions": "Nem található hasonló beadvány.",
   "app.components.ideas.similarIdeas.openToSeeDetails": "Nyissa meg a részletek megtekintéséhez",
   "app.components.ideas.similarIdeas.similarIdeaDetails": "Hasonló ötlet részletei",
-  "app.components.ideas.similarIdeas.similarSubmissionsDescription": "Hasonló beadványokat találtunk – ha velük foglalkozunk, az megerősítheti őket!",
   "app.components.ideas.similarIdeas.similarSubmissionsList": "Hasonló beküldési ötletek listája",
   "app.components.ideas.similarIdeas.similarSubmissionsPosted": "Már közzétett hasonló beadványok:",
   "app.components.ideas.similarIdeas.similarSubmissionsSearch": "Hasonló pályaműveket keresek...",

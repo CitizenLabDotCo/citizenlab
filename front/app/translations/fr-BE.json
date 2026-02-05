@@ -947,7 +947,6 @@
   "app.components.ideas.similarIdeas.noSimilarSubmissions": "Aucune contribution similaire trouvée.",
   "app.components.ideas.similarIdeas.openToSeeDetails": "Voir les détails",
   "app.components.ideas.similarIdeas.similarIdeaDetails": "Détails de l'idée similaire",
-  "app.components.ideas.similarIdeas.similarSubmissionsDescription": "Nous avons trouvé des contributions similaires à la vôtre. Nous vous encourageons à les consulter et, si elles sont pertinentes, à interagir avec elles plutôt que d'en créer une nouvelle.",
   "app.components.ideas.similarIdeas.similarSubmissionsList": "Liste des idées similaires",
   "app.components.ideas.similarIdeas.similarSubmissionsPosted": "Contributions similaires déjà publiées :",
   "app.components.ideas.similarIdeas.similarSubmissionsSearch": "Recherche de contributions similaires en cours...",

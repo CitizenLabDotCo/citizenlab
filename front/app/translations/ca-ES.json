@@ -947,7 +947,6 @@
   "app.components.ideas.similarIdeas.noSimilarSubmissions": "No s'han trobat enviaments similars.",
   "app.components.ideas.similarIdeas.openToSeeDetails": "Obre per veure els detalls",
   "app.components.ideas.similarIdeas.similarIdeaDetails": "Detalls d'idees similars",
-  "app.components.ideas.similarIdeas.similarSubmissionsDescription": "Hem trobat enviaments similars: col·laborar amb ells pot ajudar a fer-los més forts!",
   "app.components.ideas.similarIdeas.similarSubmissionsList": "Llista d'idees de propostes similars",
   "app.components.ideas.similarIdeas.similarSubmissionsPosted": "Enviaments similars ja publicats:",
   "app.components.ideas.similarIdeas.similarSubmissionsSearch": "Buscant enviaments similars...",

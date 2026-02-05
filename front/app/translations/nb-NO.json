@@ -947,7 +947,6 @@
   "app.components.ideas.similarIdeas.noSimilarSubmissions": "Ingen lignende innleveringer funnet.",
   "app.components.ideas.similarIdeas.openToSeeDetails": "Åpne for å se detaljer",
   "app.components.ideas.similarIdeas.similarIdeaDetails": "Lignende idédetaljer",
-  "app.components.ideas.similarIdeas.similarSubmissionsDescription": "Vi fant lignende underkastelser - å engasjere seg i dem kan bidra til å gjøre dem sterkere!",
   "app.components.ideas.similarIdeas.similarSubmissionsList": "Liste over lignende innleveringer",
   "app.components.ideas.similarIdeas.similarSubmissionsPosted": "Lignende bidrag er allerede lagt ut:",
   "app.components.ideas.similarIdeas.similarSubmissionsSearch": "Ser etter lignende bidrag ...",
