@@ -1353,6 +1353,8 @@
   "app.containers.Admin.projects.project.insights.aiAnalysis": "AI analysis",
   "app.containers.Admin.projects.project.insights.areas": "Areas",
   "app.containers.Admin.projects.project.insights.associatedIdeas": "Associated ideas",
+  "app.containers.Admin.projects.project.insights.cannotCalculateNoNewSurveyResponsesInPeriod": "Cannot calculate completion rate change with zero new survey responses in a comparison period",
+  "app.containers.Admin.projects.project.insights.cannotCalulateNoVisitsInPeriod": "Cannot calculate participation rate change with zero visitors in a comparison period",
   "app.containers.Admin.projects.project.insights.category": "Category",
   "app.containers.Admin.projects.project.insights.comments": "Comments",
   "app.containers.Admin.projects.project.insights.commonGroundStatements": "Statements",
