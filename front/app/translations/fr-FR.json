@@ -1195,7 +1195,7 @@
   "app.containers.AreaTerms.areaTerm": "zone géographique",
   "app.containers.AreaTerms.areasTerm": "zones géographiques",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Un compte avec cette adresse e-mail existe déjà. Vous pouvez vous déconnecter, vous connecter avec cette adresse e-mail et vérifier votre compte sur la page \"Mes réglages\".",
-  "app.containers.Authentication.signUpOrLogIn": "Sign up or log in",
+  "app.containers.Authentication.signUpOrLogIn": "S'inscrire ou se connecter",
   "app.containers.Authentication.steps.AccessDenied.close": "Fermer",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Vous ne remplissez pas les conditions requises pour participer à ce processus.",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Cliquez ici pour vous connecter en tant qu'administrateur ou gestionnaire de projet",
