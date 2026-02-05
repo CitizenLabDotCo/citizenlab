@@ -1353,6 +1353,8 @@
   "app.containers.Admin.projects.project.insights.aiAnalysis": "AI analīze",
   "app.containers.Admin.projects.project.insights.areas": "Jomas",
   "app.containers.Admin.projects.project.insights.associatedIdeas": "Saistītās idejas",
+  "app.containers.Admin.projects.project.insights.cannotCalculateNoNewSurveyResponsesInPeriod": "Nevar aprēķināt aizpildīšanas rādītāja izmaiņas, ja salīdzināšanas periodā nav jaunu aptaujas atbilžu.",
+  "app.containers.Admin.projects.project.insights.cannotCalulateNoVisitsInPeriod": "Nevar aprēķināt līdzdalības līmeņa izmaiņas, ja salīdzināšanas periodā apmeklētāju skaits ir nulle.",
   "app.containers.Admin.projects.project.insights.category": "Kategorija",
   "app.containers.Admin.projects.project.insights.comments": "Komentāri",
   "app.containers.Admin.projects.project.insights.commonGroundStatements": "Paziņojumi",
