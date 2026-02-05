@@ -4,7 +4,6 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import GraphCard from 'components/admin/GraphCard';
 import Statistic from 'components/admin/Graphs/Statistic';
-import { IResolution } from 'components/admin/ResolutionControl';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -12,18 +11,7 @@ import Chart from './Chart';
 import messages from './messages';
 import { Props } from './typings';
 import useInternalAdoption from './useInternalAdoption';
-
-const getActiveTimePeriodLabel = (
-  formatMessage: (message: { id: string; defaultMessage: string }) => string,
-  resolution: IResolution
-) => {
-  const messageKey = {
-    month: messages.activeLast30Days,
-    week: messages.activeLast7Days,
-    day: messages.activeYesterday,
-  }[resolution];
-  return formatMessage(messageKey);
-};
+import { getActiveTimePeriodLabel } from './useInternalAdoption/translations';
 
 const InternalAdoptionCard = ({
   startAtMoment,

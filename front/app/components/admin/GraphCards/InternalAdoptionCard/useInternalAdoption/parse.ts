@@ -97,7 +97,7 @@ export const parseExcelData = (
   const statsData = keys(stats).map((key) => ({
     [translations.statistic]: translations[key],
     [translations.registered]: stats[key].registered,
-    [translations.active]: stats[key].active,
+    [translations.activePeriodLabel]: stats[key].activeLastPeriod,
   }));
 
   const timeSeriesData = timeSeries?.map((row) => ({
