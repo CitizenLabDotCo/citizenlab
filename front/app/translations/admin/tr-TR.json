@@ -1353,6 +1353,8 @@
   "app.containers.Admin.projects.project.insights.aiAnalysis": "Yapay zeka analizi",
   "app.containers.Admin.projects.project.insights.areas": "Alanlar",
   "app.containers.Admin.projects.project.insights.associatedIdeas": "İlişkili fikirler",
+  "app.containers.Admin.projects.project.insights.cannotCalculateNoNewSurveyResponsesInPeriod": "Karşılaştırma döneminde sıfır yeni anket yanıtı ile tamamlama oranı değişikliği hesaplanamaz",
+  "app.containers.Admin.projects.project.insights.cannotCalulateNoVisitsInPeriod": "Karşılaştırma döneminde sıfır ziyaretçi ile katılım oranı değişimi hesaplanamaz",
   "app.containers.Admin.projects.project.insights.category": "Kategori",
   "app.containers.Admin.projects.project.insights.comments": "Yorumlar",
   "app.containers.Admin.projects.project.insights.commonGroundStatements": "Açıklamalar",
