@@ -161,6 +161,7 @@
   "app.components.admin.GraphCards.InternalAdoptionCard.internalAdoption": "Interne adoptie",
   "app.components.admin.GraphCards.InternalAdoptionCard.timeSeries": "Interne adoptie in de loop van de tijd",
   "app.components.admin.GraphCards.InternalAdoptionCard.totalActive": "Totaal actief",
+  "app.components.admin.GraphCards.InternalAdoptionCard.totalRegistered": "Totaal geregistreerd",
   "app.components.admin.Graphs": "Geen gegevens beschikbaar met de huidige filters.",
   "app.components.admin.Graphs.SurveyBars.surveyResults": "Resultaten van de vragenlijst",
   "app.components.admin.Graphs.noDataShort": "Geen gegevens beschikbaar.",

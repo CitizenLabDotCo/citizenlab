@@ -161,6 +161,7 @@
   "app.components.admin.GraphCards.InternalAdoptionCard.internalAdoption": "التبني الداخلي",
   "app.components.admin.GraphCards.InternalAdoptionCard.timeSeries": "التبني الداخلي بمرور الوقت",
   "app.components.admin.GraphCards.InternalAdoptionCard.totalActive": "إجمالي النشطين",
+  "app.components.admin.GraphCards.InternalAdoptionCard.totalRegistered": "إجمالي المسجلين",
   "app.components.admin.Graphs": "لا تتوفر أي بيانات باستخدام عوامل التصفية الحالية.",
   "app.components.admin.Graphs.SurveyBars.surveyResults": "نتائج الاستطلاع",
   "app.components.admin.Graphs.noDataShort": "لا تتوفر أي بيانات.",

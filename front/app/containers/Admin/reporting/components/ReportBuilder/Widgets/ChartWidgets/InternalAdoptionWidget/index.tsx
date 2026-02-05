@@ -56,7 +56,6 @@ InternalAdoptionWidget.craft = {
     compareStartAt: undefined,
     compareEndAt: undefined,
     hideStatistics: undefined,
-    showActiveStats: undefined,
   },
   related: {
     settings: ChartWidgetSettings,

@@ -50,9 +50,14 @@ export default function useInternalAdoption({
   const xlsxData = useMemo(
     () =>
       analytics?.data && stats
-        ? parseExcelData(stats, timeSeries, getTranslations(formatMessage))
+        ? parseExcelData(
+            stats,
+            timeSeries,
+            currentResolution,
+            getTranslations(formatMessage)
+          )
         : null,
-    [analytics?.data, stats, timeSeries, formatMessage]
+    [analytics?.data, stats, timeSeries, currentResolution, formatMessage]
   );
 
   return { timeSeries, stats, xlsxData, currentResolution };

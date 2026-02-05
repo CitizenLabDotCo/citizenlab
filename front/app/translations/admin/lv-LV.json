@@ -161,6 +161,7 @@
   "app.components.admin.GraphCards.InternalAdoptionCard.internalAdoption": "Iekšējā pieņemšana",
   "app.components.admin.GraphCards.InternalAdoptionCard.timeSeries": "Iekšējā pieņemšana laika gaitā",
   "app.components.admin.GraphCards.InternalAdoptionCard.totalActive": "Kopējais aktīvo",
+  "app.components.admin.GraphCards.InternalAdoptionCard.totalRegistered": "Kopējais reģistrēto",
   "app.components.admin.Graphs": "Ar pašreizējiem filtriem dati nav pieejami.",
   "app.components.admin.Graphs.SurveyBars.surveyResults": "Aptaujas rezultāti",
   "app.components.admin.Graphs.noDataShort": "Nav pieejami nekādi dati.",

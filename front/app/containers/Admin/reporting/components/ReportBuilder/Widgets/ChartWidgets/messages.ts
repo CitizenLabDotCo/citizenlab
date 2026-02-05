@@ -67,10 +67,6 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ParticipantsWidget.ChartWidgetSettings.showVisitors',
     defaultMessage: 'Show visitors',
   },
-  showActiveStats: {
-    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.InternalAdoptionWidget.ChartWidgetSettings.showActiveStats',
-    defaultMessage: 'Show active users',
-  },
   youNeedToSelectADateRange: {
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.ActiveUsersWidget.ChartWidgetSettings.youNeedToSelectADateRange',
     defaultMessage: 'You need to select a date range first.',

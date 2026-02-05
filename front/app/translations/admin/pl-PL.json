@@ -161,6 +161,7 @@
   "app.components.admin.GraphCards.InternalAdoptionCard.internalAdoption": "Przyjęcie wewnętrzne",
   "app.components.admin.GraphCards.InternalAdoptionCard.timeSeries": "Wewnętrzna adopcja w czasie",
   "app.components.admin.GraphCards.InternalAdoptionCard.totalActive": "Aktywni ogółem",
+  "app.components.admin.GraphCards.InternalAdoptionCard.totalRegistered": "Całkowita liczba zarejestrowanych",
   "app.components.admin.Graphs": "Brak danych dla obecnie stosowanych filtrów.",
   "app.components.admin.Graphs.SurveyBars.surveyResults": "Wyniki ankiety",
   "app.components.admin.Graphs.noDataShort": "Brak dostępnych danych.",

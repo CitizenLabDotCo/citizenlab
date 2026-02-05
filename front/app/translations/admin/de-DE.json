@@ -161,6 +161,7 @@
   "app.components.admin.GraphCards.InternalAdoptionCard.internalAdoption": "Interne Organisation",
   "app.components.admin.GraphCards.InternalAdoptionCard.timeSeries": "Interne Organisation im Zeitverlauf",
   "app.components.admin.GraphCards.InternalAdoptionCard.totalActive": "Insgesamt aktiv",
+  "app.components.admin.GraphCards.InternalAdoptionCard.totalRegistered": "Insgesamt registriert",
   "app.components.admin.Graphs": "Mit den aktuellen Filtern sind keine Daten verfügbar.",
   "app.components.admin.Graphs.SurveyBars.surveyResults": "Umfrageergebnisse",
   "app.components.admin.Graphs.noDataShort": "Keine Daten verfügbar.",

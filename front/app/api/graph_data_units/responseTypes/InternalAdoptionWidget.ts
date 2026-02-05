@@ -4,24 +4,22 @@ export interface TimeSeriesResponseRow {
   active_moderators: number;
 }
 
-export interface RoleCounts {
-  registered: number;
-  active: number;
-}
-
 export interface InternalAdoptionResponse {
   data: {
     type: 'report_builder_data_units';
     attributes: {
-      admin_counts: RoleCounts;
-      moderator_counts: RoleCounts;
+      // Current period counts
+      active_admins_count: number;
+      active_moderators_count: number;
+      total_admin_pm_count: number;
 
       // Timeseries data for the graph
       timeseries: TimeSeriesResponseRow[];
 
       // Comparison period counts (optional)
-      admin_counts_compared?: RoleCounts;
-      moderator_counts_compared?: RoleCounts;
+      active_admins_compared?: number;
+      active_moderators_compared?: number;
+      total_admin_pm_compared?: number;
     };
   };
 }

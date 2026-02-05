@@ -4,26 +4,15 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import GraphCard from 'components/admin/GraphCard';
 import Statistic from 'components/admin/Graphs/Statistic';
-import { IResolution } from 'components/admin/ResolutionControl';
 
 import { useIntl } from 'utils/cl-intl';
+
+import { getTimePeriodTranslationByResolution } from '../_utils/resolution';
 
 import Chart from './Chart';
 import messages from './messages';
 import { Props } from './typings';
 import useInternalAdoption from './useInternalAdoption';
-
-const getActiveTimePeriodLabel = (
-  formatMessage: (message: { id: string; defaultMessage: string }) => string,
-  resolution: IResolution
-) => {
-  const messageKey = {
-    month: messages.activeLast30Days,
-    week: messages.activeLast7Days,
-    day: messages.activeYesterday,
-  }[resolution];
-  return formatMessage(messageKey);
-};
 
 const InternalAdoptionCard = ({
   startAtMoment,
@@ -40,13 +29,12 @@ const InternalAdoptionCard = ({
     });
 
   const cardTitle = formatMessage(messages.internalAdoption);
-  const activeBottomLabel = getActiveTimePeriodLabel(formatMessage, resolution);
+  const bottomLabel = getTimePeriodTranslationByResolution(
+    formatMessage,
+    resolution
+  );
   const startAt = startAtMoment?.toISOString();
   const endAt = endAtMoment?.toISOString();
-
-  const registeredAdmins = stats?.admins.registered;
-  const registeredModerators = stats?.moderators.registered;
-  const totalRegistered = stats?.total.registered;
 
   return (
     <GraphCard
@@ -69,22 +57,24 @@ const InternalAdoptionCard = ({
           gap="16px"
         >
           <Statistic
-            name={formatMessage(messages.admins)}
-            value={registeredAdmins}
-            bottomLabel={activeBottomLabel}
-            bottomLabelValue={stats.admins.active.toString()}
+            name={formatMessage(messages.activeAdmins)}
+            value={stats.activeAdmins.value}
+            bottomLabel={bottomLabel}
+            bottomLabelValue={stats.activeAdmins.lastPeriod?.toString() ?? '-'}
           />
           <Statistic
-            name={formatMessage(messages.moderators)}
-            value={registeredModerators}
-            bottomLabel={activeBottomLabel}
-            bottomLabelValue={stats.moderators.active.toString()}
+            name={formatMessage(messages.activeModerators)}
+            value={stats.activeModerators.value}
+            bottomLabel={bottomLabel}
+            bottomLabelValue={
+              stats.activeModerators.lastPeriod?.toString() ?? '-'
+            }
           />
           <Statistic
-            name={formatMessage(messages.total)}
-            value={totalRegistered}
-            bottomLabel={activeBottomLabel}
-            bottomLabelValue={stats.total.active.toString()}
+            name={formatMessage(messages.totalAdminPm)}
+            value={stats.totalAdminPm.value}
+            bottomLabel={bottomLabel}
+            bottomLabelValue={stats.totalAdminPm.lastPeriod?.toString() ?? '-'}
           />
         </Box>
       )}

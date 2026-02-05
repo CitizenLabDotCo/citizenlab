@@ -16,12 +16,12 @@ export type CombinedTimeSeriesRow = {
 };
 
 export type Stat = {
-  registered: number;
-  active: number;
+  value: number;
+  lastPeriod?: number;
 };
 
 export type Stats = {
-  admins: Stat;
-  moderators: Stat;
-  total: Stat;
+  activeAdmins: Stat;
+  activeModerators: Stat;
+  totalAdminPm: Stat;
 };
