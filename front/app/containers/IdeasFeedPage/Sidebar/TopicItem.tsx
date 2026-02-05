@@ -66,9 +66,9 @@ const TopicItem = ({
         >
           <Box display="flex" alignItems="center" gap="8px">
             {topic?.data.attributes.icon && (
-              <Emoji emoji={topic.data.attributes.icon} size="28px" />
+              <Emoji emoji={topic.data.attributes.icon} size="24px" />
             )}
-            <Text mb="0px" fontWeight="bold" variant="bodyL">
+            <Text m="0px" p="0px" fontWeight="bold" variant="bodyL">
               {localize(topic?.data.attributes.title_multiloc)}
             </Text>
           </Box>
