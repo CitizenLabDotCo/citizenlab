@@ -1353,6 +1353,8 @@
   "app.containers.Admin.projects.project.insights.aiAnalysis": "AI-analys",
   "app.containers.Admin.projects.project.insights.areas": "Områden",
   "app.containers.Admin.projects.project.insights.associatedIdeas": "Associerade idéer",
+  "app.containers.Admin.projects.project.insights.cannotCalculateNoNewSurveyResponsesInPeriod": "Det går inte att beräkna en förändring i svarsfrekvensen med noll nya enkätsvar under en jämförelseperiod",
+  "app.containers.Admin.projects.project.insights.cannotCalulateNoVisitsInPeriod": "Det går inte att beräkna förändringen i deltagandegrad med noll besökare under en jämförelseperiod",
   "app.containers.Admin.projects.project.insights.category": "Kategori",
   "app.containers.Admin.projects.project.insights.comments": "Kommentarer",
   "app.containers.Admin.projects.project.insights.commonGroundStatements": "Uttalanden",
