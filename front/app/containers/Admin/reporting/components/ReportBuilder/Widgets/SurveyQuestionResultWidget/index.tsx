@@ -24,7 +24,7 @@ const SurveyQuestionResultWidget = ({
   quarter,
   ariaLabel,
   description,
-  sort,
+  optionsSortOrder,
 }: Props) => {
   const localize = useLocalize();
   const hasEverything = projectId && phaseId && questionId;
@@ -51,7 +51,7 @@ const SurveyQuestionResultWidget = ({
             heatmap={heatmap}
             year={year}
             quarter={quarter}
-            sort={sort}
+            optionsSortOrder={optionsSortOrder}
           />
           <DescriptionText
             description={description}
@@ -75,7 +75,7 @@ SurveyQuestionResultWidget.craft = {
     heatmap: undefined,
     ariaLabel: undefined,
     description: undefined,
-    sort: undefined,
+    optionsSortOrder: undefined,
   },
   related: {
     settings: Settings,

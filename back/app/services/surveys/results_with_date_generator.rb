@@ -2,8 +2,8 @@
 
 module Surveys
   class ResultsWithDateGenerator < ResultsGenerator
-    def initialize(phase, structure_by_category: false, year: nil, quarter: nil, sort: 'count')
-      super(phase, structure_by_category: structure_by_category, sort: sort)
+    def initialize(phase, structure_by_category: false, year: nil, quarter: nil, options_sort_order: 'count')
+      super(phase, structure_by_category: structure_by_category, options_sort_order: options_sort_order)
       @year = year&.to_i
       @quarter = quarter&.to_i
       filter_inputs_by_quarter
