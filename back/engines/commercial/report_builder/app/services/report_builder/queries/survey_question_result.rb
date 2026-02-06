@@ -7,7 +7,7 @@ module ReportBuilder
       group_field_id: nil,
       year: nil,
       quarter: nil,
-      sort: 'count',
+      options_sort_order: 'count',
       **_other_props
     )
       return {} if phase_id.blank? || question_id.blank?
@@ -21,17 +21,17 @@ module ReportBuilder
           group_field_id:,
           year:,
           quarter:,
-          sort: sort
+          options_sort_order:
         )
       elsif year && quarter
         Surveys::ResultsWithDateGenerator.new(
           phase,
           year:,
           quarter:,
-          sort: sort
+          options_sort_order:
         )
       else
-        Surveys::ResultsGenerator.new(phase, sort: sort)
+        Surveys::ResultsGenerator.new(phase, options_sort_order:)
       end
 
       service.generate_result_for_field(question_id)

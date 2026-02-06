@@ -406,6 +406,10 @@ module MultiTenancy
               enabled: false,
               allowed: false
             },
+            prescreening_flagged_only: {
+              enabled: false,
+              allowed: false
+            },
             disable_disliking: {
               enabled: true,
               allowed: true
@@ -551,6 +555,10 @@ module MultiTenancy
               allowed: true
             },
             nested_input_topics: {
+              enabled: true,
+              allowed: true
+            },
+            live_auto_input_topics: {
               enabled: true,
               allowed: true
             },

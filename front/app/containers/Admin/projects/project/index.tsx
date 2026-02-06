@@ -36,7 +36,10 @@ const AdminProjectsProjectIndex = () => {
       flexGrow={1}
     >
       <ProjectHeader projectId={projectId} />
-      <NavigationTabs position="relative">
+      <NavigationTabs
+        position="relative"
+        className="intercom-admin-project-level-settings"
+      >
         <Tab
           className="intercom-admin-project-general-tab"
           label={formatMessage(messages.generalTab)}

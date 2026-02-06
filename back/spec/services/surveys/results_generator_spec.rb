@@ -530,7 +530,7 @@ RSpec.describe Surveys::ResultsGenerator do
       end
 
       context "when sort is 'original'" do
-        subject(:generator) { described_class.new(survey_phase, sort: 'original') }
+        subject(:generator) { described_class.new(survey_phase, options_sort_order: 'original') }
 
         it 'returns select answers in original field option order, with other always last' do
           results = generator.generate_results

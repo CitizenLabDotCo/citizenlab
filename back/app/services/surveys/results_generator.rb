@@ -7,11 +7,11 @@
 
 module Surveys
   class ResultsGenerator < FieldVisitorService
-    # sort: 'count' (default) sorts options by count descending, 'original' preserves option order
-    def initialize(phase, structure_by_category: false, sort: 'count')
+    # options_sort_order: 'count' (default) sorts options by count descending, 'original' preserves option order
+    def initialize(phase, structure_by_category: false, options_sort_order: 'count')
       super()
       @phase = phase
-      @sort = sort
+      @options_sort_order = options_sort_order
       form = phase.custom_form || CustomForm.new(participation_context: phase)
       @fields = IdeaCustomFieldsService.new(form).survey_results_fields(structure_by_category:)
       @locales = AppConfiguration.instance.settings('core', 'locales')
@@ -301,7 +301,7 @@ module Surveys
       end
 
       # Sort answers correctly
-      if @sort == 'count' && !field.supports_linear_scale?
+      if @options_sort_order == 'count' && !field.supports_linear_scale?
         answers = answers.sort_by { |a| -a[:count] }
       end
       answers = answers.sort_by { |a| a[:answer] == 'other' ? 1 : 0 } # other should always be last

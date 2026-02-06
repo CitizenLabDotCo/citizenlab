@@ -764,6 +764,18 @@
         }
       },
 
+      "prescreening_flagged_only": {
+        "type": "object",
+        "title": "Screening (flagged only mode)",
+        "description": "When active, the 'flagged only' prescreening mode is available if screening and flag inappropriate content are enabled. In this mode, only inputs flagged for inappropriate content require admin review before publication. Non-flagged inputs are published (almost) immediately. This is a temporary feature flag for testing purposes.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "surveys": {
         "type": "object",
         "title": "Surveys",
@@ -1480,6 +1492,18 @@
         "type": "object",
         "title": "Nested input topics",
         "description": "Nested input topics allow for hierarchical organization (topics and subtopics) of the input topics within a project.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "live_auto_input_topics": {
+        "type": "object",
+        "title": "Live input topic clustering",
+        "description": "Live input topic clustering automatically groups similar inputs together in real-time as they are submitted, using AI algorithms to analyze the content and determine relevant clusters.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
