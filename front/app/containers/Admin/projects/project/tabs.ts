@@ -120,7 +120,7 @@ export const getTabs = (
       label: formatMessage(messages.phaseEmails),
       url: 'emails',
       name: 'emails',
-      className: 'notifications',
+      className: 'intercom-phase-notifications-tab',
     },
   ].filter((tab) => typeof tab === 'object') as IPhaseTab[];
 };
