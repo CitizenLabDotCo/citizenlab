@@ -764,6 +764,18 @@
         }
       },
 
+      "prescreening_flagged_only": {
+        "type": "object",
+        "title": "Screening (flagged only mode)",
+        "description": "When active, the 'flagged only' prescreening mode is available if screening and flag inappropriate content are enabled. In this mode, only inputs flagged for inappropriate content require admin review before publication. Non-flagged inputs are published (almost) immediately. This is a temporary feature flag for testing purposes.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
       "surveys": {
         "type": "object",
         "title": "Surveys",

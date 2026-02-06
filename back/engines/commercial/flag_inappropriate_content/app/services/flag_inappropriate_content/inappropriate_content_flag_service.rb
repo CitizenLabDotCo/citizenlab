@@ -9,8 +9,11 @@ module FlagInappropriateContent
       flag.assign_attributes attributes
       flag.deleted_at = nil # re-introduce flag if it was marked as deleted
       flag.save!
+
       LogActivityJob.perform_later(flag, 'created', nil, flag.created_at.to_i) unless reuse_flag
       LogActivityJob.perform_later(flaggable, 'flagged_for_inappropriate_content', nil, flag.created_at.to_i) if !reuse_flag || was_deleted
+
+      flag
     end
 
     def maybe_delete!(flag)

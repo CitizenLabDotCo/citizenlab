@@ -529,4 +529,81 @@ RSpec.describe Phase do
       expect(phase.reacting_dislike_enabled).to be true
     end
   end
+
+  describe 'prescreening_mode' do
+    using RSpec::Parameterized::TableSyntax
+
+    describe 'validation' do
+      def set_feature_flags(prescreening:, flag_inappropriate_content:)
+        AppConfiguration.instance.settings.tap do |settings|
+          settings['prescreening'] = { 'allowed' => true, 'enabled' => prescreening }
+          settings['prescreening_ideation'] = { 'allowed' => true, 'enabled' => prescreening }
+          settings['flag_inappropriate_content'] = { 'allowed' => true, 'enabled' => flag_inappropriate_content }
+        end
+
+        AppConfiguration.instance.save!
+      end
+
+      describe 'on create' do
+        where(:factory, :prescreening_mode, :prescreening, :flag_inappropriate_content, :valid) do
+          :phase           | nil            | false | false | true
+          :phase           | 'all'          | false | false | false
+          :phase           | 'all'          | true  | false | true
+          :phase           | 'flagged_only' | true  | false | false
+          :phase           | 'flagged_only' | true  | true  | true
+          :phase           | 'invalid'      | true  | true  | false
+          :proposals_phase | nil            | false | false | true
+          :proposals_phase | 'all'          | false | false | false
+          :proposals_phase | 'all'          | true  | false | true
+          :proposals_phase | 'flagged_only' | true  | false | false
+          :proposals_phase | 'flagged_only' | true  | true  | true
+          :proposals_phase | 'invalid'      | true  | true  | false
+        end
+
+        with_them do
+          before { set_feature_flags(prescreening:, flag_inappropriate_content:) }
+
+          it { expect(build(factory, prescreening_mode: prescreening_mode).valid?).to eq valid }
+        end
+      end
+
+      describe 'on update' do
+        it 'remains valid when feature is disabled but prescreening_mode unchanged' do
+          set_feature_flags(prescreening: true, flag_inappropriate_content: false)
+          phase = create(:phase, prescreening_mode: 'all')
+          set_feature_flags(prescreening: false, flag_inappropriate_content: false)
+
+          expect(phase).to be_valid
+          phase.title_multiloc = { 'en' => 'Updated title' }
+          expect(phase).to be_valid
+        end
+
+        it 'becomes invalid when changing prescreening_mode to non-nil with feature disabled' do
+          set_feature_flags(prescreening: true, flag_inappropriate_content: true)
+          phase = create(:phase, prescreening_mode: 'flagged_only')
+          set_feature_flags(prescreening: false, flag_inappropriate_content: false)
+
+          expect(phase).to be_valid
+          phase.prescreening_mode = 'all'
+          expect(phase).not_to be_valid
+        end
+      end
+    end
+
+    describe 'helper methods' do
+      where(:mode, :enabled, :flagged_only, :all) do
+        nil            | false | false | false
+        'flagged_only' | true  | true  | false
+        'all'          | true  | false | true
+      end
+
+      with_them do
+        subject(:phase) { build(:phase, prescreening_mode: mode) }
+
+        it { expect(phase.prescreening_enabled?).to eq enabled }
+        it { expect(phase.prescreening_flagged_only?).to eq flagged_only }
+        it { expect(phase.prescreening_all?).to eq all }
+      end
+    end
+  end
 end

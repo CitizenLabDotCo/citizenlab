@@ -3,7 +3,7 @@ import React from 'react';
 import { Input, IOption } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
-import { IdeaSortMethod, InputTerm } from 'api/phases/types';
+import { IdeaSortMethod, InputTerm, PrescreeningMode } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -17,7 +17,7 @@ import messages from '../../../../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
-import PrescreeningToggle from '../_shared/PrescreeningToggle';
+import PrescreeningModeSelector from '../_shared/PrescreeningModeSelector';
 import SortingPicker from '../_shared/SortingPicker';
 import UserActions from '../_shared/UserActions';
 
@@ -53,8 +53,8 @@ interface Props {
   handleIdeaDefaultSortMethodChange: (ideas_order: IdeaSortMethod) => void;
   handleDaysLimitChange: (limit: string) => void;
   handleReactingThresholdChange: (threshold: string) => void;
-  prescreening_enabled: boolean | null | undefined;
-  togglePrescreeningEnabled: (prescreening_enabled: boolean) => void;
+  prescreening_mode: PrescreeningMode | null | undefined;
+  onPrescreeningModeChange: (mode: PrescreeningMode | null) => void;
   similarity_enabled?: boolean | null;
   similarity_threshold_title: number | null | undefined;
   similarity_threshold_body: number | null | undefined;
@@ -93,8 +93,8 @@ const ProposalsInputs = ({
   handleIdeaDefaultSortMethodChange,
   handleDaysLimitChange,
   handleReactingThresholdChange,
-  prescreening_enabled,
-  togglePrescreeningEnabled,
+  prescreening_mode,
+  onPrescreeningModeChange,
   similarity_enabled,
   similarity_threshold_title,
   similarity_threshold_body,
@@ -153,9 +153,9 @@ const ProposalsInputs = ({
         disabledReason={toggleAnonymousPostingDisabledReason}
       />
       {prescreeningFeatureEnabled && (
-        <PrescreeningToggle
-          prescreening_enabled={prescreening_enabled}
-          togglePrescreeningEnabled={togglePrescreeningEnabled}
+        <PrescreeningModeSelector
+          prescreening_mode={prescreening_mode}
+          onPrescreeningModeChange={onPrescreeningModeChange}
         />
       )}
       <UserActions

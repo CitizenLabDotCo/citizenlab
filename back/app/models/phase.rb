@@ -68,6 +68,7 @@ class Phase < ApplicationRecord
   include DocumentAnnotation::DocumentAnnotationPhase
   include Files::FileAttachable
 
+  PRESCREENING_MODES = %w[flagged_only all].freeze
   PARTICIPATION_METHODS = ParticipationMethod::Base.all_methods.map(&:method_str).freeze
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
   PRESENTATION_MODES    = %w[card map feed].freeze
@@ -75,7 +76,6 @@ class Phase < ApplicationRecord
   INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition].freeze
   FALLBACK_INPUT_TERM   = 'idea'
   VOTE_TERMS            = %w[vote point token credit percent]
-  PRESCREENING_MODES    = %w[all].freeze
 
   attribute :reacting_dislike_enabled, :boolean, default: -> { disliking_enabled_default }
 
@@ -107,7 +107,6 @@ class Phase < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :start_at, presence: true
-  validates :prescreening_mode, inclusion: { in: PRESCREENING_MODES }, allow_nil: true
   validate :validate_end_at
   validate :validate_previous_blank_end_at
   validate :validate_start_at_before_end_at # Also enforced by the phases_start_before_end check constraint
@@ -120,6 +119,8 @@ class Phase < ApplicationRecord
   validates :survey_popup_frequency, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_nil: true
 
   validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
+  validates :prescreening_mode, inclusion: { in: PRESCREENING_MODES }, allow_nil: true
+  validate :validate_prescreening_mode, if: :prescreening_mode_changed?
 
   with_options if: ->(phase) { phase.pmethod.supports_public_visibility? } do
     validates :presentation_mode, inclusion: { in: PRESENTATION_MODES }
@@ -269,10 +270,6 @@ class Phase < ApplicationRecord
     participation_method == 'ideation'
   end
 
-  def prescreening_enabled?
-    prescreening_mode.present?
-  end
-
   def pmethod
     @pmethod = case participation_method
     when 'information'
@@ -321,7 +318,29 @@ class Phase < ApplicationRecord
     !AppConfiguration.instance.feature_activated?('disable_disliking')
   end
 
+  def prescreening_enabled? = prescreening_mode.present?
+  def prescreening_flagged_only? = prescreening_mode == 'flagged_only'
+  def prescreening_all? = prescreening_mode == 'all'
+
   private
+
+  def validate_prescreening_mode
+    return if prescreening_mode.nil?
+
+    prescreening_flag = participation_method == 'proposals' ? 'prescreening' : 'prescreening_ideation'
+
+    # Any prescreening mode requires the prescreening feature to be enabled.
+    unless AppConfiguration.instance.feature_activated?(prescreening_flag)
+      errors.add(:prescreening_mode, "requires the #{prescreening_flag} feature to be enabled")
+      return
+    end
+
+    # 'flagged_only' mode requires the flag_inappropriate_content feature to be enabled.
+    return unless prescreening_mode == 'flagged_only'
+    return if AppConfiguration.instance.feature_activated?('flag_inappropriate_content')
+
+    errors.add(:prescreening_mode, 'requires the flag_inappropriate_content feature to be enabled')
+  end
 
   def sanitize_description_multiloc
     service = SanitizationService.new
