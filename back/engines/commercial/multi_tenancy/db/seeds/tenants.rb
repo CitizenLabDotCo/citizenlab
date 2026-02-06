@@ -554,6 +554,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            live_auto_input_topics: {
+              enabled: true,
+              allowed: true
+            },
             data_repository_transcription: {
               enabled: true,
               allowed: true
