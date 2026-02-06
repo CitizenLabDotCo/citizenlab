@@ -1426,6 +1426,7 @@
   "app.containers.Admin.projects.project.insights.shared.topicsAutoDetected": "Pynciau a gynhyrchir yn awtomatig gan AI o gynnwys syniadau",
   "app.containers.Admin.projects.project.insights.shared.unlockAiTopicClustering": "Datgloi Clwstrio Pynciau AI",
   "app.containers.Admin.projects.project.insights.shared.unlockTopicClustering": "Datgloi clystyru pynciau",
+  "app.containers.Admin.projects.project.insights.shared.upgradeYourPlan": "Uwchraddiwch eich cynllun",
   "app.containers.Admin.projects.project.insights.shared.upsellTooltipMessage": "Nid yw'r nodwedd hon wedi'i chynnwys yn eich cynllun cyfredol. Siaradwch â'ch Rheolwr Llwyddiant Llywodraeth neu'ch gweinyddwr i'w datgloi.",
   "app.containers.Admin.projects.project.insights.statements": "Datganiadau",
   "app.containers.Admin.projects.project.insights.statusBreakdown": "Dadansoddiad Statws",
