@@ -280,7 +280,7 @@ resource 'Ideas' do
             idea: {
               publication_status: 'published',
               'u_user_select_field' => 'option1',
-              'u_locked_field' => 'option2',
+              'u_locked_field' => 'option2', # this should be ignored!
               @custom_field.key => 'option2'
             }
           })
