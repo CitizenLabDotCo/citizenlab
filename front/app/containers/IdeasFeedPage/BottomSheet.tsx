@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { FocusOn } from 'react-focus-on';
@@ -84,7 +84,9 @@ const BottomSheet = ({
   onCollapse,
   onExpand,
 }: Props) => {
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  // Derive fullscreen state directly from prop - URL is the source of truth
+  const isFullscreen = Boolean(expandToFullscreenOn);
+
   const [isPeeking, setIsPeeking] = useState(false);
   const [dragOffset, setDragOffset] = useState<number | null>(null);
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
@@ -115,14 +117,6 @@ const BottomSheet = ({
     }, PEEK_DELAY_MS);
     return () => clearTimeout(timer);
   }, [isFullscreen]);
-
-  useEffect(() => {
-    if (expandToFullscreenOn) {
-      setIsFullscreen(true);
-    } else {
-      setIsFullscreen(false);
-    }
-  }, [expandToFullscreenOn]);
 
   // Reset scroll position when sheet opens to fullscreen
   useEffect(() => {
@@ -162,23 +156,19 @@ const BottomSheet = ({
 
     if (hadDragged && Math.abs(delta) >= SWIPE_THRESHOLD) {
       const willBeFullscreen = delta < 0;
-      setIsFullscreen(willBeFullscreen);
+      // Only call callbacks - let URL be the source of truth for isFullscreen
       if (willBeFullscreen) {
         onExpand?.();
       } else {
         onCollapse?.();
       }
     } else if (!hadDragged) {
-      // Tap detected - toggle state
-      setIsFullscreen((prev) => {
-        const newValue = !prev;
-        if (newValue) {
-          onExpand?.();
-        } else {
-          onCollapse?.();
-        }
-        return newValue;
-      });
+      // Tap detected - toggle via callbacks only
+      if (isFullscreen) {
+        onCollapse?.();
+      } else {
+        onExpand?.();
+      }
     }
   };
 
@@ -205,7 +195,7 @@ const BottomSheet = ({
   };
 
   const handleCollapse = () => {
-    setIsFullscreen(false);
+    // Only call callback - let URL be the source of truth for isFullscreen
     onCollapse?.();
   };
 
