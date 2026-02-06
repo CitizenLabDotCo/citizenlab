@@ -1,6 +1,6 @@
 module IdeaFeed
   class FeedService
-    attr_reader :phase, :user, :visitor_hash, :topic_ids
+    attr_reader :phase, :user, :visitor_hash
 
     def initialize(phase, user: nil, visitor_hash: nil)
       raise ArgumentError, 'Either user or visitor_hash must be provided' if user.nil? && visitor_hash.nil?
