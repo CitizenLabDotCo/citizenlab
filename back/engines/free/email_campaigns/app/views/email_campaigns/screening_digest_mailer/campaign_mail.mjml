@@ -1,39 +1,25 @@
 <!-- Statistics box with CTA -->
-<mj-wrapper padding="0 25px">
-  <mj-section padding="25px" border="1px solid #EAEAEA" border-radius="5px">
-    <mj-column>
-      <mj-text font-size="28px" align="center" font-weight="700">
-        <%= event.total_screening_count %>
-      </mj-text>
-      <mj-text font-size="16px" align="center" padding-bottom="20px">
-        <%= format_message('inputs_awaiting_screening') %>
-      </mj-text>
-      <mj-button
-        href="<%= event.screening_overview_url %>"
-        background-color="#044D6C"
-        color="#FFFFFF"
-        border-radius="4px"
-        font-size="16px"
-        padding="0"
-      >
-        <%= cta_button_text %>
-      </mj-button>
-    </mj-column>
-  </mj-section>
-</mj-wrapper>
-
-<!-- Section header -->
-<mj-section padding="0 25px">
+<mj-section padding="0 25px 25px">
   <mj-column>
-    <mj-text>
-      <h2 style="padding: 20px 0">
-        <%= format_message('projects_with_inputs_to_review') %>
-      </h2>
-    </mj-text>
+    <mj-table>
+      <tr>
+        <td style="border: 1px solid #EAEAEA; padding: 25px; background-color: #fff; border-radius: 5px; text-align: center;">
+          <p style="font-size: 28px; font-weight: 700; margin: 0 0 10px;">
+            <%= event.total_screening_count %>
+          </p>
+
+          <p style="font-size: 16px; margin: 0 0 20px;">
+            <%= format_message('inputs_awaiting_screening') %>
+          </p>
+
+          <a
+            href="<%= event.screening_url %>"
+            style="display: inline-block; background-color: #044D6C; color: #FFFFFF; border-radius: 4px; font-size: 16px; padding: 12px 24px; text-decoration: none;"
+          >
+            <%= cta_button_text %>
+          </a>
+        </td>
+      </tr>
+    </mj-table>
   </mj-column>
 </mj-section>
-
-<!-- Project rows -->
-<% event.projects.each do |project| %>
-  <%= render 'email_campaigns/screening/project_row', project: project %>
-<% end %>

@@ -17,35 +17,16 @@ module EmailCampaigns
     end
 
     def preview_command(recipient, _context)
-      data = preview_service.preview_data(recipient)
-      prescreening_status_id = IdeaStatus.find_by(code: 'prescreening')&.id
-      url_service = Frontend::UrlService.new
+      idea_status = IdeaStatus.find_by(code: 'prescreening')
+      total_screening_count = Idea.where(idea_status: idea_status).count
+      screening_url = Frontend::UrlService.new.input_manager_url(
+        status: idea_status,
+        tab: 'statuses'
+      )
+
       {
         recipient: recipient,
-        event_payload: {
-          total_screening_count: 12,
-          projects: [
-            {
-              project_id: data.project.id,
-              title_multiloc: data.project.title_multiloc,
-              screening_count: 5,
-              screening_url: "#{url_service.admin_project_url(data.project.id)}/ideas?status=#{prescreening_status_id}&tab=statuses"
-            },
-            {
-              project_id: SecureRandom.uuid,
-              title_multiloc: { en: 'Community Center Renovation' },
-              screening_count: 4,
-              screening_url: '#'
-            },
-            {
-              project_id: SecureRandom.uuid,
-              title_multiloc: { en: 'Budget Priorities 2024' },
-              screening_count: 3,
-              screening_url: '#'
-            }
-          ],
-          screening_overview_url: "#{url_service.admin_ideas_url}?status=#{prescreening_status_id}&tab=statuses"
-        }
+        event_payload: { total_screening_count:, screening_url: }
       }
     end
   end

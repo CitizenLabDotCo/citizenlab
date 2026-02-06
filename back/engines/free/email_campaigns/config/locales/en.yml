@@ -492,17 +492,12 @@ en:
       subject: '"%{input_title}" is almost published'
       preheader: 'It''s currently in %{prescreening_status_title}'
     screening_digest:
-      subject: 'Inputs awaiting screening: %{count}'
-      preheader: 'Review inputs on %{organizationName}'
-      title: '%{firstName}, inputs are awaiting your review'
-      event_description: 'Some inputs require screening before they become visible to the public.'
-      cta_button: 'Go to screening overview'
-      inputs_awaiting_screening: 'inputs awaiting screening'
-      projects_with_inputs_to_review: 'Projects with inputs to review'
-      x_inputs_to_review:
-        one: '1 input to review'
-        other: '%{count} inputs to review'
-      review_inputs: 'Review inputs'
+      subject: '%{count} inputs awaiting review'
+      preheader: 'Review inputs for %{organizationName}'
+      title: '%{firstName}, inputs are waiting to be reviewed'
+      event_description: "These inputs need approval before they are visible to the public. You can review them in the platform-wide Input Manager or within each phase's Input Manager."
+      cta_button: 'Review inputs'
+      inputs_awaiting_screening: 'inputs to review'
     voting_basket_submitted:
       subject: '%{organizationName}: You voted successfully'
       preheader: 'You voted successfully on the participation platform of %{organizationName}'

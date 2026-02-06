@@ -42,17 +42,14 @@ module EmailCampaigns
     include LifecycleStageRestrictable
     include ContentConfigurable
 
-    MAX_PROJECTS = 10
-
     allow_lifecycle_stages only: ['active']
 
-    recipient_filter :user_filter_admins_and_moderators
-    recipient_filter :user_filter_no_invitees
+    recipient_filter :admins_and_moderators
 
     filter :content_worth_sending?
 
     def self.default_schedule
-      start_time = AppConfiguration.timezone.local(2019)
+      start_time = AppConfiguration.timezone.at(0)
 
       IceCube::Schedule.new(start_time) do |schedule|
         schedule.add_recurrence_rule(
@@ -82,83 +79,41 @@ module EmailCampaigns
     end
 
     def generate_commands(recipient:, time: nil)
-      all_projects_data = all_projects_with_screening_inputs_for(recipient)
-      return [] if all_projects_data.empty?
-
-      total_count = all_projects_data.sum { |p| p[:screening_count] }
-      limited_projects = all_projects_data.first(MAX_PROJECTS)
+      count = screening_count_for(recipient)
+      return [] if count.zero?
 
       [{
         event_payload: {
-          total_screening_count: total_count,
-          projects: limited_projects,
-          screening_overview_url: screening_overview_url
+          total_screening_count: count,
+          screening_url:
         }
       }]
     end
 
     private
 
-    def user_filter_admins_and_moderators(users_scope, _options = {})
-      users_scope.where("roles @> '[{\"type\":\"admin\"}]' OR roles @> '[{\"type\":\"project_moderator\"}]'")
-    end
-
-    def user_filter_no_invitees(users_scope, _options = {})
-      users_scope.active
+    def admins_and_moderators(users_scope, _options = {})
+      users_scope.admin_or_moderator.active
     end
 
     def content_worth_sending?(_)
-      prescreening_status = IdeaStatus.find_by(code: 'prescreening')
       return false unless prescreening_status
 
       Idea.where(idea_status: prescreening_status).exists?
     end
 
-    def all_projects_with_screening_inputs_for(recipient)
-      prescreening_status = IdeaStatus.find_by(code: 'prescreening')
-      return [] unless prescreening_status
+    def screening_count_for(recipient)
+      return 0 unless prescreening_status
 
-      # Admins see all projects, moderators see only their moderated projects
-      project_ids = if recipient.admin?
-                      nil # No filter - all projects
-                    else
-                      recipient.moderatable_project_ids
-                    end
-
-      ideas_query = Idea.where(idea_status: prescreening_status)
-      ideas_query = ideas_query.where(project_id: project_ids) if project_ids.present?
-      ideas_query = ideas_query.where.not(project_id: nil)
-
-      ideas_by_project = ideas_query.group(:project_id).count
-
-      return [] if ideas_by_project.empty?
-
-      Project.where(id: ideas_by_project.keys).map do |project|
-        {
-          project_id: project.id,
-          title_multiloc: project.title_multiloc,
-          screening_count: ideas_by_project[project.id],
-          screening_url: screening_url_for_project(project.id)
-        }
-      end.sort_by { |p| -p[:screening_count] }
+      projects = UserRoleService.new.moderatable_projects(recipient)
+      Idea.where(idea_status: prescreening_status, project: projects).count
     end
 
-    def prescreening_status_id
-      @prescreening_status_id ||= IdeaStatus.find_by(code: 'prescreening')&.id
+    def screening_url
+      url_service.input_manager_url(status: prescreening_status, tab: 'statuses')
     end
 
-    def screening_url_for_project(project_id)
-      "#{Frontend::UrlService.new.admin_project_url(project_id)}/ideas?status=#{prescreening_status_id}&tab=statuses"
-    end
-
-    def screening_overview_url
-      "#{Frontend::UrlService.new.admin_ideas_url}?status=#{prescreening_status_id}&tab=statuses"
-    end
-
-    protected
-
-    def set_enabled
-      self.enabled = false if enabled.nil?
-    end
+    def prescreening_status = @prescreening_status ||= IdeaStatus.find_by(code: 'prescreening')
+    def url_service = @url_service ||= Frontend::UrlService.new
   end
 end
