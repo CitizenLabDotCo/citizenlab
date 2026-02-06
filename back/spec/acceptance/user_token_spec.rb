@@ -219,6 +219,38 @@ resource 'User Token' do
           end
         end
       end
+
+      context 'when password_login is disabled' do
+        before do
+          SettingsService.new.deactivate_feature! 'password_login'
+        end
+
+        let(:email) { 'test@email.com' }
+        let(:password) { '12345678' }
+        let(:remember_me) { false }
+
+        let!(:user) { create(:user, email: email, password: password) }
+
+        before do
+          allow(Time).to receive(:now).and_return(Time.now)
+        end
+
+        example_request '[error] no JWT token is returned' do
+          assert_status 404
+        end
+
+        context do
+          let!(:user) { create(:super_admin, password: password) }
+          let!(:email) { user.email }
+
+          example_request 'does allow a super admin to log in with a password' do
+            assert_status 201
+
+            jwt = JWT.decode(json_response_body[:jwt], nil, false).first
+            expect(jwt['sub']).to eq(user.id)
+          end
+        end
+      end
     end
 
     context 'when user_confirmation is disabled' do
@@ -282,20 +314,6 @@ resource 'User Token' do
             assert_status 404
           end
         end
-      end
-    end
-
-    context 'when password_login is disabled' do
-      before do
-        SettingsService.new.deactivate_feature! 'password_login'
-      end
-
-      it 'does not allow a regular user to log in with a password' do
-        # TODO
-      end
-
-      it 'does allow a super admin to log in with a password' do
-        # TODO
       end
     end
   end
