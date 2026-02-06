@@ -356,8 +356,8 @@ namespace :cl2_back do
           allowed: true
         },
         phase_insights: {
-          enabled: false,
-          allowed: false
+          enabled: true,
+          allowed: true
         },
         participation_location_tracking: {
           enabled: false,
