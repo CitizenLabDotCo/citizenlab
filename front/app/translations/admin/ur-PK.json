@@ -2964,6 +2964,8 @@
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "تمام زبانوں کے لیے ٹیگ کا نام فراہم کریں۔",
   "app.containers.AdminPage.Topics.inputTags": "ان پٹ ٹیگز",
   "app.containers.AdminPage.Topics.lastTopicWarning3": "کم از کم ایک ٹیگ درکار ہے۔ اگر آپ ٹیگز استعمال نہیں کرنا چاہتے تو 'ٹیگز' آئٹم کو کسی بھی مرحلے کے ان پٹ فارم (اگر موجود ہو) سے حذف کیا جا سکتا ہے۔",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "فعال ہونے پر، AI کا استعمال کرتے ہوئے ٹیگز کو مسلسل تخلیق، اپ ڈیٹ اور ان پٹس کو تفویض کیا جاتا ہے۔",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "خودکار طور پر ٹیگز کا پتہ لگائیں اور تفویض کریں۔",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "وہ ٹیگ بنائیں اور ان کا نظم کریں جنہیں شہری اس پروجیکٹ میں اپنی معلومات کی درجہ بندی کرنے کے لیے استعمال کر سکتے ہیں۔",
   "app.containers.AdminPage.Topics.save": "محفوظ کریں۔",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "ایک نیا گروپ شامل کریں۔",
