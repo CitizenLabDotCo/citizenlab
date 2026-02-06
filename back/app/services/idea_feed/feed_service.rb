@@ -2,13 +2,12 @@ module IdeaFeed
   class FeedService
     attr_reader :phase, :user, :visitor_hash, :topic_ids
 
-    def initialize(phase, user: nil, topic_ids: nil, visitor_hash: nil)
+    def initialize(phase, user: nil, visitor_hash: nil)
       raise ArgumentError, 'Either user or visitor_hash must be provided' if user.nil? && visitor_hash.nil?
 
       @phase = phase
       @user = user
       @visitor_hash = visitor_hash
-      @topic_ids = topic_ids
     end
 
     def top_n(n = 5, scope = Idea.all)
@@ -67,26 +66,18 @@ module IdeaFeed
     def fetch_eligible_ideas(scope)
       exposed_ideas = exposures_scope.select(:idea_id).distinct
 
-      scope = scope
+      scope
         .joins(:ideas_phases)
         .where(ideas_phases: { phase_id: phase.id })
         .published
         .where.not(id: exposed_ideas)
-
-      scope = scope.with_some_input_topics(topic_ids) if topic_ids.present?
-
-      scope
     end
 
     def fetch_all_ideas(scope)
-      scope = scope
+      scope
         .joins(:ideas_phases)
         .where(ideas_phases: { phase_id: phase.id })
         .published
-
-      scope = scope.with_some_input_topics(topic_ids) if topic_ids.present?
-
-      scope
     end
   end
 end
