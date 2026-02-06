@@ -453,7 +453,7 @@ RSpec.shared_context 'survey_setup' do
 
   # Helper methods
   def result_index(field)
-    form.custom_fields.enabled.index(field)
+    form.custom_fields.reload.enabled.to_a.index { |f| f.id == field.id }
   end
 
   def reset_survey_logic!

@@ -534,7 +534,7 @@ RSpec.describe Surveys::ResultsGenerator do
 
         it 'returns select answers in original field option order, with other always last' do
           results = generator.generate_results
-          answers = results[:results][5][:answers]
+          answers = results[:results][result_index(select_field)][:answers]
           expect(answers.pluck(:answer)).to eq ['la', 'ny', nil, 'other']
         end
       end
