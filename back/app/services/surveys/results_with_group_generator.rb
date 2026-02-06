@@ -2,8 +2,8 @@
 
 module Surveys
   class ResultsWithGroupGenerator < ResultsWithDateGenerator
-    def initialize(phase, group_mode: nil, group_field_id: nil, year: nil, quarter: nil)
-      super(phase, year:, quarter:)
+    def initialize(phase, group_mode: nil, group_field_id: nil, year: nil, quarter: nil, sort: 'count')
+      super(phase, year:, quarter:, sort:)
       @group_mode = group_mode
       @group_field_id = group_field_id
     end
@@ -28,7 +28,7 @@ module Surveys
     end
 
     def visit_select_base(field)
-      query = inputs
+      query = inputs(field)
       query = query.joins(:author) if group_mode == 'user_field'
 
       raise "Unsupported group field type: #{group_field.input_type}" unless group_field.supports_single_selection?

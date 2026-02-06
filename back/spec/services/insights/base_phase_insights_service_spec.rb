@@ -153,8 +153,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
       let!(:option_a) { create(:custom_field_option, custom_field: single_select_field, key: 'a', title_multiloc: { en: 'Option A' }) }
       let!(:option_b) { create(:custom_field_option, custom_field: single_select_field, key: 'b', title_multiloc: { en: 'Option B' }) }
 
-      let(:participation1) { create(:basket_participation, user_custom_field_values: { 'single_select' => 'a' }) }
-      let(:participation2) { create(:basket_participation, user_custom_field_values: { 'single_select' => 'b' }) }
+      let(:participation1) { create(:basket_participation, user: create(:user), user_custom_field_values: { 'single_select' => 'a' }) }
+      let(:participation2) { create(:basket_participation, user: create(:user), user_custom_field_values: { 'single_select' => 'b' }) }
 
       let(:flattened_participations) { [participation1, participation2] }
       let(:participant_ids) { flattened_participations.pluck(:participant_id).uniq }
@@ -604,27 +604,35 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
   describe '#phase_has_run_more_than_14_days?' do
     it 'returns false when phase duration is less than 14 days' do
-      phase = create(:single_voting_phase, start_at: 15.days.ago, end_at: 2.days.ago)
-      service = described_class.new(phase)
-      expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+      travel_to(Time.zone.parse('2026-01-15 12:00:00')) do
+        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 13)) # 13 days, including both start and end dates
+        service = described_class.new(phase)
+        expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+      end
     end
 
-    it 'returns false when phase duration is more than 14 days but elapsed time is less than 14 days' do
-      phase = create(:single_voting_phase, start_at: 13.days.ago, end_at: 2.days.from_now)
-      service = described_class.new(phase)
-      expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+    it 'returns false when phase duration is 14 days but elapsed time is less than 14 days' do
+      travel_to(Time.zone.parse('2026-01-13 12:00:00')) do
+        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 14)) # 14 days, including both start and end dates
+        service = described_class.new(phase)
+        expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+      end
     end
 
-    it 'returns true when phase duration is more than 14 days and elapsed time is at least 14 days' do
-      phase = create(:single_voting_phase, start_at: 20.days.ago, end_at: 1.day.ago)
-      service = described_class.new(phase)
-      expect(service.send(:phase_has_run_more_than_14_days?)).to be true
+    it 'returns true when phase duration is 14 days and elapsed time is at least 14 days' do
+      travel_to(Time.zone.parse('2026-01-15 12:00:00')) do
+        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 14)) # 14 days, including both start and end dates
+        service = described_class.new(phase)
+        expect(service.send(:phase_has_run_more_than_14_days?)).to be true
+      end
     end
 
     it 'returns false when phase is long enough but started less than 14 days ago' do
-      phase = create(:single_voting_phase, start_at: 10.days.ago, end_at: 30.days.from_now)
-      service = described_class.new(phase)
-      expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+      travel_to(Time.zone.parse('2026-01-14 12:00:00')) do
+        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 14)) # 14 days, including both start and end dates
+        service = described_class.new(phase)
+        expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+      end
     end
 
     it 'returns true for ongoing phases without end_at when started more than 14 days ago' do
@@ -706,6 +714,54 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
       # Unique participants in last 7 days: user_1, user_3, user_4 => 3
       expect(service.send(:participations_7_day_change, participations)).to eq(50.0)
+    end
+  end
+
+  describe '#parse_user_custom_field_values' do
+    let(:prefix) { UserFieldsInFormService.prefix }
+
+    it 'preferentially merges the parsed item.custom_field_values if present' do
+      item = create(:idea, custom_field_values: { "#{prefix}key1" => 'value1', 'other_key' => 'other_value' })
+
+      result = service.send(:parse_user_custom_field_values, item, nil)
+      expect(result).to eq({ 'key1' => 'value1' })
+
+      user = create(:user, custom_field_values: { 'key1' => 'value2' })
+
+      result = service.send(:parse_user_custom_field_values, item, user)
+      expect(result).to eq({ 'key1' => 'value1' })
+    end
+
+    it 'merges user.custom_field_values not parsed from item.custom_field_values' do
+      item = create(:idea, custom_field_values: { "#{prefix}key1" => 'value1', 'other_key' => 'other_value' })
+      user = create(:user, custom_field_values: { 'key2' => 'value2' })
+
+      result = service.send(:parse_user_custom_field_values, item, user)
+      expect(result).to eq({ 'key1' => 'value1', 'key2' => 'value2' })
+    end
+
+    it 'avoids collisions with similar keys in idea custom_field_values' do
+      item = create(:idea, custom_field_values: { "#{prefix}key" => 'value1', 'key' => 'value2' })
+      user = create(:user, custom_field_values: { 'key' => 'value3' })
+
+      result = service.send(:parse_user_custom_field_values, item, user)
+      expect(result).to eq({ 'key' => 'value1' })
+    end
+
+    it 'returns the user.custom_field_values if item.custom_field_values is not present' do
+      item = create(:idea, custom_field_values: {})
+      user = create(:user, custom_field_values: { 'key2' => 'value2' })
+
+      result = service.send(:parse_user_custom_field_values, item, user)
+      expect(result).to eq({ 'key2' => 'value2' })
+    end
+
+    it 'returns an empty hash if neither item nor user have custom_field_values' do
+      item = create(:idea, custom_field_values: {})
+      user = create(:user, custom_field_values: {})
+
+      result = service.send(:parse_user_custom_field_values, item, user)
+      expect(result).to eq({})
     end
   end
 end

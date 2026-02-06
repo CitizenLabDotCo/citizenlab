@@ -29,7 +29,7 @@ module Insights
           classname: 'Idea',
           threshold_reached_at: threshold_reached_at(idea),
           participant_id: participant_id(idea.id, idea.author_id, idea.author_hash),
-          user_custom_field_values: idea&.author&.custom_field_values || {}
+          user_custom_field_values: parse_user_custom_field_values(idea, idea&.author)
         }
       end
     end

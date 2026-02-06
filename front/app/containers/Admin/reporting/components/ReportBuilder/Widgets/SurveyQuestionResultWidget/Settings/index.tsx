@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 
-import { Box, Toggle } from '@citizenlab/cl2-component-library';
+import { Box, Toggle, Select } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { IOption } from 'typings';
 
@@ -32,7 +32,7 @@ import { Props } from '../typings';
 import GroupModeSelect from './GroupModeSelect';
 import messages from './messages';
 import UserFieldSelect from './UserFieldSelect';
-import { FieldsHideGroupBy } from './utils';
+import { FieldsHideGroupBy, FieldsWithSortOption } from './utils';
 
 const findQuestion = (questions: ICustomFields, questionId: string) => {
   return questions.data.find((question) => question.id === questionId);
@@ -50,6 +50,7 @@ const Settings = () => {
     groupMode,
     groupFieldId,
     heatmap,
+    sort,
   } = useNode<Props>((node) => ({
     title: node.data.props.title,
     projectId: node.data.props.projectId,
@@ -58,6 +59,7 @@ const Settings = () => {
     groupMode: node.data.props.groupMode,
     groupFieldId: node.data.props.groupFieldId,
     heatmap: node.data.props.heatmap,
+    sort: node.data.props.sort,
   }));
 
   const { data: questions } = useRawCustomFields({ phaseId });
@@ -90,6 +92,16 @@ const Settings = () => {
   const showAccessibilityInputs =
     selectedQuestion &&
     questionTypesWithCharts.includes(selectedQuestion.attributes.input_type);
+
+  const showSortSettings =
+    questionId &&
+    selectedQuestion &&
+    FieldsWithSortOption.includes(selectedQuestion.attributes.input_type);
+
+  const sortOptions = [
+    { value: 'count', label: formatMessage(messages.sortByCount) },
+    { value: 'original', label: formatMessage(messages.sortByOriginal) },
+  ];
 
   const handleProjectFilter = useCallback(
     ({ value }: IOption) => {
@@ -148,6 +160,15 @@ const Settings = () => {
       props.heatmap = !heatmap;
     });
   }, [setProp, heatmap]);
+
+  const handleSort = useCallback(
+    ({ value }: IOption) => {
+      setProp((props: Props) => {
+        props.sort = value;
+      });
+    },
+    [setProp]
+  );
 
   const relevantAnalyses = analyses?.data.filter(
     (analysis) =>
@@ -236,6 +257,18 @@ const Settings = () => {
             />
           </Box>
         ))}
+
+      {showSortSettings && (
+        <Box mb="20px">
+          <Select
+            label={formatMessage(messages.sort)}
+            options={sortOptions}
+            value={sort || 'count'}
+            onChange={handleSort}
+            dataCy="sort-select"
+          />
+        </Box>
+      )}
 
       {showHeatmapSettings && (
         <Box my="32px">

@@ -29,9 +29,12 @@ resource 'Ideas' do
       enabled: true
     )
     create(:permissions_custom_field, custom_field: @user_select_field, permission: @permission)
+
+    # Create another user field (but that is not added as permissions_custom_field)
+    create(:custom_field_select, :for_registration, :with_options, key: 'favorite_color', enabled: true)
   end
 
-  # This endpoint is used in the context of ideation in 3 situations:
+  # This endpoint is used in the context of surveys in 3 situations:
   # 1. The user is a visitor and permitted_by is everyone.
   #   In this case, the whole survey gets submitted at once at the end in one POST request.
   # 2. The user is logged in and the survey has >1 page.
@@ -46,7 +49,8 @@ resource 'Ideas' do
     context 'when visitor and permitted_by is everyone' do
       before do
         @permission.update!(
-          permitted_by: 'everyone'
+          permitted_by: 'everyone',
+          user_data_collection: 'all_data'
         )
       end
 
@@ -57,7 +61,8 @@ resource 'Ideas' do
             project_id: @project.id,
             @custom_field.key => 'option2',
             u_user_select_field: 'option1',
-            u_nonexistent_field: 'whatever'
+            u_nonexistent_field: 'whatever', # key has no custom field so should be filtered out
+            u_favorite_color: 'green' # custom field is not a permissions_custom_field so should be filtered out
           }
         })
 
@@ -67,6 +72,44 @@ resource 'Ideas' do
           @custom_field.key => 'option2',
           'u_user_select_field' => 'option1'
         })
+      end
+
+      it 'issues claim token' do
+        do_request({
+          idea: {
+            publication_status: 'published',
+            project_id: @project.id,
+            @custom_field.key => 'option2',
+            u_user_select_field: 'option1'
+          }
+        })
+
+        assert_status 201
+        expect(Idea.count).to eq 1
+        expect(response_data[:attributes][:claim_token]).to eq(Idea.first.claim_token.token)
+      end
+
+      context 'user_data_collection = anonymous' do
+        before do
+          @permission.update!(
+            user_data_collection: 'anonymous'
+          )
+        end
+
+        it 'does not issue claim token' do
+          do_request({
+            idea: {
+              publication_status: 'published',
+              project_id: @project.id,
+              @custom_field.key => 'option2',
+              u_user_select_field: 'option1'
+            }
+          })
+
+          assert_status 201
+          expect(Idea.count).to eq 1
+          expect(response_data[:attributes][:claim_token]).to be_nil
+        end
       end
     end
 
