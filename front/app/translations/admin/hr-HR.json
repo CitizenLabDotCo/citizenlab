@@ -1426,6 +1426,7 @@
   "app.containers.Admin.projects.project.insights.shared.topicsAutoDetected": "Teme koje umjetna inteligencija automatski generira iz sadržaja ideja",
   "app.containers.Admin.projects.project.insights.shared.unlockAiTopicClustering": "Otključaj AI grupiranje tema",
   "app.containers.Admin.projects.project.insights.shared.unlockTopicClustering": "Otključaj grupiranje tema",
+  "app.containers.Admin.projects.project.insights.shared.upgradeYourPlan": "Nadogradite svoj plan",
   "app.containers.Admin.projects.project.insights.shared.upsellTooltipMessage": "Ova značajka nije uključena u vaš trenutni plan. Obratite se svom voditelju za uspjeh u vladi ili administratoru da biste je otključali.",
   "app.containers.Admin.projects.project.insights.statements": "Izjave",
   "app.containers.Admin.projects.project.insights.statusBreakdown": "Raspodjela statusa",
