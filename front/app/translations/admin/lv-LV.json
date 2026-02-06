@@ -2964,6 +2964,8 @@
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Provide a tag name for all languages",
   "app.containers.AdminPage.Topics.inputTags": "Ievades tagi",
   "app.containers.AdminPage.Topics.lastTopicWarning3": "Nepieciešama vismaz viena birka. Ja nevēlaties izmantot tagus, elementu \"Tags\" var dzēst no jebkuras fāzes ievades veidlapas (ja tāda ir).",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "Ja šī funkcija ir iespējota, tagi tiek nepārtraukti radīti, atjaunināti un piešķirti ievades datiem, izmantojot mākslīgo intelektuālo intelektu.",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "Automātiski noteikt un piešķirt tagus",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "Create and manage the tags that citizens can use to categorize their inputs in this project.",
   "app.containers.AdminPage.Topics.save": "Save",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "Pievienot jaunu grupu",
