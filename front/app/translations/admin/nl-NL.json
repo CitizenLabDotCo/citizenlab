@@ -2964,6 +2964,8 @@
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Voer voor elke taal een tagnaam in",
   "app.containers.AdminPage.Topics.inputTags": "Tags voor bijdragen",
   "app.containers.AdminPage.Topics.lastTopicWarning3": "Minstens één tag is vereist. Als je geen tags wilt gebruiken, kun je het onderdeel 'Tags' verwijderen uit het invoerformulier van elke fase (indien aanwezig).",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "Als dit is ingeschakeld, worden er voortdurend tags aangemaakt, bijgewerkt en toegewezen aan ingangen, met behulp van AI.",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "Automatisch tags detecteren en toewijzen",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "Beheer de tags die burgers kunnen gebruiken om hun bijdragen aan dit project te categoriseren.",
   "app.containers.AdminPage.Topics.save": "Bewaar",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "Voeg een groep toe",
