@@ -2964,6 +2964,8 @@
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "ਸਾਰੀਆਂ ਭਾਸ਼ਾਵਾਂ ਲਈ ਇੱਕ ਟੈਗ ਨਾਮ ਪ੍ਰਦਾਨ ਕਰੋ",
   "app.containers.AdminPage.Topics.inputTags": "ਇਨਪੁੱਟ ਟੈਗ",
   "app.containers.AdminPage.Topics.lastTopicWarning3": "ਘੱਟੋ-ਘੱਟ ਇੱਕ ਟੈਗ ਦੀ ਲੋੜ ਹੈ। ਜੇਕਰ ਤੁਸੀਂ ਟੈਗਸ ਦੀ ਵਰਤੋਂ ਨਹੀਂ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹੋ, ਤਾਂ 'ਟੈਗਸ' ਆਈਟਮ ਨੂੰ ਕਿਸੇ ਵੀ ਪੜਾਅ ਦੇ ਇਨਪੁਟ ਫਾਰਮ (ਜੇਕਰ ਮੌਜੂਦ ਹੈ) ਤੋਂ ਮਿਟਾ ਦਿੱਤਾ ਜਾ ਸਕਦਾ ਹੈ।",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "ਜਦੋਂ ਸਮਰੱਥ ਬਣਾਇਆ ਜਾਂਦਾ ਹੈ, ਤਾਂ AI ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋਏ, ਟੈਗ ਲਗਾਤਾਰ ਬਣਾਏ ਜਾਂਦੇ ਹਨ, ਅੱਪਡੇਟ ਕੀਤੇ ਜਾਂਦੇ ਹਨ ਅਤੇ ਇਨਪੁਟਸ ਨੂੰ ਨਿਰਧਾਰਤ ਕੀਤੇ ਜਾਂਦੇ ਹਨ।",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "ਟੈਗਸ ਨੂੰ ਆਟੋਮੈਟਿਕਲੀ ਖੋਜੋ ਅਤੇ ਨਿਰਧਾਰਤ ਕਰੋ",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "ਇਸ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਆਪਣੇ ਇਨਪੁਟਸ ਨੂੰ ਸ਼੍ਰੇਣੀਬੱਧ ਕਰਨ ਲਈ ਨਾਗਰਿਕ ਜੋ ਟੈਗ ਵਰਤ ਸਕਦੇ ਹਨ, ਉਹਨਾਂ ਨੂੰ ਬਣਾਓ ਅਤੇ ਪ੍ਰਬੰਧਿਤ ਕਰੋ।",
   "app.containers.AdminPage.Topics.save": "ਸੇਵ ਕਰੋ",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "ਇੱਕ ਨਵਾਂ ਸਮੂਹ ਸ਼ਾਮਲ ਕਰੋ",
