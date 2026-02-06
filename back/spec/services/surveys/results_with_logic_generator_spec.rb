@@ -337,15 +337,15 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
       responses = generator.send(:seen_field_responses)
       expect(responses.count).to eq 9
       expect(responses).to match({
-        page1.id => [response1.id, response2.id, response3.id],
-        page1_select.id => [response1.id, response2.id, response3.id],
-        page2.id => [response1.id, response2.id, response3.id],
-        page2_linear_scale.id => [response1.id, response2.id, response3.id],
-        page3.id => [response1.id, response2.id, response3.id],
-        page3_text.id => [response1.id, response2.id, response3.id],
-        page4.id => [response1.id, response2.id, response3.id],
-        page4_text.id => [response1.id, response2.id, response3.id],
-        page5.id => [response1.id, response2.id, response3.id]
+        page1.id => contain_exactly(response1.id, response2.id, response3.id),
+        page1_select.id => contain_exactly(response1.id, response2.id, response3.id),
+        page2.id => contain_exactly(response1.id, response2.id, response3.id),
+        page2_linear_scale.id => contain_exactly(response1.id, response2.id, response3.id),
+        page3.id => contain_exactly(response1.id, response2.id, response3.id),
+        page3_text.id => contain_exactly(response1.id, response2.id, response3.id),
+        page4.id => contain_exactly(response1.id, response2.id, response3.id),
+        page4_text.id => contain_exactly(response1.id, response2.id, response3.id),
+        page5.id => contain_exactly(response1.id, response2.id, response3.id)
       })
     end
 
@@ -360,15 +360,15 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
       responses = generator.send(:seen_field_responses)
       expect(responses.count).to eq 9
       expect(responses).to match({
-        page1.id => [response1.id, response2.id, response3.id],
-        page1_select.id => [response1.id, response2.id, response3.id],
-        page2.id => [response2.id],
-        page2_linear_scale.id => [response2.id],
-        page3.id => [response2.id],
-        page3_text.id => [response2.id],
-        page4.id => [response2.id],
-        page4_text.id => [response2.id],
-        page5.id => [response1.id, response2.id, response3.id]
+        page1.id => contain_exactly(response1.id, response2.id, response3.id),
+        page1_select.id => contain_exactly(response1.id, response2.id, response3.id),
+        page2.id => contain_exactly(response2.id),
+        page2_linear_scale.id => contain_exactly(response2.id),
+        page3.id => contain_exactly(response2.id),
+        page3_text.id => contain_exactly(response2.id),
+        page4.id => contain_exactly(response2.id),
+        page4_text.id => contain_exactly(response2.id),
+        page5.id => contain_exactly(response1.id, response2.id, response3.id)
       })
     end
 
@@ -383,15 +383,15 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
       responses = generator.send(:seen_field_responses)
       expect(responses.count).to eq 9
       expect(responses).to match({
-        page1.id => [response1.id, response2.id, response3.id],
-        page1_select.id => [response1.id, response2.id, response3.id],
-        page2.id => [response1.id, response2.id, response3.id],
-        page2_linear_scale.id => [response1.id, response2.id, response3.id],
-        page3.id => [response3.id],
-        page3_text.id => [response3.id],
-        page4.id => [response1.id, response2.id, response3.id],
-        page4_text.id => [response1.id, response2.id, response3.id],
-        page5.id => [response1.id, response2.id, response3.id]
+        page1.id => contain_exactly(response1.id, response2.id, response3.id),
+        page1_select.id => contain_exactly(response1.id, response2.id, response3.id),
+        page2.id => contain_exactly(response1.id, response2.id, response3.id),
+        page2_linear_scale.id => contain_exactly(response1.id, response2.id, response3.id),
+        page3.id => contain_exactly(response3.id),
+        page3_text.id => contain_exactly(response3.id),
+        page4.id => contain_exactly(response1.id, response2.id, response3.id),
+        page4_text.id => contain_exactly(response1.id, response2.id, response3.id),
+        page5.id => contain_exactly(response1.id, response2.id, response3.id)
       })
     end
 
@@ -411,13 +411,13 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
       responses = generator.send(:seen_field_responses)
       expect(responses.count).to eq 7
       expect(responses).to match({
-        page1.id => [response1.id, response2.id, response3.id],
-        page1_select.id => [response1.id, response2.id, response3.id],
-        page2.id => [response1.id, response3.id],
-        page2_linear_scale.id => [response1.id, response3.id],
-        page4.id => [response2.id],
-        page4_text.id => [response2.id],
-        page5.id => [response1.id, response2.id, response3.id]
+        page1.id => contain_exactly(response1.id, response2.id, response3.id),
+        page1_select.id => contain_exactly(response1.id, response2.id, response3.id),
+        page2.id => contain_exactly(response1.id, response3.id),
+        page2_linear_scale.id => contain_exactly(response1.id, response3.id),
+        page4.id => contain_exactly(response2.id),
+        page4_text.id => contain_exactly(response2.id),
+        page5.id => contain_exactly(response1.id, response2.id, response3.id)
       })
     end
   end
