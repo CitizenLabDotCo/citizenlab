@@ -291,6 +291,46 @@ RSpec.describe Phase do
     end
   end
 
+  describe '::current' do
+    let(:timeline_service) { TimelineService.new }
+
+    it 'returns phases that have started and not yet ended' do
+      phase = create(:phase, start_at: 5.days.ago, end_at: 5.days.from_now)
+      expect(described_class.current).to include(phase)
+      expect(timeline_service.current_phase(phase.project)).to eq(phase)
+    end
+
+    it 'returns phases starting today' do
+      phase = create(:phase, start_at: Time.zone.today, end_at: 5.days.from_now)
+      expect(described_class.current).to include(phase)
+      expect(timeline_service.current_phase(phase.project)).to eq(phase)
+    end
+
+    it 'returns phases ending today' do
+      phase = create(:phase, start_at: 5.days.ago, end_at: Time.zone.today)
+      expect(described_class.current).to include(phase)
+      expect(timeline_service.current_phase(phase.project)).to eq(phase)
+    end
+
+    it 'returns phases with no end date that have started' do
+      phase = create(:phase, start_at: 5.days.ago, end_at: nil)
+      expect(described_class.current).to include(phase)
+      expect(timeline_service.current_phase(phase.project)).to eq(phase)
+    end
+
+    it 'excludes phases that have not started yet' do
+      phase = create(:phase, start_at: 1.day.from_now, end_at: 5.days.from_now)
+      expect(described_class.current).not_to include(phase)
+      expect(timeline_service.current_phase(phase.project)).to be_nil
+    end
+
+    it 'excludes phases that have already ended' do
+      phase = create(:phase, start_at: 10.days.ago, end_at: 1.day.ago)
+      expect(described_class.current).not_to include(phase)
+      expect(timeline_service.current_phase(phase.project)).to be_nil
+    end
+  end
+
   describe 'native_survey_title_multiloc and native_survey_button_multiloc' do
     %i[
       native_survey_phase

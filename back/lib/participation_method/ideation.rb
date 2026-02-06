@@ -444,6 +444,10 @@ module ParticipationMethod
       true
     end
 
+    def supports_input_topics?
+      true
+    end
+
     def transitive?
       true
     end
