@@ -50,7 +50,7 @@ const Settings = () => {
     groupMode,
     groupFieldId,
     heatmap,
-    sort,
+    optionsSortOrder,
   } = useNode<Props>((node) => ({
     title: node.data.props.title,
     projectId: node.data.props.projectId,
@@ -59,7 +59,7 @@ const Settings = () => {
     groupMode: node.data.props.groupMode,
     groupFieldId: node.data.props.groupFieldId,
     heatmap: node.data.props.heatmap,
-    sort: node.data.props.sort,
+    optionsSortOrder: node.data.props.optionsSortOrder,
   }));
 
   const { data: questions } = useRawCustomFields({ phaseId });
@@ -164,7 +164,7 @@ const Settings = () => {
   const handleSort = useCallback(
     ({ value }: IOption) => {
       setProp((props: Props) => {
-        props.sort = value;
+        props.optionsSortOrder = value;
       });
     },
     [setProp]
@@ -263,7 +263,7 @@ const Settings = () => {
           <Select
             label={formatMessage(messages.sort)}
             options={sortOptions}
-            value={sort || 'count'}
+            value={optionsSortOrder || 'count'}
             onChange={handleSort}
             dataCy="sort-select"
           />
