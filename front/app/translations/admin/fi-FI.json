@@ -2962,6 +2962,8 @@
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Anna tagin nimi kaikille kielille",
   "app.containers.AdminPage.Topics.inputTags": "Syöttötagit",
   "app.containers.AdminPage.Topics.lastTopicWarning3": "Vähintään yksi tagi vaaditaan. Jos et halua käyttää tageja, 'Tunnisteet'-kohta voidaan poistaa minkä tahansa vaiheen syöttölomakkeesta (jos sellainen on).",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "Kun tämä on käytössä, tageja luodaan, päivitetään ja liitetään syötteisiin jatkuvasti tekoälyn avulla.",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "Tunnisteiden automaattinen tunnistus ja määrittäminen",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "Luo ja hallinnoi tunnisteita, joita kansalaiset voivat käyttää luokitellakseen syötteitään tässä projektissa.",
   "app.containers.AdminPage.Topics.save": "Tallentaa",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "Lisää uusi ryhmä",

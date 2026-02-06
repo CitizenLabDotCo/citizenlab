@@ -2962,6 +2962,8 @@
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Provide a tag name for all languages",
   "app.containers.AdminPage.Topics.inputTags": "Įvesties žymos",
   "app.containers.AdminPage.Topics.lastTopicWarning3": "Būtina bent viena žyma. Jei nenorite naudoti žymių, elementą \"Žymos\" galima ištrinti iš bet kurios fazės įvesties formos (jei yra).",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "Kai ši funkcija įjungta, žymos nuolat kuriamos, atnaujinamos ir priskiriamos įvestims naudojant dirbtinį intelektą.",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "Automatiškai aptikti ir priskirti žymas",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "Create and manage the tags that citizens can use to categorize their inputs in this project.",
   "app.containers.AdminPage.Topics.save": "Save",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "Pridėti naują grupę",

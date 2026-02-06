@@ -2962,6 +2962,8 @@
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Provide a tag name for all languages",
   "app.containers.AdminPage.Topics.inputTags": "Tags de entrada",
   "app.containers.AdminPage.Topics.lastTopicWarning3": "Pelo menos uma tag é necessária. Se você não quiser usar tags, o item \"Tags\" poderá ser excluído do formulário de entrada de qualquer fase (se houver).",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "Quando ativadas, as tags são continuamente criadas, atualizadas e atribuídas a entradas, usando IA.",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "Detectar e atribuir tags automaticamente",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "Create and manage the tags that citizens can use to categorize their inputs in this project.",
   "app.containers.AdminPage.Topics.save": "Save",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "Adionar um novo grupo",
