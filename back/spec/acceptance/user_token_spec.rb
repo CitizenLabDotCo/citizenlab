@@ -223,6 +223,7 @@ resource 'User Token' do
       context 'when password_login is disabled' do
         before do
           SettingsService.new.deactivate_feature! 'password_login'
+          allow(Time).to receive(:now).and_return(Time.now)
         end
 
         let(:email) { 'test@email.com' }
@@ -230,10 +231,6 @@ resource 'User Token' do
         let(:remember_me) { false }
 
         let!(:user) { create(:user, email: email, password: password) }
-
-        before do
-          allow(Time).to receive(:now).and_return(Time.now)
-        end
 
         example_request '[error] no JWT token is returned' do
           assert_status 404
