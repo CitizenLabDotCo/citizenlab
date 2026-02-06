@@ -107,11 +107,11 @@ describe IdeaFeed::TopicClassificationService do
     end
 
     it 'enqueues multiple batch jobs when ideas exceed batch size' do
-      create_list(:idea, 50, project:, phases: [phase], input_topics: [])
+      create_list(:idea, 25, project:, phases: [phase], input_topics: []) # rubocop:disable FactoryBot/ExcessiveCreateList
 
       expect do
         service.classify_all_inputs_in_background!
-      end.to have_enqueued_job(IdeaFeed::BatchTopicClassificationJob).exactly(3).times # 24 + 24 + 2
+      end.to have_enqueued_job(IdeaFeed::BatchTopicClassificationJob).exactly(2).times
     end
   end
 

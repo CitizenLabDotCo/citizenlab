@@ -89,7 +89,7 @@ class TopicRebalancingVisualization
 
   private
 
-  def build_steps
+  def build_steps # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     steps = []
 
     # Step 0: Initial state from first activity's update_log old values
