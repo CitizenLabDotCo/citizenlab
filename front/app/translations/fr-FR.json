@@ -274,7 +274,7 @@
   "app.components.FormBuilder.components.FormBuilderTopBar.superAdmin.schemaEdit": "Modifier le schéma",
   "app.components.FormBuilder.components.FormBuilderTopBar.superAdmin.schemaParseError": "JSON invalide",
   "app.components.FormBuilder.components.FormBuilderTopBar.superAdmin.schemaSave": "Enregistrer",
-  "app.components.FormBuilder.components.FormBuilderTopBar.superAdmin.schemaSaveDisabled": "Impossible d'enregistrer le schéma sur les plates-formes actives lorsqu'il y a des réponses à l'enquête",
+  "app.components.FormBuilder.components.FormBuilderTopBar.superAdmin.schemaSaveDisabled": "Impossible d'enregistrer le schéma sur une plateforme active lorsqu'il y a déjà des réponses à l'enquête",
   "app.components.GanttChart.timeRange.month": "Mois",
   "app.components.GanttChart.timeRange.quarter": "Trimestre",
   "app.components.GanttChart.timeRange.timeRangeMultiyear": "Pluriannuel",
