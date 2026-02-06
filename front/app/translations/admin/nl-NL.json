@@ -1361,7 +1361,7 @@
   "app.containers.Admin.projects.project.insights.comments": "Reacties",
   "app.containers.Admin.projects.project.insights.commonGroundStatements": "Stellingen",
   "app.containers.Admin.projects.project.insights.completionRate": "Voltooiingspercentage",
-  "app.containers.Admin.projects.project.insights.completionRateExplanationTooltip": "Het aantal ingediende enquêtereacties gedeeld door het totale aantal enquêtereacties (inclusief 'concept', niet-ingediende reacties), uitgedrukt als percentage.",
+  "app.containers.Admin.projects.project.insights.completionRateExplanationTooltip": "Het aantal ingediende vragenlijstreacties gedeeld door het totale aantal vragenlijstreacties (inclusief 'concept', niet-ingediende reacties), uitgedrukt als percentage.",
   "app.containers.Admin.projects.project.insights.count": "Aantal",
   "app.containers.Admin.projects.project.insights.deleteSurveyResults": "Resultaten van de vragenlijst verwijderen",
   "app.containers.Admin.projects.project.insights.demographicsAndAudience": "Demografie en publiek",
