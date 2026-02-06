@@ -201,7 +201,6 @@ const BottomSheet = ({
   };
 
   const handleCollapse = () => {
-    // Only call callback - let URL be the source of truth for isFullscreen
     onCollapse?.();
   };
 
