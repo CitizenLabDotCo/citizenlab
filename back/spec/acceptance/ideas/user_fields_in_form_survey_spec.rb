@@ -221,6 +221,19 @@ resource 'Ideas' do
           @permission.update!(
             user_data_collection: 'all_data'
           )
+
+          # Create locked field
+          create(
+            :permissions_custom_field, 
+            permission: @permission, 
+            required: true,
+            custom_field: create(
+              :custom_field_select,
+              :for_registration,
+              :with_options,
+              key: 'locked_field'
+            )
+          )
         end
 
         let(:idea) do
@@ -256,6 +269,27 @@ resource 'Ideas' do
           user = User.find(@user.id)
           expect(user.reload.custom_field_values).to eq({
             'user_select_field' => 'option1'
+          })
+        end
+
+        it 'does not update locked field' do
+          create(:idea, custom_field_values: { @custom_field.key => 'option2' })
+          @user.update!(custom_field_values: { 'locked_field' => 'option1' })
+
+          do_request({
+            idea: {
+              publication_status: 'published',
+              'u_user_select_field' => 'option1',
+              'u_locked_field' => 'option2',
+              @custom_field.key => 'option2'
+            }
+          })
+
+          assert_status 200
+          user = User.find(@user.id)
+          expect(user.reload.custom_field_values).to eq({
+            'user_select_field' => 'option1',
+            'locked_field' => 'option1'
           })
         end
       end
