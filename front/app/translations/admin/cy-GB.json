@@ -2964,6 +2964,8 @@
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Darparwch enw tag ar gyfer pob iaith",
   "app.containers.AdminPage.Topics.inputTags": "Tagiau mewnbwn",
   "app.containers.AdminPage.Topics.lastTopicWarning3": "Mae angen o leiaf un tag. Os nad ydych chi am ddefnyddio tagiau, gellir dileu'r eitem 'Tagiau' o ffurflen fewnbwn unrhyw gam (os yw'n bresennol).",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "Pan fyddant wedi'u galluogi, mae tagiau'n cael eu creu, eu diweddaru a'u neilltuo i fewnbynnau yn barhaus, gan ddefnyddio AI.",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "Canfod a neilltuo tagiau'n awtomatig",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "Creu a rheoli'r tagiau y gall dinasyddion eu defnyddio i gategoreiddio eu mewnbynnau yn y prosiect hwn.",
   "app.containers.AdminPage.Topics.save": "Cadw",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "Ychwanegu grŵp newydd",
