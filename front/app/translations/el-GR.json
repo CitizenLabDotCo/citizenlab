@@ -1195,7 +1195,6 @@
   "app.containers.AreaTerms.areaTerm": "περιοχή",
   "app.containers.AreaTerms.areasTerm": "περιοχές",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Ένας λογαριασμός με αυτό το email υπάρχει ήδη. Μπορείτε να αποσυνδεθείτε, να συνδεθείτε με αυτή τη διεύθυνση ηλεκτρονικού ταχυδρομείου και να επαληθεύσετε το λογαριασμό σας στη σελίδα ρυθμίσεων.",
-  "app.containers.Authentication.createAnAccount": "Δημιουργία λογαριασμού",
   "app.containers.Authentication.steps.AccessDenied.close": "Κλείστε το",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Δεν πληροίτε τις προϋποθέσεις για να συμμετάσχετε σε αυτή τη διαδικασία.",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Κάντε κλικ εδώ για να συνδεθείτε ως διαχειριστής ή διαχειριστής έργου",

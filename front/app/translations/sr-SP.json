@@ -1195,7 +1195,6 @@
   "app.containers.AreaTerms.areaTerm": "area",
   "app.containers.AreaTerms.areasTerm": "areas",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Налог са овом е-поштом већ постоји. Можете се одјавити, пријавити са овом адресом е-поште и верификовати свој налог на страници са подешавањима.",
-  "app.containers.Authentication.createAnAccount": "Create an account",
   "app.containers.Authentication.steps.AccessDenied.close": "Close",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "You do not meet the requirements to participate in this process.",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Click here to login as admin or project manager",
