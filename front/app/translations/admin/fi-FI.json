@@ -1426,6 +1426,7 @@
   "app.containers.Admin.projects.project.insights.shared.topicsAutoDetected": "Tekoälyn automaattisesti ideasisällöstä luomat aiheet",
   "app.containers.Admin.projects.project.insights.shared.unlockAiTopicClustering": "Avaa tekoälyn aiheklusterointi",
   "app.containers.Admin.projects.project.insights.shared.unlockTopicClustering": "Avaa aiheryhmittely",
+  "app.containers.Admin.projects.project.insights.shared.upgradeYourPlan": "Päivitä sopimuksesi",
   "app.containers.Admin.projects.project.insights.shared.upsellTooltipMessage": "Tämä ominaisuus ei sisälly nykyiseen sopimukseesi. Ota yhteyttä Government Success Manageriin tai ylläpitäjään avataksesi sen.",
   "app.containers.Admin.projects.project.insights.statements": "Lausunnot",
   "app.containers.Admin.projects.project.insights.statusBreakdown": "Tilaerittely",
