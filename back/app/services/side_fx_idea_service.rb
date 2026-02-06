@@ -260,6 +260,7 @@ class SideFxIdeaService
 
   def enqueue_topic_classification_job(idea)
     return unless idea.project.live_auto_input_topics_enabled
+    return if idea.input_topics.any?
 
     current_phase = TimelineService.new.current_phase(idea.project)
     return unless current_phase.pmethod.supports_input_topics?

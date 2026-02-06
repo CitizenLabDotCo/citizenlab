@@ -192,6 +192,15 @@ describe SideFxIdeaService do
       expect { service.after_create(idea, user, phase) }
         .not_to enqueue_job(IdeaFeed::BatchTopicClassificationJob)
     end
+
+    it "doesn't enqueue an IdeaFeed::BatchTopicClassificationJob if topics are already assigned" do
+      idea = create(:idea)
+      idea.project.update!(live_auto_input_topics_enabled: true)
+      topic = create(:input_topic, project: idea.project)
+      idea.update!(input_topics: [topic])
+      expect { service.after_create(idea, user, phase) }
+        .not_to enqueue_job(IdeaFeed::BatchTopicClassificationJob)
+    end
   end
 
   describe 'after_update' do
