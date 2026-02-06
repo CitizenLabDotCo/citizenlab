@@ -2964,6 +2964,8 @@
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Provide a tag name for all languages",
   "app.containers.AdminPage.Topics.inputTags": "Taggar för inmatning",
   "app.containers.AdminPage.Topics.lastTopicWarning3": "Minst en tagg krävs. Om du inte vill använda taggar kan du ta bort \"Tags\"-posten från inmatningsformuläret för en fas (om det finns).",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "När den är aktiverad skapas, uppdateras och tilldelas taggar kontinuerligt till inmatningar med hjälp av AI.",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "Automatisk upptäckt och tilldelning av taggar",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "Create and manage the tags that citizens can use to categorize their inputs in this project.",
   "app.containers.AdminPage.Topics.save": "Save",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "Lägg till en ny grupp",
