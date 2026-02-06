@@ -453,7 +453,7 @@ RSpec.shared_context 'survey_setup' do
 
   # Helper methods
   def result_index(field)
-    form.custom_fields.enabled.index(field)
+    form.custom_fields.enabled.order(:ordering).index(field)
   end
 
   def reset_survey_logic!
