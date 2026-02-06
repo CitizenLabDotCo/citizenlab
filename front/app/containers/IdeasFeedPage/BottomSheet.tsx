@@ -96,6 +96,7 @@ const BottomSheet = ({
   const dragStartY = useRef<number | null>(null);
   const hasPeeked = useRef(false);
   const hasDragged = useRef(false);
+  const touchHandled = useRef(false);
 
   // Update windowHeight on resize to keep handle position consistent
   useEffect(() => {
@@ -156,14 +157,13 @@ const BottomSheet = ({
 
     if (hadDragged && Math.abs(delta) >= SWIPE_THRESHOLD) {
       const willBeFullscreen = delta < 0;
-      // Only call callbacks - let URL be the source of truth for isFullscreen
       if (willBeFullscreen) {
         onExpand?.();
       } else {
         onCollapse?.();
       }
     } else if (!hadDragged) {
-      // Tap detected - toggle via callbacks only
+      // Tap detected
       if (isFullscreen) {
         onCollapse?.();
       } else {
@@ -172,14 +172,20 @@ const BottomSheet = ({
     }
   };
 
-  const handleTouchStart = (e: React.TouchEvent) =>
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchHandled.current = true;
     handleDragStart(e.touches[0].clientY);
+  };
   const handleTouchMove = (e: React.TouchEvent) =>
     handleDragMove(e.touches[0].clientY);
   const handleTouchEnd = (e: React.TouchEvent) =>
     handleDragEnd(e.changedTouches[0].clientY);
 
   const handleMouseDown = (e: React.MouseEvent) => {
+    if (touchHandled.current) {
+      touchHandled.current = false;
+      return;
+    }
     e.preventDefault();
     handleDragStart(e.clientY);
 
