@@ -7,7 +7,7 @@
 
 module Surveys
   class ResultsGenerator < FieldVisitorService
-    # sort: 'count' (default) sorts by count descending, 'original' preserves option order
+    # sort: 'count' (default) sorts options by count descending, 'original' preserves option order
     def initialize(phase, structure_by_category: false, sort: 'count')
       super()
       @phase = phase
