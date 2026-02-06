@@ -2964,6 +2964,8 @@
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "Navedite naziv oznake za sve jezike",
   "app.containers.AdminPage.Topics.inputTags": "Ulazne oznake",
   "app.containers.AdminPage.Topics.lastTopicWarning3": "Potrebna je barem jedna oznaka. Ako ne želite koristiti oznake, stavku 'Oznake' možete izbrisati iz obrasca za unos bilo koje faze (ako postoji).",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "Kada je omogućeno, oznake se kontinuirano stvaraju, ažuriraju i dodjeljuju ulazima pomoću umjetne inteligencije.",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "Automatsko otkrivanje i dodjeljivanje oznaka",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "Izradite i upravljajte oznakama koje građani mogu koristiti za kategorizaciju svojih doprinosa u ovom projektu.",
   "app.containers.AdminPage.Topics.save": "Uštedjeti",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "Dodaj novu grupu",
