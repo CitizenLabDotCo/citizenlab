@@ -4,15 +4,18 @@ export interface Props extends TimeSeriesWidgetProps {
   compareStartAt?: string;
   compareEndAt?: string;
   hideStatistics?: boolean;
+  showActiveStats?: boolean;
 }
 
 export type Stat = {
-  value: number;
-  change?: number;
+  registered: number;
+  active: number;
+  activeDelta?: number;
+  registeredDelta?: number;
 };
 
 export type Stats = {
-  activeAdmins: Stat;
-  activeModerators: Stat;
-  totalAdminPm: Stat;
+  admins: Stat;
+  moderators: Stat;
+  total: Stat;
 };
