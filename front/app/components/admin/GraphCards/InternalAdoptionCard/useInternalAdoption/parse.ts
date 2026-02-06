@@ -5,7 +5,6 @@ import {
   TimeSeriesResponseRow,
 } from 'api/graph_data_units/responseTypes/InternalAdoptionWidget';
 
-import { RESOLUTION_TO_MESSAGE_KEY } from 'components/admin/GraphCards/_utils/resolution';
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
 import { IResolution } from 'components/admin/ResolutionControl';
 
@@ -61,27 +60,20 @@ export const parseTimeSeries = (
 export const parseStats = (
   attributes: InternalAdoptionResponse['data']['attributes']
 ): Stats => {
-  const {
-    active_admins_count,
-    active_moderators_count,
-    total_admin_pm_count,
-    active_admins_compared,
-    active_moderators_compared,
-    total_admin_pm_compared,
-  } = attributes;
+  const { admin_counts, moderator_counts } = attributes;
 
   return {
-    activeAdmins: {
-      value: active_admins_count,
-      lastPeriod: active_admins_compared,
+    admins: {
+      registered: admin_counts.registered,
+      active: admin_counts.active,
     },
-    activeModerators: {
-      value: active_moderators_count,
-      lastPeriod: active_moderators_compared,
+    moderators: {
+      registered: moderator_counts.registered,
+      active: moderator_counts.active,
     },
-    totalAdminPm: {
-      value: total_admin_pm_count,
-      lastPeriod: total_admin_pm_compared,
+    total: {
+      registered: admin_counts.registered + moderator_counts.registered,
+      active: admin_counts.active + moderator_counts.active,
     },
   };
 };
@@ -89,15 +81,12 @@ export const parseStats = (
 export const parseExcelData = (
   stats: Stats,
   timeSeries: CombinedTimeSeriesRow[] | null,
-  resolution: IResolution,
   translations: Translations
 ) => {
-  const lastPeriod = translations[RESOLUTION_TO_MESSAGE_KEY[resolution]];
-
   const statsData = keys(stats).map((key) => ({
     [translations.statistic]: translations[key],
-    [translations.total]: stats[key].value,
-    [lastPeriod]: stats[key].lastPeriod,
+    [translations.registered]: stats[key].registered,
+    [translations.active]: stats[key].active,
   }));
 
   const timeSeriesData = timeSeries?.map((row) => ({

@@ -2,8 +2,8 @@
 
 module Surveys
   class ResultsWithDateGenerator < ResultsGenerator
-    def initialize(phase, structure_by_category: false, year: nil, quarter: nil)
-      super(phase, structure_by_category: structure_by_category)
+    def initialize(phase, structure_by_category: false, year: nil, quarter: nil, sort: 'count')
+      super(phase, structure_by_category: structure_by_category, sort: sort)
       @year = year&.to_i
       @quarter = quarter&.to_i
       filter_inputs_by_quarter
@@ -16,7 +16,7 @@ module Surveys
 
       raise ArgumentError, 'Invalid date format' unless valid_quarter?
 
-      @inputs = @inputs.where(created_at: quarter_to_date_range(@year, @quarter))
+      @all_inputs = @all_inputs.where(created_at: quarter_to_date_range(@year, @quarter))
     end
 
     def add_averages(results)

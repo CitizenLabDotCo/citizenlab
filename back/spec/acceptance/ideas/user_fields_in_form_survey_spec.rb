@@ -29,6 +29,9 @@ resource 'Ideas' do
       enabled: true
     )
     create(:permissions_custom_field, custom_field: @user_select_field, permission: @permission)
+
+    # Create another user field (but that is not added as permissions_custom_field)
+    create(:custom_field_select, :for_registration, :with_options, key: 'favorite_color', enabled: true)
   end
 
   # This endpoint is used in the context of surveys in 3 situations:
@@ -58,7 +61,8 @@ resource 'Ideas' do
             project_id: @project.id,
             @custom_field.key => 'option2',
             u_user_select_field: 'option1',
-            u_nonexistent_field: 'whatever'
+            u_nonexistent_field: 'whatever', # key has no custom field so should be filtered out
+            u_favorite_color: 'green' # custom field is not a permissions_custom_field so should be filtered out
           }
         })
 

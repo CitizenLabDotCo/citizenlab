@@ -21,6 +21,7 @@ const InternalAdoptionCard = ({
   compareStartAt,
   compareEndAt,
   hideStatistics = false,
+  showActiveStats = false,
   ariaLabel,
   ariaDescribedBy,
 }: Props & AccessibilityProps) => {
@@ -35,9 +36,9 @@ const InternalAdoptionCard = ({
   const previousDays = getDaysInRange(startAt, endAt);
 
   if (
-    stats?.activeAdmins.value === 0 &&
-    stats.activeModerators.value === 0 &&
-    stats.totalAdminPm.value === 0
+    stats?.admins.active === 0 &&
+    stats.moderators.active === 0 &&
+    stats.total.registered === 0
   ) {
     return <NoData message={chartWidgetMessages.noData} />;
   }
@@ -45,7 +46,11 @@ const InternalAdoptionCard = ({
   return (
     <Box className="e2e-internal-adoption-widget" height="100%">
       {!hideStatistics && stats && (
-        <Statistics stats={stats} previousDays={previousDays} />
+        <Statistics
+          stats={stats}
+          previousDays={previousDays}
+          showActiveStats={showActiveStats}
+        />
       )}
       <Box
         flexGrow={1}
