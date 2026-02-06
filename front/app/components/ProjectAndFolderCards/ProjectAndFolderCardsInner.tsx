@@ -75,8 +75,10 @@ const ProjectAndFolderCardsInner = ({
     );
     if (!cards) return;
 
-    // Focus only if new cards were added
-    if (adminPublications.length > visibileCardsLength.current) {
+    if (
+      adminPublications.length > visibileCardsLength.current &&
+      visibileCardsLength.current > 0
+    ) {
       cards[visibileCardsLength.current].focus();
       cards[visibileCardsLength.current].scrollIntoView({
         behavior: 'smooth',
@@ -84,7 +86,6 @@ const ProjectAndFolderCardsInner = ({
       });
     }
 
-    // Update previous length (handles tab change or new cards)
     visibileCardsLength.current = adminPublications.length;
   }, [adminPublications, currentTab]);
 
