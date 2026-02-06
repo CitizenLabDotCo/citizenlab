@@ -284,6 +284,20 @@ resource 'User Token' do
         end
       end
     end
+
+    context 'when password_login is disabled' do
+      before do
+        SettingsService.new.deactivate_feature! 'password_login'
+      end
+
+      it 'does not allow a regular user to log in with a password' do
+        # TODO
+      end
+
+      it 'does allow a super admin to log in with a password' do
+        # TODO
+      end
+    end
   end
 
   post 'web_api/v1/user_token/unconfirmed' do
