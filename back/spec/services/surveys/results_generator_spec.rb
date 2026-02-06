@@ -523,18 +523,18 @@ RSpec.describe Surveys::ResultsGenerator do
         expect(generated_results[:results][result_index(select_field)]).to match expected_result_select
       end
 
-      # it 'returns select answers in order of the number of responses, with other always last' do
-      #   answers = generated_results[:results][result_index(select_field)][:answers]
-      #   expect(answers.pluck(:answer)).to eq [nil, 'la', 'ny', 'other']
-      #   expect(answers.pluck(:count)).to eq [21, 2, 1, 3]
-      # end
+      it 'returns select answers in order of the number of responses, with other always last' do
+        answers = generated_results[:results][result_index(select_field)][:answers]
+        expect(answers.pluck(:answer)).to eq [nil, 'la', 'ny', 'other']
+        expect(answers.pluck(:count)).to eq [21, 2, 1, 3]
+      end
 
       context "when sort is 'original'" do
         subject(:generator) { described_class.new(survey_phase, sort: 'original') }
 
         it 'returns select answers in original field option order, with other always last' do
           results = generator.generate_results
-          answers = results[:results][5][:answers]
+          answers = results[:results][result_index(select_field)][:answers]
           expect(answers.pluck(:answer)).to eq ['la', 'ny', nil, 'other']
         end
       end
