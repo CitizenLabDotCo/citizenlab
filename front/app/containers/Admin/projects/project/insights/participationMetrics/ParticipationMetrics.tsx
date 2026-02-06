@@ -79,6 +79,7 @@ const ParticipationMetrics = ({ phase }: Props) => {
         change={
           isCurrentPhase ? metrics.participants_7_day_percent_change : undefined
         }
+        labelTooltip={formatMessage(messages.phaseParticipantsMetricTooltip)}
       />
 
       <MethodMetrics
