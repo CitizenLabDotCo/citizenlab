@@ -2964,6 +2964,8 @@
   "app.containers.AdminPage.Topics.fieldTopicTitleError": "قم بتوفير اسم علامة لجميع اللغات",
   "app.containers.AdminPage.Topics.inputTags": "علامات الإدخال",
   "app.containers.AdminPage.Topics.lastTopicWarning3": "مطلوب وسم واحد على الأقل. إذا لم ترغب باستخدام الوسوم، يُمكن حذف عنصر \"الوسوم\" من نموذج إدخال أي مرحلة (إن وُجد).",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "عند التفعيل، يتم إنشاء العلامات وتحديثها وتعيينها للمدخلات بشكل مستمر، باستخدام الذكاء الاصطناعي.",
+  "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "الكشف عن العلامات وتعيينها تلقائيًا",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "قم بإنشاء وإدارة الوسوم التي يمكن للمواطنين استخدامها لتصنيف مدخلاتهم في هذا المشروع.",
   "app.containers.AdminPage.Topics.save": "يحفظ",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "أضِف مجموعة جديدة",
