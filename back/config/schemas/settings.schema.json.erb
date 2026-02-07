@@ -1484,7 +1484,13 @@
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
+          "enabled": { "type": "boolean", "default": false },
+          "skip_diversity_sampling": {
+            "title": "Skip diversity sampling",
+            "description": "When enabled, the idea feed bypasses the diversity sampling algorithm and returns ideas based on scoring only. This can improve performance under high load.",
+            "type": "boolean",
+            "default": false
+          }
         }
       },
 
