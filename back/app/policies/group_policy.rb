@@ -34,7 +34,7 @@ class GroupPolicy < ApplicationPolicy
   end
 
   def show?
-    return unless active?
+    return false unless active?
 
     show_to_active?
   end

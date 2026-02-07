@@ -5,7 +5,12 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
   before_action :authenticate_user_token_unconfirmed, only: [:user_token_unconfirmed]
   skip_before_action :authenticate, only: [:user_token_unconfirmed]
 
-  # This endpoint is only used when user_confirmation is disabled.
+  # Passwordless login for platforms without email confirmation.
+  #
+  # This endpoint is part of the signup flow when `user_confirmation` is disabled:
+  # 1. User creates account via POST /users with email only
+  # 2. User calls this endpoint to get a JWT (only works if no password is set)
+  # 3. User updates their profile (password, name, etc.) using the JWT
   def user_token_unconfirmed
     user = User.find_by_cimail(user_token_unconfirmed_params[:email])
 

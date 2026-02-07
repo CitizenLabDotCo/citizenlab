@@ -35,7 +35,7 @@ class FolderModeratorPolicy < ApplicationPolicy
   def admin_or_moderator?
     # In the case of moderator, the user must be moderator of that project
     # (not just of any project).
-    return unless user&.active?
+    return false unless user&.active?
 
     user.admin? || user.project_folder_moderator?(record.project_folder_id)
   end

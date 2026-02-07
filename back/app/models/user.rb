@@ -70,8 +70,8 @@ class User < ApplicationRecord
     # Asynchronously deletes all users in a specified scope with associated side effects.
     # By default, this method deletes all users on the platform.
     def destroy_all_async(scope = User)
-      scope.pluck(:id).each.with_index do |id, idx|
-        # Spread out the deletion of users to avoid throttling.
+      scope.ids.each.with_index do |id, idx|
+        # Spread out the deletion of users to avoid overloading the system.
         DeleteUserJob.set(wait: (idx / 5.0).seconds).perform_later(id)
       end
     end
@@ -185,7 +185,7 @@ class User < ApplicationRecord
   validates :bio_multiloc, multiloc: { presence: false, html: true }
   validates :gender, inclusion: { in: GENDERS }, allow_nil: true
   validates :birthyear, numericality: { only_integer: true, greater_than_or_equal_to: 1900, less_than: Time.zone.now.year }, allow_nil: true
-  validates :domicile, inclusion: { in: proc { ['outside'] + Area.select(:id).map(&:id) } }, allow_nil: true
+  validates :domicile, inclusion: { in: proc { ['outside'] + Area.ids } }, allow_nil: true
   validates :invite_status, inclusion: { in: INVITE_STATUSES }, allow_nil: true
 
   # NOTE: All validation except for required
