@@ -30,8 +30,6 @@ module IdeaFeed
       fetch_eligible_ideas(scope).count
     end
 
-    private
-
     def exposures_scope
       if user
         IdeaExposure.where(user: user, phase: phase)
@@ -39,6 +37,8 @@ module IdeaFeed
         IdeaExposure.where(visitor_hash: visitor_hash, phase: phase)
       end
     end
+
+    private
 
     def fetch_scored_candidates(scope, limit)
       scored = scope

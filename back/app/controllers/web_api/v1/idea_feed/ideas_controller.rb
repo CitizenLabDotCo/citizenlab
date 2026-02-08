@@ -49,3 +49,5 @@ module WebApi
     end
   end
 end
+
+WebApi::V1::IdeaFeed::IdeasController.include(AggressiveCaching::Patches::WebApi::V1::IdeaFeed::IdeasController)
