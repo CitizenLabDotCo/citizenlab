@@ -18,7 +18,7 @@ module AggressiveCaching
                 end
 
                 # The main special thing about this cache_path is that it
-                # includes the IDs of ExposedIdeas. Since the endpoint is likely
+                # includes the IDs of IdeaExposures. Since the endpoint is likely
                 # to trigger the same order of ideas for most people browsing at
                 # the same time, or at least at the start of their browsing, it
                 # can make a big difference, at the expense of a more
