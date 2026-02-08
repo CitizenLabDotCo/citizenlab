@@ -2336,7 +2336,7 @@
   "app.containers.AdminPage.ProjectEdit.enabledActionsTooltip2": "Sélectionnez les actions que les utilisateurs peuvent effectuer.",
   "app.containers.AdminPage.ProjectEdit.enalyzer": "Enalyzer",
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Événements",
-  "app.containers.AdminPage.ProjectEdit.feedDisplay": "Flux",
+  "app.containers.AdminPage.ProjectEdit.feedDisplay": "Fil",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Pièces jointes (max. 50Mo)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Les fichiers ajoutés seront visibles sur la page \"information\" du projet.",
   "app.containers.AdminPage.ProjectEdit.filesTab2": "Portail de contenus",
