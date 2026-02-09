@@ -39,7 +39,7 @@ const NewCustomPage = () => {
       defaultValues={{
         projects_filter_type: 'no_filter',
         area_id: null,
-        topic_ids: [],
+        global_topic_ids: [],
       }}
       hideSlug
     />
