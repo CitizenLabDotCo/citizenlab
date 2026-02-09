@@ -1407,7 +1407,7 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Részvétel időbeli lefolyása",
   "app.containers.Admin.projects.project.insights.participationRate": "Részvételi arány",
   "app.containers.Admin.projects.project.insights.participationRateExplanationTooltip": "A résztvevők száma osztva a látogatók számával, százalékban kifejezve.",
-  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip": "Az egyedi résztvevők száma. Nem tartalmazza az eseményre regisztrálókat és a projektkövetőket, akik nem vettek részt a fázisban.",
+  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2": "Az egyedi résztvevők száma. Nem tartalmazza az eseményre regisztrálókat és a projektkövetőket.",
   "app.containers.Admin.projects.project.insights.populationPercent": "Népesség (%)",
   "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Most liked",
   "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "These proposals got the most traction",
