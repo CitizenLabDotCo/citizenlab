@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+import NewLabel from 'components/UI/NewLabel';
+
 import { colors } from '../../utils/styleUtils';
 import Box, { BoxProps } from '../Box';
 import Icon, { IconNames } from '../Icon';
@@ -10,7 +12,8 @@ type CardButtonProps = {
   selected?: boolean;
   iconName?: IconNames;
   icon?: React.ReactNode;
-  title?: string;
+  title?: React.ReactNode;
+  titleNewLabel?: boolean;
   subtitle?: React.ReactNode;
   disabled?: boolean;
 };
@@ -20,6 +23,7 @@ const CardButton = ({
   iconName,
   icon,
   title,
+  titleNewLabel,
   subtitle,
   disabled = false,
   onMouseEnter,
@@ -64,13 +68,20 @@ const CardButton = ({
       )}
       {icon ?? null}
       {title && (
-        <Title
-          variant="h5"
-          color={disabled ? 'disabled' : 'primary'}
-          textAlign="left"
-        >
-          {title}
-        </Title>
+        <Box display="flex" flexDirection="row" alignItems="center">
+          <Title
+            variant="h5"
+            color={disabled ? 'disabled' : 'primary'}
+            textAlign="left"
+          >
+            {title}
+          </Title>
+          {titleNewLabel && (
+            <Box ml="8px" mt="8px">
+              <NewLabel />
+            </Box>
+          )}
+        </Box>
       )}
       {subtitle && (
         <Text

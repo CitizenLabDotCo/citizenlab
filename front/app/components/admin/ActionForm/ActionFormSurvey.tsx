@@ -71,7 +71,7 @@ const ActionFormSurvey = ({
   return (
     <form className={`e2e-action-form-${action}`}>
       <AccessRestrictions
-        showAnyone
+        showAnyone={'show'}
         permissionData={permissionData}
         onChange={onChange}
       />
