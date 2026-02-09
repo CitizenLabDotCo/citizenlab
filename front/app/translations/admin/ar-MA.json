@@ -1407,7 +1407,7 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "المشاركة على مر الزمن",
   "app.containers.Admin.projects.project.insights.participationRate": "معدل المشاركة",
   "app.containers.Admin.projects.project.insights.participationRateExplanationTooltip": "عدد المشاركين مقسومًا على عدد الزوار، معبرًا عنه كنسبة مئوية.",
-  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip": "عدد المشاركين الفريدين. يستثنى من ذلك المسجلون في الفعالية ومتابعو المشروع الذين لم يشاركوا في هذه المرحلة.",
+  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2": "عدد المشاركين الفريدين. لا يشمل ذلك المسجلين في الفعالية ومتابعي المشروع.",
   "app.containers.Admin.projects.project.insights.populationPercent": "سكان (٪)",
   "app.containers.Admin.projects.project.insights.proposals.mostLiked": "الأكثر إعجابًا",
   "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "حظيت هذه المقترحات بأكبر قدر من الاهتمام",
