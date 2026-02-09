@@ -1402,7 +1402,6 @@
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity": "Iepriekšējo 7 dienu periodā nebija aktivitātes, ar ko salīdzināt (kas dotu bezgalīgu vērtību).",
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "Nevar aprēķināt 7 dienu izmaiņas, ja fāze ir darbojusies mazāk nekā 14 dienas.",
   "app.containers.Admin.projects.project.insights.last7Days": "Pēdējās 7 dienas",
-  "app.containers.Admin.projects.project.insights.liveData": "Tiešraides dati",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Demogrāfisko datu ielāde...",
   "app.containers.Admin.projects.project.insights.newSubmission": "Jauns iesniegums",
   "app.containers.Admin.projects.project.insights.noAnswer": "Nav atbildes",
