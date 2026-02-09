@@ -4,9 +4,9 @@
 # identifying records where translations are missing or empty for configured locales.
 #
 # Usage:
-#   rake 'demos:translate_missing_locales[hostname.com,en]'                      - Audit only
-#   rake 'demos:translate_missing_locales[hostname.com,en,true]'                 - Audit and translate
-#   rake 'demos:translate_missing_locales[hostname.com,en,true,nl-NL:fr-BE]'     - With extra locales
+#   rails 'demos:translate_missing_locales[hostname.com,en]'                      - Audit only
+#   rails 'demos:translate_missing_locales[hostname.com,en,true]'                 - Audit and translate
+#   rails 'demos:translate_missing_locales[hostname.com,en,true,nl-NL:fr-BE]'     - With extra locales
 #
 # Parameters:
 #   - host: The tenant hostname
@@ -149,6 +149,13 @@ module TranslateMissingLocales
       missing_locales, empty_locales = find_missing_locales(value)
       return nil if missing_locales.empty? && empty_locales.empty?
 
+      # Skip records where source locale is missing - don't count in issues
+      source_text = value[source_locale]
+      if source_text.blank?
+        puts "  Skipped #{model.name}##{record.id}.#{column}: source locale '#{source_locale}' not present"
+        return nil
+      end
+
       @issues_found += 1
 
       issue = {
@@ -158,7 +165,7 @@ module TranslateMissingLocales
         empty_locales: empty_locales
       }
 
-      translate_multiloc_field(model, record, column, value, missing_locales + empty_locales)
+      translate_multiloc_field(model, record, column, value, missing_locales + empty_locales, source_text)
 
       issue
     end
@@ -178,13 +185,7 @@ module TranslateMissingLocales
       [missing_locales, empty_locales]
     end
 
-    def translate_multiloc_field(model, record, column, value, locales_to_translate)
-      source_text = value[source_locale]
-      if source_text.blank?
-        puts "  Skipped #{model.name}##{record.id}.#{column}: source locale '#{source_locale}' not present"
-        return
-      end
-
+    def translate_multiloc_field(model, record, column, value, locales_to_translate, source_text)
       # Count characters for locales that will actually need machine translation
       # Simulate the translation order to account for same-language copies from earlier translations
       @total_characters += count_characters_needing_translation(value, locales_to_translate, source_text)
@@ -332,6 +333,13 @@ module TranslateMissingLocales
       missing_locales, empty_locales = find_missing_locales(multiloc)
       return nil if missing_locales.empty? && empty_locales.empty?
 
+      # Skip when source locale is missing - don't count in issues
+      source_text = multiloc[source_locale]
+      if source_text.blank?
+        puts "  Skipped craftjs_json text: source locale '#{source_locale}' not present"
+        return nil
+      end
+
       @issues_found += 1
 
       issue = {
@@ -342,18 +350,12 @@ module TranslateMissingLocales
         empty_locales: empty_locales
       }
 
-      modified = translate_craftjs_multiloc(multiloc, missing_locales + empty_locales)
+      modified = translate_craftjs_multiloc(multiloc, missing_locales + empty_locales, source_text)
 
       { issue: issue, modified: modified }
     end
 
-    def translate_craftjs_multiloc(multiloc, locales_to_translate)
-      source_text = multiloc[source_locale]
-      if source_text.blank?
-        puts "  Skipped craftjs_json text: source locale '#{source_locale}' not present"
-        return false
-      end
-
+    def translate_craftjs_multiloc(multiloc, locales_to_translate, source_text)
       # Count characters for locales that will actually need machine translation
       # Simulate the translation order to account for same-language copies from earlier translations
       @total_characters += count_characters_needing_translation(multiloc, locales_to_translate, source_text)
