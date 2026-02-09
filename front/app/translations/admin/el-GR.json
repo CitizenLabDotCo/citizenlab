@@ -1396,7 +1396,7 @@
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity": "The 7 day period before last had no activity to compare against (which would give an infinite value)",
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "Cannot calculate 7 day change when phase has run for less than 14 days",
   "app.containers.Admin.projects.project.insights.last7Days": "Τελευταίες 7 ημέρες",
-  "app.containers.Admin.projects.project.insights.liveData": "Live data",
+  "app.containers.Admin.projects.project.insights.liveData": "Ζωντανά δεδομένα",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Φόρτωση δημογραφικών στοιχείων...",
   "app.containers.Admin.projects.project.insights.newSubmission": "Νέα υποβολή",
   "app.containers.Admin.projects.project.insights.noAnswer": "Καμία απάντηση",
