@@ -1407,7 +1407,7 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Sudjelovanje tijekom vremena",
   "app.containers.Admin.projects.project.insights.participationRate": "Stopa sudjelovanja",
   "app.containers.Admin.projects.project.insights.participationRateExplanationTooltip": "Broj sudionika podijeljen s brojem posjetitelja, izražen u postotku.",
-  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip": "Broj jedinstvenih sudionika. Isključuje registrirane sudionike događaja i pratitelje projekta koji nisu sudjelovali u fazi.",
+  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2": "Broj jedinstvenih sudionika. Ne uključuje registrirane sudionike događaja i pratitelje projekta.",
   "app.containers.Admin.projects.project.insights.populationPercent": "Broj stanovnika (%)",
   "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Najsviđanije",
   "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "Ovi prijedlozi su dobili najviše podrške",
