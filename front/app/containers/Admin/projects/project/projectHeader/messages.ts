@@ -30,9 +30,9 @@ export default defineMessages({
     defaultMessage: 'Anyone with the link can interact with the draft project',
   },
   participants: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants2',
     defaultMessage:
-      '{participantsCount, plural, one {1 participant} other {{participantsCount} participants}}',
+      '{participantsCount, plural, one {1 project participant} other {{participantsCount} project participants}}',
   },
   offlineVoters: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters',

@@ -30,8 +30,8 @@ export default defineMessages({
     defaultMessage: 'Total',
   },
   participants: {
-    id: 'app.containers.Admin.projects.project.insights.participants',
-    defaultMessage: 'Participants',
+    id: 'app.containers.Admin.projects.project.insights.participants2',
+    defaultMessage: 'Phase participants',
   },
   inputs: {
     id: 'app.containers.Admin.projects.project.insights.inputs',
