@@ -65,9 +65,7 @@ const AuthProviderButton = ({
         padding="10px 18px"
         textColor={theme.colors.tenantText}
       >
-        {imageUrl && (
-          <Image width="22px" height="22px" mr="8px" src={imageUrl} alt="" />
-        )}
+        {imageUrl && <Image height="22px" mr="8px" src={imageUrl} alt="" />}
         {children}
       </ButtonWithLink>
     </Container>
