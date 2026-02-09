@@ -1407,7 +1407,7 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Zaman içinde katılım",
   "app.containers.Admin.projects.project.insights.participationRate": "Katılım oranı",
   "app.containers.Admin.projects.project.insights.participationRateExplanationTooltip": "Katılımcı sayısının ziyaretçi sayısına bölünmesiyle elde edilir ve yüzde olarak ifade edilir.",
-  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip": "Tekil katılımcıların sayısı. Etkinlik kayıtları ve aşamaya katılmamış proje takipçileri hariçtir.",
+  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2": "Benzersiz katılımcı sayısı. Etkinlik kayıtlarını ve proje takipçilerini içermez.",
   "app.containers.Admin.projects.project.insights.populationPercent": "Nüfus (%)",
   "app.containers.Admin.projects.project.insights.proposals.mostLiked": "En çok beğenilenler",
   "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "These proposals got the most traction",
