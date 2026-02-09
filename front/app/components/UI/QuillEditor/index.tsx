@@ -68,7 +68,6 @@ const QuillEditor = ({
   minCharCount,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [editor, setEditor] = useState<Quill | null>(null);
   const [focussed, setFocussed] = useState(false);
 
   const [isButtonsMenuVisible, setIsButtonsMenuVisible] = useState(false);
@@ -90,17 +89,14 @@ const QuillEditor = ({
   // Initialize Quill
   // https://quilljs.com/playground/react
   // Using ref to persist across StrictMode remounts
-  const quillRef = useRef<Quill | null>(null);
+  const editorRef = useRef<Quill | null>(null);
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
     // Reuse existing Quill instance (fixes React StrictMode double-mount)
-    if (quillRef.current) {
-      setEditor(quillRef.current);
-      return;
-    }
+    if (editorRef.current) return;
 
     const editorContainer = container.appendChild(
       container.ownerDocument.createElement('div')
@@ -118,9 +114,8 @@ const QuillEditor = ({
       onBlur: onBlurRef.current,
     });
 
-    quillRef.current = quill;
+    editorRef.current = quill;
     setHTML(quill, value);
-    setEditor(quill);
 
     return () => {
       // Only cleanup in production - in dev, StrictMode double-mounts break Quill
@@ -134,6 +129,7 @@ const QuillEditor = ({
 
   // Handle text and focus changes
   useEffect(() => {
+    const editor = editorRef.current;
     if (!editor) return;
 
     // Convert Delta back to HTML
@@ -170,10 +166,11 @@ const QuillEditor = ({
       editor.off('text-change', debouncedTextChangeHandler);
       editor.off('selection-change', focusHandler);
     };
-  }, [editor]);
+  }, []);
 
   // Synchronize the editor content with the value prop
   useEffect(() => {
+    const editor = editorRef.current;
     if (!editor) return;
 
     if (value !== htmlRef.current) {
@@ -181,7 +178,7 @@ const QuillEditor = ({
       const html = getHTML(editor);
       htmlRef.current = html;
     }
-  }, [value, editor]);
+  }, [value]);
 
   // Hack to get correct placeholder for image alt text input
   const altTextPlaceHolder = formatMessage(messages.altTextPlaceholder);
@@ -193,6 +190,7 @@ const QuillEditor = ({
   // We call this when the mouse leaves the editor, to ensure the
   // latest content (and image size + alt text) is properly saved.
   const saveLatestContent = () => {
+    const editor = editorRef.current;
     if (!editor) return;
     const html = getHTML(editor);
 
@@ -203,8 +201,8 @@ const QuillEditor = ({
   };
 
   const handleLabelOnClick = useCallback(() => {
-    editor?.focus();
-  }, [editor]);
+    editorRef.current?.focus();
+  }, []);
 
   const className = focussed ? 'focus' : '';
 
@@ -230,25 +228,27 @@ const QuillEditor = ({
         noVideos={noVideos}
         noAlign={noAlign}
         noLinks={noLinks}
-        editor={editor}
+        editor={editorRef.current}
         setIsButtonsMenuVisible={setIsButtonsMenuVisible}
       />
       <div>
         <div ref={containerRef} />
       </div>
-      {(maxCharCount || minCharCount) && editor && (
+      {(maxCharCount || minCharCount) && editorRef.current && (
         <Box
           display="flex"
           justifyContent="flex-end"
           mt="8px"
           color={
-            (maxCharCount && getQuillPlainTextLength(editor) > maxCharCount) ||
-            (minCharCount && getQuillPlainTextLength(editor) < minCharCount)
+            (maxCharCount &&
+              getQuillPlainTextLength(editorRef.current) > maxCharCount) ||
+            (minCharCount &&
+              getQuillPlainTextLength(editorRef.current) < minCharCount)
               ? 'red600'
               : 'textSecondary'
           }
         >
-          {getQuillPlainTextLength(editor)}
+          {getQuillPlainTextLength(editorRef.current)}
           {maxCharCount && ` / ${maxCharCount}`}
           {minCharCount && ` (≥ ${minCharCount})`}
         </Box>
