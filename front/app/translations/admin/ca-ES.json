@@ -1391,7 +1391,7 @@
   "app.containers.Admin.projects.project.insights.inputs": "Entrades",
   "app.containers.Admin.projects.project.insights.insightsSubtitle1": "Track engagement in real-time",
   "app.containers.Admin.projects.project.insights.last7Days": "Últims 7 dies",
-  "app.containers.Admin.projects.project.insights.liveData": "Live data",
+  "app.containers.Admin.projects.project.insights.liveData": "Dades en directe",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "S'estan carregant les dades demogràfiques...",
   "app.containers.Admin.projects.project.insights.newSubmission": "Nova presentació",
   "app.containers.Admin.projects.project.insights.noAnswer": "Cap resposta",
