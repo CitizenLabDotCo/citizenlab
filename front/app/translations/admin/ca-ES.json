@@ -1389,7 +1389,7 @@
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity": "The 7 day period before last had no activity to compare against (which would give an infinite value)",
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "Cannot calculate 7 day change when phase has run for less than 14 days",
   "app.containers.Admin.projects.project.insights.last7Days": "Últims 7 dies",
-  "app.containers.Admin.projects.project.insights.liveData": "Live data",
+  "app.containers.Admin.projects.project.insights.liveData": "Dades en directe",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "S'estan carregant les dades demogràfiques...",
   "app.containers.Admin.projects.project.insights.newSubmission": "Nova presentació",
   "app.containers.Admin.projects.project.insights.noAnswer": "Cap resposta",
