@@ -1407,7 +1407,7 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Deltakelse over tid",
   "app.containers.Admin.projects.project.insights.participationRate": "Deltakelsesprosent",
   "app.containers.Admin.projects.project.insights.participationRateExplanationTooltip": "Antall deltakere delt på antall besøkende, uttrykt i prosent.",
-  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip": "Antall unike deltakere. Omfatter ikke deltakere som har meldt seg på arrangementer og prosjektdeltakere som ikke har deltatt i fasen.",
+  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2": "Antall unike deltakere. Inkluderer ikke påmeldte til arrangementer og prosjektfølgere.",
   "app.containers.Admin.projects.project.insights.populationPercent": "Befolkning (%)",
   "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Mest likt",
   "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "These proposals got the most traction",
