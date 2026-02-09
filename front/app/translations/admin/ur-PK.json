@@ -1407,7 +1407,7 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "وقت کے ساتھ شرکت",
   "app.containers.Admin.projects.project.insights.participationRate": "شرکت کی شرح",
   "app.containers.Admin.projects.project.insights.participationRateExplanationTooltip": "شرکاء کی تعداد کو زائرین کی تعداد سے تقسیم کیا جاتا ہے، جو فیصد کے طور پر ظاہر ہوتا ہے۔",
-  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip": "منفرد شرکاء کی تعداد۔ ایونٹ کے اندراج کرنے والوں اور پروجیکٹ کے پیروکاروں کو شامل نہیں کیا گیا جنہوں نے مرحلے میں حصہ نہیں لیا ہے۔",
+  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2": "منفرد شرکاء کی تعداد۔ ایونٹ کے اندراج کرنے والے اور پروجیکٹ کے پیروکار شامل نہیں ہیں۔",
   "app.containers.Admin.projects.project.insights.populationPercent": "آبادی (%)",
   "app.containers.Admin.projects.project.insights.proposals.mostLiked": "سب سے زیادہ پسند کیا۔",
   "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "ان تجاویز کو سب سے زیادہ پذیرائی ملی",
