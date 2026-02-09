@@ -1392,7 +1392,7 @@
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity": "The 7 day period before last had no activity to compare against (which would give an infinite value)",
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "Cannot calculate 7 day change when phase has run for less than 14 days",
   "app.containers.Admin.projects.project.insights.last7Days": "Utolsó 7 nap",
-  "app.containers.Admin.projects.project.insights.liveData": "Live data",
+  "app.containers.Admin.projects.project.insights.liveData": "Élő adatok",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Demográfiai adatok betöltése...",
   "app.containers.Admin.projects.project.insights.newSubmission": "Új beküldés",
   "app.containers.Admin.projects.project.insights.noAnswer": "Nincs válasz",
