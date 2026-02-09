@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights',
     defaultMessage: 'Insights',
   },
-  liveData: {
-    id: 'app.containers.Admin.projects.project.insights.liveData',
-    defaultMessage: 'Live data',
-  },
   insightsSubtitle1: {
     id: 'app.containers.Admin.projects.project.insights.insightsSubtitle1',
     defaultMessage: 'Track engagement in real-time',

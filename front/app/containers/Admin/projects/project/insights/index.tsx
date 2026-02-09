@@ -1,13 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  Title,
-  Button,
-  Text,
-  Badge,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Title, Button, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
@@ -68,9 +61,6 @@ const InsightsContent = () => {
 
   const participationMethod = phase?.data.attributes.participation_method;
   const { start_at, end_at } = phase?.data.attributes || {};
-  const isCurrentPhase = start_at
-    ? pastPresentOrFuture([start_at, end_at ?? null]) === 'present'
-    : false;
   const isFuturePhase = start_at
     ? pastPresentOrFuture([start_at, end_at ?? null]) === 'future'
     : false;
@@ -133,18 +123,9 @@ const InsightsContent = () => {
           alignItems="flex-start"
         >
           <Box>
-            <Box display="flex" alignItems="center">
-              <Title variant="h2" as="h1" color="textPrimary" m="0px">
-                <FormattedMessage {...messages.insights} />
-              </Title>
-              {isCurrentPhase && (
-                <Box ml="12px">
-                  <Badge className="inverse" color={colors.primary}>
-                    <FormattedMessage {...messages.liveData} />
-                  </Badge>
-                </Box>
-              )}
-            </Box>
+            <Title variant="h2" as="h1" color="textPrimary" m="0px">
+              <FormattedMessage {...messages.insights} />
+            </Title>
             <Text fontSize="s" color="textSecondary" m="0" mt="4px">
               <FormattedMessage {...messages.insightsSubtitle1} />
             </Text>
