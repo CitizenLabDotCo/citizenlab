@@ -1407,7 +1407,7 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Dalība laika gaitā",
   "app.containers.Admin.projects.project.insights.participationRate": "Līdzdalības līmenis",
   "app.containers.Admin.projects.project.insights.participationRateExplanationTooltip": "Dalībnieku skaits dalīts ar apmeklētāju skaitu, izteikts procentos.",
-  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip": "Unikālo dalībnieku skaits. Neietver pasākumu reģistrētājus un projekta sekotājus, kuri nav piedalījušies šajā posmā.",
+  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2": "Unikālo dalībnieku skaits. Neietver pasākumu reģistrētājus un projekta sekotājus.",
   "app.containers.Admin.projects.project.insights.populationPercent": "Iedzīvotāju skaits (%)",
   "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Visvairāk patika",
   "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "These proposals got the most traction",
