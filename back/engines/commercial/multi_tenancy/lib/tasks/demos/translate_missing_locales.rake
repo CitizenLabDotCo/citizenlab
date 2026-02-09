@@ -143,14 +143,15 @@ module TranslateMissingLocales
     end
 
     def process_multiloc_field(model, record, column)
-      value = record.send(column)
+      # Use record[column] to get raw attribute value, bypassing any model-level locale filtering
+      value = record[column]
       return nil if value.blank? || value.values.all?(&:blank?)
 
       missing_locales, empty_locales = find_missing_locales(value)
       return nil if missing_locales.empty? && empty_locales.empty?
 
       # Skip records where source locale is missing - don't count in issues
-      source_text = value[source_locale]
+      source_text = value[source_locale.to_s]
       if source_text.blank?
         puts "  Skipped #{model.name}##{record.id}.#{column}: source locale '#{source_locale}' not present"
         return nil
@@ -175,10 +176,11 @@ module TranslateMissingLocales
       empty_locales = []
 
       locales.each do |locale|
-        if !value.key?(locale)
-          missing_locales << locale
-        elsif value[locale].blank?
-          empty_locales << locale
+        locale_str = locale.to_s
+        if !value.key?(locale_str)
+          missing_locales << locale_str
+        elsif value[locale_str].blank?
+          empty_locales << locale_str
         end
       end
 
@@ -196,7 +198,7 @@ module TranslateMissingLocales
         translate_to_locale(model, record, column, value, source_locale, target_locale, source_text)
       end
 
-      record.update!(column => value)
+      record.update!(column => value, updated_at: record.updated_at)
     end
 
     def count_characters_needing_translation(value, locales_to_translate, source_text)
@@ -206,13 +208,14 @@ module TranslateMissingLocales
       chars_needed = 0
 
       locales_to_translate.each do |locale|
-        if find_same_language_translation(simulated_value, locale)
+        locale_str = locale.to_s
+        if find_same_language_translation(simulated_value, locale_str)
           # This locale can be copied from an existing same-language translation
-          simulated_value[locale] = 'copied'
+          simulated_value[locale_str] = 'copied'
         else
           # This locale needs actual translation
           chars_needed += source_text.to_s.length
-          simulated_value[locale] = 'translated'
+          simulated_value[locale_str] = 'translated'
         end
       end
 
@@ -224,30 +227,32 @@ module TranslateMissingLocales
     end
 
     def find_same_language_translation(value, target_locale)
-      target_language = language_code(target_locale)
+      target_locale_str = target_locale.to_s
+      target_language = language_code(target_locale_str)
 
       value.find do |locale, text|
-        text.present? && locale != target_locale && language_code(locale) == target_language
+        text.present? && locale.to_s != target_locale_str && language_code(locale) == target_language
       end
     end
 
     def translate_to_locale(model, record, column, value, source_locale, target_locale, source_text)
+      target_locale_str = target_locale.to_s
       # Check if there's a same-language translation we can copy instead of translating
-      same_language = find_same_language_translation(value, target_locale)
+      same_language = find_same_language_translation(value, target_locale_str)
       if same_language
         same_lang_locale, same_lang_text = same_language
-        value[target_locale] = same_lang_text
+        value[target_locale_str] = same_lang_text
         @translations_made += 1
-        puts "  Copied #{model.name}##{record.id}.#{column} from #{same_lang_locale} to #{target_locale} (same language)"
+        puts "  Copied #{model.name}##{record.id}.#{column} from #{same_lang_locale} to #{target_locale_str} (same language)"
       elsif Rails.env.development?
-        value[target_locale] = source_text
+        value[target_locale_str] = source_text
         @translations_made += 1
-        puts "  Copied #{model.name}##{record.id}.#{column} from #{source_locale} to #{target_locale} (dev mode)"
+        puts "  Copied #{model.name}##{record.id}.#{column} from #{source_locale} to #{target_locale_str} (dev mode)"
       else
-        translated_text = translation_service.translate(source_text, source_locale, target_locale)
-        value[target_locale] = translated_text
+        translated_text = translation_service.translate(source_text, source_locale.to_s, target_locale_str)
+        value[target_locale_str] = translated_text
         @translations_made += 1
-        puts "  Translated #{model.name}##{record.id}.#{column} from #{source_locale} to #{target_locale}"
+        puts "  Translated #{model.name}##{record.id}.#{column} from #{source_locale} to #{target_locale_str}"
       end
     rescue StandardError => e
       puts "  ERROR translating #{model.name}##{record.id}.#{column} to #{target_locale}: #{e.message}"
@@ -276,7 +281,7 @@ module TranslateMissingLocales
       ContentBuilder::Layout.find_each do |layout|
         layout_issues, layout_modified = process_craftjs_layout(layout)
         craftjs_issues.concat(layout_issues)
-        layout.update!(craftjs_json: layout.craftjs_json) if layout_modified
+        layout.update!(craftjs_json: layout.craftjs_json, updated_at: layout.updated_at) if layout_modified
       end
 
       report_craftjs_issues(craftjs_issues) if craftjs_issues.any?
@@ -334,7 +339,7 @@ module TranslateMissingLocales
       return nil if missing_locales.empty? && empty_locales.empty?
 
       # Skip when source locale is missing - don't count in issues
-      source_text = multiloc[source_locale]
+      source_text = multiloc[source_locale.to_s]
       if source_text.blank?
         puts "  Skipped craftjs_json text: source locale '#{source_locale}' not present"
         return nil
@@ -365,25 +370,26 @@ module TranslateMissingLocales
       modified = false
 
       locales_to_translate.each do |target_locale|
+        target_locale_str = target_locale.to_s
         # Check if there's a same-language translation we can copy instead of translating
-        same_language = find_same_language_translation(multiloc, target_locale)
+        same_language = find_same_language_translation(multiloc, target_locale_str)
         if same_language
           same_lang_locale, same_lang_text = same_language
-          multiloc[target_locale] = same_lang_text
+          multiloc[target_locale_str] = same_lang_text
           @translations_made += 1
           modified = true
-          puts "  Copied craftjs_json text from #{same_lang_locale} to #{target_locale} (same language)"
+          puts "  Copied craftjs_json text from #{same_lang_locale} to #{target_locale_str} (same language)"
         elsif Rails.env.development?
-          multiloc[target_locale] = source_text
+          multiloc[target_locale_str] = source_text
           @translations_made += 1
           modified = true
-          puts "  Copied craftjs_json text from #{source_locale} to #{target_locale} (dev mode)"
+          puts "  Copied craftjs_json text from #{source_locale} to #{target_locale_str} (dev mode)"
         else
-          translated_text = translation_service.translate(source_text, source_locale, target_locale)
-          multiloc[target_locale] = translated_text
+          translated_text = translation_service.translate(source_text, source_locale.to_s, target_locale_str)
+          multiloc[target_locale_str] = translated_text
           @translations_made += 1
           modified = true
-          puts "  Translated craftjs_json text from #{source_locale} to #{target_locale}"
+          puts "  Translated craftjs_json text from #{source_locale} to #{target_locale_str}"
         end
       rescue StandardError => e
         puts "  ERROR translating craftjs_json text to #{target_locale}: #{e.message}"
@@ -413,7 +419,7 @@ module TranslateMissingLocales
       puts '=' * 80
 
       if model_summary.empty?
-        puts 'No issues found.'
+        puts 'Nothing found to translate.'
         return
       end
 

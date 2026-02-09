@@ -111,7 +111,7 @@ describe 'rake demos:translate_missing_locales' do
 
       # Without extra locales, no issues
       expect { task.invoke('extra-locale-test.com', 'en') }
-        .to output(/No issues found/).to_stdout
+        .to output(/Nothing found to translate/).to_stdout
 
       task.reenable
       # With extra locales, should report as missing and display in header
@@ -179,7 +179,7 @@ describe 'rake demos:translate_missing_locales' do
 
     it 'reports missing and empty locales with summary' do
       tenant.switch do
-        project = create(:project, title_multiloc: { 'en' => 'Title' })
+        create(:project, title_multiloc: { 'en' => 'Title' })
         # Create a project with empty values
         project2 = create(:project, title_multiloc: { 'en' => 'Title2' })
         project2.update_column(:title_multiloc, { 'en' => 'Title2', 'fr-FR' => '', 'nl-NL' => nil })
@@ -241,7 +241,7 @@ describe 'rake demos:translate_missing_locales' do
       end
 
       expect { task.invoke('audit-test.com', 'en') }
-        .to output(/No issues found/).to_stdout
+        .to output(/Nothing found to translate/).to_stdout
     end
   end
 
