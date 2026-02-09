@@ -1402,7 +1402,6 @@
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity": "De vorige periode van 7 dagen had geen activiteit om mee te vergelijken (wat een oneindige waarde zou geven).",
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "Kan geen verandering van 7 dagen berekenen als de fase minder dan 14 dagen heeft geduurd",
   "app.containers.Admin.projects.project.insights.last7Days": "Laatste 7 dagen",
-  "app.containers.Admin.projects.project.insights.liveData": "Live data",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Demografische gegevens worden geladen...",
   "app.containers.Admin.projects.project.insights.newSubmission": "Nieuwe inzending",
   "app.containers.Admin.projects.project.insights.noAnswer": "Geen antwoord",
