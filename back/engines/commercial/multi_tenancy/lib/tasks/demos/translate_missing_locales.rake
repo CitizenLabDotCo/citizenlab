@@ -49,7 +49,7 @@ namespace :demos do
 
     tenant.switch do
       translate_missing = args[:translate].to_s.downcase == 'true'
-      extra_locales = args[:extra_locales].to_s.split(':').reject(&:blank?)
+      extra_locales = args[:extra_locales].to_s.split(':').compact_blank
       TranslateMissingLocales.run(tenant, args[:source_locale], translate_missing, extra_locales)
     end
   end
@@ -180,7 +180,7 @@ module TranslateMissingLocales
 
     def translate_multiloc_field(model, record, column, value, locales_to_translate)
       source_text = value[source_locale]
-      unless source_text.present?
+      if source_text.blank?
         puts "  Skipped #{model.name}##{record.id}.#{column}: source locale '#{source_locale}' not present"
         return
       end
@@ -349,7 +349,7 @@ module TranslateMissingLocales
 
     def translate_craftjs_multiloc(multiloc, locales_to_translate)
       source_text = multiloc[source_locale]
-      unless source_text.present?
+      if source_text.blank?
         puts "  Skipped craftjs_json text: source locale '#{source_locale}' not present"
         return false
       end
