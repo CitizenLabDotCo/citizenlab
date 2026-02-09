@@ -1407,7 +1407,7 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Dalyvavimas laikui bėgant",
   "app.containers.Admin.projects.project.insights.participationRate": "Dalyvavimo lygis",
   "app.containers.Admin.projects.project.insights.participationRateExplanationTooltip": "Dalyvių skaičius, padalytas iš lankytojų skaičiaus, išreikštas procentais.",
-  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip": "Unikalių dalyvių skaičius. Neįtraukiami renginių registruoti dalyviai ir projekto sekėjai, kurie nedalyvavo etape.",
+  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2": "Unikalių dalyvių skaičius. Neįtraukiami renginių registruoti dalyviai ir projekto sekėjai.",
   "app.containers.Admin.projects.project.insights.populationPercent": "Gyventojų skaičius (%)",
   "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Most liked",
   "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "These proposals got the most traction",
