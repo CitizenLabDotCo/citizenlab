@@ -420,8 +420,6 @@ class WebApi::V1::ProjectsController < ApplicationController
     authorize @project
   end
 
-
-
   def base_render_mini_index
     render json: linked_json(
       @projects,
