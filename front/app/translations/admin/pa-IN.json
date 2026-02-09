@@ -1394,7 +1394,6 @@
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity": "ਪਿਛਲੇ ਤੋਂ ਪਹਿਲਾਂ ਦੇ 7 ਦਿਨਾਂ ਦੀ ਮਿਆਦ ਵਿੱਚ ਤੁਲਨਾ ਕਰਨ ਲਈ ਕੋਈ ਗਤੀਵਿਧੀ ਨਹੀਂ ਸੀ (ਜੋ ਇੱਕ ਅਨੰਤ ਮੁੱਲ ਦੇਵੇਗੀ)",
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "ਜਦੋਂ ਪੜਾਅ 14 ਦਿਨਾਂ ਤੋਂ ਘੱਟ ਸਮੇਂ ਲਈ ਚੱਲਿਆ ਹੋਵੇ ਤਾਂ 7 ਦਿਨਾਂ ਦੇ ਬਦਲਾਅ ਦੀ ਗਣਨਾ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕਦੀ।",
   "app.containers.Admin.projects.project.insights.last7Days": "ਪਿਛਲੇ 7 ਦਿਨ",
-  "app.containers.Admin.projects.project.insights.liveData": "ਲਾਈਵ ਡਾਟਾ",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "ਜਨਸੰਖਿਆ ਲੋਡ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ...",
   "app.containers.Admin.projects.project.insights.newSubmission": "ਨਵੀਂ ਸਪੁਰਦਗੀ",
   "app.containers.Admin.projects.project.insights.noAnswer": "ਕੋਈ ਜਵਾਬ ਨਹੀਂ",
