@@ -1402,7 +1402,6 @@
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity": "Il periodo di 7 giorni precedente all'ultimo non ha avuto alcuna attività da confrontare (il che darebbe un valore infinito).",
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "Non è possibile calcolare la variazione di 7 giorni quando la fase è in corso da meno di 14 giorni",
   "app.containers.Admin.projects.project.insights.last7Days": "Ultimi 7 giorni",
-  "app.containers.Admin.projects.project.insights.liveData": "Dati in tempo reale",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Caricamento dei dati demografici...",
   "app.containers.Admin.projects.project.insights.newSubmission": "Nuovo invio",
   "app.containers.Admin.projects.project.insights.noAnswer": "Nessuna risposta",
