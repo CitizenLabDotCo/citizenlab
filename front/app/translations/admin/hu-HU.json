@@ -1391,7 +1391,7 @@
   "app.containers.Admin.projects.project.insights.inputs": "Bemenetek",
   "app.containers.Admin.projects.project.insights.insightsSubtitle1": "Track engagement in real-time",
   "app.containers.Admin.projects.project.insights.last7Days": "Utolsó 7 nap",
-  "app.containers.Admin.projects.project.insights.liveData": "Live data",
+  "app.containers.Admin.projects.project.insights.liveData": "Élő adatok",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Demográfiai adatok betöltése...",
   "app.containers.Admin.projects.project.insights.newSubmission": "Új beküldés",
   "app.containers.Admin.projects.project.insights.noAnswer": "Nincs válasz",
