@@ -1195,6 +1195,7 @@
   "app.containers.AreaTerms.areaTerm": "apgabals",
   "app.containers.AreaTerms.areasTerm": "apgabali",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Konts ar šo e-pasta adresi jau pastāv. Jūs varat izrakstīties, pieteikties ar šo e-pasta adresi un pārbaudīt savu kontu iestatījumu lapā.",
+  "app.containers.Authentication.signUpOrLogIn": "Pierakstīties vai pieteikties",
   "app.containers.Authentication.steps.AccessDenied.close": "Aizvērt",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Jūs neatbilstat prasībām, lai piedalītos šajā procesā.",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Noklikšķiniet šeit, lai pieteiktos kā administrators vai projekta vadītājs",
