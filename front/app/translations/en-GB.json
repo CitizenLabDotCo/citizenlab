@@ -1195,6 +1195,7 @@
   "app.containers.AreaTerms.areaTerm": "area",
   "app.containers.AreaTerms.areasTerm": "areas",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "An account with this email already exists. You can sign out, log in with this email address and verify your account on the settings page.",
+  "app.containers.Authentication.signUpOrLogIn": "Sign up or log in",
   "app.containers.Authentication.steps.AccessDenied.close": "Close",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "You do not meet the requirements to participate in this process.",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Click here to login as admin or project manager",

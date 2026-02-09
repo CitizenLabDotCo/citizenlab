@@ -1195,6 +1195,7 @@
   "app.containers.AreaTerms.areaTerm": "ਖੇਤਰ",
   "app.containers.AreaTerms.areasTerm": "ਖੇਤਰ",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "ਇਸ ਈਮੇਲ ਵਾਲਾ ਖਾਤਾ ਪਹਿਲਾਂ ਹੀ ਮੌਜੂਦ ਹੈ। ਤੁਸੀਂ ਸਾਈਨ ਆਉਟ ਕਰ ਸਕਦੇ ਹੋ, ਇਸ ਈਮੇਲ ਪਤੇ ਨਾਲ ਲੌਗਇਨ ਕਰ ਸਕਦੇ ਹੋ ਅਤੇ ਸੈਟਿੰਗਾਂ ਪੰਨੇ 'ਤੇ ਆਪਣੇ ਖਾਤੇ ਦੀ ਪੁਸ਼ਟੀ ਕਰ ਸਕਦੇ ਹੋ।",
+  "app.containers.Authentication.signUpOrLogIn": "ਸਾਈਨ ਅੱਪ ਕਰੋ ਜਾਂ ਲੌਗ ਇਨ ਕਰੋ",
   "app.containers.Authentication.steps.AccessDenied.close": "ਬੰਦ ਕਰੋ",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "ਤੁਸੀਂ ਇਸ ਪ੍ਰਕਿਰਿਆ ਵਿੱਚ ਹਿੱਸਾ ਲੈਣ ਲਈ ਲੋੜਾਂ ਨੂੰ ਪੂਰਾ ਨਹੀਂ ਕਰਦੇ ਹੋ।",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "ਐਡਮਿਨ ਜਾਂ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਵਜੋਂ ਲੌਗਇਨ ਕਰਨ ਲਈ ਇੱਥੇ ਕਲਿੱਕ ਕਰੋ।",

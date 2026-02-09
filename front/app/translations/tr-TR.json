@@ -1195,6 +1195,7 @@
   "app.containers.AreaTerms.areaTerm": "alan",
   "app.containers.AreaTerms.areasTerm": "alanlar",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Bu e-posta adresine sahip bir hesap zaten mevcut. Oturumu kapatabilir, bu e-posta adresiyle giriş yapabilir ve ayarlar sayfasında hesabınızı doğrulayabilirsiniz.",
+  "app.containers.Authentication.signUpOrLogIn": "Kaydolun veya giriş yapın",
   "app.containers.Authentication.steps.AccessDenied.close": "Kapat",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Bu sürece katılmak için gereken şartları karşılamıyorsunuz.",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Yönetici veya proje yöneticisi olarak giriş yapmak için buraya tıklayın",

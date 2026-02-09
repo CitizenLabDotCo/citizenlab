@@ -1195,6 +1195,7 @@
   "app.containers.AreaTerms.areaTerm": "område",
   "app.containers.AreaTerms.areasTerm": "områder",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Det finnes allerede en konto med denne e-postadressen. Du kan logge av, logge på med denne e-postadressen og bekrefte kontoen din på innstillingssiden.",
+  "app.containers.Authentication.signUpOrLogIn": "Registrer deg eller logg inn",
   "app.containers.Authentication.steps.AccessDenied.close": "Lukk",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Du oppfyller ikke kravene for å delta i denne prosessen.",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Klikk her for å logge inn som administrator eller prosjektleder",
