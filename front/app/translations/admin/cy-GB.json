@@ -1394,7 +1394,6 @@
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity": "Nid oedd unrhyw weithgarwch i gymharu yn ei erbyn yn ystod y cyfnod 7 diwrnod cyn y diwethaf (a fyddai'n rhoi gwerth anfeidraidd)",
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "Ni ellir cyfrifo newid 7 diwrnod pan fydd y cyfnod wedi rhedeg am lai na 14 diwrnod",
   "app.containers.Admin.projects.project.insights.last7Days": "7 diwrnod diwethaf",
-  "app.containers.Admin.projects.project.insights.liveData": "Data byw",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Yn llwytho demograffeg...",
   "app.containers.Admin.projects.project.insights.newSubmission": "Cyflwyniad newydd",
   "app.containers.Admin.projects.project.insights.noAnswer": "Dim ateb",

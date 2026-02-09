@@ -1394,7 +1394,6 @@
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity": "لم تشهد فترة السبعة أيام السابقة أي نشاط للمقارنة به (مما كان سيعطي قيمة لا نهائية).",
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "لا يمكن حساب التغير خلال 7 أيام عندما تكون المرحلة قد استمرت لأقل من 14 يومًا",
   "app.containers.Admin.projects.project.insights.last7Days": "آخر 7 أيام",
-  "app.containers.Admin.projects.project.insights.liveData": "بيانات مباشرة",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "جارٍ تحميل البيانات الديموغرافية...",
   "app.containers.Admin.projects.project.insights.newSubmission": "طلب جديد",
   "app.containers.Admin.projects.project.insights.noAnswer": "لا يوجد رد",

@@ -1394,7 +1394,6 @@
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity": "Sondan bir önceki 7 günlük dönemde karşılaştırılacak hiçbir faaliyet yoktu (bu da sonsuz bir değer verirdi)",
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "Faz 14 günden daha az süredir çalıştığında 7 günlük değişim hesaplanamıyor",
   "app.containers.Admin.projects.project.insights.last7Days": "Son 7 gün",
-  "app.containers.Admin.projects.project.insights.liveData": "Canlı veri",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Demografik bilgiler yükleniyor...",
   "app.containers.Admin.projects.project.insights.newSubmission": "Yeni gönderim",
   "app.containers.Admin.projects.project.insights.noAnswer": "Cevap yok",

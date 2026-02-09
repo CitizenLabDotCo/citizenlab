@@ -1394,7 +1394,6 @@
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity": "Priešpaskutinį 7 dienų laikotarpį nebuvo jokio aktyvumo, su kuriuo būtų galima palyginti (todėl būtų gauta begalinė vertė).",
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "Negalima apskaičiuoti 7 dienų pokyčio, kai etapas truko trumpiau nei 14 dienų",
   "app.containers.Admin.projects.project.insights.last7Days": "Paskutinės 7 dienos",
-  "app.containers.Admin.projects.project.insights.liveData": "Tiesioginiai duomenys",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Demografinių duomenų įkėlimas...",
   "app.containers.Admin.projects.project.insights.newSubmission": "Naujas pateikimas",
   "app.containers.Admin.projects.project.insights.noAnswer": "Nėra atsakymo",

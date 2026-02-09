@@ -1394,7 +1394,6 @@
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity": "آخری سے پہلے کے 7 دن کی مدت میں موازنہ کرنے کے لیے کوئی سرگرمی نہیں تھی (جو ایک لامحدود قدر دے گی)",
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "جب مرحلہ 14 دن سے کم چلتا ہے تو 7 دن کی تبدیلی کا حساب نہیں لگا سکتا",
   "app.containers.Admin.projects.project.insights.last7Days": "آخری 7 دن",
-  "app.containers.Admin.projects.project.insights.liveData": "لائیو ڈیٹا",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "ڈیموگرافکس لوڈ ہو رہا ہے...",
   "app.containers.Admin.projects.project.insights.newSubmission": "نئی جمع کرائی",
   "app.containers.Admin.projects.project.insights.noAnswer": "کوئی جواب نہیں۔",

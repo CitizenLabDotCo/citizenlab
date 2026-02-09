@@ -1394,7 +1394,6 @@
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity": "Den siste 7-dagersperioden hadde ingen aktivitet å sammenligne med (noe som ville gitt en uendelig verdi)",
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "Kan ikke beregne 7-dagers endring når fasen har pågått i mindre enn 14 dager",
   "app.containers.Admin.projects.project.insights.last7Days": "Siste 7 dager",
-  "app.containers.Admin.projects.project.insights.liveData": "Direkte data",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Laster inn demografi...",
   "app.containers.Admin.projects.project.insights.newSubmission": "Ny innsending",
   "app.containers.Admin.projects.project.insights.noAnswer": "Ingen svar",

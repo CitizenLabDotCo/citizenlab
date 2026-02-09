@@ -1394,7 +1394,6 @@
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity": "Toisena seitsemänä päivänä ei ollut vertailukelpoista toimintaa (mikä antaisi äärettömän arvon)",
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "7 päivän muutosta ei voida laskea, kun vaihe on kestänyt alle 14 päivää",
   "app.containers.Admin.projects.project.insights.last7Days": "Viimeiset 7 päivää",
-  "app.containers.Admin.projects.project.insights.liveData": "Reaaliaikaiset tiedot",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Ladataan väestötietoja...",
   "app.containers.Admin.projects.project.insights.newSubmission": "Uusi lähetys",
   "app.containers.Admin.projects.project.insights.noAnswer": "Ei vastausta",
