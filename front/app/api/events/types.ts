@@ -62,6 +62,7 @@ export interface InputParameters {
   projectPublicationStatuses?: PublicationStatus[];
   attendeeId?: string;
   ongoing_during?: (string | null)[]; // [startDate, endDate], use null for open ended
+  show_unlisted_events_user_can_moderate?: boolean;
 }
 export interface IEvent {
   data: IEventData;

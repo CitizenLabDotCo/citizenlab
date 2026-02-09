@@ -24,7 +24,7 @@ RSpec.describe EmailCampaigns::RecipientConfigurable do
 
       campaign.update!(groups: [g1, g2])
 
-      expect(campaign.apply_recipient_filters.all).to match_array [u1, u2, u3]
+      expect(campaign.apply_recipient_filters.all).to contain_exactly(u1, u2, u3)
     end
   end
 end

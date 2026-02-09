@@ -63,6 +63,8 @@ const RankingQuestion = ({ result, hideDetailsButton = false }: Props) => {
       pt="16px"
       w="100%"
       maxWidth="520px"
+      role="list"
+      aria-label={formatMessage(messages.rankingResults)}
     >
       {optionsWithAverageRanks.map((option) => {
         const currentOptionWithDetailedRanks = optionsWithDetailedRanks.find(
@@ -73,11 +75,24 @@ const RankingQuestion = ({ result, hideDetailsButton = false }: Props) => {
           multilocs.answer[option.optionKey].title_multiloc[locale];
 
         return (
-          <Box key={option.optionKey}>
+          <Box
+            key={option.optionKey}
+            role="listitem"
+            tabIndex={0}
+            aria-label={`${formatMessage(messages.rank, {
+              rank: option.resultRank,
+            })}, ${optionTitle}, ${formatMessage(
+              messages.averageRankAccessible,
+              {
+                averageRank: parseFloat(option.averageRank.toFixed(1)),
+              }
+            )}`}
+          >
             <Box
               display="flex"
               justifyContent="space-between"
               borderTop={`1px solid ${colors.divider}`}
+              aria-hidden="true"
             >
               <Box display="flex">
                 <Text mr="20px" my="auto">
@@ -98,17 +113,15 @@ const RankingQuestion = ({ result, hideDetailsButton = false }: Props) => {
                   {optionTitle}
                 </Text>
               </Box>
-              <Box my="auto">
-                <Text>
-                  <FormattedMessage
-                    {...messages.averageRank}
-                    values={{
-                      averageRank: parseFloat(option.averageRank.toFixed(1)),
-                      b: (chunks: React.ReactNode) => <b>{chunks}</b>,
-                    }}
-                  />
-                </Text>
-              </Box>
+              <Text my="auto">
+                <FormattedMessage
+                  {...messages.averageRank}
+                  values={{
+                    averageRank: parseFloat(option.averageRank.toFixed(1)),
+                    b: (chunks: React.ReactNode) => <b>{chunks}</b>,
+                  }}
+                />
+              </Text>
             </Box>
             {showDetails && currentOptionWithDetailedRanks && (
               <DetailedRankView

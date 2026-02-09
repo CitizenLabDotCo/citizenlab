@@ -4,6 +4,7 @@ import { ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 
 import ActionFormDefault from './ActionFormDefault';
+import ActionFormIdeation from './ActionFormIdeation';
 import ActionFormSurvey from './ActionFormSurvey';
 import { Props } from './types';
 
@@ -26,6 +27,20 @@ const ActionForm = ({ permissionData, phaseId, ...props }: Props) => {
   if (showSurveyForm) {
     return (
       <ActionFormSurvey
+        permissionData={permissionData}
+        phaseId={phaseId}
+        {...props}
+      />
+    );
+  }
+
+  const showIdeationForm =
+    ['ideation', 'proposals'].includes(participation_method) &&
+    action === 'posting_idea';
+
+  if (showIdeationForm) {
+    return (
+      <ActionFormIdeation
         permissionData={permissionData}
         phaseId={phaseId}
         {...props}

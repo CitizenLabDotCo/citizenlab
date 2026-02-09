@@ -43,8 +43,13 @@ export default defineMessages({
     defaultMessage: 'Something went wrong. Please try again later.',
   },
   signInError: {
-    id: 'app.containers.SignIn.signInError',
-    defaultMessage: 'No account was found for the provided credentials',
+    id: 'app.containers.SignIn.signInError2',
+    defaultMessage:
+      "The provided information is not correct. Click 'Forgot Password?' to reset your password, or {createAnAccountLink}.",
+  },
+  createAnAccountLink: {
+    id: 'app.containers.SignIn.createAnAccountLink',
+    defaultMessage: 'create an account',
   },
   emailTakenAndUserCanBeVerified: {
     id: 'app.containers.AuthProviders.emailTakenAndUserCanBeVerified',
@@ -56,10 +61,43 @@ export default defineMessages({
     defaultMessage:
       'An account already exists with this email address.{br}{br}You cannot access the platform using FranceConnect as the personal details do not match. To log in using FranceConnect, you will have to first change your first name or last name on this platform to match your official details.{br}{br}You can log in as you normally do below.',
   },
-  nemlogInUnderMinimumAgeVerificationFailed: {
+  underMinimumAgeVerificationFailed: {
     id: 'app.components.AuthProviders.nemlogInUnderMinimumAgeVerificationFailed',
     defaultMessage:
       'You must be the specified minimum age or above to be verified.',
+  },
+  livesOutsideAreaVerificationFailed: {
+    id: 'app.components.AuthProviders.livesOutsideAreaVerificationFailed',
+    defaultMessage:
+      'You cannot be verified as your address is not in the area required.',
+  },
+  noMatchVerificationFailed: {
+    id: 'app.components.AuthProviders.noMatchVerificationFailed',
+    defaultMessage: 'You cannot be verified.',
+  },
+  serviceErrorVerificationFailed: {
+    id: 'app.components.AuthProviders.serviceErrorVerificationFailed',
+    defaultMessage:
+      'You cannot be verified as there is an error with the verification service.',
+  },
+  underMinimumAgeAuthFailed: {
+    id: 'app.components.AuthProviders.underMinimumAgeAuthFailed',
+    defaultMessage:
+      'You cannot login as you do not meet the specified minimum age to participate.',
+  },
+  livesOutsideAreaAuthFailed: {
+    id: 'app.components.AuthProviders.livesOutsideAreaAuthFailed',
+    defaultMessage:
+      'You cannot login as your address is not in the area required.',
+  },
+  noMatchAuthFailed: {
+    id: 'app.components.AuthProviders.noMatchAuthFailed',
+    defaultMessage: 'You cannot login as we cannot successfully verify you.',
+  },
+  serviceErrorAuthFailed: {
+    id: 'app.components.AuthProviders.serviceErrorAuthFailed',
+    defaultMessage:
+      'You cannot login as there is an error with the verification service.',
   },
   verificationRequired: {
     id: 'app.components.AuthProviders.verificationRequired',
@@ -68,5 +106,9 @@ export default defineMessages({
   youCantParticipate: {
     id: 'app.containers.NewAuthModal.youCantParticipate',
     defaultMessage: "You can't participate",
+  },
+  createAnAccount: {
+    id: 'app.containers.Authentication.createAnAccount',
+    defaultMessage: 'Create an account',
   },
 });

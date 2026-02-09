@@ -1,5 +1,6 @@
 import moment = require('moment');
 import { randomString, randomEmail } from '../../support/commands';
+import { signUpEmailConformation, enterUserInfo } from '../../support/auth';
 
 describe('Native survey permissions', () => {
   describe('Native survey for smart group (question defining smart group asked in registration flow)', () => {
@@ -17,69 +18,67 @@ describe('Native survey permissions', () => {
 
     before(() => {
       // Create custom field
-      cy.apiCreateCustomField(fieldName, true, false, 'select').then(
-        (response) => {
-          customFieldId = response.body.data.id;
+      cy.apiCreateCustomField(fieldName, false, 'select').then((response) => {
+        customFieldId = response.body.data.id;
 
-          // Create custom field options
-          cy.apiCreateCustomFieldOption('Option A', customFieldId).then(
-            (response) => {
-              customFieldOptionId = response.body.data.id;
+        // Create custom field options
+        cy.apiCreateCustomFieldOption('Option A', customFieldId).then(
+          (response) => {
+            customFieldOptionId = response.body.data.id;
 
-              cy.apiCreateCustomFieldOption('Option B', customFieldId).then(
-                () => {
-                  // Create smart group based on custom field
-                  cy.apiCreateSmartGroupCustomField(
-                    'Option A people',
-                    customFieldId,
-                    customFieldOptionId
-                  ).then((response) => {
-                    smartGroupId = response.body.data.id;
+            cy.apiCreateCustomFieldOption('Option B', customFieldId).then(
+              () => {
+                // Create smart group based on custom field
+                cy.apiCreateSmartGroupCustomField(
+                  'Option A people',
+                  customFieldId,
+                  customFieldOptionId
+                ).then((response) => {
+                  smartGroupId = response.body.data.id;
 
-                    // Create project with active native survey phase
-                    cy.apiCreateProject({
+                  // Create project with active native survey phase
+                  cy.apiCreateProject({
+                    title: randomString(),
+                    descriptionPreview: randomString(),
+                    description: randomString(),
+                    publicationStatus: 'published',
+                  }).then((project) => {
+                    projectId = project.body.data.id;
+                    projectSlug = project.body.data.attributes.slug;
+                    cy.apiCreatePhase({
+                      projectId,
                       title: randomString(),
-                      descriptionPreview: randomString(),
-                      description: randomString(),
-                      publicationStatus: 'published',
-                    }).then((project) => {
-                      projectId = project.body.data.id;
-                      projectSlug = project.body.data.attributes.slug;
-                      cy.apiCreatePhase({
-                        projectId,
-                        title: randomString(),
-                        startAt: twoDaysAgo,
-                        endAt: inTwoMonths,
-                        participationMethod: 'native_survey',
-                        nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-                        nativeSurveyTitleMultiloc: { en: 'Survey' },
-                        canComment: true,
-                        canPost: true,
-                        canReact: true,
-                        description: 'Some description',
-                      }).then((phase) => {
-                        phaseId = phase.body.data.id;
+                      startAt: twoDaysAgo,
+                      endAt: inTwoMonths,
+                      participationMethod: 'native_survey',
+                      nativeSurveyButtonMultiloc: { en: 'Take the survey' },
+                      nativeSurveyTitleMultiloc: { en: 'Survey' },
+                      canComment: true,
+                      canPost: true,
+                      canReact: true,
+                      description: 'Some description',
+                    }).then((phase) => {
+                      phaseId = phase.body.data.id;
 
-                        // Set permission to smart group
-                        cy.apiSetPhasePermission({
-                          phaseId,
-                          action: 'posting_idea',
-                          permissionBody: {
-                            permission: {
-                              permitted_by: 'users',
-                              group_ids: [smartGroupId],
-                            },
+                      // Set permission to smart group
+                      cy.apiSetPhasePermission({
+                        phaseId,
+                        action: 'posting_idea',
+                        permissionBody: {
+                          permission: {
+                            permitted_by: 'users',
+                            group_ids: [smartGroupId],
                           },
-                        });
+                        },
                       });
                     });
                   });
-                }
-              );
-            }
-          );
-        }
-      );
+                });
+              }
+            );
+          }
+        );
+      });
     });
 
     after(() => {
@@ -96,29 +95,8 @@ describe('Native survey permissions', () => {
       cy.get('#e2e-authentication-modal').should('exist');
 
       // Complete email sign up
-      const firstName = randomString();
-      const lastName = randomString();
-      const email = randomEmail();
-      const password = randomString();
-
-      cy.get('#e2e-goto-signup').click();
-      cy.get('#firstName').type(firstName);
-      cy.get('#lastName').type(lastName);
-      cy.get('#email').type(email);
-      cy.get('#password').type(password);
-      cy.get('[data-testid="termsAndConditionsAccepted"] .e2e-checkbox')
-
-        .click()
-        .should('have.class', 'checked');
-      cy.get('[data-testid="privacyPolicyAccepted"] .e2e-checkbox')
-        .click()
-        .should('have.class', 'checked');
-      cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
-
-      // Enter email confirmation code
-      cy.get('#code').should('exist');
-      cy.get('#code').click().type('1234');
-      cy.get('#e2e-verify-email-button').click();
+      signUpEmailConformation(cy);
+      enterUserInfo(cy);
 
       // Enter custom fields step
       cy.get('#e2e-signup-custom-fields-container');
@@ -152,28 +130,8 @@ describe('Native survey permissions', () => {
       cy.get('#e2e-authentication-modal').should('exist');
 
       // Complete email sign up
-      const firstName = randomString();
-      const lastName = randomString();
-      const email = randomEmail();
-      const password = randomString();
-
-      cy.get('#e2e-goto-signup').click();
-      cy.get('#firstName').type(firstName);
-      cy.get('#lastName').type(lastName);
-      cy.get('#email').type(email);
-      cy.get('#password').type(password);
-      cy.get('[data-testid="termsAndConditionsAccepted"] .e2e-checkbox')
-        .click()
-        .should('have.class', 'checked');
-      cy.get('[data-testid="privacyPolicyAccepted"] .e2e-checkbox')
-        .click()
-        .should('have.class', 'checked');
-      cy.get('#e2e-signup-password-submit-button').wait(500).click().wait(500);
-
-      // Enter email confirmation code
-      cy.get('#code').should('exist');
-      cy.get('#code').click().type('1234');
-      cy.get('#e2e-verify-email-button').click();
+      signUpEmailConformation(cy);
+      enterUserInfo(cy);
 
       // Enter custom fields step
       cy.get('#e2e-signup-custom-fields-container');

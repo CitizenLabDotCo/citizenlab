@@ -25,7 +25,7 @@ resource 'PermissionsCustomField' do
       expect(response_data.size).to eq 1
       expect(response_data.map { |d| d.dig(:attributes, :required) }).to eq [true]
       expect(response_data.map { |d| d.dig(:attributes, :lock) }).to eq ['verification']
-      expect(response_data.map { |d| d.dig(:relationships, :permission, :data, :id) }).to match_array [permission.id]
+      expect(response_data.map { |d| d.dig(:relationships, :permission, :data, :id) }).to contain_exactly(permission.id)
       expect(response_data.last.dig(:relationships, :custom_field, :data, :id)).to eq custom_field.id
     end
   end

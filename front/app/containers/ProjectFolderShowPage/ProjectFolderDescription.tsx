@@ -11,9 +11,9 @@ import {
 import { WrappedComponentProps } from 'react-intl';
 import ReactResizeDetector from 'react-resize-detector';
 import styled, { useTheme } from 'styled-components';
+import { Multiloc } from 'typings';
 
 import useProjectFolderFiles from 'api/project_folder_files/useProjectFolderFiles';
-import { IProjectFolderData } from 'api/project_folders/types';
 
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -22,7 +22,6 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { injectIntl, FormattedMessage } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import messages from './messages';
 
@@ -105,14 +104,15 @@ const CollapseButtonWrapper = styled.div`
 const CollapseButton = styled(ButtonWithLink)``;
 
 interface Props {
-  projectFolder: IProjectFolderData;
-  className?: string;
+  folderId: string;
+  folderTitle: Multiloc;
+  folderDescription: Multiloc;
 }
 
 const ProjectFolderDescription = memo<Props & WrappedComponentProps>(
-  ({ projectFolder, className, intl: { formatMessage } }) => {
+  ({ folderId, folderTitle, folderDescription, intl: { formatMessage } }) => {
     const { data: projectFolderFiles } = useProjectFolderFiles({
-      projectFolderId: projectFolder.id,
+      projectFolderId: folderId,
     });
     const { windowWidth } = useWindowSize();
     const theme = useTheme();
@@ -130,7 +130,7 @@ const ProjectFolderDescription = memo<Props & WrappedComponentProps>(
 
     useEffect(() => {
       setExpanded(false);
-    }, [projectFolder, descriptionHeight]);
+    }, [descriptionHeight]);
 
     const toggleExpandCollapse = useCallback((event: React.MouseEvent) => {
       event.preventDefault();
@@ -152,86 +152,79 @@ const ProjectFolderDescription = memo<Props & WrappedComponentProps>(
       !expanded
     );
 
-    if (!isNilOrError(projectFolder)) {
-      return (
-        <Container className={className || ''}>
-          <ScreenReaderOnly>
-            <h2>{formatMessage(messages.invisibleTitleMainContent)}</h2>
-          </ScreenReaderOnly>
-          <Title id="e2e-folder-title">
-            <T value={projectFolder.attributes.title_multiloc} />
-          </Title>
-          <Description
-            className={expanded ? 'expanded' : ''}
-            maxHeight={collapsedDescriptionMaxHeight}
-          >
-            <ReactResizeDetector handleWidth handleHeight onResize={onResize}>
-              <div>
-                <QuillEditedContent
-                  textColor={theme.colors.tenantText}
-                  fontSize="m"
-                  className="e2e-folder-description"
-                  disableTabbing={showReadMoreButton}
+    return (
+      <Container>
+        <ScreenReaderOnly>
+          <h2>{formatMessage(messages.invisibleTitleMainContent)}</h2>
+        </ScreenReaderOnly>
+        <Title id="e2e-folder-title">
+          <T value={folderTitle} />
+        </Title>
+        <Description
+          className={expanded ? 'expanded' : ''}
+          maxHeight={collapsedDescriptionMaxHeight}
+        >
+          <ReactResizeDetector handleWidth handleHeight onResize={onResize}>
+            <div>
+              <QuillEditedContent
+                textColor={theme.colors.tenantText}
+                fontSize="m"
+                className="e2e-folder-description"
+                disableTabbing={showReadMoreButton}
+              >
+                <T value={folderDescription} supportHtml={true} />
+              </QuillEditedContent>
+            </div>
+          </ReactResizeDetector>
+          {showReadMoreButton && (
+            <ReadMoreOuterWrapper>
+              <ReadMoreInnerWrapper>
+                <ReadMoreButton
+                  id="e2e-project-description-read-more-button"
+                  buttonStyle="text"
+                  onClick={toggleExpandCollapse}
+                  textDecoration="underline"
+                  textDecorationHover="underline"
+                  textColor={colors.textSecondary}
+                  textHoverColor={theme.colors.tenantText}
+                  fontWeight="500"
+                  fontSize={`${fontSizes.m}px`}
+                  padding="0"
                 >
-                  <T
-                    value={projectFolder.attributes.description_multiloc}
-                    supportHtml={true}
-                  />
-                </QuillEditedContent>
-              </div>
-            </ReactResizeDetector>
-            {showReadMoreButton && (
-              <ReadMoreOuterWrapper>
-                <ReadMoreInnerWrapper>
-                  <ReadMoreButton
-                    id="e2e-project-description-read-more-button"
-                    buttonStyle="text"
-                    onClick={toggleExpandCollapse}
-                    textDecoration="underline"
-                    textDecorationHover="underline"
-                    textColor={colors.textSecondary}
-                    textHoverColor={theme.colors.tenantText}
-                    fontWeight="500"
-                    fontSize={`${fontSizes.m}px`}
-                    padding="0"
-                  >
-                    <FormattedMessage {...messages.readMore} />
-                  </ReadMoreButton>
-                </ReadMoreInnerWrapper>
-              </ReadMoreOuterWrapper>
-            )}
-
-            {descriptionHeight &&
-              descriptionHeight > collapsedDescriptionMaxHeight &&
-              expanded && (
-                <CollapseButtonWrapper>
-                  <CollapseButton
-                    id="e2e-project-description-see-less-button"
-                    buttonStyle="text"
-                    onClick={toggleExpandCollapse}
-                    textDecoration="underline"
-                    textDecorationHover="underline"
-                    textColor={colors.textSecondary}
-                    textHoverColor={theme.colors.tenantText}
-                    fontWeight="500"
-                    fontSize={`${fontSizes.m}px`}
-                    padding="0"
-                  >
-                    <FormattedMessage {...messages.seeLess} />
-                  </CollapseButton>
-                </CollapseButtonWrapper>
-              )}
-          </Description>
-          {projectFolderFiles && projectFolderFiles.data.length > 0 && (
-            <Box mb="25px">
-              <FileAttachments files={projectFolderFiles.data} />
-            </Box>
+                  <FormattedMessage {...messages.readMore} />
+                </ReadMoreButton>
+              </ReadMoreInnerWrapper>
+            </ReadMoreOuterWrapper>
           )}
-        </Container>
-      );
-    }
 
-    return null;
+          {descriptionHeight &&
+            descriptionHeight > collapsedDescriptionMaxHeight &&
+            expanded && (
+              <CollapseButtonWrapper>
+                <CollapseButton
+                  id="e2e-project-description-see-less-button"
+                  buttonStyle="text"
+                  onClick={toggleExpandCollapse}
+                  textDecoration="underline"
+                  textDecorationHover="underline"
+                  textColor={colors.textSecondary}
+                  textHoverColor={theme.colors.tenantText}
+                  fontWeight="500"
+                  fontSize={`${fontSizes.m}px`}
+                  padding="0"
+                >
+                  <FormattedMessage {...messages.seeLess} />
+                </CollapseButton>
+              </CollapseButtonWrapper>
+            )}
+        </Description>
+        {projectFolderFiles && projectFolderFiles.data.length > 0 && (
+          <Box mb="25px">
+            <FileAttachments files={projectFolderFiles.data} />
+          </Box>
+        )}
+      </Container>
+    );
   }
 );
 

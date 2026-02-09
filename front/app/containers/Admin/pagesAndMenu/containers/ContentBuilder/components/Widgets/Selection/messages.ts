@@ -10,6 +10,11 @@ export default defineMessages({
     defaultMessage:
       'With this widget, you can select and determine the order in which you want projects or folders to show to users.',
   },
+  withThisWidgetFolder: {
+    id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidgetFolder',
+    defaultMessage:
+      'With this widget, you can select and determine the order in which you want projects from this folder to appear to users.',
+  },
   selectProjectsOrFolders: {
     id: 'front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectProjectsOrFolders',
     defaultMessage: 'Select projects or folders',

@@ -93,7 +93,10 @@ export const AvatarBubbles = ({
 
     let avatarsToShow = avatarsWithImage;
 
-    if (avatarsWithImage.length < currentUserCount) {
+    if (
+      avatarsWithImage.length < limit &&
+      avatarsWithImage.length < currentUserCount
+    ) {
       const placeholdersNeeded =
         Math.min(currentUserCount, limit) - avatarsWithImage.length;
       avatarsToShow = [
@@ -102,6 +105,8 @@ export const AvatarBubbles = ({
           attributes: { avatar: { [imageSize]: placeholderImage } },
         }),
       ];
+    } else if (avatarsWithImage.length > limit) {
+      avatarsToShow = avatarsWithImage.slice(0, limit);
     }
 
     const avatarImagesCount = avatarsToShow.length;
@@ -139,6 +144,8 @@ export const AvatarBubbles = ({
                 index={index}
                 overlap={overlap}
                 size={bubbleSize}
+                width={bubbleSize}
+                height={bubbleSize}
                 src={avatar.attributes.avatar[imageSize]}
                 alt=""
                 data-testid="avatarImageBubble"

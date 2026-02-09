@@ -11,7 +11,7 @@ export type AdminPublicationsKeys = Keys<typeof adminPublicationsKeys>;
 export type ReviewState = 'pending' | 'approved';
 
 export interface IQueryParameters {
-  topicIds?: string[] | null;
+  globalTopicIds?: string[] | null;
   areaIds?: string[] | null;
   publicationStatusFilter?: PublicationStatus[];
   childrenOfId?: string;

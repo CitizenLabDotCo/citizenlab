@@ -14,11 +14,14 @@ const SiteMap = lazy(() => import('containers/SiteMap'));
 const UsersEditPage = lazy(() => import('containers/UsersEditPage'));
 const PasswordChange = lazy(() => import('containers/PasswordChange'));
 const EmailChange = lazy(() => import('containers/EmailChange'));
+
 const IdeasEditPage = lazy(() => import('containers/IdeasEditPage'));
 const IdeasIndexPage = lazy(() => import('containers/IdeasIndexPage'));
 const IdeasShowPage = lazy(() => import('containers/IdeasShowPage'));
 const IdeasNewPage = lazy(() => import('containers/IdeasNewPage'));
 const IdeasNewSurveyPage = lazy(() => import('containers/IdeasNewSurveyPage'));
+const IdeasFeedPage = lazy(() => import('containers/IdeasFeedPage'));
+
 const ProjectsIndexPage = lazy(() => import('containers/ProjectsIndexPage'));
 const ProjectsShowPage = lazy(() => import('containers/ProjectsShowPage'));
 const ProjectFolderShowPage = lazy(
@@ -47,6 +50,8 @@ const DisabledAccount = lazy(() => import('containers/DisabledAccount'));
 const ProjectPreviewToken = lazy(
   () => import('containers/Admin/projects/project/previewToken')
 );
+
+const PageNotFound = lazy(() => import('components/PageNotFound'));
 
 export type RouteType =
   | AdminRouteTypes
@@ -77,6 +82,7 @@ export enum citizenRoutes {
   ideasEditIdea = `ideas/edit/:ideaId`,
   ideasSlug = `ideas/:slug`,
   projects = 'projects',
+  projectIdeasFeed = `projects/:slug/ideas-feed`,
   projectIdeaNew = `projects/:slug/ideas/new`,
   projectSurveyNew = `projects/:slug/surveys/new`,
   projectSlug = `projects/:slug`,
@@ -116,6 +122,7 @@ type citizenRouteTypes =
   | `/${citizenRoutes.ideas}/${string}`
   | `/${citizenRoutes.projects}`
   | `/${citizenRoutes.projects}?focusSearch=${string}`
+  | `/${citizenRoutes.projects}/${string}/ideas-feed`
   | `/${citizenRoutes.projects}/${string}/${citizenRoutes.ideas}/new`
   | `/${citizenRoutes.projects}/${string}`
   | `/${citizenRoutes.projects}/${string}/preview/${string}`
@@ -236,7 +243,14 @@ export default function createRoutes() {
             </PageLoading>
           ),
         },
-
+        {
+          path: citizenRoutes.projectIdeasFeed,
+          element: (
+            <PageLoading>
+              <IdeasFeedPage />
+            </PageLoading>
+          ),
+        },
         {
           path: citizenRoutes.projectIdeaNew,
           element: (
@@ -401,6 +415,14 @@ export default function createRoutes() {
           ),
         },
         ...moduleConfiguration.routes.citizen,
+        {
+          path: '*',
+          element: (
+            <PageLoading>
+              <PageNotFound />
+            </PageLoading>
+          ),
+        },
       ],
     },
   ];

@@ -26,6 +26,7 @@ module IdIdAustria
         client_secret
         ui_method_name
         enabled_for_verified_actions
+        hide_from_profile
       ]
     end
 
@@ -39,6 +40,11 @@ module IdIdAustria
           private: true,
           type: 'boolean',
           description: 'Whether this verification method should be enabled for verified actions.'
+        },
+        hide_from_profile: {
+          private: true,
+          type: 'boolean',
+          description: 'Should verification be hidden in the user profile and under the username?'
         }
       }
     end

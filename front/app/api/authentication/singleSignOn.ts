@@ -9,6 +9,8 @@ import {
   SignUpInError,
 } from 'containers/Authentication/typings';
 
+import { getClaimTokens } from 'utils/claimToken';
+
 export interface SSOProviderMap {
   azureactivedirectory: 'azureactivedirectory';
   azureactivedirectory_b2c: 'azureactivedirectory_b2c';
@@ -23,6 +25,7 @@ export interface SSOProviderMap {
   nemlog_in: 'nemlog_in';
   keycloak: 'keycloak';
   twoday: 'twoday';
+  acm: 'acm';
   id_vienna_saml: 'id_vienna_saml';
 }
 
@@ -41,11 +44,8 @@ export interface SSOParams {
   // TODO: Refactoring + better integration of verification into new
   // registration flow when there is BE support
   verification_success?: string;
+  claim_tokens?: string[];
 }
-
-const setHrefVienna = () => {
-  window.location.href = `${AUTH_PATH}/vienna_citizen`;
-};
 
 export const handleOnSSOClick = (
   provider: SSOProvider,
@@ -62,9 +62,7 @@ export const handleOnSSOClick = (
   localStorage.setItem('auth_context', JSON.stringify(metaData.context));
   localStorage.setItem('auth_path', window.location.pathname as RouteType);
 
-  provider === 'id_vienna_saml'
-    ? setHrefVienna()
-    : setHref(provider, metaData, verification, flow);
+  setHref(provider, metaData, verification, flow);
 };
 
 function setHref(
@@ -83,7 +81,15 @@ function setHref(
     sso_verification_action: context.action,
     sso_verification_id: isProjectContext(context) ? context.id : undefined,
     sso_verification_type: context.type,
+    claim_tokens: getClaimTokens(),
   };
-  const urlSearchParams = stringify(omitBy(ssoParams, isNil));
-  window.location.href = `${AUTH_PATH}/${provider}?${urlSearchParams}`;
+
+  // NOTE: SSO passthru params are not currently called for Vienna SAML login
+  // This may mean that some flows (eg post participation registration) do not work as expected
+  if (provider === 'id_vienna_saml') {
+    window.location.href = `${AUTH_PATH}/vienna_citizen`;
+  } else {
+    const urlSearchParams = stringify(omitBy(ssoParams, isNil));
+    window.location.href = `${AUTH_PATH}/${provider}?${urlSearchParams}`;
+  }
 }

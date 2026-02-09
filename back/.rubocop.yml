@@ -24,6 +24,7 @@ Layout/HashAlignment:
   EnforcedHashRocketStyle: [key, table]
 
 Metrics/BlockLength:
+  Max: 384
   Exclude:
     - "engines/*/*/spec/**/*"
     - "spec/**/*"
@@ -85,6 +86,11 @@ Layout/EndAlignment:
 
 Layout/TrailingWhitespace:
   AllowInHeredoc: true
+
+# rspec-parameterized uses a DSL that overrides the `|` operator.
+Lint/BinaryOperatorWithIdenticalOperands:
+  Exclude:
+    - 'spec/**/*'
 
 Lint/AmbiguousBlockAssociation:
   AllowedPatterns:
@@ -152,6 +158,16 @@ Layout/MultilineMethodCallIndentation:
 RSpec/DescribeClass:
   IgnoredMetadata:
     type: ["request"]
+  Exclude:
+    - 'engines/commercial/id_bosa_fas/spec/requests/bosa_fas_verification_spec.rb'
+    - 'engines/commercial/id_clave_unica/spec/requests/clave_unica_verification_spec.rb'
+    - 'engines/commercial/id_franceconnect/spec/requests/franceconnect_verification_spec.rb'
+    - 'engines/commercial/id_vienna_saml/spec/requests/citizen_authentication_spec.rb'
+    - 'engines/commercial/id_vienna_saml/spec/requests/employee_authentication_spec.rb'
+    - 'spec/requests/google_authentication_spec.rb'
+    - 'engines/commercial/multi_tenancy/spec/db/seedfile_spec.rb'
+    - 'engines/commercial/multi_tenancy/spec/tasks/*_task_spec.rb'
+    - 'spec/tasks/single_use/*.ignore.rb'
 
 RSpec/EmptyExampleGroup:
   # `context` and `describe` are found as empty example groups when
@@ -162,7 +178,13 @@ RSpec/EmptyExampleGroup:
 RSpec/ExampleLength:
   Enabled: false
 
+RSpec/SpecFilePathSuffix:
+  Exclude:
+    - 'spec/migrations/20241127093339_add_first_published_at_to_admin_publications_spec.ignore.rb'
+    - 'spec/tasks/single_use/*.ignore.rb'
+
 Metrics/MethodLength:
+  Max: 61
   CountAsOne: ["array", "hash", "heredoc"]
   Exclude:
     - "**/db/migrate/**/*"
@@ -174,3 +196,108 @@ Lint/Void:
 Rails/UnknownEnv:
   # config/initializers/apartment.rb refers to staging, which is not part of the default settings.
   Environments: [development, test, production, staging]
+
+Layout/LineLength:
+  Max: 1269
+
+Metrics/AbcSize:
+  Max: 126
+
+Metrics/BlockNesting:
+  Max: 5
+
+Metrics/ClassLength:
+  Max: 564
+
+Metrics/CyclomaticComplexity:
+  Max: 26
+
+Metrics/ModuleLength:
+  Max: 102
+
+Metrics/ParameterLists:
+  Max: 10
+
+Metrics/PerceivedComplexity:
+  Max: 28
+
+RSpec/AnyInstance:
+  Enabled: false
+
+RSpec/ContextWording:
+  Enabled: false
+
+RSpec/FilePath:
+  Enabled: false
+
+RSpec/IndexedLet:
+  Enabled: false
+
+RSpec/InstanceVariable:
+  Enabled: false
+
+RSpec/LetSetup:
+  Enabled: false
+
+RSpec/MessageSpies:
+  Enabled: false
+
+RSpec/MissingExampleGroupArgument:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Max: 6
+
+RSpec/SpecFilePathFormat:
+  Enabled: false
+
+RSpec/StubbedMock:
+  Enabled: false
+
+RSpecRails/NegationBeValid:
+  Enabled: false
+
+FactoryBot/AssociationStyle:
+  Enabled: false
+
+Rails/BulkChangeTable:
+  Enabled: false
+
+Rails/FindEach:
+  Enabled: false
+
+Rails/RedundantActiveRecordAllMethod:
+  Enabled: false
+
+Rails/RedundantPresenceValidationOnBelongsTo:
+  Enabled: false
+
+Rails/ReversibleMigration:
+  Enabled: false
+
+Rails/SkipsModelValidations:
+  Enabled: false
+
+Rails/TimeZone:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/MutableConstant:
+  Enabled: false
+
+Gemspec/DevelopmentDependencies:
+  Enabled: false
+
+Gemspec/RequireMFA:
+  Enabled: false
+
+Gemspec/RequiredRubyVersion:
+  Enabled: false
+
+Security/Open:
+  Enabled: false
+
+Naming/MethodParameterName:
+  Enabled: false

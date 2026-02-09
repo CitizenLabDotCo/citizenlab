@@ -5,4 +5,12 @@ export default defineMessages({
     id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.skipCarrousel',
     defaultMessage: 'Press escape to skip carrousel',
   },
+  scrollLeft: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollLeft',
+    defaultMessage: 'Scroll left',
+  },
+  scrollRight: {
+    id: 'app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.OpenToParticipation.ProjectCarrousel.scrollRight',
+    defaultMessage: 'Scroll right',
+  },
 });

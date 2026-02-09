@@ -62,9 +62,7 @@ describe BulkImportIdeas::Importers::IdeaImporter do
 
       expect(project.ideas.count).to eq 2
       expect(project.reload.ideas_count).to eq 0
-      expect(project.reload.ideas.pluck(:custom_field_values)).to match_array(
-        [{ 'text_field' => 'custom text field content' }, { 'text_field' => 'custom text field content 2' }]
-      )
+      expect(project.reload.ideas.pluck(:custom_field_values)).to contain_exactly({ 'text_field' => 'custom text field content' }, { 'text_field' => 'custom text field content 2' })
     end
 
     it 'imports draft ideas with idea import meta data' do
@@ -189,18 +187,20 @@ describe BulkImportIdeas::Importers::IdeaImporter do
       )
     end
 
-    it 'adds a timestamp to published at so that idea sorting is consistent' do
+    it 'adds a timestamp to published at and submitted at so that idea sorting is consistent' do
       allow(Time).to receive(:now).and_return(Time.new(2024, 12, 25, 11, 22, 33))
       project = create(:project, title_multiloc: { 'en' => 'Project title' })
       idea_rows = [
         {
           title_multiloc: { 'en' => 'My idea title' },
           project_id: project.id,
-          published_at: '01-11-2024'
+          published_at: '01-11-2024',
+          submitted_at: '01-11-2024'
         }
       ]
       service.import idea_rows
       expect(project.ideas.first.published_at.strftime('%F %T')).to eq '2024-11-01 11:22:33'
+      expect(project.ideas.first.submitted_at.strftime('%F %T')).to eq '2024-11-01 11:22:33'
     end
 
     it 'does not import a user if there is a problem with saving a named user' do

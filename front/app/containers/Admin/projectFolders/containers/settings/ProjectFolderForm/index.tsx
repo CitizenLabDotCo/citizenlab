@@ -21,6 +21,7 @@ import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 
 import { useSyncFolderFiles } from 'hooks/files/useSyncFolderFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
@@ -33,12 +34,15 @@ import {
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
+import DescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
+import Highlighter from 'components/Highlighter';
+import Error from 'components/UI/Error';
 import FileUploader from 'components/UI/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError, isError } from 'utils/helperUtils';
@@ -70,6 +74,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     Resource hooks
     ==============
   */
+  const { formatMessage } = useIntl();
   const { mutateAsync: addProjectFolderFile } = useAddProjectFolderFile();
   const syncProjectFolderFiles = useSyncFolderFiles();
 
@@ -96,6 +101,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const { mutate: addProjectFolder, isLoading: isAddProjectFolderLoading } =
     useAddProjectFolder();
   const { mutate: updateProjectFolder } = useUpdateProjectFolder();
+
+  const showDescriptionBuilder =
+    useFeatureFlag({
+      name: 'project_description_builder',
+    }) && projectFolder; // description builder cannot be used when creating a folder
 
   /*
     ==============
@@ -564,8 +574,52 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             label={<FormattedMessage {...messages.titleInputLabel} />}
           />
         </SectionField>
-
-        {/* Only show this field when slug is already saved to folder (i.e. not when creating a new folder, which uses this form as well) */}
+        <SectionField data-cy="e2e-project-folder-short-description">
+          <SubSectionTitle>
+            <FormattedMessage {...messages.folderDescription} />
+          </SubSectionTitle>
+          {showDescriptionBuilder ? (
+            <Highlighter fragmentId="description-multiloc">
+              <DescriptionBuilderToggle
+                valueMultiloc={descriptionMultiloc}
+                onChange={getHandler(setDescriptionMultiloc)}
+                label={formatMessage(messages.descriptionInputLabel)}
+                contentBuildableType="folder"
+              />
+            </Highlighter>
+          ) : (
+            <Box data-cy="e2e-project-folder-description">
+              <QuillMutilocWithLocaleSwitcher
+                id="description"
+                valueMultiloc={descriptionMultiloc}
+                onChange={getHandler(setDescriptionMultiloc)}
+                label={<FormattedMessage {...messages.descriptionInputLabel} />}
+                withCTAButton
+              />
+            </Box>
+          )}
+          <Error
+            fieldName="description_multiloc"
+            apiErrors={errors.description_multiloc}
+          />
+          <Box mt="35px">
+            <TextAreaMultilocWithLocaleSwitcher
+              data-cy="e2e-project-folder-short-description"
+              valueMultiloc={shortDescriptionMultiloc}
+              name="textAreaMultiloc"
+              onChange={getHandler(setShortDescriptionMultiloc)}
+              label={
+                <FormattedMessage {...messages.shortDescriptionInputLabel} />
+              }
+              labelTooltipText={
+                <FormattedMessage
+                  {...messages.shortDescriptionInputLabelTooltip}
+                />
+              }
+            />
+          </Box>
+        </SectionField>
+        {/* Only show URL field when slug is already saved to folder (i.e. not when creating a new folder, which uses this form as well) */}
         {!isNilOrError(projectFolder) && slug && (
           <SectionField>
             <>
@@ -585,37 +639,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             </>
           </SectionField>
         )}
-        <SectionField data-cy="e2e-project-folder-short-description">
-          <SubSectionTitle>
-            <FormattedMessage {...messages.folderDescriptions} />
-          </SubSectionTitle>
-          <Box mb="35px">
-            <TextAreaMultilocWithLocaleSwitcher
-              data-cy="e2e-project-folder-short-description"
-              valueMultiloc={shortDescriptionMultiloc}
-              name="textAreaMultiloc"
-              onChange={getHandler(setShortDescriptionMultiloc)}
-              label={
-                <FormattedMessage {...messages.shortDescriptionInputLabel} />
-              }
-              labelTooltipText={
-                <FormattedMessage
-                  {...messages.shortDescriptionInputLabelTooltip}
-                />
-              }
-            />
-          </Box>
-          <Box data-cy="e2e-project-folder-description">
-            <QuillMutilocWithLocaleSwitcher
-              id="description"
-              valueMultiloc={descriptionMultiloc}
-              onChange={getHandler(setDescriptionMultiloc)}
-              label={<FormattedMessage {...messages.descriptionInputLabel} />}
-              withCTAButton
-            />
-          </Box>
-        </SectionField>
-
         <SectionField>
           <SubSectionTitle>
             <FormattedMessage {...messages.headerImageInputLabel} />

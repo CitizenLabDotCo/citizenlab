@@ -65,6 +65,18 @@ describe SideFxCommentService do
       expect(project.reload.followers.count).to eq n_project_followers
       expect(folder.reload.followers.count).to eq n_folder_followers
     end
+
+    it 'enqueues wise voice detection job if idea_feed feature is activated' do
+      SettingsService.new.activate_feature! 'nested_input_topics'
+      SettingsService.new.activate_feature! 'live_auto_input_topics'
+      SettingsService.new.activate_feature! 'idea_feed'
+      expect { service.after_create(comment, user) }.to have_enqueued_job(WiseVoiceDetectionJob).with(comment)
+    end
+
+    it 'does not enqueue wise voice detection job if idea_feed feature is deactivated' do
+      SettingsService.new.deactivate_feature! 'idea_feed'
+      expect { service.after_create(comment, user) }.not_to have_enqueued_job(WiseVoiceDetectionJob)
+    end
   end
 
   describe 'after_update' do
@@ -93,6 +105,20 @@ describe SideFxCommentService do
       project_id = comment.idea.project_id
       expectation.not_to enqueue_job(LogActivityJob).with(comment, 'mentioned', user, created_at, payload: { mentioned_user: u1.id }, project_id: project_id)
       expectation.to enqueue_job(LogActivityJob).with(comment, 'mentioned', user, created_at, payload: { mentioned_user: u2.id }, project_id: project_id)
+    end
+
+    it 'enqueues wise voice detection job if idea_feed feature is activated and body_multiloc changed' do
+      SettingsService.new.activate_feature! 'nested_input_topics'
+      SettingsService.new.activate_feature! 'live_auto_input_topics'
+      SettingsService.new.activate_feature! 'idea_feed'
+      comment.update!(body_multiloc: { en: 'changed' })
+      expect { service.after_update(comment, user) }.to have_enqueued_job(WiseVoiceDetectionJob).with(comment)
+    end
+
+    it 'does not enqueue wise voice detection job if idea_feed feature is deactivated' do
+      SettingsService.new.deactivate_feature! 'idea_feed'
+      comment.update!(body_multiloc: { en: 'changed' })
+      expect { service.after_update(comment, user) }.not_to have_enqueued_job(WiseVoiceDetectionJob)
     end
   end
 

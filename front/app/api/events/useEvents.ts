@@ -18,6 +18,7 @@ const fetchEvents = (filters: InputParameters) => {
     staticPageId: static_page_id,
     attendeeId: attendee_id,
     ongoing_during,
+    show_unlisted_events_user_can_moderate,
   } = filters;
   return fetcher<IEvents>({
     path: '/events',
@@ -34,6 +35,7 @@ const fetchEvents = (filters: InputParameters) => {
       attendee_id,
       ongoing_during:
         ongoing_during && `[${ongoing_during[0]}, ${ongoing_during[1]}]`,
+      show_unlisted_events_user_can_moderate,
     },
   });
 };
@@ -51,6 +53,7 @@ const useEvents = ({
   pageNumber,
   attendeeId,
   ongoing_during,
+  show_unlisted_events_user_can_moderate,
 }: InputParameters) => {
   const queryParams: InputParameters = {
     projectPublicationStatuses,
@@ -63,6 +66,7 @@ const useEvents = ({
     staticPageId,
     attendeeId,
     ongoing_during,
+    show_unlisted_events_user_can_moderate,
   };
 
   return useQuery<IEvents, CLErrors, IEvents, EventsKeys>({

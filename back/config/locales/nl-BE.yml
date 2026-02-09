@@ -125,6 +125,7 @@ nl-BE:
     open_idea_project_description_preview: Misschien past je idee niet bij een van de bestaande projecten? Plaats het dan hier, verzamel steun en krijg het op de politieke agenda!
     open_idea_project_description: >
       <p>Hier kan je je eigen idee starten als het niet past in een van de bestaande projecten.</p><p><strong>Het doel?</strong> Jouw idee op de politieke agenda krijgen.</p><p><strong>Hoe?</strong> Door steun te verzamelen, namelijk 100 stemmen in 3 maanden tijd. Dit doe je door je idee eerst 'aantrekkelijk' te maken. Schrijf op een heldere en overtuigende manier, voeg afbeeldingen toe, geef sterke op feiten gebaseerde argumenten, sluit bijlagen in die verdere details geven, ... Daarna kun je je idee delen op sociale media of via e-mail. Nodig mensen uit om feedback te geven op jouw idee of om je idee te steunen door hun stem uit te brengen.</p><p><strong>Waarover?</strong> Je idee kan over zowat van alles en nog wat gaan, zolang het maar een link heeft met je gemeente en haar beleid. Het kan een probleem zijn dat je ervaart, een oplossing die je voor ogen hebt, of zelfs een combinatie van beide. Het kan een wild plan zijn, op de lange termijn, of net zeer tastbaar en op korte termijn te realiseren.</p><p><strong>En daarna?</strong> Heb je 100 stemmen verzameld in 3 maanden? Gefeliciteerd! De gemeente zal je idee overwegen. Als geoordeeld wordt dat je idee haalbaar is en geen personen of groepen schade berokkent, krijg je de kans om je idee te komen voorstellen op de gemeenteraad. Tijdens dezelfde vergadering zullen de leden van de gemeenteraad ook aangeven of ze al dan niet aan de slag gaan met je idee, en waarom. Als je geen 100 stemmen verzameld in 3 maanden wordt je idee automatisch verworpen.</p><p>We kijken ernaar uit om je ideeën te horen!</p>
+    published_projects: Gepubliceerde projecten
   phases:
     open_idea_phase_title: Huidige fase
     native_survey_title: Vragenlijst
@@ -385,3 +386,4 @@ nl-BE:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "Het maximum moet groter zijn dan het minimum."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Het maximum moet groter zijn dan of gelijk aan het minimum."

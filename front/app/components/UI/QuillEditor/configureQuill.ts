@@ -1,6 +1,8 @@
 import Quill from 'quill';
 import BlotFormatter from '@enzedonline/quill-blot-formatter2';
 
+import { isYouTubeEmbedLink } from 'utils/urlUtils';
+
 import {
   attributes,
   ImageBlot,
@@ -14,6 +16,17 @@ export const configureQuill = () => {
   // BEGIN allow video resizing styles
   const BaseVideoFormat = Quill.import('formats/video') as any;
   class VideoFormat extends BaseVideoFormat {
+    static create(url: string) {
+      const node = super.create(url);
+
+      // Add referrer policy to YouTube video embeds
+      if (isYouTubeEmbedLink(url)) {
+        node.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      }
+
+      return node;
+    }
+
     static formats(domNode) {
       return attributes.reduce((formats, attribute) => {
         if (domNode.hasAttribute(attribute)) {

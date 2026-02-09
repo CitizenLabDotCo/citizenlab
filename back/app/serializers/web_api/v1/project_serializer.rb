@@ -14,7 +14,9 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     :created_at,
     :updated_at,
     :header_bg_alt_text_multiloc,
-    :listed
+    :listed,
+    :track_participation_location,
+    :live_auto_input_topics_enabled
   )
 
   attribute :folder_id do |project|
@@ -72,7 +74,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
 
   has_many :project_images, serializer: WebApi::V1::ImageSerializer
   has_many :areas
-  has_many :topics, serializer: WebApi::V1::TopicSerializer
+  has_many :global_topics, serializer: WebApi::V1::GlobalTopicSerializer
   has_many :avatars, serializer: WebApi::V1::AvatarSerializer do |object, params|
     avatars_for_project(object, params)[:users]
   end

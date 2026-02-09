@@ -9,6 +9,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
+import ColorKey from './ColorKey';
 import ResultList from './ResultList';
 import Statistics from './Statistics';
 
@@ -44,12 +45,13 @@ const CommonGroundResults = ({ phaseId }: Props) => {
   const totalVotes = votes.up + votes.down + votes.neutral;
 
   return (
-    <Box mt="8px" bg="white" p="30px 30px 48px 30px">
+    <Box mt="8px">
       <Statistics
         numOfParticipants={num_participants}
         numOfIdeas={num_ideas}
         totalVotes={totalVotes}
       />
+      <ColorKey />
       <ResultList
         title={formatMessage(messages.highestConsensusTitle)}
         description={formatMessage(messages.highestConsensusDescription)}

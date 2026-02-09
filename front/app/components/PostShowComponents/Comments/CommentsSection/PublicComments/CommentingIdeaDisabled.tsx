@@ -16,15 +16,21 @@ import messages from '../../messages';
 interface Props {
   phaseId: string | undefined;
   idea: IIdea;
+  onUnauthenticatedClick?: () => void;
 }
 
-const CommentingIdeaDisabled = ({ phaseId, idea }: Props) => {
+const CommentingIdeaDisabled = ({
+  phaseId,
+  idea,
+  onUnauthenticatedClick,
+}: Props) => {
   const {
     enabled: commentingEnabled,
     disabled_reason: commentingDisabledReason,
   } = idea.data.attributes.action_descriptors.commenting_idea;
 
   const signUpIn = (flow: 'signin' | 'signup') => {
+    onUnauthenticatedClick?.();
     if (!phaseId) return;
 
     triggerAuthenticationFlow(

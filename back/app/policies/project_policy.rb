@@ -1,40 +1,6 @@
 # frozen_string_literal: true
 
 class ProjectPolicy < ApplicationPolicy
-  def self.apply_listed_scope(scope, user, remove_unlisted_type)
-    # remove_unlisted_type can be:
-    # - 'remove_all_unlisted': only return listed projects
-    # - 'remove_unlisted_that_user_cannot_moderate': return listed projects
-    # AND unlisted projects that the user can moderate.
-
-    if remove_unlisted_type == 'remove_all_unlisted'
-      return scope.where(listed: true)
-    end
-
-    # Admins: return all projects,
-    # since they can moderate all projects.
-    if user&.admin?
-      return scope
-    end
-
-    # Moderators: return all projects that
-    # they can moderate.
-    if user&.project_or_folder_moderator?
-      scope = scope.joins(:admin_publication)
-
-      return scope.where(
-        '(projects.listed = TRUE) OR ' \
-        '(projects.listed = FALSE AND projects.id IN (?)) OR ' \
-        '(projects.listed = FALSE AND admin_publications.parent_id IN (?))',
-        user.moderatable_project_ids,
-        AdminPublication.where(publication_id: user.moderated_project_folder_ids).select(:id)
-      )
-    end
-
-    # Other users: return only listed projects.
-    scope.where(listed: true)
-  end
-
   class Scope < ApplicationPolicy::Scope
     def resolve
       @scope = scope.includes(:admin_publication)
@@ -45,19 +11,9 @@ class ProjectPolicy < ApplicationPolicy
       # of the user gives access).
       moderator_scope = user&.active? ? UserRoleService.new.moderatable_projects(user, scope) : scope.none
 
-      moderator_scope = moderator_scope
+      moderator_scope
         .or(resolve_for_visitor)
         .or(resolve_for_normal_user)
-
-      if context[:remove_unlisted]
-        moderator_scope = ProjectPolicy.apply_listed_scope(
-          moderator_scope,
-          user,
-          context[:remove_unlisted]
-        )
-      end
-
-      moderator_scope
     end
 
     private
@@ -194,12 +150,13 @@ class ProjectPolicy < ApplicationPolicy
       :visible_to,
       :include_all_areas,
       :listed,
+      :live_auto_input_topics_enabled,
       {
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,
         description_preview_multiloc: CL2_SUPPORTED_LOCALES,
         area_ids: [],
-        topic_ids: [],
+        global_topic_ids: [],
         header_bg_alt_text_multiloc: CL2_SUPPORTED_LOCALES
       }
     ]
@@ -207,6 +164,11 @@ class ProjectPolicy < ApplicationPolicy
     if AppConfiguration.instance.feature_activated? 'disable_disliking'
       shared += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]
     end
+
+    if AppConfiguration.instance.feature_activated? 'participation_location_tracking'
+      shared += %i[track_participation_location]
+    end
+
     shared
   end
 

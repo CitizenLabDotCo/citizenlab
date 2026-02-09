@@ -9,6 +9,9 @@ RSpec.describe Idea do
     it { is_expected.to have_many(:related_ideas).through(:idea_relations) }
   end
 
+  it_behaves_like 'claimable_participation'
+  it_behaves_like 'location_trackable_participation'
+
   describe 'title validation' do
     it 'requires title_multiloc when title_multiloc_required? is true' do
       idea = build(:idea, publication_status: 'published')
@@ -443,18 +446,18 @@ RSpec.describe Idea do
   end
 
   context 'hooks' do
-    it 'should set the author name on creation' do
+    it 'sets the author name on creation' do
       u = create(:user)
       idea = create(:idea, author: u)
       expect(idea.author_name).to eq u.full_name
     end
 
-    it 'should generate a slug on creation' do
+    it 'generates a slug on creation' do
       idea = create(:idea, slug: nil)
       expect(idea.slug).to be_present
     end
 
-    it 'should generate a slug when there is no current phase' do
+    it 'generates a slug when there is no current phase' do
       project = create(:project)
       create(:phase, project: project, start_at: (Time.zone.today - 10), end_at: (Time.zone.today - 5))
       create(:phase, project: project, start_at: (Time.zone.today + 5), end_at: (Time.zone.today + 10))
@@ -462,7 +465,7 @@ RSpec.describe Idea do
       expect(idea.slug).to be_present
     end
 
-    it 'should generate a slug for a timeline project with no phases' do
+    it 'generates a slug for a timeline project with no phases' do
       project = create(:project)
       idea = create(:idea, slug: nil, project: project)
       expect(idea.slug).to be_present
@@ -470,7 +473,7 @@ RSpec.describe Idea do
   end
 
   context 'feedback_needed' do
-    it 'should select ideas with no official feedback or no idea status change' do
+    it 'selects ideas with no official feedback or no idea status change' do
       ideas = [
         create(:idea, idea_status: create(:idea_status_proposed)),
         create(:idea, idea_status: create(:idea_status, code: 'accepted')),
@@ -479,7 +482,7 @@ RSpec.describe Idea do
       ]
       create(:official_feedback, idea: ideas[0])
 
-      expect(described_class.feedback_needed.ids).to match_array [ideas[2].id, ideas[3].id]
+      expect(described_class.feedback_needed.ids).to contain_exactly(ideas[2].id, ideas[3].id)
     end
   end
 
@@ -616,7 +619,7 @@ RSpec.describe Idea do
   end
 
   describe 'idea search' do
-    it 'should return results with exact prefixes' do
+    it 'returns results with exact prefixes' do
       create(:idea, title_multiloc: { 'nl-BE' => 'Bomen in het park' })
       srx_results = described_class.all.search_by_all 'Bomen'
       expect(srx_results.size).to be > 0
@@ -632,10 +635,11 @@ RSpec.describe Idea do
     end
 
     it 'sanitizes img tags in the body' do
-      idea = create(:idea, body_multiloc: {
-        'en' => 'Something <img src=x onerror=alert(1)>'
-      })
-      expect(idea.body_multiloc).to eq({ 'en' => 'Something <img src="x">' })
+      ti_service = instance_double(TextImageService).as_null_object
+      allow(TextImageService).to receive(:new).and_return(ti_service)
+
+      idea = create(:idea, body_multiloc: { 'en' => '... <img src=x onerror=alert(1)>' })
+      expect(idea.body_multiloc).to match('en' => '... <img src="x">')
     end
 
     it "allows embedded youtube video's in the body" do
@@ -723,7 +727,7 @@ RSpec.describe Idea do
       proposal = create(:proposal)
       _response = create(:native_survey_response)
 
-      expect(described_class.where_pmethod { |pmethod| %w[ideation proposals].include? pmethod.class.method_str }).to match_array [proposal, idea]
+      expect(described_class.where_pmethod { |pmethod| %w[ideation proposals].include? pmethod.class.method_str }).to contain_exactly(proposal, idea)
     end
   end
 
@@ -739,7 +743,7 @@ RSpec.describe Idea do
       _idea_without_content = build(:idea, title_multiloc: {}, body_multiloc: {}).tap { _1.save(validate: false) }
       idea_with_both = create(:idea)
 
-      expect(described_class.with_content).to match_array [idea_with_only_title, idea_with_only_body, idea_with_both]
+      expect(described_class.with_content).to contain_exactly(idea_with_only_title, idea_with_only_body, idea_with_both)
     end
   end
 end

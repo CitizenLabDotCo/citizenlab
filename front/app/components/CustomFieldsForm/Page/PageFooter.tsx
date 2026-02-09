@@ -7,8 +7,7 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 import { IPhaseData, IPhases } from 'api/phases/types';
 import { IProject } from 'api/projects/types';
 
-import PageControlButtons from 'components/Form/Components/Layouts/PageControlButtons';
-
+import PageControlButtons from '../PageControlButtons';
 import ProgressBar from '../ProgressBar';
 
 const PageFooter = ({

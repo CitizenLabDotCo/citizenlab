@@ -15,7 +15,7 @@ import { Multiloc } from 'typings';
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAreas from 'api/areas/useAreas';
-import useTopics from 'api/topics/useTopics';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -106,6 +106,7 @@ interface Props {
   onChangeTab: (tab: PublicationTab) => void;
   onChangeSearch: (search: string | null) => void;
   currentlyWorkingOnText?: Multiloc;
+  searchTerm?: string | null;
 }
 
 const Header = ({
@@ -123,11 +124,12 @@ const Header = ({
   onChangeTab,
   onChangeSearch,
   currentlyWorkingOnText,
+  searchTerm,
 }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
   const isSmallerThanPhone = useBreakpoint('phone');
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const { data: topics } = useTopics({ forHomepageFilter: true });
+  const { data: topics } = useGlobalTopics({ forHomepageFilter: true });
   const { data: areas } = useAreas({ forHomepageFilter: true });
   const localize = useLocalize();
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
@@ -193,6 +195,9 @@ const Header = ({
 
   const shouldShowAreaAndTagFilters = !isSmallerThanPhone && displayFilters;
 
+  const filtersAppliedCount =
+    (selectedTopics.length || 0) + (selectedAreas.length || 0);
+
   return (
     <div className={className}>
       {showTitle ? (
@@ -214,6 +219,8 @@ const Header = ({
         <StyledSearchInput
           onChange={handleOnSearchChange}
           a11y_numberOfSearchResults={statusCounts.all}
+          a11y_searchQuery={searchTerm ?? ''}
+          a11y_filtersAppliedCount={filtersAppliedCount}
           setInputRef={handleSetSearchInputRef}
         />
       )}

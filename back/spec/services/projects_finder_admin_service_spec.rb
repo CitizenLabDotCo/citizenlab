@@ -50,19 +50,17 @@ describe ProjectsFinderAdminService do
     it 'returns all projects for admin user' do
       admin_user = create(:admin)
       result = described_class.filter_moderatable(Project.all, admin_user)
-      expect(result.pluck(:id)).to match_array([
-        project_in_folder1.id,
-        project_in_folder2.id,
-        project_without_folder.id
-      ])
+      expect(result.pluck(:id)).to contain_exactly(project_in_folder1.id, project_in_folder2.id, project_without_folder.id)
     end
 
     it 'returns projects user can moderate if not admin' do
       result = described_class.filter_moderatable(Project.all, user)
-      expect(result.pluck(:id)).to match_array([
-        project_without_folder.id,
-        project_in_folder1.id
-      ])
+      expect(result.pluck(:id)).to contain_exactly(project_without_folder.id, project_in_folder1.id)
+    end
+
+    it 'returns empty scope if there is no user' do
+      result = described_class.filter_moderatable(Project.all, nil)
+      expect(result.count).to eq 0
     end
   end
 
@@ -155,7 +153,7 @@ describe ProjectsFinderAdminService do
 
     it 'returns all projects when no managers specified' do
       result = described_class.filter_project_manager(Project.all, {})
-      expect(result.pluck(:id)).to match_array([p1.id, p2.id, p3.id])
+      expect(result.pluck(:id)).to contain_exactly(p1.id, p2.id, p3.id)
     end
   end
 
@@ -191,12 +189,12 @@ describe ProjectsFinderAdminService do
 
     it 'filters projects by start date' do
       result = described_class.filter_start_date(Project.all, { min_start_date: Time.zone.today - 7.days, max_start_date: Time.zone.today + 3.days })
-      expect(result.pluck(:id).sort).to match_array([p1.id, p4.id])
+      expect(result.pluck(:id).sort).to contain_exactly(p1.id, p4.id)
     end
 
     it 'returns all projects when range is empty' do
       result = described_class.filter_start_date(Project.all, { min_start_date: nil, max_start_date: nil })
-      expect(result.pluck(:id).sort).to match_array([p1.id, p2.id, p3.id, p4.id, p5.id])
+      expect(result.pluck(:id).sort).to contain_exactly(p1.id, p2.id, p3.id, p4.id, p5.id)
     end
   end
 
@@ -307,12 +305,12 @@ describe ProjectsFinderAdminService do
 
     it 'returns projects in the specified folder' do
       result = described_class.filter_by_folder_ids(Project.all, { folder_ids: [folder1.id] })
-      expect(result.pluck(:id)).to match_array([project_in_folder1.id])
+      expect(result.pluck(:id)).to contain_exactly(project_in_folder1.id)
     end
 
     it 'returns projects in any of the specified folders' do
       result = described_class.filter_by_folder_ids(Project.all, { folder_ids: [folder1.id, folder2.id] })
-      expect(result.pluck(:id)).to match_array([project_in_folder1.id, project_in_folder2.id])
+      expect(result.pluck(:id)).to contain_exactly(project_in_folder1.id, project_in_folder2.id)
     end
 
     it 'returns all projects if folder_ids is blank' do
@@ -345,9 +343,7 @@ describe ProjectsFinderAdminService do
 
     it 'returns all projects when no participation_methods specified' do
       result = described_class.filter_current_phase_participation_method(Project.all, {})
-      expect(result.pluck(:id)).to match_array([
-        project_ideation.id, project_voting.id, project_information.id, project_ideation_future.id
-      ])
+      expect(result.pluck(:id)).to contain_exactly(project_ideation.id, project_voting.id, project_information.id, project_ideation_future.id)
     end
 
     it 'filters projects by a single participation method' do
@@ -357,7 +353,7 @@ describe ProjectsFinderAdminService do
 
     it 'filters projects by multiple participation methods' do
       result = described_class.filter_current_phase_participation_method(Project.all, { participation_methods: %w[ideation voting] })
-      expect(result.pluck(:id)).to match_array([project_ideation.id, project_voting.id])
+      expect(result.pluck(:id)).to contain_exactly(project_ideation.id, project_voting.id)
     end
   end
 
@@ -369,6 +365,60 @@ describe ProjectsFinderAdminService do
     it 'sorts projects alphabetically by title' do
       result = described_class.sort_alphabetically(Project.all, { locale: 'en', sort: 'alphabetically_asc' })
       expect(result.pluck(:id)).to eq([p1.id, p2.id, p3.id])
+    end
+  end
+
+  describe 'self.sort_by_participation' do
+    before_all do
+      Analytics::PopulateDimensionsService.populate_types
+    end
+
+    let!(:p1) { create(:project, title_multiloc: { 'en' => 'Project 1' }) }
+    let!(:p2) { create(:project, title_multiloc: { 'en' => 'Project 2' }) }
+    let!(:p3) { create(:project, title_multiloc: { 'en' => 'Project 3' }) }
+    let!(:p4) { create(:project, title_multiloc: { 'en' => 'Project 4' }) }
+
+    before do
+      create_list(:idea, 5, project: p1)
+      create_list(:idea, 10, project: p2)
+      create_list(:idea, 2, project: p3)
+    end
+
+    it 'sorts projects by participation count in ascending order' do
+      result = described_class.sort_by_participation(Project.all, { sort: 'participation_asc' })
+      expect(result.pluck(:id)).to eq([p4.id, p3.id, p1.id, p2.id])
+    end
+
+    it 'sorts projects by participation count in descending order' do
+      result = described_class.sort_by_participation(Project.all, { sort: 'participation_desc' })
+      expect(result.pluck(:id)).to eq([p2.id, p1.id, p3.id, p4.id])
+    end
+
+    it 'handles multiple participation types correctly' do
+      idea = create(:idea, project: p3)
+      create_list(:comment, 3, idea: idea)
+      create_list(:reaction, 2, reactable: idea)
+
+      result = described_class.sort_by_participation(Project.all, { sort: 'participation_desc' })
+      # p3 now has: 2 ideas + 1 new idea + 3 comments + 2 reactions = 8 participations
+      # p2 has 10, p3 has 8, p1 has 5, p4 has 0
+      expect(result.pluck(:id)).to eq([p2.id, p3.id, p1.id, p4.id])
+    end
+
+    it 'works with pre-filtered scopes that have joins' do
+      pre_filtered_scope = Project
+        .joins(:admin_publication)
+        .where(admin_publication: { publication_status: 'published' })
+
+      result = described_class.execute(
+        pre_filtered_scope,
+        { sort: 'participation_desc' },
+        current_user: create(:admin)
+      )
+
+      # Force the query to actually run
+      expect { result.to_a }.not_to raise_error(ActiveRecord::StatementInvalid)
+      expect(result.to_a).to be_an(Array)
     end
   end
 
@@ -597,6 +647,60 @@ describe ProjectsFinderAdminService do
         )
 
         expect(result.pluck(:id)).to eq([p6, p5, p7, p8].pluck(:id))
+      end
+    end
+
+    describe 'with excluded_project_ids' do
+      let!(:project1) { create(:project) }
+      let!(:project2) { create(:project) }
+      let!(:project3) { create(:project) }
+      let(:admin_user) { create(:admin) }
+
+      it 'excludes projects by their project IDs' do
+        result = described_class.execute(
+          Project.all,
+          { excluded_project_ids: [project1.id] },
+          current_user: admin_user
+        )
+
+        expect(result.pluck(:id)).to contain_exactly(project2.id, project3.id)
+      end
+
+      it 'returns all projects when excluded_project_ids is empty' do
+        result = described_class.execute(
+          Project.all,
+          { excluded_project_ids: [] },
+          current_user: admin_user
+        )
+
+        expect(result.pluck(:id)).to contain_exactly(project1.id, project2.id, project3.id)
+      end
+    end
+
+    describe 'with excluded_folder_ids' do
+      let!(:folder) { create(:project_folder) }
+      let!(:project_in_folder) { create(:project, folder: folder) }
+      let!(:project_outside_folder) { create(:project) }
+      let(:admin_user) { create(:admin) }
+
+      it 'excludes projects within excluded folders' do
+        result = described_class.execute(
+          Project.all,
+          { excluded_folder_ids: [folder.id] },
+          current_user: admin_user
+        )
+
+        expect(result.pluck(:id)).to contain_exactly(project_outside_folder.id)
+      end
+
+      it 'returns all projects when excluded_folder_ids is empty' do
+        result = described_class.execute(
+          Project.all,
+          { excluded_folder_ids: [] },
+          current_user: admin_user
+        )
+
+        expect(result.pluck(:id)).to contain_exactly(project_in_folder.id, project_outside_folder.id)
       end
     end
   end

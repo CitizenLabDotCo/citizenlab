@@ -60,7 +60,7 @@ fe-up-claveunica:
 # MitID (via NemLogin)
 be-up-nemlogin:
 	docker compose down
- 	BASE_DEV_URI=https://nemlogin-k3kd.loca.lt ASSET_HOST_URI=https://nemlogin-k3kd.loca.lt docker compose up
+	BASE_DEV_URI=https://nemlogin-k3kd.loca.lt ASSET_HOST_URI=https://nemlogin-k3kd.loca.lt docker compose up
 
 fe-up-nemlogin:
 	cd front && npm run start:sso:nemlogin
@@ -73,13 +73,21 @@ be-up-idaustria:
 fe-up-idaustria:
 	cd front && npm run start:sso:idaustria
 
-# Keycloak (Oslo ID-Porten)
-be-up-keycloak:
+# Keycloak (Oslo ID-Porten & Rheinbahn)
+be-up-idporten:
 	docker compose down
 	BASE_DEV_URI=https://keycloak-r3tyu.loca.lt ASSET_HOST_URI=https://keycloak-r3tyu.loca.lt docker compose up
 
-fe-up-keycloak:
-	cd front && npm run start:sso:keycloak
+fe-up-idporten:
+	cd front && npm run start:sso:idporten
+
+# Note: Rheinbahn uses the same Keycloak setup as ID-Porten so verification config will need changing
+be-up-rheinbahn:
+	docker compose down
+	BASE_DEV_URI=https://demo.stg.govocal.com ASSET_HOST_URI=https://demo.stg.govocal.com docker compose up
+
+fe-up-rheinbahn:
+	cd front && npm run start:sso:rheinbahn
 
 # Twoday (Helsingborg BankID & Freja eID)
 be-up-twoday:
@@ -88,6 +96,13 @@ be-up-twoday:
 
 fe-up-twoday:
 	cd front && npm run start:sso:twoday
+
+be-up-hoplr:
+	docker compose down
+	BASE_DEV_URI=http://localhost:3000 ASSET_HOST_URI=http://localhost:3000 docker compose up
+
+fe-up-hoplr:
+	cd front && npm start
 
 # Run it with:
 # make c

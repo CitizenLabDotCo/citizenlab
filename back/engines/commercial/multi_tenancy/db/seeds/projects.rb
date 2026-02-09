@@ -22,8 +22,7 @@ module MultiTenancy
           title_multiloc: { 'en' => 'Mixed 3 methods project' },
           description_multiloc: runner.rand_description_multiloc,
           slug: 'mixed-3-methods-project',
-          header_bg: Rails.root.join('spec/fixtures/3-methods-project-header-bg.png').open,
-          allowed_input_topics: Topic.all
+          header_bg: Rails.root.join('spec/fixtures/3-methods-project-header-bg.png').open
         )
         project.phases.create!(
           title_multiloc: { 'en' => 'Past proposals phase' },
@@ -49,6 +48,33 @@ module MultiTenancy
           native_survey_button_multiloc: { 'en' => 'Take the survey' }
         )
         project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.jpg").open)
+        project.input_topics.create!(
+          title_multiloc: { 'en' => 'Environment' },
+          description_multiloc: { 'en' => 'Ideas about the environment' }
+        )
+        transportation = project.input_topics.create!(
+          title_multiloc: { 'en' => 'Transportation' },
+          description_multiloc: { 'en' => 'Ideas about transportation' }
+        )
+        transportation.children.create!(
+          title_multiloc: { 'en' => 'Public transport' },
+          description_multiloc: { 'en' => 'Ideas about public transport' },
+          project: project
+        )
+        transportation.children.create!(
+          title_multiloc: { 'en' => 'Biking' },
+          description_multiloc: { 'en' => 'Ideas about biking' },
+          project: project
+        )
+        transportation.children.create!(
+          title_multiloc: { 'en' => 'Walking' },
+          description_multiloc: { 'en' => 'Ideas about walking' },
+          project: project
+        )
+        project.input_topics.create!(
+          title_multiloc: { 'en' => 'Housing' },
+          description_multiloc: { 'en' => 'Ideas about housing' }
+        )
       end
 
       def create_archived_project
@@ -57,7 +83,6 @@ module MultiTenancy
           description_multiloc: runner.rand_description_multiloc,
           slug: 'archived-project',
           header_bg: Rails.root.join('spec/fixtures/image6.jpg').open,
-          allowed_input_topics: Topic.all,
           admin_publication_attributes: { publication_status: 'archived' }
         )
         project.phases.create!(
@@ -68,6 +93,14 @@ module MultiTenancy
           end_at: Time.zone.today - 11.days
         )
         project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.jpg").open)
+        project.input_topics.create!(
+          title_multiloc: { 'en' => 'Culture' },
+          description_multiloc: { 'en' => 'Ideas about culture' }
+        )
+        project.input_topics.create!(
+          title_multiloc: { 'en' => 'Sports' },
+          description_multiloc: { 'en' => 'Ideas about sports' }
+        )
       end
 
       def create_random_projects
@@ -79,7 +112,6 @@ module MultiTenancy
             header_bg: rand(25) == 0 ? nil : Rails.root.join("spec/fixtures/image#{rand(20)}.jpg").open,
             visible_to: %w[admins groups public public public][rand(5)],
             areas: Array.new(rand(3)) { rand(Area.count) }.uniq.map { |offset| Area.offset(offset).first },
-            allowed_input_topics: Topic.all.shuffle.take(rand(Topic.count) + 1),
             admin_publication_attributes: {
               parent_id: (rand(2) == 0 ? nil : AdminPublication.where(publication_type: ::ProjectFolders::Folder.name).ids.sample),
               publication_status: %w[published published published published published draft
@@ -97,6 +129,7 @@ module MultiTenancy
             end
           end
 
+          configure_random_input_topics_for(project)
           configure_random_timeline_for(project)
           configure_random_events_for(project)
 
@@ -181,6 +214,22 @@ module MultiTenancy
 
           rand(1..3).times do
             event.event_files.create!(runner.generate_file_attributes)
+          end
+        end
+      end
+
+      def configure_random_input_topics_for(project)
+        rand(1..3).times do
+          parent = project.input_topics.create!(
+            title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
+            description_multiloc: runner.rand_description_multiloc
+          )
+          rand(0..2).times do
+            project.input_topics.create!(
+              title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
+              description_multiloc: runner.rand_description_multiloc,
+              parent: parent
+            )
           end
         end
       end

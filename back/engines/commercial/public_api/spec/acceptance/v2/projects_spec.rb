@@ -124,23 +124,23 @@ resource 'Projects' do
     end
 
     context "when filtering by 'topic_ids'" do
-      let(:topics) { create_list(:topic, 2) }
+      let(:topics) { create_list(:global_topic, 2) }
       let(:topic_ids) { topics.pluck(:id) }
 
       let!(:project) do
-        create(:project).tap { |project| project.topics << topics }
+        create(:project).tap { |project| project.global_topics << topics }
       end
 
       before do
         # This project should not be returned because it only has one of the requested
         # topics.
-        create(:project).tap { |project| project.topics << topics.first }
+        create(:project).tap { |project| project.global_topics << topics.first }
       end
 
       example_request 'List only the projects that have all the specified topics' do
         assert_status 200
         expect(json_response_body[:projects].pluck(:id))
-          .to match_array [project.id]
+          .to contain_exactly(project.id)
       end
     end
 
@@ -158,7 +158,7 @@ resource 'Projects' do
       example_request 'List only the projects that are in the specified areas' do
         assert_status 200
         expect(json_response_body[:projects].pluck(:id))
-          .to match_array [project.id, project_in_all_areas.id]
+          .to contain_exactly(project.id, project_in_all_areas.id)
       end
     end
 

@@ -7,6 +7,8 @@ import {
   useParams,
 } from 'react-router-dom';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+
 import NavigationTabs from 'components/admin/NavigationTabs';
 import Tab from 'components/admin/NavigationTabs/Tab';
 import NewLabel from 'components/UI/NewLabel';
@@ -20,11 +22,24 @@ const AdminProjectsProjectIndex = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
   const { projectId } = useParams() as { projectId: string };
+  const { data: appConfiguration } = useAppConfiguration();
+
+  const privateAttributesInExport =
+    appConfiguration?.data.attributes.settings.core
+      .private_attributes_in_export !== false;
 
   return (
-    <div data-cy="e2e-admin-projects-project-index">
+    <Box
+      data-cy="e2e-admin-projects-project-index"
+      display="flex"
+      flexDirection="column"
+      flexGrow={1}
+    >
       <ProjectHeader projectId={projectId} />
-      <NavigationTabs position="relative">
+      <NavigationTabs
+        position="relative"
+        className="intercom-admin-project-level-settings"
+      >
         <Tab
           className="intercom-admin-project-general-tab"
           label={formatMessage(messages.generalTab)}
@@ -41,7 +56,11 @@ const AdminProjectsProjectIndex = () => {
         <Tab
           className="intercom-admin-project-participants-tab"
           label={formatMessage(messages.audienceTab)}
-          url={`/admin/projects/${projectId}/audience`}
+          url={
+            privateAttributesInExport
+              ? `/admin/projects/${projectId}/audience`
+              : `/admin/projects/${projectId}/audience/demographics`
+          }
           active={pathname.includes(`/admin/projects/${projectId}/audience`)}
         />
         <Tab
@@ -69,7 +88,7 @@ const AdminProjectsProjectIndex = () => {
         />
       </NavigationTabs>
       <RouterOutlet />
-    </div>
+    </Box>
   );
 };
 

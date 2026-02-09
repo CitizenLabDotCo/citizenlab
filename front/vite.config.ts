@@ -6,8 +6,8 @@ import dotenv from 'dotenv';
 import { defineConfig } from 'vite';
 import checker from 'vite-plugin-checker';
 import commonjs from 'vite-plugin-commonjs';
-import tsconfigPaths from 'vite-plugin-tsconfig-paths';
 import mkcert from 'vite-plugin-mkcert';
+import tsconfigPaths from 'vite-plugin-tsconfig-paths';
 
 // Load environment variables using dotenv
 dotenv.config({
@@ -36,7 +36,7 @@ export default defineConfig(({ mode }) => {
   // Determine if HTTPS should be used based on the presence of a HTTPS_HOST
   const HTTPS_HOST = process.env.HTTPS_HOST;
   const USE_HTTPS = HTTPS_HOST !== undefined;
-  if (USE_HTTPS) console.log('\nSecure local dev URL: https://' + HTTPS_HOST);
+  if (USE_HTTPS) console.log(`\nSecure local dev URL: https://${HTTPS_HOST}`);
 
   return {
     root: path.resolve(__dirname, 'app'), // Root directory
@@ -45,6 +45,9 @@ export default defineConfig(({ mode }) => {
       port: USE_HTTPS ? 443 : 3000,
       host: '0.0.0.0',
       allowedHosts: true,
+      watch: {
+        ignored: ['**/public/twemoji/**'],
+      },
       proxy: {
         '/web_api/': {
           target: `http://${API_HOST}:${API_PORT}`,
@@ -154,7 +157,6 @@ export default defineConfig(({ mode }) => {
         INTERCOM_APP_ID: process.env.INTERCOM_APP_ID,
         SENTRY_DSN: process.env.SENTRY_DSN,
         SENTRY_ENV: process.env.SENTRY_ENV,
-        SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
         CI: process.env.CI,
         CIRCLECI: process.env.CIRCLECI,
         CIRCLE_BUILD_NUM: process.env.CIRCLE_BUILD_NUM,

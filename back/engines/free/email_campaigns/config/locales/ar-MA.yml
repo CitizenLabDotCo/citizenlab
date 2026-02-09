@@ -259,6 +259,7 @@ ar-MA:
       x_days_ago_by_author: 'قبل %{x} يوم بواسطة %{author}'
     new_comment_for_admin:
       commented: 'علّق %{authorFirstName}:'
+      anonymous_user: مستخدم مجهول
       cta_button: 'عرض تعليق %{authorFirstName}'
       days_ago: 'قبل %{numberOfDays} يوم'
       event_description: 'كتب %{authorName} تعليقًا على منصتك. لا تتردد بالانضمام إلى النقاش وإبقاء الحوار مستمرًا!'
@@ -407,11 +408,13 @@ ar-MA:
       title: 'لقد دعاك %{requesterName} لمراجعة المشروع "%{projectTitle}"'
       event_description: "المشروع حاليًا في وضع المسودة، وهو غير مرئي للمستخدمين. بعد مراجعته والموافقة عليه، سيتمكن المشرف من نشره."
       cta_button: "مراجعة المشروع"
+      preheader: 'لقد دعاك %{requesterName} لمراجعة المشروع "%{projectTitle}"'
     project_review_state_change:
       subject: 'تمت الموافقة على "%{projectTitle}"'
       title: '%{reviewerName} وافق على المشروع "%{projectTitle}"'
       event_description: "المشروع جاهز الآن للانطلاق. يمكنك نشره في أي وقت!"
       cta_button: "انتقل إلى إعدادات المشروع"
+      preheader: '%{reviewerName} وافق على المشروع "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
       event_description: 'قام %{organizationName} بتحديث حالة الإدخال ''%{input_title}'' على منصة المشاركة الرقمية الخاصة بهم.'
@@ -512,9 +515,7 @@ ar-MA:
       subject: '%{organizationName}: آخر فرصة للتصويت لـ %{phaseTitle}'
       preheader: 'آخر فرصة للتصويت لـ %{phaseTitle} على منصة المشاركة %{organizationName}'
       title: 'الفرصة الأخيرة للتصويت لـ %{phaseTitle}'
-      body_1: 'تنتهي مرحلة التصويت على مشروع %{projectTitle} غدًا ، في منتصف الليل.'
-      body_2: 'الوقت ينفد ، ولاحظنا أنك لم تدلي بصوتك بعد! تصرف الآن بمجرد النقر فوق الزر أدناه للمشاركة.'
-      body_3: 'من خلال القيام بذلك ، ستتمكن من الوصول إلى مجموعة من الخيارات وستتاح لك الفرصة لتقديم مدخلاتك ، وهو أمر حاسم في تحديد مستقبل هذا المشروع.'
+      event_description: '<p>ستنتهي مرحلة التصويت لمشروع %{projectTitle} غدًا، عند منتصف الليل.</p><p>الوقت ينفد، وقد لاحظنا أنك لم تدلِ بصوتك بعد! بادر الآن بالتصويت بالضغط على الزر أدناه للمشاركة.</p><p>بذلك، ستتمكن من الوصول إلى مجموعة من الخيارات وستتاح لك فرصة تقديم رأيك، وهو أمر بالغ الأهمية في تحديد مستقبل هذا المشروع.</p>'
       cta_button: 'تصويت'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} تم الكشف عن نتائج التصويت!'

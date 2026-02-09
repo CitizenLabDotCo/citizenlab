@@ -40,7 +40,7 @@ const TextArea = ({ name, scrollErrorIntoView, ...rest }: Props) => {
             {...field}
             {...rest}
             onBlur={() => {
-              trigger();
+              trigger(name);
             }}
           />
         )}

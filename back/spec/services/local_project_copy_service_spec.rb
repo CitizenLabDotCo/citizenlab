@@ -52,7 +52,7 @@ describe LocalProjectCopyService do
     let!(:timeline_project) { create(:project_with_past_ideation_and_current_information_phase) }
     let!(:folder) { create(:project_folder) }
 
-    it 'works' do
+    it 'creates a new project when copying' do
       project_count = Project.count
       service.copy(open_ended_project)
 
@@ -108,20 +108,33 @@ describe LocalProjectCopyService do
       expect(copied_project.areas.map(&:as_json)).to match_array(source_project.areas.map(&:as_json))
     end
 
-    it 'associates topics of source project with copied project' do
-      source_project = create(:project, topics: create_list(:topic, 2))
+    it 'associates global topics of source project with copied project' do
+      source_project = create(:project, global_topics: create_list(:global_topic, 2))
       copied_project = service.copy(source_project.reload)
 
-      expect(copied_project.topics.map(&:as_json)).to match_array(source_project.topics.map(&:as_json))
+      expect(copied_project.global_topics.map(&:as_json)).to match_array(source_project.global_topics.map(&:as_json))
     end
 
-    it 'copies associated projects_allowed_input_topics' do
-      create_list(:projects_allowed_input_topic, 2, project_id: open_ended_project.id)
+    it 'copies associated input_topics' do
+      create_list(:input_topic, 2, project_id: open_ended_project.id)
       copied_project = service.copy(open_ended_project)
 
-      expect(copied_project.allowed_input_topics.count).to eq 2
-      expect(copied_project.allowed_input_topics.map(&:as_json))
-        .to match_array(open_ended_project.allowed_input_topics.map(&:as_json))
+      expect(copied_project.input_topics.count).to eq 2
+      expect(copied_project.input_topics.map { it.as_json(except: %i[id project_id created_at updated_at]) })
+        .to match_array(open_ended_project.input_topics.map { it.as_json(except: %i[id project_id created_at updated_at]) })
+    end
+
+    it 'copies nested associated input_topics preserving hierarchy' do
+      parent_topic = create(:input_topic, project_id: open_ended_project.id)
+      child_topic1 = create(:input_topic, parent: parent_topic, project_id: open_ended_project.id)
+      child_topic2 = create(:input_topic, parent: parent_topic, project_id: open_ended_project.id)
+      copied_project = service.copy(open_ended_project)
+      copied_parent_topic = copied_project.input_topics.find_by(title_multiloc: parent_topic.title_multiloc)
+      copied_child_topic1 = copied_project.input_topics.find_by(title_multiloc: child_topic1.title_multiloc)
+      copied_child_topic2 = copied_project.input_topics.find_by(title_multiloc: child_topic2
+        .title_multiloc)
+      expect(copied_child_topic1.parent_id).to eq copied_parent_topic.id
+      expect(copied_child_topic2.parent_id).to eq copied_parent_topic.id
     end
 
     it 'copies associated maps configs and layers' do

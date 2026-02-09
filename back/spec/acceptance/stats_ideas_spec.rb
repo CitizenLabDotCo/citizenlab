@@ -24,7 +24,7 @@ def group_filter_parameter(s)
 end
 
 def topic_filter_parameter(s)
-  s.parameter :topic, 'Topic ID. Only count ideas that have the given topic assigned', required: false
+  s.parameter :input_topic, 'Input topic ID. Only count ideas that have the given input topic assigned', required: false
 end
 
 def feedback_needed_filter_parameter(s)
@@ -42,7 +42,7 @@ resource 'Stats - Ideas' do
   before { admin_header_token }
 
   before_all do
-    AppConfiguration.instance.update!(created_at: now - 3.years)
+    AppConfiguration.instance.update!(created_at: now - 3.years, platform_start_at: now - 3.years)
 
     @project1 = create(:single_phase_ideation_project)
     @project2 = create(:single_phase_proposals_project)
@@ -121,6 +121,7 @@ resource 'Stats - Ideas' do
     project_filter_parameter self
     group_filter_parameter self
     feedback_needed_filter_parameter self
+    parameter :limit, 'Limit the number of topics returned to the given number, ordered by idea count descending', required: false
 
     describe 'with time filters only' do
       example_request 'Ideas by topic' do
@@ -128,7 +129,7 @@ resource 'Stats - Ideas' do
         json_response = json_parse response_body
         expect(json_response.dig(:data, :type)).to eq 'ideas_by_topic'
         json_attributes = json_response.dig(:data, :attributes)
-        expected_topics = @ideas_with_topics.flat_map { |i| i.ideas_topics.map(&:topic_id) }.uniq
+        expected_topics = @ideas_with_topics.flat_map { |i| i.ideas_input_topics.map(&:input_topic_id) }.uniq
         expect(json_attributes[:series][:ideas].keys.map(&:to_s).uniq - expected_topics).to eq []
         expect(json_attributes[:series][:ideas].values.map(&:class).uniq).to eq [Integer]
       end
@@ -138,10 +139,10 @@ resource 'Stats - Ideas' do
       let(:project) { @project.id }
 
       before do
-        topic = create(:topic)
-        @project = create(:single_phase_ideation_project, allowed_input_topics: [topic])
+        @project = create(:single_phase_ideation_project)
+        input_topic = create(:input_topic, project: @project)
         travel_to start_at + 2.months do
-          create(:idea, project: @project, topics: [topic])
+          create(:idea, project: @project, input_topics: [input_topic])
           create(:idea)
         end
       end
@@ -171,6 +172,47 @@ resource 'Stats - Ideas' do
         expect(json_response.dig(:data, :attributes, :series, :ideas).values.sum).to eq 2
       end
     end
+
+    describe 'with limit' do
+      let(:limit) { 2 }
+
+      before do
+        travel_to(start_at + 2.months) do
+          create(:idea, input_topics: @ideas_with_topics.first.input_topics.take(1))
+        end
+      end
+
+      example_request 'Ideas by topic with a limit' do
+        assert_status 200
+        json_response = json_parse response_body
+        expect(json_response.dig(:data, :type)).to eq 'ideas_by_topic'
+        json_attributes = json_response.dig(:data, :attributes)
+        expect(json_attributes[:series][:ideas].length).to eq 2
+        # Expect descending values
+        expect(json_attributes[:series][:ideas].values).to eq json_attributes[:series][:ideas].values.sort.reverse
+      end
+    end
+
+    describe 'with subtopics' do
+      before do
+        travel_to start_at + 2.months do
+          @project = create(:project)
+          @parent_topic = create(:input_topic, project: @project)
+          @child_topic = create(:input_topic, project: @project, parent: @parent_topic)
+          create(:idea, project: @project, input_topics: [@parent_topic])
+          create(:idea, project: @project, input_topics: [@child_topic])
+        end
+      end
+
+      example 'Ideas by topic aggregates child counts into parent' do
+        do_request
+        assert_status 200
+        json_attributes = json_parse(response_body).dig(:data, :attributes)
+        # Parent should include its own count (1) + child count (1) = 2
+        expect(json_attributes[:series][:ideas][@parent_topic.id.to_sym]).to eq 2
+        expect(json_attributes[:series][:ideas][@child_topic.id.to_sym]).to eq 1
+      end
+    end
   end
 
   get 'web_api/v1/stats/ideas_by_topic_as_xlsx' do
@@ -183,10 +225,10 @@ resource 'Stats - Ideas' do
       let(:project) { @project.id }
 
       before do
-        topic = create(:topic)
-        @project = create(:single_phase_ideation_project, allowed_input_topics: [topic])
+        @project = create(:single_phase_ideation_project)
+        input_topic = create(:input_topic, project: @project)
         travel_to start_at + 2.months do
-          create(:idea, project: @project, topics: [topic])
+          create(:idea, project: @project, input_topics: [input_topic])
           create(:idea)
         end
       end
@@ -238,18 +280,18 @@ resource 'Stats - Ideas' do
           @project1.id => 5,
           @project2.id => 1
         })
-        expect(json_attributes[:projects].keys.map(&:to_s)).to match_array [@project1.id, @project2.id]
+        expect(json_attributes[:projects].keys.map(&:to_s)).to contain_exactly(@project1.id, @project2.id)
       end
     end
 
     describe 'with topic filter' do
-      let(:topic) { @topic.id }
+      let(:input_topic) { @topic.id }
 
       before do
         travel_to start_at + 4.months do
           idea = create(:idea_with_topics)
           create(:idea)
-          @topic = idea.topics.first
+          @topic = idea.input_topics.first
         end
       end
 
@@ -295,26 +337,26 @@ resource 'Stats - Ideas' do
         expect(worksheet[0].cells.map(&:value)).to match %w[project project_id ideas]
         project_col = worksheet.map { |col| col.cells[1].value }
         _header, *projects = project_col
-        expect(projects).to match_array [@project1.id, @project2.id]
+        expect(projects).to contain_exactly(@project1.id, @project2.id)
 
         project_name_col = worksheet.map { |col| col.cells[0].value }
         _header, *project_names = project_name_col
-        expect(project_names).to match_array [multiloc_service.t(@project1.title_multiloc), multiloc_service.t(@project2.title_multiloc)]
+        expect(project_names).to contain_exactly(multiloc_service.t(@project1.title_multiloc), multiloc_service.t(@project2.title_multiloc))
 
         idea_col = worksheet.map { |col| col.cells[2].value }
         _header, *ideas = idea_col
-        expect(ideas).to match_array [5, 1]
+        expect(ideas).to contain_exactly(5, 1)
       end
     end
 
     describe 'with topic filter' do
-      let(:topic) { @topic.id }
+      let(:input_topic) { @topic.id }
 
       before do
         travel_to start_at + 4.months do
           idea = create(:idea_with_topics)
           create(:idea)
-          @topic = idea.topics.first
+          @topic = idea.input_topics.first
         end
       end
 

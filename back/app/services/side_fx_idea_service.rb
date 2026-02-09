@@ -13,8 +13,7 @@ class SideFxIdeaService
     before_publish_or_submit idea, user if idea.submitted_or_published?
   end
 
-  def after_create(idea, user)
-    idea.update!(body_multiloc: TextImageService.new.swap_data_images_multiloc(idea.body_multiloc, field: :body_multiloc, imageable: idea))
+  def after_create(idea, user, phase)
     idea.phases.each(&:update_manual_votes_count!) if idea.manual_votes_amount.present?
 
     LogActivityJob.perform_later(
@@ -26,7 +25,7 @@ class SideFxIdeaService
     )
 
     after_submission idea, user if idea.submitted_or_published?
-    after_publish idea, user if idea.published?
+    after_publish(idea, user, phase) if idea.published?
     enqueue_embeddings_job(idea)
 
     log_activities_if_cosponsors_added(idea, user)
@@ -35,12 +34,11 @@ class SideFxIdeaService
   def before_update(idea, user)
     @old_cosponsor_ids = idea.cosponsor_ids
     @old_phase_ids = idea.phase_ids
-    idea.body_multiloc = TextImageService.new.swap_data_images_multiloc(idea.body_multiloc, field: :body_multiloc, imageable: idea)
     idea.publication_status = 'published' if idea.submitted_or_published? && idea.idea_status&.public_post?
     before_publish_or_submit idea, user if idea.will_be_submitted? || idea.will_be_published?
   end
 
-  def after_update(idea, user)
+  def after_update(idea, user) # rubocop:disable Metrics/MethodLength
     # We need to check if the idea was just submitted or just published before
     # we do anything else because updates to the idea can change this state.
     just_submitted = idea.just_submitted?
@@ -54,7 +52,7 @@ class SideFxIdeaService
 
     after_submission idea, user if just_submitted
     if just_published
-      after_publish idea, user
+      after_publish(idea, user, idea.creation_phase)
     elsif idea.published?
       change = idea.saved_changes
       payload = { idea: serialize_idea(idea) }
@@ -100,7 +98,11 @@ class SideFxIdeaService
       )
     end
 
-    enqueue_embeddings_job(idea) if idea.title_multiloc_previously_changed? || idea.body_multiloc_previously_changed?
+    if idea.title_multiloc_previously_changed? || idea.body_multiloc_previously_changed?
+      enqueue_embeddings_job(idea)
+      enqueue_wise_voice_detection_job(idea)
+      enqueue_topic_classification_job(idea)
+    end
 
     if idea.manual_votes_amount_previously_changed?
       LogActivityJob.perform_later(
@@ -150,11 +152,17 @@ class SideFxIdeaService
   def after_submission(idea, user)
     add_autoreaction(idea)
     create_followers(idea, user) unless idea.anonymous?
+    enqueue_wise_voice_detection_job(idea)
+    enqueue_topic_classification_job(idea)
+    notify_topic_modeling_scheduler(idea)
+
     LogActivityJob.set(wait: 20.seconds).perform_later(idea, 'submitted', user_for_activity_on_anonymizable_item(idea, user), idea.submitted_at.to_i)
   end
 
-  def after_publish(idea, user)
-    update_user_profile(idea, user)
+  def after_publish(idea, user, phase)
+    if UserFieldsInFormService.should_merge_user_fields_from_idea_into_user?(idea, user, phase)
+      UserFieldsInFormService.merge_user_fields_from_idea_into_user!(idea, user)
+    end
     log_activity_jobs_after_published(idea, user)
   end
 
@@ -234,17 +242,30 @@ class SideFxIdeaService
     UpsertEmbeddingJob.perform_later(idea)
   end
 
-  # update the user profile if user fields are changed as part of a survey
-  def update_user_profile(idea, user)
-    return unless user && idea.participation_method_on_creation.user_fields_in_form?
+  def enqueue_wise_voice_detection_job(idea)
+    current_phase = TimelineService.new.current_phase(idea.project)
+    return unless current_phase&.presentation_mode == 'feed'
 
-    user_prefix = UserFieldsInSurveyService.prefix
+    WiseVoiceDetectionJob.perform_later(idea)
+  end
 
-    user_values_from_idea = idea.custom_field_values
-      .select { |key, _value| key.start_with?(user_prefix) }
-      .transform_keys { |key| key[user_prefix.length..] }
+  def notify_topic_modeling_scheduler(idea)
+    return unless idea.project.live_auto_input_topics_enabled
 
-    user.update!(custom_field_values: user.custom_field_values.merge(user_values_from_idea))
+    current_phase = TimelineService.new.current_phase(idea.project)
+    return unless current_phase.pmethod.supports_input_topics?
+
+    IdeaFeed::TopicModelingScheduler.new(current_phase).on_new_input
+  end
+
+  def enqueue_topic_classification_job(idea)
+    return unless idea.project.live_auto_input_topics_enabled
+    return if idea.input_topics.any?
+
+    current_phase = TimelineService.new.current_phase(idea.project)
+    return unless current_phase.pmethod.supports_input_topics?
+
+    IdeaFeed::BatchTopicClassificationJob.set(priority: 10).perform_later(current_phase, [idea.id])
   end
 end
 

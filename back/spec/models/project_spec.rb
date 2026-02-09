@@ -26,11 +26,11 @@ RSpec.describe Project do
 
   describe 'Factory with topics' do
     it 'is valid' do
-      expect(create(:project_with_allowed_input_topics)).to be_valid
+      expect(create(:project_with_input_topics)).to be_valid
     end
 
     it 'has topics' do
-      expect(create(:project_with_allowed_input_topics).allowed_input_topics).not_to be_empty
+      expect(create(:project_with_input_topics).input_topics).not_to be_empty
     end
   end
 
@@ -101,13 +101,6 @@ RSpec.describe Project do
     end
   end
 
-  describe 'allowed_input_topics' do
-    it 'cannot have duplicate topics' do
-      project = create(:project_with_allowed_input_topics)
-      expect(project.projects_allowed_input_topics.create(topic: project.allowed_input_topics.first)).not_to be_valid
-    end
-  end
-
   describe 'generate_slug' do
     let(:project) { build(:project, slug: nil) }
 
@@ -120,6 +113,30 @@ RSpec.describe Project do
   describe 'pmethod' do
     it 'returns an instance of ParticipationMethod::Ideation' do
       expect(build(:project).pmethod).to be_an_instance_of(ParticipationMethod::Ideation)
+    end
+
+    # There is some super hacky method on the project to make sure that the project
+    # has a `.pmethod` attribute. This attribute was defaulting to the first phase
+    # of the project always. This was causing bugs.
+    # This test makes sure that it defaults to the current phase.
+    # Still messy as hell and extremely confusing but at least now it is tested
+    it 'returns correct pmethod' do
+      project = create(:project)
+      create(
+        :native_survey_phase,
+        start_at: 3.weeks.ago,
+        end_at: 2.weeks.ago,
+        project: project
+      )
+      ideation_phase = create(
+        :phase,
+        start_at: 1.week.ago,
+        end_at: 3.weeks.from_now,
+        participation_method: 'ideation',
+        project: project
+      )
+
+      expect(project.pmethod.phase).to eq(ideation_phase)
     end
   end
 
@@ -149,7 +166,7 @@ RSpec.describe Project do
     let!(:project3) { create(:project) }
 
     it 'returns projects not in a draft folder' do
-      expect(described_class.not_in_draft_folder).to match_array([project2, project3])
+      expect(described_class.not_in_draft_folder).to contain_exactly(project2, project3)
     end
   end
 
@@ -163,6 +180,56 @@ RSpec.describe Project do
 
     it 'returns projects that are not hidden' do
       expect(described_class.not_hidden.count).to eq 1
+    end
+  end
+
+  describe 'with_participation_count scope' do
+    before_all do
+      Analytics::PopulateDimensionsService.populate_types
+    end
+
+    let(:scope_with_count) do
+      described_class
+        .with_participation_count
+        .select('projects.*, project_participants.participants_count')
+    end
+
+    it 'includes participation count for each project' do
+      project1 = create(:project)
+      project2 = create(:project)
+
+      create_list(:idea, 3, project: project1)
+      create_list(:idea, 5, project: project2)
+
+      results = scope_with_count.where(id: [project1.id, project2.id])
+
+      result1 = results.find { |p| p.id == project1.id }
+      result2 = results.find { |p| p.id == project2.id }
+
+      expect(result1['participants_count']).to eq(3)
+      expect(result2['participants_count']).to eq(5)
+    end
+
+    it 'returns 0 for projects with no participation' do
+      project = create(:project)
+
+      result = scope_with_count.find(project.id)
+
+      expect(result['participants_count']).to eq(0)
+    end
+
+    it 'counts distinct participants across multiple participation types' do
+      project = create(:project)
+      idea = create(:idea, project: project)
+
+      # Same user participates multiple times
+      create_list(:comment, 2, idea: idea)
+      create_list(:reaction, 3, reactable: idea)
+
+      result = scope_with_count.find(project.id)
+
+      # Should count distinct participants, not total actions
+      expect(result['participants_count']).to be > 1
     end
   end
 end

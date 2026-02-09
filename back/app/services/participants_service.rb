@@ -158,8 +158,8 @@ class ParticipantsService
     participants
   end
 
-  def topics_participants(topics, options = {})
-    ideas = Idea.with_some_topics(topics)
+  def input_topics_participants(input_topics, options = {})
+    ideas = Idea.with_some_input_topics(input_topics)
     ideas_participants ideas, options
   end
 
@@ -201,5 +201,72 @@ class ParticipantsService
     voting_phases = project.phases.where(participation_method: 'voting')
     ideas_in_voting_phases = IdeasPhase.where(phase: voting_phases).select(:idea_id)
     Idea.where(project: project).where.not(id: ideas_in_voting_phases).destroy_all
+  end
+
+  # @param user [User] The user to get participation stats for
+  # @return [Hash] Counts of each participation type
+  def user_participation_stats(user)
+    idea_counts = user.ideas.published
+      .reorder(nil) # default ORDER BY on user.ideas conflicts with the GROUP BY
+      .left_joins(:creation_phase)
+      .group("COALESCE(phases.participation_method, 'ideation')")
+      .count
+
+    {
+      ideas_count: idea_counts['ideation'] || 0,
+      proposals_count: idea_counts['proposals'] || 0,
+      survey_responses_count: idea_counts['native_survey'] || 0,
+      comments_count: user.comments.published.count,
+      reactions_count: user.reactions.count,
+      baskets_count: user.baskets.submitted.count,
+      poll_responses_count: user.poll_responses.count,
+      volunteers_count: user.volunteers.count,
+      event_attendances_count: user.event_attendances.count
+    }
+  end
+
+  # Destroys all participation data for a user.
+  def destroy_user_participation_data(user)
+    project_ids = participated_project_ids(user)
+
+    # Capture phases with submitted baskets before destroying them
+    # (needed to update baskets_count/votes_count since Basket doesn't use counter_culture)
+    phases_with_submitted_baskets = Phase.where(id: user.baskets.submitted.distinct.select(:phase_id)).to_a
+
+    # This is probably not the most efficient way to delete all participation, but it has
+    # the advantage of being simple by relying on ActiveRecord callbacks. It can be
+    # optimized later if needed.
+    ActiveRecord::Base.transaction do
+      # Comments are marked as deleted instead of being removed, so we don't delete
+      # the replies and preserve the thread structure. Must be done before ideas
+      # are destroyed since comments belong to ideas.
+      # Using +update+ instead of +update_all+ to trigger counter_culture callbacks.
+      user.comments.published.find_each do |comment|
+        comment.update!(publication_status: 'deleted')
+      end
+
+      user.reactions.destroy_all
+      user.ideas.destroy_all
+      user.baskets.destroy_all
+      user.poll_responses.destroy_all
+      user.volunteers.destroy_all
+      user.event_attendances.destroy_all
+
+      phases_with_submitted_baskets.each { |phase| Basket.update_counts(phase) }
+    end
+
+    Project.where(id: project_ids).each do |project|
+      clear_project_participants_count_cache(project)
+    end
+  end
+
+  private
+
+  def participated_project_ids(user)
+    Analytics::FactParticipation
+      .where(dimension_user_id: user.id)
+      .pluck(:dimension_project_id)
+      .compact
+      .uniq
   end
 end

@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'active_model_serializers', '~> 0.10.7'
   s.add_dependency 'pundit', '~> 2.0'
-  s.add_dependency 'rails', '~> 7.0'
+  s.add_dependency 'rails', '~> 7.2'
 
   s.add_development_dependency 'rspec_api_documentation'
   s.add_development_dependency 'rspec-rails'

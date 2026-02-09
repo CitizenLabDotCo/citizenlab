@@ -41,8 +41,8 @@ import {
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
+import DescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
 import Highlighter from 'components/Highlighter';
-import ProjectDescriptionBuilderToggle from 'components/ProjectDescriptionBuilder/ProjectDescriptionBuilderToggle';
 import Error from 'components/UI/Error';
 import FileRepositorySelectAndUpload from 'components/UI/FileRepositorySelectAndUpload';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
@@ -336,7 +336,7 @@ const AdminProjectsProjectGeneral = () => {
     setSubmitState('enabled');
     setProjectAttributesDiff((projectAttributesDiff) => ({
       ...projectAttributesDiff,
-      topic_ids: topicIds,
+      global_topic_ids: topicIds,
     }));
   };
 
@@ -595,10 +595,11 @@ const AdminProjectsProjectGeneral = () => {
               {/* Main Description */}
               <SectionField>
                 <Highlighter fragmentId="description-multiloc">
-                  <ProjectDescriptionBuilderToggle
+                  <DescriptionBuilderToggle
                     valueMultiloc={descriptionMultiloc}
                     onChange={handleDescriptionChange}
                     label={formatMessage(messages.descriptionLabel)}
+                    contentBuildableType="project"
                   />
                 </Highlighter>
                 <Error
@@ -758,7 +759,7 @@ const AdminProjectsProjectGeneral = () => {
               fileAttachments={projectFileAttachments}
               enableDragAndDrop
               apiErrors={apiErrors}
-              maxSizeMb={10}
+              maxSizeMb={50}
               isUploadingFile={isAddingFile}
             />
           </StyledSectionField>
@@ -800,10 +801,12 @@ function getSelectedTopicIds(
   projectAttributesDiff: IUpdatedProjectProperties,
   project: IProjectData | null
 ) {
-  if (projectAttributesDiff.topic_ids) return projectAttributesDiff.topic_ids;
+  if (projectAttributesDiff.global_topic_ids) {
+    return projectAttributesDiff.global_topic_ids;
+  }
 
   if (project) {
-    return project.relationships.topics.data.map((topic) => topic.id);
+    return project.relationships.global_topics.data.map((topic) => topic.id);
   }
 
   return [];

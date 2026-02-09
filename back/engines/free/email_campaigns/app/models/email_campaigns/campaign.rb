@@ -34,6 +34,8 @@
 #
 module EmailCampaigns
   class Campaign < ApplicationRecord
+    include Imageable
+
     belongs_to :author, class_name: 'User', optional: true
     belongs_to :context, polymorphic: true, optional: true
     has_many :examples, class_name: 'EmailCampaigns::Example', dependent: :destroy
@@ -45,6 +47,8 @@ module EmailCampaigns
     # ContentConfigurable concern.
     has_many :text_images, as: :imageable, dependent: :destroy
     accepts_nested_attributes_for :text_images
+    has_many_text_images from: :body_multiloc, as: :body_text_images
+    has_many_text_images from: :intro_multiloc, as: :intro_text_images
 
     before_validation :set_enabled, on: :create
 

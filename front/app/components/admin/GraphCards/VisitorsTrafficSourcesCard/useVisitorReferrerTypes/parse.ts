@@ -14,7 +14,10 @@ export const parsePieData = (
   }: VisitorsTrafficSourcesResponse['data']['attributes'],
   translations: Translations
 ): PieRow[] | undefined => {
-  const referrerTypes = keys(sessions_per_referrer_type);
+  // Sort by translated name alphabetically for consistent colors across timeframes
+  const referrerTypes = keys(sessions_per_referrer_type).toSorted((a, b) =>
+    translations[a].localeCompare(translations[b])
+  );
   if (referrerTypes.length === 0) return undefined;
 
   const counts = referrerTypes.map((key) => sessions_per_referrer_type[key]);
@@ -30,7 +33,7 @@ export const parsePieData = (
 
 export type TranslatedReferrers = {
   referrer_type: string;
-  referrer: string;
+  referrer: string | null; // If the referrer is direct, this might be null
   visits: number;
   visitors: number;
 }[];

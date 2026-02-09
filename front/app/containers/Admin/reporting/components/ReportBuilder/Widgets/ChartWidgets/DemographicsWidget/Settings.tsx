@@ -25,6 +25,7 @@ import {
 
 import platformTemplateMessages from '../../../Templates/PlatformTemplate/messages';
 import UserFieldSelect from '../../_shared/UserFieldSelect';
+import { AccessibilityInputs } from '../_shared/AccessibilityInputs';
 import {
   TitleInput,
   DateRangeInput,
@@ -122,6 +123,7 @@ const Settings = () => {
           onGroupFilter={setGroup}
         />
       </Box>
+      <AccessibilityInputs />
     </>
   );
 };

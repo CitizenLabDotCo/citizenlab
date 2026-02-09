@@ -9,6 +9,9 @@ import {
 import { useDropzone } from 'react-dropzone';
 import { useParams } from 'react-router-dom';
 
+import useAuthUser from 'api/me/useAuthUser';
+
+import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
@@ -17,6 +20,7 @@ import FileDropzone from './components/FileDropzone';
 import FileUploadActions from './components/FileUploadActions';
 import InformationSection from './components/InformationSection/index';
 import SelectedFile from './components/SelectedFile';
+import tracks from './tracks';
 import { FileWithMeta, UploadStatus } from './types';
 import { countFilesWithStatus } from './utils';
 
@@ -30,6 +34,7 @@ const MAX_FILE_SIZE = 50 * 1024 * 1024;
 const MAX_FILES = 35;
 
 const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
+  const { data: user } = useAuthUser();
   const { formatMessage } = useIntl();
   const { projectId } = useParams() as { projectId: string };
 
@@ -70,6 +75,19 @@ const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
   });
 
   const handleUpload = () => {
+    // For each file the user tries to upload, track it with relevant metadata.
+    fileList.forEach((file) => {
+      trackEventByName(tracks.filesTabFileUploaded, {
+        projectId,
+        userId: user?.data.id,
+        userRole: user?.data.attributes.highest_role,
+        fileName: file.file.name,
+        fileType: file.file.name.split('.').pop(),
+        fileSize: file.file.size,
+        aiProcessingAllowed: allowAiProcessing,
+      });
+    });
+
     setHasStartedUploading(true);
 
     // If uploading for the first time, this keeps the initial "First Upload" view visible

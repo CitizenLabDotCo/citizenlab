@@ -193,6 +193,36 @@ export const defaultOutline = css`
   border: 2px solid ${(props) => props.theme.colors.tenantPrimary};
 `;
 
+export const stylingConsts = {
+  menuHeight: 78,
+  mobileMenuHeight: 72,
+  mobileTopBarHeight: 66,
+  footerHeight: 60,
+  maxPageWidth: 952,
+  inputHeight: 48,
+  bannerWidth: 1340,
+  pageWidth: 1150,
+  textWidth: 720,
+  borderRadius: '3px',
+  border: `1px solid ${colors.divider}`,
+};
+
+type DefaultInputStyleProps = {
+  theme: MainThemeProps;
+  height?: string | number;
+  size?: InputSize;
+};
+
+const getHeight = (props: DefaultInputStyleProps) => {
+  if (typeof props.height === 'string') {
+    return props.height;
+  }
+  if (typeof props.height === 'number') {
+    return `${props.height}px`;
+  }
+  return `${stylingConsts.inputHeight}px`;
+};
+
 export const defaultInputStyle = css`
   color: ${colors.textPrimary};
   font-size: ${fontSizes.base}px;
@@ -208,6 +238,7 @@ export const defaultInputStyle = css`
   -moz-appearance: none;
   -webkit-appearance: none;
   transition: box-shadow 100ms ease-out;
+  height: ${getHeight};
 
   &:not(:disabled):not(.disabled) {
     &:not(.error):hover,
@@ -246,19 +277,6 @@ export const defaultInputStyle = css`
     `}
   }
 `;
-
-export const stylingConsts = {
-  menuHeight: 78,
-  mobileMenuHeight: 72,
-  mobileTopBarHeight: 66,
-  footerHeight: 60,
-  maxPageWidth: 952,
-  bannerWidth: 1340,
-  pageWidth: 1150,
-  textWidth: 720,
-  borderRadius: '3px',
-  border: `1px solid ${colors.divider}`,
-};
 
 export const getFontWeightCSS = (fontWeight: FontWeight) => {
   switch (fontWeight) {
@@ -540,21 +558,4 @@ export function hexToRgb(hex: any) {
         b: parseInt(result[3], 16),
       }
     : null;
-}
-
-// RGBAtoRGB
-// Description: Function to convert RGBA color to RGB representation by blending it with a white background.
-// https://stackoverflow.com/a/71532946
-export function RGBAtoRGB(rgba: string, alpha: number) {
-  const rgbaValues: RegExpMatchArray | null = rgba.match(/\d+/g);
-
-  if (rgbaValues) {
-    const r = Math.round((1 - alpha) * 255 + alpha * parseFloat(rgbaValues[0]));
-    const g = Math.round((1 - alpha) * 255 + alpha * parseFloat(rgbaValues[1]));
-    const b = Math.round((1 - alpha) * 255 + alpha * parseFloat(rgbaValues[2]));
-
-    return `rgba(${r},${g},${b}, 1.0)`;
-  }
-
-  return '';
 }

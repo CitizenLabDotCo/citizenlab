@@ -79,4 +79,6 @@ AboutBox.craft = {
   },
 };
 
+export const aboutBoxTitle = messages.participationBox;
+
 export default AboutBox;

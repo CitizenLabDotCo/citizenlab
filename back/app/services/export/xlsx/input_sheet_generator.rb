@@ -91,12 +91,18 @@ module Export
         )
       end
 
-      def created_at_report_field
-        ComputedFieldForReport.new(column_header_for('created_at'), ->(input) { input.created_at })
+      def submitted_at_report_field
+        ComputedFieldForReport.new(
+          column_header_for('submitted_at'),
+          ->(input) { AppConfiguration.timezone.at(input.submitted_at || input.created_at) }
+        )
       end
 
       def published_at_report_field
-        ComputedFieldForReport.new(column_header_for('published_at'), ->(input) { input.published_at })
+        ComputedFieldForReport.new(
+          column_header_for('published_at'),
+          ->(input) { input.published_at && AppConfiguration.timezone.at(input.published_at) }
+        )
       end
 
       def comments_count_report_field
@@ -228,7 +234,7 @@ module Export
 
       def meta_report_fields
         [].tap do |meta_fields|
-          meta_fields << created_at_report_field
+          meta_fields << submitted_at_report_field
           meta_fields << published_at_report_field if participation_method.supports_public_visibility?
           meta_fields << comments_count_report_field if participation_method.supports_commenting?
           meta_fields << likes_count_report_field if participation_method.supports_reacting?('up')
@@ -250,7 +256,7 @@ module Export
       end
 
       def user_report_fields
-        return [] if participation_method.user_fields_in_form? # User fields are returned from the idea if they are included in the form
+        return [] if participation_method.user_fields_in_form_enabled? # User fields are returned from the idea if they are included in the form
 
         registration_fields.map do |field|
           Export::CustomFieldForExport.new(field, @value_visitor, :author)

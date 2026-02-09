@@ -7,18 +7,35 @@ describe ContentImageService do
 
   let(:subclass) do
     Class.new(described_class) do
-      def decode_content(str)
-        JSON.parse str, symbolize_names: true
+      def decode_content(content, raise_on_error: false)
+        case content
+        when Hash then content.transform_values { |v| decode_content(v, raise_on_error:) }
+        when String then JSON.parse(content, symbolize_names: true)
+        else raise "Invalid content type: #{content.class}"
+        end
       rescue StandardError => e
-        raise ContentImageService::DecodingError.new parse_errors: e.message
+        error = ContentImageService::DecodingError.new parse_errors: e.message
+        raise error if raise_on_error
+
+        log_decoding_error(error)
+        ContentImageService::UndecodableContent.new(content, error)
       end
 
       def encode_content(json)
-        json.to_json
+        case json
+        when ContentImageService::UndecodableContent then json.original_content
+        when Hash then json.transform_values { |v| encode_content(v) }
+        else json.to_json
+        end
       end
 
       def image_elements(content)
-        content.select { |elt| elt[:type] == 'image' }
+        case content
+        when ContentImageService::UndecodableContent then []
+        when Hash then content.values.flat_map { |v| image_elements(v) }
+        when Array then content.select { |elt| elt[:type] == 'image' }
+        else raise "Invalid content type: #{content.class}"
+        end
       end
 
       def content_image_class
@@ -59,19 +76,19 @@ describe ContentImageService do
   let(:service) { subclass.new }
   let(:text_images) { create_list(:text_image, 2) }
 
-  describe 'swap_data_images_multiloc' do
+  describe 'swap_data_images' do
     before { allow(TextImage).to receive(:create!).and_return(text_images[0], text_images[1]) }
 
     it 'returns exactly the same input locales' do
       imageable = build(:user, bio_multiloc: { 'en' => '[]', 'fr-BE' => '[]', 'nl-BE' => '[]', 'de' => '[]' })
-      output = service.swap_data_images_multiloc imageable.bio_multiloc, field: :bio_multiloc
+      output = service.swap_data_images imageable.bio_multiloc, field: :bio_multiloc
       expect(output.keys).to match_array %w[en fr-BE nl-BE de]
     end
 
     it 'returns the same multiloc when no images are included' do
       json_str = '[{"type":"furniture"},{"type":"text","value":"My awesome text"}]'
       imageable = build(:user, bio_multiloc: { 'fr-BE' => json_str })
-      output = service.swap_data_images_multiloc imageable.bio_multiloc, field: :bio_multiloc
+      output = service.swap_data_images imageable.bio_multiloc, field: :bio_multiloc
       expect(output).to eq({ 'fr-BE' => json_str })
     end
 
@@ -86,7 +103,7 @@ describe ContentImageService do
       ].to_json
 
       imageable = build(:user, bio_multiloc: { 'nl-BE' => json_str })
-      output = service.swap_data_images_multiloc imageable.bio_multiloc, field: :bio_multiloc
+      output = service.swap_data_images imageable.bio_multiloc, field: :bio_multiloc
       expect(output).to eq({ 'nl-BE' => expected_json })
       expect(TextImage).to have_received(:create!).twice
     end
@@ -101,7 +118,7 @@ describe ContentImageService do
 
       imageable = build(:user, bio_multiloc: { 'en' => json_str })
       output = nil
-      expect { output = service.swap_data_images_multiloc imageable.bio_multiloc, field: :bio_multiloc }.not_to(change(TextImage, :count))
+      expect { output = service.swap_data_images imageable.bio_multiloc, field: :bio_multiloc }.not_to(change(TextImage, :count))
       expect(output).to eq({ 'en' => expected_json })
     end
 
@@ -109,24 +126,20 @@ describe ContentImageService do
       json_str = '[{"type":"image"}]'
       imageable = build(:user, bio_multiloc: { 'de' => json_str })
       output = nil
-      expect { output = service.swap_data_images_multiloc imageable.bio_multiloc, field: :bio_multiloc }.not_to(change(TextImage, :count))
+      expect { output = service.swap_data_images imageable.bio_multiloc, field: :bio_multiloc }.not_to(change(TextImage, :count))
       expect(output).to eq({ 'de' => json_str })
     end
 
-    it 'returns the same value when decoding failed' do
-      invalid_json_str = '¯\_(ツ)_/¯'
-      valid_json_str = [
-        { type: 'image', src: 'https://images.com/image.png' }
-      ].to_json
-      expected_json = [
-        { type: 'image', data_cl2_content_image_code: text_images[0].text_reference }
-      ].to_json
+    it 'processes valid locale and preserves malformed one unchanged' do
+      valid_json = '[{"type":"text"}]'
+      malformed_json = '{invalid json'
+      multiloc = { 'en' => valid_json, 'fr' => malformed_json }
 
-      imageable = build(:user, bio_multiloc: { 'en' => invalid_json_str, 'de' => valid_json_str })
-      output = service.swap_data_images_multiloc imageable.bio_multiloc, field: :bio_multiloc
-      expect(output).to eq({ 'en' => invalid_json_str, 'de' => expected_json })
-      expect(Sentry).to have_received :capture_exception
-      expect(TextImage).to have_received(:create!).once
+      result = service.swap_data_images(multiloc)
+
+      expect(result).to be_a(Hash)
+      expect(result['en']).to eq('[{"type":"text"}]')
+      expect(result['fr']).to eq(malformed_json)
     end
   end
 
@@ -213,6 +226,18 @@ describe ContentImageService do
       output = service.render_data_images_multiloc imageable.bio_multiloc, imageable: imageable, field: :bio_multiloc
       expect(output).to eq({ 'en' => json_str })
       expect(service).to have_received :could_include_images?
+    end
+  end
+
+  describe 'encode/decode round-trip' do
+    it 'preserves original content through encode/decode round-trip' do
+      malformed = '{bad json}'
+
+      decoded = service.send(:decode_content, malformed)
+      expect(decoded).to be_a(ContentImageService::UndecodableContent)
+
+      encoded = service.send(:encode_content, decoded)
+      expect(encoded).to eq(malformed)
     end
   end
 end

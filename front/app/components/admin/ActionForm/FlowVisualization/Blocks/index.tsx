@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
+import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
 import { PermittedBy } from 'api/phase_permissions/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -18,7 +18,7 @@ import VerificationBlock from './VerificationBlock';
 
 interface Props {
   permittedBy: PermittedBy;
-  permissionsCustomFields: IPermissionsCustomFieldData[];
+  permissionsCustomFields: IPermissionsPhaseCustomFieldData[];
   verificationEnabled: boolean;
   verificationExpiry: number | null;
   onChangeVerificationExpiry: (value: number | null) => void;
@@ -93,21 +93,23 @@ const Blocks = ({
   if (permittedBy === 'users') {
     return (
       <>
-        <Block
-          number={1}
-          text={formatMessage(messages.enterNameLastNameEmailAndPassword)}
-        />
+        <Block number={1} text={formatMessage(messages.enterYourEmail)} />
         {emailConfirmationEnabled && (
           <>
             <Edge />
             <Block number={2} text={formatMessage(messages.confirmYourEmail)} />
           </>
         )}
+        <Edge />
+        <Block
+          number={3}
+          text={formatMessage(messages.enterNameLastNameAndPassword)}
+        />
         {verificationEnabled && (
           <>
             <Edge />
             <VerificationBlock
-              number={2 + enabledSteps(emailConfirmationEnabled)}
+              number={3 + enabledSteps(emailConfirmationEnabled)}
             />
           </>
         )}
@@ -116,7 +118,7 @@ const Blocks = ({
             <Edge />
             <Block
               number={
-                2 + enabledSteps(emailConfirmationEnabled, verificationEnabled)
+                3 + enabledSteps(emailConfirmationEnabled, verificationEnabled)
               }
               text={formatMessage(
                 messages.completeTheDemographicQuestionsAbove

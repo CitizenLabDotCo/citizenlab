@@ -127,4 +127,55 @@ describe('Input form builder', () => {
     cy.dataCy('e2e-next-page').should('be.visible').click();
     cy.get('.e2e-topics-picker').should('not.exist');
   });
+
+  it('can be limited to a minimum and maximum number of selections', () => {
+    const title = randomString(12);
+    const description = randomString(42);
+
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
+    cy.dataCy('e2e-edit-input-form').click();
+
+    cy.dataCy('e2e-form-fields').within(() => {
+      cy.contains('Tags').should('exist');
+      cy.contains('Tags').click();
+    });
+    cy.dataCy('e2e-limit-topics-toggle').find('input').click({ force: true });
+    cy.dataCy('e2e-limit-topics-minimum').find('input').type('2');
+    cy.dataCy('e2e-limit-topics-maximum').find('input').type('3');
+
+    // Save the form
+    cy.get('form').submit();
+    // Should show success message on saving
+    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
+
+    // Fill in the form
+    cy.visit(`/projects/${projectSlug}/ideas/new?phase_id=${phaseId}`);
+
+    cy.get('#title_multiloc ').type(title, { delay: 0 });
+    cy.get('#title_multiloc ').should('contain.value', title);
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.get('#body_multiloc .ql-editor').type(description);
+    cy.get('#body_multiloc .ql-editor').contains(description);
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+
+    // Selecting one topic returns an error
+    cy.contains('Mobility').click();
+    cy.dataCy('e2e-submit-form').click();
+    cy.get('[data-testid="error-message"]').should('exist');
+
+    // Selecting four topics returns an error
+    cy.contains('Other').click();
+    cy.get('[data-testid="error-message"]').should('not.exist');
+    cy.contains('Safety').click();
+    cy.contains('Housing').click();
+    cy.get('[data-testid="error-message"]').should('exist');
+
+    // Selecting three topics is accepted
+    cy.contains('Safety').click();
+    cy.get('[data-testid="error-message"]').should('not.exist');
+
+    cy.dataCy('e2e-submit-form').click();
+    cy.dataCy('e2e-after-submission').should('exist');
+  });
 });

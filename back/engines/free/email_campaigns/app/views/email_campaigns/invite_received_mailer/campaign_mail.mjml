@@ -10,7 +10,7 @@
 </mj-raw>
 <mj-section padding="0 25px 20px" border-radius="5px" text-align="left">
   <mj-column padding="30px 25px 20px" border-radius="5px" background-color="#F2F6F8">
-    <mj-text font-size="14px" color="#84939E">
+    <mj-text font-size="14px" color="#3e4448ff">
       <%= format_message('added_a_message', values: { organizationName: organization_name }) %>
       <p style="color: #000"><%= event.invite_text.html_safe %></p>
     </mj-text>

@@ -24,6 +24,8 @@ RSpec.describe User do
     it { is_expected.to have_many(:assigned_project_reviews).class_name('ProjectReview').with_foreign_key('reviewer_id').dependent(:nullify) }
     it { is_expected.to have_many(:jobs_trackers).class_name('Jobs::Tracker').with_foreign_key('owner_id').dependent(:nullify) }
     it { is_expected.to have_many(:files).class_name('Files::File').with_foreign_key('uploader_id').dependent(:nullify) }
+    it { is_expected.to have_many(:claim_tokens).with_foreign_key('pending_claimer_id').dependent(:destroy) }
+    it { is_expected.to have_many(:idea_exposures).dependent(:destroy) }
 
     it 'nullifies idea import association' do
       idea_import = create(:idea_import, import_user: user)
@@ -41,6 +43,15 @@ RSpec.describe User do
       phase = create(:phase, manual_voters_last_updated_by: user)
       expect { user.destroy }.not_to raise_error
       expect(phase.reload.manual_voters_last_updated_by).to be_nil
+    end
+
+    it 'destroys idea_exposures when user is deleted' do
+      user.save!
+      phase = create(:phase)
+      idea = create(:idea, phases: [phase])
+      idea_exposure = create(:idea_exposure, user: user, idea: idea, phase: phase)
+      expect { user.destroy }.not_to raise_error
+      expect { idea_exposure.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 
@@ -139,7 +150,7 @@ RSpec.describe User do
       blocked_users = described_class.all.blocked
 
       expect(blocked_users.count).to eq 2
-      expect(blocked_users).to match_array([user1, user3])
+      expect(blocked_users).to contain_exactly(user1, user3)
       expect(blocked_users).not_to include(user2)
     end
   end
@@ -150,22 +161,22 @@ RSpec.describe User do
         SettingsService.new.activate_feature! 'user_confirmation'
       end
 
-      it 'should be allowed if the user has no password and confirmation is required' do
+      it 'is allowed if the user has no password and confirmation is required' do
         u = described_class.new(email: 'bob@citizenlab.co')
         expect(!!u.authenticate('')).to be(true)
       end
 
-      it 'should not be allowed if a password has been supplied in the request' do
+      it 'is not allowed if a password has been supplied in the request' do
         u = described_class.new(email: 'bob@citizenlab.co')
         expect(!!u.authenticate('any_string')).to be(false)
       end
 
-      it 'should not be allowed if a password has been set' do
+      it 'is not allowed if a password has been set' do
         u = described_class.new(email: 'bob@citizenlab.co', password: 'democracy2.0')
         expect(!!u.authenticate('')).to be(false)
       end
 
-      it 'should not be allowed if confirmation is not required' do
+      it 'is not allowed if confirmation is not required' do
         u = described_class.new(email: 'bob@citizenlab.co')
         u.confirm
         expect(!!u.authenticate('')).to be(false)
@@ -177,18 +188,18 @@ RSpec.describe User do
         SettingsService.new.deactivate_feature! 'user_confirmation'
       end
 
-      it 'should not be allowed if no password has been set and confirmation is required' do
+      it 'is not allowed if no password has been set and confirmation is required' do
         u = described_class.new(email: 'bob@citizenlab.co')
         expect(!!u.authenticate('')).to be(false)
         expect(!!u.authenticate('any_string')).to be(false)
       end
 
-      it 'should not be allowed if a password has been set' do
+      it 'is not allowed if a password has been set' do
         u = described_class.new(email: 'bob@citizenlab.co', password: 'democracy2.0')
         expect(!!u.authenticate('')).to be(false)
       end
 
-      it 'should not be allowed if confirmation is not required' do
+      it 'is not allowed if confirmation is not required' do
         u = described_class.new(email: 'bob@citizenlab.co')
         u.confirm
         expect(!!u.authenticate('')).to be(false)
@@ -229,6 +240,41 @@ RSpec.describe User do
       expect(user).to be_valid
     end
 
+    it 'is valid if domain is on our blacklist but also on our whitelist' do
+      common_spam_domains = Rails.root.join('config/common_spam_domains.txt').readlines.map { |x| x.strip.downcase }
+      expect(common_spam_domains).to include('yopmail.com')
+      expect(EmailDomainBlacklist::WHITELISTED_DOMAINS).to include('yopmail.com')
+
+      user = build(:user, email: 'someone@yopmail.com')
+      expect(user).to be_valid
+    end
+
+    it 'is invalid when new record and the email is banned' do
+      EmailBan.ban!('banned.user+test@gmail.com')
+      user = build(:user, email: 'banneduser@gmail.com') # normalized match
+
+      expect(user).to be_invalid
+      expect(user.errors.details[:email]).to eq [{ error: 'something_went_wrong', code: 'zrb-43' }]
+    end
+
+    it 'is invalid when existing record and the email is updated to a banned email' do
+      EmailBan.ban!('banned@example.com')
+      user = create(:user, email: 'allowed@domain.com')
+      user.email = 'banned@example.com'
+
+      expect(user).to be_invalid
+      expect(user.errors.details[:email]).to eq [{ error: 'something_went_wrong', code: 'zrb-43' }]
+    end
+
+    it 'is valid if email is banned but are updating other user attributes' do
+      user = create(:user)
+      user.update_column(:email, 'now_banned@example.com') # bypasses validations
+      EmailBan.ban!('now_banned@example.com')
+
+      user.first_name = 'UpdatedName'
+      expect(user).to be_valid
+    end
+
     it 'is required when a unique code is not present' do
       u1 = build(:user, email: nil)
       expect(u1).to be_invalid
@@ -262,6 +308,32 @@ RSpec.describe User do
     it 'is valid if domain is on our blacklist but are updating other user attributes' do
       user = create(:user)
       user.update_column(:new_email, 'blocked@039b1ee.netsolhost.com') # bypasses validations
+
+      user.first_name = 'UpdatedName'
+      expect(user).to be_valid
+    end
+
+    it 'is valid if domain is on our blacklist but also on our whitelist' do
+      common_spam_domains = Rails.root.join('config/common_spam_domains.txt').readlines.map { |x| x.strip.downcase }
+      expect(common_spam_domains).to include('yopmail.com')
+      expect(EmailDomainBlacklist::WHITELISTED_DOMAINS).to include('yopmail.com')
+
+      user = build(:user, new_email: 'someone@yopmail.com')
+      expect(user).to be_valid
+    end
+
+    it 'is invalid when the new_email is banned' do
+      EmailBan.ban!('banned.user+test@gmail.com')
+      user = build(:user, new_email: 'banneduser@gmail.com') # normalized match
+
+      expect(user).to be_invalid
+      expect(user.errors.details[:new_email]).to eq [{ error: 'something_went_wrong', code: 'zrb-43' }]
+    end
+
+    it 'is valid if new_email is banned but are updating other user attributes' do
+      user = create(:user)
+      user.update_column(:new_email, 'now_banned@example.com') # bypasses validations
+      EmailBan.ban!('now_banned@example.com')
 
       user.first_name = 'UpdatedName'
       expect(user).to be_valid
@@ -630,7 +702,7 @@ RSpec.describe User do
       context 'when a project ID is not provided' do
         it 'includes only users with a project moderator role' do
           expect(described_class.project_moderator)
-            .to match_array([project_moderator, moderator_of_other_project])
+            .to contain_exactly(project_moderator, moderator_of_other_project)
         end
       end
     end
@@ -689,7 +761,7 @@ RSpec.describe User do
       context 'when no folder ID is not provided' do
         it 'includes only users with a folder moderator role' do
           expect(described_class.project_folder_moderator)
-            .to match_array([project_folder_moderator, moderator_of_other_folder])
+            .to contain_exactly(project_folder_moderator, moderator_of_other_folder)
         end
       end
     end
@@ -724,7 +796,7 @@ RSpec.describe User do
       context 'when a project ID is not provided' do
         it 'includes only users without a project moderator role' do
           expect(described_class.not_project_moderator)
-            .to match_array([user, admin, project_folder_moderator, moderator_of_other_folder])
+            .to contain_exactly(user, admin, project_folder_moderator, moderator_of_other_folder)
         end
       end
     end
@@ -761,7 +833,7 @@ RSpec.describe User do
       context 'when a folder ID is not provided' do
         it 'includes only users without a folder moderator role' do
           expect(described_class.not_project_folder_moderator)
-            .to match_array([user, admin, project_moderator, moderator_of_other_project])
+            .to contain_exactly(user, admin, project_moderator, moderator_of_other_project)
         end
       end
     end
@@ -1017,8 +1089,8 @@ RSpec.describe User do
     let(:user) { create(:user, manual_groups: [manual_group, group]) }
 
     it 'returns manual groups' do
-      expect(user.groups).to match_array [manual_group, group]
-      expect(user.group_ids).to match_array [manual_group.id, group.id]
+      expect(user.groups).to contain_exactly(manual_group, group)
+      expect(user.group_ids).to contain_exactly(manual_group.id, group.id)
     end
   end
 
@@ -1039,7 +1111,7 @@ RSpec.describe User do
       user2 = create(:user, email: 'jules@test.com', manual_groups: [group1])
       user4 = create(:user, manual_groups: [group2])
 
-      expect(described_class.in_any_group([group1, group2])).to match_array [user1, user2, user4]
+      expect(described_class.in_any_group([group1, group2])).to contain_exactly(user1, user2, user4)
     end
   end
 
@@ -1181,38 +1253,6 @@ RSpec.describe User do
       end
     end
 
-    describe '#increment_confirmation_retry_count!' do
-      it 'increments the retry count' do
-        expect { user.increment_confirmation_retry_count! }.to change(user, :email_confirmation_retry_count).from(0).to(1)
-      end
-
-      it 'saved the change to the retry count' do
-        expect { user.increment_confirmation_retry_count! }.to change(user, :saved_change_to_email_confirmation_retry_count?)
-      end
-    end
-
-    describe '#increment_confirmation_code_reset_count' do
-      it 'increments the reset count' do
-        expect { user.increment_confirmation_code_reset_count }.to change(user, :email_confirmation_code_reset_count).from(0).to(1)
-      end
-
-      it 'saved the change to the reset count' do
-        user.increment_confirmation_code_reset_count
-        expect { user.save! }.to change(user, :saved_change_to_email_confirmation_code_reset_count?)
-      end
-    end
-
-    describe '#reset_confirmation_code' do
-      it 'changes the code' do
-        expect { user.reset_confirmation_code }.to change(user, :email_confirmation_code)
-        expect(user.email_confirmation_code).to match(USER_CONFIRMATION_CODE_PATTERN)
-      end
-
-      it 'should not save a change to the email confirmation code' do
-        expect { user.reset_confirmation_code }.not_to change(user, :saved_change_to_email_confirmation_code?)
-      end
-    end
-
     describe '#email' do
       let(:email) { 'new_email@email.com' }
 
@@ -1242,7 +1282,11 @@ RSpec.describe User do
     end
 
     describe '#confirm!' do
-      it 'should set email confirmed at' do
+      before do
+        SettingsService.new.activate_feature! 'user_confirmation'
+      end
+
+      it 'sets email confirmed at' do
         user.save!
         expect { user.confirm! }.to change(user, :saved_change_to_email_confirmed_at?)
       end
@@ -1250,6 +1294,8 @@ RSpec.describe User do
       it 'cancels any pending email change initiated with the same email' do
         new_email = 'new-email@provider.org'
         user1, user2 = create_list(:user, 2, new_email: new_email, email_confirmation_code: 9999)
+        user1.update_column(:confirmation_required, true)
+        user1.save!
 
         user1.confirm!
 
@@ -1298,6 +1344,38 @@ RSpec.describe User do
     end
   end
 
+  describe '#first_name' do
+    it 'does not allow HTML in the name' do
+      user = described_class.new
+      user.first_name = '<script>alert("hacked")</script>Bob'
+      user.validate
+      expect(user.first_name).to eq 'alert("hacked")Bob'
+    end
+
+    it 'does not change valid names' do
+      user = described_class.new
+      user.first_name = 'Terry'
+      user.validate
+      expect(user.first_name).to eq 'Terry'
+    end
+  end
+
+  describe '#last_name' do
+    it 'does not allow HTML in the name' do
+      user = described_class.new
+      user.last_name = '<script>alert("hacked")</script><p>Bob</p>'
+      user.validate
+      expect(user.last_name).to eq 'alert("hacked")Bob'
+    end
+
+    it 'does not change valid names' do
+      user = described_class.new
+      user.first_name = 'Smith'
+      user.validate
+      expect(user.first_name).to eq 'Smith'
+    end
+  end
+
   context 'billed users' do
     def create_admin_moderator(factory)
       create(factory).tap do |user|
@@ -1310,14 +1388,14 @@ RSpec.describe User do
       it 'returns admins' do
         create(:user)
         admin = create(:admin)
-        expect(described_class.billed_admins).to match_array([admin])
+        expect(described_class.billed_admins).to contain_exactly(admin)
       end
 
       it 'does not return Go Vocal admins' do
         create(:user)
         create(:admin, email: 'test@govocal.com')
         non_gv_admin = create(:admin)
-        expect(described_class.billed_admins).to match_array([non_gv_admin])
+        expect(described_class.billed_admins).to contain_exactly(non_gv_admin)
       end
 
       it 'does not return project and folder moderators' do
@@ -1325,14 +1403,14 @@ RSpec.describe User do
         admin = create(:admin)
         create(:project_moderator)
         create(:project_folder_moderator)
-        expect(described_class.billed_admins).to match_array([admin])
+        expect(described_class.billed_admins).to contain_exactly(admin)
       end
 
       it 'returns admins who are also project or folder moderators' do
         create(:user)
         admin = create_admin_moderator(:project_moderator)
         admin1 = create_admin_moderator(:project_folder_moderator)
-        expect(described_class.billed_admins).to match_array([admin, admin1])
+        expect(described_class.billed_admins).to contain_exactly(admin, admin1)
       end
     end
 
@@ -1341,14 +1419,14 @@ RSpec.describe User do
         create(:user)
         project_moderator = create(:project_moderator)
         folder_moderator = create(:project_folder_moderator)
-        expect(described_class.billed_moderators).to match_array([project_moderator, folder_moderator])
+        expect(described_class.billed_moderators).to contain_exactly(project_moderator, folder_moderator)
       end
 
       it 'does not return Go Vocal moderators' do
         create(:user)
         create(:project_moderator, email: 'test@govocal.eu')
         non_cl_project_moderator = create(:project_moderator)
-        expect(described_class.billed_moderators).to match_array([non_cl_project_moderator])
+        expect(described_class.billed_moderators).to contain_exactly(non_cl_project_moderator)
       end
 
       it 'does not return admins' do
@@ -1356,7 +1434,7 @@ RSpec.describe User do
         project_moderator = create(:project_moderator)
         folder_moderator = create(:project_folder_moderator)
         create(:admin)
-        expect(described_class.billed_moderators).to match_array([project_moderator, folder_moderator])
+        expect(described_class.billed_moderators).to contain_exactly(project_moderator, folder_moderator)
       end
 
       it 'does not return admins who are also project or folder moderators' do
@@ -1366,7 +1444,7 @@ RSpec.describe User do
         folder_moderator = create(:project_folder_moderator)
         create_admin_moderator(:project_moderator)
         create_admin_moderator(:project_folder_moderator)
-        expect(described_class.billed_moderators).to match_array([project_moderator, folder_moderator])
+        expect(described_class.billed_moderators).to contain_exactly(project_moderator, folder_moderator)
       end
     end
   end

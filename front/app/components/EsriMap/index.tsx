@@ -25,6 +25,8 @@ import {
   getDefaultBasemapType,
   getDefaultBasemap,
   handleWebMapReferenceLayers,
+  createUserLocationGraphic,
+  useLabelExpandButtons,
 } from './utils';
 
 // Custom Esri styles
@@ -71,6 +73,7 @@ export type EsriMapProps = {
   onClick?: (event: any, mapView: MapView) => void;
   onHover?: (event: any, mapView: MapView) => void;
   globalMapSettings: AppConfigurationMapSettings;
+  showUserLocation?: boolean;
 };
 
 const EsriMap = ({
@@ -84,6 +87,7 @@ const EsriMap = ({
   webMapId,
   initialData,
   globalMapSettings,
+  showUserLocation = false,
 }: EsriMapProps) => {
   const locale = useLocale();
   const isMobileOrSmaller = useBreakpoint('phone');
@@ -99,6 +103,10 @@ const EsriMap = ({
   const [initialized, setInitialized] = useState(false);
 
   const mapRefAvailable = !!mapRef.current;
+
+  // for Accessibility: add labels to the expand buttons in the map's legend and layer list
+
+  useLabelExpandButtons({ mapView });
 
   useEffect(() => {
     if (!mapRefAvailable) return;
@@ -268,6 +276,55 @@ const EsriMap = ({
     }
   }, [appConfig?.data.attributes.settings.esri_integration?.api_key]);
 
+  // Handle user location
+  useEffect(() => {
+    if (!showUserLocation || !mapView) return;
+
+    let currentLocationGraphic: Graphic | null = null;
+    let watchId: number | null = null;
+
+    const updateUserLocation = (position: GeolocationPosition) => {
+      const { longitude, latitude } = position.coords;
+
+      // Remove existing location graphic if it exists
+      if (currentLocationGraphic) {
+        mapView.graphics.remove(currentLocationGraphic);
+      }
+
+      // Create new user location graphic
+      const locationGraphic = createUserLocationGraphic(longitude, latitude);
+      mapView.graphics.add(locationGraphic);
+      currentLocationGraphic = locationGraphic;
+    };
+
+    const handleLocationError = (error: GeolocationPositionError) => {
+      console.warn('Error getting user location:', error);
+    };
+
+    if ('geolocation' in navigator) {
+      // Use watchPosition for continuous location updates
+      watchId = navigator.geolocation.watchPosition(
+        updateUserLocation,
+        handleLocationError,
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 30000, // Cache location for 30 seconds
+        }
+      );
+    }
+
+    // Cleanup function to remove user location graphic and stop watching
+    return () => {
+      if (currentLocationGraphic) {
+        mapView.graphics.remove(currentLocationGraphic);
+      }
+      if (watchId !== null) {
+        navigator.geolocation.clearWatch(watchId);
+      }
+    };
+  }, [showUserLocation, mapView]);
+
   return (
     <>
       <MapContainer
@@ -276,6 +333,10 @@ const EsriMap = ({
         width={width ? `${width}` : '100%'}
         height={height ? `${height}` : '400px'}
         basemapType={getDefaultBasemapType(globalMapSettings.tile_provider)}
+        style={{
+          maxHeight: height || '400px',
+          overflow: 'hidden',
+        }}
       />
     </>
   );

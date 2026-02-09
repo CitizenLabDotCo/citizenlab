@@ -11,6 +11,11 @@ module Analysis
         self.class.name.demodulize.underscore
       end
 
+      # Should return a family key as defined in LLMSelector::FAMILIES
+      def self.family
+        raise NotImplementedError
+      end
+
       def context_window
         raise NotImplementedError
       end

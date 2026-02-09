@@ -15,6 +15,7 @@ import {
   sizes,
   animation,
 } from 'components/admin/Graphs/styling';
+import { getRechartsAccessibilityProps } from 'components/admin/Graphs/utils';
 
 import { truncate } from 'utils/textUtils';
 
@@ -25,11 +26,11 @@ import {
   GraphDimensions,
   LegendDimensions,
 } from '../_components/Legend/typings';
+import { AccessibilityProps } from '../typings';
 import { hasNoData, getTooltipConfig, parseMargin } from '../utils';
 
 import { Props } from './typings';
 import { getBarConfigs, getRechartsLayout, getLabelConfig } from './utils';
-
 export const DEFAULT_LEGEND_OFFSET = 10;
 
 const MultiBarChart = <Row,>({
@@ -49,7 +50,9 @@ const MultiBarChart = <Row,>({
   innerRef,
   onMouseOver,
   onMouseOut,
-}: Props<Row>) => {
+  ariaLabel,
+  ariaDescribedBy,
+}: Props<Row> & AccessibilityProps) => {
   const [graphDimensions, setGraphDimensions] = useState<
     GraphDimensions | undefined
   >();
@@ -106,7 +109,6 @@ const MultiBarChart = <Row,>({
       width={width}
       height={height}
       legend={legend}
-      graphDimensions={graphDimensions}
       legendDimensions={legendDimensions}
       defaultLegendOffset={DEFAULT_LEGEND_OFFSET}
       onUpdateGraphDimensions={setGraphDimensions}
@@ -124,7 +126,7 @@ const MultiBarChart = <Row,>({
         ref={innerRef}
         barGap={0}
         barCategoryGap={bars?.categoryGap}
-        accessibilityLayer
+        {...getRechartsAccessibilityProps(ariaLabel, ariaDescribedBy)}
       >
         {legend && graphDimensions && legendDimensions && (
           <g className="graph-legend">

@@ -10,9 +10,13 @@ module Permissions
     # is complex, could be slow, and in some cases impossible.
     FIXABLE_DENIED_REASONS = %w[user_not_signed_in user_not_active user_not_verified user_missing_requirements].freeze
 
-    def initialize(project, user, user_requirements_service: nil, request: nil)
+    def initialize(project, user, user_requirements_service: nil, request: nil, fallback_to_last_phase: false)
       @timeline_service = TimelineService.new
-      phase = @timeline_service.current_phase_not_archived project
+      phase = if fallback_to_last_phase
+        @timeline_service.current_phase_or_last_completed_not_archived project
+      else
+        @timeline_service.current_phase_not_archived project
+      end
       phase.project = project if phase # Performance optimization (keep preloaded relationships)
       super(phase, user, user_requirements_service: user_requirements_service, request: request)
       @project ||= project
@@ -110,7 +114,7 @@ module Permissions
     def participation_possible?(action_descriptors)
       # `attending_event` is not included, as we do not check if any ongoing/future events exist for the project,
       # nor if user is already attending such an event, in the interests of performance and simplicity.
-      descriptors = action_descriptors.except(:attending_event, :annotating_document)
+      descriptors = action_descriptors.except(:attending_event)
 
       return true if descriptors.values.any? { |d| d[:enabled] }
       return true if descriptors.values.any? { |d| FIXABLE_DENIED_REASONS.include?(d[:disabled_reason]) }

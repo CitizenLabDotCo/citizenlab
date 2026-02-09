@@ -259,6 +259,7 @@ da:
       x_days_ago_by_author: '%{x} dage siden af %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} kommenterede:'
+      anonymous_user: Anonym bruger
       cta_button: 'Se %{authorFirstName}s kommentar'
       days_ago: '%{numberOfDays} dage siden'
       event_description: '%{authorName} skrev en kommentar til din platform. Deltag i diskussionen og hold samtalen i gang!'
@@ -407,11 +408,13 @@ da:
       title: '%{requesterName} har inviteret dig til at gennemgå projektet "%{projectTitle}"'
       event_description: "I øjeblikket er projektet i kladdetilstand og er ikke synligt for brugerne. Når du har gennemgået og godkendt det, vil moderatoren kunne udgive det."
       cta_button: "Gennemgå projektet"
+      preheader: '%{requesterName} har inviteret dig til at gennemgå projektet "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" er blevet godkendt'
       title: '%{reviewerName} godkendte projektet "%{projectTitle}"'
       event_description: "Projektet er nu klar til at gå live. Du kan udgive det, når du er klar!"
       cta_button: "Gå til projektindstillinger"
+      preheader: '%{reviewerName} godkendte projektet "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'Den nye status for dette input er ''%{status}'''
       event_description: '%{organizationName} opdaterede status for input ''%{input_title}'' på deres digitale platform.'
@@ -512,9 +515,7 @@ da:
       subject: '%{organizationName}: Sidste chance for at stemme på %{phaseTitle}'
       preheader: 'Sidste chance for at stemme på %{phaseTitle} på borgerinddragelsesplatformen fra %{organizationName}'
       title: 'Sidste chance for at stemme på %{phaseTitle}'
-      body_1: 'Afstemningsfasen for %{projectTitle} -projektet afsluttes i morgen ved midnat.'
-      body_2: 'Tiden er ved at løbe ud, og vi har bemærket, at du ikke har afgivet din stemme endnu! Gør det nu ved blot at klikke på knappen nedenfor for at deltage.'
-      body_3: 'Ved at gøre det får du adgang til en række muligheder for at komme med dit input, som er afgørende for projektets fremtid.'
+      event_description: '<p>Afstemningsfasen for %{projectTitle} -projektet slutter i morgen ved midnat.</p><p>Tiden er ved at løbe ud, og vi har bemærket, at du ikke har afgivet din stemme endnu! Gør det nu ved at klikke på knappen nedenfor for at deltage.</p><p>På den måde får du adgang til en række muligheder for at komme med input, som kan være afgørende for projektets fremtid.</p>'
       cta_button: 'Stemme'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} afstemningsresultater offentliggjort!'

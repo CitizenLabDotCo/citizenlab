@@ -50,13 +50,13 @@ resource 'Ideas' do
         let(:location_point_geojson) { { type: 'Point', coordinates: [51.4365635, 3.825930459] } }
         let(:location_description) { 'Watkins Road 8' }
         let(:title_multiloc) { { 'en' => 'Changed title' } }
-        let(:topic_ids) { create_list(:topic, 2, projects: [project]).map(&:id) }
+        let(:topic_ids) { create_list(:input_topic, 2, project: project).map(&:id) }
 
         example_request 'Update an idea' do
           assert_status 200
           json_response = json_parse(response_body)
           expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
-          expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+          expect(json_response.dig(:data, :relationships, :input_topics, :data).pluck(:id)).to match_array topic_ids
           expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
           expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
         end
@@ -69,6 +69,14 @@ resource 'Ideas' do
             json_response = json_parse response_body
             expect(json_response.dig(:data, :attributes, :publication_status)).to eq 'published'
           end
+        end
+
+        context 'when body_multiloc contains images' do
+          let(:body_multiloc) { { 'en' => html_with_base64_image } }
+
+          it_behaves_like 'updates record with text images',
+            model_class: Idea,
+            field: :body_multiloc
         end
 
         describe do
@@ -113,7 +121,7 @@ resource 'Ideas' do
             expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
             # proposed_budget is disabled, so its given value was ignored.
             expect(json_response.dig(:data, :attributes, :proposed_budget)).to eq input.proposed_budget
-            expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+            expect(json_response.dig(:data, :relationships, :input_topics, :data).pluck(:id)).to match_array topic_ids
             expect(json_response.dig(:data, :attributes, :location_point_geojson)).to eq location_point_geojson
             expect(json_response.dig(:data, :attributes, :location_description)).to eq location_description
           end
@@ -123,11 +131,11 @@ resource 'Ideas' do
           let(:topic_ids) { [] }
 
           example 'Remove the topics', document: false do
-            input.topics = create_list :topic, 2
+            input.input_topics = create_list :input_topic, 2, project: project
             do_request
             assert_status 200
             json_response = json_parse response_body
-            expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+            expect(json_response.dig(:data, :relationships, :input_topics, :data).pluck(:id)).to match_array topic_ids
           end
         end
 
@@ -164,6 +172,43 @@ resource 'Ideas' do
             expect(response_data.dig(:relationships, :author, :data, :id)).not_to eq author_id
           end
         end
+
+        context 'when prescreening_mode is all' do
+          before_all { SettingsService.new.activate_feature!('prescreening_ideation') }
+
+          let!(:proposed_status) { create(:idea_status_proposed) }
+
+          let(:phase) { create(:phase, :ongoing, prescreening_mode: 'all') }
+          let(:input) { create(:idea, phases: [phase], idea_status: proposed_status) }
+          let(:title_multiloc) { { 'en' => 'Changed title' } }
+
+          example '[error] Author cannot edit a published idea after screening', document: false do
+            do_request
+
+            assert_status 401
+            expect(json_response_body).to include_response_error(:base, 'published_after_screening')
+          end
+        end
+
+        context 'when prescreening_mode is flagged_only' do
+          before_all do
+            SettingsService.new.activate_feature!('prescreening_ideation')
+            SettingsService.new.activate_feature!('flag_inappropriate_content')
+          end
+
+          let!(:proposed_status) { create(:idea_status_proposed) }
+
+          let(:phase) { create(:phase, :ongoing, prescreening_mode: 'flagged_only') }
+          let(:input) { create(:idea, phases: [phase], idea_status: proposed_status) }
+          let(:title_multiloc) { { 'en' => 'Changed title' } }
+
+          example 'Author can edit a published idea in flagged_only mode', document: false do
+            do_request
+
+            assert_status 200
+            expect(response_data.dig(:attributes, :title_multiloc, :en)).to eq('Changed title')
+          end
+        end
       end
 
       context 'when admin' do
@@ -178,11 +223,11 @@ resource 'Ideas' do
 
         describe do
           before do
-            project.update! allowed_input_topics: create_list(:topic, 2)
-            input.update! topics: project.allowed_input_topics
+            project.update! input_topics: create_list(:input_topic, 2, project:)
+            input.update! input_topics: project.input_topics
           end
 
-          let(:project_id) { create(:project, allowed_input_topics: [project.allowed_input_topics.first]).id }
+          let(:project_id) { create(:project, input_topics: [project.input_topics.first]).id }
 
           example_request 'Change the project' do
             assert_status 200
@@ -193,18 +238,18 @@ resource 'Ideas' do
           end
         end
 
-        example '[error] Removing the author of a published idea', document: false do
+        example 'Removing the author of a published idea', document: false do
           input.update! publication_status: 'published'
           do_request idea: { author_id: nil }
-          assert_status 422
-          expect(json_response_body).to include_response_error(:author, 'blank')
+          assert_status 200
+          expect(response_data.dig(:attributes, :author_id)).to be_nil
         end
 
-        example '[error] Publishing an idea without author', document: false do
+        example 'Publishing an idea without author', document: false do
           input.update! publication_status: 'draft', author: nil
           do_request idea: { publication_status: 'published' }
-          assert_status 422
-          expect(json_response_body).to include_response_error(:author, 'blank')
+          assert_status 200
+          expect(response_data.dig(:attributes, :author_id)).to be_nil
         end
 
         describe 'draft ideas' do
@@ -423,7 +468,7 @@ resource 'Ideas' do
         end
 
         context 'when reviewing is enabled' do
-          let(:creation_phase) { create(:proposals_phase, prescreening_enabled: true) }
+          let(:creation_phase) { create(:proposals_phase, prescreening_mode: 'all') }
           let(:input) { create(:proposal, idea_status: proposals_status, publication_status: publication_status, creation_phase: creation_phase, project: creation_phase.project) }
 
           describe do
@@ -548,7 +593,7 @@ resource 'Ideas' do
         end
 
         context 'when reviewing is enabled' do
-          let(:creation_phase) { create(:proposals_phase, prescreening_enabled: true) }
+          let(:creation_phase) { create(:proposals_phase, prescreening_mode: 'all') }
           let!(:prescreening) { create(:proposals_status, code: 'prescreening') }
           let!(:proposed) { create(:proposals_status, code: 'proposed') }
           let(:input) { create(:proposal, idea_status: proposed, creation_phase: creation_phase, project: creation_phase.project) }
@@ -697,13 +742,13 @@ resource 'Ideas' do
 
             example 'Successfully removes the idea from a voting phase and recalculates vote counts', document: false do
               # Voting counts before
-              expect(input.ideas_phases.pluck(:votes_count)).to match_array [0, 1]
+              expect(input.ideas_phases.pluck(:votes_count)).to contain_exactly(0, 1)
 
               do_request
               assert_status 200
 
               # Voting phase counts after
-              expect(input.ideas_phases.pluck(:votes_count)).to match_array [0]
+              expect(input.ideas_phases.pluck(:votes_count)).to contain_exactly(0)
             end
           end
 
@@ -713,12 +758,12 @@ resource 'Ideas' do
             example 'Successfully added the idea to the voting phase and restores vote counts', document: false do
               # Voting counts before
               input.update!(phases: [project.phases.first])
-              expect(input.ideas_phases.pluck(:votes_count)).to match_array [0]
+              expect(input.ideas_phases.pluck(:votes_count)).to contain_exactly(0)
 
               do_request
               assert_status 200
 
-              expect(input.ideas_phases.pluck(:votes_count)).to match_array [1]
+              expect(input.ideas_phases.pluck(:votes_count)).to contain_exactly(1)
             end
           end
 

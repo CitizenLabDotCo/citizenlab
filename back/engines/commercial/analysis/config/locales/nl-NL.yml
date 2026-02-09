@@ -14,7 +14,7 @@ nl:
         participants: "Mensen die '%{answer}' reageren op '%{question}' participeren %{percent_more_less} in '%{tag}' dan gemiddeld."
       bin_vs_bin:
         inputs: "Mensen die '%{answer1}' antwoorden op '%{question1}' antwoorden '%{answer2}' op '%{question2}' %{percent_more_less} dan gemiddeld."
-        likes: "Mensen die '%{answer1}' antwoorden op '%{question1}' liken %{percent_more_less} invoeren als ze '%{answer2}' antwoorden op '%{question2}' dan gemiddeld."
-        dislikes: "Mensen die '%{answer1}' antwoorden op '%{question1}' disliken %{percent_more_less} invoeren als ze '%{answer2}' antwoorden op '%{question2}' dan gemiddeld."
+        likes: "Mensen die '%{answer1}' antwoorden op '%{question1}' liken %{percent_more_less} bijdragen als ze '%{answer2}' antwoorden op '%{question2}' dan gemiddeld."
+        dislikes: "Mensen die '%{answer1}' antwoorden op '%{question1}' disliken %{percent_more_less} bijdragen als ze '%{answer2}' antwoorden op '%{question2}' dan gemiddeld."
         participants: "Mensen die '%{answer1}' antwoorden op '%{question1}' participeren %{percent_more_less} als ze '%{answer2}' antwoorden op '%{question2}' dan gemiddeld."
 

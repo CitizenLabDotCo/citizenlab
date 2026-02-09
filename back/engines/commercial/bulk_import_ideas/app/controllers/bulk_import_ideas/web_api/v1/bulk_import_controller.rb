@@ -20,10 +20,10 @@ module BulkImportIdeas
           exporter_class: Exporters::IdeaPdfFormExporter,
           parser_class: Parsers::IdeaPdfFileParser
         },
-        # The following classes are now for legacy support of the prawn based pdf import/export
-        'legacy_pdf' => {
-          exporter_class: Legacy::IdeaPdfFormExporter,
-          parser_class: Legacy::IdeaPdfFileParser
+        # Alpha feature for GPT based PDF form parser
+        'gpt_pdf' => {
+          exporter_class: Exporters::IdeaPdfFormExporter,
+          parser_class: Parsers::IdeaPdfFileGPTParser
         }
       }
     }
@@ -116,7 +116,7 @@ module BulkImportIdeas
     def bulk_create_params
       params
         .require(:import)
-        .permit(%i[file locale personal_data legacy_pdf])
+        .permit(%i[file locale personal_data parser])
     end
 
     def authorize_bulk_import_ideas
@@ -153,15 +153,14 @@ module BulkImportIdeas
 
       return CONSTANTIZER.fetch(model)[class_type] if class_type == :serializer_class
 
-      format = 'legacy_pdf' if format == 'pdf' && use_legacy_pdf?
+      format = 'gpt_pdf' if format == 'pdf' && use_gpt_form_parser?
 
       CONSTANTIZER.fetch(model).fetch(format)[class_type]
     end
 
-    # Use legacy pdf if the html_pdfs feature flag is off or ?legacy=true in importer url
-    def use_legacy_pdf?
-      legacy = params[:import] ? !!bulk_create_params[:legacy_pdf] : false # Allows backdoor access to the old pdf format whilst feature flag is on
-      !AppConfiguration.instance.settings.dig('html_pdfs', 'enabled') || legacy
+    # Allows gpt_parser to be enabled (currently in alpha) via ?gpt_form_parser=true in importer url
+    def use_gpt_form_parser?
+      params[:import] ? bulk_create_params[:parser] == 'gpt' : false
     end
 
     def serializer
@@ -185,8 +184,9 @@ module BulkImportIdeas
           .in_phase(phase)
           .joins(:idea_import)
           .where(project_id: @project.id, creation_phase_id: creation_phase_id)
-          .includes(%i[project idea_import author ideas_phases phases topics idea_images])
+          .includes(%i[project idea_import author ideas_phases phases input_topics idea_images])
           .includes([idea_import: :file])
+          .order(:created_at)
       end
     end
   end

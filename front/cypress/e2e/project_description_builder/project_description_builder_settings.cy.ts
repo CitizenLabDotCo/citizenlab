@@ -55,9 +55,7 @@ describe('Settings panel options', () => {
   });
 
   it('handles close button click correctly', () => {
-    cy.visit(
-      `/admin/project-description-builder/projects/${projectId}/description`
-    );
+    cy.visit(`/admin/description-builder/projects/${projectId}/description`);
     cy.get('#e2e-draggable-text').dragAndDrop('#e2e-content-builder-frame', {
       position: 'inside',
     });

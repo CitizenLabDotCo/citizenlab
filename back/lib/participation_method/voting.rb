@@ -9,6 +9,10 @@ module ParticipationMethod
       'voting'
     end
 
+    def phase_insights_class
+      Insights::VotingPhaseInsightsService
+    end
+
     def allowed_ideas_orders
       %w[random]
     end
@@ -48,6 +52,14 @@ module ParticipationMethod
 
     def voting_method
       Factory.instance.voting_method_for(phase)
+    end
+
+    def supports_inputs_without_author?
+      false
+    end
+
+    def supports_permitted_by_everyone?
+      false
     end
   end
 end

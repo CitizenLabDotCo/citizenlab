@@ -33,8 +33,8 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
     let!(:_follower3) { create(:follower, followable: area, user: @user) }
 
     let!(:project_for_followed_topic) { create(:project) }
-    let!(:topic) { create(:topic) }
-    let!(:_projects_topic) { create(:projects_topic, project: project_for_followed_topic, topic: topic) }
+    let!(:topic) { create(:global_topic) }
+    let!(:_projects_topic) { create(:projects_global_topic, project: project_for_followed_topic, global_topic: topic) }
     let!(:_follower4) { create(:follower, followable: topic, user: @user) }
 
     let!(:_unfollowed_project) { create(:project) }
@@ -44,12 +44,7 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
 
       project_ids = json_response[:data].pluck(:id)
 
-      expect(project_ids).to match_array [
-        followed_project.id,
-        project_with_followed_idea.id,
-        project_for_followed_area.id,
-        project_for_followed_topic.id
-      ]
+      expect(project_ids).to contain_exactly(followed_project.id, project_with_followed_idea.id, project_for_followed_area.id, project_for_followed_topic.id)
     end
 
     example 'Returns an empty list if the user is not signed in', document: false do
@@ -77,6 +72,17 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       included_phase_ids = json_response[:included].select { |d| d[:type] == 'phase' }.pluck(:id)
 
       expect(current_phase_ids).to match included_phase_ids
+    end
+
+    example 'Does not include unlisted projects' do
+      unlisted_project = create(:project, listed: false)
+      create(:follower, followable: unlisted_project, user: @user)
+
+      do_request
+      expect(status).to eq(200)
+
+      project_ids = json_response[:data].pluck(:id)
+      expect(project_ids).not_to include(unlisted_project.id)
     end
 
     context 'when admin' do
@@ -241,7 +247,7 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
 
         project_ids = json_response[:data].pluck(:id)
 
-        expect(project_ids).to match_array [finished_project1.id, unfinished_project2.id]
+        expect(project_ids).to contain_exactly(finished_project1.id, unfinished_project2.id)
       end
 
       example 'Excludes projects that are not published' do
@@ -253,7 +259,15 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
 
         project_ids = json_response[:data].pluck(:id)
 
-        expect(project_ids).to match_array [finished_project1.id, unfinished_project2.id]
+        expect(project_ids).to contain_exactly(finished_project1.id, unfinished_project2.id)
+      end
+
+      example 'Does not include unlisted projects' do
+        create(:project_with_two_past_ideation_phases, listed: false)
+        do_request filter_by: 'finished'
+        expect(status).to eq 200
+        project_ids = json_response[:data].pluck(:id)
+        expect(project_ids).to contain_exactly(finished_project1.id, unfinished_project2.id)
       end
     end
 
@@ -304,7 +318,7 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
         expect(status).to eq 200
 
         project_ids = json_response[:data].pluck(:id)
-        expect(project_ids).to match_array [archived_project.id, finished_project1.id, unfinished_project2.id]
+        expect(project_ids).to contain_exactly(archived_project.id, finished_project1.id, unfinished_project2.id)
       end
 
       example 'Includes correct ended_days_ago attribute value', document: false do
@@ -359,7 +373,7 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       expect(Project.count).to eq 3
 
       project_ids = json_response[:data].pluck(:id)
-      expect(project_ids).to match_array [project_with_areas.id, project_for_all_areas.id]
+      expect(project_ids).to contain_exactly(project_with_areas.id, project_for_all_areas.id)
     end
 
     example_request 'Returns projects for followed areas & for all areas when areas param is blank', document: false do
@@ -368,7 +382,7 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       do_request
       expect(status).to eq 200
 
-      expect(json_response[:data].pluck(:id)).to match_array [project_for_all_areas.id, project_with_areas.id]
+      expect(json_response[:data].pluck(:id)).to contain_exactly(project_for_all_areas.id, project_with_areas.id)
     end
   end
 
@@ -379,11 +393,11 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       parameter :topics, 'Array of topic IDs', required: false
     end
 
-    let!(:topic1) { create(:topic) }
-    let!(:topic2) { create(:topic) }
+    let!(:topic1) { create(:global_topic) }
+    let!(:topic2) { create(:global_topic) }
     let!(:project_with_topics) { create(:project) }
-    let!(:_projects_topic1) { create(:projects_topic, project: project_with_topics, topic: topic1) }
-    let!(:_projects_topic2) { create(:projects_topic, project: project_with_topics, topic: topic2) }
+    let!(:_projects_topic1) { create(:projects_global_topic, project: project_with_topics, global_topic: topic1) }
+    let!(:_projects_topic2) { create(:projects_global_topic, project: project_with_topics, global_topic: topic2) }
 
     let!(:_project_without_topic) { create(:project) }
 
@@ -394,16 +408,16 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       expect(Project.count).to eq 2
 
       project_ids = json_response[:data].pluck(:id)
-      expect(project_ids).to match_array [project_with_topics.id]
+      expect(project_ids).to contain_exactly(project_with_topics.id)
     end
 
     example 'Orders projects by created_at DESC', document: false do
       project2 = create(:project)
       project3 = create(:project)
       project4 = create(:project)
-      create(:projects_topic, project: project2, topic: topic1)
-      create(:projects_topic, project: project3, topic: topic1)
-      create(:projects_topic, project: project4, topic: topic1)
+      create(:projects_global_topic, project: project2, global_topic: topic1)
+      create(:projects_global_topic, project: project3, global_topic: topic1)
+      create(:projects_global_topic, project: project4, global_topic: topic1)
 
       project_with_topics.update!(created_at: 4.days.ago)
       project2.update!(created_at: 1.day.ago)
@@ -422,7 +436,7 @@ resource 'ProjectsMini' do # == Projects, but labeled as ProjectsMini, to help d
       expect(status).to eq 200
 
       project_ids = json_response[:data].pluck(:id)
-      expect(project_ids).to match_array [project_with_topics.id]
+      expect(project_ids).to contain_exactly(project_with_topics.id)
     end
 
     example_request 'Returns an empty list when topics parameter is nil', document: false do

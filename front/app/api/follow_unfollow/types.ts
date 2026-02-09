@@ -36,14 +36,14 @@ export type FollowableType =
   | 'projects'
   | 'project_folders'
   | 'ideas'
-  | 'topics'
+  | 'global_topics'
   | 'areas';
 
 export type FollowableObject =
   | 'Idea'
   | 'ProjectFolders::Folder'
   | 'Project'
-  | 'Topic'
+  | 'GlobalTopic'
   | 'Area';
 
 export type FollowerAdd = {

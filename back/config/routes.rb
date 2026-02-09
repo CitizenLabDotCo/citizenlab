@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   mount Seo::Engine => '', as: 'seo'
   mount Surveys::Engine => '', as: 'surveys'
   mount Volunteering::Engine => '', as: 'volunteering'
+  mount Webhooks::Engine => '', as: 'webhooks'
 
   namespace :web_api, defaults: { format: :json } do
     namespace :v1 do
@@ -27,8 +28,8 @@ Rails.application.routes.draw do
         # We named the param :permission_action, bc :action is already taken (controller action).
         resources :permissions, param: :permission_action do
           get 'requirements', on: :member
-          get 'schema', on: :member
           get 'custom_fields', on: :member
+          get 'custom_field_options', on: :member
           get 'access_denied_explanation', on: :member
           patch 'reset', on: :member
           resources :permissions_custom_fields, shallow: true do
@@ -69,7 +70,6 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
         get :as_markers, on: :collection, action: 'index_idea_markers'
         get :filter_counts, on: :collection
-        get :json_forms_schema, on: :member
         get 'draft/:phase_id', on: :collection, to: 'ideas#draft_by_phase'
 
         resources :official_feedback, shallow: true
@@ -88,6 +88,7 @@ Rails.application.routes.draw do
         post :similar_ideas, on: :collection
         resources :authoring_assistance_responses, only: %i[create]
         get :as_xlsx, on: :member, action: 'show_xlsx'
+        resources :exposures, controller: 'idea_exposures', only: %i[create]
       end
 
       resources :background_jobs, only: %i[index]
@@ -105,21 +106,32 @@ Rails.application.routes.draw do
 
       # auth
       post 'user_token' => 'user_token#create'
+      post 'user_token/unconfirmed' => 'user_token#user_token_unconfirmed'
 
       resources :users, only: %i[index create update destroy] do
-        get :me, on: :collection
-        get :seats, on: :collection
-        get :as_xlsx, on: :collection, action: 'index_xlsx'
-        patch :block, :unblock, on: :member
-        post 'reset_password_email' => 'reset_password#reset_password_email', on: :collection
-        post 'reset_password' => 'reset_password#reset_password', on: :collection
-        post 'update_password', on: :collection
-        get 'by_slug/:slug', on: :collection, to: 'users#by_slug'
-        get 'by_invite/:token', on: :collection, to: 'users#by_invite'
-        get 'ideas_count', on: :member
-        get 'comments_count', on: :member
-        get 'blocked_count', on: :collection
-        get 'check/:email', on: :collection, to: 'users#check', constraints: { email: /.*/ }
+        collection do
+          get :me
+          get :seats
+          get :as_xlsx, action: 'index_xlsx'
+
+          post 'reset_password_email' => 'reset_password#reset_password_email'
+          post 'reset_password' => 'reset_password#reset_password'
+          post 'update_password'
+          post 'check'
+          patch 'update_email_unconfirmed'
+
+          get 'by_slug/:slug', to: 'users#by_slug'
+          get 'by_invite/:token', to: 'users#by_invite'
+          get 'blocked_count'
+        end
+
+        member do
+          patch :block, :unblock
+          get 'ideas_count'
+          get 'comments_count'
+          get 'participation_stats'
+        end
+
         scope module: 'verification' do
           get 'me/locked_attributes', on: :collection, to: 'locked_attributes#index'
         end
@@ -131,17 +143,28 @@ Rails.application.routes.draw do
       get 'users/:id', to: 'users#show', constraints: { id: /\b(?!custom_fields|me)\b\S+/ }
 
       scope path: 'user' do
-        resource :confirmation, path: :confirm, only: %i[create]
-        resource :resend_code, only: %i[create]
+        post 'request_code_unauthenticated', to: 'request_codes#request_code_unauthenticated'
+        post 'request_code_authenticated', to: 'request_codes#request_code_authenticated'
+        post 'request_code_email_change', to: 'request_codes#request_code_email_change'
+
+        post 'confirm_code_unauthenticated', to: 'confirmations#confirm_code_unauthenticated'
+        post 'confirm_code_authenticated', to: 'confirmations#confirm_code_authenticated'
+        post 'confirm_code_email_change', to: 'confirmations#confirm_code_email_change'
       end
 
-      resources :topics do
+      resources :global_topics do
         patch 'reorder', on: :member
 
-        resources :followers, only: [:create], defaults: { followable: 'Topic' }
+        resources :followers, only: [:create], defaults: { followable: 'GlobalTopic' }
+      end
+
+      resources :default_input_topics do
+        patch 'move', on: :member
       end
 
       resources :areas do
+        patch 'reorder', on: :member
+
         resources :followers, only: [:create], defaults: { followable: 'Area' }
         collection do
           get 'with_visible_projects_counts', to: 'areas#with_visible_projects_counts'
@@ -151,6 +174,11 @@ Rails.application.routes.draw do
       resources :followers, except: %i[create update]
 
       resource :app_configuration, only: %i[show update]
+
+      # Constraint allows dots in email (prevents Rails treating top level domain as format)
+      resources :email_bans, only: %i[show destroy], param: :email, constraints: { email: %r{[^/]+} } do
+        get :count, on: :collection
+      end
 
       resources :static_pages do
         concerns :file_attachable, attachable_type: 'StaticPage'
@@ -190,16 +218,21 @@ Rails.application.routes.draw do
           get 'submission_count'
           get 'progress', action: 'show_progress'
           delete 'inputs', action: 'delete_inputs'
+          namespace :idea_feed do
+            resources :ideas, only: [:index]
+          end
         end
 
         resources :inputs, only: [], controller: 'ideas' do
           post 'copy', on: :collection
         end
 
-        resources :files, defaults: { container_type: 'Phase' }, shallow: false
-        resources :custom_fields, controller: 'phase_custom_fields', only: %i[] do
-          get 'json_forms_schema', on: :collection
+        resource :insights, only: [], controller: 'insights/phase_insights' do
+          get '', action: 'show_insights'
+          get :voting, action: 'votes_with_grouping'
         end
+
+        resources :files, defaults: { container_type: 'Phase' }, shallow: false
         get 'custom_form', on: :member, controller: 'custom_forms', action: 'show', defaults: { container_type: 'Phase' }
         patch 'custom_form', on: :member, controller: 'custom_forms', action: 'update', defaults: { container_type: 'Phase' }
       end
@@ -208,14 +241,13 @@ Rails.application.routes.draw do
         concerns :file_attachable, attachable_type: 'Project'
 
         resources :events, only: %i[new create]
-        resources :projects_allowed_input_topics, only: [:index]
+        resources :input_topics, shallow: true do
+          patch 'move', on: :member
+        end
         resources :phases, only: %i[index new create]
         resources :images, defaults: { container_type: 'Project' }
         resources :files, defaults: { container_type: 'Project' }
         resources :groups_projects, shallow: true, except: [:update]
-        resources :custom_fields, controller: 'project_custom_fields', only: %i[] do
-          get 'json_forms_schema', on: :collection
-        end
         resources :moderators, controller: 'project_moderators', except: [:update] do
           get :users_search, on: :collection
         end
@@ -247,10 +279,6 @@ Rails.application.routes.draw do
           get 'custom_form', controller: 'custom_forms', action: 'show', defaults: { container_type: 'Project' }
           patch 'custom_form', controller: 'custom_forms', action: 'update', defaults: { container_type: 'Project' }
         end
-      end
-
-      resources :projects_allowed_input_topics, only: %i[show create destroy] do
-        patch 'reorder', on: :member
       end
 
       resources :admin_publications, only: %i[index show] do
@@ -354,7 +382,7 @@ Rails.application.routes.draw do
           .all_methods
           .select { |vm| vm.verification_method_type == :manual_sync }
           .each do |vm|
-          post "#{vm.name}/verification", to: 'verifications#create', on: :collection, :defaults => { method_name: vm.name }
+          post "#{vm.name}/verification", to: 'verifications#create', on: :collection, defaults: { method_name: vm.name }
         end
       end
 
@@ -374,6 +402,7 @@ Rails.application.routes.draw do
       resources :files, controller: 'files/files' do
         get 'preview', on: :member, to: 'files/previews#show'
         resources :attachments, controller: 'files/file_attachments', only: %i[index]
+        get 'transcript', on: :member, to: 'files/transcripts#show'
       end
 
       resources :file_attachments, controller: 'files/file_attachments'

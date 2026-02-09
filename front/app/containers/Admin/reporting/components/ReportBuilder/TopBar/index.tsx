@@ -7,7 +7,7 @@ import {
   TooltipContentWrapper,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useEditor } from '@craftjs/core';
+import { useEditor, SerializedNodes } from '@craftjs/core';
 import { RouteType } from 'routes';
 import { SupportedLocale } from 'typings';
 
@@ -20,7 +20,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 
-import { CONTENT_BUILDER_Z_INDEX } from 'components/admin/ContentBuilder/constants';
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import LocaleSelect from 'components/admin/ContentBuilder/TopBar/LocaleSelect';
@@ -50,7 +49,7 @@ type ContentBuilderTopBarProps = {
   saved: boolean;
   view: View;
   setView: (view: View) => void;
-  setSaved: () => void;
+  setSaved: (savedNodes: SerializedNodes) => void;
   setSelectedLocale: React.Dispatch<React.SetStateAction<SupportedLocale>>;
 };
 
@@ -119,15 +118,16 @@ const ContentBuilderTopBar = ({
   };
 
   const handleSave = () => {
+    const nodesToSave = query.getSerializedNodes();
     updateReportLayout(
       {
         id: reportId,
-        craftjs_json: query.getSerializedNodes(),
+        craftjs_json: nodesToSave,
         projectId,
       },
       {
         onSuccess: () => {
-          setSaved();
+          setSaved(nodesToSave);
         },
       }
     );
@@ -201,7 +201,7 @@ const ContentBuilderTopBar = ({
         },
         {
           onSuccess: () => {
-            setSaved();
+            setSaved(nodes);
           },
         }
       );
@@ -254,7 +254,6 @@ const ContentBuilderTopBar = ({
           <Tooltip
             placement="bottom"
             disabled={!disablePrint}
-            zIndex={CONTENT_BUILDER_Z_INDEX.tooltip}
             content={
               <TooltipContentWrapper tippytheme="light">
                 {formatMessage(messages.cannotPrint)}

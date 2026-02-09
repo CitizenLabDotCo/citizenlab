@@ -49,6 +49,9 @@ const AdminProjectPhaseIndex = ({
     report_builder_enabled: useFeatureFlag({
       name: 'report_builder',
     }),
+    phase_insights_enabled: useFeatureFlag({
+      name: 'phase_insights',
+    }),
   };
 
   const isNewPhaseLink = pathname.endsWith(
@@ -62,7 +65,7 @@ const AdminProjectPhaseIndex = ({
     : [];
 
   return (
-    <>
+    <Box display="flex" flexDirection="column" flexGrow={1}>
       <Box mt="16px" px="24px">
         <Timeline
           projectId={project.id}
@@ -71,16 +74,25 @@ const AdminProjectPhaseIndex = ({
           isBackoffice
         />
       </Box>
-      <Box p="8px 24px 24px 24px">
+      <Box
+        p="8px 24px 24px 24px"
+        display="flex"
+        flexDirection="column"
+        flexGrow={1}
+      >
         {!isNewPhaseLink && selectedPhase && (
           <PhaseHeader phase={selectedPhase} tabs={tabs} />
         )}
 
-        <Box p={`${defaultAdminCardPadding}px`} background={colors.white}>
+        <Box
+          p={`${defaultAdminCardPadding}px`}
+          background={colors.white}
+          flexGrow={1}
+        >
           <RouterOutlet />
         </Box>
       </Box>
-    </>
+    </Box>
   );
 };
 
@@ -100,6 +112,7 @@ export default () => {
     undefined
   );
   const { pathname } = useLocation();
+  const phaseInsightsEnabled = useFeatureFlag({ name: 'phase_insights' });
 
   useEffect(() => {
     if (!phases) return;
@@ -122,14 +135,22 @@ export default () => {
     if (phases.data.length === 0 && !isLoadingPhases && !isFetchingPhases) {
       clHistory.replace(`/admin/projects/${projectId}/phases/new`);
     } else if (phaseShown && pathname.endsWith('phases/setup')) {
-      const redirectTab = getTimelineTab(phaseShown);
+      const redirectTab = getTimelineTab(phaseShown, phaseInsightsEnabled);
       clHistory.replace(
         `/admin/projects/${projectId}/phases/${phaseShown.id}/${redirectTab}`
       );
     }
 
     setSelectedPhase(phaseShown);
-  }, [phaseId, phases, projectId, pathname, isLoadingPhases, isFetchingPhases]);
+  }, [
+    phaseId,
+    phases,
+    projectId,
+    pathname,
+    isLoadingPhases,
+    isFetchingPhases,
+    phaseInsightsEnabled,
+  ]);
 
   if (isLoadingProject || isLoadingPhases) {
     return (

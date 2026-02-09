@@ -8,7 +8,6 @@ class SideFxPhaseService
   def before_create(phase, user); end
 
   def after_create(phase, user)
-    phase.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(phase.description_multiloc, field: :description_multiloc, imageable: phase))
     LogActivityJob.perform_later(
       phase,
       'created',
@@ -29,8 +28,6 @@ class SideFxPhaseService
   end
 
   def before_update(phase, _user)
-    phase.description_multiloc = TextImageService.new.swap_data_images_multiloc(phase.description_multiloc, field: :description_multiloc, imageable: phase)
-
     if phase.pmethod.allowed_ideas_orders.exclude? phase.ideas_order
       phase.ideas_order = phase.pmethod.allowed_ideas_orders.first
     end

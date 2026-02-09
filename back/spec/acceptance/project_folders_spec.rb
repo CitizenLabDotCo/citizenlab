@@ -10,7 +10,7 @@ resource 'ProjectFolder' do
     header 'Content-Type', 'application/json'
 
     @projects = %w[published published draft published archived archived published]
-      .map { |ps|  create(:project, admin_publication_attributes: { publication_status: ps }) }
+      .map { |ps| create(:project, admin_publication_attributes: { publication_status: ps }) }
     @folders = [
       create(:project_folder, projects: @projects.take(3)),
       create(:project_folder, projects: [@projects.last])
@@ -30,7 +30,7 @@ resource 'ProjectFolder' do
       expect(json_response[:data].size).to eq 2
     end
 
-    example 'List only folders with specified IDs', document: true do
+    example 'List only folders with specified IDs' do
       filter_ids = [@folders.first.id]
 
       do_request(filter_ids: filter_ids)
@@ -178,6 +178,14 @@ resource 'ProjectFolder' do
         # New folders are added to the top
         expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
       end
+
+      context 'when the folder description contains images' do
+        let(:description_multiloc) { { 'en' => html_with_base64_image } }
+
+        it_behaves_like 'creates record with text images',
+          model_class: ProjectFolders::Folder,
+          field: :description_multiloc
+      end
     end
 
     patch 'web_api/v1/project_folders/:id' do
@@ -209,6 +217,14 @@ resource 'ProjectFolder' do
         expect(json_response.dig(:data, :attributes, :title_multiloc).stringify_keys).to match title_multiloc
         expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
         expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'archived'
+      end
+
+      context 'when description_multiloc contains images' do
+        let(:description_multiloc) { { 'en' => html_with_base64_image } }
+
+        it_behaves_like 'updates record with text images',
+          model_class: ProjectFolders::Folder,
+          field: :description_multiloc
       end
 
       describe do
@@ -386,7 +402,7 @@ resource 'ProjectFolder' do
 
           expect(response_status).to eq 200
           expect(layout.reload.craftjs_json['nUOW77iNcW']['props']['adminPublicationIds'])
-            .to match_array [project_folder2.admin_publication.id, project3.admin_publication.id]
+            .to contain_exactly(project_folder2.admin_publication.id, project3.admin_publication.id)
         end
       end
     end

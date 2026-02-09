@@ -9,8 +9,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { Action } from 'api/permissions/types';
-import useAddPermissionsCustomField from 'api/permissions_custom_fields/useAddPermissionsCustomField';
-import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
+import useAddPermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useAddPermissionsPhaseCustomField';
+import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 import {
   PermittedBy,
   UserFieldsInFormFrontendDescriptor,
@@ -45,7 +45,7 @@ const Fields = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const [showSelectionModal, setShowSelectionModal] = useState(false);
-  const { data: permissionFields } = usePermissionsCustomFields({
+  const { data: permissionFields } = usePermissionsPhaseCustomFields({
     phaseId,
     action,
   });
@@ -62,7 +62,7 @@ const Fields = ({
     }) || globalCustomFieldsSetting === false;
 
   const { mutate: addPermissionsCustomField, isLoading } =
-    useAddPermissionsCustomField({
+    useAddPermissionsPhaseCustomField({
       phaseId,
       action,
     });

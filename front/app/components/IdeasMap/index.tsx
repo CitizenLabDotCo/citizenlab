@@ -127,6 +127,7 @@ const IdeasMap = memo<Props>(
     const { data: authUser } = useAuthUser();
     const [searchParams] = useSearchParams();
     const isMobileOrSmaller = useBreakpoint('phone');
+    const isTabletOrSmaller = useBreakpoint('tablet');
 
     // Create div elements to use for inserting React components into Esri map popup
     // Docs: https://developers.arcgis.com/javascript/latest/custom-ui/#introduction
@@ -164,23 +165,23 @@ const IdeasMap = memo<Props>(
     // Map icon for ideas
     const ideaIcon = useMemo(() => {
       return getShapeSymbol({
-        shape: 'circle',
+        shape: isTabletOrSmaller ? 'triangle' : 'circle',
         color: theme.colors.tenantPrimary,
         outlineColor: colors.white,
         outlineWidth: 2,
         sizeInPx: 18,
       });
-    }, [theme.colors.tenantPrimary]);
+    }, [theme.colors.tenantPrimary, isTabletOrSmaller]);
 
     const ideaIconSecondary = useMemo(() => {
       return getShapeSymbol({
-        shape: 'circle',
+        shape: isTabletOrSmaller ? 'triangle' : 'circle',
         color: theme.colors.tenantSecondary,
         outlineColor: colors.white,
         outlineWidth: 2,
         sizeInPx: 18,
       });
-    }, [theme.colors.tenantSecondary]);
+    }, [theme.colors.tenantSecondary, isTabletOrSmaller]);
 
     // Existing handling for dynamic container width
     const { windowWidth } = useWindowSize();
@@ -419,12 +420,11 @@ const IdeasMap = memo<Props>(
                           geometry,
                           symbol: ideaIconSecondary,
                         });
-                        mapView.graphics.removeAll();
 
                         // Add the graphic to the map for a few seconds to highlight the clicked point
                         mapView.graphics.add(graphic);
                         setTimeout(() => {
-                          mapView.graphics.removeAll();
+                          mapView.graphics.remove(graphic);
                         }, 2000);
                       }
                     });
@@ -537,6 +537,8 @@ const IdeasMap = memo<Props>(
               onHover={onMapHover}
               onClick={onMapClick}
               id="e2e-ideas-map"
+              // Only show user location on mobile screens
+              showUserLocation={isTabletOrSmaller}
             />
             <LayerHoverLabel
               layer={mapConfig?.data.attributes.layers.find(

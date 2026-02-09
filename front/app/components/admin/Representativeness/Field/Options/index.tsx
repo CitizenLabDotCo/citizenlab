@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Box, Text, Toggle } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
@@ -8,6 +8,7 @@ import { Bins } from 'api/reference_distribution/types';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
 
 import useLocalize from 'hooks/useLocalize';
+import { useSeeMore } from 'hooks/useSeeMore';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -44,7 +45,6 @@ const Options = injectIntl(
     onEditBins,
     intl: { formatMessage },
   }: Props & WrappedComponentProps) => {
-    const [seeMore, setSeeMore] = useState(false);
     const { data: userCustomField } = useUserCustomField(userCustomFieldId);
     const { data: customFieldOptions } =
       useCustomFieldOptions(userCustomFieldId);
@@ -59,12 +59,9 @@ const Options = injectIntl(
         ? formatBinOptions(bins, formatMessage(binMessages.andOver))
         : formatCustomFieldOptions(customFieldOptions.data, localize);
 
-    const visibleOptions = options.slice(
-      0,
-      seeMore ? customFieldOptions.data.length : 12
-    );
+    const { visibleItems, showSeeMore, seeMore, toggleSeeMore, hiddenCount } =
+      useSeeMore(options);
 
-    const showSeeMoreButton = customFieldOptions.data.length > 12;
     const showEditAgeGroupsButton =
       userCustomField.data.attributes.key === 'birthyear' && bins;
 
@@ -77,12 +74,11 @@ const Options = injectIntl(
       onUpdatePopulation(optionId, newPopulation);
     };
 
-    const toggleSeeMore = () => setSeeMore(!seeMore);
     const percentages = getPercentages(formValues);
 
     return (
       <>
-        {visibleOptions.map(({ id, label }) => {
+        {visibleItems.map(({ id, label }) => {
           const enabled = id in formValues;
           const population = formValues[id];
 
@@ -116,7 +112,7 @@ const Options = injectIntl(
           );
         })}
 
-        {showSeeMoreButton && (
+        {showSeeMore && (
           <Box width="100%" display="flex" mt="16px" mb="12px">
             <ButtonWithLink
               buttonStyle="secondary-outlined"
@@ -124,7 +120,7 @@ const Options = injectIntl(
                 seeMore
                   ? formatMessage(messages.seeLess)
                   : formatMessage(messages.seeMore, {
-                      numberOfHiddenItems: options.length - 12,
+                      numberOfHiddenItems: hiddenCount,
                     })
               }
               width="auto"

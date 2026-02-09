@@ -13,7 +13,7 @@ module CarrierwaveErrorDetailsTransformation
     # > @file.errors
     # => #<ActiveModel::Errors [
     #  #<ActiveModel::Error attribute=file, type=carrierwave_integrity_error, options={:message=>"max_size_error"}>,
-    #  #<ActiveModel::Error attribute=file, type=blank, options={:unless=>#<Proc:0x0000558d8a77ac00 /cl2_back/app/models/project_file.rb:30>}>
+    #  #<ActiveModel::Error attribute=file, type=blank, options={:unless=>#<Proc:0x0000558d8a77ac00 /citizenlab/back/app/models/project_file.rb:30>}>
     # ]>
     #
     # Taken from https://github.com/rails/rails/blob/d86b098a8a1/activemodel/lib/active_model/errors.rb#L276

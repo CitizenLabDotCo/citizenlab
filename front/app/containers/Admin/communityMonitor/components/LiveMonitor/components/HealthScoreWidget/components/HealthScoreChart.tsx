@@ -4,6 +4,7 @@ import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import LineChart from 'components/admin/Graphs/LineChart';
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -15,7 +16,11 @@ type Props = {
   sentimentScores: QuarterlyScores | null;
 };
 
-const HealthScoreChart = ({ sentimentScores }: Props) => {
+const HealthScoreChart = ({
+  sentimentScores,
+  ariaLabel,
+  ariaDescribedBy,
+}: Props & AccessibilityProps) => {
   const [search] = useSearchParams();
   const { formatMessage } = useIntl();
   const isMobileOrSmaller = useBreakpoint('phone');
@@ -101,6 +106,8 @@ const HealthScoreChart = ({ sentimentScores }: Props) => {
             tickLine: true,
           }}
           innerRef={undefined}
+          ariaLabel={ariaLabel}
+          ariaDescribedBy={ariaDescribedBy}
         />
       </Box>
     </Box>

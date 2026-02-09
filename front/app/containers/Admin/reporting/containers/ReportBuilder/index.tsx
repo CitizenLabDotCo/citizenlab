@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
+import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
 import { useLocation, useParams, useSearchParams } from 'react-router-dom';
 import { SupportedLocale } from 'typings';
@@ -71,9 +72,25 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
 
   const [saved, setSaved] = useState(true);
 
-  const handleSetSaved = () => {
+  // Use ref to track last saved nodes to avoid stale closure issues
+  const lastSavedNodesRef = useRef<SerializedNodes>(
+    reportLayout.attributes.craftjs_json
+  );
+
+  const handleSetSaved = useCallback((savedNodes: SerializedNodes) => {
+    lastSavedNodesRef.current = savedNodes;
     setSaved(true);
-  };
+  }, []);
+
+  const handleNodesChange = useCallback((query) => {
+    const currentNodes = query.getSerializedNodes();
+    const isSaved = areCraftjsObjectsEqual(
+      currentNodes,
+      lastSavedNodesRef.current
+    );
+    // Use setTimeout to defer state update outside render cycle
+    setTimeout(() => setSaved(isSaved), 0);
+  }, []);
 
   return (
     <ReportContextProvider width={view} reportId={reportId} phaseId={phaseId}>
@@ -81,31 +98,7 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
         <Editor
           isPreview={false}
           // onNodesChange is called twice on initial load.
-          onNodesChange={(query) => {
-            // This comparison is still not perfect.
-            // E.g., if you add a node with rich text editor, save the report,
-            // and then modify the default text and revert the change,
-            // areCraftjsObjectsEqual may still return false, because the default text may not have
-            // a wrapping <p> tag, which is added as soon as you start typing.
-            // But it's good enough for now.
-            // Also, see reactions_by_time_widget.cy.ts#getReportLayout
-            // for the current pitfalls of the `saved` state.
-            //
-            // Ideally, we should detected this `saved` state in only one way.
-            // Either always via areCraftjsObjectsEqual (probably,
-            // storing `currentNodes` state instead or `saved` state)
-            // or always via setSaved(true) (and then without detecting
-            // when nodes were changed and then changed back w/o saving).
-            // Also, we could move the states from ContentBuilderTopBar
-            // here to manage the entire state in one place and get rid of
-            // `setInterval`.
-            setSaved(
-              areCraftjsObjectsEqual(
-                query.getSerializedNodes(),
-                reportLayout.attributes.craftjs_json
-              )
-            );
-          }}
+          onNodesChange={handleNodesChange}
         >
           <TopBar
             hasPendingState={imageUploading}

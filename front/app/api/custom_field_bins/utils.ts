@@ -1,7 +1,7 @@
 import { ICustomFieldBins } from './types';
 
 export const deduplicateBins = (bins: ICustomFieldBins): ICustomFieldBins => {
-  const binType = bins.data[0].attributes.type;
+  const binType = bins.data[0]?.attributes.type;
 
   // Only implementing for age bins for now
   if (binType !== 'CustomFieldBins::AgeBin') {

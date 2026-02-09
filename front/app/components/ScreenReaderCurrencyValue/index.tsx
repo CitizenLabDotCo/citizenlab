@@ -9,9 +9,10 @@ import messages from './messages';
 
 interface Props {
   amount: number;
+  id?: string;
 }
 
-const ScreenReaderCurrencyValue = ({ amount }: Props) => {
+const ScreenReaderCurrencyValue = ({ amount, id }: Props) => {
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
 
@@ -30,7 +31,7 @@ const ScreenReaderCurrencyValue = ({ amount }: Props) => {
   const label = `${formatMessage(messages.amount)}: ${amount},
     ${formatMessage(messages.currency)}: ${formatMessage(messages[currency])}`;
 
-  return <ScreenReaderOnly>({label})</ScreenReaderOnly>;
+  return <ScreenReaderOnly id={id}>({label})</ScreenReaderOnly>;
 };
 
 export default ScreenReaderCurrencyValue;

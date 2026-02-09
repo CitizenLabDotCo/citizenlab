@@ -1,54 +1,27 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
-
-import useProjectById from 'api/projects/useProjectById';
-import useFormResults from 'api/survey_results/useSurveyResults';
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
 import FormResultsPage from './FormResultsPage';
 import FormResultsQuestion from './FormResultsQuestion';
 import messages from './messages';
+import useSurveyResultsData from './useSurveyResultsData';
 
 type Props = {
   projectId?: string;
   phaseId?: string;
 };
 
-const FormResults = (props: Props) => {
-  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams() as {
-    projectId: string;
-    phaseId: string;
-  };
-
-  const projectId = props.projectId || projectIdParam;
-  const phaseId = props.phaseId || phaseIdParam;
-
+const FormResults = ({ projectId, phaseId }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: project } = useProjectById(projectId);
-  const [filterLogicIds, setFilterLogicIds] = useState<string[]>(
-    [] // Array of page or option ids to pass to the API
-  );
-  const { data: formResults, isLoading: isLoadingResults } = useFormResults({
-    phaseId,
-    filterLogicIds,
-  });
+  const { results, totalSubmissions, logicConfig, isReady } =
+    useSurveyResultsData({ projectId, phaseId });
 
-  if (!formResults || !project) {
+  if (!isReady) {
     return null;
   }
-
-  const toggleLogicIds = (logicId: string) => {
-    if (filterLogicIds.includes(logicId)) {
-      setFilterLogicIds(filterLogicIds.filter((id) => id !== logicId));
-    } else {
-      setFilterLogicIds([...filterLogicIds, logicId]);
-    }
-  };
-
-  const { totalSubmissions, results } = formResults.data.attributes;
 
   const surveyResponseMessage =
     totalSubmissions > 0
@@ -57,19 +30,14 @@ const FormResults = (props: Props) => {
         })
       : formatMessage(messages.noSurveyResponses);
 
-  const logicConfig = {
-    toggleLogicIds,
-    filterLogicIds,
-    isLoading: isLoadingResults,
-  };
-
   return (
     <Box width="100%">
-      <Box width="100%">
-        <Text variant="bodyM" color="textSecondary">
-          {surveyResponseMessage}
-        </Text>
-      </Box>
+      <Title variant="h3" as="h2" color="textPrimary" m="0px" mb="16px">
+        {formatMessage(messages.questions)}
+      </Title>
+      <Text variant="bodyM" color="textSecondary">
+        {surveyResponseMessage}
+      </Text>
       <Box mt="24px">
         {totalSubmissions > 0 &&
           results.map((result, index) => {
@@ -89,6 +57,7 @@ const FormResults = (props: Props) => {
                   result={result}
                   totalSubmissions={totalSubmissions}
                   logicConfig={logicConfig}
+                  isPdfExport={false}
                 />
               );
             }

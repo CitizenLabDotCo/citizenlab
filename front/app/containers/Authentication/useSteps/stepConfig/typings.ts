@@ -4,27 +4,21 @@ export type Step =
   | 'success'
   | 'access-denied'
 
-  // old sign in flow
-  | 'sign-in:auth-providers'
-  | 'sign-in:email-password'
+  // email flow
+  | 'email:start'
+  | 'email:policies'
+  | 'email:password'
+  | 'email:sso-policies'
+  | 'email:confirmation'
 
-  // old sign up flow
-  | 'sign-up:auth-providers'
-  | 'sign-up:email-password'
-  | 'sign-up:invite'
-
-  // light flow
-  | 'light-flow:email'
-  | 'light-flow:email-policies'
-  | 'light-flow:sso-policies'
-  | 'light-flow:france-connect-login'
-  | 'light-flow:email-confirmation'
-  | 'light-flow:password'
+  // invite flow
+  | 'invite:email-password'
+  | 'invite:code'
+  | 'invite:taken'
 
   // missing data (if signed in already)
   | 'missing-data:built-in'
   | 'missing-data:email-confirmation'
-  | 'missing-data:change-email'
   | 'missing-data:verification'
   | 'missing-data:custom-fields'
 
@@ -38,10 +32,9 @@ export type Step =
   // sso verification flow
   | 'sso-verification:sso-providers'
   | 'sso-verification:sso-providers-policies'
-  | 'sso-verification:email-password'
 
-  // invite taken flow
-  | 'taken-by-invite';
+  // post-participation flow (sign up after participation)
+  | 'post-participation:email';
 
 export interface BuiltInFieldsUpdate {
   first_name?: string;

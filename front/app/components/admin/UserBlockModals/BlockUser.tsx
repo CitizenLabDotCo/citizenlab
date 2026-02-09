@@ -28,7 +28,6 @@ import messages from './messages';
 import SuccessfulUserBlock from './SuccessfulUserBlock';
 
 type Props = {
-  open: boolean;
   setClose: () => void;
   user: IUserData;
   /**
@@ -43,7 +42,7 @@ type FormValues = {
   reason: string;
 };
 
-const BlockUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
+const BlockUserModal = ({ setClose, user, returnFocusRef }: Props) => {
   const [success, setSuccess] = useState(false);
   const [updatedUser, setUpdatedUser] = useState<IUserData | undefined>();
   const { data: appConfiguration } = useAppConfiguration();
@@ -75,7 +74,6 @@ const BlockUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
         },
       }
     );
-    setClose();
   };
 
   const blockingDuration =
@@ -91,6 +89,7 @@ const BlockUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         date={moment(updatedUser?.attributes.block_end_at).format('LL')}
         resetSuccess={() => setSuccess(false)}
+        setClose={setClose}
         opened={true}
       />
     );
@@ -99,7 +98,7 @@ const BlockUserModal = ({ open, setClose, user, returnFocusRef }: Props) => {
   return (
     <Modal
       close={setClose}
-      opened={open}
+      opened={true}
       header={formatMessage(messages.header)}
       returnFocusRef={returnFocusRef}
     >

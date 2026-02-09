@@ -4,8 +4,7 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 
 import { Localize } from 'hooks/useLocalize';
 
-import messages from 'components/Form/Components/Controls/messages';
-
+import messages from '../../messages';
 import { getLinearScaleLabel } from '../LinearScale/utils';
 
 import Sentiment1Png from './assets/sentiment_1.png';

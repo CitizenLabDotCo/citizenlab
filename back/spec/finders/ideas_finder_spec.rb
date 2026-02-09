@@ -107,14 +107,18 @@ describe IdeasFinder do
     end
   end
 
-  describe '#topics_condition' do
-    let(:topic_ids) { Topic.first(2).pluck(:id) }
-    let(:expected_record_ids) do
-      Idea.includes(:ideas_topics).where(ideas_topics: { topic_id: topic_ids }).distinct.pluck(:id)
-    end
+  describe '#input_topics_condition' do
+    let(:project) { create(:project) }
+    let(:input_topic1) { create(:input_topic, project: project) }
+    let(:input_topic2) { create(:input_topic, project: project) }
+    let!(:idea1) { create(:idea, project: project, input_topics: [input_topic1]) }
+    let!(:idea2) { create(:idea, project: project, input_topics: [input_topic1, input_topic2]) }
+    let!(:idea3) { create(:idea, project: project, input_topics: [input_topic2]) }
+    let(:input_topic_ids) { [input_topic1.id] }
+    let(:expected_record_ids) { [idea1.id, idea2.id] }
 
     before do
-      params[:topics] = topic_ids
+      params[:input_topics] = input_topic_ids
     end
 
     it 'returns the correct records' do

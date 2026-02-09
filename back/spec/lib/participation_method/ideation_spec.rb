@@ -5,7 +5,7 @@ require 'rails_helper'
 RSpec.describe ParticipationMethod::Ideation do
   subject(:participation_method) { described_class.new phase }
 
-  let(:phase) { create(:phase) }
+  let(:phase) { create(:phase, with_permissions: true) }
 
   describe '#method_str' do
     it 'returns ideation' do
@@ -47,6 +47,50 @@ RSpec.describe ParticipationMethod::Ideation do
         expect(input.idea_status).to eq initial_status
       end
     end
+
+    context 'with prescreening_mode' do
+      before_all do
+        SettingsService.new.activate_feature!('prescreening_ideation')
+        SettingsService.new.activate_feature!('flag_inappropriate_content')
+      end
+
+      let!(:prescreening_status) { create(:idea_status_prescreening) }
+      let!(:proposed_status) { create(:idea_status_proposed) }
+      let(:phase) { create(:phase, prescreening_mode: prescreening_mode, with_permissions: true) }
+
+      context 'when prescreening_mode is all' do
+        let(:prescreening_mode) { 'all' }
+
+        it 'sets idea_status to prescreening and publication_status to submitted' do
+          input = build(:idea, idea_status: nil, publication_status: nil)
+          participation_method.assign_defaults input
+          expect(input.idea_status).to eq prescreening_status
+          expect(input.publication_status).to eq 'submitted'
+        end
+      end
+
+      context 'when prescreening_mode is flagged_only' do
+        let(:prescreening_mode) { 'flagged_only' }
+
+        it 'sets idea_status to proposed and publication_status to published' do
+          input = build(:idea, idea_status: nil, publication_status: nil)
+          participation_method.assign_defaults input
+          expect(input.idea_status).to eq(proposed_status)
+          expect(input.publication_status).to eq('published')
+        end
+      end
+
+      context 'when prescreening_mode is nil' do
+        let(:prescreening_mode) { nil }
+
+        it 'sets idea_status to proposed and publication_status to published' do
+          input = build(:idea, idea_status: nil, publication_status: nil)
+          participation_method.assign_defaults input
+          expect(input.idea_status).to eq proposed_status
+          expect(input.publication_status).to eq 'published'
+        end
+      end
+    end
   end
 
   describe '#assign_defaults_for_phase' do
@@ -60,9 +104,9 @@ RSpec.describe ParticipationMethod::Ideation do
     describe 'when prescreening is activated' do
       before { SettingsService.new.activate_feature! 'prescreening' }
 
-      it 'sets prescreening_enabled to false' do
+      it 'does not set prescreening_mode' do
         participation_method.assign_defaults_for_phase
-        expect(phase.prescreening_enabled).to be false
+        expect(phase.prescreening_mode).to be_nil
       end
     end
   end
@@ -228,9 +272,9 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:supports_edits_after_publication?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }
   its(:supports_input_term?) { is_expected.to be true }
-  its(:supports_inputs_without_author?) { is_expected.to be false }
+  its(:supports_inputs_without_author?) { is_expected.to be true }
   its(:allow_posting_again_after) { is_expected.to eq 0.seconds }
-  its(:supports_permitted_by_everyone?) { is_expected.to be false }
+  its(:supports_permitted_by_everyone?) { is_expected.to be true }
   its(:supports_public_visibility?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }
   its(:supports_submission?) { is_expected.to be true }
@@ -241,7 +285,6 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:form_logic_enabled?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be true }
   its(:supports_custom_field_categories?) { is_expected.to be false }
-  its(:user_fields_in_form?) { is_expected.to be false }
   its(:supports_multiple_phase_reports?) { is_expected.to be false }
   its(:add_autoreaction_to_inputs?) { is_expected.to be(true) }
   its(:everyone_tracking_enabled?) { is_expected.to be false }

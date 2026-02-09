@@ -33,6 +33,8 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
   end
 
   def update
+    raise 'Domicile fields must be updated through AreasController' if @option.custom_field.domicile?
+
     @option.assign_attributes permitted_attributes(@option)
     authorize @option
     if @option.save
@@ -47,6 +49,8 @@ class WebApi::V1::CustomFieldOptionsController < ApplicationController
   end
 
   def reorder
+    raise 'Domicile fields must be reordered through AreasController' if @option.custom_field.domicile?
+
     if @option.insert_at(permitted_attributes(@option)[:ordering])
       SideFxCustomFieldOptionService.new.after_update(@option, current_user)
       render json: WebApi::V1::CustomFieldOptionSerializer.new(

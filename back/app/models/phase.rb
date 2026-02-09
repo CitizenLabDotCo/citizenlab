@@ -68,15 +68,19 @@ class Phase < ApplicationRecord
   include DocumentAnnotation::DocumentAnnotationPhase
   include Files::FileAttachable
 
+  PRESCREENING_MODES = %w[flagged_only all].freeze
   PARTICIPATION_METHODS = ParticipationMethod::Base.all_methods.map(&:method_str).freeze
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
-  PRESENTATION_MODES    = %w[card map].freeze
+  PRESENTATION_MODES    = %w[card map feed].freeze
   REACTING_METHODS      = %w[unlimited limited].freeze
   INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition].freeze
   FALLBACK_INPUT_TERM   = 'idea'
-  VOTE_TERMS            = %w[vote point token credit]
+  VOTE_TERMS            = %w[vote point token credit percent]
 
   attribute :reacting_dislike_enabled, :boolean, default: -> { disliking_enabled_default }
+
+  has_many_text_images from: :description_multiloc, as: :text_images
+  accepts_nested_attributes_for :text_images
 
   belongs_to :project
 
@@ -87,8 +91,6 @@ class Phase < ApplicationRecord
   has_many :ideas_phases, dependent: :destroy
   has_many :ideas, through: :ideas_phases
   has_many :reactions, through: :ideas
-  has_many :text_images, as: :imageable, dependent: :destroy
-  accepts_nested_attributes_for :text_images
   has_many :phase_files, -> { order(:ordering) }, dependent: :destroy
   has_many :jobs_trackers, -> { where(context_type: 'Phase') }, class_name: 'Jobs::Tracker', as: :context, dependent: :destroy
   belongs_to :manual_voters_last_updated_by, class_name: 'User', optional: true
@@ -96,8 +98,8 @@ class Phase < ApplicationRecord
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
   before_validation :set_participation_method_defaults, on: :create
+  before_validation :set_participation_method_defaults_on_method_change, on: :update
   before_validation :set_presentation_mode, on: :create
-
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
@@ -105,7 +107,6 @@ class Phase < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :start_at, presence: true
-  validates :prescreening_enabled, inclusion: { in: [true, false] }
   validate :validate_end_at
   validate :validate_previous_blank_end_at
   validate :validate_start_at_before_end_at # Also enforced by the phases_start_before_end check constraint
@@ -118,6 +119,8 @@ class Phase < ApplicationRecord
   validates :survey_popup_frequency, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_nil: true
 
   validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
+  validates :prescreening_mode, inclusion: { in: PRESCREENING_MODES }, allow_nil: true
+  validate :validate_prescreening_mode, if: :prescreening_mode_changed?
 
   with_options if: ->(phase) { phase.pmethod.supports_public_visibility? } do
     validates :presentation_mode, inclusion: { in: PRESENTATION_MODES }
@@ -172,6 +175,7 @@ class Phase < ApplicationRecord
     validates :voting_method, presence: true, inclusion: { in: VOTING_METHODS }
     validates :autoshare_results_enabled, inclusion: { in: [true, false] }
   end
+
   validates :voting_min_total,
     numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :voting_max_total,
                     if: %i[voting? voting_max_total],
@@ -188,6 +192,7 @@ class Phase < ApplicationRecord
     numericality: { greater_than_or_equal_to: 1, less_than_or_equal_to: :voting_max_total,
                     if: %i[voting? voting_max_total],
                     allow_nil: true }
+  validates :voting_filtering_enabled, inclusion: { in: [true, false] }
 
   scope :starting_on, lambda { |date|
     where(start_at: date)
@@ -220,6 +225,10 @@ class Phase < ApplicationRecord
         }
       )
     )
+  }
+
+  scope :current, lambda {
+    where('start_at <= ? AND (end_at IS NULL OR end_at >= ?)', Time.zone.now, Time.zone.now)
   }
 
   def ends_before?(date)
@@ -255,6 +264,10 @@ class Phase < ApplicationRecord
   # Used for validations (which are hard to delegate through the participation method)
   def voting?
     participation_method == 'voting'
+  end
+
+  def ideation?
+    participation_method == 'ideation'
   end
 
   def pmethod
@@ -305,7 +318,29 @@ class Phase < ApplicationRecord
     !AppConfiguration.instance.feature_activated?('disable_disliking')
   end
 
+  def prescreening_enabled? = prescreening_mode.present?
+  def prescreening_flagged_only? = prescreening_mode == 'flagged_only'
+  def prescreening_all? = prescreening_mode == 'all'
+
   private
+
+  def validate_prescreening_mode
+    return if prescreening_mode.nil?
+
+    prescreening_flag = participation_method == 'proposals' ? 'prescreening' : 'prescreening_ideation'
+
+    # Any prescreening mode requires the prescreening feature to be enabled.
+    unless AppConfiguration.instance.feature_activated?(prescreening_flag)
+      errors.add(:prescreening_mode, "requires the #{prescreening_flag} feature to be enabled")
+      return
+    end
+
+    # 'flagged_only' mode requires the flag_inappropriate_content feature to be enabled.
+    return unless prescreening_mode == 'flagged_only'
+    return if AppConfiguration.instance.feature_activated?('flag_inappropriate_content')
+
+    errors.add(:prescreening_mode, 'requires the flag_inappropriate_content feature to be enabled')
+  end
 
   def sanitize_description_multiloc
     service = SanitizationService.new
@@ -369,6 +404,12 @@ class Phase < ApplicationRecord
   end
 
   def set_participation_method_defaults
+    pmethod.assign_defaults_for_phase
+  end
+
+  def set_participation_method_defaults_on_method_change
+    return unless participation_method_changed?
+
     pmethod.assign_defaults_for_phase
   end
 

@@ -22,7 +22,6 @@ import {
   getPrimaryColourByPercentage,
   getLinearScaleLabelsArray,
   getPercentage,
-  getPercentageTextBorder,
   getStatementsWithResultsArray,
   StickyTd,
   StyledTd,
@@ -43,18 +42,20 @@ const MatrixQuestion = ({ result }: Props) => {
 
   return (
     <Box overflowX="auto">
-      <Table borderSpacing="8px 8px" display="block">
+      <Table borderSpacing="4px 4px" display="block">
         <Thead>
           <Tr>
             <Th borderBottom="none !important" />
             {linearScaleLabels.map((linearScaleMultiloc) => (
               <Th
-                width="84px"
-                minWidth="84px"
+                width="60px"
+                minWidth="60px"
                 borderBottom="none !important"
                 key={linearScaleMultiloc.value}
               >
-                <Text m="0px">{linearScaleMultiloc.label[locale]}</Text>
+                <Text m="0px" fontSize="s">
+                  {linearScaleMultiloc.label[locale]}
+                </Text>
               </Th>
             ))}
           </Tr>
@@ -65,7 +66,7 @@ const MatrixQuestion = ({ result }: Props) => {
             <Tr key={statementWithResult.statementKey}>
               <StickyTd>
                 <Box display="flex" minHeight="80px">
-                  <Text m="0px" my="auto">
+                  <Text m="0px" my="auto" fontSize="s">
                     {statementWithResult.statementMultiloc[locale]}
                   </Text>
                 </Box>
@@ -98,7 +99,6 @@ const MatrixQuestion = ({ result }: Props) => {
                             my="auto"
                             fontSize="s"
                             color={percentage >= 75 ? 'white' : 'textPrimary'}
-                            textShadow={getPercentageTextBorder(percentage)}
                             fontWeight="semi-bold"
                           >
                             {`${percentage}%`}

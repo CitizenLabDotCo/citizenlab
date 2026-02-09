@@ -22,11 +22,11 @@ interface Props extends Omit<SelectProps, 'onChange'> {
   title: string;
 }
 
-const StyledBox = styled(Box)`
+const StyledBox = styled(Box)<{ selected: boolean }>`
   cursor: pointer;
-  background-color: ${colors.grey100};
   &:hover {
-    background-color: ${colors.grey200};
+    box-shadow: 0 0 0 1px
+      ${({ selected }) => (selected ? 'undefined' : colors.borderDark)};
   }
 `;
 
@@ -69,11 +69,11 @@ const CheckboxMultiSelect = ({
                   border={
                     checkedOptions.includes(option.value)
                       ? `2px solid ${theme.colors.tenantPrimary}`
-                      : `1px solid ${theme.colors.tenantPrimary}`
+                      : `1px solid ${theme.colors.borderDark}`
                   }
-                  background={theme.colors.tenantPrimaryLighten95}
                   key={option.value}
                   borderRadius="3px"
+                  selected={checkedOptions.includes(option.value)}
                 >
                   <CheckboxWithLabel
                     size="20px"
@@ -85,7 +85,7 @@ const CheckboxMultiSelect = ({
                       </Text>
                     }
                     checked={checkedOptions.includes(option.value)}
-                    usePrimaryBorder={true}
+                    usePrimaryBorder={false}
                     onChange={() => {
                       if (checkedOptions.includes(option.value)) {
                         setValue(

@@ -1,4 +1,7 @@
 // Shared widgets
+import AboutBox, {
+  aboutBoxTitle,
+} from 'components/admin/ContentBuilder/Widgets/AboutBox';
 import AccordionMultiloc, {
   accordionMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
@@ -20,10 +23,19 @@ import TwoColumn, {
 import WhiteSpace, {
   whiteSpaceTitle,
 } from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import FolderFiles, {
+  folderFilesTitle,
+} from 'components/DescriptionBuilder/Widgets/FolderFiles';
+import FolderTitle, {
+  folderTitleTitle,
+} from 'components/DescriptionBuilder/Widgets/FolderTitle';
+import InfoWithAccordions, {
+  infoWithAccordionsTitle,
+} from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
-// Homepage builder widggets
+// Homepage builder widgets
 import Proposals from './_deprecated/Proposals';
 import Areas, { areasTitle } from './Areas';
 import CallToAction, { callToActionTitle } from './CallToAction';
@@ -57,6 +69,9 @@ export const WIDGETS = {
   ThreeColumn,
   TwoColumn,
   WhiteSpace,
+  Published,
+  Selection,
+  Spotlight,
 
   // Homepage builder widgets
   Areas,
@@ -68,9 +83,6 @@ export const WIDGETS = {
   HomepageBanner,
   OpenToParticipation,
   ProjectsAndFoldersLegacy,
-  Published,
-  Selection,
-  Spotlight,
   TextMultiloc,
   VideoEmbed,
 
@@ -80,6 +92,14 @@ export const WIDGETS = {
 
   // DEPRECATED (TODO remove in migration)
   Proposals,
+
+  // Folder description builder widgets
+  FolderTitle,
+  FolderFiles,
+
+  // Project description builder widgets
+  InfoWithAccordions,
+  AboutBox,
 };
 
 type WidgetName = keyof typeof WIDGETS;
@@ -93,6 +113,9 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   ThreeColumn: threeColumnTitle,
   TwoColumn: twoColumnTitle,
   WhiteSpace: whiteSpaceTitle,
+  Published: publishedTitle,
+  Selection: selectionTitle,
+  Spotlight: spotlightTitle,
 
   // Homepage builder widgets
   Areas: areasTitle,
@@ -104,9 +127,6 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
   HomepageBanner: homepageBannerTitle,
   OpenToParticipation: openToParticipationTitle,
   ProjectsAndFoldersLegacy: projectsAndFoldersLegacyTitle,
-  Published: publishedTitle,
-  Selection: selectionTitle,
-  Spotlight: spotlightTitle,
   TextMultiloc: textMultilocTitle,
   VideoEmbed: videoEmbedTitle,
 
@@ -116,12 +136,21 @@ export const WIDGET_TITLES: Record<WidgetName, MessageDescriptor> = {
 
   // DEPRECATED
   Proposals: callToActionTitle,
+
+  // Folder description builder widgets
+  FolderTitle: folderTitleTitle,
+  FolderFiles: folderFilesTitle,
+
+  // Project description builder widgets
+  InfoWithAccordions: infoWithAccordionsTitle,
+  AboutBox: aboutBoxTitle,
 };
 
 const WIDGETS_WITH_CHILDREN = new Set<string>([
   'TwoColumn',
   'ThreeColumn',
   'AccordionMultiloc',
+  'InfoWithAccordions',
 ] satisfies WidgetName[]);
 
 export const hasChildren = (nodeName: string) => {
@@ -132,6 +161,9 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   // Shared widgets
   'ButtonMultiloc',
   'IframeMultiloc',
+  'Published',
+  'Selection',
+  'Spotlight',
 
   // Homepage builder widgets
   'Areas',
@@ -143,14 +175,19 @@ const WIDGETS_WITHOUT_POINTER_EVENTS = new Set<string>([
   'HomepageBanner',
   'OpenToParticipation',
   'ProjectsAndFoldersLegacy',
-  'Published',
-  'Selection',
-  'Spotlight',
   'VideoEmbed',
 
   // RENAMED
   'Projects',
   'Highlight',
+
+  // Folder description builder widgets
+  'FolderTitle',
+  'FolderFiles',
+
+  // Project description builder widgets
+  'InfoWithAccordions',
+  'AboutBox',
 ] satisfies WidgetName[]);
 
 export const hasNoPointerEvents = (nodeName: string) => {

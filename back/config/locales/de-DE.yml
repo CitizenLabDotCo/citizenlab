@@ -125,6 +125,7 @@ de:
     open_idea_project_description_preview: Vielleicht haben Sie eine Idee, die nicht zu einem der bestehenden Projekte passt? Dann posten Sie sie hier, sammeln Sie Unterstützung und bringen Sie sie auf die politische Tagesordnung!
     open_idea_project_description: >
       Die Ideen hier sind nicht mit einem Projekt verknüpft.
+    published_projects: Veröffentlichte Projekte
   phases:
     open_idea_phase_title: Aktuelle Phase
     native_survey_title: Umfrage
@@ -236,7 +237,7 @@ de:
         project:
           title: Was ist dein Projekt?
         issue:
-          title: Was ist dein Vorhaben?
+          title: Was ist Ihr Kommentar?
         option:
           title: Was ist deine Option?
         proposal:
@@ -289,7 +290,7 @@ de:
       participants: 'Teilnehmende'
       picks: 'Auswahl'
       project: '{orgName, select, München {Bezirke} other {Projekte}}'
-      published_at: 'Veröffentlicht am'
+      published_at: 'Veröffentlicht'
       registration_completed_at: 'Registrierung abgeschlossen am'
       status: 'Status'
       submitted_at: 'Eingereicht am'
@@ -385,3 +386,4 @@ de:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "Das Maximum muss größer sein als das Minimum."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Das Maximum muss größer oder gleich dem Minimum sein."

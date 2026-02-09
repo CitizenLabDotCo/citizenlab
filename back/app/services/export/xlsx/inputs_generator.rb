@@ -46,8 +46,8 @@ module Export
         inputs.includes(
           :project,
           :author,
-          :ideas_topics,
-          :topics,
+          :ideas_input_topics,
+          :input_topics,
           :idea_files,
           :file_attachments,
           :attached_files,
@@ -66,7 +66,7 @@ module Export
 
       def generate_phase_sheet(workbook, phase)
         inputs = eager_load_inputs(phase.ideas.submitted_or_published)
-        inputs = inputs.with_content unless phase.participation_method == 'native_survey'
+        inputs = inputs.with_content unless phase.pmethod.supports_survey_form?
 
         generate_sheet(workbook, inputs, phase)
       end

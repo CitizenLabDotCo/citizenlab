@@ -19,8 +19,7 @@ import {
   SubmitButton,
   CancelButton,
   HelpImage,
-} from 'containers/Authentication/steps/AuthProviders/styles';
-
+} from 'components/AuthProviderStyles/styles';
 import Collapse from 'components/UI/Collapse';
 import Error from 'components/UI/Error';
 

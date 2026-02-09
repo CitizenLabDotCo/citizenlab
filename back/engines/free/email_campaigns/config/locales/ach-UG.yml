@@ -259,6 +259,7 @@ ach:
       x_days_ago_by_author: 'crwdns208554:0%{x}crwdnd208554:0%{author}crwdne208554:0'
     new_comment_for_admin:
       commented: 'crwdns208570:0%{authorFirstName}crwdne208570:0'
+      anonymous_user: crwdns5843375:0crwdne5843375:0
       cta_button: 'crwdns5049689:0%{authorFirstName}crwdne5049689:0'
       days_ago: 'crwdns208574:0%{numberOfDays}crwdne208574:0'
       event_description: 'crwdns208576:0%{authorName}crwdne208576:0'
@@ -407,11 +408,13 @@ ach:
       title: 'crwdns5184273:0%{requesterName}crwdnd5184273:0%{projectTitle}crwdne5184273:0'
       event_description: "crwdns5184275:0crwdne5184275:0"
       cta_button: "crwdns5184277:0crwdne5184277:0"
+      preheader: 'crwdns5621233:0%{requesterName}crwdnd5621233:0%{projectTitle}crwdne5621233:0'
     project_review_state_change:
       subject: 'crwdns3848655:0%{projectTitle}crwdne3848655:0'
       title: 'crwdns5184279:0%{reviewerName}crwdnd5184279:0%{projectTitle}crwdne5184279:0'
       event_description: "crwdns5184281:0crwdne5184281:0"
       cta_button: "crwdns5184283:0crwdne5184283:0"
+      preheader: 'crwdns5621235:0%{reviewerName}crwdnd5621235:0%{projectTitle}crwdne5621235:0'
     status_change_on_idea_you_follow:
       status_change: 'crwdns1081730:0%{status}crwdne1081730:0'
       event_description: 'crwdns5184285:0%{organizationName}crwdnd5184285:0%{input_title}crwdne5184285:0'
@@ -512,9 +515,7 @@ ach:
       subject: 'crwdns777451:0%{organizationName}crwdnd777451:0%{phaseTitle}crwdne777451:0'
       preheader: 'crwdns777453:0%{phaseTitle}crwdnd777453:0%{organizationName}crwdne777453:0'
       title: 'crwdns5184317:0%{phaseTitle}crwdne5184317:0'
-      body_1: 'crwdns777457:0%{projectTitle}crwdne777457:0'
-      body_2: 'crwdns777459:0crwdne777459:0'
-      body_3: 'crwdns777461:0crwdne777461:0'
+      event_description: 'crwdns5912899:0%{projectTitle}crwdne5912899:0'
       cta_button: 'crwdns5184319:0crwdne5184319:0'
     voting_results:
       subject: 'crwdns777465:0%{organizationName}crwdnd777465:0%{phaseTitle}crwdne777465:0'

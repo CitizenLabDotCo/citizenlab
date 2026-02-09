@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.components.PostCardsComponents.list',
     defaultMessage: 'List',
   },
+  feed: {
+    id: 'app.components.PostCardsComponents.feed',
+    defaultMessage: 'Feed',
+  },
 });

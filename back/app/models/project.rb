@@ -4,27 +4,29 @@
 #
 # Table name: projects
 #
-#  id                           :uuid             not null, primary key
-#  title_multiloc               :jsonb
-#  description_multiloc         :jsonb
-#  slug                         :string
-#  created_at                   :datetime         not null
-#  updated_at                   :datetime         not null
-#  header_bg                    :string
-#  ideas_count                  :integer          default(0), not null
-#  visible_to                   :string           default("public"), not null
-#  description_preview_multiloc :jsonb
-#  internal_role                :string
-#  comments_count               :integer          default(0), not null
-#  default_assignee_id          :uuid
-#  include_all_areas            :boolean          default(FALSE), not null
-#  baskets_count                :integer          default(0), not null
-#  votes_count                  :integer          default(0), not null
-#  followers_count              :integer          default(0), not null
-#  preview_token                :string           not null
-#  header_bg_alt_text_multiloc  :jsonb
-#  hidden                       :boolean          default(FALSE), not null
-#  listed                       :boolean          default(TRUE), not null
+#  id                             :uuid             not null, primary key
+#  title_multiloc                 :jsonb
+#  description_multiloc           :jsonb
+#  slug                           :string
+#  created_at                     :datetime         not null
+#  updated_at                     :datetime         not null
+#  header_bg                      :string
+#  ideas_count                    :integer          default(0), not null
+#  visible_to                     :string           default("public"), not null
+#  description_preview_multiloc   :jsonb
+#  internal_role                  :string
+#  comments_count                 :integer          default(0), not null
+#  default_assignee_id            :uuid
+#  include_all_areas              :boolean          default(FALSE), not null
+#  baskets_count                  :integer          default(0), not null
+#  votes_count                    :integer          default(0), not null
+#  followers_count                :integer          default(0), not null
+#  header_bg_alt_text_multiloc    :jsonb
+#  preview_token                  :string           not null
+#  hidden                         :boolean          default(FALSE), not null
+#  listed                         :boolean          default(TRUE), not null
+#  track_participation_location   :boolean          default(FALSE), not null
+#  live_auto_input_topics_enabled :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -46,15 +48,21 @@ class Project < ApplicationRecord
 
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
+  has_many_text_images from: :description_multiloc, as: :text_images
+  accepts_nested_attributes_for :text_images
+
   has_one :custom_form, as: :participation_context, dependent: :destroy # ideation & voting phases only
 
   has_many :ideas, dependent: :destroy
   has_many :reactions, through: :ideas
 
-  has_many :projects_topics, dependent: :destroy
-  has_many :topics, -> { order(:ordering) }, through: :projects_topics
-  has_many :projects_allowed_input_topics, dependent: :destroy
-  has_many :allowed_input_topics, through: :projects_allowed_input_topics, source: :topic
+  # Use case A - Project categorization (GlobalTopics)
+  has_many :projects_global_topics, dependent: :destroy
+  has_many :global_topics, -> { order(:ordering) }, through: :projects_global_topics
+
+  # Use case B - Input categorization InputTopics)
+  has_many :input_topics, -> { order(:lft) }, dependent: :destroy, inverse_of: :project
+
   has_many :areas_projects, dependent: :destroy
   has_many :areas, through: :areas_projects
   has_many :groups_projects, dependent: :destroy
@@ -65,8 +73,6 @@ class Project < ApplicationRecord
   # project_images should always store one record, but in practice it's different (maybe because of a bug)
   # https://citizenlabco.slack.com/archives/C015M14HYSF/p1674228018666059
   has_many :project_images, -> { order(:ordering) }, dependent: :destroy
-  has_many :text_images, as: :imageable, dependent: :destroy
-  accepts_nested_attributes_for :text_images
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
   has_many :followers, as: :followable, dependent: :destroy
   has_many :impact_tracking_pageviews, class_name: 'ImpactTracking::Pageview', dependent: :nullify
@@ -101,6 +107,7 @@ class Project < ApplicationRecord
   validates :description_preview_multiloc, multiloc: { presence: false }
   validates :visible_to, presence: true, inclusion: { in: VISIBLE_TOS }
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
+  validates :live_auto_input_topics_enabled, inclusion: { in: [true, false] }
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # TODO: This should always be validated!
 
   scope :not_hidden, -> { where(hidden: false) }
@@ -120,8 +127,8 @@ class Project < ApplicationRecord
     where(id: with_dups)
   end)
 
-  scope :with_some_topics, (proc do |topic_ids|
-    joins(:projects_topics).where(projects_topics: { topic_id: topic_ids })
+  scope :with_some_global_topics, (proc do |topic_ids|
+    joins(:projects_global_topics).where(projects_global_topics: { global_topic_id: topic_ids })
   end)
 
   scope :ordered, lambda {
@@ -152,6 +159,17 @@ class Project < ApplicationRecord
       .where("admin_publications.parent_id IS NULL OR parent_pubs.publication_status != 'draft'")
   }
 
+  scope :with_participation_count, lambda {
+    joins(<<~SQL.squish
+      LEFT JOIN LATERAL (
+        SELECT COUNT(DISTINCT participant_id) as participants_count
+        FROM analytics_fact_participations
+        WHERE dimension_project_id = projects.id
+      ) AS project_participants ON true
+    SQL
+         )
+  }
+
   alias project_id id
 
   delegate :published?, :ever_published?, :never_published?, to: :admin_publication, allow_nil: true
@@ -175,9 +193,25 @@ class Project < ApplicationRecord
     TimelineService.new.current_phase(self)
   end
 
-  def set_default_topics!
-    self.allowed_input_topics = Topic.defaults.order(:ordering).reverse
-    save!
+  def set_default_input_topics!
+    # First create root topics, then children
+    DefaultInputTopic.roots.order(:lft).each do |default_topic|
+      copy_default_input_topic_tree(default_topic)
+    end
+  end
+
+  def copy_default_input_topic_tree(default_topic, parent_input_topic = nil)
+    input_topic = input_topics.create!(
+      title_multiloc: default_topic.title_multiloc,
+      description_multiloc: default_topic.description_multiloc,
+      icon: default_topic.icon,
+      parent: parent_input_topic
+    )
+
+    # Recursively create children
+    default_topic.children.order(:lft).each do |child_default_topic|
+      copy_default_input_topic_tree(child_default_topic, input_topic)
+    end
   end
 
   def folder
@@ -228,8 +262,10 @@ class Project < ApplicationRecord
     # NOTE: if a project is passed to this method, timeline projects used to always return 'Ideation'
     # as it was never set and defaulted to this when the participation_method was available on the project
     # The following mimics the same behaviour now that participation method is not available on the project
-    # TODO: Maybe change to find phase with ideation or voting where created date between start and end date?
-    @pmethod ||= ParticipationMethod::Ideation.new(phases.first)
+    # This defaults to Ideation as pmethod is only needed when dealing with custom forms for Ideation phases
+    @pmethod ||= ParticipationMethod::Ideation.new(
+      TimelineService.new.current_or_backup_transitive_phase(self) || phases.first
+    )
   end
 
   def refresh_preview_token
@@ -329,7 +365,8 @@ end
 Project.include(SmartGroups::Concerns::ValueReferenceable)
 Project.include(CustomMaps::Extensions::Project)
 Project.include(IdeaAssignment::Extensions::Project)
-Project.include(ContentBuilder::Patches::Project)
+Project.include(ContentBuilder::Concerns::ContentBuildable)
 Project.include(Analysis::Patches::Project)
 Project.include(EmailCampaigns::Extensions::Project)
 Project.include(BulkImportIdeas::Patches::Project)
+Project.include(Webhooks::Patches::Project)

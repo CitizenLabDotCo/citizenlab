@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :fact_visit, class: 'Analytics::FactVisit' do
-    association :dimension_referrer_type, factory: :dimension_referrer_type
+    association :dimension_referrer_type
     association :dimension_date_first_action, factory: :dimension_date
     association :dimension_date_last_action, factory: :dimension_date
 

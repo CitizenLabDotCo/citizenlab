@@ -10,4 +10,4 @@ pl:
       event_description: 'Dane wejściowe zostały przypisane do Ciebie. Przekaż opinię, pisząc oficjalną aktualizację lub zmieniając jej status.'
       title: '%{firstName}wejście zostało przypisane do Ciebie'
       subject: 'Zostałeś przypisany na platformie %{organizationName}'
-      preheader_idea: 'Został do ciebie przypisany pomysł %{authorName}'
+      preheader: 'Wejście %{authorName} zostało przypisane do Ciebie'

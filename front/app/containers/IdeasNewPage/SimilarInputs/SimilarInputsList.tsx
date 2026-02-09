@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import {
   Box,
@@ -12,6 +12,7 @@ import { Multiloc } from 'typings';
 
 import { IIdeaData } from 'api/ideas/types';
 import useIdeaById from 'api/ideas/useIdeaById';
+import { IPhaseData } from 'api/phases/types';
 import useProjectById from 'api/projects/useProjectById';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 import useSimilarIdeas from 'api/similar_ideas/useSimilarIdeas';
@@ -24,7 +25,6 @@ import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import messages from './messages';
-import { IPhaseData } from 'api/phases/types';
 
 const SimilarIdeasList = ({
   titleMultiloc,
@@ -37,6 +37,9 @@ const SimilarIdeasList = ({
 }) => {
   const { formatMessage } = useIntl();
   const currentLocale = useLocale();
+  const selectedIdeaRef = useRef<HTMLDivElement>(null);
+  const lastClickedIdeaRef = useRef<HTMLElement | null>(null);
+  const ideaRefs = useRef<{ [key: string]: HTMLElement | null }>({});
   const { slug: projectSlug, projectId: urlProjectId } = useParams() as {
     slug?: string;
     projectId?: string;
@@ -57,6 +60,38 @@ const SimilarIdeasList = ({
   const title = titleMultiloc && titleMultiloc[currentLocale];
   const body = bodyMultiloc && bodyMultiloc[currentLocale];
 
+  // focus on selected idea when sidebar opens
+  useEffect(() => {
+    if (selectedIdeaId && selectedIdeaRef.current) {
+      selectedIdeaRef.current.focus();
+    }
+  }, [selectedIdeaId]);
+
+  // focus again to clicked idea when sidebar closes
+  useEffect(() => {
+    if (!selectedIdeaId && lastClickedIdeaRef.current) {
+      lastClickedIdeaRef.current.focus();
+    }
+  }, [selectedIdeaId]);
+
+  const keyboardAccessible = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      e.currentTarget.click();
+    }
+  };
+
+  const handleIdeaClick = (
+    ideaId: string,
+    clickedElement: HTMLElement | null
+  ) => {
+    // store last clicked idea to focus again when sidebar closes for tab order logic
+    lastClickedIdeaRef.current = clickedElement;
+    updateSearchParams({
+      selected_idea_id:
+        searchParams.get('selected_idea_id') === ideaId ? undefined : ideaId,
+    });
+  };
   const { data: ideas, isLoading } = useSimilarIdeas(
     {
       idea: {
@@ -109,115 +144,130 @@ const SimilarIdeasList = ({
 
   return (
     <Box>
-      <Text fontSize="s" fontWeight="bold" color="textPrimary" mb="4px">
-        {formatMessage(messages.similarSubmissionsPosted)}
-      </Text>
-      <Text fontSize="s" color="textSecondary" mb="16px">
-        {formatMessage(messages.similarSubmissionsDescription)}
-      </Text>
-
-      {ideas.data.map((idea: IIdeaData, index: number, listedIdeas) => (
-        <Box
-          key={idea.id}
-          borderTop={`1px solid ${colors.grey300}`}
-          borderBottom={
-            listedIdeas.length - 1 === index
-              ? `1px solid ${colors.grey300}`
-              : undefined
-          }
-          py="12px"
-          background={
-            selectedIdeaId === idea.id ? colors.background : undefined
-          }
-        >
+      <Box tabIndex={0}>
+        <Text fontSize="s" fontWeight="bold" color="textPrimary" mb="4px">
+          {formatMessage(messages.similarSubmissionsPosted)}
+        </Text>
+        <Text fontSize="s" color="textSecondary" mb="16px">
+          {formatMessage(messages.similarSubmissionsDescription)}
+        </Text>
+      </Box>
+      <Box
+        as="ul"
+        tabIndex={0}
+        aria-label={formatMessage(messages.similarSubmissionsList)}
+        style={{ listStyle: 'none', padding: 0, margin: 0 }}
+      >
+        {ideas.data.map((idea: IIdeaData, index: number, listedIdeas) => (
           <Box
-            onClick={() => {
-              updateSearchParams({
-                selected_idea_id:
-                  searchParams.get('selected_idea_id') === idea.id
-                    ? undefined
-                    : idea.id,
-              });
-            }}
-            style={{ cursor: 'pointer' }}
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
+            key={idea.id}
+            ref={selectedIdeaId === idea.id ? selectedIdeaRef : null}
+            borderTop={`1px solid ${colors.grey300}`}
+            borderBottom={
+              listedIdeas.length - 1 === index
+                ? `1px solid ${colors.grey300}`
+                : undefined
+            }
+            py="12px"
+            background={
+              selectedIdeaId === idea.id ? colors.background : undefined
+            }
           >
-            <Box display="flex" flexDirection="column" width="100%" mr="24px">
-              <Text
-                variant="bodyM"
-                fontWeight="bold"
-                color="textPrimary"
-                my="0px"
-              >
-                <T value={idea.attributes.title_multiloc} />
-              </Text>
+            <Box
+              ref={(el) => {
+                ideaRefs.current[idea.id] = el;
+              }}
+              as="li"
+              tabIndex={0}
+              role="button"
+              aria-pressed={selectedIdeaId === idea.id}
+              aria-label={`${
+                idea.attributes.title_multiloc[currentLocale]
+              }, ${formatMessage(messages.openToSeeDetails)}`}
+              onClick={() =>
+                handleIdeaClick(idea.id, ideaRefs.current[idea.id])
+              }
+              style={{ cursor: 'pointer' }}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              onKeyDown={keyboardAccessible}
+            >
+              <Box display="flex" flexDirection="column" width="100%" mr="24px">
+                <Text
+                  variant="bodyM"
+                  fontWeight="bold"
+                  color="textPrimary"
+                  my="0px"
+                >
+                  <T value={idea.attributes.title_multiloc} />
+                </Text>
 
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Box display="flex" alignItems="center" gap="4px">
-                  <Icon
-                    name="user-circle"
-                    width="16px"
-                    height="16px"
-                    fill={colors.textPrimary}
-                  />
-                  <Text variant="bodyS" color="grey700" m="0px">
-                    {idea.attributes.author_name}
-                  </Text>
-                </Box>
-
-                <Box display="flex" alignItems="center" gap="16px">
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                >
                   <Box display="flex" alignItems="center" gap="4px">
                     <Icon
-                      name="thumb-up"
-                      width="14px"
-                      height="14px"
-                      fill={colors.grey700}
+                      name="user-circle"
+                      width="16px"
+                      height="16px"
+                      fill={colors.textPrimary}
                     />
-                    <Text fontSize="xs" color="grey700" m="0">
-                      {idea.attributes.likes_count}
+                    <Text variant="bodyS" color="grey700" m="0px">
+                      {idea.attributes.author_name}
                     </Text>
                   </Box>
-                  <Box display="flex" alignItems="center" gap="4px">
-                    <Icon
-                      name="thumb-down"
-                      width="14px"
-                      height="14px"
-                      fill={colors.grey700}
-                    />
-                    <Text fontSize="xs" color="grey700" m="0">
-                      {idea.attributes.dislikes_count}
-                    </Text>
-                  </Box>
-                  <Box display="flex" alignItems="center" gap="4px">
-                    <Icon
-                      name="chat-bubble"
-                      width="14px"
-                      height="14px"
-                      fill={colors.grey700}
-                    />
-                    <Text fontSize="xs" color="grey700" m="0">
-                      {idea.attributes.comments_count}
-                    </Text>
+
+                  <Box display="flex" alignItems="center" gap="16px">
+                    <Box display="flex" alignItems="center" gap="4px">
+                      <Icon
+                        name="thumb-up"
+                        width="14px"
+                        height="14px"
+                        fill={colors.grey700}
+                      />
+                      <Text fontSize="xs" color="grey700" m="0">
+                        {idea.attributes.likes_count}
+                      </Text>
+                    </Box>
+                    <Box display="flex" alignItems="center" gap="4px">
+                      <Icon
+                        name="thumb-down"
+                        width="14px"
+                        height="14px"
+                        fill={colors.grey700}
+                      />
+                      <Text fontSize="xs" color="grey700" m="0">
+                        {idea.attributes.dislikes_count}
+                      </Text>
+                    </Box>
+                    <Box display="flex" alignItems="center" gap="4px">
+                      <Icon
+                        name="chat-bubble"
+                        width="14px"
+                        height="14px"
+                        fill={colors.grey700}
+                      />
+                      <Text fontSize="xs" color="grey700" m="0">
+                        {idea.attributes.comments_count}
+                      </Text>
+                    </Box>
                   </Box>
                 </Box>
               </Box>
-            </Box>
 
-            <Icon
-              name="chevron-right"
-              width="20px"
-              height="20px"
-              fill={colors.textPrimary}
-            />
+              <Icon
+                name="chevron-right"
+                width="20px"
+                height="20px"
+                fill={colors.textPrimary}
+              />
+            </Box>
           </Box>
-        </Box>
-      ))}
+        ))}
+      </Box>
     </Box>
   );
 };

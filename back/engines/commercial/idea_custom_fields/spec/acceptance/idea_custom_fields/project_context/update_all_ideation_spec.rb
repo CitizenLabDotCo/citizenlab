@@ -56,7 +56,7 @@ resource 'Idea Custom Fields' do
       before { admin_header_token }
 
       context 'when the form is persisted for the first time' do
-        let(:custom_form) { create(:custom_form, participation_context: context) }
+        let(:custom_form) { build(:custom_form, participation_context: context) }
 
         example 'Updating custom fields', document: false do
           create(:idea, project: context)
@@ -305,6 +305,17 @@ resource 'Idea Custom Fields' do
 
           assert_status 200
           expect(context.reload.custom_form.custom_fields[1].description_multiloc).to eq custom_description
+        end
+
+        example 'Updating custom fields after when default multilocs have fewer persisted locales', document: false do
+          title_page = custom_form.custom_fields.find_by(code: 'title_multiloc')
+          title_page.update!(title_multiloc: { 'en' => 'Title' })
+
+          do_request(
+            custom_fields: (default_fields_param + [final_page])
+          )
+
+          assert_status 200
         end
       end
     end

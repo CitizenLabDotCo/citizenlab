@@ -57,6 +57,10 @@ module Verification
       active_methods(configuration).include? method_by_name(method_name)
     end
 
+    def enabled?(method_name)
+      method_by_name(method_name)&.enabled?
+    end
+
     # Not all verification methods are allowed at a permission/action level
     # NOTE: for real platforms, you should never have
     # more than one verification method enabled at a time.
@@ -100,7 +104,10 @@ module Verification
 
     def verify_omniauth(user:, auth:)
       method = method_by_name(auth.provider)
-      raise NotEntitledError if method.respond_to?(:entitled?) && !method.entitled?(auth)
+      if method.respond_to?(:entitled?)
+        entitled = method.entitled?(auth) # NOTE: Some methods raise more detailed NotEntitledErrors themselves
+        raise NotEntitledError if !entitled
+      end
 
       uid = method.profile_to_uid(auth)
       make_verification(user:, method:, uid:)

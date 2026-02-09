@@ -10,4 +10,4 @@ nl:
       event_description: 'Je kreeg een bijdrage toegewezen. Geef feedback door het schrijven van een officiële update of door het wijzigen van de status.'
       title: '%{firstName}, er is een bijdrage aan je toegewezen'
       subject: 'Je hebt een toewijzing op het platform van %{organizationName}'
-      preheader_idea: 'Je kreeg het idee van %{authorName} toegewezen'
+      preheader: 'De invoer van %{authorName} is aan jou toegewezen'

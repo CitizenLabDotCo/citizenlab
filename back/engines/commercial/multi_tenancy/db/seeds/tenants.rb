@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
+
 require_relative 'base'
 
 module MultiTenancy
@@ -95,6 +97,10 @@ module MultiTenancy
               enabled: true
             },
             twoday_login: {
+              allowed: true,
+              enabled: true
+            },
+            acm_login: {
               allowed: true,
               enabled: true
             },
@@ -358,10 +364,10 @@ module MultiTenancy
                 },
                 {
                   name: 'keycloak',
+                  provider: ENV.fetch('DEFAULT_ID_KEYCLOAK_PROVIDER', 'idporten'),
                   client_id: ENV.fetch('DEFAULT_ID_KEYCLOAK_CLIENT_ID', 'fake id'),
                   client_secret: ENV.fetch('DEFAULT_ID_KEYCLOAK_CLIENT_SECRET', 'fake secret'),
-                  domain: ENV.fetch('DEFAULT_ID_KEYCLOAK_DOMAIN', 'fake domain'),
-                  ui_method_name: 'Bank ID',
+                  issuer: ENV.fetch('DEFAULT_ID_KEYCLOAK_ISSUER', 'fake issuer'),
                   enabled_for_verified_actions: true
                 },
                 {
@@ -370,6 +376,16 @@ module MultiTenancy
                   client_secret: ENV.fetch('DEFAULT_ID_TWODAY_CLIENT_SECRET', 'fake secret'),
                   domain: ENV.fetch('DEFAULT_ID_TWODAY_DOMAIN', 'fake domain'),
                   ui_method_name: 'Bank ID',
+                  enabled_for_verified_actions: true
+                },
+                {
+                  name: 'acm',
+                  client_id: ENV.fetch('DEFAULT_ID_ACM_CLIENT_ID', 'fake id'),
+                  client_secret: ENV.fetch('DEFAULT_ID_ACM_CLIENT_SECRET', 'fake secret'),
+                  domain: ENV.fetch('DEFAULT_ID_ACM_DOMAIN', 'fake domain'),
+                  rrn_api_key: ENV.fetch('DEFAULT_ID_ACM_RRN_API_KEY', 'fake key'),
+                  rrn_environment: 'dv',
+                  ui_method_name: 'ACM',
                   enabled_for_verified_actions: true
                 }
               ]
@@ -387,6 +403,10 @@ module MultiTenancy
               allowed: true
             },
             flag_inappropriate_content: {
+              enabled: false,
+              allowed: false
+            },
+            prescreening_flagged_only: {
               enabled: false,
               allowed: false
             },
@@ -455,10 +475,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            html_pdfs: {
-              enabled: true,
-              allowed: true
-            },
             user_session_recording: {
               # Disable for E2E tests on localhost
               enabled: false,
@@ -489,10 +505,6 @@ module MultiTenancy
               allowed: true
             },
             customisable_homepage_banner: {
-              enabled: true,
-              allowed: true
-            },
-            proposals_participation_method: {
               enabled: true,
               allowed: true
             },
@@ -538,6 +550,22 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            idea_feed: {
+              enabled: true,
+              allowed: true
+            },
+            nested_input_topics: {
+              enabled: true,
+              allowed: true
+            },
+            live_auto_input_topics: {
+              enabled: true,
+              allowed: true
+            },
+            data_repository_transcription: {
+              enabled: true,
+              allowed: true
+            },
             data_repository_ai_analysis: {
               enabled: true,
               allowed: true
@@ -557,6 +585,14 @@ module MultiTenancy
             project_importer: {
               enabled: true,
               allowed: true
+            },
+            phase_insights: {
+              enabled: true,
+              allowed: true
+            },
+            participation_location_tracking: {
+              enabled: false,
+              allowed: false
             }
           })
         )
@@ -582,3 +618,4 @@ module MultiTenancy
     end
   end
 end
+# rubocop:enable Metrics/ClassLength

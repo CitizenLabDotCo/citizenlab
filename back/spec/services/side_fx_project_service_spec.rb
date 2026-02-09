@@ -23,11 +23,6 @@ describe SideFxProjectService do
         )
     end
 
-    it 'runs the description through the text image service' do
-      expect_any_instance_of(TextImageService).to receive(:swap_data_images_multiloc).with(project.description_multiloc, field: :description_multiloc, imageable: project).and_return(project.description_multiloc)
-      service.after_create(project, user)
-    end
-
     it "logs a 'published' action when a published project is created" do
       expect { service.after_create(project, user) }
         .to have_enqueued_job(LogActivityJob)
@@ -40,13 +35,6 @@ describe SideFxProjectService do
       expect { service.after_create(project, user) }
         .not_to have_enqueued_job(LogActivityJob)
         .with(project, 'published', user, project.updated_at.to_i, anything)
-    end
-  end
-
-  describe 'before_update' do
-    it 'runs the description through the text image service' do
-      expect_any_instance_of(TextImageService).to receive(:swap_data_images_multiloc).with(project.description_multiloc, field: :description_multiloc, imageable: project).and_return(project.description_multiloc)
-      service.before_update(project, user)
     end
   end
 

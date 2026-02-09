@@ -10,6 +10,7 @@ import {
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -21,12 +22,14 @@ interface AnonymousPostingToggleProps {
     allow_anonymous_participation: boolean
   ) => void;
   toggleLabel?: JSX.Element;
+  disabledReason?: string;
 }
 
 const AnonymousPostingToggle = ({
   allow_anonymous_participation,
   handleAllowAnonymousParticipationOnChange,
   toggleLabel,
+  disabledReason,
 }: AnonymousPostingToggleProps) => {
   const { formatMessage } = useIntl();
   const hasAnonymousParticipationEnabled = useFeatureFlag({
@@ -50,7 +53,7 @@ const AnonymousPostingToggle = ({
                 supportArticle: (
                   <a
                     href={formatMessage(
-                      messages.userAnonymitySupportTooltipLinkUrl
+                      messages.userAnonymitySupportTooltipLinkUrl2
                     )}
                     target="_blank"
                     rel="noreferrer"
@@ -67,6 +70,7 @@ const AnonymousPostingToggle = ({
       </SubSectionTitle>
       <Toggle
         checked={allow_anonymous_participation || false}
+        disabled={!!disabledReason}
         onChange={() => {
           handleAllowAnonymousParticipationOnChange(
             !allow_anonymous_participation
@@ -101,6 +105,11 @@ const AnonymousPostingToggle = ({
           )
         }
       />
+      {disabledReason && (
+        <Box mt="8px">
+          <Warning>{disabledReason}</Warning>
+        </Box>
+      )}
     </SectionField>
   );
 };

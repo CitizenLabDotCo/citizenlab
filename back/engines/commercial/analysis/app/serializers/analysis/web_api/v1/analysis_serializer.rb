@@ -8,6 +8,7 @@ class Analysis::WebApi::V1::AnalysisSerializer < WebApi::V1::BaseSerializer
 
   belongs_to :main_custom_field, serializer: ::WebApi::V1::CustomFieldSerializer
   has_many :additional_custom_fields, serializer: ::WebApi::V1::CustomFieldSerializer
+  has_many :files, serializer: ::WebApi::V1::FileSerializer, &:attached_files
 
   has_many :all_custom_fields, serializer: ::WebApi::V1::CustomFieldSerializer do |analysis|
     participation_method = analysis.participation_context.pmethod
@@ -16,6 +17,10 @@ class Analysis::WebApi::V1::AnalysisSerializer < WebApi::V1::BaseSerializer
       analysis.participation_context.reload
     end
 
-    IdeaCustomFieldsService.new(analysis.participation_context.custom_form).all_fields.filter(&:accepts_input?)
+    IdeaCustomFieldsService.new(analysis.participation_context.custom_form).all_fields.filter(&:supports_submission?)
+  end
+
+  has_many :insightables do |analysis|
+    analysis.insights.filter_map(&:insightable).compact
   end
 end

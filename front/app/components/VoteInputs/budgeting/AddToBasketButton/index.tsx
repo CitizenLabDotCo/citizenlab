@@ -178,14 +178,18 @@ const AddToBasketButton = ({
             className={`e2e-assign-budget-button ${
               ideaInBasket ? 'in-basket' : 'not-in-basket'
             }`}
+            ariaDescribedby={`idea-budget-description-${ideaId}`}
           >
             {ideaInBasket && <Icon mb="4px" fill="white" name="check" />}
             <FormattedMessage {...buttonMessage} />
-            <span aria-hidden>{` (${formatCurrency(ideaBudget)})`}</span>
-            <ScreenReaderCurrencyValue amount={ideaBudget} />
+            {` (${formatCurrency(ideaBudget)})`}
           </Button>
         </div>
       </Tooltip>
+      <ScreenReaderCurrencyValue
+        amount={ideaBudget}
+        id={`idea-budget-description-${ideaId}`}
+      />
     </Box>
   );
 };

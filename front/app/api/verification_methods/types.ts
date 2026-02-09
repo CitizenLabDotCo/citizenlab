@@ -1,3 +1,4 @@
+import { IconNames } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import { Keys } from 'utils/cl-react-query/types';
@@ -34,7 +35,8 @@ export type TVerificationMethodName =
   | 'twoday'
   | 'nemlog_in'
   | 'oostende_rrn'
-  | 'id_austria';
+  | 'id_austria'
+  | 'acm';
 
 export interface IVerificationMethods {
   data: TVerificationMethod[];
@@ -102,6 +104,7 @@ export type IDKeycloakMethod = {
     name: 'keycloak';
     method_metadata?: MethodMetadata;
     ui_method_name: string;
+    provider: IconNames;
   };
 };
 
@@ -110,6 +113,16 @@ export type IDTwodayMethod = {
   type: 'verification_method';
   attributes: {
     name: 'twoday';
+    method_metadata?: MethodMetadata;
+    ui_method_name: string;
+  };
+};
+
+export type IDAcmMethod = {
+  id: string;
+  type: 'verification_method';
+  attributes: {
+    name: 'acm';
     method_metadata?: MethodMetadata;
     ui_method_name: string;
   };
@@ -144,5 +157,3 @@ export type TVerificationMethod =
   | IDTwodayMethod
   | IDAuth0Method
   | IDIdAustriaMethod;
-// TODO: JS - No Fake SSO?
-// TODO: JS - Can we add the icon name into the method type?

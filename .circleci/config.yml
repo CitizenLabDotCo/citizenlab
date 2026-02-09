@@ -111,7 +111,8 @@ commands:
       # version available in the source repositories is 1.3.3, which has been broken by
       # a change of SSL certificate. For more information, see:
       # https://github.com/lastpass/lastpass-cli/issues/653
-      - run: sudo .circleci/install_lpass.sh v1.5.0
+      - run: sudo apt-get update && sudo apt-get install -y libxml2-dev
+      - run: sudo .circleci/install_lpass.sh master
       - run: echo $LASTPASS_PASSWORD | LPASS_DISABLE_PINENTRY=1 lpass login ${LASTPASS_EMAIL}
       - run: lpass show --notes 'citizenlab back-secret.env' > env_files/back-secret.env
       - run: lpass show --notes 'citizenlab front-secret.env' > env_files/front-secret.env
@@ -174,7 +175,7 @@ jobs:
     executor:
       name: cl2-back
       image-tag: amd64-$CIRCLE_SHA1
-    working_directory: /cl2_back
+    working_directory: /citizenlab/back
     environment:
       RAILS_ENV: development
     steps:
@@ -185,7 +186,7 @@ jobs:
     executor:
       name: cl2-back
       image-tag: amd64-$CIRCLE_SHA1
-    working_directory: /cl2_back
+    working_directory: /citizenlab/back
     steps:
       - run: bundle exec license_finder
 
@@ -226,7 +227,7 @@ jobs:
     executor:
       name: cl2-back
       image-tag: amd64-$CIRCLE_SHA1
-    working_directory: /cl2_back
+    working_directory: /citizenlab/back
     environment:
       RAILS_ENV: development
     steps:
@@ -237,7 +238,7 @@ jobs:
     executor:
       name: cl2-back
       image-tag: amd64-$CIRCLE_SHA1
-    working_directory: /cl2_back
+    working_directory: /citizenlab/back
     parallelism: 8
     environment:
       RAILS_ENV: test
@@ -256,7 +257,7 @@ jobs:
     executor:
       name: cl2-back
       image-tag: amd64-$CIRCLE_SHA1
-    working_directory: /cl2_back
+    working_directory: /citizenlab/back
     environment:
       RAILS_ENV: test
     steps:
@@ -278,7 +279,7 @@ jobs:
     executor:
       name: cl2-back
       image-tag: amd64-$CIRCLE_SHA1
-    working_directory: /cl2_back
+    working_directory: /citizenlab/back
     steps:
       - attach_workspace:
           at: /tmp/workspace
@@ -289,7 +290,7 @@ jobs:
     executor:
       name: cl2-back
       image-tag: amd64-$CIRCLE_SHA1
-    working_directory: /cl2_back
+    working_directory: /citizenlab/back
     environment:
       RAILS_ENV: test
     steps:
@@ -718,7 +719,7 @@ jobs:
   # E2E TESTS
   e2e-setup-db:
     docker:
-      - image: cimg/base:2024.08
+      - image: cimg/base:2026.01
     working_directory: ~/citizenlab
     resource_class: medium
     parameters:
@@ -735,7 +736,7 @@ jobs:
           cd e2e
           docker compose run web bin/rails db:drop db:create db:schema:load
           docker compose run web bin/rails "cl2_back:create_tenant[e2e.front,e2etests_template]"
-      - run: docker cp $(docker ps -lq):/cl2_back/public/uploads .
+      - run: docker cp $(docker ps -lq):/citizenlab/back/public/uploads .
       - run: |
           cd e2e
           docker cp -a $(docker compose ps -q postgres):/var/lib/postgresql/data ../postgresql-data
@@ -751,7 +752,7 @@ jobs:
 
   e2e-setup-front:
     docker:
-      - image: cimg/base:2024.08
+      - image: cimg/base:2026.01
     resource_class: large
     parameters:
       docker_layer_caching:
@@ -778,7 +779,7 @@ jobs:
             - build
   e2e-tests:
     docker:
-      - image: cimg/base:2024.08
+      - image: cimg/base:2026.01
     parameters:
       parallelism:
         type: integer
@@ -809,7 +810,7 @@ jobs:
             WEB_CONTAINER_ID=$(docker compose ps -a -q web)
             FRONT_CONTAINER_ID=$(docker compose ps -a -q front)
             POSTGRES_CONTAINER_ID=$(docker compose ps -a -q postgres)
-            docker cp ../uploads/. $WEB_CONTAINER_ID:/cl2_back/public/uploads
+            docker cp ../uploads/. $WEB_CONTAINER_ID:/citizenlab/back/public/uploads
             docker cp ../build $FRONT_CONTAINER_ID:/front/build
             docker cp ../postgresql-data/. $POSTGRES_CONTAINER_ID:/var/lib/postgresql/data
       - run:
@@ -1114,6 +1115,19 @@ workflows:
           env_file: ".env-web"
           stack_name: "cl2"
           cluster_name: "uk"
+      - back-deploy-to-swarm:
+          name: Deploy to Australia
+          requires:
+            - back-push-deployment-docker-image
+          filters:
+            branches:
+              only:
+                - production
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_AUS
+          compose_file: docker-compose-production.yml
+          stack_name: cl2
+          env_file: ".env-web"
+          cluster_name: "aus"
 
   # FRONT-END
   front:
@@ -1339,6 +1353,15 @@ workflows:
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
           env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "Australia"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_AUS
+          env_file: ".env-web"
       - back-test-tenant-templates:
           context:
             - docker-hub-access
@@ -1354,6 +1377,7 @@ workflows:
             - "Canada"
             - "US West"
             - "UK"
+            - "Australia"
       - back-release-tenant-templates:
           context:
             - docker-hub-access
@@ -1450,6 +1474,15 @@ workflows:
           <<: *slack-fail-post-step-templates
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
           env_file: ".env-web"
+      - back-generate-tenant-templates:
+          name: "Australia"
+          context:
+            - docker-hub-access
+            - citizenlab-ee-environment
+            - slack-dev-notifications-tenant-templates
+          <<: *slack-fail-post-step-templates
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_AUS
+          env_file: ".env-web"
       - back-test-tenant-templates:
           context:
             - docker-hub-access
@@ -1465,6 +1498,7 @@ workflows:
             - "Canada"
             - "US West"
             - "UK"
+            - "Australia"
       - back-release-tenant-templates:
           context:
             - docker-hub-access
@@ -1536,6 +1570,13 @@ workflows:
       #       - slack-dev-notifications-inconsistent-data
       #     ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_UK
       #     env_file: ".env-web"
+      - check-for-inconsistent-data:
+          <<: *slack-fail-post-step-inconsistent-data
+          name: "Australia"
+          context:
+            - slack-dev-notifications-inconsistent-data
+          ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_AUS
+          env_file: ".env-web"
       - slack-invalid-data-success:
           name: ":tada: SUCCESS: No invalid data was detected!" # Mentions are not supported for basic_success_1
           context:
@@ -1545,6 +1586,7 @@ workflows:
             - "Canada"
             - "US West"
       #     - "UK"
+            - "Australia"
 
   manual-chromatic:
     when: << pipeline.parameters.chromatic >>

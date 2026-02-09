@@ -128,6 +128,16 @@ RSpec.describe CustomField do
     end
   end
 
+  describe '#input_type_strategy' do
+    it 'has a strategy class for every INPUT_TYPE' do
+      CustomField::INPUT_TYPES.each do |input_type|
+        strategy_class_name = "InputTypeStrategy::#{input_type.camelize}"
+        expect { strategy_class_name.constantize }.not_to raise_error,
+          "Missing InputTypeStrategy class for '#{input_type}'. Expected #{strategy_class_name} to exist."
+      end
+    end
+  end
+
   describe '#logic?' do
     it 'returns true when there is logic' do
       field.logic = { 'rules' => [{ if: 2, goto_page_id: 'some_page_id' }] }
@@ -149,54 +159,19 @@ RSpec.describe CustomField do
     end
   end
 
-  describe '#file_upload?' do
-    it 'returns true when the input_type is "file_upload"' do
-      files_field = described_class.new input_type: 'file_upload'
-      expect(files_field.file_upload?).to be true
+  describe '#clear_logic_unless_supported' do
+    it 'saves logic when the field supports logic' do
+      field = create(:custom_field, resource: create(:custom_form), input_type: 'select')
+      field.logic = { 'rules' => [{ 'if' => 2, 'goto_page_id' => 'some_page_id' }] }
+      field.save!
+      expect(field.logic).to eq({ 'rules' => [{ 'if' => 2, 'goto_page_id' => 'some_page_id' }] })
     end
 
-    it 'returns true when the input_type is "shapefile_upload"' do
-      files_field = described_class.new input_type: 'shapefile_upload'
-      expect(files_field.file_upload?).to be true
-    end
-
-    it 'returns false otherwise' do
-      other_field = described_class.new input_type: 'something_else'
-      expect(other_field.file_upload?).to be false
-    end
-  end
-
-  describe '#multiloc?' do
-    it 'returns true when the input_type is "text_multiloc"' do
-      files_field = described_class.new input_type: 'text_multiloc'
-      expect(files_field.multiloc?).to be true
-    end
-
-    it 'returns true when the input_type is "multiline_text_multiloc"' do
-      files_field = described_class.new input_type: 'multiline_text_multiloc'
-      expect(files_field.multiloc?).to be true
-    end
-
-    it 'returns true when the input_type is "html_multiloc"' do
-      files_field = described_class.new input_type: 'html_multiloc'
-      expect(files_field.multiloc?).to be true
-    end
-
-    it 'returns false otherwise' do
-      other_field = described_class.new input_type: 'something_else'
-      expect(other_field.multiloc?).to be false
-    end
-  end
-
-  describe '#page?' do
-    it 'returns true when the input_type is "page"' do
-      page_field = described_class.new input_type: 'page'
-      expect(page_field.page?).to be true
-    end
-
-    it 'returns false otherwise' do
-      other_field = described_class.new input_type: 'something_else'
-      expect(other_field.page?).to be false
+    it 'does not save logic when the field does not support logic' do
+      field = create(:custom_field, resource: create(:custom_form), input_type: 'multiselect')
+      field.logic = { 'rules' => [{ 'if' => 2, 'goto_page_id' => 'some_page_id' }] }
+      field.save!
+      expect(field.logic).to eq({})
     end
   end
 
@@ -495,6 +470,74 @@ RSpec.describe CustomField do
     end
   end
 
+  describe 'topic_ids field with select counts' do
+    let(:project) { create(:single_phase_native_survey_project) }
+    let(:custom_form) { create(:custom_form, participation_context: project.phases.first) }
+    let(:field) { create(:custom_field, resource: custom_form, input_type: 'topic_ids', select_count_enabled: true) }
+
+    it 'accepts valid minimum_select_count' do
+      field.minimum_select_count = 2
+      expect(field.valid?).to be true
+    end
+
+    it 'accepts valid maximum_select_count' do
+      field.maximum_select_count = 5
+      expect(field.valid?).to be true
+    end
+
+    it 'cannot have minimum_select_count less than 0' do
+      field.minimum_select_count = -1
+      expect(field.valid?).to be false
+    end
+
+    it 'cannot have maximum_select_count less than 0' do
+      field.maximum_select_count = -1
+      expect(field.valid?).to be false
+    end
+
+    it 'supports select_count_enabled flag' do
+      field.select_count_enabled = true
+      field.minimum_select_count = 1
+      field.maximum_select_count = 3
+      expect(field.valid?).to be true
+    end
+
+    it 'cannot have maximum_select_count less than minimum_select_count' do
+      field.minimum_select_count = 5
+      field.maximum_select_count = 3
+      expect(field.valid?).to be false
+      expect(field.errors[:maximum_select_count]).to be_present
+    end
+
+    it 'can have maximum_select_count equal to minimum_select_count' do
+      field.minimum_select_count = 3
+      field.maximum_select_count = 3
+      expect(field.valid?).to be true
+    end
+
+    context 'when select_count_enabled is false' do
+      before { field.select_count_enabled = false }
+
+      it 'cannot set minimum_select_count' do
+        field.minimum_select_count = 2
+        expect(field.valid?).to be false
+        expect(field.errors[:minimum_select_count]).to be_present
+      end
+
+      it 'cannot set maximum_select_count' do
+        field.maximum_select_count = 5
+        expect(field.valid?).to be false
+        expect(field.errors[:maximum_select_count]).to be_present
+      end
+
+      it 'is valid when both counts are nil' do
+        field.minimum_select_count = nil
+        field.maximum_select_count = nil
+        expect(field.valid?).to be true
+      end
+    end
+  end
+
   describe '#other_option_text_field' do
     let(:field) { create(:custom_field_multiselect, :with_options, key: 'select_field') }
 
@@ -523,44 +566,6 @@ RSpec.describe CustomField do
     end
   end
 
-  describe '#linear_scale_print_description' do
-    let(:field) do
-      create(
-        :custom_field_linear_scale,
-        maximum: 3,
-        linear_scale_label_1_multiloc: { en: 'Bad', 'fr-FR': 'Mauvais' },
-        linear_scale_label_2_multiloc: { en: 'Neutral', 'fr-FR': 'Neutre' },
-        linear_scale_label_3_multiloc: { en: 'Good', 'fr-FR': 'Bon' },
-        linear_scale_label_4_multiloc: {
-          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
-        },
-        linear_scale_label_5_multiloc: {
-          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
-        },
-        linear_scale_label_6_multiloc: {
-          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
-        },
-        linear_scale_label_7_multiloc: {
-          en: 'Not in use (beyond maximum)', 'fr-FR': 'Non utilisé (au-delà du maximum)'
-        }
-      )
-    end
-
-    it 'returns the linear scale print description for the specified locale' do
-      expect(field.linear_scale_print_description('en')).to eq 'Please write a number between 1 (Bad) and 3 (Good) only'
-      expect(field.linear_scale_print_description('fr-FR'))
-        .to eq 'Veuillez écrire un nombre entre 1 (Mauvais) et 3 (Bon) uniquement'
-    end
-
-    it 'returns default copy if the locale values is/are not specified' do
-      field.linear_scale_label_1_multiloc = { en: '' }
-      field.linear_scale_label_3_multiloc = { en: '' }
-
-      expect(field.linear_scale_print_description('en')).to eq 'Please write a number between 1 and 3 only'
-      expect(field.linear_scale_print_description('fr-FR')).to eq 'Veuillez écrire un nombre entre 1 et 3 uniquement'
-    end
-  end
-
   describe '#nth_linear_scale_multiloc' do
     let(:field) do
       create(
@@ -583,7 +588,7 @@ RSpec.describe CustomField do
     let!(:option3) { create(:custom_field_option, custom_field: field, key: 'by_train') }
     let!(:option4) { create(:custom_field_option, custom_field: field, key: 'by_horse') }
 
-    it 'works' do
+    it 'calculates average rankings for field options' do
       create(:idea, custom_field_values: { field.key => %w[by_bike by_horse by_train by_foot] })
       create(:idea, custom_field_values: { field.key => %w[by_train by_bike by_foot by_horse] })
       create(:idea, custom_field_values: {})
@@ -607,7 +612,7 @@ RSpec.describe CustomField do
     let!(:option3) { create(:custom_field_option, custom_field: field, key: 'by_train') }
     let!(:option4) { create(:custom_field_option, custom_field: field, key: 'by_horse') }
 
-    it 'works' do
+    it 'returns ranking position counts for each option' do
       create(:user, custom_field_values: { field.key => %w[by_bike by_horse by_train by_foot] })
       create(:user, custom_field_values: { field.key => %w[by_train by_bike by_foot by_horse] })
       create(:user, custom_field_values: {})

@@ -20,8 +20,7 @@ import {
   Footer,
   SubmitButton,
   CancelButton,
-} from 'containers/Authentication/steps/AuthProviders/styles';
-
+} from 'components/AuthProviderStyles/styles';
 import Collapse from 'components/UI/Collapse';
 import Error from 'components/UI/Error';
 
@@ -98,7 +97,7 @@ const VerificationFormOostendeRrn = memo<Props & WrappedComponentProps>(
               setFormError(formatMessage(messages.noMatchFormError));
             } else if (
               get(error, 'errors.base[0].error') === 'not_entitled' &&
-              get(error, 'errors.base[0].why') === 'too_young'
+              get(error, 'errors.base[0].why') === 'under_minimum_age'
             ) {
               setFormError(
                 formatMessage(messages.notEntitledTooYoungFormError)

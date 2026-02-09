@@ -10,7 +10,7 @@ describe ProjectCopyService do
       stub_translations
     end
 
-    it 'works' do
+    it 'exports and imports projects with various configurations' do
       load Rails.root.join('db/seeds.rb')
       Apartment::Tenant.switch('localhost') do
         load Rails.root.join('db/seeds.rb')
@@ -29,6 +29,27 @@ describe ProjectCopyService do
           expected_count += 1
           expect(Project.count).to eq expected_count
         end
+      end
+    end
+
+    describe 'new_slug' do
+      let(:new_slug) { 'custom-project-slug' }
+
+      it 'preserves the slug if possible' do
+        template = create(:tenant).switch do
+          service.export create(:project), new_slug:
+        end
+        service.import template
+        expect(Project.find_by(slug: 'custom-project-slug')).to be_present
+      end
+
+      it 'generates a unique variation of the slug if a project with the slug already exists' do
+        template = create(:tenant).switch do
+          service.export create(:project), new_slug:
+        end
+        create(:project, slug: 'custom-project-slug')
+        service.import template
+        expect(Project.find_by(slug: 'custom-project-slug')).to be_present
       end
     end
 
@@ -73,7 +94,7 @@ describe ProjectCopyService do
 
         new_two_phase_project = Project.find_by(title_multiloc: { en: 'two phase' })
         new_survey_phase = new_two_phase_project.phases.order(:start_at).last
-        expect(new_two_phase_project.ideas.map(&:creation_phase_id)).to match_array [nil, new_survey_phase.id]
+        expect(new_two_phase_project.ideas.map(&:creation_phase_id)).to contain_exactly(nil, new_survey_phase.id)
         expect(new_survey_phase.custom_form.custom_fields.pluck(:input_type)).to eq ['text']
         new_field2 = new_survey_phase.custom_form.custom_fields.first
         expect(new_survey_phase.ideas_count).to eq 1
@@ -82,11 +103,8 @@ describe ProjectCopyService do
     end
 
     it 'successfully exports custom field text images' do
-      description_multiloc = {
-        'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />'
-      }
+      description_multiloc = { 'en' => '<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" />' }
       field = create(:custom_field, :for_custom_form, description_multiloc: description_multiloc)
-      field.update! description_multiloc: TextImageService.new.swap_data_images_multiloc(field.description_multiloc, field: :description_multiloc, imageable: field)
 
       template = service.export field.resource.participation_context
 
@@ -128,18 +146,15 @@ describe ProjectCopyService do
 
       expect(template.dig('models', 'custom_field', 0, 'input_type')).to eq 'matrix_linear_scale'
       expect(template['models']['custom_field_matrix_statement'].size).to eq 2
-      expect(template['models']['custom_field_matrix_statement']).to match_array [
-        hash_including(
-          'title_multiloc' => { 'en' => 'We should send more animals into space' },
-          'key' => 'send_more_animals_to_space',
-          'ordering' => 0
-        ),
-        hash_including(
-          'title_multiloc' => { 'en' => 'We should ride our bicycles more often' },
-          'key' => 'ride_bicycles_more_often',
-          'ordering' => 1
-        )
-      ]
+      expect(template['models']['custom_field_matrix_statement']).to contain_exactly(hash_including(
+        'title_multiloc' => { 'en' => 'We should send more animals into space' },
+        'key' => 'send_more_animals_to_space',
+        'ordering' => 0
+      ), hash_including(
+        'title_multiloc' => { 'en' => 'We should ride our bicycles more often' },
+        'key' => 'ride_bicycles_more_often',
+        'ordering' => 1
+      ))
     end
 
     it 'skips custom field values with ID references' do
@@ -199,11 +214,11 @@ describe ProjectCopyService do
 
         expect(CustomMaps::MapConfig.count).to eq 2
         expect(CustomMaps::MapConfig.all.pluck(:zoom_level))
-          .to match_array [map_config1.zoom_level, map_config2.zoom_level]
+          .to contain_exactly(map_config1.zoom_level, map_config2.zoom_level)
 
         expect(CustomMaps::Layer.count).to eq 3
         expect(CustomMaps::Layer.all.pluck(:title_multiloc))
-          .to match_array [layer1.title_multiloc, layer2.title_multiloc, layer3.title_multiloc]
+          .to contain_exactly(layer1.title_multiloc, layer2.title_multiloc, layer3.title_multiloc)
       end
     end
 
@@ -233,7 +248,7 @@ describe ProjectCopyService do
 
         expect(CustomMaps::Layer.count).to eq 2
         expect(CustomMaps::Layer.all.pluck(:title_multiloc))
-          .to match_array [layer1.title_multiloc, layer2.title_multiloc]
+          .to contain_exactly(layer1.title_multiloc, layer2.title_multiloc)
       end
     end
 

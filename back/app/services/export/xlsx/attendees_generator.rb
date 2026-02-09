@@ -11,7 +11,8 @@ module Export
         ]
         columns.reject! { |c| %w[email first_name last_name].include?(c[:header]) } unless view_private_attributes
 
-        xlsx_service.generate_xlsx 'Users', columns, users
+        # We allow duplicate columns here because custom fields can have the same title as built in fields (e.g., "Last name")
+        xlsx_service.generate_xlsx 'Users', columns, users, reject_duplicate_columns: false
       end
     end
   end

@@ -1,3 +1,4 @@
+import { logIn, signUpEmailConformation } from '../../support/auth';
 import { randomString, randomEmail } from '../../support/commands';
 import moment = require('moment');
 
@@ -48,15 +49,7 @@ describe('Light authentication flow', () => {
     cy.get('.e2e-idea-button').first().find('button').should('exist');
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
-    cy.get('input#email').focus().type(randomEmail());
-    cy.get('#e2e-light-flow-email-submit').click();
-
-    cy.get('#e2e-terms-conditions-container .e2e-checkbox').click();
-    cy.get('#e2e-privacy-policy-container .e2e-checkbox').click();
-    cy.get('#e2e-policies-continue').click();
-
-    cy.get('input#code').focus().type('1234');
-    cy.get('#e2e-verify-email-button').click();
+    signUpEmailConformation(cy);
 
     cy.get('#e2e-success-continue-button').click();
 
@@ -73,11 +66,7 @@ describe('Light authentication flow', () => {
     cy.get('.e2e-idea-button').first().find('button').should('exist');
     cy.get('.e2e-idea-button').first().find('button').click({ force: true });
 
-    cy.get('input#email').focus().type('admin@govocal.com');
-    cy.get('#e2e-light-flow-email-submit').click();
-
-    cy.get('input#password').type('democracy2.0');
-    cy.get('#e2e-light-flow-password-submit').click();
+    logIn(cy, 'admin@govocal.com', 'democracy2.0');
 
     cy.location('pathname').should(
       'eq',

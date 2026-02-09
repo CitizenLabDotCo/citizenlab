@@ -76,7 +76,7 @@ const PageTitle = styled.h1`
  `}
 `;
 
-export default () => {
+const IdeasIndexPage = () => {
   const [searchParams] = useSearchParams();
   const sortParam = searchParams.get('sort') as IdeaSortMethod | null;
   const searchParam = searchParams.get('search');
@@ -92,7 +92,7 @@ export default () => {
       sort: sortParam ?? 'trending',
       search: searchParam ?? undefined,
       idea_status: ideaStatusParam ?? undefined,
-      topics: topicsParam ? JSON.parse(topicsParam) : undefined,
+      input_topics: topicsParam ? JSON.parse(topicsParam) : undefined,
       transitive: true,
     }),
     [sortParam, searchParam, ideaStatusParam, topicsParam]
@@ -122,3 +122,5 @@ export default () => {
     </>
   );
 };
+
+export default IdeasIndexPage;

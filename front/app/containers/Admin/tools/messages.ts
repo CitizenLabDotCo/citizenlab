@@ -26,10 +26,10 @@ export default defineMessages({
     id: 'app.containers.Admin.tools.learnMore',
     defaultMessage: 'Learn more',
   },
-  workshopsSupportLink: {
-    id: 'app.containers.Admin.tools.workshopsSupportLink',
+  workshopsSupportLink2: {
+    id: 'app.containers.Admin.tools.workshopsSupportLink2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/4155778-setting-up-an-online-workshop',
+      'https://support.govocal.com/en/articles/527636-setting-up-an-online-workshop',
   },
   widgetTitle: {
     id: 'app.containers.Admin.tools.widgetTitle',
@@ -142,5 +142,27 @@ export default defineMessages({
   esriSaveButtonError: {
     id: 'app.containers.Admin.tools.esriSaveButtonError',
     defaultMessage: 'There was an error saving your key, please try again.',
+  },
+  webhooksTitle: {
+    id: 'app.containers.Admin.tools.webhooksTitle',
+    defaultMessage: 'Webhooks',
+  },
+  webhooksDescription: {
+    id: 'app.containers.Admin.tools.webhooksDescription',
+    defaultMessage:
+      'Configure webhooks to receive real-time notifications when events occur on your platform.',
+  },
+  manageWebhooks: {
+    id: 'app.containers.Admin.tools.manageWebhooks',
+    defaultMessage: 'Manage webhooks',
+  },
+  webhooksImage: {
+    id: 'app.containers.Admin.tools.webhooksImage',
+    defaultMessage: 'Webhooks image',
+  },
+  webhooksDisabled: {
+    id: 'app.containers.Admin.tools.webhooksDisabled',
+    defaultMessage:
+      'Webhooks are not part of your current license. Contact your GovSuccess Manager if you want more info on this.',
   },
 });

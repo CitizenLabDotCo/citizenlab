@@ -15,6 +15,7 @@ class PublishRawEventToSegmentJob < ApplicationJob
     rescue ActiveRecord::RecordNotFound
       # Tenant can't be found, so we don't add anything
     end
-    Analytics&.track(event)
+
+    Analytics.track(event)
   end
 end

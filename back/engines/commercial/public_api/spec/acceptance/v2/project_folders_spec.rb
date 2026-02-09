@@ -53,7 +53,7 @@ resource 'Project Folders' do
         example_request 'Lists project folders with the given publication status' do
           assert_status 200
           expect(json_response_body[:'project_folders/folders'].pluck(:id))
-            .to match_array([archived_project_folder.id])
+            .to contain_exactly(archived_project_folder.id)
         end
       end
     end

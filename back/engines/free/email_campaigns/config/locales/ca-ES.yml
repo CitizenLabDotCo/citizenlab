@@ -259,6 +259,7 @@ ca:
       x_days_ago_by_author: 'fa %{x} dies per %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} ha comentat:'
+      anonymous_user: Usuari anònim
       cta_button: 'Veure el comentari de %{authorFirstName}'
       days_ago: 'fa %{numberOfDays} dies'
       event_description: '%{authorName} ha afegit un comentari nou a la teva plataforma.'
@@ -407,11 +408,13 @@ ca:
       title: '%{requesterName} t''ha convidat a revisar el projecte "%{projectTitle}"'
       event_description: "Actualment, el projecte està en mode esborrany i no és visible per als usuaris. Un cop l'hagis revisat i aprovat, el moderador podrà publicar-lo."
       cta_button: "Revisar el projecte"
+      preheader: '%{requesterName} t''ha convidat a revisar el projecte "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" s''ha aprovat'
       title: '%{reviewerName} va aprovar el projecte "%{projectTitle}"'
       event_description: "El projecte ja està llest per publicar-se. El podeu publicar quan vulgueu!"
       cta_button: "Anar a la configuració del projecte"
+      preheader: '%{reviewerName} ha aprovat el projecte "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
       event_description: '%{organizationName} ha actualitzat l''estat de l''entrada ''%{input_title}'' a la seva plataforma de participació digital.'
@@ -512,9 +515,7 @@ ca:
       subject: '%{organizationName}: última oportunitat per votar %{phaseTitle}'
       preheader: 'Última oportunitat per votar %{phaseTitle} a la plataforma de participació de %{organizationName}'
       title: 'Última oportunitat per votar per %{phaseTitle}'
-      body_1: 'La fase de votació del projecte %{projectTitle} s''acaba demà, a mitjanit.'
-      body_2: 'El temps s''acaba i ens hem adonat que encara no has votat! Actua ara fent clic al botó següent per participar.'
-      body_3: 'En fer-ho, tindreu accés a una sèrie d''opcions i tindreu l''oportunitat de donar la vostra aportació, que és crucial per decidir el futur d''aquest projecte.'
+      event_description: '<p>La fase de votació per al projecte %{projectTitle} finalitza demà a mitjanit.</p><p>El temps s''acaba i hem notat que encara no heu votat! Actua ara simplement fent clic al botó següent per participar.</p><p>En fer-ho, obtindreu accés a una gamma d''opcions i tindreu l''oportunitat de donar la vostra opinió, cosa que és crucial per decidir el futur d''aquest projecte.</p>'
       cta_button: 'Vota'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} resultats de vots revelats!'

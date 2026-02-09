@@ -3,7 +3,7 @@
 class WebApi::V1::UsersController < ApplicationController
   include BlockingProfanity
 
-  before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock]
+  before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock participation_stats]
   skip_before_action :authenticate_user, only: %i[create show check by_slug by_invite ideas_count comments_count]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -20,6 +20,10 @@ class WebApi::V1::UsersController < ApplicationController
 
     # Filter by project participants
     if params[:project].present?
+      # Block access to project participants list if private_attributes_in_export is disabled
+      private_attributes_in_export = AppConfiguration.instance.settings['core']['private_attributes_in_export'] != false
+      raise ActiveRecord::RecordNotFound unless private_attributes_in_export
+
       project = Project.find(params[:project])
       participant_ids = ParticipantsService.new.project_participants(project).pluck(:id)
       @users = @users.where(id: participant_ids)
@@ -113,41 +117,62 @@ class WebApi::V1::UsersController < ApplicationController
 
   # To validate an email without creating a user and return which action to go to next
   def check
-    skip_authorization
-    if User::EMAIL_REGEX.match?(params[:email])
-      @user = User.find_by email: params[:email]
-      if @user&.invite_pending?
-        render json: { errors: { email: [{ error: 'taken_by_invite', value: params[:email], inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
-      elsif @user && !@user&.no_password?
-        render json: raw_json({ action: 'password' })
-      elsif @user&.registration_completed_at.present?
-        render json: raw_json({ action: 'confirm' })
-      else
+    authorize :user, :check?
+    email = params[:user][:email]
+
+    if User::EMAIL_REGEX.match?(email)
+      @user = User.find_by_cimail(email)
+      if @user.nil?
         render json: raw_json({ action: 'terms' })
+      elsif @user.invite_pending?
+        render json: { errors: { email: [{ error: 'taken_by_invite', value: email, inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
+      elsif !@user.no_password?
+        if @user.confirmation_required?
+          # If a user has a password set but still needs to confirm their email,
+          # we send them to the confirm action first.
+          # This situation only exists for legacy users that were created before
+          # we made email confirmation required before being able to set a password
+          RequestConfirmationCodeJob.perform_now(@user)
+          render json: raw_json({ action: 'confirm' })
+        else
+          render json: raw_json({ action: 'password' })
+        end
+      elsif !app_configuration.feature_activated?('user_confirmation')
+        render json: raw_json({ action: 'token' })
+      else
+        if @user.email_confirmation_code_reset_count == 0
+          # If the reset count is zero, we are in the following situation:
+          # The user signed up previously and logged in successfully
+          # by confirming their email, but never set a password.
+          # They are now back to log in again. In this case, we want
+          # to automatically send the confirmation code.
+          # If they would already have a email_confirmation_code_reset_count > 0,
+          # they tried to log in previously and failed. In this case, we don't
+          # automatically resend the code, because otherwise we
+          # might too easily reach the retry limit. So they will
+          # have to request it themselves
+          RequestConfirmationCodeJob.perform_now(@user)
+        end
+        render json: raw_json({ action: 'confirm' })
       end
     else
-      render json: { errors: { email: [{ error: 'invalid', value: params[:email] }] } }, status: :unprocessable_entity
+      render json: { errors: { email: [{ error: 'invalid', value: email }] } }, status: :unprocessable_entity
     end
   end
 
   def create
     @user = User.new
     saved = UserService.upsert_in_web_api(@user, permitted_attributes(@user)) do
-      verify_profanity @user
       authorize @user
     end
     if saved
-      SideFxUserService.new.after_create(@user, current_user)
+      claim_tokens = params.dig(:user, :claim_tokens)
+      SideFxUserService.new.after_create(@user, current_user, claim_tokens:)
+
       render json: WebApi::V1::UserSerializer.new(
         @user,
         params: jsonapi_serializer_params
       ).serializable_hash, status: :created
-    elsif reset_confirm_on_existing_no_password_user?
-      SideFxUserService.new.after_update(@user, current_user)
-      render json: WebApi::V1::UserSerializer.new(
-        @user,
-        params: jsonapi_serializer_params
-      ).serializable_hash, status: :ok
     else
       SideFxUserService.new.after_error(@user, request&.remote_ip)
 
@@ -174,7 +199,16 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def destroy
-    DeleteUserJob.perform_now(@user.id, current_user)
+    delete_participation_data = ActiveModel::Type::Boolean.new.cast(params[:delete_participation_data])
+    ban_email = ActiveModel::Type::Boolean.new.cast(params[:ban_email])
+
+    DeleteUserJob.perform_now(
+      @user.id,
+      current_user,
+      delete_participation_data:,
+      ban_email:,
+      ban_reason: params[:ban_reason]
+    )
     head :ok
   end
 
@@ -221,6 +255,11 @@ class WebApi::V1::UsersController < ApplicationController
     render json: raw_json({ count: count }), status: :ok
   end
 
+  def participation_stats
+    stats = ParticipantsService.new.user_participation_stats(@user)
+    render json: raw_json(stats)
+  end
+
   def update_password
     @user = current_user
     authorize @user
@@ -238,6 +277,19 @@ class WebApi::V1::UsersController < ApplicationController
     end
   end
 
+  # This endpoint is only used when user_confirmation is disabled.
+  def update_email_unconfirmed
+    authorize(current_user)
+    if current_user.update(email: params[:user][:email])
+      render json: WebApi::V1::UserSerializer.new(
+        current_user,
+        params: jsonapi_serializer_params
+      ).serializable_hash
+    else
+      render json: { errors: current_user.errors.details }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def set_user
@@ -245,28 +297,6 @@ class WebApi::V1::UsersController < ApplicationController
     authorize @user
   rescue ActiveRecord::RecordNotFound
     send_error(nil, 404)
-  end
-
-  def reset_confirm_on_existing_no_password_user?
-    return false unless app_configuration.feature_activated?('user_confirmation')
-
-    original_user = @user
-    errors = original_user.errors.details[:email]
-    return false unless errors.any? { |hash| hash[:error] == :taken }
-
-    existing_user = User.find_by(email: @user.email)
-    return false unless existing_user
-    return false unless existing_user.no_password?
-
-    # If any attributes try to change then ignore this found user
-    existing_user.assign_attributes(permitted_attributes(existing_user))
-    return false if existing_user.changed?
-
-    @user = existing_user
-    @user.reset_confirmation_and_counts
-    return false unless @user.save
-
-    true
   end
 
   def sort_by_sort_param
@@ -307,6 +337,13 @@ class WebApi::V1::UsersController < ApplicationController
       attrs[:onboarding] = @user.onboarding.merge(attrs[:onboarding].to_h)
       attrs[:custom_field_values] = params_service.updated_custom_field_values(@user.custom_field_values, attrs[:custom_field_values].to_h)
       CustomFieldService.new.compact_custom_field_values!(attrs[:custom_field_values])
+
+      first_name = attrs[:first_name]
+      last_name = attrs[:last_name]
+
+      if @user.first_name.blank? && @user.last_name.blank? && first_name.present? && last_name.present?
+        attrs[:slug] = UserSlugService.new.generate_slug(@user, [first_name, last_name].compact.join(' '))
+      end
 
       # Even if the feature is not activated, we still want to allow the user to remove
       # their avatar.

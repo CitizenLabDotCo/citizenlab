@@ -24,7 +24,7 @@ const useAddMapLayer = (projectId?: string) => {
     mutationFn: addLayer,
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
-        queryKey: mapConfigKeys.item({ mapConfigId: variables.mapConfigId }),
+        queryKey: mapConfigKeys.item({ id: variables.mapConfigId }),
       });
       if (projectId) {
         queryClient.invalidateQueries({

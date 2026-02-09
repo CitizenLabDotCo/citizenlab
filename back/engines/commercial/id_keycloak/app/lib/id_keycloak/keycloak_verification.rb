@@ -18,8 +18,8 @@ module IdKeycloak
 
     def config_parameters
       %i[
-        ui_method_name
-        domain
+        provider
+        issuer
         client_id
         client_secret
         enabled_for_verified_actions
@@ -29,10 +29,15 @@ module IdKeycloak
 
     def config_parameters_schema
       {
-        ui_method_name: {
+        provider: {
           type: 'string',
-          description: 'The name this verification method will have in the UI',
-          default: 'ID-Porten'
+          title: 'Identity Provider',
+          enum: %w[idporten rheinbahn]
+        },
+        issuer: {
+          private: true,
+          type: 'string',
+          description: 'Full URL to the issuer of the keycloak instance - eg https://keycloak.com/auth/realms/realm-name'
         },
         enabled_for_verified_actions: {
           private: true,
@@ -49,7 +54,7 @@ module IdKeycloak
 
     def exposed_config_parameters
       [
-        :ui_method_name
+        :provider
       ]
     end
 
@@ -70,7 +75,19 @@ module IdKeycloak
     end
 
     def ui_method_name
-      config[:ui_method_name] || name
+      case config[:provider]
+      when 'idporten'
+        'ID-Porten'
+      when 'rheinbahn'
+        'Rheinbahn'
+      else
+        name
+      end
+    end
+
+    # Verification is only enabled for ID-Porten not Rheinbahn
+    def enabled?
+      config[:provider] == 'idporten'
     end
   end
 end

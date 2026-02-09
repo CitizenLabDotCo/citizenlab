@@ -15,7 +15,7 @@ RSpec.describe CarrierwaveTempRemote do
       expect(model['header_bg']).to eq(remote_url)
     end
 
-    it 'downloads and sets image from stored temp remote url when it finishes background job', active_job_inline_adapter: true do
+    it 'downloads and sets image from stored temp remote url when it finishes background job', :active_job_inline_adapter do
       image_assignments = { remote_header_bg_url: remote_url }
       temp_remote.save_urls(model, image_assignments)
       expect(model.reload['header_bg']).to match(/\A.{8}-.{4}-.{4}-.{4}-.{12}\.png\Z/)

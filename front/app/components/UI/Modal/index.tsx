@@ -7,6 +7,7 @@ import {
   fontSizes,
   defaultOutline,
   viewportWidths,
+  ClickOutside,
   isRtl,
 } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
@@ -19,7 +20,6 @@ import styled from 'styled-components';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { trackEventByName } from 'utils/analytics';
-import clickOutside from 'utils/containers/clickOutside';
 import eventEmitter from 'utils/eventEmitter';
 
 import messages from './messages';
@@ -118,7 +118,7 @@ const StyledFocusOn = styled(FocusOn)<{
   justify-content: center;
 `;
 
-const ModalContainer = styled(clickOutside)<{
+const ModalContainer = styled(ClickOutside)<{
   windowHeight: number;
 }>`
   width: 100%;

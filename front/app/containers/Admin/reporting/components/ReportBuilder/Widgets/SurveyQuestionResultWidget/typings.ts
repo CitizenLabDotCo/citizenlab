@@ -1,4 +1,6 @@
-import { GroupMode } from 'api/graph_data_units/requestTypes';
+import { Multiloc } from 'component-library/utils/typings';
+
+import { GroupMode, OptionsSortOrder } from 'api/graph_data_units/requestTypes';
 
 export interface Props {
   projectId?: string;
@@ -9,4 +11,7 @@ export interface Props {
   groupMode?: GroupMode;
   groupFieldId?: string;
   heatmap?: boolean;
+  ariaLabel?: Multiloc;
+  description?: Multiloc;
+  optionsSortOrder?: OptionsSortOrder;
 }

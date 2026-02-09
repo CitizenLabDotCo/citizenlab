@@ -4,6 +4,8 @@ import { Box, Button } from '@citizenlab/cl2-component-library';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 
+import NewLabel from 'components/UI/NewLabel';
+
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
@@ -31,9 +33,11 @@ const AnalysisFileUploader = ({
         })}
         buttonStyle="text"
         iconSize="20px"
+        pr="0px"
         fontSize="s"
         onClick={() => setIsFileSelectionOpen(true)}
       />
+      <NewLabel ml="4px" expiryDate={new Date('2026-01-15')} />
     </Box>
   );
 };

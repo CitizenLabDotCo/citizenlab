@@ -99,27 +99,29 @@ resource 'Permissions' do
     get 'web_api/v1/phases/:phase_id/permissions/:action' do
       let(:action) { @phase.permissions.first.action }
 
-      before do
-        create(:custom_field_gender, enabled: true, required: true)
-        @phase.permissions.first.update!(group_ids: create_list(:group, 2, projects: [@phase.project]).map(&:id), global_custom_fields: true)
-      end
+      context 'with custom fields and groups' do
+        before do
+          create(:custom_field_gender, enabled: true, required: true)
+          @phase.permissions.first.update!(group_ids: create_list(:group, 2, projects: [@phase.project]).map(&:id), global_custom_fields: true)
+        end
 
-      example_request 'Get one permission by action' do
-        expect(status).to eq 200
-        expect(response_data[:id]).to eq @phase.permissions.first.id
-        expect(response_data.dig(:attributes, :permitted_by)).to eq 'users'
-        expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array Group.all.pluck(:id)
-        # TODO: JS - Default Permissions fields will not be returned as relationships - are they needed?
-      end
+        example_request 'Get one permission by action' do
+          expect(status).to eq 200
+          expect(response_data[:id]).to eq @phase.permissions.first.id
+          expect(response_data.dig(:attributes, :permitted_by)).to eq 'users'
+          expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array Group.all.pluck(:id)
+          # TODO: JS - Default Permissions fields will not be returned as relationships - are they needed?
+        end
 
-      example 'Get one group permission', document: false do
-        @phase.permissions.first.update!(permitted_by: 'users')
+        example 'Get one group permission', document: false do
+          @phase.permissions.first.update!(permitted_by: 'users')
 
-        do_request
-        expect(status).to eq 200
-        expect(response_data.dig(:attributes, :permitted_by)).to eq 'users'
-        expect(response_data.dig(:relationships, :groups, :data).count).to eq 2
-        expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array Group.all.pluck(:id)
+          do_request
+          expect(status).to eq 200
+          expect(response_data.dig(:attributes, :permitted_by)).to eq 'users'
+          expect(response_data.dig(:relationships, :groups, :data).count).to eq 2
+          expect(response_data.dig(:relationships, :groups, :data).pluck(:id)).to match_array Group.all.pluck(:id)
+        end
       end
     end
 
@@ -294,214 +296,108 @@ resource 'Permissions' do
     end
 
     get 'web_api/v1/permissions/:action/requirements' do
-      before do
-        @permission = Permission.where(permission_scope_type: nil).first
-        @permission.update!(permitted_by: 'everyone')
-      end
+      context 'with everyone permission' do
+        before do
+          @permission = Permission.where(permission_scope_type: nil).first
+          @permission.update!(permitted_by: 'everyone')
+        end
 
-      let(:action) { @permission.action }
+        let(:action) { @permission.action }
 
-      example_request 'Get the participation requirements of a user in the global scope' do
-        assert_status 200
-        expect(response_data[:attributes]).to eq({
-          permitted: true,
-          disabled_reason: nil,
-          requirements: {
-            authentication: {
-              permitted_by: 'everyone',
-              missing_user_attributes: []
-            },
-            verification: false,
-            custom_fields: {},
-            onboarding: false,
-            group_membership: false
-          }
-        })
+        example_request 'Get the participation requirements of a user in the global scope' do
+          assert_status 200
+          expect(response_data[:attributes]).to eq({
+            permitted: true,
+            disabled_reason: nil,
+            requirements: {
+              authentication: {
+                permitted_by: 'everyone',
+                missing_user_attributes: []
+              },
+              verification: false,
+              custom_fields: {},
+              onboarding: false,
+              group_membership: false
+            }
+          })
+        end
       end
     end
 
     get 'web_api/v1/permissions/:action/requirements' do
-      before do
-        create(:custom_field_birthyear, required: true)
-        create(:custom_field_gender, required: false)
-        create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
-        create(:custom_field, resource_type: 'User', enabled: false, key: 'disabled_field') # Should not be returned
+      context 'with custom fields and onboarding' do
+        before do
+          create(:custom_field_birthyear, required: true)
+          create(:custom_field_gender, required: false)
+          create(:custom_field_checkbox, resource_type: 'User', required: true, key: 'extra_field')
+          create(:custom_field, resource_type: 'User', enabled: false, key: 'disabled_field') # Should not be returned
 
-        @user.update!(
-          email: 'my@email.com',
-          first_name: 'Jack',
-          last_name: nil,
-          password_digest: nil,
-          custom_field_values: { 'gender' => 'male' }
-        )
+          @user.update!(
+            email: 'my@email.com',
+            first_name: 'Jack',
+            last_name: nil,
+            password_digest: nil,
+            custom_field_values: { 'gender' => 'male' }
+          )
 
-        create(:topic, include_in_onboarding: true)
-      end
+          create(:topic, include_in_onboarding: true)
+        end
 
-      let(:action) { 'visiting' }
+        let(:action) { 'visiting' }
 
-      example_request 'Get the global registration requirements when custom fields are asked' do
-        assert_status 200
-        expect(response_data[:attributes]).to eq({
-          permitted: false,
-          disabled_reason: 'user_missing_requirements',
-          requirements: {
-            authentication: {
-              permitted_by: 'users',
-              missing_user_attributes: %w[last_name password]
-            },
-            verification: false,
-            custom_fields: {
-              birthyear: 'required',
-              extra_field: 'required'
-            },
-            onboarding: true,
-            group_membership: false
-          }
-        })
+        example_request 'Get the global registration requirements when custom fields are asked' do
+          assert_status 200
+          expect(response_data[:attributes]).to eq({
+            permitted: false,
+            disabled_reason: 'user_missing_requirements',
+            requirements: {
+              authentication: {
+                permitted_by: 'users',
+                missing_user_attributes: %w[last_name password]
+              },
+              verification: false,
+              custom_fields: {
+                birthyear: 'required',
+                extra_field: 'required'
+              },
+              onboarding: true,
+              group_membership: false
+            }
+          })
+        end
       end
     end
 
     get 'web_api/v1/ideas/:idea_id/permissions/:action/requirements' do
-      before do
-        @permission = @phase.permissions.first
-        @permission.update!(permitted_by: 'users')
-
-        create(:topic, include_in_onboarding: true)
-      end
-
-      let(:action) { @permission.action }
-      let(:idea) { create(:idea, project: @project) }
-      let(:idea_id) { idea.id }
-
-      example_request 'Get the participation requirements of a user in an idea' do
-        assert_status 200
-        expect(response_data[:attributes]).to eq({
-          permitted: true,
-          disabled_reason: nil,
-          requirements: {
-            authentication: {
-              permitted_by: 'users',
-              missing_user_attributes: []
-            },
-            verification: false,
-            custom_fields: {},
-            onboarding: true,
-            group_membership: false
-          }
-        })
-      end
-    end
-
-    get 'web_api/v1/permissions/:action/schema' do
-      let(:action) { 'visiting' }
-
-      context 'without verification' do
+      context 'with user permission and onboarding' do
         before do
-          @permission = Permission.find_by permission_scope_type: nil, action: 'visiting'
-          @field1 = create(:custom_field, required: true)
-          @field2 = create(:custom_field, required: false)
+          @permission = @phase.permissions.first
+          @permission.update!(permitted_by: 'users')
+
+          create(:topic, include_in_onboarding: true)
         end
 
-        example_request 'Get the json and ui schema for a global permission with custom fields' do
+        let(:action) { @permission.action }
+        let(:idea) { create(:idea, project: @project) }
+        let(:idea_id) { idea.id }
+
+        example_request 'Get the participation requirements of a user in an idea' do
           assert_status 200
-          json_response = json_parse response_body
-          expect(json_response.dig(:data, :type)).to eq 'schema'
-          json_attributes = json_response.dig(:data, :attributes)
-          expect(json_attributes[:json_schema_multiloc][:en]).to eq({
-            type: 'object',
-            additionalProperties: false,
-            properties: {
-              @field1.key.to_sym => { type: 'string' },
-              @field2.key.to_sym => { type: 'string' }
-            },
-            required: [@field1.key]
+          expect(response_data[:attributes]).to eq({
+            permitted: true,
+            disabled_reason: nil,
+            requirements: {
+              authentication: {
+                permitted_by: 'users',
+                missing_user_attributes: []
+              },
+              verification: false,
+              custom_fields: {},
+              onboarding: true,
+              group_membership: false
+            }
           })
-          expect(json_attributes[:ui_schema_multiloc]).to be_present
         end
-      end
-
-      context 'with fields locked by verification' do
-        before do
-          create(:custom_field_gender, required: false)
-          Permissions::PermissionsUpdateService.new.update_all_permissions
-
-          user = create(:user)
-          create(:verification, method_name: 'bogus', user: user) # Bogus locks the `gender` custom_field
-
-          header 'Content-Type', 'application/json'
-          header_token_for user
-        end
-
-        example_request 'Locked fields are marked in the UI schema' do
-          assert_status 200
-          expect(response_data[:type]).to eq 'schema'
-          expect(response_data.dig(:attributes, :json_schema_multiloc, :en, :required)).to eq ['gender']
-          expect(response_data.dig(:attributes, :ui_schema_multiloc, :en, :elements).find { |e| e[:scope] == '#/properties/gender' }[:options].to_h).to include({})
-        end
-      end
-    end
-
-    get 'web_api/v1/ideas/:idea_id/permissions/:action/schema' do
-      before do
-        @permission = @project.phases.first.permissions.first
-        @permission.update!(global_custom_fields: false)
-        @field1 = create(:custom_field, required: true)
-        @field2 = create(:custom_field, required: false)
-        create(:permissions_custom_field, permission: @permission, custom_field: @field1, required: false)
-        create(:permissions_custom_field, permission: @permission, custom_field: @field2, required: true)
-      end
-
-      let(:action) { @permission.action }
-      let(:idea) { create(:idea, project: @project, phases: @project.phases) }
-      let(:idea_id) { idea.id }
-
-      example_request 'Get the json and ui schema for an idea permission' do
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :type)).to eq 'schema'
-        json_attributes = json_response.dig(:data, :attributes)
-        expect(json_attributes[:json_schema_multiloc][:en]).to eq({
-          type: 'object',
-          additionalProperties: false,
-          properties: {
-            @field1.key.to_sym => { type: 'string' },
-            @field2.key.to_sym => { type: 'string' }
-          },
-          required: [@field2.key]
-        })
-        expect(json_attributes[:ui_schema_multiloc]).to be_present
-      end
-    end
-
-    get 'web_api/v1/phases/:phase_id/permissions/:action/schema' do
-      before do
-        @permission = @phase.permissions.first
-        @permission.update!(global_custom_fields: false)
-        @field1 = create(:custom_field, required: true)
-        @field2 = create(:custom_field, required: false)
-        create(:permissions_custom_field, permission: @permission, custom_field: @field1, required: false)
-        create(:permissions_custom_field, permission: @permission, custom_field: @field2, required: true)
-      end
-
-      let(:action) { @permission.action }
-      let(:phase_id) { @phase.id }
-
-      example_request 'Get the json and ui schema for a phase permission' do
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response.dig(:data, :type)).to eq 'schema'
-        json_attributes = json_response.dig(:data, :attributes)
-        expect(json_attributes[:json_schema_multiloc][:en]).to eq({
-          type: 'object',
-          additionalProperties: false,
-          properties: {
-            @field1.key.to_sym => { type: 'string' },
-            @field2.key.to_sym => { type: 'string' }
-          },
-          required: [@field2.key]
-        })
-        expect(json_attributes[:ui_schema_multiloc]).to be_present
       end
     end
 
@@ -559,79 +455,113 @@ resource 'Permissions' do
       end
     end
 
-    get 'web_api/v1/ideas/:idea_id/permissions/:action/custom_fields' do
-      before do
-        @permission = @project.phases.first.permissions.first
-        @permission.update!(global_custom_fields: false)
-        @field1 = create(:custom_field, required: true)
-        @field2 = create(:custom_field, required: false)
-        create(:permissions_custom_field, permission: @permission, custom_field: @field1, required: false)
-        create(:permissions_custom_field, permission: @permission, custom_field: @field2, required: true)
+    get 'web_api/v1/permissions/:action/custom_field_options' do
+      let(:action) { 'visiting' }
+
+      context 'without verification' do
+        before do
+          @permission = Permission.find_by permission_scope_type: nil, action: 'visiting'
+          @field1 = create(:custom_field_select, required: true)
+          @field2 = create(:custom_field_select, required: false)
+          create_list(:custom_field_option, 3, custom_field: @field1)
+          create_list(:custom_field_option, 2, custom_field: @field2)
+
+          # Reorder one option to test ordering
+          @reordered_option = @field1.reload.options.last
+          @reordered_option.insert_at(1)
+        end
+
+        example_request 'Get the custom fields for a global permission' do
+          assert_status 200
+          json_response = json_parse response_body
+          expect(json_response[:data]).to be_an(Array)
+          expect(json_response[:data].size).to eq 5
+
+          # Test ordering
+          expect(json_response[:data][1][:id]).to eq @reordered_option.id
+        end
       end
+    end
 
-      let(:action) { @permission.action }
-      let(:idea) { create(:idea, project: @project, phases: @project.phases) }
-      let(:idea_id) { idea.id }
+    get 'web_api/v1/ideas/:idea_id/permissions/:action/custom_fields' do
+      context 'with permission-specific custom fields' do
+        before do
+          @permission = @project.phases.first.permissions.first
+          @permission.update!(global_custom_fields: false)
+          @field1 = create(:custom_field, required: true)
+          @field2 = create(:custom_field, required: false)
+          create(:permissions_custom_field, permission: @permission, custom_field: @field1, required: false)
+          create(:permissions_custom_field, permission: @permission, custom_field: @field2, required: true)
+        end
 
-      example_request 'Get the custom fields for an idea permission' do
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response[:data]).to be_an(Array)
-        expect(json_response[:data].size).to eq 2
+        let(:action) { @permission.action }
+        let(:idea) { create(:idea, project: @project, phases: @project.phases) }
+        let(:idea_id) { idea.id }
 
-        field_codes = json_response[:data].map { |field| field.dig(:attributes, :code) }
-        expect(field_codes).to include(@field1.code, @field2.code)
+        example_request 'Get the custom fields for an idea permission' do
+          assert_status 200
+          json_response = json_parse response_body
+          expect(json_response[:data]).to be_an(Array)
+          expect(json_response[:data].size).to eq 2
 
-        # Check that custom fields are returned with basic attributes
-        field1_data = json_response[:data].find { |field| field.dig(:attributes, :code) == @field1.code }
-        field2_data = json_response[:data].find { |field| field.dig(:attributes, :code) == @field2.code }
-        expect(field1_data[:type]).to eq 'custom_field'
-        expect(field2_data[:type]).to eq 'custom_field'
+          field_codes = json_response[:data].map { |field| field.dig(:attributes, :code) }
+          expect(field_codes).to include(@field1.code, @field2.code)
+
+          # Check that custom fields are returned with basic attributes
+          field1_data = json_response[:data].find { |field| field.dig(:attributes, :code) == @field1.code }
+          field2_data = json_response[:data].find { |field| field.dig(:attributes, :code) == @field2.code }
+          expect(field1_data[:type]).to eq 'custom_field'
+          expect(field2_data[:type]).to eq 'custom_field'
+        end
       end
     end
 
     get 'web_api/v1/phases/:phase_id/permissions/:action/custom_fields' do
-      before do
-        @permission = @phase.permissions.first
-        @permission.update!(global_custom_fields: false)
-        @field1 = create(:custom_field, required: true)
-        @field2 = create(:custom_field, required: false)
-        create(:permissions_custom_field, permission: @permission, custom_field: @field1, required: false)
-        create(:permissions_custom_field, permission: @permission, custom_field: @field2, required: true)
-      end
+      context 'with permission-specific custom fields' do
+        before do
+          @permission = @phase.permissions.first
+          @permission.update!(global_custom_fields: false)
+          @field1 = create(:custom_field, required: true)
+          @field2 = create(:custom_field, required: false)
+          create(:permissions_custom_field, permission: @permission, custom_field: @field1, required: false)
+          create(:permissions_custom_field, permission: @permission, custom_field: @field2, required: true)
+        end
 
-      let(:action) { @permission.action }
-      let(:phase_id) { @phase.id }
+        let(:action) { @permission.action }
+        let(:phase_id) { @phase.id }
 
-      example_request 'Get the custom fields for a phase permission' do
-        assert_status 200
-        json_response = json_parse response_body
-        expect(json_response[:data]).to be_an(Array)
-        expect(json_response[:data].size).to eq 2
+        example_request 'Get the custom fields for a phase permission' do
+          assert_status 200
+          json_response = json_parse response_body
+          expect(json_response[:data]).to be_an(Array)
+          expect(json_response[:data].size).to eq 2
 
-        field_codes = json_response[:data].map { |field| field.dig(:attributes, :code) }
-        expect(field_codes).to include(@field1.code, @field2.code)
+          field_codes = json_response[:data].map { |field| field.dig(:attributes, :code) }
+          expect(field_codes).to include(@field1.code, @field2.code)
 
-        # Check that custom fields are returned with basic attributes
-        field1_data = json_response[:data].find { |field| field.dig(:attributes, :code) == @field1.code }
-        field2_data = json_response[:data].find { |field| field.dig(:attributes, :code) == @field2.code }
-        expect(field1_data[:type]).to eq 'custom_field'
-        expect(field2_data[:type]).to eq 'custom_field'
+          # Check that custom fields are returned with basic attributes
+          field1_data = json_response[:data].find { |field| field.dig(:attributes, :code) == @field1.code }
+          field2_data = json_response[:data].find { |field| field.dig(:attributes, :code) == @field2.code }
+          expect(field1_data[:type]).to eq 'custom_field'
+          expect(field2_data[:type]).to eq 'custom_field'
+        end
       end
     end
 
     get 'web_api/v1/phases/:phase_id/permissions/:action/access_denied_explanation' do
-      before do
-        @permission = @phase.permissions.first
-        @multiloc = { en: '<p>You do not have access because you are not in the right group</p>' }
-        @permission.update!(access_denied_explanation_multiloc: @multiloc)
-      end
+      context 'with access denied explanation' do
+        before do
+          @permission = @phase.permissions.first
+          @multiloc = { en: '<p>You do not have access because you are not in the right group</p>' }
+          @permission.update!(access_denied_explanation_multiloc: @multiloc)
+        end
 
-      let(:action) { @permission.action }
+        let(:action) { @permission.action }
 
-      example_request 'Get the access denied explanation of a phase permission' do
-        assert_status 200
-        expect(response_data[:attributes][:access_denied_explanation_multiloc]).to eq(@multiloc)
+        example_request 'Get the access denied explanation of a phase permission' do
+          assert_status 200
+          expect(response_data[:attributes][:access_denied_explanation_multiloc]).to eq(@multiloc)
+        end
       end
     end
   end

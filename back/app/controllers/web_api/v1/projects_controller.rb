@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::ProjectsController < ApplicationController
-  before_action :set_project, only: %i[show update reorder destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx delete_inputs refresh_preview_token destroy_participation_data]
+  before_action :set_project, only: %i[show update destroy index_xlsx votes_by_user_xlsx votes_by_input_xlsx refresh_preview_token destroy_participation_data]
 
   skip_before_action :authenticate_user
   skip_after_action :verify_policy_scoped, only: :index
@@ -9,15 +9,6 @@ class WebApi::V1::ProjectsController < ApplicationController
   def index
     # Hidden community monitor project not included by default via AdminPublication policy scope
     policy_context[:include_hidden] = true if params[:include_hidden] == 'true'
-
-    # By default, this endpoint will remove unlisted projects that the user cannot moderate.
-    # But if the `remove_all_unlisted` parameter is set to 'true', it will
-    # even remove all unlisted projects.
-    policy_context[:remove_unlisted] = if params[:remove_all_unlisted] == 'true'
-      'remove_all_unlisted'
-    else
-      'remove_unlisted_that_user_cannot_moderate'
-    end
 
     publications = policy_scope(AdminPublication)
     publications = AdminPublicationsFilteringService.new.filter(publications, params.merge(current_user: current_user))
@@ -32,11 +23,24 @@ class WebApi::V1::ProjectsController < ApplicationController
     # Using `pluck(:publication_id)` instead of `select(:publication_id)` also helps if used with `includes`,
     # but it doesn't make any difference with `preload`. Still using it in case the query changes.
     @projects = Project.where(id: publications.pluck(:publication_id)).ordered
+
+    # By default, this endpoint will remove unlisted projects that the user cannot moderate.
+    # But if the `remove_all_unlisted` parameter is set to 'true', it will
+    # even remove all unlisted projects.
+    @projects = if params[:remove_all_unlisted] == 'true'
+      ProjectsListedScopeService.new.remove_unlisted_projects(@projects)
+    else
+      ProjectsListedScopeService.new.remove_unlisted_that_user_cannot_moderate(
+        @projects,
+        current_user
+      )
+    end
+
     @projects = paginate @projects
     @projects = @projects.preload(
       :project_images,
       :areas,
-      :topics,
+      :global_topics,
       :content_builder_layouts, # Defined in ContentBuilder engine
       phases: [:report, { permissions: [:groups] }],
       admin_publication: [:children]
@@ -69,11 +73,8 @@ class WebApi::V1::ProjectsController < ApplicationController
   # OR are archived, ordered by last phase end_at (nulls first), creation date second and ID third.
   # => [Project]
   def index_finished_or_archived
-    # In this widget, we always want to remove all unlisted projects,
-    # even those that the user can moderate.
-    policy_context[:remove_unlisted] = 'remove_all_unlisted'
-
     projects = policy_scope(Project)
+    projects = ProjectsListedScopeService.new.remove_unlisted_projects(projects)
     projects = ProjectsFinderService.new(projects, current_user, params).finished_or_archived
 
     @projects = paginate projects
@@ -89,11 +90,8 @@ class WebApi::V1::ProjectsController < ApplicationController
   # AND (are followed by user OR relate to an idea, area, topic or folder followed by user),
   # ordered by the follow created_at (most recent first).
   def index_for_followed_item
-    # In this widget, we always want to remove all unlisted projects,
-    # even those that the user can moderate.
-    policy_context[:remove_unlisted] = 'remove_all_unlisted'
-
     projects = policy_scope(Project)
+    projects = ProjectsListedScopeService.new.remove_unlisted_projects(projects)
     projects = projects.not_draft
     projects = ProjectsFinderService.new(projects, current_user).followed_by_user
 
@@ -110,11 +108,8 @@ class WebApi::V1::ProjectsController < ApplicationController
   # AND in an active participatory phase (where user can do something).
   # Ordered by the end date of the current phase, soonest first (nulls last).
   def index_with_active_participatory_phase
-    # In this widget, we always want to remove all unlisted projects,
-    # even those that the user can moderate.
-    policy_context[:remove_unlisted] = 'remove_all_unlisted'
-
     projects = policy_scope(Project)
+    projects = ProjectsListedScopeService.new.remove_unlisted_projects(projects)
     projects_and_descriptors = ProjectsFinderService.new(projects, current_user, params).participation_possible
     projects = projects_and_descriptors[:projects]
 
@@ -136,11 +131,8 @@ class WebApi::V1::ProjectsController < ApplicationController
   # Else: Returns all non-draft projects that are visible to user, for the areas user follows or for all-areas.
   # Ordered by created_at, newest first.
   def index_for_areas
-    # In this widget, we always want to remove all unlisted projects,
-    # even those that the user can moderate.
-    policy_context[:remove_unlisted] = 'remove_all_unlisted'
-
     projects = policy_scope(Project)
+    projects = ProjectsListedScopeService.new.remove_unlisted_projects(projects)
     projects = ProjectsFinderService.new(projects, current_user, params).projects_for_areas
 
     @projects = paginate projects
@@ -155,14 +147,11 @@ class WebApi::V1::ProjectsController < ApplicationController
   # Returns all non-draft projects that are visible to user, for the selected topics.
   # Ordered by created_at, newest first.
   def index_for_topics
-    # In this widget, we always want to remove all unlisted projects,
-    # even those that the user can moderate.
-    policy_context[:remove_unlisted] = 'remove_all_unlisted'
-
     projects = policy_scope(Project)
+    projects = ProjectsListedScopeService.new.remove_unlisted_projects(projects)
     projects = projects
       .not_draft
-      .with_some_topics(params[:topics])
+      .with_some_global_topics(params[:topics])
       .order(created_at: :desc)
 
     @projects = paginate projects
@@ -174,11 +163,11 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def index_for_admin
-    # In this endpoint, we only want to remove unlisted projects
-    # that the user cannot moderate.
-    policy_context[:remove_unlisted] = 'remove_unlisted_that_user_cannot_moderate'
-
     projects = policy_scope(Project).not_hidden
+    projects = ProjectsListedScopeService.new.remove_unlisted_that_user_cannot_moderate(
+      projects,
+      current_user
+    )
     projects = ProjectsFinderAdminService.execute(projects, params, current_user: current_user)
 
     projects = paginate projects
@@ -215,7 +204,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   end
 
   def create
-    project = Project.new(permitted_attributes(Project))
+    project = Project.new permitted_attributes(Project)
     sidefx.before_create(project, current_user)
 
     created = Project.transaction do
@@ -285,7 +274,7 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def update
     params[:project][:area_ids] ||= [] if params[:project].key?(:area_ids)
-    params[:project][:topic_ids] ||= [] if params[:project].key?(:topic_ids)
+    params[:project][:global_topic_ids] ||= [] if params[:project].key?(:global_topic_ids)
 
     project_params = permitted_attributes(@project)
 
@@ -433,14 +422,14 @@ class WebApi::V1::ProjectsController < ApplicationController
 
   def check_publication_inconsistencies!
     # This code is meant to be temporary to find the cause of the disappearing admin publication bugs
-    Project.all.each do |project|
+    Project.includes(:admin_publication).each do |project|
       next if project.valid?
 
       errors = project&.errors&.details
 
       # Skip a known case where we expect project to be invalid at this point
       moved_folder = project.admin_publication&.parent_id_was == project.folder_id
-      assignee_error_only = errors == { :default_assignee_id => [{ :error => :assignee_can_not_moderate_project }] }
+      assignee_error_only = errors == { default_assignee_id: [{ error: :assignee_can_not_moderate_project }] }
       next if assignee_error_only && moved_folder
 
       # Validation errors will appear in the Sentry error 'Additional Data'

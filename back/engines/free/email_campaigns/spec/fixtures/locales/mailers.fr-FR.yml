@@ -482,9 +482,7 @@ fr:
       subject: '%{organizationName}: Dernière chance de participer au vote pour %{phaseTitle}'
       preheader: 'Dernière chance prendre part au vote pour %{phaseTitle} sur la plateforme de participation de %{organizationName}'
       title: 'Dernière chance de voter pour %{phaseTitle}'
-      body_1: 'La phase de vote pour le projet %{projectTitle} prendra fin demain, à minuit.'
-      body_2: 'Le temps file, et nous avons remarqué que vous n''avez pas encore voté ! Agissez dès maintenant en cliquant sur le bouton ci-dessous pour participer.'
-      body_3: 'Saisissez cette opportunité pour faire entendre votre voix et contribuer activement à façonner l''avenir du projet.'
+      event_description: '<p>La phase de vote pour le projet %{projectTitle} prendra fin demain, à minuit.</p> <p>Le temps file, et nous avons remarqué que vous n''avez pas encore voté ! Agissez dès maintenant en cliquant sur le bouton ci-dessous pour participer.</p> <p>Saisissez cette opportunité pour faire entendre votre voix et contribuer activement à façonner l''avenir du projet.</p>' 
       cta_button: 'Voter'
     voting_results:
       subject: '%{organizationName}: Les résultats du vote pour %{phaseTitle} sont disponibles !'

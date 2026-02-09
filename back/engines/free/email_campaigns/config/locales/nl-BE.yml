@@ -259,6 +259,7 @@ nl-BE:
       x_days_ago_by_author: '%{x} dagen geleden door %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} schreef:'
+      anonymous_user: Anonieme gebruiker
       cta_button: 'Bekijk de reactie van %{authorFirstName}'
       days_ago: '%{numberOfDays} dagen geleden'
       event_description: '%{authorName} schreef een reactie op je platform. Aarzel niet om aan de discussie deel te nemen en het gesprek gaande te houden!'
@@ -407,11 +408,13 @@ nl-BE:
       title: '%{requesterName} heeft je uitgenodigd om het project "%{projectTitle}" te beoordelen'
       event_description: "Momenteel staat het project in conceptmodus en is het niet zichtbaar voor gebruikers. Zodra je het hebt goedgekeurd, kan de moderator het publiceren."
       cta_button: "Het project beoordelen"
+      preheader: '%{requesterName} heeft je uitgenodigd om het project "%{projectTitle}" te beoordelen'
     project_review_state_change:
       subject: '"%{projectTitle}" is goedgekeurd'
       title: '%{reviewerName} heeft het project "%{projectTitle}" goedgekeurd'
       event_description: "Het project is nu klaar om live te gaan. Je kunt het publiceren wanneer je er klaar voor bent!"
       cta_button: "Ga naar projectinstellingen"
+      preheader: '%{reviewerName} heeft het project "%{projectTitle}" goedgekeurd'
     status_change_on_idea_you_follow:
       status_change: 'De nieuwe status van dit idee is ''%{status}'''
       event_description: '%{organizationName} heeft de status van de input ''%{input_title}'' op hun digitale participatieplatform bijgewerkt.'
@@ -512,9 +515,7 @@ nl-BE:
       subject: '%{organizationName}: Laatste kans om te stemmen voor %{phaseTitle}'
       preheader: 'Laatste kans om te stemmen voor %{phaseTitle} op het participatieplatform van %{organizationName}'
       title: 'Laatste kans om te stemmen voor %{phaseTitle}'
-      body_1: 'De stemfase voor het %{projectTitle} project loopt morgen om middernacht af.'
-      body_2: 'De tijd dringt en we hebben gemerkt dat je nog geen stem hebt uitgebracht! Doe nu mee door op de knop hieronder te klikken.'
-      body_3: 'Door dit te doen krijg je toegang tot een reeks opties en krijg je de kans om je inbreng te geven, wat cruciaal is bij het beslissen over de toekomst van dit project.'
+      event_description: '<p>De stemfase voor het %{projectTitle} project loopt morgen om middernacht ten einde.</p><p>De tijd dringt en we hebben gemerkt dat je je stem nog niet hebt uitgebracht! Doe nu mee door op de knop hieronder te klikken.</p><p>Door dit te doen krijg je toegang tot een reeks opties en heb je de kans om je inbreng te geven, wat cruciaal is bij het beslissen over de toekomst van dit project.</p>'
       cta_button: 'Stem'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} stemresultaten bekendgemaakt!'

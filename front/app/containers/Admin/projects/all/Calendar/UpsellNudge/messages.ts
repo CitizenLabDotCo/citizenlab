@@ -23,9 +23,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.calendar.UpsellNudge.learnMore',
     defaultMessage: 'Learn more',
   },
-  timelineSupportArticle: {
-    id: 'app.containers.Admin.projects.all.calendar.UpsellNudge.timelineSupportArticle',
+  timelineSupportArticle2: {
+    id: 'app.containers.Admin.projects.all.calendar.UpsellNudge.timelineSupportArticle2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/7034763-creating-and-customizing-your-projects#h_ce4c3c0fd9',
+      'https://support.govocal.com/en/articles/527594-creating-and-customizing-your-projects',
   },
 });

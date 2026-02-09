@@ -119,9 +119,9 @@ module Export
       end
 
       def visit_topic_ids(_field)
-        return '' if model.topics.empty?
+        return '' if model.input_topics.empty?
 
-        topic_titles = model.topics.map do |topic|
+        topic_titles = model.input_topics.map do |topic|
           value_for_multiloc topic.title_multiloc
         end
         topic_titles.join(VALUE_SEPARATOR)
@@ -154,7 +154,7 @@ module Export
       end
 
       def value_for_multiloc(maybe_multiloc)
-        maybe_multiloc.is_a?(Hash) ? multiloc_service.t(maybe_multiloc) : ''
+        maybe_multiloc.is_a?(Hash) ? multiloc_service.t(maybe_multiloc, ignore_blank: true) : ''
       end
     end
   end

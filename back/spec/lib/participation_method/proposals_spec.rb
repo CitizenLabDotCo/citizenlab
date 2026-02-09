@@ -16,13 +16,18 @@ RSpec.describe ParticipationMethod::Proposals do
 
   describe '#assign_defaults' do
     context 'when the proposed and prescreening statuses are available' do
+      before_all do
+        SettingsService.new.activate_feature!('prescreening')
+        SettingsService.new.activate_feature!('flag_inappropriate_content')
+      end
+
       let!(:ideation_proposed) { create(:idea_status_proposed) }
       let!(:prescreening_status) { create(:proposals_status, code: 'prescreening') }
       let!(:proposed_status) { create(:proposals_status, code: 'proposed') }
       let!(:custom_status) { create(:proposals_status) }
 
-      context 'when the creation phase has reviewing enabled' do
-        let(:phase) { create(:proposals_phase, prescreening_enabled: true) }
+      context 'when prescreening_mode is all' do
+        let(:phase) { create(:proposals_phase, prescreening_mode: 'all') }
 
         it 'assignes the default "prescreening" status if not set' do
           proposal = build(:proposal, idea_status: nil, creation_phase: phase, project: phase.project)
@@ -37,8 +42,24 @@ RSpec.describe ParticipationMethod::Proposals do
         end
       end
 
-      context 'when the creation phase does not have reviewing enabled' do
-        let(:phase) { create(:proposals_phase, prescreening_enabled: false) }
+      context 'when prescreening_mode is flagged_only' do
+        let(:phase) { create(:proposals_phase, prescreening_mode: 'flagged_only') }
+
+        it 'assigns the default "proposed" status and published publication_status' do
+          proposal = build(
+            :proposal, creation_phase: phase, project: phase.project,
+            idea_status: nil, publication_status: nil
+          )
+
+          participation_method.assign_defaults(proposal)
+
+          expect(proposal.idea_status).to eq proposed_status
+          expect(proposal.publication_status).to eq('published')
+        end
+      end
+
+      context 'when prescreening_mode is nil' do
+        let(:phase) { create(:proposals_phase, prescreening_mode: nil) }
 
         it 'assigns the default "proposed" status if not set' do
           proposal = build(:proposal, idea_status: nil, creation_phase: phase, project: phase.project)
@@ -91,18 +112,18 @@ RSpec.describe ParticipationMethod::Proposals do
     describe 'when prescreening is deactivated' do
       before { SettingsService.new.deactivate_feature! 'prescreening' }
 
-      it 'does not set prescreening_enabled' do
+      it 'does not set prescreening_mode' do
         participation_method.assign_defaults_for_phase
-        expect(phase.prescreening_enabled).to be false
+        expect(phase.prescreening_mode).to be_nil
       end
     end
 
     describe 'when prescreening is activated' do
       before { SettingsService.new.activate_feature! 'prescreening' }
 
-      it 'sets prescreening_enabled to false' do
+      it 'does not set prescreening_mode' do
         participation_method.assign_defaults_for_phase
-        expect(phase.prescreening_enabled).to be false
+        expect(phase.prescreening_mode).to be_nil
       end
     end
   end
@@ -229,9 +250,9 @@ RSpec.describe ParticipationMethod::Proposals do
   its(:supports_edits_after_publication?) { is_expected.to be true }
   its(:supports_exports?) { is_expected.to be true }
   its(:supports_input_term?) { is_expected.to be true }
-  its(:supports_inputs_without_author?) { is_expected.to be false }
+  its(:supports_inputs_without_author?) { is_expected.to be true }
   its(:allow_posting_again_after) { is_expected.to eq 0.seconds }
-  its(:supports_permitted_by_everyone?) { is_expected.to be false }
+  its(:supports_permitted_by_everyone?) { is_expected.to be true }
   its(:supports_public_visibility?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }
   its(:supports_submission?) { is_expected.to be true }
@@ -242,7 +263,7 @@ RSpec.describe ParticipationMethod::Proposals do
   its(:form_logic_enabled?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be true }
   its(:supports_custom_field_categories?) { is_expected.to be false }
-  its(:user_fields_in_form?) { is_expected.to be false }
+  its(:user_fields_in_form_enabled?) { is_expected.to be false }
   its(:supports_multiple_phase_reports?) { is_expected.to be false }
   its(:add_autoreaction_to_inputs?) { is_expected.to be(true) }
   its(:everyone_tracking_enabled?) { is_expected.to be false }

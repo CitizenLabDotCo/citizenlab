@@ -22,15 +22,15 @@ module BulkImportIdeas
       end
     end
 
+    private
+
     def authorize_project
       project = Phase.find(params[:id]).project
       authorize project
     end
 
-    private
-
     def user_params(user)
-      params.require(:user).permit(policy(user).permitted_attributes_for_create)
+      params.require(:user).permit(policy(user).permitted_attributes_for_update + [:email])
     end
   end
 end

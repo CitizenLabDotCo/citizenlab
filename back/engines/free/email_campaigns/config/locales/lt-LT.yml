@@ -259,6 +259,7 @@ lt:
       x_days_ago_by_author: '%{x} prieš keletą dienų parašė %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} komentavo:'
+      anonymous_user: Anoniminis naudotojas
       cta_button: 'Peržiūrėti %{authorFirstName}''s komentarą'
       days_ago: '%{numberOfDays} prieš keletą dienų'
       event_description: '%{authorName} pridėjo naują komentarą apie savo platformą.'
@@ -407,11 +408,13 @@ lt:
       title: '%{requesterName} pakvietė peržiūrėti projektą "%{projectTitle}"'
       event_description: "Šiuo metu projektas veikia juodraščio režimu ir nėra matomas naudotojams. Kai jį peržiūrėsite ir patvirtinsite, moderatorius galės jį paskelbti."
       cta_button: "Projekto peržiūra"
+      preheader: '%{requesterName} pakvietė peržiūrėti projektą "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" buvo patvirtintas'
       title: '%{reviewerName} patvirtino projektą "%{projectTitle}"'
       event_description: "Projektas jau parengtas veikti. Galite jį paskelbti, kai tik būsite pasiruošę!"
       cta_button: "Eikite į projekto nustatymus"
+      preheader: '%{reviewerName} patvirtino projektą "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'Naujoji šio įvesties būsena yra ''%{status}'''
       event_description: '%{organizationName} savo skaitmeninėje dalyvavimo platformoje atnaujino įvesties statusą "%{input_title}".'
@@ -512,9 +515,7 @@ lt:
       subject: '%{organizationName}: Paskutinė galimybė balsuoti už %{phaseTitle}'
       preheader: 'Paskutinė galimybė balsuoti už %{phaseTitle} dalyvavimo platformoje %{organizationName}'
       title: 'Paskutinė galimybė balsuoti už %{phaseTitle}'
-      body_1: 'Rytoj, vidurnaktį, baigsis projekto %{projectTitle} balsavimo etapas.'
-      body_2: 'Laikas bėga, o mes pastebėjome, kad dar nebalsavote! Dalyvaukite dabar, tiesiog spustelėdami toliau esantį mygtuką.'
-      body_3: 'Tokiu būdu galėsite susipažinti su įvairiomis galimybėmis ir pareikšti savo nuomonę, kuri yra labai svarbi priimant sprendimus dėl šio projekto ateities.'
+      event_description: '<p>Rytoj, vidurnaktį, baigsis projekto %{projectTitle} balsavimo etapas.</p><p>Laikas bėga, o mes pastebėjome, kad jūs dar nebalsavote! Veikite dabar - tiesiog spustelėkite toliau esantį mygtuką ir dalyvaukite.</p><p>Tai padarę gausite galimybę susipažinti su įvairiomis galimybėmis ir galėsite pareikšti savo nuomonę, kuri yra labai svarbi sprendžiant šio projekto ateitį.</p>'
       cta_button: 'Balsuoti'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} atskleisti balsavimo rezultatai!'

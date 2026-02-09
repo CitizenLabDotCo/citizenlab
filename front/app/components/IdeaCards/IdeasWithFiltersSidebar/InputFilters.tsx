@@ -30,6 +30,7 @@ export interface InputFiltersProps {
   onChangeTopics: (topics: string[] | null) => void;
   handleSortOnChange: (sort: IdeaSortMethod) => void;
   phaseId?: string;
+  projectId?: string;
   showResetButton?: boolean;
   showStatusFilter?: boolean;
   showSearchField?: boolean;
@@ -41,6 +42,7 @@ const InputFilters = ({
   numberOfSearchResults,
   ideaQueryParameters,
   phaseId,
+  projectId,
   showResetButton = true,
   showStatusFilter = true,
   showSearchField = true,
@@ -54,6 +56,7 @@ const InputFilters = ({
     phase?.data.attributes.participation_method || 'ideation'; // Ideation used as fallback here for All Ideas page.
   const isProposalsOrIdeation =
     participationMethod === 'ideation' || participationMethod === 'proposals';
+  const isVoting = participationMethod === 'voting';
 
   return (
     <>
@@ -77,16 +80,24 @@ const InputFilters = ({
           />
         </Box>
       )}
-      <Box mb="20px">
-        <SortingBox handleSortOnChange={handleSortOnChange} phaseId={phaseId} />
-      </Box>
-      <Box mb="20px">
-        <TopicFilterBox
-          selectedTopicIds={ideaQueryParameters.topics}
-          ideaQueryParameters={ideaQueryParameters}
-          onChange={onChangeTopics}
-        />
-      </Box>
+      {!isVoting && (
+        <Box mb="20px">
+          <SortingBox
+            handleSortOnChange={handleSortOnChange}
+            phaseId={phaseId}
+          />
+        </Box>
+      )}
+      {projectId && (
+        <Box mb="20px">
+          <TopicFilterBox
+            projectId={projectId}
+            selectedTopicIds={ideaQueryParameters.input_topics}
+            ideaQueryParameters={ideaQueryParameters}
+            onChange={onChangeTopics}
+          />
+        </Box>
+      )}
       {showStatusFilter && isProposalsOrIdeation && (
         <StatusFilterBox
           participationMethod={participationMethod}

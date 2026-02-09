@@ -364,7 +364,7 @@ export const createNewField = (
     },
     // Set default character limits for text-supporting fields (excluding html_multiloc)
     ...(['text', 'multiline_text', 'text_multiloc'].includes(type) && {
-      min_characters: 3,
+      min_characters: 2,
       max_characters: type === 'text_multiloc' ? 120 : undefined,
     }),
     linear_scale_label_1_multiloc: getInitialLinearScaleLabel({
@@ -477,11 +477,20 @@ export const transformFieldForSubmission = (
         ? field.maximum_select_count
         : null,
       minimum_select_count: field.select_count_enabled
-        ? field.minimum_select_count || '0'
+        ? field.minimum_select_count || 0
         : null,
       select_count_enabled: field.select_count_enabled,
       random_option_ordering: field.random_option_ordering,
       dropdown_layout: field.dropdown_layout,
+    }),
+    ...(field.input_type === 'topic_ids' && {
+      maximum_select_count: field.select_count_enabled
+        ? field.maximum_select_count
+        : null,
+      minimum_select_count: field.select_count_enabled
+        ? field.minimum_select_count || 0
+        : null,
+      select_count_enabled: field.select_count_enabled,
     }),
     ...(field.input_type === 'ranking' && {
       options: field.options || {},

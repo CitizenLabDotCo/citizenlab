@@ -22,6 +22,7 @@ import useUpdatePhase from 'api/phases/useUpdatePhase';
 import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import {
   Section,
@@ -83,6 +84,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
   const formatMessageWithLocale = useFormatMessageWithLocale();
   const { width, containerRef } = useContainerWidthAndHeight();
   const tenantLocales = useAppConfigurationLocales();
+  const phaseInsightsEnabled = useFeatureFlag({ name: 'phase_insights' });
 
   useEffect(() => {
     // Whenever the selected phase changes, we reset the form data.
@@ -306,7 +308,10 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
         setSubmitState('success');
 
         if (redirectAfterSave) {
-          const redirectTab = getTimelineTab(phaseResponse);
+          const redirectTab = getTimelineTab(
+            phaseResponse,
+            phaseInsightsEnabled
+          );
           window.scrollTo(0, 0);
           clHistory.push(
             `/admin/projects/${projectId}/phases/${phaseId}/${redirectTab}`
@@ -391,6 +396,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
                   : formatMessage(messages.phaseTitlePlaceholder)
               }
               onChange={handleTitleMultilocOnChange}
+              className="intercom-admin-phase-name"
             />
             <Error apiErrors={errors && errors.title_multiloc} />
           </SectionField>
@@ -410,7 +416,7 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
             onChange={handlePhaseParticipationConfigChange}
             setValidationErrors={setValidationErrors}
           />
-          <SectionField className="fullWidth">
+          <SectionField className="fullWidth intercom-phase-description-text-input">
             <Box display="flex" alignItems="center">
               <SubSectionTitle>
                 <FormattedMessage {...messages.descriptionLabel} />
@@ -475,7 +481,11 @@ const AdminPhaseEdit = ({ projectId, phase }: Props) => {
           display="flex"
           justifyContent="flex-start"
         >
-          <Box py="8px" px={`${defaultAdminCardPadding}px`}>
+          <Box
+            py="8px"
+            px={`${defaultAdminCardPadding}px`}
+            className="intercom-phase-save-button"
+          >
             <SubmitWrapper
               loading={processing}
               status={submitState}

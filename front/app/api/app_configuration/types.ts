@@ -33,8 +33,9 @@ export type IAppConfigurationSettingsCore = {
   meta_title?: Multiloc | null;
   meta_description?: Multiloc | null;
   google_search_console_meta_attribute?: string | null;
-  login_helper_text?: Multiloc | null;
-  signup_helper_text?: Multiloc | null;
+  enter_email_helper_text?: Multiloc | null;
+  enter_password_helper_text?: Multiloc | null;
+  complete_your_profile_helper_text?: Multiloc | null;
   custom_fields_signup_helper_text?: Multiloc | null;
   color_main: string | null;
   color_secondary: string | null;
@@ -136,6 +137,10 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  acm_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   nemlog_in_login?: {
     allowed: boolean;
     enabled: boolean;
@@ -183,6 +188,7 @@ export interface IAppConfigurationSettings {
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
   flag_inappropriate_content?: AppConfigurationFeature;
+  prescreening_flagged_only?: AppConfigurationFeature;
   disable_disliking?: AppConfigurationFeature;
   blocking_profanity?: AppConfigurationFeature;
   anonymous_participation?: AppConfigurationFeature;
@@ -258,14 +264,20 @@ export interface IAppConfigurationSettings {
   community_monitor?: AppConfigurationFeature & {
     project_id: string;
   };
+  data_repository_transcription?: AppConfigurationFeature;
   data_repository_ai_analysis?: AppConfigurationFeature;
   user_fields_in_surveys?: AppConfigurationFeature;
-  html_pdfs?: AppConfigurationFeature;
   project_planning_calendar?: AppConfigurationFeature;
   common_ground?: AppConfigurationFeature;
   customised_automated_emails?: AppConfigurationFeature;
   customised_automated_context_emails?: AppConfigurationFeature;
   project_importer?: AppConfigurationFeature;
+  idea_feed?: AppConfigurationFeature;
+  nested_input_topics?: AppConfigurationFeature;
+  live_auto_input_topics?: AppConfigurationFeature;
+  workshops?: AppConfigurationFeature;
+  phase_insights?: AppConfigurationFeature;
+  participation_location_tracking?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

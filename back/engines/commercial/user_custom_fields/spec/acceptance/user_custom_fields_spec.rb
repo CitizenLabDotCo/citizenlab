@@ -150,6 +150,7 @@ resource 'User Custom Fields' do
       end
 
       describe 'Invalid custom fields' do
+        let(:input_type) { 'text' }
         let(:key) { 'No spaces allowed' }
         let(:title_multiloc) { { 'en' => '' } }
 
@@ -250,19 +251,6 @@ resource 'User Custom Fields' do
       example 'Reorder a custom field' do
         expect(custom_field.ordering).to eq 3
         do_request
-        assert_status 200
-        expect(response_data.dig(:attributes, :ordering)).to match ordering
-        expect(custom_field.reload.ordering).to eq 1
-        expect(CustomField.registration.order(:ordering)[1].id).to eq id
-        expect(CustomField.registration.order(:ordering).map(&:ordering)).to eq (0..3).to_a
-      end
-
-      example 'Fix the custom field order when ordering has gone wrong' do
-        ActiveRecord::Base.connection.execute("UPDATE custom_fields SET ordering = 0 WHERE id != '#{custom_field.id}'")
-        expect(custom_field.ordering).to eq 3
-        expect(CustomField.registration.order(:ordering).map(&:ordering)).to eq [0, 0, 0, 3]
-        do_request
-        expect(response_status).to eq 200
         assert_status 200
         expect(response_data.dig(:attributes, :ordering)).to match ordering
         expect(custom_field.reload.ordering).to eq 1

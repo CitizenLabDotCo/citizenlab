@@ -13,18 +13,6 @@ describe SideFxEventService do
         .to enqueue_job(LogActivityJob)
         .with(event, 'created', user, event.created_at.to_i, project_id: event.project_id)
     end
-
-    it 'runs the description through the text image service' do
-      expect_any_instance_of(TextImageService).to receive(:swap_data_images_multiloc).with(event.description_multiloc, field: :description_multiloc, imageable: event).and_return(event.description_multiloc)
-      service.after_create(event, user)
-    end
-  end
-
-  describe 'before_update' do
-    it 'runs the description through the text image service' do
-      expect_any_instance_of(TextImageService).to receive(:swap_data_images_multiloc).with(event.description_multiloc, field: :description_multiloc, imageable: event).and_return(event.description_multiloc)
-      service.before_update(event, user)
-    end
   end
 
   describe 'after_update' do

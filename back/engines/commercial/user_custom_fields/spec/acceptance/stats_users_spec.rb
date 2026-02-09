@@ -42,7 +42,7 @@ resource 'Stats - Users' do
   let_it_be(:end_at) { (now - 1.year).end_of_year }
 
   before_all do
-    Tenant.current.update!(created_at: now - 2.years)
+    AppConfiguration.instance.update!(created_at: now - 2.years, platform_start_at: now - 2.years)
 
     create(:custom_field_birthyear)
     create(:custom_field_gender, :with_options)
@@ -441,7 +441,7 @@ resource 'Stats - Users' do
     let(:group) { @group.id }
 
     before do
-      AppConfiguration.instance.update(created_at: start_at)
+      AppConfiguration.instance.update(created_at: start_at, platform_start_at: start_at)
 
       travel_to start_at + 16.days do
         birthyears = [1962, 1976, 1980, 1990, 1991, 2005, 2006]

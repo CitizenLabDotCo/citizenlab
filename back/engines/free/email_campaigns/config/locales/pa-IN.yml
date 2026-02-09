@@ -259,6 +259,7 @@ pa:
       x_days_ago_by_author: '%{x} ਦਿਨ ਪਹਿਲਾਂ %{author}ਦੁਆਰਾ'
     new_comment_for_admin:
       commented: '%{authorFirstName} ਨੇ ਟਿੱਪਣੀ ਕੀਤੀ:'
+      anonymous_user: ਅਗਿਆਤ ਵਰਤੋਂਕਾਰ
       cta_button: '%{authorFirstName}ਦੀ ਟਿੱਪਣੀ ਵੇਖੋ'
       days_ago: '%{numberOfDays} ਦਿਨ ਪਹਿਲਾਂ'
       event_description: '%{authorName} ਨੇ ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ ''ਤੇ ਇੱਕ ਨਵੀਂ ਟਿੱਪਣੀ ਸ਼ਾਮਲ ਕੀਤੀ।'
@@ -407,11 +408,13 @@ pa:
       title: '%{requesterName} ਨੇ ਤੁਹਾਨੂੰ "%{projectTitle}" ਪ੍ਰੋਜੈਕਟ ਦੀ ਸਮੀਖਿਆ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਹੈ।'
       event_description: "ਵਰਤਮਾਨ ਵਿੱਚ, ਪ੍ਰੋਜੈਕਟ ਡਰਾਫਟ ਮੋਡ ਵਿੱਚ ਹੈ ਅਤੇ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਦਿਖਾਈ ਨਹੀਂ ਦੇ ਰਿਹਾ ਹੈ। ਇੱਕ ਵਾਰ ਜਦੋਂ ਤੁਸੀਂ ਇਸਦੀ ਸਮੀਖਿਆ ਅਤੇ ਪ੍ਰਵਾਨਗੀ ਦੇ ਦਿੰਦੇ ਹੋ, ਤਾਂ ਸੰਚਾਲਕ ਇਸਨੂੰ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰਨ ਦੇ ਯੋਗ ਹੋਵੇਗਾ।"
       cta_button: "ਪ੍ਰੋਜੈਕਟ ਦੀ ਸਮੀਖਿਆ ਕਰੋ"
+      preheader: '%{requesterName} ਨੇ ਤੁਹਾਨੂੰ "%{projectTitle}" ਪ੍ਰੋਜੈਕਟ ਦੀ ਸਮੀਖਿਆ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ ਹੈ।'
     project_review_state_change:
       subject: '"%{projectTitle}" ਨੂੰ ਮਨਜ਼ੂਰੀ ਦਿੱਤੀ ਗਈ ਹੈ'
       title: '%{reviewerName} ਨੇ "%{projectTitle}" ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਪ੍ਰਵਾਨਗੀ ਦਿੱਤੀ'
       event_description: "ਇਹ ਪ੍ਰੋਜੈਕਟ ਹੁਣ ਲਾਈਵ ਹੋਣ ਲਈ ਤਿਆਰ ਹੈ। ਤੁਸੀਂ ਜਦੋਂ ਵੀ ਤਿਆਰ ਹੋਵੋ ਇਸਨੂੰ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰ ਸਕਦੇ ਹੋ!"
       cta_button: "ਪ੍ਰੋਜੈਕਟ ਸੈਟਿੰਗਾਂ 'ਤੇ ਜਾਓ"
+      preheader: '%{reviewerName} ਨੇ ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਪ੍ਰਵਾਨਗੀ ਦਿੱਤੀ "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
       event_description: '%{organizationName} ਨੇ ਆਪਣੇ ਡਿਜੀਟਲ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ''%{input_title}'' ਇਨਪੁਟ ਦੀ ਸਥਿਤੀ ਨੂੰ ਅਪਡੇਟ ਕੀਤਾ।'
@@ -512,9 +515,7 @@ pa:
       subject: '%{organizationName}: %{phaseTitle}ਲਈ ਵੋਟ ਪਾਉਣ ਦਾ ਆਖਰੀ ਮੌਕਾ'
       preheader: '%{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ %{phaseTitle} ਲਈ ਵੋਟ ਪਾਉਣ ਦਾ ਆਖਰੀ ਮੌਕਾ'
       title: '%{phaseTitle}ਲਈ ਵੋਟ ਪਾਉਣ ਦਾ ਆਖਰੀ ਮੌਕਾ'
-      body_1: '%{projectTitle} ਪ੍ਰੋਜੈਕਟ ਲਈ ਵੋਟਿੰਗ ਪੜਾਅ ਕੱਲ੍ਹ ਅੱਧੀ ਰਾਤ ਨੂੰ ਸਮਾਪਤ ਹੋ ਰਿਹਾ ਹੈ।'
-      body_2: 'ਸਮਾਂ ਖਤਮ ਹੋ ਰਿਹਾ ਹੈ, ਅਤੇ ਅਸੀਂ ਦੇਖਿਆ ਹੈ ਕਿ ਤੁਸੀਂ ਅਜੇ ਤੱਕ ਆਪਣੀ ਵੋਟ ਨਹੀਂ ਪਾਈ ਹੈ! ਭਾਗ ਲੈਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰਕੇ ਹੁਣੇ ਕਾਰਵਾਈ ਕਰੋ।'
-      body_3: 'ਅਜਿਹਾ ਕਰਨ ਨਾਲ, ਤੁਸੀਂ ਵਿਕਲਪਾਂ ਦੀ ਇੱਕ ਸੀਮਾ ਤੱਕ ਪਹੁੰਚ ਪ੍ਰਾਪਤ ਕਰੋਗੇ ਅਤੇ ਤੁਹਾਡੇ ਕੋਲ ਆਪਣਾ ਇਨਪੁਟ ਪ੍ਰਦਾਨ ਕਰਨ ਦਾ ਮੌਕਾ ਹੋਵੇਗਾ, ਜੋ ਕਿ ਇਸ ਪ੍ਰੋਜੈਕਟ ਦੇ ਭਵਿੱਖ ਦਾ ਫੈਸਲਾ ਕਰਨ ਵਿੱਚ ਮਹੱਤਵਪੂਰਨ ਹੈ।'
+      event_description: '<p> %{projectTitle} ਪ੍ਰੋਜੈਕਟ ਲਈ ਵੋਟਿੰਗ ਪੜਾਅ ਕੱਲ੍ਹ ਅੱਧੀ ਰਾਤ ਨੂੰ ਸਮਾਪਤ ਹੋ ਰਿਹਾ ਹੈ।</p><p>ਸਮਾਂ ਖਤਮ ਹੋ ਰਿਹਾ ਹੈ, ਅਤੇ ਅਸੀਂ ਦੇਖਿਆ ਹੈ ਕਿ ਤੁਸੀਂ ਅਜੇ ਤੱਕ ਆਪਣੀ ਵੋਟ ਨਹੀਂ ਪਾਈ ਹੈ! ਹਿੱਸਾ ਲੈਣ ਲਈ ਹੇਠਾਂ ਦਿੱਤੇ ਬਟਨ ''ਤੇ ਕਲਿੱਕ ਕਰਕੇ ਹੁਣੇ ਕਾਰਵਾਈ ਕਰੋ।</p><p>ਅਜਿਹਾ ਕਰਨ ਨਾਲ, ਤੁਹਾਨੂੰ ਕਈ ਵਿਕਲਪਾਂ ਤੱਕ ਪਹੁੰਚ ਮਿਲੇਗੀ ਅਤੇ ਤੁਹਾਨੂੰ ਆਪਣਾ ਸੁਝਾਅ ਦੇਣ ਦਾ ਮੌਕਾ ਮਿਲੇਗਾ, ਜੋ ਕਿ ਇਸ ਪ੍ਰੋਜੈਕਟ ਦੇ ਭਵਿੱਖ ਦਾ ਫੈਸਲਾ ਲੈਣ ਵਿੱਚ ਮਹੱਤਵਪੂਰਨ ਹੈ।</p>'
       cta_button: 'ਵੋਟ ਦਿਓ'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} ਵੋਟਾਂ ਦੇ ਨਤੀਜੇ ਸਾਹਮਣੇ ਆਏ!'

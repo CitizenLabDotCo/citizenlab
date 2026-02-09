@@ -57,15 +57,11 @@ module EmailCampaigns
       comment = activity.item
       initiator = comment.author
 
-      recipient_ids = []
-      unless initiator&.admin?
-        recipients = User.admin
-        if !initiator.project_moderator?(comment.idea.project_id)
-          recipient_ids = recipients.or(User.project_moderator(comment.idea.project_id)).ids
-        end
+      if initiator && UserRoleService.new.can_moderate?(comment, initiator)
+        return users_scope.none
       end
 
-      users_scope.where(id: recipient_ids)
+      UserRoleService.new.moderators_for(comment, users_scope)
     end
 
     def self.recipient_role_multiloc_key
@@ -94,7 +90,6 @@ module EmailCampaigns
       [{
         event_payload: {
           initiating_user_first_name: comment.author&.first_name,
-          initiating_user_last_name: comment.author&.last_name,
           comment_author_name: comment.author_name,
           comment_body_multiloc: comment.body_multiloc,
           comment_url: Frontend::UrlService.new.model_to_url(comment, locale: Locale.new(recipient.locale)),

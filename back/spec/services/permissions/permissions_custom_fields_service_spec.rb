@@ -18,16 +18,16 @@ describe Permissions::PermissionsCustomFieldsService do
         permission = create(:permission, permitted_by: 'users', global_custom_fields: true)
         fields = service.fields_for_permission(permission)
         expect(fields.count).to eq 2
-        expect(fields.map(&:persisted?)).to match_array [false, false]
-        expect(fields.pluck(:required)).to match_array([true, false])
+        expect(fields.map(&:persisted?)).to contain_exactly(false, false)
+        expect(fields.pluck(:required)).to contain_exactly(true, false)
       end
 
       it 'returns non-persisted default fields when permitted_by "verified"' do
         permission = create(:permission, permitted_by: 'verified', global_custom_fields: true)
         fields = service.fields_for_permission(permission)
         expect(fields.count).to eq 2
-        expect(fields.map(&:persisted?)).to match_array [false, false]
-        expect(fields.pluck(:required)).to match_array([false, true])
+        expect(fields.map(&:persisted?)).to contain_exactly(false, false)
+        expect(fields.pluck(:required)).to contain_exactly(false, true)
       end
 
       it 'returns no permissions fields by default when permitted_by "everyone"' do
@@ -113,12 +113,7 @@ describe Permissions::PermissionsCustomFieldsService do
                 { ruleType: 'custom_field_select', customFieldId: '2a982fca-e026-4173-9ddd-03a8082160dc', predicate: 'is_empty' }
               ])
             ]
-            expect(service.send(:extract_custom_field_ids_from_rules, groups)).to match_array([
-              { :id => '19b2088c-bb8c-4f3c-812d-4a2faf594497', :required => false },
-              { :id => '9b43081c-2ba1-432a-89fb-81cfa243cee7', :required => true },
-              { :id => '8240f6b0-aca3-4151-a8ca-f68a028d0e83', :required => true },
-              { :id => '2a982fca-e026-4173-9ddd-03a8082160dc', :required => false }
-            ])
+            expect(service.send(:extract_custom_field_ids_from_rules, groups)).to contain_exactly({ id: '19b2088c-bb8c-4f3c-812d-4a2faf594497', required: false }, { id: '9b43081c-2ba1-432a-89fb-81cfa243cee7', required: true }, { id: '8240f6b0-aca3-4151-a8ca-f68a028d0e83', required: true }, { id: '2a982fca-e026-4173-9ddd-03a8082160dc', required: false })
           end
         end
       end
@@ -134,20 +129,15 @@ describe Permissions::PermissionsCustomFieldsService do
         end
       end
 
-      it 'returns persisted fields for all permitted_by values (except "everyone")' do
+      it 'returns persisted fields for all permitted_by values' do
         domicile_field = create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_birthyear))
-        %w[everyone_confirmed_email users verified].each do |permitted_by|
+        %w[everyone everyone_confirmed_email users verified].each do |permitted_by|
           permission.update!(permitted_by: permitted_by, global_custom_fields: false)
           fields = service.fields_for_permission(permission)
           expect(fields.count).to eq 1
           expect(fields.first.persisted?).to be true
           expect(fields.first).to eq domicile_field
         end
-
-        # 'everyone' does not support fields by default
-        permission.update!(permitted_by: 'everyone', global_custom_fields: false)
-        fields = service.fields_for_permission(permission)
-        expect(fields.count).to eq 0
       end
 
       it 'returns persisted fields when permitted_by "everyone" and user fields are allowed in survey form' do

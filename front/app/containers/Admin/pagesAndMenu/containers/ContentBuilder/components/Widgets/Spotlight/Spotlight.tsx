@@ -10,10 +10,11 @@ import {
   colors,
   Shimmer,
 } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import { CARD_IMAGE_ASPECT_RATIO_STR } from 'api/project_images/useProjectImages';
 
-import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
+import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 import AvatarBubbles from 'components/AvatarBubbles';
 import Skeleton from 'components/AvatarBubbles/Skeleton';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -45,10 +46,12 @@ const Spotlight = ({
   userCount,
 }: Props) => {
   const isSmallerThanPhone = useBreakpoint('phone');
+  const craftComponentDefaultPadding = useCraftComponentDefaultPadding();
+  const theme = useTheme();
 
   return (
     <Box
-      px={DEFAULT_PADDING}
+      px={craftComponentDefaultPadding}
       pt={isSmallerThanPhone ? DEFAULT_Y_PADDING : '56px'}
       pb="56px"
       w="100%"
@@ -72,7 +75,7 @@ const Spotlight = ({
           </Title>
           {description && (
             <Text as="span">
-              <QuillEditedContent textColor={colors.textSecondary}>
+              <QuillEditedContent textColor={theme.colors.tenantText}>
                 <div dangerouslySetInnerHTML={{ __html: description }} />
               </QuillEditedContent>
             </Text>

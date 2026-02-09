@@ -259,6 +259,7 @@ fi:
       x_days_ago_by_author: '%{x} päivää sitten, kirjoittaja %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} kommentoi:'
+      anonymous_user: Anonyymi käyttäjä
       cta_button: 'Näytä käyttäjän %{authorFirstName}kommentti'
       days_ago: '%{numberOfDays} päivää sitten'
       event_description: '%{authorName} lisäsi uuden kommentin alustallesi.'
@@ -407,11 +408,13 @@ fi:
       title: '%{requesterName} on kutsunut sinut arvostelemaan projektin "%{projectTitle}"'
       event_description: "Projekti on tällä hetkellä luonnostilassa eikä se ole käyttäjien nähtävissä. Kun olet tarkistanut ja hyväksynyt sen, moderaattori voi julkaista sen."
       cta_button: "Tarkista projekti"
+      preheader: '%{requesterName} on kutsunut sinut arvioimaan projektia "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" on hyväksytty'
       title: '%{reviewerName} hyväksyi projektin "%{projectTitle}"'
       event_description: "Projekti on nyt valmis julkaistavaksi. Voit julkaista sen milloin tahansa!"
       cta_button: "Siirry projektin asetuksiin"
+      preheader: '%{reviewerName} hyväksyi projektin "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'Tämän syötteen uusi tila on%{status}'
       event_description: '%{organizationName} päivitti syötteen ''%{input_title}'' tilan digitaalisella osallistumisalustallaan.'
@@ -512,9 +515,7 @@ fi:
       subject: '%{organizationName}: Viimeinen mahdollisuus äänestää %{phaseTitle}'
       preheader: 'Viimeinen mahdollisuus äänestää %{phaseTitle} osallistumisalustalla %{organizationName}'
       title: 'Viimeinen mahdollisuus äänestää %{phaseTitle}'
-      body_1: '%{projectTitle} -projektin äänestysvaihe päättyy huomenna keskiyöllä.'
-      body_2: 'Aika on loppumassa, ja huomasimme, että et ole vielä äänestänyt! Toimi nyt klikkaamalla alla olevaa painiketta osallistuaksesi.'
-      body_3: 'Näin toimimalla saat käyttöösi useita vaihtoehtoja ja sinulla on mahdollisuus antaa mielipiteesi, mikä on ratkaisevan tärkeää tämän projektin tulevaisuudesta päätettäessä.'
+      event_description: '<p> %{projectTitle} -projektin äänestysvaihe päättyy huomenna keskiyöllä.</p><p>Aika on loppumassa, ja huomasimme, ettet ole vielä äänestänyt! Toimi nyt napsauttamalla alla olevaa painiketta osallistuaksesi.</p><p>Näin saat käyttöösi useita vaihtoehtoja ja sinulla on mahdollisuus antaa mielipiteesi, mikä on ratkaisevan tärkeää tämän projektin tulevaisuuden päättämisessä.</p>'
       cta_button: 'Äänestää'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} äänestystulokset paljastettiin!'

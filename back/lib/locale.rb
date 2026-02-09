@@ -38,9 +38,9 @@ class Locale
 
   def fallback_languages
     mapping_without_en = {
-      :'ca-ES' => [:es],
-      :'kl-GL' => [:da],
-      :'lb-LU' => [:de]
+      'ca-ES': [:es],
+      'kl-GL': [:da],
+      'lb-LU': [:de]
     }
     [
       language,
