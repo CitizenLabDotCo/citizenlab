@@ -138,7 +138,7 @@ gem 'omniauth-google-oauth2', '~> 1.2.1'
 
 # Libraries for PDF generation /reading
 gem 'pdf-reader'
-gem 'faraday', '~>  2.14.0'
+gem 'faraday', '~> 2.14.1'
 gem 'faraday-multipart'
 
 # AI
