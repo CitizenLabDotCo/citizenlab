@@ -1407,7 +1407,7 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Partecipazione nel tempo",
   "app.containers.Admin.projects.project.insights.participationRate": "Tasso di partecipazione",
   "app.containers.Admin.projects.project.insights.participationRateExplanationTooltip": "Il numero di partecipanti diviso per il numero di visitatori, espresso in percentuale.",
-  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip": "Il numero di partecipanti unici. Sono esclusi gli iscritti agli eventi e i seguaci del progetto che non hanno partecipato alla fase.",
+  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2": "Il numero di partecipanti unici. Non include gli iscritti all'evento e i seguaci del progetto.",
   "app.containers.Admin.projects.project.insights.populationPercent": "Popolazione (%)",
   "app.containers.Admin.projects.project.insights.proposals.mostLiked": "I più apprezzati",
   "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "Queste proposte hanno avuto il maggior successo",
