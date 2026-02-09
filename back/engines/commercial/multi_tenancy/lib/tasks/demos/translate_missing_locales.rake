@@ -4,29 +4,39 @@
 # identifying records where translations are missing or empty for configured locales.
 #
 # Usage:
-#   rake 'demos:translate_missing_locales[hostname.com]'         - Audit only, report issues
-#   rake 'demos:translate_missing_locales[hostname.com,true]'   - Audit and translate missing locales
+#   rake 'demos:translate_missing_locales[hostname.com,en]'                      - Audit only
+#   rake 'demos:translate_missing_locales[hostname.com,en,true]'                 - Audit and translate
+#   rake 'demos:translate_missing_locales[hostname.com,en,true,nl-NL:fr-BE]'     - With extra locales
+#
+# Parameters:
+#   - host: The tenant hostname
+#   - source_locale: The locale to translate from (must exist in tenant's configured locales)
+#   - translate: Set to 'true' to perform translations, otherwise audit only - to count characters needing translation
+#   - extra_locales: Optional colon-separated list of additional locales (not in app config) to translate to
 #
 # The task will:
 #   1. Find all models with multiloc columns (columns ending in '_multiloc')
-#   2. Check each record's multiloc fields against the tenant's configured locales
+#   2. Check each record's multiloc fields against the tenant's configured locales (plus any extra)
 #   3. Report any locales that are missing or have empty values
 #   4. Optionally translate missing content using Google Translate (or copy in dev mode)
 #   5. Display a summary with issue counts per model and total characters to translate
 #
 # Notes:
 #   - Translations can only be run on demo platforms (lifecycle_stage = 'demo') or local development
-#   - Readonly records (e.g., database views) are skipped
 #   - Records where all locale values are empty are skipped
+#   - Records where the source locale value is missing are skipped (source locale is required)
+#   - If a translation exists for the same language but different locale (e.g., fr-FR exists but fr-BE
+#     is missing), the existing translation is copied instead of calling the translation API
 #   - In development mode, translation just copies the source text (no API calls)
-#   - Translation prefers the main locale as source, falls back to any available locale
 #   - Also processes text values in craftjs_json field of content_builder_layouts
 
 namespace :demos do
   desc 'Audit and optionally translate missing multiloc fields for a demo tenant'
-  task :translate_missing_locales, %i[host translate] => :environment do |_t, args|
-    if args[:host].blank?
-      puts 'Host parameter is required. Usage: rake demos:translate_missing_locales[host,translate]'
+  task :translate_missing_locales, %i[host source_locale translate extra_locales] => :environment do |_t, args|
+    if args[:host].blank? || args[:source_locale].blank?
+      puts 'Host and source_locale parameters are required.'
+      puts 'Usage: rake demos:translate_missing_locales[host,source_locale,translate,extra_locales]'
+      puts 'Example: rake demos:translate_missing_locales[demo.example.com,en,true,nl-NL:fr-BE]'
       next
     end
 
@@ -39,7 +49,8 @@ namespace :demos do
 
     tenant.switch do
       translate_missing = args[:translate].to_s.downcase == 'true'
-      TranslateMissingLocales.run(tenant, translate_missing)
+      extra_locales = args[:extra_locales].to_s.split(':').reject(&:blank?)
+      TranslateMissingLocales.run(tenant, args[:source_locale], translate_missing, extra_locales)
     end
   end
 end
@@ -47,12 +58,14 @@ end
 # rubocop:disable Metrics/ModuleLength
 module TranslateMissingLocales
   class << self
-    attr_accessor :tenant, :translate_missing, :locales, :main_locale, :translation_service,
+    attr_accessor :tenant, :translate_missing, :locales, :source_locale, :extra_locales, :translation_service,
       :issues_found, :translations_made, :total_characters, :model_summary
 
-    def run(tenant, translate_missing)
+    def run(tenant, source_locale, translate_missing, extra_locales = [])
       @tenant = tenant
+      @source_locale = source_locale
       @translate_missing = translate_missing
+      @extra_locales = extra_locales
       @issues_found = 0
       @translations_made = 0
       @total_characters = 0
@@ -70,13 +83,13 @@ module TranslateMissingLocales
 
     def validate_configuration
       @locales = AppConfiguration.instance.settings('core', 'locales')
+      @locales = (@locales + extra_locales).uniq
 
-      if locales.blank?
-        puts 'No locales configured in settings. Skipping.'
+      unless locales.include?(source_locale)
+        puts "ERROR: Source locale '#{source_locale}' is not in configured locales: #{locales.join(', ')}"
         return false
       end
 
-      @main_locale = locales.first
       lifecycle_stage = AppConfiguration.instance.settings('core', 'lifecycle_stage')
       is_demo = lifecycle_stage == 'demo'
 
@@ -95,7 +108,8 @@ module TranslateMissingLocales
       puts "\n#{'=' * 80}"
       puts "Tenant: #{tenant.host}"
       puts '=' * 80
-      puts "Configured locales: #{locales.join(', ')} (main: #{main_locale})"
+      puts "Configured locales: #{locales.join(', ')} (source: #{source_locale})"
+      puts "Extra locales: #{extra_locales.join(', ')}" if extra_locales.any?
       puts "Lifecycle stage: #{AppConfiguration.instance.settings('core', 'lifecycle_stage')}"
       puts "Translate missing: #{translate_missing}"
       puts '-' * 80
@@ -165,11 +179,15 @@ module TranslateMissingLocales
     end
 
     def translate_multiloc_field(model, record, column, value, locales_to_translate)
-      source_locale = find_source_locale(value)
-      return unless source_locale
-
       source_text = value[source_locale]
-      @total_characters += source_text.to_s.length * locales_to_translate.size
+      unless source_text.present?
+        puts "  Skipped #{model.name}##{record.id}.#{column}: source locale '#{source_locale}' not present"
+        return
+      end
+
+      # Count characters for locales that will actually need machine translation
+      # Simulate the translation order to account for same-language copies from earlier translations
+      @total_characters += count_characters_needing_translation(value, locales_to_translate, source_text)
 
       return unless translate_missing
 
@@ -177,17 +195,50 @@ module TranslateMissingLocales
         translate_to_locale(model, record, column, value, source_locale, target_locale, source_text)
       end
 
-      record.update_column(column, value)
+      record.update!(column => value)
     end
 
-    def find_source_locale(value)
-      return main_locale if value[main_locale].present?
+    def count_characters_needing_translation(value, locales_to_translate, source_text)
+      # Simulate the translation process to accurately count characters
+      # As we "translate" each locale, it becomes available for same-language copies
+      simulated_value = value.dup
+      chars_needed = 0
 
-      value.find { |_, v| v.present? }&.first
+      locales_to_translate.each do |locale|
+        if find_same_language_translation(simulated_value, locale)
+          # This locale can be copied from an existing same-language translation
+          simulated_value[locale] = 'copied'
+        else
+          # This locale needs actual translation
+          chars_needed += source_text.to_s.length
+          simulated_value[locale] = 'translated'
+        end
+      end
+
+      chars_needed
+    end
+
+    def language_code(locale)
+      locale.to_s.split('-').first.downcase
+    end
+
+    def find_same_language_translation(value, target_locale)
+      target_language = language_code(target_locale)
+
+      value.find do |locale, text|
+        text.present? && locale != target_locale && language_code(locale) == target_language
+      end
     end
 
     def translate_to_locale(model, record, column, value, source_locale, target_locale, source_text)
-      if Rails.env.development?
+      # Check if there's a same-language translation we can copy instead of translating
+      same_language = find_same_language_translation(value, target_locale)
+      if same_language
+        same_lang_locale, same_lang_text = same_language
+        value[target_locale] = same_lang_text
+        @translations_made += 1
+        puts "  Copied #{model.name}##{record.id}.#{column} from #{same_lang_locale} to #{target_locale} (same language)"
+      elsif Rails.env.development?
         value[target_locale] = source_text
         @translations_made += 1
         puts "  Copied #{model.name}##{record.id}.#{column} from #{source_locale} to #{target_locale} (dev mode)"
@@ -224,7 +275,7 @@ module TranslateMissingLocales
       ContentBuilder::Layout.find_each do |layout|
         layout_issues, layout_modified = process_craftjs_layout(layout)
         craftjs_issues.concat(layout_issues)
-        layout.update_column(:craftjs_json, layout.craftjs_json) if layout_modified
+        layout.update!(craftjs_json: layout.craftjs_json) if layout_modified
       end
 
       report_craftjs_issues(craftjs_issues) if craftjs_issues.any?
@@ -297,18 +348,30 @@ module TranslateMissingLocales
     end
 
     def translate_craftjs_multiloc(multiloc, locales_to_translate)
-      source_locale = find_source_locale(multiloc)
-      return false unless source_locale
-
       source_text = multiloc[source_locale]
-      @total_characters += source_text.to_s.length * locales_to_translate.size
+      unless source_text.present?
+        puts "  Skipped craftjs_json text: source locale '#{source_locale}' not present"
+        return false
+      end
+
+      # Count characters for locales that will actually need machine translation
+      # Simulate the translation order to account for same-language copies from earlier translations
+      @total_characters += count_characters_needing_translation(multiloc, locales_to_translate, source_text)
 
       return false unless translate_missing
 
       modified = false
 
       locales_to_translate.each do |target_locale|
-        if Rails.env.development?
+        # Check if there's a same-language translation we can copy instead of translating
+        same_language = find_same_language_translation(multiloc, target_locale)
+        if same_language
+          same_lang_locale, same_lang_text = same_language
+          multiloc[target_locale] = same_lang_text
+          @translations_made += 1
+          modified = true
+          puts "  Copied craftjs_json text from #{same_lang_locale} to #{target_locale} (same language)"
+        elsif Rails.env.development?
           multiloc[target_locale] = source_text
           @translations_made += 1
           modified = true
