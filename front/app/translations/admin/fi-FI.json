@@ -1407,7 +1407,7 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Osallistuminen ajan kuluessa",
   "app.containers.Admin.projects.project.insights.participationRate": "Osallistumisprosentti",
   "app.containers.Admin.projects.project.insights.participationRateExplanationTooltip": "Osallistujien määrä jaettuna kävijöiden määrällä, ilmaistuna prosentteina.",
-  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip": "Yksittäisten osallistujien määrä. Ei sisällä tapahtumaan rekisteröityneitä eikä projektin seuraajia, jotka eivät ole osallistuneet vaiheeseen.",
+  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2": "Yksittäisten osallistujien määrä. Ei sisällä tapahtumaan ilmoittautuneita eikä projektin seuraajia.",
   "app.containers.Admin.projects.project.insights.populationPercent": "Väkiluku (%)",
   "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Eniten tykätty",
   "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "Nämä ehdotukset saivat eniten kannatusta",
