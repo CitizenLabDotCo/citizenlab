@@ -1407,7 +1407,7 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Participació al llarg del temps",
   "app.containers.Admin.projects.project.insights.participationRate": "Taxa de participació",
   "app.containers.Admin.projects.project.insights.participationRateExplanationTooltip": "El nombre de participants dividit pel nombre de visitants, expressat en percentatge.",
-  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip": "El nombre de participants únics. Exclou els inscrits a l'esdeveniment i els seguidors del projecte que no han participat en la fase.",
+  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2": "El nombre de participants únics. No inclou els inscrits a l'esdeveniment ni els seguidors del projecte.",
   "app.containers.Admin.projects.project.insights.populationPercent": "Població (%)",
   "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Most liked",
   "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "These proposals got the most traction",
