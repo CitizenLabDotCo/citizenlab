@@ -96,4 +96,36 @@ RSpec.describe ContentBuilder::LayoutPolicy do
       end
     end
   end
+
+  describe 'Scope' do
+    subject(:resolved_scope) { described_class::Scope.new(user, ContentBuilder::Layout).resolve }
+
+    context 'when a content_buildable_type raises NotAuthorizedError' do
+      let(:user) { create(:user) }
+      let!(:project) { create(:project) }
+      let!(:accessible_layout) { create(:layout, content_buildable: project) }
+      let!(:homepage_layout) { create(:layout, content_buildable: nil) }
+
+      before do
+        # Create a layout with a content_buildable_type that will raise NotAuthorizedError
+        # We need to stub scope_for to raise the exception for a specific type
+        allow_any_instance_of(described_class::Scope).to receive(:scope_for) do |_instance, klass|
+          if klass == Project
+            raise Pundit::NotAuthorizedError, 'not allowed'
+          end
+          klass.none
+        end
+      end
+
+      it 'filters out layouts that raise NotAuthorizedError and returns accessible layouts' do
+        # The accessible_layout should be filtered out (because scope_for raises exception)
+        # But the homepage_layout (with nil content_buildable_type) should still be included
+        expect(resolved_scope).to contain_exactly(homepage_layout)
+      end
+
+      it 'does not raise an exception' do
+        expect { resolved_scope }.not_to raise_error
+      end
+    end
+  end
 end
