@@ -1,12 +1,19 @@
 import React from 'react';
 
-import { Box, Divider, Title } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Divider,
+  Title,
+  Text,
+  colors,
+} from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 
+import usePhase from 'api/phases/usePhase';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
 
-import useLocalize from 'hooks/useLocalize';
-
 import AvatarBubbles from 'components/AvatarBubbles';
+import T from 'components/T';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import messages from '../messages';
@@ -34,17 +41,19 @@ const TopicsContent = ({
   isMobile = false,
 }: Props) => {
   const { data: project } = useProjectBySlug(slug);
-  const localize = useLocalize();
+  const [searchParams] = useSearchParams();
+  const phaseId = searchParams.get('phase_id');
+  const { data: phase } = usePhase(phaseId);
   const projectId = project?.data.id;
-  const projectTitle = project
-    ? localize(project.data.attributes.title_multiloc)
-    : '';
 
   // When a topic is selected, show only that topic with a back button
-  if (selectedTopicId) {
+  if (selectedTopicId && projectId) {
     return (
       <SelectedTopicContent
+        projectId={projectId}
         topicId={selectedTopicId}
+        topicCount={topicCounts[selectedTopicId] || 0}
+        topicCounts={topicCounts}
         onBack={() => onTopicSelect(null)}
         isMobile={isMobile}
       />
@@ -53,19 +62,17 @@ const TopicsContent = ({
 
   return (
     <>
-      {!isMobile && (
-        <Box mb="24px">
-          <GoBackButton
-            linkTo={`/projects/${slug}`}
-            size="s"
-            customMessage={messages.backToProject}
-          />
-        </Box>
-      )}
-
       <Box px="16px" mb="16px">
+        <GoBackButton
+          linkTo={`/projects/${slug}`}
+          size="s"
+          customMessage={messages.back}
+          iconSize="20px"
+          iconColor={colors.textPrimary}
+          textColor={colors.textPrimary}
+        />
         <Title fontWeight="bold" variant="h2" as="h1">
-          {projectTitle}
+          <T value={phase?.data.attributes.title_multiloc} />
         </Title>
         {projectId && (
           <AvatarBubbles
@@ -73,6 +80,9 @@ const TopicsContent = ({
             size={28}
           />
         )}
+        <Text>
+          <T value={phase?.data.attributes.description_multiloc} supportHtml />
+        </Text>
       </Box>
       <Divider mb="0px" />
       {topicIds

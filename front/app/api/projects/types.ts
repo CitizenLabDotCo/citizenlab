@@ -96,6 +96,7 @@ export interface IProjectAttributes {
   action_descriptors: ActionDescriptors;
   uses_content_builder: boolean;
   listed: boolean;
+  live_auto_input_topics_enabled: boolean;
 }
 
 export type ActionDescriptors = {
@@ -154,7 +155,7 @@ export interface IProjectData {
 }
 
 export type Visibility = 'public' | 'groups' | 'admins';
-type PresentationMode = 'map' | 'card';
+type PresentationMode = 'map' | 'card' | 'feed';
 
 interface ProjectHeaderBgImageSizes {
   large: string | null;
@@ -205,4 +206,5 @@ export interface IUpdatedProjectProperties {
   include_all_areas?: boolean;
   folder_id?: string | null;
   listed?: boolean;
+  live_auto_input_topics_enabled?: boolean;
 }

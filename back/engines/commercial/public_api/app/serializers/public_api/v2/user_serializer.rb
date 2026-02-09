@@ -17,10 +17,6 @@ class PublicApi::V2::UserSerializer < PublicApi::V2::BaseSerializer
     :email_confirmation_code_sent_at,
     :confirmation_required,
     :custom_field_values,
-    # TODO: Add in these additional user stats
-    # :last_access_at,
-    # :first_participated_at,
-    # :average_time_on_platform,
     :status
 
   def status

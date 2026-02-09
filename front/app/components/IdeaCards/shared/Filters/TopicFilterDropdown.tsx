@@ -29,7 +29,7 @@ const TopicFilterDropdown = ({
   const options = useMemo(() => {
     return (
       inputTopics?.data.map((topic) => ({
-        text: localize(topic.attributes.title_multiloc),
+        text: localize(topic.attributes.full_title_multiloc),
         value: topic.id,
       })) ?? []
     );

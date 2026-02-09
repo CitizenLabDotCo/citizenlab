@@ -29,7 +29,10 @@ module ParticipationMethod
     end
 
     def assign_defaults(input)
-      input_status_code = phase&.prescreening_enabled ? 'prescreening' : 'proposed'
+      # Only the `all` prescreening mode starts inputs in prescreening. The `flagged_only`
+      # mode starts inputs as published, and oxicity detection will asynchronously move
+      # flagged inputs to prescreening.
+      input_status_code = phase&.prescreening_all? ? 'prescreening' : 'proposed'
       input.idea_status ||= IdeaStatus.find_by!(code: input_status_code, participation_method: idea_status_method)
       input.publication_status ||= input.idea_status.public_post? ? 'published' : 'submitted'
     end
@@ -39,7 +42,6 @@ module ParticipationMethod
       phase.input_term ||= default_input_term if supports_input_term?
       phase.similarity_threshold_title ||= 0.3
       phase.similarity_threshold_body ||= 0.4
-      phase.ideation_method ||= 'base'
     end
 
     def author_in_form?(user)
@@ -426,11 +428,11 @@ module ParticipationMethod
     end
 
     def supports_inputs_without_author?
-      AppConfiguration.instance.feature_activated?('ideation_accountless_posting')
+      true
     end
 
     def supports_permitted_by_everyone?
-      AppConfiguration.instance.feature_activated?('ideation_accountless_posting')
+      true
     end
 
     def supports_public_visibility?
@@ -442,6 +444,10 @@ module ParticipationMethod
     end
 
     def supports_submission?
+      true
+    end
+
+    def supports_input_topics?
       true
     end
 
@@ -461,14 +467,27 @@ module ParticipationMethod
       true
     end
 
-    def supports_serializing?(attribute)
-      %i[ideation_method].include?(attribute)
+    def user_fields_in_form_enabled?
+      return false if posting_permission.nil?
+
+      posting_permission.user_fields_in_form_enabled?
     end
 
     private
 
     def proposed_budget_in_form?
       true
+    end
+
+    def posting_permission
+      # phase should always be defined,
+      # but for some reason it's not in some unit tests.
+      return nil if phase.nil?
+
+      @posting_permission ||= Permission.find_by(
+        permission_scope_id: phase.id,
+        action: 'posting_idea'
+      )
     end
   end
 end

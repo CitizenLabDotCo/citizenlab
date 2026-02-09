@@ -64,8 +64,6 @@ resource 'Ideas' do
         end
 
         describe 'with everyone permission (accountless posting)' do
-          before { SettingsService.new.activate_feature!('ideation_accountless_posting') }
-
           let(:project) do
             create(:single_phase_ideation_project, phase_attrs: { with_permissions: true }).tap do |project|
               project
@@ -474,7 +472,7 @@ resource 'Ideas' do
         end
 
         describe 'when reviewing is enabled' do
-          before { phase.update!(prescreening_enabled: true) }
+          before { phase.update!(prescreening_mode: 'all') }
 
           example 'Submit a proposal in prescreening', document: false do
             do_request
@@ -517,8 +515,6 @@ resource 'Ideas' do
 
       context 'when visitor' do
         describe "native survey response when permission is 'everyone'" do
-          before { SettingsService.new.activate_feature!('ideation_accountless_posting') }
-
           let(:project) do
             create(:single_phase_native_survey_project, phase_attrs: { with_permissions: true }).tap do |project|
               project.phases.first.permissions.find_by(action: 'posting_idea').update! permitted_by: 'everyone'
@@ -548,6 +544,7 @@ resource 'Ideas' do
         before { header_token_for(resident) }
 
         let(:resident) { create(:user, custom_field_values: { age: 30 }) }
+        let(:publication_status) { 'published' }
 
         example 'does not assign anyone to the created idea', document: false do
           do_request
@@ -724,6 +721,7 @@ resource 'Ideas' do
 
       context 'when resident' do
         let(:resident) { create(:user) }
+        let(:publication_status) { 'published' }
 
         before { header_token_for(resident) }
 

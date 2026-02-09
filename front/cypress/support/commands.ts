@@ -1232,7 +1232,6 @@ function apiCreatePhase({
 
 function apiCreateCustomField(
   fieldName: string,
-  enabled: boolean,
   required: boolean,
   input_type = 'text'
 ) {
@@ -1248,7 +1247,10 @@ function apiCreateCustomField(
       url: 'web_api/v1/users/custom_fields',
       body: {
         custom_field: {
-          enabled,
+          // this should be false! otherwise,
+          // these fields will be added to the global sign up flow
+          // and tests will start failing
+          enabled: false,
           required,
           input_type,
           title_multiloc: {
@@ -1983,7 +1985,6 @@ function createProjectWithNativeSurveyPhase({
   description,
   nativeSurveyButtonMultiloc = { en: 'Take the survey' },
   nativeSurveyTitleMultiloc = { en: 'Survey' },
-  allow_anonymous_participation,
   presentation_mode,
 }: {
   projectTitle?: string;
@@ -2025,7 +2026,6 @@ function createProjectWithNativeSurveyPhase({
           description,
           nativeSurveyButtonMultiloc,
           nativeSurveyTitleMultiloc,
-          allow_anonymous_participation,
           presentation_mode,
         })
         .then((phase) => {

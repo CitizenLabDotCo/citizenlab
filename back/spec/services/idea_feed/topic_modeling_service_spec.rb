@@ -62,12 +62,25 @@ describe IdeaFeed::TopicModelingService do
         service.rebalance_topics!
       end
 
-      it 'creates the returned topics' do
+      it 'creates the returned topics and subtopics' do
         create(:idea, project:, phases: [phase], title_multiloc: { 'en' => 'Finding parking is impossible' }, body_multiloc: { 'en' => "I'm getting tired of the impossible parking situation in the city center. Sometimes I have to drive around for half an hour to find a parking space near my house." })
 
-        expect_any_instance_of(Analysis::LLM::Gemini3Pro).to receive(:chat).and_return([{ 'title_multiloc' => { 'en' => 'Parking', 'fr-FR' => 'Stationnement', 'nl-NL' => 'Parkeren' }, 'description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.', 'fr-FR' => 'Contributions relatives à la disponibilité du stationnement, à la réglementation et aux infrastructures pour les véhicules.', 'nl-NL' => 'Bijdragen met betrekking tot de beschikbaarheid van parkeerplaatsen, regelgeving en infrastructuur voor voertuigen.' } }])
-        expect { service.rebalance_topics! }.to change(InputTopic, :count).from(0).to(1)
-        expect(project.input_topics.count).to eq 1
+        expect_any_instance_of(Analysis::LLM::Gemini3Pro).to receive(:chat).and_return([
+          {
+            'title_multiloc' => { 'en' => 'Parking', 'fr-FR' => 'Stationnement', 'nl-NL' => 'Parkeren' },
+            'description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.', 'fr-FR' => 'Contributions relatives à la disponibilité du stationnement, à la réglementation et aux infrastructures pour les véhicules.', 'nl-NL' => 'Bijdragen met betrekking tot de beschikbaarheid van parkeerplaatsen, regelgeving en infrastructuur voor voertuigen.' },
+            'icon' => '🚗',
+            'problems' => [
+              {
+                'title_multiloc' => { 'en' => 'Lack of parking spaces', 'fr-FR' => 'Manque de places de stationnement', 'nl-NL' => 'Gebrek aan parkeerplaatsen' },
+                'description_multiloc' => { 'en' => 'How can we address the shortage of parking spaces in busy urban areas?', 'fr-FR' => 'Comment pouvons-nous remédier à la pénurie de places de stationnement dans les zones urbaines très fréquentées ?', 'nl-NL' => 'Hoe kunnen we het tekort aan parkeerplaatsen in drukke stedelijke gebieden aanpakken?' }
+              }
+            ]
+          }
+        ])
+        expect { service.rebalance_topics! }.to change(InputTopic, :count).from(0).to(2)
+        expect(project.input_topics.count).to eq 2
+        expect(project.input_topics.pluck(:depth)).to contain_exactly(0, 1)
       end
     end
 
@@ -80,16 +93,56 @@ describe IdeaFeed::TopicModelingService do
         ]
       end
 
+      it 'maps matching old topics to new topics and recreates subtopics' do
+        create(:idea, project:, phases: [phase], title_multiloc: { 'en' => 'Finding parking is impossible' }, body_multiloc: { 'en' => "I'm getting tired of the impossible parking situation in the city center. Sometimes I have to drive around for half an hour to find a parking space near my house." })
+
+        allow_any_instance_of(Analysis::LLM::Gemini3Pro).to receive(:chat).and_return(
+          # First call: topic model returns new topics
+          [
+            {
+              'title_multiloc' => { 'en' => 'Parking', 'fr-FR' => 'Stationnement', 'nl-NL' => 'Parkeren' },
+              'description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.', 'fr-FR' => 'Contributions relatives à la disponibilité du stationnement, à la réglementation et aux infrastructures pour les véhicules.', 'nl-NL' => 'Bijdragen met betrekking tot de beschikbaarheid van parkeerplaatsen, regelgeving en infrastructuur voor voertuigen.' },
+              'icon' => '🚗',
+              'problems' => [
+                {
+                  'title_multiloc' => { 'en' => 'Lack of parking spaces', 'fr-FR' => 'Manque de places de stationnement', 'nl-NL' => 'Gebrek aan parkeerplaatsen' },
+                  'description_multiloc' => { 'en' => 'How can we address the shortage of parking spaces in busy urban areas?', 'fr-FR' => 'Comment pouvons-nous remédier à la pénurie de places de stationnement dans les zones urbaines très fréquentées ?', 'nl-NL' => 'Hoe kunnen we het tekort aan parkeerplaatsen in drukke stedelijke gebieden aanpakken?' }
+                }
+              ]
+            }
+          ],
+          # Second call: mapping - OLD-1 (Parking areas) maps to NEW-1 (Parking), others are removed
+          {
+            'OLD-1' => { 'new_topic_id' => 'NEW-1', 'adjusted_topic_title_multiloc' => { 'en' => 'Parking', 'fr-FR' => 'Stationnement', 'nl-NL' => 'Parkeren' }, 'adjusted_topic_description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.', 'fr-FR' => 'Contributions relatives à la disponibilité du stationnement, à la réglementation et aux infrastructures pour les véhicules.', 'nl-NL' => 'Bijdragen met betrekking tot de beschikbaarheid van parkeerplaatsen, regelgeving en infrastructuur voor voertuigen.' } },
+            'OLD-2' => { 'new_topic_id' => nil },
+            'OLD-3' => { 'new_topic_id' => nil }
+          }
+        )
+
+        expect { service.rebalance_topics! }.to change(InputTopic, :count).from(3).to(2)
+        expect(project.input_topics.count).to eq 2
+        expect(project.input_topics.reload.pluck(:depth)).to contain_exactly(0, 1)
+        # The first old topic should be updated (not recreated)
+        expect(old_topics[0].reload.title_multiloc['en']).to eq 'Parking'
+        # The subtopic should be created under the updated topic
+        expect(old_topics[0].children.count).to eq 1
+        expect(old_topics[0].children.first.title_multiloc['en']).to eq 'Lack of parking spaces'
+      end
+
       it 'updates changed topics, creates new topics, and removes obsolete topics' do
         create(:idea, project:, phases: [phase], title_multiloc: { 'en' => 'Finding parking is impossible' }, body_multiloc: { 'en' => "I'm getting tired of the impossible parking situation in the city center. Sometimes I have to drive around for half an hour to find a parking space near my house." })
 
-        allow_any_instance_of(Analysis::LLM::Gemini3Pro).to receive(:chat).and_return([
-          { 'title_multiloc' => { 'en' => 'Public Transportation' }, 'description_multiloc' => { 'en' => 'Ideas about public transportation systems and services' } },
-          { 'title_multiloc' => { 'en' => 'Parking' }, 'description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.' } }
-        ],
-          { 'OLD-1' => { 'new_topic_id' => 'NEW-2', 'adjusted_topic_description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.', 'fr-FR' => 'Contributions relatives à la disponibilité du stationnement, à la réglementation et aux infrastructures pour les véhicules.', 'nl-NL' => 'Bijdragen met betrekking tot de beschikbaarheid van parkeerplaatsen, regelgeving en infrastructuur voor voertuigen.' }, 'adjusted_topic_title_multiloc' => { 'en' => 'Parking', 'fr-FR' => 'Stationnement', 'nl-NL' => 'Parkeren' } },
+        allow_any_instance_of(Analysis::LLM::Gemini3Pro).to receive(:chat).and_return(
+          [
+            { 'title_multiloc' => { 'en' => 'Public Transportation' }, 'description_multiloc' => { 'en' => 'Ideas about public transportation systems and services' }, 'problems' => [] },
+            { 'title_multiloc' => { 'en' => 'Parking' }, 'description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.' }, 'problems' => [] }
+          ],
+          {
+            'OLD-1' => { 'new_topic_id' => 'NEW-2', 'adjusted_topic_description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.', 'fr-FR' => 'Contributions relatives à la disponibilité du stationnement, à la réglementation et aux infrastructures pour les véhicules.', 'nl-NL' => 'Bijdragen met betrekking tot de beschikbaarheid van parkeerplaatsen, regelgeving en infrastructuur voor voertuigen.' }, 'adjusted_topic_title_multiloc' => { 'en' => 'Parking', 'fr-FR' => 'Stationnement', 'nl-NL' => 'Parkeren' } },
             'OLD-2' => { 'new_topic_id' => nil },
-            'OLD-3' => { 'new_topic_id' => nil } })
+            'OLD-3' => { 'new_topic_id' => nil }
+          }
+        )
 
         expect { service.rebalance_topics! }.to change(InputTopic, :count).from(3).to(2)
           .and change { project.input_topics.count }.from(3).to(2)
@@ -99,7 +152,7 @@ describe IdeaFeed::TopicModelingService do
           .and have_enqueued_job(LogActivityJob).at_least(:once).with(phase, 'topics_rebalanced', nil, anything, project_id: kind_of(String), payload: hash_including(
             update_log: [{ topic_id: old_topics[0].id, title_multiloc: { old: { 'en' => 'Parking areas' }, new: { 'en' => 'Parking', 'fr-FR' => 'Stationnement', 'nl-NL' => 'Parkeren' } }, description_multiloc: { old: { 'en' => 'Ideas about depositing your car' }, new: { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.', 'fr-FR' => 'Contributions relatives à la disponibilité du stationnement, à la réglementation et aux infrastructures pour les véhicules.', 'nl-NL' => 'Bijdragen met betrekking tot de beschikbaarheid van parkeerplaatsen, regelgeving en infrastructuur voor voertuigen.' } } }],
             input_count: 1,
-            creation_log: [{ topic_id: kind_of(String), title_multiloc: { 'en' => 'Public Transportation' }, description_multiloc: { 'en' => 'Ideas about public transportation systems and services' } }],
+            creation_log: [{ topic_id: kind_of(String), title_multiloc: { 'en' => 'Public Transportation' }, description_multiloc: { 'en' => 'Ideas about public transportation systems and services' }, icon: nil }],
             removal_log: [{ topic_id: old_topics[1].id }, { topic_id: old_topics[2].id }]
           ))
       end
@@ -107,13 +160,17 @@ describe IdeaFeed::TopicModelingService do
       it 'when the mapping maps multiple old topics to the same new topic, removes them both and creates the new topic' do
         create(:idea, project:, phases: [phase], title_multiloc: { 'en' => 'Finding parking is impossible' }, body_multiloc: { 'en' => "I'm getting tired of the impossible parking situation in the city center. Sometimes I have to drive around for half an hour to find a parking space near my house." })
 
-        allow_any_instance_of(Analysis::LLM::Gemini3Pro).to receive(:chat).and_return([
-          { 'title_multiloc' => { 'en' => 'Public Transportation' }, 'description_multiloc' => { 'en' => 'Ideas about public transportation systems and services' } },
-          { 'title_multiloc' => { 'en' => 'Parking' }, 'description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.' } }
-        ],
-          { 'OLD-1' => { 'new_topic_id' => 'NEW-2', 'adjusted_topic_description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.', 'fr-FR' => 'Contributions relatives à la disponibilité du stationnement, à la réglementation et aux infrastructures pour les véhicules.', 'nl-NL' => 'Bijdragen met betrekking tot de beschikbaarheid van parkeerplaatsen, regelgeving en infrastructuur voor voertuigen.' }, 'adjusted_topic_title_multiloc' => { 'en' => 'Parking', 'fr-FR' => 'Stationnement', 'nl-NL' => 'Parkeren' } },
+        allow_any_instance_of(Analysis::LLM::Gemini3Pro).to receive(:chat).and_return(
+          [
+            { 'title_multiloc' => { 'en' => 'Public Transportation' }, 'description_multiloc' => { 'en' => 'Ideas about public transportation systems and services' }, 'problems' => [] },
+            { 'title_multiloc' => { 'en' => 'Parking' }, 'description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.' }, 'problems' => [] }
+          ],
+          {
+            'OLD-1' => { 'new_topic_id' => 'NEW-2', 'adjusted_topic_description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.', 'fr-FR' => 'Contributions relatives à la disponibilité du stationnement, à la réglementation et aux infrastructures pour les véhicules.', 'nl-NL' => 'Bijdragen met betrekking tot de beschikbaarheid van parkeerplaatsen, regelgeving en infrastructuur voor voertuigen.' }, 'adjusted_topic_title_multiloc' => { 'en' => 'Parking', 'fr-FR' => 'Stationnement', 'nl-NL' => 'Parkeren' } },
             'OLD-2' => { 'new_topic_id' => 'NEW-2' },
-            'OLD-3' => { 'new_topic_id' => nil } })
+            'OLD-3' => { 'new_topic_id' => nil }
+          }
+        )
 
         expect { service.rebalance_topics! }.to change(InputTopic, :count).from(3).to(2)
           .and have_enqueued_job(LogActivityJob).twice.with(kind_of(InputTopic), 'created', nil, anything, project_id: kind_of(String))
@@ -121,11 +178,36 @@ describe IdeaFeed::TopicModelingService do
             update_log: [],
             input_count: 1,
             creation_log: [
-              { topic_id: kind_of(String), title_multiloc: { 'en' => 'Public Transportation' }, description_multiloc: { 'en' => 'Ideas about public transportation systems and services' } },
-              { topic_id: kind_of(String), title_multiloc: { 'en' => 'Parking' }, description_multiloc: { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.' } }
+              { topic_id: kind_of(String), title_multiloc: { 'en' => 'Public Transportation' }, description_multiloc: { 'en' => 'Ideas about public transportation systems and services' }, icon: nil },
+              { topic_id: kind_of(String), title_multiloc: { 'en' => 'Parking' }, description_multiloc: { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.' }, icon: nil }
             ],
             removal_log: [{ topic_id: old_topics[0].id }, { topic_id: old_topics[1].id }, { topic_id: old_topics[2].id }]
           ))
+      end
+    end
+
+    context 'simulating application' do
+      it 'loads an xlsx', skip: 'Too slow and API dependent for CI, only use for manual testing' do
+        raw_file = Rails.root.join('spec/fixtures/a1-tryout-ideas.xlsx')
+        base_64_content = Base64.encode64(raw_file.read)
+        admin = create(:admin)
+        parser = BulkImportIdeas::Parsers::IdeaXlsxFileParser.new(
+          admin,
+          'en', phase.id, false
+        )
+        file = parser.send(:upload_source_file, "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}")
+        parsed_rows = parser.parse_rows(file)
+        parsed_rows.sort_by! { |row| row[:published_at] }
+        from_date = parsed_rows.first[:published_at].to_date
+        to_date = parsed_rows.last[:published_at].to_date
+        puts "Importing ideas from #{from_date} to #{to_date}"
+
+        parsed_rows.each_with_index do |row, index|
+          puts "  - Creating idea #{index + 1}/#{parsed_rows.size} published at #{row[:published_at]}"
+          create(:idea, project: phase.project, phases: [phase], title_multiloc: row[:title_multiloc], body_multiloc: row[:body_multiloc], created_at: row[:created_at], published_at: row[:published_at])
+        end
+        activity = service.rebalance_topics!
+        pp activity
       end
     end
 

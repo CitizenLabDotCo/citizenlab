@@ -85,7 +85,7 @@ const DateSetup = ({
   const defaultMonth = getDefaultMonth(selectedRange, disabledRanges);
 
   return (
-    <SectionField>
+    <SectionField className="intercom-admin-phase-date-setup">
       <SubSectionTitle>
         <FormattedMessage {...messages.datesLabel} />
       </SubSectionTitle>

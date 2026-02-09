@@ -9,13 +9,17 @@ class WebApi::V1::InputTopicsController < ApplicationController
     input_topics = policy_scope(InputTopic, policy_scope_class: InputTopicPolicy::Scope)
       .where(project: @project)
 
+    input_topics = input_topics.where(parent_id: params[:parent_id]) if params.key?(:parent_id)
+    input_topics = input_topics.where(depth: params[:depth]) if params.key?(:depth)
+
     # Get filtered ideas for ideas_count sorting
     filter_ideas = policy_scope(Idea).where(project: @project)
 
     input_topics =
       case params[:sort]
       when 'custom', nil
-        input_topics.order(:ordering)
+        # Return tree structure - roots first, ordered by lft
+        input_topics.order(:lft)
       when 'ideas_count'
         input_topics.order_ideas_count(filter_ideas)
       when '-ideas_count'
@@ -29,14 +33,16 @@ class WebApi::V1::InputTopicsController < ApplicationController
     render json: linked_json(
       input_topics,
       WebApi::V1::InputTopicSerializer,
-      params: jsonapi_serializer_params
+      params: jsonapi_serializer_params,
+      include: %i[children parent]
     )
   end
 
   def show
     render json: WebApi::V1::InputTopicSerializer.new(
       @input_topic,
-      params: jsonapi_serializer_params
+      params: jsonapi_serializer_params,
+      include: [:children]
     ).serializable_hash
   end
 
@@ -51,7 +57,8 @@ class WebApi::V1::InputTopicsController < ApplicationController
       SideFxInputTopicService.new.after_create(@input_topic, current_user)
       render json: WebApi::V1::InputTopicSerializer.new(
         @input_topic,
-        params: jsonapi_serializer_params
+        params: jsonapi_serializer_params,
+        include: [:children]
       ).serializable_hash, status: :created
     else
       render json: { errors: @input_topic.errors.details }, status: :unprocessable_entity
@@ -67,21 +74,45 @@ class WebApi::V1::InputTopicsController < ApplicationController
       SideFxInputTopicService.new.after_update(@input_topic, current_user)
       render json: WebApi::V1::InputTopicSerializer.new(
         @input_topic,
-        params: jsonapi_serializer_params
+        params: jsonapi_serializer_params,
+        include: [:children]
       ).serializable_hash, status: :ok
     else
       render json: { errors: @input_topic.errors.details }, status: :unprocessable_entity
     end
   end
 
-  def reorder
+  # Move topic within the tree
+  # position: 'child' (make child of target), 'left' (move before target), 'right' (move after target), 'root' (make root)
+  def move
     SideFxInputTopicService.new.before_update(@input_topic, current_user)
-    ordering = permitted_attributes(@input_topic)[:ordering]
-    if ordering && @input_topic.insert_at(ordering)
+
+    move_params = permitted_attributes(@input_topic)
+    position = move_params[:position]
+    target_id = move_params[:target_id]
+
+    success = case position
+    when 'child'
+      target = InputTopic.find(target_id)
+      @input_topic.move_to_child_of(target)
+    when 'left'
+      target = InputTopic.find(target_id)
+      @input_topic.move_to_left_of(target)
+    when 'right'
+      target = InputTopic.find(target_id)
+      @input_topic.move_to_right_of(target)
+    when 'root'
+      @input_topic.move_to_root
+    else
+      false
+    end
+
+    if success
       SideFxInputTopicService.new.after_update(@input_topic, current_user)
       render json: WebApi::V1::InputTopicSerializer.new(
         @input_topic.reload,
-        params: jsonapi_serializer_params
+        params: jsonapi_serializer_params,
+        include: [:children]
       ).serializable_hash, status: :ok
     else
       render json: { errors: @input_topic.errors.details }, status: :unprocessable_entity

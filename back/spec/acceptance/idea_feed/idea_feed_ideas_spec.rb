@@ -27,18 +27,17 @@ resource 'Idea feed ideas' do
 
     describe 'filtering by topic' do
       let(:topic) { create(:input_topic, project: phase.project) }
+      let(:subtopic) { create(:input_topic, project: phase.project, parent: topic) }
       let(:topics) { [topic.id] }
       let!(:idea_with_topic) { create(:idea, project: phase.project, phases: [phase], input_topics: [topic]) }
-
-      before do
-        phase.project.input_topics << topic
-      end
+      let!(:idea_with_subtopic) { create(:idea, project: phase.project, phases: [phase], input_topics: [subtopic]) }
+      let!(:idea_without_topics) { create(:idea, project: phase.project, phases: [phase]) }
 
       example_request 'List ideas filtered by topic' do
         expect(status).to eq(200)
         json_response = json_parse(response_body)
-        expect(json_response[:data].size).to eq(1)
-        expect(json_response[:data][0][:id]).to eq(idea_with_topic.id)
+        expect(json_response[:data].size).to eq(2)
+        expect(json_response[:data].map { it[:id] }).to contain_exactly(idea_with_topic.id, idea_with_subtopic.id)
       end
     end
   end

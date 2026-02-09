@@ -10,7 +10,7 @@ module PublicApi
         **finder_params
       ).execute
 
-      list_items(ideas, V2::IdeaSerializer, includes: %i[idea_images project idea_status])
+      list_items(ideas, V2::IdeaSerializer, includes: %i[idea_images project creation_phase idea_status])
     end
 
     def show
@@ -23,7 +23,7 @@ module PublicApi
 
       side_fx.before_create(idea, nil)
       if idea.save
-        side_fx.after_create(idea, nil)
+        side_fx.after_create(idea, nil, nil)
         show_item idea, V2::IdeaSerializer, status: :created
       else
         render json: { errors: idea.errors.details }, status: :unprocessable_entity

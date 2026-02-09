@@ -22,6 +22,7 @@ import tracks from '../tracks';
 import { convertCustomFieldsToNestedPages } from '../util';
 
 import SurveyPage from './SurveyPage';
+import { getInitialData } from './utils';
 
 const SurveyForm = ({
   projectId,
@@ -65,14 +66,11 @@ const SurveyForm = ({
     formValues: FormValues;
     isSubmitPage: boolean;
   }) => {
-    const userWillNotBeLinkedToSurvey =
-      !authUser || phase.data.attributes.user_data_collection !== 'all_data';
-
     // The draft idea endpoint relies on the idea having a user id / being linked to a user
-    // If the user is not linked to the survey, we cannot use draft ideas
-    // So instead, we just keep all the data on the client until the final page
-    // (the submit page) where everything gets submitted in a single POST request.
-    if (userWillNotBeLinkedToSurvey && !isSubmitPage) {
+    // If there is no user (because permitted_by is 'everyone' and the user is signed out)
+    // there is no draft idea. So instead we wait until we are on the submit page
+    // and then send the whole survey as one big POST.
+    if (!authUser && !isSubmitPage) {
       return;
     }
 
@@ -105,13 +103,14 @@ const SurveyForm = ({
         idea_id: isSubmitPage ? draftIdea.data.id : undefined,
       });
     }
+
     clearDraftIdea(phaseId);
     if (isSubmitPage) {
       trackEventByName(tracks.surveyFormSubmitted);
     }
   };
 
-  const initialFormData = draftIdea?.data.attributes;
+  const initialFormData = getInitialData(draftIdea, authUser, phase);
 
   if (isLoading) {
     return <Spinner />;

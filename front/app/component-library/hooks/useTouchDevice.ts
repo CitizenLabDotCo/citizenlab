@@ -19,13 +19,14 @@ import useBreakpoint from './useBreakpoint';
  * the device's input method rather than viewport size
  */
 const useTouchDevice = () => {
-  const isLargeScreen = useBreakpoint('smallDesktop');
+  const isSmallerThanTablet = useBreakpoint('tablet');
+  const isDesktop = !isSmallerThanTablet;
 
   return useMemo(() => {
     // 0. Check screen size first - large screens should always show non-touch UI
     // Even if they have touch capability, navigation buttons are more useful on large screens
     // and this is more the intention of this hook
-    if (isLargeScreen) {
+    if (isDesktop) {
       return false;
     }
 
@@ -54,7 +55,7 @@ const useTouchDevice = () => {
     }
 
     return false;
-  }, [isLargeScreen]);
+  }, [isDesktop]);
 };
 
 export default useTouchDevice;

@@ -16,6 +16,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { useModalQueue } from 'containers/App/ModalQueue';
 import { invalidateAllActionDescriptors } from 'containers/Authentication/useSteps/invalidateAllActionDescriptors';
 
+import { trackEventByName } from 'utils/analytics';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
@@ -67,6 +68,8 @@ export default function useSteps() {
       } else {
         queueModal('authentication');
       }
+
+      trackEventByName('Transition step in authentication flow', { step });
 
       _setCurrentStep(step);
     },

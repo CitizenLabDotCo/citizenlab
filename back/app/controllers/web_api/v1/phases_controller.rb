@@ -170,13 +170,12 @@ class WebApi::V1::PhasesController < ApplicationController
       :voting_max_votes_per_idea,
       :voting_min_selected_options,
       :voting_filtering_enabled,
-      :ideation_method,
       :poll_anonymous,
       :document_annotation_embed_url,
       :ideas_order,
       :input_term,
       :vote_term,
-      :prescreening_enabled,
+      :prescreening_mode,
       :reacting_threshold,
       :expire_days_limit,
       :manual_voters_amount,
@@ -191,9 +190,11 @@ class WebApi::V1::PhasesController < ApplicationController
         native_survey_button_multiloc: CL2_SUPPORTED_LOCALES
       }
     ]
+
     if AppConfiguration.instance.feature_activated? 'disable_disliking'
       permitted += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]
     end
+
     params.require(:phase).permit(permitted)
   end
 

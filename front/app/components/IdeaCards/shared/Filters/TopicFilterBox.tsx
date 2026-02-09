@@ -26,7 +26,10 @@ const TopicFilterBox = memo<Props>(
   }) => {
     const ideaFiltersWithoutTopics = omit(ideaQueryParameters, 'topics');
 
-    const { data: topics } = useInputTopics(projectId, '-ideas_count');
+    const { data: topics } = useInputTopics(projectId, {
+      sort: '-ideas_count',
+      depth: 0,
+    });
 
     const { data: ideasFilterCounts } = useIdeasFilterCounts({
       ...ideaFiltersWithoutTopics,

@@ -175,7 +175,10 @@ const IdeasNewIdeationForm = ({
                         borderRadius="2px"
                         m="8px auto"
                       />
-                      <InputDetailView ideaId={selectedIdeaId} />
+                      <InputDetailView
+                        ideaId={selectedIdeaId}
+                        onClose={handleCloseDetail}
+                      />
                     </Box>
                   </Box>
                 ) : (
@@ -189,7 +192,10 @@ const IdeasNewIdeationForm = ({
                     position="relative"
                     mb="80px"
                   >
-                    <InputDetailView ideaId={selectedIdeaId} />
+                    <InputDetailView
+                      ideaId={selectedIdeaId}
+                      onClose={handleCloseDetail}
+                    />
                   </Box>
                 ))}
             </Box>

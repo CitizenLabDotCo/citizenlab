@@ -37,6 +37,17 @@ resource 'Posts' do
     )
   end
 
+  # 1 proposal
+  let!(:proposals_timeline) do
+    project = create(:single_phase_proposals_project)
+    create(
+      :idea,
+      created_at: '2020-01-01',
+      project: project,
+      creation_phase: project.phases.first
+    )
+  end
+
   # TODO: How do we get the format etc of response fields out into the spec? This doesn't seem to work
   response_field :created_at, 'Date the resource was created at'
 
@@ -135,6 +146,16 @@ resource 'Posts' do
           expect(json_response_body[:ideas].pluck(:type)).to all eq 'idea'
         end
       end
+
+      context 'proposals' do
+        let(:type) { 'proposal' }
+
+        example_request 'List only proposals' do
+          assert_status 200
+          expect(json_response_body[:ideas].size).to eq(1)
+          expect(json_response_body[:ideas].pluck(:type)).to all eq 'proposal'
+        end
+      end
     end
 
     context 'when filtering by topic ids' do
@@ -152,6 +173,19 @@ resource 'Posts' do
         assert_status 200
         expect(json_response_body[:ideas].size).to eq(1)
         expect(json_response_body[:ideas].pluck(:id)).to eq [idea.id]
+      end
+    end
+
+    context 'when filtering by parent topic id' do
+      let(:project) { create(:project) }
+      let(:parent_topic) { create(:input_topic, project: project) }
+      let(:child_topic) { create(:input_topic, project: project, parent: parent_topic) }
+      let!(:idea_with_child) { create(:idea, project: project, input_topics: [child_topic]) }
+      let(:topic_ids) { [parent_topic.id] }
+
+      example_request 'List ideas with child topic when filtering by parent topic' do
+        assert_status 200
+        expect(json_response_body[:ideas].pluck(:id)).to include(idea_with_child.id)
       end
     end
 
@@ -219,6 +253,7 @@ resource 'Posts' do
     end
 
     let(:project_id) { @project.id }
+    let(:phase) { create(:phase, project:) }
     let(:title_multiloc) { { 'en' => 'My great idea', 'nl-NL' => 'Mijn geweldige idee' } }
     let(:body_multiloc) { { 'en' => 'This is a detailed description of my idea', 'nl-NL' => 'Dit is een gedetailleerde beschrijving van mijn idee' } }
     let(:input_topic_ids) { create_list(:input_topic, 2, project: @project).map(&:id) }

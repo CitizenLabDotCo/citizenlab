@@ -114,6 +114,30 @@ RSpec.describe Project do
     it 'returns an instance of ParticipationMethod::Ideation' do
       expect(build(:project).pmethod).to be_an_instance_of(ParticipationMethod::Ideation)
     end
+
+    # There is some super hacky method on the project to make sure that the project
+    # has a `.pmethod` attribute. This attribute was defaulting to the first phase
+    # of the project always. This was causing bugs.
+    # This test makes sure that it defaults to the current phase.
+    # Still messy as hell and extremely confusing but at least now it is tested
+    it 'returns correct pmethod' do
+      project = create(:project)
+      create(
+        :native_survey_phase,
+        start_at: 3.weeks.ago,
+        end_at: 2.weeks.ago,
+        project: project
+      )
+      ideation_phase = create(
+        :phase,
+        start_at: 1.week.ago,
+        end_at: 3.weeks.from_now,
+        participation_method: 'ideation',
+        project: project
+      )
+
+      expect(project.pmethod.phase).to eq(ideation_phase)
+    end
   end
 
   describe '#refresh_preview_token' do

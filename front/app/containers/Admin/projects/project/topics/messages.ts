@@ -23,6 +23,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Topics.addInputTopic',
     defaultMessage: 'Add input tag',
   },
+  addSubtopic: {
+    id: 'app.containers.AdminPage.Topics.addSubtopic',
+    defaultMessage: 'Add subtag',
+  },
   editInputTopic: {
     id: 'app.containers.AdminPage.Topics.editInputTopic',
     defaultMessage: 'Edit input tag',
@@ -52,6 +56,11 @@ export default defineMessages({
     defaultMessage:
       'This tag will be removed from all inputs in this project. This action cannot be undone.',
   },
+  deleteInputTopicWithChildrenConfirmation: {
+    id: 'app.containers.AdminPage.Topics.deleteInputTopicWithChildrenConfirmation',
+    defaultMessage:
+      'This tag has subtags. Deleting it will also delete all its subtags. Inputs assigned to these tags will be updated. This action cannot be undone.',
+  },
   lastTopicWarning: {
     id: 'app.containers.AdminPage.Topics.lastTopicWarning3',
     defaultMessage:
@@ -68,5 +77,18 @@ export default defineMessages({
   fieldTopicDescription: {
     id: 'app.containers.AdminPage.Topics.fieldTopicDescription',
     defaultMessage: 'Tag description (optional)',
+  },
+  fieldTopicEmoji: {
+    id: 'app.containers.AdminPage.Topics.fieldTopicEmoji',
+    defaultMessage: 'Emoji (optional)',
+  },
+  liveAutoInputTopicsLabel: {
+    id: 'app.containers.AdminPage.Topics.liveAutoInputTopicsLabel',
+    defaultMessage: 'Automatically detect and assign tags',
+  },
+  liveAutoInputTopicsDescription: {
+    id: 'app.containers.AdminPage.Topics.liveAutoInputTopicsDescription',
+    defaultMessage:
+      'When enabled, tags are continuously created, updated and assigned to inputs, using AI.',
   },
 });

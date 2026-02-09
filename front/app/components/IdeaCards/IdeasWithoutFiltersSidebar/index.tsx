@@ -83,9 +83,8 @@ export interface Props {
   // other
   projectId?: string;
   phaseId?: string;
-  showViewToggle?: boolean | undefined;
   defaultSortingMethod?: IdeaSortMethod;
-  defaultView?: 'card' | 'map';
+  defaultView?: 'card' | 'map' | 'feed';
   className?: string;
   allowProjectsFilter?: boolean;
   showSearchbar: boolean;
@@ -97,7 +96,6 @@ const IdeasWithoutFiltersSidebar = ({
   onUpdateQuery,
   projectId,
   phaseId,
-  showViewToggle = false,
   defaultView,
   defaultSortingMethod,
   className,
@@ -185,7 +183,6 @@ const IdeasWithoutFiltersSidebar = ({
     onUpdateQuery({ idea_status });
   };
 
-  const showViewButtons = !!(locationEnabled && showViewToggle);
   const showSearch = !(selectedView === 'map') && showSearchbar;
   const participationMethod = phase?.data.attributes.participation_method;
 
@@ -196,12 +193,12 @@ const IdeasWithoutFiltersSidebar = ({
       <Box id="e2e-ideas-container" className={`${className || ''}`}>
         <FiltersArea id="e2e-ideas-filters" className="ideasContainer">
           <Box display="flex" justifyContent="flex-end">
-            {showViewButtons && (
-              <ViewButtons
-                selectedView={selectedView}
-                onClick={setSelectedView}
-              />
-            )}
+            <ViewButtons
+              selectedView={selectedView}
+              onClick={setSelectedView}
+              locationEnabled={locationEnabled}
+              defaultView={defaultView}
+            />
           </Box>
           <Box
             display="flex"
@@ -258,7 +255,7 @@ const IdeasWithoutFiltersSidebar = ({
                     alignment={smallerThanTablet ? 'right' : 'left'}
                     participationMethod={participationMethod}
                     isScreeningEnabled={
-                      phase?.data.attributes.prescreening_enabled
+                      !!phase?.data.attributes.prescreening_mode
                     }
                   />
                 )}

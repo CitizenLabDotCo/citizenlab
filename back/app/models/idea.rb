@@ -67,6 +67,7 @@ class Idea < ApplicationRecord
   include AnonymousParticipation
   include Files::FileAttachable
   include ClaimableParticipation
+  include LocationTrackableParticipation
   extend OrderAsSpecified
 
   PUBLICATION_STATUSES = %w[draft submitted published].freeze
@@ -122,7 +123,7 @@ class Idea < ApplicationRecord
   has_many :notifications, dependent: :nullify
 
   has_many :ideas_input_topics, dependent: :destroy
-  has_many :input_topics, -> { order(:ordering) }, through: :ideas_input_topics
+  has_many :input_topics, -> { order(:lft) }, through: :ideas_input_topics
   has_many :ideas_phases, dependent: :destroy
   has_many :phases, through: :ideas_phases, after_add: :update_phase_counts, after_remove: :update_phase_counts
   has_many :baskets_ideas, dependent: :destroy
@@ -194,6 +195,16 @@ class Idea < ApplicationRecord
     where(id: ideas)
   end)
 
+  # Same as with_some_input_topics, but also includes ideas assigned to child topics
+  scope :with_some_input_topics_and_children, (proc do |input_topics|
+    input_topics = Array(input_topics)
+    input_topic_ids = InputTopic.where(id: input_topics).or(
+      InputTopic.where(parent_id: input_topics)
+    ).pluck(:id)
+    ideas = joins(:ideas_input_topics).where(ideas_input_topics: { input_topic_id: input_topic_ids })
+    where(id: ideas)
+  end)
+
   scope :in_phase, (proc do |phase_id|
     joins(:ideas_phases)
       .where(ideas_phases: { phase_id: phase_id })
@@ -254,6 +265,8 @@ class Idea < ApplicationRecord
 
   # Equivalent to pmethod.supports_survey_form?
   scope :supports_survey, -> { where(creation_phase: Phase.where(participation_method: %w[native_survey community_monitor_survey])) }
+  scope :supports_proposal, -> { where(creation_phase: Phase.where(participation_method: %w[proposals])) }
+  scope :supports_idea, -> { where(creation_phase: nil) }
 
   # Filters out all the ideas for which the ParticipationMethod responds truety
   # to the given block. The block receives the ParticipationMethod object as an

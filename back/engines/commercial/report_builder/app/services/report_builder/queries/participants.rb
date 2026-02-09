@@ -49,7 +49,7 @@ module ReportBuilder
       response = {
         participants_timeseries: participants_timeseries,
         participants_whole_period: participants_whole_period,
-        participation_rate_whole_period: participation_rate(
+        participation_rate_whole_period: participation_rate_as_percent(
           participants_whole_period,
           start_date,
           end_date,
@@ -68,7 +68,7 @@ module ReportBuilder
           .count('distinct participant_id')
 
         response[:participants_compared_period] = participants_compared_period
-        response[:participation_rate_compared_period] = participation_rate(
+        response[:participation_rate_compared_period] = participation_rate_as_percent(
           participants_compared_period,
           compare_start_at,
           compare_end_at,
@@ -105,7 +105,7 @@ module ReportBuilder
       participations
     end
 
-    def participation_rate(
+    def participation_rate_as_percent(
       participants,
       start_date,
       end_date,

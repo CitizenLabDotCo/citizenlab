@@ -167,7 +167,7 @@ const TopicsFilter = memo<Props>(
                       selected={topicSelected}
                     >
                       <Box as="span" mr="8px">
-                        {localize(topic.attributes.title_multiloc)}
+                        {localize(topic.attributes.full_title_multiloc)}
                       </Box>
                       <Count aria-hidden>{postCount}</Count>
                       <ScreenReaderOnly>

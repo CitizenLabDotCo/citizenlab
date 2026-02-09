@@ -48,11 +48,7 @@ class ProjectsFinderService
       )
       action_descriptors = service.action_descriptors
       has_participation_possible = service.participation_possible?(action_descriptors)
-      # include document annotation ( konveio project ) in open to participation projects section as well
-      current_phase = TimelineService.new.current_phase(project)
-      has_annotation_phase = current_phase&.participation_method == 'document_annotation'
-
-      next unless has_participation_possible || has_annotation_phase
+      next unless has_participation_possible
 
       project_descriptor_pairs[project.id] = action_descriptors
       break if project_descriptor_pairs.size >= pagination_limit + 1 # +1 needed to produce pagination link to next page

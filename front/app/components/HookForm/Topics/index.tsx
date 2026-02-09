@@ -1,26 +1,35 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { Controller, useFormContext } from 'react-hook-form';
-import { CLError, RHFErrors } from 'typings';
+import { CLError, IOption, RHFErrors } from 'typings';
 
 import useInputTopics from 'api/input_topics/useInputTopics';
 
-import Error, { TFieldName } from 'components/UI/Error';
-import TopicsPicker, {
-  Props as TopicPickerProps,
-} from 'components/UI/TopicsPicker';
+import useLocalize from 'hooks/useLocalize';
 
-interface Props
-  extends Omit<
-    TopicPickerProps,
-    'onClick' | 'availableTopics' | 'selectedTopicIds' | 'value'
-  > {
+import Error, { TFieldName } from 'components/UI/Error';
+import MultipleSelect from 'components/UI/MultipleSelect';
+import TopicsPicker from 'components/UI/TopicsPicker';
+
+interface Props {
   name: string;
   projectId?: string;
   scrollErrorIntoView?: boolean;
+  id?: string;
+  className?: string;
+  placeholder?: string;
+  label?: React.ReactNode;
 }
 
-const Topics = ({ name, projectId, scrollErrorIntoView, ...rest }: Props) => {
+const Topics = ({
+  name,
+  projectId,
+  scrollErrorIntoView,
+  id,
+  className,
+  placeholder,
+  label,
+}: Props) => {
   const {
     setValue,
     formState: { errors: formContextErrors },
@@ -28,6 +37,7 @@ const Topics = ({ name, projectId, scrollErrorIntoView, ...rest }: Props) => {
     getValues,
     trigger,
   } = useFormContext();
+  const localize = useLocalize();
 
   const errors = formContextErrors[name] as RHFErrors;
   const validationError = errors?.message;
@@ -36,22 +46,59 @@ const Topics = ({ name, projectId, scrollErrorIntoView, ...rest }: Props) => {
 
   const { data: inputTopics } = useInputTopics(projectId || '');
 
+  const topics = inputTopics?.data ?? [];
+
+  // Use dropdown when there are child topics (depth > 0) or more than 20 topics
+  const hasChildTopics = topics.some((topic) => topic.attributes.depth > 0);
+  const useDropdown = hasChildTopics || topics.length > 20;
+
+  const options: IOption[] = useMemo(() => {
+    if (!inputTopics?.data) return [];
+    return inputTopics.data.map((topic) => ({
+      value: topic.id,
+      label: localize(topic.attributes.full_title_multiloc),
+    }));
+  }, [inputTopics, localize]);
+
+  const handleChange = (selectedOptions: IOption[]) => {
+    const topicIds = selectedOptions.map((option) => option.value);
+    setValue(name, topicIds);
+    trigger(name);
+  };
+
+  const handlePickerChange = (topicIds: string[]) => {
+    setValue(name, topicIds);
+    trigger(name);
+  };
+
   return (
     <>
       <Controller
         name={name}
         control={control}
-        render={({ field: { ref: _ref, ...field } }) => {
+        render={() => {
+          const selectedTopicIds: string[] = getValues(name) || [];
+          if (useDropdown) {
+            return (
+              <MultipleSelect
+                id={id}
+                inputId={id ? `${id}-input` : undefined}
+                className={className}
+                value={selectedTopicIds}
+                options={options}
+                onChange={handleChange}
+                placeholder={placeholder}
+                label={label}
+              />
+            );
+          }
           return (
             <TopicsPicker
-              {...field}
-              {...rest}
-              selectedTopicIds={getValues(name) || []}
-              availableTopics={inputTopics?.data || []}
-              onClick={(topicIds: string[]) => {
-                setValue(name, topicIds);
-                trigger(name);
-              }}
+              id={id}
+              className={className}
+              selectedTopicIds={selectedTopicIds}
+              availableTopics={topics}
+              onClick={handlePickerChange}
             />
           );
         }}
