@@ -113,7 +113,7 @@ const SurveyActions = ({ phase }: Props) => {
     );
   };
 
-  const handleDownloadResults = async () => {
+  const handleDownloadXlsx = async () => {
     try {
       setIsDownloadingXlsx(true);
       setDropdownOpened(false);
@@ -214,7 +214,7 @@ const SurveyActions = ({ phase }: Props) => {
                   </Text>
                 </DropdownListItem>
                 <DropdownListItem
-                  onClick={handleDownloadResults}
+                  onClick={handleDownloadXlsx}
                   data-cy="e2e-download-survey-results"
                 >
                   <Icon name="download" fill={colors.coolGrey600} mr="8px" />
