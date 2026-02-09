@@ -53,7 +53,7 @@ const ActionFormIdeation = ({
   return (
     <form className={`e2e-action-form-${action}`}>
       <AccessRestrictions
-        showAnyone
+        showAnyone={'show-with-new-label'}
         permissionData={permissionData}
         onChange={onChange}
       />
