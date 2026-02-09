@@ -101,7 +101,7 @@ models:
     domicile: outside
     password: helpmeOB1
     remote_avatar_url: http://images2.fanpop.com/image/photos/9300000/leia-princess-leia-organa-solo-skywalker-9301321-576-1010.jpg
-  topic:
+  global_topic:
   - title_multiloc: topics.infrastructure
     description_multiloc: topics.infrastructure_description
     default: true

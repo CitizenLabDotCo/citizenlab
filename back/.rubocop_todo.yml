@@ -357,7 +357,7 @@ Style/SafeNavigationChainLength:
     - 'app/controllers/web_api/v1/areas_controller.rb'
     - 'app/controllers/web_api/v1/folders_controller.rb'
     - 'app/controllers/web_api/v1/projects_controller.rb'
-    - 'app/controllers/web_api/v1/topics_controller.rb'
+    - 'app/controllers/web_api/v1/global_topics_controller.rb'
     - 'app/services/surveys/results_generator.rb'
     - 'config/initializers/rack_attack.rb'
     - 'engines/commercial/admin_api/spec/graphql/ideas_spec.rb'

@@ -67,6 +67,7 @@ class Idea < ApplicationRecord
   include AnonymousParticipation
   include Files::FileAttachable
   include ClaimableParticipation
+  include LocationTrackableParticipation
   extend OrderAsSpecified
 
   PUBLICATION_STATUSES = %w[draft submitted published].freeze
@@ -121,8 +122,8 @@ class Idea < ApplicationRecord
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
-  has_many :ideas_topics, dependent: :destroy
-  has_many :topics, -> { order(:ordering) }, through: :ideas_topics
+  has_many :ideas_input_topics, dependent: :destroy
+  has_many :input_topics, -> { order(:lft) }, through: :ideas_input_topics
   has_many :ideas_phases, dependent: :destroy
   has_many :phases, through: :ideas_phases, after_add: :update_phase_counts, after_remove: :update_phase_counts
   has_many :baskets_ideas, dependent: :destroy
@@ -189,8 +190,18 @@ class Idea < ApplicationRecord
   # > it will be impossible to speed up searches with database indexes. However, it
   # > is supported as a quick way to try out cross-model searching.
 
-  scope :with_some_topics, (proc do |topics|
-    ideas = joins(:ideas_topics).where(ideas_topics: { topic: topics })
+  scope :with_some_input_topics, (proc do |input_topics|
+    ideas = joins(:ideas_input_topics).where(ideas_input_topics: { input_topic: input_topics })
+    where(id: ideas)
+  end)
+
+  # Same as with_some_input_topics, but also includes ideas assigned to child topics
+  scope :with_some_input_topics_and_children, (proc do |input_topics|
+    input_topics = Array(input_topics)
+    input_topic_ids = InputTopic.where(id: input_topics).or(
+      InputTopic.where(parent_id: input_topics)
+    ).pluck(:id)
+    ideas = joins(:ideas_input_topics).where(ideas_input_topics: { input_topic_id: input_topic_ids })
     where(id: ideas)
   end)
 
@@ -254,6 +265,8 @@ class Idea < ApplicationRecord
 
   # Equivalent to pmethod.supports_survey_form?
   scope :supports_survey, -> { where(creation_phase: Phase.where(participation_method: %w[native_survey community_monitor_survey])) }
+  scope :supports_proposal, -> { where(creation_phase: Phase.where(participation_method: %w[proposals])) }
+  scope :supports_idea, -> { where(creation_phase: nil) }
 
   # Filters out all the ideas for which the ParticipationMethod responds truety
   # to the given block. The block receives the ParticipationMethod object as an

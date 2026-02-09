@@ -8,8 +8,7 @@
 
   "workspaceFolder": "/citizenlab/back",
 
-  // Keep containers running when VS Code shuts down
-  "shutdownAction": "none", // Stop only the dev container
+  "shutdownAction": "stopContainer",
 
   // Initialize the development environment
   // "postCreateCommand": "../.devcontainer/scripts/post-create.sh",

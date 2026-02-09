@@ -188,103 +188,87 @@ models:
       color: '#8B0000'
       description_multiloc: idea_statuses.ineligible_description
       participation_method: proposals
-  topic:
+  global_topic:
     - &topic-nature
       title_multiloc: topics.nature
       description_multiloc: topics.nature_description
       ordering: 0
       include_in_onboarding: true
-      is_default: true
     - &topic-waste
       title_multiloc: topics.waste
       description_multiloc: topics.waste_description
       ordering: 1
       include_in_onboarding: true
-      is_default: true
     - &topic-sustainability
       title_multiloc: topics.sustainability
       description_multiloc: topics.sustainability_description
       ordering: 2
       include_in_onboarding: true
-      is_default: true
     - &topic-mobility
       title_multiloc: topics.mobility
       description_multiloc: topics.mobility_description
       ordering: 3
       include_in_onboarding: true
-      is_default: true
     - &topic-technology
       title_multiloc: topics.technology
       description_multiloc: topics.technology_description
       ordering: 4
       include_in_onboarding: true
-      is_default: true
     - &topic-economy
       title_multiloc: topics.economy
       description_multiloc: topics.economy_description
       ordering: 5
       include_in_onboarding: true
-      is_default: true
     - &topic-housing
       title_multiloc: topics.housing
       description_multiloc: topics.housing_description
       ordering: 6
       include_in_onboarding: true
-      is_default: true
     - &topic-public_space
       title_multiloc: topics.public_space
       description_multiloc: topics.public_space_description
       ordering: 7
       include_in_onboarding: true
-      is_default: true
     - &topic-safety
       title_multiloc: topics.safety
       description_multiloc: topics.safety_description
       ordering: 8
       include_in_onboarding: true
-      is_default: true
     - &topic-education
       title_multiloc: topics.education
       description_multiloc: topics.education_description
       ordering: 9
       include_in_onboarding: true
-      is_default: true
     - &topic-culture
       title_multiloc: topics.culture
       description_multiloc: topics.culture_description
       ordering: 10
       include_in_onboarding: true
-      is_default: true
     - &topic-health
       title_multiloc: topics.health
       description_multiloc: topics.health_description
       ordering: 11
       include_in_onboarding: true
-      is_default: true
     - &topic-inclusion
       title_multiloc: topics.inclusion
       description_multiloc: topics.inclusion_description
       ordering: 12
       include_in_onboarding: true
-      is_default: true
     - &topic-community
       title_multiloc: topics.community
       description_multiloc: topics.community_description
       ordering: 13
       include_in_onboarding: true
-      is_default: true
     - &topic-services
       title_multiloc: topics.services
       description_multiloc: topics.services_description
       ordering: 14
       include_in_onboarding: true
-      is_default: true
     - &topic-other
       title_multiloc: topics.other
       description_multiloc: topics.other_description
       ordering: 15
       include_in_onboarding: true
-      is_default: true
   static_page:
     - &information-page
       code: about
@@ -369,55 +353,71 @@ models:
   project_image:
     - remote_image_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/brainstorming_graphic.png
       project_ref: *open_idea_project
-  projects_allowed_input_topic:
-    - project_ref: *open_idea_project
-      topic_ref: *topic-nature
-      ordering: 0
-    - project_ref: *open_idea_project
-      topic_ref: *topic-waste
-      ordering: 1
-    - project_ref: *open_idea_project
-      topic_ref: *topic-sustainability
-      ordering: 2
-    - project_ref: *open_idea_project
-      topic_ref: *topic-mobility
-      ordering: 3
-    - project_ref: *open_idea_project
-      topic_ref: *topic-technology
-      ordering: 4
-    - project_ref: *open_idea_project
-      topic_ref: *topic-economy
-      ordering: 5
-    - project_ref: *open_idea_project
-      topic_ref: *topic-housing
-      ordering: 6
-    - project_ref: *open_idea_project
-      topic_ref: *topic-public_space
-      ordering: 7
-    - project_ref: *open_idea_project
-      topic_ref: *topic-safety
-      ordering: 8
-    - project_ref: *open_idea_project
-      topic_ref: *topic-education
-      ordering: 9
-    - project_ref: *open_idea_project
-      topic_ref: *topic-culture
-      ordering: 10
-    - project_ref: *open_idea_project
-      topic_ref: *topic-health
-      ordering: 11
-    - project_ref: *open_idea_project
-      topic_ref: *topic-inclusion
-      ordering: 12
-    - project_ref: *open_idea_project
-      topic_ref: *topic-community
-      ordering: 13
-    - project_ref: *open_idea_project
-      topic_ref: *topic-services
-      ordering: 14
-    - project_ref: *open_idea_project
-      topic_ref: *topic-other
-      ordering: 15
+  input_topic:
+    -
+      project_ref: *open_idea_project
+      title_multiloc: topics.nature
+      description_multiloc: topics.nature_description
+    -
+      project_ref: *open_idea_project
+      title_multiloc: topics.waste
+      description_multiloc: topics.waste_description
+    -
+      project_ref: *open_idea_project
+      title_multiloc: topics.sustainability
+      description_multiloc: topics.sustainability_description
+    -
+      project_ref: *open_idea_project
+      title_multiloc: topics.mobility
+      description_multiloc: topics.mobility_description
+    -
+      project_ref: *open_idea_project
+      title_multiloc: topics.technology
+      description_multiloc: topics.technology_description
+    -
+      project_ref: *open_idea_project
+      title_multiloc: topics.economy
+      description_multiloc: topics.economy_description
+    -
+      project_ref: *open_idea_project
+      title_multiloc: topics.housing
+      description_multiloc: topics.housing_description
+    -
+      project_ref: *open_idea_project
+      title_multiloc: topics.public_space
+      description_multiloc: topics.public_space_description
+    -
+      project_ref: *open_idea_project
+      title_multiloc: topics.safety
+      description_multiloc: topics.safety_description
+    -
+      project_ref: *open_idea_project
+      title_multiloc: topics.education
+      description_multiloc: topics.education_description
+    -
+      project_ref: *open_idea_project
+      title_multiloc: topics.culture
+      description_multiloc: topics.culture_description
+    -
+      project_ref: *open_idea_project
+      title_multiloc: topics.health
+      description_multiloc: topics.health_description
+    -
+      project_ref: *open_idea_project
+      title_multiloc: topics.inclusion
+      description_multiloc: topics.inclusion_description
+    -
+      project_ref: *open_idea_project
+      title_multiloc: topics.community
+      description_multiloc: topics.community_description
+    -
+      project_ref: *open_idea_project
+      title_multiloc: topics.services
+      description_multiloc: topics.services_description
+    -
+      project_ref: *open_idea_project
+      title_multiloc: topics.other
+      description_multiloc: topics.other_description
   phase:
     - &open_idea_project_current
       title_multiloc: phases.open_idea_phase_title

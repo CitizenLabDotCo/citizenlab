@@ -28,7 +28,7 @@ module IdeaCustomFields
       end
 
       def value_getter_for_custom_form_custom_field_columns(field, options)
-        if field.support_options?
+        if field.supports_options?
           lambda do |idea|
             title_multiloc_for idea, field, options
           end

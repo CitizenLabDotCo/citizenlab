@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
+# Serializer for the deprecated /api/v2/topics endpoint.
+# Handles both GlobalTopic and InputTopic records with the same output format.
 class PublicApi::V2::TopicSerializer < PublicApi::V2::BaseSerializer
+  type :topic
+
   attributes :id,
     :title,
     :description,
@@ -13,11 +17,5 @@ class PublicApi::V2::TopicSerializer < PublicApi::V2::BaseSerializer
 
   def description
     multiloc_service.t(object.description_multiloc)
-  end
-
-  private
-
-  def multiloc_service
-    @multiloc_service ||= MultilocService.new
   end
 end

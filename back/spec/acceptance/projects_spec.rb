@@ -21,10 +21,11 @@ resource 'Projects' do
       parameter :slug, 'The unique slug of the project'
       parameter :header_bg, 'Base64 encoded header image'
       parameter :area_ids, 'Array of ids of the associated areas'
-      parameter :topic_ids, 'Array of ids of the associated topics'
+      parameter :global_topic_ids, 'Array of ids of the associated global topics'
       parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}.", required: false
       parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned', required: false
       parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)'
+      parameter :live_auto_input_topics_enabled, 'Whether the project should automatically detect topics and assign inputs to them. Defaults to false.', required: false
     end
 
     with_options scope: %i[project admin_publication_attributes] do
@@ -42,10 +43,11 @@ resource 'Projects' do
       parameter :slug, 'The unique slug of the project. If not given, it will be auto generated'
       parameter :header_bg, 'Base64 encoded header image'
       parameter :area_ids, 'Array of ids of the associated areas'
-      parameter :topic_ids, 'Array of ids of the associated topics'
+      parameter :global_topic_ids, 'Array of ids of the associated topics'
       parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}. Defaults to public.", required: false
       parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)', required: false
       parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned', required: false
+      parameter :live_auto_input_topics_enabled, 'Whether the project should automatically detect topics and assign inputs to them. Defaults to false.', required: false
     end
 
     with_options scope: %i[project admin_publication_attributes] do
@@ -297,10 +299,11 @@ resource 'Projects' do
         let(:description_preview_multiloc) { project.description_preview_multiloc }
         let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
         let(:area_ids) { create_list(:area, 2).map(&:id) }
-        let(:topic_ids) { create_list(:topic, 2).map(&:id) }
+        let(:global_topic_ids) { create_list(:global_topic, 2).map(&:id) }
         let(:visible_to) { 'admins' }
         let(:publication_status) { 'published' }
         let(:default_assignee_id) { create(:admin).id }
+        let(:live_auto_input_topics_enabled) { true }
 
         example_request 'Create a timeline project' do
           assert_status 201
@@ -313,11 +316,12 @@ resource 'Projects' do
             description_preview_multiloc: description_preview_multiloc.symbolize_keys,
             visible_to: visible_to,
             first_published_at: new_project.admin_publication.first_published_at.iso8601(3),
-            header_bg: be_present
+            header_bg: be_present,
+            live_auto_input_topics_enabled: live_auto_input_topics_enabled
           )
 
           expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
-          expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+          expect(json_response.dig(:data, :relationships, :global_topics, :data).pluck(:id)).to match_array global_topic_ids
           expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
 
           admin_publication_attrs = json_response[:included].find { |its| its[:type] == 'admin_publication' }[:attributes]
@@ -360,10 +364,11 @@ resource 'Projects' do
         let(:slug) { 'changed-title' }
         let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
         let(:area_ids) { create_list(:area, 2).map(&:id) }
-        let(:topic_ids) { create_list(:topic, 2).map(&:id) }
+        let(:global_topic_ids) { create_list(:global_topic, 2).map(&:id) }
         let(:visible_to) { 'groups' }
         let(:publication_status) { 'archived' }
         let(:default_assignee_id) { create(:admin).id }
+        let(:live_auto_input_topics_enabled) { true }
 
         example 'Update a project' do
           old_publcation_ids = AdminPublication.ids
@@ -377,10 +382,11 @@ resource 'Projects' do
           expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
           expect(json_response.dig(:data, :attributes, :slug)).to eq 'changed-title'
           expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
-          expect(json_response.dig(:data, :relationships, :topics, :data).pluck(:id)).to match_array topic_ids
+          expect(json_response.dig(:data, :relationships, :global_topics, :data).pluck(:id)).to match_array global_topic_ids
           expect(json_response.dig(:data, :attributes, :visible_to)).to eq 'groups'
           expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'archived'
           expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
+          expect(json_response.dig(:data, :attributes, :live_auto_input_topics_enabled)).to be true
         end
 
         example 'Add a project to a folder' do
@@ -436,10 +442,10 @@ resource 'Projects' do
         end
 
         example 'Clear all topics', document: false do
-          @project.update!(topic_ids: topic_ids)
-          expect(@project.topics.size).to eq 2
-          do_request(project: { topic_ids: [] })
-          expect(json_response.dig(:data, :relationships, :topics, :data).size).to eq 0
+          @project.update!(global_topic_ids: global_topic_ids)
+          expect(@project.global_topics.size).to eq 2
+          do_request(project: { global_topic_ids: [] })
+          expect(json_response.dig(:data, :relationships, :global_topics, :data).size).to eq 0
         end
 
         example 'Set default assignee to unassigned', document: false do

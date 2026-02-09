@@ -18,12 +18,14 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
       )
     else
       ClaimTokenService.claim(user, nil)
+      IdeaExposureTransferService.new.transfer_from_request(user: user, request: request)
       render json: auth_token, status: :created
     end
   end
 
   def create
     ClaimTokenService.claim(entity, auth_params[:claim_tokens])
+    IdeaExposureTransferService.new.transfer_from_request(user: entity, request: request)
     super
   end
 

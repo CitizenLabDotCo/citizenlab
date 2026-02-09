@@ -336,7 +336,7 @@ const AdminProjectsProjectGeneral = () => {
     setSubmitState('enabled');
     setProjectAttributesDiff((projectAttributesDiff) => ({
       ...projectAttributesDiff,
-      topic_ids: topicIds,
+      global_topic_ids: topicIds,
     }));
   };
 
@@ -759,7 +759,7 @@ const AdminProjectsProjectGeneral = () => {
               fileAttachments={projectFileAttachments}
               enableDragAndDrop
               apiErrors={apiErrors}
-              maxSizeMb={10}
+              maxSizeMb={50}
               isUploadingFile={isAddingFile}
             />
           </StyledSectionField>
@@ -801,10 +801,12 @@ function getSelectedTopicIds(
   projectAttributesDiff: IUpdatedProjectProperties,
   project: IProjectData | null
 ) {
-  if (projectAttributesDiff.topic_ids) return projectAttributesDiff.topic_ids;
+  if (projectAttributesDiff.global_topic_ids) {
+    return projectAttributesDiff.global_topic_ids;
+  }
 
   if (project) {
-    return project.relationships.topics.data.map((topic) => topic.id);
+    return project.relationships.global_topics.data.map((topic) => topic.id);
   }
 
   return [];

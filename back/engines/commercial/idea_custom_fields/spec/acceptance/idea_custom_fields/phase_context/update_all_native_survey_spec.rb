@@ -3237,6 +3237,39 @@ resource 'Idea Custom Fields' do
         })
       end
 
+      example 'Swap the order of existing options' do
+        select_field = create(:custom_field_select, resource: custom_form)
+        option_a = create(:custom_field_option, custom_field: select_field, key: 'option_a', title_multiloc: { 'en' => 'Option A' }, ordering: 0)
+        option_b = create(:custom_field_option, custom_field: select_field, key: 'option_b', title_multiloc: { 'en' => 'Option B' }, ordering: 1)
+
+        # Swap the order: B first, then A
+        request = {
+          custom_fields: [
+            {
+              input_type: 'page',
+              page_layout: 'default'
+            },
+            {
+              id: select_field.id,
+              input_type: 'select',
+              title_multiloc: select_field.title_multiloc,
+              options: [
+                { id: option_b.id, title_multiloc: { 'en' => 'Option B' } },
+                { id: option_a.id, title_multiloc: { 'en' => 'Option A' } }
+              ]
+            },
+            final_page
+          ]
+        }
+        do_request request
+
+        assert_status 200
+
+        # Verify ordering was swapped
+        expect(option_b.reload.ordering).to eq(0)
+        expect(option_a.reload.ordering).to eq(1)
+      end
+
       example 'Updating custom fields when there are responses' do
         create(:custom_field, resource: custom_form) # field to ensure custom form has been created
         create(:idea_status_proposed)

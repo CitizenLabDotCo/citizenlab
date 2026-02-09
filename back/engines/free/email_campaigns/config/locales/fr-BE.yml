@@ -217,7 +217,7 @@ fr-BE:
       event_description_action: 'Cliquez ci-dessous pour lire la proposition.'
       cta_button: 'Soutenir cette proposition'
     invite_reminder:
-      subject: 'Une invitation en attente pour la plate-forme de participation de %{organizationName}'
+      subject: 'Une invitation en attente pour la plateforme de participation de %{organizationName}'
       preheader: 'Il y a quelques jours, %{organizationName} vous a invité à rejoindre sa plateforme de participation.'
       title: 'Votre invitation est toujours en attente !'
       cta_button: 'Accepter l''invitation'
@@ -263,7 +263,7 @@ fr-BE:
       cta_button: 'Voir le commentaire de %{authorFirstName}'
       days_ago: 'Il y a %{numberOfDays} jours'
       event_description: '%{authorName} a écrit un commentaire sur votre plateforme. N''hésitez pas à joindre à la discussion et à poursuivre la conversation !'
-      title: '%{firstName}, un nouveau commentaire a été posté sur votre plate-forme'
+      title: '%{firstName}, un nouveau commentaire a été posté sur votre plateforme'
       subject: 'Il y a un nouveau commentaire sur la plateforme de %{organizationName}'
       preheader: '%{authorName} a laissé un commentaire'
       today: Aujourd'hui
@@ -383,7 +383,7 @@ fr-BE:
       x_projects: '%{numberOfProjects} projets'
     project_phase_started:
       cta_button: 'Découvrez la nouvelle phase'
-      event_description: 'Ce projet est entré dans une nouvelle phase sur la plate-forme de %{organizationName}. Cliquez sur le lien ci-dessous pour en savoir plus !'
+      event_description: 'Ce projet est entré dans une nouvelle phase sur la plateforme de %{organizationName}. Cliquez sur le lien ci-dessous pour en savoir plus !'
       title: 'Une nouvelle phase a commencé pour le projet « %{projectName} »'
       subtitle: 'À propos de ''%{projectName}'''
       new_phase: 'Ce projet est entré dans la phase ''%{phaseTitle}'''
@@ -423,7 +423,7 @@ fr-BE:
       preheader: 'Une contribution que vous suivez a un nouveau statut'
       cta_button: Voir la contribution
     user_digest:
-      subject: "Mise à jour hebdomadaire de la plate-forme de participation de %{organizationName}"
+      subject: "Mise à jour hebdomadaire de la plateforme de participation de %{organizationName}"
       commented: "%{authorFirstName} a commenté :"
       preheader: "Aperçu hebdomadaire de %{organizationName}"
       title: "Découvrez ce qui s'est passé la semaine dernière"
@@ -441,7 +441,7 @@ fr-BE:
       one_notification: "1 notification"
       multiple_notifications: "%{notifCount} notifications"
       no_unread_notifications: "Il est temps de recréer de l'activité ! Visitez la plateforme pour découvrir ce qu'il s'y passe."
-      unread_notifications: "Vous avez de nouvelles notifications ! Visitez la plate-forme pour découvrir ce qu'il s'y passe."
+      unread_notifications: "Vous avez de nouvelles notifications ! Visitez la plateforme pour découvrir ce qu'il s'y passe."
     threshold_reached_for_admin:
       cta_button: 'Passez cette proposition aux étapes suivantes'
       title: 'Une proposition a atteint le nombre de voix requis !'

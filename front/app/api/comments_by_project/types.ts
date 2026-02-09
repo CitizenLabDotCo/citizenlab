@@ -29,5 +29,5 @@ export interface ICommentsByProjectParams {
   end_at?: string | null;
   group?: string;
   project?: string;
-  topic?: string;
+  input_topic?: string;
 }

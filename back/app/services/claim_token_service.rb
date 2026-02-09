@@ -6,11 +6,6 @@ class ClaimTokenService
     # @param item [ClaimableParticipation] the item to generate a token for
     # @return [ClaimToken, nil] the created token, or nil if item has an author
     def generate(item)
-      # Temporarily feature-flagging the participation-claiming feature for a smoother
-      # release, (opportunistically using the `ideation_accountless_posting` feature flag
-      # instead of adding a new one.) This feature will likely be enabled for all tenants
-      # in the future; otherwise, we should consider adding a dedicated feature flag.
-      return nil unless AppConfiguration.instance.feature_activated?('ideation_accountless_posting')
       return nil if item_has_owner?(item)
 
       ClaimToken.find_or_create_by!(item: item)
@@ -39,7 +34,10 @@ class ClaimTokenService
     # @param user [User] the user whose pending claims to complete
     # @return [Array<ClaimableParticipation>] items that were claimed
     def complete(user)
-      user.claim_tokens.map { |claim_token| claim_item(claim_token) }
+      claimed_items = user.claim_tokens.map { |claim_token| claim_item(claim_token) }
+      sync_demographics!(user, claimed_items)
+
+      claimed_items
     end
 
     # Claim items for a user. Only marks tokens if the user requires confirmation.
@@ -70,15 +68,32 @@ class ClaimTokenService
       user = claim_token.pending_claimer
       owner_attr = item.respond_to?(:author_id=) ? :author_id : :user_id
 
+      # If phase is survey and user_data_collection != all_data:
+      # do not update the user id because it would not be anonymous then
+      creation_phase = item.creation_phase # only surveys have creation_phase
+      permission = creation_phase&.permissions&.find_by(action: 'posting_idea')
+      do_not_update_user = permission && permission.user_data_collection != 'all_data'
+
       ClaimToken.transaction do
+        item.update!(owner_attr => user.id) unless do_not_update_user
         # NOTE: The AnonymousParticipation concern will automatically set
         # anonymous = false and recalculate author_hash via before_validation
-        item.update!(owner_attr => user.id)
         LogActivityJob.perform_later(item, 'claimed', user, Time.current.to_i)
         claim_token.destroy!
       end
 
       item
+    end
+
+    # Gets the lastly created item. If this item
+    # contains demographic data: we copy it into the user's profile.
+    # @param user [User] the user to claim items for
+    # @param items [Array<ClaimableParticipation>] claimed items
+    def sync_demographics!(user, items)
+      lastly_created_item = items.max_by(&:created_at)
+      return unless lastly_created_item
+
+      UserFieldsInFormService.merge_user_fields_from_idea_into_user!(lastly_created_item, user)
     end
   end
 end

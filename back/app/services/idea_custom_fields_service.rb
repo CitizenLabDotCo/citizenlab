@@ -10,7 +10,7 @@ class IdeaCustomFieldsService
     fields = if @custom_form.custom_field_ids.empty?
       @participation_method.default_fields(@custom_form)
     else
-      @custom_form.custom_fields.includes(:map_config, options: [:image])
+      @custom_form.custom_fields.includes(:map_config, :matrix_statements, options: [:image])
     end
 
     fields = fields.to_a
@@ -25,7 +25,7 @@ class IdeaCustomFieldsService
   end
 
   def xlsx_exportable_fields
-    UserFieldsInSurveyService
+    UserFieldsInFormService
       .add_user_fields_to_form(all_fields, participation_method, custom_form)
       .filter(&:supports_xlsx_export?)
   end
@@ -39,7 +39,7 @@ class IdeaCustomFieldsService
   end
 
   def submittable_fields
-    enabled_fields.select(&:submittable?)
+    enabled_fields.select(&:supports_submission?)
   end
 
   def submittable_fields_with_other_options
@@ -48,16 +48,16 @@ class IdeaCustomFieldsService
 
   # Used in the printable PDF export
   def printable_fields
-    enabled_fields_with_other_options(print_version: true).select(&:printable?)
+    enabled_fields_with_other_options(print_version: true).select(&:supports_printing?)
   end
 
   def xlsx_importable_fields
-    enabled_fields_with_other_options.select(&:xlsx_importable?)
+    enabled_fields_with_other_options.select(&:supports_xlsx_import?)
   end
 
   def enabled_fields
     fields = all_fields.select(&:enabled?)
-    UserFieldsInSurveyService.add_user_fields_to_form(fields, participation_method, custom_form)
+    UserFieldsInFormService.add_user_fields_to_form(fields, participation_method, custom_form)
   end
 
   def enabled_fields_with_other_options(print_version: false)
@@ -78,7 +78,7 @@ class IdeaCustomFieldsService
     # Restructure the results to order by category with each category as a page
 
     # Remove the original pages
-    fields = enabled_fields.reject { |field| field.input_type == 'page' }
+    fields = enabled_fields.select(&:supports_submission?)
 
     # Order fields by the order of categories in custom field
     categories = CustomField::QUESTION_CATEGORIES

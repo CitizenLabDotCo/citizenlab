@@ -6,7 +6,10 @@ if [ $# -ne 1 ]; then
 fi
 
 version="$1"
-repository="https://github.com/lastpass/lastpass-cli.git"
+
+# Temporary fix until https://github.com/lastpass/lastpass-cli/pull/729 is merged
+repository="https://github.com/aukecb/lastpass-cli.git"
+# repository="https://github.com/lastpass/lastpass-cli.git"
 
 # Clone the LastPass CLI repository with a shallow clone
 if ! git clone --depth 1 --branch "$version" "$repository" lastpass-cli; then

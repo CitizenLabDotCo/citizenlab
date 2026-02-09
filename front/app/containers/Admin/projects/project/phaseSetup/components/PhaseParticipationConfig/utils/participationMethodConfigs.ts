@@ -24,13 +24,12 @@ export const defaultParticipationConfig: IUpdatedPhaseProperties = {
   survey_embed_url: null,
   expire_days_limit: undefined,
   reacting_threshold: undefined,
-  prescreening_enabled: undefined,
+  prescreening_mode: undefined,
 };
 
 export const ideationDefaultConfig: IUpdatedPhaseProperties = {
   ...defaultParticipationConfig,
   participation_method: 'ideation',
-  ideation_method: 'base',
   submission_enabled: true,
   commenting_enabled: true,
   reacting_enabled: true,
@@ -43,7 +42,7 @@ export const ideationDefaultConfig: IUpdatedPhaseProperties = {
   presentation_mode: 'card',
   input_term: 'idea',
   ideas_order: 'trending',
-  prescreening_enabled: false,
+  prescreening_mode: null,
 };
 
 export const nativeSurveyDefaultConfig: IUpdatedPhaseProperties = {
@@ -94,5 +93,5 @@ export const proposalsDefaultConfig: IUpdatedPhaseProperties = {
   ideas_order: 'trending',
   expire_days_limit: 90,
   reacting_threshold: 300,
-  prescreening_enabled: false,
+  prescreening_mode: null,
 };

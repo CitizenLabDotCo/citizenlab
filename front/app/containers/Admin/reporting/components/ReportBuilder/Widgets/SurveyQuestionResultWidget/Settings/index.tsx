@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 
-import { Box, Toggle } from '@citizenlab/cl2-component-library';
+import { Box, Toggle, Select } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { IOption } from 'typings';
 
@@ -25,13 +25,14 @@ import {
 } from '../../../constants';
 import ProjectFilter from '../../_shared/ProjectFilter';
 import QuestionSelect from '../../_shared/QuestionSelect';
+import { AccessibilityInputs } from '../../ChartWidgets/_shared/AccessibilityInputs';
 import widgetMessages from '../../messages';
 import { Props } from '../typings';
 
 import GroupModeSelect from './GroupModeSelect';
 import messages from './messages';
 import UserFieldSelect from './UserFieldSelect';
-import { FieldsHideGroupBy } from './utils';
+import { FieldsHideGroupBy, FieldsWithSortOption } from './utils';
 
 const findQuestion = (questions: ICustomFields, questionId: string) => {
   return questions.data.find((question) => question.id === questionId);
@@ -49,6 +50,7 @@ const Settings = () => {
     groupMode,
     groupFieldId,
     heatmap,
+    optionsSortOrder,
   } = useNode<Props>((node) => ({
     title: node.data.props.title,
     projectId: node.data.props.projectId,
@@ -57,6 +59,7 @@ const Settings = () => {
     groupMode: node.data.props.groupMode,
     groupFieldId: node.data.props.groupFieldId,
     heatmap: node.data.props.heatmap,
+    optionsSortOrder: node.data.props.optionsSortOrder,
   }));
 
   const { data: questions } = useRawCustomFields({ phaseId });
@@ -76,6 +79,29 @@ const Settings = () => {
     questionId &&
     selectedQuestion &&
     selectedQuestion.attributes.input_type === 'point';
+  const questionTypesWithCharts = [
+    'linear_scale',
+    'multiselect',
+    'select',
+    'multiselect_image',
+    'select_image',
+    'sentiment_linear_scale',
+    'rating',
+    'ranking',
+  ];
+  const showAccessibilityInputs =
+    selectedQuestion &&
+    questionTypesWithCharts.includes(selectedQuestion.attributes.input_type);
+
+  const showSortSettings =
+    questionId &&
+    selectedQuestion &&
+    FieldsWithSortOption.includes(selectedQuestion.attributes.input_type);
+
+  const sortOptions = [
+    { value: 'count', label: formatMessage(messages.sortByCount) },
+    { value: 'original', label: formatMessage(messages.sortByOriginal) },
+  ];
 
   const handleProjectFilter = useCallback(
     ({ value }: IOption) => {
@@ -134,6 +160,15 @@ const Settings = () => {
       props.heatmap = !heatmap;
     });
   }, [setProp, heatmap]);
+
+  const handleSort = useCallback(
+    ({ value }: IOption) => {
+      setProp((props: Props) => {
+        props.optionsSortOrder = value;
+      });
+    },
+    [setProp]
+  );
 
   const relevantAnalyses = analyses?.data.filter(
     (analysis) =>
@@ -223,6 +258,18 @@ const Settings = () => {
           </Box>
         ))}
 
+      {showSortSettings && (
+        <Box mb="20px">
+          <Select
+            label={formatMessage(messages.sort)}
+            options={sortOptions}
+            value={optionsSortOrder || 'count'}
+            onChange={handleSort}
+            dataCy="sort-select"
+          />
+        </Box>
+      )}
+
       {showHeatmapSettings && (
         <Box my="32px">
           <Toggle
@@ -232,6 +279,7 @@ const Settings = () => {
           />
         </Box>
       )}
+      {showAccessibilityInputs && <AccessibilityInputs />}
     </Box>
   );
 };

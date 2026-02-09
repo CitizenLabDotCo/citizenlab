@@ -5,10 +5,9 @@ import { useParams, useSearchParams } from 'react-router-dom';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
-import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase } from 'api/phases/utils';
-import useProjectAllowedInputTopics from 'api/project_allowed_input_topics/useProjectAllowedInputTopics';
-import useProjectBySlug from 'api/projects/useProjectBySlug';
+import useInputTopics from 'api/input_topics/useInputTopics';
+import usePhase from 'api/phases/usePhase';
+import { getInputTerm } from 'api/phases/utils';
 
 import IdeasShow from 'containers/IdeasShow';
 
@@ -24,13 +23,21 @@ import messages from '../messages';
 import IdeaContent from './IdeaContent';
 import TopicsContent from './TopicsContent';
 
-const Sidebar = () => {
+interface Props {
+  projectId: string;
+  onSheetCollapse?: () => void;
+  onSheetExpand?: () => void;
+}
+
+const Sidebar = ({ projectId, onSheetCollapse, onSheetExpand }: Props) => {
   const { formatMessage } = useIntl();
   const contentRef = useRef<HTMLDivElement>(null);
   const { slug } = useParams() as { slug: string };
   const [searchParams] = useSearchParams();
   const selectedTopicId = searchParams.get('topic');
   const selectedIdeaId = searchParams.get('idea_id');
+  const phaseId = searchParams.get('phase_id');
+  const sheetOpen = searchParams.get('sheet_open');
   const isMobile = useBreakpoint('phone');
 
   useEffect(() => {
@@ -39,38 +46,39 @@ const Sidebar = () => {
     }
   }, [selectedIdeaId]);
 
-  const { data: project } = useProjectBySlug(slug);
-  const projectId = project?.data.id;
-
-  const { data: topics, isLoading: topicsLoading } =
-    useProjectAllowedInputTopics({ projectId });
-
-  const { data: phases } = usePhases(projectId);
-  const currentPhase = getCurrentPhase(phases?.data);
-  const phaseId = currentPhase?.id;
+  const { data: topics, isLoading: topicsLoading } = useInputTopics(projectId, {
+    sort: '-ideas_count',
+    depth: 0,
+  });
 
   const { data: filterCounts } = useIdeasFilterCounts({
-    projects: projectId ? [projectId] : undefined,
-    phase: phaseId,
+    projects: [projectId],
   });
+
+  const { data: phase } = usePhase(phaseId);
+  const inputTerm = phase ? getInputTerm([phase.data]) : 'idea';
 
   const { data: selectedIdea } = useIdeaById(selectedIdeaId ?? undefined);
   const selectedIdeaProjectId =
     selectedIdea?.data.relationships.project.data.id;
 
   const totalIdeasCount = filterCounts?.data.attributes.total || 0;
-  const topicCounts = filterCounts?.data.attributes.topic_id || {};
+  const topicCounts = filterCounts?.data.attributes.input_topic_id || {};
 
   const setSelectedTopicId = (topicId: string | null) => {
     if (topicId) {
       updateSearchParams({ topic: topicId });
     } else {
-      removeSearchParams(['topic']);
+      removeSearchParams(['topic', 'subtopic']);
     }
   };
 
   const handleCloseIdea = () => {
-    removeSearchParams(['idea_id']);
+    removeSearchParams(['idea_id', 'sheet_open']);
+  };
+
+  const handleUnauthenticatedCommentClick = () => {
+    updateSearchParams({ initial_idea_id: selectedIdeaId });
   };
 
   if (topicsLoading || !projectId) {
@@ -81,9 +89,7 @@ const Sidebar = () => {
     return null;
   }
 
-  const topicIds = topics.data.map(
-    (topic) => topic.relationships.topic.data.id
-  );
+  const topicIds = topics.data.map((topic) => topic.id);
 
   const showIdeaDetail =
     selectedIdeaId && selectedIdea && selectedIdeaProjectId;
@@ -94,13 +100,17 @@ const Sidebar = () => {
         a11y_panelLabel={formatMessage(messages.topicsPanel)}
         a11y_expandLabel={formatMessage(messages.expandPanel)}
         a11y_collapseLabel={formatMessage(messages.collapsePanel)}
-        expandToFullscreenOn={selectedIdeaId}
+        expandToFullscreenOn={sheetOpen}
+        inputTerm={inputTerm}
+        onCollapse={onSheetCollapse}
+        onExpand={onSheetExpand}
       >
         {showIdeaDetail ? (
           <IdeaContent
             selectedIdeaId={selectedIdeaId}
             selectedIdeaProjectId={selectedIdeaProjectId}
             handleCloseIdea={handleCloseIdea}
+            onUnauthenticatedCommentClick={handleUnauthenticatedCommentClick}
           />
         ) : (
           <TopicsContent
@@ -125,17 +135,25 @@ const Sidebar = () => {
       py="20px"
       overflowY="auto"
       ref={contentRef}
+      maxWidth="450px"
     >
       {showIdeaDetail ? (
         <>
-          <Box mb="16px">
-            <GoBackButton onClick={handleCloseIdea} showGoBackText={false} />
-          </Box>
-          <Box flex="1" overflowY="auto" padding="24px">
+          <Box flex="1" overflowY="auto" px="16px" pb="16px">
+            <GoBackButton
+              onClick={handleCloseIdea}
+              size="s"
+              iconSize="20px"
+              iconColor={colors.textPrimary}
+              textColor={colors.textPrimary}
+              customMessage={messages.back}
+              pb="16px"
+            />
             <IdeasShow
               ideaId={selectedIdeaId}
               projectId={selectedIdeaProjectId}
               compact={true}
+              onUnauthenticatedCommentClick={handleUnauthenticatedCommentClick}
             />
           </Box>
         </>

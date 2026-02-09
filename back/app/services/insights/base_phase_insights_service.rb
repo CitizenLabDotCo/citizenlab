@@ -51,11 +51,11 @@ module Insights
 
       {
         visitors: visitors_count,
-        visitors_7_day_change: base_7_day_changes[:visitors_7_day_change],
+        visitors_7_day_percent_change: base_7_day_changes[:visitors_7_day_percent_change],
         participants: participants_count,
-        participants_7_day_change: base_7_day_changes[:participants_7_day_change],
-        participation_rate: visitors_count > 0 ? (participants_count.to_f / visitors_count).round(3) : 0,
-        participation_rate_7_day_change: base_7_day_changes[:participation_rate_7_day_change]
+        participants_7_day_percent_change: base_7_day_changes[:participants_7_day_percent_change],
+        participation_rate_as_percent: visitors_count > 0 ? ((participants_count.to_f / visitors_count) * 100).round(1) : 0,
+        participation_rate_7_day_percent_change: base_7_day_changes[:participation_rate_7_day_percent_change]
       }
     end
 
@@ -82,31 +82,30 @@ module Insights
       participation_rate_previous_7_days = visitors_previous_7_days_count > 0 ? (participants_previous_7_days_count.to_f / visitors_previous_7_days_count).round(3) : 0
 
       {
-        visitors_7_day_change: percentage_change(visitors_previous_7_days_count, visitors_last_7_days_count),
-        participants_7_day_change: percentage_change(participants_previous_7_days_count, participants_last_7_days_count),
-        participation_rate_7_day_change: percentage_change(participation_rate_previous_7_days, participation_rate_last_7_days)
+        visitors_7_day_percent_change: percentage_change(visitors_previous_7_days_count, visitors_last_7_days_count),
+        participants_7_day_percent_change: percentage_change(participants_previous_7_days_count, participants_last_7_days_count),
+        participation_rate_7_day_percent_change: percentage_change(participation_rate_previous_7_days, participation_rate_last_7_days)
       }
     end
 
     def phase_has_run_more_than_14_days?
-      time_now = Time.current
-      phase_start_at = @phase.start_at.to_time
-      phase_end_at = (@phase.end_at || time_now).to_time
+      time_now = Time.current.to_date
+      phase_end_date = @phase.end_at || time_now
 
-      # Check if the phase duration (start to end or current time) is more than 14 days
-      phase_duration_seconds = phase_end_at - phase_start_at
-      phase_duration_days = (phase_duration_seconds / 86_400).to_i
+      # Check if the phase duration (start to end or current date) is less than 14 days
+      # Add 1 to include both start and end dates (inclusive counting)
+      phase_duration_days = (phase_end_date - @phase.start_at).to_i + 1
 
       return false if phase_duration_days < 14
 
       # Check if the elapsed time from phase start to now is more than 14 days
-      elapsed_seconds = time_now - phase_start_at
-      elapsed_days = (elapsed_seconds / 86_400).to_i
+      elapsed_days = (time_now - @phase.start_at).to_i
 
       elapsed_days >= 14
     end
 
     def percentage_change(old_value, new_value)
+      return nil unless phase_has_run_more_than_14_days?
       return 0.0 if old_value == new_value # Includes case where both are zero
       return 'last_7_days_compared_with_zero' if old_value.zero? # Infinite percentage change (avoid division by zero)
 
@@ -137,9 +136,25 @@ module Insights
       @phase.ideas.where(publication_status: 'published').count
     end
 
-    def demographics_data(participations, participant_ids)
-      return [] if participant_ids.empty?
+    # Parses user custom_field_values from both the item (if values)
+    # and/or the participant (user) referenced in each participation.
+    # Item values take precedence over participant values in case of key collisions,
+    # to prefer demographics at the time of participation.
+    def parse_user_custom_field_values(item, participant)
+      user_cfvs = participant&.custom_field_values || {}
 
+      return user_cfvs if !item.respond_to?(:custom_field_values) || item.custom_field_values.blank?
+
+      prefix = @user_fields_prefix ||= UserFieldsInFormService.prefix
+
+      item_cfvs = item.custom_field_values
+        .select { |key, _| key.to_s.start_with?(prefix) }
+        .transform_keys { |key| key.to_s.delete_prefix(prefix) }
+
+      user_cfvs.merge(item_cfvs)
+    end
+
+    def demographics_data(participations, participant_ids)
       participant_custom_field_values = participants_custom_field_values(participations, participant_ids)
       permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
 
@@ -158,19 +173,16 @@ module Insights
           key: custom_field.key,
           code: custom_field.code,
           input_type: custom_field.input_type,
-          r_score: nil, # May be set below (or null if no ref distribution).
           title_multiloc: custom_field.title_multiloc,
           series: nil # Will be set below
         }
 
         if custom_field.key == 'birthyear'
           birthyear_data = birthyear_demographics_data(participant_custom_field_values)
-          result[:r_score] = birthyear_data[:r_score]
           result[:series] = birthyear_data[:series]
           reference_distribution = birthyear_data[:reference_distribution]
-        elsif custom_field.support_reference_distribution?
+        elsif custom_field.supports_reference_distribution?
           select_or_checkbox_data = select_or_checkbox_field_demographics_data(participant_custom_field_values, custom_field)
-          result[:r_score] = select_or_checkbox_data[:r_score]
           result[:series] = select_or_checkbox_data[:series]
           result[:options] = select_or_checkbox_data[:options] if select_or_checkbox_data[:options]
           reference_distribution = select_or_checkbox_data[:reference_distribution]
@@ -194,23 +206,19 @@ module Insights
     def birthyear_demographics_data(participant_custom_field_values)
       age_stats = UserCustomFields::AgeStats.calculate(participant_custom_field_values)
       reference_distribution = nil
-      r_score = nil
 
       if age_stats.reference_distribution.present?
         distribution_data = age_stats.reference_distribution.distribution
 
-        if distribution_data.is_a?(Hash) && distribution_data['counts']
-          distribution_counts = distribution_data['counts']
+        if distribution_data.is_a?(Hash)
           formatted_data = age_stats.format_in_ranges
           reference_distribution = formatted_data[:ranged_reference_distribution]
-          r_score = calculate_r_score(age_stats.binned_counts, distribution_counts)
         end
       end
 
       formatted_data = age_stats.format_in_ranges
 
       {
-        r_score: r_score,
         series: formatted_data[:ranged_series],
         reference_distribution: reference_distribution
       }
@@ -219,7 +227,6 @@ module Insights
     def select_or_checkbox_field_demographics_data(participant_custom_field_values, custom_field)
       counts = select_or_checkbox_counts_for_field(participant_custom_field_values, custom_field)
       reference_distribution = calculate_reference_distribution(custom_field)
-      r_score = calculate_r_score(counts, reference_distribution)
 
       options = nil
       if custom_field.options.present?
@@ -229,7 +236,6 @@ module Insights
       end
 
       {
-        r_score: r_score,
         series: counts,
         reference_distribution: reference_distribution,
         options: options
@@ -269,12 +275,6 @@ module Insights
       return if (ref_distribution = custom_field.current_ref_distribution).blank?
 
       ref_distribution.distribution_by_option_key
-    end
-
-    def calculate_r_score(counts, reference_distribution)
-      return nil if reference_distribution.blank?
-
-      UserCustomFields::Representativeness::RScore.compute_scores(counts, reference_distribution)[:min_max_p_ratio]
     end
 
     def participants_and_visitors_chart_data(flattened_participations, visits)

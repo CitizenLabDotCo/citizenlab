@@ -20,21 +20,21 @@ RSpec.describe Surveys::ResultsWithDateGenerator do
         let(:quarter) { 2 }
 
         it 'returns the correct totals' do
-          expect(generated_results[:results].count).to eq 18
+          expect(generated_results[:results].count).to eq 20
           expect(generated_results[:totalSubmissions]).to eq 4
         end
 
         it 'returns linear scale averages for both this period and the previous period of the same length' do
           # Linear scale field
-          expect(generated_results.dig(:results, 4, :averages)).to eq(
+          expect(generated_results.dig(:results, result_index(linear_scale_field), :averages)).to eq(
             { this_period: 3.5, last_period: 3.6 }
           )
           # Rating field
-          expect(generated_results.dig(:results, 16, :averages)).to eq(
+          expect(generated_results.dig(:results, result_index(rating_field), :averages)).to eq(
             { this_period: 3.5, last_period: 3.6 }
           )
           # Sentiment linear scale field
-          expect(generated_results.dig(:results, 17, :averages)).to eq(
+          expect(generated_results.dig(:results, result_index(sentiment_linear_scale_field), :averages)).to eq(
             { this_period: 3.3, last_period: 2.1 }
           )
         end
@@ -49,21 +49,21 @@ RSpec.describe Surveys::ResultsWithDateGenerator do
         let(:quarter) { '1' }
 
         it 'returns the correct totals' do
-          expect(generated_results[:results].count).to eq 18
+          expect(generated_results[:results].count).to eq 20
           expect(generated_results[:totalSubmissions]).to eq 23
         end
 
         it 'returns nil for "last_period" in averages when there are no results in the previous period' do
           # Linear scale field
-          expect(generated_results.dig(:results, 4, :averages)).to eq(
+          expect(generated_results.dig(:results, result_index(linear_scale_field), :averages)).to eq(
             { this_period: 3.6, last_period: nil }
           )
           # Rating field
-          expect(generated_results.dig(:results, 16, :averages)).to eq(
+          expect(generated_results.dig(:results, result_index(rating_field), :averages)).to eq(
             { this_period: 3.6, last_period: nil }
           )
           # Sentiment linear scale field
-          expect(generated_results.dig(:results, 17, :averages)).to eq(
+          expect(generated_results.dig(:results, result_index(sentiment_linear_scale_field), :averages)).to eq(
             { this_period: 2.1, last_period: nil }
           )
         end
@@ -83,6 +83,28 @@ RSpec.describe Surveys::ResultsWithDateGenerator do
 
         it 'raises an incorrect date format error for a single result' do
           expect { single_result }.to raise_error(ArgumentError, 'Invalid date format')
+        end
+      end
+
+      context 'boundary day inclusion' do
+        context 'Q1 last day (March 31)' do
+          let(:year) { 2025 }
+          let(:quarter) { 1 }
+
+          before do
+            create(
+              :native_survey_response,
+              project: project,
+              phases: phases_of_inputs,
+              custom_field_values: { linear_scale_field.key => 5 },
+              created_at: Time.zone.local(2025, 3, 31, 23, 59, 0)
+            )
+          end
+
+          it 'includes responses created at end of day on the last day of Q1' do
+            # Q1 existing has 23 submissions (from survey_setup.rb)
+            expect(generated_results[:totalSubmissions]).to eq 24
+          end
         end
       end
     end

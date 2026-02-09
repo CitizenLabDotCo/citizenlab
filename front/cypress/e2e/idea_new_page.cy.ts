@@ -96,9 +96,9 @@ describe('Idea submission form', () => {
 
     const ideaTitle = randomString(40);
     const ideaContent = randomString(60);
-    const geocodedLocation = 'Korenmarkt 11, 9000 Gent, Belgium';
-    const lat = 51.0546195;
-    const long = 3.7219968;
+    const geocodedLocation = 'Minnemeers 10, 9000 Gent, Belgium';
+    const lat = 51.059736;
+    const long = 3.729047;
 
     // Go to URL with lat/long where point is in body of water
     cy.visit(

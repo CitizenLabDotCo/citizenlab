@@ -5,7 +5,7 @@ import { SurveyMetrics as SurveyMetricsType } from 'api/phase_insights/types';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
-import Metric from '../Metric';
+import MetricCard from '../MetricCard';
 
 interface Props {
   metrics: SurveyMetricsType;
@@ -17,15 +17,23 @@ const SurveyMetrics = ({ metrics, showChange }: Props) => {
 
   return (
     <>
-      <Metric
+      <MetricCard
         label={formatMessage(messages.submissions)}
         value={metrics.surveys_submitted}
-        change={showChange ? metrics.surveys_submitted_7_day_change : undefined}
+        icon="check-circle"
+        change={
+          showChange
+            ? metrics.surveys_submitted_7_day_percent_change
+            : undefined
+        }
       />
-      <Metric
+      <MetricCard
         label={formatMessage(messages.completionRate)}
-        value={`${(metrics.completion_rate * 100).toFixed(1)}%`}
-        change={showChange ? metrics.completion_rate_7_day_change : undefined}
+        value={`${metrics.completion_rate_as_percent.toFixed(1)}%`}
+        icon="chart-bar"
+        change={
+          showChange ? metrics.completion_rate_7_day_percent_change : undefined
+        }
       />
     </>
   );

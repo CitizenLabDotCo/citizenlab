@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 
-import { Box, Button, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -12,12 +12,11 @@ import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import { triggerPostParticipationFlow } from 'containers/Authentication/events';
 
-import SubmissionReference from 'components/CustomFieldsForm/PageControlButtons/SubmissionReference';
+import SubmissionReference from 'components/CustomFieldsForm/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
 
 import clHistory from 'utils/cl-router/history';
@@ -32,6 +31,7 @@ import PageFooter from '../Page/PageFooter';
 import PageTitle from '../Page/PageTitle';
 import { FormValues } from '../Page/types';
 import usePageForm from '../Page/usePageForm';
+import PostParticipationBox from '../PostParticipationBox';
 import { getFormCompletionPercentage, Pages } from '../util';
 
 import {
@@ -94,9 +94,6 @@ const SurveyPage = ({
   const isMapPage = page.page_layout === 'map';
   const isMobileOrSmaller = useBreakpoint('phone');
   const { data: authUser } = useAuthUser();
-  const postParticipationSignUpEnabled = useFeatureFlag({
-    name: 'post_participation_signup',
-  });
 
   const [searchParams] = useSearchParams();
   const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
@@ -215,8 +212,7 @@ const SurveyPage = ({
   const isLastPage = currentPageIndex === lastPageIndex;
 
   const showSubmissionReference = isLastPage && idea && showIdeaId;
-  const showPostParticipationSignup =
-    isLastPage && project && !authUser && postParticipationSignUpEnabled;
+  const showPostParticipationSignup = !!(isLastPage && idea && !authUser);
 
   return (
     <FormProvider {...methods}>
@@ -278,28 +274,28 @@ const SurveyPage = ({
                         phase={phase}
                         participationMethod={participationMethod}
                       />
+                      {showPostParticipationSignup && project && (
+                        <Box mb="24px">
+                          <PostParticipationBox
+                            onCreateAccount={() => {
+                              triggerPostParticipationFlow({
+                                name: 'followProjectAndRedirect',
+                                params: {
+                                  projectId: project.data.id,
+                                  path: `/projects/${project.data.attributes.slug}`,
+                                },
+                              });
+                            }}
+                          />
+                        </Box>
+                      )}
                       {showSubmissionReference && (
                         <SubmissionReference
                           inputId={idea.data.id}
-                          participationMethod={participationMethod}
+                          postParticipationSignUpVisible={
+                            showPostParticipationSignup
+                          }
                         />
-                      )}
-                      {showPostParticipationSignup && (
-                        <Button
-                          onClick={() => {
-                            triggerPostParticipationFlow({
-                              name: 'redirect',
-                              params: {
-                                path: `/projects/${project.data.attributes.slug}`,
-                              },
-                            });
-                          }}
-                          mt="16px"
-                          width="auto"
-                          dataCy="post-participation-signup"
-                        >
-                          Sign up to stay in touch
-                        </Button>
                       )}
                     </Box>
                   </Box>

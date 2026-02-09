@@ -19,7 +19,7 @@ const MostLikedIdeas = ({ phaseId }: MethodSpecificInsightProps) => {
 
   const { data: ideasData, isLoading } = useInfiniteIdeas({
     phase: phaseId,
-    sort: '-likes_count',
+    sort: 'popular',
     'page[size]': NUMBER_OF_IDEAS,
   });
 

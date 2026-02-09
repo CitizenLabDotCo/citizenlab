@@ -6,13 +6,13 @@ import { DemographicField } from 'api/phase_insights/types';
 
 import ComparisonBarChart from 'components/admin/Graphs/ComparisonBarChart';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
+import Warning from 'components/UI/Warning';
 
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import { INSIGHTS_CHART_COLORS } from '../constants';
 import messages from '../messages';
 
-import RScore from './RScore';
 import { toChartData, toExcelData } from './utils';
 
 interface Props {
@@ -36,7 +36,7 @@ const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
         alignItems="center"
         mb="8px"
       >
-        <Text fontSize="l" fontWeight="bold" m="0px">
+        <Text fontSize="m" fontWeight="semi-bold" m="0px">
           {field.field_name}
         </Text>
         {showExportMenu && (
@@ -47,9 +47,20 @@ const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
         )}
       </Box>
 
-      {hasPopulationData && field.r_score !== undefined && (
-        <Box mb="8px">
-          <RScore value={field.r_score} />
+      {!hasPopulationData && (
+        <Box mb="16px">
+          <Warning>
+            <FormattedMessage
+              {...messages.noReferenceDataMessage}
+              values={{
+                link: (chunks) => (
+                  <a href="/admin/dashboard/representation/edit-base-data">
+                    {chunks}
+                  </a>
+                ),
+              }}
+            />
+          </Warning>
         </Box>
       )}
 

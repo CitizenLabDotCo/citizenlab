@@ -62,10 +62,12 @@ const FormBuilderSettings = ({
       'page',
     ].includes(fieldType);
 
-    // For backwards compatibility, we only show the logic tab for multiselect/multiselect_image if they already have logic.
+    // For backwards compatibility (pre-2026), we only show the logic tab for multiselect/multiselect_image if they already have logic.
     const fieldHasLogic = field.logic.rules && field.logic.rules.length > 0;
     const isMultiselectWithLogic =
-      ['multiselect', 'multiselect_image'].includes(fieldType) && fieldHasLogic;
+      ['multiselect', 'multiselect_image'].includes(fieldType) &&
+      fieldHasLogic &&
+      field.created_at < '2026-01-18';
 
     const isFormEndPage = fieldType === 'page' && field.key === 'form_end';
 

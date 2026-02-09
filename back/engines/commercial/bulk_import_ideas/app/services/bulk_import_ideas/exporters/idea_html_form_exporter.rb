@@ -143,7 +143,7 @@ module BulkImportIdeas::Exporters
     end
 
     def option_image_url(field, option)
-      return nil unless field.support_option_images? && option.image
+      return nil unless field.supports_option_images? && option.image
 
       format_urls(option.image.image.versions[:large].url)
     end
@@ -220,12 +220,12 @@ module BulkImportIdeas::Exporters
     end
 
     def field_has_question_number?(field)
-      !field.page? && !field.additional_text_question?
+      field.supports_submission? && !field.additional_text_question?
     end
 
     def field_map_url(field)
       return unless %w[point line polygon page].include? field.input_type
-      return if field.input_type == 'page' && field.page_layout != 'map'
+      return if field.page? && field.page_layout != 'map'
 
       # Use map config from field > project > platform in that order
       map_config = field.map_config || @project.map_config
@@ -334,13 +334,13 @@ module BulkImportIdeas::Exporters
     end
 
     def select_print_instructions(field)
-      return '' unless field.singleselect?
+      return '' if !field.supports_options? || !field.supports_single_selection?
 
       format_instructions("*#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.select_print_description') }}")
     end
 
     def multiselect_print_instructions(field)
-      return '' unless field.multiselect?
+      return '' if !field.supports_multiple_selection?
 
       min = field.minimum_select_count
       max = field.maximum_select_count
@@ -367,7 +367,7 @@ module BulkImportIdeas::Exporters
 
     # Should options be displayed in a grid or a list?
     def field_option_columns?(field)
-      return false unless field.multiselect? || field.singleselect?
+      return false if !field.supports_options? || !field.supports_selection?
 
       # Only use columns if there are more than 4 options
       field.options.length > 4

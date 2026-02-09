@@ -75,10 +75,10 @@ RSpec.describe StaticPage do
 
   describe '#filter_projects' do
     it 'filters projects by topics' do
-      topic = create(:topic)
-      project = create(:project, topics: [topic])
-      project2 = create(:project, topics: [])
-      page = create(:static_page, topics: [topic], projects_filter_type: 'topics')
+      topic = create(:global_topic)
+      project = create(:project, global_topics: [topic])
+      project2 = create(:project, global_topics: [])
+      page = create(:static_page, global_topics: [topic], projects_filter_type: 'topics')
 
       expect(page.filter_projects(Project.all)).to include(project)
       expect(page.filter_projects(Project.all)).not_to include(project2)
@@ -123,34 +123,34 @@ RSpec.describe StaticPage do
   end
 
   describe 'before validate' do
-    let(:topic) { create(:topic) }
+    let(:topic) { create(:global_topic) }
 
     it 'destroys unused associations' do
-      static_page = create(:static_page, projects_filter_type: 'topics', code: 'faq', topics: [topic])
-      expect(static_page.topics).to be_present
+      static_page = create(:static_page, projects_filter_type: 'topics', code: 'faq', global_topics: [topic])
+      expect(static_page.global_topics).to be_present
       static_page.update!(projects_filter_type: 'areas', areas: [build(:area)])
-      expect(static_page.topics).to be_empty
+      expect(static_page.global_topics).to be_empty
       expect(topic).to be_persisted
     end
 
     it 'does not destroy association if validation failed' do
-      static_page = create(:static_page, projects_filter_type: 'topics', code: 'faq', topics: [topic])
-      expect(static_page.topics).to be_present
+      static_page = create(:static_page, projects_filter_type: 'topics', code: 'faq', global_topics: [topic])
+      expect(static_page.global_topics).to be_present
       updated = static_page.update(projects_filter_type: 'areas', areas: [])
 
       expect(updated).to be(false)
-      expect(static_page.reload.topics).to be_present
+      expect(static_page.reload.global_topics).to be_present
     end
 
     it 'saves only association from projects_filter_type' do
       area = create(:area)
 
-      static_page = create(:static_page, projects_filter_type: 'topics', code: 'faq', topics: [topic], areas: [area])
-      expect(static_page.reload.topics).to be_present
+      static_page = create(:static_page, projects_filter_type: 'topics', code: 'faq', global_topics: [topic], areas: [area])
+      expect(static_page.reload.global_topics).to be_present
       expect(static_page.reload.areas).to be_empty
 
-      static_page.update(projects_filter_type: 'no_filter', topics: [topic], areas: [area])
-      expect(static_page.reload.topics).to be_empty
+      static_page.update(projects_filter_type: 'no_filter', global_topics: [topic], areas: [area])
+      expect(static_page.reload.global_topics).to be_empty
       expect(static_page.reload.areas).to be_empty
     end
   end

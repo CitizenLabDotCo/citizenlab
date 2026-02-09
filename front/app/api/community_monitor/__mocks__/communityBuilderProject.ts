@@ -92,6 +92,7 @@ export const project: IProjectData = {
     preview_token: 'fake-token-0123456789',
     baskets_count: 0,
     votes_count: 0,
+    live_auto_input_topics_enabled: false,
   },
   relationships: {
     admin_publication: {
@@ -117,7 +118,7 @@ export const project: IProjectData = {
     areas: {
       data: [],
     },
-    topics: {
+    global_topics: {
       data: [],
     },
     avatars: {

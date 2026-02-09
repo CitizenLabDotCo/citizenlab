@@ -406,6 +406,10 @@ module MultiTenancy
               enabled: false,
               allowed: false
             },
+            prescreening_flagged_only: {
+              enabled: false,
+              allowed: false
+            },
             disable_disliking: {
               enabled: true,
               allowed: true
@@ -504,10 +508,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            proposals_participation_method: {
-              enabled: true,
-              allowed: true
-            },
             input_cosponsorship: {
               enabled: true,
               allowed: true
@@ -554,6 +554,14 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            nested_input_topics: {
+              enabled: true,
+              allowed: true
+            },
+            live_auto_input_topics: {
+              enabled: true,
+              allowed: true
+            },
             data_repository_transcription: {
               enabled: true,
               allowed: true
@@ -579,16 +587,12 @@ module MultiTenancy
               allowed: true
             },
             phase_insights: {
+              enabled: true,
+              allowed: true
+            },
+            participation_location_tracking: {
               enabled: false,
               allowed: false
-            },
-            ideation_accountless_posting: {
-              enabled: true,
-              allowed: true
-            },
-            post_participation_signup: {
-              enabled: true,
-              allowed: true
             }
           })
         )
