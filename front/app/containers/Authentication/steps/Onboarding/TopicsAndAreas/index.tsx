@@ -70,7 +70,14 @@ const TopicsAndAreas = ({ onSubmit, onSkip }: Props) => {
         </Accordion>
       )}
       <Box display="flex" justifyContent="flex-end">
-        <Box my="20px" w="auto" display="flex" alignSelf="flex-end" gap="8px">
+        <Box
+          my="20px"
+          w="auto"
+          display="flex"
+          alignSelf="flex-end"
+          gap="8px"
+          flexWrap="wrap"
+        >
           <ButtonWithLink onClick={onSkip} buttonStyle="primary-outlined">
             {formatMessage(messages.skipForNow)}
           </ButtonWithLink>
