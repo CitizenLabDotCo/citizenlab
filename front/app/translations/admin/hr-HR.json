@@ -1402,7 +1402,6 @@
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity": "Pretprošlih 7 dana nije bilo aktivnosti za usporedbu (što bi dalo beskonačnu vrijednost)",
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "Nije moguće izračunati promjenu od 7 dana kada faza traje manje od 14 dana",
   "app.containers.Admin.projects.project.insights.last7Days": "Posljednjih 7 dana",
-  "app.containers.Admin.projects.project.insights.liveData": "Podaci uživo",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Učitavanje demografskih podataka...",
   "app.containers.Admin.projects.project.insights.newSubmission": "Novi podnesak",
   "app.containers.Admin.projects.project.insights.noAnswer": "Nema odgovora",
