@@ -1195,7 +1195,6 @@
   "app.containers.AreaTerms.areaTerm": "علاقہ",
   "app.containers.AreaTerms.areasTerm": "علاقوں",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "اس ای میل کے ساتھ ایک اکاؤنٹ پہلے سے موجود ہے۔ آپ سائن آؤٹ کر سکتے ہیں، اس ای میل ایڈریس کے ساتھ لاگ ان کر سکتے ہیں اور ترتیبات کے صفحہ پر اپنے اکاؤنٹ کی تصدیق کر سکتے ہیں۔",
-  "app.containers.Authentication.createAnAccount": "ایک اکاؤنٹ بنائیں",
   "app.containers.Authentication.steps.AccessDenied.close": "بند",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "آپ اس عمل میں حصہ لینے کی ضروریات کو پورا نہیں کرتے ہیں۔",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "ایڈمن یا پروجیکٹ مینیجر کے طور پر لاگ ان ہونے کے لیے یہاں کلک کریں۔",

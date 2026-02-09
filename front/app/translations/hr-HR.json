@@ -1195,7 +1195,6 @@
   "app.containers.AreaTerms.areaTerm": "područje",
   "app.containers.AreaTerms.areasTerm": "područja",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Račun s ovom e-poštom već postoji. Možete se odjaviti, prijaviti s ovom adresom e-pošte i potvrditi svoj račun na stranici postavki.",
-  "app.containers.Authentication.createAnAccount": "Izradi račun",
   "app.containers.Authentication.steps.AccessDenied.close": "Zatvoriti",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Ne ispunjavate uvjete za sudjelovanje u ovom procesu.",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Kliknite ovdje za prijavu kao administrator ili voditelj projekta",
