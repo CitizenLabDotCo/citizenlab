@@ -1195,6 +1195,7 @@
   "app.containers.AreaTerms.areaTerm": "obszar",
   "app.containers.AreaTerms.areasTerm": "obszary",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Konto z tym adresem e-mail już istnieje. Możesz się wylogować, zalogować przy użyciu tego adresu e-mail i zweryfikować swoje konto na stronie ustawień.",
+  "app.containers.Authentication.signUpOrLogIn": "Zarejestruj się lub zaloguj",
   "app.containers.Authentication.steps.AccessDenied.close": "Zamknij",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Nie spełniasz wymagań, aby wziąć udział w tym procesie.",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Kliknij tutaj, aby zalogować się jako administrator lub kierownik projektu",
