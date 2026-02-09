@@ -1195,6 +1195,7 @@
   "app.containers.AreaTerms.areaTerm": "ardal",
   "app.containers.AreaTerms.areasTerm": "ardaloedd",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Mae cyfrif gyda'r e-bost hwn eisoes yn bodoli. Gallwch allgofnodi, mewngofnodi gyda'r cyfeiriad e-bost hwn a gwirio'ch cyfrif ar y dudalen gosodiadau.",
+  "app.containers.Authentication.signUpOrLogIn": "Cofrestru neu fewngofnodi",
   "app.containers.Authentication.steps.AccessDenied.close": "Cau",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Nid ydych yn bodloni'r gofynion i gymryd rhan yn y broses hon.",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Cliciwch yma i fewngofnodi fel gweinyddwr neu reolwr prosiect",
