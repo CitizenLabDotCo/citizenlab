@@ -258,6 +258,40 @@ resource 'Ideas' do
             'user_select_field' => 'option1'
           })
         end
+
+        context do
+          before do
+            @gender_field = create(:custom_field_gender)
+            @verification = create(:verification, method_name: 'bogus')
+            @user = @verification.user
+            @user.update!(custom_field_values: { @gender_field.key => 'female' })
+
+            header_token_for @user
+          end
+
+          it 'does not update locked field' do
+            create(:idea, custom_field_values: { @custom_field.key => 'option2' })
+            expect(@user.custom_field_values).to eq({
+              @gender_field.key => 'female'
+            })
+
+            do_request({
+              idea: {
+                publication_status: 'published',
+                'u_user_select_field' => 'option1',
+                "u_#{@gender_field.key}" => 'male', # this should be ignored!
+                @custom_field.key => 'option2'
+              }
+            })
+
+            assert_status 200
+            user = User.find(@user.id)
+            expect(user.reload.custom_field_values).to eq({
+              'user_select_field' => 'option1',
+              @gender_field.key => 'female'
+            })
+          end
+        end
       end
 
       context 'when user_data_collection is demographics_only' do
