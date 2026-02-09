@@ -1407,7 +1407,7 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Συμμετοχή με την πάροδο του χρόνου",
   "app.containers.Admin.projects.project.insights.participationRate": "Ποσοστό συμμετοχής",
   "app.containers.Admin.projects.project.insights.participationRateExplanationTooltip": "Ο αριθμός των συμμετεχόντων δια του αριθμού των επισκεπτών, εκφρασμένος ως ποσοστό.",
-  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip": "Ο αριθμός των μοναδικών συμμετεχόντων. Εξαιρούνται οι εγγεγραμμένοι σε εκδηλώσεις και οι οπαδοί του έργου που δεν συμμετείχαν στη φάση.",
+  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2": "Ο αριθμός των μοναδικών συμμετεχόντων. Δεν περιλαμβάνει τους εγγεγραμμένους σε εκδηλώσεις και τους οπαδούς του έργου.",
   "app.containers.Admin.projects.project.insights.populationPercent": "Πληθυσμός (%)",
   "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Most liked",
   "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "These proposals got the most traction",
