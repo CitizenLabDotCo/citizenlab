@@ -72,11 +72,11 @@ RSpec.describe ParticipationMethod::Ideation do
       context 'when prescreening_mode is flagged_only' do
         let(:prescreening_mode) { 'flagged_only' }
 
-        it 'sets idea_status to prescreening and publication_status to submitted' do
+        it 'sets idea_status to proposed and publication_status to published' do
           input = build(:idea, idea_status: nil, publication_status: nil)
           participation_method.assign_defaults input
-          expect(input.idea_status).to eq(prescreening_status)
-          expect(input.publication_status).to eq('submitted')
+          expect(input.idea_status).to eq(proposed_status)
+          expect(input.publication_status).to eq('published')
         end
       end
 
