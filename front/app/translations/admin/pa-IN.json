@@ -1407,7 +1407,7 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "ਸਮੇਂ ਦੇ ਨਾਲ ਭਾਗੀਦਾਰੀ",
   "app.containers.Admin.projects.project.insights.participationRate": "ਭਾਗੀਦਾਰੀ ਦਰ",
   "app.containers.Admin.projects.project.insights.participationRateExplanationTooltip": "ਭਾਗੀਦਾਰਾਂ ਦੀ ਗਿਣਤੀ ਨੂੰ ਦਰਸ਼ਕਾਂ ਦੀ ਗਿਣਤੀ ਨਾਲ ਭਾਗ ਕੀਤਾ ਗਿਆ ਹੈ, ਜਿਸਨੂੰ ਪ੍ਰਤੀਸ਼ਤ ਵਜੋਂ ਦਰਸਾਇਆ ਗਿਆ ਹੈ।",
-  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip": "ਵਿਲੱਖਣ ਭਾਗੀਦਾਰਾਂ ਦੀ ਗਿਣਤੀ। ਇਸ ਵਿੱਚ ਇਵੈਂਟ ਰਜਿਸਟਰੈਂਟ ਅਤੇ ਪ੍ਰੋਜੈਕਟ ਫਾਲੋਅਰ ਸ਼ਾਮਲ ਨਹੀਂ ਹਨ ਜਿਨ੍ਹਾਂ ਨੇ ਪੜਾਅ ਵਿੱਚ ਹਿੱਸਾ ਨਹੀਂ ਲਿਆ ਹੈ।",
+  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2": "ਵਿਲੱਖਣ ਭਾਗੀਦਾਰਾਂ ਦੀ ਗਿਣਤੀ। ਇਸ ਵਿੱਚ ਇਵੈਂਟ ਰਜਿਸਟਰੈਂਟ ਅਤੇ ਪ੍ਰੋਜੈਕਟ ਫਾਲੋਅਰ ਸ਼ਾਮਲ ਨਹੀਂ ਹਨ।",
   "app.containers.Admin.projects.project.insights.populationPercent": "ਆਬਾਦੀ (%)",
   "app.containers.Admin.projects.project.insights.proposals.mostLiked": "ਸਭ ਤੋਂ ਵੱਧ ਪਸੰਦ ਕੀਤੇ ਗਏ",
   "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "ਇਹਨਾਂ ਪ੍ਰਸਤਾਵਾਂ ਨੂੰ ਸਭ ਤੋਂ ਵੱਧ ਖਿੱਚ ਮਿਲੀ",
