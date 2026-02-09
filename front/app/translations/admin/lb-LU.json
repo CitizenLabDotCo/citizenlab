@@ -1407,7 +1407,7 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Participatioun am Laf vun der Zäit",
   "app.containers.Admin.projects.project.insights.participationRate": "Participatiounsquote",
   "app.containers.Admin.projects.project.insights.participationRateExplanationTooltip": "D'Zuel vun den Deelhueler gedeelt duerch d'Zuel vun de Visiteuren, ausgedréckt a Prozent.",
-  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip": "D'Zuel vun den eenzegaartege Participanten. Ausgeschloss sinn Eventregistranten a Projetfolger, déi net un der Phase deelgeholl hunn.",
+  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2": "D'Zuel vun den eenzegaartegen Participanten. Schléisst net d'Participanten un den Eventer an d'Follower vum Projet an.",
   "app.containers.Admin.projects.project.insights.populationPercent": "Bevëlkerung (%)",
   "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Most liked",
   "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "These proposals got the most traction",
