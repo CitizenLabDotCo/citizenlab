@@ -113,6 +113,7 @@ RSpec.describe ContentBuilder::LayoutPolicy do
           if klass == Project
             raise Pundit::NotAuthorizedError, 'not allowed'
           end
+
           klass.none
         end
       end
