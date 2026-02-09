@@ -1407,7 +1407,7 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Cyfranogiad dros amser",
   "app.containers.Admin.projects.project.insights.participationRate": "Cyfradd cyfranogiad",
   "app.containers.Admin.projects.project.insights.participationRateExplanationTooltip": "Nifer y cyfranogwyr wedi'i rannu â nifer yr ymwelwyr, wedi'i fynegi fel canran.",
-  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip": "Nifer y cyfranogwyr unigryw. Nid yw'n cynnwys y rhai sydd wedi cofrestru ar gyfer y digwyddiad na dilynwyr y prosiect nad ydynt wedi cymryd rhan yn y cyfnod.",
+  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2": "Nifer y cyfranogwyr unigryw. Nid yw'n cynnwys y rhai sydd wedi cofrestru ar gyfer y digwyddiad a dilynwyr y prosiect.",
   "app.containers.Admin.projects.project.insights.populationPercent": "Poblogaeth (%)",
   "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Mwyaf poblogaidd",
   "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "Y cynigion hyn a gafodd y sylw mwyaf",
