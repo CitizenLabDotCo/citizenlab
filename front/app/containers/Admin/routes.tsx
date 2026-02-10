@@ -14,7 +14,9 @@ import { usePermission } from 'utils/permissions';
 import { createRoute, Navigate, useLocation } from 'utils/router';
 
 import { communityMonitorRouteTypes } from './communityMonitor/routes';
-import { dashboardRouteTypes } from './dashboard/routes';
+import createAdminDashboardRoutes, {
+  dashboardRouteTypes,
+} from './dashboard/routes';
 import { ideaRouteTypes } from './ideas/routes';
 import { inspirationHubRouteTypes } from './inspirationHub/routes';
 import { invitationRouteTypes } from './invitations/routes';
@@ -213,8 +215,8 @@ export const createAdminRoutes = () => {
   return adminRoute.addChildren([
     adminIndexRoute,
     createAdminProjectsRoutes(),
+    createAdminDashboardRoutes(),
     // TODO: Convert these sub-route factories to TanStack format one by one
-    // createDashboardRoutes(),
     // createAdminUsersRoutes(),
     // settingsRoutes(),
     // pagesAndMenuRoutes(),

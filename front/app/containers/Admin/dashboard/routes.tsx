@@ -2,7 +2,9 @@ import React, { lazy } from 'react';
 
 import PageLoading from 'components/UI/PageLoading';
 
-import { AdminRoute } from '../routes';
+import { createRoute } from 'utils/router';
+
+import { adminRoute, AdminRoute } from '../routes';
 
 const DashboardContainer = React.lazy(
   () => import('../Representativeness/Dashboard')
@@ -53,61 +55,85 @@ export type dashboardRouteTypes =
   | AdminRoute<`dashboard/${representativenessRoutes.editBaseData}`>
   | AdminRoute<`dashboard/${moderationRoutes.moderation}`>;
 
+// Dashboard layout route
+const dashboardRoute = createRoute({
+  getParentRoute: () => adminRoute,
+  path: dashboardRoutes.dashboard,
+  component: () => (
+    <PageLoading>
+      <DashboardWrapper />
+    </PageLoading>
+  ),
+});
+
+const overviewRoute = createRoute({
+  getParentRoute: () => dashboardRoute,
+  path: dashboardRoutes.overview,
+  component: () => (
+    <PageLoading>
+      <Overview />
+    </PageLoading>
+  ),
+});
+
+const usersRoute = createRoute({
+  getParentRoute: () => dashboardRoute,
+  path: dashboardRoutes.users,
+  component: () => (
+    <PageLoading>
+      <Users />
+    </PageLoading>
+  ),
+});
+
+const visitorsRoute = createRoute({
+  getParentRoute: () => dashboardRoute,
+  path: dashboardRoutes.visitors,
+  component: () => (
+    <PageLoading>
+      <Visitors />
+    </PageLoading>
+  ),
+});
+
+const managementFeedRoute = createRoute({
+  getParentRoute: () => dashboardRoute,
+  path: dashboardRoutes.management_feed,
+  component: () => (
+    <PageLoading>
+      <ManagementFeed />
+    </PageLoading>
+  ),
+});
+
+const representationRoute = createRoute({
+  getParentRoute: () => dashboardRoute,
+  path: representativenessRoutes.representation,
+  component: () => <DashboardContainer />,
+});
+
+const editBaseDataRoute = createRoute({
+  getParentRoute: () => dashboardRoute,
+  path: representativenessRoutes.editBaseData,
+  component: () => <ReferenceDataInterface />,
+});
+
+const moderationRoute = createRoute({
+  getParentRoute: () => dashboardRoute,
+  path: moderationRoutes.moderation,
+  component: () => <AdminModerationComponent />,
+});
+
 const createAdminDashboardRoutes = () => {
-  return {
-    path: dashboardRoutes.dashboard,
-    element: (
-      <PageLoading>
-        <DashboardWrapper />
-      </PageLoading>
-    ),
-    children: [
-      {
-        path: dashboardRoutes.overview,
-        element: (
-          <PageLoading>
-            <Overview />
-          </PageLoading>
-        ),
-      },
-      {
-        path: dashboardRoutes.users,
-        element: (
-          <PageLoading>
-            <Users />
-          </PageLoading>
-        ),
-      },
-      {
-        path: dashboardRoutes.visitors,
-        element: (
-          <PageLoading>
-            <Visitors />
-          </PageLoading>
-        ),
-      },
-      {
-        path: dashboardRoutes.management_feed,
-        element: (
-          <PageLoading>
-            <ManagementFeed />
-          </PageLoading>
-        ),
-      },
-      {
-        path: representativenessRoutes.representation,
-        element: <DashboardContainer />,
-      },
-      {
-        path: representativenessRoutes.editBaseData,
-        element: <ReferenceDataInterface />,
-      },
-      {
-        path: moderationRoutes.moderation,
-        element: <AdminModerationComponent />,
-      },
-    ],
-  };
+  return dashboardRoute.addChildren([
+    overviewRoute,
+    usersRoute,
+    visitorsRoute,
+    managementFeedRoute,
+    representationRoute,
+    editBaseDataRoute,
+    moderationRoute,
+  ]);
 };
 
 export default createAdminDashboardRoutes;
