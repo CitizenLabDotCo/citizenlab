@@ -28,7 +28,9 @@ import { projectFolderRouteTypes } from './projectFolders/routes';
 import createAdminProjectsRoutes, {
   projectsRouteTypes,
 } from './projects/routes';
-import { reportingRouteTypes } from './reporting/routes';
+import createAdminReportingRoutes, {
+  reportingRouteTypes,
+} from './reporting/routes';
 import { settingRouteTypes } from './settings/routes';
 import { toolRouteTypes } from './tools/routes';
 import createAdminUsersRoutes, { userRouteTypes } from './users/routes';
@@ -226,7 +228,7 @@ export const createAdminRoutes = () => {
     createAdminMessagingRoutes(),
     createAdminIdeasRoutes(),
     // projectFoldersRoutes(),
-    // ...reportingRoutes(),
+    ...createAdminReportingRoutes(),
     // toolsRoutes(),
     // communityMonitorsRoutes(),
     // inspirationHubRoutes(),
