@@ -1407,7 +1407,7 @@
   "app.containers.Admin.projects.project.insights.participationOverTime": "Deelname na verloop van tijd",
   "app.containers.Admin.projects.project.insights.participationRate": "Deelnameratio",
   "app.containers.Admin.projects.project.insights.participationRateExplanationTooltip": "Het aantal deelnemers gedeeld door het aantal bezoekers, uitgedrukt als percentage.",
-  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2": "Het aantal unieke deelnemers. Omvat niet de inschrijvers op evenementen en projectvolgers.",
+  "app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2": "Het aantal unieke deelnemers. Dit aantal is exclusief de geregistreerden op activiteiten en volgers van het project.",
   "app.containers.Admin.projects.project.insights.populationPercent": "Bevolking (%)",
   "app.containers.Admin.projects.project.insights.proposals.mostLiked": "Meest geliket",
   "app.containers.Admin.projects.project.insights.proposals.mostLikedDescription": "Deze voorstellen kregen de meeste tractie",
