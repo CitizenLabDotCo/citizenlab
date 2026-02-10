@@ -63,6 +63,14 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.userCommentedOnPetitionYouFollow',
     defaultMessage: '{name} commented on a petition that you follow',
   },
+  userCommentedOnCommentYouFollow: {
+    id: 'app.containers.NotificationMenu.userCommentedOnCommentYouFollow',
+    defaultMessage: '{name} commented on a comment that you follow',
+  },
+  userCommentedOnStatementYouFollow: {
+    id: 'app.containers.NotificationMenu.userCommentedOnStatementYouFollow',
+    defaultMessage: '{name} commented on a statement that you follow',
+  },
   userReactedToYourComment: {
     id: 'app.containers.NotificationMenu.userReactedToYourComment',
     defaultMessage: '{name} reacted to your comment',
@@ -134,6 +142,14 @@ export default defineMessages({
   invitationToCosponsorInitiative: {
     id: 'app.containers.NotificationMenu.invitationToCosponsorInitiative',
     defaultMessage: '{name} invited you to co-sponsor an initiative',
+  },
+  invitationToCosponsorComment: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorComment',
+    defaultMessage: '{name} invited you to co-sponsor a comment',
+  },
+  invitationToCosponsorStatement: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorStatement',
+    defaultMessage: '{name} invited you to co-sponsor a statement',
   },
   userReportedCommentAsSpam: {
     id: 'app.containers.NotificationMenu.userReportedCommentAsSpam1',
@@ -231,6 +247,16 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.officialFeedbackOnPetitionYouFollow',
     defaultMessage:
       '{officialName} gave an official update on a petition you follow',
+  },
+  officialFeedbackOnCommentYouFollow: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnCommentYouFollow',
+    defaultMessage:
+      '{officialName} gave an official update on a comment you follow',
+  },
+  officialFeedbackOnStatementYouFollow: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnStatementYouFollow',
+    defaultMessage:
+      '{officialName} gave an official update on a statement you follow',
   },
   mentionInOfficialFeedback: {
     id: 'app.containers.NotificationMenu.mentionInOfficialFeedback',

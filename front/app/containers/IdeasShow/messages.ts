@@ -86,6 +86,14 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.petitionTwitterMessage',
     defaultMessage: 'Support this petition: {postTitle}',
   },
+  commentTwitterMessage: {
+    id: 'app.containers.IdeasShow.commentTwitterMessage',
+    defaultMessage: 'I just posted a comment: {postTitle}',
+  },
+  statementTwitterMessage: {
+    id: 'app.containers.IdeasShow.statementTwitterMessage',
+    defaultMessage: 'Support this statement: {postTitle}',
+  },
   // #input_term_copy
   ideaWhatsAppMessage: {
     id: 'app.containers.IdeasShow.ideaWhatsAppMessage',
@@ -122,6 +130,14 @@ export default defineMessages({
   petitionWhatsAppMessage: {
     id: 'app.containers.IdeasShow.petitionWhatsAppMessage',
     defaultMessage: 'Support this petition: {postTitle}',
+  },
+  commentWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.commentWhatsAppMessage',
+    defaultMessage: 'I just posted a comment: {postTitle}',
+  },
+  statementWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.statementWhatsAppMessage',
+    defaultMessage: 'Support this statement: {postTitle}',
   },
   // #input_term_copy
   ideaEmailSharingSubject: {
@@ -196,6 +212,22 @@ export default defineMessages({
   petitionEmailSharingBody: {
     id: 'app.containers.IdeasShow.petitionEmailSharingBody',
     defaultMessage: "Support this petition '{ideaTitle}' at {ideaUrl}!",
+  },
+  commentEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.commentEmailSharingSubject',
+    defaultMessage: 'I just posted a comment: {ideaTitle}',
+  },
+  commentEmailSharingBody: {
+    id: 'app.containers.IdeasShow.commentEmailSharingBody',
+    defaultMessage: "I posted a comment '{ideaTitle}' at {ideaUrl}!",
+  },
+  statementEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.statementEmailSharingSubject',
+    defaultMessage: 'Support this statement: {ideaTitle}',
+  },
+  statementEmailSharingBody: {
+    id: 'app.containers.IdeasShow.statementEmailSharingBody',
+    defaultMessage: "Support this statement '{ideaTitle}' at {ideaUrl}!",
   },
   share: {
     id: 'app.containers.IdeasShow.share',

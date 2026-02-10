@@ -237,7 +237,7 @@ ca:
         project:
           title: Quin és el vostre projecte ?
         issue:
-          title: Quin és el vostre comentari?
+          title: Quin és el teu problema?
         option:
           title: Quina és la vostra opció ?
         proposal:
@@ -246,6 +246,10 @@ ca:
           title: Quina és la teva iniciativa?
         petition:
           title: Quina és la teva petició?
+        comment:
+          title: Quin és el teu comentari?
+        statement:
+          title: Quina és la teva declaració?
   custom_field_options:
     gender:
       male: Mascle

@@ -237,7 +237,7 @@ hu:
         project:
           title: Mi a projektje?
         issue:
-          title: Mi a megjegyzésed?
+          title: Mi a problémája?
         option:
           title: Mi a lehetőséged?
         proposal:
@@ -246,6 +246,10 @@ hu:
           title: Mi a kezdeményezésed?
         petition:
           title: Mi a petíciója?
+        comment:
+          title: Mi a hozzászólása?
+        statement:
+          title: Mi a nyilatkozata?
   custom_field_options:
     gender:
       male: Férfi

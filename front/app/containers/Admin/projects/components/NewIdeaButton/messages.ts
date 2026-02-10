@@ -46,4 +46,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.newPetition',
     defaultMessage: 'Add a petition',
   },
+  newComment: {
+    id: 'app.containers.AdminPage.ProjectEdit.newComment',
+    defaultMessage: 'Add a comment',
+  },
+  newStatement: {
+    id: 'app.containers.AdminPage.ProjectEdit.newStatement',
+    defaultMessage: 'Add a statement',
+  },
 });

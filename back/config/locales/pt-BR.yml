@@ -246,6 +246,10 @@ pt:
           title: Qual é a iniciativa de vocês?
         petition:
           title: Qual é a sua petição?
+        comment:
+          title: Qual é o seu comentário?
+        statement:
+          title: Qual é a sua declaração?
   custom_field_options:
     gender:
       male: Homem

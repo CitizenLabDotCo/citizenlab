@@ -189,7 +189,9 @@ export type InputTerm =
   | 'contribution'
   | 'proposal'
   | 'initiative'
-  | 'petition';
+  | 'petition'
+  | 'comment'
+  | 'statement';
 
 export type PresentationMode = 'card' | 'map' | 'feed';
 

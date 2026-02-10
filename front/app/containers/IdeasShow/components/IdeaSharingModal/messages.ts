@@ -38,6 +38,14 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.petitionSharingModalTitle',
     defaultMessage: 'Thanks for submitting your petition!',
   },
+  commentSharingModalTitle: {
+    id: 'app.containers.IdeasShow.commentSharingModalTitle',
+    defaultMessage: 'Thanks for submitting your comment!',
+  },
+  statementSharingModalTitle: {
+    id: 'app.containers.IdeasShow.statementSharingModalTitle',
+    defaultMessage: 'Thanks for submitting your statement!',
+  },
   sharingModalSubtitle: {
     id: 'app.containers.IdeasShow.sharingModalSubtitle',
     defaultMessage: 'Reach more people and make your voice heard.',

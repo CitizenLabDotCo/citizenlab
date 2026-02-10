@@ -204,6 +204,14 @@ export default defineMessages({
     id: 'app.containers.Projects.petitions',
     defaultMessage: 'Petitions',
   },
+  comments: {
+    id: 'app.containers.Projects.comments',
+    defaultMessage: 'Comments',
+  },
+  statements: {
+    id: 'app.containers.Projects.statements',
+    defaultMessage: 'Statements',
+  },
   survey: {
     id: 'app.containers.Projects.survey',
     defaultMessage: 'Survey',
@@ -267,6 +275,14 @@ export default defineMessages({
   seeThePetitions: {
     id: 'app.containers.Projects.seeThePetitions',
     defaultMessage: 'See the petitions',
+  },
+  seeTheComments: {
+    id: 'app.containers.Projects.seeTheComments',
+    defaultMessage: 'See the comments',
+  },
+  seeTheStatements: {
+    id: 'app.containers.Projects.seeTheStatements',
+    defaultMessage: 'See the statements',
   },
   meetMinBudgetRequirement: {
     id: 'app.containers.Projects.meetMinBudgetRequirement',

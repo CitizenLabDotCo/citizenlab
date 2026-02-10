@@ -64,6 +64,8 @@ const Component = ({ ideaId }: Props) => {
             proposal: messages.proposalWhatsAppMessage,
             initiative: messages.initiativeWhatsAppMessage,
             petition: messages.petitionWhatsAppMessage,
+            comment: messages.commentWhatsAppMessage,
+            statement: messages.statementWhatsAppMessage,
           }),
           {
             postTitle,
@@ -80,6 +82,8 @@ const Component = ({ ideaId }: Props) => {
             proposal: messages.proposalTwitterMessage,
             initiative: messages.initiativeTwitterMessage,
             petition: messages.petitionTwitterMessage,
+            comment: messages.commentTwitterMessage,
+            statement: messages.statementTwitterMessage,
           }),
           {
             postTitle,
@@ -96,6 +100,8 @@ const Component = ({ ideaId }: Props) => {
             proposal: messages.proposalEmailSharingSubject,
             initiative: messages.initiativeEmailSharingSubject,
             petition: messages.petitionEmailSharingSubject,
+            comment: messages.commentEmailSharingSubject,
+            statement: messages.statementEmailSharingSubject,
           }),
           {
             ideaTitle: postTitle,
@@ -112,6 +118,8 @@ const Component = ({ ideaId }: Props) => {
             proposal: messages.proposalEmailSharingBody,
             initiative: messages.initiativeEmailSharingBody,
             petition: messages.petitionEmailSharingBody,
+            comment: messages.commentEmailSharingBody,
+            statement: messages.statementEmailSharingBody,
           }),
           {
             ideaUrl: postUrl,

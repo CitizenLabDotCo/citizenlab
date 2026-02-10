@@ -237,7 +237,7 @@ it:
         project:
           title: Qual è il suo progetto?
         issue:
-          title: Qual è il suo commento?
+          title: Qual è il tuo problema?
         option:
           title: Qual è la tua opzione?
         proposal:
@@ -246,6 +246,10 @@ it:
           title: Qual è la tua iniziativa?
         petition:
           title: Qual è la tua petizione?
+        comment:
+          title: Qual è il tuo commento?
+        statement:
+          title: Qual è la tua dichiarazione?
   custom_field_options:
     gender:
       male: Uomo

@@ -237,7 +237,7 @@ lb:
         project:
           title: Wat ass Äre Projet?
         issue:
-          title: Wat ass Är Ugeleeënheet ?
+          title: Wat ass Äert Problem?
         option:
           title: Wat ass Är Optioun?
         proposal:
@@ -246,6 +246,10 @@ lb:
           title: Wat ass Är Initiativ?
         petition:
           title: Wat ass Är Petitioun?
+        comment:
+          title: Wat ass Äre Kommentar?
+        statement:
+          title: Wat ass Är Ausso?
   custom_field_options:
     gender:
       male: Männlech

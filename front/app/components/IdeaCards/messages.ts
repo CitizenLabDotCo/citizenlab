@@ -68,6 +68,16 @@ export default defineMessages({
     defaultMessage:
       '{ideasCount, plural, no {{ideasCount} petitions} one {{ideasCount} petition} other {{ideasCount} petitions}}',
   },
+  xIssues: {
+    id: 'app.containers.IdeaCards.xIssues2',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} issues} one {{ideasCount} issue} other {{ideasCount} issues}}',
+  },
+  xStatements: {
+    id: 'app.containers.IdeaCards.xStatements2',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} statements} one {{ideasCount} statement} other {{ideasCount} statements}}',
+  },
   topics: {
     id: 'app.containers.IdeaCards.topics',
     defaultMessage: 'Topics',
@@ -185,5 +195,13 @@ export default defineMessages({
   petitions: {
     id: 'app.containers.IdeaCards.petitions',
     defaultMessage: 'Petitions',
+  },
+  comments: {
+    id: 'app.containers.IdeaCards.commentTerm',
+    defaultMessage: 'Comments',
+  },
+  statements: {
+    id: 'app.containers.IdeaCards.statementTerm',
+    defaultMessage: 'Statements',
   },
 });

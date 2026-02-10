@@ -237,7 +237,7 @@ lt:
         project:
           title: Koks yra jūsų projektas?
         issue:
-          title: Koks jūsų komentaras?
+          title: Kokia jūsų problema?
         option:
           title: Kokia yra jūsų galimybė?
         proposal:
@@ -246,6 +246,10 @@ lt:
           title: Kokia yra jūsų iniciatyva?
         petition:
           title: Kokia yra jūsų peticija?
+        comment:
+          title: Koks jūsų komentaras?
+        statement:
+          title: Koks jūsų pareiškimas?
   custom_field_options:
     gender:
       male: Vyras

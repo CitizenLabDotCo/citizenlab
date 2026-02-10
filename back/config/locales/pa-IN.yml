@@ -237,7 +237,7 @@ pa:
         project:
           title: ਤੁਹਾਡਾ ਪ੍ਰੋਜੈਕਟ ਕੀ ਹੈ?
         issue:
-          title: ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਕੀ ਹੈ?
+          title: ਤੁਹਾਡੀ ਸਮੱਸਿਆ ਕੀ ਹੈ?
         option:
           title: ਤੁਹਾਡਾ ਵਿਕਲਪ ਕੀ ਹੈ?
         proposal:
@@ -246,6 +246,10 @@ pa:
           title: ਤੁਹਾਡੀ ਪਹਿਲ ਕੀ ਹੈ?
         petition:
           title: ਤੁਹਾਡੀ ਪਟੀਸ਼ਨ ਕੀ ਹੈ?
+        comment:
+          title: ਤੁਹਾਡੀ ਟਿੱਪਣੀ ਕੀ ਹੈ?
+        statement:
+          title: ਤੁਹਾਡਾ ਬਿਆਨ ਕੀ ਹੈ?
   custom_field_options:
     gender:
       male: ਨਰ

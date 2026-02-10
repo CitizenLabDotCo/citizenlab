@@ -202,6 +202,8 @@ const IdeaButton = memo<Props>(
                     proposal: messages.addAProposal,
                     initiative: messages.addAnInitiative,
                     petition: messages.addAPetition,
+                    comment: messages.addAComment,
+                    statement: messages.addAStatement,
                   })}
                 />
               )}

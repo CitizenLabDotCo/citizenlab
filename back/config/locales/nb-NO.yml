@@ -237,7 +237,7 @@ nb:
         project:
           title: Hva er prosjektet ditt?
         issue:
-          title: Hva er din kommentar?
+          title: Hva er problemet ditt?
         option:
           title: Hva er ditt innspill?
         proposal:
@@ -246,6 +246,10 @@ nb:
           title: Hva er initiativet ditt?
         petition:
           title: Hva er din begjæring?
+        comment:
+          title: Hva er din kommentar?
+        statement:
+          title: Hva er din uttalelse?
   custom_field_options:
     gender:
       male: Mann

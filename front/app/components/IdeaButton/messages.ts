@@ -42,6 +42,14 @@ export default defineMessages({
     id: 'app.containers.IdeaButton.addAPetition',
     defaultMessage: 'Add a petition',
   },
+  addAComment: {
+    id: 'app.containers.IdeaButton.addAComment',
+    defaultMessage: 'Add a comment',
+  },
+  addAStatement: {
+    id: 'app.containers.IdeaButton.addAStatement',
+    defaultMessage: 'Add a statement',
+  },
   signInLinkText: {
     id: 'app.containers.IdeaButton.signInLinkText',
     defaultMessage: 'sign in',

@@ -25,6 +25,8 @@ const LABEL_MESSAGES: {
   proposal: messages.proposalTerm,
   initiative: messages.initiativeTerm,
   petition: messages.petitionTerm,
+  comment: messages.commentTerm,
+  statement: messages.statementTerm,
 };
 
 export const getInputTermOptions = (formatMessage: FormatMessage) => {

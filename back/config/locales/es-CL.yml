@@ -237,7 +237,7 @@ es-CL:
         project:
           title: '¿Cuál es su proyecto?'
         issue:
-          title: '¿Cuál es su respuesta?'
+          title: '¿Cuál es tu problema?'
         option:
           title: '¿Cuál es su opción?'
         proposal:
@@ -246,6 +246,10 @@ es-CL:
           title: '¿Cuál es tu iniciativa?'
         petition:
           title: '¿Cuál es tu petición?'
+        comment:
+          title: '¿Cuál es tu comentario?'
+        statement:
+          title: '¿Cuál es tu declaración?'
   custom_field_options:
     gender:
       male: Masculino

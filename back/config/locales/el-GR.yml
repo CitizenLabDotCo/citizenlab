@@ -237,7 +237,7 @@ el:
         project:
           title: Ποιο είναι το έργο σας;
         issue:
-          title: Ποιο είναι το σχόλιό σας;
+          title: Ποιο είναι το πρόβλημά σας;
         option:
           title: Ποια είναι η επιλογή σας;
         proposal:
@@ -246,6 +246,10 @@ el:
           title: Ποια είναι η πρωτοβουλία σας;
         petition:
           title: Ποιο είναι το αίτημά σας;
+        comment:
+          title: Ποιο είναι το σχόλιό σας;
+        statement:
+          title: Ποια είναι η δήλωσή σας;
   custom_field_options:
     gender:
       male: Άνδρας

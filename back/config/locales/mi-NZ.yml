@@ -112,6 +112,31 @@ mi:
       attachments:
         title: Attachments
         description:
+  custom_forms:
+    categories:
+      main_content:
+        idea:
+          title: What is your idea?
+        question:
+          title: What is your question?
+        contribution:
+          title: What is your contribution?
+        project:
+          title: What is your project?
+        issue:
+          title: He aha tō take?
+        option:
+          title: What is your option?
+        proposal:
+          title: What is your proposal?
+        initiative:
+          title: What is your initiative?
+        petition:
+          title: What is your petition?
+        comment:
+          title: He aha tō kōrero?
+        statement:
+          title: He aha tō tauākī?
   custom_field_options:
     gender:
       male: Male

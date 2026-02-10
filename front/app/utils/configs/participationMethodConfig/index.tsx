@@ -121,6 +121,8 @@ const ideationConfig: ParticipationMethodConfig = {
           proposal: messages.proposalFormTitle,
           petition: messages.petitionFormTitle,
           initiative: messages.initiativeFormTitle,
+          comment: messages.commentFormTitle,
+          statement: messages.statementFormTitle,
         }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );
@@ -188,6 +190,8 @@ const proposalsConfig: ParticipationMethodConfig = {
           proposal: messages.proposalFormTitle,
           petition: messages.petitionFormTitle,
           initiative: messages.initiativeFormTitle,
+          comment: messages.commentFormTitle,
+          statement: messages.statementFormTitle,
         }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );

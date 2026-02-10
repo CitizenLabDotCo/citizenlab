@@ -237,7 +237,7 @@ da:
         project:
           title: Hvad er dit projekt?
         issue:
-          title: Hvad er dit Høringssvar?
+          title: Hvad er dit problem?
         option:
           title: Hvad er din mulighed?
         proposal:
@@ -246,6 +246,10 @@ da:
           title: Hvad er dit forslag?
         petition:
           title: Hvad er din anmodning?
+        comment:
+          title: Hvad er din kommentar?
+        statement:
+          title: Hvad er din udtalelse?
   custom_field_options:
     gender:
       male: Mand

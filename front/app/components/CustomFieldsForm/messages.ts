@@ -313,6 +313,10 @@ export default defineMessages({
     id: 'app.utils.IdeasNewPage.viewYourIssue',
     defaultMessage: 'View your issue',
   },
+  viewYourStatement: {
+    id: 'app.utils.IdeasNewPage.viewYourStatement',
+    defaultMessage: 'View your statement',
+  },
   valueOutOfTotalWithLabel: {
     id: 'app.components.form.controls.valueOutOfTotalWithLabel',
     defaultMessage: '{value} out of {total}, {label}',

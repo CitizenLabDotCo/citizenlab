@@ -52,6 +52,11 @@ export default defineMessages({
     defaultMessage:
       '{ideasCount, plural, no {# petitions} one {# petition} other {# petitions}}',
   },
+  xStatements: {
+    id: 'app.components.ProjectCard.xStatements',
+    defaultMessage:
+      '{ideasCount, plural, no {# statements} one {# statement} other {# statements}}',
+  },
   archived: {
     id: 'app.components.ProjectCard.archived',
     defaultMessage: 'Archived',
@@ -121,6 +126,14 @@ export default defineMessages({
     id: 'app.components.ProjectCard.submitYourPetition',
     defaultMessage: 'Submit your petition',
   },
+  addYourComment: {
+    id: 'app.components.ProjectCard.addYourComment',
+    defaultMessage: 'Add your comment',
+  },
+  addYourStatement: {
+    id: 'app.components.ProjectCard.addYourStatement',
+    defaultMessage: 'Add your statement',
+  },
   reaction: {
     id: 'app.components.ProjectCard.reaction',
     defaultMessage: 'Reaction',
@@ -165,6 +178,14 @@ export default defineMessages({
   viewThePetitions: {
     id: 'app.components.ProjectCard.viewThePetitions',
     defaultMessage: 'View the petitions',
+  },
+  viewTheComments: {
+    id: 'app.components.ProjectCard.viewTheComments',
+    defaultMessage: 'View the comments',
+  },
+  viewTheStatements: {
+    id: 'app.components.ProjectCard.viewTheStatements',
+    defaultMessage: 'View the statements',
   },
   a11y_projectTitle: {
     id: 'app.components.ProjectCard.a11y_projectTitle',

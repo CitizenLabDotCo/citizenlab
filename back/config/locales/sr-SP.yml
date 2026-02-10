@@ -237,7 +237,7 @@ sr-Cyrl:
         project:
           title: Шта је ваш пројекат?
         issue:
-          title: Који је твој коментар?
+          title: Koji je vaš problem?
         option:
           title: Која је твоја опција?
         proposal:
@@ -246,6 +246,10 @@ sr-Cyrl:
           title: What is your initiative?
         petition:
           title: What is your petition?
+        comment:
+          title: Koji je vaš komentar?
+        statement:
+          title: Koja je vaša izjava?
   custom_field_options:
     gender:
       male: Мушки

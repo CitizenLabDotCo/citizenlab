@@ -73,7 +73,7 @@ class Phase < ApplicationRecord
   VOTING_METHODS        = %w[budgeting multiple_voting single_voting].freeze
   PRESENTATION_MODES    = %w[card map feed].freeze
   REACTING_METHODS      = %w[unlimited limited].freeze
-  INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition].freeze
+  INPUT_TERMS           = %w[idea question contribution project issue option proposal initiative petition comment statement].freeze
   FALLBACK_INPUT_TERM   = 'idea'
   VOTE_TERMS            = %w[vote point token credit percent]
 

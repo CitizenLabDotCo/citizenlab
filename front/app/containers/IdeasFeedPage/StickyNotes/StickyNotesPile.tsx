@@ -230,6 +230,8 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
               proposal: messages.seeAllProposals,
               initiative: messages.seeAllInitiatives,
               petition: messages.seeAllPetitions,
+              comment: messages.seeAllComments,
+              statement: messages.seeAllStatements,
             })}
             values={{ ideasCount }}
           />

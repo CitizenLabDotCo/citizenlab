@@ -246,6 +246,10 @@ tr:
           title: Girişiminiz nedir?
         petition:
           title: Dilekçeniz nedir?
+        comment:
+          title: Yorumunuz nedir?
+        statement:
+          title: Beyanınız nedir?
   custom_field_options:
     gender:
       male: Erkek

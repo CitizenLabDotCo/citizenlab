@@ -237,7 +237,7 @@ fi:
         project:
           title: Mikä on projektisi?
         issue:
-          title: Mikä on kommenttisi?
+          title: Mikä on ongelmasi?
         option:
           title: Mikä on vaihtoehtosi?
         proposal:
@@ -246,6 +246,10 @@ fi:
           title: Mikä on aloitteesi?
         petition:
           title: Mikä on vetoomuksenne?
+        comment:
+          title: Mikä on kommenttisi?
+        statement:
+          title: Mikä on kannanottosi?
   custom_field_options:
     gender:
       male: Mies

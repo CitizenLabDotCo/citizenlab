@@ -39,6 +39,8 @@ const SeeAllButton = ({ inputTerm, onClose }: Props) => {
             proposal: messages.showAllProposals,
             initiative: messages.showAllInitiatives,
             petition: messages.showAllPetitions,
+            comment: messages.showAllComments,
+            statement: messages.showAllStatements,
           })}
         />
       </Button>

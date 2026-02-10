@@ -522,6 +522,14 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.petitionTerm',
     defaultMessage: 'Petition',
   },
+  commentTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.commentTerm',
+    defaultMessage: 'Comment',
+  },
+  statementTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.statementTerm',
+    defaultMessage: 'Statement',
+  },
   inputTermSelectLabel: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel',
     defaultMessage: 'What should an input be called?',

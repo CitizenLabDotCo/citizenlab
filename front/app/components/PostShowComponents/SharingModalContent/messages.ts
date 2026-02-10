@@ -42,6 +42,14 @@ export default defineMessages({
     id: 'app.components.PostComponents.SharingModalContent.petitionEmailSharingSubject',
     defaultMessage: 'Support my petition: {postTitle}.',
   },
+  commentEmailSharingSubject: {
+    id: 'app.components.PostComponents.SharingModalContent.commentEmailSharingSubject',
+    defaultMessage: 'I just posted a comment: {postTitle}.',
+  },
+  statementEmailSharingSubject: {
+    id: 'app.components.PostComponents.SharingModalContent.statementEmailSharingSubject',
+    defaultMessage: 'Support my statement: {postTitle}.',
+  },
   ideaEmailSharingBody: {
     id: 'app.components.PostComponents.SharingModalContent.ideaEmailSharingBody',
     defaultMessage: "Support my idea '{postTitle}' at {postUrl}!",
@@ -80,6 +88,14 @@ export default defineMessages({
     id: 'app.components.PostComponents.SharingModalContent.petitionEmailSharingBody',
     defaultMessage: "Support my petition '{postTitle}' at {postUrl}!",
   },
+  commentEmailSharingBody: {
+    id: 'app.components.PostComponents.SharingModalContent.commentEmailSharingBody',
+    defaultMessage: "I posted a comment '{postTitle}' at {postUrl}!",
+  },
+  statementEmailSharingBody: {
+    id: 'app.components.PostComponents.SharingModalContent.statementEmailSharingBody',
+    defaultMessage: "Support my statement '{postTitle}' at {postUrl}!",
+  },
   ideaWhatsAppMessage: {
     id: 'app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage',
     defaultMessage: 'Support my idea: {postTitle}.',
@@ -115,5 +131,13 @@ export default defineMessages({
   petitionWhatsAppMessage: {
     id: 'app.components.PostComponents.SharingModalContent.petitionWhatsAppMessage',
     defaultMessage: 'Support my petition: {postTitle}.',
+  },
+  commentWhatsAppMessage: {
+    id: 'app.components.PostComponents.SharingModalContent.commentWhatsAppMessage',
+    defaultMessage: 'I just posted a comment: {postTitle}.',
+  },
+  statementWhatsAppMessage: {
+    id: 'app.components.PostComponents.SharingModalContent.statementWhatsAppMessage',
+    defaultMessage: 'Support my statement: {postTitle}.',
   },
 });

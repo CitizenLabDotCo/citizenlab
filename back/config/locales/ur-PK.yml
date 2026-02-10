@@ -237,7 +237,7 @@ ur:
         project:
           title: آپ کا پروجیکٹ کیا ہے؟
         issue:
-          title: آپ کا کیا تبصرہ ہے؟
+          title: آپ کا مسئلہ کیا ہے؟
         option:
           title: آپ کا آپشن کیا ہے؟
         proposal:
@@ -246,6 +246,10 @@ ur:
           title: آپ کی پہل کیا ہے؟
         petition:
           title: آپ کی درخواست کیا ہے؟
+        comment:
+          title: آپ کا تبصرہ کیا ہے؟
+        statement:
+          title: آپ کا بیان کیا ہے؟
   custom_field_options:
     gender:
       male: مرد

@@ -237,7 +237,7 @@ ach:
         project:
           title: crwdns207912:0crwdne207912:0
         issue:
-          title: crwdns207914:0crwdne207914:0
+          title: Peko ni en ango?
         option:
           title: crwdns207916:0crwdne207916:0
         proposal:
@@ -246,6 +246,10 @@ ach:
           title: crwdns3324809:0crwdne3324809:0
         petition:
           title: crwdns3324811:0crwdne3324811:0
+        comment:
+          title: Tam ni en ango?
+        statement:
+          title: Lok ni en ango?
   custom_field_options:
     gender:
       male: crwdns207924:0crwdne207924:0

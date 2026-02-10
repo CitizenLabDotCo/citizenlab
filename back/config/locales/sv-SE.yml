@@ -246,6 +246,10 @@ sv:
           title: Vad är ditt initiativ?
         petition:
           title: Vad är din framställan?
+        comment:
+          title: Vad är din kommentar?
+        statement:
+          title: Vad är ditt påstående?
   custom_field_options:
     gender:
       male: Man

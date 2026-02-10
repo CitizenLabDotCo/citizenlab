@@ -38,6 +38,14 @@ export default defineMessages({
     id: 'app.containers.IdeasEditPage.petitionFormTitle',
     defaultMessage: 'Edit petition',
   },
+  commentFormTitle: {
+    id: 'app.containers.IdeasEditPage.commentFormTitle',
+    defaultMessage: 'Edit comment',
+  },
+  statementFormTitle: {
+    id: 'app.containers.IdeasEditPage.statementFormTitle',
+    defaultMessage: 'Edit statement',
+  },
   save: {
     id: 'app.containers.IdeasEditPage.save',
     defaultMessage: 'Save',

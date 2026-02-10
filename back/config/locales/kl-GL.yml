@@ -138,9 +138,19 @@ kl:
         project:
           title: Suna suliniutigaajuk?
         issue:
-          title: Suna ajornartorsiutaava?
+          title: Suna ajoqusernerit?
         option:
           title: Suna toqqagassaraajuk?
+        proposal:
+          title: What is your proposal?
+        initiative:
+          title: What is your initiative?
+        petition:
+          title: What is your petition?
+        comment:
+          title: Oqaaseqaatit suna?
+        statement:
+          title: Nalunaarutit suna?
   custom_field_options:
     gender:
       male: Angut

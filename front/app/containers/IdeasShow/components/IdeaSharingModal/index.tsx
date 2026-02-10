@@ -45,6 +45,8 @@ const IdeaSharingModal = ({
             proposal: messages.proposalSharingModalTitle,
             initiative: messages.initiativeSharingModalTitle,
             petition: messages.petitionSharingModalTitle,
+            comment: messages.commentSharingModalTitle,
+            statement: messages.statementSharingModalTitle,
           })
         )}
         subtitle={formatMessage(messages.sharingModalSubtitle)}

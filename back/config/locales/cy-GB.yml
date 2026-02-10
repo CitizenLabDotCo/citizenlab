@@ -237,7 +237,7 @@ cy:
         project:
           title: Beth yw eich prosiect?
         issue:
-          title: Beth yw eich sylw?
+          title: Beth yw eich mater?
         option:
           title: Beth yw eich opsiwn?
         proposal:
@@ -246,6 +246,10 @@ cy:
           title: Beth yw eich menter?
         petition:
           title: Beth yw eich deiseb?
+        comment:
+          title: Beth yw eich sylw?
+        statement:
+          title: Beth yw eich datganiad?
   custom_field_options:
     gender:
       male: Gwryw

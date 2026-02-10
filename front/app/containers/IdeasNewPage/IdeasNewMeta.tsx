@@ -38,6 +38,8 @@ const IdeasNewMeta = () => {
       proposal: messages.proposalMetaTitle1,
       initiative: messages.initiativeMetaTitle1,
       petition: messages.petitionMetaTitle1,
+      comment: messages.commentMetaTitle1,
+      statement: messages.statementMetaTitle1,
     })
   );
   const ideasIndexDescription = formatMessage(messages.ideaNewMetaDescription);

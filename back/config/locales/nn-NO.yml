@@ -132,9 +132,19 @@ nn:
         project:
           title: What is your project ?
         issue:
-          title: What is your issue ?
+          title: Hva er problemet ditt?
         option:
           title: What is your option ?
+        proposal:
+          title: What is your proposal?
+        initiative:
+          title: What is your initiative?
+        petition:
+          title: What is your petition?
+        comment:
+          title: Hva er din kommentar?
+        statement:
+          title: Hva er din uttalelse?
   custom_field_options:
     gender:
       male: Mann

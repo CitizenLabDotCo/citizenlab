@@ -237,7 +237,7 @@ hr:
         project:
           title: Što je vaš projekt?
         issue:
-          title: Šta je vaša tema ?
+          title: Koji je vaš problem?
         option:
           title: Što je vaša opcija?
         proposal:
@@ -246,6 +246,10 @@ hr:
           title: Koja je vaša inicijativa?
         petition:
           title: Koja je vaša molba?
+        comment:
+          title: Koji je vaš komentar?
+        statement:
+          title: Koja je vaša izjava?
   custom_field_options:
     gender:
       male: Muškarac

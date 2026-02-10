@@ -237,7 +237,7 @@ ar-MA:
         project:
           title: ما مشروعك؟
         issue:
-          title: ما مشكلتك؟
+          title: ما هي مشكلتك؟
         option:
           title: ما خيارك؟
         proposal:
@@ -246,6 +246,10 @@ ar-MA:
           title: ما هي مبادرتك؟
         petition:
           title: ما هي عريضتك؟
+        comment:
+          title: ما هو تعليقك؟
+        statement:
+          title: ما هو بيانك؟
   custom_field_options:
     gender:
       male: ذكر

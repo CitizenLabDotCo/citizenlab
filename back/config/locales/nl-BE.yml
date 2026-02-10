@@ -237,7 +237,7 @@ nl-BE:
         project:
           title: Wat is je project?
         issue:
-          title: Wat is je reactie?
+          title: Wat is je probleem?
         option:
           title: Wat is je optie?
         proposal:
@@ -246,6 +246,10 @@ nl-BE:
           title: Waar is jouw initiatief?
         petition:
           title: Wat is jouw petitie?
+        comment:
+          title: Wat is je reactie?
+        statement:
+          title: Wat is je stelling?
   custom_field_options:
     gender:
       male: Man

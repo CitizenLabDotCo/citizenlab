@@ -50,6 +50,8 @@ const OfficialFeedbackOnIdeaYouFollowNotification = memo<Props>((props) => {
             proposal: messages.officialFeedbackOnProposalYouFollow,
             initiative: messages.officialFeedbackOnInitiativeYouFollow,
             petition: messages.officialFeedbackOnPetitionYouFollow,
+            comment: messages.officialFeedbackOnCommentYouFollow,
+            statement: messages.officialFeedbackOnStatementYouFollow,
           })}
           values={{
             officialName: (

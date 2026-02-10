@@ -38,6 +38,14 @@ export default defineMessages({
     id: 'app.containers.IdeasFeedPage.showAllPetitions',
     defaultMessage: 'Show petitions',
   },
+  showAllComments: {
+    id: 'app.containers.IdeasFeedPage.showAllComments',
+    defaultMessage: 'Show comments',
+  },
+  showAllStatements: {
+    id: 'app.containers.IdeasFeedPage.showAllStatements',
+    defaultMessage: 'Show statements',
+  },
   // #input_term_copy
   seeAllIdeas: {
     id: 'app.containers.IdeasFeedPage.seeAllIdeas2',
@@ -74,6 +82,14 @@ export default defineMessages({
   seeAllPetitions: {
     id: 'app.containers.IdeasFeedPage.seeAllPetitions',
     defaultMessage: 'See all {ideasCount} petitions',
+  },
+  seeAllComments: {
+    id: 'app.containers.IdeasFeedPage.seeAllComments',
+    defaultMessage: 'See all {ideasCount} comments',
+  },
+  seeAllStatements: {
+    id: 'app.containers.IdeasFeedPage.seeAllStatements',
+    defaultMessage: 'See all {ideasCount} statements',
   },
   allTopics: {
     id: 'app.containers.IdeasFeedPage.allTopics',
@@ -114,7 +130,7 @@ export default defineMessages({
   },
   addAnIssue: {
     id: 'app.containers.IdeasFeedPage.addAnIssue',
-    defaultMessage: 'Add an issue',
+    defaultMessage: 'Add a comment',
   },
   addAContribution: {
     id: 'app.containers.IdeasFeedPage.addAContribution',
@@ -131,6 +147,14 @@ export default defineMessages({
   addAPetition: {
     id: 'app.containers.IdeasFeedPage.addAPetition',
     defaultMessage: 'Add a petition',
+  },
+  addAComment: {
+    id: 'app.containers.IdeasFeedPage.addAComment',
+    defaultMessage: 'Add a comment',
+  },
+  addAStatement: {
+    id: 'app.containers.IdeasFeedPage.addAStatement',
+    defaultMessage: 'Add a statement',
   },
   noIdeasForTag: {
     id: 'app.containers.IdeasFeedPage.noIdeasForTag',

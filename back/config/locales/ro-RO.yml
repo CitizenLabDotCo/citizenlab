@@ -141,6 +141,16 @@ ro:
           title: Care este problema ta?
         option:
           title: Care este opțiunea ta?
+        proposal:
+          title: What is your proposal?
+        initiative:
+          title: What is your initiative?
+        petition:
+          title: What is your petition?
+        comment:
+          title: Care este comentariul tău?
+        statement:
+          title: Care este declarația ta?
   custom_field_options:
     gender:
       male: Masculin

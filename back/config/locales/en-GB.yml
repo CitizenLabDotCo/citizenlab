@@ -237,7 +237,7 @@ en-GB:
         project:
           title: What is your project?
         issue:
-          title: What is your comment?
+          title: What is your issue?
         option:
           title: What is your option?
         proposal:
@@ -246,6 +246,10 @@ en-GB:
           title: What is your initiative?
         petition:
           title: What is your petition?
+        comment:
+          title: What is your comment?
+        statement:
+          title: What is your statement?
   custom_field_options:
     gender:
       male: Male
