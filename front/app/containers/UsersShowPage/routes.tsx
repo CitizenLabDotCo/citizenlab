@@ -1,8 +1,8 @@
 import React, { lazy } from 'react';
 
-import { Navigate } from 'utils/router';
-
 import PageLoading from 'components/UI/PageLoading';
+
+import { Navigate } from 'utils/router';
 
 const UsersShowPage = lazy(() => import('./'));
 const Following = lazy(() => import('./Following'));
