@@ -17,7 +17,7 @@ import { communityMonitorRouteTypes } from './communityMonitor/routes';
 import createAdminDashboardRoutes, {
   dashboardRouteTypes,
 } from './dashboard/routes';
-import { ideaRouteTypes } from './ideas/routes';
+import createAdminIdeasRoutes, { ideaRouteTypes } from './ideas/routes';
 import { inspirationHubRouteTypes } from './inspirationHub/routes';
 import { invitationRouteTypes } from './invitations/routes';
 import { messagingRouteTypes } from './messaging/routes';
@@ -222,7 +222,7 @@ export const createAdminRoutes = () => {
     // pagesAndMenuRoutes(),
     // invitationsRoutes(),
     // createAdminMessagingRoutes(),
-    // ideasRoutes(),
+    createAdminIdeasRoutes(),
     // projectFoldersRoutes(),
     // ...reportingRoutes(),
     // toolsRoutes(),
