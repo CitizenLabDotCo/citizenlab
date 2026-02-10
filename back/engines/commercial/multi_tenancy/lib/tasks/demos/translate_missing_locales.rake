@@ -2,6 +2,7 @@
 
 # This rake task audits all multiloc fields across all models for a given demo tenant,
 # identifying records where translations are missing or empty for configured locales.
+# Optionally, it can also translate missing content using Machine Translation (or copy in dev mode).
 #
 # Usage:
 #   rails 'demos:translate_missing_locales[hostname.com,en]'                      - Audit only
@@ -9,26 +10,25 @@
 #   rails 'demos:translate_missing_locales[hostname.com,en,true,nl-NL:fr-BE]'     - With extra locales
 #
 # Parameters:
-#   - host: The tenant hostname
+#   - host: The demo tenant hostname
 #   - source_locale: The locale to translate from (must exist in tenant's configured locales)
 #   - translate: Set to 'true' to perform translations, otherwise audit only - to count characters needing translation
 #   - extra_locales: Optional colon-separated list of additional locales (not in app config) to translate to
 #
 # The task will:
 #   1. Find all models with multiloc columns (columns ending in '_multiloc')
-#   2. Check each record's multiloc fields against the tenant's configured locales (plus any extra)
+#   2. Check each record's multiloc fields against the tenant's configured locales (plus any extra locales passed in)
 #   3. Report any locales that are missing or have empty values
-#   4. Optionally translate missing content using Google Translate (or copy in dev mode)
-#   5. Display a summary with issue counts per model and total characters to translate
+#   4. Also process the multiloc text values in craftjs_json field of content_builder_layouts
+#   5. Optionally translate missing content using Machine Translation (or copy in dev mode)
+#   6. Display a summary with issue counts per model and total characters to translate
 #
 # Notes:
 #   - Translations can only be run on demo platforms (lifecycle_stage = 'demo') or local development
-#   - Records where all locale values are empty are skipped
-#   - Records where the source locale value is missing are skipped (source locale is required)
+#   - If the main locale value is empty the record is skipped
 #   - If a translation exists for the same language but different locale (e.g., fr-FR exists but fr-BE
 #     is missing), the existing translation is copied instead of calling the translation API
 #   - In development mode, translation just copies the source text (no API calls)
-#   - Also processes text values in craftjs_json field of content_builder_layouts
 
 namespace :demos do
   desc 'Audit and optionally translate missing multiloc fields for a demo tenant'
@@ -115,6 +115,8 @@ module TranslateMissingLocales
       puts '-' * 80
     end
 
+    # Multiloc translations
+
     def process_all_models
       data_listing_service = Cl2DataListingService.new
 
@@ -143,7 +145,8 @@ module TranslateMissingLocales
     end
 
     def process_multiloc_field(model, record, column)
-      # Use record[column] to get raw attribute value, bypassing any model-level locale filtering
+      # Use record[column] to get raw attribute value,
+      # This bypasses any model-level locale filtering so we can add 'hidden' translations by passing in extra_locales
       value = record[column]
       return nil if value.blank? || value.values.all?(&:blank?)
 
@@ -244,7 +247,7 @@ module TranslateMissingLocales
         value[target_locale_str] = same_lang_text
         @translations_made += 1
         puts "  Copied #{model.name}##{record.id}.#{column} from #{same_lang_locale} to #{target_locale_str} (same language)"
-      elsif Rails.env.development?
+      elsif Rails.env.development? # NOTE: In development we skip actual translation to avoid translation costs
         value[target_locale_str] = source_text
         @translations_made += 1
         puts "  Copied #{model.name}##{record.id}.#{column} from #{source_locale} to #{target_locale_str} (dev mode)"
@@ -273,6 +276,7 @@ module TranslateMissingLocales
       end
     end
 
+    # Craft JSON translations
     def process_craftjs_layouts
       return unless defined?(ContentBuilder::Layout)
 
@@ -433,8 +437,10 @@ module TranslateMissingLocales
       puts '-' * 50
       puts "#{'Total'.ljust(40)} | #{issues_found}"
 
-      formatted_chars = total_characters.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
-      puts "\nCharacters #{translate_missing ? 'translated' : 'to translate'}: #{formatted_chars}"
+      approx_cost = (total_characters.to_f / 1000000 * 20).round(2) # Assuming $20 per million characters for translation
+
+      puts "\nCharacters #{translate_missing ? 'translated' : 'to translate'}: #{total_characters}"
+      puts "Approx cost to translate: $#{approx_cost}"
       puts "Translations made: #{translations_made}" if translate_missing
     end
   end
