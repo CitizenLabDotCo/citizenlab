@@ -87,7 +87,7 @@ export default defineMessages({
     defaultMessage: 'Perspectives',
   },
   liveAutoInputTopicsLabel: {
-    id: 'app.containers.AdminPage.Topics.perspectives',
+    id: 'app.containers.AdminPage.Topics.liveAutoInputTopicsLabel',
     defaultMessage: 'Automatically detect and assign tags',
   },
   liveAutoInputTopicsDescription: {
