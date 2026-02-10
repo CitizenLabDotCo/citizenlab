@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 
-import { Navigate as NavigateTanstack } from 'utils/router';
+// eslint-disable-next-line no-restricted-imports
+import { Navigate as TanstackNavigate } from '@tanstack/react-router';
 
 import { updateSearchParams } from './cl-router/updateSearchParams';
 
@@ -36,5 +37,5 @@ export const useSearch = (_options: any) => {
 };
 
 export const Navigate = (props: any) => {
-  return <NavigateTanstack {...props} />;
+  return <TanstackNavigate {...props} />;
 };

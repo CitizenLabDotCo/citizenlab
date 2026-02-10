@@ -12,23 +12,15 @@ import modules from 'modules';
 import { createRoot } from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 
-import App from 'containers/App';
 import LanguageProvider from 'containers/LanguageProvider';
 import OutletsProvider from 'containers/OutletsProvider';
 import 'utils/locale';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
-import {
-  createRootRoute,
-  createRoute,
-  createRouter,
-  Route,
-  RouterProvider,
-  Outlet,
-} from 'utils/router';
+import { RouterProvider } from 'utils/router';
 
 import prefetchData from './prefetchData';
-import createRoutes from './routes2';
+import { router } from './routes';
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,
@@ -46,62 +38,6 @@ Sentry.init({
   tracesSampleRate: 0.05,
   sendClientReports: false,
 });
-
-// const useSentryRoutes = wrapUseRoutesV6(useRoutes);
-const legacyRoutes = createRoutes();
-
-type LegacyRoutes = typeof legacyRoutes;
-
-const findComponent = (legacyRoute: any) => {
-  if (legacyRoute.component) {
-    return legacyRoute.component;
-  }
-
-  if (legacyRoute.children) {
-    const indexComponent = legacyRoute.children.find(
-      (child: any) => child.index
-    );
-    if (indexComponent) {
-      return indexComponent.component;
-    }
-  }
-
-  return undefined;
-};
-
-const setupRouter = (legacyRoutes: LegacyRoutes) => {
-  const rootRoute = createRootRoute({
-    component: () => (
-      <App>
-        <Outlet />
-      </App>
-    ), // Use Outlet to render child routes
-  });
-
-  const children: Route[] = [];
-
-  legacyRoutes.forEach((legacyRoute: any) => {
-    const route = createRoute({
-      getParentRoute: () => rootRoute,
-      path: legacyRoute.path,
-      component: findComponent(legacyRoute),
-    });
-
-    children.push(route as any);
-  });
-
-  const routeTree = rootRoute.addChildren(children);
-
-  return createRouter({ routeTree });
-};
-
-const router = setupRouter(legacyRoutes);
-
-declare module '@tanstack/react-router' {
-  interface Register {
-    router: typeof router;
-  }
-}
 
 const Root = () => {
   useEffect(() => {

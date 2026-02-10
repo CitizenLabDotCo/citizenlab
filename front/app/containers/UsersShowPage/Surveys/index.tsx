@@ -25,7 +25,7 @@ const Container = styled.div`
 const Surveys = () => {
   const { data: authUser } = useAuthUser();
 
-  const { userSlug } = useParams({ strict: false });
+  const { userSlug } = useParams({ strict: false }) as { userSlug?: string };
   const { data: user } = useUserBySlug(userSlug);
 
   const { data: surveySubmissions } = useUserSurveySubmissions();
