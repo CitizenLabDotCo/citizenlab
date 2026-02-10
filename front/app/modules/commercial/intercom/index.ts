@@ -132,13 +132,20 @@ const configuration: ModuleConfiguration = {
       }
     });
 
-    pageChanges$.subscribe((_pageChange) => {
-      if (window.Intercom) {
-        window.Intercom('update', {
-          last_request_at: new Date().getTime() / 1000,
-        });
+    combineLatest([pageChanges$, appConfigurationStream]).subscribe(
+      ([_pageChange, tenant]) => {
+        if (window.Intercom && !isNilOrError(tenant)) {
+          window.Intercom('update', {
+            last_request_at: new Date().getTime() / 1000,
+            company: {
+              company_id: tenant.data.id,
+              name: tenant.data.attributes.name,
+              ...tenantInfo(tenant.data),
+            },
+          });
+        }
       }
-    });
+    );
 
     registerDestination(destinationConfig);
   },
