@@ -12,7 +12,6 @@ class PublicApi::V2::ProjectSerializer < PublicApi::V2::BaseSerializer
     :images,
     :created_at,
     :updated_at,
-    :ideas_count,
     :comments_count,
     :map_center_geojson
 

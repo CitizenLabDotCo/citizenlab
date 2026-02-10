@@ -127,7 +127,7 @@ Rails.application.routes.draw do
 
         member do
           patch :block, :unblock
-          get 'ideas_count'
+          # get 'ideas_count'
           get 'comments_count'
           get 'participation_stats'
         end
@@ -334,7 +334,7 @@ Rails.application.routes.draw do
         end
 
         with_options controller: 'stats_ideas' do
-          get 'ideas_count'
+          # get 'ideas_count'
 
           get 'ideas_by_topic'
           get 'ideas_by_project'
