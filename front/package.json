@@ -68,6 +68,7 @@
     "@sentry/react": "10.17.0",
     "@tanstack/react-query": "4.22.4",
     "@tanstack/react-router": "^1.132.47",
+    "@tanstack/react-router-devtools": "^1.159.5",
     "@tanstack/react-virtual": "3.0.0-beta.61",
     "@tippyjs/react": "4.2.6",
     "ajv": "8.12.0",
