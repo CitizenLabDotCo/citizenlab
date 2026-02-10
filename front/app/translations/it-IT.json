@@ -948,7 +948,7 @@
   "app.components.ideas.similarIdeas.similarSubmissionsDescription": "Abbiamo trovato contributi simili: interagire con essi può aiutare a dargli maggiore risonanza!",
   "app.components.ideas.similarIdeas.similarSubmissionsList": "Elenco di idee per invii simili",
   "app.components.ideas.similarIdeas.similarSubmissionsPosted": "Contributi simili già pubblicati:",
-  "app.components.ideas.similarIdeas.similarSubmissionsSearch": "Cercate invii simili ...",
+  "app.components.ideas.similarIdeas.similarSubmissionsSearch": "Alla ricerca di contributi simili...",
   "app.components.phaseTimeLeft.xDayLeft": "{timeLeft, plural, =0 {Meno di un giorno} one {# giorno} other {# giorni}} rimasti",
   "app.components.phaseTimeLeft.xWeeksLeft": "{timeLeft}  settimane rimaste",
   "app.components.screenReaderCurrency.AED": "Dirham degli Emirati Arabi Uniti",
