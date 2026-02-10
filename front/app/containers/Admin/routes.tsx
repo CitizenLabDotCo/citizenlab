@@ -24,7 +24,9 @@ import createAdminIdeasRoutes, { ideaRouteTypes } from './ideas/routes';
 import createAdminInspirationHubRoutes, {
   inspirationHubRouteTypes,
 } from './inspirationHub/routes';
-import { invitationRouteTypes } from './invitations/routes';
+import createAdminInvitationsRoutes, {
+  invitationRouteTypes,
+} from './invitations/routes';
 import createAdminMessagingRoutes, {
   messagingRouteTypes,
 } from './messaging/routes';
@@ -232,7 +234,7 @@ export const createAdminRoutes = (moduleRoutes: Partial<Routes> = {}) => {
     createAdminUsersRoutes(),
     createAdminSettingsRoutes(),
     createAdminPagesAndMenuRoutes(),
-    // invitationsRoutes(),
+    createAdminInvitationsRoutes(),
     createAdminMessagingRoutes(),
     createAdminIdeasRoutes(moduleRoutes['admin.ideas']),
     // projectFoldersRoutes(),
