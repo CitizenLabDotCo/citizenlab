@@ -15,6 +15,7 @@ import useInputTopicById from 'api/input_topics/useInputTopicById';
 import useInputTopics from 'api/input_topics/useInputTopics';
 
 import T from 'components/T';
+import Emoji from 'components/UI/Emoji';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -52,36 +53,44 @@ const SelectedTopicContent = ({
   const { data: subtopics } = useInputTopics(projectId, {
     parent_id: topicId,
     depth: 1,
+    sort: '-ideas_count',
   });
 
   const handleSubtopicClick = (subtopicId: string) => {
     if (selectedSubtopicId === subtopicId) {
-      removeSearchParams(['subtopic']);
+      removeSearchParams(['subtopic', 'sheet_open']);
     } else {
+      removeSearchParams(['sheet_open']);
       updateSearchParams({ subtopic: subtopicId });
     }
   };
 
   return (
     <>
-      <Box mb="16px">
+      <Box px="16px" mb="16px">
         <GoBackButton
           onClick={onBack}
-          customMessage={messages.allTopics}
+          customMessage={messages.back}
           size="s"
+          iconSize="20px"
+          iconColor={colors.textPrimary}
+          textColor={colors.textPrimary}
+          mb="16px"
         />
-      </Box>
-
-      <Box px="16px" mb="16px">
         <Box
           display="flex"
           justifyContent="space-between"
           alignItems="center"
           mb="8px"
         >
-          <Title as="h1" variant="h3" mb="0px">
-            <T value={topic?.data.attributes.title_multiloc} />
-          </Title>
+          <Box display="flex" alignItems="center" gap="8px">
+            {topic?.data.attributes.icon && (
+              <Emoji emoji={topic.data.attributes.icon} size="28px" />
+            )}
+            <Title as="h1" variant="h3" m="0px">
+              <T value={topic?.data.attributes.title_multiloc} />
+            </Title>
+          </Box>
           <Box
             display="flex"
             alignItems="center"
@@ -123,9 +132,11 @@ const SelectedTopicContent = ({
                 mb="4px"
                 w="100%"
               >
-                <Text fontWeight="bold" variant="bodyM" mb="0px">
-                  <T value={subtopic.attributes.title_multiloc} supportHtml />
-                </Text>
+                <Box display="flex" alignItems="center" gap="8px">
+                  <Text fontWeight="bold" variant="bodyM" mb="0px">
+                    <T value={subtopic.attributes.title_multiloc} />
+                  </Text>
+                </Box>
                 <Box
                   display="flex"
                   alignItems="center"

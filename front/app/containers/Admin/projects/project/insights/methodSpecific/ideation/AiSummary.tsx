@@ -18,14 +18,18 @@ import useAddAnalysisSummary from 'api/analysis_summaries/useAddAnalysisSummary'
 import useAnalysisSummary from 'api/analysis_summaries/useAnalysisSummary';
 import useRegenerateAnalysisSummary from 'api/analysis_summaries/useRegenerateAnalysisSummary';
 import useAddAnalysisSummaryPreCheck from 'api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck';
+import { ParticipationMethod } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { getAnalysisScope } from 'containers/Admin/projects/components/AnalysisBanner/utils';
 import InsightBody from 'containers/Admin/projects/project/analysis/Insights/InsightBody';
 import SummaryHeader from 'containers/Admin/projects/project/analysis/Insights/SummaryHeader';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+
+import { usePdfExportContext } from '../../pdf/PdfExportContext';
 
 import messages from './messages';
 
@@ -33,11 +37,12 @@ const MIN_INPUTS_FOR_SUMMARY = 10;
 
 interface Props {
   phaseId: string;
-  isPdfExport?: boolean;
+  participationMethod: ParticipationMethod;
 }
 
-const AiSummary = ({ phaseId, isPdfExport = false }: Props) => {
+const AiSummary = ({ phaseId, participationMethod }: Props) => {
   const { formatMessage } = useIntl();
+  const { isPdfRenderMode } = usePdfExportContext();
   const { projectId } = useParams() as { projectId: string };
   const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
   const [analysisCreationAttempted, setAnalysisCreationAttempted] =
@@ -48,9 +53,13 @@ const AiSummary = ({ phaseId, isPdfExport = false }: Props) => {
     onlyCheckAllowed: true,
   });
 
-  const { data: analyses, isLoading: isLoadingAnalyses } = useAnalyses({
-    projectId,
-  });
+  // Determine the correct scope based on participation method
+  const scope = getAnalysisScope(participationMethod);
+
+  // Query analyses with correct scope (projectId for ideation/voting, phaseId for others)
+  const { data: analyses, isLoading: isLoadingAnalyses } = useAnalyses(
+    scope === 'project' ? { projectId } : { phaseId }
+  );
   const analysis = analyses?.data[0];
   const analysisId = analysis?.id;
 
@@ -94,11 +103,14 @@ const AiSummary = ({ phaseId, isPdfExport = false }: Props) => {
       !analysisCreationAttempted
     ) {
       setAnalysisCreationAttempted(true);
-      addAnalysis({ projectId });
+      // Create analysis with correct scope (projectId for ideation/voting, phaseId for others)
+      addAnalysis(scope === 'project' ? { projectId } : { phaseId });
     }
   }, [
     analyses,
     projectId,
+    phaseId,
+    scope,
     addAnalysis,
     isCreatingAnalysis,
     analysisCreationAttempted,
@@ -232,7 +244,7 @@ const AiSummary = ({ phaseId, isPdfExport = false }: Props) => {
         borderLeft={`3px solid ${colors.primary}`}
         display="flex"
         flexDirection="column"
-        h={isPdfExport ? 'auto' : '400px'}
+        h={isPdfRenderMode ? 'auto' : '400px'}
       >
         <Box
           display="flex"
@@ -242,7 +254,7 @@ const AiSummary = ({ phaseId, isPdfExport = false }: Props) => {
           flexShrink={0}
         >
           <SummaryHeader showAiWarning={false} />
-          {!isPdfExport && (
+          {!isPdfRenderMode && (
             <Button
               buttonStyle="text"
               icon="refresh"
@@ -260,9 +272,9 @@ const AiSummary = ({ phaseId, isPdfExport = false }: Props) => {
           flexDirection="column"
           gap="8px"
           flex="1"
-          overflow={isPdfExport ? 'visible' : 'hidden'}
+          overflow={isPdfRenderMode ? 'visible' : 'hidden'}
         >
-          <Box flex="1" overflow={isPdfExport ? 'visible' : 'auto'}>
+          <Box flex="1" overflow={isPdfRenderMode ? 'visible' : 'auto'}>
             <InsightBody
               text={summary}
               filters={filters}
@@ -273,7 +285,7 @@ const AiSummary = ({ phaseId, isPdfExport = false }: Props) => {
             />
           </Box>
 
-          {!isPdfExport && (
+          {!isPdfRenderMode && (
             <Box
               display="flex"
               justifyContent="space-between"

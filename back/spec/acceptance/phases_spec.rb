@@ -241,7 +241,10 @@ resource 'Phases' do
   end
 
   context 'when admin' do
-    before { admin_header_token }
+    before do
+      admin_header_token
+      SettingsService.new.activate_feature!('prescreening_ideation')
+    end
 
     post 'web_api/v1/projects/:project_id/phases' do
       with_options scope: :phase do
@@ -274,7 +277,7 @@ resource 'Phases' do
         parameter :vote_term, "The term used to describe the concept of a vote (noun). One of #{Phase::VOTE_TERMS.join(', ')}. Defaults to 'vote'.", required: false
         parameter :native_survey_title_multiloc, 'A title for the native survey.'
         parameter :native_survey_button_multiloc, 'Text for native survey call to action button.'
-        parameter :prescreening_enabled, 'Do inputs need to go through pre-screening before being published? Defaults to false', required: false
+        parameter :prescreening_mode, "The pre-screening mode. Either null, 'all', or 'flagged_only'.", required: false
         parameter :similarity_enabled, 'Enable searching for similar inputs during submission. Defaults to false.', required: false
         parameter :similarity_threshold_title, 'The similarity threshold for the title of the input. Defaults to 0.3', required: false
         parameter :similarity_threshold_body, 'The similarity threshold for the body of the input. Defaults to 0.4', required: false
@@ -581,7 +584,7 @@ resource 'Phases' do
         parameter :end_at, 'The end date of the phase'
         parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", required: false
         parameter :ideas_order, 'The default order of ideas.'
-        parameter :prescreening_enabled, 'Do inputs need to go through pre-screening before being published?', required: false
+        parameter :prescreening_mode, "The pre-screening mode. Either nil, 'all', or 'flagged_only'.", required: false
         parameter :similarity_enabled, 'Enable searching for similar inputs during submission.', required: false
         parameter :similarity_threshold_title, 'The similarity threshold for the title of the input.', required: false
         parameter :similarity_threshold_body, 'The similarity threshold for the body of the input.', required: false
@@ -601,24 +604,27 @@ resource 'Phases' do
       let(:reacting_like_limited_max) { 6 }
       let(:presentation_mode) { 'map' }
       let(:allow_anonymous_participation) { true }
-      let(:prescreening_enabled) { true }
+      let(:prescreening_mode) { 'all' }
       let(:similarity_enabled) { true }
       let(:similarity_threshold_body) { 0.2 }
 
       example_request 'Update a phase' do
         expect(response_status).to eq 200
-        expect(json_response.dig(:data, :attributes, :description_multiloc).stringify_keys).to match description_multiloc
-        expect(json_response.dig(:data, :attributes, :participation_method)).to eq participation_method
-        expect(json_response.dig(:data, :attributes, :submission_enabled)).to eq submission_enabled
-        expect(json_response.dig(:data, :attributes, :commenting_enabled)).to eq commenting_enabled
-        expect(json_response.dig(:data, :attributes, :reacting_enabled)).to eq reacting_enabled
-        expect(json_response.dig(:data, :attributes, :reacting_like_method)).to eq reacting_like_method
-        expect(json_response.dig(:data, :attributes, :reacting_like_limited_max)).to eq reacting_like_limited_max
-        expect(json_response.dig(:data, :attributes, :presentation_mode)).to eq presentation_mode
-        expect(json_response.dig(:data, :attributes, :allow_anonymous_participation)).to eq allow_anonymous_participation
-        expect(json_response.dig(:data, :attributes, :prescreening_enabled)).to eq prescreening_enabled
-        expect(json_response.dig(:data, :attributes, :similarity_enabled)).to eq similarity_enabled
-        expect(json_response.dig(:data, :attributes, :similarity_threshold_body)).to eq similarity_threshold_body
+
+        expect(response_data[:attributes]).to include(
+          description_multiloc: description_multiloc.symbolize_keys,
+          participation_method: participation_method,
+          submission_enabled: submission_enabled,
+          commenting_enabled: commenting_enabled,
+          reacting_enabled: reacting_enabled,
+          reacting_like_method: reacting_like_method,
+          reacting_like_limited_max: reacting_like_limited_max,
+          presentation_mode: presentation_mode,
+          allow_anonymous_participation: allow_anonymous_participation,
+          prescreening_mode: prescreening_mode,
+          similarity_enabled: similarity_enabled,
+          similarity_threshold_body: similarity_threshold_body
+        )
       end
 
       context 'when description_multiloc contains images' do

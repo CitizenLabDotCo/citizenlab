@@ -19,6 +19,7 @@ module FlagInappropriateContent
       @llm = Analysis::LLM::Claude3Haiku.new(region: region) if region
     end
 
+    # @return [InappropriateContentFlag, nil] The flag if one was created, nil otherwise
     def flag_toxicity!(flaggable, attributes: nil)
       return unless AppConfiguration.instance.feature_activated? 'flag_inappropriate_content'
 
@@ -31,6 +32,7 @@ module FlagInappropriateContent
       elsif (flag = flaggable.inappropriate_content_flag)
         flag.update! toxicity_label: nil
         flag_service.maybe_delete! flag
+        nil
       end
     end
 

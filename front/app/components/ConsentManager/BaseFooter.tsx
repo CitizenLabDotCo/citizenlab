@@ -14,6 +14,7 @@ const BaseFooter = ({ children }: Props) => {
       alignItems="center"
       justifyContent="flex-end"
       gap={'8px'}
+      flexWrap="wrap"
     >
       {children}
     </Box>

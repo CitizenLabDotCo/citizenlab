@@ -167,3 +167,15 @@ export const getInstructionMessage = ({
   }
   return null;
 };
+
+const PREFIX = 'u_';
+
+export const addPrefix = (customFieldValues: Record<string, any>) => {
+  const newValues = {};
+
+  for (const key in customFieldValues) {
+    newValues[`${PREFIX}${key}`] = customFieldValues[key];
+  }
+
+  return newValues;
+};

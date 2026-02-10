@@ -6,6 +6,8 @@ import { useParams, useSearchParams } from 'react-router-dom';
 import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import useInputTopics from 'api/input_topics/useInputTopics';
+import usePhase from 'api/phases/usePhase';
+import { getInputTerm } from 'api/phases/utils';
 
 import IdeasShow from 'containers/IdeasShow';
 
@@ -21,13 +23,21 @@ import messages from '../messages';
 import IdeaContent from './IdeaContent';
 import TopicsContent from './TopicsContent';
 
-const Sidebar = ({ projectId }: { projectId: string }) => {
+interface Props {
+  projectId: string;
+  onSheetCollapse?: () => void;
+  onSheetExpand?: () => void;
+}
+
+const Sidebar = ({ projectId, onSheetCollapse, onSheetExpand }: Props) => {
   const { formatMessage } = useIntl();
   const contentRef = useRef<HTMLDivElement>(null);
   const { slug } = useParams() as { slug: string };
   const [searchParams] = useSearchParams();
   const selectedTopicId = searchParams.get('topic');
   const selectedIdeaId = searchParams.get('idea_id');
+  const phaseId = searchParams.get('phase_id');
+  const sheetOpen = searchParams.get('sheet_open');
   const isMobile = useBreakpoint('phone');
 
   useEffect(() => {
@@ -45,6 +55,9 @@ const Sidebar = ({ projectId }: { projectId: string }) => {
     projects: [projectId],
   });
 
+  const { data: phase } = usePhase(phaseId);
+  const inputTerm = phase ? getInputTerm([phase.data]) : 'idea';
+
   const { data: selectedIdea } = useIdeaById(selectedIdeaId ?? undefined);
   const selectedIdeaProjectId =
     selectedIdea?.data.relationships.project.data.id;
@@ -61,7 +74,11 @@ const Sidebar = ({ projectId }: { projectId: string }) => {
   };
 
   const handleCloseIdea = () => {
-    removeSearchParams(['idea_id']);
+    removeSearchParams(['idea_id', 'sheet_open']);
+  };
+
+  const handleUnauthenticatedCommentClick = () => {
+    updateSearchParams({ initial_idea_id: selectedIdeaId });
   };
 
   if (topicsLoading || !projectId) {
@@ -83,13 +100,17 @@ const Sidebar = ({ projectId }: { projectId: string }) => {
         a11y_panelLabel={formatMessage(messages.topicsPanel)}
         a11y_expandLabel={formatMessage(messages.expandPanel)}
         a11y_collapseLabel={formatMessage(messages.collapsePanel)}
-        expandToFullscreenOn={selectedIdeaId}
+        expandToFullscreenOn={sheetOpen}
+        inputTerm={inputTerm}
+        onCollapse={onSheetCollapse}
+        onExpand={onSheetExpand}
       >
         {showIdeaDetail ? (
           <IdeaContent
             selectedIdeaId={selectedIdeaId}
             selectedIdeaProjectId={selectedIdeaProjectId}
             handleCloseIdea={handleCloseIdea}
+            onUnauthenticatedCommentClick={handleUnauthenticatedCommentClick}
           />
         ) : (
           <TopicsContent
@@ -114,17 +135,25 @@ const Sidebar = ({ projectId }: { projectId: string }) => {
       py="20px"
       overflowY="auto"
       ref={contentRef}
+      maxWidth="450px"
     >
       {showIdeaDetail ? (
         <>
-          <Box mb="16px">
-            <GoBackButton onClick={handleCloseIdea} showGoBackText={false} />
-          </Box>
-          <Box flex="1" overflowY="auto" padding="24px">
+          <Box flex="1" overflowY="auto" px="16px" pb="16px">
+            <GoBackButton
+              onClick={handleCloseIdea}
+              size="s"
+              iconSize="20px"
+              iconColor={colors.textPrimary}
+              textColor={colors.textPrimary}
+              customMessage={messages.back}
+              pb="16px"
+            />
             <IdeasShow
               ideaId={selectedIdeaId}
               projectId={selectedIdeaProjectId}
               compact={true}
+              onUnauthenticatedCommentClick={handleUnauthenticatedCommentClick}
             />
           </Box>
         </>
