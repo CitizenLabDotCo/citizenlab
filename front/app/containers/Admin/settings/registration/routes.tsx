@@ -1,12 +1,14 @@
 import React, { lazy } from 'react';
 
-import { Outlet } from 'utils/router';
-
 import { AdminRoute } from 'containers/Admin/routes';
 
 import PageLoading from 'components/UI/PageLoading';
 
-import customFieldRoutes, {
+import { createRoute, Outlet as RouterOutlet } from 'utils/router';
+
+import { settingsRoute } from '../routes';
+
+import createCustomFieldRoutes, {
   customFieldRouteTypes,
 } from './CustomFieldRoutes/routes';
 
@@ -20,18 +22,27 @@ export type registrationRouteTypes =
   | AdminRoute<`settings/${registrationRoutes.registration}`>
   | customFieldRouteTypes;
 
-export default () => ({
+export const registrationRoute = createRoute({
+  getParentRoute: () => settingsRoute,
   path: 'registration',
-  element: <Outlet />,
-  children: [
-    {
-      path: '',
-      element: (
-        <PageLoading>
-          <AdminSettingsRegistration />
-        </PageLoading>
-      ),
-    },
-    customFieldRoutes(),
-  ],
+  component: () => <RouterOutlet />,
 });
+
+const registrationIndexRoute = createRoute({
+  getParentRoute: () => registrationRoute,
+  path: '/',
+  component: () => (
+    <PageLoading>
+      <AdminSettingsRegistration />
+    </PageLoading>
+  ),
+});
+
+const createRegistrationRoutes = () => {
+  return registrationRoute.addChildren([
+    registrationIndexRoute,
+    createCustomFieldRoutes(),
+  ]);
+};
+
+export default createRegistrationRoutes;

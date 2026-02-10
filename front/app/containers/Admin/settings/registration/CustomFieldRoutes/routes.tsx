@@ -2,6 +2,10 @@ import React from 'react';
 
 import { AdminRoute } from 'containers/Admin/routes';
 
+import { createRoute } from 'utils/router';
+
+import { registrationRoute } from '../routes';
+
 const AdminCustomFieldsContainer = React.lazy(() => import('.'));
 const AdminNewCustomFieldComponent = React.lazy(
   () => import('./RegistrationCustomFieldNew')
@@ -43,35 +47,58 @@ export type customFieldRouteTypes =
   | AdminRoute<`settings/registration/${customFieldRouteEnum.customFields}/${string}/${customFieldRouteEnum.optionsNew}`>
   | AdminRoute<`settings/registration/${customFieldRouteEnum.customFields}/${string}/${customFieldRouteEnum.options}/${string}`>;
 
-export default () => ({
+const customFieldsRoute = createRoute({
+  getParentRoute: () => registrationRoute,
   path: customFieldRouteEnum.customFields,
-  element: <AdminCustomFieldsContainer />,
-  children: [
-    {
-      path: customFieldRouteEnum.new,
-      element: <AdminNewCustomFieldComponent />,
-    },
-    {
-      path: customFieldRouteEnum.customFieldsId,
-      element: <AdminCustomFieldEditComponent />,
-      children: [
-        {
-          path: customFieldRouteEnum.fieldSettings,
-          element: <AdminCustomFieldRegistrationSettingsComponent />,
-        },
-        {
-          path: customFieldRouteEnum.options,
-          element: <AdminCustomFieldRegistrationOptionsComponent />,
-        },
-        {
-          path: customFieldRouteEnum.optionsNew,
-          element: <AdminCustomFieldRegistrationOptionsNewComponent />,
-        },
-        {
-          path: customFieldRouteEnum.userCustomFieldOptionId,
-          element: <AdminCustomFieldRegistrationOptionsEditComponent />,
-        },
-      ],
-    },
-  ],
+  component: () => <AdminCustomFieldsContainer />,
 });
+
+const customFieldNewRoute = createRoute({
+  getParentRoute: () => customFieldsRoute,
+  path: customFieldRouteEnum.new,
+  component: () => <AdminNewCustomFieldComponent />,
+});
+
+const customFieldEditRoute = createRoute({
+  getParentRoute: () => customFieldsRoute,
+  path: customFieldRouteEnum.customFieldsId,
+  component: () => <AdminCustomFieldEditComponent />,
+});
+
+const customFieldSettingsRoute = createRoute({
+  getParentRoute: () => customFieldEditRoute,
+  path: customFieldRouteEnum.fieldSettings,
+  component: () => <AdminCustomFieldRegistrationSettingsComponent />,
+});
+
+const customFieldOptionsRoute = createRoute({
+  getParentRoute: () => customFieldEditRoute,
+  path: customFieldRouteEnum.options,
+  component: () => <AdminCustomFieldRegistrationOptionsComponent />,
+});
+
+const customFieldOptionsNewRoute = createRoute({
+  getParentRoute: () => customFieldEditRoute,
+  path: customFieldRouteEnum.optionsNew,
+  component: () => <AdminCustomFieldRegistrationOptionsNewComponent />,
+});
+
+const customFieldOptionEditRoute = createRoute({
+  getParentRoute: () => customFieldEditRoute,
+  path: customFieldRouteEnum.userCustomFieldOptionId,
+  component: () => <AdminCustomFieldRegistrationOptionsEditComponent />,
+});
+
+const createCustomFieldRoutes = () => {
+  return customFieldsRoute.addChildren([
+    customFieldNewRoute,
+    customFieldEditRoute.addChildren([
+      customFieldSettingsRoute,
+      customFieldOptionsRoute,
+      customFieldOptionsNewRoute,
+      customFieldOptionEditRoute,
+    ]),
+  ]);
+};
+
+export default createCustomFieldRoutes;

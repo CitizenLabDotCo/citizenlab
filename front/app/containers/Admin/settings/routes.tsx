@@ -1,13 +1,12 @@
 import React, { lazy } from 'react';
 
-import { Navigate } from 'utils/router';
-import moduleConfiguration from 'modules';
-
 import PageLoading from 'components/UI/PageLoading';
 
-import { AdminRoute } from '../routes';
+import { createRoute, Navigate } from 'utils/router';
 
-import registrationRoutes, {
+import { adminRoute, AdminRoute } from '../routes';
+
+import createRegistrationRoutes, {
   registrationRouteTypes,
 } from './registration/routes';
 
@@ -98,180 +97,236 @@ export type settingRouteTypes =
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.ideation}/${string}`>
   | registrationRouteTypes;
 
-export default () => ({
+export const settingsRoute = createRoute({
+  getParentRoute: () => adminRoute,
   path: settingsRoutes.settings,
-  element: (
+  component: () => (
     <PageLoading>
       <AdminSettingsIndex />
     </PageLoading>
   ),
-  children: [
-    {
-      path: settingsRoutes.settingsDefault,
-      element: <Navigate to="/general" replace />,
-    },
-    {
-      path: settingsRoutes.general,
-      element: (
-        <PageLoading>
-          <AdminSettingsGeneral />
-        </PageLoading>
-      ),
-    },
-    {
-      path: settingsRoutes.branding,
-      element: (
-        <PageLoading>
-          <AdminSettingsCustomize />
-        </PageLoading>
-      ),
-    },
-    {
-      path: settingsRoutes.policies,
-      element: (
-        <PageLoading>
-          <AdminSettingsPolicies />
-        </PageLoading>
-      ),
-    },
-    {
-      path: settingsRoutes.statuses,
-      element: (
-        <PageLoading>
-          <StatusesMain />
-        </PageLoading>
-      ),
-      children: [
-        {
-          path: settingsRoutes.ideation,
-          children: [
-            {
-              path: settingsRoutes.new,
-              element: (
-                <PageLoading>
-                  <NewStatusComponent variant="ideation" />
-                </PageLoading>
-              ),
-            },
-            {
-              path: settingsRoutes.statusId,
-              element: (
-                <PageLoading>
-                  <StatusShowComponent variant="ideation" />
-                </PageLoading>
-              ),
-            },
-          ],
-        },
-        {
-          path: settingsRoutes.proposals,
-          children: [
-            {
-              path: settingsRoutes.new,
-              element: (
-                <PageLoading>
-                  <NewStatusComponent variant="proposals" />
-                </PageLoading>
-              ),
-            },
-            {
-              path: settingsRoutes.statusId,
-              element: (
-                <PageLoading>
-                  <StatusShowComponent variant="proposals" />
-                </PageLoading>
-              ),
-            },
-          ],
-        },
-      ],
-    },
-    registrationRoutes(),
-    {
-      path: settingsRoutes.areas,
-      children: [
-        {
-          index: true,
-          element: (
-            <PageLoading>
-              <AdminAreasAll />
-            </PageLoading>
-          ),
-        },
-        {
-          path: settingsRoutes.new,
-          element: (
-            <PageLoading>
-              <AdminAreasNew />
-            </PageLoading>
-          ),
-        },
-        {
-          path: settingsRoutes.areaId,
-          element: (
-            <PageLoading>
-              <AdminAreasEdit />
-            </PageLoading>
-          ),
-        },
-      ],
-    },
-    {
-      path: settingsRoutes.topics,
-      element: (
-        <PageLoading>
-          <TopicsMain />
-        </PageLoading>
-      ),
-      children: [
-        {
-          index: true,
-          element: <Navigate to="platform" replace />,
-        },
-        {
-          path: settingsRoutes.platform,
-          children: [
-            {
-              path: settingsRoutes.new,
-              element: (
-                <PageLoading>
-                  <AdminTopicsNewComponent />
-                </PageLoading>
-              ),
-            },
-            {
-              path: settingsRoutes.topicEdit,
-              element: (
-                <PageLoading>
-                  <AdminTopicsEditComponent />
-                </PageLoading>
-              ),
-            },
-          ],
-        },
-        {
-          path: settingsRoutes.input,
-          children: [
-            {
-              path: settingsRoutes.new,
-              element: (
-                <PageLoading>
-                  <AdminDefaultInputTopicsNewComponent />
-                </PageLoading>
-              ),
-            },
-            {
-              path: settingsRoutes.defaultInputTopicEdit,
-              element: (
-                <PageLoading>
-                  <AdminDefaultInputTopicsEditComponent />
-                </PageLoading>
-              ),
-            },
-          ],
-        },
-      ],
-    },
-    ...moduleConfiguration.routes['admin.settings'],
-  ],
 });
+
+const settingsIndexRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: '/',
+  component: () => <Navigate to="general" replace />,
+});
+
+const generalRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: settingsRoutes.general,
+  component: () => (
+    <PageLoading>
+      <AdminSettingsGeneral />
+    </PageLoading>
+  ),
+});
+
+const brandingRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: settingsRoutes.branding,
+  component: () => (
+    <PageLoading>
+      <AdminSettingsCustomize />
+    </PageLoading>
+  ),
+});
+
+const policiesRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: settingsRoutes.policies,
+  component: () => (
+    <PageLoading>
+      <AdminSettingsPolicies />
+    </PageLoading>
+  ),
+});
+
+// statuses
+const statusesRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: settingsRoutes.statuses,
+  component: () => (
+    <PageLoading>
+      <StatusesMain />
+    </PageLoading>
+  ),
+});
+
+const ideationRoute = createRoute({
+  getParentRoute: () => statusesRoute,
+  path: settingsRoutes.ideation,
+});
+
+const ideationNewRoute = createRoute({
+  getParentRoute: () => ideationRoute,
+  path: settingsRoutes.new,
+  component: () => (
+    <PageLoading>
+      <NewStatusComponent variant="ideation" />
+    </PageLoading>
+  ),
+});
+
+const ideationStatusRoute = createRoute({
+  getParentRoute: () => ideationRoute,
+  path: settingsRoutes.statusId,
+  component: () => (
+    <PageLoading>
+      <StatusShowComponent variant="ideation" />
+    </PageLoading>
+  ),
+});
+
+const proposalsRoute = createRoute({
+  getParentRoute: () => statusesRoute,
+  path: settingsRoutes.proposals,
+});
+
+const proposalsNewRoute = createRoute({
+  getParentRoute: () => proposalsRoute,
+  path: settingsRoutes.new,
+  component: () => (
+    <PageLoading>
+      <NewStatusComponent variant="proposals" />
+    </PageLoading>
+  ),
+});
+
+const proposalsStatusRoute = createRoute({
+  getParentRoute: () => proposalsRoute,
+  path: settingsRoutes.statusId,
+  component: () => (
+    <PageLoading>
+      <StatusShowComponent variant="proposals" />
+    </PageLoading>
+  ),
+});
+
+// areas
+const areasRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: settingsRoutes.areas,
+});
+
+const areasIndexRoute = createRoute({
+  getParentRoute: () => areasRoute,
+  path: '/',
+  component: () => (
+    <PageLoading>
+      <AdminAreasAll />
+    </PageLoading>
+  ),
+});
+
+const areasNewRoute = createRoute({
+  getParentRoute: () => areasRoute,
+  path: settingsRoutes.new,
+  component: () => (
+    <PageLoading>
+      <AdminAreasNew />
+    </PageLoading>
+  ),
+});
+
+const areasEditRoute = createRoute({
+  getParentRoute: () => areasRoute,
+  path: settingsRoutes.areaId,
+  component: () => (
+    <PageLoading>
+      <AdminAreasEdit />
+    </PageLoading>
+  ),
+});
+
+// topics
+const topicsRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: settingsRoutes.topics,
+  component: () => (
+    <PageLoading>
+      <TopicsMain />
+    </PageLoading>
+  ),
+});
+
+const topicsIndexRoute = createRoute({
+  getParentRoute: () => topicsRoute,
+  path: '/',
+  component: () => <Navigate to="platform" replace />,
+});
+
+const platformRoute = createRoute({
+  getParentRoute: () => topicsRoute,
+  path: settingsRoutes.platform,
+});
+
+const platformNewRoute = createRoute({
+  getParentRoute: () => platformRoute,
+  path: settingsRoutes.new,
+  component: () => (
+    <PageLoading>
+      <AdminTopicsNewComponent />
+    </PageLoading>
+  ),
+});
+
+const platformEditRoute = createRoute({
+  getParentRoute: () => platformRoute,
+  path: settingsRoutes.topicEdit,
+  component: () => (
+    <PageLoading>
+      <AdminTopicsEditComponent />
+    </PageLoading>
+  ),
+});
+
+const inputRoute = createRoute({
+  getParentRoute: () => topicsRoute,
+  path: settingsRoutes.input,
+});
+
+const inputNewRoute = createRoute({
+  getParentRoute: () => inputRoute,
+  path: settingsRoutes.new,
+  component: () => (
+    <PageLoading>
+      <AdminDefaultInputTopicsNewComponent />
+    </PageLoading>
+  ),
+});
+
+const inputEditRoute = createRoute({
+  getParentRoute: () => inputRoute,
+  path: settingsRoutes.defaultInputTopicEdit,
+  component: () => (
+    <PageLoading>
+      <AdminDefaultInputTopicsEditComponent />
+    </PageLoading>
+  ),
+});
+
+const createAdminSettingsRoutes = () => {
+  return settingsRoute.addChildren([
+    settingsIndexRoute,
+    generalRoute,
+    brandingRoute,
+    policiesRoute,
+    statusesRoute.addChildren([
+      ideationRoute.addChildren([ideationNewRoute, ideationStatusRoute]),
+      proposalsRoute.addChildren([proposalsNewRoute, proposalsStatusRoute]),
+    ]),
+    createRegistrationRoutes(),
+    areasRoute.addChildren([areasIndexRoute, areasNewRoute, areasEditRoute]),
+    topicsRoute.addChildren([
+      topicsIndexRoute,
+      platformRoute.addChildren([platformNewRoute, platformEditRoute]),
+      inputRoute.addChildren([inputNewRoute, inputEditRoute]),
+    ]),
+    // TODO: Wire in module routes (admin.settings) after conversion
+    // ...moduleConfiguration.routes['admin.settings'],
+  ]);
+};
+
+export default createAdminSettingsRoutes;
