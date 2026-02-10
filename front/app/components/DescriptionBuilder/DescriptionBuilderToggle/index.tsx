@@ -25,7 +25,7 @@ import Warning from 'components/UI/Warning';
 
 import { injectIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { useParams } from 'utils/router';
 
 // Messages
 
@@ -34,8 +34,7 @@ type DescriptionBuilderToggleProps = {
   onChange: (description_multiloc: Multiloc, _locale: SupportedLocale) => void;
   contentBuildableType: ContentBuildableType;
   label: string;
-} & WithRouterProps &
-  WrappedComponentProps;
+} & WrappedComponentProps;
 
 const StyledToggle = styled(Toggle)`
   margin-bottom: 30px;
@@ -51,13 +50,13 @@ const StyledLink = styled(Link)`
 `;
 
 const DescriptionBuilderToggle = ({
-  params,
   intl: { formatMessage },
   valueMultiloc,
   onChange,
   contentBuildableType,
   label,
 }: DescriptionBuilderToggleProps) => {
+  const params = useParams({ strict: false }) as Record<string, string>;
   const featureEnabled = useFeatureFlag({
     name: 'project_description_builder',
   });
@@ -151,4 +150,4 @@ const DescriptionBuilderToggle = ({
   );
 };
 
-export default injectIntl(withRouter(DescriptionBuilderToggle));
+export default injectIntl(DescriptionBuilderToggle);

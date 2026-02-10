@@ -19,7 +19,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { injectIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
@@ -35,10 +35,11 @@ export interface Props {
 type TabType = ITab & { className: string };
 
 const RegistrationCustomFieldEdit = memo(
-  ({
-    intl: { formatMessage },
-    params: { userCustomFieldId },
-  }: Props & WithRouterProps & WrappedComponentProps) => {
+  ({ intl: { formatMessage } }: Props & WrappedComponentProps) => {
+    const { userCustomFieldId } = useParams({ strict: false }) as Record<
+      string,
+      string
+    >;
     const localize = useLocalize();
     const { data: userCustomField } = useUserCustomField(userCustomFieldId);
     const hasOptions = (inputType: IUserCustomFieldInputType) => {
@@ -94,4 +95,4 @@ const RegistrationCustomFieldEdit = memo(
   }
 );
 
-export default withRouter(injectIntl(RegistrationCustomFieldEdit));
+export default injectIntl(RegistrationCustomFieldEdit);

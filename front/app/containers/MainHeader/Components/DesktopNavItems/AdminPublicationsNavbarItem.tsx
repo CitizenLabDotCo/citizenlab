@@ -21,7 +21,7 @@ import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
+import { useLocation } from 'utils/router';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 
 import messages from '../../messages';
@@ -146,8 +146,8 @@ const AdminPublicationsNavbarItem = ({
   linkTo,
   navigationItemTitle,
   onDropdownStateChange,
-  location,
-}: Props & WithRouterProps) => {
+}: Props) => {
+  const location = useLocation();
   const [projectsDropdownOpened, setProjectsDropdownOpened] = useState(false);
   const localize = useLocalize();
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
@@ -267,4 +267,4 @@ const AdminPublicationsNavbarItem = ({
   );
 };
 
-export default withRouter(AdminPublicationsNavbarItem);
+export default AdminPublicationsNavbarItem;
