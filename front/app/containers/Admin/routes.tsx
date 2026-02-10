@@ -36,7 +36,7 @@ import createAdminReportingRoutes, {
   reportingRouteTypes,
 } from './reporting/routes';
 import { settingRouteTypes } from './settings/routes';
-import { toolRouteTypes } from './tools/routes';
+import createAdminToolsRoutes, { toolRouteTypes } from './tools/routes';
 import createAdminUsersRoutes, { userRouteTypes } from './users/routes';
 
 const AdminContainer = lazy(() => import('containers/Admin'));
@@ -233,7 +233,7 @@ export const createAdminRoutes = () => {
     createAdminIdeasRoutes(),
     // projectFoldersRoutes(),
     ...createAdminReportingRoutes(),
-    // toolsRoutes(),
+    createAdminToolsRoutes(),
     createAdminCommunityMonitorRoutes(),
     createAdminInspirationHubRoutes(),
     // TODO: understand this:
