@@ -15,7 +15,8 @@ import { InsertConfigurationOptions } from 'typings';
 
 import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useIdeasCount from 'api/idea_count/useIdeasCount';
+// import useIdeasCount from 'api/idea_count/useIdeasCount';
+import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import useAuthUser from 'api/me/useAuthUser';
 import { IUser } from 'api/users/types';
 
@@ -90,7 +91,7 @@ const Sidebar = ({ authUser }: Props) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
 
-  const { data: ideasCount } = useIdeasCount(
+  const { data: ideasCount } = useIdeasFilterCounts(
     {
       feedback_needed: true,
       // TODO: Fix this the next time the file is edited.
@@ -112,9 +113,9 @@ const Sidebar = ({ authUser }: Props) => {
           if (
             navItem.name === 'ideas' &&
             ideasCount &&
-            ideasCount.data.attributes.count
+            ideasCount.data.attributes.total
           ) {
-            return { ...navItem, count: ideasCount.data.attributes.count };
+            return { ...navItem, count: ideasCount.data.attributes.total };
           }
           return navItem;
         }
