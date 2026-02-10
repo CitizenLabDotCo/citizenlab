@@ -61,9 +61,9 @@ interface Props {
 }
 
 const ProjectTimelineContainer = ({ projectId, className }: Props) => {
-  const { phaseNumber } = useParams({
-    from: '/$locale/projects/$slug/$phaseNumber',
-  });
+  const { phaseNumber } = useParams({ strict: false }) as {
+    phaseNumber?: string;
+  };
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const currentLocale = useLocale();
