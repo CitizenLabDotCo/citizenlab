@@ -12,6 +12,8 @@ import useVerificationMethodVerifiedActions from 'api/verification_methods/useVe
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import NewLabel from 'components/UI/NewLabel';
+
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
@@ -56,7 +58,9 @@ const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
               />
             }
             title={formatMessage(messages.none)}
-            titleNewLabel={showAnyone === 'show-with-new-label'}
+            titleLabel={
+              showAnyone === 'show-with-new-label' ? <NewLabel /> : undefined
+            }
             subtitle={formatMessage(messages.noneSubtitle)}
             onClick={handleUpdate('everyone')}
             selected={permittedBy === 'everyone'}
