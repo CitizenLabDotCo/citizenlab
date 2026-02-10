@@ -1,4 +1,5 @@
 import { combineLatest } from 'rxjs';
+import { withLatestFrom } from 'rxjs/operators';
 
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import authUserStream from 'api/me/authUserStream';
@@ -132,8 +133,9 @@ const configuration: ModuleConfiguration = {
       }
     });
 
-    combineLatest([pageChanges$, appConfigurationStream]).subscribe(
-      ([_pageChange, tenant]) => {
+    pageChanges$
+      .pipe(withLatestFrom(appConfigurationStream))
+      .subscribe(([_pageChange, tenant]) => {
         if (window.Intercom && !isNilOrError(tenant)) {
           window.Intercom('update', {
             last_request_at: new Date().getTime() / 1000,
@@ -144,8 +146,7 @@ const configuration: ModuleConfiguration = {
             },
           });
         }
-      }
-    );
+      });
 
     registerDestination(destinationConfig);
   },
