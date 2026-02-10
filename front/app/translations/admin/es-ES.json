@@ -2971,6 +2971,7 @@
   "app.containers.AdminPage.Topics.lastTopicWarning3": "Se requiere al menos una etiqueta. Si no deseas utilizar etiquetas, puedes eliminar el elemento \"Etiquetas\" del formulario de entrada de cualquier fase (si está presente).",
   "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "Cuando está activada, las etiquetas se crean, actualizan y asignan continuamente a las entradas, utilizando IA.",
   "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "Detecta y asigna etiquetas automáticamente",
+  "app.containers.AdminPage.Topics.perspectives": "Perspectivas",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "Crear y administrar las etiquetas que los ciudadanos pueden usar para categorizar sus aportaciones en este proyecto.",
   "app.containers.AdminPage.Topics.save": "Guardar",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "Agregar un grupo nuevo",
