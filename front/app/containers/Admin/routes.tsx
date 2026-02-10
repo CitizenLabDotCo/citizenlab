@@ -29,7 +29,7 @@ import createAdminProjectsRoutes, {
 import { reportingRouteTypes } from './reporting/routes';
 import { settingRouteTypes } from './settings/routes';
 import { toolRouteTypes } from './tools/routes';
-import { userRouteTypes } from './users/routes';
+import createAdminUsersRoutes, { userRouteTypes } from './users/routes';
 
 const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
@@ -216,8 +216,8 @@ export const createAdminRoutes = () => {
     adminIndexRoute,
     createAdminProjectsRoutes(),
     createAdminDashboardRoutes(),
+    createAdminUsersRoutes(),
     // TODO: Convert these sub-route factories to TanStack format one by one
-    // createAdminUsersRoutes(),
     // settingsRoutes(),
     // pagesAndMenuRoutes(),
     // invitationsRoutes(),
