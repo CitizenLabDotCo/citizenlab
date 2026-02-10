@@ -78,4 +78,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Topics.fieldTopicDescription',
     defaultMessage: 'Tag description (optional)',
   },
+  fieldTopicEmoji: {
+    id: 'app.containers.AdminPage.Topics.fieldTopicEmoji',
+    defaultMessage: 'Emoji (optional)',
+  },
+  liveAutoInputTopicsLabel: {
+    id: 'app.containers.AdminPage.Topics.liveAutoInputTopicsLabel',
+    defaultMessage: 'Automatically detect and assign tags',
+  },
+  liveAutoInputTopicsDescription: {
+    id: 'app.containers.AdminPage.Topics.liveAutoInputTopicsDescription',
+    defaultMessage:
+      'When enabled, tags are continuously created, updated and assigned to inputs, using AI.',
+  },
 });

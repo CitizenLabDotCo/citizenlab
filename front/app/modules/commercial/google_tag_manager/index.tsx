@@ -49,8 +49,6 @@ const configuration: ModuleConfiguration = {
         tenant.data.attributes.settings.google_tag_manager?.container_id || '';
 
       // Split by comma to support multiple container IDs
-      // if provided in a comma-separated format (not recommended
-      // but supported for specific cases)
       const containerIds = containerIdString
         .split(',')
         .map((id) => id.trim())
@@ -58,6 +56,13 @@ const configuration: ModuleConfiguration = {
 
       // Initialize GTM for each container ID
       containerIds.forEach((containerId: string) => {
+        // Check if GTM script for this container ID already exists
+        const existingScript = document.querySelector(
+          `script[src*="googletagmanager.com/gtm.js?id=${containerId}"]`
+        );
+
+        if (existingScript) return; // Skip if already loaded
+
         (function (w, d, s, l, i) {
           w[l] = w[l] || [];
           w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });

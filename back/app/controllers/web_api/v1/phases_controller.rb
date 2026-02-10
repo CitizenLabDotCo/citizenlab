@@ -175,7 +175,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :ideas_order,
       :input_term,
       :vote_term,
-      :prescreening_enabled,
+      :prescreening_mode,
       :reacting_threshold,
       :expire_days_limit,
       :manual_voters_amount,
@@ -190,9 +190,11 @@ class WebApi::V1::PhasesController < ApplicationController
         native_survey_button_multiloc: CL2_SUPPORTED_LOCALES
       }
     ]
+
     if AppConfiguration.instance.feature_activated? 'disable_disliking'
       permitted += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]
     end
+
     params.require(:phase).permit(permitted)
   end
 

@@ -24,10 +24,14 @@ class TopicRebalancingVisualization
   COLUMN_WIDTH = 320
   COLUMN_GAP = 80
   TOPIC_HEIGHT = 50
+  SUBTOPIC_HEIGHT = 40
   TOPIC_GAP = 15
+  SUBTOPIC_GAP = 8
+  SUBTOPIC_INDENT = 20
   HEADER_HEIGHT = 60
   PADDING = 40
   MAX_TITLE_LENGTH = 50
+  MAX_SUBTOPIC_TITLE_LENGTH = 45
 
   # Colors
   COLORS = {
@@ -35,6 +39,13 @@ class TopicRebalancingVisualization
     updated: '#FFD700',   # Gold
     unchanged: '#F5F5F5', # White smoke
     removed: '#FFCCCB'    # Light red
+  }.freeze
+
+  SUBTOPIC_COLORS = {
+    created: '#B8F4B8',   # Lighter green
+    updated: '#FFE766',   # Lighter gold
+    unchanged: '#FAFAFA', # Lighter smoke
+    removed: '#FFE0E0'    # Lighter red
   }.freeze
 
   def initialize(input_file)
@@ -59,8 +70,11 @@ class TopicRebalancingVisualization
             .header { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; fill: #333; }
             .subheader { font-family: Arial, sans-serif; font-size: 11px; fill: #666; }
             .topic-title { font-family: Arial, sans-serif; font-size: 11px; fill: #333; }
+            .subtopic-title { font-family: Arial, sans-serif; font-size: 10px; fill: #555; }
             .removed-title { font-family: Arial, sans-serif; font-size: 11px; fill: #999; text-decoration: line-through; }
+            .removed-subtopic-title { font-family: Arial, sans-serif; font-size: 10px; fill: #999; text-decoration: line-through; }
             .topic-rect { stroke: #999; stroke-width: 1; }
+            .subtopic-rect { stroke: #aaa; stroke-width: 1; }
             .removed-rect { stroke: #999; stroke-width: 1; stroke-dasharray: 4,2; }
             .arrow { stroke: #666; stroke-width: 1.5; fill: none; marker-end: url(#arrowhead); }
             .legend-label { font-family: Arial, sans-serif; font-size: 10px; fill: #333; }
@@ -75,7 +89,7 @@ class TopicRebalancingVisualization
 
   private
 
-  def build_steps
+  def build_steps # rubocop:disable Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
     steps = []
 
     # Step 0: Initial state from first activity's update_log old values
@@ -89,14 +103,16 @@ class TopicRebalancingVisualization
       initial_topics[topic_id] = {
         id: topic_id,
         title: old_title,
-        status: :unchanged
+        status: :unchanged,
+        parent_id: nil,
+        children: []
       }
     end
 
     steps << {
       label: 'Initial',
       input_count: nil,
-      topics: sort_topics(initial_topics.values)
+      topics: build_topic_hierarchy(initial_topics.values)
     }
 
     # Subsequent steps: Apply each activity's changes
@@ -118,9 +134,9 @@ class TopicRebalancingVisualization
       # Copy existing topics and mark removed ones
       current_topics.each do |topic_id, topic|
         step_topics[topic_id] = if removed_ids.include?(topic_id)
-          topic.merge(status: :removed)
+          topic.merge(status: :removed, children: topic[:children].map { |c| c.merge(status: :removed) })
         else
-          topic.merge(status: :unchanged)
+          topic.merge(status: :unchanged, children: topic[:children].map { |c| c.merge(status: :unchanged) })
         end
       end
 
@@ -132,42 +148,72 @@ class TopicRebalancingVisualization
         if step_topics[topic_id]
           old_title = step_topics[topic_id][:title]
           if old_title != new_title
-            step_topics[topic_id] = {
-              id: topic_id,
+            step_topics[topic_id] = step_topics[topic_id].merge(
               title: new_title,
               status: :updated
-            }
+            )
           end
         end
       end
 
-      # Apply creations
+      # Apply creations - track parent relationships
+      parent_map = {} # Maps topic_id to its children
       payload['creation_log']&.each do |creation|
         topic_id = creation['topic_id']
+        parent_id = creation['parent_id']
         title = creation.dig('title_multiloc', 'en') || creation['title_multiloc']&.values&.first
-        step_topics[topic_id] = {
+
+        topic_data = {
           id: topic_id,
           title: title,
-          status: :created
+          status: :created,
+          parent_id: parent_id,
+          children: []
         }
+
+        if parent_id
+          # This is a subtopic - add to parent's children
+          parent_map[parent_id] ||= []
+          parent_map[parent_id] << topic_data
+        else
+          # This is a root topic
+          step_topics[topic_id] = topic_data
+        end
+      end
+
+      # Attach subtopics to their parents
+      parent_map.each do |parent_id, children|
+        if step_topics[parent_id]
+          step_topics[parent_id][:children] = children
+        end
       end
 
       steps << {
         label: "Step #{idx + 1}",
         input_count: input_count,
-        topics: sort_topics(step_topics.values)
+        topics: build_topic_hierarchy(step_topics.values)
       }
 
       # Prepare for next iteration - remove the removed topics
       current_topics = step_topics.reject { |_, t| t[:status] == :removed }
-      current_topics.transform_values! { |t| t.merge(status: :unchanged) }
+      current_topics.transform_values! do |t|
+        t.merge(
+          status: :unchanged,
+          children: t[:children].reject { |c| c[:status] == :removed }.map { |c| c.merge(status: :unchanged) }
+        )
+      end
     end
 
     steps
   end
 
-  def sort_topics(topics)
-    topics.sort_by { |t| t[:title]&.downcase || '' }
+  def build_topic_hierarchy(topics)
+    # Sort root topics by title, with their children attached
+    topics.select { |t| t[:parent_id].nil? }
+      .sort_by { |t| t[:title]&.downcase || '' }
+      .map do |topic|
+        topic.merge(children: (topic[:children] || []).sort_by { |c| c[:title]&.downcase || '' })
+      end
   end
 
   def calculate_width
@@ -175,8 +221,19 @@ class TopicRebalancingVisualization
   end
 
   def calculate_height
-    max_topics = @steps.map { |s| s[:topics].length }.max
-    (PADDING * 2) + LEGEND_HEIGHT + HEADER_HEIGHT + (max_topics * (TOPIC_HEIGHT + TOPIC_GAP))
+    max_height = @steps.map { |s| calculate_column_height(s[:topics]) }.max
+    (PADDING * 2) + LEGEND_HEIGHT + HEADER_HEIGHT + max_height
+  end
+
+  def calculate_column_height(topics)
+    height = 0
+    topics.each do |topic|
+      height += TOPIC_HEIGHT + TOPIC_GAP
+      topic[:children].each do
+        height += SUBTOPIC_HEIGHT + SUBTOPIC_GAP
+      end
+    end
+    height
   end
 
   def render_legend
@@ -219,10 +276,17 @@ class TopicRebalancingVisualization
       elements << %(<text x="#{x + (COLUMN_WIDTH / 2)}" y="#{y + 40}" class="subheader" text-anchor="middle">(#{step[:input_count]} inputs)</text>)
     end
 
-    # Topics
-    step[:topics].each_with_index do |topic, topic_idx|
-      topic_y = y + HEADER_HEIGHT + (topic_idx * (TOPIC_HEIGHT + TOPIC_GAP))
-      elements << render_topic(topic, x, topic_y)
+    # Topics with subtopics
+    current_y = y + HEADER_HEIGHT
+    step[:topics].each do |topic|
+      elements << render_topic(topic, x, current_y)
+      current_y += TOPIC_HEIGHT + TOPIC_GAP
+
+      # Render subtopics indented
+      topic[:children].each do |subtopic|
+        elements << render_subtopic(subtopic, x + SUBTOPIC_INDENT, current_y)
+        current_y += SUBTOPIC_HEIGHT + SUBTOPIC_GAP
+      end
     end
 
     elements.join("\n")
@@ -232,7 +296,7 @@ class TopicRebalancingVisualization
     color = COLORS[topic[:status]]
     rect_class = topic[:status] == :removed ? 'removed-rect' : 'topic-rect'
     text_class = topic[:status] == :removed ? 'removed-title' : 'topic-title'
-    title = truncate_title(topic[:title] || 'Untitled')
+    title = truncate_title(topic[:title] || 'Untitled', MAX_TITLE_LENGTH)
 
     <<~SVG
       <rect x="#{x}" y="#{y}" width="#{COLUMN_WIDTH}" height="#{TOPIC_HEIGHT}" rx="5" ry="5" fill="#{color}" class="#{rect_class}" data-topic-id="#{topic[:id]}"/>
@@ -240,25 +304,37 @@ class TopicRebalancingVisualization
     SVG
   end
 
+  def render_subtopic(subtopic, x, y)
+    color = SUBTOPIC_COLORS[subtopic[:status]]
+    rect_class = subtopic[:status] == :removed ? 'removed-rect' : 'subtopic-rect'
+    text_class = subtopic[:status] == :removed ? 'removed-subtopic-title' : 'subtopic-title'
+    title = truncate_title(subtopic[:title] || 'Untitled', MAX_SUBTOPIC_TITLE_LENGTH)
+    width = COLUMN_WIDTH - SUBTOPIC_INDENT
+
+    <<~SVG
+      <rect x="#{x}" y="#{y}" width="#{width}" height="#{SUBTOPIC_HEIGHT}" rx="3" ry="3" fill="#{color}" class="#{rect_class}" data-topic-id="#{subtopic[:id]}"/>
+      <text x="#{x + 8}" y="#{y + (SUBTOPIC_HEIGHT / 2) + 3}" class="#{text_class}">#{escape_xml(title)}</text>
+    SVG
+  end
+
   def render_arrows
     arrows = []
 
     @steps.each_cons(2).with_index do |(prev_step, next_step), col_idx|
-      prev_topics_by_id = prev_step[:topics].each_with_index.to_h { |t, i| [t[:id], i] }
-      next_topics_by_id = next_step[:topics].each_with_index.to_h { |t, i| [t[:id], i] }
+      prev_positions = calculate_topic_positions(prev_step[:topics])
+      next_positions = calculate_topic_positions(next_step[:topics])
 
       # Find topics that exist in both columns (same id, not removed)
       prev_step[:topics].each do |topic|
         next if topic[:status] == :removed
 
-        if next_topics_by_id.key?(topic[:id])
-          # Check if the topic in next step is not removed
+        if next_positions.key?(topic[:id])
           next_topic = next_step[:topics].find { |t| t[:id] == topic[:id] }
-          next if next_topic[:status] == :removed
+          next if next_topic&.dig(:status) == :removed
 
-          from_idx = prev_topics_by_id[topic[:id]]
-          to_idx = next_topics_by_id[topic[:id]]
-          arrows << render_arrow(col_idx, from_idx, to_idx)
+          from_y = prev_positions[topic[:id]]
+          to_y = next_positions[topic[:id]]
+          arrows << render_arrow(col_idx, from_y, to_y)
         end
       end
     end
@@ -266,12 +342,25 @@ class TopicRebalancingVisualization
     arrows.join("\n")
   end
 
-  def render_arrow(col_idx, from_idx, to_idx)
+  def calculate_topic_positions(topics)
+    positions = {}
+    current_y = PADDING + LEGEND_HEIGHT + HEADER_HEIGHT
+
+    topics.each do |topic|
+      positions[topic[:id]] = current_y + (TOPIC_HEIGHT / 2)
+      current_y += TOPIC_HEIGHT + TOPIC_GAP
+
+      topic[:children].each do
+        current_y += SUBTOPIC_HEIGHT + SUBTOPIC_GAP
+      end
+    end
+
+    positions
+  end
+
+  def render_arrow(col_idx, from_y, to_y)
     from_x = PADDING + (col_idx * (COLUMN_WIDTH + COLUMN_GAP)) + COLUMN_WIDTH
     to_x = PADDING + ((col_idx + 1) * (COLUMN_WIDTH + COLUMN_GAP))
-
-    from_y = PADDING + LEGEND_HEIGHT + HEADER_HEIGHT + (from_idx * (TOPIC_HEIGHT + TOPIC_GAP)) + (TOPIC_HEIGHT / 2)
-    to_y = PADDING + LEGEND_HEIGHT + HEADER_HEIGHT + (to_idx * (TOPIC_HEIGHT + TOPIC_GAP)) + (TOPIC_HEIGHT / 2)
 
     # Quadratic bezier curve
     mid_x = (from_x + to_x) / 2
@@ -286,9 +375,9 @@ class TopicRebalancingVisualization
     end
   end
 
-  def truncate_title(title)
-    if title.length > MAX_TITLE_LENGTH
-      "#{title[0, MAX_TITLE_LENGTH - 3]}..."
+  def truncate_title(title, max_length)
+    if title.length > max_length
+      "#{title[0, max_length - 3]}..."
     else
       title
     end

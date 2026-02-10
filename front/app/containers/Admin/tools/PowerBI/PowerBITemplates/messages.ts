@@ -53,10 +53,10 @@ export default defineMessages({
     defaultMessage:
       'Further details about using your Go Vocal data in Power BI can be found in our {link}.',
   },
-  supportLinkUrl: {
-    id: 'app.containers.Admin.tools.powerBITemplates.supportLinkUrl',
+  supportLinkUrl2: {
+    id: 'app.containers.Admin.tools.powerBITemplates.supportLinkUrl2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/8512834-use-citizenlab-data-in-powerbi',
+      'https://support.govocal.com/en/articles/527578-use-citizenlab-data-in-powerbi',
   },
   supportLinkText: {
     id: 'app.containers.Admin.tools.powerBITemplates.supportLinkText',

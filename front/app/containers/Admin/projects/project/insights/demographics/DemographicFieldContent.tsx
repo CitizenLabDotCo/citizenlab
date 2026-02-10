@@ -36,7 +36,7 @@ const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
         alignItems="center"
         mb="8px"
       >
-        <Text fontSize="l" fontWeight="bold" m="0px">
+        <Text fontSize="m" fontWeight="semi-bold" m="0px">
           {field.field_name}
         </Text>
         {showExportMenu && (
@@ -51,11 +51,11 @@ const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
         <Box mb="16px">
           <Warning>
             <FormattedMessage
-              {...messages.noReferenceData}
+              {...messages.noReferenceDataMessage}
               values={{
-                addBaseDataLink: (
+                link: (chunks) => (
                   <a href="/admin/dashboard/representation/edit-base-data">
-                    <FormattedMessage {...messages.addBaseData} />
+                    {chunks}
                   </a>
                 ),
               }}

@@ -8,7 +8,7 @@ module Insights
     end
 
     def phase_ideas
-      @phase_ideas ||= @phase.ideas.transitive(false)
+      @phase_ideas ||= @phase.ideas.transitive(false).includes(:author)
     end
 
     def participations_submitting_idea
@@ -19,7 +19,7 @@ module Insights
           acted_at: idea.submitted_at,
           classname: 'Idea',
           participant_id: participant_id(idea.id, idea.author_id, idea.author_hash),
-          user_custom_field_values: idea&.custom_field_values || {}
+          user_custom_field_values: parse_user_custom_field_values(idea, idea&.author)
         }
       end
     end

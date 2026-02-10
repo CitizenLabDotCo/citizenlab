@@ -4,27 +4,29 @@
 #
 # Table name: projects
 #
-#  id                           :uuid             not null, primary key
-#  title_multiloc               :jsonb
-#  description_multiloc         :jsonb
-#  slug                         :string
-#  created_at                   :datetime         not null
-#  updated_at                   :datetime         not null
-#  header_bg                    :string
-#  ideas_count                  :integer          default(0), not null
-#  visible_to                   :string           default("public"), not null
-#  description_preview_multiloc :jsonb
-#  internal_role                :string
-#  comments_count               :integer          default(0), not null
-#  default_assignee_id          :uuid
-#  include_all_areas            :boolean          default(FALSE), not null
-#  baskets_count                :integer          default(0), not null
-#  votes_count                  :integer          default(0), not null
-#  followers_count              :integer          default(0), not null
-#  preview_token                :string           not null
-#  header_bg_alt_text_multiloc  :jsonb
-#  hidden                       :boolean          default(FALSE), not null
-#  listed                       :boolean          default(TRUE), not null
+#  id                             :uuid             not null, primary key
+#  title_multiloc                 :jsonb
+#  description_multiloc           :jsonb
+#  slug                           :string
+#  created_at                     :datetime         not null
+#  updated_at                     :datetime         not null
+#  header_bg                      :string
+#  ideas_count                    :integer          default(0), not null
+#  visible_to                     :string           default("public"), not null
+#  description_preview_multiloc   :jsonb
+#  internal_role                  :string
+#  comments_count                 :integer          default(0), not null
+#  default_assignee_id            :uuid
+#  include_all_areas              :boolean          default(FALSE), not null
+#  baskets_count                  :integer          default(0), not null
+#  votes_count                    :integer          default(0), not null
+#  followers_count                :integer          default(0), not null
+#  header_bg_alt_text_multiloc    :jsonb
+#  preview_token                  :string           not null
+#  hidden                         :boolean          default(FALSE), not null
+#  listed                         :boolean          default(TRUE), not null
+#  track_participation_location   :boolean          default(FALSE), not null
+#  live_auto_input_topics_enabled :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -105,6 +107,7 @@ class Project < ApplicationRecord
   validates :description_preview_multiloc, multiloc: { presence: false }
   validates :visible_to, presence: true, inclusion: { in: VISIBLE_TOS }
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
+  validates :live_auto_input_topics_enabled, inclusion: { in: [true, false] }
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # TODO: This should always be validated!
 
   scope :not_hidden, -> { where(hidden: false) }

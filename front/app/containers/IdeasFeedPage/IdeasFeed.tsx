@@ -1,40 +1,36 @@
-import React, {
-  useMemo,
-  useRef,
-  useCallback,
-  useState,
-  useEffect,
-} from 'react';
+import React, { useCallback } from 'react';
 
 import {
   Box,
   Spinner,
   Text,
-  colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useVirtualizer } from '@tanstack/react-virtual';
-import { uniqBy } from 'lodash-es';
 import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
-import useInfiniteIdeaFeedIdeas from 'api/idea_feed/useInfiniteIdeaFeedIdeas';
-import useIdeaById from 'api/ideas/useIdeaById';
+import usePhase from 'api/phases/usePhase';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
+import IdeaNoteRow from './components/IdeaNoteRow';
+import LoaderRow from './components/LoaderRow';
+import useIdeasFeedData from './hooks/useIdeasFeedData';
+import useTopicData from './hooks/useTopicEmojis';
+import useVirtualScroll from './hooks/useVirtualScroll';
 import messages from './messages';
-import StickyNote, { NOTE_HEIGHTS } from './StickyNotes/StickyNote';
-import { getTopicColor } from './topicsColor';
+import ScrollHintOverlay from './ScrollHintOverlay';
+import { NOTE_WIDTH, NOTE_ASPECT_RATIO } from './StickyNotes/StickyNote';
 
-const PEEK_HEIGHT = 150;
+const PEEK_HEIGHT = 200;
 
-const FeedContainer = styled(Box)`
+const FeedContainer = styled.div`
   scroll-snap-type: y mandatory;
   overflow-y: auto;
   height: 100dvh;
+  background: white
+    url("data:image/svg+xml,%3Csvg width='20' height='20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='1.5' fill='%23e5e5e5'/%3E%3C/svg%3E");
 
   ::-webkit-scrollbar {
     display: none;
@@ -79,11 +75,10 @@ const NoteContainer = styled(Box)<{
       }
       if (isPrevious) {
         // Move to bottom of container
-        return `translateY(calc(-50% + (${containerHeight} - ${noteHeight}px) / 2 + 40px)) scale(${scale})`;
+        return `translateY(calc(-50% + (${containerHeight} - ${noteHeight}px) / 2)) scale(${scale})`;
       }
       return `translateY(-50%) scale(${scale})`;
     }};
-    opacity: ${({ isCentered }) => (isCentered ? 1 : 0.5)};
     pointer-events: ${({ isCentered }) => (isCentered ? 'auto' : 'none')};
     transition: transform 0.4s ease-out, opacity 0.3s ease-out;
   }
@@ -103,154 +98,76 @@ interface Props {
 }
 
 const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
-  const { formatMessage } = useIntl();
   const [searchParams] = useSearchParams();
   const phaseId = searchParams.get('phase_id')!;
-  const initialIdeaIdFromUrl = searchParams.get('initial_idea_id') || undefined;
+  const initialIdeaId = searchParams.get('initial_idea_id') || undefined;
 
-  // Store the initial idea ID in a ref so it persists after being removed from URL
-  const initialIdeaIdRef = useRef(initialIdeaIdFromUrl);
-  const initialIdeaId = initialIdeaIdRef.current;
-
-  const parentRef = useRef<HTMLDivElement | null>(null);
   const isMobile = useBreakpoint('phone');
 
-  const handleIdeaSelect = useCallback((ideaId: string | null) => {
-    if (ideaId) {
-      updateSearchParams({ idea_id: ideaId });
-    }
-  }, []);
+  // Get project ID from phase to fetch topics
+  const { data: phase } = usePhase(phaseId);
+  const projectId = phase?.data.relationships.project.data.id;
 
-  const noteSize = isMobile ? 'small' : 'large';
-  const noteHeight = NOTE_HEIGHTS[noteSize];
+  // Fetch ideas data
+  const {
+    orderedIdeas,
+    ideaTopics,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+  } = useIdeasFeedData({ phaseId, topicId, initialIdeaId });
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-    useInfiniteIdeaFeedIdeas({
-      phaseId,
-      topic: topicId || undefined,
-      'page[size]': 10,
-      keepPreviousData: topicId ? false : true,
-    });
+  // Fetch topic data (emoji + name)
+  const topicDataMap = useTopicData(projectId);
 
-  const flatIdeas = useMemo(() => {
-    if (!data) return [];
-    const allIdeas = data.pages.flatMap((page) => page.data);
-    return uniqBy(allIdeas, 'id');
-  }, [data]);
-
-  // Check if initial idea is already in the list
-  const initialIdeaInList = useMemo(() => {
-    if (!initialIdeaId) return true;
-    return flatIdeas.some((idea) => idea.id === initialIdeaId);
-  }, [flatIdeas, initialIdeaId]);
-
-  // Fetch the initial idea separately if it's not in the list
-  const { data: initialIdeaData, isFetching: isFetchingInitialIdea } =
-    useIdeaById(initialIdeaInList ? undefined : initialIdeaId);
-
-  // Reorder ideas to put the initial idea first (if provided), otherwise keep original order
-  const orderedIdeas = useMemo(() => {
-    // If we need to fetch the initial idea and it's loaded, prepend it
-    if (initialIdeaId && !initialIdeaInList && initialIdeaData) {
-      return [initialIdeaData.data, ...flatIdeas];
-    }
-
-    if (flatIdeas.length === 0 || !initialIdeaId) return flatIdeas;
-
-    const initialIndex = flatIdeas.findIndex(
-      (idea) => idea.id === initialIdeaId
-    );
-    if (initialIndex === -1) return flatIdeas;
-
-    const initialIdea = flatIdeas[initialIndex];
-    const otherIdeas = [
-      ...flatIdeas.slice(0, initialIndex),
-      ...flatIdeas.slice(initialIndex + 1),
-    ];
-
-    return [initialIdea, ...otherIdeas];
-  }, [flatIdeas, initialIdeaId, initialIdeaInList, initialIdeaData]);
-
-  // Remove initial_idea_id from URL once the feed has loaded with the initial idea
-  useEffect(() => {
-    if (initialIdeaId && orderedIdeas.length > 0 && !isLoading) {
-      removeSearchParams(['initial_idea_id']);
-    }
-  }, [initialIdeaId, orderedIdeas.length, isLoading]);
-
-  // Extract topic IDs for each idea
-  const ideaTopics = useMemo(() => {
-    const map = new Map<string, string[]>();
-    orderedIdeas.forEach((idea) => {
-      const topicIds =
-        idea.relationships.input_topics?.data.map((topic) => topic.id) || [];
-      map.set(idea.id, topicIds);
-    });
-    return map;
-  }, [orderedIdeas]);
-
+  const noteHeight = NOTE_WIDTH / NOTE_ASPECT_RATIO;
   const ideasLength = orderedIdeas.length;
 
-  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+  const handleHeightResize = useCallback(
+    (currentCenteredIndex: number) => {
+      const currentCenteredIdeaId = orderedIdeas[currentCenteredIndex]?.id;
+      if (currentCenteredIdeaId && currentCenteredIdeaId !== initialIdeaId) {
+        updateSearchParams({ initial_idea_id: currentCenteredIdeaId });
+      }
+    },
+    [orderedIdeas, initialIdeaId]
+  );
 
-  useEffect(() => {
-    const handleResize = () => setWindowHeight(window.innerHeight);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  const itemHeight = windowHeight - PEEK_HEIGHT;
-
-  const { getVirtualItems, getTotalSize, measureElement } = useVirtualizer({
-    count: ideasLength + 1,
-    getScrollElement: () => parentRef.current,
-    estimateSize: () => itemHeight,
-    overscan: 2,
+  // Virtual scroll setup
+  const {
+    parentRef,
+    virtualItems,
+    getTotalSize,
+    measureElement,
+    centeredIndex,
+    handleScroll,
+  } = useVirtualScroll({
+    itemCount: ideasLength + 1, // +1 for loader row
+    peekHeight: PEEK_HEIGHT,
+    onHeightResize: handleHeightResize,
   });
-
-  const virtualItems = getVirtualItems();
-
-  const [centeredIndex, setCenteredIndex] = useState(0);
 
   const centeredIdeaId = orderedIdeas[centeredIndex]?.id;
 
-  const handleScroll = useCallback(
+  const handleIdeaSelect = useCallback((ideaId: string) => {
+    updateSearchParams({ idea_id: ideaId, sheet_open: 'true' });
+  }, []);
+
+  const onScroll = useCallback(
     (e: React.UIEvent<HTMLElement>) => {
-      const scrollTop = e.currentTarget.scrollTop;
-      const newIndex = Math.round(scrollTop / itemHeight);
-
-      if (
-        newIndex >= 0 &&
-        newIndex < ideasLength &&
-        newIndex !== centeredIndex
-      ) {
-        setCenteredIndex(newIndex);
-      }
-
-      // Fetch next page when reaching the end
-      if (virtualItems.length > 0) {
-        const lastItem = virtualItems[virtualItems.length - 1];
-        if (
-          lastItem.index >= ideasLength - 1 &&
-          hasNextPage &&
-          !isFetchingNextPage
-        ) {
-          fetchNextPage();
-        }
-      }
+      handleScroll(e, {
+        onNearEnd: () => {
+          if (hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+          }
+        },
+      });
     },
-    [
-      itemHeight,
-      ideasLength,
-      centeredIndex,
-      virtualItems,
-      hasNextPage,
-      isFetchingNextPage,
-      fetchNextPage,
-    ]
+    [handleScroll, hasNextPage, isFetchingNextPage, fetchNextPage]
   );
 
-  if (isLoading || isFetchingInitialIdea) {
+  if (isLoading) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" h="100vh">
         <Spinner />
@@ -272,7 +189,8 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
   const topPadding = PEEK_HEIGHT / 2;
 
   return (
-    <FeedContainer ref={parentRef} onScroll={handleScroll}>
+    <FeedContainer ref={parentRef} onScroll={onScroll}>
+      {isMobile && <ScrollHintOverlay />}
       <Box
         height={`${getTotalSize() + topPadding}px`}
         width="100%"
@@ -298,22 +216,13 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
                   isPrevious={false}
                   isNext={false}
                 >
-                  {hasNextPage ? (
-                    <Spinner />
-                  ) : (
-                    <Text fontWeight="bold" mt="-200px">
-                      {formatMessage(messages.endOfFeed)}
-                    </Text>
-                  )}
+                  <LoaderRow hasNextPage={hasNextPage} />
                 </NoteContainer>
               </VirtualItem>
             );
           }
 
           const topicIds = ideaTopics.get(idea.id) || [];
-          // Use parentTopicId for color when filtering by subtopic, otherwise use the first topic
-          const colorTopicId = parentTopicId || topicId || topicIds[0];
-          const topicBackgroundColor = getTopicColor(colorTopicId);
 
           return (
             <VirtualItem
@@ -326,18 +235,18 @@ const IdeasFeed = ({ topicId, parentTopicId }: Props) => {
               <NoteContainer
                 peekHeight={PEEK_HEIGHT}
                 noteHeight={noteHeight}
-                bgColor={colors.grey100}
                 isCentered={virtualRow.index === centeredIndex}
                 isPrevious={virtualRow.index < centeredIndex}
                 isNext={virtualRow.index > centeredIndex}
               >
-                <StickyNote
+                <IdeaNoteRow
                   ideaId={idea.id}
-                  topicBackgroundColor={topicBackgroundColor}
-                  onClick={() => handleIdeaSelect(idea.id)}
-                  centeredIdeaId={centeredIdeaId || undefined}
-                  size={noteSize}
-                  showReactions={true}
+                  topicIds={topicIds}
+                  topicDataMap={topicDataMap}
+                  topicId={topicId}
+                  parentTopicId={parentTopicId}
+                  centeredIdeaId={centeredIdeaId}
+                  onSelect={handleIdeaSelect}
                 />
               </NoteContainer>
             </VirtualItem>

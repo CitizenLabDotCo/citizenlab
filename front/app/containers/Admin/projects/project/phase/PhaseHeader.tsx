@@ -24,6 +24,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { Tab } from 'components/admin/NavigationTabs';
 import Modal from 'components/UI/Modal';
+import NewLabel from 'components/UI/NewLabel';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -228,9 +229,18 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
           boxShadow="0px 2px 4px -1px rgba(0, 0, 0, 0.06)"
           background="#FBFBFB"
         >
-          {tabs.map(({ url, label, disabledTooltipText }) => (
+          {tabs.map(({ url, label, name, disabledTooltipText, className }) => (
             <Tab
-              label={label}
+              label={
+                name === 'insights' ? (
+                  <Box display="flex" alignItems="center" gap="8px">
+                    {label}
+                    <NewLabel expiryDate={new Date('2026-05-09')} />
+                  </Box>
+                ) : (
+                  label
+                )
+              }
               url={url}
               key={url}
               active={isTopBarNavActive(
@@ -239,6 +249,7 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
                 url
               )}
               disabledTooltipText={disabledTooltipText}
+              className={className}
             />
           ))}
         </Box>

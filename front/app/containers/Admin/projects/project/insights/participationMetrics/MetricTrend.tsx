@@ -4,6 +4,7 @@ import {
   Box,
   Text,
   Icon,
+  Tooltip,
   colors,
   Color,
 } from '@citizenlab/cl2-component-library';
@@ -19,27 +20,34 @@ interface Props {
 }
 
 const MetricTrend = ({ change }: Props) => {
-  const { formatMessage } = useIntl();
+  const { formatMessage, formatNumber } = useIntl();
 
   if (change === null || change === 'last_7_days_compared_with_zero') {
+    const tooltipMessage =
+      change === null
+        ? messages.insufficientComparisonDataPhaseTooNew
+        : messages.insufficientComparisonDataNoPriorActivity;
+
     return (
-      <Box
-        display="flex"
-        alignItems="center"
-        gap="6px"
-        flexWrap="wrap"
-        opacity={0.6}
-      >
-        <Text
-          as="span"
-          fontSize="s"
-          color="textSecondary"
-          fontStyle="italic"
-          m="0"
+      <Tooltip content={formatMessage(tooltipMessage)} placement="top">
+        <Box
+          display="flex"
+          alignItems="center"
+          gap="6px"
+          flexWrap="wrap"
+          opacity={0.6}
         >
-          {formatMessage(messages.noComparisonData)}
-        </Text>
-      </Box>
+          <Text
+            as="span"
+            fontSize="s"
+            color="textSecondary"
+            fontStyle="italic"
+            m="0"
+          >
+            {formatMessage(messages.insufficientComparisonData)}
+          </Text>
+        </Box>
+      </Tooltip>
     );
   }
 
@@ -50,7 +58,14 @@ const MetricTrend = ({ change }: Props) => {
     : isNeutral
     ? undefined
     : 'arrow-down';
-  const trendLabel = `${isPositive ? '+' : ''}${Math.round(change)}%`;
+  const formattedPercentage = formatNumber(Math.round(change) / 100, {
+    style: 'percent',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+  const trendLabel = isPositive
+    ? `+${formattedPercentage}`
+    : formattedPercentage;
   const trendColor: Color = isNeutral
     ? 'textSecondary'
     : isPositive

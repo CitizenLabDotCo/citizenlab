@@ -147,7 +147,7 @@ const VotingInputs = ({
                 voteTypeDescription: getVoteTypeDescription(),
                 optionAnalysisArticleLink: (
                   <a
-                    href="https://support.govocal.com/en/articles/8124630-voting-and-prioritization-methods-for-enhanced-decision-making"
+                    href="https://support.govocal.com/en/articles/527581-voting-and-prioritization-methods-for-enhanced-decision-making"
                     target="_blank"
                     rel="noreferrer"
                   >

@@ -1,37 +1,32 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-import {
-  Box,
-  colors,
-  Icon,
-  Text,
-  Tooltip,
-} from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import { FocusOn } from 'react-focus-on';
 import styled from 'styled-components';
 
-import { useIntl } from 'utils/cl-intl';
+import { InputTerm } from 'api/phases/types';
 
-import messages from './messages';
+import SeeAllButton from './BottomSheet/SeeAllButton';
 
 const COLLAPSED_HEIGHT = 40;
-const NUDGE_DELAY_MS = 5000;
+const PEEK_DELAY_MS = 10000;
+const PEEK_DURATION_MS = 1000;
 const DRAG_AREA_HEIGHT = 28;
 const SWIPE_THRESHOLD = 50;
 
-const Container = styled.div<{ $translateY: number; $isDragging: boolean }>`
+const Container = styled.div<{ translateY: number; isDragging: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   height: 100dvh;
   background: ${colors.white};
-  border-radius: ${({ $translateY }) =>
-    $translateY <= 0 ? '0' : '16px 16px 0 0'};
+  border-radius: ${({ translateY }) =>
+    translateY <= 0 ? '0' : '16px 16px 0 0'};
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
-  transform: translateY(${({ $translateY }) => $translateY}px);
-  transition: ${({ $isDragging }) =>
-    $isDragging ? 'none' : 'transform 0.3s ease-out'};
+  transform: translateY(${({ translateY }) => translateY}px);
+  transition: ${({ isDragging }) =>
+    isDragging ? 'none' : 'transform 0.3s ease-out'};
   z-index: 1050;
 `;
 
@@ -44,6 +39,7 @@ const DragHandle = styled.div`
 `;
 
 const DragArea = styled.div`
+  position: relative;
   width: 100%;
   padding: 8px 0;
   touch-action: none;
@@ -52,10 +48,19 @@ const DragArea = styled.div`
   &:active {
     cursor: grabbing;
   }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -32px;
+    left: 0;
+    right: 0;
+    bottom: -32px;
+  }
 `;
 
-const ContentArea = styled(Box)<{ $scrollable: boolean }>`
-  overflow-y: ${({ $scrollable }) => ($scrollable ? 'auto' : 'hidden')};
+const ContentArea = styled(Box)<{ scrollable: boolean }>`
+  overflow-y: ${({ scrollable }) => (scrollable ? 'auto' : 'hidden')};
 `;
 
 interface Props {
@@ -64,6 +69,9 @@ interface Props {
   a11y_expandLabel: string;
   a11y_collapseLabel: string;
   expandToFullscreenOn?: string | null;
+  inputTerm: InputTerm;
+  onCollapse?: () => void;
+  onExpand?: () => void;
 }
 
 const BottomSheet = ({
@@ -72,45 +80,65 @@ const BottomSheet = ({
   a11y_expandLabel,
   a11y_collapseLabel,
   expandToFullscreenOn,
+  inputTerm,
+  onCollapse,
+  onExpand,
 }: Props) => {
-  const { formatMessage } = useIntl();
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  const [showNudge, setShowNudge] = useState(false);
+  // Derive fullscreen state directly from prop - URL is the source of truth
+  const isFullscreen = Boolean(expandToFullscreenOn);
+
+  const [isPeeking, setIsPeeking] = useState(false);
   const [dragOffset, setDragOffset] = useState<number | null>(null);
+  const [windowHeight, setWindowHeight] = useState(window.innerHeight);
 
   const sheetRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const dragStartY = useRef<number | null>(null);
-  const hasShownNudge = useRef(false);
+  const hasPeeked = useRef(false);
+  const hasDragged = useRef(false);
+  const touchHandled = useRef(false);
+
+  // Update windowHeight on resize to keep handle position consistent
+  useEffect(() => {
+    const handleResize = () => setWindowHeight(window.innerHeight);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
-    if (isFullscreen || hasShownNudge.current) return;
+    if (isFullscreen || hasPeeked.current) return;
 
     const timer = setTimeout(() => {
-      setShowNudge(true);
-      hasShownNudge.current = true;
-    }, NUDGE_DELAY_MS);
+      setIsPeeking(true);
+      hasPeeked.current = true;
+
+      setTimeout(() => {
+        setIsPeeking(false);
+      }, PEEK_DURATION_MS);
+    }, PEEK_DELAY_MS);
     return () => clearTimeout(timer);
   }, [isFullscreen]);
 
+  // Reset scroll position when sheet opens to fullscreen
   useEffect(() => {
-    if (expandToFullscreenOn) {
-      setIsFullscreen(true);
-    } else {
-      setIsFullscreen(false);
+    if (isFullscreen && contentRef.current) {
+      contentRef.current.scrollTop = 0;
     }
-  }, [expandToFullscreenOn]);
+  }, [isFullscreen]);
 
-  const getCollapsedY = () =>
-    (sheetRef.current?.offsetHeight ?? window.innerHeight) - COLLAPSED_HEIGHT;
+  const getCollapsedY = () => windowHeight - COLLAPSED_HEIGHT;
+
+  const getPeekY = () => windowHeight * 0.5;
 
   const handleDragStart = (y: number) => {
     dragStartY.current = y;
-    setShowNudge(false);
+    hasDragged.current = false;
   };
 
   const handleDragMove = (currentY: number) => {
     if (dragStartY.current === null) return;
 
+    hasDragged.current = true;
     const delta = currentY - dragStartY.current;
     const baseY = isFullscreen ? 0 : getCollapsedY();
     const maxY = getCollapsedY();
@@ -121,24 +149,43 @@ const BottomSheet = ({
     if (dragStartY.current === null) return;
 
     const delta = endY - dragStartY.current;
-    const hadOffset = dragOffset !== null;
+    const hadDragged = hasDragged.current;
 
     setDragOffset(null);
     dragStartY.current = null;
+    hasDragged.current = false;
 
-    if (hadOffset && Math.abs(delta) >= SWIPE_THRESHOLD) {
-      setIsFullscreen(delta < 0);
+    if (hadDragged && Math.abs(delta) >= SWIPE_THRESHOLD) {
+      const willBeFullscreen = delta < 0;
+      if (willBeFullscreen) {
+        onExpand?.();
+      } else {
+        onCollapse?.();
+      }
+    } else if (!hadDragged) {
+      // Tap detected
+      if (isFullscreen) {
+        onCollapse?.();
+      } else {
+        onExpand?.();
+      }
     }
   };
 
-  const handleTouchStart = (e: React.TouchEvent) =>
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchHandled.current = true;
     handleDragStart(e.touches[0].clientY);
+  };
   const handleTouchMove = (e: React.TouchEvent) =>
     handleDragMove(e.touches[0].clientY);
   const handleTouchEnd = (e: React.TouchEvent) =>
     handleDragEnd(e.changedTouches[0].clientY);
 
   const handleMouseDown = (e: React.MouseEvent) => {
+    if (touchHandled.current) {
+      touchHandled.current = false;
+      return;
+    }
     e.preventDefault();
     handleDragStart(e.clientY);
 
@@ -153,7 +200,15 @@ const BottomSheet = ({
     document.addEventListener('mouseup', onUp);
   };
 
-  const baseTranslateY = isFullscreen ? 0 : getCollapsedY();
+  const handleCollapse = () => {
+    onCollapse?.();
+  };
+
+  const baseTranslateY = isFullscreen
+    ? 0
+    : isPeeking
+    ? getPeekY()
+    : getCollapsedY();
   const translateY = baseTranslateY + (dragOffset ?? 0);
   const isDragging = dragOffset !== null;
 
@@ -166,8 +221,8 @@ const BottomSheet = ({
     >
       <Container
         ref={sheetRef}
-        $translateY={translateY}
-        $isDragging={isDragging}
+        translateY={translateY}
+        isDragging={isDragging}
         role="dialog"
         aria-modal={isFullscreen}
         aria-label={a11y_panelLabel}
@@ -180,30 +235,21 @@ const BottomSheet = ({
           onTouchEnd={handleTouchEnd}
           onMouseDown={handleMouseDown}
         >
-          <Tooltip
-            content={
-              <Box display="flex" alignItems="center" gap="8px">
-                <Icon name="stars" fill={colors.orange500} />
-                <Text color="textPrimary" fontSize="s" m="0px">
-                  {formatMessage(messages.exploreTopicsNudge)}
-                </Text>
-              </Box>
-            }
-            placement="top"
-            visible={showNudge}
-            onClickOutside={() => setShowNudge(false)}
-          >
-            <DragHandle aria-hidden="true" />
-          </Tooltip>
+          <DragHandle aria-hidden="true" />
         </DragArea>
 
         <ContentArea
+          ref={contentRef}
           px="16px"
-          py="24px"
-          $scrollable={isFullscreen}
+          pt="24px"
+          pb={isFullscreen ? '100px' : '24px'}
+          scrollable={isFullscreen}
           h={`calc(100dvh - ${translateY + DRAG_AREA_HEIGHT}px)`}
         >
           {children}
+          {isFullscreen && (
+            <SeeAllButton inputTerm={inputTerm} onClose={handleCollapse} />
+          )}
         </ContentArea>
       </Container>
     </FocusOn>

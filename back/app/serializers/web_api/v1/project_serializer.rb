@@ -14,7 +14,9 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     :created_at,
     :updated_at,
     :header_bg_alt_text_multiloc,
-    :listed
+    :listed,
+    :track_participation_location,
+    :live_auto_input_topics_enabled
   )
 
   attribute :folder_id do |project|
