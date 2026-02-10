@@ -1195,7 +1195,7 @@
   "app.containers.AreaTerms.areaTerm": "área",
   "app.containers.AreaTerms.areasTerm": "áreas",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Já existe uma conta com este e-mail. Você pode sair, fazer login com este endereço de e-mail e verificar sua conta na página de configurações.",
-  "app.containers.Authentication.createAnAccount": "Criar uma conta",
+  "app.containers.Authentication.signUpOrLogIn": "Inscreva-se ou faça login",
   "app.containers.Authentication.steps.AccessDenied.close": "Fechar",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Você não atende aos requisitos para participar desse processo.",
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Clique aqui para fazer login como administrador ou gerente de projeto",
