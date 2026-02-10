@@ -1,10 +1,10 @@
 import React, { lazy } from 'react';
 
-import { Navigate } from 'utils/router';
-
 import PageLoading from 'components/UI/PageLoading';
 
-import { AdminRoute } from '../routes';
+import { createRoute, Navigate } from 'utils/router';
+
+import { adminRoute, AdminRoute } from '../routes';
 
 const ReportingWrapper = lazy(() => import('.'));
 const ReportBuilderPage = lazy(() => import('./containers/ReportBuilderPage'));
@@ -23,39 +23,52 @@ export type reportingRouteTypes =
   | AdminRoute<`${reportingEnumRoutes.reporting}/${reportingEnumRoutes.reportBuilder}?${string}`>
   | AdminRoute<`${reportingEnumRoutes.reporting}/${reportingEnumRoutes.reportBuilder}/${string}/${reportingEnumRoutes.editor}`>;
 
-const reportingRoutes = () => {
+// reporting/report-builder layout route
+const reportBuilderLayoutRoute = createRoute({
+  getParentRoute: () => adminRoute,
+  path: `${reportingEnumRoutes.reporting}/${reportingEnumRoutes.reportBuilder}`,
+  component: () => (
+    <PageLoading>
+      <ReportingWrapper />
+    </PageLoading>
+  ),
+});
+
+const reportBuilderIndexRoute = createRoute({
+  getParentRoute: () => reportBuilderLayoutRoute,
+  path: '/',
+  component: () => (
+    <PageLoading>
+      <ReportBuilderPage />
+    </PageLoading>
+  ),
+});
+
+const reportEditorRoute = createRoute({
+  getParentRoute: () => reportBuilderLayoutRoute,
+  path: `$reportId/${reportingEnumRoutes.editor}`,
+  component: () => (
+    <PageLoading>
+      <ReportBuilder />
+    </PageLoading>
+  ),
+});
+
+// Redirect /admin/reporting to /admin/reporting/report-builder
+const reportingRedirectRoute = createRoute({
+  getParentRoute: () => adminRoute,
+  path: reportingEnumRoutes.reporting,
+  component: () => <Navigate to={reportingEnumRoutes.reportBuilder} />,
+});
+
+const createAdminReportingRoutes = () => {
   return [
-    {
-      path: `${reportingEnumRoutes.reporting}/${reportingEnumRoutes.reportBuilder}`,
-      element: (
-        <PageLoading>
-          <ReportingWrapper />
-        </PageLoading>
-      ),
-      children: [
-        {
-          index: true,
-          element: (
-            <PageLoading>
-              <ReportBuilderPage />
-            </PageLoading>
-          ),
-        },
-        {
-          path: `$reportId/${reportingEnumRoutes.editor}`,
-          element: (
-            <PageLoading>
-              <ReportBuilder />
-            </PageLoading>
-          ),
-        },
-      ],
-    },
-    {
-      path: reportingEnumRoutes.reporting,
-      element: <Navigate to={`/${reportingEnumRoutes.reportBuilder}`} />,
-    },
+    reportBuilderLayoutRoute.addChildren([
+      reportBuilderIndexRoute,
+      reportEditorRoute,
+    ]),
+    reportingRedirectRoute,
   ];
 };
 
-export default reportingRoutes;
+export default createAdminReportingRoutes;
