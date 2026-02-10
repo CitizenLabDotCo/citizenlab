@@ -10,6 +10,7 @@ import Unauthorized from 'components/Unauthorized';
 
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import { isUUID } from 'utils/helperUtils';
+import type { Routes } from 'utils/moduleUtils';
 import { usePermission } from 'utils/permissions';
 import { createRoute, Navigate, useLocation } from 'utils/router';
 
@@ -223,7 +224,7 @@ const projectImporterRoute = createRoute({
 });
 
 // Factory function to create admin route tree
-export const createAdminRoutes = () => {
+export const createAdminRoutes = (moduleRoutes: Partial<Routes> = {}) => {
   return adminRoute.addChildren([
     adminIndexRoute,
     createAdminProjectsRoutes(),
@@ -233,14 +234,12 @@ export const createAdminRoutes = () => {
     createAdminPagesAndMenuRoutes(),
     // invitationsRoutes(),
     createAdminMessagingRoutes(),
-    createAdminIdeasRoutes(),
+    createAdminIdeasRoutes(moduleRoutes['admin.ideas']),
     // projectFoldersRoutes(),
     ...createAdminReportingRoutes(),
     createAdminToolsRoutes(),
     createAdminCommunityMonitorRoutes(),
     createAdminInspirationHubRoutes(),
-    // TODO: understand this:
-    // ...moduleConfiguration.routes.admin,
     faviconRoute,
     projectDescriptionRoute,
     projectPreviewRoute,

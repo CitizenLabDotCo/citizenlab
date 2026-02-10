@@ -2,6 +2,7 @@ import React, { lazy } from 'react';
 
 import PageLoading from 'components/UI/PageLoading';
 
+import { parseModuleRoutes, type RouteConfiguration } from 'utils/moduleUtils';
 import { createRoute } from 'utils/router';
 
 import { adminRoute, AdminRoute } from '../routes';
@@ -38,11 +39,10 @@ const ideasIndexRoute = createRoute({
   ),
 });
 
-const createAdminIdeasRoutes = () => {
+const createAdminIdeasRoutes = (moduleRoutes: RouteConfiguration[] = []) => {
   return ideasRoute.addChildren([
     ideasIndexRoute,
-    // TODO: Wire in module routes (admin.ideas) after conversion
-    // ...moduleConfiguration.routes['admin.ideas'],
+    ...parseModuleRoutes(moduleRoutes, ideasRoute),
   ]);
 };
 

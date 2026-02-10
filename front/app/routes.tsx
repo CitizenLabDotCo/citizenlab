@@ -14,6 +14,8 @@ import { createUserShowPageRoutes } from 'containers/UsersShowPage/routes';
 
 import PageLoading from 'components/UI/PageLoading';
 
+import type { Routes } from 'utils/moduleUtils';
+
 const HomePage = lazy(() => import('containers/HomePage'));
 const SiteMap = lazy(() => import('containers/SiteMap'));
 const UsersEditPage = lazy(() => import('containers/UsersEditPage'));
@@ -411,48 +413,58 @@ const disabledAccountRoute = createRoute({
 });
 
 // Build the route tree
-export const routeTree = rootRoute.addChildren([
-  localeRoute.addChildren([
-    homeRoute,
-    signInAdminRoute,
-    signInRoute,
-    signUpRoute,
-    inviteRoute,
-    siteMapRoute,
-    profileEditRoute,
-    changePasswordRoute,
-    changeEmailRoute,
-    createUserShowPageRoutes(),
-    ideasEditRoute,
-    ideasIndexRoute,
-    ideasShowRoute,
-    projectIdeaNewRoute,
-    projectSurveyNewRoute,
-    projectPreviewRoute.addChildren([projectPreviewTokenRoute]),
-    projectsIndexRoute,
-    projectShowRoute.addChildren([
-      projectShowIndexRoute,
-      projectPhaseRoute,
-      projectIdeasFeedRoute,
+const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
+  rootRoute.addChildren([
+    localeRoute.addChildren([
+      homeRoute,
+      signInAdminRoute,
+      signInRoute,
+      signUpRoute,
+      inviteRoute,
+      siteMapRoute,
+      profileEditRoute,
+      changePasswordRoute,
+      changeEmailRoute,
+      createUserShowPageRoutes(),
+      ideasEditRoute,
+      ideasIndexRoute,
+      ideasShowRoute,
+      projectIdeaNewRoute,
+      projectSurveyNewRoute,
+      projectPreviewRoute.addChildren([projectPreviewTokenRoute]),
+      projectsIndexRoute,
+      projectShowRoute.addChildren([
+        projectShowIndexRoute,
+        projectPhaseRoute,
+        projectIdeasFeedRoute,
+      ]),
+      foldersShowRoute,
+      eventsIndexRoute,
+      eventShowRoute,
+      cookiePolicyRoute,
+      accessibilityStatementRoute,
+      customPageRoute,
+      passwordRecoveryRoute,
+      resetPasswordRoute,
+      subscriptionEndedRoute,
+      emailSettingsRoute,
+      reportPrintRoute,
+      disabledAccountRoute,
+      createAdminRoutes(moduleRoutes),
     ]),
-    foldersShowRoute,
-    eventsIndexRoute,
-    eventShowRoute,
-    cookiePolicyRoute,
-    accessibilityStatementRoute,
-    customPageRoute,
-    passwordRecoveryRoute,
-    resetPasswordRoute,
-    subscriptionEndedRoute,
-    emailSettingsRoute,
-    reportPrintRoute,
-    disabledAccountRoute,
-    createAdminRoutes(),
-  ]),
-]);
+  ]);
 
-// Create and export the router
-export const router = createRouter({ routeTree });
+// Create and export the router.
+// createAppRouter is called from root.tsx so that module routes can be
+// injected without creating a circular dependency.
+export const createAppRouter = (moduleRoutes: Partial<Routes> = {}) =>
+  createRouter({ routeTree: buildRouteTree(moduleRoutes) });
+
+export let router = createAppRouter();
+
+export const initRouter = (moduleRoutes: Partial<Routes> = {}) => {
+  router = createAppRouter(moduleRoutes);
+};
 
 declare module '@tanstack/react-router' {
   interface Register {

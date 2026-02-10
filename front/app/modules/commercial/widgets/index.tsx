@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AdminRoute } from 'containers/Admin/routes';
+import type { AdminRoute } from 'containers/Admin/routes';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
 

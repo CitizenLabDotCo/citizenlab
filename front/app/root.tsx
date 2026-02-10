@@ -20,7 +20,11 @@ import { queryClient } from 'utils/cl-react-query/queryClient';
 import { RouterProvider } from 'utils/router';
 
 import prefetchData from './prefetchData';
-import { router } from './routes';
+import { initRouter, router } from './routes';
+
+// Initialize the router with module routes.
+// This must happen before any component renders.
+initRouter(modules.routes);
 
 Sentry.init({
   dsn: process.env.SENTRY_DSN,

@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 
 import { TTabName } from 'containers/Admin/projects/new';
-import { AdminRoute } from 'containers/Admin/routes';
+import type { AdminRoute } from 'containers/Admin/routes';
 
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
