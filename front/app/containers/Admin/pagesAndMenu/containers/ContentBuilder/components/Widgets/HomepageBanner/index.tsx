@@ -593,10 +593,10 @@ const HomepageBannerSettings = () => {
               disabled={!customHomepageBannerAllowed}
               label={
                 <Box>
-                  <Text m={'0px'} color="primary">
+                  <Text m="0px" color="primary">
                     {formatMessage(messages.showAvatars)}
                   </Text>
-                  <Text m={'0px'} color="textSecondary" fontSize="s">
+                  <Text m="0px" color="textSecondary" fontSize="s">
                     {formatMessage(messages.showAvatarsDescription)}
                   </Text>
                 </Box>

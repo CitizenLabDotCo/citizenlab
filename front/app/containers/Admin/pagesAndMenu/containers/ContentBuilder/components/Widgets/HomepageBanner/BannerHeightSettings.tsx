@@ -50,6 +50,30 @@ const BannerHeightSettings = ({
 }: Props) => {
   const { formatMessage } = useIntl();
 
+  const heightInputs = [
+    {
+      key: 'desktop',
+      label: messages.desktopHeightPx,
+      value: desktopHeight,
+      placeholder: desktopPlaceholder,
+      onChange: onDesktopHeightChange,
+    },
+    {
+      key: 'tablet',
+      label: messages.tabletHeightPx,
+      value: tabletHeight,
+      placeholder: tabletPlaceholder,
+      onChange: onTabletHeightChange,
+    },
+    {
+      key: 'phone',
+      label: messages.phoneHeightPx,
+      value: phoneHeight,
+      placeholder: phonePlaceholder,
+      onChange: onPhoneHeightChange,
+    },
+  ];
+
   return (
     <Box>
       {showToggle && (
@@ -92,60 +116,36 @@ const BannerHeightSettings = ({
               />
             </Text>
             <Box display="flex" flexDirection="column" gap="12px" mt="12px">
-              <Box>
-                <Label htmlFor="headerHeightDesktop">
-                  {formatMessage(messages.desktopHeightPx)}
-                </Label>
-                <Input
-                  id="headerHeightDesktop"
-                  type="number"
-                  min="50"
-                  max="800"
-                  placeholder={desktopPlaceholder}
-                  value={desktopHeight?.toString() || ''}
-                  onChange={(value) => {
-                    const numValue = value ? parseInt(value, 10) : undefined;
-                    onDesktopHeightChange(numValue);
-                  }}
-                  disabled={disabled}
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="headerHeightTablet">
-                  {formatMessage(messages.tabletHeightPx)}
-                </Label>
-                <Input
-                  id="headerHeightTablet"
-                  type="number"
-                  min="50"
-                  max="800"
-                  placeholder={tabletPlaceholder}
-                  value={tabletHeight?.toString() || ''}
-                  onChange={(value) => {
-                    const numValue = value ? parseInt(value, 10) : undefined;
-                    onTabletHeightChange(numValue);
-                  }}
-                  disabled={disabled}
-                />
-              </Box>
-              <Box>
-                <Label htmlFor="headerHeightPhone">
-                  {formatMessage(messages.phoneHeightPx)}
-                </Label>
-                <Input
-                  id="headerHeightPhone"
-                  type="number"
-                  min="50"
-                  max="800"
-                  placeholder={phonePlaceholder}
-                  value={phoneHeight?.toString() || ''}
-                  onChange={(value) => {
-                    const numValue = value ? parseInt(value, 10) : undefined;
-                    onPhoneHeightChange(numValue);
-                  }}
-                  disabled={disabled}
-                />
-              </Box>
+              {heightInputs.map(
+                ({ key, label, value, placeholder, onChange }) => (
+                  <Box key={key}>
+                    <Label
+                      htmlFor={`headerHeight${
+                        key.charAt(0).toUpperCase() + key.slice(1)
+                      }`}
+                    >
+                      {formatMessage(label)}
+                    </Label>
+                    <Input
+                      id={`headerHeight${
+                        key.charAt(0).toUpperCase() + key.slice(1)
+                      }`}
+                      type="number"
+                      min="50"
+                      max="800"
+                      placeholder={placeholder}
+                      value={value?.toString() || ''}
+                      onChange={(inputValue) => {
+                        const numValue = inputValue
+                          ? parseInt(inputValue, 10)
+                          : undefined;
+                        onChange(numValue);
+                      }}
+                      disabled={disabled}
+                    />
+                  </Box>
+                )
+              )}
             </Box>
           </Box>
           {disabled && (
