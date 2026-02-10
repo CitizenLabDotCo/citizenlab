@@ -1,5 +1,4 @@
-import Quill, { Range } from 'quill';
-import Delta from 'quill-delta';
+import Quill, { Delta, Range } from 'quill';
 
 import { attributes } from './altTextToImagesModule';
 
