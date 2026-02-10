@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useParams, useSearch } from 'utils/router';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
@@ -16,6 +15,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useParams, useSearch } from 'utils/router';
 
 import BottomSheet from '../BottomSheet';
 import messages from '../messages';

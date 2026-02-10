@@ -3,7 +3,6 @@ import React, { useState, useRef, useCallback } from 'react';
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
-import { useParams, useLocation } from 'utils/router';
 import { SupportedLocale } from 'typings';
 
 import useProjectDescriptionBuilderLayout from 'api/project_description_builder/useProjectDescriptionBuilderLayout';
@@ -21,6 +20,7 @@ import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import Editor from 'components/ProjectDescriptionBuilder/Editor';
 
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams, useLocation } from 'utils/router';
 
 import ProjectDescriptionBuilderEditModePreview from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderEditModePreview';
 import ProjectDescriptionBuilderToolbox from '../../components/ProjectDescriptionBuilder/ProjectDescriptionBuilderToolbox';

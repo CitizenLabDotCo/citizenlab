@@ -6,7 +6,6 @@ import {
   useBreakpoint,
   useWindowSize,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 
 import { IPhases, IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
@@ -23,6 +22,7 @@ import { FORM_PAGE_CHANGE_EVENT } from 'components/CustomFieldsForm/PageControlB
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import eventEmitter from 'utils/eventEmitter';
+import { useSearch } from 'utils/router';
 
 import IdeasNewMeta from '../IdeasNewMeta';
 

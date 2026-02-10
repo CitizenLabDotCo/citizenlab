@@ -7,7 +7,6 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 
 import usePhase from 'api/phases/usePhase';
 import useProjectBySlug from 'api/projects/useProjectBySlug';
@@ -15,6 +14,8 @@ import useProjectBySlug from 'api/projects/useProjectBySlug';
 import AvatarBubbles from 'components/AvatarBubbles';
 import T from 'components/T';
 import GoBackButton from 'components/UI/GoBackButton';
+
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 

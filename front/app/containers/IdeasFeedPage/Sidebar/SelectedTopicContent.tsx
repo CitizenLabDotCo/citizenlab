@@ -8,7 +8,6 @@ import {
   Text,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import useInputTopicById from 'api/input_topics/useInputTopicById';
@@ -20,6 +19,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 import { getTopicColor } from '../topicsColor';

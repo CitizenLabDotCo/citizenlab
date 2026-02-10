@@ -6,7 +6,6 @@ import {
   colors,
   isRtl,
 } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import { IdeaQueryParameters } from 'api/ideas/types';
@@ -19,6 +18,7 @@ import IdeaListScrollAnchor from 'components/IdeaListScrollAnchor';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useSearch } from 'utils/router';
 
 import IdeasIndexMeta from './IdeaIndexMeta';
 import messages from './messages';

@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useParams, useSearch } from 'utils/router';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
@@ -11,6 +10,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useParams, useSearch } from 'utils/router';
 
 import AddIdeaButton from './AddIdeaButton';
 import IdeasFeed from './IdeasFeed';
