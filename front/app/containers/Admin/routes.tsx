@@ -20,7 +20,9 @@ import createAdminDashboardRoutes, {
 import createAdminIdeasRoutes, { ideaRouteTypes } from './ideas/routes';
 import { inspirationHubRouteTypes } from './inspirationHub/routes';
 import { invitationRouteTypes } from './invitations/routes';
-import { messagingRouteTypes } from './messaging/routes';
+import createAdminMessagingRoutes, {
+  messagingRouteTypes,
+} from './messaging/routes';
 import { pagesAndMenuRouteTypes } from './pagesAndMenu/routes';
 import { projectFolderRouteTypes } from './projectFolders/routes';
 import createAdminProjectsRoutes, {
@@ -221,7 +223,7 @@ export const createAdminRoutes = () => {
     // settingsRoutes(),
     // pagesAndMenuRoutes(),
     // invitationsRoutes(),
-    // createAdminMessagingRoutes(),
+    createAdminMessagingRoutes(),
     createAdminIdeasRoutes(),
     // projectFoldersRoutes(),
     // ...reportingRoutes(),

@@ -1,10 +1,10 @@
 import React, { lazy } from 'react';
 
-import { Navigate } from 'utils/router';
-
 import PageLoading from 'components/UI/PageLoading';
 
-import { AdminRoute } from '../routes';
+import { createRoute, Navigate } from 'utils/router';
+
+import { adminRoute, AdminRoute } from '../routes';
 
 const MessagingIndex = lazy(() => import('.'));
 const CustomEmailsIndex = lazy(() => import('./CustomEmails/All'));
@@ -32,67 +32,92 @@ export type messagingRouteTypes =
   | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsAutomated}`>
   | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsAutomated}/${string}/edit`>;
 
-const createAdminMessagingRoutes = () => ({
+const messagingRoute = createRoute({
+  getParentRoute: () => adminRoute,
   path: messagingRoutes.messaging,
-  element: (
+  component: () => (
     <PageLoading>
       <MessagingIndex />
     </PageLoading>
   ),
-  children: [
-    {
-      path: '',
-      element: <Navigate to={`/${messagingRoutes.emailsCustom}`} />,
-    },
-    {
-      path: messagingRoutes.emailsCustom,
-      element: (
-        <PageLoading>
-          <CustomEmailsIndex />
-        </PageLoading>
-      ),
-    },
-    {
-      path: messagingRoutes.emailsCustomNew,
-      element: (
-        <PageLoading>
-          <CustomEmailsNew />
-        </PageLoading>
-      ),
-    },
-    {
-      path: messagingRoutes.emailsCustomCampaignId,
-      element: (
-        <PageLoading>
-          <CustomEmailsShow />
-        </PageLoading>
-      ),
-    },
-    {
-      path: messagingRoutes.emailsCustomCampaignIdEdit,
-      element: (
-        <PageLoading>
-          <EmailsEdit campaignType="custom" />
-        </PageLoading>
-      ),
-    },
-    {
-      path: messagingRoutes.emailsAutomated,
-      element: (
-        <PageLoading>
-          <AutomatedEmails />
-        </PageLoading>
-      ),
-    },
-    {
-      path: messagingRoutes.emailsAutomatedCampaignIdEdit,
-      element: (
-        <PageLoading>
-          <EmailsEdit campaignType="automated" />
-        </PageLoading>
-      ),
-    },
-  ],
 });
+
+const messagingIndexRoute = createRoute({
+  getParentRoute: () => messagingRoute,
+  path: '/',
+  component: () => <Navigate to={messagingRoutes.emailsCustom} />,
+});
+
+const customEmailsRoute = createRoute({
+  getParentRoute: () => messagingRoute,
+  path: messagingRoutes.emailsCustom,
+  component: () => (
+    <PageLoading>
+      <CustomEmailsIndex />
+    </PageLoading>
+  ),
+});
+
+const customEmailsNewRoute = createRoute({
+  getParentRoute: () => messagingRoute,
+  path: messagingRoutes.emailsCustomNew,
+  component: () => (
+    <PageLoading>
+      <CustomEmailsNew />
+    </PageLoading>
+  ),
+});
+
+const customEmailsShowRoute = createRoute({
+  getParentRoute: () => messagingRoute,
+  path: messagingRoutes.emailsCustomCampaignId,
+  component: () => (
+    <PageLoading>
+      <CustomEmailsShow />
+    </PageLoading>
+  ),
+});
+
+const customEmailsEditRoute = createRoute({
+  getParentRoute: () => messagingRoute,
+  path: messagingRoutes.emailsCustomCampaignIdEdit,
+  component: () => (
+    <PageLoading>
+      <EmailsEdit campaignType="custom" />
+    </PageLoading>
+  ),
+});
+
+const automatedEmailsRoute = createRoute({
+  getParentRoute: () => messagingRoute,
+  path: messagingRoutes.emailsAutomated,
+  component: () => (
+    <PageLoading>
+      <AutomatedEmails />
+    </PageLoading>
+  ),
+});
+
+const automatedEmailsEditRoute = createRoute({
+  getParentRoute: () => messagingRoute,
+  path: messagingRoutes.emailsAutomatedCampaignIdEdit,
+  component: () => (
+    <PageLoading>
+      <EmailsEdit campaignType="automated" />
+    </PageLoading>
+  ),
+});
+
+const createAdminMessagingRoutes = () => {
+  return messagingRoute.addChildren([
+    messagingIndexRoute,
+    customEmailsRoute,
+    customEmailsNewRoute,
+    customEmailsShowRoute,
+    customEmailsEditRoute,
+    automatedEmailsRoute,
+    automatedEmailsEditRoute,
+  ]);
+};
 
 export default createAdminMessagingRoutes;
