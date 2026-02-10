@@ -56,7 +56,7 @@
     }
   },
   "dependencies": {
-    "@arcgis/core": "4.28.10",
+    "@arcgis/core": "4.34.8",
     "@babel/runtime": "7.x",
     "@craftjs/core": "0.2.11",
     "@emoji-mart/data": "^1.2.1",
