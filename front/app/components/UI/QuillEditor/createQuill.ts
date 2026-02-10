@@ -1,4 +1,7 @@
-import Quill from 'quill';
+import Quill, { Range } from 'quill';
+import Delta from 'quill-delta';
+
+import { attributes } from './altTextToImagesModule';
 
 interface Params {
   id: string;
@@ -65,6 +68,62 @@ export const createQuill = (
         matchVisual: false,
       },
     },
+  });
+
+  // Quill 2.0 bug: the default image handler calls getSelection(true) after
+  // the file picker closes, but focus is already lost so it returns null.
+  // Track selection ourselves and use a custom handler.
+  if (!noImages) {
+    let lastKnownRange: Range | null = null;
+    quill.on('selection-change', (range: Range | null) => {
+      if (range) lastKnownRange = range;
+    });
+
+    const toolbar = quill.getModule('toolbar') as any;
+    toolbar.addHandler('image', () => {
+      if (!document.body.contains(quill.root)) return;
+
+      const range = lastKnownRange || {
+        index: quill.getLength() - 1,
+        length: 0,
+      };
+
+      let fileInput = quill.container.querySelector(
+        'input.ql-image[type=file]'
+      ) as HTMLInputElement | null;
+
+      if (!fileInput) {
+        fileInput = document.createElement('input');
+        fileInput.setAttribute('type', 'file');
+        fileInput.setAttribute('accept', 'image/png, image/jpeg');
+        fileInput.classList.add('ql-image');
+        fileInput.style.display = 'none';
+        quill.container.appendChild(fileInput);
+      }
+
+      fileInput.onchange = () => {
+        if (fileInput && fileInput.files?.length) {
+          (quill as any).uploader.upload(range, fileInput.files);
+        }
+        if (fileInput) fileInput.value = '';
+      };
+
+      fileInput.click();
+    });
+  }
+
+  // ImageBlot uses tagName='span', so the clipboard can't auto-match <img>
+  // tags. This matcher handles <img> in saved content and external paste.
+  const clipboard = quill.getModule('clipboard') as any;
+  clipboard.addMatcher('IMG', (node: HTMLImageElement) => {
+    const src = node.getAttribute('src');
+    if (!src) return new Delta();
+    const formats: Record<string, string> = {};
+    for (const attr of attributes) {
+      const val = node.getAttribute(attr);
+      if (val) formats[attr] = val;
+    }
+    return new Delta().insert({ image: src }, formats);
   });
 
   // Apply correct attributes for a11y

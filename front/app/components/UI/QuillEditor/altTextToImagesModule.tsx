@@ -11,29 +11,24 @@ const BaseImageFormat = Quill.import('formats/image') as any;
 
 export const attributes = ['alt', 'width', 'height', 'style'];
 
-// Create a custom ImageBlot that allows us to add alt text to the image.
-// The blot's domNode is a <span> container that holds both the <img> and
-// an alt-text <input>. This is necessary because Parchment manages the
-// domNode's position in the DOM tree — wrapping it at runtime (e.g. in
-// attach()) breaks Parchment's assumptions about parent-child relationships.
+// The blot's domNode is a <span> container holding both the <img> and an
+// alt-text <input>. Parchment manages domNode positioning, so wrapping at
+// runtime (e.g. in attach()) breaks its parent-child assumptions.
 export class ImageBlot extends BaseImageFormat {
   static blotName = 'image';
   static tagName = 'span';
   static className = 'ql-alt-text-input-container';
 
   static create(value: string) {
-    // Create the span container (the blot's domNode, managed by Parchment)
     const node = document.createElement('span');
     node.classList.add('ql-alt-text-input-container');
 
-    // Create the img as a child element
     const img = document.createElement('img');
     if (typeof value === 'string') {
       img.setAttribute('src', value);
       img.setAttribute('alt', '');
     }
 
-    // Create the alt text input field
     const altInput = document.createElement('input');
     altInput.setAttribute('type', 'text');
     altInput.setAttribute('class', 'ql-alt-text-input');
@@ -44,22 +39,44 @@ export class ImageBlot extends BaseImageFormat {
     altInput.setAttribute('value', img.getAttribute('alt') || '');
     altInput.setAttribute('placeholder', getPlaceHolder());
 
-    // Handle change of input field value
-    const handleChange = (e: Event) => {
-      const target = e.target as HTMLInputElement;
-      img.setAttribute('alt', target.value);
-    };
+    // Prevent Quill 2.0 from intercepting input events (keyboard, editor,
+    // and selection modules all listen on the editor root).
+    const stopPropagation = (e: Event) => e.stopPropagation();
+    altInput.addEventListener('keydown', stopPropagation);
+    altInput.addEventListener('keyup', stopPropagation);
+    altInput.addEventListener('beforeinput', stopPropagation);
+    altInput.addEventListener('mousedown', stopPropagation);
 
-    // Build the DOM structure: [altInput, img] inside the span
+    // Pause Quill's MutationObserver while syncing alt text, otherwise
+    // Quill processes the DOM change and steals focus from the input.
+    let scrollRef: any = null;
+    altInput.addEventListener('input', (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      if (scrollRef) {
+        scrollRef.observer.disconnect();
+        img.setAttribute('alt', target.value);
+        scrollRef.observer.observe(scrollRef.domNode, {
+          attributes: true,
+          characterData: true,
+          characterDataOldValue: true,
+          childList: true,
+          subtree: true,
+        });
+      } else {
+        img.setAttribute('alt', target.value);
+      }
+    });
+
     node.appendChild(altInput);
     node.appendChild(img);
 
-    // Set up select/deselect callbacks on the node (used by AltTextToImagesModule)
-    (node as any).onSelect = () => {
-      altInput.addEventListener('input', handleChange);
+    (node as any).onSelect = (quill: Quill) => {
+      scrollRef = quill.scroll;
+      altInput.focus();
     };
     (node as any).onDeselect = () => {
-      altInput.removeEventListener('input', handleChange);
+      scrollRef = null;
+      altInput.blur();
     };
 
     return node;
@@ -71,7 +88,6 @@ export class ImageBlot extends BaseImageFormat {
 
   static formats(domNode: HTMLSpanElement) {
     const img = domNode.querySelector('img');
-    // Read format attributes from the child <img>, not the span container
     return attributes.reduce((formats, attribute) => {
       if (img?.hasAttribute(attribute)) {
         formats[attribute] = img.getAttribute(attribute);
@@ -80,12 +96,10 @@ export class ImageBlot extends BaseImageFormat {
     }, {});
   }
 
-  // No instance value() override — the inherited LeafBlot.value() correctly
-  // wraps the result as { image: staticValue }, which is required for Delta
-  // serialization (undo/redo, getContents, copy-paste).
+  // Do not override instance value() — LeafBlot.value() wraps the result
+  // as { image: url }, which is required for Delta serialization.
 
-  format(name: string, value: string) {
-    // Apply format attributes to the child <img>
+  format(name: string, value: string | null) {
     const img = (this.domNode as HTMLSpanElement).querySelector('img');
     const altInput = (this.domNode as HTMLSpanElement).querySelector(
       '.ql-alt-text-input'
@@ -101,16 +115,14 @@ export class ImageBlot extends BaseImageFormat {
       super.format(name, value);
     }
 
-    // Ensure that there is always an alt attribute
     if (name === 'alt') {
-      altInput?.setAttribute('value', value);
+      altInput?.setAttribute('value', value ?? '');
       img?.setAttribute(name, value || '');
     }
   }
 }
 
-// Define custom KeepHTML blot that preserves the HTML of images
-// including inline styles that otherwise get stripped out by Quill
+// Preserves inline styles on images that Quill would otherwise strip.
 export class KeepHTML extends BaseImageFormat {
   static blotName = 'KeepHTML';
   static className = 'keepHTML';
@@ -124,9 +136,8 @@ export class KeepHTML extends BaseImageFormat {
   }
 }
 
-// Define custom AltTextToImages module that handles click-to-edit
-// alt text on images. Uses Quill.find() (Parchment 3.0 API) instead
-// of the removed __blot DOM property (Parchment 1.x API).
+// Handles click-to-edit alt text on images. Uses Quill.find()
+// (Parchment 3.0 API) instead of the removed __blot DOM property.
 export class AltTextToImagesModule extends Module {
   constructor(quill: Quill, options: QuillOptions) {
     super(quill, options);
@@ -135,13 +146,11 @@ export class AltTextToImagesModule extends Module {
       if (!document.body.contains(quill.root)) {
         return document.body.removeEventListener('click', listener);
       }
-      // Find the image blot's container element
-      const elm = (e.target as Element).closest('.ql-alt-text-input-container');
+      const target = e.target as Element;
+      const elm = target.closest('.ql-alt-text-input-container');
 
-      // Deselect callback
       const deselect = () => {
         (elm as any).onDeselect();
-        // Use Quill.find() to look up the blot from the DOM node
         const blot = elm ? Quill.find(elm as Node) : null;
         if (blot) {
           quill.setSelection(
@@ -152,17 +161,14 @@ export class AltTextToImagesModule extends Module {
         }
       };
 
-      // Use Quill.find() to check if the element is a registered blot
       const blot = elm ? Quill.find(elm as Node) : null;
+
       if (elm && blot && (elm as any).onSelect) {
-        quill.disable();
         (elm as any).onSelect(quill);
 
         const handleClick = (e: MouseEvent) => {
-          // Handle blot deselect
           if (!elm.contains(e.target as Node)) {
             deselect();
-            quill.enable(true);
             window.removeEventListener('click', handleClick);
           }
         };

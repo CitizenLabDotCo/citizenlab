@@ -59,7 +59,21 @@ export const getPlainTextLengthFromHTML = (
 };
 
 export const getHTML = (editor: Quill) => {
-  return editor.root.innerHTML === '<p><br></p>' ? '' : editor.root.innerHTML;
+  const html = editor.root.innerHTML;
+  if (html === '<p><br></p>') return '';
+
+  // Strip ImageBlot's internal wrapper (<span> + <input>) so saved HTML
+  // contains only clean <img> tags.
+  if (!html.includes('ql-alt-text-input-container')) return html;
+  const temp = document.createElement('div');
+  temp.innerHTML = html;
+  temp.querySelectorAll('.ql-alt-text-input-container').forEach((span) => {
+    const img = span.querySelector('img');
+    if (img) {
+      span.replaceWith(img);
+    }
+  });
+  return temp.innerHTML;
 };
 
 export const setHTML = (editor: Quill, html: string = '') => {
