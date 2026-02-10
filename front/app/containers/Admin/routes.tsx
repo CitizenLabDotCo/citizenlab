@@ -21,7 +21,9 @@ import { invitationRouteTypes } from './invitations/routes';
 import { messagingRouteTypes } from './messaging/routes';
 import { pagesAndMenuRouteTypes } from './pagesAndMenu/routes';
 import { projectFolderRouteTypes } from './projectFolders/routes';
-import { projectsRouteTypes } from './projects/routes';
+import createAdminProjectsRoutes, {
+  projectsRouteTypes,
+} from './projects/routes';
 import { reportingRouteTypes } from './reporting/routes';
 import { settingRouteTypes } from './settings/routes';
 import { toolRouteTypes } from './tools/routes';
@@ -210,8 +212,8 @@ const projectImporterRoute = createRoute({
 export const createAdminRoutes = () => {
   return adminRoute.addChildren([
     adminIndexRoute,
+    createAdminProjectsRoutes(),
     // TODO: Convert these sub-route factories to TanStack format one by one
-    // createAdminProjectsRoutes(),
     // createDashboardRoutes(),
     // createAdminUsersRoutes(),
     // settingsRoutes(),

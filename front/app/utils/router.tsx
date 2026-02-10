@@ -25,7 +25,7 @@ export const useSearch = (_options: any) => {
     return [
       {
         get: (key: string) => {
-          return params[key];
+          return params[key] ?? null;
         },
         has: (key: string) => {
           return key in params;
