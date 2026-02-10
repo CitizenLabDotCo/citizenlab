@@ -20,7 +20,9 @@ import createAdminDashboardRoutes, {
   dashboardRouteTypes,
 } from './dashboard/routes';
 import createAdminIdeasRoutes, { ideaRouteTypes } from './ideas/routes';
-import { inspirationHubRouteTypes } from './inspirationHub/routes';
+import createAdminInspirationHubRoutes, {
+  inspirationHubRouteTypes,
+} from './inspirationHub/routes';
 import { invitationRouteTypes } from './invitations/routes';
 import createAdminMessagingRoutes, {
   messagingRouteTypes,
@@ -233,7 +235,7 @@ export const createAdminRoutes = () => {
     ...createAdminReportingRoutes(),
     // toolsRoutes(),
     createAdminCommunityMonitorRoutes(),
-    // inspirationHubRoutes(),
+    createAdminInspirationHubRoutes(),
     // TODO: understand this:
     // ...moduleConfiguration.routes.admin,
     faviconRoute,
