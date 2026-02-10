@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import { FollowableObject } from 'api/follow_unfollow/types';
 import useAuthUser from 'api/me/useAuthUser';
@@ -16,6 +15,7 @@ import FilterTabs, { TabData } from 'components/UI/FilterTabs';
 
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
@@ -24,7 +24,7 @@ import UserFollowingList from './UserFollowingList';
 type FollowableValue = FollowableObject | 'Topics' | 'Areas';
 
 const Following = () => {
-  const { userSlug } = useParams({ strict: false }) as { userSlug: string };
+  const { userSlug } = useParams({ from: '/$locale/profile/$userSlug' });
   const { data: user } = useUserBySlug(userSlug);
   const [currentTab, setSelectedTab] = useState<FollowableValue>('Project');
   const handleOnChangeTab = (selectedTab: FollowableValue) => {

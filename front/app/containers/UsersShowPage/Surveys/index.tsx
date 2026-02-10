@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { media } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -9,6 +8,8 @@ import useUserSurveySubmissions from 'api/user_survey_submissions/useUserSurveyS
 import useUserBySlug from 'api/users/useUserBySlug';
 
 import Unauthorized from 'components/Unauthorized';
+
+import { useParams } from 'utils/router';
 
 import SurveySubmissionCard from './SurveySubmissionCard';
 
@@ -24,8 +25,7 @@ const Container = styled.div`
 
 const Surveys = () => {
   const { data: authUser } = useAuthUser();
-
-  const { userSlug } = useParams({ strict: false }) as { userSlug?: string };
+  const { userSlug } = useParams({ from: '/$locale/profile/$userSlug' });
   const { data: user } = useUserBySlug(userSlug);
 
   const { data: surveySubmissions } = useUserSurveySubmissions();

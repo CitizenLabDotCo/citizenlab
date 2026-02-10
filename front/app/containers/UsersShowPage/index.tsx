@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { media, colors } from '@citizenlab/cl2-component-library';
-import { useParams, Outlet as RouterOutlet } from 'utils/router';
 import styled from 'styled-components';
 
 import useUserBySlug from 'api/users/useUserBySlug';
@@ -10,6 +9,8 @@ import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
 import ContentContainer from 'components/ContentContainer';
 import Unauthorized from 'components/Unauthorized';
+
+import { useParams, Outlet as RouterOutlet } from 'utils/router';
 
 import UserHeader from './UserHeader';
 import UserNavbar from './UserNavbar';
@@ -35,7 +36,7 @@ const StyledContentContainer = styled(ContentContainer)`
 `;
 
 const UsersShowPage = () => {
-  const { userSlug } = useParams({ strict: false }) as { userSlug: string };
+  const { userSlug } = useParams({ from: '/$locale/profile/$userSlug' });
   const { data: user } = useUserBySlug(userSlug);
 
   if (!user) return null;
