@@ -54,44 +54,6 @@ const ProjectPreviewToken = lazy(
   () => import('containers/Admin/projects/project/previewToken')
 );
 
-export enum citizenRoutes {
-  locale = '$locale',
-  profile = 'profile',
-  signIn = 'sign-in',
-  signUp = 'sign-up',
-  signInAdmin = 'sign-in/admin',
-  invite = 'invite',
-  siteMap = 'site-map',
-  profileEdit = 'profile/edit',
-  changePassword = 'profile/change-password',
-  changeEmail = 'profile/change-email',
-  ideas = 'ideas',
-  ideasEditIdea = 'ideas/edit/$ideaId',
-  ideasSlug = 'ideas/$slug',
-  projects = 'projects',
-  projectIdeaNew = 'projects/$slug/ideas/new',
-  projectSurveyNew = 'projects/$slug/surveys/new',
-  projectSlug = 'projects/$slug',
-  projectSlugPreview = 'projects/$slug/preview',
-  projectSlugPreviewToken = '$token',
-  phaseNumber = '$phaseNumber',
-  folders = 'folders',
-  foldersSlug = 'folders/$slug',
-  wildcard = '*',
-  events = 'events',
-  eventId = 'events/$eventId',
-  pages = 'pages',
-  cookiePolicy = 'pages/cookie-policy',
-  AccessibilityStatement = 'pages/accessibility-statement',
-  customPage = 'pages/$slug',
-  passwordRecovery = 'password-recovery',
-  resetPassword = 'reset-password',
-  subscriptionEnded = 'subscription-ended',
-  emailSettings = 'email-settings',
-  disabledAccount = 'disabled-account',
-  reportPrintPage = 'admin/reporting/report-builder/$reportId/print',
-}
-
 // TODO: Replace with proper route types after migration
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type RouteType = any;
@@ -109,7 +71,7 @@ const rootRoute = createRootRoute({
 // Locale route - parent for all citizen routes
 export const localeRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: citizenRoutes.locale,
+  path: '$locale',
   component: Outlet,
 });
 
@@ -127,7 +89,7 @@ const homeRoute = createRoute({
 // Auth routes
 const signInAdminRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.signInAdmin,
+  path: 'sign-in/admin',
   component: () => (
     <PageLoading>
       <HomePage />
@@ -137,7 +99,7 @@ const signInAdminRoute = createRoute({
 
 const signInRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.signIn,
+  path: 'sign-in',
   component: () => (
     <PageLoading>
       <HomePage />
@@ -147,7 +109,7 @@ const signInRoute = createRoute({
 
 const signUpRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.signUp,
+  path: 'sign-up',
   component: () => (
     <PageLoading>
       <HomePage />
@@ -157,7 +119,7 @@ const signUpRoute = createRoute({
 
 const inviteRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.invite,
+  path: 'invite',
   component: () => (
     <PageLoading>
       <HomePage />
@@ -168,7 +130,7 @@ const inviteRoute = createRoute({
 // Site map
 const siteMapRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.siteMap,
+  path: 'site-map',
   component: () => (
     <PageLoading>
       <SiteMap />
@@ -179,7 +141,7 @@ const siteMapRoute = createRoute({
 // Profile routes
 const profileEditRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.profileEdit,
+  path: 'profile/edit',
   component: () => (
     <PageLoading>
       <UsersEditPage />
@@ -189,7 +151,7 @@ const profileEditRoute = createRoute({
 
 const changePasswordRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.changePassword,
+  path: 'profile/change-password',
   component: () => (
     <PageLoading>
       <PasswordChange />
@@ -199,7 +161,7 @@ const changePasswordRoute = createRoute({
 
 const changeEmailRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.changeEmail,
+  path: 'profile/change-email',
   component: () => (
     <PageLoading>
       <EmailChange />
@@ -210,7 +172,7 @@ const changeEmailRoute = createRoute({
 // Ideas routes
 const ideasEditRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.ideasEditIdea,
+  path: 'ideas/edit/$ideaId',
   component: () => (
     <PageLoading>
       <IdeasEditPage />
@@ -220,7 +182,7 @@ const ideasEditRoute = createRoute({
 
 const ideasIndexRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.ideas,
+  path: 'ideas',
   component: () => (
     <PageLoading>
       <IdeasIndexPage />
@@ -230,7 +192,7 @@ const ideasIndexRoute = createRoute({
 
 const ideasShowRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.ideasSlug,
+  path: 'ideas/$slug',
   component: () => (
     <PageLoading>
       <IdeasShowPage />
@@ -241,7 +203,7 @@ const ideasShowRoute = createRoute({
 // Project idea/survey new routes
 const projectIdeaNewRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.projectIdeaNew,
+  path: 'projects/$slug/ideas/new',
   component: () => (
     <PageLoading>
       <IdeasNewPage />
@@ -251,7 +213,7 @@ const projectIdeaNewRoute = createRoute({
 
 const projectSurveyNewRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.projectSurveyNew,
+  path: 'projects/$slug/surveys/new',
   component: () => (
     <PageLoading>
       <IdeasNewSurveyPage />
@@ -262,13 +224,13 @@ const projectSurveyNewRoute = createRoute({
 // Project preview routes
 const projectPreviewRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.projectSlugPreview,
+  path: 'projects/$slug/preview',
   component: Outlet,
 });
 
 const projectPreviewTokenRoute = createRoute({
   getParentRoute: () => projectPreviewRoute,
-  path: citizenRoutes.projectSlugPreviewToken,
+  path: '$token',
   component: () => (
     <PageLoading>
       <ProjectPreviewToken />
@@ -279,7 +241,7 @@ const projectPreviewTokenRoute = createRoute({
 // Projects routes
 const projectsIndexRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.projects,
+  path: 'projects',
   component: () => (
     <PageLoading>
       <ProjectsIndexPage />
@@ -289,7 +251,7 @@ const projectsIndexRoute = createRoute({
 
 const projectShowRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.projectSlug,
+  path: 'projects/$slug',
   component: Outlet,
 });
 
@@ -305,7 +267,7 @@ const projectShowIndexRoute = createRoute({
 
 const projectPhaseRoute = createRoute({
   getParentRoute: () => projectShowRoute,
-  path: citizenRoutes.phaseNumber,
+  path: '$phaseNumber',
   component: () => (
     <PageLoading>
       <ProjectsShowPage />
@@ -327,7 +289,7 @@ const projectIdeasFeedRoute = createRoute({
 // Folders route
 const foldersShowRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.foldersSlug,
+  path: 'folders/$slug',
   component: () => (
     <PageLoading>
       <ProjectFolderShowPage />
@@ -338,7 +300,7 @@ const foldersShowRoute = createRoute({
 // Events routes
 const eventsIndexRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.events,
+  path: 'events',
   component: () => (
     <PageLoading>
       <EventsPage />
@@ -348,7 +310,7 @@ const eventsIndexRoute = createRoute({
 
 const eventShowRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.eventId,
+  path: 'events/$eventId',
   component: () => (
     <PageLoading>
       <EventsShowPage />
@@ -359,7 +321,7 @@ const eventShowRoute = createRoute({
 // Pages routes
 const cookiePolicyRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.cookiePolicy,
+  path: 'pages/cookie-policy',
   component: () => (
     <PageLoading>
       <CookiePolicy />
@@ -369,7 +331,7 @@ const cookiePolicyRoute = createRoute({
 
 const accessibilityStatementRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.AccessibilityStatement,
+  path: 'pages/accessibility-statement',
   component: () => (
     <PageLoading>
       <AccessibilityStatement />
@@ -379,7 +341,7 @@ const accessibilityStatementRoute = createRoute({
 
 const customPageRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.customPage,
+  path: 'pages/$slug',
   component: () => (
     <PageLoading>
       <CustomPageShow />
@@ -390,7 +352,7 @@ const customPageRoute = createRoute({
 // Auth/misc routes
 const passwordRecoveryRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.passwordRecovery,
+  path: 'password-recovery',
   component: () => (
     <PageLoading>
       <PasswordRecovery />
@@ -400,7 +362,7 @@ const passwordRecoveryRoute = createRoute({
 
 const resetPasswordRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.resetPassword,
+  path: 'reset-password',
   component: () => (
     <PageLoading>
       <PasswordReset />
@@ -410,7 +372,7 @@ const resetPasswordRoute = createRoute({
 
 const subscriptionEndedRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.subscriptionEnded,
+  path: 'subscription-ended',
   component: () => (
     <PageLoading>
       <SubscriptionEndedPage />
@@ -420,7 +382,7 @@ const subscriptionEndedRoute = createRoute({
 
 const emailSettingsRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.emailSettings,
+  path: 'email-settings',
   component: () => (
     <PageLoading>
       <EmailSettingsPage />
@@ -430,7 +392,7 @@ const emailSettingsRoute = createRoute({
 
 const reportPrintRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.reportPrintPage,
+  path: 'admin/reporting/report-builder/$reportId/print',
   component: () => (
     <PageLoading>
       <ReportPrintPage />
@@ -440,7 +402,7 @@ const reportPrintRoute = createRoute({
 
 const disabledAccountRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: citizenRoutes.disabledAccount,
+  path: 'disabled-account',
   component: () => (
     <PageLoading>
       <DisabledAccount />
