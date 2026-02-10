@@ -407,7 +407,6 @@ class WebApi::V1::ProjectsController < ApplicationController
           # The project must be saved before performing the authorization because it requires
           # the admin publication to be created.
           authorize(project)
-          CheckProjectPublicationConsistencyJob.perform_later(project.id)
         else
           skip_authorization
         end
