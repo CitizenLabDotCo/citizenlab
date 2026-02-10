@@ -179,9 +179,10 @@ const ProjectsShowPage = ({ project }: Props) => {
 };
 
 const ProjectsShowPageWrapper = () => {
-  const { slug, phaseNumber } = useParams({
-    from: '/$locale/projects/$slug/$phaseNumber',
-  });
+  const { slug, phaseNumber } = useParams({ strict: false }) as {
+    slug: string;
+    phaseNumber?: string;
+  };
   const {
     data: project,
     status: statusProject,
