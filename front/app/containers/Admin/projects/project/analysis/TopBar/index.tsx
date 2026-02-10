@@ -6,6 +6,7 @@ import {
   colors,
   Title,
   Text,
+  ClickOutside,
 } from '@citizenlab/cl2-component-library';
 import { get, set } from 'js-cookie';
 import { useParams, useSearch } from 'utils/router';
@@ -16,6 +17,7 @@ import useAnalysis from 'api/analyses/useAnalysis';
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectById from 'api/projects/useProjectById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -27,7 +29,6 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import ClickOutside from 'utils/containers/clickOutside';
 
 import FilterItems from '../FilterItems';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
@@ -85,16 +86,22 @@ const TopBar = () => {
   const projectTitle = project?.data.attributes.title_multiloc;
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const phaseInsightsEnabled = useFeatureFlag({ name: 'phase_insights' });
 
   const goBack = () => {
-    if (analysis?.data.attributes.participation_method === 'native_survey') {
-      clHistory.push(`/admin/projects/${projectId}/phases/${phaseId}/results`);
-    } else if (
-      analysis?.data.attributes.participation_method ===
-      'community_monitor_survey'
-    ) {
+    const fromInsights = urlParams.get('from') === 'insights';
+    const participationMethod = analysis?.data.attributes.participation_method;
+
+    if (participationMethod === 'community_monitor_survey') {
       clHistory.push(`/admin/community-monitor/live-monitor`);
-    } else if (analysis?.data.attributes.participation_method === 'proposals') {
+    } else if (fromInsights || participationMethod === 'native_survey') {
+      // When phase_insights is disabled, redirect to old 'results' tab for native surveys
+      const tab =
+        participationMethod === 'native_survey' && !phaseInsightsEnabled
+          ? 'results'
+          : 'insights';
+      clHistory.push(`/admin/projects/${projectId}/phases/${phaseId}/${tab}`);
+    } else if (participationMethod === 'proposals') {
       clHistory.push(
         `/admin/projects/${projectId}/phases/${phaseId}/proposals`
       );
@@ -172,7 +179,7 @@ const TopBar = () => {
           icon="info-solid"
           buttonStyle="text"
           openLinkInNewTab
-          linkTo={formatMessage(messages.supportArticleLink) as RouteType}
+          linkTo={formatMessage(messages.supportArticleLink2) as RouteType}
           iconColor={colors.grey800}
         />
         {isFiltersOpen && <Filters onClose={() => setIsFiltersOpen(false)} />}

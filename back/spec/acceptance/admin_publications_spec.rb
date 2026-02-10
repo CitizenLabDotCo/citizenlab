@@ -34,7 +34,7 @@ resource 'AdminPublication' do
         parameter :number, 'Page number'
         parameter :size, 'Number of projects per page'
       end
-      parameter :topics, 'Filter by topics (AND)', required: false
+      parameter :global_topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :depth, 'Filter by depth', required: false
       parameter :search, 'Search text of title, description, preview, and slug', required: false
@@ -75,7 +75,7 @@ resource 'AdminPublication' do
       example 'List all draft or archived admin publications' do
         do_request(publication_statuses: %w[draft archived])
         expect(response_data.size).to eq 5
-        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }).to match_array [empty_draft_folder.id, projects[2].id, projects[3].id, projects[5].id, projects[6].id]
+        expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) }).to contain_exactly(empty_draft_folder.id, projects[2].id, projects[3].id, projects[5].id, projects[6].id)
         expect(response_data.find { |d| d.dig(:relationships, :publication, :data, :type) == 'folder' }.dig(:attributes, :visible_children_count)).to eq 0
       end
 
@@ -106,7 +106,7 @@ resource 'AdminPublication' do
 
         do_request filter_user_is_moderator_of: moderator.id
         assert_status 200
-        expect(publication_ids).to match_array [projects[0].id, projects[1].id, moderated_folder.id]
+        expect(publication_ids).to contain_exactly(projects[0].id, projects[1].id, moderated_folder.id)
       end
 
       example 'Includes unlisted projects', document: false do
@@ -192,15 +192,13 @@ resource 'AdminPublication' do
         example 'List publications admin is moderator of', document: false do
           do_request filter_is_moderator_of: true
           assert_status 200
-          expect(publication_ids).to match_array [
-            @moderated_project1.id, @moderated_project2.id, @moderated_folder1.id, @moderated_folder2.id
-          ]
+          expect(publication_ids).to contain_exactly(@moderated_project1.id, @moderated_project2.id, @moderated_folder1.id, @moderated_folder2.id)
         end
 
         example 'List only projects admin is moderator of', document: false do
           do_request(filter_is_moderator_of: true, only_projects: true)
           assert_status 200
-          expect(publication_ids).to match_array [@moderated_project1.id, @moderated_project2.id]
+          expect(publication_ids).to contain_exactly(@moderated_project1.id, @moderated_project2.id)
         end
       end
 
@@ -222,7 +220,7 @@ resource 'AdminPublication' do
             do_request(model_name_plural => [m1.id])
 
             expect(response_data.size).to eq 2
-            expect(publication_ids).to match_array [p1.id, custom_folder.id]
+            expect(publication_ids).to contain_exactly(p1.id, custom_folder.id)
           end
 
           example "List admin publications representing folders that contain project(s) with the specified #{model_name_plural}" do
@@ -233,37 +231,37 @@ resource 'AdminPublication' do
 
             do_request(model_name_plural => [m1.id])
 
-            expect(publication_ids).to match_array([project.id, custom_folder.id])
+            expect(publication_ids).to contain_exactly(project.id, custom_folder.id)
           end
         end
       end
 
       example 'List all admin publications with all specified model filters' do
         # add more model filters in this spec and change the next expect if it fails (it means the constant was changed)
-        expect(ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS).to eq(%i[topics areas])
+        expect(ProjectsFilteringService::HOMEPAGE_FILTER_PARAMS).to eq(%i[global_topics areas])
 
-        topic = create(:topic)
+        topic = create(:global_topic)
         area = create(:area)
-        published_projects[0].update!(topics: [topic], areas: [area])
-        published_projects[1].update!(topics: [topic])
+        published_projects[0].update!(global_topics: [topic], areas: [area])
+        published_projects[1].update!(global_topics: [topic])
         published_projects[2].update!(areas: [area])
 
-        do_request({ topics: [topic.id], areas: [area.id] })
-        expect(publication_ids).to match_array [published_projects[0].id, custom_folder.id]
+        do_request({ global_topics: [topic.id], areas: [area.id] })
+        expect(publication_ids).to contain_exactly(published_projects[0].id, custom_folder.id)
       end
 
       example 'List all admin publications with pending project review' do
         create(:project_review, project: draft_projects.first)
 
         do_request(review_state: 'pending', publication_statuses: ['draft'], only_projects: true)
-        expect(publication_ids).to match_array [draft_projects.first.id]
+        expect(publication_ids).to contain_exactly(draft_projects.first.id)
       end
 
       example 'List all admin publications with approved project review' do
         create(:project_review, :approved, project: draft_projects.first)
 
         do_request(review_state: 'approved', publication_statuses: ['draft'], only_projects: true)
-        expect(publication_ids).to match_array [draft_projects.first.id]
+        expect(publication_ids).to contain_exactly(draft_projects.first.id)
       end
 
       describe "showing empty folders (which don't have any projects)" do
@@ -461,7 +459,7 @@ resource 'AdminPublication' do
         parameter :number, 'Page number'
         parameter :size, 'Number of projects per page'
       end
-      parameter :topics, 'Filter by topics (AND)', required: false
+      parameter :global_topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :remove_not_allowed_parents, 'Filter out folders with no visible children for the current user', required: false
       parameter :publication_statuses, 'Return only publications with the specified publication statuses (i.e. given an array of publication statuses); always includes folders; returns all publications by default', required: false
@@ -561,8 +559,8 @@ resource 'AdminPublication' do
         end
 
         example 'searching with query and filtering by topic', document: false do
-          topic = create(:topic)
-          project_with_topic = create(:project, topics: [topic],
+          topic = create(:global_topic)
+          project_with_topic = create(:project, global_topics: [topic],
             admin_publication_attributes: { publication_status: 'published' },
             title_multiloc: {
               en: 'fancy title'
@@ -698,7 +696,7 @@ resource 'AdminPublication' do
         parameter :number, 'Page number'
         parameter :size, 'Number of projects per page'
       end
-      parameter :topics, 'Filter by topics (AND)', required: false
+      parameter :global_topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :depth, 'Filter by depth', required: false
       parameter :search, 'Search text of title, description, preview, and slug', required: false
@@ -721,7 +719,7 @@ resource 'AdminPublication' do
         assert_status 200
         expect(response_data.size).to eq 2
         expect(response_data.map { |d| d.dig(:relationships, :publication, :data, :id) })
-          .to match_array [published_projects[0].id, published_projects[1].id]
+          .to contain_exactly(published_projects[0].id, published_projects[1].id)
       end
 
       # This is how the FE requests the admin_publications to show in the 'Your projects' tab,
@@ -733,7 +731,7 @@ resource 'AdminPublication' do
 
         do_request(filter_is_moderator_of: true, exclude_projects_in_included_folders: true)
         assert_status 200
-        expect(publication_ids).to match_array [published_projects[0].id, published_projects[1].id, root_project.id]
+        expect(publication_ids).to contain_exactly(published_projects[0].id, published_projects[1].id, root_project.id)
       end
 
       example 'Lists projects', document: false do
@@ -792,7 +790,7 @@ resource 'AdminPublication' do
         parameter :number, 'Page number'
         parameter :size, 'Number of projects per page'
       end
-      parameter :topics, 'Filter by topics (AND)', required: false
+      parameter :global_topics, 'Filter by topics (AND)', required: false
       parameter :areas, 'Filter by areas (AND)', required: false
       parameter :depth, 'Filter by depth', required: false
       parameter :search, 'Search text of title, description, preview, and slug', required: false

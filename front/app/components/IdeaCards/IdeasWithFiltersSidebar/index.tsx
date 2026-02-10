@@ -77,10 +77,10 @@ export interface QueryParametersUpdate {
 export interface Props {
   ideaQueryParameters: IdeaQueryParameters;
   onUpdateQuery: (newParams: QueryParametersUpdate) => void;
-  showViewToggle?: boolean;
   defaultView?: PresentationMode;
   projectId?: string;
   phaseId?: string;
+  projectSlug?: string;
   inputTerm?: InputTerm;
 }
 
@@ -88,9 +88,9 @@ const IdeasWithFiltersSidebar = ({
   ideaQueryParameters,
   projectId,
   phaseId,
+  projectSlug,
   defaultView = 'card',
   onUpdateQuery,
-  showViewToggle,
   inputTerm,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -124,7 +124,6 @@ const IdeasWithFiltersSidebar = ({
     (field) => field.key === 'location_description'
   )?.enabled;
 
-  const showViewButtons = !!(locationEnabled && showViewToggle);
   const loadIdeaMarkers = locationEnabled && selectedView === 'map';
   const { data: ideaMarkers } = useIdeaMarkers(
     {
@@ -191,15 +190,12 @@ const IdeasWithFiltersSidebar = ({
     onChangeTopics: handleTopicsOnChange,
     handleSortOnChange,
     phaseId,
+    projectId,
   };
 
   return (
     <Container id="e2e-ideas-container">
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        mb={showViewButtons ? '8px' : '16px'}
-      >
+      <Box display="flex" justifyContent="space-between" mb="8px">
         {inputTerm && (
           <Title
             variant="h5"
@@ -214,9 +210,12 @@ const IdeasWithFiltersSidebar = ({
           </Title>
         )}
 
-        {showViewButtons && (
-          <ViewButtons selectedView={selectedView} onClick={setSelectedView} />
-        )}
+        <ViewButtons
+          selectedView={selectedView}
+          onClick={setSelectedView}
+          locationEnabled={locationEnabled}
+          defaultView={defaultView}
+        />
       </Box>
 
       {list === undefined && (
@@ -227,7 +226,9 @@ const IdeasWithFiltersSidebar = ({
 
       {list && (
         <>
-          <ButtonWithFiltersModal {...inputFiltersProps} />
+          {selectedView !== 'feed' && (
+            <ButtonWithFiltersModal {...inputFiltersProps} />
+          )}
           {/* 
             If we have an inputTerm (are on the project page), we don't need this because the number of results is displayed next to the heading (see above). This fallback is used on the /ideas page, where we have no inputTerm. 
             TO DO: refactor this component so we can add it to the page instead to this general component.
@@ -258,6 +259,7 @@ const IdeasWithFiltersSidebar = ({
                 view={selectedView}
                 hasMoreThanOneView={false}
                 projectId={projectId}
+                projectSlug={projectSlug}
                 hasFilterSidebar={true}
                 phaseId={phaseId}
                 ideaMarkers={ideaMarkers}

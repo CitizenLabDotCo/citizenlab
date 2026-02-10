@@ -49,6 +49,7 @@ const MethodsUsedCard = ({
   endAt,
   compareStartAt,
   compareEndAt,
+  projectPublicationStatus,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -57,6 +58,9 @@ const MethodsUsedCard = ({
     end_at: endAt,
     compare_start_at: compareStartAt,
     compare_end_at: compareEndAt,
+    publication_statuses: projectPublicationStatus
+      ? [projectPublicationStatus]
+      : undefined,
   });
 
   const layout = useLayout();

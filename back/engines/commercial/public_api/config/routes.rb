@@ -18,6 +18,9 @@ PublicApi::Engine.routes.draw do
     end
 
     resources :files, concerns: :deleted_items
+    resources :file_attachments, only: %i[index show]
+    resources :ideas, only: %i[index show create update], concerns: :deleted_items
+    resources :internal_comments, only: %i[index show create], concerns: :deleted_items
 
     with_options only: %i[index show], concerns: :deleted_items do |route_mapper|
       route_mapper.resources :comments
@@ -27,11 +30,11 @@ PublicApi::Engine.routes.draw do
       route_mapper.resources :email_campaign_deliveries
       route_mapper.resources :events
       route_mapper.resources :event_attendances
-      route_mapper.resources :ideas
       route_mapper.resources :phases
       route_mapper.resources :project_folders
       route_mapper.resources :reactions, only: %i[index]
-      route_mapper.resources :topics
+      route_mapper.resources :global_topics
+      route_mapper.resources :input_topics
       route_mapper.resources :areas
       route_mapper.resources :users
       route_mapper.resources :volunteering_causes
@@ -42,10 +45,17 @@ PublicApi::Engine.routes.draw do
       end
     end
 
+    # Deprecated: merged topics endpoint (use /global_topics or /input_topics instead)
+    resources :topics, only: %i[index show] do
+      get 'deleted', on: :collection
+    end
+
     # Association endpoints
     resources :idea_phases, only: %i[index]
     resources :idea_topics, only: %i[index]
+    resources :ideas_input_topics, only: %i[index]
     resources :project_topics, only: %i[index]
+    resources :project_global_topics, only: %i[index]
   end
 end
 

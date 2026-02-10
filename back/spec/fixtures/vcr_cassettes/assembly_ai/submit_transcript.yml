@@ -1,0 +1,74 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.eu.assemblyai.com/v2/transcript
+    body:
+      encoding: UTF-8
+      string: '{"audio_url":"https://example.com/audio.mp3","punctuate":true,"format_text":true,"language_detection":true,"speaker_labels":true}'
+    headers:
+      Authorization:
+      - <ASSEMBLYAI_API_KEY>
+      Content-Type:
+      - application/json
+      User-Agent:
+      - Faraday v2.12.2
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 31 Jul 2025 13:07:31 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Content-Length:
+      - '1669'
+      Connection:
+      - keep-alive
+      Set-Cookie:
+      - AWSALB=YY9nYLqh65zG1p6ayll9c+7yln3Tt+p0QjHNaIVCtSA8XwJH8VXohfknQ2DpV1OopAkUnpnYCDFfk5ADR5Apzg/jr5EuWS05ZrZBwAKVhRBhU10lWrfPCRXhTq9a;
+        Expires=Thu, 07 Aug 2025 13:07:31 GMT; Path=/
+      - AWSALBCORS=YY9nYLqh65zG1p6ayll9c+7yln3Tt+p0QjHNaIVCtSA8XwJH8VXohfknQ2DpV1OopAkUnpnYCDFfk5ADR5Apzg/jr5EuWS05ZrZBwAKVhRBhU10lWrfPCRXhTq9a;
+        Expires=Thu, 07 Aug 2025 13:07:31 GMT; Path=/; SameSite=None; Secure
+      - AWSALBTG=JMqcgs+bnZ+DwYTriubSWJ1Aq4bAF7IFLXdq7TkFXaqXv+CBkcTb7UeG+cZqjc+Z7wqRQbDJJcEM0DhjGXKSYrNr6neoUKWf6JCUB2N0zs4PATVooQUvpIPgZWLd9X7GwswVtzSCuJE3yfx3SKshW3eYpgoksD1Qzq/MXkshPL5h;
+        Expires=Thu, 07 Aug 2025 13:07:31 GMT; Path=/
+      - AWSALBTGCORS=JMqcgs+bnZ+DwYTriubSWJ1Aq4bAF7IFLXdq7TkFXaqXv+CBkcTb7UeG+cZqjc+Z7wqRQbDJJcEM0DhjGXKSYrNr6neoUKWf6JCUB2N0zs4PATVooQUvpIPgZWLd9X7GwswVtzSCuJE3yfx3SKshW3eYpgoksD1Qzq/MXkshPL5h;
+        Expires=Thu, 07 Aug 2025 13:07:31 GMT; Path=/; SameSite=None; Secure
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Allow-Headers:
+      - Content-Type, Authorization, X-Requested-With, User-Agent, AssemblyAI-Agent
+      Access-Control-Allow-Methods:
+      - POST, PUT, GET, OPTIONS
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains; preload
+    body:
+      encoding: UTF-8
+      string: '{"id": "6db87a5b-db5e-4f59-a05c-503b64cdb7a9", "language_model": "assemblyai_default",
+        "acoustic_model": "assemblyai_default", "language_code": null, "status": "queued",
+        "audio_url": "https://example.com/audio.mp3", "text": null, "words": null,
+        "utterances": null, "confidence": null, "audio_duration": null, "punctuate":
+        true, "format_text": true, "dual_channel": false, "webhook_url": null, "webhook_status_code":
+        null, "webhook_auth": false, "webhook_auth_header_name": null, "speed_boost":
+        false, "auto_highlights_result": null, "auto_highlights": false, "audio_start_from":
+        null, "audio_end_at": null, "word_boost": [], "boost_param": null, "prompt":
+        null, "keyterms_prompt": null, "filter_profanity": false, "redact_pii": false,
+        "redact_pii_audio": false, "redact_pii_audio_quality": null, "redact_pii_audio_options":
+        null, "redact_pii_policies": null, "redact_pii_sub": null, "speaker_labels":
+        true, "speaker_options": null, "content_safety": false, "iab_categories":
+        false, "content_safety_labels": {}, "iab_categories_result": {}, "language_detection":
+        true, "language_confidence_threshold": null, "language_confidence": null,
+        "custom_spelling": null, "throttled": false, "auto_chapters": false, "summarization":
+        false, "summary_type": null, "summary_model": null, "custom_topics": false,
+        "topics": [], "speech_threshold": null, "speech_model": null, "chapters":
+        null, "disfluencies": false, "entity_detection": false, "sentiment_analysis":
+        false, "sentiment_analysis_results": null, "entities": null, "speakers_expected":
+        null, "summary": null, "custom_topics_results": null, "is_deleted": null,
+        "multichannel": null, "project_id": 667342, "token_id": 673447}'
+  recorded_at: Thu, 31 Jul 2025 13:07:31 GMT
+recorded_with: VCR 6.2.0

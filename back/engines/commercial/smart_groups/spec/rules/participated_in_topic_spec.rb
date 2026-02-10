@@ -3,11 +3,12 @@
 require 'rails_helper'
 
 describe SmartGroups::Rules::ParticipatedInTopic do
+  let(:project) { create(:project) }
   let(:valid_json_rule) do
     {
       'ruleType' => 'participated_in_topic',
       'predicate' => 'in',
-      'value' => create_list(:topic, 2).map(&:id)
+      'value' => create_list(:input_topic, 2, project: project).map(&:id)
     }
   end
   let(:valid_rule) { described_class.from_json(valid_json_rule) }
@@ -28,7 +29,7 @@ describe SmartGroups::Rules::ParticipatedInTopic do
     it 'rejects a rule with a mutli-value predicate and a single value' do
       rule = valid_json_rule.tap do |r|
         r['predicate'] = 'in'
-        r['value'] = Topic.first.id
+        r['value'] = InputTopic.first.id
       end
       expect(build(:smart_group, rules: [rule])).to be_invalid
     end
@@ -36,7 +37,7 @@ describe SmartGroups::Rules::ParticipatedInTopic do
     it 'accepts a rule with a single-value predicate and a single value' do
       rule = valid_json_rule.tap do |r|
         r['predicate'] = 'not_in'
-        r['value'] = Topic.first.id
+        r['value'] = InputTopic.first.id
       end
       expect(described_class.from_json(rule)).to be_valid
       expect(build(:smart_group, rules: [rule])).to be_valid
@@ -50,90 +51,91 @@ describe SmartGroups::Rules::ParticipatedInTopic do
 
   describe 'filter' do
     before do
-      @topic1 = create(:topic)
-      @topic2 = create(:topic)
-      @project = create(:project, allowed_input_topics: [@topic1, @topic2])
+      @project = create(:project)
+      @input_topic1 = create(:input_topic, project: @project)
+      @input_topic2 = create(:input_topic, project: @project)
       @user1 = create(:user)
       @user2 = create(:user)
       @user3 = create(:user)
       @user4 = create(:user)
-      @idea1 = create(:idea, topics: [@topic1], author: @user1, project: @project)
+      @idea1 = create(:idea, input_topics: [@input_topic1], author: @user1, project: @project)
       @comment = create(:comment, idea: @idea1, author: @user3)
       @reaction = create(:reaction, reactable: @comment, user: @user2)
-      @idea2 = create(:idea, topics: [@topic2], author: @user3, project: @project)
+      @idea2 = create(:idea, input_topics: [@input_topic2], author: @user3, project: @project)
     end
 
     it "correctly filters on 'in' predicate" do
-      rule = described_class.new('in', [@topic1.id])
+      rule = described_class.new('in', [@input_topic1.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array([@user1.id, @user2.id, @user3.id])
+      expect(@ids).to contain_exactly(@user1.id, @user2.id, @user3.id)
     end
 
     it "correctly filters on 'not_in' predicate" do
-      rule = described_class.new('not_in', @topic2.id)
+      rule = described_class.new('not_in', @input_topic2.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user1.id, @user2.id, @user4.id]
+      expect(@ids).to contain_exactly(@user1.id, @user2.id, @user4.id)
     end
 
     it "correctly filters on 'posted_in' predicate" do
-      rule = described_class.new('posted_in', [@topic1.id, @topic2.id])
+      rule = described_class.new('posted_in', [@input_topic1.id, @input_topic2.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user1.id, @user3.id]
+      expect(@ids).to contain_exactly(@user1.id, @user3.id)
     end
 
     it "correctly filters on 'not_posted_in' predicate" do
-      rule = described_class.new('not_posted_in', @topic1.id)
+      rule = described_class.new('not_posted_in', @input_topic1.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user2.id, @user3.id, @user4.id]
+      expect(@ids).to contain_exactly(@user2.id, @user3.id, @user4.id)
     end
 
     it "correctly filters on 'commented_in' predicate" do
-      rule = described_class.new('commented_in', [@topic1.id])
+      rule = described_class.new('commented_in', [@input_topic1.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user3.id]
+      expect(@ids).to contain_exactly(@user3.id)
     end
 
     it "correctly filters on 'not_commented_in' predicate" do
-      rule = described_class.new('not_commented_in', @topic1.id)
+      rule = described_class.new('not_commented_in', @input_topic1.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user1.id, @user2.id, @user4.id]
+      expect(@ids).to contain_exactly(@user1.id, @user2.id, @user4.id)
     end
 
     it "correctly filters on 'reacted_idea_in' predicate" do
-      rule = described_class.new('reacted_idea_in', [@topic1.id])
+      rule = described_class.new('reacted_idea_in', [@input_topic1.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
       expect(@ids).to be_empty
     end
 
     it "correctly filters on 'not_reacted_idea_in' predicate" do
-      rule = described_class.new('not_reacted_idea_in', @topic1.id)
+      rule = described_class.new('not_reacted_idea_in', @input_topic1.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user1.id, @user2.id, @user3.id, @user4.id]
+      expect(@ids).to contain_exactly(@user1.id, @user2.id, @user3.id, @user4.id)
     end
 
     it "correctly filters on 'reacted_comment_in' predicate" do
-      rule = described_class.new('reacted_comment_in', [@topic1.id])
+      rule = described_class.new('reacted_comment_in', [@input_topic1.id])
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user2.id]
+      expect(@ids).to contain_exactly(@user2.id)
     end
 
     it "correctly filters on 'not_reacted_comment_in' predicate" do
-      rule = described_class.new('not_reacted_comment_in', @topic1.id)
+      rule = described_class.new('not_reacted_comment_in', @input_topic1.id)
       expect { @ids = rule.filter(User).ids }.not_to exceed_query_limit(1)
-      expect(@ids).to match_array [@user1.id, @user3.id, @user4.id]
+      expect(@ids).to contain_exactly(@user1.id, @user3.id, @user4.id)
     end
   end
 
   describe 'description_multiloc' do
+    let(:project) { create(:project) }
     let(:topic1) do
-      create(:topic, title_multiloc: {
+      create(:input_topic, project: project, title_multiloc: {
         'en' => 'beer',
         'fr-FR' => 'bière',
         'nl-NL' => 'bier'
       })
     end
     let(:topic2) do
-      create(:topic, title_multiloc: {
+      create(:input_topic, project: project, title_multiloc: {
         'en' => 'delayed',
         'fr-FR' => 'retardé',
         'nl-NL' => 'uitgesteld'

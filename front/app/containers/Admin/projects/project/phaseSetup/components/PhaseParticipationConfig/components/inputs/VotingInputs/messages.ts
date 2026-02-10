@@ -59,6 +59,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.Voting.voteCalledPlaceholderPlural2',
     defaultMessage: 'E.g. tokens, points, carbon credits...',
   },
+  minimumOptions: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.minimumOptions',
+    defaultMessage: 'Minimum selected options',
+  },
+  minimumOptionsDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription2',
+    defaultMessage:
+      'For example, if you choose a minimum of 2 options, users will have to vote for at least 2 different options before they can submit.',
+  },
   maximumVotes: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.maximumVotes',
     defaultMessage: 'Maximum amount of votes',
@@ -95,5 +104,9 @@ export default defineMessages({
   creditTerm: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.creditTerm',
     defaultMessage: 'Credit',
+  },
+  percentTerm: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.percentTerm',
+    defaultMessage: 'Percent',
   },
 });

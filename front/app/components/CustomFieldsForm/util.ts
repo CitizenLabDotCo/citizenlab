@@ -1,5 +1,3 @@
-import { IOption } from 'typings';
-
 import { IFlatCustomField } from 'api/custom_fields/types';
 
 import { Localize } from 'hooks/useLocalize';
@@ -103,37 +101,35 @@ export const extractOptions = (
   question: IFlatCustomField,
   localize: Localize,
   randomize = false
-): IOption[] => {
-  let result: IOption[] = [];
-  if (question.options) {
-    result = question.options.map((selectOption) => {
-      return {
-        value: selectOption.key,
-        label: localize(selectOption.title_multiloc),
-        imageId: selectOption.image_id,
-      } as IOption;
-    });
+) => {
+  if (!question.options) return [];
 
-    if (randomize) {
-      // Separate "other" options from regular options
-      const otherOptions = result.filter((option) => option.value === 'other');
-      const regularOptions = result.filter(
-        (option) => option.value !== 'other'
-      );
+  let result = question.options.map((selectOption) => {
+    return {
+      value: selectOption.key,
+      label: localize(selectOption.title_multiloc),
+      image: selectOption.image,
+    };
+  });
 
-      // Shuffle only regular options
-      for (let i = regularOptions.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [regularOptions[i], regularOptions[j]] = [
-          regularOptions[j],
-          regularOptions[i],
-        ];
-      }
+  if (randomize) {
+    // Separate "other" options from regular options
+    const otherOptions = result.filter((option) => option.value === 'other');
+    const regularOptions = result.filter((option) => option.value !== 'other');
 
-      // Recombine arrays
-      result = [...regularOptions, ...otherOptions];
+    // Shuffle only regular options
+    for (let i = regularOptions.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [regularOptions[i], regularOptions[j]] = [
+        regularOptions[j],
+        regularOptions[i],
+      ];
     }
+
+    // Recombine arrays
+    result = [...regularOptions, ...otherOptions];
   }
+
   return result;
 };
 
@@ -170,4 +166,16 @@ export const getInstructionMessage = ({
     }
   }
   return null;
+};
+
+const PREFIX = 'u_';
+
+export const addPrefix = (customFieldValues: Record<string, any>) => {
+  const newValues = {};
+
+  for (const key in customFieldValues) {
+    newValues[`${PREFIX}${key}`] = customFieldValues[key];
+  }
+
+  return newValues;
 };

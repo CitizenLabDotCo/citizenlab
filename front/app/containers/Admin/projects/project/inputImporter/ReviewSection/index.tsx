@@ -27,7 +27,6 @@ import EmptyState from './EmptyState';
 import IdeaEditor from './IdeaEditor';
 import IdeaList from './IdeaList';
 import messages from './messages';
-import PDFPageControl from './PDFPageControl';
 import PDFViewer from './PDFViewer';
 
 const ReviewSection = ({
@@ -62,8 +61,6 @@ const ReviewSection = ({
   const { mutate: approveIdeas, isLoading: isApproving } =
     useApproveOfflineIdeas();
 
-  const [currentPageIndex, setCurrentPageIndex] = useState(0);
-
   const { data: idea } = useIdeaById(ideaId ?? undefined, false);
   const { data: ideaMetadata } = useImportedIdeaMetadata({
     id: isLoadingIdeas
@@ -79,7 +76,6 @@ const ReviewSection = ({
   }
 
   const handleSelectIdea = (ideaId: string) => {
-    setCurrentPageIndex(0);
     setIdeaId(ideaId);
   };
 
@@ -88,11 +84,12 @@ const ReviewSection = ({
       onSuccess: () => {
         if (ideaId === idToBeDeleted) {
           setIdeaId(null);
-          setCurrentPageIndex(0);
         }
       },
     });
   };
+
+  const importType = ideaMetadata?.data.attributes.import_type;
 
   const handleApproveAll = () => {
     approveIdeas(phaseId, {
@@ -103,16 +100,6 @@ const ReviewSection = ({
       },
     });
   };
-
-  const pages =
-    ideaMetadata?.data.attributes.import_type === 'pdf'
-      ? // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        ideaMetadata?.data.attributes.page_range.map((page) => Number(page))
-      : null;
-
-  const goToNextPage = () => setCurrentPageIndex((index) => index + 1);
-  const goToPreviousPage = () => setCurrentPageIndex((index) => index - 1);
 
   return (
     <Box
@@ -141,7 +128,7 @@ const ReviewSection = ({
         borderBottom={`5px ${colors.grey200} solid`}
         display="flex"
       >
-        <Box w="60%" display="flex" alignItems="center">
+        <Box w="100%" display="flex" alignItems="center">
           {approvals.not_approved === 0 ? (
             <>
               <Box px="15px" py="10px">
@@ -172,24 +159,6 @@ const ReviewSection = ({
               marginTop="0px"
               showBackground={false}
               showIcon={true}
-            />
-          )}
-        </Box>
-        <Box
-          w="40%"
-          display="flex"
-          flexDirection="column"
-          justifyContent="center"
-          alignItems="center"
-        >
-          {pages && (
-            <PDFPageControl
-              currentPageNumber={currentPageIndex + 1}
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              numberOfPages={pages?.length}
-              goToNextPage={goToNextPage}
-              goToPreviousPage={goToPreviousPage}
             />
           )}
         </Box>
@@ -259,15 +228,14 @@ const ReviewSection = ({
           <IdeaEditor ideaId={ideaId} setIdeaId={setIdeaId} />
         </Box>
         <Box w="40%">
-          {ideaMetadata && pages && (
+          {ideaMetadata && ideaId && importType === 'pdf' && (
             <PDFViewer
-              currentPageIndex={currentPageIndex}
               file={ideaMetadata.data.attributes.file.url}
-              pages={pages}
+              ideaId={ideaId}
             />
           )}
-          {ideaMetadata?.data.attributes.import_type === 'xlsx' && (
-            <Box w="100%" h="100%" m="10px">
+          {importType === 'xlsx' && (
+            <Box w="100%" h="100%" m="16px">
               <Text>
                 <FormattedMessage {...messages.pdfNotAvailable} />
               </Text>

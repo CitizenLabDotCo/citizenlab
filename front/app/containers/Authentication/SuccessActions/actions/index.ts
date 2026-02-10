@@ -7,6 +7,10 @@ import {
 
 import { follow, FollowActionParams } from './follow';
 import {
+  followProjectAndRedirect,
+  FollowProjectAndRedirectParams,
+} from './followProjectAndRedirect';
+import {
   reactionOnComment,
   ReactionOnCommentParams,
 } from './reactionOnComment';
@@ -71,6 +75,11 @@ interface SubmitPollAction {
   params: SubmitPollParams;
 }
 
+interface FollowProjectAndRedirectAction {
+  name: 'followProjectAndRedirect';
+  params: FollowProjectAndRedirectParams;
+}
+
 export type SuccessAction =
   | RedirectToIdeaFormAction
   | ReplyToCommentAction
@@ -81,7 +90,8 @@ export type SuccessAction =
   | ReactionOnIdeaAction
   | FollowAction
   | SubmitPollAction
-  | AttendEventAction;
+  | AttendEventAction
+  | FollowProjectAndRedirectAction;
 
 // https://hackernoon.com/mastering-type-safe-json-serialization-in-typescript
 type JSONPrimitive = string | number | boolean | null | undefined;
@@ -194,6 +204,11 @@ export const getAction = ({ name, params }: SuccessAction) => {
   if (name === 'submitPoll') {
     ensureJSONSerializable(params);
     return submitPoll(params);
+  }
+
+  if (name === 'followProjectAndRedirect') {
+    ensureJSONSerializable(params);
+    return followProjectAndRedirect(params);
   }
 
   ensureJSONSerializable(params);

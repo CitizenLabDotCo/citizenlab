@@ -38,7 +38,6 @@ const PhaseFilter = ({
 }: Props) => {
   const { data: phases } = usePhases(projectId);
   const localize = useLocalize();
-
   const correctPhases = useMemo(() => {
     if (!phases) return null;
 

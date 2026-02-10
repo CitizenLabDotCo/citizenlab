@@ -11,10 +11,10 @@ import { useParams } from 'utils/router';
 import { RouteType } from 'routes';
 
 import { IIdeaStatusData } from 'api/idea_statuses/types';
+import { IInputTopicData } from 'api/input_topics/types';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
-import { ITopicData } from 'api/topics/types';
 
 import { ManagerType, TFilterMenu } from 'components/admin/PostManager';
 
@@ -32,7 +32,7 @@ interface Props {
   phases?: IPhaseData[];
   projects?: IProjectData[];
   statuses: IIdeaStatusData[];
-  topics: ITopicData[];
+  topics?: IInputTopicData[];
   selectedTopics?: string[] | null;
   selectedPhase: string | undefined;
   selectedProject?: string | null;
@@ -82,7 +82,7 @@ const FilterSidebar = ({
       (type === 'ProjectIdeas' || type === 'ProjectProposals') &&
       typeof projectId === 'string'
     ) {
-      return `/admin/projects/${projectId}/settings/tags`;
+      return `/admin/projects/${projectId}/general/input-tags`;
     } else if (isAdmin(authUser)) {
       // For admins we show the link to the platform-wide tag manager
       return '/admin/settings/topics';
@@ -156,7 +156,7 @@ const FilterSidebar = ({
     {
       name: tabName('topicsTab', selectedTopics, 'topics'),
       key: 'topics',
-      content: (
+      content: topics && (
         <FilterSidebarTopics
           selectableTopics={topics}
           selectedTopics={selectedTopics}

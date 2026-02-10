@@ -16,6 +16,8 @@ import useCommunityMonitorSentimentScores from 'api/community_monitor_scores/use
 
 import useLocale from 'hooks/useLocale';
 
+import { AccessibilityProps } from 'components/admin/Graphs/typings';
+
 import { useIntl } from 'utils/cl-intl';
 
 import CategoryScores from './components/CategoryScores';
@@ -36,7 +38,12 @@ type Props = {
   quarter?: string;
   year?: string;
 };
-const HealthScoreWidget = ({ phaseId, ...props }: Props) => {
+const HealthScoreWidget = ({
+  phaseId,
+  ariaDescribedBy,
+  ariaLabel,
+  ...props
+}: Props & AccessibilityProps) => {
   const locale = useLocale();
   const [search] = useSearch({ strict: false });
   const { formatMessage } = useIntl();
@@ -58,6 +65,10 @@ const HealthScoreWidget = ({ phaseId, ...props }: Props) => {
     year,
     quarter
   );
+  const accessibilityProps = {
+    ariaLabel,
+    ariaDescribedBy,
+  };
 
   // Get the current overall health score
   const currentOverallHealthScore = sentimentScores?.overallHealthScores.find(
@@ -131,7 +142,10 @@ const HealthScoreWidget = ({ phaseId, ...props }: Props) => {
             />
           </Box>
         </Box>
-        <HealthScoreChart sentimentScores={sentimentScores} />
+        <HealthScoreChart
+          sentimentScores={sentimentScores}
+          {...accessibilityProps}
+        />
       </Box>
       <Box mt="20px">
         <CategoryScores

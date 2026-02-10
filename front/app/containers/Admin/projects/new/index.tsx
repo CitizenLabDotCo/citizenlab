@@ -8,7 +8,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { InsertConfigurationOptions } from 'typings';
 
-import AdminProjectsProjectGeneral from 'containers/Admin/projects/project/general';
+import AdminProjectsProjectGeneralSetUp from 'containers/Admin/projects/project/general/setUp';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import Outlet from 'components/Outlet';
@@ -57,7 +57,7 @@ const CreateProject = () => {
         if (projectId) {
           setTimeout(() => {
             clHistory.push({
-              pathname: `${adminProjectsProjectPath(projectId)}/phases/new`,
+              pathname: `${adminProjectsProjectPath(projectId)}/general`,
             });
           }, 1000);
         }
@@ -109,7 +109,7 @@ const CreateProject = () => {
           id="app.containers.Admin.projects.all.createProject"
           selectedTabValue={selectedTabValue}
         />
-        {selectedTabValue === 'scratch' && <AdminProjectsProjectGeneral />}
+        {selectedTabValue === 'scratch' && <AdminProjectsProjectGeneralSetUp />}
       </Box>
     </Box>
   );

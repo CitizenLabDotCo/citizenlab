@@ -103,27 +103,27 @@ describe OmniAuth::Strategies::AzureActiveDirectory do
 
         before { strategy.callback_phase }
 
-        it 'should contain the name' do
+        it 'contains the name' do
           expect(auth.info['name']).to eq name
         end
 
-        it 'should contain the first name' do
+        it 'contains the first name' do
           expect(auth.info['first_name']).to eq given_name
         end
 
-        it 'should contain the last name' do
+        it 'contains the last name' do
           expect(auth.info['last_name']).to eq family_name
         end
 
-        it 'should contain the email' do
+        it 'contains the email' do
           expect(auth.info['email']).to eq email
         end
 
-        it 'should contain the auth code' do
+        it 'contains the auth code' do
           expect(auth.credentials['code']).to eq code
         end
 
-        it 'should contain the session state' do
+        it 'contains the session state' do
           expect(auth.extra['session_state']).to eq session_state
         end
       end
@@ -178,7 +178,7 @@ describe OmniAuth::Strategies::AzureActiveDirectory do
     context 'with no alg header' do
       let(:id_token) { Rails.root.join('spec/fixtures/azure_active_directory/id_token_no_alg.txt').read }
 
-      it 'should correctly parse using default RS256' do
+      it 'correctlies parse using default RS256' do
         expect(callback_phase).not_to raise_error
       end
 
@@ -187,7 +187,7 @@ describe OmniAuth::Strategies::AzureActiveDirectory do
 
         before { strategy.callback_phase }
 
-        it 'should default to RS256' do
+        it 'defaults to RS256' do
           expect(auth.info['name']).to eq name
         end
       end
@@ -201,11 +201,11 @@ describe OmniAuth::Strategies::AzureActiveDirectory do
 
     before { strategy.call!(env) }
 
-    it 'should make a redirect' do
+    it 'makes a redirect' do
       expect(request_phase.first).to eq 302
     end
 
-    it 'should redirect to the correct endpoint' do
+    it 'redirects to the correct endpoint' do
       expect(URI(request_phase[1]['Location']).host).to eq auth_endpoint_host
     end
   end
@@ -225,7 +225,7 @@ describe OmniAuth::Strategies::AzureActiveDirectory do
     context 'after a nonce is set' do
       before { @nonce = strategy.send(:new_nonce) }
 
-      it 'should match' do
+      it 'matches' do
         expect(read_nonce).to eq @nonce
       end
     end

@@ -151,10 +151,10 @@ class Tenant < ApplicationRecord
     end
   end
 
-  def switch(&block)
+  def switch(&)
     raise Apartment::TenantNotFound unless schema_name
 
-    Apartment::Tenant.switch(schema_name, &block)
+    Apartment::Tenant.switch(schema_name, &)
   end
 
   def switch!

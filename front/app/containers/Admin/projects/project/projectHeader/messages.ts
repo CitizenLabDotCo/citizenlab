@@ -1,10 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  settings: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.settings',
-    defaultMessage: 'Settings',
-  },
   view: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.view',
     defaultMessage: 'View',
@@ -160,10 +156,6 @@ export default defineMessages({
   approvedBy: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.approvedBy',
     defaultMessage: 'Approved by {name}',
-  },
-  editDescription: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.editDescription',
-    defaultMessage: 'Edit description',
   },
   public: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.projectHeader.public',

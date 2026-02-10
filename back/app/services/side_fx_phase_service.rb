@@ -8,7 +8,6 @@ class SideFxPhaseService
   def before_create(phase, user); end
 
   def after_create(phase, user)
-    phase.update!(description_multiloc: TextImageService.new.swap_data_images_multiloc(phase.description_multiloc, field: :description_multiloc, imageable: phase))
     LogActivityJob.perform_later(
       phase,
       'created',
@@ -29,8 +28,6 @@ class SideFxPhaseService
   end
 
   def before_update(phase, _user)
-    phase.description_multiloc = TextImageService.new.swap_data_images_multiloc(phase.description_multiloc, field: :description_multiloc, imageable: phase)
-
     if phase.pmethod.allowed_ideas_orders.exclude? phase.ideas_order
       phase.ideas_order = phase.pmethod.allowed_ideas_orders.first
     end
@@ -52,7 +49,7 @@ class SideFxPhaseService
     permissions_update_service.update_permissions_for_scope(phase)
 
     %i[
-      description_multiloc voting_method voting_max_votes_per_idea voting_max_total voting_min_total
+      description_multiloc voting_method voting_max_votes_per_idea voting_min_selected_options voting_max_total voting_min_total
       submission_enabled commenting_enabled reacting_enabled
       reacting_like_method reacting_like_limited_max reacting_dislike_enabled presentation_mode participation_method
       autoshare_results_enabled manual_voters_amount survey_popup_frequency

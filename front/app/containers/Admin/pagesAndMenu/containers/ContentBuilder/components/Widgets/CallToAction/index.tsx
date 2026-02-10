@@ -128,6 +128,9 @@ const CallToAction = ({
   const isSmallerThanTablet = useBreakpoint('tablet');
   const lоcalize = useLocalize();
 
+  const renderSecondaryButton = secondaryButtonLink && secondaryButtonText;
+  const renderPrimaryButton = primaryButtonLink && primaryButtonText;
+  const renderAnyButton = renderSecondaryButton || renderPrimaryButton;
   return (
     <Box
       data-cy="e2e-highlight"
@@ -143,45 +146,46 @@ const CallToAction = ({
             flex="1 1 auto"
             w="100%"
             maxWidth={isSmallerThanTablet ? undefined : '400px'}
+            tabIndex={0}
           >
             <Title variant="h2" color="tenantText" mt="0">
               {lоcalize(title)}
             </Title>
-            <Text color="textSecondary" m="0">
+            <Text color="tenantText" m="0">
               {lоcalize(description)}
             </Text>
           </Box>
-          <ButtonContainer>
-            {((enabled && secondaryButtonText) ||
-              (secondaryButtonLink && secondaryButtonText)) && (
-              <ButtonWithLink
-                fontWeight="500"
-                padding="13px 22px"
-                buttonStyle="text"
-                textColor={theme.colors.tenantPrimary}
-                textDecorationHover="underline"
-                fullWidth={isSmallerThanTablet}
-                linkTo={getLink(secondaryButtonLink)}
-                scrollToTop
-                openLinkInNewTab={openInNewTab(secondaryButtonLink)}
-              >
-                {lоcalize(secondaryButtonText)}
-              </ButtonWithLink>
-            )}
-            {((enabled && primaryButtonText) ||
-              (primaryButtonLink && primaryButtonText)) && (
-              <StyledPrimaryButton
-                fontWeight="500"
-                linkTo={getLink(primaryButtonLink)}
-                scrollToTop
-                buttonStyle="primary"
-                padding="13px 22px"
-                openLinkInNewTab={openInNewTab(primaryButtonLink)}
-              >
-                {lоcalize(primaryButtonText)}
-              </StyledPrimaryButton>
-            )}
-          </ButtonContainer>
+          {enabled && renderAnyButton && (
+            <ButtonContainer>
+              {renderSecondaryButton && (
+                <ButtonWithLink
+                  fontWeight="500"
+                  padding="13px 22px"
+                  buttonStyle="text"
+                  textColor={theme.colors.tenantPrimary}
+                  textDecorationHover="underline"
+                  fullWidth={isSmallerThanTablet}
+                  linkTo={getLink(secondaryButtonLink)}
+                  scrollToTop
+                  openLinkInNewTab={openInNewTab(secondaryButtonLink)}
+                >
+                  {lоcalize(secondaryButtonText)}
+                </ButtonWithLink>
+              )}
+              {renderPrimaryButton && (
+                <StyledPrimaryButton
+                  fontWeight="500"
+                  linkTo={getLink(primaryButtonLink)}
+                  scrollToTop
+                  buttonStyle="primary"
+                  padding="13px 22px"
+                  openLinkInNewTab={openInNewTab(primaryButtonLink)}
+                >
+                  {lоcalize(primaryButtonText)}
+                </StyledPrimaryButton>
+              )}
+            </ButtonContainer>
+          )}
         </Container>
       </Box>
     </Box>

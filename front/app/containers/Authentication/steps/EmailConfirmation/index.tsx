@@ -5,8 +5,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 
-import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
-
 import Input from 'components/HookForm/Input';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -26,8 +24,9 @@ interface Props {
   state: State;
   loading: boolean;
   setError: SetError;
-  onConfirm: (code: string) => void;
+  onConfirm: (email: string, code: string) => void;
   onChangeEmail?: () => void;
+  onResendCode: (email: string) => Promise<void>;
 }
 
 interface FormValues {
@@ -48,6 +47,7 @@ const EmailConfirmation = ({
   setError,
   onConfirm,
   onChangeEmail,
+  onResendCode,
 }: Props) => {
   const [codeResent, setCodeResent] = useState(false);
   const [resendingCode, setResendingCode] = useState(false);
@@ -71,12 +71,15 @@ const EmailConfirmation = ({
     resolver: yupResolver(schema),
   });
 
+  const email = state.email;
+  if (!email) return null;
+
   const handleConfirm = async ({ code }: FormValues) => {
     setResendingCode(false);
     setCodeResent(false);
 
     try {
-      await onConfirm(code);
+      await onConfirm(email, code);
     } catch (e) {
       if (isCLErrorsWrapper(e)) {
         handleHookFormSubmissionError(e, methods.setError);
@@ -96,7 +99,7 @@ const EmailConfirmation = ({
     e.preventDefault();
     setResendingCode(true);
 
-    resendEmailConfirmationCode()
+    onResendCode(email)
       .then(() => {
         setResendingCode(false);
         setCodeResent(true);
@@ -107,19 +110,18 @@ const EmailConfirmation = ({
       });
   };
 
-  const handleChangeEmail = (e: FormEvent) => {
-    e.preventDefault();
-    onChangeEmail && onChangeEmail();
-  };
+  const handleChangeEmail = onChangeEmail
+    ? (e: FormEvent) => {
+        e.preventDefault();
+        onChangeEmail();
+      }
+    : undefined;
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(handleConfirm)}>
         <Box mt="-8px">
-          <CodeSentMessage
-            email={state.email ?? undefined}
-            codeResent={codeResent}
-          />
+          <CodeSentMessage email={email} codeResent={codeResent} />
         </Box>
         <Box>
           <Input
@@ -144,7 +146,7 @@ const EmailConfirmation = ({
           <FooterNotes
             codeResent={codeResent}
             onResendCode={handleResendCode}
-            onChangeEmail={onChangeEmail ? handleChangeEmail : undefined}
+            onChangeEmail={handleChangeEmail}
           />
         </Box>
       </form>

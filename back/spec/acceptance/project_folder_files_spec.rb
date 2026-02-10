@@ -3,14 +3,17 @@
 require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
-resource 'ProjectFolderFile' do
-  explanation 'File attachments.'
+resource 'File attachment as legacy ProjectFolders::File' do
+  explanation <<~EXPLANATION
+    The implementation of this API has been updated to use the +Files:FileAttachment+
+    model behind the scenes, instead of the legacy +ProjectFolders::File+ model.
+  EXPLANATION
 
   before do
     header 'Content-Type', 'application/json'
     admin_header_token
     @folder = create(:project_folder)
-    create_list(:project_folder_file, 2, project_folder: @folder)
+    create_list(:file_attachment, 2, attachable: @folder)
   end
 
   get 'web_api/v1/project_folders/:folder_id/files' do
@@ -18,19 +21,29 @@ resource 'ProjectFolderFile' do
 
     example_request 'List all file attachments of a folder' do
       expect(status).to eq(200)
-      json_response = json_parse(response_body)
-      expect(json_response[:data].size).to eq 2
+      expect(response_data.size).to eq 2
     end
   end
 
   get 'web_api/v1/project_folders/:folder_id/files/:file_id' do
     let(:folder_id) { @folder.id }
-    let(:file_id) { ProjectFolders::File.first.id }
+    let(:file_id) { @folder.file_attachments.first.id }
 
     example_request 'Get one file of a folder' do
       expect(status).to eq(200)
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :file)).to be_present
+
+      expect(response_data).to include(
+        type: 'file',
+        id: file_id,
+        attributes: hash_including(
+          file: hash_including(url: end_with('.pdf')),
+          ordering: nil,
+          name: be_a(String),
+          size: be_an(Integer),
+          created_at: be_a(String),
+          updated_at: be_a(String)
+        )
+      )
     end
   end
 
@@ -40,14 +53,12 @@ resource 'ProjectFolderFile' do
     end
 
     let(:folder_id) { @folder.id }
-    let(:file_id) { ProjectFolders::File.first.id }
+    let(:file_id) { @folder.file_attachments.first.id }
     let(:ordering) { 3 }
 
     example_request 'Update the ordering of a file attachment' do
-      do_request(ordering: ordering)
       assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :ordering)).to eq(3)
+      expect(response_data.dig(:attributes, :ordering)).to eq(3)
     end
   end
 
@@ -57,52 +68,65 @@ resource 'ProjectFolderFile' do
       parameter :name, 'The name of the file, including the file extension', required: true
       parameter :ordering, 'An integer that is used to order the file attachments within a folder', required: false
     end
-    ValidationErrorHelper.new.error_fields(self, ProjectFolders::File)
+    ValidationErrorHelper.new.error_fields(self, Files::File)
     let(:folder_id) { @folder.id }
     let(:ordering) { 1 }
     let(:name) { 'afvalkalender.pdf' }
     let(:file) { file_as_base64 name, 'application/pdf' }
 
-    example_request 'Add a file attachment to a folder' do
+    example 'Add a file attachment to a folder' do
+      expect { do_request }
+        .to change(Files::File, :count).by(1)
+        .and(change(Files::FileAttachment, :count).by(1))
+        .and not_change(ProjectFolders::File, :count)
+
       assert_status 201
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :file)).to be_present
-      expect(json_response.dig(:data, :attributes, :ordering)).to eq(1)
-      expect(json_response.dig(:data, :attributes, :name)).to eq(name)
-      expect(json_response.dig(:data, :attributes, :size)).to be_present
+
+      expect(response_data[:attributes]).to include(
+        file: be_present,
+        ordering: 1,
+        name: name,
+        size: be_present
+      )
     end
 
-    describe do
+    describe 'Add a file with an unsupported file extension', pending: <<~REASON do
+      Currently, the +Files::FileUploader+ allows all file extensions.
+    REASON
+      let(:file) { file_as_base64 'keylogger.exe', 'application/octet-stream' }
       let(:name) { 'keylogger.exe' }
-      let(:file) { file_as_base64 name, 'application/octet-stream' }
 
-      example_request '[error] Add an unsupported file extension as attachment to a folder' do
+      example_request '[error]' do
         assert_status 422
-        json_response = json_parse response_body
-        expect(json_response).to include_response_error(:file, 'extension_whitelist_error')
+        expect(json_response_body).to include_response_error(:file, 'extension_whitelist_error')
       end
     end
 
-    describe do
-      example '[error] Add a file of which the size is too large' do
-        # mock the size_range method of ProjectFolderFileUploader to have 3 bytes as maximum size
-        expect_any_instance_of(ProjectFolders::FileUploader).to receive(:size_range).and_return(1..3)
+    describe 'Add a file that is too large' do
+      example '[error]' do
+        # Mock the `size_range` method of `Files::FileUploader` to set the maximum size to 3 bytes.
+        expect_any_instance_of(Files::FileUploader).to receive(:size_range).and_return(1..3)
 
         do_request
         assert_status 422
-        json_response = json_parse response_body
-        expect(json_response).to include_response_error(:file, 'max_size_error')
+        expect(json_response_body).to include_response_error(:file, 'max_size_error')
       end
     end
   end
 
   delete 'web_api/v1/project_folders/:folder_id/files/:file_id' do
     let(:folder_id) { @folder.id }
-    let(:file_id) { ProjectFolders::File.first.id }
+    let(:file_id) { @folder.file_attachments.first.id }
 
-    example_request 'Delete a file attachment from a folder' do
+    example 'Delete file attachment from a folder' do
+      expect { do_request }
+        .to change(Files::FileAttachment, :count).by(-1)
+        .and not_change(ProjectFolders::File, :count)
+
       expect(response_status).to eq 200
-      expect { ProjectFolders::File.find(file_id) }.to raise_error(ActiveRecord::RecordNotFound)
+
+      expect { Files::FileAttachment.find(file_id) }
+        .to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

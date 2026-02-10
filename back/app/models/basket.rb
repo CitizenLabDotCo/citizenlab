@@ -22,6 +22,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Basket < ApplicationRecord
+  include LocationTrackableParticipation
   belongs_to :phase
 
   belongs_to :user, optional: true
@@ -36,7 +37,7 @@ class Basket < ApplicationRecord
   scope :submitted, -> { where.not(submitted_at: nil) }
   scope :not_submitted, -> { where(submitted_at: nil) }
 
-  delegate :project_id, to: :phase
+  delegate :project_id, :project, to: :phase
 
   def submitted?
     !!submitted_at
@@ -119,7 +120,12 @@ class Basket < ApplicationRecord
   def basket_submission
     return unless submitted?
 
-    if phase.voting_min_total && (total_votes < phase.voting_min_total)
+    if baskets_ideas.size < phase.voting_min_selected_options
+      errors.add(
+        :baskets_ideas, :greater_than_or_equal_to, value: baskets_ideas.size, count: phase.voting_min_selected_options,
+        message: "must be greater than or equal to #{phase.voting_min_selected_options}"
+      )
+    elsif phase.voting_min_total && (total_votes < phase.voting_min_total)
       errors.add(
         :total_votes, :greater_than_or_equal_to, value: total_votes, count: phase.voting_min_total,
         message: "must be greater than or equal to #{phase.voting_min_total}"
@@ -129,6 +135,7 @@ class Basket < ApplicationRecord
         :total_votes, :less_than_or_equal_to, value: total_votes, count: phase.voting_max_total,
         message: "must be less than or equal to #{phase.voting_max_total}"
       )
+
     end
 
     max_votes = phase.voting_max_votes_per_idea

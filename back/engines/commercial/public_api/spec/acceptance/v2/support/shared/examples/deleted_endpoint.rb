@@ -2,8 +2,8 @@
 
 # @example
 #   include_examples '/api/v2/.../deleted', :ideas
-RSpec.shared_examples '/api/v2/.../deleted' do |collection|
-  item_type = collection.to_s.singularize.classify
+RSpec.shared_examples '/api/v2/.../deleted' do |collection, options = {}|
+  item_type = options[:item_type] || collection.to_s.singularize.classify
 
   get "/api/v2/#{collection}/deleted" do
     parameter(

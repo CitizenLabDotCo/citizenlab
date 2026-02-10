@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
   s.add_dependency 'omniauth-saml', '~> 2.2.0'
-  s.add_dependency 'rails', '~> 7.0'
+  s.add_dependency 'rails', '~> 7.2'
 
   s.add_development_dependency 'rspec_api_documentation'
   s.add_development_dependency 'rspec-rails'

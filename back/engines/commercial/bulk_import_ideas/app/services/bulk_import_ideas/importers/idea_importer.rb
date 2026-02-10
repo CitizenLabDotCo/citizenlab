@@ -2,7 +2,7 @@
 
 module BulkImportIdeas::Importers
   class IdeaImporter < BaseImporter
-    DEFAULT_MAX_IDEAS = 2000
+    DEFAULT_MAX_IDEAS = 5000
     DATE_FORMAT_REGEX = /^(0[1-9]|[1|2][0-9]|3[0|1])-(0[1-9]|1[0-2])-([0-9]{4})$/ # After https://stackoverflow.com/a/47218282/3585671
 
     def import(idea_rows)
@@ -30,7 +30,7 @@ module BulkImportIdeas::Importers
       add_publication_status idea_row, idea_attributes
       add_location idea_row, idea_attributes
       add_phase idea_row, idea_attributes
-      add_topics idea_row, idea_attributes
+      add_input_topics idea_row, idea_attributes
       add_custom_fields idea_row, idea_attributes
       user_created = add_author idea_row, idea_attributes
 
@@ -111,7 +111,9 @@ module BulkImportIdeas::Importers
         )
       end
 
+      # Set both published_at and submitted_at to the same value
       idea_attributes[:published_at] = published_at
+      idea_attributes[:submitted_at] = published_at
     end
 
     # Add the current time to the date to ensure consistent sorting by published_at date
@@ -160,20 +162,20 @@ module BulkImportIdeas::Importers
       idea_attributes[:phases] = [phase]
     end
 
-    def add_topics(idea_row, idea_attributes)
+    def add_input_topics(idea_row, idea_attributes)
       idea_row[:topic_titles] ||= []
-      topics_ids = idea_row[:topic_titles].map do |topic_title|
+      input_topics_ids = idea_row[:topic_titles].map do |topic_title|
         topic_title = topic_title.downcase.strip
-        Topic.all.find do |topic|
+        idea_attributes[:project].input_topics.find do |topic|
           topic
             .title_multiloc
             .values
             .map(&:downcase)
             .include? topic_title
         end
-      end.select(&:present?).map(&:id).uniq
+      end.compact_blank.map(&:id).uniq
 
-      idea_attributes[:topic_ids] = topics_ids
+      idea_attributes[:input_topic_ids] = input_topics_ids
     end
 
     def add_custom_fields(idea_row, idea_attributes)

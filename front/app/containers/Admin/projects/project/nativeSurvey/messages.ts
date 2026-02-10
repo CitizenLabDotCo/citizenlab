@@ -9,11 +9,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.surveyResponses',
     defaultMessage: 'Survey responses',
   },
-  informationText: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.informationText4',
-    defaultMessage:
-      'AI summaries for short answer, long answer, and sentiment scale follow up questions can be accessed from the AI tab in the left sidebar.',
-  },
   openForResponses: {
     id: 'app.containers.AdminPage.ProjectEdit.survey.openForResponses2',
     defaultMessage: 'Open for responses',
@@ -39,10 +34,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.survey.successMessage2',
     defaultMessage: 'Survey successfully saved',
   },
-  supportArticleLink: {
-    id: 'app.containers.AdminPage.ProjectEdit.survey.supportArticleLink2',
+  supportArticleLinkSurvey: {
+    id: 'app.containers.AdminPage.ProjectEdit.survey.supportArticleLinkSurvey',
     defaultMessage:
-      'https://support.govocal.com/en/articles/6673873-creating-an-in-platform-survey',
+      'https://support.govocal.com/en/articles/527602-creating-an-in-platform-survey',
   },
   surveyEnd: {
     id: 'app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd2',

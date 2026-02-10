@@ -17,7 +17,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 interface Props {
-  showAnyone: boolean;
+  showAnyone?: 'show' | 'show-with-new-label';
   permittedBy: PermittedBy;
   onUpdate: (permittedBy: PermittedBy) => void;
 }
@@ -56,6 +56,7 @@ const CardButtons = ({ showAnyone, permittedBy, onUpdate }: Props) => {
               />
             }
             title={formatMessage(messages.none)}
+            titleNewLabel={showAnyone === 'show-with-new-label'}
             subtitle={formatMessage(messages.noneSubtitle)}
             onClick={handleUpdate('everyone')}
             selected={permittedBy === 'everyone'}

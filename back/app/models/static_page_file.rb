@@ -22,7 +22,6 @@
 # Foreign Keys
 #
 #  fk_rails_...  (migrated_file_id => files.id)
-#  fk_rails_...  (static_page_id => static_pages.id)
 #
 class StaticPageFile < ApplicationRecord
   include FileMigratable

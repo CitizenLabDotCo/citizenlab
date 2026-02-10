@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
@@ -7,13 +7,16 @@ import styled from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import useIdeaById from 'api/ideas/useIdeaById';
+import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
-import SubmissionReference from 'components/Form/Components/Layouts/SubmissionReference';
+import { triggerPostParticipationFlow } from 'containers/Authentication/events';
+
+import SubmissionReference from 'components/CustomFieldsForm/SubmissionReference';
 import Feedback from 'components/HookForm/Feedback';
 
 import clHistory from 'utils/cl-router/history';
@@ -28,9 +31,14 @@ import PageFooter from '../Page/PageFooter';
 import PageTitle from '../Page/PageTitle';
 import { FormValues } from '../Page/types';
 import usePageForm from '../Page/usePageForm';
+import PostParticipationBox from '../PostParticipationBox';
 import { getFormCompletionPercentage, Pages } from '../util';
 
-import { determineNextPageNumber, determinePreviousPageNumber } from './logic';
+import {
+  determineNextPageNumber,
+  determinePreviousPageNumber,
+  getSkippedPageIndices,
+} from './logic';
 
 const StyledForm = styled.form`
   height: 100%;
@@ -42,6 +50,8 @@ type SurveyPage = {
   pageQuestions: IFlatCustomField[];
   currentPageIndex: number;
   setCurrentPageIndex: React.Dispatch<React.SetStateAction<number>>;
+  userNavigationHistory: number[];
+  setUserNavigationHistory: React.Dispatch<React.SetStateAction<number[]>>;
   lastPageIndex: number;
   participationMethod?: ParticipationMethod;
   ideaId?: string;
@@ -68,6 +78,8 @@ const SurveyPage = ({
   onSubmit,
   currentPageIndex,
   setCurrentPageIndex,
+  userNavigationHistory,
+  setUserNavigationHistory,
   phase,
   defaultValues,
 }: SurveyPage) => {
@@ -81,6 +93,7 @@ const SurveyPage = ({
   const isAdminPage = isPage('admin', pathname);
   const isMapPage = page.page_layout === 'map';
   const isMobileOrSmaller = useBreakpoint('phone');
+  const { data: authUser } = useAuthUser();
 
   const [searchParams] = useSearch({ strict: false });
   const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
@@ -102,9 +115,8 @@ const SurveyPage = ({
     });
 
   const previousPageNumber = determinePreviousPageNumber({
-    pages,
-    currentPage: page,
-    formData: methods.watch(),
+    userNavigationHistory,
+    currentPageIndex,
   });
 
   const nextPageNumber = determineNextPageNumber({
@@ -112,6 +124,35 @@ const SurveyPage = ({
     currentPage: page,
     formData: methods.watch(),
   });
+
+  // Clear values from skipped pages when form data changes
+  // This ensures that if a user changes an answer that affects conditional logic,
+  // any previously filled values from now-skipped pages are removed
+  useEffect(() => {
+    const subscription = methods.watch((formData) => {
+      const skippedPageIndices = getSkippedPageIndices({
+        pages,
+        formData,
+      });
+
+      // Clear all field values from skipped pages
+      skippedPageIndices.forEach((skippedPageIndex) => {
+        const skippedPage = pages[skippedPageIndex];
+        skippedPage.pageQuestions.forEach((question) => {
+          const currentValue = methods.getValues(question.key);
+          // Only clear if there's actually a value to clear
+          if (currentValue !== undefined && currentValue !== null) {
+            methods.setValue(question.key, undefined, {
+              shouldValidate: false,
+              shouldDirty: false,
+            });
+          }
+        });
+      });
+    });
+
+    return () => subscription.unsubscribe();
+  }, [methods, pages]);
 
   const onFormSubmit = async (formValues: FormValues) => {
     // Go to the project page if this is the last page
@@ -130,6 +171,8 @@ const SurveyPage = ({
       });
       // Go to the next page
       if (currentPageIndex < lastPageIndex) {
+        // Add the next page to navigation history
+        setUserNavigationHistory((history) => [...history, nextPageNumber]);
         setCurrentPageIndex(nextPageNumber);
       }
     } catch (error) {
@@ -161,8 +204,15 @@ const SurveyPage = ({
 
   const handlePrevious = () => {
     pageRef.current?.scrollTo(0, 0);
+    // Remove the current page from navigation history when going back
+    setUserNavigationHistory((history) => history.slice(0, -1));
     setCurrentPageIndex(previousPageNumber);
   };
+
+  const isLastPage = currentPageIndex === lastPageIndex;
+
+  const showSubmissionReference = isLastPage && idea && showIdeaId;
+  const showPostParticipationSignup = !!(isLastPage && idea && !authUser);
 
   return (
     <FormProvider {...methods}>
@@ -224,14 +274,29 @@ const SurveyPage = ({
                         phase={phase}
                         participationMethod={participationMethod}
                       />
-                      {currentPageIndex === lastPageIndex &&
-                        idea &&
-                        showIdeaId && (
-                          <SubmissionReference
-                            inputId={idea.data.id}
-                            participationMethod={participationMethod}
+                      {showPostParticipationSignup && project && (
+                        <Box mb="24px">
+                          <PostParticipationBox
+                            onCreateAccount={() => {
+                              triggerPostParticipationFlow({
+                                name: 'followProjectAndRedirect',
+                                params: {
+                                  projectId: project.data.id,
+                                  path: `/projects/${project.data.attributes.slug}`,
+                                },
+                              });
+                            }}
                           />
-                        )}
+                        </Box>
+                      )}
+                      {showSubmissionReference && (
+                        <SubmissionReference
+                          inputId={idea.data.id}
+                          postParticipationSignUpVisible={
+                            showPostParticipationSignup
+                          }
+                        />
+                      )}
                     </Box>
                   </Box>
                 </Box>

@@ -45,6 +45,9 @@ export default defineConfig(({ mode }) => {
       port: USE_HTTPS ? 443 : 3000,
       host: '0.0.0.0',
       allowedHosts: true,
+      watch: {
+        ignored: ['**/public/twemoji/**'],
+      },
       proxy: {
         '/web_api/': {
           target: `http://${API_HOST}:${API_PORT}`,
@@ -154,7 +157,6 @@ export default defineConfig(({ mode }) => {
         INTERCOM_APP_ID: process.env.INTERCOM_APP_ID,
         SENTRY_DSN: process.env.SENTRY_DSN,
         SENTRY_ENV: process.env.SENTRY_ENV,
-        SENTRY_AUTH_TOKEN: process.env.SENTRY_AUTH_TOKEN,
         CI: process.env.CI,
         CIRCLECI: process.env.CIRCLECI,
         CIRCLE_BUILD_NUM: process.env.CIRCLE_BUILD_NUM,

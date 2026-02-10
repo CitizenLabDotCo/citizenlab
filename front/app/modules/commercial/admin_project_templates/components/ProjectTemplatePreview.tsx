@@ -1,6 +1,5 @@
 import React, { memo, useCallback, useState, useEffect } from 'react';
 
-import { gql, useQuery } from '@apollo/client';
 import {
   Icon,
   Spinner,
@@ -9,10 +8,10 @@ import {
   media,
 } from '@citizenlab/cl2-component-library';
 import * as clipboard from 'clipboard-polyfill';
+import useGraphqlTenantLocales from 'modules/commercial/admin_project_templates/admin/api/useGraphqlTenantLocales';
 import { lighten } from 'polished';
 import styled from 'styled-components';
 
-import useGraphqlTenantLocales from 'hooks/useGraphqlTenantLocales';
 import useLocalize from 'hooks/useLocalize';
 
 import T from 'components/T';
@@ -23,8 +22,8 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 
+import useProjectTemplatePreview from '../admin/api/useProjectTemplatePreview';
 import tracks from '../tracks';
-import { client } from '../utils/apolloUtils';
 
 import messages from './messages';
 
@@ -323,52 +322,10 @@ const ProjectTemplatePreview = memo<Props>(
 
     const [linkCopied, setLinkCopied] = useState(false);
 
-    const TEMPLATE_QUERY = gql`
-    {
-      projectTemplate(id: "${projectTemplateId}"){
-        id
-        headerImage
-        departments {
-          id
-          titleMultiloc {
-            ${graphqlTenantLocales}
-          }
-        }
-        participationLevels {
-          id
-          titleMultiloc {
-            ${graphqlTenantLocales}
-          }
-        }
-        phases {
-          ${graphqlTenantLocales}
-        }
-        purposes {
-          id
-          titleMultiloc {
-            ${graphqlTenantLocales}
-          }
-        }
-        titleMultiloc {
-          ${graphqlTenantLocales}
-        }
-        subtitleMultiloc {
-          ${graphqlTenantLocales}
-        }
-        descriptionMultilocs {
-          content
-          locale
-        }
-        successCases {
-          id
-          href
-          image
-        }
-      }
-    }
-  `;
-
-    const { loading, data } = useQuery(TEMPLATE_QUERY, { client });
+    const { data, isLoading: loading } = useProjectTemplatePreview({
+      projectTemplateId,
+      graphqlTenantLocales,
+    });
 
     const copyLink = useCallback(() => {
       clipboard.writeText(

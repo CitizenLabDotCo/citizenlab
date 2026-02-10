@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Text, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import authProvidersMessages from 'containers/Authentication/steps/AuthProviders/messages';
+import authProvidersMessages from 'containers/Authentication/steps/_components/AuthProviderButton/messages';
 
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 

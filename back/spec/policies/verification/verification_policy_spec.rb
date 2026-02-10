@@ -13,7 +13,7 @@ describe Verification::VerificationPolicy do
 
     it { is_expected.not_to permit(:create) }
 
-    it 'should not index the verification' do
+    it 'does not index the verification' do
       expect(scope.resolve.size).to eq 0
     end
   end
@@ -23,7 +23,7 @@ describe Verification::VerificationPolicy do
 
     it { is_expected.not_to permit(:create) }
 
-    it 'should not index the verification' do
+    it 'does not index the verification' do
       verification.save!
       expect(scope.resolve.size).to eq 0
     end
@@ -34,7 +34,7 @@ describe Verification::VerificationPolicy do
 
     it { is_expected.to permit(:create) }
 
-    it 'should index the verification' do
+    it 'indexes the verification' do
       verification.save!
       expect(scope.resolve.size).to eq 1
     end
@@ -49,7 +49,7 @@ describe Verification::VerificationPolicy do
 
     it { is_expected.to permit(:create) }
 
-    it 'should index the verification' do
+    it 'indexes the verification' do
       verification.save!
       expect(scope.resolve.size).to eq 1
     end

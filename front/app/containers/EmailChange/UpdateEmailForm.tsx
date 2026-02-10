@@ -3,9 +3,9 @@ import React, { useState } from 'react';
 import { Box, Success } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 
-import resendEmailConfirmationCode from 'api/authentication/confirm_email/resendEmailConfirmationCode';
+import { requestEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import { updateEmailUnconfirmed } from 'api/authentication/updateEmailUnconfirmed';
 import { IUserData } from 'api/users/types';
-import useUpdateUser from 'api/users/useUpdateUser';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -42,7 +42,6 @@ const UpdateEmailForm = ({
   user,
 }: UpdateEmailFormProps) => {
   const { formatMessage } = useIntl();
-  const { mutateAsync: updateUser } = useUpdateUser();
   const [error, setError] = useState<'taken' | undefined>(undefined);
   const userConfirmationEnabled = useFeatureFlag({ name: 'user_confirmation' });
 
@@ -50,7 +49,7 @@ const UpdateEmailForm = ({
     try {
       // If confirmation required, launch modal
       if (userConfirmationEnabled) {
-        resendEmailConfirmationCode(formValues.email)
+        requestEmailConfirmationCodeChangeEmail(formValues.email)
           .then(() => {
             setOpenConfirmationModal(true);
             setError(undefined);
@@ -60,7 +59,7 @@ const UpdateEmailForm = ({
           });
       } else {
         // Otherwise, update the user's email
-        await updateUser({ userId: user.id, ...formValues });
+        await updateEmailUnconfirmed(formValues.email);
         setUpdateSuccessful(true);
       }
     } catch (error) {
@@ -101,6 +100,7 @@ const UpdateEmailForm = ({
             processing={methods.formState.isSubmitting}
             onClick={methods.handleSubmit(onFormSubmit)}
             text={formatMessage(messages.submitButton)}
+            dataCy="change-email-submit-button"
           />
         </Form>
         <Box display="flex" justifyContent="center">

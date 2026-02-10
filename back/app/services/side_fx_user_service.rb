@@ -3,7 +3,7 @@
 class SideFxUserService
   include SideFxHelper
 
-  def after_create(user, current_user)
+  def after_create(user, current_user, claim_tokens: nil)
     create_followers user
     TrackUserJob.perform_later(user)
     GenerateUserAvatarJob.perform_later(user)
@@ -20,6 +20,7 @@ class SideFxUserService
     user.create_email_campaigns_unsubscription_token
     RequestConfirmationCodeJob.perform_now(user) if should_send_confirmation_email?(user)
     AdditionalSeatsIncrementer.increment_if_necessary(user, current_user) if user.roles_previously_changed?
+    ClaimTokenService.claim(user, claim_tokens)
   end
 
   def after_update(user, current_user)
@@ -34,12 +35,19 @@ class SideFxUserService
     AdditionalSeatsIncrementer.increment_if_necessary(user, current_user) if user.roles_previously_changed?
 
     UpdateMemberCountJob.perform_later
-    RequestConfirmationCodeJob.perform_now(user) if should_send_confirmation_email?(user)
   end
 
-  def after_destroy(frozen_user, current_user)
+  def after_destroy(frozen_user, current_user, participation_data_deleted: false)
     activity_user = current_user&.id == frozen_user&.id ? nil : current_user
-    LogActivityJob.perform_later(encode_frozen_resource(frozen_user), 'deleted', activity_user, Time.now.to_i)
+
+    LogActivityJob.perform_later(
+      encode_frozen_resource(frozen_user),
+      'deleted',
+      activity_user,
+      Time.now.to_i,
+      payload: { participation_data_deleted: }
+    )
+
     UpdateMemberCountJob.perform_later
     RemoveUserFromIntercomJob.perform_later(frozen_user.id)
     RemoveUsersFromSegmentJob.perform_later([frozen_user.id])

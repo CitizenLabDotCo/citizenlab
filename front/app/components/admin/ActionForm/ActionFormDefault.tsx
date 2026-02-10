@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
+import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 
 import AccessRestrictions from './AccessRestrictions';
 import Fields from './Fields';
@@ -29,7 +29,7 @@ const ActionFormDefault = ({
 
   const groupIds = relationships.groups.data.map((p) => p.id);
 
-  const { data: permissionsCustomFields } = usePermissionsCustomFields({
+  const { data: permissionsCustomFields } = usePermissionsPhaseCustomFields({
     phaseId,
     action,
   });

@@ -9,8 +9,8 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { Action } from 'api/permissions/types';
-import useAddPermissionsCustomField from 'api/permissions_custom_fields/useAddPermissionsCustomField';
-import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
+import useAddPermissionsPhaseCustomField from 'api/permissions_phase_custom_fields/useAddPermissionsPhaseCustomField';
+import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 import {
   PermittedBy,
   UserFieldsInFormFrontendDescriptor,
@@ -31,7 +31,7 @@ interface Props {
   action: Action;
   allowAddingFields: boolean;
   permitted_by: PermittedBy;
-  user_fields_in_form_frontend_descriptor?: UserFieldsInFormFrontendDescriptor;
+  user_fields_in_form_descriptor?: UserFieldsInFormFrontendDescriptor;
   onChangeUserFieldsInForm?: (value: boolean) => void;
 }
 
@@ -39,13 +39,13 @@ const Fields = ({
   phaseId,
   action,
   allowAddingFields,
-  user_fields_in_form_frontend_descriptor,
+  user_fields_in_form_descriptor,
   permitted_by,
   onChangeUserFieldsInForm,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [showSelectionModal, setShowSelectionModal] = useState(false);
-  const { data: permissionFields } = usePermissionsCustomFields({
+  const { data: permissionFields } = usePermissionsPhaseCustomFields({
     phaseId,
     action,
   });
@@ -62,7 +62,7 @@ const Fields = ({
     }) || globalCustomFieldsSetting === false;
 
   const { mutate: addPermissionsCustomField, isLoading } =
-    useAddPermissionsCustomField({
+    useAddPermissionsPhaseCustomField({
       phaseId,
       action,
     });
@@ -107,12 +107,10 @@ const Fields = ({
           </Tooltip>
         )}
       </Box>
-      {onChangeUserFieldsInForm && user_fields_in_form_frontend_descriptor && (
+      {onChangeUserFieldsInForm && user_fields_in_form_descriptor && (
         <Box>
           <UserFieldsInFormRadio
-            user_fields_in_form_frontend_descriptor={
-              user_fields_in_form_frontend_descriptor
-            }
+            user_fields_in_form_descriptor={user_fields_in_form_descriptor}
             onChange={onChangeUserFieldsInForm}
           />
         </Box>
@@ -123,9 +121,7 @@ const Fields = ({
             phaseId={phaseId}
             action={action}
             permitted_by={permitted_by}
-            userFieldsInForm={
-              user_fields_in_form_frontend_descriptor?.value ?? false
-            }
+            userFieldsInForm={user_fields_in_form_descriptor?.value ?? false}
           />
         </Box>
       )}

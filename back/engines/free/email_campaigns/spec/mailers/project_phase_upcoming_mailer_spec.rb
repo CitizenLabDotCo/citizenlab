@@ -78,7 +78,7 @@ RSpec.describe EmailCampaigns::ProjectPhaseUpcomingMailer do
     context 'with custom text' do
       let!(:global_campaign) do
         create(
-          :status_change_on_idea_you_follow_campaign,
+          :project_phase_upcoming_campaign,
           subject_multiloc: { 'en' => 'Custom Global Subject - {{ organizationName }}' },
           title_multiloc: { 'en' => 'NEW TITLE FOR {{ projectName }}' },
           intro_multiloc: { 'en' => 'NEW BODY TEXT {{ phaseTitle }}' },

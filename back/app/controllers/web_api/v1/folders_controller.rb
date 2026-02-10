@@ -77,7 +77,6 @@ class WebApi::V1::FoldersController < ApplicationController
 
   def create
     @project_folder = ProjectFolders::Folder.new(project_folder_params)
-
     authorize @project_folder
 
     if @project_folder.save
@@ -98,7 +97,6 @@ class WebApi::V1::FoldersController < ApplicationController
     authorize @project_folder
     remove_image_if_requested!(@project_folder, project_folder_params, :header_bg)
 
-    ProjectFolders::SideFxProjectFolderService.new.before_update(@project_folder, current_user)
     if @project_folder.save
       ProjectFolders::SideFxProjectFolderService.new.after_update(@project_folder, current_user)
       render json: WebApi::V1::FolderSerializer.new(

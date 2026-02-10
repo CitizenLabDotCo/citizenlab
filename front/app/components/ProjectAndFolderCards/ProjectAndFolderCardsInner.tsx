@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
@@ -7,9 +7,7 @@ import { IAdminPublicationData } from 'api/admin_publications/types';
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 import { PublicationStatus } from 'api/projects/types';
 
-import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
-import { useIntl } from 'utils/cl-intl';
 
 import EmptyContainer from './components/EmptyContainer';
 import Footer from './components/Footer';
@@ -38,6 +36,7 @@ interface Props extends BaseProps {
   onChangePublicationStatus?: (publicationStatus: PublicationStatus[]) => void;
   onLoadMore?: () => void;
   onChangeCurrentTab: (tab: PublicationTab) => void;
+  searchTerm?: string | null;
 }
 
 const ProjectAndFolderCardsInner = ({
@@ -58,15 +57,37 @@ const ProjectAndFolderCardsInner = ({
   onChangeSearch,
   onLoadMore,
   onChangeCurrentTab,
+  searchTerm,
 }: Props) => {
-  const { formatMessage } = useIntl();
-
   const handleChangeSearch = React.useCallback(
     (search: string | null) => {
       onChangeSearch?.(search);
     },
     [onChangeSearch]
   );
+
+  // Focus on the first newly added card when show more are loaded
+  const visibileCardsLength = useRef(adminPublications.length);
+  useEffect(() => {
+    const panel = document.querySelector('[role="tabpanel"].active-tab');
+    const cards = panel?.querySelectorAll<HTMLElement>(
+      '.e2e-admin-publication-card'
+    );
+    if (!cards) return;
+
+    if (
+      adminPublications.length > visibileCardsLength.current &&
+      visibileCardsLength.current > 0
+    ) {
+      cards[visibileCardsLength.current].focus();
+      cards[visibileCardsLength.current].scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
+
+    visibileCardsLength.current = adminPublications.length;
+  }, [adminPublications, currentTab]);
 
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -96,11 +117,6 @@ const ProjectAndFolderCardsInner = ({
 
   return (
     <Box id="e2e-projects-container" display="flex" flexDirection="column">
-      <ScreenReaderOnly aria-live="assertive">
-        {formatMessage(messages.a11y_projectsHaveChanged1, {
-          numberOfFilteredResults: adminPublications.length,
-        })}
-      </ScreenReaderOnly>
       <Box mb="30px">
         <Topbar
           showTitle={showTitle}
@@ -116,6 +132,7 @@ const ProjectAndFolderCardsInner = ({
           onChangeSearch={handleChangeSearch}
           onChangeTab={onChangeCurrentTab}
           currentlyWorkingOnText={currentlyWorkingOnText}
+          searchTerm={searchTerm}
         />
       </Box>
 

@@ -30,7 +30,7 @@ describe TrendingIdeaService do
 
   describe 'sort_trending' do
     it 'sorts trending to untrending in accordance with the trending score' do
-      trending_score_sorted =  nil
+      trending_score_sorted = nil
       expected_order = nil
       freeze_time do
         trending_score_sorted = described_class.new.sort_trending(Idea.all).map(&:id)

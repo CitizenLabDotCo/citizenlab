@@ -10,7 +10,7 @@ describe WebApi::V1::IdeaSerializer do
     let(:john) { create(:user, first_name: 'John', last_name: 'Smith') }
     let(:admin) { create(:admin, first_name: 'Thomas', last_name: 'Anderson') }
 
-    it 'should abbreviate the author name' do
+    it 'abbreviates the author name' do
       jane_idea = create(:idea, author: jane)
       last_name = described_class
         .new(jane_idea, params: { current_user: john })
@@ -19,7 +19,7 @@ describe WebApi::V1::IdeaSerializer do
       expect(last_name).to eq 'Jane D.'
     end
 
-    it 'should not abbreviate user names for admins' do
+    it 'does not abbreviate user names for admins' do
       jane_idea = create(:idea, author: jane)
       last_name = described_class
         .new(jane_idea, params: { current_user: admin })
@@ -46,33 +46,33 @@ describe WebApi::V1::IdeaSerializer do
     end
 
     context 'when current user is nil (visitor)' do
-      it 'should not include internal comments count' do
+      it 'does not include internal comments count' do
         expect(internal_comments_count_for_current_user(idea, nil)).to be_nil
       end
     end
 
     context 'when current user is regular user' do
-      it 'should not include internal comments count' do
+      it 'does not include internal comments count' do
         expect(internal_comments_count_for_current_user(idea, create(:user))).to be_nil
       end
     end
 
     context "when current user is moderator of idea's project" do
-      it 'should include internal comments count' do
+      it 'includes internal comments count' do
         moderator = create(:project_moderator, projects: [project])
         expect(internal_comments_count_for_current_user(idea, moderator)).to eq 2
       end
     end
 
     context "when current user is moderator, but not of idea's project" do
-      it 'should not include internal comments count' do
+      it 'does not include internal comments count' do
         moderator = create(:project_moderator, projects: [create(:project)])
         expect(internal_comments_count_for_current_user(idea, moderator)).to be_nil
       end
     end
 
     context 'when current user is admin' do
-      it 'should include internal comments count' do
+      it 'includes internal comments count' do
         expect(internal_comments_count_for_current_user(idea, create(:admin))).to eq 2
       end
     end

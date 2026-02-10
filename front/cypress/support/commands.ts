@@ -9,7 +9,7 @@ import { ICustomFieldInputType } from '../../app/api/custom_fields/types';
 import { IGroup } from '../../app/api/groups/types';
 import { Multiloc } from '../../app/typings';
 
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { ParticipationMethod, VotingMethod } from '../../app/api/phases/types';
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -18,7 +18,6 @@ declare global {
       dataCy: typeof dataCy;
       unregisterServiceWorkers: typeof unregisterServiceWorkers;
       goToLandingPage: typeof goToLandingPage;
-      login: typeof login;
       signUp: typeof signUp;
       apiLogin: typeof apiLogin;
       apiCreateManualGroup: typeof apiCreateManualGroup;
@@ -30,7 +29,6 @@ declare global {
       setLoginCookie: typeof setLoginCookie;
       apiSignup: typeof apiSignup;
       apiCreateAdmin: typeof apiCreateAdmin;
-      apiConfirmUser: typeof apiConfirmUser;
       apiUpdateCurrentUser: typeof apiUpdateCurrentUser;
       apiRemoveUser: typeof apiRemoveUser;
       apiGetUsersCount: typeof apiGetUsersCount;
@@ -88,7 +86,7 @@ declare global {
       apiUpdateUserCustomFields: typeof apiUpdateUserCustomFields;
       apiCreateSurveyResponse: typeof apiCreateSurveyResponse;
       uploadSurveyImageQuestionImage: typeof uploadSurveyImageQuestionImage;
-      apiGetSurveySchema: typeof apiGetSurveySchema;
+      apiGetSurveyFields: typeof apiGetSurveyFields;
       uploadProjectFolderImage: typeof uploadProjectFolderImage;
       uploadProjectImage: typeof uploadProjectImage;
       apiCreateModeratorForProject: typeof apiCreateModeratorForProject;
@@ -138,20 +136,6 @@ function unregisterServiceWorkers() {
 
 function goToLandingPage() {
   cy.visit('/');
-}
-
-function login(email: string, password: string) {
-  cy.wait(500);
-  cy.visit('/');
-  cy.get('#e2e-landing-page');
-  cy.get('#e2e-navbar');
-  cy.get('#e2e-navbar-login-menu-item').click();
-  cy.get('#e2e-authentication-modal');
-  cy.get('#email').type(email);
-  cy.get('#password').type(password);
-  cy.get('#e2e-signin-password-submit-button').click();
-  cy.get('#e2e-user-menu-container');
-  cy.wait(500);
 }
 
 function signUp() {
@@ -223,12 +207,7 @@ function setConsentAndAdminLoginCookies() {
   cy.setAdminLoginCookie();
 }
 
-function emailSignup(
-  firstName: string,
-  lastName: string,
-  email: string,
-  password: string
-) {
+function emailSignup(email: string) {
   return cy.request({
     headers: {
       'Content-Type': 'application/json',
@@ -238,58 +217,64 @@ function emailSignup(
     body: {
       user: {
         email,
-        password,
         locale: 'en',
-        first_name: firstName,
-        last_name: lastName,
       },
     },
   });
 }
 
-function emailConfirmation(jwt: any) {
+function emailConfirmation(email: string) {
+  return cy.request({
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+    url: 'web_api/v1/user/confirm_code_unauthenticated',
+    body: {
+      confirmation: { email, code: '1234' },
+    },
+  });
+}
+
+function updateProfile(
+  id: string,
+  jwt: string,
+  attributes: Record<string, any>
+) {
   return cy.request({
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${jwt}`,
     },
-    method: 'POST',
-    url: 'web_api/v1/user/confirm',
+    method: 'PATCH',
+    url: `web_api/v1/users/${id}`,
     body: {
-      confirmation: { code: '1234' },
+      user: attributes,
     },
   });
 }
 
 function apiSignup(
-  firstName: string,
-  lastName: string,
+  first_name: string,
+  last_name: string,
   email: string,
   password: string
 ) {
-  let originalResponse: Cypress.Response<any>;
+  return emailSignup(email).then((response) => {
+    const id = response.body.data.id;
+    return emailConfirmation(email).then((emailConfirmationResponse) => {
+      const jwt =
+        emailConfirmationResponse.body.data.attributes.auth_token.token;
 
-  return emailSignup(firstName, lastName, email, password).then((response) => {
-    originalResponse = response;
-
-    return cy.apiLogin(email, password).then((response) => {
-      const jwt = response.body.jwt;
-
-      return emailConfirmation(jwt).then(() => {
-        return {
-          ...originalResponse,
-          _jwt: jwt,
-        };
+      return updateProfile(id, jwt, {
+        first_name,
+        last_name,
+        password,
+      }).then((res: any) => {
+        res._jwt = jwt;
+        return res;
       });
     });
-  });
-}
-
-function apiConfirmUser(email: string, password: string) {
-  return cy.apiLogin(email, password).then((response) => {
-    const jwt = response.body.jwt;
-
-    return emailConfirmation(jwt);
   });
 }
 
@@ -303,28 +288,18 @@ function apiCreateAdmin(
   IMPORTANT: at the time of writing, this does not increase additional_admins_number in appConfig correctly,
   so it's important to remove admins after creating them in order to not influence other tests.
   */
-  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
-    const adminJwt = response.body.jwt;
-
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
-      },
-      method: 'POST',
-      url: 'web_api/v1/users',
-      body: {
-        user: {
-          email,
-          password,
-          locale: 'en',
-          first_name: firstName,
-          last_name: lastName,
-          roles: [{ type: 'admin' }],
-        },
-      },
+  return cy
+    .apiSignup(firstName, lastName, email, password)
+    .then((outerResponse) => {
+      return cy
+        .apiLogin('admin@govocal.com', 'democracy2.0')
+        .then((response) => {
+          const adminJwt = response.body.jwt;
+          return updateProfile(outerResponse.body.data.id, adminJwt, {
+            roles: [{ type: 'admin' }],
+          });
+        });
     });
-  });
 }
 
 function apiUpdateCurrentUser(attrs: IUserUpdate) {
@@ -1257,7 +1232,6 @@ function apiCreatePhase({
 
 function apiCreateCustomField(
   fieldName: string,
-  enabled: boolean,
   required: boolean,
   input_type = 'text'
 ) {
@@ -1273,7 +1247,10 @@ function apiCreateCustomField(
       url: 'web_api/v1/users/custom_fields',
       body: {
         custom_field: {
-          enabled,
+          // this should be false! otherwise,
+          // these fields will be added to the global sign up flow
+          // and tests will start failing
+          enabled: false,
           required,
           input_type,
           title_multiloc: {
@@ -1846,7 +1823,7 @@ function uploadSurveyImageQuestionImage(base64: string) {
   });
 }
 
-function apiGetSurveySchema(phaseId: string) {
+function apiGetSurveyFields(phaseId: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1856,7 +1833,7 @@ function apiGetSurveySchema(phaseId: string) {
         Authorization: `Bearer ${adminJwt}`,
       },
       method: 'GET',
-      url: `web_api/v1/phases/${phaseId}/custom_fields/json_forms_schema`,
+      url: `web_api/v1/phases/${phaseId}/custom_fields`,
     });
   });
 }
@@ -2008,7 +1985,6 @@ function createProjectWithNativeSurveyPhase({
   description,
   nativeSurveyButtonMultiloc = { en: 'Take the survey' },
   nativeSurveyTitleMultiloc = { en: 'Survey' },
-  allow_anonymous_participation,
   presentation_mode,
 }: {
   projectTitle?: string;
@@ -2050,7 +2026,6 @@ function createProjectWithNativeSurveyPhase({
           description,
           nativeSurveyButtonMultiloc,
           nativeSurveyTitleMultiloc,
-          allow_anonymous_participation,
           presentation_mode,
         })
         .then((phase) => {
@@ -2137,12 +2112,10 @@ function dataCy(dataCyValue: string): Cypress.Chainable<JQuery<HTMLElement>> {
 Cypress.Commands.add('dataCy', dataCy);
 Cypress.Commands.add('unregisterServiceWorkers', unregisterServiceWorkers);
 Cypress.Commands.add('goToLandingPage', goToLandingPage);
-Cypress.Commands.add('login', login);
 Cypress.Commands.add('signUp', signUp);
 Cypress.Commands.add('apiLogin', apiLogin);
 Cypress.Commands.add('apiSignup', apiSignup);
 Cypress.Commands.add('apiCreateAdmin', apiCreateAdmin);
-Cypress.Commands.add('apiConfirmUser', apiConfirmUser);
 Cypress.Commands.add('apiUpdateCurrentUser', apiUpdateCurrentUser);
 Cypress.Commands.add('apiRemoveUser', apiRemoveUser);
 Cypress.Commands.add('apiGetUsersCount', apiGetUsersCount);
@@ -2234,7 +2207,7 @@ Cypress.Commands.add(
   'uploadSurveyImageQuestionImage',
   uploadSurveyImageQuestionImage
 );
-Cypress.Commands.add('apiGetSurveySchema', apiGetSurveySchema);
+Cypress.Commands.add('apiGetSurveyFields', apiGetSurveyFields);
 Cypress.Commands.add('uploadProjectFolderImage', uploadProjectFolderImage);
 Cypress.Commands.add('uploadProjectImage', uploadProjectImage);
 Cypress.Commands.add(

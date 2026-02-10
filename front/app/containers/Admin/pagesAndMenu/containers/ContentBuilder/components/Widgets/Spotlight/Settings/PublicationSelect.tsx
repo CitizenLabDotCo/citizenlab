@@ -2,6 +2,7 @@ import React, { KeyboardEvent } from 'react';
 
 import { Box, Label, Spinner } from '@citizenlab/cl2-component-library';
 import ReactSelect from 'react-select';
+import { useParams } from 'utils/router';
 import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
 
@@ -24,8 +25,12 @@ interface Props {
 }
 
 const PublicationSelect = ({ publicationId, onSelect }: Props) => {
+  const { folderId } = useParams({ strict: false }) as {
+    folderId: string; // We only return projects from the folder if folderId is defined
+  };
   const { data: adminPublications } = useAdminPublications({
     publicationStatusFilter: ['published', 'archived'],
+    childrenOfId: folderId,
   });
   const localize = useLocalize();
   const { formatMessage } = useIntl();

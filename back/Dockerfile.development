@@ -1,4 +1,4 @@
-FROM ruby:3.3.4-slim
+FROM ruby:3.4.7-slim
 
 RUN apt-get update && apt-get install -qq -y --no-install-recommends \
       lsb-release          \
@@ -20,7 +20,10 @@ RUN apt-get update && apt-get install -qq -y --no-install-recommends \
       shared-mime-info     \
       less                 \
       clang                \
-      gnupg
+      gnupg                \
+      # Needed by Psych (Ruby's default YAML parser)
+      libyaml-dev          \
+      sudo
 
 # Install Postgres client:
 # Import the PostgreSQL repository signing key, add the repository, and install the package.
@@ -30,11 +33,26 @@ RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --yes --
     # `postgres` service in `docker-compose.yml`.
     && apt-get update && apt-get install -y postgresql-client-16
 
-ENV INSTALL_PATH /cl2_back
-RUN mkdir -p $INSTALL_PATH
-WORKDIR $INSTALL_PATH
+# Create non-root user with proper UID/GID mapping
+ARG USERNAME=dev
+ARG USER_UID=1000
+ARG USER_GID=$USER_UID
 
-ENV PATH="$PATH:/cl2_back/bin"
+RUN groupadd --gid $USER_GID $USERNAME \
+    && useradd --uid $USER_UID --gid $USER_GID -m $USERNAME \
+    && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
+    && chmod 0440 /etc/sudoers.d/$USERNAME
+
+ENV INSTALL_PATH /citizenlab
+RUN mkdir -p $INSTALL_PATH && chown -R $USERNAME:$USERNAME $INSTALL_PATH
+RUN mkdir -p /bundle && chown -R $USERNAME:$USERNAME /bundle
+
+WORKDIR ${INSTALL_PATH}/back
+
+# Switch to non-root user
+USER $USERNAME
+
+ENV PATH="$PATH:/citizenlab/back/bin:/bundle/ruby/*/bin"
 
 COPY back/Gemfile back/Gemfile.* back/.ruby-version ./
 COPY back/engines ./engines

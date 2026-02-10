@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { useBreakpoint, Box, Title } from '@citizenlab/cl2-component-library';
 import { useSearch } from 'utils/router';
@@ -11,20 +11,16 @@ import usePhase from 'api/phases/usePhase';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { IMAGES_LOADED_EVENT } from 'components/admin/ContentBuilder/constants';
-
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
-import eventEmitter from 'utils/eventEmitter';
-import { scrollToElement } from 'utils/scroll';
 
 import Body from './Body';
 import CardImage from './CardImage';
 import Container from './Container';
 import Footer from './Footer';
+import { useScrollToCard } from './hooks/useScrollToCard';
 import Interactions from './Interactions';
 
 export interface Props {
@@ -72,23 +68,13 @@ const IdeaCard = ({
   const [searchParams] = useSearch({ strict: false });
   const scrollToCardParam = searchParams.get('scroll_to_card');
 
-  useEffect(() => {
-    if (scrollToCardParam && idea.data.id === scrollToCardParam) {
-      const subscription = eventEmitter
-        .observeEvent(IMAGES_LOADED_EVENT)
-        .subscribe(() => {
-          scrollToElement({
-            id: scrollToCardParam,
-            behavior: 'auto',
-            offset: smallerThanPhone ? 150 : 300,
-          });
+  // Scroll to this card if it matches the scroll_to_card search param
+  const shouldScrollToCard =
+    scrollToCardParam && idea.data.id === scrollToCardParam
+      ? scrollToCardParam
+      : undefined;
 
-          subscription.unsubscribe();
-        });
-    }
-
-    removeSearchParams(['scroll_to_card']);
-  }, [scrollToCardParam, idea, smallerThanPhone]);
+  useScrollToCard(shouldScrollToCard, smallerThanPhone);
 
   const { slug } = idea.data.attributes;
 

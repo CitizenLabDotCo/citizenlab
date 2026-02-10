@@ -12,7 +12,7 @@ class UserCustomFieldService
   def delete_custom_field_option_values(option_key, field)
     return unless field.resource_type == 'User'
 
-    if field.input_type == 'multiselect'
+    if field.supports_multiple_selection?
       # When option is the only selection
       User
         .where("custom_field_values->>'#{field.key}' = ?", [option_key].to_json)

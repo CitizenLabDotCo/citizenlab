@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { Outlet as RouterOutlet } from 'utils/router';
 
 import HelmetIntl from 'components/HelmetIntl';
@@ -12,9 +13,14 @@ const AdminProjectsAndFolders = () => (
       title={messages.helmetTitle}
       description={messages.helmetDescription}
     />
-    <div id="e2e-projects-admin-container">
+    <Box
+      id="e2e-projects-admin-container"
+      display="flex"
+      flexDirection="column"
+      flexGrow={1}
+    >
       <RouterOutlet />
-    </div>
+    </Box>
   </>
 );
 

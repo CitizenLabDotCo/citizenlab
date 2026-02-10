@@ -22,6 +22,8 @@ class WebApi::V1::EventsController < ApplicationController
         ]
       ).find_records
 
+    events = apply_projects_listed_scope(events, params)
+
     events = paginate SortByParamsService.new.sort_events(events, params)
 
     serializer_params = jsonapi_serializer_params
@@ -30,7 +32,8 @@ class WebApi::V1::EventsController < ApplicationController
     render json: linked_json(
       events,
       WebApi::V1::EventSerializer,
-      params: serializer_params
+      params: serializer_params,
+      include: [:event_images]
     )
   end
 
@@ -70,11 +73,9 @@ class WebApi::V1::EventsController < ApplicationController
   def create
     event = Event.new(event_params)
     event.project_id = params[:project_id]
-
-    sidefx.before_create(event, current_user)
-
     authorize(event)
 
+    sidefx.before_create(event, current_user)
     if event.save
       sidefx.after_create(event, current_user)
       render json: WebApi::V1::EventSerializer.new(event, params: jsonapi_serializer_params, include: %i[event_images]).serializable_hash, status: :created
@@ -86,7 +87,6 @@ class WebApi::V1::EventsController < ApplicationController
   def update
     @event.assign_attributes event_params
     authorize @event
-    sidefx.before_update(@event, current_user)
     if @event.save
       sidefx.after_update(@event, current_user)
       render json: WebApi::V1::EventSerializer.new(@event, params: jsonapi_serializer_params, include: %i[event_images]).serializable_hash, status: :ok
@@ -193,6 +193,29 @@ class WebApi::V1::EventsController < ApplicationController
 
   def sidefx
     @sidefx ||= SideFxEventService.new
+  end
+
+  def apply_projects_listed_scope(events, params)
+    # If we do not filter by project_ids, we hide events from unlisted projects
+    # This way, when people list all events, they don't see events from unlisted projects
+    # But if someone filters by an unlisted project we do want to show those events
+    if params[:project_ids].blank?
+      # This 'show_unlisted_events_user_can_moderate' flag is needed in e.g.
+      # the case of smart groups, where a moderator should be able to see unlisted
+      # events of projects that they can moderate, but not other unlisted events.
+      projects = if params[:show_unlisted_events_user_can_moderate]
+        ProjectsListedScopeService.new.remove_unlisted_that_user_cannot_moderate(
+          Project.all,
+          current_user
+        )
+      else
+        ProjectsListedScopeService.new.remove_unlisted_projects(Project.all)
+      end
+
+      return events.where(project_id: projects.select(:id))
+    end
+
+    events
   end
 end
 

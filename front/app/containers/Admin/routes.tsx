@@ -43,10 +43,22 @@ import createAdminUsersRoutes, { userRouteTypes } from './users/routes';
 const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
 const ProjectDescriptionBuilderComponent = React.lazy(
-  () => import('containers/ProjectDescriptionBuilder')
+  () => import('containers/DescriptionBuilder/ProjectDescriptionBuilder')
 );
-const FullscreenPreview = React.lazy(
-  () => import('containers/ProjectDescriptionBuilder/FullscreenPreview')
+const ProjectFullscreenPreview = React.lazy(
+  () =>
+    import(
+      'containers/DescriptionBuilder/ProjectDescriptionBuilder/ProjectFullScreenPreview'
+    )
+);
+const FolderDescriptionBuilderComponent = React.lazy(
+  () => import('containers/DescriptionBuilder/FolderDescriptionBuilder')
+);
+const FolderFullscreenPreview = React.lazy(
+  () =>
+    import(
+      'containers/DescriptionBuilder/FolderDescriptionBuilder/FolderFullScreenPreview'
+    )
 );
 
 const ProjectImporter = React.lazy(
@@ -136,9 +148,11 @@ const IndexElement = () => {
 };
 
 export enum descriptionBuilderRoutes {
-  projectdescriptionBuilder = 'project-description-builder',
-  description = `project-description-builder/projects/$projectId/description`,
-  preview = `project-description-builder/projects/$projectId/preview`,
+  descriptionBuilder = 'description-builder',
+  projectDescription = `description-builder/projects/$projectId/description`,
+  projectPreview = `description-builder/projects/$projectId/preview`,
+  folderDescription = `description-builder/folders/$folderId/description`,
+  folderPreview = `description-builder/folders/$folderId/preview`,
 }
 
 const createAdminRoutes = () => {
@@ -177,12 +191,20 @@ const createAdminRoutes = () => {
         ),
       },
       {
-        path: descriptionBuilderRoutes.description,
+        path: descriptionBuilderRoutes.projectDescription,
         element: <ProjectDescriptionBuilderComponent />,
       },
       {
-        path: descriptionBuilderRoutes.preview,
-        element: <FullscreenPreview />,
+        path: descriptionBuilderRoutes.projectPreview,
+        element: <ProjectFullscreenPreview />,
+      },
+      {
+        path: descriptionBuilderRoutes.folderDescription,
+        element: <FolderDescriptionBuilderComponent />,
+      },
+      {
+        path: descriptionBuilderRoutes.folderPreview,
+        element: <FolderFullscreenPreview />,
       },
       ...moduleConfiguration.routes.admin,
       {

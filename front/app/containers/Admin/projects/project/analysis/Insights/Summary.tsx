@@ -5,7 +5,6 @@ import {
   IconButton,
   colors,
   IconTooltip,
-  Divider,
 } from '@citizenlab/cl2-component-library';
 import { useParams, useSearch } from 'utils/router';
 
@@ -94,14 +93,12 @@ const Summary = ({ insight }: Props) => {
   return (
     <Box
       key={summary.data.id}
-      mb="24px"
+      my="14px"
       position="relative"
       data-cy="e2e-analysis-summary"
     >
-      <Divider />
-
-      <Box>
-        <SummaryHeader />
+      <Box display="flex" flexDirection="column" gap="8px">
+        <SummaryHeader showAiWarning={false} />
         <InsightBody
           text={summaryText}
           filters={summary.data.attributes.filters}
@@ -119,42 +116,53 @@ const Summary = ({ insight }: Props) => {
           phaseId={phaseId}
           customFieldIds={summary.data.attributes.custom_field_ids}
         />
-      </Box>
-
-      <Box display="flex" gap="16px" alignItems="center" mt="16px">
-        <IconButton
-          iconName="filter-2"
-          onClick={handleRestoreFilters}
-          iconColor={colors.textPrimary}
-          iconColorOnHover={colors.textSecondary}
-          a11y_buttonActionMessage={formatMessage(messages.restoreFilters)}
-        />
-        <IconButton
-          iconName={isCopied ? 'check' : 'copy'}
-          iconColor={colors.textPrimary}
-          iconColorOnHover={colors.textSecondary}
-          a11y_buttonActionMessage={'Copy summary to clipboard'}
-          onClick={() => {
-            summaryText &&
-              navigator.clipboard.writeText(removeRefs(summaryText));
-            setIsCopied(true);
-          }}
-        />
-        <IconTooltip
-          icon="flag"
-          content={<Rate insightId={insight.id} />}
-          theme="light"
-          iconSize="24px"
-          iconColor={colors.textPrimary}
-          placement="top"
-        />
-        <IconButton
-          iconName="delete"
-          onClick={() => handleSummaryDelete(insight.id)}
-          iconColor={colors.textPrimary}
-          iconColorOnHover={colors.textSecondary}
-          a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
-        />
+        <Box
+          display="flex"
+          gap="16px"
+          alignItems="center"
+          justifyContent="flex-end"
+          pt="8px"
+        >
+          <IconButton
+            iconName="filter-2"
+            onClick={handleRestoreFilters}
+            iconColor={colors.textPrimary}
+            iconColorOnHover={colors.textSecondary}
+            iconWidth="20px"
+            iconHeight="20px"
+            a11y_buttonActionMessage={formatMessage(messages.restoreFilters)}
+          />
+          <IconButton
+            iconName={isCopied ? 'check' : 'copy'}
+            iconColor={colors.textPrimary}
+            iconColorOnHover={colors.textSecondary}
+            iconWidth="20px"
+            iconHeight="20px"
+            a11y_buttonActionMessage={'Copy summary to clipboard'}
+            onClick={() => {
+              summaryText &&
+                navigator.clipboard.writeText(removeRefs(summaryText));
+              setIsCopied(true);
+            }}
+          />
+          <IconTooltip
+            icon="flag"
+            content={<Rate insightId={insight.id} />}
+            theme="light"
+            iconSize="20px"
+            iconColor={colors.textPrimary}
+            placement="top"
+          />
+          <IconButton
+            iconName="delete"
+            onClick={() => handleSummaryDelete(insight.id)}
+            iconColor={colors.textPrimary}
+            iconColorOnHover={colors.textSecondary}
+            iconWidth="20px"
+            iconHeight="20px"
+            a11y_buttonActionMessage={formatMessage(messages.deleteSummary)}
+          />
+        </Box>
       </Box>
     </Box>
   );

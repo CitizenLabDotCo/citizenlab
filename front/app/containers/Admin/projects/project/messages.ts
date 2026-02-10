@@ -98,6 +98,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.voteTermError',
     defaultMessage: 'Vote terms must be specified for all locales',
   },
+  minSelectedOptionsError: {
+    id: 'app.containers.AdminPage.ProjectEdit.minSelectedOptionsError',
+    defaultMessage:
+      'Minimum number of selected options must be less than total number of votes',
+  },
   noReactingLimitErrorMessage: {
     id: 'app.containers.AdminPage.ProjectEdit.noVotingLimitErrorMessage',
     defaultMessage: 'Not a valid number',
@@ -195,6 +200,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.inputPostingEnabled',
     defaultMessage: 'Submitting inputs',
   },
+  votingFilteringEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.votingFilteringEnabled',
+    defaultMessage: 'Allow users to filter input during voting.',
+  },
   inputCommentingEnabled: {
     id: 'app.containers.AdminPage.ProjectEdit.inputCommentingEnabled',
     defaultMessage: 'Commenting on inputs',
@@ -244,6 +253,11 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.Voting.enabledActionsForUsersDescription',
     defaultMessage: 'Select what additional actions users can take.',
   },
+  enabledVotingFiltering: {
+    id: 'app.containers.AdminPage.ProjectEdit.Voting.enabledVotingFiltering2',
+    defaultMessage: 'Filtering input',
+  },
+
   defaultViewOptions: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.defaultViewOptions',
     defaultMessage: 'Default view of options',
@@ -311,6 +325,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.mapDisplay',
     defaultMessage: 'Map',
   },
+  feedDisplay: {
+    id: 'app.containers.AdminPage.ProjectEdit.feedDisplay',
+    defaultMessage: 'Feed',
+  },
   trendingSortingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.trendingSortingMethod',
     defaultMessage: 'Trending',
@@ -339,15 +357,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.surveyService',
     defaultMessage: 'Survey Service',
   },
-  surveyServiceTooltipLink: {
-    id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink1',
+  surveyServiceTooltipLink2: {
+    id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/7025887-creating-an-external-survey-project',
+      'https://support.govocal.com/en/articles/527596-creating-an-external-survey-project',
   },
   surveyServiceTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltip',
     defaultMessage:
-      'Choose what survey tool you want to embed. All information can be found {surveyServiceTooltipLink}.',
+      'Choose what survey tool you want to embed. All information can be found {surveyServiceTooltipLink2}.',
   },
   surveyServiceTooltipLinkText: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText',
@@ -462,18 +480,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals',
     defaultMessage: 'Manage proposals, give feedback and assign topics.',
   },
-  hiddenFieldsTip: {
-    id: 'app.components.admin.PostManager.hiddenFieldsTip',
+  hiddenFieldsTip2: {
+    id: 'app.components.admin.PostManager.hiddenFieldsTip2',
     defaultMessage:
-      'Tip: add {hiddenFieldsLink} when setting up your Typeform survey to keep track of who has responded to your survey.',
-  },
-  hiddenFieldsLinkText: {
-    id: 'app.components.admin.PostManager.hiddenFieldsLink',
-    defaultMessage: 'hidden fields',
-  },
-  hiddenFieldsSupportArticleUrl: {
-    id: 'app.components.admin.PostManager.hiddenFieldsSupportArticleUrl',
-    defaultMessage: 'https://support.govocal.com/en/articles/1641202',
+      'Tip: add hidden fields when setting up your Typeform survey to keep track of who has responded to your survey.',
   },
   // #input_term_copy
   ideaTerm: {
@@ -550,12 +560,12 @@ export default defineMessages({
   googleFormsTooltip: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip',
     defaultMessage:
-      'More information on how to embed a link for Google Forms can be found in {googleFormsTooltipLink}.',
+      'More information on how to embed a link for Google Forms can be found in {googleFormsTooltipLink2}.',
   },
-  googleFormsTooltipLink: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink',
+  googleFormsTooltipLink2: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/5050525-how-to-embed-your-google-forms-survey-in-a-project-phase',
+      'https://support.govocal.com/en/articles/527596-creating-an-external-survey-project',
   },
   googleFormsTooltipLinkText: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText',
@@ -583,6 +593,10 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.report',
     defaultMessage: 'Report',
   },
+  insightsTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.insights',
+    defaultMessage: 'Insights',
+  },
   lockedTooltip: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.lockedTooltip',
     defaultMessage:
@@ -596,9 +610,9 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.timelineTab',
     defaultMessage: 'Timeline',
   },
-  participationTab: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.participationTab',
-    defaultMessage: 'Participants',
+  audienceTab: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.audienceTab',
+    defaultMessage: 'Audience',
   },
   messagingTab: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.messagingTab',
@@ -623,15 +637,6 @@ export default defineMessages({
   participationOptions: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.participationOptions',
     defaultMessage: 'Participation options',
-  },
-  prescreeningText: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.screeningText',
-    defaultMessage: 'Require screening of inputs',
-  },
-  prescreeningSubtext: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.prescreeningSubtext',
-    defaultMessage:
-      'Inputs won’t be visible until an admin reviews and approves them. Authors can’t edit inputs after they are screened or reacted on.',
   },
   missingStartDateError: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.missingStartDateError',

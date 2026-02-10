@@ -10,4 +10,4 @@ lb:
       event_description_idea: 'Eng Iddi ass Iech zougewise ginn. Gitt Feedback, andeem Dir en offizielle Kommentar schreift oder de Status ännert.'
       main_header: '%{firstName}, Dir hutt eng nei Zouweisung'
       subject: 'Dir hutt eng Zouweisung op der Plattform vun %{organizationName}'
-      preheader_idea: 'D’Iddi vun %{authorName} ass iech zougewise ginn'
+      preheader: 'D’Iddi vun %{authorName} ass iech zougewise ginn'

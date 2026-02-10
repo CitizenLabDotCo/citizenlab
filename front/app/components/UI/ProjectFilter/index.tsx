@@ -5,6 +5,8 @@ import {
   Label,
   Spinner,
   BoxProps,
+  colors,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import ReactSelect from 'react-select';
 import { useTheme } from 'styled-components';
@@ -43,6 +45,7 @@ interface Props {
   hideLabel?: boolean;
   onProjectFilter: (filter: Option) => void;
   includeHiddenProjects?: boolean;
+  isClearable?: boolean;
 }
 
 const generateProjectOptions = (
@@ -71,6 +74,7 @@ const ProjectFilter = ({
   hideLabel = false,
   onProjectFilter,
   includeHiddenProjects = false,
+  isClearable = true,
   id,
   ...boxProps
 }: Props & Omit<BoxProps, 'children'>) => {
@@ -177,14 +181,37 @@ const ProjectFilter = ({
             ...base,
             zIndex: 1001,
           }),
-          control: (base) => ({
+          control: (base, { isFocused }) => ({
             ...base,
-            minWidth: '300px',
+            width: '100%',
+            minHeight: `${stylingConsts.inputHeight}px`,
+            height: `${stylingConsts.inputHeight}px`,
+            borderWidth: isFocused ? '2px' : '1px',
+            borderColor: isFocused
+              ? theme.colors.tenantPrimary
+              : colors.borderDark,
+            boxShadow: 'none',
+            '&:hover': {
+              borderColor: isFocused
+                ? theme.colors.tenantPrimary
+                : colors.black,
+            },
+          }),
+          placeholder: (base) => ({
+            ...base,
+            color: colors.placeholder,
+          }),
+          dropdownIndicator: (base, { isFocused }) => ({
+            ...base,
+            color: isFocused ? theme.colors.tenantPrimary : colors.borderDark,
+            '&:hover': {
+              color: theme.colors.tenantPrimary,
+            },
           }),
         }}
         menuPosition="fixed"
         menuPlacement="auto"
-        isClearable
+        isClearable={isClearable}
       />
     </Box>
   );

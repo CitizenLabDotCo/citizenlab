@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 
-import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Divider,
+  Icon,
+  Text,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { useParams } from 'utils/router';
 
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
@@ -12,6 +18,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
+import DisclaimerBanner from './DisclaimerBanner';
 import AnalysisFileUploader from './Files/AnalysisFileUploader';
 import FileSelectionView from './Files/FileSelectionView';
 import messages from './messages';
@@ -64,59 +71,65 @@ const Insights = () => {
   }
   return (
     <Box display="flex" flexDirection="column" height="100%">
-      <Box display="flex" gap="4px">
-        <Box flex="1">
-          <SummarizeButton
-            applyInputsLimit={applyInputsLimit}
-            inputsCount={filteredInputsCount}
-            analysisId={analysisId}
-          />
-        </Box>
-        <Box flex="1">
-          <QuestionButton
-            onClick={() => setIsQuestionInputOpen(!isQuestionInputOpen)}
-          />
-        </Box>
-      </Box>
-      <Box
-        m="0"
-        my="8px"
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        gap="4px"
-      >
-        <Box>
-          {applyInputsLimit && (
-            <Icon name="alert-circle" fill={colors.orange500} />
-          )}
-
-          <Text
-            fontSize="s"
-            m="0"
-            variant="bodyXs"
-            color={applyInputsLimit ? 'orange500' : 'textSecondary'}
-          >
-            {`${filteredInputsCount} / ${inputsCount}`}{' '}
-            {formatMessage(messages.inputsSelected)}
-          </Text>
+      <Box display="flex" flexDirection="column" gap="8px">
+        <Box display="flex" gap="4px">
+          <Box flex="1">
+            <SummarizeButton
+              applyInputsLimit={applyInputsLimit}
+              inputsCount={filteredInputsCount}
+              analysisId={analysisId}
+            />
+          </Box>
+          <Box flex="1">
+            <QuestionButton
+              onClick={() => setIsQuestionInputOpen(!isQuestionInputOpen)}
+            />
+          </Box>
         </Box>
 
-        {isDataRepositoryAnalysisEnabled && (
-          <AnalysisFileUploader
-            setIsFileSelectionOpen={setIsFileSelectionOpen}
-            analysisId={analysisId}
-          />
+        <DisclaimerBanner />
+
+        {isQuestionInputOpen && (
+          <QuestionInput onClose={() => setIsQuestionInputOpen(false)} />
         )}
+
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          height="40px"
+          pb="8px"
+          gap="4px"
+        >
+          <Box>
+            {applyInputsLimit && (
+              <Icon name="alert-circle" fill={colors.orange500} />
+            )}
+
+            <Text
+              fontSize="s"
+              m="0"
+              variant="bodyXs"
+              color={applyInputsLimit ? 'orange500' : 'textSecondary'}
+            >
+              {`${filteredInputsCount} / ${inputsCount}`}{' '}
+              {formatMessage(messages.inputsSelected)}
+            </Text>
+          </Box>
+
+          {isDataRepositoryAnalysisEnabled && (
+            <AnalysisFileUploader
+              setIsFileSelectionOpen={setIsFileSelectionOpen}
+              analysisId={analysisId}
+            />
+          )}
+        </Box>
       </Box>
-
-      {isQuestionInputOpen && (
-        <QuestionInput onClose={() => setIsQuestionInputOpen(false)} />
-      )}
-
+      <Divider m="0px" />
       <Box flex="1" overflow="auto">
-        {insights?.data.map((insight) => (
+        {insights?.data.map((insight, index) => (
           <div key={insight.id}>
+            {index > 0 && <Divider m="0px" />}
             {insight.relationships.insightable.data.type === 'summary' ? (
               <Summary insight={insight} />
             ) : (
@@ -124,9 +137,7 @@ const Insights = () => {
             )}
           </div>
         ))}
-        {/* TODO: Fix this the next time the file is edited. */}
-        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-        {!isLoading && insights?.data?.length === 0 && (
+        {!isLoading && insights?.data.length === 0 && (
           <>
             <Text px="24px" color="grey600">
               {formatMessage(messages.emptyList)}

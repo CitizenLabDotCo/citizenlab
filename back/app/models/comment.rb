@@ -37,11 +37,14 @@
 #
 class Comment < ApplicationRecord
   include AnonymousParticipation
+  include LocationTrackableParticipation
 
   acts_as_nested_set dependent: :destroy, counter_cache: :children_count
 
-  belongs_to :author, class_name: 'User', optional: true
   belongs_to :idea
+  delegate :project_id, :project, to: :idea
+
+  belongs_to :author, class_name: 'User', optional: true
   has_many :reactions, as: :reactable, dependent: :destroy
   has_many :likes, -> { where(mode: 'up') }, as: :reactable, class_name: 'Reaction'
   has_many :dislikes, -> { where(mode: 'down') }, as: :reactable, class_name: 'Reaction'
@@ -52,6 +55,7 @@ class Comment < ApplicationRecord
   before_validation :sanitize_body_multiloc
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
+  has_one :wise_voice_flag, as: :flaggable, class_name: 'WiseVoiceFlag', dependent: :destroy
 
   counter_culture(
     :idea,
@@ -77,8 +81,6 @@ class Comment < ApplicationRecord
   validates :publication_status, presence: true, inclusion: { in: PUBLICATION_STATUSES }
 
   scope :published, -> { where publication_status: 'published' }
-
-  delegate :project_id, to: :idea
 
   def published?
     publication_status == 'published'

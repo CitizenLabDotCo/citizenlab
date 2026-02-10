@@ -1,0 +1,54 @@
+{
+  "name": "citizenlab/back",
+
+  "dockerComposeFile": ["../docker-compose.yml", "docker-compose.yml"],
+
+  // Use the dedicated devcontainer service instead of web
+  "service": "devcontainer",
+
+  "workspaceFolder": "/citizenlab/back",
+
+  "shutdownAction": "stopContainer",
+
+  // Initialize the development environment
+  // "postCreateCommand": "../.devcontainer/scripts/post-create.sh",
+
+  // // Run after container starts
+  // "postStartCommand": "../.devcontainer/scripts/post-start.sh",
+
+  // // Run when attaching to the container
+  // "postAttachCommand": "../.devcontainer/scripts/post-attach.sh",
+
+  "customizations": {
+    "vscode": {
+      "extensions": ["Shopify.ruby-lsp", "eamodio.gitlens", "GitHub.copilot"],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "ruby.rubocop.executePath": "/bundle/ruby/*/bin/",
+        "ruby.format": "rubocop",
+        "files.watcherExclude": {
+          "**/log/**": true,
+          "**/tmp/**": true,
+          "**/node_modules/**": true,
+          "**/.git/objects/**": true,
+          "**/.git/subtree-cache/**": true
+        }
+      }
+    }
+  },
+
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "username": "dev",
+      "userUid": "1000",
+      "userGid": "1000",
+      "upgradePackages": false
+    }
+  },
+
+  "remoteUser": "dev"
+}

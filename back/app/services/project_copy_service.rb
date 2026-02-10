@@ -2,6 +2,7 @@
 
 class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   def import(template, folder: nil, local_copy: false)
+    fix_project_slugs_in_template!(template)
     # No translation required if it's a local copy
     template, translate_logs = MultiTenancy::Templates::Utils.translate_and_fix_locales(template) unless local_copy
 
@@ -10,10 +11,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     end
 
     project = Project.find(created_objects_ids['Project'].first)
-    unless local_copy
-      project.update!(slug: SlugService.new.generate_slug(project, project.slug))
-      project.set_default_topics!
-    end
+    project.set_default_input_topics! if !local_copy
     project.update! folder: folder if folder
 
     # Log to a project import if this is a copy from another platform
@@ -28,6 +26,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     project
   end
 
+  # rubocop:disable Metrics/AbcSize
   def export(
     project,
     local_copy: false,
@@ -41,7 +40,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     new_publication_status: nil
   )
     include_ideas = false if local_copy
-    max_ideas = max_ideas&.to_i
+    max_ideas = max_ideas.presence&.to_i
     @include_ideas = include_ideas
     @local_copy = local_copy
     @project = project
@@ -49,7 +48,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     @template = { 'models' => {} }
     new_slug = SlugService.new.generate_slug(nil, new_slug) if new_slug
 
-    # TODO: deal with linking idea_statuses, topics, custom field values and maybe areas and groups
+    # TODO: deal with linking idea_statuses, custom field values and maybe areas and groups
     @template['models']['project']                       = yml_projects new_slug: new_slug, new_publication_status: new_publication_status, new_title_multiloc: new_title_multiloc, shift_timestamps: shift_timestamps
     @template['models']['project_file']                  = yml_project_files shift_timestamps: shift_timestamps
     @template['models']['project_image']                 = yml_project_images shift_timestamps: shift_timestamps
@@ -66,6 +65,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     @template['models']['volunteering/cause']            = yml_volunteering_causes shift_timestamps: shift_timestamps
     @template['models']['custom_maps/map_config']        = yml_maps_map_configs shift_timestamps: shift_timestamps
     @template['models']['custom_maps/layer']             = yml_maps_layers shift_timestamps: shift_timestamps
+    @template['models']['input_topic']                   = yml_input_topics(shift_timestamps: shift_timestamps)
 
     @template['models']['content_builder/layout'], layout_images_mapping = yml_content_builder_layouts shift_timestamps: shift_timestamps
     @template['models']['content_builder/layout_image'] = yml_content_builder_layout_images layout_images_mapping, shift_timestamps: shift_timestamps
@@ -96,6 +96,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
     end
     @template
   end
+  # rubocop:enable Metrics/AbcSize
 
   private
 
@@ -274,7 +275,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         }
       end,
       'include_all_areas' => @project.include_all_areas,
-      'hidden' => @project.hidden
+      'hidden' => @project.hidden,
+      'live_auto_input_topics_enabled' => @project.live_auto_input_topics_enabled
     }
     yml_project['slug'] = new_slug if new_slug.present?
     store_ref yml_project, @project.id, :project
@@ -344,7 +346,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'input_term' => phase.input_term,
         'baskets_count' => @local_copy || !@include_ideas ? 0 : phase.baskets_count,
         'votes_count' => @local_copy || !@include_ideas ? 0 : phase.votes_count,
-        'prescreening_enabled' => phase.prescreening_enabled,
+        'prescreening_mode' => phase.prescreening_mode,
         'expire_days_limit' => phase.expire_days_limit,
         'reacting_threshold' => phase.reacting_threshold
       }
@@ -353,9 +355,11 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         yml_phase['voting_max_total'] = phase.voting_max_total
         yml_phase['voting_min_total'] = phase.voting_min_total
         yml_phase['voting_max_votes_per_idea'] = phase.voting_max_votes_per_idea
+        yml_phase['voting_min_selected_options'] = phase.voting_min_selected_options
         yml_phase['vote_term'] = phase.vote_term
         yml_phase['autoshare_results_enabled'] = phase.autoshare_results_enabled
       end
+
       if yml_phase['participation_method'] == 'survey'
         yml_phase['survey_embed_url'] = phase.survey_embed_url
         yml_phase['survey_service'] = phase.survey_service
@@ -469,6 +473,22 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         'updated_at' => shift_timestamp(layer.updated_at, shift_timestamps)&.iso8601
       }
       yml_layer
+    end
+  end
+
+  def yml_input_topics(shift_timestamps: 0)
+    @project.input_topics.order(:lft).map do |topic|
+      yml_topic = {
+        'project_ref' => lookup_ref(topic.project_id, :project),
+        'parent_ref' => lookup_ref(topic.parent_id, :input_topic),
+        'title_multiloc' => topic.title_multiloc,
+        'description_multiloc' => topic.description_multiloc,
+        'icon' => topic.icon,
+        'created_at' => shift_timestamp(topic.created_at, shift_timestamps)&.iso8601,
+        'updated_at' => shift_timestamp(topic.updated_at, shift_timestamps)&.iso8601
+      }
+      store_ref yml_topic, topic.id, :input_topic
+      yml_topic
     end
   end
 
@@ -812,5 +832,12 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
           mappable: CustomField.where(resource: CustomForm.where(participation_context: [@project, *@project.phases]))
         )
       )
+  end
+
+  def fix_project_slugs_in_template!(template)
+    projects = template.dig('models', 'project')
+    projects.each do |project|
+      project['slug'] = SlugService.new.generate_slug(Project.new, project['slug'])
+    end
   end
 end

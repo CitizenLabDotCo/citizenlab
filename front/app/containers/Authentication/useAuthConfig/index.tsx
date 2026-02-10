@@ -3,6 +3,7 @@ import { useLocation, useSearch } from 'utils/router';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useSuperAdmin from 'hooks/useSuperAdmin';
 
 export default function useAuthConfig() {
   const { data: appConfiguration } = useAppConfiguration();
@@ -14,25 +15,27 @@ export default function useAuthConfig() {
   const providerForTest = searchParams.get('provider');
 
   // Allows super admins to sign in with password when password login is disabled
-  // through hidden param (?super_admin)
-  const superAdminParam = searchParams.get('super_admin') !== null;
+  // through hidden param (?super_admin) or cookie
+  const isSuperAdmin = useSuperAdmin();
 
   // A hidden path that will show all methods inc any that are admin only
   const { pathname } = useLocation();
   const showAdminOnlyMethods = pathname.endsWith('/sign-in/admin');
 
   const passwordLoginEnabled =
-    useFeatureFlag({ name: 'password_login' }) || superAdminParam;
+    useFeatureFlag({ name: 'password_login' }) || isSuperAdmin;
 
   const google = useFeatureFlag({ name: 'google_login' });
 
   const facebook = useFeatureFlag({ name: 'facebook_login' });
 
+  const azureAdSettings = appConfigurationSettings?.azure_ad_login;
+  const azureAdVisiblity = azureAdSettings?.visibility;
+  const azureAdIsVisible = ['show', undefined].includes(azureAdVisiblity);
+
   const azureAd =
     useFeatureFlag({ name: 'azure_ad_login' }) &&
-    ((appConfigurationSettings?.azure_ad_login?.visibility !== 'link' &&
-      appConfigurationSettings?.azure_ad_login?.visibility !== 'hide') ||
-      showAdminOnlyMethods);
+    (azureAdIsVisible || showAdminOnlyMethods);
 
   const azureAdB2c = useFeatureFlag({
     name: 'azure_ad_b2c_login',
@@ -76,6 +79,11 @@ export default function useAuthConfig() {
       name: 'twoday_login',
     }) || providerForTest === 'twoday';
 
+  const acm =
+    useFeatureFlag({
+      name: 'acm_login',
+    }) || providerForTest === 'acm';
+
   const fakeSso = useFeatureFlag({ name: 'fake_sso' });
 
   const ssoProviders = {
@@ -92,12 +100,13 @@ export default function useAuthConfig() {
     nemlogIn,
     keycloak,
     twoday,
+    acm,
     fakeSso,
   };
 
   return {
     passwordLoginEnabled,
     ssoProviders,
-    anySSOProviderEnabled: Object.values(ssoProviders).some((v) => v),
+    azureAdSettings,
   };
 }

@@ -22,7 +22,6 @@
 # Foreign Keys
 #
 #  fk_rails_...  (migrated_file_id => files.id)
-#  fk_rails_...  (project_folder_id => project_folders_folders.id)
 #
 module ProjectFolders
   class File < ::ApplicationRecord

@@ -259,6 +259,7 @@ en-IE:
       x_days_ago_by_author: '%{x} days ago by %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} commented:'
+      anonymous_user: Anonymous user
       cta_button: 'View %{authorFirstName}''s comment'
       days_ago: '%{numberOfDays} days ago'
       event_description: '%{authorName} added a new comment on your platform.'
@@ -407,11 +408,13 @@ en-IE:
       title: '%{requesterName} has invited you to review the project "%{projectTitle}"'
       event_description: "Currently, the project is in draft mode and isn't visible to users. Once you've reviewed and approved it, the moderator will be able to publish it."
       cta_button: "Review the project"
+      preheader: '%{requesterName} has invited you to review the project "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" has been approved'
       title: '%{reviewerName} approved the project "%{projectTitle}"'
       event_description: "The project is now ready to go live. You can publish it whenever you're ready!"
       cta_button: "Go to project settings"
+      preheader: '%{reviewerName} approved the project "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
       event_description: '%{organizationName} updated the status of the input ''%{input_title}'' on their digital participation platform.'
@@ -512,9 +515,7 @@ en-IE:
       subject: '%{organizationName}: Last chance to vote for %{phaseTitle}'
       preheader: 'Last chance to vote for %{phaseTitle} on the participation platform of %{organizationName}'
       title: 'Last chance to vote for %{phaseTitle}'
-      body_1: 'The voting phase for the %{projectTitle} project is coming to a close tomorrow, at midnight.'
-      body_2: 'Time is running out, and we noticed that you haven''t cast your vote yet! Act now by simply clicking the button below to participate.'
-      body_3: 'By doing so, you''ll gain access to a range of options and have the chance to provide your input, which is crucial in deciding the future of this project.'
+      event_description: '<p>The voting phase for the %{projectTitle} project is coming to a close tomorrow, at midnight.</p><p>Time is running out, and we noticed that you haven''t cast your vote yet! Act now by simply clicking the button below to participate.</p><p>By doing so, you''ll gain access to a range of options and have the chance to provide your input, which is crucial in deciding the future of this project.</p>'
       cta_button: 'Vote'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} vote results revealed!'

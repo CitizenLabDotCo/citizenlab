@@ -46,7 +46,8 @@ module BulkImportIdeas::Parsers
     end
 
     def parse_xlsx_ideas(file)
-      XlsxService.new.xlsx_to_hash_array(file.file.read)
+      # Empty cells are included so we get all form fields per idea - this is important for 'other' fields that have the same header
+      XlsxService.new.xlsx_to_hash_array(file.file.read, include_empty_cells: true)
     end
 
     # Merge the form fields that generated the input xlsx sheet and the import values into a single array

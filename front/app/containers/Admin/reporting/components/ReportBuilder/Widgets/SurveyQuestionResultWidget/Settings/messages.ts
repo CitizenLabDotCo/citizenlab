@@ -43,4 +43,25 @@ export default defineMessages({
     id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.groupBySurveyQuestion',
     defaultMessage: 'Group by survey question',
   },
+  openAIAnalysis: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.openAIAnalysis',
+    defaultMessage: 'Open AI Analysis',
+  },
+  dragAndDrop: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.dragAndDrop',
+    defaultMessage:
+      'Use the ☰ icon to drag and drop AI content into your report.',
+  },
+  sort: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sort',
+    defaultMessage: 'Sort by',
+  },
+  sortByCount: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sortByCount',
+    defaultMessage: 'Response count',
+  },
+  sortByOriginal: {
+    id: 'containers.Admin.reporting.components.ReportBuilder.Widgets.SurveyQuestionResultWidget.Settings.sortByOriginal',
+    defaultMessage: 'Original order',
+  },
 });

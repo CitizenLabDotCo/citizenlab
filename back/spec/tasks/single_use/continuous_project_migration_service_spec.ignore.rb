@@ -15,7 +15,7 @@ RSpec.describe Tasks::SingleUse::Services::ContinuousProjectMigrationService do
   shared_examples 'project_settings' do
     let_it_be(:continuous_project_attributes) { project.attributes.symbolize_keys.clone }
 
-    it 'should return valid stats' do
+    it 'returns valid stats' do
       expect(service.stats[:projects]).to eq 1
       expect(service.stats[:success]).to eq 1
       expect(service.stats[:errors]).to eq []
@@ -127,11 +127,11 @@ RSpec.describe Tasks::SingleUse::Services::ContinuousProjectMigrationService do
 
       before { service.migrate(false) }
 
-      it 'should list number of projects with no success' do
+      it 'lists number of projects with no success' do
         expect(service.stats).to eq({ projects: 1, success: 0, records_updated: 0, errors: [] })
       end
 
-      it 'should not change the project type' do
+      it 'does not change the project type' do
         expect(project.reload.process_type).to eq 'continuous'
       end
     end

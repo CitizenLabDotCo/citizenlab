@@ -259,6 +259,7 @@ ur:
       x_days_ago_by_author: '%{x} دن پہلے بذریعہ %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} نے تبصرہ کیا:'
+      anonymous_user: گمنام صارف
       cta_button: '%{authorFirstName}کا تبصرہ دیکھیں'
       days_ago: '%{numberOfDays} دن پہلے'
       event_description: '%{authorName} نے آپ کے پلیٹ فارم پر ایک نیا تبصرہ شامل کیا۔'
@@ -407,11 +408,13 @@ ur:
       title: '%{requesterName} نے آپ کو پروجیکٹ کا جائزہ لینے کے لیے مدعو کیا ہے "%{projectTitle}"'
       event_description: "فی الحال، پروجیکٹ ڈرافٹ موڈ میں ہے اور صارفین کو دکھائی نہیں دے رہا ہے۔ ایک بار جب آپ اس کا جائزہ لے لیں اور اسے منظور کر لیں تو ماڈریٹر اسے شائع کر سکے گا۔"
       cta_button: "پروجیکٹ کا جائزہ لیں۔"
+      preheader: '%{requesterName} نے آپ کو پروجیکٹ کا جائزہ لینے کے لیے مدعو کیا ہے "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" کو منظور کر لیا گیا ہے۔'
       title: '%{reviewerName} نے پروجیکٹ کی منظوری دی "%{projectTitle}"'
       event_description: "پروجیکٹ اب لائیو جانے کے لیے تیار ہے۔ جب بھی آپ تیار ہوں آپ اسے شائع کر سکتے ہیں!"
       cta_button: "پروجیکٹ کی ترتیبات پر جائیں۔"
+      preheader: '%{reviewerName} نے پروجیکٹ کی منظوری دے دی "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
       event_description: '%{organizationName} نے اپنے ڈیجیٹل شرکت کے پلیٹ فارم پر ان پٹ ''%{input_title}'' کی حیثیت کو اپ ڈیٹ کیا۔'
@@ -512,9 +515,7 @@ ur:
       subject: '%{organizationName}: %{phaseTitle}کو ووٹ دینے کا آخری موقع'
       preheader: '%{organizationName}کے شرکت کے پلیٹ فارم پر %{phaseTitle} کو ووٹ دینے کا آخری موقع'
       title: '%{phaseTitle}کو ووٹ دینے کا آخری موقع'
-      body_1: '%{projectTitle} پروجیکٹ کے لیے ووٹنگ کا مرحلہ کل آدھی رات کو ختم ہو رہا ہے۔'
-      body_2: 'وقت ختم ہو رہا ہے، اور ہم نے محسوس کیا کہ آپ نے ابھی تک اپنا ووٹ نہیں ڈالا ہے! حصہ لینے کے لیے نیچے دیئے گئے بٹن پر کلک کرکے ابھی عمل کریں۔'
-      body_3: 'ایسا کرنے سے، آپ کو اختیارات کی ایک حد تک رسائی حاصل ہو جائے گی اور آپ کو اپنا ان پٹ فراہم کرنے کا موقع ملے گا، جو اس پروجیکٹ کے مستقبل کا فیصلہ کرنے میں اہم ہے۔'
+      event_description: '<p> %{projectTitle} پروجیکٹ کے لیے ووٹنگ کا مرحلہ کل آدھی رات کو ختم ہو رہا ہے۔</p><p>وقت ختم ہو رہا ہے، اور ہم نے محسوس کیا کہ آپ نے ابھی تک اپنا ووٹ نہیں ڈالا ہے! حصہ لینے کے لیے نیچے دیئے گئے بٹن پر کلک کرکے ابھی عمل کریں۔</p><p>ایسا کرنے سے، آپ کو اختیارات کی ایک حد تک رسائی حاصل ہوگی اور آپ کو اپنا ان پٹ فراہم کرنے کا موقع ملے گا، جو اس پروجیکٹ کے مستقبل کا فیصلہ کرنے میں اہم ہے۔</p>'
       cta_button: 'ووٹ'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} ووٹ کے نتائج سامنے آ گئے!'

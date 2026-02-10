@@ -125,6 +125,7 @@ es:
     open_idea_project_description_preview: '¿Quizás tienes una idea que no encaja con uno de los proyectos existentes? Entonces publícalo aquí, reúne apoyo y ponlo en la agenda política!'
     open_idea_project_description: >
       <p>Aquí, puedes empezar tu propia idea si no encaja dentro de uno de los proyectos existentes.</p><p><strong>¿El objetivo?</strong> Para poner tu idea en la agenda política.</p><p><strong>¿Cómo?</strong> Reuniendo apoyo, es decir, al menos 100 votos en 3 meses. Puedes hacerlo primero haciendo que tu idea sea `atractiva'. Escríbelo de forma clara y atractiva, añade imágenes, da argumentos sólidos basados en hechos, añade adjuntos con más detalles o información adicional, .... Una vez hecho esto, empieza a compartir tu idea en las redes sociales o a través del correo electrónico. Invita a la gente a unirse a la discusión sobre tu idea, o simplemente para convencerlos de que voten a favor.</p><p><strong>¿Sobre qué?</strong> Tu idea puede ser sobre muchas cosas, siempre y cuando esté relacionada con tu ciudad y tu política. Puede ser un problema que experimentes, una solución que imagines o incluso una combinación de ambos. Puede ser algo loco y a largo plazo, o muy tangible y una victoria rápida.</p><p><strong>¿Y luego? </strong>¿Llegaste a los 100 votos en 3 meses? Felicitaciones! La institución tomará tu idea en consideración. Si tu idea se considera factible y no perjudica a grupos o individuos, tendrás la oportunidad de presentar tu propuesta durante la reunión del concejo. Durante esa misma reunión, los miembros del concejo te darán retroalimentación directa sobre lo que harán o no con tu idea y por qué. Si no consigues 100 votos en 3 meses, tu propuesta no será considerada.</p><p>Tenemos curiosidad por conocer tus ideas!</p>
+    published_projects: Proyectos publicados
   phases:
     open_idea_phase_title: Fase actual
     native_survey_title: Encuesta
@@ -385,3 +386,4 @@ es:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "El máximo debe ser mayor que el mínimo."
+      max_must_be_greater_than_or_equal_to_min_select_count: "El máximo debe ser mayor o igual que el mínimo."

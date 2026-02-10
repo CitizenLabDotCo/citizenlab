@@ -49,10 +49,7 @@ resource 'Analytics - FactParticipations' do
         }
       })
       assert_status 200
-      expect(response_data[:attributes]).to match_array([
-        { 'dimension_date_created.month': '2022-09', count: 1 },
-        { 'dimension_date_created.month': '2022-10', count: 2 }
-      ])
+      expect(response_data[:attributes]).to contain_exactly({ 'dimension_date_created.month': '2022-09', count: 1 }, { 'dimension_date_created.month': '2022-10', count: 2 })
     end
 
     example 'filter between dates and return citizen participations only' do
@@ -69,7 +66,7 @@ resource 'Analytics - FactParticipations' do
         }
       })
       assert_status 200
-      expect(response_data[:attributes]).to match_array([{ count: 1 }])
+      expect(response_data[:attributes]).to contain_exactly({ count: 1 })
     end
 
     example 'filter participations by project' do
@@ -85,7 +82,7 @@ resource 'Analytics - FactParticipations' do
         }
       })
       assert_status 200
-      expect(response_data[:attributes]).to match_array([{ count: 3 }])
+      expect(response_data[:attributes]).to contain_exactly({ count: 3 })
     end
   end
 end

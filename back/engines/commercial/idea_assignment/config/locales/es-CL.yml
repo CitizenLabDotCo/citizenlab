@@ -10,4 +10,4 @@ es-CL:
       event_description: 'Un aporte te ha sido asignado. Escribe una actualización oficial o cambia el estado del aporte.'
       title: '%{firstName}, se te asignó una entrada'
       subject: 'Tienes una asignación en la plataforma de %{organizationName}'
-      preheader_idea: 'La idea de %{authorName} ha sido asignada a ti'
+      preheader: 'Se te ha asignado la contribución de %{authorName}'

@@ -125,6 +125,7 @@ ach:
     open_idea_project_description_preview: crwdns207848:0crwdne207848:0
     open_idea_project_description: >
       crwdns207850:0crwdne207850:0
+    published_projects: crwdns5634649:0crwdne5634649:0
   phases:
     open_idea_phase_title: crwdns1443018:0crwdne1443018:0
     native_survey_title: crwdns1930452:0crwdne1930452:0
@@ -385,3 +386,4 @@ ach:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "crwdns5211557:0crwdne5211557:0"
+      max_must_be_greater_than_or_equal_to_min_select_count: "crwdns5675677:0crwdne5675677:0"

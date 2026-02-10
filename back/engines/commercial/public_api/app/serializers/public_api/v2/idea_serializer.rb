@@ -26,6 +26,8 @@ class PublicApi::V2::IdeaSerializer < PublicApi::V2::BaseSerializer
     :assigned_at,
     :proposed_budget,
     :creation_phase_id,
+    :creation_phase_title,
+    :survey_title,
     :images, # Not in spec
     :href, # Not in spec
     :status, # idea_status in spec
@@ -55,11 +57,23 @@ class PublicApi::V2::IdeaSerializer < PublicApi::V2::BaseSerializer
   end
 
   def type
-    object.creation_phase_id.present? ? 'survey' : 'idea'
+    if object.creation_phase_id.present?
+      object.creation_phase.pmethod.supports_survey_form? ? 'survey' : 'proposal'
+    else
+      'idea'
+    end
   end
 
   def href
     Frontend::UrlService.new.model_to_url object
+  end
+
+  def creation_phase_title
+    multiloc_service.t(object.creation_phase&.title_multiloc)
+  end
+
+  def survey_title
+    multiloc_service.t(object.creation_phase&.native_survey_title_multiloc)
   end
 
   private

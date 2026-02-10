@@ -7,19 +7,13 @@ class CustomFieldService
     @multiloc_service = MultilocService.new app_configuration: AppConfiguration.instance
   end
 
-  def ui_and_json_multiloc_schemas(configuration, fields)
-    json_schema_multiloc = fields_to_json_schema_multiloc(configuration, fields)
-    ui_schema_multiloc = fields_to_ui_schema_multiloc(configuration, fields)
-
-    { json_schema_multiloc: json_schema_multiloc, ui_schema_multiloc: ui_schema_multiloc }
-  end
-
-  # @param [AppConfiguration] configuration
-  # @return [Hash{String => Object}]
-  def fields_to_json_schema_multiloc(configuration, fields)
-    configuration.settings('core', 'locales').index_with do |locale|
-      fields_to_json_schema(fields, locale)
+  # To allow schema validation whilst ignoring 'required' requirements by setting all required attributes to false
+  def fields_to_json_schema_ignore_required(fields)
+    optional_fields = fields.map do |field|
+      field[:required] = false
+      field
     end
+    fields_to_json_schema(optional_fields)
   end
 
   def fields_to_json_schema(fields, locale = 'en')
@@ -44,41 +38,8 @@ class CustomFieldService
     end
   end
 
-  # To allow schema validation whilst ignoring 'required' requirements by setting all required attributes to false
-  def fields_to_json_schema_ignore_required(fields)
-    optional_fields = fields.map do |field|
-      field[:required] = false
-      field
-    end
-    fields_to_json_schema(optional_fields)
-  end
-
-  # @param [AppConfiguration] configuration
-  # @return [Hash{String => Object}]
-  def fields_to_ui_schema_multiloc(configuration, fields)
-    configuration.settings('core', 'locales').index_with do |locale|
-      fields_to_ui_schema(fields, locale)
-    end
-  end
-
-  def fields_to_ui_schema(fields, locale = 'en')
-    fields.each_with_object({}) do |field, memo|
-      override_method = "#{field.resource_type.underscore}_#{field.code}_to_ui_schema_field"
-      memo[field.key] =
-        if field.code && respond_to?(override_method, true)
-          send(override_method, field, locale)
-        else
-          send(:"#{field.input_type}_to_ui_schema_field", field, locale)
-        end
-    end.tap do |output|
-      output['ui:order'] = fields.sort_by { |f| f.ordering || Float::INFINITY }.map(&:key)
-    end
-  end
-
   def generate_key(title, other_option: false)
-    return 'other' if other_option == true
-
-    keyify(title)
+    other_option ? 'other' : keyify(title)
   end
 
   def keyify(str)
@@ -112,15 +73,6 @@ class CustomFieldService
     custom_field_values.except(*hidden_keys)
   end
 
-  # @param [Hash<String, _>] custom_field_values
-  # @return [Hash<String, _>]
-  # NOTE: this only works for users - custom forms can have the same key in multiple forms
-  def self.remove_disabled_custom_fields(custom_field_values)
-    all_disabled_keys = CustomField.disabled.pluck(:key)
-    disabled_keys = all_disabled_keys & custom_field_values.keys
-    custom_field_values.except(*disabled_keys)
-  end
-
   # NOTE: Needs refactor. This is called by idea serializer so will have an n+1 issue
   def self.remove_not_visible_fields(idea, current_user)
     return idea.custom_field_values if idea.draft?
@@ -139,11 +91,11 @@ class CustomFieldService
     fields.each do |field|
       visible_keys << field.key
 
-      if field.support_other_option?
+      if field.supports_other_option?
         visible_keys << "#{field.key}_other"
       end
 
-      if field.support_follow_up?
+      if field.supports_follow_up?
         visible_keys << "#{field.key}_follow_up"
       end
     end
@@ -178,12 +130,6 @@ class CustomFieldService
   end
 
   private
-
-  def base_ui_schema_field(field, _locale)
-    {}.tap do |ui_schema|
-      ui_schema[:'ui:widget'] = 'hidden' if field.hidden? || !field.enabled?
-    end
-  end
 
   # *** text ***
 

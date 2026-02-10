@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import Basemap from '@arcgis/core/Basemap';
 import Collection from '@arcgis/core/core/Collection';
 import Point from '@arcgis/core/geometry/Point';
@@ -25,6 +27,7 @@ import { IMapLayerAttributes } from 'api/map_layers/types';
 
 import { Localize } from 'hooks/useLocalize';
 
+import { useIntl } from 'utils/cl-intl';
 import { hexToRGBA } from 'utils/helperUtils';
 import { projectPointToWebMercator } from 'utils/mapUtils/map';
 
@@ -33,7 +36,60 @@ import {
   DEFAULT_TILE_PROVIDER,
   MAPTILER_ATTRIBUTION,
 } from './constants';
+import messages from './messages';
 import { DefaultBasemapType } from './types';
+
+// For Accessibility: add (aria-labels) to the expand buttons for layer list and legend
+interface UseLabelExpandButtonsProps {
+  mapView: MapView | null;
+}
+export const useLabelExpandButtons = ({
+  mapView,
+}: UseLabelExpandButtonsProps) => {
+  const { formatMessage } = useIntl();
+  useEffect(() => {
+    if (!mapView) return;
+
+    const SELECTORS = {
+      EXPAND_CONTAINER: '.esri-expand__container',
+      EXPAND_BUTTON: ".esri-widget--button[role='button']",
+      EXPAND_CONTENT: '.esri-expand__content',
+      LAYER_LIST: '.esri-layer-list',
+      LEGEND: '.esri-legend',
+    } as const;
+
+    const labelExpandButtons = () => {
+      document
+        .querySelectorAll(SELECTORS.EXPAND_CONTAINER)
+        .forEach((container) => {
+          const button = container.querySelector(SELECTORS.EXPAND_BUTTON);
+          const content = container.querySelector(SELECTORS.EXPAND_CONTENT);
+          if (!button || !content) return;
+
+          if (content.querySelector(SELECTORS.LAYER_LIST)) {
+            button.setAttribute(
+              'aria-label',
+              formatMessage(messages.mapLayerListAriaLabel)
+            );
+          }
+          if (content.querySelector(SELECTORS.LEGEND)) {
+            button.setAttribute(
+              'aria-label',
+              formatMessage(messages.mapLegendAriaLabel)
+            );
+          }
+        });
+    };
+    labelExpandButtons();
+
+    const observer = new MutationObserver(labelExpandButtons);
+    observer.observe(mapView.container, { childList: true, subtree: true });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [mapView, formatMessage]);
+};
 
 // getBasemapType
 // Description: Gets the basemap type given a certain tileProvider URL.
@@ -711,5 +767,35 @@ export const goToLayerExtent = (
     if (zoomOutFurther) {
       mapView.zoom = mapView.zoom - 1;
     }
+  });
+};
+
+// Helper function to create user location marker
+export const createUserLocationGraphic = (
+  longitude: number,
+  latitude: number
+) => {
+  const point = new Point({
+    longitude,
+    latitude,
+  });
+
+  const symbol = new SimpleMarkerSymbol({
+    color: [51, 119, 255], // Blue color
+    size: 12,
+    outline: {
+      color: [255, 255, 255], // White outline
+      width: 2,
+    },
+    style: 'circle',
+  });
+
+  return new Graphic({
+    geometry: point,
+    symbol,
+    attributes: {
+      id: 'user-location',
+      title: 'Your Location',
+    },
   });
 };

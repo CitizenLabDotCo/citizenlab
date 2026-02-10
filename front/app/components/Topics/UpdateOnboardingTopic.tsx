@@ -3,8 +3,8 @@ import React from 'react';
 import { Badge, colors, Button } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
-import { ITopicData } from 'api/topics/types';
-import useUpdateTopic from 'api/topics/useUpdateTopic';
+import { IGlobalTopicData } from 'api/global_topics/types';
+import useUpdateGlobalTopic from 'api/global_topics/useUpdateGlobalTopic';
 
 import T from 'components/T';
 import Error from 'components/UI/Error';
@@ -14,11 +14,11 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  topic: ITopicData;
+  topic: IGlobalTopicData;
 }
 
 const UpdateOnboardingTopic = ({ topic }: Props) => {
-  const { mutate: updateTopic, isLoading, error } = useUpdateTopic();
+  const { mutate: updateTopic, isLoading, error } = useUpdateGlobalTopic();
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const iconName = topic.attributes.include_in_onboarding

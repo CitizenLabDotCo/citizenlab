@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import useAuthUser from 'api/me/useAuthUser';
-import { IPermissionsCustomFieldData } from 'api/permissions_custom_fields/types';
+import { IPermissionsPhaseCustomFieldData } from 'api/permissions_phase_custom_fields/types';
 import { IUserCustomFieldData } from 'api/user_custom_fields/types';
 import { isBuiltInField } from 'api/user_custom_fields/util';
 
@@ -21,7 +21,7 @@ import { isAdmin } from 'utils/permissions/roles';
 import messages from './messages';
 
 type SelectionScreenProps = {
-  selectedFields: Array<IPermissionsCustomFieldData> | undefined;
+  selectedFields: Array<IPermissionsPhaseCustomFieldData> | undefined;
   registrationFieldList: Array<IUserCustomFieldData> | null | undefined;
   handleAddField: (fields: IUserCustomFieldData) => void;
   setShowAddFieldPage: (show: boolean) => void;
@@ -93,6 +93,7 @@ export const SelectionScreen = ({
       <Tooltip
         zIndex={9999999}
         disabled={userIsAdmin}
+        theme="dark"
         content={
           <Text my="8px" color="white" fontSize="s">
             {formatMessage(messages.onlyAdminsCreateQuestion)}

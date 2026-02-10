@@ -125,6 +125,7 @@ lt:
     open_idea_project_description_preview: Galbūt turite idėją, kuri netinka vienam iš esamų projektų? Tada paskelbkite ją čia, surinkite palaikymą ir įtraukite ją į politinę darbotvarkę!
     open_idea_project_description: >
       <p>Čia galite pradėti savo idėją, jei ji netinka vienam iš esamų projektų.</p><p><strong>Tikslas?</strong> Įtraukti savo idėją į politinę darbotvarkę.</p><p><strong>Kaip?</strong> Surinkdami paramą, t. y. bent 100 balsų per 3 mėnesius. Tai galite padaryti pirmiausia padarydami savo idėją "patrauklią". Parašykite ją aiškiai ir patraukliai, pridėkite paveikslėlių, pateikite svarių argumentų, pagrįstų faktais, pridėkite priedų su išsamesne informacija ar pagrindine informacija, ... Tai padarę, pradėkite dalytis savo idėja socialiniuose tinkluose arba el. paštu. Kvieskite žmones prisijungti prie diskusijos apie jūsų idėją arba tiesiog įtikinkite juos palaikyti idėją balsuodami už ją.</p><p><strong>Apie ką?</strong> Jūsų idėja gali būti apie daug ką, jei tik ji susijusi su jūsų miestu ir jo politika. Tai gali būti problema, su kuria susiduriate, sprendimas, kurį įsivaizduojate, arba net abiejų šių dalykų derinys. Ji gali būti drąsi ir ilgalaikė arba labai apčiuopiama ir greitai pasiekiama.</p><p><strong>O tada? </strong>Ar pasiekėte 100 balsų per 3 mėnesius? Sveikiname! Dabar miestas atsižvelgs į jūsų idėją. Jei jūsų idėja bus pripažinta įgyvendinama ir nekenks konkrečioms grupėms ar asmenims, gausite galimybę pristatyti savo pasiūlymą per tarybos posėdį. Tame pačiame posėdyje tarybos nariai jums tiesiogiai pasakys, ką ir kodėl jie darys arba nedarys su jūsų idėja. Jei per 3 mėnesius nesurinksite 100 balsų, jūsų pasiūlymas nebus svarstomas.</p><p>Mums smalsu sužinoti apie jūsų idėjas!</p>
+    published_projects: Paskelbti projektai
   phases:
     open_idea_phase_title: Dabartinis etapas
     native_survey_title: Apklausa
@@ -387,3 +388,4 @@ lt:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "Didžiausia reikšmė turi būti didesnė už mažiausią."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Didžiausia reikšmė turi būti didesnė arba lygi mažiausiai reikšmei."

@@ -34,6 +34,8 @@ module ContentBuilder
           @content_buildable ||= case params[:content_buildable]
           when 'Project'
             Project.find params[:project_id]
+          when 'ProjectFolder'
+            ProjectFolders::Folder.find params[:project_folder_id]
           when 'HomePage'
             nil
           end
@@ -65,6 +67,11 @@ module ContentBuilder
 
         def create
           @layout = Layout.new params_for_create
+
+          if @layout.craftjs_json == {}
+            @layout.craftjs_json = ContentBuilder::Craftjs::DefaultLayoutService.new.default_layout(content_buildable)
+          end
+
           layout.content_buildable = content_buildable
           authorize layout
           side_fx_service.before_create layout, current_user

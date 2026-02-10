@@ -3,7 +3,7 @@ import React from 'react';
 import { Input, IOption } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
-import { IdeaSortMethod, InputTerm } from 'api/phases/types';
+import { IdeaSortMethod, InputTerm, PrescreeningMode } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -17,7 +17,7 @@ import messages from '../../../../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import DefaultViewPicker from '../../shared/DefaultViewPicker';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
-import PrescreeningToggle from '../_shared/PrescreeningToggle';
+import PrescreeningModeSelector from '../_shared/PrescreeningModeSelector';
 import SortingPicker from '../_shared/SortingPicker';
 import UserActions from '../_shared/UserActions';
 
@@ -30,6 +30,7 @@ interface Props {
   reacting_like_method: 'unlimited' | 'limited' | null | undefined;
   reacting_like_limited_max: number | null | undefined;
   allow_anonymous_participation: boolean | null | undefined;
+  toggleAnonymousPostingDisabledReason?: string;
   noLikingLimitError?: string;
   expire_days_limit: number | null | undefined;
   expireDateLimitError?: string;
@@ -46,14 +47,14 @@ interface Props {
   handleAllowAnonymousParticipationOnChange: (
     allow_anonymous_participation: boolean
   ) => void;
-  presentation_mode: 'card' | 'map' | null | undefined;
+  presentation_mode: 'card' | 'map' | 'feed' | null | undefined;
   handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
   ideas_order: IdeaSortMethod | undefined;
   handleIdeaDefaultSortMethodChange: (ideas_order: IdeaSortMethod) => void;
   handleDaysLimitChange: (limit: string) => void;
   handleReactingThresholdChange: (threshold: string) => void;
-  prescreening_enabled: boolean | null | undefined;
-  togglePrescreeningEnabled: (prescreening_enabled: boolean) => void;
+  prescreening_mode: PrescreeningMode | null | undefined;
+  onPrescreeningModeChange: (mode: PrescreeningMode | null) => void;
   similarity_enabled?: boolean | null;
   similarity_threshold_title: number | null | undefined;
   similarity_threshold_body: number | null | undefined;
@@ -72,6 +73,7 @@ const ProposalsInputs = ({
   reacting_enabled,
   reacting_like_method,
   allow_anonymous_participation,
+  toggleAnonymousPostingDisabledReason,
   reacting_like_limited_max,
   noLikingLimitError,
   expire_days_limit,
@@ -91,8 +93,8 @@ const ProposalsInputs = ({
   handleIdeaDefaultSortMethodChange,
   handleDaysLimitChange,
   handleReactingThresholdChange,
-  prescreening_enabled,
-  togglePrescreeningEnabled,
+  prescreening_mode,
+  onPrescreeningModeChange,
   similarity_enabled,
   similarity_threshold_title,
   similarity_threshold_body,
@@ -148,11 +150,12 @@ const ProposalsInputs = ({
         handleAllowAnonymousParticipationOnChange={
           handleAllowAnonymousParticipationOnChange
         }
+        disabledReason={toggleAnonymousPostingDisabledReason}
       />
       {prescreeningFeatureEnabled && (
-        <PrescreeningToggle
-          prescreening_enabled={prescreening_enabled}
-          togglePrescreeningEnabled={togglePrescreeningEnabled}
+        <PrescreeningModeSelector
+          prescreening_mode={prescreening_mode}
+          onPrescreeningModeChange={onPrescreeningModeChange}
         />
       )}
       <UserActions

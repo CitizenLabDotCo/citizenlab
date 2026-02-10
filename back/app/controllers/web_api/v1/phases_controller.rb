@@ -27,7 +27,8 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def create
-    @phase = Phase.new(phase_params)
+    phase_attributes = phase_params
+    @phase = Phase.new(phase_attributes)
     @phase.project_id = params[:project_id]
     sidefx.before_create(@phase, current_user)
     authorize @phase
@@ -167,12 +168,14 @@ class WebApi::V1::PhasesController < ApplicationController
       :voting_max_total,
       :voting_min_total,
       :voting_max_votes_per_idea,
+      :voting_min_selected_options,
+      :voting_filtering_enabled,
       :poll_anonymous,
       :document_annotation_embed_url,
       :ideas_order,
       :input_term,
       :vote_term,
-      :prescreening_enabled,
+      :prescreening_mode,
       :reacting_threshold,
       :expire_days_limit,
       :manual_voters_amount,
@@ -187,9 +190,11 @@ class WebApi::V1::PhasesController < ApplicationController
         native_survey_button_multiloc: CL2_SUPPORTED_LOCALES
       }
     ]
+
     if AppConfiguration.instance.feature_activated? 'disable_disliking'
       permitted += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]
     end
+
     params.require(:phase).permit(permitted)
   end
 

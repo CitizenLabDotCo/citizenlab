@@ -51,8 +51,7 @@ const ScreeningStatusFilter = ({ status, active, onClick, type }: Props) => {
   });
 
   // Both ideation and proposal phases use the same setting.
-  const phaseSettingEnabled =
-    phase?.data.attributes.prescreening_enabled === true;
+  const phaseSettingEnabled = !!phase?.data.attributes.prescreening_mode;
   const statusFilterIsEnabled =
     // We only show ideation inputs in the general input manager, so we don't need to check
     // for the proposals screening feature being allowed here.

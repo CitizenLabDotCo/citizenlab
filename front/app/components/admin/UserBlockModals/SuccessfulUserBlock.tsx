@@ -17,17 +17,19 @@ import messages from './messages';
 type Props = {
   opened: boolean;
   resetSuccess: () => void;
+  setClose: () => void;
   date: string;
   name: string;
 };
 
-export default ({ opened, resetSuccess, date, name }: Props) => {
+export default ({ opened, resetSuccess, setClose, date, name }: Props) => {
   const [localOpened, setLocaloOpened] = useState(opened);
   const { formatMessage } = useIntl();
 
   const onClose = () => {
     resetSuccess();
     setLocaloOpened(false);
+    setClose();
   };
 
   return (

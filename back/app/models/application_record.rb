@@ -2,6 +2,7 @@
 
 class ApplicationRecord < ActiveRecord::Base
   include Sluggable
+  include Imageable
 
   self.abstract_class = true
 

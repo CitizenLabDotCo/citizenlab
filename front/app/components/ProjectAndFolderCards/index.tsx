@@ -68,6 +68,7 @@ const ProjectAndFolderCards = ({
         publicationStatusFilter: PUBLICATION_STATUSES,
         rootLevelOnly,
         removeNotAllowedParents: true,
+        remove_all_unlisted: true,
         topicIds,
         areaIds,
         search,
@@ -87,7 +88,7 @@ const ProjectAndFolderCards = ({
     publicationStatusFilter: getPublicationStatuses(currentTab),
     rootLevelOnly,
     removeNotAllowedParents: true,
-    topicIds,
+    globalTopicIds: topicIds,
     areaIds,
     search,
     include_publications: true,
@@ -122,6 +123,7 @@ const ProjectAndFolderCards = ({
       loadingInitial={isInitialLoading}
       hasMore={hasNextPage}
       loadingMore={isFetchingNextPage}
+      searchTerm={search}
       {...otherProps}
       onChangeTopics={setTopicsIds}
       onChangeAreas={setAreasIds}
@@ -138,6 +140,7 @@ const ProjectAndFolderCardsWrapper = (props: Props) => {
       publicationStatusFilter: PUBLICATION_STATUSES,
       rootLevelOnly: true,
       removeNotAllowedParents: true,
+      remove_all_unlisted: true,
     }
   );
 

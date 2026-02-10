@@ -27,11 +27,12 @@ import ReactionButton from './ReactionButton';
 import ScreenReaderContent from './ScreenReaderContent';
 
 type TSize = '1' | '2' | '3' | '4';
-type TStyleType = 'border' | 'shadow';
+type TStyleType = 'border' | 'shadow' | 'compact';
 
-const Container = styled.div`
+const Container = styled.div<{ reverse?: boolean }>`
   display: flex;
   align-items: center;
+  flex-direction: ${({ reverse }) => (reverse ? 'row-reverse' : 'row')};
 
   ${isRtl`
     flex-direction: row-reverse;
@@ -60,6 +61,7 @@ const ReactionControl = ({
   size,
   className,
   styleType,
+  unauthenticatedReactionClick,
   disabledReactionClick,
   variant = 'icon',
 }: Props) => {
@@ -249,6 +251,7 @@ const ReactionControl = ({
         !reactingEnabled &&
         isFixableByAuthentication(reactingDisabledReason)
       ) {
+        unauthenticatedReactionClick?.(reactionMode);
         triggerAuthenticationFlow({ context, successAction });
       } else if (reactingDisabledReason) {
         disabledReactionClick?.(reactingDisabledReason);
@@ -274,6 +277,7 @@ const ReactionControl = ({
         dislikesCount={dislikesCount}
       />
       <Container
+        reverse={styleType === 'compact'}
         className={[
           className,
           'e2e-reaction-controls',

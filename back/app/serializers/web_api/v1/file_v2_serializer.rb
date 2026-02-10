@@ -20,4 +20,5 @@ class WebApi::V1::FileV2Serializer < WebApi::V1::BaseSerializer
   has_many :projects, serializer: WebApi::V1::ProjectSerializer
   has_many :attachments, serializer: WebApi::V1::Files::FileAttachmentSerializer
   has_one :preview, serializer: WebApi::V1::Files::PreviewSerializer
+  has_one :transcript, serializer: WebApi::V1::Files::TranscriptSerializer
 end

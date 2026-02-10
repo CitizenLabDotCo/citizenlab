@@ -56,13 +56,13 @@ describe Export::Xlsx::ProjectIdeasVotesGenerator do
     it 'contains a worksheet for each voting phase' do
       expect(workbook.worksheets.size).to eq(3)
       expect(workbook.worksheets.map(&:sheet_name))
-        .to match_array(['Single voting phase', 'Multiple voting phase', 'Budget allocation phase'])
+        .to contain_exactly('Single voting phase', 'Multiple voting phase', 'Budget allocation phase')
     end
 
     it 'handles phases with same title multiloc values' do
       phase2.update!(title_multiloc: phase3.title_multiloc)
       expect(workbook.worksheets.map(&:sheet_name))
-        .to match_array(['Multiple voting phase (1)', 'Multiple voting phase (2)', 'Budget allocation phase'])
+        .to contain_exactly('Multiple voting phase (1)', 'Multiple voting phase (2)', 'Budget allocation phase')
     end
 
     it 'contains a row for every idea assigned to the voting phase' do
@@ -76,80 +76,50 @@ describe Export::Xlsx::ProjectIdeasVotesGenerator do
       idea_id_column = workbook.worksheets[0].collect { |row| row[0].value }
 
       expect(project.ideas.count).to eq(5)
-      expect(idea_id_column).to match_array(['ID', ideas[0].id, ideas[1].id, ideas[2].id, ideas[3].id])
+      expect(idea_id_column).to contain_exactly('ID', ideas[0].id, ideas[1].id, ideas[2].id, ideas[3].id)
       expect(idea_id_column).not_to include(idea_not_in_voting_phase.id)
     end
 
     context 'when sheet is for a single voting phase' do
       it 'contains a column with vote count values for each idea in the phase' do
         votes_column = workbook.worksheets[0].collect { |row| { idea_id: row[0].value, votes: row[4].value } }
-        expect(votes_column).to match_array([
-          { idea_id: 'ID', votes: 'Votes' },
-          { idea_id: ideas[0].id, votes: 2 },
-          { idea_id: ideas[1].id, votes: 1 },
-          { idea_id: ideas[2].id, votes: 0 },
-          { idea_id: ideas[3].id, votes: 0 }
-        ])
+        expect(votes_column).to contain_exactly({ idea_id: 'ID', votes: 'Votes' }, { idea_id: ideas[0].id, votes: 2 }, { idea_id: ideas[1].id, votes: 1 }, { idea_id: ideas[2].id, votes: 0 }, { idea_id: ideas[3].id, votes: 0 })
       end
     end
 
     context 'when sheet is for a multiple voting phase' do
       it 'contains a column with count of participants who voted for each idea in the phase' do
         participants_column = workbook.worksheets[1].collect { |row| { idea_id: row[0].value, participants: row[4].value } }
-        expect(participants_column).to match_array([
-          { idea_id: 'ID', participants: 'Participants' },
-          { idea_id: ideas[0].id, participants: 2 },
-          { idea_id: ideas[1].id, participants: 1 },
-          { idea_id: ideas[2].id, participants: 0 },
-          { idea_id: ideas[3].id, participants: 0 }
-        ])
+        expect(participants_column).to contain_exactly({ idea_id: 'ID', participants: 'Participants' }, { idea_id: ideas[0].id, participants: 2 }, { idea_id: ideas[1].id, participants: 1 }, { idea_id: ideas[2].id, participants: 0 }, { idea_id: ideas[3].id, participants: 0 })
       end
 
       it 'contains a column with vote count values for each idea in the phase' do
         votes_column = workbook.worksheets[1].collect { |row| { idea_id: row[0].value, votes: row[5].value } }
-        expect(votes_column).to match_array([
-          { idea_id: 'ID', votes: 'Votes' },
-          { idea_id: ideas[0].id, votes: 63 },
-          { idea_id: ideas[1].id, votes: 24 },
-          { idea_id: ideas[2].id, votes: 0 },
-          { idea_id: ideas[3].id, votes: 0 }
-        ])
+        expect(votes_column).to contain_exactly({ idea_id: 'ID', votes: 'Votes' }, { idea_id: ideas[0].id, votes: 63 }, { idea_id: ideas[1].id, votes: 24 }, { idea_id: ideas[2].id, votes: 0 }, { idea_id: ideas[3].id, votes: 0 })
       end
     end
 
     context 'when sheet is for a budget allocation phase' do
       it 'contains a column with count of participants who selected each idea in the phase' do
         participants_column = workbook.worksheets[2].collect { |row| { idea_id: row[0].value, participants: row[4].value } }
-        expect(participants_column).to match_array([
-          { idea_id: 'ID', participants: 'Picks / Participants' },
-          { idea_id: ideas[0].id, participants: 1 },
-          { idea_id: ideas[1].id, participants: 1 },
-          { idea_id: ideas[2].id, participants: 2 },
-          { idea_id: ideas[3].id, participants: 0 }
-        ])
+        expect(participants_column).to contain_exactly({ idea_id: 'ID', participants: 'Picks / Participants' }, { idea_id: ideas[0].id, participants: 1 }, { idea_id: ideas[1].id, participants: 1 }, { idea_id: ideas[2].id, participants: 2 }, { idea_id: ideas[3].id, participants: 0 })
       end
 
       it 'contains a column with cost (budgeted cost) of each idea in the phase' do
         ideas[1].update!(budget: 42)
         participants_column = workbook.worksheets[2].collect { |row| { idea_id: row[0].value, cost: row[5].value } }
-        expect(participants_column).to match_array([
-          { idea_id: 'ID', cost: 'Cost' },
-          { idea_id: ideas[0].id, cost: 500 },
-          { idea_id: ideas[1].id, cost: 42 },
-          { idea_id: ideas[2].id, cost: 500 },
-          { idea_id: ideas[3].id, cost: 500 }
-        ])
+        expect(participants_column).to contain_exactly({ idea_id: 'ID', cost: 'Cost' }, { idea_id: ideas[0].id, cost: 500 }, { idea_id: ideas[1].id, cost: 42 }, { idea_id: ideas[2].id, cost: 500 }, { idea_id: ideas[3].id, cost: 500 })
       end
     end
 
     it 'contains attribute values specific to the idea detailed in a row' do
       author = create(:user)
-      topic1 = create(:topic_nature)
-      topic2 = create(:topic_sustainability)
+      topic1 = create(:input_topic_nature)
+      topic2 = create(:input_topic_sustainability)
       idea_file1 = create(:idea_file, idea: ideas[0])
       ideas[0].update!(
         author: author,
-        topics: [topic1, topic2],
+        input_topics: [topic1, topic2],
         location_point: 'POINT(1.234 5.678)',
         location_description: '489 Calista Coves',
         manual_votes_amount: 11
@@ -165,7 +135,7 @@ describe Export::Xlsx::ProjectIdeasVotesGenerator do
       expect(idea_row[header_row.find_index 'Attachments'])
         .to match %r{\A/uploads/.+/idea_file/file/#{idea_file1.id}/#{idea_file1.name}\Z}
       expect(idea_row[header_row.find_index 'Tags'].split(','))
-        .to match_array([topic1.title_multiloc['en'], topic2.title_multiloc['en']])
+        .to contain_exactly(topic1.title_multiloc['en'], topic2.title_multiloc['en'])
       expect(idea_row[header_row.find_index 'Latitude']).to eq ideas[0].location_point.coordinates.last
       expect(idea_row[header_row.find_index 'Longitude']).to eq ideas[0].location_point.coordinates.first
       expect(idea_row[header_row.find_index 'Location']).to eq ideas[0].location_description

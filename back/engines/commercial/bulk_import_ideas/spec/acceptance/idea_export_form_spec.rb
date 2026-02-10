@@ -18,15 +18,6 @@ resource 'Idea form exports' do
         let(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
         let!(:custom_field) { create(:custom_field, resource: custom_form) }
 
-        context 'PDF download (deprecated legacy version)' do
-          let(:format) { 'legacy_pdf' }
-
-          example 'Get a pdf version of the idea form', document: false do
-            do_request
-            assert_status 200
-          end
-        end
-
         context 'XLSX download' do
           let(:format) { 'xlsx' }
 
@@ -53,37 +44,13 @@ resource 'Idea form exports' do
         context 'PDF rendered from HTML' do
           let(:format) { 'pdf' }
 
-          context 'feature flag enabled' do
-            example 'Get an PDF version of the idea form', document: false do
-              # Expect the HTML PDF generator to be invoked
-              expect_any_instance_of(BulkImportIdeas::Exporters::IdeaPdfFormExporter).to receive(:export).and_return(
-                Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read
-              )
-              do_request
-              assert_status 200
-            end
-
-            example 'Get the legacy PDF version of the idea form when ?legacy=true', document: false do
-              # Expect the Legacy PDF generator to be invoked
-              expect_any_instance_of(BulkImportIdeas::Legacy::IdeaPdfFormExporter).to receive(:export).and_return(
-                Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read
-              )
-              do_request({ import: { legacy_pdf: true } })
-              assert_status 200
-            end
-          end
-
-          context 'feature flag is not enabled' do
-            before { SettingsService.new.deactivate_feature! 'html_pdfs' }
-
-            example 'Get the legacy PDF version of the idea form', document: false do
-              # Expect the Legacy PDF generator to be invoked
-              expect_any_instance_of(BulkImportIdeas::Legacy::IdeaPdfFormExporter).to receive(:export).and_return(
-                Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read
-              )
-              do_request
-              assert_status 200
-            end
+          example 'Get an PDF version of the idea form', document: false do
+            # Expect the HTML PDF generator to be invoked
+            expect_any_instance_of(BulkImportIdeas::Exporters::IdeaPdfFormExporter).to receive(:export).and_return(
+              Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf').read
+            )
+            do_request
+            assert_status 200
           end
         end
 

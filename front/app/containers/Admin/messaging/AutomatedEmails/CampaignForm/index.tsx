@@ -115,7 +115,6 @@ const EditCampaignForm = ({
   };
 
   const defaultReplyTo = appConfig.data.attributes.settings.core.reply_to_email;
-
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onFormSubmit)}>

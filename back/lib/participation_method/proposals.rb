@@ -8,12 +8,16 @@ module ParticipationMethod
       'proposals'
     end
 
+    def phase_insights_class
+      Insights::ProposalsPhaseInsightsService
+    end
+
     def assign_defaults_for_phase
       super
       phase.reacting_dislike_enabled = false
       phase.expire_days_limit ||= 90
       phase.reacting_threshold ||= 300
-      phase.prescreening_enabled ||= false
+      phase.prescreening_mode ||= nil
     end
 
     def budget_in_form?(_)

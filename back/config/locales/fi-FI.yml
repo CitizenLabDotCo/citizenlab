@@ -125,6 +125,7 @@ fi:
     open_idea_project_description_preview: Ehkä sinulla on idea, joka ei sovi yhteen olemassa olevista projekteista? Lähetä se tänne, kerää tukea ja ota se poliittiselle asialistalle!
     open_idea_project_description: >
       <p>Täällä voit aloittaa oman ideasi, jos se ei sovi yhteen olemassa olevista projekteista.</p><p><strong>Tavoite?</strong> Saadaksesi ideasi poliittiselle asialistalle.</p><p><strong>Miten?</strong> Keräämällä kannatusta, eli vähintään 100 ääntä 3 kuukaudessa. Voit tehdä sen tekemällä ideastasi ensin "houkuttelevan". Kirjoita se selkeästi ja mukaansatempaavalla tavalla, lisää kuvia, esitä vahvoja faktoihin perustuvia argumentteja, lisää liitteitä tarkempiin yksityiskohtiin tai taustatietoihin... Kun olet tehnyt sen, aloita ideasi jakaminen sosiaalisessa mediassa tai sähköpostitse. Kutsu ihmisiä mukaan keskusteluun ideastasi tai yksinkertaisesti vakuuta heidät tukemaan sitä äänestämällä sen puolesta.</p><p><strong>Mistä?</strong> Ideasi voi koskea monia asioita, kunhan se liittyy kaupunkiisi ja sen politiikkaan. Se voi olla kohtaamasi ongelma, kuvittelemasi ratkaisu tai jopa näiden yhdistelmä. Se voi olla villi ja pitkällä aikavälillä tai erittäin konkreettinen ja nopea voitto.</p><p><strong>Ja sitten? </strong>Saitko 100 ääntä 3 kuukaudessa? Onnittelut! Kaupunki ottaa nyt ideasi huomioon. Jos ideasi katsotaan toteuttamiskelpoiseksi eikä se vahingoita tiettyjä ryhmiä tai yksilöitä, sinulla on mahdollisuus esittää ehdotuksesi valtuuston kokouksessa. Saman kokouksen aikana valtuuston jäsenet antavat sinulle suoraa palautetta siitä, mitä he tekevät tai eivät tee ideasi kanssa ja miksi. Jos et kerää 100 ääntä 3 kuukaudessa, ehdotustasi ei oteta huomioon.</p><p>Olemme uteliaita kuulemaan ideoistasi!</p>
+    published_projects: Julkaistut projektit
   phases:
     open_idea_phase_title: Nykyinen vaihe
     native_survey_title: Kysely
@@ -334,7 +335,7 @@ fi:
       unsupported_field: 'Tätä kenttää ei voi täyttää paperilla. Käytä sen sijaan lomakkeen verkkoversiota.'
       ranking_print_description: 'Kirjoita jokaiseen ruutuun numero asteikolla 1 (suosituin) ja %{max_rank} (vähiten toivottu). Käytä kutakin numeroa täsmälleen kerran.'
       matrix_print_description: 'Merkitse jokaiselle riville yksi ympyrä ristillä osoittaaksesi mieltymyksesi.'
-      rating_print_description: 'Rate this by writing a number between 1 (worst) and %{max_stars} (best).'
+      rating_print_description: 'Arvioi tämä kirjoittamalla numero väliltä 1 (huonoin) - %{max_stars} (paras).'
       sentiment_linear_scale_print_description: 'Kirjoita numero väliltä 1 ja 5.'
       sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
       point_print_description: 'Merkitse alla olevaan karttaan X osoittaaksesi sijainnin tai kirjoita osoite.'
@@ -385,3 +386,4 @@ fi:
   errors:
     messages:
       max_must_be_greater_than_min_characters: "Maksimin on oltava suurempi kuin minimin."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Maksimin on oltava suurempi tai yhtä suuri kuin minimi."

@@ -31,13 +31,13 @@ class XlsxService
   # | John  |      | 35  |
   # into this hash array:
   #   [{'name' => 'Ron', 'size' => 'xl'), {'name' => 'John', 'age' => 35}]
-  def xlsx_to_hash_array(xlsx)
+  def xlsx_to_hash_array(xlsx, include_empty_cells: false)
     workbook = RubyXL::Parser.parse_buffer(xlsx)
     worksheet = workbook.worksheets[0]
     worksheet.drop(1).map do |row|
       xlsx_utils = Export::Xlsx::Utils.new
       (row&.cells || []).compact.filter_map do |cell|
-        if cell.value
+        if cell.value || include_empty_cells
           column_header = xlsx_utils.add_duplicate_column_name_suffix(worksheet[0][cell.column]&.value)
           [column_header, cell.value]
         end
@@ -62,16 +62,16 @@ class XlsxService
     xlsx_from_rows([header, *rows], sheetname: sheetname)
   end
 
-  def generate_xlsx(sheetname, columns, instances)
-    columns = columns.uniq { |c| c[:header] }
+  def generate_xlsx(sheetname, columns, instances, reject_duplicate_columns: true)
+    columns = columns.uniq { |c| c[:header] } if reject_duplicate_columns
     pa = Axlsx::Package.new
-    generate_sheet pa.workbook, sheetname, columns, instances
+    generate_sheet pa.workbook, sheetname, columns, instances, reject_duplicate_columns: reject_duplicate_columns
     pa.to_stream
   end
 
-  def generate_sheet(workbook, sheetname, columns, instances)
+  def generate_sheet(workbook, sheetname, columns, instances, reject_duplicate_columns: true)
     sheetname = utils.sanitize_sheetname sheetname
-    columns = columns.uniq { |c| c[:header] }
+    columns = columns.uniq { |c| c[:header] } if reject_duplicate_columns
     workbook.styles do |s|
       workbook.add_worksheet(name: sheetname) do |sheet|
         header = columns.pluck(:header)
@@ -154,7 +154,7 @@ class XlsxService
       { header: 'unsure',               f: ->(i) { i.neutral_reactions_count }, skip_sanitization: true },
       { header: 'url',                  f: ->(i) { Frontend::UrlService.new.model_to_url(i) }, skip_sanitization: true, hyperlink: true },
       { header: 'project',              f: ->(i) { multiloc_service.t(i&.project&.title_multiloc) } },
-      { header: 'topics',               f: ->(i) { i.topics.map { |t| multiloc_service.t(t.title_multiloc) }.join(',') } },
+      { header: 'topics',               f: ->(i) { i.input_topics.map { |t| multiloc_service.t(t.title_multiloc) }.join(',') } },
       { header: 'status',               f: ->(i) { multiloc_service.t(i&.idea_status&.title_multiloc) } },
       { header: 'assignee',             f: ->(i) { i.assignee&.full_name } },
       { header: 'assignee_email',       f: ->(i) { i.assignee&.email } },
@@ -254,7 +254,7 @@ class XlsxService
   end
 
   def value_getter_for_user_custom_field_columns(field, record_to_user, options)
-    if field.support_options? # field with options
+    if field.supports_options? # field with options
       if field.domicile? # 'domicile' options are a special case
         options = field.ordered_transformed_options.index_by { |option| namespace(option.custom_field_id, option.key) }
       end

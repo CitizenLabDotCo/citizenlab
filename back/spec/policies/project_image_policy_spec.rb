@@ -19,7 +19,7 @@ describe ProjectImagePolicy do
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 
-      it 'should index the image' do
+      it 'indexes the image' do
         expect(scope.resolve.size).to eq 1
       end
     end
@@ -32,7 +32,7 @@ describe ProjectImagePolicy do
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 
-      it 'should index the image' do
+      it 'indexes the image' do
         expect(scope.resolve.size).to eq 1
       end
     end
@@ -45,7 +45,7 @@ describe ProjectImagePolicy do
       it { is_expected.to permit(:update)  }
       it { is_expected.to permit(:destroy) }
 
-      it 'should index the image' do
+      it 'indexes the image' do
         expect(scope.resolve.size).to eq 1
       end
     end
@@ -76,7 +76,7 @@ describe ProjectImagePolicy do
       it { is_expected.not_to permit(:update)  }
       it { is_expected.not_to permit(:destroy) }
 
-      it 'should not index the image' do
+      it 'does not index the image' do
         expect(scope.resolve.size).to eq 0
       end
     end
@@ -89,7 +89,7 @@ describe ProjectImagePolicy do
       it { is_expected.to permit(:update)  }
       it { is_expected.to permit(:destroy) }
 
-      it 'should index the image' do
+      it 'indexes the image' do
         expect(scope.resolve.size).to eq 1
       end
     end

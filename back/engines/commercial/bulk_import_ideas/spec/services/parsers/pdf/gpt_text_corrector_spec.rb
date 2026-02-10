@@ -106,22 +106,26 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::GPTTextCorrector do
       end
     end
 
-    context 'when running real GPT', skip: 'These tests are added to run manualy. They will make real requests to GPT API.' do
+    context 'when running real GPT', skip: 'These tests are added to run manually. They will make real requests to GPT API.' do
       context 'when processing Dutch' do
         subject(:corrector) { described_class.new(phase, idea_rows) }
 
         let(:idea_rows) do
           [
             {
-              :id => 1, :title_multiloc => { :'nl-BE' => 'Test Sharon' }, :body_multiloc => { :'nl-BE' => 'me af of dit ook Ik Uraa Uraag werkt' }
+              id: 1,
+              title_multiloc: { 'nl-BE': 'Test Sharon' },
+              body_multiloc: { 'nl-BE': 'me af of dit ook Ik Uraa Uraag werkt' }
             },
             {
-              :id => 2, :title_multiloc => { :'nl-BE' => 'Test 5' }, :body_multiloc => { :'nl-BE' => 'Dit is nog een ingevuld test formulier' }
+              id: 2,
+              title_multiloc: { 'nl-BE': 'Test 5' },
+              body_multiloc: { 'nl-BE': 'Dit is nog een ingevuld test formulier' }
             },
             {
-              :id => 3,
-              :title_multiloc => { :'nl-BE' => 'Test 1' },
-              :body_multiloc => { :'nl-BE' => 'Dit is een 2e harte test met het originele formulier' }
+              id: 3,
+              title_multiloc: { 'nl-BE': 'Test 1' },
+              body_multiloc: { 'nl-BE': 'Dit is een 2e harte test met het originele formulier' }
             }
           ]
         end
@@ -147,16 +151,14 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::GPTTextCorrector do
         let(:idea_rows) do
           [
             {
-              :id => 1,
-              :title_multiloc => { :en => 'Another idea title' },
-              :body_multiloc => { :en => 'Some noe des description here. Once upon small child by a time there was a the name "Bob" He lived in a of Castle by the side a large of mountain.' }
+              id: 1,
+              title_multiloc: { en: 'Another idea title' },
+              body_multiloc: { en: 'Some noe des description here. Once upon small child by a time there was a the name "Bob" He lived in a of Castle by the side a large of mountain.' }
             },
             {
-              :id => 2,
-              :title_multiloc => { :en => 'This is a title and I like it' },
-              :body_multiloc =>
-              { :en =>
-                'This should show how the text does on multiple get Jumbled Jumbled if you put stuff lines. you? Did nice holiday? How are have you a' }
+              id: 2,
+              title_multiloc: { en: 'This is a title and I like it' },
+              body_multiloc: { en: 'This should show how the text does on multiple get Jumbled Jumbled if you put stuff lines. you? Did nice holiday? How are have you a' }
             }
           ]
         end

@@ -27,9 +27,20 @@ const AdminAreasNew = lazy(() => import('./areas/New'));
 const AdminAreasEdit = lazy(() => import('./areas/Edit'));
 
 // topics
-const AdminTopicsIndexComponent = lazy(() => import('./topics/all'));
-const AdminTopicsNewComponent = lazy(() => import('./topics/New'));
-const AdminTopicsEditComponent = lazy(() => import('./topics/Edit'));
+const TopicsMain = React.lazy(() => import('./topics/TopicsMain'));
+const AdminTopicsNewComponent = lazy(
+  () => import('./topics/global_topics/New')
+);
+const AdminTopicsEditComponent = lazy(
+  () => import('./topics/global_topics/Edit')
+);
+// default input topics
+const AdminDefaultInputTopicsNewComponent = lazy(
+  () => import('./topics/default_input_topics/New')
+);
+const AdminDefaultInputTopicsEditComponent = lazy(
+  () => import('./topics/default_input_topics/Edit')
+);
 
 // statuses
 const StatusesMain = React.lazy(
@@ -52,8 +63,11 @@ export enum settingsRoutes {
   new = 'new',
   areaId = '$areaId',
   topics = 'topics',
+  platform = 'platform',
+  input = 'input',
   edit = 'edit',
   topicEdit = '$topicId/edit',
+  defaultInputTopicEdit = '$defaultInputTopicId/edit',
   ideation = 'ideation',
   proposals = 'proposals',
   statuses = 'statuses',
@@ -69,8 +83,12 @@ export type settingRouteTypes =
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.areas}/${settingsRoutes.new}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.areas}/${string}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.new}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${string}/${settingsRoutes.edit}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.platform}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.platform}/${settingsRoutes.new}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.platform}/${string}/${settingsRoutes.edit}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.input}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.input}/${settingsRoutes.new}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.input}/${string}/${settingsRoutes.edit}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.proposals}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.proposals}/${settingsRoutes.new}`>
@@ -200,30 +218,57 @@ export default () => ({
     },
     {
       path: settingsRoutes.topics,
+      element: (
+        <PageLoading>
+          <TopicsMain />
+        </PageLoading>
+      ),
       children: [
         {
           index: true,
-          element: (
-            <PageLoading>
-              <AdminTopicsIndexComponent />
-            </PageLoading>
-          ),
+          element: <Navigate to="platform" replace />,
         },
         {
-          path: settingsRoutes.new,
-          element: (
-            <PageLoading>
-              <AdminTopicsNewComponent />
-            </PageLoading>
-          ),
+          path: settingsRoutes.platform,
+          children: [
+            {
+              path: settingsRoutes.new,
+              element: (
+                <PageLoading>
+                  <AdminTopicsNewComponent />
+                </PageLoading>
+              ),
+            },
+            {
+              path: settingsRoutes.topicEdit,
+              element: (
+                <PageLoading>
+                  <AdminTopicsEditComponent />
+                </PageLoading>
+              ),
+            },
+          ],
         },
         {
-          path: settingsRoutes.topicEdit,
-          element: (
-            <PageLoading>
-              <AdminTopicsEditComponent />
-            </PageLoading>
-          ),
+          path: settingsRoutes.input,
+          children: [
+            {
+              path: settingsRoutes.new,
+              element: (
+                <PageLoading>
+                  <AdminDefaultInputTopicsNewComponent />
+                </PageLoading>
+              ),
+            },
+            {
+              path: settingsRoutes.defaultInputTopicEdit,
+              element: (
+                <PageLoading>
+                  <AdminDefaultInputTopicsEditComponent />
+                </PageLoading>
+              ),
+            },
+          ],
         },
       ],
     },

@@ -9,7 +9,9 @@ namespace :cl2back do
         AutomatedTransitionJob.perform_later
         CreatePeriodicActivitiesJob.perform_later now.to_i
         CreateHeatmapGenerationJob.perform_later now.to_i
+        IdeaFeed::TopicModelingSchedulerJob.perform_later
         DeleteInvitesJob.perform_later
+        CleanupExpiredClaimTokensJob.perform_later
       end
     end
   end

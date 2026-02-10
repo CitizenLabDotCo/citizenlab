@@ -6,7 +6,7 @@ PATH
       graphql (~> 2.3)
       kaminari (~> 1.2)
       multi_tenancy
-      rails (~> 7.0)
+      rails (~> 7.2)
       ros-apartment (>= 2.9.0)
 
 PATH
@@ -14,17 +14,17 @@ PATH
   specs:
     aggressive_caching (0.1.0)
       actionpack-action_caching (~> 1.2)
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/analysis
   specs:
     analysis (0.1.0)
-      concurrent-ruby (~> 1.2.3)
+      concurrent-ruby (~> 1.3.5)
       distribution (~> 0.8.0)
       matrix (~> 0.4.2)
       prime (~> 0.1.3)
-      rails (~> 7.0)
+      rails (~> 7.2)
       ruby-openai (~> 8.3.0)
       tiktoken_ruby (~> 0.0.12)
 
@@ -32,7 +32,7 @@ PATH
   remote: engines/commercial/analytics
   specs:
     analytics (0.1.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
       scenic
 
 PATH
@@ -41,7 +41,7 @@ PATH
     bulk_import_ideas (0.1.0)
       active_model_serializers (~> 0.10.7)
       pundit (~> 2.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
       ros-apartment (>= 2.9.0)
 
 PATH
@@ -51,7 +51,7 @@ PATH
       active_model_serializers (~> 0.10.7)
       nanoid (~> 2.0)
       pundit (~> 2.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
       ros-apartment (>= 2.9.0)
 
 PATH
@@ -59,7 +59,7 @@ PATH
   specs:
     custom_maps (0.1.0)
       pundit (~> 2.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
       ros-apartment (>= 2.9.0)
 
 PATH
@@ -70,33 +70,40 @@ PATH
       email_campaigns
       moderation
       pundit (~> 2.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
       ros-apartment (>= 2.9.0)
 
 PATH
   remote: engines/commercial/google_tag_manager
   specs:
     google_tag_manager (0.1.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
+
+PATH
+  remote: engines/commercial/id_acm
+  specs:
+    id_acm (1.0.0)
+      omniauth_openid_connect (~> 0.8.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/id_auth0
   specs:
     id_auth0 (0.1.0)
       omniauth-auth0 (~> 2.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/id_bogus
   specs:
     id_bogus (0.1.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/id_bosa_fas
   specs:
     id_bosa_fas (0.1.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/id_clave_unica
@@ -104,118 +111,118 @@ PATH
     id_clave_unica (0.1.0)
       id_id_card_lookup
       omniauth_openid_connect
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/id_cow
   specs:
     id_cow (0.1.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
       savon (>= 2.12, < 2.15)
 
 PATH
   remote: engines/commercial/id_criipto
   specs:
     id_criipto (0.1.0)
-      omniauth_openid_connect (~> 0.7.1)
-      rails (~> 7.0)
+      omniauth_openid_connect (~> 0.8.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/id_fake_sso
   specs:
     id_fake_sso (0.1.0)
       omniauth_openid_connect
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/id_franceconnect
   specs:
     id_franceconnect (0.1.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/id_gent_rrn
   specs:
     id_gent_rrn (0.1.0)
       httparty
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/id_hoplr
   specs:
     id_hoplr (0.1.0)
       omniauth_openid_connect
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/id_id_austria
   specs:
     id_id_austria (1.0.0)
-      omniauth_openid_connect (~> 0.7.1)
-      rails (~> 7.0)
+      omniauth_openid_connect (~> 0.8.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/id_id_card_lookup
   specs:
     id_id_card_lookup (0.1.0)
       admin_api
-      rails (~> 7.0)
+      rails (~> 7.2)
       savon (>= 2.12, < 2.15)
 
 PATH
   remote: engines/commercial/id_keycloak
   specs:
     id_keycloak (0.1.0)
-      omniauth_openid_connect (~> 0.7.1)
-      rails (~> 7.0)
+      omniauth_openid_connect (~> 0.8.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/id_nemlog_in
   specs:
     id_nemlog_in (1.0.0)
       omniauth-saml (~> 2.2.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/id_oostende_rrn
   specs:
     id_oostende_rrn (0.1.0)
       httparty
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/id_twoday
   specs:
     id_twoday (1.0.0)
-      omniauth_openid_connect (~> 0.7.1)
-      rails (~> 7.0)
+      omniauth_openid_connect (~> 0.8.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/id_vienna_saml
   specs:
     id_vienna_saml (1.0.0)
       omniauth-saml (~> 2.2.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/idea_assignment
   specs:
     idea_assignment (0.1.0)
       email_campaigns
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/idea_custom_fields
   specs:
     idea_custom_fields (0.1.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/impact_tracking
   specs:
     impact_tracking (0.1.0)
       crawler_detect (~> 1.2.1)
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/machine_translations
@@ -224,14 +231,14 @@ PATH
       active_model_serializers (~> 0.10.7)
       easy_translate
       pundit (~> 2.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
       ros-apartment (>= 2.9.0)
 
 PATH
   remote: engines/commercial/matomo
   specs:
     matomo (0.1.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/moderation
@@ -239,13 +246,13 @@ PATH
     moderation (0.1.0)
       active_model_serializers (~> 0.10.7)
       pundit (~> 2.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/multi_tenancy
   specs:
     multi_tenancy (0.1.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
       ros-apartment (>= 2.9.0)
 
 PATH
@@ -254,7 +261,7 @@ PATH
     posthog_integration (0.1.0)
       http (~> 5.1)
       posthog-ruby (~> 2.1)
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/public_api
@@ -263,7 +270,7 @@ PATH
       active_model_serializers (~> 0.10.7)
       kaminari (~> 1.2)
       pundit (~> 2.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
       ros-apartment (>= 2.9.0)
 
 PATH
@@ -277,14 +284,14 @@ PATH
     report_builder (0.1.0)
       analytics
       content_builder
-      rails (~> 7.0)
+      rails (~> 7.2)
       user_custom_fields
 
 PATH
   remote: engines/commercial/smart_groups
   specs:
     smart_groups (0.1.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/commercial/user_custom_fields
@@ -292,8 +299,15 @@ PATH
     user_custom_fields (0.1.0)
       active_model_serializers (~> 0.10.7)
       pundit (~> 2.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
       ros-apartment (>= 2.9.0)
+
+PATH
+  remote: engines/commercial/webhooks
+  specs:
+    webhooks (1.0.0)
+      http
+      rails (~> 7.0)
 
 PATH
   remote: engines/free/document_annotation
@@ -303,7 +317,7 @@ PATH
       httparty
       kaminari (~> 1.2)
       pundit (~> 2.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/free/email_campaigns
@@ -315,13 +329,13 @@ PATH
       liquid (>= 4, < 6)
       mailgun-ruby (~> 1.2.0)
       pundit (~> 2.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/free/frontend
   specs:
     frontend (0.1.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/free/onboarding
@@ -330,7 +344,7 @@ PATH
       active_model_serializers (~> 0.10.7)
       kaminari (~> 1.2)
       pundit (~> 2.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/free/polls
@@ -339,7 +353,7 @@ PATH
       acts_as_list (~> 1.0)
       kaminari (~> 1.2)
       pundit (~> 2.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/free/seo
@@ -349,7 +363,7 @@ PATH
       google-api-client
       httparty
       koala
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/free/surveys
@@ -359,7 +373,7 @@ PATH
       httparty
       kaminari (~> 1.2)
       pundit (~> 2.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 PATH
   remote: engines/free/volunteering
@@ -368,60 +382,57 @@ PATH
       acts_as_list (~> 1.0)
       kaminari (~> 1.2)
       pundit (~> 2.0)
-      rails (~> 7.0)
+      rails (~> 7.2)
 
 GEM
   remote: https://rubygems.org/
   specs:
     Ascii85 (2.0.1)
-    actioncable (7.1.5.2)
-      actionpack (= 7.1.5.2)
-      activesupport (= 7.1.5.2)
+    actioncable (7.2.3)
+      actionpack (= 7.2.3)
+      activesupport (= 7.2.3)
       nio4r (~> 2.0)
       websocket-driver (>= 0.6.1)
       zeitwerk (~> 2.6)
-    actionmailbox (7.1.5.2)
-      actionpack (= 7.1.5.2)
-      activejob (= 7.1.5.2)
-      activerecord (= 7.1.5.2)
-      activestorage (= 7.1.5.2)
-      activesupport (= 7.1.5.2)
-      mail (>= 2.7.1)
-      net-imap
-      net-pop
-      net-smtp
-    actionmailer (7.1.5.2)
-      actionpack (= 7.1.5.2)
-      actionview (= 7.1.5.2)
-      activejob (= 7.1.5.2)
-      activesupport (= 7.1.5.2)
-      mail (~> 2.5, >= 2.5.4)
-      net-imap
-      net-pop
-      net-smtp
+    actionmailbox (7.2.3)
+      actionpack (= 7.2.3)
+      activejob (= 7.2.3)
+      activerecord (= 7.2.3)
+      activestorage (= 7.2.3)
+      activesupport (= 7.2.3)
+      mail (>= 2.8.0)
+    actionmailer (7.2.3)
+      actionpack (= 7.2.3)
+      actionview (= 7.2.3)
+      activejob (= 7.2.3)
+      activesupport (= 7.2.3)
+      mail (>= 2.8.0)
       rails-dom-testing (~> 2.2)
-    actionpack (7.1.5.2)
-      actionview (= 7.1.5.2)
-      activesupport (= 7.1.5.2)
+    actionpack (7.2.3)
+      actionview (= 7.2.3)
+      activesupport (= 7.2.3)
+      cgi
       nokogiri (>= 1.8.5)
       racc
-      rack (>= 2.2.4)
+      rack (>= 2.2.4, < 3.3)
       rack-session (>= 1.0.1)
       rack-test (>= 0.6.3)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
+      useragent (~> 0.16)
     actionpack-action_caching (1.2.2)
       actionpack (>= 4.0.0)
-    actiontext (7.1.5.2)
-      actionpack (= 7.1.5.2)
-      activerecord (= 7.1.5.2)
-      activestorage (= 7.1.5.2)
-      activesupport (= 7.1.5.2)
+    actiontext (7.2.3)
+      actionpack (= 7.2.3)
+      activerecord (= 7.2.3)
+      activestorage (= 7.2.3)
+      activesupport (= 7.2.3)
       globalid (>= 0.6.0)
       nokogiri (>= 1.8.5)
-    actionview (7.1.5.2)
-      activesupport (= 7.1.5.2)
+    actionview (7.2.3)
+      activesupport (= 7.2.3)
       builder (~> 3.1)
+      cgi
       erubi (~> 1.11)
       rails-dom-testing (~> 2.2)
       rails-html-sanitizer (~> 1.6)
@@ -430,40 +441,39 @@ GEM
       activemodel (>= 4.1)
       case_transform (>= 0.2)
       jsonapi-renderer (>= 0.1.1.beta1, < 0.3)
-    activejob (7.1.5.2)
-      activesupport (= 7.1.5.2)
+    activejob (7.2.3)
+      activesupport (= 7.2.3)
       globalid (>= 0.3.6)
-    activemodel (7.1.5.2)
-      activesupport (= 7.1.5.2)
-    activerecord (7.1.5.2)
-      activemodel (= 7.1.5.2)
-      activesupport (= 7.1.5.2)
+    activemodel (7.2.3)
+      activesupport (= 7.2.3)
+    activerecord (7.2.3)
+      activemodel (= 7.2.3)
+      activesupport (= 7.2.3)
       timeout (>= 0.4.0)
     activerecord-import (1.7.0)
       activerecord (>= 4.2)
-    activerecord-postgis-adapter (9.0.2)
-      activerecord (~> 7.1.0)
-      rgeo-activerecord (~> 7.0.0)
-    activestorage (7.1.5.2)
-      actionpack (= 7.1.5.2)
-      activejob (= 7.1.5.2)
-      activerecord (= 7.1.5.2)
-      activesupport (= 7.1.5.2)
+    activerecord-postgis-adapter (10.0.1)
+      activerecord (~> 7.2.0)
+      rgeo-activerecord (~> 8.0.0)
+    activestorage (7.2.3)
+      actionpack (= 7.2.3)
+      activejob (= 7.2.3)
+      activerecord (= 7.2.3)
+      activesupport (= 7.2.3)
       marcel (~> 1.0)
-    activesupport (7.1.5.2)
+    activesupport (7.2.3)
       base64
       benchmark (>= 0.3)
       bigdecimal
-      concurrent-ruby (~> 1.0, >= 1.0.2)
+      concurrent-ruby (~> 1.0, >= 1.3.1)
       connection_pool (>= 2.2.5)
       drb
       i18n (>= 1.6, < 2)
       logger (>= 1.4.2)
       minitest (>= 5.1)
-      mutex_m
       securerandom (>= 0.3)
-      tzinfo (~> 2.0)
-    acts_as_list (1.2.4)
+      tzinfo (~> 2.0, >= 2.0.5)
+    acts_as_list (1.2.6)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
     addressable (2.8.7)
@@ -481,34 +491,35 @@ GEM
     api-pagination (6.0.0)
     ast (2.4.2)
     attr_required (1.0.1)
-    awesome_nested_set (3.6.0)
-      activerecord (>= 4.0.0, < 7.2)
-    aws-eventstream (1.3.2)
-    aws-partitions (1.1094.0)
+    awesome_nested_set (3.8.0)
+      activerecord (>= 4.0.0, < 8.1)
+    aws-eventstream (1.4.0)
+    aws-partitions (1.1197.0)
     aws-sdk-bedrockruntime (1.37.0)
       aws-sdk-core (~> 3, >= 3.216.0)
       aws-sigv4 (~> 1.5)
     aws-sdk-cloudfront (1.118.0)
       aws-sdk-core (~> 3, >= 3.216.0)
       aws-sigv4 (~> 1.5)
-    aws-sdk-core (3.222.3)
+    aws-sdk-core (3.240.0)
       aws-eventstream (~> 1, >= 1.3.0)
       aws-partitions (~> 1, >= 1.992.0)
       aws-sigv4 (~> 1.9)
       base64
+      bigdecimal
       jmespath (~> 1, >= 1.6.1)
       logger
-    aws-sdk-kms (1.99.0)
-      aws-sdk-core (~> 3, >= 3.216.0)
+    aws-sdk-kms (1.118.0)
+      aws-sdk-core (~> 3, >= 3.239.1)
       aws-sigv4 (~> 1.5)
-    aws-sdk-route53 (1.114.0)
-      aws-sdk-core (~> 3, >= 3.216.0)
+    aws-sdk-route53 (1.124.0)
+      aws-sdk-core (~> 3, >= 3.234.0)
       aws-sigv4 (~> 1.5)
-    aws-sdk-s3 (1.184.0)
-      aws-sdk-core (~> 3, >= 3.216.0)
+    aws-sdk-s3 (1.208.0)
+      aws-sdk-core (~> 3, >= 3.234.0)
       aws-sdk-kms (~> 1)
       aws-sigv4 (~> 1.5)
-    aws-sigv4 (1.11.0)
+    aws-sigv4 (1.12.1)
       aws-eventstream (~> 1, >= 1.0.2)
     axlsx (3.0.0.pre)
       htmlentities (~> 4.3, >= 4.3.4)
@@ -517,8 +528,8 @@ GEM
       rubyzip (~> 1.2, >= 1.2.1)
     base64 (0.3.0)
     bcrypt (3.1.20)
-    benchmark (0.4.1)
-    bigdecimal (3.2.3)
+    benchmark (0.5.0)
+    bigdecimal (3.3.1)
     bindata (2.5.0)
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
@@ -526,7 +537,7 @@ GEM
       msgpack (~> 1.2)
     browser (6.1.0)
     builder (3.3.0)
-    bullet (7.1.6)
+    bullet (8.1.0)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
     bundler-audit (0.9.2)
@@ -545,7 +556,7 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
-    carrierwave (3.0.7)
+    carrierwave (3.1.2)
       activemodel (>= 6.0.0)
       activesupport (>= 6.0.0)
       addressable (~> 2.6)
@@ -558,13 +569,14 @@ GEM
       mime-types (~> 3.0)
     case_transform (0.2)
       activesupport
+    cgi (0.5.0)
     cloudfront-rails (0.4.0)
       railties (> 4.0)
     coderay (1.1.3)
     combine_pdf (1.0.26)
       matrix
       ruby-rc4 (>= 0.1.5)
-    concurrent-ruby (1.2.3)
+    concurrent-ruby (1.3.5)
     connection_pool (2.5.4)
     counter_culture (3.5.3)
       activerecord (>= 4.2)
@@ -573,7 +585,7 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
-    crawler_detect (1.2.7)
+    crawler_detect (1.2.9)
       qonfig (>= 0.24)
     css_parser (1.14.0)
       addressable
@@ -610,7 +622,7 @@ GEM
       railties (>= 5.0.0)
     faker (3.5.1)
       i18n (>= 1.8.11, < 2)
-    faraday (2.12.2)
+    faraday (2.14.0)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
@@ -701,16 +713,13 @@ GEM
     google-cloud-location (0.8.0)
       gapic-common (>= 0.21.1, < 2.a)
       google-cloud-errors (~> 1.0)
-    google-protobuf (3.25.5-aarch64-linux)
-    google-protobuf (3.25.5-arm64-darwin)
-    google-protobuf (3.25.5-x86_64-darwin)
-    google-protobuf (3.25.5-x86_64-linux)
+    google-protobuf (3.25.8)
     googleapis-common-protos (1.5.0)
       google-protobuf (~> 3.18)
       googleapis-common-protos-types (~> 1.7)
       grpc (~> 1.41)
-    googleapis-common-protos-types (1.14.0)
-      google-protobuf (~> 3.18)
+    googleapis-common-protos-types (1.20.0)
+      google-protobuf (>= 3.18, < 5.a)
     googleauth (1.11.0)
       faraday (>= 1.0, < 3.a)
       google-cloud-env (~> 2.1)
@@ -724,17 +733,17 @@ GEM
       logger
     groupdate (6.5.1)
       activesupport (>= 7)
-    grpc (1.63.0-aarch64-linux)
-      google-protobuf (~> 3.25)
+    grpc (1.75.0-aarch64-linux-gnu)
+      google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
-    grpc (1.63.0-arm64-darwin)
-      google-protobuf (~> 3.25)
+    grpc (1.75.0-arm64-darwin)
+      google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
-    grpc (1.63.0-x86_64-darwin)
-      google-protobuf (~> 3.25)
+    grpc (1.75.0-x86_64-darwin)
+      google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
-    grpc (1.63.0-x86_64-linux)
-      google-protobuf (~> 3.25)
+    grpc (1.75.0-x86_64-linux-gnu)
+      google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
     gyoku (1.4.0)
       builder (>= 2.1.2)
@@ -752,7 +761,7 @@ GEM
     http-cookie (1.0.8)
       domain_name (~> 0.5)
     http-form_data (2.3.0)
-    httparty (0.23.1)
+    httparty (0.24.0)
       csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
@@ -796,7 +805,7 @@ GEM
     jsonapi-renderer (0.2.2)
     jsonapi-serializer (2.2.0)
       activesupport (>= 4.2)
-    jwt (2.8.1)
+    jwt (2.9.3)
       base64
     kaminari (1.2.2)
       activesupport (>= 4.1.0)
@@ -858,7 +867,7 @@ GEM
       rake
     mini_magick (4.13.2)
     mini_mime (1.1.5)
-    minitest (5.25.5)
+    minitest (5.26.0)
     mjml-rails (4.11.0)
     mrml (1.7.0-aarch64-linux)
     mrml (1.7.0-arm64-darwin)
@@ -866,8 +875,8 @@ GEM
     mrml (1.7.0-x86_64-linux)
     msgpack (1.7.2)
     multi_json (1.15.0)
-    multi_xml (0.7.1)
-      bigdecimal (~> 3.1)
+    multi_xml (0.8.1)
+      bigdecimal (>= 3.1, < 5)
     multipart-post (2.4.1)
     mustache (1.1.1)
     mutex_m (0.3.0)
@@ -898,15 +907,18 @@ GEM
       racc (~> 1.4)
     nori (2.7.1)
       bigdecimal
-    oauth2 (1.4.11)
-      faraday (>= 0.17.3, < 3.0)
-      jwt (>= 1.0, < 3.0)
-      multi_json (~> 1.3)
+    oauth2 (2.0.18)
+      faraday (>= 0.17.3, < 4.0)
+      jwt (>= 1.0, < 4.0)
+      logger (~> 1.2)
       multi_xml (~> 0.5)
       rack (>= 1.2, < 4)
+      snaky_hash (~> 2.0, >= 2.0.3)
+      version_gem (~> 1.1, >= 1.1.9)
     okcomputer (1.18.5)
-    omniauth (2.1.3)
+    omniauth (2.1.4)
       hashie (>= 3.4.6)
+      logger
       rack (>= 2.2.3)
       rack-protection
     omniauth-auth0 (2.4.1)
@@ -914,21 +926,21 @@ GEM
     omniauth-facebook (10.0.0)
       bigdecimal
       omniauth-oauth2 (>= 1.2, < 3)
-    omniauth-google-oauth2 (1.0.1)
-      jwt (>= 2.0)
-      oauth2 (~> 1.1)
+    omniauth-google-oauth2 (1.2.1)
+      jwt (>= 2.9.2)
+      oauth2 (~> 2.0)
       omniauth (~> 2.0)
-      omniauth-oauth2 (~> 1.7.1)
-    omniauth-oauth2 (1.7.3)
+      omniauth-oauth2 (~> 1.8)
+    omniauth-oauth2 (1.8.0)
       oauth2 (>= 1.4, < 3)
-      omniauth (>= 1.9, < 3)
-    omniauth-rails_csrf_protection (0.1.2)
+      omniauth (~> 2.0)
+    omniauth-rails_csrf_protection (1.0.2)
       actionpack (>= 4.2)
-      omniauth (>= 1.3.1)
+      omniauth (~> 2.0)
     omniauth-saml (2.2.3)
       omniauth (~> 2.1)
       ruby-saml (~> 1.18)
-    omniauth_openid_connect (0.7.1)
+    omniauth_openid_connect (0.8.0)
       omniauth (>= 1.9, < 3)
       openid_connect (~> 2.2)
     openid_connect (2.2.0)
@@ -951,7 +963,6 @@ GEM
     parser (3.3.6.0)
       ast (~> 2.4.1)
       racc
-    pdf-core (0.10.0)
     pdf-reader (2.14.1)
       Ascii85 (>= 1.0, < 3.0, != 2.0.0)
       afm (~> 0.2.1)
@@ -959,9 +970,9 @@ GEM
       ruby-rc4
       ttfunk
     pg (1.5.6)
-    pg_search (2.3.6)
-      activerecord (>= 5.2)
-      activesupport (>= 5.2)
+    pg_search (2.3.7)
+      activerecord (>= 6.1)
+      activesupport (>= 6.1)
     positioning (0.4.6)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
@@ -969,12 +980,6 @@ GEM
       concurrent-ruby (~> 1)
     pp (0.6.2)
       prettyprint
-    prawn (2.5.0)
-      matrix (~> 0.4)
-      pdf-core (~> 0.10.0)
-      ttfunk (~> 1.8)
-    prawn-grouping (0.2.0)
-      prawn (>= 2.0.0)
     premailer (1.19.0)
       addressable
       css_parser (>= 1.12.0)
@@ -1014,10 +1019,10 @@ GEM
       base64 (>= 0.2)
     que (2.3.0)
     racc (1.8.1)
-    rack (2.2.19)
+    rack (2.2.21)
     rack-attack (6.7.0)
       rack (>= 1.0, < 4)
-    rack-cors (2.0.0)
+    rack-cors (2.0.2)
       rack (>= 2.0.0)
     rack-mini-profiler (3.3.1)
       rack (>= 1.2.0)
@@ -1038,20 +1043,20 @@ GEM
     rackup (1.0.1)
       rack (< 3)
       webrick
-    rails (7.1.5.2)
-      actioncable (= 7.1.5.2)
-      actionmailbox (= 7.1.5.2)
-      actionmailer (= 7.1.5.2)
-      actionpack (= 7.1.5.2)
-      actiontext (= 7.1.5.2)
-      actionview (= 7.1.5.2)
-      activejob (= 7.1.5.2)
-      activemodel (= 7.1.5.2)
-      activerecord (= 7.1.5.2)
-      activestorage (= 7.1.5.2)
-      activesupport (= 7.1.5.2)
+    rails (7.2.3)
+      actioncable (= 7.2.3)
+      actionmailbox (= 7.2.3)
+      actionmailer (= 7.2.3)
+      actionpack (= 7.2.3)
+      actiontext (= 7.2.3)
+      actionview (= 7.2.3)
+      activejob (= 7.2.3)
+      activemodel (= 7.2.3)
+      activerecord (= 7.2.3)
+      activestorage (= 7.2.3)
+      activesupport (= 7.2.3)
       bundler (>= 1.15.0)
-      railties (= 7.1.5.2)
+      railties (= 7.2.3)
     rails-dom-testing (2.3.0)
       activesupport (>= 5.0.0)
       minitest
@@ -1066,13 +1071,15 @@ GEM
       rack
       railties (>= 5.1)
       semantic_logger (~> 4.16)
-    railties (7.1.5.2)
-      actionpack (= 7.1.5.2)
-      activesupport (= 7.1.5.2)
-      irb
+    railties (7.2.3)
+      actionpack (= 7.2.3)
+      activesupport (= 7.2.3)
+      cgi
+      irb (~> 1.13)
       rackup (>= 1.0.0)
       rake (>= 12.2)
       thor (~> 1.0, >= 1.2.2)
+      tsort (>= 0.2)
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.3.0)
@@ -1099,18 +1106,19 @@ GEM
     retriable (3.1.2)
     rexml (3.4.2)
     rgeo (3.0.1)
-    rgeo-activerecord (7.0.1)
-      activerecord (>= 5.0)
-      rgeo (>= 1.0.0)
+    rgeo-activerecord (8.0.0)
+      activerecord (>= 7.0)
+      rgeo (>= 3.0)
     rgeo-geojson (2.2.0)
       multi_json (~> 1.15)
       rgeo (>= 1.0.0)
     ricecream (0.2.1)
     rinku (2.0.6)
-    ros-apartment (3.1.0)
-      activerecord (>= 6.1.0, < 7.2)
+    ros-apartment (3.2.0)
+      activerecord (>= 6.1.0, < 8.1)
+      activesupport (>= 6.1.0, < 8.1)
       parallel (< 2.0)
-      public_suffix (>= 2.0.5, < 6.0)
+      public_suffix (>= 2.0.5, <= 6.0.1)
       rack (>= 1.3.6, < 4.0)
     rspec (3.13.0)
       rspec-core (~> 3.13.0)
@@ -1206,7 +1214,7 @@ GEM
     rubyXL (3.4.27)
       nokogiri (>= 1.10.8)
       rubyzip (>= 1.3.0)
-    ruby_llm (1.8.2)
+    ruby_llm (1.11.0)
       base64
       event_stream_parser (~> 1)
       faraday (>= 1.10.0)
@@ -1214,7 +1222,9 @@ GEM
       faraday-net_http (>= 1)
       faraday-retry (>= 1)
       marcel (~> 1.0)
+      ruby_llm-schema (~> 0.2.1)
       zeitwerk (~> 2)
+    ruby_llm-schema (0.2.5)
     rubyzip (1.3.0)
     saharspec (0.0.10)
       ruby2_keywords
@@ -1258,6 +1268,9 @@ GEM
       simplecov (>= 0.4.1)
     simplecov_json_formatter (0.1.4)
     singleton (0.3.0)
+    snaky_hash (2.0.3)
+      hashie (>= 0.1.0, < 6)
+      version_gem (>= 1.1.8, < 3)
     sorted_set (1.0.3)
       rbtree
       set (~> 1.0)
@@ -1268,7 +1281,7 @@ GEM
       listen (>= 2.7, < 4.0)
       spring (>= 4)
     ssrf_filter (1.2.0)
-    stackprof (0.2.26)
+    stackprof (0.2.27)
     stringio (3.1.7)
     strong_migrations (2.5.0)
       activerecord (>= 7.1)
@@ -1286,22 +1299,26 @@ GEM
     tiktoken_ruby (0.0.12-arm64-darwin)
     tiktoken_ruby (0.0.12-x86_64-darwin)
     tiktoken_ruby (0.0.12-x86_64-linux)
-    timeout (0.4.3)
+    timeout (0.4.4)
     tomlrb (2.0.3)
     trailblazer-option (0.1.2)
+    tsort (0.2.0)
     ttfunk (1.8.0)
       bigdecimal (~> 3.1)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    tzinfo-data (1.2025.2)
+      tzinfo (>= 1.0.0)
     uber (0.1.0)
     unicode-display_width (3.1.4)
       unicode-emoji (~> 4.0, >= 4.0.4)
     unicode-emoji (4.0.4)
-    uniform_notifier (1.16.0)
+    uniform_notifier (1.18.0)
     unparser (0.6.7)
       diff-lcs (~> 1.3)
       parser (>= 3.2.0)
     uri (1.0.4)
+    useragent (0.16.11)
     validate_email (0.1.6)
       activemodel (>= 3.0)
       mail (>= 2.2.5)
@@ -1309,6 +1326,7 @@ GEM
       activemodel (>= 3.0.0)
       public_suffix
     vcr (6.2.0)
+    version_gem (1.1.9)
     wasabi (3.8.0)
       addressable
       httpi (~> 3.0)
@@ -1344,7 +1362,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers (~> 0.10.15)
   activerecord-import (~> 1.7)
-  activerecord-postgis-adapter (~> 9.0.2)
+  activerecord-postgis-adapter (~> 10.0.1)
   acts_as_list (~> 1.2)
   admin_api!
   aggressive_caching!
@@ -1352,7 +1370,7 @@ DEPENDENCIES
   analytics!
   annotate
   api-pagination (~> 6.0.0)
-  awesome_nested_set (~> 3.6.0)
+  awesome_nested_set (~> 3.8.0)
   aws-sdk-bedrockruntime (~> 1)
   aws-sdk-cloudfront (~> 1.118.0)
   aws-sdk-s3 (~> 1)
@@ -1366,7 +1384,7 @@ DEPENDENCIES
   bunny (>= 2.7.2)
   byebug
   capybara (~> 3.40)
-  carrierwave (~> 3.0.7)
+  carrierwave (~> 3.1.2)
   carrierwave-base64 (~> 2.11)
   cloudfront-rails (~> 0.4)
   combine_pdf (~> 1.0.26)
@@ -1382,7 +1400,7 @@ DEPENDENCIES
   email_campaigns!
   factory_bot_rails
   faker
-  faraday
+  faraday (~> 2.14.0)
   faraday-jwt (~> 0.1.0)
   faraday-multipart
   flag_inappropriate_content!
@@ -1393,6 +1411,7 @@ DEPENDENCIES
   groupdate (~> 6.5)
   icalendar (~> 2.10)
   ice_cube (~> 0.17)
+  id_acm!
   id_auth0!
   id_bogus!
   id_bosa_fas!
@@ -1418,7 +1437,7 @@ DEPENDENCIES
   intercom (~> 4.2)
   json-schema (~> 4.3)
   jsonapi-serializer
-  jwt (~> 2.8.1)
+  jwt (~> 2.9.2)
   kaminari (~> 1.2)
   license_finder
   liquid (~> 5.8)
@@ -1436,22 +1455,20 @@ DEPENDENCIES
   nkf
   nokogiri (~> 1.18.9)
   okcomputer
-  omniauth (~> 2.1)
-  omniauth-facebook
-  omniauth-google-oauth2
-  omniauth-rails_csrf_protection
+  omniauth (~> 2.1.4)
+  omniauth-facebook (~> 10.0.0)
+  omniauth-google-oauth2 (~> 1.2.1)
+  omniauth-rails_csrf_protection (~> 1.0.2)
   omniauth-saml (~> 2.2.3)
-  omniauth_openid_connect (~> 0.7.1)
+  omniauth_openid_connect (~> 0.8.0)
   onboarding!
   order_as_specified
   pdf-reader
   pg (~> 1.5.6)
-  pg_search (~> 2.3.5)
+  pg_search (~> 2.3.7)
   polls!
   positioning (~> 0.4.6)
   posthog_integration!
-  prawn (~> 2.5)
-  prawn-grouping (~> 0.2.0)
   premailer-rails (~> 1.12.0)
   pry
   pry-byebug
@@ -1462,9 +1479,9 @@ DEPENDENCIES
   pundit (~> 2.5.0)
   que (~> 2.3.0)
   rack-attack (~> 6)
-  rack-cors (= 2.0.0)
+  rack-cors (= 2.0.2)
   rack-mini-profiler
-  rails (~> 7.1.5.2)
+  rails (~> 7.2.3)
   rails-i18n (~> 7.0.9)
   rails_semantic_logger
   redcarpet
@@ -1474,7 +1491,7 @@ DEPENDENCIES
   rgeo-geojson
   ricecream (~> 0.2.1)
   rinku (~> 2)
-  ros-apartment (~> 3.1.0)
+  ros-apartment (~> 3.2)
   rspec-html-matchers (~> 0.10)
   rspec-its
   rspec-parameterized
@@ -1482,13 +1499,13 @@ DEPENDENCIES
   rspec-sqlimit
   rspec_api_documentation
   rspec_junit_formatter
-  rubocop
+  rubocop (~> 1.69)
   rubocop-ast
   rubocop-performance
   rubocop-rails
   rubocop-rspec
   rubyXL (~> 3.4.27)
-  ruby_llm (~> 1.8.2)
+  ruby_llm (~> 1.11.0)
   rubyzip (~> 1.3.0)
   saharspec
   scenic
@@ -1504,17 +1521,20 @@ DEPENDENCIES
   spring
   spring-commands-rspec
   spring-watcher-listen (~> 2.1)
-  stackprof (~> 0.2.26)
+  stackprof (~> 0.2.27)
   strong_migrations (~> 2.5)
   surveys!
   test-prof (~> 1.3)
+  tzinfo (~> 2.0)
+  tzinfo-data (~> 1.2024)
   user_custom_fields!
   vcr (~> 6.2)
   volunteering!
+  webhooks!
   webmock (~> 3.23)
 
 RUBY VERSION
-   ruby 3.3.4p94
+   ruby 3.4.7p58
 
 BUNDLED WITH
-   2.5.11
+   2.6.9

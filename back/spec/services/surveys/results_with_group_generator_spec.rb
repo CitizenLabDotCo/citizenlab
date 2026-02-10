@@ -11,7 +11,7 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
   include_context 'survey_setup'
 
   describe 'generate_results' do
-    it 'it is not implemented and returns an error' do
+    it 'is not implemented and returns an error' do
       generator = described_class.new(survey_phase)
       expect { generator.generate_results }.to raise_error(NotImplementedError)
     end
@@ -620,6 +620,35 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
 
         expect(result).to match expected_result_select_sliced_by_linear_scale
       end
+
+      context 'when logic is in the form' do
+        it 'groups select by gender user field and returns the correct counts' do
+          linear_scale_field.update!(logic: {
+            rules: [
+              { if: 2, goto_page_id: mid_page_field2.id },
+              { if: 'no_answer', goto_page_id: last_page_field.id }
+            ]
+          })
+
+          generator = described_class.new(survey_phase,
+            group_mode: 'user_field',
+            group_field_id: gender_user_custom_field.id)
+
+          expected_result_after_logic = expected_result_select_with_gender_user_field_grouping
+          expected_result_after_logic[:totalResponseCount] = 17
+          expected_result_after_logic[:totalPickCount] = 17
+          expected_result_after_logic[:questionResponseCount] = 2
+          expected_result_after_logic[:textResponses] = []
+          expected_result_after_logic[:answers] = [
+            { answer: nil, count: 15, groups: [{ count: 15, group: nil }] },
+            { answer: 'la', count: 1, groups: [{ count: 1, group: 'male' }] },
+            { answer: 'ny', count: 1, groups: [{ count: 1, group: 'female' }] },
+            { answer: 'other', count: 0, groups: [] }
+          ]
+
+          expect(generator.generate_result_for_field(select_field.id)).to match expected_result_after_logic
+        end
+      end
     end
 
     describe 'image select fields' do
@@ -656,6 +685,19 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
           }
         ]
       end
+    end
+  end
+
+  describe 'performance' do
+    it 'does not run too many SQL queries when generating a single result' do
+      expect do
+        generator = described_class.new(
+          survey_phase,
+          group_mode: 'user_field',
+          group_field_id: gender_user_custom_field.id
+        )
+        generator.generate_result_for_field(select_field.id)
+      end.not_to exceed_query_limit(16).with(/SELECT/)
     end
   end
 end

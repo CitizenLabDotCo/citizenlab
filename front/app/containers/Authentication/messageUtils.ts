@@ -17,27 +17,21 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   success: null,
   'access-denied': messages.youCantParticipate,
 
-  // sign in flow
-  'sign-in:auth-providers': messages.logIn,
-  'sign-in:email-password': messages.logIn,
+  // email flow
+  'email:start': messages.beforeYouParticipate,
+  'email:policies': messages.beforeYouParticipate,
+  'email:password': messages.logIn,
+  'email:sso-policies': messages.signUp,
+  'email:confirmation': messages.confirmYourEmail,
 
-  // full account creation sign up flow
-  'sign-up:auth-providers': messages.signUp,
-  'sign-up:email-password': messages.signUp,
-  'sign-up:invite': messages.signUp,
-
-  // light flow
-  'light-flow:email': messages.beforeYouParticipate,
-  'light-flow:email-policies': messages.beforeYouParticipate,
-  'light-flow:sso-policies': messages.beforeYouParticipate,
-  'light-flow:france-connect-login': messages.beforeYouParticipate,
-  'light-flow:email-confirmation': messages.confirmYourEmail,
-  'light-flow:password': messages.logIn,
+  // invite flow
+  'invite:email-password': messages.signUp,
+  'invite:code': messages.signUp,
+  'invite:taken': messages.signUp,
 
   // missing data flow
   'missing-data:built-in': messages.completeYourProfile,
   'missing-data:email-confirmation': messages.confirmYourEmail,
-  'missing-data:change-email': messages.confirmYourEmail,
   'missing-data:verification': messages.verifyYourIdentity,
   'missing-data:custom-fields': messages.completeYourProfile,
   'missing-data:onboarding': messages.whatAreYouInterestedIn,
@@ -49,10 +43,9 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   // sso verification flow
   'sso-verification:sso-providers': messages.verificationRequired,
   'sso-verification:sso-providers-policies': messages.verificationRequired,
-  'sso-verification:email-password': messages.logIn,
 
-  // invite taken flow
-  'taken-by-invite': messages.signUp,
+  // post-participation flow
+  'post-participation:email': messages.signUpOrLogIn,
 };
 
 export const getHeaderMessage = (
@@ -61,12 +54,7 @@ export const getHeaderMessage = (
 ) => {
   if (
     action === 'following' &&
-    [
-      'light-flow:email',
-      'light-flow:email-policies',
-      'light-flow:sso-policies',
-      'light-flow:france-connect-login',
-    ].includes(step)
+    ['email:start', 'emailemail-policies', 'email:sso-policies'].includes(step)
   ) {
     return messages.beforeYouFollow;
   }
@@ -82,20 +70,27 @@ export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   invitation_error: messages.invitationErrorText,
   franceconnect_merging_failed: messages.franceConnectMergingFailed,
   email_taken_and_user_can_be_verified: messages.emailTakenAndUserCanBeVerified,
-  not_entitled_under_minimum_age:
-    messages.nemlogInUnderMinimumAgeVerificationFailed,
+  verification_under_minimum_age: messages.underMinimumAgeVerificationFailed,
+  verification_lives_outside: messages.livesOutsideAreaVerificationFailed,
+  verification_no_match: messages.noMatchVerificationFailed,
+  verification_service_error: messages.serviceErrorVerificationFailed,
+  auth_under_minimum_age: messages.underMinimumAgeAuthFailed,
+  auth_lives_outside: messages.livesOutsideAreaAuthFailed,
+  auth_no_match: messages.noMatchAuthFailed,
+  auth_service_error: messages.serviceErrorAuthFailed,
   resending_code_failed: errorMessages.resending_code_failed,
   verification_taken: errorMessages.verification_taken,
 };
 
 type HelperTextKey =
-  | 'signup_helper_text'
-  | 'custom_fields_signup_helper_text'
-  | 'login_helper_text';
+  | 'enter_email_helper_text'
+  | 'enter_password_helper_text'
+  | 'complete_your_profile_helper_text'
+  | 'custom_fields_signup_helper_text';
 
 export const HELPER_TEXT_KEYS: Partial<Record<Step, HelperTextKey>> = {
-  'sign-in:email-password': 'login_helper_text',
-  'sign-up:auth-providers': 'signup_helper_text',
-  'sign-up:email-password': 'signup_helper_text',
+  'email:start': 'enter_email_helper_text',
+  'email:password': 'enter_password_helper_text',
+  'missing-data:built-in': 'complete_your_profile_helper_text',
   'missing-data:custom-fields': 'custom_fields_signup_helper_text',
 };

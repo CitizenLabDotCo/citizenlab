@@ -15,13 +15,13 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{app,config,db,lib}/**/*', 'Rakefile', 'README.md']
 
-  s.add_dependency 'rails', '~> 7.0'
+  s.add_dependency 'concurrent-ruby', '~> 1.3.5'
+  s.add_dependency 'distribution', '~> 0.8.0'
+  s.add_dependency 'matrix', '~> 0.4.2'
+  s.add_dependency 'prime', '~> 0.1.3'
+  s.add_dependency 'rails', '~> 7.2'
   s.add_dependency 'ruby-openai', '~> 8.3.0'
   s.add_dependency 'tiktoken_ruby', '~> 0.0.12'
-  s.add_dependency 'concurrent-ruby', '~> 1.2.3'
-  s.add_dependency 'distribution', '~> 0.8.0'
-  s.add_dependency 'prime', '~> 0.1.3'
-  s.add_dependency 'matrix', '~> 0.4.2'
 
   s.add_development_dependency 'rspec_api_documentation'
   s.add_development_dependency 'rspec-rails'

@@ -17,5 +17,12 @@ node_modules
 
 # VSCode settings files
 .vscode/
-.devcontainer/
+.devcontainer/.env
 
+# Claude Code local files
+CLAUDE.local.md
+.claude/settings.local.json
+
+# MCP local files
+.serena/
+.playwright-mcp/

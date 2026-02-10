@@ -1,12 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-import {
-  Box,
-  useBreakpoint,
-  media,
-  colors,
-} from '@citizenlab/cl2-component-library';
-import { lighten } from 'polished';
+import { Box, useBreakpoint, media } from '@citizenlab/cl2-component-library';
 import { useSearch } from 'utils/router';
 import styled from 'styled-components';
 
@@ -36,7 +30,6 @@ const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;
   height: ${(props) => props.theme.mobileTopBarHeight}px;
   background-color: #fff;
-  border-bottom: solid 1px ${lighten(0.3, colors.textSecondary)};
 `;
 
 const TopBarInner = styled.div`

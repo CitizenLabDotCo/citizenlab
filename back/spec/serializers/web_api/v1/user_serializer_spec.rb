@@ -10,7 +10,7 @@ describe WebApi::V1::UserSerializer do
     let(:john) { create(:user, first_name: 'John', last_name: 'Smith') }
     let(:admin) { create(:admin, first_name: 'Thomas', last_name: 'Anderson') }
 
-    it 'should abbreviate the user name' do
+    it 'abbreviates the user name' do
       last_name = described_class
         .new(jane, params: { current_user: john })
         .serializable_hash
@@ -18,7 +18,7 @@ describe WebApi::V1::UserSerializer do
       expect(last_name).to eq 'D.'
     end
 
-    it 'should not abbreviate user names for admins' do
+    it 'does not abbreviate user names for admins' do
       last_name = described_class
         .new(jane, params: { current_user: admin })
         .serializable_hash

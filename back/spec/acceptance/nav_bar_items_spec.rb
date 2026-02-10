@@ -37,13 +37,12 @@ resource 'NavBarItems' do
   end
 
   context 'when admin' do
-    before { admin_header_token }
+    before do
+      admin_header_token
+      create(:nav_bar_item, code: 'events')
+    end
 
     get 'web_api/v1/nav_bar_items/removed_default_items' do
-      before do
-        create(:nav_bar_item, code: 'events')
-      end
-
       let(:codes) { json_response_body[:data].map { |d| d.dig(:attributes, :code) } }
 
       example_request 'List removed default NavBarItems' do

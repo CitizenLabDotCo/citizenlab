@@ -6,7 +6,7 @@ import { useTheme } from 'styled-components';
 
 import useAddFollower from 'api/follow_unfollow/useAddFollower';
 import useDeleteFollower from 'api/follow_unfollow/useDeleteFollower';
-import { ITopicData } from 'api/topics/types';
+import { IGlobalTopicData } from 'api/global_topics/types';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -20,7 +20,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  topic: ITopicData;
+  topic: IGlobalTopicData;
 }
 
 const UpdateFollowTopic = ({ topic }: Props) => {
@@ -61,20 +61,20 @@ const UpdateFollowTopic = ({ topic }: Props) => {
       deleteFollower({
         followerId,
         followableId: topic.id,
-        followableType: 'topics',
+        followableType: 'global_topics',
       });
       trackEventByName(tracks.unfollow, {
-        followableType: 'topics',
+        followableType: 'global_topics',
         id: topic.id,
         urlPathName: pathname,
       });
     } else {
       addFollower({
-        followableType: 'topics',
+        followableType: 'global_topics',
         followableId: topic.id,
       });
       trackEventByName(tracks.follow, {
-        followableType: 'topics',
+        followableType: 'global_topics',
         id: topic.id,
         urlPathName: pathname,
       });

@@ -5,7 +5,7 @@ import { SerializedNodes } from '@craftjs/core';
 import { useSearch } from 'utils/router';
 import { SupportedLocale } from 'typings';
 
-import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
+import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 
 import useLocale from 'hooks/useLocale';
 
@@ -24,7 +24,7 @@ export const FullScreenPreview = () => {
     (search.get('selected_locale') as SupportedLocale) || undefined;
   const [draftData, setDraftData] = useState<SerializedNodes | undefined>();
   const platformLocale = useLocale();
-  const { data: homepage, isLoading } = useHomepageLayout();
+  const { data: homepage, isLoading } = useContentBuilderLayout('homepage');
 
   if (isNilOrError(platformLocale)) {
     return null;

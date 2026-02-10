@@ -1,6 +1,11 @@
 import React, { Suspense, useEffect, useState } from 'react';
 
-import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  useBreakpoint,
+  useWindowSize,
+} from '@citizenlab/cl2-component-library';
 import { useSearch } from 'utils/router';
 
 import { IPhases, IPhaseData, ParticipationMethod } from 'api/phases/types';
@@ -13,7 +18,7 @@ import NewIdeaHeading from 'containers/IdeaHeading/NewIdeaHeading';
 import InputDetailView from 'containers/IdeasNewPage/SimilarInputs/InputDetailView';
 import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
-import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
+import { FORM_PAGE_CHANGE_EVENT } from 'components/CustomFieldsForm/PageControlButtons/events';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
@@ -59,6 +64,9 @@ const IdeasNewIdeationForm = ({
   const handleCloseDetail = () => {
     updateSearchParams({ selected_idea_id: null });
   };
+
+  // Used only to rerender the component when window is resized to recalculate the form's height https://stackoverflow.com/a/38641993
+  useWindowSize();
 
   useEffect(() => {
     const subscription = eventEmitter
@@ -167,7 +175,10 @@ const IdeasNewIdeationForm = ({
                         borderRadius="2px"
                         m="8px auto"
                       />
-                      <InputDetailView ideaId={selectedIdeaId} />
+                      <InputDetailView
+                        ideaId={selectedIdeaId}
+                        onClose={handleCloseDetail}
+                      />
                     </Box>
                   </Box>
                 ) : (
@@ -181,7 +192,10 @@ const IdeasNewIdeationForm = ({
                     position="relative"
                     mb="80px"
                   >
-                    <InputDetailView ideaId={selectedIdeaId} />
+                    <InputDetailView
+                      ideaId={selectedIdeaId}
+                      onClose={handleCloseDetail}
+                    />
                   </Box>
                 ))}
             </Box>

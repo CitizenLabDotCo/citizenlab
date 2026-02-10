@@ -3,7 +3,6 @@ module.exports = {
   clearMocks: true,
   coverageDirectory: 'coverage',
   preset: undefined,
-  testEnvironment: 'jest-environment-jsdom',
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest',
   },
@@ -33,6 +32,7 @@ module.exports = {
     '@citizenlab/cl2-component-library': '<rootDir>/app/component-library',
   },
   modulePathIgnorePatterns: ['.*__mocks__.*'],
+  testEnvironment: '<rootDir>/internals/jest/jsdom-no-canvas.js',
   testEnvironmentOptions: {
     url: 'https://demo.stg.govocal.com/en/',
     customExportConditions: [''],

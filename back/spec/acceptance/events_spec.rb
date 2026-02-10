@@ -44,11 +44,10 @@ resource 'Events' do
     end
 
     context 'passing static page id' do
-      let(:static_page_id) { create(:static_page, projects_filter_type: 'topics', topics: [topic]).id }
+      let(:topic) { create(:global_topic) }
+      let(:static_page_id) { create(:static_page, projects_filter_type: 'topics', global_topics: [topic]).id }
 
-      let(:topic) { create(:topic) }
-
-      before { @project.update!(topics: [topic]) }
+      before { @project.update!(global_topics: [topic]) }
 
       example_request 'List all events of a page' do
         assert_status 200
@@ -82,12 +81,12 @@ resource 'Events' do
 
       example 'List events that overlap with the given range' do
         do_request(ongoing_during: '[2020-12-31T00:00:00Z,2020-12-31T23:59:59Z]')
-        expect(response_ids).to match_array [event1.id]
+        expect(response_ids).to contain_exactly(event1.id)
       end
 
       example 'List events that overlap with the given range (right open-ended)', document: false do
         do_request(ongoing_during: '[2020-12-31,null]')
-        expect(response_ids).to match_array [event1.id, event2.id]
+        expect(response_ids).to contain_exactly(event1.id, event2.id)
       end
 
       example 'List events that overlap with the given range (left open-ended)', document: false do
@@ -124,6 +123,82 @@ resource 'Events' do
         end.compact
 
         expect(actual_attendance_ids).to eq expected_attendance_ids
+      end
+    end
+
+    context 'when there are unlisted projects' do
+      before do
+        @unlisted_project = create(:project, listed: false)
+        @unlisted_events = create_list(:event, 2, project: @unlisted_project)
+      end
+
+      example_request 'Does not list unlisted projects if not filtering by project ID' do
+        assert_status 200
+        expect(response_data.size).to eq 4
+        expected_ids = @events.pluck(:id) + @other_events.pluck(:id)
+        expect(response_ids.sort).to match_array(expected_ids.sort)
+      end
+
+      example_request 'Does list unlisted project if included in project IDs' do
+        do_request(project_ids: [@project.id, @unlisted_project.id])
+        assert_status 200
+        expect(response_data.size).to eq 4
+        expected_ids = @events.pluck(:id) + @unlisted_events.pluck(:id)
+        expect(response_ids.sort).to match_array(expected_ids.sort)
+      end
+
+      context 'when moderator' do
+        before do
+          @unlisted_project2 = create(:project, listed: false)
+          @unlisted_events2 = create_list(:event, 2, project: @unlisted_project2)
+
+          @user = create(:user, roles: [{ type: 'project_moderator', project_id: @unlisted_project2.id }])
+          header_token_for @user
+        end
+
+        example_request 'Does not list unlisted projects if not filtering by project ID' do
+          assert_status 200
+          expect(response_data.size).to eq 4
+          expected_ids = @events.pluck(:id) + @other_events.pluck(:id)
+          expect(response_ids.sort).to match_array(expected_ids.sort)
+        end
+
+        example 'Does list unlisted project the user can moderate if show_unlisted_events_user_can_moderate' do
+          do_request(
+            show_unlisted_events_user_can_moderate: true
+          )
+          assert_status 200
+          expect(response_data.size).to eq 6
+          expected_ids = @events.pluck(:id) + @other_events.pluck(:id) + @unlisted_events2.pluck(:id)
+          expect(response_ids.sort).to match_array(expected_ids.sort)
+        end
+
+        example_request 'Does list unlisted project if included in project IDs' do
+          do_request(project_ids: [@project.id, @unlisted_project.id])
+          assert_status 200
+          expect(response_data.size).to eq 4
+          expected_ids = @events.pluck(:id) + @unlisted_events.pluck(:id)
+          expect(response_ids.sort).to match_array(expected_ids.sort)
+        end
+      end
+    end
+
+    context 'when the event has an image' do
+      before do
+        @event_with_image = create(:event, project: @project)
+        @event_image = create(:event_image, event: @event_with_image)
+      end
+
+      example_request 'Includes event images' do
+        assert_status 200
+        event_data = response_data.find { |e| e[:id] == @event_with_image.id }
+        relationships = event_data.dig(:relationships, :event_images, :data)
+        expect(relationships).to eq([
+          { type: 'image', id: @event_image.id }
+        ])
+
+        image = json_response_body[:included].find { |inc| inc[:id] == relationships.first[:id] }
+        expect(image[:type]).to eq 'image'
       end
     end
 
@@ -187,12 +262,7 @@ resource 'Events' do
         workbook = RubyXL::Parser.parse_buffer(response_body)
         header_row = workbook.worksheets[0][0].cells.map(&:value)
 
-        expect(header_row).to match_array([
-          french_column_headers['first_name'],
-          french_column_headers['last_name'],
-          french_column_headers['email'],
-          french_column_headers['registration_completed_at']
-        ])
+        expect(header_row).to contain_exactly(french_column_headers['first_name'], french_column_headers['last_name'], french_column_headers['email'], french_column_headers['registration_completed_at'])
       end
     end
 
@@ -340,6 +410,19 @@ resource 'Events' do
         end
       end
 
+      context 'when event description contains images' do
+        let(:project_id) { @project.id }
+        let(:title_multiloc) { event.title_multiloc }
+        let(:description_multiloc) { { 'en' => html_with_base64_image } }
+        let(:start_at) { event.start_at }
+        let(:end_at) { event.end_at }
+        let(:online_link) { event.online_link }
+
+        it_behaves_like 'creates record with text images',
+          model_class: Event,
+          field: :description_multiloc
+      end
+
       example 'Create an event with a location using location_multiloc parameter', document: false do
         address_1 = 'event-location'
 
@@ -445,6 +528,14 @@ resource 'Events' do
         attributes = response_data[:attributes].with_indifferent_access
         expect(attributes[:address_1]).to eq(address_1)
         expect(attributes[:address_2_multiloc]).to eq(address_2_multiloc)
+      end
+
+      context 'when description_multiloc contains images' do
+        let(:description_multiloc) { { 'en' => html_with_base64_image } }
+
+        it_behaves_like 'updates record with text images',
+          model_class: Event,
+          field: :description_multiloc
       end
 
       example 'Update event location using location_multiloc parameter', document: false do

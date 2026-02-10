@@ -42,12 +42,15 @@ const multipleVotingConfig: VotingMethodConfig = {
   }: GetStatusDescriptionProps) => {
     if (!phase) return null;
 
+    const minimumSelectedOptions = phase.attributes.voting_min_selected_options;
+
     const cumulativeVotingInstructionsTotalVotesMessage =
       getPhaseVoteTermMessage(phase, {
         vote: messages.cumulativeVotingInstructionsTotalVotes,
         point: messages.cumulativeVotingInstructionsTotalPoints,
         token: messages.cumulativeVotingInstructionsTotalTokens,
         credit: messages.cumulativeVotingInstructionsTotalCredits,
+        percent: messages.cumulativeVotingInstructionsTotalPercents,
       });
 
     const cumulativeVotingInstructionsMaxVotesPerIdeaMessage =
@@ -56,6 +59,7 @@ const multipleVotingConfig: VotingMethodConfig = {
         point: messages.cumulativeVotingInstructionsMaxPointsPerIdea,
         token: messages.cumulativeVotingInstructionsMaxTokensPerIdea,
         credit: messages.cumulativeVotingInstructionsMaxCreditsPerIdea,
+        percent: messages.cumulativeVotingInstructionsMaxPercentsPerIdea,
       });
     if (submissionState === 'hasNotSubmitted') {
       return (
@@ -70,6 +74,20 @@ const multipleVotingConfig: VotingMethodConfig = {
             }}
             {...cumulativeVotingInstructionsTotalVotesMessage}
           />
+          {minimumSelectedOptions && minimumSelectedOptions > 1 && (
+            <>
+              {' '}
+              <FormattedMessage
+                values={{
+                  b: (chunks) => (
+                    <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                  ),
+                  minSelectedOptions: minimumSelectedOptions,
+                }}
+                {...messages.minSelectedOptionsMessage}
+              />
+            </>
+          )}
           <ul>
             <li>
               <FormattedMessage

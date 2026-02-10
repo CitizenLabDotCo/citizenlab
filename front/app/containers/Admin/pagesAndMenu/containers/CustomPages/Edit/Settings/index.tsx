@@ -52,7 +52,7 @@ const EditCustomPageSettings = () => {
       });
     };
 
-    const topicIds = customPage.data.relationships.topics.data.map(
+    const topicIds = customPage.data.relationships.global_topics.data.map(
       (topicRelationship) => topicRelationship.id
     );
     const areaIds = customPage.data.relationships.areas.data.map(

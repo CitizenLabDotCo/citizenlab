@@ -15,6 +15,8 @@ import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase, getLatestRelevantPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import messages from 'containers/ProjectsShowPage/messages';
 
 import { trackEventByName } from 'utils/analytics';
@@ -68,6 +70,7 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
   const { data: phases } = usePhases(projectId);
   const { phaseNumber } = useParams({ strict: false });
   const { data: project } = useProjectById(projectId);
+  const phaseInsightsEnabled = useFeatureFlag({ name: 'phase_insights' });
 
   const selectedPhase = useMemo(() => {
     if (!phases) return;
@@ -85,9 +88,15 @@ const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
   const selectPhase = useCallback(
     (phase: IPhaseData) => {
       if (!phases || !project) return;
-      setPhaseURL(phase, phases.data, project.data);
+      setPhaseURL(
+        phase,
+        phases.data,
+        project.data,
+        undefined,
+        phaseInsightsEnabled
+      );
     },
-    [phases, project]
+    [phases, project, phaseInsightsEnabled]
   );
 
   const goToNextPhase = useCallback(() => {

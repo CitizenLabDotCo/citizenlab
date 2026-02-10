@@ -12,8 +12,11 @@ class ProjectsFinderAdminService
     projects = filter_review_state(projects, params)
     projects = filter_by_folder_ids(projects, params)
     projects = filter_project_manager(projects, params)
+    projects = filter_excluded_project_ids(projects, params)
+    projects = filter_excluded_folder_ids(projects, params)
     projects = search(projects, params)
     projects = filter_start_date(projects, params)
+    projects = filter_phase_date_range(projects, params)
     projects = filter_participation_states(projects, params)
     projects = filter_current_phase_participation_method(projects, params)
     projects = filter_visibility(projects, params)
@@ -27,6 +30,8 @@ class ProjectsFinderAdminService
       sort_phase_starting_or_ending_soon(projects)
     when 'alphabetically_asc', 'alphabetically_desc'
       sort_alphabetically(projects, params)
+    when 'participation_asc', 'participation_desc'
+      sort_by_participation(projects, params)
     else
       direction = params[:sort] == 'recently_created_desc' ? 'DESC' : 'ASC'
       projects.order("projects.created_at #{direction}, projects.id ASC")
@@ -103,6 +108,14 @@ class ProjectsFinderAdminService
     )
   end
 
+  def self.sort_by_participation(scope, params)
+    direction = params[:sort] == 'participation_desc' ? 'DESC' : 'ASC'
+
+    scope
+      .with_participation_count
+      .order(Arel.sql("COALESCE(project_participants.participants_count, 0) #{direction}, projects.id ASC"))
+  end
+
   # FILTERING METHODS
   def self.filter_with_admin_publication(scope)
     # Filter out projects that don't have an admin_publication to prevent crashes
@@ -111,6 +124,7 @@ class ProjectsFinderAdminService
   end
 
   def self.filter_moderatable(scope, current_user)
+    return scope.none unless current_user
     return scope if current_user.admin?
 
     moderatable_project_ids = current_user.moderatable_project_ids
@@ -200,6 +214,32 @@ class ProjectsFinderAdminService
     scope.where(id: moderated_projects)
   end
 
+  # Excludes projects by their project IDs
+  def self.filter_excluded_project_ids(scope, params = {})
+    excluded_project_ids = params[:excluded_project_ids] || []
+    return scope if excluded_project_ids.blank?
+
+    scope.where.not(id: excluded_project_ids)
+  end
+
+  # NOTE: This method requires admin_publications to be joined to the scope.
+  # Excludes projects whose parent folder is in the excluded folders list.
+  # When a folder is excluded, all projects within that folder are automatically excluded.
+  def self.filter_excluded_folder_ids(scope, params = {})
+    excluded_folder_ids = params[:excluded_folder_ids] || []
+    return scope if excluded_folder_ids.blank?
+
+    excluded_folder_admin_pub_ids = AdminPublication
+      .where(publication_type: 'ProjectFolders::Folder', publication_id: excluded_folder_ids)
+      .select(:id)
+
+    scope.where(
+      admin_publication: { parent_id: [nil] }
+    ).or(
+      scope.where.not(admin_publication: { parent_id: excluded_folder_admin_pub_ids })
+    )
+  end
+
   def self.search(scope, params = {})
     search = params[:search] || ''
     return scope if search.blank?
@@ -219,6 +259,25 @@ class ProjectsFinderAdminService
       .group(:project_id)
       .having('min(start_at) >= ? AND min(start_at) <= ?', min_start_date, max_start_date)
       .select(:project_id)
+
+    scope.where(id: overlapping_project_ids)
+  end
+
+  # Filter projects by a date range where ANY phase overlaps with the given range.
+  # This is different from filter_start_date which filters by when the first phase started.
+  # Used primarily for report building to find projects active during a time period.
+  def self.filter_phase_date_range(scope, params = {})
+    phase_start_date = params[:phase_start_date]
+    phase_end_date = params[:phase_end_date]
+    return scope if phase_start_date.blank? || phase_end_date.blank?
+
+    start_date = parse_date(phase_start_date)
+    end_date = parse_date(phase_end_date)
+    return scope if start_date.blank? || end_date.blank?
+
+    overlapping_project_ids = Phase
+      .select(:project_id)
+      .where("(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)", start_date, end_date)
 
     scope.where(id: overlapping_project_ids)
   end

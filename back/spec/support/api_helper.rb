@@ -6,7 +6,7 @@ module ApiHelper
   end
 
   def assert_status(code)
-    expect(status).to eq code
+    expect(status).to eq Rack::Utils.status_code(code)
   end
 
   def json_parse(body)

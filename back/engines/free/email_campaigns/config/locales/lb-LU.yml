@@ -259,6 +259,7 @@ lb:
       x_days_ago_by_author: 'Virun %{x} Deeg %{author} vun'
     new_comment_for_admin:
       commented: '%{authorFirstName} huet kommentéiert:'
+      anonymous_user: Anonyme Benotzer
       cta_button: 'Kuckt de Kommentar vun %{authorFirstName}'
       days_ago: 'Virun %{numberOfDays} Deeg'
       event_description: '%{authorName} huet en neie Kommentar op Är Plattform hannerlooss.'
@@ -407,11 +408,13 @@ lb:
       title: '%{requesterName} huet Iech invitéiert, de Projet "%{projectTitle}" ze iwwerpréiwen'
       event_description: "De Projet ass am Moment am Entworfmodus a kann net fir d'Benotzer gesi ginn. Soubal Dir en iwwerpréift an approuvéiert hutt, kann de Moderator en publizéieren."
       cta_button: "Iwwerpréift de Projet"
+      preheader: '%{requesterName} huet Iech invitéiert, de Projet "%{projectTitle}" ze iwwerpréiwen'
     project_review_state_change:
       subject: '"%{projectTitle}" gouf guttgeheescht'
       title: '%{reviewerName} huet de Projet "%{projectTitle}" guttgeheescht'
       event_description: "De Projet ass elo prett fir online ze goen. Dir kënnt en publizéieren, wann Dir prett sidd!"
       cta_button: "Gitt op d'Projetastellungen"
+      preheader: '%{reviewerName} huet de Projet "%{projectTitle}" guttgeheescht'
     status_change_on_idea_you_follow:
       status_change: 'Den neie Status vun dësem Input ass ''%{status}'''
       event_description: '%{organizationName} huet de Status vum Input ''%{input_title}'' op hirer digitaler Participatiounsplattform aktualiséiert.'
@@ -512,9 +515,7 @@ lb:
       subject: '%{organizationName}: Lescht Chance fir %{phaseTitle}ze wielen'
       preheader: 'Lescht Chance fir %{phaseTitle} op der Participatiounsplattform vun %{organizationName}ze wielen'
       title: 'Lescht Chance fir ze wielen fir %{phaseTitle}'
-      body_1: 'D''Stëmmphase fir den %{projectTitle} Projet geet muer um Mëtternuecht op en Enn.'
-      body_2: 'D''Zäit leeft aus, a mir hu gemierkt datt Dir Är Stëmm nach net ofginn hutt! Akt elo andeems Dir einfach op de Knäppchen hei ënnen klickt fir matzemaachen.'
-      body_3: 'Wann Dir dëst maacht, kritt Dir Zougang zu enger Rei vun Optiounen an hutt d''Chance Ären Input ze ginn, wat entscheedend ass fir d''Zukunft vun dësem Projet ze entscheeden.'
+      event_description: '<p>D''Ofstëmmungsphase fir de Projet %{projectTitle} geet muer um Mëtternuecht op en Enn.</p><p>D''Zäit leeft aus, an et ass eis opgefall, datt Dir nach net ofginn hutt! Maacht elo mat andeems Dir einfach op de Knäppchen hei ënnendrënner klickt fir matzemaachen.</p><p>Doduerch kritt Dir Zougang zu enger Rei vun Optiounen an d''Méiglechkeet, Äre Bäitrag ze ginn, wat entscheedend ass fir d''Zukunft vun dësem Projet ze entscheeden.</p>'
       cta_button: 'Wiel'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} Stëmmen Resultater opgedeckt!'

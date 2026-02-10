@@ -18,7 +18,7 @@ type IUpdateCustomFieldProperties = {
     id?: string;
   })[];
   customForm: {
-    saveType: 'auto' | 'manual';
+    saveType: 'auto' | 'manual' | 'schema';
     openedAt?: string;
     fieldsLastUpdatedAt?: string;
   };

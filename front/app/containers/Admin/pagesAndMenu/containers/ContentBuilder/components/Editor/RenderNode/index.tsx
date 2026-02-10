@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useNode, useEditor, ROOT_NODE } from '@craftjs/core';
+import { MessageDescriptor } from 'react-intl';
 import styled from 'styled-components';
 
 import messages from 'components/admin/ContentBuilder/messages';
@@ -50,7 +51,9 @@ const RenderNode = ({ render }) => {
       isHover: node.events.hovered,
       name,
       hasError: node.data.props.hasError,
-      title: WIDGET_TITLES[name],
+      title:
+        WIDGET_TITLES[name] ||
+        (node.data.custom?.title as MessageDescriptor | undefined),
       noPointerEvents: hasNoPointerEvents(name),
     };
   });

@@ -44,7 +44,7 @@ class Permission < ApplicationRecord
   UNSUPPORTED_DESCRIPTOR = {
     value: nil,
     locked: true,
-    explanation: 'user_fields_in_survey_not_supported_for_participation_method'
+    explanation: 'user_fields_in_form_not_supported_for_action'
   }
 
   scope :filter_enabled_actions, ->(permission_scope) { where(action: enabled_actions(permission_scope)) }
@@ -111,44 +111,21 @@ class Permission < ApplicationRecord
     permitted_by == 'everyone' && everyone_tracking_enabled
   end
 
-  def user_fields_in_form_frontend_descriptor
-    # If the permission is not about posting an idea in a native survey phase
-    # or community monitor phase,
-    # we don't support this attribute
-    return UNSUPPORTED_DESCRIPTOR unless action == 'posting_idea'
+  # Attribute used in frontend to render access rights UI
+  def user_fields_in_form_descriptor
+    return UNSUPPORTED_DESCRIPTOR unless permission_scope.is_a?(Phase)
 
-    phase = permission_scope
-    has_survey_form = phase.is_a?(Phase) && phase.pmethod.supports_survey_form?
+    UserFieldsInFormService.user_fields_in_form_descriptor(
+      self,
+      permission_scope.participation_method
+    )
+  end
 
-    return UNSUPPORTED_DESCRIPTOR unless has_survey_form
-
-    if permitted_by == 'everyone'
-      if user_data_collection == 'anonymous'
-        {
-          value: nil,
-          locked: true,
-          explanation: 'with_these_settings_cannot_ask_demographic_fields'
-        }
-      else
-        {
-          value: true,
-          locked: true,
-          explanation: 'cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone'
-        }
-      end
-    elsif user_data_collection == 'anonymous'
-      {
-        value: false,
-        locked: true,
-        explanation: 'with_these_settings_can_only_ask_demographic_fields_in_registration_flow'
-      }
-    else
-      {
-        value: user_fields_in_form,
-        locked: false,
-        explanation: nil
-      }
-    end
+  # This just checks if the user fields are enabled for the form
+  # This does not guarantee that they will be added, because it is possible
+  # that there are none
+  def user_fields_in_form_enabled?
+    !!user_fields_in_form_descriptor[:value]
   end
 
   private

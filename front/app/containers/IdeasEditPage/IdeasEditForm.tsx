@@ -12,7 +12,7 @@ import EditIdeaHeading from 'containers/IdeaHeading/EditIdeaHeading';
 import InputDetailView from 'containers/IdeasNewPage/SimilarInputs/InputDetailView';
 import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
-import { FORM_PAGE_CHANGE_EVENT } from 'components/Form/Components/Layouts/events';
+import { FORM_PAGE_CHANGE_EVENT } from 'components/CustomFieldsForm/PageControlButtons/events';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
@@ -174,7 +174,10 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                       borderRadius="2px"
                       m="8px auto"
                     />
-                    <InputDetailView ideaId={selectedIdeaId} />
+                    <InputDetailView
+                      ideaId={selectedIdeaId}
+                      onClose={handleCloseDetail}
+                    />
                   </Box>
                 </Box>
               ) : (
@@ -188,7 +191,10 @@ const IdeasEditForm = ({ ideaId }: Props) => {
                   position="relative"
                   mb="80px"
                 >
-                  <InputDetailView ideaId={selectedIdeaId} />
+                  <InputDetailView
+                    ideaId={selectedIdeaId}
+                    onClose={handleCloseDetail}
+                  />
                 </Box>
               ))}
           </Box>

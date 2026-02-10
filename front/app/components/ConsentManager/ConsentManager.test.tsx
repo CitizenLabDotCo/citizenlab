@@ -26,6 +26,11 @@ const mockAppConfiguration = {
     id: '1',
     attributes: {
       settings: {
+        core: {
+          organization_name: {
+            en: 'Test Organization',
+          },
+        },
         matomo: {
           allowed: true,
           enabled: true,

@@ -259,6 +259,7 @@ pt:
       x_days_ago_by_author: '%{x} días atrás por %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} comentado:'
+      anonymous_user: Usuário anônimo
       cta_button: 'Veja o comentário de %{authorFirstName}'
       days_ago: '%{numberOfDays} dias atrás'
       event_description: '%{authorName} escreveu um comentário sobre a sua plataforma. Não hesite em juntar-se à discussão e mantenha a conversa ativa!'
@@ -407,11 +408,13 @@ pt:
       title: '%{requesterName} convidou você para avaliar o projeto "%{projectTitle}"'
       event_description: "No momento, o projeto está em modo de rascunho e não está visível para os usuários. Depois que você o revisar e aprovar, o moderador poderá publicá-lo."
       cta_button: "Revisar o projeto"
+      preheader: '%{requesterName} convidou você para analisar o projeto "%{projectTitle}"'
     project_review_state_change:
       subject: '"%{projectTitle}" " foi aprovado'
       title: '%{reviewerName} aprovou o projeto "%{projectTitle}"'
       event_description: "Agora o projeto está pronto para ser lançado. Você pode publicá-lo quando estiver pronto!"
       cta_button: "Vá para as configurações do projeto"
+      preheader: '%{reviewerName} aprovou o projeto "%{projectTitle}"'
     status_change_on_idea_you_follow:
       status_change: 'The new status of this input is ''%{status}'''
       event_description: '%{organizationName} atualizou o status da entrada ''%{input_title}'' em sua plataforma de participação digital.'
@@ -512,9 +515,7 @@ pt:
       subject: '%{organizationName}: Última oportunidade para votar em %{phaseTitle}'
       preheader: 'Última oportunidade para votar em %{phaseTitle} na plataforma de participação de %{organizationName}'
       title: 'Última chance para você votar em %{phaseTitle}'
-      body_1: 'A fase de votação do projeto %{projectTitle} termina amanhã, à meia-noite.'
-      body_2: 'O tempo está acabando e notamos que você ainda não votou! Faça isso agora simplesmente clicando no botão abaixo para participar.'
-      body_3: 'Ao fazê-lo, terá acesso a uma série de opções e terá a oportunidade de dar a sua contribuição, que é crucial para decidir o futuro deste projeto.'
+      event_description: '<p>A fase de votação do projeto %{projectTitle} está chegando ao fim amanhã, à meia-noite.</p><p>O tempo está se esgotando e notamos que você ainda não votou! Você pode agir agora, basta clicar no botão abaixo para participar.</p><p>Ao fazer isso, você terá acesso a uma série de opções e terá a chance de dar sua opinião, o que é crucial para decidir o futuro desse projeto.</p>'
       cta_button: 'Votação'
     voting_results:
       subject: '%{organizationName}: %{phaseTitle} resultados da votação revelados!'

@@ -76,9 +76,9 @@ resource 'Followers' do
       factory: 'idea'
     },
     {
-      type: 'topic',
-      resource: 'topics',
-      factory: 'topic'
+      type: 'global_topic',
+      resource: 'global_topics',
+      factory: 'global_topic'
     },
     {
       type: 'area',

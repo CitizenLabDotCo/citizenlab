@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Title, Text, Toggle } from '@citizenlab/cl2-component-library';
 
-import usePermissionsCustomFields from 'api/permissions_custom_fields/usePermissionsCustomFields';
+import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields/usePermissionsPhaseCustomFields';
 import { isPhasePermission } from 'api/phase_permissions/utils';
 import usePhase from 'api/phases/usePhase';
 
@@ -26,7 +26,7 @@ const ActionFormSurvey = ({
 }: Props) => {
   const { data: phase } = usePhase(phaseId);
 
-  const { data: permissionsCustomFields } = usePermissionsCustomFields({
+  const { data: permissionsCustomFields } = usePermissionsPhaseCustomFields({
     phaseId,
     action: permissionData.attributes.action,
   });
@@ -42,7 +42,7 @@ const ActionFormSurvey = ({
       verification_enabled,
       verification_expiry,
       everyone_tracking_enabled,
-      user_fields_in_form_frontend_descriptor,
+      user_fields_in_form_descriptor,
       user_data_collection,
     },
     relationships,
@@ -59,19 +59,19 @@ const ActionFormSurvey = ({
 
   const { participation_method } = phase.data.attributes;
 
-  // Currently only community monitor supports everyone tracking
+  // Only community monitor supports everyone tracking
   const canUseEveryoneTracking =
     participation_method === 'community_monitor_survey' &&
     action === 'posting_idea' &&
     permitted_by === 'everyone';
 
-  const userFieldsInForm = user_fields_in_form_frontend_descriptor.value;
-  const { explanation } = user_fields_in_form_frontend_descriptor;
+  const userFieldsInForm = user_fields_in_form_descriptor.value;
+  const { explanation } = user_fields_in_form_descriptor;
 
   return (
     <form className={`e2e-action-form-${action}`}>
       <AccessRestrictions
-        showAnyone
+        showAnyone={'show'}
         permissionData={permissionData}
         onChange={onChange}
       />
@@ -88,9 +88,7 @@ const ActionFormSurvey = ({
               phaseId={phaseId}
               action={action}
               allowAddingFields={allowAddingFields(explanation)}
-              user_fields_in_form_frontend_descriptor={
-                user_fields_in_form_frontend_descriptor
-              }
+              user_fields_in_form_descriptor={user_fields_in_form_descriptor}
               permitted_by={permitted_by}
               onChangeUserFieldsInForm={(user_fields_in_form) => {
                 onChange({ user_fields_in_form });

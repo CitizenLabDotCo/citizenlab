@@ -15,7 +15,7 @@ export const Workshops = () => {
   const { formatMessage } = useIntl();
 
   return (
-    <Box background={colors.white} display="flex" p="20px">
+    <Box background={colors.white} display="flex" p="20px" mb="20px">
       <Box w="320px" h="240px" borderRadius="3px">
         <img
           src={workshopsImage}
@@ -46,7 +46,7 @@ export const Workshops = () => {
           <ButtonWithLink
             height="45px"
             buttonStyle="text"
-            linkTo={formatMessage(messages.workshopsSupportLink) as RouteType}
+            linkTo={formatMessage(messages.workshopsSupportLink2) as RouteType}
             openLinkInNewTab
             textColor={colors.primary}
           >

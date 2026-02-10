@@ -104,7 +104,7 @@ RSpec.describe Notification do
       activity = create(:activity, item: user, action: 'project_folder_moderation_rights_received', payload: { project_folder_id: folder.id })
 
       notifications = Notifications::ProjectFolderModerationRightsReceived.make_notifications_on activity
-      expect(notifications.map(&:recipient_id)).to match_array [user.id]
+      expect(notifications.map(&:recipient_id)).to contain_exactly(user.id)
     end
   end
 

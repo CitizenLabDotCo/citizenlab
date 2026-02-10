@@ -28,7 +28,7 @@ function getSelectStyles(theme: DefaultTheme) {
         ? theme.colors.tenantPrimary
         : `${colors.borderDark}`,
       borderRadius: stylingConsts.borderRadius,
-      minHeight: '48px',
+      minHeight: `${stylingConsts.inputHeight}px`,
       backgroundColor: '#fff',
       boxShadow: 'none',
       cursor: 'pointer',

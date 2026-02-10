@@ -6,6 +6,8 @@ import { RouteType } from 'routes';
 import useAnalyses from 'api/analyses/useAnalyses';
 import { ParticipationMethod } from 'api/phases/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Warning from 'components/UI/Warning';
 
@@ -16,40 +18,39 @@ import messages from './messages';
 
 const Analyses = ({
   projectId,
-  phaseId,
-  questionId,
   selectedLocale,
+  phaseId,
   participationMethod,
 }: {
   projectId?: string;
-  phaseId?: string;
-  questionId?: string;
   selectedLocale: string;
+  phaseId?: string;
   participationMethod?: ParticipationMethod;
 }) => {
   const { formatMessage } = useIntl();
+  const phaseInsightsEnabled = useFeatureFlag({ name: 'phase_insights' });
   const { data: analyses, isLoading } = useAnalyses({
     projectId: participationMethod === 'ideation' ? projectId : undefined,
     phaseId: participationMethod === 'native_survey' ? phaseId : undefined,
   });
 
-  const relevantAnalyses = questionId
-    ? analyses?.data.filter(
-        (analysis) =>
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          analysis.relationships.main_custom_field?.data?.id === questionId
-      )
-    : analyses?.data;
-
-  const hasRelevantAnalyses = relevantAnalyses && relevantAnalyses.length > 0;
+  // When phase_insights is disabled, use 'results' for native surveys
+  const nativeSurveyTab =
+    participationMethod === 'native_survey' && !phaseInsightsEnabled
+      ? 'results'
+      : 'insights';
 
   const projectLink: RouteType =
     participationMethod === 'ideation'
       ? `/admin/projects/${projectId}/phases/${phaseId}/ideas`
-      : `/admin/projects/${projectId}/phases/${phaseId}/results`;
+      : `/admin/projects/${projectId}/phases/${phaseId}/${nativeSurveyTab}`;
 
-  if (relevantAnalyses?.length === 0 && !isLoading) {
+  // Analyses related to specific survey questions are now handled in the Survey Question Widget
+  const analysesWithoutMainCustomField = analyses?.data.filter(
+    (analysis) => analysis.relationships.main_custom_field?.data === null
+  );
+
+  if (analysesWithoutMainCustomField?.length === 0 && !isLoading) {
     return (
       <Box id="e2e-report-buider-ai-no-analyses">
         <Divider />
@@ -69,18 +70,19 @@ const Analyses = ({
 
   return (
     <div>
-      {phaseId && hasRelevantAnalyses && (
-        <Box mb="16px">
-          <Warning>
-            <Text p="0px" m="0px" fontSize="s" color="teal700">
-              {formatMessage(messages.dragAiContentInfo)}
-            </Text>
-          </Warning>
-        </Box>
-      )}
-
       {projectId &&
-        relevantAnalyses?.map((analysis) => (
+        analysesWithoutMainCustomField &&
+        analysesWithoutMainCustomField.length > 0 && (
+          <Box mb="16px">
+            <Warning>
+              <Text p="0px" m="0px" fontSize="s" color="teal700">
+                {formatMessage(messages.dragAiContentInfo)}
+              </Text>
+            </Warning>
+          </Box>
+        )}
+      {projectId &&
+        analysesWithoutMainCustomField?.map((analysis) => (
           <Insights
             analysisId={analysis.id}
             key={analysis.id}

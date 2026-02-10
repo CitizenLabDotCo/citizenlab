@@ -1,5 +1,8 @@
 import { IRelationship, Multiloc } from 'typings';
 
+import { ICustomFieldOptionImage } from 'api/content_field_option_images/types';
+import { ICustomFieldOptionData } from 'api/custom_field_options/types';
+import { IFormCustomFieldStatementData } from 'api/custom_field_statements/types';
 import { IMapConfig } from 'api/map_config/types';
 
 import { Keys } from 'utils/cl-react-query/types';
@@ -51,6 +54,7 @@ export type IOptionsType = {
   other?: boolean;
   temp_id?: string;
   image_id?: string;
+  image?: ICustomFieldOptionImage['data'];
 };
 
 export type IMatrixStatementsType = {
@@ -85,6 +89,7 @@ export interface IAttributes {
   isDeleteEnabled?: boolean;
   ask_follow_up?: boolean;
   constraints?: {
+    locked: boolean;
     locks: {
       attributes?: ('title_multiloc' | 'required')[];
       deletion?: boolean;
@@ -123,7 +128,7 @@ export interface ICustomFieldResponse {
   type: string;
   attributes: IAttributes;
   relationships: {
-    options: {
+    options?: {
       data: IRelationship[];
     };
     matrix_statements?: {
@@ -203,6 +208,11 @@ export type IFlatCreateCustomField = Omit<
 
 export interface ICustomFields {
   data: ICustomFieldResponse[];
+  included?: (
+    | ICustomFieldOptionData
+    | IFormCustomFieldStatementData
+    | ICustomFieldOptionImage['data']
+  )[];
 }
 
 export interface ICustomField {

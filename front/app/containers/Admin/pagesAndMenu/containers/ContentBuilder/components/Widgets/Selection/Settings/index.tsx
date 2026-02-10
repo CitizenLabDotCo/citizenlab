@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, Label, Text } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
+import { useParams } from 'utils/router';
 
 import { IAdminPublicationData } from 'api/admin_publications/types';
 
@@ -15,6 +16,9 @@ import AdminPublicationsList from './AdminPublicationsList';
 import { LoadMore, getNewIdsOnDrop, isAdminPublication } from './utils';
 
 const Settings = () => {
+  const { folderId } = useParams({ strict: false }) as {
+    folderId: string; // We only return projects from the folder if folderId is defined
+  };
   const {
     actions: { setProp },
     adminPublicationIds,
@@ -54,7 +58,12 @@ const Settings = () => {
   return (
     <Box my="20px">
       <Text mb="32px" color="textSecondary">
-        <FormattedMessage {...messages.withThisWidget} formatBold />
+        <FormattedMessage
+          {...(folderId
+            ? messages.withThisWidgetFolder
+            : messages.withThisWidget)}
+          formatBold
+        />
       </Text>
       <Box mb="40px">
         <TitleMultilocInput name="selection_title" />
@@ -65,6 +74,7 @@ const Settings = () => {
         </Label>
         <AdminPublicationSearchInput
           adminPublicationIds={adminPublicationIds}
+          folderId={folderId}
           onChange={handleAdd}
         />
       </Box>

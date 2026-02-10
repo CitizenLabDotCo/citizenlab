@@ -79,7 +79,7 @@ resource 'StaticPages' do
         parameter :bottom_info_section_enabled, 'if the bottom info section is enabled'
         parameter :bottom_info_section_multiloc, 'The bottom content of the static page, as a multiloc HTML string'
         parameter :header_bg, 'image for the header background'
-        parameter :topic_ids, 'the IDs of topics that are used to filter the page projects list', type: :array
+        parameter :global_topic_ids, 'the IDs of global topics that are used to filter the page projects list', type: :array
         parameter :area_ids, 'the ID of an area that is used to filter the page projects list', type: :array
       end
       ValidationErrorHelper.new.error_fields self, StaticPage
@@ -124,14 +124,14 @@ resource 'StaticPages' do
 
       describe 'updating topics' do
         let(:projects_filter_type) { 'topics' }
-        let(:topic1) { create(:topic) }
-        let(:topic2) { create(:topic) }
-        let(:topic_ids) { [topic1.id, topic2.id] }
+        let(:topic1) { create(:global_topic) }
+        let(:topic2) { create(:global_topic) }
+        let(:global_topic_ids) { [topic1.id, topic2.id] }
 
         example_request 'set topics for projects list' do
           json_response = json_parse(response_body)
           expect(response_status).to eq 200
-          expect(json_response.dig(:data, :relationships, :topics, :data).length).to eq(2)
+          expect(json_response.dig(:data, :relationships, :global_topics, :data).length).to eq(2)
         end
 
         context 'when wrong project filter type is set' do
@@ -143,7 +143,7 @@ resource 'StaticPages' do
         end
 
         context 'when no topic ids in request' do
-          let(:topic_ids) { [] }
+          let(:global_topic_ids) { [] }
 
           example_request 'attempt to update page' do
             expect(response_status).to eq 422
@@ -252,6 +252,14 @@ resource 'StaticPages' do
           assert_status 422
           expect(json_response).to include_response_error(:slug, 'blank')
         end
+      end
+
+      context 'when bottom section contains images' do
+        let(:bottom_info_section_multiloc) { { 'en' => html_with_base64_image } }
+
+        it_behaves_like 'creates record with text images',
+          model_class: StaticPage,
+          field: :bottom_info_section_multiloc
       end
     end
 

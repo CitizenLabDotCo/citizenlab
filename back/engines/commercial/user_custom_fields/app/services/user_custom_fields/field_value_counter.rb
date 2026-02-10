@@ -3,6 +3,8 @@
 module UserCustomFields
   # This module can be used to count the number of times each custom field option
   # has been selected by a user (within a group of users).
+  #
+  # rubocop:disable Metrics/ModuleLength
   module FieldValueCounter
     UNKNOWN_VALUE_LABEL = '_blank'
 
@@ -11,16 +13,23 @@ module UserCustomFields
     # who do not have a value for the custom field. The key of this entry is equal to
     # +UNKNOWN_VALUE_LABEL+.
     #
-    # @param [ActiveRecord::Relation] records - users OR ideas
-    # @param [UserCustomField] user_custom_field
+    # @param [ActiveRecord::Relation, Array<Hash>] records_or_values - Either:
+    #   - ActiveRecord relation of users OR ideas (traditional usage)
+    #   - Array of custom_field_values hashes (for in-memory processing)
+    # @param [UserCustomField] custom_field
     # @param [Symbol] by index the counts by
     #   - option id if +by+ is +:option_id+
     #   - area id if +by+ is +:area_id+ (only for domicile field)
     #   - option key otherwise.
-    # @param [String] record_type - are the records passed in users (default) or ideas
+    # @param [String] record_type - are the records passed in users (default) or ideas. Ignored when using array of hashes.
     # @return [ActiveSupport::HashWithIndifferentAccess]
-    def self.counts_by_field_option(records, custom_field, by: :option_key, record_type: 'users')
-      field_values = select_field_values(records, custom_field, record_type)
+    def self.counts_by_field_option(records_or_values, custom_field, by: :option_key, record_type: 'users')
+      # NEW: Handle array of custom_field_values hashes
+      if records_or_values.is_a?(Array)
+        return counts_from_custom_field_values_array(records_or_values, custom_field, by)
+      end
+
+      field_values = select_field_values(records_or_values, custom_field, record_type)
 
       # Warning: The method +count+ cannot be used here because it introduces a SQL syntax
       # error while rewriting the SELECT clause. This is because the 'field_value' column is a
@@ -63,7 +72,7 @@ module UserCustomFields
     # Custom fields with multiple values (e.g. multiselect) are returned as multiple rows.
     # If the custom field has no value for a given user or idea, the resulting row contains NULL.
     private_class_method def self.select_field_values(records, custom_field, record_type)
-      field_key = record_type == 'ideas' ? UserFieldsInSurveyService.prefix_key(custom_field.key) : custom_field.key
+      field_key = record_type == 'ideas' ? UserFieldsInFormService.prefix_key(custom_field.key) : custom_field.key
       case custom_field.input_type
       when 'select', 'checkbox', 'number'
         records.select("custom_field_values->'#{field_key}' as field_value")
@@ -80,6 +89,44 @@ module UserCustomFields
       else
         raise NotSupportedFieldTypeError
       end
+    end
+
+    private_class_method def self.counts_from_custom_field_values_array(custom_field_values_array, custom_field, by)
+      # Handle empty arrays gracefully
+      if custom_field_values_array.empty?
+        counts = { UNKNOWN_VALUE_LABEL => 0 }
+        counts = add_missing_options(counts, custom_field)
+        return counts.with_indifferent_access
+      end
+
+      field_key = custom_field.key # For arrays, we don't need Ideas prefix logic
+      unknown_count = 0
+
+      case custom_field.input_type
+      when 'select', 'checkbox', 'number'
+        values = custom_field_values_array.pluck(field_key)
+      when 'multiselect'
+        values = []
+        custom_field_values_array.each do |cfv|
+          if cfv.key?(field_key) && cfv[field_key].present?
+            values.concat(cfv[field_key])
+          else
+            # Count missing or empty multiselect values as unknown
+            unknown_count += 1
+          end
+        end
+      else
+        raise NotSupportedFieldTypeError
+      end
+
+      counts = values.group_by(&:itself).transform_values(&:count)
+      counts[UNKNOWN_VALUE_LABEL] = (counts.delete(nil) || 0) + unknown_count
+      counts = add_missing_options(counts, custom_field)
+
+      convert_area_ids_to_option_keys!(counts, custom_field) if by != :area_id && custom_field.domicile?
+      convert_keys_to_option_ids!(counts, custom_field) if by == :option_id
+
+      counts.with_indifferent_access
     end
 
     private_class_method def self.convert_area_ids_to_option_keys!(counts, custom_field)
@@ -143,4 +190,5 @@ module UserCustomFields
       counts
     end
   end
+  # rubocop:enable Metrics/ModuleLength
 end

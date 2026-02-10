@@ -259,10 +259,11 @@ fr:
       x_days_ago_by_author: 'Il y a %{x} jours par %{author}'
     new_comment_for_admin:
       commented: '%{authorFirstName} a commenté :'
+      anonymous_user: Utilisateur anonyme
       cta_button: 'Voir le commentaire de %{authorFirstName}'
       days_ago: 'Il y a %{numberOfDays} jours'
       event_description: '%{authorName} a écrit un commentaire sur votre plateforme. N''hésitez pas à joindre à la discussion et à poursuivre la conversation !'
-      title: '%{firstName}, un nouveau commentaire a été posté sur votre plate-forme'
+      title: '%{firstName}, un nouveau commentaire a été posté sur votre plateforme'
       subject: 'Il y a un nouveau commentaire sur la plateforme de %{organizationName}'
       preheader: '%{authorName} a laissé un commentaire'
       today: Aujourd'hui
@@ -382,7 +383,7 @@ fr:
       x_projects: '%{numberOfProjects} projets'
     project_phase_started:
       cta_button: 'Découvrez la nouvelle phase'
-      event_description: 'Ce projet est entré dans une nouvelle phase sur la plate-forme de %{organizationName}. Cliquez sur le lien ci-dessous pour en savoir plus !'
+      event_description: 'Ce projet est entré dans une nouvelle phase sur la plateforme de %{organizationName}. Cliquez sur le lien ci-dessous pour en savoir plus !'
       title: 'Une nouvelle phase a commencé pour le projet « %{projectName} »'
       subtitle: 'À propos de ''%{projectName}'''
       new_phase: 'Ce projet est entré dans la phase ''%{phaseTitle}'''
@@ -407,11 +408,13 @@ fr:
       title: '%{requesterName} vous a invité à vérifier le projet « %{projectTitle} »'
       event_description: "Actuellement, le projet est en mode brouillon et n'est pas visible par les utilisateurs. Une fois que vous l'aurez vérifié et approuvé, le modérateur pourra le publier."
       cta_button: "Vérifier le projet"
+      preheader: '%{requesterName} vous a invité à vérifier le projet « %{projectTitle} »'
     project_review_state_change:
       subject: '"%{projectTitle}" a été approuvé'
       title: '%{reviewerName} a approuvé le projet « %{projectTitle} »'
       event_description: "Le projet est maintenant prêt à être mis en ligne. Vous pouvez le publier dès que vous êtes prêt !"
       cta_button: "Accéder au projet"
+      preheader: '%{reviewerName} a approuvé le projet « %{projectTitle} »'
     status_change_on_idea_you_follow:
       status_change: 'Le nouveau statut de cette contribution est « %{status} »'
       event_description: '%{organizationName} a mis à jour le statut de la contribution « %{input_title} » sur leur plateforme de participation.'
@@ -420,7 +423,7 @@ fr:
       preheader: 'Une contribution que vous suivez a un nouveau statut'
       cta_button: Voir la contribution
     user_digest:
-      subject: "Mise à jour hebdomadaire de la plate-forme de participation de %{organizationName}"
+      subject: "Mise à jour hebdomadaire de la plateforme de participation de %{organizationName}"
       commented: "%{authorFirstName} a commenté :"
       preheader: "Aperçu hebdomadaire de %{organizationName}"
       title: "Découvrez ce qui s'est passé la semaine dernière"
@@ -438,7 +441,7 @@ fr:
       one_notification: "1 notification"
       multiple_notifications: "%{notifCount} notifications"
       no_unread_notifications: "Il est temps de recréer de l'activité ! Visitez la plateforme pour découvrir ce qu'il s'y passe."
-      unread_notifications: "Vous avez de nouvelles notifications ! Visitez la plate-forme pour découvrir ce qu'il s'y passe."
+      unread_notifications: "Vous avez de nouvelles notifications ! Visitez la plateforme pour découvrir ce qu'il s'y passe."
     threshold_reached_for_admin:
       cta_button: 'Passez cette proposition aux étapes suivantes'
       title: 'Une proposition a atteint le nombre de voix requis !'
@@ -512,9 +515,7 @@ fr:
       subject: '%{organizationName}: Dernière chance de participer au vote pour %{phaseTitle}'
       preheader: 'Dernière chance prendre part au vote pour %{phaseTitle} sur la plateforme de participation de %{organizationName}'
       title: 'Dernière chance de voter pour %{phaseTitle}'
-      body_1: 'La phase de vote pour le projet %{projectTitle} prendra fin demain, à minuit.'
-      body_2: 'Le temps file, et nous avons remarqué que vous n''avez pas encore voté ! Agissez dès maintenant en cliquant sur le bouton ci-dessous pour participer.'
-      body_3: 'Saisissez cette opportunité pour faire entendre votre voix et contribuer activement à façonner l''avenir du projet.'
+      event_description: '<p>La phase de vote du projet %{projectTitle} se termine demain à minuit.</p><p>Vous pouvez encore participer avant la clôture en cliquant sur le bouton ci-dessous. Faites entendre votre voix et contribuez concrètement à façonner l’avenir du projet.</p>'
       cta_button: 'Vote'
     voting_results:
       subject: '%{organizationName}: Les résultats du vote pour %{phaseTitle} sont disponibles !'

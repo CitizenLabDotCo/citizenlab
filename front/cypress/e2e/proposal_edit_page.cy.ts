@@ -139,10 +139,14 @@ describe('Proposal edit page', () => {
       force: true,
     });
 
+    cy.wait(1000);
+    cy.intercept('PATCH', `**/ideas/${inputId}**`).as('patchInput');
+
     // Submit
     cy.dataCy('e2e-submit-form').click();
-    cy.get('#e2e-accept-disclaimer').click();
     cy.wait(1000);
+    cy.get('#e2e-accept-disclaimer').click();
+    cy.wait('@patchInput');
 
     // Check new values
     cy.visit(`/ideas/${inputSlug}`);

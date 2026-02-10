@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { Dropdown, fontSizes } from '@citizenlab/cl2-component-library';
 import { Canvg } from 'canvg';
 import { saveAs } from 'file-saver';
-import { findDOMNode } from 'react-dom';
 import styled from 'styled-components';
 import * as XLSX from 'xlsx';
 
@@ -119,12 +118,7 @@ const ReportExportMenu = ({
       svgNode instanceof Array ? svgNode : svgNode ? [svgNode] : [];
 
     svgNodes.forEach((svgNode_, i) => {
-      // eslint-disable-next-line react/no-find-dom-node
-      const node = findDOMNode(
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        svgNode_ && svgNode_.current.container.children[0]
-      );
+      const node = svgNode_.current;
       if (node) {
         const svgContent = new XMLSerializer().serializeToString(node);
         const svgBlob = new Blob([svgContent], {
@@ -135,7 +129,7 @@ const ReportExportMenu = ({
       }
     });
 
-    trackEventByName(tracks.clickPng, { graph: name });
+    trackEventByName(tracks.clickSvg, { graph: name });
   };
 
   const handleDownloadPng = async () => {
@@ -143,14 +137,8 @@ const ReportExportMenu = ({
       svgNode instanceof Array ? svgNode : svgNode ? [svgNode] : [];
 
     svgNodes.forEach(async (svgNode_, i) => {
-      // eslint-disable-next-line react/no-find-dom-node
-      const node = findDOMNode(
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        svgNode_ && svgNode_.current.container.children[0]
-      );
+      const node = svgNode_.current;
       if (node) {
-        // Create copy of node to trick TS (doesn't seem to understand that this will be always be a SVG)
         const copy = node.cloneNode(true) as SVGElement;
 
         // Get aspect ratio
@@ -171,6 +159,10 @@ const ReportExportMenu = ({
 
         // Create canvas
         const canvas = document.createElement('canvas');
+
+        // Set canvas dimensions
+        canvas.width = newWidth;
+        canvas.height = newHeight;
 
         const ctx = canvas.getContext('2d');
         if (!ctx) return;

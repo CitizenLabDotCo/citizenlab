@@ -5,7 +5,7 @@ import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
 import { SupportedLocale } from 'typings';
 
-import useHomepageLayout from 'api/home_page_layout/useHomepageLayout';
+import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
@@ -32,7 +32,7 @@ const HomepageBuilderPage = () => {
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   const locales = useAppConfigurationLocales();
-  const { data: homepageLayout } = useHomepageLayout();
+  const { data: homepageLayout } = useContentBuilderLayout('homepage');
 
   const [contentBuilderErrors, setContentBuilderErrors] =
     useState<ContentBuilderErrors>({});

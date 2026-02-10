@@ -12,25 +12,19 @@ import messages from './messages';
 import ParticipationReportPreview from './ParticipationReportPreview';
 
 interface Props {
-  defaultStartDate?: string;
-  defaultEndDate?: string;
   projectId?: string;
 }
 
-const Demographics = ({
-  defaultStartDate,
-  defaultEndDate,
-  ...props
-}: Props) => {
+const Demographics = ({ projectId: _projectId }: Props) => {
   const { projectId: projectIdFromParams } = useParams({ strict: false }) as {
     projectId: string;
   };
-  const projectId = props.projectId || projectIdFromParams;
+  const projectId = _projectId || projectIdFromParams;
 
   const { formatMessage } = useIntl();
 
-  const [startAt, setStartAt] = useState(defaultStartDate);
-  const [endAt, setEndAt] = useState(defaultEndDate);
+  const [startAt, setStartAt] = useState<string>();
+  const [endAt, setEndAt] = useState<string>();
 
   return (
     <Box>

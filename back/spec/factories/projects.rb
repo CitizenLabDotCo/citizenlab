@@ -21,7 +21,7 @@ FactoryBot.define do
         'nl-BE' => 'Laten we het park op de grend van de stad vernieuwen en er een aangename plek van maken, voor jong en oud.'
       }
     end
-    sequence(:slug) { |n| "renew-west-parc-#{n}" }
+    sequence(:slug) { |n| "renew-west-parc-#{n}-#{SecureRandom.hex(4)}" }
 
     transient do
       with_permissions { false }
@@ -37,13 +37,13 @@ FactoryBot.define do
       end
     end
 
-    factory :project_with_allowed_input_topics do
+    factory :project_with_input_topics do
       transient do
-        allowed_input_topics_count { 5 }
+        input_topics_count { 5 }
       end
 
       after(:create) do |project, evaluator|
-        evaluator.allowed_input_topics_count.times { project.allowed_input_topics << create(:topic) }
+        evaluator.input_topics_count.times { project.input_topics << create(:input_topic) }
       end
     end
 
@@ -371,7 +371,7 @@ FactoryBot.define do
     factory :project_xl do
       transient do
         ideas_count { 10 }
-        allowed_input_topics_count { 3 }
+        input_topics_count { 3 }
         areas_count { 3 }
         phases_count { 3 }
         events_count { 3 }
@@ -383,8 +383,8 @@ FactoryBot.define do
         evaluator.ideas_count.times do
           project.ideas << create(:idea, project: project)
         end
-        evaluator.allowed_input_topics_count.times do
-          project.allowed_input_topics << create(:topic)
+        evaluator.input_topics_count.times do
+          project.input_topics << create(:input_topic, project:)
         end
         evaluator.areas_count.times do
           project.areas << create(:area)

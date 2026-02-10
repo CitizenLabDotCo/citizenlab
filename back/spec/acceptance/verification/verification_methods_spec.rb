@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Verification methods' do
-  explanation "Verification methods are the channels that lets users prove they're real. (e.g. itsme)"
+  explanation "Verification methods are the channels that let users prove they're real. (e.g. itsme)"
 
   before do
     header 'Content-Type', 'application/json'
@@ -73,14 +73,14 @@ resource 'Verification methods' do
               allowed_for_verified_actions: true,
               name: 'Fake SSO',
               locked_attributes: [
-                { :en => 'First name(s)', :'fr-FR' => 'Prénom(s)', :'nl-NL' => 'Voornamen' },
-                { :en => 'Last name', :'fr-FR' => 'Nom de famille', :'nl-NL' => 'Achternaam' }
+                { en: 'First name(s)', 'fr-FR': 'Prénom(s)', 'nl-NL': 'Voornamen' },
+                { en: 'Last name', 'fr-FR': 'Nom de famille', 'nl-NL': 'Achternaam' }
               ],
               other_attributes: [
-                { :en => 'Email', :'fr-FR' => 'E-mail', :'nl-NL' => 'E-mail' }
+                { en: 'Email', 'fr-FR': 'E-mail', 'nl-NL': 'E-mail' }
               ],
               locked_custom_fields: [
-                { :en => 'gender' }, { :en => 'birthyear' }
+                { en: 'gender' }, { en: 'birthyear' }
               ],
               other_custom_fields: []
             }
@@ -125,14 +125,14 @@ resource 'Verification methods' do
               allowed_for_verified_actions: true,
               name: 'Fake SSO',
               locked_attributes: [
-                { :en => 'First name(s)', :'fr-FR' => 'Prénom(s)', :'nl-NL' => 'Voornamen' },
-                { :en => 'Last name', :'fr-FR' => 'Nom de famille', :'nl-NL' => 'Achternaam' }
+                { en: 'First name(s)', 'fr-FR': 'Prénom(s)', 'nl-NL': 'Voornamen' },
+                { en: 'Last name', 'fr-FR': 'Nom de famille', 'nl-NL': 'Achternaam' }
               ],
               other_attributes: [
-                { :en => 'Email', :'fr-FR' => 'E-mail', :'nl-NL' => 'E-mail' }
+                { en: 'Email', 'fr-FR': 'E-mail', 'nl-NL': 'E-mail' }
               ],
               locked_custom_fields: [
-                { :en => 'gender' }, { :en => 'birthyear' }
+                { en: 'gender' }, { en: 'birthyear' }
               ],
               other_custom_fields: []
             }

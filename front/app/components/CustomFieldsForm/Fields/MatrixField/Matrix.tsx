@@ -12,25 +12,23 @@ import {
   Thead,
   Tr,
 } from '@citizenlab/cl2-component-library';
-import { media, RGBAtoRGB } from 'component-library/utils/styleUtils';
+import { media } from 'component-library/utils/styleUtils';
 import styled, { useTheme } from 'styled-components';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import messages from 'components/Form/Components/Controls/messages';
-
 import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 
+import messages from '../../messages';
 import { getLinearScaleLabel } from '../LinearScale/utils';
 
 const StickyTh = styled(Th)<{ hasLongContent: boolean }>`
-  background: ${(props) =>
-    RGBAtoRGB(props.theme.colors.tenantPrimaryLighten95, 0.05)};
   position: sticky;
   inset-inline-start: 0px;
+  background: white;
   z-index: 1;
 
   overflow-wrap: break-word;
@@ -48,15 +46,20 @@ const StickyTh = styled(Th)<{ hasLongContent: boolean }>`
 `;
 
 const StyledTd = styled(Td)`
-  background: ${(props) =>
-    RGBAtoRGB(props.theme.colors.tenantPrimaryLighten95, 0.05)};
   // This min-width also ensures that the th elements have the same min-width.
   min-width: 84px;
 
   .circle {
     margin-right: 0px;
-    border: 1px solid ${(props) => props.theme.colors.tenantPrimary};
+    border: 1px solid ${(props) => props.theme.colors.borderDark};
   }
+  .circle :hover {
+    border-color: ${(props) => props.theme.colors.grey800};
+  }
+`;
+
+const StyledTr = styled(Tr)`
+  border-bottom: 1px solid ${(props) => props.theme.colors.borderDark};
 `;
 
 const LONG_LABEL_THRESHOLD = 10; // Threshold for long labels, used to apply specific styling
@@ -102,7 +105,7 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
         ) {
           tableElement.style.borderRight = 'none';
         } else {
-          tableElement.style.borderRight = `1px dashed ${theme.colors.tenantPrimaryLighten75}`;
+          tableElement.style.borderRight = `1px dashed ${theme.colors.borderLight}`;
         }
       }
     };
@@ -112,7 +115,7 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
     tableDivRef.current?.addEventListener('scroll', () => {
       checkApplyBorder();
     });
-  }, [theme.colors.tenantPrimaryLighten75]);
+  }, [theme.colors.borderLight]);
 
   const getAriaValueText = useCallback(
     (value: number, total: number) => {
@@ -150,21 +153,29 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
       <Box overflowX="auto" ref={tableDivRef} id="e2e-matrix-control">
         <Table
           width={'100%'}
-          style={{ borderCollapse: 'separate', borderSpacing: '0px 8px' }}
+          style={{ borderCollapse: 'collapse', borderSpacing: '0px 8px' }}
           aria-labelledby={`matrix-question-label-${id}`}
         >
           <Thead>
             <Tr>
-              <Th pt="0px" />
+              <Th
+                pt="0px"
+                borderBottom={`1px solid ${theme.colors.borderDark} !important`}
+              />
               {columnsFromSchema.map((column, index) => {
                 return (
-                  <Th key={index} scope="col" pt="0px">
+                  <Th
+                    key={index}
+                    scope="col"
+                    pt="0px"
+                    borderBottom={`1px solid ${theme.colors.borderDark} !important`}
+                  >
                     <Text
                       textAlign="center"
                       m="0px"
                       p="0px"
                       mx="auto"
-                      color="tenantPrimary"
+                      color="textPrimary"
                     >
                       {column}
                     </Text>
@@ -177,14 +188,14 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
             {statements.map((statement, index) => {
               const statementLabel = localize(statement.title_multiloc);
               return (
-                <Tr key={index}>
+                <StyledTr key={index}>
                   <StickyTh
                     scope="row"
                     hasLongContent={
                       statementLabel.length > LONG_LABEL_THRESHOLD
                     }
                   >
-                    <Text m="4px" color="tenantPrimary">
+                    <Text m="4px" color="textPrimary">
                       {statementLabel}
                     </Text>
                   </StickyTh>
@@ -219,6 +230,7 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
                             }
                             name={`radio-group-${statement.key}-${id}`}
                             id={`${id}-${index}-${columnIndex}-radio`}
+                            buttonColor={theme.colors.tenantPrimary}
                             onChange={(value) => {
                               onChange({
                                 ...data,
@@ -230,7 +242,7 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
                       </StyledTd>
                     );
                   })}
-                </Tr>
+                </StyledTr>
               );
             })}
           </Tbody>
@@ -241,8 +253,9 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
           <Button
             p="0px"
             buttonStyle="text"
-            textColor={theme.colors.tenantPrimary}
+            textColor={theme.colors.textPrimary}
             textDecoration="underline"
+            mt="4px"
             text={
               <>
                 <ScreenReaderOnly>

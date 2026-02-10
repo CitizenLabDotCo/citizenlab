@@ -6,11 +6,14 @@ import ideasCountKeys from 'api/idea_count/keys';
 import ideaImagesKeys from 'api/idea_images/keys';
 import ideaMarkersKeys from 'api/idea_markers/keys';
 import ideaFilterCountsKeys from 'api/ideas_filter_counts/keys';
+import meKeys from 'api/me/keys';
 import projectsKeys from 'api/projects/keys';
 import submissionsCountKeys from 'api/submission_count/keys';
 import userIdeaCountKeys from 'api/user_ideas_count/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
+
+import { storeClaimToken } from '../../utils/claimToken';
 
 import ideasKeys from './keys';
 import { IIdea, IIdeaAdd } from './types';
@@ -27,6 +30,12 @@ const useAddIdea = () => {
   return useMutation<IIdea, CLErrors, IIdeaAdd>({
     mutationFn: addIdea,
     onSuccess: (idea) => {
+      const { claim_token } = idea.data.attributes;
+
+      if (claim_token) {
+        storeClaimToken(claim_token);
+      }
+
       queryClient.invalidateQueries({ queryKey: ideasKeys.lists() });
       queryClient.invalidateQueries({ queryKey: ideaMarkersKeys.lists() });
       queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
@@ -40,6 +49,9 @@ const useAddIdea = () => {
       });
       queryClient.invalidateQueries({
         queryKey: submissionsCountKeys.items(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: meKeys.all(),
       });
 
       // TODO: Fix this the next time the file is edited.

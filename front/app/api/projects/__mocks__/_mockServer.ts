@@ -90,10 +90,11 @@ export const project1: IProjectData = {
     },
     avatars_count: 8,
     participants_count: 8,
-    uses_content_builder: false,
+    uses_content_builder: true,
     preview_token: 'fake-token-0123456789',
     baskets_count: 0,
     votes_count: 0,
+    live_auto_input_topics_enabled: false,
   },
   relationships: {
     admin_publication: {
@@ -119,7 +120,7 @@ export const project1: IProjectData = {
     areas: {
       data: [],
     },
-    topics: {
+    global_topics: {
       data: [],
     },
     avatars: {
@@ -239,6 +240,7 @@ export const project2: IProjectData = {
     preview_token: 'fake-token-0123456789',
     baskets_count: 0,
     votes_count: 0,
+    live_auto_input_topics_enabled: false,
   },
   relationships: {
     admin_publication: {
@@ -259,7 +261,7 @@ export const project2: IProjectData = {
     areas: {
       data: [],
     },
-    topics: {
+    global_topics: {
       data: [],
     },
     avatars: {
@@ -385,6 +387,7 @@ const votingProject: IProject = {
       participants_count: 2,
       uses_content_builder: true,
       preview_token: 'fake-token-0123456789',
+      live_auto_input_topics_enabled: false,
     },
     relationships: {
       admin_publication: {
@@ -399,7 +402,7 @@ const votingProject: IProject = {
       areas: {
         data: [],
       },
-      topics: {
+      global_topics: {
         data: [],
       },
       avatars: {

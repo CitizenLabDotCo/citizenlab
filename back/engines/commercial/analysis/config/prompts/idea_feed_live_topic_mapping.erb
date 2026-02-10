@@ -1,0 +1,39 @@
+You are an advanced topic mapping AI, in the context of an online engagement project called '<%= multiloc_service.t(project.title_multiloc) %>'.
+
+For context, here is more information on the project.
+<project>
+  <title>
+    <%= multiloc_service.t(project.title_multiloc) %>
+  </title>
+  <description>
+    <%= project_description %>
+  </description>
+</project>
+
+You are receiving two sets of topics that were derived by the same topic model, based on the contributions of participants to this project. An old set of topics, which was generated in the recent past, and a new set of topics, which has just been generated now. It's possible that since the last time topics were generated, new contributions have come in or slight changes or removals have occurred in existing contributions.
+
+Your goal is to create a mapping between the old topics and the new topics. For each old topic, identify whether there is a new topic that corresponds to it based on their titles and descriptions. If an old topic does not have a clear counterpart in the new topics, indicate that it has no match by providing a null ID.
+The general idea is to keep some stability in the names and descriptions of the topics over time, so people who return to the project can still recognize the topics they saw before.
+Only match topics if the match is very clear and unambiguous; if there is any doubt, assign a null ID.
+If the new topic is very similar, but slightly diverges, propose a new title and description to better reflect the content of the new topic while still maintaining the essence of the old topic. Don't make any changes if it doesn't really matter.
+
+These are the old topics:
+<topics>
+  <% old_topics.each_with_index do |old_topic, index| %>
+    <topic id="OLD-<%= index + 1 %>">
+      <title><%= multiloc_service.t(old_topic.title_multiloc) %></title>
+      <description><%= multiloc_service.t(old_topic.description_multiloc) %></description>
+    </topic>
+  <% end %>
+</topics>
+
+These are the new topics:
+<topics>
+  <% new_topics.each_with_index do |new_topic, index| %>
+    <topic id="NEW-<%= index + 1 %>">
+      <title><%= multiloc_service.t(new_topic['title_multiloc']) %></title>
+      <description><%= multiloc_service.t(new_topic['description_multiloc']) %></description>
+    </topic>
+  <% end %>
+</topics>
+

@@ -1,5 +1,11 @@
 import moment = require('moment');
 import { randomString, randomEmail } from '../../support/commands';
+import {
+  updatePermission,
+  confirmUserCustomFieldHasValue,
+  addPermissionsCustomField,
+  setupProject,
+} from '../../support/permitted_by_utils';
 
 describe('Native survey permitted by: everyone', () => {
   let customFieldId = '';
@@ -7,97 +13,39 @@ describe('Native survey permitted by: everyone', () => {
   let projectId = '';
   let projectSlug = '';
   let phaseId = '';
+  let fieldName = '';
   let userId: string | undefined;
-
-  const fieldName = randomString(10);
-
-  const twoDaysAgo = moment().subtract(2, 'days').format('DD/MM/YYYY');
-  const inTwoMonths = moment().add(2, 'month').format('DD/MM/YYYY');
-
-  const updatePermission = ({
-    adminJwt,
-    permitted_by,
-    user_fields_in_form,
-    user_data_collection,
-  }: {
-    adminJwt: string;
-    permitted_by?: string;
-    user_fields_in_form?: boolean;
-    user_data_collection?: string;
-  }) => {
-    return cy.request({
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${adminJwt}`,
-      },
-      method: 'PATCH',
-      url: `web_api/v1/phases/${phaseId}/permissions/posting_idea`,
-      body: {
-        permitted_by,
-        user_fields_in_form,
-        user_data_collection,
-      },
-    });
-  };
+  let answer: string | undefined;
 
   before(() => {
-    // Create custom field
-    cy.apiCreateCustomField(fieldName, true, false).then((response) => {
-      customFieldId = response.body.data.id;
-      customFieldKey = response.body.data.attributes.key;
+    setupProject({ participationMethod: 'native_survey' }).then((data) => {
+      customFieldId = data.customFieldId;
+      customFieldKey = data.customFieldKey;
+      projectId = data.projectId;
+      projectSlug = data.projectSlug;
+      phaseId = data.phaseId;
+      fieldName = data.fieldName;
 
-      // Create project with active native survey phase
-      cy.apiCreateProject({
-        title: randomString(),
-        descriptionPreview: randomString(),
-        description: randomString(),
-        publicationStatus: 'published',
-      }).then((project) => {
-        projectId = project.body.data.id;
-        projectSlug = project.body.data.attributes.slug;
-        cy.apiCreatePhase({
-          projectId,
-          title: randomString(),
-          startAt: twoDaysAgo,
-          endAt: inTwoMonths,
-          participationMethod: 'native_survey',
-          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-          nativeSurveyTitleMultiloc: { en: 'Survey' },
-          canComment: true,
-          canPost: true,
-          canReact: true,
-          description: 'Some description',
-        }).then((phase) => {
-          phaseId = phase.body.data.id;
+      return cy
+        .apiLogin('admin@govocal.com', 'democracy2.0')
+        .then((response) => {
+          const adminJwt = response.body.jwt;
 
-          // Set permission to everyone
-          return cy
-            .apiLogin('admin@govocal.com', 'democracy2.0')
-            .then((response) => {
-              const adminJwt = response.body.jwt;
-
-              return updatePermission({
-                adminJwt,
-                permitted_by: 'everyone',
-                user_fields_in_form: true,
-              }).then(() => {
-                // Add one permissions custom field
-                return cy.request({
-                  headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${adminJwt}`,
-                  },
-                  method: 'POST',
-                  url: `web_api/v1/phases/${phaseId}/permissions/posting_idea/permissions_custom_fields`,
-                  body: {
-                    custom_field_id: customFieldId,
-                    required: true,
-                  },
-                });
-              });
+          return updatePermission({
+            adminJwt,
+            phaseId,
+            permitted_by: 'everyone',
+            user_fields_in_form: true,
+            user_data_collection: 'all_data',
+          }).then(() => {
+            // Add one permissions custom field
+            return addPermissionsCustomField({
+              adminJwt,
+              phaseId,
+              customFieldId,
             });
+          });
         });
-      });
     });
   });
 
@@ -109,6 +57,10 @@ describe('Native survey permitted by: everyone', () => {
       cy.apiRemoveUser(userId);
     }
   });
+
+  const confirmSavedToProfile = () => {
+    confirmUserCustomFieldHasValue({ key: customFieldKey, value: answer });
+  };
 
   describe('As a visitor', () => {
     const fieldsInSurvey = () => {
@@ -157,6 +109,21 @@ describe('Native survey permitted by: everyone', () => {
     });
 
     describe('Collect demographics only', () => {
+      before(() => {
+        // Set up data collection for demographics only
+        cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+          const adminJwt = response.body.jwt;
+
+          return updatePermission({
+            adminJwt,
+            phaseId,
+            permitted_by: 'everyone',
+            user_fields_in_form: true,
+            user_data_collection: 'demographics_only',
+          });
+        });
+      });
+
       it('works', () => {
         fieldsInSurvey();
       });
@@ -164,6 +131,46 @@ describe('Native survey permitted by: everyone', () => {
   });
 
   describe('As a user with name and confirmed email', () => {
+    const fieldsInForm = () => {
+      cy.visit(`/projects/${projectSlug}`);
+
+      // Click take survey button
+      cy.get('.e2e-idea-button').first().find('button').click({ force: true });
+
+      // Confirm we're in the survey now
+      cy.location('pathname').should(
+        'eq',
+        `/en/projects/${projectSlug}/surveys/new`
+      );
+
+      // Answer question and go to next page
+      cy.get('fieldset').first().find('input').first().check({ force: true });
+      cy.dataCy('e2e-next-page').click();
+
+      // Confirm we are on demographic question page
+      cy.get('form').contains(fieldName);
+
+      // Fill in demographic question
+      answer = randomString(10);
+      cy.get('form').find('input').first().type(answer);
+
+      // Intercept submit request
+      cy.intercept('PATCH', '/web_api/v1/ideas/**').as('submitSurvey');
+
+      // Submit survey
+      cy.dataCy('e2e-submit-form').click();
+
+      // Make sure request body contains custom field value
+      cy.wait('@submitSurvey').then((interception) => {
+        const ideaPayload = interception.request.body.idea;
+        expect(ideaPayload[`u_${customFieldKey}`]).to.eq(answer);
+      });
+
+      // Now we should be on last page
+      cy.dataCy('e2e-after-submission').should('exist');
+      confirmSavedToProfile();
+    };
+
     const createUser = () => {
       if (userId) {
         cy.logout();
@@ -184,72 +191,50 @@ describe('Native survey permitted by: everyone', () => {
       );
     };
 
-    const fieldsInSurvey = () => {
-      cy.visit(`/projects/${projectSlug}`);
-
-      // Click take survey button
-      cy.get('.e2e-idea-button').first().find('button').click({ force: true });
-
-      // Confirm we're in the survey now
-      cy.location('pathname').should(
-        'eq',
-        `/en/projects/${projectSlug}/surveys/new`
-      );
-
-      // Answer question and go to next page
-      cy.get('fieldset').first().find('input').first().check({ force: true });
-      cy.dataCy('e2e-next-page').click();
-
-      // Confirm we are on demographic question page
-      cy.get('form').contains(fieldName);
-
-      // Fill in demographic question
-      const answer = randomString(10);
-      cy.get('form').find('input').first().type(answer);
-
-      // Intercept submit request
-      cy.intercept('PATCH', '/web_api/v1/ideas/**').as('submitSurvey');
-
-      // Submit survey
-      cy.dataCy('e2e-submit-form').click();
-
-      // Make sure request body contains custom field value
-      cy.wait('@submitSurvey').then((interception) => {
-        const ideaPayload = interception.request.body.idea;
-        expect(ideaPayload[`u_${customFieldKey}`]).to.eq(answer);
-      });
-
-      // Now we should be on last page
-      cy.dataCy('e2e-after-submission').should('exist');
-    };
-
-    const confirmSavedToProfile = () => {
-      cy.intercept('GET', `/web_api/v1/users/me`).as('getMe');
-      cy.visit('/');
-      cy.wait('@getMe').then((interception) => {
-        expect(interception.response?.statusCode).to.equal(200);
-        expect(
-          interception.response?.body.data.attributes.custom_field_values[
-            customFieldKey
-          ]
-        ).to.be.a('string');
-      });
-    };
-
     beforeEach(() => {
       createUser();
     });
 
     describe('Collect all data', () => {
+      before(() => {
+        // Set up data collection for all data
+        cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+          const adminJwt = response.body.jwt;
+
+          return updatePermission({
+            adminJwt,
+            phaseId,
+            permitted_by: 'everyone',
+            user_fields_in_form: true,
+            user_data_collection: 'all_data',
+          });
+        });
+      });
+
       it('works', () => {
-        fieldsInSurvey();
+        fieldsInForm();
         confirmSavedToProfile();
       });
     });
 
     describe('Collect demographics only', () => {
+      before(() => {
+        // Set up data collection for demographics only
+        cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+          const adminJwt = response.body.jwt;
+
+          return updatePermission({
+            adminJwt,
+            phaseId,
+            permitted_by: 'everyone',
+            user_fields_in_form: true,
+            user_data_collection: 'demographics_only',
+          });
+        });
+      });
+
       it('works', () => {
-        fieldsInSurvey();
+        fieldsInForm();
         confirmSavedToProfile();
       });
     });

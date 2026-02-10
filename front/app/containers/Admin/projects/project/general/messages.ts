@@ -1,6 +1,44 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  setUp: {
+    id: 'app.containers.AdminPage.Project.general.setUp',
+    defaultMessage: 'Set up',
+  },
+  inputTags: {
+    id: 'app.containers.AdminPage.Project.general.inputTags',
+    defaultMessage: 'Input tags',
+  },
+  accessRights: {
+    id: 'app.containers.AdminPage.Project.general.accessRights',
+    defaultMessage: 'Access rights',
+  },
+  data: {
+    id: 'app.containers.AdminPage.Project.general.data',
+    defaultMessage: 'Data',
+  },
+  descriptionLabel: {
+    id: 'app.containers.AdminPage.Project.general.descriptionLabel',
+    defaultMessage: 'Description',
+  },
+  homepageDescriptionLabel: {
+    id: 'app.containers.AdminPage.Project.general.homepageDescriptionLabel',
+    defaultMessage: 'Homepage description',
+  },
+  homepageDescriptionTooltip: {
+    id: 'app.containers.AdminPage.Project.general.homepageDescriptionTooltip',
+    defaultMessage:
+      'This short description will be shown on the project card on the homepage. Keep it concise and engaging.',
+  },
+  projectDescriptionSectionTitle: {
+    id: 'app.containers.AdminPage.Project.general.projectDescriptionSectionTitle',
+    defaultMessage: 'Project description',
+  },
+  projectDescriptionSectionDescription: {
+    id: 'app.containers.AdminPage.Project.general.projectDescriptionSectionDescription',
+    defaultMessage:
+      'Decide on which message you want to give to your audience. Edit your project and enrich it with images, videos, file attachments,... This information helps visitors to understand what your project is about.',
+  },
   titleGeneral: {
     id: 'app.containers.AdminPage.ProjectEdit.titleGeneral',
     defaultMessage: 'General settings for the project',
@@ -22,18 +60,30 @@ export default defineMessages({
     defaultMessage:
       'Choose a title that is short, engaging and clear. It will be shown in the dropdown overview and on the project cards on the home page.',
   },
-  projectTypeTitle: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectTypeTitle',
-    defaultMessage: 'Project type',
+  projectName: {
+    id: 'app.containers.AdminPage.ProjectEdit.projectName',
+    defaultMessage: 'Project name',
   },
-  projectTypeWarning: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectTypeWarning',
-    defaultMessage: 'The project type can not be changed later.',
+  url: {
+    id: 'app.containers.AdminPage.ProjectEdit.url',
+    defaultMessage: 'URL',
   },
-  projectTypeTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectTypeTooltip',
+  topicsLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.topicLabel',
+    defaultMessage: 'Tags',
+  },
+  topicsLabelTooltip: {
+    id: 'app.containers.AdminPage.ProjectEdit.topicLabelTooltip',
     defaultMessage:
-      'Projects with a timeline have a clear beginning and end and can have different phases. Projects without a timeline are continuous.',
+      'Select {topicsCopy} for this project. Users can use these to filter projects by.',
+  },
+  topicInputsTooltipExtraCopy: {
+    id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy',
+    defaultMessage: 'Tags can be configured {topicManagerLink}.',
+  },
+  topicInputsTooltipLink: {
+    id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink',
+    defaultMessage: 'here',
   },
   areasLabelHint: {
     id: 'app.containers.AdminPage.ProjectEdit.areasLabelHint',
@@ -47,15 +97,6 @@ export default defineMessages({
   areasLabelTooltipLinkText: {
     id: 'app.containers.AdminPage.ProjectEdit.areasLabelTooltipLinkText',
     defaultMessage: 'here',
-  },
-  topicsLabel: {
-    id: 'app.containers.AdminPage.ProjectEdit.topicLabel',
-    defaultMessage: 'Tags',
-  },
-  topicsLabelTooltip: {
-    id: 'app.containers.AdminPage.ProjectEdit.topicLabelTooltip',
-    defaultMessage:
-      'Select {topicsCopy} for this project. Users can use these to filter projects by.',
   },
   areasNoneLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.areasNoneLabel',
@@ -111,22 +152,6 @@ export default defineMessages({
     defaultMessage:
       'An error occurred while saving your data. Please try again.',
   },
-  projectName: {
-    id: 'app.containers.AdminPage.ProjectEdit.projectName',
-    defaultMessage: 'Project name',
-  },
-  url: {
-    id: 'app.containers.AdminPage.ProjectEdit.url',
-    defaultMessage: 'URL',
-  },
-  topicInputsTooltipExtraCopy: {
-    id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipExtraCopy',
-    defaultMessage: 'Tags can be configured {topicManagerLink}.',
-  },
-  topicInputsTooltipLink: {
-    id: 'app.containers.AdminPage.SettingsPage.AllowedInputTopics.topicInputsTooltipLink',
-    defaultMessage: 'here',
-  },
   headerImageInputLabel: {
     id: 'app.containers.AdminPage.ProjectEdit.headerImageInputLabel',
     defaultMessage: 'Header image',
@@ -141,10 +166,10 @@ export default defineMessages({
     defaultMessage: `
     This image is part of the project card; the card that summarizes the project and is shown on the homepage for example. For more information on recommended image resolutions, {supportPageLink}.`,
   },
-  imageSupportPageURL: {
-    id: 'app.containers.AdminPage.ProjectEdit.imageSupportPageURL',
+  imageSupportPageURL2: {
+    id: 'app.containers.AdminPage.ProjectEdit.imageSupportPageURL2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
+      'https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
   },
   supportPageLinkText: {
     id: 'app.containers.AdminPage.ProjectEdit.supportPageLinkText',
@@ -166,15 +191,6 @@ export default defineMessages({
   headerImageAltText: {
     id: 'app.containers.AdminPage.ProjectEdit.headerImageAltText',
     defaultMessage: 'Header image alt text',
-  },
-  resetParticipationData: {
-    id: 'app.containers.AdminPage.ProjectEdit.resetParticipationData',
-    defaultMessage: 'Reset participation data',
-  },
-  publicationStatusWarning: {
-    id: 'app.containers.AdminPage.ProjectEdit.publicationStatusWarningMessage',
-    defaultMessage:
-      'Looking for the project status? Now you can change it at any time directly from the project page header.',
   },
   needInspiration: {
     id: 'app.containers.AdminPage.ProjectEdit.needInspiration',

@@ -24,7 +24,7 @@ export const scrollTo =
     }
 
     if (isOnProjectPage) {
-      scrollToElement({ id: elementId, shouldFocus: true });
+      scrollToElement({ id: elementId });
     } else {
       clHistory.push(`/projects/${projectSlug}#${elementId}`);
     }

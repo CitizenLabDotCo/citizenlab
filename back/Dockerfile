@@ -14,7 +14,7 @@ COPY back/engines ./engines
 RUN find engines -type f -not -name "*.gemspec" -not -name "version.rb" -print0 | xargs -0 rm -rf \
    && find engines -type d -empty -delete
 
-FROM ruby:3.3.4-slim
+FROM ruby:3.4.7-slim
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN apt-get update                                        \
@@ -46,6 +46,8 @@ RUN apt-get update                                        \
    # tiktoken_ruby
    clang                                                  \
    gnupg                                                  \
+   # Needed by Psych (Ruby's default YAML parser)
+   libyaml-dev                                            \
    && apt-get clean                                       \
    && rm -rf /var/lib/apt/lists/*
 
@@ -57,7 +59,7 @@ RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --yes --
     # `postgres` service in `docker-compose.yml`.
     && apt-get update && apt-get install -y postgresql-client-16
 
-WORKDIR /cl2_back
+WORKDIR /citizenlab/back
 
 COPY --from=dependency_files /app .
 
@@ -67,7 +69,7 @@ RUN bundle config set --local clean 'true'      \
    && bundle install                              \
    # Removing the cached files manually as --no-cache does not seem to work
    # (or at least it's not doing what I expect from it).
-   && rm -rf ./vendor/bundle/ruby/2.7.0/cache
+   && rm -rf ./vendor/bundle/ruby/3.4.0/cache
 
 COPY back/. .
 

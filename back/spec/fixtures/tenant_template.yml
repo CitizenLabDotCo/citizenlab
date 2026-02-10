@@ -101,36 +101,50 @@ models:
     domicile: outside
     password: helpmeOB1
     remote_avatar_url: http://images2.fanpop.com/image/photos/9300000/leia-princess-leia-organa-solo-skywalker-9301321-576-1010.jpg
-  topic:
+  global_topic:
   - title_multiloc: topics.infrastructure
     description_multiloc: topics.infrastructure_description
+    default: true
   - title_multiloc: topics.waste
     description_multiloc: topics.waste_description
+    default: true
   - &8
     title_multiloc: topics.mobility
     description_multiloc: topics.mobility_description
+    default: true
   - title_multiloc: topics.technology
     description_multiloc: topics.technology_description
+    default: true
   - title_multiloc: topics.economy
     description_multiloc: topics.economy_description
+    default: true
   - title_multiloc: topics.nature
     description_multiloc: topics.nature_description
+    default: true
   - title_multiloc: topics.sustainability
     description_multiloc: topics.sustainability_description
+    default: true
   - title_multiloc: topics.housing
     description_multiloc: topics.housing_description
+    default: true
   - title_multiloc: topics.culture
     description_multiloc: topics.culture_description
+    default: true
   - title_multiloc: topics.citizenship
     description_multiloc: topics.citizenship_description
+    default: true
   - title_multiloc: topics.social
     description_multiloc: topics.social_description
+    default: true
   - title_multiloc: topics.health
     description_multiloc: topics.health_description
+    default: true
   - title_multiloc: topics.sport
     description_multiloc: topics.sport_description
+    default: true
   - title_multiloc: topics.education
     description_multiloc: topics.education_description
+    default: true
   idea_status:
   - title_multiloc: statuses.proposed
     ordering: 100

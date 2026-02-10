@@ -93,7 +93,9 @@ class WebApi::V1::InvitesController < ApplicationController
           raise ClErrors::TransactionError.new(error_key: :unprocessable_invite)
         end
 
-        SideFxInviteService.new.after_accept @invite
+        claim_tokens = params.dig(:invite, :claim_tokens)
+        SideFxInviteService.new.after_accept(@invite, claim_tokens:)
+
         render json: WebApi::V1::InviteSerializer.new(
           @invite.reload,
           params: jsonapi_serializer_params,
@@ -125,7 +127,7 @@ class WebApi::V1::InvitesController < ApplicationController
   end
 
   def resend
-    user = User.find_by(email: accept_params[:email])
+    user = User.find_by_cimail(accept_params[:email])
 
     unless user&.invite_status == 'pending'
       render json: { errors: { base: [{ error: 'no_pending_invite' }] } }, status: :unprocessable_entity

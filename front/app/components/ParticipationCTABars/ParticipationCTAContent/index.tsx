@@ -34,11 +34,7 @@ const ParticipationCTAContent = ({
       bgColor={theme.colors.tenantPrimary}
       p="12px"
     >
-      <Box
-        display="flex"
-        alignItems="center"
-        mb={CTAButton !== undefined ? '12px' : '0'}
-      >
+      <Box alignItems="center" mb={CTAButton !== undefined ? '12px' : '0'}>
         <TimeIndicator
           hasUserParticipated={hasUserParticipated}
           currentPhase={currentPhase}
@@ -72,12 +68,15 @@ const ParticipationCTAContent = ({
       data-cy="project-cta-bar-top"
     >
       <Box display="flex" width="100%" maxWidth={`${maxPageWidth}px`}>
-        <TimeIndicator
-          hasUserParticipated={hasUserParticipated}
-          currentPhase={currentPhase}
-        />
+        <Box>
+          <TimeIndicator
+            hasUserParticipated={hasUserParticipated}
+            currentPhase={currentPhase}
+          />
+          <Box>{participationState}</Box>
+        </Box>
+
         <Box display="flex" alignItems="center" ml="auto">
-          {participationState}
           <Box ml={CTAButton !== undefined ? '12px' : '0'}>{CTAButton}</Box>
         </Box>
       </Box>

@@ -8,12 +8,15 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
 
+import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import {
   IdeaSortMethod,
   InputTerm,
   IPhase,
   IUpdatedPhaseProperties,
   ParticipationMethod,
+  PresentationMode,
+  PrescreeningMode,
   TSurveyService,
   VoteTerm,
   VotingMethod,
@@ -23,6 +26,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
+import anonymousMessages from 'components/admin/AnonymousPostingToggle/messages';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
@@ -95,6 +99,18 @@ const PhaseParticipationConfig = ({
   const project_library_enabled = useFeatureFlag({ name: 'project_library' });
 
   const { formatMessage } = useIntl();
+
+  const { data: permissions } = usePhasePermissions({
+    phaseId: phase?.data.id,
+  });
+
+  // If posting without an account is allowed, we allow logged-in users to post
+  // anonymously.
+  const toggleAnonymousPostingDisabledReason =
+    permissions?.data.find((p) => p.attributes.action === 'posting_idea')
+      ?.attributes.permitted_by === 'everyone'
+      ? formatMessage(anonymousMessages.anonymousParticipationAutoEnabled)
+      : undefined;
 
   const updateFormData = (fn: SetFn) => {
     const updatedFormData = fn(formData);
@@ -251,7 +267,7 @@ const PhaseParticipationConfig = ({
     }));
   };
 
-  const handleIdeasDisplayChange = (presentation_mode: 'map' | 'card') => {
+  const handleIdeasDisplayChange = (presentation_mode: PresentationMode) => {
     updateFormData((state) => ({
       ...state,
       presentation_mode,
@@ -303,6 +319,27 @@ const PhaseParticipationConfig = ({
     }));
   };
 
+  const handleMinVotingOptionsChange = (newMinVotingOptions: string | null) => {
+    const voting_min_selected_options = newMinVotingOptions
+      ? parseInt(newMinVotingOptions, 10)
+      : null;
+    updateFormData((state) => ({
+      ...state,
+      voting_min_selected_options,
+    }));
+    setValidationErrors((errors) => ({
+      ...errors,
+      minSelectedOptionsError: undefined,
+    }));
+  };
+
+  const toggleVotingFilteringEnabled = () => {
+    updateFormData((state) => ({
+      ...state,
+      voting_filtering_enabled: !state.voting_filtering_enabled,
+    }));
+  };
+
   const handleInputTermChange = (option: IOption) => {
     const input_term: InputTerm = option.value;
 
@@ -342,10 +379,12 @@ const PhaseParticipationConfig = ({
     }));
   };
 
-  const togglePrescreeningEnabled = (prescreening_enabled: boolean) => {
+  const onPrescreeningModeChange = (
+    prescreening_mode: PrescreeningMode | null
+  ) => {
     updateFormData((state) => ({
       ...state,
-      prescreening_enabled,
+      prescreening_mode,
     }));
   };
 
@@ -407,7 +446,9 @@ const PhaseParticipationConfig = ({
     voting_method,
     voting_min_total,
     voting_max_total,
+    voting_min_selected_options,
     voting_max_votes_per_idea,
+    voting_filtering_enabled,
     survey_service,
     survey_embed_url,
     poll_anonymous,
@@ -417,7 +458,7 @@ const PhaseParticipationConfig = ({
     document_annotation_embed_url,
     expire_days_limit,
     reacting_threshold,
-    prescreening_enabled,
+    prescreening_mode,
     similarity_enabled,
     similarity_threshold_title,
     similarity_threshold_body,
@@ -482,10 +523,14 @@ const PhaseParticipationConfig = ({
             voting_method={voting_method}
             voting_min_total={voting_min_total}
             voting_max_total={voting_max_total}
+            voting_min_selected_options={voting_min_selected_options}
+            voting_filtering_enabled={voting_filtering_enabled}
             commenting_enabled={commenting_enabled}
             autoshare_results_enabled={autoshare_results_enabled}
+            handleMinVotingOptionsChange={handleMinVotingOptionsChange}
             handleVotingMinTotalChange={handleVotingMinTotalChange}
             handleVotingMaxTotalChange={handleVotingMaxTotalChange}
+            toggleVotingFilteringEnabled={toggleVotingFilteringEnabled}
             toggleCommentingEnabled={toggleCommentingEnabled}
             toggleAutoshareResultsEnabled={toggleAutoshareResultsEnabled}
             apiErrors={apiErrors}
@@ -520,6 +565,9 @@ const PhaseParticipationConfig = ({
             noLikingLimitError={validationErrors.noLikingLimitError}
             noDislikingLimitError={validationErrors.noDislikingLimitError}
             allow_anonymous_participation={allow_anonymous_participation}
+            toggleAnonymousPostingDisabledReason={
+              toggleAnonymousPostingDisabledReason
+            }
             apiErrors={apiErrors}
             togglePostingEnabled={togglePostingEnabled}
             toggleCommentingEnabled={toggleCommentingEnabled}
@@ -542,8 +590,8 @@ const PhaseParticipationConfig = ({
             handleIdeaDefaultSortMethodChange={
               handleIdeaDefaultSortMethodChange
             }
-            prescreening_enabled={prescreening_enabled}
-            togglePrescreeningEnabled={togglePrescreeningEnabled}
+            prescreening_mode={prescreening_mode}
+            onPrescreeningModeChange={onPrescreeningModeChange}
             similarity_enabled={similarity_enabled}
             similarity_threshold_title={similarity_threshold_title}
             similarity_threshold_body={similarity_threshold_body}
@@ -563,6 +611,9 @@ const PhaseParticipationConfig = ({
             reacting_like_limited_max={reacting_like_limited_max}
             noLikingLimitError={validationErrors.noLikingLimitError}
             allow_anonymous_participation={allow_anonymous_participation}
+            toggleAnonymousPostingDisabledReason={
+              toggleAnonymousPostingDisabledReason
+            }
             apiErrors={apiErrors}
             togglePostingEnabled={togglePostingEnabled}
             toggleCommentingEnabled={toggleCommentingEnabled}
@@ -584,8 +635,8 @@ const PhaseParticipationConfig = ({
             expireDateLimitError={validationErrors.expireDateLimitError}
             handleReactingThresholdChange={handleReactingThresholdChange}
             reactingThresholdError={validationErrors.reactingThresholdError}
-            prescreening_enabled={prescreening_enabled}
-            togglePrescreeningEnabled={togglePrescreeningEnabled}
+            prescreening_mode={prescreening_mode}
+            onPrescreeningModeChange={onPrescreeningModeChange}
             similarity_enabled={similarity_enabled}
             similarity_threshold_title={similarity_threshold_title}
             similarity_threshold_body={similarity_threshold_body}
@@ -617,7 +668,7 @@ const PhaseParticipationConfig = ({
                     values={{
                       supportArticleLink: (
                         <a
-                          href={formatMessage(messages.konveioSupportPageURL)}
+                          href={formatMessage(messages.konveioSupportPageURL2)}
                           target="_blank"
                           rel="noreferrer"
                         >

@@ -13,10 +13,9 @@ module AggressiveCaching
                 # and takes precedence
                 skip_after_action :verify_policy_scoped
 
-                caches_action :index, :index_mini, :filter_counts, :as_markers, expires_in: 1.minute, cache_path: -> { request.query_parameters }
+                caches_action :index, :index_mini, :filter_counts, :index_idea_markers, expires_in: 1.minute, cache_path: -> { request.query_parameters }
                 caches_action :show, :by_slug, expires_in: 1.minute
               end
-              caches_action :json_forms_schema, expires_in: 1.day, if: :caching_and_non_admin?
             end
           end
         end

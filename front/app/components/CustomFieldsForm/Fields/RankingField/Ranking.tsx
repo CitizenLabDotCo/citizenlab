@@ -8,7 +8,6 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 import useLocalize from 'hooks/useLocalize';
 
 import { extractOptions } from 'components/CustomFieldsForm/util';
-import messages from 'components/Form/Components/Controls/messages';
 import {
   DragAndDrop,
   Drop,
@@ -16,6 +15,8 @@ import {
 import { DragAndDropResult } from 'components/FormBuilder/edit/utils';
 
 import { useIntl } from 'utils/cl-intl';
+
+import messages from '../../messages';
 
 import RankingOption from './RankingOption';
 
@@ -96,7 +97,7 @@ const Ranking = ({ value: data, question, onChange }: Props) => {
           }}
         >
           <Drop id="droppable" type="rankOptions">
-            <Text m="0px" aria-hidden color="tenantPrimary">
+            <Text m="0px" aria-hidden color="textPrimary">
               {formatMessage(messages.rankingInstructions)}
             </Text>
             <Ul aria-labelledby={`ranking-question-label-${question.key}`}>
@@ -118,7 +119,7 @@ const Ranking = ({ value: data, question, onChange }: Props) => {
             <Button
               p="0px"
               buttonStyle="text"
-              textColor={theme.colors.tenantPrimary}
+              textColor={theme.colors.textPrimary}
               textDecoration="underline"
               text={formatMessage(messages.clearAll)}
               onClick={() => {
