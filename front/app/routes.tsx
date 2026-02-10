@@ -8,6 +8,7 @@ import {
 } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
+import { createAdminRoutes } from 'containers/Admin/routes';
 import App from 'containers/App';
 import { createUserShowPageRoutes } from 'containers/UsersShowPage/routes';
 
@@ -468,6 +469,7 @@ export const routeTree = rootRoute.addChildren([
     emailSettingsRoute,
     reportPrintRoute,
     disabledAccountRoute,
+    createAdminRoutes(),
   ]),
 ]);
 
