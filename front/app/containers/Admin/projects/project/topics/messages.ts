@@ -82,8 +82,12 @@ export default defineMessages({
     id: 'app.containers.AdminPage.Topics.fieldTopicEmoji',
     defaultMessage: 'Emoji (optional)',
   },
+  perspectives: {
+    id: 'app.containers.AdminPage.Topics.perspectives',
+    defaultMessage: 'Perspectives',
+  },
   liveAutoInputTopicsLabel: {
-    id: 'app.containers.AdminPage.Topics.liveAutoInputTopicsLabel',
+    id: 'app.containers.AdminPage.Topics.perspectives',
     defaultMessage: 'Automatically detect and assign tags',
   },
   liveAutoInputTopicsDescription: {

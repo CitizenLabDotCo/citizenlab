@@ -1,11 +1,18 @@
 import React from 'react';
 
-import { Box, Toggle, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Toggle,
+  Text,
+  IconTooltip,
+} from '@citizenlab/cl2-component-library';
 
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import NewLabel from 'components/UI/NewLabel';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -40,8 +47,21 @@ const LiveAutoInputTopicsControl = ({ projectId }: Props) => {
         }}
         label={
           <Box ml="8px">
-            <Text color="primary" mb="0px" fontSize="m" fontWeight="semi-bold">
-              <FormattedMessage {...messages.liveAutoInputTopicsLabel} />
+            <Text
+              color="primary"
+              mb="0px"
+              fontSize="m"
+              fontWeight="semi-bold"
+              display="flex"
+            >
+              <FormattedMessage {...messages.perspectives} />
+              <IconTooltip
+                mx="4px"
+                content={
+                  <FormattedMessage {...messages.liveAutoInputTopicsLabel} />
+                }
+              />
+              <NewLabel />
             </Text>
             <Text color="coolGrey600" mt="0px" fontSize="m">
               <FormattedMessage {...messages.liveAutoInputTopicsDescription} />

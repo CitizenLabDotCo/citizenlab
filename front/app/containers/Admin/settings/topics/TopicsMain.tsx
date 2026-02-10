@@ -4,6 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { useLocation, Outlet } from 'react-router-dom';
 
 import { Tab } from 'components/admin/NavigationTabs';
+import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -44,7 +45,12 @@ const TopicsMain = () => {
             active={selectedTopicType === 'platform'}
           />
           <Tab
-            label={formatMessage(messages.tabDefaultInputTags)}
+            label={
+              <Box display="flex" alignItems="center" gap="8px">
+                {formatMessage(messages.tabDefaultInputTags)}
+                <NewLabel />
+              </Box>
+            }
             url={'/admin/settings/topics/input'}
             active={selectedTopicType === 'input'}
           />
