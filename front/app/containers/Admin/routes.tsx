@@ -13,12 +13,16 @@ import { isUUID } from 'utils/helperUtils';
 import { usePermission } from 'utils/permissions';
 import { createRoute, Navigate, useLocation } from 'utils/router';
 
-import { communityMonitorRouteTypes } from './communityMonitor/routes';
+import createAdminCommunityMonitorRoutes, {
+  communityMonitorRouteTypes,
+} from './communityMonitor/routes';
 import createAdminDashboardRoutes, {
   dashboardRouteTypes,
 } from './dashboard/routes';
 import createAdminIdeasRoutes, { ideaRouteTypes } from './ideas/routes';
-import { inspirationHubRouteTypes } from './inspirationHub/routes';
+import createAdminInspirationHubRoutes, {
+  inspirationHubRouteTypes,
+} from './inspirationHub/routes';
 import { invitationRouteTypes } from './invitations/routes';
 import createAdminMessagingRoutes, {
   messagingRouteTypes,
@@ -32,7 +36,7 @@ import createAdminReportingRoutes, {
   reportingRouteTypes,
 } from './reporting/routes';
 import { settingRouteTypes } from './settings/routes';
-import { toolRouteTypes } from './tools/routes';
+import createAdminToolsRoutes, { toolRouteTypes } from './tools/routes';
 import createAdminUsersRoutes, { userRouteTypes } from './users/routes';
 
 const AdminContainer = lazy(() => import('containers/Admin'));
@@ -229,9 +233,9 @@ export const createAdminRoutes = () => {
     createAdminIdeasRoutes(),
     // projectFoldersRoutes(),
     ...createAdminReportingRoutes(),
-    // toolsRoutes(),
-    // communityMonitorsRoutes(),
-    // inspirationHubRoutes(),
+    createAdminToolsRoutes(),
+    createAdminCommunityMonitorRoutes(),
+    createAdminInspirationHubRoutes(),
     // TODO: understand this:
     // ...moduleConfiguration.routes.admin,
     faviconRoute,

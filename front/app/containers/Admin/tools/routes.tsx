@@ -1,14 +1,14 @@
 import React, { lazy } from 'react';
 
-import moduleConfiguration from 'modules';
-import { Outlet as RouterOutlet } from 'utils/router';
-
 import HelmetIntl from 'components/HelmetIntl';
 import PageLoading from 'components/UI/PageLoading';
 
-import { AdminRoute } from '../routes';
+import { createRoute, Outlet as RouterOutlet } from 'utils/router';
+
+import { adminRoute, AdminRoute } from '../routes';
 
 import messages from './messages';
+
 const EsriKeyInput = lazy(() => import('./Esri/EsriKeyInput'));
 const PowerBITemplates = lazy(() => import('./PowerBI/PowerBITemplates'));
 const PublicAPITokens = lazy(() => import('./PublicAPI/PublicAPITokens'));
@@ -33,59 +33,77 @@ export type toolRouteTypes =
   | AdminRoute<`${toolRoutes.tools}/${toolRoutes.powerBi}`>
   | AdminRoute<`${toolRoutes.tools}/${toolRoutes.webhooks}`>;
 
-const toolsRoutes = () => {
-  return {
-    path: toolRoutes.tools,
-    element: (
-      <PageLoading>
-        <HelmetIntl title={messages.toolsLabel} />
-        <RouterOutlet />
-      </PageLoading>
-    ),
-    children: [
-      {
-        path: toolRoutes.toolsDefault,
-        element: (
-          <PageLoading>
-            <Tools />
-          </PageLoading>
-        ),
-      },
-      {
-        path: toolRoutes.publicApiTokens,
-        element: (
-          <PageLoading>
-            <PublicAPITokens />
-          </PageLoading>
-        ),
-      },
-      {
-        path: toolRoutes.powerBi,
-        element: (
-          <PageLoading>
-            <PowerBITemplates />
-          </PageLoading>
-        ),
-      },
-      {
-        path: toolRoutes.esriIntegration,
-        element: (
-          <PageLoading>
-            <EsriKeyInput />
-          </PageLoading>
-        ),
-      },
-      {
-        path: toolRoutes.webhooks,
-        element: (
-          <PageLoading>
-            <WebhookSubscriptions />
-          </PageLoading>
-        ),
-      },
-      ...moduleConfiguration.routes['admin.tools'],
-    ],
-  };
+const toolsRoute = createRoute({
+  getParentRoute: () => adminRoute,
+  path: toolRoutes.tools,
+  component: () => (
+    <PageLoading>
+      <HelmetIntl title={messages.toolsLabel} />
+      <RouterOutlet />
+    </PageLoading>
+  ),
+});
+
+const toolsIndexRoute = createRoute({
+  getParentRoute: () => toolsRoute,
+  path: '/',
+  component: () => (
+    <PageLoading>
+      <Tools />
+    </PageLoading>
+  ),
+});
+
+const publicApiTokensRoute = createRoute({
+  getParentRoute: () => toolsRoute,
+  path: toolRoutes.publicApiTokens,
+  component: () => (
+    <PageLoading>
+      <PublicAPITokens />
+    </PageLoading>
+  ),
+});
+
+const powerBiRoute = createRoute({
+  getParentRoute: () => toolsRoute,
+  path: toolRoutes.powerBi,
+  component: () => (
+    <PageLoading>
+      <PowerBITemplates />
+    </PageLoading>
+  ),
+});
+
+const esriRoute = createRoute({
+  getParentRoute: () => toolsRoute,
+  path: toolRoutes.esriIntegration,
+  component: () => (
+    <PageLoading>
+      <EsriKeyInput />
+    </PageLoading>
+  ),
+});
+
+const webhooksRoute = createRoute({
+  getParentRoute: () => toolsRoute,
+  path: toolRoutes.webhooks,
+  component: () => (
+    <PageLoading>
+      <WebhookSubscriptions />
+    </PageLoading>
+  ),
+});
+
+const createAdminToolsRoutes = () => {
+  return toolsRoute.addChildren([
+    toolsIndexRoute,
+    publicApiTokensRoute,
+    powerBiRoute,
+    esriRoute,
+    webhooksRoute,
+    // TODO: Wire in module routes (admin.tools) after conversion
+    // ...moduleConfiguration.routes['admin.tools'],
+  ]);
 };
 
-export default toolsRoutes;
+export default createAdminToolsRoutes;
