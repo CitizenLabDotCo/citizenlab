@@ -48,31 +48,35 @@ const SearchInputWrapper = ({
   const { formatMessage } = useIntl();
   const [announcement, setAnnouncement] = useState('');
   useEffect(() => {
-    const announcementParts: string[] = [];
+    const timeoutId = setTimeout(() => {
+      const announcementParts: string[] = [];
 
-    announcementParts.push(
-      formatMessage(messages.a11y_projectsAvailable, {
-        numberOfProjects: a11y_numberOfSearchResults,
-      })
-    );
-
-    if (a11y_searchQuery?.trim()) {
       announcementParts.push(
-        formatMessage(messages.a11y_searchQuery, {
-          searchTerm: a11y_searchQuery.trim(),
+        formatMessage(messages.a11y_projectsAvailable, {
+          numberOfProjects: a11y_numberOfSearchResults,
         })
       );
-    }
 
-    if (a11y_filtersAppliedCount) {
-      announcementParts.push(
-        formatMessage(messages.a11y_filtersAppliedCount, {
-          numberOfFilters: a11y_filtersAppliedCount,
-        })
-      );
-    }
+      if (a11y_searchQuery?.trim()) {
+        announcementParts.push(
+          formatMessage(messages.a11y_searchQuery, {
+            searchTerm: a11y_searchQuery.trim(),
+          })
+        );
+      }
 
-    setAnnouncement(announcementParts.join(' '));
+      if (a11y_filtersAppliedCount) {
+        announcementParts.push(
+          formatMessage(messages.a11y_filtersAppliedCount, {
+            numberOfFilters: a11y_filtersAppliedCount,
+          })
+        );
+      }
+
+      setAnnouncement(announcementParts.join(' '));
+    }, 700);
+
+    return () => clearTimeout(timeoutId);
   }, [
     a11y_numberOfSearchResults,
     a11y_searchQuery,
@@ -97,7 +101,9 @@ const SearchInputWrapper = ({
         hideLabel={hideLabel}
         dataCy={dataCy}
       />
-      <ScreenReaderOnly aria-live="polite">{announcement}</ScreenReaderOnly>
+      <ScreenReaderOnly role="status" aria-live="polite">
+        {announcement}
+      </ScreenReaderOnly>
     </>
   );
 };
