@@ -214,7 +214,7 @@ const Calendar = ({
         selected={[] as any}
         onSelect={NOOP}
         timeZone={userTimezone}
-        className={className ?? ''}
+        className={className}
       />
     </DayPickerStyles>
   );
