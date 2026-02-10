@@ -47,6 +47,7 @@ const EmailSettingsPage = lazy(() => import('containers/EmailSettingsPage'));
 const ReportPrintPage = lazy(
   () => import('containers/Admin/reporting/containers/PrintReport')
 );
+const IdeasFeedPage = lazy(() => import('containers/IdeasFeedPage'));
 const DisabledAccount = lazy(() => import('containers/DisabledAccount'));
 
 const ProjectPreviewToken = lazy(
@@ -312,6 +313,17 @@ const projectPhaseRoute = createRoute({
   ),
 });
 
+// Ideas feed route
+const projectIdeasFeedRoute = createRoute({
+  getParentRoute: () => projectShowRoute,
+  path: 'ideas-feed',
+  component: () => (
+    <PageLoading>
+      <IdeasFeedPage />
+    </PageLoading>
+  ),
+});
+
 // Folders route
 const foldersShowRoute = createRoute({
   getParentRoute: () => localeRoute,
@@ -456,7 +468,11 @@ export const routeTree = rootRoute.addChildren([
     projectSurveyNewRoute,
     projectPreviewRoute.addChildren([projectPreviewTokenRoute]),
     projectsIndexRoute,
-    projectShowRoute.addChildren([projectShowIndexRoute, projectPhaseRoute]),
+    projectShowRoute.addChildren([
+      projectShowIndexRoute,
+      projectPhaseRoute,
+      projectIdeasFeedRoute,
+    ]),
     foldersShowRoute,
     eventsIndexRoute,
     eventShowRoute,
