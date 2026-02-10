@@ -3334,7 +3334,7 @@
   "app.containers.ContentBuilder.homepage.PageTitle": "Homepage",
   "app.containers.ContentBuilder.homepage.SaveError": "Something went wrong while saving the homepage.",
   "app.containers.ContentBuilder.homepage.TwoColumnLayout": "Two columns",
-  "app.containers.ContentBuilder.homepage.advancedHeightCustomization2": "Advanced height customization (non-registered users)",
+  "app.containers.ContentBuilder.homepage.advancedHeightCustomization": "Advanced height customization",
   "app.containers.ContentBuilder.homepage.advancedHeightCustomizationInfoSignedIn2": "These settings customize the banner height specifically for <bold>registered users</bold>.",
   "app.containers.ContentBuilder.homepage.advancedHeightCustomizationInfoSignedOut": "These settings customize the banner height specifically for <bold>non-registered users</bold>.",
   "app.containers.ContentBuilder.homepage.bannerImage": "Banner image",
