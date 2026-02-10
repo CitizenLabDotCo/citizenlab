@@ -28,7 +28,9 @@ const useSurveyResultsData = ({
   projectId: projectIdProp,
   phaseId: phaseIdProp,
 }: UseSurveyResultsDataProps): UseSurveyResultsDataReturn => {
-  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams() as {
+  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams({
+    strict: false,
+  }) as {
     projectId: string;
     phaseId: string;
   };

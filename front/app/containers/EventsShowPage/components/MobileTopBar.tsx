@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { useBreakpoint, Box, media } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'utils/router';
 import styled from 'styled-components';
 
 import useProjectById from 'api/projects/useProjectById';
@@ -42,7 +41,6 @@ const MobileTopBar = ({ projectId }: Props) => {
   const { data: project } = useProjectById(projectId);
   const isSmallerThanTablet = useBreakpoint('tablet');
   const { formatMessage } = useIntl();
-  // const location = useLocation();
 
   return (
     <Container>
@@ -52,8 +50,8 @@ const MobileTopBar = ({ projectId }: Props) => {
             text={formatMessage(messages.goBack)}
             iconSize={isSmallerThanTablet ? '42px' : undefined}
             onClick={() => {
-              // const hasGoBackLink = location.key !== 'default';
-              const hasGoBackLink = Math.random() > 0;
+              // Check if there's history to go back to
+              const hasGoBackLink = window.history.length > 1;
               hasGoBackLink
                 ? clHistory.goBack()
                 : clHistory.push(`/projects/${project?.data.attributes.slug}`);
