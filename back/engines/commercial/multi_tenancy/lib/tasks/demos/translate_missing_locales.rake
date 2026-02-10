@@ -437,7 +437,7 @@ module TranslateMissingLocales
       puts '-' * 50
       puts "#{'Total'.ljust(40)} | #{issues_found}"
 
-      approx_cost = total_characters > 0 ? (total_characters.to_f / 1000000 * 20).round(2) : 0.00 # Assuming $20 per million characters for translation
+      approx_cost = total_characters > 0 ? (total_characters.to_f / 1_000_000 * 20).round(2) : 0.00 # Assuming $20 per million characters for translation
 
       puts "\nCharacters #{translate_missing ? 'translated' : 'to translate'}: #{total_characters}"
       puts "Approx cost to translate: $#{approx_cost}"
