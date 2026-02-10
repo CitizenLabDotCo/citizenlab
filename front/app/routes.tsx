@@ -6,6 +6,7 @@ import {
   createRouter,
   Outlet,
 } from '@tanstack/react-router';
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
 import App from 'containers/App';
 
@@ -97,6 +98,7 @@ const rootRoute = createRootRoute({
   component: () => (
     <App>
       <Outlet />
+      <TanStackRouterDevtools />
     </App>
   ),
 });
