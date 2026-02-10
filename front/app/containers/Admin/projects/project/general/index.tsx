@@ -41,7 +41,7 @@ const General = () => {
       label: (
         <Box display="flex" alignItems="center" gap="8px">
           {formatMessage(messages.inputTags)}
-          <NewLabel />
+          <NewLabel expiryDate={new Date('2026-08-10')} />
         </Box>
       ),
       name: 'input-tags',

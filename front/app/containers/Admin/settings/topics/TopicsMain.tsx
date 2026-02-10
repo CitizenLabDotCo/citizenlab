@@ -48,7 +48,7 @@ const TopicsMain = () => {
             label={
               <Box display="flex" alignItems="center" gap="8px">
                 {formatMessage(messages.tabDefaultInputTags)}
-                <NewLabel />
+                <NewLabel expiryDate={new Date('2026-08-10')} />
               </Box>
             }
             url={'/admin/settings/topics/input'}

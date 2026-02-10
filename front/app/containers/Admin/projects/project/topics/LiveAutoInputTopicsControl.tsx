@@ -61,7 +61,7 @@ const LiveAutoInputTopicsControl = ({ projectId }: Props) => {
                   <FormattedMessage {...messages.liveAutoInputTopicsLabel} />
                 }
               />
-              <NewLabel />
+              <NewLabel expiryDate={new Date('2026-08-10')} />
             </Text>
             <Text color="coolGrey600" mt="0px" fontSize="m">
               <FormattedMessage {...messages.liveAutoInputTopicsDescription} />
