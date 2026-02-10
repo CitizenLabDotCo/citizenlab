@@ -25,6 +25,9 @@ export const useSearch = (_options: any) => {
         get: (key: string) => {
           return params[key];
         },
+        has: (key: string) => {
+          return key in params;
+        },
         entries: () => Object.entries(params),
       },
       updateSearchParams,
