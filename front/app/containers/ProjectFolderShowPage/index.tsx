@@ -200,7 +200,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
 };
 
 const ProjectFolderShowPageWrapper = () => {
-  const { slug } = useParams({ strict: false });
+  const { slug } = useParams({ from: '/$locale/folders/$slug' });
   const { data: projectFolder, status, error } = useProjectFolderBySlug(slug);
 
   if (status === 'loading') {

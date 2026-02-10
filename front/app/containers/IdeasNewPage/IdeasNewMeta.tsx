@@ -19,7 +19,7 @@ import messages from './messages';
 
 const IdeasNewMeta = () => {
   const { formatMessage } = useIntl();
-  const { slug } = useParams({ strict: false });
+  const { slug } = useParams({ from: '/$locale/projects/$slug/ideas/new' });
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectBySlug(slug);
   const { data: phases } = usePhases(project ? project.data.id : undefined);

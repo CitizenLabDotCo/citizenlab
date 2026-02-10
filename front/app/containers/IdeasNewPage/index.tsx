@@ -24,7 +24,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import IdeasNewIdeationForm from './IdeasNewIdeationForm';
 
 const IdeasNewPage = () => {
-  const { slug } = useParams({ strict: false });
+  const { slug } = useParams({ from: '/$locale/projects/$slug/ideas/new' });
   const {
     data: project,
     status: projectStatus,

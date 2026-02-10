@@ -25,7 +25,7 @@ import SurveyNotActiveNotice from './SurveyNotActiveNotice';
 import SurveySubmittedNotice from './SurveySubmittedNotice';
 
 const IdeasNewSurveyPage = () => {
-  const { slug } = useParams({ strict: false });
+  const { slug } = useParams({ from: '/$locale/projects/$slug/surveys/new' });
   const {
     data: project,
     status: projectStatus,

@@ -40,7 +40,9 @@ type Props = {
 };
 
 const NewIdeaHeading = ({ phase, titleText }: Props) => {
-  const { slug: projectSlug } = useParams({ strict: false });
+  const { slug: projectSlug } = useParams({
+    from: '/$locale/projects/$slug/ideas/new',
+  });
   const { data: project } = useProjectBySlug(projectSlug);
   const { data: authUser } = useAuthUser();
   const phaseId = phase.id;

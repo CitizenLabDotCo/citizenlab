@@ -58,7 +58,7 @@ const MessageContainer = styled.div`
 `;
 
 export const UserComments = () => {
-  const { userSlug } = useParams({ strict: false }) as { userSlug: string };
+  const { userSlug } = useParams({ from: '/$locale/profile/$userSlug' });
   const { data: user } = useUserBySlug(userSlug);
   const theme = useTheme();
   const { data: authUser } = useAuthUser();

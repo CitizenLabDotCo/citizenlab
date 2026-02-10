@@ -30,7 +30,7 @@ const PageContainer = styled.div`
 `;
 
 const IdeasFeedPage = () => {
-  const { slug } = useParams({ strict: false }) as { slug: string };
+  const { slug } = useParams({ from: '/$locale/projects/$slug' });
   const { data: project } = useProjectBySlug(slug);
   const [searchParams] = useSearch({ strict: false });
   const selectedTopicId = searchParams.get('topic');

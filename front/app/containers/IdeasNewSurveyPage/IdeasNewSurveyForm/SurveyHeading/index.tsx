@@ -46,7 +46,9 @@ type Props = {
 const SurveyHeading = ({ titleText, phaseId }: Props) => {
   // const location = useLocation();
 
-  const { slug: projectSlug } = useParams({ strict: false });
+  const { slug: projectSlug } = useParams({
+    from: '/$locale/projects/$slug/surveys/new',
+  });
   const { data: project } = useProjectBySlug(projectSlug);
   const { data: phase } = usePhase(phaseId);
   const { data: authUser } = useAuthUser();

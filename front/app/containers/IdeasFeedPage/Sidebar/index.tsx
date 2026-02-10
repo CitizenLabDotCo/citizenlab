@@ -32,7 +32,7 @@ interface Props {
 const Sidebar = ({ projectId, onSheetCollapse, onSheetExpand }: Props) => {
   const { formatMessage } = useIntl();
   const contentRef = useRef<HTMLDivElement>(null);
-  const { slug } = useParams({ strict: false }) as { slug: string };
+  const { slug } = useParams({ from: '/$locale/projects/$slug' });
   const [searchParams] = useSearch({ strict: false });
   const selectedTopicId = searchParams.get('topic');
   const selectedIdeaId = searchParams.get('idea_id');

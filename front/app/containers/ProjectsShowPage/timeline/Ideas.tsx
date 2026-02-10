@@ -40,7 +40,7 @@ interface QueryParameters {
 }
 
 const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
-  const { slug } = useParams({ strict: false }) as { slug: string };
+  const { slug } = useParams({ from: '/$locale/projects/$slug' });
   const [searchParams] = useSearch({ strict: false });
   const sortParam = searchParams.get('sort') as IdeaSortMethod | null;
   const searchParam = searchParams.get('search');

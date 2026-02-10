@@ -179,7 +179,9 @@ const ProjectsShowPage = ({ project }: Props) => {
 };
 
 const ProjectsShowPageWrapper = () => {
-  const { slug, phaseNumber } = useParams({ strict: false });
+  const { slug, phaseNumber } = useParams({
+    from: '/$locale/projects/$slug/$phaseNumber',
+  });
   const {
     data: project,
     status: statusProject,

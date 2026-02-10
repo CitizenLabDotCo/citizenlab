@@ -68,7 +68,9 @@ interface Props {
 const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
   const { formatMessage } = useIntl();
   const { data: phases } = usePhases(projectId);
-  const { phaseNumber } = useParams({ strict: false });
+  const { phaseNumber } = useParams({
+    from: '/$locale/projects/$slug/$phaseNumber',
+  });
   const { data: project } = useProjectById(projectId);
   const phaseInsightsEnabled = useFeatureFlag({ name: 'phase_insights' });
 

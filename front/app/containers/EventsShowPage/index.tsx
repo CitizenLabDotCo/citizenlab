@@ -70,9 +70,7 @@ const EventImage = styled(Image)`
 const EventsShowPage = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const localize = useLocalize();
-  const { eventId } = useParams({ strict: false }) as {
-    eventId: string;
-  };
+  const { eventId } = useParams({ from: '/$locale/events/$eventId' });
   const { data: event, status, error } = useEvent(eventId);
   const { data: project } = useProjectById(
     event?.data.relationships.project.data.id

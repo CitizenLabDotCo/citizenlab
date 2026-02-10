@@ -50,7 +50,7 @@ const StyledIdeasShow = styled(IdeasShow)`
 `;
 
 const IdeasShowPage = () => {
-  const { slug } = useParams({ strict: false }) as { slug: string };
+  const { slug } = useParams({ from: '/$locale/ideas/$slug' });
   const { data: idea, status, error } = useIdeaBySlug(slug);
   const isSmallerThanTablet = useBreakpoint('tablet');
   const { data: project } = useProjectById(

@@ -26,8 +26,8 @@ const EventPreviews = ({ projectId }: EventPreviewsProps) => {
   const isTablet = useBreakpoint('tablet');
 
   // project related
-  const params = useParams({ strict: false }) as any;
-  const { data: project } = useProjectBySlug(params.slug);
+  const { slug } = useParams({ from: '/$locale/projects/$slug' });
+  const { data: project } = useProjectBySlug(slug);
   const projectIdToUse = projectId || project?.data.id;
   const { data: phases } = usePhases(projectIdToUse);
   const { data: events } = useEvents({

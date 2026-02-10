@@ -73,9 +73,7 @@ const NoBannerContainer = styled(ContentContainer)`
 `;
 
 const CustomPageShow = () => {
-  const { slug } = useParams({ strict: false }) as {
-    slug: string;
-  };
+  const { slug } = useParams({ from: '/$locale/pages/$slug' });
   const { data: appConfiguration } = useAppConfiguration();
   const localize = useLocalize();
   const { data: page, isError } = useCustomPageBySlug(slug);
