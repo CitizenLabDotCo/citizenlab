@@ -27,7 +27,9 @@ import { invitationRouteTypes } from './invitations/routes';
 import createAdminMessagingRoutes, {
   messagingRouteTypes,
 } from './messaging/routes';
-import { pagesAndMenuRouteTypes } from './pagesAndMenu/routes';
+import createAdminPagesAndMenuRoutes, {
+  pagesAndMenuRouteTypes,
+} from './pagesAndMenu/routes';
 import { projectFolderRouteTypes } from './projectFolders/routes';
 import createAdminProjectsRoutes, {
   projectsRouteTypes,
@@ -227,7 +229,7 @@ export const createAdminRoutes = () => {
     createAdminUsersRoutes(),
     // TODO: Convert these sub-route factories to TanStack format one by one
     // settingsRoutes(),
-    // pagesAndMenuRoutes(),
+    createAdminPagesAndMenuRoutes(),
     // invitationsRoutes(),
     createAdminMessagingRoutes(),
     createAdminIdeasRoutes(),
