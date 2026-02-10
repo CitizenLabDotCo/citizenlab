@@ -1,4 +1,5 @@
 import { combineLatest } from 'rxjs';
+import { withLatestFrom } from 'rxjs/operators';
 
 import appConfigurationStream from 'api/app_configuration/appConfigurationStream';
 import authUserStream from 'api/me/authUserStream';
@@ -132,13 +133,20 @@ const configuration: ModuleConfiguration = {
       }
     });
 
-    pageChanges$.subscribe((_pageChange) => {
-      if (window.Intercom) {
-        window.Intercom('update', {
-          last_request_at: new Date().getTime() / 1000,
-        });
-      }
-    });
+    pageChanges$
+      .pipe(withLatestFrom(appConfigurationStream))
+      .subscribe(([_pageChange, tenant]) => {
+        if (window.Intercom && !isNilOrError(tenant)) {
+          window.Intercom('update', {
+            last_request_at: new Date().getTime() / 1000,
+            company: {
+              company_id: tenant.data.id,
+              name: tenant.data.attributes.name,
+              ...tenantInfo(tenant.data),
+            },
+          });
+        }
+      });
 
     registerDestination(destinationConfig);
   },

@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 
-import NewLabel from 'components/UI/NewLabel';
-
 import { colors } from '../../utils/styleUtils';
 import Box, { BoxProps } from '../Box';
 import Icon, { IconNames } from '../Icon';
@@ -13,7 +11,7 @@ type CardButtonProps = {
   iconName?: IconNames;
   icon?: React.ReactNode;
   title?: React.ReactNode;
-  titleNewLabel?: boolean;
+  titleLabel?: React.ReactNode;
   subtitle?: React.ReactNode;
   disabled?: boolean;
 };
@@ -23,7 +21,7 @@ const CardButton = ({
   iconName,
   icon,
   title,
-  titleNewLabel,
+  titleLabel,
   subtitle,
   disabled = false,
   onMouseEnter,
@@ -76,9 +74,9 @@ const CardButton = ({
           >
             {title}
           </Title>
-          {titleNewLabel && (
+          {titleLabel && (
             <Box ml="8px" mt="8px">
-              <NewLabel />
+              {titleLabel}
             </Box>
           )}
         </Box>
