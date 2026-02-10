@@ -6,10 +6,16 @@ module Files
       def resolve
         # Resetting the order because it interferes with +pluck+ and sometimes results in
         # an invalid query.
-        attachable_types = scope.distinct.reorder(nil).pluck(:attachable_type)
+        attachable_types = scope.distinct.reorder(nil).pluck(:attachable_type).compact
 
-        attachable_types.map do |attachable_type|
+        # Filter attachable types and handle authorization errors for each type.
+        # Some attachable types may raise NotAuthorizedError (e.g., when their policy scope
+        # doesn't exist or the user doesn't have access), so we filter those out.
+        attachable_types.filter_map do |attachable_type|
           scope.where(attachable_type: attachable_type, attachable_id: scope_for(attachable_type.constantize))
+        rescue Pundit::NotAuthorizedError
+          # Skip attachments for resources the user cannot access
+          nil
         end.reduce(scope.none, :or)
       end
     end
