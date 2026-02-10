@@ -9,6 +9,7 @@ import {
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
 import App from 'containers/App';
+import { createUserShowPageRoutes } from 'containers/UsersShowPage/routes';
 
 import PageLoading from 'components/UI/PageLoading';
 
@@ -104,7 +105,7 @@ const rootRoute = createRootRoute({
 });
 
 // Locale route - parent for all citizen routes
-const localeRoute = createRoute({
+export const localeRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: citizenRoutes.locale,
   component: Outlet,
@@ -446,6 +447,7 @@ export const routeTree = rootRoute.addChildren([
     profileEditRoute,
     changePasswordRoute,
     changeEmailRoute,
+    createUserShowPageRoutes(),
     ideasEditRoute,
     ideasIndexRoute,
     ideasShowRoute,
