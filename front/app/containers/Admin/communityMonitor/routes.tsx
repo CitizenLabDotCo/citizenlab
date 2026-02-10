@@ -1,15 +1,15 @@
 import React, { lazy } from 'react';
 
-import { Navigate } from 'utils/router';
-
 import PageLoading from 'components/UI/PageLoading';
+
+import { createRoute, Navigate } from 'utils/router';
+
+import { adminRoute, AdminRoute } from '../routes';
 
 const LiveMonitor = lazy(() => import('./components/LiveMonitor'));
 const Reports = lazy(() => import('./components/Reports'));
 const Settings = lazy(() => import('./components/Settings/index'));
 const Participants = lazy(() => import('./components/Participants'));
-
-import { AdminRoute } from '../routes';
 
 const CommunityMonitorSurveyFormBuilder = lazy(
   () => import('./CommunityMonitorFormBuilder')
@@ -58,101 +58,135 @@ export type communityMonitorRouteTypes =
   | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.settings}/${communityMonitorRoutes.settingsModerators}`
   | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/projects/${string}/phases/${string}/survey/edit`;
 
-const communityMonitorsRoutes = () => {
-  return {
-    path: communityMonitorRoutes.communityMonitor,
-    element: (
-      <PageLoading>
-        <CommunityMonitor />
-      </PageLoading>
-    ),
-    children: [
-      {
-        path: '',
-        element: <Navigate to="/live-monitor" replace />,
-      },
-      {
-        path: communityMonitorRoutes.liveMonitor,
-        element: (
-          <PageLoading>
-            <LiveMonitor />
-          </PageLoading>
-        ),
-      },
-      {
-        path: communityMonitorRoutes.reports,
-        element: (
-          <PageLoading>
-            <Reports />
-          </PageLoading>
-        ),
-      },
-      {
-        path: communityMonitorRoutes.settings,
-        element: (
-          <PageLoading>
-            <Settings />
-          </PageLoading>
-        ),
-        children: [
-          {
-            path: '',
-            element: <Navigate to="/survey" replace />,
-          },
-          {
-            path: communityMonitorRoutes.settingsSurvey,
-            element: (
-              <PageLoading>
-                <>
-                  <SurveySettings />
-                </>
-              </PageLoading>
-            ),
-          },
-          {
-            path: communityMonitorRoutes.settingsPopup,
-            element: (
-              <PageLoading>
-                <PopupSettings />
-              </PageLoading>
-            ),
-          },
-          {
-            path: communityMonitorRoutes.settingsAccessRights,
-            element: (
-              <PageLoading>
-                <AccessRights />
-              </PageLoading>
-            ),
-          },
-          {
-            path: communityMonitorRoutes.settingsModerators,
-            element: (
-              <PageLoading>
-                <CommunityMonitorManagement />
-              </PageLoading>
-            ),
-          },
-        ],
-      },
-      {
-        path: communityMonitorRoutes.participants,
-        element: (
-          <PageLoading>
-            <Participants />
-          </PageLoading>
-        ),
-      },
-      {
-        path: communityMonitorRoutes.communityMonitorSurveyEdit,
-        element: (
-          <PageLoading>
-            <CommunityMonitorSurveyFormBuilder />
-          </PageLoading>
-        ),
-      },
-    ],
-  };
+// Community monitor layout route
+const communityMonitorRoute = createRoute({
+  getParentRoute: () => adminRoute,
+  path: communityMonitorRoutes.communityMonitor,
+  component: () => (
+    <PageLoading>
+      <CommunityMonitor />
+    </PageLoading>
+  ),
+});
+
+const communityMonitorIndexRoute = createRoute({
+  getParentRoute: () => communityMonitorRoute,
+  path: '/',
+  component: () => <Navigate to="live-monitor" replace />,
+});
+
+const liveMonitorRoute = createRoute({
+  getParentRoute: () => communityMonitorRoute,
+  path: communityMonitorRoutes.liveMonitor,
+  component: () => (
+    <PageLoading>
+      <LiveMonitor />
+    </PageLoading>
+  ),
+});
+
+const reportsRoute = createRoute({
+  getParentRoute: () => communityMonitorRoute,
+  path: communityMonitorRoutes.reports,
+  component: () => (
+    <PageLoading>
+      <Reports />
+    </PageLoading>
+  ),
+});
+
+// Settings layout route
+const settingsRoute = createRoute({
+  getParentRoute: () => communityMonitorRoute,
+  path: communityMonitorRoutes.settings,
+  component: () => (
+    <PageLoading>
+      <Settings />
+    </PageLoading>
+  ),
+});
+
+const settingsIndexRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: '/',
+  component: () => <Navigate to="survey" replace />,
+});
+
+const settingsSurveyRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: communityMonitorRoutes.settingsSurvey,
+  component: () => (
+    <PageLoading>
+      <SurveySettings />
+    </PageLoading>
+  ),
+});
+
+const settingsPopupRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: communityMonitorRoutes.settingsPopup,
+  component: () => (
+    <PageLoading>
+      <PopupSettings />
+    </PageLoading>
+  ),
+});
+
+const settingsAccessRightsRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: communityMonitorRoutes.settingsAccessRights,
+  component: () => (
+    <PageLoading>
+      <AccessRights />
+    </PageLoading>
+  ),
+});
+
+const settingsModeratorsRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: communityMonitorRoutes.settingsModerators,
+  component: () => (
+    <PageLoading>
+      <CommunityMonitorManagement />
+    </PageLoading>
+  ),
+});
+
+const participantsRoute = createRoute({
+  getParentRoute: () => communityMonitorRoute,
+  path: communityMonitorRoutes.participants,
+  component: () => (
+    <PageLoading>
+      <Participants />
+    </PageLoading>
+  ),
+});
+
+const surveyEditRoute = createRoute({
+  getParentRoute: () => communityMonitorRoute,
+  path: communityMonitorRoutes.communityMonitorSurveyEdit,
+  component: () => (
+    <PageLoading>
+      <CommunityMonitorSurveyFormBuilder />
+    </PageLoading>
+  ),
+});
+
+const createAdminCommunityMonitorRoutes = () => {
+  return communityMonitorRoute.addChildren([
+    communityMonitorIndexRoute,
+    liveMonitorRoute,
+    reportsRoute,
+    settingsRoute.addChildren([
+      settingsIndexRoute,
+      settingsSurveyRoute,
+      settingsPopupRoute,
+      settingsAccessRightsRoute,
+      settingsModeratorsRoute,
+    ]),
+    participantsRoute,
+    surveyEditRoute,
+  ]);
 };
 
-export default communityMonitorsRoutes;
+export default createAdminCommunityMonitorRoutes;

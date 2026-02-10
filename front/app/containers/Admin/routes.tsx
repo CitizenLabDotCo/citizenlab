@@ -13,7 +13,9 @@ import { isUUID } from 'utils/helperUtils';
 import { usePermission } from 'utils/permissions';
 import { createRoute, Navigate, useLocation } from 'utils/router';
 
-import { communityMonitorRouteTypes } from './communityMonitor/routes';
+import createAdminCommunityMonitorRoutes, {
+  communityMonitorRouteTypes,
+} from './communityMonitor/routes';
 import createAdminDashboardRoutes, {
   dashboardRouteTypes,
 } from './dashboard/routes';
@@ -230,7 +232,7 @@ export const createAdminRoutes = () => {
     // projectFoldersRoutes(),
     ...createAdminReportingRoutes(),
     // toolsRoutes(),
-    // communityMonitorsRoutes(),
+    createAdminCommunityMonitorRoutes(),
     // inspirationHubRoutes(),
     // TODO: understand this:
     // ...moduleConfiguration.routes.admin,
