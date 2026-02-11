@@ -7,6 +7,10 @@ import {
   Outlet,
 } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+import * as yup from 'yup';
+
+import type { InputStatusCode } from 'api/idea_statuses/types';
+import type { IdeaSortMethod } from 'api/phases/types';
 
 import { createAdminRoutes } from 'containers/Admin/routes';
 import App from 'containers/App';
@@ -182,9 +186,64 @@ const ideasEditRoute = createRoute({
   ),
 });
 
+const ideasIndexSearchSchema = yup.object({
+  sort: yup
+    .string()
+    .oneOf<IdeaSortMethod>([
+      'trending',
+      'comments_count',
+      'random',
+      'popular',
+      'new',
+      '-new',
+    ])
+    .default('trending'),
+  search: yup.string().optional(),
+  idea_status: yup
+    .string()
+    .oneOf<InputStatusCode>([
+      'prescreening',
+      'proposed',
+      'viewed',
+      'under_consideration',
+      'accepted',
+      'rejected',
+      'implemented',
+      'custom',
+      'threshold_reached',
+      'expired',
+      'answered',
+      'ineligible',
+    ])
+    .optional(),
+  topics: yup
+    .array()
+    .of(yup.string().required())
+    .optional()
+    .transform((_value, originalValue) => {
+      if (typeof originalValue === 'string') {
+        try {
+          return JSON.parse(originalValue);
+        } catch {
+          return undefined;
+        }
+      }
+      return undefined;
+    }),
+});
+
+export type IdeasIndexSearchParams = {
+  sort: IdeaSortMethod;
+  search?: string;
+  idea_status?: InputStatusCode;
+  topics?: string[];
+};
+
 const ideasIndexRoute = createRoute({
   getParentRoute: () => localeRoute,
   path: 'ideas',
+  validateSearch: (search: Record<string, unknown>): IdeasIndexSearchParams =>
+    ideasIndexSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <IdeasIndexPage />
@@ -468,7 +527,7 @@ export const initRouter = (moduleRoutes: Partial<Routes> = {}) => {
 
 declare module '@tanstack/react-router' {
   interface Register {
-    router: typeof router;
+    router: ReturnType<typeof createAppRouter>;
   }
 }
 
