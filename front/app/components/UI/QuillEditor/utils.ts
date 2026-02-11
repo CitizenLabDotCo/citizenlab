@@ -66,30 +66,43 @@ const ALIGNMENT_STYLES: Record<string, string> = {
   right: 'display: inline; float: right; margin: 0 0 1em 1em;',
 };
 
-// Convert blot-formatter2's span wrapper alignment to inline styles on the
-// <img> element. This keeps saved HTML backward-compatible with the old
-// quill-blot-formatter output and ensures text wraps around floated images.
-const convertAlignmentSpansToInlineStyles = (html: string): string => {
+// Convert blot-formatter2 alignment to inline styles. Images use a wrapper
+// <span> with the alignment class; iframes get the class directly.
+const convertAlignmentToInlineStyles = (html: string): string => {
   const div = document.createElement('div');
   div.innerHTML = html;
 
+  // Images: unwrap alignment <span> and apply inline styles to <img>
   div
-    .querySelectorAll<HTMLSpanElement>(
-      '[class^="ql-image-align-"], [class^="ql-iframe-align-"]'
-    )
+    .querySelectorAll<HTMLSpanElement>('[class^="ql-image-align-"]')
     .forEach((span) => {
       const align = span.className.match(
-        /ql-(?:image|iframe)-align-(left|center|right)/
+        /ql-image-align-(left|center|right)/
       )?.[1];
       if (!align) return;
 
-      const child = span.querySelector('img, iframe');
-      if (!child) return;
+      const img = span.querySelector('img');
+      if (!img) return;
 
-      child.setAttribute('data-align', align);
-      child.setAttribute('style', ALIGNMENT_STYLES[align] || '');
+      img.setAttribute('data-align', align);
+      img.setAttribute('style', ALIGNMENT_STYLES[align] || '');
+      span.replaceWith(img);
+    });
 
-      span.replaceWith(child);
+  // Iframes: class is directly on the element, replace with inline styles
+  div
+    .querySelectorAll<HTMLIFrameElement>('[class*="ql-iframe-align-"]')
+    .forEach((iframe) => {
+      const align = iframe.className.match(
+        /ql-iframe-align-(left|center|right)/
+      )?.[1];
+      if (!align) return;
+
+      iframe.setAttribute('data-align', align);
+      iframe.setAttribute('style', ALIGNMENT_STYLES[align] || '');
+      iframe.className = iframe.className
+        .replace(/ql-iframe-align-(left|center|right)/, '')
+        .trim();
     });
 
   return div.innerHTML;
@@ -97,7 +110,7 @@ const convertAlignmentSpansToInlineStyles = (html: string): string => {
 
 export const getHTML = (editor: Quill) => {
   if (editor.root.innerHTML === '<p><br></p>') return '';
-  return convertAlignmentSpansToInlineStyles(editor.root.innerHTML);
+  return convertAlignmentToInlineStyles(editor.root.innerHTML);
 };
 
 export const setHTML = (editor: Quill, html: string = '') => {
