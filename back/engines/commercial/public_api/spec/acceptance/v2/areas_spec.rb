@@ -34,6 +34,26 @@ resource 'Areas' do
       end
     end
 
+    # No special reaosn this test in this spec, but any Public API acceptance test seems good enough.
+    context 'logging' do
+      example 'logs tenant and api_client information' do
+        # Subscribe to rails instrumentation to capture the payload
+        payload_data = nil
+        subscriber = ActiveSupport::Notifications.subscribe('process_action.action_controller') do |_name, _start, _finish, _id, payload|
+          payload_data = payload if payload[:controller] == 'PublicApi::V2::AreasController'
+        end
+
+        do_request
+
+        ActiveSupport::Notifications.unsubscribe(subscriber)
+
+        expect(payload_data).not_to be_nil
+        expect(payload_data[:tenant_id]).to eq(Tenant.current.id)
+        expect(payload_data[:tenant_host]).to eq(Tenant.current.host)
+        expect(payload_data[:api_client_id]).to be_present
+      end
+    end
+
     include_examples 'filtering_by_date', :area, :created_at
 
     # Temporarily disable acts_as_list callbacks because they modify the updated_at
