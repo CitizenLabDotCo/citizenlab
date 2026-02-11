@@ -5,9 +5,11 @@
 # Optionally, it can also translate missing content using Machine Translation (or copy in dev mode).
 #
 # Usage:
-#   rails 'demos:translate_missing_locales[hostname.com,en]'                      - Audit only
-#   rails 'demos:translate_missing_locales[hostname.com,en,true]'                 - Audit and translate
-#   rails 'demos:translate_missing_locales[hostname.com,en,true,nl-NL:fr-BE]'     - With extra locales
+#   rake 'demos:translate_missing_locales[hostname.com,en]'                      - Audit only
+#   rake 'demos:translate_missing_locales[hostname.com,en,true]'                 - Audit and translate
+#   rake 'demos:translate_missing_locales[hostname.com,en,true,nl-NL:fr-BE]'     - With extra locales
+#
+# NOTE: needs to be run on production with rake not rails to ensure it loads the full Rails environment and all models.
 #
 # Parameters:
 #   - host: The demo tenant hostname
