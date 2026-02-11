@@ -15,7 +15,6 @@ import { InsertConfigurationOptions } from 'typings';
 
 import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-// import useIdeasCount from 'api/idea_count/useIdeasCount';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import useAuthUser from 'api/me/useAuthUser';
 import { IUser } from 'api/users/types';

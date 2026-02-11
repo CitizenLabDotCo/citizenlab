@@ -1,6 +1,5 @@
 import React from 'react';
 
-// import useIdeasCount from 'api/idea_count/useIdeasCount';
 import { IIdeaQueryParameters } from 'api/ideas/types';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 

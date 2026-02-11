@@ -2,8 +2,6 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-// import useIdeasCount from 'api/idea_count/useIdeasCount';
-
 import { IIdeaQueryParameters } from 'api/ideas/types';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
@@ -33,7 +31,7 @@ const IdeasCount = ({ project, queryParameters }: Props) => {
     search: queryParameters.search,
     assignee: queryParameters.assignee,
     feedback_needed: queryParameters.feedback_needed,
-    // idea_status_id: queryParameters.idea_status,
+    idea_status_id: queryParameters.idea_status,
     projects: project ? [project] : undefined,
     transitive: queryParameters.transitive,
   });
