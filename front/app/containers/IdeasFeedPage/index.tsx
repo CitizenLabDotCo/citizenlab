@@ -70,71 +70,74 @@ const IdeasFeedPage = () => {
     return undefined;
   };
 
-  if (!phaseId || !project) {
+  if (!project) {
     return null;
   }
 
   return (
-    <main id="e2e-project-ideas-page">
+    <>
       <IdeasFeedPageMeta project={project.data} />
-      <PageContainer>
-        {isMobileOrSmaller && (
-          <Box position="absolute" top="16px" left="16px" zIndex="1">
-            <GoBackButton
-              linkTo={getMobileBackLinkTo()}
-              onClick={
-                getMobileBackLinkTo() ? undefined : handleMobileBackClick
-              }
-              showGoBackText={false}
-              buttonStyle="white"
-            />
-          </Box>
-        )}
-        <Box
-          mx="auto"
-          position="relative"
-          display="flex"
-          overflow="auto"
-          h="100dvh"
-        >
-          <Sidebar
-            projectId={project.data.id}
-            onSheetCollapse={handleSheetCollapse}
-            onSheetExpand={handleSheetExpand}
-          />
-          <Box flex="4" position="relative">
-            {/* General feed - always mounted to preserve scroll position */}
-            <Box visibility={activeTopicFilter ? 'hidden' : 'visible'}>
-              <IdeasFeed
-                key={initialIdeaId || 'default'}
-                topicId={null}
-                parentTopicId={null}
+
+      <main id="e2e-project-ideas-page">
+        <PageContainer>
+          {isMobileOrSmaller && (
+            <Box position="absolute" top="16px" left="16px" zIndex="1">
+              <GoBackButton
+                linkTo={getMobileBackLinkTo()}
+                onClick={
+                  getMobileBackLinkTo() ? undefined : handleMobileBackClick
+                }
+                showGoBackText={false}
+                buttonStyle="white"
               />
             </Box>
-
-            {/* Topic/subtopic-specific feed - mounted only when topic or subtopic is selected */}
-            {activeTopicFilter && (
-              <Box position="absolute" top="0" left="0" right="0" bottom="0">
+          )}
+          <Box
+            mx="auto"
+            position="relative"
+            display="flex"
+            overflow="auto"
+            h="100dvh"
+          >
+            <Sidebar
+              projectId={project.data.id}
+              onSheetCollapse={handleSheetCollapse}
+              onSheetExpand={handleSheetExpand}
+            />
+            <Box flex="4" position="relative">
+              {/* General feed - always mounted to preserve scroll position */}
+              <Box visibility={activeTopicFilter ? 'hidden' : 'visible'}>
                 <IdeasFeed
-                  key={`${activeTopicFilter}-${initialIdeaId}`}
-                  topicId={activeTopicFilter}
-                  parentTopicId={selectedTopicId}
+                  key={initialIdeaId || 'default'}
+                  topicId={null}
+                  parentTopicId={null}
                 />
               </Box>
-            )}
+
+              {/* Topic/subtopic-specific feed - mounted only when topic or subtopic is selected */}
+              {activeTopicFilter && (
+                <Box position="absolute" top="0" left="0" right="0" bottom="0">
+                  <IdeasFeed
+                    key={`${activeTopicFilter}-${initialIdeaId}`}
+                    topicId={activeTopicFilter}
+                    parentTopicId={selectedTopicId}
+                  />
+                </Box>
+              )}
+            </Box>
           </Box>
-        </Box>
-        <Box
-          position="absolute"
-          top={isMobileOrSmaller ? '16px' : undefined}
-          bottom={isMobileOrSmaller ? undefined : '24px'}
-          right={isMobileOrSmaller ? '16px' : '24px'}
-          zIndex="1"
-        >
-          <AddIdeaButton projectSlug={slug} phaseId={phaseId} />
-        </Box>
-      </PageContainer>
-    </main>
+          <Box
+            position="absolute"
+            top={isMobileOrSmaller ? '16px' : undefined}
+            bottom={isMobileOrSmaller ? undefined : '24px'}
+            right={isMobileOrSmaller ? '16px' : '24px'}
+            zIndex="1"
+          >
+            {phaseId && <AddIdeaButton projectSlug={slug} phaseId={phaseId} />}
+          </Box>
+        </PageContainer>
+      </main>
+    </>
   );
 };
 
