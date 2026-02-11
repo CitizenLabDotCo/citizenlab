@@ -16,8 +16,19 @@ const mockSearchParams = new URLSearchParams({
   reactions_from: '10',
 });
 
+const mockSearchString = `?${mockSearchParams.toString()}`;
+
+// The hook uses useSearch from utils/router, which internally calls
+// useLocation from @tanstack/react-router to build search params.
 jest.mock('@tanstack/react-router', () => ({
-  useSearch: jest.fn(() => [mockSearchParams]),
+  ...jest.requireActual('@tanstack/react-router'),
+  useLocation: jest.fn(() => ({
+    pathname: '/',
+    search: mockSearchString,
+    hash: '',
+    href: `/${mockSearchString}`,
+    state: {},
+  })),
 }));
 
 describe('useAnalysisFilterParams', () => {

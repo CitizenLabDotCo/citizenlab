@@ -43,11 +43,18 @@ jest.mock('@tanstack/react-router', () => {
     useParams: () => ({
       projectId: 'id',
     }),
-    useSearch: () => [
-      {
-        get: () => mockLocale,
-      },
-    ],
+    // useLocation provides search params for utils/router's useSearch wrapper
+    useLocation: jest.fn(() => ({
+      pathname: '/',
+      search: `?selected_locale=${mockLocale}`,
+      hash: '',
+      href: '/',
+      state: {},
+    })),
+    useNavigate: jest.fn(() => jest.fn()),
+    useRouterState: jest.fn(() => ({
+      location: { pathname: '/', search: '', hash: '', href: '/', state: {} },
+    })),
   };
 });
 

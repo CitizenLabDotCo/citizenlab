@@ -49,19 +49,20 @@ jest.mock('hooks/useAppConfigurationLocales', () =>
 
 const mockParams = { projectId: 'id' };
 
-jest.mock('utils/cl-router/withRouter', () => {
-  return {
-    withRouter: (Component) => {
-      return (props) => {
-        return <Component {...props} params={mockParams} />;
-      };
-    },
-  };
-});
-
 jest.mock('@tanstack/react-router', () => ({
   ...jest.requireActual('@tanstack/react-router'),
   useParams: () => mockParams,
+  useLocation: jest.fn(() => ({
+    pathname: '/',
+    search: '',
+    hash: '',
+    href: '/',
+    state: {},
+  })),
+  useNavigate: jest.fn(() => jest.fn()),
+  useRouterState: jest.fn(() => ({
+    location: { pathname: '/', search: '', hash: '', href: '/', state: {} },
+  })),
 }));
 
 jest.mock('api/projects/useProjectById', () => {

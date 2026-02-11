@@ -331,17 +331,18 @@ export const insertConfiguration =
       0,
       itemsClone.length
     );
-    const itemAtInsertIndex = itemsClone[insertIndex];
     const isItemInsertedBefore =
       itemAlreadyInserted &&
       insertBeforeName &&
       insertIndex &&
-      itemAtInsertIndex.name === insertBeforeName &&
+      insertIndex < itemsClone.length &&
+      itemsClone[insertIndex].name === insertBeforeName &&
       itemsClone[insertIndex - 1].name === configuration.name;
     const isItemInsertedAfter =
       itemAlreadyInserted &&
       insertAfterName &&
-      itemAtInsertIndex.name === insertAfterName;
+      insertIndex < itemsClone.length &&
+      itemsClone[insertIndex].name === insertAfterName;
 
     // If item is already inserted then let's not do anything
     if (isItemInsertedBefore || isItemInsertedAfter) {
