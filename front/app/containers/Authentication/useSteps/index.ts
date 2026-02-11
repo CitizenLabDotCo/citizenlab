@@ -234,7 +234,7 @@ export default function useSteps() {
 
         updateState({ flow: 'signup' });
 
-        transition(currentStep, 'START_INVITE_FLOW')(search);
+        transition(currentStep, 'START_INVITE_FLOW')(window.location.search);
       }
 
       // Remove all parameters from URL as they've already been captured

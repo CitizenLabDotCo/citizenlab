@@ -246,7 +246,7 @@ const App = ({ children }: Props) => {
             locales.includes(localeInUrl) &&
             pathnameWithoutLocale === rule.path
           ) {
-            const queryString = location.search;
+            const queryString = window.location.search;
             const separator = rule.target.includes('?') ? '&' : '?';
             const targetUrl = queryString
               ? `${rule.target}${separator}${queryString.slice(1)}`

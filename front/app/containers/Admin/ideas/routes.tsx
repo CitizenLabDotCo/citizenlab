@@ -42,7 +42,10 @@ const ideasIndexRoute = createRoute({
 const createAdminIdeasRoutes = (moduleRoutes: RouteConfiguration[] = []) => {
   return ideasRoute.addChildren([
     ideasIndexRoute,
-    ...parseModuleRoutes(moduleRoutes, ideasRoute),
+    // Cast as never[] so dynamic module routes (which have `string` paths)
+    // don't widen the route tree type and break TanStack Router's type inference.
+    // The routes still work at runtime; they're just invisible to the type system.
+    ...(parseModuleRoutes(moduleRoutes, ideasRoute) as never[]),
   ]);
 };
 

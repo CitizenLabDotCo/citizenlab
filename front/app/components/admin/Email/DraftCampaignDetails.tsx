@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import { ICampaignData } from 'api/campaigns/types';
@@ -11,6 +10,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 
