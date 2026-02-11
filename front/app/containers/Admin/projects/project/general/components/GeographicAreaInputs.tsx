@@ -39,7 +39,7 @@ const GeographicAreaInputs = ({
   onProjectAttributesDiffChange,
 }: Props) => {
   const { projectId } = useParams({
-    from: '/$locale/admin/projects/$projectId/general',
+    strict: false,
   });
   const { data: areas } = useAreas({});
   const { data: project } = useProjectById(projectId);

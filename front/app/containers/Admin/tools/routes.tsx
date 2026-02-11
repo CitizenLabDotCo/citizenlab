@@ -3,6 +3,7 @@ import React, { lazy } from 'react';
 import HelmetIntl from 'components/HelmetIntl';
 import PageLoading from 'components/UI/PageLoading';
 
+import { parseModuleRoutes, RouteConfiguration } from 'utils/moduleUtils';
 import { createRoute, Outlet as RouterOutlet } from 'utils/router';
 
 import { adminRoute, AdminRoute } from '../routes';
@@ -94,15 +95,14 @@ const webhooksRoute = createRoute({
   ),
 });
 
-const createAdminToolsRoutes = () => {
+const createAdminToolsRoutes = (moduleRoutes: RouteConfiguration[] = []) => {
   return toolsRoute.addChildren([
     toolsIndexRoute,
     publicApiTokensRoute,
     powerBiRoute,
     esriRoute,
     webhooksRoute,
-    // TODO: Wire in module routes (admin.tools) after conversion
-    // ...moduleConfiguration.routes['admin.tools'],
+    ...(parseModuleRoutes(moduleRoutes, toolsRoute) as never[]),
   ]);
 };
 

@@ -4,6 +4,7 @@ import { RouteType } from 'routes';
 
 import PageLoading from 'components/UI/PageLoading';
 
+import { parseModuleRoutes, RouteConfiguration } from 'utils/moduleUtils';
 import { createRoute, Navigate } from 'utils/router';
 
 import { adminRoute, AdminRoute } from '../routes';
@@ -667,7 +668,7 @@ const phaseInsightsRoute = createRoute({
 });
 
 // Factory function to create the admin projects route tree
-const createAdminProjectsRoutes = () => {
+const createAdminProjectsRoutes = (moduleRoutes: RouteConfiguration[] = []) => {
   return projectsRoute.addChildren([
     projectsIndexRoute,
     // TODO: Wire in module routes (admin.project_templates, admin.projects) after conversion
@@ -721,6 +722,7 @@ const createAdminProjectsRoutes = () => {
         phaseInsightsRoute,
       ]),
     ]),
+    ...(parseModuleRoutes(moduleRoutes, projectsRoute) as never[]),
   ]);
 };
 
