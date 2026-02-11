@@ -5,6 +5,7 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     :description_preview_multiloc,
     :title_multiloc,
     :comments_count,
+    :ideas_count,
     :followers_count,
     :include_all_areas,
     :internal_role,
