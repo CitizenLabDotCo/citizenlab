@@ -10,7 +10,6 @@ import {
   Spinner,
   Divider,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import {
@@ -26,6 +25,7 @@ import ProgressBar from 'components/UI/ProgressBar';
 import { useIntl } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import { TagTypeColorMap } from '../Tags/Tag';
 
@@ -47,7 +47,9 @@ const Tasks = () => {
   const { formatMessage } = useIntl();
   const [isDropdownOpened, setIsDropdownOpened] = useState(false);
 
-  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
+  const { analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const { data: tasks } = useAnalysisBackgroundTasks(analysisId);
 
   const locale = useLocale();

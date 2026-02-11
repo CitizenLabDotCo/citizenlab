@@ -8,7 +8,6 @@ import {
   Text,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 import {
   BarChart as RechartsBarChart,
   Bar,
@@ -23,6 +22,7 @@ import useAuthorsByAge from 'api/analysis_stats/useAuthorsByAge';
 
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useParams } from 'utils/router';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
@@ -68,7 +68,9 @@ const ageToBirthyear = (age: number): number => {
 
 const AuthorsByAge = ({ customFieldId }: Props) => {
   const { formatMessage } = useIntl();
-  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
+  const { analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const filters = useAnalysisFilterParams();
   const { data: totalAuthorsByAge, isLoading: isLoadingTotal } =
     useAuthorsByAge({

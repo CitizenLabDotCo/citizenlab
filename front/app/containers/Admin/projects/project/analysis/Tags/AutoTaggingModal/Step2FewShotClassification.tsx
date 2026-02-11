@@ -8,12 +8,12 @@ import {
   Title,
 } from '@citizenlab/cl2-component-library';
 import { xor } from 'lodash-es';
-import { useParams } from 'utils/router';
 
 import { ITagData } from 'api/analysis_tags/types';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
 
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 import Tag from '../Tag';
@@ -24,7 +24,9 @@ type Props = {
 
 const Step2LabelClassification = ({ onLaunch }: Props) => {
   const { formatMessage } = useIntl();
-  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
+  const { analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const { data: tags } = useAnalysisTags({ analysisId });
 
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);

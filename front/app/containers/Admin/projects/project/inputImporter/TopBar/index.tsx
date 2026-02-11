@@ -7,7 +7,6 @@ import {
   stylingConsts,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 import { RouteType } from 'routes';
 
 import usePhase from 'api/phases/usePhase';
@@ -19,6 +18,7 @@ import useLocalize from 'hooks/useLocalize';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
@@ -32,10 +32,9 @@ interface Props {
 
 const TopBar = ({ onClickPDFImport, onClickExcelImport }: Props) => {
   const localize = useLocalize();
-  const { projectId, phaseId } = useParams({ strict: false }) as {
-    projectId: string;
-    phaseId: string;
-  };
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/input-importer',
+  });
 
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);

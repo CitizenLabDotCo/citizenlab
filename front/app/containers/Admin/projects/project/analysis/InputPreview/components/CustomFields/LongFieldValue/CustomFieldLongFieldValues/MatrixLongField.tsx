@@ -28,7 +28,9 @@ const MatrixLongField = ({ customField, rawValue }: Props) => {
 
   // Get phase and project from URL
   const phaseId = searchParams.get('phase_id') || '';
-  const projectId = (useParams({ strict: false }) as any).projectId || '';
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
 
   // Get the statements data for the custom field
   const statements = useCustomFieldStatements({

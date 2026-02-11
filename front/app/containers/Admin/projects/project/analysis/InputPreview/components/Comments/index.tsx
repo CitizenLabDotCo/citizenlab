@@ -2,7 +2,6 @@ import React, { useMemo, useEffect } from 'react';
 
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { useInView } from 'react-intersection-observer';
-import { useParams } from 'utils/router';
 
 import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
 import useComments from 'api/comments/useComments';
@@ -12,6 +11,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import { useSelectedInputContext } from '../../../SelectedInputContext';
 
@@ -41,7 +41,9 @@ const Comments = () => {
     pageSize: 5,
   });
 
-  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
+  const { analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const { data: input } = useAnalysisInput(
     analysisId,
     selectedInputId ?? undefined

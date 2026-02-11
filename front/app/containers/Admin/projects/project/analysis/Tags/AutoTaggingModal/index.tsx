@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import { AutoTaggingMethod } from 'api/analysis_background_tasks/types';
 import useLaunchAnalysisAutotagging from 'api/analysis_background_tasks/useLaunchAnalysisAutotagging';
@@ -9,6 +8,7 @@ import useLaunchAnalysisAutotagging from 'api/analysis_background_tasks/useLaunc
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { trackEventByName } from 'utils/analytics';
+import { useParams } from 'utils/router';
 
 import useAnalysisFilterParams from '../../hooks/useAnalysisFilterParams';
 import tracks from '../../tracks';
@@ -25,7 +25,9 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
     'all'
   );
 
-  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
+  const { analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const {
     mutate: launchTagging,
     isLoading,

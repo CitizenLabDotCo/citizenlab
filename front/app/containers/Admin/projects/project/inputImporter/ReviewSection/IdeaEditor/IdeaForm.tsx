@@ -2,13 +2,14 @@ import React, { Suspense, useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { FormProvider, UseFormSetError } from 'react-hook-form';
-import { useParams } from 'utils/router';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import usePhase from 'api/phases/usePhase';
 
 import usePageForm from 'components/CustomFieldsForm/Page/usePageForm';
 import Feedback from 'components/HookForm/Feedback';
+
+import { useParams } from 'utils/router';
 
 const CustomFields = React.lazy(
   () => import('components/CustomFieldsForm/CustomFields')
@@ -28,10 +29,9 @@ const IdeaForm = ({
   setIdeaFormDataValid,
   setError,
 }: Props) => {
-  const { projectId, phaseId } = useParams({ strict: false }) as {
-    projectId: string;
-    phaseId: string;
-  };
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/input-importer',
+  });
 
   const { data: phase } = usePhase(phaseId);
   const participationMethod = phase?.data.attributes.participation_method;

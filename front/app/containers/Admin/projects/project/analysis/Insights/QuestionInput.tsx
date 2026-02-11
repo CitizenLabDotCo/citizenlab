@@ -7,7 +7,6 @@ import {
   stylingConsts,
   Button,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import useAddAnalysisQuestion from 'api/analysis_questions/useAddAnalysisQuestion';
@@ -16,6 +15,7 @@ import tracks from 'containers/Admin/projects/project/analysis/tracks';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
@@ -25,7 +25,9 @@ const QuestionInput = ({ onClose }: { onClose: () => void }) => {
   const [question, setQuestion] = useState('');
   const { formatMessage } = useIntl();
   const { mutate: askQuestion, isLoading } = useAddAnalysisQuestion();
-  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
+  const { analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const { data: analysis } = useAnalysis(analysisId);
   const fileIds = analysis?.data.relationships.files?.data.map(
     (file) => file.id

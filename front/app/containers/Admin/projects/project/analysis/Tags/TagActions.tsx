@@ -10,7 +10,6 @@ import {
   Box,
   IconButton,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useAddAnalysisBulkTagging from 'api/analysis_taggings/useAnalysisBulkTaggings';
@@ -23,6 +22,7 @@ import Modal from 'components/UI/Modal';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
@@ -42,7 +42,9 @@ const TagActions = ({ tag }: { tag: ITagData }) => {
     useDeleteAnalysisTag();
   const { mutate: bulkAddTaggings, isLoading: bulkTaggingIsLoading } =
     useAddAnalysisBulkTagging();
-  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
+  const { analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const filters = useAnalysisFilterParams();
 
   const { formatMessage } = useIntl();

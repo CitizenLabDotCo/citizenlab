@@ -7,17 +7,19 @@ import {
   Box,
   Icon,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import useRateAnalysisInsight from 'api/analysis_insights/useRateAnalysisInsight';
 
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 
 const Rate = ({ insightId }: { insightId: string }) => {
   const { formatMessage } = useIntl();
-  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
+  const { analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const { mutate: rateAnalysisInsight } = useRateAnalysisInsight();
   const [rated, setRated] = useState(false);
 

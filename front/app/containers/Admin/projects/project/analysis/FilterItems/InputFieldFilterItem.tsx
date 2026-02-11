@@ -6,13 +6,13 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import useIdeaCustomField from 'api/idea_custom_fields/useIdeaCustomField';
 
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { useParams } from 'utils/router';
 
 import ShortFieldValue from '../components/ShortInputFieldValue';
 
@@ -35,7 +35,9 @@ const InputFieldFilterItem = ({
   predicate,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
+  const { analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const { data: analysis } = useAnalysis(analysisId);
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Box, Button, Input } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import useAddAnalysisTag from 'api/analysis_tags/useAddAnalysisTag';
 
@@ -9,13 +8,16 @@ import Error from 'components/UI/Error';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import tracks from '../tracks';
 
 import messages from './messages';
 
 const AddTag = ({ onCreateTag }: { onCreateTag?: (tagId: string) => void }) => {
-  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
+  const { analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
 
   const [name, setName] = useState('');
   const { mutate: addTag, isLoading, error } = useAddAnalysisTag();
