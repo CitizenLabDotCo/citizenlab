@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Box, Spinner, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import { GetFilesParameters } from 'api/files/types';
 import useFiles from 'api/files/useFiles';
@@ -11,6 +10,7 @@ import SearchInput from 'components/UI/SearchInput';
 
 import { useIntl } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
+import { useParams } from 'utils/router';
 
 import FeatureInformation from '../FeatureInformation';
 import FileSideView from '../FileSideView';
@@ -24,9 +24,9 @@ const FilesList = () => {
   const [sideViewOpened, setSideViewOpened] = useState(false);
   const [selectedFileId, setSelectedFileId] = useState<string | null>(null);
 
-  const { projectId } = useParams({ strict: false }) as {
-    projectId: string;
-  };
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId/files',
+  });
 
   const [queryParameters, setQueryParameters] = useState<GetFilesParameters>({
     pageNumber: 1,

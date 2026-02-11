@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import usePhases from 'api/phases/usePhases';
@@ -12,6 +11,7 @@ import T from 'components/T';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
@@ -24,7 +24,9 @@ const Container = styled.div`
 `;
 
 const SurveyResults = () => {
-  const { projectId } = useParams({ strict: false }) as { projectId: string };
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/survey-results',
+  });
   const surveys_enabled = useFeatureFlag({ name: 'surveys' });
   const typeform_enabled = useFeatureFlag({ name: 'typeform_surveys' });
   const { data: phases } = usePhases(projectId);

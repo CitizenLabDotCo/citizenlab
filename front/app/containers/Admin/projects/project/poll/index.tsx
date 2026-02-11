@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
 import { isError } from 'lodash-es';
-import { useParams } from 'utils/router';
 import GetPollQuestions, {
   GetPollQuestionsChildProps,
 } from 'resources/GetPollQuestions';
@@ -16,6 +15,7 @@ import useLocalize from 'hooks/useLocalize';
 import { SectionDescription } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import ExportPollButton from './ExportPollButton';
 import messages from './messages';
@@ -28,9 +28,9 @@ const PhaseContainer = styled.div`
 `;
 
 const AdminProjectPoll = () => {
-  const { phaseId } = useParams({ strict: false }) as {
-    phaseId?: string;
-  };
+  const { phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/polls',
+  });
   const { data: phase } = usePhase(phaseId);
   const isEnabled = useFeatureFlag({ name: 'polls' });
   const localize = useLocalize();

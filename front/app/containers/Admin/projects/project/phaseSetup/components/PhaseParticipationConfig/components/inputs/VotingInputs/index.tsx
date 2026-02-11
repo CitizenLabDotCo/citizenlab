@@ -7,7 +7,6 @@ import {
   Box,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 import { CLErrors, IOption } from 'typings';
 
@@ -24,6 +23,7 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
+import { useParams } from 'utils/router';
 
 import messages from '../../../../../../messages';
 import { ValidationErrors } from '../../../../../typings';
@@ -111,10 +111,9 @@ const VotingInputs = ({
   voteTerm,
 }: VotingInputsProps) => {
   const { formatMessage } = useIntl();
-  const { projectId, phaseId } = useParams({ strict: false }) as {
-    projectId: string;
-    phaseId: string;
-  };
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/setup',
+  });
 
   const getVoteTypeDescription = () => {
     switch (voting_method) {

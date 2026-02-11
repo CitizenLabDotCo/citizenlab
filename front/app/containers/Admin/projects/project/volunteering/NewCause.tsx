@@ -13,7 +13,9 @@ import CauseForm, { SubmitValues } from './CauseForm';
 import messages from './messages';
 
 const NewCause = () => {
-  const { projectId, phaseId } = useParams({ strict: false });
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/volunteering/causes/new',
+  });
   const { mutateAsync: addCause } = useAddCause();
 
   const handleOnSubmit = async (formValues: SubmitValues) => {

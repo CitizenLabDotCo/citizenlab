@@ -2,7 +2,6 @@ import React, { useState, useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-import { useParams } from 'utils/router';
 
 import { IInputTopicData } from 'api/input_topics/types';
 import useDeleteInputTopic from 'api/input_topics/useDeleteInputTopic';
@@ -33,17 +32,20 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
+import { useParams } from 'utils/router';
 
 import InputTopicModal from './InputTopicModal';
-import messages from './messages';
 import LiveAutoInputTopicsControl from './LiveAutoInputTopicsControl';
+import messages from './messages';
 
 const IndentedSortableRow = styled(SortableRow)<{ depth: number }>`
   padding-left: ${(props) => props.depth * 32}px;
 `;
 
 const ProjectInputTopics = () => {
-  const { projectId } = useParams({ strict: false }) as { projectId: string };
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId/general/input-tags',
+  });
   const nestedInputTopicsActive = useFeatureFlag({
     name: 'nested_input_topics',
   });

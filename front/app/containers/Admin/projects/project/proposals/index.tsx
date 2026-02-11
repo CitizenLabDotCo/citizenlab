@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import usePhase from 'api/phases/usePhase';
 import useProjectById from 'api/projects/useProjectById';
@@ -10,6 +9,7 @@ import ProjectProposalsManager from 'components/admin/PostManager/ProjectProposa
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import AnalysisBanner from '../../components/AnalysisBanner';
 import NewIdeaButton from '../../components/NewIdeaButton';
@@ -24,10 +24,9 @@ const timelineProjectVisibleFilterMenus: TFilterMenu[] = [
 ];
 
 const AdminProjectProposals = () => {
-  const { projectId, phaseId } = useParams({ strict: false }) as {
-    projectId: string;
-    phaseId: string;
-  };
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/proposals',
+  });
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
 
