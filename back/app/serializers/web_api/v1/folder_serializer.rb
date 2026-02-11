@@ -9,11 +9,11 @@ class WebApi::V1::FolderSerializer < WebApi::V1::BaseSerializer
     end
   end
 
-  # attribute :ideas_count do |object|
-  #   Rails.cache.fetch("#{object.cache_key}/ideas_count", expires_in: 1.day) do
-  #     object.projects.not_draft.sum(&:ideas_count)
-  #   end
-  # end
+  attribute :ideas_count do |object|
+    Rails.cache.fetch("#{object.cache_key}/ideas_count", expires_in: 1.day) do
+      object.projects.not_draft.sum(&:ideas_count)
+    end
+  end
 
   attribute :description_multiloc do |object|
     TextImageService.new.render_data_images_multiloc object.description_multiloc, field: :description_multiloc, imageable: object
