@@ -1,14 +1,9 @@
-import Quill from 'quill';
 import BlotFormatter from '@enzedonline/quill-blot-formatter2';
+import Quill from 'quill';
 
 import { isYouTubeEmbedLink } from 'utils/urlUtils';
 
-import {
-  attributes,
-  ImageBlot,
-  AltTextToImagesModule,
-  KeepHTML,
-} from './altTextToImagesModule';
+import { attributes, ImageBlot, KeepHTML } from './altTextToImagesModule';
 
 export const configureQuill = () => {
   Quill.register('modules/blotFormatter', BlotFormatter);
@@ -116,13 +111,7 @@ export const configureQuill = () => {
   Quill.register(CustomButton);
   // END custom button implementation
 
-  Quill.register(
-    {
-      'formats/image': ImageBlot,
-      'modules/altTextToImages': AltTextToImagesModule,
-    },
-    true
-  );
+  Quill.register('formats/image', ImageBlot, true);
 
   Quill.register(KeepHTML);
 };
