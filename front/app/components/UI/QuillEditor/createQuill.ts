@@ -1,6 +1,4 @@
-import Quill, { Delta, Range } from 'quill';
-
-import { attributes } from './altTextToImagesModule';
+import Quill, { Range } from 'quill';
 
 interface Params {
   id: string;
@@ -12,6 +10,8 @@ interface Params {
   withCTAButton?: boolean;
   noLinks: boolean;
   onBlur?: () => void;
+  altTextLabel?: string;
+  imageTitleLabel?: string;
 }
 
 export const createQuill = (
@@ -26,6 +26,8 @@ export const createQuill = (
     noLinks,
     withCTAButton,
     onBlur,
+    altTextLabel,
+    imageTitleLabel,
   }: Params
 ) => {
   const quill = new Quill(editorContainer, {
@@ -41,8 +43,19 @@ export const createQuill = (
       ...(!noVideos ? ['video'] : []),
     ],
     modules: {
-      altTextToImages: true,
-      blotFormatter: !noImages || !noVideos,
+      blotFormatter:
+        !noImages || !noVideos
+          ? {
+              image: {
+                altTitleModalOptions: {
+                  labels: {
+                    alt: altTextLabel || 'Alt Text',
+                    title: imageTitleLabel || 'Image Title',
+                  },
+                },
+              },
+            }
+          : false,
       toolbar: `#${toolbarId}`,
       keyboard: {
         bindings: {
@@ -110,20 +123,6 @@ export const createQuill = (
       fileInput.click();
     });
   }
-
-  // ImageBlot uses tagName='span', so the clipboard can't auto-match <img>
-  // tags. This matcher handles <img> in saved content and external paste.
-  const clipboard = quill.getModule('clipboard') as any;
-  clipboard.addMatcher('IMG', (node: HTMLImageElement) => {
-    const src = node.getAttribute('src');
-    if (!src) return new Delta();
-    const formats: Record<string, string> = {};
-    for (const attr of attributes) {
-      const val = node.getAttribute(attr);
-      if (val) formats[attr] = val;
-    }
-    return new Delta().insert({ image: src }, formats);
-  });
 
   // Apply correct attributes for a11y
   const editor = editorContainer.getElementsByClassName('ql-editor')[0];
