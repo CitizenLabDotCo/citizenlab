@@ -13,6 +13,7 @@ import Quill, { Range } from 'quill';
 import { useIntl } from 'utils/cl-intl';
 
 import 'quill/dist/quill.snow.css';
+import '@enzedonline/quill-blot-formatter2/dist/css/quill-blot-formatter2.css';
 
 import { configureQuill } from './configureQuill';
 import { createQuill } from './createQuill';
