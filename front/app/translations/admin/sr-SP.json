@@ -2971,6 +2971,7 @@
   "app.containers.AdminPage.Topics.lastTopicWarning3": "At least one tag is required. If you do not wish to use tags, the ‘Tags’ item can be deleted from any phase’s input form (if present).",
   "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "When enabled, tags are continuously created, updated and assigned to inputs, using AI.",
   "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "Automatically detect and assign tags",
+  "app.containers.AdminPage.Topics.perspectives": "Perspectives",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "Create and manage the tags that citizens can use to categorize their inputs in this project.",
   "app.containers.AdminPage.Topics.save": "Save",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "Додајте нову групу",
