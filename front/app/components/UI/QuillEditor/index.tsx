@@ -10,21 +10,16 @@ import { Label, IconTooltip, Box } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import Quill, { Range } from 'quill';
 
-import 'quill/dist/quill.snow.css';
-
 import { useIntl } from 'utils/cl-intl';
+
+import 'quill/dist/quill.snow.css';
 
 import { configureQuill } from './configureQuill';
 import { createQuill } from './createQuill';
 import messages from './messages';
 import StyleContainer from './StyleContainer';
 import Toolbar from './Toolbar';
-import {
-  getHTML,
-  setHTML,
-  syncPlaceHolder,
-  getQuillPlainTextLength,
-} from './utils';
+import { getHTML, setHTML, getQuillPlainTextLength } from './utils';
 
 export interface Props {
   id: string;
@@ -107,6 +102,8 @@ const QuillEditor = ({
       limitedTextFormatting,
       withCTAButton,
       onBlur: onBlurRef.current,
+      altTextLabel: formatMessage(messages.altTextLabel),
+      imageTitleLabel: formatMessage(messages.imageTitleLabel),
     });
 
     setHTML(quill, value);
@@ -168,12 +165,6 @@ const QuillEditor = ({
       htmlRef.current = html;
     }
   }, [value, editor]);
-
-  // Hack to get correct placeholder for image alt text input
-  const altTextPlaceHolder = formatMessage(messages.altTextPlaceholder);
-  useEffect(() => {
-    syncPlaceHolder(altTextPlaceHolder);
-  }, [altTextPlaceHolder]);
 
   // Function to save the latest state of the content.
   // We call this when the mouse leaves the editor, to ensure the
