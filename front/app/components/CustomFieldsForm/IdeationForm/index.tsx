@@ -53,11 +53,13 @@ const IdeationForm = ({
     publicFields: true,
   });
 
+  if (!phase) return null;
+
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);
 
   const showTogglePostAnonymously =
     !!authUser &&
-    phase?.data.attributes.allow_anonymous_participation &&
+    phase.data.attributes.allow_anonymous_participation &&
     participationMethod !== 'native_survey';
 
   const lastPageIndex = nestedPagesData.length - 1;
@@ -117,7 +119,7 @@ const IdeationForm = ({
           ideaId={idea?.id}
           projectId={projectId}
           onSubmit={onSubmit}
-          phase={phase?.data}
+          phase={phase.data}
           defaultValues={initialFormData}
           pages={nestedPagesData}
         />
