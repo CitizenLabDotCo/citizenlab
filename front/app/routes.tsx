@@ -233,20 +233,7 @@ const ideasIndexSearchSchema = yup.object({
       'ineligible',
     ])
     .optional(),
-  topics: yup
-    .array()
-    .of(yup.string().required())
-    .optional()
-    .transform((_value, originalValue) => {
-      if (typeof originalValue === 'string') {
-        try {
-          return JSON.parse(originalValue);
-        } catch {
-          return undefined;
-        }
-      }
-      return undefined;
-    }),
+  topics: yup.array().of(yup.string().required()).optional(),
 });
 
 export type IdeasIndexSearchParams = {
