@@ -123,6 +123,8 @@ module TranslateMissingLocales
       data_listing_service = Cl2DataListingService.new
 
       data_listing_service.cl2_schema_models.each do |model|
+        next if model == User # User model bio does not need translation - waste of money!
+
         multiloc_columns = data_listing_service.multiloc_attributes(model)
         next if multiloc_columns.empty?
 
