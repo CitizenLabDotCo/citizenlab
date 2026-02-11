@@ -39,8 +39,8 @@ export const createQuill = (
       ...(withCTAButton ? ['button'] : []),
       ...(!limitedTextFormatting ? ['header', 'list'] : []),
       ...(!limitedTextFormatting && !noAlign ? ['align'] : []),
-      ...(!noImages ? ['image'] : []),
-      ...(!noVideos ? ['video'] : []),
+      ...(!noImages ? ['image', 'imageAlign'] : []),
+      ...(!noVideos ? ['video', 'iframeAlign'] : []),
     ],
     modules: {
       blotFormatter:
