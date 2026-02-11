@@ -2971,6 +2971,7 @@
   "app.containers.AdminPage.Topics.lastTopicWarning3": "Au moins une étiquette est requise. Si vous ne souhaitez pas utiliser d’étiquettes pour une phase, vous pouvez supprimer l’élément « Étiquettes » du formulaire de contribution de cette phase.",
   "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "Les étiquettes sont automatiquement générées, mises à jour et associées aux entrées par l’IA.",
   "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "Étiquetage automatique",
+  "app.containers.AdminPage.Topics.perspectives": "Perspectives",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "Gérez les étiquettes que les citoyens peuvent assigner à leurs contributions dans ce projet.",
   "app.containers.AdminPage.Topics.save": "Enregistrer",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "Ajouter un nouveau groupe",
