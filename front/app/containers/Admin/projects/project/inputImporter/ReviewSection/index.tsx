@@ -8,7 +8,6 @@ import {
   stylingConsts,
   Spinner,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import { IBackgroundJobData } from 'api/background_jobs/types';
 import useTrackBackgroundJobs from 'api/background_jobs/useTrackBackgroundJobs';
@@ -22,6 +21,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import EmptyState from './EmptyState';
 import IdeaEditor from './IdeaEditor';
@@ -34,10 +34,9 @@ const ReviewSection = ({
 }: {
   importJobs: IBackgroundJobData[];
 }) => {
-  const { projectId, phaseId } = useParams({ strict: false }) as {
-    projectId: string;
-    phaseId: string;
-  };
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/input-importer',
+  });
   const { formatMessage } = useIntl();
   const [ideaId, setIdeaId] = useState<string | null>(null);
   const [approvals, setApprovals] = useState({ approved: 0, not_approved: 0 });

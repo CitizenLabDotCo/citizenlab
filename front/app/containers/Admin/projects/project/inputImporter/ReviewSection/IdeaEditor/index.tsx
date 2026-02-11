@@ -8,7 +8,6 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { UseFormSetError } from 'react-hook-form';
-import { useParams } from 'utils/router';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
@@ -24,6 +23,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
@@ -51,10 +51,9 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const [ideaFormDataValid, setIdeaFormDataValid] = useState(false);
   const setError = useRef<UseFormSetError<FormValues>>();
 
-  const { projectId, phaseId } = useParams({ strict: false }) as {
-    projectId: string;
-    phaseId: string;
-  };
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/input-importer',
+  });
 
   const [userFormStatePerIdea, setUserFormStatePerIdea] = useState<
     Record<string, UserFormData>

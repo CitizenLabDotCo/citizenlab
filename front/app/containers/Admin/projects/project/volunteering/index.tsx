@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
@@ -10,6 +9,7 @@ import useProjectById from 'api/projects/useProjectById';
 import { SectionDescription } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import AllCauses from './AllCauses';
 import ExportVolunteersButton from './ExportVolunteersButton';
@@ -22,10 +22,9 @@ const PhaseContainer = styled.div`
 `;
 
 const AdminProjectVolunteering = () => {
-  const { projectId, phaseId } = useParams({ strict: false }) as {
-    projectId: string;
-    phaseId: string;
-  };
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/volunteering',
+  });
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
 

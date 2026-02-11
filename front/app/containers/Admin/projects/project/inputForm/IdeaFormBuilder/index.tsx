@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useParams } from 'utils/router';
 import { RouteType } from 'routes';
 
 import useFormCustomFields from 'api/custom_fields/useCustomFields';
@@ -9,6 +8,8 @@ import useProjectById from 'api/projects/useProjectById';
 
 import FormBuilder from 'components/FormBuilder/edit';
 import { FormBuilderConfig } from 'components/FormBuilder/utils';
+
+import { useParams } from 'utils/router';
 
 import { ideationConfig, proposalsConfig } from '../utils';
 
@@ -55,7 +56,9 @@ const IdeaFormBuilder = ({
 };
 
 export default () => {
-  const { projectId, phaseId } = useParams({ strict: false });
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/form/edit',
+  });
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
 

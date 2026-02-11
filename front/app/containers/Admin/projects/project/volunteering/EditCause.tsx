@@ -15,11 +15,9 @@ import messages from './messages';
 
 const EditCause = () => {
   const { mutateAsync: updateCause } = useUpdateCause();
-  const { projectId, causeId, phaseId } = useParams({ strict: false }) as {
-    projectId: string;
-    causeId: string;
-    phaseId: string;
-  };
+  const { projectId, causeId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/volunteering/causes/$causeId',
+  });
   const { data: cause } = useCause(causeId);
 
   const handleOnSubmit = async (formValues: SubmitValues) => {

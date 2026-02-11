@@ -7,7 +7,6 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import usePhase from 'api/phases/usePhase';
 
@@ -15,6 +14,7 @@ import DownloadPDFButtonWithModal from 'components/admin/FormSync/DownloadPDFBut
 import ExcelDownloadButton from 'components/admin/FormSync/ExcelDownloadButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import sharedMessages from '../messages';
 
@@ -22,9 +22,9 @@ import messages from './messages';
 import { isPDFUploadSupported, supportsNativeSurvey } from './utils';
 
 const EmptyState = () => {
-  const { phaseId } = useParams({ strict: false }) as {
-    phaseId: string;
-  };
+  const { phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/input-importer',
+  });
   const { data: phase } = usePhase(phaseId);
 
   const participationMethod = phase?.data.attributes.participation_method;

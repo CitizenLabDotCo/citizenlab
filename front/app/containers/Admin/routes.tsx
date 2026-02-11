@@ -231,7 +231,9 @@ const projectImporterRoute = createRoute({
 export const createAdminRoutes = (moduleRoutes: Partial<Routes> = {}) => {
   return adminRoute.addChildren([
     adminIndexRoute,
-    createAdminProjectsRoutes(),
+    createAdminProjectsRoutes(
+      moduleRoutes['admin.project_templates, admin.projects']
+    ),
     createAdminDashboardRoutes(),
     createAdminUsersRoutes(),
     createAdminSettingsRoutes(),
@@ -241,7 +243,7 @@ export const createAdminRoutes = (moduleRoutes: Partial<Routes> = {}) => {
     createAdminIdeasRoutes(moduleRoutes['admin.ideas']),
     createProjectFoldersRoutes(),
     ...createAdminReportingRoutes(),
-    createAdminToolsRoutes(),
+    createAdminToolsRoutes(moduleRoutes['admin.tools']),
     createAdminCommunityMonitorRoutes(),
     createAdminInspirationHubRoutes(),
     faviconRoute,

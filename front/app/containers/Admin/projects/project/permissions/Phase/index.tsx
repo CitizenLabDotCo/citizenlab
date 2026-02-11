@@ -1,16 +1,18 @@
 import React from 'react';
 
 import { Title, Text, Box, colors } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
 import ActionForms from './ActionForms';
 
 const Phase = () => {
-  const { phaseId } = useParams({ strict: false });
+  const { phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/access-rights',
+  });
   if (!phaseId) return null;
 
   return (

@@ -8,7 +8,6 @@ import {
   Spinner,
 } from '@citizenlab/cl2-component-library';
 import { useVirtualizer } from '@tanstack/react-virtual';
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
@@ -16,6 +15,7 @@ import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisIn
 import useKeyPress from 'hooks/useKeyPress';
 
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import Demographics from '../Demographics';
 import Heatmap from '../Heatmap';
@@ -36,7 +36,9 @@ const Item = styled.div<{ start: number }>`
 const InputsList = () => {
   const { formatMessage } = useIntl();
   const { selectedInputId, setSelectedInputId } = useSelectedInputContext();
-  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
+  const { analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const filters = useAnalysisFilterParams();
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isSuccess } =

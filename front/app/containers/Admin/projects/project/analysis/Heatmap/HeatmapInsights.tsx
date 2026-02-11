@@ -7,7 +7,6 @@ import {
   Button,
   IconButton,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import { Unit } from 'api/analysis_heat_map_cells/types';
 import useAnalysisHeatmapCells from 'api/analysis_heat_map_cells/useAnalysisHeatmapCells';
@@ -16,6 +15,7 @@ import useCustomFieldBin from 'api/custom_field_bins/useCustomFieldBin';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 import StatementText from './StatementText';
@@ -41,7 +41,9 @@ const HeatMapInsights = ({ onExploreClick }: HeatMapInsightsProps) => {
 
   const { formatMessage } = useIntl();
 
-  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
+  const { analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
 
   const { data: analysisHeatmapCells } = useAnalysisHeatmapCells({
     analysisId,

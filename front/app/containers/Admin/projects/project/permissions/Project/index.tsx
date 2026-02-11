@@ -1,12 +1,12 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import { SectionDescription, SectionTitle } from 'components/admin/Section';
 import Outlet from 'components/Outlet';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
@@ -15,7 +15,9 @@ import ProjectManagement from './ProjectManagement';
 import ProjectVisibility from './ProjectVisibility';
 
 const ProjectPermissions = () => {
-  const { projectId } = useParams({ strict: false });
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId/general/access-rights',
+  });
   if (!projectId) return null;
 
   return (

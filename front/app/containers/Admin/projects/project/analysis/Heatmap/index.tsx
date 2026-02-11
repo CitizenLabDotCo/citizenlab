@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Button } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import { Unit } from 'api/analysis_heat_map_cells/types';
@@ -15,6 +14,7 @@ import UpsellTooltip from 'components/UpsellTooltip';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import useRelevantToHeatmapInputCustomFields from '../hooks/useRelevantToHeatmapInputCustomFields';
 
@@ -33,8 +33,9 @@ const Heatmap = () => {
 
   const { formatMessage } = useIntl();
 
-  const { projectId } = useParams({ strict: false }) as { projectId: string };
-  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
+  const { projectId, analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
 
   const { data: analysis } = useAnalysis(analysisId);
 

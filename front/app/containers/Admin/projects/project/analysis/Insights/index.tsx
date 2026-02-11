@@ -7,7 +7,6 @@ import {
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import useInfiniteAnalysisInputs from 'api/analysis_inputs/useInfiniteAnalysisInputs';
 import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
@@ -15,6 +14,7 @@ import useAnalysisInsights from 'api/analysis_insights/useAnalysisInsights';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
 
@@ -32,7 +32,9 @@ const Insights = () => {
   const { formatMessage } = useIntl();
   const [isQuestionInputOpen, setIsQuestionInputOpen] = useState(false);
   const [isFileSelectionOpen, setIsFileSelectionOpen] = useState(false);
-  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
+  const { analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const { data: insights, isLoading } = useAnalysisInsights({
     analysisId,
   });

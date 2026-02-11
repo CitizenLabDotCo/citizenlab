@@ -8,7 +8,6 @@ import {
   Divider,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useParams } from 'utils/router';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import { IInputsData } from 'api/analysis_inputs/types';
@@ -19,6 +18,7 @@ import T from 'components/T';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { useParams } from 'utils/router';
 import { getFullName } from 'utils/textUtils';
 
 import Taggings from '../Taggings';
@@ -34,7 +34,9 @@ interface Props {
 }
 
 const InputListItem = memo(({ input, onSelect, selected }: Props) => {
-  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
+  const { analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const { data: analysis } = useAnalysis(analysisId);
   const { data: author } = useAnalysisUserById({
     id: input.relationships.author.data?.id ?? null,

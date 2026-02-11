@@ -9,7 +9,6 @@ import {
   ClickOutside,
 } from '@citizenlab/cl2-component-library';
 import { get, set } from 'js-cookie';
-import { useParams, useSearch } from 'utils/router';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
@@ -29,6 +28,7 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useParams, useSearch } from 'utils/router';
 
 import FilterItems from '../FilterItems';
 import useAnalysisFilterParams from '../hooks/useAnalysisFilterParams';
@@ -50,10 +50,9 @@ const TopBar = () => {
   const { data: authUser } = useAuthUser();
   const [urlParams] = useSearch({ strict: false });
   const phaseId = urlParams.get('phase_id') || undefined;
-  const { projectId, analysisId } = useParams({ strict: false }) as {
-    projectId: string;
-    analysisId: string;
-  };
+  const { projectId, analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
 
   const cookieName =
     authUser &&

@@ -10,7 +10,6 @@ import {
   Radio,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useAnalysis from 'api/analyses/useAnalysis';
@@ -22,6 +21,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
@@ -73,7 +73,9 @@ const Step1 = ({
     name: 'advanced_autotagging',
     onlyCheckAllowed: true,
   });
-  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
+  const { analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const { data: analysis } = useAnalysis(analysisId);
   const { data: allInputs } = useInfiniteAnalysisInputs({
     analysisId,

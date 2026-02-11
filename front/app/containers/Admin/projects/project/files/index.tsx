@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import useFiles from 'api/files/useFiles';
+
+import { useParams } from 'utils/router';
 
 import FilesList from './components/FilesList';
 import FirstUploadView from './components/FirstUploadView';
@@ -35,9 +36,9 @@ const ProjectFilesTab = ({ projectHasFiles }: Props) => {
 };
 
 const ProjectFilesTabWrapper = () => {
-  const { projectId } = useParams({ strict: false }) as {
-    projectId: string;
-  };
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId/files',
+  });
 
   // Try to fetch first file of the project, to determine if there are any files.
   const { data: files, isLoading } = useFiles({

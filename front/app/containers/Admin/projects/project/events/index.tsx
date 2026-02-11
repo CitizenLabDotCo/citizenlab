@@ -9,7 +9,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import saveAs from 'file-saver';
 import moment from 'moment';
-import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import { IEventData } from 'api/events/types';
@@ -26,6 +25,7 @@ import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { requestBlob } from 'utils/requestBlob';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 
@@ -43,7 +43,9 @@ const StyledList = styled(List)`
 `;
 
 const AdminProjectEventsIndex = () => {
-  const { projectId } = useParams({ strict: false }) as { projectId: string };
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId/events',
+  });
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { data: events } = useEvents({

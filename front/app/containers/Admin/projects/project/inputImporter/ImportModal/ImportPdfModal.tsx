@@ -9,7 +9,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
-import { useParams, useSearch } from 'utils/router';
 import { SupportedLocale } from 'typings';
 import { object, mixed, boolean } from 'yup';
 
@@ -29,6 +28,7 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
+import { useParams, useSearch } from 'utils/router';
 import validateLocale from 'utils/yup/validateLocale';
 
 import LocalePicker from './LocalePicker';
@@ -51,11 +51,10 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeasAsync();
   const locale = useLocale();
-  const { phaseId } = useParams({ strict: false });
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/input-importer',
+  });
   const { data: phase } = usePhase(phaseId);
-  const { projectId } = useParams({ strict: false }) as {
-    projectId: string;
-  };
 
   // Allows switching of different parsers if needed
   const [searchParams] = useSearch({ strict: false });

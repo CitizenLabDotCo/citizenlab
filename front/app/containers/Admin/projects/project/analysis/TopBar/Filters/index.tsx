@@ -7,7 +7,6 @@ import {
   Text,
   defaultStyles,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 
@@ -15,6 +14,7 @@ import CloseIconButton from 'components/UI/CloseIconButton';
 
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
@@ -28,7 +28,9 @@ interface FilterProps {
 }
 
 const Filters = ({ onClose }: FilterProps) => {
-  const { analysisId } = useParams({ strict: false }) as { analysisId: string };
+  const { analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const { data: analysis } = useAnalysis(analysisId);
   const { formatMessage } = useIntl();
 

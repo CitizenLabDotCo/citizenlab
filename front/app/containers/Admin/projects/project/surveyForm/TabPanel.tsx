@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useParams } from 'utils/router';
 import { RouteType } from 'routes';
 
 import DownloadPDFButtonWithModal from 'components/admin/FormSync/DownloadPDFButtonWithModal';
@@ -13,6 +12,7 @@ import {
 } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import DuplicateSurveyButtonWithModal from './DuplicateSurveyButtonWithModal';
 import EditButtonWithWarningModal from './EditButtonWithWarningModal';
@@ -57,7 +57,9 @@ const TabPanel = ({
 };
 
 export default () => {
-  const { projectId, phaseId } = useParams({ strict: false });
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/survey-form',
+  });
 
   if (!projectId || !phaseId) {
     return null;

@@ -4,7 +4,6 @@ import { Box, Text, Title } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { isEqual } from 'lodash-es';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
-import { useParams } from 'utils/router';
 import { array, object, string } from 'yup';
 
 import useAnalysis from 'api/analyses/useAnalysis';
@@ -17,6 +16,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from '../messages';
 
@@ -26,7 +26,9 @@ type Props = {
 };
 
 const FileSelectionView = ({ setIsFileSelectionOpen, analysisId }: Props) => {
-  const { projectId } = useParams({ strict: false });
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const { mutate: updateAnalysis } = useUpdateAnalysis();
 
   const { data: analysis, isLoading: isLoadingAnalysis } =
