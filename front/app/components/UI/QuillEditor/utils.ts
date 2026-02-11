@@ -108,12 +108,48 @@ const convertAlignmentToInlineStyles = (html: string): string => {
   return div.innerHTML;
 };
 
+// Reverse of convertAlignmentToInlineStyles: convert saved data-align
+// attributes back to the CSS classes that blot-formatter2 expects.
+const convertInlineStylesToAlignment = (html: string): string => {
+  const div = document.createElement('div');
+  div.innerHTML = html;
+
+  // Images: wrap in alignment span (reverse of unwrapping in getHTML)
+  div.querySelectorAll<HTMLImageElement>('img[data-align]').forEach((img) => {
+    const align = img.getAttribute('data-align');
+    if (!align || !['left', 'center', 'right'].includes(align)) return;
+
+    const wrapper = document.createElement('span');
+    wrapper.className = `ql-image-align-${align}`;
+    img.parentNode?.insertBefore(wrapper, img);
+    wrapper.appendChild(img);
+    img.removeAttribute('data-align');
+    img.removeAttribute('style');
+  });
+
+  // Iframes: restore alignment class
+  div
+    .querySelectorAll<HTMLIFrameElement>('iframe[data-align]')
+    .forEach((iframe) => {
+      const align = iframe.getAttribute('data-align');
+      if (!align || !['left', 'center', 'right'].includes(align)) return;
+
+      iframe.classList.add(`ql-iframe-align-${align}`);
+      iframe.removeAttribute('data-align');
+      iframe.removeAttribute('style');
+    });
+
+  return div.innerHTML;
+};
+
 export const getHTML = (editor: Quill) => {
   if (editor.root.innerHTML === '<p><br></p>') return '';
   return convertAlignmentToInlineStyles(editor.root.innerHTML);
 };
 
 export const setHTML = (editor: Quill, html: string = '') => {
-  const delta = editor.clipboard.convert({ html });
+  const delta = editor.clipboard.convert({
+    html: convertInlineStylesToAlignment(html),
+  });
   editor.setContents(delta);
 };
