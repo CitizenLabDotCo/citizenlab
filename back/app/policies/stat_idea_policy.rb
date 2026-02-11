@@ -22,10 +22,6 @@ class StatIdeaPolicy < ApplicationPolicy
     end
   end
 
-  def ideas_count?
-    show_stats?
-  end
-
   def ideas_by_topic?
     show_stats?
   end
