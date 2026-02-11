@@ -244,6 +244,7 @@ export interface IIdeaQueryParameters {
   filter_can_moderate?: boolean;
   basket_id?: string;
   transitive?: boolean;
+  idea_status_id?: string | null;
 }
 
 export interface IIdeaApprovals {

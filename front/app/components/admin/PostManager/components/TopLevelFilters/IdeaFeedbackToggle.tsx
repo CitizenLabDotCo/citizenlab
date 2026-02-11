@@ -28,7 +28,7 @@ const IdeaFeedbackToggle = ({
     projects: project ? [project] : undefined,
     phase: queryParameters.phase,
     input_topics: queryParameters.input_topics,
-    // idea_status_id: queryParameters.idea_status,
+    idea_status_id: queryParameters.idea_status,
     search: queryParameters.search,
     transitive: queryParameters.transitive,
   });
