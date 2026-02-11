@@ -1,7 +1,5 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 
-import { parse } from 'qs';
-import { useLocation } from 'utils/router';
 import { RouteType } from 'routes';
 
 import { GLOBAL_CONTEXT } from 'api/authentication/authentication_requirements/constants';
@@ -20,6 +18,7 @@ import { trackEventByName } from 'utils/analytics';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
+import { useLocation } from 'utils/router';
 
 import {
   triggerAuthenticationFlow$,
@@ -28,10 +27,12 @@ import {
 } from '../events';
 import {
   ErrorCode,
+  SignUpInError,
   State,
   StepConfig,
   Step,
   AuthenticationData,
+  VerificationError,
 } from '../typings';
 
 import { getStepConfig } from './stepConfig';
@@ -272,24 +273,23 @@ export default function useSteps() {
       return;
     }
 
-    const urlSearchParams = parse(search, {
-      ignoreQueryPrefix: true,
-    }) as any;
-
     // Verification from profile & group based (non-SSO) verification flow
-    if (urlSearchParams.verification_error === 'true') {
+    if (search.verification_error === 'true') {
       transition(
         currentStep,
         'TRIGGER_VERIFICATION_ERROR'
-      )(urlSearchParams.error_code);
+      )(search.error_code as VerificationError | undefined);
 
       // Remove query string from URL as params already been captured
       window.history.replaceState(null, '', pathname);
       return;
     }
 
-    if (urlSearchParams.authentication_error === 'true') {
-      transition(currentStep, 'TRIGGER_AUTH_ERROR')(urlSearchParams.error_code);
+    if (search.authentication_error === 'true') {
+      transition(
+        currentStep,
+        'TRIGGER_AUTH_ERROR'
+      )(search.error_code as SignUpInError | undefined);
 
       // Remove query string from URL as params already been captured
       window.history.replaceState(null, '', pathname);
@@ -300,15 +300,15 @@ export default function useSteps() {
     // authentication method through an URL param, and launch the corresponding
     // flow
     if (
-      urlSearchParams.sso_success === 'true' ||
-      urlSearchParams.verification_success === 'true'
+      search.sso_success === 'true' ||
+      search.verification_success === 'true'
     ) {
       const {
         sso_flow,
         sso_verification_action,
         sso_verification_id,
         sso_verification_type,
-      } = urlSearchParams as SSOParams;
+      } = search as SSOParams;
 
       // Check if there is a success action in local storage (from SSO or verification)
       const actionFromLocalStorage = localStorage.getItem(

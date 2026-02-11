@@ -64,8 +64,25 @@ const ProjectPreviewToken = lazy(
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type RouteType = any;
 
+// Root search schema — SSO/auth callback params that can appear on any route
+const rootSearchSchema = yup.object({
+  verification_error: yup.string(),
+  authentication_error: yup.string(),
+  sso_success: yup.string(),
+  verification_success: yup.string(),
+  sso_flow: yup.string().oneOf(['signup', 'signin']),
+  sso_verification_action: yup.string(),
+  sso_verification_id: yup.string(),
+  sso_verification_type: yup.string(),
+  error_code: yup.string(),
+});
+
+export type RootSearchParams = yup.InferType<typeof rootSearchSchema>;
+
 // Root route
 const rootRoute = createRootRoute({
+  validateSearch: (search: Record<string, unknown>): RootSearchParams =>
+    rootSearchSchema.validateSync(search),
   component: () => (
     <App>
       <Outlet />
