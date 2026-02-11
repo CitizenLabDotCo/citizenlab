@@ -533,7 +533,6 @@
   "app.components.QuillEditor.customLinkPrompt": "Унесите линк:",
   "app.components.QuillEditor.edit": "Уредити",
   "app.components.QuillEditor.image": "Учитај слику",
-  "app.components.QuillEditor.imageAltPlaceholder": "Кратак опис слике",
   "app.components.QuillEditor.italic": "Курзив",
   "app.components.QuillEditor.link": "Додај везу",
   "app.components.QuillEditor.linkPrompt": "Унесите линк:",

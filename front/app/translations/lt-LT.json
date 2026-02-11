@@ -533,7 +533,6 @@
   "app.components.QuillEditor.customLinkPrompt": "Įveskite nuorodą:",
   "app.components.QuillEditor.edit": "Redaguoti",
   "app.components.QuillEditor.image": "Įkelti paveikslėlį",
-  "app.components.QuillEditor.imageAltPlaceholder": "Trumpas vaizdo aprašymas",
   "app.components.QuillEditor.italic": "Kursyvu",
   "app.components.QuillEditor.link": "Pridėti nuorodą",
   "app.components.QuillEditor.linkPrompt": "Įveskite nuorodą:",

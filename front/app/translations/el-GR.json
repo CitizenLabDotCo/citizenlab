@@ -533,7 +533,6 @@
   "app.components.QuillEditor.customLinkPrompt": "Εισαγωγή συνδέσμου:",
   "app.components.QuillEditor.edit": "Επεξεργασία",
   "app.components.QuillEditor.image": "Αποστολή εικόνας",
-  "app.components.QuillEditor.imageAltPlaceholder": "Σύντομη περιγραφή της εικόνας",
   "app.components.QuillEditor.italic": "Πλάγια γραφή",
   "app.components.QuillEditor.link": "Προσθήκη συνδέσμου",
   "app.components.QuillEditor.linkPrompt": "Εισαγωγή συνδέσμου:",

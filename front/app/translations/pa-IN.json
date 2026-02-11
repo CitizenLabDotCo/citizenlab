@@ -533,7 +533,6 @@
   "app.components.QuillEditor.customLinkPrompt": "ਲਿੰਕ ਦਰਜ ਕਰੋ:",
   "app.components.QuillEditor.edit": "ਸੰਪਾਦਿਤ ਕਰੋ",
   "app.components.QuillEditor.image": "ਚਿੱਤਰ ਅੱਪਲੋਡ ਕਰੋ",
-  "app.components.QuillEditor.imageAltPlaceholder": "ਚਿੱਤਰ ਦਾ ਛੋਟਾ ਵੇਰਵਾ",
   "app.components.QuillEditor.italic": "ਇਟਾਲਿਕ",
   "app.components.QuillEditor.link": "ਲਿੰਕ ਸ਼ਾਮਲ ਕਰੋ",
   "app.components.QuillEditor.linkPrompt": "ਲਿੰਕ ਦਰਜ ਕਰੋ:",

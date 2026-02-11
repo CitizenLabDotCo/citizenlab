@@ -533,7 +533,6 @@
   "app.components.QuillEditor.customLinkPrompt": "Indtast link:",
   "app.components.QuillEditor.edit": "Rediger",
   "app.components.QuillEditor.image": "Overfør billede",
-  "app.components.QuillEditor.imageAltPlaceholder": "Kort beskrivelse af billedet",
   "app.components.QuillEditor.italic": "Kursiv",
   "app.components.QuillEditor.link": "Tilføj link",
   "app.components.QuillEditor.linkPrompt": "Indtast link:",

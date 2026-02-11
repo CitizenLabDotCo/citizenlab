@@ -533,7 +533,6 @@
   "app.components.QuillEditor.customLinkPrompt": "Skriv inn lenke:",
   "app.components.QuillEditor.edit": "Rediger",
   "app.components.QuillEditor.image": "Last opp bilde",
-  "app.components.QuillEditor.imageAltPlaceholder": "Kort beskrivelse av bildet",
   "app.components.QuillEditor.italic": "Kursiv",
   "app.components.QuillEditor.link": "Legg til lenke",
   "app.components.QuillEditor.linkPrompt": "Skriv inn lenke:",

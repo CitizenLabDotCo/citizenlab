@@ -533,7 +533,6 @@
   "app.components.QuillEditor.customLinkPrompt": "أدخل الرابط:",
   "app.components.QuillEditor.edit": "تعديل",
   "app.components.QuillEditor.image": "تحميل صورة",
-  "app.components.QuillEditor.imageAltPlaceholder": "وصف موجز للصورة",
   "app.components.QuillEditor.italic": "مائل",
   "app.components.QuillEditor.link": "أضِف رابطًا",
   "app.components.QuillEditor.linkPrompt": "أدخل الرابط:",

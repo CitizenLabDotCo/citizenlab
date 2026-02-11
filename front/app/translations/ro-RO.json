@@ -251,7 +251,6 @@
   "app.components.QuillEditor.customLinkPrompt": "Introduceți link-ul:",
   "app.components.QuillEditor.edit": "Editați",
   "app.components.QuillEditor.image": "Încarcă imaginea",
-  "app.components.QuillEditor.imageAltPlaceholder": "Scurtă descriere a imaginii",
   "app.components.QuillEditor.italic": "Italic",
   "app.components.QuillEditor.link": "Adăugați link-ul",
   "app.components.QuillEditor.linkPrompt": "Introduceți link-ul:",

@@ -533,7 +533,6 @@
   "app.components.QuillEditor.customLinkPrompt": "Rhowch ddolen:",
   "app.components.QuillEditor.edit": "Golygu",
   "app.components.QuillEditor.image": "Uwchlwytho delwedd",
-  "app.components.QuillEditor.imageAltPlaceholder": "Disgrifiad byr o'r ddelwedd....",
   "app.components.QuillEditor.italic": "Italaidd",
   "app.components.QuillEditor.link": "Ychwanegu dolen",
   "app.components.QuillEditor.linkPrompt": "Rhowch ddolen:",
