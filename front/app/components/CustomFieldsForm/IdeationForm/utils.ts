@@ -7,7 +7,7 @@ import { addPrefix } from '../util';
 export const getInitialData = (
   idea: IIdeaData | undefined,
   authUser: IUser | undefined,
-  phase: IPhase
+  phase: IPhase | undefined
 ) => {
   const initialFormData = idea
     ? {
@@ -24,7 +24,7 @@ export const getInitialData = (
 
   const customFieldValues = authUser?.data.attributes.custom_field_values;
 
-  if (phase.data.attributes.user_fields_in_form_enabled && customFieldValues) {
+  if (phase?.data.attributes.user_fields_in_form_enabled && customFieldValues) {
     return {
       ...initialFormData,
       ...addPrefix(customFieldValues),
