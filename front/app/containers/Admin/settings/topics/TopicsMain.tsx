@@ -4,6 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { useLocation, Outlet } from 'utils/router';
 
 import { Tab } from 'components/admin/NavigationTabs';
+import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -44,7 +45,12 @@ const TopicsMain = () => {
             active={selectedTopicType === 'platform'}
           />
           <Tab
-            label={formatMessage(messages.tabDefaultInputTags)}
+            label={
+              <Box display="flex" alignItems="center" gap="8px">
+                {formatMessage(messages.tabDefaultInputTags)}
+                <NewLabel expiryDate={new Date('2026-08-10')} />
+              </Box>
+            }
             url={'/admin/settings/topics/input'}
             active={selectedTopicType === 'input'}
           />

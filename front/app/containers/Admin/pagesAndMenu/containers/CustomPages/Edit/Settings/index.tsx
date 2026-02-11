@@ -70,7 +70,7 @@ const EditCustomPageSettings = () => {
           }),
           slug: customPage.data.attributes.slug,
           projects_filter_type: customPage.data.attributes.projects_filter_type,
-          topic_ids: topicIds,
+          global_topic_ids: topicIds,
           area_id: areaIds[0],
         }}
         showNavBarItemTitle={hasNavbarItem}

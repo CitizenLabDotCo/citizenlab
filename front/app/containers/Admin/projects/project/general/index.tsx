@@ -8,6 +8,7 @@ import { IUpdatedProjectProperties } from 'api/projects/types';
 
 import NavigationTabs, { Tab } from 'components/admin/NavigationTabs';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
+import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
 import { isTopBarNavActive } from 'utils/helperUtils';
@@ -33,7 +34,12 @@ const General = () => {
       className: 'intercom-product-tour-project-general-tab-set-up',
     },
     {
-      label: formatMessage(messages.inputTags),
+      label: (
+        <Box display="flex" alignItems="center" gap="8px">
+          {formatMessage(messages.inputTags)}
+          <NewLabel expiryDate={new Date('2026-08-10')} />
+        </Box>
+      ),
       name: 'input-tags',
       url: `/admin/projects/${projectId}/general/input-tags` as const,
       className: 'intercom-product-tour-project-general-tab-input-tags',
