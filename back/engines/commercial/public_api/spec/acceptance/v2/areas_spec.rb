@@ -34,7 +34,7 @@ resource 'Areas' do
       end
     end
 
-    # No special reaosn this test in this spec, but any Public API acceptance test seems good enough.
+    # No special reason this test in this spec, but any Public API acceptance test seems good enough.
     context 'logging' do
       example 'logs tenant and api_client information' do
         # Subscribe to rails instrumentation to capture the payload
