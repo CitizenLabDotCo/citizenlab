@@ -2971,6 +2971,7 @@
   "app.containers.AdminPage.Topics.lastTopicWarning3": "En az bir etiket gereklidir. Etiket kullanmak istemiyorsanız, 'Etiketler' öğesi herhangi bir aşamanın giriş formundan silinebilir (varsa).",
   "app.containers.AdminPage.Topics.liveAutoInputTopicsDescription": "Etkinleştirildiğinde, etiketler yapay zeka kullanılarak sürekli olarak oluşturulur, güncellenir ve girişlere atanır.",
   "app.containers.AdminPage.Topics.liveAutoInputTopicsLabel": "Etiketleri otomatik olarak algılama ve atama",
+  "app.containers.AdminPage.Topics.perspectives": "Perspektifler",
   "app.containers.AdminPage.Topics.projectTopicsDescription2": "Create and manage the tags that citizens can use to categorize their inputs in this project.",
   "app.containers.AdminPage.Topics.save": "Save",
   "app.containers.AdminPage.Users.GroupCreation.createGroupButton": "Yeni bir grup ekleyin",
