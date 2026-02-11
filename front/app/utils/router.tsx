@@ -1,7 +1,10 @@
 import React, { useMemo } from 'react';
 
 // eslint-disable-next-line no-restricted-imports
-import { Navigate as TanstackNavigate } from '@tanstack/react-router';
+import {
+  Navigate as TanstackNavigate,
+  useLocation,
+} from '@tanstack/react-router';
 
 import { updateSearchParams } from './cl-router/updateSearchParams';
 
@@ -9,10 +12,10 @@ import { updateSearchParams } from './cl-router/updateSearchParams';
 export * from '@tanstack/react-router';
 
 export const useSearch = (_options: any) => {
-  const location = window.location;
+  const { searchStr } = useLocation();
 
   return useMemo(() => {
-    const searchParams = new URLSearchParams(location.search);
+    const searchParams = new URLSearchParams(searchStr);
     const params: Record<string, string> = {};
 
     searchParams.forEach((value, key) => {
@@ -31,7 +34,7 @@ export const useSearch = (_options: any) => {
       },
       updateSearchParams,
     ] as any;
-  }, [location.search]);
+  }, [searchStr]);
 };
 
 export const Navigate = (props: any) => {
