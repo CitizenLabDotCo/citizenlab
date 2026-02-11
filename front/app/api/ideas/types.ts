@@ -65,7 +65,7 @@ export interface IdeaQueryParameters {
   phase?: string;
 
   // filters
-  sort: IdeaSortMethod;
+  sort?: IdeaSortMethod;
   search?: string;
   idea_status?: string;
   input_topics?: string[];
