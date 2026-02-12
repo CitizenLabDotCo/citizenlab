@@ -288,8 +288,8 @@ RSpec.describe DeleteUserJob do
 
         expect { described_class.new.run(user) }
           .to change { EmailCampaigns::CampaignEmailCommand.count }.by(-1)
-          .and change { User.count }.by(-1)
-        
+          .and change(User, :count).by(-1)
+
         expect(User.exists?(user.id)).to be false
       end
 
@@ -298,9 +298,9 @@ RSpec.describe DeleteUserJob do
         create(:delivery, user: user)
 
         expect { described_class.new.run(user) }
-          .to change { EmailCampaigns::Delivery.count }.by(-1)
-          .and change { User.count }.by(-1)
-        
+          .to change(EmailCampaigns::Delivery, :count).by(-1)
+          .and change(User, :count).by(-1)
+
         expect(User.exists?(user.id)).to be false
       end
 
@@ -309,9 +309,9 @@ RSpec.describe DeleteUserJob do
         create(:consent, user: user)
 
         expect { described_class.new.run(user) }
-          .to change { EmailCampaigns::Consent.count }.by(-1)
-          .and change { User.count }.by(-1)
-        
+          .to change(EmailCampaigns::Consent, :count).by(-1)
+          .and change(User, :count).by(-1)
+
         expect(User.exists?(user.id)).to be false
       end
 
@@ -320,9 +320,9 @@ RSpec.describe DeleteUserJob do
         create(:email_campaigns_unsubscription_token, user: user)
 
         expect { described_class.new.run(user) }
-          .to change { EmailCampaigns::UnsubscriptionToken.count }.by(-1)
-          .and change { User.count }.by(-1)
-        
+          .to change(EmailCampaigns::UnsubscriptionToken, :count).by(-1)
+          .and change(User, :count).by(-1)
+
         expect(User.exists?(user.id)).to be false
       end
 
@@ -331,9 +331,9 @@ RSpec.describe DeleteUserJob do
         create(:campaign_example, recipient: user)
 
         expect { described_class.new.run(user) }
-          .to change { EmailCampaigns::Example.count }.by(-1)
-          .and change { User.count }.by(-1)
-        
+          .to change(EmailCampaigns::Example, :count).by(-1)
+          .and change(User, :count).by(-1)
+
         expect(User.exists?(user.id)).to be false
       end
     end
@@ -359,9 +359,9 @@ RSpec.describe DeleteUserJob do
         create(:claim_token, pending_claimer: user)
 
         expect { described_class.new.run(user) }
-          .to change { ClaimToken.count }.by(-1)
-          .and change { User.count }.by(-1)
-        
+          .to change(ClaimToken, :count).by(-1)
+          .and change(User, :count).by(-1)
+
         expect(User.exists?(user.id)).to be false
       end
 
@@ -370,9 +370,9 @@ RSpec.describe DeleteUserJob do
         create(:invites_import, importer: user, job_type: 'bulk_create')
 
         expect { described_class.new.run(user) }
-          .to change { InvitesImport.count }.by(-1)
-          .and change { User.count }.by(-1)
-        
+          .to change(InvitesImport, :count).by(-1)
+          .and change(User, :count).by(-1)
+
         expect(User.exists?(user.id)).to be false
       end
 
@@ -382,9 +382,9 @@ RSpec.describe DeleteUserJob do
         create(:event_attendance, attendee: user, event: event)
 
         expect { described_class.new.run(user) }
-          .to change { Events::Attendance.count }.by(-1)
-          .and change { User.count }.by(-1)
-        
+          .to change(Events::Attendance, :count).by(-1)
+          .and change(User, :count).by(-1)
+
         expect(User.exists?(user.id)).to be false
       end
     end
