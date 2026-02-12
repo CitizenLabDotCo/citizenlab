@@ -1446,6 +1446,7 @@
   "app.containers.Admin.projects.project.insights.totalVotes": "Gesamtzahl der Stimmen",
   "app.containers.Admin.projects.project.insights.visitors": "Besucher*innen",
   "app.containers.Admin.projects.project.insights.volunteerings": "Freiwillige",
+  "app.containers.Admin.projects.project.insights.voters": "Abstimmende",
   "app.containers.Admin.projects.project.insights.votes": "Stimmen",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Stimmen pro Person",
   "app.containers.Admin.projects.project.insights.vsLast7Days": "im Vergleich zu den letzten 7 Tagen",
