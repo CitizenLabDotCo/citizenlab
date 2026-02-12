@@ -1,5 +1,7 @@
 import React, { lazy } from 'react';
 
+import * as yup from 'yup';
+
 import PageLoading from 'components/UI/PageLoading';
 
 import { createRoute, Navigate } from 'utils/router';
@@ -31,6 +33,15 @@ export type messagingRouteTypes =
   | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsCustom}/${string}/edit`>
   | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsAutomated}`>
   | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsAutomated}/${string}/edit`>;
+
+// Messaging edit search schema
+const messagingEditSearchSchema = yup.object({
+  created: yup.string().optional(),
+});
+
+export type MessagingEditSearchParams = yup.InferType<
+  typeof messagingEditSearchSchema
+>;
 
 const messagingRoute = createRoute({
   getParentRoute: () => adminRoute,
@@ -81,6 +92,10 @@ const customEmailsShowRoute = createRoute({
 const customEmailsEditRoute = createRoute({
   getParentRoute: () => messagingRoute,
   path: messagingRoutes.emailsCustomCampaignIdEdit,
+  validateSearch: (
+    search: Record<string, unknown>
+  ): MessagingEditSearchParams =>
+    messagingEditSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <EmailsEdit campaignType="custom" />
@@ -101,6 +116,10 @@ const automatedEmailsRoute = createRoute({
 const automatedEmailsEditRoute = createRoute({
   getParentRoute: () => messagingRoute,
   path: messagingRoutes.emailsAutomatedCampaignIdEdit,
+  validateSearch: (
+    search: Record<string, unknown>
+  ): MessagingEditSearchParams =>
+    messagingEditSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <EmailsEdit campaignType="automated" />
