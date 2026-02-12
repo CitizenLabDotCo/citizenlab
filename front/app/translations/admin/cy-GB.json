@@ -1446,6 +1446,7 @@
   "app.containers.Admin.projects.project.insights.totalVotes": "Cyfanswm y pleidleisiau",
   "app.containers.Admin.projects.project.insights.visitors": "Ymwelwyr",
   "app.containers.Admin.projects.project.insights.volunteerings": "Gwirfoddolwyr",
+  "app.containers.Admin.projects.project.insights.voters": "Pleidleiswyr",
   "app.containers.Admin.projects.project.insights.votes": "Pleidleisiau",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Pleidleisiau fesul person",
   "app.containers.Admin.projects.project.insights.vsLast7Days": "o'i gymharu â'r 7 diwrnod diwethaf",

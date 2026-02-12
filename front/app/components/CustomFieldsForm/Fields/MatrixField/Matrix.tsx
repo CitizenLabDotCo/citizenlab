@@ -21,7 +21,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
-import { sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import messages from '../../messages';
 import { getLinearScaleLabel } from '../LinearScale/utils';
@@ -155,7 +154,7 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
         <Table
           width={'100%'}
           style={{ borderCollapse: 'collapse', borderSpacing: '0px 8px' }}
-          aria-labelledby={sanitizeForClassname(id)}
+          aria-labelledby={`matrix-question-label-${id}`}
         >
           <Thead>
             <Tr>

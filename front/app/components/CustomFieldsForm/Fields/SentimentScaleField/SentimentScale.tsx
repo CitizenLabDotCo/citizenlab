@@ -7,7 +7,6 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
-import { sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import { MINIMUM, MAXIMUM } from './constants';
 import TableBody from './TableBody';
@@ -76,7 +75,7 @@ const SentimentScale = ({ value: data, question, onChange }: Props) => {
       ref={sliderRef}
       aria-valuemin={MINIMUM}
       aria-valuemax={MAXIMUM}
-      aria-labelledby={sanitizeForClassname(id)}
+      aria-labelledby={id}
       onKeyDown={(event) => {
         if (event.key !== 'Tab' && !event.metaKey) {
           // Don't override the default tab behaviour or meta key (E.g. Mac command key)
