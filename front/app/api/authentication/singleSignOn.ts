@@ -9,7 +9,7 @@ import {
   SignUpInError,
 } from 'containers/Authentication/typings';
 
-import { getClaimTokens } from 'utils/claimToken';
+import { getUnexpiredClaimTokens } from 'utils/claimToken';
 
 export interface SSOProviderMap {
   azureactivedirectory: 'azureactivedirectory';
@@ -81,7 +81,7 @@ function setHref(
     sso_verification_action: context.action,
     sso_verification_id: isProjectContext(context) ? context.id : undefined,
     sso_verification_type: context.type,
-    claim_tokens: getClaimTokens(),
+    claim_tokens: getUnexpiredClaimTokens().map(({ token }) => token),
   };
 
   // NOTE: SSO passthru params are not currently called for Vienna SAML login

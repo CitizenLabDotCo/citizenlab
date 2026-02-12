@@ -3,7 +3,7 @@ import { SupportedLocale } from 'typings';
 import { IUser } from 'api/users/types';
 
 import fetcher from 'utils/cl-react-query/fetcher';
-import { clearClaimTokens, getClaimTokens } from 'utils/claimToken';
+import { clearClaimTokens, getUnexpiredClaimTokens } from 'utils/claimToken';
 
 import { CreateEmailOnlyAccountProperties } from './types';
 
@@ -35,7 +35,7 @@ export default async function createEmailOnlyAccount({
     user: {
       email,
       locale,
-      claim_tokens: getClaimTokens(),
+      claim_tokens: getUnexpiredClaimTokens().map(({ token }) => token),
     },
   };
 

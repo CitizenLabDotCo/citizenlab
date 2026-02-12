@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 
 import { getJwt, setJwt } from 'utils/auth/jwt';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
-import { getClaimTokens, clearClaimTokens } from 'utils/claimToken';
+import { getUnexpiredClaimTokens, clearClaimTokens } from 'utils/claimToken';
 
 import getAuthUser from '../auth_user/getAuthUser';
 
@@ -41,7 +41,7 @@ async function getAndSetToken({
       email,
       password,
       remember_me: rememberMe,
-      claim_tokens: getClaimTokens(),
+      claim_tokens: getUnexpiredClaimTokens().map(({ token }) => token),
     },
   };
 
