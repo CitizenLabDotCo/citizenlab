@@ -4,6 +4,7 @@ import { Spinner } from '@citizenlab/cl2-component-library';
 
 import AccessDenied from '../steps/AccessDenied';
 import BuiltInFields from '../steps/BuiltInFields';
+import ClaimTokenConsent from '../steps/ClaimTokenConsent';
 import EmailConfirmation from '../steps/EmailConfirmation';
 import EmailFlowStart from '../steps/EmailFlowStart';
 import Invitation from '../steps/Invitation';
@@ -211,6 +212,14 @@ const CurrentStep = ({
         <AccessDenied
           authenticationData={authenticationData}
           onClose={transition(currentStep, 'CLOSE')}
+        />
+      );
+
+    case 'claim-token-consent':
+      return (
+        <ClaimTokenConsent
+          onLink={transition(currentStep, 'LINK_PARTICIPATIONS')}
+          onKeepAnonymous={transition(currentStep, 'KEEP_ANONYMOUS')}
         />
       );
 

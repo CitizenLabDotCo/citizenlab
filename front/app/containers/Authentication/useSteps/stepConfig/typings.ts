@@ -34,7 +34,10 @@ export type Step =
   | 'sso-verification:sso-providers-policies'
 
   // post-participation flow (sign up after participation)
-  | 'post-participation:email';
+  | 'post-participation:email'
+
+  // claim token consent window
+  | 'claim-token-consent';
 
 export interface BuiltInFieldsUpdate {
   first_name?: string;

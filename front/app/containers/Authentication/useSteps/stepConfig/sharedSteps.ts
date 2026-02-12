@@ -192,5 +192,10 @@ export const sharedSteps = (
     'access-denied': {
       CLOSE: () => setCurrentStep('closed'),
     },
+
+    'claim-token-consent': {
+      LINK_PARTICIPATIONS: () => setCurrentStep('closed'), // TODO
+      KEEP_ANONYMOUS: () => setCurrentStep('closed'), // TODO
+    },
   };
 };
