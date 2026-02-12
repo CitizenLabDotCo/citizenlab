@@ -1446,6 +1446,7 @@
   "app.containers.Admin.projects.project.insights.totalVotes": "Összes szavazat",
   "app.containers.Admin.projects.project.insights.visitors": "Látogatók",
   "app.containers.Admin.projects.project.insights.volunteerings": "önkéntesek",
+  "app.containers.Admin.projects.project.insights.voters": "Választók",
   "app.containers.Admin.projects.project.insights.votes": "Szavazatok",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Szavazatok személyenként",
   "app.containers.Admin.projects.project.insights.vsLast7Days": "az elmúlt 7 naphoz képest",
