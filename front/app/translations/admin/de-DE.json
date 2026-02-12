@@ -1385,7 +1385,7 @@
   "app.containers.Admin.projects.project.insights.noComparisonData": "Keine Vergleichsdaten",
   "app.containers.Admin.projects.project.insights.noDemographicData": "Für diese Phase sind keine demografischen Daten verfügbar.",
   "app.containers.Admin.projects.project.insights.noInputsSubmitted": "Es wurden noch keine Beiträge eingereicht.",
-  "app.containers.Admin.projects.project.insights.openForResponses": "Für Antworten öffnen",
+  "app.containers.Admin.projects.project.insights.openForResponses": "Umfrage ein/aus",
   "app.containers.Admin.projects.project.insights.participants": "Teilnehmende",
   "app.containers.Admin.projects.project.insights.participantsPercent": "Teilnehmende (%)",
   "app.containers.Admin.projects.project.insights.participationOverTime": "Beteiligung im Zeitverlauf",
