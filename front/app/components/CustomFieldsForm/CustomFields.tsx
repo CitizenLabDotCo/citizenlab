@@ -228,6 +228,7 @@ const CustomFields = ({
         .filter((question) => question.enabled)
         .map((question) => {
           const labelProps = {
+            id: `${question.key}-label`,
             htmlFor: question.key,
             labelValue: localize(question.title_multiloc),
             optional: !question.required,
