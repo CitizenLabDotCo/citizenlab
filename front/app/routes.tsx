@@ -363,9 +363,34 @@ const foldersShowRoute = createRoute({
 });
 
 // Events routes
+const eventsIndexSearchSchema = yup.object({
+  ongoing_events_project_ids: yup
+    .array()
+    .of(yup.string().required())
+    .optional(),
+  past_events_project_ids: yup.array().of(yup.string().required()).optional(),
+  ongoing_page: yup.number().optional(),
+  past_page: yup.number().optional(),
+  time_period: yup
+    .array()
+    .of(
+      yup
+        .string()
+        .oneOf(['today', 'week', 'month', 'all'] as const)
+        .required()
+    )
+    .optional(),
+});
+
+export type EventsIndexSearchParams = yup.InferType<
+  typeof eventsIndexSearchSchema
+>;
+
 const eventsIndexRoute = createRoute({
   getParentRoute: () => localeRoute,
   path: 'events',
+  validateSearch: (search: Record<string, unknown>): EventsIndexSearchParams =>
+    eventsIndexSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <EventsPage />

@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
 
 import FilterSelector from 'components/FilterSelector';
 
@@ -11,6 +10,7 @@ import messages from './messages';
 
 type Props = {
   onChange: (dateFilterValue: string[]) => void;
+  selectedValues: string[];
   textColor?: string;
   listTop?: string;
   mobileLeft?: string;
@@ -18,24 +18,14 @@ type Props = {
 
 const DateFilterDropdown = ({
   onChange,
+  selectedValues,
   textColor,
   listTop,
   mobileLeft,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [searchParams] = useSearch({ strict: false });
-  const dateParam = searchParams.get('time_period');
-
-  const dateFilterFromUrl: string[] = dateParam ? JSON.parse(dateParam) : null;
-
-  const [selectedValue, setSelectedValue] = useState<string[]>(
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    dateFilterFromUrl || []
-  );
 
   const handleOnChange = (selectedValue) => {
-    setSelectedValue(selectedValue);
     onChange(selectedValue);
   };
 
@@ -51,7 +41,7 @@ const DateFilterDropdown = ({
         id="e2e-date-filter-selector"
         title={formatMessage(messages.date)}
         name="dates"
-        selected={selectedValue}
+        selected={selectedValues}
         values={options}
         onChange={handleOnChange}
         multipleSelectionAllowed={false}

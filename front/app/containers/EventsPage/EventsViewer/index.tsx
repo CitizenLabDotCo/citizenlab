@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
+import { useSearch } from '@tanstack/react-router';
 import moment from 'moment';
 import { MessageDescriptor } from 'react-intl';
-import { useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import useEvents from 'api/events/useEvents';
@@ -81,42 +81,23 @@ const EventsViewer = ({
   attendeeId,
   showDateFilter = true,
 }: Props) => {
-  const [searchParams] = useSearch({ strict: false });
+  const {
+    ongoing_events_project_ids,
+    past_events_project_ids,
+    ongoing_page,
+    past_page,
+    time_period,
+  } = useSearch({ strict: false });
   const { formatMessage } = useIntl();
 
-  // Get any URL params
-  const projectIdsParam = searchParams.get(
-    eventsTime === 'past'
-      ? 'past_events_project_ids'
-      : 'ongoing_events_project_ids'
-  );
-  const pageNumberParam = searchParams.get(
-    eventsTime === 'past' ? 'past_page' : 'ongoing_page'
-  );
-  const dateParam =
-    eventsTime === 'currentAndFuture' ? searchParams.get('time_period') : null;
-  const projectIdsFromUrl: string[] = projectIdsParam
-    ? JSON.parse(projectIdsParam)
-    : null;
-  const dateFilterFromUrl: dateFilterKey[] = dateParam
-    ? JSON.parse(dateParam)
-    : null;
-  const pageNumberFromUrl: number | null = pageNumberParam
-    ? JSON.parse(pageNumberParam)
-    : null;
+  const projectIdList = projectId
+    ? [projectId]
+    : (eventsTime === 'past'
+        ? past_events_project_ids
+        : ongoing_events_project_ids) ?? [];
 
-  // Set state based on URL params
-  const [projectIdList, setProjectIdList] = useState<string[] | undefined>(
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    projectIdsFromUrl || (projectId ? [projectId] : [])
-  );
-  const [dateFilter, setDateFilter] = useState<dateFilterKey[]>(
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    dateFilterFromUrl || []
-  );
-
-  const [currentPage, setCurrentPage] = useState(pageNumberFromUrl || 1);
+  const dateFilter: dateFilterKey[] = time_period ?? [];
+  const currentPage = (eventsTime === 'past' ? past_page : ongoing_page) ?? 1;
 
   const ongoingDuringDates = getDatesFromKey(dateFilter);
 
@@ -125,7 +106,7 @@ const EventsViewer = ({
     isLoading,
     isError,
   } = useEvents({
-    projectIds: projectIdList,
+    projectIds: projectIdList.length > 0 ? projectIdList : undefined,
     projectPublicationStatuses,
     currentAndFutureOnly: eventsTime === 'currentAndFuture',
     pastOnly: eventsTime === 'past',
@@ -136,47 +117,32 @@ const EventsViewer = ({
     ongoing_during: ongoingDuringDates,
   });
 
-  useEffect(() => {
-    if (projectId) {
-      setProjectIdList([projectId]);
-    }
-  }, [projectId]);
-
-  // Update projectIds URL params based on state, events time will not change after initial render
-  useEffect(() => {
-    const hasProjectFilter = projectIdList?.length;
-    const eventParam =
-      eventsTime === 'past'
-        ? 'past_events_project_ids'
-        : 'ongoing_events_project_ids';
+  const handleProjectIdsChange = (ids: string[]) => {
     if (!location.pathname.includes('/projects')) {
+      const eventParam =
+        eventsTime === 'past'
+          ? 'past_events_project_ids'
+          : 'ongoing_events_project_ids';
       updateSearchParams({
-        [eventParam]: hasProjectFilter ? projectIdList : null,
+        [eventParam]: ids.length > 0 ? ids : null,
       });
     }
-  }, [eventsTime, projectIdList]);
+  };
 
-  // Update pageNumber URL param based on state, events time will not change after initial render
-  useEffect(() => {
+  const handleDateFilterChange = (filter: dateFilterKey[]) => {
+    if (eventsTime === 'currentAndFuture') {
+      const hasDateFilter = filter.length > 0 ? filter[0] !== 'all' : false;
+      updateSearchParams({
+        time_period: hasDateFilter ? filter : null,
+      });
+    }
+  };
+
+  const handlePageChange = (newPage: number) => {
     const eventParam = eventsTime === 'past' ? 'past_page' : 'ongoing_page';
     updateSearchParams({
-      [eventParam]: currentPage > 1 ? currentPage : null,
+      [eventParam]: newPage > 1 ? newPage : null,
     });
-  }, [eventsTime, currentPage]);
-
-  // Update date filter URL params based on state, events time will not change after initial render
-  useEffect(() => {
-    const hasDateFilter =
-      dateFilter.length > 0 ? dateFilter[0] !== 'all' : false;
-    if (eventsTime === 'currentAndFuture') {
-      updateSearchParams({
-        time_period: hasDateFilter ? dateFilter : null,
-      });
-    }
-  }, [eventsTime, dateFilter]);
-
-  const onCurrentPageChange = (newPage: number) => {
-    setCurrentPage(newPage);
   };
 
   const lastPageNumber =
@@ -189,10 +155,11 @@ const EventsViewer = ({
       <TopBar
         showProjectFilter={showProjectFilter}
         title={title}
-        setProjectIds={setProjectIdList}
+        setProjectIds={handleProjectIdsChange}
         eventsTime={eventsTime}
-        setDateFilter={setDateFilter}
+        setDateFilter={handleDateFilterChange}
         showDateFilter={showDateFilter}
+        dateFilter={dateFilter}
       />
       {isError && <EventsMessage message={messages.errorWhenFetchingEvents} />}
       {isLoading && <EventsSpinner />}
@@ -213,7 +180,7 @@ const EventsViewer = ({
           <StyledPagination
             currentPage={currentPage}
             totalPages={lastPageNumber}
-            loadPage={onCurrentPageChange}
+            loadPage={handlePageChange}
             useColorsTheme
           />
         </>
