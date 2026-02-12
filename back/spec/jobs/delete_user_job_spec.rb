@@ -302,7 +302,7 @@ RSpec.describe DeleteUserJob do
         create(:campaign_email_command, recipient: user, campaign: 'admin_weekly_report')
 
         expect { described_class.new.run(user) }
-          .to change { EmailCampaigns::CampaignEmailCommand.count }.by(-1)
+          .to change(EmailCampaigns::CampaignEmailCommand, :count).by(-1)
           .and change(User, :count).by(-1)
 
         expect(User.exists?(user.id)).to be false
@@ -360,7 +360,7 @@ RSpec.describe DeleteUserJob do
         campaign_with_org_sender = create(:manual_campaign, author: user, sender: 'organization')
 
         expect { described_class.new.run(user) }.not_to raise_error
-        
+
         expect(User.exists?(user.id)).to be false
         expect(campaign_with_author_sender.reload.sender).to eq('organization')
         expect(campaign_with_author_sender.author_id).to be_nil
