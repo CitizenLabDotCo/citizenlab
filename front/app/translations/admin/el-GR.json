@@ -1446,6 +1446,7 @@
   "app.containers.Admin.projects.project.insights.totalVotes": "Σύνολο ψήφων",
   "app.containers.Admin.projects.project.insights.visitors": "Επισκέπτες",
   "app.containers.Admin.projects.project.insights.volunteerings": "Εθελοντές",
+  "app.containers.Admin.projects.project.insights.voters": "Ψηφοφόροι",
   "app.containers.Admin.projects.project.insights.votes": "Ψήφοι",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Ψήφοι ανά άτομο",
   "app.containers.Admin.projects.project.insights.vsLast7Days": "έναντι των τελευταίων 7 ημερών",
