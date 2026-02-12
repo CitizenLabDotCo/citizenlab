@@ -757,7 +757,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.projectsPublished": "gepubliceerde projecten",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.reportTitle": "Platform rapport",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.representativenessDashboard": "Representativiteitsdashboard",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourProjects": "Jouw projecten",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourProjects": "Jullie projecten",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourProjectsDescription": "De volgende sectie geeft een overzicht van publiekelijk zichtbare projecten die overlappen met de geselecteerde tijdsspanne, de meest gebruikte methoden in deze projecten en statistieken over de totale deelnamecijfers.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourRegistrationQuestions": "Jouw registratievragen",
   "app.containers.Admin.Reporting.Widgets.RegistrationsWidget.registrationsTimeline": "Tijdlijn registraties",
