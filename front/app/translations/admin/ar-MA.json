@@ -1446,6 +1446,7 @@
   "app.containers.Admin.projects.project.insights.totalVotes": "إجمالي الأصوات",
   "app.containers.Admin.projects.project.insights.visitors": "الزوار",
   "app.containers.Admin.projects.project.insights.volunteerings": "المتطوعون",
+  "app.containers.Admin.projects.project.insights.voters": "الناخبون",
   "app.containers.Admin.projects.project.insights.votes": "الأصوات",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "عدد الأصوات لكل شخص",
   "app.containers.Admin.projects.project.insights.vsLast7Days": "مقارنة بالأيام السبعة الماضية",
