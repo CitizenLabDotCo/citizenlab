@@ -1,7 +1,21 @@
-const STORAGE_KEY = 'claim_tokens';
-let inMemoryStorage: string[] = [];
+const STORAGE_KEY = 'claim_tokens_with_expiration_date';
+let inMemoryStorage: ClaimToken[] = [];
 
 let localStorageAvailable: boolean | undefined = undefined;
+
+type ClaimToken = {
+  token: string;
+  expirationDate: string;
+};
+
+const isClaimToken = (obj: any): obj is ClaimToken => {
+  return (
+    typeof obj === 'object' &&
+    obj !== null &&
+    typeof obj.token === 'string' &&
+    typeof obj.expirationDate === 'string'
+  );
+};
 
 const isLocalStorageAvailable = () => {
   if (localStorageAvailable !== undefined) {
@@ -21,32 +35,47 @@ const isLocalStorageAvailable = () => {
   return localStorageAvailable;
 };
 
-export const storeClaimToken = (token: string) => {
-  const storedTokens = getClaimTokens();
-  if (storedTokens.includes(token)) {
+export const storeClaimToken = (claimToken: ClaimToken) => {
+  const storedTokens = getUnexpiredClaimTokens();
+  if (
+    storedTokens
+      .map((storedToken) => storedToken.token)
+      .includes(claimToken.token)
+  ) {
     return;
   }
 
   if (isLocalStorageAvailable()) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify([...storedTokens, token]));
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify([...storedTokens, claimToken])
+    );
   } else {
-    inMemoryStorage = [...storedTokens, token];
+    inMemoryStorage = [...storedTokens, claimToken];
   }
 };
 
-export const getClaimTokens = () => {
-  if (isLocalStorageAvailable()) {
-    const tokensString = localStorage.getItem(STORAGE_KEY);
-    const tokens = tokensString ? JSON.parse(tokensString) : [];
+export const getUnexpiredClaimTokens = () => {
+  const getClaimTokens = () => {
+    if (isLocalStorageAvailable()) {
+      const tokensString = localStorage.getItem(STORAGE_KEY);
+      const tokens = tokensString ? JSON.parse(tokensString) : [];
 
-    if (Array.isArray(tokens) && tokens.every((t) => typeof t === 'string')) {
-      return tokens;
+      if (Array.isArray(tokens) && tokens.every(isClaimToken)) {
+        return tokens;
+      }
+
+      return [];
     }
 
-    return [];
-  }
+    return inMemoryStorage;
+  };
 
-  return inMemoryStorage;
+  const claimTokens = getClaimTokens();
+
+  return claimTokens.filter(
+    (token) => new Date(token.expirationDate) > new Date()
+  );
 };
 
 export const clearClaimTokens = () => {
