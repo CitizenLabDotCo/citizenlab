@@ -1620,7 +1620,7 @@
   "app.containers.Navbar.unverified": "Nicht verifiziert",
   "app.containers.Navbar.verified": "Verifiziert",
   "app.containers.NewAuthModal.beforeYouFollow": "Bevor Sie folgen",
-  "app.containers.NewAuthModal.beforeYouParticipate": "Bevor Sie teilnehmen können",
+  "app.containers.NewAuthModal.beforeYouParticipate": "Bevor es weiter geht",
   "app.containers.NewAuthModal.completeYourProfile": "Profil vervollständigen",
   "app.containers.NewAuthModal.confirmYourEmail": "E-Mail-Adresse bestätigen",
   "app.containers.NewAuthModal.logIn": "Anmelden",
