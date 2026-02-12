@@ -92,15 +92,6 @@ RSpec.describe DeleteUserJob do
     end
 
     context 'when user has associations that should be nullified' do
-      it 'successfully deletes user with activities' do
-        user = create(:user)
-        create(:activity, user: user)
-
-        expect { described_class.new.run(user) }.not_to raise_error
-        expect(User.exists?(user.id)).to be false
-        expect(Activity.where(user_id: nil).count).to eq(1)
-      end
-
       it 'successfully deletes user with project imports' do
         user = create(:user)
         create(:project_import, import_user: user, import_type: 'project')
@@ -116,6 +107,152 @@ RSpec.describe DeleteUserJob do
 
         expect { described_class.new.run(user) }.not_to raise_error
         expect(User.exists?(user.id)).to be false
+        expect(BulkImportIdeas::IdeaImport.where(import_user_id: nil).count).to eq(1)
+      end
+
+      it 'successfully deletes user who banned an email' do
+        user = create(:admin)
+        EmailBan.ban!('banned@example.com', reason: 'Spam', banned_by: user)
+
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+        expect(EmailBan.where(banned_by_id: nil).count).to eq(1)
+      end
+
+      it 'successfully deletes user with activities' do
+        user = create(:user)
+        create(:activity, user: user)
+
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+        expect(Activity.where(user_id: nil).count).to eq(1)
+      end
+
+      it 'successfully deletes user with ideas' do
+        user = create(:user)
+        create(:idea, author: user)
+
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+        expect(Idea.where(author_id: nil).count).to eq(1)
+      end
+
+      it 'successfully deletes user with manual votes last updated ideas' do
+        user = create(:user)
+        create(:idea, manual_votes_last_updated_by: user)
+
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+        expect(Idea.where(manual_votes_last_updated_by_id: nil).count).to eq(1)
+      end
+
+      it 'successfully deletes user with manual voters last updated phases' do
+        user = create(:user)
+        create(:phase, manual_voters_last_updated_by: user)
+
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+        expect(Phase.where(manual_voters_last_updated_by_id: nil).count).to eq(1)
+      end
+
+      it 'successfully deletes user with comments' do
+        user = create(:user)
+        create(:comment, author: user)
+
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+        expect(Comment.where(author_id: nil).count).to eq(1)
+      end
+
+      it 'successfully deletes user with internal comments' do
+        user = create(:user)
+        create(:internal_comment, author: user)
+
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+        expect(InternalComment.where(author_id: nil).count).to eq(1)
+      end
+
+      it 'successfully deletes user with official feedbacks' do
+        user = create(:user)
+        create(:official_feedback, user: user)
+
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+        expect(OfficialFeedback.where(user_id: nil).count).to eq(1)
+      end
+
+      it 'successfully deletes user with reactions' do
+        user = create(:user)
+        create(:reaction, user: user)
+
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+        expect(Reaction.where(user_id: nil).count).to eq(1)
+      end
+
+      it 'successfully deletes user with files' do
+        user = create(:user)
+        create(:file, uploader: user)
+
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+        expect(Files::File.where(uploader_id: nil).count).to eq(1)
+      end
+
+      it 'successfully deletes user with spam reports' do
+        user = create(:user)
+        create(:spam_report, user: user)
+
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+        expect(SpamReport.where(user_id: nil).count).to eq(1)
+      end
+
+      it 'successfully deletes user with inviter invites' do
+        user = create(:user)
+        create(:invite, inviter: user)
+
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+        expect(Invite.where(inviter_id: nil).count).to eq(1)
+      end
+
+      it 'successfully deletes user with requested project reviews' do
+        user = create(:admin)
+        create(:project_review, requester: user)
+
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+        expect(ProjectReview.where(requester_id: nil).count).to eq(1)
+      end
+
+      it 'successfully deletes user with assigned project reviews' do
+        user = create(:admin)
+        create(:project_review, reviewer: user)
+
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+        expect(ProjectReview.where(reviewer_id: nil).count).to eq(1)
+      end
+
+      it 'successfully deletes user with jobs trackers' do
+        user = create(:user)
+        create(:jobs_tracker, owner: user)
+
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+        expect(Jobs::Tracker.where(owner_id: nil).count).to eq(1)
+      end
+
+      it 'successfully deletes user with initiator notifications' do
+        user = create(:user)
+        recipient = create(:user)
+        create(:notification, initiating_user: user, recipient: recipient)
+
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+        expect(Notification.where(initiating_user_id: nil).count).to eq(1)
       end
     end
   end
