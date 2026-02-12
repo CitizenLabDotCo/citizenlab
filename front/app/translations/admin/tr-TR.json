@@ -1446,6 +1446,7 @@
   "app.containers.Admin.projects.project.insights.totalVotes": "Toplam oy sayısı",
   "app.containers.Admin.projects.project.insights.visitors": "Ziyaretçiler",
   "app.containers.Admin.projects.project.insights.volunteerings": "Gönüllüler",
+  "app.containers.Admin.projects.project.insights.voters": "Seçmenler",
   "app.containers.Admin.projects.project.insights.votes": "Oylar",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Kişi başına oy",
   "app.containers.Admin.projects.project.insights.vsLast7Days": "vs son 7 gün",
