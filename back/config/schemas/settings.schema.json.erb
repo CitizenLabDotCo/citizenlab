@@ -722,7 +722,7 @@
           "tracking_id": {
             "type": "string",
             "description": "The tracking ID the front-end send it's data to. Format UA-XXXXXXXXX-XX",
-            "pattern": "^(UA|YT|MO)\-[0-9]+\-[0-9]+$",
+            "pattern": "^(UA|YT|MO)\\-[0-9]+\\-[0-9]+$",
             "default": "<%= ENV.fetch('DEFAULT_GA_TRACKING_ID', '')%>"
           }
         }
