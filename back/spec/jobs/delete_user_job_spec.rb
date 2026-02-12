@@ -254,6 +254,139 @@ RSpec.describe DeleteUserJob do
         expect(User.exists?(user.id)).to be false
         expect(Notification.where(initiating_user_id: nil).count).to eq(1)
       end
+
+      it 'successfully deletes user who is default assignee for projects' do
+        user = create(:admin)
+        create(:project, default_assignee: user)
+
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+        expect(Project.where(default_assignee_id: nil).count).to eq(1)
+      end
+
+      it 'successfully deletes user with assigned ideas' do
+        user = create(:admin)
+        create(:idea, assignee: user)
+
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+        expect(Idea.where(assignee_id: nil).count).to eq(1)
+      end
+
+      it 'successfully deletes user who owns reports' do
+        user = create(:user)
+        create(:report, owner: user)
+
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+        expect(ReportBuilder::Report.where(owner_id: nil).count).to eq(1)
+      end
+
+      it 'successfully deletes user with campaign email commands' do
+        user = create(:user)
+        create(:campaign_email_command, recipient: user, campaign: 'admin_weekly_report')
+
+        expect { described_class.new.run(user) }
+          .to change { EmailCampaigns::CampaignEmailCommand.count }.by(-1)
+          .and change { User.count }.by(-1)
+        
+        expect(User.exists?(user.id)).to be false
+      end
+
+      it 'successfully deletes user with email campaigns deliveries' do
+        user = create(:user)
+        create(:delivery, user: user)
+
+        expect { described_class.new.run(user) }
+          .to change { EmailCampaigns::Delivery.count }.by(-1)
+          .and change { User.count }.by(-1)
+        
+        expect(User.exists?(user.id)).to be false
+      end
+
+      it 'successfully deletes user with email campaigns consents' do
+        user = create(:user)
+        create(:consent, user: user)
+
+        expect { described_class.new.run(user) }
+          .to change { EmailCampaigns::Consent.count }.by(-1)
+          .and change { User.count }.by(-1)
+        
+        expect(User.exists?(user.id)).to be false
+      end
+
+      it 'successfully deletes user with email campaigns unsubscription token' do
+        user = create(:user)
+        create(:email_campaigns_unsubscription_token, user: user)
+
+        expect { described_class.new.run(user) }
+          .to change { EmailCampaigns::UnsubscriptionToken.count }.by(-1)
+          .and change { User.count }.by(-1)
+        
+        expect(User.exists?(user.id)).to be false
+      end
+
+      it 'successfully deletes user with email campaigns examples' do
+        user = create(:user)
+        create(:campaign_example, recipient: user)
+
+        expect { described_class.new.run(user) }
+          .to change { EmailCampaigns::Example.count }.by(-1)
+          .and change { User.count }.by(-1)
+        
+        expect(User.exists?(user.id)).to be false
+      end
+    end
+
+    context 'when user has authored campaigns' do
+      it 'successfully deletes user and fixes authored campaigns' do
+        user = create(:user)
+        campaign_with_author_sender = create(:manual_campaign, author: user, sender: 'author')
+        campaign_with_org_sender = create(:manual_campaign, author: user, sender: 'organization')
+
+        expect { described_class.new.run(user) }.not_to raise_error
+        
+        expect(User.exists?(user.id)).to be false
+        expect(campaign_with_author_sender.reload.sender).to eq('organization')
+        expect(campaign_with_author_sender.author_id).to be_nil
+        expect(campaign_with_org_sender.reload.author_id).to be_nil
+      end
+    end
+
+    context 'when user has associations that should be destroyed' do
+      it 'successfully deletes user with claim tokens' do
+        user = create(:user)
+        create(:claim_token, pending_claimer: user)
+
+        expect { described_class.new.run(user) }
+          .to change { ClaimToken.count }.by(-1)
+          .and change { User.count }.by(-1)
+        
+        expect(User.exists?(user.id)).to be false
+      end
+
+      it 'successfully deletes user with invites imports' do
+        user = create(:user)
+        create(:invites_import, importer: user, job_type: 'bulk_create')
+
+        expect { described_class.new.run(user) }
+          .to change { InvitesImport.count }.by(-1)
+          .and change { User.count }.by(-1)
+        
+        expect(User.exists?(user.id)).to be false
+      end
+
+      it 'successfully deletes user with event attendances' do
+        user = create(:user)
+        event = create(:event)
+        create(:event_attendance, attendee: user, event: event)
+
+        expect { described_class.new.run(user) }
+          .to change { Events::Attendance.count }.by(-1)
+          .and change { User.count }.by(-1)
+        
+        expect(User.exists?(user.id)).to be false
+      end
     end
   end
 end
