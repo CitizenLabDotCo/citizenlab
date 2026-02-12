@@ -7,7 +7,7 @@ FROM cypress/factory:4.1.0
 WORKDIR /
 
 # Install jq for version parsing
-RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg \
+RUN rm -f /etc/apt/sources.list.d/google-chrome.list \
     && apt-get update && apt-get install -y jq curl
 
 # Change the working directory to /front
