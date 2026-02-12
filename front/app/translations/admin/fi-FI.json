@@ -1446,6 +1446,7 @@
   "app.containers.Admin.projects.project.insights.totalVotes": "Äänten kokonaismäärä",
   "app.containers.Admin.projects.project.insights.visitors": "Vierailijat",
   "app.containers.Admin.projects.project.insights.volunteerings": "Vapaaehtoiset",
+  "app.containers.Admin.projects.project.insights.voters": "Äänestäjät",
   "app.containers.Admin.projects.project.insights.votes": "Äänet",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Ääniä henkilöä kohden",
   "app.containers.Admin.projects.project.insights.vsLast7Days": "verrattuna viimeisiin 7 päivään",
