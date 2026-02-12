@@ -1446,6 +1446,7 @@
   "app.containers.Admin.projects.project.insights.totalVotes": "Ukupno glasova",
   "app.containers.Admin.projects.project.insights.visitors": "Posjetitelji",
   "app.containers.Admin.projects.project.insights.volunteerings": "Volonteri",
+  "app.containers.Admin.projects.project.insights.voters": "Birači",
   "app.containers.Admin.projects.project.insights.votes": "Glasovi",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Glasovi po osobi",
   "app.containers.Admin.projects.project.insights.vsLast7Days": "u odnosu na posljednjih 7 dana",
