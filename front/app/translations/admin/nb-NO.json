@@ -1446,6 +1446,7 @@
   "app.containers.Admin.projects.project.insights.totalVotes": "Totalt antall stemmer",
   "app.containers.Admin.projects.project.insights.visitors": "Besøkende",
   "app.containers.Admin.projects.project.insights.volunteerings": "Frivillige",
+  "app.containers.Admin.projects.project.insights.voters": "Velgerne",
   "app.containers.Admin.projects.project.insights.votes": "Stemmer",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Stemmer per person",
   "app.containers.Admin.projects.project.insights.vsLast7Days": "vs siste 7 dager",
