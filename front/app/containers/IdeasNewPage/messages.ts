@@ -38,6 +38,30 @@ export default defineMessages({
     id: 'app.containers.IdeasNewPage.petitionMetaTitle1',
     defaultMessage: 'Add new petition to project | {orgName}',
   },
+  commentMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.commentMetaTitle1',
+    defaultMessage: 'Add new comment to project | {orgName}',
+  },
+  responseMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.responseMetaTitle1',
+    defaultMessage: 'Add new response to project | {orgName}',
+  },
+  suggestionMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.suggestionMetaTitle1',
+    defaultMessage: 'Add new suggestion to project | {orgName}',
+  },
+  topicMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.topicMetaTitle1',
+    defaultMessage: 'Add new topic to project | {orgName}',
+  },
+  postMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.postMetaTitle1',
+    defaultMessage: 'Add new post to project | {orgName}',
+  },
+  storyMetaTitle1: {
+    id: 'app.containers.IdeasNewPage.storyMetaTitle1',
+    defaultMessage: 'Add new story to project | {orgName}',
+  },
   ideaNewMetaDescription: {
     id: 'app.containers.IdeasNewPage.ideaNewMetaDescription',
     defaultMessage:

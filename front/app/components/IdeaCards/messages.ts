@@ -43,6 +43,11 @@ export default defineMessages({
     defaultMessage:
       '{ideasCount, plural, no {{ideasCount} questions} one {{ideasCount} question} other {{ideasCount} questions}}',
   },
+  xIssues: {
+    id: 'app.containers.IdeaCards.xIssues',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} issues} one {{ideasCount} issue} other {{ideasCount} issues}}',
+  },
   xComments: {
     id: 'app.containers.IdeaCards.xComments3',
     defaultMessage:
@@ -67,6 +72,31 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.xPetitions2',
     defaultMessage:
       '{ideasCount, plural, no {{ideasCount} petitions} one {{ideasCount} petition} other {{ideasCount} petitions}}',
+  },
+  xResponses: {
+    id: 'app.containers.IdeaCards.xResponses',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} responses} one {{ideasCount} response} other {{ideasCount} responses}}',
+  },
+  xSuggestions: {
+    id: 'app.containers.IdeaCards.xSuggestions',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} suggestions} one {{ideasCount} suggestion} other {{ideasCount} suggestions}}',
+  },
+  xTopics: {
+    id: 'app.containers.IdeaCards.xTopics',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} topics} one {{ideasCount} topic} other {{ideasCount} topics}}',
+  },
+  xPosts: {
+    id: 'app.containers.IdeaCards.xPosts',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} posts} one {{ideasCount} post} other {{ideasCount} posts}}',
+  },
+  xStories: {
+    id: 'app.containers.IdeaCards.xStories',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} stories} one {{ideasCount} story} other {{ideasCount} stories}}',
   },
   topics: {
     id: 'app.containers.IdeaCards.topics',
@@ -185,5 +215,29 @@ export default defineMessages({
   petitions: {
     id: 'app.containers.IdeaCards.petitions',
     defaultMessage: 'Petitions',
+  },
+  comments: {
+    id: 'app.containers.IdeaCards.comments',
+    defaultMessage: 'Comments',
+  },
+  responses: {
+    id: 'app.containers.IdeaCards.responses',
+    defaultMessage: 'Responses',
+  },
+  suggestions: {
+    id: 'app.containers.IdeaCards.suggestions',
+    defaultMessage: 'Suggestions',
+  },
+  topicPlural: {
+    id: 'app.containers.IdeaCards.topicPlural',
+    defaultMessage: 'Topics',
+  },
+  posts: {
+    id: 'app.containers.IdeaCards.posts',
+    defaultMessage: 'Posts',
+  },
+  stories: {
+    id: 'app.containers.IdeaCards.stories',
+    defaultMessage: 'Stories',
   },
 });

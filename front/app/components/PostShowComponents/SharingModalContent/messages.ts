@@ -42,6 +42,30 @@ export default defineMessages({
     id: 'app.components.PostComponents.SharingModalContent.petitionEmailSharingSubject',
     defaultMessage: 'Support my petition: {postTitle}.',
   },
+  commentEmailSharingSubject: {
+    id: 'app.components.PostComponents.SharingModalContent.commentEmailSharingSubject',
+    defaultMessage: 'Support my comment: {postTitle}.',
+  },
+  responseEmailSharingSubject: {
+    id: 'app.components.PostComponents.SharingModalContent.responseEmailSharingSubject',
+    defaultMessage: 'Support my response: {postTitle}.',
+  },
+  suggestionEmailSharingSubject: {
+    id: 'app.components.PostComponents.SharingModalContent.suggestionEmailSharingSubject',
+    defaultMessage: 'Support my suggestion: {postTitle}.',
+  },
+  topicEmailSharingSubject: {
+    id: 'app.components.PostComponents.SharingModalContent.topicEmailSharingSubject',
+    defaultMessage: 'Join the discussion: {postTitle}.',
+  },
+  postEmailSharingSubject: {
+    id: 'app.components.PostComponents.SharingModalContent.postEmailSharingSubject',
+    defaultMessage: 'Support my post: {postTitle}.',
+  },
+  storyEmailSharingSubject: {
+    id: 'app.components.PostComponents.SharingModalContent.storyEmailSharingSubject',
+    defaultMessage: 'Read my story: {postTitle}.',
+  },
   ideaEmailSharingBody: {
     id: 'app.components.PostComponents.SharingModalContent.ideaEmailSharingBody',
     defaultMessage: "Support my idea '{postTitle}' at {postUrl}!",
@@ -80,6 +104,31 @@ export default defineMessages({
     id: 'app.components.PostComponents.SharingModalContent.petitionEmailSharingBody',
     defaultMessage: "Support my petition '{postTitle}' at {postUrl}!",
   },
+  commentEmailSharingBody: {
+    id: 'app.components.PostComponents.SharingModalContent.commentEmailSharingBody',
+    defaultMessage: "Support my comment '{postTitle}' at {postUrl}!",
+  },
+  responseEmailSharingBody: {
+    id: 'app.components.PostComponents.SharingModalContent.responseEmailSharingBody',
+    defaultMessage: "Support my response '{postTitle}' at {postUrl}!",
+  },
+  suggestionEmailSharingBody: {
+    id: 'app.components.PostComponents.SharingModalContent.suggestionEmailSharingBody',
+    defaultMessage: "Support my suggestion '{postTitle}' at {postUrl}!",
+  },
+  topicEmailSharingBody: {
+    id: 'app.components.PostComponents.SharingModalContent.topicEmailSharingBody',
+    defaultMessage:
+      "Join the discussion about this topic '{postTitle}' at {postUrl}!",
+  },
+  postEmailSharingBody: {
+    id: 'app.components.PostComponents.SharingModalContent.postEmailSharingBody',
+    defaultMessage: "Support my post '{postTitle}' at {postUrl}!",
+  },
+  storyEmailSharingBody: {
+    id: 'app.components.PostComponents.SharingModalContent.storyEmailSharingBody',
+    defaultMessage: "Read my story '{postTitle}' at {postUrl}!",
+  },
   ideaWhatsAppMessage: {
     id: 'app.components.PostComponents.SharingModalContent.ideaWhatsAppMessage',
     defaultMessage: 'Support my idea: {postTitle}.',
@@ -115,5 +164,29 @@ export default defineMessages({
   petitionWhatsAppMessage: {
     id: 'app.components.PostComponents.SharingModalContent.petitionWhatsAppMessage',
     defaultMessage: 'Support my petition: {postTitle}.',
+  },
+  commentWhatsAppMessage: {
+    id: 'app.components.PostComponents.SharingModalContent.commentWhatsAppMessage',
+    defaultMessage: 'Support my comment: {postTitle}.',
+  },
+  responseWhatsAppMessage: {
+    id: 'app.components.PostComponents.SharingModalContent.responseWhatsAppMessage',
+    defaultMessage: 'Support my response: {postTitle}.',
+  },
+  suggestionWhatsAppMessage: {
+    id: 'app.components.PostComponents.SharingModalContent.suggestionWhatsAppMessage',
+    defaultMessage: 'Support my suggestion: {postTitle}.',
+  },
+  topicWhatsAppMessage: {
+    id: 'app.components.PostComponents.SharingModalContent.topicWhatsAppMessage',
+    defaultMessage: 'Join the discussion: {postTitle}.',
+  },
+  postWhatsAppMessage: {
+    id: 'app.components.PostComponents.SharingModalContent.postWhatsAppMessage',
+    defaultMessage: 'Support my post: {postTitle}.',
+  },
+  storyWhatsAppMessage: {
+    id: 'app.components.PostComponents.SharingModalContent.storyWhatsAppMessage',
+    defaultMessage: 'Read my story: {postTitle}.',
   },
 });

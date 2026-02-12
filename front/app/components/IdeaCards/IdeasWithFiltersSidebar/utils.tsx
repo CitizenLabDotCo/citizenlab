@@ -13,9 +13,7 @@ export const getInputCountMessage = (inputTerm: InputTerm) => {
     case 'question':
       return messages.xQuestions;
     case 'issue':
-      // We use "comment" instead of "issue" as of 2021
-      // see: https://docs.google.com/spreadsheets/d/1ZAdsuCiApii-nIrcFnEXFAUeZXaygYwvI4Z_XhrpJRg
-      return messages.xComments;
+      return messages.xIssues;
     case 'contribution':
       return messages.xContributions;
     case 'proposal':
@@ -24,6 +22,18 @@ export const getInputCountMessage = (inputTerm: InputTerm) => {
       return messages.xInitiatives;
     case 'petition':
       return messages.xPetitions;
+    case 'comment':
+      return messages.xComments;
+    case 'response':
+      return messages.xResponses;
+    case 'suggestion':
+      return messages.xSuggestions;
+    case 'topic':
+      return messages.xTopics;
+    case 'post':
+      return messages.xPosts;
+    case 'story':
+      return messages.xStories;
     default:
       return messages.xIdeas;
   }

@@ -268,6 +268,30 @@ export default defineMessages({
     id: 'app.containers.Projects.seeThePetitions',
     defaultMessage: 'See the petitions',
   },
+  seeTheComments: {
+    id: 'app.containers.Projects.seeTheComments',
+    defaultMessage: 'See the comments',
+  },
+  seeTheResponses: {
+    id: 'app.containers.Projects.seeTheResponses',
+    defaultMessage: 'See the responses',
+  },
+  seeTheSuggestions: {
+    id: 'app.containers.Projects.seeTheSuggestions',
+    defaultMessage: 'See the suggestions',
+  },
+  seeTheTopics: {
+    id: 'app.containers.Projects.seeTheTopics',
+    defaultMessage: 'See the topics',
+  },
+  seeThePosts: {
+    id: 'app.containers.Projects.seeThePosts',
+    defaultMessage: 'See the posts',
+  },
+  seeTheStories: {
+    id: 'app.containers.Projects.seeTheStories',
+    defaultMessage: 'See the stories',
+  },
   meetMinBudgetRequirement: {
     id: 'app.containers.Projects.meetMinBudgetRequirement',
     defaultMessage: 'Meet the minimum budget to submit your basket.',

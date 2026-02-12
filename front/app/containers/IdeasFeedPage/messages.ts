@@ -38,6 +38,30 @@ export default defineMessages({
     id: 'app.containers.IdeasFeedPage.showAllPetitions',
     defaultMessage: 'Show petitions',
   },
+  showAllComments: {
+    id: 'app.containers.IdeasFeedPage.showAllComments',
+    defaultMessage: 'Show comments',
+  },
+  showAllResponses: {
+    id: 'app.containers.IdeasFeedPage.showAllResponses',
+    defaultMessage: 'Show responses',
+  },
+  showAllSuggestions: {
+    id: 'app.containers.IdeasFeedPage.showAllSuggestions',
+    defaultMessage: 'Show suggestions',
+  },
+  showAllTopics: {
+    id: 'app.containers.IdeasFeedPage.showAllTopics',
+    defaultMessage: 'Show topics',
+  },
+  showAllPosts: {
+    id: 'app.containers.IdeasFeedPage.showAllPosts',
+    defaultMessage: 'Show posts',
+  },
+  showAllStories: {
+    id: 'app.containers.IdeasFeedPage.showAllStories',
+    defaultMessage: 'Show stories',
+  },
   // #input_term_copy
   seeAllIdeas: {
     id: 'app.containers.IdeasFeedPage.seeAllIdeas2',
@@ -74,6 +98,30 @@ export default defineMessages({
   seeAllPetitions: {
     id: 'app.containers.IdeasFeedPage.seeAllPetitions',
     defaultMessage: 'See all {ideasCount} petitions',
+  },
+  seeAllComments: {
+    id: 'app.containers.IdeasFeedPage.seeAllComments',
+    defaultMessage: 'See all {ideasCount} comments',
+  },
+  seeAllResponses: {
+    id: 'app.containers.IdeasFeedPage.seeAllResponses',
+    defaultMessage: 'See all {ideasCount} responses',
+  },
+  seeAllSuggestions: {
+    id: 'app.containers.IdeasFeedPage.seeAllSuggestions',
+    defaultMessage: 'See all {ideasCount} suggestions',
+  },
+  seeAllTopics: {
+    id: 'app.containers.IdeasFeedPage.seeAllTopics',
+    defaultMessage: 'See all {ideasCount} topics',
+  },
+  seeAllPosts: {
+    id: 'app.containers.IdeasFeedPage.seeAllPosts',
+    defaultMessage: 'See all {ideasCount} posts',
+  },
+  seeAllStories: {
+    id: 'app.containers.IdeasFeedPage.seeAllStories',
+    defaultMessage: 'See all {ideasCount} stories',
   },
   allTopics: {
     id: 'app.containers.IdeasFeedPage.allTopics',
@@ -131,6 +179,30 @@ export default defineMessages({
   addAPetition: {
     id: 'app.containers.IdeasFeedPage.addAPetition',
     defaultMessage: 'Add a petition',
+  },
+  addAComment: {
+    id: 'app.containers.IdeasFeedPage.addAComment',
+    defaultMessage: 'Add a comment',
+  },
+  addAResponse: {
+    id: 'app.containers.IdeasFeedPage.addAResponse',
+    defaultMessage: 'Add a response',
+  },
+  addASuggestion: {
+    id: 'app.containers.IdeasFeedPage.addASuggestion',
+    defaultMessage: 'Add a suggestion',
+  },
+  addATopic: {
+    id: 'app.containers.IdeasFeedPage.addATopic',
+    defaultMessage: 'Add a topic',
+  },
+  addAPost: {
+    id: 'app.containers.IdeasFeedPage.addAPost',
+    defaultMessage: 'Add a post',
+  },
+  addAStory: {
+    id: 'app.containers.IdeasFeedPage.addAStory',
+    defaultMessage: 'Add a story',
   },
   noIdeasForTag: {
     id: 'app.containers.IdeasFeedPage.noIdeasForTag',

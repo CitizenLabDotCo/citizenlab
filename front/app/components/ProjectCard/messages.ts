@@ -121,6 +121,30 @@ export default defineMessages({
     id: 'app.components.ProjectCard.submitYourPetition',
     defaultMessage: 'Submit your petition',
   },
+  addYourComment: {
+    id: 'app.components.ProjectCard.addYourComment',
+    defaultMessage: 'Add your comment',
+  },
+  submitYourResponse: {
+    id: 'app.components.ProjectCard.submitYourResponse',
+    defaultMessage: 'Submit your response',
+  },
+  addYourSuggestion: {
+    id: 'app.components.ProjectCard.addYourSuggestion',
+    defaultMessage: 'Add your suggestion',
+  },
+  addYourTopic: {
+    id: 'app.components.ProjectCard.addYourTopic',
+    defaultMessage: 'Add your topic',
+  },
+  addYourPost: {
+    id: 'app.components.ProjectCard.addYourPost',
+    defaultMessage: 'Add your post',
+  },
+  addYourStory: {
+    id: 'app.components.ProjectCard.addYourStory',
+    defaultMessage: 'Add your story',
+  },
   reaction: {
     id: 'app.components.ProjectCard.reaction',
     defaultMessage: 'Reaction',
@@ -165,6 +189,30 @@ export default defineMessages({
   viewThePetitions: {
     id: 'app.components.ProjectCard.viewThePetitions',
     defaultMessage: 'View the petitions',
+  },
+  viewTheComments: {
+    id: 'app.components.ProjectCard.viewTheComments',
+    defaultMessage: 'View the comments',
+  },
+  viewTheResponses: {
+    id: 'app.components.ProjectCard.viewTheResponses',
+    defaultMessage: 'View the responses',
+  },
+  viewTheSuggestions: {
+    id: 'app.components.ProjectCard.viewTheSuggestions',
+    defaultMessage: 'View the suggestions',
+  },
+  viewTheTopics: {
+    id: 'app.components.ProjectCard.viewTheTopics',
+    defaultMessage: 'View the topics',
+  },
+  viewThePosts: {
+    id: 'app.components.ProjectCard.viewThePosts',
+    defaultMessage: 'View the posts',
+  },
+  viewTheStories: {
+    id: 'app.components.ProjectCard.viewTheStories',
+    defaultMessage: 'View the stories',
   },
   a11y_projectTitle: {
     id: 'app.components.ProjectCard.a11y_projectTitle',

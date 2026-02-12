@@ -148,7 +148,7 @@ export default defineMessages({
   },
   issueFormTitle1: {
     id: 'app.utils.IdeasNewPage.issueFormTitle1',
-    defaultMessage: 'Add new comment',
+    defaultMessage: 'Add new issue',
   },
   proposalFormTitle: {
     id: 'app.utils.IdeasNewPage.proposalFormTitle',
@@ -161,6 +161,30 @@ export default defineMessages({
   petitionFormTitle: {
     id: 'app.utils.IdeasNewPage.petitionFormTitle',
     defaultMessage: 'Add new petition',
+  },
+  commentFormTitle: {
+    id: 'app.utils.IdeasNewPage.commentFormTitle',
+    defaultMessage: 'Add new comment',
+  },
+  responseFormTitle: {
+    id: 'app.utils.IdeasNewPage.responseFormTitle',
+    defaultMessage: 'Add new response',
+  },
+  suggestionFormTitle: {
+    id: 'app.utils.IdeasNewPage.suggestionFormTitle',
+    defaultMessage: 'Add new suggestion',
+  },
+  topicFormTitle: {
+    id: 'app.utils.IdeasNewPage.topicFormTitle',
+    defaultMessage: 'Add new topic',
+  },
+  postFormTitle: {
+    id: 'app.utils.IdeasNewPage.postFormTitle',
+    defaultMessage: 'Add new post',
+  },
+  storyFormTitle: {
+    id: 'app.utils.IdeasNewPage.storyFormTitle',
+    defaultMessage: 'Add new story',
   },
   surveyTitle: {
     id: 'app.utils.IdeasNewPage.surveyTitle',

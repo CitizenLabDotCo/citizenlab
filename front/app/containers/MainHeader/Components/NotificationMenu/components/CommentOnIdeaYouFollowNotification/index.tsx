@@ -50,6 +50,12 @@ const CommentOnIdeaYouFollowNotification = memo<Props>((props) => {
             proposal: messages.userCommentedOnProposalYouFollow,
             initiative: messages.userCommentedOnInitiativeYouFollow,
             petition: messages.userCommentedOnPetitionYouFollow,
+            comment: messages.userCommentedOnCommentYouFollow,
+            response: messages.userCommentedOnResponseYouFollow,
+            suggestion: messages.userCommentedOnSuggestionYouFollow,
+            topic: messages.userCommentedOnTopicYouFollow,
+            post: messages.userCommentedOnPostYouFollow,
+            story: messages.userCommentedOnStoryYouFollow,
           })}
           values={{
             name: (
