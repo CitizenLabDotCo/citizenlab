@@ -1,5 +1,7 @@
 import React, { lazy } from 'react';
 
+import * as yup from 'yup';
+
 import PageLoading from 'components/UI/PageLoading';
 
 import { createRoute, Navigate } from 'utils/router';
@@ -96,6 +98,13 @@ export type settingRouteTypes =
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.ideation}/${settingsRoutes.new}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.ideation}/${string}`>
   | registrationRouteTypes;
+
+// Topics new search schema (for parent_id)
+const topicsNewSearchSchema = yup.object({
+  parent_id: yup.string().optional(),
+});
+
+export type TopicsNewSearchParams = yup.InferType<typeof topicsNewSearchSchema>;
 
 export const settingsRoute = createRoute({
   getParentRoute: () => adminRoute,
@@ -290,6 +299,8 @@ const inputRoute = createRoute({
 const inputNewRoute = createRoute({
   getParentRoute: () => inputRoute,
   path: settingsRoutes.new,
+  validateSearch: (search: Record<string, unknown>): TopicsNewSearchParams =>
+    topicsNewSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <AdminDefaultInputTopicsNewComponent />
