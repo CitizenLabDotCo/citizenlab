@@ -1,5 +1,8 @@
 import BlotFormatter from '@enzedonline/quill-blot-formatter2';
 import Quill from 'quill';
+import QuillInline from 'quill/blots/inline';
+import QuillLink from 'quill/formats/link';
+import Video from 'quill/formats/video';
 
 import { isYouTubeEmbedLink } from 'utils/urlUtils';
 
@@ -9,8 +12,7 @@ export const configureQuill = () => {
   Quill.register('modules/blotFormatter', BlotFormatter);
 
   // BEGIN allow video resizing styles
-  const BaseVideoFormat = Quill.import('formats/video') as any;
-  class VideoFormat extends BaseVideoFormat {
+  class VideoFormat extends Video {
     static create(url: string) {
       const node = super.create(url);
 
@@ -22,15 +24,18 @@ export const configureQuill = () => {
       return node;
     }
 
-    static formats(domNode) {
-      return attributes.reduce((formats, attribute) => {
-        if (domNode.hasAttribute(attribute)) {
-          formats[attribute] = domNode.getAttribute(attribute);
-        }
-        return formats;
-      }, {});
+    static formats(domNode: Element) {
+      return attributes.reduce(
+        (formats: Record<string, string | null>, attribute) => {
+          if (domNode.hasAttribute(attribute)) {
+            formats[attribute] = domNode.getAttribute(attribute);
+          }
+          return formats;
+        },
+        {}
+      );
     }
-    format(name, value) {
+    format(name: string, value: string) {
       if (attributes.indexOf(name) > -1) {
         if (value) {
           this.domNode.setAttribute(name, value);
@@ -58,9 +63,7 @@ export const configureQuill = () => {
   // END function to detect whether urls are external
 
   // BEGIN custom link implementation
-  const Link = Quill.import('formats/link') as any;
-
-  class CustomLink extends Link {
+  class CustomLink extends QuillLink {
     static create(url: string) {
       const node = super.create(url);
       node.setAttribute('rel', 'noreferrer noopener nofollow');
@@ -84,11 +87,9 @@ export const configureQuill = () => {
   // END custom link implementation
 
   // BEGIN custom button implementation
-  const Inline = Quill.import('blots/inline') as any;
-
-  class CustomButton extends Inline {
+  class CustomButton extends QuillInline {
     static create(url: string) {
-      const node = super.create();
+      const node = super.create() as HTMLElement;
       node.setAttribute('href', url);
       node.setAttribute('rel', 'noorefferer');
 
@@ -100,7 +101,7 @@ export const configureQuill = () => {
       return node;
     }
 
-    static formats(node) {
+    static formats(node: HTMLElement) {
       return node.getAttribute('href');
     }
   }

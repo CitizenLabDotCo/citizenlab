@@ -1,5 +1,7 @@
 import Quill, { Range } from 'quill';
 
+import type Toolbar from 'quill/modules/toolbar';
+
 interface Params {
   id: string;
   toolbarId: string;
@@ -91,7 +93,7 @@ export const createQuill = (
       if (range) lastKnownRange = range;
     });
 
-    const toolbar = quill.getModule('toolbar') as any;
+    const toolbar = quill.getModule('toolbar') as Toolbar;
     toolbar.addHandler('image', () => {
       if (!document.body.contains(quill.root)) return;
 
@@ -114,8 +116,9 @@ export const createQuill = (
       }
 
       fileInput.onchange = () => {
-        if (fileInput && fileInput.files?.length) {
-          (quill as any).uploader.upload(range, fileInput.files);
+        const files = fileInput?.files;
+        if (files && files.length) {
+          quill.uploader.upload(range, files);
         }
         if (fileInput) fileInput.value = '';
       };

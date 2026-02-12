@@ -1,13 +1,11 @@
-import Quill from 'quill';
-
-const BaseImageFormat = Quill.import('formats/image') as any;
+import Image from 'quill/formats/image';
 
 export const attributes = ['alt', 'title', 'width', 'height', 'style'];
 
 // Extend the default Image blot to preserve alt, title, width, height,
 // and style attributes through Quill's format system. Alt text and title
 // are edited via blot-formatter2's built-in dialog.
-export class ImageBlot extends BaseImageFormat {
+export class ImageBlot extends Image {
   static blotName = 'image';
   static tagName = 'img';
 
@@ -20,7 +18,7 @@ export class ImageBlot extends BaseImageFormat {
     }, {});
   }
 
-  format(name: string, value: string | null) {
+  format(name: string, value: string) {
     if (attributes.indexOf(name) > -1) {
       if (value) {
         (this.domNode as HTMLImageElement).setAttribute(name, value);
@@ -34,13 +32,14 @@ export class ImageBlot extends BaseImageFormat {
 }
 
 // Preserves inline styles on images that Quill would otherwise strip.
-export class KeepHTML extends BaseImageFormat {
+export class KeepHTML extends Image {
   static blotName = 'KeepHTML';
   static className = 'keepHTML';
   static tagName = 'img';
 
-  static create(node: HTMLImageElement) {
-    return node;
+  static create(value: string | Node): Element {
+    if (value instanceof Node) return value as Element;
+    return super.create(value as string);
   }
   static value(node: HTMLImageElement) {
     return node.getAttribute('src') || '';
