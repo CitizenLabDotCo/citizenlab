@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
+import { useSearch } from '@tanstack/react-router';
 
 import { IdeaSortMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
@@ -25,9 +25,9 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
   const { data: phase } = usePhase(phaseId);
   const phaseDefaultSort = phase?.data.attributes.ideas_order;
 
-  const [searchParams] = useSearch({ strict: false });
-  const searchParamsSort = searchParams.get('sort') as IdeaSortMethod | null;
-  const currentSortType = searchParamsSort || phaseDefaultSort || 'trending';
+  const { sort } = useSearch({ strict: false });
+  const currentSortType =
+    (sort as IdeaSortMethod | undefined) || phaseDefaultSort || 'trending';
 
   return (
     <InputFilterCollapsible title={formatMessage(messages.sortBy)}>

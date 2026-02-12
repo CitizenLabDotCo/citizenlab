@@ -10,8 +10,8 @@ import useUserBySlug from 'api/users/useUserBySlug';
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams, useSearch } from '@tanstack/react-router';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { useParams, useSearch } from 'utils/router';
 
 import messages from '../messages';
 
@@ -28,20 +28,18 @@ interface QueryParameters {
 const Submissions = () => {
   const { userSlug } = useParams({ from: '/$locale/profile/$userSlug' });
   const { data: user } = useUserBySlug(userSlug);
-  const [searchParams] = useSearch({ strict: false });
-  const sortParam = searchParams.get('sort') as IdeaSortMethod | null;
+  const { sort, search } = useSearch({ strict: false });
   const { data: ideasCount } = useUserIdeasCount({ userId: user?.data.id });
   const isSmallerThanPhone = useBreakpoint('phone');
-  const searchParam = searchParams.get('search');
   const ideaQueryParameters = useMemo<QueryParameters>(
     () => ({
       'page[number]': 1,
       'page[size]': 24,
       author: user?.data.id || '',
-      sort: sortParam ?? IdeaSortMethodFallback,
-      search: searchParam ?? undefined,
+      sort: sort ?? IdeaSortMethodFallback,
+      search: search ?? undefined,
     }),
-    [user, sortParam, searchParam]
+    [user, sort, search]
   );
 
   return (

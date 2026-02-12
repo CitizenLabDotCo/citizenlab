@@ -1,7 +1,7 @@
 import React, { memo, useCallback, useState } from 'react';
 
 import { Button, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
+import { useSearch } from '@tanstack/react-router';
 import styled from 'styled-components';
 
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
@@ -47,7 +47,7 @@ interface Props {
 
 const MapIdeasList = memo<Props>(
   ({ projectId, phaseId, className, onSelectIdea, inputFiltersProps }) => {
-    const [searchParams] = useSearch({ strict: false });
+    const { sort: sortParam, search, topics } = useSearch({ strict: false });
     const isTabletOrSmaller = useBreakpoint('tablet');
     const { formatMessage } = useIntl();
     const [showFilters, setShowFilters] = useState(false);
@@ -67,12 +67,10 @@ const MapIdeasList = memo<Props>(
     const { data: phase } = usePhase(phaseId);
 
     const sort =
-      (searchParams.get('sort') as IdeaSortMethod | null) ??
+      (sortParam as IdeaSortMethod | null) ??
       phase?.data.attributes.ideas_order ??
       IdeaSortMethodFallback;
-    const search = searchParams.get('search');
-    const topicsParam = searchParams.get('topics');
-    const input_topics: string[] = topicsParam ? JSON.parse(topicsParam) : [];
+    const input_topics: string[] = topics ?? [];
 
     const { data: ideaMarkers } = useIdeaMarkers({
       projectIds: [projectId],
