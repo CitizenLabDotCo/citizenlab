@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
-import { useSearch } from 'utils/router';
+import { useSearch } from '@tanstack/react-router';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectImports from 'api/project_imports/useProjectImports';
@@ -22,10 +22,11 @@ const ProjectImporter = () => {
     name: 'project_importer',
   });
 
-  const [searchParams] = useSearch({ strict: false });
-  const importId = searchParams.get('id') || undefined;
-  const numImports = searchParams.get('num_imports') || undefined;
-  const isPreview = searchParams.get('preview') === 'true';
+  const {
+    id: importId,
+    num_imports: numImports,
+    preview: isPreview,
+  } = useSearch({ strict: false });
 
   const [importZipModalOpen, setImportZipModalOpen] = useState(false);
   const openImportZipModal = () => setImportZipModalOpen(true);

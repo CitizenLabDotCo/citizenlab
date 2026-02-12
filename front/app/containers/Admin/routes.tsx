@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
 
 import { localeRoute } from 'routes';
+import * as yup from 'yup';
 
 import { IAppConfigurationData } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -220,10 +221,25 @@ const folderPreviewRoute = createRoute({
   component: () => <FolderFullscreenPreview />,
 });
 
+// Project importer search schema
+const projectImporterSearchSchema = yup.object({
+  id: yup.string().optional(),
+  num_imports: yup.string().optional(),
+  preview: yup.boolean().optional(),
+});
+
+export type ProjectImporterSearchParams = yup.InferType<
+  typeof projectImporterSearchSchema
+>;
+
 // Project importer route
 const projectImporterRoute = createRoute({
   getParentRoute: () => adminRoute,
   path: adminRoutes.projectImporter,
+  validateSearch: (
+    search: Record<string, unknown>
+  ): ProjectImporterSearchParams =>
+    projectImporterSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => <ProjectImporter />,
 });
 
