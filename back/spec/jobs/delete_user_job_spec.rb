@@ -90,5 +90,33 @@ RSpec.describe DeleteUserJob do
           .not_to change(EmailBan, :count)
       end
     end
+
+    context 'when user has associations that should be nullified' do
+      it 'successfully deletes user with activities' do
+        user = create(:user)
+        create(:activity, user: user)
+        
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+        expect(Activity.where(user_id: nil).count).to eq(1)
+      end
+      
+      it 'successfully deletes user with project imports' do
+        user = create(:user)
+        create(:project_import, import_user: user, import_type: 'project')
+        
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+        expect(BulkImportIdeas::ProjectImport.where(import_user_id: nil).count).to eq(1)
+      end
+      
+      it 'successfully deletes user with idea imports' do
+        user = create(:user)
+        create(:idea_import, import_user: user)
+        
+        expect { described_class.new.run(user) }.not_to raise_error
+        expect(User.exists?(user.id)).to be false
+      end
+    end
   end
 end
