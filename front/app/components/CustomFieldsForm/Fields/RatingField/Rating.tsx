@@ -34,7 +34,7 @@ const Rating = ({ value: data, question, onChange }: Props) => {
 
   const id = question.key;
 
-  const labelId = sanitizeForClassname(id);
+  const labelId = `${sanitizeForClassname(id)}-label`;
   const inputId = `${sanitizeForClassname(id)}-rating-input`;
 
   const getButtonWidth = () => {

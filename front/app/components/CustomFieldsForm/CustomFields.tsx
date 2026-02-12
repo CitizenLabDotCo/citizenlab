@@ -17,7 +17,6 @@ import { FormLabel } from 'components/UI/FormComponents';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import CheckboxField from './Fields/CheckboxField';
 import CosponsorsField from './Fields/CosponsorsField';
@@ -228,22 +227,8 @@ const CustomFields = ({
       {questions
         .filter((question) => question.enabled)
         .map((question) => {
-          // These question types render non-labelable elements (e.g. div[role="slider"], table, ul)
-          // so htmlFor would create an invalid label reference. They use aria-labelledby instead.
-          const nonLabelableTypes = [
-            'linear_scale',
-            'rating',
-            'matrix_linear_scale',
-            'sentiment_linear_scale',
-            'ranking',
-          ];
-          const htmlFor = nonLabelableTypes.includes(question.input_type)
-            ? undefined
-            : question.key;
-
           const labelProps = {
-            id: sanitizeForClassname(question.key),
-            htmlFor,
+            htmlFor: question.key,
             labelValue: localize(question.title_multiloc),
             optional: !question.required,
             subtextValue: (
