@@ -1,5 +1,7 @@
 import React, { lazy } from 'react';
 
+import * as yup from 'yup';
+
 import PageLoading from 'components/UI/PageLoading';
 
 import { createRoute, Navigate } from 'utils/router';
@@ -23,6 +25,23 @@ export type reportingRouteTypes =
   | AdminRoute<`${reportingEnumRoutes.reporting}/${reportingEnumRoutes.reportBuilder}?${string}`>
   | AdminRoute<`${reportingEnumRoutes.reporting}/${reportingEnumRoutes.reportBuilder}/${string}/${reportingEnumRoutes.editor}`>;
 
+// Report builder search schema
+const reportBuilderSearchSchema = yup.object({
+  tab: yup
+    .string()
+    .oneOf([
+      'all-reports',
+      'your-reports',
+      'service-reports',
+      'community-monitor',
+    ])
+    .optional(),
+});
+
+export type ReportBuilderSearchParams = yup.InferType<
+  typeof reportBuilderSearchSchema
+>;
+
 // reporting/report-builder layout route
 const reportBuilderLayoutRoute = createRoute({
   getParentRoute: () => adminRoute,
@@ -37,6 +56,10 @@ const reportBuilderLayoutRoute = createRoute({
 const reportBuilderIndexRoute = createRoute({
   getParentRoute: () => reportBuilderLayoutRoute,
   path: '/',
+  validateSearch: (
+    search: Record<string, unknown>
+  ): ReportBuilderSearchParams =>
+    reportBuilderSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <ReportBuilderPage />
