@@ -104,7 +104,7 @@ RSpec.describe DeleteUserJob do
       it 'successfully deletes user with project imports' do
         user = create(:user)
         create(:project_import, import_user: user, import_type: 'project')
-        
+
         expect { described_class.new.run(user) }.not_to raise_error
         expect(User.exists?(user.id)).to be false
         expect(BulkImportIdeas::ProjectImport.where(import_user_id: nil).count).to eq(1)
