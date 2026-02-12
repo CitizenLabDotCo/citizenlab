@@ -6,6 +6,7 @@ import { clearClaimTokens, getClaimTokens } from 'utils/claimToken';
 
 import signOut from './signOut';
 
+// This endpoint is only used when user_confirmation is disabled.
 export default async function getUserTokenUnconfirmed(email: string) {
   try {
     await getAndSetToken(email);
