@@ -2,7 +2,6 @@ import { API_PATH } from 'containers/App/constants';
 
 import { setJwt } from 'utils/auth/jwt';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
-import { clearClaimTokens, getClaimTokens } from 'utils/claimToken';
 
 import signOut from './signOut';
 
@@ -21,7 +20,6 @@ async function getAndSetToken(email: string) {
   const bodyData = {
     auth: {
       email,
-      claim_tokens: getClaimTokens(),
     },
   };
 
@@ -35,6 +33,5 @@ async function getAndSetToken(email: string) {
     .then((response) => response.json())
     .then((data) => {
       setJwt(data.jwt, false);
-      clearClaimTokens();
     });
 }
