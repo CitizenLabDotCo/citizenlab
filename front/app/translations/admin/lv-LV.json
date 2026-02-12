@@ -1446,6 +1446,7 @@
   "app.containers.Admin.projects.project.insights.totalVotes": "Kopējais balsu skaits",
   "app.containers.Admin.projects.project.insights.visitors": "Apmeklētāji",
   "app.containers.Admin.projects.project.insights.volunteerings": "Brīvprātīgie",
+  "app.containers.Admin.projects.project.insights.voters": "Vēlētāji",
   "app.containers.Admin.projects.project.insights.votes": "Balsis",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Balsis uz personu",
   "app.containers.Admin.projects.project.insights.vsLast7Days": "pret pēdējām 7 dienām",
