@@ -753,6 +753,7 @@
   "app.components.form.controls.clearAllScreenreader": "Clirio pob ateb o'r cwestiwn matrics uchod",
   "app.components.form.controls.cosponsorsPlaceholder": "Dechreuwch deipio enw i'w chwilio",
   "app.components.form.controls.currentRank": "Safle presennol:",
+  "app.components.form.controls.matrixStatementHeader": "Datganiad",
   "app.components.form.controls.noRankSelected": "Dim rheng wedi'i dewis",
   "app.components.form.controls.optionalParentheses": "(dewisol)",
   "app.components.form.controls.rankingInstructions": "Llusgo a gollwng i opsiynau graddio.",
