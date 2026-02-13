@@ -1435,6 +1435,7 @@
   "app.containers.IdeasFeedPage.collapsePanel": "Pienennä aihepaneelia",
   "app.containers.IdeasFeedPage.endOfFeed": "Olet saavuttanut tämän syötteen lopun.",
   "app.containers.IdeasFeedPage.expandPanel": "Laajenna aihepaneeli",
+  "app.containers.IdeasFeedPage.exploreTags": "Tutustu tunnisteisiin",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Ei vielä ideoita tälle tagille.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Ei vielä mitään näytettävää.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Katso kaikki osuudet",
