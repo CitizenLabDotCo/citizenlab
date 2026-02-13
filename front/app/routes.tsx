@@ -546,7 +546,10 @@ const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
 // createAppRouter is called from root.tsx so that module routes can be
 // injected without creating a circular dependency.
 export const createAppRouter = (moduleRoutes: Partial<Routes> = {}) =>
-  createRouter({ routeTree: buildRouteTree(moduleRoutes) });
+  createRouter({
+    routeTree: buildRouteTree(moduleRoutes),
+    trailingSlash: 'preserve',
+  });
 
 export let router = createAppRouter();
 
