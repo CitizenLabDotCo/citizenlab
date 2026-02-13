@@ -161,7 +161,11 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
               <Th
                 pt="0px"
                 borderBottom={`1px solid ${theme.colors.borderDark} !important`}
-              />
+              >
+                <ScreenReaderOnly>
+                  {formatMessage(messages.matrixStatementHeader)}
+                </ScreenReaderOnly>
+              </Th>
               {columnsFromSchema.map((column, index) => {
                 return (
                   <Th
