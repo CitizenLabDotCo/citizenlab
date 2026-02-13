@@ -23,7 +23,7 @@ export type Props = {
  */
 const Link = ({
   to,
-  // onlyActiveOnIndex,
+  onlyActiveOnIndex,
   scrollToTop,
   onClick,
   active: _active,
@@ -32,7 +32,7 @@ const Link = ({
   const locale = useLocale();
   return (
     <RouterLink
-      // end={onlyActiveOnIndex}
+      activeOptions={onlyActiveOnIndex ? { exact: true } : undefined}
       to={(updateLocationDescriptor(to, locale).pathname ?? '#') as any}
       onClick={(event) => {
         onClick && onClick(event);
