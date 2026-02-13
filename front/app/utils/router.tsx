@@ -1,15 +1,23 @@
 import React, { useMemo } from 'react';
 
-// eslint-disable-next-line no-restricted-imports
+/* eslint-disable no-restricted-imports */
 import {
+  type AnyRoute,
+  type LinkProps,
   Navigate as TanstackNavigate,
+  Link,
+  Outlet,
+  RouterProvider,
+  createRoute,
   useLocation,
+  useParams,
 } from '@tanstack/react-router';
+/* eslint-enable no-restricted-imports */
 
 import { updateSearchParams } from './cl-router/updateSearchParams';
 
-// eslint-disable-next-line no-restricted-imports
-export * from '@tanstack/react-router';
+export { useLocation, useParams, Link, Outlet, RouterProvider, createRoute };
+export type { AnyRoute, LinkProps };
 
 export const useSearch = (_options: any) => {
   const { searchStr } = useLocation();
