@@ -753,6 +753,7 @@
   "app.components.form.controls.clearAllScreenreader": "Kloer all Äntwerten vun uewen Matrixentgasung Fro",
   "app.components.form.controls.cosponsorsPlaceholder": "Fänkt un en Numm ze schreiwen fir ze sichen",
   "app.components.form.controls.currentRank": "Aktuelle Rang:",
+  "app.components.form.controls.matrixStatementHeader": "Ausso",
   "app.components.form.controls.noRankSelected": "Kee Rang ausgewielt",
   "app.components.form.controls.optionalParentheses": "(optional)",
   "app.components.form.controls.rankingInstructions": "Drag and drop to Ranking Optiounen.",
