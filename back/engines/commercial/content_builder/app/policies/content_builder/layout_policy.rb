@@ -13,11 +13,11 @@ module ContentBuilder
             content_buildable_type: content_buildable_type,
             content_buildable_id: scope_for(content_buildable_type.constantize)
           )
-        rescue Pundit::NotAuthorizedError
+        rescue Pundit::NotAuthorizedError, Pundit::NotDefinedError
           # When scope_for is called for a resource type (e.g., ReportBuilder::Report)
-          # that raises NotAuthorizedError for the current user, we filter out those
-          # layouts rather than failing the entire query. This allows the query to return
-          # layouts the user CAN access while excluding unauthorized ones.
+          # that raises NotAuthorizedError (user doesn't have access) or NotDefinedError
+          # (policy scope doesn't exist), we filter out those layouts rather than failing
+          # the entire query. This allows the query to return layouts the user CAN access.
           nil
         end.reduce(scope.none, :or)
 
