@@ -11,6 +11,13 @@ module PublicApi
 
     rescue_from InvalidEnumParameterValueError, with: :render_problem_details
 
+    def append_info_to_payload(payload)
+      super
+      payload[:tenant_id] = Tenant.safe_current&.id
+      payload[:tenant_host] = Tenant.safe_current&.host
+      payload[:api_client_id] = current_public_api_api_client&.id
+    end
+
     def render_problem_details(exception)
       problem_details = {
         # TODO: What would be an appropriate base URI for types

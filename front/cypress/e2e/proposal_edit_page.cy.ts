@@ -135,9 +135,12 @@ describe('Proposal edit page', () => {
     cy.get('.e2e-topics-picker').should('exist');
     // Answer the extra field
     cy.contains(extraFieldTitle).should('exist');
-    cy.get(`*[id^="${extraFieldTitle}"]`).type(extraFieldAnswer, {
-      force: true,
-    });
+    cy.get(`*[id^="${extraFieldTitle}"]:not([id$="-label"])`).type(
+      extraFieldAnswer,
+      {
+        force: true,
+      }
+    );
 
     cy.wait(1000);
     cy.intercept('PATCH', `**/ideas/${inputId}**`).as('patchInput');

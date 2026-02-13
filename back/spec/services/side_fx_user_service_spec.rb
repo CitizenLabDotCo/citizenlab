@@ -143,8 +143,12 @@ describe SideFxUserService do
       end
     end
 
-    it 'logs a UpdateMemberCountJob' do
+    it 'enqueues a UpdateMemberCountJob by default' do
       expect { service.after_destroy(user, current_user) }.to have_enqueued_job(UpdateMemberCountJob)
+    end
+
+    it 'does not enqueue a UpdateMemberCountJob when update_member_counts is false' do
+      expect { service.after_destroy(user, current_user, update_member_counts: false) }.not_to have_enqueued_job(UpdateMemberCountJob)
     end
 
     it 'successfully enqueues PII data deletion job for Intercom' do
