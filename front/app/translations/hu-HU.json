@@ -753,6 +753,7 @@
   "app.components.form.controls.clearAllScreenreader": "Törölje az összes választ a fenti mátrixkérdésből",
   "app.components.form.controls.cosponsorsPlaceholder": "Kezdjen el beírni egy nevet a kereséshez",
   "app.components.form.controls.currentRank": "Jelenlegi rang:",
+  "app.components.form.controls.matrixStatementHeader": "Nyilatkozat",
   "app.components.form.controls.noRankSelected": "Nincs kiválasztva rang",
   "app.components.form.controls.optionalParentheses": "(választható)",
   "app.components.form.controls.rankingInstructions": "Húzással rangsorolhatja a lehetőségeket.",
