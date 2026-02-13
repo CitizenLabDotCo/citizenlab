@@ -753,6 +753,7 @@
   "app.components.form.controls.clearAllScreenreader": "Löschen Sie alle Antworten aus der obigen Matrixfrage",
   "app.components.form.controls.cosponsorsPlaceholder": "Einen Namen eingeben, um die Suche zu starten",
   "app.components.form.controls.currentRank": "Aktuelle Reihenfolge:",
+  "app.components.form.controls.matrixStatementHeader": "Anweisung",
   "app.components.form.controls.noRankSelected": "Keine Reihenfolge ausgewählt",
   "app.components.form.controls.optionalParentheses": "(optional)",
   "app.components.form.controls.rankingInstructions": "Optionen per Drag & Drop priorisieren.",
