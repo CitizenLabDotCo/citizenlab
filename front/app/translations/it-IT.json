@@ -265,7 +265,7 @@
   "app.components.GoBackButton.group.edit.goBack": "Torna indietro",
   "app.components.GoBackButton.group.edit.goBackToPreviousPage": "Torna alla pagina precedente",
   "app.components.HookForm.Feedback.errorTitle": "C'è un problema",
-  "app.components.HookForm.Feedback.submissionError": "Riprovare. Se il problema persiste, contattaci",
+  "app.components.HookForm.Feedback.submissionError": "Riprova. Se il problema persiste, contattaci",
   "app.components.HookForm.Feedback.submissionErrorTitle": "C'è stato un problema da parte nostra, siamo spiacenti",
   "app.components.HookForm.Feedback.successMessage": "Modulo inviato correttamente",
   "app.components.HookForm.PasswordInput.passwordLabel": "Password",
