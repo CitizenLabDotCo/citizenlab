@@ -7,6 +7,8 @@ import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { sanitizeForClassname } from 'utils/JSONFormUtils';
+
 import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import LocationInput from 'components/HookForm/LocationInput';
@@ -227,8 +229,22 @@ const CustomFields = ({
       {questions
         .filter((question) => question.enabled)
         .map((question) => {
+          // These question types render non-labelable elements (e.g. div[role="slider"], table, ul)
+          // so htmlFor would create an invalid label reference. They use aria-labelledby instead.
+          const nonLabelableTypes = [
+            'linear_scale',
+            'rating',
+            'matrix_linear_scale',
+            'sentiment_linear_scale',
+            'ranking',
+          ];
+          const htmlFor = nonLabelableTypes.includes(question.input_type)
+            ? undefined
+            : question.key;
+
           const labelProps = {
-            htmlFor: question.key,
+            id: sanitizeForClassname(question.key),
+            htmlFor,
             labelValue: localize(question.title_multiloc),
             optional: !question.required,
             subtextValue: (
