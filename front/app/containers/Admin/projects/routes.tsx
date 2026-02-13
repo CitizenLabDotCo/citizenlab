@@ -1,6 +1,5 @@
 import React, { lazy } from 'react';
 
-import { RouteType } from 'routes';
 import * as yup from 'yup';
 
 import PageLoading from 'components/UI/PageLoading';
@@ -8,7 +7,7 @@ import PageLoading from 'components/UI/PageLoading';
 import { parseModuleRoutes, RouteConfiguration } from 'utils/moduleUtils';
 import { createRoute, Navigate } from 'utils/router';
 
-import { adminRoute, AdminRoute } from '../routes';
+import { adminRoute } from '../routes';
 
 const AdminProjectIdeaPreviewIndex = lazy(
   () => import('./AdminProjectIdeaPreviewIndex')
@@ -80,102 +79,9 @@ const AdminProjectsData = lazy(() => import('./project/data'));
 
 const EmailsEdit = lazy(() => import('../messaging/Edit'));
 
-export function adminProjectsProjectPath(projectId: string): RouteType {
+export function adminProjectsProjectPath(projectId: string) {
   return `/admin/projects/${projectId}`;
 }
-
-export enum projectsRoutes {
-  projects = 'projects',
-  new = 'new',
-  projectIdeaId = '$projectId/ideas/$ideaId',
-  projectGeneral = 'general',
-  projectGeneralSetUp = 'set-up',
-  projectGeneralInputTags = 'input-tags',
-  projectGeneralAccessRights = 'access-rights',
-  projectGeneralData = 'data',
-  projectAudience = 'audience',
-  projectSettingsDescription = 'description',
-  projectMessaging = 'messaging',
-  projectMessagingNew = 'messaging/new',
-  projectMessagingEdit = 'messaging/$campaignId/edit',
-  projectMessagingShow = 'messaging/$campaignId',
-  projectFiles = 'files',
-  projectEvents = 'events',
-  projectEventsNew = 'events/new',
-  projectEventsId = 'events/$id',
-  projectSettingsTags = 'tags',
-  projectId = '$projectId',
-  projectIdPhases = 'phases',
-  projectPhasesSetup = 'setup',
-  projectPhaseSetup = '$phaseId/setup',
-  projectPhase = '$phaseId',
-  projectPhaseExternalSurveyResults = '$phaseId/survey-results',
-  projectPhasePolls = '$phaseId/polls',
-  projectPhaseAccessRights = '$phaseId/access-rights',
-  projectPhaseEmails = '$phaseId/emails',
-  projectPhaseEmailsCampaignEdit = '$phaseId/emails/$campaignId/edit',
-  projectPhaseIdeas = '$phaseId/ideas',
-  projectPhaseProposals = '$phaseId/proposals',
-  projectPhaseIdeaForm = '$phaseId/form',
-  projectPhaseVolunteering = '$phaseId/volunteering',
-  projectPhaseMap = '$phaseId/map',
-  projectPhaseNativeSurveyResults = '$phaseId/results',
-  projectPhaseSurveyForm = '$phaseId/survey-form',
-  projectPhaseNativeSurveyFormEdit = '$phaseId/survey-form/edit',
-  projectPhaseVolunteeringNewCause = '$phaseId/volunteering/causes/new',
-  projectPhaseIdeaFormEdit = '$phaseId/form/edit',
-  projectPhaseVolunteeringCause = '$phaseId/volunteering/causes/$causeId',
-  projectPhaseInputImporter = '$phaseId/input-importer',
-  projectPhaseReport = '$phaseId/report',
-  projectPhaseInsights = '$phaseId/insights',
-  projectAnalysis = 'analysis/$analysisId',
-}
-
-export type projectsRouteTypes =
-  | AdminRoute<projectsRoutes.projects>
-  | AdminRoute<`${projectsRoutes.projects}/${projectsRoutes.new}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/ideas/${string}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/general`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/general/set-up`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/general/input-tags`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/general/access-rights`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/general/data`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectAudience}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectAudience}/demographics`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectAudience}/traffic`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectEvents}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectFiles}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsDescription}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectEvents}/${string}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectMessaging}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectMessagingNew}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectMessagingEdit}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectMessagingShow}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectSettingsTags}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/${projectsRoutes.projectPhasesSetup}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/setup`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${projectsRoutes.new}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-results`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/polls`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/access-rights`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/ideas`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/form`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/map`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/results`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/new`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/new`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/form/edit`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form/edit`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/survey-form/edit?${string}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/volunteering/causes/${string}`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/emails`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/insights`>
-  | AdminRoute<`${projectsRoutes.projects}/${string}/analysis/${string}`>;
 
 // --- Search parameter schemas ---
 
@@ -200,7 +106,7 @@ export type InputImporterSearchParams = yup.InferType<
 // --- Projects layout route ---
 const projectsRoute = createRoute({
   getParentRoute: () => adminRoute,
-  path: projectsRoutes.projects,
+  path: 'projects',
   component: () => (
     <PageLoading>
       <AdminProjectsAndFolders />
@@ -222,7 +128,7 @@ const projectsIndexRoute = createRoute({
 // New project
 const projectNewRoute = createRoute({
   getParentRoute: () => projectsRoute,
-  path: projectsRoutes.new,
+  path: 'new',
   component: () => (
     <PageLoading>
       <AdminProjectNew />
@@ -233,7 +139,7 @@ const projectNewRoute = createRoute({
 // Project idea preview
 const projectIdeaPreviewRoute = createRoute({
   getParentRoute: () => projectsRoute,
-  path: projectsRoutes.projectIdeaId,
+  path: '$projectId/ideas/$ideaId',
   component: () => (
     <PageLoading>
       <AdminProjectIdeaPreviewIndex />
@@ -244,7 +150,7 @@ const projectIdeaPreviewRoute = createRoute({
 // --- Single project layout ---
 const projectRoute = createRoute({
   getParentRoute: () => projectsRoute,
-  path: projectsRoutes.projectId,
+  path: '$projectId',
   component: () => (
     <PageLoading>
       <AdminProjectsProjectIndex />
@@ -262,7 +168,7 @@ const projectIndexRoute = createRoute({
 // --- General settings layout ---
 const projectGeneralRoute = createRoute({
   getParentRoute: () => projectRoute,
-  path: projectsRoutes.projectGeneral,
+  path: 'general',
   component: () => (
     <PageLoading>
       <AdminProjectsProjectGeneral />
@@ -282,13 +188,13 @@ const projectGeneralIndexRoute = createRoute({
 
 const projectGeneralInputTagsRoute = createRoute({
   getParentRoute: () => projectGeneralRoute,
-  path: projectsRoutes.projectGeneralInputTags,
+  path: 'input-tags',
   component: () => <AdminAllowedTopicsComponent />,
 });
 
 const projectGeneralAccessRightsRoute = createRoute({
   getParentRoute: () => projectGeneralRoute,
-  path: projectsRoutes.projectGeneralAccessRights,
+  path: 'access-rights',
   component: () => (
     <PageLoading>
       <AdminProjectPermissions />
@@ -298,7 +204,7 @@ const projectGeneralAccessRightsRoute = createRoute({
 
 const projectGeneralDataRoute = createRoute({
   getParentRoute: () => projectGeneralRoute,
-  path: projectsRoutes.projectGeneralData,
+  path: 'data',
   component: () => (
     <PageLoading>
       <AdminProjectsData />
@@ -309,7 +215,7 @@ const projectGeneralDataRoute = createRoute({
 // --- Audience layout ---
 const projectAudienceRoute = createRoute({
   getParentRoute: () => projectRoute,
-  path: projectsRoutes.projectAudience,
+  path: 'audience',
   component: () => (
     <PageLoading>
       <AdminProjectsProjectAudience />
@@ -350,7 +256,7 @@ const projectAudienceTrafficRoute = createRoute({
 // --- Messaging routes ---
 const projectMessagingRoute = createRoute({
   getParentRoute: () => projectRoute,
-  path: projectsRoutes.projectMessaging,
+  path: 'messaging',
   component: () => (
     <PageLoading>
       <ProjectMessaging />
@@ -360,7 +266,7 @@ const projectMessagingRoute = createRoute({
 
 const projectMessagingNewRoute = createRoute({
   getParentRoute: () => projectRoute,
-  path: projectsRoutes.projectMessagingNew,
+  path: 'messaging/new',
   component: () => (
     <PageLoading>
       <ProjectMessagingNew />
@@ -370,7 +276,7 @@ const projectMessagingNewRoute = createRoute({
 
 const projectMessagingEditRoute = createRoute({
   getParentRoute: () => projectRoute,
-  path: projectsRoutes.projectMessagingEdit,
+  path: 'messaging/$campaignId/edit',
   component: () => (
     <PageLoading>
       <ProjectMessagingEdit />
@@ -380,7 +286,7 @@ const projectMessagingEditRoute = createRoute({
 
 const projectMessagingShowRoute = createRoute({
   getParentRoute: () => projectRoute,
-  path: projectsRoutes.projectMessagingShow,
+  path: 'messaging/$campaignId',
   component: () => (
     <PageLoading>
       <ProjectMessagingShow />
@@ -391,7 +297,7 @@ const projectMessagingShowRoute = createRoute({
 // --- Analysis route ---
 const projectAnalysisRoute = createRoute({
   getParentRoute: () => projectRoute,
-  path: projectsRoutes.projectAnalysis,
+  path: 'analysis/$analysisId',
   component: () => (
     <PageLoading>
       <AdminProjectAnalysis />
@@ -402,7 +308,7 @@ const projectAnalysisRoute = createRoute({
 // --- Files route ---
 const projectFilesRoute = createRoute({
   getParentRoute: () => projectRoute,
-  path: projectsRoutes.projectFiles,
+  path: 'files',
   component: () => (
     <PageLoading>
       <AdminProjectFiles />
@@ -413,7 +319,7 @@ const projectFilesRoute = createRoute({
 // --- Events routes ---
 const projectEventsRoute = createRoute({
   getParentRoute: () => projectRoute,
-  path: projectsRoutes.projectEvents,
+  path: 'events',
   component: () => (
     <PageLoading>
       <AdminProjectEvents />
@@ -423,7 +329,7 @@ const projectEventsRoute = createRoute({
 
 const projectEventsNewRoute = createRoute({
   getParentRoute: () => projectRoute,
-  path: projectsRoutes.projectEventsNew,
+  path: 'events/new',
   component: () => (
     <PageLoading>
       <AdminProjectEventsEdit />
@@ -433,7 +339,7 @@ const projectEventsNewRoute = createRoute({
 
 const projectEventsEditRoute = createRoute({
   getParentRoute: () => projectRoute,
-  path: projectsRoutes.projectEventsId,
+  path: 'events/$id',
   component: () => (
     <PageLoading>
       <AdminProjectEventsEdit />
@@ -444,7 +350,7 @@ const projectEventsEditRoute = createRoute({
 // --- Phases layout ---
 const projectPhasesRoute = createRoute({
   getParentRoute: () => projectRoute,
-  path: projectsRoutes.projectIdPhases,
+  path: 'phases',
   component: () => (
     <PageLoading>
       <AdminProjectPhaseIndex />
@@ -454,7 +360,7 @@ const projectPhasesRoute = createRoute({
 
 const phasesSetupRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhasesSetup,
+  path: 'setup',
   component: () => (
     <PageLoading>
       <AdminPhaseNewAndEdit />
@@ -464,7 +370,7 @@ const phasesSetupRoute = createRoute({
 
 const phaseSetupRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhaseSetup,
+  path: '$phaseId/setup',
   component: () => (
     <PageLoading>
       {/* We use the key here to make sure that the component is treated as a different instance
@@ -479,7 +385,7 @@ const phaseSetupRoute = createRoute({
 
 const phaseNewRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.new,
+  path: 'new',
   component: () => (
     <PageLoading>
       {/* We use the key here to make sure that the component is treated as a different instance
@@ -494,7 +400,7 @@ const phaseNewRoute = createRoute({
 
 const phaseRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhase,
+  path: '$phaseId',
   component: () => (
     <PageLoading>
       <AdminPhaseNewAndEdit />
@@ -504,7 +410,7 @@ const phaseRoute = createRoute({
 
 const phaseExternalSurveyResultsRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhaseExternalSurveyResults,
+  path: '$phaseId/survey-results',
   component: () => (
     <PageLoading>
       <AdminProjectSurveyResults />
@@ -514,7 +420,7 @@ const phaseExternalSurveyResultsRoute = createRoute({
 
 const phasePollsRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhasePolls,
+  path: '$phaseId/polls',
   component: () => (
     <PageLoading>
       <AdminProjectPoll />
@@ -524,7 +430,7 @@ const phasePollsRoute = createRoute({
 
 const phaseAccessRightsRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhaseAccessRights,
+  path: '$phaseId/access-rights',
   component: () => (
     <PageLoading>
       <AdminPhasePermissions />
@@ -534,7 +440,7 @@ const phaseAccessRightsRoute = createRoute({
 
 const phaseEmailsRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhaseEmails,
+  path: '$phaseId/emails',
   component: () => (
     <PageLoading>
       <AdminPhaseEmails />
@@ -544,13 +450,13 @@ const phaseEmailsRoute = createRoute({
 
 const phaseEmailsCampaignEditRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhaseEmailsCampaignEdit,
+  path: '$phaseId/emails/$campaignId/edit',
   component: () => <EmailsEdit campaignType="automated" />,
 });
 
 const phaseIdeasRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhaseIdeas,
+  path: '$phaseId/ideas',
   component: () => (
     <PageLoading>
       <AdminProjectIdeas />
@@ -560,7 +466,7 @@ const phaseIdeasRoute = createRoute({
 
 const phaseIdeaFormRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhaseIdeaForm,
+  path: '$phaseId/form',
   component: () => (
     <PageLoading>
       <AdminProjectIdeaForm />
@@ -570,7 +476,7 @@ const phaseIdeaFormRoute = createRoute({
 
 const phaseProposalsRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhaseProposals,
+  path: '$phaseId/proposals',
   component: () => (
     <PageLoading>
       <AdminProjectProposals />
@@ -580,7 +486,7 @@ const phaseProposalsRoute = createRoute({
 
 const phaseVolunteeringRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhaseVolunteering,
+  path: '$phaseId/volunteering',
   component: () => (
     <PageLoading>
       <AdminProjectVolunteering />
@@ -590,7 +496,7 @@ const phaseVolunteeringRoute = createRoute({
 
 const phaseMapRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhaseMap,
+  path: '$phaseId/map',
   component: () => (
     <PageLoading>
       <AdminCustomMapConfigComponent />
@@ -600,7 +506,7 @@ const phaseMapRoute = createRoute({
 
 const phaseVolunteeringNewCauseRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhaseVolunteeringNewCause,
+  path: '$phaseId/volunteering/causes/new',
   component: () => (
     <PageLoading>
       <AdminProjectVolunteeringNew />
@@ -610,7 +516,7 @@ const phaseVolunteeringNewCauseRoute = createRoute({
 
 const phaseNativeSurveyResultsRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhaseNativeSurveyResults,
+  path: '$phaseId/results',
   component: () => (
     <PageLoading>
       <AdminProjectsSurvey />
@@ -620,7 +526,7 @@ const phaseNativeSurveyResultsRoute = createRoute({
 
 const phaseSurveyFormRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhaseSurveyForm,
+  path: '$phaseId/survey-form',
   component: () => (
     <PageLoading>
       <AdminPhaseSurveyFormTabPanel />
@@ -630,7 +536,7 @@ const phaseSurveyFormRoute = createRoute({
 
 const phaseIdeaFormEditRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhaseIdeaFormEdit,
+  path: '$phaseId/form/edit',
   component: () => (
     <PageLoading>
       <IdeaFormBuilder />
@@ -640,7 +546,7 @@ const phaseIdeaFormEditRoute = createRoute({
 
 const phaseNativeSurveyFormEditRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhaseNativeSurveyFormEdit,
+  path: '$phaseId/survey-form/edit',
   validateSearch: (
     search: Record<string, unknown>
   ): SurveyFormBuilderSearchParams =>
@@ -654,7 +560,7 @@ const phaseNativeSurveyFormEditRoute = createRoute({
 
 const phaseVolunteeringCauseRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhaseVolunteeringCause,
+  path: '$phaseId/volunteering/causes/$causeId',
   component: () => (
     <PageLoading>
       <AdminProjectVolunteeringEdit />
@@ -664,7 +570,7 @@ const phaseVolunteeringCauseRoute = createRoute({
 
 const phaseInputImporterRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhaseInputImporter,
+  path: '$phaseId/input-importer',
   validateSearch: (
     search: Record<string, unknown>
   ): InputImporterSearchParams =>
@@ -678,7 +584,7 @@ const phaseInputImporterRoute = createRoute({
 
 const phaseReportRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhaseReport,
+  path: '$phaseId/report',
   component: () => (
     <PageLoading>
       <ReportTab />
@@ -688,7 +594,7 @@ const phaseReportRoute = createRoute({
 
 const phaseInsightsRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
-  path: projectsRoutes.projectPhaseInsights,
+  path: '$phaseId/insights',
   component: () => (
     <PageLoading>
       <AdminPhaseInsights />

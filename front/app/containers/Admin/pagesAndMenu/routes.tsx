@@ -1,12 +1,10 @@
 import React, { lazy } from 'react';
 
-import { RouteType } from 'routes';
-
 import PageLoading from 'components/UI/PageLoading';
 
 import { createRoute, Navigate } from 'utils/router';
 
-import { adminRoute, AdminRoute } from '../routes';
+import { adminRoute } from '../routes';
 
 const FullScreenPreview = lazy(
   () => import('./containers/ContentBuilder/containers/FullscreenPreview')
@@ -47,48 +45,18 @@ const CustomPageHeroBannerForm = lazy(
 // path utils
 export const ADMIN_PAGES_MENU_PATH = `/admin/pages-menu`;
 
-export const adminCustomPageContentPath = (pageId: string): RouteType => {
+export const adminCustomPageContentPath = (pageId: string) => {
   return `/admin/pages-menu/pages/${pageId}/content`;
 };
 
-export const adminCustomPageSettingsPath = (pageId: string): RouteType => {
+export const adminCustomPageSettingsPath = (pageId: string) => {
   return `/admin/pages-menu/pages/${pageId}/settings`;
 };
-
-export enum pagesAndMenuRoutes {
-  pagesAndMenu = 'pages-menu',
-  pagesAndMenuDefault = '',
-  homepageBuilder = 'homepage-builder',
-  homepageBuilderPreview = 'homepage-builder/preview',
-  pages = 'pages',
-  pagesNew = 'new',
-  customPageId = '$customPageId',
-  pageSettings = 'settings',
-  pageContent = 'content',
-  customPageIdBanner = '$customPageId/banner',
-  customPageIdTopInfoSection = '$customPageId/top-info-section',
-  customPageIdBottomInfoSection = '$customPageId/bottom-info-section',
-  customPageIdAttachments = '$customPageId/attachments',
-  customPageIdProjects = '$customPageId/projects',
-}
-
-export type pagesAndMenuRouteTypes =
-  | AdminRoute<pagesAndMenuRoutes.pagesAndMenu>
-  | AdminRoute<`${pagesAndMenuRoutes.pagesAndMenu}/${string}`>
-  | AdminRoute<`${pagesAndMenuRoutes.pagesAndMenu}/${pagesAndMenuRoutes.homepageBuilder}`>
-  | AdminRoute<`${pagesAndMenuRoutes.pagesAndMenu}/${pagesAndMenuRoutes.pages}/${pagesAndMenuRoutes.pagesNew}`>
-  | AdminRoute<`${pagesAndMenuRoutes.pagesAndMenu}/${pagesAndMenuRoutes.pages}/${string}/${pagesAndMenuRoutes.pageSettings}`>
-  | AdminRoute<`${pagesAndMenuRoutes.pagesAndMenu}/${pagesAndMenuRoutes.pages}/${string}/${pagesAndMenuRoutes.pageContent}`>
-  | AdminRoute<`${pagesAndMenuRoutes.pagesAndMenu}/${pagesAndMenuRoutes.pages}/${string}/banner`>
-  | AdminRoute<`${pagesAndMenuRoutes.pagesAndMenu}/${pagesAndMenuRoutes.pages}/${string}/top-info-section`>
-  | AdminRoute<`${pagesAndMenuRoutes.pagesAndMenu}/${pagesAndMenuRoutes.pages}/${string}/bottom-info-section`>
-  | AdminRoute<`${pagesAndMenuRoutes.pagesAndMenu}/${pagesAndMenuRoutes.pages}/${string}/attachments`>
-  | AdminRoute<`${pagesAndMenuRoutes.pagesAndMenu}/${pagesAndMenuRoutes.pages}/${string}/projects`>;
 
 // pages-menu grouping route (no component — PagesAndMenuIndex only wraps the index)
 const pagesAndMenuRoute = createRoute({
   getParentRoute: () => adminRoute,
-  path: pagesAndMenuRoutes.pagesAndMenu,
+  path: 'pages-menu',
 });
 
 // Layout route: PagesAndMenuIndex wraps the index content (NavigationSettings renders via Outlet)
@@ -114,7 +82,7 @@ const navigationSettingsRoute = createRoute({
 
 const homepageBuilderRoute = createRoute({
   getParentRoute: () => pagesAndMenuRoute,
-  path: pagesAndMenuRoutes.homepageBuilder,
+  path: 'homepage-builder',
   component: () => (
     <PageLoading>
       <ContentBuilder />
@@ -124,7 +92,7 @@ const homepageBuilderRoute = createRoute({
 
 const homepageBuilderPreviewRoute = createRoute({
   getParentRoute: () => pagesAndMenuRoute,
-  path: pagesAndMenuRoutes.homepageBuilderPreview,
+  path: 'homepage-builder/preview',
   component: () => (
     <PageLoading>
       <FullScreenPreview />
@@ -135,20 +103,20 @@ const homepageBuilderPreviewRoute = createRoute({
 // pages layout route
 const pagesRoute = createRoute({
   getParentRoute: () => pagesAndMenuRoute,
-  path: pagesAndMenuRoutes.pages,
+  path: 'pages',
   component: () => <CustomPagesIndex />,
 });
 
 const pagesNewRoute = createRoute({
   getParentRoute: () => pagesRoute,
-  path: pagesAndMenuRoutes.pagesNew,
+  path: 'new',
   component: () => <NewCustomPageIndex />,
 });
 
 // custom page edit layout
 const customPageRoute = createRoute({
   getParentRoute: () => pagesRoute,
-  path: pagesAndMenuRoutes.customPageId,
+  path: '$customPageId',
   component: () => <EditCustomPageIndex />,
 });
 
@@ -160,7 +128,7 @@ const customPageIndexRoute = createRoute({
 
 const customPageSettingsRoute = createRoute({
   getParentRoute: () => customPageRoute,
-  path: pagesAndMenuRoutes.pageSettings,
+  path: 'settings',
   component: () => (
     <PageLoading>
       <EditCustomPageSettings />
@@ -170,7 +138,7 @@ const customPageSettingsRoute = createRoute({
 
 const customPageContentRoute = createRoute({
   getParentRoute: () => customPageRoute,
-  path: pagesAndMenuRoutes.pageContent,
+  path: 'content',
   component: () => (
     <PageLoading>
       <EditCustomPageContent />
@@ -180,7 +148,7 @@ const customPageContentRoute = createRoute({
 
 const customPageBannerRoute = createRoute({
   getParentRoute: () => pagesRoute,
-  path: pagesAndMenuRoutes.customPageIdBanner,
+  path: '$customPageId/banner',
   component: () => (
     <PageLoading>
       <CustomPageHeroBannerForm />
@@ -190,7 +158,7 @@ const customPageBannerRoute = createRoute({
 
 const customPageTopInfoRoute = createRoute({
   getParentRoute: () => pagesRoute,
-  path: pagesAndMenuRoutes.customPageIdTopInfoSection,
+  path: '$customPageId/top-info-section',
   component: () => (
     <PageLoading>
       <CustomPageTopInfoSection />
@@ -200,7 +168,7 @@ const customPageTopInfoRoute = createRoute({
 
 const customPageBottomInfoRoute = createRoute({
   getParentRoute: () => pagesRoute,
-  path: pagesAndMenuRoutes.customPageIdBottomInfoSection,
+  path: '$customPageId/bottom-info-section',
   component: () => (
     <PageLoading>
       <CustomPageBottomInfoSection />
@@ -210,7 +178,7 @@ const customPageBottomInfoRoute = createRoute({
 
 const customPageAttachmentsRoute = createRoute({
   getParentRoute: () => pagesRoute,
-  path: pagesAndMenuRoutes.customPageIdAttachments,
+  path: '$customPageId/attachments',
   component: () => (
     <PageLoading>
       <AttachmentsForm />
@@ -220,7 +188,7 @@ const customPageAttachmentsRoute = createRoute({
 
 const customPageProjectsRoute = createRoute({
   getParentRoute: () => pagesRoute,
-  path: pagesAndMenuRoutes.customPageIdProjects,
+  path: '$customPageId/projects',
   component: () => (
     <PageLoading>
       <ProjectsList />

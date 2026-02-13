@@ -4,7 +4,7 @@ import PageLoading from 'components/UI/PageLoading';
 
 import { createRoute, Navigate } from 'utils/router';
 
-import { adminRoute, AdminRoute } from '../routes';
+import { adminRoute } from '../routes';
 
 const LiveMonitor = lazy(() => import('./components/LiveMonitor'));
 const Reports = lazy(() => import('./components/Reports'));
@@ -32,36 +32,10 @@ const PopupSettings = lazy(
 
 const CommunityMonitor = lazy(() => import('./index'));
 
-export enum communityMonitorRoutes {
-  communityMonitor = 'community-monitor',
-  communityMonitorSurveyEdit = 'projects/$projectId/phases/$phaseId/survey/edit',
-  communityMonitorDefault = '',
-  liveMonitor = 'live-monitor',
-  participants = 'participants',
-  reports = 'reports',
-  settings = 'settings',
-  settingsSurvey = 'survey',
-  settingsPopup = 'popup',
-  settingsAccessRights = 'access-rights',
-  settingsModerators = 'moderators',
-}
-
-export type communityMonitorRouteTypes =
-  | AdminRoute<communityMonitorRoutes.communityMonitor>
-  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.liveMonitor}`
-  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.participants}`
-  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.reports}`
-  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.settings}`
-  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.settings}/${communityMonitorRoutes.settingsSurvey}`
-  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.settings}/${communityMonitorRoutes.settingsAccessRights}`
-  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.settings}/${communityMonitorRoutes.settingsPopup}`
-  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/${communityMonitorRoutes.settings}/${communityMonitorRoutes.settingsModerators}`
-  | `${AdminRoute<communityMonitorRoutes.communityMonitor>}/projects/${string}/phases/${string}/survey/edit`;
-
 // Community monitor layout route
 const communityMonitorRoute = createRoute({
   getParentRoute: () => adminRoute,
-  path: communityMonitorRoutes.communityMonitor,
+  path: 'community-monitor',
   component: () => (
     <PageLoading>
       <CommunityMonitor />
@@ -77,7 +51,7 @@ const communityMonitorIndexRoute = createRoute({
 
 const liveMonitorRoute = createRoute({
   getParentRoute: () => communityMonitorRoute,
-  path: communityMonitorRoutes.liveMonitor,
+  path: 'live-monitor',
   component: () => (
     <PageLoading>
       <LiveMonitor />
@@ -87,7 +61,7 @@ const liveMonitorRoute = createRoute({
 
 const reportsRoute = createRoute({
   getParentRoute: () => communityMonitorRoute,
-  path: communityMonitorRoutes.reports,
+  path: 'reports',
   component: () => (
     <PageLoading>
       <Reports />
@@ -98,7 +72,7 @@ const reportsRoute = createRoute({
 // Settings layout route
 const settingsRoute = createRoute({
   getParentRoute: () => communityMonitorRoute,
-  path: communityMonitorRoutes.settings,
+  path: 'settings',
   component: () => (
     <PageLoading>
       <Settings />
@@ -114,7 +88,7 @@ const settingsIndexRoute = createRoute({
 
 const settingsSurveyRoute = createRoute({
   getParentRoute: () => settingsRoute,
-  path: communityMonitorRoutes.settingsSurvey,
+  path: 'survey',
   component: () => (
     <PageLoading>
       <SurveySettings />
@@ -124,7 +98,7 @@ const settingsSurveyRoute = createRoute({
 
 const settingsPopupRoute = createRoute({
   getParentRoute: () => settingsRoute,
-  path: communityMonitorRoutes.settingsPopup,
+  path: 'popup',
   component: () => (
     <PageLoading>
       <PopupSettings />
@@ -134,7 +108,7 @@ const settingsPopupRoute = createRoute({
 
 const settingsAccessRightsRoute = createRoute({
   getParentRoute: () => settingsRoute,
-  path: communityMonitorRoutes.settingsAccessRights,
+  path: 'access-rights',
   component: () => (
     <PageLoading>
       <AccessRights />
@@ -144,7 +118,7 @@ const settingsAccessRightsRoute = createRoute({
 
 const settingsModeratorsRoute = createRoute({
   getParentRoute: () => settingsRoute,
-  path: communityMonitorRoutes.settingsModerators,
+  path: 'moderators',
   component: () => (
     <PageLoading>
       <CommunityMonitorManagement />
@@ -154,7 +128,7 @@ const settingsModeratorsRoute = createRoute({
 
 const participantsRoute = createRoute({
   getParentRoute: () => communityMonitorRoute,
-  path: communityMonitorRoutes.participants,
+  path: 'participants',
   component: () => (
     <PageLoading>
       <Participants />
@@ -164,7 +138,7 @@ const participantsRoute = createRoute({
 
 const surveyEditRoute = createRoute({
   getParentRoute: () => communityMonitorRoute,
-  path: communityMonitorRoutes.communityMonitorSurveyEdit,
+  path: 'projects/$projectId/phases/$phaseId/survey/edit',
   component: () => (
     <PageLoading>
       <CommunityMonitorSurveyFormBuilder />

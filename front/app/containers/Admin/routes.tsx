@@ -15,39 +15,19 @@ import type { Routes } from 'utils/moduleUtils';
 import { usePermission } from 'utils/permissions';
 import { createRoute, Navigate, useLocation } from 'utils/router';
 
-import createAdminCommunityMonitorRoutes, {
-  communityMonitorRouteTypes,
-} from './communityMonitor/routes';
-import createAdminDashboardRoutes, {
-  dashboardRouteTypes,
-} from './dashboard/routes';
-import createAdminIdeasRoutes, { ideaRouteTypes } from './ideas/routes';
-import createAdminInspirationHubRoutes, {
-  inspirationHubRouteTypes,
-} from './inspirationHub/routes';
-import createAdminInvitationsRoutes, {
-  invitationRouteTypes,
-} from './invitations/routes';
-import createAdminMessagingRoutes, {
-  messagingRouteTypes,
-} from './messaging/routes';
-import createAdminPagesAndMenuRoutes, {
-  pagesAndMenuRouteTypes,
-} from './pagesAndMenu/routes';
-import createProjectFoldersRoutes, {
-  projectFolderRouteTypes,
-} from './projectFolders/routes';
-import createAdminProjectsRoutes, {
-  projectsRouteTypes,
-} from './projects/routes';
-import createAdminReportingRoutes, {
-  reportingRouteTypes,
-} from './reporting/routes';
-import createAdminSettingsRoutes, {
-  settingRouteTypes,
-} from './settings/routes';
-import createAdminToolsRoutes, { toolRouteTypes } from './tools/routes';
-import createAdminUsersRoutes, { userRouteTypes } from './users/routes';
+import createAdminCommunityMonitorRoutes from './communityMonitor/routes';
+import createAdminDashboardRoutes from './dashboard/routes';
+import createAdminIdeasRoutes from './ideas/routes';
+import createAdminInspirationHubRoutes from './inspirationHub/routes';
+import createAdminInvitationsRoutes from './invitations/routes';
+import createAdminMessagingRoutes from './messaging/routes';
+import createAdminPagesAndMenuRoutes from './pagesAndMenu/routes';
+import createProjectFoldersRoutes from './projectFolders/routes';
+import createAdminProjectsRoutes from './projects/routes';
+import createAdminReportingRoutes from './reporting/routes';
+import createAdminSettingsRoutes from './settings/routes';
+import createAdminToolsRoutes from './tools/routes';
+import createAdminUsersRoutes from './users/routes';
 
 const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
@@ -73,25 +53,6 @@ const FolderFullscreenPreview = React.lazy(
 const ProjectImporter = React.lazy(
   () => import('containers/Admin/ProjectImporter')
 );
-
-export type AdminRoute<T extends string = string> = `/admin/${T}`;
-
-export type AdminRouteTypes =
-  | '/admin'
-  | ideaRouteTypes
-  | userRouteTypes
-  | invitationRouteTypes
-  | dashboardRouteTypes
-  | projectFolderRouteTypes
-  | toolRouteTypes
-  | communityMonitorRouteTypes
-  | reportingRouteTypes
-  | messagingRouteTypes
-  | pagesAndMenuRouteTypes
-  | projectsRouteTypes
-  | settingRouteTypes
-  | inspirationHubRouteTypes
-  | AdminRoute<'projects-redesign-early-access'>;
 
 const isTemplatePreviewPage = (urlSegments: string[]) =>
   urlSegments.length === 4 &&
@@ -156,20 +117,10 @@ const AdminLayoutElement = () => {
   );
 };
 
-export enum adminRoutes {
-  admin = 'admin',
-  favicon = 'favicon',
-  projectDescription = 'description-builder/projects/$projectId/description',
-  projectPreview = 'description-builder/projects/$projectId/preview',
-  folderDescription = 'description-builder/folders/$folderId/description',
-  folderPreview = 'description-builder/folders/$folderId/preview',
-  projectImporter = 'project-importer',
-}
-
 // Admin layout route - parent for all admin routes
 export const adminRoute = createRoute({
   getParentRoute: () => localeRoute,
-  path: adminRoutes.admin,
+  path: 'admin',
   component: AdminLayoutElement,
 });
 
@@ -188,7 +139,7 @@ const faviconRoute = createRoute({
   // This path is only reachable via URL.
   // It's a pragmatic solution to reduce workload
   // on the team so admins can set their favicon.
-  path: adminRoutes.favicon,
+  path: 'favicon',
   component: () => (
     <PageLoading>
       <AdminFavicon />
@@ -199,25 +150,25 @@ const faviconRoute = createRoute({
 // Description builder routes
 const projectDescriptionRoute = createRoute({
   getParentRoute: () => adminRoute,
-  path: adminRoutes.projectDescription,
+  path: 'description-builder/projects/$projectId/description',
   component: () => <ProjectDescriptionBuilderComponent />,
 });
 
 const projectPreviewRoute = createRoute({
   getParentRoute: () => adminRoute,
-  path: adminRoutes.projectPreview,
+  path: 'description-builder/projects/$projectId/preview',
   component: () => <ProjectFullscreenPreview />,
 });
 
 const folderDescriptionRoute = createRoute({
   getParentRoute: () => adminRoute,
-  path: adminRoutes.folderDescription,
+  path: 'description-builder/folders/$folderId/description',
   component: () => <FolderDescriptionBuilderComponent />,
 });
 
 const folderPreviewRoute = createRoute({
   getParentRoute: () => adminRoute,
-  path: adminRoutes.folderPreview,
+  path: 'description-builder/folders/$folderId/preview',
   component: () => <FolderFullscreenPreview />,
 });
 
@@ -235,7 +186,7 @@ export type ProjectImporterSearchParams = yup.InferType<
 // Project importer route
 const projectImporterRoute = createRoute({
   getParentRoute: () => adminRoute,
-  path: adminRoutes.projectImporter,
+  path: 'project-importer',
   validateSearch: (
     search: Record<string, unknown>
   ): ProjectImporterSearchParams =>

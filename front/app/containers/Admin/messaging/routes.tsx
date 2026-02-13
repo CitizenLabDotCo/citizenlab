@@ -6,7 +6,7 @@ import PageLoading from 'components/UI/PageLoading';
 
 import { createRoute, Navigate } from 'utils/router';
 
-import { adminRoute, AdminRoute } from '../routes';
+import { adminRoute } from '../routes';
 
 const MessagingIndex = lazy(() => import('.'));
 const CustomEmailsIndex = lazy(() => import('./CustomEmails/All'));
@@ -14,25 +14,6 @@ const CustomEmailsNew = lazy(() => import('./CustomEmails/New'));
 const CustomEmailsShow = lazy(() => import('./CustomEmails/Show'));
 const AutomatedEmails = lazy(() => import('./AutomatedEmails'));
 const EmailsEdit = lazy(() => import('./Edit'));
-
-export enum messagingRoutes {
-  messaging = 'messaging',
-  emailsCustom = `emails/custom`,
-  emailsCustomNew = `emails/custom/new`,
-  emailsCustomCampaignId = 'emails/custom/$campaignId',
-  emailsCustomCampaignIdEdit = 'emails/custom/$campaignId/edit',
-  emailsAutomated = 'emails/automated',
-  emailsAutomatedCampaignIdEdit = 'emails/automated/$campaignId/edit',
-}
-
-export type messagingRouteTypes =
-  | AdminRoute<messagingRoutes.messaging>
-  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsCustom}`>
-  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsCustomNew}`>
-  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsCustom}/${string}`>
-  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsCustom}/${string}/edit`>
-  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsAutomated}`>
-  | AdminRoute<`${messagingRoutes.messaging}/${messagingRoutes.emailsAutomated}/${string}/edit`>;
 
 // Messaging edit search schema
 const messagingEditSearchSchema = yup.object({
@@ -45,7 +26,7 @@ export type MessagingEditSearchParams = yup.InferType<
 
 const messagingRoute = createRoute({
   getParentRoute: () => adminRoute,
-  path: messagingRoutes.messaging,
+  path: 'messaging',
   component: () => (
     <PageLoading>
       <MessagingIndex />
@@ -56,12 +37,12 @@ const messagingRoute = createRoute({
 const messagingIndexRoute = createRoute({
   getParentRoute: () => messagingRoute,
   path: '/',
-  component: () => <Navigate to={messagingRoutes.emailsCustom} />,
+  component: () => <Navigate to="emails/custom" />,
 });
 
 const customEmailsRoute = createRoute({
   getParentRoute: () => messagingRoute,
-  path: messagingRoutes.emailsCustom,
+  path: 'emails/custom',
   component: () => (
     <PageLoading>
       <CustomEmailsIndex />
@@ -71,7 +52,7 @@ const customEmailsRoute = createRoute({
 
 const customEmailsNewRoute = createRoute({
   getParentRoute: () => messagingRoute,
-  path: messagingRoutes.emailsCustomNew,
+  path: 'emails/custom/new',
   component: () => (
     <PageLoading>
       <CustomEmailsNew />
@@ -81,7 +62,7 @@ const customEmailsNewRoute = createRoute({
 
 const customEmailsShowRoute = createRoute({
   getParentRoute: () => messagingRoute,
-  path: messagingRoutes.emailsCustomCampaignId,
+  path: 'emails/custom/$campaignId',
   component: () => (
     <PageLoading>
       <CustomEmailsShow />
@@ -91,7 +72,7 @@ const customEmailsShowRoute = createRoute({
 
 const customEmailsEditRoute = createRoute({
   getParentRoute: () => messagingRoute,
-  path: messagingRoutes.emailsCustomCampaignIdEdit,
+  path: 'emails/custom/$campaignId/edit',
   validateSearch: (
     search: Record<string, unknown>
   ): MessagingEditSearchParams =>
@@ -105,7 +86,7 @@ const customEmailsEditRoute = createRoute({
 
 const automatedEmailsRoute = createRoute({
   getParentRoute: () => messagingRoute,
-  path: messagingRoutes.emailsAutomated,
+  path: 'emails/automated',
   component: () => (
     <PageLoading>
       <AutomatedEmails />
@@ -115,7 +96,7 @@ const automatedEmailsRoute = createRoute({
 
 const automatedEmailsEditRoute = createRoute({
   getParentRoute: () => messagingRoute,
-  path: messagingRoutes.emailsAutomatedCampaignIdEdit,
+  path: 'emails/automated/$campaignId/edit',
   validateSearch: (
     search: Record<string, unknown>
   ): MessagingEditSearchParams =>

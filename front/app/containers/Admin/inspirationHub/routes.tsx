@@ -5,24 +5,16 @@ import PageLoading from 'components/UI/PageLoading';
 
 import { createRoute, Outlet as RouterOutlet } from 'utils/router';
 
-import { adminRoute, AdminRoute } from '../routes';
+import { adminRoute } from '../routes';
 import sidebarMessages from '../sideBar/messages';
 
 import messages from './messages';
 
 const InspirationHub = lazy(() => import('.'));
 
-export enum inspirationHubRoutes {
-  inspirationHub = 'inspiration-hub',
-  inspirationHubDefault = '',
-}
-
-export type inspirationHubRouteTypes =
-  AdminRoute<inspirationHubRoutes.inspirationHub>;
-
 const inspirationHubRoute = createRoute({
   getParentRoute: () => adminRoute,
-  path: inspirationHubRoutes.inspirationHub,
+  path: 'inspiration-hub',
   component: () => (
     <PageLoading>
       <HelmetIntl

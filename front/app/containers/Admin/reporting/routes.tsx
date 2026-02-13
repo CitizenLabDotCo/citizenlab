@@ -6,24 +6,11 @@ import PageLoading from 'components/UI/PageLoading';
 
 import { createRoute, Navigate } from 'utils/router';
 
-import { adminRoute, AdminRoute } from '../routes';
+import { adminRoute } from '../routes';
 
 const ReportingWrapper = lazy(() => import('.'));
 const ReportBuilderPage = lazy(() => import('./containers/ReportBuilderPage'));
 const ReportBuilder = lazy(() => import('./containers/ReportBuilder'));
-
-export enum reportingEnumRoutes {
-  reporting = 'reporting',
-  reportBuilder = `report-builder`,
-  editor = `editor`,
-  print = `print`,
-}
-
-export type reportingRouteTypes =
-  | AdminRoute<reportingEnumRoutes.reporting>
-  | AdminRoute<`${reportingEnumRoutes.reporting}/${reportingEnumRoutes.reportBuilder}`>
-  | AdminRoute<`${reportingEnumRoutes.reporting}/${reportingEnumRoutes.reportBuilder}?${string}`>
-  | AdminRoute<`${reportingEnumRoutes.reporting}/${reportingEnumRoutes.reportBuilder}/${string}/${reportingEnumRoutes.editor}`>;
 
 // Report builder search schema
 const reportBuilderSearchSchema = yup.object({
@@ -45,7 +32,7 @@ export type ReportBuilderSearchParams = yup.InferType<
 // reporting/report-builder layout route
 const reportBuilderLayoutRoute = createRoute({
   getParentRoute: () => adminRoute,
-  path: `${reportingEnumRoutes.reporting}/${reportingEnumRoutes.reportBuilder}`,
+  path: 'reporting/report-builder',
   component: () => (
     <PageLoading>
       <ReportingWrapper />
@@ -69,7 +56,7 @@ const reportBuilderIndexRoute = createRoute({
 
 const reportEditorRoute = createRoute({
   getParentRoute: () => reportBuilderLayoutRoute,
-  path: `$reportId/${reportingEnumRoutes.editor}`,
+  path: '$reportId/editor',
   component: () => (
     <PageLoading>
       <ReportBuilder />
@@ -80,8 +67,8 @@ const reportEditorRoute = createRoute({
 // Redirect /admin/reporting to /admin/reporting/report-builder
 const reportingRedirectRoute = createRoute({
   getParentRoute: () => adminRoute,
-  path: reportingEnumRoutes.reporting,
-  component: () => <Navigate to={reportingEnumRoutes.reportBuilder} />,
+  path: 'reporting',
+  component: () => <Navigate to="report-builder" />,
 });
 
 const createAdminReportingRoutes = () => {

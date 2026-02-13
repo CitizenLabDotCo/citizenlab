@@ -1,25 +1,16 @@
 import React from 'react';
 
-import type { AdminRoute } from 'containers/Admin/routes';
-
 import { ModuleConfiguration } from 'utils/moduleUtils';
 const Tab = React.lazy(() => import('./admin/components/Tab'));
 const FeatureFlag = React.lazy(() => import('components/FeatureFlag'));
 
 const ImportComponent = React.lazy(() => import('./admin/containers/Import'));
 
-export enum bulkIdeaImportRoutes {
-  import = 'import',
-}
-
-// TODO: Replace "ideas" with link to route in main app once converted.
-export type bulkIdeaImportRouteTypes = AdminRoute<'ideas/import'>;
-
 const configuration: ModuleConfiguration = {
   routes: {
     'admin.ideas': [
       {
-        path: bulkIdeaImportRoutes.import,
+        path: 'import',
         element: <ImportComponent />,
       },
     ],

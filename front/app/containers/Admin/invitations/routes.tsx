@@ -4,24 +4,15 @@ import PageLoading from 'components/UI/PageLoading';
 
 import { createRoute } from 'utils/router';
 
-import { adminRoute, AdminRoute } from '../routes';
+import { adminRoute } from '../routes';
 
 const AdminInvitationsContainer = lazy(() => import('.'));
 const AdminInvitationsInvite = lazy(() => import('./invite'));
 const AdminInvitationsAll = lazy(() => import('./all'));
 
-export enum invitationRoutes {
-  invitations = 'users/invitations',
-  all = 'all',
-}
-
-export type invitationRouteTypes =
-  | AdminRoute<invitationRoutes.invitations>
-  | AdminRoute<`${invitationRoutes.invitations}/${invitationRoutes.all}`>;
-
 const invitationsRoute = createRoute({
   getParentRoute: () => adminRoute,
-  path: invitationRoutes.invitations,
+  path: 'users/invitations',
   component: () => (
     <PageLoading>
       <AdminInvitationsContainer />
@@ -41,7 +32,7 @@ const invitationsIndexRoute = createRoute({
 
 const invitationsAllRoute = createRoute({
   getParentRoute: () => invitationsRoute,
-  path: invitationRoutes.all,
+  path: 'all',
   component: () => (
     <PageLoading>
       <AdminInvitationsAll />

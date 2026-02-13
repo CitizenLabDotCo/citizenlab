@@ -6,11 +6,9 @@ import PageLoading from 'components/UI/PageLoading';
 
 import { createRoute, Navigate } from 'utils/router';
 
-import { adminRoute, AdminRoute } from '../routes';
+import { adminRoute } from '../routes';
 
-import createRegistrationRoutes, {
-  registrationRouteTypes,
-} from './registration/routes';
+import createRegistrationRoutes from './registration/routes';
 
 const AdminSettingsIndex = lazy(() => import('containers/Admin/settings'));
 const AdminSettingsGeneral = lazy(
@@ -54,51 +52,6 @@ const StatusShowComponent = React.lazy(
   () => import('./statuses/containers/edit')
 );
 
-export enum settingsRoutes {
-  settings = 'settings',
-  settingsDefault = '',
-  general = 'general',
-  branding = 'branding',
-  policies = 'policies',
-  areas = 'areas',
-  new = 'new',
-  areaId = '$areaId',
-  topics = 'topics',
-  platform = 'platform',
-  input = 'input',
-  edit = 'edit',
-  topicEdit = '$topicId/edit',
-  defaultInputTopicEdit = '$defaultInputTopicId/edit',
-  ideation = 'ideation',
-  proposals = 'proposals',
-  statuses = 'statuses',
-  statusId = '$statusId',
-}
-
-export type settingRouteTypes =
-  | AdminRoute<settingsRoutes.settings>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.general}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.branding}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.policies}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.areas}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.areas}/${settingsRoutes.new}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.areas}/${string}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.platform}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.platform}/${settingsRoutes.new}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.platform}/${string}/${settingsRoutes.edit}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.input}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.input}/${settingsRoutes.new}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.input}/${string}/${settingsRoutes.edit}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.proposals}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.proposals}/${settingsRoutes.new}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.proposals}/${string}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.ideation}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.ideation}/${settingsRoutes.new}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.ideation}/${string}`>
-  | registrationRouteTypes;
-
 // Topics new search schema (for parent_id)
 const topicsNewSearchSchema = yup.object({
   parent_id: yup.string().optional(),
@@ -108,7 +61,7 @@ export type TopicsNewSearchParams = yup.InferType<typeof topicsNewSearchSchema>;
 
 export const settingsRoute = createRoute({
   getParentRoute: () => adminRoute,
-  path: settingsRoutes.settings,
+  path: 'settings',
   component: () => (
     <PageLoading>
       <AdminSettingsIndex />
@@ -124,7 +77,7 @@ const settingsIndexRoute = createRoute({
 
 const generalRoute = createRoute({
   getParentRoute: () => settingsRoute,
-  path: settingsRoutes.general,
+  path: 'general',
   component: () => (
     <PageLoading>
       <AdminSettingsGeneral />
@@ -134,7 +87,7 @@ const generalRoute = createRoute({
 
 const brandingRoute = createRoute({
   getParentRoute: () => settingsRoute,
-  path: settingsRoutes.branding,
+  path: 'branding',
   component: () => (
     <PageLoading>
       <AdminSettingsCustomize />
@@ -144,7 +97,7 @@ const brandingRoute = createRoute({
 
 const policiesRoute = createRoute({
   getParentRoute: () => settingsRoute,
-  path: settingsRoutes.policies,
+  path: 'policies',
   component: () => (
     <PageLoading>
       <AdminSettingsPolicies />
@@ -155,7 +108,7 @@ const policiesRoute = createRoute({
 // statuses
 const statusesRoute = createRoute({
   getParentRoute: () => settingsRoute,
-  path: settingsRoutes.statuses,
+  path: 'statuses',
   component: () => (
     <PageLoading>
       <StatusesMain />
@@ -165,12 +118,12 @@ const statusesRoute = createRoute({
 
 const ideationRoute = createRoute({
   getParentRoute: () => statusesRoute,
-  path: settingsRoutes.ideation,
+  path: 'ideation',
 });
 
 const ideationNewRoute = createRoute({
   getParentRoute: () => ideationRoute,
-  path: settingsRoutes.new,
+  path: 'new',
   component: () => (
     <PageLoading>
       <NewStatusComponent variant="ideation" />
@@ -180,7 +133,7 @@ const ideationNewRoute = createRoute({
 
 const ideationStatusRoute = createRoute({
   getParentRoute: () => ideationRoute,
-  path: settingsRoutes.statusId,
+  path: '$statusId',
   component: () => (
     <PageLoading>
       <StatusShowComponent variant="ideation" />
@@ -190,12 +143,12 @@ const ideationStatusRoute = createRoute({
 
 const proposalsRoute = createRoute({
   getParentRoute: () => statusesRoute,
-  path: settingsRoutes.proposals,
+  path: 'proposals',
 });
 
 const proposalsNewRoute = createRoute({
   getParentRoute: () => proposalsRoute,
-  path: settingsRoutes.new,
+  path: 'new',
   component: () => (
     <PageLoading>
       <NewStatusComponent variant="proposals" />
@@ -205,7 +158,7 @@ const proposalsNewRoute = createRoute({
 
 const proposalsStatusRoute = createRoute({
   getParentRoute: () => proposalsRoute,
-  path: settingsRoutes.statusId,
+  path: '$statusId',
   component: () => (
     <PageLoading>
       <StatusShowComponent variant="proposals" />
@@ -216,7 +169,7 @@ const proposalsStatusRoute = createRoute({
 // areas
 const areasRoute = createRoute({
   getParentRoute: () => settingsRoute,
-  path: settingsRoutes.areas,
+  path: 'areas',
 });
 
 const areasIndexRoute = createRoute({
@@ -231,7 +184,7 @@ const areasIndexRoute = createRoute({
 
 const areasNewRoute = createRoute({
   getParentRoute: () => areasRoute,
-  path: settingsRoutes.new,
+  path: 'new',
   component: () => (
     <PageLoading>
       <AdminAreasNew />
@@ -241,7 +194,7 @@ const areasNewRoute = createRoute({
 
 const areasEditRoute = createRoute({
   getParentRoute: () => areasRoute,
-  path: settingsRoutes.areaId,
+  path: '$areaId',
   component: () => (
     <PageLoading>
       <AdminAreasEdit />
@@ -252,7 +205,7 @@ const areasEditRoute = createRoute({
 // topics
 const topicsRoute = createRoute({
   getParentRoute: () => settingsRoute,
-  path: settingsRoutes.topics,
+  path: 'topics',
   component: () => (
     <PageLoading>
       <TopicsMain />
@@ -268,12 +221,12 @@ const topicsIndexRoute = createRoute({
 
 const platformRoute = createRoute({
   getParentRoute: () => topicsRoute,
-  path: settingsRoutes.platform,
+  path: 'platform',
 });
 
 const platformNewRoute = createRoute({
   getParentRoute: () => platformRoute,
-  path: settingsRoutes.new,
+  path: 'new',
   component: () => (
     <PageLoading>
       <AdminTopicsNewComponent />
@@ -283,7 +236,7 @@ const platformNewRoute = createRoute({
 
 const platformEditRoute = createRoute({
   getParentRoute: () => platformRoute,
-  path: settingsRoutes.topicEdit,
+  path: '$topicId/edit',
   component: () => (
     <PageLoading>
       <AdminTopicsEditComponent />
@@ -293,12 +246,12 @@ const platformEditRoute = createRoute({
 
 const inputRoute = createRoute({
   getParentRoute: () => topicsRoute,
-  path: settingsRoutes.input,
+  path: 'input',
 });
 
 const inputNewRoute = createRoute({
   getParentRoute: () => inputRoute,
-  path: settingsRoutes.new,
+  path: 'new',
   validateSearch: (search: Record<string, unknown>): TopicsNewSearchParams =>
     topicsNewSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
@@ -310,7 +263,7 @@ const inputNewRoute = createRoute({
 
 const inputEditRoute = createRoute({
   getParentRoute: () => inputRoute,
-  path: settingsRoutes.defaultInputTopicEdit,
+  path: '$defaultInputTopicId/edit',
   component: () => (
     <PageLoading>
       <AdminDefaultInputTopicsEditComponent />

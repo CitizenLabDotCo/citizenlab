@@ -3,7 +3,6 @@ import { useNode } from '@craftjs/core';
 import useGraphDataUnitsPublished from 'api/graph_data_units/useGraphDataUnitsPublished';
 
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
-import { reportingEnumRoutes } from 'containers/Admin/reporting/routes';
 
 import { BaseResponseData } from 'utils/cl-react-query/fetcher';
 import { isPage } from 'utils/helperUtils';
@@ -31,8 +30,8 @@ const checkIfLiveDataShouldBeShown = ({
 
   const isReportBuilder =
     isAdminPage &&
-    pathname.includes(reportingEnumRoutes.reportBuilder) &&
-    pathname.endsWith(reportingEnumRoutes.editor);
+    pathname.includes('report-builder') &&
+    pathname.endsWith('editor');
 
   if (isReportBuilder) {
     // If we're in the report builder,

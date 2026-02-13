@@ -5,23 +5,14 @@ import PageLoading from 'components/UI/PageLoading';
 import { parseModuleRoutes, type RouteConfiguration } from 'utils/moduleUtils';
 import { createRoute } from 'utils/router';
 
-import { adminRoute, AdminRoute } from '../routes';
+import { adminRoute } from '../routes';
 
 const AdminIdeasContainer = lazy(() => import('./index'));
 const AdminIdeasAll = lazy(() => import('./all'));
 
-export enum ideaRoutes {
-  ideas = 'ideas',
-  ideaId = `$ideaId`,
-}
-
-export type ideaRouteTypes =
-  | AdminRoute<ideaRoutes.ideas>
-  | AdminRoute<`${ideaRoutes.ideas}/${string}`>;
-
 const ideasRoute = createRoute({
   getParentRoute: () => adminRoute,
-  path: ideaRoutes.ideas,
+  path: 'ideas',
   component: () => (
     <PageLoading>
       <AdminIdeasContainer />

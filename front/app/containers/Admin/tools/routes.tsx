@@ -6,7 +6,7 @@ import PageLoading from 'components/UI/PageLoading';
 import { parseModuleRoutes, RouteConfiguration } from 'utils/moduleUtils';
 import { createRoute, Outlet as RouterOutlet } from 'utils/router';
 
-import { adminRoute, AdminRoute } from '../routes';
+import { adminRoute } from '../routes';
 
 import messages from './messages';
 
@@ -18,25 +18,9 @@ const WebhookSubscriptions = lazy(
 );
 const Tools = lazy(() => import('./'));
 
-export enum toolRoutes {
-  tools = 'tools',
-  toolsDefault = '',
-  publicApiTokens = `public-api-tokens`,
-  powerBi = `power-bi`,
-  esriIntegration = `esri-integration`,
-  webhooks = `webhooks`,
-}
-
-export type toolRouteTypes =
-  | AdminRoute<toolRoutes.tools>
-  | AdminRoute<`${toolRoutes.tools}/${toolRoutes.publicApiTokens}`>
-  | AdminRoute<`${toolRoutes.tools}/${toolRoutes.esriIntegration}`>
-  | AdminRoute<`${toolRoutes.tools}/${toolRoutes.powerBi}`>
-  | AdminRoute<`${toolRoutes.tools}/${toolRoutes.webhooks}`>;
-
 const toolsRoute = createRoute({
   getParentRoute: () => adminRoute,
-  path: toolRoutes.tools,
+  path: 'tools',
   component: () => (
     <PageLoading>
       <HelmetIntl title={messages.toolsLabel} />
@@ -57,7 +41,7 @@ const toolsIndexRoute = createRoute({
 
 const publicApiTokensRoute = createRoute({
   getParentRoute: () => toolsRoute,
-  path: toolRoutes.publicApiTokens,
+  path: 'public-api-tokens',
   component: () => (
     <PageLoading>
       <PublicAPITokens />
@@ -67,7 +51,7 @@ const publicApiTokensRoute = createRoute({
 
 const powerBiRoute = createRoute({
   getParentRoute: () => toolsRoute,
-  path: toolRoutes.powerBi,
+  path: 'power-bi',
   component: () => (
     <PageLoading>
       <PowerBITemplates />
@@ -77,7 +61,7 @@ const powerBiRoute = createRoute({
 
 const esriRoute = createRoute({
   getParentRoute: () => toolsRoute,
-  path: toolRoutes.esriIntegration,
+  path: 'esri-integration',
   component: () => (
     <PageLoading>
       <EsriKeyInput />
@@ -87,7 +71,7 @@ const esriRoute = createRoute({
 
 const webhooksRoute = createRoute({
   getParentRoute: () => toolsRoute,
-  path: toolRoutes.webhooks,
+  path: 'webhooks',
   component: () => (
     <PageLoading>
       <WebhookSubscriptions />
