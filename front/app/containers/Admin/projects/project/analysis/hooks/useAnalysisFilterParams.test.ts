@@ -24,7 +24,7 @@ jest.mock('@tanstack/react-router', () => ({
   ...jest.requireActual('@tanstack/react-router'),
   useLocation: jest.fn(() => ({
     pathname: '/',
-    search: mockSearchString,
+    searchStr: mockSearchString,
     hash: '',
     href: `/${mockSearchString}`,
     state: {},
