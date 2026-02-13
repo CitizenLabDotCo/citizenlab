@@ -1435,6 +1435,7 @@
   "app.containers.IdeasFeedPage.collapsePanel": "Panel pynciau wedi'i gwanhau",
   "app.containers.IdeasFeedPage.endOfFeed": "Rydych chi wedi cyrraedd diwedd y ffrwd hon.",
   "app.containers.IdeasFeedPage.expandPanel": "Ehangu panel pynciau",
+  "app.containers.IdeasFeedPage.exploreTags": "Archwilio tagiau",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Dim syniadau ar gyfer y tag hwn eto.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Dim byd i'w ddangos eto.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Gweld yr holl gyfraniadau",
