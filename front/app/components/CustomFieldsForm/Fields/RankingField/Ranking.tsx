@@ -101,7 +101,7 @@ const Ranking = ({ value: data, question, onChange }: Props) => {
             <Text m="0px" aria-hidden color="textPrimary">
               {formatMessage(messages.rankingInstructions)}
             </Text>
-            <Ul aria-labelledby={sanitizeForClassname(question.key)}>
+            <Ul aria-labelledby={`${sanitizeForClassname(question.key)}-label`}>
               {options.map((option: IOption, index: number) => (
                 <RankingOption
                   key={option.value}

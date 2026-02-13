@@ -155,7 +155,7 @@ const Matrix = ({ value: data, question, onChange }: Props) => {
         <Table
           width={'100%'}
           style={{ borderCollapse: 'collapse', borderSpacing: '0px 8px' }}
-          aria-labelledby={sanitizeForClassname(id)}
+          aria-labelledby={`${sanitizeForClassname(id)}-label`}
         >
           <Thead>
             <Tr>

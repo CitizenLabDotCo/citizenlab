@@ -243,7 +243,7 @@ const CustomFields = ({
             : question.key;
 
           const labelProps = {
-            id: sanitizeForClassname(question.key),
+            id: `${sanitizeForClassname(question.key)}-label`,
             htmlFor,
             labelValue: localize(question.title_multiloc),
             optional: !question.required,
