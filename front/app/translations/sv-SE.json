@@ -1435,6 +1435,7 @@
   "app.containers.IdeasFeedPage.collapsePanel": "Dölj panelen för ämnen",
   "app.containers.IdeasFeedPage.endOfFeed": "Du har kommit till slutet av detta flöde.",
   "app.containers.IdeasFeedPage.expandPanel": "Utöka ämnespanelen",
+  "app.containers.IdeasFeedPage.exploreTags": "Utforska taggar",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Inga idéer för denna tagg ännu.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Inget att visa ännu.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Se alla bidrag",

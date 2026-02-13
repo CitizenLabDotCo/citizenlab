@@ -1435,6 +1435,7 @@
   "app.containers.IdeasFeedPage.collapsePanel": "Temų skydelis \"Collapse",
   "app.containers.IdeasFeedPage.endOfFeed": "Pasiekėte šio kanalo pabaigą.",
   "app.containers.IdeasFeedPage.expandPanel": "Išplėsti temų skydelį",
+  "app.containers.IdeasFeedPage.exploreTags": "Naršyti žymas",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Kol kas nėra idėjų šiai žymei.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Kol kas nieko nerodo.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Žiūrėti visus įnašus",

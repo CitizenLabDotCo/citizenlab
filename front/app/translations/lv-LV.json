@@ -1435,6 +1435,7 @@
   "app.containers.IdeasFeedPage.collapsePanel": "Tēmu paneļa sabrukšana",
   "app.containers.IdeasFeedPage.endOfFeed": "Jūs esat sasnieguši šīs plūsmas beigas.",
   "app.containers.IdeasFeedPage.expandPanel": "Paplašināt tēmu paneli",
+  "app.containers.IdeasFeedPage.exploreTags": "Izpētīt tagus",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Ideju par šo birku vēl nav.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Pagaidām vēl nekas nav redzams.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Skatīt visus ieguldījumus",

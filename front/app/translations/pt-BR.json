@@ -1435,6 +1435,7 @@
   "app.containers.IdeasFeedPage.collapsePanel": "Recolher o painel de tópicos",
   "app.containers.IdeasFeedPage.endOfFeed": "Você chegou ao final deste feed.",
   "app.containers.IdeasFeedPage.expandPanel": "Expandir o painel de tópicos",
+  "app.containers.IdeasFeedPage.exploreTags": "Explorar tags",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Ainda não há ideias para essa tag.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Ainda não há nada para mostrar.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Ver todas as contribuições",

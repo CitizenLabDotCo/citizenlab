@@ -1435,6 +1435,7 @@
   "app.containers.IdeasFeedPage.collapsePanel": "Réduire le panel de thématiques",
   "app.containers.IdeasFeedPage.endOfFeed": "Fin du fil.",
   "app.containers.IdeasFeedPage.expandPanel": "Élargir le panel de thématiques",
+  "app.containers.IdeasFeedPage.exploreTags": "Explorer les tags",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Pas encore de publications sur ce thème.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Rien à afficher pour l'instant.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Voir les {ideasCount} contributions",

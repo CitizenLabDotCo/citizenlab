@@ -1435,6 +1435,7 @@
   "app.containers.IdeasFeedPage.collapsePanel": "Replega el panell de temes",
   "app.containers.IdeasFeedPage.endOfFeed": "Has arribat al final d'aquest feed.",
   "app.containers.IdeasFeedPage.expandPanel": "Desplega el panell de temes",
+  "app.containers.IdeasFeedPage.exploreTags": "Explora les etiquetes",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Encara no hi ha idees per a aquesta etiqueta.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Res per mostrar encara.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Veure totes les contribucions",
