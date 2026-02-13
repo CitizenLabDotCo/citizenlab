@@ -1435,6 +1435,7 @@
   "app.containers.IdeasFeedPage.collapsePanel": "Sažmi ploču s temama",
   "app.containers.IdeasFeedPage.endOfFeed": "Došli ste do kraja ovog feeda.",
   "app.containers.IdeasFeedPage.expandPanel": "Proširi ploču s temama",
+  "app.containers.IdeasFeedPage.exploreTags": "Istraži oznake",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Još nema ideja za ovu oznaku.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Još nema ništa za pokazati.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Pogledajte sve doprinose",
