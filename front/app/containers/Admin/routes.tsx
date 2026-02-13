@@ -221,5 +221,3 @@ export const createAdminRoutes = (moduleRoutes: Partial<Routes> = {}) => {
     projectImporterRoute,
   ]);
 };
-
-export default createAdminRoutes;

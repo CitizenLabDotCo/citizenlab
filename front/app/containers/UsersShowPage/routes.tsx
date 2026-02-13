@@ -22,14 +22,6 @@ export enum userShowPageRoutes {
   surveys = 'surveys',
 }
 
-export type userShowPageRouteTypes =
-  | `profile/${string}`
-  | `profile/${string}/${userShowPageRoutes.submissions}`
-  | `profile/${string}/${userShowPageRoutes.surveys}`
-  | `profile/${string}/${userShowPageRoutes.comments}`
-  | `profile/${string}/${userShowPageRoutes.following}`
-  | `profile/${string}/${userShowPageRoutes.events}`;
-
 // Factory function to create routes with parent
 export const createUserShowPageRoutes = () => {
   const profileRoute = createRoute({
