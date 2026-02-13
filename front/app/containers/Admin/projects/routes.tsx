@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
 
 import { RouteType } from 'routes';
+import * as yup from 'yup';
 
 import PageLoading from 'components/UI/PageLoading';
 
@@ -175,6 +176,26 @@ export type projectsRouteTypes =
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/emails`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/phases/${string}/insights`>
   | AdminRoute<`${projectsRoutes.projects}/${string}/analysis/${string}`>;
+
+// --- Search parameter schemas ---
+
+// Survey form builder search schema
+const surveyFormBuilderSearchSchema = yup.object({
+  copy_from: yup.string().optional(),
+});
+
+export type SurveyFormBuilderSearchParams = yup.InferType<
+  typeof surveyFormBuilderSearchSchema
+>;
+
+// Input importer search schema
+const inputImporterSearchSchema = yup.object({
+  parser: yup.string().oneOf(['legacy', 'gpt']).optional(),
+});
+
+export type InputImporterSearchParams = yup.InferType<
+  typeof inputImporterSearchSchema
+>;
 
 // --- Projects layout route ---
 const projectsRoute = createRoute({
@@ -620,6 +641,10 @@ const phaseIdeaFormEditRoute = createRoute({
 const phaseNativeSurveyFormEditRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
   path: projectsRoutes.projectPhaseNativeSurveyFormEdit,
+  validateSearch: (
+    search: Record<string, unknown>
+  ): SurveyFormBuilderSearchParams =>
+    surveyFormBuilderSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <SurveyFormBuilder />
@@ -640,6 +665,10 @@ const phaseVolunteeringCauseRoute = createRoute({
 const phaseInputImporterRoute = createRoute({
   getParentRoute: () => projectPhasesRoute,
   path: projectsRoutes.projectPhaseInputImporter,
+  validateSearch: (
+    search: Record<string, unknown>
+  ): InputImporterSearchParams =>
+    inputImporterSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
       <InputImporter />

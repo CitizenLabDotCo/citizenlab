@@ -8,14 +8,13 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useSearch } from '@tanstack/react-router';
 import { useForm, FormProvider } from 'react-hook-form';
 import { SupportedLocale } from 'typings';
 import { object, mixed, boolean } from 'yup';
 
 import { IBackgroundJobData } from 'api/background_jobs/types';
-import useAddOfflineIdeasAsync, {
-  ParserType,
-} from 'api/import_ideas/useAddOfflineIdeasAsync';
+import useAddOfflineIdeasAsync from 'api/import_ideas/useAddOfflineIdeasAsync';
 import usePhase from 'api/phases/usePhase';
 
 import useLocale from 'hooks/useLocale';
@@ -28,7 +27,7 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { useParams, useSearch } from 'utils/router';
+import { useParams } from 'utils/router';
 import validateLocale from 'utils/yup/validateLocale';
 
 import LocalePicker from './LocalePicker';
@@ -52,13 +51,12 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeasAsync();
   const locale = useLocale();
   const { projectId, phaseId } = useParams({
-    from: '/$locale/admin/projects/$projectId/phases/$phaseId/input-importer',
+    strict: false,
   });
   const { data: phase } = usePhase(phaseId);
 
   // Allows switching of different parsers if needed
-  const [searchParams] = useSearch({ strict: false });
-  const parser = (searchParams.get('parser') || undefined) as ParserType;
+  const { parser } = useSearch({ strict: false });
   const parserConsentRequired = parser !== 'gpt'; // Only need to show consent when using Google document AI parser
 
   const downloadFormPath =
