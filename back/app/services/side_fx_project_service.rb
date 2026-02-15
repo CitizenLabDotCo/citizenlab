@@ -18,6 +18,8 @@ class SideFxProjectService
       payload: { project: serialized_project }
     )
 
+    CheckProjectPublicationConsistencyJob.perform_later(project.id)
+
     after_publish project, user if project.admin_publication.published?
   end
 
@@ -66,6 +68,8 @@ class SideFxProjectService
       project.updated_at.to_i,
       payload: payload
     )
+
+    CheckProjectPublicationConsistencyJob.perform_later(project.id)
 
     after_folder_changed project, user if @folder_id_was != project.folder_id
     # We don't want to send out the "project published" campaign when e.g. changing from "archived" to "published"

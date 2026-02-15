@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { useParams, useSearchParams } from 'react-router-dom';
+import { RouteType } from 'routes';
 import styled from 'styled-components';
 
 import useProjectBySlug from 'api/projects/useProjectBySlug';
@@ -36,17 +37,37 @@ const IdeasFeedPage = () => {
   const selectedSubtopicId = searchParams.get('subtopic');
   const phaseId = searchParams.get('phase_id');
   const initialIdeaId = searchParams.get('initial_idea_id');
+  const sheetOpen = searchParams.get('sheet_open');
   const isMobileOrSmaller = useBreakpoint('phone');
 
   // Use subtopic if selected, otherwise use topic
   const activeTopicFilter = selectedSubtopicId || selectedTopicId;
 
-  const setSelectedTopicId = (topicId: string | null) => {
-    if (topicId) {
-      updateSearchParams({ topic: topicId });
-    } else {
-      removeSearchParams(['topic', 'subtopic']);
+  const handleSheetCollapse = () => {
+    removeSearchParams(['sheet_open', 'idea_id']);
+  };
+
+  const handleSheetExpand = () => {
+    updateSearchParams({ sheet_open: 'true' });
+  };
+
+  const handleMobileBackClick = () => {
+    if (!sheetOpen) {
+      // Sheet is collapsed -> open it
+      updateSearchParams({ sheet_open: 'true' });
+    } else if (selectedSubtopicId) {
+      // Sheet is open with subtopic -> clear subtopic (stay on topics)
+      removeSearchParams(['subtopic']);
     }
+    // If sheet is open without subtopic -> handled by linkTo (exit to project)
+  };
+
+  const getMobileBackLinkTo = (): RouteType | undefined => {
+    // Only exit to project when sheet is open and no subtopic selected
+    if (sheetOpen && !selectedSubtopicId) {
+      return `/projects/${slug}`;
+    }
+    return undefined;
   };
 
   if (!phaseId || !project) {
@@ -60,9 +81,9 @@ const IdeasFeedPage = () => {
         {isMobileOrSmaller && (
           <Box position="absolute" top="16px" left="16px" zIndex="1">
             <GoBackButton
-              linkTo={selectedTopicId ? undefined : `/projects/${slug}`}
+              linkTo={getMobileBackLinkTo()}
               onClick={
-                selectedTopicId ? () => setSelectedTopicId(null) : undefined
+                getMobileBackLinkTo() ? undefined : handleMobileBackClick
               }
               showGoBackText={false}
               buttonStyle="white"
@@ -76,7 +97,11 @@ const IdeasFeedPage = () => {
           overflow="auto"
           h="100dvh"
         >
-          <Sidebar projectId={project.data.id} />
+          <Sidebar
+            projectId={project.data.id}
+            onSheetCollapse={handleSheetCollapse}
+            onSheetExpand={handleSheetExpand}
+          />
           <Box flex="4" position="relative">
             {/* General feed - always mounted to preserve scroll position */}
             <Box visibility={activeTopicFilter ? 'hidden' : 'visible'}>

@@ -638,15 +638,6 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.participationOptions',
     defaultMessage: 'Participation options',
   },
-  prescreeningText: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.screeningText',
-    defaultMessage: 'Require screening of inputs',
-  },
-  prescreeningSubtext: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.prescreeningSubtext',
-    defaultMessage:
-      'Inputs won’t be visible until an admin reviews and approves them. Authors can’t edit inputs after they are screened or reacted on.',
-  },
   missingStartDateError: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.missingStartDateError',
     defaultMessage: 'Missing start date',
