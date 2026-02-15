@@ -36,22 +36,19 @@ module BulkImportIdeas::Parsers::Pdf
 
     def prompt
       <<~GPT_PROMPT
-        In this message is a scan of a survey form that has been printed and then filled in by hand.
+        In this message is a scanned survey form that has been filled in by hand.
   
         Your task is to extract the text and checked options based on the questions in the JSON form schema below.
   
-        The language used in the form is #{@locale}.
-        Do not attempt to interpret or summarize the responses. 
-        Ignore any content that does not appear to be written by hand. 
-        Do not guess or make up anything that is missing - only return values that are present on the form.
+        Do not attempt to interpret or summarize the responses. Ignore any text that does not appear handwritten. Do not fill in any missing answers.
+  
         Do not extract answers unless they are in the correct order in the scanned form.
-        Each question in the form has a number corresponding to the ID in the schema. When reading each question only consider answers to that question only.
+
+        The language used in the form is #{@locale}.
 
         Return the same array of JSON objects in the same order, but with an additional 'answer' attribute for each question, according to the following rules:
         - if the question is a text question, add an attribute answer with the extracted handwritten text as value.
-        - if the question is of type select or multiselect then return the 'answer' attribute as an array of the checked or ticked options' text values. If no options were checked, return an empty array.
-        - if the question is of type select, then the options may be listed in one or two columns with round checkboxes horizontally to the left of each option. Return the value for an option only if the round checkbox has a cross or a tick handwritten in it.
-        - if the question is of type multiselect, then the options may be listed in one or two columns with square checkboxes horizontally to the left of each option. Return the value for an option only if the square checkbox has a cross or a tick handwritten in it.
+        - if the question is of type select or multiselect then return an attribute answer as an array of the checked or ticked options' text values. If no options were checked, return an empty array.
         - if the question is of type checkbox, return the answer as 'checked' if it has been checked.
         - if the question is of type linear_scale, rating or sentiment_linear_scale, return the answer as a number.
         - if the question is of type ranking, then there will be a number written in a box next to each option indicating its rank. Return the answer as an array of option texts ordered by their rank from lowest to highest. The written numbers will not be higher than the number of options.
@@ -102,29 +99,29 @@ module BulkImportIdeas::Parsers::Pdf
     def personal_data_schema
       organization_name = AppConfiguration.instance.settings('core', 'organization_name')[@locale]
       [{
-        id: 0,
-        type: 'text',
-        optional: true,
-        text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.first_name') }
-      },
-        {
-          id: 0,
-          type: 'text',
-          optional: true,
-          text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.last_name') }
-        },
-        {
-          id: 0,
-          type: 'text',
-          optional: true,
-          text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.email_address') }
-        },
-        {
-          id: 0,
-          type: 'checkbox',
-          optional: true,
-          text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.by_checking_this_box', organizationName: organization_name) }
-        }]
+         id: 0,
+         type: 'text',
+         optional: true,
+         text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.first_name') }
+       },
+       {
+         id: 0,
+         type: 'text',
+         optional: true,
+         text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.last_name') }
+       },
+       {
+         id: 0,
+         type: 'text',
+         optional: true,
+         text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.email_address') }
+       },
+       {
+         id: 0,
+         type: 'checkbox',
+         optional: true,
+         text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.by_checking_this_box', organizationName: organization_name) }
+       }]
     end
 
     def llm
