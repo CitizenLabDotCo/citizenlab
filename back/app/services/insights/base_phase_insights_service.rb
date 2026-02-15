@@ -89,19 +89,17 @@ module Insights
     end
 
     def phase_has_run_more_than_14_days?
-      time_now = Time.current
-      phase_start_at = @phase.start_at.to_time
-      phase_end_at = (@phase.end_at || time_now).to_time
+      time_now = Time.current.to_date
+      phase_end_date = @phase.end_at || time_now
 
-      # Check if the phase duration (start to end or current time) is more than 14 days
-      phase_duration_seconds = phase_end_at - phase_start_at
-      phase_duration_days = (phase_duration_seconds / 86_400).to_i
+      # Check if the phase duration (start to end or current date) is less than 14 days
+      # Add 1 to include both start and end dates (inclusive counting)
+      phase_duration_days = (phase_end_date - @phase.start_at).to_i + 1
 
       return false if phase_duration_days < 14
 
       # Check if the elapsed time from phase start to now is more than 14 days
-      elapsed_seconds = time_now - phase_start_at
-      elapsed_days = (elapsed_seconds / 86_400).to_i
+      elapsed_days = (time_now - @phase.start_at).to_i
 
       elapsed_days >= 14
     end

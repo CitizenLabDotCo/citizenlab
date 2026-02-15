@@ -86,6 +86,7 @@ describe UserFieldsInFormService do
       permission.update!(global_custom_fields: false)
       create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field, key: 'age'))
       create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field, key: 'city'))
+      create(:custom_field, key: 'favorite_color', enabled: true)
     end
 
     it 'merges user custom fields into idea custom fields with prefixed keys' do
@@ -105,8 +106,8 @@ describe UserFieldsInFormService do
       })
     end
 
-    it 'does not include user fields that are not explicitly asked' do
-      user = build(:user, custom_field_values: { 'age' => 30, 'city' => 'New York', 'gender' => 'female' })
+    it 'does not include user fields that are not explicitly asked in permissions_custom_fields' do
+      user = build(:user, custom_field_values: { 'age' => 30, 'city' => 'New York', 'gender' => 'female', 'favorite_color' => 'green' })
       idea = build(:idea, custom_field_values: { 'satisfaction' => 'high' })
 
       merged_values = described_class.merge_user_fields_into_idea(
@@ -295,7 +296,8 @@ describe UserFieldsInFormService do
       )
 
       keys = updated_fields.pluck(:key)
-      expect(keys.slice(keys.length - 3, keys.length)).to eq(%w[
+      last_three_field_keys = keys.slice(keys.length - 3, keys.length)
+      expect(last_three_field_keys).to eq(%w[
         user_page
         u_age
         form_end

@@ -188,6 +188,7 @@ export interface IAppConfigurationSettings {
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
   flag_inappropriate_content?: AppConfigurationFeature;
+  prescreening_flagged_only?: AppConfigurationFeature;
   disable_disliking?: AppConfigurationFeature;
   blocking_profanity?: AppConfigurationFeature;
   anonymous_participation?: AppConfigurationFeature;
@@ -273,6 +274,7 @@ export interface IAppConfigurationSettings {
   project_importer?: AppConfigurationFeature;
   idea_feed?: AppConfigurationFeature;
   nested_input_topics?: AppConfigurationFeature;
+  live_auto_input_topics?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
   phase_insights?: AppConfigurationFeature;
   participation_location_tracking?: AppConfigurationFeature;

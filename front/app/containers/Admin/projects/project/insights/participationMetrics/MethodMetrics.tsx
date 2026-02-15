@@ -9,6 +9,7 @@ import PollMetrics from './methodMetrics/PollMetrics';
 import ProposalsMetrics from './methodMetrics/ProposalsMetrics';
 import SurveyMetrics from './methodMetrics/SurveyMetrics';
 import VolunteeringMetrics from './methodMetrics/VolunteeringMetrics';
+import VotingMetrics from './methodMetrics/VotingMetrics';
 
 interface Props {
   participationMethod: ParticipationMethod;
@@ -52,6 +53,11 @@ const MethodMetrics = ({ participationMethod, metrics, showChange }: Props) => {
           showChange={showChange}
         />
       );
+    }
+    case 'voting': {
+      const votingMetrics = metrics.voting;
+      if (!votingMetrics) return null;
+      return <VotingMetrics metrics={votingMetrics} showChange={showChange} />;
     }
     case 'volunteering': {
       const volunteeringMetrics = metrics.volunteering;

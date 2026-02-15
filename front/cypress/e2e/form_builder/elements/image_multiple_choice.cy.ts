@@ -72,11 +72,11 @@ describe('Form builder image multiple choice choose multiple component', () => {
     cy.visit(`/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`);
     cy.contains(questionTitle).should('exist');
     cy.wait(2000);
-    cy.get(`*[id^="${questionTitle}"]`).eq(1).click({
+    cy.get(`*[id^="${questionTitle}"]:not([id$="-label"])`).eq(1).click({
       force: true,
     });
     cy.contains('Survey').should('exist');
-    cy.get(`*[id^="${questionTitle}"]`).should('exist');
+    cy.get(`*[id^="${questionTitle}"]:not([id$="-label"])`).should('exist');
 
     // Try submitting without entering data for required field
     cy.dataCy('e2e-submit-form').wait(1000).click();
@@ -90,7 +90,7 @@ describe('Form builder image multiple choice choose multiple component', () => {
       }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
 
-    cy.get(`*[id^="${questionTitle}"]`)
+    cy.get(`*[id^="${questionTitle}"]:not([id$="-label"])`)
       .eq(2)
       .should(($element) => {
         const id = $element.attr('id');

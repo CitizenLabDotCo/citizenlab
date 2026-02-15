@@ -299,12 +299,13 @@ const IdeationPage = ({
                           onChange={handleOnChangeAnonymousPosting}
                         />
                       )}
-                    {showPostParticipationSignup && (
+                    {showPostParticipationSignup && project && (
                       <PostParticipationBox
                         onCreateAccount={() => {
                           triggerPostParticipationFlow({
-                            name: 'redirect',
+                            name: 'followProjectAndRedirect',
                             params: {
+                              projectId: project.data.id,
                               path: `/ideas/${idea.data.attributes.slug}`,
                             },
                           });

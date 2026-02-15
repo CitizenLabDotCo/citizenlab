@@ -13,8 +13,8 @@ class WebApi::V1::PermissionSerializer < WebApi::V1::BaseSerializer
     object.everyone_tracking_enabled?
   end
 
-  attribute :user_fields_in_form_frontend_descriptor do |permission|
-    permission.user_fields_in_form_frontend_descriptor
+  attribute :user_fields_in_form_descriptor do |permission|
+    permission.user_fields_in_form_descriptor
   end
 
   belongs_to :permission_scope, polymorphic: true

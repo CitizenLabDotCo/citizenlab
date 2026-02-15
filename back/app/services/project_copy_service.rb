@@ -275,7 +275,8 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         }
       end,
       'include_all_areas' => @project.include_all_areas,
-      'hidden' => @project.hidden
+      'hidden' => @project.hidden,
+      'live_auto_input_topics_enabled' => @project.live_auto_input_topics_enabled
     }
     yml_project['slug'] = new_slug if new_slug.present?
     store_ref yml_project, @project.id, :project
