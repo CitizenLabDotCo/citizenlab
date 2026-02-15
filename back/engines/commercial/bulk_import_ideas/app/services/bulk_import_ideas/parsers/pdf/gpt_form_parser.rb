@@ -99,29 +99,29 @@ module BulkImportIdeas::Parsers::Pdf
     def personal_data_schema
       organization_name = AppConfiguration.instance.settings('core', 'organization_name')[@locale]
       [{
-         id: 0,
-         type: 'text',
-         optional: true,
-         text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.first_name') }
-       },
-       {
-         id: 0,
-         type: 'text',
-         optional: true,
-         text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.last_name') }
-       },
-       {
-         id: 0,
-         type: 'text',
-         optional: true,
-         text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.email_address') }
-       },
-       {
-         id: 0,
-         type: 'checkbox',
-         optional: true,
-         text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.by_checking_this_box', organizationName: organization_name) }
-       }]
+        id: 0,
+        type: 'text',
+        optional: true,
+        text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.first_name') }
+      },
+        {
+          id: 0,
+          type: 'text',
+          optional: true,
+          text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.last_name') }
+        },
+        {
+          id: 0,
+          type: 'text',
+          optional: true,
+          text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.email_address') }
+        },
+        {
+          id: 0,
+          type: 'checkbox',
+          optional: true,
+          text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.by_checking_this_box', organizationName: organization_name) }
+        }]
     end
 
     def llm
