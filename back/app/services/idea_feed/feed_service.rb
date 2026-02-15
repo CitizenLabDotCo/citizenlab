@@ -1,14 +1,13 @@
 module IdeaFeed
   class FeedService
-    attr_reader :phase, :user, :visitor_hash, :topic_ids
+    attr_reader :phase, :user, :visitor_hash
 
-    def initialize(phase, user: nil, topic_ids: nil, visitor_hash: nil)
+    def initialize(phase, user: nil, visitor_hash: nil)
       raise ArgumentError, 'Either user or visitor_hash must be provided' if user.nil? && visitor_hash.nil?
 
       @phase = phase
       @user = user
       @visitor_hash = visitor_hash
-      @topic_ids = topic_ids
     end
 
     def top_n(n = 5, scope = Idea.all)
@@ -20,14 +19,16 @@ module IdeaFeed
         fetch_scored_candidates(eligible_ideas, n * 4)
       end
 
-      DiversityService.new.generate_list(candidates, exposures_scope, n)
+      if skip_diversity_sampling?
+        candidates.limit(n).to_a
+      else
+        DiversityService.new.generate_list(candidates, exposures_scope, n)
+      end
     end
 
     def eligible_ideas_count(scope = Idea.all)
       fetch_eligible_ideas(scope).count
     end
-
-    private
 
     def exposures_scope
       if user
@@ -36,6 +37,8 @@ module IdeaFeed
         IdeaExposure.where(visitor_hash: visitor_hash, phase: phase)
       end
     end
+
+    private
 
     def fetch_scored_candidates(scope, limit)
       scored = scope
@@ -64,29 +67,27 @@ module IdeaFeed
         .limit(limit)
     end
 
+    # This is am exceptional performance optimization in case a platform is hit
+    # pretty hard. Can be manually turned on.
+    def skip_diversity_sampling?
+      AppConfiguration.instance.settings('idea_feed', 'skip_diversity_sampling') == true
+    end
+
     def fetch_eligible_ideas(scope)
       exposed_ideas = exposures_scope.select(:idea_id).distinct
 
-      scope = scope
+      scope
         .joins(:ideas_phases)
         .where(ideas_phases: { phase_id: phase.id })
         .published
         .where.not(id: exposed_ideas)
-
-      scope = scope.with_some_input_topics(topic_ids) if topic_ids.present?
-
-      scope
     end
 
     def fetch_all_ideas(scope)
-      scope = scope
+      scope
         .joins(:ideas_phases)
         .where(ideas_phases: { phase_id: phase.id })
         .published
-
-      scope = scope.with_some_input_topics(topic_ids) if topic_ids.present?
-
-      scope
     end
   end
 end

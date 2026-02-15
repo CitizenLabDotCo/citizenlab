@@ -29,7 +29,10 @@ module ParticipationMethod
     end
 
     def assign_defaults(input)
-      input_status_code = phase&.prescreening_enabled? ? 'prescreening' : 'proposed'
+      # Only the `all` prescreening mode starts inputs in prescreening. The `flagged_only`
+      # mode starts inputs as published, and oxicity detection will asynchronously move
+      # flagged inputs to prescreening.
+      input_status_code = phase&.prescreening_all? ? 'prescreening' : 'proposed'
       input.idea_status ||= IdeaStatus.find_by!(code: input_status_code, participation_method: idea_status_method)
       input.publication_status ||= input.idea_status.public_post? ? 'published' : 'submitted'
     end
@@ -441,6 +444,10 @@ module ParticipationMethod
     end
 
     def supports_submission?
+      true
+    end
+
+    def supports_input_topics?
       true
     end
 

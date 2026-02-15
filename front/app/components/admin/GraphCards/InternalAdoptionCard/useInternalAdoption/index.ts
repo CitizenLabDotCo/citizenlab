@@ -53,11 +53,10 @@ export default function useInternalAdoption({
         ? parseExcelData(
             stats,
             timeSeries,
-            currentResolution,
-            getTranslations(formatMessage)
+            getTranslations(formatMessage, currentResolution)
           )
         : null,
-    [analytics?.data, stats, timeSeries, currentResolution, formatMessage]
+    [analytics?.data, stats, timeSeries, formatMessage, currentResolution]
   );
 
   return { timeSeries, stats, xlsxData, currentResolution };

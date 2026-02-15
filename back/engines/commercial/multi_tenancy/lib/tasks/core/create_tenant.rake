@@ -242,6 +242,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        prescreening_flagged_only: {
+          enabled: false,
+          allowed: false
+        },
         disable_disliking: {
           enabled: true,
           allowed: true
@@ -343,6 +347,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        live_auto_input_topics: {
+          enabled: true,
+          allowed: true
+        },
         data_repository_transcription: {
           enabled: true,
           allowed: true
@@ -356,8 +364,8 @@ namespace :cl2_back do
           allowed: true
         },
         phase_insights: {
-          enabled: false,
-          allowed: false
+          enabled: true,
+          allowed: true
         },
         participation_location_tracking: {
           enabled: false,

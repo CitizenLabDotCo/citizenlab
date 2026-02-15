@@ -1387,7 +1387,8 @@ CREATE TABLE public.projects (
     preview_token character varying NOT NULL,
     hidden boolean DEFAULT false NOT NULL,
     listed boolean DEFAULT true NOT NULL,
-    track_participation_location boolean DEFAULT false NOT NULL
+    track_participation_location boolean DEFAULT false NOT NULL,
+    live_auto_input_topics_enabled boolean DEFAULT false NOT NULL
 );
 
 
@@ -8385,6 +8386,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260205124240'),
 ('20260127094257'),
 ('20260127092840'),
 ('20260127090030'),
