@@ -90,7 +90,6 @@ const ProjectAndFolderCardsInner = ({
         );
         if (cards && cards.length > indexToFocus) {
           const cardToFocus = cards[indexToFocus];
-          console.log('newcardindex', indexToFocus);
           cardToFocus.setAttribute('tabindex', '-1');
           cardToFocus.focus();
           cardToFocus.scrollIntoView({
