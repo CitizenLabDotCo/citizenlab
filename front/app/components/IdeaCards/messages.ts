@@ -68,6 +68,36 @@ export default defineMessages({
     defaultMessage:
       '{ideasCount, plural, no {{ideasCount} petitions} one {{ideasCount} petition} other {{ideasCount} petitions}}',
   },
+  xCommentsTerm: {
+    id: 'app.containers.IdeaCards.xCommentsTerm',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} comments} one {{ideasCount} comment} other {{ideasCount} comments}}',
+  },
+  xResponses: {
+    id: 'app.containers.IdeaCards.xResponses',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} responses} one {{ideasCount} response} other {{ideasCount} responses}}',
+  },
+  xSuggestions: {
+    id: 'app.containers.IdeaCards.xSuggestions',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} suggestions} one {{ideasCount} suggestion} other {{ideasCount} suggestions}}',
+  },
+  xTopics: {
+    id: 'app.containers.IdeaCards.xTopics',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} topics} one {{ideasCount} topic} other {{ideasCount} topics}}',
+  },
+  xPosts: {
+    id: 'app.containers.IdeaCards.xPosts',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} posts} one {{ideasCount} post} other {{ideasCount} posts}}',
+  },
+  xStories: {
+    id: 'app.containers.IdeaCards.xStories',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} stories} one {{ideasCount} story} other {{ideasCount} stories}}',
+  },
   topics: {
     id: 'app.containers.IdeaCards.topics',
     defaultMessage: 'Topics',
@@ -185,5 +215,29 @@ export default defineMessages({
   petitions: {
     id: 'app.containers.IdeaCards.petitions',
     defaultMessage: 'Petitions',
+  },
+  comments: {
+    id: 'app.containers.IdeaCards.commentTerm',
+    defaultMessage: 'Comments',
+  },
+  responses: {
+    id: 'app.containers.IdeaCards.responseTerm',
+    defaultMessage: 'Responses',
+  },
+  suggestions: {
+    id: 'app.containers.IdeaCards.suggestionTerm',
+    defaultMessage: 'Suggestions',
+  },
+  topicsTerm: {
+    id: 'app.containers.IdeaCards.topicTerm',
+    defaultMessage: 'Topics',
+  },
+  posts: {
+    id: 'app.containers.IdeaCards.postTerm',
+    defaultMessage: 'Posts',
+  },
+  stories: {
+    id: 'app.containers.IdeaCards.storyTerm',
+    defaultMessage: 'Stories',
   },
 });

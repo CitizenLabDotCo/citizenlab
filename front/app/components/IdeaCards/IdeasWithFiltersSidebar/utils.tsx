@@ -24,6 +24,18 @@ export const getInputCountMessage = (inputTerm: InputTerm) => {
       return messages.xInitiatives;
     case 'petition':
       return messages.xPetitions;
+    case 'comment':
+      return messages.xCommentsTerm;
+    case 'response':
+      return messages.xResponses;
+    case 'suggestion':
+      return messages.xSuggestions;
+    case 'topic':
+      return messages.xTopics;
+    case 'post':
+      return messages.xPosts;
+    case 'story':
+      return messages.xStories;
     default:
       return messages.xIdeas;
   }

@@ -204,6 +204,30 @@ export default defineMessages({
     id: 'app.containers.Projects.petitions',
     defaultMessage: 'Petitions',
   },
+  commentsTerm: {
+    id: 'app.containers.Projects.commentsTerm',
+    defaultMessage: 'Comments',
+  },
+  responsesTerm: {
+    id: 'app.containers.Projects.responsesTerm',
+    defaultMessage: 'Responses',
+  },
+  suggestionsTerm: {
+    id: 'app.containers.Projects.suggestionsTerm',
+    defaultMessage: 'Suggestions',
+  },
+  topicsTerm: {
+    id: 'app.containers.Projects.topicsTerm',
+    defaultMessage: 'Topics',
+  },
+  postsTerm: {
+    id: 'app.containers.Projects.postsTerm',
+    defaultMessage: 'Posts',
+  },
+  storiesTerm: {
+    id: 'app.containers.Projects.storiesTerm',
+    defaultMessage: 'Stories',
+  },
   survey: {
     id: 'app.containers.Projects.survey',
     defaultMessage: 'Survey',
@@ -267,6 +291,30 @@ export default defineMessages({
   seeThePetitions: {
     id: 'app.containers.Projects.seeThePetitions',
     defaultMessage: 'See the petitions',
+  },
+  seeTheComments: {
+    id: 'app.containers.Projects.seeTheComments',
+    defaultMessage: 'See the comments',
+  },
+  seeTheResponses: {
+    id: 'app.containers.Projects.seeTheResponses',
+    defaultMessage: 'See the responses',
+  },
+  seeTheSuggestions: {
+    id: 'app.containers.Projects.seeTheSuggestions',
+    defaultMessage: 'See the suggestions',
+  },
+  seeTheTopics: {
+    id: 'app.containers.Projects.seeTheTopics',
+    defaultMessage: 'See the topics',
+  },
+  seeThePosts: {
+    id: 'app.containers.Projects.seeThePosts',
+    defaultMessage: 'See the posts',
+  },
+  seeTheStories: {
+    id: 'app.containers.Projects.seeTheStories',
+    defaultMessage: 'See the stories',
   },
   meetMinBudgetRequirement: {
     id: 'app.containers.Projects.meetMinBudgetRequirement',

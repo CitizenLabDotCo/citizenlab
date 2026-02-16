@@ -86,6 +86,30 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.petitionTwitterMessage',
     defaultMessage: 'Support this petition: {postTitle}',
   },
+  commentTwitterMessage: {
+    id: 'app.containers.IdeasShow.commentTwitterMessage',
+    defaultMessage: 'Support this comment: {postTitle}',
+  },
+  responseTwitterMessage: {
+    id: 'app.containers.IdeasShow.responseTwitterMessage',
+    defaultMessage: 'Support this response: {postTitle}',
+  },
+  suggestionTwitterMessage: {
+    id: 'app.containers.IdeasShow.suggestionTwitterMessage',
+    defaultMessage: 'Support this suggestion: {postTitle}',
+  },
+  topicTwitterMessage: {
+    id: 'app.containers.IdeasShow.topicTwitterMessage',
+    defaultMessage: 'Support this topic: {postTitle}',
+  },
+  postTwitterMessage: {
+    id: 'app.containers.IdeasShow.postTwitterMessage',
+    defaultMessage: 'Support this post: {postTitle}',
+  },
+  storyTwitterMessage: {
+    id: 'app.containers.IdeasShow.storyTwitterMessage',
+    defaultMessage: 'Support this story: {postTitle}',
+  },
   // #input_term_copy
   ideaWhatsAppMessage: {
     id: 'app.containers.IdeasShow.ideaWhatsAppMessage',
@@ -122,6 +146,30 @@ export default defineMessages({
   petitionWhatsAppMessage: {
     id: 'app.containers.IdeasShow.petitionWhatsAppMessage',
     defaultMessage: 'Support this petition: {postTitle}',
+  },
+  commentWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.commentWhatsAppMessage',
+    defaultMessage: 'Support this comment: {postTitle}',
+  },
+  responseWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.responseWhatsAppMessage',
+    defaultMessage: 'Support this response: {postTitle}',
+  },
+  suggestionWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.suggestionWhatsAppMessage',
+    defaultMessage: 'Support this suggestion: {postTitle}',
+  },
+  topicWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.topicWhatsAppMessage',
+    defaultMessage: 'Support this topic: {postTitle}',
+  },
+  postWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.postWhatsAppMessage',
+    defaultMessage: 'Support this post: {postTitle}',
+  },
+  storyWhatsAppMessage: {
+    id: 'app.containers.IdeasShow.storyWhatsAppMessage',
+    defaultMessage: 'Support this story: {postTitle}',
   },
   // #input_term_copy
   ideaEmailSharingSubject: {
@@ -196,6 +244,54 @@ export default defineMessages({
   petitionEmailSharingBody: {
     id: 'app.containers.IdeasShow.petitionEmailSharingBody',
     defaultMessage: "Support this petition '{ideaTitle}' at {ideaUrl}!",
+  },
+  commentEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.commentEmailSharingSubject',
+    defaultMessage: 'Support this comment: {ideaTitle}',
+  },
+  commentEmailSharingBody: {
+    id: 'app.containers.IdeasShow.commentEmailSharingBody',
+    defaultMessage: "Support this comment '{ideaTitle}' at {ideaUrl}!",
+  },
+  responseEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.responseEmailSharingSubject',
+    defaultMessage: 'Support this response: {ideaTitle}',
+  },
+  responseEmailSharingBody: {
+    id: 'app.containers.IdeasShow.responseEmailSharingBody',
+    defaultMessage: "Support this response '{ideaTitle}' at {ideaUrl}!",
+  },
+  suggestionEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.suggestionEmailSharingSubject',
+    defaultMessage: 'Support this suggestion: {ideaTitle}',
+  },
+  suggestionEmailSharingBody: {
+    id: 'app.containers.IdeasShow.suggestionEmailSharingBody',
+    defaultMessage: "Support this suggestion '{ideaTitle}' at {ideaUrl}!",
+  },
+  topicEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.topicEmailSharingSubject',
+    defaultMessage: 'Support this topic: {ideaTitle}',
+  },
+  topicEmailSharingBody: {
+    id: 'app.containers.IdeasShow.topicEmailSharingBody',
+    defaultMessage: "Support this topic '{ideaTitle}' at {ideaUrl}!",
+  },
+  postEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.postEmailSharingSubject',
+    defaultMessage: 'Support this post: {ideaTitle}',
+  },
+  postEmailSharingBody: {
+    id: 'app.containers.IdeasShow.postEmailSharingBody',
+    defaultMessage: "Support this post '{ideaTitle}' at {ideaUrl}!",
+  },
+  storyEmailSharingSubject: {
+    id: 'app.containers.IdeasShow.storyEmailSharingSubject',
+    defaultMessage: 'Support this story: {ideaTitle}',
+  },
+  storyEmailSharingBody: {
+    id: 'app.containers.IdeasShow.storyEmailSharingBody',
+    defaultMessage: "Support this story '{ideaTitle}' at {ideaUrl}!",
   },
   share: {
     id: 'app.containers.IdeasShow.share',

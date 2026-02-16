@@ -38,6 +38,30 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.petitionSharingModalTitle',
     defaultMessage: 'Thanks for submitting your petition!',
   },
+  commentSharingModalTitle: {
+    id: 'app.containers.IdeasShow.commentSharingModalTitle',
+    defaultMessage: 'Thanks for submitting your comment!',
+  },
+  responseSharingModalTitle: {
+    id: 'app.containers.IdeasShow.responseSharingModalTitle',
+    defaultMessage: 'Thanks for submitting your response!',
+  },
+  suggestionSharingModalTitle: {
+    id: 'app.containers.IdeasShow.suggestionSharingModalTitle',
+    defaultMessage: 'Thanks for submitting your suggestion!',
+  },
+  topicSharingModalTitle: {
+    id: 'app.containers.IdeasShow.topicSharingModalTitle',
+    defaultMessage: 'Thanks for submitting your topic!',
+  },
+  postSharingModalTitle: {
+    id: 'app.containers.IdeasShow.postSharingModalTitle',
+    defaultMessage: 'Thanks for submitting your post!',
+  },
+  storySharingModalTitle: {
+    id: 'app.containers.IdeasShow.storySharingModalTitle',
+    defaultMessage: 'Thanks for submitting your story!',
+  },
   sharingModalSubtitle: {
     id: 'app.containers.IdeasShow.sharingModalSubtitle',
     defaultMessage: 'Reach more people and make your voice heard.',

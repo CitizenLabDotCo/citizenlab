@@ -38,6 +38,30 @@ export default defineMessages({
     id: 'app.containers.IdeasEditPage.petitionFormTitle',
     defaultMessage: 'Edit petition',
   },
+  commentFormTitle: {
+    id: 'app.containers.IdeasEditPage.commentFormTitle',
+    defaultMessage: 'Edit comment',
+  },
+  responseFormTitle: {
+    id: 'app.containers.IdeasEditPage.responseFormTitle',
+    defaultMessage: 'Edit response',
+  },
+  suggestionFormTitle: {
+    id: 'app.containers.IdeasEditPage.suggestionFormTitle',
+    defaultMessage: 'Edit suggestion',
+  },
+  topicFormTitle: {
+    id: 'app.containers.IdeasEditPage.topicFormTitle',
+    defaultMessage: 'Edit topic',
+  },
+  postFormTitle: {
+    id: 'app.containers.IdeasEditPage.postFormTitle',
+    defaultMessage: 'Edit post',
+  },
+  storyFormTitle: {
+    id: 'app.containers.IdeasEditPage.storyFormTitle',
+    defaultMessage: 'Edit story',
+  },
   save: {
     id: 'app.containers.IdeasEditPage.save',
     defaultMessage: 'Save',
