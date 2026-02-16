@@ -1435,6 +1435,7 @@
   "app.containers.IdeasFeedPage.collapsePanel": "Skjul panelet med emner",
   "app.containers.IdeasFeedPage.endOfFeed": "Du er nået til slutningen af dette feed.",
   "app.containers.IdeasFeedPage.expandPanel": "Udvid emnepanelet",
+  "app.containers.IdeasFeedPage.exploreTags": "Udforsk tags",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Ingen ideer til dette tag endnu.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Der er ikke noget at vise endnu.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Se alle bidrag",

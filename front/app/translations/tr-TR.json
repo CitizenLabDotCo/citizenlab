@@ -1435,6 +1435,7 @@
   "app.containers.IdeasFeedPage.collapsePanel": "Konuları daralt paneli",
   "app.containers.IdeasFeedPage.endOfFeed": "Bu beslemenin sonuna ulaştınız.",
   "app.containers.IdeasFeedPage.expandPanel": "Konu panelini genişletin",
+  "app.containers.IdeasFeedPage.exploreTags": "Etiketleri keşfedin",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Bu etiket için henüz bir fikir yok.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Henüz gösterecek bir şey yok.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Tüm katkıları görün",

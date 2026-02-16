@@ -103,7 +103,7 @@ const LinearScale = ({ value: data, question, onChange }: Props) => {
         aria-valuemin={minimum}
         aria-valuemax={maximum}
         aria-valuenow={data || minimum}
-        aria-labelledby={sanitizeForClassname(name)}
+        aria-labelledby={`${sanitizeForClassname(name)}-label`}
         tabIndex={0}
         onKeyDown={handleKeyDown}
       >

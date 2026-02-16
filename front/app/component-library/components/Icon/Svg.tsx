@@ -24,6 +24,7 @@ export type SvgProps = {
   height?: string;
   width?: string;
   transform?: string;
+  role?: string;
 } & BoxPositionProps &
   BoxMarginProps &
   BoxPaddingProps &
@@ -47,6 +48,7 @@ const Svg = ({
   width = '24px',
   transform,
   name,
+  role = 'img',
   ...rest
 }: SvgProps) => {
   // Generate a unique id for the title element to ensure it doesn't conflict
@@ -62,7 +64,7 @@ const Svg = ({
     <StyledBox
       as="svg"
       className={className || ''}
-      role="img"
+      role={role}
       viewBox={viewBox}
       aria-hidden={ariaHidden}
       xmlns="http://www.w3.org/2000/svg"
