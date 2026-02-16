@@ -1437,7 +1437,7 @@
   "app.containers.IdeasFeedPage.expandPanel": "Ampliar el panel de temas",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Aún no hay ideas para esta etiqueta.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Todavía no hay nada que mostrar.",
-  "app.containers.IdeasFeedPage.seeAllContributions": "Ver todas las contribuciones",
+  "app.containers.IdeasFeedPage.seeAllContributions": "Ver las {ideasCount} contribuciones",
   "app.containers.IdeasFeedPage.seeAllIdeas2": "Ver todas las ideas de {ideasCount}",
   "app.containers.IdeasFeedPage.seeAllInitiatives": "Ver todas las iniciativas",
   "app.containers.IdeasFeedPage.seeAllIssues": "Ver todos los números",
