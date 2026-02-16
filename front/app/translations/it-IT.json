@@ -753,6 +753,7 @@
   "app.components.form.controls.clearAllScreenreader": "Cancella tutte le risposte dalla domanda della matrice precedente",
   "app.components.form.controls.cosponsorsPlaceholder": "Inizia a digitare un nome da cercare",
   "app.components.form.controls.currentRank": "Classifica attuale:",
+  "app.components.form.controls.matrixStatementHeader": "Dichiarazione",
   "app.components.form.controls.noRankSelected": "Nessun grado selezionato",
   "app.components.form.controls.optionalParentheses": "(opzionale)",
   "app.components.form.controls.rankingInstructions": "Trascina e rilascia per classificare le opzioni.",

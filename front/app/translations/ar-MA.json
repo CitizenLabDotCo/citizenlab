@@ -753,6 +753,7 @@
   "app.components.form.controls.clearAllScreenreader": "مسح جميع الإجابات من سؤال المصفوفة أعلاه",
   "app.components.form.controls.cosponsorsPlaceholder": "ابدأ بكتابة اسم للبحث",
   "app.components.form.controls.currentRank": "الرتبة الحالية:",
+  "app.components.form.controls.matrixStatementHeader": "إفادة",
   "app.components.form.controls.noRankSelected": "لم يتم تحديد رتبة",
   "app.components.form.controls.optionalParentheses": "(خياري)",
   "app.components.form.controls.rankingInstructions": "اسحب وأفلِت لترتيب الخيارات.",

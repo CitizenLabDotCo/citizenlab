@@ -753,6 +753,7 @@
   "app.components.form.controls.clearAllScreenreader": "Izbrišite sve odgovore iz gornjeg pitanja matrice",
   "app.components.form.controls.cosponsorsPlaceholder": "Počnite upisivati ime za pretraživanje",
   "app.components.form.controls.currentRank": "Trenutačni rang:",
+  "app.components.form.controls.matrixStatementHeader": "Izjava",
   "app.components.form.controls.noRankSelected": "Nije odabran rang",
   "app.components.form.controls.optionalParentheses": "(neobavezno)",
   "app.components.form.controls.rankingInstructions": "Povucite i ispustite za opcije rangiranja.",
