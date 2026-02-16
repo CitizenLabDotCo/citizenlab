@@ -17,13 +17,13 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 import AvatarBubbles from 'components/AvatarBubbles';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isAdmin } from 'utils/permissions/roles';
 
 import ProjectActionButtons from '../ProjectActionButtons';
 import { hasPhaseType } from '../utils';
-import { ScreenReaderOnly } from 'utils/a11y';
 
 const StyledProjectActionButtons = styled(ProjectActionButtons)`
   margin-top: 20px;
