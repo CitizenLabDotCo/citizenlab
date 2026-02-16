@@ -31,13 +31,7 @@ Sentry.init({
   environment: process.env.SENTRY_ENV,
   integrations: [
     Sentry.browserTracingIntegration(),
-    // Sentry.reactRouterV6BrowserTracingIntegration({
-    //   useEffect: React.useEffect,
-    //   useLocation,
-    //   useNavigationType,
-    //   createRoutesFromChildren,
-    //   matchRoutes,
-    // }),
+    Sentry.tanstackRouterBrowserTracingIntegration(router),
   ],
   tracesSampleRate: 0.05,
   sendClientReports: false,
