@@ -1435,6 +1435,7 @@
   "app.containers.IdeasFeedPage.collapsePanel": "Pannello degli argomenti a rischio",
   "app.containers.IdeasFeedPage.endOfFeed": "Hai raggiunto la fine di questo feed.",
   "app.containers.IdeasFeedPage.expandPanel": "Espandi il pannello degli argomenti",
+  "app.containers.IdeasFeedPage.exploreTags": "Esplora i tag",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Non ci sono ancora idee per questo tag.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Non c'è ancora nulla da mostrare.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Vedi tutti i contributi",

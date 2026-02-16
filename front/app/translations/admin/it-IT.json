@@ -1446,6 +1446,7 @@
   "app.containers.Admin.projects.project.insights.totalVotes": "Totale voti",
   "app.containers.Admin.projects.project.insights.visitors": "Visitatori",
   "app.containers.Admin.projects.project.insights.volunteerings": "Volontari",
+  "app.containers.Admin.projects.project.insights.voters": "Votanti",
   "app.containers.Admin.projects.project.insights.votes": "Voti",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Voti per persona",
   "app.containers.Admin.projects.project.insights.vsLast7Days": "rispetto agli ultimi 7 giorni",

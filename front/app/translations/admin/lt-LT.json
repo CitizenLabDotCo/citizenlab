@@ -1446,6 +1446,7 @@
   "app.containers.Admin.projects.project.insights.totalVotes": "Iš viso balsų",
   "app.containers.Admin.projects.project.insights.visitors": "Lankytojai",
   "app.containers.Admin.projects.project.insights.volunteerings": "Savanoriai",
+  "app.containers.Admin.projects.project.insights.voters": "Rinkėjai",
   "app.containers.Admin.projects.project.insights.votes": "Balsai",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Balsai vienam asmeniui",
   "app.containers.Admin.projects.project.insights.vsLast7Days": "palyginti su paskutinėmis 7 dienomis",

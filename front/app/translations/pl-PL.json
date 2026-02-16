@@ -1435,6 +1435,7 @@
   "app.containers.IdeasFeedPage.collapsePanel": "Zwiń panel tematów",
   "app.containers.IdeasFeedPage.endOfFeed": "Dotarłeś do końca tego kanału.",
   "app.containers.IdeasFeedPage.expandPanel": "Rozwiń panel tematów",
+  "app.containers.IdeasFeedPage.exploreTags": "Poznaj tagi",
   "app.containers.IdeasFeedPage.noIdeasForTag": "Nie masz jeszcze pomysłów na ten tag.",
   "app.containers.IdeasFeedPage.nothingToShowYet": "Jeszcze nic nie pokazałem.",
   "app.containers.IdeasFeedPage.seeAllContributions": "Zobacz wszystkie wkłady",

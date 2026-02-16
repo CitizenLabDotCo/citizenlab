@@ -1435,6 +1435,7 @@
   "app.containers.IdeasFeedPage.collapsePanel": "crwdns5788109:0crwdne5788109:0",
   "app.containers.IdeasFeedPage.endOfFeed": "crwdns6055081:0crwdne6055081:0",
   "app.containers.IdeasFeedPage.expandPanel": "crwdns5788111:0crwdne5788111:0",
+  "app.containers.IdeasFeedPage.exploreTags": "crwdns6298049:0crwdne6298049:0",
   "app.containers.IdeasFeedPage.noIdeasForTag": "crwdns6055093:0crwdne6055093:0",
   "app.containers.IdeasFeedPage.nothingToShowYet": "crwdns6155193:0crwdne6155193:0",
   "app.containers.IdeasFeedPage.seeAllContributions": "crwdns6155195:0{ideasCount}crwdne6155195:0",

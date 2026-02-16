@@ -1446,6 +1446,7 @@
   "app.containers.Admin.projects.project.insights.totalVotes": "Totalt antal röster",
   "app.containers.Admin.projects.project.insights.visitors": "Besökare",
   "app.containers.Admin.projects.project.insights.volunteerings": "Volontärer",
+  "app.containers.Admin.projects.project.insights.voters": "Väljare",
   "app.containers.Admin.projects.project.insights.votes": "Röster",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Röster per person",
   "app.containers.Admin.projects.project.insights.vsLast7Days": "jämfört med de senaste 7 dagarna",
