@@ -66,55 +66,6 @@ resource 'Stats - Ideas' do
     create(:idea, project: native_survey_project, creation_phase: native_survey_project.phases.first)
   end
 
-  # get 'web_api/v1/stats/ideas_count' do
-  #   time_boundary_parameters self
-  #   project_filter_parameter self
-  #   group_filter_parameter self
-  #   topic_filter_parameter self
-  #   feedback_needed_filter_parameter self
-
-  #   # Remove time-boundary query parameters
-  #   let(:start_at) { nil }
-  #   let(:end_at) { nil }
-
-  #   example_request 'Count all public inputs (default behaviour)' do
-  #     assert_status 200
-  #     json_response = json_parse response_body
-  #     expect(json_response.dig(:data, :type)).to eq 'ideas_count'
-  #     expect(json_response.dig(:data, :attributes, :count)).to eq 7
-  #   end
-
-  #   describe 'with feedback_needed filter' do
-  #     let(:feedback_needed) { true }
-
-  #     example_request 'Count all ideas that need feedback' do
-  #       assert_status 200
-  #       json_response = json_parse response_body
-  #       expect(json_response.dig(:data, :type)).to eq 'ideas_count'
-  #       expect(json_response.dig(:data, :attributes, :count)).to eq 6
-  #     end
-
-  #     example 'Count all ideas that need feedback for a specific assignee' do
-  #       assignee = create(:admin)
-  #       create(:idea, idea_status: @proposed, assignee: assignee)
-  #       do_request assignee: assignee.id
-
-  #       assert_status 200
-  #       json_response = json_parse response_body
-  #       expect(json_response.dig(:data, :type)).to eq 'ideas_count'
-  #       expect(json_response.dig(:data, :attributes, :count)).to eq 1
-  #     end
-
-  #     example 'Count is not limited by pagination' do
-  #       do_request(page: { size: 2, number: 1 })
-
-  #       assert_status 200
-  #       json_response = json_parse response_body
-  #       expect(json_response.dig(:data, :type)).to eq 'ideas_count'
-  #       expect(json_response.dig(:data, :attributes, :count)).to eq 6
-  #     end
-  #   end
-  # end
 
   get 'web_api/v1/stats/ideas_by_topic' do
     time_boundary_parameters self
