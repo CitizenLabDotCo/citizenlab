@@ -66,7 +66,6 @@ resource 'Stats - Ideas' do
     create(:idea, project: native_survey_project, creation_phase: native_survey_project.phases.first)
   end
 
-
   get 'web_api/v1/stats/ideas_by_topic' do
     time_boundary_parameters self
     project_filter_parameter self
