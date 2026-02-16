@@ -34,19 +34,12 @@ const SentimentBar = ({ answerGroups }: Props) => {
         height="8px"
         borderRadius={stylingConsts.borderRadius}
         background={colors.grey300}
-        tabIndex={0}
       />
     );
   }
 
   return (
-    <StyledBox
-      display="flex"
-      alignItems="center"
-      width="160px"
-      gap="2px"
-      tabIndex={0}
-    >
+    <StyledBox display="flex" alignItems="center" width="160px" gap="2px">
       {answerGroups!
         .filter(({ percentage }) => percentage > 0)
         .map(({ answer, percentage }) => (

@@ -34,7 +34,7 @@ const TrendIndicator = ({
   }${Math.round(percentageDifference)}%`;
 
   return (
-    <Box display="flex" gap="8px" tabIndex={0}>
+    <Box display="flex" gap="8px">
       <Text
         m="0px"
         color={trendConfiguration[trendType].colorName}
