@@ -1398,7 +1398,7 @@
   "app.containers.Admin.projects.project.insights.noComparisonData": "No hay datos de comparación",
   "app.containers.Admin.projects.project.insights.noDemographicData": "No hay datos demográficos disponibles para esta fase.",
   "app.containers.Admin.projects.project.insights.noInputsSubmitted": "Aún no se han enviado aportaciones.",
-  "app.containers.Admin.projects.project.insights.noReferenceData": "Aún no hay datos de referencia. {addBaseDataLink} para este grupo demográfico para permitir la representatividad.",
+  "app.containers.Admin.projects.project.insights.noReferenceData": "Aún no hay datos de referencia. {addBaseDataLink} para este grupo demográfico para ver la representatividad.",
   "app.containers.Admin.projects.project.insights.openForResponses": "Abierto a respuestas",
   "app.containers.Admin.projects.project.insights.participants": "Participantes",
   "app.containers.Admin.projects.project.insights.participantsPercent": "Participantes (%)",
