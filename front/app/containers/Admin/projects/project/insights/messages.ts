@@ -205,6 +205,11 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.vsLast7Days',
     defaultMessage: 'vs last 7 days',
   },
+  phaseParticipantsMetricTooltip2: {
+    id: 'app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2',
+    defaultMessage:
+      'The number of unique participants. Does not include event registrants and project followers.',
+  },
   participationRateExplanationTooltip: {
     id: 'app.containers.Admin.projects.project.insights.participationRateExplanationTooltip',
     defaultMessage:
