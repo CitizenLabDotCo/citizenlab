@@ -2538,7 +2538,7 @@
   "app.containers.AdminPage.ProjectEvents.descriptionLabel": "Descrizione dell'evento",
   "app.containers.AdminPage.ProjectEvents.editButtonLabel": "Modifica",
   "app.containers.AdminPage.ProjectEvents.editEventTitle": "Modifica evento",
-  "app.containers.AdminPage.ProjectEvents.eventAttendanceExport1": "Per inviare un'email agli tenti registrati all'evento direttamente dalla piattaforma, gli amministratori devono creare un gruppo di utenti nella pagina {userTabLink}. {supportArticleLink}.",
+  "app.containers.AdminPage.ProjectEvents.eventAttendanceExport1": "Per inviare un'email agli utenti registrati all'evento direttamente dalla piattaforma, gli amministratori devono creare un gruppo di utenti nella pagina {userTabLink}. {supportArticleLink}.",
   "app.containers.AdminPage.ProjectEvents.eventDates": "Date dell'evento",
   "app.containers.AdminPage.ProjectEvents.eventImage": "Immagine dell'evento",
   "app.containers.AdminPage.ProjectEvents.eventImageAltTextTitle": "Testo alternativo dell'immagine dell'evento",
