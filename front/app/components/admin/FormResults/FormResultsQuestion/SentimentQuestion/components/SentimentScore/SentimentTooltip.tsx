@@ -22,6 +22,7 @@ const SentimentTooltip = ({ answers }: { answers?: SentimentAnswers }) => {
       flexDirection="column"
       gap="8px"
       minWidth="200px"
+      tabIndex={0}
     >
       {hasAnswers
         ? answers.map(({ answer, label, percentage }, index) => (

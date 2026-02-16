@@ -85,6 +85,7 @@ const ProjectInfoSideBar = memo<Props>(
                   display="flex"
                   justifyContent="center"
                   alignItems="center"
+                  tabIndex={0}
                 >
                   <AvatarBubbles
                     size={32}
