@@ -51,7 +51,9 @@ export interface BudgetingMetrics extends BaseVotingMetrics {
 export interface SurveyMetrics {
   surveys_submitted: number;
   surveys_submitted_7_day_percent_change?: SevenDayChange;
-  completion_rate_as_percent: number;
+  completion_rate_as_percent:
+    | number
+    | 'submitted_count_compared_with_zero_ideas';
   completion_rate_7_day_percent_change?: SevenDayChange;
 }
 
@@ -78,7 +80,9 @@ export interface PhaseInsightsParticipationMetrics {
   visitors_7_day_percent_change?: SevenDayChange;
   participants: number;
   participants_7_day_percent_change?: SevenDayChange;
-  participation_rate_as_percent: number;
+  participation_rate_as_percent:
+    | number
+    | 'participant_count_compared_with_zero_visitors';
   participation_rate_7_day_percent_change?: SevenDayChange;
   ideation?: IdeationMetrics;
   proposals?: ProposalsMetrics;
