@@ -3,8 +3,6 @@
 
 import { pathToRegexp } from 'path-to-regexp';
 
-import { RouteConfiguration } from 'utils/moduleUtils';
-
 const cache = {};
 const cacheLimit = 10000;
 let cacheCount = 0;
@@ -72,30 +70,6 @@ function matchPath(pathname: string, { paths, exact }: MatchPathOptions) {
       }, {}),
     };
   }, null);
-}
-
-export function getAllPathsFromRoutes(route: RouteConfiguration) {
-  const res: string[] = [];
-  function makeRoute(head: string, path: string | undefined) {
-    if (path?.startsWith('/')) {
-      return path;
-    } else {
-      return `${head}/${path || ''}`;
-    }
-  }
-
-  function paths(route: RouteConfiguration, head: string) {
-    // to do: check into this vs. master
-    if (route.children) {
-      res.push(makeRoute(head, route.path));
-      route.children.forEach((r) => paths(r, makeRoute(head, route.path)));
-    } else {
-      res.push(makeRoute(head, route.path));
-    }
-  }
-
-  paths(route, '');
-  return res.map((path) => path.replaceAll('/*', ''));
 }
 
 export default matchPath;

@@ -1,11 +1,9 @@
-import createRoutes from 'routes';
-
 import { IAppConfiguration } from 'api/app_configuration/types';
 
 import { tenantInfo, IEvent } from 'utils/analytics';
+import { getRoutePattern } from 'utils/getRoutePattern';
 import { getUrlLocale } from 'utils/getUrlLocale';
 import { isNilOrError } from 'utils/helperUtils';
-import matchPath, { getAllPathsFromRoutes } from 'utils/matchPath';
 
 import { getProjectId } from './getProjectId';
 
@@ -30,14 +28,8 @@ export const trackEvent = (
   }
 };
 
-let allAppPaths: string[] | undefined;
-
 export const trackPageChange = async (path: string) => {
   if (!window._paq) return;
-
-  if (allAppPaths === undefined) {
-    allAppPaths = getAllPathsFromRoutes(createRoutes()[0]);
-  }
 
   // Update locale custom dimension if URL contains locale
   const locale = getUrlLocale(path);
@@ -59,14 +51,11 @@ export const trackPageChange = async (path: string) => {
   // Set custom URL (override default behavior)
   window._paq.push(['setCustomUrl', path]);
 
-  // Sort out path and params for this pathname
-  const routeMatch = matchPath(path, {
-    paths: allAppPaths,
-    exact: true,
-  });
+  // Match route pattern using TanStack Router
+  const routePattern = getRoutePattern(path);
 
-  if (routeMatch?.isExact) {
-    window._paq.push(['trackPageView', routeMatch.path]);
+  if (routePattern) {
+    window._paq.push(['trackPageView', routePattern]);
   } else {
     window._paq.push(['trackPageView']);
   }
