@@ -753,6 +753,7 @@
   "app.components.form.controls.clearAllScreenreader": "Poista kaikki vastaukset yllä olevasta matriisikysymyksestä",
   "app.components.form.controls.cosponsorsPlaceholder": "Aloita etsittävän nimen kirjoittaminen",
   "app.components.form.controls.currentRank": "Nykyinen sijoitus:",
+  "app.components.form.controls.matrixStatementHeader": "Lausunto",
   "app.components.form.controls.noRankSelected": "Arvoa ei ole valittu",
   "app.components.form.controls.optionalParentheses": "(valinnainen)",
   "app.components.form.controls.rankingInstructions": "Sijoita vaihtoehtoja vetämällä ja pudottamalla.",

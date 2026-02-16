@@ -753,6 +753,7 @@
   "app.components.form.controls.clearAllScreenreader": "Καθαρίστε όλες τις απαντήσεις από την παραπάνω ερώτηση μήτρας",
   "app.components.form.controls.cosponsorsPlaceholder": "Αρχίστε να πληκτρολογείτε ένα όνομα για αναζήτηση",
   "app.components.form.controls.currentRank": "Τρέχουσα κατάταξη:",
+  "app.components.form.controls.matrixStatementHeader": "Δήλωση",
   "app.components.form.controls.noRankSelected": "Δεν έχει επιλεγεί κατάταξη",
   "app.components.form.controls.optionalParentheses": "(προαιρετικά)",
   "app.components.form.controls.rankingInstructions": "Σύρετε και αφήστε τις επιλογές κατάταξης.",

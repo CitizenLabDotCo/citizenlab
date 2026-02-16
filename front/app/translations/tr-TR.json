@@ -753,6 +753,7 @@
   "app.components.form.controls.clearAllScreenreader": "Yukarıdaki matris sorusundaki tüm cevapları temizleyin",
   "app.components.form.controls.cosponsorsPlaceholder": "Aramak için bir isim yazmaya başlayın",
   "app.components.form.controls.currentRank": "Şu anki rütbesi:",
+  "app.components.form.controls.matrixStatementHeader": "Açıklama",
   "app.components.form.controls.noRankSelected": "Rütbe seçilmedi",
   "app.components.form.controls.optionalParentheses": "(isteğe bağlı)",
   "app.components.form.controls.rankingInstructions": "Seçenekleri sıralamak için sürükleyip bırakın.",

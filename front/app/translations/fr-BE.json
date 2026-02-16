@@ -753,6 +753,7 @@
   "app.components.form.controls.clearAllScreenreader": "Effacer toutes les réponses de la question matricielle ci-dessus",
   "app.components.form.controls.cosponsorsPlaceholder": "Commencez à taper un nom pour lancer une recherche",
   "app.components.form.controls.currentRank": "Classement actuel :",
+  "app.components.form.controls.matrixStatementHeader": "Déclaration",
   "app.components.form.controls.noRankSelected": "Aucun classement attribué",
   "app.components.form.controls.optionalParentheses": "(facultatif)",
   "app.components.form.controls.rankingInstructions": "Glissez-déposez les options pour les classer.",

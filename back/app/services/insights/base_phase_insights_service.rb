@@ -54,7 +54,7 @@ module Insights
         visitors_7_day_percent_change: base_7_day_changes[:visitors_7_day_percent_change],
         participants: participants_count,
         participants_7_day_percent_change: base_7_day_changes[:participants_7_day_percent_change],
-        participation_rate_as_percent: visitors_count > 0 ? ((participants_count.to_f / visitors_count) * 100).round(1) : 0,
+        participation_rate_as_percent: visitors_count > 0 ? ((participants_count.to_f / visitors_count) * 100).round(1) : 'participant_count_compared_with_zero_visitors',
         participation_rate_7_day_percent_change: base_7_day_changes[:participation_rate_7_day_percent_change]
       }
     end
@@ -78,13 +78,18 @@ module Insights
         v[:acted_at] < 7.days.ago && v[:acted_at] >= 14.days.ago
       end.pluck(:visitor_id).uniq.count
 
-      participation_rate_last_7_days = visitors_last_7_days_count > 0 ? (participants_last_7_days_count.to_f / visitors_last_7_days_count).round(3) : 0
-      participation_rate_previous_7_days = visitors_previous_7_days_count > 0 ? (participants_previous_7_days_count.to_f / visitors_previous_7_days_count).round(3) : 0
+      participation_rate_7_day_percent_change = if visitors_last_7_days_count > 0 && visitors_previous_7_days_count > 0
+        participation_rate_last_7_days = participants_last_7_days_count.to_f / visitors_last_7_days_count
+        participation_rate_previous_7_days = participants_previous_7_days_count.to_f / visitors_previous_7_days_count
+        percentage_change(participation_rate_previous_7_days, participation_rate_last_7_days)
+      else
+        'no_visitors_in_one_or_both_periods'
+      end
 
       {
         visitors_7_day_percent_change: percentage_change(visitors_previous_7_days_count, visitors_last_7_days_count),
         participants_7_day_percent_change: percentage_change(participants_previous_7_days_count, participants_last_7_days_count),
-        participation_rate_7_day_percent_change: percentage_change(participation_rate_previous_7_days, participation_rate_last_7_days)
+        participation_rate_7_day_percent_change: participation_rate_7_day_percent_change
       }
     end
 

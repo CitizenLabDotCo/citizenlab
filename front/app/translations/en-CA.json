@@ -753,6 +753,7 @@
   "app.components.form.controls.clearAllScreenreader": "Clear all answers from above matrix question",
   "app.components.form.controls.cosponsorsPlaceholder": "Start typing a name to search",
   "app.components.form.controls.currentRank": "Current rank:",
+  "app.components.form.controls.matrixStatementHeader": "Statement",
   "app.components.form.controls.noRankSelected": "No rank selected",
   "app.components.form.controls.optionalParentheses": "(optional)",
   "app.components.form.controls.rankingInstructions": "Drag and drop to rank options.",

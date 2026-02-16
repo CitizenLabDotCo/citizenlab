@@ -753,6 +753,7 @@
   "app.components.form.controls.clearAllScreenreader": "Wis alle antwoorden uit bovenstaande matrixvraag",
   "app.components.form.controls.cosponsorsPlaceholder": "Begin met het typen van een naam om te zoeken",
   "app.components.form.controls.currentRank": "Huidige rang:",
+  "app.components.form.controls.matrixStatementHeader": "Verklaring",
   "app.components.form.controls.noRankSelected": "Geen rang geselecteerd",
   "app.components.form.controls.optionalParentheses": "(optioneel)",
   "app.components.form.controls.rankingInstructions": "Sleep om opties te rangschikken.",
