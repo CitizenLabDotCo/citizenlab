@@ -132,6 +132,7 @@ const Row = ({ folder }: Props) => {
         <Box mr="12px">
           <FolderMoreActionsMenu
             folderId={folder.id}
+            folderName={localize(folder.attributes.title_multiloc)}
             color={colors.black}
             setError={setError}
             setIsRunningAction={setIsBeingDeleted}

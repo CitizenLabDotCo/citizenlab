@@ -7,6 +7,8 @@ import useCopyProject from 'api/projects/useCopyProject';
 import useDeleteProject from 'api/projects/useDeleteProject';
 
 import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+import TypedDeleteConfirmationModal from 'components/UI/TypedDeleteConfirmationModal';
+import typedDeleteConfirmationMessages from 'components/UI/TypedDeleteConfirmationModal/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
@@ -19,6 +21,7 @@ export type ActionType = 'deleting' | 'copying';
 
 export interface Props {
   projectId: string;
+  projectName: string;
   firstPublishedAt: string | null;
   folderId?: string;
   color?: string;
@@ -28,6 +31,7 @@ export interface Props {
 
 const ProjectMoreActionsMenu = ({
   projectId,
+  projectName,
   firstPublishedAt,
   folderId,
   color,
@@ -42,6 +46,7 @@ const ProjectMoreActionsMenu = ({
 
   const [isCopying, setIsCopying] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   if (!authUser) {
     return null;
@@ -105,22 +110,7 @@ const ProjectMoreActionsMenu = ({
     if (userCanDeleteProject) {
       actions.push({
         handler: async () => {
-          if (
-            window.confirm(formatMessage(messages.deleteProjectConfirmation))
-          ) {
-            setLoadingState('deleting', true);
-
-            deleteProject(projectId, {
-              onSuccess: () => {
-                setError(null);
-                setLoadingState('deleting', false);
-              },
-              onError: () => {
-                setError(formatMessage(messages.deleteProjectError));
-                setLoadingState('deleting', false);
-              },
-            });
-          }
+          setShowDeleteModal(true);
         },
         label: formatMessage(messages.deleteProjectButtonFull),
         icon: 'delete' as const,
@@ -137,16 +127,54 @@ const ProjectMoreActionsMenu = ({
 
   const actions = createActions();
 
+  const handleDeleteProject = () => {
+    setLoadingState('deleting', true);
+
+    deleteProject(projectId, {
+      onSuccess: () => {
+        setError(null);
+        setLoadingState('deleting', false);
+        setShowDeleteModal(false);
+      },
+      onError: () => {
+        setError(formatMessage(messages.deleteProjectError));
+        setLoadingState('deleting', false);
+        setShowDeleteModal(false);
+      },
+    });
+  };
+
+  const handleCloseDeleteModal = () => {
+    if (!isDeleting) {
+      setShowDeleteModal(false);
+    }
+  };
+
   if (actions) {
     return (
-      <Box
-        display="flex"
-        alignItems="center"
-        ml="1rem"
-        data-testid="moreProjectActionsMenu"
-      >
-        <MoreActionsMenu showLabel={false} actions={actions} color={color} />
-      </Box>
+      <>
+        <Box
+          display="flex"
+          alignItems="center"
+          ml="1rem"
+          data-testid="moreProjectActionsMenu"
+        >
+          <MoreActionsMenu showLabel={false} actions={actions} color={color} />
+        </Box>
+        <TypedDeleteConfirmationModal
+          opened={showDeleteModal}
+          onClose={handleCloseDeleteModal}
+          onConfirm={handleDeleteProject}
+          title={messages.deleteProjectModalTitle}
+          entityName={projectName}
+          mainWarning={messages.deleteProjectModalWarning}
+          confirmationWord={
+            typedDeleteConfirmationMessages.confirmationWordDelete
+          }
+          deleteButtonText={messages.deleteProjectButtonFull}
+          isDeleting={isDeleting}
+        />
+      </>
     );
   }
 
