@@ -67,26 +67,44 @@ const ProjectAndFolderCardsInner = ({
   );
 
   // Focus on the first newly added card when show more are loaded
-  const visibileCardsLength = useRef(adminPublications.length);
+  const visibileCardsLength = useRef(0);
+  const previousTab = useRef(currentTab);
   useEffect(() => {
-    const panel = document.querySelector('[role="tabpanel"].active-tab');
-    const cards = panel?.querySelectorAll<HTMLElement>(
-      '.e2e-admin-publication-card'
-    );
-    if (!cards) return;
-
+    if (previousTab.current !== currentTab) {
+      visibileCardsLength.current = adminPublications.length;
+      previousTab.current = currentTab;
+      return;
+    }
+    // Only run when we're loading MORE cards (not initial load)
     if (
       adminPublications.length > visibileCardsLength.current &&
       visibileCardsLength.current > 0
     ) {
-      cards[visibileCardsLength.current].focus();
-      cards[visibileCardsLength.current].scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    }
+      const indexToFocus = visibileCardsLength.current;
 
-    visibileCardsLength.current = adminPublications.length;
+      // Use a small timeout to ensure DOM is ready
+      const timeoutId = setTimeout(() => {
+        const panel = document.querySelector('[role="tabpanel"].active-tab');
+        const cards = panel?.querySelectorAll<HTMLElement>(
+          '.e2e-admin-publication-card'
+        );
+        if (cards && cards.length > indexToFocus) {
+          const cardToFocus = cards[indexToFocus];
+          cardToFocus.focus();
+          console.log('Focusing on card index', indexToFocus);
+        }
+      }, 200);
+
+      visibileCardsLength.current = adminPublications.length;
+      return () => clearTimeout(timeoutId);
+    } else {
+      // Update ref even when not focusing
+      visibileCardsLength.current = adminPublications.length;
+      console.log('cards length', adminPublications.length);
+      console.log('visible cards length', visibileCardsLength.current);
+      console.log('current tab', currentTab);
+      return;
+    }
   }, [adminPublications, currentTab]);
 
   // TODO: Fix this the next time the file is edited.
