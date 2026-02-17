@@ -1413,7 +1413,6 @@
   "app.containers.Admin.projects.project.insights.noInputsSubmitted": "Es wurden noch keine Beiträge eingereicht.",
   "app.containers.Admin.projects.project.insights.noReferenceDataMessage": "Für diese demografische Dimension sind noch keine Referenzdaten der Volkszählung verfügbar. <link>Fügen Sie sie hier hinzu</link>, um zu verstehen, wie repräsentativ Ihre Daten sind.",
   "app.containers.Admin.projects.project.insights.openForResponses": "Umfrage ein/aus",
-  "app.containers.Admin.projects.project.insights.participants": "Teilnehmende",
   "app.containers.Admin.projects.project.insights.participantsPercent": "Teilnehmende (%)",
   "app.containers.Admin.projects.project.insights.participationOverTime": "Beteiligung im Zeitverlauf",
   "app.containers.Admin.projects.project.insights.participationRate": "Beteiligungsrate",
