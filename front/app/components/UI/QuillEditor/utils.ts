@@ -142,9 +142,51 @@ const convertInlineStylesToAlignment = (html: string): string => {
   return div.innerHTML;
 };
 
+// Quill 2.0 uses <ol> for ALL list types internally, with data-list
+// attributes on <li> to distinguish bullet vs ordered. Convert to
+// proper <ul>/<ol> so lists survive the clipboard.convert() round-trip.
+// Legacy HTML without data-list attributes passes through unchanged.
+const normalizeListTags = (html: string): string => {
+  const div = document.createElement('div');
+  div.innerHTML = html;
+
+  div.querySelectorAll('ol').forEach((ol) => {
+    const items = ol.querySelectorAll<HTMLLIElement>(':scope > li');
+    const hasBullets = Array.from(items).some(
+      (li) => li.getAttribute('data-list') === 'bullet'
+    );
+
+    if (!hasBullets) {
+      items.forEach((li) => li.removeAttribute('data-list'));
+      return;
+    }
+
+    const fragment = document.createDocumentFragment();
+    let current: HTMLUListElement | HTMLOListElement | null = null;
+    let currentType = '';
+
+    items.forEach((li) => {
+      const type = li.getAttribute('data-list') || 'ordered';
+      li.removeAttribute('data-list');
+
+      if (type !== currentType) {
+        currentType = type;
+        current = document.createElement(type === 'bullet' ? 'ul' : 'ol');
+        fragment.appendChild(current);
+      }
+      current!.appendChild(li);
+    });
+
+    ol.replaceWith(fragment);
+  });
+
+  return div.innerHTML;
+};
+
 export const getHTML = (editor: Quill) => {
-  if (editor.root.innerHTML === '<p><br></p>') return '';
-  return convertAlignmentToInlineStyles(editor.root.innerHTML);
+  const html = editor.root.innerHTML;
+  if (!html || html === '<p><br></p>') return '';
+  return convertAlignmentToInlineStyles(normalizeListTags(html));
 };
 
 export const setHTML = (editor: Quill, html: string = '') => {
