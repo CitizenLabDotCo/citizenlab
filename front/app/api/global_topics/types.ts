@@ -19,7 +19,6 @@ export interface IGlobalTopicData {
     static_page_ids: string[];
     followers_count: number;
     include_in_onboarding: boolean;
-    is_default: boolean;
   };
   relationships: {
     static_pages: {
@@ -50,7 +49,6 @@ export interface IGlobalTopicsQueryParams {
 export interface IGlobalTopicAdd {
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
-  is_default?: boolean;
 }
 
 export interface IGlobalTopicUpdate {
@@ -58,5 +56,4 @@ export interface IGlobalTopicUpdate {
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   include_in_onboarding?: boolean;
-  is_default?: boolean;
 }

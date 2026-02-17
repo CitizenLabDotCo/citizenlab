@@ -72,7 +72,8 @@ class User < ApplicationRecord
     def destroy_all_async(scope = User)
       scope.pluck(:id).each.with_index do |id, idx|
         # Spread out the deletion of users to avoid throttling.
-        DeleteUserJob.set(wait: (idx / 5.0).seconds).perform_later(id)
+        # Note: No need to update member counts if we're deleting all users, as the count will never be seen.
+        DeleteUserJob.set(wait: (idx / 5.0).seconds).perform_later(id, update_member_counts: false)
       end
     end
 

@@ -6,9 +6,9 @@ export default defineMessages({
     defaultMessage: 'Similar submissions already posted:',
   },
   similarSubmissionsDescription: {
-    id: 'app.components.ideas.similarIdeas.similarSubmissionsDescription',
+    id: 'app.components.ideas.similarIdeas.similarSubmissionsDescription2',
     defaultMessage:
-      'We found similar submisisons - engaging with them can help make them stronger!',
+      'We found similar submissions - engaging with them can help make them stronger!',
   },
   similarSubmissionsSearch: {
     id: 'app.components.ideas.similarIdeas.similarSubmissionsSearch',

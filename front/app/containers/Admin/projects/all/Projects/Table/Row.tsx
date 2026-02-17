@@ -189,6 +189,7 @@ const Row = ({ project, participantsCount, firstRow }: Props) => {
         <Box mr="12px">
           <ProjectMoreActionsMenu
             projectId={project.id}
+            projectName={localize(project.attributes.title_multiloc)}
             firstPublishedAt={project.attributes.first_published_at}
             folderId={folderId}
             color={colors.black}

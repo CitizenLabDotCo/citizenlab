@@ -6,6 +6,7 @@ import ideasCountKeys from 'api/idea_count/keys';
 import ideaImagesKeys from 'api/idea_images/keys';
 import ideaMarkersKeys from 'api/idea_markers/keys';
 import ideaFilterCountsKeys from 'api/ideas_filter_counts/keys';
+import meKeys from 'api/me/keys';
 import projectsKeys from 'api/projects/keys';
 import submissionsCountKeys from 'api/submission_count/keys';
 import userIdeaCountKeys from 'api/user_ideas_count/keys';
@@ -48,6 +49,9 @@ const useAddIdea = () => {
       });
       queryClient.invalidateQueries({
         queryKey: submissionsCountKeys.items(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: meKeys.all(),
       });
 
       // TODO: Fix this the next time the file is edited.

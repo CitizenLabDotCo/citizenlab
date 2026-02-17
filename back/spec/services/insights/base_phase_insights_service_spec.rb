@@ -58,7 +58,94 @@ RSpec.describe Insights::BasePhaseInsightsService do
           participants: 3,
           participants_7_day_percent_change: 50.0, # From 2 (7 to 14 days ago) to 3 (last 7-day period) unique participants = 50% increase
           participation_rate_as_percent: 75.0,
-          participation_rate_7_day_percent_change: 49.9 # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 0.667 = (((1 - 0.667).to_f / 0.667) * 100.0).round(1)
+          participation_rate_7_day_percent_change: 50.0 # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 0.667 = (((1 - 0.667).to_f / 0.667) * 100.0).round(1)
+        }
+      )
+    end
+
+    it 'handles zero visitors as expected' do
+      visits = []
+      result = service.send(:base_metrics, participations, participant_ids, visits)
+
+      expect(result).to eq(
+        {
+          visitors: 0,
+          visitors_7_day_percent_change: 0.0, # From 0 (7 to 14 days ago) to 0 (last 7-day period) unique visitors = 0% change
+          participants: 3,
+          participants_7_day_percent_change: 50.0,
+          participation_rate_as_percent: 'participant_count_compared_with_zero_visitors',
+          participation_rate_7_day_percent_change: 'no_visitors_in_one_or_both_periods'
+        }
+      )
+    end
+  end
+
+  describe '#base_7_day_changes' do
+    it 'calculates 7 day changes correctly' do
+      participations = {
+        voting: [
+          create(:basket_participation, acted_at: 10.days.ago),
+          create(:basket_participation, acted_at: 5.days.ago),
+          create(:basket_participation, acted_at: 4.days.ago)
+        ]
+      }
+
+      visits = [
+        { acted_at: 10.days.ago, visitor_id: SecureRandom.uuid },
+        { acted_at: 5.days.ago, visitor_id: SecureRandom.uuid },
+        { acted_at: 4.days.ago, visitor_id: SecureRandom.uuid }
+      ]
+
+      result = service.send(:base_7_day_changes, participations, visits)
+
+      expect(result).to eq(
+        {
+          visitors_7_day_percent_change: 100.0, # from 1 (in week before last) to 2 (in last 7 days) = 100% increase
+          participants_7_day_percent_change: 100.0, # from 1 (in week before last) to 2 (in last 7 days) = 100% increase
+          participation_rate_7_day_percent_change: 0.0 # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 1.0 = 0% change
+        }
+      )
+    end
+
+    it 'handles zero visitors in either of last two 7-day periods as expected' do
+      participations = {
+        voting: [
+          create(:basket_participation, acted_at: 10.days.ago),
+          create(:basket_participation, acted_at: 5.days.ago),
+          create(:basket_participation, acted_at: 4.days.ago)
+        ]
+      }
+
+      visits = [{ acted_at: 5.days.ago, visitor_id: SecureRandom.uuid }] # No visits in week before last
+      result = service.send(:base_7_day_changes, participations, visits)
+
+      expect(result).to eq(
+        {
+          visitors_7_day_percent_change: 'last_7_days_compared_with_zero',
+          participants_7_day_percent_change: 100.0,
+          participation_rate_7_day_percent_change: 'no_visitors_in_one_or_both_periods'
+        }
+      )
+
+      visits = [{ acted_at: 10.days.ago, visitor_id: SecureRandom.uuid }] # No visits in last 7 days
+      result = service.send(:base_7_day_changes, participations, visits)
+
+      expect(result).to eq(
+        {
+          visitors_7_day_percent_change: -100.0,
+          participants_7_day_percent_change: 100.0,
+          participation_rate_7_day_percent_change: 'no_visitors_in_one_or_both_periods'
+        }
+      )
+
+      visits = [] # No visits in either period
+      result = service.send(:base_7_day_changes, participations, visits)
+
+      expect(result).to eq(
+        {
+          visitors_7_day_percent_change: 0.0, # NOTE: This will be overriden as 'last_7_days_compared_with_zero' if no visitors to phase at all
+          participants_7_day_percent_change: 100.0,
+          participation_rate_7_day_percent_change: 'no_visitors_in_one_or_both_periods'
         }
       )
     end
@@ -604,27 +691,35 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
   describe '#phase_has_run_more_than_14_days?' do
     it 'returns false when phase duration is less than 14 days' do
-      phase = create(:single_voting_phase, start_at: 15.days.ago, end_at: 2.days.ago)
-      service = described_class.new(phase)
-      expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+      travel_to(Time.zone.parse('2026-01-15 12:00:00')) do
+        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 13)) # 13 days, including both start and end dates
+        service = described_class.new(phase)
+        expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+      end
     end
 
-    it 'returns false when phase duration is more than 14 days but elapsed time is less than 14 days' do
-      phase = create(:single_voting_phase, start_at: 13.days.ago, end_at: 2.days.from_now)
-      service = described_class.new(phase)
-      expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+    it 'returns false when phase duration is 14 days but elapsed time is less than 14 days' do
+      travel_to(Time.zone.parse('2026-01-13 12:00:00')) do
+        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 14)) # 14 days, including both start and end dates
+        service = described_class.new(phase)
+        expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+      end
     end
 
-    it 'returns true when phase duration is more than 14 days and elapsed time is at least 14 days' do
-      phase = create(:single_voting_phase, start_at: 20.days.ago, end_at: 1.day.ago)
-      service = described_class.new(phase)
-      expect(service.send(:phase_has_run_more_than_14_days?)).to be true
+    it 'returns true when phase duration is 14 days and elapsed time is at least 14 days' do
+      travel_to(Time.zone.parse('2026-01-15 12:00:00')) do
+        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 14)) # 14 days, including both start and end dates
+        service = described_class.new(phase)
+        expect(service.send(:phase_has_run_more_than_14_days?)).to be true
+      end
     end
 
     it 'returns false when phase is long enough but started less than 14 days ago' do
-      phase = create(:single_voting_phase, start_at: 10.days.ago, end_at: 30.days.from_now)
-      service = described_class.new(phase)
-      expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+      travel_to(Time.zone.parse('2026-01-14 12:00:00')) do
+        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 14)) # 14 days, including both start and end dates
+        service = described_class.new(phase)
+        expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+      end
     end
 
     it 'returns true for ongoing phases without end_at when started more than 14 days ago' do

@@ -40,8 +40,10 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
 
   const azureProviderName =
     tenantSettings?.azure_ad_login?.login_mechanism_name;
+  const azureProviderLogoUrl = tenantSettings?.azure_ad_login?.logo_url;
   const azureB2cProviderName =
     tenantSettings?.azure_ad_b2c_login?.login_mechanism_name;
+  const azureB2cProviderLogoUrl = tenantSettings?.azure_ad_b2c_login?.logo_url;
 
   const keycloakMethod = verificationMethods?.data.find(
     (item) => item.attributes.name === 'keycloak'
@@ -177,6 +179,7 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
       {ssoProviders.azureAd && (
         <WrappedAuthProviderButton
           icon="microsoft-windows"
+          imageUrl={azureProviderLogoUrl}
           authProvider="azureactivedirectory"
           onClick={onClickSSO}
         >
@@ -189,6 +192,7 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
       {ssoProviders.azureAdB2c && (
         <WrappedAuthProviderButton
           icon="microsoft-windows"
+          imageUrl={azureB2cProviderLogoUrl}
           authProvider="azureactivedirectory_b2c"
           onClick={onClickSSO}
         >

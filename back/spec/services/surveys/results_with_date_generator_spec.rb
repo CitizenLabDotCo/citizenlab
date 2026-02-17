@@ -20,21 +20,21 @@ RSpec.describe Surveys::ResultsWithDateGenerator do
         let(:quarter) { 2 }
 
         it 'returns the correct totals' do
-          expect(generated_results[:results].count).to eq 18
+          expect(generated_results[:results].count).to eq 20
           expect(generated_results[:totalSubmissions]).to eq 4
         end
 
         it 'returns linear scale averages for both this period and the previous period of the same length' do
           # Linear scale field
-          expect(generated_results.dig(:results, 4, :averages)).to eq(
+          expect(generated_results.dig(:results, result_index(linear_scale_field), :averages)).to eq(
             { this_period: 3.5, last_period: 3.6 }
           )
           # Rating field
-          expect(generated_results.dig(:results, 16, :averages)).to eq(
+          expect(generated_results.dig(:results, result_index(rating_field), :averages)).to eq(
             { this_period: 3.5, last_period: 3.6 }
           )
           # Sentiment linear scale field
-          expect(generated_results.dig(:results, 17, :averages)).to eq(
+          expect(generated_results.dig(:results, result_index(sentiment_linear_scale_field), :averages)).to eq(
             { this_period: 3.3, last_period: 2.1 }
           )
         end
@@ -49,21 +49,21 @@ RSpec.describe Surveys::ResultsWithDateGenerator do
         let(:quarter) { '1' }
 
         it 'returns the correct totals' do
-          expect(generated_results[:results].count).to eq 18
+          expect(generated_results[:results].count).to eq 20
           expect(generated_results[:totalSubmissions]).to eq 23
         end
 
         it 'returns nil for "last_period" in averages when there are no results in the previous period' do
           # Linear scale field
-          expect(generated_results.dig(:results, 4, :averages)).to eq(
+          expect(generated_results.dig(:results, result_index(linear_scale_field), :averages)).to eq(
             { this_period: 3.6, last_period: nil }
           )
           # Rating field
-          expect(generated_results.dig(:results, 16, :averages)).to eq(
+          expect(generated_results.dig(:results, result_index(rating_field), :averages)).to eq(
             { this_period: 3.6, last_period: nil }
           )
           # Sentiment linear scale field
-          expect(generated_results.dig(:results, 17, :averages)).to eq(
+          expect(generated_results.dig(:results, result_index(sentiment_linear_scale_field), :averages)).to eq(
             { this_period: 2.1, last_period: nil }
           )
         end

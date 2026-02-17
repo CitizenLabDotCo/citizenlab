@@ -14,7 +14,8 @@ class DeleteUserJob < ApplicationJob
     current_user = nil,
     delete_participation_data: false,
     ban_email: false,
-    ban_reason: nil
+    ban_reason: nil,
+    update_member_counts: true
   )
     user = User.find(user) unless user.respond_to?(:id)
     email_to_ban = user.email if ban_email
@@ -27,7 +28,8 @@ class DeleteUserJob < ApplicationJob
 
     SideFxUserService.new.after_destroy(
       user, current_user,
-      participation_data_deleted: delete_participation_data
+      participation_data_deleted: delete_participation_data,
+      update_member_counts:
     )
   end
 end

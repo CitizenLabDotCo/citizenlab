@@ -10,8 +10,8 @@ module IdeaFeed
       seen_centroid = calculate_centroid_sql(seen_ideas)
       candidates_centroid = calculate_centroid_sql(candidates)
 
-      prefetch_embeddings(candidates)
-      prefetch_embeddings(seen_ideas)
+      candidates = prefetch_embeddings(candidates)
+      seen_ideas = prefetch_embeddings(seen_ideas)
 
       seen_ideas = seen_ideas.to_a
       candidates = candidates.to_a
@@ -47,7 +47,7 @@ module IdeaFeed
     end
 
     def prefetch_embeddings(ideas)
-      ideas.includes(:embeddings_similarities).where(embeddings_similarities: { embedded_attributes: 'title' })
+      ideas.includes(:embeddings_similarities).where(embeddings_similarities: { embedded_attributes: ['title', nil] })
     end
 
     def find_closest_idea(ideas, centroid)

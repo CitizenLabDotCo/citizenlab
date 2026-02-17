@@ -172,6 +172,43 @@ resource 'Ideas' do
             expect(response_data.dig(:relationships, :author, :data, :id)).not_to eq author_id
           end
         end
+
+        context 'when prescreening_mode is all' do
+          before_all { SettingsService.new.activate_feature!('prescreening_ideation') }
+
+          let!(:proposed_status) { create(:idea_status_proposed) }
+
+          let(:phase) { create(:phase, :ongoing, prescreening_mode: 'all') }
+          let(:input) { create(:idea, phases: [phase], idea_status: proposed_status) }
+          let(:title_multiloc) { { 'en' => 'Changed title' } }
+
+          example '[error] Author cannot edit a published idea after screening', document: false do
+            do_request
+
+            assert_status 401
+            expect(json_response_body).to include_response_error(:base, 'published_after_screening')
+          end
+        end
+
+        context 'when prescreening_mode is flagged_only' do
+          before_all do
+            SettingsService.new.activate_feature!('prescreening_ideation')
+            SettingsService.new.activate_feature!('flag_inappropriate_content')
+          end
+
+          let!(:proposed_status) { create(:idea_status_proposed) }
+
+          let(:phase) { create(:phase, :ongoing, prescreening_mode: 'flagged_only') }
+          let(:input) { create(:idea, phases: [phase], idea_status: proposed_status) }
+          let(:title_multiloc) { { 'en' => 'Changed title' } }
+
+          example 'Author can edit a published idea in flagged_only mode', document: false do
+            do_request
+
+            assert_status 200
+            expect(response_data.dig(:attributes, :title_multiloc, :en)).to eq('Changed title')
+          end
+        end
       end
 
       context 'when admin' do

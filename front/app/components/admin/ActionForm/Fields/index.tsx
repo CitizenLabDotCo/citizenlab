@@ -31,7 +31,7 @@ interface Props {
   action: Action;
   allowAddingFields: boolean;
   permitted_by: PermittedBy;
-  user_fields_in_form_frontend_descriptor?: UserFieldsInFormFrontendDescriptor;
+  user_fields_in_form_descriptor?: UserFieldsInFormFrontendDescriptor;
   onChangeUserFieldsInForm?: (value: boolean) => void;
 }
 
@@ -39,7 +39,7 @@ const Fields = ({
   phaseId,
   action,
   allowAddingFields,
-  user_fields_in_form_frontend_descriptor,
+  user_fields_in_form_descriptor,
   permitted_by,
   onChangeUserFieldsInForm,
 }: Props) => {
@@ -107,12 +107,10 @@ const Fields = ({
           </Tooltip>
         )}
       </Box>
-      {onChangeUserFieldsInForm && user_fields_in_form_frontend_descriptor && (
+      {onChangeUserFieldsInForm && user_fields_in_form_descriptor && (
         <Box>
           <UserFieldsInFormRadio
-            user_fields_in_form_frontend_descriptor={
-              user_fields_in_form_frontend_descriptor
-            }
+            user_fields_in_form_descriptor={user_fields_in_form_descriptor}
             onChange={onChangeUserFieldsInForm}
           />
         </Box>
@@ -123,9 +121,7 @@ const Fields = ({
             phaseId={phaseId}
             action={action}
             permitted_by={permitted_by}
-            userFieldsInForm={
-              user_fields_in_form_frontend_descriptor?.value ?? false
-            }
+            userFieldsInForm={user_fields_in_form_descriptor?.value ?? false}
           />
         </Box>
       )}

@@ -128,8 +128,6 @@ export const emailFlow = (
           return;
         }
 
-        // trackEventByName(tracks.signUpFlowCompleted);
-
         if (doesNotMeetGroupCriteria(requirements)) {
           setCurrentStep('access-denied');
           return;

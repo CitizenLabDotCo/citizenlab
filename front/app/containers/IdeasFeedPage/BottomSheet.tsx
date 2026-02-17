@@ -1,14 +1,17 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors, Icon, Text } from '@citizenlab/cl2-component-library';
 import { FocusOn } from 'react-focus-on';
 import styled from 'styled-components';
 
 import { InputTerm } from 'api/phases/types';
 
-import SeeAllButton from './BottomSheet/SeeAllButton';
+import { useIntl } from 'utils/cl-intl';
 
-const COLLAPSED_HEIGHT = 40;
+import SeeAllButton from './BottomSheet/SeeAllButton';
+import messages from './messages';
+
+const COLLAPSED_HEIGHT = 60;
 const PEEK_DELAY_MS = 10000;
 const PEEK_DURATION_MS = 1000;
 const DRAG_AREA_HEIGHT = 28;
@@ -35,7 +38,7 @@ const DragHandle = styled.div`
   height: 4px;
   background: ${colors.grey400};
   border-radius: 2px;
-  margin: 12px auto;
+  margin: 8px auto 0;
 `;
 
 const DragArea = styled.div`
@@ -70,6 +73,8 @@ interface Props {
   a11y_collapseLabel: string;
   expandToFullscreenOn?: string | null;
   inputTerm: InputTerm;
+  onCollapse?: () => void;
+  onExpand?: () => void;
 }
 
 const BottomSheet = ({
@@ -79,8 +84,13 @@ const BottomSheet = ({
   a11y_collapseLabel,
   expandToFullscreenOn,
   inputTerm,
+  onCollapse,
+  onExpand,
 }: Props) => {
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const { formatMessage } = useIntl();
+  // Derive fullscreen state directly from prop - URL is the source of truth
+  const isFullscreen = Boolean(expandToFullscreenOn);
+
   const [isPeeking, setIsPeeking] = useState(false);
   const [dragOffset, setDragOffset] = useState<number | null>(null);
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
@@ -90,6 +100,7 @@ const BottomSheet = ({
   const dragStartY = useRef<number | null>(null);
   const hasPeeked = useRef(false);
   const hasDragged = useRef(false);
+  const touchHandled = useRef(false);
 
   // Update windowHeight on resize to keep handle position consistent
   useEffect(() => {
@@ -111,14 +122,6 @@ const BottomSheet = ({
     }, PEEK_DELAY_MS);
     return () => clearTimeout(timer);
   }, [isFullscreen]);
-
-  useEffect(() => {
-    if (expandToFullscreenOn) {
-      setIsFullscreen(true);
-    } else {
-      setIsFullscreen(false);
-    }
-  }, [expandToFullscreenOn]);
 
   // Reset scroll position when sheet opens to fullscreen
   useEffect(() => {
@@ -157,21 +160,36 @@ const BottomSheet = ({
     hasDragged.current = false;
 
     if (hadDragged && Math.abs(delta) >= SWIPE_THRESHOLD) {
-      setIsFullscreen(delta < 0);
+      const willBeFullscreen = delta < 0;
+      if (willBeFullscreen) {
+        onExpand?.();
+      } else {
+        onCollapse?.();
+      }
     } else if (!hadDragged) {
-      // Tap detected - toggle state
-      setIsFullscreen((prev) => !prev);
+      // Tap detected
+      if (isFullscreen) {
+        onCollapse?.();
+      } else {
+        onExpand?.();
+      }
     }
   };
 
-  const handleTouchStart = (e: React.TouchEvent) =>
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchHandled.current = true;
     handleDragStart(e.touches[0].clientY);
+  };
   const handleTouchMove = (e: React.TouchEvent) =>
     handleDragMove(e.touches[0].clientY);
   const handleTouchEnd = (e: React.TouchEvent) =>
     handleDragEnd(e.changedTouches[0].clientY);
 
   const handleMouseDown = (e: React.MouseEvent) => {
+    if (touchHandled.current) {
+      touchHandled.current = false;
+      return;
+    }
     e.preventDefault();
     handleDragStart(e.clientY);
 
@@ -187,7 +205,7 @@ const BottomSheet = ({
   };
 
   const handleCollapse = () => {
-    setIsFullscreen(false);
+    onCollapse?.();
   };
 
   const baseTranslateY = isFullscreen
@@ -222,6 +240,27 @@ const BottomSheet = ({
           onMouseDown={handleMouseDown}
         >
           <DragHandle aria-hidden="true" />
+          {!isFullscreen && (
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              gap="4px"
+              py="4px"
+              aria-hidden="true"
+            >
+              <Icon name="search" fill={colors.textSecondary} ml="-28px" />
+              <Text
+                m="0px"
+                p="0px"
+                fontSize="s"
+                color="textSecondary"
+                fontWeight="semi-bold"
+              >
+                {formatMessage(messages.exploreTags)}
+              </Text>
+            </Box>
+          )}
         </DragArea>
 
         <ContentArea

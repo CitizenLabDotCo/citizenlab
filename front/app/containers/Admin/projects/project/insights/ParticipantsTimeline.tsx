@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 
-import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
+import { Box, Text, Title, Spinner } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
@@ -78,9 +78,9 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
         alignItems="center"
         mb="16px"
       >
-        <Text fontSize="l" fontWeight="semi-bold" my="0px">
+        <Title variant="h3" m="0">
           {formatMessage(messages.participationOverTime)}
-        </Text>
+        </Title>
         <ReportExportMenu
           name="participation-timeline"
           svgNode={graphRef}

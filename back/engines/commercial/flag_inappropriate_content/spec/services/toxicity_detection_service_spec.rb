@@ -12,20 +12,24 @@ describe FlagInappropriateContent::ToxicityDetectionService do
       stub_classify_toxicity! service
     end
 
-    it 'creates a new flag if toxicity was detected' do
+    it 'creates and returns a new flag if toxicity was detected' do
       idea = create(:idea, title_multiloc: { 'en' => 'An idea for my fellow wankers' })
-      service.flag_toxicity! idea, attributes: [:title_multiloc]
+
+      flag = service.flag_toxicity! idea, attributes: [:title_multiloc]
+
       idea.reload
-      expect(idea.inappropriate_content_flag).to be_present
+      expect(flag).to eq idea.inappropriate_content_flag
       expect(idea.inappropriate_content_flag.toxicity_label).to eq 'insult'
       expect(idea.inappropriate_content_flag.ai_reason).to be_present
     end
 
-    it 'creates no flag if no toxicity was detected' do
+    it 'creates no flag and returns nil if no toxicity was detected' do
       idea = create(:idea, title_multiloc: { 'en' => 'My innocent idea' }, location_description: 'Wankerford')
-      service.flag_toxicity! idea, attributes: [:title_multiloc]
-      idea.reload
-      expect(idea.inappropriate_content_flag).to be_blank
+
+      flag = service.flag_toxicity! idea, attributes: [:title_multiloc]
+
+      expect(flag).to be_nil
+      expect(idea.reload.inappropriate_content_flag).to be_nil
     end
 
     it 'reintroduces a deleted flag if no toxicity was detected' do

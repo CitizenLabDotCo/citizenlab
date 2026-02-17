@@ -139,7 +139,10 @@ const Sidebar = ({ authUser }: Props) => {
   return (
     <Menu>
       <Outlet id="app.containers.Admin.sideBar.navItems" onData={handleData} />
-      <MenuInner id="sidebar">
+      <MenuInner
+        id="sidebar"
+        className="intercom-admin-general-navigation-side-bar"
+      >
         <Box w="100%">
           {/* The aria-label here is used when there is no clear
            * 'text-like' element as a child of the Link component,

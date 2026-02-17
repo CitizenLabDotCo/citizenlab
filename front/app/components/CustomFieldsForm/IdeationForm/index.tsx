@@ -20,6 +20,7 @@ import tracks from '../tracks';
 import { convertCustomFieldsToNestedPages } from '../util';
 
 import IdeationPage from './IdeationPage';
+import { getInitialData } from './utils';
 
 const IdeationForm = ({
   projectId,
@@ -52,11 +53,13 @@ const IdeationForm = ({
     publicFields: true,
   });
 
+  if (!phase) return null;
+
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);
 
   const showTogglePostAnonymously =
     !!authUser &&
-    phase?.data.attributes.allow_anonymous_participation &&
+    phase.data.attributes.allow_anonymous_participation &&
     participationMethod !== 'native_survey';
 
   const lastPageIndex = nestedPagesData.length - 1;
@@ -100,18 +103,7 @@ const IdeationForm = ({
       setCurrentPageIndex((pageNumber: number) => pageNumber + 1);
     }
   };
-  const initialFormData = idea
-    ? {
-        ...idea.attributes,
-        author_id: idea.relationships.author?.data?.id,
-        cosponsor_ids: idea.relationships.cosponsors?.data?.map(
-          (cosponsor) => cosponsor.id
-        ),
-        topic_ids: idea.relationships.input_topics?.data.map(
-          (topic) => topic.id
-        ),
-      }
-    : undefined;
+  const initialFormData = getInitialData(idea, authUser, phase);
 
   return (
     <Box w="100%">
@@ -127,7 +119,7 @@ const IdeationForm = ({
           ideaId={idea?.id}
           projectId={projectId}
           onSubmit={onSubmit}
-          phase={phase?.data}
+          phase={phase.data}
           defaultValues={initialFormData}
           pages={nestedPagesData}
         />

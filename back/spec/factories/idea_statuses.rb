@@ -2,7 +2,6 @@
 
 FactoryBot.define do
   factory :idea_status do
-    participation_method { 'ideation' }
     title_multiloc do
       {
         'en' => 'At the mayor',
@@ -18,23 +17,32 @@ FactoryBot.define do
       }
     end
 
-    factory :proposals_status do
-      participation_method { 'proposals' }
+    trait :prescreening do
+      code { 'prescreening' }
+      title_multiloc { { 'en' => 'screening' } }
     end
 
-    factory :idea_status_proposed do
+    trait :proposed do
       code { 'proposed' }
       title_multiloc { { 'en' => 'proposed' } }
     end
 
-    factory :proposal_status_threshold_reached do
+    trait :proposals do
+      participation_method { 'proposals' }
+    end
+
+    trait :ideation do
+      participation_method { 'ideation' }
+    end
+
+    factory :proposal_status_threshold_reached, traits: [:proposals] do
       code { 'threshold_reached' }
       title_multiloc { { 'en' => 'Threshold reached' } }
     end
 
-    factory :proposal_status_prescreening do
-      code { 'prescreening' }
-      title_multiloc { { 'en' => 'screening' } }
-    end
+    factory :proposals_status, traits: [:proposals]
+    factory :idea_status_proposed, traits: %i[ideation proposed]
+    factory :idea_status_prescreening, traits: %i[ideation prescreening]
+    factory :proposal_status_prescreening, traits: %i[proposals prescreening]
   end
 end

@@ -54,7 +54,7 @@ module Insights
         visitors_7_day_percent_change: base_7_day_changes[:visitors_7_day_percent_change],
         participants: participants_count,
         participants_7_day_percent_change: base_7_day_changes[:participants_7_day_percent_change],
-        participation_rate_as_percent: visitors_count > 0 ? ((participants_count.to_f / visitors_count) * 100).round(1) : 0,
+        participation_rate_as_percent: visitors_count > 0 ? ((participants_count.to_f / visitors_count) * 100).round(1) : 'participant_count_compared_with_zero_visitors',
         participation_rate_7_day_percent_change: base_7_day_changes[:participation_rate_7_day_percent_change]
       }
     end
@@ -78,30 +78,33 @@ module Insights
         v[:acted_at] < 7.days.ago && v[:acted_at] >= 14.days.ago
       end.pluck(:visitor_id).uniq.count
 
-      participation_rate_last_7_days = visitors_last_7_days_count > 0 ? (participants_last_7_days_count.to_f / visitors_last_7_days_count).round(3) : 0
-      participation_rate_previous_7_days = visitors_previous_7_days_count > 0 ? (participants_previous_7_days_count.to_f / visitors_previous_7_days_count).round(3) : 0
+      participation_rate_7_day_percent_change = if visitors_last_7_days_count > 0 && visitors_previous_7_days_count > 0
+        participation_rate_last_7_days = participants_last_7_days_count.to_f / visitors_last_7_days_count
+        participation_rate_previous_7_days = participants_previous_7_days_count.to_f / visitors_previous_7_days_count
+        percentage_change(participation_rate_previous_7_days, participation_rate_last_7_days)
+      else
+        'no_visitors_in_one_or_both_periods'
+      end
 
       {
         visitors_7_day_percent_change: percentage_change(visitors_previous_7_days_count, visitors_last_7_days_count),
         participants_7_day_percent_change: percentage_change(participants_previous_7_days_count, participants_last_7_days_count),
-        participation_rate_7_day_percent_change: percentage_change(participation_rate_previous_7_days, participation_rate_last_7_days)
+        participation_rate_7_day_percent_change: participation_rate_7_day_percent_change
       }
     end
 
     def phase_has_run_more_than_14_days?
-      time_now = Time.current
-      phase_start_at = @phase.start_at.to_time
-      phase_end_at = (@phase.end_at || time_now).to_time
+      time_now = Time.current.to_date
+      phase_end_date = @phase.end_at || time_now
 
-      # Check if the phase duration (start to end or current time) is more than 14 days
-      phase_duration_seconds = phase_end_at - phase_start_at
-      phase_duration_days = (phase_duration_seconds / 86_400).to_i
+      # Check if the phase duration (start to end or current date) is less than 14 days
+      # Add 1 to include both start and end dates (inclusive counting)
+      phase_duration_days = (phase_end_date - @phase.start_at).to_i + 1
 
       return false if phase_duration_days < 14
 
       # Check if the elapsed time from phase start to now is more than 14 days
-      elapsed_seconds = time_now - phase_start_at
-      elapsed_days = (elapsed_seconds / 86_400).to_i
+      elapsed_days = (time_now - @phase.start_at).to_i
 
       elapsed_days >= 14
     end

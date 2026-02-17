@@ -7,6 +7,7 @@ import ideaImagesKeys from 'api/idea_images/keys';
 import ideaMarkersKeys from 'api/idea_markers/keys';
 import ideaFilterCountsKeys from 'api/ideas_filter_counts/keys';
 import { importedIdeasKeys } from 'api/import_ideas/keys';
+import meKeys from 'api/me/keys';
 import projectsKeys from 'api/projects/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -45,6 +46,9 @@ const useUpdateIdea = () => {
       });
       queryClient.invalidateQueries({
         queryKey: ideaImagesKeys.items(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: meKeys.all(),
       });
 
       // TODO: Fix this the next time the file is edited.
