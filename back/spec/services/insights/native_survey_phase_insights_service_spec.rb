@@ -132,10 +132,9 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
     end
   end
 
-  describe 'phase_participation_method_metrics' do
+  describe '#phase_participation_method_metrics' do
     it 'calculates the correct metrics' do
       participations = service.send(:phase_participations)
-
       metrics = service.send(:phase_participation_method_metrics, participations)
 
       expect(metrics).to eq({
@@ -143,6 +142,51 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
         surveys_submitted_7_day_percent_change: -33.3, # from 3 (in week before last) to 2 (in last 7 days) = -33.3% change
         completion_rate_as_percent: 85.7, # 6 submitted surveys out of 7 ideas created during phase
         completion_rate_7_day_percent_change: 33.3 # completion_rate_last_7_days: 1.0, completion_rate_previous_7_days: 0.75 = 33.3% change
+      })
+    end
+
+    it 'handles zero ideas associated with the phase as expected' do
+      Idea.destroy_all
+
+      participations = { submitting_idea: [] }
+      metrics = service.send(:phase_participation_method_metrics, participations)
+
+      expect(metrics).to eq({
+        surveys_submitted: 0,
+        surveys_submitted_7_day_percent_change: 0,
+        completion_rate_as_percent: 'submitted_count_compared_with_zero_ideas',
+        completion_rate_7_day_percent_change: 'no_new_survey_responses_in_one_or_both_periods'
+      })
+    end
+  end
+
+  describe '#rolling_7_day_changes' do
+    it 'handles zero ideas created in either of last two 7-day periods as expected' do
+      Idea.all.each { |idea| idea.update!(created_at: 12.days.ago) } # all ideas created in 7 days before last 7 days
+      participations = service.send(:phase_participations)
+      changes = service.send(:rolling_7_day_changes, participations)
+
+      expect(changes).to eq({
+        surveys_submitted_7_day_percent_change: -33.3, # from 3 (in week before last) to 2 (in last 7 days) = -33.3% change
+        completion_rate_7_day_percent_change: 'no_new_survey_responses_in_one_or_both_periods'
+      })
+
+      Idea.all.each { |idea| idea.update!(created_at: 5.days.ago) } # all ideas created in last 7 days
+      participations = service.send(:phase_participations)
+      changes = service.send(:rolling_7_day_changes, participations)
+
+      expect(changes).to eq({
+        surveys_submitted_7_day_percent_change: -33.3, # from 3 (in week before last) to 2 (in last 7 days) = -33.3% change
+        completion_rate_7_day_percent_change: 'no_new_survey_responses_in_one_or_both_periods'
+      })
+
+      Idea.destroy_all # zero ideas created in both periods
+      participations = { submitting_idea: [] }
+      changes = service.send(:rolling_7_day_changes, participations)
+
+      expect(changes).to eq({
+        surveys_submitted_7_day_percent_change: 0.0, # from 0 (in week before last) to 0 (in last 7 days) = 0.0% change
+        completion_rate_7_day_percent_change: 'no_new_survey_responses_in_one_or_both_periods'
       })
     end
   end

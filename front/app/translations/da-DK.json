@@ -753,6 +753,7 @@
   "app.components.form.controls.clearAllScreenreader": "Ryd alle svar fra ovenstående matrixspørgsmål",
   "app.components.form.controls.cosponsorsPlaceholder": "Begynd at skrive et navn for at søge",
   "app.components.form.controls.currentRank": "Nuværende rang:",
+  "app.components.form.controls.matrixStatementHeader": "Erklæring",
   "app.components.form.controls.noRankSelected": "Ingen rang valgt",
   "app.components.form.controls.optionalParentheses": "(valgfri)",
   "app.components.form.controls.rankingInstructions": "Træk og slip for at rangordne muligheder.",

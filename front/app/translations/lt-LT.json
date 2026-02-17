@@ -753,6 +753,7 @@
   "app.components.form.controls.clearAllScreenreader": "Išvalykite visus atsakymus iš pirmiau pateikto matricos klausimo",
   "app.components.form.controls.cosponsorsPlaceholder": "Pradėkite rinkti vardą, kurio norite ieškoti",
   "app.components.form.controls.currentRank": "Dabartinis rangas:",
+  "app.components.form.controls.matrixStatementHeader": "Pareiškimas",
   "app.components.form.controls.noRankSelected": "Nepasirinktas rangas",
   "app.components.form.controls.optionalParentheses": "(neprivaloma)",
   "app.components.form.controls.rankingInstructions": "Vilkite ir nuleiskite rangavimo parinktis.",

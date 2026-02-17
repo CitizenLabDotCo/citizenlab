@@ -753,6 +753,7 @@
   "app.components.form.controls.clearAllScreenreader": "Borra todas las respuestas de la pregunta matriz anterior",
   "app.components.form.controls.cosponsorsPlaceholder": "Empieza a escribir un nombre a buscar",
   "app.components.form.controls.currentRank": "Rango actual:",
+  "app.components.form.controls.matrixStatementHeader": "Declaración",
   "app.components.form.controls.noRankSelected": "Sin rango seleccionado",
   "app.components.form.controls.optionalParentheses": "(opcional)",
   "app.components.form.controls.rankingInstructions": "Arrastra y suelta para clasificar las opciones.",

@@ -753,6 +753,7 @@
   "app.components.form.controls.clearAllScreenreader": "Fjern alle svarene fra matrisespørsmålet ovenfor",
   "app.components.form.controls.cosponsorsPlaceholder": "Begynn å skrive inn et navn for å søke",
   "app.components.form.controls.currentRank": "Nåværende rang:",
+  "app.components.form.controls.matrixStatementHeader": "Uttalelse",
   "app.components.form.controls.noRankSelected": "Ingen rang valgt",
   "app.components.form.controls.optionalParentheses": "(valgfritt)",
   "app.components.form.controls.rankingInstructions": "Dra og slipp for å rangere alternativer.",

@@ -753,6 +753,7 @@
   "app.components.form.controls.clearAllScreenreader": "مندرجہ بالا میٹرکس سوال سے تمام جوابات صاف کریں۔",
   "app.components.form.controls.cosponsorsPlaceholder": "تلاش کرنے کے لیے نام لکھنا شروع کریں۔",
   "app.components.form.controls.currentRank": "موجودہ درجہ:",
+  "app.components.form.controls.matrixStatementHeader": "بیان",
   "app.components.form.controls.noRankSelected": "کوئی درجہ منتخب نہیں کیا گیا۔",
   "app.components.form.controls.optionalParentheses": "(اختیاری)",
   "app.components.form.controls.rankingInstructions": "رینک کے اختیارات کے لیے گھسیٹیں اور چھوڑیں۔",

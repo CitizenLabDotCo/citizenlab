@@ -753,6 +753,7 @@
   "app.components.form.controls.clearAllScreenreader": "Rensa alla svar från ovanstående matrisfråga",
   "app.components.form.controls.cosponsorsPlaceholder": "Börja skriva in ett namn för att söka",
   "app.components.form.controls.currentRank": "Nuvarande rankning:",
+  "app.components.form.controls.matrixStatementHeader": "Uttalande",
   "app.components.form.controls.noRankSelected": "Ingen rang vald",
   "app.components.form.controls.optionalParentheses": "(valfritt)",
   "app.components.form.controls.rankingInstructions": "Dra och släpp för att rangordna alternativ.",
