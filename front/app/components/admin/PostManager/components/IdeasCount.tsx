@@ -2,8 +2,8 @@ import React from 'react';
 
 import styled from 'styled-components';
 
-import useIdeasCount from 'api/idea_count/useIdeasCount';
 import { IIdeaQueryParameters } from 'api/ideas/types';
+import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -25,7 +25,7 @@ interface Props {
 }
 
 const IdeasCount = ({ project, queryParameters }: Props) => {
-  const { data: ideasCount } = useIdeasCount({
+  const { data: ideasCount } = useIdeasFilterCounts({
     phase: queryParameters.phase,
     input_topics: queryParameters.input_topics,
     search: queryParameters.search,
@@ -44,13 +44,13 @@ const IdeasCount = ({ project, queryParameters }: Props) => {
           If there are no ideas, we have an 'empty container' to indicate there are no ideas matching the filters.
           Hence we only show this count when there's at least 1 idea.
         */}
-      {ideasCount.data.attributes.count > 0 &&
-        (ideasCount.data.attributes.count === 1 ? (
+      {ideasCount.data.attributes.total > 0 &&
+        (ideasCount.data.attributes.total === 1 ? (
           <FormattedMessage {...messages.oneInput} />
         ) : (
           <FormattedMessage
             {...messages.multipleInputs}
-            values={{ ideaCount: ideasCount.data.attributes.count }}
+            values={{ ideaCount: ideasCount.data.attributes.total }}
           />
         ))}
     </Container>

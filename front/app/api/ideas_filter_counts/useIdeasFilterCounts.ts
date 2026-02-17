@@ -24,7 +24,8 @@ const fetchIdeaFilterCounts = ({
   });
 
 const useIdeasFilterCounts = (
-  queryParams: IIdeasFilterCountsQueryParameters
+  queryParams: IIdeasFilterCountsQueryParameters,
+  enabled = true
 ) => {
   return useQuery<
     IIdeasFilterCounts,
@@ -34,6 +35,7 @@ const useIdeasFilterCounts = (
   >({
     queryKey: ideaFilterCountKeys.item(queryParams),
     queryFn: () => fetchIdeaFilterCounts(queryParams),
+    enabled,
   });
 };
 
