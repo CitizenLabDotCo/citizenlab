@@ -4,6 +4,9 @@
 #   rake 'bulk_import:test_pdf_import'
 #   rake 'bulk_import:test_pdf_import[engines/commercial/bulk_import_ideas/spec/llm/fixtures]'
 #
+# NOTE: The default path is created by passing in the test data repo as a volume when running the task via docker
+# eg docker compose run -v /path/to/local/formsync_test_data:/formsync_test_data --rm web rails bulk_import:test_pdf_import
+#
 # This task tests the PDF import pipeline by:
 #   1. Looping over all example folders in the fixtures path
 #   2. For each example: reading locale and custom_fields from schema.json
@@ -30,8 +33,7 @@ namespace :bulk_import do
     ActiveRecord::Base.logger.level = :fatal if defined?(ActiveRecord::Base)
     ActionView::Base.logger.level = :fatal if defined?(ActionView::Base)
 
-    # NOTE: The default path is created by passing in the test data repo as a volume when running the task via docker
-    # eg docker compose run -v /path/to/local/formsync_test_data:/formsync_test_data --rm web rails bulk_import:test_pdf_import
+    # Get the path to the test data
     test_data_base_path = args[:test_data_path] || '/formsync_test_data'
 
     tenant = Tenant.find_by(host: 'localhost')
@@ -202,7 +204,7 @@ namespace :bulk_import do
         if generate_expected_output
           puts '  expected_output.json not found - will generate from first parser'
           first_parser = parsers.first
-          file_parser = first_parser[:class].new(admin_user, locale, phase.id, false, llm: first_parser[:llm])
+          file_parser = first_parser[:class].new(admin_user, locale, phase.id, false, llm_parser_model: first_parser[:llm])
           idea_rows = file_parser.parse_rows(idea_import_file)
           idea = idea_rows.first
 
