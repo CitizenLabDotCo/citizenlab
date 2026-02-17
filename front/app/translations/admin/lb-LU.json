@@ -131,7 +131,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText": "Dëse Begleedartikel",
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "Iddi",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "What should an input be called?",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Kommentar",
   "app.components.app.containers.AdminPage.ProjectEdit.maxBudgetRequired": "A maximum budget is required",
   "app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError": "The minimum budget can't be larger than the maximum budget",
   "app.components.app.containers.AdminPage.ProjectEdit.minBudgetRequired": "A minimum budget is required",

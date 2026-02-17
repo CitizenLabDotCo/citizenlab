@@ -391,7 +391,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.inputScreeningToggle": "ਇਨਪੁੱਟ ਸਕ੍ਰੀਨਿੰਗ",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "ਇੱਕ ਇੰਪੁੱਟ ਨੂੰ ਕੀ ਕਿਹਾ ਜਾਣਾ ਚਾਹੀਦਾ ਹੈ?",
   "app.components.app.containers.AdminPage.ProjectEdit.insights": "ਸੂਝ-ਬੂਝ",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "ਟਿੱਪਣੀ",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "ਇੱਥੇ ਆਪਣੇ ਕੋਨਵੀਓ ਦਸਤਾਵੇਜ਼ ਦਾ ਲਿੰਕ ਪ੍ਰਦਾਨ ਕਰੋ। Konveio ਸਥਾਪਤ ਕਰਨ ਬਾਰੇ ਹੋਰ ਜਾਣਕਾਰੀ ਲਈ ਸਾਡਾ {supportArticleLink} ਪੜ੍ਹੋ।",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "ਸਹਾਇਤਾ ਲੇਖ",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL2": "https://support.govocal.com/en/articles/527582-embedding-konveio-pdf-documents-for-collecting-feedback",

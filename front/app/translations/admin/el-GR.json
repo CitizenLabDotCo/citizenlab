@@ -178,7 +178,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText": "αυτό το άρθρο υποστήριξης",
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "Ιδέα",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Πώς πρέπει να ονομάζεται μια εισήγηση;",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Comment",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Δώστε τον σύνδεσμο προς το έγγραφο Konveio εδώ. Διαβάστε το {supportArticleLink} για περισσότερες πληροφορίες σχετικά με τη ρύθμιση του Konveio.",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "άρθρο υποστήριξης",
   "app.components.app.containers.AdminPage.ProjectEdit.maxBudgetRequired": "Απαιτείται μέγιστος προϋπολογισμός",

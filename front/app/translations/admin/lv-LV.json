@@ -391,7 +391,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.inputScreeningToggle": "Ievades pārbaude",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Kā būtu jānosauc ievade?",
   "app.components.app.containers.AdminPage.ProjectEdit.insights": "Ieskats",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Komentēt",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Šeit norādiet saiti uz savu Konveio dokumentu. Vairāk informācijas par Konveio iestatīšanu lasiet mūsu vietnē {supportArticleLink} .",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "atbalsta raksts",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL2": "https://support.govocal.com/en/articles/527582-embedding-konveio-pdf-documents-for-collecting-feedback",

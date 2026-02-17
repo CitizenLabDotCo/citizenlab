@@ -391,7 +391,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.inputScreeningToggle": "Revisión de entradas",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "¿Cómo debería llamarse un aporte?",
   "app.components.app.containers.AdminPage.ProjectEdit.insights": "Tendencias",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Respuesta",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Proporcione el enlace a su documento Konveio aquí. Lea nuestro {supportArticleLink} para obtener más información sobre cómo configurar Konveio.",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "artículo de soporte",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL2": "https://support.govocal.com/es/articles/527582-incrustación-de-documentos-pdf-konveio-para-recopilar-comentarios",

@@ -391,7 +391,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.inputScreeningToggle": "Revisión de entradas",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "¿Cómo debería llamarse una entrada?",
   "app.components.app.containers.AdminPage.ProjectEdit.insights": "Tendencias",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Respuesta",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Proporciona aquí el enlace a tu documento Konveio. Lee nuestro {supportArticleLink} para obtener más información sobre cómo configurar un documento de Konveio.",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "artículo de apoyo",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL2": "https://support.govocal.com/en/articles/527582-embedding-konveio-pdf-documents-for-collecting-feedback",
