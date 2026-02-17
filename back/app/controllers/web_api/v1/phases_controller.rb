@@ -175,7 +175,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :ideas_order,
       :input_term,
       :vote_term,
-      :prescreening_enabled,
+      :prescreening_mode,
       :reacting_threshold,
       :expire_days_limit,
       :manual_voters_amount,

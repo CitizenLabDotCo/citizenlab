@@ -30,7 +30,7 @@ describe('validate', () => {
       presentation_mode: 'card',
       ideas_order: 'random',
       input_term: 'idea',
-      prescreening_enabled: false,
+      prescreening_mode: null,
       voting_method: 'single_voting',
       voting_max_total: 1,
       voting_min_total: 0,

@@ -46,6 +46,9 @@ const ScrollableCarrousel = ({
     setNextButtonShouldDisappearAfterMouseMove,
   ] = useState(false);
 
+  // Track if content is scrollable (for skip button visibility)
+  const [isScrollable, setIsScrollable] = useState(false);
+
   const isTouchDevice = useTouchDevice();
 
   const handleButtonVisiblity = useCallback(
@@ -70,6 +73,7 @@ const ScrollableCarrousel = ({
 
       setShowPreviousGradient(showPreviousButton);
       setShowNextGradient(showNextButton);
+      setIsScrollable(showNextButton || showPreviousButton || hasMore);
     },
     [isTouchDevice, mouseOverPreviousButton, mouseOverNextButton]
   );
@@ -94,7 +98,7 @@ const ScrollableCarrousel = ({
       // We set position relative to be able to position the skip (& scroll?) buttons.
       position="relative"
     >
-      <SkipButton onSkip={() => skipCarrousel(endId)} />
+      {isScrollable && <SkipButton onSkip={() => skipCarrousel(endId)} />}
       <HorizontalScroll
         setRef={(ref) => {
           if (ref) {

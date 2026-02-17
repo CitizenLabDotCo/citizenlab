@@ -24,7 +24,7 @@ RSpec.describe DeleteUserJob do
       described_class.perform_now(user.id, current_user)
 
       expect(sidefx_service).to have_received(:after_destroy)
-        .with(user, current_user, participation_data_deleted: false)
+        .with(user, current_user, participation_data_deleted: false, update_member_counts: true)
     end
 
     context 'with delete_participation_data: true' do
@@ -46,7 +46,22 @@ RSpec.describe DeleteUserJob do
 
         described_class.perform_now(user.id, current_user, delete_participation_data: true)
 
-        expect(sidefx_service).to have_received(:after_destroy).with(user, current_user, participation_data_deleted: true)
+        expect(sidefx_service).to have_received(:after_destroy).with(user, current_user, participation_data_deleted: true, update_member_counts: true)
+      end
+    end
+
+    context 'with update_member_counts: false' do
+      let(:current_user) { create(:admin) }
+
+      it 'triggers after_destroy side effects' do
+        sidefx_service = instance_spy(SideFxUserService, 'sidefx_service')
+        allow(SideFxUserService).to receive(:new).and_return(sidefx_service)
+
+        current_user = build_stubbed(:user)
+        described_class.perform_now(user.id, current_user, update_member_counts: false)
+
+        expect(sidefx_service).to have_received(:after_destroy)
+          .with(user, current_user, participation_data_deleted: false, update_member_counts: false)
       end
     end
 

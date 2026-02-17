@@ -58,6 +58,23 @@ RSpec.describe Insights::CommonGroundPhaseInsightsService do
         .to be_within(1.second).of(Idea.find(first_participation[:item_id]).published_at)
     end
 
+    it 'adds user custom field values as expected' do
+      user1.update!(custom_field_values: { 'field_1' => 'value_1u', 'field_2' => 'value_2u' })
+
+      prefix = UserFieldsInFormService.prefix
+      idea2.update!(custom_field_values: { "#{prefix}field_1" => 'value_1i', 'field_3' => 'value_3i', "#{prefix}field_4" => 'value_4i' })
+
+      participations_posting_idea = service.send(:participations_posting_idea)
+      idea2_participation = participations_posting_idea.find { |p| p[:item_id] == idea2.id }
+
+      # We expect that:
+      # - field_1 value comes from idea2 (item), preferred over value from user1, which collides after removing key prefix
+      # - field_2 comes from user1 custom_field_values (not present in idea2)
+      # - field_3 filtered from idea2 (item) custom_field_values (no prefix)
+      # - field_4 comes from idea2 (item) custom_field_values, with key prefix removed
+      expect(idea2_participation[:user_custom_field_values]).to eq({ 'field_1' => 'value_1i', 'field_2' => 'value_2u', 'field_4' => 'value_4i' })
+    end
+
     it 'correctly handles phases with no end date' do
       phase.update!(end_at: nil)
       participations_posting_idea = service.send(:participations_posting_idea)

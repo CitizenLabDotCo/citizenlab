@@ -87,19 +87,6 @@ export function isPage(pageKey: pageKeys, pathName: string) {
   }
 }
 
-export const isIdeaShowPage = (urlSegments: string[]) => {
-  const firstUrlSegment = urlSegments[0];
-  const secondUrlSegment = urlSegments[1];
-  const lastUrlSegment = urlSegments[urlSegments.length - 1];
-
-  return (
-    urlSegments.length === 3 &&
-    locales.includes(firstUrlSegment) &&
-    secondUrlSegment === 'ideas' &&
-    lastUrlSegment !== 'new'
-  );
-};
-
 export const initiativeShowPageSlug = (urlSegments: string[]) => {
   const firstUrlSegment = urlSegments[0];
   const secondUrlSegment = urlSegments[1];

@@ -16,6 +16,7 @@ import {
   IUpdatedPhaseProperties,
   ParticipationMethod,
   PresentationMode,
+  PrescreeningMode,
   TSurveyService,
   VoteTerm,
   VotingMethod,
@@ -96,14 +97,11 @@ const PhaseParticipationConfig = ({
   });
 
   const project_library_enabled = useFeatureFlag({ name: 'project_library' });
-  const ideationAccountlessPostingEnabled = useFeatureFlag({
-    name: 'ideation_accountless_posting',
-  });
 
   const { formatMessage } = useIntl();
 
   const { data: permissions } = usePhasePermissions({
-    phaseId: ideationAccountlessPostingEnabled ? phase?.data.id : undefined,
+    phaseId: phase?.data.id,
   });
 
   // If posting without an account is allowed, we allow logged-in users to post
@@ -381,10 +379,12 @@ const PhaseParticipationConfig = ({
     }));
   };
 
-  const togglePrescreeningEnabled = (prescreening_enabled: boolean) => {
+  const onPrescreeningModeChange = (
+    prescreening_mode: PrescreeningMode | null
+  ) => {
     updateFormData((state) => ({
       ...state,
-      prescreening_enabled,
+      prescreening_mode,
     }));
   };
 
@@ -458,7 +458,7 @@ const PhaseParticipationConfig = ({
     document_annotation_embed_url,
     expire_days_limit,
     reacting_threshold,
-    prescreening_enabled,
+    prescreening_mode,
     similarity_enabled,
     similarity_threshold_title,
     similarity_threshold_body,
@@ -590,8 +590,8 @@ const PhaseParticipationConfig = ({
             handleIdeaDefaultSortMethodChange={
               handleIdeaDefaultSortMethodChange
             }
-            prescreening_enabled={prescreening_enabled}
-            togglePrescreeningEnabled={togglePrescreeningEnabled}
+            prescreening_mode={prescreening_mode}
+            onPrescreeningModeChange={onPrescreeningModeChange}
             similarity_enabled={similarity_enabled}
             similarity_threshold_title={similarity_threshold_title}
             similarity_threshold_body={similarity_threshold_body}
@@ -635,8 +635,8 @@ const PhaseParticipationConfig = ({
             expireDateLimitError={validationErrors.expireDateLimitError}
             handleReactingThresholdChange={handleReactingThresholdChange}
             reactingThresholdError={validationErrors.reactingThresholdError}
-            prescreening_enabled={prescreening_enabled}
-            togglePrescreeningEnabled={togglePrescreeningEnabled}
+            prescreening_mode={prescreening_mode}
+            onPrescreeningModeChange={onPrescreeningModeChange}
             similarity_enabled={similarity_enabled}
             similarity_threshold_title={similarity_threshold_title}
             similarity_threshold_body={similarity_threshold_body}
@@ -668,7 +668,7 @@ const PhaseParticipationConfig = ({
                     values={{
                       supportArticleLink: (
                         <a
-                          href={formatMessage(messages.konveioSupportPageURL)}
+                          href={formatMessage(messages.konveioSupportPageURL2)}
                           target="_blank"
                           rel="noreferrer"
                         >

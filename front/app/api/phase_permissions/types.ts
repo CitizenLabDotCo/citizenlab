@@ -15,8 +15,7 @@ export type IPhasePermissionAction =
   | 'voting'
   | 'annotating_document'
   | 'attending_event'
-  | 'volunteering'
-  | 'reacting_idea';
+  | 'volunteering';
 
 export type UserDataCollection = 'all_data' | 'demographics_only' | 'anonymous';
 
@@ -46,7 +45,7 @@ export interface IPhasePermissionData {
     verification_expiry: number | null;
     everyone_tracking_enabled: boolean;
     user_data_collection: UserDataCollection;
-    user_fields_in_form_frontend_descriptor: UserFieldsInFormFrontendDescriptor;
+    user_fields_in_form_descriptor: UserFieldsInFormFrontendDescriptor;
   };
   relationships: {
     permission_scope: {

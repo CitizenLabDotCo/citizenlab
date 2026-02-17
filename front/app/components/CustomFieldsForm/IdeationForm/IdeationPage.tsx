@@ -12,7 +12,6 @@ import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import { triggerPostParticipationFlow } from 'containers/Authentication/events';
@@ -103,9 +102,6 @@ const IdeationPage = ({
   const [postAnonymously, setPostAnonymously] = useState(
     idea?.data.attributes.anonymous || false
   );
-  const postParticipationSignUpEnabled = useFeatureFlag({
-    name: 'post_participation_signup',
-  });
 
   // allow moderators also to edit BudgetField
   const isAdminOrModerator =
@@ -220,12 +216,7 @@ const IdeationPage = ({
   const isLastPage = currentPageIndex === lastPageIndex;
 
   const showSubmissionReference = isLastPage && idea && showIdeaId;
-  const showPostParticipationSignup = !!(
-    isLastPage &&
-    idea &&
-    !authUser &&
-    postParticipationSignUpEnabled
-  );
+  const showPostParticipationSignup = !!(isLastPage && idea && !authUser);
 
   return (
     <FormProvider {...methods}>
@@ -308,12 +299,13 @@ const IdeationPage = ({
                           onChange={handleOnChangeAnonymousPosting}
                         />
                       )}
-                    {showPostParticipationSignup && (
+                    {showPostParticipationSignup && project && (
                       <PostParticipationBox
                         onCreateAccount={() => {
                           triggerPostParticipationFlow({
-                            name: 'redirect',
+                            name: 'followProjectAndRedirect',
                             params: {
+                              projectId: project.data.id,
                               path: `/ideas/${idea.data.attributes.slug}`,
                             },
                           });
