@@ -246,6 +246,18 @@ it:
           title: Qual è la tua iniziativa?
         petition:
           title: Qual è la tua petizione?
+        comment:
+          title: Qual è il tuo commento?
+        response:
+          title: Qual è la tua risposta?
+        suggestion:
+          title: Qual è il tuo suggerimento?
+        topic:
+          title: Qual è il tuo argomento?
+        post:
+          title: Qual è il tuo post?
+        story:
+          title: Qual è la tua storia?
   custom_field_options:
     gender:
       male: Uomo
