@@ -246,6 +246,18 @@ el:
           title: Ποια είναι η πρωτοβουλία σας;
         petition:
           title: Ποιο είναι το αίτημά σας;
+        comment:
+          title: Ποιο είναι το σχόλιό σας;
+        response:
+          title: Ποια είναι η απάντησή σας;
+        suggestion:
+          title: Ποια είναι η πρότασή σας;
+        topic:
+          title: Ποιο είναι το θέμα σας;
+        post:
+          title: Ποια είναι η θέση σας;
+        story:
+          title: Ποια είναι η δική σας ιστορία;
   custom_field_options:
     gender:
       male: Άνδρας
