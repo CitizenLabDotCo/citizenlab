@@ -122,7 +122,6 @@ module TranslateMissingLocales
     def process_all_models
       data_listing_service = Cl2DataListingService.new
 
-      binding.pry
       data_listing_service.cl2_schema_models.each do |model|
         next if model == User # User model bio does not need translation - waste of money!
 
