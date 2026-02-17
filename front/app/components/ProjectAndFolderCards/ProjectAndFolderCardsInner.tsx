@@ -91,7 +91,6 @@ const ProjectAndFolderCardsInner = ({
         if (cards && cards.length > indexToFocus) {
           const cardToFocus = cards[indexToFocus];
           cardToFocus.focus();
-          console.log('Focusing on card index', indexToFocus);
         }
       }, 200);
 
@@ -100,9 +99,6 @@ const ProjectAndFolderCardsInner = ({
     } else {
       // Update ref even when not focusing
       visibileCardsLength.current = adminPublications.length;
-      console.log('cards length', adminPublications.length);
-      console.log('visible cards length', visibileCardsLength.current);
-      console.log('current tab', currentTab);
       return;
     }
   }, [adminPublications, currentTab]);
