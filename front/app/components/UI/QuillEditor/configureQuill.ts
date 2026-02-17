@@ -9,6 +9,32 @@ import { isYouTubeEmbedLink } from 'utils/urlUtils';
 import { attributes, ImageBlot, KeepHTML } from './altTextToImagesModule';
 
 export const configureQuill = () => {
+  // Pre-register imageAlign and iframeAlign formats so they exist in the
+  // registry when Quill validates the "formats" whitelist during construction.
+  // BlotFormatter2 registers its own (richer) versions in its constructor,
+  // overwriting these placeholders, but Quill needs them in the registry
+  // *before* modules are instantiated.
+  const Parchment = Quill.import('parchment') as typeof import('parchment');
+  const ImageAlign = new Parchment.ClassAttributor(
+    'imageAlign',
+    'ql-image-align',
+    { scope: Parchment.Scope.INLINE, whitelist: ['left', 'center', 'right'] }
+  );
+  const IframeAlign = new Parchment.ClassAttributor(
+    'iframeAlign',
+    'ql-iframe-align',
+    { scope: Parchment.Scope.BLOCK, whitelist: ['left', 'center', 'right'] }
+  );
+  Quill.register(
+    {
+      'formats/imageAlign': ImageAlign,
+      'attributors/class/imageAlign': ImageAlign,
+      'formats/iframeAlign': IframeAlign,
+      'attributors/class/iframeAlign': IframeAlign,
+    },
+    true
+  );
+
   Quill.register('modules/blotFormatter', BlotFormatter);
 
   // BEGIN allow video resizing styles
