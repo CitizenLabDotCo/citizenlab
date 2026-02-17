@@ -23,10 +23,9 @@ import useDeletePhase from 'api/phases/useDeletePhase';
 import useLocalize from 'hooks/useLocalize';
 
 import { Tab } from 'components/admin/NavigationTabs';
+import NewLabel from 'components/UI/NewLabel';
 import TypedDeleteConfirmationModal from 'components/UI/TypedDeleteConfirmationModal';
 import typedDeleteConfirmationMessages from 'components/UI/TypedDeleteConfirmationModal/messages';
-import Modal from 'components/UI/Modal';
-import NewLabel from 'components/UI/NewLabel';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
