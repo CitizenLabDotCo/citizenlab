@@ -122,6 +122,7 @@ module TranslateMissingLocales
     def process_all_models
       data_listing_service = Cl2DataListingService.new
 
+      binding.pry
       data_listing_service.cl2_schema_models.each do |model|
         next if model == User # User model bio does not need translation - waste of money!
 
@@ -140,6 +141,8 @@ module TranslateMissingLocales
         next if record.readonly?
 
         multiloc_columns.each do |column|
+          next if column == 'author_multiloc' # Author multiloc is not important to translate - waste of money!
+
           issue = process_multiloc_field(model, record, column)
           model_issues << issue if issue
         end
