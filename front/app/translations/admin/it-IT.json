@@ -1241,7 +1241,7 @@
   "app.containers.Admin.projects.all.new.Projects.Table.admins": "Amministratori",
   "app.containers.Admin.projects.all.new.Projects.Table.allProjectsHaveLoaded": "Tutti i progetti sono stati caricati",
   "app.containers.Admin.projects.all.new.Projects.Table.anyone": "Chiunque",
-  "app.containers.Admin.projects.all.new.Projects.Table.archived": "Archiviati",
+  "app.containers.Admin.projects.all.new.Projects.Table.archived": "Archiviato",
   "app.containers.Admin.projects.all.new.Projects.Table.currentPhase": "Fase attuale:",
   "app.containers.Admin.projects.all.new.Projects.Table.daysLeft2": "{days, plural, no {{days} giorni} one {{days} giorno} other {{days} giorni}} rimasti",
   "app.containers.Admin.projects.all.new.Projects.Table.daysToStart2": "{days, plural, no {{days} giorni} one {{days} giorno} other {{days} giorni}} all'avvio",
