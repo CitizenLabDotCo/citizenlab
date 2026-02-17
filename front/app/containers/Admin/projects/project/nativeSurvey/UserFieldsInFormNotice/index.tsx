@@ -34,7 +34,7 @@ const UserFieldsInFormNotice = ({
 
   if (
     !postingPermission ||
-    !postingPermission.attributes.user_fields_in_form_frontend_descriptor.value
+    !postingPermission.attributes.user_fields_in_form_descriptor.value
   ) {
     return null;
   }

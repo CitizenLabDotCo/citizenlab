@@ -28,6 +28,7 @@ interface Props {
   disabledMessage: MessageDescriptor | null;
   enabled: boolean;
   className?: string;
+  projectName?: string;
 }
 
 const ParticipationPermission = ({
@@ -38,6 +39,7 @@ const ParticipationPermission = ({
   action,
   disabledMessage,
   enabled,
+  projectName,
 }: Props) => {
   const signUpIn = (flow: 'signin' | 'signup') => {
     if (!phaseId) return;
@@ -75,6 +77,7 @@ const ParticipationPermission = ({
             <FormattedMessage
               {...disabledMessage}
               values={{
+                projectName,
                 verificationLink: (
                   <button onClick={signUp}>
                     <FormattedMessage {...messages.verificationLinkText} />

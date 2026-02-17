@@ -4,7 +4,6 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import GraphCard from 'components/admin/GraphCard';
 import Statistic from 'components/admin/Graphs/Statistic';
-import { IResolution } from 'components/admin/ResolutionControl';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -12,18 +11,7 @@ import Chart from './Chart';
 import messages from './messages';
 import { Props } from './typings';
 import useInternalAdoption from './useInternalAdoption';
-
-const getActiveTimePeriodLabel = (
-  formatMessage: (message: { id: string; defaultMessage: string }) => string,
-  resolution: IResolution
-) => {
-  const messageKey = {
-    month: messages.activeLast30Days,
-    week: messages.activeLast7Days,
-    day: messages.activeYesterday,
-  }[resolution];
-  return formatMessage(messageKey);
-};
+import { getActiveTimePeriodLabel } from './useInternalAdoption/translations';
 
 const InternalAdoptionCard = ({
   startAtMoment,
@@ -72,19 +60,19 @@ const InternalAdoptionCard = ({
             name={formatMessage(messages.admins)}
             value={registeredAdmins}
             bottomLabel={activeBottomLabel}
-            bottomLabelValue={stats.admins.active.toString()}
+            bottomLabelValue={stats.admins.activeLastPeriod.toString()}
           />
           <Statistic
             name={formatMessage(messages.moderators)}
             value={registeredModerators}
             bottomLabel={activeBottomLabel}
-            bottomLabelValue={stats.moderators.active.toString()}
+            bottomLabelValue={stats.moderators.activeLastPeriod.toString()}
           />
           <Statistic
             name={formatMessage(messages.total)}
             value={totalRegistered}
             bottomLabel={activeBottomLabel}
-            bottomLabelValue={stats.total.active.toString()}
+            bottomLabelValue={stats.total.activeLastPeriod.toString()}
           />
         </Box>
       )}

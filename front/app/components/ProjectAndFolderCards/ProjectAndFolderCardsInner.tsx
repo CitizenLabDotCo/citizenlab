@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
@@ -66,6 +66,29 @@ const ProjectAndFolderCardsInner = ({
     [onChangeSearch]
   );
 
+  // Focus on the first newly added card when show more are loaded
+  const visibileCardsLength = useRef(adminPublications.length);
+  useEffect(() => {
+    const panel = document.querySelector('[role="tabpanel"].active-tab');
+    const cards = panel?.querySelectorAll<HTMLElement>(
+      '.e2e-admin-publication-card'
+    );
+    if (!cards) return;
+
+    if (
+      adminPublications.length > visibileCardsLength.current &&
+      visibileCardsLength.current > 0
+    ) {
+      cards[visibileCardsLength.current].focus();
+      cards[visibileCardsLength.current].scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
+
+    visibileCardsLength.current = adminPublications.length;
+  }, [adminPublications, currentTab]);
+
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!currentTab) {
@@ -76,20 +99,8 @@ const ProjectAndFolderCardsInner = ({
   const noAdminPublicationsAtAll = statusCountsWithoutFilters.all === 0;
 
   const showMore = () => {
-    const cardsCountBeforeLoadMore = adminPublications.length;
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
     onLoadMore && onLoadMore();
-    if (onLoadMore) {
-      setTimeout(() => {
-        const allCards = document.querySelectorAll(
-          '.e2e-admin-publication-card'
-        );
-        const firstNewCard = allCards[cardsCountBeforeLoadMore] as
-          | HTMLElement
-          | undefined;
-        firstNewCard?.focus();
-      }, 300);
-    }
   };
 
   const handleChangeTopics = (topics: string[]) => {

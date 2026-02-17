@@ -10,7 +10,8 @@ type CardButtonProps = {
   selected?: boolean;
   iconName?: IconNames;
   icon?: React.ReactNode;
-  title?: string;
+  title?: React.ReactNode;
+  titleLabel?: React.ReactNode;
   subtitle?: React.ReactNode;
   disabled?: boolean;
 };
@@ -20,6 +21,7 @@ const CardButton = ({
   iconName,
   icon,
   title,
+  titleLabel,
   subtitle,
   disabled = false,
   onMouseEnter,
@@ -64,13 +66,20 @@ const CardButton = ({
       )}
       {icon ?? null}
       {title && (
-        <Title
-          variant="h5"
-          color={disabled ? 'disabled' : 'primary'}
-          textAlign="left"
-        >
-          {title}
-        </Title>
+        <Box display="flex" flexDirection="row" alignItems="center">
+          <Title
+            variant="h5"
+            color={disabled ? 'disabled' : 'primary'}
+            textAlign="left"
+          >
+            {title}
+          </Title>
+          {titleLabel && (
+            <Box ml="8px" mt="8px">
+              {titleLabel}
+            </Box>
+          )}
+        </Box>
       )}
       {subtitle && (
         <Text
