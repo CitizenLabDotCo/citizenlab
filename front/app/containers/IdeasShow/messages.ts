@@ -59,7 +59,7 @@ export default defineMessages({
     defaultMessage: 'Support this option: {postTitle}',
   },
   issueTwitterMessage: {
-    id: 'app.containers.IdeasShow.issueTwitterMessage',
+    id: 'app.containers.IdeasShow.issueTwitterMessage1',
     defaultMessage: 'Support this issue: {postTitle}',
   },
   projectTwitterMessage: {
@@ -132,7 +132,7 @@ export default defineMessages({
     defaultMessage: 'Join the discussion: {postTitle}',
   },
   issueWhatsAppMessage: {
-    id: 'app.containers.IdeasShow.ideasWhatsAppMessage',
+    id: 'app.containers.IdeasShow.issueWhatsAppMessage1',
     defaultMessage: 'Support this issue: {postTitle}',
   },
   proposalWhatsAppMessage: {
@@ -206,11 +206,11 @@ export default defineMessages({
       "Join the discussion about this question '{ideaTitle}' at {ideaUrl}!",
   },
   issueEmailSharingSubject: {
-    id: 'app.containers.IdeasShow.issueEmailSharingSubject',
+    id: 'app.containers.IdeasShow.issueEmailSharingSubject1',
     defaultMessage: 'Support this issue: {ideaTitle}',
   },
   issueEmailSharingBody: {
-    id: 'app.containers.IdeasShow.issueEmailSharingBody',
+    id: 'app.containers.IdeasShow.issueEmailSharingBody1',
     defaultMessage: "Support this issue '{ideaTitle}' at {ideaUrl}!",
   },
   projectEmailSharingSubject: {

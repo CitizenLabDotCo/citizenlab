@@ -1,0 +1,6 @@
+{
+  "app.components.admin.PostManager.petitionFormTitle": "Rediger petisjon",
+  "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Alternativ",
+  "app.components.app.containers.AdminPage.ProjectEdit.petitionTerm": "Petisjon",
+  "app.containers.AdminPage.ProjectEdit.newOption": "Legg til et alternativ"
+}

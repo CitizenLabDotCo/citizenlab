@@ -503,7 +503,7 @@ export default defineMessages({
     defaultMessage: 'Option',
   },
   issueTerm: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.issueTerm',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.issueTerm1',
     defaultMessage: 'Issue',
   },
   contributionTerm: {

@@ -15,7 +15,7 @@ export default defineMessages({
     defaultMessage: 'Support my proposed option: {postTitle}.',
   },
   issueEmailSharingSubject: {
-    id: 'app.components.PostComponents.SharingModalContent.issueEmailSharingSubject',
+    id: 'app.components.PostComponents.SharingModalContent.issueEmailSharingSubject1',
     defaultMessage: 'I just posted an issue: {postTitle}.',
   },
   questionEmailSharingSubject: {
@@ -71,7 +71,7 @@ export default defineMessages({
     defaultMessage: "Support my idea '{postTitle}' at {postUrl}!",
   },
   issueEmailSharingBody: {
-    id: 'app.components.PostComponents.SharingModalContent.issueEmailSharingBody',
+    id: 'app.components.PostComponents.SharingModalContent.issueEmailSharingBody1',
     defaultMessage: "I posted an issue '{postTitle}' at {postUrl}!",
   },
   optionEmailSharingBody: {
@@ -149,7 +149,7 @@ export default defineMessages({
     defaultMessage: 'Support my project: {postTitle}.',
   },
   issueWhatsAppMessage: {
-    id: 'app.components.PostComponents.SharingModalContent.issueWhatsAppMessage',
+    id: 'app.components.PostComponents.SharingModalContent.issueWhatsAppMessage1',
     defaultMessage: 'I just posted an issue: {postTitle}.',
   },
   proposalWhatsAppMessage: {

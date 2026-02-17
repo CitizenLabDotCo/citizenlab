@@ -177,7 +177,7 @@ export default defineMessages({
     defaultMessage: 'Contributions',
   },
   issues: {
-    id: 'app.containers.Projects.issues',
+    id: 'app.containers.Projects.issues1',
     defaultMessage: 'Issues',
   },
   options: {

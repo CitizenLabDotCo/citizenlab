@@ -19,7 +19,7 @@ export default defineMessages({
     defaultMessage: 'Edit question',
   },
   issueFormTitle: {
-    id: 'app.containers.IdeasEditPage.issueFormTitle',
+    id: 'app.containers.IdeasEditPage.issueFormTitle1',
     defaultMessage: 'Edit issue',
   },
   contributionFormTitle: {

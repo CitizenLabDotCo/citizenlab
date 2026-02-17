@@ -1,0 +1,14 @@
+{
+  "app.components.ParticipationCTABars.seePetitions": "Se petitioner",
+  "app.components.ProjectCard.viewThePetitions": "Ta del av petitionerna",
+  "app.containers.IdeaCards.petitions": "Petitioner",
+  "app.containers.IdeaCards.xPetitions2": "{ideasCount, plural, no {{ideasCount} petitioner} one {{ideasCount} petition} other {{ideasCount} petitioner}}",
+  "app.containers.IdeasFeedPage.seeAllPetitions": "Se alla petitioner",
+  "app.containers.IdeasNewPage.ajv_error_petition_body_multiloc_minLength": "Beskrivningen av petitionen måste vara längre än {limit} tecken",
+  "app.containers.IdeasNewPage.api_error_petition_description_multiloc_too_long": "Beskrivningen av petitionen måste vara mindre än 80 tecken lång",
+  "app.containers.IdeasNewPage.api_error_petition_description_multiloc_too_short": "Beskrivningen av petitionen måste vara minst 30 tecken lång",
+  "app.containers.NotificationMenu.invitationToCosponsorPetition": "{name} uppmanade dig att medverka i en petition",
+  "app.containers.NotificationMenu.officialFeedbackOnPetitionYouFollow": "{officialName} gav en officiell uppdatering om en petition som du följer",
+  "app.containers.Projects.petitions": "Petitioner",
+  "app.containers.Projects.seeThePetitions": "Se petitionerna"
+}

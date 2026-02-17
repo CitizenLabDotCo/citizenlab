@@ -1,0 +1,6 @@
+{
+  "app.components.admin.PostManager.petitionFormTitle": "Muokkaa adressia",
+  "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Panos",
+  "app.components.app.containers.AdminPage.ProjectEdit.petitionTerm": "Adressi",
+  "app.containers.AdminPage.ProjectEdit.newPetition": "Lisää adressi"
+}

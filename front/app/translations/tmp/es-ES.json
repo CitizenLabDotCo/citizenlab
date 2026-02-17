@@ -1,0 +1,16 @@
+{
+  "app.components.ProjectCard.viewTheContributions": "Ver las contribuciones",
+  "app.components.ProjectCard.xContributions": "{ideasCount, plural, one {# contribución} other {# contribuciones}}",
+  "app.containers.IdeaButton.addAContribution": "Enviar una contribución",
+  "app.containers.IdeaCards.contributions": "Contribuciones",
+  "app.containers.IdeasEditPage.contributionFormTitle": "Editar contribución",
+  "app.containers.IdeasFeedPage.addAContribution": "Añadir una contribución",
+  "app.containers.IdeasShow.contributionEmailSharingBody": "Apoya esta contribución '{postTitle}' en {postUrl}!",
+  "app.containers.IdeasShow.contributionSharingModalTitle": "¡Gracias por enviar tu contribución!",
+  "app.containers.IdeasShow.contributionTwitterMessage": "Apoya esta contribución: {postTitle}",
+  "app.containers.IdeasShow.contributionWhatsAppMessage": "Apoya esta contribución: {postTitle}",
+  "app.containers.Projects.contributions": "Contribuciones",
+  "app.containers.Projects.seeTheContributions": "Ver las contribuciones",
+  "app.containers.SiteMap.contributions": "Contribuciones",
+  "app.utils.IdeasNewPage.contributionFormTitle": "Agregar nueva contribución"
+}

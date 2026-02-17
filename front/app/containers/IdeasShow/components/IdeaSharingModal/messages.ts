@@ -19,7 +19,7 @@ export default defineMessages({
     defaultMessage: 'Your question has been successfully posted!',
   },
   issueSharingModalTitle: {
-    id: 'app.containers.IdeasShow.issueSharingModalTitle',
+    id: 'app.containers.IdeasShow.issueSharingModalTitle1',
     defaultMessage: 'Thanks for submitting your issue!',
   },
   contributionSharingModalTitle: {

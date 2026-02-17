@@ -1,0 +1,9 @@
+{
+  "app.components.admin.PostManager.initiativeFormTitle": "Redigér initiativ",
+  "app.components.admin.PostManager.optionFormTitle": "Rediger valgmulighed",
+  "app.components.app.containers.AdminPage.ProjectEdit.initiativeTerm": "Initiativ",
+  "app.components.app.containers.AdminPage.ProjectEdit.optionTerm": "Valgmulighed",
+  "app.components.app.containers.AdminPage.ProjectEdit.petitionTerm": "Petition",
+  "app.containers.AdminPage.ProjectEdit.newOption": "Tilføj valgmulighed",
+  "app.containers.AdminPage.ProjectEdit.newPetition": "Tilføj en petition"
+}

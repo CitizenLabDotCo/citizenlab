@@ -1,0 +1,18 @@
+{
+  "app.components.PostComponents.SharingModalContent.contributionEmailSharingBody": "Steun mijn bijdrage '{postTitle}' op {postUrl}!",
+  "app.components.PostComponents.SharingModalContent.contributionEmailSharingSubject": "Steun mijn bijdrage: {postTitle}.",
+  "app.components.PostComponents.SharingModalContent.contributionWhatsAppMessage": "Steun mijn bijdrage: {postTitle}.",
+  "app.components.ProjectCard.viewTheContributions": "Bekijk de bijdragen",
+  "app.components.ProjectCard.xContributions": "{ideasCount, plural, one {# bijdrage} other {# bijdragen}}",
+  "app.containers.IdeaButton.addAContribution": "Voeg een bijdrage toe",
+  "app.containers.IdeasEditPage.contributionFormTitle": "Bewerk dit bijdrage",
+  "app.containers.IdeasShow.contributionEmailSharingBody": "Dit bijdrage '{postTitle}' op {postUrl} steunen!",
+  "app.containers.IdeasShow.contributionEmailSharingSubject": "Dit bijdrage steunen: {postTitle}",
+  "app.containers.IdeasShow.contributionSharingModalTitle": "Bedankt voor het inzenden van je bijdrage!",
+  "app.containers.IdeasShow.contributionTwitterMessage": "Dit bijdrage steunen: {postTitle}",
+  "app.containers.IdeasShow.contributionWhatsAppMessage": "Dit bijdrage steunen: {postTitle}",
+  "app.containers.Projects.contributions": "Bijdragen",
+  "app.containers.Projects.seeTheContributions": "Bekijk de bijdragen",
+  "app.containers.SiteMap.contributions": "Bijdragen",
+  "app.utils.IdeasNewPage.contributionFormTitle": "Voeg een nieuw bijdrage toe"
+}

@@ -1,0 +1,10 @@
+{
+  "app.components.ProjectCard.viewTheContributions": "Ver las contribuciones",
+  "app.components.ProjectCard.xContributions": "{ideasCount, plural, no {# contribuciones} one {# contribución} other {# contribuciones}}",
+  "app.containers.IdeaButton.addAContribution": "Agregar una contribución",
+  "app.containers.IdeaCards.contributions": "Contribuciones",
+  "app.containers.IdeasFeedPage.addAContribution": "Añadir una contribución",
+  "app.containers.Projects.contributions": "Contribuciones",
+  "app.containers.SiteMap.contributions": "Contribuciones",
+  "app.utils.IdeasNewPage.contributionFormTitle": "Agregar nueva contribución"
+}

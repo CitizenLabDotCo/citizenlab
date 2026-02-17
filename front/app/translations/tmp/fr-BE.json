@@ -1,0 +1,18 @@
+{
+  "app.components.PostComponents.SharingModalContent.contributionEmailSharingBody": "Soutenez ma contribution « {postTitle} » à {postUrl} !",
+  "app.components.PostComponents.SharingModalContent.contributionEmailSharingSubject": "Soutenez ma contribution : {postTitle}.",
+  "app.components.PostComponents.SharingModalContent.contributionWhatsAppMessage": "Soutenez ma contribution : {postTitle}.",
+  "app.components.ProjectCard.viewTheContributions": "Voir les contributions",
+  "app.components.ProjectCard.xContributions": "{ideasCount, plural, no {# contributions} one {# contribution} other {# contributions}}",
+  "app.containers.IdeaButton.addAContribution": "Ajoutez une contribution",
+  "app.containers.IdeasEditPage.contributionFormTitle": "Modifiez la contribution",
+  "app.containers.IdeasShow.contributionEmailSharingBody": "Soutenez cette contribution « {postTitle} » à {postUrl} !",
+  "app.containers.IdeasShow.contributionEmailSharingSubject": "Soutenez cette contribution : {postTitle}",
+  "app.containers.IdeasShow.contributionSharingModalTitle": "Merci d'avoir soumis votre contribution!",
+  "app.containers.IdeasShow.contributionTwitterMessage": "Soutenez cette contribution : {postTitle}",
+  "app.containers.IdeasShow.contributionWhatsAppMessage": "Soutenez cette contribution : {postTitle}",
+  "app.containers.Projects.contributions": "Contributions",
+  "app.containers.Projects.seeTheContributions": "Voir les contributions",
+  "app.containers.SiteMap.contributions": "Contributions",
+  "app.utils.IdeasNewPage.contributionFormTitle": "Ajoutez une nouvelle contribution"
+}

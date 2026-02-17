@@ -1,0 +1,21 @@
+{
+  "app.components.ParticipationCTABars.seePetitions": "Se petisjoner",
+  "app.containers.IdeaButton.addAnOption": "Legg til et alternativ",
+  "app.containers.IdeaCards.petitions": "Petisjoner",
+  "app.containers.IdeaCards.xPetitions2": "{ideasCount, plural, no {{ideasCount} petisjoner} one {{ideasCount} petisjon} other {{ideasCount} petisjoner}}",
+  "app.containers.IdeasEditPage.petitionFormTitle": "Rediger petisjon",
+  "app.containers.IdeasFeedPage.seeAllPetitions": "Se alle petisjoner",
+  "app.containers.IdeasFeedPage.showAllPetitions": "Vis petisjoner",
+  "app.containers.IdeasNewPage.ajv_error_petition_body_multiloc_maxLength": "Beskrivelsen av petisjonen må være på mindre enn {limit} tegn",
+  "app.containers.IdeasNewPage.ajv_error_petition_body_multiloc_minLength": "Beskrivelsen av petisjonen må være på mer enn {limit} tegn",
+  "app.containers.IdeasNewPage.ajv_error_petition_title_multiloc_maxLength": "Tittelen på petisjonen må være på mindre enn {limit} tegn",
+  "app.containers.IdeasNewPage.ajv_error_petition_title_multiloc_minLength1": "Tittelen på petisjonen må være på mer enn {limit} tegn",
+  "app.containers.IdeasNewPage.api_error_petition_description_multiloc_too_long": "Beskrivelsen av petisjonen må være på mindre enn 80 tegn",
+  "app.containers.IdeasNewPage.api_error_petition_description_multiloc_too_short": "Beskrivelsen av petisjonen må være på minst 30 tegn",
+  "app.containers.IdeasNewPage.api_error_petition_title_multiloc_too_long": "Tittelen på petisjonen må være på mindre enn 80 tegn",
+  "app.containers.IdeasNewPage.api_error_petition_title_multiloc_too_short": "Tittelen på petisjonen må være på minst 10 tegn",
+  "app.containers.IdeasNewPage.petitionMetaTitle1": "Legg til ny petisjon i prosjektet | {orgName}",
+  "app.containers.Projects.petitions": "Petisjoner",
+  "app.containers.Projects.seeThePetitions": "Se petisjonene",
+  "app.utils.IdeasNewPage.petitionFormTitle": "Legg til ny petisjon"
+}

@@ -147,8 +147,8 @@ export default defineMessages({
     defaultMessage: 'Add new question',
   },
   issueFormTitle1: {
-    id: 'app.utils.IdeasNewPage.issueFormTitle1',
-    defaultMessage: 'Add new comment',
+    id: 'app.utils.IdeasNewPage.issueFormTitle2',
+    defaultMessage: 'Add new issue',
   },
   proposalFormTitle: {
     id: 'app.utils.IdeasNewPage.proposalFormTitle',
