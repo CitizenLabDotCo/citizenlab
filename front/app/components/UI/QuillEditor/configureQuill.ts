@@ -14,7 +14,7 @@ export const configureQuill = () => {
   // BlotFormatter2 registers its own (richer) versions in its constructor,
   // overwriting these placeholders, but Quill needs them in the registry
   // *before* modules are instantiated.
-  const Parchment = Quill.import('parchment') as typeof import('parchment');
+  const Parchment = Quill.import('parchment');
   const ImageAlign = new Parchment.ClassAttributor(
     'imageAlign',
     'ql-image-align',
