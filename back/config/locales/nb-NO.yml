@@ -246,6 +246,18 @@ nb:
           title: Hva er initiativet ditt?
         petition:
           title: Hva er din begjæring?
+        comment:
+          title: Hva er din kommentar?
+        response:
+          title: Hva er ditt svar?
+        suggestion:
+          title: Hva er ditt forslag?
+        topic:
+          title: Hva er temaet ditt?
+        post:
+          title: Hva er din post?
+        story:
+          title: Hva er din historie?
   custom_field_options:
     gender:
       male: Mann
