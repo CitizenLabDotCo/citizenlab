@@ -1456,6 +1456,7 @@
   "app.containers.IdeaCards.xContributions2": "{ideasCount, plural, no {{ideasCount} ~ bidrag} one {{ideasCount} ~ bidrag} other {{ideasCount} bidrag}}",
   "app.containers.IdeaCards.xIdeas2": "{ideasCount, plural, no {{ideasCount} ~ ideer} one {{ideasCount} ~ idé} other {{ideasCount} ideer}}",
   "app.containers.IdeaCards.xInitiatives2": "{ideasCount, plural, no {{ideasCount} ~ initiativ} one {{ideasCount} ~ initiativ} other {{ideasCount} initiativ}}",
+  "app.containers.IdeaCards.xIssues": "{ideasCount, plural, no {{ideasCount} ~ utgaver} one {{ideasCount} ~ utgave} other {{ideasCount} ~ utgaver}}",
   "app.containers.IdeaCards.xOptions2": "{ideasCount, plural, no {{ideasCount} alternativer} one {{ideasCount} alternativ} other {{ideasCount} alternativer}}",
   "app.containers.IdeaCards.xPetitions2": "{ideasCount, plural, no {{ideasCount} begjæringer} one {{ideasCount} begjæring} other {{ideasCount} begjæringer}}",
   "app.containers.IdeaCards.xPosts": "{ideasCount, plural, no {{ideasCount} ~ innlegg} one {{ideasCount} ~ innlegg} other {{ideasCount} innlegg}}",
