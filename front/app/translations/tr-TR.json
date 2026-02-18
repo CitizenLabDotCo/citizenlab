@@ -1456,6 +1456,7 @@
   "app.containers.IdeaCards.xContributions2": "{ideasCount, plural, no {{ideasCount} katkılar} one {{ideasCount} katkılar} other {{ideasCount} katkılar}}",
   "app.containers.IdeaCards.xIdeas2": "{ideasCount, plural, no {{ideasCount} fikirler} one {{ideasCount} fikir} other {{ideasCount} fikirler}}",
   "app.containers.IdeaCards.xInitiatives2": "{ideasCount, plural, no {{ideasCount} girişimler} one {{ideasCount} girişim} other {{ideasCount} girişimler}}",
+  "app.containers.IdeaCards.xIssues": "{ideasCount, plural, no {{ideasCount} sayılar} one {{ideasCount} sayı} other {{ideasCount} sayılar}}",
   "app.containers.IdeaCards.xOptions2": "{ideasCount, plural, no {{ideasCount} options} one {{ideasCount} option} other {{ideasCount} options}}",
   "app.containers.IdeaCards.xPetitions2": "{ideasCount, plural, no {{ideasCount} dilekçeler} one {{ideasCount} dilekçe} other {{ideasCount} dilekçeler}}",
   "app.containers.IdeaCards.xPosts": "{ideasCount, plural, no {{ideasCount} posts} one {{ideasCount} post} other {{ideasCount} posts}}",
