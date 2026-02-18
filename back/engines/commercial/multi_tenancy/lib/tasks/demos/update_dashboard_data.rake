@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-# This rake task updates demo dashboard data:
+# This rake task updates data randomly so that the dashboard charts look more interesting on demo platforms:
 #   - ImpactTracking::Session device_type: 60% mobile, 40% desktop_or_other
 #   - ImpactTracking::Session referrer: 50% empty, 15% google, 20% facebook, 15% govocal
 #   - OfficialFeedback: creates records so 38% of non-native-survey ideas have one
-#   - Activity (changed_status): creates records for remaining non-native-survey ideas
+#   - Idea statuses + Activity: updates status for 80% of ideas and creates changed_status activities
 #   - User custom_field_values: populates select/multiselect fields and birthyear with random values
 #
 # Usage:
@@ -12,8 +12,7 @@
 #
 # Notes:
 #   - Only works on demo platforms or localhost
-#   - Updates session records in random order
-#   - Does not change any existing dates
+#   - Should not change any dates of the records.
 
 namespace :demos do
   desc 'Update session device_type/referrer distributions and create OfficialFeedback for ideas'
@@ -42,7 +41,7 @@ namespace :demos do
       UpdateDashboardData.update_device_types
       UpdateDashboardData.update_referrers
       UpdateDashboardData.create_official_feedback
-      UpdateDashboardData.create_status_change_activities
+      UpdateDashboardData.create_idea_status_change_activities
       UpdateDashboardData.update_user_custom_field_values
 
       puts 'Done.'
@@ -133,28 +132,43 @@ module UpdateDashboardData
       OfficialFeedback.insert({ # rubocop:disable Rails/SkipsModelValidations
         id: SecureRandom.uuid,
         idea_id: idea.id,
-        body_multiloc: template.body_multiloc.to_json,
-        author_multiloc: template.author_multiloc.to_json,
+        body_multiloc: template.body_multiloc,
+        author_multiloc: template.author_multiloc,
         created_at: feedback_time,
         updated_at: feedback_time
       })
     end
 
-    # Reset counter caches (counter_culture, not Rails counter_cache)
+    # Reset counter caches
     OfficialFeedback.counter_culture_fix_counts only: :idea
   end
 
-  def create_status_change_activities
+  def create_idea_status_change_activities
     eligible_ideas = non_native_survey_ideas
-    ideas_with_feedback = eligible_ideas.where(id: OfficialFeedback.select(:idea_id))
-    ideas_without_feedback = eligible_ideas.where.not(id: ideas_with_feedback.select(:id))
-    total = ideas_without_feedback.count
+    total = eligible_ideas.count
+    target_count = (total * 0.8).round
 
-    puts "\nCreating changed_status Activity for #{total} ideas without feedback..."
+    # Status distribution: 40% viewed, 35% under_consideration, 10% accepted, 10% rejected, 5% implemented
+    status_codes = %w[viewed under_consideration accepted rejected implemented]
+    statuses = status_codes.filter_map do |code|
+      IdeaStatus.find_by(code: code, participation_method: 'ideation')
+    end
 
-    return unless total.positive?
+    if statuses.empty?
+      puts "\nNo matching IdeaStatus records found. Skipping."
+      return
+    end
 
-    ideas_without_feedback.find_each do |idea|
+    status_weights = [0.4, 0.35, 0.1, 0.1, 0.05].first(statuses.size)
+    weight_sum = status_weights.sum
+
+    puts "\nUpdating status and creating changed_status Activity for #{target_count} of #{total} ideas..."
+
+    eligible_ideas.order('RANDOM()').limit(target_count).each do |idea|
+      status = weighted_random_pick(statuses, status_weights, weight_sum)
+
+      idea.update_column(:idea_status_id, status.id) # rubocop:disable Rails/SkipsModelValidations
+
       random_days = rand(1.0..7.0)
       activity_time = idea.created_at + random_days.days
 
