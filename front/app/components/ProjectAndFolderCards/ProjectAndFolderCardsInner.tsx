@@ -83,7 +83,9 @@ const ProjectAndFolderCardsInner = ({
 
   const showMore = async () => {
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
-    const previousCount = adminPublications.length;
+    const previousCount = document.querySelectorAll<HTMLElement>(
+      '.e2e-projects-list.active-tab .e2e-admin-publication-card'
+    ).length;
     await onLoadMore?.();
 
     // Wait for React to commit the new items to the DOM
@@ -91,7 +93,8 @@ const ProjectAndFolderCardsInner = ({
       const cards = document.querySelectorAll<HTMLElement>(
         '.e2e-projects-list.active-tab .e2e-admin-publication-card'
       );
-      cards[previousCount].focus();
+      const cardToFocus = cards[previousCount] as HTMLElement | undefined;
+      if (cardToFocus) cardToFocus.focus();
     });
   };
 
