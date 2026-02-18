@@ -533,7 +533,6 @@
   "app.components.QuillEditor.customLinkPrompt": "Anna linkki:",
   "app.components.QuillEditor.edit": "Muokkaa",
   "app.components.QuillEditor.image": "Lataa kuva",
-  "app.components.QuillEditor.imageAltPlaceholder": "Lyhyt kuvaus kuvasta",
   "app.components.QuillEditor.italic": "Kursiivi",
   "app.components.QuillEditor.link": "Lisää linkki",
   "app.components.QuillEditor.linkPrompt": "Anna linkki:",

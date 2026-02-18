@@ -533,7 +533,6 @@
   "app.components.QuillEditor.customLinkPrompt": "Unesite vezu:",
   "app.components.QuillEditor.edit": "Uredi",
   "app.components.QuillEditor.image": "Prenesite sliku",
-  "app.components.QuillEditor.imageAltPlaceholder": "Kratak opis slike",
   "app.components.QuillEditor.italic": "Kurziv",
   "app.components.QuillEditor.link": "Dodajte vezu",
   "app.components.QuillEditor.linkPrompt": "Unesite vezu:",

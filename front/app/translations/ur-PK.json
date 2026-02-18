@@ -533,7 +533,6 @@
   "app.components.QuillEditor.customLinkPrompt": "لنک درج کریں:",
   "app.components.QuillEditor.edit": "ترمیم کریں۔",
   "app.components.QuillEditor.image": "تصویر اپ لوڈ کریں۔",
-  "app.components.QuillEditor.imageAltPlaceholder": "تصویر کی مختصر تفصیل",
   "app.components.QuillEditor.italic": "ترچھا",
   "app.components.QuillEditor.link": "لنک شامل کریں۔",
   "app.components.QuillEditor.linkPrompt": "لنک درج کریں:",

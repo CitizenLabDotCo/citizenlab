@@ -533,7 +533,6 @@
   "app.components.QuillEditor.customLinkPrompt": "Ievadīt saiti:",
   "app.components.QuillEditor.edit": "Rediģēt",
   "app.components.QuillEditor.image": "Augšupielādēt attēlu",
-  "app.components.QuillEditor.imageAltPlaceholder": "Īss attēla apraksts",
   "app.components.QuillEditor.italic": "Kursīvs",
   "app.components.QuillEditor.link": "Pievienot saiti",
   "app.components.QuillEditor.linkPrompt": "Ievadīt saiti:",

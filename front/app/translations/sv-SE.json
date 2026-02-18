@@ -533,7 +533,6 @@
   "app.components.QuillEditor.customLinkPrompt": "Ange länk:",
   "app.components.QuillEditor.edit": "Redigera",
   "app.components.QuillEditor.image": "Ladda upp bild",
-  "app.components.QuillEditor.imageAltPlaceholder": "Kort beskrivning av bilden",
   "app.components.QuillEditor.italic": "Kursiv",
   "app.components.QuillEditor.link": "Lägg till länk",
   "app.components.QuillEditor.linkPrompt": "Ange länk:",

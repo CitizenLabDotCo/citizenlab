@@ -533,7 +533,6 @@
   "app.components.QuillEditor.customLinkPrompt": "Enter link:",
   "app.components.QuillEditor.edit": "Edit",
   "app.components.QuillEditor.image": "Upload image",
-  "app.components.QuillEditor.imageAltPlaceholder": "Short description of the image",
   "app.components.QuillEditor.italic": "Italic",
   "app.components.QuillEditor.link": "Add link",
   "app.components.QuillEditor.linkPrompt": "Enter link:",

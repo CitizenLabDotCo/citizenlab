@@ -533,7 +533,6 @@
   "app.components.QuillEditor.customLinkPrompt": "Bağlantıyı girin:",
   "app.components.QuillEditor.edit": "Düzenle",
   "app.components.QuillEditor.image": "Görsel yükleyin",
-  "app.components.QuillEditor.imageAltPlaceholder": "Görselin kısa açıklaması",
   "app.components.QuillEditor.italic": "İtalik",
   "app.components.QuillEditor.link": "Bağlantı ekle",
   "app.components.QuillEditor.linkPrompt": "Bağlantıyı girin:",

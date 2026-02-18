@@ -533,7 +533,6 @@
   "app.components.QuillEditor.customLinkPrompt": "Írja be a linket:",
   "app.components.QuillEditor.edit": "Szerkesztés",
   "app.components.QuillEditor.image": "Kép feltöltése",
-  "app.components.QuillEditor.imageAltPlaceholder": "A kép rövid leírása",
   "app.components.QuillEditor.italic": "Dőlt",
   "app.components.QuillEditor.link": "Link hozzáadása",
   "app.components.QuillEditor.linkPrompt": "Írja be a linket:",
