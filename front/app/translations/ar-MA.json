@@ -1456,6 +1456,7 @@
   "app.containers.IdeaCards.xContributions2": "{ideasCount, plural, no {{ideasCount} مساهمات} one {{ideasCount} مساهمة} other {{ideasCount} مساهمات}}",
   "app.containers.IdeaCards.xIdeas2": "{ideasCount, plural, no {{ideasCount} أفكار} one {{ideasCount} فكرة} other {{ideasCount} أفكار}}",
   "app.containers.IdeaCards.xInitiatives2": "{ideasCount, plural, no {{ideasCount} مبادرات} one {{ideasCount} مبادرات} other {{ideasCount} مبادرات}}",
+  "app.containers.IdeaCards.xIssues": "{ideasCount, plural, no {{ideasCount} مشاكل} one {{ideasCount} مشكلة} other {{ideasCount} مشاكل}}",
   "app.containers.IdeaCards.xOptions2": "{ideasCount, plural, no {{ideasCount} خيارات} one {{ideasCount} خيار} other {{ideasCount} خيارات}}",
   "app.containers.IdeaCards.xPetitions2": "{ideasCount, plural, no {{ideasCount} عرائض} one {{ideasCount} عرائض} other {{ideasCount} عرائض}}",
   "app.containers.IdeaCards.xPosts": "{ideasCount, plural, no {{ideasCount} منشورات} one {{ideasCount} منشور} other {{ideasCount} منشورات}}",
