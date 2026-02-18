@@ -15,7 +15,7 @@
 #   - Should not change any dates of the records.
 
 namespace :demos do
-  desc 'Update session device_type/referrer distributions and create OfficialFeedback for ideas'
+  desc 'Update demo platform data to make dashboards appear more interesting'
   task :update_dashboard_data, %i[host] => [:environment] do |_t, args|
     if args[:host].blank?
       puts 'Usage: rake demos:update_dashboard_data[host]'
@@ -38,18 +38,19 @@ namespace :demos do
         next
       end
 
-      UpdateDashboardData.update_device_types
-      UpdateDashboardData.update_referrers
-      UpdateDashboardData.create_official_feedback
-      UpdateDashboardData.create_idea_status_change_activities
-      UpdateDashboardData.update_user_custom_field_values
+      UpdateDemoDashboardData.update_device_types
+      UpdateDemoDashboardData.update_referrers
+      UpdateDemoDashboardData.create_official_feedback
+      UpdateDemoDashboardData.create_idea_status_change_activities
+      UpdateDemoDashboardData.update_user_custom_field_values
 
       puts 'Done.'
     end
   end
 end
 
-module UpdateDashboardData
+# rubocop:disable Metrics/ModuleLength
+module UpdateDemoDashboardData
   module_function
 
   def update_device_types
@@ -67,8 +68,8 @@ module UpdateDashboardData
     puts "Total sessions: #{total}"
     puts "Setting device_type: #{mobile_count} mobile, #{desktop_count} desktop_or_other"
 
-    ImpactTracking::Session.where(id: session_ids.first(mobile_count)).update_all(device_type: 'mobile') # rubocop:disable Rails/SkipsModelValidations
-    ImpactTracking::Session.where(id: session_ids.last(desktop_count)).update_all(device_type: 'desktop_or_other') # rubocop:disable Rails/SkipsModelValidations
+    ImpactTracking::Session.where(id: session_ids.first(mobile_count)).update_all(device_type: 'mobile')
+    ImpactTracking::Session.where(id: session_ids.last(desktop_count)).update_all(device_type: 'desktop_or_other')
   end
 
   def update_referrers
@@ -95,7 +96,7 @@ module UpdateDashboardData
     }
 
     referrer_groups.each do |referrer, ids|
-      ImpactTracking::Session.where(id: ids).update_all(referrer: referrer) # rubocop:disable Rails/SkipsModelValidations
+      ImpactTracking::Session.where(id: ids).update_all(referrer: referrer)
     end
   end
 
@@ -129,9 +130,10 @@ module UpdateDashboardData
       random_days = rand(1.0..7.0)
       feedback_time = idea.created_at + random_days.days
 
-      OfficialFeedback.insert({ # rubocop:disable Rails/SkipsModelValidations
+      OfficialFeedback.create!({
         id: SecureRandom.uuid,
         idea_id: idea.id,
+        user_id: template.user_id,
         body_multiloc: template.body_multiloc,
         author_multiloc: template.author_multiloc,
         created_at: feedback_time,
@@ -167,12 +169,12 @@ module UpdateDashboardData
     eligible_ideas.order('RANDOM()').limit(target_count).each do |idea|
       status = weighted_random_pick(statuses, status_weights, weight_sum)
 
-      idea.update_column(:idea_status_id, status.id) # rubocop:disable Rails/SkipsModelValidations
+      idea.update_column(:idea_status_id, status.id)
 
       random_days = rand(1.0..7.0)
       activity_time = idea.created_at + random_days.days
 
-      Activity.insert({ # rubocop:disable Rails/SkipsModelValidations
+      Activity.create!({
         id: SecureRandom.uuid,
         item_type: 'Idea',
         item_id: idea.id,
@@ -242,7 +244,7 @@ module UpdateDashboardData
       end
 
       cfv = (user.custom_field_values || {}).merge(new_values)
-      user.update_column(:custom_field_values, cfv) # rubocop:disable Rails/SkipsModelValidations
+      user.update_column(:custom_field_values, cfv)
       updated += 1
     end
 
@@ -253,8 +255,8 @@ module UpdateDashboardData
     if field.key == 'domicile'
       # Domicile stores Area UUIDs (or 'outside') instead of option keys
       area_ids = Area.joins(:custom_field_option)
-                     .where(custom_field_options: { custom_field_id: field.id })
-                     .pluck(:id)
+        .where(custom_field_options: { custom_field_id: field.id })
+        .pluck(:id)
       outside_option = field.options.find_by(other: true)
       area_ids << 'outside' if outside_option
       area_ids
@@ -273,3 +275,4 @@ module UpdateDashboardData
     keys.last
   end
 end
+# rubocop:enable Metrics/ModuleLength
