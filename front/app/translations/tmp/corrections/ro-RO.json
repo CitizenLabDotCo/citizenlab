@@ -1,0 +1,7 @@
+{
+  "app.components.ProjectCard.submitAnIssue": "Trimite o chestiune",
+  "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_maxLength": "Descrierea chestiunii trebuie să aibă mai puțin de {limit} caractere",
+  "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_minLength": "Descrierea chestiunii trebuie să aibă mai mult de {limit} caractere",
+  "app.containers.IdeasNewPage.api_error_issue_description_multiloc_too_long": "Descrierea chestiunii trebuie să aibă mai puțin de 80 de caractere",
+  "app.containers.IdeasNewPage.api_error_issue_title_multiloc_too_long": "Titlul chestiunii trebuie să aibă mai puțin de 80 de caractere"
+}

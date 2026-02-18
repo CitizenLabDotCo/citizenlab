@@ -1,0 +1,15 @@
+{
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Mitä mieltä olet tästä aloitteesta? Äänestä sitä ja jaa keskustelu osoitteessa {postUrl} saadaksesi äänesi kuuluviin!",
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Tue aloitetta: {postTitle}.",
+  "app.components.ProjectCard.submitAnIssue": "Lähetä asia",
+  "app.containers.IdeaButton.submitAnIssue": "Lähetä asia",
+  "app.containers.IdeasFeedPage.addAnIssue": "Lisää asia",
+  "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_maxLength": "Asian kuvauksen tulee olla alle {limit} merkkiä pitkä",
+  "app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_maxLength": "Asian otsikon on oltava alle {limit} merkkiä pitkä",
+  "app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_minLength": "Asian otsikon on oltava yli {limit} merkkiä pitkä",
+  "app.containers.IdeasNewPage.api_error_issue_description_multiloc_too_long": "Asian kuvauksen tulee olla alle 80 merkkiä pitkä",
+  "app.containers.IdeasNewPage.api_error_issue_title_multiloc_too_short": "Asian otsikon on oltava vähintään 10 merkkiä pitkä",
+  "app.containers.IdeasNewPage.issueMetaTitle1": "Lisää uusi asia projektiin | {orgName}",
+  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "{name} kutsui sinut tukemaan aloitetta",
+  "app.containers.NotificationMenu.invitationToCosponsorIssue": "{name} kutsui sinut sponsoroimaan asiaa"
+}

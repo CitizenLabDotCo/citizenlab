@@ -1,0 +1,14 @@
+{
+  "app.containers.IdeasEditPage.petitionFormTitle": "تعديل العريضة",
+  "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_maxLength": "يجب أن يكون طول وصف القضية أقل من {limit} حرف/حروف",
+  "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_minLength": "يجب أن يكون طول وصف القضية أكبر من {limit} حرف/حروف",
+  "app.containers.IdeasNewPage.ajv_error_petition_title_multiloc_maxLength": "يجب أن يكون عنوان العريضة أقل من {limit} حرفًا",
+  "app.containers.IdeasNewPage.api_error_issue_description_multiloc_too_long": "يجب أن يكون طول وصف القضية أقل من 80 حرفًا",
+  "app.containers.IdeasNewPage.api_error_issue_title_multiloc_too_long": "يجب أن يكون طول عنوان القضية أقل من 80 حرفًا",
+  "app.containers.IdeasNewPage.api_error_petition_description_multiloc_too_long": "يجب أن يكون وصف العريضة أقل من 80 حرفًا",
+  "app.containers.IdeasNewPage.api_error_petition_title_multiloc_too_long": "يجب أن يكون عنوان العريضة أقل من 80 حرفًا",
+  "app.containers.IdeasNewPage.petitionMetaTitle1": "إضافة عريضة جديدة إلى المشروع | {orgName}",
+  "app.containers.IdeasShow.petitionTwitterMessage": "ادعم هذه العريضة: {postTitle}",
+  "app.containers.IdeasShow.petitionWhatsAppMessage": "ادعم هذه العريضة: {postTitle}",
+  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "دعاك {name} للمشاركة في رعاية مبادرة"
+}

@@ -48,6 +48,11 @@ export default defineMessages({
     defaultMessage:
       '{ideasCount, plural, no {{ideasCount} comments} one {{ideasCount} comment} other {{ideasCount} comments}}',
   },
+  xIssues: {
+    id: 'app.containers.IdeaCards.xIssues',
+    defaultMessage:
+      '{ideasCount, plural, no {{ideasCount} issues} one {{ideasCount} issue} other {{ideasCount} issues}}',
+  },
   xContributions: {
     id: 'app.containers.IdeaCards.xContributions2',
     defaultMessage:

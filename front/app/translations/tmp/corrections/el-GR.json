@@ -1,0 +1,10 @@
+{
+  "app.components.PostComponents.SharingModalContent.contributionEmailSharingBody": "Υποστηρίξτε τη συνεισφορά μου '{postTitle}' στο {postUrl}!",
+  "app.components.PostComponents.SharingModalContent.projectEmailSharingBody": "Υποστηρίξτε το project μου '{postTitle}' στο {postUrl}!",
+  "app.components.PostComponents.SharingModalContent.projectEmailSharingSubject": "Υποστηρίξτε το project μου: {postTitle}.",
+  "app.components.PostComponents.SharingModalContent.projectWhatsAppMessage": "Υποστηρίξτε το project μου: {postTitle}.",
+  "app.components.ProjectCard.submitYourProject": "Υποβάλετε το project σας",
+  "app.containers.IdeasEditPage.projectFormTitle": "Επεξεργασία project",
+  "app.utils.IdeasNewPage.viewYourIssue": "Δείτε το ζήτημα σας",
+  "app.utils.IdeasNewPage.viewYourProject": "Δείτε το project σας"
+}

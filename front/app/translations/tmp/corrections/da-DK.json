@@ -1,0 +1,19 @@
+{
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Hvad synes du om dette initiativ? Stem på det og del diskussionen på {postUrl} for at blive hørt!",
+  "app.containers.IdeasEditPage.initiativeFormTitle": "Redigér initiativ",
+  "app.containers.IdeasNewPage.api_error_initiative_description_multiloc_too_short": "Beskrivelsen af initiativet skal være mindst 30 tegn lang",
+  "app.containers.IdeasNewPage.api_error_issue_description_multiloc_too_long": "Sagsbeskrivelsen skal være mindre end 80 tegn lang",
+  "app.containers.IdeasShow.contributionEmailSharingBody": "Støt dette bidrag '{postTitle}' på {postUrl}!",
+  "app.containers.IdeasShow.contributionSharingModalTitle": "Tak for at du har indsendt et bidrag!",
+  "app.containers.IdeasShow.contributionTwitterMessage": "Støt dette bidrag: '{postTitle}'",
+  "app.containers.IdeasShow.contributionWhatsAppMessage": "Støt dette bidrag: {postTitle}",
+  "app.containers.IdeasShow.initiativeTwitterMessage": "Støt dette initiativ: {postTitle}",
+  "app.containers.IdeasShow.initiativeWhatsAppMessage": "Støt dette initiativ: {postTitle}",
+  "app.containers.IdeasShow.projectSharingModalTitle": "Tak for at du har indsendt et projekt!",
+  "app.containers.IdeasShow.projectTwitterMessage": "Støt dette projekt '{postTitle}'",
+  "app.containers.IdeasShow.projectWhatsAppMessage": "Støt dette projekt '{postTitle}'",
+  "app.containers.IdeasShow.questionSharingModalTitle": "Dit spørgsmål er blevet postet med succes!",
+  "app.containers.NotificationMenu.invitationToCosponsorContribution": "{name} har inviteret dig til at være medstiller af et bidrag",
+  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "{name} opfordrede dig til at støtte et initiativ",
+  "app.containers.NotificationMenu.officialFeedbackOnInitiativeYouFollow": "{officialName} gav en officiel opdatering på et initiativ, du følger"
+}

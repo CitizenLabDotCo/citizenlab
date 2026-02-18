@@ -1,0 +1,6 @@
+{
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Ko jūs domājat par šo iniciatīvu? Balsojiet par to un koplietojiet diskusiju vietnē {postUrl}, lai jūsu viedoklis tiktu sadzirdēts!",
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Atbalstīt manu iniciatīvu: {postTitle}.",
+  "app.containers.IdeasNewPage.ajv_error_petition_title_multiloc_maxLength": "Lūgumraksta nosaukumam jābūt īsākam par {limit} rakstzīmēm.",
+  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "{name} aicināja jūs kļūt par iniciatīvas līdzpriekšsēdētāju."
+}

@@ -1,0 +1,12 @@
+{
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Wat denk je van dit initiatief? Breng je stem uit en neem deel aan de discussie op {postUrl} om je stem te laten horen!",
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Steun mijn initiatief: {postTitle}.",
+  "app.containers.IdeasFeedPage.addAnIssue": "Voeg een kwestie toe",
+  "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_maxLength": "De omschrijving van de kwestie mag niet langer zijn dan {limit} tekens",
+  "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_minLength": "De omschrijving van de kwestie dient meer dan {limit} tekens lang te zijn",
+  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "{name} heeft je uitgenodigd om een initiatief te steunen",
+  "app.containers.NotificationMenu.invitationToCosponsorIssue": "{name} heeft je uitgenodigd om een kwestie te ondersteunen",
+  "app.containers.NotificationMenu.officialFeedbackOnInitiativeYouFollow": "{officialName} gaf een officiële update over een initiatief dat je volgt",
+  "app.containers.NotificationMenu.userCommentedOnInitiativeYouFollow": "{name} heeft gereageerd op een initiatief dat je volgt",
+  "app.utils.IdeasNewPage.viewYourIssue": "Bekijk je kwestie"
+}

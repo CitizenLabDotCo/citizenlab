@@ -1,0 +1,5 @@
+{
+  "app.containers.IdeasFeedPage.addAnIssue": "Afegeix un assumpte",
+  "app.containers.NotificationMenu.invitationToCosponsorIssue": "{name} t'ha convidat a copatrocinar un assumpte",
+  "app.containers.NotificationMenu.userCommentedOnIssueYouFollow": "{name} ha comentat un assumpte que segueixes"
+}

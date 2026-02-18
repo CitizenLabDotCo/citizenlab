@@ -1,0 +1,10 @@
+{
+  "app.components.PostComponents.SharingModalContent.contributionEmailSharingSubject": "Palaikykite mano įnašą: {postTitle}.",
+  "app.components.PostComponents.SharingModalContent.contributionWhatsAppMessage": "Palaikykite mano įnašą: {postTitle}.",
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Ką manote apie šią iniciatyvą? Balsuokite dėl jos ir dalinkitės diskusija svetainėje {postUrl} , kad jūsų balsas būtų išgirstas!",
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Pritarkite mano iniciatyvai: {postTitle}.",
+  "app.containers.IdeasEditPage.contributionFormTitle": "Redaguoti įnašą",
+  "app.containers.IdeasShow.contributionSharingModalTitle": "Ačiū, kad pateikėte savo įnašą!",
+  "app.utils.IdeasNewPage.contributionFormTitle": "Pridėti naują įnašą",
+  "app.utils.IdeasNewPage.viewYourContribution": "Peržiūrėkite savo įnašą"
+}

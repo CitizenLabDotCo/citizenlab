@@ -1,0 +1,11 @@
+{
+  "app.components.PostComponents.SharingModalContent.contributionEmailSharingSubject": "Steun mijn bijdrage: {postTitle}.",
+  "app.components.PostComponents.SharingModalContent.contributionWhatsAppMessage": "Steun mijn bijdrage: {postTitle}.",
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Wat denk je van dit initiatief? Breng je stem uit en neem deel aan de discussie op {postUrl} om je stem te laten horen!",
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Steun mijn initiatief: {postTitle}.",
+  "app.containers.IdeasEditPage.contributionFormTitle": "Bewerk deze bijdrage",
+  "app.containers.IdeasShow.contributionSharingModalTitle": "Bedankt voor het inzenden van je bijdrage!",
+  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "{name} heeft je uitgenodigd om een initiatief te steunen",
+  "app.containers.NotificationMenu.officialFeedbackOnInitiativeYouFollow": "{officialName} gaf een officiële update over een initiatief dat je volgt",
+  "app.containers.NotificationMenu.userCommentedOnInitiativeYouFollow": "{name} heeft gereageerd op een initiatief dat je volgt"
+}

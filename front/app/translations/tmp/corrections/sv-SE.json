@@ -1,0 +1,21 @@
+{
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Vad tycker du om det här initiativet? Rösta på det och dela diskussionen på {postUrl} för att göra din röst hörd!",
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Stöd mitt initiativ: {postTitle}.",
+  "app.components.ProjectCard.submitAnIssue": "Skicka ett ärende",
+  "app.containers.IdeaButton.submitAnIssue": "Skicka ett ärende",
+  "app.containers.IdeasFeedPage.addAnIssue": "Lägg till ett ärende",
+  "app.containers.IdeasNewPage.ajv_error_contribution_body_multiloc_minLength": "Bidragets brödtext måste vara längre än {limit} tecken",
+  "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_maxLength": "Ärende måste vara kortare än {limit} tecken",
+  "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_minLength": "Ärende måste vara längre än {limit} tecken",
+  "app.containers.IdeasNewPage.api_error_issue_description_multiloc_too_long": "Ärende måste vara kortare än 80 tecken",
+  "app.containers.IdeasNewPage.api_error_issue_description_multiloc_too_short": "Ärende måste vara minst 30 tecken långt",
+  "app.containers.IdeasNewPage.api_error_issue_title_multiloc_too_long": "Ärende måste vara kortare än 80 tecken",
+  "app.containers.IdeasNewPage.api_error_issue_title_multiloc_too_short": "Ärende måste vara minst 10 tecken långt",
+  "app.containers.IdeasNewPage.issueMetaTitle1": "Lägg till nytt ärende i projektet | {orgName}",
+  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "{name} uppmanade dig att stödja ett initiativ",
+  "app.containers.NotificationMenu.invitationToCosponsorIssue": "{name} uppmanade dig att stödja ett ärende",
+  "app.containers.NotificationMenu.officialFeedbackOnIssueYouFollow": "{officialName} gav en officiell uppdatering om ett ärende som du följer",
+  "app.containers.NotificationMenu.userCommentedOnIssueYouFollow": "{name} kommenterat ett ärende som du följer",
+  "app.containers.NotificationMenu.userCommentedOnQuestionYouFollow": "{name} har kommenterat en fråga som du följer",
+  "app.utils.IdeasNewPage.viewYourIssue": "Se ditt ärende"
+}

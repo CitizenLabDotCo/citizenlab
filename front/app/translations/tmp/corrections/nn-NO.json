@@ -1,0 +1,13 @@
+{
+  "app.containers.IdeasNewPage.ajv_error_contribution_body_multiloc_maxLength": "Beskrivinga av bidraget må vere under {limit} teikn",
+  "app.containers.IdeasNewPage.ajv_error_project_body_multiloc_maxLength": "Beskrivinga av prosjektet må vere under {limit} teikn",
+  "app.containers.IdeasNewPage.ajv_error_project_body_multiloc_minLength": "Beskrivinga av prosjektet må vere over {limit} teikn",
+  "app.containers.IdeasNewPage.ajv_error_question_body_multiloc_maxLength": "Beskrivinga av spørsmålet må vere under {limit} teikn",
+  "app.containers.IdeasNewPage.ajv_error_question_body_multiloc_minLength": "Beskrivinga av spørsmålet må vere over {limit} teikn",
+  "app.containers.IdeasNewPage.api_error_contribution_description_multiloc_too_long": "Beskrivinga av bidraget må vere under 80 teikn",
+  "app.containers.IdeasNewPage.api_error_contribution_title_multiloc_too_long": "Tittelen på bidraget må vere under 80 teikn",
+  "app.containers.IdeasNewPage.api_error_project_description_multiloc_too_long": "Beskrivinga av prosjektet må vere under 80 teikn",
+  "app.containers.IdeasNewPage.api_error_project_title_multiloc_too_long": "Tittelen på prosjektet må vere under 80 teikn",
+  "app.containers.IdeasNewPage.api_error_question_description_multiloc_too_long": "Beskrivinga av spørsmålet må vere under 80 teikn",
+  "app.containers.IdeasNewPage.api_error_question_title_multiloc_too_long": "Tittelen på spørsmålet må vere under 80 teikn"
+}

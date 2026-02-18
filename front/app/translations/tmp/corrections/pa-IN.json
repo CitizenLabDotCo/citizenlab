@@ -1,0 +1,7 @@
+{
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "ਤੁਸੀਂ ਇਸ ਪਹਿਲ ਬਾਰੇ ਕੀ ਸੋਚਦੇ ਹੋ? ਇਸ 'ਤੇ ਵੋਟ ਦਿਓ ਅਤੇ ਆਪਣੀ ਆਵਾਜ਼ ਸੁਣਨ ਲਈ {postUrl} 'ਤੇ ਚਰਚਾ ਨੂੰ ਸਾਂਝਾ ਕਰੋ!",
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "ਮੇਰੀ ਪਹਿਲ ਦਾ ਸਮਰਥਨ ਕਰੋ: {postTitle}.",
+  "app.containers.IdeasNewPage.api_error_question_description_multiloc_too_long": "ਸਵਾਲ ਵਰਣਨ 80 ਅੱਖਰਾਂ ਤੋਂ ਘੱਟ ਲੰਬਾ ਹੋਣਾ ਚਾਹੀਦਾ ਹੈ",
+  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "{name} ਨੇ ਤੁਹਾਨੂੰ ਇੱਕ ਪਹਿਲ ਨੂੰ ਸਹਿਯੋਗੀ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ",
+  "app.containers.NotificationMenu.invitationToCosponsorQuestion": "{name} ਨੇ ਤੁਹਾਨੂੰ ਇੱਕ ਸਵਾਲ ਸਹਿ-ਪ੍ਰਾਯੋਜਿਤ ਕਰਨ ਲਈ ਸੱਦਾ ਦਿੱਤਾ"
+}
