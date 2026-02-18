@@ -1456,6 +1456,7 @@
   "app.containers.IdeaCards.xContributions2": "{ideasCount, plural, no {{ideasCount} ਯੋਗਦਾਨ} one {{ideasCount} ਯੋਗਦਾਨ} other {{ideasCount} ਯੋਗਦਾਨ}}",
   "app.containers.IdeaCards.xIdeas2": "{ideasCount, plural, no {{ideasCount} ਵਿਚਾਰ} one {{ideasCount} ਵਿਚਾਰ} other {{ideasCount} ਵਿਚਾਰ}}",
   "app.containers.IdeaCards.xInitiatives2": "{ideasCount, plural, no {{ideasCount} ਪਹਿਲਕਦਮੀ} one {{ideasCount} ਪਹਿਲਕਦਮੀ} other {{ideasCount} ਪਹਿਲਕਦਮੀ}}",
+  "app.containers.IdeaCards.xIssues": "{ideasCount, plural, no {{ideasCount} ਮੁੱਦੇ} one {{ideasCount} ਮੁੱਦਾ} other {{ideasCount} ਮੁੱਦੇ}}",
   "app.containers.IdeaCards.xOptions2": "{ideasCount, plural, no {{ideasCount} ਵਿਕਲਪ} one {{ideasCount} ਵਿਕਲਪ} other {{ideasCount} ਵਿਕਲਪ}}",
   "app.containers.IdeaCards.xPetitions2": "{ideasCount, plural, no {{ideasCount} ਪਟੀਸ਼ਨਾਂ} one {{ideasCount} ਪਟੀਸ਼ਨ} other {{ideasCount} ਪਟੀਸ਼ਨਾਂ}}",
   "app.containers.IdeaCards.xPosts": "{ideasCount, plural, no {{ideasCount} ਪੋਸਟਾਂ} one {{ideasCount} ਪੋਸਟ} other {{ideasCount} ਪੋਸਟਾਂ}}",
