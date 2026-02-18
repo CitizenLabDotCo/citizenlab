@@ -249,7 +249,7 @@ de:
         comment:
           title: Was ist Ihr Kommentar?
         response:
-          title: Wie lautet Ihre Antwort?
+          title: Was ist Ihre Antwort?
         suggestion:
           title: Was ist Ihr Vorschlag?
         topic:
@@ -257,7 +257,7 @@ de:
         post:
           title: Was ist Ihr Beitrag?
         story:
-          title: Was ist Ihre Geschichte?
+          title: Was ist Ihre Story?
   custom_field_options:
     gender:
       male: Männlich
