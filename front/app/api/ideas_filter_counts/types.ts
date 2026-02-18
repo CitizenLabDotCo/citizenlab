@@ -10,7 +10,7 @@ export interface IIdeasFilterCounts {
   data: {
     type: 'filter_counts';
     attributes: {
-      idea_status: {
+      idea_status_id: {
         [key: string]: number;
       };
       area_id: {
