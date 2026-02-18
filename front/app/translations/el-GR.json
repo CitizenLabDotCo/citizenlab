@@ -1456,6 +1456,7 @@
   "app.containers.IdeaCards.xContributions2": "{ideasCount, plural, no {{ideasCount} συνεισφορές} one {{ideasCount} συνεισφορά} other {{ideasCount} συνεισφορές}}",
   "app.containers.IdeaCards.xIdeas2": "{ideasCount, plural, no {{ideasCount} ιδέες} one {{ideasCount} ιδέα} other {{ideasCount} ιδέες}}",
   "app.containers.IdeaCards.xInitiatives2": "{ideasCount, plural, no {{ideasCount} πρωτοβουλίες} one {{ideasCount} πρωτοβουλία} other {{ideasCount} πρωτοβουλίες}}",
+  "app.containers.IdeaCards.xIssues": "{ideasCount, plural, no {{ideasCount} θέματα} one {{ideasCount} θέμα} other {{ideasCount} θέματα}}",
   "app.containers.IdeaCards.xOptions2": "{ideasCount, plural, no {{ideasCount} επιλογές} one {{ideasCount} επιλογή} other {{ideasCount} επιλογές}}",
   "app.containers.IdeaCards.xPetitions2": "{ideasCount, plural, no {{ideasCount} αναφορές} one {{ideasCount} αναφορές} other {{ideasCount} αναφορές}}",
   "app.containers.IdeaCards.xPosts": "{ideasCount, plural, no {{ideasCount} θέσεις} one {{ideasCount} θέσεις} other {{ideasCount} θέσεις}}",
