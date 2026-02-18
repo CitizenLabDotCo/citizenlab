@@ -521,7 +521,7 @@ de:
         suggestion: 'Ihr Vorschlag ist in "%{prescreening_status_title}"'
         topic: 'Ihr Thema ist in "%{prescreening_status_title}"'
         post: 'Ihr Beitrag ist in "%{prescreening_status_title}"'
-        story: 'Ihre Geschichte ist in "%{prescreening_status_title}"'
+        story: 'Ihre Story ist in "%{prescreening_status_title}"'
       event_description: '"%{input_title}" wird für andere sichtbar, sobald der Beitrag geprüft und genehmigt wurde.'
       subject: '"%{input_title}" ist fast veröffentlicht'
       preheader: 'Es befindet sich derzeit in %{prescreening_status_title}'
