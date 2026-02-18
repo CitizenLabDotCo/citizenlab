@@ -247,7 +247,7 @@ da:
         petition:
           title: Hvad er din anmodning?
         comment:
-          title: Hvad er dit Høringssvar?
+          title: Hvad er din kommentar?
         response:
           title: Hvad er dit svar?
         suggestion:
@@ -255,7 +255,7 @@ da:
         topic:
           title: Hvad er dit emne?
         post:
-          title: Hvad er dit indlæg?
+          title: Hvad er dit opslag?
         story:
           title: Hvad er din historie?
   custom_field_options:
