@@ -1456,6 +1456,7 @@
   "app.containers.IdeaCards.xContributions2": "{ideasCount, plural, no {{ideasCount} cyfraniadau} one {{ideasCount} cyfraniad} other {{ideasCount} cyfraniadau}}",
   "app.containers.IdeaCards.xIdeas2": "{ideasCount, plural, no {{ideasCount} syniadau} one {{ideasCount} syniad} other {{ideasCount} syniadau}}",
   "app.containers.IdeaCards.xInitiatives2": "{ideasCount, plural, no {{ideasCount} mentrau} one {{ideasCount} menter} other {{ideasCount} mentrau}}",
+  "app.containers.IdeaCards.xIssues": "{ideasCount, plural, no {{ideasCount} materion} one {{ideasCount} mater} other {{ideasCount} materion}}",
   "app.containers.IdeaCards.xOptions2": "{ideasCount, plural, no {{ideasCount} opsiynau} one {{ideasCount} opsiwn} other {{ideasCount} opsiynau}}",
   "app.containers.IdeaCards.xPetitions2": "{ideasCount, plural, no {{ideasCount} deisebau} one {{ideasCount} deiseb} other {{ideasCount} deisebau}}",
   "app.containers.IdeaCards.xPosts": "{ideasCount, plural, no {{ideasCount} postiadau} one {{ideasCount} post} other {{ideasCount} postiadau}}",
