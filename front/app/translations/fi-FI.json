@@ -1456,6 +1456,7 @@
   "app.containers.IdeaCards.xContributions2": "{ideasCount, plural, no {{ideasCount} ideoita} one {{ideasCount} idea} other {{ideasCount} ideaa}}",
   "app.containers.IdeaCards.xIdeas2": "{ideasCount, plural, no {{ideasCount} ideoita} one {{ideasCount} idea} other {{ideasCount} ideoita}}",
   "app.containers.IdeaCards.xInitiatives2": "{ideasCount, plural, no {{ideasCount} aloitteita} one {{ideasCount} aloite} other {{ideasCount} aloitetta}}",
+  "app.containers.IdeaCards.xIssues": "{ideasCount, plural, no {{ideasCount} ongelmat} one {{ideasCount} ongelma} other {{ideasCount} ongelmat}}",
   "app.containers.IdeaCards.xOptions2": "{ideasCount, plural, no {{ideasCount} valinnat} one {{ideasCount} vaihtoehto} other {{ideasCount} valinnat}}",
   "app.containers.IdeaCards.xPetitions2": "{ideasCount, plural, no {{ideasCount} vetoomuksia} one {{ideasCount} vetoomus} other {{ideasCount} vetoomuksia}}",
   "app.containers.IdeaCards.xPosts": "{ideasCount, plural, no {{ideasCount} viestit} one {{ideasCount} viesti} other {{ideasCount} viestit}}",
