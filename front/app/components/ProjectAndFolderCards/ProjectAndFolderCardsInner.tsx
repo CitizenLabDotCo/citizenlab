@@ -1,9 +1,13 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Multiloc } from 'typings';
+import { InfiniteQueryObserverResult } from '@tanstack/react-query';
+import { CLErrors, Multiloc } from 'typings';
 
-import { IAdminPublicationData } from 'api/admin_publications/types';
+import {
+  IAdminPublicationData,
+  IAdminPublications,
+} from 'api/admin_publications/types';
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 import { PublicationStatus } from 'api/projects/types';
 
@@ -34,7 +38,9 @@ interface Props extends BaseProps {
   onChangeAreas?: (areas: string[]) => void;
   onChangeSearch?: (search: string | null) => void;
   onChangePublicationStatus?: (publicationStatus: PublicationStatus[]) => void;
-  onLoadMore?: () => void;
+  onLoadMore?: () => Promise<
+    InfiniteQueryObserverResult<IAdminPublications, CLErrors>
+  >;
   onChangeCurrentTab: (tab: PublicationTab) => void;
   searchTerm?: string | null;
 }
@@ -66,29 +72,6 @@ const ProjectAndFolderCardsInner = ({
     [onChangeSearch]
   );
 
-  // Focus on the first newly added card when show more are loaded
-  const visibileCardsLength = useRef(adminPublications.length);
-  useEffect(() => {
-    const panel = document.querySelector('[role="tabpanel"].active-tab');
-    const cards = panel?.querySelectorAll<HTMLElement>(
-      '.e2e-admin-publication-card'
-    );
-    if (!cards) return;
-
-    if (
-      adminPublications.length > visibileCardsLength.current &&
-      visibileCardsLength.current > 0
-    ) {
-      cards[visibileCardsLength.current].focus();
-      cards[visibileCardsLength.current].scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      });
-    }
-
-    visibileCardsLength.current = adminPublications.length;
-  }, [adminPublications, currentTab]);
-
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!currentTab) {
@@ -98,9 +81,18 @@ const ProjectAndFolderCardsInner = ({
   const availableTabs = getAvailableTabs(statusCountsWithoutFilters);
   const noAdminPublicationsAtAll = statusCountsWithoutFilters.all === 0;
 
-  const showMore = () => {
+  const showMore = async () => {
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
-    onLoadMore && onLoadMore();
+    const previousCount = adminPublications.length;
+    await onLoadMore?.();
+
+    // Wait for React to commit the new items to the DOM
+    requestAnimationFrame(() => {
+      const cards = document.querySelectorAll<HTMLElement>(
+        '.e2e-projects-list.active-tab .e2e-admin-publication-card'
+      );
+      cards[previousCount].focus();
+    });
   };
 
   const handleChangeTopics = (topics: string[]) => {
