@@ -1456,6 +1456,7 @@
   "app.containers.IdeaCards.xContributions2": "{ideasCount, plural, no {{ideasCount} įnašai} one {{ideasCount} įnašas} other {~{ideasCount} įnašai}}",
   "app.containers.IdeaCards.xIdeas2": "{ideasCount, plural, no {{ideasCount} idėjos} one {{ideasCount} idėja} other {~{ideasCount} idėjos}}.",
   "app.containers.IdeaCards.xInitiatives2": "{ideasCount, plural, no {{ideasCount} iniciatyvos} one {{ideasCount} iniciatyva} other {~{ideasCount} iniciatyvos}}.",
+  "app.containers.IdeaCards.xIssues": "{ideasCount, plural, no {{ideasCount} klausimai} one {{ideasCount} klausimas} other {~{ideasCount} klausimai}}",
   "app.containers.IdeaCards.xOptions2": "{ideasCount, plural, no {{ideasCount} parinktys} one {{ideasCount} parinktis} other {~{ideasCount} parinktys}}",
   "app.containers.IdeaCards.xPetitions2": "{ideasCount, plural, no {{ideasCount} peticijos} one {{ideasCount} peticija} other {~{ideasCount} peticijos}}.",
   "app.containers.IdeaCards.xPosts": "{ideasCount, plural, no {{ideasCount} pareigos} one {{ideasCount} pareigos} other {~{ideasCount} pareigos}}.",
