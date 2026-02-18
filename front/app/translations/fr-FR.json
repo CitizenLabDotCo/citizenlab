@@ -527,7 +527,7 @@
   "app.components.QuillEditor.alignCenter": "Centrer le texte",
   "app.components.QuillEditor.alignLeft": "Aligner à gauche",
   "app.components.QuillEditor.alignRight": "Aligner à droite",
-  "app.components.QuillEditor.altTextLabel": "Texte Alt",
+  "app.components.QuillEditor.altTextLabel": "Texte alternatif",
   "app.components.QuillEditor.bold": "Gras",
   "app.components.QuillEditor.clean": "Supprimer le formatage",
   "app.components.QuillEditor.customLink": "Ajouter un bouton",
