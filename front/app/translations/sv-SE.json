@@ -1456,6 +1456,7 @@
   "app.containers.IdeaCards.xContributions2": "{ideasCount, plural, no {{ideasCount} bidrag} one {{ideasCount} ~ bidrag} other {{ideasCount} bidrag}}",
   "app.containers.IdeaCards.xIdeas2": "{ideasCount, plural, no {{ideasCount} ~ idéer} one {{ideasCount} ~ idé} other {{ideasCount} idéer}}",
   "app.containers.IdeaCards.xInitiatives2": "{ideasCount, plural, no {{ideasCount} initiativ} one {{ideasCount} initiativ} other {{ideasCount} initiativ}}",
+  "app.containers.IdeaCards.xIssues": "{ideasCount, plural, no {{ideasCount} utgåvor} one {{ideasCount} ~ utgåva} other {{ideasCount} utgåvor}}",
   "app.containers.IdeaCards.xOptions2": "{ideasCount, plural, no {{ideasCount} optioner} one {{ideasCount} ~ option} other {{ideasCount} optioner}}",
   "app.containers.IdeaCards.xPetitions2": "{ideasCount, plural, no {{ideasCount} framställningar} one {{ideasCount} framställning} other {{ideasCount} framställningar}}",
   "app.containers.IdeaCards.xPosts": "{ideasCount, plural, no {{ideasCount} inlägg} one {{ideasCount} ~ inlägg} other {{ideasCount} inlägg}}",
