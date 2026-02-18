@@ -70,7 +70,7 @@
     "@tanstack/react-query": "4.22.4",
     "@tanstack/react-virtual": "3.0.0-beta.61",
     "@tippyjs/react": "4.2.6",
-    "ajv": "8.12.0",
+    "ajv": "8.18.0",
     "boring-avatars": "1.7.0",
     "canvg": "4.0.3",
     "clipboard-polyfill": "4.1.0",
