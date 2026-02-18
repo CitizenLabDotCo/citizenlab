@@ -492,7 +492,7 @@ da:
         response: 'Dit svar er blevet offentliggjort'
         suggestion: 'Dit forslag er blevet offentliggjort'
         topic: 'Dit emne er blevet offentliggjort'
-        post: 'Dit indlæg er blevet offentliggjort'
+        post: 'Dit opslag er blevet offentliggjort'
         story: 'Din historie er blevet offentliggjort'
       header_message: 'Lad os sørge for, at det bliver læst.'
       message_get_votes: 'Nå ud til flere personer'
