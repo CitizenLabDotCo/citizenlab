@@ -1456,6 +1456,7 @@
   "app.containers.IdeaCards.xContributions2": "{ideasCount, plural, no {{ideasCount} doprinosi} one {{ideasCount} doprinos} other {{ideasCount} doprinosi}}",
   "app.containers.IdeaCards.xIdeas2": "{ideasCount, plural, no {{ideasCount} ideje} one {{ideasCount} ideja} other {{ideasCount} ideje}}",
   "app.containers.IdeaCards.xInitiatives2": "{ideasCount, plural, no {{ideasCount} inicijative} one {{ideasCount} inicijativa} other {{ideasCount} inicijative}}",
+  "app.containers.IdeaCards.xIssues": "{ideasCount, plural, no {{ideasCount} problemi} one {{ideasCount} problem} other {{ideasCount} problemi}}",
   "app.containers.IdeaCards.xOptions2": "{ideasCount, plural, no {{ideasCount} opcije} one {{ideasCount} opcija} other {{ideasCount} opcije}}",
   "app.containers.IdeaCards.xPetitions2": "{ideasCount, plural, no {{ideasCount} peticije} one {{ideasCount} peticije} other {{ideasCount} peticije}}",
   "app.containers.IdeaCards.xPosts": "{ideasCount, plural, no {{ideasCount} objave} one {{ideasCount} objava} other {{ideasCount} objave}}",
