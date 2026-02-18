@@ -1456,6 +1456,7 @@
   "app.containers.IdeaCards.xContributions2": "{ideasCount, plural, no {{ideasCount} wpłaty} one {{ideasCount} wpłaty} other {{ideasCount} wpłaty}}",
   "app.containers.IdeaCards.xIdeas2": "{ideasCount, plural, no {{ideasCount} pomysły} one {{ideasCount} pomysły} other {{ideasCount} pomysły}}",
   "app.containers.IdeaCards.xInitiatives2": "{ideasCount, plural, no {{ideasCount} inicjatywy} one {{ideasCount} inicjatywy} other {{ideasCount} inicjatywy}}",
+  "app.containers.IdeaCards.xIssues": "{ideasCount, plural, no {{ideasCount} issues} one {{ideasCount} issue} other {{ideasCount} issues}}",
   "app.containers.IdeaCards.xOptions2": "{ideasCount, plural, no {{ideasCount} opcje} one {{ideasCount} opcje} other {{ideasCount} opcje}}",
   "app.containers.IdeaCards.xPetitions2": "{ideasCount, plural, no {{ideasCount} petycje} one {{ideasCount} petycje} other {{ideasCount} petycje}}",
   "app.containers.IdeaCards.xPosts": "{ideasCount, plural, no {{ideasCount} posty} one {{ideasCount} posty} other {{ideasCount} posty}}",
