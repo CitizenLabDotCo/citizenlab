@@ -1456,6 +1456,7 @@
   "app.containers.IdeaCards.xContributions2": "{ideasCount, plural, no {{ideasCount} شراکتیں} one {{ideasCount} شراکت} other {{ideasCount} شراکتیں}}",
   "app.containers.IdeaCards.xIdeas2": "{ideasCount, plural, no {{ideasCount} خیالات} one {{ideasCount} خیال} other {{ideasCount} خیالات}}",
   "app.containers.IdeaCards.xInitiatives2": "{ideasCount, plural, no {{ideasCount} پہل} one {{ideasCount} پہل} other {{ideasCount} پہل}}",
+  "app.containers.IdeaCards.xIssues": "{ideasCount, plural, no {{ideasCount} issues} one {{ideasCount} issue} other {{ideasCount} issues}}",
   "app.containers.IdeaCards.xOptions2": "{ideasCount, plural, no {{ideasCount} اختیارات} one {{ideasCount} آپشن} other {{ideasCount} اختیارات}}",
   "app.containers.IdeaCards.xPetitions2": "{ideasCount, plural, no {{ideasCount} petitions} one {{ideasCount} petition} other {{ideasCount} petitions}}",
   "app.containers.IdeaCards.xPosts": "{ideasCount, plural, no {{ideasCount} posts} one {{ideasCount} post} other {{ideasCount} posts}}",
