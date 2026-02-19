@@ -50,6 +50,7 @@ ur:
       "voting_phase_started": ووٹنگ کے ساتھ نیا پروجیکٹ مرحلہ
       "voting_results": ووٹنگ کے نتائج
       "your_input_in_screening": میرا ان پٹ اسکریننگ کا منتظر ہے۔
+      "screening_digest": ہفتہ وار اسکریننگ کی یاد دہانی
     general:
       by_author: 'بذریعہ %{authorName}'
       author_wrote: '%{authorName} نے لکھا:'
@@ -490,6 +491,13 @@ ur:
       event_description: '"%{input_title}" ایک بار نظرثانی اور منظوری کے بعد دوسروں کے لیے مرئی ہو جائے گا۔'
       subject: '"%{input_title}" تقریباً شائع ہو چکا ہے۔'
       preheader: 'یہ فی الحال %{prescreening_status_title}میں ہے۔'
+    screening_digest:
+      subject: '%{count} ان پٹس جائزہ کے منتظر ہیں۔'
+      preheader: '%{organizationName}کے لیے ان پٹس کا جائزہ لیں۔'
+      title: '%{firstName}، ان پٹس کا جائزہ لینے کا انتظار ہے۔'
+      event_description: "ان پٹ کو عوام کے لیے نظر آنے سے پہلے منظوری کی ضرورت ہے۔ آپ پلیٹ فارم کے وسیع ان پٹ مینیجر میں یا ہر مرحلے کے ان پٹ مینیجر میں ان کا جائزہ لے سکتے ہیں۔"
+      cta_button: 'ان پٹ کا جائزہ لیں۔'
+      inputs_awaiting_screening: 'جائزہ لینے کے لیے ان پٹ'
     voting_basket_submitted:
       subject: '%{organizationName}: آپ نے کامیابی سے ووٹ دیا۔'
       preheader: 'آپ نے %{organizationName}کے شرکت کے پلیٹ فارم پر کامیابی سے ووٹ دیا۔'
