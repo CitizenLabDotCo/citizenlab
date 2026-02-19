@@ -50,6 +50,7 @@ cy:
       "voting_phase_started": Cyfnod prosiect newydd gyda phleidleisio
       "voting_results": Canlyniadau pleidleisio
       "your_input_in_screening": Mae fy mewnbwn yn aros am sgrinio
+      "screening_digest": Nodyn atgoffa sgrinio wythnosol
     general:
       by_author: 'gan %{authorName}'
       author_wrote: 'Ysgrifennodd %{authorName} :'
@@ -490,6 +491,13 @@ cy:
       event_description: 'Bydd "%{input_title}" yn weladwy i eraill ar ôl iddo gael ei adolygu a''i gymeradwyo.'
       subject: '"%{input_title}" bron wedi''i gyhoeddi'
       preheader: 'Mae mewn %{prescreening_status_title}ar hyn o bryd'
+    screening_digest:
+      subject: '%{count} mewnbynnau yn aros am adolygiad'
+      preheader: 'Adolygu mewnbynnau ar gyfer %{organizationName}'
+      title: '%{firstName}, mae mewnbynnau''n aros i gael eu hadolygu'
+      event_description: "Mae angen cymeradwyo'r mewnbynnau hyn cyn iddynt fod yn weladwy i'r cyhoedd. Gallwch eu hadolygu yn y Rheolwr Mewnbynnau ar gyfer y platfform cyfan neu o fewn Rheolwr Mewnbynnau pob cam."
+      cta_button: 'Mewnbynnau adolygu'
+      inputs_awaiting_screening: 'mewnbynnau i''w hadolygu'
     voting_basket_submitted:
       subject: '%{organizationName}: Fe wnaethoch chi bleidleisio''n llwyddiannus'
       preheader: 'Fe wnaethoch chi bleidleisio''n llwyddiannus ar y platfform cyfranogiad o %{organizationName}'
