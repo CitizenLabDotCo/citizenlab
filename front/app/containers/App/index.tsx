@@ -90,7 +90,7 @@ async function importMomentLocaleFilePromise(momentLocale: string) {
 
 const App = ({ children }: Props) => {
   const isSmallerThanTablet = useBreakpoint('tablet');
-  const location = useLocation();
+  const { pathname, searchStr } = useLocation();
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const momentLocale = appLocalesMomentPairs[locale] || 'en';
@@ -230,7 +230,6 @@ const App = ({ children }: Props) => {
 
   useEffect(() => {
     const handleCustomRedirect = () => {
-      const { pathname } = location;
       const urlSegments = pathname.replace(/^\/+/g, '').split('/');
       const localeInUrl = urlSegments[0];
       const pathnameWithoutLocale = removeLocale(pathname).pathname?.replace(
@@ -246,10 +245,9 @@ const App = ({ children }: Props) => {
             locales.includes(localeInUrl) &&
             pathnameWithoutLocale === rule.path
           ) {
-            const queryString = window.location.search;
             const separator = rule.target.includes('?') ? '&' : '?';
-            const targetUrl = queryString
-              ? `${rule.target}${separator}${queryString.slice(1)}`
+            const targetUrl = searchStr
+              ? `${rule.target}${separator}${searchStr.slice(1)}`
               : rule.target;
             window.location.href = targetUrl;
           }
@@ -260,7 +258,7 @@ const App = ({ children }: Props) => {
     if (redirectsEnabled) {
       handleCustomRedirect();
     }
-  }, [redirectsEnabled, appConfiguration, location]);
+  }, [redirectsEnabled, appConfiguration, searchStr, pathname]);
 
   useEffect(() => {
     const subscriptions = [
@@ -294,10 +292,10 @@ const App = ({ children }: Props) => {
   }, [authUser]);
 
   useEffect(() => {
-    trackPage(location.pathname);
-  }, [location.pathname]);
+    trackPage(pathname);
+  }, [pathname]);
 
-  const urlSegments = location.pathname.replace(/^\/+/g, '').split('/');
+  const urlSegments = pathname.replace(/^\/+/g, '').split('/');
 
   // Redirect from /initiatives/:slug to /ideas/:slug to make sure old initiative links still work
   useEffect(() => {
@@ -311,15 +309,15 @@ const App = ({ children }: Props) => {
     setUserDeletedSuccessfullyModalOpened(false);
   };
 
-  const isAdminPage = isPage('admin', location.pathname);
-  const isPagesAndMenuPage = isPage('pages_menu', location.pathname);
-  const isHomePageBuilderRoute = location.pathname.match(
+  const isAdminPage = isPage('admin', pathname);
+  const isPagesAndMenuPage = isPage('pages_menu', pathname);
+  const isHomePageBuilderRoute = pathname.match(
     /\/admin\/pages-menu\/homepage-builder/
   );
-  const isIdeaFormPage = isPage('idea_form', location.pathname);
-  const isIdeaEditPage = isPage('idea_edit', location.pathname);
-  const isNativeSurveyPage = isPage('native_survey', location.pathname);
-  const isIdeasFeedPage = isPage('ideas_feed', location.pathname);
+  const isIdeaFormPage = isPage('idea_form', pathname);
+  const isIdeaEditPage = isPage('idea_edit', pathname);
+  const isNativeSurveyPage = isPage('native_survey', pathname);
+  const isIdeasFeedPage = isPage('ideas_feed', pathname);
   const theme = getTheme(appConfiguration);
   const showFooter =
     !isAdminPage &&
@@ -327,12 +325,12 @@ const App = ({ children }: Props) => {
     !isIdeaEditPage &&
     !isNativeSurveyPage &&
     !isIdeasFeedPage;
-  const { pathname } = removeLocale(location.pathname);
+  const { pathname: pathnameWithoutLocale } = removeLocale(pathname);
   const isAuthenticationPending = authUser === undefined;
   const canAccessRoute = usePermission({
     item: {
       type: 'route',
-      path: pathname,
+      path: pathnameWithoutLocale,
     },
     action: 'access',
   });

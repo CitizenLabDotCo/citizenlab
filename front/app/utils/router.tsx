@@ -12,7 +12,6 @@ import {
   useLocation,
   useParams,
 } from '@tanstack/react-router';
-/* eslint-enable no-restricted-imports */
 
 import { updateSearchParams } from './cl-router/updateSearchParams';
 
@@ -22,27 +21,14 @@ export type { AnyRoute, LinkProps };
 export const useSearch = (_options: any) => {
   const { searchStr } = useLocation();
 
-  return useMemo(() => {
-    const searchParams = new URLSearchParams(searchStr);
-    const params: Record<string, string> = {};
-
-    searchParams.forEach((value, key) => {
-      params[key] = value;
-    });
-
-    return [
-      {
-        get: (key: string) => {
-          return params[key] ?? null;
-        },
-        has: (key: string) => {
-          return key in params;
-        },
-        entries: () => Object.entries(params),
-      },
-      updateSearchParams,
-    ] as any;
-  }, [searchStr]);
+  return useMemo(
+    () =>
+      [new URLSearchParams(searchStr), updateSearchParams] as [
+        URLSearchParams,
+        typeof updateSearchParams
+      ],
+    [searchStr]
+  );
 };
 
 export const Navigate = (props: any) => {
