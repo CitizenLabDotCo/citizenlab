@@ -50,6 +50,7 @@ fr-BE:
       "voting_phase_started": Nouvelle phase de projet avec vote
       "voting_results": Résultats du vote
       "your_input_in_screening": Ma contribution est en attente de validation
+      "screening_digest": Rappel de dépistage hebdomadaire
     general:
       by_author: 'par %{authorName}'
       author_wrote: '%{authorName} a écrit :'
@@ -490,6 +491,13 @@ fr-BE:
       event_description: 'Votre contribution « %{input_title} » deviendra visible pour les autres une fois qu''elle aura été relue et approuvée.'
       subject: '« %{input_title} » est presque publié'
       preheader: 'Le statut de votre contribution est actuellement « %{prescreening_status_title} »'
+    screening_digest:
+      subject: '%{count} contributions en attente d''examen'
+      preheader: 'Examinez les données à l''adresse %{organizationName}'
+      title: '%{firstName}Les entrées sont en attente d''être examinées'
+      event_description: "Ces contributions doivent être approuvées avant d'être rendues publiques. Vous pouvez les examiner dans le gestionnaire d'intrants de l'ensemble de la plateforme ou dans le gestionnaire d'intrants de chaque phase."
+      cta_button: 'Les apports de la révision'
+      inputs_awaiting_screening: 'contributions à l''examen'
     voting_basket_submitted:
       subject: '%{organizationName}: Vous avez voté avec succès'
       preheader: 'Votre vote a bien été enregistré sur la plateforme de participation de %{organizationName}'
