@@ -2164,7 +2164,7 @@
   "app.containers.AdminPage.Project.general.inputTags": "Tags voor bijdragen",
   "app.containers.AdminPage.Project.general.projectDescriptionSectionDescription": "Beslis welke boodschap je aan je publiek wilt geven. Bewerk je project en verrijk het met afbeeldingen, video's, bestandsbijlagen... Deze informatie helpt bezoekers te begrijpen waar je project over gaat.",
   "app.containers.AdminPage.Project.general.projectDescriptionSectionTitle": "Projectbeschrijving",
-  "app.containers.AdminPage.Project.general.setUp": "Instellen",
+  "app.containers.AdminPage.Project.general.setUp": "Instellingen",
   "app.containers.AdminPage.Project.resetParticipationData": "Reset alle deelnamegegevens",
   "app.containers.AdminPage.ProjectDashboard.helmetDescription": "Lijst van projecten op het platform",
   "app.containers.AdminPage.ProjectDashboard.helmetTitle": "Projecten dashboard",
