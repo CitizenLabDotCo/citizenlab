@@ -50,6 +50,7 @@ tr:
       "voting_phase_started": Oylama ile yeni proje aşaması
       "voting_results": Oylama sonuçları
       "your_input_in_screening": Girdilerim taranmayı bekliyor
+      "screening_digest": Haftalık tarama hatırlatması
     general:
       by_author: 'tarafından %{authorName}'
       author_wrote: '%{authorName} yazdı:'
@@ -490,6 +491,13 @@ tr:
       event_description: '"%{input_title}" ifadesi incelendikten ve onaylandıktan sonra başkaları tarafından görülebilir hale gelecektir.'
       subject: '"%{input_title}" neredeyse yayınlandı'
       preheader: 'Şu anda %{prescreening_status_title}adresinde'
+    screening_digest:
+      subject: '%{count} gözden geçirilmeyi bekleyen girdiler'
+      preheader: '%{organizationName}için girdileri gözden geçirin'
+      title: '%{firstName}, girdiler gözden geçirilmeyi bekliyor'
+      event_description: "Bu girdilerin kamuya açık hale gelmeden önce onaylanması gerekir. Bunları platform genelindeki Girdi Yöneticisinde veya her aşamanın Girdi Yöneticisinde inceleyebilirsiniz."
+      cta_button: 'Girdileri gözden geçirin'
+      inputs_awaiting_screening: 'gözden geçirilecek girdiler'
     voting_basket_submitted:
       subject: '%{organizationName}: Başarılı bir şekilde oy kullandınız'
       preheader: '%{organizationName}katılım platformunda başarıyla oy kullandınız'
