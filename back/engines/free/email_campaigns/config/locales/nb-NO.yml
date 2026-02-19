@@ -50,6 +50,7 @@ nb:
       "voting_phase_started": Ny prosjektfase med avstemning
       "voting_results": Resultater av avstemningen
       "your_input_in_screening": Mine innspill venter på screening
+      "screening_digest": Ukentlig påminnelse om screening
     general:
       by_author: 'av %{authorName}'
       author_wrote: '%{authorName} skrev:'
@@ -490,6 +491,13 @@ nb:
       event_description: '"%{input_title}" blir synlig for andre når den er gjennomgått og godkjent.'
       subject: '"%{input_title}" er nesten publisert'
       preheader: 'Den ligger for tiden på %{prescreening_status_title}'
+    screening_digest:
+      subject: '%{count} innspill som venter på gjennomgang'
+      preheader: 'Gjennomgå innganger for %{organizationName}'
+      title: '%{firstName}, innspill venter på å bli gjennomgått'
+      event_description: "Disse innspillene må godkjennes før de blir synlige for offentligheten. Du kan gå gjennom dem i Input Manager for hele plattformen eller i Input Manager for hver fase."
+      cta_button: 'Gjennomgå innganger'
+      inputs_awaiting_screening: 'innganger til gjennomgang'
     voting_basket_submitted:
       subject: '%{organizationName}: Du stemte vellykket'
       preheader: 'Du har stemt på medvirkningsplattformen til %{organizationName}'
