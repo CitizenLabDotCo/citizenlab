@@ -50,6 +50,7 @@ sv:
       "voting_phase_started": Ny projektfas med omröstning
       "voting_results": Resultat av omröstningen
       "your_input_in_screening": Mitt bidrag väntar på bedömning
+      "screening_digest": Påminnelse om screening varje vecka
     general:
       by_author: 'av %{authorName}'
       author_wrote: '%{authorName} skrev:'
@@ -490,6 +491,13 @@ sv:
       event_description: '"%{input_title}" blir synligt för andra när det har granskats och godkänts.'
       subject: '"%{input_title}" förhandsgranskas'
       preheader: 'Den finns för närvarande på %{prescreening_status_title}'
+    screening_digest:
+      subject: '%{count} ingångar som väntar på granskning'
+      preheader: 'Granska ingångar för %{organizationName}'
+      title: '%{firstName}, indata väntar på att granskas'
+      event_description: "Dessa inmatningar måste godkännas innan de blir synliga för allmänheten. Du kan granska dem i den plattformsövergripande Input Manager eller i varje fas Input Manager."
+      cta_button: 'Granska ingångar'
+      inputs_awaiting_screening: 'ingångar till granskning'
     voting_basket_submitted:
       subject: '%{organizationName}: Ditt val är registrerat'
       preheader: 'Ditt val är registrerat på involveringsplattformen för %{organizationName}'
