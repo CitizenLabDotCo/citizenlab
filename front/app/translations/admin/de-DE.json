@@ -747,7 +747,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicators": "Wer sind eure Nutzer*innen?",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inclusionIndicatorsDescription2": "Im folgenden Abschnitt werden Indikatoren für Barrierefreiheit und Zielgruppen erläutert, die Ihre Fortschritte bei der Förderung einer inklusiveren und repräsentativeren Beteiligungsplattform aufzeigen.",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusFromStart2": "Reaktionsfähigkeit insgesamt",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusSince": "Beitragsstatus seit {date}",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.inputStatusSince": "Reaktionsfähigkeit seit {date}",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.internalOrganization": "Interne Organisation",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participants": "Teilnehmende",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.participationIndicators": "Wie viele Personen wurden erreicht?",
