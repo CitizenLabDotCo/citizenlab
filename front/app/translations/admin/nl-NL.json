@@ -771,7 +771,7 @@
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.representativenessDashboard": "Representativiteitsdashboard",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourProjects": "Hoe wordt er geparticipeerd?",
   "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourProjectsDescription": "De volgende sectie geeft een overzicht van de projecten die deze periode online hebben gestaan, de methoden die deze periode gebruikt zijn en wat er verder nog is opgevallen in jullie projecten.",
-  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourRegistrationQuestions": "Jouw registratievragen",
+  "app.containers.Admin.Reporting.Templates.PlatformReportTemplate.yourRegistrationQuestions": "Jullie registratievragen",
   "app.containers.Admin.Reporting.Widgets.RegistrationsWidget.registrationsTimeline": "Tijdlijn registraties",
   "app.containers.Admin.Users.BannedEmails.banReason": "Reden",
   "app.containers.Admin.Users.BannedEmails.bannedEmails": "Geblokkeerde e-mails",
