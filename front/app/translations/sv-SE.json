@@ -2397,7 +2397,7 @@
   "app.utils.votingMethodUtils.budgetingSubmittedInstructions2": "<b>Grattis, din budget har skickats in!</b> Du kan när som helst kontrollera dina alternativ nedan eller ändra dem före <b>{endDate}</b>.",
   "app.utils.votingMethodUtils.budgetingSubmittedInstructionsNoEndDate": "<b>Grattis, din budget har skickats in!</b> Du kan när som helst kontrollera dina alternativ nedan.",
   "app.utils.votingMethodUtils.castYourVote": "Avge din röst",
-  "app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxCreditsPerIdea1": "Du kan lägga till högst {maxVotes, plural, one {# procent} other {# procent}} per alternativ.",
+  "app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxCreditsPerIdea1": "Du kan lägga till högst {maxVotes, plural, one {# credit} other {# credits}} per alternativ.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxPercentsPerIdea2": "Du kan lägga till högst {maxVotes, plural, one {#%} other {#%}} per alternativ.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxPointsPerIdea1": "Du kan lägga till högst {maxVotes, plural, one {# poäng} other {# poäng}} per alternativ.",
   "app.utils.votingMethodUtils.cumulativeVotingInstructionsMaxTokensPerIdea1": "Du kan lägga till högst {maxVotes, plural, one {# token} other {# tokens}} per alternativ.",
