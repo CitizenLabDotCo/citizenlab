@@ -5,9 +5,11 @@
 # Optionally, it can also translate missing content using Machine Translation (or copy in dev mode).
 #
 # Usage:
-#   rails 'demos:translate_missing_locales[hostname.com,en]'                      - Audit only
-#   rails 'demos:translate_missing_locales[hostname.com,en,true]'                 - Audit and translate
-#   rails 'demos:translate_missing_locales[hostname.com,en,true,nl-NL:fr-BE]'     - With extra locales
+#   rake 'demos:translate_missing_locales[hostname.com,en]'                      - Audit only
+#   rake 'demos:translate_missing_locales[hostname.com,en,true]'                 - Audit and translate
+#   rake 'demos:translate_missing_locales[hostname.com,en,true,nl-NL:fr-BE]'     - With extra locales
+#
+# NOTE: needs to be run on production with rake not rails to ensure it loads the full Rails environment and all models.
 #
 # Parameters:
 #   - host: The demo tenant hostname
@@ -121,6 +123,8 @@ module TranslateMissingLocales
       data_listing_service = Cl2DataListingService.new
 
       data_listing_service.cl2_schema_models.each do |model|
+        next if model == User # User model bio does not need translation - waste of money!
+
         multiloc_columns = data_listing_service.multiloc_attributes(model)
         next if multiloc_columns.empty?
 
@@ -148,7 +152,7 @@ module TranslateMissingLocales
       # Use record[column] to get raw attribute value,
       # This bypasses any model-level locale filtering so we can add 'hidden' translations by passing in extra_locales
       value = record[column]
-      return nil if value.blank? || value.values.all?(&:blank?)
+      return nil if value.blank? || !value.is_a?(Hash) || value.values.all?(&:blank?)
 
       missing_locales, empty_locales = find_missing_locales(value)
       return nil if missing_locales.empty? && empty_locales.empty?
@@ -298,45 +302,34 @@ module TranslateMissingLocales
       issues = []
       layout_modified = false
 
-      craftjs_json.each do |node_key, node_value|
-        node_issues, node_modified = process_craftjs_node(layout, node_key, node_value)
-        issues.concat(node_issues)
-        layout_modified ||= node_modified
+      find_multiloc_hashes(craftjs_json) do |multiloc, path|
+        result = process_craftjs_multiloc(layout, path, path.last, multiloc)
+        next unless result
+
+        issues << result[:issue]
+        layout_modified ||= result[:modified]
       end
 
       [issues, layout_modified]
     end
 
-    def process_craftjs_node(layout, node_key, node_value)
-      return [[], false] unless node_value.is_a?(Hash)
-      return [[], false] unless node_value['type'].is_a?(Hash)
+    def find_multiloc_hashes(obj, path = [], &block)
+      return unless obj.is_a?(Hash)
 
-      resolved_name = node_value['type']['resolvedName']
-      return [[], false] unless ContentBuilder::Layout::TEXT_CRAFTJS_NODE_TYPES.include?(resolved_name)
-
-      issues = []
-      node_modified = false
-
-      # Process 'text' prop
-      text_result = process_craftjs_multiloc(layout, node_key, 'text', node_value.dig('props', 'text'))
-      if text_result
-        issues << text_result[:issue]
-        node_modified ||= text_result[:modified]
-      end
-
-      # Process 'title' prop (only in AccordionMultiloc)
-      if resolved_name == 'AccordionMultiloc'
-        title_result = process_craftjs_multiloc(layout, node_key, 'title', node_value.dig('props', 'title'))
-        if title_result
-          issues << title_result[:issue]
-          node_modified ||= title_result[:modified]
+      if looks_like_multiloc?(obj)
+        yield(obj, path)
+      else
+        obj.each do |key, value|
+          find_multiloc_hashes(value, path + [key], &block)
         end
       end
-
-      [issues, node_modified]
     end
 
-    def process_craftjs_multiloc(layout, node_key, prop, multiloc)
+    def looks_like_multiloc?(hash)
+      locales.any? { |locale| hash.key?(locale.to_s) }
+    end
+
+    def process_craftjs_multiloc(layout, path, prop, multiloc)
       return nil unless multiloc.is_a?(Hash) && multiloc.values.any?(&:present?)
 
       missing_locales, empty_locales = find_missing_locales(multiloc)
@@ -353,7 +346,7 @@ module TranslateMissingLocales
 
       issue = {
         id: layout.id,
-        node_key: node_key,
+        path: path.join('.'),
         prop: prop,
         missing_locales: missing_locales,
         empty_locales: empty_locales
@@ -413,7 +406,7 @@ module TranslateMissingLocales
         messages << "missing: #{issue[:missing_locales].join(', ')}" if issue[:missing_locales].any?
         messages << "empty: #{issue[:empty_locales].join(', ')}" if issue[:empty_locales].any?
 
-        puts "  ID: #{issue[:id]} | node: #{issue[:node_key]} | #{issue[:prop]} | #{messages.join(' | ')}"
+        puts "  ID: #{issue[:id]} | path: #{issue[:path]} | #{issue[:prop]} | #{messages.join(' | ')}"
       end
     end
 

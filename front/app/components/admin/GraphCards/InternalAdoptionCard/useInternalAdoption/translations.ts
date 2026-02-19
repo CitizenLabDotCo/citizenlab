@@ -1,11 +1,23 @@
 import { FormatMessage } from 'typings';
 
-import { getTimePeriodTranslations } from 'components/admin/GraphCards/_utils/resolution';
 import moduleMessages from 'components/admin/GraphCards/messages';
+import { IResolution } from 'components/admin/ResolutionControl';
 
 import cardMessages from '../messages';
 
 import messages from './messages';
+
+export const getActiveTimePeriodLabel = (
+  formatMessage: FormatMessage,
+  resolution: IResolution
+) => {
+  const messageKey = {
+    month: cardMessages.activeLast30Days,
+    week: cardMessages.activeLast7Days,
+    day: cardMessages.activeYesterday,
+  }[resolution];
+  return formatMessage(messageKey);
+};
 
 export interface Translations {
   stats: string;
@@ -20,13 +32,12 @@ export interface Translations {
   activeAdmins: string;
   activeModerators: string;
   totalActive: string;
-  last30Days: string;
-  last7Days: string;
-  yesterday: string;
+  activePeriodLabel: string;
 }
 
 export const getTranslations = (
-  formatMessage: FormatMessage
+  formatMessage: FormatMessage,
+  resolution: IResolution
 ): Translations => ({
   stats: formatMessage(moduleMessages.stats),
   timeSeries: formatMessage(messages.timeSeries),
@@ -40,5 +51,5 @@ export const getTranslations = (
   activeAdmins: formatMessage(cardMessages.activeAdmins),
   activeModerators: formatMessage(cardMessages.activeModerators),
   totalActive: formatMessage(cardMessages.totalActive),
-  ...getTimePeriodTranslations(formatMessage),
+  activePeriodLabel: getActiveTimePeriodLabel(formatMessage, resolution),
 });

@@ -18,6 +18,7 @@ export type CombinedTimeSeriesRow = {
 export type Stat = {
   registered: number;
   active: number;
+  activeLastPeriod: number;
 };
 
 export type Stats = {

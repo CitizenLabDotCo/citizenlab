@@ -83,6 +83,10 @@ export default defineMessages({
     id: 'app.containers.IdeasFeedPage.back',
     defaultMessage: 'Back',
   },
+  exploreTags: {
+    id: 'app.containers.IdeasFeedPage.exploreTags',
+    defaultMessage: 'Explore tags',
+  },
   expandPanel: {
     id: 'app.containers.IdeasFeedPage.expandPanel',
     defaultMessage: 'Expand topics panel',

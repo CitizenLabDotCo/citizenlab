@@ -153,12 +153,14 @@ describe BulkImportIdeas::Exporters::IdeaHtmlFormExporter do
       end
 
       it 'shows 1 line for short text fields' do
-        single_line_text = parsed_html.css("div##{text_field.id}")
+        single_line_text = parsed_html.css("[id='#{text_field.id}']")
+        expect(single_line_text.count).to eq 1
         expect(single_line_text.css('div.line').count).to eq 1
       end
 
       it 'shows 7 lines for longer text fields' do
-        multiline_text = parsed_html.css("div##{multiline_field.id}")
+        multiline_text = parsed_html.css("[id='#{multiline_field.id}']")
+        expect(multiline_text.count).to eq 1
         expect(multiline_text.css('div.line').count).to eq 7
       end
 
