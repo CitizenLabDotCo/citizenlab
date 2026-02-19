@@ -9,7 +9,6 @@ import {
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import * as yup from 'yup';
 
-import type { InputStatusCode } from 'api/idea_statuses/types';
 import type { IdeaSortMethod } from 'api/phases/types';
 
 import { createAdminRoutes } from 'containers/Admin/routes';
@@ -216,30 +215,14 @@ const ideasIndexSearchSchema = yup.object({
     ])
     .default('trending'),
   search: yup.string().optional(),
-  idea_status: yup
-    .string()
-    .oneOf<InputStatusCode>([
-      'prescreening',
-      'proposed',
-      'viewed',
-      'under_consideration',
-      'accepted',
-      'rejected',
-      'implemented',
-      'custom',
-      'threshold_reached',
-      'expired',
-      'answered',
-      'ineligible',
-    ])
-    .optional(),
+  idea_status: yup.string().optional(),
   topics: yup.array().of(yup.string().required()).optional(),
 });
 
 export type IdeasIndexSearchParams = {
   sort: IdeaSortMethod;
   search?: string;
-  idea_status?: InputStatusCode;
+  idea_status?: string;
   topics?: string[];
 };
 
