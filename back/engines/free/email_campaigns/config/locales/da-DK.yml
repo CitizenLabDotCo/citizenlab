@@ -50,6 +50,7 @@ da:
       "voting_phase_started": Ny projektfase med afstemning
       "voting_results": Afstemningsresultater
       "your_input_in_screening": Mit input afventer screening
+      "screening_digest": Ugentlig påmindelse om screening
     general:
       by_author: 'af %{authorName}'
       author_wrote: '%{authorName} skrev:'
@@ -490,6 +491,13 @@ da:
       event_description: '"%{input_title}" bliver synlig for andre, når den er blevet gennemgået og godkendt.'
       subject: '"%{input_title}" er næsten udgivet'
       preheader: 'Den er i øjeblikket på %{prescreening_status_title}'
+    screening_digest:
+      subject: '%{count} input, der afventer gennemgang'
+      preheader: 'Gennemgå input til %{organizationName}'
+      title: '%{firstName}, input venter på at blive gennemgået'
+      event_description: "Disse input skal godkendes, før de er synlige for offentligheden. Du kan gennemgå dem i Input Manager for hele platformen eller i Input Manager for hver fase."
+      cta_button: 'Gennemgå input'
+      inputs_awaiting_screening: 'input til gennemgang'
     voting_basket_submitted:
       subject: '%{organizationName}: Du har stemt med succes'
       preheader: 'Du har stemt med succes på borgerinddragelsesplatformen %{organizationName}'
