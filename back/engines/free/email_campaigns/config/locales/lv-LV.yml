@@ -50,6 +50,7 @@ lv:
       "voting_phase_started": Jauns projekta posms ar balsošanu
       "voting_results": Balsošanas rezultāti
       "your_input_in_screening": Mans ieguldījums gaida skrīningu
+      "screening_digest": Iknedēļas skrīninga atgādinājums
     general:
       by_author: 'līdz %{authorName}'
       author_wrote: '%{authorName} rakstīja:'
@@ -490,6 +491,13 @@ lv:
       event_description: '"%{input_title}" kļūs redzams citiem, kad tas būs pārskatīts un apstiprināts.'
       subject: '"%{input_title}" ir gandrīz publicēts'
       preheader: 'Pašlaik tas ir %{prescreening_status_title}'
+    screening_digest:
+      subject: '%{count} ieguldījumi, kas gaida pārskatīšanu'
+      preheader: 'Pārskatīt ievades datus %{organizationName}'
+      title: '%{firstName}, tiek gaidīts, kad tiks pārskatīti ievadītie dati'
+      event_description: "Šos ievaddatus ir jāapstiprina, pirms tie kļūst publiski redzami. Tos var pārskatīt platformas mēroga ievades pārvaldniekā vai katra posma ievades pārvaldniekā."
+      cta_button: 'Pārskata ievades'
+      inputs_awaiting_screening: 'pārskatāmie ievades dati'
     voting_basket_submitted:
       subject: '%{organizationName}: Jūs veiksmīgi nobalsojāt'
       preheader: 'Jūs veiksmīgi balsojāt %{organizationName}līdzdalības platformā.'
