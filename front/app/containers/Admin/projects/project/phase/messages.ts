@@ -9,22 +9,18 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.deletePhase',
     defaultMessage: 'Delete phase',
   },
-  deletePhaseConfirmationQuestion: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.deletePhaseConfirmationQuestion',
-    defaultMessage: 'Are you sure you want to delete this phase?',
+  deletePhaseModalTitle: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.deletePhaseModalTitle',
+    defaultMessage: 'Delete this phase permanently?',
   },
-  deletePhaseInfo: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.deletePhaseInfo',
+  deletePhaseModalWarning: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.deletePhaseModalWarning1',
     defaultMessage:
-      'All data relating to this phase will be deleted. This cannot be undone.',
+      'This will permanently delete this phase and all of its associated data, such as survey responses, poll results, and volunteering data.',
   },
   deletePhaseButtonText: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.deletePhaseButtonText',
     defaultMessage: 'Yes, delete this phase',
-  },
-  cancelDeletePhaseText: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.cancelDeleteButtonText',
-    defaultMessage: 'Cancel',
   },
   ideationPhase: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.ideationPhase',

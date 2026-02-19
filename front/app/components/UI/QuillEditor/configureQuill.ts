@@ -1,21 +1,44 @@
+import BlotFormatter from '@enzedonline/quill-blot-formatter2';
 import Quill from 'quill';
-import BlotFormatter from 'quill-blot-formatter/dist/BlotFormatter';
+import QuillInline from 'quill/blots/inline';
+import QuillLink from 'quill/formats/link';
+import Video from 'quill/formats/video';
 
 import { isYouTubeEmbedLink } from 'utils/urlUtils';
 
-import {
-  attributes,
-  ImageBlot,
-  AltTextToImagesModule,
-  KeepHTML,
-} from './altTextToImagesModule';
+import { attributes, ImageBlot, KeepHTML } from './altTextToImagesModule';
 
 export const configureQuill = () => {
+  // Pre-register imageAlign and iframeAlign formats so they exist in the
+  // registry when Quill validates the "formats" whitelist during construction.
+  // BlotFormatter2 registers its own (richer) versions in its constructor,
+  // overwriting these placeholders, but Quill needs them in the registry
+  // *before* modules are instantiated.
+  const Parchment = Quill.import('parchment');
+  const ImageAlign = new Parchment.ClassAttributor(
+    'imageAlign',
+    'ql-image-align',
+    { scope: Parchment.Scope.INLINE, whitelist: ['left', 'center', 'right'] }
+  );
+  const IframeAlign = new Parchment.ClassAttributor(
+    'iframeAlign',
+    'ql-iframe-align',
+    { scope: Parchment.Scope.BLOCK, whitelist: ['left', 'center', 'right'] }
+  );
+  Quill.register(
+    {
+      'formats/imageAlign': ImageAlign,
+      'attributors/class/imageAlign': ImageAlign,
+      'formats/iframeAlign': IframeAlign,
+      'attributors/class/iframeAlign': IframeAlign,
+    },
+    true
+  );
+
   Quill.register('modules/blotFormatter', BlotFormatter);
 
   // BEGIN allow video resizing styles
-  const BaseVideoFormat = Quill.import('formats/video');
-  class VideoFormat extends BaseVideoFormat {
+  class VideoFormat extends Video {
     static create(url: string) {
       const node = super.create(url);
 
@@ -27,15 +50,18 @@ export const configureQuill = () => {
       return node;
     }
 
-    static formats(domNode) {
-      return attributes.reduce((formats, attribute) => {
-        if (domNode.hasAttribute(attribute)) {
-          formats[attribute] = domNode.getAttribute(attribute);
-        }
-        return formats;
-      }, {});
+    static formats(domNode: Element) {
+      return attributes.reduce(
+        (formats: Record<string, string | null>, attribute) => {
+          if (domNode.hasAttribute(attribute)) {
+            formats[attribute] = domNode.getAttribute(attribute);
+          }
+          return formats;
+        },
+        {}
+      );
     }
-    format(name, value) {
+    format(name: string, value: string) {
       if (attributes.indexOf(name) > -1) {
         if (value) {
           this.domNode.setAttribute(name, value);
@@ -63,9 +89,7 @@ export const configureQuill = () => {
   // END function to detect whether urls are external
 
   // BEGIN custom link implementation
-  const Link = Quill.import('formats/link');
-
-  class CustomLink extends Link {
+  class CustomLink extends QuillLink {
     static create(url: string) {
       const node = super.create(url);
       node.setAttribute('rel', 'noreferrer noopener nofollow');
@@ -89,11 +113,9 @@ export const configureQuill = () => {
   // END custom link implementation
 
   // BEGIN custom button implementation
-  const Inline = Quill.import('blots/inline');
-
-  class CustomButton extends Inline {
+  class CustomButton extends QuillInline {
     static create(url: string) {
-      const node = super.create();
+      const node = super.create() as HTMLElement;
       node.setAttribute('href', url);
       node.setAttribute('rel', 'noorefferer');
 
@@ -105,7 +127,7 @@ export const configureQuill = () => {
       return node;
     }
 
-    static formats(node) {
+    static formats(node: HTMLElement) {
       return node.getAttribute('href');
     }
   }
@@ -116,13 +138,7 @@ export const configureQuill = () => {
   Quill.register(CustomButton);
   // END custom button implementation
 
-  Quill.register(
-    {
-      'formats/image': ImageBlot,
-      'modules/altTextToImages': AltTextToImagesModule,
-    },
-    true
-  );
+  Quill.register('formats/image', ImageBlot, true);
 
   Quill.register(KeepHTML);
 };
