@@ -50,6 +50,7 @@ hr:
       "voting_phase_started": Nova faza projekta s glasovanjem
       "voting_results": Rezultati glasovanja
       "your_input_in_screening": Moj unos čeka provjeru
+      "screening_digest": Podsjetnik na tjedni pregled
     general:
       by_author: 'od %{authorName}'
       author_wrote: '%{authorName} je napisao:'
@@ -490,6 +491,13 @@ hr:
       event_description: '"%{input_title}" će postati vidljiv drugima nakon što bude pregledan i odobren.'
       subject: '"%{input_title}" je skoro objavljen'
       preheader: 'Trenutno je u %{prescreening_status_title}'
+    screening_digest:
+      subject: '%{count} unosi čekaju pregled'
+      preheader: 'Pregledajte unose za %{organizationName}'
+      title: '%{firstName}, unosi čekaju pregled'
+      event_description: "Ovi unosi trebaju odobrenje prije nego što postanu vidljivi javnosti. Možete ih pregledati u Upravitelju unosa na razini cijele platforme ili unutar Upravitelja unosa svake faze."
+      cta_button: 'Pregledajte unose'
+      inputs_awaiting_screening: 'unosi za pregled'
     voting_basket_submitted:
       subject: '%{organizationName}: Uspješno ste glasali'
       preheader: 'Uspješno ste glasali na platformi za sudjelovanje od %{organizationName}'
