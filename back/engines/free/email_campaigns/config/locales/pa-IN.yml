@@ -50,6 +50,7 @@ pa:
       "voting_phase_started": ਵੋਟਿੰਗ ਦੇ ਨਾਲ ਨਵਾਂ ਪ੍ਰੋਜੈਕਟ ਪੜਾਅ
       "voting_results": ਵੋਟਿੰਗ ਨਤੀਜੇ
       "your_input_in_screening": ਮੇਰਾ ਇੰਪੁੱਟ ਸਕ੍ਰੀਨਿੰਗ ਦੀ ਉਡੀਕ ਕਰ ਰਿਹਾ ਹੈ
+      "screening_digest": ਹਫ਼ਤਾਵਾਰੀ ਸਕ੍ਰੀਨਿੰਗ ਰੀਮਾਈਂਡਰ
     general:
       by_author: '%{authorName}ਦੁਆਰਾ'
       author_wrote: '%{authorName} ਨੇ ਲਿਖਿਆ:'
@@ -490,6 +491,13 @@ pa:
       event_description: '"%{input_title}" ਦੀ ਸਮੀਖਿਆ ਅਤੇ ਮਨਜ਼ੂਰੀ ਮਿਲਣ ਤੋਂ ਬਾਅਦ ਇਹ ਦੂਜਿਆਂ ਨੂੰ ਦਿਖਾਈ ਦੇਵੇਗਾ।'
       subject: '"%{input_title}" ਲਗਭਗ ਪ੍ਰਕਾਸ਼ਿਤ ਹੋ ਚੁੱਕਾ ਹੈ'
       preheader: 'ਇਹ ਵਰਤਮਾਨ ਵਿੱਚ %{prescreening_status_title}ਵਿੱਚ ਹੈ'
+    screening_digest:
+      subject: '%{count} ਇਨਪੁੱਟ ਸਮੀਖਿਆ ਦੀ ਉਡੀਕ ਵਿੱਚ ਹਨ'
+      preheader: '%{organizationName}ਲਈ ਇਨਪੁੱਟ ਦੀ ਸਮੀਖਿਆ ਕਰੋ'
+      title: '%{firstName}, ਇਨਪੁੱਟ ਸਮੀਖਿਆ ਦੀ ਉਡੀਕ ਕਰ ਰਹੇ ਹਨ'
+      event_description: "ਇਹਨਾਂ ਇਨਪੁਟਸ ਨੂੰ ਜਨਤਾ ਨੂੰ ਦਿਖਾਈ ਦੇਣ ਤੋਂ ਪਹਿਲਾਂ ਪ੍ਰਵਾਨਗੀ ਦੀ ਲੋੜ ਹੁੰਦੀ ਹੈ। ਤੁਸੀਂ ਪਲੇਟਫਾਰਮ-ਵਿਆਪੀ ਇਨਪੁਟ ਮੈਨੇਜਰ ਵਿੱਚ ਜਾਂ ਹਰੇਕ ਪੜਾਅ ਦੇ ਇਨਪੁਟ ਮੈਨੇਜਰ ਦੇ ਅੰਦਰ ਇਹਨਾਂ ਦੀ ਸਮੀਖਿਆ ਕਰ ਸਕਦੇ ਹੋ।"
+      cta_button: 'ਇਨਪੁੱਟ ਦੀ ਸਮੀਖਿਆ ਕਰੋ'
+      inputs_awaiting_screening: 'ਸਮੀਖਿਆ ਕਰਨ ਲਈ ਇਨਪੁੱਟ'
     voting_basket_submitted:
       subject: '%{organizationName}: ਤੁਸੀਂ ਸਫਲਤਾਪੂਰਵਕ ਵੋਟ ਦਿੱਤੀ'
       preheader: 'ਤੁਸੀਂ %{organizationName}ਦੇ ਭਾਗੀਦਾਰੀ ਪਲੇਟਫਾਰਮ ''ਤੇ ਸਫਲਤਾਪੂਰਵਕ ਵੋਟ ਦਿੱਤੀ'
