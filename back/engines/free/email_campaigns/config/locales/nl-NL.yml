@@ -495,9 +495,9 @@ nl:
       subject: '%{count} bijdragen in afwachting van beoordeling'
       preheader: 'Bijdragen beoordelen voor %{organizationName}'
       title: '%{firstName}, bijdragen wachten op beoordeling'
-      event_description: "Deze inputs moeten worden goedgekeurd voordat ze zichtbaar zijn voor het publiek. Je kunt ze bekijken in de Input Manager van het hele platform of in de Input Manager van elke fase."
-      cta_button: 'Herziening ingangen'
-      inputs_awaiting_screening: 'input om te beoordelen'
+      event_description: "Deze bijdragen moeten worden goedgekeurd voordat ze zichtbaar zijn voor het publiek. Je kunt ze bekijken in de Beheer bijdragen-pagina van het hele platform of in de Beheer bijdragen-pagina van elke fase."
+      cta_button: 'Beoordeel bijdragen'
+      inputs_awaiting_screening: 'bijdragen om te beoordelen'
     voting_basket_submitted:
       subject: '%{organizationName}: Je hebt succesvol gestemd'
       preheader: 'Je hebt succesvol gestemd op het participatieplatform van %{organizationName}'
