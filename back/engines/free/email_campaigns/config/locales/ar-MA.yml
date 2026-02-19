@@ -50,6 +50,7 @@ ar-MA:
       "voting_phase_started": مرحلة المشروع الجديد مع التصويت
       "voting_results": نتائج التصويت
       "your_input_in_screening": مدخلاتي تنتظر الفحص
+      "screening_digest": تذكير بالفحص الأسبوعي
     general:
       by_author: 'بواسطة %{authorName}'
       author_wrote: '%{authorName} كتب:'
@@ -490,6 +491,13 @@ ar-MA:
       event_description: '"%{input_title}" سوف تصبح مرئية للآخرين بمجرد مراجعتها والموافقة عليها.'
       subject: '"%{input_title}" تم نشره تقريبًا'
       preheader: 'إنه حاليا في %{prescreening_status_title}'
+    screening_digest:
+      subject: '%{count} المدخلات قيد المراجعة'
+      preheader: 'مراجعة المدخلات لـ %{organizationName}'
+      title: '%{firstName}، المدخلات بانتظار المراجعة'
+      event_description: "تتطلب هذه المدخلات موافقة قبل أن تصبح مرئية للعامة. يمكنك مراجعتها في مدير المدخلات على مستوى المنصة أو ضمن مدير المدخلات الخاص بكل مرحلة."
+      cta_button: 'مراجعة المدخلات'
+      inputs_awaiting_screening: 'مدخلات للمراجعة'
     voting_basket_submitted:
       subject: '%{organizationName}: لقد قمت بالتصويت بنجاح'
       preheader: 'لقد قمت بالتصويت بنجاح على منصة المشاركة %{organizationName}'
