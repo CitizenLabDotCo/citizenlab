@@ -50,6 +50,7 @@ es-CL:
       "voting_phase_started": Nueva fase del proyecto con votación
       "voting_results": Resultados de la votación
       "your_input_in_screening": Mi aportación espera ser examinada
+      "screening_digest": Recordatorio semanal de cribado
     general:
       by_author: 'por %{authorName}'
       author_wrote: '%{authorName} escribió:'
@@ -490,6 +491,13 @@ es-CL:
       event_description: '"%{input_title}" será visible para los demás una vez que haya sido revisado y aprobado.'
       subject: '"%{input_title}" está casi publicado'
       preheader: 'Actualmente está en %{prescreening_status_title}'
+    screening_digest:
+      subject: '%{count} aportaciones pendientes de revisión'
+      preheader: 'Revisa las entradas para %{organizationName}'
+      title: '%{firstName}, las entradas están a la espera de ser revisadas'
+      event_description: "Estas aportaciones necesitan aprobación antes de que sean visibles para el público. Puedes revisarlas en el Gestor de Entradas de toda la plataforma o dentro del Gestor de Entradas de cada fase."
+      cta_button: 'Entradas de revisión'
+      inputs_awaiting_screening: 'entradas para revisar'
     voting_basket_submitted:
       subject: '%{organizationName}Has votado correctamente'
       preheader: 'Has votado con éxito en la plataforma de participación de %{organizationName}'
