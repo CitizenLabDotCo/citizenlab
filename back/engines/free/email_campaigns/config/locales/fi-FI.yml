@@ -50,6 +50,7 @@ fi:
       "voting_phase_started": Uusi projektivaihe äänestyksellä
       "voting_results": Äänestystulokset
       "your_input_in_screening": Oma panokseni odottaa seulontaa
+      "screening_digest": Viikoittainen seulontamuistutus
     general:
       by_author: 'kirjoittaja %{authorName}'
       author_wrote: '%{authorName} kirjoitti:'
@@ -490,6 +491,13 @@ fi:
       event_description: '"%{input_title}" tulee näkyviin muille, kun se on tarkistettu ja hyväksytty.'
       subject: '"%{input_title}" on melkein julkaistu'
       preheader: 'Se on tällä hetkellä paikassa %{prescreening_status_title}'
+    screening_digest:
+      subject: '%{count} syötettä odottaa tarkistusta'
+      preheader: 'Tarkista syötteet kohteelle %{organizationName}'
+      title: '%{firstName}, syötteet odottavat tarkistusta'
+      event_description: "Nämä syötteet vaativat hyväksynnän ennen kuin ne näkyvät julkisesti. Voit tarkastella niitä koko alustan laajuisessa syötteiden hallinnassa tai kunkin vaiheen syötteiden hallinnassa."
+      cta_button: 'Tarkista syötteet'
+      inputs_awaiting_screening: 'tarkistettavat syötteet'
     voting_basket_submitted:
       subject: '%{organizationName}: Äänestit onnistuneesti'
       preheader: 'Äänestit onnistuneesti %{organizationName}osallistumisalustalla'
