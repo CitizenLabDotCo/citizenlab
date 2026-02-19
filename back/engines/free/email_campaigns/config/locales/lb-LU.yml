@@ -50,6 +50,7 @@ lb:
       "voting_phase_started": Nei Projetsphase mat Ofstëmmung
       "voting_results": Wahlresultater
       "your_input_in_screening": Meng Input waart op Screening
+      "screening_digest": Wëchentlech Screening-Erënnerung
     general:
       by_author: 'vum %{authorName}'
       author_wrote: '%{authorName} geschriwwen:'
@@ -490,6 +491,13 @@ lb:
       event_description: '"%{input_title}" gëtt fir anerer sichtbar, soubal et iwwerpréift a guttgeheescht gouf.'
       subject: '"%{input_title}" ass bal publizéiert'
       preheader: 'Et ass de Moment an %{prescreening_status_title}'
+    screening_digest:
+      subject: '%{count} Entréeën waarden op Iwwerpréiwung'
+      preheader: 'Iwwerpréift d''Entréeën fir %{organizationName}'
+      title: '%{firstName}, d''Entréeën waarden drop, iwwerpréift ze ginn'
+      event_description: "Dës Inputen mussen approuvéiert ginn, ier se ëffentlech zougänglech sinn. Dir kënnt se am plattformweiten Input Manager oder am Input Manager vun all Phase iwwerpréiwen."
+      cta_button: 'Iwwerpréift d''Entréen'
+      inputs_awaiting_screening: 'Entréeën fir ze iwwerpréiwen'
     voting_basket_submitted:
       subject: '%{organizationName}: Dir hutt erfollegräich gestëmmt'
       preheader: 'Dir hutt erfollegräich op der Participatiounsplattform vun %{organizationName}gestëmmt'
