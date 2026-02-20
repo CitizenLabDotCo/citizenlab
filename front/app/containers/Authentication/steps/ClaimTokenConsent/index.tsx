@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  Text,
-  Icon,
-  colors,
-  Button,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, Button } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -20,22 +14,11 @@ interface Props {
 const ClaimTokenConsent = ({ onLink, onKeepAnonymous }: Props) => {
   return (
     <Box>
-      <Text mt="0px" mb="32px">
-        <Icon
-          width="20px"
-          height="20px"
-          name="personRaisedHand"
-          fill={colors.textSecondary}
-          mr="8px"
-          transform="translate(0,-1)"
-        />
-        <FormattedMessage {...messages.linkYourContributions} />
-      </Text>
-      <Text fontSize="s">
+      <Text mt="0px">
         <FormattedMessage {...messages.youRecentlyParticipatedWhileLoggedOut} />
       </Text>
-      <Box>
-        <Button width="auto" onClick={onLink}>
+      <Box display="flex" mt="32px">
+        <Button width="auto" onClick={onLink} mr="12px">
           <FormattedMessage {...messages.linkParticipations} />
         </Button>
         <Button width="auto" buttonStyle="secondary" onClick={onKeepAnonymous}>
