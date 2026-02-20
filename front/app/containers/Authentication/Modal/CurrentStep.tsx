@@ -218,6 +218,7 @@ const CurrentStep = ({
     case 'claim-token-consent':
       return (
         <ClaimTokenConsent
+          inputType="idea"
           onLink={transition(currentStep, 'LINK_PARTICIPATIONS')}
           onKeepAnonymous={transition(currentStep, 'KEEP_ANONYMOUS')}
         />
