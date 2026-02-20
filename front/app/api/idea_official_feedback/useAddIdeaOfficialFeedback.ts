@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
-import ideasCountKeys from 'api/idea_count/keys';
+import ideaFilterCountsKeys from 'api/ideas_filter_counts/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -27,7 +27,7 @@ const useAddIdeaOfficialFeedback = () => {
         queryKey: ideaOfficialFeedbackKeys.lists(),
       });
       queryClient.invalidateQueries({
-        queryKey: ideasCountKeys.all(),
+        queryKey: ideaFilterCountsKeys.all(),
       });
     },
   });

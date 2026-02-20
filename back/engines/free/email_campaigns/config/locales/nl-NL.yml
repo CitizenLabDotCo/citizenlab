@@ -436,7 +436,7 @@ nl:
       yesterday_by_author: "Gisteren door %{author}"
       x_days_ago_by_author: "%{x} dagen geleden door %{author}"
       trending_title: "Populair"
-      trending_text: "Ben je geïnteresseerd in wat er gebeurt op het platform? Hier zijn de drie meest trending bijdragen en wat mensen erover zeggen."
+      trending_text: "Ben je geïnteresseerd in wat er gebeurt op het platform? Hier zijn de drie populairste bijdragen en wat mensen erover zeggen."
       no_notifications: "Geen meldingen"
       one_notification: "1 melding"
       multiple_notifications: "%{notifCount} meldingen"

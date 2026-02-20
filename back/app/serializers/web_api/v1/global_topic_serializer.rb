@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class WebApi::V1::GlobalTopicSerializer < WebApi::V1::BaseSerializer
-  attributes :title_multiloc, :description_multiloc, :ordering, :icon, :static_page_ids, :followers_count, :include_in_onboarding, :is_default
+  attributes :title_multiloc, :description_multiloc, :ordering, :icon, :static_page_ids, :followers_count, :include_in_onboarding
   has_many :static_pages, if: proc { |_record, params| params && params[:include_static_pages] }
 
   has_one :user_follower, record_type: :follower, if: proc { |object, params|

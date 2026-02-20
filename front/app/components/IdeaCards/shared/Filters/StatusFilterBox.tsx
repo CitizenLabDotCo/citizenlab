@@ -33,11 +33,11 @@ const StatusFilterBox = ({
     name: 'prescreening_ideation',
   });
   const showScreeningStatus = phase
-    ? // This prescreening_enabled setting is the same for ideation and proposal phases.
+    ? // This prescreening_mode setting is the same for ideation and proposal phases.
       // So no need to differentiate between prescreening and prescreening_ideation.
-      phase.data.attributes.prescreening_enabled
-    : /*     
-        On the All inputs page, with no phase, we show all statuses if the prescreening_ideation feature is enabled (similar to platform input manager behavior). 
+      !!phase.data.attributes.prescreening_mode
+    : /*
+        On the All inputs page, with no phase, we show all statuses if the prescreening_ideation feature is enabled (similar to platform input manager behavior).
 
         We only check for prescreening_ideation and not prescreening (proposals) because proposals are not shown ont the All inputs page (also similar to platform input manager behavior).
       */

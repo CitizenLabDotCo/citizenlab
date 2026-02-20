@@ -124,6 +124,7 @@ class ProjectsFinderAdminService
   end
 
   def self.filter_moderatable(scope, current_user)
+    return scope.none unless current_user
     return scope if current_user.admin?
 
     moderatable_project_ids = current_user.moderatable_project_ids

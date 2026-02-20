@@ -54,10 +54,13 @@ module PublicApi
     def filter_by_type(scope)
       return scope unless @type
 
-      if @type == 'survey'
-        scope.native_survey
-      elsif @type == 'idea'
-        scope.transitive
+      case @type
+      when 'survey'
+        scope.supports_survey
+      when 'proposal'
+        scope.supports_proposal
+      when 'idea'
+        scope.supports_idea
       else
         scope
       end

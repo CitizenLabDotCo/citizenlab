@@ -25,6 +25,7 @@ RSpec.describe User do
     it { is_expected.to have_many(:jobs_trackers).class_name('Jobs::Tracker').with_foreign_key('owner_id').dependent(:nullify) }
     it { is_expected.to have_many(:files).class_name('Files::File').with_foreign_key('uploader_id').dependent(:nullify) }
     it { is_expected.to have_many(:claim_tokens).with_foreign_key('pending_claimer_id').dependent(:destroy) }
+    it { is_expected.to have_many(:idea_exposures).dependent(:destroy) }
 
     it 'nullifies idea import association' do
       idea_import = create(:idea_import, import_user: user)
@@ -42,6 +43,15 @@ RSpec.describe User do
       phase = create(:phase, manual_voters_last_updated_by: user)
       expect { user.destroy }.not_to raise_error
       expect(phase.reload.manual_voters_last_updated_by).to be_nil
+    end
+
+    it 'destroys idea_exposures when user is deleted' do
+      user.save!
+      phase = create(:phase)
+      idea = create(:idea, phases: [phase])
+      idea_exposure = create(:idea_exposure, user: user, idea: idea, phase: phase)
+      expect { user.destroy }.not_to raise_error
+      expect { idea_exposure.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IconNames, colors } from '@citizenlab/cl2-component-library';
+import { IconNames, Image, colors } from '@citizenlab/cl2-component-library';
 import { darken } from 'polished';
 import styled, { useTheme } from 'styled-components';
 
@@ -27,6 +27,7 @@ const Container = styled.div`
 export interface Props {
   id?: string;
   icon?: IconNames;
+  imageUrl?: string;
   authProvider: AuthProvider;
   onClick: (authProvider: AuthProvider) => void;
   children: React.ReactNode;
@@ -35,6 +36,7 @@ export interface Props {
 const AuthProviderButton = ({
   id,
   icon,
+  imageUrl,
   authProvider,
   onClick,
   children,
@@ -48,7 +50,7 @@ const AuthProviderButton = ({
   return (
     <Container id={id}>
       <ButtonWithLink
-        icon={icon}
+        icon={imageUrl ? undefined : icon}
         iconSize="22px"
         iconColor={
           authProvider === 'facebook'
@@ -63,6 +65,7 @@ const AuthProviderButton = ({
         padding="10px 18px"
         textColor={theme.colors.tenantText}
       >
+        {imageUrl && <Image height="22px" mr="8px" src={imageUrl} alt="" />}
         {children}
       </ButtonWithLink>
     </Container>

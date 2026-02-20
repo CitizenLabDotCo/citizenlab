@@ -1,6 +1,11 @@
 import moment = require('moment');
 import { randomString, randomEmail } from '../../support/commands';
-import { updatePermission } from '../../support/permitted_by_utils';
+import {
+  updatePermission,
+  confirmUserCustomFieldHasValue,
+  addPermissionsCustomField,
+  setupProject,
+} from '../../support/permitted_by_utils';
 
 describe('Native survey permitted by: users', () => {
   let customFieldId = '';
@@ -8,91 +13,55 @@ describe('Native survey permitted by: users', () => {
   let projectId = '';
   let projectSlug = '';
   let phaseId = '';
+  let fieldName = '';
   let userId: string | undefined;
   let ideaId: string | undefined;
   let answer: string | undefined;
 
-  const fieldName = randomString(10);
-
-  const twoDaysAgo = moment().subtract(2, 'days').format('DD/MM/YYYY');
-  const inTwoMonths = moment().add(2, 'month').format('DD/MM/YYYY');
-
   before(() => {
-    // Create custom field
-    cy.apiCreateCustomField(fieldName, true, false).then((response) => {
-      customFieldId = response.body.data.id;
-      customFieldKey = response.body.data.attributes.key;
+    setupProject({ participationMethod: 'native_survey' }).then((data) => {
+      customFieldId = data.customFieldId;
+      customFieldKey = data.customFieldKey;
+      projectId = data.projectId;
+      projectSlug = data.projectSlug;
+      phaseId = data.phaseId;
+      fieldName = data.fieldName;
 
-      // Create project with active native survey phase
-      cy.apiCreateProject({
-        title: randomString(),
-        descriptionPreview: randomString(),
-        description: randomString(),
-        publicationStatus: 'published',
-      }).then((project) => {
-        projectId = project.body.data.id;
-        projectSlug = project.body.data.attributes.slug;
-        cy.apiCreatePhase({
-          projectId,
-          title: randomString(),
-          startAt: twoDaysAgo,
-          endAt: inTwoMonths,
-          participationMethod: 'native_survey',
-          nativeSurveyButtonMultiloc: { en: 'Take the survey' },
-          nativeSurveyTitleMultiloc: { en: 'Survey' },
-          canComment: true,
-          canPost: true,
-          canReact: true,
-          description: 'Some description',
-        }).then((phase) => {
-          phaseId = phase.body.data.id;
+      // Temporarily set permission to everyone_confirmed_email
+      // to make sure we clear out the global settings
+      return cy
+        .apiLogin('admin@govocal.com', 'democracy2.0')
+        .then((response) => {
+          const adminJwt = response.body.jwt;
 
-          // Temporarily set permission to everyone_confirmed_email
-          // to make sure we clear out the global settings
-          return cy
-            .apiLogin('admin@govocal.com', 'democracy2.0')
-            .then((response) => {
-              const adminJwt = response.body.jwt;
-
-              return updatePermission(cy, {
+          return updatePermission({
+            adminJwt,
+            phaseId,
+            permitted_by: 'everyone_confirmed_email',
+          }).then(() => {
+            // Add one permissions custom field
+            return addPermissionsCustomField({
+              adminJwt,
+              phaseId,
+              customFieldId,
+            }).then(() => {
+              // Set permission back to users
+              return updatePermission({
                 adminJwt,
                 phaseId,
-                permitted_by: 'everyone_confirmed_email',
+                permitted_by: 'users',
               }).then(() => {
-                // Add one permissions custom field
-                return cy
-                  .request({
-                    headers: {
-                      'Content-Type': 'application/json',
-                      Authorization: `Bearer ${adminJwt}`,
-                    },
-                    method: 'POST',
-                    url: `web_api/v1/phases/${phaseId}/permissions/posting_idea/permissions_custom_fields`,
-                    body: {
-                      custom_field_id: customFieldId,
-                      required: true,
-                    },
-                  })
-                  .then(() => {
-                    // Set permission back to users
-                    return updatePermission(cy, {
-                      adminJwt,
-                      phaseId,
-                      permitted_by: 'users',
-                    }).then(() => {
-                      // Finally: go into the survey and save it
-                      cy.setAdminLoginCookie();
-                      cy.visit(
-                        `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`
-                      );
-                      cy.get('form').submit();
-                      cy.get('[data-testid="feedbackSuccessMessage"]');
-                    });
-                  });
+                // Finally: go into the survey and save it
+                cy.setAdminLoginCookie();
+                cy.visit(
+                  `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`
+                );
+                cy.get('form').submit();
+                cy.get('[data-testid="feedbackSuccessMessage"]');
               });
             });
+          });
         });
-      });
     });
   });
 
@@ -209,16 +178,7 @@ describe('Native survey permitted by: users', () => {
   };
 
   const confirmSavedToProfile = () => {
-    cy.intercept('GET', `/web_api/v1/users/me`).as('getMe');
-    cy.visit('/');
-    cy.wait('@getMe').then((interception) => {
-      expect(interception.response?.statusCode).to.equal(200);
-      expect(
-        interception.response?.body.data.attributes.custom_field_values[
-          customFieldKey
-        ]
-      ).to.eq(answer);
-    });
+    confirmUserCustomFieldHasValue({ key: customFieldKey, value: answer });
   };
 
   const confirmSavedToIdea = ({ expectUserId }: { expectUserId: boolean }) => {
@@ -265,7 +225,7 @@ describe('Native survey permitted by: users', () => {
         cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
           const adminJwt = response.body.jwt;
 
-          return updatePermission(cy, {
+          return updatePermission({
             adminJwt,
             phaseId,
             user_fields_in_form: true,
@@ -287,7 +247,7 @@ describe('Native survey permitted by: users', () => {
         cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
           const adminJwt = response.body.jwt;
 
-          return updatePermission(cy, {
+          return updatePermission({
             adminJwt,
             phaseId,
             user_fields_in_form: false,
@@ -308,7 +268,7 @@ describe('Native survey permitted by: users', () => {
         cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
           const adminJwt = response.body.jwt;
 
-          return updatePermission(cy, {
+          return updatePermission({
             adminJwt,
             phaseId,
             user_fields_in_form: true,
@@ -330,7 +290,7 @@ describe('Native survey permitted by: users', () => {
         cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
           const adminJwt = response.body.jwt;
 
-          return updatePermission(cy, {
+          return updatePermission({
             adminJwt,
             phaseId,
             user_fields_in_form: false,

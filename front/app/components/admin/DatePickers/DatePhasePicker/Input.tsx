@@ -13,14 +13,23 @@ interface Props {
   selectedRange: Partial<DateRange>;
   selectedRangeIsOpenEnded: boolean;
   onClick: () => void;
+  className?: string;
 }
 
-const Input = ({ selectedRange, selectedRangeIsOpenEnded, onClick }: Props) => {
+const Input = ({
+  selectedRange,
+  selectedRangeIsOpenEnded,
+  onClick,
+  className,
+}: Props) => {
   const { formatMessage } = useIntl();
   const selectDate = formatMessage(sharedMessages.selectDate);
 
   return (
-    <InputContainer className="e2e-date-phase-picker-input" onClick={onClick}>
+    <InputContainer
+      className={`e2e-date-phase-picker-input ${className}-input`}
+      onClick={onClick}
+    >
       <Box mr="8px">
         {selectedRange.from
           ? selectedRange.from.toLocaleDateString()

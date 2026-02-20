@@ -364,7 +364,7 @@ export const createNewField = (
     },
     // Set default character limits for text-supporting fields (excluding html_multiloc)
     ...(['text', 'multiline_text', 'text_multiloc'].includes(type) && {
-      min_characters: 3,
+      min_characters: 2,
       max_characters: type === 'text_multiloc' ? 120 : undefined,
     }),
     linear_scale_label_1_multiloc: getInitialLinearScaleLabel({

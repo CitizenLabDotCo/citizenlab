@@ -85,7 +85,7 @@ describe('Form builder file upload field', () => {
     );
 
     // Upload a file
-    cy.get(`*[id^="${questionTitle}"]`).selectFile(
+    cy.get(`*[id^="${questionTitle}"]:not([id$="-label"])`).selectFile(
       'cypress/fixtures/example.pdf'
     );
     cy.wait(4000);

@@ -18,6 +18,7 @@ const DatePhasePicker = ({
   endMonth,
   defaultMonth,
   onUpdateRange,
+  className,
 }: Props) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
 
@@ -32,6 +33,7 @@ const DatePhasePicker = ({
       onClickOutside={() => setCalendarOpen(false)}
     >
       <Tooltip
+        className={`${className}-date-picker`}
         content={
           <Box width={WIDTH}>
             <Calendar
@@ -52,6 +54,7 @@ const DatePhasePicker = ({
           selectedRange={selectedRange}
           selectedRangeIsOpenEnded={selectedRangeIsOpenEnded}
           onClick={() => setCalendarOpen((open) => !open)}
+          className={className}
         />
       </Tooltip>
     </ClickOutsideContainer>

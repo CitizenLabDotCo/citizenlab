@@ -26,13 +26,19 @@ interface Props {
   delta: number | string;
   sign: Sign;
   deltaType?: 'percentage' | 'absolute';
+  fontSize?: 's' | 'm' | 'l';
 }
 
-const StatisticDelta = ({ delta, sign, deltaType = 'absolute' }: Props) => {
+const StatisticDelta = ({
+  delta,
+  sign,
+  deltaType = 'absolute',
+  fontSize = 'l',
+}: Props) => {
   return (
     <Text
       color={COLOR_MAP[sign]}
-      fontSize="l"
+      fontSize={fontSize}
       fontWeight="bold"
       display="inline"
       ml="8px"

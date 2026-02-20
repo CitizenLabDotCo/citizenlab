@@ -72,7 +72,8 @@ class User < ApplicationRecord
     def destroy_all_async(scope = User)
       scope.pluck(:id).each.with_index do |id, idx|
         # Spread out the deletion of users to avoid throttling.
-        DeleteUserJob.set(wait: (idx / 5.0).seconds).perform_later(id)
+        # Note: No need to update member counts if we're deleting all users, as the count will never be seen.
+        DeleteUserJob.set(wait: (idx / 5.0).seconds).perform_later(id, update_member_counts: false)
       end
     end
 
@@ -138,7 +139,8 @@ class User < ApplicationRecord
   end)
 
   has_many :ideas, -> { order(:project_id) }, foreign_key: :author_id, dependent: :nullify
-  has_many :idea_imports, class_name: 'BulkImportIdeas::IdeaImport', foreign_key: :import_user_id, dependent: :nullify
+  has_many :idea_exposures, dependent: :destroy
+  has_many :email_bans, foreign_key: :banned_by_id, dependent: :nullify
   has_many :manual_votes_last_updated_ideas, class_name: 'Idea', foreign_key: :manual_votes_last_updated_by_id, dependent: :nullify
   has_many :manual_voters_last_updated_phases, class_name: 'Phase', foreign_key: :manual_voters_last_updated_by_id, dependent: :nullify
   has_many :comments, foreign_key: :author_id, dependent: :nullify
@@ -163,7 +165,6 @@ class User < ApplicationRecord
   has_many :activities, dependent: :nullify
   has_many :inviter_invites, class_name: 'Invite', foreign_key: :inviter_id, dependent: :nullify
   has_one :invitee_invite, class_name: 'Invite', foreign_key: :invitee_id, dependent: :destroy
-  has_many :campaign_email_commands, class_name: 'EmailCampaigns::CampaignEmailCommand', foreign_key: :recipient_id, dependent: :destroy
   has_many :baskets, -> { order(:phase_id) }
   before_destroy :destroy_baskets
 
@@ -426,3 +427,4 @@ end
 
 User.include(IdeaAssignment::Extensions::User)
 User.include(ReportBuilder::Patches::User)
+User.include(BulkImportIdeas::Patches::User)

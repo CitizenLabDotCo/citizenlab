@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Box, Label } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -20,7 +20,6 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
 
-import { trackEventByName } from 'utils/analytics';
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import {
@@ -28,7 +27,6 @@ import {
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
 
-import tracks from '../../tracks';
 import sharedMessages from '../messages';
 import PoliciesMarkup from '../Policies/PoliciesMarkup';
 
@@ -62,10 +60,6 @@ const InviteSignUp = ({ state, loading, setError, onSubmit }: Props) => {
     },
     resolver: yupResolver(schema),
   });
-
-  useEffect(() => {
-    trackEventByName(tracks.signUpEmailPasswordStepEntered);
-  }, []);
 
   const token = state.token;
 

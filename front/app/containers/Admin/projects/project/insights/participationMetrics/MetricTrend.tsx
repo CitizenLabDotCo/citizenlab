@@ -20,13 +20,21 @@ interface Props {
 }
 
 const MetricTrend = ({ change }: Props) => {
-  const { formatMessage } = useIntl();
+  const { formatMessage, formatNumber } = useIntl();
 
-  if (change === null || change === 'last_7_days_compared_with_zero') {
+  const insufficientDataMessages = {
+    null: messages.insufficientComparisonDataPhaseTooNew,
+    last_7_days_compared_with_zero:
+      messages.insufficientComparisonDataNoPriorActivity,
+    no_visitors_in_one_or_both_periods:
+      messages.cannotCalculateNoVisitsInPeriod,
+    no_new_survey_responses_in_one_or_both_periods:
+      messages.cannotCalculateNoNewSurveyResponsesInPeriod,
+  };
+
+  if (change === null || typeof change === 'string') {
     const tooltipMessage =
-      change === null
-        ? messages.insufficientComparisonDataPhaseTooNew
-        : messages.insufficientComparisonDataNoPriorActivity;
+      insufficientDataMessages[change as keyof typeof insufficientDataMessages];
 
     return (
       <Tooltip content={formatMessage(tooltipMessage)} placement="top">
@@ -58,7 +66,14 @@ const MetricTrend = ({ change }: Props) => {
     : isNeutral
     ? undefined
     : 'arrow-down';
-  const trendLabel = `${isPositive ? '+' : ''}${Math.round(change)}%`;
+  const formattedPercentage = formatNumber(Math.round(change) / 100, {
+    style: 'percent',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
+  const trendLabel = isPositive
+    ? `+${formattedPercentage}`
+    : formattedPercentage;
   const trendColor: Color = isNeutral
     ? 'textSecondary'
     : isPositive

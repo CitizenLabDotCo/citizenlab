@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  useBreakpoint,
-  Box,
-  media,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { useBreakpoint, Box, media } from '@citizenlab/cl2-component-library';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -22,10 +17,6 @@ const Container = styled.div`
   flex: 0 0 ${(props) => props.theme.mobileTopBarHeight}px;
   height: ${(props) => props.theme.mobileTopBarHeight}px;
   background-color: #fff;
-  border-bottom: solid 1px ${colors.coolGrey300};
-  position: sticky;
-  top: 0;
-  z-index: 2000;
 `;
 
 const TopBarInner = styled.div`

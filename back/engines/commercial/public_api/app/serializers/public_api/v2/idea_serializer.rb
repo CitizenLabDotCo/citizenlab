@@ -57,7 +57,11 @@ class PublicApi::V2::IdeaSerializer < PublicApi::V2::BaseSerializer
   end
 
   def type
-    object.creation_phase_id.present? ? 'survey' : 'idea'
+    if object.creation_phase_id.present?
+      object.creation_phase.pmethod.supports_survey_form? ? 'survey' : 'proposal'
+    else
+      'idea'
+    end
   end
 
   def href

@@ -3,10 +3,13 @@ import React from 'react';
 import {
   Box,
   Text,
+  Title,
   Spinner,
   Icon,
   colors,
 } from '@citizenlab/cl2-component-library';
+
+import { ParticipationMethod } from 'api/phases/types';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -19,9 +22,10 @@ import useTopicBreakdownData from './useTopicBreakdownData';
 
 interface Props {
   phaseId: string;
+  participationMethod?: ParticipationMethod;
 }
 
-const TopicBreakdown = ({ phaseId }: Props) => {
+const TopicBreakdown = ({ phaseId, participationMethod }: Props) => {
   const { formatMessage } = useIntl();
 
   const {
@@ -32,7 +36,7 @@ const TopicBreakdown = ({ phaseId }: Props) => {
     maxAiTopicCount,
     maxManualTopicCount,
     isLoading,
-  } = useTopicBreakdownData({ phaseId });
+  } = useTopicBreakdownData({ phaseId, participationMethod });
 
   if (isLoading) {
     return (
@@ -63,9 +67,9 @@ const TopicBreakdown = ({ phaseId }: Props) => {
         alignItems="center"
         mb="16px"
       >
-        <Text m="0" fontWeight="semi-bold" fontSize="m">
+        <Title variant="h3" m="0">
           {formatMessage(messages.topicBreakdown)}
-        </Text>
+        </Title>
         <Box
           display="inline-flex"
           alignItems="center"

@@ -68,10 +68,16 @@ class ClaimTokenService
       user = claim_token.pending_claimer
       owner_attr = item.respond_to?(:author_id=) ? :author_id : :user_id
 
+      # If phase is survey and user_data_collection != all_data:
+      # do not update the user id because it would not be anonymous then
+      creation_phase = item.creation_phase # only surveys have creation_phase
+      permission = creation_phase&.permissions&.find_by(action: 'posting_idea')
+      do_not_update_user = permission && permission.user_data_collection != 'all_data'
+
       ClaimToken.transaction do
+        item.update!(owner_attr => user.id) unless do_not_update_user
         # NOTE: The AnonymousParticipation concern will automatically set
         # anonymous = false and recalculate author_hash via before_validation
-        item.update!(owner_attr => user.id)
         LogActivityJob.perform_later(item, 'claimed', user, Time.current.to_i)
         claim_token.destroy!
       end

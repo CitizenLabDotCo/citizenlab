@@ -1,6 +1,6 @@
 import React, { useMemo, ReactNode } from 'react';
 
-import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
+import { Box, Text, Title, Spinner } from '@citizenlab/cl2-component-library';
 
 import { IdeaStatusParticipationMethod } from 'api/idea_statuses/types';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
@@ -101,15 +101,9 @@ const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
   if (statusData.length === 0) {
     return (
       <StatusCard>
-        <Text
-          m="0"
-          mb="16px"
-          fontWeight="semi-bold"
-          fontSize="m"
-          color="primary"
-        >
+        <Title variant="h3" m="0" mb="16px">
           {formatMessage(messages.statusBreakdown)}
-        </Text>
+        </Title>
         <Text m="0" color="textSecondary">
           {formatMessage(messages.noInputsSubmitted)}
         </Text>
@@ -119,9 +113,9 @@ const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
 
   return (
     <StatusCard>
-      <Text m="0" mb="24px" fontWeight="semi-bold" fontSize="m" color="primary">
+      <Title variant="h3" m="0" mb="24px">
         {formatMessage(messages.statusBreakdown)}
-      </Text>
+      </Title>
       <Box display="flex" flexDirection="column" gap="4px">
         {statusData.map((status) => (
           <DistributionBar

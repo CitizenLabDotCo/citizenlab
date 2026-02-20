@@ -337,6 +337,10 @@ export default defineMessages({
     id: 'app.components.form.controls.clearAllScreenreader',
     defaultMessage: 'Clear all answers from above matrix question',
   },
+  matrixStatementHeader: {
+    id: 'app.components.form.controls.matrixStatementHeader',
+    defaultMessage: 'Statement',
+  },
   noRankSelected: {
     id: 'app.components.form.controls.noRankSelected',
     defaultMessage: 'No rank selected',

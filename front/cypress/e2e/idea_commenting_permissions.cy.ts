@@ -71,7 +71,7 @@ describe('idea commenting permissions for non-active users', () => {
 
   before(() => {
     // create user
-    cy.apiCreateCustomField(randomFieldName, true, false).then((response) => {
+    cy.apiCreateCustomField(randomFieldName, false).then((response) => {
       customFieldId = response.body.data.id;
       cy.apiSignup(firstName, lastName, email, password).then((response) => {
         userId = response.body.data.id;
