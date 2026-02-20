@@ -55,7 +55,7 @@ export const getHeaderMessage = (
 ) => {
   if (
     action === 'following' &&
-    ['email:start', 'emailemail-policies', 'email:sso-policies'].includes(step)
+    ['email:start', 'email:email-policies', 'email:sso-policies'].includes(step)
   ) {
     return messages.beforeYouFollow;
   }
