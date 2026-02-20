@@ -46,6 +46,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
 
   // post-participation flow
   'post-participation:email': messages.signUpOrLogIn,
+  'claim-token-consent': messages.linkParticipation,
 };
 
 export const getHeaderMessage = (

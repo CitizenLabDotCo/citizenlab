@@ -111,4 +111,8 @@ export default defineMessages({
     id: 'app.containers.Authentication.signUpOrLogIn',
     defaultMessage: 'Sign up or log in',
   },
+  linkParticipation: {
+    id: 'app.containers.NewAuthModal.linkParticipation',
+    defaultMessage: 'Link participation',
+  },
 });
