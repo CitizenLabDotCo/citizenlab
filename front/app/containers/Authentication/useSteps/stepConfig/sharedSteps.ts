@@ -172,7 +172,8 @@ export const sharedSteps = (
       },
 
       TRIGGER_POST_PARTICIPATION_FLOW: async () => {
-        setCurrentStep('post-participation:email');
+        // setCurrentStep('post-participation:email');
+        setCurrentStep('claim-token-consent'); // TODO check if claim tokens first
       },
     },
 
@@ -196,6 +197,7 @@ export const sharedSteps = (
     'claim-token-consent': {
       LINK_PARTICIPATIONS: () => setCurrentStep('closed'), // TODO
       KEEP_ANONYMOUS: () => setCurrentStep('closed'), // TODO
+      CLOSE: () => setCurrentStep('closed'),
     },
   };
 };
