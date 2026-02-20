@@ -39,13 +39,16 @@ namespace :single_use do
       puts "Using locale: #{I18n.default_locale}"
       csv = CSV.read(args[:csv_path], headers: true)
       validate_csv_headers!(csv)
+
       mapping = build_mapping_from_csv(csv)
       puts "Found #{mapping.size} area mappings to process"
       puts "Tenant: #{tenant.host}"
       puts '-' * 80
+
       domicile_field = CustomField.find_by(key: 'domicile')
       print_domicile_field_status(domicile_field)
       puts '-' * 80
+
       target_groups = mapping.group_by { |_old, new| new }
       stats = init_stats
       ActiveRecord::Base.transaction do
@@ -98,6 +101,13 @@ def init_stats
     areas_merged: 0,
     areas_not_found: 0,
     options_updated: 0,
+    areas_projects_updated: 0,
+    areas_projects_destroyed: 0,
+    followers_updated: 0,
+    followers_destroyed: 0,
+    areas_static_pages_updated: 0,
+    areas_static_pages_destroyed: 0,
+    users_updated: 0,
     errors: []
   }
 end
@@ -189,21 +199,39 @@ end
 def update_projects_associations(area_to_keep, area_to_merge)
   AreasProject.where(area_id: area_to_merge.id).each do |areas_project|
     existing = AreasProject.find_by(area_id: area_to_keep.id, project_id: areas_project.project_id)
-    existing ? areas_project.destroy : areas_project.update!(area_id: area_to_keep.id)
+    if existing
+      areas_project.destroy
+      stats[:areas_projects_destroyed] += 1
+    else
+      areas_project.update!(area_id: area_to_keep.id)
+      stats[:areas_projects_updated] += 1
+    end
   end
 end
 
 def update_followers(area_to_keep, area_to_merge)
   Follower.where(followable_type: 'Area', followable_id: area_to_merge.id).each do |follower|
     existing = Follower.find_by(followable_type: 'Area', followable_id: area_to_keep.id, user_id: follower.user_id)
-    existing ? follower.destroy : follower.update!(followable_id: area_to_keep.id)
+    if existing
+      follower.destroy
+      stats[:followers_destroyed] += 1
+    else
+      follower.update!(followable_id: area_to_keep.id)
+      stats[:followers_updated] += 1
+    end
   end
 end
 
 def update_static_pages(area_to_keep, area_to_merge)
   AreasStaticPage.where(area_id: area_to_merge.id).each do |areas_static_page|
     existing = AreasStaticPage.find_by(area_id: area_to_keep.id, static_page_id: areas_static_page.static_page_id)
-    existing ? areas_static_page.destroy : areas_static_page.update!(area_id: area_to_keep.id)
+    if existing
+      areas_static_page.destroy
+      stats[:areas_static_pages_destroyed] += 1
+    else
+      areas_static_page.update!(area_id: area_to_keep.id)
+      stats[:areas_static_pages_updated] += 1
+    end
   end
 end
 
@@ -213,6 +241,7 @@ def update_user_domicile(area_to_keep, area_to_merge, domicile_field)
   User.where("custom_field_values->>'domicile' = ?", area_to_merge.id).each do |user|
     user.custom_field_values['domicile'] = area_to_keep.id
     user.save(validate: false)
+    stats[:users_updated] += 1
   end
 end
 
@@ -229,6 +258,13 @@ def print_summary(stats)
   puts "  Areas merged: #{stats[:areas_merged]}"
   puts "  Areas not found: #{stats[:areas_not_found]}"
   puts "  Custom field options updated: #{stats[:options_updated]}"
+  puts "  AreasProjects updated: #{stats[:areas_projects_updated]}"
+  puts "  AreasProjects destroyed: #{stats[:areas_projects_destroyed]}"
+  puts "  Followers updated: #{stats[:followers_updated]}"
+  puts "  Followers destroyed: #{stats[:followers_destroyed]}"
+  puts "  AreasStaticpages updated: #{stats[:areas_static_pages_updated]}"
+  puts "  AreasStaticpages destroyed: #{stats[:areas_static_pages_destroyed]}"
+  puts "  Users updated: #{stats[:areas_static_pages_updated]}"
   if stats[:errors].any?
     puts "\n⚠ Errors encountered:"
     stats[:errors].each { |error| puts "  - #{error}" }
