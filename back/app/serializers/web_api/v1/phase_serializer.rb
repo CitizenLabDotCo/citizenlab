@@ -14,8 +14,6 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
     :similarity_enabled, :similarity_threshold_title, :similarity_threshold_body,
     :survey_popup_frequency
 
-  attribute :prescreening_enabled, &:prescreening_enabled?
-
   %i[
     voting_method voting_max_total voting_min_total
     voting_max_votes_per_idea baskets_count voting_min_selected_options
@@ -67,6 +65,10 @@ class WebApi::V1::PhaseSerializer < WebApi::V1::BaseSerializer
 
   attribute :user_data_collection do |phase|
     phase.pmethod.user_data_collection
+  end
+
+  attribute :user_fields_in_form_enabled do |phase|
+    phase.pmethod.user_fields_in_form_enabled?
   end
 
   attribute :allow_anonymous_participation do |phase|

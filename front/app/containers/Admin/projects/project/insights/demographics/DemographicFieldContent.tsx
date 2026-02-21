@@ -49,7 +49,7 @@ const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
         alignItems="center"
         mb="8px"
       >
-        <Text fontSize="l" fontWeight="bold" m="0px">
+        <Text fontSize="m" fontWeight="semi-bold" m="0px">
           {field.field_name}
         </Text>
         {showExportMenu && (

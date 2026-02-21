@@ -17,6 +17,7 @@ import messages from 'containers/ProjectsShowPage/messages';
 
 import AvatarBubbles from 'components/AvatarBubbles';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { isAdmin } from 'utils/permissions/roles';
@@ -78,6 +79,7 @@ const ProjectInfoSideBar = memo<Props>(
                 // to ensure the tooltip doesn't slip under the project CTA bar.
                 placement="left"
                 content={formatMessage(messages.liveDataMessage)}
+                aria-hidden={true}
               >
                 <Box
                   my="8px"
@@ -85,7 +87,19 @@ const ProjectInfoSideBar = memo<Props>(
                   display="flex"
                   justifyContent="center"
                   alignItems="center"
+                  tabIndex={0}
+                  aria-label={`${projectParticipantsCount} ${formatMessage(
+                    messages.participants
+                  )}`}
+                  aria-describedby={
+                    isAdmin(authUser)
+                      ? `project-participants-${projectId}`
+                      : undefined
+                  }
                 >
+                  <ScreenReaderOnly id={`project-participants-${projectId}`}>
+                    {formatMessage(messages.liveDataMessage)}
+                  </ScreenReaderOnly>
                   <AvatarBubbles
                     size={32}
                     limit={3}

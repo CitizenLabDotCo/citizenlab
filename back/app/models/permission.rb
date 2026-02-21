@@ -112,10 +112,10 @@ class Permission < ApplicationRecord
   end
 
   # Attribute used in frontend to render access rights UI
-  def user_fields_in_form_frontend_descriptor
+  def user_fields_in_form_descriptor
     return UNSUPPORTED_DESCRIPTOR unless permission_scope.is_a?(Phase)
 
-    UserFieldsInFormService.user_fields_in_form_frontend_descriptor(
+    UserFieldsInFormService.user_fields_in_form_descriptor(
       self,
       permission_scope.participation_method
     )
@@ -125,7 +125,7 @@ class Permission < ApplicationRecord
   # This does not guarantee that they will be added, because it is possible
   # that there are none
   def user_fields_in_form_enabled?
-    !!user_fields_in_form_frontend_descriptor[:value]
+    !!user_fields_in_form_descriptor[:value]
   end
 
   private

@@ -71,10 +71,7 @@ const SurveyActions = ({ phase }: Props) => {
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDropdownOpened, setDropdownOpened] = useState(false);
-  const [isExportDropdownOpened, setExportDropdownOpened] = useState(false);
-  const [isDownloading, setIsDownloading] = useState(false);
-
-  const isExporting = isDownloadingPdf || isDownloadingWord;
+  const [isDownloadingXlsx, setIsDownloadingXlsx] = useState(false);
 
   if (!project || !submissionCount) {
     return null;
@@ -119,15 +116,15 @@ const SurveyActions = ({ phase }: Props) => {
     );
   };
 
-  const handleDownloadResults = async () => {
+  const handleDownloadXlsx = async () => {
     try {
-      setIsDownloading(true);
+      setIsDownloadingXlsx(true);
       setDropdownOpened(false);
       await downloadSurveyResults(locale, phase);
     } catch (error) {
       // eslint-disable-next-line no-empty
     } finally {
-      setIsDownloading(false);
+      setIsDownloadingXlsx(false);
     }
   };
 
@@ -182,17 +179,10 @@ const SurveyActions = ({ phase }: Props) => {
     setDropdownOpened(false);
   };
 
-  if (isDownloading) {
-    return (
-      <Box width="100%" height="100%" display="flex" alignItems="center">
-        <Spinner />
-      </Box>
-    );
-  }
-
   return (
     <>
       <Box display="flex" alignItems="center" gap="8px" data-pdf-exclude="true">
+        {(isDownloadingXlsx || isDownloadingPdf || isDownloadingWord) && <Spinner size="24px" />}
         <Box position="relative">
           <Button
             icon="dots-horizontal"
@@ -214,24 +204,37 @@ const SurveyActions = ({ phase }: Props) => {
             right="0px"
             top="45px"
             content={
-              <Box minWidth="250px">
+              <Box minWidth="300px">
                 <DropdownListItem
-                  onClick={handleDownloadResults}
+                  onClick={() => {
+                    setDropdownOpened(false);
+                    downloadPdf();
+                  }}
+                >
+                  <Icon name="download" fill={colors.coolGrey600} mr="8px" />
+                  <Text my="0px">
+                    {formatMessage(messages.downloadInsightsPdf)}
+                  </Text>
+                </DropdownListItem>
+                <DropdownListItem
+                  onClick={() => {
+                    setDropdownOpened(false);
+                    downloadWord();
+                  }}
+                >
+                  <Icon name="download" fill={colors.coolGrey600} mr="8px" />
+                  <Text my="0px">
+                    {formatMessage(messages.downloadWord)}
+                  </Text>
+                </DropdownListItem>
+                <DropdownListItem
+                  onClick={handleDownloadXlsx}
                   data-cy="e2e-download-survey-results"
                 >
                   <Icon name="download" fill={colors.coolGrey600} mr="8px" />
                   <Text my="0px">
-                    {formatMessage(messages.downloadSurveyResults)}
+                    {formatMessage(messages.downloadSurveyResults)} (.xlsx)
                   </Text>
-                </DropdownListItem>
-                <DropdownListItem>
-                  <Toggle
-                    checked={postingEnabled}
-                    label={formatMessage(messages.openForResponses)}
-                    onChange={() => {
-                      togglePostingEnabled();
-                    }}
-                  />
                 </DropdownListItem>
                 {haveSubmissionsComeIn && (
                   <DropdownListItem
@@ -248,43 +251,13 @@ const SurveyActions = ({ phase }: Props) => {
             }
           />
         </Box>
-        <Box position="relative">
-          <Button
-            buttonStyle="text"
-            icon="download"
-            onClick={() => setExportDropdownOpened(!isExportDropdownOpened)}
-            processing={isExporting}
-            aria-label={formatMessage(messages.downloadInsightsPdf)}
-            data-pdf-exclude="true"
-          >
-            {formatMessage(messages.download)}
-          </Button>
-          <Dropdown
-            opened={isExportDropdownOpened}
-            onClickOutside={() => setExportDropdownOpened(false)}
-            width="180px"
-            right="0px"
-            top="42px"
-            content={
-              <Box p="8px" display="flex" flexDirection="column" gap="4px">
-                <DropdownListItem
-                  onClick={() => {
-                    setExportDropdownOpened(false);
-                    downloadPdf();
-                  }}
-                >
-                  {formatMessage(messages.downloadPdf)}
-                </DropdownListItem>
-                <DropdownListItem
-                  onClick={() => {
-                    setExportDropdownOpened(false);
-                    downloadWord();
-                  }}
-                >
-                  {formatMessage(messages.downloadWord)}
-                </DropdownListItem>
-              </Box>
-            }
+        <Box flexShrink={0} style={{ whiteSpace: 'nowrap' }}>
+          <Toggle
+            checked={postingEnabled}
+            label={formatMessage(messages.openForResponses)}
+            onChange={() => {
+              togglePostingEnabled();
+            }}
           />
         </Box>
         <ButtonWithLink

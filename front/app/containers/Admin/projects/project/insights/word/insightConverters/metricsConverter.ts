@@ -88,7 +88,9 @@ export function createMetricsSection(
   rows.push(
     createMetricRow(
       formatMessage(messages.participationRate),
-      formatPercent(metrics.participation_rate_as_percent),
+      typeof metrics.participation_rate_as_percent === 'number'
+        ? formatPercent(metrics.participation_rate_as_percent)
+        : '-',
       showChanges
         ? formatChange(
             metrics.participation_rate_7_day_percent_change,
@@ -193,7 +195,9 @@ export function createMetricsSection(
     rows.push(
       createMetricRow(
         formatMessage(messages.completionRate),
-        formatPercent(metrics.native_survey.completion_rate_as_percent),
+        typeof metrics.native_survey.completion_rate_as_percent === 'number'
+          ? formatPercent(metrics.native_survey.completion_rate_as_percent)
+          : '-',
         showChanges
           ? formatChange(
               metrics.native_survey.completion_rate_7_day_percent_change,

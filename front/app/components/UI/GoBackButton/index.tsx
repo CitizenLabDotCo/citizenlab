@@ -19,9 +19,7 @@ type Props = {
   customMessage?: MessageDescriptor;
   linkTo?: RouteType;
   showGoBackText?: boolean;
-  size?: ButtonProps['size'];
-  buttonStyle?: ButtonProps['buttonStyle'];
-};
+} & ButtonProps;
 
 const GoBackButton = ({
   onClick,
@@ -29,17 +27,15 @@ const GoBackButton = ({
   customMessage,
   linkTo,
   showGoBackText = true,
-  size = 'm',
   buttonStyle = 'text',
+  ...buttonProps
 }: Props) => {
   return (
     <Container className={className || ''}>
       <ButtonWithLink
         id="e2e-go-back-button"
         onClick={onClick}
-        buttonStyle={buttonStyle}
         icon="arrow-left"
-        size={size}
         padding="0px"
         text={
           showGoBackText ? (
@@ -48,6 +44,8 @@ const GoBackButton = ({
         }
         data-testid="goBackButton"
         linkTo={linkTo}
+        buttonStyle={buttonStyle}
+        {...buttonProps}
       />
     </Container>
   );

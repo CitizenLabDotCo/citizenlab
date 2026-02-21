@@ -45,7 +45,7 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   'sso-verification:sso-providers-policies': messages.verificationRequired,
 
   // post-participation flow
-  'post-participation:email': messages.createAnAccount,
+  'post-participation:email': messages.signUpOrLogIn,
 };
 
 export const getHeaderMessage = (

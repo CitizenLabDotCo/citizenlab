@@ -255,7 +255,7 @@ const IdeasWithoutFiltersSidebar = ({
                     alignment={smallerThanTablet ? 'right' : 'left'}
                     participationMethod={participationMethod}
                     isScreeningEnabled={
-                      phase?.data.attributes.prescreening_enabled
+                      !!phase?.data.attributes.prescreening_mode
                     }
                   />
                 )}

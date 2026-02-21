@@ -49,9 +49,8 @@ RSpec.describe ReportBuilder::Queries::InternalAdoption do
       }
 
       expect(query.run_query(**params)).to eq({
-        active_admins_count: 2,           # 2 admins with sessions in period
-        active_moderators_count: 2,       # 2 moderators with sessions in period
-        total_admin_pm_count: 5,          # 2 admins + 3 mods created before end_at
+        admin_counts: { registered: 2, active: 2 },
+        moderator_counts: { registered: 3, active: 2 },
         timeseries: [
           { date_group: Date.new(2022, 9, 1), active_admins: 2, active_moderators: 2 },
           { date_group: Date.new(2022, 10, 1), active_admins: 1, active_moderators: 0 }
@@ -76,14 +75,13 @@ RSpec.describe ReportBuilder::Queries::InternalAdoption do
       }
 
       expect(query.run_query(**params)).to eq({
-        active_admins_count: 0,           # No sessions in period
-        active_moderators_count: 0,       # No sessions in period
-        total_admin_pm_count: 2,          # Both registered before end_at
+        admin_counts: { registered: 1, active: 0 },
+        moderator_counts: { registered: 1, active: 0 },
         timeseries: []
       })
     end
 
-    it 'does not count users registered after end_date in total_admin_pm' do
+    it 'does not count users registered after end_date in registered counts' do
       project = create(:project)
 
       # Users registered AFTER the query period
@@ -100,9 +98,8 @@ RSpec.describe ReportBuilder::Queries::InternalAdoption do
       }
 
       expect(query.run_query(**params)).to eq({
-        active_admins_count: 0,
-        active_moderators_count: 0,
-        total_admin_pm_count: 0,
+        admin_counts: { registered: 0, active: 0 },
+        moderator_counts: { registered: 0, active: 0 },
         timeseries: []
       })
     end
@@ -138,17 +135,40 @@ RSpec.describe ReportBuilder::Queries::InternalAdoption do
 
       expect(query.run_query(**params)).to eq({
         # Main period (September)
-        active_admins_count: 2,
-        active_moderators_count: 1,
-        total_admin_pm_count: 6,
+        admin_counts: { registered: 3, active: 2 },
+        moderator_counts: { registered: 3, active: 1 },
         timeseries: [
           { date_group: Date.new(2022, 9, 1), active_admins: 2, active_moderators: 1 }
         ],
         # Comparison period (October)
-        active_admins_compared: 1,
-        active_moderators_compared: 2,
-        total_admin_pm_compared: 6
+        admin_counts_compared: { registered: 3, active: 1 },
+        moderator_counts_compared: { registered: 3, active: 2 }
       })
+    end
+
+    it 'deduplicates users who are both admin and moderator' do
+      project = create(:project)
+
+      # Create an admin who is also a project moderator
+      admin_mod = create(:admin, created_at: @date_september - 10.days)
+      admin_mod.add_role('project_moderator', project_id: project.id)
+      admin_mod.save!
+
+      # Create a pure moderator
+      create(:project_moderator, projects: [project], created_at: @date_september - 10.days)
+
+      create(:session, created_at: @date_september, highest_role: 'admin', user_id: admin_mod.id)
+
+      params = {
+        start_at: @date_september - 1.day,
+        end_at: @date_october + 1.day
+      }
+
+      result = query.run_query(**params)
+
+      # admin_mod should count as admin only, not as moderator
+      expect(result[:admin_counts][:registered]).to eq(1)
+      expect(result[:moderator_counts][:registered]).to eq(1)
     end
   end
 end

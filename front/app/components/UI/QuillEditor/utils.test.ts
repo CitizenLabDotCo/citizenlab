@@ -5,8 +5,6 @@ import {
   getPlainTextLengthFromHTML,
   getHTML,
   setHTML,
-  syncPlaceHolder,
-  getPlaceHolder,
 } from './utils';
 
 // Helper to create a real, headless Quill instance from an HTML string.
@@ -17,7 +15,7 @@ const createEditor = (htmlContent: string): Quill => {
   const quill = new Quill(editorElement);
 
   if (htmlContent) {
-    const delta = quill.clipboard.convert(htmlContent as any);
+    const delta = quill.clipboard.convert({ html: htmlContent });
     quill.setContents(delta, 'silent');
   }
 
@@ -117,12 +115,6 @@ describe('Quill Character Count Consistency', () => {
       setHTML(editor, '<p>New Content</p>');
       const html = getHTML(editor);
       expect(html).toContain('New Content');
-    });
-
-    it('should test placeholder functions', () => {
-      const testPlaceholder = 'Test placeholder';
-      syncPlaceHolder(testPlaceholder);
-      expect(getPlaceHolder()).toBe(testPlaceholder);
     });
   });
 

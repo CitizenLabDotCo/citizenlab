@@ -76,12 +76,13 @@ export interface IPhaseAttributes {
   report_public: boolean;
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;
-  prescreening_enabled?: boolean;
+  prescreening_mode?: PrescreeningMode;
   manual_voters_amount?: number;
   similarity_enabled?: boolean;
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
   user_data_collection: UserDataCollection;
+  user_fields_in_form_enabled: boolean;
 }
 
 export interface IPhases {
@@ -126,7 +127,7 @@ export interface IUpdatedPhaseProperties {
   document_annotation_embed_url?: string | null;
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;
-  prescreening_enabled?: boolean | null;
+  prescreening_mode?: PrescreeningMode | null;
   allow_anonymous_participation?: boolean;
   expire_days_limit?: number;
   manual_voters_amount?: number;
@@ -191,3 +192,5 @@ export type InputTerm =
   | 'petition';
 
 export type PresentationMode = 'card' | 'map' | 'feed';
+
+export type PrescreeningMode = 'flagged_only' | 'all';

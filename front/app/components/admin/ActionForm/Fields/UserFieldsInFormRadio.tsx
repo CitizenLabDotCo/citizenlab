@@ -17,18 +17,17 @@ import { EXPLANATION_MESSAGES } from './constants';
 import messages from './messages';
 
 interface Props {
-  user_fields_in_form_frontend_descriptor: UserFieldsInFormFrontendDescriptor;
+  user_fields_in_form_descriptor: UserFieldsInFormFrontendDescriptor;
   onChange: (userFieldsInForm: boolean) => void;
 }
 
 const UserFieldsInFormRadio = ({
-  user_fields_in_form_frontend_descriptor,
+  user_fields_in_form_descriptor,
   onChange,
 }: Props) => {
   const { formatMessage } = useIntl();
 
-  const { value, locked, explanation } =
-    user_fields_in_form_frontend_descriptor;
+  const { value, locked, explanation } = user_fields_in_form_descriptor;
 
   return (
     <>

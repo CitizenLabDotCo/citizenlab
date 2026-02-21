@@ -8,7 +8,6 @@
 #  title_multiloc       :jsonb            not null
 #  description_multiloc :jsonb            not null
 #  icon                 :string
-#  ordering             :integer          default(0), not null
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  parent_id            :uuid

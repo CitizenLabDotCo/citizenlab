@@ -150,6 +150,7 @@ class ProjectPolicy < ApplicationPolicy
       :visible_to,
       :include_all_areas,
       :listed,
+      :live_auto_input_topics_enabled,
       {
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,

@@ -6,6 +6,8 @@ module Files
   # @example Basic usage
   #   Files::DescriptionGenerator.new.generate_descriptions!(file)
   class DescriptionGenerator
+    SONNET_MODEL_ID = ENV.fetch('BEDROCK_SONNET_MODEL', 'eu.anthropic.claude-sonnet-4-5-20250929-v1:0')
+
     delegate :generate_descriptions?, to: :class
 
     # Generate and update the descriptions for the given file
@@ -40,7 +42,7 @@ module Files
     # @param locales [Array<String>] Array of locale codes
     # @return [Hash] Hash with locale keys and description values
     def generate_descriptions(file, locales)
-      chat = RubyLLM.chat(model: infer_best_model, provider: :bedrock, assume_model_exists: true)
+      chat = RubyLLM.chat(model: SONNET_MODEL_ID, provider: :bedrock, assume_model_exists: true)
       prompt = build_prompt(file.name, locales)
       prefill_msg = '{' # Prefill the response to encourage the LLM to respond with a JSON object
 
@@ -57,40 +59,6 @@ module Files
 
     def file_preprocessor
       @file_preprocessor ||= LLMFilePreprocessor.new
-    end
-
-    # Selects the best available Claude model for the Bedrock provider.
-    # Uses Sonnet 4 if available, otherwise falls back to Sonnet 3.7.
-    #
-    # @return [String] The model ID to use
-    def infer_best_model
-      # RubyLLM does not yet support all Bedrock regions due to differences in available
-      # models and inference profiles. In the following regions, it returns non-existent
-      # inference profiles. For now, we hardcode the id of the inference profile and set
-      # +assume_model_exists+ to +true+ when initializing the RubyLLM client.
-      # (We are considering moving away from RubyLLM, so we don't want to spend too much
-      # time on a full fix.)
-      if RubyLLM.config.bedrock_region.in? %w[ca-central-1 sa-east-1]
-        return 'global.anthropic.claude-sonnet-4-5-20250929-v1:0'
-      end
-
-      available_models = RubyLLM.models
-        .select { |model| model.provider == 'bedrock' }
-        .map(&:id)
-
-      # These are not full model IDs, but substrings used to find the corresponding model
-      # ID, since model IDs can vary depending on the Bedrock region.
-      preferred_models = %w[
-        .anthropic.claude-sonnet-4
-        .anthropic.claude-3-7-sonnet
-      ]
-
-      preferred_models.each do |substring|
-        matching_model = available_models.find { |id| id.include?(substring) }
-        return matching_model if matching_model
-      end
-
-      raise DescriptionGeneratorError, 'No suitable model found for description generation.'
     end
 
     def build_prompt(file_name, locales)

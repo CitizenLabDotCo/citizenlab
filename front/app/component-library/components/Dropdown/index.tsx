@@ -174,54 +174,6 @@ const Dropdown: React.FC<Props> = ({
   const triggerElement = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    const getFocusableElements = () => {
-      const contentElements =
-        dropdownContentRef.current?.querySelectorAll<HTMLElement>(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
-      const footerElements = footerRef.current?.querySelectorAll<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      );
-
-      const allElements = [
-        ...(contentElements ? Array.from(contentElements) : []),
-        ...(footerElements ? Array.from(footerElements) : []),
-      ];
-
-      return allElements.filter(
-        (el) =>
-          el.tabIndex !== -1 && // Exclude elements with tabIndex=-1
-          el.offsetWidth > 0 && // Visible in DOM
-          el.offsetHeight > 0 && // Visible in DOM
-          window.getComputedStyle(el).visibility !== 'hidden' && // Not hidden
-          window.getComputedStyle(el).display !== 'none' // Not display:none
-      );
-    };
-
-    const handleKeyDown = (event: KeyboardEvent) => {
-      const focusableElements = getFocusableElements();
-      if (focusableElements.length === 0) return;
-
-      const firstElement = focusableElements[0];
-      const lastElement = focusableElements[focusableElements.length - 1];
-
-      if (event.key === 'Tab') {
-        if (event.shiftKey) {
-          // Shift + Tab: Focus last element if on the first
-          if (document.activeElement === firstElement) {
-            event.preventDefault();
-            lastElement.focus();
-          }
-        } else {
-          // Tab: Focus first element if on the last
-          if (document.activeElement === lastElement) {
-            event.preventDefault();
-            firstElement.focus();
-          }
-        }
-      }
-    };
-
     const handleScroll = (event: WheelEvent) => {
       if (dropdownContentRef.current) {
         const deltaY = event.deltaMode === 1 ? event.deltaY * 20 : event.deltaY;
@@ -233,29 +185,13 @@ const Dropdown: React.FC<Props> = ({
     const dropdownContent = dropdownContentRef.current;
 
     if (opened) {
-      document.addEventListener('keydown', handleKeyDown);
       dropdownContent?.addEventListener('wheel', handleScroll);
     }
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
       dropdownContent?.removeEventListener('wheel', handleScroll);
     };
   }, [opened, footer]);
-
-  useEffect(() => {
-    if (opened) {
-      const focusableElements =
-        dropdownContentRef.current?.querySelectorAll<HTMLElement>(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
-      if (focusableElements?.length) {
-        focusableElements[0].focus();
-      }
-    } else if (triggerElement.current) {
-      triggerElement.current.focus();
-    }
-  }, [opened]);
 
   const close = (event: FormEvent) => {
     event.preventDefault();
