@@ -7,6 +7,7 @@ import { FormatMessageValues } from 'utils/cl-intl/useIntl';
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 
 import messages from './messages';
+import { trackPageView } from 'modules/commercial/impact_tracking';
 
 export type Pages = {
   page: IFlatCustomField;
@@ -178,4 +179,14 @@ export const addPrefix = (customFieldValues: Record<string, any>) => {
   }
 
   return newValues;
+};
+
+// Tracks each page view after the first page - the first page is tracked when the form is opened
+export const trackFormPageView = (
+  currentPageIndex: number,
+  lastPageIndex: number
+) => {
+  const pageNum =
+    currentPageIndex === lastPageIndex ? 'submitted' : currentPageIndex + 1;
+  if (pageNum !== 1) trackPageView(window.location.pathname + '/' + pageNum);
 };

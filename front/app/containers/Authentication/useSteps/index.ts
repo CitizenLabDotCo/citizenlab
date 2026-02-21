@@ -35,6 +35,7 @@ import {
 } from '../typings';
 
 import { getStepConfig } from './stepConfig';
+import { trackPageView } from 'modules/commercial/impact_tracking';
 
 let initialized = false;
 
@@ -69,6 +70,8 @@ export default function useSteps() {
         queueModal('authentication');
       }
 
+      // Track the step - NOTE: SSO does not track - this needs to be done in the button - so we know what version of the button was clicked
+      trackPageView(pathname + '/auth/' + step.replace(/:/g, '/'));
       trackEventByName('Transition step in authentication flow', { step });
 
       _setCurrentStep(step);

@@ -10,6 +10,7 @@ import {
 } from 'containers/Authentication/typings';
 
 import { getClaimTokens } from 'utils/claimToken';
+import { trackPageView } from 'modules/commercial/impact_tracking';
 
 export interface SSOProviderMap {
   azureactivedirectory: 'azureactivedirectory';
@@ -61,6 +62,9 @@ export const handleOnSSOClick = (
   }
   localStorage.setItem('auth_context', JSON.stringify(metaData.context));
   localStorage.setItem('auth_path', window.location.pathname as RouteType);
+
+  // Track the SSO click as a pageView
+  trackPageView(window.location.pathname + '/auth/sso/' + provider);
 
   setHref(provider, metaData, verification, flow);
 };

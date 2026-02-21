@@ -59,7 +59,7 @@ const upgradeSession = () => {
   });
 };
 
-const trackPageView = async (path: string) => {
+export const trackPageView = async (path: string) => {
   if (allAppPaths === undefined) {
     allAppPaths = getAllPathsFromRoutes(createRoutes()[0]);
   }
