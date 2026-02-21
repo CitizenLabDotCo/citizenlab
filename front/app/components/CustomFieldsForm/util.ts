@@ -1,3 +1,5 @@
+import { trackPageView } from 'modules/commercial/impact_tracking';
+
 import { IFlatCustomField } from 'api/custom_fields/types';
 
 import { Localize } from 'hooks/useLocalize';
@@ -7,7 +9,6 @@ import { FormatMessageValues } from 'utils/cl-intl/useIntl';
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 
 import messages from './messages';
-import { trackPageView } from 'modules/commercial/impact_tracking';
 
 export type Pages = {
   page: IFlatCustomField;
@@ -188,5 +189,5 @@ export const trackFormPageView = (
 ) => {
   const pageNum =
     currentPageIndex === lastPageIndex ? 'submitted' : currentPageIndex + 1;
-  if (pageNum !== 1) trackPageView(window.location.pathname + '/' + pageNum);
+  if (pageNum !== 1) trackPageView(`${window.location.pathname}/${pageNum}`);
 };
