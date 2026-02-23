@@ -21,7 +21,7 @@ module.exports = {
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
   transformIgnorePatterns: [
-    '<rootDir>/node_modules/(?!(lodash-es|d3-format|@hookform/resolvers|dnd-core|react-dnd|dnd-core|@react-dnd|@arcgis|@esri|@stencil|formdata-node|quill|@enzedonline|parchment)).+\\.js$',
+    '<rootDir>/node_modules/(?!(lodash-es|d3-format|@hookform/resolvers|dnd-core|react-dnd|dnd-core|@react-dnd|@arcgis|@esri|@stencil|formdata-node|quill|@enzedonline|parchment|lit|@lit|lit-html|lit-element)).+\\.js$',
   ],
   reporters: ['default', 'jest-junit'],
   coverageReporters: ['json', 'lcov', 'text-summary', 'clover'],
@@ -30,6 +30,7 @@ module.exports = {
     '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/app/utils/testUtils/fileMock.js',
     '^react-scroll-to-component$': 'identity-obj-proxy',
     '@citizenlab/cl2-component-library': '<rootDir>/app/component-library',
+    '^@arcgis/core/widgets/Popup$': '<rootDir>/app/utils/testUtils/fileMock.js',
   },
   modulePathIgnorePatterns: ['.*__mocks__.*'],
   testEnvironment: '<rootDir>/internals/jest/jsdom-no-canvas.js',
