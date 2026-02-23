@@ -11,6 +11,7 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 
 import ExportableInsight from '../../word/ExportableInsight';
+import { useWordSection } from '../../word/useWordSection';
 import DistributionBar from './DistributionBar';
 import messages from './messages';
 
@@ -88,6 +89,27 @@ const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
   }, [statusData]);
 
   const isLoading = isLoadingCounts || isLoadingStatuses;
+
+  // Native Word breakdown table — colored bars per status
+  useWordSection(
+    'status-breakdown',
+    () => {
+      if (statusData.length === 0) return [];
+      return [
+        {
+          type: 'breakdown',
+          items: statusData.map((s) => ({
+            name: s.name,
+            count: s.count,
+            color: s.color,
+            percentage: s.percentage,
+          })),
+          title: formatMessage(messages.statusBreakdown),
+        },
+      ];
+    },
+    { skip: isLoading || statusData.length === 0 }
+  );
 
   if (isLoading) {
     return (
