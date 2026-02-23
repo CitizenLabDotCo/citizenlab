@@ -31,8 +31,9 @@ import { useIntl } from 'utils/cl-intl';
 
 import { getExpectedComponents, type ExportId } from './exportRegistry';
 import messages from './messages';
-import type { WordSerializer } from './useWordSection';
 import { sectionsToDocxBlob } from './wordRenderer';
+
+import type { WordSerializer } from './useWordSection';
 
 export type ExportStatus = 'idle' | 'preparing' | 'capturing' | 'generating';
 
@@ -110,12 +111,9 @@ export const WordExportProvider = ({
 
   // ── Registration API ──────────────────────────────────────────────────────
 
-  const registerSerializer = useCallback(
-    (id: ExportId, fn: WordSerializer) => {
-      serializers.current.set(id, fn);
-    },
-    []
-  );
+  const registerSerializer = useCallback((id: ExportId, fn: WordSerializer) => {
+    serializers.current.set(id, fn);
+  }, []);
 
   const unregisterSerializer = useCallback((id: ExportId) => {
     serializers.current.delete(id);

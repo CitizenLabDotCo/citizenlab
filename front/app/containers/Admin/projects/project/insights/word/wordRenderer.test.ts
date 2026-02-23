@@ -11,14 +11,23 @@ jest.mock('docx', () => {
     return class Mock {
       _type: string;
       config: any;
-      constructor(cfg: any) { this._type = name; this.config = cfg; }
+      constructor(cfg: any) {
+        this._type = name;
+        this.config = cfg;
+      }
     };
   };
 
   return {
     Document: mockElement('Document'),
     Packer: {
-      toBlob: jest.fn().mockResolvedValue(new Blob(['mock-docx'], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' })),
+      toBlob: jest
+        .fn()
+        .mockResolvedValue(
+          new Blob(['mock-docx'], {
+            type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          })
+        ),
     },
     Paragraph: mockElement('Paragraph'),
     ImageRun: mockElement('ImageRun'),
@@ -26,7 +35,11 @@ jest.mock('docx', () => {
     TableRow: mockElement('TableRow'),
     TableCell: mockElement('TableCell'),
     TextRun: mockElement('TextRun'),
-    HeadingLevel: { HEADING_1: 'Heading1', HEADING_2: 'Heading2', HEADING_3: 'Heading3' },
+    HeadingLevel: {
+      HEADING_1: 'Heading1',
+      HEADING_2: 'Heading2',
+      HEADING_3: 'Heading3',
+    },
     WidthType: { PERCENTAGE: 'pct', AUTO: 'auto' },
     AlignmentType: { LEFT: 'left', CENTER: 'center' },
     VerticalAlign: { CENTER: 'center' },
@@ -46,7 +59,9 @@ jest.mock('utils/word/converters/tableConverter', () => ({
 }));
 
 jest.mock('utils/word/converters/breakdownBarConverter', () => ({
-  createBreakdownTable: jest.fn((items, opts) => [{ _mock: 'breakdown', items, opts }]),
+  createBreakdownTable: jest.fn((items, opts) => [
+    { _mock: 'breakdown', items, opts },
+  ]),
 }));
 
 jest.mock('utils/word/utils/styleConstants', () => ({
@@ -54,21 +69,29 @@ jest.mock('utils/word/utils/styleConstants', () => ({
   WORD_PAGE_SIZE: { width: 11906, height: 16838 },
 }));
 
-jest.mock('../../../../reporting/word/reportConverters/textWidgetConverter', () => ({
-  createParagraphsFromHtml: jest.fn((html) => [{ _mock: 'html-paragraph', html }]),
-}));
+jest.mock(
+  '../../../../reporting/word/reportConverters/textWidgetConverter',
+  () => ({
+    createParagraphsFromHtml: jest.fn((html) => [
+      { _mock: 'html-paragraph', html },
+    ]),
+  })
+);
 
-import { sectionsToDocxBlob } from './wordRenderer';
+import { Packer } from 'docx';
+
+import { createBreakdownTable } from 'utils/word/converters/breakdownBarConverter';
+import { createSimpleTable } from 'utils/word/converters/tableConverter';
 import {
   createTitle,
   createHeading,
   createParagraph,
   createEmptyParagraph,
 } from 'utils/word/converters/textConverter';
-import { createSimpleTable } from 'utils/word/converters/tableConverter';
-import { createBreakdownTable } from 'utils/word/converters/breakdownBarConverter';
+
 import { createParagraphsFromHtml } from '../../../../reporting/word/reportConverters/textWidgetConverter';
-import { Packer } from 'docx';
+
+import { sectionsToDocxBlob } from './wordRenderer';
 
 describe('sectionsToDocxBlob', () => {
   beforeEach(() => {
@@ -99,7 +122,9 @@ describe('sectionsToDocxBlob', () => {
 
   describe('heading section', () => {
     it('calls createHeading with correct text and level', async () => {
-      await sectionsToDocxBlob([{ type: 'heading', text: 'Test Heading', level: 2 }]);
+      await sectionsToDocxBlob([
+        { type: 'heading', text: 'Test Heading', level: 2 },
+      ]);
       expect(createHeading).toHaveBeenCalledWith('Test Heading', 2);
     });
   });
@@ -121,9 +146,16 @@ describe('sectionsToDocxBlob', () => {
 
   describe('table section', () => {
     it('calls createSimpleTable with rows and columnWidths', async () => {
-      const rows = [['A', 'B'], ['1', '2']];
-      await sectionsToDocxBlob([{ type: 'table', rows, columnWidths: [60, 40] }]);
-      expect(createSimpleTable).toHaveBeenCalledWith(rows, { columnWidths: [60, 40] });
+      const rows = [
+        ['A', 'B'],
+        ['1', '2'],
+      ];
+      await sectionsToDocxBlob([
+        { type: 'table', rows, columnWidths: [60, 40] },
+      ]);
+      expect(createSimpleTable).toHaveBeenCalledWith(rows, {
+        columnWidths: [60, 40],
+      });
     });
   });
 
@@ -131,19 +163,23 @@ describe('sectionsToDocxBlob', () => {
     it('calls createBreakdownTable with items and title', async () => {
       const items = [{ name: 'Housing', count: 10, percentage: 50 }];
       await sectionsToDocxBlob([{ type: 'breakdown', items, title: 'Topics' }]);
-      expect(createBreakdownTable).toHaveBeenCalledWith(items, { title: 'Topics' });
+      expect(createBreakdownTable).toHaveBeenCalledWith(items, {
+        title: 'Topics',
+      });
     });
   });
 
   describe('image section', () => {
     it('includes an ImageRun for image sections', async () => {
       const image = new Uint8Array([1, 2, 3]);
-      await sectionsToDocxBlob([{
-        type: 'image',
-        image,
-        width: 800,
-        height: 400,
-      }]);
+      await sectionsToDocxBlob([
+        {
+          type: 'image',
+          image,
+          width: 800,
+          height: 400,
+        },
+      ]);
       // Packer.toBlob was called — document was built
       expect(Packer.toBlob).toHaveBeenCalledTimes(1);
     });
@@ -152,12 +188,14 @@ describe('sectionsToDocxBlob', () => {
       // Width 1200 should be scaled to 600 (50%)
       // Height 600 should be scaled to 300 (50%)
       const image = new Uint8Array([1]);
-      await sectionsToDocxBlob([{
-        type: 'image',
-        image,
-        width: 1200,
-        height: 600,
-      }]);
+      await sectionsToDocxBlob([
+        {
+          type: 'image',
+          image,
+          width: 1200,
+          height: 600,
+        },
+      ]);
       // Can't easily test the ImageRun config without deeper mocking,
       // but we verify no error was thrown
       expect(Packer.toBlob).toHaveBeenCalledTimes(1);
@@ -165,13 +203,15 @@ describe('sectionsToDocxBlob', () => {
 
     it('adds a caption when provided', async () => {
       const image = new Uint8Array([1]);
-      await sectionsToDocxBlob([{
-        type: 'image',
-        image,
-        width: 400,
-        height: 200,
-        caption: 'Figure 1',
-      }]);
+      await sectionsToDocxBlob([
+        {
+          type: 'image',
+          image,
+          width: 400,
+          height: 200,
+          caption: 'Figure 1',
+        },
+      ]);
       expect(createParagraph).toHaveBeenCalledWith('Figure 1');
     });
   });

@@ -29,8 +29,8 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { usePdfExportContext } from '../pdf/PdfExportContext';
 import ExportableInsight from '../word/ExportableInsight';
-import { useWordExportContext } from '../word/WordExportContext';
 import { useWordSection } from '../word/useWordSection';
+import { useWordExportContext } from '../word/WordExportContext';
 
 import DemographicFieldContent from './DemographicFieldContent';
 
@@ -133,7 +133,11 @@ const DemographicsSection = ({ phase }: Props) => {
       if (fields.length === 0) return [];
 
       const sections: any[] = [
-        { type: 'heading', text: formatMessage(messages.demographicsAndAudience), level: 2 },
+        {
+          type: 'heading',
+          text: formatMessage(messages.demographicsAndAudience),
+          level: 2,
+        },
       ];
 
       for (const field of fields) {
@@ -268,10 +272,7 @@ const DemographicsSection = ({ phase }: Props) => {
           {fields.slice(1).map((field, sliceIndex) => (
             <PageBreakBox key={field.field_id}>
               <Box data-export-id={`demographics-field-${sliceIndex + 1}`}>
-                <DemographicFieldContent
-                  field={field}
-                  showExportMenu={false}
-                />
+                <DemographicFieldContent field={field} showExportMenu={false} />
               </Box>
             </PageBreakBox>
           ))}

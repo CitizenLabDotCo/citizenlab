@@ -13,8 +13,9 @@ import { Box, BoxProps } from '@citizenlab/cl2-component-library';
 
 import { htmlToImageBuffer } from 'utils/word/utils/htmlToImage';
 
-import type { ExportId } from './exportRegistry';
 import { useWordExportContext } from './WordExportContext';
+
+import type { ExportId } from './exportRegistry';
 
 interface Props extends Omit<BoxProps, 'ref'> {
   exportId: ExportId;
@@ -62,7 +63,10 @@ const ExportableInsight = ({
           },
         ];
       } catch (err) {
-        console.error(`[ExportableInsight] Capture failed for "${exportId}":`, err);
+        console.error(
+          `[ExportableInsight] Capture failed for "${exportId}":`,
+          err
+        );
         return [];
       }
     };

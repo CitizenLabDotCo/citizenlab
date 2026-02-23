@@ -4,15 +4,15 @@ import { Box, Title, Text, Spinner } from '@citizenlab/cl2-component-library';
 
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 
-import IdeaCard from 'components/IdeaCard';
-
 import useLocalize from 'hooks/useLocalize';
+
+import IdeaCard from 'components/IdeaCard';
 
 import { useIntl } from 'utils/cl-intl';
 
 import ExportableInsight from '../../word/ExportableInsight';
-import { useWordSection } from '../../word/useWordSection';
 import wordMessages from '../../word/messages';
+import { useWordSection } from '../../word/useWordSection';
 import { MethodSpecificInsightProps } from '../types';
 
 import messages from './messages';
@@ -91,7 +91,11 @@ const MostLikedIdeas = ({ phaseId }: MethodSpecificInsightProps) => {
           gap="16px"
         >
           {ideas.map((idea, index) => (
-            <Box key={idea.id} data-export-id={`most-liked-idea-${index}`} pb="16px">
+            <Box
+              key={idea.id}
+              data-export-id={`most-liked-idea-${index}`}
+              pb="16px"
+            >
               <IdeaCard ideaId={idea.id} phaseId={phaseId} />
             </Box>
           ))}

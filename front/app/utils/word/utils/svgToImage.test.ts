@@ -1,4 +1,8 @@
-import { svgElementToImageBuffer, chartContainerToImageBuffer, hasSvgChart } from './svgToImage';
+import {
+  svgElementToImageBuffer,
+  chartContainerToImageBuffer,
+  hasSvgChart,
+} from './svgToImage';
 
 // Mock OffscreenCanvas for JSDOM environment
 class MockOffscreenCanvas {
@@ -20,15 +24,75 @@ class MockOffscreenCanvas {
   async convertToBlob(_options?: { type?: string }): Promise<Blob> {
     // Return a minimal valid PNG blob (1x1 white pixel)
     const pngBytes = new Uint8Array([
-      0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, // PNG signature
-      0x00, 0x00, 0x00, 0x0d, 0x49, 0x48, 0x44, 0x52, // IHDR chunk
-      0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01,
-      0x08, 0x02, 0x00, 0x00, 0x00, 0x90, 0x77, 0x53,
-      0xde, 0x00, 0x00, 0x00, 0x0c, 0x49, 0x44, 0x41, // IDAT chunk
-      0x54, 0x08, 0xd7, 0x63, 0xf8, 0xcf, 0xc0, 0x00,
-      0x00, 0x00, 0x02, 0x00, 0x01, 0xe2, 0x21, 0xbc,
-      0x33, 0x00, 0x00, 0x00, 0x00, 0x49, 0x45, 0x4e, // IEND chunk
-      0x44, 0xae, 0x42, 0x60, 0x82,
+      0x89,
+      0x50,
+      0x4e,
+      0x47,
+      0x0d,
+      0x0a,
+      0x1a,
+      0x0a, // PNG signature
+      0x00,
+      0x00,
+      0x00,
+      0x0d,
+      0x49,
+      0x48,
+      0x44,
+      0x52, // IHDR chunk
+      0x00,
+      0x00,
+      0x00,
+      0x01,
+      0x00,
+      0x00,
+      0x00,
+      0x01,
+      0x08,
+      0x02,
+      0x00,
+      0x00,
+      0x00,
+      0x90,
+      0x77,
+      0x53,
+      0xde,
+      0x00,
+      0x00,
+      0x00,
+      0x0c,
+      0x49,
+      0x44,
+      0x41, // IDAT chunk
+      0x54,
+      0x08,
+      0xd7,
+      0x63,
+      0xf8,
+      0xcf,
+      0xc0,
+      0x00,
+      0x00,
+      0x00,
+      0x02,
+      0x00,
+      0x01,
+      0xe2,
+      0x21,
+      0xbc,
+      0x33,
+      0x00,
+      0x00,
+      0x00,
+      0x00,
+      0x49,
+      0x45,
+      0x4e, // IEND chunk
+      0x44,
+      0xae,
+      0x42,
+      0x60,
+      0x82,
     ]);
     // JSDOM's Blob doesn't implement .arrayBuffer() — return a mock with it
     const blob = new Blob([pngBytes], { type: 'image/png' });
@@ -63,7 +127,17 @@ function createTestSvg(width = 400, height = 200): SVGElement {
   // JSDOM doesn't implement getBoundingClientRect for SVG
   // Override to return meaningful values
   Object.defineProperty(svg, 'getBoundingClientRect', {
-    value: () => ({ width, height, x: 0, y: 0, top: 0, left: 0, right: width, bottom: height } as DOMRect),
+    value: () =>
+      ({
+        width,
+        height,
+        x: 0,
+        y: 0,
+        top: 0,
+        left: 0,
+        right: width,
+        bottom: height,
+      } as DOMRect),
     configurable: true,
   });
 
@@ -113,7 +187,9 @@ describe('svgToImage', () => {
       onerror: ((err: any) => void) | null = null;
       private _src = '';
 
-      get src() { return this._src; }
+      get src() {
+        return this._src;
+      }
       set src(value: string) {
         this._src = value;
         // Simulate async image load
@@ -123,9 +199,7 @@ describe('svgToImage', () => {
   });
 
   afterEach(() => {
-    if (originalOffscreenCanvas !== undefined) {
-      (global as any).OffscreenCanvas = originalOffscreenCanvas;
-    }
+    (global as any).OffscreenCanvas = originalOffscreenCanvas;
     URL.createObjectURL = originalCreateObjectURL;
     URL.revokeObjectURL = originalRevokeObjectURL;
     (global as any).Image = originalImage;
@@ -149,9 +223,9 @@ describe('svgToImage', () => {
 
     it('creates canvas at the correct scaled dimensions', async () => {
       const svg = createTestSvg(400, 200);
-      const MockOffscreenCanvasSpy = jest.fn().mockImplementation(
-        (w, h) => new MockOffscreenCanvas(w, h)
-      );
+      const MockOffscreenCanvasSpy = jest
+        .fn()
+        .mockImplementation((w, h) => new MockOffscreenCanvas(w, h));
       (global as any).OffscreenCanvas = MockOffscreenCanvasSpy;
 
       await svgElementToImageBuffer(svg, { scale: 3 });
@@ -163,7 +237,7 @@ describe('svgToImage', () => {
       const svg = createTestSvg(100, 100);
       const serialized: string[] = [];
       const origSerialize = XMLSerializer.prototype.serializeToString;
-      XMLSerializer.prototype.serializeToString = function(node) {
+      XMLSerializer.prototype.serializeToString = function (node) {
         const result = origSerialize.call(this, node);
         serialized.push(result);
         return result;
@@ -179,7 +253,9 @@ describe('svgToImage', () => {
     it('handles minimum 1x1 size for empty SVGs', async () => {
       const svg = createTestSvg(0, 0);
       // Should not throw
-      await expect(svgElementToImageBuffer(svg)).resolves.toBeInstanceOf(Uint8Array);
+      await expect(svgElementToImageBuffer(svg)).resolves.toBeInstanceOf(
+        Uint8Array
+      );
     });
   });
 

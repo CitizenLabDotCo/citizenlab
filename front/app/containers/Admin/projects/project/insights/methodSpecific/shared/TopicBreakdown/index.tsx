@@ -12,9 +12,9 @@ import { ParticipationMethod } from 'api/phases/types';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
 import ExportableInsight from '../../../word/ExportableInsight';
 import { useWordSection } from '../../../word/useWordSection';
+import messages from '../messages';
 
 import AiTopicsAccordion from './AiTopicsAccordion';
 import AiUpsellBanner from './AiUpsellBanner';
@@ -40,7 +40,7 @@ const TopicBreakdown = ({ phaseId, participationMethod }: Props) => {
   } = useTopicBreakdownData({ phaseId, participationMethod });
 
   // Native Word breakdown table — sorted by count
-  const allTopics = [...(aiTopics ?? []), ...(manualTopics ?? [])].sort(
+  const allTopics = [...aiTopics, ...manualTopics].sort(
     (a, b) => b.count - a.count
   );
   useWordSection(

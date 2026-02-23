@@ -116,10 +116,7 @@ export async function chartContainerToImageBuffer(
  *
  * Only inlines properties that differ from SVG defaults to keep the output clean.
  */
-function inlineComputedStyles(
-  source: Element,
-  target: Element
-): void {
+function inlineComputedStyles(source: Element, target: Element): void {
   // Properties we care about for chart rendering
   const STYLE_PROPERTIES = [
     'fill',
@@ -151,9 +148,7 @@ function inlineComputedStyles(
   const sourceChildren = source.children;
   const targetChildren = target.children;
   for (let i = 0; i < sourceChildren.length; i++) {
-    if (targetChildren[i]) {
-      inlineComputedStyles(sourceChildren[i], targetChildren[i]);
-    }
+    inlineComputedStyles(sourceChildren[i], targetChildren[i]);
   }
 }
 

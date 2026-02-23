@@ -28,8 +28,9 @@
  */
 import { useEffect, useRef, useCallback } from 'react';
 
-import type { ExportId } from './exportRegistry';
 import { useWordExportContext } from './WordExportContext';
+
+import type { ExportId } from './exportRegistry';
 
 /**
  * Unified section type for the Word document schema.
@@ -49,7 +50,12 @@ export type WordSection =
   | { type: 'table'; rows: string[][]; columnWidths?: number[] }
   | {
       type: 'breakdown';
-      items: Array<{ name: string; count: number; color?: string; percentage?: number }>;
+      items: Array<{
+        name: string;
+        count: number;
+        color?: string;
+        percentage?: number;
+      }>;
       title?: string;
     }
   | { type: 'spacer'; size?: 'small' | 'medium' | 'large' }

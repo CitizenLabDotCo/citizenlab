@@ -7,8 +7,6 @@ import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { sanitizeForClassname } from 'utils/JSONFormUtils';
-
 import Input from 'components/HookForm/Input';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import LocationInput from 'components/HookForm/LocationInput';
@@ -19,6 +17,7 @@ import { FormLabel } from 'components/UI/FormComponents';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import CheckboxField from './Fields/CheckboxField';
 import CosponsorsField from './Fields/CosponsorsField';

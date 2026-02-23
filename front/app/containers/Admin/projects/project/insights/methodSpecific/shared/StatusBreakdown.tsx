@@ -12,6 +12,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import ExportableInsight from '../../word/ExportableInsight';
 import { useWordSection } from '../../word/useWordSection';
+
 import DistributionBar from './DistributionBar';
 import messages from './messages';
 

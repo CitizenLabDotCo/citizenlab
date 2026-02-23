@@ -1,7 +1,7 @@
 import React from 'react';
 
-import useSurveyResults from 'api/survey_results/useSurveyResults';
 import usePhase from 'api/phases/usePhase';
+import useSurveyResults from 'api/survey_results/useSurveyResults';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -10,9 +10,9 @@ import SurveyResultsPdfExport from 'components/admin/FormResults/PdfExport/Surve
 
 import { useIntl } from 'utils/cl-intl';
 
-import { createSurveyResultsSection } from '../../word/insightConverters/surveyResultsConverter';
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
 import ExportableInsight from '../../word/ExportableInsight';
+import { createSurveyResultsSection } from '../../word/insightConverters/surveyResultsConverter';
 import { useWordSection } from '../../word/useWordSection';
 
 interface Props {

@@ -8,9 +8,9 @@ import { IPhaseData } from 'api/phases/types';
 import { useIntl } from 'utils/cl-intl';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
-import { useWordSection } from '../word/useWordSection';
 import messages from '../messages';
 import wordMessages from '../word/messages';
+import { useWordSection } from '../word/useWordSection';
 
 import MethodMetrics from './MethodMetrics';
 import MetricCard from './MetricCard';
@@ -44,13 +44,15 @@ const ParticipationMetrics = ({ phase }: Props) => {
       // directly in the renderer via a raw docx section type.
       // TODO: Migrate metricsConverter to return WordSection[] in a follow-up.
       // For now, use a simple table representation.
-      const rows: string[][] = [[
-        formatMessage(wordMessages.metric),
-        formatMessage(wordMessages.value),
-      ]];
+      const rows: string[][] = [
+        [formatMessage(wordMessages.metric), formatMessage(wordMessages.value)],
+      ];
 
       rows.push([formatMessage(messages.visitors), String(metrics.visitors)]);
-      rows.push([formatMessage(messages.participants), String(metrics.participants)]);
+      rows.push([
+        formatMessage(messages.participants),
+        String(metrics.participants),
+      ]);
 
       if (typeof metrics.participation_rate_as_percent === 'number') {
         rows.push([
@@ -60,25 +62,51 @@ const ParticipationMetrics = ({ phase }: Props) => {
       }
 
       if (metrics.ideation) {
-        rows.push([formatMessage(messages.ideasPosted), String(metrics.ideation.ideas_posted)]);
-        rows.push([formatMessage(wordMessages.commentsPosted), String(metrics.ideation.comments_posted)]);
-        rows.push([formatMessage(messages.reactions), String(metrics.ideation.reactions)]);
+        rows.push([
+          formatMessage(messages.ideasPosted),
+          String(metrics.ideation.ideas_posted),
+        ]);
+        rows.push([
+          formatMessage(wordMessages.commentsPosted),
+          String(metrics.ideation.comments_posted),
+        ]);
+        rows.push([
+          formatMessage(messages.reactions),
+          String(metrics.ideation.reactions),
+        ]);
       }
 
       if (metrics.native_survey) {
-        rows.push([formatMessage(wordMessages.surveysSubmitted), String(metrics.native_survey.surveys_submitted)]);
-        if (typeof metrics.native_survey.completion_rate_as_percent === 'number') {
-          rows.push([formatMessage(messages.completionRate), `${metrics.native_survey.completion_rate_as_percent.toFixed(1)}%`]);
+        rows.push([
+          formatMessage(wordMessages.surveysSubmitted),
+          String(metrics.native_survey.surveys_submitted),
+        ]);
+        if (
+          typeof metrics.native_survey.completion_rate_as_percent === 'number'
+        ) {
+          rows.push([
+            formatMessage(messages.completionRate),
+            `${metrics.native_survey.completion_rate_as_percent.toFixed(1)}%`,
+          ]);
         }
       }
 
       if (metrics.voting) {
-        rows.push([formatMessage(messages.voters), String(metrics.voting.voters)]);
-        rows.push([formatMessage(messages.votes), String(metrics.voting.online_votes + metrics.voting.offline_votes)]);
+        rows.push([
+          formatMessage(messages.voters),
+          String(metrics.voting.voters),
+        ]);
+        rows.push([
+          formatMessage(messages.votes),
+          String(metrics.voting.online_votes + metrics.voting.offline_votes),
+        ]);
       }
 
       if (metrics.proposals) {
-        rows.push([formatMessage(wordMessages.proposalsPosted), String(metrics.proposals.ideas_posted)]);
+        rows.push([
+          formatMessage(wordMessages.proposalsPosted),
+          String(metrics.proposals.ideas_posted),
+        ]);
       }
 
       return [{ type: 'table', rows, columnWidths: [60, 40] }];
@@ -88,15 +116,27 @@ const ParticipationMetrics = ({ phase }: Props) => {
 
   if (isLoading) {
     return (
-      <Box display="flex" flexWrap="wrap" alignContent="center" gap="24px" flexGrow={1}>
+      <Box
+        display="flex"
+        flexWrap="wrap"
+        alignContent="center"
+        gap="24px"
+        flexGrow={1}
+      >
         <Spinner size="24px" />
       </Box>
     );
   }
 
-  if (error || !response) {
+  if (!response) {
     return (
-      <Box display="flex" flexWrap="wrap" alignContent="center" gap="24px" flexGrow={1}>
+      <Box
+        display="flex"
+        flexWrap="wrap"
+        alignContent="center"
+        gap="24px"
+        flexGrow={1}
+      >
         <Text color="error">{formatMessage(messages.errorLoadingMetrics)}</Text>
       </Box>
     );
@@ -110,13 +150,19 @@ const ParticipationMetrics = ({ phase }: Props) => {
         label={formatMessage(messages.visitors)}
         value={metrics!.visitors}
         icon="user-circle"
-        change={isCurrentPhase ? metrics!.visitors_7_day_percent_change : undefined}
+        change={
+          isCurrentPhase ? metrics!.visitors_7_day_percent_change : undefined
+        }
       />
       <MetricCard
         label={formatMessage(messages.participants)}
         value={metrics!.participants}
         icon="sidebar-users"
-        change={isCurrentPhase ? metrics!.participants_7_day_percent_change : undefined}
+        change={
+          isCurrentPhase
+            ? metrics!.participants_7_day_percent_change
+            : undefined
+        }
         labelTooltip={formatMessage(messages.phaseParticipantsMetricTooltip2)}
       />
       <MethodMetrics
@@ -137,12 +183,20 @@ const ParticipationMetrics = ({ phase }: Props) => {
               })
         }
         icon="chart-bar"
-        change={isCurrentPhase ? metrics!.participation_rate_7_day_percent_change : undefined}
-        labelTooltip={formatMessage(messages.participationRateExplanationTooltip)}
+        change={
+          isCurrentPhase
+            ? metrics!.participation_rate_7_day_percent_change
+            : undefined
+        }
+        labelTooltip={formatMessage(
+          messages.participationRateExplanationTooltip
+        )}
         valueTooltip={
           participation_rate_as_percent ===
           'participant_count_compared_with_zero_visitors'
-            ? formatMessage(messages.cannotCalculateParticipationRateZeroVisitors)
+            ? formatMessage(
+                messages.cannotCalculateParticipationRateZeroVisitors
+              )
             : undefined
         }
       />

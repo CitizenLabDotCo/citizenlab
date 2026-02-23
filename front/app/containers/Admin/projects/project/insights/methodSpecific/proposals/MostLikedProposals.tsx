@@ -4,9 +4,9 @@ import { Box, Title, Text, Spinner } from '@citizenlab/cl2-component-library';
 
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 
-import IdeaCard from 'components/IdeaCard';
-
 import useLocalize from 'hooks/useLocalize';
+
+import IdeaCard from 'components/IdeaCard';
 
 import { useIntl } from 'utils/cl-intl';
 

@@ -202,20 +202,16 @@ export default function useInsightsWordDownload({
         );
 
         // Demographics Section - prefer per-field images, fall back to single image, then data tables
-        const demographicFieldKeys = Array.from(
-          capturedImages?.keys() || []
-        )
+        const demographicFieldKeys = Array.from(capturedImages?.keys() || [])
           .filter((key) => key.startsWith('demographics-field-'))
           .sort((a, b) => {
-            const ai = parseInt(a.replace('demographics-field-', ''));
-            const bi = parseInt(b.replace('demographics-field-', ''));
+            const ai = parseInt(a.replace('demographics-field-', ''), 10);
+            const bi = parseInt(b.replace('demographics-field-', ''), 10);
             return ai - bi;
           });
 
         if (demographicFieldKeys.length > 0) {
-          children.push(
-            createHeading(formatMessage(messages.demographics), 2)
-          );
+          children.push(createHeading(formatMessage(messages.demographics), 2));
           for (const key of demographicFieldKeys) {
             const imageData = capturedImages?.get(key);
             if (!imageData) continue;
@@ -418,20 +414,16 @@ export default function useInsightsWordDownload({
               ? messages.mostLikedProposals
               : messages.mostLikedIdeas;
 
-          const mostLikedKeys = Array.from(
-            capturedImages?.keys() || []
-          )
+          const mostLikedKeys = Array.from(capturedImages?.keys() || [])
             .filter((key) => key.startsWith(mostLikedPrefix))
             .sort((a, b) => {
-              const ai = parseInt(a.replace(mostLikedPrefix, ''));
-              const bi = parseInt(b.replace(mostLikedPrefix, ''));
+              const ai = parseInt(a.replace(mostLikedPrefix, ''), 10);
+              const bi = parseInt(b.replace(mostLikedPrefix, ''), 10);
               return ai - bi;
             });
 
           if (mostLikedKeys.length > 0) {
-            children.push(
-              createHeading(formatMessage(mostLikedHeading), 2)
-            );
+            children.push(createHeading(formatMessage(mostLikedHeading), 2));
             for (const key of mostLikedKeys) {
               const imageData = capturedImages?.get(key);
               if (!imageData) continue;
