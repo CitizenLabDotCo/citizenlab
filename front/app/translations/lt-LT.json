@@ -148,7 +148,6 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Siųskite šį kodą į mano el. paštą",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Pateikimo identifikatorius",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Sukurkite paskyrą arba prisijunkite",
-  "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountToFollow": "Sukurkite paskyrą, kad galėtumėte sekti, kas vyksta toliau, ir dalyvauti kituose pokalbiuose.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Gaukite naujienas, kai bus imtasi tolesnių veiksmų",
   "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Dalyvaukite diskusijose, jei jūsų informacija dalijamasi viešai",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "Dalyvaukite kituose projektuose ir pokalbiuose",
