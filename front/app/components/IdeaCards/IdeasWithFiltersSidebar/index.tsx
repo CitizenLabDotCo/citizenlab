@@ -18,6 +18,7 @@ import { IdeaQueryParameters } from 'api/ideas/types';
 import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import { PresentationMode, IdeaSortMethod, InputTerm } from 'api/phases/types';
+import usePhase from 'api/phases/usePhase';
 
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
@@ -113,6 +114,8 @@ const IdeasWithFiltersSidebar = ({
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteIdeas(ideaQueryParameters);
+
+  const { data: phase } = usePhase(phaseId);
 
   const list = data?.pages.map((page) => page.data).flat();
   const { data: ideasFilterCounts } = useIdeasFilterCounts(ideaQueryParameters);
@@ -213,8 +216,7 @@ const IdeasWithFiltersSidebar = ({
         <ViewButtons
           selectedView={selectedView}
           onClick={setSelectedView}
-          locationEnabled={locationEnabled}
-          defaultView={defaultView}
+          availableViews={phase?.data.attributes.available_views}
         />
       </Box>
 
