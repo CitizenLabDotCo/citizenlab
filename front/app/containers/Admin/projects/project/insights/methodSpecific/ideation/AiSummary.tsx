@@ -31,6 +31,7 @@ import clHistory from 'utils/cl-router/history';
 
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
 import ExportableInsight from '../../word/ExportableInsight';
+import { useWordSection } from '../../word/useWordSection';
 
 import messages from './messages';
 
@@ -154,6 +155,30 @@ const AiSummary = ({ phaseId, participationMethod }: Props) => {
     largeSummariesAllowed,
   ]);
 
+  const summary = summaryData?.data.attributes.summary;
+  const isReady = !!(summaryData && analysisId && summary);
+
+  // Register native Word serializer — AI summary as editable HTML paragraphs
+  useWordSection(
+    'ai-summary',
+    () => {
+      if (!summary) return [];
+      return [
+        { type: 'heading', text: formatMessage(messages.whatArePeopleSaying), level: 2 },
+        { type: 'html', html: summary },
+      ];
+    },
+    {
+      skip:
+        isLoadingAnalyses ||
+        isLoadingInsights ||
+        isCreatingAnalysis ||
+        isPreChecking ||
+        isAddingSummary ||
+        !isReady,
+    }
+  );
+
   const handleRefresh = () => {
     if (analysisId && summaryId) {
       regenerateSummary({ analysisId, summaryId });
@@ -170,63 +195,72 @@ const AiSummary = ({ phaseId, participationMethod }: Props) => {
 
   if (isLoadingAnalyses || isLoadingInsights || isCreatingAnalysis) {
     return (
-      <Box p="24px" bg="white" borderRadius="3px">
-        <Box display="flex" alignItems="center" gap="8px">
-          <Spinner size="24px" />
-          <Text m="0">{formatMessage(messages.loading)}</Text>
+      <ExportableInsight exportId="ai-summary" skipExport>
+        <Box p="24px" bg="white" borderRadius="3px">
+          <Box display="flex" alignItems="center" gap="8px">
+            <Spinner size="24px" />
+            <Text m="0">{formatMessage(messages.loading)}</Text>
+          </Box>
         </Box>
-      </Box>
+      </ExportableInsight>
     );
   }
 
   if (inputCount < MIN_INPUTS_FOR_SUMMARY) {
     return (
-      <Box
-        pt="8px"
-        pb="24px"
-        px="24px"
-        bgColor="rgba(4, 77, 108, 0.05)"
-        borderRadius="4px"
-        borderLeft={`3px solid ${colors.primary}`}
-        display="flex"
-        flexDirection="column"
-      >
-        <Title variant="h3" m="0" mb="16px">
-          {formatMessage(messages.whatArePeopleSaying)}
-        </Title>
+      <ExportableInsight exportId="ai-summary" skipExport>
         <Box
-          p="24px"
-          bgColor="white"
-          borderRadius="8px"
-          boxShadow="0px 1px 2px 0px rgba(0,0,0,0.05)"
+          pt="8px"
+          pb="24px"
+          px="24px"
+          bgColor="rgba(4, 77, 108, 0.05)"
+          borderRadius="4px"
+          borderLeft={`3px solid ${colors.primary}`}
+          display="flex"
+          flexDirection="column"
         >
-          <Text m="0" color="textSecondary">
-            {formatMessage(messages.notEnoughInputs, {
-              minInputs: MIN_INPUTS_FOR_SUMMARY,
-              count: inputCount,
-            })}
-          </Text>
+          <Title variant="h3" m="0" mb="16px">
+            {formatMessage(messages.whatArePeopleSaying)}
+          </Title>
+          <Box
+            p="24px"
+            bgColor="white"
+            borderRadius="8px"
+            boxShadow="0px 1px 2px 0px rgba(0,0,0,0.05)"
+          >
+            <Text m="0" color="textSecondary">
+              {formatMessage(messages.notEnoughInputs, {
+                minInputs: MIN_INPUTS_FOR_SUMMARY,
+                count: inputCount,
+              })}
+            </Text>
+          </Box>
         </Box>
-      </Box>
+      </ExportableInsight>
     );
   }
 
   if (isPreChecking || isAddingSummary) {
     return (
-      <Box p="24px" bg="white" borderRadius="3px">
-        <Box display="flex" alignItems="center" gap="8px">
-          <Spinner size="24px" />
-          <Text m="0">{formatMessage(messages.generatingSummary)}</Text>
+      <ExportableInsight exportId="ai-summary" skipExport>
+        <Box p="24px" bg="white" borderRadius="3px">
+          <Box display="flex" alignItems="center" gap="8px">
+            <Spinner size="24px" />
+            <Text m="0">{formatMessage(messages.generatingSummary)}</Text>
+          </Box>
         </Box>
-      </Box>
+      </ExportableInsight>
     );
   }
 
   if (!summaryData || !analysisId) {
-    return null;
+    return (
+      <ExportableInsight exportId="ai-summary" skipExport>
+        <Box />
+      </ExportableInsight>
+    );
   }
 
-  const summary = summaryData.data.attributes.summary;
   const filters = summaryData.data.attributes.filters;
   const backgroundTaskId =
     summaryData.data.relationships.background_task.data.id;
