@@ -169,4 +169,21 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.word.commonGroundResults',
     defaultMessage: 'Common Ground Results',
   },
+  exportPreparing: {
+    id: 'app.containers.Admin.projects.project.insights.word.exportPreparing',
+    defaultMessage: 'Preparing export...',
+  },
+  exportCapturing: {
+    id: 'app.containers.Admin.projects.project.insights.word.exportCapturing',
+    defaultMessage: 'Capturing {completed}/{total} components...',
+  },
+  exportGenerating: {
+    id: 'app.containers.Admin.projects.project.insights.word.exportGenerating',
+    defaultMessage: 'Generating document...',
+  },
+  exportCaptureWarning: {
+    id: 'app.containers.Admin.projects.project.insights.word.exportCaptureWarning',
+    defaultMessage:
+      'Some sections could not be captured and may be missing from the document.',
+  },
 });
