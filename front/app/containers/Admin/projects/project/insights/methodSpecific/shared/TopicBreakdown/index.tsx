@@ -14,6 +14,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 import ExportableInsight from '../../../word/ExportableInsight';
+import { useWordSection } from '../../../word/useWordSection';
 
 import AiTopicsAccordion from './AiTopicsAccordion';
 import AiUpsellBanner from './AiUpsellBanner';
@@ -38,19 +39,44 @@ const TopicBreakdown = ({ phaseId, participationMethod }: Props) => {
     isLoading,
   } = useTopicBreakdownData({ phaseId, participationMethod });
 
+  // Native Word breakdown table — sorted by count
+  const allTopics = [...(aiTopics ?? []), ...(manualTopics ?? [])].sort(
+    (a, b) => b.count - a.count
+  );
+  useWordSection(
+    'topic-breakdown',
+    () => {
+      if (allTopics.length === 0) return [];
+      return [
+        {
+          type: 'breakdown',
+          items: allTopics.map((t) => ({
+            name: t.name,
+            count: t.count,
+            percentage: t.percentage,
+          })),
+          title: formatMessage(messages.topicBreakdown),
+        },
+      ];
+    },
+    { skip: isLoading || allTopics.length === 0 }
+  );
+
   if (isLoading) {
     return (
-      <Box
-        bgColor="white"
-        borderRadius="8px"
-        p="24px"
-        boxShadow="0px 1px 2px 0px rgba(0,0,0,0.05)"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Spinner size="24px" />
-      </Box>
+      <ExportableInsight exportId="topic-breakdown" skipExport>
+        <Box
+          bgColor="white"
+          borderRadius="8px"
+          p="24px"
+          boxShadow="0px 1px 2px 0px rgba(0,0,0,0.05)"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner size="24px" />
+        </Box>
+      </ExportableInsight>
     );
   }
 
