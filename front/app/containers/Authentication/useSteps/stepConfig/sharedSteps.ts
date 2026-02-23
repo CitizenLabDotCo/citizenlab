@@ -5,7 +5,7 @@ import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
-import { clearClaimTokens, getClaimTokens } from 'utils/claimToken';
+import { clearClaimToken, getClaimTokens } from 'utils/claimToken';
 
 import {
   GetRequirements,
@@ -57,7 +57,7 @@ export const sharedSteps = (
 
       // When the user returns from SSO
       RESUME_FLOW_AFTER_SSO: async (flow: 'signup' | 'signin') => {
-        clearClaimTokens();
+        clearClaimToken();
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 

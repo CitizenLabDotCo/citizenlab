@@ -9,7 +9,7 @@ export const storeClaimToken = (token: string, expiryDate: string) => {
   claimToken = { token, expiryDate };
 };
 
-export const clearClaimTokens = () => {
+export const clearClaimToken = () => {
   claimToken = null;
 };
 
