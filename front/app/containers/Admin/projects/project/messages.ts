@@ -349,16 +349,20 @@ export default defineMessages({
   mapViewDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.mapViewDescription',
     defaultMessage:
-      'Displays inputs as pins on a map. Best for: location-based consultations, urban planning, infrastructure feedback. Make sure you add a location field to the {inputFormLink}.',
+      'Displays inputs as pins on a map. Make sure you add a location field to the {inputFormLink}. Best for: location-based consultations, urban planning, infrastructure feedback.',
   },
   feedViewTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.feedViewTitle',
     defaultMessage: 'Perspectives view',
   },
   feedViewDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.feedViewDescription',
+    id: 'app.containers.AdminPage.ProjectEdit.feedViewDescription2',
     defaultMessage:
-      'Participants explore the discussion via emerging topics, and AI surfaces representative voices and bridges between perspectives. Best for: Large-scale consultations, finding common ground, avoiding echo chambers.',
+      'Participants explore the discussion via emerging topics. AI surfaces representative voices and bridges between perspectives if you enable the Perspectives toggle in the {inputTagsLink}. Best for: Large-scale consultations, finding common ground, avoiding echo chambers.',
+  },
+  inputTagsPageLink: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputTagsPageLink',
+    defaultMessage: 'Input Tags page',
   },
   makeDefault: {
     id: 'app.containers.AdminPage.ProjectEdit.makeDefault',

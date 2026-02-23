@@ -64,6 +64,13 @@ const ViewSelector = ({
     </a>
   );
 
+  const inputTagsUrl = `/admin/projects/${projectId}/general/input-tags`;
+  const inputTagsLink = (
+    <a href={inputTagsUrl} target="_blank" rel="noreferrer">
+      <FormattedMessage {...messages.inputTagsPageLink} />
+    </a>
+  );
+
   const viewOptions: ViewOption[] = [
     {
       value: 'card',
@@ -83,6 +90,7 @@ const ViewSelector = ({
             value: 'feed' as const,
             title: messages.feedViewTitle,
             description: messages.feedViewDescription,
+            descriptionValues: { inputTagsLink },
           },
         ]
       : []),
