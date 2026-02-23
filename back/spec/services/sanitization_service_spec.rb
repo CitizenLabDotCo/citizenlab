@@ -113,6 +113,16 @@ describe SanitizationService do
       expect(service.sanitize(input, features)).to eq input
     end
 
+    it 'allows image alt and title attributes to pass through when image feature is enabled' do
+      input = <<~HTML
+        <p>
+          <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="A description" title="Image title" width="313" height="160">
+        </p>
+      HTML
+      features = [:image]
+      expect(service.sanitize(input, features)).to eq input
+    end
+
     it 'disallows images to pass through when image feature is disabled' do
       input = <<~HTML
         <p>
