@@ -34,7 +34,7 @@ const PostParticipationBox = ({
         <FormattedMessage {...messages.stayConnected} />
       </Title>
       <Text mb="12px">
-        <FormattedMessage {...messages.createAnAccountToFollow} />
+        <FormattedMessage {...messages.createOrLinkAnAccountToFollow} />
       </Text>
       <Box display="flex" flexDirection="column" gap="8px">
         <BulletPoint iconName="notification" message={messages.getUpdates} />

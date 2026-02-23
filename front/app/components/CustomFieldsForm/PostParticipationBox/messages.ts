@@ -5,10 +5,10 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.PostParticipationBox.stayConnected',
     defaultMessage: 'Stay connected',
   },
-  createAnAccountToFollow: {
-    id: 'app.components.CustomFieldsForm.PostParticipationBox.createAnAccountToFollow',
+  createOrLinkAnAccountToFollow: {
+    id: 'app.components.CustomFieldsForm.PostParticipationBox.createOrLinkAnAccountToFollow',
     defaultMessage:
-      'Create an account to follow what happens next and take part in other conversations.',
+      'Create or link an existing account to follow what happens next and take part in other conversations.',
   },
   createAnAccountOrLogIn: {
     id: 'app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn',
