@@ -30,6 +30,7 @@ import messages from '../messages';
 import { usePdfExportContext } from '../pdf/PdfExportContext';
 import ExportableInsight from '../word/ExportableInsight';
 import { useWordExportContext } from '../word/WordExportContext';
+import { useWordSection } from '../word/useWordSection';
 
 import DemographicFieldContent from './DemographicFieldContent';
 
@@ -121,6 +122,36 @@ const DemographicsSection = ({ phase }: Props) => {
   const fields = useMemo(
     () => demographicsData?.fields || [],
     [demographicsData]
+  );
+
+  // Native Word serializer — one breakdown table per demographic field
+  // No DOM capture needed: data comes directly from the API response.
+  // This eliminates the opacity:0 DOM hack that the old html2canvas approach required.
+  useWordSection(
+    'demographics',
+    () => {
+      if (fields.length === 0) return [];
+
+      const sections: any[] = [
+        { type: 'heading', text: formatMessage(messages.demographicsAndAudience), level: 2 },
+      ];
+
+      for (const field of fields) {
+        if (field.data_points.length === 0) continue;
+        sections.push({
+          type: 'breakdown',
+          title: field.field_name,
+          items: field.data_points.map((dp) => ({
+            name: dp.label,
+            count: dp.count,
+            percentage: dp.percentage,
+          })),
+        });
+      }
+
+      return sections;
+    },
+    { skip: isLoading || !!error || fields.length === 0 }
   );
 
   // Hide demographics when private attributes export is disabled
@@ -225,16 +256,23 @@ const DemographicsSection = ({ phase }: Props) => {
                   {formatMessage(messages.demographicsAndAudience)}
                 </Text>
               </Box>
-              <DemographicFieldContent
-                field={fields[0]}
-                showExportMenu={false}
-              />
+              <Box data-export-id="demographics-field-0">
+                <DemographicFieldContent
+                  field={fields[0]}
+                  showExportMenu={false}
+                />
+              </Box>
             </Box>
           </PageBreakBox>
 
-          {fields.slice(1).map((field) => (
+          {fields.slice(1).map((field, sliceIndex) => (
             <PageBreakBox key={field.field_id}>
-              <DemographicFieldContent field={field} showExportMenu={false} />
+              <Box data-export-id={`demographics-field-${sliceIndex + 1}`}>
+                <DemographicFieldContent
+                  field={field}
+                  showExportMenu={false}
+                />
+              </Box>
             </PageBreakBox>
           ))}
         </Box>
@@ -283,6 +321,7 @@ const DemographicsSection = ({ phase }: Props) => {
             return (
               <Box
                 key={field.field_id}
+                data-export-id={`demographics-field-${index}`}
                 position={isSelected ? 'relative' : 'absolute'}
                 top={isSelected ? undefined : '0'}
                 left={isSelected ? undefined : '0'}
