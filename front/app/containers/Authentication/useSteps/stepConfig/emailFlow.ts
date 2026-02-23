@@ -62,10 +62,18 @@ export const emailFlow = (
 
     'email:policies': {
       CLOSE: () => setCurrentStep('closed'),
-      ACCEPT_POLICIES: async (email: string, locale: SupportedLocale) => {
+      ACCEPT_POLICIES: async (
+        email: string,
+        locale: SupportedLocale,
+        claimTokens?: string[]
+      ) => {
         updateState({ email });
 
-        const result = await createEmailOnlyAccount({ email, locale });
+        const result = await createEmailOnlyAccount({
+          email,
+          locale,
+          claimTokens,
+        });
 
         if (result === 'account_created_successfully') {
           if (userConfirmationEnabled) {
@@ -108,10 +116,17 @@ export const emailFlow = (
         email: string,
         password: string,
         rememberMe: boolean,
-        tokenLifetime: number
+        tokenLifetime: number,
+        claimTokens?: string[]
       ) => {
         updateState({ email });
-        await signIn({ email, password, rememberMe, tokenLifetime });
+        await signIn({
+          email,
+          password,
+          rememberMe,
+          tokenLifetime,
+          claimTokens,
+        });
 
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
