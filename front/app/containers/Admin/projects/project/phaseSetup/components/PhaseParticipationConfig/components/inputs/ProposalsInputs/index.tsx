@@ -3,7 +3,12 @@ import React from 'react';
 import { Input, IOption } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
-import { IdeaSortMethod, InputTerm, PrescreeningMode } from 'api/phases/types';
+import {
+  IdeaSortMethod,
+  InputTerm,
+  PresentationMode,
+  PrescreeningMode,
+} from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -48,7 +53,12 @@ interface Props {
     allow_anonymous_participation: boolean
   ) => void;
   presentation_mode: 'card' | 'map' | 'feed' | null | undefined;
+  available_views: PresentationMode[] | null | undefined;
   handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
+  handleAvailableViewsChange: (
+    available_views: PresentationMode[],
+    presentation_mode?: PresentationMode
+  ) => void;
   ideas_order: IdeaSortMethod | undefined;
   handleIdeaDefaultSortMethodChange: (ideas_order: IdeaSortMethod) => void;
   handleDaysLimitChange: (limit: string) => void;
@@ -88,7 +98,9 @@ const ProposalsInputs = ({
   handleLikingLimitOnChange,
   handleAllowAnonymousParticipationOnChange,
   presentation_mode,
+  available_views,
   handleIdeasDisplayChange,
+  handleAvailableViewsChange,
   ideas_order,
   handleIdeaDefaultSortMethodChange,
   handleDaysLimitChange,
@@ -184,8 +196,10 @@ const ProposalsInputs = ({
 
       <DefaultViewPicker
         presentation_mode={presentation_mode}
+        available_views={available_views}
         apiErrors={apiErrors}
         handleIdeasDisplayChange={handleIdeasDisplayChange}
+        handleAvailableViewsChange={handleAvailableViewsChange}
       />
 
       <SortingPicker

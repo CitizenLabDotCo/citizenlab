@@ -329,6 +329,49 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.feedDisplay',
     defaultMessage: 'Feed',
   },
+  availableViews: {
+    id: 'app.containers.AdminPage.ProjectEdit.availableViews',
+    defaultMessage: 'Available views',
+  },
+  listViewTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.listViewTitle',
+    defaultMessage: 'List view',
+  },
+  listViewDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.listViewDescription',
+    defaultMessage:
+      'Traditional threaded discussion. Best for: smaller discussions, when you want engagement metrics to drive visibility.',
+  },
+  mapViewTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.mapViewTitle',
+    defaultMessage: 'Map view',
+  },
+  mapViewDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.mapViewDescription',
+    defaultMessage:
+      'Displays inputs as pins on a map. Best for: location-based consultations, urban planning, infrastructure feedback. Make sure you add a location field to the {inputFormLink}.',
+  },
+  feedViewTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.feedViewTitle',
+    defaultMessage: 'Perspectives view',
+  },
+  feedViewDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.feedViewDescription',
+    defaultMessage:
+      'Participants explore the discussion via emerging topics, and AI surfaces representative voices and bridges between perspectives. Best for: Large-scale consultations, finding common ground, avoiding echo chambers.',
+  },
+  makeDefault: {
+    id: 'app.containers.AdminPage.ProjectEdit.makeDefault',
+    defaultMessage: 'Make default',
+  },
+  defaultLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.defaultLabel',
+    defaultMessage: 'Default',
+  },
+  listViewCannotBeDisabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled',
+    defaultMessage: 'List view is always available and cannot be disabled.',
+  },
   trendingSortingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.trendingSortingMethod',
     defaultMessage: 'Trending',

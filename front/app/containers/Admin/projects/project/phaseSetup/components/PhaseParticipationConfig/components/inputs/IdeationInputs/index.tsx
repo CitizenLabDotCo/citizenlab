@@ -65,7 +65,12 @@ interface Props {
     allow_anonymous_participation: boolean
   ) => void;
   presentation_mode: PresentationMode | null | undefined;
+  available_views: PresentationMode[] | null | undefined;
   handleIdeasDisplayChange: (presentation_mode: PresentationMode) => void;
+  handleAvailableViewsChange: (
+    available_views: PresentationMode[],
+    presentation_mode?: PresentationMode
+  ) => void;
   ideas_order: IdeaSortMethod | undefined;
   handleIdeaDefaultSortMethodChange: (ideas_order: IdeaSortMethod) => void;
   prescreening_mode: PrescreeningMode | null | undefined;
@@ -103,7 +108,9 @@ const IdeationInputs = ({
   handleReactingDislikeEnabledOnChange,
   handleAllowAnonymousParticipationOnChange,
   presentation_mode,
+  available_views,
   handleIdeasDisplayChange,
+  handleAvailableViewsChange,
   ideas_order,
   handleIdeaDefaultSortMethodChange,
   prescreening_mode,
@@ -243,8 +250,10 @@ const IdeationInputs = ({
 
       <DefaultViewPicker
         presentation_mode={presentation_mode}
+        available_views={available_views}
         apiErrors={apiErrors}
         handleIdeasDisplayChange={handleIdeasDisplayChange}
+        handleAvailableViewsChange={handleAvailableViewsChange}
       />
 
       <SortingPicker
