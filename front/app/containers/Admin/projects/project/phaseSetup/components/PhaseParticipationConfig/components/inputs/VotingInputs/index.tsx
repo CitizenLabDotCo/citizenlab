@@ -27,7 +27,7 @@ import Link from 'utils/cl-router/Link';
 
 import messages from '../../../../../../messages';
 import { ValidationErrors } from '../../../../../typings';
-import DefaultViewPicker from '../../shared/DefaultViewPicker';
+import ViewSelector from '../../shared/ViewSelector';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import { ToggleRow } from '../../shared/styling';
 
@@ -278,7 +278,7 @@ const VotingInputs = ({
           handleThresholdChange={handleThresholdChange}
         />
 
-        <DefaultViewPicker
+        <ViewSelector
           presentation_mode={presentation_mode}
           available_views={available_views}
           apiErrors={apiErrors}

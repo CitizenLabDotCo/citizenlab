@@ -20,7 +20,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
-import DefaultViewPicker from '../../shared/DefaultViewPicker';
+import ViewSelector from '../../shared/ViewSelector';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import PrescreeningModeSelector from '../_shared/PrescreeningModeSelector';
 import SortingPicker from '../_shared/SortingPicker';
@@ -194,7 +194,7 @@ const ProposalsInputs = ({
         handleThresholdChange={handleThresholdChange}
       />
 
-      <DefaultViewPicker
+      <ViewSelector
         presentation_mode={presentation_mode}
         available_views={available_views}
         apiErrors={apiErrors}

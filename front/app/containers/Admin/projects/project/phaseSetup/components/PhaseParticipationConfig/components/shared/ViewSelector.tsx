@@ -40,7 +40,7 @@ interface Props {
   title?: MessageDescriptor;
 }
 
-const DefaultViewPicker = ({
+const ViewSelector = ({
   presentation_mode,
   available_views,
   apiErrors,
@@ -182,4 +182,4 @@ const DefaultViewPicker = ({
   );
 };
 
-export default DefaultViewPicker;
+export default ViewSelector;
