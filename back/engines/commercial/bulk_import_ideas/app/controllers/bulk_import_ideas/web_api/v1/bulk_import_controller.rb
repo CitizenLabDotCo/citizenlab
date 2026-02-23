@@ -191,22 +191,22 @@ module BulkImportIdeas
       ).call
       elapsed_ms = ((Process.clock_gettime(Process::CLOCK_MONOTONIC) - start_time) * 1000).round
 
+      # Strip markdown code fences and extract JSON array
+      cleaned = model_response
+        .gsub(/^```(?:json)?\s*\n?/i, '')
+        .gsub(/\n?```\s*$/, '')
       parsed = begin
-        json_str = model_response[/\[.*\]/m]
+        json_str = cleaned[/\[.*\]/m]
         json_str ? JSON.parse(json_str) : nil
       rescue JSON::ParserError
         nil
-      end
-
-      accuracy = if parsed
-        FormsyncAccuracyService.new(benchmark[:ground_truth], parsed).calculate
       end
 
       render json: {
         model: params[:model],
         model_response: model_response,
         parsed_response: parsed,
-        accuracy: accuracy,
+        ground_truth: benchmark[:ground_truth],
         response_time_ms: elapsed_ms
       }
     end

@@ -21,6 +21,11 @@ import useFormsyncBenchmarks, {
 import AccuracyReport from './components/AccuracyReport';
 import QuestionDiff from './components/QuestionDiff';
 import { MODEL_OPTIONS } from './TestTab';
+import {
+  calculateAccuracy,
+  Overrides,
+  AccuracyResult,
+} from './utils/calculateAccuracy';
 
 const SelectInput = styled.select`
   width: 100%;
@@ -64,11 +69,22 @@ const EvaluateTab = ({ initialBenchmarkId, initialBenchmarkLocale }: Props) => {
     useState<BenchmarkSummary | null>(null);
   const [selectedModel, setSelectedModel] = useState('gpt_41');
   const [result, setResult] = useState<EvaluationResult | null>(null);
+  const [overrides, setOverrides] = useState<Overrides>({});
 
   const benchmarks = useMemo(
     () => benchmarksData?.benchmarks ?? [],
     [benchmarksData]
   );
+
+  // Calculate accuracy on the frontend, recalculates when overrides change
+  const accuracy: AccuracyResult | null = useMemo(() => {
+    if (!result || !result.parsed_response) return null;
+    return calculateAccuracy(
+      result.ground_truth,
+      result.parsed_response,
+      overrides
+    );
+  }, [result, overrides]);
 
   // Auto-select benchmark from Library tab
   const initialized = useRef(false);
@@ -106,6 +122,7 @@ const EvaluateTab = ({ initialBenchmarkId, initialBenchmarkLocale }: Props) => {
     if (!selectedBenchmark) return;
 
     try {
+      setOverrides({});
       const evalResult = await evaluate({
         id: selectedBenchmark.id,
         locale: selectedBenchmark.locale,
@@ -115,6 +132,13 @@ const EvaluateTab = ({ initialBenchmarkId, initialBenchmarkLocale }: Props) => {
     } catch {
       // Error handled by mutation
     }
+  };
+
+  const handleApprove = (questionId: string, field: string) => {
+    setOverrides((prev) => ({
+      ...prev,
+      [`${questionId}:${field}`]: true,
+    }));
   };
 
   if (loadingBenchmarks) {
@@ -132,7 +156,7 @@ const EvaluateTab = ({ initialBenchmarkId, initialBenchmarkLocale }: Props) => {
           No benchmarks available.
         </Text>
         <Text color="textSecondary" mt="8px">
-          Save a benchmark from the Test tab first.
+          Save a benchmark from the Import tab first.
         </Text>
       </Box>
     );
@@ -204,11 +228,18 @@ const EvaluateTab = ({ initialBenchmarkId, initialBenchmarkLocale }: Props) => {
             </Text>
           </Title>
 
-          {result.accuracy ? (
+          {accuracy ? (
             <Box>
-              <AccuracyReport accuracy={result.accuracy} />
+              <AccuracyReport
+                accuracy={accuracy}
+                hasOverrides={Object.keys(overrides).length > 0}
+              />
               <Box mt="32px">
-                <QuestionDiff questions={result.accuracy.by_question} />
+                <QuestionDiff
+                  questions={accuracy.by_question}
+                  overrides={overrides}
+                  onApprove={handleApprove}
+                />
               </Box>
             </Box>
           ) : (

@@ -49,12 +49,16 @@ module BulkImportIdeas
 
         Do not attempt to interpret or summarize the responses. Ignore any text that does not appear handwritten. Do not fill in any missing answers.
 
+        You MUST include ALL questions from the form, even if they have no answer. For unanswered questions, set the "answer" to null. Never skip a question just because it is blank.
+
+        Include the full question text exactly as it appears on the form, including any annotations like "(optional)".
+
         The language used in the form is #{@locale}.
 
         For each question found in the form, return a JSON object with the following attributes:
-        - "id": sequential number starting from 1
+        - "id": the question number as printed on the form (e.g. "1", "2", "3"). If a question is a follow-up or sub-question without its own number (e.g. "If Other, please specify"), use the parent question's number with a letter suffix (e.g. "6a", "6b"). If no number is printed, use the position as a string.
         - "type": the type of question. Use one of: "text", "multiline_text", "select", "multiselect", "checkbox", "linear_scale", "rating", "sentiment_linear_scale", "ranking", "matrix_linear_scale"
-        - "text": the question text as it appears on the form
+        - "text": the main question title only. Do not include any subtitle, description, helper text, or instructions that appear below the title (e.g. "select all that apply", "Choose as many as you like"). Include annotations that are part of the title itself like "(optional)".
         - "options": (only for select, multiselect, ranking) array of option texts
         - "matrix_statements": (only for matrix_linear_scale) array of statement texts
         - "labels": (only for matrix_linear_scale) array of scale labels from left to right

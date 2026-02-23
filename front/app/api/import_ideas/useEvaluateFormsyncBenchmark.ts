@@ -11,34 +11,12 @@ interface EvaluateParams {
   model: string;
 }
 
-interface QuestionResult {
-  id: number;
-  type: string;
-  text: string;
-  fields: Record<string, number>;
-  score: number;
-  matched: boolean;
-  ground_truth: Record<string, any>;
-  model_output: Record<string, any> | null;
-}
-
-interface TypeResult {
-  score: number;
-  count: number;
-}
-
 export interface EvaluationResult {
   model: string;
   model_response: string;
   parsed_response: Record<string, any>[] | null;
+  ground_truth: Record<string, any>[];
   response_time_ms: number;
-  accuracy: {
-    overall_score: number;
-    total_fields: number;
-    matched_fields: number;
-    by_question: QuestionResult[];
-    by_type: Record<string, TypeResult>;
-  } | null;
 }
 
 const evaluateBenchmark = async ({
