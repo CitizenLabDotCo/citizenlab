@@ -48,15 +48,19 @@ export const configureMapView = (
   if (initialData?.showZoomControls === false || isMobileOrSmaller) {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const zoom = mapView.ui?.find('zoom');
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    mapView.ui?.remove(zoom);
+    if (zoom) {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      mapView.ui?.remove(zoom);
+    }
   } else if (initialData?.zoomWidgetLocation === 'right') {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     const zoom = mapView.ui?.find('zoom');
 
     // Note: Incorrect type from ArcGIS API, ui might be null.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    mapView.ui?.add(zoom, 'top-right');
+    if (zoom) {
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      mapView.ui?.add(zoom, 'top-right');
+    }
   }
 
   // Add fullscreen widget if set
