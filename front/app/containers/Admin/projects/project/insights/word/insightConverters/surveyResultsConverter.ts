@@ -1,7 +1,11 @@
 import { Table, Paragraph } from 'docx';
+import { MessageDescriptor } from 'react-intl';
 
 import type { ResultUngrouped } from 'api/survey_results/types';
 
+import type { Localize } from 'hooks/useLocalize';
+
+import { FormatMessageValues } from 'utils/cl-intl/useIntl';
 import { createSimpleTable } from 'utils/word/converters/tableConverter';
 import {
   createHeading,
@@ -10,7 +14,14 @@ import {
 
 import messages from '../messages';
 
-import type { WordExportIntl } from './types';
+export interface WordExportIntl {
+  formatMessage: (
+    descriptor: MessageDescriptor,
+    values?: FormatMessageValues
+  ) => string;
+  locale: string;
+  localize: Localize;
+}
 
 /**
  * Groups results by page number.
