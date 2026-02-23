@@ -41,7 +41,6 @@ const FormResults = ({ projectId, phaseId }: Props) => {
       <Box mt="24px">
         {totalSubmissions > 0 &&
           results.map((result, index) => {
-            const exportId = `survey-results-item-${index}`;
             if (result.inputType === 'page') {
               return (
                 <FormResultsPage
@@ -49,7 +48,6 @@ const FormResults = ({ projectId, phaseId }: Props) => {
                   result={result}
                   totalSubmissions={totalSubmissions}
                   logicConfig={logicConfig}
-                  exportId={exportId}
                 />
               );
             } else {
@@ -60,7 +58,6 @@ const FormResults = ({ projectId, phaseId }: Props) => {
                   totalSubmissions={totalSubmissions}
                   logicConfig={logicConfig}
                   isPdfExport={false}
-                  exportId={exportId}
                 />
               );
             }

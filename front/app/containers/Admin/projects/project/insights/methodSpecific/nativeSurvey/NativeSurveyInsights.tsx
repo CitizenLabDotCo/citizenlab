@@ -6,7 +6,6 @@ import FormResults from 'components/admin/FormResults';
 import SurveyResultsPdfExport from 'components/admin/FormResults/PdfExport/SurveyResultsPdfExport';
 
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
-import ExportableInsight from '../../word/ExportableInsight';
 
 interface Props {
   phaseId: string;
@@ -25,17 +24,11 @@ const NativeSurveyInsights = ({ phaseId }: Props) => {
 
   if (isPdfRenderMode) {
     return (
-      <ExportableInsight exportId="survey-results">
-        <SurveyResultsPdfExport projectId={projectId} phaseId={phaseDataId} />
-      </ExportableInsight>
+      <SurveyResultsPdfExport projectId={projectId} phaseId={phaseDataId} />
     );
   }
 
-  return (
-    <ExportableInsight exportId="survey-results">
-      <FormResults projectId={projectId} phaseId={phaseDataId} />
-    </ExportableInsight>
-  );
+  return <FormResults projectId={projectId} phaseId={phaseDataId} />;
 };
 
 export default NativeSurveyInsights;

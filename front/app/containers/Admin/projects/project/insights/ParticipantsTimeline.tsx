@@ -12,7 +12,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import { usePdfExportContext } from './pdf/PdfExportContext';
-import ExportableInsight from './word/ExportableInsight';
 
 interface Props {
   phaseId: string;
@@ -89,8 +88,7 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
         />
       </Box>
 
-      <ExportableInsight
-        exportId="participation-timeline"
+      <Box
         height={isPdfRenderMode ? `${PDF_CHART_HEIGHT}px` : '249px'}
         width={isPdfRenderMode ? `${PDF_CHART_WIDTH}px` : undefined}
       >
@@ -103,7 +101,7 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
           innerRef={graphRef}
           isAnimationActive={!isPdfRenderMode}
         />
-      </ExportableInsight>
+      </Box>
     </Box>
   );
 };

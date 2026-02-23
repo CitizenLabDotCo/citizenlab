@@ -3,6 +3,7 @@ import React, { useMemo, useState } from 'react';
 import {
   Box,
   Text,
+  Title,
   Spinner,
   colors,
   fontSizes,
@@ -28,8 +29,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 import { usePdfExportContext } from '../pdf/PdfExportContext';
-import ExportableInsight from '../word/ExportableInsight';
-import { useWordExportContext } from '../word/WordExportContext';
 
 import DemographicFieldContent from './DemographicFieldContent';
 
@@ -87,7 +86,6 @@ interface Props {
 const DemographicsSection = ({ phase }: Props) => {
   const { formatMessage } = useIntl();
   const { isPdfRenderMode } = usePdfExportContext();
-  const { isDownloading } = useWordExportContext();
   const localize = useLocalize();
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(0);
   const { data: appConfiguration } = useAppConfiguration();
@@ -122,6 +120,7 @@ const DemographicsSection = ({ phase }: Props) => {
     () => demographicsData?.fields || [],
     [demographicsData]
   );
+  const selectedField = fields[selectedFieldIndex];
 
   // Hide demographics when private attributes export is disabled
   if (!privateAttributesInExport) {
@@ -130,120 +129,72 @@ const DemographicsSection = ({ phase }: Props) => {
 
   if (isLoading) {
     return (
-      <ExportableInsight exportId="demographics">
-        <Box
-          background="white"
-          borderRadius="8px"
-          display="flex"
-          flexDirection="column"
-          gap="24px"
-        >
-          <Box display="flex" alignItems="center" gap="8px">
-            <Text fontSize="m" fontWeight="bold" m="0px">
-              {formatMessage(messages.demographicsAndAudience)}
-            </Text>
-          </Box>
-          <Box display="flex" alignItems="center" gap="8px">
-            <Spinner size="24px" />
-            <Text color="textSecondary" m="0">
-              {formatMessage(messages.loadingDemographics)}
-            </Text>
-          </Box>
+      <Box
+        background="white"
+        borderRadius="8px"
+        display="flex"
+        flexDirection="column"
+        gap="24px"
+      >
+        <Box display="flex" alignItems="center" gap="8px">
+          <Title variant="h3" m="0">
+            {formatMessage(messages.demographicsAndAudience)}
+          </Title>
         </Box>
-      </ExportableInsight>
+        <Box display="flex" alignItems="center" gap="8px">
+          <Spinner size="24px" />
+          <Text color="textSecondary" m="0">
+            {formatMessage(messages.loadingDemographics)}
+          </Text>
+        </Box>
+      </Box>
     );
   }
 
   if (error) {
     return (
-      <ExportableInsight exportId="demographics">
-        <Box
-          background="white"
-          borderRadius="8px"
-          display="flex"
-          flexDirection="column"
-          gap="24px"
-        >
-          <Box display="flex" alignItems="center" gap="8px">
-            <Text fontSize="m" fontWeight="bold" m="0px">
-              {formatMessage(messages.demographicsAndAudience)}
-            </Text>
-          </Box>
-          <Text color="error">
-            {formatMessage(messages.errorLoadingDemographics)}
-          </Text>
+      <Box
+        background="white"
+        borderRadius="8px"
+        display="flex"
+        flexDirection="column"
+        gap="24px"
+      >
+        <Box display="flex" alignItems="center" gap="8px">
+          <Title variant="h3" m="0">
+            {formatMessage(messages.demographicsAndAudience)}
+          </Title>
         </Box>
-      </ExportableInsight>
+        <Text color="error">
+          {formatMessage(messages.errorLoadingDemographics)}
+        </Text>
+      </Box>
     );
   }
 
   if (fields.length === 0) {
     return (
-      <ExportableInsight exportId="demographics">
-        <Box
-          background="white"
-          borderRadius="8px"
-          display="flex"
-          flexDirection="column"
-          gap="24px"
-        >
-          <Box display="flex" alignItems="center" gap="8px">
-            <Text fontSize="m" fontWeight="bold" m="0px">
-              {formatMessage(messages.demographicsAndAudience)}
-            </Text>
-          </Box>
-          <Text color="textSecondary">
-            {formatMessage(messages.noDemographicData)}
-          </Text>
+      <Box
+        background="white"
+        borderRadius="8px"
+        display="flex"
+        flexDirection="column"
+        gap="24px"
+      >
+        <Box display="flex" alignItems="center" gap="8px">
+          <Title variant="h3" m="0">
+            {formatMessage(messages.demographicsAndAudience)}
+          </Title>
         </Box>
-      </ExportableInsight>
+        <Text color="textSecondary">
+          {formatMessage(messages.noDemographicData)}
+        </Text>
+      </Box>
     );
   }
 
-  const renderAllFields = isPdfRenderMode || isDownloading;
-
-  if (renderAllFields) {
+  if (isPdfRenderMode) {
     return (
-      <ExportableInsight exportId="demographics">
-        <Box
-          background="white"
-          borderRadius="8px"
-          display="flex"
-          flexDirection="column"
-          gap="24px"
-          role="region"
-          aria-label={formatMessage(messages.demographicsAndAudience)}
-        >
-          <PageBreakBox>
-            <Box display="flex" flexDirection="column" gap="24px">
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Text fontSize="m" fontWeight="bold" m="0px">
-                  {formatMessage(messages.demographicsAndAudience)}
-                </Text>
-              </Box>
-              <DemographicFieldContent
-                field={fields[0]}
-                showExportMenu={false}
-              />
-            </Box>
-          </PageBreakBox>
-
-          {fields.slice(1).map((field) => (
-            <PageBreakBox key={field.field_id}>
-              <DemographicFieldContent field={field} showExportMenu={false} />
-            </PageBreakBox>
-          ))}
-        </Box>
-      </ExportableInsight>
-    );
-  }
-
-  return (
-    <ExportableInsight exportId="demographics">
       <Box
         background="white"
         borderRadius="8px"
@@ -252,57 +203,64 @@ const DemographicsSection = ({ phase }: Props) => {
         gap="24px"
         role="region"
         aria-label={formatMessage(messages.demographicsAndAudience)}
-        position="relative"
       >
-        <Box display="flex" alignItems="center" justifyContent="space-between">
-          <Text fontSize="m" fontWeight="bold" m="0px">
-            {formatMessage(messages.demographicsAndAudience)}
-          </Text>
-        </Box>
-
-        <TabsContainer data-pdf-exclude="true">
-          {fields.map((field, index) => (
-            <TabButton
-              key={field.field_id}
-              active={selectedFieldIndex === index}
-              onClick={() => setSelectedFieldIndex(index)}
-              type="button"
-              aria-selected={selectedFieldIndex === index}
-              role="tab"
+        <PageBreakBox>
+          <Box display="flex" flexDirection="column" gap="24px">
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
             >
-              {field.field_name}
-            </TabButton>
-          ))}
-        </TabsContainer>
+              <Title variant="h3" m="0">
+                {formatMessage(messages.demographicsAndAudience)}
+              </Title>
+            </Box>
+            <DemographicFieldContent field={fields[0]} showExportMenu={false} />
+          </Box>
+        </PageBreakBox>
 
-        {/* Render all fields for Word export capture, but only show the selected one */}
-        {/* Non-selected fields use opacity: 0 so html2canvas can still capture them */}
-        <Box position="relative">
-          {fields.map((field, index) => {
-            const isSelected = index === selectedFieldIndex;
-            return (
-              <Box
-                key={field.field_id}
-                position={isSelected ? 'relative' : 'absolute'}
-                top={isSelected ? undefined : '0'}
-                left={isSelected ? undefined : '0'}
-                width="100%"
-                style={{
-                  opacity: isSelected ? 1 : 0,
-                  pointerEvents: isSelected ? 'auto' : 'none',
-                }}
-                aria-hidden={!isSelected}
-              >
-                <DemographicFieldContent
-                  field={field}
-                  showExportMenu={isSelected}
-                />
-              </Box>
-            );
-          })}
-        </Box>
+        {fields.slice(1).map((field) => (
+          <PageBreakBox key={field.field_id}>
+            <DemographicFieldContent field={field} showExportMenu={false} />
+          </PageBreakBox>
+        ))}
       </Box>
-    </ExportableInsight>
+    );
+  }
+
+  return (
+    <Box
+      background="white"
+      borderRadius="8px"
+      display="flex"
+      flexDirection="column"
+      gap="24px"
+      role="region"
+      aria-label={formatMessage(messages.demographicsAndAudience)}
+    >
+      <Box display="flex" alignItems="center" justifyContent="space-between">
+        <Title variant="h3" m="0">
+          {formatMessage(messages.demographicsAndAudience)}
+        </Title>
+      </Box>
+
+      <TabsContainer data-pdf-exclude="true">
+        {fields.map((field, index) => (
+          <TabButton
+            key={field.field_id}
+            active={selectedFieldIndex === index}
+            onClick={() => setSelectedFieldIndex(index)}
+            type="button"
+            aria-selected={selectedFieldIndex === index}
+            role="tab"
+          >
+            {field.field_name}
+          </TabButton>
+        ))}
+      </TabsContainer>
+
+      <DemographicFieldContent field={selectedField} showExportMenu={true} />
+    </Box>
   );
 };
 

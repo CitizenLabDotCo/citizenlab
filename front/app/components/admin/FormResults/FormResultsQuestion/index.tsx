@@ -34,7 +34,6 @@ type FormResultsQuestionProps = {
   totalSubmissions: number;
   logicConfig: LogicConfig;
   isPdfExport?: boolean;
-  exportId?: string;
 };
 
 const FormResultsQuestion = ({
@@ -42,7 +41,6 @@ const FormResultsQuestion = ({
   totalSubmissions,
   logicConfig,
   isPdfExport,
-  exportId,
 }: FormResultsQuestionProps) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -73,7 +71,6 @@ const FormResultsQuestion = ({
 
   const content = (
     <Box
-      data-export-id={exportId}
       border={isPdfExport ? 'none' : '1px solid #e0e0e0'}
       borderRadius="4px"
       p="10px 20px 10px 20px"

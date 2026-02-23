@@ -8,7 +8,6 @@ import { IPhaseData } from 'api/phases/types';
 import { useIntl } from 'utils/cl-intl';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
-import ExportableInsight from '../word/ExportableInsight';
 import messages from '../messages';
 
 import MethodMetrics from './MethodMetrics';
@@ -64,66 +63,62 @@ const ParticipationMetrics = ({ phase }: Props) => {
   const { participation_rate_as_percent } = metrics;
 
   return (
-    <ExportableInsight exportId="participation-metrics">
-      <Box display="flex" flexWrap="wrap" gap="16px" w="100%">
-        <MetricCard
-          label={formatMessage(messages.visitors)}
-          value={metrics.visitors}
-          icon="user-circle"
-          change={
-            isCurrentPhase ? metrics.visitors_7_day_percent_change : undefined
-          }
-        />
-        <MetricCard
-          label={formatMessage(messages.participants)}
-          value={metrics.participants}
-          icon="sidebar-users"
-          change={
-            isCurrentPhase
-              ? metrics.participants_7_day_percent_change
-              : undefined
-          }
-          labelTooltip={formatMessage(messages.phaseParticipantsMetricTooltip2)}
-        />
+    <Box display="flex" flexWrap="wrap" gap="16px" w="100%">
+      <MetricCard
+        label={formatMessage(messages.visitors)}
+        value={metrics.visitors}
+        icon="user-circle"
+        change={
+          isCurrentPhase ? metrics.visitors_7_day_percent_change : undefined
+        }
+      />
+      <MetricCard
+        label={formatMessage(messages.participants)}
+        value={metrics.participants}
+        icon="sidebar-users"
+        change={
+          isCurrentPhase ? metrics.participants_7_day_percent_change : undefined
+        }
+        labelTooltip={formatMessage(messages.phaseParticipantsMetricTooltip2)}
+      />
 
-        <MethodMetrics
-          participationMethod={participation_method}
-          metrics={metrics}
-          showChange={isCurrentPhase}
-        />
+      <MethodMetrics
+        participationMethod={participation_method}
+        metrics={metrics}
+        showChange={isCurrentPhase}
+      />
 
-        <MetricCard
-          label={formatMessage(messages.participationRate)}
-          value={
-            participation_rate_as_percent ===
-            'participant_count_compared_with_zero_visitors'
-              ? '-'
-              : formatNumber(participation_rate_as_percent / 100, {
-                  style: 'percent',
-                  minimumFractionDigits: 1,
-                  maximumFractionDigits: 1,
-                })
-          }
-          icon="chart-bar"
-          change={
-            isCurrentPhase
-              ? metrics.participation_rate_7_day_percent_change
-              : undefined
-          }
-          labelTooltip={formatMessage(
-            messages.participationRateExplanationTooltip
-          )}
-          valueTooltip={
-            participation_rate_as_percent ===
-            'participant_count_compared_with_zero_visitors'
-              ? formatMessage(
-                  messages.cannotCalculateParticipationRateZeroVisitors
-                )
-              : undefined
-          }
-        />
-      </Box>
-    </ExportableInsight>
+      <MetricCard
+        label={formatMessage(messages.participationRate)}
+        value={
+          participation_rate_as_percent ===
+          'participant_count_compared_with_zero_visitors'
+            ? '-'
+            : formatNumber(participation_rate_as_percent / 100, {
+                style: 'percent',
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 1,
+              })
+        }
+        icon="chart-bar"
+        change={
+          isCurrentPhase
+            ? metrics.participation_rate_7_day_percent_change
+            : undefined
+        }
+        labelTooltip={formatMessage(
+          messages.participationRateExplanationTooltip
+        )}
+        valueTooltip={
+          participation_rate_as_percent ===
+          'participant_count_compared_with_zero_visitors'
+            ? formatMessage(
+                messages.cannotCalculateParticipationRateZeroVisitors
+              )
+            : undefined
+        }
+      />
+    </Box>
   );
 };
 

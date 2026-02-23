@@ -35,7 +35,6 @@ import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 
 import messages from '../../messages';
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
-import { useWordExportContext } from '../../word/WordExportContext';
 
 interface Props {
   phase: IPhaseData;
@@ -49,8 +48,6 @@ const SurveyActions = ({ phase }: Props) => {
 
   const { downloadPdf, isDownloading: isDownloadingPdf } =
     usePdfExportContext();
-  const { downloadWord, isDownloading: isDownloadingWord } =
-    useWordExportContext();
 
   const { data: project } = useProjectById(projectId);
   const { mutate: updatePhase } = useUpdatePhase();
@@ -182,7 +179,7 @@ const SurveyActions = ({ phase }: Props) => {
   return (
     <>
       <Box display="flex" alignItems="center" gap="8px" data-pdf-exclude="true">
-        {(isDownloadingXlsx || isDownloadingPdf || isDownloadingWord) && <Spinner size="24px" />}
+        {(isDownloadingXlsx || isDownloadingPdf) && <Spinner size="24px" />}
         <Box position="relative">
           <Button
             icon="dots-horizontal"
@@ -214,17 +211,6 @@ const SurveyActions = ({ phase }: Props) => {
                   <Icon name="download" fill={colors.coolGrey600} mr="8px" />
                   <Text my="0px">
                     {formatMessage(messages.downloadInsightsPdf)}
-                  </Text>
-                </DropdownListItem>
-                <DropdownListItem
-                  onClick={() => {
-                    setDropdownOpened(false);
-                    downloadWord();
-                  }}
-                >
-                  <Icon name="download" fill={colors.coolGrey600} mr="8px" />
-                  <Text my="0px">
-                    {formatMessage(messages.downloadWord)}
                   </Text>
                 </DropdownListItem>
                 <DropdownListItem
