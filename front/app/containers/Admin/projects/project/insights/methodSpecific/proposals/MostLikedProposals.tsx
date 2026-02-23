@@ -6,9 +6,13 @@ import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 
 import IdeaCard from 'components/IdeaCard';
 
+import useLocalize from 'hooks/useLocalize';
+
 import { useIntl } from 'utils/cl-intl';
 
 import ExportableInsight from '../../word/ExportableInsight';
+import wordMessages from '../../word/messages';
+import { useWordSection } from '../../word/useWordSection';
 import { MethodSpecificInsightProps } from '../types';
 
 import messages from './messages';
@@ -17,6 +21,7 @@ const NUMBER_OF_PROPOSALS = 5;
 
 const MostLikedProposals = ({ phaseId }: MethodSpecificInsightProps) => {
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
 
   const { data: proposalsData, isLoading } = useInfiniteIdeas({
     phase: phaseId,
@@ -26,23 +31,51 @@ const MostLikedProposals = ({ phaseId }: MethodSpecificInsightProps) => {
 
   const proposals = proposalsData?.pages[0]?.data ?? [];
 
+  // Native Word table: proposal title + vote count
+  useWordSection(
+    'most-liked-proposals',
+    () => {
+      if (proposals.length === 0) return [];
+
+      const rows: string[][] = [
+        [formatMessage(messages.mostLiked), formatMessage(wordMessages.likes)],
+        ...proposals.map((proposal) => [
+          localize(proposal.attributes.title_multiloc),
+          String(proposal.attributes.likes_count),
+        ]),
+      ];
+
+      return [
+        { type: 'heading', text: formatMessage(messages.mostLiked), level: 2 },
+        { type: 'table', rows, columnWidths: [80, 20] },
+      ];
+    },
+    { skip: isLoading || proposals.length === 0 }
+  );
+
   if (isLoading) {
     return (
-      <Box
-        p="24px"
-        bg="white"
-        borderRadius="3px"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Spinner size="24px" />
-      </Box>
+      <ExportableInsight exportId="most-liked-proposals" skipExport>
+        <Box
+          p="24px"
+          bg="white"
+          borderRadius="3px"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Spinner size="24px" />
+        </Box>
+      </ExportableInsight>
     );
   }
 
   if (proposals.length === 0) {
-    return null;
+    return (
+      <ExportableInsight exportId="most-liked-proposals" skipExport>
+        <Box />
+      </ExportableInsight>
+    );
   }
 
   return (
@@ -61,8 +94,12 @@ const MostLikedProposals = ({ phaseId }: MethodSpecificInsightProps) => {
           flexDirection="column"
           gap="16px"
         >
-          {proposals.map((proposal) => (
-            <Box key={proposal.id} pb="16px">
+          {proposals.map((proposal, index) => (
+            <Box
+              key={proposal.id}
+              data-export-id={`most-liked-proposal-${index}`}
+              pb="16px"
+            >
               <IdeaCard ideaId={proposal.id} phaseId={phaseId} />
             </Box>
           ))}
