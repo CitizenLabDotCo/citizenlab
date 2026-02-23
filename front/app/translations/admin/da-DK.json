@@ -2360,7 +2360,7 @@
   "app.containers.AdminPage.ProjectEdit.eventsTab": "Begivenheder",
   "app.containers.AdminPage.ProjectEdit.feedDisplay": "Feed",
   "app.containers.AdminPage.ProjectEdit.feedViewDescription2": "Deltagerne udforsker diskussionen via nye emner. AI får repræsentative stemmer frem og bygger bro mellem perspektiver, hvis du aktiverer Perspectives toggle på {inputTagsLink}. Bedst til: Store konsultationer, finde fælles fodslag, undgå ekkokamre.",
-  "app.containers.AdminPage.ProjectEdit.feedViewTitle": "Udsigt til perspektiver",
+  "app.containers.AdminPage.ProjectEdit.feedViewTitle": "Visning af perspektiver",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabel": "Vedhæftede filer (maks. 50 MB)",
   "app.containers.AdminPage.ProjectEdit.fileUploadLabelTooltip": "Filer bør ikke være større end 50 Mb. Tilføjede filer vil blive vist på projektinformationssiden.",
   "app.containers.AdminPage.ProjectEdit.filesTab2": "360 Input",
