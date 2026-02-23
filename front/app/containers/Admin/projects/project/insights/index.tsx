@@ -33,6 +33,7 @@ import ParticipationMetrics from './participationMetrics/ParticipationMetrics';
 import InsightsPdfContent from './pdf/InsightsPdfContent';
 import { PdfExportProvider, usePdfExportContext } from './pdf/PdfExportContext';
 import ExportValidation from './word/ExportValidation';
+import wordMessages from './word/messages';
 import {
   WordExportProvider,
   useWordExportContext,
@@ -90,11 +91,31 @@ const InsightsContent = () => {
   const {
     downloadWord,
     isDownloading: isDownloadingWord,
+    exportStatus,
+    exportProgress,
+    allComponentsReady,
     error: wordError,
+    captureWarnings,
   } = useWordExportContext();
 
   const isDownloading = isDownloadingPdf || isDownloadingWord;
   const exportError = pdfError || wordError;
+
+  const getExportStatusText = () => {
+    switch (exportStatus) {
+      case 'preparing':
+        return formatMessage(wordMessages.exportPreparing);
+      case 'capturing':
+        return formatMessage(wordMessages.exportCapturing, {
+          completed: exportProgress.completed,
+          total: exportProgress.total,
+        });
+      case 'generating':
+        return formatMessage(wordMessages.exportGenerating);
+      default:
+        return null;
+    }
+  };
 
   const toggleDropdown = (value?: boolean) => () => {
     setDropdownOpened(value ?? !dropdownOpened);
@@ -203,6 +224,7 @@ const InsightsContent = () => {
                       icon="download"
                       onClick={toggleDropdown()}
                       processing={isDownloading}
+                      disabled={!allComponentsReady && !isDownloading}
                       aria-label={formatMessage(messages.downloadInsightsPdf)}
                     >
                       <FormattedMessage {...messages.download} />
@@ -251,9 +273,19 @@ const InsightsContent = () => {
                     </Button>
                   )}
                 </Box>
+                {isDownloadingWord && getExportStatusText() && (
+                  <Text fontSize="s" color="textSecondary" m="0px">
+                    {getExportStatusText()}
+                  </Text>
+                )}
                 {exportError && (
                   <Text fontSize="s" color="error" m="0px">
                     {formatMessage(messages.errorPdfDownload)}
+                  </Text>
+                )}
+                {captureWarnings.length > 0 && !isDownloading && (
+                  <Text fontSize="s" color="orange500" m="0px">
+                    {formatMessage(wordMessages.exportCaptureWarning)}
                   </Text>
                 )}
               </Box>
@@ -319,9 +351,14 @@ const AdminPhaseInsights = () => {
     .replace(/\s+/g, '-')
     .toLowerCase();
 
+  const participationMethod = phase?.data.attributes.participation_method;
+
   return (
     <PdfExportProvider filename={sanitizedPhaseName}>
-      <WordExportProvider filename={sanitizedPhaseName}>
+      <WordExportProvider
+        filename={sanitizedPhaseName}
+        participationMethod={participationMethod}
+      >
         <InsightsContent />
         <ExportValidation />
       </WordExportProvider>
