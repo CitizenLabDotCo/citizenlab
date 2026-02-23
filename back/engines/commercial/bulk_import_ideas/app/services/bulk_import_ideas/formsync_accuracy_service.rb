@@ -57,6 +57,22 @@ module BulkImportIdeas
       end
     end
 
+    # Try exact match first, then fall back to substring containment
+    def find_model_question(gt_text)
+      gt_norm = normalize(gt_text)
+
+      # Exact match
+      return @model_by_text[gt_norm] if @model_by_text.key?(gt_norm)
+
+      # Substring: ground truth is contained in model text, or vice versa
+      @model_by_text.each_value do |q|
+        model_norm = normalize(q['text'])
+        return q if model_norm.include?(gt_norm) || gt_norm.include?(model_norm)
+      end
+
+      nil
+    end
+
     def compare_question(gt_q)
       unless gt_q.is_a?(Hash)
         return { id: nil, type: nil, text: gt_q.to_s, fields: {}, score: 0.0,
@@ -65,7 +81,7 @@ module BulkImportIdeas
 
       gt_id = gt_q['id']&.to_i
       gt_text = gt_q['text']
-      model_q = gt_text.present? ? @model_by_text[normalize(gt_text)] : nil
+      model_q = gt_text.present? ? find_model_question(gt_text) : nil
 
       fields = {}
 

@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { EvaluationResult } from 'api/import_ideas/useEvaluateFormsyncBenchmark';
+import { AccuracyResult } from '../utils/calculateAccuracy';
 
 const ScoreBar = styled.div<{ width: number; color: string }>`
   height: 8px;
@@ -56,10 +56,11 @@ const getScoreColor = (score: number) => {
 };
 
 interface Props {
-  accuracy: NonNullable<EvaluationResult['accuracy']>;
+  accuracy: AccuracyResult;
+  hasOverrides: boolean;
 }
 
-const AccuracyReport = ({ accuracy }: Props) => {
+const AccuracyReport = ({ accuracy, hasOverrides }: Props) => {
   const pct = Math.round(accuracy.overall_score * 100);
   const scoreColor = getScoreColor(accuracy.overall_score);
 
@@ -74,6 +75,17 @@ const AccuracyReport = ({ accuracy }: Props) => {
         <Box>
           <Text fontWeight="bold" fontSize="l">
             Overall Accuracy
+            {hasOverrides && (
+              <Text
+                as="span"
+                fontSize="s"
+                color="textSecondary"
+                fontWeight="normal"
+                ml="8px"
+              >
+                (with manual approvals)
+              </Text>
+            )}
           </Text>
           <Text color="textSecondary">
             {accuracy.matched_fields} / {accuracy.total_fields} fields matched

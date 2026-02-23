@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import { EvaluationResult } from 'api/import_ideas/useEvaluateFormsyncBenchmark';
+import { QuestionComparison, Overrides } from '../utils/calculateAccuracy';
 
 const Card = styled.div`
   border: 1px solid ${colors.grey300};
@@ -59,21 +59,51 @@ const FieldValue = styled.pre`
   min-width: 0;
 `;
 
+const ApproveButton = styled.button`
+  flex-shrink: 0;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid ${colors.grey300};
+  border-radius: 3px;
+  background: white;
+  color: ${colors.textSecondary};
+  cursor: pointer;
+  margin-left: 8px;
+  align-self: center;
+
+  &:hover {
+    background: ${colors.grey100};
+    border-color: ${colors.primary};
+    color: ${colors.primary};
+  }
+`;
+
+const ApprovedBadge = styled.span`
+  flex-shrink: 0;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 3px;
+  background: #e6f4ea;
+  color: ${colors.success};
+  margin-left: 8px;
+  align-self: center;
+`;
+
 const formatValue = (value: any): string => {
   if (value === null || value === undefined) return 'null';
   if (typeof value === 'string') return value;
   return JSON.stringify(value, null, 2);
 };
 
-type QuestionResult = NonNullable<
-  EvaluationResult['accuracy']
->['by_question'][number];
-
 interface Props {
-  questions: QuestionResult[];
+  questions: QuestionComparison[];
+  overrides: Overrides;
+  onApprove: (questionId: string, field: string) => void;
 }
 
-const QuestionDiff = ({ questions }: Props) => {
+const QuestionDiff = ({ questions, overrides, onApprove }: Props) => {
   return (
     <Box>
       <Title variant="h4" mb="12px">
@@ -110,27 +140,40 @@ const QuestionDiff = ({ questions }: Props) => {
                 </Text>
               </Box>
             ) : (
-              Object.entries(q.fields).map(([field, fieldScore]) => (
-                <FieldRow key={field} fieldScore={fieldScore}>
-                  <FieldLabel>{field}</FieldLabel>
-                  <Box flex="1" minWidth="0" mr="8px">
-                    <Text fontSize="xs" color="textSecondary" mb="2px">
-                      Ground Truth
-                    </Text>
-                    <FieldValue>
-                      {formatValue(q.ground_truth?.[field])}
-                    </FieldValue>
-                  </Box>
-                  <Box flex="1" minWidth="0">
-                    <Text fontSize="xs" color="textSecondary" mb="2px">
-                      Model Output
-                    </Text>
-                    <FieldValue>
-                      {formatValue(q.model_output?.[field])}
-                    </FieldValue>
-                  </Box>
-                </FieldRow>
-              ))
+              Object.entries(q.fields).map(([field, fieldScore]) => {
+                const key = `${q.id}:${field}`;
+                const isOverridden = !!overrides[key];
+
+                return (
+                  <FieldRow key={field} fieldScore={fieldScore}>
+                    <FieldLabel>{field}</FieldLabel>
+                    <Box flex="1" minWidth="0" mr="8px">
+                      <Text fontSize="xs" color="textSecondary" mb="2px">
+                        Ground Truth
+                      </Text>
+                      <FieldValue>
+                        {formatValue(q.ground_truth?.[field])}
+                      </FieldValue>
+                    </Box>
+                    <Box flex="1" minWidth="0">
+                      <Text fontSize="xs" color="textSecondary" mb="2px">
+                        Model Output
+                      </Text>
+                      <FieldValue>
+                        {formatValue(q.model_output?.[field])}
+                      </FieldValue>
+                    </Box>
+                    {fieldScore >= 1.0 &&
+                    !isOverridden ? null : isOverridden ? (
+                      <ApprovedBadge>Approved</ApprovedBadge>
+                    ) : (
+                      <ApproveButton onClick={() => onApprove(q.id, field)}>
+                        Approve
+                      </ApproveButton>
+                    )}
+                  </FieldRow>
+                );
+              })
             )}
           </Card>
         );
