@@ -5,7 +5,7 @@ import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
-import { clearClaimTokens } from 'utils/claimToken';
+import { clearClaimTokens, getClaimTokens } from 'utils/claimToken';
 
 import {
   GetRequirements,
@@ -91,6 +91,7 @@ export const sharedSteps = (
           token: null,
           prefilledBuiltInFields: null,
           ssoProvider: null,
+          claimTokens: null,
         });
 
         const { requirements, disabled_reason } = await getRequirements();
@@ -172,6 +173,9 @@ export const sharedSteps = (
       },
 
       TRIGGER_POST_PARTICIPATION_FLOW: async () => {
+        const claimTokens = getClaimTokens();
+        updateState({ claimTokens });
+
         setCurrentStep('post-participation:email');
       },
     },
