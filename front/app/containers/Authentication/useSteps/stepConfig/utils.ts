@@ -178,7 +178,8 @@ export const handleSSOClick = async (
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   updateState: UpdateState,
-  state: State
+  state: State,
+  claimTokens?: string[]
 ) => {
   if (ssoProvider === 'clave_unica') {
     // If clave unica, we always go straight to SSO login
@@ -186,7 +187,8 @@ export const handleSSOClick = async (
       ssoProvider,
       getAuthenticationData(),
       true,
-      state.flow
+      state.flow,
+      claimTokens
     );
   } else if (ssoProvider === 'franceconnect') {
     const { requirements } = await getRequirements();
@@ -195,7 +197,8 @@ export const handleSSOClick = async (
       'franceconnect',
       getAuthenticationData(),
       requirements.verification,
-      'signin'
+      'signin',
+      claimTokens
     );
   } else {
     // If other SSO provider, it depends on the flow
@@ -204,7 +207,8 @@ export const handleSSOClick = async (
         ssoProvider,
         getAuthenticationData(),
         true,
-        state.flow
+        state.flow,
+        claimTokens
       );
     } else {
       updateState({ ssoProvider });
