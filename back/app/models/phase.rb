@@ -421,6 +421,7 @@ class Phase < ApplicationRecord
   def set_presentation_mode
     self.presentation_mode ||= 'card'
     self.available_views = ['card'] if available_views.blank?
+    self.available_views |= [presentation_mode] unless available_views.include?(presentation_mode)
   end
 
   def validate_available_views
