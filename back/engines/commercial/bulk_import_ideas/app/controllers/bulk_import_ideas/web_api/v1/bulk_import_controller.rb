@@ -116,16 +116,99 @@ module BulkImportIdeas
 
       skip_authorization
 
-      phase = params[:phase_id].present? ? Phase.find(params[:phase_id]) : nil
-
+      start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       result = FormsyncTestService.new(
-        phase: phase,
         locale: params[:locale],
         model_key: params[:model],
         pdf_base64: params[:file]
       ).call
+      elapsed_ms = ((Process.clock_gettime(Process::CLOCK_MONOTONIC) - start_time) * 1000).round
 
-      render json: { response: result, model: params[:model] }
+      render json: { response: result, model: params[:model], response_time_ms: elapsed_ms }
+    end
+
+    def formsync_benchmarks_index
+      raise Pundit::NotAuthorizedError unless current_user&.admin?
+
+      skip_authorization
+
+      benchmarks = FormsyncBenchmarkService.new.list(locale: params[:locale])
+      render json: { benchmarks: benchmarks }
+    end
+
+    def formsync_benchmarks_create
+      raise Pundit::NotAuthorizedError unless current_user&.admin?
+
+      skip_authorization
+
+      # Parse from raw body to avoid Rails mangling nested JSON arrays
+      body = JSON.parse(request.body.read)
+
+      result = FormsyncBenchmarkService.new.create(
+        name: body['name'],
+        locale: body['locale'],
+        ground_truth: body['ground_truth'],
+        pdf_base64: body['pdf_base64']
+      )
+      render json: result, status: :created
+    end
+
+    def formsync_benchmarks_show
+      raise Pundit::NotAuthorizedError unless current_user&.admin?
+
+      skip_authorization
+
+      benchmark = FormsyncBenchmarkService.new.find(params[:id], params[:locale])
+      if benchmark
+        render json: benchmark
+      else
+        head :not_found
+      end
+    end
+
+    def formsync_benchmarks_destroy
+      raise Pundit::NotAuthorizedError unless current_user&.admin?
+
+      skip_authorization
+
+      FormsyncBenchmarkService.new.destroy(params[:id], params[:locale])
+      render json: { success: true }
+    end
+
+    def formsync_benchmarks_evaluate
+      raise Pundit::NotAuthorizedError unless current_user&.admin?
+
+      skip_authorization
+
+      benchmark = FormsyncBenchmarkService.new.find(params[:id], params[:locale])
+      return head(:not_found) unless benchmark
+
+      start_time = Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      model_response = FormsyncTestService.new(
+        locale: params[:locale],
+        model_key: params[:model],
+        pdf_base64: benchmark[:pdf_base64]
+      ).call
+      elapsed_ms = ((Process.clock_gettime(Process::CLOCK_MONOTONIC) - start_time) * 1000).round
+
+      parsed = begin
+        json_str = model_response[/\[.*\]/m]
+        json_str ? JSON.parse(json_str) : nil
+      rescue JSON::ParserError
+        nil
+      end
+
+      accuracy = if parsed
+        FormsyncAccuracyService.new(benchmark[:ground_truth], parsed).calculate
+      end
+
+      render json: {
+        model: params[:model],
+        model_response: model_response,
+        parsed_response: parsed,
+        accuracy: accuracy,
+        response_time_ms: elapsed_ms
+      }
     end
 
     private

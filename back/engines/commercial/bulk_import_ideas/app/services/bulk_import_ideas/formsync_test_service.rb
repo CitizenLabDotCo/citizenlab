@@ -13,8 +13,7 @@ module BulkImportIdeas
       'gemini_3_pro' => Analysis::LLM::Gemini3Pro
     }.freeze
 
-    def initialize(model_key:, pdf_base64:, locale:, phase: nil)
-      @phase = phase
+    def initialize(model_key:, pdf_base64:, locale:)
       @locale = locale
       @model_key = model_key
       @pdf_base64 = pdf_base64
@@ -32,9 +31,7 @@ module BulkImportIdeas
         content: @pdf_base64
       }
 
-      prompt_text = @phase ? guided_prompt : blind_prompt
-
-      message = Analysis::LLM::Message.new(prompt_text, pdf_file)
+      message = Analysis::LLM::Message.new(prompt, pdf_file)
       model.chat(message)
     end
 
@@ -44,11 +41,7 @@ module BulkImportIdeas
 
     private
 
-    def guided_prompt
-      Parsers::Pdf::GPTFormParser.new(@phase, @locale).prompt
-    end
-
-    def blind_prompt
+    def prompt
       <<~PROMPT
         In this message is a scanned survey form that has been filled in by hand.
 

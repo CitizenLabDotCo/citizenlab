@@ -6,7 +6,6 @@ import { API_PATH } from 'containers/App/constants';
 import { getJwt } from 'utils/auth/jwt';
 
 interface FormsyncTestParams {
-  phase_id?: string;
   locale: string;
   model: string;
   file: string; // base64
@@ -15,10 +14,10 @@ interface FormsyncTestParams {
 interface FormsyncTestResponse {
   response: string;
   model: string;
+  response_time_ms: number;
 }
 
 const formsyncTest = async ({
-  phase_id,
   locale,
   model,
   file,
@@ -31,7 +30,7 @@ const formsyncTest = async ({
       'Content-Type': 'application/json',
       Authorization: `Bearer ${jwt}`,
     },
-    body: JSON.stringify({ phase_id, locale, model, file }),
+    body: JSON.stringify({ locale, model, file }),
   });
 
   if (!res.ok) {
