@@ -198,7 +198,8 @@ export const emailFlow = (
           ssoProvider,
           getAuthenticationData(),
           true,
-          state.flow
+          state.flow,
+          state.claimTokens ?? undefined
         );
       },
     },
