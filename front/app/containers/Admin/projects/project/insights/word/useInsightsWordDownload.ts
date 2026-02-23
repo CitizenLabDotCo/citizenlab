@@ -79,10 +79,6 @@ export interface InsightsWordData {
   mostLikedIdeas?: IIdeaData[];
   participationMethod?: ParticipationMethod;
   intl: WordExportIntl;
-  // Chart images (legacy)
-  timelineImage?: Uint8Array;
-  demographicImages?: Map<string, Uint8Array>;
-  // Captured images by export ID (new pattern)
   capturedImages?: Map<
     string,
     { image: Uint8Array; width: number; height: number }
@@ -122,8 +118,6 @@ export default function useInsightsWordDownload({
           mostLikedIdeas,
           participationMethod,
           intl,
-          timelineImage,
-          demographicImages,
           capturedImages,
           surveyResults,
           surveyTotalSubmissions,
@@ -201,56 +195,41 @@ export default function useInsightsWordDownload({
         };
 
         // Participation Over Time Chart (Timeline)
-        const timelineCaptured = appendCapturedSection(
+        appendCapturedSection(
           'participation-timeline',
           messages.participationOverTime,
-          600,
-          260
+          600
         );
-        if (!timelineCaptured && timelineImage) {
+
+        // Demographics Section - prefer per-field images, fall back to single image, then data tables
+        const demographicFieldKeys = Array.from(
+          capturedImages?.keys() || []
+        )
+          .filter((key) => key.startsWith('demographics-field-'))
+          .sort((a, b) => {
+            const ai = parseInt(a.replace('demographics-field-', ''));
+            const bi = parseInt(b.replace('demographics-field-', ''));
+            return ai - bi;
+          });
+
+        if (demographicFieldKeys.length > 0) {
           children.push(
-            createHeading(formatMessage(messages.participationOverTime), 2),
-            new Paragraph({
-              children: [
-                new ImageRun({
-                  data: timelineImage,
-                  transformation: {
-                    width: 600,
-                    height: 260,
-                  },
-                  type: 'png',
-                }),
-              ],
-            }),
-            createEmptyParagraph()
+            createHeading(formatMessage(messages.demographics), 2)
           );
-        }
-
-        // Demographics Section - use captured section image if available
-        const demographicsCaptured = appendCapturedSection(
-          'demographics',
-          messages.demographics,
-          600,
-          400
-        );
-        if (
-          !demographicsCaptured &&
-          demographicImages &&
-          demographicImages.size > 0
-        ) {
-          children.push(createHeading(formatMessage(messages.demographics), 2));
-
-          for (const [fieldName, imageData] of demographicImages.entries()) {
+          for (const key of demographicFieldKeys) {
+            const imageData = capturedImages?.get(key);
+            if (!imageData) continue;
+            const { width, height } = getImageTransform(
+              imageData.width,
+              imageData.height,
+              600
+            );
             children.push(
-              createHeading(fieldName, 3),
               new Paragraph({
                 children: [
                   new ImageRun({
-                    data: imageData,
-                    transformation: {
-                      width: 600,
-                      height: 200,
-                    },
+                    data: imageData.image,
+                    transformation: { width, height },
                     type: 'png',
                   }),
                 ],
@@ -258,16 +237,22 @@ export default function useInsightsWordDownload({
               createEmptyParagraph()
             );
           }
-        } else if (
-          !demographicsCaptured &&
-          demographics &&
-          demographics.length > 0
-        ) {
-          // Fall back to table-based demographics if no images available
-          children.push(
-            ...createDemographicsSection(demographics, intl),
-            createEmptyParagraph()
+        } else {
+          const demographicsCaptured = appendCapturedSection(
+            'demographics',
+            messages.demographics,
+            600
           );
+          if (
+            !demographicsCaptured &&
+            demographics &&
+            demographics.length > 0
+          ) {
+            children.push(
+              ...createDemographicsSection(demographics, intl),
+              createEmptyParagraph()
+            );
+          }
         }
 
         // Survey Results (only for native_survey)
@@ -346,8 +331,7 @@ export default function useInsightsWordDownload({
           const aiSummaryCaptured = appendCapturedSection(
             'ai-summary',
             messages.aiSummary,
-            600,
-            500
+            600
           );
           if (!aiSummaryCaptured && aiSummary) {
             children.push(...createAiSummarySection(aiSummary, intl));
@@ -359,8 +343,7 @@ export default function useInsightsWordDownload({
           const topicBreakdownCaptured = appendCapturedSection(
             'topic-breakdown',
             messages.topicBreakdown,
-            600,
-            500
+            600
           );
           if (!topicBreakdownCaptured && topicBreakdown) {
             if (topicBreakdown.aiTopics.length > 0) {
@@ -400,8 +383,7 @@ export default function useInsightsWordDownload({
           const statusBreakdownCaptured = appendCapturedSection(
             'status-breakdown',
             messages.statusBreakdown,
-            600,
-            400
+            600
           );
           if (
             !statusBreakdownCaptured &&
@@ -425,38 +407,79 @@ export default function useInsightsWordDownload({
           }
         }
 
-        // Most Liked Ideas/Proposals
+        // Most Liked Ideas/Proposals - prefer per-card images, fall back to single image, then data
         if (showIdeaSections) {
-          const mostLikedExportId =
+          const mostLikedPrefix =
             participationMethod === 'proposals'
-              ? 'most-liked-proposals'
-              : 'most-liked-ideas';
+              ? 'most-liked-proposal-'
+              : 'most-liked-idea-';
           const mostLikedHeading =
             participationMethod === 'proposals'
               ? messages.mostLikedProposals
               : messages.mostLikedIdeas;
-          const mostLikedCaptured = appendCapturedSection(
-            mostLikedExportId,
-            mostLikedHeading,
-            600,
-            500
-          );
-          if (
-            !mostLikedCaptured &&
-            mostLikedIdeas &&
-            mostLikedIdeas.length > 0
-          ) {
-            const type =
-              participationMethod === 'proposals' ? 'proposals' : 'ideas';
+
+          const mostLikedKeys = Array.from(
+            capturedImages?.keys() || []
+          )
+            .filter((key) => key.startsWith(mostLikedPrefix))
+            .sort((a, b) => {
+              const ai = parseInt(a.replace(mostLikedPrefix, ''));
+              const bi = parseInt(b.replace(mostLikedPrefix, ''));
+              return ai - bi;
+            });
+
+          if (mostLikedKeys.length > 0) {
             children.push(
-              ...createMostLikedSection(mostLikedIdeas, intl, type)
+              createHeading(formatMessage(mostLikedHeading), 2)
             );
+            for (const key of mostLikedKeys) {
+              const imageData = capturedImages?.get(key);
+              if (!imageData) continue;
+              const { width, height } = getImageTransform(
+                imageData.width,
+                imageData.height,
+                600
+              );
+              children.push(
+                new Paragraph({
+                  children: [
+                    new ImageRun({
+                      data: imageData.image,
+                      transformation: { width, height },
+                      type: 'png',
+                    }),
+                  ],
+                }),
+                createEmptyParagraph()
+              );
+            }
+          } else {
+            const mostLikedExportId =
+              participationMethod === 'proposals'
+                ? 'most-liked-proposals'
+                : 'most-liked-ideas';
+            const mostLikedCaptured = appendCapturedSection(
+              mostLikedExportId,
+              mostLikedHeading,
+              600
+            );
+            if (
+              !mostLikedCaptured &&
+              mostLikedIdeas &&
+              mostLikedIdeas.length > 0
+            ) {
+              const type =
+                participationMethod === 'proposals' ? 'proposals' : 'ideas';
+              children.push(
+                ...createMostLikedSection(mostLikedIdeas, intl, type)
+              );
+            }
           }
         }
 
         // Vote Results (captured as image)
         if (participationMethod === 'voting') {
-          appendCapturedSection('vote-results', messages.voteResults, 600, 400);
+          appendCapturedSection('vote-results', messages.voteResults, 600);
         }
 
         // Common Ground Results (captured as image)
@@ -464,8 +487,7 @@ export default function useInsightsWordDownload({
           appendCapturedSection(
             'common-ground-results',
             messages.commonGroundResults,
-            600,
-            400
+            600
           );
         }
 
