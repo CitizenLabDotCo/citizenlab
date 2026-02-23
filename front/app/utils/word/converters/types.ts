@@ -1,6 +1,6 @@
 // Breakdown bar data item (used for topics, statuses, etc.)
 export interface BreakdownItem {
-  id: string;
+  id?: string;
   name: string;
   count: number;
   color?: string;

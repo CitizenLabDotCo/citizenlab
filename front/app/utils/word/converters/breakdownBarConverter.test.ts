@@ -4,9 +4,10 @@
  * The converter creates native Word tables with visual bars — no screenshots,
  * no DOM, pure data → docx objects. These are fully unit-testable.
  */
-import { Table, Paragraph } from 'docx';
+import { Table } from 'docx';
 
 import { createBreakdownTable } from './breakdownBarConverter';
+
 import type { BreakdownItem } from './types';
 
 // Mock the styleConstants to avoid the @citizenlab/cl2-component-library dep
@@ -98,7 +99,9 @@ describe('createBreakdownTable', () => {
     });
 
     it('includes a heading when title is provided', () => {
-      const result = createBreakdownTable(sampleItems, { title: 'Topic Breakdown' });
+      const result = createBreakdownTable(sampleItems, {
+        title: 'Topic Breakdown',
+      });
       // First element should be the heading
       const first = result[0] as any;
       expect(first._mock).toBe('heading');
@@ -148,9 +151,7 @@ describe('createBreakdownTable', () => {
     });
 
     it('handles items with custom colors', () => {
-      expect(() =>
-        createBreakdownTable(sampleItemsWithColors)
-      ).not.toThrow();
+      expect(() => createBreakdownTable(sampleItemsWithColors)).not.toThrow();
     });
 
     it('handles single item without division-by-zero', () => {

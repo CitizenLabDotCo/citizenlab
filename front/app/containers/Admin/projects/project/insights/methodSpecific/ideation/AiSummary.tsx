@@ -164,7 +164,11 @@ const AiSummary = ({ phaseId, participationMethod }: Props) => {
     () => {
       if (!summary) return [];
       return [
-        { type: 'heading', text: formatMessage(messages.whatArePeopleSaying), level: 2 },
+        {
+          type: 'heading',
+          text: formatMessage(messages.whatArePeopleSaying),
+          level: 2,
+        },
         { type: 'html', html: summary },
       ];
     },
@@ -312,7 +316,7 @@ const AiSummary = ({ phaseId, participationMethod }: Props) => {
           >
             <Box flex="1" overflow={isPdfRenderMode ? 'visible' : 'auto'}>
               <InsightBody
-                text={summary}
+                text={summary ?? null}
                 filters={filters}
                 analysisId={analysisId}
                 projectId={projectId}
