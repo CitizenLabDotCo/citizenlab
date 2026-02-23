@@ -258,4 +258,16 @@ export default defineMessages({
     defaultMessage:
       'No reference census data is available yet for this demographic dimension. <link>Add it here</link> to understand how representative your data is.',
   },
+  downloadPdf: {
+    id: 'app.containers.Admin.projects.project.insights.downloadPdf',
+    defaultMessage: 'Download as PDF',
+  },
+  downloadWord: {
+    id: 'app.containers.Admin.projects.project.insights.downloadWord',
+    defaultMessage: 'Download as Word',
+  },
+  errorWordDownload: {
+    id: 'app.containers.Admin.projects.project.insights.errorWordDownload',
+    defaultMessage: 'Failed to download Word document. Please try again.',
+  },
 });
