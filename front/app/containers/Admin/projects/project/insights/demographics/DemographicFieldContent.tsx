@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 
 import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
@@ -12,7 +12,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import { INSIGHTS_CHART_COLORS } from '../constants';
 import messages from '../messages';
-import { useWordExportContext } from '../word/WordExportContext';
 
 import { toChartData, toExcelData } from './utils';
 
@@ -23,26 +22,14 @@ interface Props {
 
 const DemographicFieldContent = ({ field, showExportMenu = true }: Props) => {
   const { formatMessage } = useIntl();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { registerDemographicRef } = useWordExportContext();
 
   // Check if any data point has population data (reference distribution exists)
   const hasPopulationData = field.data_points.some(
     (point) => point.population_percentage !== undefined
   );
 
-  // Register the container ref with WordExportContext for chart capture
-  useEffect(() => {
-    if (containerRef.current) {
-      registerDemographicRef(field.field_name, containerRef.current);
-    }
-    return () => {
-      registerDemographicRef(field.field_name, null);
-    };
-  }, [field.field_name, registerDemographicRef]);
-
   return (
-    <Box ref={containerRef} mb="24px">
+    <Box mb="24px">
       <Box
         display="flex"
         justifyContent="space-between"
