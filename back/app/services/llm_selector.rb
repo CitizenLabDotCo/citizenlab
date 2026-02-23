@@ -30,6 +30,7 @@ class LLMSelector
     ::Analysis::LLM::GPT4oMini,
     ::Analysis::LLM::GPT4o,
     ::Analysis::LLM::GPT41,
+    ::Analysis::LLM::GPT5,
     ::Analysis::LLM::ClaudeHaiku45,
     ::Analysis::LLM::ClaudeSonnet45,
     ::Analysis::LLM::ClaudeOpus45,

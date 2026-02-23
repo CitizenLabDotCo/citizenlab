@@ -29,6 +29,7 @@ import SingleFileUploader from 'components/HookForm/SingleFileUploader';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 
 export const MODEL_OPTIONS = [
+  { value: 'gpt_5', label: 'GPT-5 (Azure)' },
   { value: 'gpt_41', label: 'GPT-4.1 (Azure)' },
   { value: 'gpt_4o', label: 'GPT-4o (Azure)' },
   { value: 'gpt_4o_mini', label: 'GPT-4o Mini (Azure)' },

@@ -3,6 +3,7 @@
 module BulkImportIdeas
   class FormsyncTestService
     MODELS = {
+      'gpt_5' => Analysis::LLM::GPT5,
       'gpt_41' => Analysis::LLM::GPT41,
       'gpt_4o' => Analysis::LLM::GPT4o,
       'gpt_4o_mini' => Analysis::LLM::GPT4oMini,
