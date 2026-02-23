@@ -5,7 +5,7 @@ import { requestEmailConfirmationCodeUnauthenticated } from 'api/authentication/
 import getUserTokenUnconfirmed from 'api/authentication/sign_in_out/getUserTokenUnconfirmed';
 import signIn from 'api/authentication/sign_in_out/signIn';
 import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAccount';
-import { handleOnSSOClick } from 'api/authentication/singleSignOn';
+import { redirectToSSOProvider } from 'api/authentication/singleSignOn';
 
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
@@ -194,7 +194,7 @@ export const emailFlow = (
     'email:sso-policies': {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: (ssoProvider: SSOProviderWithoutVienna) => {
-        handleOnSSOClick(
+        redirectToSSOProvider(
           ssoProvider,
           getAuthenticationData(),
           true,

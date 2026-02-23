@@ -45,7 +45,7 @@ export interface SSOParams {
   claim_tokens?: string[];
 }
 
-export const handleOnSSOClick = (
+export const redirectToSSOProvider = (
   provider: SSOProvider,
   metaData: AuthenticationData,
   verification: boolean,
