@@ -148,6 +148,7 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.sendThisCode": "Wyślij ten kod na mój adres e-mail",
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Identyfikator zgłoszenia",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Utwórz konto lub zaloguj się",
+  "app.components.CustomFieldsForm.PostParticipationBox.createOrLinkAnAccountToFollow": "Utwórz lub połącz istniejące konto, aby śledzić dalsze wydarzenia i brać udział w innych rozmowach.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Otrzymuj powiadomienia o kolejnych krokach",
   "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Dołącz do dyskusji, jeśli Twój wkład jest udostępniany publicznie",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "Bierz udział w innych projektach i rozmowach",
