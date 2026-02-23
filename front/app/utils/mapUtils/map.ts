@@ -18,7 +18,7 @@ import {
 export type LatLngTuple = [number, number, number?];
 
 export const projectPointToWebMercator = (geometry: Geometry): Point => {
-  const projectedPoint = projection.project(geometry, {
+  const projectedPoint = projection.project(geometry as Point, {
     wkid: 3857, // Web Mercator Projection
   });
 
