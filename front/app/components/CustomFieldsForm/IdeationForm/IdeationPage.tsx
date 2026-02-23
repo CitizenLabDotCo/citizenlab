@@ -301,6 +301,7 @@ const IdeationPage = ({
                       )}
                     {showPostParticipationSignup && project && (
                       <PostParticipationBox
+                        showJoinDiscussionsBulletPoint
                         onCreateAccount={() => {
                           triggerPostParticipationFlow({
                             name: 'followProjectAndRedirect',
