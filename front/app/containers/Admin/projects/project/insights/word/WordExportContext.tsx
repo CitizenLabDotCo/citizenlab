@@ -100,6 +100,9 @@ export const WordExportProvider = ({
   const serializers = useRef<Map<ExportId, WordSerializer>>(new Map());
   const skipped = useRef<Set<ExportId>>(new Set());
 
+  // Bumped on every register/unregister/skip so `allComponentsReady` re-evaluates
+  const [registrationVersion, setRegistrationVersion] = useState(0);
+
   // Status — matches UI expectations: preparing → capturing → generating → idle
   const [exportStatus, setExportStatus] = useState<ExportStatus>('idle');
   const [exportProgress, setExportProgress] = useState<ExportProgress>({
@@ -109,20 +112,21 @@ export const WordExportProvider = ({
   const [error, setError] = useState<string | null>(null);
   const [captureWarnings, setCaptureWarnings] = useState<string[]>([]);
 
-  // ── Registration API ──────────────────────────────────────────────────────
-
   const registerSerializer = useCallback((id: ExportId, fn: WordSerializer) => {
     serializers.current.set(id, fn);
+    setRegistrationVersion((v) => v + 1);
   }, []);
 
   const unregisterSerializer = useCallback((id: ExportId) => {
     serializers.current.delete(id);
     skipped.current.delete(id);
+    setRegistrationVersion((v) => v + 1);
   }, []);
 
   const setSerializerSkipped = useCallback((id: ExportId, skip: boolean) => {
     if (skip) skipped.current.add(id);
     else skipped.current.delete(id);
+    setRegistrationVersion((v) => v + 1);
   }, []);
 
   // Legacy compat for ExportableInsight (no-ops — components migrated to useWordSection)
@@ -193,23 +197,22 @@ export const WordExportProvider = ({
     }
   }, [filename, participationMethod, formatMessage]);
 
-  // ── Validation (for ExportValidation component) ───────────────────────────
-
   const allComponentsReady = useMemo(() => {
+    // registrationVersion is read to re-evaluate when components register/unregister
+    void registrationVersion;
     const expected = getExpectedComponents(participationMethod as any);
     return expected.every(
       (id) => serializers.current.has(id) || skipped.current.has(id)
     );
-  }, [participationMethod]);
+  }, [participationMethod, registrationVersion]);
 
   const getMissingComponents = useCallback((): ExportId[] => {
+    void registrationVersion;
     const expected = getExpectedComponents(participationMethod);
     return expected.filter(
       (id) => !serializers.current.has(id) && !skipped.current.has(id)
     );
-  }, [participationMethod]);
-
-  // ── Context value ─────────────────────────────────────────────────────────
+  }, [participationMethod, registrationVersion]);
 
   const contextValue = useMemo(
     () => ({
