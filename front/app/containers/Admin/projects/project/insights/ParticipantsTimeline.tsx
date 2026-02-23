@@ -31,17 +31,21 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
 
   if (isLoading) {
     return (
-      <Box mt="8px" bg="white" p="24px" borderRadius="8px">
-        <Spinner size="24px" />
-      </Box>
+      <ExportableInsight exportId="participation-timeline" skipExport>
+        <Box mt="8px" bg="white" p="24px" borderRadius="8px">
+          <Spinner size="24px" />
+        </Box>
+      </ExportableInsight>
     );
   }
 
   if (error) {
     return (
-      <Box mt="8px" bg="white" p="24px" borderRadius="8px">
-        <Text color="error">{formatMessage(messages.errorLoading)}</Text>
-      </Box>
+      <ExportableInsight exportId="participation-timeline" skipExport>
+        <Box mt="8px" bg="white" p="24px" borderRadius="8px">
+          <Text color="error">{formatMessage(messages.errorLoading)}</Text>
+        </Box>
+      </ExportableInsight>
     );
   }
 
