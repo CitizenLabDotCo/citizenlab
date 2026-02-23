@@ -111,6 +111,23 @@ module BulkImportIdeas
       send_data URI.open(idea_import_file.file_content_url).read, type: 'application/octet-stream'
     end
 
+    def formsync_test
+      raise Pundit::NotAuthorizedError unless current_user&.admin?
+
+      skip_authorization
+
+      phase = params[:phase_id].present? ? Phase.find(params[:phase_id]) : nil
+
+      result = FormsyncTestService.new(
+        phase: phase,
+        locale: params[:locale],
+        model_key: params[:model],
+        pdf_base64: params[:file]
+      ).call
+
+      render json: { response: result, model: params[:model] }
+    end
+
     private
 
     def bulk_create_params
