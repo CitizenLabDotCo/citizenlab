@@ -332,6 +332,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
                                       }
                                     end,
         'presentation_mode' => phase.presentation_mode,
+        'available_views' => phase.available_views,
         'participation_method' => phase.participation_method,
         'submission_enabled' => phase.submission_enabled,
         'commenting_enabled' => phase.commenting_enabled,

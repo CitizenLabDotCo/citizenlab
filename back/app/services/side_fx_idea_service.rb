@@ -244,7 +244,7 @@ class SideFxIdeaService
 
   def enqueue_wise_voice_detection_job(idea)
     current_phase = TimelineService.new.current_phase(idea.project)
-    return unless current_phase&.presentation_mode == 'feed'
+    return unless current_phase&.feed_enabled?
 
     WiseVoiceDetectionJob.perform_later(idea)
   end

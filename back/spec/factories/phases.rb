@@ -158,6 +158,7 @@ FactoryBot.define do
       title_multiloc { { 'en' => 'Idea Feed (en)', 'nl-BE' => 'Idea Feed (nl)' } }
       participation_method { 'ideation' }
       presentation_mode { 'feed' }
+      available_views { %w[card feed] }
     end
 
     trait :ongoing do
