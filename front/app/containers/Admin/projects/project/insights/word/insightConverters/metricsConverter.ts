@@ -22,8 +22,8 @@ function formatChange(
   if (change === undefined || change === null) {
     return '-';
   }
-  if (change === 'last_7_days_compared_with_zero') {
-    return 'New';
+  if (typeof change === 'string') {
+    return '-';
   }
   const sign = change >= 0 ? '+' : '';
   return `${sign}${change.toFixed(1)}%`;
