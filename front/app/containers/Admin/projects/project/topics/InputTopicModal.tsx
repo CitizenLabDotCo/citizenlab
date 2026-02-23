@@ -10,8 +10,6 @@ import { IInputTopicData } from 'api/input_topics/types';
 import useAddInputTopic from 'api/input_topics/useAddInputTopic';
 import useUpdateInputTopic from 'api/input_topics/useUpdateInputTopic';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import { SectionField } from 'components/admin/Section';
 import EmojiPicker from 'components/HookForm/EmojiPicker';
 import Feedback from 'components/HookForm/Feedback';
@@ -27,6 +25,7 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 import messages from './messages';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 interface FormValues {
   title_multiloc: Multiloc;
@@ -56,7 +55,7 @@ const InputTopicModal = ({
 
   const isEditing = topic !== null;
   const isAddingSubtopic = !isEditing && parentId !== undefined;
-  const isEditingSubtopic = isEditing && (topic.attributes.depth || 0) >= 1;
+  const isEditingSubtopic = isEditing && (topic?.attributes.depth || 0) >= 1;
   const isSubtopic = isAddingSubtopic || isEditingSubtopic;
 
   const schema = object({
