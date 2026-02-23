@@ -10,7 +10,7 @@ import { createHeading } from 'utils/word/converters/textConverter';
 
 import messages from '../messages';
 
-import type { WordExportIntl } from '../useInsightsWordDownload';
+import type { WordExportIntl } from './types';
 
 /**
  * Formats a 7-day change value for display.

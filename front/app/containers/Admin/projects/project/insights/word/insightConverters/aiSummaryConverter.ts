@@ -8,7 +8,7 @@ import {
 
 import messages from '../messages';
 
-import type { WordExportIntl } from '../useInsightsWordDownload';
+import type { WordExportIntl } from './types';
 
 /**
  * Creates an AI summary section for the Word document.

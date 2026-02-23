@@ -7,7 +7,7 @@ import { createHeading } from 'utils/word/converters/textConverter';
 
 import messages from '../messages';
 
-import type { WordExportIntl } from '../useInsightsWordDownload';
+import type { WordExportIntl } from './types';
 
 /**
  * Creates a most liked ideas/proposals section for the Word document.

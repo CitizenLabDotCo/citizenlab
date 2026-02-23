@@ -10,7 +10,7 @@ import {
 
 import messages from '../messages';
 
-import type { WordExportIntl } from '../useInsightsWordDownload';
+import type { WordExportIntl } from './types';
 
 /**
  * Groups results by page number.

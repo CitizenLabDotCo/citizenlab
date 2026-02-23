@@ -149,9 +149,3 @@ export const getExpectedComponents = (
     ]
   );
 };
-
-// Helper to check if a component should be captured as an image
-export const shouldCaptureAsImage = (exportId: ExportId): boolean => {
-  const config = INSIGHT_EXPORT_REGISTRY[exportId];
-  return config.exportType === 'image' || config.exportType === 'hybrid';
-};
