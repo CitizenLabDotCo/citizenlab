@@ -2117,7 +2117,7 @@
   "app.containers.AdminPage.InspirationHubPage.inspirationHubDescription": "Inspiration Hub er et sted, hvor du kan finde inspiration til dine projekter ved at gennemse projekter fra andre platforme.",
   "app.containers.AdminPage.PagesEdition.policiesSubtitle": "Rediger din platforms vilkår og betingelser og privatlivspolitik. Andre sider, herunder siderne Om og FAQ, kan redigeres under fanen {navigationLink}.",
   "app.containers.AdminPage.PagesEdition.policiesTitle": "Politikker for platformen",
-  "app.containers.AdminPage.PagesEdition.privacy-policy": "Fortrolighedspolitik",
+  "app.containers.AdminPage.PagesEdition.privacy-policy": "Privatlivspolitik",
   "app.containers.AdminPage.PagesEdition.terms-and-conditions": "Vilkår",
   "app.containers.AdminPage.Project.confirmation.description": "Denne handling kan ikke fortrydes.",
   "app.containers.AdminPage.Project.confirmation.no": "Afbryd",
