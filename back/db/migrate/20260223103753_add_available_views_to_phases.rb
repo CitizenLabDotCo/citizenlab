@@ -22,13 +22,13 @@ class AddAvailableViewsToPhases < ActiveRecord::Migration[7.2]
 
   def location_description_enabled?(phase)
     context = case phase.participation_method
-              when 'ideation'
-                phase.project # Ideation forms live on the project
-              when 'proposals'
-                phase # Proposals forms live on the phase
-              else
-                return false
-              end
+    when 'ideation'
+      phase.project # Ideation forms live on the project
+    when 'proposals'
+      phase # Proposals forms live on the phase
+    else
+      return false
+    end
 
     custom_form = CustomForm.find_by(participation_context: context)
     return true unless custom_form # No persisted form means defaults are used, and location_description is enabled by default
