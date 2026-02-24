@@ -494,10 +494,10 @@ fr:
     screening_digest:
       subject: '%{count} contributions en attente d''examen'
       preheader: 'Examinez les données à l''adresse %{organizationName}'
-      title: '%{firstName}Les entrées sont en attente d''être examinées'
-      event_description: "Ces contributions doivent être approuvées avant d'être rendues publiques. Vous pouvez les examiner dans le gestionnaire d'intrants de l'ensemble de la plateforme ou dans le gestionnaire d'intrants de chaque phase."
-      cta_button: 'Les apports de la révision'
-      inputs_awaiting_screening: 'contributions à l''examen'
+      title: '%{firstName} Les contributions sont en attente d''être examinées'
+      event_description: "Ces contributions doivent être approuvées avant d'être rendues publiques. Vous pouvez les examiner dans le gestionnaire de contributions de l'ensemble de la plateforme ou dans le gestionnaire de contributions de chaque phase."
+      cta_button: 'Examiner des contributions'
+      inputs_awaiting_screening: 'Contributions à examiner'
     voting_basket_submitted:
       subject: '%{organizationName}: Vous avez voté avec succès'
       preheader: 'Votre vote a bien été enregistré sur la plateforme de participation de %{organizationName}'
