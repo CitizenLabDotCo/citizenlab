@@ -95,6 +95,7 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
 
       <ExportableInsight
         exportId="participation-timeline"
+        heading={formatMessage(messages.participationOverTime)}
         height={isPdfRenderMode ? `${PDF_CHART_HEIGHT}px` : '249px'}
         width={isPdfRenderMode ? `${PDF_CHART_WIDTH}px` : undefined}
       >
