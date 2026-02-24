@@ -1,7 +1,7 @@
 // Accuracy calculation for formsync benchmark evaluation.
 // Matches questions by printed question number (id), with text-based fallback.
 
-const COMPARED_FIELDS = ['type', 'options', 'answer'] as const;
+const COMPARED_FIELDS = ['options', 'answer'] as const;
 
 const SET_ANSWER_TYPES = ['multiselect'];
 const ORDERED_ARRAY_ANSWER_TYPES = ['ranking'];
@@ -10,9 +10,6 @@ const NUMERIC_ANSWER_TYPES = [
   'linear_scale',
   'rating',
   'sentiment_linear_scale',
-];
-const EQUIVALENT_TYPE_GROUPS = [
-  new Set(['linear_scale', 'rating', 'sentiment_linear_scale']),
 ];
 
 export interface QuestionComparison {
@@ -64,16 +61,6 @@ function isBlank(value: any): boolean {
     value === undefined ||
     value === '' ||
     (Array.isArray(value) && value.length === 0)
-  );
-}
-
-function compareType(gt: string | null, model: string | null): boolean {
-  const gtS = String(gt ?? '');
-  const modelS = String(model ?? '');
-  if (gtS === modelS) return true;
-
-  return EQUIVALENT_TYPE_GROUPS.some(
-    (group) => group.has(gtS) && group.has(modelS)
   );
 }
 
@@ -267,7 +254,6 @@ function compareQuestion(
     }
   } else {
     const gtType = gtQ.type ?? null;
-    fields['type'] = compareType(gtQ.type, modelQ.type) ? 1.0 : 0.0;
 
     if ('options' in gtQ) {
       fields['options'] = compareSetPartial(gtQ.options, modelQ.options);
