@@ -19,8 +19,9 @@ export default defineMessages({
     defaultMessage: 'Get updates when there are next steps',
   },
   joinDiscussions: {
-    id: 'app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions',
-    defaultMessage: 'Join discussions if your input is shared publicly',
+    id: 'app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions2',
+    defaultMessage:
+      'Join discussions and receive notifications when others engage with your input',
   },
   participateInOtherProjects: {
     id: 'app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects',
