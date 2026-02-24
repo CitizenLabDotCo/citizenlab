@@ -150,7 +150,7 @@
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Fiók létrehozása vagy bejelentkezés",
   "app.components.CustomFieldsForm.PostParticipationBox.createOrLinkAnAccountToFollow": "Hozz létre vagy csatolj egy meglévő fiókot, hogy követhesd a további eseményeket és részt vehess más beszélgetésekben.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Értesülj a következő lépésekről",
-  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Csatlakozz a beszélgetésekhez, ha a hozzászólásod nyilvánosan meg van osztva",
+  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions2": "Csatlakozz a beszélgetésekhez, és kapj értesítéseket, amikor mások reagálnak a hozzászólásaidra",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "Vegyen részt más projektekben és beszélgetésekben",
   "app.components.CustomFieldsForm.PostParticipationBox.stayConnected": "Maradj kapcsolatban",
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Cím megadása",
