@@ -150,7 +150,7 @@
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Maak een account aan of log in",
   "app.components.CustomFieldsForm.PostParticipationBox.createOrLinkAnAccountToFollow": "Maak een account aan of koppel een bestaand account om te volgen wat er verder gebeurt en deel te nemen aan andere gesprekken.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Krijg updates als er volgende stappen zijn",
-  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Doe mee aan discussies als je bijdrage openbaar wordt gedeeld",
+  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions2": "Neem deel aan discussies en ontvang meldingen wanneer anderen jouw input gebruiken",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "Deelnemen aan andere projecten en gesprekken",
   "app.components.CustomFieldsForm.PostParticipationBox.stayConnected": "Blijf verbonden",
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Adres invoer",
