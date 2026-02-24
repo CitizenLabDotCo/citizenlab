@@ -60,7 +60,7 @@ export const INSIGHT_EXPORT_REGISTRY: Record<string, ExportableComponent> = {
   'vote-results': {
     id: 'vote-results',
     displayName: 'Vote Results',
-    exportType: 'image' as const,
+    exportType: 'data' as const,
   },
 
   // Common Ground components
