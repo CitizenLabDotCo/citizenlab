@@ -150,7 +150,7 @@
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Opprett en konto eller logg inn",
   "app.components.CustomFieldsForm.PostParticipationBox.createOrLinkAnAccountToFollow": "Opprett eller koble til en eksisterende konto for å følge med på hva som skjer videre og delta i andre samtaler.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Få oppdateringer når det er neste skritt",
-  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Delta i diskusjoner hvis innspillene dine deles offentlig",
+  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions2": "Delta i diskusjoner og motta varsler når andre engasjerer seg i innspillene dine",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "Delta i andre prosjekter og samtaler",
   "app.components.CustomFieldsForm.PostParticipationBox.stayConnected": "Hold kontakten",
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Adresseinngang",
