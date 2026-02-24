@@ -150,7 +150,7 @@
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Crea un account o accedi",
   "app.components.CustomFieldsForm.PostParticipationBox.createOrLinkAnAccountToFollow": "Crea o collega un account esistente per seguire gli sviluppi successivi e partecipare ad altre conversazioni.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Ricevi aggiornamenti sui prossimi passi da compiere",
-  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Partecipa alle discussioni se il tuo contributo viene condiviso pubblicamente",
+  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions2": "Partecipa alle discussioni e ricevi le notifiche quando gli altri si interessano ai tuoi contributi",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "Partecipa ad altri progetti e conversazioni",
   "app.components.CustomFieldsForm.PostParticipationBox.stayConnected": "Rimani connesso",
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Indirizzo di ingresso",
