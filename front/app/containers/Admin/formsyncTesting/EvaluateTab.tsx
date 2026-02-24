@@ -137,7 +137,14 @@ const EvaluateTab = ({ initialBenchmarkId, initialBenchmarkLocale }: Props) => {
   const handleApprove = (questionId: string, field: string) => {
     setOverrides((prev) => ({
       ...prev,
-      [`${questionId}:${field}`]: true,
+      [`${questionId}:${field}`]: 'approved' as const,
+    }));
+  };
+
+  const handleReject = (questionId: string, field: string) => {
+    setOverrides((prev) => ({
+      ...prev,
+      [`${questionId}:${field}`]: 'rejected' as const,
     }));
   };
 
@@ -239,6 +246,7 @@ const EvaluateTab = ({ initialBenchmarkId, initialBenchmarkLocale }: Props) => {
                   questions={accuracy.by_question}
                   overrides={overrides}
                   onApprove={handleApprove}
+                  onReject={handleReject}
                 />
               </Box>
             </Box>

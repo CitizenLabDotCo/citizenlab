@@ -39,8 +39,8 @@ export interface AccuracyResult {
   by_type: Record<string, TypeResult>;
 }
 
-// Overrides map: "questionId:field" → true
-export type Overrides = Record<string, boolean>;
+// Overrides map: "questionId:field" → 'approved' | 'rejected'
+export type Overrides = Record<string, 'approved' | 'rejected'>;
 
 function normalize(value: any): string {
   return String(value ?? '')
@@ -310,8 +310,11 @@ export function calculateAccuracy(
     let hasOverride = false;
     for (const field of Object.keys(q.fields)) {
       const key = `${q.id}:${field}`;
-      if (overrides[key]) {
+      if (overrides[key] === 'approved') {
         q.fields[field] = 1.0;
+        hasOverride = true;
+      } else if (overrides[key] === 'rejected') {
+        q.fields[field] = 0;
         hasOverride = true;
       }
     }

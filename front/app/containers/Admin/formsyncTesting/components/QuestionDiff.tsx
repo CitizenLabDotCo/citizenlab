@@ -79,6 +79,26 @@ const ApproveButton = styled.button`
   }
 `;
 
+const RejectButton = styled.button`
+  flex-shrink: 0;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid ${colors.grey300};
+  border-radius: 3px;
+  background: white;
+  color: ${colors.textSecondary};
+  cursor: pointer;
+  margin-left: 4px;
+  align-self: center;
+
+  &:hover {
+    background: #fce8e6;
+    border-color: ${colors.error};
+    color: ${colors.error};
+  }
+`;
+
 const ApprovedBadge = styled.span`
   flex-shrink: 0;
   padding: 2px 8px;
@@ -87,6 +107,18 @@ const ApprovedBadge = styled.span`
   border-radius: 3px;
   background: #e6f4ea;
   color: ${colors.success};
+  margin-left: 8px;
+  align-self: center;
+`;
+
+const RejectedBadge = styled.span`
+  flex-shrink: 0;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  border-radius: 3px;
+  background: #fce8e6;
+  color: ${colors.error};
   margin-left: 8px;
   align-self: center;
 `;
@@ -101,9 +133,10 @@ interface Props {
   questions: QuestionComparison[];
   overrides: Overrides;
   onApprove: (questionId: string, field: string) => void;
+  onReject: (questionId: string, field: string) => void;
 }
 
-const QuestionDiff = ({ questions, overrides, onApprove }: Props) => {
+const QuestionDiff = ({ questions, overrides, onApprove, onReject }: Props) => {
   return (
     <Box>
       <Title variant="h4" mb="12px">
@@ -142,7 +175,7 @@ const QuestionDiff = ({ questions, overrides, onApprove }: Props) => {
             ) : (
               Object.entries(q.fields).map(([field, fieldScore]) => {
                 const key = `${q.id}:${field}`;
-                const isOverridden = !!overrides[key];
+                const isOverridden = overrides[key];
 
                 return (
                   <FieldRow key={field} fieldScore={fieldScore}>
@@ -163,13 +196,23 @@ const QuestionDiff = ({ questions, overrides, onApprove }: Props) => {
                         {formatValue(q.model_output?.[field])}
                       </FieldValue>
                     </Box>
-                    {fieldScore >= 1.0 &&
-                    !isOverridden ? null : isOverridden ? (
+                    {isOverridden === 'approved' ? (
                       <ApprovedBadge>Approved</ApprovedBadge>
+                    ) : isOverridden === 'rejected' ? (
+                      <RejectedBadge>Rejected</RejectedBadge>
+                    ) : fieldScore >= 1.0 ? (
+                      <RejectButton onClick={() => onReject(q.id, field)}>
+                        Reject
+                      </RejectButton>
                     ) : (
-                      <ApproveButton onClick={() => onApprove(q.id, field)}>
-                        Approve
-                      </ApproveButton>
+                      <>
+                        <ApproveButton onClick={() => onApprove(q.id, field)}>
+                          Approve
+                        </ApproveButton>
+                        <RejectButton onClick={() => onReject(q.id, field)}>
+                          Reject
+                        </RejectButton>
+                      </>
                     )}
                   </FieldRow>
                 );
