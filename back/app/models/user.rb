@@ -292,12 +292,12 @@ class User < ApplicationRecord
   end
 
   # Sometimes for privacy reasons we do not want to expose the personal data in the slug
-  def self.no_user_slugs?
-    AppConfiguration.instance.feature_activated?('no_user_slugs')
+  def self.user_slugs_disabled?
+    AppConfiguration.instance.feature_activated?('user_slugs_disabled')
   end
 
   def slug
-    self.class.no_user_slugs? && id ? id : super
+    self.class.user_slugs_disabled? && id ? id : super
   end
 
   private

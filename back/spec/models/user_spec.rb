@@ -96,7 +96,7 @@ RSpec.describe User do
     context 'when no_user_slugs feature is active' do
       before do
         settings = AppConfiguration.instance.settings
-        settings['no_user_slugs'] = { 'enabled' => true, 'allowed' => true }
+        settings['user_slugs_disabled'] = { 'enabled' => true, 'allowed' => true }
         AppConfiguration.instance.update!(settings: settings)
       end
 
