@@ -10,9 +10,13 @@ const getTextLines = (text: string) =>
     .filter(Boolean);
 
 export const convertHtmlToTextLines = (html: string) => {
+  const withLineBreaks = html
+    .replace(/<\/(h[1-6]|p|div|li|tr|blockquote)>/gi, '\n')
+    .replace(/<br\s*\/?>/gi, '\n');
+
   const parser = new DOMParser();
-  const doc = parser.parseFromString(html, 'text/html');
-  const text = doc.body.innerText || '';
+  const doc = parser.parseFromString(withLineBreaks, 'text/html');
+  const text = doc.body.textContent || '';
   return getTextLines(text);
 };
 
