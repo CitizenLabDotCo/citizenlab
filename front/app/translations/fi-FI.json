@@ -150,7 +150,7 @@
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Luo tili tai kirjaudu sisään",
   "app.components.CustomFieldsForm.PostParticipationBox.createOrLinkAnAccountToFollow": "Luo tai linkitä olemassa oleva tili seurataksesi tapahtumia ja osallistuaksesi muihin keskusteluihin.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Saat päivityksiä, kun seuraavat vaiheet ovat olemassa",
-  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Liity keskusteluihin, jos panoksesi on jaettu julkisesti",
+  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions2": "Liity keskusteluihin ja vastaanota ilmoituksia, kun muut reagoivat panokseen",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "Osallistu muihin projekteihin ja keskusteluihin",
   "app.components.CustomFieldsForm.PostParticipationBox.stayConnected": "Pysy yhteydessä",
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Osoitteen syöttö",
