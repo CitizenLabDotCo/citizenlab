@@ -2,6 +2,7 @@ import {
   svgElementToImageBuffer,
   chartContainerToImageBuffer,
   hasSvgChart,
+  findChartSvg,
 } from './svgToImage';
 
 // Mock OffscreenCanvas for JSDOM environment
@@ -277,7 +278,7 @@ describe('svgToImage', () => {
   });
 
   describe('hasSvgChart', () => {
-    it('returns true when container has a visible SVG', () => {
+    it('returns true when container has a chart-sized SVG', () => {
       const container = createChartContainer(true);
       const svg = container.querySelector('svg')!;
       Object.defineProperty(svg, 'getBoundingClientRect', {
@@ -302,6 +303,55 @@ describe('svgToImage', () => {
       });
 
       expect(hasSvgChart(container)).toBe(false);
+    });
+
+    it('returns false when SVG is a small icon (< 50px)', () => {
+      const container = document.createElement('div');
+      const svg = createTestSvg(16, 16);
+      Object.defineProperty(svg, 'getBoundingClientRect', {
+        value: () => ({ width: 16, height: 16 } as DOMRect),
+        configurable: true,
+      });
+      container.appendChild(svg);
+
+      expect(hasSvgChart(container)).toBe(false);
+    });
+  });
+
+  describe('findChartSvg', () => {
+    it('returns the largest chart-sized SVG', () => {
+      const container = document.createElement('div');
+
+      // Small icon SVG
+      const iconSvg = createTestSvg(16, 16);
+      Object.defineProperty(iconSvg, 'getBoundingClientRect', {
+        value: () => ({ width: 16, height: 16 } as DOMRect),
+        configurable: true,
+      });
+
+      // Large chart SVG
+      const chartSvg = createTestSvg(400, 200);
+      Object.defineProperty(chartSvg, 'getBoundingClientRect', {
+        value: () => ({ width: 400, height: 200 } as DOMRect),
+        configurable: true,
+      });
+
+      container.appendChild(iconSvg);
+      container.appendChild(chartSvg);
+
+      expect(findChartSvg(container)).toBe(chartSvg);
+    });
+
+    it('returns null when only small icon SVGs exist', () => {
+      const container = document.createElement('div');
+      const iconSvg = createTestSvg(20, 20);
+      Object.defineProperty(iconSvg, 'getBoundingClientRect', {
+        value: () => ({ width: 20, height: 20 } as DOMRect),
+        configurable: true,
+      });
+      container.appendChild(iconSvg);
+
+      expect(findChartSvg(container)).toBeNull();
     });
   });
 });

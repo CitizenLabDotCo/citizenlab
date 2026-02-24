@@ -39,7 +39,7 @@ const ExportableInsight = ({
         const rect = el.getBoundingClientRect();
         if (rect.width === 0 || rect.height === 0) return [];
 
-        const image = await htmlToImageBuffer(el, {
+        const { buffer } = await htmlToImageBuffer(el, {
           scale: 2,
           backgroundColor: '#FFFFFF',
         });
@@ -56,7 +56,7 @@ const ExportableInsight = ({
         }
         sections.push({
           type: 'image' as const,
-          image,
+          image: buffer,
           width: Math.round(rect.width),
           height: Math.round(rect.height),
         });

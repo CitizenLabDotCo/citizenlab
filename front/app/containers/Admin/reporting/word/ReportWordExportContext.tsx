@@ -64,7 +64,6 @@ const EXPORTABLE_WIDGETS = new Set(Object.keys(WIDGET_TITLES));
 const CONTAINER_NODES = new Set([
   'Container',
   'Box',
-  'TwoColumn',
   'ProjectTemplate',
   'PhaseTemplate',
   'PlatformTemplate',
@@ -130,6 +129,10 @@ const buildExportNodes = (
         tenantLocales
       );
       return url ? [{ type: 'iframe', url, title }] : [];
+    }
+
+    if (nodeName === 'TwoColumn') {
+      return [{ type: 'image', nodeId, widgetName: nodeName }];
     }
 
     if (CONTAINER_NODES.has(nodeName)) {
@@ -230,17 +233,18 @@ export const ReportWordExportProvider = ({
         }
 
         element.scrollIntoView({ block: 'center' });
-        const { width, height } = element.getBoundingClientRect();
 
         try {
-          const imageBuffer = await htmlToImageBuffer(element, {
+          const forceRaster = node.widgetName === 'TwoColumn';
+          const { buffer, width, height } = await htmlToImageBuffer(element, {
             scale: 2,
             backgroundColor: '#FFFFFF',
+            forceRaster,
           });
 
           sections.push({
             type: 'image',
-            image: imageBuffer,
+            image: buffer,
             width,
             height,
             widgetName: node.widgetName,

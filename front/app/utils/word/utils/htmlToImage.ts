@@ -1,47 +1,47 @@
-/**
- * Converts an HTML element to a PNG image buffer suitable for Word documents.
- *
- * Strategy: SVG-first with html2canvas fallback.
- * 1. If element contains a renderable <svg>, use svgElementToImageBuffer
- *    → crisp, reliable, no CORS, works in backgrounded tabs
- * 2. Fallback to html2canvas for non-SVG content (HTML cards, mixed layouts)
- */
 import html2canvas from 'html2canvas';
 
-import { svgElementToImageBuffer, hasSvgChart } from './svgToImage';
+import { svgElementToImageBuffer, findChartSvg } from './svgToImage';
 
 interface HtmlToImageOptions {
   scale?: number;
   backgroundColor?: string;
+  forceRaster?: boolean;
 }
 
-/**
- * Converts an HTML element to a PNG Uint8Array for use in docx ImageRun.
- * Prefers SVG serialization (better quality) over html2canvas DOM re-render.
- *
- * Drop-in replacement — same signature, same return type as before.
- */
+export interface ImageCaptureResult {
+  buffer: Uint8Array;
+  width: number;
+  height: number;
+}
+
 export async function htmlToImageBuffer(
   element: HTMLElement,
   options: HtmlToImageOptions = {}
-): Promise<Uint8Array> {
-  const { scale = 2, backgroundColor = '#FFFFFF' } = options;
+): Promise<ImageCaptureResult> {
+  const {
+    scale = 2,
+    backgroundColor = '#FFFFFF',
+    forceRaster = false,
+  } = options;
 
-  // SVG-native path: best quality, no CORS, resolution-independent
-  if (hasSvgChart(element)) {
-    const svgEl = element.querySelector('svg')!;
+  const chartSvg = !forceRaster ? findChartSvg(element) : null;
+  if (chartSvg) {
     try {
-      return await svgElementToImageBuffer(svgEl, { scale, backgroundColor });
-    } catch (err) {
-      // SVG serialization failed — fall through to html2canvas
-      console.warn(
-        '[htmlToImageBuffer] SVG capture failed, falling back to html2canvas:',
-        err
-      );
+      const rect = chartSvg.getBoundingClientRect();
+      const buffer = await svgElementToImageBuffer(chartSvg, {
+        scale,
+        backgroundColor,
+      });
+      return {
+        buffer,
+        width: Math.round(rect.width),
+        height: Math.round(rect.height),
+      };
+    } catch {
+      // fall through to html2canvas
     }
   }
 
-  // Fallback: html2canvas for non-SVG components (idea cards, mixed HTML, etc.)
   const canvas = await html2canvas(element, {
     scale,
     backgroundColor,
@@ -50,6 +50,8 @@ export async function htmlToImageBuffer(
     windowWidth: element.scrollWidth,
     windowHeight: element.scrollHeight,
   });
+
+  const elRect = element.getBoundingClientRect();
 
   return new Promise((resolve, reject) => {
     canvas.toBlob(
@@ -60,7 +62,11 @@ export async function htmlToImageBuffer(
         }
         try {
           const arrayBuffer = await blob.arrayBuffer();
-          resolve(new Uint8Array(arrayBuffer));
+          resolve({
+            buffer: new Uint8Array(arrayBuffer),
+            width: Math.round(elRect.width),
+            height: Math.round(elRect.height),
+          });
         } catch (error) {
           reject(error);
         }

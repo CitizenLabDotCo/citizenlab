@@ -152,14 +152,27 @@ function inlineComputedStyles(source: Element, target: Element): void {
   }
 }
 
-/**
- * Checks whether a container element has a renderable SVG chart.
- * Used to decide whether to use SVG capture vs html2canvas fallback.
- */
-export function hasSvgChart(container: HTMLElement): boolean {
-  const svg = container.querySelector('svg');
-  if (!svg) return false;
+const MIN_CHART_SIZE = 50;
 
-  const rect = svg.getBoundingClientRect();
-  return rect.width > 0 && rect.height > 0;
+export function findChartSvg(container: HTMLElement): SVGElement | null {
+  const svgs = container.querySelectorAll('svg');
+  let best: SVGElement | null = null;
+  let bestArea = 0;
+
+  for (const svg of svgs) {
+    const rect = svg.getBoundingClientRect();
+    if (rect.width >= MIN_CHART_SIZE && rect.height >= MIN_CHART_SIZE) {
+      const area = rect.width * rect.height;
+      if (area > bestArea) {
+        best = svg;
+        bestArea = area;
+      }
+    }
+  }
+
+  return best;
+}
+
+export function hasSvgChart(container: HTMLElement): boolean {
+  return findChartSvg(container) !== null;
 }
