@@ -1,22 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import {
-  Box,
-  Title,
-  Button,
-  Text,
-  Dropdown,
-  fontSizes,
-} from '@citizenlab/cl2-component-library';
+import { Box, Title, Button, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
 import usePhase from 'api/phases/usePhase';
 
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -72,7 +63,7 @@ const hiddenContainerStyle: React.CSSProperties = {
   overflow: 'visible',
 };
 
-// Inner component that uses the export contexts (visible UI)
+// Inner component that uses the PDF export context (visible UI)
 const InsightsContent = () => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -80,8 +71,6 @@ const InsightsContent = () => {
   };
   const { data: phase } = usePhase(phaseId);
   const { formatMessage } = useIntl();
-  const [dropdownOpened, setDropdownOpened] = useState(false);
-
   const {
     downloadPdf,
     isDownloading: isDownloadingPdf,

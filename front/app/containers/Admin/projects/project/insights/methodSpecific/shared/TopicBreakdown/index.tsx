@@ -3,6 +3,7 @@ import React from 'react';
 import {
   Box,
   Text,
+  Title,
   Spinner,
   Icon,
   colors,
@@ -81,61 +82,54 @@ const TopicBreakdown = ({ phaseId, participationMethod }: Props) => {
   }
 
   return (
-    <ExportableInsight exportId="topic-breakdown">
+    <Box
+      bgColor="white"
+      borderRadius="8px"
+      p="24px"
+      boxShadow="0px 1px 2px 0px rgba(0,0,0,0.05)"
+    >
       <Box
-        bgColor="white"
-        borderRadius="8px"
-        p="24px"
-        boxShadow="0px 1px 2px 0px rgba(0,0,0,0.05)"
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        mb="16px"
       >
+        <Title variant="h3" m="0">
+          {formatMessage(messages.topicBreakdown)}
+        </Title>
         <Box
-          display="flex"
-          justifyContent="space-between"
+          display="inline-flex"
           alignItems="center"
-          mb="16px"
+          gap="4px"
+          px="8px"
+          py="4px"
+          borderRadius="4px"
+          background="rgba(4, 77, 108, 0.1)"
         >
-          <Text m="0" fontWeight="semi-bold" fontSize="m">
-            {formatMessage(messages.topicBreakdown)}
+          <Icon name="stars" width="12px" height="12px" fill={colors.primary} />
+          <Text m="0" fontSize="xs" fontWeight="bold" color="primary">
+            {formatMessage(messages.aiPowered)}
           </Text>
-          <Box
-            display="inline-flex"
-            alignItems="center"
-            gap="4px"
-            px="8px"
-            py="4px"
-            borderRadius="4px"
-            background="rgba(4, 77, 108, 0.1)"
-          >
-            <Icon
-              name="stars"
-              width="12px"
-              height="12px"
-              fill={colors.primary}
-            />
-            <Text m="0" fontSize="xs" fontWeight="bold" color="primary">
-              {formatMessage(messages.aiPowered)}
-            </Text>
-          </Box>
-        </Box>
-
-        {isAiTopicsAllowed ? (
-          <AiTopicsAccordion
-            aiTopics={aiTopics}
-            totalInputs={totalInputs}
-            maxAiTopicCount={maxAiTopicCount}
-          />
-        ) : (
-          <AiUpsellBanner />
-        )}
-
-        <Box borderTop={`1px solid ${colors.divider}`} mt="8px" pt="8px">
-          <ManualTagsAccordion
-            manualTopics={manualTopics}
-            maxManualTopicCount={maxManualTopicCount}
-          />
         </Box>
       </Box>
-    </ExportableInsight>
+
+      {isAiTopicsAllowed ? (
+        <AiTopicsAccordion
+          aiTopics={aiTopics}
+          totalInputs={totalInputs}
+          maxAiTopicCount={maxAiTopicCount}
+        />
+      ) : (
+        <AiUpsellBanner />
+      )}
+
+      <Box borderTop={`1px solid ${colors.divider}`} mt="8px" pt="8px">
+        <ManualTagsAccordion
+          manualTopics={manualTopics}
+          maxManualTopicCount={maxManualTopicCount}
+        />
+      </Box>
+    </Box>
   );
 };
 
