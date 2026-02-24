@@ -150,7 +150,7 @@
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "E Kont erstellen oder Iech aloggen",
   "app.components.CustomFieldsForm.PostParticipationBox.createOrLinkAnAccountToFollow": "Erstellt oder verlinkt en existente Kont fir ze verfollegen, wat duerno geschitt, an un anere Gespréicher deelzehuelen.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Kritt Updates wann et nächst Schrëtt gëtt",
-  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Maacht mat bei Diskussiounen, wann Äre Bäitrag ëffentlech gedeelt gëtt",
+  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions2": "Maacht mat bei Diskussiounen a kritt Notifikatiounen, wann aner Leit mat Ärem Bäitrag interagéieren",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "Un anere Projeten a Gespréicher deelhuelen",
   "app.components.CustomFieldsForm.PostParticipationBox.stayConnected": "Bleift verbonnen",
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Adresseingabe",
