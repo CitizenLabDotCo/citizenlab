@@ -340,7 +340,7 @@ export default defineMessages({
   listViewDescription: {
     id: 'app.containers.AdminPage.ProjectEdit.listViewDescription',
     defaultMessage:
-      'Traditional threaded discussion. Best for: smaller discussions, when you want engagement metrics to drive visibility.',
+      'Inputs are displayed as a scrollable feed, sorted by trending, reactions, comments, date, or activity. Best for: smaller consultations.',
   },
   mapViewTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.mapViewTitle',
