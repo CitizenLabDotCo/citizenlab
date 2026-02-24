@@ -9,7 +9,7 @@ import {
   StatusLabel,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useSearch } from '@tanstack/react-router';
 
 import { CampaignFormValues } from 'api/campaigns/types';
 import useCampaign from 'api/campaigns/useCampaign';
@@ -28,6 +28,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { useParams } from 'utils/router';
 
 type EditProps = {
   campaignType: 'custom' | 'automated';
@@ -42,14 +43,13 @@ const feedbackMessages = {
 };
 
 const Edit = ({ campaignType }: EditProps) => {
-  const { campaignId } = useParams() as {
+  const { campaignId } = useParams({ strict: false }) as {
     campaignId: string;
   };
   const { data: campaign } = useCampaign(campaignId);
   const { mutateAsync: updateCampaign, isLoading } = useUpdateCampaign();
 
-  const [searchParams] = useSearchParams();
-  const created = searchParams.get('created');
+  const { created } = useSearch({ strict: false });
   const [feedbackType, setFeedbackType] = useState<FeedbackType>(
     created ? 'created' : null
   );

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useParams, useLocation } from 'react-router-dom';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
+import { useParams, useLocation } from 'utils/router';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
@@ -86,7 +86,7 @@ export type TOnProjectAttributesDiffChangeFunction = (
 
 const AdminProjectsProjectGeneral = () => {
   const { formatMessage } = useIntl();
-  const { projectId } = useParams();
+  const { projectId } = useParams({ strict: false });
   const { data: project } = useProjectById(projectId);
 
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });

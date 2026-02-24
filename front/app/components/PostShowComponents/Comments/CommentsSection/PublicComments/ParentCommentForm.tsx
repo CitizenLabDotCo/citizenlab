@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import { Box, colors, ClickOutside } from '@citizenlab/cl2-component-library';
 import { isString, trim } from 'lodash-es';
 import { hideVisually } from 'polished';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'utils/router';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';

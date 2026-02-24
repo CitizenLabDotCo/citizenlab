@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
 
 import { IdeaSortMethod } from 'api/phases/types';
 import { IdeaSortMethodFallback } from 'api/phases/utils';
@@ -11,6 +10,7 @@ import useUserBySlug from 'api/users/useUserBySlug';
 import { IdeaCardsWithoutFiltersSidebar } from 'components/IdeaCards';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams, useSearch } from '@tanstack/react-router';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import messages from '../messages';
@@ -26,22 +26,20 @@ interface QueryParameters {
 }
 
 const Submissions = () => {
-  const { userSlug } = useParams() as { userSlug: string };
+  const { userSlug } = useParams({ from: '/$locale/profile/$userSlug' });
   const { data: user } = useUserBySlug(userSlug);
-  const [searchParams] = useSearchParams();
-  const sortParam = searchParams.get('sort') as IdeaSortMethod | null;
+  const { sort, search } = useSearch({ strict: false });
   const { data: ideasCount } = useUserIdeasCount({ userId: user?.data.id });
   const isSmallerThanPhone = useBreakpoint('phone');
-  const searchParam = searchParams.get('search');
   const ideaQueryParameters = useMemo<QueryParameters>(
     () => ({
       'page[number]': 1,
       'page[size]': 24,
       author: user?.data.id || '',
-      sort: sortParam ?? IdeaSortMethodFallback,
-      search: searchParam ?? undefined,
+      sort: sort ?? IdeaSortMethodFallback,
+      search: search ?? undefined,
     }),
-    [user, sortParam, searchParam]
+    [user, sort, search]
   );
 
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, Title, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'utils/router';
 
 import { DEFAULT_PADDING } from 'components/admin/ContentBuilder/constants';
 import Warning from 'components/UI/Warning';

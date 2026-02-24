@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 
 import { Parameters } from 'api/projects_mini_admin/types';
 
@@ -51,7 +51,7 @@ export const setParam = <ParamName extends Parameter>(
 export const useParam = <ParamName extends Parameter>(
   paramName: ParamName
 ): Parameters[ParamName] | undefined => {
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
 
   const paramValue = searchParams.get(paramName);
 
@@ -65,7 +65,7 @@ export const useParam = <ParamName extends Parameter>(
 };
 
 export const useParams = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
 
   return useMemo(
     () =>

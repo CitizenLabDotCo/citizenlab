@@ -13,7 +13,6 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-import { useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
@@ -30,6 +29,7 @@ import typedDeleteConfirmationMessages from 'components/UI/TypedDeleteConfirmati
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isTopBarNavActive } from 'utils/helperUtils';
+import { useLocation, useParams } from 'utils/router';
 
 import { IPhaseTab } from '../tabs';
 
@@ -70,9 +70,9 @@ export const PhaseHeader = ({ phase, tabs }: Props) => {
   const [isDropdownOpened, setDropdownOpened] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { mutate: deletePhase } = useDeletePhase();
-  const { projectId } = useParams() as {
-    projectId: string;
-  };
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases',
+  });
   const { data: permissions } = usePhasePermissions({ phaseId: phase.id });
   const participationRequirementsMessage = getParticipantMessage(
     permissions?.data,

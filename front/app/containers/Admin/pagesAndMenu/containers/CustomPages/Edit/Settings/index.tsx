@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { omit } from 'lodash-es';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import { TCustomPageCode } from 'api/custom_pages/types';
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
@@ -29,7 +29,9 @@ const customPageSlugAllowedToEdit: { [key in TCustomPageCode]: boolean } = {
 
 const EditCustomPageSettings = () => {
   const { mutateAsync: updateCustomPage } = useUpdateCustomPage();
-  const { customPageId } = useParams() as { customPageId: string };
+  const { customPageId } = useParams({ strict: false }) as {
+    customPageId: string;
+  };
   const { data: customPage } = useCustomPageById(customPageId);
 
   if (!isNilOrError(customPage)) {

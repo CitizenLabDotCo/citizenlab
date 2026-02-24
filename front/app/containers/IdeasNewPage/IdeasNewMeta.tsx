@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Helmet } from 'react-helmet-async';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
@@ -19,7 +19,7 @@ import messages from './messages';
 
 const IdeasNewMeta = () => {
   const { formatMessage } = useIntl();
-  const { slug } = useParams();
+  const { slug } = useParams({ from: '/$locale/projects/$slug/ideas/new' });
   const { data: authUser } = useAuthUser();
   const { data: project } = useProjectBySlug(slug);
   const { data: phases } = usePhases(project ? project.data.id : undefined);

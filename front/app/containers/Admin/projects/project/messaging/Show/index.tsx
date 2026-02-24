@@ -8,7 +8,7 @@ import {
   Box,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -64,7 +64,7 @@ const Buttons = styled.div`
 `;
 
 const Show = () => {
-  const { projectId, campaignId } = useParams() as {
+  const { projectId, campaignId } = useParams({ strict: false }) as {
     projectId: string;
     campaignId: string;
   };

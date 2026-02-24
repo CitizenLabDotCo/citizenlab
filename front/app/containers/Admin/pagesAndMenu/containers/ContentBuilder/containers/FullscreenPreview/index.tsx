@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 import { SupportedLocale } from 'typings';
 
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';
@@ -18,7 +18,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import Editor from '../../components/Editor';
 
 export const FullScreenPreview = () => {
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
   const selectedLocale =
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     (search.get('selected_locale') as SupportedLocale) || undefined;

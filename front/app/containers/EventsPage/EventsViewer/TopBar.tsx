@@ -25,6 +25,7 @@ interface Props {
   showDateFilter?: boolean;
   setProjectIds: (projectIds: string[]) => void;
   setDateFilter: (dateFilter: dateFilterKey[]) => void;
+  dateFilter: dateFilterKey[];
   eventsTime?: 'past' | 'currentAndFuture';
 }
 
@@ -35,6 +36,7 @@ const TopBar = memo<Props>(
     showDateFilter,
     setProjectIds,
     setDateFilter,
+    dateFilter,
     eventsTime,
   }) => {
     const { formatMessage } = useIntl();
@@ -78,6 +80,7 @@ const TopBar = memo<Props>(
               >
                 <DateFilterDropdown
                   onChange={setDateFilter}
+                  selectedValues={dateFilter}
                   textColor={theme.colors.tenantText}
                   listTop="44px"
                   mobileLeft={isSmallerThanPhone ? '-70px' : mobileLeft}

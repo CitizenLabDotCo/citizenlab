@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useCommunityMonitorProject from 'api/community_monitor/useCommunityMonitorProject';
 
@@ -28,7 +28,9 @@ const Comments = ({
   const isTabletOrSmaller = useBreakpoint('tablet');
 
   // Get the relevant project and phase id from the URL
-  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams() as {
+  const { projectId: projectIdParam, phaseId: phaseIdParam } = useParams({
+    strict: false,
+  }) as {
     projectId: string;
     phaseId: string;
   };

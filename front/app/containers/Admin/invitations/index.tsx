@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useLocation, Outlet as RouterOutlet } from 'react-router-dom';
+import { Outlet as RouterOutlet } from 'utils/router';
 import { ITab } from 'typings';
 
 import TabbedResource from 'components/admin/TabbedResource';
@@ -15,7 +15,7 @@ import messages from './messages';
 
 const InvitationsPage = () => {
   const { formatMessage } = useIntl();
-  const location = useLocation();
+  // const location = useLocation();
   const tabs: ITab[] = [
     {
       label: formatMessage(messages.tabInviteUsers),
@@ -36,7 +36,10 @@ const InvitationsPage = () => {
   const goBack = () => {
     clHistory.goBack();
   };
-  const hasGoBackLink = location.key !== 'default';
+
+  // TODO
+  const hasGoBackLink = Math.random() > 0;
+  // const hasGoBackLink = location.key !== 'default';
 
   return (
     <>

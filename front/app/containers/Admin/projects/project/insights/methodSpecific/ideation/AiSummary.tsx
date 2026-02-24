@@ -8,7 +8,7 @@ import {
   colors,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
@@ -43,7 +43,7 @@ interface Props {
 const AiSummary = ({ phaseId, participationMethod }: Props) => {
   const { formatMessage } = useIntl();
   const { isPdfRenderMode } = usePdfExportContext();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const [automaticSummaryCreated, setAutomaticSummaryCreated] = useState(false);
   const [analysisCreationAttempted, setAnalysisCreationAttempted] =
     useState(false);

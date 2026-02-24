@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 import DescriptionBuilderPage from 'containers/DescriptionBuilder/index';
 
 const FolderDescriptionBuilderPage = () => {
-  const { folderId } = useParams() as { folderId: string };
+  const { folderId } = useParams({ strict: false }) as { folderId: string };
   const { data: folder } = useProjectFolderById(folderId);
 
   if (!folder) return null;

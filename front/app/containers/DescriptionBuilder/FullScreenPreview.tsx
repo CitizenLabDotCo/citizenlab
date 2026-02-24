@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Box, Spinner, Title } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 import { Multiloc, SupportedLocale } from 'typings';
 
 import { ContentBuildableType } from 'api/content_builder/types';
@@ -29,7 +29,7 @@ export const FullScreenPreview = ({
   contentBuildableType,
   titleMultiloc,
 }: Props) => {
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
   const selectedLocale =
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

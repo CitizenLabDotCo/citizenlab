@@ -1,8 +1,6 @@
 import { trackPage } from 'utils/analytics';
 import eventEmitter from 'utils/eventEmitter';
 
-import { mockRoutes } from '../../../utils/__mocks__/mockRoutes.mock';
-
 import { trackPageChange } from './actions';
 import { setupMatomo } from './setup';
 
@@ -10,10 +8,6 @@ import config from '.';
 
 jest.mock('api/app_configuration/appConfigurationStream');
 
-jest.mock('routes', () => ({
-  __esModule: true,
-  default: jest.fn(() => [mockRoutes]),
-}));
 jest.mock('./setup', () => ({
   setupMatomo: jest.fn(),
 }));

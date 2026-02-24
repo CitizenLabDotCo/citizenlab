@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import { IIdeaQueryParameters, Sort } from 'api/ideas/types';
@@ -81,7 +81,7 @@ const InputManager = ({
   );
 
   const topicsData = inputTopics?.data;
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
   const [selection, setSelection] = useState<Set<string>>(new Set());
 
   const [activeFilterMenu, setActiveFilterMenu] =

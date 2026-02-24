@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, colors, Icon, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import { RouteType } from 'routes';
 
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
@@ -19,7 +19,7 @@ const UserFieldsInFormNotice = ({
   communityMonitor = false,
 }: UserFieldsInFormNoticeProps) => {
   const { formatMessage } = useIntl();
-  const { phaseId, projectId } = useParams() as {
+  const { phaseId, projectId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

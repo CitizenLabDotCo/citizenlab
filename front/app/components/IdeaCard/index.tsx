@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useBreakpoint, Box, Title } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 import { RouteType } from 'routes';
 
 import useIdeaImage from 'api/idea_images/useIdeaImage';
@@ -65,7 +65,7 @@ const IdeaCard = ({
   const ideaTitle = localize(idea.data.attributes.title_multiloc, {
     maxChar: 50,
   });
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const scrollToCardParam = searchParams.get('scroll_to_card');
 
   // Scroll to this card if it matches the scroll_to_card search param

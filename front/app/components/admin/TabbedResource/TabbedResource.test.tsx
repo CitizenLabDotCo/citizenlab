@@ -2,20 +2,9 @@ import React from 'react';
 
 import { RouteType } from 'routes';
 
-import { WithRouterProps } from 'utils/cl-router/withRouter';
 import { render, screen } from 'utils/testUtils/rtl';
 
 import TabbedResource from '.';
-
-const getRouterProps = (tabId, tabName?: string) =>
-  ({
-    location: {
-      pathname: `/admin/projects/${tabId}/${tabName}`,
-    },
-    params: {
-      tabId,
-    },
-  } as any as WithRouterProps);
 
 const children = (
   <>
@@ -49,10 +38,8 @@ const fakeResource = {
 
 describe('<TabbedResource />', () => {
   it('renders tabs and header properly including an active tab', () => {
-    const routerProps = getRouterProps('continuousInformation');
-
     const { container } = render(
-      <TabbedResource resource={fakeResource} tabs={fakeTabs} {...routerProps}>
+      <TabbedResource resource={fakeResource} tabs={fakeTabs}>
         {children}
       </TabbedResource>
     );
@@ -65,8 +52,6 @@ describe('<TabbedResource />', () => {
   });
 
   it('renders properly with an optional status label', () => {
-    const routerProps = getRouterProps('continuousInformation');
-
     const tabsIncludingOneWithStatusLabel = [
       ...fakeTabs,
       {
@@ -81,7 +66,6 @@ describe('<TabbedResource />', () => {
       <TabbedResource
         resource={fakeResource}
         tabs={tabsIncludingOneWithStatusLabel}
-        {...routerProps}
       >
         {children}
       </TabbedResource>

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 
 import { Box, colors, isRtl, Title } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
@@ -61,7 +61,9 @@ interface Props {
 }
 
 const ProjectTimelineContainer = ({ projectId, className }: Props) => {
-  const { phaseNumber } = useParams();
+  const { phaseNumber } = useParams({ strict: false }) as {
+    phaseNumber?: string;
+  };
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
   const currentLocale = useLocale();

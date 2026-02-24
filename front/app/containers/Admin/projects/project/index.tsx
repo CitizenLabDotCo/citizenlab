@@ -1,11 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import {
-  Outlet as RouterOutlet,
-  useLocation,
-  useParams,
-} from 'react-router-dom';
+import { Outlet as RouterOutlet, useLocation, useParams } from 'utils/router';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
@@ -21,7 +17,7 @@ import ProjectHeader from './projectHeader';
 const AdminProjectsProjectIndex = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: appConfiguration } = useAppConfiguration();
 
   const privateAttributesInExport =

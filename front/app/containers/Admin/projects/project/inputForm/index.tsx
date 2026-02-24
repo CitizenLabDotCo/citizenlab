@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import DownloadPDFButtonWithModal from 'components/admin/FormSync/DownloadPDFButtonWithModal';
 import ExcelDownloadButton from 'components/admin/FormSync/ExcelDownloadButton';
@@ -9,14 +8,14 @@ import { SectionTitle, SectionDescription } from 'components/admin/Section';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 import messages from './messages';
 
 export const InputForm = () => {
-  const { projectId, phaseId } = useParams() as {
-    projectId: string;
-    phaseId: string;
-  };
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/form',
+  });
 
   return (
     <>

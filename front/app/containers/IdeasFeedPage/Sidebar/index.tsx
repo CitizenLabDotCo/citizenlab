@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
 import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
 
 import useIdeaById from 'api/ideas/useIdeaById';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
@@ -16,6 +15,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useParams, useSearch } from 'utils/router';
 
 import BottomSheet from '../BottomSheet';
 import messages from '../messages';
@@ -32,8 +32,8 @@ interface Props {
 const Sidebar = ({ projectId, onSheetCollapse, onSheetExpand }: Props) => {
   const { formatMessage } = useIntl();
   const contentRef = useRef<HTMLDivElement>(null);
-  const { slug } = useParams() as { slug: string };
-  const [searchParams] = useSearchParams();
+  const { slug } = useParams({ from: '/$locale/projects/$slug' });
+  const [searchParams] = useSearch({ strict: false });
   const selectedTopicId = searchParams.get('topic');
   const selectedIdeaId = searchParams.get('idea_id');
   const phaseId = searchParams.get('phase_id');

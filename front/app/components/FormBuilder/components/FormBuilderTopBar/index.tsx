@@ -11,7 +11,7 @@ import {
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
@@ -67,7 +67,7 @@ const FormBuilderTopBar = ({
 }: FormBuilderTopBarProps) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const { projectId } = useParams() as {
+  const { projectId } = useParams({ strict: false }) as {
     projectId: string;
   };
 

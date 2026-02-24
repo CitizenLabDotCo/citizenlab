@@ -1,5 +1,3 @@
-import createRoutes from 'routes';
-
 import authUserStream from 'api/me/authUserStream';
 
 import { API_PATH, locales } from 'containers/App/constants';
@@ -7,11 +5,10 @@ import { API_PATH, locales } from 'containers/App/constants';
 import { pageChanges$ } from 'utils/analytics';
 import { getJwt } from 'utils/auth/jwt';
 import fetcher from 'utils/cl-react-query/fetcher';
-import matchPath, { getAllPathsFromRoutes } from 'utils/matchPath';
+import { getRoutePattern } from 'utils/getRoutePattern';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 
 let sessionId: string | undefined;
-let allAppPaths: string[] | undefined;
 let previousPathTracked: string | undefined;
 let sessionTracked = false;
 
@@ -60,10 +57,6 @@ const upgradeSession = () => {
 };
 
 const trackPageView = async (path: string) => {
-  if (allAppPaths === undefined) {
-    allAppPaths = getAllPathsFromRoutes(createRoutes()[0]);
-  }
-
   // For some reason, sometimes the page view event is triggered twice
   // for the same path. This prevents that.
   if (previousPathTracked === path) return;
@@ -73,12 +66,7 @@ const trackPageView = async (path: string) => {
 
   previousPathTracked = path;
 
-  const routeMatch = matchPath(path, {
-    paths: allAppPaths,
-    exact: true,
-  });
-
-  const route = routeMatch?.path;
+  const route = getRoutePattern(path);
 
   await fetcher({
     path: `/sessions/${sessionId}/track_pageview`,

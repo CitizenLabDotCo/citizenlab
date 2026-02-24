@@ -14,8 +14,8 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 import { isAdmin } from 'utils/permissions/roles';
 
 import messages from '../../admin/containers/messages';
@@ -105,53 +105,52 @@ export interface Props {
   className?: string;
 }
 
-const ProjectTemplatePreviewCitizen = memo<Props & WithRouterProps>(
-  ({ params, className }) => {
-    const { data: authUser } = useAuthUser();
-    const projectTemplateId: string | undefined = get(
-      params,
-      'projectTemplateId'
-    );
+const ProjectTemplatePreviewCitizen = memo<Props>(({ className }) => {
+  const params = useParams({ strict: false });
+  const { data: authUser } = useAuthUser();
+  const projectTemplateId: string | undefined = get(
+    params,
+    'projectTemplateId'
+  );
 
-    if (projectTemplateId) {
-      if (!isNilOrError(authUser) && isAdmin(authUser)) {
-        clHistory.push(`/admin/projects/templates/${projectTemplateId}`);
-      } else {
-        const link = (
-          <a href="mailto:support@govocal.com" target="_blank" rel="noreferrer">
-            <FormattedMessage {...messages.govocalExpert} />
-          </a>
-        );
+  if (projectTemplateId) {
+    if (!isNilOrError(authUser) && isAdmin(authUser)) {
+      clHistory.push(`/admin/projects/templates/${projectTemplateId}`);
+    } else {
+      const link = (
+        <a href="mailto:support@govocal.com" target="_blank" rel="noreferrer">
+          <FormattedMessage {...messages.govocalExpert} />
+        </a>
+      );
 
-        return (
-          <Container className={className || ''}>
-            <ContainerInner>
-              <InfoboxContainer className={className}>
-                <InfoboxIcon name="key" />
-                <InfoboxText>
-                  <p>
-                    <strong>
-                      <FormattedMessage {...messages.infoboxLine1} />
-                    </strong>
-                  </p>
-                  <p>
-                    <FormattedMessage
-                      {...messages.infoboxLine2}
-                      values={{ link }}
-                    />
-                  </p>
-                </InfoboxText>
-              </InfoboxContainer>
+      return (
+        <Container className={className || ''}>
+          <ContainerInner>
+            <InfoboxContainer className={className}>
+              <InfoboxIcon name="key" />
+              <InfoboxText>
+                <p>
+                  <strong>
+                    <FormattedMessage {...messages.infoboxLine1} />
+                  </strong>
+                </p>
+                <p>
+                  <FormattedMessage
+                    {...messages.infoboxLine2}
+                    values={{ link }}
+                  />
+                </p>
+              </InfoboxText>
+            </InfoboxContainer>
 
-              <ProjectTemplatePreview projectTemplateId={projectTemplateId} />
-            </ContainerInner>
-          </Container>
-        );
-      }
+            <ProjectTemplatePreview projectTemplateId={projectTemplateId} />
+          </ContainerInner>
+        </Container>
+      );
     }
-
-    return null;
   }
-);
 
-export default withRouter(ProjectTemplatePreviewCitizen);
+  return null;
+});
+
+export default ProjectTemplatePreviewCitizen;

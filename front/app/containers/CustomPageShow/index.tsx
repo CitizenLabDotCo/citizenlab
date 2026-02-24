@@ -7,7 +7,7 @@ import {
   media,
 } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet-async';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -73,9 +73,7 @@ const NoBannerContainer = styled(ContentContainer)`
 `;
 
 const CustomPageShow = () => {
-  const { slug } = useParams() as {
-    slug: string;
-  };
+  const { slug } = useParams({ from: '/$locale/pages/$slug' });
   const { data: appConfiguration } = useAppConfiguration();
   const localize = useLocalize();
   const { data: page, isError } = useCustomPageBySlug(slug);

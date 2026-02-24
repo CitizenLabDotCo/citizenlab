@@ -158,6 +158,49 @@ jest.mock('history', () => ({
   }),
 }));
 
+jest.mock('@tanstack/react-router', () => {
+  const actual = jest.requireActual('@tanstack/react-router');
+  return {
+    ...actual,
+    useLocation: jest.fn(() => ({
+      pathname: '/',
+      search: '',
+      hash: '',
+      href: '/',
+      state: {},
+    })),
+    useNavigate: jest.fn(() => jest.fn()),
+    useParams: jest.fn(() => ({})),
+    useSearch: jest.fn(() => ({})),
+    useRouterState: jest.fn(() => ({
+      location: {
+        pathname: '/',
+        search: '',
+        hash: '',
+        href: '/',
+        state: {},
+      },
+    })),
+    useMatch: jest.fn(() => ({
+      params: {},
+    })),
+    useMatches: jest.fn(() => []),
+    Outlet: jest.fn(() => null),
+  };
+});
+
+// Mock the top-level routes module to break the circular dependency
+// between routes.tsx and containers/Admin/routes.tsx during tests.
+jest.mock('routes', () => ({
+  __esModule: true,
+  default: jest.fn(() => []),
+  localeRoute: {},
+  RouteType: undefined,
+  createAppRouter: jest.fn(),
+  router: {},
+  initRouter: jest.fn(),
+}));
+
 jest.mock('utils/cl-router/Link');
 jest.mock('utils/cl-router/history');
 jest.mock('hooks/useLocale');

@@ -8,7 +8,6 @@ import {
   Icon,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAddIdeaExposure from 'api/idea_exposure/useAddIdeaExposure';
@@ -22,6 +21,7 @@ import ReactionControl from 'components/ReactionControl';
 import Emoji from 'components/UI/Emoji';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useSearch } from 'utils/router';
 import { stripHtml } from 'utils/textUtils';
 
 export const NOTE_ASPECT_RATIO = 4 / 5;
@@ -99,7 +99,7 @@ const StickyNote: React.FC<Props> = ({
   centeredIdeaId,
   showReactions = true,
 }) => {
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const phaseId = searchParams.get('phase_id') || undefined;
   const { data: phase } = usePhase(phaseId);
 

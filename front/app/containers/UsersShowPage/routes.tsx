@@ -1,8 +1,10 @@
 import React, { lazy } from 'react';
 
-import { Navigate } from 'react-router-dom';
+import { localeRoute } from 'routes';
 
 import PageLoading from 'components/UI/PageLoading';
+
+import { createRoute, Navigate } from 'utils/router';
 
 const UsersShowPage = lazy(() => import('./'));
 const Following = lazy(() => import('./Following'));
@@ -11,10 +13,8 @@ const Surveys = lazy(() => import('./Surveys'));
 const UserComments = lazy(() => import('./UserComments'));
 const UserEvents = lazy(() => import('./UserEvents'));
 
-enum userShowPageRoutes {
-  profile = 'profile',
-  default = '',
-  profileUserSlug = `profile/:userSlug`,
+export enum userShowPageRoutes {
+  profileUserSlug = 'profile/$userSlug',
   submissions = 'submissions',
   comments = 'comments',
   following = 'following',
@@ -22,76 +22,90 @@ enum userShowPageRoutes {
   surveys = 'surveys',
 }
 
-export type userShowPageRouteTypes =
-  | ``
-  | `/${userShowPageRoutes.profile}/${string}`
-  | `/${userShowPageRoutes.profile}/${string}/${userShowPageRoutes.submissions}`
-  | `/${userShowPageRoutes.profile}/${string}/${userShowPageRoutes.surveys}`
-  | `/${userShowPageRoutes.profile}/${string}/${userShowPageRoutes.comments}`
-  | `/${userShowPageRoutes.profile}/${string}/${userShowPageRoutes.following}`
-  | `/${userShowPageRoutes.profile}/${string}/${userShowPageRoutes.events}`;
+// Factory function to create routes with parent
+export const createUserShowPageRoutes = () => {
+  const profileRoute = createRoute({
+    getParentRoute: () => localeRoute,
+    path: userShowPageRoutes.profileUserSlug,
+    component: () => (
+      <PageLoading>
+        <UsersShowPage />
+      </PageLoading>
+    ),
+  });
 
-export default () => ({
-  path: userShowPageRoutes.profileUserSlug,
-  element: (
-    <PageLoading>
-      <UsersShowPage />
-    </PageLoading>
-  ),
-  children: [
-    {
-      path: userShowPageRoutes.default,
-      element: <Navigate to="submissions" replace />,
-    },
-    {
-      path: userShowPageRoutes.submissions,
-      element: (
-        <PageLoading>
-          <div role="tabpanel" aria-labelledby="tab-submissions" tabIndex={0}>
-            <Submissions />
-          </div>
-        </PageLoading>
-      ),
-    },
-    {
-      path: userShowPageRoutes.surveys,
-      element: (
-        <PageLoading>
-          <div role="tabpanel" aria-labelledby="tab-surveys" tabIndex={0}>
-            <Surveys />
-          </div>
-        </PageLoading>
-      ),
-    },
-    {
-      path: userShowPageRoutes.comments,
-      element: (
-        <PageLoading>
-          <div role="tabpanel" aria-labelledby="tab-comments" tabIndex={0}>
-            <UserComments />
-          </div>
-        </PageLoading>
-      ),
-    },
-    {
-      path: userShowPageRoutes.following,
-      element: (
-        <PageLoading>
-          <div role="tabpanel" aria-labelledby="tab-following" tabIndex={0}>
-            <Following />
-          </div>
-        </PageLoading>
-      ),
-    },
-    {
-      path: userShowPageRoutes.events,
-      element: (
-        <PageLoading>
-          <div role="tabpanel" aria-labelledby="tab-events" tabIndex={0}>
-            <UserEvents />
-          </div>
-        </PageLoading>
-      ),
-    },
-  ],
-});
+  const profileIndexRoute = createRoute({
+    getParentRoute: () => profileRoute,
+    path: '/',
+    component: () => <Navigate to="submissions" replace />,
+  });
+
+  const submissionsRoute = createRoute({
+    getParentRoute: () => profileRoute,
+    path: userShowPageRoutes.submissions,
+    component: () => (
+      <PageLoading>
+        <div role="tabpanel" aria-labelledby="tab-submissions" tabIndex={0}>
+          <Submissions />
+        </div>
+      </PageLoading>
+    ),
+  });
+
+  const surveysRoute = createRoute({
+    getParentRoute: () => profileRoute,
+    path: userShowPageRoutes.surveys,
+    component: () => (
+      <PageLoading>
+        <div role="tabpanel" aria-labelledby="tab-surveys" tabIndex={0}>
+          <Surveys />
+        </div>
+      </PageLoading>
+    ),
+  });
+
+  const commentsRoute = createRoute({
+    getParentRoute: () => profileRoute,
+    path: userShowPageRoutes.comments,
+    component: () => (
+      <PageLoading>
+        <div role="tabpanel" aria-labelledby="tab-comments" tabIndex={0}>
+          <UserComments />
+        </div>
+      </PageLoading>
+    ),
+  });
+
+  const followingRoute = createRoute({
+    getParentRoute: () => profileRoute,
+    path: userShowPageRoutes.following,
+    component: () => (
+      <PageLoading>
+        <div role="tabpanel" aria-labelledby="tab-following" tabIndex={0}>
+          <Following />
+        </div>
+      </PageLoading>
+    ),
+  });
+
+  const eventsRoute = createRoute({
+    getParentRoute: () => profileRoute,
+    path: userShowPageRoutes.events,
+    component: () => (
+      <PageLoading>
+        <div role="tabpanel" aria-labelledby="tab-events" tabIndex={0}>
+          <UserEvents />
+        </div>
+      </PageLoading>
+    ),
+  });
+
+  return profileRoute.addChildren([
+    profileIndexRoute,
+    submissionsRoute,
+    surveysRoute,
+    commentsRoute,
+    followingRoute,
+    eventsRoute,
+  ]);
+};

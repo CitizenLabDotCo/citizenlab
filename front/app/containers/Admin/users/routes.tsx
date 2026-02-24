@@ -1,5 +1,11 @@
 import React, { lazy } from 'react';
 
+import PageLoading from 'components/UI/PageLoading';
+
+import { createRoute } from 'utils/router';
+
+import { adminRoute } from '../routes';
+
 const AdminUsersIndex = lazy(() => import('.'));
 const AdminAllUsers = lazy(() => import('./AllUsers'));
 const AdminAdmins = lazy(() => import('./Admins'));
@@ -7,87 +13,86 @@ const AdminModerators = lazy(() => import('./Moderators'));
 const AdminUsersGroup = lazy(() => import('./UsersGroup'));
 const AdminBlockedUsers = lazy(() => import('./BlockedUsers'));
 const AdminBannedEmails = lazy(() => import('./BannedEmails'));
-import PageLoading from 'components/UI/PageLoading';
 
-import { AdminRoute } from '../routes';
-
-export enum usersRoutes {
-  users = 'users',
-  admins = 'admins',
-  moderators = 'moderators',
-  groupId = `:groupId`,
-  blocked = 'blocked',
-  bannedEmails = 'banned-emails',
-}
-
-type UsersRoute<T extends string = string> =
-  AdminRoute<`${usersRoutes.users}/${T}`>;
-
-export type userRouteTypes =
-  | AdminRoute<`${usersRoutes.users}`>
-  | UsersRoute<`${usersRoutes.admins}`>
-  | UsersRoute<`${usersRoutes.moderators}`>
-  | UsersRoute<`${usersRoutes.blocked}`>
-  | UsersRoute<`${usersRoutes.bannedEmails}`>
-  | UsersRoute<`${string}`>;
-
-const createAdminUsersRoutes = () => ({
-  path: usersRoutes.users,
-  element: (
+const usersRoute = createRoute({
+  getParentRoute: () => adminRoute,
+  path: 'users',
+  component: () => (
     <PageLoading>
       <AdminUsersIndex />
     </PageLoading>
   ),
-  children: [
-    {
-      index: true,
-      element: (
-        <PageLoading>
-          <AdminAllUsers />
-        </PageLoading>
-      ),
-    },
-    {
-      path: usersRoutes.admins,
-      element: (
-        <PageLoading>
-          <AdminAdmins />
-        </PageLoading>
-      ),
-    },
-    {
-      path: usersRoutes.moderators,
-      element: (
-        <PageLoading>
-          <AdminModerators />
-        </PageLoading>
-      ),
-    },
-    {
-      path: usersRoutes.groupId,
-      element: (
-        <PageLoading>
-          <AdminUsersGroup />
-        </PageLoading>
-      ),
-    },
-    {
-      path: usersRoutes.blocked,
-      element: (
-        <PageLoading>
-          <AdminBlockedUsers />
-        </PageLoading>
-      ),
-    },
-    {
-      path: usersRoutes.bannedEmails,
-      element: (
-        <PageLoading>
-          <AdminBannedEmails />
-        </PageLoading>
-      ),
-    },
-  ],
 });
+
+const usersIndexRoute = createRoute({
+  getParentRoute: () => usersRoute,
+  path: '/',
+  component: () => (
+    <PageLoading>
+      <AdminAllUsers />
+    </PageLoading>
+  ),
+});
+
+const adminsRoute = createRoute({
+  getParentRoute: () => usersRoute,
+  path: 'admins',
+  component: () => (
+    <PageLoading>
+      <AdminAdmins />
+    </PageLoading>
+  ),
+});
+
+const moderatorsRoute = createRoute({
+  getParentRoute: () => usersRoute,
+  path: 'moderators',
+  component: () => (
+    <PageLoading>
+      <AdminModerators />
+    </PageLoading>
+  ),
+});
+
+const groupRoute = createRoute({
+  getParentRoute: () => usersRoute,
+  path: '$groupId',
+  component: () => (
+    <PageLoading>
+      <AdminUsersGroup />
+    </PageLoading>
+  ),
+});
+
+const blockedRoute = createRoute({
+  getParentRoute: () => usersRoute,
+  path: 'blocked',
+  component: () => (
+    <PageLoading>
+      <AdminBlockedUsers />
+    </PageLoading>
+  ),
+});
+
+const bannedEmailsRoute = createRoute({
+  getParentRoute: () => usersRoute,
+  path: 'banned-emails',
+  component: () => (
+    <PageLoading>
+      <AdminBannedEmails />
+    </PageLoading>
+  ),
+});
+
+const createAdminUsersRoutes = () => {
+  return usersRoute.addChildren([
+    usersIndexRoute,
+    adminsRoute,
+    moderatorsRoute,
+    groupRoute,
+    blockedRoute,
+    bannedEmailsRoute,
+  ]);
+};
 
 export default createAdminUsersRoutes;

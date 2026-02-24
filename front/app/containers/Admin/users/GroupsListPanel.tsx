@@ -303,9 +303,9 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
               <MenuLink
                 key={group.id}
                 to={`/admin/users/${group.id}`}
-                className={() =>
-                  `${highlightedGroups.has(group.id) ? 'highlight' : ''}`
-                }
+                className={`${
+                  highlightedGroups.has(group.id) ? 'highlight' : ''
+                }`}
               >
                 <Outlet
                   id="app.containers.Admin.users.GroupsListPanel.listitem.icon"

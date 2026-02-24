@@ -9,7 +9,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { groupBy } from 'lodash-es';
 import { darken, rgba } from 'polished';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import styled, { useTheme } from 'styled-components';
 
 import useComments from 'api/comments/useComments';
@@ -58,7 +58,7 @@ const MessageContainer = styled.div`
 `;
 
 export const UserComments = () => {
-  const { userSlug } = useParams() as { userSlug: string };
+  const { userSlug } = useParams({ from: '/$locale/profile/$userSlug' });
   const { data: user } = useUserBySlug(userSlug);
   const theme = useTheme();
   const { data: authUser } = useAuthUser();

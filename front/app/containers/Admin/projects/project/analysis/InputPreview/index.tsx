@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import { Box, Divider, Text } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
 
 import useAnalysis from 'api/analyses/useAnalysis';
 import useAnalysisInput from 'api/analysis_inputs/useAnalysisInput';
@@ -12,6 +11,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
+import { useParams, useSearch } from 'utils/router';
 import { getFullName } from 'utils/textUtils';
 
 import { useSelectedInputContext } from '../SelectedInputContext';
@@ -22,15 +22,16 @@ import CustomFields from './components/CustomFields';
 import messages from './messages';
 
 const InputListItem = () => {
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId, analysisId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const [showAllQuestions, setShowAllQuestions] = useState(false);
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
 
   const phaseId = searchParams.get('phase_id');
 
   const { formatMessage } = useIntl();
   const { selectedInputId } = useSelectedInputContext();
-  const { analysisId } = useParams() as { analysisId: string };
   const { data: input } = useAnalysisInput(
     analysisId,
     selectedInputId ?? undefined

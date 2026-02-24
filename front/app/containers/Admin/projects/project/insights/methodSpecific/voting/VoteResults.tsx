@@ -8,7 +8,6 @@ import {
   Spinner,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
 
@@ -20,6 +19,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useSearch } from 'utils/router';
 
 import { INSIGHTS_CHART_COLORS } from '../../constants';
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
@@ -39,7 +39,7 @@ const VoteResults = ({ phaseId }: Props) => {
   const localize = useLocalize();
   const theme = useTheme();
   const { isPdfRenderMode } = usePdfExportContext();
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
 
   // Read clusterBy from URL so it persists across PDF export
   const clusterBy = searchParams.get('votingClusterBy') || '';

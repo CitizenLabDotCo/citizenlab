@@ -9,7 +9,7 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useLocation, useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearch } from 'utils/router';
 import { RouteType } from 'routes';
 import styled from 'styled-components';
 
@@ -44,9 +44,11 @@ type Props = {
 };
 
 const SurveyHeading = ({ titleText, phaseId }: Props) => {
-  const location = useLocation();
+  // const location = useLocation();
 
-  const { slug: projectSlug } = useParams();
+  const { slug: projectSlug } = useParams({
+    from: '/$locale/projects/$slug/surveys/new',
+  });
   const { data: project } = useProjectBySlug(projectSlug);
   const { data: phase } = usePhase(phaseId);
   const { data: authUser } = useAuthUser();
@@ -62,7 +64,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
   const closeModal = () => {
     setShowLeaveModal(false);
   };
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
 
   const hasBeenSubmitted = !!searchParams.get('idea_id');
 
@@ -83,7 +85,7 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
     switch (leaveFormDestination) {
       case 'go-back':
         // If there is a back history, go back, otherwise go to the homepage
-        location.key !== 'default' ? clHistory.goBack() : clHistory.push('/');
+        // location.key !== 'default' ? clHistory.goBack() : clHistory.push('/');
         break;
       case 'project-page':
         clHistory.push(`/projects/${projectSlug}`);

@@ -6,7 +6,6 @@ import {
   colors,
   IconTooltip,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
 
 import { IInsightData } from 'api/analysis_insights/types';
 import useDeleteAnalysisInsight from 'api/analysis_insights/useDeleteAnalysisInsight';
@@ -17,6 +16,7 @@ import tracks from 'containers/Admin/projects/project/analysis/tracks';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { useParams, useSearch } from 'utils/router';
 
 import InsightBody from './InsightBody';
 import InsightFooter from './InsightFooter';
@@ -31,12 +31,11 @@ type Props = {
 
 const Question = ({ insight }: Props) => {
   const [isCopied, setIsCopied] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearch({ strict: false });
   const { formatMessage } = useIntl();
-  const { analysisId, projectId } = useParams() as {
-    analysisId: string;
-    projectId: string;
-  };
+  const { analysisId, projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId/analysis/$analysisId',
+  });
   const { mutate: deleteQuestion } = useDeleteAnalysisInsight();
   const { data: question } = useAnalysisQuestion({
     analysisId,

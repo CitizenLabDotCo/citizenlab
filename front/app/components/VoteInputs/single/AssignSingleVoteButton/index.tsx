@@ -6,7 +6,7 @@ import {
   Tooltip,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
@@ -54,7 +54,7 @@ const AssignSingleVoteButton = ({
   const { getVotes, setVotes, numberOfVotesCast } = useVoting();
   const ideaInBasket = !!getVotes?.(ideaId);
 
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const isProcessing = searchParams.get('processing_vote') === ideaId;
 
   // TODO: Fix this the next time the file is edited.

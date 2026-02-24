@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 import { Multiloc, SupportedLocale } from 'typings';
 
 import { Country } from 'api/project_library_countries/types';
@@ -31,7 +31,7 @@ export const setRansackParam = <ParamName extends keyof RansackParams>(
 export const useRansackParam = <ParamName extends keyof RansackParams>(
   paramName: ParamName
 ): RansackParams[ParamName] => {
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
 
   const paramValue = searchParams.get(paramName);
 
@@ -56,7 +56,7 @@ const RANSACK_PARAMS: (keyof RansackParams)[] = [
 ];
 
 export const useRansackParams = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   return useMemo(
     () =>
       RANSACK_PARAMS.reduce((acc, paramName) => {

@@ -21,7 +21,7 @@ import {
   useWindowSize,
   viewportWidths,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 import { CSSTransition } from 'react-transition-group';
 import styled, { useTheme } from 'styled-components';
 
@@ -125,7 +125,7 @@ const IdeasMap = memo<Props>(
     const { formatMessage } = useIntl();
     const { data: phase } = usePhase(phaseId);
     const { data: authUser } = useAuthUser();
-    const [searchParams] = useSearchParams();
+    const [searchParams] = useSearch({ strict: false });
     const isMobileOrSmaller = useBreakpoint('phone');
     const isTabletOrSmaller = useBreakpoint('tablet');
 

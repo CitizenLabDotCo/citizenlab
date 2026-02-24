@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useCampaign from 'api/campaigns/useCampaign';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
@@ -15,7 +15,7 @@ import CampaignForm, { FormValues, PageTitle } from '../CampaignForm';
 import messages from '../messages';
 
 const Edit = () => {
-  const { projectId, campaignId } = useParams() as {
+  const { projectId, campaignId } = useParams({ strict: false }) as {
     projectId: string;
     campaignId: string;
   };

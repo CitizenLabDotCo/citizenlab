@@ -4,7 +4,7 @@ import React, { useCallback, useMemo, useState } from 'react';
 import MapView from '@arcgis/core/views/MapView';
 import { Box, Button, Label, Spinner } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -44,7 +44,7 @@ type Props = {
 };
 
 const PointSettings = ({ mapConfigIdName, pageLayoutName, field }: Props) => {
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId?: string;
   };

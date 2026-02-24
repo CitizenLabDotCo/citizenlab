@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Radio, Text } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'utils/router';
 
 import useAuthUser from 'api/me/useAuthUser';
 

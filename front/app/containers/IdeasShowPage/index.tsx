@@ -7,7 +7,7 @@ import {
   media,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import { VotingContext } from 'api/baskets_ideas/useVoting';
@@ -50,7 +50,7 @@ const StyledIdeasShow = styled(IdeasShow)`
 `;
 
 const IdeasShowPage = () => {
-  const { slug } = useParams() as { slug: string };
+  const { slug } = useParams({ from: '/$locale/ideas/$slug' });
   const { data: idea, status, error } = useIdeaBySlug(slug);
   const isSmallerThanTablet = useBreakpoint('tablet');
   const { data: project } = useProjectById(
@@ -58,7 +58,7 @@ const IdeasShowPage = () => {
   );
   const { data: phases } = usePhases(project?.data.id);
 
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const phaseContext = searchParams.get('phase_context');
 
   if (!project) return <PageNotFound />;

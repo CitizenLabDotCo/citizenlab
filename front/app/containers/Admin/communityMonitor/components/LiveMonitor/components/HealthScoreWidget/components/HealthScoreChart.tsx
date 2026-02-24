@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 
 import LineChart from 'components/admin/Graphs/LineChart';
 import { AccessibilityProps } from 'components/admin/Graphs/typings';
@@ -21,7 +21,7 @@ const HealthScoreChart = ({
   ariaLabel,
   ariaDescribedBy,
 }: Props & AccessibilityProps) => {
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
   const { formatMessage } = useIntl();
   const isMobileOrSmaller = useBreakpoint('phone');
 

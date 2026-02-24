@@ -3,7 +3,7 @@ import React, { useState, useRef, useCallback } from 'react';
 import { Box, stylingConsts } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 import { isEmpty } from 'lodash-es';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'utils/router';
 import { RouteType } from 'routes';
 import { Multiloc, SupportedLocale } from 'typings';
 

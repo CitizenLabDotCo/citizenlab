@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useAnalyses from 'api/analyses/useAnalyses';
 import useAnalysisTags from 'api/analysis_tags/useAnalysisTags';
@@ -30,7 +30,7 @@ const useTopicBreakdownData = ({
   participationMethod,
 }: UseTopicBreakdownDataProps) => {
   const localize = useLocalize();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
 
   const isAiTopicsAllowed = useFeatureFlag({
     name: 'large_summaries',

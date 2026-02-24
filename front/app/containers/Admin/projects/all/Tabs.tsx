@@ -6,7 +6,7 @@ import {
   colors,
   IconNames,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -59,7 +59,7 @@ const Tab = ({ message, active, icon, dataCy, onClick }: TabProps) => {
 };
 
 const Tabs = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const tab = searchParams.get('tab');
   const { data: user } = useAuthUser();
   const { formatMessage } = useIntl();

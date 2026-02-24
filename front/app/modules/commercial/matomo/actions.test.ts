@@ -2,13 +2,20 @@ import ideasKeys from 'api/ideas/keys';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
-import { mockRoutes } from '../../../utils/__mocks__/mockRoutes.mock';
-
 import { trackPageChange } from './actions';
 
-jest.mock('routes', () => ({
-  __esModule: true,
-  default: jest.fn(() => [mockRoutes]),
+jest.mock('utils/getRoutePattern', () => ({
+  getRoutePattern: jest.fn((path: string) => {
+    const patterns: Record<string, string> = {
+      '/nl-NL/projects': '/:locale/projects',
+      '/en/projects/some-project': '/:locale/projects/:slug',
+      '/en/ideas/some-idea': '/:locale/ideas/:slug',
+      '/en/projects/some-project/ideas/new':
+        '/:locale/projects/:slug/ideas/new',
+      '/en': '/:locale',
+    };
+    return patterns[path];
+  }),
 }));
 
 let mockProject;

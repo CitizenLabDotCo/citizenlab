@@ -36,18 +36,25 @@ jest.mock('api/content_builder/useContentBuilderLayout', () => () => {
   };
 });
 
-jest.mock('react-router-dom', () => {
-  const originalModule = jest.requireActual('react-router-dom');
+jest.mock('@tanstack/react-router', () => {
+  const originalModule = jest.requireActual('@tanstack/react-router');
   return {
     ...originalModule,
     useParams: () => ({
       projectId: 'id',
     }),
-    useSearchParams: () => [
-      {
-        get: () => mockLocale,
-      },
-    ],
+    // useLocation provides search params for utils/router's useSearch wrapper
+    useLocation: jest.fn(() => ({
+      pathname: '/',
+      searchStr: `?selected_locale=${mockLocale}`,
+      hash: '',
+      href: '/',
+      state: {},
+    })),
+    useNavigate: jest.fn(() => jest.fn()),
+    useRouterState: jest.fn(() => ({
+      location: { pathname: '/', search: '', hash: '', href: '/', state: {} },
+    })),
   };
 });
 

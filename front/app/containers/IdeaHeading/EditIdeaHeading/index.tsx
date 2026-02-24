@@ -9,7 +9,7 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 import styled from 'styled-components';
 
 import { IIdeaData } from 'api/ideas/types';
@@ -45,7 +45,7 @@ const EditIdeaHeading = ({ titleText, idea, projectId }: Props) => {
   const { formatMessage } = useIntl();
   const isSmallerThanPhone = useBreakpoint('phone');
   const [showLeaveModal, setShowLeaveModal] = useState(false);
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const ideaSubmitted = searchParams.get('idea_id') !== null;
 
   const openModal = () => {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Box, Tooltip } from '@citizenlab/cl2-component-library';
-import { Outlet as RouterOutlet } from 'react-router-dom';
+import { Outlet as RouterOutlet } from 'utils/router';
 
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import { MAX_NAVBAR_ITEMS } from 'api/navbar/util';

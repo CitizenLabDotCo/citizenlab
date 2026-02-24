@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
@@ -30,7 +30,7 @@ const AnalysisBanner = () => {
   const { mutate: updateAnalysis, isLoading: isUpdateLoading } =
     useUpdateAnalysis();
 
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

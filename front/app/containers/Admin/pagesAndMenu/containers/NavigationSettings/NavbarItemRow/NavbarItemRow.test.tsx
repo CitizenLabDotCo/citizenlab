@@ -6,8 +6,6 @@ import { render, screen, fireEvent } from 'utils/testUtils/rtl';
 
 import NavbarItemRow from '.';
 
-jest.mock('utils/cl-router/withRouter');
-
 const title = { en: 'English title' };
 
 describe('<NavbarItemRow />', () => {

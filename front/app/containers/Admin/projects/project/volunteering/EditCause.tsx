@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useCause from 'api/causes/useCause';
 import useUpdateCause from 'api/causes/useUpdateCause';
@@ -15,11 +15,9 @@ import messages from './messages';
 
 const EditCause = () => {
   const { mutateAsync: updateCause } = useUpdateCause();
-  const { projectId, causeId, phaseId } = useParams() as {
-    projectId: string;
-    causeId: string;
-    phaseId: string;
-  };
+  const { projectId, causeId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/volunteering/causes/$causeId',
+  });
   const { data: cause } = useCause(causeId);
 
   const handleOnSubmit = async (formValues: SubmitValues) => {

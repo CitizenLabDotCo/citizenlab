@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import { IGlobalTopicUpdate } from 'api/global_topics/types';
 import useGlobalTopic from 'api/global_topics/useGlobalTopic';
@@ -17,7 +17,7 @@ import messages from '../messages';
 import TopicForm from '../TopicForm';
 
 const Edit = () => {
-  const { topicId } = useParams() as { topicId: string };
+  const { topicId } = useParams({ strict: false }) as { topicId: string };
   const { data: topic } = useGlobalTopic(topicId);
   const { mutate: updateTopic } = useUpdateGlobalTopic();
 

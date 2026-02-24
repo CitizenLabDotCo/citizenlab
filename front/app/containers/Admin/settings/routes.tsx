@@ -1,15 +1,14 @@
 import React, { lazy } from 'react';
 
-import moduleConfiguration from 'modules';
-import { Navigate } from 'react-router-dom';
+import * as yup from 'yup';
 
 import PageLoading from 'components/UI/PageLoading';
 
-import { AdminRoute } from '../routes';
+import { createRoute, Navigate } from 'utils/router';
 
-import registrationRoutes, {
-  registrationRouteTypes,
-} from './registration/routes';
+import { adminRoute } from '../routes';
+
+import createRegistrationRoutes from './registration/routes';
 
 const AdminSettingsIndex = lazy(() => import('containers/Admin/settings'));
 const AdminSettingsGeneral = lazy(
@@ -53,225 +52,245 @@ const StatusShowComponent = React.lazy(
   () => import('./statuses/containers/edit')
 );
 
-export enum settingsRoutes {
-  settings = 'settings',
-  settingsDefault = '',
-  general = 'general',
-  branding = 'branding',
-  policies = 'policies',
-  areas = 'areas',
-  new = 'new',
-  areaId = ':areaId',
-  topics = 'topics',
-  platform = 'platform',
-  input = 'input',
-  edit = 'edit',
-  topicEdit = ':topicId/edit',
-  defaultInputTopicEdit = ':defaultInputTopicId/edit',
-  ideation = 'ideation',
-  proposals = 'proposals',
-  statuses = 'statuses',
-  statusId = ':statusId',
-}
+// Topics new search schema (for parent_id)
+const topicsNewSearchSchema = yup.object({
+  parent_id: yup.string().optional(),
+});
 
-export type settingRouteTypes =
-  | AdminRoute<settingsRoutes.settings>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.general}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.branding}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.policies}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.areas}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.areas}/${settingsRoutes.new}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.areas}/${string}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.platform}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.platform}/${settingsRoutes.new}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.platform}/${string}/${settingsRoutes.edit}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.input}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.input}/${settingsRoutes.new}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.topics}/${settingsRoutes.input}/${string}/${settingsRoutes.edit}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.proposals}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.proposals}/${settingsRoutes.new}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.proposals}/${string}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.ideation}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.ideation}/${settingsRoutes.new}`>
-  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.ideation}/${string}`>
-  | registrationRouteTypes;
+export type TopicsNewSearchParams = yup.InferType<typeof topicsNewSearchSchema>;
 
-export default () => ({
-  path: settingsRoutes.settings,
-  element: (
+export const settingsRoute = createRoute({
+  getParentRoute: () => adminRoute,
+  path: 'settings',
+  component: () => (
     <PageLoading>
       <AdminSettingsIndex />
     </PageLoading>
   ),
-  children: [
-    {
-      path: settingsRoutes.settingsDefault,
-      element: <Navigate to="general" replace />,
-    },
-    {
-      path: settingsRoutes.general,
-      element: (
-        <PageLoading>
-          <AdminSettingsGeneral />
-        </PageLoading>
-      ),
-    },
-    {
-      path: settingsRoutes.branding,
-      element: (
-        <PageLoading>
-          <AdminSettingsCustomize />
-        </PageLoading>
-      ),
-    },
-    {
-      path: settingsRoutes.policies,
-      element: (
-        <PageLoading>
-          <AdminSettingsPolicies />
-        </PageLoading>
-      ),
-    },
-    {
-      path: settingsRoutes.statuses,
-      element: (
-        <PageLoading>
-          <StatusesMain />
-        </PageLoading>
-      ),
-      children: [
-        {
-          path: settingsRoutes.ideation,
-          children: [
-            {
-              path: settingsRoutes.new,
-              element: (
-                <PageLoading>
-                  <NewStatusComponent variant="ideation" />
-                </PageLoading>
-              ),
-            },
-            {
-              path: settingsRoutes.statusId,
-              element: (
-                <PageLoading>
-                  <StatusShowComponent variant="ideation" />
-                </PageLoading>
-              ),
-            },
-          ],
-        },
-        {
-          path: settingsRoutes.proposals,
-          children: [
-            {
-              path: settingsRoutes.new,
-              element: (
-                <PageLoading>
-                  <NewStatusComponent variant="proposals" />
-                </PageLoading>
-              ),
-            },
-            {
-              path: settingsRoutes.statusId,
-              element: (
-                <PageLoading>
-                  <StatusShowComponent variant="proposals" />
-                </PageLoading>
-              ),
-            },
-          ],
-        },
-      ],
-    },
-    registrationRoutes(),
-    {
-      path: settingsRoutes.areas,
-      children: [
-        {
-          index: true,
-          element: (
-            <PageLoading>
-              <AdminAreasAll />
-            </PageLoading>
-          ),
-        },
-        {
-          path: settingsRoutes.new,
-          element: (
-            <PageLoading>
-              <AdminAreasNew />
-            </PageLoading>
-          ),
-        },
-        {
-          path: settingsRoutes.areaId,
-          element: (
-            <PageLoading>
-              <AdminAreasEdit />
-            </PageLoading>
-          ),
-        },
-      ],
-    },
-    {
-      path: settingsRoutes.topics,
-      element: (
-        <PageLoading>
-          <TopicsMain />
-        </PageLoading>
-      ),
-      children: [
-        {
-          index: true,
-          element: <Navigate to="platform" replace />,
-        },
-        {
-          path: settingsRoutes.platform,
-          children: [
-            {
-              path: settingsRoutes.new,
-              element: (
-                <PageLoading>
-                  <AdminTopicsNewComponent />
-                </PageLoading>
-              ),
-            },
-            {
-              path: settingsRoutes.topicEdit,
-              element: (
-                <PageLoading>
-                  <AdminTopicsEditComponent />
-                </PageLoading>
-              ),
-            },
-          ],
-        },
-        {
-          path: settingsRoutes.input,
-          children: [
-            {
-              path: settingsRoutes.new,
-              element: (
-                <PageLoading>
-                  <AdminDefaultInputTopicsNewComponent />
-                </PageLoading>
-              ),
-            },
-            {
-              path: settingsRoutes.defaultInputTopicEdit,
-              element: (
-                <PageLoading>
-                  <AdminDefaultInputTopicsEditComponent />
-                </PageLoading>
-              ),
-            },
-          ],
-        },
-      ],
-    },
-    ...moduleConfiguration.routes['admin.settings'],
-  ],
 });
+
+const settingsIndexRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: '/',
+  component: () => <Navigate to="general" replace />,
+});
+
+const generalRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: 'general',
+  component: () => (
+    <PageLoading>
+      <AdminSettingsGeneral />
+    </PageLoading>
+  ),
+});
+
+const brandingRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: 'branding',
+  component: () => (
+    <PageLoading>
+      <AdminSettingsCustomize />
+    </PageLoading>
+  ),
+});
+
+const policiesRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: 'policies',
+  component: () => (
+    <PageLoading>
+      <AdminSettingsPolicies />
+    </PageLoading>
+  ),
+});
+
+// statuses
+const statusesRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: 'statuses',
+  component: () => (
+    <PageLoading>
+      <StatusesMain />
+    </PageLoading>
+  ),
+});
+
+const ideationRoute = createRoute({
+  getParentRoute: () => statusesRoute,
+  path: 'ideation',
+});
+
+const ideationNewRoute = createRoute({
+  getParentRoute: () => ideationRoute,
+  path: 'new',
+  component: () => (
+    <PageLoading>
+      <NewStatusComponent variant="ideation" />
+    </PageLoading>
+  ),
+});
+
+const ideationStatusRoute = createRoute({
+  getParentRoute: () => ideationRoute,
+  path: '$statusId',
+  component: () => (
+    <PageLoading>
+      <StatusShowComponent variant="ideation" />
+    </PageLoading>
+  ),
+});
+
+const proposalsRoute = createRoute({
+  getParentRoute: () => statusesRoute,
+  path: 'proposals',
+});
+
+const proposalsNewRoute = createRoute({
+  getParentRoute: () => proposalsRoute,
+  path: 'new',
+  component: () => (
+    <PageLoading>
+      <NewStatusComponent variant="proposals" />
+    </PageLoading>
+  ),
+});
+
+const proposalsStatusRoute = createRoute({
+  getParentRoute: () => proposalsRoute,
+  path: '$statusId',
+  component: () => (
+    <PageLoading>
+      <StatusShowComponent variant="proposals" />
+    </PageLoading>
+  ),
+});
+
+// areas
+const areasRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: 'areas',
+});
+
+const areasIndexRoute = createRoute({
+  getParentRoute: () => areasRoute,
+  path: '/',
+  component: () => (
+    <PageLoading>
+      <AdminAreasAll />
+    </PageLoading>
+  ),
+});
+
+const areasNewRoute = createRoute({
+  getParentRoute: () => areasRoute,
+  path: 'new',
+  component: () => (
+    <PageLoading>
+      <AdminAreasNew />
+    </PageLoading>
+  ),
+});
+
+const areasEditRoute = createRoute({
+  getParentRoute: () => areasRoute,
+  path: '$areaId',
+  component: () => (
+    <PageLoading>
+      <AdminAreasEdit />
+    </PageLoading>
+  ),
+});
+
+// topics
+const topicsRoute = createRoute({
+  getParentRoute: () => settingsRoute,
+  path: 'topics',
+  component: () => (
+    <PageLoading>
+      <TopicsMain />
+    </PageLoading>
+  ),
+});
+
+const topicsIndexRoute = createRoute({
+  getParentRoute: () => topicsRoute,
+  path: '/',
+  component: () => <Navigate to="platform" replace />,
+});
+
+const platformRoute = createRoute({
+  getParentRoute: () => topicsRoute,
+  path: 'platform',
+});
+
+const platformNewRoute = createRoute({
+  getParentRoute: () => platformRoute,
+  path: 'new',
+  component: () => (
+    <PageLoading>
+      <AdminTopicsNewComponent />
+    </PageLoading>
+  ),
+});
+
+const platformEditRoute = createRoute({
+  getParentRoute: () => platformRoute,
+  path: '$topicId/edit',
+  component: () => (
+    <PageLoading>
+      <AdminTopicsEditComponent />
+    </PageLoading>
+  ),
+});
+
+const inputRoute = createRoute({
+  getParentRoute: () => topicsRoute,
+  path: 'input',
+});
+
+const inputNewRoute = createRoute({
+  getParentRoute: () => inputRoute,
+  path: 'new',
+  validateSearch: (search: Record<string, unknown>): TopicsNewSearchParams =>
+    topicsNewSearchSchema.validateSync(search, { stripUnknown: true }),
+  component: () => (
+    <PageLoading>
+      <AdminDefaultInputTopicsNewComponent />
+    </PageLoading>
+  ),
+});
+
+const inputEditRoute = createRoute({
+  getParentRoute: () => inputRoute,
+  path: '$defaultInputTopicId/edit',
+  component: () => (
+    <PageLoading>
+      <AdminDefaultInputTopicsEditComponent />
+    </PageLoading>
+  ),
+});
+
+const createAdminSettingsRoutes = () => {
+  return settingsRoute.addChildren([
+    settingsIndexRoute,
+    generalRoute,
+    brandingRoute,
+    policiesRoute,
+    statusesRoute.addChildren([
+      ideationRoute.addChildren([ideationNewRoute, ideationStatusRoute]),
+      proposalsRoute.addChildren([proposalsNewRoute, proposalsStatusRoute]),
+    ]),
+    createRegistrationRoutes(),
+    areasRoute.addChildren([areasIndexRoute, areasNewRoute, areasEditRoute]),
+    topicsRoute.addChildren([
+      topicsIndexRoute,
+      platformRoute.addChildren([platformNewRoute, platformEditRoute]),
+      inputRoute.addChildren([inputNewRoute, inputEditRoute]),
+    ]),
+    // TODO: Wire in module routes (admin.settings) after conversion
+    // ...moduleConfiguration.routes['admin.settings'],
+  ]);
+};
+
+export default createAdminSettingsRoutes;

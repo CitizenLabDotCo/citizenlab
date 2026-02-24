@@ -7,7 +7,7 @@ import {
   Icon,
   colors,
 } from '@citizenlab/cl2-component-library';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearch } from 'utils/router';
 import { Multiloc } from 'typings';
 
 import { IIdeaData } from 'api/ideas/types';
@@ -40,14 +40,14 @@ const SimilarIdeasList = ({
   const selectedIdeaRef = useRef<HTMLDivElement>(null);
   const lastClickedIdeaRef = useRef<HTMLElement | null>(null);
   const ideaRefs = useRef<{ [key: string]: HTMLElement | null }>({});
-  const { slug: projectSlug, projectId: urlProjectId } = useParams() as {
+  const { slug: projectSlug, projectId: urlProjectId } = useParams({
+    strict: false,
+  }) as {
     slug?: string;
     projectId?: string;
   };
-  const [searchParams] = useSearchParams();
-  const { ideaId: idea_id } = useParams<{
-    ideaId?: string;
-  }>();
+  const [searchParams] = useSearch({ strict: false });
+  const { ideaId: idea_id } = useParams({ strict: false });
   const ideaId = searchParams.get('idea_id') || idea_id;
   const selectedIdeaId = searchParams.get('selected_idea_id');
   const { data: idea } = useIdeaById(ideaId ?? undefined);

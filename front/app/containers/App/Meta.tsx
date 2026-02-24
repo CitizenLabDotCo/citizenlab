@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Helmet } from 'react-helmet-async';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'utils/router';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useContentBuilderLayout from 'api/content_builder/useContentBuilderLayout';

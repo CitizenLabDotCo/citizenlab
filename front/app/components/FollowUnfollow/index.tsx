@@ -8,7 +8,7 @@ import {
   colors,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'utils/router';
 
 import useABTest from 'api/experiments/useABTest';
 import { FollowableType } from 'api/follow_unfollow/types';

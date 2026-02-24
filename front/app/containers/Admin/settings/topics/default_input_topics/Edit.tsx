@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import { IDefaultInputTopicUpdate } from 'api/default_input_topics/types';
 import useDefaultInputTopic from 'api/default_input_topics/useDefaultInputTopic';
@@ -17,7 +17,7 @@ import DefaultInputTopicForm from './DefaultInputTopicForm';
 import messages from './messages';
 
 const Edit = () => {
-  const { defaultInputTopicId } = useParams() as {
+  const { defaultInputTopicId } = useParams({ strict: false }) as {
     defaultInputTopicId: string;
   };
   const { data: topic } = useDefaultInputTopic(defaultInputTopicId);

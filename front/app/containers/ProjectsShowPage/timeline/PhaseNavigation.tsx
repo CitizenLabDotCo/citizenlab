@@ -7,7 +7,7 @@ import {
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { findIndex } from 'lodash-es';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
@@ -68,7 +68,9 @@ interface Props {
 const PhaseNavigation = memo<Props>(({ projectId, buttonStyle, className }) => {
   const { formatMessage } = useIntl();
   const { data: phases } = usePhases(projectId);
-  const { phaseNumber } = useParams();
+  const { phaseNumber } = useParams({ strict: false }) as {
+    phaseNumber?: string;
+  };
   const { data: project } = useProjectById(projectId);
   const phaseInsightsEnabled = useFeatureFlag({ name: 'phase_insights' });
 

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -13,7 +13,7 @@ import { isSuperAdmin } from 'utils/permissions/roles';
  * If also logged in, the param can only enable super_admin features if the user is actually a super admin (.govocal.com email).
  */
 export default function useSuperAdmin() {
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const { data: authUser } = useAuthUser();
 
   // Multiple possible param names for super admin - people forget the exact one sometimes!

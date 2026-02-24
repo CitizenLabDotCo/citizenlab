@@ -1,61 +1,84 @@
 import React, { lazy } from 'react';
 
-import { Navigate } from 'react-router-dom';
+import * as yup from 'yup';
 
 import PageLoading from 'components/UI/PageLoading';
 
-import { AdminRoute } from '../routes';
+import { createRoute, Navigate } from 'utils/router';
+
+import { adminRoute } from '../routes';
 
 const ReportingWrapper = lazy(() => import('.'));
 const ReportBuilderPage = lazy(() => import('./containers/ReportBuilderPage'));
 const ReportBuilder = lazy(() => import('./containers/ReportBuilder'));
 
-export enum reportingEnumRoutes {
-  reporting = 'reporting',
-  reportBuilder = `report-builder`,
-  editor = `editor`,
-  print = `print`,
-}
+// Report builder search schema
+const reportBuilderSearchSchema = yup.object({
+  tab: yup
+    .string()
+    .oneOf([
+      'all-reports',
+      'your-reports',
+      'service-reports',
+      'community-monitor',
+    ])
+    .optional(),
+});
 
-export type reportingRouteTypes =
-  | AdminRoute<reportingEnumRoutes.reporting>
-  | AdminRoute<`${reportingEnumRoutes.reporting}/${reportingEnumRoutes.reportBuilder}`>
-  | AdminRoute<`${reportingEnumRoutes.reporting}/${reportingEnumRoutes.reportBuilder}?${string}`>
-  | AdminRoute<`${reportingEnumRoutes.reporting}/${reportingEnumRoutes.reportBuilder}/${string}/${reportingEnumRoutes.editor}`>;
+export type ReportBuilderSearchParams = yup.InferType<
+  typeof reportBuilderSearchSchema
+>;
 
-const reportingRoutes = () => {
+// reporting/report-builder layout route
+const reportBuilderLayoutRoute = createRoute({
+  getParentRoute: () => adminRoute,
+  path: 'reporting/report-builder',
+  component: () => (
+    <PageLoading>
+      <ReportingWrapper />
+    </PageLoading>
+  ),
+});
+
+const reportBuilderIndexRoute = createRoute({
+  getParentRoute: () => reportBuilderLayoutRoute,
+  path: '/',
+  validateSearch: (
+    search: Record<string, unknown>
+  ): ReportBuilderSearchParams =>
+    reportBuilderSearchSchema.validateSync(search, { stripUnknown: true }),
+  component: () => (
+    <PageLoading>
+      <ReportBuilderPage />
+    </PageLoading>
+  ),
+});
+
+const reportEditorRoute = createRoute({
+  getParentRoute: () => reportBuilderLayoutRoute,
+  path: '$reportId/editor',
+  component: () => (
+    <PageLoading>
+      <ReportBuilder />
+    </PageLoading>
+  ),
+});
+
+// Redirect /admin/reporting to /admin/reporting/report-builder
+const reportingRedirectRoute = createRoute({
+  getParentRoute: () => adminRoute,
+  path: 'reporting',
+  component: () => <Navigate to="report-builder" />,
+});
+
+const createAdminReportingRoutes = () => {
   return [
-    {
-      path: `${reportingEnumRoutes.reporting}/${reportingEnumRoutes.reportBuilder}`,
-      element: (
-        <PageLoading>
-          <ReportingWrapper />
-        </PageLoading>
-      ),
-      children: [
-        {
-          index: true,
-          element: (
-            <PageLoading>
-              <ReportBuilderPage />
-            </PageLoading>
-          ),
-        },
-        {
-          path: `:reportId/${reportingEnumRoutes.editor}`,
-          element: (
-            <PageLoading>
-              <ReportBuilder />
-            </PageLoading>
-          ),
-        },
-      ],
-    },
-    {
-      path: reportingEnumRoutes.reporting,
-      element: <Navigate to={reportingEnumRoutes.reportBuilder} />,
-    },
+    reportBuilderLayoutRoute.addChildren([
+      reportBuilderIndexRoute,
+      reportEditorRoute,
+    ]),
+    reportingRedirectRoute,
   ];
 };
 
-export default reportingRoutes;
+export default createAdminReportingRoutes;

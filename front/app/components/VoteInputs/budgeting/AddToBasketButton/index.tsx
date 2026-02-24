@@ -7,7 +7,7 @@ import {
   Tooltip,
   Box,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
@@ -61,7 +61,7 @@ const AddToBasketButton = ({
 
   const ideaInBasket = !!getVotes?.(ideaId);
 
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const isProcessing = searchParams.get('processing_vote') === ideaId;
 
   if (!idea || !ideaBudget) {

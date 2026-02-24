@@ -5,8 +5,8 @@ import styled from 'styled-components';
 import useAuthUser from 'api/me/useAuthUser';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
+import { useParams } from 'utils/router';
 import { usePermission } from 'utils/permissions';
 
 // localisation
@@ -46,9 +46,11 @@ const Spacer = styled.div`
   flex: 1;
 `;
 
-const AdminFolderProjectsList = ({
-  params: { projectFolderId },
-}: WithRouterProps) => {
+const AdminFolderProjectsList = () => {
+  const { projectFolderId } = useParams({ strict: false }) as Record<
+    string,
+    string
+  >;
   const { data: authUser } = useAuthUser();
 
   const canManageProjects = usePermission({
@@ -88,4 +90,4 @@ const AdminFolderProjectsList = ({
   );
 };
 
-export default withRouter(AdminFolderProjectsList);
+export default AdminFolderProjectsList;

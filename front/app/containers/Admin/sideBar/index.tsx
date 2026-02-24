@@ -9,7 +9,7 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'utils/router';
 import styled from 'styled-components';
 import { InsertConfigurationOptions } from 'typings';
 

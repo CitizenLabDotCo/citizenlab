@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Select, Label } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 import { IOption } from 'typings';
 
@@ -40,7 +40,7 @@ interface Props {
 }
 
 const FeedbackSettings = ({ projectId, ideaId, className }: Props) => {
-  const { phaseId } = useParams() as { phaseId: string };
+  const { phaseId } = useParams({ strict: false }) as { phaseId: string };
   const { data: phase } = usePhase(phaseId);
   const { formatMessage } = useIntl();
   const localize = useLocalize();

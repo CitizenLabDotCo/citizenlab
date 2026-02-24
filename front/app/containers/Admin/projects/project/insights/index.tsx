@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, Title, Button, Text } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
@@ -47,7 +47,7 @@ const hiddenContainerStyle: React.CSSProperties = {
 
 // Inner component that uses the PDF export context (visible UI)
 const InsightsContent = () => {
-  const { projectId, phaseId } = useParams() as {
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };
@@ -216,7 +216,7 @@ const InsightsContent = () => {
 
 // Main component that wraps with PdfExportProvider
 const AdminPhaseInsights = () => {
-  const { phaseId } = useParams() as {
+  const { phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
   };

@@ -8,7 +8,7 @@ import {
   useBreakpoint,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 import { useTheme } from 'styled-components';
 
 import useBasket from 'api/baskets/useBasket';
@@ -50,7 +50,7 @@ const AssignMultipleVotesInput = ({
   const { getVotes, setVotes, userHasVotesLeft, numberOfVotesCast } =
     useVoting();
   const votes = getVotes?.(ideaId);
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const isProcessing = searchParams.get('processing_vote') === ideaId;
 
   // participation context

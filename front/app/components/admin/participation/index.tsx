@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'utils/router';
 import { RouteType } from 'routes';
 import { ITab } from 'typings';
 
@@ -20,7 +20,7 @@ import messages from './messages';
 import Users from './Users';
 
 const ProjectParticipation = () => {
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { pathname } = useLocation();
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();

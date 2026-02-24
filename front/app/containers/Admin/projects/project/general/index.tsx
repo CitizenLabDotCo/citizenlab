@@ -1,11 +1,6 @@
 import React from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
-import {
-  Outlet as RouterOutlet,
-  useLocation,
-  useParams,
-} from 'react-router-dom';
 import { ITab } from 'typings';
 
 import { IUpdatedProjectProperties } from 'api/projects/types';
@@ -16,6 +11,7 @@ import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
 import { isTopBarNavActive } from 'utils/helperUtils';
+import { Outlet as RouterOutlet, useLocation, useParams } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import messages from './messages';
@@ -28,7 +24,9 @@ export type TOnProjectAttributesDiffChangeFunction = (
 const General = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
-  const { projectId } = useParams() as { projectId: string };
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId/general',
+  });
 
   const tabs: ITab[] = [
     {

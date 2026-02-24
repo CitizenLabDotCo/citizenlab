@@ -7,7 +7,7 @@ import {
   colors,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -200,7 +200,7 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
 };
 
 const ProjectFolderShowPageWrapper = () => {
-  const { slug } = useParams();
+  const { slug } = useParams({ from: '/$locale/folders/$slug' });
   const { data: projectFolder, status, error } = useProjectFolderBySlug(slug);
 
   if (status === 'loading') {

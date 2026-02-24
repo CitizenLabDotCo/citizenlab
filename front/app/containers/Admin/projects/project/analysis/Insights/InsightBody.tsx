@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 import styled from 'styled-components';
 import { FormatMessage } from 'typings';
 
@@ -60,7 +60,7 @@ const InsightBody = ({
   generatedAt?: string;
   backgroundTaskId?: string;
 }) => {
-  const [search] = useSearchParams();
+  const [search] = useSearch({ strict: false });
   const { formatMessage } = useIntl();
   const { data: task } = useAnalysisBackgroundTask(
     analysisId,

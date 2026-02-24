@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Radio, IconTooltip } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import { CLErrors } from 'typings';
 
 import { PresentationMode } from 'api/phases/types';
@@ -29,10 +29,10 @@ export default ({
   handleIdeasDisplayChange,
   title,
 }: Props) => {
-  const { projectId, phaseId } = useParams<{
+  const { projectId, phaseId } = useParams({ strict: false }) as {
     projectId: string;
     phaseId: string;
-  }>();
+  };
   const ideaFeedEnabled = useFeatureFlag({ name: 'idea_feed' });
 
   const inputFormUrl = `/admin/projects/${projectId}/phases/${phaseId}/form/edit`;

@@ -4,7 +4,7 @@ import MapView from '@arcgis/core/views/MapView';
 import { Input, IconTooltip, Icon } from '@citizenlab/cl2-component-library';
 import { isEmpty, inRange } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -84,7 +84,7 @@ interface IFormValues {
 
 const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
   ({ className, mapConfig, mapView, intl: { formatMessage } }) => {
-    const { projectId } = useParams() as {
+    const { projectId } = useParams({ strict: false }) as {
       projectId: string;
     };
 

@@ -9,7 +9,7 @@ import {
   Box,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import GetGroup from 'resources/GetGroup';
 import styled from 'styled-components';
 
@@ -97,7 +97,7 @@ const SendNowWarning = styled.div`
 `;
 
 const Show = () => {
-  const { campaignId } = useParams() as { campaignId: string };
+  const { campaignId } = useParams({ strict: false }) as { campaignId: string };
 
   const { data: tenant } = useAppConfiguration();
   const { data: campaign } = useCampaign(campaignId);

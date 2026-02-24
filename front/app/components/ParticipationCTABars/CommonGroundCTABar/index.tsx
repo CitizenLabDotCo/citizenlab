@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'utils/router';
 import { useTheme } from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';

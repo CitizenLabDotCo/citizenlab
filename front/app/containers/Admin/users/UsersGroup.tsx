@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useDeleteMembership from 'api/group_memberships/useDeleteMembership';
 import { MembershipType } from 'api/groups/types';
@@ -33,7 +33,7 @@ const UsersGroup = () => {
   const queryClient = useQueryClient();
   const isVerificationEnabled = useFeatureFlag({ name: 'verification' });
   const { formatMessage } = useIntl();
-  const { groupId } = useParams() as { groupId: string };
+  const { groupId } = useParams({ strict: false }) as { groupId: string };
   const { data: group } = useGroup(groupId);
   const { mutateAsync: deleteMembershipByUserId } = useDeleteMembership();
   const { mutateAsync: updateGroup } = useUpdateGroup();

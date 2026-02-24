@@ -7,7 +7,7 @@ import {
   media,
   useBreakpoint,
 } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 import styled from 'styled-components';
 
 import useEventImage from 'api/event_images/useEventImage';
@@ -70,9 +70,7 @@ const EventImage = styled(Image)`
 const EventsShowPage = () => {
   const isSmallerThanTablet = useBreakpoint('tablet');
   const localize = useLocalize();
-  const { eventId } = useParams() as {
-    eventId: string;
-  };
+  const { eventId } = useParams({ from: '/$locale/events/$eventId' });
   const { data: event, status, error } = useEvent(eventId);
   const { data: project } = useProjectById(
     event?.data.relationships.project.data.id

@@ -7,7 +7,7 @@ import {
   Title,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from '@tanstack/react-router';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
@@ -84,7 +84,7 @@ type ReportBuilderPageProps = {
 
 const ReportBuilderPage = ({ tabsToHide }: ReportBuilderPageProps) => {
   const { formatMessage } = useIntl();
-  const [searchParams] = useSearchParams();
+  const searchParams = useSearch({ strict: false });
   const { data: me } = useAuthUser();
   const [modalOpen, setModalOpen] = useState(false);
   const [search, setSearch] = useState<string | undefined>();
@@ -120,7 +120,7 @@ const ReportBuilderPage = ({ tabsToHide }: ReportBuilderPageProps) => {
   const defaultTab = getDefaultTab(me);
 
   const currentTab =
-    tabNames.find((tab) => tab === searchParams.get('tab')) ?? defaultTab;
+    tabNames.find((tab) => tab === searchParams.tab) ?? defaultTab;
 
   const reports = {
     'your-reports': yourReports,

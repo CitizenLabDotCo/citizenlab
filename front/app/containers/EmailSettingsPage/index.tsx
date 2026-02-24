@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Title, colors } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
+import { useSearch } from 'utils/router';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
@@ -31,7 +31,7 @@ const EmailSettingPage = () => {
   const [unsubscribedCampaignMultiloc, setUnsubscribedCampaignMultiloc] =
     useState<Multiloc | null>(null);
 
-  const [searchParams] = useSearchParams();
+  const [searchParams] = useSearch({ strict: false });
   const unsubscriptionToken = searchParams.get('unsubscription_token');
   const campaignId = searchParams.get('campaign_id');
 

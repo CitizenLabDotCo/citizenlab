@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useParams } from 'react-router-dom';
+import { useParams } from 'utils/router';
 
 import useUpdateUserCustomField from 'api/user_custom_fields/useUpdateUserCustomField';
 import useUserCustomField from 'api/user_custom_fields/useUserCustomField';
@@ -11,7 +11,9 @@ import RegistrationCustomFieldForm, {
 } from '../RegistrationCustomFieldForm';
 
 const RegistrationCustomFieldSettings = () => {
-  const { userCustomFieldId } = useParams() as { userCustomFieldId: string };
+  const { userCustomFieldId } = useParams({ strict: false }) as {
+    userCustomFieldId: string;
+  };
   const { data: customField } = useUserCustomField(userCustomFieldId);
   const { mutate: updateCustomFieldForUsers } = useUpdateUserCustomField();
 

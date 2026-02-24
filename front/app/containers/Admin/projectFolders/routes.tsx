@@ -1,67 +1,92 @@
 import React, { lazy } from 'react';
 
-import { Navigate, Outlet as RouterOutlet } from 'react-router-dom';
-
 import PageLoading from 'components/UI/PageLoading';
 
-import { AdminRoute } from '../routes';
+import { createRoute, Navigate, Outlet as RouterOutlet } from 'utils/router';
+
+import { adminRoute } from '../routes';
 
 const FolderSettings = lazy(() => import('./containers/settings'));
 const FolderContainer = lazy(() => import('./containers'));
 const FolderProjects = lazy(() => import('./containers/projects'));
 const FolderPermissions = lazy(() => import('./containers/permissions'));
 
-export enum projectFolderRoutes {
-  projectFolders = 'projects/folders',
-  new = 'new',
-  projectFolderId = `:projectFolderId`,
-  projectFolderIdDefault = '',
-  settings = `settings`,
-  projects = `projects`,
-  permissions = `permissions`,
-}
-
-export type projectFolderRouteTypes =
-  | AdminRoute<projectFolderRoutes.projectFolders>
-  | AdminRoute<`${projectFolderRoutes.projectFolders}/${projectFolderRoutes.new}`>
-  | AdminRoute<`${projectFolderRoutes.projectFolders}/${string}`>
-  | AdminRoute<`${projectFolderRoutes.projectFolders}/${string}/${projectFolderRoutes.projects}`>
-  | AdminRoute<`${projectFolderRoutes.projectFolders}/${string}/${projectFolderRoutes.settings}`>
-  | AdminRoute<`${projectFolderRoutes.projectFolders}/${string}/${projectFolderRoutes.permissions}`>;
-
-export default () => ({
-  path: projectFolderRoutes.projectFolders,
-  element: (
+const projectFoldersRoute = createRoute({
+  getParentRoute: () => adminRoute,
+  path: 'projects/folders',
+  component: () => (
     <PageLoading>
       <RouterOutlet />
     </PageLoading>
   ),
-  children: [
-    {
-      path: projectFolderRoutes.new,
-      element: <FolderSettings />,
-    },
-    {
-      path: projectFolderRoutes.projectFolderId,
-      element: <FolderContainer />,
-      children: [
-        {
-          path: projectFolderRoutes.projectFolderIdDefault,
-          element: <Navigate to="projects" />,
-        },
-        {
-          path: projectFolderRoutes.projects,
-          element: <FolderProjects />,
-        },
-        {
-          path: projectFolderRoutes.settings,
-          element: <FolderSettings />,
-        },
-        {
-          path: projectFolderRoutes.permissions,
-          element: <FolderPermissions />,
-        },
-      ],
-    },
-  ],
 });
+
+const projectFoldersNewRoute = createRoute({
+  getParentRoute: () => projectFoldersRoute,
+  path: 'new',
+  component: () => (
+    <PageLoading>
+      <FolderSettings />
+    </PageLoading>
+  ),
+});
+
+const projectFoldersIdRoute = createRoute({
+  getParentRoute: () => projectFoldersRoute,
+  path: '$projectFolderId',
+  component: () => (
+    <PageLoading>
+      <FolderContainer />
+    </PageLoading>
+  ),
+});
+
+const projectFoldersIdDefaultRoute = createRoute({
+  getParentRoute: () => projectFoldersIdRoute,
+  path: '/',
+  component: () => <Navigate to="projects" />,
+});
+
+const projectFoldersIdProjectsRoute = createRoute({
+  getParentRoute: () => projectFoldersIdRoute,
+  path: 'projects',
+  component: () => (
+    <PageLoading>
+      <FolderProjects />
+    </PageLoading>
+  ),
+});
+
+const projectFoldersIdSettingsRoute = createRoute({
+  getParentRoute: () => projectFoldersIdRoute,
+  path: 'settings',
+  component: () => (
+    <PageLoading>
+      <FolderSettings />
+    </PageLoading>
+  ),
+});
+
+const projectFoldersIdPermissionsRoute = createRoute({
+  getParentRoute: () => projectFoldersIdRoute,
+  path: 'permissions',
+  component: () => (
+    <PageLoading>
+      <FolderPermissions />
+    </PageLoading>
+  ),
+});
+
+const createProjectFoldersRoutes = () => {
+  return projectFoldersRoute.addChildren([
+    projectFoldersNewRoute,
+    projectFoldersIdRoute.addChildren([
+      projectFoldersIdDefaultRoute,
+      projectFoldersIdProjectsRoute,
+      projectFoldersIdSettingsRoute,
+      projectFoldersIdPermissionsRoute,
+    ]),
+  ]);
+};
+
+export default createProjectFoldersRoutes;

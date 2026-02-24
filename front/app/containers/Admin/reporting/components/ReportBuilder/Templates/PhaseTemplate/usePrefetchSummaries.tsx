@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 
 import { UseQueryResult } from '@tanstack/react-query';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'utils/router';
 
 import { IAnalysisData } from 'api/analyses/types';
 import useAnalyses from 'api/analyses/useAnalyses';

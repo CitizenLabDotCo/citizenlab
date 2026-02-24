@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
-import { useSearchParams } from 'react-router-dom';
 
 import useCommonGroundProgress from 'api/common_ground/useCommonGroundProgress';
 import { IProjectData } from 'api/projects/types';
@@ -14,6 +13,7 @@ import Tabs, { TabData } from 'components/UI/FilterTabs';
 
 import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
 import { FormattedMessage } from 'utils/cl-intl';
+import { useSearch } from 'utils/router';
 
 import CommonGroundResults from './CommonGroundResults';
 import CommonGroundStatements from './CommonGroundStatements';
@@ -29,7 +29,7 @@ interface Props {
 }
 
 const CommonGroundTabs = ({ phaseId, project, isPastPhase }: Props) => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearch({ strict: false });
   const localize = useLocalize();
   const currentTabParam = searchParams.get('tab') as TabKey;
   const defaultTab = isPastPhase ? 'results' : 'statements';
