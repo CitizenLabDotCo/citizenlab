@@ -461,7 +461,7 @@
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.hidden": "Hidden",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.offlineVoters": "Offline szavazók",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.onlyAdminsAndFolderManagersCanPublish2": "Csak{inFolder, select, true { adminisztrátorok vagy} other {}} mappakezelők tehetik közzé a projektet",
-  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants": "{participantsCount, plural, one {1 participant} other {{participantsCount} participants}}",
+  "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participants": "{participantsCount, plural, one {1 résztvevő} other {{participantsCount} résztvevők}}",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.embeddedMethods": "Participants in embedded methods (e.g., external surveys)",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.followers": "Followers of a project",
   "app.components.app.containers.AdminPage.ProjectEdit.projectHeader.participantsInfo.note": "Note: Enabling anonymous or open participation permissions may allow users to participate multiple times, leading to misleading or incomplete user data.",
