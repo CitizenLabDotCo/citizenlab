@@ -150,7 +150,7 @@
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Skapa ett konto eller logga in",
   "app.components.CustomFieldsForm.PostParticipationBox.createOrLinkAnAccountToFollow": "Skapa eller koppla ett befintligt konto för att följa vad som händer härnäst och delta i andra konversationer.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Få uppdateringar när det finns nästa steg",
-  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Delta i diskussioner om dina synpunkter delas offentligt",
+  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions2": "Delta i diskussioner och få meddelanden när andra engagerar sig i dina inlägg",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "Delta i andra projekt och samtal",
   "app.components.CustomFieldsForm.PostParticipationBox.stayConnected": "Håll kontakten",
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Inmatning av adress",
