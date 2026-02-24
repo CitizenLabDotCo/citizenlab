@@ -150,7 +150,7 @@
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "أنشئ حسابًا أو سجّل الدخول",
   "app.components.CustomFieldsForm.PostParticipationBox.createOrLinkAnAccountToFollow": "أنشئ حسابًا جديدًا أو اربط حسابًا موجودًا لمتابعة الأحداث القادمة والمشاركة في المحادثات الأخرى.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "احصل على التحديثات عند وجود خطوات لاحقة",
-  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "انضم إلى المناقشات إذا كانت مشاركتك ستُنشر علنًا.",
+  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions2": "انضم إلى المناقشات واحصل على إشعارات عندما يتفاعل الآخرون مع مساهمتك",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "المشاركة في مشاريع ومحادثات أخرى",
   "app.components.CustomFieldsForm.PostParticipationBox.stayConnected": "ابقَ على اتصال",
   "app.components.CustomFieldsForm.addressInputAriaLabel": "إدخال العنوان",
