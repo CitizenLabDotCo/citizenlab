@@ -150,7 +150,7 @@
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Δημιουργήστε έναν λογαριασμό ή συνδεθείτε",
   "app.components.CustomFieldsForm.PostParticipationBox.createOrLinkAnAccountToFollow": "Δημιουργήστε ή συνδέστε έναν υπάρχοντα λογαριασμό για να παρακολουθείτε τι θα συμβεί στη συνέχεια και να συμμετέχετε σε άλλες συζητήσεις.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Λάβετε ενημερώσεις όταν υπάρχουν επόμενα βήματα",
-  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Συμμετέχετε σε συζητήσεις εάν η συνεισφορά σας κοινοποιείται δημόσια",
+  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions2": "Συμμετέχετε σε συζητήσεις και λαμβάνετε ειδοποιήσεις όταν οι άλλοι ασχολούνται με τα σχόλιά σας",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "Συμμετοχή σε άλλα έργα και συζητήσεις",
   "app.components.CustomFieldsForm.PostParticipationBox.stayConnected": "Μείνετε συνδεδεμένοι",
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Εισαγωγή διεύθυνσης",
