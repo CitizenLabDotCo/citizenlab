@@ -34,16 +34,10 @@ const ParticipationMetrics = ({ phase }: Props) => {
   const metrics = response?.data.attributes.metrics;
   const isCurrentPhase = pastPresentOrFuture([start_at, end_at]) === 'present';
 
-  // Register native Word table serializer — editable data table, not a screenshot
   useWordSection(
     'participation-metrics',
     () => {
       if (!metrics) return [];
-      // metricsConverter returns (Paragraph | Table)[] — wrap as 'table' type sections
-      // Note: metricsConverter returns docx objects, not WordSection[]. We use it
-      // directly in the renderer via a raw docx section type.
-      // TODO: Migrate metricsConverter to return WordSection[] in a follow-up.
-      // For now, use a simple table representation.
       const rows: string[][] = [
         [formatMessage(wordMessages.metric), formatMessage(wordMessages.value)],
       ];
@@ -54,12 +48,12 @@ const ParticipationMetrics = ({ phase }: Props) => {
         String(metrics.participants),
       ]);
 
-      if (typeof metrics.participation_rate_as_percent === 'number') {
-        rows.push([
-          formatMessage(messages.participationRate),
-          `${metrics.participation_rate_as_percent.toFixed(1)}%`,
-        ]);
-      }
+      rows.push([
+        formatMessage(messages.participationRate),
+        typeof metrics.participation_rate_as_percent === 'number'
+          ? `${metrics.participation_rate_as_percent.toFixed(1)}%`
+          : '-',
+      ]);
 
       if (metrics.ideation) {
         rows.push([
@@ -98,7 +92,10 @@ const ParticipationMetrics = ({ phase }: Props) => {
         ]);
         rows.push([
           formatMessage(messages.votes),
-          String(metrics.voting.online_votes + metrics.voting.offline_votes),
+          String(
+            (metrics.voting.online_votes || 0) +
+              (metrics.voting.offline_votes || 0)
+          ),
         ]);
       }
 
@@ -109,7 +106,43 @@ const ParticipationMetrics = ({ phase }: Props) => {
         ]);
       }
 
-      return [{ type: 'table', rows, columnWidths: [60, 40] }];
+      if (metrics.volunteering) {
+        rows.push([
+          formatMessage(messages.volunteerings),
+          String(metrics.volunteering.volunteerings),
+        ]);
+      }
+
+      if (metrics.poll) {
+        rows.push([
+          formatMessage(messages.responses),
+          String(metrics.poll.responses),
+        ]);
+      }
+
+      if (metrics.common_ground) {
+        rows.push([
+          formatMessage(messages.ideasPosted),
+          String(metrics.common_ground.ideas_posted),
+        ]);
+        rows.push([
+          formatMessage(messages.associatedIdeas),
+          String(metrics.common_ground.associated_ideas),
+        ]);
+        rows.push([
+          formatMessage(messages.reactions),
+          String(metrics.common_ground.reactions),
+        ]);
+      }
+
+      return [
+        {
+          type: 'heading' as const,
+          text: formatMessage(wordMessages.participationMetrics),
+          level: 2 as const,
+        },
+        { type: 'table' as const, rows, columnWidths: [60, 40] },
+      ];
     },
     { skip: isLoading || !!error || !metrics }
   );
