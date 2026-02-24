@@ -86,12 +86,14 @@ const WordExportContext = createContext<WordExportContextValue>({
 interface WordExportProviderProps {
   children: ReactNode;
   filename: string;
+  title?: string;
   participationMethod?: ParticipationMethod;
 }
 
 export const WordExportProvider = ({
   children,
   filename,
+  title,
   participationMethod,
 }: WordExportProviderProps) => {
   const { formatMessage } = useIntl();
@@ -182,7 +184,9 @@ export const WordExportProvider = ({
 
       setCaptureWarnings(warnings);
       setExportStatus('generating');
-      const blob = await sectionsToDocxBlob(allSections, { title: filename });
+      const blob = await sectionsToDocxBlob(allSections, {
+        title: title || filename,
+      });
       const timestamp = new Date()
         .toISOString()
         .replace(/[:.]/g, '-')
@@ -195,7 +199,7 @@ export const WordExportProvider = ({
       setExportStatus('idle');
       setExportProgress({ completed: 0, total: 0 });
     }
-  }, [filename, participationMethod, formatMessage]);
+  }, [filename, title, participationMethod, formatMessage]);
 
   const allComponentsReady = useMemo(() => {
     // registrationVersion is read to re-evaluate when components register/unregister
