@@ -9,6 +9,7 @@ import {
   Label,
   Spinner,
   Input,
+  Toggle,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
@@ -78,6 +79,7 @@ const TestTab = () => {
   const [editableJson, setEditableJson] = useState('');
   const [jsonError, setJsonError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
+  const [showPdf, setShowPdf] = useState(true);
   const { mutateAsync: saveBenchmark, isLoading: saving } =
     useSaveFormsyncBenchmark();
 
@@ -203,23 +205,37 @@ const TestTab = () => {
 
       {response !== null && (
         <Box mt="40px">
-          <Title variant="h3" mb="12px">
-            Response
-            {responseModel && (
-              <Text
-                as="span"
-                color="textSecondary"
-                fontWeight="normal"
-                fontSize="base"
-                ml="8px"
-              >
-                ({MODEL_OPTIONS.find((m) => m.value === responseModel)?.label}
-                {responseTimeMs !== null &&
-                  ` — ${(responseTimeMs / 1000).toFixed(1)}s`}
-                )
-              </Text>
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            mb="12px"
+          >
+            <Title variant="h3">
+              Response
+              {responseModel && (
+                <Text
+                  as="span"
+                  color="textSecondary"
+                  fontWeight="normal"
+                  fontSize="base"
+                  ml="8px"
+                >
+                  ({MODEL_OPTIONS.find((m) => m.value === responseModel)?.label}
+                  {responseTimeMs !== null &&
+                    ` — ${(responseTimeMs / 1000).toFixed(1)}s`}
+                  )
+                </Text>
+              )}
+            </Title>
+            {pdfBase64 && (
+              <Toggle
+                checked={showPdf}
+                onChange={() => setShowPdf((prev) => !prev)}
+                label="Show PDF"
+              />
             )}
-          </Title>
+          </Box>
 
           <Box display="flex" gap="16px">
             {/* Editable JSON */}
@@ -242,7 +258,7 @@ const TestTab = () => {
             </Box>
 
             {/* PDF preview */}
-            {pdfBase64 && (
+            {showPdf && pdfBase64 && (
               <Box flex="1" minWidth="0">
                 <Label>PDF Preview</Label>
                 <iframe
