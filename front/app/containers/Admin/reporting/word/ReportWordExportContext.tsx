@@ -235,11 +235,10 @@ export const ReportWordExportProvider = ({
         element.scrollIntoView({ block: 'center' });
 
         try {
-          const forceRaster = node.widgetName === 'TwoColumn';
           const { buffer, width, height } = await htmlToImageBuffer(element, {
             scale: 2,
             backgroundColor: '#FFFFFF',
-            forceRaster,
+            forceRaster: true,
           });
 
           sections.push({
