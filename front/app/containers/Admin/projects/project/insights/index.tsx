@@ -357,6 +357,7 @@ const AdminPhaseInsights = () => {
     <PdfExportProvider filename={sanitizedPhaseName}>
       <WordExportProvider
         filename={sanitizedPhaseName}
+        title={phaseName}
         participationMethod={participationMethod}
       >
         <InsightsContent />
