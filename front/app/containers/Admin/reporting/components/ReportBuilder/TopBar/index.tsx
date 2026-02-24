@@ -8,7 +8,6 @@ import {
   Tooltip,
   Dropdown,
   fontSizes,
-  Spinner,
 } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 import { RouteType } from 'routes';
@@ -22,6 +21,7 @@ import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
 
 import useLocalize from 'hooks/useLocalize';
 
+import insightWordMessages from 'containers/Admin/projects/project/insights/word/messages';
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 import { useReportWordExportContext } from 'containers/Admin/reporting/word/ReportWordExportContext';
 
@@ -94,7 +94,8 @@ const ContentBuilderTopBar = ({
   const { query } = useEditor();
   const { mutate: updateReportLayout, isLoading } = useUpdateReportLayout();
   const { projectId, phaseId } = useReportContext();
-  const { downloadWord, isDownloading, error } = useReportWordExportContext();
+  const { downloadWord, isDownloading, error, status, progress } =
+    useReportWordExportContext();
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
 
@@ -104,7 +105,8 @@ const ContentBuilderTopBar = ({
   const disableSave = hasPendingState || saved;
   const disablePrint = hasPendingState || !saved;
   const disableWordExport = isDownloading;
-  const disableDownloadMenu = disablePrint && disableWordExport;
+  const hasUnsavedChanges = hasPendingState || !saved;
+  const disableDownloadMenu = hasUnsavedChanges && isDownloading;
 
   const closeModal = () => {
     setShowQuitModal(false);
@@ -161,14 +163,30 @@ const ContentBuilderTopBar = ({
     setDownloadMenuOpened(false);
   };
 
-  const handleDownloadWord = async () => {
+  const handleDownloadWord = () => {
     if (disableWordExport) return;
-    await downloadWord();
     setDownloadMenuOpened(false);
+    downloadWord();
   };
 
   const toggleDownloadMenu = (value?: boolean) => () => {
     setDownloadMenuOpened(value ?? !downloadMenuOpened);
+  };
+
+  const getExportStatusText = () => {
+    switch (status) {
+      case 'preparing':
+        return formatMessage(insightWordMessages.exportPreparing);
+      case 'capturing':
+        return formatMessage(insightWordMessages.exportCapturing, {
+          completed: progress.completed,
+          total: progress.total,
+        });
+      case 'generating':
+        return formatMessage(insightWordMessages.exportGenerating);
+      default:
+        return null;
+    }
   };
 
   useEffect(() => {
@@ -308,6 +326,7 @@ const ContentBuilderTopBar = ({
                 py="8px"
                 onClick={toggleDownloadMenu()}
                 disabled={disableDownloadMenu}
+                processing={isDownloading}
               >
                 {formatMessage(messages.download)}
               </ButtonWithLink>
@@ -344,12 +363,14 @@ const ContentBuilderTopBar = ({
             }
           />
         </Box>
-        {isDownloading && (
+        {isDownloading && getExportStatusText() && (
           <Box ml="16px">
-            <Spinner size="20px" />
+            <Text m="0" color="textSecondary" fontSize="s">
+              {getExportStatusText()}
+            </Text>
           </Box>
         )}
-        {error && (
+        {error && !isDownloading && (
           <Box ml="16px">
             <Text m="0" color="error" fontSize="s">
               {error}
