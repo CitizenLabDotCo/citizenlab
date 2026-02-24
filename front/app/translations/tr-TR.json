@@ -150,7 +150,7 @@
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Bir hesap oluşturun veya giriş yapın",
   "app.components.CustomFieldsForm.PostParticipationBox.createOrLinkAnAccountToFollow": "Bundan sonra ne olacağını takip etmek ve diğer konuşmalara katılmak için mevcut bir hesap oluşturun veya bu hesaba bağlanın.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Sonraki adımlar olduğunda güncellemeleri alın",
-  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Girdileriniz herkese açık olarak paylaşılıyorsa tartışmalara katılın",
+  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions2": "Tartışmalara katılın ve başkaları girdilerinizle etkileşime geçtiğinde bildirim alın",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "Diğer projelere ve görüşmelere katılın",
   "app.components.CustomFieldsForm.PostParticipationBox.stayConnected": "Bağlantıda kalın",
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Adres girişi",
