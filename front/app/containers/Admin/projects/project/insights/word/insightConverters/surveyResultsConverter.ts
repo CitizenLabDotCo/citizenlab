@@ -59,12 +59,8 @@ function createAnswersTable(
   if (result.textResponses && result.textResponses.length > 0) {
     const rows: string[][] = [[formatMessage(messages.responses)]];
 
-    for (const response of result.textResponses.slice(0, 10)) {
+    for (const response of result.textResponses) {
       rows.push([response.answer || '-']);
-    }
-
-    if (result.textResponses.length > 10) {
-      rows.push([`... and ${result.textResponses.length - 10} more responses`]);
     }
 
     return createSimpleTable(rows, { columnWidths: [100] });
@@ -73,14 +69,8 @@ function createAnswersTable(
   if (result.numberResponses && result.numberResponses.length > 0) {
     const rows: string[][] = [[formatMessage(messages.responses)]];
 
-    for (const response of result.numberResponses.slice(0, 10)) {
+    for (const response of result.numberResponses) {
       rows.push([String(response.answer)]);
-    }
-
-    if (result.numberResponses.length > 10) {
-      rows.push([
-        `... and ${result.numberResponses.length - 10} more responses`,
-      ]);
     }
 
     return createSimpleTable(rows, { columnWidths: [100] });
