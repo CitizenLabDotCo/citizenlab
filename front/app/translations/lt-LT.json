@@ -150,7 +150,7 @@
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Sukurkite paskyrą arba prisijunkite",
   "app.components.CustomFieldsForm.PostParticipationBox.createOrLinkAnAccountToFollow": "Sukurkite arba susiekite esamą paskyrą, kad galėtumėte sekti, kas vyksta toliau, ir dalyvauti kituose pokalbiuose.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Gaukite naujienas, kai bus imtasi tolesnių veiksmų",
-  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Dalyvaukite diskusijose, jei jūsų informacija dalijamasi viešai",
+  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions2": "Dalyvaukite diskusijose ir gaukite pranešimus, kai kiti įsitraukia į jūsų indėlį.",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "Dalyvaukite kituose projektuose ir pokalbiuose",
   "app.components.CustomFieldsForm.PostParticipationBox.stayConnected": "Palaikykite ryšį",
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Adreso įvedimas",
