@@ -8,6 +8,7 @@ import IdeaCard from 'components/IdeaCard';
 
 import { useIntl } from 'utils/cl-intl';
 
+import ExportableInsight from '../../word/ExportableInsight';
 import { MethodSpecificInsightProps } from '../types';
 
 import messages from './messages';
@@ -41,27 +42,29 @@ const MostLikedIdeas = ({ phaseId }: MethodSpecificInsightProps) => {
   }
 
   return (
-    <Box mt="24px" p="8px" background="rgba(4, 77, 108, 0.05)">
-      <Title variant="h3" m="0" mb="8px">
-        {formatMessage(messages.mostLiked)}
-      </Title>
-      <Text m="0" mb="16px" color="textSecondary">
-        {formatMessage(messages.mostLikedDescription)}
-      </Text>
-      <Box
-        bg="white"
-        borderRadius="3px"
-        display="flex"
-        flexDirection="column"
-        gap="16px"
-      >
-        {ideas.map((idea) => (
-          <Box key={idea.id} pb="16px">
-            <IdeaCard ideaId={idea.id} phaseId={phaseId} />
-          </Box>
-        ))}
+    <ExportableInsight exportId="most-liked-ideas">
+      <Box mt="24px" p="8px" background="rgba(4, 77, 108, 0.05)">
+        <Title variant="h3" m="0" mb="8px">
+          {formatMessage(messages.mostLiked)}
+        </Title>
+        <Text m="0" mb="16px" color="textSecondary">
+          {formatMessage(messages.mostLikedDescription)}
+        </Text>
+        <Box
+          bg="white"
+          borderRadius="3px"
+          display="flex"
+          flexDirection="column"
+          gap="16px"
+        >
+          {ideas.map((idea) => (
+            <Box key={idea.id} pb="16px">
+              <IdeaCard ideaId={idea.id} phaseId={phaseId} />
+            </Box>
+          ))}
+        </Box>
       </Box>
-    </Box>
+    </ExportableInsight>
   );
 };
 

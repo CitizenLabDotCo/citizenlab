@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Box, Title, Button, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Title,
+  Button,
+  Text,
+  Dropdown,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
 import usePhase from 'api/phases/usePhase';
 
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -23,6 +32,23 @@ import ParticipantsTimeline from './ParticipantsTimeline';
 import ParticipationMetrics from './participationMetrics/ParticipationMetrics';
 import InsightsPdfContent from './pdf/InsightsPdfContent';
 import { PdfExportProvider, usePdfExportContext } from './pdf/PdfExportContext';
+import ExportValidation from './word/ExportValidation';
+import {
+  WordExportProvider,
+  useWordExportContext,
+} from './word/WordExportContext';
+
+const DropdownButton = styled(ButtonWithLink)`
+  button {
+    display: flex !important;
+    justify-content: flex-start !important;
+  }
+`;
+
+const DropdownContainer = styled.div`
+  position: relative;
+  display: inline-block;
+`;
 
 const AI_ANALYSIS_SUPPORTED_METHODS = [
   'ideation',
@@ -45,7 +71,7 @@ const hiddenContainerStyle: React.CSSProperties = {
   overflow: 'visible',
 };
 
-// Inner component that uses the PDF export context (visible UI)
+// Inner component that uses the export contexts (visible UI)
 const InsightsContent = () => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -53,11 +79,36 @@ const InsightsContent = () => {
   };
   const { data: phase } = usePhase(phaseId);
   const { formatMessage } = useIntl();
+  const [dropdownOpened, setDropdownOpened] = useState(false);
+
   const {
     downloadPdf,
     isDownloading: isDownloadingPdf,
     error: pdfError,
   } = usePdfExportContext();
+
+  const {
+    downloadWord,
+    isDownloading: isDownloadingWord,
+    error: wordError,
+  } = useWordExportContext();
+
+  const isDownloading = isDownloadingPdf || isDownloadingWord;
+  const exportError = pdfError || wordError;
+
+  const toggleDropdown = (value?: boolean) => () => {
+    setDropdownOpened(value ?? !dropdownOpened);
+  };
+
+  const handleDownloadPdf = async () => {
+    setDropdownOpened(false);
+    await downloadPdf();
+  };
+
+  const handleDownloadWord = async () => {
+    setDropdownOpened(false);
+    await downloadWord();
+  };
 
   const participationMethod = phase?.data.attributes.participation_method;
   const { start_at, end_at } = phase?.data.attributes || {};
@@ -146,15 +197,49 @@ const InsightsContent = () => {
                 alignItems="flex-end"
               >
                 <Box display="flex" gap="8px">
-                  <Button
-                    buttonStyle={supportsAiAnalysis ? 'secondary' : 'primary'}
-                    icon="download"
-                    onClick={downloadPdf}
-                    processing={isDownloadingPdf}
-                    aria-label={formatMessage(messages.downloadInsightsPdf)}
-                  >
-                    <FormattedMessage {...messages.download} />
-                  </Button>
+                  <DropdownContainer>
+                    <Button
+                      buttonStyle={supportsAiAnalysis ? 'secondary' : 'primary'}
+                      icon="download"
+                      onClick={toggleDropdown()}
+                      processing={isDownloading}
+                      aria-label={formatMessage(messages.downloadInsightsPdf)}
+                    >
+                      <FormattedMessage {...messages.download} />
+                    </Button>
+                    <Dropdown
+                      width="180px"
+                      top="42px"
+                      right="0px"
+                      opened={dropdownOpened}
+                      onClickOutside={toggleDropdown(false)}
+                      content={
+                        <Box
+                          p="8px"
+                          display="flex"
+                          flexDirection="column"
+                          gap="4px"
+                        >
+                          <DropdownButton
+                            onClick={handleDownloadPdf}
+                            buttonStyle="text"
+                            padding="8px"
+                            fontSize={`${fontSizes.s}px`}
+                          >
+                            <FormattedMessage {...messages.downloadPdf} />
+                          </DropdownButton>
+                          <DropdownButton
+                            onClick={handleDownloadWord}
+                            buttonStyle="text"
+                            padding="8px"
+                            fontSize={`${fontSizes.s}px`}
+                          >
+                            <FormattedMessage {...messages.downloadWord} />
+                          </DropdownButton>
+                        </Box>
+                      }
+                    />
+                  </DropdownContainer>
                   {supportsAiAnalysis && (
                     <Button
                       buttonStyle="primary"
@@ -166,7 +251,7 @@ const InsightsContent = () => {
                     </Button>
                   )}
                 </Box>
-                {pdfError && (
+                {exportError && (
                   <Text fontSize="s" color="error" m="0px">
                     {formatMessage(messages.errorPdfDownload)}
                   </Text>
@@ -236,7 +321,10 @@ const AdminPhaseInsights = () => {
 
   return (
     <PdfExportProvider filename={sanitizedPhaseName}>
-      <InsightsContent />
+      <WordExportProvider filename={sanitizedPhaseName}>
+        <InsightsContent />
+        <ExportValidation />
+      </WordExportProvider>
     </PdfExportProvider>
   );
 };

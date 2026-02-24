@@ -30,6 +30,7 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
+import ExportableInsight from '../../word/ExportableInsight';
 
 import messages from './messages';
 
@@ -231,99 +232,101 @@ const AiSummary = ({ phaseId, participationMethod }: Props) => {
     summaryData.data.relationships.background_task.data.id;
 
   return (
-    <Box>
-      <Title variant="h3" m="0" mb="16px">
-        {formatMessage(messages.whatArePeopleSaying)}
-      </Title>
-      <Box
-        pt="8px"
-        pb="24px"
-        px="24px"
-        bgColor="rgba(4, 77, 108, 0.05)"
-        borderRadius="4px"
-        borderLeft={`3px solid ${colors.primary}`}
-        display="flex"
-        flexDirection="column"
-        h={isPdfRenderMode ? 'auto' : '400px'}
-      >
+    <ExportableInsight exportId="ai-summary">
+      <Box>
+        <Title variant="h3" m="0" mb="16px">
+          {formatMessage(messages.whatArePeopleSaying)}
+        </Title>
         <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          mb="8px"
-          flexShrink={0}
-        >
-          <SummaryHeader showAiWarning={false} />
-          {!isPdfRenderMode && (
-            <Button
-              buttonStyle="text"
-              icon="refresh"
-              onClick={handleRefresh}
-              processing={isRegenerating}
-              padding="0"
-            >
-              {formatMessage(messages.refresh)}
-            </Button>
-          )}
-        </Box>
-
-        <Box
+          pt="8px"
+          pb="24px"
+          px="24px"
+          bgColor="rgba(4, 77, 108, 0.05)"
+          borderRadius="4px"
+          borderLeft={`3px solid ${colors.primary}`}
           display="flex"
           flexDirection="column"
-          gap="8px"
-          flex="1"
-          overflow={isPdfRenderMode ? 'visible' : 'hidden'}
+          h={isPdfRenderMode ? 'auto' : '400px'}
         >
-          <Box flex="1" overflow={isPdfRenderMode ? 'visible' : 'auto'}>
-            <InsightBody
-              text={summary}
-              filters={filters}
-              analysisId={analysisId}
-              projectId={projectId}
-              phaseId={phaseId}
-              backgroundTaskId={backgroundTaskId}
-            />
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            mb="8px"
+            flexShrink={0}
+          >
+            <SummaryHeader showAiWarning={false} />
+            {!isPdfRenderMode && (
+              <Button
+                buttonStyle="text"
+                icon="refresh"
+                onClick={handleRefresh}
+                processing={isRegenerating}
+                padding="0"
+              >
+                {formatMessage(messages.refresh)}
+              </Button>
+            )}
           </Box>
 
-          {!isPdfRenderMode && (
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              flexShrink={0}
-            >
-              <Box display="flex" flexDirection="column" gap="4px">
-                <Text m="0" fontSize="s" color="textSecondary">
-                  {missingInputsCount} / {inputCount}
-                </Text>
-                <Box display="flex" alignItems="center" gap="4px">
-                  <Box
-                    w="8px"
-                    h="8px"
-                    borderRadius="50%"
-                    bgColor={colors.primary}
-                  />
-                  <Text m="0" fontSize="s" color="textSecondary">
-                    {formatMessage(messages.newResponses, {
-                      count: missingInputsCount,
-                    })}
-                  </Text>
-                </Box>
-              </Box>
-
-              <Button
-                buttonStyle="secondary-outlined"
-                icon="eye"
-                onClick={handleExplore}
-                size="s"
-              >
-                {formatMessage(messages.explore)}
-              </Button>
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap="8px"
+            flex="1"
+            overflow={isPdfRenderMode ? 'visible' : 'hidden'}
+          >
+            <Box flex="1" overflow={isPdfRenderMode ? 'visible' : 'auto'}>
+              <InsightBody
+                text={summary}
+                filters={filters}
+                analysisId={analysisId}
+                projectId={projectId}
+                phaseId={phaseId}
+                backgroundTaskId={backgroundTaskId}
+              />
             </Box>
-          )}
+
+            {!isPdfRenderMode && (
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                flexShrink={0}
+              >
+                <Box display="flex" flexDirection="column" gap="4px">
+                  <Text m="0" fontSize="s" color="textSecondary">
+                    {missingInputsCount} / {inputCount}
+                  </Text>
+                  <Box display="flex" alignItems="center" gap="4px">
+                    <Box
+                      w="8px"
+                      h="8px"
+                      borderRadius="50%"
+                      bgColor={colors.primary}
+                    />
+                    <Text m="0" fontSize="s" color="textSecondary">
+                      {formatMessage(messages.newResponses, {
+                        count: missingInputsCount,
+                      })}
+                    </Text>
+                  </Box>
+                </Box>
+
+                <Button
+                  buttonStyle="secondary-outlined"
+                  icon="eye"
+                  onClick={handleExplore}
+                  size="s"
+                >
+                  {formatMessage(messages.explore)}
+                </Button>
+              </Box>
+            )}
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </ExportableInsight>
   );
 };
 
