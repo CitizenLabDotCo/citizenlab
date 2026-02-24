@@ -291,6 +291,15 @@ class User < ApplicationRecord
     sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
   end
 
+  # Sometimes for privacy reasons we do not want to expose the personal data in the slug
+  def self.no_user_slugs?
+    AppConfiguration.instance.feature_activated?('no_user_slugs')
+  end
+
+  def slug
+    self.class.no_user_slugs? && id ? id : super
+  end
+
   private
 
   def validate_not_duplicate_new_email

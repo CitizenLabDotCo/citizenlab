@@ -1361,6 +1361,25 @@ resource 'Users' do
         end
       end
 
+      get 'web_api/v1/users/by_slug/:slug' do
+        context 'when no_user_slugs feature is active' do
+          before do
+            settings = AppConfiguration.instance.settings
+            settings['no_user_slugs'] = { 'enabled' => true, 'allowed' => true }
+            AppConfiguration.instance.update!(settings: settings)
+          end
+
+          let(:user) { create(:user) }
+          let(:slug) { user.id }
+
+          example_request 'Get one user by id when no_user_slugs is active', document: false do
+            expect(status).to eq 200
+            json_response = json_parse response_body
+            expect(json_response.dig(:data, :id)).to eq user.id
+          end
+        end
+      end
+
       get 'web_api/v1/users/by_invite/:token' do
         let!(:invite) { create(:invite) }
         let(:token) { invite.token }

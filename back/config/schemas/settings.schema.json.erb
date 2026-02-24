@@ -1605,6 +1605,18 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "no_user_slugs": {
+        "type": "object",
+        "title": "No user name in profile slugs",
+        "description": "Turn on for privacy/security reasons to prevent urls of user profiles containing names eg /profile/joe-bloggs.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {

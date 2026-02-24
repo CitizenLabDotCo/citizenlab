@@ -84,6 +84,28 @@ RSpec.describe User do
     end
   end
 
+  describe '#slug' do
+    let(:user) { create(:user, first_name: 'bob', last_name: 'smith') }
+
+    context 'when no_user_slugs feature is not active' do
+      it 'returns the normal slug' do
+        expect(user.slug).to eq 'bob-smith'
+      end
+    end
+
+    context 'when no_user_slugs feature is active' do
+      before do
+        settings = AppConfiguration.instance.settings
+        settings['no_user_slugs'] = { 'enabled' => true, 'allowed' => true }
+        AppConfiguration.instance.update!(settings: settings)
+      end
+
+      it 'returns the user id instead of the slug' do
+        expect(user.slug).to eq user.id
+      end
+    end
+  end
+
   describe 'creating an invited user' do
     it 'has correct linking between invite and invitee' do
       invitee = create(:invited_user)
