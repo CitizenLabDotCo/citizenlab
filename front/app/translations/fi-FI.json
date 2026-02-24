@@ -149,7 +149,6 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Lähetyksen tunniste",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Luo tili tai kirjaudu sisään",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Saat päivityksiä, kun seuraavat vaiheet ovat olemassa",
-  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Liity keskusteluihin, jos panoksesi on jaettu julkisesti",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "Osallistu muihin projekteihin ja keskusteluihin",
   "app.components.CustomFieldsForm.PostParticipationBox.stayConnected": "Pysy yhteydessä",
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Osoitteen syöttö",

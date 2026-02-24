@@ -149,7 +149,6 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Code de référence",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Créer un compte ou se connecter",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Recevez des mises à jour lors des prochaines étapes",
-  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Participez aux échanges sur votre contribution si elle est publique",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "Participez à d'autres projets",
   "app.components.CustomFieldsForm.PostParticipationBox.stayConnected": "Restons en contact",
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Champ d'adresse",

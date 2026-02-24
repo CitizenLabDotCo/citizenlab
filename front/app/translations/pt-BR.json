@@ -149,7 +149,6 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Identificador de envio",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Criar uma conta ou fazer login",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Receba atualizações quando houver próximas etapas",
-  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Participe de discussões se sua opinião for compartilhada publicamente",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "Participar de outros projetos e conversas",
   "app.components.CustomFieldsForm.PostParticipationBox.stayConnected": "Fique conectado",
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Entrada de endereço",
