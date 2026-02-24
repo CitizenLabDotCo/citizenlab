@@ -150,7 +150,7 @@
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Izradi račun ili se prijavi",
   "app.components.CustomFieldsForm.PostParticipationBox.createOrLinkAnAccountToFollow": "Izradite ili povežite postojeći račun kako biste pratili što se događa sljedeće i sudjelovali u drugim razgovorima.",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Primajte ažuriranja kada budu dostupni sljedeći koraci",
-  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Pridružite se raspravama ako se vaš doprinos javno dijeli",
+  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions2": "Pridružite se raspravama i primajte obavijesti kada drugi reagiraju na vaš doprinos",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "Sudjelujte u drugim projektima i razgovorima",
   "app.components.CustomFieldsForm.PostParticipationBox.stayConnected": "Ostanite povezani",
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Unos adrese",
