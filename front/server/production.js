@@ -1,5 +1,5 @@
 const express = require('express');
-const request = require('request');
+const { createProxyMiddleware } = require('http-proxy-middleware');
 const path = require('path');
 const compression = require('compression');
 const {
@@ -15,31 +15,24 @@ const app = express();
 app.use(compression());
 
 // Redirects API requests
-app.use('/web_api', (req, res) => {
-  req
-    .pipe(request(`http://${API_HOST}:${API_PORT}/web_api${req.url}`))
-    .pipe(res);
-});
-app.use('/admin_templates_api', (req, res) => {
-  req
-    .pipe(
-      request(
-        `http://${GRAPHQL_HOST}:${GRAPHQL_PORT}/admin_templates_api${req.url}`
-      )
-    )
-    .pipe(res);
-});
-app.use('/auth', (req, res) => {
-  req.pipe(request(`http://${API_HOST}:${API_PORT}/auth${req.url}`)).pipe(res);
-});
-app.use('/uploads', function (req, res) {
-  req
-    .pipe(request(`http://${API_HOST}:${API_PORT}/uploads${req.url}`))
-    .pipe(res);
-});
-app.use('/widgets', function (req, res) {
-  req.pipe(request(`http://${API_HOST}:3200${req.url}`)).pipe(res);
-});
+app.use(
+  createProxyMiddleware({
+    target: `http://${API_HOST}:${API_PORT}`,
+    pathFilter: ['/web_api', '/auth', '/uploads'],
+  })
+);
+app.use(
+  createProxyMiddleware({
+    target: `http://${GRAPHQL_HOST}:${GRAPHQL_PORT}`,
+    pathFilter: '/admin_templates_api',
+  })
+);
+app.use(
+  createProxyMiddleware({
+    target: `http://${API_HOST}:3200`,
+    pathFilter: '/widgets',
+  })
+);
 
 // Serve static files
 app.use(express.static('build'));
