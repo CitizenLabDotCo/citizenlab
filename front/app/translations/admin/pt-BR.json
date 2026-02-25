@@ -1463,6 +1463,7 @@
   "app.containers.Admin.projects.project.insights.vsLast7Days": "em relação aos últimos 7 dias",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "Resumo da IA",
   "app.containers.Admin.projects.project.insights.word.answer": "Resposta",
+  "app.containers.Admin.projects.project.insights.word.averageRank": "Classificação média",
   "app.containers.Admin.projects.project.insights.word.category": "Categoria",
   "app.containers.Admin.projects.project.insights.word.change": "Mudança de 7 dias",
   "app.containers.Admin.projects.project.insights.word.commentsPosted": "Comentários postados",
