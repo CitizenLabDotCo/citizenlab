@@ -54,7 +54,9 @@ const AdminProjectsListNew = () => {
             </Box>
           )}
           {tab === 'folders' && (
-            <Search placeholder={formatMessage(messages.searchFolders)} />
+            <Box mb="16px">
+              <Search placeholder={formatMessage(messages.searchFolders)} />
+            </Box>
           )}
         </Box>
         <Box mt="20px">
