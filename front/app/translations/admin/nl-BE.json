@@ -1463,6 +1463,7 @@
   "app.containers.Admin.projects.project.insights.vsLast7Days": "vs laatste 7 dagen",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "AI Samenvatting",
   "app.containers.Admin.projects.project.insights.word.answer": "Antwoord",
+  "app.containers.Admin.projects.project.insights.word.averageRank": "Gemiddelde rang",
   "app.containers.Admin.projects.project.insights.word.category": "Tag",
   "app.containers.Admin.projects.project.insights.word.change": "7-daagse verandering",
   "app.containers.Admin.projects.project.insights.word.commentsPosted": "Reacties geplaatst",
