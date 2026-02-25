@@ -10,6 +10,8 @@ import { useSearchParams } from 'react-router-dom';
 
 import useAuthUser from 'api/me/useAuthUser';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { trackEventByName } from 'utils/analytics';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -60,6 +62,7 @@ const Tabs = () => {
   const [searchParams] = useSearchParams();
   const tab = searchParams.get('tab');
   const { data: user } = useAuthUser();
+  const workspacesEnabled = useFeatureFlag({ name: 'workspaces' });
 
   if (!user) return null;
 
@@ -120,6 +123,19 @@ const Tabs = () => {
         }}
       />
       {userIsAdmin && (
+        <Tab
+          message={messages.workspaces}
+          icon="organigram"
+          active={tab === 'workspaces'}
+          dataCy="projects-overview-workspaces-tab"
+          onClick={() => {
+            removeSearchParams([...PROJECT_PARAMS, ...FOLDER_PARAMS]);
+            updateSearchParams({ tab: 'workspaces' });
+            trackEventByName(tracks.setTab, { tab: 'workspaces' });
+          }}
+        />
+      )}
+      {userIsAdmin && workspacesEnabled && (
         <Tab
           message={messages.arrangeProjects}
           icon="drag-handle"

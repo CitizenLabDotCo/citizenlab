@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.calendar',
     defaultMessage: 'Calendar',
   },
+  workspaces: {
+    id: 'app.containers.Admin.projects.all.new.workspaces',
+    defaultMessage: 'Workspaces',
+  },
   arrangeProjects: {
     id: 'app.containers.Admin.projects.all.new.arrangeProjects',
     defaultMessage: 'Arrange projects',
