@@ -22,13 +22,14 @@ export const applyMapRenderer = (
   showHeatmap: boolean
 ) => {
   const { renderer } = layer;
-  if (!renderer) return;
 
-  const isHeatmap = renderer.type === 'heatmap';
+  if (renderer) {
+    const isHeatmap = renderer.type === 'heatmap';
 
-  // If there is a renderer, and it already is the correct one,
-  // no need to do anything
-  if (isHeatmap === showHeatmap) return;
+    // If there is a renderer, and it already is the correct one,
+    // no need to do anything
+    if (isHeatmap === showHeatmap) return;
+  }
 
   if (showHeatmap) {
     applyHeatMapRenderer(layer, mapView);
