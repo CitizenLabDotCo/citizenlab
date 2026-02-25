@@ -59,9 +59,9 @@ const Header = () => {
               <Button
                 data-cy="e2e-new-project-folder-button"
                 linkTo={'/admin/projects/folders/new'}
-                buttonStyle="secondary-outlined"
                 icon="folder-add"
                 disabled={!userIsAdmin}
+                buttonStyle="admin-dark"
               >
                 <FormattedMessage {...messages.createProjectFolder} />
               </Button>
