@@ -37,6 +37,8 @@ const getSearchMessage = (
   if (tab === 'workspaces' && workspacesEnabled) {
     return messages.searchWorkspaces;
   }
+
+  return undefined;
 };
 
 const AdminProjectsListNew = () => {
