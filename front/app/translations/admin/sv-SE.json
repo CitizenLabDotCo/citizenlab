@@ -1463,6 +1463,7 @@
   "app.containers.Admin.projects.project.insights.vsLast7Days": "jämfört med de senaste 7 dagarna",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "Sammanfattning av AI",
   "app.containers.Admin.projects.project.insights.word.answer": "Svar",
+  "app.containers.Admin.projects.project.insights.word.averageRank": "Genomsnittlig rankning",
   "app.containers.Admin.projects.project.insights.word.category": "Kategori",
   "app.containers.Admin.projects.project.insights.word.change": "7 dagars förändring",
   "app.containers.Admin.projects.project.insights.word.commentsPosted": "Kommentarer publicerade",
