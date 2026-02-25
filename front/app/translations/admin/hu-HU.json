@@ -1463,6 +1463,7 @@
   "app.containers.Admin.projects.project.insights.vsLast7Days": "az elmúlt 7 naphoz képest",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "AI-összefoglaló",
   "app.containers.Admin.projects.project.insights.word.answer": "Válasz",
+  "app.containers.Admin.projects.project.insights.word.averageRank": "Átlagos rangsor",
   "app.containers.Admin.projects.project.insights.word.category": "Kategória",
   "app.containers.Admin.projects.project.insights.word.change": "7 napos változás",
   "app.containers.Admin.projects.project.insights.word.commentsPosted": "Hozzászólások közzétéve",
