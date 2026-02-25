@@ -1463,6 +1463,7 @@
   "app.containers.Admin.projects.project.insights.vsLast7Days": "palyginti su paskutinėmis 7 dienomis",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "AI santrauka",
   "app.containers.Admin.projects.project.insights.word.answer": "Atsakymas",
+  "app.containers.Admin.projects.project.insights.word.averageRank": "Vidutinis rangas",
   "app.containers.Admin.projects.project.insights.word.category": "Kategorija",
   "app.containers.Admin.projects.project.insights.word.change": "7 dienų pokytis",
   "app.containers.Admin.projects.project.insights.word.commentsPosted": "Paskelbti komentarai",
