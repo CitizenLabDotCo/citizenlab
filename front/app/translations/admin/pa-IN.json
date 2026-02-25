@@ -1463,6 +1463,7 @@
   "app.containers.Admin.projects.project.insights.vsLast7Days": "ਪਿਛਲੇ 7 ਦਿਨਾਂ ਦੇ ਮੁਕਾਬਲੇ",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "ਏਆਈ ਸੰਖੇਪ",
   "app.containers.Admin.projects.project.insights.word.answer": "ਜਵਾਬ",
+  "app.containers.Admin.projects.project.insights.word.averageRank": "ਔਸਤ ਦਰਜਾ",
   "app.containers.Admin.projects.project.insights.word.category": "ਸ਼੍ਰੇਣੀ",
   "app.containers.Admin.projects.project.insights.word.change": "7-ਦਿਨਾਂ ਦਾ ਬਦਲਾਅ",
   "app.containers.Admin.projects.project.insights.word.commentsPosted": "ਟਿੱਪਣੀਆਂ ਪੋਸਟ ਕੀਤੀਆਂ ਗਈਆਂ",
