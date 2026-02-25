@@ -16,6 +16,7 @@ import Projects from './Projects';
 import Tabs from './Tabs';
 
 const Calendar = React.lazy(() => import('./Calendar'));
+const Workspaces = React.lazy(() => import('./Workspaces'));
 
 const getSearchMessage = (
   tab: string | null,
@@ -90,6 +91,11 @@ const AdminProjectsListNew = () => {
           {tab === 'calendar' && (
             <Suspense>
               <Calendar />
+            </Suspense>
+          )}
+          {tab === 'workspaces' && (
+            <Suspense>
+              <Workspaces />
             </Suspense>
           )}
           {tab === 'ordering' && (
