@@ -1,7 +1,7 @@
 import React from 'react';
 
 // eslint-disable-next-line no-restricted-imports
-import { Path } from 'history';
+import { Path } from '@remix-run/router';
 import {
   // eslint-disable-next-line no-restricted-imports
   NavLink as RouterLink,

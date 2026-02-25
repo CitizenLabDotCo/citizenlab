@@ -27,7 +27,7 @@ document.execCommand = jest.fn();
 const AllTheProviders = ({ children }: { children: ReactNode }) => {
   return (
     <HelmetProvider>
-      <HistoryRouter history={history as any}>
+      <HistoryRouter history={history}>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider theme={getTheme(null)}>
             <ModalQueueProvider>

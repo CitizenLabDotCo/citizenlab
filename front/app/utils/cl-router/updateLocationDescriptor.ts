@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-restricted-imports
-import { Location } from 'history';
+import type { Location } from '@remix-run/router';
 import { isString } from 'lodash-es';
 import { SupportedLocale } from 'typings';
 
