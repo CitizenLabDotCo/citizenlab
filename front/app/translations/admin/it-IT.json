@@ -1375,7 +1375,7 @@
   "app.containers.Admin.projects.project.insights.comments": "Commenti",
   "app.containers.Admin.projects.project.insights.commonGroundStatements": "Dichiarazioni",
   "app.containers.Admin.projects.project.insights.completionRate": "Tasso di completamento",
-  "app.containers.Admin.projects.project.insights.completionRateExplanationTooltip": "Il numero di risposte all'indagine inviate diviso per il numero totale di risposte all'indagine (incluse le risposte \"in bozza\", non inviate), espresso in percentuale.",
+  "app.containers.Admin.projects.project.insights.completionRateExplanationTooltip": "Il numero di risposte al sondaggio inviate diviso per il numero totale di risposte al sondaggio (incluse le risposte \"in bozza\", non inviate), espresso in percentuale.",
   "app.containers.Admin.projects.project.insights.count": "Conteggio",
   "app.containers.Admin.projects.project.insights.deleteSurveyResults": "Elimina i risultati del sondaggio",
   "app.containers.Admin.projects.project.insights.demographicsAndAudience": "Demografia e pubblico",
