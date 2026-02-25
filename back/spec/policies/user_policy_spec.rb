@@ -22,6 +22,30 @@ describe UserPolicy do
       subject_user.save!
       expect(scope.resolve.size).to eq 0
     end
+
+    context 'when enhanced_user_profile_privacy is active' do
+      before do
+        settings = AppConfiguration.instance.settings
+        settings['enhanced_user_profile_privacy'] = { 'enabled' => true, 'allowed' => true }
+        AppConfiguration.instance.update!(settings: settings)
+      end
+
+      context 'when subject user has no public contributions' do
+        it { is_expected.not_to permit(:show) }
+      end
+
+      context 'when subject user has a non-anonymous idea in an ideation phase' do
+        before { create(:idea, author: subject_user, anonymous: false) }
+
+        it { is_expected.to permit(:show) }
+      end
+
+      context 'when subject user has comments' do
+        before { create(:comment, author: subject_user) }
+
+        it { is_expected.to permit(:show) }
+      end
+    end
   end
 
   context 'for a resident' do

@@ -38,7 +38,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def show?
-    true
+    record.id == user&.id || active_admin_or_moderator? || record.show_public_profile?
   end
 
   def by_slug?

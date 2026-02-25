@@ -1363,13 +1363,13 @@ resource 'Users' do
         context 'when no_user_slugs feature is active' do
           before do
             settings = AppConfiguration.instance.settings
-            settings['user_slugs_disabled'] = { 'enabled' => true, 'allowed' => true }
+            settings['enhanced_user_profile_privacy'] = { 'enabled' => true, 'allowed' => true }
             AppConfiguration.instance.update!(settings: settings)
           end
 
           let(:slug) { user.id }
 
-          example_request 'Get one user by id when user_slugs_disabled is active', document: false do
+          example_request 'Get one user by id when enhanced_user_profile_privacy is active', document: false do
             expect(status).to eq 200
             json_response = json_parse response_body
             expect(json_response.dig(:data, :id)).to eq user.id
