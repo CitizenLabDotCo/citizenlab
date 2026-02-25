@@ -1463,6 +1463,7 @@
   "app.containers.Admin.projects.project.insights.vsLast7Days": "verrattuna viimeisiin 7 päivään",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "Tekoälyn yhteenveto",
   "app.containers.Admin.projects.project.insights.word.answer": "Vastaus",
+  "app.containers.Admin.projects.project.insights.word.averageRank": "Keskimääräinen sijoitus",
   "app.containers.Admin.projects.project.insights.word.category": "Kategoria",
   "app.containers.Admin.projects.project.insights.word.change": "7 päivän muutos",
   "app.containers.Admin.projects.project.insights.word.commentsPosted": "Lähetetyt kommentit",
