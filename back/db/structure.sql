@@ -144,6 +144,7 @@ ALTER TABLE IF EXISTS ONLY public.volunteering_volunteers DROP CONSTRAINT IF EXI
 ALTER TABLE IF EXISTS ONLY public.webhooks_deliveries DROP CONSTRAINT IF EXISTS fk_rails_333f76f79b;
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_rails_2d026b99a2;
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS fk_rails_2c74f68dd3;
+ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS fk_rails_2b526e3a7f;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_2a92a64a56;
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS fk_rails_29ccdf5b04;
 ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS fk_rails_231f268568;
@@ -212,6 +213,7 @@ DROP INDEX IF EXISTS public.index_report_builder_reports_on_name;
 DROP INDEX IF EXISTS public.index_reactions_on_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id_and_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id;
+DROP INDEX IF EXISTS public.index_projects_on_workspace_id;
 DROP INDEX IF EXISTS public.index_projects_on_slug;
 DROP INDEX IF EXISTS public.index_projects_global_topics_on_project_id;
 DROP INDEX IF EXISTS public.index_projects_global_topics_on_global_topic_id;
@@ -1390,7 +1392,8 @@ CREATE TABLE public.projects (
     hidden boolean DEFAULT false NOT NULL,
     listed boolean DEFAULT true NOT NULL,
     track_participation_location boolean DEFAULT false NOT NULL,
-    live_auto_input_topics_enabled boolean DEFAULT false NOT NULL
+    live_auto_input_topics_enabled boolean DEFAULT false NOT NULL,
+    workspace_id uuid
 );
 
 
@@ -6830,6 +6833,13 @@ CREATE UNIQUE INDEX index_projects_on_slug ON public.projects USING btree (slug)
 
 
 --
+-- Name: index_projects_on_workspace_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_projects_on_workspace_id ON public.projects USING btree (workspace_id);
+
+
+--
 -- Name: index_reactions_on_reactable_type_and_reactable_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7320,6 +7330,14 @@ ALTER TABLE ONLY public.events_attendances
 
 ALTER TABLE ONLY public.analysis_analyses
     ADD CONSTRAINT fk_rails_2a92a64a56 FOREIGN KEY (phase_id) REFERENCES public.phases(id);
+
+
+--
+-- Name: projects fk_rails_2b526e3a7f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.projects
+    ADD CONSTRAINT fk_rails_2b526e3a7f FOREIGN KEY (workspace_id) REFERENCES public.workspaces(id);
 
 
 --
@@ -8409,6 +8427,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260225115007'),
 ('20260225104455'),
 ('20260205124240'),
 ('20260127094257'),

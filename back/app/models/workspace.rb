@@ -9,6 +9,8 @@
 #  updated_at           :datetime         not null
 #
 class Workspace < ApplicationRecord
+  has_many :projects, dependent: :nullify
+
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
 end

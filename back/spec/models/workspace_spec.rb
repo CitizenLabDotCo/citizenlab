@@ -20,5 +20,28 @@ RSpec.describe Workspace do
         expect(workspace).to be_valid
       end
     end
+
+    describe 'associations' do
+      it { is_expected.to have_many(:projects).dependent(:nullify) }
+    end
+
+    describe 'destroying a workspace' do
+      it 'nullifies workspace_id on associated projects' do
+        workspace = create(:workspace)
+        project = create(:project, workspace: workspace)
+        
+        workspace.destroy
+        
+        expect(project.reload.workspace_id).to be_nil
+        expect(Project.exists?(project.id)).to be true
+      end
+
+      it 'does not destroy projects when workspace is destroyed' do
+        workspace = create(:workspace)
+        project = create(:project, workspace: workspace)
+        
+        expect { workspace.destroy }.not_to change(Project, :count)
+      end
+    end
   end
 end
