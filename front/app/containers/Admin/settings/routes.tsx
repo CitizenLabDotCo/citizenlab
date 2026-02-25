@@ -27,7 +27,7 @@ const AdminAreasNew = lazy(() => import('./areas/New'));
 const AdminAreasEdit = lazy(() => import('./areas/Edit'));
 
 // topics
-const TopicsMain = React.lazy(() => import('./topics/TopicsMain'));
+const TopicsMain = lazy(() => import('./topics/TopicsMain'));
 const AdminTopicsNewComponent = lazy(
   () => import('./topics/global_topics/New')
 );
@@ -43,15 +43,12 @@ const AdminDefaultInputTopicsEditComponent = lazy(
 );
 
 // statuses
-const StatusesMain = React.lazy(
-  () => import('./statuses/containers/statusesMain')
-);
-const NewStatusComponent = React.lazy(
-  () => import('./statuses/containers/new')
-);
-const StatusShowComponent = React.lazy(
-  () => import('./statuses/containers/edit')
-);
+const StatusesMain = lazy(() => import('./statuses/containers/statusesMain'));
+const NewStatusComponent = lazy(() => import('./statuses/containers/new'));
+const StatusShowComponent = lazy(() => import('./statuses/containers/edit'));
+
+// workspaces
+const WorkspacesMain = lazy(() => import('./workspaces'));
 
 export enum settingsRoutes {
   settings = 'settings',
@@ -72,6 +69,7 @@ export enum settingsRoutes {
   proposals = 'proposals',
   statuses = 'statuses',
   statusId = ':statusId',
+  workspaces = 'workspaces',
 }
 
 export type settingRouteTypes =
@@ -96,6 +94,7 @@ export type settingRouteTypes =
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.ideation}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.ideation}/${settingsRoutes.new}`>
   | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.statuses}/${settingsRoutes.ideation}/${string}`>
+  | AdminRoute<`${settingsRoutes.settings}/${settingsRoutes.workspaces}`>
   | registrationRouteTypes;
 
 export default () => ({
@@ -271,6 +270,14 @@ export default () => ({
           ],
         },
       ],
+    },
+    {
+      path: settingsRoutes.workspaces,
+      element: (
+        <PageLoading>
+          <WorkspacesMain />
+        </PageLoading>
+      ),
     },
     ...moduleConfiguration.routes['admin.settings'],
   ],
