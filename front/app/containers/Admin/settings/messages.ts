@@ -56,6 +56,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabTopics2',
     defaultMessage: 'Tags',
   },
+  tabWorkspaces: {
+    id: 'app.containers.AdminPage.SettingsPage.tabWorkspaces',
+    defaultMessage: 'Workspaces',
+  },
   organizationName: {
     id: 'app.containers.AdminPage.SettingsPage.organizationName',
     defaultMessage: 'Name of city or organization',
