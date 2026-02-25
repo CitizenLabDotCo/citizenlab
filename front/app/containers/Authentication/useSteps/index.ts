@@ -1,6 +1,5 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 
-import { trackPageView } from 'modules/commercial/impact_tracking';
 import { parse } from 'qs';
 import { useLocation } from 'react-router-dom';
 import { RouteType } from 'routes';
@@ -17,7 +16,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { useModalQueue } from 'containers/App/ModalQueue';
 import { invalidateAllActionDescriptors } from 'containers/Authentication/useSteps/invalidateAllActionDescriptors';
 
-import { trackEventByName } from 'utils/analytics';
+import { trackEventByName, trackVirtualPageView } from 'utils/analytics';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
@@ -71,7 +70,7 @@ export default function useSteps() {
       }
 
       // Track the step - NOTE: SSO does not track - this needs to be done in the button - so we know what version of the button was clicked
-      trackPageView(`${pathname}/auth/${step.replace(/:/g, '/')}`);
+      trackVirtualPageView(`${pathname}/auth/${step.replace(/:/g, '/')}`);
       trackEventByName('Transition step in authentication flow', { step });
 
       _setCurrentStep(step);

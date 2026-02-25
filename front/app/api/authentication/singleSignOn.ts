@@ -1,5 +1,4 @@
 import { omitBy, isNil } from 'lodash-es';
-import { trackPageView } from 'modules/commercial/impact_tracking';
 import { stringify } from 'qs';
 import { RouteType } from 'routes';
 
@@ -10,6 +9,7 @@ import {
   SignUpInError,
 } from 'containers/Authentication/typings';
 
+import { trackVirtualPageView } from 'utils/analytics';
 import { getClaimTokens } from 'utils/claimToken';
 
 export interface SSOProviderMap {
@@ -64,7 +64,7 @@ export const handleOnSSOClick = (
   localStorage.setItem('auth_path', window.location.pathname as RouteType);
 
   // Track the SSO click as a pageView
-  trackPageView(`${window.location.pathname}/auth/sso/${provider}`);
+  trackVirtualPageView(`${window.location.pathname}/auth/sso/${provider}`);
 
   setHref(provider, metaData, verification, flow);
 };
