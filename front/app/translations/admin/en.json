@@ -2914,6 +2914,7 @@
   "app.containers.AdminPage.SettingsPage.tabSettings": "General",
   "app.containers.AdminPage.SettingsPage.tabTopics2": "Tags",
   "app.containers.AdminPage.SettingsPage.tabWidgets": "Widget",
+  "app.containers.AdminPage.SettingsPage.tabWorkspaces": "Workspaces",
   "app.containers.AdminPage.SettingsPage.tablet": "Tablet",
   "app.containers.AdminPage.SettingsPage.terminologyTooltip": "Define what geographic unit you would like to use for your projects (e.g., neighborhoods, districts, boroughs, etc.)",
   "app.containers.AdminPage.SettingsPage.titleAreas": "Geographic areas",
