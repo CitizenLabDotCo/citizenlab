@@ -1463,6 +1463,7 @@
   "app.containers.Admin.projects.project.insights.vsLast7Days": "am Verglach zu de leschten 7 Deeg",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "KI-Zesummefassung",
   "app.containers.Admin.projects.project.insights.word.answer": "Äntwert",
+  "app.containers.Admin.projects.project.insights.word.averageRank": "Duerchschnëttleche Rang",
   "app.containers.Admin.projects.project.insights.word.category": "Kategorie",
   "app.containers.Admin.projects.project.insights.word.change": "7-Deeg Ännerung",
   "app.containers.Admin.projects.project.insights.word.commentsPosted": "Kommentarer gepost",
