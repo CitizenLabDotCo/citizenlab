@@ -45,11 +45,6 @@ const DropdownButton = styled(ButtonWithLink)`
   }
 `;
 
-const DropdownContainer = styled.div`
-  position: relative;
-  display: inline-block;
-`;
-
 const AI_ANALYSIS_SUPPORTED_METHODS = [
   'ideation',
   'voting',
@@ -216,7 +211,7 @@ const InsightsContent = () => {
                 alignItems="flex-end"
               >
                 <Box display="flex" gap="8px">
-                  <DropdownContainer>
+                  <Box position="relative" display="inline-block">
                     <Button
                       buttonStyle={supportsAiAnalysis ? 'secondary' : 'primary'}
                       icon="download"
@@ -259,7 +254,7 @@ const InsightsContent = () => {
                         </Box>
                       }
                     />
-                  </DropdownContainer>
+                  </Box>
                   {supportsAiAnalysis && (
                     <Button
                       buttonStyle="primary"
