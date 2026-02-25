@@ -1463,6 +1463,7 @@
   "app.containers.Admin.projects.project.insights.vsLast7Days": "im Vergleich zu den letzten 7 Tagen",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "KI-Zusammenfassung",
   "app.containers.Admin.projects.project.insights.word.answer": "Antwort",
+  "app.containers.Admin.projects.project.insights.word.averageRank": "Durchschnittlicher Rang",
   "app.containers.Admin.projects.project.insights.word.category": "Kategorie",
   "app.containers.Admin.projects.project.insights.word.change": "7-Tage-Änderung",
   "app.containers.Admin.projects.project.insights.word.commentsPosted": "Kommentare veröffentlicht",
