@@ -301,7 +301,7 @@ Key features:
 - **Date Handling**: `date-fns`, `moment`, `react-day-picker`
 - **PDF**: `react-pdf`
 - **CSV Export**: `react-csv`, `papaparse`
-- **Analytics**: `posthog-js`, `@segment/snippet`
+- **Analytics**: `posthog-js`
 - **Error Tracking**: `@sentry/react`
 - **Animations**: `lottie-react`, `react-transition-group`
 
