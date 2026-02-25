@@ -155,7 +155,6 @@ describe SideFxUserService do
       expect { service.after_destroy(user, current_user) }
         .to have_enqueued_job(RemoveUserFromIntercomJob).with(user.id)
     end
-
   end
 
   describe 'after_block' do
