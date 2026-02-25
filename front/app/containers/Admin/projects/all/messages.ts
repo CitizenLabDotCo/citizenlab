@@ -29,6 +29,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Folders.Filters.searchFolders',
     defaultMessage: 'Search folders',
   },
+  searchWorkspaces: {
+    id: 'app.containers.Admin.projects.all.new.Workspaces.Filters.searchWorkspaces',
+    defaultMessage: 'Search workspaces',
+  },
   overviewPageTitle: {
     id: 'app.containers.AdminPage.ProjectDashboard.overviewPageTitle',
     defaultMessage: 'Projects',
