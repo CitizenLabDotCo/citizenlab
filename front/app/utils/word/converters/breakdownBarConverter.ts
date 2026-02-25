@@ -45,17 +45,14 @@ export function createBreakdownTable(
     defaultBarColor = WORD_COLORS.primary,
   } = options;
 
-  // Limit items if specified
   const displayItems = maxItems ? items.slice(0, maxItems) : items;
 
   if (displayItems.length === 0) {
     return [];
   }
 
-  // Calculate max count for percentage calculation
   const maxCount = Math.max(...displayItems.map((item) => item.count), 1);
 
-  // Build table rows
   const rows: TableRow[] = [];
 
   // Header row
@@ -205,15 +202,13 @@ function createBreakdownRow(
 }
 
 /**
- * Creates a cell with a visual bar representation.
- * Uses a nested table with two cells - one colored (the bar) and one white.
+ * Creates a cell with a visual bar using a nested table —
+ * one colored cell (the bar) and one background cell.
  */
 function createBarCell(percentage: number, barColor: string): TableCell {
   const barWidth = Math.max(Math.round(percentage), 1);
   const emptyWidth = 100 - barWidth;
 
-  // Create a visual bar using text with background
-  // We'll use percentage text with shaded background
   return new TableCell({
     children: [
       new Paragraph({
@@ -227,7 +222,6 @@ function createBarCell(percentage: number, barColor: string): TableCell {
         ],
         alignment: AlignmentType.LEFT,
       }),
-      // Visual bar representation using a nested table
       new Table({
         rows: [
           new TableRow({
@@ -276,7 +270,7 @@ function createBarCell(percentage: number, barColor: string): TableCell {
               }),
             ],
             height: {
-              value: 200, // Fixed height in twips for the bar
+              value: 200,
               rule: 'exact' as const,
             },
           }),

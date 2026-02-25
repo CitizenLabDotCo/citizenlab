@@ -39,7 +39,6 @@ const TopicBreakdown = ({ phaseId, participationMethod }: Props) => {
     isLoading,
   } = useTopicBreakdownData({ phaseId, participationMethod });
 
-  // Native Word breakdown table — sorted by count
   const allTopics = [...aiTopics, ...manualTopics].sort(
     (a, b) => b.count - a.count
   );

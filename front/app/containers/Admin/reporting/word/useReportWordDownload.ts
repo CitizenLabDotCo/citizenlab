@@ -7,15 +7,19 @@ import {
   createParagraph,
   createTitle,
 } from 'utils/word/converters/textConverter';
-import { WORD_MARGINS, WORD_PAGE_SIZE } from 'utils/word/utils/styleConstants';
+import {
+  WORD_MARGINS,
+  WORD_PAGE_SIZE,
+  getScaledDimensions,
+  getSpacerSpacing,
+  type SpacerSize,
+} from 'utils/word/utils/styleConstants';
 
 import { createParagraphsFromHtml } from './reportConverters/textWidgetConverter';
 
-type WhiteSpaceSize = 'small' | 'medium' | 'large';
-
 export type ReportWordSection =
   | { type: 'text'; html: string }
-  | { type: 'whitespace'; size?: WhiteSpaceSize }
+  | { type: 'whitespace'; size?: SpacerSize }
   | { type: 'iframe'; url: string; title?: string }
   | {
       type: 'image';
@@ -41,35 +45,6 @@ export interface ReportWordData {
   reportTitle: string;
   sections: ReportWordSection[];
 }
-
-const MAX_IMAGE_WIDTH = 600;
-
-const getScaledDimensions = (width: number, height: number) => {
-  if (width <= 0 || height <= 0) {
-    return {
-      width: MAX_IMAGE_WIDTH,
-      height: Math.round(MAX_IMAGE_WIDTH * 0.6),
-    };
-  }
-
-  const scale = Math.min(1, MAX_IMAGE_WIDTH / width);
-  return {
-    width: Math.round(width * scale),
-    height: Math.round(height * scale),
-  };
-};
-
-const getWhitespaceSpacing = (size?: WhiteSpaceSize) => {
-  switch (size) {
-    case 'large':
-      return 600;
-    case 'medium':
-      return 400;
-    case 'small':
-    default:
-      return 200;
-  }
-};
 
 export default function useReportWordDownload({
   errorMessage,
@@ -97,7 +72,7 @@ export default function useReportWordDownload({
             }
             case 'whitespace': {
               children.push(
-                createEmptyParagraph(getWhitespaceSpacing(section.size))
+                createEmptyParagraph(getSpacerSpacing(section.size))
               );
               break;
             }
@@ -167,8 +142,7 @@ export default function useReportWordDownload({
           .slice(0, 19);
 
         saveAs(blob, `${filename}-${timestamp}.docx`);
-      } catch (err) {
-        console.error('Word download error:', err);
+      } catch {
         setError(errorMessage);
       } finally {
         setIsDownloading(false);

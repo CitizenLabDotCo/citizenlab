@@ -158,7 +158,6 @@ const AiSummary = ({ phaseId, participationMethod }: Props) => {
   const summary = summaryData?.data.attributes.summary;
   const isReady = !!(summaryData && analysisId && summary);
 
-  // Register native Word serializer — AI summary as editable HTML paragraphs
   useWordSection(
     'ai-summary',
     () => {

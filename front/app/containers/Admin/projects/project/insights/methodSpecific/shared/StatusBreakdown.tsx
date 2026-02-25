@@ -91,7 +91,6 @@ const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
 
   const isLoading = isLoadingCounts || isLoadingStatuses;
 
-  // Native Word breakdown table — colored bars per status
   useWordSection(
     'status-breakdown',
     () => {

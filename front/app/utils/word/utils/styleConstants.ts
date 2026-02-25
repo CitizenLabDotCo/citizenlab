@@ -76,6 +76,37 @@ export const WORD_TABLE_STYLES = {
   },
 };
 
+export const MAX_IMAGE_WIDTH = 600;
+const DEFAULT_IMAGE_HEIGHT_RATIO = 0.6;
+
+export const getScaledDimensions = (width: number, height: number) => {
+  if (width <= 0 || height <= 0) {
+    return {
+      width: MAX_IMAGE_WIDTH,
+      height: Math.round(MAX_IMAGE_WIDTH * DEFAULT_IMAGE_HEIGHT_RATIO),
+    };
+  }
+  const scale = Math.min(1, MAX_IMAGE_WIDTH / width);
+  return {
+    width: Math.round(width * scale),
+    height: Math.round(height * scale),
+  };
+};
+
+export type SpacerSize = 'small' | 'medium' | 'large';
+
+export const getSpacerSpacing = (size?: SpacerSize) => {
+  switch (size) {
+    case 'large':
+      return 600;
+    case 'medium':
+      return 400;
+    case 'small':
+    default:
+      return 200;
+  }
+};
+
 // Common text run styles
 export const TEXT_STYLES = {
   title: {

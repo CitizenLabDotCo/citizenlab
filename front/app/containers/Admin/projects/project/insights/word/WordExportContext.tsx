@@ -1,17 +1,8 @@
 /**
  * Word Export Context — thin coordinator.
  *
- * Responsibilities:
- * - Accept serializer registrations from section components
- * - On download: call serializers in order, assemble WordSection[], render to .docx
- *
- * Does NOT:
- * - Fetch any API data (each component fetches its own)
- * - Manage DOM refs
- * - Run html2canvas or any capture loop
- * - Manipulate opacity/scroll position
- *
- * Contrast with the old implementation: 390 lines, 8 API calls, DOM capture loop.
+ * Accepts serializer registrations from section components.
+ * On download: calls serializers in order, assembles WordSection[], renders to .docx.
  */
 import React, {
   createContext,
@@ -33,7 +24,7 @@ import { getExpectedComponents, type ExportId } from './exportRegistry';
 import messages from './messages';
 import { sectionsToDocxBlob } from './wordRenderer';
 
-import type { WordSerializer } from './useWordSection';
+import type { WordSerializer, WordSection } from './useWordSection';
 
 export type ExportStatus = 'idle' | 'preparing' | 'capturing' | 'generating';
 
@@ -101,7 +92,6 @@ export const WordExportProvider = ({
   // Serializer registry
   const serializers = useRef<Map<ExportId, WordSerializer>>(new Map());
   const skipped = useRef<Set<ExportId>>(new Set());
-
   // Bumped on every register/unregister/skip so `allComponentsReady` re-evaluates
   const [registrationVersion, setRegistrationVersion] = useState(0);
 
@@ -139,8 +129,6 @@ export const WordExportProvider = ({
     [setSerializerSkipped]
   );
 
-  // ── Download ──────────────────────────────────────────────────────────────
-
   const downloadWord = useCallback(async () => {
     setExportStatus('preparing');
     setError(null);
@@ -155,7 +143,7 @@ export const WordExportProvider = ({
       await new Promise<void>((resolve) => setTimeout(resolve, 50));
       setExportStatus('capturing');
 
-      const allSections: any[] = [];
+      const allSections: WordSection[] = [];
 
       for (let i = 0; i < orderedIds.length; i++) {
         const id = orderedIds[i];
@@ -174,9 +162,8 @@ export const WordExportProvider = ({
         try {
           const sections = await serialize();
           allSections.push(...sections);
-        } catch (sectionErr) {
-          console.error(`[WordExport] Section "${id}" failed:`, sectionErr);
-          warnings.push(id); // Track for UI warning
+        } catch {
+          warnings.push(id);
         }
 
         setExportProgress({ completed: i + 1, total: orderedIds.length });
@@ -192,8 +179,7 @@ export const WordExportProvider = ({
         .replace(/[:.]/g, '-')
         .slice(0, 19);
       saveAs(blob, `${filename}-${timestamp}.docx`);
-    } catch (err) {
-      console.error('[WordExport] Document generation failed:', err);
+    } catch {
       setError(formatMessage(messages.errorWordDownload));
     } finally {
       setExportStatus('idle');
@@ -204,7 +190,7 @@ export const WordExportProvider = ({
   const allComponentsReady = useMemo(() => {
     // registrationVersion is read to re-evaluate when components register/unregister
     void registrationVersion;
-    const expected = getExpectedComponents(participationMethod as any);
+    const expected = getExpectedComponents(participationMethod);
     return expected.every(
       (id) => serializers.current.has(id) || skipped.current.has(id)
     );

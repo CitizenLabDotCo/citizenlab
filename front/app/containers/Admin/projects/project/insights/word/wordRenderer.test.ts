@@ -21,13 +21,11 @@ jest.mock('docx', () => {
   return {
     Document: mockElement('Document'),
     Packer: {
-      toBlob: jest
-        .fn()
-        .mockResolvedValue(
-          new Blob(['mock-docx'], {
-            type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-          })
-        ),
+      toBlob: jest.fn().mockResolvedValue(
+        new Blob(['mock-docx'], {
+          type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        })
+      ),
     },
     Paragraph: mockElement('Paragraph'),
     ImageRun: mockElement('ImageRun'),
@@ -67,6 +65,23 @@ jest.mock('utils/word/converters/breakdownBarConverter', () => ({
 jest.mock('utils/word/utils/styleConstants', () => ({
   WORD_MARGINS: { top: 1440, right: 1440, bottom: 1440, left: 1440 },
   WORD_PAGE_SIZE: { width: 11906, height: 16838 },
+  getScaledDimensions: jest.fn((w: number, h: number) => {
+    const maxW = 600;
+    if (w <= 0 || h <= 0)
+      return { width: maxW, height: Math.round(maxW * 0.6) };
+    const scale = Math.min(1, maxW / w);
+    return { width: Math.round(w * scale), height: Math.round(h * scale) };
+  }),
+  getSpacerSpacing: jest.fn((size?: string) => {
+    switch (size) {
+      case 'large':
+        return 600;
+      case 'medium':
+        return 400;
+      default:
+        return 200;
+    }
+  }),
 }));
 
 jest.mock(
@@ -243,7 +258,7 @@ describe('sectionsToDocxBlob', () => {
       const rawElements = [
         { _type: 'Paragraph', text: 'raw1' },
         { _type: 'Table', rows: [] },
-      ];
+      ] as unknown as (import('docx').Paragraph | import('docx').Table)[];
       // Should not throw
       await expect(
         sectionsToDocxBlob([{ type: 'docx-elements', elements: rawElements }])

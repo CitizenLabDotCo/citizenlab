@@ -180,7 +180,6 @@ const InsightsContent = () => {
 
   return (
     <>
-      {/* Visible UI - never changes during PDF export */}
       <Box
         borderBottom="none"
         display="flex"
@@ -280,7 +279,7 @@ const InsightsContent = () => {
                 )}
                 {exportError && (
                   <Text fontSize="s" color="error" m="0px">
-                    {formatMessage(messages.errorPdfDownload)}
+                    {exportError}
                   </Text>
                 )}
                 {captureWarnings.length > 0 && !isDownloading && (
@@ -319,7 +318,6 @@ const InsightsContent = () => {
         </Box>
       </Box>
 
-      {/* Hidden container for PDF rendering - only mounted during export */}
       {isDownloadingPdf && (
         <div style={hiddenContainerStyle}>
           <PdfExportProvider isPdfRenderMode>

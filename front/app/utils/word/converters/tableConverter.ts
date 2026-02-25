@@ -27,9 +27,6 @@ interface TableOptions {
   headerBackground?: string;
 }
 
-/**
- * Creates a styled table from row data.
- */
 export function createTable(
   rows: TableRowData[],
   options: TableOptions = {}
@@ -78,9 +75,6 @@ export function createTable(
   });
 }
 
-/**
- * Creates a simple table from a 2D array of strings.
- */
 export function createSimpleTable(
   data: CellContent[][],
   options: TableOptions = {}
@@ -102,9 +96,6 @@ interface CellOptions {
   alignment?: 'left' | 'center' | 'right';
 }
 
-/**
- * Creates a single table cell with content.
- */
 export function createTableCell(
   content: CellContent,
   options: CellOptions = {}

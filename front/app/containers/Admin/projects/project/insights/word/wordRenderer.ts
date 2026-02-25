@@ -1,17 +1,5 @@
-/**
- * Unified Word document renderer.
- * Converts WordSection[] → docx Blob.
- *
- * Used by both Insights and Report Builder exports.
- * One renderer, one schema, no duplication.
- */
-import {
-  Document,
-  Packer,
-  Paragraph,
-  ImageRun,
-  Table,
-} from 'docx';
+/** Unified Word document renderer. Converts WordSection[] → docx Blob. */
+import { Document, Packer, Paragraph, ImageRun, Table } from 'docx';
 
 import { createBreakdownTable } from 'utils/word/converters/breakdownBarConverter';
 import { createSimpleTable } from 'utils/word/converters/tableConverter';
@@ -21,29 +9,16 @@ import {
   createParagraph,
   createEmptyParagraph,
 } from 'utils/word/converters/textConverter';
-import { WORD_MARGINS, WORD_PAGE_SIZE } from 'utils/word/utils/styleConstants';
+import {
+  WORD_MARGINS,
+  WORD_PAGE_SIZE,
+  getScaledDimensions,
+  getSpacerSpacing,
+} from 'utils/word/utils/styleConstants';
 
 import { createParagraphsFromHtml } from '../../../../reporting/word/reportConverters/textWidgetConverter';
 
 import type { WordSection } from './useWordSection';
-
-const MAX_IMAGE_WIDTH = 600;
-
-const getScaledDimensions = (width: number, height: number) => {
-  if (width <= 0 || height <= 0) {
-    return { width: MAX_IMAGE_WIDTH, height: Math.round(MAX_IMAGE_WIDTH * 0.6) };
-  }
-  const scale = Math.min(1, MAX_IMAGE_WIDTH / width);
-  return { width: Math.round(width * scale), height: Math.round(height * scale) };
-};
-
-const spacerSize = (size?: 'small' | 'medium' | 'large') => {
-  switch (size) {
-    case 'large': return 600;
-    case 'medium': return 400;
-    default: return 200;
-  }
-};
 
 interface RendererOptions {
   title?: string;
@@ -84,7 +59,10 @@ export async function sectionsToDocxBlob(
       }
 
       case 'image': {
-        const { width, height } = getScaledDimensions(section.width, section.height);
+        const { width, height } = getScaledDimensions(
+          section.width,
+          section.height
+        );
         children.push(
           new Paragraph({
             children: [
@@ -122,11 +100,10 @@ export async function sectionsToDocxBlob(
       }
 
       case 'spacer':
-        children.push(createEmptyParagraph(spacerSize(section.size)));
+        children.push(createEmptyParagraph(getSpacerSpacing(section.size)));
         break;
 
       case 'docx-elements':
-        // Pre-built docx objects from existing converters — spread directly
         children.push(...section.elements);
         children.push(createEmptyParagraph());
         break;
@@ -138,7 +115,10 @@ export async function sectionsToDocxBlob(
       {
         properties: {
           page: {
-            size: { width: WORD_PAGE_SIZE.width, height: WORD_PAGE_SIZE.height },
+            size: {
+              width: WORD_PAGE_SIZE.width,
+              height: WORD_PAGE_SIZE.height,
+            },
             margin: {
               top: WORD_MARGINS.top,
               right: WORD_MARGINS.right,

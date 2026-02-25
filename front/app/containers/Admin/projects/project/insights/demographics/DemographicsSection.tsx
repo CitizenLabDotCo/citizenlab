@@ -29,7 +29,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 import { usePdfExportContext } from '../pdf/PdfExportContext';
 import ExportableInsight from '../word/ExportableInsight';
-import { useWordSection } from '../word/useWordSection';
+import { useWordSection, type WordSection } from '../word/useWordSection';
 import { useWordExportContext } from '../word/WordExportContext';
 
 import DemographicFieldContent from './DemographicFieldContent';
@@ -124,15 +124,12 @@ const DemographicsSection = ({ phase }: Props) => {
     [demographicsData]
   );
 
-  // Native Word serializer — one breakdown table per demographic field
-  // No DOM capture needed: data comes directly from the API response.
-  // This eliminates the opacity:0 DOM hack that the old html2canvas approach required.
   useWordSection(
     'demographics',
     () => {
       if (fields.length === 0) return [];
 
-      const sections: any[] = [
+      const sections: WordSection[] = [
         {
           type: 'heading',
           text: formatMessage(messages.demographicsAndAudience),
@@ -314,8 +311,6 @@ const DemographicsSection = ({ phase }: Props) => {
           ))}
         </TabsContainer>
 
-        {/* Render all fields for Word export capture, but only show the selected one */}
-        {/* Non-selected fields use opacity: 0 so html2canvas can still capture them */}
         <Box position="relative">
           {fields.map((field, index) => {
             const isSelected = index === selectedFieldIndex;

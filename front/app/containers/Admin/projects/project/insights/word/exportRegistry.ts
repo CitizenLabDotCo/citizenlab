@@ -1,87 +1,73 @@
 import { ParticipationMethod } from 'api/phases/types';
 
-// Export types for insight components
 export type ExportType = 'image' | 'data' | 'hybrid';
 
-// Component definition for exportable insights
 export interface ExportableComponent {
   id: string;
   displayName: string;
   exportType: ExportType;
 }
 
-// Registry of all exportable insight components
 export const INSIGHT_EXPORT_REGISTRY: Record<string, ExportableComponent> = {
-  // Universal components (all participation methods)
   'participation-metrics': {
     id: 'participation-metrics',
     displayName: 'Participation Metrics',
-    exportType: 'data' as const,
+    exportType: 'data',
   },
   'participation-timeline': {
     id: 'participation-timeline',
     displayName: 'Participation Over Time',
-    exportType: 'image' as const,
+    exportType: 'image',
   },
   demographics: {
     id: 'demographics',
     displayName: 'Demographics',
-    exportType: 'hybrid' as const, // Image for charts, fallback to data tables
+    exportType: 'hybrid',
   },
-
-  // Ideation/Proposals components
   'ai-summary': {
     id: 'ai-summary',
     displayName: 'AI Summary',
-    exportType: 'hybrid' as const, // Text data + visual container
+    exportType: 'hybrid',
   },
   'topic-breakdown': {
     id: 'topic-breakdown',
     displayName: 'Topic Breakdown',
-    exportType: 'hybrid' as const, // Data tables + visual charts
+    exportType: 'hybrid',
   },
   'status-breakdown': {
     id: 'status-breakdown',
     displayName: 'Status Breakdown',
-    exportType: 'hybrid' as const,
+    exportType: 'hybrid',
   },
   'most-liked-ideas': {
     id: 'most-liked-ideas',
     displayName: 'Most Liked Ideas',
-    exportType: 'hybrid' as const,
+    exportType: 'hybrid',
   },
   'most-liked-proposals': {
     id: 'most-liked-proposals',
     displayName: 'Most Liked Proposals',
-    exportType: 'hybrid' as const,
+    exportType: 'hybrid',
   },
-
-  // Voting components
   'vote-results': {
     id: 'vote-results',
     displayName: 'Vote Results',
-    exportType: 'data' as const,
+    exportType: 'data',
   },
-
-  // Common Ground components
   'common-ground-results': {
     id: 'common-ground-results',
     displayName: 'Common Ground Statements',
-    exportType: 'image' as const,
+    exportType: 'image',
   },
-
-  // Survey components
   'survey-results': {
     id: 'survey-results',
     displayName: 'Survey Results',
-    exportType: 'hybrid' as const,
+    exportType: 'hybrid',
   },
 };
 
 export type ExportId = keyof typeof INSIGHT_EXPORT_REGISTRY;
 
-// Expected components per participation method
-// This ensures TypeScript catches any typos in export IDs
 export const EXPECTED_COMPONENTS: Partial<
   Record<ParticipationMethod, ExportId[]>
 > = {
@@ -134,18 +120,17 @@ export const EXPECTED_COMPONENTS: Partial<
   ],
 };
 
-// Helper to get expected components for a participation method
+const DEFAULT_COMPONENTS: ExportId[] = [
+  'participation-metrics',
+  'participation-timeline',
+  'demographics',
+];
+
 export const getExpectedComponents = (
   participationMethod?: ParticipationMethod
 ): ExportId[] => {
   if (!participationMethod) {
-    return ['participation-metrics', 'participation-timeline', 'demographics'];
+    return DEFAULT_COMPONENTS;
   }
-  return (
-    EXPECTED_COMPONENTS[participationMethod] || [
-      'participation-metrics',
-      'participation-timeline',
-      'demographics',
-    ]
-  );
+  return EXPECTED_COMPONENTS[participationMethod] || DEFAULT_COMPONENTS;
 };

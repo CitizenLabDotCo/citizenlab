@@ -1,13 +1,6 @@
 /**
  * SVG-native image capture for Word documents.
- *
  * Uses SVG serialization + OffscreenCanvas instead of html2canvas.
- * Key advantages:
- * - No DOM re-render (captures actual rendered SVG)
- * - No CORS issues (all data is local DOM)
- * - Resolution-independent (scales to any DPI cleanly)
- * - Works in backgrounded browser tabs (no requestAnimationFrame dependency)
- * - 100% reliable with Recharts/D3/SVG-based charts
  */
 
 interface SvgToImageOptions {
@@ -18,13 +11,9 @@ interface SvgToImageOptions {
 }
 
 /**
- * Converts an SVG element directly to a PNG Uint8Array suitable for docx ImageRun.
+ * Converts an SVG element to a PNG Uint8Array suitable for docx ImageRun.
  *
- * Algorithm:
- * 1. Serialize SVG to string (preserves all gradients, clips, fonts)
- * 2. Blob URL → Image element
- * 3. Draw to OffscreenCanvas at target scale
- * 4. Export as PNG Uint8Array
+ * Algorithm: serialize SVG → Blob URL → Image → OffscreenCanvas → PNG.
  */
 export async function svgElementToImageBuffer(
   svgElement: SVGElement,
@@ -65,7 +54,6 @@ export async function svgElementToImageBuffer(
     );
     const ctx = canvas.getContext('2d')!;
 
-    // White background
     ctx.fillStyle = backgroundColor;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -88,11 +76,8 @@ export async function svgElementToImageBuffer(
 }
 
 /**
- * Finds the first <svg> element inside an HTML container and converts it to PNG.
- * Falls back to the container element itself if no SVG found.
- *
- * This is the primary entry point for chart components (Recharts renders an <svg>
- * inside a wrapper <div>).
+ * Finds the first <svg> inside an HTML container and converts it to PNG.
+ * Primary entry point for chart components (Recharts renders <svg> inside a wrapper <div>).
  */
 export async function chartContainerToImageBuffer(
   container: HTMLElement,
@@ -102,7 +87,6 @@ export async function chartContainerToImageBuffer(
   if (svgEl) {
     return svgElementToImageBuffer(svgEl, options);
   }
-  // Fallback: no SVG found — caller should handle this case
   throw new Error(
     `No <svg> element found inside container. ` +
       `For non-SVG components, use htmlToImageBuffer instead.`
@@ -111,13 +95,9 @@ export async function chartContainerToImageBuffer(
 
 /**
  * Inlines computed CSS styles onto an SVG clone's elements.
- * This is necessary for SVGs that rely on external stylesheets for styling,
- * since blob URLs lose access to document styles.
- *
- * Only inlines properties that differ from SVG defaults to keep the output clean.
+ * Necessary because blob URLs lose access to document stylesheets.
  */
 function inlineComputedStyles(source: Element, target: Element): void {
-  // Properties we care about for chart rendering
   const STYLE_PROPERTIES = [
     'fill',
     'stroke',

@@ -38,7 +38,7 @@ export async function htmlToImageBuffer(
         height: Math.round(rect.height),
       };
     } catch {
-      // fall through to html2canvas
+      // Fall through to html2canvas
     }
   }
 

@@ -7,6 +7,7 @@ import { htmlToImageBuffer } from 'utils/word/utils/htmlToImage';
 import { useWordExportContext } from './WordExportContext';
 
 import type { ExportId } from './exportRegistry';
+import type { WordSection } from './useWordSection';
 
 interface Props extends Omit<BoxProps, 'ref'> {
   exportId: ExportId;
@@ -43,29 +44,18 @@ const ExportableInsight = ({
           scale: 2,
           backgroundColor: '#FFFFFF',
         });
-        const sections: Array<
-          | { type: 'heading'; text: string; level: 2 }
-          | { type: 'image'; image: Uint8Array; width: number; height: number }
-        > = [];
+        const sections: WordSection[] = [];
         if (heading) {
-          sections.push({
-            type: 'heading' as const,
-            text: heading,
-            level: 2 as const,
-          });
+          sections.push({ type: 'heading', text: heading, level: 2 });
         }
         sections.push({
-          type: 'image' as const,
+          type: 'image',
           image: buffer,
           width: Math.round(rect.width),
           height: Math.round(rect.height),
         });
         return sections;
-      } catch (err) {
-        console.error(
-          `[ExportableInsight] Capture failed for "${exportId}":`,
-          err
-        );
+      } catch {
         return [];
       }
     };

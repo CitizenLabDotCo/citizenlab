@@ -77,7 +77,9 @@ function createAnswersTable(
   }
 
   if (result.rankings_counts && result.average_rankings) {
-    const rows: string[][] = [[formatMessage(messages.answer), 'Average Rank']];
+    const rows: string[][] = [
+      [formatMessage(messages.answer), formatMessage(messages.averageRank)],
+    ];
 
     const entries = Object.entries(result.average_rankings).sort(
       (a, b) => parseFloat(a[1]) - parseFloat(b[1])

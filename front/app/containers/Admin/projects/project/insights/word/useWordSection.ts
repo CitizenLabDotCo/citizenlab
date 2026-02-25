@@ -1,41 +1,17 @@
 /**
  * useWordSection — registration API for exportable insight components.
- *
- * Each component that contributes to the Word export registers a serializer
- * function via this hook. The serializer is called during document generation
- * and returns an array of WordSection objects.
- *
- * This replaces the DOM ref registration pattern in ExportableInsight.
- * No DOM manipulation, no scroll hacks, no opacity manipulation.
- *
- * Usage for a chart component (SVG):
- *
- *   const chartRef = useRef<SVGElement>(null);
- *
- *   useWordSection('participation-timeline', async () => {
- *     if (!chartRef.current) return [];
- *     const image = await svgElementToImageBuffer(chartRef.current);
- *     const { width, height } = chartRef.current.getBoundingClientRect();
- *     return [{ type: 'image', image, width: Math.round(width), height: Math.round(height) }];
- *   }, { skip: !isLoaded });
- *
- * Usage for a data section (native Word table):
- *
- *   useWordSection('participation-metrics', () => {
- *     if (!metrics) return [];
- *     return createMetricsSections(metrics, intl);
- *   });
+ * Components register serializer functions that return WordSection[] arrays.
  */
 import { useEffect, useRef, useCallback } from 'react';
+
+import type { SpacerSize } from 'utils/word/utils/styleConstants';
 
 import { useWordExportContext } from './WordExportContext';
 
 import type { ExportId } from './exportRegistry';
+import type { Paragraph, Table } from 'docx';
 
-/**
- * Unified section type for the Word document schema.
- * Both Insights and Report Builder produce these — one renderer handles all.
- */
+/** Unified section type for the Word document schema. */
 export type WordSection =
   | { type: 'heading'; text: string; level: 1 | 2 | 3 }
   | { type: 'paragraph'; text: string }
@@ -58,13 +34,13 @@ export type WordSection =
       }>;
       title?: string;
     }
-  | { type: 'spacer'; size?: 'small' | 'medium' | 'large' }
+  | { type: 'spacer'; size?: SpacerSize }
   /**
    * Escape hatch for pre-built docx objects (Paragraph | Table).
    * Use sparingly — only when an existing converter already produces docx
    * objects and migrating it to WordSection would be high effort.
    */
-  | { type: 'docx-elements'; elements: any[] };
+  | { type: 'docx-elements'; elements: (Paragraph | Table)[] };
 
 export type WordSerializer = () => Promise<WordSection[]> | WordSection[];
 
@@ -81,7 +57,6 @@ export function useWordSection(
   const { registerSerializer, unregisterSerializer, setSerializerSkipped } =
     useWordExportContext();
 
-  // Keep serializer in a ref so we can update it without re-registering
   const serializerRef = useRef(serializer);
   serializerRef.current = serializer;
 

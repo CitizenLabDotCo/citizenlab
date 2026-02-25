@@ -186,4 +186,8 @@ export default defineMessages({
     defaultMessage:
       'Some sections could not be captured and may be missing from the document.',
   },
+  averageRank: {
+    id: 'app.containers.Admin.projects.project.insights.word.averageRank',
+    defaultMessage: 'Average Rank',
+  },
 });

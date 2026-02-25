@@ -8,9 +8,6 @@ import {
   WORD_FONTS,
 } from '../utils/styleConstants';
 
-/**
- * Creates a document title paragraph.
- */
 export function createTitle(text: string): Paragraph {
   return new Paragraph({
     children: [
@@ -26,9 +23,6 @@ export function createTitle(text: string): Paragraph {
   });
 }
 
-/**
- * Creates a heading paragraph at the specified level.
- */
 export function createHeading(text: string, level: 1 | 2 | 3 = 1): Paragraph {
   const headingLevels = {
     1: HeadingLevel.HEADING_1,
@@ -57,9 +51,6 @@ export function createHeading(text: string, level: 1 | 2 | 3 = 1): Paragraph {
   });
 }
 
-/**
- * Creates a body text paragraph.
- */
 export function createParagraph(
   text: string,
   options: {
@@ -96,9 +87,6 @@ export function createParagraph(
   });
 }
 
-/**
- * Creates an empty paragraph for spacing.
- */
 export function createEmptyParagraph(height?: number): Paragraph {
   return new Paragraph({
     children: [],
