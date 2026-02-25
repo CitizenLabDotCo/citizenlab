@@ -5,7 +5,7 @@ RSpec.describe Workspace do
     subject(:workspace) { build(:workspace) }
 
     it { is_expected.to be_valid }
-    
+
     describe 'validations' do
       it { is_expected.to validate_presence_of(:title_multiloc) }
 
