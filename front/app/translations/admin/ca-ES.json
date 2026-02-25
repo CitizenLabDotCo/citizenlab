@@ -1463,6 +1463,7 @@
   "app.containers.Admin.projects.project.insights.vsLast7Days": "en comparació amb els darrers 7 dies",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "Resum de la IA",
   "app.containers.Admin.projects.project.insights.word.answer": "Resposta",
+  "app.containers.Admin.projects.project.insights.word.averageRank": "Rang mitjà",
   "app.containers.Admin.projects.project.insights.word.category": "Categoria",
   "app.containers.Admin.projects.project.insights.word.change": "canvi de 7 dies",
   "app.containers.Admin.projects.project.insights.word.commentsPosted": "Comentaris publicats",
