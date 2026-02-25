@@ -1463,6 +1463,7 @@
   "app.containers.Admin.projects.project.insights.vsLast7Days": "مقارنة بالأيام السبعة الماضية",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "ملخص الذكاء الاصطناعي",
   "app.containers.Admin.projects.project.insights.word.answer": "إجابة",
+  "app.containers.Admin.projects.project.insights.word.averageRank": "متوسط الترتيب",
   "app.containers.Admin.projects.project.insights.word.category": "فئة",
   "app.containers.Admin.projects.project.insights.word.change": "تغيير كل 7 أيام",
   "app.containers.Admin.projects.project.insights.word.commentsPosted": "التعليقات المنشورة",
