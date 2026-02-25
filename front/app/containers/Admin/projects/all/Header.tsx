@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, Title, Tooltip } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -18,6 +19,9 @@ const Header = () => {
   const { data: authUser } = useAuthUser();
   const userIsAdmin = isAdmin(authUser);
 
+  const [searchParams] = useSearchParams();
+  const tab = searchParams.get('tab');
+
   return (
     <Box display="flex" justifyContent="space-between">
       <Box>
@@ -28,11 +32,23 @@ const Header = () => {
       <Box
         display="flex"
         justifyContent="flex-end"
-        gap="12px"
         alignItems="center"
         className="intercom-admin-projects-new-project-folder-buttons"
       >
-        {isProjectFoldersEnabled && (
+        {[null, 'calendar'].includes(tab) && (
+          <Box>
+            <Button
+              data-cy="e2e-new-project-button"
+              className="intercom-admin-projects-new-project-button"
+              linkTo={'/admin/projects/new'}
+              icon="plus-circle"
+              buttonStyle="admin-dark"
+            >
+              <FormattedMessage {...messages.newProject} />
+            </Button>
+          </Box>
+        )}
+        {tab === 'folders' && isProjectFoldersEnabled && (
           <Tooltip
             content={
               <FormattedMessage {...messages.onlyAdminsCanCreateFolders} />
@@ -52,18 +68,6 @@ const Header = () => {
             </Box>
           </Tooltip>
         )}
-
-        <Box>
-          <Button
-            data-cy="e2e-new-project-button"
-            className="intercom-admin-projects-new-project-button"
-            linkTo={'/admin/projects/new'}
-            icon="plus-circle"
-            buttonStyle="admin-dark"
-          >
-            <FormattedMessage {...messages.newProject} />
-          </Button>
-        </Box>
       </Box>
     </Box>
   );
