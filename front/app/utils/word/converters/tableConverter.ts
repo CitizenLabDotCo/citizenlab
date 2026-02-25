@@ -27,10 +27,7 @@ interface TableOptions {
   headerBackground?: string;
 }
 
-export function createTable(
-  rows: TableRowData[],
-  options: TableOptions = {}
-): Table {
+function createTable(rows: TableRowData[], options: TableOptions = {}): Table {
   const {
     columnWidths,
     headerRow = true,
@@ -96,7 +93,7 @@ interface CellOptions {
   alignment?: 'left' | 'center' | 'right';
 }
 
-export function createTableCell(
+function createTableCell(
   content: CellContent,
   options: CellOptions = {}
 ): TableCell {

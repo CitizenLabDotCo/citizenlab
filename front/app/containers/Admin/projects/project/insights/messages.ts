@@ -266,8 +266,4 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.downloadWord',
     defaultMessage: 'Download as Word',
   },
-  errorWordDownload: {
-    id: 'app.containers.Admin.projects.project.insights.errorWordDownload',
-    defaultMessage: 'Failed to download Word document. Please try again.',
-  },
 });

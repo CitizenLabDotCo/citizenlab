@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.word.errorWordDownload',
     defaultMessage: 'Failed to download Word document. Please try again.',
   },
-  insightsDocument: {
-    id: 'app.containers.Admin.projects.project.insights.word.insightsDocument',
-    defaultMessage: 'Phase Insights',
-  },
   participationMetrics: {
     id: 'app.containers.Admin.projects.project.insights.word.participationMetrics',
     defaultMessage: 'Participation Metrics',
@@ -28,10 +24,6 @@ export default defineMessages({
   value: {
     id: 'app.containers.Admin.projects.project.insights.word.value',
     defaultMessage: 'Value',
-  },
-  change: {
-    id: 'app.containers.Admin.projects.project.insights.word.change',
-    defaultMessage: '7-day change',
   },
   visitors: {
     id: 'app.containers.Admin.projects.project.insights.word.visitors',
@@ -57,22 +49,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.word.statusBreakdown',
     defaultMessage: 'Status Breakdown',
   },
-  mostLikedIdeas: {
-    id: 'app.containers.Admin.projects.project.insights.word.mostLikedIdeas',
-    defaultMessage: 'Most Liked Ideas',
-  },
-  mostLikedProposals: {
-    id: 'app.containers.Admin.projects.project.insights.word.mostLikedProposals',
-    defaultMessage: 'Most Liked Proposals',
-  },
-  surveyResults: {
-    id: 'app.containers.Admin.projects.project.insights.word.surveyResults',
-    defaultMessage: 'Survey Results',
-  },
-  noDataAvailable: {
-    id: 'app.containers.Admin.projects.project.insights.word.noDataAvailable',
-    defaultMessage: 'No data available',
-  },
   category: {
     id: 'app.containers.Admin.projects.project.insights.word.category',
     defaultMessage: 'Category',
@@ -84,10 +60,6 @@ export default defineMessages({
   percentage: {
     id: 'app.containers.Admin.projects.project.insights.word.percentage',
     defaultMessage: 'Percentage',
-  },
-  rank: {
-    id: 'app.containers.Admin.projects.project.insights.word.rank',
-    defaultMessage: 'Rank',
   },
   title: {
     id: 'app.containers.Admin.projects.project.insights.word.title',
@@ -112,10 +84,6 @@ export default defineMessages({
   proposalsPosted: {
     id: 'app.containers.Admin.projects.project.insights.word.proposalsPosted',
     defaultMessage: 'Proposals posted',
-  },
-  reachedThreshold: {
-    id: 'app.containers.Admin.projects.project.insights.word.reachedThreshold',
-    defaultMessage: 'Reached threshold',
   },
   surveysSubmitted: {
     id: 'app.containers.Admin.projects.project.insights.word.surveysSubmitted',
@@ -164,10 +132,6 @@ export default defineMessages({
   voteResults: {
     id: 'app.containers.Admin.projects.project.insights.word.voteResults',
     defaultMessage: 'Vote Results',
-  },
-  commonGroundResults: {
-    id: 'app.containers.Admin.projects.project.insights.word.commonGroundResults',
-    defaultMessage: 'Common Ground Results',
   },
   exportPreparing: {
     id: 'app.containers.Admin.projects.project.insights.word.exportPreparing',

@@ -16,9 +16,7 @@ const INSIGHT_EXPORT_REGISTRY = {
 
 export type ExportId = keyof typeof INSIGHT_EXPORT_REGISTRY;
 
-export const EXPECTED_COMPONENTS: Partial<
-  Record<ParticipationMethod, ExportId[]>
-> = {
+const EXPECTED_COMPONENTS: Partial<Record<ParticipationMethod, ExportId[]>> = {
   ideation: [
     'participation-metrics',
     'participation-timeline',

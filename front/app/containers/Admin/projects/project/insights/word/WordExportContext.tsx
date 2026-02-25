@@ -46,11 +46,6 @@ interface WordExportContextValue {
   unregisterSerializer: (id: ExportId) => void;
   setSerializerSkipped: (id: ExportId, skip: boolean) => void;
 
-  // Legacy compat — kept so ExportableInsight doesn't break during migration
-  registerExportRef: (id: ExportId, ref: HTMLElement) => void;
-  unregisterExportRef: (id: ExportId) => void;
-  setExportSkipped: (id: ExportId, skip: boolean) => void;
-
   allComponentsReady: boolean;
   captureWarnings: string[];
 }
@@ -64,9 +59,6 @@ const WordExportContext = createContext<WordExportContextValue>({
   registerSerializer: () => {},
   unregisterSerializer: () => {},
   setSerializerSkipped: () => {},
-  registerExportRef: () => {},
-  unregisterExportRef: () => {},
-  setExportSkipped: () => {},
   allComponentsReady: false,
   captureWarnings: [],
 });
@@ -117,14 +109,6 @@ export const WordExportProvider = ({
     else skipped.current.delete(id);
     setRegistrationVersion((v) => v + 1);
   }, []);
-
-  // Legacy compat for ExportableInsight (no-ops — components migrated to useWordSection)
-  const registerExportRef = useCallback(() => {}, []);
-  const unregisterExportRef = useCallback(() => {}, []);
-  const setExportSkipped = useCallback(
-    (id: ExportId, skip: boolean) => setSerializerSkipped(id, skip),
-    [setSerializerSkipped]
-  );
 
   const downloadWord = useCallback(async () => {
     setExportStatus('preparing');
@@ -203,9 +187,6 @@ export const WordExportProvider = ({
       registerSerializer,
       unregisterSerializer,
       setSerializerSkipped,
-      registerExportRef,
-      unregisterExportRef,
-      setExportSkipped,
       allComponentsReady,
       captureWarnings,
     }),
@@ -217,9 +198,6 @@ export const WordExportProvider = ({
       registerSerializer,
       unregisterSerializer,
       setSerializerSkipped,
-      registerExportRef,
-      unregisterExportRef,
-      setExportSkipped,
       allComponentsReady,
       captureWarnings,
     ]

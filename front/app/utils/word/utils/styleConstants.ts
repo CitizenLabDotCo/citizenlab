@@ -76,7 +76,7 @@ export const WORD_TABLE_STYLES = {
   },
 };
 
-export const MAX_IMAGE_WIDTH = 600;
+const MAX_IMAGE_WIDTH = 600;
 const DEFAULT_IMAGE_HEIGHT_RATIO = 0.6;
 
 export const getScaledDimensions = (width: number, height: number) => {
