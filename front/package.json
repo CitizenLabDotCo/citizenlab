@@ -155,7 +155,7 @@
     "@babel/preset-react": "7.28.5",
     "@babel/preset-typescript": "7.x",
     "@cypress/skip-test": "2.6.1",
-    "@cypress/webpack-preprocessor": "6.0.1",
+    "@cypress/webpack-preprocessor": "7.0.2",
     "@rollup/plugin-commonjs": "25.0.7",
     "@rollup/plugin-node-resolve": "15.2.3",
     "@rollup/plugin-replace": "^6.0.2",
