@@ -54,20 +54,21 @@ const SettingsPage = () => {
       label: formatMessage(messages.statuses),
       url: '/admin/settings/statuses',
     },
+    ...(workspacesEnabled
+      ? [
+          {
+            name: 'workspaces',
+            label: formatMessage(messages.tabWorkspaces),
+            url: '/admin/settings/workspaces',
+          } as const,
+        ]
+      : []),
     {
       name: 'policies',
       label: formatMessage(messages.tabPolicies),
       url: '/admin/settings/policies',
     },
   ];
-
-  if (workspacesEnabled) {
-    tabs.push({
-      name: 'workspaces',
-      label: formatMessage(messages.tabWorkspaces),
-      url: '/admin/settings/workspaces',
-    });
-  }
 
   return (
     <>
