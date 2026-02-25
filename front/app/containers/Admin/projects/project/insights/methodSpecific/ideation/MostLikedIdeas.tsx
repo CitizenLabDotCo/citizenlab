@@ -90,12 +90,8 @@ const MostLikedIdeas = ({ phaseId }: MethodSpecificInsightProps) => {
           flexDirection="column"
           gap="16px"
         >
-          {ideas.map((idea, index) => (
-            <Box
-              key={idea.id}
-              data-export-id={`most-liked-idea-${index}`}
-              pb="16px"
-            >
+          {ideas.map((idea) => (
+            <Box key={idea.id} pb="16px">
               <IdeaCard ideaId={idea.id} phaseId={phaseId} />
             </Box>
           ))}

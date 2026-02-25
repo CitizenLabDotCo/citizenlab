@@ -73,7 +73,7 @@ const ExportableInsight = ({
   }, [exportId, skipExport, setSerializerSkipped]);
 
   return (
-    <Box ref={containerRef} data-export-id={exportId} {...boxProps}>
+    <Box ref={containerRef} {...boxProps}>
       {children}
     </Box>
   );

@@ -257,7 +257,7 @@ const DemographicsSection = ({ phase }: Props) => {
                   {formatMessage(messages.demographicsAndAudience)}
                 </Text>
               </Box>
-              <Box data-export-id="demographics-field-0">
+              <Box>
                 <DemographicFieldContent
                   field={fields[0]}
                   showExportMenu={false}
@@ -266,9 +266,9 @@ const DemographicsSection = ({ phase }: Props) => {
             </Box>
           </PageBreakBox>
 
-          {fields.slice(1).map((field, sliceIndex) => (
+          {fields.slice(1).map((field) => (
             <PageBreakBox key={field.field_id}>
-              <Box data-export-id={`demographics-field-${sliceIndex + 1}`}>
+              <Box>
                 <DemographicFieldContent field={field} showExportMenu={false} />
               </Box>
             </PageBreakBox>
@@ -317,13 +317,12 @@ const DemographicsSection = ({ phase }: Props) => {
             return (
               <Box
                 key={field.field_id}
-                data-export-id={`demographics-field-${index}`}
                 position={isSelected ? 'relative' : 'absolute'}
                 top={isSelected ? undefined : '0'}
                 left={isSelected ? undefined : '0'}
                 width="100%"
+                opacity={isSelected ? 1 : 0}
                 style={{
-                  opacity: isSelected ? 1 : 0,
                   pointerEvents: isSelected ? 'auto' : 'none',
                 }}
                 aria-hidden={!isSelected}
