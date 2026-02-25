@@ -1463,6 +1463,7 @@
   "app.containers.Admin.projects.project.insights.vsLast7Days": "o'i gymharu â'r 7 diwrnod diwethaf",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "Crynodeb AI",
   "app.containers.Admin.projects.project.insights.word.answer": "Ateb",
+  "app.containers.Admin.projects.project.insights.word.averageRank": "Safle Cyfartalog",
   "app.containers.Admin.projects.project.insights.word.category": "Categori",
   "app.containers.Admin.projects.project.insights.word.change": "Newid 7 diwrnod",
   "app.containers.Admin.projects.project.insights.word.commentsPosted": "Sylwadau wedi'u postio",
