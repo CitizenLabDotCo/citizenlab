@@ -1463,6 +1463,7 @@
   "app.containers.Admin.projects.project.insights.vsLast7Days": "vs son 7 gün",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "Yapay Zeka Özeti",
   "app.containers.Admin.projects.project.insights.word.answer": "Cevap",
+  "app.containers.Admin.projects.project.insights.word.averageRank": "Ortalama Sıralama",
   "app.containers.Admin.projects.project.insights.word.category": "Kategori",
   "app.containers.Admin.projects.project.insights.word.change": "7 günlük değişim",
   "app.containers.Admin.projects.project.insights.word.commentsPosted": "Gönderilen yorumlar",
