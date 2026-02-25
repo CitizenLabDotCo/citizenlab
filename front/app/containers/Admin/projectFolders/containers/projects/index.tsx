@@ -1,15 +1,13 @@
 import React from 'react';
 
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { withRouter, WithRouterProps } from 'utils/cl-router/withRouter';
 import { isNilOrError } from 'utils/helperUtils';
 import { usePermission } from 'utils/permissions';
-
-// localisation
 
 import messages from '../messages';
 
@@ -46,9 +44,8 @@ const Spacer = styled.div`
   flex: 1;
 `;
 
-const AdminFolderProjectsList = ({
-  params: { projectFolderId },
-}: WithRouterProps) => {
+const AdminFolderProjectsList = () => {
+  const { projectFolderId } = useParams() as { projectFolderId: string };
   const { data: authUser } = useAuthUser();
 
   const canManageProjects = usePermission({
@@ -88,4 +85,4 @@ const AdminFolderProjectsList = ({
   );
 };
 
-export default withRouter(AdminFolderProjectsList);
+export default AdminFolderProjectsList;
