@@ -31,6 +31,7 @@ ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.files_projects DROP CONSTRAINT IF EXISTS fk_rails_df4dbb0098;
 ALTER TABLE IF EXISTS ONLY public.project_reviews DROP CONSTRAINT IF EXISTS fk_rails_de7c38cbc4;
 ALTER TABLE IF EXISTS ONLY public.official_feedbacks DROP CONSTRAINT IF EXISTS fk_rails_ddd7e21dfa;
+ALTER TABLE IF EXISTS ONLY public.project_folders_folders DROP CONSTRAINT IF EXISTS fk_rails_dd7ac0bda2;
 ALTER TABLE IF EXISTS ONLY public.impact_tracking_pageviews DROP CONSTRAINT IF EXISTS fk_rails_dd3b2cc184;
 ALTER TABLE IF EXISTS ONLY public.project_folders_images DROP CONSTRAINT IF EXISTS fk_rails_dcbc962cfe;
 ALTER TABLE IF EXISTS ONLY public.analysis_summaries DROP CONSTRAINT IF EXISTS fk_rails_dbd13460f0;
@@ -224,6 +225,7 @@ DROP INDEX IF EXISTS public.index_project_imports_on_project_id;
 DROP INDEX IF EXISTS public.index_project_imports_on_import_user_id;
 DROP INDEX IF EXISTS public.index_project_images_on_project_id;
 DROP INDEX IF EXISTS public.index_project_folders_images_on_project_folder_id;
+DROP INDEX IF EXISTS public.index_project_folders_folders_on_workspace_id;
 DROP INDEX IF EXISTS public.index_project_folders_folders_on_slug;
 DROP INDEX IF EXISTS public.index_project_folders_files_on_project_folder_id;
 DROP INDEX IF EXISTS public.index_project_folders_files_on_migrated_file_id;
@@ -3426,7 +3428,8 @@ CREATE TABLE public.project_folders_folders (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
-    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb
+    header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
+    workspace_id uuid
 );
 
 
@@ -6763,6 +6766,13 @@ CREATE INDEX index_project_folders_folders_on_slug ON public.project_folders_fol
 
 
 --
+-- Name: index_project_folders_folders_on_workspace_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_project_folders_folders_on_workspace_id ON public.project_folders_folders USING btree (workspace_id);
+
+
+--
 -- Name: index_project_folders_images_on_project_folder_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8245,6 +8255,14 @@ ALTER TABLE ONLY public.impact_tracking_pageviews
 
 
 --
+-- Name: project_folders_folders fk_rails_dd7ac0bda2; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.project_folders_folders
+    ADD CONSTRAINT fk_rails_dd7ac0bda2 FOREIGN KEY (workspace_id) REFERENCES public.workspaces(id);
+
+
+--
 -- Name: official_feedbacks fk_rails_ddd7e21dfa; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8427,6 +8445,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260225152418'),
 ('20260225115007'),
 ('20260225104455'),
 ('20260205124240'),

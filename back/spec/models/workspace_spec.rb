@@ -23,6 +23,7 @@ RSpec.describe Workspace do
 
     describe 'associations' do
       it { is_expected.to have_many(:projects).dependent(:nullify) }
+      it { is_expected.to have_many(:folders).dependent(:nullify) }
     end
 
     describe 'destroying a workspace' do
@@ -41,6 +42,23 @@ RSpec.describe Workspace do
         create(:project, workspace: workspace)
 
         expect { workspace.destroy }.not_to change(Project, :count)
+      end
+
+      it 'nullifies workspace_id on associated folders' do
+        workspace = create(:workspace)
+        folder = create(:project_folder, workspace: workspace)
+
+        workspace.destroy
+
+        expect(folder.reload.workspace_id).to be_nil
+        expect(ProjectFolders::Folder.exists?(folder.id)).to be true
+      end
+
+      it 'does not destroy folders when workspace is destroyed' do
+        workspace = create(:workspace)
+        create(:project_folder, workspace: workspace)
+
+        expect { workspace.destroy }.not_to change(ProjectFolders::Folder, :count)
       end
     end
   end

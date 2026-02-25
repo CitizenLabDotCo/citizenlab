@@ -10,6 +10,7 @@
 #
 class Workspace < ApplicationRecord
   has_many :projects, dependent: :nullify
+  has_many :folders, dependent: :nullify, class_name: 'ProjectFolders::Folder'
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false, html: true }
