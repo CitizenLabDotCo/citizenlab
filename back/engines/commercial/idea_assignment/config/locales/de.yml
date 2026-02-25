@@ -1,0 +1,13 @@
+de-inf:
+  email_campaigns:
+    campaign_type_description:
+      "idea_assigned_to_you": Zuweisung eines Beitrags
+    admin_campaign_type_description:
+      "idea_assigned_to_you": Zuweisung einer Idee - Admins und Projektmanager*innen
+    idea_assigned_to_you:
+      by_author: 'von %{authorName}'
+      cta_button: '%{authorName} Feedback geben'
+      event_description: 'Ihnen wurde ein Beitrag zugewiesen. Geben Sie Feedback, indem Sie ein offizielles Update schreiben oder den Status ändern.'
+      title: '%{firstName}, Ihnen wurde ein Beitrag zugewiesen'
+      subject: 'Ihnen wurde ein Beitrag auf der Plattform von %{organizationName} zugewiesen'
+      preheader: 'Ihnen wurde der Beitrag von %{authorName} zugewiesen'
