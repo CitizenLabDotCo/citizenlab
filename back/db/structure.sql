@@ -481,6 +481,7 @@ DROP INDEX IF EXISTS public.i_l_v_locale;
 DROP INDEX IF EXISTS public.i_d_referrer_key;
 DROP INDEX IF EXISTS public.i_analytics_dim_projects_fact_visits_on_project_and_visit_ids;
 DROP INDEX IF EXISTS public.i_analytics_dim_locales_fact_visits_on_locale_and_visit_ids;
+ALTER TABLE IF EXISTS ONLY public.workspaces DROP CONSTRAINT IF EXISTS workspaces_pkey;
 ALTER TABLE IF EXISTS ONLY public.wise_voice_flags DROP CONSTRAINT IF EXISTS wise_voice_flags_pkey;
 ALTER TABLE IF EXISTS ONLY public.webhooks_subscriptions DROP CONSTRAINT IF EXISTS webhooks_subscriptions_pkey;
 ALTER TABLE IF EXISTS ONLY public.webhooks_deliveries DROP CONSTRAINT IF EXISTS webhooks_deliveries_pkey;
@@ -618,6 +619,7 @@ ALTER TABLE IF EXISTS ONLY public.admin_publications DROP CONSTRAINT IF EXISTS a
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS activities_pkey;
 ALTER TABLE IF EXISTS public.que_jobs ALTER COLUMN id DROP DEFAULT;
 ALTER TABLE IF EXISTS public.areas_static_pages ALTER COLUMN id DROP DEFAULT;
+DROP TABLE IF EXISTS public.workspaces;
 DROP TABLE IF EXISTS public.wise_voice_flags;
 DROP TABLE IF EXISTS public.webhooks_subscriptions;
 DROP TABLE IF EXISTS public.webhooks_deliveries;
@@ -3830,6 +3832,19 @@ CREATE TABLE public.wise_voice_flags (
 
 
 --
+-- Name: workspaces; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.workspaces (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    description_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: areas_static_pages id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -4921,6 +4936,14 @@ ALTER TABLE ONLY public.webhooks_subscriptions
 
 ALTER TABLE ONLY public.wise_voice_flags
     ADD CONSTRAINT wise_voice_flags_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: workspaces workspaces_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.workspaces
+    ADD CONSTRAINT workspaces_pkey PRIMARY KEY (id);
 
 
 --
@@ -8386,6 +8409,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260225104455'),
 ('20260205124240'),
 ('20260127094257'),
 ('20260127092840'),
