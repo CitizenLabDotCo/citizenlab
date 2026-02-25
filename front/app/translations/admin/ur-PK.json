@@ -1463,6 +1463,7 @@
   "app.containers.Admin.projects.project.insights.vsLast7Days": "بمقابلہ آخری 7 دن",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "AI کا خلاصہ",
   "app.containers.Admin.projects.project.insights.word.answer": "جواب دیں۔",
+  "app.containers.Admin.projects.project.insights.word.averageRank": "اوسط درجہ",
   "app.containers.Admin.projects.project.insights.word.category": "زمرہ",
   "app.containers.Admin.projects.project.insights.word.change": "7 دن کی تبدیلی",
   "app.containers.Admin.projects.project.insights.word.commentsPosted": "تبصرے پوسٹ کیے گئے۔",
