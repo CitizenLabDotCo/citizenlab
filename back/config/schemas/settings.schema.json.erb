@@ -1605,6 +1605,18 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "workspaces": {
+        "type": "object",
+        "title": "Workspaces (In development - do not enable)",
+        "description": "A workspace is used to manage a group of projects and folders and the people that can work on them.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {
