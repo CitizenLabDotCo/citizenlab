@@ -45,4 +45,8 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.createProject',
     defaultMessage: 'New project',
   },
+  newWorkspace: {
+    id: 'app.containers.AdminPage.projects.all.newWorkspace',
+    defaultMessage: 'New workspace',
+  },
 });

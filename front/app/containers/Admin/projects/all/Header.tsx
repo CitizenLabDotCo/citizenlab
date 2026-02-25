@@ -18,6 +18,7 @@ const Header = () => {
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const { data: authUser } = useAuthUser();
   const userIsAdmin = isAdmin(authUser);
+  const workspacesEnabled = useFeatureFlag({ name: 'workspaces' });
 
   const [searchParams] = useSearchParams();
   const tab = searchParams.get('tab');
@@ -67,6 +68,19 @@ const Header = () => {
               </Button>
             </Box>
           </Tooltip>
+        )}
+        {tab === 'workspaces' && userIsAdmin && workspacesEnabled && (
+          <Box>
+            <Button
+              data-cy="e2e-new-workspace-button"
+              className="intercom-admin-projects-new-workspace-button"
+              linkTo={'/admin/projects/workspaces/new'}
+              icon="plus-circle"
+              buttonStyle="admin-dark"
+            >
+              <FormattedMessage {...messages.newWorkspace} />
+            </Button>
+          </Box>
         )}
       </Box>
     </Box>
