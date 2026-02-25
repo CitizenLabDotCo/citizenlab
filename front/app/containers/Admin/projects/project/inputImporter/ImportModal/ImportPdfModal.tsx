@@ -60,7 +60,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   // Allows switching of different parsers if needed
   const [searchParams] = useSearchParams();
   const parser = (searchParams.get('parser') || undefined) as ParserType;
-  const parserConsentRequired = parser !== 'gpt'; // Only need to show consent when using Google document AI parser
+  const parserConsentRequired = parser !== 'gpt' && parser !== 'claude'; // Only need to show consent when using Google document AI parser
 
   const downloadFormPath =
     phase?.data.attributes.participation_method === 'native_survey'
