@@ -1184,6 +1184,8 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "This image is shown at the top of the folder page. For more information on recommended image resolutions, {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "visit our support center",
+  "app.containers.Admin.projects.all.Workspaces.Table.workspace": "Workspace",
+  "app.containers.Admin.projects.all.Workspaces.Table.workspaceManagers": "Workspace managers",
   "app.containers.Admin.projects.all.askPersonalData3": "Add fields for name and email",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.enableCalendarView": "Enable calendar view",
   "app.containers.Admin.projects.all.calendar.UpsellNudge.featureNotIncluded": "This feature is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.",
