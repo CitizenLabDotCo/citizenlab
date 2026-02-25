@@ -1463,6 +1463,7 @@
   "app.containers.Admin.projects.project.insights.vsLast7Days": "u odnosu na posljednjih 7 dana",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "Sažetak umjetne inteligencije",
   "app.containers.Admin.projects.project.insights.word.answer": "Odgovor",
+  "app.containers.Admin.projects.project.insights.word.averageRank": "Prosječni rang",
   "app.containers.Admin.projects.project.insights.word.category": "Kategorija",
   "app.containers.Admin.projects.project.insights.word.change": "Promjena u 7 dana",
   "app.containers.Admin.projects.project.insights.word.commentsPosted": "Objavljeni komentari",
