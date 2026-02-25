@@ -1463,6 +1463,7 @@
   "app.containers.Admin.projects.project.insights.vsLast7Days": "έναντι των τελευταίων 7 ημερών",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "Περίληψη AI",
   "app.containers.Admin.projects.project.insights.word.answer": "Απάντηση",
+  "app.containers.Admin.projects.project.insights.word.averageRank": "Μέση κατάταξη",
   "app.containers.Admin.projects.project.insights.word.category": "Κατηγορία",
   "app.containers.Admin.projects.project.insights.word.change": "Αλλαγή 7 ημερών",
   "app.containers.Admin.projects.project.insights.word.commentsPosted": "Σχόλια που δημοσιεύτηκαν",
