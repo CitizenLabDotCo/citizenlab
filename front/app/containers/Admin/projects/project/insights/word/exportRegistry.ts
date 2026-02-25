@@ -1,70 +1,18 @@
 import { ParticipationMethod } from 'api/phases/types';
 
-export type ExportType = 'image' | 'data' | 'hybrid';
-
-export interface ExportableComponent {
-  id: string;
-  displayName: string;
-  exportType: ExportType;
-}
-
-export const INSIGHT_EXPORT_REGISTRY: Record<string, ExportableComponent> = {
-  'participation-metrics': {
-    id: 'participation-metrics',
-    displayName: 'Participation Metrics',
-    exportType: 'data',
-  },
-  'participation-timeline': {
-    id: 'participation-timeline',
-    displayName: 'Participation Over Time',
-    exportType: 'image',
-  },
-  demographics: {
-    id: 'demographics',
-    displayName: 'Demographics',
-    exportType: 'hybrid',
-  },
-  'ai-summary': {
-    id: 'ai-summary',
-    displayName: 'AI Summary',
-    exportType: 'hybrid',
-  },
-  'topic-breakdown': {
-    id: 'topic-breakdown',
-    displayName: 'Topic Breakdown',
-    exportType: 'hybrid',
-  },
-  'status-breakdown': {
-    id: 'status-breakdown',
-    displayName: 'Status Breakdown',
-    exportType: 'hybrid',
-  },
-  'most-liked-ideas': {
-    id: 'most-liked-ideas',
-    displayName: 'Most Liked Ideas',
-    exportType: 'hybrid',
-  },
-  'most-liked-proposals': {
-    id: 'most-liked-proposals',
-    displayName: 'Most Liked Proposals',
-    exportType: 'hybrid',
-  },
-  'vote-results': {
-    id: 'vote-results',
-    displayName: 'Vote Results',
-    exportType: 'data',
-  },
-  'common-ground-results': {
-    id: 'common-ground-results',
-    displayName: 'Common Ground Statements',
-    exportType: 'image',
-  },
-  'survey-results': {
-    id: 'survey-results',
-    displayName: 'Survey Results',
-    exportType: 'hybrid',
-  },
-};
+const INSIGHT_EXPORT_REGISTRY = {
+  'participation-metrics': true,
+  'participation-timeline': true,
+  demographics: true,
+  'ai-summary': true,
+  'topic-breakdown': true,
+  'status-breakdown': true,
+  'most-liked-ideas': true,
+  'most-liked-proposals': true,
+  'vote-results': true,
+  'common-ground-results': true,
+  'survey-results': true,
+} as const;
 
 export type ExportId = keyof typeof INSIGHT_EXPORT_REGISTRY;
 

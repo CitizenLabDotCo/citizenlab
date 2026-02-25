@@ -51,10 +51,8 @@ interface WordExportContextValue {
   unregisterExportRef: (id: ExportId) => void;
   setExportSkipped: (id: ExportId, skip: boolean) => void;
 
-  // Validation (used by ExportValidation)
   allComponentsReady: boolean;
   captureWarnings: string[];
-  getMissingComponents: () => ExportId[];
 }
 
 const WordExportContext = createContext<WordExportContextValue>({
@@ -71,7 +69,6 @@ const WordExportContext = createContext<WordExportContextValue>({
   setExportSkipped: () => {},
   allComponentsReady: false,
   captureWarnings: [],
-  getMissingComponents: () => [],
 });
 
 interface WordExportProviderProps {
@@ -196,14 +193,6 @@ export const WordExportProvider = ({
     );
   }, [participationMethod, registrationVersion]);
 
-  const getMissingComponents = useCallback((): ExportId[] => {
-    void registrationVersion;
-    const expected = getExpectedComponents(participationMethod);
-    return expected.filter(
-      (id) => !serializers.current.has(id) && !skipped.current.has(id)
-    );
-  }, [participationMethod, registrationVersion]);
-
   const contextValue = useMemo(
     () => ({
       downloadWord,
@@ -219,7 +208,6 @@ export const WordExportProvider = ({
       setExportSkipped,
       allComponentsReady,
       captureWarnings,
-      getMissingComponents,
     }),
     [
       downloadWord,
@@ -234,7 +222,6 @@ export const WordExportProvider = ({
       setExportSkipped,
       allComponentsReady,
       captureWarnings,
-      getMissingComponents,
     ]
   );
 

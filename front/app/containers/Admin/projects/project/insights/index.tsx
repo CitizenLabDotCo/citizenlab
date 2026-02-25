@@ -32,7 +32,6 @@ import ParticipantsTimeline from './ParticipantsTimeline';
 import ParticipationMetrics from './participationMetrics/ParticipationMetrics';
 import InsightsPdfContent from './pdf/InsightsPdfContent';
 import { PdfExportProvider, usePdfExportContext } from './pdf/PdfExportContext';
-import ExportValidation from './word/ExportValidation';
 import wordMessages from './word/messages';
 import {
   WordExportProvider,
@@ -359,7 +358,6 @@ const AdminPhaseInsights = () => {
         participationMethod={participationMethod}
       >
         <InsightsContent />
-        <ExportValidation />
       </WordExportProvider>
     </PdfExportProvider>
   );
