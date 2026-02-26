@@ -201,9 +201,6 @@ export interface IAppConfigurationSettings {
   google_analytics?: AppConfigurationFeature & {
     tracking_id: string;
   };
-  segment?: AppConfigurationFeature & {
-    destinations: string;
-  };
   google_tag_manager?: AppConfigurationFeature & {
     destinations: string;
     container_id: string;
