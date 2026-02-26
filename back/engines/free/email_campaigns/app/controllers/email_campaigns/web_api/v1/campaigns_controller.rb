@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
-    before_action :set_campaign, only: %i[show update do_send send_preview preview deliveries stats destroy]
+    before_action :set_campaign, only: %i[show update do_send cancel_sending send_preview preview deliveries stats destroy]
     skip_after_action :verify_authorized, only: %i[supported_campaign_names]
 
     def index
@@ -111,6 +111,19 @@ module EmailCampaigns
       end
     end
 
+    def cancel_sending
+      if @campaign.manual? && @campaign.scheduled_at.present? && !@campaign.sent?
+        @campaign.update!(scheduled_at: nil)
+        SideFxCampaignService.new.after_update(@campaign, current_user)
+        render json: WebApi::V1::CampaignSerializer.new(
+          @campaign,
+          params: jsonapi_serializer_params
+        ).serializable_hash, status: :ok
+      else
+        head :unprocessable_entity
+      end
+    end
+
     def send_preview
       EmailCampaigns::DeliveryService.new.send_preview(@campaign, current_user)
       head :ok
@@ -183,6 +196,7 @@ module EmailCampaigns
         :enabled,
         :sender,
         :reply_to,
+        :scheduled_at,
         group_ids: [],
         subject_multiloc: I18n.available_locales,
         body_multiloc: I18n.available_locales

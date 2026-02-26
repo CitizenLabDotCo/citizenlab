@@ -37,6 +37,10 @@ module EmailCampaigns
       update?
     end
 
+    def cancel_sending?
+      update?
+    end
+
     def send_preview?
       update?
     end

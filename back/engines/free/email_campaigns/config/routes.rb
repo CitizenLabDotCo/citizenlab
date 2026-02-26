@@ -5,6 +5,7 @@ EmailCampaigns::Engine.routes.draw do
     namespace :v1 do
       resources :campaigns do
         post :send, action: :do_send, on: :member
+        post :cancel_sending, on: :member
         post :send_preview, on: :member
         get :preview, on: :member
         get :deliveries, on: :member

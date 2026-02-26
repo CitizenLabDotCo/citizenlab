@@ -71,6 +71,10 @@ module EmailCampaigns
       end
     end
 
+    attribute :scheduled_at, if: proc { |object|
+      object.manual?
+    }
+
     attribute :delivery_stats, if: proc { |object|
       object.manual? && object.sent?
     } do |object|

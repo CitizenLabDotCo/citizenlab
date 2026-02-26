@@ -9,7 +9,7 @@ module EmailCampaigns
     def after_update(campaign, user)
       super
 
-      %i[enabled reply_to body_multiloc subject_multiloc title_multiloc intro_multiloc button_text_multiloc].each do |attr|
+      %i[enabled reply_to body_multiloc subject_multiloc title_multiloc intro_multiloc button_text_multiloc scheduled_at].each do |attr|
         next if !campaign.public_send(:"saved_change_to_#{attr}?")
 
         LogActivityJob.perform_later(
