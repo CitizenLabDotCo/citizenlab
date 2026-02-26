@@ -24,6 +24,10 @@ class AppConfiguration < ApplicationRecord
   has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
 
+  validates :settings, presence: true, json: {
+    schema: -> { AppConfiguration::Settings.json_schema }
+  }
+
   validates :host, presence: true
   validate :validate_host_format
   validate :validate_locales, on: :update
