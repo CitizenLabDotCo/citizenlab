@@ -171,7 +171,7 @@ resource 'Phase insights' do
             voting_method: 'budgeting',
             associated_ideas: 3,
             online_picks: 4,
-            online_picks_7_day_percent_change: 0.0, # from 2 by 7-days ago, to 2 now = 0% change
+            online_picks_7_day_percent_change: 33.3, # from 3 by 7-days ago, to 4 now = 33.3% increase
             offline_picks: 3,
             voters: 3,
             voters_7_day_percent_change: 50.0, # from 2 unique voters by 7-days ago, to 3 now = 50% increase
