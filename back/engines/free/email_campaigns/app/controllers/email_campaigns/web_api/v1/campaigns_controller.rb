@@ -2,7 +2,7 @@
 
 module EmailCampaigns
   class WebApi::V1::CampaignsController < EmailCampaignsController
-    before_action :set_campaign, only: %i[show update do_send cancel_sending send_preview preview deliveries stats destroy]
+    before_action :set_campaign, only: %i[show update do_send send_preview preview deliveries stats destroy]
     skip_after_action :verify_authorized, only: %i[supported_campaign_names]
 
     def index
@@ -108,19 +108,6 @@ module EmailCampaigns
         ).serializable_hash
       else
         render json: { errors: @campaign.errors.details }, status: :unprocessable_entity
-      end
-    end
-
-    def cancel_sending
-      if @campaign.manual? && @campaign.scheduled_at.present? && !@campaign.sent?
-        @campaign.update!(scheduled_at: nil)
-        SideFxCampaignService.new.after_update(@campaign, current_user)
-        render json: WebApi::V1::CampaignSerializer.new(
-          @campaign,
-          params: jsonapi_serializer_params
-        ).serializable_hash, status: :ok
-      else
-        head :unprocessable_entity
       end
     end
 

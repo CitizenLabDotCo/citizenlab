@@ -4,7 +4,7 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Campaign Scheduling' do
-  explanation 'Scheduling and cancelling manual email campaigns'
+  explanation 'Scheduling manual email campaigns'
 
   before do
     header 'Content-Type', 'application/json'
@@ -41,32 +41,6 @@ resource 'Campaign Scheduling' do
       do_request(campaign: { scheduled_at: 1.hour.ago.iso8601 })
 
       assert_status 422
-    end
-  end
-
-  post 'web_api/v1/campaigns/:id/cancel_sending' do
-    let(:campaign) { create(:manual_campaign, scheduled_at: 2.hours.from_now) }
-    let(:id) { campaign.id }
-
-    example_request 'Cancel a scheduled campaign' do
-      assert_status 200
-      json_response = json_parse(response_body)
-      expect(json_response.dig(:data, :attributes, :scheduled_at)).to be_nil
-      expect(campaign.reload.scheduled_at).to be_nil
-    end
-
-    example '[error] Cancel sending for a campaign that is not scheduled' do
-      campaign.update_column(:scheduled_at, nil)
-      do_request
-
-      assert_status 422
-    end
-
-    example '[Unauthorized] Cancel sending for a campaign that has already been sent' do
-      create(:delivery, campaign: campaign)
-      do_request
-
-      assert_status 401
     end
   end
 
