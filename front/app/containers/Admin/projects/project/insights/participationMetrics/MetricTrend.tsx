@@ -102,7 +102,7 @@ const MetricTrend = ({ change }: Props) => {
         </Text>
       </Box>
       <Text as="span" fontSize="s" color="coolGrey500" m="0">
-        {formatMessage(messages.vsLast7Days)}
+        {formatMessage(messages.sevenDayChange)}
       </Text>
     </Box>
   );

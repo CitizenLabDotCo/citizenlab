@@ -201,9 +201,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.count',
     defaultMessage: 'Count',
   },
-  vsLast7Days: {
-    id: 'app.containers.Admin.projects.project.insights.vsLast7Days',
-    defaultMessage: 'vs last 7 days',
+  sevenDayChange: {
+    id: 'app.containers.Admin.projects.project.insights.sevenDayChange',
+    defaultMessage: '7-day change',
   },
   phaseParticipantsMetricTooltip2: {
     id: 'app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2',
