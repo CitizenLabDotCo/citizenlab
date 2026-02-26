@@ -29,10 +29,10 @@ const useAddIdea = () => {
   return useMutation<IIdea, CLErrors, IIdeaAdd>({
     mutationFn: addIdea,
     onSuccess: (idea) => {
-      const { claim_token } = idea.data.attributes;
+      const { claim_token, claim_token_expires_at } = idea.data.attributes;
 
-      if (claim_token) {
-        storeClaimToken(claim_token);
+      if (claim_token && claim_token_expires_at) {
+        storeClaimToken(claim_token, claim_token_expires_at);
       }
 
       queryClient.invalidateQueries({ queryKey: ideasKeys.lists() });

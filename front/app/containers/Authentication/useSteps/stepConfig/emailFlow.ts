@@ -5,7 +5,7 @@ import { requestEmailConfirmationCodeUnauthenticated } from 'api/authentication/
 import getUserTokenUnconfirmed from 'api/authentication/sign_in_out/getUserTokenUnconfirmed';
 import signIn from 'api/authentication/sign_in_out/signIn';
 import createEmailOnlyAccount from 'api/authentication/sign_up/createEmailOnlyAccount';
-import { handleOnSSOClick } from 'api/authentication/singleSignOn';
+import { redirectToSSOProvider } from 'api/authentication/singleSignOn';
 
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
@@ -62,10 +62,18 @@ export const emailFlow = (
 
     'email:policies': {
       CLOSE: () => setCurrentStep('closed'),
-      ACCEPT_POLICIES: async (email: string, locale: SupportedLocale) => {
+      ACCEPT_POLICIES: async (
+        email: string,
+        locale: SupportedLocale,
+        claimTokens?: string[]
+      ) => {
         updateState({ email });
 
-        const result = await createEmailOnlyAccount({ email, locale });
+        const result = await createEmailOnlyAccount({
+          email,
+          locale,
+          claimTokens,
+        });
 
         if (result === 'account_created_successfully') {
           if (userConfirmationEnabled) {
@@ -108,10 +116,17 @@ export const emailFlow = (
         email: string,
         password: string,
         rememberMe: boolean,
-        tokenLifetime: number
+        tokenLifetime: number,
+        claimTokens?: string[]
       ) => {
         updateState({ email });
-        await signIn({ email, password, rememberMe, tokenLifetime });
+        await signIn({
+          email,
+          password,
+          rememberMe,
+          tokenLifetime,
+          claimTokens,
+        });
 
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
@@ -179,11 +194,12 @@ export const emailFlow = (
     'email:sso-policies': {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT_POLICIES: (ssoProvider: SSOProviderWithoutVienna) => {
-        handleOnSSOClick(
+        redirectToSSOProvider(
           ssoProvider,
           getAuthenticationData(),
           true,
-          state.flow
+          state.flow,
+          state.claimTokens ?? undefined
         );
       },
     },

@@ -95,12 +95,9 @@ export const getStepConfig = (
           getRequirements,
           setCurrentStep,
           updateState,
-          state
+          state,
+          state.claimTokens ?? undefined
         );
-      },
-      DO_NOT_ASK_AGAIN: () => {
-        // TODO set cookie / local storage?
-        setCurrentStep('closed');
       },
     },
   };
