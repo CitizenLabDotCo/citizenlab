@@ -1,4 +1,7 @@
-import { handleOnSSOClick, SSOProvider } from 'api/authentication/singleSignOn';
+import {
+  redirectToSSOProvider,
+  SSOProvider,
+} from 'api/authentication/singleSignOn';
 
 import {
   AuthenticationData,
@@ -23,7 +26,7 @@ export const ssoVerificationFlow = (
         const signedIn = disabled_reason !== 'user_not_signed_in';
 
         if (signedIn) {
-          handleOnSSOClick(
+          redirectToSSOProvider(
             ssoProvider,
             getAuthenticationData(),
             true,
@@ -31,7 +34,7 @@ export const ssoVerificationFlow = (
           );
         } else {
           if (ssoProvider === 'clave_unica') {
-            handleOnSSOClick(
+            redirectToSSOProvider(
               ssoProvider,
               getAuthenticationData(),
               true,
@@ -51,7 +54,12 @@ export const ssoVerificationFlow = (
     'sso-verification:sso-providers-policies': {
       CLOSE: () => setCurrentStep('closed'),
       ACCEPT: (ssoProvider: SSOProvider) => {
-        handleOnSSOClick(ssoProvider, getAuthenticationData(), true, 'signup');
+        redirectToSSOProvider(
+          ssoProvider,
+          getAuthenticationData(),
+          true,
+          'signup'
+        );
       },
     },
   };
