@@ -47,7 +47,7 @@ module Insights
     def base_metrics(participations, participant_ids, visits)
       visitors_count = visits.pluck(:visitor_id).uniq.count
       participants_count = participant_ids.count
-      base_7_day_changes = base_7_day_changes(participations, visits, visitors_count)
+      base_7_day_changes = base_7_day_changes(participations, visits, visitors_count, participants_count)
 
       {
         visitors: visitors_count,
@@ -59,8 +59,12 @@ module Insights
       }
     end
 
-    def base_7_day_changes(participations, visits, visitors_count)
+    def base_7_day_changes(participations, visits, visitors_count, participants_count)
       flattened_participations = participations.values.flatten
+
+      participants_count_7_days_ago = flattened_participations.select do |p|
+        p[:acted_at] < 7.days.ago
+      end.pluck(:participant_id).uniq.count
 
       participants_last_7_days_count = flattened_participations.select do |p|
         p[:acted_at] >= 7.days.ago
@@ -92,7 +96,7 @@ module Insights
 
       {
         visitors_7_day_percent_change: percentage_change(visitors_count_7_days_ago, visitors_count),
-        participants_7_day_percent_change: percentage_change(participants_previous_7_days_count, participants_last_7_days_count),
+        participants_7_day_percent_change: percentage_change(participants_count_7_days_ago, participants_count),
         participation_rate_7_day_percent_change: participation_rate_7_day_percent_change
       }
     end

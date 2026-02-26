@@ -96,12 +96,12 @@ RSpec.describe Insights::BasePhaseInsightsService do
         { acted_at: 4.days.ago, visitor_id: SecureRandom.uuid }
       ]
 
-      result = service.send(:base_7_day_changes, participations, visits, 3)
+      result = service.send(:base_7_day_changes, participations, visits, 3, 3)
 
       expect(result).to eq(
         {
           visitors_7_day_percent_change: 200.0, # From 1 unique visitor 7-days ago, to 3 now = 200% change
-          participants_7_day_percent_change: 100.0, # from 1 (in week before last) to 2 (in last 7 days) = 100% increase
+          participants_7_day_percent_change: 200.0, # from 1 unique participants 7-days ago, to 3 now = 200% increase
           participation_rate_7_day_percent_change: 0.0 # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 1.0 = 0% change
         }
       )
@@ -117,34 +117,34 @@ RSpec.describe Insights::BasePhaseInsightsService do
       }
 
       visits = [{ acted_at: 5.days.ago, visitor_id: SecureRandom.uuid }] # No visits before 7-days ago
-      result = service.send(:base_7_day_changes, participations, visits, 1)
+      result = service.send(:base_7_day_changes, participations, visits, 1, 3)
 
       expect(result).to eq(
         {
           visitors_7_day_percent_change: 'current_value_compared_with_zero',
-          participants_7_day_percent_change: 100.0,
+          participants_7_day_percent_change: 200.0,
           participation_rate_7_day_percent_change: 'no_visitors_in_one_or_both_periods'
         }
       )
 
       visits = [{ acted_at: 10.days.ago, visitor_id: SecureRandom.uuid }] # No visits in last 7 days
-      result = service.send(:base_7_day_changes, participations, visits, 1)
+      result = service.send(:base_7_day_changes, participations, visits, 1, 3)
 
       expect(result).to eq(
         {
           visitors_7_day_percent_change: 0.0,
-          participants_7_day_percent_change: 100.0,
+          participants_7_day_percent_change: 200.0,
           participation_rate_7_day_percent_change: 'no_visitors_in_one_or_both_periods'
         }
       )
 
       visits = [] # No visits in either period
-      result = service.send(:base_7_day_changes, participations, visits, 0)
+      result = service.send(:base_7_day_changes, participations, visits, 0, 3)
 
       expect(result).to eq(
         {
           visitors_7_day_percent_change: 0.0, # NOTE: This will be overriden as 'current_value_compared_with_zero' if no visitors to phase at all
-          participants_7_day_percent_change: 100.0,
+          participants_7_day_percent_change: 200.0,
           participation_rate_7_day_percent_change: 'no_visitors_in_one_or_both_periods'
         }
       )

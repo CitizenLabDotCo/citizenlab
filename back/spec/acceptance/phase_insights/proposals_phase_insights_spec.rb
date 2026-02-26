@@ -118,7 +118,7 @@ resource 'Phase insights' do
         visitors: 4,
         visitors_7_day_percent_change: 33.3, # from 3 unique visitors 7-days ago, to 4 now = 33.3% change
         participants: 3,
-        participants_7_day_percent_change: 0.0, # from 2 (in week before last) to 2 unique participants (in last 7 days) = 0% change
+        participants_7_day_percent_change: 50.0, # from 2 unique participants 7-days ago, to 3 now = 50% change
         participation_rate_as_percent: 75.0,
         participation_rate_7_day_percent_change: 0.0, # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 1.0 = 0% change
         proposals: {

@@ -113,7 +113,7 @@ resource 'Phase insights' do
         visitors: 3,
         visitors_7_day_percent_change: 0.0, # from 3 unique visitors 7-days ago to 3 now = 0% change
         participants: 3,
-        participants_7_day_percent_change: 100.0, # from 1 (in week before last) to 2 unique participants (in last 7 days) = 100% increase
+        participants_7_day_percent_change: 50.0, # from 2 unique participants 7-days ago, to 3 now = 50% increase
         participation_rate_as_percent: 100.0,
         participation_rate_7_day_percent_change: 300.0, # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 1.0 = 0% change
         native_survey: {

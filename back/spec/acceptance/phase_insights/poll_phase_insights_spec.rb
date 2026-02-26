@@ -70,7 +70,7 @@ resource 'Phase insights' do
         visitors: 2,
         visitors_7_day_percent_change: 0.0, # from 2 unique visitors 7-days ago to 2 now = 0% change
         participants: 2,
-        participants_7_day_percent_change: 0.0, # from 1 (in week before last) to 1 unique participant (in last 7 days) = 0% change
+        participants_7_day_percent_change: 100.0, # from 1 unique participant 7-days ago, to 2 now = 100% change
         participation_rate_as_percent: 100.0,
         participation_rate_7_day_percent_change: 100.0, # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 0.5 = (((1.0 - 0.5).to_f / 0.5) * 100.0).round(1)
         poll: {
