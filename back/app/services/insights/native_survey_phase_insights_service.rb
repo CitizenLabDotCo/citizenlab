@@ -54,8 +54,6 @@ module Insights
         completion_rate_now = submitted_surveys_count.to_f / posted_ideas_count
         completion_rate_7_days_ago = submitted_surveys_count_7_days_ago.to_f / posted_ideas_count_7_days_ago
 
-        puts "Debug: completion_rate_now = #{completion_rate_now}, completion_rate_7_days_ago = #{completion_rate_7_days_ago}"
-
         percentage_change(completion_rate_7_days_ago, completion_rate_now)
       else
         'no_new_survey_responses_in_one_or_both_periods'
