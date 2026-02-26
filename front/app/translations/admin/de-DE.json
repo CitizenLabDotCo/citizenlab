@@ -1415,7 +1415,7 @@
   "app.containers.Admin.projects.project.insights.noInputsSubmitted": "Es wurden noch keine Beiträge eingereicht.",
   "app.containers.Admin.projects.project.insights.noReferenceDataMessage": "Für diese demografische Dimension liegen noch keine Zensus-Referenzdaten vor. <link>Fügen Sie sie hier hinzu</link>, um zu erfahren, wie repräsentativ Ihre Daten sind.",
   "app.containers.Admin.projects.project.insights.openForResponses": "Umfrage ein/aus",
-  "app.containers.Admin.projects.project.insights.participants2": "Phasenteilnehmende",
+  "app.containers.Admin.projects.project.insights.participants2": "Teilnehmende",
   "app.containers.Admin.projects.project.insights.participantsPercent": "Teilnehmende (%)",
   "app.containers.Admin.projects.project.insights.participationOverTime": "Beteiligung im Zeitverlauf",
   "app.containers.Admin.projects.project.insights.participationRate": "Beteiligungsrate",
