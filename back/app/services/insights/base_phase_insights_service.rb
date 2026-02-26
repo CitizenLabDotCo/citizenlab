@@ -47,7 +47,7 @@ module Insights
     def base_metrics(participations, participant_ids, visits)
       visitors_count = visits.pluck(:visitor_id).uniq.count
       participants_count = participant_ids.count
-      base_7_day_changes = base_7_day_changes(participations, visits)
+      base_7_day_changes = base_7_day_changes(participations, visits, visitors_count)
 
       {
         visitors: visitors_count,
@@ -59,7 +59,7 @@ module Insights
       }
     end
 
-    def base_7_day_changes(participations, visits)
+    def base_7_day_changes(participations, visits, visitors_count)
       flattened_participations = participations.values.flatten
 
       participants_last_7_days_count = flattened_participations.select do |p|
@@ -69,6 +69,10 @@ module Insights
       participants_previous_7_days_count = flattened_participations.select do |p|
         p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
       end.pluck(:participant_id).uniq.count
+
+      visitors_count_7_days_ago = visits.select do |v|
+        v[:acted_at] < 7.days.ago
+      end.pluck(:visitor_id).uniq.count
 
       visitors_last_7_days_count = visits.select do |v|
         v[:acted_at] >= 7.days.ago
@@ -87,7 +91,7 @@ module Insights
       end
 
       {
-        visitors_7_day_percent_change: percentage_change(visitors_previous_7_days_count, visitors_last_7_days_count),
+        visitors_7_day_percent_change: percentage_change(visitors_count_7_days_ago, visitors_count),
         participants_7_day_percent_change: percentage_change(participants_previous_7_days_count, participants_last_7_days_count),
         participation_rate_7_day_percent_change: participation_rate_7_day_percent_change
       }
@@ -112,7 +116,7 @@ module Insights
     def percentage_change(old_value, new_value)
       return nil unless phase_has_run_more_than_14_days?
       return 0.0 if old_value == new_value # Includes case where both are zero
-      return 'last_7_days_compared_with_zero' if old_value.zero? # Infinite percentage change (avoid division by zero)
+      return 'current_value_compared_with_zero' if old_value.zero? # Infinite percentage change (avoid division by zero)
 
       # Round to one decimal place
       (((new_value - old_value).to_f / old_value) * 100.0).round(1)

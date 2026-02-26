@@ -116,7 +116,7 @@ resource 'Phase insights' do
       metrics = json_response_body.dig(:data, :attributes, :metrics)
       expect(metrics).to eq({
         visitors: 4,
-        visitors_7_day_percent_change: 0.0, # from 2 (in week before last) to 2 unique visitors (in last 7 days) = 0% change
+        visitors_7_day_percent_change: 33.3, # from 3 unique visitors 7-days ago, to 4 now = 33.3% change
         participants: 3,
         participants_7_day_percent_change: 0.0, # from 2 (in week before last) to 2 unique participants (in last 7 days) = 0% change
         participation_rate_as_percent: 75.0,

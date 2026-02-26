@@ -54,7 +54,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
       expect(result).to eq(
         {
           visitors: 4,
-          visitors_7_day_percent_change: 0.0, # From 3 (7 to 14 days ago) to 3 (last 7-day period) unique visitors = 0% change
+          visitors_7_day_percent_change: 33.3, # From 3 unique visitors 7-days ago, to 4 now = 33.3% change
           participants: 3,
           participants_7_day_percent_change: 50.0, # From 2 (7 to 14 days ago) to 3 (last 7-day period) unique participants = 50% increase
           participation_rate_as_percent: 75.0,
@@ -96,11 +96,11 @@ RSpec.describe Insights::BasePhaseInsightsService do
         { acted_at: 4.days.ago, visitor_id: SecureRandom.uuid }
       ]
 
-      result = service.send(:base_7_day_changes, participations, visits)
+      result = service.send(:base_7_day_changes, participations, visits, 3)
 
       expect(result).to eq(
         {
-          visitors_7_day_percent_change: 100.0, # from 1 (in week before last) to 2 (in last 7 days) = 100% increase
+          visitors_7_day_percent_change: 200.0, # From 1 unique visitor 7-days ago, to 3 now = 200% change
           participants_7_day_percent_change: 100.0, # from 1 (in week before last) to 2 (in last 7 days) = 100% increase
           participation_rate_7_day_percent_change: 0.0 # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 1.0 = 0% change
         }
@@ -116,30 +116,30 @@ RSpec.describe Insights::BasePhaseInsightsService do
         ]
       }
 
-      visits = [{ acted_at: 5.days.ago, visitor_id: SecureRandom.uuid }] # No visits in week before last
-      result = service.send(:base_7_day_changes, participations, visits)
+      visits = [{ acted_at: 5.days.ago, visitor_id: SecureRandom.uuid }] # No visits before 7-days ago
+      result = service.send(:base_7_day_changes, participations, visits, 1)
 
       expect(result).to eq(
         {
-          visitors_7_day_percent_change: 'last_7_days_compared_with_zero',
+          visitors_7_day_percent_change: 'current_value_compared_with_zero',
           participants_7_day_percent_change: 100.0,
           participation_rate_7_day_percent_change: 'no_visitors_in_one_or_both_periods'
         }
       )
 
       visits = [{ acted_at: 10.days.ago, visitor_id: SecureRandom.uuid }] # No visits in last 7 days
-      result = service.send(:base_7_day_changes, participations, visits)
+      result = service.send(:base_7_day_changes, participations, visits, 1)
 
       expect(result).to eq(
         {
-          visitors_7_day_percent_change: -100.0,
+          visitors_7_day_percent_change: 0.0,
           participants_7_day_percent_change: 100.0,
           participation_rate_7_day_percent_change: 'no_visitors_in_one_or_both_periods'
         }
       )
 
       visits = [] # No visits in either period
-      result = service.send(:base_7_day_changes, participations, visits)
+      result = service.send(:base_7_day_changes, participations, visits, 0)
 
       expect(result).to eq(
         {
@@ -743,8 +743,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
       expect(service.send(:percentage_change, 80, 60)).to eq(-25.0)
     end
 
-    it "returns 'last_7_days_compared_with_zero' when old value is zero and new value is not zero" do
-      expect(service.send(:percentage_change, 0, 100)).to eq('last_7_days_compared_with_zero')
+    it "returns 'current_value_compared_with_zero' when old value is zero and new value is not zero" do
+      expect(service.send(:percentage_change, 0, 100)).to eq('current_value_compared_with_zero')
     end
 
     it 'returns zero when there is no change' do

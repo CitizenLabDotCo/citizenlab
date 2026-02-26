@@ -229,10 +229,10 @@ export default defineMessages({
     defaultMessage:
       'Cannot calculate 7 day change when phase has run for less than 14 days',
   },
-  insufficientComparisonDataNoPriorActivity: {
-    id: 'app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity',
+  currentValueComparedWithZero: {
+    id: 'app.containers.Admin.projects.project.insights.currentValueComparedWithZero',
     defaultMessage:
-      'The 7 day period before last had no activity to compare against (which would give an infinite value)',
+      'Current value compared with zero (would give infinite percentage change)',
   },
   cannotCalculateNoVisitsInPeriod: {
     id: 'app.containers.Admin.projects.project.insights.cannotCalulateNoVisitsInPeriod',
