@@ -38,6 +38,7 @@ import reportingRoutes, { reportingRouteTypes } from './reporting/routes';
 import settingsRoutes, { settingRouteTypes } from './settings/routes';
 import toolsRoutes, { toolRouteTypes } from './tools/routes';
 import createAdminUsersRoutes, { userRouteTypes } from './users/routes';
+import workspaceRoutes from './workspaces/routes';
 
 const AdminContainer = lazy(() => import('containers/Admin'));
 const AdminFavicon = lazy(() => import('containers/Admin/favicon'));
@@ -174,6 +175,7 @@ const createAdminRoutes = () => {
       createAdminMessagingRoutes(),
       ideasRoutes(),
       projectFoldersRoutes(),
+      workspaceRoutes(),
       ...reportingRoutes(),
       toolsRoutes(),
       communityMonitorsRoutes(),
