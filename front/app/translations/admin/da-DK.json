@@ -1405,7 +1405,6 @@
   "app.containers.Admin.projects.project.insights.inputs": "Input",
   "app.containers.Admin.projects.project.insights.insightsSubtitle1": "Spor engagement i realtid",
   "app.containers.Admin.projects.project.insights.insufficientComparisonData": "Utilstrækkelige sammenligningsdata",
-  "app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity": "Den foregående 7-dages periode havde ingen aktivitet at sammenligne med (hvilket ville give en uendelig værdi).",
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "Kan ikke beregne 7-dages ændring, når fasen har kørt i mindre end 14 dage",
   "app.containers.Admin.projects.project.insights.last7Days": "Sidste 7 dage",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Indlæsning af demografi...",

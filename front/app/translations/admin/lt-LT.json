@@ -1405,7 +1405,6 @@
   "app.containers.Admin.projects.project.insights.inputs": "Įėjimai",
   "app.containers.Admin.projects.project.insights.insightsSubtitle1": "Stebėkite įsitraukimą realiuoju laiku",
   "app.containers.Admin.projects.project.insights.insufficientComparisonData": "Nepakankamai palyginamųjų duomenų",
-  "app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity": "Priešpaskutinį 7 dienų laikotarpį nebuvo jokio aktyvumo, su kuriuo būtų galima palyginti (todėl būtų gauta begalinė vertė).",
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "Negalima apskaičiuoti 7 dienų pokyčio, kai etapas truko trumpiau nei 14 dienų",
   "app.containers.Admin.projects.project.insights.last7Days": "Paskutinės 7 dienos",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Demografinių duomenų įkėlimas...",

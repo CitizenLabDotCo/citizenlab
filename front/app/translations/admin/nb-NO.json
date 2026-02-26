@@ -1405,7 +1405,6 @@
   "app.containers.Admin.projects.project.insights.inputs": "Innganger",
   "app.containers.Admin.projects.project.insights.insightsSubtitle1": "Spor engasjement i sanntid",
   "app.containers.Admin.projects.project.insights.insufficientComparisonData": "Utilstrekkelige sammenligningsdata",
-  "app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity": "Den siste 7-dagersperioden hadde ingen aktivitet å sammenligne med (noe som ville gitt en uendelig verdi)",
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "Kan ikke beregne 7-dagers endring når fasen har pågått i mindre enn 14 dager",
   "app.containers.Admin.projects.project.insights.last7Days": "Siste 7 dager",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Laster inn demografi...",

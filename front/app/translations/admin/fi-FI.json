@@ -1405,7 +1405,6 @@
   "app.containers.Admin.projects.project.insights.inputs": "Tulot",
   "app.containers.Admin.projects.project.insights.insightsSubtitle1": "Seuraa sitoutumista reaaliajassa",
   "app.containers.Admin.projects.project.insights.insufficientComparisonData": "Riittämättömät vertailutiedot",
-  "app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity": "Toisena seitsemänä päivänä ei ollut vertailukelpoista toimintaa (mikä antaisi äärettömän arvon)",
   "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "7 päivän muutosta ei voida laskea, kun vaihe on kestänyt alle 14 päivää",
   "app.containers.Admin.projects.project.insights.last7Days": "Viimeiset 7 päivää",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Ladataan väestötietoja...",
