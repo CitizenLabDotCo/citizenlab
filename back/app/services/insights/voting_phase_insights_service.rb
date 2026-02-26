@@ -199,13 +199,16 @@ module Insights
       end.pluck(:participant_id).uniq.count
 
       commenting_ideas_participations = participations[:commenting_idea]
-      comments_last_7_days = commenting_ideas_participations.count { |p| p[:acted_at] >= 7.days.ago }
-      comments_previous_7_days = commenting_ideas_participations.count do |p|
-        p[:acted_at] >= 14.days.ago && p[:acted_at] < 7.days.ago
-      end
+      # comments_last_7_days = commenting_ideas_participations.count { |p| p[:acted_at] >= 7.days.ago }
+      # comments_previous_7_days = commenting_ideas_participations.count do |p|
+      #   p[:acted_at] >= 14.days.ago && p[:acted_at] < 7.days.ago
+      # end
+
+      comments_count = commenting_ideas_participations.count
+      comments_count_7_days_ago = commenting_ideas_participations.count { |p| p[:acted_at] < 7.days.ago }
 
       result[:voters_7_day_percent_change] = percentage_change(voters_count_7_days_ago, voters_count)
-      result[:comments_posted_7_day_percent_change] = percentage_change(comments_previous_7_days, comments_last_7_days)
+      result[:comments_posted_7_day_percent_change] = percentage_change(comments_count_7_days_ago, comments_count)
 
       result
     end

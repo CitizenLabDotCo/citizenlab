@@ -109,7 +109,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
         voters: 1,
         voters_7_day_percent_change: 0.0, # from 1 by 7-days ago, to 1 now = 0% change
         comments_posted: 2,
-        comments_posted_7_day_percent_change: 0.0 # from 1 by 7-days ago, to 1 now = 0% change
+        comments_posted_7_day_percent_change: 100.0 # from 1 by 7-days ago, to 2 now = 100% increase
       })
     end
   end

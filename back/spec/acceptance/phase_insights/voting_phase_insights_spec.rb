@@ -141,7 +141,7 @@ resource 'Phase insights' do
           voters: 3,
           voters_7_day_percent_change: 50.0, # from 2 unique voters by 7-days ago, to 3 now = 50% increase
           comments_posted: 3,
-          comments_posted_7_day_percent_change: 100.0 # from 1 (in week before last) to 2 (in last 7 days) = 100% increase
+          comments_posted_7_day_percent_change: 200.0 # from 1 by 7-days ago, to 3 now = 200% increase
         }
       })
     end
@@ -176,7 +176,7 @@ resource 'Phase insights' do
             voters: 3,
             voters_7_day_percent_change: 50.0, # from 2 unique voters by 7-days ago, to 3 now = 50% increase
             comments_posted: 3,
-            comments_posted_7_day_percent_change: 100.0 # from 1 by 7-days ago, to 2 now = 100% increase
+            comments_posted_7_day_percent_change: 200.0 # from 1 by 7-days ago, to 3 now = 200% increase
           }
         })
 
