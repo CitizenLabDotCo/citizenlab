@@ -16,7 +16,7 @@ RSpec.describe EmailCampaigns::Campaigns::BaseManual do
       end
 
       it 'rejects activity-triggered sends' do
-        activity = double('activity')
+        activity = instance_double(Activity)
         expect(campaign.run_filter_hooks(activity: activity)).to be false
       end
     end
@@ -37,7 +37,7 @@ RSpec.describe EmailCampaigns::Campaigns::BaseManual do
       end
 
       it 'rejects activity-triggered sends' do
-        activity = double('activity')
+        activity = instance_double(Activity)
         expect(campaign.run_filter_hooks(activity: activity)).to be false
       end
     end
