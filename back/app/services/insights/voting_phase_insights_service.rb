@@ -193,9 +193,9 @@ module Insights
       return result unless phase_has_run_more_than_14_days?
 
       voting_participations = participations[:voting]
-      voters_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:participant_id).uniq.count
-      voters_previous_7_days = voting_participations.select do |p|
-        p[:acted_at] >= 14.days.ago && p[:acted_at] < 7.days.ago
+      voters_count = voting_participations.pluck(:participant_id).uniq.count
+      voters_count_7_days_ago = voting_participations.select do |p|
+        p[:acted_at] < 7.days.ago
       end.pluck(:participant_id).uniq.count
 
       commenting_ideas_participations = participations[:commenting_idea]
@@ -204,7 +204,7 @@ module Insights
         p[:acted_at] >= 14.days.ago && p[:acted_at] < 7.days.ago
       end
 
-      result[:voters_7_day_percent_change] = percentage_change(voters_previous_7_days, voters_last_7_days)
+      result[:voters_7_day_percent_change] = percentage_change(voters_count_7_days_ago, voters_count)
       result[:comments_posted_7_day_percent_change] = percentage_change(comments_previous_7_days, comments_last_7_days)
 
       result

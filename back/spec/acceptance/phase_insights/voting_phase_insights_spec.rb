@@ -139,7 +139,7 @@ resource 'Phase insights' do
           online_votes_7_day_percent_change: 0.0, # from 3 (in week before last) to 3 (in last 7 days) = 0% change
           offline_votes: 3,
           voters: 3,
-          voters_7_day_percent_change: 0.0, # from 2 (in week before last) to 2 unique voters (in last 7 days) = 0% change
+          voters_7_day_percent_change: 50.0, # from 2 unique voters by 7-days ago, to 3 now = 50% increase
           comments_posted: 3,
           comments_posted_7_day_percent_change: 100.0 # from 1 (in week before last) to 2 (in last 7 days) = 100% increase
         }
@@ -174,7 +174,7 @@ resource 'Phase insights' do
             online_picks_7_day_percent_change: 0.0, # from 2 by 7-days ago, to 2 now = 0% change
             offline_picks: 3,
             voters: 3,
-            voters_7_day_percent_change: 0.0, # from 2 by 7-days ago, to 2 now = 0% change
+            voters_7_day_percent_change: 50.0, # from 2 unique voters by 7-days ago, to 3 now = 50% increase
             comments_posted: 3,
             comments_posted_7_day_percent_change: 100.0 # from 1 by 7-days ago, to 2 now = 100% increase
           }
