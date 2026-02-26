@@ -1560,7 +1560,8 @@ CREATE TABLE public.email_campaigns_campaigns (
     title_multiloc jsonb DEFAULT '{}'::jsonb,
     intro_multiloc jsonb DEFAULT '{}'::jsonb,
     button_text_multiloc jsonb DEFAULT '{}'::jsonb,
-    context_type character varying
+    context_type character varying,
+    scheduled_at timestamp(6) without time zone
 );
 
 
@@ -8386,6 +8387,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260226110316'),
 ('20260205124240'),
 ('20260127094257'),
 ('20260127092840'),

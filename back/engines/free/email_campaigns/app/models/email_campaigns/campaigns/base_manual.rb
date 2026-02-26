@@ -21,6 +21,7 @@
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
 #  context_type         :string
+#  scheduled_at         :datetime
 #
 # Indexes
 #
@@ -41,8 +42,11 @@ module EmailCampaigns
     include Trackable
     include LifecycleStageRestrictable
 
-    # Without this, the campaign would be sent on every event and every schedule trigger
+    # Without this, the campaign would be sent on every event and every schedule trigger.
+    # When scheduled_at is set, the hourly TriggerOnScheduleJob is allowed to send it.
     filter :only_manual_send
+
+    validate :scheduled_at_in_future, if: -> { scheduled_at.present? && scheduled_at_changed? }
 
     def mailer_class
       ManualCampaignMailer
@@ -80,7 +84,14 @@ module EmailCampaigns
     private
 
     def only_manual_send(activity: nil, time: nil)
-      !activity && !time
+      return false if activity
+      return true unless time
+
+      scheduled_at.present? && !sent? && scheduled_at <= time
+    end
+
+    def scheduled_at_in_future
+      errors.add(:scheduled_at, :in_the_past) if scheduled_at <= Time.zone.now
     end
   end
 end

@@ -191,6 +191,39 @@ describe EmailCampaigns::DeliveryService do
     end
   end
 
+  describe 'send_on_schedule with scheduled manual campaign' do
+    let!(:campaign) do
+      c = create(:manual_campaign)
+      c.update_column(:scheduled_at, 1.hour.ago)
+      c.reload
+    end
+    let!(:users) { create_list(:user, 3) }
+
+    it 'sends a manual campaign when scheduled_at has passed' do
+      expect { service.send_on_schedule(Time.zone.now) }
+        .to have_enqueued_job(ActionMailer::MailDeliveryJob)
+        .at_least(1).times
+    end
+
+    it 'does not send a manual campaign when scheduled_at is in the future' do
+      campaign.update_column(:scheduled_at, 2.hours.from_now)
+      expect { service.send_on_schedule(Time.zone.now) }
+        .not_to have_enqueued_job(ActionMailer::MailDeliveryJob)
+    end
+
+    it 'does not send a manual campaign without scheduled_at' do
+      campaign.update_column(:scheduled_at, nil)
+      expect { service.send_on_schedule(Time.zone.now) }
+        .not_to have_enqueued_job(ActionMailer::MailDeliveryJob)
+    end
+
+    it 'does not re-send an already sent scheduled campaign' do
+      create(:delivery, campaign: campaign)
+      expect { service.send_on_schedule(Time.zone.now) }
+        .not_to have_enqueued_job(ActionMailer::MailDeliveryJob)
+    end
+  end
+
   describe 'consentable_campaign_types_for' do
     let(:user) { create(:user) }
 

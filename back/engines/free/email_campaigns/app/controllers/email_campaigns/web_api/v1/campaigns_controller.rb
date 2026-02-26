@@ -183,6 +183,7 @@ module EmailCampaigns
         :enabled,
         :sender,
         :reply_to,
+        :scheduled_at,
         group_ids: [],
         subject_multiloc: I18n.available_locales,
         body_multiloc: I18n.available_locales
