@@ -80,7 +80,7 @@ resource 'Phase insights' do
         participation_rate_7_day_percent_change: 0.0, # participation_rate_7_days_ago = 1.0, participation_rate_now = 1.0 = 0% change
         volunteering: {
           volunteerings: 3,
-          volunteerings_7_day_percent_change: 0.0 # from 1 (in week before last) to 1 (in last 7 days) = 0% change
+          volunteerings_7_day_percent_change: 50.0 # from 2 by 7-days ago, to 3 now = 50% increase
         }
       })
 

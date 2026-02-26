@@ -62,7 +62,7 @@ RSpec.describe Insights::PollPhaseInsightsService do
 
       expect(metrics).to eq({
         responses: 2,
-        responses_7_day_percent_change: 100.0 # from 1 response 7-days ago, to 2 now = 100% change
+        responses_7_day_percent_change: 100.0 # from 1 response by 7-days ago, to 2 now = 100% change
       })
     end
   end

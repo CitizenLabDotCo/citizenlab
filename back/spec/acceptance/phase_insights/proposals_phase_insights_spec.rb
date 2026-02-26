@@ -116,20 +116,20 @@ resource 'Phase insights' do
       metrics = json_response_body.dig(:data, :attributes, :metrics)
       expect(metrics).to eq({
         visitors: 4,
-        visitors_7_day_percent_change: 33.3, # from 3 unique visitors 7-days ago, to 4 now = 33.3% change
+        visitors_7_day_percent_change: 33.3, # from 3 unique visitors 7-days ago, to 4 now = 33.3% increase
         participants: 3,
-        participants_7_day_percent_change: 50.0, # from 2 unique participants 7-days ago, to 3 now = 50% change
+        participants_7_day_percent_change: 50.0, # from 2 unique participants 7-days ago, to 3 now = 50% increase
         participation_rate_as_percent: 75.0,
         participation_rate_7_day_percent_change: 12.5, # participation_rate_7_days_ago = 0.6666666666666666, participation_rate_now = 0.75 = (((0.75 - 0.6666666666666666).to_f / 0.6666666666666666) * 100.0).round(1) = 12.5% change
         proposals: {
           ideas_posted: 2,
-          ideas_posted_7_day_percent_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) => 0% change
+          ideas_posted_7_day_percent_change: 100.0, # from 1 by 7-days ago, to 2 now = 100% increase
           reached_threshold: 2,
-          reached_threshold_7_day_percent_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) => 0% change
+          reached_threshold_7_day_percent_change: 100.0, # from 1 by 7-days ago, to 2 now = 100% increase
           comments_posted: 1,
-          comments_posted_7_day_percent_change: -100.0, # from 1 (in week before last) to 0 (in last 7 days) = -100% decrease
+          comments_posted_7_day_percent_change: 0.0, # from 1 by 7-days ago, to 0 now = 0% change
           reactions: 1,
-          reactions_7_day_percent_change: 'current_value_compared_with_zero' # from 0 (in week before last) to 1 (in last 7 days) => avoid division by zero
+          reactions_7_day_percent_change: 'current_value_compared_with_zero' # from 0 by 7-days ago, to 1 now => avoid division by zero
         }
       })
 

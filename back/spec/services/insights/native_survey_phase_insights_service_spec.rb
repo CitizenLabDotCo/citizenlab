@@ -139,7 +139,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
 
       expect(metrics).to eq({
         surveys_submitted: 6,
-        surveys_submitted_7_day_percent_change: -33.3, # from 3 (in week before last) to 2 (in last 7 days) = -33.3% change
+        surveys_submitted_7_day_percent_change: -33.3, # from 3 by 7-days ago, to 2 now = -33.3% change
         completion_rate_as_percent: 85.7, # 6 submitted surveys out of 7 ideas created during phase
         completion_rate_7_day_percent_change: 33.3 # completion_rate_last_7_days: 1.0, completion_rate_previous_7_days: 0.75 = 33.3% change
       })
