@@ -28,17 +28,17 @@ module Insights
       posted_ideas_count = phase_ideas.count
       total_submitted_surveys = participations[:submitting_idea].count
       completion_rate_as_percent = posted_ideas_count > 0 ? (total_submitted_surveys.to_f / posted_ideas_count * 100).round(1) : 'submitted_count_compared_with_zero_ideas'
-      rolling_7_day_changes = rolling_7_day_changes(participations)
+      survey_7_day_changes = survey_7_day_changes(participations)
 
       {
         surveys_submitted: total_submitted_surveys,
-        surveys_submitted_7_day_percent_change: rolling_7_day_changes[:surveys_submitted_7_day_percent_change],
+        surveys_submitted_7_day_percent_change: survey_7_day_changes[:surveys_submitted_7_day_percent_change],
         completion_rate_as_percent: completion_rate_as_percent,
-        completion_rate_7_day_percent_change: rolling_7_day_changes[:completion_rate_7_day_percent_change]
+        completion_rate_7_day_percent_change: survey_7_day_changes[:completion_rate_7_day_percent_change]
       }
     end
 
-    def rolling_7_day_changes(participations)
+    def survey_7_day_changes(participations)
       result = {
         surveys_submitted_7_day_percent_change: nil,
         completion_rate_7_day_percent_change: nil

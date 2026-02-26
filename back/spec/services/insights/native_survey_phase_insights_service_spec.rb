@@ -160,11 +160,11 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
     end
   end
 
-  describe '#rolling_7_day_changes' do
+  describe '#survey_7_day_changes' do
     it 'handles zero ideas created in either of last two 7-day periods as expected' do
       Idea.all.each { |idea| idea.update!(created_at: 12.days.ago) } # all ideas created in 7 days before last 7 days
       participations = service.send(:phase_participations)
-      changes = service.send(:rolling_7_day_changes, participations)
+      changes = service.send(:survey_7_day_changes, participations)
 
       expect(changes).to eq({
         surveys_submitted_7_day_percent_change: -33.3, # from 3 (in week before last) to 2 (in last 7 days) = -33.3% change
@@ -173,7 +173,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
 
       Idea.all.each { |idea| idea.update!(created_at: 5.days.ago) } # all ideas created in last 7 days
       participations = service.send(:phase_participations)
-      changes = service.send(:rolling_7_day_changes, participations)
+      changes = service.send(:survey_7_day_changes, participations)
 
       expect(changes).to eq({
         surveys_submitted_7_day_percent_change: -33.3, # from 3 (in week before last) to 2 (in last 7 days) = -33.3% change
@@ -182,7 +182,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
 
       Idea.destroy_all # zero ideas created in both periods
       participations = { submitting_idea: [] }
-      changes = service.send(:rolling_7_day_changes, participations)
+      changes = service.send(:survey_7_day_changes, participations)
 
       expect(changes).to eq({
         surveys_submitted_7_day_percent_change: 0.0, # from 0 (in week before last) to 0 (in last 7 days) = 0.0% change
