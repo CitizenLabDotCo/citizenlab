@@ -149,7 +149,6 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Αναγνωριστικό υποβολής",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Δημιουργήστε έναν λογαριασμό ή συνδεθείτε",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Λάβετε ενημερώσεις όταν υπάρχουν επόμενα βήματα",
-  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Συμμετέχετε σε συζητήσεις εάν η συνεισφορά σας κοινοποιείται δημόσια",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "Συμμετοχή σε άλλα έργα και συζητήσεις",
   "app.components.CustomFieldsForm.PostParticipationBox.stayConnected": "Μείνετε συνδεδεμένοι",
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Εισαγωγή διεύθυνσης",

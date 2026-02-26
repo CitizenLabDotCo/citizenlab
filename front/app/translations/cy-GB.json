@@ -149,7 +149,6 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Dynodwr cyflwyniad",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Creu cyfrif neu fewngofnodi",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Derbyniwch y wybodaeth ddiweddaraf pan fydd camau nesaf",
-  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Ymunwch â thrafodaethau os yw eich mewnbwn yn cael ei rannu'n gyhoeddus",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "Cymryd rhan mewn prosiectau a sgyrsiau eraill",
   "app.components.CustomFieldsForm.PostParticipationBox.stayConnected": "Cadwch mewn cysylltiad",
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Mewnbwn cyfeiriad",

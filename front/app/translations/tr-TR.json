@@ -149,7 +149,6 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Gönderim tanımlayıcısı",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Bir hesap oluşturun veya giriş yapın",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Sonraki adımlar olduğunda güncellemeleri alın",
-  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Girdileriniz herkese açık olarak paylaşılıyorsa tartışmalara katılın",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "Diğer projelere ve görüşmelere katılın",
   "app.components.CustomFieldsForm.PostParticipationBox.stayConnected": "Bağlantıda kalın",
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Adres girişi",

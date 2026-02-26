@@ -149,7 +149,6 @@
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.submissionIdentifier": "Identifikator podneska",
   "app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn": "Izradi račun ili se prijavi",
   "app.components.CustomFieldsForm.PostParticipationBox.getUpdates": "Primajte ažuriranja kada budu dostupni sljedeći koraci",
-  "app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions": "Pridružite se raspravama ako se vaš doprinos javno dijeli",
   "app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects": "Sudjelujte u drugim projektima i razgovorima",
   "app.components.CustomFieldsForm.PostParticipationBox.stayConnected": "Ostanite povezani",
   "app.components.CustomFieldsForm.addressInputAriaLabel": "Unos adrese",
