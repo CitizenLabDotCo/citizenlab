@@ -85,6 +85,7 @@ export default function useSteps() {
     token: null,
     prefilledBuiltInFields: null,
     ssoProvider: null,
+    claimTokens: null,
   });
   const [loading, setLoading] = useState(false);
   const [error, _setError] = useState<ErrorCode | null>(null);
