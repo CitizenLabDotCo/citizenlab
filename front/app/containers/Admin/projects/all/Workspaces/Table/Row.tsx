@@ -4,6 +4,7 @@ import { Tr, Td, Text, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import clHistory from 'utils/cl-router/history';
+import AvatarBubbles from 'components/AvatarBubbles';
 
 const StyledTd = styled(Td)`
   &:hover {
@@ -41,6 +42,9 @@ const Row = ({ workspace }: Props) => {
           {workspace.name}
         </Text>
       </StyledTd>
+      <Td>
+        <AvatarBubbles showParticipantText={false} />
+      </Td>
     </Tr>
   );
 };

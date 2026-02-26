@@ -21,7 +21,13 @@ import Row from './Row';
 const Table = () => {
   const { formatMessage } = useIntl();
 
-  const DATA = [{ name: 'Workspace 1', id: '1' }];
+  const DATA = [
+    { name: 'Urban planning', id: '1' },
+    { name: 'Parks and recreation', id: '2' },
+    { name: 'Marketing and communication', id: '3' },
+    { name: 'Economic development', id: '4' },
+    { name: 'Health and sanitation', id: '5' },
+  ];
 
   return (
     <Box position="relative" w="100%" h="100%" minHeight="300px">
