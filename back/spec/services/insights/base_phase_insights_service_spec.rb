@@ -143,7 +143,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
       expect(result).to eq(
         {
-          visitors_7_day_percent_change: 0.0, # NOTE: This will be overriden as 'last_7_days_compared_with_zero' if no visitors to phase at all
+          visitors_7_day_percent_change: 0.0, # NOTE: This will be overriden as 'current_value_compared_with_zero' if no visitors to phase at all
           participants_7_day_percent_change: 100.0,
           participation_rate_7_day_percent_change: 'no_visitors_in_one_or_both_periods'
         }

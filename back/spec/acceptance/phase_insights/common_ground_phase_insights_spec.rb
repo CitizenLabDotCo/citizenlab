@@ -96,7 +96,7 @@ resource 'Phase insights' do
           ideas_posted: 2,
           ideas_posted_7_day_percent_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) = 0% change
           reactions: 1,
-          reactions_7_day_percent_change: 'last_7_days_compared_with_zero' # from 0 (in week before last) to 1 (in last 7 days) => avoid division by zero
+          reactions_7_day_percent_change: 'current_value_compared_with_zero' # from 0 (in week before last) to 1 (in last 7 days) => avoid division by zero
         }
       })
 
