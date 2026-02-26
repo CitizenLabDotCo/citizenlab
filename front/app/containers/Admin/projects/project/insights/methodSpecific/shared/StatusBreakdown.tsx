@@ -1,6 +1,6 @@
 import React, { useMemo, ReactNode } from 'react';
 
-import { Box, Text, Title, Spinner } from '@citizenlab/cl2-component-library';
+import { Box, Text, Spinner } from '@citizenlab/cl2-component-library';
 
 import { IdeaStatusParticipationMethod } from 'api/idea_statuses/types';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
@@ -9,6 +9,9 @@ import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
+
+import ExportableInsight from '../../word/ExportableInsight';
+import { useWordSection } from '../../word/useWordSection';
 
 import DistributionBar from './DistributionBar';
 import messages from './messages';
@@ -88,48 +91,86 @@ const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
 
   const isLoading = isLoadingCounts || isLoadingStatuses;
 
+  useWordSection(
+    'status-breakdown',
+    () => {
+      if (statusData.length === 0) return [];
+      return [
+        {
+          type: 'breakdown',
+          items: statusData.map((s) => ({
+            name: s.name,
+            count: s.count,
+            color: s.color,
+            percentage: s.percentage,
+          })),
+          title: formatMessage(messages.statusBreakdown),
+        },
+      ];
+    },
+    { skip: isLoading || statusData.length === 0 }
+  );
+
   if (isLoading) {
     return (
-      <StatusCard>
-        <Box display="flex" alignItems="center" gap="8px">
-          <Spinner size="24px" />
-        </Box>
-      </StatusCard>
+      <ExportableInsight exportId="status-breakdown">
+        <StatusCard>
+          <Box display="flex" alignItems="center" gap="8px">
+            <Spinner size="24px" />
+          </Box>
+        </StatusCard>
+      </ExportableInsight>
     );
   }
 
   if (statusData.length === 0) {
     return (
-      <StatusCard>
-        <Title variant="h3" m="0" mb="16px">
-          {formatMessage(messages.statusBreakdown)}
-        </Title>
-        <Text m="0" color="textSecondary">
-          {formatMessage(messages.noInputsSubmitted)}
-        </Text>
-      </StatusCard>
+      <ExportableInsight exportId="status-breakdown">
+        <StatusCard>
+          <Text
+            m="0"
+            mb="16px"
+            fontWeight="semi-bold"
+            fontSize="m"
+            color="primary"
+          >
+            {formatMessage(messages.statusBreakdown)}
+          </Text>
+          <Text m="0" color="textSecondary">
+            {formatMessage(messages.noInputsSubmitted)}
+          </Text>
+        </StatusCard>
+      </ExportableInsight>
     );
   }
 
   return (
-    <StatusCard>
-      <Title variant="h3" m="0" mb="24px">
-        {formatMessage(messages.statusBreakdown)}
-      </Title>
-      <Box display="flex" flexDirection="column" gap="4px">
-        {statusData.map((status) => (
-          <DistributionBar
-            key={status.id}
-            name={status.name}
-            count={status.count}
-            percentage={status.percentage}
-            maxCount={maxCount}
-            barColor={status.color}
-            showBadge={false}
-          />
-        ))}
-      </Box>
-    </StatusCard>
+    <ExportableInsight exportId="status-breakdown">
+      <StatusCard>
+        <Text
+          m="0"
+          mb="24px"
+          fontWeight="semi-bold"
+          fontSize="m"
+          color="primary"
+        >
+          {formatMessage(messages.statusBreakdown)}
+        </Text>
+        <Box display="flex" flexDirection="column" gap="4px">
+          {statusData.map((status) => (
+            <DistributionBar
+              key={status.id}
+              name={status.name}
+              count={status.count}
+              percentage={status.percentage}
+              maxCount={maxCount}
+              barColor={status.color}
+              showBadge={false}
+            />
+          ))}
+        </Box>
+      </StatusCard>
+    </ExportableInsight>
   );
 };
 

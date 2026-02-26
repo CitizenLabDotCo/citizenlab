@@ -30,6 +30,8 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
+import ExportableInsight from '../../word/ExportableInsight';
+import { useWordSection } from '../../word/useWordSection';
 
 import messages from './messages';
 
@@ -153,6 +155,33 @@ const AiSummary = ({ phaseId, participationMethod }: Props) => {
     largeSummariesAllowed,
   ]);
 
+  const summary = summaryData?.data.attributes.summary;
+  const isReady = !!(summaryData && analysisId && summary);
+
+  useWordSection(
+    'ai-summary',
+    () => {
+      if (!summary) return [];
+      return [
+        {
+          type: 'heading',
+          text: formatMessage(messages.whatArePeopleSaying),
+          level: 2,
+        },
+        { type: 'html', html: summary },
+      ];
+    },
+    {
+      skip:
+        isLoadingAnalyses ||
+        isLoadingInsights ||
+        isCreatingAnalysis ||
+        isPreChecking ||
+        isAddingSummary ||
+        !isReady,
+    }
+  );
+
   const handleRefresh = () => {
     if (analysisId && summaryId) {
       regenerateSummary({ analysisId, summaryId });
@@ -169,161 +198,172 @@ const AiSummary = ({ phaseId, participationMethod }: Props) => {
 
   if (isLoadingAnalyses || isLoadingInsights || isCreatingAnalysis) {
     return (
-      <Box p="24px" bg="white" borderRadius="3px">
-        <Box display="flex" alignItems="center" gap="8px">
-          <Spinner size="24px" />
-          <Text m="0">{formatMessage(messages.loading)}</Text>
+      <ExportableInsight exportId="ai-summary" skipExport>
+        <Box p="24px" bg="white" borderRadius="3px">
+          <Box display="flex" alignItems="center" gap="8px">
+            <Spinner size="24px" />
+            <Text m="0">{formatMessage(messages.loading)}</Text>
+          </Box>
         </Box>
-      </Box>
+      </ExportableInsight>
     );
   }
 
   if (inputCount < MIN_INPUTS_FOR_SUMMARY) {
     return (
-      <Box
-        pt="8px"
-        pb="24px"
-        px="24px"
-        bgColor="rgba(4, 77, 108, 0.05)"
-        borderRadius="4px"
-        borderLeft={`3px solid ${colors.primary}`}
-        display="flex"
-        flexDirection="column"
-      >
-        <Title variant="h3" m="0" mb="16px">
-          {formatMessage(messages.whatArePeopleSaying)}
-        </Title>
+      <ExportableInsight exportId="ai-summary" skipExport>
         <Box
-          p="24px"
-          bgColor="white"
-          borderRadius="8px"
-          boxShadow="0px 1px 2px 0px rgba(0,0,0,0.05)"
+          pt="8px"
+          pb="24px"
+          px="24px"
+          bgColor="rgba(4, 77, 108, 0.05)"
+          borderRadius="4px"
+          borderLeft={`3px solid ${colors.primary}`}
+          display="flex"
+          flexDirection="column"
         >
-          <Text m="0" color="textSecondary">
-            {formatMessage(messages.notEnoughInputs, {
-              minInputs: MIN_INPUTS_FOR_SUMMARY,
-              count: inputCount,
-            })}
-          </Text>
+          <Title variant="h3" m="0" mb="16px">
+            {formatMessage(messages.whatArePeopleSaying)}
+          </Title>
+          <Box
+            p="24px"
+            bgColor="white"
+            borderRadius="8px"
+            boxShadow="0px 1px 2px 0px rgba(0,0,0,0.05)"
+          >
+            <Text m="0" color="textSecondary">
+              {formatMessage(messages.notEnoughInputs, {
+                minInputs: MIN_INPUTS_FOR_SUMMARY,
+                count: inputCount,
+              })}
+            </Text>
+          </Box>
         </Box>
-      </Box>
+      </ExportableInsight>
     );
   }
 
   if (isPreChecking || isAddingSummary) {
     return (
-      <Box p="24px" bg="white" borderRadius="3px">
-        <Box display="flex" alignItems="center" gap="8px">
-          <Spinner size="24px" />
-          <Text m="0">{formatMessage(messages.generatingSummary)}</Text>
+      <ExportableInsight exportId="ai-summary" skipExport>
+        <Box p="24px" bg="white" borderRadius="3px">
+          <Box display="flex" alignItems="center" gap="8px">
+            <Spinner size="24px" />
+            <Text m="0">{formatMessage(messages.generatingSummary)}</Text>
+          </Box>
         </Box>
-      </Box>
+      </ExportableInsight>
     );
   }
 
   if (!summaryData || !analysisId) {
-    return null;
+    return (
+      <ExportableInsight exportId="ai-summary" skipExport>
+        <Box />
+      </ExportableInsight>
+    );
   }
 
-  const summary = summaryData.data.attributes.summary;
   const filters = summaryData.data.attributes.filters;
   const backgroundTaskId =
     summaryData.data.relationships.background_task.data.id;
 
   return (
-    <Box>
-      <Title variant="h3" m="0" mb="16px">
-        {formatMessage(messages.whatArePeopleSaying)}
-      </Title>
-      <Box
-        pt="8px"
-        pb="24px"
-        px="24px"
-        bgColor="rgba(4, 77, 108, 0.05)"
-        borderRadius="4px"
-        borderLeft={`3px solid ${colors.primary}`}
-        display="flex"
-        flexDirection="column"
-        h={isPdfRenderMode ? 'auto' : '400px'}
-      >
+    <ExportableInsight exportId="ai-summary">
+      <Box>
+        <Title variant="h3" m="0" mb="16px">
+          {formatMessage(messages.whatArePeopleSaying)}
+        </Title>
         <Box
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-          mb="8px"
-          flexShrink={0}
-        >
-          <SummaryHeader showAiWarning={false} />
-          {!isPdfRenderMode && (
-            <Button
-              buttonStyle="text"
-              icon="refresh"
-              onClick={handleRefresh}
-              processing={isRegenerating}
-              padding="0"
-            >
-              {formatMessage(messages.refresh)}
-            </Button>
-          )}
-        </Box>
-
-        <Box
+          pt="8px"
+          pb="24px"
+          px="24px"
+          bgColor="rgba(4, 77, 108, 0.05)"
+          borderRadius="4px"
+          borderLeft={`3px solid ${colors.primary}`}
           display="flex"
           flexDirection="column"
-          gap="8px"
-          flex="1"
-          overflow={isPdfRenderMode ? 'visible' : 'hidden'}
+          h={isPdfRenderMode ? 'auto' : '400px'}
         >
-          <Box flex="1" overflow={isPdfRenderMode ? 'visible' : 'auto'}>
-            <InsightBody
-              text={summary}
-              filters={filters}
-              analysisId={analysisId}
-              projectId={projectId}
-              phaseId={phaseId}
-              backgroundTaskId={backgroundTaskId}
-            />
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            mb="8px"
+            flexShrink={0}
+          >
+            <SummaryHeader showAiWarning={false} />
+            {!isPdfRenderMode && (
+              <Button
+                buttonStyle="text"
+                icon="refresh"
+                onClick={handleRefresh}
+                processing={isRegenerating}
+                padding="0"
+              >
+                {formatMessage(messages.refresh)}
+              </Button>
+            )}
           </Box>
 
-          {!isPdfRenderMode && (
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              flexShrink={0}
-            >
-              <Box display="flex" flexDirection="column" gap="4px">
-                <Text m="0" fontSize="s" color="textSecondary">
-                  {missingInputsCount} / {inputCount}
-                </Text>
-                <Box display="flex" alignItems="center" gap="4px">
-                  <Box
-                    w="8px"
-                    h="8px"
-                    borderRadius="50%"
-                    bgColor={colors.primary}
-                  />
-                  <Text m="0" fontSize="s" color="textSecondary">
-                    {formatMessage(messages.newResponses, {
-                      count: missingInputsCount,
-                    })}
-                  </Text>
-                </Box>
-              </Box>
-
-              <Button
-                buttonStyle="secondary-outlined"
-                icon="eye"
-                onClick={handleExplore}
-                size="s"
-              >
-                {formatMessage(messages.explore)}
-              </Button>
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap="8px"
+            flex="1"
+            overflow={isPdfRenderMode ? 'visible' : 'hidden'}
+          >
+            <Box flex="1" overflow={isPdfRenderMode ? 'visible' : 'auto'}>
+              <InsightBody
+                text={summary ?? null}
+                filters={filters}
+                analysisId={analysisId}
+                projectId={projectId}
+                phaseId={phaseId}
+                backgroundTaskId={backgroundTaskId}
+              />
             </Box>
-          )}
+
+            {!isPdfRenderMode && (
+              <Box
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                flexShrink={0}
+              >
+                <Box display="flex" flexDirection="column" gap="4px">
+                  <Text m="0" fontSize="s" color="textSecondary">
+                    {missingInputsCount} / {inputCount}
+                  </Text>
+                  <Box display="flex" alignItems="center" gap="4px">
+                    <Box
+                      w="8px"
+                      h="8px"
+                      borderRadius="50%"
+                      bgColor={colors.primary}
+                    />
+                    <Text m="0" fontSize="s" color="textSecondary">
+                      {formatMessage(messages.newResponses, {
+                        count: missingInputsCount,
+                      })}
+                    </Text>
+                  </Box>
+                </Box>
+
+                <Button
+                  buttonStyle="secondary-outlined"
+                  icon="eye"
+                  onClick={handleExplore}
+                  size="s"
+                >
+                  {formatMessage(messages.explore)}
+                </Button>
+              </Box>
+            )}
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </ExportableInsight>
   );
 };
 

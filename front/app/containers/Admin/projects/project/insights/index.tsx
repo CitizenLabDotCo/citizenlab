@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Box, Title, Button, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Title,
+  Button,
+  Text,
+  Dropdown,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
 import usePhase from 'api/phases/usePhase';
 
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
+import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -23,6 +32,18 @@ import ParticipantsTimeline from './ParticipantsTimeline';
 import ParticipationMetrics from './participationMetrics/ParticipationMetrics';
 import InsightsPdfContent from './pdf/InsightsPdfContent';
 import { PdfExportProvider, usePdfExportContext } from './pdf/PdfExportContext';
+import wordMessages from './word/messages';
+import {
+  WordExportProvider,
+  useWordExportContext,
+} from './word/WordExportContext';
+
+const DropdownButton = styled(ButtonWithLink)`
+  button {
+    display: flex !important;
+    justify-content: flex-start !important;
+  }
+`;
 
 const AI_ANALYSIS_SUPPORTED_METHODS = [
   'ideation',
@@ -45,7 +66,7 @@ const hiddenContainerStyle: React.CSSProperties = {
   overflow: 'visible',
 };
 
-// Inner component that uses the PDF export context (visible UI)
+// Inner component that uses the export contexts (visible UI)
 const InsightsContent = () => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -53,11 +74,56 @@ const InsightsContent = () => {
   };
   const { data: phase } = usePhase(phaseId);
   const { formatMessage } = useIntl();
+  const [dropdownOpened, setDropdownOpened] = useState(false);
+
   const {
     downloadPdf,
     isDownloading: isDownloadingPdf,
     error: pdfError,
   } = usePdfExportContext();
+
+  const {
+    downloadWord,
+    isDownloading: isDownloadingWord,
+    exportStatus,
+    exportProgress,
+    allComponentsReady,
+    error: wordError,
+    captureWarnings,
+  } = useWordExportContext();
+
+  const isDownloading = isDownloadingPdf || isDownloadingWord;
+  const exportError = pdfError || wordError;
+
+  const getExportStatusText = () => {
+    switch (exportStatus) {
+      case 'preparing':
+        return formatMessage(wordMessages.exportPreparing);
+      case 'capturing':
+        return formatMessage(wordMessages.exportCapturing, {
+          completed: exportProgress.completed,
+          total: exportProgress.total,
+        });
+      case 'generating':
+        return formatMessage(wordMessages.exportGenerating);
+      default:
+        return null;
+    }
+  };
+
+  const toggleDropdown = (value?: boolean) => () => {
+    setDropdownOpened(value ?? !dropdownOpened);
+  };
+
+  const handleDownloadPdf = async () => {
+    setDropdownOpened(false);
+    await downloadPdf();
+  };
+
+  const handleDownloadWord = async () => {
+    setDropdownOpened(false);
+    await downloadWord();
+  };
 
   const participationMethod = phase?.data.attributes.participation_method;
   const { start_at, end_at } = phase?.data.attributes || {};
@@ -108,7 +174,6 @@ const InsightsContent = () => {
 
   return (
     <>
-      {/* Visible UI - never changes during PDF export */}
       <Box
         borderBottom="none"
         display="flex"
@@ -146,15 +211,50 @@ const InsightsContent = () => {
                 alignItems="flex-end"
               >
                 <Box display="flex" gap="8px">
-                  <Button
-                    buttonStyle={supportsAiAnalysis ? 'secondary' : 'primary'}
-                    icon="download"
-                    onClick={downloadPdf}
-                    processing={isDownloadingPdf}
-                    aria-label={formatMessage(messages.downloadInsightsPdf)}
-                  >
-                    <FormattedMessage {...messages.download} />
-                  </Button>
+                  <Box position="relative" display="inline-block">
+                    <Button
+                      buttonStyle={supportsAiAnalysis ? 'secondary' : 'primary'}
+                      icon="download"
+                      onClick={toggleDropdown()}
+                      processing={isDownloading}
+                      disabled={!allComponentsReady && !isDownloading}
+                      aria-label={formatMessage(messages.downloadInsightsPdf)}
+                    >
+                      <FormattedMessage {...messages.download} />
+                    </Button>
+                    <Dropdown
+                      width="180px"
+                      top="42px"
+                      right="0px"
+                      opened={dropdownOpened}
+                      onClickOutside={toggleDropdown(false)}
+                      content={
+                        <Box
+                          p="8px"
+                          display="flex"
+                          flexDirection="column"
+                          gap="4px"
+                        >
+                          <DropdownButton
+                            onClick={handleDownloadPdf}
+                            buttonStyle="text"
+                            padding="8px"
+                            fontSize={`${fontSizes.s}px`}
+                          >
+                            <FormattedMessage {...messages.downloadPdf} />
+                          </DropdownButton>
+                          <DropdownButton
+                            onClick={handleDownloadWord}
+                            buttonStyle="text"
+                            padding="8px"
+                            fontSize={`${fontSizes.s}px`}
+                          >
+                            <FormattedMessage {...messages.downloadWord} />
+                          </DropdownButton>
+                        </Box>
+                      }
+                    />
+                  </Box>
                   {supportsAiAnalysis && (
                     <Button
                       buttonStyle="primary"
@@ -166,9 +266,19 @@ const InsightsContent = () => {
                     </Button>
                   )}
                 </Box>
-                {pdfError && (
+                {isDownloadingWord && getExportStatusText() && (
+                  <Text fontSize="s" color="textSecondary" m="0px">
+                    {getExportStatusText()}
+                  </Text>
+                )}
+                {exportError && (
                   <Text fontSize="s" color="error" m="0px">
-                    {formatMessage(messages.errorPdfDownload)}
+                    {exportError}
+                  </Text>
+                )}
+                {captureWarnings.length > 0 && !isDownloading && (
+                  <Text fontSize="s" color="orange500" m="0px">
+                    {formatMessage(wordMessages.exportCaptureWarning)}
                   </Text>
                 )}
               </Box>
@@ -202,7 +312,6 @@ const InsightsContent = () => {
         </Box>
       </Box>
 
-      {/* Hidden container for PDF rendering - only mounted during export */}
       {isDownloadingPdf && (
         <div style={hiddenContainerStyle}>
           <PdfExportProvider isPdfRenderMode>
@@ -234,9 +343,17 @@ const AdminPhaseInsights = () => {
     .replace(/\s+/g, '-')
     .toLowerCase();
 
+  const participationMethod = phase?.data.attributes.participation_method;
+
   return (
     <PdfExportProvider filename={sanitizedPhaseName}>
-      <InsightsContent />
+      <WordExportProvider
+        filename={sanitizedPhaseName}
+        title={phaseName}
+        participationMethod={participationMethod}
+      >
+        <InsightsContent />
+      </WordExportProvider>
     </PdfExportProvider>
   );
 };
