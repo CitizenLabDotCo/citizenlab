@@ -1457,7 +1457,6 @@
   "app.containers.Admin.projects.project.insights.voters": "Pleidleiswyr",
   "app.containers.Admin.projects.project.insights.votes": "Pleidleisiau",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Pleidleisiau fesul person",
-  "app.containers.Admin.projects.project.insights.vsLast7Days": "o'i gymharu â'r 7 diwrnod diwethaf",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Ychwanegu at y cyfnod",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded": "Mae angen i chi gydsynio i hyn cyn y gallwch barhau",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formCanBeDownloadedHere": "Gellir lawrlwytho'r ffurflen yma.",

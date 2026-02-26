@@ -1457,7 +1457,6 @@
   "app.containers.Admin.projects.project.insights.voters": "Rinkėjai",
   "app.containers.Admin.projects.project.insights.votes": "Balsai",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Balsai vienam asmeniui",
-  "app.containers.Admin.projects.project.insights.vsLast7Days": "palyginti su paskutinėmis 7 dienomis",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Pridėti į fazę",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded": "Prieš tęsdami darbą, turite su tuo sutikti.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formCanBeDownloadedHere": "Formą galite atsisiųsti čia.",

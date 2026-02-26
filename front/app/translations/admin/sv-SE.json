@@ -1457,7 +1457,6 @@
   "app.containers.Admin.projects.project.insights.voters": "Väljare",
   "app.containers.Admin.projects.project.insights.votes": "Röster",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Röster per person",
-  "app.containers.Admin.projects.project.insights.vsLast7Days": "jämfört med de senaste 7 dagarna",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Lägg till fas",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded": "Du måste godkänna detta innan du kan fortsätta",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formCanBeDownloadedHere": "Formuläret kan laddas ner här.",

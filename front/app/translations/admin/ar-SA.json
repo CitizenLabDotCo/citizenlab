@@ -1457,7 +1457,6 @@
   "app.containers.Admin.projects.project.insights.voters": "الناخبون",
   "app.containers.Admin.projects.project.insights.votes": "الأصوات",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "عدد الأصوات لكل شخص",
-  "app.containers.Admin.projects.project.insights.vsLast7Days": "مقارنة بالأيام السبعة الماضية",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "أضف إلى المرحلة",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded": "تحتاج إلى الموافقة على هذا قبل أن تتمكن من المتابعة",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formCanBeDownloadedHere": "يمكن تنزيل النموذج هنا.",

@@ -1457,7 +1457,6 @@
   "app.containers.Admin.projects.project.insights.voters": "Birači",
   "app.containers.Admin.projects.project.insights.votes": "Glasovi",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Glasovi po osobi",
-  "app.containers.Admin.projects.project.insights.vsLast7Days": "u odnosu na posljednjih 7 dana",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Dodaj u fazu",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded": "Morate pristati na ovo prije nego što možete nastaviti",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formCanBeDownloadedHere": "Obrazac možete preuzeti ovdje.",

@@ -1457,7 +1457,6 @@
   "app.containers.Admin.projects.project.insights.voters": "Seçmenler",
   "app.containers.Admin.projects.project.insights.votes": "Oylar",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Kişi başına oy",
-  "app.containers.Admin.projects.project.insights.vsLast7Days": "vs son 7 gün",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Faza ekle",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded": "Devam edebilmeniz için buna onay vermeniz gerekir",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formCanBeDownloadedHere": "Formu buradan indirebilirsiniz.",

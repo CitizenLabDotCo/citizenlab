@@ -1457,7 +1457,6 @@
   "app.containers.Admin.projects.project.insights.voters": "Eleitores",
   "app.containers.Admin.projects.project.insights.votes": "Votos",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Votos por pessoa",
-  "app.containers.Admin.projects.project.insights.vsLast7Days": "em relação aos últimos 7 dias",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Adicionar à fase",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded": "Você precisa consentir com isso antes de continuar",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formCanBeDownloadedHere": "O formulário pode ser baixado aqui.",

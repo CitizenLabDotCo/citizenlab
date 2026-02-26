@@ -1457,7 +1457,6 @@
   "app.containers.Admin.projects.project.insights.voters": "Velgerne",
   "app.containers.Admin.projects.project.insights.votes": "Stemmer",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Stemmer per person",
-  "app.containers.Admin.projects.project.insights.vsLast7Days": "vs siste 7 dager",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Legg til i fase",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded": "Du må samtykke til dette før du kan fortsette",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formCanBeDownloadedHere": "Skjemaet kan lastes ned her.",

@@ -1457,7 +1457,6 @@
   "app.containers.Admin.projects.project.insights.voters": "Äänestäjät",
   "app.containers.Admin.projects.project.insights.votes": "Äänet",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Ääniä henkilöä kohden",
-  "app.containers.Admin.projects.project.insights.vsLast7Days": "verrattuna viimeisiin 7 päivään",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Lisää vaiheeseen",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded": "Sinun on hyväksyttävä tämä ennen kuin voit jatkaa",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formCanBeDownloadedHere": "Lomakkeen voi ladata täältä.",

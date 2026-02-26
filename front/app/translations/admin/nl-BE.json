@@ -1457,7 +1457,6 @@
   "app.containers.Admin.projects.project.insights.voters": "Stemmers",
   "app.containers.Admin.projects.project.insights.votes": "Stemmen",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Stemmen per persoon",
-  "app.containers.Admin.projects.project.insights.vsLast7Days": "vs laatste 7 dagen",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Toevoegen aan fase",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded": "Je moet hiermee instemmen voordat je verder kunt gaan",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formCanBeDownloadedHere": "Je kunt het formulier hier downloaden.",

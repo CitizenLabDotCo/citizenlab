@@ -1457,7 +1457,6 @@
   "app.containers.Admin.projects.project.insights.voters": "Vēlētāji",
   "app.containers.Admin.projects.project.insights.votes": "Balsis",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Balsis uz personu",
-  "app.containers.Admin.projects.project.insights.vsLast7Days": "pret pēdējām 7 dienām",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.addToPhase": "Pievienot fāzei",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded": "Pirms turpināt darbu, jums tam ir jāpiekrīt.",
   "app.containers.Admin.projects.project.offlineInputs.ImportModal.formCanBeDownloadedHere": "Veidlapu var lejupielādēt šeit.",
