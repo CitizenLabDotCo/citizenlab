@@ -140,6 +140,8 @@ module TranslateMissingLocales
         next if record.readonly?
 
         multiloc_columns.each do |column|
+          next if column == 'author_multiloc' # Author multiloc is not important to translate - waste of money!
+
           issue = process_multiloc_field(model, record, column)
           model_issues << issue if issue
         end
