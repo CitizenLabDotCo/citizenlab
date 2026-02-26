@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 import { FormProvider } from 'react-hook-form';
@@ -39,7 +39,7 @@ import PageTitle from '../Page/PageTitle';
 import { FormValues } from '../Page/types';
 import usePageForm from '../Page/usePageForm';
 import PostParticipationBox from '../PostParticipationBox';
-import { getFormCompletionPercentage } from '../util';
+import { getFormCompletionPercentage, trackFormPageView } from '../util';
 
 const StyledForm = styled.form`
   height: 100%;
@@ -102,6 +102,10 @@ const IdeationPage = ({
   const [postAnonymously, setPostAnonymously] = useState(
     idea?.data.attributes.anonymous || false
   );
+
+  useEffect(() => {
+    trackFormPageView(currentPageIndex, lastPageIndex);
+  }, [currentPageIndex, lastPageIndex]);
 
   // allow moderators also to edit BudgetField
   const isAdminOrModerator =
@@ -301,6 +305,7 @@ const IdeationPage = ({
                       )}
                     {showPostParticipationSignup && project && (
                       <PostParticipationBox
+                        showJoinDiscussionsBulletPoint
                         onCreateAccount={() => {
                           triggerPostParticipationFlow({
                             name: 'followProjectAndRedirect',

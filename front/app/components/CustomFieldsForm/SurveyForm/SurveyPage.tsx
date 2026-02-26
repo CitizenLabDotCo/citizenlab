@@ -32,7 +32,7 @@ import PageTitle from '../Page/PageTitle';
 import { FormValues } from '../Page/types';
 import usePageForm from '../Page/usePageForm';
 import PostParticipationBox from '../PostParticipationBox';
-import { getFormCompletionPercentage, Pages } from '../util';
+import { getFormCompletionPercentage, Pages, trackFormPageView } from '../util';
 
 import {
   determineNextPageNumber,
@@ -124,6 +124,10 @@ const SurveyPage = ({
     currentPage: page,
     formData: methods.watch(),
   });
+
+  useEffect(() => {
+    trackFormPageView(currentPageIndex, lastPageIndex);
+  }, [currentPageIndex, lastPageIndex]);
 
   // Clear values from skipped pages when form data changes
   // This ensures that if a user changes an answer that affects conditional logic,
