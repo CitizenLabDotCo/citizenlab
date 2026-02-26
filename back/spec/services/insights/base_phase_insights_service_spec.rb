@@ -792,15 +792,16 @@ RSpec.describe Insights::BasePhaseInsightsService do
         create(:basket_participation, acted_at: 4.days.ago, participant_id: 'user_3')
       ]
 
-      # Unique participants in 7-14 days ago: user_1, user_2 => 2
-      # Unique participants in last 7 days: user_1, user_3 => 2
-      expect(service.send(:participations_7_day_change, participations)).to eq(0.0)
+      # Participations count 7-days ago: 2
+      # Participantions count now: 4
+      expect(service.send(:participations_7_day_change, participations)).to eq(100.0)
 
       # Adding one more participation in the last 7 days
       participations << create(:basket_participation, acted_at: 3.days.ago, participant_id: 'user_4')
 
-      # Unique participants in last 7 days: user_1, user_3, user_4 => 3
-      expect(service.send(:participations_7_day_change, participations)).to eq(50.0)
+      # Participations count 7-days ago: 2
+      # Participantions count now: 5
+      expect(service.send(:participations_7_day_change, participations)).to eq(150.0)
     end
   end
 

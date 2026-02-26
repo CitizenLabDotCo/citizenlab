@@ -114,15 +114,20 @@ module Insights
       return nil unless phase_has_run_more_than_14_days?
       return 0.0 if participations.empty?
 
-      participations_last_7_days = participations.select { |p| p[:acted_at] >= 7.days.ago }
-      participations_previous_7_days = participations.select do |p|
-        p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
-      end
+      # participations_last_7_days = participations.select { |p| p[:acted_at] >= 7.days.ago }
+      # participations_previous_7_days = participations.select do |p|
+      #   p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
+      # end
 
-      percentage_change(
-        participations_previous_7_days.count,
-        participations_last_7_days.count
-      )
+      # percentage_change(
+      #   participations_previous_7_days.count,
+      #   participations_last_7_days.count
+      # )
+
+      participations_count = participations.count
+      participations_count_7_days_ago = participations.select { |p| p[:acted_at] < 7.days.ago }.count
+
+      percentage_change(participations_count_7_days_ago, participations_count)
     end
 
     def participant_id(item_id, user_id, user_hash = nil)
