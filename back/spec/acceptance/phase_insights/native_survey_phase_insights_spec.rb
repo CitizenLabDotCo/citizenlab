@@ -115,7 +115,7 @@ resource 'Phase insights' do
         participants: 3,
         participants_7_day_percent_change: 50.0, # from 2 unique participants 7-days ago, to 3 now = 50% increase
         participation_rate_as_percent: 100.0,
-        participation_rate_7_day_percent_change: 300.0, # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 1.0 = 0% change
+        participation_rate_7_day_percent_change: 50.0, # participation_rate_7_days_ago = 0.6666666666666666, participation_rate_now = 1.0 = (((1.0 - 0.6666666666666666).to_f / 0.6666666666666666) * 100.0).round(1) = 50% increase
         native_survey: {
           surveys_submitted: 4,
           surveys_submitted_7_day_percent_change: 100.0, # from 1 (in week before last) to 2 (in last 7 days) = +100% change

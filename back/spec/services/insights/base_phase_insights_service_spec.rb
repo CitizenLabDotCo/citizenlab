@@ -58,7 +58,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
           participants: 3,
           participants_7_day_percent_change: 50.0, # From 2 (7 to 14 days ago) to 3 (last 7-day period) unique participants = 50% increase
           participation_rate_as_percent: 75.0,
-          participation_rate_7_day_percent_change: 50.0 # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 0.667 = (((1 - 0.667).to_f / 0.667) * 100.0).round(1)
+          participation_rate_7_day_percent_change: 12.5 # participation_rate_7_days_ago=0.6666666666666666, participation_rate_now=0.75 = (((0.75 - 0.6666666666666666).to_f / 0.6666666666666666) * 100.0).round(1)
         }
       )
     end
@@ -107,7 +107,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
       )
     end
 
-    it 'handles zero visitors in either of last two 7-day periods as expected' do
+    it 'handles zero visitors as expected' do
       participations = {
         voting: [
           create(:basket_participation, acted_at: 10.days.ago),
@@ -134,7 +134,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
         {
           visitors_7_day_percent_change: 0.0,
           participants_7_day_percent_change: 200.0,
-          participation_rate_7_day_percent_change: 'no_visitors_in_one_or_both_periods'
+          participation_rate_7_day_percent_change: 200.0 # participation_rate_7_days_ago=1.0, participation_rate_now=3.0 = (((3.0 - 1.0).to_f / 1.0) * 100.0).round(1) = 200% change
         }
       )
 

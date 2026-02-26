@@ -66,30 +66,31 @@ module Insights
         p[:acted_at] < 7.days.ago
       end.pluck(:participant_id).uniq.count
 
-      participants_last_7_days_count = flattened_participations.select do |p|
-        p[:acted_at] >= 7.days.ago
-      end.pluck(:participant_id).uniq.count
+      # participants_last_7_days_count = flattened_participations.select do |p|
+      #   p[:acted_at] >= 7.days.ago
+      # end.pluck(:participant_id).uniq.count
 
-      participants_previous_7_days_count = flattened_participations.select do |p|
-        p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
-      end.pluck(:participant_id).uniq.count
+      # participants_previous_7_days_count = flattened_participations.select do |p|
+      #   p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
+      # end.pluck(:participant_id).uniq.count
 
       visitors_count_7_days_ago = visits.select do |v|
         v[:acted_at] < 7.days.ago
       end.pluck(:visitor_id).uniq.count
 
-      visitors_last_7_days_count = visits.select do |v|
-        v[:acted_at] >= 7.days.ago
-      end.pluck(:visitor_id).uniq.count
+      # visitors_last_7_days_count = visits.select do |v|
+      #   v[:acted_at] >= 7.days.ago
+      # end.pluck(:visitor_id).uniq.count
 
-      visitors_previous_7_days_count = visits.select do |v|
-        v[:acted_at] < 7.days.ago && v[:acted_at] >= 14.days.ago
-      end.pluck(:visitor_id).uniq.count
+      # visitors_previous_7_days_count = visits.select do |v|
+      #   v[:acted_at] < 7.days.ago && v[:acted_at] >= 14.days.ago
+      # end.pluck(:visitor_id).uniq.count
 
-      participation_rate_7_day_percent_change = if visitors_last_7_days_count > 0 && visitors_previous_7_days_count > 0
-        participation_rate_last_7_days = participants_last_7_days_count.to_f / visitors_last_7_days_count
-        participation_rate_previous_7_days = participants_previous_7_days_count.to_f / visitors_previous_7_days_count
-        percentage_change(participation_rate_previous_7_days, participation_rate_last_7_days)
+      participation_rate_7_day_percent_change = if visitors_count > 0 && visitors_count_7_days_ago > 0
+        participation_rate_7_days_ago = participants_count_7_days_ago.to_f / visitors_count_7_days_ago
+        participation_rate_now = participants_count.to_f / visitors_count
+        puts "Debug: participation_rate_7_days_ago = #{participation_rate_7_days_ago}, participation_rate_now = #{participation_rate_now}"
+        percentage_change(participation_rate_7_days_ago, participation_rate_now)
       else
         'no_visitors_in_one_or_both_periods'
       end

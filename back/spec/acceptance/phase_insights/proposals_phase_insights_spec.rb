@@ -120,7 +120,7 @@ resource 'Phase insights' do
         participants: 3,
         participants_7_day_percent_change: 50.0, # from 2 unique participants 7-days ago, to 3 now = 50% change
         participation_rate_as_percent: 75.0,
-        participation_rate_7_day_percent_change: 0.0, # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 1.0 = 0% change
+        participation_rate_7_day_percent_change: 12.5, # participation_rate_7_days_ago = 0.6666666666666666, participation_rate_now = 0.75 = (((0.75 - 0.6666666666666666).to_f / 0.6666666666666666) * 100.0).round(1) = 12.5% change
         proposals: {
           ideas_posted: 2,
           ideas_posted_7_day_percent_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) => 0% change

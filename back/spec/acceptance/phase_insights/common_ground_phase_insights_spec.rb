@@ -90,7 +90,7 @@ resource 'Phase insights' do
         participants: 2,
         participants_7_day_percent_change: 100.0, # from 1 unique participant 7-days ago, to 2 now = 100% increase
         participation_rate_as_percent: 66.7,
-        participation_rate_7_day_percent_change: 100.0, # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 0.5 = (((1.0 - 0.5).to_f / 0.5) * 100.0).round(1)
+        participation_rate_7_day_percent_change: 33.3, # participation_rate_7_days_ago = 0.5, participation_rate_now = 0.6666666666666666 = (((0.6666666666666666 - 0.5).to_f / 0.5) * 100.0).round(1)
         common_ground: {
           associated_ideas: 4,
           ideas_posted: 2,
