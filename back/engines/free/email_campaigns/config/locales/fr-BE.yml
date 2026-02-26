@@ -492,11 +492,11 @@ fr-BE:
       subject: '« %{input_title} » est presque publié'
       preheader: 'Le statut de votre contribution est actuellement « %{prescreening_status_title} »'
     screening_digest:
-      subject: '%{count} contributions en attente d''examen'
+      subject: '%{count} contributions en attente de validation'
       preheader: 'Examinez les données à l''adresse %{organizationName}'
       title: '%{firstName} Les contributions sont en attente d''être examinées'
       event_description: "Ces contributions doivent être approuvées avant d'être rendues publiques. Vous pouvez les examiner dans le gestionnaire de contributions de l'ensemble de la plateforme ou dans le gestionnaire de contributions de chaque phase."
-      cta_button: 'Examiner des contributions'
+      cta_button: 'Examiner les contributions'
       inputs_awaiting_screening: 'Contributions à examiner'
     voting_basket_submitted:
       subject: '%{organizationName}: Vous avez voté avec succès'
