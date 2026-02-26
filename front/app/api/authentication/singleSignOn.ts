@@ -9,6 +9,8 @@ import {
   SignUpInError,
 } from 'containers/Authentication/typings';
 
+import { trackVirtualPageView } from 'utils/analytics';
+
 export interface SSOProviderMap {
   azureactivedirectory: 'azureactivedirectory';
   azureactivedirectory_b2c: 'azureactivedirectory_b2c';
@@ -60,6 +62,9 @@ export const redirectToSSOProvider = (
   }
   localStorage.setItem('auth_context', JSON.stringify(metaData.context));
   localStorage.setItem('auth_path', window.location.pathname as RouteType);
+
+  // Track the SSO click as a pageView
+  trackVirtualPageView(`${window.location.pathname}/auth/sso/${provider}`);
 
   setHref(provider, metaData, verification, flow, claimTokens);
 };
