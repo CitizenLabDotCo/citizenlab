@@ -6,7 +6,7 @@ export default defineMessages({
     defaultMessage: 'Stay connected',
   },
   createOrLinkAnAccountToFollow: {
-    id: 'app.components.CustomFieldsForm.PostParticipationBox.createOrLinkAnAccountToFollow',
+    id: 'app.components.CustomFieldsForm.PostParticipationBox.createOrLinkAnAccountToFollow2',
     defaultMessage:
       'Create or link an existing account to follow what happens next and take part in other conversations.',
   },
@@ -19,7 +19,7 @@ export default defineMessages({
     defaultMessage: 'Get updates when there are next steps',
   },
   joinDiscussions: {
-    id: 'app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions2',
+    id: 'app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions3',
     defaultMessage:
       'Join discussions and receive notifications when others engage with your input',
   },
