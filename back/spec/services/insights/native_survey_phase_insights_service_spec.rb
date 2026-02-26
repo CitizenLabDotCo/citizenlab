@@ -141,7 +141,7 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
         surveys_submitted: 6,
         surveys_submitted_7_day_percent_change: 50.0, # from 4 by 7-days ago, to 6 now = 50% increase
         completion_rate_as_percent: 85.7, # 6 submitted surveys out of 7 ideas created during phase
-        completion_rate_7_day_percent_change: 33.3 # completion_rate_last_7_days: 1.0, completion_rate_previous_7_days: 0.75 = 33.3% change
+        completion_rate_7_day_percent_change: 7.1 # completion_rate_7_days_ago = 0.8, completion_rate_now = 0.8571428571428571: 0.75 = 7.1% increase
       })
     end
 

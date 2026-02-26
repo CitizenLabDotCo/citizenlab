@@ -46,22 +46,15 @@ module Insights
 
       return result unless phase_has_run_more_than_14_days?
 
-      ideas_last_7_days_count = phase_ideas.where(created_at: 7.days.ago..).count
-      ideas_previous_7_days_count = phase_ideas.where(created_at: 14.days.ago...7.days.ago).count
-
       posted_ideas_count_7_days_ago = phase_ideas.where(created_at: ...7.days.ago).count
-
-      submitted_last_7_days_count = participations[:submitting_idea].count { |p| p[:acted_at] >= 7.days.ago }
-      submitted_previous_7_days_count = participations[:submitting_idea].count do |p|
-        p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
-      end
-
       submitted_surveys_count = participations[:submitting_idea].count
       submitted_surveys_count_7_days_ago = participations[:submitting_idea].count { |p| p[:acted_at] < 7.days.ago }
 
       completion_rate_7_day_percent_change = if posted_ideas_count > 0 && posted_ideas_count_7_days_ago > 0
         completion_rate_now = submitted_surveys_count.to_f / posted_ideas_count
         completion_rate_7_days_ago = submitted_surveys_count_7_days_ago.to_f / posted_ideas_count_7_days_ago
+
+        puts "Debug: completion_rate_now = #{completion_rate_now}, completion_rate_7_days_ago = #{completion_rate_7_days_ago}"
 
         percentage_change(completion_rate_7_days_ago, completion_rate_now)
       else
