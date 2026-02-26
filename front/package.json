@@ -40,9 +40,7 @@
     "dependency-cruiser": "depcruise app --validate",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build -c .storybook-build",
-    "chromatic": "chromatic --exit-once-uploaded",
-    "generate-component-library-types": "tsc app/component-library/index.tsx --jsx react --esModuleInterop true --skipLibCheck --emitDeclarationOnly --declaration --declarationDir app/component-library/dist",
-    "build-component-library": "rimraf ./app/component-library/dist && npm run generate-component-library-types && rollup -c ./app/component-library/rollup.config.cjs --bundleConfigAsCjs"
+    "chromatic": "chromatic --exit-once-uploaded"
   },
   "jest-junit": {
     "addFileAttribute": "true"
@@ -156,11 +154,6 @@
     "@babel/preset-typescript": "7.x",
     "@cypress/skip-test": "2.6.1",
     "@cypress/webpack-preprocessor": "6.0.1",
-    "@rollup/plugin-commonjs": "25.0.7",
-    "@rollup/plugin-node-resolve": "15.2.3",
-    "@rollup/plugin-replace": "^6.0.2",
-    "@rollup/plugin-terser": "0.4.4",
-    "@rollup/plugin-typescript": "9.0.2",
     "@sentry/vite-plugin": "^2.22.7",
     "@storybook/addon-viewport": "8.6.15",
     "@storybook/builder-vite": "8.6.15",
@@ -244,11 +237,6 @@
     "readline": "1.3.0",
     "resize-observer-polyfill": "1.5.1",
     "rimraf": "6.1.3",
-    "rollup": "3.29.5",
-    "rollup-plugin-dts": "6.1.1",
-    "rollup-plugin-peer-deps-external": "2.2.4",
-    "rollup-plugin-postcss": "4.0.2",
-    "rollup-plugin-typescript": "1.0.1",
     "shelljs": "0.8.5",
     "storybook": "8.6.15",
     "storybook-react-intl": "^3.2.2",
