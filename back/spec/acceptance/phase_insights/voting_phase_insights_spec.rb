@@ -136,7 +136,7 @@ resource 'Phase insights' do
           voting_method: 'multiple_voting',
           associated_ideas: 3,
           online_votes: 6,
-          online_votes_7_day_percent_change: 0.0, # from 3 (in week before last) to 3 (in last 7 days) = 0% change
+          online_votes_7_day_percent_change: 20.0, # from 5 by 7-days ago, to 6 now = 20% increase
           offline_votes: 3,
           voters: 3,
           voters_7_day_percent_change: 50.0, # from 2 unique voters by 7-days ago, to 3 now = 50% increase
