@@ -283,11 +283,20 @@ namespace :input_term do
         ```
         #{JSON.pretty_generate(term_translations)}
         ```
-        Return the updated translations in JSON, where the keys are the translation IDs and the values are the updated translations.  Do not modify the keys. Repond with valid JSON ONLY, don't wrap it in markdown code blocks.
+        Return the updated translations in JSON, where the keys are the translation IDs and the values are the updated translations.
         "
-        llm_output = Analysis::LLM::ClaudeOpus45.new.chat(prompt)
+        # puts prompt
 
-        parsed_output = JSON.parse(llm_output)
+        llm_output = Analysis::LLM::Gemini3Flash.new.chat(prompt, response_schema: {
+          type: 'object',
+          properties: term_translations.transform_values { |_translation| { type: 'string' } },
+          required: term_translations.keys
+        })
+
+        # puts llm_output
+
+        # parsed_output = JSON.parse(llm_output)
+        parsed_output = llm_output # Assuming the LLM output is already a parsed JSON object as per the response schema
         # We append to ../front/app/translations/corrections/<locale>.json only those translations that have changed, so that we can easily review the changes and then manually apply them in crowdin
         changed_non_admin = parsed_output.select { |id, translation| term_translations[id] != translation && !admin_id?(id) }
         changed_admin = parsed_output.select { |id, translation| term_translations[id] != translation && admin_id?(id) }
