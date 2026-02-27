@@ -276,6 +276,16 @@ RSpec.describe Basket do
           expect(project.reload.votes_count).to eq 0
         end
       end
+
+      context 'when votes_count exceeds 4-byte integer limit' do
+        it 'stores the votes_count without overflow on the phase and project' do
+          basket = create(:basket, phase: project.phases.first, ideas: ideas, submitted_at: Time.zone.now)
+          basket.baskets_ideas.update_all(votes: 1_500_000_000)
+          basket.update_counts!
+          expect(current_phase.reload.votes_count).to eq 3_000_000_000
+          expect(project.reload.votes_count).to eq 3_000_000_000
+        end
+      end
     end
   end
 end
