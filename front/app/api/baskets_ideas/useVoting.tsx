@@ -28,6 +28,7 @@ interface VotingInterface {
   userHasVotesLeft?: boolean;
   processing?: boolean;
   numberOfOptionsSelected?: number;
+  basketId?: string;
 }
 
 const VotingInterfaceContext = createContext<VotingInterface | null>(null);
@@ -62,11 +63,18 @@ const useVotingInterface = ({
 
   const [votesPerIdea, setVotesPerIdea] = useState<Record<string, number>>({});
 
-  const { voteForIdea, processing } = useVoteForIdea(phase);
+  const {
+    voteForIdea,
+    processing,
+    basketId: basketIdFromVote,
+  } = useVoteForIdea(phase);
 
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const basketId = phase?.relationships?.user_basket?.data?.id;
+  const phaseBasketId = phase?.relationships?.user_basket?.data?.id;
+  // For first-time voters, the phase hasn't refetched yet when the basket
+  // is created. Fall back to the basket ID from the vote response.
+  const basketId = phaseBasketId || basketIdFromVote;
   const { data: basketIdeas, isFetching: basketIdeasLoading } =
     useBasketsIdeas(basketId);
 
@@ -169,6 +177,7 @@ const useVotingInterface = ({
     userHasVotesLeft,
     numberOfOptionsSelected,
     processing,
+    basketId,
   };
 };
 
@@ -183,6 +192,7 @@ const useVoting = (): VotingInterface => {
       userHasVotesLeft: undefined,
       processing: undefined,
       numberOfOptionsSelected: undefined,
+      basketId: undefined,
     };
   }
 
