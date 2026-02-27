@@ -38,6 +38,8 @@ export const locales = [
   'fr',
   'fr-BE',
   'fr-FR',
+  'ga',
+  'ga-IE',
   'hr-HR',
   'hu-HU',
   'it-IT',
@@ -80,6 +82,7 @@ export const appLocalePairs = {
   'fi-FI': 'Suomi',
   'fr-BE': 'Français (Belgique)',
   'fr-FR': 'Français (France)',
+  'ga-IE': 'Gaeilge',
   'hr-HR': 'Hrvatski',
   'hu-HU': 'Magyar',
   'it-IT': 'Italiano',
@@ -124,6 +127,7 @@ export const appGraphqlLocalePairs = {
   fr: 'fr',
   frBe: 'fr-BE',
   frFr: 'fr-FR',
+  gaIe: 'ga-IE',
   hrHr: 'hr-HR',
   huHu: 'hu-HU',
   itIt: 'it-IT',
@@ -165,6 +169,7 @@ export const shortenedAppLocalePairs = {
   'fi-FI': 'Suomi',
   'fr-BE': 'Français',
   'fr-FR': 'Français',
+  'ga-IE': 'Gaeilge',
   'hr-HR': 'Hrvatski',
   'hu-HU': 'Magyar',
   'it-IT': 'Italiano',
@@ -204,6 +209,7 @@ export const appLocalesMomentPairs = {
   'fi-FI': 'fi',
   'fr-BE': 'fr',
   'fr-FR': 'fr',
+  'ga-IE': 'ga',
   'hr-HR': 'hr',
   'hu-HU': 'hu',
   'it-IT': 'it',
@@ -294,6 +300,10 @@ export async function localeGetter(localeName: string) {
     case 'fr':
       // @ts-ignore
       await import('moment/dist/locale/fr');
+      break;
+    case 'ga':
+      // @ts-ignore
+      await import('moment/dist/locale/ga');
       break;
     case 'hr':
       // @ts-ignore
