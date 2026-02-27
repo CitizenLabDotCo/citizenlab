@@ -6,10 +6,12 @@ module IdFedera
 
     ENVIRONMENTS = {
       'test' => {
-        metadata_xml_file: File.join(IdFedera::Engine.root, 'config', 'saml', 'idp_metadata_test.xml')
+        metadata_xml_file: File.join(IdFedera::Engine.root, 'config', 'saml', 'idp_metadata_test.xml'),
+        logout_url: 'https://federatest.lepida.it/logout/'
       },
       'production' => {
-        metadata_xml_file: File.join(IdFedera::Engine.root, 'config', 'saml', 'idp_metadata_production.xml')
+        metadata_xml_file: File.join(IdFedera::Engine.root, 'config', 'saml', 'idp_metadata_production.xml'),
+        logout_url: 'https://federa.lepida.it/logout/'
       }
     }.freeze
 
@@ -45,11 +47,23 @@ module IdFedera
       idp_metadata_parser = OneLogin::RubySaml::IdpMetadataParser.new
       idp_metadata = idp_metadata_parser.parse_to_hash(File.read(metadata_file))
 
-      # binding.pry
+      # FedERa requires a RelayState parameter in the SAML AuthnRequest.
+      # omniauth-saml's additional_params_for_authn_request reads RelayState from
+      # request.params via idp_sso_service_url_runtime_params. We inject a RelayState
+      # into the query string so it gets picked up and forwarded to the IdP.
+      unless Rack::Utils.parse_query(env['QUERY_STRING'] || '').key?('RelayState')
+        relay_state = SecureRandom.uuid
+        qs = env['QUERY_STRING'] || ''
+        env['QUERY_STRING'] = qs.empty? ? "RelayState=#{relay_state}" : "#{qs}&RelayState=#{relay_state}"
+      end
+
+      verification_config = config
 
       options = idp_metadata.merge(
         issuer: "#{configuration.base_backend_uri}/auth/federa/metadata",
         assertion_consumer_service_url: "#{configuration.base_backend_uri}/auth/federa/callback",
+        private_key: verification_config[:private_key],
+        idpis_sso_service_url_runtime_params: { RelayState: :RelayState },
         authn_context: SPID_AUTHN_CONTEXT.fetch(spid_level, SPID_AUTHN_CONTEXT['1']),
         security: {
           authn_requests_signed: true,
@@ -58,6 +72,17 @@ module IdFedera
       )
 
       env['omniauth.strategy'].options.merge!(options)
+    end
+
+    def logout_url(_user)
+      configuration = AppConfiguration.instance
+      environment = configuration.settings('federa_login', 'environment')
+      base_url = ENVIRONMENTS.dig(environment, :logout_url)
+      params = {
+        spid: "#{configuration.base_backend_uri}/auth/federa/metadata",
+        spurl: Frontend::UrlService.new.home_url
+      }
+      "#{base_url}?#{params.to_query}"
     end
 
     def email_always_present?

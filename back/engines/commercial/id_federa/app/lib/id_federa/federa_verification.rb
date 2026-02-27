@@ -17,11 +17,16 @@ module IdFedera
     end
 
     def config_parameters
-      %i[environment spid_level enabled_for_verified_actions]
+      %i[environment spid_level private_key enabled_for_verified_actions]
     end
 
     def config_parameters_schema
       {
+        private_key: {
+          private: true,
+          type: 'string',
+          description: 'SP private key for signing SAML AuthnRequests. Should start with "-----BEGIN PRIVATE KEY-----".'
+        },
         enabled_for_verified_actions: {
           private: true,
           type: 'boolean',
