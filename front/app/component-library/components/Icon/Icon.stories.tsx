@@ -54,9 +54,7 @@ export const AllIcons: Story = {
         .map((iconName) => (
           <IconWithName key={iconName} name={iconName as IconNames} />
         ))}
-      <Box h="200px" bgColor="red">
-        End
-      </Box>
+      <Box bgColor="red">End</Box>
     </Box>
   ),
 };
