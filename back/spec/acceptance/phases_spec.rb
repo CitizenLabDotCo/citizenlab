@@ -571,6 +571,7 @@ resource 'Phases' do
         parameter :reacting_dislike_limited_max, 'Number of dislikes a citizen can perform in this phase, only if the reacting_dislike_method is limited', required: false
         parameter :allow_anonymous_participation, 'Only for ideation and budgeting phases. Allow users to post inputs and comments anonymously.', required: false
         parameter :presentation_mode, "Describes the presentation of the project's items (i.e. ideas), either #{Phase::PRESENTATION_MODES.join(',')}.", required: false
+        parameter :available_views, "The available views for the phase, an array of #{Phase::PRESENTATION_MODES.join(',')}.", required: false
         parameter :survey_embed_url, 'The identifier for the survey from the external API, if participation_method is set to survey', required: false
         parameter :survey_service, "The name of the service of the survey. Either #{Surveys::SurveyPhase::SURVEY_SERVICES.join(',')}", required: false
         parameter :voting_method, "Either #{Phase::VOTING_METHODS.join(',')}", required: false
@@ -603,6 +604,7 @@ resource 'Phases' do
       let(:reacting_like_method) { 'limited' }
       let(:reacting_like_limited_max) { 6 }
       let(:presentation_mode) { 'map' }
+      let(:available_views) { %w[card map] }
       let(:allow_anonymous_participation) { true }
       let(:prescreening_mode) { 'all' }
       let(:similarity_enabled) { true }

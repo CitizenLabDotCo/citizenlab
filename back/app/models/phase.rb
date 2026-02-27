@@ -127,6 +127,7 @@ class Phase < ApplicationRecord
     validates :presentation_mode, presence: true
     validates :similarity_enabled, inclusion: { in: [true, false] }
     validates :similarity_threshold_title, :similarity_threshold_body, presence: true, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 1 }
+    validate :validate_available_views
   end
 
   validates :submission_enabled, inclusion: { in: [true, false] }, if: lambda { |phase|
@@ -318,6 +319,10 @@ class Phase < ApplicationRecord
     !AppConfiguration.instance.feature_activated?('disable_disliking')
   end
 
+  def feed_enabled?
+    available_views&.include?('feed')
+  end
+
   def prescreening_enabled? = prescreening_mode.present?
   def prescreening_flagged_only? = prescreening_mode == 'flagged_only'
   def prescreening_all? = prescreening_mode == 'all'
@@ -415,6 +420,29 @@ class Phase < ApplicationRecord
 
   def set_presentation_mode
     self.presentation_mode ||= 'card'
+    self.available_views = ['card'] if available_views.blank?
+    self.available_views |= [presentation_mode] unless available_views.include?(presentation_mode)
+  end
+
+  def validate_available_views
+    if available_views.blank? || !available_views.is_a?(Array)
+      errors.add(:available_views, :blank, message: 'must be a non-empty array')
+      return
+    end
+
+    unless available_views.all? { |v| PRESENTATION_MODES.include?(v) }
+      errors.add(:available_views, :invalid, message: 'contains invalid view modes')
+      return
+    end
+
+    unless available_views.include?('card')
+      errors.add(:available_views, :invalid, message: 'must include card view')
+      return
+    end
+
+    unless available_views.include?(presentation_mode)
+      errors.add(:available_views, :invalid, message: 'must include the default presentation mode')
+    end
   end
 
   # Delegate any rules specific to a method to the participation method itself
