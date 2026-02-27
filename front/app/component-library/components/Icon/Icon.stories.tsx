@@ -27,9 +27,9 @@ interface IconWithNameProps {
 const IconWithName = ({ name }: IconWithNameProps) => {
   return (
     <Box display="flex">
-      <Box>{name}</Box>
+      <Box width="200px">{name}</Box>
       <Box>
-        <Icon name={name} />
+        <Icon name={name} width="20px" height="20px" />
       </Box>
     </Box>
   );
@@ -40,10 +40,23 @@ export const AllIcons: Story = {
     name: 'idea',
   },
   render: () => (
-    <Box>
-      {Object.keys(icons).map((iconName) => (
-        <IconWithName key={iconName} name={iconName as IconNames} />
-      ))}
+    <Box
+      display="flex"
+      flexDirection="column"
+      gap="16px"
+      height="100%"
+      position="absolute"
+      top="40px"
+      bottom="0px"
+    >
+      {Object.keys(icons)
+        .sort()
+        .map((iconName) => (
+          <IconWithName key={iconName} name={iconName as IconNames} />
+        ))}
+      <Box h="200px" bgColor="red">
+        End
+      </Box>
     </Box>
   ),
 };
