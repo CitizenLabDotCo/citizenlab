@@ -83,7 +83,9 @@ export const useLabelExpandButtons = ({
     labelExpandButtons();
 
     const observer = new MutationObserver(labelExpandButtons);
-    observer.observe(mapView.container, { childList: true, subtree: true });
+    if (mapView.container) {
+      observer.observe(mapView.container, { childList: true, subtree: true });
+    }
 
     return () => {
       observer.disconnect();
@@ -474,7 +476,7 @@ export const esriPointToGeoJson = (esriPoint: Point): GeoJSON.Point => {
 
   return {
     type: 'Point',
-    coordinates: [projectedPoint.longitude, projectedPoint.latitude],
+    coordinates: [projectedPoint.longitude || 0, projectedPoint.latitude || 0],
   };
 };
 
@@ -550,7 +552,6 @@ export const showAddInputPopup = ({
     () => {
       // Create an Esri popup
       mapView.popup = new Popup({
-        collapseEnabled: false,
         dockEnabled: false,
         dockOptions: {
           buttonEnabled: false,

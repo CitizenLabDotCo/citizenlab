@@ -225,7 +225,7 @@ const EsriMap = ({
         });
 
         // If the WebMap has reference layers, save them in state
-        setReferenceLayers(map.basemap.referenceLayers);
+        setReferenceLayers(map.basemap?.referenceLayers || null);
       });
     }
   }, [layers, map, mapView, referenceLayers]);
