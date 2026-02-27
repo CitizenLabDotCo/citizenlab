@@ -1,4 +1,8 @@
-import Icon from '.';
+import React from 'react';
+
+import Box from '../Box';
+
+import Icon, { icons, IconNames } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -14,4 +18,32 @@ export const IdeaIcon: Story = {
   args: {
     name: 'idea',
   },
+};
+
+interface IconWithNameProps {
+  name: IconNames;
+}
+
+const IconWithName = ({ name }: IconWithNameProps) => {
+  return (
+    <Box display="flex">
+      <Box>{name}</Box>
+      <Box>
+        <Icon name={name} />
+      </Box>
+    </Box>
+  );
+};
+
+export const AllIcons: Story = {
+  args: {
+    name: 'idea',
+  },
+  render: () => (
+    <Box>
+      {Object.keys(icons).map((iconName) => (
+        <IconWithName key={iconName} name={iconName as IconNames} />
+      ))}
+    </Box>
+  ),
 };
