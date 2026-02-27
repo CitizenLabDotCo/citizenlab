@@ -246,6 +246,18 @@ hr:
           title: Koja je vaša inicijativa?
         petition:
           title: Koja je vaša molba?
+        comment:
+          title: Koji je tvoj komentar?
+        response:
+          title: Kakav je vaš odgovor?
+        suggestion:
+          title: Koji je tvoj prijedlog?
+        topic:
+          title: Koja je tvoja tema?
+        post:
+          title: Koja je tvoja objava?
+        story:
+          title: Koja je tvoja priča?
   custom_field_options:
     gender:
       male: Muškarac

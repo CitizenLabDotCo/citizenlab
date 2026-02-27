@@ -246,6 +246,18 @@ tr:
           title: Girişiminiz nedir?
         petition:
           title: Dilekçeniz nedir?
+        comment:
+          title: Yorumunuz nedir?
+        response:
+          title: Cevabınız nedir?
+        suggestion:
+          title: Öneriniz nedir?
+        topic:
+          title: Konunuz nedir?
+        post:
+          title: Göreviniz nedir?
+        story:
+          title: Senin hikayen ne?
   custom_field_options:
     gender:
       male: Erkek

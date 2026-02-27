@@ -246,6 +246,18 @@ da:
           title: Hvad er dit forslag?
         petition:
           title: Hvad er din anmodning?
+        comment:
+          title: Hvad er din kommentar?
+        response:
+          title: Hvad er dit svar?
+        suggestion:
+          title: Hvad er dit forslag?
+        topic:
+          title: Hvad er dit emne?
+        post:
+          title: Hvad er dit opslag?
+        story:
+          title: Hvad er din historie?
   custom_field_options:
     gender:
       male: Mand

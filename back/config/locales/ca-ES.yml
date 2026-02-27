@@ -246,6 +246,18 @@ ca:
           title: Quina és la teva iniciativa?
         petition:
           title: Quina és la teva petició?
+        comment:
+          title: Quin és el teu comentari?
+        response:
+          title: Quina és la teva resposta?
+        suggestion:
+          title: Quin és el teu suggeriment?
+        topic:
+          title: Quin és el teu tema?
+        post:
+          title: Quina és la teva publicació?
+        story:
+          title: Quina és la teva història?
   custom_field_options:
     gender:
       male: Mascle

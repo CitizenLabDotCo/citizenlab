@@ -246,6 +246,18 @@ es-CL:
           title: '¿Cuál es tu iniciativa?'
         petition:
           title: '¿Cuál es tu petición?'
+        comment:
+          title: '¿Cuál es su respuesta?'
+        response:
+          title: '¿Cuál es tu respuesta?'
+        suggestion:
+          title: '¿Cuál es tu sugerencia?'
+        topic:
+          title: '¿Cuál es tu tema?'
+        post:
+          title: '¿Cuál es tu puesto?'
+        story:
+          title: '¿Cuál es tu historia?'
   custom_field_options:
     gender:
       male: Masculino

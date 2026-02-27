@@ -246,6 +246,18 @@ fr:
           title: Quelle est votre initiative ?
         petition:
           title: Quelle est votre pétition ?
+        comment:
+          title: Quel est votre problème ?
+        response:
+          title: Quelle est votre réponse ?
+        suggestion:
+          title: Quelle est votre suggestion ?
+        topic:
+          title: Quel est votre sujet ?
+        post:
+          title: Quel est votre poste ?
+        story:
+          title: Quelle est votre histoire ?
   custom_field_options:
     gender:
       male: Masculin

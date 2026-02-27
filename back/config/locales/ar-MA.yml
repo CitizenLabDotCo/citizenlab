@@ -246,6 +246,18 @@ ar-MA:
           title: ما هي مبادرتك؟
         petition:
           title: ما هي عريضتك؟
+        comment:
+          title: ما هو تعليقك؟
+        response:
+          title: ما هو ردك؟
+        suggestion:
+          title: ما هو اقتراحك؟
+        topic:
+          title: ما هو موضوعك؟
+        post:
+          title: ما هو منشورك؟
+        story:
+          title: ما هي قصتك؟
   custom_field_options:
     gender:
       male: ذكر

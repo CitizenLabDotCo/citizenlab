@@ -246,6 +246,18 @@ sv:
           title: Vad är ditt initiativ?
         petition:
           title: Vad är din framställan?
+        comment:
+          title: Vad är din kommentar?
+        response:
+          title: Vad är ditt svar?
+        suggestion:
+          title: Vad är ditt förslag?
+        topic:
+          title: Vad är ditt ämne?
+        post:
+          title: Vad är din post?
+        story:
+          title: Vad är din historia?
   custom_field_options:
     gender:
       male: Man

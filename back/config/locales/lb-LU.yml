@@ -246,6 +246,18 @@ lb:
           title: Wat ass Är Initiativ?
         petition:
           title: Wat ass Är Petitioun?
+        comment:
+          title: Wat ass Äre Kommentar?
+        response:
+          title: Wat ass Är Äntwert?
+        suggestion:
+          title: Wat ass Äre Virschlag?
+        topic:
+          title: Wat ass däin Thema?
+        post:
+          title: Wat ass däi Post?
+        story:
+          title: Wat ass Är Geschicht?
   custom_field_options:
     gender:
       male: Männlech
