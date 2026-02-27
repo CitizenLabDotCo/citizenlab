@@ -1258,6 +1258,7 @@ GEM
       faraday (>= 0.17.5, < 3.a)
       jwt (>= 1.5, < 3.0)
       multi_json (~> 1.10)
+    simple_segment (1.5.0)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -1511,6 +1512,7 @@ DEPENDENCIES
   scientist (~> 1.6.4)
   sentry-rails
   sentry-ruby
+  simple_segment (~> 1.5)
   seo!
   shoulda-matchers (~> 6.2.0)
   simplecov

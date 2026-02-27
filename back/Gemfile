@@ -115,6 +115,7 @@ gem 'stackprof', '~> 0.2.27'
 gem 'scientist', '~> 1.6.4'
 
 gem 'okcomputer'
+gem 'simple_segment', '~>1.5'
 gem 'sentry-ruby'
 gem 'sentry-rails'
 

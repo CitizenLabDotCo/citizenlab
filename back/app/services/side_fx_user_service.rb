@@ -50,6 +50,7 @@ class SideFxUserService
 
     UpdateMemberCountJob.perform_later if update_member_counts
     RemoveUserFromIntercomJob.perform_later(frozen_user.id)
+    RemoveUsersFromSegmentJob.perform_later([frozen_user.id])
   end
 
   def after_block(user, current_user)
