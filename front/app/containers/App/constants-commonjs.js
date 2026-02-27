@@ -52,7 +52,6 @@ exports.locales = [
   'fr',
   'fr-BE',
   'fr-FR',
-  'ga',
   'ga-IE',
   'hr-HR',
   'hu-HU',
