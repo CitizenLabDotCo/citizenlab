@@ -69,9 +69,7 @@ const useVotingInterface = ({
     basketId: basketIdFromVote,
   } = useVoteForIdea(phase);
 
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const phaseBasketId = phase?.relationships?.user_basket?.data?.id;
+  const phaseBasketId = phase?.relationships.user_basket?.data?.id;
   // For first-time voters, the phase hasn't refetched yet when the basket
   // is created. Fall back to the basket ID from the vote response.
   const basketId = phaseBasketId || basketIdFromVote;
