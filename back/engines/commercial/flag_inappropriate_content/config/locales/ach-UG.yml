@@ -1,16 +1,16 @@
 ach:
   email_campaigns:
     campaign_type_description:
-      "inappropriate_content_flagged": crwdns208022:0crwdne208022:0
+      "inappropriate_content_flagged": crwdns6341907:0crwdne6341907:0
     admin_campaign_type_description:
-      "inappropriate_content_flagged": crwdns208024:0crwdne208024:0
+      "inappropriate_content_flagged": crwdns6341909:0crwdne6341909:0
     inappropriate_content_flagged:
-      subject: 'crwdns208026:0crwdne208026:0'
-      title: 'crwdns5184341:0crwdne5184341:0'
-      author_wrote: 'crwdns3337055:0%{authorName}crwdne3337055:0'
-      preheader: 'crwdns3166243:0crwdne3166243:0'
+      subject: 'crwdns6341911:0crwdne6341911:0'
+      title: 'crwdns6341913:0crwdne6341913:0'
+      author_wrote: 'crwdns6341915:0%{authorName}crwdne6341915:0'
+      preheader: 'crwdns6341917:0crwdne6341917:0'
       automatically_flagged: >
-        crwdns1368374:0crwdne1368374:0
+        crwdns6341919:0crwdne6341919:0
       how_to_review: >
-        crwdns1368376:0crwdne1368376:0
-      cta_button: 'crwdns5184343:0crwdne5184343:0'
+        crwdns6341921:0crwdne6341921:0
+      cta_button: 'crwdns6341923:0crwdne6341923:0'
