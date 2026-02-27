@@ -461,8 +461,13 @@ describe('Survey question widget', () => {
           .first()
           .select(surveyCustomFields.data[5].id);
 
-        // Expect map to render
-        cy.get('div.esri-view-root').contains('Responses');
+        // Expect map to render - expand legend first (collapsed by default in ArcGIS 4.34)
+        cy.get('.esri-ui-bottom-right .esri-expand__toggle').click({
+          force: true,
+        });
+        cy.get('div.esri-view-root').contains('Responses', {
+          includeShadowDom: true,
+        });
 
         // Save
         cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
@@ -473,7 +478,12 @@ describe('Survey question widget', () => {
 
         // Check if it's visible in the frontend
         cy.visit(`/projects/${projectSlug}`);
-        cy.get('div.esri-view-root').contains('Responses');
+        cy.get('.esri-ui-bottom-right .esri-expand__toggle').click({
+          force: true,
+        });
+        cy.get('div.esri-view-root').contains('Responses', {
+          includeShadowDom: true,
+        });
       });
     });
 
