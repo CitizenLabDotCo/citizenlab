@@ -50,7 +50,7 @@ fr:
       "voting_phase_started": Nouvelle phase de projet avec vote
       "voting_results": Résultats du vote
       "your_input_in_screening": Ma contribution est en attente de validation
-      "screening_digest": Rappel de dépistage hebdomadaire
+      "screening_digest": Rappel hebdomadaire de modération
     general:
       by_author: 'par %{authorName}'
       author_wrote: '%{authorName} a écrit :'
