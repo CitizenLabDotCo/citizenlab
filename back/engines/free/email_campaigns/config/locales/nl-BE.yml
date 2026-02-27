@@ -50,6 +50,7 @@ nl-BE:
       "voting_phase_started": Nieuwe projectfase met stemmen
       "voting_results": Stemresultaten
       "your_input_in_screening": Mijn input wacht op screening
+      "screening_digest": Wekelijkse screeningherinnering
     general:
       by_author: 'door %{authorName}'
       author_wrote: '%{authorName} schreef:'
@@ -436,7 +437,7 @@ nl-BE:
       yesterday_by_author: "Gisteren door %{author}"
       x_days_ago_by_author: "%{x} dagen geleden door %{author}"
       trending_title: "Populair"
-      trending_text: "Ben je geïnteresseerd in wat er gebeurt op het platform? Hier zijn de drie meest trending bijdragen en wat mensen erover zeggen."
+      trending_text: "Ben je geïnteresseerd in wat er gebeurt op het platform? Hier zijn de drie populairste bijdragen en wat mensen erover zeggen."
       no_notifications: "Geen meldingen"
       one_notification: "1 melding"
       multiple_notifications: "%{notifCount} meldingen"
@@ -490,6 +491,13 @@ nl-BE:
       event_description: '"%{input_title}" wordt zichtbaar voor anderen zodra het is beoordeeld en goedgekeurd.'
       subject: '"%{input_title}" is bijna gepubliceerd'
       preheader: 'Het staat momenteel in %{prescreening_status_title}'
+    screening_digest:
+      subject: '%{count} bijdragen in afwachting van beoordeling'
+      preheader: 'Bijdragen beoordelen voor %{organizationName}'
+      title: '%{firstName}, bijdragen wachten op beoordeling'
+      event_description: "Deze bijdragen moeten worden goedgekeurd voordat ze zichtbaar zijn voor het publiek. Je kunt ze bekijken in de Beheer bijdragen-pagina van het hele platform of in de Beheer bijdragen-pagina van elke fase."
+      cta_button: 'Beoordeel bijdragen'
+      inputs_awaiting_screening: 'bijdragen om te beoordelen'
     voting_basket_submitted:
       subject: '%{organizationName}: Je hebt succesvol gestemd'
       preheader: 'Je hebt succesvol gestemd op het participatieplatform van %{organizationName}'

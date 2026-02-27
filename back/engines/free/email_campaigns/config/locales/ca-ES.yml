@@ -50,6 +50,7 @@ ca:
       "voting_phase_started": Nova fase del projecte amb votació
       "voting_results": Resultats de les votacions
       "your_input_in_screening": La meva aportació està pendent de la projecció
+      "screening_digest": Recordatori de cribratge setmanal
     general:
       by_author: 'per %{authorName}'
       author_wrote: '%{authorName} va escriure:'
@@ -490,6 +491,13 @@ ca:
       event_description: '«%{input_title}» serà visible per als altres un cop s''hagi revisat i aprovat.'
       subject: '"%{input_title}" gairebé està publicat'
       preheader: 'Actualment és a %{prescreening_status_title}'
+    screening_digest:
+      subject: '%{count} entrades pendents de revisió'
+      preheader: 'Revisa les entrades per a %{organizationName}'
+      title: '%{firstName}, les entrades estan pendents de ser revisades'
+      event_description: "Aquestes entrades necessiten aprovació abans que siguin visibles per al públic. Les podeu revisar al Gestor d'entrades de tota la plataforma o dins del Gestor d'entrades de cada fase."
+      cta_button: 'Revisar les entrades'
+      inputs_awaiting_screening: 'entrades per revisar'
     voting_basket_submitted:
       subject: '%{organizationName}: has votat correctament'
       preheader: 'Heu votat amb èxit a la plataforma de participació de %{organizationName}'

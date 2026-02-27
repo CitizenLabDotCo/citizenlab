@@ -50,6 +50,7 @@ pt:
       "voting_phase_started": Nova fase do projeto com votação
       "voting_results": Resultados da votação
       "your_input_in_screening": Minha contribuição aguarda a triagem
+      "screening_digest": Lembrete semanal de triagem
     general:
       by_author: 'por %{authorName}'
       author_wrote: '%{authorName} escreveu:'
@@ -490,6 +491,13 @@ pt:
       event_description: '"%{input_title}" se tornará visível para os outros quando for revisado e aprovado.'
       subject: '"%{input_title}" está quase publicado'
       preheader: 'No momento, você está em %{prescreening_status_title}'
+    screening_digest:
+      subject: '%{count} entradas aguardando revisão'
+      preheader: 'Analise as entradas para %{organizationName}'
+      title: '%{firstName}Você está aguardando a revisão das entradas'
+      event_description: "Esses inputs precisam de aprovação antes de ficarem visíveis para o público. Você pode revisá-las no Input Manager de toda a plataforma ou no Input Manager de cada fase."
+      cta_button: 'Insumos de revisão'
+      inputs_awaiting_screening: 'entradas para revisão'
     voting_basket_submitted:
       subject: '%{organizationName}: Votou com sucesso'
       preheader: 'Você votou com sucesso na plataforma de participação de %{organizationName}'

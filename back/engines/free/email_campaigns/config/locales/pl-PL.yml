@@ -50,6 +50,7 @@ pl:
       "voting_phase_started": Nowa faza projektu z głosowaniem
       "voting_results": Wyniki głosowania
       "your_input_in_screening": Mój wkład czeka na sprawdzenie
+      "screening_digest": Cotygodniowe przypomnienie o badaniu przesiewowym
     general:
       by_author: 'przez %{authorName}'
       author_wrote: '%{authorName} napisał:'
@@ -490,6 +491,13 @@ pl:
       event_description: '"%{input_title}" stanie się widoczny dla innych po jego sprawdzeniu i zatwierdzeniu.'
       subject: '"%{input_title}" jest prawie opublikowany'
       preheader: 'Obecnie znajduje się na stronie %{prescreening_status_title}'
+    screening_digest:
+      subject: '%{count} dane wejściowe oczekujące na przegląd'
+      preheader: 'Przejrzyj dane wejściowe dla %{organizationName}'
+      title: '%{firstName}dane wejściowe czekają na weryfikację'
+      event_description: "Te dane wejściowe wymagają zatwierdzenia, zanim będą widoczne publicznie. Możesz je przejrzeć w Menedżerze danych wejściowych dla całej platformy lub w Menedżerze danych wejściowych dla każdej fazy."
+      cta_button: 'Wejścia do recenzji'
+      inputs_awaiting_screening: 'dane wejściowe do przeglądu'
     voting_basket_submitted:
       subject: '%{organizationName}Pomyślnie zagłosowałeś'
       preheader: 'Pomyślnie zagłosowałeś na platformie uczestnictwa %{organizationName}'

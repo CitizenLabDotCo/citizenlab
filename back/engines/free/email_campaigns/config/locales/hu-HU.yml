@@ -50,6 +50,7 @@ hu:
       "voting_phase_started": Új projektszakasz szavazással
       "voting_results": Szavazási eredmények
       "your_input_in_screening": Hozzászólásom átvilágításra vár
+      "screening_digest": Heti szűrővizsgálati emlékeztető
     general:
       by_author: 'készítette: %{authorName}'
       author_wrote: '%{authorName} írta:'
@@ -490,6 +491,13 @@ hu:
       event_description: 'A(z) „%{input_title}” a felülvizsgálat és jóváhagyás után mások számára is láthatóvá válik.'
       subject: '"%{input_title}" majdnem megjelent'
       preheader: 'Jelenleg %{prescreening_status_title}helyen van'
+    screening_digest:
+      subject: '%{count} elbírálásra váró bemenet'
+      preheader: 'Tekintse át a %{organizationName}bemeneteit'
+      title: '%{firstName}, a bemenetek ellenőrzésre várnak'
+      event_description: "Ezeket a bemeneteket jóvá kell hagyni, mielőtt nyilvánosan láthatóvá válnának. Ezeket a platform szintű Bevitelkezelőben vagy az egyes fázisok Bevitelkezelőjében tekintheti át."
+      cta_button: 'Bemenetek áttekintése'
+      inputs_awaiting_screening: 'felülvizsgálandó bemenetek'
     voting_basket_submitted:
       subject: '%{organizationName}: Sikeresen szavaztál'
       preheader: 'Sikeresen szavaztál a %{organizationName}részvételi platformján'

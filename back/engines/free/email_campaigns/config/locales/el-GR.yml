@@ -50,6 +50,7 @@ el:
       "voting_phase_started": Νέα φάση έργου με ψηφοφορία
       "voting_results": Αποτελέσματα ψηφοφορίας
       "your_input_in_screening": Εκκρεμεί ο έλεγχος της πρότασής μου
+      "screening_digest": Εβδομαδιαία υπενθύμιση ελέγχου
     general:
       by_author: 'από %{authorName}'
       author_wrote: '%{authorName} έγραψε:'
@@ -490,6 +491,13 @@ el:
       event_description: '"%{input_title}" θα γίνει ορατό στους άλλους μόλις επανεξεταστεί και εγκριθεί.'
       subject: '"%{input_title}" είναι σχεδόν δημοσιευμένο'
       preheader: 'Αυτή τη στιγμή βρίσκεται στο %{prescreening_status_title}'
+    screening_digest:
+      subject: '%{count} εισροές που αναμένουν επανεξέταση'
+      preheader: 'Επανεξέταση των εισροών για το %{organizationName}'
+      title: '%{firstName}, οι εισροές περιμένουν να επανεξεταστούν'
+      event_description: "Αυτές οι εισροές χρειάζονται έγκριση πριν γίνουν ορατές στο κοινό. Μπορείτε να τις αναθεωρήσετε στο Διαχειριστή Εισροών όλης της πλατφόρμας ή στο Διαχειριστή Εισροών κάθε φάσης."
+      cta_button: 'Επανεξέταση εισροών'
+      inputs_awaiting_screening: 'εισροές για επανεξέταση'
     voting_basket_submitted:
       subject: '%{organizationName}: Ψηφίσατε με επιτυχία'
       preheader: 'Ψηφίσατε με επιτυχία στην πλατφόρμα συμμετοχής του %{organizationName}'

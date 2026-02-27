@@ -50,6 +50,7 @@ lt:
       "voting_phase_started": Naujas projekto etapas su balsavimu
       "voting_results": Balsavimo rezultatai
       "your_input_in_screening": Mano indėlis laukia patikrinimo
+      "screening_digest": Savaitinis priminimas apie patikrą
     general:
       by_author: 'pagal %{authorName}'
       author_wrote: '%{authorName} rašė:'
@@ -490,6 +491,13 @@ lt:
       event_description: '"%{input_title}" taps matomas kitiems, kai bus peržiūrėtas ir patvirtintas.'
       subject: '"%{input_title}" yra beveik paskelbtas'
       preheader: 'Šiuo metu jis yra %{prescreening_status_title}'
+    screening_digest:
+      subject: '%{count} peržiūros laukiantys duomenys'
+      preheader: 'Įvesties duomenų peržiūra %{organizationName}'
+      title: '%{firstName}, laukiama, kol bus peržiūrėtos įvestys'
+      event_description: "Šiuos įvesties duomenis reikia patvirtinti, kad jie būtų matomi visuomenei. Juos galite peržiūrėti visos platformos įvesties tvarkyklėje arba kiekvieno etapo įvesties tvarkyklėje."
+      cta_button: 'Peržiūros įvestis'
+      inputs_awaiting_screening: 'peržiūros įvesties duomenys'
     voting_basket_submitted:
       subject: '%{organizationName}: Jūs sėkmingai balsavote'
       preheader: 'Sėkmingai balsavote %{organizationName}dalyvavimo platformoje'

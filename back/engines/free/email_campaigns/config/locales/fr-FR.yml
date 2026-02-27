@@ -50,6 +50,7 @@ fr:
       "voting_phase_started": Nouvelle phase de projet avec vote
       "voting_results": Résultats du vote
       "your_input_in_screening": Ma contribution est en attente de validation
+      "screening_digest": Rappel hebdomadaire de modération
     general:
       by_author: 'par %{authorName}'
       author_wrote: '%{authorName} a écrit :'
@@ -490,6 +491,13 @@ fr:
       event_description: 'Votre contribution « %{input_title} » deviendra visible pour les autres une fois qu''elle aura été relue et approuvée.'
       subject: '« %{input_title} » est presque publié'
       preheader: 'Le statut de votre contribution est actuellement « %{prescreening_status_title} »'
+    screening_digest:
+      subject: '%{count} contributions en attente de modération'
+      preheader: 'Action requise sur la plateforme "%{organizationName}"'
+      title: '%{firstName}, des contributions sont en attente de modération'
+      event_description: "Les contributions ne seront visibles sur la plateforme qu’après modération. Attribuez-leur un nouveau statut dans le gestionnaire de contributions pour les publier."
+      cta_button: 'Examiner les contributions'
+      inputs_awaiting_screening: 'contributions en attente de modération'
     voting_basket_submitted:
       subject: '%{organizationName}: Vous avez voté avec succès'
       preheader: 'Votre vote a bien été enregistré sur la plateforme de participation de %{organizationName}'
