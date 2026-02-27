@@ -19,7 +19,7 @@
 #  default_assignee_id            :uuid
 #  include_all_areas              :boolean          default(FALSE), not null
 #  baskets_count                  :integer          default(0), not null
-#  votes_count                    :integer          default(0), not null
+#  votes_count                    :bigint           default(0), not null
 #  followers_count                :integer          default(0), not null
 #  header_bg_alt_text_multiloc    :jsonb
 #  preview_token                  :string           not null
