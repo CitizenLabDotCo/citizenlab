@@ -50,7 +50,7 @@ de:
       "voting_phase_started": Neue Projektphase mit Abstimmung
       "voting_results": Abstimmungsergebnisse
       "your_input_in_screening": Mein Beitrag wartet auf Überprüfung
-      "screening_digest": Wöchentliche Erinnerung an das Screening
+      "screening_digest": Wöchentliche Überprüfungs-Erinnerung
     general:
       by_author: 'von %{authorName}'
       author_wrote: '%{authorName} schrieb:'
@@ -492,12 +492,12 @@ de:
       subject: '"%{input_title}" ist fast veröffentlicht'
       preheader: 'Es befindet sich derzeit in %{prescreening_status_title}'
     screening_digest:
-      subject: '%{count} Eingaben, die zur Überprüfung anstehen'
-      preheader: 'Überprüfen Sie die Eingaben für %{organizationName}'
-      title: '%{firstName}, Eingaben warten auf ihre Überprüfung'
-      event_description: "Diese Eingaben müssen genehmigt werden, bevor sie für die Öffentlichkeit sichtbar sind. Sie können sie im plattformweiten Input Manager oder im Input Manager der einzelnen Phasen überprüfen."
-      cta_button: 'Eingaben überprüfen'
-      inputs_awaiting_screening: 'Eingaben zur Überprüfung'
+      subject: '%{count} Beiträge, die zur Überprüfung anstehen'
+      preheader: 'Beiträge überprüfen für %{organizationName}'
+      title: '%{firstName}, Beiträge warten darauf, überprüft zu werden'
+      event_description: "Diese Beiträge müssen freigegeben werden, bevor sie für die Öffentlichkeit sichtbar sind. Sie können sie im plattformweiten Beitragsmanager oder im Beitragsmanager der einzelnen Phasen überprüfen."
+      cta_button: 'Beiträge überprüfen'
+      inputs_awaiting_screening: 'zu überprüfende Beiträge'
     voting_basket_submitted:
       subject: '%{organizationName}: Sie haben erfolgreich abgestimmt'
       preheader: 'Sie haben erfolgreich auf der Beteiligungsplattform von %{organizationName} abgestimmt'
