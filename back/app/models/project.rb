@@ -27,14 +27,17 @@
 #  listed                         :boolean          default(TRUE), not null
 #  track_participation_location   :boolean          default(FALSE), not null
 #  live_auto_input_topics_enabled :boolean          default(FALSE), not null
+#  workspace_id                   :uuid
 #
 # Indexes
 #
-#  index_projects_on_slug  (slug) UNIQUE
+#  index_projects_on_slug          (slug) UNIQUE
+#  index_projects_on_workspace_id  (workspace_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (default_assignee_id => users.id)
+#  fk_rails_...  (workspace_id => workspaces.id)
 #
 class Project < ApplicationRecord
   include Files::FileAttachable
@@ -50,6 +53,8 @@ class Project < ApplicationRecord
 
   has_many_text_images from: :description_multiloc, as: :text_images
   accepts_nested_attributes_for :text_images
+
+  belongs_to :workspace, optional: true
 
   has_one :custom_form, as: :participation_context, dependent: :destroy # ideation & voting phases only
 

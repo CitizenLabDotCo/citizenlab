@@ -7,6 +7,7 @@ RSpec.describe Project do
     subject(:project) { build(:project) }
 
     it { is_expected.to be_valid }
+    it { is_expected.to belong_to(:workspace).optional }
     it { is_expected.to have_one(:review).class_name('ProjectReview').dependent(:destroy) }
     it { is_expected.to have_many(:jobs_trackers).class_name('Jobs::Tracker').dependent(:destroy) }
     it { is_expected.to validate_presence_of(:title_multiloc) }
