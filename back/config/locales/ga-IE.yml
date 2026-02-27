@@ -1,0 +1,390 @@
+ga:
+  locales:
+    en: Béarla
+    ar-MA: Araibis (Maracó)
+    ar-SA: Araibis (An Araib Shádach)
+    ca-ES: Catalóinis
+    cy-GB: Breatnais
+    da-DK: Danmhairgis
+    de-DE: Gearmáinis
+    el-GR: Gréigis
+    en-CA: Béarla (Ceanada)
+    en-GB: Béarla (An Ríocht Aontaithe)
+    en-IE: Béarla (Éire)
+    es-CL: Spáinnis (An tSile)
+    es-ES: Spáinnis (An Spáinn)
+    fi-FI: Fionlainnis
+    fr-BE: Fraincis (An Bheilg)
+    fr-FR: Fraincis
+    ga-IE: Gaeilge
+    hr-HR: Cróitis
+    hu-HU: Ungáiris
+    it-IT: Iodáilis
+    kl-GL: Graonlainnis
+    lb-LU: Lucsambuirgis
+    lv-LV: Laitvis
+    mi: Maorais
+    nb-NO: Ioruais (Bokmål)
+    nl-BE: Ollainnis (An Bheilg)
+    nl-NL: Ollainnis
+    pl-PL: Polainnis
+    pt-BR: Portaingéilis (An Bhrasaíl)
+    ro-RO: Rómáinis
+    sr-Latn: Seirbis (Laidin)
+    sr-SP: Seirbis (Coireallach)
+    sv-SE: Sualainnis
+    tr-TR: Tuircis
+  symbols:
+    outside: áit éigin eile
+  idea_statuses:
+    prescreening: réamhscagadh
+    prescreening_description: Tá an t-ionchur seo á athbhreithniú faoi láthair ag bainisteoir an tionscadail agus níl sé le feiceáil ag an bpobal fós.
+    proposed: molta
+    proposed_description: Tá an smaoineamh seo curtha faoi bhráid na cathrach
+    viewed: breathnaithe
+    viewed_description: Tá an smaoineamh seo feicthe ag duine ón gcathair
+    under_consideration: á mheas
+    under_consideration_description: Tá an smaoineamh seo á mheas ag an gcathair
+    accepted: glactha
+    accepted_description: Tá glactha leis an smaoineamh seo agus cuirfidh an chathair i bhfeidhm é
+    implemented: curtha i bhfeidhm
+    implemented_description: Tá an smaoineamh seo curtha i bhfeidhm ag an gcathair
+    rejected: diúltaithe
+    rejected_description: Tá an smaoineamh seo diúltaithe
+    expired: éagtha
+    expired_description: éagtha
+    threshold_reached: tairseach bainte amach
+    threshold_reached_description: tairseach bainte amach
+    answered: freagartha
+    answered_description: freagartha
+    ineligible: neamh-incháilithe
+    ineligible_description: neamh-incháilithe
+  topics:
+    nature: Nádúr agus bithéagsúlacht
+    nature_description: Nádúr agus bithéagsúlacht
+    waste: Glantacht agus dramhaíl
+    waste_description: Glantacht agus dramhaíl
+    sustainability: Forbairt inbhuanaithe
+    sustainability_description: Forbairt inbhuanaithe
+    mobility: Soghluaisteacht
+    mobility_description: Soghluaisteacht
+    technology: Fuinneamh agus teicneolaíocht
+    technology_description: Fuinneamh agus teicneolaíocht
+    economy: Obair, geilleagar agus turasóireacht
+    economy_description: Obair, geilleagar agus turasóireacht
+    housing: Tithíocht
+    housing_description: Tithíocht
+    public_space: Spásanna poiblí agus foirgnimh
+    public_space_description: Spásanna poiblí agus foirgnimh
+    safety: Sábháilteacht
+    safety_description: Sábháilteacht
+    education: Oideachas agus an óige
+    education_description: Oideachas agus an óige
+    culture: Cultúr, spórt agus imeachtaí
+    culture_description: Cultúr, spórt agus imeachtaí
+    health: Sláinte agus leas
+    health_description: Sláinte agus leas
+    inclusion: Cuimsiú sóisialta
+    inclusion_description: Cuimsiú sóisialta
+    community: Forbairt phobail
+    community_description: Forbairt phobail
+    services: Seirbhísí poiblí
+    services_description: Seirbhísí poiblí
+    other: Eile
+    other_description: Eile
+    quality_of_life: Cáilíocht beatha
+    service_delivery: Soláthar seirbhísí
+    governance_and_trust: Rialachas agus muinín
+  static_pages:
+    terms_and_conditions_title: Téarmaí agus coinníollacha
+    terms_and_conditions_body: >
+      <p>These terms & conditions outline the rules and guidelines of contributing to the platform and are meant to help ensure a constructive dialogue.</p> <p>Your ideas to further improve the platform are welcome and can be sent to support@govocal.com.</p> <h2>Who can participate?</h2> <p>Anyone is able to view public projects via the platform. If you'd like to contribute content (e.g., submit input or react), you will need to register and create an account. You can register using your e-mail address; for some platforms, it may also be possible to sign in using an existing Facebook or Google account. If you use either of these services, your name, email address and profile photo will be shared with and added to your platform account.</p> <p>Please note that the creation of your account does not give you ownership. Platform administrators can refuse, suspend or delete accounts for reasons such as not adhering to the terms and conditions outlined on this page.</p> <p>The general conditions for your account are the following: </p> <ul> <li> <strong>You may create one account</strong> <p>An individual may not create and maintain multiple accounts. The account details you provide must be accurate and this account cannot be transferred to someone else without permission from a platform administrator. </p> </li> <li> <strong>Your account cannot be used for commercial promotion</strong> <p>An account may not be used for the sole purpose of advertising, marketing a product or service, etc.</p> </li> <li> <strong>You are responsible for keeping your account information secure and confidential</strong> <p>You are the only person who should use your account and have access to your account's password and login details. To improve your account security, we advise using a password with a combination of numbers, lowercase letters and uppercase letters. We are not responsible for any loss or damage incurred to your account and cannot be held responsible for its theft (e.g., via phishing). Note that we will never ask you for your log-in details such as your password. </p>  <h2>Your activity on the platform</h2> <p>To ensure safe and productive participation, there are some restrictions on the type of content that may be published on this platform. Any content you post on the platform must be free of:</p> <ul> <li> <strong>Private data</strong> <p>Confidential data and personal information about others, such as telephone numbers and addresses may not be posted without their express authorization and consent.  </p> <li><strong>Spam / malware / phishing / viruses / worms / Trojans</strong> <p>Malicious content or links that are meant violate others' privacy or to damage or disrupt others' browsers or computers.</p> </li> <li> <strong>Threats, insults and other inappropriate content </strong> <p>Personal attacks and insults, threatening behavior or language, discriminatory comments, profanity and other offensive language.</p> </li> <li><strong>Advertising and commercial activity</strong> <p>Content posted with the sole purpose of advertising a commercial service or product.</p> </li> <li> <strong>Copyrighted material</strong> <p>Content that infringes upon intellectual property rights (e.g., copyrighted images).</p> </li> <li> <strong>Illegal activities</strong> <p>Content that in any way promotes illegal activities.</li></p> </ul> <p>Submissions and other content that includes any of the above may be edited, deleted or otherwise prevented from being posted, and the account may be temporarily blocked or permanently deleted. New or additional accounts created to avoid temporary or permanent suspension may also be monitored and deleted.</p> <h2>Applicable laws</h2> <p>The use of an account may not infringe upon applicable laws. This includes any violation of privacy legislation, intellectual property rights, the criminal code, etc.</p> <p>We cannot be held liable in any way for content posted on the platform that does not adhere to the above rules and laws. Violations can be reported to support@govocal.com and may result in the relevant messages being deleted and/or the underlying account being suspended or permanently revoked.</p> <p>It is possible that content posted on the platform can contain harmful files or links. By downloading files or accessing hyperlinks via the platform, you assume the risk and responsibility for any damage that may incur.</p> <h2>Property rights</h2> <p>This platform is protected by intellectual property rights related to its content, source code, databases, etc. Any original content that you post on the platform may be visible to the public and falls under the Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) Public License, which allows your content to be shared or adapted with attribution. You may not otherwise reproduce, distribute, modify or transmit the platform and any of its contents that do not fall under the public domain without permission.</p><h2>Platform admin and project manager communications</h2><p>By creating an account, you consent to receiving product updates, support communications via Intercom, and account-related emails. You may update your preferences by contacting support at support@govocal.com</p>
+    privacy_policy_title: Polasaí Príobháideachta
+    privacy_policy_body: >
+      <p>Responsible for the processing of the Data:</p> <p>Go Vocal NV - Pachecolaan 34 - 1000 Brussels - Belgium</p> <p>Contact e-mail address: support@govocal.com</p> <p>Organization: //insert client contacts</p> <h2>1. PRIVACY POLICY</h2> <p>This 'Privacy Policy' applies to the 'Personal Data' collected by Go Vocal on behalf of the organization through this website.</p> <h2>2. WHAT ARE PERSONAL DATA?</h2> <p>In this Privacy Policy, Personal Data refers to information that makes it possible to identify you. An identifiable person is someone who can be identified, either directly or indirectly, in particular by referring to an identification number or to one or more factors that are linked to physical, physiological, mental, economic, cultural or social identity. A typical example of personal information is your name and email address.</p> <h2>3. WHAT PERSONAL DATA DO WE COLLECT?</h2> <p>We might collect your Personal Data from the following three sources:</p> <h3>3.1 Personal Data that you provide during the registration process on the Platform, some of which are optional.</h3> <p>The personal data that we might collect from you are:</p> <ul> <li>First and last name</li> <li>E-mail address</li> <li>Year of birth</li> <li>Gender</li> <li>Area of residence</li> <li>Preferred language</li> </ul> <p>This list can be extended on request of the organization. If you choose to sign-in via a 3rd party authentication provider as Google Accounts, Facebook or FranceConnect, we will get this data from them. If you choose to verify your identity with a 3rd party identity provider as COW, FranceConnect or CSAM, we will get this information from them.</p> <h3>3.2 Personal data that you provide when taking participative action on our platform.</h3> <p>Every action you take on the platform (voting, posting an idea, writing a comment, answering a poll,…) is registered and stored. This data is also linked to your registration data (3.1), implying that the organization can link your platform profile to this participation data.</p> <h3>3.3 Personal Data that we collect when you visit our platform.</h3> <p>We (and third party processors acting on our behalf) collect information about usage of our platform for assessing the good functioning and security of the platform. To this end, we collect technical information that can identify you, such as your IP address and browser details. By using our services you agree to this data being collected.</p> <p>We also gather usage data to improve our services, you can opt-out of this collection at all time from the consent manager.</p> <h2>4. HOW DO WE USE PERSONAL DATA?</h2> <p>We might use your personal data for the following purposes:</p> <ul> <li>First and foremost, to communicate your input to the organization with relevant context, and to draw aggregated reports of all the data collected on this platform to assist their decision-making.</li> <li>To create and maintain your user profile on this website.</li> <li>To manage the identification and authentication of users.</li> <li>To provide information about your community and/or alert you when activities on the platform may interest you. You can opt-out of user emails from your user profile at any time.</li> <li>To improve our services and monitor their functionalities.</li> </ul> <p>The personal data is only stored and processed for the period required for the purpose of the processing. After that, the data will be deleted or anonymized.</p> <h2>5. WITH WHOM DO WE SHARE YOUR PERSONAL DATA?</h2> <p>We share your personal data with the organization on behalf of which we gather this data. We share your data to the sub-processors working on our behalf. We will never sell or rent your personal data to other service providers, nor will we share your Personal Data with any service providers who are not compliant with the GDPR.</p> <h2>6. WHERE DO WE TRANSFER YOUR PERSONAL DATA TO?</h2> <p>We only transfer your Personal Data to service providers established outside the European Economic Area if they comply to art 44 GDPR.</p> <h2>7. WHAT RIGHTS DO YOU HAVE?</h2> <p>You have the right to view your personal data at any time, as well as the right to be informed of the use that Go Vocal makes of your personal data.</p> <h3>7.1 Right to rectification, erasure and restriction of processing</h3> <p>You are free to decide whether or not to provide your personal data to Go Vocal. In addition, you always have the right to request Go Vocal to correct, supplement or remove your personal data. You acknowledge that a refusal to provide or a request for the erasure of personal data means that certain services can no longer be delivered. You may also request that the processing of your personal data is limited. If you choose to remove your account from the platform, the personal data that was collected about you will be removed from our servers. Some personal information about you might remain in the logging data we keep for security and legal reasons for up to 30 days.</p> <h3>7.2 Right to object</h3> <p>You have the right to object to the processing of your personal data for serious and legitimate reasons. In addition, you always have the right to object to the use of your personal data for direct marketing purposes; in such cases, you do not have to state reasons.</p> <h3>7.3 Right to data portability</h3> <p>You have the right to obtain the personal data you have provided to Go Vocal in a structured, typical and machine-readable form and/or have such transferred to different controllers.</p> <h3>7.4 Right to withdraw consent</h3> <p>Insofar as the processing is based on your prior consent, you have the right to withdraw this approval.</p> <h3>7.5 Exercising your rights</h3> <p>You can exercise your rights by contacting Go Vocal to this end, either by email to support@govocal.com, by post to Pachecolaan 34, 1000 Brussels, Belgium or by using the "Contact us" form on our Website, provided you enclose a copy of the front of your identity card.</p> <h3>7.6 Automated decision-making and profiling</h3> <p>The processing of your personal data does not include profiling and shall also not be subjected by Go Vocal to automated decision-making.</p> <h3>7.7 Right to lodge a complaint</h3> <p>You have the right to lodge a complaint to the Privacy authority of your country, or the Belgian Privacy Authority under which authority Go Vocal falls: Drukpersstraat 35, 1000 Brussels, Belgium, Tel +32 (0)2 274 48 00, Fax +32 (0)2 274 48 35, e-mail: contact@adp-gba.be. This does not affect relief before a civil court.</p> <h2>8. ADDITIONAL INFORMATION ON DATA COLLECTION AND PROCESSING</h2> <h3>Legal procedures</h3> <p>Go Vocal and the Organization we process this data for might use the Personal Data of the User for legal purposes, for the court or legal proceedings preceding phases in the event of unlawful use of this Application or the related services. The User is aware that Go Vocal and the Organization we work with might be obliged to disclose the personal data at the request of competent government institutions for the processing of the Data. The legal basis for this processing is the acceptance of the terms and conditions (contractual basis) and given consent.</p> <h3>Security Measures</h3> <p>Go Vocal has developed security measures which have been adjusted at the technological and organisational level to prevent the destruction, loss, falsification, changing, prohibited access or the erroneous disclosure to third parties of personal data as well as any other prohibited processing of this data. Under no circumstances can Go Vocal be held liable for any direct or indirect loss resulting from the incorrect or unlawful use of your personal data by a third party. You must at all times comply with the security instructions, including by preventing all prohibited access to your login details and password. You are solely responsible for the use made from the website on your computer, IP-address and your identification details, as well as for the confidentiality of such.</p> <h3>Changes to this privacy policy</h3> <p>Go Vocal reserves the right to change this privacy policy at any time by notifying Users on this page. We encourage you to check this page for possible changes. The date of the last change is indicated at the bottom of the page. If a User objects to any change in the policy, the User must not continue to use this Application. Unless otherwise indicated, the valid Privacy Policy applicable at that time applies to all Personal Data that we have collected.</p> <p><em>Most recent update: 17/12/2019</em></p>
+    infopage_title: Leathanach Eolais
+    infopage_body: "<p>This <strong>all-in-one participation platform</strong> is an initiative of your municipality or organisation and can be used for different public consultation processes: collecting ideas, voting, discussing, surveys, polls, participatory budgeting, online mapping, scenario planning, support for advisory boards and committees, ...</p>\n<p>On the home page, you'll see which <strong>processes are active </strong>and in which <strong>phase </strong>they currently are.</p>\n<p><img data-cl2-text-image-text-reference=\"e2c7bc7a-017d-4887-a3cb-b94185617a59\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<h2>How do I sign in on the platform?</h2>\n<p>Signing in is done easily by giving your first and last name and your e-mail address. You could also use your Google or Facebook account. Only your first and last name will be visible to others.</p>\n<h2>Can I use the platform myself, e.g. to organise a public consultation?</h2>\n<p>Absolutely. Ask the responsible within your municipality or organisation to give you the needed permission rights to become a project moderator. Once granted these permissions, you can set up your own project and timeline and share the information you want (video, documents, images, ...). This will also allow you to invite others to the platform, enabling them to post ideas within your project, vote or comment.</p>\n<h2>Can I participate as an association/organisation/committee? </h2>\n<p>Yes, that's possible. Given that only your first and last name are visible to others on the platform, you can simply use your organisation's name while setting up your profile.</p>\n<h2>Why would I use this platform and not create a website myself?</h2>\n<p>A team of dedicated developers and specialists in online participation (<a href=\"https://www.govocal.com/en\" target=\"_blank\">Go Vocal</a>, commissioned by your municipality or organisation) is improving and updating this platform on a daily basis. Even the smallest bug gets tackled immediately and if you have creative proposals, they can help you pointing out which features of the platform can be used for this or which ones are in the pipeline.</p>\n<p><img data-cl2-text-image-text-reference=\"392d0e47-e5f9-41ab-9ceb-affac617b8b1\" alt=\"Horizontal separation rule\" data-align=\"center\" style=\"display: block; margin: auto;\"></p>\n<p><strong><em>Need more information?</em></strong><em> Do you want to use the platform? Questions or feedback? Contact the responsible within your municipality or organisation. Or contact Go Vocal through support@govocal.com.</em></p><strong>"
+    faq_title: Ceisteanna Coitianta
+    faq_body: "<h2 class=\"ql-align-justify\">What is this platform for?</h2><p class=\"ql-align-justify\">This platform is designed as a central hub to share information and get input and feedback. Participation projects that are currently active are shown on the homepage - each participation project may have a different mode of engagement, whether it's adding an idea, commenting on a proposal, voting on and prioritising projects, or taking a survey. </p><h2 class=\"ql-align-justify\">How do I participate? </h2><p class=\"ql-align-justify\">You can always browse public projects, but you'll need to sign up in order to take an action. This helps to maintain a community feel and ensure the legitimacy of the input. </p><h2 class=\"ql-align-justify\">What information can people see about me?</h2><p class=\"ql-align-justify\">Your name, photo and bio, if you've added one, are visible. You can always change these in your Settings.</p><h2 class=\"ql-align-justify\">Why can't I post my input or submit a comment?</h2><p class=\"ql-align-justify\">Posting, commenting and voting may be enabled only during certain times or phases of a project. In some instances, a project may only be open to contributions from a certain stakeholder group.</p><p class=\"ql-align-justify\">If posting is currently enabled for a project, you'll see a button that prompts you to submit a post. Alternatively, you can browse other active projects for additional engagement opportunities.</p><h2 class=\"ql-align-justify\">How do I edit or delete my input?</h2><p class=\"ql-align-justify\">If you've posted your input but want to make edits or delete it, you can find this option by clicking on the three small dots on the top right of the post. </p><h2 class=\"ql-align-justify\">What are the community guidelines and moderation policies?</h2><p class=\"ql-align-justify\">Our community guidelines are here to help ensure that the platform is a safe space for everyone to participate. Please ensure your posts are free of:</p><ul>\n  <li class=\"ql-align-justify\">Personal attacks, insults, abusive or discriminatory comments</li>\n  <li class=\"ql-align-justify\">Offensive language including profanity</li>\n  <li class=\"ql-align-justify\">Marketing or advertising material</li>\n  <li class=\"ql-align-justify\">Personal information about other individuals</li>\n  <li class=\"ql-align-justify\">Copyrighted material such as images</li>\n  </ul><p class=\"ql-align-justify\">Any posts or comments that do not adhere to these guidelines may be edited or deleted, or in extreme instances, prevented from being posted. Please review our Terms &amp; Conditions for more information. </p><h2 class=\"ql-align-justify\">How do I report an offensive post?</h2><p class=\"ql-align-justify\">Click on the three small dots on the top right corner of the post to report it. Please indicate the reason you are reporting the content - this will send a notification for the post to be reviewed.</p><h2 class=\"ql-align-justify\">Why am I having difficulty signing up or logging in?</h2><p class=\"ql-align-justify\">If you're unable to sign up, it may be because you've already registered with the same email address or previously received an invitation to join the platform. If you see a message that your email address is taken by a pending invite, please check your email and follow the link in the invitation to register your account. If you can't find the invite, try looking in your spam box or request a new invitation. </p><h2 class=\"ql-align-justify\">How do I reset my password?</h2><p class=\"ql-align-justify\">You can always request to reset your password from the log in page. If you reset your password, a link will be sent to your email address - follow the instructions to change your password. For security reasons, the link is valid for one hour. If the link has expired, you can simply click on 'Forgot password?' in the log in page again to generate a new reset link.</p><p class=\"ql-align-justify\">If you didn't receive the email, check to make sure that it's not in your spam and that you're sending the link to the same email address that you signed up with.</p><h2 class=\"ql-align-justify\">What will you do with my data?</h2><p class=\"ql-align-justify\">Review our privacy policy for more information on data collection and usage. In short, we will never use your data for advertising, marketing or other types of spam.</p><h2 class=\"ql-align-justify\">What emails will I receive?</h2><p class=\"ql-align-justify\">You may receive emails related to your account and your activity on the platform, for instance, when someone responds to one of your posts. You can control which emails you receive in your Settings. There is a section called \"Notifications\" where you can turn email notifications on and off.</p><h2 class=\"ql-align-justify\">How do I delete my account?</h2><p class=\"ql-align-justify\">In your Settings there is the option to delete your account. Input that you've posted will remain published, but your name will be removed from the post and replaced with 'unknown author.' If you'd like to delete all of your input, please do so before deleting your account. </p>"
+  nav_bar_items:
+    home:
+      title: Baile
+    projects:
+      title: Gach tionscadal
+    all_input:
+      title: Gach ionchur
+    proposals:
+      title: Moltaí
+    events:
+      title: Imeachtaí
+    about:
+      title: Maidir Linn
+    faq:
+      title: Ceisteanna Coitianta
+  projects:
+    open_idea_project_title: Smaoineamh agat? Cuir faoi bhráid do chomhairle é!
+    open_idea_project_description_preview: B'fhéidir go bhfuil smaoineamh agat nach n-oireann d'aon cheann de na tionscadail reatha? Postáil anseo é, bailigh tacaíocht agus cuir ar an gclár oibre polaitiúil é!
+    open_idea_project_description: >
+      <p>Here, you can start your own idea if it doesn't fit within one of the existing projects.</p><p><strong>The objective?</strong> To get your idea on the political agenda.</p><p><strong>How?</strong> By gathering support, namely at least 100 votes in 3 months. You can do that by first making your idea 'attractive'. Write it in a clear and engaging way, add images, give strong arguments based on facts, add attachments with further details or background information, ... After you've done that, start sharing your idea on social media or through email. Invite people to join the discussion on your idea, or simply convince them to support it by voting in favour.</p><p><strong>About what?</strong> Your idea can be about a lot of things, as long as it is related to your city and its policy. It can be a problem you experience, a solution you envision or even a combination of both. It can be wild and on the long term, or very tangible and a quick win.</p><p><strong>And then? </strong>Did you reach 100 votes in 3 months? Congratulations! The city will now take your idea in consideration. If your idea is considered to be feasible and does not harm specific groups or individuals, you will get the chance to present your proposal during the council meeting. During that same meeting, the council members will give you direct feedback on what they will or won't do with your idea and why. If you don't gather 100 votes in 3 months, your proposal won't be considered.</p><p>We're curious to learn about your ideas!</p>
+    published_projects: Tionscadail fhoilsithe
+  phases:
+    open_idea_phase_title: Céim reatha
+    native_survey_title: Suirbhé
+    native_survey_button: Déan an suirbhé
+    community_monitor_title: Monatóir pobail
+  events:
+    council_meeting_title: Cruinniú Comhairle
+    council_meeting_description: >
+      <p>During this council meeting, those citizen initiatives that gained 100 votes in less than 3 months, will be presented.</p><p>The council will then share their view on each idea.</p>
+  custom_fields:
+    users:
+      gender:
+        title: Inscne
+      birthyear:
+        title: Bliain bhreithe
+      domicile:
+        title: Áit chónaithe
+    ideas:
+      title:
+        title: Teideal
+        description:
+      body:
+        title: Cur síos
+        description:
+      author_id:
+        title: Údar
+      topic_ids:
+        title: Clibeanna
+        description:
+      consponsor_ids:
+        title: Comhurraithe
+        description: Tabhair cuireadh do chomhurraithe tríd an réimse thíos. Gheobhaidh an comhurraí/na comhurraithe cuireadh ríomhphost.
+      location:
+        title: Suíomh
+        description:
+      proposed_budget:
+        title: Buiséad Molta
+        description:
+      budget:
+        title: Buiséad
+      images:
+        title: Íomhánna
+        description:
+      attachments:
+        title: Ceangaltáin
+        description:
+      title_page:
+        description:
+      body_page:
+        title: Inis tuilleadh dúinn
+        description:
+      uploads_page:
+        title: Íomhánna agus ceangaltáin
+        description:
+      details_page:
+        title: Sonraí
+        description:
+      other_input_field:
+        title: Clóscríobh do fhreagra
+        print_title: Má '%{other_option}', sonraigh le do thoil
+      ask_follow_up_field:
+        title: Inis dúinn cén fáth
+    community_monitor:
+      questions:
+        place_to_live:
+          title: An chathair mar áit le cónaí ann
+        sense_of_safety:
+          title: Mothú ginearálta sábháilteachta
+        access_to_parks:
+          title: Rochtain ar pháirceanna, spásanna glasa, agus deiseanna áineasa
+        affordable_housing:
+          title: Infhaighteacht tithíochta inacmhainne
+        employment_opportunities:
+          title: Deiseanna fostaíochta agus forbairt eacnamaíoch
+        quality_of_services:
+          title: Cáilíocht fhoriomlán na seirbhísí a sholáthraíonn an chathair
+        overall_value:
+          title: Luach foriomlán a fhaigheann tú as do chánacha agus táillí cathrach
+        cleanliness_and_maintenance:
+          title: Glantacht agus cothabháil fhoriomlán sráideanna agus spásanna poiblí
+        trust_in_government:
+          title: Muinín sa rialtas áitiúil
+        responsiveness_of_officials:
+          title: Freagrúlacht oifigeach tofa d'ábhair imní pobail
+        transparency_of_money_spent:
+          title: Trédhearcacht faoi conas a chaitear airgead cánach cathrach
+      question_categories:
+        quality_of_life: Cáilíocht beatha
+        service_delivery: Soláthar seirbhísí
+        governance_and_trust: Rialachas agus muinín
+        other: Eile
+      labels:
+        label_1: An-dona
+        label_2: Dona
+        label_3: Cothrom
+        label_4: Maith
+        label_5: Ar fheabhas
+      form_end:
+        button_text: Ar ais abhaile
+  custom_forms:
+    categories:
+      main_content:
+        idea:
+          title: Cad é do smaoineamh?
+        question:
+          title: Cad é do cheist?
+        contribution:
+          title: Cad é do ranníocaíocht?
+        project:
+          title: Cad é do thionscadal?
+        issue:
+          title: Cad é do thuairim?
+        option:
+          title: Cad é do rogha?
+        proposal:
+          title: Cad é do mholadh?
+        initiative:
+          title: Cad é do thionscnamh?
+        petition:
+          title: Cad é d'achainí?
+  custom_field_options:
+    gender:
+      male: Fireann
+      female: Baineann
+      unspecified: Eile
+    domicile:
+      outside: Áit éigin eile
+  reset_password_mailer:
+    send_reset_password:
+      preheader: 'Athshocraigh do phasfhocal le haghaidh %{organizationName}'
+      cta_reset_password: 'Athshocraigh do phasfhocal'
+      message_you_reset_your_password: 'D''iarr tú athshocrú pasfhocail don ardán rannpháirtíochta %{organizationName}. Cliceáil ar an gcnaipe thíos chun pasfhocal nua sábháilte a roghnú. Rachaidh an nasc in éag i gceann 1 uair.'
+      subject: '%{organizationName}: Athshocraigh do phasfhocal'
+      title_reset_your_password: 'Roghnaigh pasfhocal nua'
+  xlsx_export:
+    anonymous: 'Anaithnid'
+    column_headers:
+      assignee_fullname: 'Sannaí'
+      assignee_email: 'Ríomhphost an tsannaí'
+      attachments: 'Ceangaltáin'
+      author_email: 'Ríomhphost an údair'
+      author_fullname: 'Ainm an údair'
+      author_id: 'ID Údair'
+      budget: 'Buiséad'
+      comments_count: 'Tuairimí'
+      cost: 'Costas'
+      created_at: 'Curtha isteach ag'
+      description: 'Cur síos'
+      dislikes_count: 'Ní maith liom'
+      email: 'Ríomhphost'
+      first_name: 'Céadainm(neacha)'
+      image_url: 'URL íomhá'
+      input_id: 'ID'
+      manual_votes: 'Vótaí as líne'
+      input_url: 'URL'
+      last_name: 'Sloinne'
+      latitude: 'Domhanleithead'
+      likes_count: 'Is maith liom'
+      location: 'Suíomh'
+      longitude: 'Domhanfhad'
+      neutral_reactions_count: 'Éiginnte'
+      participants: 'Rannpháirtithe'
+      picks: 'Roghanna'
+      project: 'Tionscadal'
+      published_at: 'Foilsithe ag'
+      registration_completed_at: 'Clárú críochnaithe ag'
+      status: 'Stádas'
+      submitted_at: 'Curtha isteach ag'
+      tags: 'Clibeanna'
+      title: 'Teideal'
+      user_data: 'Sonraí úsáideora'
+      votes_count: 'Vótaí'
+  form_builder:
+    default_select_field:
+      title: 'Do cheist'
+      option1: 'Rogha 1'
+      option2: 'Rogha 2'
+    form_end_page:
+      title_text_3: 'Go raibh maith agat as d''ionchur a roinnt!'
+      description_text_3: "Tá d'ionchur curtha isteach go rathúil."
+    form_user_page:
+      title_text: 'Maidir leat féin'
+    pdf_export:
+      personal_data: 'Sonraí pearsanta'
+      personal_data_explanation_public: "Cuirfimid d'ionchur isteach ar ardán rannpháirtíochta ar líne %{organizationName}. Más mian leat d'ainm a thaispeáint mar údar an ionchuir seo agus nuashonruithe ábhartha a fháil trí ríomhphost, líon isteach na réimsí seo a leanas ar an leathanach seo agus cruthóimid cuntas duit. Ní bheidh do ríomhphost poiblí agus ní úsáidfidh ach %{organizationName} é. Más mian leat fanacht gan ainm, nó mura n-aontaíonn tú go n-úsáidfimis do shonraí pearsanta ar an mbealach seo, is féidir leat iad a fhágáil folamh."
+      personal_data_explanation_private: "Cuirfimid d'ionchur isteach ar ardán rannpháirtíochta ar líne %{organizationName}. Más mian leat nuashonruithe ábhartha a fháil trí ríomhphost, líon isteach na réimsí seo a leanas ar an leathanach seo agus cruthóimid cuntas duit. Ní bheidh do shonraí poiblí agus ní úsáidfidh ach %{organizationName} iad. Mura n-aontaíonn tú go n-úsáidfimis do shonraí pearsanta ar an mbealach seo, is féidir leat iad a fhágáil folamh."
+      first_name: 'Céadainm(neacha)'
+      last_name: 'Sloinne'
+      email_address: 'Seoladh ríomhphoist'
+      by_checking_this_box: "Trí an bosca seo a thiceáil, aontaím go n-úsáidfear mo shonraí chun cuntas a chruthú ar ardán rannpháirtíochta %{organizationName}."
+      optional: 'roghnach'
+      permission: 'Cead'
+      choose_as_many: 'Roghnaigh an oiread agus is mian leat'
+      choose_exactly:
+        one: 'Roghnaigh díreach %{count} rogha amháin'
+        other: 'Roghnaigh díreach %{count} rogha'
+      choose_between: 'Roghnaigh idir %{min} agus %{max} rogha'
+      choose_at_least: 'Roghnaigh ar a laghad %{count} rogha'
+      choose_at_most: 'Roghnaigh ar a mhéad %{count} rogha'
+      this_answer: 'Ní roinnfear an freagra seo ach le modhnóirí amháin, agus ní leis an bpobal.'
+      page: 'Leathanach'
+      date_published: 'Dáta Foilsithe (ll-mm-bbbb)'
+      instructions: 'Treoracha'
+      write_as_clearly: 'Scríobh chomh <b>soiléir</b> agus is féidir— d''fhéadfaí na foirmeacha seo a scanadh'
+      write_in_language: 'Scríobh do fhreagraí sa teanga chéanna leis an bhfoirm seo'
+      linear_scale_print_description: 'Scríobh uimhir idir %{min_label} agus %{max_label} amháin le do thoil'
+      unsupported_field: 'Ní féidir an réimse seo a chomhlánú ar pháipéar. Bain úsáid as an leagan ar líne den fhoirm seo ina ionad.'
+      ranking_print_description: 'Scríobh uimhir ó 1 (is fearr leat) agus %{max_rank} (is lú is fearr leat) i ngach bosca. Úsáid gach uimhir díreach uair amháin.'
+      matrix_print_description: 'I ngach sraith, marcáil ciorcal amháin le cros chun do rogha a léiriú.'
+      rating_print_description: 'Rátáil seo trí uimhir idir 1 (is measa) agus %{max_stars} (is fearr) a scríobh.'
+      sentiment_linear_scale_print_description: 'Scríobh uimhir idir 1 agus 5 le do thoil.'
+      sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
+      point_print_description: 'Tarraing X ar an léarscáil thíos chun an suíomh a léiriú nó scríobh an seoladh ina ionad.'
+      line_print_description: 'Tarraing bealach ar an léarscáil thíos.'
+      polygon_print_description: 'Tarraing cruth ar an léarscáil thíos.'
+      select_print_description: 'Roghnaigh rogha amháin.'
+      date_print_description: 'Scríobh dáta san fhormáid BBBB-MM-LL.'
+  project_copy:
+    title_suffix: 'Cóip'
+  confirmations_mailer:
+    send_confirmation_code:
+      subject: "Deimhnigh do sheoladh ríomhphoist d'ardán rannpháirtíochta %{organizationName}"
+      preheader: 'Deimhnigh do sheoladh ríomhphoist le haghaidh %{organizationName}'
+      header: "Do Chód Deimhnithe"
+      header_message: "Dia duit %{firstName}!"
+      confirm_email_address: "Deimhnigh do sheoladh ríomhphoist"
+      thanks_for_signing_up1: "Go raibh maith agat as páirt a ghlacadh. Cuir isteach an cód deimhnithe seo san fhuinneog ar ardán %{organizationName}:"
+      best_regards: "Le dea-mhéin,"
+      ignore_email: "Mura ndearna tú cód a iarraidh, is féidir leat an ríomhphost seo a neamhaird go sábháilte."
+      expire_code: "Rachaidh an cód seo in éag i "
+      24_hours: "24 uair."
+      copy_paste_the_link_below: "Cóipeáil agus greamaigh an cód thíos isteach san fhoirm chláraithe ar an ardán."
+      the_link_is_valid_for: "Tá an nasc seo bailí ar feadh 24 uair. Má tá an nasc éagtha, is féidir leat <a href=\"%{link}\">cód nua a iarraidh</a>."
+      did_you_receive_this_email_in_error: "Ar fuair tú an ríomhphost seo trí earráid? <a href=\"%{link}\">Cuir in iúl dúinn</a>."
+  user_blocked_mailer:
+    send_user_blocked_email:
+      subject: 'Tá do chuntas díchumasaithe go sealadach'
+      preheader: 'Tá do chuntas ar ardán rannpháirtíochta %{organizationName} díchumasaithe go sealadach'
+      title_user_blocked: 'Tá do chuntas díchumasaithe go sealadach'
+      paragraph_1_without_reason: "Tá do chuntas ar ardán rannpháirtíochta %{organizationName} díchumasaithe go sealadach mar gheall ar shárú ar na treoirlínte pobail."
+      paragraph_1_with_reason: "Tá do chuntas ar ardán rannpháirtíochta %{organizationName} díchumasaithe go sealadach ar an gcúis seo a leanas:"
+      for_more_information: "Le haghaidh tuilleadh eolais faoi seo, is féidir leat an %{termsAndConditionsPage} a léamh"
+      you_can_sign_in_again_from: "Is féidir leat logáil isteach arís ó %{date}"
+  user:
+    anon_first_name: "Úsáideoir"
+    anon_scheme:
+      animals: 'ailigéadar,crogall,alpaca,seangán,antalóp,aip,armadillo,babún,broc,ialtóg,béar,béabhar,beach,ciaróg,buabhall,féileacán,camal,buabhall uisce,caribú,cat,eallach,síota,simpéansaí,sinsiola,cicéad,breallach,ciaróg dhubh,trosc,cadhóit,portán,criogair,préachán,fiach dubh,fia,dineasár,madra,deilf,muc mhara,lacha,iolar,eascann,eilifint,eilc,firéad,iasc,cuil,sionnach,frog,buaf,geirbil,sioráf,cuileog bheag,gnú,fiagaí,gabhar,iasc órga,gé,goraille,dreoilín teaspaigh,muc ghuine,hamstar,giorria,gráinneog,scadán,dobhareach,cearnabhán,capall,cú,hiéana,iompála,seacál,smugairle róin,cangarú,valbaí,cóála,liopard,leon,laghairt,láma,lócaiste,míol,macá,lacha fhiáin,mamat,manatí,martar,minc,mionnán,caochán,mús,mosquito,luch,francach,miúil,muscráit,madra uisce,damh,oisre,panda,muc,platapas,torcán,madra préirí,puig,coinín,racún,réinfhia,srónbheannach,bradán,sairdín,scairp,rón,leon mara,seirbheal,siorc,caora,scunc,seilide,nathair,damhán alla,iora,eala,teirmít,tíogar,breac,turtar,toirtís,rosualt,foiche,míol mór,mac tíre,vombat,marmóta,péist,eac,seicéad buí,séabra'
+  time:
+    am: rn
+    formats:
+      hour_of_day: "%l %p"
+    pm: in
+  voting_method:
+    default_voting_term_singular: "vóta"
+    default_voting_term_plural: "vótaí"
+  ics_calendar_event:
+    event_details: "Sonraí an imeachta"
+  errors:
+    messages:
+      max_must_be_greater_than_min_characters: "Caithfidh an t-uasmhéid a bheith níos mó ná an t-íosmhéid."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Caithfidh an t-uasmhéid a bheith níos mó ná nó cothrom leis an íosmhéid."
