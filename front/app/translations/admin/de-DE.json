@@ -808,7 +808,7 @@
   "app.containers.Admin.Users.deleteUserModal.memberSince": "Mitglied seit {date}",
   "app.containers.Admin.Users.deleteUserModal.noParticipation": "Diese*r Nutzer*in hat keine Teilnahmedaten.",
   "app.containers.Admin.Users.deleteUserModal.participationSummary": "Zusammenfassung der Beteiligung",
-  "app.containers.Admin.Users.deleteUserModal.pollResponsesCount": "{count, plural, one {~ Umfrageantwort} other {~ Umfrageantworten}}",
+  "app.containers.Admin.Users.deleteUserModal.pollResponsesCount": "{count, plural, one {# Umfrageantwort} other {# Umfrageantworten}}",
   "app.containers.Admin.Users.deleteUserModal.proposalsCount": "{count,  plural, one {# Vorschlag} other {# Vorschläge}}",
   "app.containers.Admin.Users.deleteUserModal.reactionsCount": "{count, plural, one {# Reaktion} other {# Reaktionen}}",
   "app.containers.Admin.Users.deleteUserModal.surveyResponsesCount": "{count, plural, one {# Umfrageantwort} other {# Umfrageantworten}}",
