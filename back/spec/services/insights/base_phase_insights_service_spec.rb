@@ -689,12 +689,12 @@ RSpec.describe Insights::BasePhaseInsightsService do
     end
   end
 
-  describe '#phase_has_run_more_than_14_days?' do
+  describe '#phase_has_run_more_than_7_days?' do
     it 'returns false when phase duration is less than 7 days' do
       travel_to(Time.zone.parse('2026-01-15 12:00:00')) do
         phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 6)) # 6 days, including both start and end dates
         service = described_class.new(phase)
-        expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+        expect(service.send(:phase_has_run_more_than_7_days?)).to be false
       end
     end
 
@@ -702,7 +702,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
       travel_to(Time.zone.parse('2026-01-6 12:00:00')) do
         phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 7)) # 7 days, including both start and end dates
         service = described_class.new(phase)
-        expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+        expect(service.send(:phase_has_run_more_than_7_days?)).to be false
       end
     end
 
@@ -710,7 +710,7 @@ RSpec.describe Insights::BasePhaseInsightsService do
       travel_to(Time.zone.parse('2026-01-8 12:00:00')) do
         phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 7)) # 7 days, including both start and end dates
         service = described_class.new(phase)
-        expect(service.send(:phase_has_run_more_than_14_days?)).to be true
+        expect(service.send(:phase_has_run_more_than_7_days?)).to be true
       end
     end
 
@@ -718,20 +718,20 @@ RSpec.describe Insights::BasePhaseInsightsService do
       travel_to(Time.zone.parse('2026-01-7 12:00:00')) do
         phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 7)) # 7 days, including both start and end dates
         service = described_class.new(phase)
-        expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+        expect(service.send(:phase_has_run_more_than_7_days?)).to be false
       end
     end
 
     it 'returns true for ongoing phases without end_at when started more than 7 days ago' do
       phase = create(:single_voting_phase, start_at: 9.days.ago, end_at: nil)
       service = described_class.new(phase)
-      expect(service.send(:phase_has_run_more_than_14_days?)).to be true
+      expect(service.send(:phase_has_run_more_than_7_days?)).to be true
     end
 
     it 'returns false for ongoing phases without end_at when started less than 7 days ago' do
       phase = create(:single_voting_phase, start_at: 6.days.ago, end_at: nil)
       service = described_class.new(phase)
-      expect(service.send(:phase_has_run_more_than_14_days?)).to be false
+      expect(service.send(:phase_has_run_more_than_7_days?)).to be false
     end
   end
 

@@ -190,7 +190,7 @@ module Insights
         comments_posted_7_day_percent_change: nil
       }
 
-      return result unless phase_has_run_more_than_14_days?
+      return result unless phase_has_run_more_than_7_days?
 
       voting_participations = participations[:voting]
       voters_count = voting_participations.pluck(:participant_id).uniq.count
@@ -209,7 +209,7 @@ module Insights
     end
 
     def online_picks_7_day_percent_change(participations)
-      return nil unless phase_has_run_more_than_14_days?
+      return nil unless phase_has_run_more_than_7_days?
 
       voting_participations = participations[:voting]
       return 0.0 if voting_participations.empty?
@@ -221,7 +221,7 @@ module Insights
     end
 
     def online_votes_7_day_percent_change(participations)
-      return nil unless phase_has_run_more_than_14_days?
+      return nil unless phase_has_run_more_than_7_days?
 
       voting_participations = participations[:voting]
       return 0.0 if voting_participations.empty?

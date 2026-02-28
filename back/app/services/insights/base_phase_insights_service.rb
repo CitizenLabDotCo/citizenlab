@@ -85,7 +85,7 @@ module Insights
       }
     end
 
-    def phase_has_run_more_than_14_days?
+    def phase_has_run_more_than_7_days?
       time_now = Time.current.to_date
       phase_end_date = @phase.end_at || time_now
 
@@ -102,7 +102,7 @@ module Insights
     end
 
     def percentage_change(old_value, new_value)
-      return nil unless phase_has_run_more_than_14_days?
+      return nil unless phase_has_run_more_than_7_days?
       return 0.0 if old_value == new_value # Includes case where both are zero
       return 'current_value_compared_with_zero' if old_value.zero? # Infinite percentage change (avoid division by zero)
 
@@ -111,7 +111,7 @@ module Insights
     end
 
     def participations_7_day_change(participations)
-      return nil unless phase_has_run_more_than_14_days?
+      return nil unless phase_has_run_more_than_7_days?
       return 0.0 if participations.empty?
 
       participations_count = participations.count

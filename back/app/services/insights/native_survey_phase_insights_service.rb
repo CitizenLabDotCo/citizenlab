@@ -44,7 +44,7 @@ module Insights
         completion_rate_7_day_percent_change: nil
       }
 
-      return result unless phase_has_run_more_than_14_days?
+      return result unless phase_has_run_more_than_7_days?
 
       posted_ideas_count_7_days_ago = phase_ideas.where(created_at: ...7.days.ago).count
       submitted_surveys_count = participations[:submitting_idea].count
