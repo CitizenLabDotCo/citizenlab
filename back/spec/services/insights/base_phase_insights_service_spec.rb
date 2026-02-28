@@ -690,46 +690,46 @@ RSpec.describe Insights::BasePhaseInsightsService do
   end
 
   describe '#phase_has_run_more_than_14_days?' do
-    it 'returns false when phase duration is less than 14 days' do
+    it 'returns false when phase duration is less than 7 days' do
       travel_to(Time.zone.parse('2026-01-15 12:00:00')) do
-        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 13)) # 13 days, including both start and end dates
+        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 6)) # 6 days, including both start and end dates
         service = described_class.new(phase)
         expect(service.send(:phase_has_run_more_than_14_days?)).to be false
       end
     end
 
-    it 'returns false when phase duration is 14 days but elapsed time is less than 14 days' do
-      travel_to(Time.zone.parse('2026-01-13 12:00:00')) do
-        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 14)) # 14 days, including both start and end dates
+    it 'returns false when phase duration is 7 days but elapsed time is less than 7 days' do
+      travel_to(Time.zone.parse('2026-01-6 12:00:00')) do
+        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 7)) # 7 days, including both start and end dates
         service = described_class.new(phase)
         expect(service.send(:phase_has_run_more_than_14_days?)).to be false
       end
     end
 
-    it 'returns true when phase duration is 14 days and elapsed time is at least 14 days' do
-      travel_to(Time.zone.parse('2026-01-15 12:00:00')) do
-        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 14)) # 14 days, including both start and end dates
+    it 'returns true when phase duration is 7 days and elapsed time is at least 7 days' do
+      travel_to(Time.zone.parse('2026-01-8 12:00:00')) do
+        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 7)) # 7 days, including both start and end dates
         service = described_class.new(phase)
         expect(service.send(:phase_has_run_more_than_14_days?)).to be true
       end
     end
 
-    it 'returns false when phase is long enough but started less than 14 days ago' do
-      travel_to(Time.zone.parse('2026-01-14 12:00:00')) do
-        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 14)) # 14 days, including both start and end dates
+    it 'returns false when phase is long enough but started less than 7 days ago' do
+      travel_to(Time.zone.parse('2026-01-7 12:00:00')) do
+        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 7)) # 7 days, including both start and end dates
         service = described_class.new(phase)
         expect(service.send(:phase_has_run_more_than_14_days?)).to be false
       end
     end
 
-    it 'returns true for ongoing phases without end_at when started more than 14 days ago' do
-      phase = create(:single_voting_phase, start_at: 20.days.ago, end_at: nil)
+    it 'returns true for ongoing phases without end_at when started more than 7 days ago' do
+      phase = create(:single_voting_phase, start_at: 9.days.ago, end_at: nil)
       service = described_class.new(phase)
       expect(service.send(:phase_has_run_more_than_14_days?)).to be true
     end
 
-    it 'returns false for ongoing phases without end_at when started less than 14 days ago' do
-      phase = create(:single_voting_phase, start_at: 10.days.ago, end_at: nil)
+    it 'returns false for ongoing phases without end_at when started less than 7 days ago' do
+      phase = create(:single_voting_phase, start_at: 6.days.ago, end_at: nil)
       service = described_class.new(phase)
       expect(service.send(:phase_has_run_more_than_14_days?)).to be false
     end
@@ -759,8 +759,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
       expect(service.send(:percentage_change, 100, 0)).to eq(-100.0)
     end
 
-    it 'returns null when phase less than 14 days old' do
-      phase.update(start_at: 10.days.ago)
+    it 'returns null when phase less than 7 days old' do
+      phase.update(start_at: 6.days.ago)
 
       expect(service.send(:percentage_change, 100, 150)).to be_nil
     end

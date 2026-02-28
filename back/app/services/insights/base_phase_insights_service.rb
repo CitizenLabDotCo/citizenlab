@@ -89,16 +89,16 @@ module Insights
       time_now = Time.current.to_date
       phase_end_date = @phase.end_at || time_now
 
-      # Check if the phase duration (start to end or current date) is less than 14 days
+      # Check if the phase duration (start to end or current date) is less than 7 days
       # Add 1 to include both start and end dates (inclusive counting)
       phase_duration_days = (phase_end_date - @phase.start_at).to_i + 1
 
-      return false if phase_duration_days < 14
+      return false if phase_duration_days < 7
 
-      # Check if the elapsed time from phase start to now is more than 14 days
+      # Check if the elapsed time from phase start to now is more than 7 days
       elapsed_days = (time_now - @phase.start_at).to_i
 
-      elapsed_days >= 14
+      elapsed_days >= 7
     end
 
     def percentage_change(old_value, new_value)
