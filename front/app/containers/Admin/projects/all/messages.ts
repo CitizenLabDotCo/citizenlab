@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.calendar',
     defaultMessage: 'Calendar',
   },
+  workspaces: {
+    id: 'app.containers.Admin.projects.all.new.workspaces',
+    defaultMessage: 'Workspaces',
+  },
   arrangeProjects: {
     id: 'app.containers.Admin.projects.all.new.arrangeProjects',
     defaultMessage: 'Arrange projects',
@@ -24,6 +28,10 @@ export default defineMessages({
   searchFolders: {
     id: 'app.containers.Admin.projects.all.new.Folders.Filters.searchFolders',
     defaultMessage: 'Search folders',
+  },
+  searchWorkspaces: {
+    id: 'app.containers.Admin.projects.all.new.Workspaces.Filters.searchWorkspaces',
+    defaultMessage: 'Search workspaces',
   },
   overviewPageTitle: {
     id: 'app.containers.AdminPage.ProjectDashboard.overviewPageTitle',
@@ -40,5 +48,9 @@ export default defineMessages({
   newProject: {
     id: 'app.containers.AdminPage.ProjectEdit.createProject',
     defaultMessage: 'New project',
+  },
+  newWorkspace: {
+    id: 'app.containers.AdminPage.projects.all.newWorkspace',
+    defaultMessage: 'New workspace',
   },
 });

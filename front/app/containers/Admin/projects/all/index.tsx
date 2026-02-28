@@ -16,6 +16,31 @@ import Projects from './Projects';
 import Tabs from './Tabs';
 
 const Calendar = React.lazy(() => import('./Calendar'));
+const Workspaces = React.lazy(() => import('./Workspaces'));
+
+const getSearchMessage = (
+  tab: string | null,
+  calendarViewEnabled: boolean,
+  workspacesEnabled: boolean
+) => {
+  if (tab === null) {
+    return messages.searchProjects;
+  }
+
+  if (tab === 'calendar' && calendarViewEnabled) {
+    return messages.searchProjects;
+  }
+
+  if (tab === 'folders') {
+    return messages.searchFolders;
+  }
+
+  if (tab === 'workspaces' && workspacesEnabled) {
+    return messages.searchWorkspaces;
+  }
+
+  return undefined;
+};
 
 const AdminProjectsListNew = () => {
   const [searchParams] = useSearchParams();
@@ -24,9 +49,15 @@ const AdminProjectsListNew = () => {
   const calendarViewEnabled = useFeatureFlag({
     name: 'project_planning_calendar',
   });
+  const workspacesEnabled = useFeatureFlag({
+    name: 'workspaces',
+  });
 
-  const showProjectSearch =
-    tab === null || (tab === 'calendar' && calendarViewEnabled);
+  const searchMessage = getSearchMessage(
+    tab,
+    calendarViewEnabled,
+    workspacesEnabled
+  );
 
   return (
     <Box
@@ -48,13 +79,10 @@ const AdminProjectsListNew = () => {
           height="44px"
         >
           <Tabs />
-          {showProjectSearch && (
+          {searchMessage && (
             <Box mb="16px">
-              <Search placeholder={formatMessage(messages.searchProjects)} />
+              <Search placeholder={formatMessage(searchMessage)} />
             </Box>
-          )}
-          {tab === 'folders' && (
-            <Search placeholder={formatMessage(messages.searchFolders)} />
           )}
         </Box>
         <Box mt="20px">
@@ -63,6 +91,11 @@ const AdminProjectsListNew = () => {
           {tab === 'calendar' && (
             <Suspense>
               <Calendar />
+            </Suspense>
+          )}
+          {tab === 'workspaces' && (
+            <Suspense>
+              <Workspaces />
             </Suspense>
           )}
           {tab === 'ordering' && (
