@@ -1,9 +1,13 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Multiloc } from 'typings';
+import { InfiniteQueryObserverResult } from '@tanstack/react-query';
+import { CLErrors, Multiloc } from 'typings';
 
-import { IAdminPublicationData } from 'api/admin_publications/types';
+import {
+  IAdminPublicationData,
+  IAdminPublications,
+} from 'api/admin_publications/types';
 import { IStatusCountsAll } from 'api/admin_publications_status_counts/types';
 import { PublicationStatus } from 'api/projects/types';
 
@@ -34,7 +38,9 @@ interface Props extends BaseProps {
   onChangeAreas?: (areas: string[]) => void;
   onChangeSearch?: (search: string | null) => void;
   onChangePublicationStatus?: (publicationStatus: PublicationStatus[]) => void;
-  onLoadMore?: () => void;
+  onLoadMore?: () => Promise<
+    InfiniteQueryObserverResult<IAdminPublications, CLErrors>
+  >;
   onChangeCurrentTab: (tab: PublicationTab) => void;
   searchTerm?: string | null;
 }
@@ -75,9 +81,21 @@ const ProjectAndFolderCardsInner = ({
   const availableTabs = getAvailableTabs(statusCountsWithoutFilters);
   const noAdminPublicationsAtAll = statusCountsWithoutFilters.all === 0;
 
-  const showMore = () => {
+  const showMore = async () => {
     trackEventByName(tracks.clickOnProjectsShowMoreButton);
-    onLoadMore && onLoadMore();
+    const previousCount = document.querySelectorAll<HTMLElement>(
+      '.e2e-projects-list.active-tab .e2e-admin-publication-card'
+    ).length;
+    await onLoadMore?.();
+
+    // Wait for React to commit the new items to the DOM
+    requestAnimationFrame(() => {
+      const cards = document.querySelectorAll<HTMLElement>(
+        '.e2e-projects-list.active-tab .e2e-admin-publication-card'
+      );
+      const cardToFocus = cards[previousCount] as HTMLElement | undefined;
+      if (cardToFocus) cardToFocus.focus();
+    });
   };
 
   const handleChangeTopics = (topics: string[]) => {
