@@ -99,7 +99,7 @@ gem 'axlsx', '3.0.0.pre' # write xlsx files
 gem 'rubyXL', '~> 3.4.27' # read xlsx files. Has issues with writing files https://github.com/CitizenLabDotCo/citizenlab/pull/7834
 gem 'docx', '~> 0.3.0'
 gem 'counter_culture', '~> 3.5'
-gem 'groupdate', '~> 6.5'
+gem 'groupdate', '~> 6.7'
 gem 'icalendar', '~> 2.10'
 gem 'interactor'
 gem 'interactor-rails'
