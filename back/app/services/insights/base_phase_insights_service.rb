@@ -60,11 +60,13 @@ module Insights
     end
 
     def base_7_day_changes(participations, visits, visitors_count, participants_count)
-      return {
-        visitors_7_day_percent_change: nil,
-        participants_7_day_percent_change: nil,
-        participation_rate_7_day_percent_change: nil
-      } unless phase_has_run_more_than_7_days?
+      unless phase_has_run_more_than_7_days?
+        return {
+          visitors_7_day_percent_change: nil,
+          participants_7_day_percent_change: nil,
+          participation_rate_7_day_percent_change: nil
+        }
+      end
 
       flattened_participations = participations.values.flatten
 
