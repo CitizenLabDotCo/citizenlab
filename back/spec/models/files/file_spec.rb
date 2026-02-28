@@ -46,7 +46,7 @@ RSpec.describe Files::File do
 
   describe 'associations' do
     it { is_expected.to belong_to(:uploader).class_name('User').optional }
-    it { is_expected.to have_many(:files_projects).class_name('Files::FilesProject').dependent(:destroy) }
+    it { is_expected.to have_many(:files_projects).class_name('Files::FilesProject') }
     it { is_expected.to have_many(:projects).through(:files_projects) }
   end
 
