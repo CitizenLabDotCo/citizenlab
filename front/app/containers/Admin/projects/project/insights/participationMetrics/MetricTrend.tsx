@@ -23,7 +23,7 @@ const MetricTrend = ({ change }: Props) => {
   const { formatMessage, formatNumber } = useIntl();
 
   const insufficientDataMessages = {
-    null: messages.insufficientComparisonDataPhaseTooNew,
+    null: messages.insufficientComparisonDataPhaseTooYoung,
     current_value_compared_with_zero: messages.currentValueComparedWithZero,
     no_visitors_in_one_or_both_periods:
       messages.cannotCalculateNoVisitsInPeriod,

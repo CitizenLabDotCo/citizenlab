@@ -224,10 +224,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.insufficientComparisonData',
     defaultMessage: 'Insufficient comparison data',
   },
-  insufficientComparisonDataPhaseTooNew: {
-    id: 'app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew',
+  insufficientComparisonDataPhaseTooYoung: {
+    id: 'app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooYoung',
     defaultMessage:
-      'Cannot calculate 7 day change when phase has run for less than 14 days',
+      'Cannot calculate 7-day change when phase has run for less than 7 days',
   },
   currentValueComparedWithZero: {
     id: 'app.containers.Admin.projects.project.insights.currentValueComparedWithZero',
