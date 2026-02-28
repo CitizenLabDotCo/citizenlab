@@ -242,4 +242,97 @@ RSpec.describe Insights::IdeationPhaseInsightsService do
       })
     end
   end
+
+  describe '#cached_phase_participations' do
+    # Enable memory store for these tests
+    around do |example|
+      original_cache_store = Rails.cache
+      Rails.cache = ActiveSupport::Cache::MemoryStore.new
+      example.run
+      Rails.cache = original_cache_store
+    end
+
+    it 'caches participations on first call' do
+      expect(service).to receive(:phase_participations).once.and_call_original
+
+      service.cached_phase_participations
+      service.cached_phase_participations # Second call should use cache
+    end
+
+    it 'returns cached data even when underlying data changes' do
+      participations1 = service.send(:phase_participations)
+      result1 = service.cached_phase_participations
+
+      expect(result1).to eq(participations1)
+
+      # Change underlying data - move idea1 into the phase timeframe
+      # (just update columns, don't create new records, as that is flaky)
+      idea1.update_column(:created_at, 10.days.ago)
+      idea1.update_column(:published_at, 10.days.ago)
+
+      result2 = service.cached_phase_participations
+      participations2 = service.send(:phase_participations)
+
+      # Should still return old cached data, not including updated idea
+      expect(result2).to eq(result1)
+      expect(result2).not_to eq(participations2)
+    end
+
+    it 'uses cache key based on phase id and updated_at' do
+      cache_key = "phase_participations/#{phase.id}/#{phase.updated_at.to_i}"
+
+      expect(Rails.cache).to receive(:fetch).with(cache_key, expires_in: 5.minutes).and_call_original
+
+      service.cached_phase_participations
+    end
+  end
+
+  describe '#cached_insights_data' do
+    # Enable memory store for these tests
+    around do |example|
+      original_cache_store = Rails.cache
+      Rails.cache = ActiveSupport::Cache::MemoryStore.new
+      example.run
+      Rails.cache = original_cache_store
+    end
+
+    it 'caches insights data on first call' do
+      participations = service.send(:phase_participations)
+
+      expect(service).to receive(:insights_data).once.and_call_original
+
+      service.send(:cached_insights_data, participations)
+      service.send(:cached_insights_data, participations) # Second call should use cache
+    end
+
+    it 'returns cached data even when underlying data changes' do
+      participations1 = service.send(:phase_participations)
+      original_data = service.send(:insights_data, participations1)
+      result1 = service.send(:cached_insights_data, participations1)
+
+      expect(result1).to eq(original_data)
+
+      # Change underlying data - move idea1 into the phase timeframe
+      # (just update columns, don't create new records, as that is flaky)
+      idea1.update_column(:created_at, 10.days.ago)
+      idea1.update_column(:published_at, 10.days.ago)
+
+      result2 = service.send(:cached_insights_data, participations1)
+      participations2 = service.send(:phase_participations)
+      insights2 = service.send(:insights_data, participations2)
+
+      # Should still return old cached data, not recalculated insights
+      expect(result2).to eq(result1)
+      expect(result2).not_to eq(insights2)
+    end
+
+    it 'uses cache key based on phase id and updated_at' do
+      participations = service.send(:phase_participations)
+      cache_key = "phase_insights_data/#{phase.id}/#{phase.updated_at.to_i}"
+
+      expect(Rails.cache).to receive(:fetch).with(cache_key, expires_in: 5.minutes).and_call_original
+
+      service.send(:cached_insights_data, participations)
+    end
+  end
 end
