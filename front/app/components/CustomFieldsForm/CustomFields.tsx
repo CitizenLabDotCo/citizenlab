@@ -215,12 +215,14 @@ const CustomFields = ({
   ideaId,
   phase,
   participationMethod,
+  showQuestionNumbers,
 }: {
   questions: IFlatCustomField[];
   projectId?: string;
   ideaId?: string;
   phase?: IPhaseData;
   participationMethod?: ParticipationMethod;
+  showQuestionNumbers?: boolean;
 }) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -228,7 +230,7 @@ const CustomFields = ({
     <>
       {questions
         .filter((question) => question.enabled)
-        .map((question) => {
+        .map((question, index) => {
           // These question types render non-labelable elements (e.g. div[role="slider"], table, ul)
           // so htmlFor would create an invalid label reference. They use aria-labelledby instead.
           const nonLabelableTypes = [
@@ -257,6 +259,7 @@ const CustomFields = ({
               </QuillEditedContent>
             ),
             subtextSupportsHtml: true,
+            questionNumber: showQuestionNumbers ? index + 1 : undefined,
           };
 
           const answerNotPublic =

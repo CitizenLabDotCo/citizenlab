@@ -168,6 +168,7 @@ interface FormLabelGenericProps {
   subtextMessageValues?: FormattedMessageProps['values'];
   subtextValue?: JSX.Element | string;
   subtextSupportsHtml?: boolean;
+  questionNumber?: number;
 }
 
 interface FormLabelPropsMessages extends FormLabelGenericProps {
@@ -218,6 +219,7 @@ export const FormLabel = memo<
     subtextMessageValues,
     subtextSupportsHtml,
     subtextValue,
+    questionNumber,
     ...remainingProps
   } = props;
 
@@ -237,6 +239,7 @@ export const FormLabel = memo<
     >
       <LabelContainer>
         <StyledSpan>
+          {questionNumber && <>{questionNumber}. </>}
           {propsHasValues(props) ? (
             props.labelValue
           ) : (
