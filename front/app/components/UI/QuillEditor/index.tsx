@@ -64,7 +64,6 @@ const QuillEditor = ({
   minCharCount,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [editor, setEditor] = useState<Quill | null>(null);
   const [focussed, setFocussed] = useState(false);
 
   const [isButtonsMenuVisible, setIsButtonsMenuVisible] = useState(false);
@@ -85,9 +84,15 @@ const QuillEditor = ({
 
   // Initialize Quill
   // https://quilljs.com/playground/react
+  // Using ref to persist across StrictMode remounts
+  const editorRef = useRef<Quill | null>(null);
+
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
+
+    // Reuse existing Quill instance (fixes React StrictMode double-mount)
+    if (editorRef.current) return;
 
     const editorContainer = container.appendChild(
       container.ownerDocument.createElement('div')
@@ -107,17 +112,22 @@ const QuillEditor = ({
       imageTitleLabel: formatMessage(messages.imageTitleLabel),
     });
 
+    editorRef.current = quill;
     setHTML(quill, value);
-    setEditor(quill);
 
     return () => {
-      container.innerHTML = '';
+      // Only cleanup in production - in dev, StrictMode double-mounts break Quill
+      if (process.env.NODE_ENV !== 'development') {
+        container.innerHTML = '';
+      }
     };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Handle text and focus changes
   useEffect(() => {
+    const editor = editorRef.current;
     if (!editor) return;
 
     // Convert Delta back to HTML
@@ -154,10 +164,11 @@ const QuillEditor = ({
       editor.off('text-change', debouncedTextChangeHandler);
       editor.off('selection-change', focusHandler);
     };
-  }, [editor]);
+  }, []);
 
   // Synchronize the editor content with the value prop
   useEffect(() => {
+    const editor = editorRef.current;
     if (!editor) return;
 
     if (value !== htmlRef.current) {
@@ -165,12 +176,13 @@ const QuillEditor = ({
       const html = getHTML(editor);
       htmlRef.current = html;
     }
-  }, [value, editor]);
+  }, [value]);
 
   // Function to save the latest state of the content.
   // We call this when the mouse leaves the editor, to ensure the
   // latest content (and image size + alt text) is properly saved.
   const saveLatestContent = () => {
+    const editor = editorRef.current;
     if (!editor) return;
     const html = getHTML(editor);
 
@@ -181,8 +193,8 @@ const QuillEditor = ({
   };
 
   const handleLabelOnClick = useCallback(() => {
-    editor?.focus();
-  }, [editor]);
+    editorRef.current?.focus();
+  }, []);
 
   const className = focussed ? 'focus' : '';
 
@@ -208,25 +220,27 @@ const QuillEditor = ({
         noVideos={noVideos}
         noAlign={noAlign}
         noLinks={noLinks}
-        editor={editor}
+        editor={editorRef.current}
         setIsButtonsMenuVisible={setIsButtonsMenuVisible}
       />
       <div>
         <div ref={containerRef} />
       </div>
-      {(maxCharCount || minCharCount) && editor && (
+      {(maxCharCount || minCharCount) && editorRef.current && (
         <Box
           display="flex"
           justifyContent="flex-end"
           mt="8px"
           color={
-            (maxCharCount && getQuillPlainTextLength(editor) > maxCharCount) ||
-            (minCharCount && getQuillPlainTextLength(editor) < minCharCount)
+            (maxCharCount &&
+              getQuillPlainTextLength(editorRef.current) > maxCharCount) ||
+            (minCharCount &&
+              getQuillPlainTextLength(editorRef.current) < minCharCount)
               ? 'red600'
               : 'textSecondary'
           }
         >
-          {getQuillPlainTextLength(editor)}
+          {getQuillPlainTextLength(editorRef.current)}
           {maxCharCount && ` / ${maxCharCount}`}
           {minCharCount && ` (≥ ${minCharCount})`}
         </Box>
