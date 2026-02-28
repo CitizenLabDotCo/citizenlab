@@ -55,11 +55,11 @@ module CustomFieldBins
 
       case custom_field.input_type
       when 'checkbox'
-        create!(custom_field:, values: [true])
-        create!(custom_field:, values: [false])
+        find_or_create_by!(custom_field:, values: [true])
+        find_or_create_by!(custom_field:, values: [false])
       when 'linear_scale', 'rating', 'sentiment_linear_scale'
         (1..custom_field.maximum).each do |i|
-          create!(custom_field:, values: [i])
+          find_or_create_by!(custom_field:, values: [i])
         end
       end
     end
