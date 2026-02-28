@@ -1405,7 +1405,6 @@
   "app.containers.Admin.projects.project.insights.inputs": "Ieejas",
   "app.containers.Admin.projects.project.insights.insightsSubtitle1": "Reāllaika iesaistes izsekošana",
   "app.containers.Admin.projects.project.insights.insufficientComparisonData": "Nepietiekami salīdzināšanas dati",
-  "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "Nevar aprēķināt 7 dienu izmaiņas, ja fāze ir darbojusies mazāk nekā 14 dienas.",
   "app.containers.Admin.projects.project.insights.last7Days": "Pēdējās 7 dienas",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Demogrāfisko datu ielāde...",
   "app.containers.Admin.projects.project.insights.newSubmission": "Jauns iesniegums",

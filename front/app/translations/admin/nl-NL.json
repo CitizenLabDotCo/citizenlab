@@ -1405,7 +1405,6 @@
   "app.containers.Admin.projects.project.insights.inputs": "Bijdragen",
   "app.containers.Admin.projects.project.insights.insightsSubtitle1": "Betrokkenheid in real-time volgen",
   "app.containers.Admin.projects.project.insights.insufficientComparisonData": "Onvoldoende vergelijkingsgegevens",
-  "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "Kan geen verandering van 7 dagen berekenen als de fase minder dan 14 dagen heeft geduurd",
   "app.containers.Admin.projects.project.insights.last7Days": "Laatste 7 dagen",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Demografische gegevens worden geladen...",
   "app.containers.Admin.projects.project.insights.newSubmission": "Nieuwe inzending",

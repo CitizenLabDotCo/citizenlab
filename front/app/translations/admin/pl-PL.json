@@ -1405,7 +1405,6 @@
   "app.containers.Admin.projects.project.insights.inputs": "Wejścia",
   "app.containers.Admin.projects.project.insights.insightsSubtitle1": "Śledź zaangażowanie w czasie rzeczywistym",
   "app.containers.Admin.projects.project.insights.insufficientComparisonData": "Niewystarczające dane porównawcze",
-  "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "Nie można obliczyć 7-dniowej zmiany, gdy faza trwała krócej niż 14 dni.",
   "app.containers.Admin.projects.project.insights.last7Days": "Ostatnie 7 dni",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Ładowanie danych demograficznych...",
   "app.containers.Admin.projects.project.insights.newSubmission": "Nowe zgłoszenie",

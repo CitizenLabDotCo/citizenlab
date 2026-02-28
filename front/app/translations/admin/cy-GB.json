@@ -1405,7 +1405,6 @@
   "app.containers.Admin.projects.project.insights.inputs": "Mewnbynnau",
   "app.containers.Admin.projects.project.insights.insightsSubtitle1": "Tracio ymgysylltiad mewn amser real",
   "app.containers.Admin.projects.project.insights.insufficientComparisonData": "Data cymharu annigonol",
-  "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "Ni ellir cyfrifo newid 7 diwrnod pan fydd y cyfnod wedi rhedeg am lai na 14 diwrnod",
   "app.containers.Admin.projects.project.insights.last7Days": "7 diwrnod diwethaf",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Yn llwytho demograffeg...",
   "app.containers.Admin.projects.project.insights.newSubmission": "Cyflwyniad newydd",

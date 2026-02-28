@@ -1405,7 +1405,6 @@
   "app.containers.Admin.projects.project.insights.inputs": "المدخلات",
   "app.containers.Admin.projects.project.insights.insightsSubtitle1": "تتبع التفاعل في الوقت الفعلي",
   "app.containers.Admin.projects.project.insights.insufficientComparisonData": "بيانات مقارنة غير كافية",
-  "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "لا يمكن حساب التغير خلال 7 أيام عندما تكون المرحلة قد استمرت لأقل من 14 يومًا",
   "app.containers.Admin.projects.project.insights.last7Days": "آخر 7 أيام",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "جارٍ تحميل البيانات الديموغرافية...",
   "app.containers.Admin.projects.project.insights.newSubmission": "طلب جديد",

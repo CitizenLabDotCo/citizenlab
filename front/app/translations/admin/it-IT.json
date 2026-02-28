@@ -1405,7 +1405,6 @@
   "app.containers.Admin.projects.project.insights.inputs": "Contributi",
   "app.containers.Admin.projects.project.insights.insightsSubtitle1": "Traccia il coinvolgimento in tempo reale",
   "app.containers.Admin.projects.project.insights.insufficientComparisonData": "Dati di confronto insufficienti",
-  "app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew": "Non è possibile calcolare la variazione di 7 giorni quando la fase è in corso da meno di 14 giorni",
   "app.containers.Admin.projects.project.insights.last7Days": "Ultimi 7 giorni",
   "app.containers.Admin.projects.project.insights.loadingDemographics": "Caricamento dei dati demografici...",
   "app.containers.Admin.projects.project.insights.newSubmission": "Nuova risposta",
