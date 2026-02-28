@@ -6,6 +6,12 @@ module Files
     after :store, :generate_preview
     after :store, :transcribe
 
+    # Extension validation is handled at the model level to support
+    # role-based restrictions. See +Files::File#validate_extension+.
+    def extension_allowlist
+      nil
+    end
+
     def generate_descriptions(_file)
       Files::DescriptionGenerator.enqueue_job(model)
     end
@@ -22,10 +28,6 @@ module Files
       return unless AppConfiguration.instance.feature_activated?('data_repository_transcription')
 
       Files::TranscriptService.new(model).enqueue_transcript
-    end
-
-    def extension_allowlist
-      # All file types are allowed.
     end
 
     def size_range
