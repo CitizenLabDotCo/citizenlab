@@ -391,7 +391,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.inputScreeningToggle": "Screening av inndata",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Hva skal en inngang hete?",
   "app.components.app.containers.AdminPage.ProjectEdit.insights": "Innsikt",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Kommentar",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Oppgi lenken til Konveio-dokumentet ditt her. Les vår {supportArticleLink} for mer informasjon om hvordan du konfigurerer Konveio.",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "støtteartikkel",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL2": "https://support.govocal.com/en/articles/527582-embedding-konveio-pdf-documents-for-collecting-feedback",

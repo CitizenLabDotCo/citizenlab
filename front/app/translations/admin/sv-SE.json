@@ -391,7 +391,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.inputScreeningToggle": "Granskning av inmatning",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Vad ska indata heta?",
   "app.components.app.containers.AdminPage.ProjectEdit.insights": "Insikter",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Kommentar",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Ange länken till ditt Konveio-dokument här. Läs vår {supportArticleLink} för mer information om hur du konfigurerar Konveio.",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "stödartikel",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL2": "https://support.govocal.com/en/articles/527582-embedding-konveio-pdf-documents-for-collecting-feedback",

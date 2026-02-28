@@ -168,6 +168,12 @@ export const INPUT_TERMS = [
   'proposal',
   'initiative',
   'petition',
+  'comment',
+  'response',
+  'suggestion',
+  'topic',
+  'post',
+  'story',
 ];
 
 export const IdeaSortMethodFallback = 'trending';

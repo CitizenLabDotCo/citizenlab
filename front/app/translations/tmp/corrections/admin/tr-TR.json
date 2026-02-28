@@ -1,0 +1,5 @@
+{
+  "app.components.admin.PostManager.initiativeFormTitle": "İnisiyatif düzenleme",
+  "app.components.admin.PostManager.issueFormTitle": "Mesele düzenleme",
+  "app.containers.AdminPage.ProjectEdit.newIssue": "Bir mesele ekleyin"
+}

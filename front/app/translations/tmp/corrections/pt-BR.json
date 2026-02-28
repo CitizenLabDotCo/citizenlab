@@ -1,0 +1,16 @@
+{
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "O que você acha desta iniciativa? Vote nela e compartilhe a discussão em  {postUrl} para fazer ouvir a sua voz!",
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Apoie a minha iniciativa: {postTitle}.",
+  "app.components.ProjectCard.submitAnIssue": "Envie uma questão",
+  "app.containers.IdeaButton.submitAnIssue": "Enviar uma questão",
+  "app.containers.IdeasFeedPage.addAnIssue": "Adicionar uma questão",
+  "app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_minLength": "O título da questão deve ter mais de {limit} caracteres",
+  "app.containers.IdeasNewPage.api_error_option_description_multiloc_too_short": "A descrição da opção deve ter pelo menos 30 caracteres",
+  "app.containers.IdeasNewPage.api_error_option_title_multiloc_too_long": "O título da opção deve ter menos de 80 caracteres",
+  "app.containers.IdeasNewPage.api_error_option_title_multiloc_too_short": "O título da opção deve ter pelo menos 10 caracteres",
+  "app.containers.IdeasNewPage.api_error_project_title_multiloc_too_short": "O título do projeto deve ter pelo menos 10 caracteres",
+  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "{name} convidou você para co-patrocinar uma iniciativa",
+  "app.containers.NotificationMenu.officialFeedbackOnIssueYouFollow": "{officialName} deu uma atualização oficial sobre uma questão que você segue",
+  "app.containers.NotificationMenu.officialFeedbackOnQuestionYouFollow": "{officialName} deu uma atualização oficial sobre uma pergunta que você segue",
+  "app.containers.NotificationMenu.userCommentedOnIssueYouFollow": "{name} comentou uma questão que segue"
+}

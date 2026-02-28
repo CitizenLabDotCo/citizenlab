@@ -391,7 +391,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.inputScreeningToggle": "ان پٹ اسکریننگ",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "ان پٹ کو کیا کہا جائے؟",
   "app.components.app.containers.AdminPage.ProjectEdit.insights": "بصیرت",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "تبصرہ",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "اپنے Konveio دستاویز کا لنک یہاں فراہم کریں۔ Konveio کو ترتیب دینے کے بارے میں مزید معلومات کے لیے ہمارا {supportArticleLink} پڑھیں۔",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "سپورٹ مضمون",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL2": "https://support.govocal.com/en/articles/527582-embedding-konveio-pdf-documents-for-collecting-feedback",

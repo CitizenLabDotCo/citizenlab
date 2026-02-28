@@ -391,7 +391,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.inputScreeningToggle": "Syötteen seulonta",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Millä nimellä syötettä pitäisi kutsua?",
   "app.components.app.containers.AdminPage.ProjectEdit.insights": "Näkemyksiä",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Kommentti",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Anna linkki Konveio-asiakirjaasi tähän. Lue {supportArticleLink} saadaksesi lisätietoja Konveion määrittämisestä.",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "tukiartikkeli",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL2": "https://support.govocal.com/en/articles/527582-embedding-konveio-pdf-documents-for-collecting-feedback",

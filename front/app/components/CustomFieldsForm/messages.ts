@@ -313,6 +313,26 @@ export default defineMessages({
     id: 'app.utils.IdeasNewPage.viewYourIssue',
     defaultMessage: 'View your issue',
   },
+  viewYourResponse: {
+    id: 'app.utils.IdeasNewPage.viewYourResponse',
+    defaultMessage: 'View your response',
+  },
+  viewYourSuggestion: {
+    id: 'app.utils.IdeasNewPage.viewYourSuggestion',
+    defaultMessage: 'View your suggestion',
+  },
+  viewYourTopic: {
+    id: 'app.utils.IdeasNewPage.viewYourTopic',
+    defaultMessage: 'View your topic',
+  },
+  viewYourPost: {
+    id: 'app.utils.IdeasNewPage.viewYourPost',
+    defaultMessage: 'View your post',
+  },
+  viewYourStory: {
+    id: 'app.utils.IdeasNewPage.viewYourStory',
+    defaultMessage: 'View your story',
+  },
   valueOutOfTotalWithLabel: {
     id: 'app.components.form.controls.valueOutOfTotalWithLabel',
     defaultMessage: '{value} out of {total}, {label}',

@@ -1,0 +1,6 @@
+{
+  "app.containers.IdeasNewPage.ajv_error_contribution_body_multiloc_maxLength": "Опис доприноса мора бити краћи од {limit} знакова",
+  "app.containers.IdeasNewPage.ajv_error_contribution_title_multiloc_maxLength": "Наслов доприноса мора бити краћи од {limit} знакова",
+  "app.containers.IdeasNewPage.api_error_contribution_description_multiloc_too_long": "Опис доприноса мора бити краћи од 80 знакова",
+  "app.containers.IdeasNewPage.api_error_contribution_title_multiloc_too_long": "Наслов доприноса мора бити краћи од 80 знакова"
+}

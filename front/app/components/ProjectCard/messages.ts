@@ -52,6 +52,36 @@ export default defineMessages({
     defaultMessage:
       '{ideasCount, plural, no {# petitions} one {# petition} other {# petitions}}',
   },
+  xCommentsTerm: {
+    id: 'app.components.ProjectCard.xCommentsTerm',
+    defaultMessage:
+      '{ideasCount, plural, no {# comments} one {# comment} other {# comments}}',
+  },
+  xResponses: {
+    id: 'app.components.ProjectCard.xResponses',
+    defaultMessage:
+      '{ideasCount, plural, no {# responses} one {# response} other {# responses}}',
+  },
+  xSuggestions: {
+    id: 'app.components.ProjectCard.xSuggestions',
+    defaultMessage:
+      '{ideasCount, plural, no {# suggestions} one {# suggestion} other {# suggestions}}',
+  },
+  xTopics: {
+    id: 'app.components.ProjectCard.xTopics',
+    defaultMessage:
+      '{ideasCount, plural, no {# topics} one {# topic} other {# topics}}',
+  },
+  xPosts: {
+    id: 'app.components.ProjectCard.xPosts',
+    defaultMessage:
+      '{ideasCount, plural, no {# posts} one {# post} other {# posts}}',
+  },
+  xStories: {
+    id: 'app.components.ProjectCard.xStories',
+    defaultMessage:
+      '{ideasCount, plural, no {# stories} one {# story} other {# stories}}',
+  },
   archived: {
     id: 'app.components.ProjectCard.archived',
     defaultMessage: 'Archived',
@@ -121,6 +151,30 @@ export default defineMessages({
     id: 'app.components.ProjectCard.submitYourPetition',
     defaultMessage: 'Submit your petition',
   },
+  submitYourComment: {
+    id: 'app.components.ProjectCard.submitYourComment',
+    defaultMessage: 'Submit your comment',
+  },
+  submitYourResponse: {
+    id: 'app.components.ProjectCard.submitYourResponse',
+    defaultMessage: 'Submit your response',
+  },
+  submitYourSuggestion: {
+    id: 'app.components.ProjectCard.submitYourSuggestion',
+    defaultMessage: 'Submit your suggestion',
+  },
+  submitYourTopic: {
+    id: 'app.components.ProjectCard.submitYourTopic',
+    defaultMessage: 'Submit your topic',
+  },
+  submitYourPost: {
+    id: 'app.components.ProjectCard.submitYourPost',
+    defaultMessage: 'Submit your post',
+  },
+  submitYourStory: {
+    id: 'app.components.ProjectCard.submitYourStory',
+    defaultMessage: 'Submit your story',
+  },
   reaction: {
     id: 'app.components.ProjectCard.reaction',
     defaultMessage: 'Reaction',
@@ -165,6 +219,30 @@ export default defineMessages({
   viewThePetitions: {
     id: 'app.components.ProjectCard.viewThePetitions',
     defaultMessage: 'View the petitions',
+  },
+  viewTheComments: {
+    id: 'app.components.ProjectCard.viewTheComments',
+    defaultMessage: 'View the comments',
+  },
+  viewTheResponses: {
+    id: 'app.components.ProjectCard.viewTheResponses',
+    defaultMessage: 'View the responses',
+  },
+  viewTheSuggestions: {
+    id: 'app.components.ProjectCard.viewTheSuggestions',
+    defaultMessage: 'View the suggestions',
+  },
+  viewTheTopics: {
+    id: 'app.components.ProjectCard.viewTheTopics',
+    defaultMessage: 'View the topics',
+  },
+  viewThePosts: {
+    id: 'app.components.ProjectCard.viewThePosts',
+    defaultMessage: 'View the posts',
+  },
+  viewTheStories: {
+    id: 'app.components.ProjectCard.viewTheStories',
+    defaultMessage: 'View the stories',
   },
   a11y_projectTitle: {
     id: 'app.components.ProjectCard.a11y_projectTitle',

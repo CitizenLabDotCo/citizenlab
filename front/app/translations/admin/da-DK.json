@@ -391,7 +391,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.inputScreeningToggle": "Screening af input",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Hvad skal et input hedde?",
   "app.components.app.containers.AdminPage.ProjectEdit.insights": "Indsigt",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Høringssvar",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Angiv linket til dit Konveio-dokument her. Læs vores {supportArticleLink} for mere information om opsætning af Konveio.",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "supportartikel",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL2": "{tenantName, select,  {https://matomo.org/} other {https://support.govocal.com/da/articles/527582-indlejring-af-konveio-pdf-dokumenter-til-indsamling-af-feedback}}",

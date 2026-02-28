@@ -1,0 +1,18 @@
+{
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Was hälst du von dieser Initiative? Stimme ab und teile die Diskussion unter {postUrl}, um deiner Stimme Gehör zu verschaffen!",
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Meine Initiative unterstützen: {postTitle}.",
+  "app.components.PostComponents.SharingModalContent.initiativeWhatsAppMessage": "Meine Initiative unterstützen: {postTitle}.",
+  "app.components.ProjectCard.submitAnIssue": "Anliegen",
+  "app.containers.IdeaButton.submitAnIssue": "Anliegen",
+  "app.containers.IdeasNewPage.ajv_error_contribution_body_multiloc_minLength": "Der Beitrag muss mehr als {limit} Zeichen lang sein",
+  "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_maxLength": "Das Anliegen muss weniger als {limit} Zeichen lang sein",
+  "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_minLength": "Das Anliegen muss mehr als {limit} Zeichen lang sein",
+  "app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_minLength": "Der Titel des Anliegens muss mehr als {limit} Zeichen lang sein",
+  "app.containers.IdeasNewPage.api_error_issue_description_multiloc_too_long": "Das Anliegen muss weniger als 80 Zeichen lang sein",
+  "app.containers.IdeasNewPage.api_error_issue_description_multiloc_too_short": "Das Anliegen muss mindestens 30 Zeichen lang sein",
+  "app.containers.IdeasShow.initiativeEmailSharingSubject": "Diese Initiative unterstützen: {ideaTitle}",
+  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "{name} hat Sie eingeladen, eine Initiative zu unterstützen",
+  "app.containers.NotificationMenu.officialFeedbackOnInitiativeYouFollow": "{officialName} hat ein offizielles Update zu einer Initiative gegeben, der Sie folgen",
+  "app.containers.NotificationMenu.userCommentedOnInitiativeYouFollow": "{name} hat eine Initiative kommentiert, der Sie folgen",
+  "app.utils.IdeasNewPage.viewYourIssue": "Anliegen ansehen"
+}

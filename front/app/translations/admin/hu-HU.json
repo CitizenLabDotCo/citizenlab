@@ -108,7 +108,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText": "this support article",
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "Idea",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "What should an input be called?",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Comment",
   "app.components.app.containers.AdminPage.ProjectEdit.maxBudgetRequired": "A maximum budget is required",
   "app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError": "The minimum budget can't be larger than the maximum budget",
   "app.components.app.containers.AdminPage.ProjectEdit.minBudgetRequired": "A minimum budget is required",

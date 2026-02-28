@@ -1,0 +1,6 @@
+{
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Što mislite o ovoj inicijativi? Glasajte i podijelite raspravu na {postUrl} kako bi se vaš glas čuo!",
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Podržite moju inicijativu: {postTitle}.",
+  "app.containers.IdeasNewPage.api_error_proposal_description_multiloc_too_long": "Opis prijedloga mora biti kraći od 80 znakova",
+  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "{name} vas je pozvao da susponzorirate inicijativu"
+}

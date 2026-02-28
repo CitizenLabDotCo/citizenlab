@@ -1,0 +1,15 @@
+{
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Poprzyj moją inicjatywę: {postTitle}.",
+  "app.components.PostComponents.SharingModalContent.optionEmailSharingSubject": "Poprzyj moją opcję: {postTitle}.",
+  "app.components.PostComponents.SharingModalContent.optionWhatsAppMessage": "Poprzyj moją opcję: {postTitle}.",
+  "app.components.ProjectCard.submitAnIssue": "Zgłoś kwestię",
+  "app.containers.IdeaButton.submitAnIssue": "Zgłoś kwestię",
+  "app.containers.IdeasFeedPage.addAnIssue": "Dodaj kwestię",
+  "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_maxLength": "Opis kwestii musi mieć długość mniejszą niż {limit} znaków",
+  "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_minLength": "Opis kwestii musi mieć długość większą niż {limit} znaków",
+  "app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_maxLength": "Tytuł kwestii musi mieć długość mniejszą niż {limit} znaków",
+  "app.containers.IdeasNewPage.api_error_issue_description_multiloc_too_long": "Opis kwestii musi mieć mniej niż 80 znaków",
+  "app.containers.IdeasNewPage.api_error_issue_title_multiloc_too_short": "Tytuł kwestii musi mieć co najmniej 10 znaków",
+  "app.containers.NotificationMenu.invitationToCosponsorIssue": "{name} zaprosił Cię do współsponsorowania kwestii",
+  "app.containers.NotificationMenu.invitationToCosponsorProposal": "{name} zaprosił Cię do współsponsorowania propozycji"
+}

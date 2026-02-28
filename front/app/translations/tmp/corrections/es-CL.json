@@ -1,0 +1,20 @@
+{
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "¿Qué opinas de esta iniciativa? Voten y compartan la discusión en {postUrl} para hacer oír tu voz!",
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Apoya mi iniciativa: {postTitle}.",
+  "app.components.PostComponents.SharingModalContent.initiativeWhatsAppMessage": "Apoya mi iniciativa: {postTitle}.",
+  "app.components.ProjectCard.submitAnIssue": "Envía tu asunto",
+  "app.containers.IdeaButton.addAContribution": "Agregar una contribución",
+  "app.containers.IdeasEditPage.initiativeFormTitle": "Editar iniciativa",
+  "app.containers.IdeasFeedPage.addAContribution": "Añadir una contribución",
+  "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_maxLength": "La descripción del asunto debe tener menos de {limit} caracteres",
+  "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_minLength": "La descripción del asunto debe tener más de {limit} caracteres",
+  "app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_maxLength": "El título del asunto debe tener menos de {limit} caracteres",
+  "app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_minLength": "El título del asunto debe tener más de {limit} caracteres",
+  "app.containers.IdeasNewPage.api_error_issue_description_multiloc_too_long": "La descripción del asunto debe tener menos de 80 caracteres",
+  "app.containers.IdeasNewPage.api_error_issue_title_multiloc_too_long": "El título del asunto debe tener menos de 80 caracteres",
+  "app.containers.IdeasNewPage.issueMetaTitle1": "Añadir nuevo asunto al proyecto | {orgName}",
+  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "{name} te ha invitado a copatrocinar una iniciativa",
+  "app.containers.NotificationMenu.invitationToCosponsorIssue": "{name} te invitó a copatrocinar un asunto",
+  "app.containers.NotificationMenu.officialFeedbackOnContributionYouFollow": "{officialName} dio una actualización oficial de una contribución que sigues",
+  "app.utils.IdeasNewPage.contributionFormTitle": "Agregar nueva contribución"
+}

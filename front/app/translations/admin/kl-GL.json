@@ -131,7 +131,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText": "una ikiuutissatut allaatigisaq",
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "Isumassarsiaq",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Suna qulequtarissavaa?",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Ajornartorsiut",
   "app.components.app.containers.AdminPage.ProjectEdit.maxBudgetRequired": "Annerpaamik missingersuutit allanneqassapput",
   "app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError": "Minnerpaamik missingersuutit annerpaamik missingersuutinit annerusinnaanngillat",
   "app.components.app.containers.AdminPage.ProjectEdit.minBudgetRequired": "Minnerpaamik missingersuutit allanneqassapput",

@@ -1,0 +1,7 @@
+{
+  "app.components.ProjectCard.submitYourProject": "Suliniummik ilanngussigit",
+  "app.containers.IdeaButton.addAProject": "Suliniummik ilanngussigit",
+  "app.containers.IdeasShow.projectSharingModalTitle": "Suliniut ilanngukkakku qujanaq!",
+  "app.containers.IdeasShow.projectTwitterMessage": "Suliniut una taperseruk: {postTitle}",
+  "app.containers.IdeasShow.projectWhatsAppMessage": "Suliniut una taperseruk: {postTitle}"
+}

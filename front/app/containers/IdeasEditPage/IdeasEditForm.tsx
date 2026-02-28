@@ -71,6 +71,12 @@ const IdeasEditForm = ({ ideaId }: Props) => {
         initiative: messages.initiativeFormTitle,
         petition: messages.petitionFormTitle,
         proposal: messages.proposalFormTitle,
+        comment: messages.commentFormTitle,
+        response: messages.responseFormTitle,
+        suggestion: messages.suggestionFormTitle,
+        topic: messages.topicFormTitle,
+        post: messages.postFormTitle,
+        story: messages.storyFormTitle,
       }[phase?.data.attributes.input_term || 'idea']}
     />
   );

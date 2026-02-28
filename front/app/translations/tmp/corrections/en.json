@@ -1,0 +1,8 @@
+{
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "What do you think of this initiative? Vote on it and share the discussion at {postUrl} to make your voice heard!",
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Support my initiative: {postTitle}.",
+  "app.components.ProjectCard.submitAnIssue": "Submit an issue",
+  "app.components.ProjectCard.viewTheIssues": "View the issues",
+  "app.containers.IdeaButton.submitAnIssue": "Submit an issue",
+  "app.containers.Projects.seeTheIssues": "See the issues"
+}

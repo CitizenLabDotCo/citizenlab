@@ -1,0 +1,6 @@
+{
+  "app.components.admin.PostManager.issueFormTitle": "Editar asunto",
+  "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Contribución",
+  "app.components.app.containers.AdminPage.ProjectEdit.initiativeTerm": "Iniciativa",
+  "app.containers.AdminPage.ProjectEdit.newContribution": "Enviar una contribución"
+}

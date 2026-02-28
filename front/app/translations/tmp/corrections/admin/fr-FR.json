@@ -1,0 +1,5 @@
+{
+  "app.components.admin.PostManager.issueFormTitle": "Modifiez l'enjeu",
+  "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "Contribution",
+  "app.containers.AdminPage.ProjectEdit.newIssue": "Ajoutez un enjeu"
+}

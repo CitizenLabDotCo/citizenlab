@@ -1,0 +1,9 @@
+{
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Cosa ne pensi di questa iniziativa? Vota e condividi la discussione su {postUrl} per far sentire la tua voce!",
+  "app.components.ProjectCard.submitAnIssue": "Invia una questione",
+  "app.containers.IdeaButton.submitAnIssue": "Invia una questione",
+  "app.containers.IdeasFeedPage.addAnIssue": "Aggiungi una questione",
+  "app.containers.NotificationMenu.invitationToCosponsorInitiative": "{name} ti ha invitato a sponsorizzare un'iniziativa",
+  "app.containers.NotificationMenu.invitationToCosponsorIssue": "{name} ti ha invitato a co-sponsorizzare una questione",
+  "app.containers.NotificationMenu.userCommentedOnIssueYouFollow": "{name} ha commentato una questione che segui"
+}

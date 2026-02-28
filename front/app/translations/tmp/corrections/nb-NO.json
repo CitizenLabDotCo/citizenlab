@@ -1,0 +1,17 @@
+{
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "Hva synes du om dette initiativet? Stem på det og del diskusjonen på {postUrl} for å gjøre din stemme hørt!",
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Støtt initiativet mitt: {postTitle}.",
+  "app.components.ProjectCard.addYourOption": "Legg til ditt alternativ",
+  "app.components.ProjectCard.submitAnIssue": "Send inn en sak",
+  "app.containers.IdeaButton.submitAnIssue": "Send inn en sak",
+  "app.containers.IdeasFeedPage.addAnIssue": "Legg til en sak",
+  "app.containers.IdeasNewPage.ajv_error_contribution_body_multiloc_minLength": "Bidrag må være på mer enn {limit} tegn",
+  "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_maxLength": "Sak må være på mindre enn {limit} tegn",
+  "app.containers.IdeasNewPage.ajv_error_issue_body_multiloc_minLength": "Sak må være på mer enn {limit} tegn",
+  "app.containers.IdeasNewPage.ajv_error_issue_title_multiloc_minLength": "Tittelen på saken må være på mer enn {limit} tegn",
+  "app.containers.IdeasNewPage.api_error_issue_description_multiloc_too_long": "Sak må være på mindre enn 80 tegn",
+  "app.containers.IdeasNewPage.api_error_issue_description_multiloc_too_short": "Sak må være på minst 30 tegn",
+  "app.containers.IdeasNewPage.api_error_issue_title_multiloc_too_long": "Tittelen på saken må være på mindre enn 80 tegn",
+  "app.containers.IdeasNewPage.api_error_issue_title_multiloc_too_short": "Tittelen på saken må være på minst 10 tegn",
+  "app.utils.IdeasNewPage.viewYourIssue": "Se saken din"
+}

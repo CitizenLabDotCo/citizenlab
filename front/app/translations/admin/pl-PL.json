@@ -391,7 +391,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.inputScreeningToggle": "Sprawdzanie danych wejściowych",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Jak nazwać wkład?",
   "app.components.app.containers.AdminPage.ProjectEdit.insights": "Spostrzeżenia",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Potrzeba",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Podaj link do swojego dokumentu Konveio tutaj. Przeczytaj naszą stronę {supportArticleLink} , aby uzyskać więcej informacji na temat konfigurowania Konveio.",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "artykuł pomocniczy",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL2": "https://support.govocal.com/en/articles/527582-embedding-konveio-pdf-documents-for-collecting-feedback",

@@ -391,7 +391,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.inputScreeningToggle": "Įvesties patikra",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Kaip reikėtų vadinti įvestį?",
   "app.components.app.containers.AdminPage.ProjectEdit.insights": "Įžvalgos",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Komentaras",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Čia pateikite nuorodą į \"Konveio\" dokumentą. Daugiau informacijos apie \"Konveio\" nustatymą rasite mūsų svetainėje {supportArticleLink} .",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "paramos straipsnis",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL2": "https://support.govocal.com/en/articles/527582-embedding-konveio-pdf-documents-for-collecting-feedback",
