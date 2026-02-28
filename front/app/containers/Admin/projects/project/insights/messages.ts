@@ -201,9 +201,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.count',
     defaultMessage: 'Count',
   },
-  vsLast7Days: {
-    id: 'app.containers.Admin.projects.project.insights.vsLast7Days',
-    defaultMessage: 'vs last 7 days',
+  sevenDayChange: {
+    id: 'app.containers.Admin.projects.project.insights.sevenDayChange',
+    defaultMessage: '7-day change',
   },
   phaseParticipantsMetricTooltip2: {
     id: 'app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2',
@@ -224,15 +224,15 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.insufficientComparisonData',
     defaultMessage: 'Insufficient comparison data',
   },
-  insufficientComparisonDataPhaseTooNew: {
-    id: 'app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooNew',
+  insufficientComparisonDataPhaseTooYoung: {
+    id: 'app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooYoung',
     defaultMessage:
-      'Cannot calculate 7 day change when phase has run for less than 14 days',
+      'Cannot calculate 7-day change when phase has run for less than 7 days',
   },
-  insufficientComparisonDataNoPriorActivity: {
-    id: 'app.containers.Admin.projects.project.insights.insufficientComparisonDataNoPriorActivity',
+  currentValueComparedWithZero: {
+    id: 'app.containers.Admin.projects.project.insights.currentValueComparedWithZero',
     defaultMessage:
-      'The 7 day period before last had no activity to compare against (which would give an infinite value)',
+      'Current value compared with zero (would give infinite percentage change)',
   },
   cannotCalculateNoVisitsInPeriod: {
     id: 'app.containers.Admin.projects.project.insights.cannotCalulateNoVisitsInPeriod',
