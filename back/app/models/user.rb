@@ -291,6 +291,27 @@ class User < ApplicationRecord
     sso? && email.blank? && new_email.blank? && password_digest.blank? && identity_ids.count == 1
   end
 
+  # Sometimes for privacy reasons we do not want to expose the personal data in the slug
+  def self.enhanced_user_profile_privacy?
+    AppConfiguration.instance.feature_activated?('enhanced_user_profile_privacy')
+  end
+
+  def slug
+    self.class.enhanced_user_profile_privacy? && id ? id : super
+  end
+
+  def show_public_profile?
+    return true unless self.class.enhanced_user_profile_privacy?
+
+    # Only show the public profile if the user has contributed publicly to the platform,
+    # either by posting ideas or comments in phases with public participation methods.
+    # This is to avoid exposing personal data of users who have not actively used the platform.
+    ideas
+      .joins(:ideas_phases)
+      .joins(:phases)
+      .exists?(ideas_phases: { phases: { participation_method: %w[ideation proposals] } }) || comments.exists?
+  end
+
   private
 
   def validate_not_duplicate_new_email

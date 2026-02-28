@@ -84,6 +84,86 @@ RSpec.describe User do
     end
   end
 
+  describe '#slug' do
+    let(:user) { create(:user, first_name: 'bob', last_name: 'smith') }
+
+    context 'when no_user_slugs feature is not active' do
+      it 'returns the normal slug' do
+        expect(user.slug).to eq 'bob-smith'
+      end
+    end
+
+    context 'when no_user_slugs feature is active' do
+      before do
+        settings = AppConfiguration.instance.settings
+        settings['enhanced_user_profile_privacy'] = { 'enabled' => true, 'allowed' => true }
+        AppConfiguration.instance.update!(settings: settings)
+      end
+
+      it 'returns the user id instead of the slug' do
+        expect(user.slug).to eq user.id
+      end
+    end
+  end
+
+  describe '#show_public_profile?' do
+    let(:user) { create(:user) }
+
+    context 'when enhanced_user_profile_privacy is not active' do
+      it 'returns true' do
+        expect(user.show_public_profile?).to be true
+      end
+    end
+
+    context 'when enhanced_user_profile_privacy is active' do
+      before do
+        settings = AppConfiguration.instance.settings
+        settings['enhanced_user_profile_privacy'] = { 'enabled' => true, 'allowed' => true }
+        AppConfiguration.instance.update!(settings: settings)
+        create(:idea_status_proposed)
+      end
+
+      it 'returns false when user has no ideas or comments' do
+        expect(user.show_public_profile?).to be false
+      end
+
+      it 'returns true when user has posted an idea in an ideation phase' do
+        create(:idea, author: user)
+        expect(user.show_public_profile?).to be true
+      end
+
+      it 'returns false when user has only posted anonymous ideas' do
+        create(:idea, author: user, anonymous: true)
+        expect(user.show_public_profile?).to be false
+      end
+
+      it 'returns true when user has posted an idea in a proposals phase' do
+        create(:proposal, author: user)
+        expect(user.show_public_profile?).to be true
+      end
+
+      it 'returns false when user has only posted anonymous ideas in a proposals phase' do
+        create(:proposal, author: user, anonymous: true)
+        expect(user.show_public_profile?).to be false
+      end
+
+      it 'returns false when user only has ideas in a native survey phase' do
+        create(:native_survey_response, author: user)
+        expect(user.show_public_profile?).to be false
+      end
+
+      it 'returns true when user has comments' do
+        create(:comment, author: user)
+        expect(user.show_public_profile?).to be true
+      end
+
+      it 'returns false when user has only posted anonymous comments' do
+        create(:comment, author: user, anonymous: true)
+        expect(user.show_public_profile?).to be false
+      end
+    end
+  end
+
   describe 'creating an invited user' do
     it 'has correct linking between invite and invitee' do
       invitee = create(:invited_user)

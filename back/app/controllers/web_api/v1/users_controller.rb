@@ -104,7 +104,7 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def by_slug
-    @user = User.find_by!(slug: params[:slug])
+    @user = User.enhanced_user_profile_privacy? ? User.find(params[:slug]) : User.find_by!(slug: params[:slug])
     authorize @user
     show
   end

@@ -1359,6 +1359,29 @@ resource 'Users' do
           expect(json_response.dig(:data, :attributes)).not_to have_key(:block_end_at)
           expect(json_response.dig(:data, :attributes)).not_to have_key(:block_reason)
         end
+
+        context 'when enhanced_user_profile_privacy feature is active' do
+          before do
+            settings = AppConfiguration.instance.settings
+            settings['enhanced_user_profile_privacy'] = { 'enabled' => true, 'allowed' => true }
+            AppConfiguration.instance.update!(settings: settings)
+          end
+
+          let(:slug) { user.id }
+
+          example 'Get one user by id when enhanced_user_profile_privacy is active and user has posted publicly', document: false do
+            create(:idea, author: user)
+            do_request
+            expect(status).to eq 200
+            expect(response_data[:id]).to eq user.id
+            expect(response_data.dig(:attributes, :slug)).to eq user.id
+          end
+
+          example 'Returns error when enhanced_user_profile_privacy is active and user has not posted', document: false do
+            do_request
+            expect(status).to eq 401
+          end
+        end
       end
 
       get 'web_api/v1/users/by_invite/:token' do
