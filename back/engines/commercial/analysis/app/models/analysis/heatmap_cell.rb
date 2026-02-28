@@ -14,13 +14,15 @@
 #  p_value     :decimal(20, 15)  not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  deleted_at  :datetime
 #
 # Indexes
 #
 #  index_analysis_heatmap_cells_on_analysis_id  (analysis_id)
 #  index_analysis_heatmap_cells_on_column       (column_type,column_id)
+#  index_analysis_heatmap_cells_on_deleted_at   (deleted_at)
 #  index_analysis_heatmap_cells_on_row          (row_type,row_id)
-#  index_analysis_heatmap_cells_uniqueness      (analysis_id,row_id,column_id,unit) UNIQUE
+#  index_analysis_heatmap_cells_uniqueness      (analysis_id,row_id,column_id,unit) UNIQUE WHERE (deleted_at IS NULL)
 #
 # Foreign Keys
 #
@@ -28,6 +30,7 @@
 #
 module Analysis
   class HeatmapCell < ::ApplicationRecord
+    acts_as_paranoid
     INDEX_TYPES = [CustomFieldBin, Tag].freeze
     UNIT_TYPES = %w[inputs likes dislikes participants]
 

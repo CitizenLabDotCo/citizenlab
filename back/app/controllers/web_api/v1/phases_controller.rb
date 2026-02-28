@@ -58,7 +58,7 @@ class WebApi::V1::PhasesController < ApplicationController
   def destroy
     sidefx.before_destroy(@phase, current_user)
     phase = ActiveRecord::Base.transaction do
-      @phase.ideas.each(&:destroy!) unless @phase.pmethod.transitive?
+      @phase.ideas.each(&:destroy_fully!) unless @phase.pmethod.transitive?
 
       @phase.destroy
     end

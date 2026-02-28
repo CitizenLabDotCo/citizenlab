@@ -15,14 +15,17 @@
 #  answers              :jsonb
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
+#  deleted_at           :datetime
 #
 # Indexes
 #
-#  index_surveys_responses_on_phase_id  (phase_id)
-#  index_surveys_responses_on_user_id   (user_id)
+#  index_surveys_responses_on_deleted_at  (deleted_at)
+#  index_surveys_responses_on_phase_id    (phase_id)
+#  index_surveys_responses_on_user_id     (user_id)
 #
 module Surveys
   class Response < ApplicationRecord
+    acts_as_paranoid
     belongs_to :user, optional: true
     belongs_to :phase
 

@@ -12,13 +12,16 @@
 #  updated_at     :datetime         not null
 #  question_type  :string           default("single_option"), not null
 #  max_options    :integer
+#  deleted_at     :datetime
 #
 # Indexes
 #
-#  index_polls_questions_on_phase_id  (phase_id)
+#  index_polls_questions_on_deleted_at  (deleted_at)
+#  index_polls_questions_on_phase_id    (phase_id)
 #
 module Polls
   class Question < ApplicationRecord
+    acts_as_paranoid
     QUESTION_TYPES = %w[single_option multiple_options]
 
     acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: %i[phase_id]

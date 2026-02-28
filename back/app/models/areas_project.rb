@@ -7,12 +7,14 @@
 #  area_id    :uuid
 #  project_id :uuid
 #  id         :uuid             not null, primary key
+#  deleted_at :datetime
 #
 # Indexes
 #
 #  index_areas_projects_on_area_id                 (area_id)
+#  index_areas_projects_on_deleted_at              (deleted_at)
 #  index_areas_projects_on_project_id              (project_id)
-#  index_areas_projects_on_project_id_and_area_id  (project_id,area_id) UNIQUE
+#  index_areas_projects_on_project_id_and_area_id  (project_id,area_id) UNIQUE WHERE (deleted_at IS NULL)
 #
 # Foreign Keys
 #
@@ -20,6 +22,7 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class AreasProject < ApplicationRecord
+  acts_as_paranoid
   belongs_to :project
   belongs_to :area
 

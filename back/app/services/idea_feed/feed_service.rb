@@ -50,7 +50,7 @@ module IdeaFeed
           ideas.*
         ")
 
-      Idea.from(scored, :ideas)
+      Idea.unscoped.from(scored, :ideas)
         .order(Arel.sql('recency_score * 0.65 + engagement_score * 0.25 + wise_voice_score * 0.1 DESC'))
         .limit(limit)
     end

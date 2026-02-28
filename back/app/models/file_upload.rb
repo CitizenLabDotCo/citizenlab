@@ -13,9 +13,11 @@
 #  name                                                                                   :string
 #  migrated_file_id(References the Files::File record after migration to new file system) :uuid
 #  migration_skipped_reason                                                               :string
+#  deleted_at                                                                             :datetime
 #
 # Indexes
 #
+#  index_idea_files_on_deleted_at        (deleted_at)
 #  index_idea_files_on_idea_id           (idea_id)
 #  index_idea_files_on_migrated_file_id  (migrated_file_id)
 #

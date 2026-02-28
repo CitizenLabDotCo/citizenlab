@@ -9,20 +9,23 @@
 #  user_id    :uuid
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  deleted_at :datetime
 #
 # Indexes
 #
-#  index_polls_responses_on_phase_id  (phase_id)
-#  index_polls_responses_on_user_id   (user_id)
+#  index_polls_responses_on_deleted_at  (deleted_at)
+#  index_polls_responses_on_phase_id    (phase_id)
+#  index_polls_responses_on_user_id     (user_id)
 #
 module Polls
   class Response < ApplicationRecord
+    acts_as_paranoid
     belongs_to :user
     belongs_to :phase
     has_many :response_options, class_name: 'Polls::ResponseOption', dependent: :destroy
 
     validates :user, :phase, presence: true
-    validates :user, uniqueness: { scope: [:phase] }
+    validates :user, uniqueness: { scope: [:phase], conditions: -> { where(deleted_at: nil) } }
 
     validate :validate_phase_poll, on: :response_submission
     validate :validate_option_count, on: :response_submission

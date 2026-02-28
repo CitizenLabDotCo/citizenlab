@@ -14,9 +14,11 @@
 #  updated_at   :datetime         not null
 #  parent_id    :uuid
 #  parsed_value :jsonb
+#  deleted_at   :datetime
 #
 # Indexes
 #
+#  index_idea_import_files_on_deleted_at  (deleted_at)
 #  index_idea_import_files_on_parent_id   (parent_id)
 #  index_idea_import_files_on_project_id  (project_id)
 #
@@ -27,6 +29,7 @@
 #
 module BulkImportIdeas
   class IdeaImportFile < ApplicationRecord
+    acts_as_paranoid
     self.table_name = 'idea_import_files'
 
     attr_accessor :filename

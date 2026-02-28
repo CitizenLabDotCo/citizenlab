@@ -11,11 +11,13 @@
 #  mode           :string           not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  deleted_at     :datetime
 #
 # Indexes
 #
+#  index_reactions_on_deleted_at                                   (deleted_at)
 #  index_reactions_on_reactable_type_and_reactable_id              (reactable_type,reactable_id)
-#  index_reactions_on_reactable_type_and_reactable_id_and_user_id  (reactable_type,reactable_id,user_id) UNIQUE
+#  index_reactions_on_reactable_type_and_reactable_id_and_user_id  (reactable_type,reactable_id,user_id) UNIQUE WHERE (deleted_at IS NULL)
 #  index_reactions_on_user_id                                      (user_id)
 #
 # Foreign Keys
@@ -23,6 +25,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Reaction < ApplicationRecord
+  acts_as_paranoid
   include LocationTrackableParticipation
   # Neutral mode is only valid for ideas. Also, currently, it only makes sense the context
   # of "Common Ground" participation. However, we don't make it a hard constraint, since
@@ -51,7 +54,7 @@ class Reaction < ApplicationRecord
   validates :reactable, :mode, presence: true
   validates :mode, inclusion: { in: MODES }
   validate :neutral_mode_must_be_valid, if: -> { mode == 'neutral' }
-  validates :user_id, uniqueness: { scope: %i[reactable_id reactable_type mode], allow_nil: true }
+  validates :user_id, uniqueness: { scope: %i[reactable_id reactable_type mode], allow_nil: true, conditions: -> { where(deleted_at: nil) } }
 
   scope :up, -> { where mode: 'up' }
   scope :down, -> { where mode: 'down' }

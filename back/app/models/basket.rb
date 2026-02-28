@@ -10,9 +10,11 @@
 #  phase_id     :uuid
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  deleted_at   :datetime
 #
 # Indexes
 #
+#  index_baskets_on_deleted_at    (deleted_at)
 #  index_baskets_on_phase_id      (phase_id)
 #  index_baskets_on_submitted_at  (submitted_at)
 #  index_baskets_on_user_id       (user_id)
@@ -22,6 +24,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Basket < ApplicationRecord
+  acts_as_paranoid
   include LocationTrackableParticipation
   belongs_to :phase
 
@@ -51,7 +54,7 @@ class Basket < ApplicationRecord
     if submitted? && TimelineService.new.phase_is_complete?(phase)
       update!(user: nil)
     else
-      destroy!
+      destroy_fully!
       update_counts!
     end
   end
@@ -94,8 +97,8 @@ class Basket < ApplicationRecord
           COUNT(b.id) AS baskets_count,
           SUM(CASE WHEN b.id IS NOT NULL THEN bi.votes END) AS votes_count
         FROM ideas i
-        LEFT OUTER JOIN baskets_ideas bi ON i.id = bi.idea_id
-        LEFT OUTER JOIN baskets b ON bi.basket_id = b.id AND b.submitted_at IS NOT NULL"
+        LEFT OUTER JOIN baskets_ideas bi ON i.id = bi.idea_id AND bi.deleted_at IS NULL
+        LEFT OUTER JOIN baskets b ON bi.basket_id = b.id AND b.submitted_at IS NOT NULL AND b.deleted_at IS NULL"
       query += " AND b.phase_id = '#{phase_id}'" if phase_id
       query += "
         WHERE i.project_id = '#{project_id}'

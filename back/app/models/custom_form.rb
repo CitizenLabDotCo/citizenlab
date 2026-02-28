@@ -13,18 +13,21 @@
 #  print_start_multiloc       :jsonb            not null
 #  print_end_multiloc         :jsonb            not null
 #  print_personal_data_fields :boolean          default(FALSE), not null
+#  deleted_at                 :datetime
 #
 # Indexes
 #
-#  index_custom_forms_on_participation_context  (participation_context_id,participation_context_type) UNIQUE
+#  index_custom_forms_on_deleted_at             (deleted_at)
+#  index_custom_forms_on_participation_context  (participation_context_id,participation_context_type) UNIQUE WHERE (deleted_at IS NULL)
 #
 class CustomForm < ApplicationRecord
+  acts_as_paranoid
   belongs_to :participation_context, polymorphic: true
   has_many :custom_fields, -> { order(:ordering) }, as: :resource, dependent: :destroy, inverse_of: :resource
   has_many :text_images, as: :imageable, dependent: :destroy
 
   validates :participation_context, presence: true
-  validates :participation_context_id, uniqueness: { scope: %i[participation_context_type] } # https://github.com/rails/rails/issues/34312#issuecomment-586870322
+  validates :participation_context_id, uniqueness: { scope: %i[participation_context_type], conditions: -> { where(deleted_at: nil) } } # https://github.com/rails/rails/issues/34312#issuecomment-586870322
 
   delegate :project_id, to: :participation_context
 

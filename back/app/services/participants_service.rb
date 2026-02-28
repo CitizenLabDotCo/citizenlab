@@ -173,24 +173,24 @@ class ParticipantsService
     Volunteering::Volunteer
       .joins(cause: { phase: :project })
       .where(cause: { phases: { project_id: project.id } })
-      .destroy_all
+      .each(&:destroy_fully!)
 
     # Destroy event attendance data
     Events::Attendance
       .joins(event: :project)
       .where(events: { project_id: project.id })
-      .destroy_all
+      .each(&:destroy_fully!)
 
     # Destroy poll data
     Polls::Response
       .joins(phase: :project)
       .where(phases: { project_id: project.id })
-      .destroy_all
+      .each(&:destroy_fully!)
 
     # Destroy comments, reactions and baskets data
-    Comment.where(idea: project.ideas).destroy_all
-    Reaction.where(reactable: project.ideas).destroy_all
-    Basket.where(phase: project.phases).destroy_all
+    Comment.where(idea: project.ideas).each(&:destroy_fully!)
+    Reaction.where(reactable: project.ideas).each(&:destroy_fully!)
+    Basket.where(phase: project.phases).each(&:destroy_fully!)
 
     # We must update_counts explicitly because the current implementation of Basket does
     # not use `counter_culture`.
@@ -200,7 +200,7 @@ class ParticipantsService
     # (Ideas in voting phases are considered part of the project setup.)
     voting_phases = project.phases.where(participation_method: 'voting')
     ideas_in_voting_phases = IdeasPhase.where(phase: voting_phases).select(:idea_id)
-    Idea.where(project: project).where.not(id: ideas_in_voting_phases).destroy_all
+    Idea.where(project: project).where.not(id: ideas_in_voting_phases).each(&:destroy_fully!)
   end
 
   # @param user [User] The user to get participation stats for
@@ -245,12 +245,12 @@ class ParticipantsService
         comment.update!(publication_status: 'deleted')
       end
 
-      user.reactions.destroy_all
-      user.ideas.destroy_all
-      user.baskets.destroy_all
-      user.poll_responses.destroy_all
-      user.volunteers.destroy_all
-      user.event_attendances.destroy_all
+      user.reactions.each(&:destroy_fully!)
+      user.ideas.each(&:destroy_fully!)
+      user.baskets.each(&:destroy_fully!)
+      user.poll_responses.each(&:destroy_fully!)
+      user.volunteers.each(&:destroy_fully!)
+      user.event_attendances.each(&:destroy_fully!)
 
       phases_with_submitted_baskets.each { |phase| Basket.update_counts(phase) }
     end

@@ -9,9 +9,11 @@
 #  created_at                                                                                                        :datetime         not null
 #  updated_at                                                                                                        :datetime         not null
 #  visitor_hash                                                                                                      :string
+#  deleted_at                                                                                                        :datetime
 #
 # Indexes
 #
+#  index_idea_exposures_on_deleted_at    (deleted_at)
 #  index_idea_exposures_on_idea_id       (idea_id)
 #  index_idea_exposures_on_phase_id      (phase_id)
 #  index_idea_exposures_on_user_id       (user_id)
@@ -24,6 +26,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class IdeaExposure < ApplicationRecord
+  acts_as_paranoid
   belongs_to :user, optional: true
   belongs_to :idea
   belongs_to :phase

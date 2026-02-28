@@ -12,18 +12,21 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  other           :boolean          default(FALSE), not null
+#  deleted_at      :datetime
 #
 # Indexes
 #
 #  index_custom_field_options_on_custom_field_id               (custom_field_id)
-#  index_custom_field_options_on_custom_field_id_and_key       (custom_field_id,key) UNIQUE
-#  index_custom_field_options_on_field_id_and_ordering_unique  (custom_field_id,ordering) UNIQUE
+#  index_custom_field_options_on_custom_field_id_and_key       (custom_field_id,key) UNIQUE WHERE (deleted_at IS NULL)
+#  index_custom_field_options_on_deleted_at                    (deleted_at)
+#  index_custom_field_options_on_field_id_and_ordering_unique  (custom_field_id,ordering) UNIQUE WHERE (deleted_at IS NULL)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (custom_field_id => custom_fields.id)
 #
 class CustomFieldOption < ApplicationRecord
+  acts_as_paranoid
   # non-persisted attribute to enable form copying
   attribute :temp_id, :string, default: nil
 
@@ -32,7 +35,7 @@ class CustomFieldOption < ApplicationRecord
   belongs_to :custom_field
 
   validates :custom_field, presence: true
-  validates :key, presence: true, uniqueness: { scope: [:custom_field_id] },
+  validates :key, presence: true, uniqueness: { scope: [:custom_field_id], conditions: -> { where(deleted_at: nil) } },
     format: { with: /\A[\w-]+\z/, message: 'can only consist of word characters or dashes' }
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validate :belongs_to_select_field

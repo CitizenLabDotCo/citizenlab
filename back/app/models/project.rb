@@ -27,16 +27,19 @@
 #  listed                         :boolean          default(TRUE), not null
 #  track_participation_location   :boolean          default(FALSE), not null
 #  live_auto_input_topics_enabled :boolean          default(FALSE), not null
+#  deleted_at                     :datetime
 #
 # Indexes
 #
-#  index_projects_on_slug  (slug) UNIQUE
+#  index_projects_on_deleted_at  (deleted_at)
+#  index_projects_on_slug        (slug) UNIQUE WHERE (deleted_at IS NULL)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (default_assignee_id => users.id)
 #
 class Project < ApplicationRecord
+  acts_as_paranoid
   include Files::FileAttachable
   include PgSearch::Model
 

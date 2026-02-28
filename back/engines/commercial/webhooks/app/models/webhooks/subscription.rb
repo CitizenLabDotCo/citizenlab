@@ -13,9 +13,11 @@
 #  enabled      :boolean          default(TRUE), not null
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  deleted_at   :datetime
 #
 # Indexes
 #
+#  index_webhooks_subscriptions_on_deleted_at  (deleted_at)
 #  index_webhooks_subscriptions_on_enabled     (enabled)
 #  index_webhooks_subscriptions_on_events      (events) USING gin
 #  index_webhooks_subscriptions_on_project_id  (project_id)
@@ -26,6 +28,7 @@
 #
 module Webhooks
   class Subscription < ApplicationRecord
+    acts_as_paranoid
     self.table_name = 'webhooks_subscriptions'
 
     belongs_to :project, optional: true

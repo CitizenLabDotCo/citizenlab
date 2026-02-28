@@ -9,11 +9,13 @@
 #  input_topic_id :uuid             not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  deleted_at     :datetime
 #
 # Indexes
 #
+#  index_ideas_input_topics_on_deleted_at                  (deleted_at)
 #  index_ideas_input_topics_on_idea_id                     (idea_id)
-#  index_ideas_input_topics_on_idea_id_and_input_topic_id  (idea_id,input_topic_id) UNIQUE
+#  index_ideas_input_topics_on_idea_id_and_input_topic_id  (idea_id,input_topic_id) UNIQUE WHERE (deleted_at IS NULL)
 #  index_ideas_input_topics_on_input_topic_id              (input_topic_id)
 #
 # Foreign Keys
@@ -22,10 +24,11 @@
 #  fk_rails_...  (input_topic_id => input_topics.id)
 #
 class IdeasInputTopic < ApplicationRecord
+  acts_as_paranoid
   belongs_to :idea
   belongs_to :input_topic
 
-  validates :input_topic_id, uniqueness: { scope: :idea_id }
+  validates :input_topic_id, uniqueness: { scope: :idea_id, conditions: -> { where(deleted_at: nil) } }
 
   after_create :enfore_clean_topic_hierarchy
 

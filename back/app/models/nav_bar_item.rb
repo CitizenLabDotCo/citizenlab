@@ -13,10 +13,12 @@
 #  updated_at        :datetime         not null
 #  project_id        :uuid
 #  project_folder_id :uuid
+#  deleted_at        :datetime
 #
 # Indexes
 #
 #  index_nav_bar_items_on_code               (code)
+#  index_nav_bar_items_on_deleted_at         (deleted_at)
 #  index_nav_bar_items_on_ordering           (ordering)
 #  index_nav_bar_items_on_project_folder_id  (project_folder_id)
 #  index_nav_bar_items_on_project_id         (project_id)
@@ -29,6 +31,7 @@
 #  fk_rails_...  (static_page_id => static_pages.id)
 #
 class NavBarItem < ApplicationRecord
+  acts_as_paranoid
   # The codes must be listed in the correct default ordering
   CODES = %w[home projects events all_input custom].freeze
 
@@ -40,7 +43,7 @@ class NavBarItem < ApplicationRecord
 
   validates :title_multiloc, multiloc: { presence: false }
   validates :code, inclusion: { in: CODES }
-  validates :code, uniqueness: true, if: ->(item) { !item.custom? }
+  validates :code, uniqueness: { conditions: -> { where(deleted_at: nil) } }, if: ->(item) { !item.custom? }
   validates :static_page, presence: true, if: :page?
   validates :project, presence: true, if: :project?
   validates :project_folder, presence: true, if: :project_folder?

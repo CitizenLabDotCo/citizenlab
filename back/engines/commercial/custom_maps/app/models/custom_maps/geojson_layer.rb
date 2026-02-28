@@ -15,9 +15,11 @@
 #  updated_at      :datetime         not null
 #  type            :string
 #  layer_url       :string
+#  deleted_at      :datetime
 #
 # Indexes
 #
+#  index_maps_layers_on_deleted_at     (deleted_at)
 #  index_maps_layers_on_map_config_id  (map_config_id)
 #
 # Foreign Keys

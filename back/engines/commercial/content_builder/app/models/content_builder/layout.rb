@@ -12,13 +12,16 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  craftjs_json           :jsonb            not null
+#  deleted_at             :datetime
 #
 # Indexes
 #
-#  index_content_builder_layouts_content_buidable_type_id_code  (content_buildable_type,content_buildable_id,code) UNIQUE
+#  index_content_builder_layouts_content_buidable_type_id_code  (content_buildable_type,content_buildable_id,code) UNIQUE WHERE (deleted_at IS NULL)
+#  index_content_builder_layouts_on_deleted_at                  (deleted_at)
 #
 module ContentBuilder
   class Layout < ApplicationRecord
+    acts_as_paranoid
     include Files::FileAttachable
     TEXT_CRAFTJS_NODE_TYPES = %w[TextMultiloc AccordionMultiloc].freeze
 

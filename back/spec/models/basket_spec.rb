@@ -197,8 +197,8 @@ RSpec.describe Basket do
         end
 
         it "reduces the 'baskets_count' and 'votes_count' when the basket is deleted" do
-          basket.destroy!
-          basket.update_counts!
+          basket.destroy_fully!
+          Basket.update_counts(current_phase)
 
           expect(ideas[0].reload.baskets_count).to eq 0
           expect(ideas[1].reload.baskets_count).to eq 0

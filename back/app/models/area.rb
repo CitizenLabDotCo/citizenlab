@@ -127,7 +127,7 @@ class Area < ApplicationRecord
       # after the option with ordering 3, the latter will be adjusted (by acts_as_list)
       # to ordering 4.
       options = Area.order(:ordering).map(&:recreate_custom_field_option)
-      domicile_field.options.where.not(id: options).destroy_all
+      domicile_field.options.where.not(id: options).each(&:destroy_fully!)
       options << create_somewhere_else_option
     end
 

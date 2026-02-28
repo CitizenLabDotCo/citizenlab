@@ -17,12 +17,14 @@
 #  succeeded_at             :datetime
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
+#  deleted_at               :datetime
 #
 # Indexes
 #
 #  idx_on_webhooks_subscription_id_status_c35145e2df      (webhooks_subscription_id,status)
 #  index_webhooks_deliveries_on_activity_id               (activity_id)
 #  index_webhooks_deliveries_on_created_at                (created_at)
+#  index_webhooks_deliveries_on_deleted_at                (deleted_at)
 #  index_webhooks_deliveries_on_status_and_created_at     (status,created_at)
 #  index_webhooks_deliveries_on_webhooks_subscription_id  (webhooks_subscription_id)
 #
@@ -33,6 +35,7 @@
 #
 module Webhooks
   class Delivery < ApplicationRecord
+    acts_as_paranoid
     self.table_name = 'webhooks_deliveries'
 
     belongs_to :subscription,

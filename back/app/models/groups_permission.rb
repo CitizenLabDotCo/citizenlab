@@ -9,9 +9,11 @@
 #  group_id      :uuid             not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  deleted_at    :datetime
 #
 # Indexes
 #
+#  index_groups_permissions_on_deleted_at     (deleted_at)
 #  index_groups_permissions_on_group_id       (group_id)
 #  index_groups_permissions_on_permission_id  (permission_id)
 #
@@ -21,6 +23,7 @@
 #  fk_rails_...  (permission_id => permissions.id)
 #
 class GroupsPermission < ApplicationRecord
+  acts_as_paranoid
   belongs_to :group
   belongs_to :permission
 

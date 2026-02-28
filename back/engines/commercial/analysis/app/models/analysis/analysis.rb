@@ -11,9 +11,11 @@
 #  updated_at           :datetime         not null
 #  show_insights        :boolean          default(TRUE), not null
 #  main_custom_field_id :uuid
+#  deleted_at           :datetime
 #
 # Indexes
 #
+#  index_analysis_analyses_on_deleted_at            (deleted_at)
 #  index_analysis_analyses_on_main_custom_field_id  (main_custom_field_id)
 #  index_analysis_analyses_on_phase_id              (phase_id)
 #  index_analysis_analyses_on_project_id            (project_id)
@@ -26,6 +28,7 @@
 #
 module Analysis
   class Analysis < ApplicationRecord
+    acts_as_paranoid
     include Files::FileAttachable
 
     belongs_to :project, optional: true
@@ -43,7 +46,7 @@ module Analysis
     validate :project_xor_phase_present
     validate :project_or_phase_form_context, on: :create
     validate :main_or_additional_fields_present
-    validates :main_custom_field_id, uniqueness: { allow_nil: true }
+    validates :main_custom_field_id, uniqueness: { allow_nil: true, conditions: -> { where(deleted_at: nil) } }
     validate :main_field_is_textual
     validate :main_field_not_in_additional_fields
 

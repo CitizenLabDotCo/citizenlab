@@ -32,7 +32,7 @@ module WebApi::V1
         attendance = ::Events::Attendance.find(params[:id])
 
         authorize(attendance)
-        attendance.destroy!
+        attendance.destroy_fully!
         side_fx.after_destroy(attendance, current_user)
 
         head :no_content

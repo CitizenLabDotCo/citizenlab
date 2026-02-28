@@ -21,9 +21,11 @@
 #  attend_button_multiloc :jsonb            not null
 #  using_url              :string
 #  maximum_attendees      :integer
+#  deleted_at             :datetime
 #
 # Indexes
 #
+#  index_events_on_deleted_at         (deleted_at)
 #  index_events_on_location_point     (location_point) USING gist
 #  index_events_on_maximum_attendees  (maximum_attendees)
 #  index_events_on_project_id         (project_id)
@@ -33,6 +35,7 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class Event < ApplicationRecord
+  acts_as_paranoid
   include Files::FileAttachable
   include GeoJsonHelpers
 

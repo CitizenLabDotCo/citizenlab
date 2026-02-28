@@ -12,10 +12,12 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  campaign_id    :uuid
+#  deleted_at     :datetime
 #
 # Indexes
 #
 #  index_email_campaigns_examples_on_campaign_id   (campaign_id)
+#  index_email_campaigns_examples_on_deleted_at    (deleted_at)
 #  index_email_campaigns_examples_on_recipient_id  (recipient_id)
 #
 # Foreign Keys
@@ -24,6 +26,7 @@
 #
 module EmailCampaigns
   class Example < ApplicationRecord
+    acts_as_paranoid
     belongs_to :recipient, class_name: 'User', optional: true
     belongs_to :campaign, class_name: 'EmailCampaigns::Campaign'
   end

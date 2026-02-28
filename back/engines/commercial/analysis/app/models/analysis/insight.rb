@@ -13,10 +13,12 @@
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  custom_field_ids :jsonb            not null
+#  deleted_at       :datetime
 #
 # Indexes
 #
 #  index_analysis_insights_on_analysis_id  (analysis_id)
+#  index_analysis_insights_on_deleted_at   (deleted_at)
 #  index_analysis_insights_on_insightable  (insightable_type,insightable_id)
 #
 # Foreign Keys
@@ -25,6 +27,7 @@
 #
 module Analysis
   class Insight < ::ApplicationRecord
+    acts_as_paranoid
     include HasFilters
 
     belongs_to :analysis, class_name: 'Analysis::Analysis'

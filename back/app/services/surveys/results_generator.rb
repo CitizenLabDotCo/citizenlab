@@ -367,6 +367,7 @@ module Surveys
 
     def select_group_query(query)
       Idea
+        .unscoped
         .select(:answer)
         .from(query)
         .group(:answer)

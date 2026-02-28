@@ -44,14 +44,17 @@
 #  include_in_printed_form        :boolean          default(TRUE), not null
 #  min_characters                 :integer
 #  max_characters                 :integer
+#  deleted_at                     :datetime
 #
 # Indexes
 #
-#  index_custom_fields_on_ordering                         (ordering) UNIQUE WHERE (resource_id IS NULL)
-#  index_custom_fields_on_resource_id_and_ordering_unique  (resource_id,ordering) UNIQUE
+#  index_custom_fields_on_deleted_at                       (deleted_at)
+#  index_custom_fields_on_ordering                         (ordering) UNIQUE WHERE ((resource_id IS NULL) AND (deleted_at IS NULL))
+#  index_custom_fields_on_resource_id_and_ordering_unique  (resource_id,ordering) UNIQUE WHERE (deleted_at IS NULL)
 #  index_custom_fields_on_resource_type_and_resource_id    (resource_type,resource_id)
 #
 class CustomField < ApplicationRecord
+  acts_as_paranoid
   delegate :page?, :supports_submission?, :supports_average?, :supports_options?, :supports_other_option?, :supports_option_images?,
     :supports_follow_up?, :supports_text?, :supports_linear_scale?, :supports_linear_scale_labels?, :supports_matrix_statements?,
     :supports_single_selection?, :supports_multiple_selection?, :supports_selection?, :supports_select_count?, :supports_dropdown_layout?,
@@ -94,7 +97,7 @@ class CustomField < ApplicationRecord
   validates(
     :key,
     presence: true,
-    uniqueness: { scope: %i[resource_type resource_id] }, format: { with: /\A[a-zA-Z0-9_]+\z/, message: 'only letters, numbers and underscore' },
+    uniqueness: { scope: %i[resource_type resource_id], conditions: -> { where(deleted_at: nil) } }, format: { with: /\A[a-zA-Z0-9_]+\z/, message: 'only letters, numbers and underscore' },
     if: :supports_submission?
   )
   validates :input_type, presence: true, inclusion: INPUT_TYPES
@@ -104,7 +107,7 @@ class CustomField < ApplicationRecord
   validates :enabled, inclusion: { in: [true, false] }
   validates :hidden, inclusion: { in: [true, false] }
   validates :select_count_enabled, inclusion: { in: [true, false] }
-  validates :code, inclusion: { in: CODES }, uniqueness: { scope: %i[resource_type resource_id] }, allow_nil: true
+  validates :code, inclusion: { in: CODES }, uniqueness: { scope: %i[resource_type resource_id], conditions: -> { where(deleted_at: nil) } }, allow_nil: true
   validates :maximum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :select_count_enabled_and_supported?, allow_nil: true
   validates :minimum_select_count, comparison: { greater_than_or_equal_to: 0 }, if: :select_count_enabled_and_supported?, allow_nil: true
   validates :maximum_select_count, absence: true, unless: :select_count_enabled_and_supported?

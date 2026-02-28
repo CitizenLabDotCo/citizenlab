@@ -11,11 +11,13 @@
 #  updated_at    :datetime         not null
 #  baskets_count :integer          default(0), not null
 #  votes_count   :integer          default(0), not null
+#  deleted_at    :datetime
 #
 # Indexes
 #
+#  index_ideas_phases_on_deleted_at            (deleted_at)
 #  index_ideas_phases_on_idea_id               (idea_id)
-#  index_ideas_phases_on_idea_id_and_phase_id  (idea_id,phase_id) UNIQUE
+#  index_ideas_phases_on_idea_id_and_phase_id  (idea_id,phase_id) UNIQUE WHERE (deleted_at IS NULL)
 #  index_ideas_phases_on_phase_id              (phase_id)
 #
 # Foreign Keys
@@ -24,12 +26,13 @@
 #  fk_rails_...  (phase_id => phases.id)
 #
 class IdeasPhase < ApplicationRecord
+  acts_as_paranoid
   belongs_to :idea, touch: true
   belongs_to :phase, touch: true
   counter_culture :phase, column_name: :ideas_count
 
   validates :idea, :phase, presence: true
-  validates :phase_id, uniqueness: { scope: :idea_id }
+  validates :phase_id, uniqueness: { scope: :idea_id, conditions: -> { where(deleted_at: nil) } }
   validate :idea_and_phase_same_project
 
   private

@@ -81,7 +81,7 @@ class WebApi::V1::BasketsIdeasController < ApplicationController
     baskets_idea.assign_attributes baskets_idea_params_for_update
 
     if baskets_idea.votes.nil? || baskets_idea.votes == 0
-      baskets_idea.destroy
+      baskets_idea.destroy_fully!
       if baskets_idea.destroyed?
         SideFxBasketsIdeaService.new.after_destroy baskets_idea, current_user
       end
@@ -106,7 +106,7 @@ class WebApi::V1::BasketsIdeasController < ApplicationController
 
   def destroy
     SideFxBasketsIdeaService.new.before_destroy baskets_idea, current_user
-    baskets_idea.destroy
+    baskets_idea.destroy_fully!
     if baskets_idea.destroyed?
       SideFxBasketsIdeaService.new.after_destroy baskets_idea, current_user
       head :ok

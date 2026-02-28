@@ -20,11 +20,13 @@
 #  children_count     :integer          default(0), not null
 #  author_hash        :string
 #  anonymous          :boolean          default(FALSE), not null
+#  deleted_at         :datetime
 #
 # Indexes
 #
 #  index_comments_on_author_id   (author_id)
 #  index_comments_on_created_at  (created_at)
+#  index_comments_on_deleted_at  (deleted_at)
 #  index_comments_on_idea_id     (idea_id)
 #  index_comments_on_lft         (lft)
 #  index_comments_on_parent_id   (parent_id)
@@ -36,6 +38,7 @@
 #  fk_rails_...  (idea_id => ideas.id)
 #
 class Comment < ApplicationRecord
+  acts_as_paranoid
   include AnonymousParticipation
   include LocationTrackableParticipation
 

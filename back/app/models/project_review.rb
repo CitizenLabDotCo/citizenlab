@@ -11,10 +11,12 @@
 #  approved_at  :datetime
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  deleted_at   :datetime
 #
 # Indexes
 #
-#  index_project_reviews_on_project_id    (project_id) UNIQUE
+#  index_project_reviews_on_deleted_at    (deleted_at)
+#  index_project_reviews_on_project_id    (project_id) UNIQUE WHERE (deleted_at IS NULL)
 #  index_project_reviews_on_requester_id  (requester_id)
 #  index_project_reviews_on_reviewer_id   (reviewer_id)
 #
@@ -25,6 +27,7 @@
 #  fk_rails_...  (reviewer_id => users.id)
 #
 class ProjectReview < ApplicationRecord
+  acts_as_paranoid
   belongs_to :project
   belongs_to :requester, class_name: 'User', optional: true
   belongs_to :reviewer, class_name: 'User', optional: true
@@ -35,7 +38,7 @@ class ProjectReview < ApplicationRecord
 
   validate :validate_create, on: :create
   validate :validate_update, on: :update
-  validates :project_id, uniqueness: { case_sensitive: false } # UUIDs are case-insensitive
+  validates :project_id, uniqueness: { case_sensitive: false, conditions: -> { where(deleted_at: nil) } } # UUIDs are case-insensitive
 
   def approved?
     approved_at.present?

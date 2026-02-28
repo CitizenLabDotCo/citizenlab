@@ -15,10 +15,12 @@
 #  year              :integer
 #  quarter           :integer
 #  community_monitor :boolean          default(FALSE), not null
+#  deleted_at        :datetime
 #
 # Indexes
 #
-#  index_report_builder_reports_on_name           (name) UNIQUE
+#  index_report_builder_reports_on_deleted_at     (deleted_at)
+#  index_report_builder_reports_on_name           (name) UNIQUE WHERE (deleted_at IS NULL)
 #  index_report_builder_reports_on_name_tsvector  (name_tsvector) USING gin
 #  index_report_builder_reports_on_owner_id       (owner_id)
 #  index_report_builder_reports_on_phase_id       (phase_id)
@@ -30,6 +32,7 @@
 #
 module ReportBuilder
   class Report < ::ApplicationRecord
+    acts_as_paranoid
     include PgSearch::Model
 
     belongs_to :owner, class_name: 'User', optional: true
@@ -49,8 +52,8 @@ module ReportBuilder
       tsearch: { tsvector_column: 'name_tsvector', prefix: true }
     }
 
-    validates :name, uniqueness: true, allow_nil: true
-    validates :phase_id, uniqueness: true, unless: :supports_multiple_phase_reports?, allow_nil: true
+    validates :name, uniqueness: { conditions: -> { where(deleted_at: nil) } }, allow_nil: true
+    validates :phase_id, uniqueness: { conditions: -> { where(deleted_at: nil) } }, unless: :supports_multiple_phase_reports?, allow_nil: true
     validates :visible, inclusion: { in: [false], unless: :phase? }
     validates :year, numericality: { in: 2024..2050 }, allow_nil: true
     validates :quarter, numericality: { in: 1..4 }, allow_nil: true

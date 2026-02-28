@@ -9,18 +9,21 @@
 #  project_id      :uuid             not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  deleted_at      :datetime
 #
 # Indexes
 #
-#  index_projects_global_topics_on_project_id       (project_id)
+#  index_projects_global_topics_on_deleted_at       (deleted_at)
 #  index_projects_global_topics_on_global_topic_id  (global_topic_id)
+#  index_projects_global_topics_on_project_id       (project_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (project_id => projects.id)
 #  fk_rails_...  (global_topic_id => global_topics.id)
+#  fk_rails_...  (project_id => projects.id)
 #
 class ProjectsGlobalTopic < ApplicationRecord
+  acts_as_paranoid
   belongs_to :project
   belongs_to :global_topic
 end

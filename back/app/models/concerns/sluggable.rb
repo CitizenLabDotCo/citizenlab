@@ -24,8 +24,16 @@ module Sluggable
   end
 
   included do
-    validates :slug, uniqueness: true, presence: true, format: { with: SLUG_REGEX }, if: proc { slug_enabled? }
+    validates :slug, presence: true, format: { with: SLUG_REGEX }, if: proc { slug_enabled? }
+    validate :validate_slug_uniqueness, if: proc { slug_enabled? }
     before_validation :generate_slug, if: proc { slug_enabled? }
+  end
+
+  def validate_slug_uniqueness
+    scope = self.class.where(slug: slug)
+    scope = scope.where(deleted_at: nil) if self.class.respond_to?(:paranoid?) && self.class.paranoid?
+    scope = scope.where.not(id: id) if persisted?
+    errors.add(:slug, :taken) if scope.exists?
   end
 
   def generate_slug

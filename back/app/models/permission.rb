@@ -17,13 +17,16 @@
 #  everyone_tracking_enabled          :boolean          default(FALSE), not null
 #  user_fields_in_form                :boolean          default(FALSE), not null
 #  user_data_collection               :string           default("all_data"), not null
+#  deleted_at                         :datetime
 #
 # Indexes
 #
 #  index_permissions_on_action               (action)
+#  index_permissions_on_deleted_at           (deleted_at)
 #  index_permissions_on_permission_scope_id  (permission_scope_id)
 #
 class Permission < ApplicationRecord
+  acts_as_paranoid
   PERMITTED_BIES = %w[everyone everyone_confirmed_email users admins_moderators verified].freeze
   ACTIONS = {
     # NOTE: Order of actions in each array is used when using :order_by_action
@@ -60,7 +63,7 @@ class Permission < ApplicationRecord
 
   validates :action, presence: true, inclusion: { in: ->(permission) { available_actions(permission.permission_scope) } }
   validates :permitted_by, presence: true, inclusion: { in: PERMITTED_BIES }
-  validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type] }
+  validates :action, uniqueness: { scope: %i[permission_scope_id permission_scope_type], conditions: -> { where(deleted_at: nil) } }
   validates :permission_scope_type, inclusion: { in: SCOPE_TYPES }
   validate :validate_verified_permitted_by
   validate :validate_verification_expiry

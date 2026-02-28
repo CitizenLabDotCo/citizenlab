@@ -139,7 +139,7 @@ class User < ApplicationRecord
   end)
 
   has_many :ideas, -> { order(:project_id) }, foreign_key: :author_id, dependent: :nullify
-  has_many :idea_exposures, dependent: :destroy
+  has_many :idea_exposures
   has_many :email_bans, foreign_key: :banned_by_id, dependent: :nullify
   has_many :manual_votes_last_updated_ideas, class_name: 'Idea', foreign_key: :manual_votes_last_updated_by_id, dependent: :nullify
   has_many :manual_voters_last_updated_phases, class_name: 'Phase', foreign_key: :manual_voters_last_updated_by_id, dependent: :nullify
@@ -147,10 +147,10 @@ class User < ApplicationRecord
   has_many :internal_comments, foreign_key: :author_id, dependent: :nullify
   has_many :official_feedbacks, dependent: :nullify
   has_many :reactions, dependent: :nullify
-  has_many :event_attendances, -> { order(:event_id) }, class_name: 'Events::Attendance', foreign_key: :attendee_id, dependent: :destroy
+  has_many :event_attendances, -> { order(:event_id) }, class_name: 'Events::Attendance', foreign_key: :attendee_id
   has_many :attended_events, through: :event_attendances, source: :event
-  has_many :follows, -> { order(:followable_id) }, class_name: 'Follower', dependent: :destroy
-  has_many :cosponsorships, dependent: :destroy
+  has_many :follows, -> { order(:followable_id) }, class_name: 'Follower'
+  has_many :cosponsorships
   has_many :cosponsored_ideas, through: :cosponsorships, source: :idea
   has_many :files, class_name: 'Files::File', foreign_key: :uploader_id, inverse_of: :uploader, dependent: :nullify
   has_many :claim_tokens, foreign_key: :pending_claimer_id, inverse_of: :pending_claimer, dependent: :destroy
@@ -167,6 +167,7 @@ class User < ApplicationRecord
   has_one :invitee_invite, class_name: 'Invite', foreign_key: :invitee_id, dependent: :destroy
   has_many :baskets, -> { order(:phase_id) }
   before_destroy :destroy_baskets
+  before_destroy :hard_destroy_paranoid_associations
 
   has_many :requested_project_reviews, class_name: 'ProjectReview', foreign_key: :requester_id, dependent: :nullify
   has_many :assigned_project_reviews, class_name: 'ProjectReview', foreign_key: :reviewer_id, dependent: :nullify
@@ -422,6 +423,13 @@ class User < ApplicationRecord
 
   def destroy_baskets
     baskets.each(&:destroy_or_keep!)
+  end
+
+  def hard_destroy_paranoid_associations
+    idea_exposures.each(&:destroy_fully!)
+    event_attendances.each(&:destroy_fully!)
+    follows.each(&:destroy_fully!)
+    cosponsorships.each(&:destroy_fully!)
   end
 end
 

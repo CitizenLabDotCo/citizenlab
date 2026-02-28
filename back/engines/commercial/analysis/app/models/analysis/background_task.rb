@@ -17,10 +17,12 @@
 #  tags_ids            :jsonb
 #  filters             :jsonb            not null
 #  last_error_class    :string
+#  deleted_at          :datetime
 #
 # Indexes
 #
 #  index_analysis_background_tasks_on_analysis_id  (analysis_id)
+#  index_analysis_background_tasks_on_deleted_at   (deleted_at)
 #
 # Foreign Keys
 #
@@ -28,6 +30,7 @@
 #
 module Analysis
   class BackgroundTask < ::ApplicationRecord
+    acts_as_paranoid
     TYPES = ['Analysis::AutoTaggingTask', 'Analysis::SummarizationTask', 'Analysis::QAndATask', 'Analysis::CommentsSummarizationTask']
     STATES = %w[queued in_progress succeeded failed]
 

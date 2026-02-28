@@ -12,8 +12,14 @@
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #  text_reference  :string           not null
+#  deleted_at      :datetime
+#
+# Indexes
+#
+#  index_text_images_on_deleted_at  (deleted_at)
 #
 class TextImage < ApplicationRecord
+  acts_as_paranoid
   attribute :text_reference, :string, default: -> { SecureRandom.uuid }
 
   mount_base64_uploader :image, TextImageUploader

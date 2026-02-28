@@ -13,14 +13,17 @@
 #  ordering             :integer          not null
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
+#  deleted_at           :datetime
 #
 # Indexes
 #
-#  index_volunteering_causes_on_ordering  (ordering)
-#  index_volunteering_causes_on_phase_id  (phase_id)
+#  index_volunteering_causes_on_deleted_at  (deleted_at)
+#  index_volunteering_causes_on_ordering    (ordering)
+#  index_volunteering_causes_on_phase_id    (phase_id)
 #
 module Volunteering
   class Cause < ApplicationRecord
+    acts_as_paranoid
     mount_base64_uploader :image, CauseImageUploader
     acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: %i[phase_id]
 

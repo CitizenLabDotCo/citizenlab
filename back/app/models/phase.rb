@@ -62,6 +62,7 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class Phase < ApplicationRecord
+  acts_as_paranoid
   include Polls::PollPhase
   include Surveys::SurveyPhase
   include Volunteering::VolunteeringPhase

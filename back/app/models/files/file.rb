@@ -99,7 +99,8 @@ module Files
     around_destroy :mark_as_being_destroyed
 
     has_many :attachments, class_name: 'Files::FileAttachment', inverse_of: :file, dependent: :destroy
-    has_many :files_projects, class_name: 'Files::FilesProject', dependent: :destroy
+    has_many :files_projects, class_name: 'Files::FilesProject'
+    before_destroy { files_projects.each(&:destroy_fully!) }
     has_many :projects, through: :files_projects
     has_one :preview, class_name: 'Files::Preview', dependent: :destroy, inverse_of: :file
     has_one :transcript, class_name: 'Files::Transcript', dependent: :destroy, inverse_of: :file

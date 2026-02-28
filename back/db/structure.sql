@@ -174,17 +174,22 @@ DROP INDEX IF EXISTS public.moderation_statuses_moderatable;
 DROP INDEX IF EXISTS public.machine_translations_translatable;
 DROP INDEX IF EXISTS public.machine_translations_lookup;
 DROP INDEX IF EXISTS public.index_wise_voice_flags_on_flaggable;
+DROP INDEX IF EXISTS public.index_wise_voice_flags_on_deleted_at;
 DROP INDEX IF EXISTS public.index_webhooks_subscriptions_on_project_id;
 DROP INDEX IF EXISTS public.index_webhooks_subscriptions_on_events;
 DROP INDEX IF EXISTS public.index_webhooks_subscriptions_on_enabled;
+DROP INDEX IF EXISTS public.index_webhooks_subscriptions_on_deleted_at;
 DROP INDEX IF EXISTS public.index_webhooks_deliveries_on_webhooks_subscription_id;
 DROP INDEX IF EXISTS public.index_webhooks_deliveries_on_status_and_created_at;
+DROP INDEX IF EXISTS public.index_webhooks_deliveries_on_deleted_at;
 DROP INDEX IF EXISTS public.index_webhooks_deliveries_on_created_at;
 DROP INDEX IF EXISTS public.index_webhooks_deliveries_on_activity_id;
 DROP INDEX IF EXISTS public.index_volunteering_volunteers_on_user_id;
+DROP INDEX IF EXISTS public.index_volunteering_volunteers_on_deleted_at;
 DROP INDEX IF EXISTS public.index_volunteering_volunteers_on_cause_id_and_user_id;
 DROP INDEX IF EXISTS public.index_volunteering_causes_on_phase_id;
 DROP INDEX IF EXISTS public.index_volunteering_causes_on_ordering;
+DROP INDEX IF EXISTS public.index_volunteering_causes_on_deleted_at;
 DROP INDEX IF EXISTS public.index_verification_verifications_on_user_id;
 DROP INDEX IF EXISTS public.index_verification_verifications_on_hashed_uid;
 DROP INDEX IF EXISTS public.index_users_on_unique_code;
@@ -192,11 +197,13 @@ DROP INDEX IF EXISTS public.index_users_on_slug;
 DROP INDEX IF EXISTS public.index_users_on_registration_completed_at;
 DROP INDEX IF EXISTS public.index_users_on_email;
 DROP INDEX IF EXISTS public.index_ucf_representativeness_ref_distributions_on_custom_field;
+DROP INDEX IF EXISTS public.index_text_images_on_deleted_at;
 DROP INDEX IF EXISTS public.index_tenants_on_host;
 DROP INDEX IF EXISTS public.index_tenants_on_deleted_at;
 DROP INDEX IF EXISTS public.index_tenants_on_creation_finalized_at;
 DROP INDEX IF EXISTS public.index_surveys_responses_on_user_id;
 DROP INDEX IF EXISTS public.index_surveys_responses_on_phase_id;
+DROP INDEX IF EXISTS public.index_surveys_responses_on_deleted_at;
 DROP INDEX IF EXISTS public.index_static_pages_on_slug;
 DROP INDEX IF EXISTS public.index_static_pages_on_code;
 DROP INDEX IF EXISTS public.index_static_pages_global_topics_on_static_page_id;
@@ -205,48 +212,65 @@ DROP INDEX IF EXISTS public.index_static_page_files_on_static_page_id;
 DROP INDEX IF EXISTS public.index_static_page_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_user_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_reported_at;
+DROP INDEX IF EXISTS public.index_spam_reports_on_deleted_at;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_phase_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_owner_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_name_tsvector;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_name;
+DROP INDEX IF EXISTS public.index_report_builder_reports_on_deleted_at;
+DROP INDEX IF EXISTS public.index_report_builder_published_graph_data_units_on_deleted_at;
 DROP INDEX IF EXISTS public.index_reactions_on_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id_and_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id;
+DROP INDEX IF EXISTS public.index_reactions_on_deleted_at;
 DROP INDEX IF EXISTS public.index_projects_on_slug;
+DROP INDEX IF EXISTS public.index_projects_on_deleted_at;
 DROP INDEX IF EXISTS public.index_projects_global_topics_on_project_id;
 DROP INDEX IF EXISTS public.index_projects_global_topics_on_global_topic_id;
+DROP INDEX IF EXISTS public.index_projects_global_topics_on_deleted_at;
 DROP INDEX IF EXISTS public.index_project_reviews_on_reviewer_id;
 DROP INDEX IF EXISTS public.index_project_reviews_on_requester_id;
 DROP INDEX IF EXISTS public.index_project_reviews_on_project_id;
+DROP INDEX IF EXISTS public.index_project_reviews_on_deleted_at;
 DROP INDEX IF EXISTS public.index_project_imports_on_project_id;
 DROP INDEX IF EXISTS public.index_project_imports_on_import_user_id;
 DROP INDEX IF EXISTS public.index_project_images_on_project_id;
+DROP INDEX IF EXISTS public.index_project_images_on_deleted_at;
 DROP INDEX IF EXISTS public.index_project_folders_images_on_project_folder_id;
 DROP INDEX IF EXISTS public.index_project_folders_folders_on_slug;
 DROP INDEX IF EXISTS public.index_project_folders_files_on_project_folder_id;
 DROP INDEX IF EXISTS public.index_project_folders_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_project_files_on_project_id;
 DROP INDEX IF EXISTS public.index_project_files_on_migrated_file_id;
+DROP INDEX IF EXISTS public.index_project_files_on_deleted_at;
 DROP INDEX IF EXISTS public.index_polls_responses_on_user_id;
 DROP INDEX IF EXISTS public.index_polls_responses_on_phase_id;
+DROP INDEX IF EXISTS public.index_polls_responses_on_deleted_at;
 DROP INDEX IF EXISTS public.index_polls_response_options_on_response_id;
 DROP INDEX IF EXISTS public.index_polls_response_options_on_option_id;
 DROP INDEX IF EXISTS public.index_polls_questions_on_phase_id;
+DROP INDEX IF EXISTS public.index_polls_questions_on_deleted_at;
 DROP INDEX IF EXISTS public.index_polls_options_on_question_id;
+DROP INDEX IF EXISTS public.index_polls_options_on_deleted_at;
 DROP INDEX IF EXISTS public.index_phases_on_start_at_and_end_at;
 DROP INDEX IF EXISTS public.index_phases_on_project_id;
 DROP INDEX IF EXISTS public.index_phases_on_manual_voters_last_updated_by_id;
+DROP INDEX IF EXISTS public.index_phases_on_deleted_at;
 DROP INDEX IF EXISTS public.index_phase_files_on_phase_id;
 DROP INDEX IF EXISTS public.index_phase_files_on_migrated_file_id;
+DROP INDEX IF EXISTS public.index_phase_files_on_deleted_at;
 DROP INDEX IF EXISTS public.index_permissions_on_permission_scope_id;
+DROP INDEX IF EXISTS public.index_permissions_on_deleted_at;
 DROP INDEX IF EXISTS public.index_permissions_on_action;
 DROP INDEX IF EXISTS public.index_permissions_custom_fields_on_permission_id;
+DROP INDEX IF EXISTS public.index_permissions_custom_fields_on_deleted_at;
 DROP INDEX IF EXISTS public.index_permissions_custom_fields_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_permission_field;
 DROP INDEX IF EXISTS public.index_participation_locations_on_trackable;
 DROP INDEX IF EXISTS public.index_onboarding_campaign_dismissals_on_user_id;
 DROP INDEX IF EXISTS public.index_official_feedbacks_on_user_id;
 DROP INDEX IF EXISTS public.index_official_feedbacks_on_idea_id;
+DROP INDEX IF EXISTS public.index_official_feedbacks_on_deleted_at;
 DROP INDEX IF EXISTS public.index_notifications_on_spam_report_id;
 DROP INDEX IF EXISTS public.index_notifications_on_recipient_id_and_read_at;
 DROP INDEX IF EXISTS public.index_notifications_on_recipient_id;
@@ -265,17 +289,21 @@ DROP INDEX IF EXISTS public.index_nav_bar_items_on_static_page_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_project_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_project_folder_id;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_ordering;
+DROP INDEX IF EXISTS public.index_nav_bar_items_on_deleted_at;
 DROP INDEX IF EXISTS public.index_nav_bar_items_on_code;
 DROP INDEX IF EXISTS public.index_memberships_on_user_id;
 DROP INDEX IF EXISTS public.index_memberships_on_group_id_and_user_id;
 DROP INDEX IF EXISTS public.index_memberships_on_group_id;
 DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable_id;
 DROP INDEX IF EXISTS public.index_maps_map_configs_on_mappable;
+DROP INDEX IF EXISTS public.index_maps_map_configs_on_deleted_at;
 DROP INDEX IF EXISTS public.index_maps_layers_on_map_config_id;
+DROP INDEX IF EXISTS public.index_maps_layers_on_deleted_at;
 DROP INDEX IF EXISTS public.index_jobs_trackers_on_root_job_type;
 DROP INDEX IF EXISTS public.index_jobs_trackers_on_root_job_id;
 DROP INDEX IF EXISTS public.index_jobs_trackers_on_project_id;
 DROP INDEX IF EXISTS public.index_jobs_trackers_on_owner_id;
+DROP INDEX IF EXISTS public.index_jobs_trackers_on_deleted_at;
 DROP INDEX IF EXISTS public.index_jobs_trackers_on_context;
 DROP INDEX IF EXISTS public.index_jobs_trackers_on_completed_at;
 DROP INDEX IF EXISTS public.index_invites_on_token;
@@ -286,61 +314,76 @@ DROP INDEX IF EXISTS public.index_internal_comments_on_rgt;
 DROP INDEX IF EXISTS public.index_internal_comments_on_parent_id;
 DROP INDEX IF EXISTS public.index_internal_comments_on_lft;
 DROP INDEX IF EXISTS public.index_internal_comments_on_idea_id;
+DROP INDEX IF EXISTS public.index_internal_comments_on_deleted_at;
 DROP INDEX IF EXISTS public.index_internal_comments_on_created_at;
 DROP INDEX IF EXISTS public.index_internal_comments_on_author_id;
 DROP INDEX IF EXISTS public.index_input_topics_on_rgt;
 DROP INDEX IF EXISTS public.index_input_topics_on_project_id;
 DROP INDEX IF EXISTS public.index_input_topics_on_parent_id;
+DROP INDEX IF EXISTS public.index_input_topics_on_deleted_at;
 DROP INDEX IF EXISTS public.index_impact_tracking_sessions_on_monthly_user_hash;
 DROP INDEX IF EXISTS public.index_identities_on_user_id;
 DROP INDEX IF EXISTS public.index_ideas_search;
 DROP INDEX IF EXISTS public.index_ideas_phases_on_phase_id;
 DROP INDEX IF EXISTS public.index_ideas_phases_on_idea_id_and_phase_id;
 DROP INDEX IF EXISTS public.index_ideas_phases_on_idea_id;
+DROP INDEX IF EXISTS public.index_ideas_phases_on_deleted_at;
 DROP INDEX IF EXISTS public.index_ideas_on_title_multiloc;
 DROP INDEX IF EXISTS public.index_ideas_on_slug;
 DROP INDEX IF EXISTS public.index_ideas_on_project_id;
 DROP INDEX IF EXISTS public.index_ideas_on_manual_votes_last_updated_by_id;
 DROP INDEX IF EXISTS public.index_ideas_on_location_point;
 DROP INDEX IF EXISTS public.index_ideas_on_idea_status_id;
+DROP INDEX IF EXISTS public.index_ideas_on_deleted_at;
 DROP INDEX IF EXISTS public.index_ideas_on_body_multiloc;
 DROP INDEX IF EXISTS public.index_ideas_on_author_id;
 DROP INDEX IF EXISTS public.index_ideas_on_author_hash;
 DROP INDEX IF EXISTS public.index_ideas_input_topics_on_input_topic_id;
 DROP INDEX IF EXISTS public.index_ideas_input_topics_on_idea_id_and_input_topic_id;
 DROP INDEX IF EXISTS public.index_ideas_input_topics_on_idea_id;
+DROP INDEX IF EXISTS public.index_ideas_input_topics_on_deleted_at;
 DROP INDEX IF EXISTS public.index_idea_relations_on_related_idea_id;
 DROP INDEX IF EXISTS public.index_idea_relations_on_idea_id_and_related_idea_id;
 DROP INDEX IF EXISTS public.index_idea_relations_on_idea_id;
+DROP INDEX IF EXISTS public.index_idea_relations_on_deleted_at;
 DROP INDEX IF EXISTS public.index_idea_imports_on_import_user_id;
 DROP INDEX IF EXISTS public.index_idea_imports_on_idea_id;
 DROP INDEX IF EXISTS public.index_idea_imports_on_file_id;
+DROP INDEX IF EXISTS public.index_idea_imports_on_deleted_at;
 DROP INDEX IF EXISTS public.index_idea_import_files_on_project_id;
 DROP INDEX IF EXISTS public.index_idea_import_files_on_parent_id;
+DROP INDEX IF EXISTS public.index_idea_import_files_on_deleted_at;
 DROP INDEX IF EXISTS public.index_idea_images_on_idea_id;
+DROP INDEX IF EXISTS public.index_idea_images_on_deleted_at;
 DROP INDEX IF EXISTS public.index_idea_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_idea_files_on_idea_id;
+DROP INDEX IF EXISTS public.index_idea_files_on_deleted_at;
 DROP INDEX IF EXISTS public.index_idea_exposures_on_visitor_hash;
 DROP INDEX IF EXISTS public.index_idea_exposures_on_user_id;
 DROP INDEX IF EXISTS public.index_idea_exposures_on_phase_id;
 DROP INDEX IF EXISTS public.index_idea_exposures_on_idea_id;
+DROP INDEX IF EXISTS public.index_idea_exposures_on_deleted_at;
 DROP INDEX IF EXISTS public.index_id_id_card_lookup_id_cards_on_hashed_card_id;
 DROP INDEX IF EXISTS public.index_groups_projects_on_project_id;
 DROP INDEX IF EXISTS public.index_groups_projects_on_group_id_and_project_id;
 DROP INDEX IF EXISTS public.index_groups_projects_on_group_id;
+DROP INDEX IF EXISTS public.index_groups_projects_on_deleted_at;
 DROP INDEX IF EXISTS public.index_groups_permissions_on_permission_id;
 DROP INDEX IF EXISTS public.index_groups_permissions_on_group_id;
+DROP INDEX IF EXISTS public.index_groups_permissions_on_deleted_at;
 DROP INDEX IF EXISTS public.index_groups_on_slug;
 DROP INDEX IF EXISTS public.index_global_topics_on_include_in_onboarding;
 DROP INDEX IF EXISTS public.index_followers_on_user_id;
 DROP INDEX IF EXISTS public.index_followers_on_followable_id_and_followable_type;
 DROP INDEX IF EXISTS public.index_followers_on_followable;
+DROP INDEX IF EXISTS public.index_followers_on_deleted_at;
 DROP INDEX IF EXISTS public.index_followers_followable_type_id_user_id;
 DROP INDEX IF EXISTS public.index_files_transcripts_on_status;
 DROP INDEX IF EXISTS public.index_files_transcripts_on_file_id;
 DROP INDEX IF EXISTS public.index_files_projects_on_project_id;
 DROP INDEX IF EXISTS public.index_files_projects_on_file_id_and_project_id;
 DROP INDEX IF EXISTS public.index_files_projects_on_file_id;
+DROP INDEX IF EXISTS public.index_files_projects_on_deleted_at;
 DROP INDEX IF EXISTS public.index_files_previews_on_file_id;
 DROP INDEX IF EXISTS public.index_files_on_uploader_id;
 DROP INDEX IF EXISTS public.index_files_on_tsvector;
@@ -355,21 +398,27 @@ DROP INDEX IF EXISTS public.index_file_attachments_on_attachable;
 DROP INDEX IF EXISTS public.index_events_on_project_id;
 DROP INDEX IF EXISTS public.index_events_on_maximum_attendees;
 DROP INDEX IF EXISTS public.index_events_on_location_point;
+DROP INDEX IF EXISTS public.index_events_on_deleted_at;
 DROP INDEX IF EXISTS public.index_events_attendances_on_updated_at;
 DROP INDEX IF EXISTS public.index_events_attendances_on_event_id;
+DROP INDEX IF EXISTS public.index_events_attendances_on_deleted_at;
 DROP INDEX IF EXISTS public.index_events_attendances_on_created_at;
 DROP INDEX IF EXISTS public.index_events_attendances_on_attendee_id_and_event_id;
 DROP INDEX IF EXISTS public.index_events_attendances_on_attendee_id;
 DROP INDEX IF EXISTS public.index_event_images_on_event_id;
+DROP INDEX IF EXISTS public.index_event_images_on_deleted_at;
 DROP INDEX IF EXISTS public.index_event_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_event_files_on_event_id;
+DROP INDEX IF EXISTS public.index_event_files_on_deleted_at;
 DROP INDEX IF EXISTS public.index_embeddings_similarities_on_embedding;
 DROP INDEX IF EXISTS public.index_embeddings_similarities_on_embedded_attributes;
 DROP INDEX IF EXISTS public.index_embeddings_similarities_on_embeddable;
+DROP INDEX IF EXISTS public.index_embeddings_similarities_on_deleted_at;
 DROP INDEX IF EXISTS public.index_email_snippets_on_email_and_snippet_and_locale;
 DROP INDEX IF EXISTS public.index_email_campaigns_unsubscription_tokens_on_user_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_unsubscription_tokens_on_token;
 DROP INDEX IF EXISTS public.index_email_campaigns_examples_on_recipient_id;
+DROP INDEX IF EXISTS public.index_email_campaigns_examples_on_deleted_at;
 DROP INDEX IF EXISTS public.index_email_campaigns_examples_on_campaign_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_deliveries_on_user_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_deliveries_on_sent_at;
@@ -378,6 +427,7 @@ DROP INDEX IF EXISTS public.index_email_campaigns_deliveries_on_campaign_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_consents_on_user_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_consents_on_campaign_type_and_user_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_on_type;
+DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_on_deleted_at;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_on_context_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_on_author_id;
 DROP INDEX IF EXISTS public.index_email_campaigns_campaigns_groups_on_group_id;
@@ -389,25 +439,33 @@ DROP INDEX IF EXISTS public.index_dismissals_on_campaign_name_and_user_id;
 DROP INDEX IF EXISTS public.index_default_input_topics_on_rgt;
 DROP INDEX IF EXISTS public.index_default_input_topics_on_parent_id;
 DROP INDEX IF EXISTS public.index_custom_forms_on_participation_context;
+DROP INDEX IF EXISTS public.index_custom_forms_on_deleted_at;
 DROP INDEX IF EXISTS public.index_custom_fields_on_resource_type_and_resource_id;
 DROP INDEX IF EXISTS public.index_custom_fields_on_resource_id_and_ordering_unique;
 DROP INDEX IF EXISTS public.index_custom_fields_on_ordering;
+DROP INDEX IF EXISTS public.index_custom_fields_on_deleted_at;
 DROP INDEX IF EXISTS public.index_custom_field_options_on_field_id_and_ordering_unique;
+DROP INDEX IF EXISTS public.index_custom_field_options_on_deleted_at;
 DROP INDEX IF EXISTS public.index_custom_field_options_on_custom_field_id_and_key;
 DROP INDEX IF EXISTS public.index_custom_field_options_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_custom_field_option_images_on_custom_field_option_id;
 DROP INDEX IF EXISTS public.index_custom_field_matrix_statements_on_key;
+DROP INDEX IF EXISTS public.index_custom_field_matrix_statements_on_deleted_at;
 DROP INDEX IF EXISTS public.index_custom_field_matrix_statements_on_custom_field_id;
+DROP INDEX IF EXISTS public.index_custom_field_bins_on_deleted_at;
 DROP INDEX IF EXISTS public.index_custom_field_bins_on_custom_field_option_id;
 DROP INDEX IF EXISTS public.index_custom_field_bins_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_cosponsorships_on_user_id;
 DROP INDEX IF EXISTS public.index_cosponsorships_on_idea_id;
+DROP INDEX IF EXISTS public.index_cosponsorships_on_deleted_at;
+DROP INDEX IF EXISTS public.index_content_builder_layouts_on_deleted_at;
 DROP INDEX IF EXISTS public.index_content_builder_layouts_content_buidable_type_id_code;
 DROP INDEX IF EXISTS public.index_common_passwords_on_password;
 DROP INDEX IF EXISTS public.index_comments_on_rgt;
 DROP INDEX IF EXISTS public.index_comments_on_parent_id;
 DROP INDEX IF EXISTS public.index_comments_on_lft;
 DROP INDEX IF EXISTS public.index_comments_on_idea_id;
+DROP INDEX IF EXISTS public.index_comments_on_deleted_at;
 DROP INDEX IF EXISTS public.index_comments_on_created_at;
 DROP INDEX IF EXISTS public.index_comments_on_author_id;
 DROP INDEX IF EXISTS public.index_claim_tokens_on_token;
@@ -418,39 +476,51 @@ DROP INDEX IF EXISTS public.index_campaigns_groups;
 DROP INDEX IF EXISTS public.index_baskets_on_user_id;
 DROP INDEX IF EXISTS public.index_baskets_on_submitted_at;
 DROP INDEX IF EXISTS public.index_baskets_on_phase_id;
+DROP INDEX IF EXISTS public.index_baskets_on_deleted_at;
 DROP INDEX IF EXISTS public.index_baskets_ideas_on_idea_id;
+DROP INDEX IF EXISTS public.index_baskets_ideas_on_deleted_at;
 DROP INDEX IF EXISTS public.index_baskets_ideas_on_basket_id_and_idea_id;
 DROP INDEX IF EXISTS public.index_authoring_assistance_responses_on_idea_id;
+DROP INDEX IF EXISTS public.index_authoring_assistance_responses_on_deleted_at;
 DROP INDEX IF EXISTS public.index_areas_static_pages_on_static_page_id;
 DROP INDEX IF EXISTS public.index_areas_static_pages_on_area_id;
 DROP INDEX IF EXISTS public.index_areas_projects_on_project_id_and_area_id;
 DROP INDEX IF EXISTS public.index_areas_projects_on_project_id;
+DROP INDEX IF EXISTS public.index_areas_projects_on_deleted_at;
 DROP INDEX IF EXISTS public.index_areas_projects_on_area_id;
 DROP INDEX IF EXISTS public.index_areas_on_ordering_unique;
 DROP INDEX IF EXISTS public.index_areas_on_include_in_onboarding;
 DROP INDEX IF EXISTS public.index_areas_on_custom_field_option_id;
 DROP INDEX IF EXISTS public.index_analytics_dimension_types_on_name_and_parent;
 DROP INDEX IF EXISTS public.index_analytics_dimension_locales_on_name;
+DROP INDEX IF EXISTS public.index_analysis_tags_on_deleted_at;
 DROP INDEX IF EXISTS public.index_analysis_tags_on_analysis_id_and_name;
 DROP INDEX IF EXISTS public.index_analysis_tags_on_analysis_id;
 DROP INDEX IF EXISTS public.index_analysis_taggings_on_tag_id_and_input_id;
 DROP INDEX IF EXISTS public.index_analysis_taggings_on_tag_id;
 DROP INDEX IF EXISTS public.index_analysis_taggings_on_input_id;
+DROP INDEX IF EXISTS public.index_analysis_taggings_on_deleted_at;
 DROP INDEX IF EXISTS public.index_analysis_summaries_on_background_task_id;
 DROP INDEX IF EXISTS public.index_analysis_questions_on_background_task_id;
 DROP INDEX IF EXISTS public.index_analysis_insights_on_insightable;
+DROP INDEX IF EXISTS public.index_analysis_insights_on_deleted_at;
 DROP INDEX IF EXISTS public.index_analysis_insights_on_analysis_id;
 DROP INDEX IF EXISTS public.index_analysis_heatmap_cells_uniqueness;
 DROP INDEX IF EXISTS public.index_analysis_heatmap_cells_on_row;
+DROP INDEX IF EXISTS public.index_analysis_heatmap_cells_on_deleted_at;
 DROP INDEX IF EXISTS public.index_analysis_heatmap_cells_on_column;
 DROP INDEX IF EXISTS public.index_analysis_heatmap_cells_on_analysis_id;
 DROP INDEX IF EXISTS public.index_analysis_comments_summaries_on_idea_id;
+DROP INDEX IF EXISTS public.index_analysis_comments_summaries_on_deleted_at;
 DROP INDEX IF EXISTS public.index_analysis_comments_summaries_on_background_task_id;
+DROP INDEX IF EXISTS public.index_analysis_background_tasks_on_deleted_at;
 DROP INDEX IF EXISTS public.index_analysis_background_tasks_on_analysis_id;
 DROP INDEX IF EXISTS public.index_analysis_analyses_on_project_id;
 DROP INDEX IF EXISTS public.index_analysis_analyses_on_phase_id;
 DROP INDEX IF EXISTS public.index_analysis_analyses_on_main_custom_field_id;
+DROP INDEX IF EXISTS public.index_analysis_analyses_on_deleted_at;
 DROP INDEX IF EXISTS public.index_analysis_analyses_custom_fields;
+DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_deleted_at;
 DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_analysis_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_rgt;
@@ -460,6 +530,7 @@ DROP INDEX IF EXISTS public.index_admin_publications_on_parent_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_ordering;
 DROP INDEX IF EXISTS public.index_admin_publications_on_lft;
 DROP INDEX IF EXISTS public.index_admin_publications_on_depth;
+DROP INDEX IF EXISTS public.index_admin_publications_on_deleted_at;
 DROP INDEX IF EXISTS public.index_activities_on_user_id;
 DROP INDEX IF EXISTS public.index_activities_on_project_id;
 DROP INDEX IF EXISTS public.index_activities_on_item_type_and_item_id;
@@ -1117,7 +1188,8 @@ CREATE TABLE public.admin_publications (
     depth integer DEFAULT 0 NOT NULL,
     children_allowed boolean DEFAULT true NOT NULL,
     children_count integer DEFAULT 0 NOT NULL,
-    first_published_at timestamp(6) without time zone
+    first_published_at timestamp(6) without time zone,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -1130,7 +1202,8 @@ CREATE TABLE public.analysis_additional_custom_fields (
     analysis_id uuid NOT NULL,
     custom_field_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -1145,7 +1218,8 @@ CREATE TABLE public.analysis_analyses (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     show_insights boolean DEFAULT true NOT NULL,
-    main_custom_field_id uuid
+    main_custom_field_id uuid,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -1166,7 +1240,8 @@ CREATE TABLE public.analysis_background_tasks (
     updated_at timestamp(6) without time zone NOT NULL,
     tags_ids jsonb,
     filters jsonb DEFAULT '{}'::jsonb NOT NULL,
-    last_error_class character varying
+    last_error_class character varying,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -1184,7 +1259,8 @@ CREATE TABLE public.analysis_comments_summaries (
     generated_at timestamp(6) without time zone,
     comments_ids jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -1204,7 +1280,8 @@ CREATE TABLE public.analysis_heatmap_cells (
     lift numeric(20,15) NOT NULL,
     p_value numeric(20,15) NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -1221,7 +1298,8 @@ CREATE TABLE public.analysis_insights (
     inputs_ids jsonb,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    custom_field_ids jsonb DEFAULT '{}'::jsonb NOT NULL
+    custom_field_ids jsonb DEFAULT '{}'::jsonb NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -1270,7 +1348,8 @@ CREATE TABLE public.analysis_taggings (
     input_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    background_task_id uuid
+    background_task_id uuid,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -1284,7 +1363,8 @@ CREATE TABLE public.analysis_tags (
     tag_type character varying NOT NULL,
     analysis_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -1299,7 +1379,8 @@ CREATE TABLE public.official_feedbacks (
     user_id uuid,
     idea_id uuid,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -1388,7 +1469,8 @@ CREATE TABLE public.projects (
     hidden boolean DEFAULT false NOT NULL,
     listed boolean DEFAULT true NOT NULL,
     track_participation_location boolean DEFAULT false NOT NULL,
-    live_auto_input_topics_enabled boolean DEFAULT false NOT NULL
+    live_auto_input_topics_enabled boolean DEFAULT false NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -1560,7 +1642,8 @@ CREATE TABLE public.email_campaigns_campaigns (
     title_multiloc jsonb DEFAULT '{}'::jsonb,
     intro_multiloc jsonb DEFAULT '{}'::jsonb,
     button_text_multiloc jsonb DEFAULT '{}'::jsonb,
-    context_type character varying
+    context_type character varying,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -1616,7 +1699,8 @@ CREATE TABLE public.events (
     online_link character varying,
     attend_button_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     using_url character varying,
-    maximum_attendees integer
+    maximum_attendees integer,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -1643,7 +1727,8 @@ CREATE TABLE public.baskets (
     user_id uuid,
     phase_id uuid,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -1667,7 +1752,8 @@ CREATE TABLE public.comments (
     body_updated_at timestamp without time zone,
     children_count integer DEFAULT 0 NOT NULL,
     author_hash character varying,
-    anonymous boolean DEFAULT false NOT NULL
+    anonymous boolean DEFAULT false NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -1680,7 +1766,8 @@ CREATE TABLE public.events_attendances (
     attendee_id uuid NOT NULL,
     event_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -1722,7 +1809,8 @@ CREATE TABLE public.ideas (
     manual_votes_amount integer,
     manual_votes_last_updated_by_id uuid,
     manual_votes_last_updated_at timestamp(6) without time zone,
-    neutral_reactions_count integer DEFAULT 0 NOT NULL
+    neutral_reactions_count integer DEFAULT 0 NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -1781,7 +1869,8 @@ CREATE TABLE public.phases (
     vote_term character varying DEFAULT 'vote'::character varying,
     voting_min_selected_options integer DEFAULT 1 NOT NULL,
     voting_filtering_enabled boolean DEFAULT false NOT NULL,
-    prescreening_mode character varying
+    prescreening_mode character varying,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -1794,7 +1883,8 @@ CREATE TABLE public.polls_responses (
     phase_id uuid NOT NULL,
     user_id uuid,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -1809,7 +1899,8 @@ CREATE TABLE public.reactions (
     user_id uuid,
     mode character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -1826,7 +1917,8 @@ CREATE TABLE public.volunteering_causes (
     image character varying,
     ordering integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -1839,7 +1931,8 @@ CREATE TABLE public.volunteering_volunteers (
     cause_id uuid NOT NULL,
     user_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2129,7 +2222,8 @@ CREATE TABLE public.areas (
 CREATE TABLE public.areas_projects (
     area_id uuid,
     project_id uuid,
-    id uuid DEFAULT shared_extensions.uuid_generate_v4() NOT NULL
+    id uuid DEFAULT shared_extensions.uuid_generate_v4() NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2175,7 +2269,8 @@ CREATE TABLE public.authoring_assistance_responses (
     prompt_response jsonb DEFAULT '{}'::jsonb NOT NULL,
     custom_free_prompt character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2189,7 +2284,8 @@ CREATE TABLE public.baskets_ideas (
     idea_id uuid,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    votes integer DEFAULT 1 NOT NULL
+    votes integer DEFAULT 1 NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2244,7 +2340,8 @@ CREATE TABLE public.content_builder_layouts (
     enabled boolean DEFAULT false NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    craftjs_json jsonb DEFAULT '{}'::jsonb NOT NULL
+    craftjs_json jsonb DEFAULT '{}'::jsonb NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2258,7 +2355,8 @@ CREATE TABLE public.cosponsorships (
     user_id uuid NOT NULL,
     idea_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2274,7 +2372,8 @@ CREATE TABLE public.custom_field_bins (
     "values" jsonb,
     range int4range,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2289,7 +2388,8 @@ CREATE TABLE public.custom_field_matrix_statements (
     key character varying NOT NULL,
     ordering integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2319,7 +2419,8 @@ CREATE TABLE public.custom_field_options (
     ordering integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    other boolean DEFAULT false NOT NULL
+    other boolean DEFAULT false NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2367,7 +2468,8 @@ CREATE TABLE public.custom_fields (
     question_category character varying,
     include_in_printed_form boolean DEFAULT true NOT NULL,
     min_characters integer,
-    max_characters integer
+    max_characters integer,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2384,7 +2486,8 @@ CREATE TABLE public.custom_forms (
     fields_last_updated_at timestamp(6) without time zone DEFAULT now() NOT NULL,
     print_start_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     print_end_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    print_personal_data_fields boolean DEFAULT false NOT NULL
+    print_personal_data_fields boolean DEFAULT false NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2474,7 +2577,8 @@ CREATE TABLE public.email_campaigns_examples (
     recipient_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    campaign_id uuid
+    campaign_id uuid,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2515,7 +2619,8 @@ CREATE TABLE public.embeddings_similarities (
     embeddable_id uuid NOT NULL,
     embedded_attributes character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2532,7 +2637,8 @@ CREATE TABLE public.event_files (
     updated_at timestamp without time zone NOT NULL,
     name character varying,
     migrated_file_id uuid,
-    migration_skipped_reason character varying
+    migration_skipped_reason character varying,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2554,7 +2660,8 @@ CREATE TABLE public.event_images (
     ordering integer,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    alt_text_multiloc jsonb DEFAULT '{}'::jsonb
+    alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2651,7 +2758,8 @@ CREATE TABLE public.files_projects (
     file_id uuid NOT NULL,
     project_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2697,7 +2805,8 @@ CREATE TABLE public.followers (
     followable_id uuid NOT NULL,
     user_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2743,7 +2852,8 @@ CREATE TABLE public.groups_permissions (
     permission_id uuid NOT NULL,
     group_id uuid NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2756,7 +2866,8 @@ CREATE TABLE public.groups_projects (
     group_id uuid,
     project_id uuid,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2781,7 +2892,8 @@ CREATE TABLE public.idea_exposures (
     phase_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    visitor_hash character varying
+    visitor_hash character varying,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2805,7 +2917,8 @@ CREATE TABLE public.idea_files (
     updated_at timestamp without time zone NOT NULL,
     name character varying,
     migrated_file_id uuid,
-    migration_skipped_reason character varying
+    migration_skipped_reason character varying,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2826,7 +2939,8 @@ CREATE TABLE public.idea_images (
     image character varying,
     ordering integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2844,7 +2958,8 @@ CREATE TABLE public.idea_import_files (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     parent_id uuid,
-    parsed_value jsonb DEFAULT '{}'::jsonb
+    parsed_value jsonb DEFAULT '{}'::jsonb,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2866,7 +2981,8 @@ CREATE TABLE public.idea_imports (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     user_consent boolean DEFAULT false NOT NULL,
-    content_changes jsonb DEFAULT '{}'::jsonb
+    content_changes jsonb DEFAULT '{}'::jsonb,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2879,7 +2995,8 @@ CREATE TABLE public.idea_relations (
     idea_id uuid NOT NULL,
     related_idea_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2916,7 +3033,8 @@ CREATE TABLE public.ideas_input_topics (
     idea_id uuid NOT NULL,
     input_topic_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2931,7 +3049,8 @@ CREATE TABLE public.ideas_phases (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     baskets_count integer DEFAULT 0 NOT NULL,
-    votes_count integer DEFAULT 0 NOT NULL
+    votes_count integer DEFAULT 0 NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -2992,7 +3111,8 @@ CREATE TABLE public.input_topics (
     lft integer,
     rgt integer,
     depth integer DEFAULT 0,
-    children_count integer DEFAULT 0
+    children_count integer DEFAULT 0,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3012,7 +3132,8 @@ CREATE TABLE public.internal_comments (
     body_updated_at timestamp without time zone,
     children_count integer DEFAULT 0 NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3048,7 +3169,8 @@ CREATE TABLE public.jobs_trackers (
     context_type character varying,
     context_id uuid,
     project_id uuid,
-    error_count integer DEFAULT 0 NOT NULL
+    error_count integer DEFAULT 0 NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3083,7 +3205,8 @@ CREATE TABLE public.maps_layers (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     type character varying,
-    layer_url character varying
+    layer_url character varying,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3101,7 +3224,8 @@ CREATE TABLE public.maps_map_configs (
     esri_web_map_id character varying,
     esri_base_map_id character varying,
     mappable_type character varying,
-    mappable_id uuid
+    mappable_id uuid,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3188,7 +3312,8 @@ CREATE TABLE public.nav_bar_items (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     project_id uuid,
-    project_folder_id uuid
+    project_folder_id uuid,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3273,7 +3398,8 @@ CREATE TABLE public.permissions (
     access_denied_explanation_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     everyone_tracking_enabled boolean DEFAULT false NOT NULL,
     user_fields_in_form boolean DEFAULT false NOT NULL,
-    user_data_collection character varying DEFAULT 'all_data'::character varying NOT NULL
+    user_data_collection character varying DEFAULT 'all_data'::character varying NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3288,7 +3414,8 @@ CREATE TABLE public.permissions_custom_fields (
     required boolean DEFAULT true NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    ordering integer DEFAULT 0
+    ordering integer DEFAULT 0,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3305,7 +3432,8 @@ CREATE TABLE public.phase_files (
     updated_at timestamp without time zone NOT NULL,
     name character varying,
     migrated_file_id uuid,
-    migration_skipped_reason character varying
+    migration_skipped_reason character varying,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3326,7 +3454,8 @@ CREATE TABLE public.polls_options (
     title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     ordering integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3342,7 +3471,8 @@ CREATE TABLE public.polls_questions (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     question_type character varying DEFAULT 'single_option'::character varying NOT NULL,
-    max_options integer
+    max_options integer,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3372,7 +3502,8 @@ CREATE TABLE public.project_files (
     updated_at timestamp without time zone NOT NULL,
     name character varying,
     migrated_file_id uuid,
-    migration_skipped_reason character varying
+    migration_skipped_reason character varying,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3451,7 +3582,8 @@ CREATE TABLE public.project_images (
     ordering integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    alt_text_multiloc jsonb DEFAULT '{}'::jsonb
+    alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3484,7 +3616,8 @@ CREATE TABLE public.project_reviews (
     reviewer_id uuid,
     approved_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3497,7 +3630,8 @@ CREATE TABLE public.projects_global_topics (
     global_topic_id uuid NOT NULL,
     project_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3575,7 +3709,8 @@ CREATE TABLE public.report_builder_published_graph_data_units (
     graph_id character varying NOT NULL,
     data jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3594,7 +3729,8 @@ CREATE TABLE public.report_builder_reports (
     name_tsvector tsvector GENERATED ALWAYS AS (to_tsvector('simple'::regconfig, (name)::text)) STORED,
     year integer,
     quarter integer,
-    community_monitor boolean DEFAULT false NOT NULL
+    community_monitor boolean DEFAULT false NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3620,7 +3756,8 @@ CREATE TABLE public.spam_reports (
     other_reason character varying,
     user_id uuid,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3708,7 +3845,8 @@ CREATE TABLE public.surveys_responses (
     submitted_at timestamp without time zone NOT NULL,
     answers jsonb DEFAULT '{}'::jsonb,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3743,7 +3881,8 @@ CREATE TABLE public.text_images (
     image character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    text_reference character varying NOT NULL
+    text_reference character varying NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3793,7 +3932,8 @@ CREATE TABLE public.webhooks_deliveries (
     last_attempt_at timestamp(6) without time zone,
     succeeded_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3810,7 +3950,8 @@ CREATE TABLE public.webhooks_subscriptions (
     project_id uuid,
     enabled boolean DEFAULT true NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -3825,7 +3966,8 @@ CREATE TABLE public.wise_voice_flags (
     role_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     quotes jsonb DEFAULT '[]'::jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -5018,7 +5160,7 @@ CREATE INDEX i_v_user ON public.analytics_fact_visits USING btree (dimension_use
 -- Name: idx_on_context_type_context_id_root_job_type_d5d424e7c3; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX idx_on_context_type_context_id_root_job_type_d5d424e7c3 ON public.jobs_trackers USING btree (context_type, context_id, root_job_type) WHERE ((root_job_type)::text = 'Files::DescriptionGenerationJob'::text);
+CREATE UNIQUE INDEX idx_on_context_type_context_id_root_job_type_d5d424e7c3 ON public.jobs_trackers USING btree (context_type, context_id, root_job_type) WHERE (((root_job_type)::text = 'Files::DescriptionGenerationJob'::text) AND (deleted_at IS NULL));
 
 
 --
@@ -5068,6 +5210,13 @@ CREATE INDEX index_activities_on_project_id ON public.activities USING btree (pr
 --
 
 CREATE INDEX index_activities_on_user_id ON public.activities USING btree (user_id);
+
+
+--
+-- Name: index_admin_publications_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_admin_publications_on_deleted_at ON public.admin_publications USING btree (deleted_at);
 
 
 --
@@ -5134,10 +5283,24 @@ CREATE INDEX index_analysis_additional_custom_fields_on_custom_field_id ON publi
 
 
 --
+-- Name: index_analysis_additional_custom_fields_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_analysis_additional_custom_fields_on_deleted_at ON public.analysis_additional_custom_fields USING btree (deleted_at);
+
+
+--
 -- Name: index_analysis_analyses_custom_fields; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_analysis_analyses_custom_fields ON public.analysis_additional_custom_fields USING btree (analysis_id, custom_field_id);
+CREATE UNIQUE INDEX index_analysis_analyses_custom_fields ON public.analysis_additional_custom_fields USING btree (analysis_id, custom_field_id) WHERE (deleted_at IS NULL);
+
+
+--
+-- Name: index_analysis_analyses_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_analysis_analyses_on_deleted_at ON public.analysis_analyses USING btree (deleted_at);
 
 
 --
@@ -5169,10 +5332,24 @@ CREATE INDEX index_analysis_background_tasks_on_analysis_id ON public.analysis_b
 
 
 --
+-- Name: index_analysis_background_tasks_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_analysis_background_tasks_on_deleted_at ON public.analysis_background_tasks USING btree (deleted_at);
+
+
+--
 -- Name: index_analysis_comments_summaries_on_background_task_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_analysis_comments_summaries_on_background_task_id ON public.analysis_comments_summaries USING btree (background_task_id);
+
+
+--
+-- Name: index_analysis_comments_summaries_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_analysis_comments_summaries_on_deleted_at ON public.analysis_comments_summaries USING btree (deleted_at);
 
 
 --
@@ -5197,6 +5374,13 @@ CREATE INDEX index_analysis_heatmap_cells_on_column ON public.analysis_heatmap_c
 
 
 --
+-- Name: index_analysis_heatmap_cells_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_analysis_heatmap_cells_on_deleted_at ON public.analysis_heatmap_cells USING btree (deleted_at);
+
+
+--
 -- Name: index_analysis_heatmap_cells_on_row; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5207,7 +5391,7 @@ CREATE INDEX index_analysis_heatmap_cells_on_row ON public.analysis_heatmap_cell
 -- Name: index_analysis_heatmap_cells_uniqueness; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_analysis_heatmap_cells_uniqueness ON public.analysis_heatmap_cells USING btree (analysis_id, row_id, column_id, unit);
+CREATE UNIQUE INDEX index_analysis_heatmap_cells_uniqueness ON public.analysis_heatmap_cells USING btree (analysis_id, row_id, column_id, unit) WHERE (deleted_at IS NULL);
 
 
 --
@@ -5215,6 +5399,13 @@ CREATE UNIQUE INDEX index_analysis_heatmap_cells_uniqueness ON public.analysis_h
 --
 
 CREATE INDEX index_analysis_insights_on_analysis_id ON public.analysis_insights USING btree (analysis_id);
+
+
+--
+-- Name: index_analysis_insights_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_analysis_insights_on_deleted_at ON public.analysis_insights USING btree (deleted_at);
 
 
 --
@@ -5239,6 +5430,13 @@ CREATE INDEX index_analysis_summaries_on_background_task_id ON public.analysis_s
 
 
 --
+-- Name: index_analysis_taggings_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_analysis_taggings_on_deleted_at ON public.analysis_taggings USING btree (deleted_at);
+
+
+--
 -- Name: index_analysis_taggings_on_input_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5256,7 +5454,7 @@ CREATE INDEX index_analysis_taggings_on_tag_id ON public.analysis_taggings USING
 -- Name: index_analysis_taggings_on_tag_id_and_input_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_analysis_taggings_on_tag_id_and_input_id ON public.analysis_taggings USING btree (tag_id, input_id);
+CREATE UNIQUE INDEX index_analysis_taggings_on_tag_id_and_input_id ON public.analysis_taggings USING btree (tag_id, input_id) WHERE (deleted_at IS NULL);
 
 
 --
@@ -5270,7 +5468,14 @@ CREATE INDEX index_analysis_tags_on_analysis_id ON public.analysis_tags USING bt
 -- Name: index_analysis_tags_on_analysis_id_and_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_analysis_tags_on_analysis_id_and_name ON public.analysis_tags USING btree (analysis_id, name);
+CREATE UNIQUE INDEX index_analysis_tags_on_analysis_id_and_name ON public.analysis_tags USING btree (analysis_id, name) WHERE (deleted_at IS NULL);
+
+
+--
+-- Name: index_analysis_tags_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_analysis_tags_on_deleted_at ON public.analysis_tags USING btree (deleted_at);
 
 
 --
@@ -5316,6 +5521,13 @@ CREATE INDEX index_areas_projects_on_area_id ON public.areas_projects USING btre
 
 
 --
+-- Name: index_areas_projects_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_areas_projects_on_deleted_at ON public.areas_projects USING btree (deleted_at);
+
+
+--
 -- Name: index_areas_projects_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5326,7 +5538,7 @@ CREATE INDEX index_areas_projects_on_project_id ON public.areas_projects USING b
 -- Name: index_areas_projects_on_project_id_and_area_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_areas_projects_on_project_id_and_area_id ON public.areas_projects USING btree (project_id, area_id);
+CREATE UNIQUE INDEX index_areas_projects_on_project_id_and_area_id ON public.areas_projects USING btree (project_id, area_id) WHERE (deleted_at IS NULL);
 
 
 --
@@ -5344,6 +5556,13 @@ CREATE INDEX index_areas_static_pages_on_static_page_id ON public.areas_static_p
 
 
 --
+-- Name: index_authoring_assistance_responses_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_authoring_assistance_responses_on_deleted_at ON public.authoring_assistance_responses USING btree (deleted_at);
+
+
+--
 -- Name: index_authoring_assistance_responses_on_idea_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5354,7 +5573,14 @@ CREATE INDEX index_authoring_assistance_responses_on_idea_id ON public.authoring
 -- Name: index_baskets_ideas_on_basket_id_and_idea_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_baskets_ideas_on_basket_id_and_idea_id ON public.baskets_ideas USING btree (basket_id, idea_id);
+CREATE UNIQUE INDEX index_baskets_ideas_on_basket_id_and_idea_id ON public.baskets_ideas USING btree (basket_id, idea_id) WHERE (deleted_at IS NULL);
+
+
+--
+-- Name: index_baskets_ideas_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_baskets_ideas_on_deleted_at ON public.baskets_ideas USING btree (deleted_at);
 
 
 --
@@ -5362,6 +5588,13 @@ CREATE UNIQUE INDEX index_baskets_ideas_on_basket_id_and_idea_id ON public.baske
 --
 
 CREATE INDEX index_baskets_ideas_on_idea_id ON public.baskets_ideas USING btree (idea_id);
+
+
+--
+-- Name: index_baskets_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_baskets_on_deleted_at ON public.baskets USING btree (deleted_at);
 
 
 --
@@ -5435,6 +5668,13 @@ CREATE INDEX index_comments_on_created_at ON public.comments USING btree (create
 
 
 --
+-- Name: index_comments_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_comments_on_deleted_at ON public.comments USING btree (deleted_at);
+
+
+--
 -- Name: index_comments_on_idea_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5473,7 +5713,21 @@ CREATE INDEX index_common_passwords_on_password ON public.common_passwords USING
 -- Name: index_content_builder_layouts_content_buidable_type_id_code; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_content_builder_layouts_content_buidable_type_id_code ON public.content_builder_layouts USING btree (content_buildable_type, content_buildable_id, code);
+CREATE UNIQUE INDEX index_content_builder_layouts_content_buidable_type_id_code ON public.content_builder_layouts USING btree (content_buildable_type, content_buildable_id, code) WHERE (deleted_at IS NULL);
+
+
+--
+-- Name: index_content_builder_layouts_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_content_builder_layouts_on_deleted_at ON public.content_builder_layouts USING btree (deleted_at);
+
+
+--
+-- Name: index_cosponsorships_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_cosponsorships_on_deleted_at ON public.cosponsorships USING btree (deleted_at);
 
 
 --
@@ -5505,10 +5759,24 @@ CREATE INDEX index_custom_field_bins_on_custom_field_option_id ON public.custom_
 
 
 --
+-- Name: index_custom_field_bins_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_custom_field_bins_on_deleted_at ON public.custom_field_bins USING btree (deleted_at);
+
+
+--
 -- Name: index_custom_field_matrix_statements_on_custom_field_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_custom_field_matrix_statements_on_custom_field_id ON public.custom_field_matrix_statements USING btree (custom_field_id);
+
+
+--
+-- Name: index_custom_field_matrix_statements_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_custom_field_matrix_statements_on_deleted_at ON public.custom_field_matrix_statements USING btree (deleted_at);
 
 
 --
@@ -5536,28 +5804,42 @@ CREATE INDEX index_custom_field_options_on_custom_field_id ON public.custom_fiel
 -- Name: index_custom_field_options_on_custom_field_id_and_key; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_custom_field_options_on_custom_field_id_and_key ON public.custom_field_options USING btree (custom_field_id, key);
+CREATE UNIQUE INDEX index_custom_field_options_on_custom_field_id_and_key ON public.custom_field_options USING btree (custom_field_id, key) WHERE (deleted_at IS NULL);
+
+
+--
+-- Name: index_custom_field_options_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_custom_field_options_on_deleted_at ON public.custom_field_options USING btree (deleted_at);
 
 
 --
 -- Name: index_custom_field_options_on_field_id_and_ordering_unique; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_custom_field_options_on_field_id_and_ordering_unique ON public.custom_field_options USING btree (custom_field_id, ordering);
+CREATE UNIQUE INDEX index_custom_field_options_on_field_id_and_ordering_unique ON public.custom_field_options USING btree (custom_field_id, ordering) WHERE (deleted_at IS NULL);
+
+
+--
+-- Name: index_custom_fields_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_custom_fields_on_deleted_at ON public.custom_fields USING btree (deleted_at);
 
 
 --
 -- Name: index_custom_fields_on_ordering; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_custom_fields_on_ordering ON public.custom_fields USING btree (ordering) WHERE (resource_id IS NULL);
+CREATE UNIQUE INDEX index_custom_fields_on_ordering ON public.custom_fields USING btree (ordering) WHERE ((resource_id IS NULL) AND (deleted_at IS NULL));
 
 
 --
 -- Name: index_custom_fields_on_resource_id_and_ordering_unique; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_custom_fields_on_resource_id_and_ordering_unique ON public.custom_fields USING btree (resource_id, ordering);
+CREATE UNIQUE INDEX index_custom_fields_on_resource_id_and_ordering_unique ON public.custom_fields USING btree (resource_id, ordering) WHERE (deleted_at IS NULL);
 
 
 --
@@ -5568,10 +5850,17 @@ CREATE INDEX index_custom_fields_on_resource_type_and_resource_id ON public.cust
 
 
 --
+-- Name: index_custom_forms_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_custom_forms_on_deleted_at ON public.custom_forms USING btree (deleted_at);
+
+
+--
 -- Name: index_custom_forms_on_participation_context; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_custom_forms_on_participation_context ON public.custom_forms USING btree (participation_context_id, participation_context_type);
+CREATE UNIQUE INDEX index_custom_forms_on_participation_context ON public.custom_forms USING btree (participation_context_id, participation_context_type) WHERE (deleted_at IS NULL);
 
 
 --
@@ -5645,6 +5934,13 @@ CREATE INDEX index_email_campaigns_campaigns_on_context_id ON public.email_campa
 
 
 --
+-- Name: index_email_campaigns_campaigns_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_email_campaigns_campaigns_on_deleted_at ON public.email_campaigns_campaigns USING btree (deleted_at);
+
+
+--
 -- Name: index_email_campaigns_campaigns_on_type; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5701,6 +5997,13 @@ CREATE INDEX index_email_campaigns_examples_on_campaign_id ON public.email_campa
 
 
 --
+-- Name: index_email_campaigns_examples_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_email_campaigns_examples_on_deleted_at ON public.email_campaigns_examples USING btree (deleted_at);
+
+
+--
 -- Name: index_email_campaigns_examples_on_recipient_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5729,6 +6032,13 @@ CREATE INDEX index_email_snippets_on_email_and_snippet_and_locale ON public.emai
 
 
 --
+-- Name: index_embeddings_similarities_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_embeddings_similarities_on_deleted_at ON public.embeddings_similarities USING btree (deleted_at);
+
+
+--
 -- Name: index_embeddings_similarities_on_embeddable; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5750,6 +6060,13 @@ CREATE INDEX index_embeddings_similarities_on_embedding ON public.embeddings_sim
 
 
 --
+-- Name: index_event_files_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_event_files_on_deleted_at ON public.event_files USING btree (deleted_at);
+
+
+--
 -- Name: index_event_files_on_event_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5761,6 +6078,13 @@ CREATE INDEX index_event_files_on_event_id ON public.event_files USING btree (ev
 --
 
 CREATE INDEX index_event_files_on_migrated_file_id ON public.event_files USING btree (migrated_file_id);
+
+
+--
+-- Name: index_event_images_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_event_images_on_deleted_at ON public.event_images USING btree (deleted_at);
 
 
 --
@@ -5781,7 +6105,7 @@ CREATE INDEX index_events_attendances_on_attendee_id ON public.events_attendance
 -- Name: index_events_attendances_on_attendee_id_and_event_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_events_attendances_on_attendee_id_and_event_id ON public.events_attendances USING btree (attendee_id, event_id);
+CREATE UNIQUE INDEX index_events_attendances_on_attendee_id_and_event_id ON public.events_attendances USING btree (attendee_id, event_id) WHERE (deleted_at IS NULL);
 
 
 --
@@ -5789,6 +6113,13 @@ CREATE UNIQUE INDEX index_events_attendances_on_attendee_id_and_event_id ON publ
 --
 
 CREATE INDEX index_events_attendances_on_created_at ON public.events_attendances USING btree (created_at);
+
+
+--
+-- Name: index_events_attendances_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_attendances_on_deleted_at ON public.events_attendances USING btree (deleted_at);
 
 
 --
@@ -5803,6 +6134,13 @@ CREATE INDEX index_events_attendances_on_event_id ON public.events_attendances U
 --
 
 CREATE INDEX index_events_attendances_on_updated_at ON public.events_attendances USING btree (updated_at);
+
+
+--
+-- Name: index_events_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_deleted_at ON public.events USING btree (deleted_at);
 
 
 --
@@ -5904,17 +6242,24 @@ CREATE INDEX index_files_previews_on_file_id ON public.files_previews USING btre
 
 
 --
+-- Name: index_files_projects_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_files_projects_on_deleted_at ON public.files_projects USING btree (deleted_at);
+
+
+--
 -- Name: index_files_projects_on_file_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_files_projects_on_file_id ON public.files_projects USING btree (file_id);
+CREATE UNIQUE INDEX index_files_projects_on_file_id ON public.files_projects USING btree (file_id) WHERE (deleted_at IS NULL);
 
 
 --
 -- Name: index_files_projects_on_file_id_and_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_files_projects_on_file_id_and_project_id ON public.files_projects USING btree (file_id, project_id);
+CREATE UNIQUE INDEX index_files_projects_on_file_id_and_project_id ON public.files_projects USING btree (file_id, project_id) WHERE (deleted_at IS NULL);
 
 
 --
@@ -5942,7 +6287,14 @@ CREATE INDEX index_files_transcripts_on_status ON public.files_transcripts USING
 -- Name: index_followers_followable_type_id_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_followers_followable_type_id_user_id ON public.followers USING btree (followable_id, followable_type, user_id);
+CREATE UNIQUE INDEX index_followers_followable_type_id_user_id ON public.followers USING btree (followable_id, followable_type, user_id) WHERE (deleted_at IS NULL);
+
+
+--
+-- Name: index_followers_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_followers_on_deleted_at ON public.followers USING btree (deleted_at);
 
 
 --
@@ -5981,6 +6333,13 @@ CREATE INDEX index_groups_on_slug ON public.groups USING btree (slug);
 
 
 --
+-- Name: index_groups_permissions_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_groups_permissions_on_deleted_at ON public.groups_permissions USING btree (deleted_at);
+
+
+--
 -- Name: index_groups_permissions_on_group_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5995,6 +6354,13 @@ CREATE INDEX index_groups_permissions_on_permission_id ON public.groups_permissi
 
 
 --
+-- Name: index_groups_projects_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_groups_projects_on_deleted_at ON public.groups_projects USING btree (deleted_at);
+
+
+--
 -- Name: index_groups_projects_on_group_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6005,7 +6371,7 @@ CREATE INDEX index_groups_projects_on_group_id ON public.groups_projects USING b
 -- Name: index_groups_projects_on_group_id_and_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_groups_projects_on_group_id_and_project_id ON public.groups_projects USING btree (group_id, project_id);
+CREATE UNIQUE INDEX index_groups_projects_on_group_id_and_project_id ON public.groups_projects USING btree (group_id, project_id) WHERE (deleted_at IS NULL);
 
 
 --
@@ -6020,6 +6386,13 @@ CREATE INDEX index_groups_projects_on_project_id ON public.groups_projects USING
 --
 
 CREATE INDEX index_id_id_card_lookup_id_cards_on_hashed_card_id ON public.id_id_card_lookup_id_cards USING btree (hashed_card_id);
+
+
+--
+-- Name: index_idea_exposures_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_idea_exposures_on_deleted_at ON public.idea_exposures USING btree (deleted_at);
 
 
 --
@@ -6051,6 +6424,13 @@ CREATE INDEX index_idea_exposures_on_visitor_hash ON public.idea_exposures USING
 
 
 --
+-- Name: index_idea_files_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_idea_files_on_deleted_at ON public.idea_files USING btree (deleted_at);
+
+
+--
 -- Name: index_idea_files_on_idea_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6065,10 +6445,24 @@ CREATE INDEX index_idea_files_on_migrated_file_id ON public.idea_files USING btr
 
 
 --
+-- Name: index_idea_images_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_idea_images_on_deleted_at ON public.idea_images USING btree (deleted_at);
+
+
+--
 -- Name: index_idea_images_on_idea_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_idea_images_on_idea_id ON public.idea_images USING btree (idea_id);
+
+
+--
+-- Name: index_idea_import_files_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_idea_import_files_on_deleted_at ON public.idea_import_files USING btree (deleted_at);
 
 
 --
@@ -6083,6 +6477,13 @@ CREATE INDEX index_idea_import_files_on_parent_id ON public.idea_import_files US
 --
 
 CREATE INDEX index_idea_import_files_on_project_id ON public.idea_import_files USING btree (project_id);
+
+
+--
+-- Name: index_idea_imports_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_idea_imports_on_deleted_at ON public.idea_imports USING btree (deleted_at);
 
 
 --
@@ -6107,6 +6508,13 @@ CREATE INDEX index_idea_imports_on_import_user_id ON public.idea_imports USING b
 
 
 --
+-- Name: index_idea_relations_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_idea_relations_on_deleted_at ON public.idea_relations USING btree (deleted_at);
+
+
+--
 -- Name: index_idea_relations_on_idea_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6117,7 +6525,7 @@ CREATE INDEX index_idea_relations_on_idea_id ON public.idea_relations USING btre
 -- Name: index_idea_relations_on_idea_id_and_related_idea_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_idea_relations_on_idea_id_and_related_idea_id ON public.idea_relations USING btree (idea_id, related_idea_id);
+CREATE UNIQUE INDEX index_idea_relations_on_idea_id_and_related_idea_id ON public.idea_relations USING btree (idea_id, related_idea_id) WHERE (deleted_at IS NULL);
 
 
 --
@@ -6125,6 +6533,13 @@ CREATE UNIQUE INDEX index_idea_relations_on_idea_id_and_related_idea_id ON publi
 --
 
 CREATE INDEX index_idea_relations_on_related_idea_id ON public.idea_relations USING btree (related_idea_id);
+
+
+--
+-- Name: index_ideas_input_topics_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ideas_input_topics_on_deleted_at ON public.ideas_input_topics USING btree (deleted_at);
 
 
 --
@@ -6138,7 +6553,7 @@ CREATE INDEX index_ideas_input_topics_on_idea_id ON public.ideas_input_topics US
 -- Name: index_ideas_input_topics_on_idea_id_and_input_topic_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_ideas_input_topics_on_idea_id_and_input_topic_id ON public.ideas_input_topics USING btree (idea_id, input_topic_id);
+CREATE UNIQUE INDEX index_ideas_input_topics_on_idea_id_and_input_topic_id ON public.ideas_input_topics USING btree (idea_id, input_topic_id) WHERE (deleted_at IS NULL);
 
 
 --
@@ -6167,6 +6582,13 @@ CREATE INDEX index_ideas_on_author_id ON public.ideas USING btree (author_id);
 --
 
 CREATE INDEX index_ideas_on_body_multiloc ON public.ideas USING gin (body_multiloc);
+
+
+--
+-- Name: index_ideas_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ideas_on_deleted_at ON public.ideas USING btree (deleted_at);
 
 
 --
@@ -6201,7 +6623,7 @@ CREATE INDEX index_ideas_on_project_id ON public.ideas USING btree (project_id);
 -- Name: index_ideas_on_slug; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_ideas_on_slug ON public.ideas USING btree (slug);
+CREATE UNIQUE INDEX index_ideas_on_slug ON public.ideas USING btree (slug) WHERE (deleted_at IS NULL);
 
 
 --
@@ -6209,6 +6631,13 @@ CREATE UNIQUE INDEX index_ideas_on_slug ON public.ideas USING btree (slug);
 --
 
 CREATE INDEX index_ideas_on_title_multiloc ON public.ideas USING gin (title_multiloc);
+
+
+--
+-- Name: index_ideas_phases_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ideas_phases_on_deleted_at ON public.ideas_phases USING btree (deleted_at);
 
 
 --
@@ -6222,7 +6651,7 @@ CREATE INDEX index_ideas_phases_on_idea_id ON public.ideas_phases USING btree (i
 -- Name: index_ideas_phases_on_idea_id_and_phase_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_ideas_phases_on_idea_id_and_phase_id ON public.ideas_phases USING btree (idea_id, phase_id);
+CREATE UNIQUE INDEX index_ideas_phases_on_idea_id_and_phase_id ON public.ideas_phases USING btree (idea_id, phase_id) WHERE (deleted_at IS NULL);
 
 
 --
@@ -6251,6 +6680,13 @@ CREATE INDEX index_identities_on_user_id ON public.identities USING btree (user_
 --
 
 CREATE INDEX index_impact_tracking_sessions_on_monthly_user_hash ON public.impact_tracking_sessions USING btree (monthly_user_hash);
+
+
+--
+-- Name: index_input_topics_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_input_topics_on_deleted_at ON public.input_topics USING btree (deleted_at);
 
 
 --
@@ -6286,6 +6722,13 @@ CREATE INDEX index_internal_comments_on_author_id ON public.internal_comments US
 --
 
 CREATE INDEX index_internal_comments_on_created_at ON public.internal_comments USING btree (created_at);
+
+
+--
+-- Name: index_internal_comments_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_internal_comments_on_deleted_at ON public.internal_comments USING btree (deleted_at);
 
 
 --
@@ -6359,6 +6802,13 @@ CREATE INDEX index_jobs_trackers_on_context ON public.jobs_trackers USING btree 
 
 
 --
+-- Name: index_jobs_trackers_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_jobs_trackers_on_deleted_at ON public.jobs_trackers USING btree (deleted_at);
+
+
+--
 -- Name: index_jobs_trackers_on_owner_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6376,7 +6826,7 @@ CREATE INDEX index_jobs_trackers_on_project_id ON public.jobs_trackers USING btr
 -- Name: index_jobs_trackers_on_root_job_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_jobs_trackers_on_root_job_id ON public.jobs_trackers USING btree (root_job_id);
+CREATE UNIQUE INDEX index_jobs_trackers_on_root_job_id ON public.jobs_trackers USING btree (root_job_id) WHERE (deleted_at IS NULL);
 
 
 --
@@ -6387,10 +6837,24 @@ CREATE INDEX index_jobs_trackers_on_root_job_type ON public.jobs_trackers USING 
 
 
 --
+-- Name: index_maps_layers_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_maps_layers_on_deleted_at ON public.maps_layers USING btree (deleted_at);
+
+
+--
 -- Name: index_maps_layers_on_map_config_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_maps_layers_on_map_config_id ON public.maps_layers USING btree (map_config_id);
+
+
+--
+-- Name: index_maps_map_configs_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_maps_map_configs_on_deleted_at ON public.maps_map_configs USING btree (deleted_at);
 
 
 --
@@ -6404,7 +6868,7 @@ CREATE INDEX index_maps_map_configs_on_mappable ON public.maps_map_configs USING
 -- Name: index_maps_map_configs_on_mappable_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_maps_map_configs_on_mappable_id ON public.maps_map_configs USING btree (mappable_id);
+CREATE UNIQUE INDEX index_maps_map_configs_on_mappable_id ON public.maps_map_configs USING btree (mappable_id) WHERE (deleted_at IS NULL);
 
 
 --
@@ -6433,6 +6897,13 @@ CREATE INDEX index_memberships_on_user_id ON public.memberships USING btree (use
 --
 
 CREATE INDEX index_nav_bar_items_on_code ON public.nav_bar_items USING btree (code);
+
+
+--
+-- Name: index_nav_bar_items_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_nav_bar_items_on_deleted_at ON public.nav_bar_items USING btree (deleted_at);
 
 
 --
@@ -6562,6 +7033,13 @@ CREATE INDEX index_notifications_on_spam_report_id ON public.notifications USING
 
 
 --
+-- Name: index_official_feedbacks_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_official_feedbacks_on_deleted_at ON public.official_feedbacks USING btree (deleted_at);
+
+
+--
 -- Name: index_official_feedbacks_on_idea_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6593,7 +7071,7 @@ CREATE UNIQUE INDEX index_participation_locations_on_trackable ON public.partici
 -- Name: index_permission_field; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_permission_field ON public.permissions_custom_fields USING btree (permission_id, custom_field_id);
+CREATE UNIQUE INDEX index_permission_field ON public.permissions_custom_fields USING btree (permission_id, custom_field_id) WHERE (deleted_at IS NULL);
 
 
 --
@@ -6601,6 +7079,13 @@ CREATE UNIQUE INDEX index_permission_field ON public.permissions_custom_fields U
 --
 
 CREATE INDEX index_permissions_custom_fields_on_custom_field_id ON public.permissions_custom_fields USING btree (custom_field_id);
+
+
+--
+-- Name: index_permissions_custom_fields_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_permissions_custom_fields_on_deleted_at ON public.permissions_custom_fields USING btree (deleted_at);
 
 
 --
@@ -6618,10 +7103,24 @@ CREATE INDEX index_permissions_on_action ON public.permissions USING btree (acti
 
 
 --
+-- Name: index_permissions_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_permissions_on_deleted_at ON public.permissions USING btree (deleted_at);
+
+
+--
 -- Name: index_permissions_on_permission_scope_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_permissions_on_permission_scope_id ON public.permissions USING btree (permission_scope_id);
+
+
+--
+-- Name: index_phase_files_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_phase_files_on_deleted_at ON public.phase_files USING btree (deleted_at);
 
 
 --
@@ -6636,6 +7135,13 @@ CREATE INDEX index_phase_files_on_migrated_file_id ON public.phase_files USING b
 --
 
 CREATE INDEX index_phase_files_on_phase_id ON public.phase_files USING btree (phase_id);
+
+
+--
+-- Name: index_phases_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_phases_on_deleted_at ON public.phases USING btree (deleted_at);
 
 
 --
@@ -6660,10 +7166,24 @@ CREATE INDEX index_phases_on_start_at_and_end_at ON public.phases USING btree (s
 
 
 --
+-- Name: index_polls_options_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_polls_options_on_deleted_at ON public.polls_options USING btree (deleted_at);
+
+
+--
 -- Name: index_polls_options_on_question_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_polls_options_on_question_id ON public.polls_options USING btree (question_id);
+
+
+--
+-- Name: index_polls_questions_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_polls_questions_on_deleted_at ON public.polls_questions USING btree (deleted_at);
 
 
 --
@@ -6688,6 +7208,13 @@ CREATE INDEX index_polls_response_options_on_response_id ON public.polls_respons
 
 
 --
+-- Name: index_polls_responses_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_polls_responses_on_deleted_at ON public.polls_responses USING btree (deleted_at);
+
+
+--
 -- Name: index_polls_responses_on_phase_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6699,6 +7226,13 @@ CREATE INDEX index_polls_responses_on_phase_id ON public.polls_responses USING b
 --
 
 CREATE INDEX index_polls_responses_on_user_id ON public.polls_responses USING btree (user_id);
+
+
+--
+-- Name: index_project_files_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_project_files_on_deleted_at ON public.project_files USING btree (deleted_at);
 
 
 --
@@ -6744,6 +7278,13 @@ CREATE INDEX index_project_folders_images_on_project_folder_id ON public.project
 
 
 --
+-- Name: index_project_images_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_project_images_on_deleted_at ON public.project_images USING btree (deleted_at);
+
+
+--
 -- Name: index_project_images_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6765,10 +7306,17 @@ CREATE INDEX index_project_imports_on_project_id ON public.project_imports USING
 
 
 --
+-- Name: index_project_reviews_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_project_reviews_on_deleted_at ON public.project_reviews USING btree (deleted_at);
+
+
+--
 -- Name: index_project_reviews_on_project_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_project_reviews_on_project_id ON public.project_reviews USING btree (project_id);
+CREATE UNIQUE INDEX index_project_reviews_on_project_id ON public.project_reviews USING btree (project_id) WHERE (deleted_at IS NULL);
 
 
 --
@@ -6786,6 +7334,13 @@ CREATE INDEX index_project_reviews_on_reviewer_id ON public.project_reviews USIN
 
 
 --
+-- Name: index_projects_global_topics_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_projects_global_topics_on_deleted_at ON public.projects_global_topics USING btree (deleted_at);
+
+
+--
 -- Name: index_projects_global_topics_on_global_topic_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6800,10 +7355,24 @@ CREATE INDEX index_projects_global_topics_on_project_id ON public.projects_globa
 
 
 --
+-- Name: index_projects_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_projects_on_deleted_at ON public.projects USING btree (deleted_at);
+
+
+--
 -- Name: index_projects_on_slug; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_projects_on_slug ON public.projects USING btree (slug);
+CREATE UNIQUE INDEX index_projects_on_slug ON public.projects USING btree (slug) WHERE (deleted_at IS NULL);
+
+
+--
+-- Name: index_reactions_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_reactions_on_deleted_at ON public.reactions USING btree (deleted_at);
 
 
 --
@@ -6817,7 +7386,7 @@ CREATE INDEX index_reactions_on_reactable_type_and_reactable_id ON public.reacti
 -- Name: index_reactions_on_reactable_type_and_reactable_id_and_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_reactions_on_reactable_type_and_reactable_id_and_user_id ON public.reactions USING btree (reactable_type, reactable_id, user_id);
+CREATE UNIQUE INDEX index_reactions_on_reactable_type_and_reactable_id_and_user_id ON public.reactions USING btree (reactable_type, reactable_id, user_id) WHERE (deleted_at IS NULL);
 
 
 --
@@ -6828,10 +7397,24 @@ CREATE INDEX index_reactions_on_user_id ON public.reactions USING btree (user_id
 
 
 --
+-- Name: index_report_builder_published_graph_data_units_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_report_builder_published_graph_data_units_on_deleted_at ON public.report_builder_published_graph_data_units USING btree (deleted_at);
+
+
+--
+-- Name: index_report_builder_reports_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_report_builder_reports_on_deleted_at ON public.report_builder_reports USING btree (deleted_at);
+
+
+--
 -- Name: index_report_builder_reports_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_report_builder_reports_on_name ON public.report_builder_reports USING btree (name);
+CREATE UNIQUE INDEX index_report_builder_reports_on_name ON public.report_builder_reports USING btree (name) WHERE (deleted_at IS NULL);
 
 
 --
@@ -6853,6 +7436,13 @@ CREATE INDEX index_report_builder_reports_on_owner_id ON public.report_builder_r
 --
 
 CREATE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_reports USING btree (phase_id);
+
+
+--
+-- Name: index_spam_reports_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_spam_reports_on_deleted_at ON public.spam_reports USING btree (deleted_at);
 
 
 --
@@ -6912,6 +7502,13 @@ CREATE UNIQUE INDEX index_static_pages_on_slug ON public.static_pages USING btre
 
 
 --
+-- Name: index_surveys_responses_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_surveys_responses_on_deleted_at ON public.surveys_responses USING btree (deleted_at);
+
+
+--
 -- Name: index_surveys_responses_on_phase_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -6944,6 +7541,13 @@ CREATE INDEX index_tenants_on_deleted_at ON public.tenants USING btree (deleted_
 --
 
 CREATE INDEX index_tenants_on_host ON public.tenants USING btree (host);
+
+
+--
+-- Name: index_text_images_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_text_images_on_deleted_at ON public.text_images USING btree (deleted_at);
 
 
 --
@@ -6996,6 +7600,13 @@ CREATE INDEX index_verification_verifications_on_user_id ON public.verification_
 
 
 --
+-- Name: index_volunteering_causes_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_volunteering_causes_on_deleted_at ON public.volunteering_causes USING btree (deleted_at);
+
+
+--
 -- Name: index_volunteering_causes_on_ordering; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7013,7 +7624,14 @@ CREATE INDEX index_volunteering_causes_on_phase_id ON public.volunteering_causes
 -- Name: index_volunteering_volunteers_on_cause_id_and_user_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_volunteering_volunteers_on_cause_id_and_user_id ON public.volunteering_volunteers USING btree (cause_id, user_id);
+CREATE UNIQUE INDEX index_volunteering_volunteers_on_cause_id_and_user_id ON public.volunteering_volunteers USING btree (cause_id, user_id) WHERE (deleted_at IS NULL);
+
+
+--
+-- Name: index_volunteering_volunteers_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_volunteering_volunteers_on_deleted_at ON public.volunteering_volunteers USING btree (deleted_at);
 
 
 --
@@ -7038,6 +7656,13 @@ CREATE INDEX index_webhooks_deliveries_on_created_at ON public.webhooks_deliveri
 
 
 --
+-- Name: index_webhooks_deliveries_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_webhooks_deliveries_on_deleted_at ON public.webhooks_deliveries USING btree (deleted_at);
+
+
+--
 -- Name: index_webhooks_deliveries_on_status_and_created_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7049,6 +7674,13 @@ CREATE INDEX index_webhooks_deliveries_on_status_and_created_at ON public.webhoo
 --
 
 CREATE INDEX index_webhooks_deliveries_on_webhooks_subscription_id ON public.webhooks_deliveries USING btree (webhooks_subscription_id);
+
+
+--
+-- Name: index_webhooks_subscriptions_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_webhooks_subscriptions_on_deleted_at ON public.webhooks_subscriptions USING btree (deleted_at);
 
 
 --
@@ -7070,6 +7702,13 @@ CREATE INDEX index_webhooks_subscriptions_on_events ON public.webhooks_subscript
 --
 
 CREATE INDEX index_webhooks_subscriptions_on_project_id ON public.webhooks_subscriptions USING btree (project_id);
+
+
+--
+-- Name: index_wise_voice_flags_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_wise_voice_flags_on_deleted_at ON public.wise_voice_flags USING btree (deleted_at);
 
 
 --
@@ -8386,6 +9025,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260227201209'),
+('20260227201134'),
 ('20260205124240'),
 ('20260127094257'),
 ('20260127092840'),

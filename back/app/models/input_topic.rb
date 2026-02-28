@@ -16,9 +16,11 @@
 #  rgt                  :integer
 #  depth                :integer          default(0)
 #  children_count       :integer          default(0)
+#  deleted_at           :datetime
 #
 # Indexes
 #
+#  index_input_topics_on_deleted_at  (deleted_at)
 #  index_input_topics_on_parent_id   (parent_id)
 #  index_input_topics_on_project_id  (project_id)
 #  index_input_topics_on_rgt         (rgt)
@@ -28,6 +30,7 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class InputTopic < ApplicationRecord
+  acts_as_paranoid
   extend OrderAsSpecified
 
   acts_as_nested_set scope: [:project_id], dependent: :destroy, counter_cache: :children_count

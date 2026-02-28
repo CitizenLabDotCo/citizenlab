@@ -19,11 +19,13 @@
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
 #  context_type         :string
+#  deleted_at           :datetime
 #
 # Indexes
 #
 #  index_email_campaigns_campaigns_on_author_id   (author_id)
 #  index_email_campaigns_campaigns_on_context_id  (context_id)
+#  index_email_campaigns_campaigns_on_deleted_at  (deleted_at)
 #  index_email_campaigns_campaigns_on_type        (type)
 #
 # Foreign Keys

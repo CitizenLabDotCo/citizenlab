@@ -11,16 +11,19 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  alt_text_multiloc :jsonb
+#  deleted_at        :datetime
 #
 # Indexes
 #
-#  index_event_images_on_event_id  (event_id)
+#  index_event_images_on_deleted_at  (deleted_at)
+#  index_event_images_on_event_id    (event_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (event_id => events.id)
 #
 class EventImage < ApplicationRecord
+  acts_as_paranoid
   mount_base64_uploader :image, EventImageUploader
   belongs_to :event
 

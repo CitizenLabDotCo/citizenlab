@@ -12,10 +12,12 @@
 #  comments_ids       :jsonb            not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  deleted_at         :datetime
 #
 # Indexes
 #
 #  index_analysis_comments_summaries_on_background_task_id  (background_task_id)
+#  index_analysis_comments_summaries_on_deleted_at          (deleted_at)
 #  index_analysis_comments_summaries_on_idea_id             (idea_id)
 #
 # Foreign Keys
@@ -25,6 +27,7 @@
 #
 module Analysis
   class CommentsSummary < ::ApplicationRecord
+    acts_as_paranoid
     belongs_to :idea
     belongs_to :background_task, class_name: 'Analysis::CommentsSummarizationTask'
     has_many :comments, through: :idea

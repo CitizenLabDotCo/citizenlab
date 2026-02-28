@@ -21,11 +21,13 @@
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
 #  context_type         :string
+#  deleted_at           :datetime
 #
 # Indexes
 #
 #  index_email_campaigns_campaigns_on_author_id   (author_id)
 #  index_email_campaigns_campaigns_on_context_id  (context_id)
+#  index_email_campaigns_campaigns_on_deleted_at  (deleted_at)
 #  index_email_campaigns_campaigns_on_type        (type)
 #
 # Foreign Keys
@@ -34,6 +36,7 @@
 #
 module EmailCampaigns
   class Campaign < ApplicationRecord
+    acts_as_paranoid
     include Imageable
 
     belongs_to :author, class_name: 'User', optional: true
@@ -53,7 +56,7 @@ module EmailCampaigns
     before_validation :set_enabled, on: :create
 
     validate :validate_recipients, on: :send
-    validates :context_id, uniqueness: { scope: :type }, if: :unique_campaigns_per_context?
+    validates :context_id, uniqueness: { scope: :type, conditions: -> { where(deleted_at: nil) } }, if: :unique_campaigns_per_context?
 
     scope :manual, -> { where type: DeliveryService.new.manual_campaign_types }
     scope :automatic, -> { where.not(type: DeliveryService.new.manual_campaign_types) }

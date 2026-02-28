@@ -12,11 +12,13 @@
 #  range                  :int4range
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  deleted_at             :datetime
 #
 # Indexes
 #
 #  index_custom_field_bins_on_custom_field_id         (custom_field_id)
 #  index_custom_field_bins_on_custom_field_option_id  (custom_field_option_id)
+#  index_custom_field_bins_on_deleted_at              (deleted_at)
 #
 # Foreign Keys
 #
@@ -32,6 +34,7 @@
 # bin definitions for the various CustomFields. We're using
 # Single-Table-Inheritance to store them in the database
 class CustomFieldBin < ApplicationRecord
+  acts_as_paranoid
   belongs_to :custom_field
 
   validate :custom_field_type_supported

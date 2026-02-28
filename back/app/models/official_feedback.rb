@@ -11,11 +11,13 @@
 #  idea_id         :uuid
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  deleted_at      :datetime
 #
 # Indexes
 #
-#  index_official_feedbacks_on_idea_id  (idea_id)
-#  index_official_feedbacks_on_user_id  (user_id)
+#  index_official_feedbacks_on_deleted_at  (deleted_at)
+#  index_official_feedbacks_on_idea_id     (idea_id)
+#  index_official_feedbacks_on_user_id     (user_id)
 #
 # Foreign Keys
 #
@@ -23,6 +25,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class OfficialFeedback < ApplicationRecord
+  acts_as_paranoid
   belongs_to :idea
   counter_culture :idea
 

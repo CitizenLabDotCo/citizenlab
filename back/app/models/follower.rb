@@ -10,10 +10,12 @@
 #  user_id         :uuid             not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  deleted_at      :datetime
 #
 # Indexes
 #
-#  index_followers_followable_type_id_user_id            (followable_id,followable_type,user_id) UNIQUE
+#  index_followers_followable_type_id_user_id            (followable_id,followable_type,user_id) UNIQUE WHERE (deleted_at IS NULL)
+#  index_followers_on_deleted_at                         (deleted_at)
 #  index_followers_on_followable                         (followable_type,followable_id)
 #  index_followers_on_followable_id_and_followable_type  (followable_id,followable_type)
 #  index_followers_on_user_id                            (user_id)
@@ -23,13 +25,14 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Follower < ApplicationRecord
+  acts_as_paranoid
   FOLLOWABLE_TYPES = %w[Project ProjectFolders::Folder Idea GlobalTopic Area]
 
   belongs_to :user
   belongs_to :followable, polymorphic: true
 
   validates :user, :followable, presence: true
-  validates :user_id, uniqueness: { scope: %i[followable_type followable_id] }
+  validates :user_id, uniqueness: { scope: %i[followable_type followable_id], conditions: -> { where(deleted_at: nil) } }
   validates :followable_type, inclusion: { in: FOLLOWABLE_TYPES }
 
   counter_culture :followable

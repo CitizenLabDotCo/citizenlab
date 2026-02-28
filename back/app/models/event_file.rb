@@ -13,9 +13,11 @@
 #  name                                                                                   :string
 #  migrated_file_id(References the Files::File record after migration to new file system) :uuid
 #  migration_skipped_reason                                                               :string
+#  deleted_at                                                                             :datetime
 #
 # Indexes
 #
+#  index_event_files_on_deleted_at        (deleted_at)
 #  index_event_files_on_event_id          (event_id)
 #  index_event_files_on_migrated_file_id  (migrated_file_id)
 #
@@ -24,6 +26,7 @@
 #  fk_rails_...  (migrated_file_id => files.id)
 #
 class EventFile < ApplicationRecord
+  acts_as_paranoid
   include FileMigratable
 
   mount_base64_file_uploader :file, EventFileUploader

@@ -10,9 +10,11 @@
 #  ordering       :integer
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  deleted_at     :datetime
 #
 # Indexes
 #
+#  index_polls_options_on_deleted_at   (deleted_at)
 #  index_polls_options_on_question_id  (question_id)
 #
 # Foreign Keys
@@ -21,6 +23,7 @@
 #
 module Polls
   class Option < ApplicationRecord
+    acts_as_paranoid
     acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: [:question_id]
 
     belongs_to :question, class_name: 'Polls::Question'

@@ -55,7 +55,7 @@ class WebApi::V1::ProjectReviewsController < ApplicationController
     if review
       authorize(review)
       side_fx.before_destroy(review, current_user)
-      review.destroy!
+      review.destroy_fully!
       side_fx.after_destroy(review, current_user)
 
       head :no_content

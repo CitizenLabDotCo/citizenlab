@@ -38,17 +38,19 @@
 #  manual_votes_last_updated_by_id :uuid
 #  manual_votes_last_updated_at    :datetime
 #  neutral_reactions_count         :integer          default(0), not null
+#  deleted_at                      :datetime
 #
 # Indexes
 #
 #  index_ideas_on_author_hash                      (author_hash)
 #  index_ideas_on_author_id                        (author_id)
 #  index_ideas_on_body_multiloc                    (body_multiloc) USING gin
+#  index_ideas_on_deleted_at                       (deleted_at)
 #  index_ideas_on_idea_status_id                   (idea_status_id)
 #  index_ideas_on_location_point                   (location_point) USING gist
 #  index_ideas_on_manual_votes_last_updated_by_id  (manual_votes_last_updated_by_id)
 #  index_ideas_on_project_id                       (project_id)
-#  index_ideas_on_slug                             (slug) UNIQUE
+#  index_ideas_on_slug                             (slug) UNIQUE WHERE (deleted_at IS NULL)
 #  index_ideas_on_title_multiloc                   (title_multiloc) USING gin
 #  index_ideas_search                              (((to_tsvector('simple'::regconfig, COALESCE((title_multiloc)::text, ''::text)) || to_tsvector('simple'::regconfig, COALESCE((body_multiloc)::text, ''::text))))) USING gin
 #
@@ -62,6 +64,7 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class Idea < ApplicationRecord
+  acts_as_paranoid
   include PgSearch::Model
   include GeoJsonHelpers
   include AnonymousParticipation

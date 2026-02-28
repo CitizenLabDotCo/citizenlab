@@ -121,6 +121,7 @@ gem 'simple_segment', '~>1.5'
 
 gem 'faraday-jwt', '~> 0.1.0'
 gem 'acts_as_list', '~> 1.2'
+gem 'acts_as_paranoid', '~> 0.10'
 gem 'positioning', '~> 0.4.6'
 gem 'bunny', '>= 2.7.2'
 gem 'faker'

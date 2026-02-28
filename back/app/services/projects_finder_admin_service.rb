@@ -72,6 +72,7 @@ class ProjectsFinderAdminService
     # We order by last_viewed_at, but tie-break with created_at and id for a stable sort,
     # which is important for pagination
     Project
+      .unscoped
       .from(projects_subquery, :projects)
       .order('last_viewed_at DESC NULLS LAST, projects.created_at ASC, projects.id ASC')
   end
@@ -95,6 +96,7 @@ class ProjectsFinderAdminService
     # We order by soon_date, but tie-break with created_at and id for a stable sort,
     # which is important for pagination
     Project
+      .unscoped
       .from(projects_subquery, :projects)
       .order('soon_date ASC NULLS LAST, projects.created_at ASC, projects.id ASC')
   end

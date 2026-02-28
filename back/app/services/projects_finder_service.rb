@@ -28,6 +28,7 @@ class ProjectsFinderService
     # second by project created_at, and third by project ID.
     # Secondary & ternary orderings prevent duplicates when paginating, when prior ordering involves equivalent values
     projects = Project
+      .unscoped
       .from(subquery, :projects)
       .distinct
       .order('phase_end_at ASC NULLS LAST, projects_created_at ASC, projects_id ASC')
@@ -194,7 +195,7 @@ class ProjectsFinderService
       .select('DISTINCT ON (last_phase_end_at, projects.created_at, projects.id) projects.*, last_phase_end_at')
       .order('last_phase_end_at DESC, projects.created_at ASC, projects.id ASC')
 
-    Project.with(ordered_projects: ordered_projects_cte)
+    Project.unscoped.with(ordered_projects: ordered_projects_cte)
       .from('ordered_projects AS projects')
       .order('last_phase_end_at DESC, created_at ASC, id ASC')
   end

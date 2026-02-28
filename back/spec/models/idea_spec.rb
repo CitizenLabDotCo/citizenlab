@@ -422,14 +422,15 @@ RSpec.describe Idea do
       expect(idea.errors.details).to eq({ creation_phase: [{ error: :invalid_participation_method }] })
     end
 
-    it 'deleting a phase used as creation phase of an input fails' do
+    it 'soft-deleting a phase used as creation phase of an input succeeds' do
       project = create(:project_with_active_native_survey_phase)
       phase = project.phases.first
       create(:idea, project: project, creation_phase: phase)
 
-      expect { phase.destroy }.to raise_error ActiveRecord::InvalidForeignKey
+      expect { phase.destroy }.not_to raise_error
       expect(Project.count).to eq 1
-      expect(Phase.count).to eq 1
+      expect(Phase.count).to eq 0 # Soft-deleted, hidden from default scope
+      expect(Phase.with_deleted.count).to eq 1
       expect(described_class.count).to eq 1
     end
 

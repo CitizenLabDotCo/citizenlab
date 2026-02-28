@@ -40,9 +40,11 @@
 #  children_allowed   :boolean          default(TRUE), not null
 #  children_count     :integer          default(0), not null
 #  first_published_at :datetime
+#  deleted_at         :datetime
 #
 # Indexes
 #
+#  index_admin_publications_on_deleted_at                           (deleted_at)
 #  index_admin_publications_on_depth                                (depth)
 #  index_admin_publications_on_lft                                  (lft)
 #  index_admin_publications_on_ordering                             (ordering)
@@ -52,6 +54,7 @@
 #  index_admin_publications_on_rgt                                  (rgt)
 #
 class AdminPublication < ApplicationRecord
+  acts_as_paranoid
   PUBLICATION_STATUSES = %w[draft published archived]
 
   belongs_to :publication, polymorphic: true, touch: true

@@ -18,9 +18,11 @@
 #  updated_at      :datetime         not null
 #  user_consent    :boolean          default(FALSE), not null
 #  content_changes :jsonb
+#  deleted_at      :datetime
 #
 # Indexes
 #
+#  index_idea_imports_on_deleted_at      (deleted_at)
 #  index_idea_imports_on_file_id         (file_id)
 #  index_idea_imports_on_idea_id         (idea_id)
 #  index_idea_imports_on_import_user_id  (import_user_id)
@@ -33,6 +35,7 @@
 #
 module BulkImportIdeas
   class IdeaImport < ApplicationRecord
+    acts_as_paranoid
     self.table_name = 'idea_imports'
 
     belongs_to :file, class_name: 'BulkImportIdeas::IdeaImportFile', optional: true

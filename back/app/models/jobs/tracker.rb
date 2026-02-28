@@ -17,15 +17,17 @@
 #  context_id    :uuid
 #  project_id    :uuid
 #  error_count   :integer          default(0), not null
+#  deleted_at    :datetime
 #
 # Indexes
 #
-#  idx_on_context_type_context_id_root_job_type_d5d424e7c3  (context_type,context_id,root_job_type) UNIQUE WHERE ((root_job_type)::text = 'Files::DescriptionGenerationJob'::text)
+#  idx_on_context_type_context_id_root_job_type_d5d424e7c3  (context_type,context_id,root_job_type) UNIQUE WHERE (((root_job_type)::text = 'Files::DescriptionGenerationJob'::text) AND (deleted_at IS NULL))
 #  index_jobs_trackers_on_completed_at                      (completed_at)
 #  index_jobs_trackers_on_context                           (context_type,context_id)
+#  index_jobs_trackers_on_deleted_at                        (deleted_at)
 #  index_jobs_trackers_on_owner_id                          (owner_id)
 #  index_jobs_trackers_on_project_id                        (project_id)
-#  index_jobs_trackers_on_root_job_id                       (root_job_id) UNIQUE
+#  index_jobs_trackers_on_root_job_id                       (root_job_id) UNIQUE WHERE (deleted_at IS NULL)
 #  index_jobs_trackers_on_root_job_type                     (root_job_type)
 #
 # Foreign Keys
@@ -71,6 +73,7 @@
 # 4. Retained for audit purposes
 module Jobs
   class Tracker < ApplicationRecord
+    acts_as_paranoid
     # The `root_job` is optional because Que removes the jobs that are completed. So,
     # eventually the `root_job` will be null.
     belongs_to :root_job, class_name: 'QueJob', optional: true

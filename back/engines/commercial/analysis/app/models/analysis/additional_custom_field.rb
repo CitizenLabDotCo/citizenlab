@@ -9,12 +9,14 @@
 #  custom_field_id :uuid             not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  deleted_at      :datetime
 #
 # Indexes
 #
 #  index_analysis_additional_custom_fields_on_analysis_id      (analysis_id)
 #  index_analysis_additional_custom_fields_on_custom_field_id  (custom_field_id)
-#  index_analysis_analyses_custom_fields                       (analysis_id,custom_field_id) UNIQUE
+#  index_analysis_additional_custom_fields_on_deleted_at       (deleted_at)
+#  index_analysis_analyses_custom_fields                       (analysis_id,custom_field_id) UNIQUE WHERE (deleted_at IS NULL)
 #
 # Foreign Keys
 #
@@ -23,6 +25,7 @@
 #
 module Analysis
   class AdditionalCustomField < ApplicationRecord
+    acts_as_paranoid
     belongs_to :analysis, class_name: 'Analysis::Analysis'
     belongs_to :custom_field
 

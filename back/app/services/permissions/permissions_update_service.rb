@@ -19,7 +19,7 @@ class Permissions::PermissionsUpdateService
     Permission::SCOPE_TYPES.compact.each do |model_class|
       model_class.constantize.all.each { |scope| update_permissions_for_scope(scope) }
     end
-    Permission.includes(:permission_scope).select(&:invalid?).each(&:destroy!)
+    Permission.includes(:permission_scope).select(&:invalid?).each(&:destroy_fully!)
   end
 
   def permission_scope_from_permissions_params(params)
@@ -44,7 +44,7 @@ class Permissions::PermissionsUpdateService
     actions ||= Permission.available_actions(scope)
     Permission.where(permission_scope: scope)
       .where.not(action: actions)
-      .destroy_all
+      .each(&:destroy_fully!)
   end
 
   def add_missing_actions(scope, actions = nil)

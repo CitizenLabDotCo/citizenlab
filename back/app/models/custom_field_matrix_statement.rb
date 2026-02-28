@@ -9,10 +9,12 @@
 #  ordering        :integer          not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  deleted_at      :datetime
 #
 # Indexes
 #
 #  index_custom_field_matrix_statements_on_custom_field_id  (custom_field_id)
+#  index_custom_field_matrix_statements_on_deleted_at       (deleted_at)
 #  index_custom_field_matrix_statements_on_key              (key)
 #
 # Foreign Keys
@@ -20,6 +22,7 @@
 #  fk_rails_...  (custom_field_id => custom_fields.id)
 #
 class CustomFieldMatrixStatement < ApplicationRecord
+  acts_as_paranoid
   # non-persisted attribute to enable form copying
   attribute :temp_id, :string, default: nil
 
@@ -29,7 +32,7 @@ class CustomFieldMatrixStatement < ApplicationRecord
   acts_as_list column: :ordering, top_of_list: 0, scope: :custom_field
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
-  validates :key, presence: true, uniqueness: { scope: [:custom_field_id] },
+  validates :key, presence: true, uniqueness: { scope: [:custom_field_id], conditions: -> { where(deleted_at: nil) } },
     format: { with: /\A[\w-]+\z/ } # Can only consist of word characters or dashes
   validates :custom_field, presence: true
 

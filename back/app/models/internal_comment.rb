@@ -16,11 +16,13 @@
 #  children_count     :integer          default(0), not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
+#  deleted_at         :datetime
 #
 # Indexes
 #
 #  index_internal_comments_on_author_id   (author_id)
 #  index_internal_comments_on_created_at  (created_at)
+#  index_internal_comments_on_deleted_at  (deleted_at)
 #  index_internal_comments_on_idea_id     (idea_id)
 #  index_internal_comments_on_lft         (lft)
 #  index_internal_comments_on_parent_id   (parent_id)
@@ -32,6 +34,7 @@
 #  fk_rails_...  (idea_id => ideas.id)
 #
 class InternalComment < ApplicationRecord
+  acts_as_paranoid
   acts_as_nested_set dependent: :destroy, counter_cache: :children_count
 
   belongs_to :author, class_name: 'User', optional: true

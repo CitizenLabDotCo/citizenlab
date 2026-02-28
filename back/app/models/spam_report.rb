@@ -13,9 +13,11 @@
 #  user_id              :uuid
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
+#  deleted_at           :datetime
 #
 # Indexes
 #
+#  index_spam_reports_on_deleted_at   (deleted_at)
 #  index_spam_reports_on_reported_at  (reported_at)
 #  index_spam_reports_on_user_id      (user_id)
 #  spam_reportable_index              (spam_reportable_type,spam_reportable_id)
@@ -25,6 +27,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class SpamReport < ApplicationRecord
+  acts_as_paranoid
   REASON_CODES = %w[wrong_content inappropriate other]
 
   belongs_to :spam_reportable, polymorphic: true

@@ -9,11 +9,13 @@
 #  related_idea_id :uuid             not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  deleted_at      :datetime
 #
 # Indexes
 #
+#  index_idea_relations_on_deleted_at                   (deleted_at)
 #  index_idea_relations_on_idea_id                      (idea_id)
-#  index_idea_relations_on_idea_id_and_related_idea_id  (idea_id,related_idea_id) UNIQUE
+#  index_idea_relations_on_idea_id_and_related_idea_id  (idea_id,related_idea_id) UNIQUE WHERE (deleted_at IS NULL)
 #  index_idea_relations_on_related_idea_id              (related_idea_id)
 #
 # Foreign Keys
@@ -31,11 +33,12 @@
 # model to support different types of relationships between ideas, such as:
 # "copy", "clone", "duplicate", "generated_from" (e.g., AI-generated), etc.
 class IdeaRelation < ApplicationRecord
+  acts_as_paranoid
   belongs_to :idea
   belongs_to :related_idea, class_name: 'Idea'
 
   validates :idea, :related_idea, presence: true
-  validates :related_idea_id, uniqueness: { scope: :idea_id }
+  validates :related_idea_id, uniqueness: { scope: :idea_id, conditions: -> { where(deleted_at: nil) } }
   validate :cannot_relate_to_self
 
   private

@@ -10,11 +10,13 @@
 #  idea_id    :uuid             not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  deleted_at :datetime
 #
 # Indexes
 #
-#  index_cosponsorships_on_idea_id  (idea_id)
-#  index_cosponsorships_on_user_id  (user_id)
+#  index_cosponsorships_on_deleted_at  (deleted_at)
+#  index_cosponsorships_on_idea_id     (idea_id)
+#  index_cosponsorships_on_user_id     (user_id)
 #
 # Foreign Keys
 #
@@ -22,6 +24,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Cosponsorship < ApplicationRecord
+  acts_as_paranoid
   STATUSES = %w[pending accepted].freeze
 
   belongs_to :user

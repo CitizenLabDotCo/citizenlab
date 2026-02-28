@@ -13,9 +13,11 @@
 #  name                                                                                   :string
 #  migrated_file_id(References the Files::File record after migration to new file system) :uuid
 #  migration_skipped_reason                                                               :string
+#  deleted_at                                                                             :datetime
 #
 # Indexes
 #
+#  index_project_files_on_deleted_at        (deleted_at)
 #  index_project_files_on_migrated_file_id  (migrated_file_id)
 #  index_project_files_on_project_id        (project_id)
 #
@@ -24,6 +26,7 @@
 #  fk_rails_...  (migrated_file_id => files.id)
 #
 class ProjectFile < ApplicationRecord
+  acts_as_paranoid
   include FileMigratable
 
   attr_accessor :filename

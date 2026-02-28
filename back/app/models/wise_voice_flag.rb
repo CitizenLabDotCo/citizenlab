@@ -9,16 +9,19 @@
 #  quotes         :jsonb            not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  deleted_at     :datetime
 #
 # Indexes
 #
-#  index_wise_voice_flags_on_flaggable  (flaggable_type,flaggable_id)
+#  index_wise_voice_flags_on_deleted_at  (deleted_at)
+#  index_wise_voice_flags_on_flaggable   (flaggable_type,flaggable_id)
 #
 
 # A WiseVoiceFlag represents a flag raised on a piece of content (idea or
 # comment) that indicates that the content is written by someone with a special
 # expertise or experience relevant to the topic being discussed.
 class WiseVoiceFlag < ApplicationRecord
+  acts_as_paranoid
   belongs_to :flaggable, polymorphic: true
 
   validates :role_multiloc, presence: true, multiloc: { presence: true }

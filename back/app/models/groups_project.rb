@@ -9,11 +9,13 @@
 #  project_id :uuid
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  deleted_at :datetime
 #
 # Indexes
 #
+#  index_groups_projects_on_deleted_at               (deleted_at)
 #  index_groups_projects_on_group_id                 (group_id)
-#  index_groups_projects_on_group_id_and_project_id  (group_id,project_id) UNIQUE
+#  index_groups_projects_on_group_id_and_project_id  (group_id,project_id) UNIQUE WHERE (deleted_at IS NULL)
 #  index_groups_projects_on_project_id               (project_id)
 #
 # Foreign Keys
@@ -22,6 +24,7 @@
 #  fk_rails_...  (project_id => projects.id)
 #
 class GroupsProject < ApplicationRecord
+  acts_as_paranoid
   belongs_to :group
   belongs_to :project
 

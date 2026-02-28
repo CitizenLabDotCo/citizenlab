@@ -18,14 +18,14 @@ RSpec.describe User do
     it { is_expected.to have_many(:internal_comments).dependent(:nullify) }
     it { is_expected.to have_many(:official_feedbacks).dependent(:nullify) }
     it { is_expected.to have_many(:reactions).dependent(:nullify) }
-    it { is_expected.to have_many(:event_attendances).class_name('Events::Attendance').dependent(:destroy) }
+    it { is_expected.to have_many(:event_attendances).class_name('Events::Attendance') }
     it { is_expected.to have_many(:attended_events).through(:event_attendances).source(:event) }
     it { is_expected.to have_many(:requested_project_reviews).class_name('ProjectReview').with_foreign_key('requester_id').dependent(:nullify) }
     it { is_expected.to have_many(:assigned_project_reviews).class_name('ProjectReview').with_foreign_key('reviewer_id').dependent(:nullify) }
     it { is_expected.to have_many(:jobs_trackers).class_name('Jobs::Tracker').with_foreign_key('owner_id').dependent(:nullify) }
     it { is_expected.to have_many(:files).class_name('Files::File').with_foreign_key('uploader_id').dependent(:nullify) }
     it { is_expected.to have_many(:claim_tokens).with_foreign_key('pending_claimer_id').dependent(:destroy) }
-    it { is_expected.to have_many(:idea_exposures).dependent(:destroy) }
+    it { is_expected.to have_many(:idea_exposures) }
 
     it 'nullifies idea import association' do
       idea_import = create(:idea_import, import_user: user)
