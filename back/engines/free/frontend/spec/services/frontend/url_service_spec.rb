@@ -84,4 +84,53 @@ describe Frontend::UrlService do
       expect(service.sso_return_url(pathname: '/en/another/path/', locale: locale)).to eq 'http://example.org/nl-NL/another/path/'
     end
   end
+
+  describe '#input_manager_url' do
+    let!(:phase) { create(:phase) }
+
+    it 'returns global input manager URL when no phase' do
+      expect(service.input_manager_url).to eq "#{base_uri}/admin/ideas"
+    end
+
+    it 'returns phase input manager URL when phase ID provided' do
+      expect(service.input_manager_url(for_phase: phase.id)).to eq "#{base_uri}/admin/projects/#{phase.project_id}/phases/#{phase.id}/ideas"
+    end
+
+    it 'returns phase input manager URL when phase record provided' do
+      expect(service.input_manager_url(for_phase: phase)).to eq "#{base_uri}/admin/projects/#{phase.project_id}/phases/#{phase.id}/ideas"
+    end
+
+    it 'adds status filter as query parameter' do
+      idea_status = create(:idea_status)
+      url = service.input_manager_url(status: idea_status)
+
+      expect(url).to eq "#{base_uri}/admin/ideas?status=#{idea_status.id}"
+    end
+
+    it 'adds tab filter as query parameter' do
+      url = service.input_manager_url(tab: 'statuses')
+      expect(url).to eq "#{base_uri}/admin/ideas?tab=statuses"
+    end
+
+    it 'combines for_phase with filters' do
+      idea_status = create(:idea_status)
+      url = service.input_manager_url(for_phase: phase, status: idea_status, tab: 'statuses')
+
+      expect(url).to include("#{base_uri}/admin/projects/#{phase.project_id}/phases/#{phase.id}/ideas?")
+      expect(url).to include("status=#{idea_status.id}")
+      expect(url).to include('tab=statuses')
+    end
+
+    it 'handles boolean feedback_needed parameter' do
+      url = service.input_manager_url(feedback_needed: true)
+      expect(url).to eq "#{base_uri}/admin/ideas?feedback_needed=true"
+    end
+
+    it 'handles array parameters for topics and projects' do
+      topic1 = create(:topic)
+      topic2 = create(:topic)
+      url = service.input_manager_url(topics: [topic1, topic2])
+      expect(url).to eq "#{base_uri}/admin/ideas?topics=#{topic1.id}%2C#{topic2.id}"
+    end
+  end
 end

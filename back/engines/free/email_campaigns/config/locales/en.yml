@@ -50,6 +50,7 @@ en:
       "voting_phase_started": New project phase with voting
       "voting_results": Voting results
       "your_input_in_screening": My input awaits screening
+      "screening_digest": Weekly screening reminder
     general:
       by_author: 'by %{authorName}'
       author_wrote: '%{authorName} wrote:'
@@ -490,6 +491,13 @@ en:
       event_description: '"%{input_title}" will become visible to others once it has been reviewed and approved.'
       subject: '"%{input_title}" is almost published'
       preheader: 'It''s currently in %{prescreening_status_title}'
+    screening_digest:
+      subject: '%{count} inputs awaiting review'
+      preheader: 'Review inputs for %{organizationName}'
+      title: '%{firstName}, inputs are waiting to be reviewed'
+      event_description: "These inputs need approval before they are visible to the public. You can review them in the platform-wide Input Manager or within each phase's Input Manager."
+      cta_button: 'Review inputs'
+      inputs_awaiting_screening: 'inputs to review'
     voting_basket_submitted:
       subject: '%{organizationName}: You voted successfully'
       preheader: 'You voted successfully on the participation platform of %{organizationName}'
