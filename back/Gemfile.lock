@@ -1512,9 +1512,9 @@ DEPENDENCIES
   scientist (~> 1.6.4)
   sentry-rails
   sentry-ruby
+  simple_segment (~> 1.5)
   seo!
   shoulda-matchers (~> 6.2.0)
-  simple_segment (~> 1.5)
   simplecov
   simplecov-rcov
   smart_groups!
