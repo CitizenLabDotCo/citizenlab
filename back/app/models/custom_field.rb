@@ -56,7 +56,7 @@ class CustomField < ApplicationRecord
     :supports_follow_up?, :supports_text?, :supports_linear_scale?, :supports_linear_scale_labels?, :supports_matrix_statements?,
     :supports_single_selection?, :supports_multiple_selection?, :supports_selection?, :supports_select_count?, :supports_dropdown_layout?,
     :supports_free_text_value?, :supports_xlsx_export?, :supports_geojson?,
-    :supports_printing?, :supports_pdf_import?, :supports_pdf_gpt_import?, :supports_xlsx_import?,
+    :supports_printing?, :supports_pdf_import?, :supports_pdf_llm_import?, :supports_xlsx_import?,
     :supports_reference_distribution?, :supports_file_upload?, :supports_logic?, to: :input_type_strategy
 
   acts_as_list column: :ordering, top_of_list: 0, scope: %i[resource_type resource_id], sequential_updates: true

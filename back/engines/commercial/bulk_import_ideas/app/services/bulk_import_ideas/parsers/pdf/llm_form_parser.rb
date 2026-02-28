@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 module BulkImportIdeas::Parsers::Pdf
-  class GPTFormParser
-    def initialize(phase, locale)
+  class LLMFormParser
+    def initialize(phase, locale, llm_model_class)
       @phase = phase
       @locale = locale
+      @llm_model_class = llm_model_class.new # e.g. Analysis::LLM::GPT41
     end
 
     # Return in format compatible with idea_to_idea_row
@@ -27,15 +28,15 @@ module BulkImportIdeas::Parsers::Pdf
       )
 
       message = Analysis::LLM::Message.new(prompt, pdf_file)
-      gpt_response = llm.chat(message)
+      llm_response = @llm_model_class.chat(message)
 
-      corrected_response = gpt_response.match(/\[.+\]/m)&.try(:[], 0) # to be sure it is json that can be parsed
+      corrected_response = llm_response.match(/\[.+\]/m)&.try(:[], 0) # to be sure it is json that can be parsed
 
       corrected_response.present? ? JSON.parse(corrected_response) : nil
     end
 
     def prompt
-      <<~GPT_PROMPT
+      <<~LLM_PROMPT
         In this message is a scanned survey form that has been filled in by hand.
   
         Your task is to extract the text and checked options based on the questions in the JSON form schema below.
@@ -59,7 +60,7 @@ module BulkImportIdeas::Parsers::Pdf
   
         JSON form schema:
         #{personal_data_schema + form_schema}
-      GPT_PROMPT
+      LLM_PROMPT
     end
 
     # Return a simple schema to send to GPT
@@ -122,10 +123,6 @@ module BulkImportIdeas::Parsers::Pdf
           optional: true,
           text: I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.by_checking_this_box', organizationName: organization_name) }
         }]
-    end
-
-    def llm
-      @llm ||= Analysis::LLM::GPT41.new
     end
 
     def printable_form_fields

@@ -2,11 +2,11 @@
 
 module BulkImportIdeas::Parsers::Pdf
   class IdeaPdfTemplateReader
-    def initialize(phase, locale, personal_data_enabled, gpt_parser: false)
+    def initialize(phase, locale, personal_data_enabled, llm_parser: false)
       @phase = phase
       @locale = locale
       @personal_data_enabled = personal_data_enabled
-      @gpt_parser = gpt_parser
+      @llm_parser = llm_parser
     end
 
     # Extract the text from the template PDF so we understand how each field is laid out in the PDF
@@ -63,9 +63,9 @@ module BulkImportIdeas::Parsers::Pdf
 
       # Skip fields or options whose fields are not importable
       importable = if type == 'field'
-        @gpt_parser ? field_or_option.supports_pdf_gpt_import? : field_or_option.supports_pdf_import?
+        @llm_parser ? field_or_option.supports_pdf_llm_import? : field_or_option.supports_pdf_import?
       else # option
-        @gpt_parser ? field_or_option.custom_field.supports_pdf_gpt_import? : field_or_option.custom_field.supports_pdf_import?
+        @llm_parser ? field_or_option.custom_field.supports_pdf_llm_import? : field_or_option.custom_field.supports_pdf_import?
       end
       return unless importable
 

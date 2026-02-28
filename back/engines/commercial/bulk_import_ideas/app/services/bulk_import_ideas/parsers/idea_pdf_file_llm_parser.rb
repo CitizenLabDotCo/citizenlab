@@ -1,13 +1,23 @@
 # frozen_string_literal: true
 
 module BulkImportIdeas::Parsers
-  class IdeaPdfFileGPTParser < IdeaPdfFileParser
-    # NEW VERSION USING GPT
+  class IdeaPdfFileLLMParser < IdeaPdfFileParser
+    def initialize(current_user, locale, phase_id, personal_data_enabled, llm_parser_model: 'gpt')
+      @llm_model_class = case llm_parser_model
+      when 'gpt'
+        Analysis::LLM::GPT41
+      when 'gemini'
+        Analysis::LLM::Gemini1V
+      end
+      super(current_user, locale, phase_id, personal_data_enabled)
+    end
+
+    # NEW VERSION USING LLM
     # Returns an array of idea rows compatible with IdeaImporter
     # Only one row ever returned as only one PDF per idea is parsed by this service
     def parse_rows(file)
-      gpt_service = BulkImportIdeas::Parsers::Pdf::GPTFormParser.new(@phase, @locale)
-      form_parsed_idea = gpt_service.parse_idea(file.file, template_data[:page_count])
+      llm_service = BulkImportIdeas::Parsers::Pdf::LLMFormParser.new(@phase, @locale, @llm_model_class)
+      form_parsed_idea = llm_service.parse_idea(file.file, template_data[:page_count])
 
       # Store the parsed idea for better analysis later
       file.update!(parsed_value: { parser: 'gpt', value: form_parsed_idea })
@@ -55,7 +65,7 @@ module BulkImportIdeas::Parsers
     end
 
     def template_data
-      @template_data ||= BulkImportIdeas::Parsers::Pdf::IdeaPdfTemplateReader.new(@phase, @locale, @personal_data_enabled, gpt_parser: true).template_data
+      @template_data ||= BulkImportIdeas::Parsers::Pdf::IdeaPdfTemplateReader.new(@phase, @locale, @personal_data_enabled, llm_parser: true).template_data
     end
   end
 end

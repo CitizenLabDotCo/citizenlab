@@ -24,7 +24,7 @@ RSpec.describe InputTypeStrategy::SentimentLinearScale do
   its(:supports_xlsx_export?) { is_expected.to be true }
   its(:supports_geojson?) { is_expected.to be true }
   its(:supports_printing?) { is_expected.to be true }
-  its(:supports_pdf_gpt_import?) { is_expected.to be true }
+  its(:supports_pdf_llm_import?) { is_expected.to be true }
   its(:supports_pdf_import?) { is_expected.to be true }
   its(:supports_xlsx_import?) { is_expected.to be true }
   its(:supports_reference_distribution?) { is_expected.to be false }
