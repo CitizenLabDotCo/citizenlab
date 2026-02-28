@@ -1,32 +1,43 @@
 module Analysis
   module LLM
-    class ClaudeSonnet45 < RubyLLM
-      # The model ID as returned by RubyLLM.models.chat_models
-      def model
-        'eu.anthropic.claude-sonnet-4-5-20250929-v1:0'
+    class ClaudeSonnet45 < Bedrock
+      def initialize
+        super(
+          region: ENV.fetch('AWS_REGION', 'eu-central-1'),
+          access_key_id: ENV.fetch('AWS_ACCESS_KEY_ID', nil),
+          secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY', nil)
+        )
       end
 
       def self.family
         'aws_anthropic'
       end
 
+      def context_window
+        1_000_000
+      end
+
       def accuracy
         0.8
       end
 
-      def chat_options
-        {
-          provider: 'bedrock',
-          assume_model_exists: true
-        }
+      protected
+
+      def model_id
+        'eu.anthropic.claude-sonnet-4-5-20250929-v1:0'
       end
 
-      def chat_context
-        ::RubyLLM.context do |config|
-          config.bedrock_secret_key = ENV.fetch('AWS_SECRET_ACCESS_KEY', nil)
-          config.bedrock_api_key = ENV.fetch('AWS_ACCESS_KEY_ID', nil)
-          config.bedrock_region = ENV.fetch('AWS_TOXICITY_DETECTION_REGION', nil)
-        end
+      def additional_model_request_fields
+        { 'anthropic_beta' => ['context-1m-2025-08-07'] }
+      end
+
+      private
+
+      def inference_config
+        {
+          max_tokens: 16_384,
+          temperature: 0.1
+        }
       end
     end
   end

@@ -17,8 +17,6 @@ module BulkImportIdeas::Parsers::Pdf
       }
     end
 
-    private
-
     def parse(file_uploader)
       pdf_file = Files::File.new(
         name: 'scan.pdf',

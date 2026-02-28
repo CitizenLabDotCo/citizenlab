@@ -64,6 +64,10 @@ const ProjectImporter = React.lazy(
   () => import('containers/Admin/ProjectImporter')
 );
 
+const FormsyncTesting = React.lazy(
+  () => import('containers/Admin/formsyncTesting')
+);
+
 export type AdminRoute<T extends string = string> = `/admin/${T}`;
 
 export type AdminRouteTypes =
@@ -209,6 +213,14 @@ const createAdminRoutes = () => {
       {
         path: 'project-importer',
         element: <ProjectImporter />,
+      },
+      {
+        path: 'formsync-testing',
+        element: (
+          <PageLoading>
+            <FormsyncTesting />
+          </PageLoading>
+        ),
       },
     ],
   };
