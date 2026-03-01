@@ -33,12 +33,12 @@ const MetricTrend = ({ change }: Props) => {
 
   if (change === null || typeof change === 'string') {
     const tooltipMessage =
-      (typeof change === 'string'
-        ? insufficientDataMessages[
+      change === null
+        ? insufficientDataMessages.null
+        : insufficientDataMessages[
             change as keyof typeof insufficientDataMessages
-          ]
-        : insufficientDataMessages.null) ??
-      messages.sevenDayChangeDefaultTooltip;
+          ] ?? messages.sevenDayChangeDefaultTooltip;
+
     return (
       <Tooltip content={formatMessage(tooltipMessage)} placement="top">
         <Box
