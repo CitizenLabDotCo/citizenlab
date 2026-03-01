@@ -33,8 +33,12 @@ const MetricTrend = ({ change }: Props) => {
 
   if (change === null || typeof change === 'string') {
     const tooltipMessage =
-      insufficientDataMessages[change as keyof typeof insufficientDataMessages];
-
+      (typeof change === 'string'
+        ? insufficientDataMessages[
+            change as keyof typeof insufficientDataMessages
+          ]
+        : insufficientDataMessages.null) ??
+      messages.sevenDayChangeDefaultTooltip;
     return (
       <Tooltip content={formatMessage(tooltipMessage)} placement="top">
         <Box
@@ -80,30 +84,35 @@ const MetricTrend = ({ change }: Props) => {
     : 'red500';
 
   return (
-    <Box display="flex" alignItems="center" gap="6px" flexWrap="wrap">
-      <Box display="flex" alignItems="center" gap="2px">
-        {trendIcon && (
-          <Icon
-            name={trendIcon}
-            width="12px"
-            height="12px"
-            fill={colors[trendColor]}
-          />
-        )}
-        <Text
-          as="span"
-          fontSize="xs"
-          fontWeight="bold"
-          color={trendColor}
-          m="0"
-        >
-          {trendLabel}
+    <Tooltip
+      content={formatMessage(messages.sevenDayChangeDefaultTooltip)}
+      placement="top"
+    >
+      <Box display="flex" alignItems="center" gap="6px" flexWrap="wrap">
+        <Box display="flex" alignItems="center" gap="2px">
+          {trendIcon && (
+            <Icon
+              name={trendIcon}
+              width="12px"
+              height="12px"
+              fill={colors[trendColor]}
+            />
+          )}
+          <Text
+            as="span"
+            fontSize="xs"
+            fontWeight="bold"
+            color={trendColor}
+            m="0"
+          >
+            {trendLabel}
+          </Text>
+        </Box>
+        <Text as="span" fontSize="s" color="coolGrey500" m="0">
+          {formatMessage(messages.sevenDayChange)}
         </Text>
       </Box>
-      <Text as="span" fontSize="s" color="coolGrey500" m="0">
-        {formatMessage(messages.sevenDayChange)}
-      </Text>
-    </Box>
+    </Tooltip>
   );
 };
 

@@ -205,6 +205,11 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.sevenDayChange',
     defaultMessage: '7-day change',
   },
+  sevenDayChangeDefaultTooltip: {
+    id: 'app.containers.Admin.projects.project.insights.sevenDayChangeDefaultTooltip',
+    defaultMessage:
+      "The percentage this metric's value has changed, in comparison to its value 7-days ago.",
+  },
   phaseParticipantsMetricTooltip2: {
     id: 'app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2',
     defaultMessage:
