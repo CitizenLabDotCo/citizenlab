@@ -60,7 +60,7 @@
     "@emoji-mart/data": "^1.2.1",
     "@emoji-mart/react": "^1.1.1",
     "@enzedonline/quill-blot-formatter2": "^3.0.0",
-    "@esri/arcgis-rest-request": "4.2.0",
+    "@esri/arcgis-rest-request": "4.9.1",
     "@hello-pangea/dnd": "^18.0.1",
     "@hookform/resolvers": "^5.2.2",
     "@segment/snippet": "5.2.1",
