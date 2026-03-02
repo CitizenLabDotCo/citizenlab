@@ -27,10 +27,6 @@ module Analysis
         'eu.anthropic.claude-haiku-4-5-20251001-v1:0'
       end
 
-      def additional_model_request_fields
-        { 'anthropic_beta' => ['context-1m-2025-08-07'] }
-      end
-
       private
 
       def inference_config

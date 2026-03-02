@@ -14,7 +14,7 @@ module Analysis
       end
 
       def context_window
-        1_000_000
+        200_000
       end
 
       def accuracy
@@ -25,10 +25,6 @@ module Analysis
 
       def model_id
         'eu.anthropic.claude-opus-4-5-20251101-v1:0'
-      end
-
-      def additional_model_request_fields
-        { 'anthropic_beta' => ['context-1m-2025-08-07'] }
       end
 
       private
