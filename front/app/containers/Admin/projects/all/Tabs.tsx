@@ -108,6 +108,19 @@ const Tabs = () => {
           }}
         />
       )}
+      {userIsAdmin && workspacesEnabled && (
+        <Tab
+          message={messages.workspaces}
+          icon="spaces"
+          active={tab === 'workspaces'}
+          dataCy="projects-overview-workspaces-tab"
+          onClick={() => {
+            removeSearchParams([...PROJECT_PARAMS, ...FOLDER_PARAMS]);
+            updateSearchParams({ tab: 'workspaces' });
+            trackEventByName(tracks.setTab, { tab: 'workspaces' });
+          }}
+        />
+      )}
       <Tab
         message={messages.calendar}
         icon="calendar"
@@ -122,19 +135,6 @@ const Tabs = () => {
           trackEventByName(tracks.setTab, { tab: 'calendar' });
         }}
       />
-      {userIsAdmin && workspacesEnabled && (
-        <Tab
-          message={messages.workspaces}
-          icon="organigram"
-          active={tab === 'workspaces'}
-          dataCy="projects-overview-workspaces-tab"
-          onClick={() => {
-            removeSearchParams([...PROJECT_PARAMS, ...FOLDER_PARAMS]);
-            updateSearchParams({ tab: 'workspaces' });
-            trackEventByName(tracks.setTab, { tab: 'workspaces' });
-          }}
-        />
-      )}
       {userIsAdmin && (
         <Tab
           message={messages.arrangeProjects}
