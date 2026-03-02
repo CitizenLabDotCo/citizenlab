@@ -30,11 +30,19 @@ export default () => ({
   children: [
     {
       path: spacesRoutes.new,
-      element: <NewSpace />,
+      element: (
+        <PageLoading>
+          <NewSpace />
+        </PageLoading>
+      ),
     },
     {
       path: spacesRoutes.spaceId,
-      element: <EditSpace />,
+      element: (
+        <PageLoading>
+          <EditSpace />
+        </PageLoading>
+      ),
     },
   ],
 });
