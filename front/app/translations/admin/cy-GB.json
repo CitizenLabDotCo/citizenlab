@@ -1867,7 +1867,7 @@
   "app.containers.Admin.tools.webhooks.deliveriesTitle": "Dosbarthiadau ar gyfer {name}",
   "app.containers.Admin.tools.webhooks.deliveryStats": "Dosbarthiadau",
   "app.containers.Admin.tools.webhooks.description": "Ffurfweddwch webhooks i dderbyn hysbysiadau amser real pan fydd digwyddiadau'n digwydd ar eich platfform. Am ragor o wybodaeth, gweler ein {webhookDocumentationLink}.",
-  "app.containers.Admin.tools.webhooks.documentationUrl": "https://developers.citizenlab.co/webhooks",
+  "app.containers.Admin.tools.webhooks.documentationUrl2": "https://developers.govocal.com/guides/reference-webhooks",
   "app.containers.Admin.tools.webhooks.edit": "Golygu bachyn gwe",
   "app.containers.Admin.tools.webhooks.editWebhookDescription": "Diweddarwch gyfluniad y webhook hwn.",
   "app.containers.Admin.tools.webhooks.editWebhookTitle": "Golygu bachyn gwe",
