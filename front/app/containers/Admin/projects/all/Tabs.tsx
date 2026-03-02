@@ -62,7 +62,7 @@ const Tabs = () => {
   const [searchParams] = useSearchParams();
   const tab = searchParams.get('tab');
   const { data: user } = useAuthUser();
-  const workspacesEnabled = useFeatureFlag({ name: 'workspaces' });
+  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
 
   if (!user) return null;
 
@@ -108,6 +108,19 @@ const Tabs = () => {
           }}
         />
       )}
+      {userIsAdmin && spacesEnabled && (
+        <Tab
+          message={messages.spaces}
+          icon="spaces"
+          active={tab === 'spaces'}
+          dataCy="projects-overview-spaces-tab"
+          onClick={() => {
+            removeSearchParams([...PROJECT_PARAMS, ...FOLDER_PARAMS]);
+            updateSearchParams({ tab: 'spaces' });
+            trackEventByName(tracks.setTab, { tab: 'spaces' });
+          }}
+        />
+      )}
       <Tab
         message={messages.calendar}
         icon="calendar"
@@ -123,19 +136,6 @@ const Tabs = () => {
         }}
       />
       {userIsAdmin && (
-        <Tab
-          message={messages.workspaces}
-          icon="organigram"
-          active={tab === 'workspaces'}
-          dataCy="projects-overview-workspaces-tab"
-          onClick={() => {
-            removeSearchParams([...PROJECT_PARAMS, ...FOLDER_PARAMS]);
-            updateSearchParams({ tab: 'workspaces' });
-            trackEventByName(tracks.setTab, { tab: 'workspaces' });
-          }}
-        />
-      )}
-      {userIsAdmin && workspacesEnabled && (
         <Tab
           message={messages.arrangeProjects}
           icon="drag-handle"

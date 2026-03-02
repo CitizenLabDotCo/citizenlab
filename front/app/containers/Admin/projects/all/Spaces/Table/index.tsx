@@ -38,14 +38,14 @@ const Table = () => {
       >
         <Thead>
           <Tr background={colors.grey50}>
-            <ColHeader>{formatMessage(messages.workspace)}</ColHeader>
-            <ColHeader>{formatMessage(messages.workspaceManagers)}</ColHeader>
+            <ColHeader>{formatMessage(messages.space)}</ColHeader>
+            <ColHeader>{formatMessage(messages.spaceManagers)}</ColHeader>
             <Th />
           </Tr>
         </Thead>
         <Tbody>
-          {DATA.map((workspace) => (
-            <Row key={workspace.id} workspace={workspace} />
+          {DATA.map((space) => (
+            <Row key={space.id} space={space} />
           ))}
         </Tbody>
       </TableComponent>

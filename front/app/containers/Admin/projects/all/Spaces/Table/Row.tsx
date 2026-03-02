@@ -3,8 +3,9 @@ import React from 'react';
 import { Tr, Td, Text, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import clHistory from 'utils/cl-router/history';
 import AvatarBubbles from 'components/AvatarBubbles';
+
+import clHistory from 'utils/cl-router/history';
 
 const StyledTd = styled(Td)`
   &:hover {
@@ -15,22 +16,22 @@ const StyledTd = styled(Td)`
   }
 `;
 
-type Workspace = {
+type Space = {
   name: string;
   id: string;
 };
 
 interface Props {
-  workspace: Workspace;
+  space: Space;
 }
 
-const Row = ({ workspace }: Props) => {
+const Row = ({ space }: Props) => {
   return (
     <Tr dataCy="projects-overview-folder-table-row">
       <StyledTd
         background={colors.grey50}
         onClick={() => {
-          clHistory.push(`/admin/projects/workspaces/${workspace.id}`);
+          clHistory.push(`/admin/projects/spaces/${space.id}`);
         }}
       >
         <Text
@@ -39,7 +40,7 @@ const Row = ({ workspace }: Props) => {
           color="black"
           className="project-table-row-title"
         >
-          {workspace.name}
+          {space.name}
         </Text>
       </StyledTd>
       <Td>

@@ -10,11 +10,11 @@ import { isAdmin } from 'utils/permissions/roles';
 
 import Table from './Table';
 
-const Workspaces = () => {
-  const workspacesEnabled = useFeatureFlag({ name: 'workspaces' });
+const Spaces = () => {
+  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
   const { data: user } = useAuthUser();
 
-  if (!workspacesEnabled || !isAdmin(user)) return null;
+  if (!spacesEnabled || !isAdmin(user)) return null;
 
   return (
     <Box>
@@ -23,4 +23,4 @@ const Workspaces = () => {
   );
 };
 
-export default Workspaces;
+export default Spaces;

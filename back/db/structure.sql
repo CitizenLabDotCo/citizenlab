@@ -1381,7 +1381,7 @@ CREATE TABLE public.projects (
     default_assignee_id uuid,
     include_all_areas boolean DEFAULT false NOT NULL,
     baskets_count integer DEFAULT 0 NOT NULL,
-    votes_count integer DEFAULT 0 NOT NULL,
+    votes_count bigint DEFAULT 0 NOT NULL,
     followers_count integer DEFAULT 0 NOT NULL,
     header_bg_alt_text_multiloc jsonb DEFAULT '{}'::jsonb,
     preview_token character varying NOT NULL,
@@ -1764,7 +1764,7 @@ CREATE TABLE public.phases (
     voting_term_singular_multiloc jsonb DEFAULT '{}'::jsonb,
     voting_term_plural_multiloc jsonb DEFAULT '{}'::jsonb,
     baskets_count integer DEFAULT 0 NOT NULL,
-    votes_count integer DEFAULT 0 NOT NULL,
+    votes_count bigint DEFAULT 0 NOT NULL,
     native_survey_title_multiloc jsonb DEFAULT '{}'::jsonb,
     native_survey_button_multiloc jsonb DEFAULT '{}'::jsonb,
     expire_days_limit integer,
@@ -8386,6 +8386,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260227120000'),
 ('20260205124240'),
 ('20260127094257'),
 ('20260127092840'),
