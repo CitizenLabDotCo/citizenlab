@@ -5,7 +5,7 @@ module MultiTenancy
     class Spaces < Base
       def run
         2.times do |i|
-          space = ::Space.create!(
+          ::Space.create!(
             title_multiloc: { 'en' => "Space#{i + 1}" },
             description_multiloc: runner.rand_description_multiloc
           )
