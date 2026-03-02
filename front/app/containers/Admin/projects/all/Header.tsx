@@ -36,14 +36,14 @@ const Header = () => {
         {spacesEnabled && (
           <Box>
             <Button
-              data-cy="e2e-new-workspace-button"
-              className="intercom-admin-projects-new-workspace-button"
-              linkTo={'/admin/projects/workspaces/new'}
+              data-cy="e2e-new-space-button"
+              className="intercom-admin-projects-new-space-button"
+              linkTo={'/admin/projects/spaces/new'}
               buttonStyle="secondary-outlined"
               icon="spaces"
               iconSize="20px"
             >
-              <FormattedMessage {...messages.newWorkspace} />
+              <FormattedMessage {...messages.newSpace} />
             </Button>
           </Box>
         )}

@@ -16,12 +16,12 @@ import Projects from './Projects';
 import Tabs from './Tabs';
 
 const Calendar = React.lazy(() => import('./Calendar'));
-const Workspaces = React.lazy(() => import('./Workspaces'));
+const Spaces = React.lazy(() => import('./Spaces'));
 
 const getSearchMessage = (
   tab: string | null,
   calendarViewEnabled: boolean,
-  workspacesEnabled: boolean
+  spacesEnabled: boolean
 ) => {
   if (tab === null) {
     return messages.searchProjects;
@@ -35,8 +35,8 @@ const getSearchMessage = (
     return messages.searchFolders;
   }
 
-  if (tab === 'workspaces' && workspacesEnabled) {
-    return messages.searchWorkspaces;
+  if (tab === 'spaces' && spacesEnabled) {
+    return messages.searchSpaces;
   }
 
   return undefined;
@@ -49,14 +49,14 @@ const AdminProjectsListNew = () => {
   const calendarViewEnabled = useFeatureFlag({
     name: 'project_planning_calendar',
   });
-  const workspacesEnabled = useFeatureFlag({
+  const spacesEnabled = useFeatureFlag({
     name: 'spaces',
   });
 
   const searchMessage = getSearchMessage(
     tab,
     calendarViewEnabled,
-    workspacesEnabled
+    spacesEnabled
   );
 
   return (
@@ -93,9 +93,9 @@ const AdminProjectsListNew = () => {
               <Calendar />
             </Suspense>
           )}
-          {tab === 'workspaces' && (
+          {tab === 'spaces' && (
             <Suspense>
-              <Workspaces />
+              <Spaces />
             </Suspense>
           )}
           {tab === 'ordering' && (
