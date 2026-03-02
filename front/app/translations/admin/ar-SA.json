@@ -1867,7 +1867,7 @@
   "app.containers.Admin.tools.webhooks.deliveriesTitle": "التسليمات لـ {name}",
   "app.containers.Admin.tools.webhooks.deliveryStats": "التسليمات",
   "app.containers.Admin.tools.webhooks.description": "قم بتكوين خطافات الويب لتلقي إشعارات فورية عند حدوث أحداث على منصتك. لمزيد من المعلومات، راجع {webhookDocumentationLink}.",
-  "app.containers.Admin.tools.webhooks.documentationUrl": "https://developers.citizenlab.co/webhooks",
+  "app.containers.Admin.tools.webhooks.documentationUrl2": "https://developers.govocal.com/guides/reference-webhooks",
   "app.containers.Admin.tools.webhooks.edit": "تعديل خطاف الويب",
   "app.containers.Admin.tools.webhooks.editWebhookDescription": "تحديث تكوين هذا الخطاف الويب.",
   "app.containers.Admin.tools.webhooks.editWebhookTitle": "تعديل خطاف الويب",
