@@ -11,7 +11,7 @@ import { isAdmin } from 'utils/permissions/roles';
 import Table from './Table';
 
 const Workspaces = () => {
-  const workspacesEnabled = useFeatureFlag({ name: 'workspaces' });
+  const workspacesEnabled = useFeatureFlag({ name: 'spaces' });
   const { data: user } = useAuthUser();
 
   if (!workspacesEnabled || !isAdmin(user)) return null;

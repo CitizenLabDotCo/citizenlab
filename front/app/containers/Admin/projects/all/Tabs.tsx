@@ -62,7 +62,7 @@ const Tabs = () => {
   const [searchParams] = useSearchParams();
   const tab = searchParams.get('tab');
   const { data: user } = useAuthUser();
-  const workspacesEnabled = useFeatureFlag({ name: 'workspaces' });
+  const workspacesEnabled = useFeatureFlag({ name: 'spaces' });
 
   if (!user) return null;
 

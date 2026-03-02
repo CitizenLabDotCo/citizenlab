@@ -50,7 +50,7 @@ const AdminProjectsListNew = () => {
     name: 'project_planning_calendar',
   });
   const workspacesEnabled = useFeatureFlag({
-    name: 'workspaces',
+    name: 'spaces',
   });
 
   const searchMessage = getSearchMessage(
