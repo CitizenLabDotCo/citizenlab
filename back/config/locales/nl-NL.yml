@@ -247,17 +247,17 @@ nl:
         petition:
           title: Wat is jouw petitie?
         comment:
-          title: Wat is je reactie?
+          title: Wat is je opmerking?
         response:
-          title: Wat is jouw antwoord?
+          title: Wat is je reactie?
         suggestion:
           title: Wat is jouw suggestie?
         topic:
-          title: Wat is je onderwerp?
+          title: Wat is je thema?
         post:
-          title: Wat is je post?
+          title: Wat is je bericht?
         story:
-          title: Wat is jouw verhaal?
+          title: Wat is je verhaal?
   custom_field_options:
     gender:
       male: Man
