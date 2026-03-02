@@ -1867,7 +1867,7 @@
   "app.containers.Admin.tools.webhooks.deliveriesTitle": "{name}ਲਈ ਡਿਲੀਵਰੀਆਂ",
   "app.containers.Admin.tools.webhooks.deliveryStats": "ਡਿਲੀਵਰੀ",
   "app.containers.Admin.tools.webhooks.description": "ਤੁਹਾਡੇ ਪਲੇਟਫਾਰਮ 'ਤੇ ਘਟਨਾਵਾਂ ਵਾਪਰਨ 'ਤੇ ਅਸਲ-ਸਮੇਂ ਦੀਆਂ ਸੂਚਨਾਵਾਂ ਪ੍ਰਾਪਤ ਕਰਨ ਲਈ ਵੈੱਬਹੁੱਕਾਂ ਨੂੰ ਕੌਂਫਿਗਰ ਕਰੋ। ਹੋਰ ਜਾਣਕਾਰੀ ਲਈ, ਸਾਡਾ {webhookDocumentationLink}ਵੇਖੋ।",
-  "app.containers.Admin.tools.webhooks.documentationUrl": "https://developers.citizenlab.co/webhooks",
+  "app.containers.Admin.tools.webhooks.documentationUrl2": "https://developers.govocal.com/guides/reference-webhooks",
   "app.containers.Admin.tools.webhooks.edit": "ਵੈੱਬਹੁੱਕ ਦਾ ਸੰਪਾਦਨ ਕਰੋ",
   "app.containers.Admin.tools.webhooks.editWebhookDescription": "ਇਸ ਵੈੱਬਹੁੱਕ ਦੀ ਸੰਰਚਨਾ ਨੂੰ ਅੱਪਡੇਟ ਕਰੋ।",
   "app.containers.Admin.tools.webhooks.editWebhookTitle": "ਵੈੱਬਹੁੱਕ ਦਾ ਸੰਪਾਦਨ ਕਰੋ",
