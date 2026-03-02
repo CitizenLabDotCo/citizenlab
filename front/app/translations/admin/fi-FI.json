@@ -1867,7 +1867,6 @@
   "app.containers.Admin.tools.webhooks.deliveriesTitle": "Toimitukset kohteelle {name}",
   "app.containers.Admin.tools.webhooks.deliveryStats": "Toimitukset",
   "app.containers.Admin.tools.webhooks.description": "Määritä webhookit vastaanottamaan reaaliaikaisia ilmoituksia alustallasi tapahtuvista tapahtumista. Lisätietoja on {webhookDocumentationLink}-sivustollamme.",
-  "app.containers.Admin.tools.webhooks.documentationUrl": "https://developers.citizenlab.co/webhooks",
   "app.containers.Admin.tools.webhooks.edit": "Muokkaa webhookia",
   "app.containers.Admin.tools.webhooks.editWebhookDescription": "Päivitä tämän webhookin kokoonpano.",
   "app.containers.Admin.tools.webhooks.editWebhookTitle": "Muokkaa webhookia",
