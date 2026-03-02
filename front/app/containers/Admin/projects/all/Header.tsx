@@ -39,8 +39,8 @@ const Header = () => {
               data-cy="e2e-new-workspace-button"
               className="intercom-admin-projects-new-workspace-button"
               linkTo={'/admin/projects/workspaces/new'}
-              icon="plus-circle"
-              buttonStyle="admin-dark"
+              buttonStyle="secondary-outlined"
+              icon="spaces"
             >
               <FormattedMessage {...messages.newWorkspace} />
             </Button>
