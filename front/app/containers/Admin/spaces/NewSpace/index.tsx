@@ -9,6 +9,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import messages from './messages';
+import SpaceNameForm from './SpaceNameForm';
 
 const goBack = () => {
   clHistory.goBack();
@@ -29,6 +30,7 @@ const NewSpace = () => {
         <SectionTitle>
           <FormattedMessage {...messages.createANewSpace} />
         </SectionTitle>
+        <SpaceNameForm />
       </Box>
     </Box>
   );

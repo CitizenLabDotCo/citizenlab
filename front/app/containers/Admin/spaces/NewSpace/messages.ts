@@ -5,4 +5,12 @@ export default defineMessages({
     id: 'app.containers.Admin.spaces.NewSpace.createANewSpace',
     defaultMessage: 'Create a new space',
   },
+  spaceName: {
+    id: 'app.containers.Admin.spaces.NewSpace.spaceName',
+    defaultMessage: 'Space name',
+  },
+  save: {
+    id: 'app.containers.Admin.spaces.NewSpace.save',
+    defaultMessage: 'Save',
+  },
 });
