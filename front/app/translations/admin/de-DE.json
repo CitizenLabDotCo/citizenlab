@@ -1430,7 +1430,7 @@
   "app.containers.Admin.projects.project.insights.respondents": "Befragte",
   "app.containers.Admin.projects.project.insights.responses": "Antworten",
   "app.containers.Admin.projects.project.insights.responsesPerRespondent": "Antworten pro Befragten",
-  "app.containers.Admin.projects.project.insights.sevenDayChange": "7-Tage-Änderung",
+  "app.containers.Admin.projects.project.insights.sevenDayChange": "7-Tage-Veränderung",
   "app.containers.Admin.projects.project.insights.sevenDayChangeDefaultTooltip": "Der Prozentsatz, um den sich der Wert dieser Metrik im Vergleich zum Wert vor 7 Tagen verändert hat.",
   "app.containers.Admin.projects.project.insights.shared.aiPowered": "KI-gestützt",
   "app.containers.Admin.projects.project.insights.shared.aiTopicClusteringDescription1": "Alle Beiträge werden automatisch in sinnvolle Themenbereiche eingeordnet, auch wenn die Teilnehmenden sie nicht verschlagworten.",
