@@ -156,7 +156,6 @@ const Show = () => {
   const handleScheduleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (campaign && selectedDate) {
-      // Combine date and time
       const scheduledDateTime = new Date(selectedDate);
       scheduledDateTime.setHours(selectedTime.getHours());
       scheduledDateTime.setMinutes(selectedTime.getMinutes());
@@ -167,7 +166,6 @@ const Show = () => {
         { id: campaign.data.id, scheduledAt },
         {
           onSuccess: () => {
-            console.log('Campaign scheduled for', scheduledAt);
             closeSchaduleModal();
           },
         }
