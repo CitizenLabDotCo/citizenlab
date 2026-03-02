@@ -114,6 +114,7 @@ class Project < ApplicationRecord
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
   validates :live_auto_input_topics_enabled, inclusion: { in: [true, false] }
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # TODO: This should always be validated!
+  validate :space_must_match_folder_space
 
   scope :not_hidden, -> { where(hidden: false) }
 
@@ -290,6 +291,13 @@ class Project < ApplicationRecord
     return unless id.present? && admin_publication&.id.blank?
 
     errors.add(:admin_publication_id, :blank, message: "Admin publication can't be blank")
+  end
+
+  def space_must_match_folder_space
+    folder = admin_publication&.parent&.publication
+    return unless folder&.is_a?(ProjectFolders::Folder) && folder&.space&.id != space_id
+
+    errors.add(:space_id, "must match the space of the folder")
   end
 
   def sanitize_description_multiloc

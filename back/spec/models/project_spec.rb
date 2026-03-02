@@ -55,6 +55,53 @@ RSpec.describe Project do
     end
   end
 
+  describe 'space_must_match_folder_space validation' do
+    let(:space) { create(:space) }
+    let(:folder) { create(:project_folder, space: space) }
+
+    it "[error] is invalid if not in its folder's space" do
+      other_space = create(:space)
+      project_in_folder = build(:project, space: other_space, folder: folder)
+
+      expect(project_in_folder).to be_invalid
+      expect(project_in_folder.errors[:space_id]).to include("must match the space of the folder")
+
+      project_in_folder = build(:project, space: nil, folder: folder)
+
+      expect(project_in_folder).to be_invalid
+      expect(project_in_folder.errors[:space_id]).to include("must match the space of the folder")
+    end
+
+    it '[error] is invalid if in a space, but its folder is not in any space' do
+      folder_without_space = create(:project_folder, space: nil)
+      project_in_folder = build(:project, space: space, folder: folder_without_space)
+
+      expect(project_in_folder).to be_invalid
+      expect(project_in_folder.errors[:space_id]).to include("must match the space of the folder")
+    end
+
+    it "is valid if in its folder's space" do
+      project_in_folder = build(:project, space: space, folder: folder)
+
+      expect(project_in_folder).to be_valid
+    end
+
+    it 'is valid if in a space and not in a folder' do
+      other_space = create(:space)
+      project = build(:project, space: other_space)
+
+      expect(project&.folder).to be_nil
+      expect(project).to be_valid
+    end
+
+    it 'is valid if not in a space and not in a folder' do
+      project = build(:project, space: nil)
+
+      expect(project&.folder).to be_nil
+      expect(project).to be_valid
+    end
+  end
+
   describe 'Project without admin publication' do
     it 'is invalid' do
       project = create(:project)
