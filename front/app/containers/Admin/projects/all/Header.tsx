@@ -41,6 +41,7 @@ const Header = () => {
               linkTo={'/admin/projects/workspaces/new'}
               buttonStyle="secondary-outlined"
               icon="spaces"
+              iconSize="20px"
             >
               <FormattedMessage {...messages.newWorkspace} />
             </Button>
