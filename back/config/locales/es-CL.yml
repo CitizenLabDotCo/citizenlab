@@ -247,7 +247,7 @@ es-CL:
         petition:
           title: '¿Cuál es tu petición?'
         comment:
-          title: '¿Cuál es su respuesta?'
+          title: '¿Cuál es su comentario?'
         response:
           title: '¿Cuál es tu respuesta?'
         suggestion:
