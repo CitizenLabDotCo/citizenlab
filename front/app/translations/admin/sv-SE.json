@@ -1867,7 +1867,7 @@
   "app.containers.Admin.tools.webhooks.deliveriesTitle": "Leveranser till {name}",
   "app.containers.Admin.tools.webhooks.deliveryStats": "Leveranser",
   "app.containers.Admin.tools.webhooks.description": "Konfigurera webhooks för att få aviseringar i realtid när händelser inträffar på din plattform. För mer information, se vår {webhookDocumentationLink}.",
-  "app.containers.Admin.tools.webhooks.documentationUrl": "https://developers.citizenlab.co/webhooks",
+  "app.containers.Admin.tools.webhooks.documentationUrl2": "https://developers.govocal.com/guides/reference-webhooks",
   "app.containers.Admin.tools.webhooks.edit": "Redigera webhook",
   "app.containers.Admin.tools.webhooks.editWebhookDescription": "Uppdatera konfigurationen för denna webhook.",
   "app.containers.Admin.tools.webhooks.editWebhookTitle": "Redigera webhook",
