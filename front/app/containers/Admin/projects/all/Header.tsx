@@ -17,6 +17,7 @@ const Header = () => {
   const isProjectFoldersEnabled = useFeatureFlag({ name: 'project_folders' });
   const { data: authUser } = useAuthUser();
   const userIsAdmin = isAdmin(authUser);
+  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
 
   return (
     <Box display="flex" justifyContent="space-between">
@@ -32,6 +33,19 @@ const Header = () => {
         alignItems="center"
         className="intercom-admin-projects-new-project-folder-buttons"
       >
+        {spacesEnabled && (
+          <Box>
+            <Button
+              data-cy="e2e-new-workspace-button"
+              className="intercom-admin-projects-new-workspace-button"
+              linkTo={'/admin/projects/workspaces/new'}
+              icon="plus-circle"
+              buttonStyle="admin-dark"
+            >
+              <FormattedMessage {...messages.newWorkspace} />
+            </Button>
+          </Box>
+        )}
         {isProjectFoldersEnabled && (
           <Tooltip
             content={
