@@ -1,0 +1,40 @@
+import React, { lazy } from 'react';
+
+import { Outlet as RouterOutlet } from 'react-router-dom';
+
+import PageLoading from 'components/UI/PageLoading';
+
+import { AdminRoute } from '../routes';
+
+const NewSpace = lazy(() => import('./NewSpace'));
+const EditSpace = lazy(() => import('./EditSpace'));
+
+export enum spacesRoutes {
+  spaces = 'projects/spaces',
+  new = 'new',
+  spaceId = ':spaceId',
+}
+
+export type spaceRouteTypes =
+  | AdminRoute<spacesRoutes.spaces>
+  | AdminRoute<`${spacesRoutes.spaces}/${spacesRoutes.new}`>
+  | AdminRoute<`${spacesRoutes.spaces}/${string}`>;
+
+export default () => ({
+  path: spacesRoutes.spaces,
+  element: (
+    <PageLoading>
+      <RouterOutlet />
+    </PageLoading>
+  ),
+  children: [
+    {
+      path: spacesRoutes.new,
+      element: <NewSpace />,
+    },
+    {
+      path: spacesRoutes.spaceId,
+      element: <EditSpace />,
+    },
+  ],
+});
