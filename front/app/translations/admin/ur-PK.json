@@ -1867,7 +1867,6 @@
   "app.containers.Admin.tools.webhooks.deliveriesTitle": "{name}کے لیے ڈیلیوری",
   "app.containers.Admin.tools.webhooks.deliveryStats": "ترسیلات",
   "app.containers.Admin.tools.webhooks.description": "جب آپ کے پلیٹ فارم پر واقعات رونما ہوتے ہیں تو ریئل ٹائم اطلاعات موصول کرنے کے لیے ویب ہکس کو ترتیب دیں۔ مزید معلومات کے لیے، ہمارا {webhookDocumentationLink}دیکھیں۔",
-  "app.containers.Admin.tools.webhooks.documentationUrl": "https://developers.citizenlab.co/webhooks",
   "app.containers.Admin.tools.webhooks.edit": "ویب ہک میں ترمیم کریں۔",
   "app.containers.Admin.tools.webhooks.editWebhookDescription": "اس ویب ہک کی ترتیب کو اپ ڈیٹ کریں۔",
   "app.containers.Admin.tools.webhooks.editWebhookTitle": "ویب ہک میں ترمیم کریں۔",

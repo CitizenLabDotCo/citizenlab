@@ -1867,7 +1867,6 @@
   "app.containers.Admin.tools.webhooks.deliveriesTitle": "Leveringen voor {name}",
   "app.containers.Admin.tools.webhooks.deliveryStats": "Leveringen",
   "app.containers.Admin.tools.webhooks.description": "Configureer webhooks om realtime meldingen te ontvangen wanneer er gebeurtenissen plaatsvinden op je platform. Zie voor meer informatie onze {webhookDocumentationLink}.",
-  "app.containers.Admin.tools.webhooks.documentationUrl": "https://developers.citizenlab.co/webhooks",
   "app.containers.Admin.tools.webhooks.edit": "Bewerk webhook",
   "app.containers.Admin.tools.webhooks.editWebhookDescription": "Bewerk de configuratie van deze webhook.",
   "app.containers.Admin.tools.webhooks.editWebhookTitle": "Bewerk webhook",
