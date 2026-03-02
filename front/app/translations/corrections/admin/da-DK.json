@@ -1,0 +1,13 @@
+{
+  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm1": "Problem",
+  "app.containers.AdminPage.ProjectEdit.newIssue": "Tilføj nyt problem",
+  "app.components.admin.PostManager.issueFormTitle": "Rediger problem",
+  "app.components.app.containers.AdminPage.ProjectEdit.initiativeTerm": "Initiativ",
+  "app.components.admin.PostManager.initiativeFormTitle": "Redigér initiativ",
+  "app.components.app.containers.AdminPage.ProjectEdit.petitionTerm": "Underskrift",
+  "app.containers.AdminPage.ProjectEdit.newPetition": "Tilføj en underskrift",
+  "app.components.admin.PostManager.petitionFormTitle": "Rediger underskrift",
+  "app.components.app.containers.AdminPage.ProjectEdit.suggestionTerm": "Udspil",
+  "app.containers.AdminPage.ProjectEdit.newSuggestion": "Tilføj et udspil",
+  "app.components.admin.PostManager.suggestionFormTitle": "Rediger udspil"
+}

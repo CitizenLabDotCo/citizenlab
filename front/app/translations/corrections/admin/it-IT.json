@@ -1,0 +1,15 @@
+{
+  "app.containers.AdminPage.ProjectEdit.newIssue": "Aggiungi un problema",
+  "app.components.admin.PostManager.issueFormTitle": "Modifica problema",
+  "app.components.app.containers.AdminPage.ProjectEdit.responseTerm": "Parere",
+  "app.containers.AdminPage.ProjectEdit.newResponse": "Aggiungi un parere",
+  "app.components.admin.PostManager.responseFormTitle": "Modifica il parere",
+  "app.containers.AdminPage.ProjectEdit.newSuggestion": "Nuovo suggerimento",
+  "app.components.admin.PostManager.suggestionFormTitle": "Modifica suggerimento",
+  "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "Tema",
+  "app.containers.AdminPage.ProjectEdit.newTopic": "Aggiungi un tema",
+  "app.components.admin.PostManager.topicFormTitle": "Modifica tema",
+  "app.components.app.containers.AdminPage.ProjectEdit.storyTerm": "L'esperienza",
+  "app.containers.AdminPage.ProjectEdit.newStory": "Aggiungi un'esperienza",
+  "app.components.admin.PostManager.storyFormTitle": "Modifica l'esperienza"
+}

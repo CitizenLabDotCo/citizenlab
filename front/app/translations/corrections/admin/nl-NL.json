@@ -1,0 +1,10 @@
+{
+  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm1": "Probleem",
+  "app.containers.AdminPage.ProjectEdit.newIssue": "Voeg een probleem toe",
+  "app.components.admin.PostManager.issueFormTitle": "Probleem bewerken",
+  "app.components.app.containers.AdminPage.ProjectEdit.commentTerm": "Opmerking",
+  "app.containers.AdminPage.ProjectEdit.newComment": "Voeg een opmerking toe",
+  "app.components.admin.PostManager.commentFormTitle": "Bewerk deze opmerking",
+  "app.containers.AdminPage.ProjectEdit.newTopic": "Een thema toevoegen",
+  "app.components.app.containers.AdminPage.ProjectEdit.postTerm": "Bericht"
+}

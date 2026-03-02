@@ -1,0 +1,10 @@
+{
+  "app.containers.NotificationMenu.userCommentedOnIdeaYouFollow": "{name} comentou uma ideia que você segue",
+  "app.containers.IdeasNewPage.api_error_question_description_multiloc_too_long": "A descrição da pergunta deve ter menos de 80 caracteres",
+  "app.containers.IdeasNewPage.ajv_error_question_title_multiloc_minLength1": "O título da pergunta deve ter pelo menos {limit} caracteres",
+  "app.containers.IdeasNewPage.ajv_error_question_body_multiloc_maxLength": "A descrição da pergunta deve ter menos de {limit} caracteres",
+  "app.containers.IdeasNewPage.ajv_error_question_body_multiloc_minLength": "A descrição da pergunta deve ter pelo menos {limit} caracteres",
+  "app.containers.NotificationMenu.userCommentedOnQuestionYouFollow": "{name} comentou em uma pergunta que você segue",
+  "app.containers.NotificationMenu.invitationToCosponsorQuestion": "{name} convidou você para copatrocinar uma pergunta",
+  "app.containers.NotificationMenu.officialFeedbackOnQuestionYouFollow": "{officialName} deu uma atualização oficial sobre uma pergunta que você segue"
+}

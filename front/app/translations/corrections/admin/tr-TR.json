@@ -1,0 +1,9 @@
+{
+  "app.components.admin.PostManager.issueFormTitle": "Sorunu düzenle",
+  "app.components.admin.PostManager.optionFormTitle": "Seçeneği düzenleyin",
+  "app.containers.AdminPage.ProjectEdit.newInitiative": "Bir inisiyatif ekleyin",
+  "app.components.admin.PostManager.initiativeFormTitle": "İnisiyatif düzenleme",
+  "app.components.admin.PostManager.suggestionFormTitle": "Öneriyi düzenle",
+  "app.containers.AdminPage.ProjectEdit.newPost": "Posta ekle",
+  "app.components.admin.PostManager.postFormTitle": "Postayı düzenle"
+}

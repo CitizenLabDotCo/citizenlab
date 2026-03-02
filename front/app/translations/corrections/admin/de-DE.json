@@ -1,0 +1,8 @@
+{
+  "app.containers.AdminPage.ProjectEdit.newIdea": "Neue Idee",
+  "app.containers.AdminPage.ProjectEdit.newIssue": "Einen Mangel hinzufügen",
+  "app.components.admin.PostManager.issueFormTitle": "Mangel bearbeiten",
+  "app.containers.AdminPage.ProjectEdit.newComment": "Kommentar hinzufügen",
+  "app.components.admin.PostManager.commentFormTitle": "Kommentar bearbeiten",
+  "app.components.admin.PostManager.storyFormTitle": "Story bearbeiten"
+}

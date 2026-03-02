@@ -1,0 +1,9 @@
+{
+  "app.containers.IdeasNewPage.ajv_error_contribution_body_multiloc_minLength": "The contribution body must be more than {limit} characters long",
+  "app.containers.IdeaButton.submitAnIssue": "Submit an issue",
+  "app.components.ProjectCard.xIssues": "{ideasCount, plural, one {# issue} other {# issues}}",
+  "app.components.ProjectCard.submitAnIssue": "Submit an issue",
+  "app.components.ProjectCard.viewTheIssues": "View the issues",
+  "app.containers.Projects.seeTheIssues": "See the issues",
+  "app.containers.NotificationMenu.userCommentedOnIssueYouFollow": "{name} commented on an issue that you follow"
+}

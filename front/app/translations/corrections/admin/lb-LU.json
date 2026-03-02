@@ -1,0 +1,12 @@
+{
+  "app.containers.AdminPage.ProjectEdit.newProject": "Neie Projet",
+  "app.containers.AdminPage.ProjectEdit.newIssue": "E Problem derbäisetzen",
+  "app.components.admin.PostManager.issueFormTitle": "Problem änneren",
+  "app.containers.AdminPage.ProjectEdit.newOption": "Füügt eng Optioun bäi",
+  "app.components.admin.PostManager.optionFormTitle": "Optioun änneren",
+  "app.containers.AdminPage.ProjectEdit.newInitiative": "Eng Initiativ bäifügen",
+  "app.containers.AdminPage.ProjectEdit.newPetition": "Eng nei Petitioun dobäizemaachen",
+  "app.components.admin.PostManager.petitionFormTitle": "Petitioun änneren",
+  "app.containers.AdminPage.ProjectEdit.newPost": "E Post derbäisetzen",
+  "app.components.admin.PostManager.postFormTitle": "Post änneren"
+}

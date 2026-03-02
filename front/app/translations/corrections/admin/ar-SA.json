@@ -1,0 +1,17 @@
+{
+  "app.containers.AdminPage.ProjectEdit.newQuestion": "أضف سؤالاً",
+  "app.components.app.containers.AdminPage.ProjectEdit.contributionTerm": "مساهمة",
+  "app.components.admin.PostManager.issueFormTitle": "تحرير المشكلة",
+  "app.components.admin.PostManager.optionFormTitle": "تحرير الخيار",
+  "app.containers.AdminPage.ProjectEdit.newProposal": "أضف عرضًا",
+  "app.components.admin.PostManager.proposalFormTitle": "تعديل العرض",
+  "app.containers.AdminPage.ProjectEdit.newPetition": "أضف التماساً",
+  "app.components.admin.PostManager.petitionFormTitle": "تعديل الالتماس",
+  "app.containers.AdminPage.ProjectEdit.newResponse": "أضف إجابة",
+  "app.components.admin.PostManager.responseFormTitle": "تعديل الإجابة",
+  "app.components.admin.PostManager.suggestionFormTitle": "تعديل اقتراح",
+  "app.containers.AdminPage.ProjectEdit.newTopic": "أضف عنوانًا",
+  "app.components.admin.PostManager.topicFormTitle": "تعديل العنوان",
+  "app.containers.AdminPage.ProjectEdit.newPost": "أضف بريدًا",
+  "app.components.admin.PostManager.postFormTitle": "تعديل البريد"
+}

@@ -1,0 +1,9 @@
+{
+  "app.containers.IdeaButton.submitYourIdea": "Trimite ideea",
+  "app.containers.IdeasShow.ideaEmailSharingBody": "Susține-mi ideea '{ideaTitle}' la {ideaUrl}!",
+  "app.components.ParticipationCTABars.seeIdeas": "Vezi ideile",
+  "app.containers.IdeaButton.addAQuestion": "Adaugă o întrebare",
+  "app.containers.IdeasNewPage.ajv_error_contribution_body_multiloc_minLength": "Corpul contribuției trebuie să aibă o lungime mai mare de {limit} caractere",
+  "app.containers.IdeasShow.projectEmailSharingBody": "Susține acest proiect '{postTitle}' la {postUrl}!",
+  "app.containers.IdeasShow.optionEmailSharingBody": "Susține această opțiune '{postTitle}' la {postUrl}!"
+}

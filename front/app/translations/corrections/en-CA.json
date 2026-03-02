@@ -1,0 +1,13 @@
+{
+  "app.components.ProjectCard.contributeYourInput": "Contribute your contribution",
+  "app.containers.IdeasNewPage.ajv_error_contribution_body_multiloc_minLength": "The contribution description must be more than {limit} characters long",
+  "app.containers.IdeaButton.submitAnIssue": "Submit an issue",
+  "app.components.ProjectCard.xIssues": "{ideasCount, plural, one {# issue} other {# issues}}",
+  "app.components.ProjectCard.submitAnIssue": "Submit an issue",
+  "app.components.ProjectCard.viewTheIssues": "View the issues",
+  "app.containers.Projects.seeTheIssues": "See the issues",
+  "app.containers.NotificationMenu.userCommentedOnIssueYouFollow": "{name} commented on an issue that you follow",
+  "app.components.ParticipationCTABars.seeIssues": "See issues",
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingSubject": "Support my initiative: {postTitle}.",
+  "app.components.PostComponents.SharingModalContent.initiativeEmailSharingBody": "What do you think of this initiative? Vote on it and share the discussion at {postUrl} to make your voice heard!"
+}

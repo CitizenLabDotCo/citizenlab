@@ -1,0 +1,11 @@
+{
+  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm1": "Problem",
+  "app.containers.AdminPage.ProjectEdit.newIssue": "Lägg till ett problem",
+  "app.components.admin.PostManager.issueFormTitle": "Redigera problemet",
+  "app.containers.AdminPage.ProjectEdit.newPetition": "Lägg till en framställning",
+  "app.components.admin.PostManager.petitionFormTitle": "Redigera framställning",
+  "app.components.app.containers.AdminPage.ProjectEdit.suggestionTerm": "Utspel till beslut",
+  "app.containers.AdminPage.ProjectEdit.newSuggestion": "Lägg till ett utspel",
+  "app.components.admin.PostManager.suggestionFormTitle": "Redigera utspel",
+  "app.components.app.containers.AdminPage.ProjectEdit.postTerm": "Inlägg"
+}

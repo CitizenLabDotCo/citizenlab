@@ -1,0 +1,10 @@
+{
+  "app.containers.AdminPage.ProjectEdit.newContribution": "Voeg een onderwerp toe",
+  "app.components.admin.PostManager.contributionFormTitle": "Onderwerp bewerken",
+  "app.components.admin.PostManager.issueFormTitle": "Reactie bewerken",
+  "app.containers.AdminPage.ProjectEdit.newComment": "Voeg een reageer toe",
+  "app.components.admin.PostManager.commentFormTitle": "Bewerk deze reageer",
+  "app.containers.AdminPage.ProjectEdit.newTopic": "Een thema toevoegen",
+  "app.containers.AdminPage.ProjectEdit.newPost": "Een bijdrage toevoegen",
+  "app.components.admin.PostManager.postFormTitle": "Bewerk bijdrage"
+}

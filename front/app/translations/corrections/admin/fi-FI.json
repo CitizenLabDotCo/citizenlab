@@ -1,0 +1,10 @@
+{
+  "app.containers.AdminPage.ProjectEdit.newContribution": "Lisää osallistuminen",
+  "app.components.admin.PostManager.contributionFormTitle": "Muokkaa osallistumista",
+  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm1": "Kysymys",
+  "app.containers.AdminPage.ProjectEdit.newIssue": "Lisää kysymys",
+  "app.components.admin.PostManager.issueFormTitle": "Muokkaa kysymystä",
+  "app.components.app.containers.AdminPage.ProjectEdit.postTerm": "Julkaisu",
+  "app.containers.AdminPage.ProjectEdit.newPost": "Lisää julkaisu",
+  "app.components.admin.PostManager.postFormTitle": "Muokkaa julkaisua"
+}
