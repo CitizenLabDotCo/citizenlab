@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Button, Text } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
@@ -37,28 +37,39 @@ const SpaceNameForm = () => {
   };
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(handleSubmit)}>
-        <InputMultilocWithLocaleSwitcher
-          name="spaceName"
-          label={
-            <>
-              <Text my="0px" color="primary" fontWeight="bold">
-                <FormattedMessage {...messages.spaceName} />
-              </Text>
-            </>
-          }
-        />
-      </form>
-      <Button
-        type="submit"
-        width="auto"
-        disabled={loading}
-        processing={loading}
-      >
-        <FormattedMessage {...messages.save} />
-      </Button>
-    </FormProvider>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="flex-start"
+      mt="120px"
+    >
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(handleSubmit)}>
+          <Box w="448px">
+            <InputMultilocWithLocaleSwitcher
+              name="spaceName"
+              label={
+                <>
+                  <Text my="0px" color="textSecondary">
+                    <FormattedMessage {...messages.spaceName} />
+                  </Text>
+                </>
+              }
+            />
+          </Box>
+        </form>
+        <Button
+          type="submit"
+          width="auto"
+          disabled={loading}
+          processing={loading}
+          buttonStyle="admin-dark"
+          mt="16px"
+        >
+          <FormattedMessage {...messages.save} />
+        </Button>
+      </FormProvider>
+    </Box>
   );
 };
 
