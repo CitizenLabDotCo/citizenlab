@@ -1867,7 +1867,7 @@
   "app.containers.Admin.tools.webhooks.deliveriesTitle": "Pristatymai {name}",
   "app.containers.Admin.tools.webhooks.deliveryStats": "Pristatymai",
   "app.containers.Admin.tools.webhooks.description": "Sukonfigūruokite žiniatinklio kabliukus, kad gautumėte pranešimus realiuoju laiku, kai jūsų platformoje įvyksta įvykiai. Daugiau informacijos rasite mūsų svetainėje {webhookDocumentationLink}.",
-  "app.containers.Admin.tools.webhooks.documentationUrl": "https://developers.citizenlab.co/webhooks",
+  "app.containers.Admin.tools.webhooks.documentationUrl2": "https://developers.govocal.com/guides/reference-webhooks",
   "app.containers.Admin.tools.webhooks.edit": "Redaguoti webhook",
   "app.containers.Admin.tools.webhooks.editWebhookDescription": "Atnaujinkite šio webhook konfigūraciją.",
   "app.containers.Admin.tools.webhooks.editWebhookTitle": "Redaguoti webhook",
