@@ -1867,7 +1867,7 @@
   "app.containers.Admin.tools.webhooks.deliveriesTitle": "Requêtes pour {name}",
   "app.containers.Admin.tools.webhooks.deliveryStats": "Requêtes",
   "app.containers.Admin.tools.webhooks.description": "Configurez des webhooks pour recevoir des notifications en temps réel lorsque des événements se produisent sur votre plateforme. Pour plus d'informations, consultez notre site {webhookDocumentationLink}.",
-  "app.containers.Admin.tools.webhooks.documentationUrl": "https://developers.citizenlab.co/webhooks",
+  "app.containers.Admin.tools.webhooks.documentationUrl2": "https://developers.govocal.com/guides/reference-webhooks",
   "app.containers.Admin.tools.webhooks.edit": "Modifier le webhook",
   "app.containers.Admin.tools.webhooks.editWebhookDescription": "Modifiez la configuration de ce webhook.",
   "app.containers.Admin.tools.webhooks.editWebhookTitle": "Modifier le webhook",
