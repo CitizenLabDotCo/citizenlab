@@ -1,7 +1,7 @@
 import { ICampaignData, CampaignContext } from './types';
 
 export function isDraft(campaign: ICampaignData) {
-  return campaign.attributes.deliveries_count === 0;
+  return campaign.attributes.deliveries_count === 0 && !isScheduled(campaign);
 }
 
 export function getCampaignsContextPath({
@@ -14,4 +14,9 @@ export function getCampaignsContextPath({
     return `projects/${projectId}/campaigns`;
   }
   return 'campaigns';
+}
+
+export function isScheduled(campaign: ICampaignData | undefined) {
+  const scheduledAt = campaign?.attributes.scheduled_at;
+  return scheduledAt !== null && scheduledAt !== undefined;
 }

@@ -7,6 +7,7 @@ export interface CalendarProps {
   defaultMonth?: Date;
   selectedDate?: Date;
   onChange: (date: Date) => void;
+  disabledDates?: (date: Date) => boolean;
 }
 
 export interface Props extends CalendarProps {

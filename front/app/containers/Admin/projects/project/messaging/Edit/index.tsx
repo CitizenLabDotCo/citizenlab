@@ -58,6 +58,7 @@ const Edit = () => {
             reply_to: campaign.data.attributes.reply_to,
             subject_multiloc: campaign.data.attributes.subject_multiloc,
             body_multiloc: campaign.data.attributes.body_multiloc,
+            isScheduled: campaign.data.attributes.scheduled_at !== null,
           }}
         />
       </Box>

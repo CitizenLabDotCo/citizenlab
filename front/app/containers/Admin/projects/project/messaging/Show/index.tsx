@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 
 import {
   StatusLabel,
@@ -7,32 +8,43 @@ import {
   Title,
   Box,
   fontSizes,
+  Button,
+  Text,
+  Dropdown,
 } from '@citizenlab/cl2-component-library';
+import { FormattedDate, FormattedTime } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useCampaign from 'api/campaigns/useCampaign';
+import useScheduleCampaign from 'api/campaigns/useScheduleCampaign';
 import useSendCampaign from 'api/campaigns/useSendCampaign';
 import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
-import { isDraft } from 'api/campaigns/util';
+import { isDraft, isScheduled } from 'api/campaigns/util';
 import useUserById from 'api/users/useUserById';
 
 import useLocalize from 'hooks/useLocalize';
 
+import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
 import DraftCampaignDetails from 'components/admin/Email/DraftCampaignDetails';
 import SentCampaignDetails from 'components/admin/Email/SentCampaignDetails';
 import Stamp from 'components/admin/Email/Stamp';
+import { Form } from 'components/smallForm';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import GoBackButton from 'components/UI/GoBackButton';
+import Modal from 'components/UI/Modal';
+import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
 
+import TimeInputScheduling from './TimeInputScheduling';
+import { getTimezoneOffset, getDefaultTime, isPastDate } from './utils';
 const StampIcon = styled(Stamp)`
   margin-right: 20px;
 `;
@@ -63,6 +75,10 @@ const Buttons = styled.div`
   }
 `;
 
+const StyledForm = styled(Form)`
+  max-width: none;
+`;
+
 const Show = () => {
   const { projectId, campaignId } = useParams() as {
     projectId: string;
@@ -79,16 +95,23 @@ const Show = () => {
   } = useSendCampaign();
   const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
     useSendCampaignPreview();
+  const { mutate: scheduleCampaign, isLoading: isScheduling } =
+    useScheduleCampaign();
 
   const { data: sender } = useUserById(
     campaign?.data.relationships.author.data.id
   );
-  const isLoading = isSendingCampaign || isSendingCampaignPreview;
+  const isLoading =
+    isSendingCampaign || isSendingCampaignPreview || isScheduling;
 
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
   const handleSend = () => {
+    // if the campaign is scheduled, we need to cancel the schedule ( send null ) before sending the campaign
+    if (isScheduled(campaign?.data)) {
+      scheduleCampaign({ id: campaignId, scheduledAt: null });
+    }
     sendCampaign(campaignId);
   };
 
@@ -119,6 +142,88 @@ const Show = () => {
     return senderName;
   };
 
+  const timeZone = tenant?.data.attributes.settings.core.timezone;
+  const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
+    undefined
+  );
+  const [selectedTime, setSelectedTime] = React.useState<Date>(
+    getDefaultTime()
+  );
+  const [openSchaduleModal, setOpenSchaduleModal] = useState(false);
+  const [openCancelScheduleModal, setOpenCancelScheduleModal] = useState(false);
+  const [openedDropdown, setOpenedDropdown] = useState(false);
+
+  const handleScheduleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (campaign && selectedDate) {
+      // Combine date and time
+      const scheduledDateTime = new Date(selectedDate);
+      scheduledDateTime.setHours(selectedTime.getHours());
+      scheduledDateTime.setMinutes(selectedTime.getMinutes());
+      scheduledDateTime.setSeconds(0);
+
+      const scheduledAt = scheduledDateTime.toISOString();
+      scheduleCampaign(
+        { id: campaign.data.id, scheduledAt },
+        {
+          onSuccess: () => {
+            console.log('Campaign scheduled for', scheduledAt);
+            closeSchaduleModal();
+          },
+        }
+      );
+    }
+  };
+  // cancel schedule campaign ( send scheduledAt as null )
+  const handleCancelSchedule = () => {
+    if (campaign) {
+      scheduleCampaign(
+        { id: campaign.data.id, scheduledAt: null },
+        {
+          onSuccess: () => {
+            closeCancelScheduleModal();
+          },
+        }
+      );
+    }
+  };
+
+  const handleDateChange = (date: Date) => {
+    setSelectedDate(date);
+    // If today is selected, update time to next hour
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const selected = new Date(date);
+    selected.setHours(0, 0, 0, 0);
+
+    if (selected.getTime() === today.getTime()) {
+      const now = new Date();
+      const nextHour = now.getHours() + 1;
+      const newTime = new Date();
+      newTime.setHours(nextHour, 0, 0, 0);
+      setSelectedTime(newTime);
+    }
+  };
+
+  const handleTimeChange = (time: Date) => {
+    setSelectedTime(time);
+  };
+  const handleOpenSchaduleModal = () => {
+    setOpenSchaduleModal(true);
+  };
+  const closeSchaduleModal = () => {
+    setOpenSchaduleModal(false);
+  };
+  const handleCancelScheduleModal = () => {
+    setOpenCancelScheduleModal(true);
+  };
+  const closeCancelScheduleModal = () => {
+    setOpenCancelScheduleModal(false);
+  };
+  const toggleScheduleSendDropdown = () => {
+    setOpenedDropdown(!openedDropdown);
+  };
+
   if (campaign) {
     const senderType = campaign.data.attributes.sender;
     const senderName = getSenderName(senderType);
@@ -128,23 +233,42 @@ const Show = () => {
         <Box background={colors.white} p="40px" id="e2e-custom-email-container">
           <GoBackButton linkTo={`/admin/projects/${projectId}/messaging`} />
           <Box display="flex" mb="20px">
-            <Box display="flex" alignItems="center" mr="auto">
+            <Box display="flex" alignItems="center" mr="auto" gap="12px">
               <Title mr="12px">
                 <T value={campaign.data.attributes.subject_multiloc} />
               </Title>
-              {isDraft(campaign.data) ? (
+              {isDraft(campaign.data) && (
                 <StatusLabel
                   backgroundColor={colors.brown}
                   text={<FormattedMessage {...messages.draft} />}
                 />
-              ) : (
+              )}
+              {!isDraft(campaign.data) && !isScheduled(campaign.data) && (
                 <StatusLabel
                   backgroundColor={colors.success}
                   text={<FormattedMessage {...messages.sent} />}
                 />
               )}
+              {isScheduled(campaign.data) && (
+                <>
+                  <StatusLabel
+                    backgroundColor={colors.black}
+                    text={<FormattedMessage {...messages.scheduled} />}
+                  />
+                  {campaign.data.attributes.scheduled_at && (
+                    <>
+                      <FormattedDate
+                        value={campaign.data.attributes.scheduled_at}
+                      />{' '}
+                      <FormattedTime
+                        value={campaign.data.attributes.scheduled_at}
+                      />
+                    </>
+                  )}
+                </>
+              )}
             </Box>
-            {isDraft(campaign.data) && (
+            {(isDraft(campaign.data) || isScheduled(campaign.data)) && (
               <Buttons>
                 <ButtonWithLink
                   linkTo={`/admin/projects/${projectId}/messaging/${campaign.data.id}/edit`}
@@ -152,16 +276,84 @@ const Show = () => {
                 >
                   <FormattedMessage {...messages.editButtonLabel} />
                 </ButtonWithLink>
-                <ButtonWithLink
-                  buttonStyle="admin-dark"
-                  icon="send"
-                  iconPos="right"
-                  onClick={handleSend}
-                  disabled={isLoading}
-                  processing={isSendingCampaign}
+
+                <Box
+                  position="relative"
+                  display="flex"
+                  gap="0.3px"
+                  alignItems="center"
                 >
-                  <FormattedMessage {...messages.send} />
-                </ButtonWithLink>
+                  <Button
+                    buttonStyle="admin-dark"
+                    icon="send"
+                    iconPos="right"
+                    onClick={handleSend}
+                    disabled={isLoading}
+                    processing={isSendingCampaign}
+                    borderRadius="3px 0px 0px 3px"
+                    height="75%"
+                  >
+                    <FormattedMessage {...messages.send} />
+                  </Button>
+                  <Button
+                    buttonStyle="admin-dark"
+                    icon="chevron-down"
+                    onClick={toggleScheduleSendDropdown}
+                    disabled={isLoading}
+                    borderRadius="0px 3px 3px 0px"
+                    padding="0px 8px"
+                    height="75%"
+                  />
+
+                  <Dropdown
+                    opened={openedDropdown}
+                    onClickOutside={() => setOpenedDropdown(false)}
+                    width="200px"
+                    top="65px"
+                    right="0px"
+                    content={
+                      <Box
+                        background={colors.white}
+                        border={`1px solid ${colors.borderLight}`}
+                        borderRadius="4px"
+                      >
+                        {isDraft(campaign.data) && (
+                          <Button
+                            onClick={() => {
+                              handleOpenSchaduleModal();
+                              setOpenedDropdown(false);
+                            }}
+                            buttonStyle="text"
+                            justify="left"
+                            bgHoverColor={colors.background}
+                          >
+                            <FormattedMessage {...messages.scheduleSend} />
+                          </Button>
+                        )}
+                        {isScheduled(campaign.data) && (
+                          <>
+                            <Button
+                              onClick={handleOpenSchaduleModal}
+                              buttonStyle="text"
+                              justify="left"
+                              bgHoverColor={colors.background}
+                            >
+                              <FormattedMessage {...messages.rescheduleSend} />
+                            </Button>
+                            <Button
+                              onClick={handleCancelScheduleModal}
+                              buttonStyle="text"
+                              justify="left"
+                              bgHoverColor={colors.background}
+                            >
+                              <FormattedMessage {...messages.cancelSchedule} />
+                            </Button>
+                          </>
+                        )}
+                      </Box>
+                    }
+                  />
+                </Box>
               </Buttons>
             )}
           </Box>
@@ -211,12 +403,72 @@ const Show = () => {
             )}
           </Box>
 
-          {isDraft(campaign.data) ? (
+          {isDraft(campaign.data) || isScheduled(campaign.data) ? (
             <DraftCampaignDetails campaign={campaign.data} />
           ) : (
             <SentCampaignDetails campaignId={campaign.data.id} />
           )}
         </Box>
+        <Modal opened={openSchaduleModal} close={closeSchaduleModal}>
+          <Title>
+            {' '}
+            <FormattedMessage {...messages.scheduleSendTitle} />{' '}
+          </Title>
+          <Text mb="16px">
+            <FormattedMessage {...messages.scheduleSendDescription} />
+          </Text>
+          <Box mt="24px" minHeight="400px">
+            <StyledForm onSubmit={handleScheduleFormSubmit}>
+              <Box display="flex" gap="16px" alignItems="center">
+                <DateSinglePicker
+                  onChange={handleDateChange}
+                  selectedDate={selectedDate}
+                  startMonth={new Date()}
+                  disabledDates={isPastDate}
+                />
+                <TimeInputScheduling
+                  selectedTime={selectedTime}
+                  onChange={handleTimeChange}
+                  selectedDate={selectedDate}
+                />
+                <Text fontSize="l">{getTimezoneOffset(timeZone)}</Text>
+              </Box>
+              <Warning mt="16px">
+                <Text mt="16px" fontSize="m">
+                  <FormattedMessage {...messages.scheduleSendWarning} />
+                </Text>
+              </Warning>
+              <Button
+                type="submit"
+                mt="16px"
+                disabled={!selectedDate || !selectedTime}
+              >
+                <FormattedMessage {...messages.confirmSchedule} />
+              </Button>
+            </StyledForm>
+          </Box>
+        </Modal>
+
+        <Modal
+          opened={openCancelScheduleModal}
+          close={closeCancelScheduleModal}
+        >
+          <Title>
+            {' '}
+            <FormattedMessage {...messages.cancelScheduleTitle} />{' '}
+          </Title>
+          <Text mb="16px">
+            <FormattedMessage {...messages.cancelScheduleDescription} />
+          </Text>
+          <Box display="flex" gap="16px" justifyContent="flex-end">
+            <Button onClick={handleCancelSchedule} buttonStyle="admin-dark">
+              <FormattedMessage {...messages.confirmCancelSchedule} />
+            </Button>
+            <Button onClick={closeCancelScheduleModal} buttonStyle="secondary">
+              <FormattedMessage {...messages.keepSchedule} />
+            </Button>
+          </Box>
+        </Modal>
       </Box>
     );
   }

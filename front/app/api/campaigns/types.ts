@@ -54,6 +54,7 @@ export interface ICampaignData {
       clicked: number;
       total: number;
     };
+    scheduled_at?: string | null;
   };
   relationships: {
     author: {

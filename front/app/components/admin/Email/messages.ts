@@ -95,4 +95,8 @@ export default defineMessages({
     id: 'app.components.Admin.Campaigns.subject',
     defaultMessage: 'Subject',
   },
+  scheduled: {
+    id: 'app.components.Admin.Campaigns.scheduled',
+    defaultMessage: 'Scheduled',
+  },
 });

@@ -62,6 +62,7 @@ export interface FormValues {
   reply_to: string;
   subject_multiloc: Multiloc;
   body_multiloc: Multiloc;
+  isScheduled?: boolean;
 }
 
 type CampaignFormProps = {
@@ -94,7 +95,7 @@ const CampaignForm = ({
       formatMessage(messages.fieldBodyError)
     ),
   });
-
+  const isScheduledSavedCampaign = defaultValues?.isScheduled;
   const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues,
@@ -248,13 +249,23 @@ const CampaignForm = ({
           </SectionField>
         </StyledSection>
         <Box display="flex">
-          <Button
-            id="e2e-campaign-form-save-button"
-            type="submit"
-            processing={isLoading}
-          >
-            {formatMessage(messages.formSave)}
-          </Button>
+          {isScheduledSavedCampaign ? (
+            <Button
+              id="e2e-campaign-form-save-button"
+              type="submit"
+              processing={isLoading}
+            >
+              {formatMessage(messages.save)}
+            </Button>
+          ) : (
+            <Button
+              id="e2e-campaign-form-save-button"
+              type="submit"
+              processing={isLoading}
+            >
+              {formatMessage(messages.formSave)}
+            </Button>
+          )}
         </Box>
       </form>
     </FormProvider>

@@ -227,4 +227,59 @@ export default defineMessages({
     id: 'app.containers.Admin.project.emails.projectParticipants',
     defaultMessage: 'Project participants',
   },
+  scheduled: {
+    id: 'app.containers.Admin.project.emails.scheduled',
+    defaultMessage: 'Scheduled',
+  },
+  save: {
+    id: 'app.containers.Admin.project.emails.save',
+    defaultMessage: 'Save',
+  },
+  scheduleSend: {
+    id: 'app.containers.Admin.project.emails.scheduleSend',
+    defaultMessage: 'Schedule send',
+  },
+  rescheduleSend: {
+    id: 'app.containers.Admin.project.emails.rescheduleSend',
+    defaultMessage: 'Reschedule',
+  },
+  cancelSchedule: {
+    id: 'app.containers.Admin.project.emails.cancelSchedule',
+    defaultMessage: 'Cancel Schedule',
+  },
+  scheduleSendTitle: {
+    id: 'app.containers.Admin.project.emails.scheduleSendTitle',
+    defaultMessage: 'Schedule email',
+  },
+  scheduleSendDescription: {
+    id: 'app.containers.Admin.project.emails.scheduleSendDescription',
+    defaultMessage:
+      'Choose the date and time you want the campaign to be sent.',
+  },
+  scheduleSendWarning: {
+    id: 'app.containers.Admin.project.emails.scheduleSendWarning',
+    defaultMessage:
+      ' Note: the schedule time can be up to 30 minutes later than the selected time due to processing time.',
+  },
+  confirmSchedule: {
+    id: 'app.containers.Admin.project.emails.confirmSchedule',
+    defaultMessage: 'Confirm schedule',
+  },
+  cancelScheduleTitle: {
+    id: 'app.containers.Admin.project.emails.cancelScheduleTitle',
+    defaultMessage: 'Cancel scheduled email',
+  },
+  cancelScheduleDescription: {
+    id: 'app.containers.Admin.project.emails.cancelScheduleDescription',
+    defaultMessage:
+      'Are you sure you want to cancel the schedule for this campaign? The campaign will no longer be scheduled to send, but you can still sendit manually or reschedule it.',
+  },
+  confirmCancelSchedule: {
+    id: 'app.containers.Admin.project.emails.confirmCancelSchedule',
+    defaultMessage: 'Yes, cancel scheduled email',
+  },
+  keepSchedule: {
+    id: 'app.containers.Admin.project.emails.keepSchedule',
+    defaultMessage: 'No, keep schedule',
+  },
 });
