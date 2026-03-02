@@ -1867,7 +1867,7 @@
   "app.containers.Admin.tools.webhooks.deliveriesTitle": "Leverancer til {name}",
   "app.containers.Admin.tools.webhooks.deliveryStats": "Leverancer",
   "app.containers.Admin.tools.webhooks.description": "Konfigurer webhooks til at modtage meddelelser i realtid, når der sker hændelser på din platform. For mere information, se vores {webhookDocumentationLink}.",
-  "app.containers.Admin.tools.webhooks.documentationUrl": "{tenantName, select,  {https://matomo.org/} other {https://developers.citizenlab.co/webhooks}}",
+  "app.containers.Admin.tools.webhooks.documentationUrl2": "{tenantName, select,  {https://matomo.org/} other {https://developers.govocal.com/guides/reference-webhooks}}",
   "app.containers.Admin.tools.webhooks.edit": "Rediger webhook",
   "app.containers.Admin.tools.webhooks.editWebhookDescription": "Opdater konfigurationen af dette webhook.",
   "app.containers.Admin.tools.webhooks.editWebhookTitle": "Rediger webhook",
