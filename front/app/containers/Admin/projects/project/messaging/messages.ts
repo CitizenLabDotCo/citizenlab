@@ -252,9 +252,8 @@ export default defineMessages({
     defaultMessage: 'Schedule email',
   },
   scheduleSendDescription: {
-    id: 'app.containers.Admin.project.emails.scheduleSendDescription',
-    defaultMessage:
-      'Choose the date and time you want the campaign to be sent.',
+    id: 'app.containers.Admin.project.emails.scheduleSendDescription2',
+    defaultMessage: 'When should this email go out?',
   },
   scheduleSendWarning: {
     id: 'app.containers.Admin.project.emails.scheduleSendWarning',

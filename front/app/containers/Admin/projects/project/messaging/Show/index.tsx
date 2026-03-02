@@ -250,7 +250,7 @@ const Show = () => {
               {isScheduled(campaign.data) && (
                 <>
                   <StatusLabel
-                    backgroundColor={colors.black}
+                    backgroundColor={colors.teal500}
                     text={<FormattedMessage {...messages.scheduled} />}
                   />
                   {campaign.data.attributes.scheduled_at && (
@@ -431,14 +431,14 @@ const Show = () => {
                 />
                 <Text fontSize="l">{getTimezoneOffset(timeZone)}</Text>
               </Box>
-              <Warning mt="16px">
+              <Warning mt="24px">
                 <Text mt="16px" fontSize="m">
                   <FormattedMessage {...messages.scheduleSendWarning} />
                 </Text>
               </Warning>
               <Button
                 type="submit"
-                mt="16px"
+                mt="24px"
                 disabled={!selectedDate || !selectedTime}
               >
                 <FormattedMessage {...messages.confirmSchedule} />

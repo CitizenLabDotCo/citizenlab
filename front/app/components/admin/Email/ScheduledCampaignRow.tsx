@@ -57,7 +57,7 @@ const ScheduledCampaignRow = ({ campaign, context }: Props) => {
             )}
           </Text>
           <StatusLabel
-            backgroundColor={colors.black}
+            backgroundColor={colors.teal500}
             text={<FormattedMessage {...messages.scheduled} />}
           />
           {/* Only display project name in the global messaging tab */}
