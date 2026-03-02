@@ -122,7 +122,7 @@ const Tabs = () => {
           trackEventByName(tracks.setTab, { tab: 'calendar' });
         }}
       />
-      {userIsAdmin && (
+      {userIsAdmin && workspacesEnabled && (
         <Tab
           message={messages.workspaces}
           icon="organigram"
@@ -135,7 +135,7 @@ const Tabs = () => {
           }}
         />
       )}
-      {userIsAdmin && workspacesEnabled && (
+      {userIsAdmin && (
         <Tab
           message={messages.arrangeProjects}
           icon="drag-handle"
