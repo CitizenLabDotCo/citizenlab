@@ -295,9 +295,9 @@ class Project < ApplicationRecord
 
   def space_must_match_folder_space
     folder = admin_publication&.parent&.publication
-    return unless folder&.is_a?(ProjectFolders::Folder) && folder&.space&.id != space_id
+    return unless folder.is_a?(ProjectFolders::Folder) && folder&.space&.id != space_id
 
-    errors.add(:space_id, "must match the space of the folder")
+    errors.add(:space_id, 'must match the space of the folder')
   end
 
   def sanitize_description_multiloc
