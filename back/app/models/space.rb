@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: workspaces
+# Table name: spaces
 #
 #  id                   :uuid             not null, primary key
 #  title_multiloc       :jsonb            not null
@@ -8,7 +8,7 @@
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #
-class Workspace < ApplicationRecord
+class Space < ApplicationRecord
   has_many :projects, dependent: :nullify
   has_many :folders, dependent: :nullify, class_name: 'ProjectFolders::Folder'
 

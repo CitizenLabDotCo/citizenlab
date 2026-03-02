@@ -14,16 +14,16 @@
 #  updated_at                   :datetime         not null
 #  followers_count              :integer          default(0), not null
 #  header_bg_alt_text_multiloc  :jsonb
-#  workspace_id                 :uuid
+#  space_id                     :uuid
 #
 # Indexes
 #
-#  index_project_folders_folders_on_slug          (slug)
-#  index_project_folders_folders_on_workspace_id  (workspace_id)
+#  index_project_folders_folders_on_slug      (slug)
+#  index_project_folders_folders_on_space_id  (space_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (workspace_id => workspaces.id)
+#  fk_rails_...  (space_id => spaces.id)
 #
 module ProjectFolders
   class Folder < ::ApplicationRecord
@@ -33,7 +33,7 @@ module ProjectFolders
 
     slug from: proc { |folder| folder.title_multiloc&.values&.find(&:present?) }
 
-    belongs_to :workspace, optional: true
+    belongs_to :space, optional: true
 
     has_many_text_images from: :description_multiloc
 

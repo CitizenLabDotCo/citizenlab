@@ -11,7 +11,7 @@ RSpec.describe ProjectFolders::Folder do
 
   it { is_expected.to validate_presence_of(:title_multiloc) }
 
-  it { is_expected.to belong_to(:workspace).optional }
+  it { is_expected.to belong_to(:space).optional }
 
   it 'validates presence of slug' do
     folder = build(:project_folder)
