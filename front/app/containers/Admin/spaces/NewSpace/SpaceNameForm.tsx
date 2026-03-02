@@ -3,25 +3,29 @@ import React from 'react';
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
-import { string, object } from 'yup';
+import { Multiloc } from 'typings';
+import { object } from 'yup';
 
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
+import validateMultiloc from 'utils/yup/validateMultilocForEveryLocale';
 
 import messages from './messages';
 
 interface FormValues {
-  spaceName: string;
+  spaceName: Multiloc;
 }
 
 const DEFAULT_VALUES: FormValues = {
-  spaceName: '',
+  spaceName: {},
 };
 
 const SpaceNameForm = () => {
+  const { formatMessage } = useIntl();
+
   const schema = object({
-    spaceName: string().required().min(3).max(80),
+    spaceName: validateMultiloc(formatMessage(messages.missingNameLocaleError)),
   });
 
   const methods = useForm<FormValues>({
@@ -51,7 +55,7 @@ const SpaceNameForm = () => {
               label={
                 <>
                   <Text my="0px" color="textSecondary">
-                    <FormattedMessage {...messages.spaceName} />
+                    {formatMessage(messages.spaceName)}
                   </Text>
                 </>
               }
@@ -66,7 +70,7 @@ const SpaceNameForm = () => {
           buttonStyle="admin-dark"
           mt="16px"
         >
-          <FormattedMessage {...messages.save} />
+          {formatMessage(messages.save)}
         </Button>
       </FormProvider>
     </Box>

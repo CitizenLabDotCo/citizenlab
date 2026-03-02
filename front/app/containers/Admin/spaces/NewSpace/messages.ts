@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.Admin.spaces.NewSpace.spaceName',
     defaultMessage: 'Space name',
   },
+  missingNameLocaleError: {
+    id: 'app.containers.Admin.spaces.NewSpace.missingNameLocaleError',
+    defaultMessage: 'Please fill in the name in all languages',
+  },
   save: {
     id: 'app.containers.Admin.spaces.NewSpace.save',
     defaultMessage: 'Save',
