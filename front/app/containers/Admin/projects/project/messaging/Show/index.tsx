@@ -143,12 +143,25 @@ const Show = () => {
   };
 
   const timeZone = tenant?.data.attributes.settings.core.timezone;
+
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
-    undefined
+    () => {
+      if (
+        isScheduled(campaign?.data) &&
+        campaign?.data.attributes.scheduled_at
+      ) {
+        return new Date(campaign.data.attributes.scheduled_at);
+      }
+      return undefined;
+    }
   );
-  const [selectedTime, setSelectedTime] = React.useState<Date>(
-    getDefaultTime()
-  );
+
+  const [selectedTime, setSelectedTime] = React.useState<Date>(() => {
+    if (isScheduled(campaign?.data) && campaign?.data.attributes.scheduled_at) {
+      return new Date(campaign.data.attributes.scheduled_at);
+    }
+    return getDefaultTime();
+  });
   const [openSchaduleModal, setOpenSchaduleModal] = useState(false);
   const [openCancelScheduleModal, setOpenCancelScheduleModal] = useState(false);
   const [openedDropdown, setOpenedDropdown] = useState(false);
@@ -207,6 +220,12 @@ const Show = () => {
     setSelectedTime(time);
   };
   const handleOpenSchaduleModal = () => {
+    // if email is already scheduled set the default value to scheduled date and time
+    if (isScheduled(campaign?.data) && campaign?.data.attributes.scheduled_at) {
+      const scheduledDate = new Date(campaign.data.attributes.scheduled_at);
+      setSelectedDate(scheduledDate);
+      setSelectedTime(scheduledDate);
+    }
     setOpenSchaduleModal(true);
   };
   const closeSchaduleModal = () => {

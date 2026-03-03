@@ -31,18 +31,20 @@ export const isPastDate = (date: Date) => {
   return compareDate < today;
 };
 
-// Generate times in 1 hour intervals for the time selector
+// Generate times in 5 minute intervals for the time selector
 export const generateTimes = () => {
   const times: Date[] = [];
 
   for (let hour = 0; hour < 24; hour++) {
-    const date = new Date();
-    date.setHours(hour);
-    date.setMinutes(0);
-    date.setSeconds(0);
-    date.setMilliseconds(0);
+    for (let minute = 0; minute < 60; minute += 5) {
+      const date = new Date();
+      date.setHours(hour);
+      date.setMinutes(minute);
+      date.setSeconds(0);
+      date.setMilliseconds(0);
 
-    times.push(date);
+      times.push(date);
+    }
   }
   return times;
 };
