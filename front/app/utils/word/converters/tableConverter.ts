@@ -17,7 +17,7 @@ import {
   WORD_COLORS,
 } from '../utils/styleConstants';
 
-import type { CellContent, TableRowData } from './types';
+import type { WordCellContent, WordTableRowData } from './types';
 
 interface TableOptions {
   columnWidths?: number[]; // Percentages that should sum to 100
@@ -27,7 +27,10 @@ interface TableOptions {
   headerBackground?: string;
 }
 
-function createTable(rows: TableRowData[], options: TableOptions = {}): Table {
+function createTable(
+  rows: WordTableRowData[],
+  options: TableOptions = {}
+): Table {
   const {
     columnWidths,
     headerRow = true,
@@ -73,10 +76,10 @@ function createTable(rows: TableRowData[], options: TableOptions = {}): Table {
 }
 
 export function createSimpleTable(
-  data: CellContent[][],
+  data: WordCellContent[][],
   options: TableOptions = {}
 ): Table {
-  const rows: TableRowData[] = data.map((rowData, index) => ({
+  const rows: WordTableRowData[] = data.map((rowData, index) => ({
     cells: rowData,
     isHeader: options.headerRow !== false && index === 0,
   }));
@@ -94,7 +97,7 @@ interface CellOptions {
 }
 
 function createTableCell(
-  content: CellContent,
+  content: WordCellContent,
   options: CellOptions = {}
 ): TableCell {
   const {

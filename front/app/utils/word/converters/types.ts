@@ -8,10 +8,10 @@ export interface WordBreakdownItem {
 }
 
 // Table cell content types
-export type CellContent = string | number | null | undefined;
+export type WordCellContent = string | number | null | undefined;
 
 // Table row data
-export interface TableRowData {
-  cells: CellContent[];
+export interface WordTableRowData {
+  cells: WordCellContent[];
   isHeader?: boolean;
 }
