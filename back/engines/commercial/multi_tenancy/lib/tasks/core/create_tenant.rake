@@ -371,7 +371,7 @@ namespace :cl2_back do
           enabled: false,
           allowed: false
         },
-        workspaces: {
+        spaces: {
           enabled: false,
           allowed: false
         }
