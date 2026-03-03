@@ -1,7 +1,19 @@
 /**
  * useWordSection — registration API for exportable insight components.
- * Components register serializer functions that return WordSection[] arrays.
- * Serializers are invoked only during download, not on every render.
+ *
+ * Relationship to `useWordExportContext`:
+ * - `useWordExportContext` owns the central registry and the download pipeline.
+ * - `useWordSection` is the per-section helper that registers a serializer
+ *   into that registry, so the export context can call it later during download.
+ *
+ * What it does:
+ * - Registers a serializer for a section (by exportId) with the Word export context.
+ * - Tracks "skip" state so sections can opt out when loading/empty/error.
+ *
+ * When work happens:
+ * - The serializer is NOT executed during render.
+ * - The serializer is called only when the user triggers a Word download.
+ *
  */
 import { useEffect, useRef, useCallback } from 'react';
 
