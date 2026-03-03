@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# NOTES: Domain partecipa.comune.modena.it
+
 module IdFedera
   class FederaOmniauth < OmniauthMethods::Base
     include FederaVerification
@@ -39,8 +41,11 @@ module IdFedera
     def omniauth_setup(configuration, env)
       return unless configuration.feature_activated?('federa_login')
 
-      environment = configuration.settings('federa_login', 'environment')
-      spid_level = configuration.settings('federa_login', 'spid_level')
+      environment = config['environment'] || 'test'
+      spid_level = config['spid_level'] || '1'
+
+      # TODO: signing of URLs requires this private key
+      # private_key = config['private_key'] || ''
 
       metadata_file = ENVIRONMENTS.dig(environment, :metadata_xml_file)
 
@@ -57,18 +62,24 @@ module IdFedera
         env['QUERY_STRING'] = qs.empty? ? "RelayState=#{relay_state}" : "#{qs}&RelayState=#{relay_state}"
       end
 
-      verification_config = config
-
       options = idp_metadata.merge(
         issuer: "#{configuration.base_backend_uri}/auth/federa/metadata",
         assertion_consumer_service_url: "#{configuration.base_backend_uri}/auth/federa/callback",
-        private_key: verification_config[:private_key],
+        request_attributes: [
+          { name: 'email' },
+          { name: 'name' },
+          { name: 'familyName' },
+          { name: 'dateOfBirth' },
+          { name: 'domicileMunicipality' }
+        ],
         idpis_sso_service_url_runtime_params: { RelayState: :RelayState },
-        authn_context: SPID_AUTHN_CONTEXT.fetch(spid_level, SPID_AUTHN_CONTEXT['1']),
-        security: {
-          authn_requests_signed: true,
-          signature_method: XMLSecurity::Document::RSA_SHA256
-        }
+        authn_context: SPID_AUTHN_CONTEXT.fetch(spid_level, SPID_AUTHN_CONTEXT['1'])
+        # TODO: signing of URLs as requires a private key
+        # private_key: private_key,
+        # security: {
+        #   authn_requests_signed: true,
+        #   signature_method: XMLSecurity::Document::RSA_SHA256
+        # }
       )
 
       env['omniauth.strategy'].options.merge!(options)

@@ -22,6 +22,22 @@ module IdFedera
 
     def config_parameters_schema
       {
+        environment: {
+          type: 'string',
+          title: 'Environment',
+          description: 'Test environment or live production environment',
+          enum: %w[test production],
+          default: 'test',
+          private: true
+        },
+        spid_level: {
+          type: 'string',
+          title: 'SPID Level',
+          description: 'SPID authentication level (1, 2, or 3)',
+          enum: %w[1 2 3],
+          default: '1',
+          private: true
+        },
         private_key: {
           private: true,
           type: 'string',
