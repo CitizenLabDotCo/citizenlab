@@ -6,23 +6,28 @@ import styled from 'styled-components';
 
 import OriginalLink from 'utils/cl-router/Link';
 
-const StyledLink = styled(OriginalLink)`
+const StyledLink = styled(OriginalLink)<{ color: string }>`
   font-size: ${fontSizes.base}px;
-  color: ${colors.black};
+  color: ${({ color }) => color};
 
   &:hover {
-    color: ${colors.black};
+    color: ${({ color }) => color};
     text-decoration: underline;
   }
 `;
 
 interface Props {
   to: RouteType;
+  color?: string;
   children: React.ReactNode;
 }
 
-const Link = ({ to, children }: Props) => {
-  return <StyledLink to={to}>{children}</StyledLink>;
+const Link = ({ to, color = colors.black, children }: Props) => {
+  return (
+    <StyledLink to={to} color={color}>
+      {children}
+    </StyledLink>
+  );
 };
 
 export default Link;

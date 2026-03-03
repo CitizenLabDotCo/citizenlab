@@ -28,14 +28,14 @@ export const TEST_NODE_DATA: TreeNode[] = [
         type: 'project',
         name: 'Some nested project',
         path: '/admin/projects/4',
-        state: 'blocked',
+        state: 'locked',
       },
       {
         id: '5',
         type: 'project',
         name: 'Another nested project',
         path: '/admin/projects/5',
-        state: 'blocked',
+        state: 'locked',
       },
     ],
   },
@@ -44,7 +44,7 @@ export const TEST_NODE_DATA: TreeNode[] = [
     type: 'folder',
     name: 'Folder 2',
     path: '/admin/projects/folders/6',
-    state: 'blocked',
+    state: 'crossed-out',
     children: [
       {
         id: '7',
