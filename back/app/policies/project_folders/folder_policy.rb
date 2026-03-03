@@ -61,7 +61,7 @@ module ProjectFolders
           title_multiloc: CL2_SUPPORTED_LOCALES,
           header_bg_alt_text_multiloc: CL2_SUPPORTED_LOCALES }
       ]
-      
+
       attrs << :space_id if user&.admin?
       attrs
     end
