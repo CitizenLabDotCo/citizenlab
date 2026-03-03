@@ -346,7 +346,7 @@
   "app.components.admin.PostManager.timelineTab": "Phases",
   "app.components.admin.PostManager.timelineTabTooltipText": "Faites glisser et déposez les contributions pour les copier dans différentes phases du projet.",
   "app.components.admin.PostManager.title": "Titre",
-  "app.components.admin.PostManager.topicFormTitle": "Modifier un thème",
+  "app.components.admin.PostManager.topicFormTitle": "Modifier le thème",
   "app.components.admin.PostManager.topicsTab": "Étiquettes",
   "app.components.admin.PostManager.topicsTabTooltipText": "Ajoutez des étiquettes à une contribution simplement en les glissant.",
   "app.components.admin.PostManager.view": "Voir",
