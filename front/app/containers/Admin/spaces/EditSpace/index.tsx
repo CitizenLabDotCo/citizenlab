@@ -9,9 +9,11 @@ import {
 
 import GoBackButton from 'components/UI/GoBackButton';
 
+import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import { TEST_NODE_DATA } from './fakeData';
+import messages from './messages';
 import TreeView from './TreeView';
 
 const goBack = () => {
@@ -33,6 +35,9 @@ const EditSpace = () => {
         px="52px"
         py="44px"
       >
+        <Title variant="h2" color="primary" mt="0px" mb="32px">
+          <FormattedMessage {...messages.projectsAndFoldersAdded} />
+        </Title>
         <TreeView nodes={TEST_NODE_DATA} />
       </Box>
     </Box>
