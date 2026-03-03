@@ -4,7 +4,7 @@ type ProjectNode = {
   name: string;
 };
 
-type FolderNode = {
+export type FolderNode = {
   id: string;
   type: 'folder';
   name: string;
