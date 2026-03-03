@@ -77,6 +77,7 @@ const Buttons = styled.div`
 
 const StyledForm = styled(Form)`
   max-width: none;
+  padding: 0;
 `;
 
 const Show = () => {
@@ -428,13 +429,12 @@ const Show = () => {
         </Box>
         <Modal opened={openSchaduleModal} close={closeSchaduleModal}>
           <Title>
-            {' '}
-            <FormattedMessage {...messages.scheduleSendTitle} />{' '}
+            <FormattedMessage {...messages.scheduleSendTitle} />
           </Title>
-          <Text mb="16px">
+          <Text>
             <FormattedMessage {...messages.scheduleSendDescription} />
           </Text>
-          <Box mt="24px" minHeight="400px">
+          <Box mt="12px" minHeight="400px">
             <StyledForm onSubmit={handleScheduleFormSubmit}>
               <Box display="flex" gap="16px" alignItems="center">
                 <DateSinglePicker
@@ -450,8 +450,8 @@ const Show = () => {
                 />
                 <Text fontSize="l">{getTimezoneOffset(timeZone)}</Text>
               </Box>
-              <Warning mt="24px">
-                <Text mt="16px" fontSize="m">
+              <Warning mt="12px">
+                <Text mt="12px" fontSize="m">
                   <FormattedMessage {...messages.scheduleSendWarning} />
                 </Text>
               </Warning>
