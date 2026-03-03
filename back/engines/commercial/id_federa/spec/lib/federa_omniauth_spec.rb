@@ -18,6 +18,8 @@ describe IdFedera::FederaOmniauth do
               'name' => 'Mario',
               'familyName' => 'Rossi',
               'email' => 'mario.rossi@example.it',
+              'domicileMunicipality' => '1234',
+              'dateOfBirth' => '1980-01-01',
               'spidCode' => 'SPID-1234-abcd',
               'fiscalNumber' => 'RSSMRA80A01H501U'
             },
@@ -27,13 +29,20 @@ describe IdFedera::FederaOmniauth do
       )
     end
 
+    before do
+      # Create user custom fields that will be filled by the auth hash
+      create(:custom_field, key: 'birthyear', resource_type: 'User')
+      create(:custom_field, key: 'domicile_municipality', resource_type: 'User')
+    end
+
     it 'returns user attrs from profile response' do
       attrs = omniauth.profile_to_user_attrs(auth)
 
       expect(attrs).to eq(
         first_name: 'Mario',
         last_name: 'Rossi',
-        email: 'mario.rossi@example.it'
+        email: 'mario.rossi@example.it',
+        custom_field_values: { 'birthyear' => 1980, 'domicile_municipality' => '1234' }
       )
     end
   end
@@ -63,7 +72,8 @@ describe IdFedera::FederaOmniauth do
 
       expect(attrs).to eq(
         first_name: 'Mario',
-        last_name: 'Rossi'
+        last_name: 'Rossi',
+        custom_field_values: {}
       )
     end
   end

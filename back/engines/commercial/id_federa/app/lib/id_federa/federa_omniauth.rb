@@ -26,10 +26,25 @@ module IdFedera
     def profile_to_user_attrs(auth)
       attrs = auth.dig(:extra, :raw_info).to_h
 
+      custom_field_values = {}
+
+      # Handle birthyear
+      birthdate = auth.extra.raw_info['dateOfBirth']
+      if birthdate.present? && CustomField.find_by(key: 'birthyear')
+        custom_field_values['birthyear'] = Date.parse(birthdate).year
+      end
+
+      # Handle municipality_code
+      municipality_code = auth.extra.raw_info['domicileMunicipality']
+      if municipality_code.present? && CustomField.find_by(key: 'domicile_municipality')
+        custom_field_values['domicile_municipality'] = municipality_code
+      end
+
       {
         first_name: attrs['name'],
         last_name: attrs['familyName'],
-        email: attrs['email']
+        email: attrs['email'],
+        custom_field_values: custom_field_values
       }.compact
     end
 

@@ -23,6 +23,8 @@ context 'federa verification' do
               { 'name' => 'Mario',
                 'familyName' => 'Rossi',
                 'email' => 'mario.rossi@example.org',
+                'domicileMunicipality' => '1234',
+                'dateOfBirth' => '1980-01-01',
                 'fiscalNumber' => user_uid,
                 'spidCode' => nil },
             'response_object' => '<saml:Response>...</saml:Response>' }
@@ -32,6 +34,10 @@ context 'federa verification' do
     before do
       @user = create(:user, first_name: 'Mario', last_name: 'Rossi')
       @token = AuthToken::AuthToken.new(payload: @user.to_token_payload).token
+
+      # Create user custom fields that will be filled by the auth hash
+      create(:custom_field, key: 'birthyear', resource_type: 'User')
+      create(:custom_field, key: 'domicile_municipality', resource_type: 'User')
 
       OmniAuth.config.test_mode = true
       OmniAuth.config.mock_auth[:federa] = OmniAuth::AuthHash.new(auth_hash)
