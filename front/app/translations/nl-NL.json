@@ -68,6 +68,8 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} gebruikers",
   "app.components.AvatarBubbles.participant": "deelnemer",
   "app.components.AvatarBubbles.participants1": "deelnemers",
+  "app.components.CityLogoSection.logoLinkAriaLabelExternal": "Bezoek de website {orgName} (opent in een nieuw tabblad)",
+  "app.components.CityLogoSection.logoLinkAriaLabelInternal": "{orgName} Home",
   "app.components.Comments.cancel": "Annuleer",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Reageren is in de huidige fase niet mogelijk.",
   "app.components.Comments.commentingDisabledInactiveProject": "Reageren is niet mogelijk omdat dit project momenteel niet actief is.",
