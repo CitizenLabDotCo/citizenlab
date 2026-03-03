@@ -434,7 +434,7 @@ const Show = () => {
           <Text>
             <FormattedMessage {...messages.scheduleSendDescription} />
           </Text>
-          <Box mt="12px" minHeight="400px">
+          <Box minHeight="350px">
             <StyledForm onSubmit={handleScheduleFormSubmit}>
               <Box display="flex" gap="16px" alignItems="center">
                 <DateSinglePicker
@@ -442,6 +442,7 @@ const Show = () => {
                   selectedDate={selectedDate}
                   startMonth={new Date()}
                   disabledDates={isPastDate}
+                  placement="bottom"
                 />
                 <TimeInputScheduling
                   selectedTime={selectedTime}
@@ -450,7 +451,7 @@ const Show = () => {
                 />
                 <Text fontSize="l">{getTimezoneOffset(timeZone)}</Text>
               </Box>
-              <Warning mt="12px">
+              <Warning mt="24px">
                 <Text mt="12px" fontSize="m">
                   <FormattedMessage {...messages.scheduleSendWarning} />
                 </Text>
