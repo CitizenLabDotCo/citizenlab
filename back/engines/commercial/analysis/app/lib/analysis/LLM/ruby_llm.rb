@@ -51,6 +51,8 @@ module Analysis
 
       private
 
+      # RubyLLM's chat.ask() only accepts a string message + file paths (via `with:`).
+      # When prompt is a Message object (e.g. text + PDF), we need to separate them.
       def extract_text_and_files(prompt)
         return [prompt, []] if prompt.is_a?(String)
 
@@ -72,6 +74,8 @@ module Analysis
         [texts.join("\n"), file_paths]
       end
 
+      # RubyLLM's `with:` param expects local file paths, not Files::File objects.
+      # Writes the file content to a tempfile and returns its path.
       def file_to_tempfile(file)
         file_content = if file.mime_type == 'application/pdf' || file.image?
           file.content.read
