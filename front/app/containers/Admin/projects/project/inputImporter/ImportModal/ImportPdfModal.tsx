@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import {
   Box,
@@ -8,10 +8,10 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm, FormProvider } from 'react-hook-form';
+import { useForm, FormProvider, Resolver } from 'react-hook-form';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { SupportedLocale } from 'typings';
-import { object, mixed, boolean } from 'yup';
+import { object, mixed, boolean, number } from 'yup';
 
 import { IBackgroundJobData } from 'api/background_jobs/types';
 import useAddOfflineIdeasAsync, {
@@ -23,6 +23,7 @@ import useLocale from 'hooks/useLocale';
 
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import Feedback from 'components/HookForm/Feedback';
+import Input from 'components/HookForm/Input';
 import SingleFileUploader from 'components/HookForm/SingleFileUploader';
 import Modal from 'components/UI/Modal';
 
@@ -36,9 +37,11 @@ import messages from './messages';
 
 interface FormValues {
   locale: SupportedLocale;
-  file: Record<string, any>;
+  file?: Record<string, any>;
   personal_data: boolean;
   parser_consent: boolean;
+  multiple_forms: boolean;
+  pages_per_form: number | undefined;
 }
 
 interface Props {
@@ -56,7 +59,6 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
-
   // Allows switching of different parsers if needed
   const [searchParams] = useSearchParams();
   const parser = (searchParams.get('parser') || undefined) as ParserType;
@@ -72,6 +74,8 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
     file: undefined,
     personal_data: false,
     parser_consent: !parserConsentRequired,
+    multiple_forms: false,
+    pages_per_form: undefined,
   };
 
   const schema = object({
@@ -88,30 +92,55 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
 
         return true;
       }),
+    multiple_forms: boolean().required(),
+    pages_per_form: number()
+      .transform((value, originalValue) =>
+        originalValue === '' || originalValue === undefined ? undefined : value
+      )
+      .when('multiple_forms', {
+        is: true,
+        then: (s) =>
+          s
+            .required(formatMessage(messages.pagesPerFormRequired))
+            .min(1, formatMessage(messages.pagesPerFormMin))
+            .integer(formatMessage(messages.pagesPerFormInteger)),
+      }),
   });
 
   const methods = useForm<FormValues>({
     mode: 'onBlur',
     defaultValues,
-    resolver: yupResolver(schema),
+    resolver: yupResolver(schema) as Resolver<FormValues>,
   });
+
+  const file = methods.watch('file');
+  const multipleFormsChecked = methods.watch('multiple_forms');
+
+  useEffect(() => {
+    if (!multipleFormsChecked) {
+      methods.setValue('pages_per_form', undefined);
+    }
+  }, [multipleFormsChecked, methods]);
 
   const submitFile = async ({
     file,
     parser_consent: _,
     locale,
     personal_data,
+    multiple_forms,
+    pages_per_form,
   }: FormValues) => {
     if (!phaseId) return;
 
     try {
       const response = await addOfflineIdeas({
         phase_id: phaseId,
-        file: file.base64,
+        file: file?.base64,
         format: 'pdf',
         parser,
         locale,
         personal_data,
+        pages_per_form: multiple_forms ? pages_per_form : undefined,
       });
 
       onImport(response.data);
@@ -125,7 +154,10 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
     <Modal
       width="780px"
       opened={open}
-      close={onClose}
+      close={() => {
+        methods.reset();
+        onClose();
+      }}
       header={
         <Title variant="h2" color="primary" px="24px" m="0">
           <FormattedMessage {...messages.importPDFFileTitle} />
@@ -165,10 +197,31 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
 
             <Box mt="24px">
               <CheckboxWithLabel
+                name="multiple_forms"
+                label={<FormattedMessage {...messages.multipleFormsCheckbox} />}
+              />
+            </Box>
+            {multipleFormsChecked && (
+              <Box mt="16px">
+                <Input
+                  name="pages_per_form"
+                  type="number"
+                  label={formatMessage(messages.pagesPerFormLabel)}
+                />
+
+                <Text fontSize="s" color="textSecondary" mt="4px">
+                  <FormattedMessage {...messages.pagesPerFormDescription} />
+                </Text>
+              </Box>
+            )}
+
+            <Box mt="24px">
+              <CheckboxWithLabel
                 name="personal_data"
                 label={<FormattedMessage {...messages.formHasPersonalData} />}
               />
             </Box>
+
             {parserConsentRequired && (
               <Box mt="24px">
                 <CheckboxWithLabel
@@ -183,6 +236,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
                 width="auto"
                 type="submit"
                 processing={isLoading}
+                disabled={!file?.base64}
               >
                 <FormattedMessage {...messages.upload} />
               </Button>

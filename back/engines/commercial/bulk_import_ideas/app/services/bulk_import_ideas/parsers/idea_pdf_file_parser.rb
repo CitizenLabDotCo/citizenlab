@@ -52,9 +52,6 @@ module BulkImportIdeas::Parsers
       # Split a pdf into one PDF per idea
       split_pdf_files = []
       if source_file&.import_type == 'pdf'
-        # Get number of pages in a form from the exported PDF template
-        pages_per_idea = template_data[:page_count]
-
         pdf = begin
           ::CombinePDF.parse source_file.file.read
         rescue ::CombinePDF::ParsingError
@@ -64,7 +61,14 @@ module BulkImportIdeas::Parsers
         source_file_page_count = pdf.pages.count
         source_file.update!(num_pages: source_file_page_count)
         raise BulkImportIdeas::Error.new 'bulk_import_maximum_pdf_pages_exceeded', value: MAX_TOTAL_PAGES if source_file_page_count > MAX_TOTAL_PAGES
+
+        # Use manual override if provided, otherwise treat entire PDF as a single form
+        pages_per_idea = @pages_per_form || source_file_page_count
+
         raise BulkImportIdeas::Error.new 'bulk_import_not_enough_pdf_pages', value: source_file_page_count if source_file_page_count < pages_per_idea
+        if @pages_per_form && (source_file_page_count % pages_per_idea != 0)
+          raise BulkImportIdeas::Error.new 'bulk_import_pdf_pages_not_divisible', total_pages: source_file_page_count, pages_per_form: pages_per_idea
+        end
 
         new_pdf = ::CombinePDF.new
         new_pdf_count = 0
