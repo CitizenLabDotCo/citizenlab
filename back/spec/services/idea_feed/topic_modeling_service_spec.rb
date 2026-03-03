@@ -112,11 +112,9 @@ describe IdeaFeed::TopicModelingService do
             }
           ],
           # Second call: mapping - OLD-1 (Parking areas) maps to NEW-1 (Parking), others are removed
-          {
-            'OLD-1' => { 'new_topic_id' => 'NEW-1', 'adjusted_topic_title_multiloc' => { 'en' => 'Parking', 'fr-FR' => 'Stationnement', 'nl-NL' => 'Parkeren' }, 'adjusted_topic_description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.', 'fr-FR' => 'Contributions relatives à la disponibilité du stationnement, à la réglementation et aux infrastructures pour les véhicules.', 'nl-NL' => 'Bijdragen met betrekking tot de beschikbaarheid van parkeerplaatsen, regelgeving en infrastructuur voor voertuigen.' } },
-            'OLD-2' => { 'new_topic_id' => nil },
-            'OLD-3' => { 'new_topic_id' => nil }
-          }
+          [
+            { 'old_topic_id' => 'OLD-1', 'new_topic_id' => 'NEW-1', 'adjusted_topic_title_multiloc' => { 'en' => 'Parking', 'fr-FR' => 'Stationnement', 'nl-NL' => 'Parkeren' }, 'adjusted_topic_description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.', 'fr-FR' => 'Contributions relatives à la disponibilité du stationnement, à la réglementation et aux infrastructures pour les véhicules.', 'nl-NL' => 'Bijdragen met betrekking tot de beschikbaarheid van parkeerplaatsen, regelgeving en infrastructuur voor voertuigen.' } }
+          ]
         )
 
         expect { service.rebalance_topics! }.to change(InputTopic, :count).from(3).to(2)
@@ -137,11 +135,9 @@ describe IdeaFeed::TopicModelingService do
             { 'title_multiloc' => { 'en' => 'Public Transportation' }, 'description_multiloc' => { 'en' => 'Ideas about public transportation systems and services' }, 'problems' => [] },
             { 'title_multiloc' => { 'en' => 'Parking' }, 'description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.' }, 'problems' => [] }
           ],
-          {
-            'OLD-1' => { 'new_topic_id' => 'NEW-2', 'adjusted_topic_description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.', 'fr-FR' => 'Contributions relatives à la disponibilité du stationnement, à la réglementation et aux infrastructures pour les véhicules.', 'nl-NL' => 'Bijdragen met betrekking tot de beschikbaarheid van parkeerplaatsen, regelgeving en infrastructuur voor voertuigen.' }, 'adjusted_topic_title_multiloc' => { 'en' => 'Parking', 'fr-FR' => 'Stationnement', 'nl-NL' => 'Parkeren' } },
-            'OLD-2' => { 'new_topic_id' => nil },
-            'OLD-3' => { 'new_topic_id' => nil }
-          }
+          [
+            { 'old_topic_id' => 'OLD-1', 'new_topic_id' => 'NEW-2', 'adjusted_topic_description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.', 'fr-FR' => 'Contributions relatives à la disponibilité du stationnement, à la réglementation et aux infrastructures pour les véhicules.', 'nl-NL' => 'Bijdragen met betrekking tot de beschikbaarheid van parkeerplaatsen, regelgeving en infrastructuur voor voertuigen.' }, 'adjusted_topic_title_multiloc' => { 'en' => 'Parking', 'fr-FR' => 'Stationnement', 'nl-NL' => 'Parkeren' } }
+          ]
         )
 
         expect { service.rebalance_topics! }.to change(InputTopic, :count).from(3).to(2)
@@ -165,11 +161,10 @@ describe IdeaFeed::TopicModelingService do
             { 'title_multiloc' => { 'en' => 'Public Transportation' }, 'description_multiloc' => { 'en' => 'Ideas about public transportation systems and services' }, 'problems' => [] },
             { 'title_multiloc' => { 'en' => 'Parking' }, 'description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.' }, 'problems' => [] }
           ],
-          {
-            'OLD-1' => { 'new_topic_id' => 'NEW-2', 'adjusted_topic_description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.', 'fr-FR' => 'Contributions relatives à la disponibilité du stationnement, à la réglementation et aux infrastructures pour les véhicules.', 'nl-NL' => 'Bijdragen met betrekking tot de beschikbaarheid van parkeerplaatsen, regelgeving en infrastructuur voor voertuigen.' }, 'adjusted_topic_title_multiloc' => { 'en' => 'Parking', 'fr-FR' => 'Stationnement', 'nl-NL' => 'Parkeren' } },
-            'OLD-2' => { 'new_topic_id' => 'NEW-2' },
-            'OLD-3' => { 'new_topic_id' => nil }
-          }
+          [
+            { 'old_topic_id' => 'OLD-1', 'new_topic_id' => 'NEW-2', 'adjusted_topic_description_multiloc' => { 'en' => 'Contributions related to parking availability, regulations, and infrastructure for vehicles.', 'fr-FR' => 'Contributions relatives à la disponibilité du stationnement, à la réglementation et aux infrastructures pour les véhicules.', 'nl-NL' => 'Bijdragen met betrekking tot de beschikbaarheid van parkeerplaatsen, regelgeving en infrastructuur voor voertuigen.' }, 'adjusted_topic_title_multiloc' => { 'en' => 'Parking', 'fr-FR' => 'Stationnement', 'nl-NL' => 'Parkeren' } },
+            { 'old_topic_id' => 'OLD-2', 'new_topic_id' => 'NEW-2' }
+          ]
         )
 
         expect { service.rebalance_topics! }.to change(InputTopic, :count).from(3).to(2)
