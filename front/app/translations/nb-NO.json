@@ -68,6 +68,8 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} brukere",
   "app.components.AvatarBubbles.participant": "deltaker",
   "app.components.AvatarBubbles.participants1": "deltakere",
+  "app.components.CityLogoSection.logoLinkAriaLabelExternal": "Besøk {orgName} (åpnes i ny fane)",
+  "app.components.CityLogoSection.logoLinkAriaLabelInternal": "{orgName} Hjem",
   "app.components.Comments.cancel": "Avbryt",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Det er ikke mulig å kommentere i den nåværende fasen.",
   "app.components.Comments.commentingDisabledInactiveProject": "Det er ikke mulig å kommentere fordi dette prosjektet ikke er aktivt for øyeblikket.",
