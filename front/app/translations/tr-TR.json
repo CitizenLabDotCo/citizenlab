@@ -68,6 +68,8 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} kullanıcılar",
   "app.components.AvatarBubbles.participant": "KATILIMCI",
   "app.components.AvatarBubbles.participants1": "Katılımcılar",
+  "app.components.CityLogoSection.logoLinkAriaLabelExternal": "{orgName} web sitesini ziyaret edin (yeni sekmede açılır)",
+  "app.components.CityLogoSection.logoLinkAriaLabelInternal": "{orgName} Ev",
   "app.components.Comments.cancel": "İptal",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Şu anki aşamada yorum yapmak mümkün değil.",
   "app.components.Comments.commentingDisabledInactiveProject": "Bu proje şu anda etkin olmadığından yorum yapmak mümkün değil.",
