@@ -137,10 +137,19 @@ const NewIdeaHeading = ({ phase, titleText }: Props) => {
           />
         </Box>
       </Box>
-      <Modal opened={showLeaveModal} close={closeModal}>
+      <Modal
+        opened={showLeaveModal}
+        close={closeModal}
+        ariaLabelledBy="leave-new-idea-modal-title"
+      >
         <Box display="flex" flexDirection="column" width="100%" p="20px">
           <Box mb="40px">
-            <Title variant="h1" as="h3" color="primary">
+            <Title
+              id="leave-new-idea-modal-title"
+              variant="h1"
+              as="h3"
+              color="primary"
+            >
               <FormattedMessage {...messages.leaveFormConfirmationQuestion} />
             </Title>
             <Text color="primary" fontSize="l">
