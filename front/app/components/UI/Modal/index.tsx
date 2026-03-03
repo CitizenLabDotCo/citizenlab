@@ -334,6 +334,7 @@ interface Props {
   children: React.ReactNode;
   zIndex?: number;
   hideCloseButton?: boolean;
+  ariaLabelledBy?: string;
   /**
    * Optional ref to return focus on close.
    * By default, focus returns to the control that opened the modal.
@@ -359,6 +360,7 @@ const Modal: React.FC<Props> = ({
   children,
   zIndex,
   hideCloseButton,
+  ariaLabelledBy,
   returnFocusRef,
 }) => {
   const nodeRef = useRef(null); // Needed to fix React StrictMode warning
@@ -490,7 +492,7 @@ const Modal: React.FC<Props> = ({
             className={`modalcontent ${fixedHeight ? 'fixedHeight' : ''}`}
             onClickOutside={clickOutsideModal}
             windowHeight={windowHeight}
-            ariaLabelledBy={header ? 'modal-header' : undefined}
+            ariaLabelledBy={header ? 'modal-header' : ariaLabelledBy}
             aria-modal="true"
             role="dialog"
           >
