@@ -25,6 +25,28 @@ export interface WordExportIntl {
 
 export type AISummaryMap = Map<string, string>;
 
+const UUID_REGEX =
+  /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
+
+const stripAiSummaryIds = (summary: string) => {
+  // Remove bracketed UUID lists like: [uuid, uuid, ...]
+  const withoutIds = summary.replace(
+    /\s*\[(?:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})(?:\s*,\s*[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})*\]/gi,
+    ''
+  );
+
+  // If any stray bracketed tokens still contain UUIDs, drop them too.
+  const cleaned = withoutIds.replace(/\[[^\]]+\]/g, (token) =>
+    UUID_REGEX.test(token) ? '' : token
+  );
+
+  // Normalize whitespace around punctuation.
+  return cleaned
+    .replace(/\s{2,}/g, ' ')
+    .replace(/\s+([.,;:!?])/g, '$1')
+    .trim();
+};
+
 function createAnswersTable(
   result: ResultUngrouped,
   intl: WordExportIntl
@@ -167,9 +189,12 @@ export function createSurveyResultsSection(
     const summary = aiSummaries?.get(result.customFieldId);
     if (summary) {
       elements.push(
-        createParagraph(`${formatMessage(messages.aiSummary)}: ${summary}`, {
-          italic: true,
-        })
+        createParagraph(
+          `${formatMessage(messages.aiSummary)}: ${stripAiSummaryIds(summary)}`,
+          {
+            italic: true,
+          }
+        )
       );
     }
 
