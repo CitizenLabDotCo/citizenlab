@@ -230,6 +230,9 @@ const Show = () => {
     setOpenSchaduleModal(true);
   };
   const closeSchaduleModal = () => {
+    // reset selected date and time when closing the modal
+    setSelectedDate(undefined);
+    setSelectedTime(getDefaultTime());
     setOpenSchaduleModal(false);
   };
   const handleCancelScheduleModal = () => {

@@ -269,9 +269,9 @@ export default defineMessages({
     defaultMessage: 'Cancel scheduled email',
   },
   cancelScheduleDescription: {
-    id: 'app.containers.Admin.project.emails.cancelScheduleDescription',
+    id: 'app.containers.Admin.project.emails.cancelScheduleDescription2',
     defaultMessage:
-      'Are you sure you want to cancel the schedule for this campaign? The campaign will no longer be scheduled to send, but you can still sendit manually or reschedule it.',
+      'Are you sure you want to cancel the schedule for this campaign? The campaign will no longer be scheduled to send, but you can still send it manually or reschedule it.',
   },
   confirmCancelSchedule: {
     id: 'app.containers.Admin.project.emails.confirmCancelSchedule',
