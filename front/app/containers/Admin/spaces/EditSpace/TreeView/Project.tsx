@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Box, Icon, Text } from '@citizenlab/cl2-component-library';
+import { Box, Icon } from '@citizenlab/cl2-component-library';
 
+import Link from './Link';
 import { ProjectNode } from './types';
 
 interface Props {
@@ -11,8 +12,14 @@ interface Props {
 const Project = ({ node }: Props) => {
   return (
     <Box display="flex" alignItems="center" mt="12px">
-      <Icon name="projects" mr="12px" width="20px" height="20px" />
-      <Text m="0">{node.name}</Text>
+      <Icon
+        name="projects"
+        mr="12px"
+        width="20px"
+        height="20px"
+        transform="translateY(-1px)"
+      />
+      <Link to={node.path}>{node.name}</Link>
     </Box>
   );
 };

@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  IconButton,
-  Text,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, IconButton, colors } from '@citizenlab/cl2-component-library';
 
+import Link from './Link';
 import Project from './Project';
 import { FolderNode } from './types';
 
@@ -27,13 +23,15 @@ const Folder = ({ node }: Props) => {
           iconWidth="20px"
           iconHeight="20px"
           iconColor={colors.black}
-          transform="translateY(1px)"
+          transform="translateY(-1px)"
           onClick={() => setExpanded(!expanded)}
           a11y_buttonActionMessage=""
         />
       </Box>
       <Box>
-        <Text m="0">{node.name}</Text>
+        <Box>
+          <Link to={node.path}>{node.name}</Link>
+        </Box>
         {expanded && (
           <>
             {node.children.map((child) => (
