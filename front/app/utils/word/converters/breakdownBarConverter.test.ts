@@ -8,7 +8,7 @@ import { Table } from 'docx';
 
 import { createBreakdownTable } from './breakdownBarConverter';
 
-import type { BreakdownItem } from './types';
+import type { WordBreakdownItem } from './types';
 
 // Mock the styleConstants to avoid the @citizenlab/cl2-component-library dep
 jest.mock('../utils/styleConstants', () => ({
@@ -72,14 +72,14 @@ jest.mock('./textConverter', () => ({
   createTitle: (_text: string) => ({ _mock: 'title', text: _text }),
 }));
 
-const sampleItems: BreakdownItem[] = [
+const sampleItems: WordBreakdownItem[] = [
   { name: 'Housing', count: 42, percentage: 42 },
   { name: 'Transport', count: 30, percentage: 30 },
   { name: 'Parks', count: 18, percentage: 18 },
   { name: 'Safety', count: 10, percentage: 10 },
 ];
 
-const sampleItemsWithColors: BreakdownItem[] = [
+const sampleItemsWithColors: WordBreakdownItem[] = [
   { name: 'Open', count: 25, color: '#4CAF50' },
   { name: 'In Progress', count: 15, color: '#2196F3' },
   { name: 'Done', count: 60, color: '#9C27B0' },
@@ -132,7 +132,7 @@ describe('createBreakdownTable', () => {
     });
 
     it('handles items with explicit percentage values', () => {
-      const items: BreakdownItem[] = [
+      const items: WordBreakdownItem[] = [
         { name: 'A', count: 10, percentage: 75 },
         { name: 'B', count: 5, percentage: 25 },
       ];
@@ -141,7 +141,7 @@ describe('createBreakdownTable', () => {
     });
 
     it('handles items without percentage (calculates from count)', () => {
-      const items: BreakdownItem[] = [
+      const items: WordBreakdownItem[] = [
         { name: 'A', count: 80 },
         { name: 'B', count: 20 },
       ];
@@ -155,12 +155,12 @@ describe('createBreakdownTable', () => {
     });
 
     it('handles single item without division-by-zero', () => {
-      const items: BreakdownItem[] = [{ name: 'Only', count: 1 }];
+      const items: WordBreakdownItem[] = [{ name: 'Only', count: 1 }];
       expect(() => createBreakdownTable(items)).not.toThrow();
     });
 
     it('handles items with count=0', () => {
-      const items: BreakdownItem[] = [
+      const items: WordBreakdownItem[] = [
         { name: 'Active', count: 10 },
         { name: 'Inactive', count: 0 },
       ];
@@ -203,7 +203,7 @@ describe('createBreakdownTable', () => {
   describe('percentage bar bounds', () => {
     it('clamps bar width to minimum 1% to avoid empty cells', () => {
       // Items where the smallest item would have <1% naturally
-      const items: BreakdownItem[] = [
+      const items: WordBreakdownItem[] = [
         { name: 'Huge', count: 1000 },
         { name: 'Tiny', count: 1 },
       ];
@@ -211,7 +211,7 @@ describe('createBreakdownTable', () => {
     });
 
     it('handles 100% percentage correctly', () => {
-      const items: BreakdownItem[] = [
+      const items: WordBreakdownItem[] = [
         { name: 'Only Item', count: 50, percentage: 100 },
       ];
       expect(() => createBreakdownTable(items)).not.toThrow();

@@ -8,6 +8,7 @@ import {
   Tooltip,
   Dropdown,
   fontSizes,
+  Badge,
 } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 import { RouteType } from 'routes';
@@ -21,6 +22,7 @@ import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
 
 import useLocalize from 'hooks/useLocalize';
 
+import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
 import insightWordMessages from 'containers/Admin/projects/project/insights/word/messages';
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 import { useReportWordExportContext } from 'containers/Admin/reporting/word/ReportWordExportContext';
@@ -333,7 +335,7 @@ const ContentBuilderTopBar = ({
             </div>
           </Tooltip>
           <Dropdown
-            width="200px"
+            width="220px"
             top="35px"
             right="0"
             zIndex="1000002"
@@ -357,7 +359,17 @@ const ContentBuilderTopBar = ({
                   fontSize={`${fontSizes.s}px`}
                   disabled={disableWordExport}
                 >
-                  {formatMessage(messages.downloadAsWord)}
+                  <Box
+                    display="inline-flex"
+                    alignItems="center"
+                    gap="6px"
+                    style={{ whiteSpace: 'nowrap' }}
+                  >
+                    {formatMessage(messages.downloadAsWord)}
+                    <Badge color={colors.coolGrey600} className="inverse">
+                      {formatMessage(projectFilesMessages.beta)}
+                    </Badge>
+                  </Box>
                 </DownloadButton>
               </>
             }

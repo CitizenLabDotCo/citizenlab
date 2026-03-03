@@ -12,8 +12,8 @@ import { ParticipationMethod } from 'api/phases/types';
 
 import { useIntl } from 'utils/cl-intl';
 
-import ExportableInsight from '../../../word/ExportableInsight';
 import { useWordSection } from '../../../word/useWordSection';
+import WordExportableInsight from '../../../word/WordExportableInsight';
 import messages from '../messages';
 
 import AiTopicsAccordion from './AiTopicsAccordion';
@@ -63,7 +63,7 @@ const TopicBreakdown = ({ phaseId, participationMethod }: Props) => {
 
   if (isLoading) {
     return (
-      <ExportableInsight exportId="topic-breakdown" skipExport>
+      <WordExportableInsight exportId="topic-breakdown" skipExport>
         <Box
           bgColor="white"
           borderRadius="8px"
@@ -75,12 +75,12 @@ const TopicBreakdown = ({ phaseId, participationMethod }: Props) => {
         >
           <Spinner size="24px" />
         </Box>
-      </ExportableInsight>
+      </WordExportableInsight>
     );
   }
 
   return (
-    <ExportableInsight exportId="topic-breakdown">
+    <WordExportableInsight exportId="topic-breakdown">
       <Box
         bgColor="white"
         borderRadius="8px"
@@ -134,7 +134,7 @@ const TopicBreakdown = ({ phaseId, participationMethod }: Props) => {
           />
         </Box>
       </Box>
-    </ExportableInsight>
+    </WordExportableInsight>
   );
 };
 

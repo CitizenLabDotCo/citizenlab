@@ -36,7 +36,7 @@ export interface ExportProgress {
 interface WordExportContextValue {
   // Public (used by download button)
   downloadWord: () => Promise<void>;
-  isDownloading: boolean;
+  isDownloadingWord: boolean;
   exportStatus: ExportStatus;
   exportProgress: ExportProgress;
   error: string | null;
@@ -52,7 +52,7 @@ interface WordExportContextValue {
 
 const WordExportContext = createContext<WordExportContextValue>({
   downloadWord: async () => {},
-  isDownloading: false,
+  isDownloadingWord: false,
   exportStatus: 'idle',
   exportProgress: { completed: 0, total: 0 },
   error: null,
@@ -180,7 +180,7 @@ export const WordExportProvider = ({
   const contextValue = useMemo(
     () => ({
       downloadWord,
-      isDownloading: exportStatus !== 'idle',
+      isDownloadingWord: exportStatus !== 'idle',
       exportStatus,
       exportProgress,
       error,

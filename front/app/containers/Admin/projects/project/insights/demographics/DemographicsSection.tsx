@@ -28,8 +28,8 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 import { usePdfExportContext } from '../pdf/PdfExportContext';
-import ExportableInsight from '../word/ExportableInsight';
 import { useWordSection, type WordSection } from '../word/useWordSection';
+import WordExportableInsight from '../word/WordExportableInsight';
 import { useWordExportContext } from '../word/WordExportContext';
 
 import DemographicFieldContent from './DemographicFieldContent';
@@ -88,7 +88,7 @@ interface Props {
 const DemographicsSection = ({ phase }: Props) => {
   const { formatMessage } = useIntl();
   const { isPdfRenderMode } = usePdfExportContext();
-  const { isDownloading } = useWordExportContext();
+  const { isDownloadingWord } = useWordExportContext();
   const localize = useLocalize();
   const [selectedFieldIndex, setSelectedFieldIndex] = useState(0);
   const { data: appConfiguration } = useAppConfiguration();
@@ -162,7 +162,7 @@ const DemographicsSection = ({ phase }: Props) => {
 
   if (isLoading) {
     return (
-      <ExportableInsight exportId="demographics">
+      <WordExportableInsight exportId="demographics">
         <Box
           background="white"
           borderRadius="8px"
@@ -182,13 +182,13 @@ const DemographicsSection = ({ phase }: Props) => {
             </Text>
           </Box>
         </Box>
-      </ExportableInsight>
+      </WordExportableInsight>
     );
   }
 
   if (error) {
     return (
-      <ExportableInsight exportId="demographics">
+      <WordExportableInsight exportId="demographics">
         <Box
           background="white"
           borderRadius="8px"
@@ -205,13 +205,13 @@ const DemographicsSection = ({ phase }: Props) => {
             {formatMessage(messages.errorLoadingDemographics)}
           </Text>
         </Box>
-      </ExportableInsight>
+      </WordExportableInsight>
     );
   }
 
   if (fields.length === 0) {
     return (
-      <ExportableInsight exportId="demographics">
+      <WordExportableInsight exportId="demographics">
         <Box
           background="white"
           borderRadius="8px"
@@ -228,15 +228,15 @@ const DemographicsSection = ({ phase }: Props) => {
             {formatMessage(messages.noDemographicData)}
           </Text>
         </Box>
-      </ExportableInsight>
+      </WordExportableInsight>
     );
   }
 
-  const renderAllFields = isPdfRenderMode || isDownloading;
+  const renderAllFields = isPdfRenderMode || isDownloadingWord;
 
   if (renderAllFields) {
     return (
-      <ExportableInsight exportId="demographics">
+      <WordExportableInsight exportId="demographics">
         <Box
           background="white"
           borderRadius="8px"
@@ -274,12 +274,12 @@ const DemographicsSection = ({ phase }: Props) => {
             </PageBreakBox>
           ))}
         </Box>
-      </ExportableInsight>
+      </WordExportableInsight>
     );
   }
 
   return (
-    <ExportableInsight exportId="demographics">
+    <WordExportableInsight exportId="demographics">
       <Box
         background="white"
         borderRadius="8px"
@@ -336,7 +336,7 @@ const DemographicsSection = ({ phase }: Props) => {
           })}
         </Box>
       </Box>
-    </ExportableInsight>
+    </WordExportableInsight>
   );
 };
 

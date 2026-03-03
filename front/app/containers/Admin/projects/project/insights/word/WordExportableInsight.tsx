@@ -16,7 +16,7 @@ interface Props extends Omit<BoxProps, 'ref'> {
   heading?: string;
 }
 
-const ExportableInsight = ({
+const WordExportableInsight = ({
   exportId,
   children,
   skipExport = false,
@@ -79,4 +79,4 @@ const ExportableInsight = ({
   );
 };
 
-export default ExportableInsight;
+export default WordExportableInsight;

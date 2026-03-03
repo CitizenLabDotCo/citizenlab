@@ -19,7 +19,7 @@ import {
 
 import { createHeading } from './textConverter';
 
-import type { BreakdownItem } from './types';
+import type { WordBreakdownItem } from './types';
 
 interface BreakdownTableOptions {
   title?: string;
@@ -34,7 +34,7 @@ interface BreakdownTableOptions {
  * The visual bar effect is achieved using table cell shading.
  */
 export function createBreakdownTable(
-  items: BreakdownItem[],
+  items: WordBreakdownItem[],
   options: BreakdownTableOptions = {}
 ): (Paragraph | Table)[] {
   const {
@@ -126,7 +126,7 @@ function createHeaderRow(headers: string[]): TableRow {
 }
 
 function createBreakdownRow(
-  item: BreakdownItem,
+  item: WordBreakdownItem,
   options: {
     percentage: number;
     barColor: string;

@@ -1,6 +1,7 @@
 /**
  * useWordSection — registration API for exportable insight components.
  * Components register serializer functions that return WordSection[] arrays.
+ * Serializers are invoked only during download, not on every render.
  */
 import { useEffect, useRef, useCallback } from 'react';
 

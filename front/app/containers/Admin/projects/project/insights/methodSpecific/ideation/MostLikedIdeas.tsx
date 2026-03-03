@@ -10,9 +10,9 @@ import IdeaCard from 'components/IdeaCard';
 
 import { useIntl } from 'utils/cl-intl';
 
-import ExportableInsight from '../../word/ExportableInsight';
 import wordMessages from '../../word/messages';
 import { useWordSection } from '../../word/useWordSection';
+import WordExportableInsight from '../../word/WordExportableInsight';
 import { MethodSpecificInsightProps } from '../types';
 
 import messages from './messages';
@@ -55,27 +55,27 @@ const MostLikedIdeas = ({ phaseId }: MethodSpecificInsightProps) => {
 
   if (isLoading) {
     return (
-      <ExportableInsight exportId="most-liked-ideas" skipExport>
+      <WordExportableInsight exportId="most-liked-ideas" skipExport>
         <Box mt="24px" p="24px" bg="white" borderRadius="3px">
           <Box display="flex" alignItems="center" gap="8px">
             <Spinner size="24px" />
             <Text m="0">{formatMessage(messages.loading)}</Text>
           </Box>
         </Box>
-      </ExportableInsight>
+      </WordExportableInsight>
     );
   }
 
   if (ideas.length === 0) {
     return (
-      <ExportableInsight exportId="most-liked-ideas" skipExport>
+      <WordExportableInsight exportId="most-liked-ideas" skipExport>
         <Box />
-      </ExportableInsight>
+      </WordExportableInsight>
     );
   }
 
   return (
-    <ExportableInsight exportId="most-liked-ideas">
+    <WordExportableInsight exportId="most-liked-ideas">
       <Box mt="24px" p="8px" background="rgba(4, 77, 108, 0.05)">
         <Title variant="h3" m="0" mb="8px">
           {formatMessage(messages.mostLiked)}
@@ -97,7 +97,7 @@ const MostLikedIdeas = ({ phaseId }: MethodSpecificInsightProps) => {
           ))}
         </Box>
       </Box>
-    </ExportableInsight>
+    </WordExportableInsight>
   );
 };
 

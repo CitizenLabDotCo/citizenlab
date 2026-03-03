@@ -12,7 +12,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import { usePdfExportContext } from './pdf/PdfExportContext';
-import ExportableInsight from './word/ExportableInsight';
+import WordExportableInsight from './word/WordExportableInsight';
 
 interface Props {
   phaseId: string;
@@ -31,21 +31,21 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
 
   if (isLoading) {
     return (
-      <ExportableInsight exportId="participation-timeline" skipExport>
+      <WordExportableInsight exportId="participation-timeline" skipExport>
         <Box mt="8px" bg="white" p="24px" borderRadius="8px">
           <Spinner size="24px" />
         </Box>
-      </ExportableInsight>
+      </WordExportableInsight>
     );
   }
 
   if (error) {
     return (
-      <ExportableInsight exportId="participation-timeline" skipExport>
+      <WordExportableInsight exportId="participation-timeline" skipExport>
         <Box mt="8px" bg="white" p="24px" borderRadius="8px">
           <Text color="error">{formatMessage(messages.errorLoading)}</Text>
         </Box>
-      </ExportableInsight>
+      </WordExportableInsight>
     );
   }
 
@@ -93,7 +93,7 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
         />
       </Box>
 
-      <ExportableInsight
+      <WordExportableInsight
         exportId="participation-timeline"
         heading={formatMessage(messages.participationOverTime)}
         height={isPdfRenderMode ? `${PDF_CHART_HEIGHT}px` : '249px'}
@@ -108,7 +108,7 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
           innerRef={graphRef}
           isAnimationActive={!isPdfRenderMode}
         />
-      </ExportableInsight>
+      </WordExportableInsight>
     </Box>
   );
 };

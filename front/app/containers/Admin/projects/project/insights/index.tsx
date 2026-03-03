@@ -6,6 +6,8 @@ import {
   Button,
   Text,
   Dropdown,
+  Badge,
+  colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
@@ -14,6 +16,8 @@ import styled from 'styled-components';
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
 import usePhase from 'api/phases/usePhase';
+
+import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
 
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -84,7 +88,7 @@ const InsightsContent = () => {
 
   const {
     downloadWord,
-    isDownloading: isDownloadingWord,
+    isDownloadingWord,
     exportStatus,
     exportProgress,
     allComponentsReady,
@@ -223,7 +227,7 @@ const InsightsContent = () => {
                       <FormattedMessage {...messages.download} />
                     </Button>
                     <Dropdown
-                      width="180px"
+                      width="220px"
                       top="42px"
                       right="0px"
                       opened={dropdownOpened}
@@ -249,7 +253,20 @@ const InsightsContent = () => {
                             padding="8px"
                             fontSize={`${fontSizes.s}px`}
                           >
-                            <FormattedMessage {...messages.downloadWord} />
+                            <Box
+                              display="inline-flex"
+                              alignItems="center"
+                              gap="6px"
+                              style={{ whiteSpace: 'nowrap' }}
+                            >
+                              <FormattedMessage {...messages.downloadWord} />
+                              <Badge
+                                color={colors.coolGrey600}
+                                className="inverse"
+                              >
+                                {formatMessage(projectFilesMessages.beta)}
+                              </Badge>
+                            </Box>
                           </DropdownButton>
                         </Box>
                       }

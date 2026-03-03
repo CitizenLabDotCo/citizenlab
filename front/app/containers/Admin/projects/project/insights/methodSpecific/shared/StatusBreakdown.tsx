@@ -10,8 +10,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
-import ExportableInsight from '../../word/ExportableInsight';
 import { useWordSection } from '../../word/useWordSection';
+import WordExportableInsight from '../../word/WordExportableInsight';
 
 import DistributionBar from './DistributionBar';
 import messages from './messages';
@@ -113,19 +113,19 @@ const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
 
   if (isLoading) {
     return (
-      <ExportableInsight exportId="status-breakdown">
+      <WordExportableInsight exportId="status-breakdown">
         <StatusCard>
           <Box display="flex" alignItems="center" gap="8px">
             <Spinner size="24px" />
           </Box>
         </StatusCard>
-      </ExportableInsight>
+      </WordExportableInsight>
     );
   }
 
   if (statusData.length === 0) {
     return (
-      <ExportableInsight exportId="status-breakdown">
+      <WordExportableInsight exportId="status-breakdown">
         <StatusCard>
           <Text
             m="0"
@@ -140,12 +140,12 @@ const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
             {formatMessage(messages.noInputsSubmitted)}
           </Text>
         </StatusCard>
-      </ExportableInsight>
+      </WordExportableInsight>
     );
   }
 
   return (
-    <ExportableInsight exportId="status-breakdown">
+    <WordExportableInsight exportId="status-breakdown">
       <StatusCard>
         <Text
           m="0"
@@ -170,7 +170,7 @@ const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
           ))}
         </Box>
       </StatusCard>
-    </ExportableInsight>
+    </WordExportableInsight>
   );
 };
 

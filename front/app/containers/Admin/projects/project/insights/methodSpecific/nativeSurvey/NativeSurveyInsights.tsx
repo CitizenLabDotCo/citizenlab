@@ -17,12 +17,12 @@ import { useIntl } from 'utils/cl-intl';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
-import ExportableInsight from '../../word/ExportableInsight';
 import {
   AISummaryMap,
   createSurveyResultsSection,
 } from '../../word/insightConverters/surveyResultsConverter';
 import { useWordSection } from '../../word/useWordSection';
+import WordExportableInsight from '../../word/WordExportableInsight';
 
 interface Props {
   phaseId: string;
@@ -122,16 +122,16 @@ const NativeSurveyInsights = ({ phaseId }: Props) => {
 
   if (isPdfRenderMode) {
     return (
-      <ExportableInsight exportId="survey-results" skipExport>
+      <WordExportableInsight exportId="survey-results" skipExport>
         <SurveyResultsPdfExport projectId={projectId} phaseId={phaseDataId} />
-      </ExportableInsight>
+      </WordExportableInsight>
     );
   }
 
   return (
-    <ExportableInsight exportId="survey-results" skipExport>
+    <WordExportableInsight exportId="survey-results" skipExport>
       <FormResults projectId={projectId} phaseId={phaseDataId} />
-    </ExportableInsight>
+    </WordExportableInsight>
   );
 };
 

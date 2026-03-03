@@ -30,8 +30,8 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
-import ExportableInsight from '../../word/ExportableInsight';
 import { useWordSection } from '../../word/useWordSection';
+import WordExportableInsight from '../../word/WordExportableInsight';
 
 import messages from './messages';
 
@@ -198,20 +198,20 @@ const AiSummary = ({ phaseId, participationMethod }: Props) => {
 
   if (isLoadingAnalyses || isLoadingInsights || isCreatingAnalysis) {
     return (
-      <ExportableInsight exportId="ai-summary" skipExport>
+      <WordExportableInsight exportId="ai-summary" skipExport>
         <Box p="24px" bg="white" borderRadius="3px">
           <Box display="flex" alignItems="center" gap="8px">
             <Spinner size="24px" />
             <Text m="0">{formatMessage(messages.loading)}</Text>
           </Box>
         </Box>
-      </ExportableInsight>
+      </WordExportableInsight>
     );
   }
 
   if (inputCount < MIN_INPUTS_FOR_SUMMARY) {
     return (
-      <ExportableInsight exportId="ai-summary" skipExport>
+      <WordExportableInsight exportId="ai-summary" skipExport>
         <Box
           pt="8px"
           pb="24px"
@@ -239,28 +239,28 @@ const AiSummary = ({ phaseId, participationMethod }: Props) => {
             </Text>
           </Box>
         </Box>
-      </ExportableInsight>
+      </WordExportableInsight>
     );
   }
 
   if (isPreChecking || isAddingSummary) {
     return (
-      <ExportableInsight exportId="ai-summary" skipExport>
+      <WordExportableInsight exportId="ai-summary" skipExport>
         <Box p="24px" bg="white" borderRadius="3px">
           <Box display="flex" alignItems="center" gap="8px">
             <Spinner size="24px" />
             <Text m="0">{formatMessage(messages.generatingSummary)}</Text>
           </Box>
         </Box>
-      </ExportableInsight>
+      </WordExportableInsight>
     );
   }
 
   if (!summaryData || !analysisId) {
     return (
-      <ExportableInsight exportId="ai-summary" skipExport>
+      <WordExportableInsight exportId="ai-summary" skipExport>
         <Box />
-      </ExportableInsight>
+      </WordExportableInsight>
     );
   }
 
@@ -269,7 +269,7 @@ const AiSummary = ({ phaseId, participationMethod }: Props) => {
     summaryData.data.relationships.background_task.data.id;
 
   return (
-    <ExportableInsight exportId="ai-summary">
+    <WordExportableInsight exportId="ai-summary">
       <Box>
         <Title variant="h3" m="0" mb="16px">
           {formatMessage(messages.whatArePeopleSaying)}
@@ -363,7 +363,7 @@ const AiSummary = ({ phaseId, participationMethod }: Props) => {
           </Box>
         </Box>
       </Box>
-    </ExportableInsight>
+    </WordExportableInsight>
   );
 };
 

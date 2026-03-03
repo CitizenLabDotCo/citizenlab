@@ -1,5 +1,5 @@
 // Breakdown bar data item (used for topics, statuses, etc.)
-export interface BreakdownItem {
+export interface WordBreakdownItem {
   id?: string;
   name: string;
   count: number;
