@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Icon } from '@citizenlab/cl2-component-library';
+import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 
 import Link from './Link';
 import { ProjectNode } from './types';
@@ -11,7 +11,12 @@ interface Props {
 
 const Project = ({ node }: Props) => {
   return (
-    <Box display="flex" alignItems="center" mt="12px">
+    <Box
+      display="flex"
+      alignItems="center"
+      py="16px"
+      borderBottom={`1px solid ${colors.divider}`}
+    >
       <Icon
         name="projects"
         mr="12px"

@@ -14,8 +14,13 @@ const Folder = ({ node }: Props) => {
   const [expanded, setExpanded] = useState(true);
 
   return (
-    <Box display="flex" alignItems="flex-start" mt="12px">
-      <Box display="flex">
+    <Box>
+      <Box
+        display="flex"
+        alignItems="flex-start"
+        py="16px"
+        borderBottom={`1px solid ${colors.divider}`}
+      >
         <IconButton
           mr="8px"
           ml="-7px"
@@ -27,11 +32,9 @@ const Folder = ({ node }: Props) => {
           onClick={() => setExpanded(!expanded)}
           a11y_buttonActionMessage=""
         />
+        <Link to={node.path}>{node.name}</Link>
       </Box>
-      <Box>
-        <Box>
-          <Link to={node.path}>{node.name}</Link>
-        </Box>
+      <Box pl="31px">
         {expanded && (
           <>
             {node.children.map((child) => (

@@ -12,7 +12,7 @@ interface Props {
 
 const TreeView = ({ nodes }: Props) => {
   return (
-    <Box>
+    <Box maxWidth="800px">
       {nodes.map((node) => (
         <Box key={node.id}>
           {node.type === 'project' && <Project node={node} />}
