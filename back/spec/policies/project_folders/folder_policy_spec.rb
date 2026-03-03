@@ -310,19 +310,21 @@ describe ProjectFolders::FolderPolicy do
   end
 
   describe 'permitted_attributes' do
+    subject(:policy) { described_class.new(user, subject_folder) }
+
+    let(:subject_folder) { create(:project_folder) }
+
     shared_examples 'does not permit space_id' do
       it 'does not include space_id' do
-        expect(subject.permitted_attributes.flatten).not_to include(:space_id)
+        expect(policy.permitted_attributes.flatten).not_to include(:space_id)
       end
     end
-    
-    let(:subject_folder) { create(:project_folder) }
 
     context 'for an admin' do
       let(:user) { create(:admin) }
 
       it 'includes space_id' do
-        expect(subject.permitted_attributes.flatten).to include(:space_id)
+        expect(policy.permitted_attributes.flatten).to include(:space_id)
       end
     end
 
