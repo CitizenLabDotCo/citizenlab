@@ -130,7 +130,10 @@ module IdeaFeed
 
     def topic_model_prompt(inputs)
       form = @phase.pmethod.custom_form
-      input_texts = Analysis::InputToText.new(custom_fields_without_topics(form)).format_all(inputs.order(Arel.sql('RANDOM()')).limit(250), truncate_values: 256)
+      input_texts = Analysis::InputToText.new(custom_fields_without_topics(form)).format_all(
+        inputs.order(Arel.sql('RANDOM()')).limit(500),
+        truncate_values: 256
+      )
       ::Analysis::LLM::Prompt.new.fetch('idea_feed_live_topic_modeling',
         multiloc_service: MultilocService.new,
         project_description:,
