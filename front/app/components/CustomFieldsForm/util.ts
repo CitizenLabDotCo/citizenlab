@@ -2,6 +2,7 @@ import { IFlatCustomField } from 'api/custom_fields/types';
 
 import { Localize } from 'hooks/useLocalize';
 
+import { trackVirtualPageView } from 'utils/analytics';
 import { MessageDescriptor } from 'utils/cl-intl';
 import { FormatMessageValues } from 'utils/cl-intl/useIntl';
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
@@ -178,4 +179,15 @@ export const addPrefix = (customFieldValues: Record<string, any>) => {
   }
 
   return newValues;
+};
+
+// Tracks each page view after the first page - the first page is tracked when the form is opened
+export const trackFormPageView = (
+  currentPageIndex: number,
+  lastPageIndex: number
+) => {
+  const pageNum =
+    currentPageIndex === lastPageIndex ? 'submitted' : currentPageIndex + 1;
+  if (pageNum !== 1)
+    trackVirtualPageView(`${window.location.pathname}/${pageNum}`);
 };
