@@ -66,7 +66,7 @@ resource 'Spaces' do
     end
   end
 
-  before { header 'Content-Type', 'application/json'}
+  before { header 'Content-Type', 'application/json' }
 
   context 'when admin' do
     before { admin_header_token }
@@ -100,7 +100,7 @@ resource 'Spaces' do
         expect(response_data.size).to eq(2)
         expect(response_data.map { |s| s[:id] }).to include(space1.id)
         expect(response_data.map { |s| s[:id] }).to include(space2.id)
-        
+
         space1_data = response_data.find { |s| s[:id] == space1.id }
         expect(space1_data[:type]).to eq('space')
         expect(space1_data[:attributes]).to include(
@@ -171,8 +171,8 @@ resource 'Spaces' do
     include_examples 'unauthorized access examples'
   end
 
+  # TODO: Insert tests when role is implemented
   # context 'space manager (moderator)' do
-    # TODO: Insert tests when role is implemented
   # end
 
   context 'project moderator' do
