@@ -317,14 +317,13 @@ const ModalContentContainerSwitch = ({
   return <StyledFocusOn width={width}>{children}</StyledFocusOn>;
 };
 
-interface Props {
+interface BaseProps {
   'data-testid'?: string;
   opened: boolean;
   fixedHeight?: boolean;
   width?: number | string;
   close: () => void;
   className?: string;
-  header?: JSX.Element | string;
   niceHeader?: boolean;
   footer?: JSX.Element;
   hasSkipButton?: boolean;
@@ -334,7 +333,6 @@ interface Props {
   children: React.ReactNode;
   zIndex?: number;
   hideCloseButton?: boolean;
-  ariaLabelledBy?: string;
   /**
    * Optional ref to return focus on close.
    * By default, focus returns to the control that opened the modal.
@@ -342,6 +340,10 @@ interface Props {
    */
   returnFocusRef?: React.RefObject<HTMLElement>;
 }
+
+type Props =
+  | (BaseProps & { header: JSX.Element | string; ariaLabelledBy?: string })
+  | (BaseProps & { header?: JSX.Element | string; ariaLabelledBy: string });
 
 const Modal: React.FC<Props> = ({
   'data-testid': dataTestId,
