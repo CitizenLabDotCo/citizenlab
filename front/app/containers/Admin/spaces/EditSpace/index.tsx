@@ -12,7 +12,7 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-import { TEST_NODE_DATA } from './fakeData';
+import { TEST_DATA_ADDED } from './fakeData';
 import messages from './messages';
 import TreeView from './TreeView';
 
@@ -38,11 +38,10 @@ const EditSpace = () => {
         <Title variant="h2" color="primary" mt="0px" mb="20px">
           <FormattedMessage {...messages.projectsAndFoldersAdded} />
         </Title>
-        <TreeView nodes={TEST_NODE_DATA} />
-        <Title variant="h2" color="primary" mt="60px" mb="20px">
-          <FormattedMessage {...messages.projectsAndFoldersYouCanAdd} />
+        <TreeView nodes={TEST_DATA_ADDED} />
+        <Title variant="h3" color="primary" mt="40px" mb="20px">
+          <FormattedMessage {...messages.addProjectsAndFolders} />
         </Title>
-        <TreeView nodes={TEST_NODE_DATA} />
       </Box>
     </Box>
   );

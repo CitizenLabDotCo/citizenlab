@@ -1,7 +1,7 @@
 import { TreeNode } from './TreeView/types';
 
 // TODO remove
-export const TEST_NODE_DATA: TreeNode[] = [
+export const TEST_DATA_ADDED: TreeNode[] = [
   {
     id: '1',
     type: 'project',
@@ -56,3 +56,5 @@ export const TEST_NODE_DATA: TreeNode[] = [
     ],
   },
 ];
+
+export const TEST_DATA_CAN_BE_ADDED: TreeNode[] = [];
