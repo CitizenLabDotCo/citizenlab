@@ -1,4 +1,4 @@
-type ProjectNode = {
+export type ProjectNode = {
   id: string;
   type: 'project';
   name: string;

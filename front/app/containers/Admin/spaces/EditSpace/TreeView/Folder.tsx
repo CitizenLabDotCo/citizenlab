@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 
 import {
   Box,
-  Icon,
   IconButton,
   Text,
   colors,
 } from '@citizenlab/cl2-component-library';
 
+import Project from './Project';
 import { FolderNode } from './types';
 
 interface Props {
@@ -18,7 +18,7 @@ const Folder = ({ node }: Props) => {
   const [expanded, setExpanded] = useState(true);
 
   return (
-    <Box display="flex" alignItems="flex-start">
+    <Box display="flex" alignItems="flex-start" mt="12px">
       <Box display="flex">
         <IconButton
           mr="8px"
@@ -37,10 +37,7 @@ const Folder = ({ node }: Props) => {
         {expanded && (
           <>
             {node.children.map((child) => (
-              <Box key={child.id} display="flex" alignItems="center" mt="8px">
-                <Icon name="projects" mr="12px" width="20px" height="20px" />
-                <Text m="0">{child.name}</Text>
-              </Box>
+              <Project key={child.id} node={child} />
             ))}
           </>
         )}
