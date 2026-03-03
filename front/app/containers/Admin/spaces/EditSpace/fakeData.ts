@@ -19,7 +19,7 @@ export const TEST_NODE_DATA: TreeNode[] = [
   {
     id: '3',
     type: 'folder',
-    name: 'Folder 1',
+    name: 'Folder in space',
     path: '/admin/projects/folders/3',
     state: 'removable',
     children: [
@@ -42,22 +42,15 @@ export const TEST_NODE_DATA: TreeNode[] = [
   {
     id: '6',
     type: 'folder',
-    name: 'Folder 2',
+    name: 'Folder not in space',
     path: '/admin/projects/folders/6',
     state: 'crossed-out',
     children: [
       {
         id: '7',
         type: 'project',
-        name: 'Some nested project',
+        name: 'Project in space',
         path: '/admin/projects/7',
-        state: 'removable',
-      },
-      {
-        id: '8',
-        type: 'project',
-        name: 'Another nested project',
-        path: '/admin/projects/8',
         state: 'removable',
       },
     ],
