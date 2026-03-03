@@ -53,7 +53,7 @@ module BulkImportIdeas::Parsers::Pdf
         - if the question is of type checkbox, return the answer as 'checked' if it has been checked.
         - if the question is of type linear_scale, rating or sentiment_linear_scale, return the answer as a number.
         - if the question is of type ranking, then there will be a number written in a box next to each option indicating its rank. Return the answer as an array of option texts ordered by their rank from lowest to highest. The written numbers will not be higher than the number of options.
-        - if the question is of type matrix_linear_scale, then there will checkboxes in rows against a list of 1 (or more) matrix_statements on the left hand side. Return the answer as a hash with each statement as the key and the value as the number corresponding to the order (starting from 1, left to right) of the box that is checked or ticked for that row.
+        - if the question is of type matrix_linear_scale, then there will checkboxes in rows against a list of matrix_statements on the left hand side. Return the answer as a hash with each statement as the key and the value as the number corresponding to the order (starting from 1, left to right) of the box that is checked or ticked for that row.
         - if the question is optional, sometimes it may not be present in the scanned form.
 
         Provide only the JSON without any additional text or markers.
