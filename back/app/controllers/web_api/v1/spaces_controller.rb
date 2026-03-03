@@ -2,6 +2,7 @@ class WebApi::V1::SpacesController < ApplicationController
   before_action :set_space, only: %i[show update destroy]
 
   def index
+    authorize :space, :index?
     @spaces = policy_scope(Space)
     @spaces = paginate @spaces
     @spaces = @spaces.includes(:folders, :projects)

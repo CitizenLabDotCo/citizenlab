@@ -8,12 +8,16 @@ class SpacePolicy < ApplicationPolicy
     end
   end
 
-  def create?
+  def show?
+    # TODO: Include space admins/managers here once those roles are implemented
     active_admin?
   end
 
-  def show?
-    # TODO: Include space admins/managers here once those roles are implemented
+  def index?
+    active_admin?
+  end
+
+  def create?
     active_admin?
   end
 
