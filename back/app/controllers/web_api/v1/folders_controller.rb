@@ -144,6 +144,7 @@ class WebApi::V1::FoldersController < ApplicationController
     params.require(:project_folder).permit(
       :header_bg,
       :slug,
+      :space_id,
       admin_publication_attributes: [:publication_status],
       title_multiloc: CL2_SUPPORTED_LOCALES,
       description_multiloc: CL2_SUPPORTED_LOCALES,
