@@ -68,6 +68,8 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} users",
   "app.components.AvatarBubbles.participant": "participant",
   "app.components.AvatarBubbles.participants1": "учесника",
+  "app.components.CityLogoSection.logoLinkAriaLabelExternal": "Visit {orgName} website (opens in new tab)",
+  "app.components.CityLogoSection.logoLinkAriaLabelInternal": "{orgName} Home",
   "app.components.Comments.cancel": "Поништити, отказати",
   "app.components.Comments.commentingDisabledInCurrentPhase": "У тренутној фази коментарисање није могуће.",
   "app.components.Comments.commentingDisabledInactiveProject": "Коментарисање није могуће јер овај пројекат тренутно није активан.",
