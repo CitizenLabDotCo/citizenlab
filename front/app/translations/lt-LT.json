@@ -68,6 +68,8 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} vartotojai",
   "app.components.AvatarBubbles.participant": "dalyvis",
   "app.components.AvatarBubbles.participants1": "dalyviai",
+  "app.components.CityLogoSection.logoLinkAriaLabelExternal": "Apsilankykite {orgName} svetainėje (atsidaro naujame skirtuke)",
+  "app.components.CityLogoSection.logoLinkAriaLabelInternal": "{orgName} Pagrindinis",
   "app.components.Comments.cancel": "Atšaukti",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Dabartiniame etape komentarai negalimi.",
   "app.components.Comments.commentingDisabledInactiveProject": "Komentuoti negalima, nes šis projektas šiuo metu nėra aktyvus.",
