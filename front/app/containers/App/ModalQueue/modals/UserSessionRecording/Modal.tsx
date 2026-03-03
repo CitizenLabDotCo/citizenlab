@@ -36,7 +36,11 @@ const UserSessionRecordingModal = () => {
   };
 
   return (
-    <Modal opened close={onClose}>
+    <Modal
+      opened
+      close={onClose}
+      ariaLabelledBy="session-recording-modal-title"
+    >
       <Box p="24px">
         <Box display="flex" gap="16px" alignItems="center">
           <Icon
@@ -45,7 +49,9 @@ const UserSessionRecordingModal = () => {
             width="40px"
             height="40px"
           />
-          <Title>{formatMessage(messages.modalTitle)}</Title>
+          <Title id="session-recording-modal-title">
+            {formatMessage(messages.modalTitle)}
+          </Title>
         </Box>
 
         <Text fontSize="l">{formatMessage(messages.modalDescription1)}</Text>
