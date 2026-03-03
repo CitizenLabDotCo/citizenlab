@@ -332,11 +332,13 @@ describe ProjectFolders::FolderPolicy do
 
     context 'for a project moderator' do
       let(:user) { create(:project_moderator) }
+
       it_behaves_like 'does not permit space_id'
     end
 
     context 'for a folder moderator' do
       let(:user) { create(:project_folder_moderator) }
+
       it_behaves_like 'does not permit space_id'
     end
   end
