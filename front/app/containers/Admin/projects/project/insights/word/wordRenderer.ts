@@ -2,6 +2,7 @@
 import { Document, Packer, Paragraph, ImageRun, Table } from 'docx';
 
 import { createBreakdownTable } from 'utils/word/converters/breakdownBarConverter';
+import { createParagraphsFromHtml } from 'utils/word/converters/htmlConverter';
 import { createSimpleTable } from 'utils/word/converters/tableConverter';
 import {
   createTitle,
@@ -15,8 +16,6 @@ import {
   getScaledDimensions,
   getSpacerSpacing,
 } from 'utils/word/utils/styleConstants';
-
-import { createParagraphsFromHtml } from '../../../../reporting/word/reportConverters/textWidgetConverter';
 
 import type { WordSection } from './useWordSection';
 

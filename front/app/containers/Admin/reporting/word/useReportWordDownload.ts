@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 
 import { saveAs } from 'file-saver';
 
+import { createParagraphsFromHtml } from 'utils/word/converters/htmlConverter';
 import {
   createEmptyParagraph,
   createParagraph,
@@ -14,8 +15,6 @@ import {
   getSpacerSpacing,
   type SpacerSize,
 } from 'utils/word/utils/styleConstants';
-
-import { createParagraphsFromHtml } from './reportConverters/textWidgetConverter';
 
 export type ReportWordSection =
   | { type: 'text'; html: string }

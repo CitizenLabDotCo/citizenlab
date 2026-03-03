@@ -84,14 +84,11 @@ jest.mock('utils/word/utils/styleConstants', () => ({
   }),
 }));
 
-jest.mock(
-  '../../../../reporting/word/reportConverters/textWidgetConverter',
-  () => ({
-    createParagraphsFromHtml: jest.fn((html) => [
-      { _mock: 'html-paragraph', html },
-    ]),
-  })
-);
+jest.mock('utils/word/converters/htmlConverter', () => ({
+  createParagraphsFromHtml: jest.fn((html) => [
+    { _mock: 'html-paragraph', html },
+  ]),
+}));
 
 import { Packer } from 'docx';
 
@@ -104,7 +101,7 @@ import {
   createEmptyParagraph,
 } from 'utils/word/converters/textConverter';
 
-import { createParagraphsFromHtml } from '../../../../reporting/word/reportConverters/textWidgetConverter';
+import { createParagraphsFromHtml } from 'utils/word/converters/htmlConverter';
 
 import { sectionsToDocxBlob } from './wordRenderer';
 
