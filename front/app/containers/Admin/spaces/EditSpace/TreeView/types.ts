@@ -1,16 +1,11 @@
 import { RouteType } from 'routes';
 
-type ProjectState = 'locked' | 'removable' | 'addable';
-
 export type ProjectNode = {
   id: string;
   type: 'project';
   name: string;
   path: RouteType;
-  state: ProjectState;
 };
-
-type FolderState = 'crossed-out' | 'removable' | 'addable';
 
 export type FolderNode = {
   id: string;
@@ -18,7 +13,7 @@ export type FolderNode = {
   name: string;
   path: RouteType;
   children: ProjectNode[];
-  state: FolderState;
+  inSpace: boolean;
 };
 
 export type TreeNode = ProjectNode | FolderNode;

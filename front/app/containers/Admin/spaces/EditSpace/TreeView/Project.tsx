@@ -12,9 +12,10 @@ import { ProjectNode } from './types';
 
 interface Props {
   node: ProjectNode;
+  removable: boolean;
 }
 
-const Project = ({ node }: Props) => {
+const Project = ({ node, removable }: Props) => {
   return (
     <Row>
       <Box display="flex">
@@ -24,15 +25,12 @@ const Project = ({ node }: Props) => {
           width="20px"
           height="20px"
           transform="translateY(-1px)"
-          fill={node.state === 'locked' ? colors.grey600 : colors.black}
+          fill={removable ? colors.black : colors.grey600}
         />
-        <Link
-          to={node.path}
-          color={node.state === 'locked' ? colors.grey600 : colors.black}
-        >
+        <Link to={node.path} color={removable ? colors.black : colors.grey600}>
           {node.name}
         </Link>
-        {node.state === 'locked' && (
+        {!removable && (
           <Tooltip
             content={
               <Box>
@@ -51,7 +49,7 @@ const Project = ({ node }: Props) => {
           </Tooltip>
         )}
       </Box>
-      {node.state === 'removable' && <DeleteButton />}
+      {removable && <DeleteButton />}
     </Row>
   );
 };

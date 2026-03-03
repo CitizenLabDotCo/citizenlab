@@ -34,21 +34,19 @@ const Folder = ({ node }: Props) => {
             iconName={expanded ? 'chevron-down' : 'chevron-right'}
             iconWidth="20px"
             iconHeight="20px"
-            iconColor={
-              node.state === 'crossed-out' ? colors.grey600 : colors.black
-            }
+            iconColor={node.inSpace ? colors.black : colors.grey600}
             transform="translateY(-1px)"
             onClick={() => setExpanded(!expanded)}
             a11y_buttonActionMessage=""
           />
           <Link
             to={node.path}
-            color={node.state === 'crossed-out' ? colors.grey600 : colors.black}
-            crossedOut={node.state === 'crossed-out'}
+            color={node.inSpace ? colors.black : colors.grey600}
+            crossedOut={!node.inSpace}
           >
             {node.name}
           </Link>
-          {node.state === 'crossed-out' && (
+          {!node.inSpace && (
             <Tooltip
               content={
                 <Box>
@@ -67,13 +65,13 @@ const Folder = ({ node }: Props) => {
             </Tooltip>
           )}
         </Box>
-        {node.state === 'removable' && <DeleteButton />}
+        {node.inSpace && <DeleteButton />}
       </Row>
       <Box pl="31px">
         {expanded && (
           <>
             {node.children.map((child) => (
-              <Project key={child.id} node={child} />
+              <Project key={child.id} node={child} removable={!node.inSpace} />
             ))}
           </>
         )}

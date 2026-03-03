@@ -15,7 +15,7 @@ const TreeView = ({ nodes }: Props) => {
     <Box maxWidth="800px">
       {nodes.map((node) => (
         <Box key={node.id}>
-          {node.type === 'project' && <Project node={node} />}
+          {node.type === 'project' && <Project node={node} removable />}
           {node.type === 'folder' && <Folder node={node} />}
         </Box>
       ))}
