@@ -11,6 +11,9 @@ import GoBackButton from 'components/UI/GoBackButton';
 
 import clHistory from 'utils/cl-router/history';
 
+import { TEST_NODE_DATA } from './fakeData';
+import TreeView from './TreeView';
+
 const goBack = () => {
   clHistory.goBack();
 };
@@ -30,7 +33,7 @@ const EditSpace = () => {
         px="52px"
         py="44px"
       >
-        TODO
+        <TreeView nodes={TEST_NODE_DATA} />
       </Box>
     </Box>
   );
