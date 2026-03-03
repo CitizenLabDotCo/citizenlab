@@ -35,8 +35,12 @@ const EditSpace = () => {
         px="52px"
         py="44px"
       >
-        <Title variant="h2" color="primary" mt="0px" mb="32px">
+        <Title variant="h2" color="primary" mt="0px" mb="20px">
           <FormattedMessage {...messages.projectsAndFoldersAdded} />
+        </Title>
+        <TreeView nodes={TEST_NODE_DATA} />
+        <Title variant="h2" color="primary" mt="60px" mb="20px">
+          <FormattedMessage {...messages.projectsAndFoldersYouCanAdd} />
         </Title>
         <TreeView nodes={TEST_NODE_DATA} />
       </Box>
