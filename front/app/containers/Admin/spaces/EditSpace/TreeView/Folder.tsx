@@ -10,7 +10,9 @@ import {
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import Link from './Link';
+import DeleteButton from './_shared/DeleteButton';
+import Link from './_shared/Link';
+import Row from './_shared/Row';
 import messages from './messages';
 import Project from './Project';
 import { FolderNode } from './types';
@@ -24,51 +26,49 @@ const Folder = ({ node }: Props) => {
 
   return (
     <Box>
-      <Box
-        display="flex"
-        alignItems="flex-start"
-        py="16px"
-        borderBottom={`1px solid ${colors.divider}`}
-      >
-        <IconButton
-          mr="8px"
-          ml="-7px"
-          iconName={expanded ? 'chevron-down' : 'chevron-right'}
-          iconWidth="20px"
-          iconHeight="20px"
-          iconColor={
-            node.state === 'crossed-out' ? colors.grey600 : colors.black
-          }
-          transform="translateY(-1px)"
-          onClick={() => setExpanded(!expanded)}
-          a11y_buttonActionMessage=""
-        />
-        <Link
-          to={node.path}
-          color={node.state === 'crossed-out' ? colors.grey600 : colors.black}
-          crossedOut={node.state === 'crossed-out'}
-        >
-          {node.name}
-        </Link>
-        {node.state === 'crossed-out' && (
-          <Tooltip
-            content={
-              <Box>
-                <FormattedMessage {...messages.crossedOutFolder} />
-              </Box>
+      <Row>
+        <Box display="flex" alignItems="flex-start">
+          <IconButton
+            mr="8px"
+            ml="-7px"
+            iconName={expanded ? 'chevron-down' : 'chevron-right'}
+            iconWidth="20px"
+            iconHeight="20px"
+            iconColor={
+              node.state === 'crossed-out' ? colors.grey600 : colors.black
             }
+            transform="translateY(-1px)"
+            onClick={() => setExpanded(!expanded)}
+            a11y_buttonActionMessage=""
+          />
+          <Link
+            to={node.path}
+            color={node.state === 'crossed-out' ? colors.grey600 : colors.black}
+            crossedOut={node.state === 'crossed-out'}
           >
-            <Icon
-              name="question-circle"
-              ml="8px"
-              width="20px"
-              height="20px"
-              transform="translateY(-1px)"
-              fill={colors.grey600}
-            />
-          </Tooltip>
-        )}
-      </Box>
+            {node.name}
+          </Link>
+          {node.state === 'crossed-out' && (
+            <Tooltip
+              content={
+                <Box>
+                  <FormattedMessage {...messages.crossedOutFolder} />
+                </Box>
+              }
+            >
+              <Icon
+                name="question-circle"
+                ml="8px"
+                width="20px"
+                height="20px"
+                transform="translateY(-1px)"
+                fill={colors.grey600}
+              />
+            </Tooltip>
+          )}
+        </Box>
+        {node.state === 'removable' && <DeleteButton />}
+      </Row>
       <Box pl="31px">
         {expanded && (
           <>

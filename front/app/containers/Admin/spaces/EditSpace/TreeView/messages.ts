@@ -11,4 +11,8 @@ export default defineMessages({
     defaultMessage:
       'This folder is not in the space. However, some projects inside of it are. These projects are shown below.',
   },
+  remove: {
+    id: 'app.containers.Admin.spaces.EditSpace.TreeView.remove',
+    defaultMessage: 'Remove',
+  },
 });
