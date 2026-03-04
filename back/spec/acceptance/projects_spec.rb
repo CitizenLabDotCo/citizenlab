@@ -456,7 +456,6 @@ resource 'Projects' do
           end
         end
 
-
         # **If a project IS in a folder and folder NOT in a space:**
 
         # - If you remove the project from the folder, it stays NOT in the space
@@ -545,6 +544,11 @@ resource 'Projects' do
 
             do_request(project: { space_id: space2.id })
             expect(json_response[:data][:attributes][:space_id]).to eq space2.id
+          end
+
+          example 'Move the project to no space' do
+            do_request(project: { space_id: nil })
+            expect(json_response[:data][:attributes][:space_id]).to be_nil
           end
         end
 
