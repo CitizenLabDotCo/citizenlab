@@ -1,8 +1,9 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
+import spacesKeys from './keys';
 import { RequestBody, Space } from './types';
 
 export const addSpace = async (requestBody: RequestBody) => {
@@ -14,8 +15,13 @@ export const addSpace = async (requestBody: RequestBody) => {
 };
 
 const useAddSpace = () => {
+  const queryClient = useQueryClient();
+
   return useMutation<Space, CLErrors, RequestBody>({
     mutationFn: addSpace,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: spacesKeys.lists() });
+    },
   });
 };
 
