@@ -299,7 +299,7 @@ resource 'Users' do
             assert_status 201
             user = User.order(:created_at).last
             expect(RequestConfirmationCodeJob).to have_received(:perform_now).with(user).once
-            expect(response_data.dig(:attributes, :confirmation_required)).to be(true)
+            expect(user.confirmation_required?).to be(true)
           end
 
           example_request 'Registration is not completed by default' do
