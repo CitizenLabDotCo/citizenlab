@@ -3,6 +3,10 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
 
+import useSpace from 'api/spaces/useSpace';
+
+import useLocalize from 'hooks/useLocalize';
+
 import TabbedResource, {
   Props as TabbedResourceProps,
 } from 'components/admin/TabbedResource';
@@ -20,22 +24,24 @@ const goBack = () => {
 const EditSpace = () => {
   const { spaceId } = useParams();
   const { formatMessage } = useIntl();
+  const localize = useLocalize();
+  const { data: space } = useSpace(spaceId);
 
-  if (!spaceId) return null;
+  if (!space) return null;
 
   const tabbedProps: Omit<TabbedResourceProps, 'children'> = {
     resource: {
-      title: 'My space',
+      title: localize(space.data.attributes.title_multiloc),
     },
     tabs: [
       {
         label: formatMessage(messages.projectsAndFolders),
-        url: `/admin/projects/spaces/${spaceId}`,
+        url: `/admin/projects/spaces/${space.data.id}`,
         name: 'projects',
       },
       {
         label: formatMessage(messages.settings),
-        url: `/admin/projects/spaces/${spaceId}/settings`,
+        url: `/admin/projects/spaces/${space.data.id}/settings`,
         name: 'settings',
       },
     ],

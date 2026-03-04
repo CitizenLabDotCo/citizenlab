@@ -6,21 +6,18 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import spacesKeys from './keys';
 import { Space, SpacesKeys } from './types';
 
-type IdParam = {
-  id: string;
-};
-
-const fetchSpace = ({ id }: IdParam) => {
+const fetchSpace = (id?: string) => {
   return fetcher<Space>({
     path: `/spaces/${id}`,
     action: 'get',
   });
 };
 
-const useSpace = (idParam: IdParam) => {
+const useSpace = (id?: string) => {
   return useQuery<Space, CLErrors, Space, SpacesKeys>({
-    queryKey: spacesKeys.item(idParam),
-    queryFn: () => fetchSpace(idParam),
+    queryKey: spacesKeys.item({ id }),
+    queryFn: () => fetchSpace(id),
+    enabled: !!id,
   });
 };
 
