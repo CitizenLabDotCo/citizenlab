@@ -1,8 +1,12 @@
 import React from 'react';
 
-import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Title,
+  colors,
+  stylingConsts,
+} from '@citizenlab/cl2-component-library';
 
-import { SectionTitle } from 'components/admin/Section';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -28,10 +32,10 @@ const NewSpace = () => {
         px="52px"
         py="44px"
       >
-        <SectionTitle>
+        <Title variant="h2" as="h1" color="primary" mt="0px">
           <FormattedMessage {...messages.createANewSpace} />
-        </SectionTitle>
-        <Box mt="120px">
+        </Title>
+        <Box mt="80px">
           <SpaceNameForm />
         </Box>
       </Box>
