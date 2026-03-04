@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  colors,
-  stylingConsts,
-  Title,
-} from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
 
 import TabbedResource, {
@@ -35,7 +30,7 @@ const EditSpace = () => {
     tabs: [
       {
         label: formatMessage(messages.projectsAndFolders),
-        url: `/admin/projects/spaces/${spaceId}/projects-and-folders`,
+        url: `/admin/projects/spaces/${spaceId}`,
         name: 'projects',
       },
       {
@@ -49,21 +44,9 @@ const EditSpace = () => {
   return (
     <Box px="48px" py="48px">
       <GoBackButton onClick={goBack} />
-      <Title variant="h1" color="primary" mt="56px" mb="40px">
-        My space
-      </Title>
-      <Box
-        bgColor={colors.white}
-        border={`1px solid ${colors.borderLight}`}
-        borderRadius={stylingConsts.borderRadius}
-        mt="20px"
-        px="52px"
-        py="44px"
-      >
-        <TabbedResource {...tabbedProps}>
-          <RouterOutlet />
-        </TabbedResource>
-      </Box>
+      <TabbedResource {...tabbedProps}>
+        <RouterOutlet />
+      </TabbedResource>
     </Box>
   );
 };
