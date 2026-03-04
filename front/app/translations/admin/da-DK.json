@@ -2449,7 +2449,6 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Maks. antal input en bruger kan 'like' (en idé) eller stemme (på et forslag)",
   "app.containers.AdminPage.ProjectEdit.limited": "Begrænset",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "Listevisning er altid tilgængelig og kan ikke deaktiveres.",
-  "app.containers.AdminPage.ProjectEdit.listViewDescription": "Traditionel diskussion med tråd. Bedst til: mindre diskussioner, når du vil have engagementsmålinger til at skabe synlighed.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Listevisning",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Indlæs flere skabeloner",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Lav standard",

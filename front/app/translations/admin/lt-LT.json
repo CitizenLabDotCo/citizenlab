@@ -2449,7 +2449,6 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Vienam dalyviui tenkančių \"patinka\" paspaudimų skaičius",
   "app.containers.AdminPage.ProjectEdit.limited": "Ribotas",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "Sąrašo rodinys yra visada prieinamas ir jo negalima išjungti.",
-  "app.containers.AdminPage.ProjectEdit.listViewDescription": "Tradicinė diskusija su gijomis. Geriausiai tinka: mažesnėms diskusijoms, kai norite, kad įsitraukimo rodikliai lemtų matomumą.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Sąrašo rodinys",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Įkelti daugiau šablonų",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Nustatykite numatytąsias nuostatas",

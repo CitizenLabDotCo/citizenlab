@@ -2449,7 +2449,6 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Anzahl der Likes/Gefällt mir pro Teilnehmendem",
   "app.containers.AdminPage.ProjectEdit.limited": "Beschränkt",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "Die Listenansicht ist immer verfügbar und kann nicht deaktiviert werden.",
-  "app.containers.AdminPage.ProjectEdit.listViewDescription": "Traditionelle Diskussion in einem Thread. Am besten geeignet für: kleinere Diskussionen, wenn Sie Beteiligungs-Metriken wünschen, um die Sichtbarkeit zu erhöhen.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Listenansicht",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Weitere Vorlagen laden",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Standard festlegen",

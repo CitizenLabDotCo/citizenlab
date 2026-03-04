@@ -2449,7 +2449,6 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Number of likes per participant",
   "app.containers.AdminPage.ProjectEdit.limited": "Sınırlı",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "Liste görünümü her zaman kullanılabilir ve devre dışı bırakılamaz.",
-  "app.containers.AdminPage.ProjectEdit.listViewDescription": "Geleneksel başlıklandırılmış tartışma. En iyi kullanım alanları: görünürlüğü artırmak için etkileşim ölçümleri istediğinizde daha küçük tartışmalar.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Liste görünümü",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Daha fazla şablon yükle",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Varsayılan yap",

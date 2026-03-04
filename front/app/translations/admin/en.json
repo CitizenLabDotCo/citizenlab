@@ -2449,7 +2449,7 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Number of likes per participant",
   "app.containers.AdminPage.ProjectEdit.limited": "Limited",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "List view is always available and cannot be disabled.",
-  "app.containers.AdminPage.ProjectEdit.listViewDescription": "Traditional threaded discussion. Best for: smaller discussions, when you want engagement metrics to drive visibility.",
+  "app.containers.AdminPage.ProjectEdit.listViewDescription1": "Inputs are displayed as a scrollable feed, sorted by trending, reactions, comments, date, or activity. Best for: smaller consultations.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "List view",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Load more templates",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Make default",

@@ -2449,7 +2449,6 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Numero di \"Mi piace\" per partecipante",
   "app.containers.AdminPage.ProjectEdit.limited": "Limitato",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "La visualizzazione a elenco è sempre disponibile e non può essere disattivata.",
-  "app.containers.AdminPage.ProjectEdit.listViewDescription": "Discussione tradizionale con thread. Ideale per: discussioni più piccole, quando vuoi che le metriche di coinvolgimento guidino la visibilità.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Vista elenco",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Carica altri modelli",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Rendi l'impostazione predefinita",
