@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import { isFolder } from 'api/admin_publications/utils';
 
 import useLocalize from 'hooks/useLocalize';
 
-import messages from 'containers/Admin/users/messages';
+import userMessages from 'containers/Admin/users/messages';
 
 import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { useIntl } from 'utils/cl-intl';
+
+import messages from '../messages';
 
 const ProjectFolderSelect = () => {
   const { formatMessage } = useIntl();
@@ -34,7 +36,7 @@ const ProjectFolderSelect = () => {
   const options = flatAdminPublications.map((publication) => ({
     value: publication.id,
     label: isFolder(publication)
-      ? `${formatMessage(messages.folder)}: ${localize(
+      ? `${formatMessage(userMessages.folder)}: ${localize(
           publication.attributes.publication_title_multiloc
         )}`
       : localize(publication.attributes.publication_title_multiloc),
@@ -59,16 +61,26 @@ const ProjectFolderSelect = () => {
   };
 
   return (
-    <Box maxWidth="500px">
+    <Box maxWidth="500px" mt="40px">
       <MultipleSelect
         value={selectedPublications}
         options={options}
         onChange={(selectedOptions) =>
           setSelectedPublications(selectedOptions.map((option) => option.value))
         }
-        label={formatMessage(messages.selectPublications)}
-        placeholder={formatMessage(messages.selectPublicationsPlaceholder)}
+        label={formatMessage(userMessages.selectPublications)}
+        placeholder={formatMessage(userMessages.selectPublicationsPlaceholder)}
       />
+      <Box display="flex" mt="12px">
+        <Button
+          onClick={handleAssign}
+          disabled={selectedPublications.length === 0}
+          processing={isLoading}
+          buttonStyle="admin-dark"
+        >
+          {formatMessage(messages.add)}
+        </Button>
+      </Box>
     </Box>
   );
 };

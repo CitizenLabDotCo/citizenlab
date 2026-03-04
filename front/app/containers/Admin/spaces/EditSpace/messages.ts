@@ -9,4 +9,8 @@ export default defineMessages({
     id: 'app.containers.EditSpace.addProjectsAndFolders',
     defaultMessage: 'Add projects and folders to this space',
   },
+  add: {
+    id: 'app.containers.EditSpace.add',
+    defaultMessage: 'Add',
+  },
 });
