@@ -338,7 +338,7 @@ export default defineMessages({
     defaultMessage: 'List view',
   },
   listViewDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.listViewDescription',
+    id: 'app.containers.AdminPage.ProjectEdit.listViewDescription1',
     defaultMessage:
       'Inputs are displayed as a scrollable feed, sorted by trending, reactions, comments, date, or activity. Best for: smaller consultations.',
   },
