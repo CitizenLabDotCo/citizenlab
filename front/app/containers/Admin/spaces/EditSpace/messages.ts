@@ -13,4 +13,12 @@ export default defineMessages({
     id: 'app.containers.EditSpace.add',
     defaultMessage: 'Add',
   },
+  projectsAndFolders: {
+    id: 'app.containers.EditSpace.projectsAndFolders',
+    defaultMessage: 'Projects and folders',
+  },
+  settings: {
+    id: 'app.containers.EditSpace.settings',
+    defaultMessage: 'Settings',
+  },
 });

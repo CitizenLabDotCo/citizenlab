@@ -6,22 +6,46 @@ import {
   stylingConsts,
   Title,
 } from '@citizenlab/cl2-component-library';
+import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
 
+import TabbedResource, {
+  Props as TabbedResourceProps,
+} from 'components/admin/TabbedResource';
 import GoBackButton from 'components/UI/GoBackButton';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-import { TEST_DATA_ADDED } from './fakeData';
 import messages from './messages';
-import ProjectFolderSelect from './ProjectFolderSelect';
-import TreeView from './TreeView';
 
 const goBack = () => {
   clHistory.goBack();
 };
 
 const EditSpace = () => {
+  const { spaceId } = useParams();
+  const { formatMessage } = useIntl();
+
+  if (!spaceId) return null;
+
+  const tabbedProps: Omit<TabbedResourceProps, 'children'> = {
+    resource: {
+      title: 'My space',
+    },
+    tabs: [
+      {
+        label: formatMessage(messages.projectsAndFolders),
+        url: `/admin/projects/spaces/${spaceId}/projects-and-folders`,
+        name: 'projects',
+      },
+      {
+        label: formatMessage(messages.settings),
+        url: `/admin/projects/spaces/${spaceId}/settings`,
+        name: 'settings',
+      },
+    ],
+  };
+
   return (
     <Box px="48px" py="48px">
       <GoBackButton onClick={goBack} />
@@ -36,14 +60,9 @@ const EditSpace = () => {
         px="52px"
         py="44px"
       >
-        <Title variant="h2" color="primary" mt="0px" mb="20px">
-          <FormattedMessage {...messages.projectsAndFoldersAdded} />
-        </Title>
-        <TreeView nodes={TEST_DATA_ADDED} />
-        <Title variant="h3" color="primary" mt="60px" mb="20px">
-          <FormattedMessage {...messages.addProjectsAndFolders} />
-        </Title>
-        <ProjectFolderSelect />
+        <TabbedResource {...tabbedProps}>
+          <RouterOutlet />
+        </TabbedResource>
       </Box>
     </Box>
   );

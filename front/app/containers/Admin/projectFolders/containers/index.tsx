@@ -2,14 +2,15 @@ import React from 'react';
 
 import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { ITab } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 import useLocalize from 'hooks/useLocalize';
 
-import TabbedResource from 'components/admin/TabbedResource';
+import TabbedResource, {
+  Props as TabbedResourceProps,
+} from 'components/admin/TabbedResource';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import GoBackButton from 'components/UI/GoBackButton';
 
@@ -29,27 +30,20 @@ const TopContainer = styled.div`
   position: relative;
 `;
 
-type TabbedPropsType = {
-  resource: {
-    title: string;
-  };
-  tabs: ITab[];
-};
-
 const AdminProjectFolderEdition = () => {
-  const { projectFolderId } = useParams() as { projectFolderId: string };
+  const { projectFolderId } = useParams();
   const { data: projectFolder } = useProjectFolderById(projectFolderId);
   const { data: authUser } = useAuthUser();
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  if (!authUser || !projectFolder) return null;
+  if (!authUser || !projectFolder || !projectFolderId) return null;
 
   const goBack = () => {
     clHistory.push('/admin/projects');
   };
 
-  let tabbedProps: TabbedPropsType = {
+  let tabbedProps: Omit<TabbedResourceProps, 'children'> = {
     resource: {
       title: localize(projectFolder.data.attributes.title_multiloc),
     },

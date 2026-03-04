@@ -13,7 +13,7 @@ import MultipleSelect from 'components/UI/MultipleSelect';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
+import messages from '../../messages';
 
 const ProjectFolderSelect = () => {
   const { formatMessage } = useIntl();

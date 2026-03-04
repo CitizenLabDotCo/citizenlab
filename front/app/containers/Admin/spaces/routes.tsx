@@ -8,17 +8,20 @@ import { AdminRoute } from '../routes';
 
 const NewSpace = lazy(() => import('./NewSpace'));
 const EditSpace = lazy(() => import('./EditSpace'));
+const ProjectsAndFolders = lazy(() => import('./EditSpace/ProjectsAndFolders'));
 
 export enum spacesRoutes {
   spaces = 'projects/spaces',
   new = 'new',
   spaceId = ':spaceId',
+  projectsAndFolder = 'projects-and-folders',
 }
 
 export type spaceRouteTypes =
   | AdminRoute<spacesRoutes.spaces>
   | AdminRoute<`${spacesRoutes.spaces}/${spacesRoutes.new}`>
-  | AdminRoute<`${spacesRoutes.spaces}/${string}`>;
+  | AdminRoute<`${spacesRoutes.spaces}/${string}`>
+  | AdminRoute<`${spacesRoutes.spaces}/${string}/${spacesRoutes.projectsAndFolder}`>;
 
 export default () => ({
   path: spacesRoutes.spaces,
@@ -43,6 +46,17 @@ export default () => ({
           <EditSpace />
         </PageLoading>
       ),
+      children: [
+        {
+          path: 'projects-and-folders',
+          index: true,
+          element: (
+            <PageLoading>
+              <ProjectsAndFolders />
+            </PageLoading>
+          ),
+        },
+      ],
     },
   ],
 });
