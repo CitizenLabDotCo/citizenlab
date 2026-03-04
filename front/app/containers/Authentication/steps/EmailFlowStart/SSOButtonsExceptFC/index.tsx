@@ -157,6 +157,15 @@ const SSOButtonsExceptFC = ({ onClickSSO }: Props) => {
           />
         </WrappedAuthProviderButton>
       )}
+      {ssoProviders.federa && (
+        <WrappedAuthProviderButton
+          icon="shield-check"
+          authProvider="federa"
+          onClick={onClickSSO}
+        >
+          <FormattedMessage {...messages.continueWithFedera} />
+        </WrappedAuthProviderButton>
+      )}
       {ssoProviders.viennaCitizen && <ViennaSamlButton onClick={onClickSSO} />}
       {ssoProviders.google && (
         <WrappedAuthProviderButton
