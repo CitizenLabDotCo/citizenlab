@@ -117,6 +117,8 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   const multipleFormsChecked = methods.watch('multiple_forms');
 
   useEffect(() => {
+    // If we uncheck the "multiple forms" checkbox,
+    // we want to reset the pages_per_form field
     if (!multipleFormsChecked) {
       methods.setValue('pages_per_form', undefined);
     }
