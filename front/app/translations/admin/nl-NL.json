@@ -2449,6 +2449,7 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Aantal likes per deelnemer",
   "app.containers.AdminPage.ProjectEdit.limited": "Beperkt",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "De lijstweergave is altijd beschikbaar en kan niet worden uitgeschakeld.",
+  "app.containers.AdminPage.ProjectEdit.listViewDescription1": "Invoer wordt weergegeven als een scrollbare feed, gesorteerd op trending, reacties, commentaar, datum of activiteit. Het meest geschikt voor: kleinere consultaties.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Lijstweergave",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Meer sjablonen tonen",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Standaard maken",
