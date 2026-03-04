@@ -622,6 +622,7 @@ resource 'Phases' do
           reacting_like_method: reacting_like_method,
           reacting_like_limited_max: reacting_like_limited_max,
           presentation_mode: presentation_mode,
+          available_views: available_views,
           allow_anonymous_participation: allow_anonymous_participation,
           prescreening_mode: prescreening_mode,
           similarity_enabled: similarity_enabled,
