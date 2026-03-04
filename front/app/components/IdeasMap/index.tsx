@@ -357,7 +357,7 @@ const IdeasMap = memo<Props>(
                 // TODO: Fix this the next time the file is edited.
                 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                 topElement?.graphic?.attributes?.cluster_count;
-              if (clusterCount) {
+              if (clusterCount && topElement.mapPoint) {
                 // User clicked a cluster. Zoom in on the cluster.
                 goToMapLocation(
                   esriPointToGeoJson(topElement.mapPoint),
@@ -375,11 +375,15 @@ const IdeasMap = memo<Props>(
                     element.type === 'graphic' &&
                     // TODO: Fix this the next time the file is edited.
                     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                    element?.graphic?.layer.id === 'ideasLayer'
+                    element?.graphic?.layer?.id === 'ideasLayer'
                 ).length;
 
                 // If there are multiple ideas at this same location (overlapping pins), show the idea selection popup.
-                if (ideasAtClickCount > 1 && mapView.zoom >= 19) {
+                if (
+                  ideasAtClickCount > 1 &&
+                  mapView.zoom >= 19 &&
+                  topElement.mapPoint
+                ) {
                   goToMapLocation(
                     esriPointToGeoJson(topElement.mapPoint),
                     mapView
@@ -400,14 +404,14 @@ const IdeasMap = memo<Props>(
                     });
                     // Set state and open the idea selection popup
                     setIdeasSharingLocation(ideaIds);
-                    mapView.popup.open({
+                    mapView.popup?.open({
                       features: [topElement.graphic],
-                      location: topElement.mapPoint,
+                      location: topElement.mapPoint || undefined,
                     });
                   });
                 } else {
                   // Otherwise, open the selected idea in the information panel
-                  if (ideaId) {
+                  if (ideaId && topElement.mapPoint) {
                     goToMapLocation(
                       esriPointToGeoJson(topElement.mapPoint),
                       mapView
@@ -415,7 +419,7 @@ const IdeasMap = memo<Props>(
                       setSelectedIdea(ideaId);
                       // Add a graphic symbol to highlight which point was clicked
                       const geometry = topElement.graphic.geometry;
-                      if (geometry.type === 'point') {
+                      if (geometry?.type === 'point') {
                         const graphic = new Graphic({
                           geometry,
                           symbol: ideaIconSecondary,

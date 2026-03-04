@@ -21,15 +21,13 @@ import { getOptionSelectionCounter, getVotesCounter } from './utils';
 
 const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const isMobileOrSmaller = useBreakpoint('phone');
-  const { numberOfVotesCast, numberOfOptionsSelected } = useVoting();
+  const { numberOfVotesCast, numberOfOptionsSelected, basketId } = useVoting();
   const { formatMessage } = useIntl();
   const formatCurrency = useFormatCurrency();
 
   const currentPhase = useMemo(() => {
     return getCurrentPhase(phases) || getLastPhase(phases);
   }, [phases]);
-
-  const basketId = currentPhase?.relationships.user_basket?.data?.id;
 
   const { data: basket } = useBasket(basketId);
 

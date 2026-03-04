@@ -39,6 +39,7 @@ interface ICustomPageChange {
 
 export const events$ = new Subject<IEvent>();
 export const pageChanges$ = new Subject<ICustomPageChange>();
+export const virtualPageViews$ = new Subject<string>();
 
 const destinationConsentChanged$ = eventEmitter
   .observeEvent<ISavedDestinations[]>('destinationConsentChanged')
@@ -129,6 +130,13 @@ export function trackPage(path: string, properties = {}) {
     properties,
     path,
   });
+}
+
+/** Tracks a virtual page view — for user actions that don't trigger a real
+ * navigation but should be recorded as page views (e.g. auth flow steps,
+ * survey form pages, SSO clicks). */
+export function trackVirtualPageView(path: string) {
+  virtualPageViews$.next(path);
 }
 
 type Properties = Record<string, string | number | boolean | undefined | null>;

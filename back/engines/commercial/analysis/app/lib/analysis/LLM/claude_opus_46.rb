@@ -1,9 +1,9 @@
 module Analysis
   module LLM
-    class ClaudeOpus45 < RubyLLM
+    class ClaudeOpus46 < RubyLLM
       # The model ID as returned by RubyLLM.models.chat_models
       def model
-        'eu.anthropic.claude-opus-4-5-20251101-v1:0'
+        'eu.anthropic.claude-opus-4-6-v1'
       end
 
       def self.family

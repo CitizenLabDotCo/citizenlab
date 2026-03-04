@@ -1,6 +1,6 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 
-import mockModules from './mockModules';
+import mockModules from './mockModules.ts';
 
 const APP_FOLDER_ALIASES = [
   'api',
