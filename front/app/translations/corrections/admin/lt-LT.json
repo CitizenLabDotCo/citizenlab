@@ -1,8 +1,0 @@
-{
-  "app.components.admin.PostManager.contributionFormTitle": "Redaguoti įnašą",
-  "app.containers.AdminPage.ProjectEdit.newIssue": "Pridėti problemą",
-  "app.containers.AdminPage.ProjectEdit.newOption": "Pridėti galimybę",
-  "app.components.admin.PostManager.optionFormTitle": "Redaguoti galimybę",
-  "app.containers.AdminPage.ProjectEdit.newPost": "Pridėti rašyti",
-  "app.components.admin.PostManager.postFormTitle": "Redaguoti rašyti"
-}
