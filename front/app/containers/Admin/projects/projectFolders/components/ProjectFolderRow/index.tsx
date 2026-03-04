@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAuthUser from 'api/me/useAuthUser';
 
+import useLocalize from 'hooks/useLocalize';
+
 import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
 import {
   RowContent,
@@ -62,6 +64,7 @@ export interface Props {
 const ProjectFolderRow = memo<Props>(
   ({ publication, toggleFolder, isFolderOpen, hasProjects }) => {
     const { data: authUser } = useAuthUser();
+    const localize = useLocalize();
 
     const [folderDeletionError, setFolderDeletionError] = useState<
       string | null
@@ -151,6 +154,9 @@ const ProjectFolderRow = memo<Props>(
               </FolderRowContent>
               <FolderMoreActionsMenu
                 folderId={publication.relationships.publication.data.id}
+                folderName={localize(
+                  publication.attributes.publication_title_multiloc
+                )}
                 setError={setFolderDeletionError}
                 setIsRunningAction={setIsBeingDeleted}
               />

@@ -19,7 +19,7 @@
 #  default_assignee_id            :uuid
 #  include_all_areas              :boolean          default(FALSE), not null
 #  baskets_count                  :integer          default(0), not null
-#  votes_count                    :integer          default(0), not null
+#  votes_count                    :bigint           default(0), not null
 #  followers_count                :integer          default(0), not null
 #  header_bg_alt_text_multiloc    :jsonb
 #  preview_token                  :string           not null
@@ -27,14 +27,17 @@
 #  listed                         :boolean          default(TRUE), not null
 #  track_participation_location   :boolean          default(FALSE), not null
 #  live_auto_input_topics_enabled :boolean          default(FALSE), not null
+#  space_id                       :uuid
 #
 # Indexes
 #
-#  index_projects_on_slug  (slug) UNIQUE
+#  index_projects_on_slug      (slug) UNIQUE
+#  index_projects_on_space_id  (space_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (default_assignee_id => users.id)
+#  fk_rails_...  (space_id => spaces.id)
 #
 class Project < ApplicationRecord
   include Files::FileAttachable
@@ -50,6 +53,8 @@ class Project < ApplicationRecord
 
   has_many_text_images from: :description_multiloc, as: :text_images
   accepts_nested_attributes_for :text_images
+
+  belongs_to :space, optional: true
 
   has_one :custom_form, as: :participation_context, dependent: :destroy # ideation & voting phases only
 

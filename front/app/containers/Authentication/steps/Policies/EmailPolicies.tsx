@@ -16,7 +16,7 @@ interface Props {
   state: State;
   loading: boolean;
   setError: SetError;
-  onAccept: (email: string, locale: string) => void;
+  onAccept: (email: string, locale: string, claimTokens?: string[]) => void;
   goBack: () => void;
 }
 
@@ -35,7 +35,7 @@ const EmailPolicies = ({
 
   const handleSubmit = async () => {
     try {
-      await onAccept(email, locale);
+      await onAccept(email, locale, state.claimTokens ?? undefined);
     } catch (e) {
       setError('account_creation_failed');
     }

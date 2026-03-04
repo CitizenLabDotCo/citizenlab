@@ -101,7 +101,7 @@ it:
       idea_title: 'Esempio di idea'
       idea_body: 'Questo è un esempio di contenuto di idea utilizzato per l''anteprima del contenuto delle e-mail. Non si tratta di contenuti reali.'
       event_title: 'Esempio di evento'
-      event_address1: '10 Example Street, Exampleton, Exampleshire'
+      event_address1: 'Via Esempio 10, Città di esempio, Provincia di esempio'
       event_address2: 'Camera 3a, piano superiore'
       proposal_title: 'Esempio di proposta'
       input_status_title: 'Esempio di status'

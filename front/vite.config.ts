@@ -42,7 +42,7 @@ export default defineConfig(({ mode }) => {
     root: path.resolve(__dirname, 'app'), // Root directory
     base: '/', // Base path for public assets
     server: {
-      port: USE_HTTPS ? 443 : 3000,
+      port: USE_HTTPS ? 443 : Number(process.env.PORT) || 3000,
       host: '0.0.0.0',
       allowedHosts: true,
       watch: {

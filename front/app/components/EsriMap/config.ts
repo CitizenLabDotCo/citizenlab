@@ -45,15 +45,15 @@ export const configureMapView = (
   }
 
   // Change location of zoom widget if specified
+  const zoom = mapView.ui.find('zoom');
   if (initialData?.showZoomControls === false || isMobileOrSmaller) {
-    const zoom = mapView.ui.find('zoom');
-    mapView.ui.remove(zoom);
+    if (zoom) {
+      mapView.ui.remove(zoom);
+    }
   } else if (initialData?.zoomWidgetLocation === 'right') {
-    const zoom = mapView.ui.find('zoom');
-
-    // Note: Incorrect type from ArcGIS API, ui might be null.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    mapView.ui?.add(zoom, 'top-right');
+    if (zoom) {
+      mapView.ui.add(zoom, 'top-right');
+    }
   }
 
   // Add fullscreen widget if set
@@ -62,9 +62,7 @@ export const configureMapView = (
       view: mapView,
     });
 
-    // Note: Incorrect type from ArcGIS API, ui might be null.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    mapView.ui?.add(fullscreen, 'top-right');
+    mapView.ui.add(fullscreen, 'top-right');
   }
 
   // Add map legend if set
@@ -80,9 +78,7 @@ export const configureMapView = (
   // Add any ui elements that were passed in
   if (initialData?.uiElements) {
     initialData.uiElements.forEach((uiElement) => {
-      // Note: Incorrect type from ArcGIS API, ui might be null.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      mapView.ui?.add(uiElement.element, uiElement.position);
+      mapView.ui.add(uiElement.element, uiElement.position);
     });
   }
 };
@@ -113,7 +109,8 @@ export const addMapLegend = (
   showLegendExpanded: boolean | undefined
 ) => {
   // Check if legend already exists and return to prevent duplicates
-  const existingLegend = mapView.ui.find('mapLegendExpand') as Expand | null; // Esri has incorrect types here
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const existingLegend = mapView.ui?.find('mapLegendExpand') as Expand | null; // Esri has incorrect types here
   if (existingLegend) return;
 
   const legend = new Expand({
@@ -139,7 +136,8 @@ export const addMapLegend = (
 // Description: Shows the layer visibility controls on the map
 export const showLayerVisibilityControls = (mapView: MapView) => {
   // Check if layer list already exists and return to prevent duplicates
-  const existingLayerList = mapView.ui.find(
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  const existingLayerList = mapView.ui?.find(
     'mapLayerListExpand'
   ) as Expand | null; // Esri has incorrect types here
   if (existingLayerList) return;

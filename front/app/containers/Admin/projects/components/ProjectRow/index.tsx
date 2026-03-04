@@ -199,6 +199,9 @@ const ProjectRow = ({
           {!hideMoreActions && (
             <ProjectMoreActionsMenu
               projectId={projectId}
+              projectName={localize(
+                publication.attributes.publication_title_multiloc
+              )}
               firstPublishedAt={project.data.attributes.first_published_at}
               folderId={folderId ? folderId : undefined}
               setError={setError}

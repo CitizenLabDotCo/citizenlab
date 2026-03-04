@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import analyticsKeys from 'api/analytics/keys';
-import ideasCountKeys from 'api/idea_count/keys';
 import ideaImagesKeys from 'api/idea_images/keys';
 import ideaMarkersKeys from 'api/idea_markers/keys';
 import ideaFilterCountsKeys from 'api/ideas_filter_counts/keys';
@@ -38,7 +37,9 @@ const useUpdateIdea = () => {
 
       if (!variables.skipRefetchCounts) {
         queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
-        queryClient.invalidateQueries({ queryKey: ideasCountKeys.items() });
+        queryClient.invalidateQueries({
+          queryKey: ideaFilterCountsKeys.items(),
+        });
       }
 
       queryClient.invalidateQueries({

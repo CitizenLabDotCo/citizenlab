@@ -30,8 +30,6 @@ const integrations = (user: IUser | null) => {
 
   if (user) {
     const highestRole = user.data.attributes.highest_role;
-    output['Intercom'] =
-      highestRole === 'admin' || highestRole === 'project_moderator';
     output['SatisMeter'] =
       highestRole === 'admin' || highestRole === 'project_moderator';
   }
@@ -103,7 +101,7 @@ const configuration: ModuleConfiguration = {
               },
               {
                 integrations: integrations(user),
-                Intercom: { hideDefaultLauncher: !isAdmin(user) },
+                Intercom: { hideDefaultLauncher: true },
               } as any
             );
             analytics.group(

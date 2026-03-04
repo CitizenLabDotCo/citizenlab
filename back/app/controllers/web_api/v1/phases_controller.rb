@@ -184,6 +184,7 @@ class WebApi::V1::PhasesController < ApplicationController
       :similarity_threshold_title,
       :similarity_threshold_body,
       {
+        available_views: [],
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,
         native_survey_title_multiloc: CL2_SUPPORTED_LOCALES,

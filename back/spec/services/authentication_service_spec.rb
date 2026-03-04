@@ -7,10 +7,11 @@ describe AuthenticationService do
 
   describe '#prevent_user_account_hijacking' do
     let(:password) { 'supersecret' }
-    let!(:user) { create(:user, password: password) }
 
     context 'user confirmation is enabled' do
       before { SettingsService.new.activate_feature! 'user_confirmation' }
+
+      let!(:user) { create(:user, password: password) }
 
       context 'when the user is not confirmed' do
         before { user.update_columns(confirmation_required: true, email_confirmed_at: nil) }
@@ -36,6 +37,8 @@ describe AuthenticationService do
 
     context 'user confirmation is disabled' do
       before { SettingsService.new.deactivate_feature! 'user_confirmation' }
+
+      let!(:user) { create(:user, password: password) }
 
       it 'clears the password of the user account' do
         user_id = user.id
