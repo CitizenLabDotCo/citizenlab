@@ -31,9 +31,8 @@ class LLMSelector
     ::Analysis::LLM::GPT4o,
     ::Analysis::LLM::GPT41,
     ::Analysis::LLM::ClaudeHaiku45,
-    ::Analysis::LLM::ClaudeSonnet45,
-    ::Analysis::LLM::ClaudeOpus45,
     ::Analysis::LLM::ClaudeSonnet46,
+    ::Analysis::LLM::ClaudeOpus46,
     ::Analysis::LLM::Gemini3Pro,
     ::Analysis::LLM::Gemini3Flash
   ]
@@ -48,7 +47,7 @@ class LLMSelector
     LLMUseCase.new(
       key: 'sensemaking_summarization',
       description: 'Summarization of content in sensemaking',
-      supported_models: [::Analysis::LLM::GPT41, ::Analysis::LLM::Gemini3Pro, ::Analysis::LLM::ClaudeOpus45, ::Analysis::LLM::ClaudeSonnet46],
+      supported_models: [::Analysis::LLM::GPT41, ::Analysis::LLM::Gemini3Pro, ::Analysis::LLM::ClaudeOpus46, ::Analysis::LLM::ClaudeSonnet46],
       default_model: ::Analysis::LLM::GPT41
     ),
     LLMUseCase.new(
@@ -60,14 +59,14 @@ class LLMSelector
     LLMUseCase.new(
       key: '360_input_file_description',
       description: 'Generating descriptions for 360 input files',
-      supported_models: [::Analysis::LLM::GPT4o, ::Analysis::LLM::ClaudeSonnet45, ::Analysis::LLM::Gemini3Pro],
+      supported_models: [::Analysis::LLM::GPT4o, ::Analysis::LLM::ClaudeSonnet46, ::Analysis::LLM::Gemini3Pro],
       default_model: ::Analysis::LLM::GPT4o
     ),
     LLMUseCase.new(
       key: 'idea_feed_live_topic_model',
       description: 'Automatically manage the tags in the Idea Feed constantly.',
-      supported_models: [::Analysis::LLM::ClaudeOpus45, ::Analysis::LLM::ClaudeSonnet46, ::Analysis::LLM::Gemini3Pro],
-      default_model: ::Analysis::LLM::Gemini3Pro
+      supported_models: [::Analysis::LLM::ClaudeOpus46, ::Analysis::LLM::Gemini3Pro],
+      default_model: ::Analysis::LLM::ClaudeOpus46
     ),
     LLMUseCase.new(
       key: 'idea_feed_live_classification',
