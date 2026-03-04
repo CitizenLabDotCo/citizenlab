@@ -2449,6 +2449,7 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Nifer hoffterau pob cyfranogwr",
   "app.containers.AdminPage.ProjectEdit.limited": "Cyfyngedig",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "Mae golwg rhestr ar gael bob amser ac ni ellir ei hanalluogi.",
+  "app.containers.AdminPage.ProjectEdit.listViewDescription1": "Dangosir mewnbynnau fel porthiant y gellir ei sgrolio, wedi'i ddidoli yn ôl tueddiadau, ymatebion, sylwadau, dyddiad neu weithgaredd. Gorau ar gyfer: ymgynghoriadau llai.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Golwg rhestr",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Llwythwch fwy o dempledi",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Gwneud yn ddiofyn",
