@@ -13,7 +13,7 @@ const Settings = () => {
       <Title variant="h2" mt="0px" mb="36px" color="primary">
         <FormattedMessage {...messages.settings} />
       </Title>
-      <SpaceNameForm />
+      <SpaceNameForm onSubmit={async () => {}} />
     </Box>
   );
 };

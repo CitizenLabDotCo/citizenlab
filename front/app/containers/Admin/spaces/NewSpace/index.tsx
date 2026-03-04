@@ -6,6 +6,9 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import { Multiloc } from 'typings';
+
+import useAddSpace from 'api/spaces/useAddSpace';
 
 import GoBackButton from 'components/UI/GoBackButton';
 
@@ -21,6 +24,12 @@ const goBack = () => {
 };
 
 const NewSpace = () => {
+  const { mutateAsync: addSpace } = useAddSpace();
+
+  const handleAddSpace = ({ spaceName }: { spaceName: Multiloc }) => {
+    return addSpace({ title_multiloc: spaceName });
+  };
+
   return (
     <Box px="92px" py="84px">
       <GoBackButton onClick={goBack} />
@@ -36,7 +45,7 @@ const NewSpace = () => {
           <FormattedMessage {...messages.createANewSpace} />
         </Title>
         <Box mt="80px">
-          <SpaceNameForm />
+          <SpaceNameForm onSubmit={handleAddSpace} />
         </Box>
       </Box>
     </Box>

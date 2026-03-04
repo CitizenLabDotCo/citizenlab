@@ -21,7 +21,11 @@ const DEFAULT_VALUES: FormValues = {
   spaceName: {},
 };
 
-const SpaceNameForm = () => {
+interface Props {
+  onSubmit: (data: FormValues) => Promise<any>;
+}
+
+const SpaceNameForm = ({ onSubmit }: Props) => {
   const { formatMessage } = useIntl();
 
   const schema = object({
@@ -36,14 +40,10 @@ const SpaceNameForm = () => {
 
   const loading = methods.formState.isSubmitting;
 
-  const handleSubmit = () => {
-    // TODO
-  };
-
   return (
     <Box display="flex" flexDirection="column" alignItems="flex-start">
       <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(handleSubmit)}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
           <Box w="448px">
             <InputMultilocWithLocaleSwitcher
               name="spaceName"
