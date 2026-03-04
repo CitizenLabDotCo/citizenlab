@@ -1528,7 +1528,8 @@ CREATE TABLE public.users (
     onboarding jsonb DEFAULT '{}'::jsonb NOT NULL,
     unique_code character varying,
     last_active_at timestamp(6) without time zone,
-    imported boolean DEFAULT false NOT NULL
+    imported boolean DEFAULT false NOT NULL,
+    token_expiry_key character varying
 );
 
 
@@ -8445,6 +8446,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260303191050'),
 ('20260302101045'),
 ('20260302100745'),
 ('20260302100636'),

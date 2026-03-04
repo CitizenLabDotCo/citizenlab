@@ -38,6 +38,7 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  unique_code                         :string
 #  last_active_at                      :datetime
 #  imported                            :boolean          default(FALSE), not null
+#  token_expiry_key                    :string
 #
 # Indexes
 #
@@ -226,9 +227,20 @@ class User < ApplicationRecord
       sub: id,
       highest_role: highest_role,
       exp: token_lifetime.from_now.to_i,
+      expiry_key: token_expiry_key,
       cluster: CL2_CLUSTER,
       tenant: Tenant.current.id
     }
+  end
+
+  # TODO: If there is an existing JWT, the FE sometimes seems to think it has sent a code to your address
+  def self.from_token_payload(payload)
+    find_by(id: payload['sub'], token_expiry_key: payload['expiry_key'])
+  end
+
+  # TODO: Need a signout endpoint that calls this method to invalidate all existing JWTs for the user by changing the token_expiry_key
+  def refresh_token_expiry_key!
+    update!(token_expiry_key: SecureRandom.hex(10))
   end
 
   def avatar_blank?
