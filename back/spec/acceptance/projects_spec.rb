@@ -333,12 +333,28 @@ resource 'Projects' do
 
         example 'Create a project in a folder' do
           folder = create(:project_folder)
-          do_request folder_id: folder.id
+          do_request(project: { folder_id: folder.id })
           assert_status 201
+
           # New folder projects are added to the top
           expect(json_response[:included].find do |inc|
                    inc[:type] == 'admin_publication'
                  end.dig(:attributes, :ordering)).to eq 0
+
+          project = Project.find(json_response[:data][:id])
+          expect(project.folder_id).to eq folder.id
+          expect(project.space_id).to be_nil
+        end
+
+        example 'Create a project in a folder in a workspace' do
+          space = create(:space)
+          folder = create(:project_folder, space: space)
+          do_request(project: { folder_id: folder.id })
+          assert_status 201
+
+          project = Project.find(json_response[:data][:id])
+          expect(project.folder_id).to eq folder.id
+          expect(project.space_id).to eq folder.space.id
         end
 
         context 'when project description contains text images' do
@@ -400,6 +416,17 @@ resource 'Projects' do
           expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
         end
 
+        example 'Add a project to a folder in a workspace' do
+          space = create(:space)
+          folder = create(:project_folder, space: space)
+
+          do_request(project: { folder_id: folder.id })
+          @project.reload
+
+          expect(@project.folder_id).to eq folder.id
+          expect(@project.space_id).to eq folder.space.id
+        end
+
         example 'Remove a project from a folder' do
           create(:project_folder, projects: [@project])
 
@@ -409,6 +436,18 @@ resource 'Projects' do
           expect(@project.folder_id).to be_nil
           # Projects moved out of folders are added to the top
           expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
+        end
+
+        example 'Remove a project from a folder in a workspace' do
+          space = create(:space)
+          folder = create(:project_folder, space: space, projects: [@project])
+          @project.update!(space_id: space.id)
+
+          do_request(project: { folder_id: nil })
+          @project.reload
+
+          expect(@project.folder_id).to be_nil
+          expect(@project.space_id).to eq space.id
         end
 
         example 'Move a project from one folder to another' do

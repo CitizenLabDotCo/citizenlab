@@ -241,6 +241,9 @@ class Project < ApplicationRecord
     raise ActiveRecord::RecordNotFound if id.present? && parent_id.nil?
     return unless folder&.admin_publication&.id != parent_id
 
+    folder = AdminPublication.find_by(id: parent_id)&.publication
+    self.space_id = folder.space_id if folder&.space_id.present?
+
     build_admin_publication unless admin_publication
     folder_will_change!
     admin_publication.assign_attributes(parent_id: parent_id)
