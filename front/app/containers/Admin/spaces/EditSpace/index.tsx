@@ -14,6 +14,7 @@ import clHistory from 'utils/cl-router/history';
 
 import { TEST_DATA_ADDED } from './fakeData';
 import messages from './messages';
+import ProjectFolderSelect from './ProjectFolderSelect';
 import TreeView from './TreeView';
 
 const goBack = () => {
@@ -42,6 +43,7 @@ const EditSpace = () => {
         <Title variant="h3" color="primary" mt="40px" mb="20px">
           <FormattedMessage {...messages.addProjectsAndFolders} />
         </Title>
+        <ProjectFolderSelect />
       </Box>
     </Box>
   );
