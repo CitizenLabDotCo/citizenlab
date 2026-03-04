@@ -237,11 +237,23 @@ class Project < ApplicationRecord
   end
 
   def folder_id=(id)
+    space_id = self.space_id
+
     parent_id = AdminPublication.find_by(publication_type: 'ProjectFolders::Folder', publication_id: id)&.id
     raise ActiveRecord::RecordNotFound if id.present? && parent_id.nil?
     return unless folder&.admin_publication&.id != parent_id
 
     folder = AdminPublication.find_by(id: parent_id)&.publication
+    folder_space_id = folder&.space_id
+
+    # Prevent: moving EXISTING project in space and in folder (in same space) to a DIFFERENT folder with different/nil space
+    # Allow: new projects (not persisted), removing from folder (target folder is nil), projects without a space,
+    # or moving to folder with matching space
+    if persisted? && folder.present? && space_id.present? && (folder_space_id.nil? || folder_space_id != space_id)
+      errors.add(:space_id, "space_id - cannot move project in space into a folder with a different space")
+      raise ActiveRecord::RecordInvalid.new(self)
+    end
+
     self.space_id = folder.space_id if folder&.space_id.present?
 
     build_admin_publication unless admin_publication
@@ -300,7 +312,7 @@ class Project < ApplicationRecord
     folder = admin_publication&.parent&.publication
     return unless folder.is_a?(ProjectFolders::Folder) && folder&.space&.id != space_id
 
-    errors.add(:space_id, 'must match the space of the folder')
+    errors.add(:space_id, 'space_id must match the space of the folder')
   end
 
   def sanitize_description_multiloc

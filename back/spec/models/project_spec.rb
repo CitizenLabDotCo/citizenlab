@@ -65,12 +65,12 @@ RSpec.describe Project do
       project_in_folder.space = other_space
 
       expect(project_in_folder).to be_invalid
-      expect(project_in_folder.errors[:space_id]).to include('must match the space of the folder')
+      expect(project_in_folder.errors[:space_id]).to include('space_id must match the space of the folder')
 
       project_in_folder.space = nil
 
       expect(project_in_folder).to be_invalid
-      expect(project_in_folder.errors[:space_id]).to include('must match the space of the folder')
+      expect(project_in_folder.errors[:space_id]).to include('space_id must match the space of the folder')
     end
 
     it '[error] is invalid if in a space, but its folder is not in any space' do
@@ -78,7 +78,7 @@ RSpec.describe Project do
       project_in_folder = build(:project, space: space, folder: folder_without_space)
 
       expect(project_in_folder).to be_invalid
-      expect(project_in_folder.errors[:space_id]).to include('must match the space of the folder')
+      expect(project_in_folder.errors[:space_id]).to include('space_id must match the space of the folder')
     end
 
     it "is valid if in its folder's space" do

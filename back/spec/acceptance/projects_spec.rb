@@ -416,7 +416,7 @@ resource 'Projects' do
           expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
         end
 
-        example 'Add a project to a folder in a workspace' do
+        example 'Add a project not in a workspace to a folder in a workspace' do
           space = create(:space)
           folder = create(:project_folder, space: space)
 
@@ -425,6 +425,49 @@ resource 'Projects' do
 
           expect(@project.folder_id).to eq folder.id
           expect(@project.space_id).to eq folder.space.id
+        end
+
+        example '[Error] Add a project in a workspace to a folder in another workspace' do
+          space1 = create(:space)
+          space2 = create(:space)
+          
+          folder1 = create(:project_folder, space: space1)
+          folder2 = create(:project_folder, space: space2)
+
+          @project.update!(folder_id: folder1.id)
+          expect(@project.space_id).to eq space1.id
+
+          do_request(project: { folder_id: folder2.id })
+          expect(response_status).to eq 422
+
+          expect(json_response[:errors][:space_id]).to include(
+            { error: 'space_id - cannot move project in space into a folder with a different space' }
+          )
+
+          @project.reload
+          expect(@project.folder_id).to eq folder1.id
+          expect(@project.space_id).to eq folder1.space.id
+        end
+
+        example '[Error] Add a project in a workspace to a folder not in workspace' do
+          space1 = create(:space)
+          
+          folder1 = create(:project_folder, space: space1)
+          folder2 = create(:project_folder, space: nil)
+
+          @project.update!(folder_id: folder1.id)
+          expect(@project.space_id).to eq space1.id
+
+          do_request(project: { folder_id: folder2.id })
+          expect(response_status).to eq 422
+
+          expect(json_response[:errors][:space_id]).to include(
+            { error: 'space_id - cannot move project in space into a folder with a different space' }
+          )
+
+          @project.reload
+          expect(@project.folder_id).to eq folder1.id
+          expect(@project.space_id).to eq folder1.space.id
         end
 
         example 'Remove a project from a folder' do
