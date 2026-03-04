@@ -2449,6 +2449,7 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Number of likes per participant",
   "app.containers.AdminPage.ProjectEdit.limited": "محدود",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "عرض القائمة متاح دائمًا ولا يمكن تعطيله.",
+  "app.containers.AdminPage.ProjectEdit.listViewDescription1": "تُعرض المدخلات على شكل موجز قابل للتمرير، مُرتبة حسب المواضيع الرائجة، أو ردود الفعل، أو التعليقات، أو التاريخ، أو النشاط. الأنسب لـ: الاستشارات الصغيرة.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "عرض القائمة",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "تحميل المزيد من القوالب",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "اجعله الوضع الافتراضي",
