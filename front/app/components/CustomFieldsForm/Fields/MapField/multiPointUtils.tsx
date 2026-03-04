@@ -38,7 +38,10 @@ export const handleMapClickMultipoint = (
   // Project the point to Web Mercator, in case the map is using a different projection
   const projectedPoint = projectPointToWebMercator(event.mapPoint);
   // Add the clicked location to the existing points
-  const newPoint = [projectedPoint.longitude, projectedPoint.latitude];
+  const newPoint = [
+    projectedPoint.longitude || 0,
+    projectedPoint.latitude || 0,
+  ];
   const currentPointCoordinates = getUserInputPoints(mapView);
 
   // Update the form data
@@ -79,9 +82,9 @@ export const setupPointDrag = ({
         // Get the first element under the mouse click
         const clickedElement = response.results[0];
         if (
-          clickedElement.layer.title === 'User Input' &&
+          clickedElement.layer?.title === 'User Input' &&
           clickedElement.type === 'graphic' &&
-          clickedElement.graphic.geometry.type === 'point'
+          clickedElement.graphic.geometry?.type === 'point'
         ) {
           event.stopPropagation();
           pointBeingDragged.current = clickedElement.graphic;
@@ -146,8 +149,9 @@ export const setupPointDrag = ({
             );
 
             if (
-              longitude === pointBeingDragged.current?.geometry['longitude'] &&
-              latitude === pointBeingDragged.current.geometry['latitude']
+              longitude ===
+                pointBeingDragged.current?.geometry?.['longitude'] &&
+              latitude === pointBeingDragged.current.geometry?.['latitude']
             ) {
               // This is the original point the user tried to drag, so
               // now we update the geometry.
@@ -201,8 +205,8 @@ export const generateLinePreview = ({
 
   const indexOfDragPoint = currentDataCoordinates.findIndex(
     (coordinates: number[][]) =>
-      coordinates[0] === pointBeingDragged.current?.geometry['longitude'] &&
-      coordinates[1] === pointBeingDragged.current.geometry['latitude']
+      coordinates[0] === pointBeingDragged.current?.geometry?.['longitude'] &&
+      coordinates[1] === pointBeingDragged.current.geometry?.['latitude']
   );
 
   // Project the point to Web Mercator, in case the map is using a different projection
@@ -217,7 +221,10 @@ export const generateLinePreview = ({
   ) {
     // Dragging a middle point
     linePreviewPath.push(currentDataCoordinates?.[indexOfDragPoint - 1]);
-    linePreviewPath.push([projectedPoint.longitude, projectedPoint.latitude]);
+    linePreviewPath.push([
+      projectedPoint.longitude || 0,
+      projectedPoint.latitude || 0,
+    ]);
     linePreviewPath.push(currentDataCoordinates?.[indexOfDragPoint + 1]);
   } else if (indexOfDragPoint === 0) {
     // Dragging the first point
@@ -227,13 +234,19 @@ export const generateLinePreview = ({
         currentDataCoordinates?.[currentDataCoordinates.length - 1]
       );
     }
-    linePreviewPath.push([projectedPoint.longitude, projectedPoint.latitude]);
+    linePreviewPath.push([
+      projectedPoint.longitude || 0,
+      projectedPoint.latitude || 0,
+    ]);
 
     linePreviewPath.push(currentDataCoordinates?.[indexOfDragPoint + 1]);
   } else if (indexOfDragPoint === currentDataCoordinates.length - 1) {
     // Dragging the last point
     linePreviewPath.push(currentDataCoordinates?.[indexOfDragPoint - 1]);
-    linePreviewPath.push([projectedPoint.longitude, projectedPoint.latitude]);
+    linePreviewPath.push([
+      projectedPoint.longitude || 0,
+      projectedPoint.latitude || 0,
+    ]);
     if (inputType === 'polygon') {
       // Connect the line to the first point if we're forming a polygon
       linePreviewPath.push(currentDataCoordinates?.[0]);

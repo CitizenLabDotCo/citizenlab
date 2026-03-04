@@ -26,8 +26,8 @@ export default defineMessages({
     defaultMessage: 'Total',
   },
   participants: {
-    id: 'app.containers.Admin.projects.project.insights.participants',
-    defaultMessage: 'Participants',
+    id: 'app.containers.Admin.projects.project.insights.participants2',
+    defaultMessage: 'Phase participants',
   },
   inputs: {
     id: 'app.containers.Admin.projects.project.insights.inputs',
@@ -257,5 +257,13 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.noReferenceDataMessage',
     defaultMessage:
       'No reference census data is available yet for this demographic dimension. <link>Add it here</link> to understand how representative your data is.',
+  },
+  downloadPdf: {
+    id: 'app.containers.Admin.projects.project.insights.downloadPdf',
+    defaultMessage: 'Download as PDF',
+  },
+  downloadWord: {
+    id: 'app.containers.Admin.projects.project.insights.downloadWord',
+    defaultMessage: 'Download as Word',
   },
 });

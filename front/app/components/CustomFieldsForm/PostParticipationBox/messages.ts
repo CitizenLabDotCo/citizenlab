@@ -5,10 +5,10 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.PostParticipationBox.stayConnected',
     defaultMessage: 'Stay connected',
   },
-  createAnAccountToFollow: {
-    id: 'app.components.CustomFieldsForm.PostParticipationBox.createAnAccountToFollow',
+  createOrLinkAnAccountToFollow: {
+    id: 'app.components.CustomFieldsForm.PostParticipationBox.createOrLinkAnAccountToFollow2',
     defaultMessage:
-      'Create an account to follow what happens next and take part in other conversations.',
+      'Create or link an existing account to follow what happens next and take part in other conversations.',
   },
   createAnAccountOrLogIn: {
     id: 'app.components.CustomFieldsForm.PostParticipationBox.createAnAccountOrLogIn',
@@ -19,8 +19,9 @@ export default defineMessages({
     defaultMessage: 'Get updates when there are next steps',
   },
   joinDiscussions: {
-    id: 'app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions',
-    defaultMessage: 'Join discussions if your input is shared publicly',
+    id: 'app.components.CustomFieldsForm.PostParticipationBox.joinDiscussions3',
+    defaultMessage:
+      'Join discussions and receive notifications when others engage with your input',
   },
   participateInOtherProjects: {
     id: 'app.components.CustomFieldsForm.PostParticipationBox.participateInOtherProjects',

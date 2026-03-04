@@ -370,6 +370,10 @@ namespace :cl2_back do
         participation_location_tracking: {
           enabled: false,
           allowed: false
+        },
+        spaces: {
+          enabled: false,
+          allowed: false
         }
       }
     )
