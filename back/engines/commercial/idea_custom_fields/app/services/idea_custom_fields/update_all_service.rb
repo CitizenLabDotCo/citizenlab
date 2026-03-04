@@ -87,7 +87,7 @@ module IdeaCustomFields
 
           update_statements!(field, statements_params, index) if statements_params
           relate_map_config_to_field(field, field_params, index)
-          field.move_to_bottom
+          field.insert_at(index) unless field.ordering == index
           count_fields(field)
         end
 
@@ -166,8 +166,8 @@ module IdeaCustomFields
             option = create_option!(option_params, field, option_temp_ids_to_ids_mapping, field_index, option_index)
             next unless option
           end
-          update_option_image!(option, option_params[:image_id])
-          option.move_to_bottom
+          update_option_image!(option, option_params[:image_id]) if option_params.key?(:image_id)
+          option.insert_at(option_index) unless option.ordering == option_index
         end
       end
     end
@@ -245,7 +245,7 @@ module IdeaCustomFields
         else
           statement = create_statement!(statement_params, field, field_index, statement_index)
         end
-        statement&.move_to_bottom
+        statement&.insert_at(statement_index) unless statement&.ordering == statement_index
       end
     end
 
