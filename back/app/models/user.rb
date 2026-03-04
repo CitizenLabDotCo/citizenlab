@@ -296,7 +296,8 @@ class User < ApplicationRecord
     AppConfiguration.instance.feature_activated?('enhanced_user_profile_privacy')
   end
 
-  def self.find_by_slug!(slug)
+  # Find a user by slug or by id when the id is used as slug
+  def self.by_slug!(slug)
     enhanced_user_profile_privacy? ? find(slug) : find_by!(slug:)
   end
 
