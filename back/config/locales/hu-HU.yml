@@ -246,6 +246,18 @@ hu:
           title: Mi a kezdeményezésed?
         petition:
           title: Mi a petíciója?
+        comment:
+          title: Mi a hozzászólásod?
+        response:
+          title: Mi a válaszod?
+        suggestion:
+          title: Mi a javaslatod?
+        topic:
+          title: Mi a témád?
+        post:
+          title: Mi a posztod?
+        story:
+          title: Mi a te történeted?
   custom_field_options:
     gender:
       male: Férfi
