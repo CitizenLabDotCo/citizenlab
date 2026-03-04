@@ -29,6 +29,7 @@ require_relative 'unsubscription_tokens'
 require_relative 'users'
 require_relative 'volunteering_causes'
 require_relative 'volunteers'
+require_relative 'spaces'
 
 module MultiTenancy
   module Seeds
@@ -105,6 +106,7 @@ module MultiTenancy
         MultiTenancy::Seeds::CustomFields.new(runner: self).run
         MultiTenancy::Seeds::Areas.new(runner: self).run
         MultiTenancy::Seeds::Topics.new(runner: self).run
+        MultiTenancy::Seeds::Spaces.new(runner: self).run
         MultiTenancy::Seeds::ProjectFolders.new(runner: self).run
         MultiTenancy::Seeds::Projects.new(runner: self).run
         MultiTenancy::Seeds::Ideas.new(runner: self).run

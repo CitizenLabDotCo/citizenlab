@@ -27,14 +27,17 @@
 #  listed                         :boolean          default(TRUE), not null
 #  track_participation_location   :boolean          default(FALSE), not null
 #  live_auto_input_topics_enabled :boolean          default(FALSE), not null
+#  space_id                       :uuid
 #
 # Indexes
 #
-#  index_projects_on_slug  (slug) UNIQUE
+#  index_projects_on_slug      (slug) UNIQUE
+#  index_projects_on_space_id  (space_id)
 #
 # Foreign Keys
 #
 #  fk_rails_...  (default_assignee_id => users.id)
+#  fk_rails_...  (space_id => spaces.id)
 #
 class Project < ApplicationRecord
   include Files::FileAttachable
@@ -50,6 +53,8 @@ class Project < ApplicationRecord
 
   has_many_text_images from: :description_multiloc, as: :text_images
   accepts_nested_attributes_for :text_images
+
+  belongs_to :space, optional: true
 
   has_one :custom_form, as: :participation_context, dependent: :destroy # ideation & voting phases only
 
@@ -109,6 +114,7 @@ class Project < ApplicationRecord
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
   validates :live_auto_input_topics_enabled, inclusion: { in: [true, false] }
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # TODO: This should always be validated!
+  validate :space_must_match_folder_space
 
   scope :not_hidden, -> { where(hidden: false) }
 
@@ -235,6 +241,9 @@ class Project < ApplicationRecord
     raise ActiveRecord::RecordNotFound if id.present? && parent_id.nil?
     return unless folder&.admin_publication&.id != parent_id
 
+    folder = AdminPublication.find_by(id: parent_id)&.publication
+    self.space_id = folder.space_id if folder&.space_id.present?
+
     build_admin_publication unless admin_publication
     folder_will_change!
     admin_publication.assign_attributes(parent_id: parent_id)
@@ -285,6 +294,13 @@ class Project < ApplicationRecord
     return unless id.present? && admin_publication&.id.blank?
 
     errors.add(:admin_publication_id, :blank, message: "Admin publication can't be blank")
+  end
+
+  def space_must_match_folder_space
+    folder = admin_publication&.parent&.publication
+    return unless folder.is_a?(ProjectFolders::Folder) && folder&.space&.id != space_id
+
+    errors.add(:space_id, 'must match the space of the folder')
   end
 
   def sanitize_description_multiloc
