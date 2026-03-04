@@ -61,7 +61,7 @@ const ProjectFolderSelect = () => {
   };
 
   return (
-    <Box maxWidth="500px" mt="40px">
+    <Box maxWidth="500px" mt="32px">
       <MultipleSelect
         value={selectedPublications}
         options={options}

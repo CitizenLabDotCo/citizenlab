@@ -40,7 +40,7 @@ const EditSpace = () => {
           <FormattedMessage {...messages.projectsAndFoldersAdded} />
         </Title>
         <TreeView nodes={TEST_DATA_ADDED} />
-        <Title variant="h3" color="primary" mt="40px" mb="20px">
+        <Title variant="h3" color="primary" mt="60px" mb="20px">
           <FormattedMessage {...messages.addProjectsAndFolders} />
         </Title>
         <ProjectFolderSelect />
