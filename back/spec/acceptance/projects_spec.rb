@@ -440,7 +440,7 @@ resource 'Projects' do
 
         example 'Remove a project from a folder in a workspace' do
           space = create(:space)
-          folder = create(:project_folder, space: space, projects: [@project])
+          create(:project_folder, space: space, projects: [@project])
           @project.update!(space_id: space.id)
 
           do_request(project: { folder_id: nil })
