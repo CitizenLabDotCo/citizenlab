@@ -14,6 +14,11 @@ export interface Space {
   included?: (IProjectFolderData | IProjectData)[];
 }
 
+export interface Spaces {
+  data: SpaceData[];
+  included?: (IProjectFolderData | IProjectData)[];
+}
+
 interface SpaceData {
   id: string;
   type: 'space';

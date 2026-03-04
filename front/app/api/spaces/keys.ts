@@ -7,7 +7,9 @@ const baseKey = {
 const spacesKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: (parameters: any) => [{ ...baseKey, operation: 'list', parameters }],
+  list: (parameters: Record<string, string>) => [
+    { ...baseKey, operation: 'list', parameters },
+  ],
   items: () => [{ ...baseKey, operation: 'item' }],
   item: ({ id }: { id?: string }) => [
     {
