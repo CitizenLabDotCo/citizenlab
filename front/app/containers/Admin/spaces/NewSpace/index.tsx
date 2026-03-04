@@ -26,8 +26,9 @@ const goBack = () => {
 const NewSpace = () => {
   const { mutateAsync: addSpace } = useAddSpace();
 
-  const handleAddSpace = ({ spaceName }: { spaceName: Multiloc }) => {
-    return addSpace({ title_multiloc: spaceName });
+  const handleAddSpace = async ({ spaceName }: { spaceName: Multiloc }) => {
+    const space = await addSpace({ title_multiloc: spaceName });
+    clHistory.push(`/admin/projects/spaces/${space.data.id}`);
   };
 
   return (
