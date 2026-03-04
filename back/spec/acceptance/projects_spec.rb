@@ -430,7 +430,7 @@ resource 'Projects' do
         example '[Error] Add a project in a space to a folder in another space' do
           space1 = create(:space)
           space2 = create(:space)
-          
+
           folder1 = create(:project_folder, space: space1)
           folder2 = create(:project_folder, space: space2)
 
@@ -451,7 +451,7 @@ resource 'Projects' do
 
         example '[Error] Add a project in a space to a folder not in space' do
           space1 = create(:space)
-          
+
           folder1 = create(:project_folder, space: space1)
           folder2 = create(:project_folder, space: nil)
 

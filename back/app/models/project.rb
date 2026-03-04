@@ -251,8 +251,8 @@ class Project < ApplicationRecord
     # Allow: new projects (not persisted), removing from folder (target folder is nil), projects without a space,
     # or moving to folder with matching space
     if persisted? && folder.present? && space_id.present? && (folder_space_id.nil? || folder_space_id != space_id)
-      errors.add(:space_id, "space_id - cannot move project in space into a folder with a different space")
-      raise ActiveRecord::RecordInvalid.new(self)
+      errors.add(:space_id, 'space_id - cannot move project in space into a folder with a different space')
+      raise ActiveRecord::RecordInvalid, self
     end
 
     self.space_id = folder.space_id if folder&.space_id.present?
@@ -318,16 +318,16 @@ class Project < ApplicationRecord
 
   def space_cannot_change_if_in_folder_with_space
     return unless persisted? && space_id_changed? && space_id_was.present?
-    
+
     # Check if the project WAS in a folder before this change
     previous_parent_id = admin_publication&.parent_id_was || admin_publication&.parent_id
-    return unless previous_parent_id.present?
-    
+    return if previous_parent_id.blank?
+
     # Find the previous folder using the parent_id_was.
     # Reject new space_id if the previous folder has a space and that space matches the old space_id
     previous_folder = AdminPublication.find_by(id: previous_parent_id)&.publication
     return unless previous_folder.is_a?(ProjectFolders::Folder) && previous_folder.space_id == space_id_was
-    
+
     errors.add(:space_id, 'cannot be changed when project was in a folder with a space')
   end
 
