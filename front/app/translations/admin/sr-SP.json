@@ -391,7 +391,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.inputScreeningToggle": "Input screening",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Како треба да се зове улаз?",
   "app.components.app.containers.AdminPage.ProjectEdit.insights": "Insights",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Коментар",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Овде наведите везу до вашег Конвеио документа. Прочитајте наш {supportArticleLink} за више информација о подешавању Конвеио-а.",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "чланак подршке",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL2": "https://support.govocal.com/en/articles/527582-embedding-konveio-pdf-documents-for-collecting-feedback",

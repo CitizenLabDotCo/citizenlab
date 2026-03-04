@@ -391,7 +391,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.inputScreeningToggle": "Activer la pré-modération",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Comment doit-on appeler une contribution ?",
   "app.components.app.containers.AdminPage.ProjectEdit.insights": "Statistiques",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Problème",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Insérez le lien de votre document Konveio ici. Consultez notre {supportArticleLink} pour obtenir plus d'informations sur la configuration de Konveio.",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "article d'assistance",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL2": "https://support.govocal.com/fr/articles/527582-integrer-des-documents-pdf-konveio-pour-recueillir-des-commentaires",

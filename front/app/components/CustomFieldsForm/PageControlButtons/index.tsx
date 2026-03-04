@@ -58,6 +58,12 @@ const inputTermMessages: Record<string, MessageDescriptor> = {
   proposal: messages.viewYourProposal,
   petition: messages.viewYourPetition,
   initiative: messages.viewYourInitiative,
+  comment: messages.viewYourComment,
+  response: messages.viewYourResponse,
+  suggestion: messages.viewYourSuggestion,
+  topic: messages.viewYourTopic,
+  post: messages.viewYourPost,
+  story: messages.viewYourStory,
 };
 
 interface Props {

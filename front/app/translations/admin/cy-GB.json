@@ -391,7 +391,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.inputScreeningToggle": "Sgrinio mewnbwn",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Beth ddylai mewnbwn gael ei alw?",
   "app.components.app.containers.AdminPage.ProjectEdit.insights": "Mewnwelediadau",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Sylw",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Darparwch y ddolen i'ch dogfen Konveio yma. Darllenwch ein {supportArticleLink} i gael rhagor o wybodaeth am sefydlu Konveio.",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "erthygl cefnogi",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL2": "https://support.govocal.com/en/articles/527582-embedding-konveio-pdf-documents-for-collecting-feedback",

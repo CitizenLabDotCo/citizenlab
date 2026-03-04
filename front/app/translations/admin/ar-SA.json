@@ -391,7 +391,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.inputScreeningToggle": "فحص المدخلات",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "بماذا ينبغي تسمية أحد المدخلات؟",
   "app.components.app.containers.AdminPage.ProjectEdit.insights": "رؤى",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "مشكلة",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "قم بتوفير الرابط لوثيقة Konveio الخاصة بك هنا. اقرأ {supportArticleLink} لمزيد من المعلومات حول إعداد Konveio.",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "مقالة الدعم",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL2": "https://support.govocal.com/en/articles/527582-embedding-konveio-pdf-documents-for-collecting-feedback",

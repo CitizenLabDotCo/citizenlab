@@ -391,7 +391,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.inputScreeningToggle": "Girdi taraması",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Bir girdinin adı ne olmalıdır?",
   "app.components.app.containers.AdminPage.ProjectEdit.insights": "İçgörüler",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Yorum",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Konveio belgenizin bağlantısını buraya girin. Konveio'nun kurulumu hakkında daha fazla bilgi için {supportArticleLink} adresimizi okuyun.",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "destek makalesi",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportPageURL2": "https://support.govocal.com/en/articles/527582-embedding-konveio-pdf-documents-for-collecting-feedback",

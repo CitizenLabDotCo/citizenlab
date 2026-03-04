@@ -178,7 +178,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText": "aquest article de suport",
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "Idea",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "Com s'ha d'anomenar una entrada?",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "Comment",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupport": "Proporcioneu l'enllaç al vostre document de Konveio aquí. Llegiu el nostre {supportArticleLink} per obtenir més informació sobre com configurar Konveio.",
   "app.components.app.containers.AdminPage.ProjectEdit.konveioSupportArticle": "article de suport",
   "app.components.app.containers.AdminPage.ProjectEdit.maxBudgetRequired": "Es requereix un pressupost màxim",
