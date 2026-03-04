@@ -11,7 +11,7 @@ export type SpacesKeys = Keys<typeof spacesKeys>;
 
 export interface Space {
   data: SpaceData;
-  included: (IProjectFolderData | IProjectData)[];
+  included?: (IProjectFolderData | IProjectData)[];
 }
 
 interface SpaceData {

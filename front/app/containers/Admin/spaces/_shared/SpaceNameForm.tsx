@@ -56,17 +56,19 @@ const SpaceNameForm = ({ onSubmit }: Props) => {
               }
             />
           </Box>
+          <Box display="flex">
+            <Button
+              type="submit"
+              width="auto"
+              disabled={loading}
+              processing={loading}
+              buttonStyle="admin-dark"
+              mt="16px"
+            >
+              {formatMessage(messages.save)}
+            </Button>
+          </Box>
         </form>
-        <Button
-          type="submit"
-          width="auto"
-          disabled={loading}
-          processing={loading}
-          buttonStyle="admin-dark"
-          mt="16px"
-        >
-          {formatMessage(messages.save)}
-        </Button>
       </FormProvider>
     </Box>
   );

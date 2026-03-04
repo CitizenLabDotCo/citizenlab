@@ -7,7 +7,7 @@ import { RequestBody, Space } from './types';
 
 export const addSpace = async (requestBody: RequestBody) => {
   return fetcher<Space>({
-    path: `/project_folders`,
+    path: `/spaces`,
     action: 'post',
     body: { space: requestBody },
   });
