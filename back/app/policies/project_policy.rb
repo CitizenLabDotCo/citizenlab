@@ -161,6 +161,8 @@ class ProjectPolicy < ApplicationPolicy
       }
     ]
 
+    shared << :space_id if user&.admin?
+
     if AppConfiguration.instance.feature_activated? 'disable_disliking'
       shared += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]
     end

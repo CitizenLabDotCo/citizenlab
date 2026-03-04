@@ -14,6 +14,7 @@ class SpacePolicy < ApplicationPolicy
   end
 
   def index?
+    # TODO: Include space admins/managers here once those roles are implemented
     active_admin?
   end
 
