@@ -437,7 +437,7 @@ const Show = () => {
           <Text>
             <FormattedMessage {...messages.scheduleSendDescription} />
           </Text>
-          <Box minHeight="350px">
+          <Box>
             <StyledForm onSubmit={handleScheduleFormSubmit}>
               <Box display="flex" gap="16px" alignItems="center">
                 <DateSinglePicker
@@ -445,7 +445,7 @@ const Show = () => {
                   selectedDate={selectedDate}
                   startMonth={new Date()}
                   disabledDates={isPastDate}
-                  placement="bottom"
+                  placement="right"
                 />
                 <TimeInputScheduling
                   selectedTime={selectedTime}
