@@ -87,13 +87,13 @@ RSpec.describe User do
   describe '#slug' do
     let(:user) { create(:user, first_name: 'bob', last_name: 'smith') }
 
-    context 'when no_user_slugs feature is not active' do
+    context 'when enhanced_user_profile_privacy feature is not active' do
       it 'returns the normal slug' do
         expect(user.slug).to eq 'bob-smith'
       end
     end
 
-    context 'when no_user_slugs feature is active' do
+    context 'when enhanced_user_profile_privacy feature is active' do
       before do
         settings = AppConfiguration.instance.settings
         settings['enhanced_user_profile_privacy'] = { 'enabled' => true, 'allowed' => true }
