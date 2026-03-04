@@ -69,7 +69,7 @@
   "app.components.AvatarBubbles.participant": "participant",
   "app.components.AvatarBubbles.participants1": "participants",
   "app.components.CityLogoSection.logoLinkAriaLabelExternal": "Visitez le site {orgName} (s'ouvre dans un nouvel onglet)",
-  "app.components.CityLogoSection.logoLinkAriaLabelInternal": "{orgName} Accueil",
+  "app.components.CityLogoSection.logoLinkAriaLabelInternal": "Accueil de {orgName}",
   "app.components.Comments.cancel": "Annuler",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Il n'est pas possible de faire des commentaires dans la phase actuelle.",
   "app.components.Comments.commentingDisabledInactiveProject": "Il n'est pas possible de commenter car ce projet n'est pas actif actuellement.",
