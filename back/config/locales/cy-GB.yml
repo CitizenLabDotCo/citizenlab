@@ -246,6 +246,18 @@ cy:
           title: Beth yw eich menter?
         petition:
           title: Beth yw eich deiseb?
+        comment:
+          title: Beth yw eich sylw?
+        response:
+          title: Beth yw eich ymateb?
+        suggestion:
+          title: Beth yw eich awgrym chi?
+        topic:
+          title: Beth yw eich pwnc?
+        post:
+          title: Beth yw eich post?
+        story:
+          title: Beth yw eich stori?
   custom_field_options:
     gender:
       male: Gwryw
