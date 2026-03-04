@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Tr, Td, Text, colors } from '@citizenlab/cl2-component-library';
+import { Tr, Td, Text, Box, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { SpaceData } from 'api/spaces/types';
@@ -8,6 +8,8 @@ import { SpaceData } from 'api/spaces/types';
 import useLocalize from 'hooks/useLocalize';
 
 import clHistory from 'utils/cl-router/history';
+
+import ActionsMenu from './ActionsMenu';
 
 const StyledTd = styled(Td)`
   &:hover {
@@ -42,6 +44,11 @@ const Row = ({ space }: Props) => {
           {localize(space.attributes.title_multiloc)}
         </Text>
       </StyledTd>
+      <Td background={colors.grey50} width="40px">
+        <Box mr="12px">
+          <ActionsMenu space={space} />
+        </Box>
+      </Td>
     </Tr>
   );
 };
