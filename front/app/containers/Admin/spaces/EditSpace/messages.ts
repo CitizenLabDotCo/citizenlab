@@ -21,4 +21,8 @@ export default defineMessages({
     id: 'app.containers.EditSpace.settings',
     defaultMessage: 'Settings',
   },
+  spaceName: {
+    id: 'app.containers.EditSpace.spaceName',
+    defaultMessage: 'Space name',
+  },
 });

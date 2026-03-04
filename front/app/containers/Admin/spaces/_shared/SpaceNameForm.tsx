@@ -11,7 +11,7 @@ import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWi
 import { useIntl } from 'utils/cl-intl';
 import validateMultiloc from 'utils/yup/validateMultilocForEveryLocale';
 
-import messages from './messages';
+import messages from '../NewSpace/messages';
 
 interface FormValues {
   spaceName: Multiloc;
@@ -41,12 +41,7 @@ const SpaceNameForm = () => {
   };
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="flex-start"
-      mt="120px"
-    >
+    <Box display="flex" flexDirection="column" alignItems="flex-start">
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(handleSubmit)}>
           <Box w="448px">

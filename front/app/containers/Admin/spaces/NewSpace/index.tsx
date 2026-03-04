@@ -8,8 +8,9 @@ import GoBackButton from 'components/UI/GoBackButton';
 import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
+import SpaceNameForm from '../_shared/SpaceNameForm';
+
 import messages from './messages';
-import SpaceNameForm from './SpaceNameForm';
 
 const goBack = () => {
   clHistory.goBack();
@@ -30,7 +31,9 @@ const NewSpace = () => {
         <SectionTitle>
           <FormattedMessage {...messages.createANewSpace} />
         </SectionTitle>
-        <SpaceNameForm />
+        <Box mt="120px">
+          <SpaceNameForm />
+        </Box>
       </Box>
     </Box>
   );
