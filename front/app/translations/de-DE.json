@@ -659,7 +659,7 @@
   "app.components.VerificationModal.verifyBosaFas": "Mit itsme oder eID verifizieren",
   "app.components.VerificationModal.verifyClaveUnica": "Mit Clave Unica verifizieren",
   "app.components.VerificationModal.verifyFakeSSO": "Überprüfen Sie mit Fake SSO",
-  "app.components.VerificationModal.verifyFedera": "Überprüfen Sie mit SPID, CIE oder CNS",
+  "app.components.VerificationModal.verifyFedera": "Verifizierung mit SPID, CIE oder CNS",
   "app.components.VerificationModal.verifyIdAustria": "Verifizierung mit ID Austria",
   "app.components.VerificationModal.verifyKeycloak": "Verifizierung mit ID-Porten",
   "app.components.VerificationModal.verifyNemLogIn": "Überprüfen Sie mit MitID",
