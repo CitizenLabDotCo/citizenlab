@@ -68,7 +68,7 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} usuarios",
   "app.components.AvatarBubbles.participant": "participante",
   "app.components.AvatarBubbles.participants1": "participantes",
-  "app.components.CityLogoSection.logoLinkAriaLabelExternal": "Visita el sitio web {orgName} (se abre en una pestaña nueva)",
+  "app.components.CityLogoSection.logoLinkAriaLabelExternal": "Visita el sitio web de {orgName} (se abre en una pestaña nueva)",
   "app.components.CityLogoSection.logoLinkAriaLabelInternal": "{orgName} Inicio",
   "app.components.Comments.cancel": "Cancelar",
   "app.components.Comments.commentingDisabledInCurrentPhase": "No es posible comentar en la fase actual.",
