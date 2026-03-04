@@ -3,7 +3,9 @@ import React from 'react';
 import { Tr, Td, Text, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
-import AvatarBubbles from 'components/AvatarBubbles';
+import { SpaceData } from 'api/spaces/types';
+
+import useLocalize from 'hooks/useLocalize';
 
 import clHistory from 'utils/cl-router/history';
 
@@ -16,16 +18,13 @@ const StyledTd = styled(Td)`
   }
 `;
 
-type Space = {
-  name: string;
-  id: string;
-};
-
 interface Props {
-  space: Space;
+  space: SpaceData;
 }
 
 const Row = ({ space }: Props) => {
+  const localize = useLocalize();
+
   return (
     <Tr dataCy="projects-overview-folder-table-row">
       <StyledTd
@@ -40,12 +39,9 @@ const Row = ({ space }: Props) => {
           color="black"
           className="project-table-row-title"
         >
-          {space.name}
+          {localize(space.attributes.title_multiloc)}
         </Text>
       </StyledTd>
-      <Td>
-        <AvatarBubbles showParticipantText={false} />
-      </Td>
     </Tr>
   );
 };
