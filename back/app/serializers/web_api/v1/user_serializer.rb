@@ -7,6 +7,7 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   attributes :slug,
     :locale,
     :bio_multiloc,
+    :invite_status, # Cannot be private as there is no current_user when an invite is accepted
     :registration_completed_at,
     :created_at,
     :updated_at
@@ -36,7 +37,6 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   # Private attributes
   attribute :roles, if: PRIVATE
   attribute :highest_role, if: PRIVATE
-  attribute :invite_status, if: PRIVATE
   attribute :email, if: PRIVATE
   attribute :last_active_at, if: PRIVATE
   attribute :block_start_at, if: PRIVATE
