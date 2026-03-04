@@ -6,19 +6,17 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-const DeleteButton = () => {
+const RemoveFromSpaceButton = () => {
   return (
     <Button
-      buttonStyle="delete"
-      icon="delete"
+      buttonStyle="text"
+      icon="minus-circle"
       fontSize={`${fontSizes.s}px`}
       iconSize={`${fontSizes.base}px`}
-      px="8px"
-      py="4px"
     >
-      <FormattedMessage {...messages.remove} />
+      <FormattedMessage {...messages.removeFromSpace} />
     </Button>
   );
 };
 
-export default DeleteButton;
+export default RemoveFromSpaceButton;

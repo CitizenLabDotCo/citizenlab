@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 
 import { Box, IconButton, colors } from '@citizenlab/cl2-component-library';
 
-import DeleteButton from './_shared/DeleteButton';
 import Link from './_shared/Link';
+import RemoveFromSpaceButton from './_shared/RemoveFromSpaceButton';
 import Row from './_shared/Row';
 import Project from './Project';
 import { FolderNode } from './types';
@@ -34,7 +34,7 @@ const Folder = ({ node }: Props) => {
             {node.name}
           </Link>
         </Box>
-        <DeleteButton />
+        <RemoveFromSpaceButton />
       </Row>
       <Box pl="31px">
         {expanded && (

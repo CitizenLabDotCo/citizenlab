@@ -4,8 +4,8 @@ import { Box, Icon, colors, Tooltip } from '@citizenlab/cl2-component-library';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import DeleteButton from './_shared/DeleteButton';
 import Link from './_shared/Link';
+import RemoveFromSpaceButton from './_shared/RemoveFromSpaceButton';
 import Row from './_shared/Row';
 import messages from './messages';
 import { ProjectNode } from './types';
@@ -49,7 +49,7 @@ const Project = ({ node, removable }: Props) => {
           </Tooltip>
         )}
       </Box>
-      {removable && <DeleteButton />}
+      {removable && <RemoveFromSpaceButton />}
     </Row>
   );
 };
