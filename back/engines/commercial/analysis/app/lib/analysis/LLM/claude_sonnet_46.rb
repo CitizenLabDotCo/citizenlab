@@ -1,9 +1,9 @@
 module Analysis
   module LLM
-    class ClaudeSonnet45 < RubyLLM
+    class ClaudeSonnet46 < RubyLLM
       # The model ID as returned by RubyLLM.models.chat_models
       def model
-        'eu.anthropic.claude-sonnet-4-5-20250929-v1:0'
+        'eu.anthropic.claude-sonnet-4-6'
       end
 
       def self.family

@@ -52,10 +52,10 @@ resource 'Phase insights' do
       manual_votes_count: 3,
       with_permissions: true
     ).tap do |phase|
-      # Ideas
-      idea1 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago, title_multiloc: { en: 'Idea 1' })
-      idea2 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago, title_multiloc: { en: 'Idea 2' }, manual_votes_amount: 3)
-      idea3 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago, title_multiloc: { en: 'Idea 3' })
+      # Ideas - created_at timestamps ensure deterministic ordering for ideas with equal votes
+      idea1 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago, created_at: 21.days.ago, title_multiloc: { en: 'Idea 1' })
+      idea2 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago, created_at: 22.days.ago, title_multiloc: { en: 'Idea 2' }, manual_votes_amount: 3)
+      idea3 = create(:idea, phases: [ideation_phase, phase], project: ideation_phase.project, submitted_at: 20.days.ago, created_at: 23.days.ago, title_multiloc: { en: 'Idea 3' })
 
       # Users
       user1 = create(:user)
@@ -289,7 +289,7 @@ resource 'Phase insights' do
         assert_status 200
 
         idea_titles = json_response_body[:data][:attributes][:ideas].map { |idea| idea[:title_multiloc][:en] }
-        expect(idea_titles).to contain_exactly('Idea 2', 'Idea 1', 'Idea 3')
+        expect(idea_titles).to eq(['Idea 2', 'Idea 3', 'Idea 1'])
       end
     end
 

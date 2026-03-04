@@ -1,7 +1,7 @@
 import React from 'react';
 
-import useIdeasCount from 'api/idea_count/useIdeasCount';
 import { IIdeaQueryParameters } from 'api/ideas/types';
+import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 
 import FeedbackToggle from './FeedbackToggle';
 
@@ -21,13 +21,13 @@ const IdeaFeedbackToggle = ({
   onChange,
   queryParameters,
 }: Props) => {
-  const { data: ideasCount } = useIdeasCount({
+  const { data: ideasCount } = useIdeasFilterCounts({
     feedback_needed: true,
     assignee: queryParameters.assignee,
     projects: project ? [project] : undefined,
     phase: queryParameters.phase,
     input_topics: queryParameters.input_topics,
-    idea_status_id: queryParameters.idea_status,
+    idea_status: queryParameters.idea_status,
     search: queryParameters.search,
     transitive: queryParameters.transitive,
   });
@@ -35,7 +35,7 @@ const IdeaFeedbackToggle = ({
   return (
     <FeedbackToggle
       value={value}
-      count={ideasCount?.data.attributes.count}
+      count={ideasCount?.data.attributes.total}
       onChange={onChange}
     />
   );

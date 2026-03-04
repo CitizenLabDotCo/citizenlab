@@ -58,19 +58,140 @@ export const getPlainTextLengthFromHTML = (
   return Math.max(0, text.length - 1);
 };
 
+// Alignment inline styles matching the old quill-blot-formatter v1 output.
+// These allow text to wrap around floated images.
+const ALIGNMENT_STYLES: Record<string, string> = {
+  left: 'display: inline; float: left; margin: 0 1em 1em 0;',
+  center: 'display: block; margin: auto;',
+  right: 'display: inline; float: right; margin: 0 0 1em 1em;',
+};
+
+// Convert blot-formatter2 alignment to inline styles. Images use a wrapper
+// <span> with the alignment class; iframes get the class directly.
+const convertAlignmentToInlineStyles = (html: string): string => {
+  const div = document.createElement('div');
+  div.innerHTML = html;
+
+  // Images: unwrap alignment <span> and apply inline styles to <img>
+  div
+    .querySelectorAll<HTMLSpanElement>('[class^="ql-image-align-"]')
+    .forEach((span) => {
+      const align = span.className.match(
+        /ql-image-align-(left|center|right)/
+      )?.[1];
+      if (!align) return;
+
+      const img = span.querySelector('img');
+      if (!img) return;
+
+      img.setAttribute('data-align', align);
+      img.setAttribute('style', ALIGNMENT_STYLES[align] || '');
+      span.replaceWith(img);
+    });
+
+  // Iframes: class is directly on the element, replace with inline styles
+  div
+    .querySelectorAll<HTMLIFrameElement>('[class*="ql-iframe-align-"]')
+    .forEach((iframe) => {
+      const align = iframe.className.match(
+        /ql-iframe-align-(left|center|right)/
+      )?.[1];
+      if (!align) return;
+
+      iframe.setAttribute('data-align', align);
+      iframe.setAttribute('style', ALIGNMENT_STYLES[align] || '');
+      iframe.className = iframe.className
+        .replace(/ql-iframe-align-(left|center|right)/, '')
+        .trim();
+    });
+
+  return div.innerHTML;
+};
+
+// Reverse of convertAlignmentToInlineStyles: convert saved data-align
+// attributes back to the CSS classes that blot-formatter2 expects.
+const convertInlineStylesToAlignment = (html: string): string => {
+  const div = document.createElement('div');
+  div.innerHTML = html;
+
+  // Images: wrap in alignment span (reverse of unwrapping in getHTML)
+  div.querySelectorAll<HTMLImageElement>('img[data-align]').forEach((img) => {
+    const align = img.getAttribute('data-align');
+    if (!align || !['left', 'center', 'right'].includes(align)) return;
+
+    const wrapper = document.createElement('span');
+    wrapper.className = `ql-image-align-${align}`;
+    img.parentNode?.insertBefore(wrapper, img);
+    wrapper.appendChild(img);
+    img.removeAttribute('data-align');
+    img.removeAttribute('style');
+  });
+
+  // Iframes: restore alignment class
+  div
+    .querySelectorAll<HTMLIFrameElement>('iframe[data-align]')
+    .forEach((iframe) => {
+      const align = iframe.getAttribute('data-align');
+      if (!align || !['left', 'center', 'right'].includes(align)) return;
+
+      iframe.classList.add(`ql-iframe-align-${align}`);
+      iframe.removeAttribute('data-align');
+      iframe.removeAttribute('style');
+    });
+
+  return div.innerHTML;
+};
+
+// Quill 2.0 uses <ol> for ALL list types internally, with data-list
+// attributes on <li> to distinguish bullet vs ordered. Convert to
+// proper <ul>/<ol> so lists survive the clipboard.convert() round-trip.
+// Legacy HTML without data-list attributes passes through unchanged.
+const normalizeListTags = (html: string): string => {
+  const div = document.createElement('div');
+  div.innerHTML = html;
+
+  div.querySelectorAll('ol').forEach((ol) => {
+    const items = ol.querySelectorAll<HTMLLIElement>(':scope > li');
+    const hasBullets = Array.from(items).some(
+      (li) => li.getAttribute('data-list') === 'bullet'
+    );
+
+    if (!hasBullets) {
+      items.forEach((li) => li.removeAttribute('data-list'));
+      return;
+    }
+
+    const fragment = document.createDocumentFragment();
+    let current: HTMLUListElement | HTMLOListElement | null = null;
+    let currentType = '';
+
+    items.forEach((li) => {
+      const type = li.getAttribute('data-list') || 'ordered';
+      li.removeAttribute('data-list');
+
+      if (type !== currentType) {
+        currentType = type;
+        current = document.createElement(type === 'bullet' ? 'ul' : 'ol');
+        fragment.appendChild(current);
+      }
+      current!.appendChild(li);
+    });
+
+    ol.replaceWith(fragment);
+  });
+
+  return div.innerHTML;
+};
+
 export const getHTML = (editor: Quill) => {
-  return editor.root.innerHTML === '<p><br></p>' ? '' : editor.root.innerHTML;
+  const html = editor.root.innerHTML;
+  if (!html || html === '<p><br></p>') return '';
+  return convertAlignmentToInlineStyles(normalizeListTags(html));
 };
 
 export const setHTML = (editor: Quill, html: string = '') => {
-  const delta = editor.clipboard.convert(html as any);
+  const delta = editor.clipboard.convert({
+    html: convertInlineStylesToAlignment(html),
+  });
   editor.setContents(delta);
 };
-
-let savedPlaceholder = '';
-
-export const syncPlaceHolder = (placeholder: string) => {
-  savedPlaceholder = placeholder;
-};
-
-export const getPlaceHolder = () => savedPlaceholder;

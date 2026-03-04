@@ -41,7 +41,7 @@ module Insights
       vote_count_column = @phase.voting_method == 'budgeting' ? 'baskets_count' : 'votes_count'
 
       @phase.ideas.transitive.order(
-        Arel.sql("COALESCE(ideas.#{vote_count_column}, 0) + COALESCE(ideas.manual_votes_amount, 0) DESC")
+        Arel.sql("COALESCE(ideas.#{vote_count_column}, 0) + COALESCE(ideas.manual_votes_amount, 0) DESC, ideas.created_at ASC, ideas.id ASC")
       )
     end
 

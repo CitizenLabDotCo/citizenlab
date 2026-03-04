@@ -169,6 +169,7 @@ const ProjectTimelineContainer = ({ projectId, className }: Props) => {
             <CommonGroundTabs
               phaseId={selectedPhase.id}
               project={project.data}
+              isPastPhase={isPastPhase}
             />
           )}
         </ContentContainer>

@@ -338,7 +338,7 @@ describe 'rake demos:translate_missing_locales' do
       end
     end
 
-    it 'skips nodes that are not TextMultiloc or AccordionMultiloc' do
+    it 'finds multiloc hashes in any node type including ImageMultiloc' do
       tenant.switch do
         project = create(:project)
         ContentBuilder::Layout.create!(
@@ -348,6 +348,23 @@ describe 'rake demos:translate_missing_locales' do
           craftjs_json: {
             'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => ['image-node-1'], 'props' => {}, 'parent' => nil },
             'image-node-1' => { 'type' => { 'resolvedName' => 'ImageMultiloc' }, 'nodes' => [], 'props' => { 'alt' => { 'en' => 'Alt' } }, 'parent' => 'ROOT' }
+          }
+        )
+      end
+
+      expect { task.invoke('craftjs-audit.com', 'en') }
+        .to output(/ContentBuilder::Layout craftjs_json/).to_stdout
+    end
+
+    it 'skips nodes with no multiloc hashes' do
+      tenant.switch do
+        project = create(:project)
+        ContentBuilder::Layout.create!(
+          content_buildable: project,
+          code: 'project_description',
+          enabled: true,
+          craftjs_json: {
+            'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => [], 'props' => {}, 'parent' => nil }
           }
         )
       end
@@ -429,14 +446,15 @@ describe 'rake demos:translate_missing_locales' do
 
       tenant.switch do
         aggregate_failures do
-          # Skip when source locale missing
-          expect(output).to include("Skipped craftjs_json text: source locale 'en' not present")
+          # Does nothing when multiloc only has locales that are not in the locales
           layout_skip.reload
+          expect(layout_skip.craftjs_json['text-node-1']['props']['text']['en']).to be_nil
           expect(layout_skip.craftjs_json['text-node-1']['props']['text']['fr-FR']).to be_nil
 
           # Copy from same language
           expect(output).to include('Copied craftjs_json text from fr-FR to fr-BE (same language)')
           layout_copy.reload
+          expect(layout_copy.craftjs_json['text-node-1']['props']['text']['en']).to eq('English')
           expect(layout_copy.craftjs_json['text-node-1']['props']['text']['fr-BE']).to eq('Texte')
         end
       end

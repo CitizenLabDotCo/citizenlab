@@ -9,10 +9,14 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.components.draft',
     defaultMessage: 'Draft',
   },
-  deleteProjectConfirmation: {
-    id: 'app.containers.Admin.projects.all.deleteProjectConfirmation',
+  deleteProjectModalTitle: {
+    id: 'app.containers.Admin.projects.all.deleteProjectModalTitle',
+    defaultMessage: 'Delete this project permanently?',
+  },
+  deleteProjectModalWarning: {
+    id: 'app.containers.Admin.projects.all.deleteProjectModalWarning1',
     defaultMessage:
-      'Are you sure you want to delete this project? This cannot be undone.',
+      'This will permanently delete this project and all of its associated data, such as ideas, comments, votes, and survey responses.',
   },
   deleteProjectError: {
     id: 'app.containers.Admin.projects.all.deleteProjectError',

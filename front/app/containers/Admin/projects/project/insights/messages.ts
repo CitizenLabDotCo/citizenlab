@@ -26,8 +26,8 @@ export default defineMessages({
     defaultMessage: 'Total',
   },
   participants: {
-    id: 'app.containers.Admin.projects.project.insights.participants',
-    defaultMessage: 'Participants',
+    id: 'app.containers.Admin.projects.project.insights.participants2',
+    defaultMessage: 'Phase participants',
   },
   inputs: {
     id: 'app.containers.Admin.projects.project.insights.inputs',
@@ -205,6 +205,21 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.vsLast7Days',
     defaultMessage: 'vs last 7 days',
   },
+  phaseParticipantsMetricTooltip2: {
+    id: 'app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2',
+    defaultMessage:
+      'The number of unique participants. Does not include event registrants and project followers.',
+  },
+  participationRateExplanationTooltip: {
+    id: 'app.containers.Admin.projects.project.insights.participationRateExplanationTooltip',
+    defaultMessage:
+      'The number of participants divided by the number of visitors, expressed as a percentage.',
+  },
+  completionRateExplanationTooltip: {
+    id: 'app.containers.Admin.projects.project.insights.completionRateExplanationTooltip',
+    defaultMessage:
+      "The number of submitted survey responses divided by the total number of survey responses (including 'draft', unsubmitted responses), expressed as a percentage.",
+  },
   insufficientComparisonData: {
     id: 'app.containers.Admin.projects.project.insights.insufficientComparisonData',
     defaultMessage: 'Insufficient comparison data',
@@ -219,9 +234,36 @@ export default defineMessages({
     defaultMessage:
       'The 7 day period before last had no activity to compare against (which would give an infinite value)',
   },
+  cannotCalculateNoVisitsInPeriod: {
+    id: 'app.containers.Admin.projects.project.insights.cannotCalulateNoVisitsInPeriod',
+    defaultMessage:
+      'Cannot calculate participation rate change with zero visitors in a comparison period',
+  },
+  cannotCalculateNoNewSurveyResponsesInPeriod: {
+    id: 'app.containers.Admin.projects.project.insights.cannotCalculateNoNewSurveyResponsesInPeriod',
+    defaultMessage:
+      'Cannot calculate completion rate change with zero new survey responses in a comparison period',
+  },
+  cannotCalculateParticipationRateZeroVisitors: {
+    id: 'app.containers.Admin.projects.project.insights.cannotCalculateParticipationRateZeroVisitors',
+    defaultMessage: 'Cannot calculate participation rate when zero visitors',
+  },
+  cannotCalculateCompletionRateNoSurveyResponses: {
+    id: 'app.containers.Admin.projects.project.insights.cannotCalculateCompletionRateNoSurveyResponses',
+    defaultMessage:
+      'Cannot calculate completion rate when no survey responses exist',
+  },
   noReferenceDataMessage: {
     id: 'app.containers.Admin.projects.project.insights.noReferenceDataMessage',
     defaultMessage:
       'No reference census data is available yet for this demographic dimension. <link>Add it here</link> to understand how representative your data is.',
+  },
+  downloadPdf: {
+    id: 'app.containers.Admin.projects.project.insights.downloadPdf',
+    defaultMessage: 'Download as PDF',
+  },
+  downloadWord: {
+    id: 'app.containers.Admin.projects.project.insights.downloadWord',
+    defaultMessage: 'Download as Word',
   },
 });
