@@ -247,17 +247,17 @@ fr-BE:
         petition:
           title: Quelle est votre pétition ?
         comment:
-          title: Quel est votre problème ?
+          title: Quel est votre commentaire ?
         response:
           title: Quelle est votre réponse ?
         suggestion:
           title: Quelle est votre suggestion ?
         topic:
-          title: Quel est votre sujet ?
+          title: Quel est votre thème ?
         post:
-          title: Quel est votre poste ?
+          title: Quelle est votre publication ?
         story:
-          title: Quelle est votre histoire ?
+          title: Quel est votre témoignage ?
   custom_field_options:
     gender:
       male: Masculin
