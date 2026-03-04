@@ -416,7 +416,7 @@ resource 'Projects' do
           expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
         end
 
-        example 'Add a project not in a workspace to a folder in a workspace' do
+        example 'Add a project not in a space to a folder in a space' do
           space = create(:space)
           folder = create(:project_folder, space: space)
 
@@ -427,7 +427,7 @@ resource 'Projects' do
           expect(@project.space_id).to eq folder.space.id
         end
 
-        example '[Error] Add a project in a workspace to a folder in another workspace' do
+        example '[Error] Add a project in a space to a folder in another space' do
           space1 = create(:space)
           space2 = create(:space)
           
@@ -449,7 +449,7 @@ resource 'Projects' do
           expect(@project.space_id).to eq folder1.space.id
         end
 
-        example '[Error] Add a project in a workspace to a folder not in workspace' do
+        example '[Error] Add a project in a space to a folder not in space' do
           space1 = create(:space)
           
           folder1 = create(:project_folder, space: space1)
@@ -468,6 +468,21 @@ resource 'Projects' do
           @project.reload
           expect(@project.folder_id).to eq folder1.id
           expect(@project.space_id).to eq folder1.space.id
+        end
+
+        example '[Error] Add a project in a folder in a space to another space' do
+          space1 = create(:space)
+          space2 = create(:space)
+
+          folder1 = create(:project_folder, space: space1)
+
+          @project.update!(folder_id: folder1.id)
+          expect(@project.space_id).to eq space1.id
+
+          do_request(project: { folder_id: nil, space_id: space2.id })
+          @project.reload
+
+          expect(response_status).to eq 422
         end
 
         example 'Remove a project from a folder' do
