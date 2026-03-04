@@ -2449,6 +2449,7 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Tykkäyksiä per osallistuja",
   "app.containers.AdminPage.ProjectEdit.limited": "Rajoitettu",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "Listanäkymä on aina käytettävissä, eikä sitä voi poistaa käytöstä.",
+  "app.containers.AdminPage.ProjectEdit.listViewDescription1": "Syötteet näytetään vieritettävänä syötteenä, lajiteltuina trendien, reaktioiden, kommenttien, päivämäärän tai aktiviteetin mukaan. Sopii parhaiten: pienempiin konsultaatioihin.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Listanäkymä",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Lataa lisää malleja",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Aseta oletukseksi",
