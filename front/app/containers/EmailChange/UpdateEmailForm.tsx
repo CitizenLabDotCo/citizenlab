@@ -5,7 +5,7 @@ import { FormProvider, UseFormReturn } from 'react-hook-form';
 
 import { requestEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
 import { updateEmailUnconfirmed } from 'api/authentication/updateEmailUnconfirmed';
-import { IUserData } from 'api/users/types';
+import { IUser } from 'api/users/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -25,13 +25,15 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import messages from './messages';
 
 import { FormValues } from '.';
+import { isAdmin } from 'utils/permissions/roles';
+import Warning from 'components/UI/Warning';
 
 type UpdateEmailFormProps = {
   updateSuccessful: boolean;
   setUpdateSuccessful: (updateSuccessful: boolean) => void;
   setOpenConfirmationModal: (openConfirmationModal: boolean) => void;
   methods: UseFormReturn<FormValues, any>;
-  user: IUserData;
+  user: IUser;
 };
 
 const UpdateEmailForm = ({
@@ -71,11 +73,16 @@ const UpdateEmailForm = ({
     <>
       <FormProvider {...methods}>
         <Title>
-          {user.attributes.no_password
+          {user.data.attributes.no_password
             ? formatMessage(messages.titleAddEmail)
             : formatMessage(messages.titleChangeEmail)}
         </Title>
         <Form>
+          {isAdmin(user) && (
+            <Warning mt="-20px" mb="20px">
+              {formatMessage(messages.adminEmailChangeWarning)}
+            </Warning>
+          )}
           <LabelContainer>
             <FormLabel
               width="max-content"

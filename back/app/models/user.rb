@@ -238,7 +238,6 @@ class User < ApplicationRecord
     find_by(id: payload['sub'], token_expiry_key: payload['expiry_key'])
   end
 
-  # TODO: Need a signout endpoint that calls this method to invalidate all existing JWTs for the user by changing the token_expiry_key
   def refresh_token_expiry_key!
     update!(token_expiry_key: SecureRandom.hex(10))
   end

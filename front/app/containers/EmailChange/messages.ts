@@ -62,4 +62,9 @@ export default defineMessages({
     id: 'app.containers.ChangeEmail.backToProfile',
     defaultMessage: 'Back to profile settings',
   },
+  adminEmailChangeWarning: {
+    id: 'app.containers.ChangeEmail.adminEmailChangeWarning',
+    defaultMessage:
+      'Changing your email address will log you out in all other tabs and browsers and you may lose any unsaved changes.',
+  },
 });
