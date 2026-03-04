@@ -1430,7 +1430,7 @@
   "app.containers.Admin.projects.project.insights.respondents": "Répondants",
   "app.containers.Admin.projects.project.insights.responses": "Réponses",
   "app.containers.Admin.projects.project.insights.responsesPerRespondent": "Réponses par répondant",
-  "app.containers.Admin.projects.project.insights.sevenDayChange": "vs Semaine préc.",
+  "app.containers.Admin.projects.project.insights.sevenDayChange": "sur 7 jours",
   "app.containers.Admin.projects.project.insights.sevenDayChangeDefaultTooltip": "Pourcentage de variation de la valeur de cet indicateur par rapport à sa valeur d'il y a 7 jours.",
   "app.containers.Admin.projects.project.insights.shared.aiPowered": "AI-Powered",
   "app.containers.Admin.projects.project.insights.shared.aiTopicClusteringDescription1": "Automatically organize all inputs into meaningful themes, even when participants don't tag them.",
