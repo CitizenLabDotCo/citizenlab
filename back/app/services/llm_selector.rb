@@ -47,7 +47,7 @@ class LLMSelector
     LLMUseCase.new(
       key: 'sensemaking_summarization',
       description: 'Summarization of content in sensemaking',
-      supported_models: [::Analysis::LLM::GPT41, ::Analysis::LLM::Gemini3Pro, ::Analysis::LLM::ClaudeOpus46, ::Analysis::LLM::ClaudeSonnet46],
+      supported_models: [::Analysis::LLM::GPT41, ::Analysis::LLM::Gemini3Pro, ::Analysis::LLM::ClaudeOpus46],
       default_model: ::Analysis::LLM::GPT41
     ),
     LLMUseCase.new(
@@ -72,7 +72,7 @@ class LLMSelector
       key: 'idea_feed_live_classification',
       description: 'Classify ideas into existing topics in the Idea Feed constantly.',
       supported_models: [::Analysis::LLM::ClaudeHaiku45, ::Analysis::LLM::Gemini3Flash],
-      default_model: ::Analysis::LLM::Gemini3Flash
+      default_model: ::Analysis::LLM::ClaudeHaiku45
     )
   ]
 
