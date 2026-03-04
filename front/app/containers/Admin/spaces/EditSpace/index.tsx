@@ -42,7 +42,7 @@ const EditSpace = () => {
   };
 
   return (
-    <Box px="48px" py="48px">
+    <Box>
       <GoBackButton onClick={goBack} />
       <TabbedResource {...tabbedProps}>
         <RouterOutlet />

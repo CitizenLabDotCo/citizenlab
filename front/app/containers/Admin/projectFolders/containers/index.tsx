@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
-import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
@@ -19,16 +19,6 @@ import clHistory from 'utils/cl-router/history';
 import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
-
-const TopContainer = styled.div`
-  width: 100%;
-  margin-top: -5px;
-  margin-bottom: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-`;
 
 const AdminProjectFolderEdition = () => {
   const { projectFolderId } = useParams();
@@ -74,7 +64,7 @@ const AdminProjectFolderEdition = () => {
 
   return (
     <>
-      <TopContainer>
+      <Box display="flex" justifyContent="space-between" alignItems="center">
         <GoBackButton onClick={goBack} />
         <ButtonWithLink
           buttonStyle="admin-dark"
@@ -84,7 +74,7 @@ const AdminProjectFolderEdition = () => {
         >
           <FormattedMessage {...messages.viewPublicProjectFolder} />
         </ButtonWithLink>
-      </TopContainer>
+      </Box>
       <TabbedResource {...tabbedProps}>
         <RouterOutlet />
       </TabbedResource>
