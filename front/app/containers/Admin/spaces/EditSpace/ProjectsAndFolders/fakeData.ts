@@ -35,5 +35,3 @@ export const TEST_DATA_ADDED: TreeNode[] = [
     ],
   },
 ];
-
-export const TEST_DATA_CAN_BE_ADDED: TreeNode[] = [];
