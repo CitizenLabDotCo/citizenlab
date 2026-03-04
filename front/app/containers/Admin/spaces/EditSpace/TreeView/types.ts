@@ -13,7 +13,6 @@ export type FolderNode = {
   name: string;
   path: RouteType;
   children: ProjectNode[];
-  inSpace: boolean;
 };
 
 export type TreeNode = ProjectNode | FolderNode;
