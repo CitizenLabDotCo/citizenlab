@@ -12,15 +12,18 @@ const updateSpace = ({ id, ...requestBody }: SpaceUpdate) =>
   fetcher<Space>({
     path: `/spaces/${id}`,
     action: 'patch',
-    body: { area: requestBody },
+    body: { space: requestBody },
   });
 
 const useUpdateSpace = () => {
   const queryClient = useQueryClient();
   return useMutation<Space, CLErrors, SpaceUpdate>({
     mutationFn: updateSpace,
-    onSuccess: () => {
+    onSuccess: (variables) => {
       queryClient.invalidateQueries({ queryKey: spacesKeys.lists() });
+      queryClient.invalidateQueries({
+        queryKey: spacesKeys.item({ id: variables.data.id }),
+      });
     },
   });
 };
