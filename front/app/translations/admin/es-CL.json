@@ -2449,6 +2449,7 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Número máximo de aportes en los que un participante puede darle a me gusta (en la ideación) o votar (en las propuestas)",
   "app.containers.AdminPage.ProjectEdit.limited": "Limitada",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "La vista de lista está siempre disponible y no se puede desactivar.",
+  "app.containers.AdminPage.ProjectEdit.listViewDescription1": "Las entradas se muestran como un feed desplazable, ordenado por tendencias, reacciones, comentarios, fecha o actividad. Lo mejor para: consultas pequeñas.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Vista de lista",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Cargar más plantillas",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Hacer por defecto",
