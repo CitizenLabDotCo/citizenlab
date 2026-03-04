@@ -87,7 +87,7 @@ module IdFedera
           { name: 'dateOfBirth' },
           { name: 'domicileMunicipality' }
         ],
-        idpis_sso_service_url_runtime_params: { RelayState: :RelayState },
+        idp_sso_service_url_runtime_params: { RelayState: :RelayState },
         authn_context: SPID_AUTHN_CONTEXT.fetch(spid_level, SPID_AUTHN_CONTEXT['1'])
         # TODO: signing of URLs as requires a private key
         # private_key: private_key,

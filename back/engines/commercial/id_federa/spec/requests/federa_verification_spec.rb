@@ -364,7 +364,7 @@ context 'federa verification' do
       host! 'example.org'
     end
 
-    it 'redirects to the service with correct SAML parameters', skip: 'Still under development' do
+    it 'redirects to the service with correct SAML parameters' do
       OmniAuth.config.test_mode = false
       get "/auth/federa?token=#{@token}"
       expect(response).to have_http_status(:redirect)
@@ -372,7 +372,7 @@ context 'federa verification' do
       expect(redirect_url.host).to eq('federatest.lepida.it')
       query_params = Rack::Utils.parse_query(redirect_url.query)
       expect(query_params).to have_key('SAMLRequest')
-      expect(query_params).to have_key('RelayState') # TODO: This has stopped working!!
+      expect(query_params).to have_key('RelayState')
       # TODO: Add in tests for sigalg and signature when those are implemented
     end
   end
