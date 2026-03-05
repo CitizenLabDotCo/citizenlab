@@ -123,7 +123,7 @@ module EmailCampaigns
     end
 
     def mark_scheduled_send_complete(_command)
-      return unless scheduled_at.present?
+      return if scheduled_at.blank?
 
       self.ic_schedule = self.class.default_schedule
       save!(validate: false)
