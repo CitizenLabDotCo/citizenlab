@@ -4,6 +4,8 @@ import { Box, IconButton, colors } from '@citizenlab/cl2-component-library';
 
 import { FolderNode } from 'api/spaces/types';
 
+import useLocalize from 'hooks/useLocalize';
+
 import Link from './_shared/Link';
 import RemoveFromSpaceButton from './_shared/RemoveFromSpaceButton';
 import Row from './_shared/Row';
@@ -14,6 +16,7 @@ interface Props {
 }
 
 const Folder = ({ node }: Props) => {
+  const localize = useLocalize();
   const [expanded, setExpanded] = useState(true);
 
   return (
@@ -31,8 +34,8 @@ const Folder = ({ node }: Props) => {
             onClick={() => setExpanded(!expanded)}
             a11y_buttonActionMessage=""
           />
-          <Link to={node.path} color={colors.black}>
-            {node.name}
+          <Link to={`/admin/projects/folders/${node.id}`} color={colors.black}>
+            {localize(node.title_multiloc)}
           </Link>
         </Box>
         <RemoveFromSpaceButton />

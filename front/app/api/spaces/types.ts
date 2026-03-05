@@ -53,6 +53,7 @@ export type FolderNode = {
   id: string;
   type: 'folder';
   title_multiloc: Multiloc;
+  children: ProjectNode[];
 };
 
 export type TreeNode = FolderNode | ProjectNode;

@@ -4,6 +4,8 @@ import { Box, Icon, colors, Tooltip } from '@citizenlab/cl2-component-library';
 
 import { ProjectNode } from 'api/spaces/types';
 
+import useLocalize from 'hooks/useLocalize';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
 import Link from './_shared/Link';
@@ -17,6 +19,8 @@ interface Props {
 }
 
 const Project = ({ node, removable }: Props) => {
+  const localize = useLocalize();
+
   return (
     <Row>
       <Box display="flex">
@@ -28,8 +32,11 @@ const Project = ({ node, removable }: Props) => {
           transform="translateY(-1px)"
           fill={removable ? colors.black : colors.grey600}
         />
-        <Link to={node.path} color={removable ? colors.black : colors.grey600}>
-          {node.name}
+        <Link
+          to={`/admin/projects/${node.id}`}
+          color={removable ? colors.black : colors.grey600}
+        >
+          {localize(node.title_multiloc)}
         </Link>
         {!removable && (
           <Tooltip
