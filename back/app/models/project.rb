@@ -115,7 +115,7 @@ class Project < ApplicationRecord
   validates :live_auto_input_topics_enabled, inclusion: { in: [true, false] }
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # TODO: This should always be validated!
   validate :space_must_match_folder_space
-  validate :space_cannot_change_if_in_folder_with_space
+  validate :space_cannot_change_if_in_folder_in_space
   validate :cannot_move_from_space_to_folder_in_different_space
 
   scope :not_hidden, -> { where(hidden: false) }
@@ -305,7 +305,7 @@ class Project < ApplicationRecord
     errors.add(:space_id, 'space_id must match the space of the folder')
   end
 
-  def space_cannot_change_if_in_folder_with_space
+  def space_cannot_change_if_in_folder_in_space
     return unless persisted? && space_id_changed? && space_id_was.present?
 
     # Check if the project WAS in a folder before this change
@@ -317,7 +317,7 @@ class Project < ApplicationRecord
     previous_folder = AdminPublication.find_by(id: previous_parent_id)&.publication
     return unless previous_folder.is_a?(ProjectFolders::Folder) && previous_folder.space_id == space_id_was
 
-    errors.add(:space_id, 'space_id - cannot be changed when project was in a folder with a space')
+    errors.add(:space_id, 'space_id cannot be changed when project is in a folder in a space')
   end
 
   def cannot_move_from_space_to_folder_in_different_space

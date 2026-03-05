@@ -422,207 +422,213 @@ resource 'Projects' do
         # - You can add it to any folder, regardless of if the folder is in a space or not.
         #     - If the folder is in the space, the project is automatically added to the space [Added to `Project#folder_id=` method, effectively adding a side_effect to achieve this when updating a project’s folder]
 
-        context 'project not in folder and not in space' do
-          before do
-            @project.update!(folder_id: nil, space_id: nil)
+        context 'space involved' do
+          context 'project not in folder and not in space' do
+            before do
+              @project.update!(folder_id: nil, space_id: nil)
+            end
+
+            example 'move project to a space' do
+              space = create(:space)
+              do_request(project: { space_id: space.id })
+
+              expect(json_response[:data][:attributes][:space_id]).to eq space.id
+            end
+
+            example 'Add a project to a folder in a space' do
+              space = create(:space)
+              folder = create(:project_folder, space: space)
+
+              do_request(project: { folder_id: folder.id })
+              @project.reload
+
+              expect(@project.folder_id).to eq folder.id
+              expect(json_response[:data][:attributes][:space_id]).to eq space.id
+            end
+
+            example 'Add a project to a folder not in a space' do
+              folder = create(:project_folder, space: nil)
+
+              do_request(project: { folder_id: folder.id })
+              @project.reload
+
+              expect(@project.folder_id).to eq folder.id
+              expect(json_response[:data][:attributes][:space_id]).to be_nil
+            end
           end
 
-          example 'move project to a space' do
-            space = create(:space)
-            do_request(project: { space_id: space.id })
+          # **If a project is NOT in a space and IS in a folder NOT in a space:**
 
-            expect(json_response[:data][:attributes][:space_id]).to eq space.id
+          # - If you remove the project from the folder, it stays NOT in the space
+          # - You can NOT add the project to a space [Validation prevents this]
+
+          context 'project not in space and in folder not in space' do
+            before do
+              @folder = create(:project_folder, space: nil, projects: [@project])
+            end
+
+            example 'Remove the project from the folder' do
+              do_request(project: { folder_id: nil })
+              @project.reload
+
+              expect(@project.folder_id).to be_nil
+              expect(json_response[:data][:attributes][:space_id]).to be_nil
+            end
+
+            example '[Error] Add the project to a space' do
+              space = create(:space)
+              do_request(project: { space_id: space.id })
+
+              expect(response_status).to eq 422
+              expect(json_response[:errors][:space_id]).to include(
+                { error: 'space_id must match the space of the folder' }
+              )
+
+              @project.reload
+              expect(@project.folder_id).not_to be_nil
+            end
+
+            example '[Error] Add the project to a folder in another space' do
+              space = create(:space)
+              folder2 = create(:project_folder, space: space)
+
+              do_request(project: { folder_id: folder2.id })
+
+              expect(response_status).to eq 422
+              expect(json_response[:errors][:space_id]).to include(
+                { error: 'space_id - cannot move project into a folder in a different space' }
+              )
+
+              @project.reload
+              expect(@project.folder_id).to eq @folder.id
+            end
           end
 
-          example 'Add a project to a folder in a space' do
-            space = create(:space)
-            folder = create(:project_folder, space: space)
+          # **If a project is NOT in a folder and IS in a space:**
 
-            do_request(project: { folder_id: folder.id })
-            @project.reload
+          # - You can add it to a folder in the same space
+          # - You can NOT add it to a folder in another space (including nil)
+          # - You can move it to another space (including nil)
 
-            expect(@project.folder_id).to eq folder.id
-            expect(json_response[:data][:attributes][:space_id]).to eq space.id
+          context 'project in space and not in folder' do
+            before do
+              @space = create(:space)
+              @project.update!(space_id: @space.id)
+            end
+
+            example 'Add the project to a folder in the same space' do
+              folder = create(:project_folder, space: @space)
+
+              do_request(project: { folder_id: folder.id })
+              @project.reload
+
+              expect(@project.folder_id).to eq folder.id
+              expect(json_response[:data][:attributes][:space_id]).to eq @space.id
+            end
+
+            example '[Error] Add the project to a folder in another space' do
+              space2 = create(:space)
+              folder = create(:project_folder, space: space2)
+
+              do_request(project: { folder_id: folder.id })
+
+              # puts json_response.inspect
+
+              expect(response_status).to eq 422
+              expect(json_response[:errors][:space_id]).to include(
+                { error: 'space_id - cannot move project into a folder in a different space' }
+              )
+
+              @project.reload
+              expect(@project.folder_id).to be_nil
+            end
+
+            example '[Error] Add the project to a folder not in a space' do
+              folder = create(:project_folder, space: nil)
+
+              do_request(project: { folder_id: folder.id })
+
+              # puts json_response.inspect
+
+              expect(response_status).to eq 422
+              expect(json_response[:errors][:space_id]).to include(
+                { error: 'space_id - cannot move project into a folder in a different space' }
+              )
+
+              @project.reload
+              expect(@project.folder_id).to be_nil
+            end
+
+            example 'Move the project to another space' do
+              space2 = create(:space)
+
+              do_request(project: { space_id: space2.id })
+              expect(json_response[:data][:attributes][:space_id]).to eq space2.id
+            end
+
+            example 'Move the project to no space' do
+              do_request(project: { space_id: nil })
+              expect(json_response[:data][:attributes][:space_id]).to be_nil
+            end
           end
 
-          example 'Add a project to a folder not in a space' do
-            folder = create(:project_folder, space: nil)
+          # **If a project IS in a folder which is in a space:**
 
-            do_request(project: { folder_id: folder.id })
-            @project.reload
+          # - It should NOT be possible to move the project to another space (including nil) (unless folder is moved)
+          # - It should be possible to remove the project from the folder.
+          #   - In this case, it keeps the space after going out of the folder
 
-            expect(@project.folder_id).to eq folder.id
-            expect(json_response[:data][:attributes][:space_id]).to be_nil
-          end
-        end
+          context 'project in folder in space' do
+            before do
+              @space = create(:space)
+              folder = create(:project_folder, space: @space, projects: [@project])
+              @project.update!(space_id: @space.id, folder_id: folder.id)
+            end
 
-        # **If a project is NOT in a space and IS in a folder NOT in a space:**
+            example '[Error] Move the project to another space' do
+              space2 = create(:space)
+              do_request(project: { space_id: space2.id })
 
-        # - If you remove the project from the folder, it stays NOT in the space
-        # - You can NOT add the project to a space [Validation prevents this]
+              expect(response_status).to eq 422
+              expect(json_response[:errors][:space_id]).to include(
+                { error: 'space_id must match the space of the folder' }
+              )
 
-        context 'project not in space and in folder not in space' do
-          before do
-            @folder = create(:project_folder, space: nil, projects: [@project])
-          end
+              @project.reload
+              expect(@project.space_id).to eq @space.id
+            end
 
-          example 'Remove the project from the folder' do
-            do_request(project: { folder_id: nil })
-            @project.reload
+            example '[Error] Move the project to a folder in another space' do
+              space2 = create(:space)
+              folder2 = create(:project_folder, space: space2)
 
-            expect(@project.folder_id).to be_nil
-            expect(json_response[:data][:attributes][:space_id]).to be_nil
-          end
+              do_request(project: { folder_id: folder2.id })
 
-          example '[Error] Add the project to a space' do
-            space = create(:space)
-            do_request(project: { space_id: space.id })
+              expect(response_status).to eq 422
+              expect(json_response[:errors][:space_id]).to include(
+                { error: 'space_id cannot be changed when project is in a folder in a space' }
+              )
+            end
 
-            expect(response_status).to eq 422
-            expect(json_response[:errors][:space_id]).to include(
-              { error: 'space_id must match the space of the folder' }
-            )
+            example '[Error] Move the project to no space' do
+              do_request(project: { space_id: nil })
 
-            @project.reload
-            expect(@project.folder_id).not_to be_nil
-          end
+              expect(response_status).to eq 422
+              expect(json_response[:errors][:space_id]).to include(
+                { error: 'space_id must match the space of the folder' }
+              )
 
-          example '[Error] Add the project to a folder in another space' do
-            space = create(:space)
-            folder2 = create(:project_folder, space: space)
+              @project.reload
+              expect(@project.space_id).to eq @space.id
+            end
 
-            do_request(project: { folder_id: folder2.id })
+            example 'Remove the project from the folder' do
+              do_request(project: { folder_id: nil })
+              @project.reload
 
-            expect(response_status).to eq 422
-            expect(json_response[:errors][:space_id]).to include(
-              { error: 'space_id - cannot move project into a folder in a different space' }
-            )
-
-            @project.reload
-            expect(@project.folder_id).to eq @folder.id
-          end
-        end
-
-        # **If a project is NOT in a folder and IS in a space:**
-
-        # - You can add it to a folder in the same space
-        # - You can NOT add it to a folder in another space (including nil)
-        # - You can move it to another space (including nil)
-
-        context 'project in space and not in folder' do
-          before do
-            @space = create(:space)
-            @project.update!(space_id: @space.id)
-          end
-
-          example 'Add the project to a folder in the same space' do
-            folder = create(:project_folder, space: @space)
-
-            do_request(project: { folder_id: folder.id })
-            @project.reload
-
-            expect(@project.folder_id).to eq folder.id
-            expect(json_response[:data][:attributes][:space_id]).to eq @space.id
-          end
-
-          example '[Error] Add the project to a folder in another space' do
-            space2 = create(:space)
-            folder = create(:project_folder, space: space2)
-
-            do_request(project: { folder_id: folder.id })
-
-            expect(response_status).to eq 422
-            expect(json_response[:errors][:space_id]).to include(
-              { error: 'space_id - cannot move project into a folder in a different space' }
-            )
-
-            @project.reload
-            expect(@project.folder_id).to be_nil
-          end
-
-          example '[Error] Add the project to a folder not in a space' do
-            folder = create(:project_folder, space: nil)
-
-            do_request(project: { folder_id: folder.id })
-
-            expect(response_status).to eq 422
-            expect(json_response[:errors][:space_id]).to include(
-              { error: 'space_id - cannot move project into a folder in a different space' }
-            )
-
-            @project.reload
-            expect(@project.folder_id).to be_nil
-          end
-
-          example 'Move the project to another space' do
-            space2 = create(:space)
-
-            do_request(project: { space_id: space2.id })
-            expect(json_response[:data][:attributes][:space_id]).to eq space2.id
-          end
-
-          example 'Move the project to no space' do
-            do_request(project: { space_id: nil })
-            expect(json_response[:data][:attributes][:space_id]).to be_nil
-          end
-        end
-
-        # **If a project IS in a folder which is in a space:**
-
-        # - It should NOT be possible to move the project to another space (including nil) (unless folder is moved)
-        # - It should be possible to remove the project from the folder.
-        #   - In this case, it keeps the space after going out of the folder
-
-        context 'project in folder in space' do
-          before do
-            @space = create(:space)
-            folder = create(:project_folder, space: @space, projects: [@project])
-            @project.update!(space_id: @space.id, folder_id: folder.id)
-          end
-
-          example '[Error] Move the project to another space' do
-            space2 = create(:space)
-            do_request(project: { space_id: space2.id })
-
-            expect(response_status).to eq 422
-            expect(json_response[:errors][:space_id]).to include(
-              { error: 'space_id must match the space of the folder' }
-            )
-
-            @project.reload
-            expect(@project.space_id).to eq @space.id
-          end
-
-          example '[Error] Move the project to a folder in another space' do
-            space2 = create(:space)
-            folder2 = create(:project_folder, space: space2)
-
-            do_request(project: { folder_id: folder2.id })
-
-            expect(response_status).to eq 422
-            expect(json_response[:errors][:space_id]).to include(
-              { error: 'space_id - cannot be changed when project was in a folder with a space' }
-            )
-          end
-
-          example '[Error] Move the project to no space' do
-            do_request(project: { space_id: nil })
-
-            expect(response_status).to eq 422
-            expect(json_response[:errors][:space_id]).to include(
-              { error: 'space_id must match the space of the folder' }
-            )
-
-            @project.reload
-            expect(@project.space_id).to eq @space.id
-          end
-
-          example 'Remove the project from the folder' do
-            do_request(project: { folder_id: nil })
-            @project.reload
-
-            expect(@project.folder_id).to be_nil
-            expect(json_response[:data][:attributes][:space_id]).to eq @space.id
+              expect(@project.folder_id).to be_nil
+              expect(json_response[:data][:attributes][:space_id]).to eq @space.id
+            end
           end
         end
 
