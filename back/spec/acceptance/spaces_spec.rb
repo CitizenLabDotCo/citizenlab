@@ -171,7 +171,7 @@ resource 'Spaces' do
         expect(status).to eq(200)
         nodes = response_data[:attributes][:nodes]
         expect(nodes.length).to eq(2)
-        expect(nodes.select { |n| n[:type] == 'project' }.length).to eq(1)
+        expect(nodes.count { |n| n[:type] == 'project' }).to eq(1)
         folders = nodes.select { |n| n[:type] == 'folder' }
         expect(folders.length).to eq(1)
         expect(folders[0][:children].length).to eq(1)

@@ -63,7 +63,7 @@ class TreeViewService
   end
 
   def filter_children_by_space(children)
-    return children unless @space_id.present?
+    return children if @space_id.blank?
 
     children.select do |child|
       child.publication.is_a?(Project) && child.publication.space_id == @space_id
