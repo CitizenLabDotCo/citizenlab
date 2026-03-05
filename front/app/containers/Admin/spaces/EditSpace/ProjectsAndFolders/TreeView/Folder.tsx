@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 
 import { Box, IconButton, colors } from '@citizenlab/cl2-component-library';
 
+import { FolderNode } from 'api/spaces/types';
+
 import Link from './_shared/Link';
 import RemoveFromSpaceButton from './_shared/RemoveFromSpaceButton';
 import Row from './_shared/Row';
 import Project from './Project';
-import { FolderNode } from './types';
 
 interface Props {
   node: FolderNode;
