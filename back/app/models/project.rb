@@ -239,15 +239,11 @@ class Project < ApplicationRecord
   end
 
   def folder_id=(id)
-    space_id = self.space_id
-
     parent_id = AdminPublication.find_by(publication_type: 'ProjectFolders::Folder', publication_id: id)&.id
     raise ActiveRecord::RecordNotFound if id.present? && parent_id.nil?
     return unless folder&.admin_publication&.id != parent_id
 
     folder = AdminPublication.find_by(id: parent_id)&.publication
-    folder_space_id = folder&.space_id
-
     self.space_id = folder.space_id if folder&.space_id.present?
 
     build_admin_publication unless admin_publication
@@ -326,13 +322,13 @@ class Project < ApplicationRecord
 
   def cannot_move_from_space_to_folder_in_different_space
     return unless persisted? && admin_publication&.parent_id_changed?
-    
+
     new_parent_id = admin_publication.parent_id
     return if new_parent_id.blank? # Removing from folder is always allowed
-    
+
     new_folder = AdminPublication.find_by(id: new_parent_id)&.publication
     return unless new_folder.is_a?(ProjectFolders::Folder)
-    
+
     # Calculate the previous space
     previous_parent_id = admin_publication.parent_id_was
     if previous_parent_id.present?
@@ -343,11 +339,11 @@ class Project < ApplicationRecord
       # Project was NOT in a folder - check its direct space_id
       previous_space_id = space_id_was
     end
-    
+
     # Only allow if project had neither a folder nor a space
     # (i.e., allow: project with no folder and no space → any folder)
     return if previous_parent_id.blank? && previous_space_id.blank?
-    
+
     # Error if moving to a folder with a different space
     if previous_space_id != new_folder.space_id
       errors.add(:space_id, 'space_id - cannot move project into a folder in a different space')
