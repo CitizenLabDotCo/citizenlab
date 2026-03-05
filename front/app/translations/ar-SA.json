@@ -69,6 +69,8 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} المستخدمين",
   "app.components.AvatarBubbles.participant": "مشارك",
   "app.components.AvatarBubbles.participants1": "مشاركون",
+  "app.components.CityLogoSection.logoLinkAriaLabelExternal": "قم بزيارة موقع {orgName} الإلكتروني (يفتح في علامة تبويب جديدة)",
+  "app.components.CityLogoSection.logoLinkAriaLabelInternal": "{orgName} الصفحة الرئيسية",
   "app.components.Comments.cancel": "إلغاء",
   "app.components.Comments.commentingDisabledInCurrentPhase": "التعليق غير ممكن في المرحلة الحالية.",
   "app.components.Comments.commentingDisabledInactiveProject": "التعليق غير ممكن لأن هذا المشروع غير نشط حالياً. ",
