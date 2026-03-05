@@ -483,7 +483,7 @@ resource 'Projects' do
 
               expect(response_status).to eq 422
               expect(json_response[:errors][:space_id]).to include(
-                { error: 'space_id must match the space of the folder' }
+                { error: 'project space must match the space of the folder' }
               )
 
               @project.reload
@@ -499,8 +499,8 @@ resource 'Projects' do
               puts json_response.inspect
 
               expect(response_status).to eq 422
-              expect(json_response[:errors][:space_id]).to include(
-                { error: 'space_id - cannot move project into a folder in a different space' }
+              expect(json_response[:errors][:folder_id]).to include(
+                { error: 'cannot move project to a folder in a different space' }
               )
 
               @project.reload
@@ -539,8 +539,8 @@ resource 'Projects' do
               puts json_response.inspect
 
               expect(response_status).to eq 422
-              expect(json_response[:errors][:space_id]).to include(
-                { error: 'space_id - cannot move project into a folder in a different space' }
+              expect(json_response[:errors][:folder_id]).to include(
+                { error: 'cannot move project to a folder in a different space' }
               )
 
               @project.reload
@@ -556,7 +556,7 @@ resource 'Projects' do
 
               expect(response_status).to eq 422
               expect(json_response[:errors][:space_id]).to include(
-                { error: 'space_id - cannot move project into a folder in a different space' }
+                { error: 'project space must match the space of the folder' }
               )
 
               @project.reload
@@ -597,7 +597,7 @@ resource 'Projects' do
 
               expect(response_status).to eq 422
               expect(json_response[:errors][:space_id]).to include(
-                { error: 'space_id must match the space of the folder' }
+                { error: 'project space must match the space of the folder' }
               )
 
               @project.reload
@@ -611,8 +611,8 @@ resource 'Projects' do
               do_request(project: { folder_id: folder2.id })
 
               expect(response_status).to eq 422
-              expect(json_response[:errors][:space_id]).to include(
-                { error: 'space_id cannot be changed when project is in a folder in a space' }
+              expect(json_response[:errors][:folder_id]).to include(
+                { error: 'cannot move project to a folder in a different space' }
               )
             end
 
@@ -623,7 +623,7 @@ resource 'Projects' do
 
               expect(response_status).to eq 422
               expect(json_response[:errors][:space_id]).to include(
-                { error: 'space_id must match the space of the folder' }
+                { error: 'project space must match the space of the folder' }
               )
 
               @project.reload

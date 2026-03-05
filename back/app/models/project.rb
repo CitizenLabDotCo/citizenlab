@@ -115,8 +115,8 @@ class Project < ApplicationRecord
   validates :live_auto_input_topics_enabled, inclusion: { in: [true, false] }
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # TODO: This should always be validated!
   validate :space_must_match_folder_space
-  validate :space_cannot_change_if_in_folder_in_space
-  validate :cannot_move_from_space_to_folder_in_different_space
+  # validate :space_cannot_change_if_in_folder_in_space
+  validate :cannot_move_to_folder_in_different_space
 
   scope :not_hidden, -> { where(hidden: false) }
 
@@ -298,55 +298,41 @@ class Project < ApplicationRecord
     errors.add(:admin_publication_id, :blank, message: "Admin publication can't be blank")
   end
 
+  # VALIDATION 1: State invariant - space must always match folder's space
   def space_must_match_folder_space
     folder = admin_publication&.parent&.publication
-    return unless folder.is_a?(ProjectFolders::Folder) && folder&.space&.id != space_id
-
-    errors.add(:space_id, 'space_id must match the space of the folder')
+    return unless folder.is_a?(ProjectFolders::Folder)
+    return if folder.space_id == space_id
+    
+    errors.add(:space_id, 'project space must match the space of the folder')
   end
 
-  def space_cannot_change_if_in_folder_in_space
-    return unless persisted? && space_id_changed? && space_id_was.present?
-
-    # Check if the project WAS in a folder before this change
-    previous_parent_id = admin_publication&.parent_id_was || admin_publication&.parent_id
-    return if previous_parent_id.blank?
-
-    # Find the previous folder using the parent_id_was.
-    # Reject new space_id if the previous folder has a space and that space matches the old space_id
-    previous_folder = AdminPublication.find_by(id: previous_parent_id)&.publication
-    return unless previous_folder.is_a?(ProjectFolders::Folder) && previous_folder.space_id == space_id_was
-
-    errors.add(:space_id, 'space_id cannot be changed when project is in a folder in a space')
-  end
-
-  def cannot_move_from_space_to_folder_in_different_space
+  # VALIDATION 2: Folder transition - prevent moves to incompatible folders
+  def cannot_move_to_folder_in_different_space
     return unless persisted? && admin_publication&.parent_id_changed?
-
+    
     new_parent_id = admin_publication.parent_id
-    return if new_parent_id.blank? # Removing from folder is always allowed
-
+    return if new_parent_id.blank? # Removing from folder is always OK
+    
     new_folder = AdminPublication.find_by(id: new_parent_id)&.publication
     return unless new_folder.is_a?(ProjectFolders::Folder)
-
-    # Calculate the previous space
+    
+    # Determine what space the project had before this move
     previous_parent_id = admin_publication.parent_id_was
-    if previous_parent_id.present?
-      # Project was in a folder - get that folder's space
-      previous_folder = AdminPublication.find_by(id: previous_parent_id)&.publication
-      previous_space_id = previous_folder.is_a?(ProjectFolders::Folder) ? previous_folder.space_id : nil
+    previous_space_id = if previous_parent_id.present?
+      # Was in folder - get that folder's space
+      AdminPublication.find_by(id: previous_parent_id)&.publication&.space_id
     else
-      # Project was NOT in a folder - check its direct space_id
-      previous_space_id = space_id_was
+      # Was not in folder - use direct space_id
+      space_id_was
     end
-
-    # Only allow if project had neither a folder nor a space
-    # (i.e., allow: project with no folder and no space → any folder)
+    
+    # Allow if project had no space and no folder (nil + nil)
     return if previous_parent_id.blank? && previous_space_id.blank?
-
-    # Error if moving to a folder with a different space
+    
+    # Block if moving to folder in different space
     if previous_space_id != new_folder.space_id
-      errors.add(:space_id, 'space_id - cannot move project into a folder in a different space')
+      errors.add(:folder_id, 'cannot move project to a folder in a different space')
     end
   end
 
