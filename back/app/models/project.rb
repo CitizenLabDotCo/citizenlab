@@ -298,16 +298,17 @@ class Project < ApplicationRecord
     errors.add(:admin_publication_id, :blank, message: "Admin publication can't be blank")
   end
 
-  # VALIDATION 1: State invariant - space must always match folder's space
   def space_must_match_folder_space
     folder = admin_publication&.parent&.publication
     return unless folder.is_a?(ProjectFolders::Folder)
     return if folder.space_id == space_id
     
-    errors.add(:space_id, 'project space must match the space of the folder')
+    # Skip during folder transitions on existing projects - the transition validation handles those
+    return if persisted? && admin_publication&.parent_id_changed?
+    
+    errors.add(:space_id, 'project space must match the space of its folder')
   end
-
-  # VALIDATION 2: Folder transition - prevent moves to incompatible folders
+  
   def cannot_move_to_folder_in_different_space
     return unless persisted? && admin_publication&.parent_id_changed?
     
@@ -332,7 +333,7 @@ class Project < ApplicationRecord
     
     # Block if moving to folder in different space
     if previous_space_id != new_folder.space_id
-      errors.add(:folder_id, 'cannot move project to a folder in a different space')
+      errors.add(:folder_id, 'project space must match target folder space')
     end
   end
 
