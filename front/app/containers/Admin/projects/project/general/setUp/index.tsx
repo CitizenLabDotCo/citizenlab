@@ -70,6 +70,7 @@ import ProjectCardImageTooltip from '../components/ProjectCardImageTooltip';
 import ProjectFolderSelect from '../components/ProjectFolderSelect';
 import ProjectHeaderImageTooltip from '../components/ProjectHeaderImageTooltip';
 import ProjectNameInput from '../components/ProjectNameInput';
+import SpaceSelectSection from '../components/SpaceSelectSection';
 import {
   StyledForm,
   StyledInputMultiloc,
@@ -533,6 +534,15 @@ const AdminProjectsProjectGeneral = () => {
       setSubmitState(submitState);
     };
 
+  const handleSpaceSelectChange = (spaceId: string | null) => {
+    setProjectAttributesDiff((projectAttributesDiff) => {
+      return {
+        ...projectAttributesDiff,
+        space_id: spaceId,
+      };
+    });
+  };
+
   const projectAttrs = {
     ...(!isNilOrError(project) ? project.data.attributes : {}),
     ...projectAttributesDiff,
@@ -684,6 +694,11 @@ const AdminProjectsProjectGeneral = () => {
               />
             </Highlighter>
           )}
+
+          <SpaceSelectSection
+            spaceId={projectAttrs.space_id ?? null}
+            onChange={handleSpaceSelectChange}
+          />
 
           <SectionField className="intercom-product-tour-project-header-image-field">
             <SubSectionTitle>

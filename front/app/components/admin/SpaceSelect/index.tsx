@@ -11,11 +11,13 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  spaceId?: string;
+  spaceId: string | null;
   spaces: SpaceData[];
   disabled?: boolean;
-  onChange: (spaceId: string) => void;
+  onChange: (spaceId: string | null) => void;
 }
+
+const NO_SPACE_ID = '';
 
 const SpaceSelect = ({
   spaceId,
@@ -26,9 +28,8 @@ const SpaceSelect = ({
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  const noSpaceId = '';
   const noSpaceLabel = formatMessage(messages.noSpaceLabel);
-  const noSpaceOption = { value: noSpaceId, label: noSpaceLabel };
+  const noSpaceOption = { value: NO_SPACE_ID, label: noSpaceLabel };
 
   const spaceOptions = [
     noSpaceOption,
@@ -40,9 +41,12 @@ const SpaceSelect = ({
 
   return (
     <Select
-      value={spaceId ?? noSpaceId}
+      value={spaceId ?? NO_SPACE_ID}
       options={spaceOptions}
-      onChange={(option) => onChange(option.value)}
+      onChange={(option) => {
+        const { value } = option;
+        onChange(value === '' ? null : value);
+      }}
       disabled={disabled}
     />
   );
