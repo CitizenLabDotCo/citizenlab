@@ -22,7 +22,7 @@ export default defineMessages({
     defaultMessage: 'Unlock topic clustering',
   },
   upsellTooltipMessage: {
-    id: 'app.containers.Admin.projects.project.insights.shared.upsellTooltipMessage',
+    id: 'app.containers.Admin.projects.project.insights.shared.upsellTooltipMessage1',
     defaultMessage:
       'This feature is not included in your current plan. Talk to your Government Success Manager or admin to unlock it.',
   },

@@ -6,11 +6,11 @@ export default defineMessages({
     defaultMessage: 'Vote Results',
   },
   online: {
-    id: 'app.containers.Admin.projects.insights.voting.online',
+    id: 'app.containers.Admin.projects.insights.voting.online1',
     defaultMessage: 'Online',
   },
   offline: {
-    id: 'app.containers.Admin.projects.insights.voting.offline',
+    id: 'app.containers.Admin.projects.insights.voting.offline1',
     defaultMessage: 'Offline',
   },
   clusterBy1: {

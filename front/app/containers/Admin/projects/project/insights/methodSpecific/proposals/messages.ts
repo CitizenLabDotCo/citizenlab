@@ -6,7 +6,7 @@ export default defineMessages({
     defaultMessage: 'Most liked',
   },
   mostLikedDescription: {
-    id: 'app.containers.Admin.projects.project.insights.proposals.mostLikedDescription',
+    id: 'app.containers.Admin.projects.project.insights.proposals.mostLikedDescription1',
     defaultMessage: 'These proposals got the most traction',
   },
 });
