@@ -231,13 +231,13 @@ RSpec.describe Insights::ProposalsPhaseInsightsService do
 
       expect(metrics).to eq({
         ideas_posted: 2,
-        ideas_posted_7_day_percent_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) => 0% change
+        ideas_posted_7_day_percent_change: 100.0, # from 1 posted by 7-days ago, to 2 posted now = 100% change
         reached_threshold: 1,
-        reached_threshold_7_day_percent_change: -100.0, # from 1 (in week before last) to 0 (in last 7 days) => -100% change
+        reached_threshold_7_day_percent_change: 0.0, # from 1 by 7-days ago, to 1 now = 0% change
         comments_posted: 2,
-        comments_posted_7_day_percent_change: 0.0, # from 1 (in week before last) to 1 (in last 7 days) => 0% change
+        comments_posted_7_day_percent_change: 100.0, # from 1 posted by 7-days ago, to 2 posted now = 100% change
         reactions: 2,
-        reactions_7_day_percent_change: 0.0 # from 1 (in week before last) to 1 (in last 7 days) => 0% change
+        reactions_7_day_percent_change: 100.0 # from 1 reaction by 7-days ago, to 2 reactions now = 100% change
       })
     end
   end
