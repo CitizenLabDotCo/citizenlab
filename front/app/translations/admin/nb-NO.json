@@ -1469,7 +1469,6 @@
   "app.containers.Admin.projects.project.insights.voters": "Velgerne",
   "app.containers.Admin.projects.project.insights.votes": "Stemmer",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Stemmer per person",
-  "app.containers.Admin.projects.project.insights.vsLast7Days": "vs siste 7 dager",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "Sammendrag av AI",
   "app.containers.Admin.projects.project.insights.word.answer": "Svar",
   "app.containers.Admin.projects.project.insights.word.averageRank": "Gjennomsnittlig rang",

@@ -1469,7 +1469,6 @@
   "app.containers.Admin.projects.project.insights.voters": "Rinkėjai",
   "app.containers.Admin.projects.project.insights.votes": "Balsai",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Balsai vienam asmeniui",
-  "app.containers.Admin.projects.project.insights.vsLast7Days": "palyginti su paskutinėmis 7 dienomis",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "AI santrauka",
   "app.containers.Admin.projects.project.insights.word.answer": "Atsakymas",
   "app.containers.Admin.projects.project.insights.word.averageRank": "Vidutinis rangas",

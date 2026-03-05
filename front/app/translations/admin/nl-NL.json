@@ -1469,7 +1469,6 @@
   "app.containers.Admin.projects.project.insights.voters": "Stemmers",
   "app.containers.Admin.projects.project.insights.votes": "Stemmen",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Stemmen per persoon",
-  "app.containers.Admin.projects.project.insights.vsLast7Days": "vs laatste 7 dagen",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "AI Samenvatting",
   "app.containers.Admin.projects.project.insights.word.answer": "Antwoord",
   "app.containers.Admin.projects.project.insights.word.averageRank": "Gemiddelde rang",

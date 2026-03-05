@@ -1469,7 +1469,6 @@
   "app.containers.Admin.projects.project.insights.voters": "Äänestäjät",
   "app.containers.Admin.projects.project.insights.votes": "Äänet",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Ääniä henkilöä kohden",
-  "app.containers.Admin.projects.project.insights.vsLast7Days": "verrattuna viimeisiin 7 päivään",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "Tekoälyn yhteenveto",
   "app.containers.Admin.projects.project.insights.word.answer": "Vastaus",
   "app.containers.Admin.projects.project.insights.word.averageRank": "Keskimääräinen sijoitus",

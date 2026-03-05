@@ -1469,7 +1469,6 @@
   "app.containers.Admin.projects.project.insights.voters": "Eleitores",
   "app.containers.Admin.projects.project.insights.votes": "Votos",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Votos por pessoa",
-  "app.containers.Admin.projects.project.insights.vsLast7Days": "em relação aos últimos 7 dias",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "Resumo da IA",
   "app.containers.Admin.projects.project.insights.word.answer": "Resposta",
   "app.containers.Admin.projects.project.insights.word.averageRank": "Classificação média",

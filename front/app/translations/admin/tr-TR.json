@@ -1469,7 +1469,6 @@
   "app.containers.Admin.projects.project.insights.voters": "Seçmenler",
   "app.containers.Admin.projects.project.insights.votes": "Oylar",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Kişi başına oy",
-  "app.containers.Admin.projects.project.insights.vsLast7Days": "vs son 7 gün",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "Yapay Zeka Özeti",
   "app.containers.Admin.projects.project.insights.word.answer": "Cevap",
   "app.containers.Admin.projects.project.insights.word.averageRank": "Ortalama Sıralama",

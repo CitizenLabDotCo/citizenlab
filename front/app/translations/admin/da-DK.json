@@ -1469,7 +1469,6 @@
   "app.containers.Admin.projects.project.insights.voters": "Vælgere",
   "app.containers.Admin.projects.project.insights.votes": "Afstemninger",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Stemmer pr. person",
-  "app.containers.Admin.projects.project.insights.vsLast7Days": "i forhold til de sidste 7 dage",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "Sammenfatning af AI",
   "app.containers.Admin.projects.project.insights.word.answer": "Svar",
   "app.containers.Admin.projects.project.insights.word.averageRank": "Gennemsnitlig rangering",

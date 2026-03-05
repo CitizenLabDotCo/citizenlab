@@ -1469,7 +1469,6 @@
   "app.containers.Admin.projects.project.insights.voters": "Votantes",
   "app.containers.Admin.projects.project.insights.votes": "Votos",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Votos por persona",
-  "app.containers.Admin.projects.project.insights.vsLast7Days": "vs últimos 7 días",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "Resumen de la IA",
   "app.containers.Admin.projects.project.insights.word.answer": "Respuesta",
   "app.containers.Admin.projects.project.insights.word.averageRank": "Rango promedio",

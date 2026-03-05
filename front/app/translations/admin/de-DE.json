@@ -1469,7 +1469,6 @@
   "app.containers.Admin.projects.project.insights.voters": "Abstimmende",
   "app.containers.Admin.projects.project.insights.votes": "Stimmen",
   "app.containers.Admin.projects.project.insights.votesPerPerson": "Stimmen pro Person",
-  "app.containers.Admin.projects.project.insights.vsLast7Days": "im Vergleich zu den letzten 7 Tagen",
   "app.containers.Admin.projects.project.insights.word.aiSummary": "KI-Zusammenfassung",
   "app.containers.Admin.projects.project.insights.word.answer": "Antwort",
   "app.containers.Admin.projects.project.insights.word.averageRank": "Durchschnittliches Ranking",
