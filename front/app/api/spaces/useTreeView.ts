@@ -15,7 +15,7 @@ const fetchTreeView = (id?: string) => {
 
 const useTreeView = (id?: string) => {
   return useQuery<TreeView, CLErrors, TreeView, SpacesKeys>({
-    queryKey: spacesKeys.item({ id }),
+    queryKey: spacesKeys.list({ id: id ?? '', type: 'tree_view' }),
     queryFn: () => fetchTreeView(id),
     enabled: !!id,
   });
