@@ -19,6 +19,7 @@ module EmailCampaigns
       end
 
       if campaign_context
+        # binding.pry
         @campaigns = @campaigns.where(context: campaign_context)
         supported_ids = @campaigns.filter { |campaign| campaign.class.supports_context?(campaign_context) }.map(&:id)
         @campaigns = @campaigns.where(id: supported_ids)
