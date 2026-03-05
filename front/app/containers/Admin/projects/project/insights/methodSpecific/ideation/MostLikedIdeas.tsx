@@ -75,7 +75,7 @@ const MostLikedIdeas = ({ phaseId }: MethodSpecificInsightProps) => {
   }
 
   return (
-    <WordExportableInsight exportId="most-liked-ideas">
+    <WordExportableInsight exportId="most-liked-ideas" skipExport>
       <Box mt="24px" p="8px" background="rgba(4, 77, 108, 0.05)">
         <Title variant="h3" m="0" mb="8px">
           {formatMessage(messages.mostLiked)}
