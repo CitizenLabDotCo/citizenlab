@@ -2462,7 +2462,7 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Antal gilla per deltagare",
   "app.containers.AdminPage.ProjectEdit.limited": "Begränsade",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "Listvyn är alltid tillgänglig och kan inte avaktiveras.",
-  "app.containers.AdminPage.ProjectEdit.listViewDescription": "Traditionell trådad diskussion. Bäst för: mindre diskussioner, när du vill att engagemangsmätningar ska öka synligheten.",
+  "app.containers.AdminPage.ProjectEdit.listViewDescription1": "Ingångarna visas som ett rullbart flöde, sorterat efter trender, reaktioner, kommentarer, datum eller aktivitet. Bäst för: mindre konsultationer.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Lista vy",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Läs in fler mallar",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Gör standard",
