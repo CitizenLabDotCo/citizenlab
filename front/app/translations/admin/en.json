@@ -3409,7 +3409,7 @@
   "app.containers.ContentBuilder.homepage.useSameHeight": "Use same height as non-registered banner",
   "app.containers.ContentBuilder.homepage.useSameHeightDescription": "When enabled, the banner for registered users will use the same heights as the banner for non-registered users.",
   "app.containers.EditSpace.add": "Add",
-  "app.containers.EditSpace.addProjectsAndFolders": "Add projects and folders to this space",
+  "app.containers.EditSpace.noProjectsAndFolders": "No projects and folders added to this space.",
   "app.containers.EditSpace.projectsAndFolders": "Projects and folders",
   "app.containers.EditSpace.projectsAndFoldersAdded": "Projects and folders added to this space",
   "app.containers.EditSpace.settings": "Settings",
