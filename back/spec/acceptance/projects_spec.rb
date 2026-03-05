@@ -479,6 +479,8 @@ resource 'Projects' do
               space = create(:space)
               do_request(project: { space_id: space.id })
 
+              puts json_response.inspect
+
               expect(response_status).to eq 422
               expect(json_response[:errors][:space_id]).to include(
                 { error: 'space_id must match the space of the folder' }
@@ -493,6 +495,8 @@ resource 'Projects' do
               folder2 = create(:project_folder, space: space)
 
               do_request(project: { folder_id: folder2.id })
+
+              puts json_response.inspect
 
               expect(response_status).to eq 422
               expect(json_response[:errors][:space_id]).to include(
@@ -532,7 +536,7 @@ resource 'Projects' do
 
               do_request(project: { folder_id: folder.id })
 
-              # puts json_response.inspect
+              puts json_response.inspect
 
               expect(response_status).to eq 422
               expect(json_response[:errors][:space_id]).to include(
@@ -548,7 +552,7 @@ resource 'Projects' do
 
               do_request(project: { folder_id: folder.id })
 
-              # puts json_response.inspect
+              puts json_response.inspect
 
               expect(response_status).to eq 422
               expect(json_response[:errors][:space_id]).to include(
@@ -589,6 +593,8 @@ resource 'Projects' do
               space2 = create(:space)
               do_request(project: { space_id: space2.id })
 
+              puts json_response.inspect
+
               expect(response_status).to eq 422
               expect(json_response[:errors][:space_id]).to include(
                 { error: 'space_id must match the space of the folder' }
@@ -612,6 +618,8 @@ resource 'Projects' do
 
             example '[Error] Move the project to no space' do
               do_request(project: { space_id: nil })
+
+              puts json_response.inspect
 
               expect(response_status).to eq 422
               expect(json_response[:errors][:space_id]).to include(
