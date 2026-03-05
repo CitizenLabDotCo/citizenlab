@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Basemap from '@arcgis/core/Basemap';
 import esriConfig from '@arcgis/core/config';
 import Collection from '@arcgis/core/core/Collection';
+import * as projection from '@arcgis/core/geometry/projection.js';
 import Graphic from '@arcgis/core/Graphic';
 import { setLocale as setEsriLocale } from '@arcgis/core/intl/locale.js';
 import Layer from '@arcgis/core/layers/Layer';
@@ -138,6 +139,10 @@ const EsriMap = ({
 
     setMapView(mapView);
     setUpdateMapViewConfig(true);
+
+    // Load the projection engine early so synchronous projection.project() calls work.
+    // This is required for WebMaps that use non-Web Mercator spatial references.
+    projection.load();
 
     return () => {
       mapView.destroy();
