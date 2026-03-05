@@ -2462,7 +2462,6 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Broj lajkova po sudioniku",
   "app.containers.AdminPage.ProjectEdit.limited": "Ograničeno",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "Prikaz popisa je uvijek dostupan i ne može se onemogućiti.",
-  "app.containers.AdminPage.ProjectEdit.listViewDescription": "Tradicionalna rasprava u nitima. Najbolje za: manje rasprave, kada želite da metrike angažmana povećaju vidljivost.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Prikaz popisa",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Učitajte još predložaka",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Postavi kao zadano",

@@ -2462,7 +2462,6 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Number of likes per participant",
   "app.containers.AdminPage.ProjectEdit.limited": "محدود",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "عرض القائمة متاح دائمًا ولا يمكن تعطيله.",
-  "app.containers.AdminPage.ProjectEdit.listViewDescription": "المناقشات التقليدية المتسلسلة. الأنسب لـ: المناقشات الصغيرة، عندما تريد أن تزيد مقاييس التفاعل من مستوى الظهور.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "عرض القائمة",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "تحميل المزيد من القوالب",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "اجعله الوضع الافتراضي",

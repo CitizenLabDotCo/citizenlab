@@ -2462,7 +2462,6 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Tykkäyksiä per osallistuja",
   "app.containers.AdminPage.ProjectEdit.limited": "Rajoitettu",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "Listanäkymä on aina käytettävissä, eikä sitä voi poistaa käytöstä.",
-  "app.containers.AdminPage.ProjectEdit.listViewDescription": "Perinteinen ketjutettu keskustelu. Sopii parhaiten pienempiin keskusteluihin, kun haluat sitoutumismittareiden parantavan näkyvyyttä.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Listanäkymä",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Lataa lisää malleja",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Aseta oletukseksi",
