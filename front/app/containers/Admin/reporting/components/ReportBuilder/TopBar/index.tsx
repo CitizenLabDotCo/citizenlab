@@ -7,12 +7,11 @@ import {
   TooltipContentWrapper,
   Tooltip,
   Dropdown,
-  fontSizes,
+  DropdownListItem,
   Badge,
 } from '@citizenlab/cl2-component-library';
 import { useEditor, SerializedNodes } from '@craftjs/core';
 import { RouteType } from 'routes';
-import styled from 'styled-components';
 import { SupportedLocale } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -47,13 +46,6 @@ import messages from './messages';
 import QuitModal from './QuitModal';
 import ReportTitle from './ReportTitle';
 import tracks from './tracks';
-
-const DownloadButton = styled(ButtonWithLink)`
-  button {
-    display: flex !important;
-    justify-content: flex-start !important;
-  }
-`;
 
 type ContentBuilderTopBarProps = {
   hasPendingState: boolean;
@@ -280,7 +272,7 @@ const ContentBuilderTopBar = ({
   ]);
 
   return (
-    <Container id="e2e-report-builder-topbar">
+    <Container id="e2e-report-builder-topbar" zIndex="100000">
       <QuitModal
         open={showQuitModal}
         onCloseModal={closeModal}
@@ -335,43 +327,32 @@ const ContentBuilderTopBar = ({
             </div>
           </Tooltip>
           <Dropdown
-            width="220px"
+            width="max-content"
             top="35px"
-            right="0"
+            right="12px"
             zIndex="1000002"
             opened={downloadMenuOpened}
             onClickOutside={toggleDownloadMenu(false)}
             content={
-              <>
-                <DownloadButton
+              <Box style={{ whiteSpace: 'nowrap' }}>
+                <DropdownListItem
                   onClick={handleDownloadPdf}
-                  buttonStyle="text"
-                  padding="0"
-                  fontSize={`${fontSizes.s}px`}
                   disabled={disablePrint}
                 >
                   {formatMessage(messages.downloadAsPdf)}
-                </DownloadButton>
-                <DownloadButton
+                </DropdownListItem>
+                <DropdownListItem
                   onClick={handleDownloadWord}
-                  buttonStyle="text"
-                  padding="0"
-                  fontSize={`${fontSizes.s}px`}
                   disabled={disableWordExport}
                 >
-                  <Box
-                    display="inline-flex"
-                    alignItems="center"
-                    gap="6px"
-                    style={{ whiteSpace: 'nowrap' }}
-                  >
+                  <Box display="inline-flex" alignItems="center" gap="6px">
                     {formatMessage(messages.downloadAsWord)}
                     <Badge color={colors.coolGrey600} className="inverse">
                       {formatMessage(projectFilesMessages.beta)}
                     </Badge>
                   </Box>
-                </DownloadButton>
-              </>
+                </DropdownListItem>
+              </Box>
             }
           />
         </Box>
