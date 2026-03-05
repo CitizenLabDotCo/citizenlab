@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 
 import { Box, Button } from '@citizenlab/cl2-component-library';
+import { useParams } from 'react-router-dom';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
 import { isFolder } from 'api/admin_publications/utils';
+import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
+import useUpdateProject from 'api/projects/useUpdateProject';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -16,22 +19,24 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 const ProjectFolderSelect = () => {
+  const { spaceId } = useParams();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedPublications, setSelectedPublications] = useState<string[]>(
     []
   );
-
   const { data: adminPublications } = useAdminPublications({
     rootLevelOnly: true,
   });
+  const { mutateAsync: updateProject } = useUpdateProject();
+  const { mutateAsync: updateFolder } = useUpdateProjectFolder();
 
   const flatAdminPublications = adminPublications?.pages.flatMap(
     (page) => page.data
   );
 
-  if (!flatAdminPublications) return null;
+  if (!flatAdminPublications || !spaceId) return null;
 
   const options = flatAdminPublications.map((publication) => ({
     value: publication.id,
@@ -44,6 +49,7 @@ const ProjectFolderSelect = () => {
 
   const handleAssign = async () => {
     setIsLoading(true);
+    const promises: Promise<any>[] = [];
 
     for (const publicationId of selectedPublications) {
       const publication = flatAdminPublications.find(
@@ -53,10 +59,18 @@ const ProjectFolderSelect = () => {
       if (!publication) return;
 
       if (isFolder(publication)) {
-        // TODO
+        const projectFolderId = publication.relationships.publication.data.id;
+        promises.push(updateFolder({ projectFolderId, space_id: spaceId }));
       } else {
-        // TODO
+        const projectId = publication.relationships.publication.data.id;
+        promises.push(updateProject({ projectId, space_id: spaceId }));
       }
+    }
+
+    try {
+      await Promise.all(promises);
+    } finally {
+      setIsLoading(false);
     }
   };
 
