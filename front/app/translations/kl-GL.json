@@ -69,6 +69,8 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} users",
   "app.components.AvatarBubbles.participant": "participant",
   "app.components.AvatarBubbles.participants1": "participants",
+  "app.components.CityLogoSection.logoLinkAriaLabelExternal": "Visit {orgName} website (opens in new tab)",
+  "app.components.CityLogoSection.logoLinkAriaLabelInternal": "{orgName} Home",
   "app.components.Comments.cancel": "Atorunnaarsiguk",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Immikkoortumi massakkut atuuttumi oqaasertaliineq ajornarallarpoq.",
   "app.components.Comments.commentingDisabledInactiveProject": "Suliap ammannginnera pissutaalluni oqaasertaliisoqarsinnanngilaq.",
