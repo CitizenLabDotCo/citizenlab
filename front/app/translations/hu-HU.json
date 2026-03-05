@@ -69,6 +69,8 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} felhasználók",
   "app.components.AvatarBubbles.participant": "résztvevő",
   "app.components.AvatarBubbles.participants1": "résztvevők",
+  "app.components.CityLogoSection.logoLinkAriaLabelExternal": "Látogassa meg a {orgName} weboldalt (új lapon nyílik meg)",
+  "app.components.CityLogoSection.logoLinkAriaLabelInternal": "{orgName} Főoldal",
   "app.components.Comments.cancel": "Mégsem",
   "app.components.Comments.commentingDisabledInCurrentPhase": "Hozzászólás a jelenlegi szakaszban nem lehetséges.",
   "app.components.Comments.commentingDisabledInactiveProject": "Hozzászólás nem lehetséges, mert ez a projekt jelenleg nem aktív.",
