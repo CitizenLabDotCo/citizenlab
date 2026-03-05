@@ -246,6 +246,18 @@ ach:
           title: crwdns6401195:0crwdne6401195:0
         petition:
           title: crwdns6401197:0crwdne6401197:0
+        comment:
+          title: crwdns6447371:0crwdne6447371:0
+        response:
+          title: crwdns6447373:0crwdne6447373:0
+        suggestion:
+          title: crwdns6447375:0crwdne6447375:0
+        topic:
+          title: crwdns6447377:0crwdne6447377:0
+        post:
+          title: crwdns6447379:0crwdne6447379:0
+        story:
+          title: crwdns6447381:0crwdne6447381:0
   custom_field_options:
     gender:
       male: crwdns6401199:0crwdne6401199:0
