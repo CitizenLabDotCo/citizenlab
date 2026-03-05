@@ -17,7 +17,10 @@ interface Props {
   onChange: (spaceId: string | null) => void;
 }
 
-const NO_SPACE_ID = '';
+// This cannot be an empty string
+// because that already has a different meaning
+// inside of the Select component
+const NO_SPACE_ID = '/';
 
 const SpaceSelect = ({
   spaceId,
@@ -39,9 +42,11 @@ const SpaceSelect = ({
     })),
   ];
 
+  const value = spaceId ?? NO_SPACE_ID;
+
   return (
     <Select
-      value={spaceId ?? NO_SPACE_ID}
+      value={value}
       options={spaceOptions}
       onChange={(option) => {
         const { value } = option;
