@@ -25,4 +25,8 @@ export default defineMessages({
     id: 'app.containers.EditSpace.spaceName',
     defaultMessage: 'Space name',
   },
+  noProjectsAndFolders: {
+    id: 'app.containers.EditSpace.noProjectsAndFolders',
+    defaultMessage: 'No projects and folders added to this space.',
+  },
 });

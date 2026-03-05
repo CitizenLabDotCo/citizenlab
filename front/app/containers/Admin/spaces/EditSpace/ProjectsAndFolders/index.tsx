@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Title } from '@citizenlab/cl2-component-library';
+import { Title, Text } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import useTreeView from 'api/spaces/useTreeView';
@@ -18,12 +18,20 @@ const ProjectsAndFolders = () => {
 
   if (!treeView) return null;
 
+  const { nodes } = treeView.data.attributes;
+
   return (
     <>
       <Title variant="h2" color="primary" mt="0px" mb="20px">
         <FormattedMessage {...messages.projectsAndFoldersAdded} />
       </Title>
-      <TreeView nodes={treeView.data.attributes.nodes} />
+      {nodes.length > 0 ? (
+        <TreeView nodes={treeView.data.attributes.nodes} />
+      ) : (
+        <Text>
+          <FormattedMessage {...messages.noProjectsAndFolders} />
+        </Text>
+      )}
       <Title variant="h3" color="primary" mt="60px" mb="20px">
         <FormattedMessage {...messages.addProjectsAndFolders} />
       </Title>
