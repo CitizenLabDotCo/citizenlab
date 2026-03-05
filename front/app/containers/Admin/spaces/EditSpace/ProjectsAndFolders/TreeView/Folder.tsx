@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Box, IconButton, colors } from '@citizenlab/cl2-component-library';
 
+import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 import { FolderNode } from 'api/spaces/types';
 
 import useLocalize from 'hooks/useLocalize';
@@ -18,6 +19,21 @@ interface Props {
 const Folder = ({ node }: Props) => {
   const localize = useLocalize();
   const [expanded, setExpanded] = useState(true);
+  const [isRemoving, setIsRemoving] = useState(false);
+
+  const { mutate: updateFolder } = useUpdateProjectFolder();
+
+  const handleRemoveProject = () => {
+    setIsRemoving(true);
+    updateFolder(
+      { projectFolderId: node.id, space_id: null },
+      {
+        onSuccess: () => {
+          setIsRemoving(false);
+        },
+      }
+    );
+  };
 
   return (
     <Box>
@@ -38,7 +54,10 @@ const Folder = ({ node }: Props) => {
             {localize(node.title_multiloc)}
           </Link>
         </Box>
-        <RemoveFromSpaceButton onClick={() => {}} />
+        <RemoveFromSpaceButton
+          processing={isRemoving}
+          onClick={handleRemoveProject}
+        />
       </Row>
       <Box pl="31px">
         {expanded && (
