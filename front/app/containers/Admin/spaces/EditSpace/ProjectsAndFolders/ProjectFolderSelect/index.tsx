@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box, Button, colors } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 
 import useAdminPublications from 'api/admin_publications/useAdminPublications';
@@ -23,6 +23,7 @@ const ProjectFolderSelect = () => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const [isLoading, setIsLoading] = useState(false);
+  const [doneAssigning, setDoneAssigning] = useState(false);
   const [selectedPublications, setSelectedPublications] = useState<string[]>(
     []
   );
@@ -70,7 +71,9 @@ const ProjectFolderSelect = () => {
     try {
       await Promise.all(promises);
     } finally {
+      setSelectedPublications([]);
       setIsLoading(false);
+      setDoneAssigning(true);
     }
   };
 
@@ -79,9 +82,12 @@ const ProjectFolderSelect = () => {
       <MultipleSelect
         value={selectedPublications}
         options={options}
-        onChange={(selectedOptions) =>
-          setSelectedPublications(selectedOptions.map((option) => option.value))
-        }
+        onChange={(selectedOptions) => {
+          setSelectedPublications(
+            selectedOptions.map((option) => option.value)
+          );
+          setDoneAssigning(false);
+        }}
         label={formatMessage(userMessages.selectPublications)}
         placeholder={formatMessage(userMessages.selectPublicationsPlaceholder)}
       />
@@ -91,6 +97,8 @@ const ProjectFolderSelect = () => {
           disabled={selectedPublications.length === 0}
           processing={isLoading}
           buttonStyle="admin-dark"
+          bgColor={doneAssigning ? colors.success : undefined}
+          icon={doneAssigning ? 'check' : undefined}
         >
           {formatMessage(messages.add)}
         </Button>
