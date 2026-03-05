@@ -211,7 +211,8 @@ const EsriMap = ({
         // On first load, move basemap reference layers underneath our layers
         if (
           !referenceLayersHandled.current &&
-          map.basemap?.referenceLayers?.length > 0
+          map.basemap?.referenceLayers.length &&
+          map.basemap.referenceLayers.length > 0
         ) {
           handleWebMapReferenceLayers(map, map.basemap.referenceLayers);
           referenceLayersHandled.current = true;

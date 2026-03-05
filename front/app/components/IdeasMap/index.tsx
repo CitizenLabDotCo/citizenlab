@@ -91,13 +91,6 @@ const StyledIdeaMapCard = styled(IdeaMapCard)<{ isClickable: boolean }>`
 // Custom styling for Esri map
 const StyledMapContainer = styled(Box)`
   position: relative;
-  calcite-action-bar {
-    display: none;
-  }
-
-  calcite-action {
-    display: none !important;
-  }
 
   .esri-popup__main-container {
     max-width: 300px !important;
