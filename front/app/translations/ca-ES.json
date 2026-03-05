@@ -69,6 +69,8 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} usuaris",
   "app.components.AvatarBubbles.participant": "participant",
   "app.components.AvatarBubbles.participants1": "participants",
+  "app.components.CityLogoSection.logoLinkAriaLabelExternal": "Visita el lloc web de {orgName} (s'obre en una pestanya nova)",
+  "app.components.CityLogoSection.logoLinkAriaLabelInternal": "{orgName} Inici",
   "app.components.Comments.cancel": "Cancel·lar",
   "app.components.Comments.commentingDisabledInCurrentPhase": "No es poden fer comentaris en la fase actual.",
   "app.components.Comments.commentingDisabledInactiveProject": "No es poden fer comentaris perquè actualment aquest projecte no està actiu.",
