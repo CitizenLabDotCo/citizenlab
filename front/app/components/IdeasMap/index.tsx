@@ -319,8 +319,13 @@ const IdeasMap = memo<Props>(
 
     const onMapClick = useCallback(
       (event: any, mapView: MapView) => {
-        // Function to trigger the "Submit an idea" popup
-        const triggerShowInputPopup = () => {
+        const clickedPointProjected = projectPointToWebMercator(event.mapPoint);
+        setClickedMapLocation(esriPointToGeoJson(clickedPointProjected));
+
+        const ideaPostingEnabled =
+          phase?.data.attributes.submission_enabled || isAdmin(authUser);
+
+        const showSubmitPopup = () => {
           if (ideaPostingEnabled) {
             showAddInputPopup({
               event,
@@ -332,125 +337,92 @@ const IdeasMap = memo<Props>(
           }
         };
 
-        // Save clicked location
-        // First, project the point to Web Mercator to guarantee the correct coordinate system
-        const clickedPointProjected = projectPointToWebMercator(event.mapPoint);
-        setClickedMapLocation(esriPointToGeoJson(clickedPointProjected));
+        mapView.hitTest(event).then((result) => {
+          // Check if the user clicked on an internal cluster label graphic.
+          // These are ArcGIS rendering artifacts that only have `_symbol` and no layer.
+          const hitClusterLabel = result.results.some(
+            (el) =>
+              el.type === 'graphic' &&
+              '_symbol' in el.graphic.attributes &&
+              !el.graphic.layer
+          );
 
-        const ideaPostingEnabled =
-          phase?.data.attributes.submission_enabled || isAdmin(authUser);
+          // Find the first meaningful graphic hit (idea pin or cluster aggregate)
+          const graphicHit = result.results.find(
+            (el): el is __esri.GraphicHit =>
+              el.type === 'graphic' &&
+              (!!el.graphic.attributes?.ideaId ||
+                !!el.graphic.attributes?.cluster_count)
+          );
 
-        // On map click, we either open an existing idea OR show the "submit an idea" popup.
-        // This depends on whether the user has clicked an existing map pin.
-        mapView
-          .hitTest(event, {
-            ...(ideasLayer ? { include: [ideasLayer] } : {}),
-          })
-          .then((result) => {
-            // Get any map elements underneath map click
-            const elements = result.results;
-            if (elements.length > 0) {
-              const topElement = elements[0];
-
-              if (topElement.type === 'graphic') {
-                // TODO: Fix this the next time the file is edited.
-                // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                const graphicId = topElement?.graphic?.attributes?.ID;
-                const clusterCount =
-                  // TODO: Fix this the next time the file is edited.
-                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                  topElement?.graphic?.attributes?.cluster_count;
-
-                if (clusterCount && clusterCount > 1 && topElement.mapPoint) {
-                  // User clicked a cluster. Zoom in on the cluster.
-                  goToMapLocation(
-                    esriPointToGeoJson(topElement.mapPoint),
-                    mapView,
-                    mapView.zoom + 3
-                  );
-                } else if (graphicId) {
-                  // User clicked an idea pin or layer.
-                  // TODO: Fix this the next time the file is edited.
-                  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                  const ideaId = topElement?.graphic?.attributes?.ideaId;
-
-                  const ideasAtClickCount = elements.filter(
-                    (element) =>
-                      element.type === 'graphic' &&
-                      // TODO: Fix this the next time the file is edited.
-                      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                      element?.graphic?.layer?.id === 'ideasLayer'
-                  ).length;
-
-                  // If there are multiple ideas at this same location (overlapping pins), show the idea selection popup.
-                  if (
-                    ideasAtClickCount > 1 &&
-                    mapView.zoom >= 19 &&
-                    topElement.mapPoint
-                  ) {
-                    goToMapLocation(
-                      esriPointToGeoJson(topElement.mapPoint),
-                      mapView
-                    ).then(() => {
-                      const ideaIds = elements.map((element) => {
-                        // Get list of idea ids at this location
-                        if (element.type === 'graphic') {
-                          // TODO: Fix this the next time the file is edited.
-                          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                          const layerId = element?.graphic?.layer?.id;
-                          // TODO: Fix this the next time the file is edited.
-                          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                          const ideaId = element?.graphic?.attributes?.ideaId;
-                          if (ideaId && layerId === 'ideasLayer') {
-                            return ideaId;
-                          }
-                        }
-                      });
-                      // Set state and open the idea selection popup
-                      setIdeasSharingLocation(ideaIds);
-                      mapView.popup?.open({
-                        features: [topElement.graphic],
-                        location: topElement.mapPoint || undefined,
-                      });
-                    });
-                  } else {
-                    // Otherwise, open the selected idea in the information panel
-                    if (ideaId && topElement.mapPoint) {
-                      goToMapLocation(
-                        esriPointToGeoJson(topElement.mapPoint),
-                        mapView
-                      ).then(() => {
-                        setSelectedIdea(ideaId);
-                        // Add a graphic symbol to highlight which point was clicked
-                        const geometry = topElement.graphic.geometry;
-                        if (geometry?.type === 'point') {
-                          const graphic = new Graphic({
-                            geometry,
-                            symbol: ideaIconSecondary,
-                          });
-
-                          // Add the graphic to the map for a few seconds to highlight the clicked point
-                          mapView.graphics.add(graphic);
-                          setTimeout(() => {
-                            mapView.graphics.remove(graphic);
-                          }, 2000);
-                        }
-                      });
-                    }
-                  }
-                } else {
-                  // Show the "Submit an idea" popup
-                  triggerShowInputPopup();
-                }
-              } else if (topElement.type === 'media') {
-                // If the user clicked on a media layer (E.g. image overlay), show the idea popup
-                triggerShowInputPopup();
-              }
+          // If we hit a cluster label but no real cluster/idea graphic,
+          // treat it as a cluster click and zoom in
+          if (!graphicHit?.mapPoint) {
+            if (hitClusterLabel) {
+              goToMapLocation(
+                esriPointToGeoJson(event.mapPoint),
+                mapView,
+                mapView.zoom + 3
+              );
             } else {
-              // If the user clicked elsewhere on the map, show the "Submit an idea" popup
-              triggerShowInputPopup();
+              showSubmitPopup();
+            }
+            return;
+          }
+
+          const { graphic, mapPoint } = graphicHit;
+          const cluster_count = graphic.attributes?.cluster_count;
+          const ideaId = graphic.attributes?.ideaId;
+
+          // Clicked a cluster — zoom in
+          if (cluster_count && cluster_count > 1) {
+            goToMapLocation(
+              esriPointToGeoJson(mapPoint),
+              mapView,
+              mapView.zoom + 3
+            );
+            return;
+          }
+
+          if (!ideaId) {
+            showSubmitPopup();
+            return;
+          }
+
+          // Collect overlapping idea IDs at this location
+          const overlappingIdeaIds = result.results
+            .filter(
+              (el): el is __esri.GraphicHit =>
+                el.type === 'graphic' && !!el.graphic?.attributes?.ideaId
+            )
+            .map((el) => el.graphic.attributes.ideaId);
+
+          // Multiple overlapping ideas at same location — show selection popup
+          if (overlappingIdeaIds.length > 1) {
+            goToMapLocation(esriPointToGeoJson(mapPoint), mapView).then(() => {
+              setIdeasSharingLocation(overlappingIdeaIds);
+              mapView.openPopup({
+                title: formatMessage(messages.multipleInputsAtLocation),
+                content: ideasAtLocationNode,
+                location: mapPoint,
+              });
+            });
+            return;
+          }
+
+          // Single idea — select it and briefly highlight
+          goToMapLocation(esriPointToGeoJson(mapPoint), mapView).then(() => {
+            setSelectedIdea(ideaId);
+            if (graphic.geometry?.type === 'point') {
+              const highlight = new Graphic({
+                geometry: graphic.geometry,
+                symbol: ideaIconSecondary,
+              });
+              mapView.graphics.add(highlight);
+              setTimeout(() => mapView.graphics.remove(highlight), 2000);
             }
           });
+        });
       },
       [
         setSelectedIdea,
@@ -459,7 +431,7 @@ const IdeasMap = memo<Props>(
         startIdeaButtonNode,
         formatMessage,
         ideaIconSecondary,
-        ideasLayer,
+        ideasAtLocationNode,
       ]
     );
 

@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import Basemap from '@arcgis/core/Basemap';
 import esriConfig from '@arcgis/core/config';
-import Collection from '@arcgis/core/core/Collection';
 import * as projection from '@arcgis/core/geometry/projection.js';
 import Graphic from '@arcgis/core/Graphic';
 import { setLocale as setEsriLocale } from '@arcgis/core/intl/locale.js';
@@ -96,8 +95,7 @@ const EsriMap = ({
 
   const [map, setMap] = useState<Map | WebMap | null>(null);
   const [mapView, setMapView] = useState<MapView | null>(null);
-  const [referenceLayers, setReferenceLayers] =
-    useState<Collection<Layer> | null>(null);
+  const referenceLayersHandled = useRef(false);
 
   const mapRef = useRef<HTMLDivElement | null>(null);
   const [updateMapViewConfig, setUpdateMapViewConfig] = useState(false);
@@ -152,6 +150,7 @@ const EsriMap = ({
   // If the webMapId changes, reset the initialized state
   useEffect(() => {
     setInitialized(false);
+    referenceLayersHandled.current = false;
   }, [webMapId]);
 
   // Load initial map configuration data that was passed in.
@@ -209,9 +208,13 @@ const EsriMap = ({
     // Otherwise add the layers into the WebMap
     if (isWebMap) {
       map.when(() => {
-        // If the Web Map has any reference layers, re-order them so the layer hierarchy is correct
-        if (referenceLayers && referenceLayers.length > 0) {
-          handleWebMapReferenceLayers(map, referenceLayers);
+        // On first load, move basemap reference layers underneath our layers
+        if (
+          !referenceLayersHandled.current &&
+          map.basemap?.referenceLayers?.length > 0
+        ) {
+          handleWebMapReferenceLayers(map, map.basemap.referenceLayers);
+          referenceLayersHandled.current = true;
         }
 
         // Remove any internal layers that were passed in as props to the Web Map
@@ -228,12 +231,9 @@ const EsriMap = ({
             : `${layer.id}_internal`;
           map.add(layer);
         });
-
-        // If the WebMap has reference layers, save them in state
-        setReferenceLayers(map.basemap?.referenceLayers || null);
       });
     }
-  }, [layers, map, mapView, referenceLayers]);
+  }, [layers, map, mapView]);
 
   useEffect(() => {
     // Add any graphics which were passed in
