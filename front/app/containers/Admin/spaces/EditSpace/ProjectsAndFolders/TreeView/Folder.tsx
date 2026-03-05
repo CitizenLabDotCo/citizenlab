@@ -38,7 +38,7 @@ const Folder = ({ node }: Props) => {
             {localize(node.title_multiloc)}
           </Link>
         </Box>
-        <RemoveFromSpaceButton />
+        <RemoveFromSpaceButton onClick={() => {}} />
       </Row>
       <Box pl="31px">
         {expanded && (

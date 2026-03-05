@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Box, Icon, colors, Tooltip } from '@citizenlab/cl2-component-library';
 
+import useUpdateProject from 'api/projects/useUpdateProject';
 import { ProjectNode } from 'api/spaces/types';
 
 import useLocalize from 'hooks/useLocalize';
@@ -19,7 +20,21 @@ interface Props {
 }
 
 const Project = ({ node, removable }: Props) => {
+  const [isRemoving, setIsRemoving] = useState(false);
   const localize = useLocalize();
+  const { mutate: updateProject } = useUpdateProject();
+
+  const handleRemoveProject = () => {
+    setIsRemoving(true);
+    updateProject(
+      { projectId: node.id, space_id: null },
+      {
+        onSuccess: () => {
+          setIsRemoving(false);
+        },
+      }
+    );
+  };
 
   return (
     <Row>
@@ -57,7 +72,12 @@ const Project = ({ node, removable }: Props) => {
           </Tooltip>
         )}
       </Box>
-      {removable && <RemoveFromSpaceButton />}
+      {removable && (
+        <RemoveFromSpaceButton
+          processing={isRemoving}
+          onClick={handleRemoveProject}
+        />
+      )}
     </Row>
   );
 };

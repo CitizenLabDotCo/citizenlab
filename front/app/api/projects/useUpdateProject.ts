@@ -6,6 +6,7 @@ import adminPublicationsStatusCountsKeys from 'api/admin_publications_status_cou
 import areasKeys from 'api/areas/keys';
 import globalTopicsKeys from 'api/global_topics/keys';
 import meKeys from 'api/me/keys';
+import spacesKeys from 'api/spaces/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -36,6 +37,9 @@ const useUpdateProject = () => {
       });
       queryClient.invalidateQueries({
         queryKey: adminPublicationsStatusCountsKeys.items(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: spacesKeys.all(),
       });
     },
   });

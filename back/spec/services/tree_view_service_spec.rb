@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # filepath: /Users/work/cl/citizenlab/back/spec/services/tree_view_service_spec.rb
 
 require 'rails_helper'
@@ -35,7 +36,7 @@ describe TreeViewService do
         result = described_class.new.generate_tree
 
         expect(result.size).to eq(2)
-        
+
         folder_node = result.find { |node| node[:type] == 'folder' }
         expect(folder_node).to eq({
           id: folder.id,
@@ -47,8 +48,8 @@ describe TreeViewService do
         })
 
         project_node = result.find { |node| node[:id] == root_project.id }
-        expect(project_node).to eq({ 
-          id: root_project.id, 
+        expect(project_node).to eq({
+          id: root_project.id,
           type: 'project',
           title_multiloc: root_project.title_multiloc
         })
@@ -87,13 +88,13 @@ describe TreeViewService do
     context 'with space_id filter' do
       it 'returns only projects in the specified space' do
         project_in_space = create(:project, space: space)
-        project_in_other_space = create(:project, space: other_space)
+        create(:project, space: other_space)
 
         result = described_class.new(space_id: space.id).generate_tree
 
         expect(result.size).to eq(1)
-        expect(result.first).to eq({ 
-          id: project_in_space.id, 
+        expect(result.first).to eq({
+          id: project_in_space.id,
           type: 'project',
           title_multiloc: project_in_space.title_multiloc
         })
@@ -101,7 +102,7 @@ describe TreeViewService do
 
       it 'returns only folders in the specified space' do
         folder_in_space = create(:project_folder, space: space)
-        folder_in_other_space = create(:project_folder, space: other_space)
+        create(:project_folder, space: other_space)
 
         result = described_class.new(space_id: space.id).generate_tree
 
@@ -112,7 +113,7 @@ describe TreeViewService do
       it 'filters children projects by space_id' do
         folder = create(:project_folder, space: space)
         project_in_space = create(:project, space: space, folder: folder)
-        project_in_other_space = create(:project, space: other_space)
+        create(:project, space: other_space)
 
         result = described_class.new(space_id: space.id).generate_tree
 
@@ -126,14 +127,14 @@ describe TreeViewService do
         project_in_space = create(:project, space: space)
         folder_in_space = create(:project_folder, space: space)
         project_in_folder_in_space = create(:project, space: space, folder: folder_in_space)
-        project_in_other_space = create(:project, space: other_space)
-        folder_in_other_space = create(:project_folder, space: other_space)
+        create(:project, space: other_space)
+        create(:project_folder, space: other_space)
 
         result = described_class.new(space_id: space.id).generate_tree
 
         expect(result.size).to eq(2)
-        expect(result.map { |node| node[:id] }).to match_array([project_in_space.id, folder_in_space.id])
-        
+        expect(result.map { |node| node[:id] }).to contain_exactly(project_in_space.id, folder_in_space.id)
+
         folder_node = result.find { |node| node[:type] == 'folder' }
         expect(folder_node[:children].size).to eq(1)
         expect(folder_node[:children].first[:id]).to eq(project_in_folder_in_space.id)
@@ -151,12 +152,12 @@ describe TreeViewService do
 
         folder_node = result.first
         expect(folder_node[:children].size).to eq(3)
-        expect(folder_node[:children].map { |c| c[:id] }).to match_array([project1.id, project2.id, project3.id])
+        expect(folder_node[:children].map { |c| c[:id] }).to contain_exactly(project1.id, project2.id, project3.id)
       end
 
       it 'handles projects without space_id' do
         project_with_space = create(:project, space: space)
-        project_without_space = create(:project, space: nil)
+        create(:project, space: nil)
 
         result = described_class.new(space_id: space.id).generate_tree
 
@@ -166,7 +167,7 @@ describe TreeViewService do
 
       it 'handles folders without space_id' do
         folder_with_space = create(:project_folder, space: space)
-        folder_without_space = create(:project_folder, space: nil)
+        create(:project_folder, space: nil)
 
         result = described_class.new(space_id: space.id).generate_tree
 

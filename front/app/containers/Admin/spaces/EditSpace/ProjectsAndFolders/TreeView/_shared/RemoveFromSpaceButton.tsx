@@ -6,13 +6,20 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-const RemoveFromSpaceButton = () => {
+interface Props {
+  processing?: boolean;
+  onClick: () => void;
+}
+
+const RemoveFromSpaceButton = ({ processing = false, onClick }: Props) => {
   return (
     <Button
       buttonStyle="text"
       icon="minus-circle"
       fontSize={`${fontSizes.s}px`}
       iconSize={`${fontSizes.base}px`}
+      processing={processing}
+      onClick={onClick}
     >
       <FormattedMessage {...messages.removeFromSpace} />
     </Button>

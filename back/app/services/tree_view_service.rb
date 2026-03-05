@@ -12,8 +12,8 @@ class TreeViewService
 
   def fetch_root_publications
     query = AdminPublication
-              .where(parent_id: nil)
-              .order(:lft)
+      .where(parent_id: nil)
+      .order(:lft)
 
     query = filter_by_space(query) if @space_id.present?
 
@@ -27,12 +27,12 @@ class TreeViewService
       LEFT JOIN project_folders_folders ON admin_publications.publication_type = 'ProjectFolders::Folder' 
                                         AND admin_publications.publication_id = project_folders_folders.id
     SQL
-    .where('projects.space_id = ? OR project_folders_folders.space_id = ?', @space_id, @space_id)
+      .where('projects.space_id = ? OR project_folders_folders.space_id = ?', @space_id, @space_id)
   end
 
   def build_tree_node(admin_publication)
     publication = admin_publication.publication
-    
+
     node = {
       id: admin_publication.publication_id,
       type: publication_type_name(admin_publication.publication_type),
@@ -40,10 +40,10 @@ class TreeViewService
     }
 
     if folder?(admin_publication)
-      if admin_publication.children.any?
-        node[:children] = build_children(admin_publication.children)
+      node[:children] = if admin_publication.children.any?
+        build_children(admin_publication.children)
       else
-        node[:children] = []
+        []
       end
     end
 
@@ -52,7 +52,7 @@ class TreeViewService
 
   def build_children(children)
     filtered_children = filter_children_by_space(children)
-    
+
     filtered_children.map do |child|
       {
         id: child.publication_id,
