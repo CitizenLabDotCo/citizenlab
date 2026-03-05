@@ -661,7 +661,7 @@
   "app.components.VerificationModal.verifyBosaFas": "Verifieer met itsme of eID",
   "app.components.VerificationModal.verifyClaveUnica": "Verifieer met Clave Unica",
   "app.components.VerificationModal.verifyFakeSSO": "Verifiëren met neppe SSO",
-  "app.components.VerificationModal.verifyFedera": "Controleer met SPID, CIE of CNS",
+  "app.components.VerificationModal.verifyFedera": "Verifieer met SPID, CIE of CNS",
   "app.components.VerificationModal.verifyIdAustria": "Verifieer met ID Oostenrijk",
   "app.components.VerificationModal.verifyKeycloak": "Verifiëren met ID-Porten",
   "app.components.VerificationModal.verifyNemLogIn": "Verifieer met MitID",
