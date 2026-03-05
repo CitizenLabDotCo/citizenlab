@@ -118,6 +118,7 @@ module EmailCampaigns
     def only_manual_send(activity: nil, time: nil)
       return false if activity  # Never send on activity
       return true unless time   # Allow send_now
+
       !sent?                    # Prevent re-sending via cron
     end
 
