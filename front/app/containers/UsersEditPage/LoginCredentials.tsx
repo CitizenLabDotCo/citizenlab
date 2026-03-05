@@ -4,13 +4,14 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import { IUserData } from 'api/users/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormSection, FormSectionTitle } from 'components/UI/FormComponents';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
-import useFeatureFlag from 'hooks/useFeatureFlag';
 
 type PasswordChangeProps = {
   user: IUserData;
