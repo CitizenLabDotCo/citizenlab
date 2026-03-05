@@ -594,7 +594,7 @@ module MultiTenancy
               enabled: false,
               allowed: false
             },
-            workspaces: {
+            spaces: {
               enabled: false,
               allowed: false
             }

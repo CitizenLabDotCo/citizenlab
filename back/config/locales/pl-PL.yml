@@ -246,6 +246,18 @@ pl:
           title: Jaka jest twoja inicjatywa?
         petition:
           title: Jaka jest twoja petycja?
+        comment:
+          title: Jaki jest twój komentarz?
+        response:
+          title: Jaka jest twoja odpowiedź?
+        suggestion:
+          title: Jaką masz propozycję?
+        topic:
+          title: Jaki jest twój temat?
+        post:
+          title: Jakie jest twoje stanowisko?
+        story:
+          title: Jaka jest twoja historia?
   custom_field_options:
     gender:
       male: Mężczyzna

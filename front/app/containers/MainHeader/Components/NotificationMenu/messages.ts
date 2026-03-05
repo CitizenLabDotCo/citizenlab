@@ -63,6 +63,30 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.userCommentedOnPetitionYouFollow',
     defaultMessage: '{name} commented on a petition that you follow',
   },
+  userCommentedOnCommentYouFollow: {
+    id: 'app.containers.NotificationMenu.userCommentedOnCommentYouFollow',
+    defaultMessage: '{name} commented on a comment that you follow',
+  },
+  userCommentedOnResponseYouFollow: {
+    id: 'app.containers.NotificationMenu.userCommentedOnResponseYouFollow',
+    defaultMessage: '{name} commented on a response that you follow',
+  },
+  userCommentedOnSuggestionYouFollow: {
+    id: 'app.containers.NotificationMenu.userCommentedOnSuggestionYouFollow',
+    defaultMessage: '{name} commented on a suggestion that you follow',
+  },
+  userCommentedOnTopicYouFollow: {
+    id: 'app.containers.NotificationMenu.userCommentedOnTopicYouFollow',
+    defaultMessage: '{name} commented on a topic that you follow',
+  },
+  userCommentedOnPostYouFollow: {
+    id: 'app.containers.NotificationMenu.userCommentedOnPostYouFollow',
+    defaultMessage: '{name} commented on a post that you follow',
+  },
+  userCommentedOnStoryYouFollow: {
+    id: 'app.containers.NotificationMenu.userCommentedOnStoryYouFollow',
+    defaultMessage: '{name} commented on a story that you follow',
+  },
   userReactedToYourComment: {
     id: 'app.containers.NotificationMenu.userReactedToYourComment',
     defaultMessage: '{name} reacted to your comment',
@@ -134,6 +158,30 @@ export default defineMessages({
   invitationToCosponsorInitiative: {
     id: 'app.containers.NotificationMenu.invitationToCosponsorInitiative',
     defaultMessage: '{name} invited you to co-sponsor an initiative',
+  },
+  invitationToCosponsorComment: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorComment',
+    defaultMessage: '{name} invited you to co-sponsor a comment',
+  },
+  invitationToCosponsorResponse: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorResponse',
+    defaultMessage: '{name} invited you to co-sponsor a response',
+  },
+  invitationToCosponsorSuggestion: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorSuggestion',
+    defaultMessage: '{name} invited you to co-sponsor a suggestion',
+  },
+  invitationToCosponsorTopic: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorTopic',
+    defaultMessage: '{name} invited you to co-sponsor a topic',
+  },
+  invitationToCosponsorPost: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorPost',
+    defaultMessage: '{name} invited you to co-sponsor a post',
+  },
+  invitationToCosponsorStory: {
+    id: 'app.containers.NotificationMenu.invitationToCosponsorStory',
+    defaultMessage: '{name} invited you to co-sponsor a story',
   },
   userReportedCommentAsSpam: {
     id: 'app.containers.NotificationMenu.userReportedCommentAsSpam1',
@@ -231,6 +279,36 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.officialFeedbackOnPetitionYouFollow',
     defaultMessage:
       '{officialName} gave an official update on a petition you follow',
+  },
+  officialFeedbackOnCommentYouFollow: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnCommentYouFollow',
+    defaultMessage:
+      '{officialName} gave an official update on a comment you follow',
+  },
+  officialFeedbackOnResponseYouFollow: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnResponseYouFollow',
+    defaultMessage:
+      '{officialName} gave an official update on a response you follow',
+  },
+  officialFeedbackOnSuggestionYouFollow: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnSuggestionYouFollow',
+    defaultMessage:
+      '{officialName} gave an official update on a suggestion you follow',
+  },
+  officialFeedbackOnTopicYouFollow: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnTopicYouFollow',
+    defaultMessage:
+      '{officialName} gave an official update on a topic you follow',
+  },
+  officialFeedbackOnPostYouFollow: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnPostYouFollow',
+    defaultMessage:
+      '{officialName} gave an official update on a post you follow',
+  },
+  officialFeedbackOnStoryYouFollow: {
+    id: 'app.containers.NotificationMenu.officialFeedbackOnStoryYouFollow',
+    defaultMessage:
+      '{officialName} gave an official update on a story you follow',
   },
   mentionInOfficialFeedback: {
     id: 'app.containers.NotificationMenu.mentionInOfficialFeedback',

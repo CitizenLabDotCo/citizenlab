@@ -13,6 +13,7 @@ export const verificationTypesLeavingPlatform = [
   'criipto',
   'bosa_fas',
   'clave_unica',
+  'federa',
   'franceconnect',
   'nemlog_in',
   'keycloak',
@@ -28,6 +29,7 @@ export type TVerificationMethodName =
   | 'clave_unica'
   | 'cow'
   | 'criipto'
+  | 'federa'
   | 'franceconnect'
   | 'gent_rrn'
   | 'id_card_lookup'
