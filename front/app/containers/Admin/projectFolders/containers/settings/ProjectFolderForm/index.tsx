@@ -33,6 +33,7 @@ import {
   SubSectionTitle,
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
+import SpaceSelectSection from 'components/admin/SpaceSelectSection';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
 import DescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
 import Highlighter from 'components/Highlighter';
@@ -120,6 +121,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     useState<Multiloc | null>(null);
   const [descriptionMultiloc, setDescriptionMultiloc] =
     useState<Multiloc | null>(null);
+  const [spaceId, setSpaceId] = useState<string | null>(null);
   const [headerBgBase64, setHeaderBgBase64] = useState<string | null>(null);
   const [headerImageAltText, setHeaderImageAltText] = useState<Multiloc>({});
   const [publicationStatus, setPublicationStatus] = useState<
@@ -163,6 +165,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
         setHeaderImageAltText(
           projectFolder.data.attributes.header_bg_alt_text_multiloc
         );
+        setSpaceId(projectFolder.data.attributes.space_id);
       }
     })();
   }, [mode, projectFolder]);
@@ -235,6 +238,11 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       setSubmitState('error');
     }
   }, []);
+
+  const handleSpaceIdChange = (spaceId: string | null) => {
+    setSubmitState('enabled');
+    setSpaceId(spaceId);
+  };
 
   const handleHeaderBgChange = useCallback((newImageBase64: string | null) => {
     setSubmitState('enabled');
@@ -343,6 +351,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                 admin_publication_attributes: {
                   publication_status: publicationStatus,
                 },
+                space_id: spaceId,
               },
               {
                 onSuccess: async (projectFolder) => {
@@ -464,13 +473,19 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                 adminPublication.data.attributes.publication_status
               );
 
+            const changedSpaceId = !isEqual(
+              spaceId,
+              projectFolder.data.attributes.space_id
+            );
+
             if (
               changedTitleMultiloc ||
               changedSlug ||
               changedDescriptionMultiloc ||
               changedShortDescriptionMultiloc ||
               changedHeaderBg ||
-              changedPublicationStatus
+              changedPublicationStatus ||
+              changedSpaceId
             ) {
               updateProjectFolder(
                 {
@@ -490,6 +505,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                   admin_publication_attributes: {
                     publication_status: publicationStatus,
                   },
+                  space_id: spaceId,
                 },
                 {
                   onError: async () => {
@@ -639,6 +655,9 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             </>
           </SectionField>
         )}
+
+        <SpaceSelectSection spaceId={spaceId} onChange={handleSpaceIdChange} />
+
         <SectionField>
           <SubSectionTitle>
             <FormattedMessage {...messages.headerImageInputLabel} />

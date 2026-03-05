@@ -6,7 +6,7 @@ import useAuthUser from 'api/me/useAuthUser';
 import useSpaces from 'api/spaces/useSpaces';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import SpaceSelect from 'components/admin/SpaceSelect';
+import SpaceSelect from 'components/admin/SpaceSelectSection/SpaceSelect';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';

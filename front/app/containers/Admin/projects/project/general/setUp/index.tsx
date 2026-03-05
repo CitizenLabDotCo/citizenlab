@@ -40,6 +40,7 @@ import {
   SectionField,
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
+import SpaceSelectSection from 'components/admin/SpaceSelectSection';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import DescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
 import Highlighter from 'components/Highlighter';
@@ -70,7 +71,6 @@ import ProjectCardImageTooltip from '../components/ProjectCardImageTooltip';
 import ProjectFolderSelect from '../components/ProjectFolderSelect';
 import ProjectHeaderImageTooltip from '../components/ProjectHeaderImageTooltip';
 import ProjectNameInput from '../components/ProjectNameInput';
-import SpaceSelectSection from '../components/SpaceSelectSection';
 import {
   StyledForm,
   StyledInputMultiloc,
