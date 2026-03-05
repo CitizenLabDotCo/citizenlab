@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Title } from '@citizenlab/cl2-component-library';
-import { useParams } from 'react-router-dom';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -12,7 +11,8 @@ import ProjectFolderSelect from './ProjectFolderSelect';
 import TreeView from './TreeView';
 
 const ProjectsAndFolders = () => {
-  const { spaceId } = useParams();
+  // const { spaceId } = useParams();
+  // const { data: treeView } = useTreeView(spaceId);
 
   return (
     <>

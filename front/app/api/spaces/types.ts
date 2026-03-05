@@ -42,3 +42,12 @@ export interface RequestBody {
   title_multiloc: Multiloc;
   description_multiloc?: Multiloc;
 }
+
+export type TreeView = {
+  data: {
+    type: 'tree_view';
+    attributes: {
+      nodes: [];
+    };
+  };
+};
