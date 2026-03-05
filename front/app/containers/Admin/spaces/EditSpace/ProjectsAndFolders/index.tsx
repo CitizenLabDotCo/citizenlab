@@ -9,7 +9,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
 
-import ProjectFolderSelect from './ProjectFolderSelect';
 import TreeView from './TreeView';
 
 const ProjectsAndFolders = () => {
@@ -32,10 +31,6 @@ const ProjectsAndFolders = () => {
           <FormattedMessage {...messages.noProjectsAndFolders} />
         </Text>
       )}
-      <Title variant="h3" color="primary" mt="60px" mb="20px">
-        <FormattedMessage {...messages.addProjectsAndFolders} />
-      </Title>
-      <ProjectFolderSelect />
     </>
   );
 };
