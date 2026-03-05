@@ -29,7 +29,8 @@ resource 'Campaign Scheduling' do
     end
 
     example 'Unschedule a campaign by setting scheduled_at to nil' do
-      campaign.update_column(:scheduled_at, 2.hours.from_now)
+      campaign.scheduled_at = 2.hours.from_now
+      campaign.save!
       do_request(campaign: { scheduled_at: nil })
 
       assert_status 200

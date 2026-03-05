@@ -12,12 +12,17 @@ module EmailCampaigns
     end
 
     def filter_campaign_scheduled(time:, activity: nil)
-      # TODO: prevent being here when time is nil
-      # This happened when triggering comment on your comment notification
       return unless time
 
       time = AppConfiguration.timezone.at(time)
-      ic_schedule.occurs_between?(time - 30.minutes, time + 30.minutes)
+
+      if recurring_schedule?
+        # Recurring: existing 30-min window behavior (unchanged)
+        ic_schedule.occurs_between?(time - 30.minutes, time + 30.minutes)
+      else
+        # One-time: eligible once the scheduled rtime has passed
+        ic_schedule.occurs_between?(ic_schedule.start_time, time)
+      end
     end
 
     def ic_schedule
@@ -40,8 +45,12 @@ module EmailCampaigns
       self.ic_schedule = ics
     end
 
+    def recurring_schedule?
+      ic_schedule.rrules.any?
+    end
+
     def schedule_multiloc_value
-      rules = schedule['rrules'][0]
+      rules = schedule.dig('rrules', 0)
       return unless rules
 
       # Quarterly schedule

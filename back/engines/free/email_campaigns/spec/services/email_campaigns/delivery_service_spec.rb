@@ -194,8 +194,9 @@ describe EmailCampaigns::DeliveryService do
   describe 'send_on_schedule with scheduled manual campaign' do
     let!(:campaign) do
       c = create(:manual_campaign)
-      c.update_column(:scheduled_at, 1.hour.ago)
-      c.reload
+      c.scheduled_at = 1.hour.ago
+      c.save!(validate: false)
+      c
     end
     let!(:users) { create_list(:user, 3) }
 
@@ -206,13 +207,14 @@ describe EmailCampaigns::DeliveryService do
     end
 
     it 'does not send a manual campaign when scheduled_at is in the future' do
-      campaign.update_column(:scheduled_at, 2.hours.from_now)
+      campaign.scheduled_at = 2.hours.from_now
+      campaign.save!
       expect { service.send_on_schedule(Time.zone.now) }
         .not_to have_enqueued_job(ActionMailer::MailDeliveryJob)
     end
 
     it 'does not send a manual campaign without scheduled_at' do
-      campaign.update_column(:scheduled_at, nil)
+      campaign.update!(scheduled_at: nil)
       expect { service.send_on_schedule(Time.zone.now) }
         .not_to have_enqueued_job(ActionMailer::MailDeliveryJob)
     end
