@@ -204,10 +204,12 @@ const SurveyActions = ({ phase }: Props) => {
             opened={isDropdownOpened}
             onClickOutside={closeDropdown}
             className="dropdown"
-            right="0px"
+            width="max-content"
+            right="12px"
             top="45px"
+            zIndex="10000"
             content={
-              <Box minWidth="300px">
+              <Box style={{ whiteSpace: 'nowrap' }}>
                 <DropdownListItem
                   onClick={() => {
                     setDropdownOpened(false);
