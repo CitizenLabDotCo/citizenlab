@@ -13,13 +13,8 @@ import TabbedResource, {
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
 
 import messages from './messages';
-
-const goBack = () => {
-  clHistory.goBack();
-};
 
 const EditSpace = () => {
   const { spaceId } = useParams();
@@ -49,7 +44,7 @@ const EditSpace = () => {
 
   return (
     <Box>
-      <GoBackButton onClick={goBack} />
+      <GoBackButton linkTo={'/admin/projects?tab=spaces' as any} />
       <TabbedResource {...tabbedProps}>
         <RouterOutlet />
       </TabbedResource>
