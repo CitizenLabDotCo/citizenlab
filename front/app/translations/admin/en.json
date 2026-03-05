@@ -365,6 +365,7 @@
   "app.components.admin.ReportExportMenu.downloadSvg": "Download as SVG",
   "app.components.admin.ReportExportMenu.downloadXlsx": "Download Excel",
   "app.components.admin.SlugInput.regexError": "The slug can only contain regular, lowercase letters (a-z), numbers (0-9) and hyphens (-). The first and last characters cannot be hyphens. Consecutive hyphens (--) are forbidden.",
+  "app.components.admin.SpaceSelect.noSpaceLabel": "— No space —",
   "app.components.admin.TerminologyConfig.saveButton": "Save",
   "app.components.admin.commonGroundInputManager.title": "Title",
   "app.components.admin.seatSetSuccess.admin": "Admin",
