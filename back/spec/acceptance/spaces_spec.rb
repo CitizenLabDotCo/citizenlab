@@ -169,6 +169,7 @@ resource 'Spaces' do
     get 'web_api/v1/spaces/:space_id/tree_view' do
       example_request 'Retrieving space tree view' do
         expect(status).to eq(200)
+        binding.pry
         expect(response_data[:attributes][:nodes]).to eq([])
       end
     end
