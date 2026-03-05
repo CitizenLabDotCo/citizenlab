@@ -311,30 +311,19 @@ class Project < ApplicationRecord
   
   def cannot_move_to_folder_in_different_space
     return unless persisted? && admin_publication&.parent_id_changed?
-    
-    new_parent_id = admin_publication.parent_id
-    return if new_parent_id.blank? # Removing from folder is always OK
-    
-    new_folder = AdminPublication.find_by(id: new_parent_id)&.publication
+    return if admin_publication.parent_id.blank? # Removing from folder is always OK
+
+    new_folder = AdminPublication.find_by(id: admin_publication.parent_id)&.publication
     return unless new_folder.is_a?(ProjectFolders::Folder)
-    
-    # Determine what space the project had before this move
+ 
     previous_parent_id = admin_publication.parent_id_was
-    previous_space_id = if previous_parent_id.present?
-      # Was in folder - get that folder's space
-      AdminPublication.find_by(id: previous_parent_id)&.publication&.space_id
-    else
-      # Was not in folder - use direct space_id
-      space_id_was
-    end
-    
+    previous_space_id = space_id_was
+
     # Allow if project had no space and no folder (nil + nil)
     return if previous_parent_id.blank? && previous_space_id.blank?
-    
-    # Block if moving to folder in different space
-    if previous_space_id != new_folder.space_id
-      errors.add(:folder_id, 'project space must match target folder space')
-    end
+
+    # Block if moving to folder with different space
+    errors.add(:folder_id, 'project space must match target folder space') if previous_space_id != new_folder.space_id
   end
 
   def sanitize_description_multiloc
