@@ -485,13 +485,13 @@ export const esriPointToGeoJson = (esriPoint: Point): GeoJSON.Point => {
 export const getClusterConfiguration = (clusterSymbolColor?: string) => {
   return new FeatureReductionCluster({
     maxScale: 600, // Stop clustering once fully zoomed in
-    clusterMinSize: '32',
+    clusterMinSize: '20',
     symbol: getShapeSymbol({
       shape: 'circle',
       color: clusterSymbolColor || colors.coolGrey700,
       outlineColor: colors.white,
       outlineWidth: 3,
-      sizeInPx: 32,
+      sizeInPx: 20,
     }),
     labelingInfo: [
       // Cluster configuration from Esri sample
