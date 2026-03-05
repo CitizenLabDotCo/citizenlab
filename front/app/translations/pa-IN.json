@@ -69,6 +69,8 @@
   "app.components.AvatarBubbles.numberOfUsers": "{numberOfUsers} ਉਪਭੋਗਤਾ",
   "app.components.AvatarBubbles.participant": "ਭਾਗੀਦਾਰ",
   "app.components.AvatarBubbles.participants1": "ਭਾਗੀਦਾਰ",
+  "app.components.CityLogoSection.logoLinkAriaLabelExternal": "{orgName} ਵੈੱਬਸਾਈਟ 'ਤੇ ਜਾਓ (ਨਵੀਂ ਟੈਬ ਵਿੱਚ ਖੁੱਲ੍ਹਦਾ ਹੈ)",
+  "app.components.CityLogoSection.logoLinkAriaLabelInternal": "{orgName} ਘਰ",
   "app.components.Comments.cancel": "ਰੱਦ ਕਰੋ",
   "app.components.Comments.commentingDisabledInCurrentPhase": "ਮੌਜੂਦਾ ਦੌਰ ਵਿੱਚ ਟਿੱਪਣੀ ਸੰਭਵ ਨਹੀਂ ਹੈ।",
   "app.components.Comments.commentingDisabledInactiveProject": "ਟਿੱਪਣੀ ਕਰਨਾ ਸੰਭਵ ਨਹੀਂ ਹੈ ਕਿਉਂਕਿ ਇਹ ਪ੍ਰੋਜੈਕਟ ਵਰਤਮਾਨ ਵਿੱਚ ਕਿਰਿਆਸ਼ੀਲ ਨਹੀਂ ਹੈ।",
