@@ -116,6 +116,7 @@ class Project < ApplicationRecord
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # TODO: This should always be validated!
   validate :space_must_match_folder_space
   validate :space_cannot_change_if_in_folder_with_space
+  validate :cannot_move_from_space_to_folder_in_different_space
 
   scope :not_hidden, -> { where(hidden: false) }
 
@@ -247,14 +248,6 @@ class Project < ApplicationRecord
     folder = AdminPublication.find_by(id: parent_id)&.publication
     folder_space_id = folder&.space_id
 
-    # Prevent: moving EXISTING project in space and in folder (in same space) to a DIFFERENT folder with different/nil space
-    # Allow: new projects (not persisted), removing from folder (target folder is nil), projects without a space,
-    # or moving to folder with matching space
-    if persisted? && folder.present? && space_id.present? && (folder_space_id.nil? || folder_space_id != space_id)
-      errors.add(:space_id, 'space_id - cannot move project in space into a folder with a different space')
-      raise ActiveRecord::RecordInvalid, self
-    end
-
     self.space_id = folder.space_id if folder&.space_id.present?
 
     build_admin_publication unless admin_publication
@@ -328,7 +321,37 @@ class Project < ApplicationRecord
     previous_folder = AdminPublication.find_by(id: previous_parent_id)&.publication
     return unless previous_folder.is_a?(ProjectFolders::Folder) && previous_folder.space_id == space_id_was
 
-    errors.add(:space_id, 'cannot be changed when project was in a folder with a space')
+    errors.add(:space_id, 'space_id - cannot be changed when project was in a folder with a space')
+  end
+
+  def cannot_move_from_space_to_folder_in_different_space
+    return unless persisted? && admin_publication&.parent_id_changed?
+    
+    new_parent_id = admin_publication.parent_id
+    return if new_parent_id.blank? # Removing from folder is always allowed
+    
+    new_folder = AdminPublication.find_by(id: new_parent_id)&.publication
+    return unless new_folder.is_a?(ProjectFolders::Folder)
+    
+    # Calculate the previous space
+    previous_parent_id = admin_publication.parent_id_was
+    if previous_parent_id.present?
+      # Project was in a folder - get that folder's space
+      previous_folder = AdminPublication.find_by(id: previous_parent_id)&.publication
+      previous_space_id = previous_folder.is_a?(ProjectFolders::Folder) ? previous_folder.space_id : nil
+    else
+      # Project was NOT in a folder - check its direct space_id
+      previous_space_id = space_id_was
+    end
+    
+    # Only allow if project had neither a folder nor a space
+    # (i.e., allow: project with no folder and no space → any folder)
+    return if previous_parent_id.blank? && previous_space_id.blank?
+    
+    # Error if moving to a folder with a different space
+    if previous_space_id != new_folder.space_id
+      errors.add(:space_id, 'space_id - cannot move project into a folder in a different space')
+    end
   end
 
   def sanitize_description_multiloc
