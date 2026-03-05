@@ -2462,6 +2462,7 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Number of likes per participant",
   "app.containers.AdminPage.ProjectEdit.limited": "Ograniczona",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "Widok listy jest zawsze dostępny i nie można go wyłączyć.",
+  "app.containers.AdminPage.ProjectEdit.listViewDescription1": "Dane wejściowe są wyświetlane jako przewijany kanał, posortowany według trendów, reakcji, komentarzy, daty lub aktywności. Najlepsze dla: mniejszych konsultacji.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Widok listy",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Załaduj więcej szablonów",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Ustaw wartość domyślną",
