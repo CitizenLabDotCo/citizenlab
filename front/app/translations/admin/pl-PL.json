@@ -2462,7 +2462,6 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Number of likes per participant",
   "app.containers.AdminPage.ProjectEdit.limited": "Ograniczona",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "Widok listy jest zawsze dostępny i nie można go wyłączyć.",
-  "app.containers.AdminPage.ProjectEdit.listViewDescription": "Tradycyjna dyskusja w wątkach. Najlepsze dla: mniejszych dyskusji, gdy chcesz, aby wskaźniki zaangażowania zwiększały widoczność.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Widok listy",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Załaduj więcej szablonów",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Ustaw wartość domyślną",

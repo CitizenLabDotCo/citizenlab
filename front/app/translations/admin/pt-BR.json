@@ -2462,7 +2462,6 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Number of likes per participant",
   "app.containers.AdminPage.ProjectEdit.limited": "Limitada",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "A visualização de lista está sempre disponível e não pode ser desativada.",
-  "app.containers.AdminPage.ProjectEdit.listViewDescription": "Discussão tradicional por tópicos. Ideal para: discussões menores, quando você deseja que as métricas de envolvimento aumentem a visibilidade.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Exibição de lista",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Baixar mais modelos",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Tornar padrão",
