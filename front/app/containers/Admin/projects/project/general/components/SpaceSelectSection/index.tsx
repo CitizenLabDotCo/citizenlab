@@ -26,10 +26,7 @@ const SpaceSelectSection = ({ spaceId, onChange }: Props) => {
   if (!spaces || !isAdmin(authUser)) return null;
 
   return (
-    <SectionField
-      data-testid="projectFolderSelect"
-      data-cy="e2e-project-folder-setting-field"
-    >
+    <SectionField>
       <SubSectionTitle>
         <FormattedMessage {...messages.spaceSelectTitle} />
         <IconTooltip content={formatMessage(messages.tooltip)} />
