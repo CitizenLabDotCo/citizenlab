@@ -416,12 +416,6 @@ resource 'Projects' do
           expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
         end
 
-        # **If a project is NOT in a folder and NOT in a space:**
-
-        # - You can add it to any space
-        # - You can add it to any folder, regardless of if the folder is in a space or not.
-        #     - If the folder is in the space, the project is automatically added to the space [Added to `Project#folder_id=` method, effectively adding a side_effect to achieve this when updating a project’s folder]
-
         context 'space involved' do
           context 'project not in folder and not in space' do
             before do
@@ -456,11 +450,6 @@ resource 'Projects' do
               expect(json_response[:data][:attributes][:space_id]).to be_nil
             end
           end
-
-          # **If a project is NOT in a space and IS in a folder NOT in a space:**
-
-          # - If you remove the project from the folder, it stays NOT in the space
-          # - You can NOT add the project to a space [Validation prevents this]
 
           context 'project not in space and in folder not in space' do
             before do
@@ -503,12 +492,6 @@ resource 'Projects' do
               expect(@project.folder_id).to eq @folder.id
             end
           end
-
-          # **If a project is NOT in a folder and IS in a space:**
-
-          # - You can add it to a folder in the same space
-          # - You can NOT add it to a folder in another space (including nil)
-          # - You can move it to another space (including nil)
 
           context 'project in space and not in folder' do
             before do
@@ -568,12 +551,6 @@ resource 'Projects' do
             end
           end
 
-          # **If a project IS in a folder which is in a space:**
-
-          # - It should NOT be possible to move the project to another space (including nil) (unless folder is moved)
-          # - It should be possible to remove the project from the folder.
-          #   - In this case, it keeps the space after going out of the folder
-
           context 'project in folder in space' do
             before do
               @space = create(:space)
@@ -627,8 +604,6 @@ resource 'Projects' do
             end
           end
         end
-
-        # --------------- End of new test cases. Need to check for duplicates below ------------------
 
         example 'Remove a project from a folder' do
           create(:project_folder, projects: [@project])
