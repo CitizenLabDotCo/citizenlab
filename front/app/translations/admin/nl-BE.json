@@ -2462,7 +2462,7 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Aantal likes per deelnemer",
   "app.containers.AdminPage.ProjectEdit.limited": "Beperkt",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "De lijstweergave is altijd beschikbaar en kan niet worden uitgeschakeld.",
-  "app.containers.AdminPage.ProjectEdit.listViewDescription": "Traditionele discussies. Het meest geschikt voor: kleinere discussies, wanneer je wilt dat de discussie wordt gestuurd door gegevens gebaseerd op interactie.",
+  "app.containers.AdminPage.ProjectEdit.listViewDescription1": "Bijdragen worden weergegeven als een scrollbare feed, gesorteerd op trending, likes en dislikes, opmerkingen, datum of activiteit. Het meest geschikt voor: kleinere consultaties.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Lijstweergave",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Meer sjablonen tonen",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Standaard maken",
