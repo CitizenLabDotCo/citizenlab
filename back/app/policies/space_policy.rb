@@ -30,6 +30,10 @@ class SpacePolicy < ApplicationPolicy
     active_admin?
   end
 
+  def tree_view?
+    active_admin?
+  end
+
   private
 
   def active_admin?
