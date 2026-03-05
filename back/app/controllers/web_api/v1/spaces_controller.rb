@@ -54,7 +54,38 @@ class WebApi::V1::SpacesController < ApplicationController
   end
 
   def tree_view
-    render json: raw_json({ nodes: [] })
+    # Fetch all admin publications ordered by left value (nested set ordering)
+    # This gives us the tree in pre-order traversal
+    publications = AdminPublication.includes(:publication)
+      .order(:lft)
+
+    # Group by parent_id for efficient lookup
+    grouped = publications.group_by(&:parent_id)
+    
+    # Build the tree structure
+    roots = grouped[nil] || []
+    
+    nodes = roots.map do |root_pub|
+      node = {
+        id: root_pub.publication_id,
+        type: root_pub.publication_type == 'ProjectFolders::Folder' ? 'folder' : 'project'
+      }
+      
+      # If it's a folder, add children
+      if root_pub.publication_type == 'ProjectFolders::Folder'
+        children = grouped[root_pub.id] || []
+        node[:children] = children.map do |child_pub|
+          {
+            id: child_pub.publication_id,
+            type: 'project' # Children of folders are always projects
+          }
+        end
+      end
+      
+      node
+    end
+
+    render json: raw_json({ nodes: })
   end
 
   private

@@ -1,0 +1,79 @@
+# frozen_string_literal: true
+# filepath: /Users/work/cl/citizenlab/back/app/services/tree_view_service.rb
+
+class TreeViewService
+  def initialize(space_id: nil)
+    @space_id = space_id
+  end
+
+  def generate_tree
+    roots = fetch_root_publications
+    roots.map { |root| build_tree_node(root) }
+  end
+
+  private
+
+  def fetch_root_publications
+    query = AdminPublication
+              .where(parent_id: nil)
+              .order(:lft)
+
+    query = filter_by_space(query) if @space_id.present?
+
+    query.includes(children: :publication)
+  end
+
+  def filter_by_space(query)
+    query.joins(<<-SQL.squish)
+      LEFT JOIN projects ON admin_publications.publication_type = 'Project' 
+                         AND admin_publications.publication_id = projects.id
+      LEFT JOIN project_folders_folders ON admin_publications.publication_type = 'ProjectFolders::Folder' 
+                                        AND admin_publications.publication_id = project_folders_folders.id
+    SQL
+    .where('projects.space_id = ? OR project_folders_folders.space_id = ?', @space_id, @space_id)
+  end
+
+  def build_tree_node(admin_publication)
+    node = {
+      id: admin_publication.publication_id,
+      type: publication_type_name(admin_publication.publication_type)
+    }
+
+    if folder?(admin_publication)
+      if admin_publication.children.any?
+        node[:children] = build_children(admin_publication.children)
+      else
+        node[:children] = []
+      end
+    end
+
+    node
+  end
+
+  def build_children(children)
+    filtered_children = filter_children_by_space(children)
+    
+    filtered_children.map do |child|
+      {
+        id: child.publication_id,
+        type: 'project'
+      }
+    end
+  end
+
+  def filter_children_by_space(children)
+    return children unless @space_id.present?
+
+    children.select do |child|
+      child.publication.is_a?(Project) && child.publication.space_id == @space_id
+    end
+  end
+
+  def folder?(admin_publication)
+    admin_publication.publication_type == 'ProjectFolders::Folder'
+  end
+
+  def publication_type_name(type)
+    type == 'ProjectFolders::Folder' ? 'folder' : 'project'
+  end
+end
