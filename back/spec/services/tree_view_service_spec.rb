@@ -22,8 +22,8 @@ describe TreeViewService do
 
         expect(result.size).to eq(2)
         expect(result).to include(
-          { id: project1.id, type: 'project' },
-          { id: project2.id, type: 'project' }
+          { id: project1.id, type: 'project', title_multiloc: project1.title_multiloc },
+          { id: project2.id, type: 'project', title_multiloc: project2.title_multiloc }
         )
       end
 
@@ -40,13 +40,18 @@ describe TreeViewService do
         expect(folder_node).to eq({
           id: folder.id,
           type: 'folder',
+          title_multiloc: folder.title_multiloc,
           children: [
-            { id: project_in_folder.id, type: 'project' }
+            { id: project_in_folder.id, type: 'project', title_multiloc: project_in_folder.title_multiloc }
           ]
         })
 
         project_node = result.find { |node| node[:id] == root_project.id }
-        expect(project_node).to eq({ id: root_project.id, type: 'project' })
+        expect(project_node).to eq({ 
+          id: root_project.id, 
+          type: 'project',
+          title_multiloc: root_project.title_multiloc
+        })
       end
 
       it 'returns folders without children when they have no projects' do
@@ -58,6 +63,7 @@ describe TreeViewService do
         expect(result.first).to eq({
           id: folder.id,
           type: 'folder',
+          title_multiloc: folder.title_multiloc,
           children: []
         })
       end
@@ -86,7 +92,11 @@ describe TreeViewService do
         result = described_class.new(space_id: space.id).generate_tree
 
         expect(result.size).to eq(1)
-        expect(result.first).to eq({ id: project_in_space.id, type: 'project' })
+        expect(result.first).to eq({ 
+          id: project_in_space.id, 
+          type: 'project',
+          title_multiloc: project_in_space.title_multiloc
+        })
       end
 
       it 'returns only folders in the specified space' do
@@ -97,6 +107,19 @@ describe TreeViewService do
 
         expect(result.size).to eq(1)
         expect(result.first[:id]).to eq(folder_in_space.id)
+      end
+
+      it 'filters children projects by space_id' do
+        folder = create(:project_folder, space: space)
+        project_in_space = create(:project, space: space, folder: folder)
+        project_in_other_space = create(:project, space: other_space)
+
+        result = described_class.new(space_id: space.id).generate_tree
+
+        expect(result.size).to eq(1)
+        folder_node = result.first
+        expect(folder_node[:children].size).to eq(1)
+        expect(folder_node[:children].first[:id]).to eq(project_in_space.id)
       end
 
       it 'handles mixed space assignments correctly' do

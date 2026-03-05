@@ -1,6 +1,3 @@
-# frozen_string_literal: true
-# filepath: /Users/work/cl/citizenlab/back/app/services/tree_view_service.rb
-
 class TreeViewService
   def initialize(space_id: nil)
     @space_id = space_id
@@ -34,9 +31,12 @@ class TreeViewService
   end
 
   def build_tree_node(admin_publication)
+    publication = admin_publication.publication
+    
     node = {
       id: admin_publication.publication_id,
-      type: publication_type_name(admin_publication.publication_type)
+      type: publication_type_name(admin_publication.publication_type),
+      title_multiloc: publication.title_multiloc
     }
 
     if folder?(admin_publication)
@@ -56,7 +56,8 @@ class TreeViewService
     filtered_children.map do |child|
       {
         id: child.publication_id,
-        type: 'project'
+        type: 'project',
+        title_multiloc: child.publication.title_multiloc
       }
     end
   end
