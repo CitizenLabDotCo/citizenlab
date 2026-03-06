@@ -78,6 +78,7 @@ export interface CampaignFormValues {
   intro_multiloc?: Multiloc;
   button_text_multiloc?: Multiloc;
   group_ids?: string[];
+  scheduled_at?: string | null;
 }
 
 export interface EditableRegion {

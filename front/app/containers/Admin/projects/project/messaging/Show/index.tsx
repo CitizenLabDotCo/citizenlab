@@ -18,9 +18,9 @@ import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useCampaign from 'api/campaigns/useCampaign';
-import useScheduleCampaign from 'api/campaigns/useScheduleCampaign';
 import useSendCampaign from 'api/campaigns/useSendCampaign';
 import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
+import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 import { isDraft, isScheduled } from 'api/campaigns/util';
 import useUserById from 'api/users/useUserById';
 
@@ -96,14 +96,14 @@ const Show = () => {
   } = useSendCampaign();
   const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
     useSendCampaignPreview();
-  const { mutate: scheduleCampaign, isLoading: isScheduling } =
-    useScheduleCampaign();
+  const { mutate: updateCampaign, isLoading: isUpdatingCampaign } =
+    useUpdateCampaign();
 
   const { data: sender } = useUserById(
     campaign?.data.relationships.author.data.id
   );
   const isLoading =
-    isSendingCampaign || isSendingCampaignPreview || isScheduling;
+    isSendingCampaign || isSendingCampaignPreview || isUpdatingCampaign;
 
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -111,7 +111,10 @@ const Show = () => {
   const handleSend = () => {
     // if the campaign is scheduled, we need to cancel the schedule ( send null ) before sending the campaign
     if (isScheduled(campaign?.data)) {
-      scheduleCampaign({ id: campaignId, scheduledAt: null });
+      updateCampaign({
+        id: campaignId,
+        campaign: { enabled: true, scheduled_at: null },
+      });
     }
     sendCampaign(campaignId);
   };
@@ -176,8 +179,11 @@ const Show = () => {
       scheduledDateTime.setSeconds(0);
 
       const scheduledAt = scheduledDateTime.toISOString();
-      scheduleCampaign(
-        { id: campaign.data.id, scheduledAt },
+      updateCampaign(
+        {
+          id: campaign.data.id,
+          campaign: { enabled: true, scheduled_at: scheduledAt },
+        },
         {
           onSuccess: () => {
             closeSchaduleModal();
@@ -189,8 +195,11 @@ const Show = () => {
   // cancel schedule campaign ( send scheduledAt as null )
   const handleCancelSchedule = () => {
     if (campaign) {
-      scheduleCampaign(
-        { id: campaign.data.id, scheduledAt: null },
+      updateCampaign(
+        {
+          id: campaign.data.id,
+          campaign: { enabled: true, scheduled_at: null },
+        },
         {
           onSuccess: () => {
             closeCancelScheduleModal();
