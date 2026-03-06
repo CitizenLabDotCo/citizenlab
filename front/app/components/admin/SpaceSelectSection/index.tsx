@@ -5,6 +5,8 @@ import { IconTooltip } from '@citizenlab/cl2-component-library';
 import useAuthUser from 'api/me/useAuthUser';
 import useSpaces from 'api/spaces/useSpaces';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import SpaceSelect from 'components/admin/SpaceSelectSection/SpaceSelect';
 
@@ -20,11 +22,12 @@ interface Props {
 }
 
 const SpaceSelectSection = ({ spaceId, disabled = false, onChange }: Props) => {
+  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
   const { data: spaces } = useSpaces();
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
 
-  if (!spaces || !isAdmin(authUser)) return null;
+  if (!spaces || !spacesEnabled || !isAdmin(authUser)) return null;
 
   return (
     <SectionField>
