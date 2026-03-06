@@ -337,19 +337,6 @@ const IdeasMap = memo<Props>(
         };
 
         mapView.hitTest(event).then((result) => {
-          // Check if the user clicked on an internal cluster label graphic.
-          // ArcGIS SDK (v4.34) creates internal label graphics for cluster text overlays.
-          // These have a `_symbol` key in their attributes and no associated layer.
-          // NOTE: `_symbol` is an undocumented ArcGIS internal — verify this still
-          // applies if upgrading @arcgis/core beyond 4.34.
-          const hitClusterLabel = result.results.some(
-            (el) =>
-              el.type === 'graphic' &&
-              el.graphic.attributes != null &&
-              '_symbol' in el.graphic.attributes &&
-              !el.graphic.layer
-          );
-
           // Find the first meaningful graphic hit (idea pin or cluster aggregate)
           const graphicHit = result.results.find(
             (el): el is __esri.GraphicHit =>
@@ -358,18 +345,8 @@ const IdeasMap = memo<Props>(
                 !!el.graphic.attributes?.cluster_count)
           );
 
-          // If we hit a cluster label but no real cluster/idea graphic,
-          // treat it as a cluster click and zoom in
           if (!graphicHit?.mapPoint) {
-            if (hitClusterLabel) {
-              goToMapLocation(
-                esriPointToGeoJson(event.mapPoint),
-                mapView,
-                mapView.zoom + 3
-              );
-            } else {
-              showSubmitPopup();
-            }
+            showSubmitPopup();
             return;
           }
 

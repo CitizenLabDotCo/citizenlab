@@ -551,13 +551,26 @@ export const showAddInputPopup = ({
 
   // Close any open UI elements
   setSelectedInput(null);
-  // Open popup using mapView.openPopup() directly — avoid creating new Popup()
+  // Pan to the clicked location, then open popup.
+  // Using mapView.openPopup() directly — avoid creating new Popup()
   // as the Popup widget class is deprecated and broken in ArcGIS SDK 4.34+.
-  mapView.openPopup({
-    title: popupTitle,
-    content: popupContentNode,
-    location: clickedPointProjected,
-  });
+  mapView
+    .goTo({ center: clickedPointProjected }, { duration: 500 })
+    .then(() => {
+      mapView.openPopup({
+        title: popupTitle,
+        content: popupContentNode,
+        location: clickedPointProjected,
+      });
+    })
+    .catch(() => {
+      // goTo can be interrupted by user interaction — still open popup
+      mapView.openPopup({
+        title: popupTitle,
+        content: popupContentNode,
+        location: clickedPointProjected,
+      });
+    });
 };
 
 // createEsriFeatureLayers
