@@ -8,7 +8,7 @@ export interface CalendarProps {
   defaultMonth?: Date;
   selectedDate?: Date;
   onChange: (date: Date) => void;
-  disabledPast: Matcher | undefined;
+  disabledPast?: Matcher | undefined;
 }
 
 export interface Props extends CalendarProps {
