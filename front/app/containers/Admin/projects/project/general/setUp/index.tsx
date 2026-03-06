@@ -692,12 +692,12 @@ const AdminProjectsProjectGeneral = () => {
                     // If a folder is chosen, the project will automatically
                     // inherit the folder's space. So we don't allow
                     // explicitly setting the space_id from the project.
-                    const clonedChange = { ...change };
-                    delete clonedChange.space_id;
                     handleProjectAttributeDiffOnChange(
-                      clonedChange,
+                      { ...change, space_id: undefined },
                       submitState
                     );
+                  } else {
+                    handleProjectAttributeDiffOnChange(change, submitState);
                   }
                 }}
                 isNewProject={isNewProject}
@@ -707,6 +707,7 @@ const AdminProjectsProjectGeneral = () => {
 
           <SpaceSelectSection
             spaceId={projectAttrs.space_id ?? null}
+            disabled={projectAttrs.folder_id !== null}
             onChange={handleSpaceSelectChange}
           />
 
