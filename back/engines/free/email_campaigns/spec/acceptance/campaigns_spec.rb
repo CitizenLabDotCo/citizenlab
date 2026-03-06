@@ -586,8 +586,9 @@ resource 'Campaigns' do
     get '/web_api/v1/campaigns/:id' do
       let(:id) { @automated_campaigns.first.id }
 
-      example_request '[Unauthorized] Get campaign of type not manageable by project moderators', document: false do
-        assert_status 401
+      example_request 'Get global campaign', document: false do
+        assert_status 200
+        expect(response_data[:id]).to eq id
       end
     end
 
@@ -706,9 +707,9 @@ resource 'Campaigns' do
         assert_status 401
       end
 
-      example '[Unauthorized] Get the delivery statistics of a sent campaign not manageable by project moderator', document: false do
+      example 'Get the delivery statistics of a sent global campaign', document: false do
         do_request(id: @automated_campaigns.second.id)
-        assert_status 401
+        assert_status 200
       end
     end
   end
