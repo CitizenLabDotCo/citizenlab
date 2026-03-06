@@ -115,7 +115,6 @@ class Project < ApplicationRecord
   validates :live_auto_input_topics_enabled, inclusion: { in: [true, false] }
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # TODO: This should always be validated!
   validate :space_must_match_folder_space
-  validate :cannot_move_to_folder_in_different_space
 
   scope :not_hidden, -> { where(hidden: false) }
 
@@ -243,7 +242,7 @@ class Project < ApplicationRecord
     return unless folder&.admin_publication&.id != parent_id
 
     folder = AdminPublication.find_by(id: parent_id)&.publication
-    self.space_id = folder.space_id if folder&.space_id.present?
+    self.space_id = folder.space_id if folder.present?
 
     build_admin_publication unless admin_publication
     folder_will_change!
@@ -302,21 +301,6 @@ class Project < ApplicationRecord
     return unless folder.present? && folder.space_id != space_id
 
     errors.add(:space_id, 'project space must match the space of its folder')
-  end
-
-  def cannot_move_to_folder_in_different_space
-    return unless persisted? && admin_publication&.parent_id_changed?
-    return if admin_publication.parent_id.blank? # Removing from folder is always OK
-
-    new_folder = AdminPublication.find_by(id: admin_publication.parent_id)&.publication
-    previous_parent_id = admin_publication.parent_id_was
-    previous_space_id = space_id_was
-
-    # Allow if project had no space and no folder (nil + nil)
-    return if previous_parent_id.blank? && previous_space_id.blank?
-
-    # Block if moving to folder with different space
-    errors.add(:folder_id, 'project space must match target folder space') if previous_space_id != new_folder.space_id
   end
 
   def sanitize_description_multiloc
