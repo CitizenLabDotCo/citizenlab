@@ -75,7 +75,7 @@ module EmailCampaigns
     end
 
     def self.content_type_multiloc_key
-      'email_campaigns.admin_labels.content_type.inputs'
+      'email_campaigns.admin_labels.content_type.content_moderation'
     end
 
     def generate_commands(recipient:, time: nil)
