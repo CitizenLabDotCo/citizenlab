@@ -246,6 +246,18 @@ lv:
           title: Kāda ir jūsu iniciatīva?
         petition:
           title: Kāda ir jūsu petīcija?
+        comment:
+          title: Kāds ir jūsu komentārs?
+        response:
+          title: Kāda ir jūsu atbilde?
+        suggestion:
+          title: Kāds ir jūsu ieteikums?
+        topic:
+          title: Kāda ir jūsu tēma?
+        post:
+          title: Kāds ir jūsu amats?
+        story:
+          title: Kāds ir jūsu stāsts?
   custom_field_options:
     gender:
       male: Vīrietis
