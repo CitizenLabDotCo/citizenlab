@@ -385,4 +385,12 @@ class ProjectsFinderAdminService
       scope.where(listed: false)
     end
   end
+
+  # Filter projects by space
+  def self.filter_space(scope, params = {})
+    space_id = params[:space_id]
+    return scope if space_id.blank?
+
+    scope.where(space_id: space_id)
+  end
 end
