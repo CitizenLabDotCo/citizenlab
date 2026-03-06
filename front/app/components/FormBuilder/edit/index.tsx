@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import {
   Box,
@@ -138,12 +138,15 @@ const FormEdit = ({
   const [isUpdatingForm, setIsUpdatingForm] = useState(false);
   // This tracks form submission and update status
   const [isSubmitting, setIsSubmitting] = useState(false);
+  // Ref for synchronous submission tracking to prevent double-clicks and concurrent saves
+  const isSubmittingRef = useRef(false);
 
   useEffect(() => {
     if (isUpdatingForm && !isFetching) {
       reset({ customFields: formCustomFields });
       setIsUpdatingForm(false);
       setIsSubmitting(false);
+      isSubmittingRef.current = false;
     }
   }, [formCustomFields, isUpdatingForm, isFetching, reset]);
 
@@ -152,11 +155,13 @@ const FormEdit = ({
     setSelectedField(undefined);
 
     // If autosave is enabled, no submission have come in yet and there are changes, save
+    // Also check isSubmittingRef to prevent autosave while a manual save is in progress
     if (
       triggerAutosave &&
       autosaveEnabled &&
       totalSubmissions === 0 &&
-      isDirty
+      isDirty &&
+      !isSubmittingRef.current
     ) {
       autosave = true;
       onFormSubmit(getValues()).then(() => {
@@ -190,6 +195,12 @@ const FormEdit = ({
   };
 
   const onFormSubmit = async ({ customFields }: FormValues) => {
+    // Prevent concurrent submissions (double-clicks, autosave during manual save, etc.)
+    if (isSubmittingRef.current) {
+      return;
+    }
+    isSubmittingRef.current = true;
+
     setSuccessMessageIsVisible(false);
     try {
       setIsSubmitting(true);
@@ -226,6 +237,7 @@ const FormEdit = ({
           : 'customFields';
       handleHookFormSubmissionError(error, setError, errorType);
       setIsSubmitting(false);
+      isSubmittingRef.current = false;
     }
   };
 

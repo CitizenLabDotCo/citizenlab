@@ -25,6 +25,7 @@ import useProjectById from 'api/projects/useProjectById';
 import { getProjectUrl } from 'api/projects/utils';
 import useReport from 'api/reports/useReport';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import AvatarBubbles from 'components/AvatarBubbles';
@@ -385,6 +386,7 @@ const ProjectCard = memo<InputProps>(
 
     const localize = useLocalize();
     const { formatMessage } = useIntl();
+    const userAvatarsEnabled = useFeatureFlag({ name: 'user_avatars' });
 
     const [visible, setVisible] = useState(false);
 
@@ -413,7 +415,8 @@ const ProjectCard = memo<InputProps>(
     const isFinished = project.data.attributes.timeline_active === 'past';
     const isArchived =
       project.data.attributes.publication_status === 'archived';
-    const showAvatarBubbles = project.data.attributes.participants_count > 0;
+    const showAvatarBubbles =
+      userAvatarsEnabled && project.data.attributes.participants_count > 0;
     const avatarIds =
       project.data.relationships.avatars &&
       project.data.relationships.avatars.data

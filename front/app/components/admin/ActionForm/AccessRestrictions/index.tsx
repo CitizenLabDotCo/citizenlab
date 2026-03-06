@@ -15,13 +15,13 @@ import CustomizeErrorMessage from './CustomizeErrorMessage';
 import GroupSelect from './GroupSelect';
 
 interface Props {
-  showAnyone?: boolean;
+  showAnyone?: 'show' | 'show-with-new-label';
   permissionData: IPermissionData;
   onChange: (changes: Changes) => void;
 }
 
 const AccessRestrictions = ({
-  showAnyone = false,
+  showAnyone,
   permissionData,
   onChange,
 }: Props) => {

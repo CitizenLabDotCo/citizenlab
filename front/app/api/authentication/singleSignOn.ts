@@ -9,7 +9,7 @@ import {
   SignUpInError,
 } from 'containers/Authentication/typings';
 
-import { getClaimTokens } from 'utils/claimToken';
+import { trackVirtualPageView } from 'utils/analytics';
 
 export interface SSOProviderMap {
   azureactivedirectory: 'azureactivedirectory';
@@ -22,6 +22,7 @@ export interface SSOProviderMap {
   id_austria: 'id_austria';
   criipto: 'criipto';
   fake_sso: 'fake_sso';
+  federa: 'federa';
   nemlog_in: 'nemlog_in';
   keycloak: 'keycloak';
   twoday: 'twoday';
@@ -47,11 +48,12 @@ export interface SSOParams {
   claim_tokens?: string[];
 }
 
-export const handleOnSSOClick = (
+export const redirectToSSOProvider = (
   provider: SSOProvider,
   metaData: AuthenticationData,
   verification: boolean,
-  flow: 'signup' | 'signin'
+  flow: 'signup' | 'signin',
+  claimTokens?: string[]
 ) => {
   if (metaData.successAction) {
     localStorage.setItem(
@@ -62,14 +64,18 @@ export const handleOnSSOClick = (
   localStorage.setItem('auth_context', JSON.stringify(metaData.context));
   localStorage.setItem('auth_path', window.location.pathname as RouteType);
 
-  setHref(provider, metaData, verification, flow);
+  // Track the SSO click as a pageView
+  trackVirtualPageView(`${window.location.pathname}/auth/sso/${provider}`);
+
+  setHref(provider, metaData, verification, flow, claimTokens);
 };
 
 function setHref(
   provider: SSOProvider,
   authenticationData: AuthenticationData,
   verification: boolean,
-  flow: 'signup' | 'signin'
+  flow: 'signup' | 'signin',
+  claimTokens?: string[]
 ) {
   const { context } = authenticationData;
 
@@ -81,7 +87,7 @@ function setHref(
     sso_verification_action: context.action,
     sso_verification_id: isProjectContext(context) ? context.id : undefined,
     sso_verification_type: context.type,
-    claim_tokens: getClaimTokens(),
+    claim_tokens: claimTokens,
   };
 
   // NOTE: SSO passthru params are not currently called for Vienna SAML login

@@ -5,6 +5,7 @@ import {
   Text,
   Icon,
   IconNames,
+  Tooltip,
   colors,
 } from '@citizenlab/cl2-component-library';
 
@@ -19,9 +20,33 @@ interface Props {
   value: number | string;
   icon: IconNames;
   change?: SevenDayChange;
+  valueTooltip?: string;
+  labelTooltip?: string;
 }
 
-const MetricCard = ({ label, value, icon, change }: Props) => {
+const ValueText = ({ value }: { value: string }) => (
+  <Text
+    as="span"
+    color="primary"
+    fontSize="xxxxl"
+    fontWeight="bold"
+    lineHeight="1.1"
+    m="0"
+    mt="8px"
+    mb="4px"
+  >
+    {value}
+  </Text>
+);
+
+const MetricCard = ({
+  label,
+  value,
+  icon,
+  change,
+  labelTooltip,
+  valueTooltip,
+}: Props) => {
   const { formatNumber } = useIntl();
   const formattedValue =
     typeof value === 'number' ? formatNumber(value) : value;
@@ -38,28 +63,25 @@ const MetricCard = ({ label, value, icon, change }: Props) => {
       gap="4px"
       boxShadow="0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
     >
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="flex-start"
-      >
-        <Text fontSize="s" color="coolGrey600" m="0">
-          {label}
-        </Text>
-        <Icon name={icon} width="20px" height="20px" fill={colors.primary} />
-      </Box>
-      <Text
-        as="span"
-        color="primary"
-        fontSize="xxxxl"
-        fontWeight="bold"
-        lineHeight="1.1"
-        m="0"
-        mt="8px"
-        mb="4px"
-      >
-        {formattedValue}
-      </Text>
+      <Tooltip content={labelTooltip} width="100%">
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="flex-start"
+        >
+          <Text fontSize="s" color="coolGrey600" m="0">
+            {label}
+          </Text>
+          <Icon name={icon} width="20px" height="20px" fill={colors.primary} />
+        </Box>
+      </Tooltip>
+      {valueTooltip ? (
+        <Tooltip content={valueTooltip} placement="top">
+          <ValueText value={formattedValue} />
+        </Tooltip>
+      ) : (
+        <ValueText value={formattedValue} />
+      )}
       {change !== undefined && <MetricTrend change={change} />}
     </Box>
   );

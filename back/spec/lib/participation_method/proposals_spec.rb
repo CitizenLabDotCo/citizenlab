@@ -45,7 +45,7 @@ RSpec.describe ParticipationMethod::Proposals do
       context 'when prescreening_mode is flagged_only' do
         let(:phase) { create(:proposals_phase, prescreening_mode: 'flagged_only') }
 
-        it 'assigns the default "prescreening" status and submitted publication_status' do
+        it 'assigns the default "proposed" status and published publication_status' do
           proposal = build(
             :proposal, creation_phase: phase, project: phase.project,
             idea_status: nil, publication_status: nil
@@ -53,8 +53,8 @@ RSpec.describe ParticipationMethod::Proposals do
 
           participation_method.assign_defaults(proposal)
 
-          expect(proposal.idea_status).to eq prescreening_status
-          expect(proposal.publication_status).to eq('submitted')
+          expect(proposal.idea_status).to eq proposed_status
+          expect(proposal.publication_status).to eq('published')
         end
       end
 

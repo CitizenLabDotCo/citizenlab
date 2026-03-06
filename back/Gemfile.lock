@@ -1,3 +1,19 @@
+GIT
+  remote: https://github.com/crmne/ruby_llm.git
+  revision: 7282f9725cb3f83eee8f0f26a0812c998f82402f
+  ref: 7282f9725cb3f83eee8f0f26a0812c998f82402f
+  specs:
+    ruby_llm (1.12.1)
+      base64
+      event_stream_parser (~> 1)
+      faraday (>= 1.10.0)
+      faraday-multipart (>= 1)
+      faraday-net_http (>= 1)
+      faraday-retry (>= 1)
+      marcel (~> 1)
+      ruby_llm-schema (~> 0)
+      zeitwerk (~> 2)
+
 PATH
   remote: engines/commercial/admin_api
   specs:
@@ -132,6 +148,13 @@ PATH
   specs:
     id_fake_sso (0.1.0)
       omniauth_openid_connect
+      rails (~> 7.2)
+
+PATH
+  remote: engines/commercial/id_federa
+  specs:
+    id_federa (1.0.0)
+      omniauth-saml (~> 2.2.0)
       rails (~> 7.2)
 
 PATH
@@ -622,7 +645,7 @@ GEM
       railties (>= 5.0.0)
     faker (3.5.1)
       i18n (>= 1.8.11, < 2)
-    faraday (2.14.0)
+    faraday (2.14.1)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
@@ -897,13 +920,13 @@ GEM
     netrc (0.11.0)
     nio4r (2.7.4)
     nkf (0.1.3)
-    nokogiri (1.18.9-aarch64-linux-gnu)
+    nokogiri (1.19.1-aarch64-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.18.9-arm64-darwin)
+    nokogiri (1.19.1-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.9-x86_64-darwin)
+    nokogiri (1.19.1-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.9-x86_64-linux-gnu)
+    nokogiri (1.19.1-x86_64-linux-gnu)
       racc (~> 1.4)
     nori (2.7.1)
       bigdecimal
@@ -1019,7 +1042,7 @@ GEM
       base64 (>= 0.2)
     que (2.3.0)
     racc (1.8.1)
-    rack (2.2.21)
+    rack (2.2.22)
     rack-attack (6.7.0)
       rack (>= 1.0, < 4)
     rack-cors (2.0.2)
@@ -1214,16 +1237,6 @@ GEM
     rubyXL (3.4.27)
       nokogiri (>= 1.10.8)
       rubyzip (>= 1.3.0)
-    ruby_llm (1.11.0)
-      base64
-      event_stream_parser (~> 1)
-      faraday (>= 1.10.0)
-      faraday-multipart (>= 1)
-      faraday-net_http (>= 1)
-      faraday-retry (>= 1)
-      marcel (~> 1.0)
-      ruby_llm-schema (~> 0.2.1)
-      zeitwerk (~> 2)
     ruby_llm-schema (0.2.5)
     rubyzip (1.3.0)
     saharspec (0.0.10)
@@ -1419,6 +1432,7 @@ DEPENDENCIES
   id_cow!
   id_criipto!
   id_fake_sso!
+  id_federa!
   id_franceconnect!
   id_gent_rrn!
   id_hoplr!
@@ -1453,7 +1467,7 @@ DEPENDENCIES
   mutex_m
   neighbor (~> 0.5.0)
   nkf
-  nokogiri (~> 1.18.9)
+  nokogiri (~> 1.19.1)
   okcomputer
   omniauth (~> 2.1.4)
   omniauth-facebook (~> 10.0.0)
@@ -1505,7 +1519,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec
   rubyXL (~> 3.4.27)
-  ruby_llm (~> 1.11.0)
+  ruby_llm!
   rubyzip (~> 1.3.0)
   saharspec
   scenic

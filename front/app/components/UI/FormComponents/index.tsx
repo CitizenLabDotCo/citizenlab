@@ -224,7 +224,7 @@ export const FormLabel = memo<
   return (
     <FormLabelStyled
       id={id}
-      as="label"
+      as={htmlFor ? 'label' : 'span'}
       className={[className, hidden ? 'invisible' : null]
         .filter((item) => item)
         .join(' ')}

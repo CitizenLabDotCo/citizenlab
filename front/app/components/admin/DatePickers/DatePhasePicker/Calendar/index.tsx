@@ -145,6 +145,7 @@ const Calendar = ({
   endMonth: _endMonth,
   defaultMonth,
   onUpdateRange,
+  className,
 }: Props) => {
   const startMonth = getStartMonth({
     startMonth: _startMonth,
@@ -213,6 +214,7 @@ const Calendar = ({
         selected={[] as any}
         onSelect={NOOP}
         timeZone={userTimezone}
+        className={className}
       />
     </DayPickerStyles>
   );

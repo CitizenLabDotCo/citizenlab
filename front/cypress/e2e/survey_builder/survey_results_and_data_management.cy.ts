@@ -148,7 +148,7 @@ describe('Survey Builder - Results and Data Management', () => {
 
     cy.contains(questionTitle).should('exist');
 
-    cy.get(`*[id^="${questionTitle}"]`).type(numberAnswer, {
+    cy.get(`*[id^="${questionTitle}"]:not([id$="-label"])`).type(numberAnswer, {
       force: true,
     });
 
@@ -192,7 +192,9 @@ describe('Survey Builder - Results and Data Management', () => {
 
     cy.contains(questionTitle).should('exist');
 
-    cy.get(`*[id^="${questionTitle}"]`).type(answer, { force: true });
+    cy.get(`*[id^="${questionTitle}"]:not([id$="-label"])`).type(answer, {
+      force: true,
+    });
 
     // Save survey response
     cy.dataCy('e2e-submit-form').should('be.visible');

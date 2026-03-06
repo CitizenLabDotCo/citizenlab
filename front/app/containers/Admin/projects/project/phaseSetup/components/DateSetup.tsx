@@ -108,6 +108,7 @@ const DateSetup = ({
             end_at: to ? format(to, 'yyyy-MM-dd') : '',
           });
         }}
+        className="intercom-admin-phase-date-setup"
       />
       <Error apiErrors={errors && errors.start_at} />
       <Error apiErrors={errors && errors.end_at} />

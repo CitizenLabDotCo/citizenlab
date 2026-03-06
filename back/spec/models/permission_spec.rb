@@ -109,10 +109,10 @@ RSpec.describe Permission do
     end
   end
 
-  describe '#user_fields_in_form_frontend_descriptor' do
+  describe '#user_fields_in_form_descriptor' do
     it 'returns locked: true and explanation if phase is not native_survey, community_monitor or ideation' do
       permission = create(:permission, action: 'taking_poll', permission_scope: create(:poll_phase))
-      descriptor = permission.user_fields_in_form_frontend_descriptor
+      descriptor = permission.user_fields_in_form_descriptor
       expect(descriptor[:value]).to be_nil
       expect(descriptor[:locked]).to be_truthy
       expect(descriptor[:explanation]).to eq('user_fields_in_form_not_supported_for_action')
@@ -123,7 +123,7 @@ RSpec.describe Permission do
 
       it 'if permitted_by is everyone and data collection is anonymous: returns locked: true, value: nil and explanation' do
         permission.update!(permitted_by: 'everyone', user_data_collection: 'anonymous')
-        descriptor = permission.user_fields_in_form_frontend_descriptor
+        descriptor = permission.user_fields_in_form_descriptor
         expect(descriptor[:value]).to be_nil
         expect(descriptor[:locked]).to be_truthy
         expect(descriptor[:explanation]).to eq('with_these_settings_cannot_ask_demographic_fields')
@@ -131,7 +131,7 @@ RSpec.describe Permission do
 
       it 'if permitted_by is everyone and data collection is not anonymous: returns locked: true, value: true and explanation' do
         permission.update!(permitted_by: 'everyone', user_data_collection: 'all_data')
-        descriptor = permission.user_fields_in_form_frontend_descriptor
+        descriptor = permission.user_fields_in_form_descriptor
         expect(descriptor[:value]).to be_truthy
         expect(descriptor[:locked]).to be_truthy
         expect(descriptor[:explanation]).to eq('cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone')
@@ -139,7 +139,7 @@ RSpec.describe Permission do
 
       it 'if permitted_by is not everyone and data collection is anonymous: returns locked: true, value: false and explanation' do
         permission.update!(permitted_by: 'users', user_data_collection: 'anonymous')
-        descriptor = permission.user_fields_in_form_frontend_descriptor
+        descriptor = permission.user_fields_in_form_descriptor
         expect(descriptor[:value]).to be_falsey
         expect(descriptor[:locked]).to be_truthy
         expect(descriptor[:explanation]).to eq('with_these_settings_can_only_ask_demographic_fields_in_registration_flow')
@@ -151,7 +151,7 @@ RSpec.describe Permission do
 
       it 'if permitted_by is everyone: returns locked: true and value: true' do
         permission.update!(permitted_by: 'everyone', user_fields_in_form: false)
-        descriptor = permission.user_fields_in_form_frontend_descriptor
+        descriptor = permission.user_fields_in_form_descriptor
         expect(descriptor[:value]).to be_truthy
         expect(descriptor[:locked]).to be_truthy
         expect(descriptor[:explanation]).to eq('cannot_ask_demographic_fields_in_registration_flow_when_permitted_by_is_everyone')
@@ -159,7 +159,7 @@ RSpec.describe Permission do
 
       it 'if permitted_by is not everyone: returns locked: false and whatever user_fields_in_form is' do
         permission.update!(permitted_by: 'users', user_fields_in_form: false)
-        descriptor = permission.user_fields_in_form_frontend_descriptor
+        descriptor = permission.user_fields_in_form_descriptor
         expect(descriptor[:value]).to be_falsey
         expect(descriptor[:locked]).to be_falsey
         expect(descriptor[:explanation]).to be_nil
@@ -167,7 +167,7 @@ RSpec.describe Permission do
 
       it 'returns locked: true and explanation if action is not posting_idea' do
         permission = create(:permission, action: 'commenting_idea', permission_scope: create(:ideation_phase))
-        descriptor = permission.user_fields_in_form_frontend_descriptor
+        descriptor = permission.user_fields_in_form_descriptor
         expect(descriptor[:value]).to be_nil
         expect(descriptor[:locked]).to be_truthy
         expect(descriptor[:explanation]).to eq('user_fields_in_form_not_supported_for_action')

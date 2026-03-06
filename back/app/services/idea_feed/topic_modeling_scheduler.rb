@@ -24,7 +24,7 @@ module IdeaFeed
       return nil unless shared_conditions_for_scheduling_met?
 
       return nil unless Time.current.in_time_zone(AppConfiguration.timezone).hour == DAILY_SCHEDULE_HOUR
-      return nil if input_increase_since_last_run < MINIMUM_INPUT_INCREASE
+      return nil if !first_run? && input_increase_since_last_run < MINIMUM_INPUT_INCREASE
 
       schedule_job!
     end
@@ -32,7 +32,7 @@ module IdeaFeed
     def on_new_input
       return nil unless shared_conditions_for_scheduling_met?
 
-      return nil if input_increase_since_last_run < INSTANT_INPUT_INCREASE
+      return nil if !first_run? && input_increase_since_last_run < INSTANT_INPUT_INCREASE
 
       schedule_job!
     end
@@ -41,7 +41,7 @@ module IdeaFeed
 
     def shared_conditions_for_scheduling_met?
       return false if phase.ideas.published.count < MINIMUM_INPUTS
-      return false if time_since_last_run < MINIMUM_INTERVAL_BETWEEN_RUNS
+      return false if !first_run? && time_since_last_run < MINIMUM_INTERVAL_BETWEEN_RUNS
 
       true
     end
@@ -62,6 +62,10 @@ module IdeaFeed
       inputs_now = phase.ideas.published.count
 
       (inputs_now - inputs_at_last_run) / inputs_at_last_run.to_f
+    end
+
+    def first_run?
+      !last_run_activity
     end
 
     def time_since_last_run

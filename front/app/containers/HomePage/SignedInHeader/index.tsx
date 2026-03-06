@@ -8,6 +8,7 @@ import useCurrentOnboardingCampaign from 'api/onboarding_campaigns/useCurrentOnb
 import useDismissOnboardingCampaign from 'api/onboarding_campaigns/useDismissOnboardingCampaign';
 
 import { IHomepageBannerSettings } from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/HomepageBanner';
+import { homepageBannerLayoutHeights } from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/HeaderImageDropzone';
 
 import {
   Container,
@@ -29,15 +30,19 @@ const VerificationOnboardingStep = lazy(
 const CustomCTAStep = lazy(() => import('./CustomCTAStep'));
 const FallbackStep = lazy(() => import('./FallbackStep'));
 
-export const heights = {
+export const defaultHeights = {
   phone: 300,
   tablet: 250,
   desktop: 200,
 };
 
-const Header = styled.div`
+const Header = styled.div<{
+  desktopHeight: number;
+  tabletHeight: number;
+  phoneHeight: number;
+}>`
   width: 100%;
-  height: ${heights.desktop}px;
+  height: ${(props) => props.desktopHeight}px;
   margin: 0;
   padding: 0;
   position: relative;
@@ -47,11 +52,11 @@ const Header = styled.div`
   justify-content: center;
 
   ${media.tablet`
-    height: ${heights.tablet}px;
+    height: ${(props) => props.tabletHeight}px;
   `}
 
   ${media.phone`
-    height: ${heights.phone}px;
+    height: ${(props) => props.phoneHeight}px;
   `}
 `;
 
@@ -79,11 +84,51 @@ const SignedInHeader = ({
   const homepageSettingOpacity =
     homepageSettings.banner_signed_in_header_overlay_opacity;
 
+  // When consistent height is enabled, use layout defaults for signed-in banner
+  const useConsistentHeight =
+    homepageSettings.banner_use_consistent_height === true;
+
+  // Get layout-specific defaults
+  const bannerLayout =
+    homepageSettings.banner_layout || 'full_width_banner_layout';
+  const layoutDefaults = homepageBannerLayoutHeights[bannerLayout];
+
+  let desktopHeight: number;
+  let tabletHeight: number;
+  let phoneHeight: number;
+
+  if (useConsistentHeight) {
+    // Use the same height as the signed-out banner (custom values if set, otherwise layout defaults)
+    desktopHeight =
+      homepageSettings.banner_signed_out_header_height_desktop ??
+      layoutDefaults.desktop;
+    tabletHeight =
+      homepageSettings.banner_signed_out_header_height_tablet ??
+      layoutDefaults.tablet;
+    phoneHeight =
+      homepageSettings.banner_signed_out_header_height_phone ??
+      layoutDefaults.phone;
+  } else {
+    // Use the custom signed-in heights, or fall back to default heights
+    desktopHeight =
+      homepageSettings.banner_signed_in_header_height_desktop ??
+      defaultHeights.desktop;
+    tabletHeight =
+      homepageSettings.banner_signed_in_header_height_tablet ??
+      defaultHeights.tablet;
+    phoneHeight =
+      homepageSettings.banner_signed_in_header_height_phone ??
+      defaultHeights.phone;
+  }
+
   if (isInitialLoading) {
     return (
       <Skeleton
         homepageSettingColor={homepageSettingColor ?? undefined}
         homepageSettingOpacity={homepageSettingOpacity ?? undefined}
+        desktopHeight={desktopHeight}
+        tabletHeight={tabletHeight}
+        phoneHeight={phoneHeight}
       />
     );
   }
@@ -100,7 +145,12 @@ const SignedInHeader = ({
       data-cy="e2e-full-width-banner-layout-container"
       className={`e2e-signed-in-header`}
     >
-      <Header id="hook-header">
+      <Header
+        id="hook-header"
+        desktopHeight={desktopHeight}
+        tabletHeight={tabletHeight}
+        phoneHeight={phoneHeight}
+      >
         <HeaderImage id="hook-header-image">
           <HeaderImageBackground
             data-testid="full-width-banner-layout-header-image"

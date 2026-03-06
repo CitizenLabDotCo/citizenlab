@@ -16,7 +16,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import { useModalQueue } from 'containers/App/ModalQueue';
 import { invalidateAllActionDescriptors } from 'containers/Authentication/useSteps/invalidateAllActionDescriptors';
 
-import { trackEventByName } from 'utils/analytics';
+import { trackEventByName, trackVirtualPageView } from 'utils/analytics';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError } from 'utils/helperUtils';
@@ -69,11 +69,13 @@ export default function useSteps() {
         queueModal('authentication');
       }
 
+      // Track the step - NOTE: SSO does not track - this needs to be done in the button - so we know what version of the button was clicked
+      trackVirtualPageView(`${pathname}/auth/${step.replace(/:/g, '/')}`);
       trackEventByName('Transition step in authentication flow', { step });
 
       _setCurrentStep(step);
     },
-    [queueModal, removeModal]
+    [queueModal, removeModal, pathname]
   );
 
   const [state, setState] = useState<State>({
@@ -83,6 +85,7 @@ export default function useSteps() {
     token: null,
     prefilledBuiltInFields: null,
     ssoProvider: null,
+    claimTokens: null,
   });
   const [loading, setLoading] = useState(false);
   const [error, _setError] = useState<ErrorCode | null>(null);

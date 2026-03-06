@@ -19,14 +19,16 @@ module IdeaFeed
         fetch_scored_candidates(eligible_ideas, n * 4)
       end
 
-      DiversityService.new.generate_list(candidates, exposures_scope, n)
+      if skip_diversity_sampling?
+        candidates.limit(n).to_a
+      else
+        DiversityService.new.generate_list(candidates, exposures_scope, n)
+      end
     end
 
     def eligible_ideas_count(scope = Idea.all)
       fetch_eligible_ideas(scope).count
     end
-
-    private
 
     def exposures_scope
       if user
@@ -35,6 +37,8 @@ module IdeaFeed
         IdeaExposure.where(visitor_hash: visitor_hash, phase: phase)
       end
     end
+
+    private
 
     def fetch_scored_candidates(scope, limit)
       scored = scope
@@ -61,6 +65,12 @@ module IdeaFeed
         .joins("LEFT JOIN (#{exposure_counts_sql}) AS exposure_counts ON exposure_counts.idea_id = ideas.id")
         .order(Arel.sql('COALESCE(exposure_counts.exposure_count, 0) ASC'))
         .limit(limit)
+    end
+
+    # This is am exceptional performance optimization in case a platform is hit
+    # pretty hard. Can be manually turned on.
+    def skip_diversity_sampling?
+      AppConfiguration.instance.settings('idea_feed', 'skip_diversity_sampling') == true
     end
 
     def fetch_eligible_ideas(scope)

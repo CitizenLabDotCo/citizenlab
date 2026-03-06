@@ -27,44 +27,40 @@ module Insights
     def phase_participation_method_metrics(participations)
       posted_ideas_count = phase_ideas.count
       total_submitted_surveys = participations[:submitting_idea].count
-      completion_rate_as_percent = completion_rate_as_percent(posted_ideas_count, total_submitted_surveys)
-      rolling_7_day_changes = rolling_7_day_changes(participations)
+      completion_rate_as_percent = posted_ideas_count > 0 ? (total_submitted_surveys.to_f / posted_ideas_count * 100).round(1) : 'submitted_count_compared_with_zero_ideas'
+      survey_7_day_changes = survey_7_day_changes(participations, posted_ideas_count)
 
       {
         surveys_submitted: total_submitted_surveys,
-        surveys_submitted_7_day_percent_change: rolling_7_day_changes[:surveys_submitted_7_day_percent_change],
+        surveys_submitted_7_day_percent_change: survey_7_day_changes[:surveys_submitted_7_day_percent_change],
         completion_rate_as_percent: completion_rate_as_percent,
-        completion_rate_7_day_percent_change: rolling_7_day_changes[:completion_rate_7_day_percent_change]
+        completion_rate_7_day_percent_change: survey_7_day_changes[:completion_rate_7_day_percent_change]
       }
     end
 
-    def completion_rate_as_percent(all, submitted)
-      return 0 if all == 0
-
-      ((submitted.to_f / all) * 100).round(1)
-    end
-
-    def rolling_7_day_changes(participations)
+    def survey_7_day_changes(participations, posted_ideas_count)
       result = {
         surveys_submitted_7_day_percent_change: nil,
         completion_rate_7_day_percent_change: nil
       }
 
-      return result unless phase_has_run_more_than_14_days?
+      return result unless phase_has_run_more_than_7_days?
 
-      ideas_last_7_days_count = phase_ideas.where(created_at: 7.days.ago..).count
-      ideas_previous_7_days_count = phase_ideas.where(created_at: 14.days.ago...7.days.ago).count
+      posted_ideas_count_7_days_ago = phase_ideas.where(created_at: ...7.days.ago).count
+      submitted_surveys_count = participations[:submitting_idea].count
+      submitted_surveys_count_7_days_ago = participations[:submitting_idea].count { |p| p[:acted_at] < 7.days.ago }
 
-      submitted_last_7_days_count = participations[:submitting_idea].count { |p| p[:acted_at] >= 7.days.ago }
-      submitted_previous_7_days_count = participations[:submitting_idea].count do |p|
-        p[:acted_at] < 7.days.ago && p[:acted_at] >= 14.days.ago
+      completion_rate_7_day_percent_change = if posted_ideas_count > 0 && posted_ideas_count_7_days_ago > 0
+        completion_rate_now = submitted_surveys_count.to_f / posted_ideas_count
+        completion_rate_7_days_ago = submitted_surveys_count_7_days_ago.to_f / posted_ideas_count_7_days_ago
+
+        percentage_change(completion_rate_7_days_ago, completion_rate_now)
+      else
+        'no_new_survey_responses_in_one_or_both_periods'
       end
 
-      completion_rate_last_7_days = completion_rate_as_percent(ideas_last_7_days_count, submitted_last_7_days_count)
-      completion_rate_previous_7_days = completion_rate_as_percent(ideas_previous_7_days_count, submitted_previous_7_days_count)
-
-      result[:surveys_submitted_7_day_percent_change] = percentage_change(submitted_previous_7_days_count, submitted_last_7_days_count)
-      result[:completion_rate_7_day_percent_change] = percentage_change(completion_rate_previous_7_days, completion_rate_last_7_days)
+      result[:surveys_submitted_7_day_percent_change] = percentage_change(submitted_surveys_count_7_days_ago, submitted_surveys_count)
+      result[:completion_rate_7_day_percent_change] = completion_rate_7_day_percent_change
 
       result
     end

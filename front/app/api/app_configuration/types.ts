@@ -141,6 +141,10 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  federa_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   nemlog_in_login?: {
     allowed: boolean;
     enabled: boolean;
@@ -278,6 +282,7 @@ export interface IAppConfigurationSettings {
   workshops?: AppConfigurationFeature;
   phase_insights?: AppConfigurationFeature;
   participation_location_tracking?: AppConfigurationFeature;
+  spaces?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

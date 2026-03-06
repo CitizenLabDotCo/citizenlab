@@ -31,7 +31,7 @@ module IdeaFeed
         creation_log = create_new_topics!(mapping, new_topics_by_id)
         removal_log = remove_obsolete_topics!(mapping, old_topics_by_id)
       else
-        creation_log = create_new_topics!({}, new_topics_by_id)
+        creation_log = create_new_topics!([], new_topics_by_id)
       end
 
       log_topics_rebalanced_activity(update_log:, creation_log:, removal_log:)
@@ -65,12 +65,12 @@ module IdeaFeed
 
     def run_map_old_to_new_topics(old_topics, new_topics)
       prompt = topic_mapping_prompt(old_topics, new_topics)
-      @llm.chat(prompt, response_schema: topic_mapping_response_schema(old_topics))
+      @llm.chat(prompt, response_schema: topic_mapping_response_schema)
     end
 
-    # Given the mapping, counts how many old topics map to the same new topic as the given old_topic_id
+    # Given the mapping, counts how many old topics map to the same new topic
     def in_count(mapping, new_topic_id)
-      mapping.values.count { |v| v['new_topic_id'] == new_topic_id }
+      mapping.count { |item| item['new_topic_id'] == new_topic_id }
     end
 
     def topic_model_response_schema
@@ -79,19 +79,23 @@ module IdeaFeed
         type: 'array',
         items: {
           type: 'object',
+          additionalProperties: false,
+          required: %w[title_multiloc description_multiloc icon problems],
           properties: {
             title_multiloc: {
               type: 'object',
+              additionalProperties: false,
               description:
               "The title of the topic in #{locales.join(', ')}",
-              properties: locales.index_with { |locale| { type: 'string', description: "The title in #{locale}" } },
-              additionalProperties: false
+              required: locales,
+              properties: locales.index_with { |locale| { type: 'string', description: "The title in #{locale}" } }
             },
             description_multiloc: {
               type: 'object',
+              additionalProperties: false,
               description: "A short description of the topic in #{locales.join(', ')}",
-              properties: locales.index_with { |locale| { type: 'string', description: "The description in #{locale}" } },
-              additionalProperties: false
+              required: locales,
+              properties: locales.index_with { |locale| { type: 'string', description: "The description in #{locale}" } }
             },
             icon: {
               type: 'string',
@@ -102,34 +106,38 @@ module IdeaFeed
               description: 'A list of mined problems or challenges that fall under this main topic.',
               items: {
                 type: 'object',
+                additionalProperties: false,
+                required: %w[title_multiloc description_multiloc],
                 properties: {
                   title_multiloc: {
                     type: 'object',
+                    additionalProperties: false,
                     description:
                     "The title of the problem in #{locales.join(', ')}. A very short problem statement.",
-                    properties: locales.index_with { |locale| { type: 'string', description: "The title in #{locale}" } },
-                    additionalProperties: false
+                    required: locales,
+                    properties: locales.index_with { |locale| { type: 'string', description: "The title in #{locale}" } }
                   },
                   description_multiloc: {
                     type: 'object',
+                    additionalProperties: false,
                     description: "A short description of the problem in #{locales.join(', ')}. An open question that invites further exploration, without leading the respondent.",
-                    properties: locales.index_with { |locale| { type: 'string', description: "The description in #{locale}" } },
-                    additionalProperties: false
+                    required: locales,
+                    properties: locales.index_with { |locale| { type: 'string', description: "The description in #{locale}" } }
                   }
-                },
-                required: %w[title_multiloc description_multiloc]
+                }
               }
             }
-          },
-          required: %w[title_multiloc description_multiloc icon],
-          additionalProperties: false
+          }
         }
       }
     end
 
     def topic_model_prompt(inputs)
       form = @phase.pmethod.custom_form
-      input_texts = Analysis::InputToText.new(custom_fields_without_topics(form)).format_all(inputs)
+      input_texts = Analysis::InputToText.new(custom_fields_without_topics(form)).format_all(
+        inputs.order(Arel.sql('RANDOM()')).limit(500),
+        truncate_values: 256
+      )
       ::Analysis::LLM::Prompt.new.fetch('idea_feed_live_topic_modeling',
         multiloc_service: MultilocService.new,
         project_description:,
@@ -147,51 +155,51 @@ module IdeaFeed
         new_topics:)
     end
 
-    def topic_mapping_response_schema(old_topics)
+    def topic_mapping_response_schema
       locales = AppConfiguration.instance.settings('core', 'locales') || ['en']
 
       {
-        type: 'object',
-        description: 'A mapping from old topic IDs to new topic IDs',
-        additionalProperties: false,
-        properties: old_topics.each_with_object({}).with_index do |(_old_topic, hash), i|
-          hash["OLD-#{i + 1}"] = {
-            type: 'object',
-            additionalProperties: false,
-            properties: {
-              new_topic_id: { type: %w[string null], description: 'The ID of the corresponding new topic (e.g. NEW-5), or null if there is no match' },
-              adjusted_topic_title_multiloc: {
-                type: 'object',
-                description: "An adjusted title of the old topic, incorporating any new nuance from the new topic, if anything. Only make a change if it is really necessary. In languages #{locales.join(', ')}",
-                properties: locales.index_with { |locale| { type: 'string', description: "The title in #{locale}" } },
-                additionalProperties: false
-              },
-              adjusted_topic_description_multiloc: {
-                type: 'object',
-                description: "An adjusted description of the old topic, incorporating any new nuance from the new topic. Only make a change if it is really necessary. In languages #{locales.join(', ')}",
-                properties: locales.index_with { |locale| { type: 'string', description: "The description in #{locale}" } },
-                additionalProperties: false
-              }
+        type: 'array',
+        description: 'A list of mappings from old topic IDs to new topic IDs. Only include items where a good match exists.',
+        items: {
+          type: 'object',
+          additionalProperties: false,
+          required: %w[old_topic_id new_topic_id],
+          properties: {
+            old_topic_id: { type: 'string', description: 'The ID of the old topic (e.g. OLD-1)' },
+            new_topic_id: { type: 'string', description: 'The ID of the corresponding new topic (e.g. NEW-5)' },
+            adjusted_topic_title_multiloc: {
+              type: 'object',
+              additionalProperties: false,
+              required: locales,
+              description: "An adjusted title of the old topic, incorporating any new nuance from the new topic, if anything. Only make a change if it is really necessary. In languages #{locales.join(', ')}",
+              properties: locales.index_with { { type: 'string' } }
             },
-            required: %w[new_topic_id]
+            adjusted_topic_description_multiloc: {
+              type: 'object',
+              additionalProperties: false,
+              required: locales,
+              description: "An adjusted description of the old topic, incorporating any new nuance from the new topic. Only make a change if it is really necessary. In languages #{locales.join(', ')}",
+              properties: locales.index_with { { type: 'string' } }
+            }
           }
-        end
+        }
       }
     end
 
     def update_changed_topics!(mapping, old_topics_by_id, new_topics_by_id)
       update_log = []
-      mapping.each do |old_topic_id, v|
-        next if v['new_topic_id'].blank?
+      mapping.each do |item|
         # If multiple old topics map to the same new topic, we don't update them
         # (but we'll remove them later)
-        next if in_count(mapping, v['new_topic_id']) != 1
+        next if in_count(mapping, item['new_topic_id']) != 1
 
-        old_topic = old_topics_by_id[old_topic_id]
-        new_topic = new_topics_by_id[v['new_topic_id']]
+        old_topic = old_topics_by_id[item['old_topic_id']]
+        new_topic = new_topics_by_id[item['new_topic_id']]
+        next unless old_topic && new_topic # LLM might return mappings to non-existing topics, in which case we skip the update
 
-        new_title_multiloc = v['adjusted_topic_title_multiloc'] || new_topic['title_multiloc']
-        new_description_multiloc = v['adjusted_topic_description_multiloc'] || new_topic['description_multiloc']
+        new_title_multiloc = item['adjusted_topic_title_multiloc'] || new_topic['title_multiloc']
+        new_description_multiloc = item['adjusted_topic_description_multiloc'] || new_topic['description_multiloc']
 
         InputTopic.transaction do
           if old_topic.title_multiloc != new_title_multiloc || old_topic.description_multiloc != new_description_multiloc
@@ -271,16 +279,17 @@ module IdeaFeed
     def remove_obsolete_topics!(mapping, old_topics_by_id)
       removal_log = []
 
-      obsolete_old_topic_ids = mapping
-        .filter { |_, v| v['new_topic_id'].blank? || in_count(mapping, v['new_topic_id']) != 1 }
-        .keys
-      obsolete_old_topic_ids.uniq.each do |old_topic_id|
-        old_topic = old_topics_by_id[old_topic_id]
+      # Old topics with a unique 1:1 mapping are kept; all others are obsolete
+      kept_old_topic_ids = mapping
+        .select { |item| in_count(mapping, item['new_topic_id']) == 1 }
+        .pluck('old_topic_id')
+
+      old_topics_by_id.each do |old_topic_id, old_topic|
+        next if kept_old_topic_ids.include?(old_topic_id)
+
         # Destroying a root topic also destroys its children via dependent: :destroy
         old_topic.destroy!
-        removal_log << {
-          topic_id: old_topic.id
-        }
+        removal_log << { topic_id: old_topic.id }
       end
       removal_log
     end

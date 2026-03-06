@@ -61,7 +61,7 @@ export interface FormValues {
   nav_bar_item_title_multiloc?: Multiloc;
   slug?: string;
   projects_filter_type: ProjectsFilterTypes;
-  topic_ids?: string[];
+  global_topic_ids?: string[];
   area_id?: string | null;
 }
 
@@ -131,10 +131,10 @@ const CustomPageSettingsForm = ({
         .required(formatMessage(messages.slugRequiredError)),
     }),
     projects_filter_type: string().oneOf(projectsFilterTypesArray).required(),
-    topic_ids: array()
+    global_topic_ids: array()
       .nullable()
       .when('projects_filter_type', ([value]) => {
-        if (value === 'topics') {
+        if (value === 'global_topics') {
           return array()
             .of(string())
             .min(1, formatMessage(messages.atLeastOneTag));
@@ -304,7 +304,7 @@ const CustomPageSettingsForm = ({
                       {methods.watch('projects_filter_type') === 'topics' && (
                         <SelectContainer mb="30px">
                           <MultipleSelect
-                            name="topic_ids"
+                            name="global_topic_ids"
                             options={mapFilterEntityToOptions(topics.data)}
                             label={formatMessage(messages.selectedTagsLabel)}
                           />

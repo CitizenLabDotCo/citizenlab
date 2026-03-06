@@ -23,6 +23,7 @@ import {
 import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import AvatarBubbles from 'components/AvatarBubbles';
@@ -320,6 +321,7 @@ const ProjectFolderCard = memo<Props>(
     const isSmallerThanPhone = useBreakpoint('phone');
     const { data: projectFolder } = useProjectFolderById(folderId);
     const localize = useLocalize();
+    const userAvatarsEnabled = useFeatureFlag({ name: 'user_avatars' });
 
     // We use this hook instead of useProjectFolderImages
     // because that one doesn't work well with our caching system
@@ -368,6 +370,7 @@ const ProjectFolderCard = memo<Props>(
           )
         : [];
     const showAvatarBubbles =
+      userAvatarsEnabled &&
       projectFolder.data.attributes.participants_count > 0;
     const folderImageAltText = localize(
       projectFolderImage?.data.attributes.alt_text_multiloc

@@ -246,6 +246,18 @@ en:
           title: What is your initiative?
         petition:
           title: What is your petition?
+        comment:
+          title: What is your comment?
+        response:
+          title: What is your response?
+        suggestion:
+          title: What is your suggestion?
+        topic:
+          title: What is your topic?
+        post:
+          title: What is your post?
+        story:
+          title: What is your story?
   custom_field_options:
     gender:
       male: Male
