@@ -11,7 +11,7 @@ describe EmailCampaigns::CampaignPolicy do
   let!(:global_campaign) { create(:comment_on_your_comment_campaign, context: nil) }
   let!(:context_campaign) { create(:comment_on_your_comment_campaign, context: phase) }
 
-  context 'for a global campaigns' do
+  context 'for global campaigns' do
     let(:campaign) { global_campaign }
 
     context 'for a visitor' do
