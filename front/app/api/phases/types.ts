@@ -191,7 +191,13 @@ export type InputTerm =
   | 'contribution'
   | 'proposal'
   | 'initiative'
-  | 'petition';
+  | 'petition'
+  | 'comment'
+  | 'response'
+  | 'suggestion'
+  | 'topic'
+  | 'post'
+  | 'story';
 
 export type PresentationMode = 'card' | 'map' | 'feed';
 
