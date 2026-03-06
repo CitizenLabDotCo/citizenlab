@@ -29,10 +29,4 @@ class SpacePolicy < ApplicationPolicy
   def destroy?
     active_admin?
   end
-
-  private
-
-  def active_admin?
-    user&.admin? && user.active?
-  end
 end
