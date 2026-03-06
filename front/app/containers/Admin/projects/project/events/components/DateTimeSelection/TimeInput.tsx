@@ -19,9 +19,14 @@ const BUTTON_HEIGHT = 45;
 interface Props {
   selectedTime: Date;
   onChange: (newDate: Date) => void;
+  selectedDate?: Date;
 }
 
-const TimeInput = ({ selectedTime, onChange }: Props) => {
+const TimeInput = ({
+  selectedTime,
+  onChange,
+  selectedDate = undefined,
+}: Props) => {
   const [visible, setVisible] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const locale = useLocale();
@@ -42,6 +47,21 @@ const TimeInput = ({ selectedTime, onChange }: Props) => {
     timeIndexRef.current = timeIndex;
   });
 
+  // Check if selected date is today
+  const isToday = selectedDate
+    ? new Date(selectedDate).toDateString() === new Date().toDateString()
+    : false;
+
+  // Filter times based on whether it's today
+  const availableTimes = isToday
+    ? TIMES.filter((time) => {
+        const now = new Date();
+        const currentHour = now.getHours();
+        const timeHour = time.getHours();
+        return timeHour > currentHour;
+      })
+    : TIMES;
+
   // Make sure the selected time is centered inside
   // of the scroll container
   useEffect(() => {
@@ -60,6 +80,7 @@ const TimeInput = ({ selectedTime, onChange }: Props) => {
     newDate.setHours(hour);
     newDate.setMinutes(minute);
     onChange(newDate);
+    setVisible(false);
   };
 
   return (
@@ -75,7 +96,7 @@ const TimeInput = ({ selectedTime, onChange }: Props) => {
           maxHeight={`${5 * BUTTON_HEIGHT}px`}
           overflowY="scroll"
         >
-          {TIMES.map((time, i) => (
+          {availableTimes.map((time, i) => (
             <Button
               key={i}
               buttonStyle="text"

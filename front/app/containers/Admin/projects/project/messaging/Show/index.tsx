@@ -41,9 +41,9 @@ import Warning from 'components/UI/Warning';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
+import TimeInput from '../../events/components/DateTimeSelection/TimeInput';
 import messages from '../messages';
 
-import TimeInputScheduling from './TimeInputScheduling';
 import { getTimezoneOffset, getDefaultTime } from './utils';
 const StampIcon = styled(Stamp)`
   margin-right: 20px;
@@ -455,7 +455,7 @@ const Show = () => {
                   placement="right"
                   disabledPast={{ before: new Date() }}
                 />
-                <TimeInputScheduling
+                <TimeInput
                   selectedTime={selectedTime}
                   onChange={handleTimeChange}
                   selectedDate={selectedDate}

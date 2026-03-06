@@ -21,23 +21,3 @@ export const getDefaultTime = () => {
   date.setHours(7, 0, 0, 0);
   return date;
 };
-
-// Generate times in 5 minute intervals for the time selector
-export const generateTimes = () => {
-  const times: Date[] = [];
-
-  for (let hour = 0; hour < 24; hour++) {
-    for (let minute = 0; minute < 60; minute += 5) {
-      const date = new Date();
-      date.setHours(hour);
-      date.setMinutes(minute);
-      date.setSeconds(0);
-      date.setMilliseconds(0);
-
-      times.push(date);
-    }
-  }
-  return times;
-};
-
-export const TIMES = generateTimes();
