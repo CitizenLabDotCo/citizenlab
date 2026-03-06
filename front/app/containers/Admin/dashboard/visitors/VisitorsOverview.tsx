@@ -15,6 +15,7 @@ import { START_DATE_SESSION_DATA_COLLECTION } from '../constants';
 
 import Charts from './Charts';
 import messages from './messages';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 interface Props {
   defaultStartDate: Moment;
@@ -28,6 +29,10 @@ const VisitorsOverview = ({ defaultStartDate }: Props) => {
   const [projectId, setProjectId] = useState<string | undefined>();
   const [resolution, setResolution] = useState<IResolution>('month');
   const { formatMessage } = useIntl();
+
+  const { data: appConfig } = useAppConfiguration();
+  const showVisitorDataBanner =
+    appConfig && appConfig.data.attributes.created_at < '2024-12-01T00:00:00Z';
 
   const handleChangeTimeRange = (
     startAtMoment: Moment | null,
@@ -58,7 +63,11 @@ const VisitorsOverview = ({ defaultStartDate }: Props) => {
           minDate={moment(START_DATE_SESSION_DATA_COLLECTION)}
           // Filtering visitor data by project is not allowed because the data is not available. For more details, refer to: https://www.notion.so/govocal/Gent-is-struggling-to-access-the-data-on-their-visitor-dashboard-cecae17322a24ccdb4bd938a511159cc?d=78857b76019144ee97b6bd8de960ead1
           showProjectFilter={false}
-          timeControlTooltip={formatMessage(messages.visitorDataBanner)}
+          timeControlTooltip={
+            showVisitorDataBanner
+              ? formatMessage(messages.visitorDataBanner)
+              : undefined
+          }
         />
       </Box>
       <Charts

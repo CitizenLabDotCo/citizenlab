@@ -14,6 +14,7 @@ import { toBackendDateString, parseBackendDateString } from 'utils/dateUtils';
 
 import Charts from './Charts';
 import messages from './messages';
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 const TrafficDatesRange = ({
   defaultStartDate,
@@ -23,6 +24,9 @@ const TrafficDatesRange = ({
   defaultEndDate: string | undefined;
 }) => {
   const { projectId } = useParams() as { projectId: string };
+  const { data: appConfig } = useAppConfiguration();
+  const showVisitorDataBanner =
+    appConfig && appConfig.data.attributes.created_at < '2024-12-01T00:00:00Z';
 
   const { formatMessage } = useIntl();
 
@@ -48,10 +52,12 @@ const TrafficDatesRange = ({
                 setEndAt(toBackendDateString(to));
               }}
             />
-            <IconTooltip
-              ml="12px"
-              content={formatMessage(messages.visitorDataBanner)}
-            />
+            {showVisitorDataBanner && (
+              <IconTooltip
+                ml="12px"
+                content={formatMessage(messages.visitorDataBanner)}
+              />
+            )}
           </Box>
           <ResolutionControl value={resolution} onChange={setResolution} />
         </Box>
