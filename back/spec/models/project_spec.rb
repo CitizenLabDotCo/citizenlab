@@ -103,6 +103,83 @@ RSpec.describe Project do
     end
   end
 
+  describe 'cannot_move_to_folder_in_different_space validation' do
+    let(:space_a) { create(:space) }
+    let(:space_b) { create(:space) }
+    let(:folder_in_space_a) { create(:project_folder, space: space_a) }
+    let(:folder_in_space_b) { create(:project_folder, space: space_b) }
+    let(:another_folder_in_space_a) { create(:project_folder, space: space_a) }
+
+    it 'is valid when removing a project from a folder in a space' do
+      project = create(:project, space: space_a, folder: folder_in_space_a)  
+      project.folder_id = nil
+
+      expect(project).to be_valid
+      expect(project.space_id).to eq(space_a.id)
+      expect(project.folder_id).to be_nil
+    end
+
+    it 'is valid when moving a project in no space to a folder in a space' do
+      project = create(:project, space: nil)
+      project.folder_id = folder_in_space_a.id
+
+      expect(project).to be_valid
+    end
+
+    it 'is valid when moving a project in no space to a folder in no space' do
+      folder_without_space = create(:project_folder, space: nil)
+      project = create(:project, space: nil)
+      
+      project.folder_id = folder_without_space.id
+
+      expect(project).to be_valid
+    end
+
+    it 'is valid when moving a project to a folder in the same space' do
+      project = create(:project, space: space_a, folder: folder_in_space_a)
+      project.folder_id = another_folder_in_space_a.id
+
+      expect(project).to be_valid
+    end
+
+    it '[error] is invalid when moving a project from one space to a folder in a different space' do
+      project = create(:project, space: space_a)
+      project.folder_id = folder_in_space_b.id
+
+      expect(project).to be_invalid
+      expect(project.errors[:folder_id]).to include('project space must match target folder space')
+    end
+
+    it '[error] is invalid when moving a project from a space to a folder with no space' do
+      folder_without_space = create(:project_folder, space: nil)
+      project = create(:project, space: space_a)
+      
+      project.folder_id = folder_without_space.id
+      
+      expect(project).to be_invalid
+      expect(project.errors[:folder_id]).to include('project space must match target folder space')
+    end
+
+    it '[error] is invalid when moving a project from a folder in one space to a folder in another space' do
+      project = create(:project, space: space_a, folder: folder_in_space_a)
+      project.folder_id = folder_in_space_b.id
+
+      expect(project).to be_invalid
+      expect(project.errors[:folder_id]).to include('project space must match target folder space')
+    end
+
+    it 'does not run validation on new (non-persisted) projects' do
+      # This should be caught by space_must_match_folder_space instead
+      project = build(:project, folder: folder_in_space_b)
+      project.space_id = space_a.id  # Manually override to create mismatch
+
+      # The project is invalid, but not because of cannot_move_to_folder_in_different_space
+      expect(project).to be_invalid
+      expect(project.errors[:space_id]).to include('project space must match the space of its folder')
+      expect(project.errors[:folder_id]).to be_empty
+    end
+  end
+
   describe 'Project without admin publication' do
     it 'is invalid' do
       project = create(:project)
