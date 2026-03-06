@@ -690,8 +690,8 @@ const AdminProjectsProjectGeneral = () => {
                 onProjectAttributesDiffChange={(change, submitState) => {
                   if (change.folder_id) {
                     // If a folder is chosen, the project will automatically
-                    // inherit the folder's space. So we don't allow
-                    // explicitly setting the space_id from the project.
+                    // inherit the folder's space. So we clear
+                    // any previously chosen space.
                     handleProjectAttributeDiffOnChange(
                       { ...change, space_id: undefined },
                       submitState
