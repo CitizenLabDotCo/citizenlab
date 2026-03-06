@@ -237,16 +237,20 @@ class Project < ApplicationRecord
   end
 
   def folder_id=(id)
-    parent_id = AdminPublication.find_by(publication_type: 'ProjectFolders::Folder', publication_id: id)&.id
-    raise ActiveRecord::RecordNotFound if id.present? && parent_id.nil?
-    return unless folder&.admin_publication&.id != parent_id
+    target_admin_publication_parent = AdminPublication.find_by(publication_type: 'ProjectFolders::Folder', publication_id: id)
+    raise ActiveRecord::RecordNotFound if id.present? && target_admin_publication_parent.nil?
 
-    folder = AdminPublication.find_by(id: parent_id)&.publication
-    self.space_id = folder.space_id if folder.present?
+    current_admin_publication_parent = admin_publication&.parent
+
+    # If target is the same as current, do nothing
+    return if current_admin_publication_parent&.id == target_admin_publication_parent&.id
+
+    target_folder = target_admin_publication_parent&.publication
+    self.space_id = target_folder&.space_id if target_folder.present?
 
     build_admin_publication unless admin_publication
     folder_will_change!
-    admin_publication.assign_attributes(parent_id: parent_id)
+    admin_publication.assign_attributes(parent_id: target_admin_publication_parent&.id)
   end
 
   def folder_changed?
@@ -297,7 +301,6 @@ class Project < ApplicationRecord
   end
 
   def space_must_match_folder_space
-    folder = admin_publication&.parent&.publication
     return unless folder.present? && folder.space_id != space_id
 
     errors.add(:space_id, 'project space must match the space of its folder')
