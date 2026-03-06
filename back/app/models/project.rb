@@ -301,10 +301,6 @@ class Project < ApplicationRecord
     folder = admin_publication&.parent&.publication
     return unless folder.present? && folder.space_id != space_id
 
-    # Skip during folder transitions on existing projects.
-    # That case is handled by the cannot_move_to_folder_in_different_space validation.
-    return if persisted? && admin_publication&.parent_id_changed?
-
     errors.add(:space_id, 'project space must match the space of its folder')
   end
 
