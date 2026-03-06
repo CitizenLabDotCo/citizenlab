@@ -332,10 +332,14 @@ const IdeasMap = memo<Props>(
 
         mapView.hitTest(event).then((result) => {
           // Check if the user clicked on an internal cluster label graphic.
-          // These are ArcGIS rendering artifacts that only have `_symbol` and no layer.
+          // ArcGIS SDK (v4.34) creates internal label graphics for cluster text overlays.
+          // These have a `_symbol` key in their attributes and no associated layer.
+          // NOTE: `_symbol` is an undocumented ArcGIS internal — verify this still
+          // applies if upgrading @arcgis/core beyond 4.34.
           const hitClusterLabel = result.results.some(
             (el) =>
               el.type === 'graphic' &&
+              el.graphic.attributes != null &&
               '_symbol' in el.graphic.attributes &&
               !el.graphic.layer
           );
