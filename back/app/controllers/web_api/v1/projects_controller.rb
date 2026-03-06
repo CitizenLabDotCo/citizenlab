@@ -398,12 +398,7 @@ class WebApi::V1::ProjectsController < ApplicationController
   def save_project(project)
     # Update folder_id only if it is provided in the request (even if it's nil)
     if params[:project].key?(:folder_id)
-      begin
-        project.folder_id = params.dig(:project, :folder_id)
-      rescue ActiveRecord::RecordInvalid => e
-        project.errors.merge!(e.record.errors)
-        return false
-      end
+      project.folder_id = params.dig(:project, :folder_id)
     end
 
     ActiveRecord::Base.transaction do

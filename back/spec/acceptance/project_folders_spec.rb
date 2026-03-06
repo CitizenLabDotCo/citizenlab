@@ -243,14 +243,24 @@ resource 'ProjectFolder' do
 
         let(:id) { folder.id }
 
-        example "Contained projects are also moved into the folder's new space" do
+        example "Contained projects are set to folder's space when folder in no space is added to a space" do
           do_request project_folder: { space_id: space.id }
 
           expect(folder.reload.space_id).to eq space.id
           expect(project_in_folder.reload.space_id).to eq space.id
         end
 
-        example "Contained projects are also removed from the folder's old space" do
+        example "Contained projects are set to folder's space when the folder is moved to another space" do
+          new_space = create(:space)
+          folder.update!(space: space)
+
+          do_request project_folder: { space_id: new_space.id }
+
+          expect(folder.reload.space_id).to eq new_space.id
+          expect(project_in_folder.reload.space_id).to eq new_space.id
+        end
+
+        example "Contained projects updated to no space when the folder's space is removed" do
           folder.update!(space: space)
 
           do_request project_folder: { space_id: nil }
