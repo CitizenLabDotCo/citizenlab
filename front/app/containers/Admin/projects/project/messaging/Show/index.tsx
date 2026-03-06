@@ -44,7 +44,8 @@ import { getFullName } from 'utils/textUtils';
 import TimeInput from '../../events/components/DateTimeSelection/TimeInput';
 import messages from '../messages';
 
-import { getTimezoneOffset, getDefaultTime } from './utils';
+import { getDefaultTime } from './utils';
+
 const StampIcon = styled(Stamp)`
   margin-right: 20px;
 `;
@@ -163,7 +164,7 @@ const Show = () => {
     }
     return getDefaultTime();
   });
-  const [openSchaduleModal, setOpenSchaduleModal] = useState(false);
+  const [openScheduleModal, setOpenScheduleModal] = useState(false);
   const [openCancelScheduleModal, setOpenCancelScheduleModal] = useState(false);
   const [openedDropdown, setOpenedDropdown] = useState(false);
 
@@ -183,7 +184,7 @@ const Show = () => {
         },
         {
           onSuccess: () => {
-            closeSchaduleModal();
+            closeScheduleModal();
           },
         }
       );
@@ -226,20 +227,20 @@ const Show = () => {
   const handleTimeChange = (time: Date) => {
     setSelectedTime(time);
   };
-  const handleOpenSchaduleModal = () => {
+  const handleOpenScheduleModal = () => {
     // if email is already scheduled set the default value to scheduled date and time
     if (campaign?.data.attributes.scheduled_at) {
       const scheduledDate = new Date(campaign.data.attributes.scheduled_at);
       setSelectedDate(scheduledDate);
       setSelectedTime(scheduledDate);
     }
-    setOpenSchaduleModal(true);
+    setOpenScheduleModal(true);
   };
-  const closeSchaduleModal = () => {
+  const closeScheduleModal = () => {
     // reset selected date and time when closing the modal
     setSelectedDate(undefined);
     setSelectedTime(getDefaultTime());
-    setOpenSchaduleModal(false);
+    setOpenScheduleModal(false);
   };
   const handleCancelScheduleModal = () => {
     setOpenCancelScheduleModal(true);
@@ -349,7 +350,7 @@ const Show = () => {
                         {isDraft(campaign.data) && (
                           <Button
                             onClick={() => {
-                              handleOpenSchaduleModal();
+                              handleOpenScheduleModal();
                               setOpenedDropdown(false);
                             }}
                             buttonStyle="text"
@@ -362,7 +363,7 @@ const Show = () => {
                         {campaign.data.attributes.scheduled_at && (
                           <>
                             <Button
-                              onClick={handleOpenSchaduleModal}
+                              onClick={handleOpenScheduleModal}
                               buttonStyle="text"
                               justify="left"
                               bgHoverColor={colors.background}
@@ -438,7 +439,7 @@ const Show = () => {
             <SentCampaignDetails campaignId={campaign.data.id} />
           )}
         </Box>
-        <Modal opened={openSchaduleModal} close={closeSchaduleModal}>
+        <Modal opened={openScheduleModal} close={closeScheduleModal}>
           <Title>
             <FormattedMessage {...messages.scheduleSendTitle} />
           </Title>
@@ -460,7 +461,7 @@ const Show = () => {
                   onChange={handleTimeChange}
                   selectedDate={selectedDate}
                 />
-                <Text fontSize="l">{getTimezoneOffset(timeZone)}</Text>
+                <Text fontSize="l">{timeZone}</Text>
               </Box>
               <Warning mt="24px">
                 <Text mt="12px" fontSize="m">

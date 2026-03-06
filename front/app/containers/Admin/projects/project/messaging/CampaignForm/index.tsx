@@ -249,23 +249,15 @@ const CampaignForm = ({
           </SectionField>
         </StyledSection>
         <Box display="flex">
-          {isScheduledSavedCampaign ? (
-            <Button
-              id="e2e-campaign-form-save-button"
-              type="submit"
-              processing={isLoading}
-            >
-              {formatMessage(messages.save)}
-            </Button>
-          ) : (
-            <Button
-              id="e2e-campaign-form-save-button"
-              type="submit"
-              processing={isLoading}
-            >
-              {formatMessage(messages.formSave)}
-            </Button>
-          )}
+          <Button
+            id="e2e-campaign-form-save-button"
+            type="submit"
+            processing={isLoading}
+          >
+            {isScheduledSavedCampaign
+              ? formatMessage(messages.save)
+              : formatMessage(messages.formSave)}
+          </Button>
         </Box>
       </form>
     </FormProvider>
