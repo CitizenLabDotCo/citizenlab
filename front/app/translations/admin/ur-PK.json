@@ -2445,6 +2445,7 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "ان پٹ کی زیادہ سے زیادہ تعداد جو ایک حصہ لینے والا پسند کر سکتا ہے (خیال میں) یا ووٹ دے سکتا ہے (تجاویز میں)",
   "app.containers.AdminPage.ProjectEdit.limited": "محدود",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "فہرست کا منظر ہمیشہ دستیاب ہوتا ہے اور اسے غیر فعال نہیں کیا جا سکتا۔",
+  "app.containers.AdminPage.ProjectEdit.listViewDescription1": "رجحانات، رد عمل، تبصرے، تاریخ، یا سرگرمی کے لحاظ سے ترتیب کردہ ان پٹس کو سکرول کے قابل فیڈ کے طور پر دکھایا جاتا ہے۔ کے لیے بہترین: چھوٹی مشاورت۔",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "فہرست کا نظارہ",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "مزید ٹیمپلیٹس لوڈ کریں۔",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "پہلے سے طے شدہ بنائیں",

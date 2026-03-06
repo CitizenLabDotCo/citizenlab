@@ -2445,6 +2445,7 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Nombre de \"j'aime\" par participant",
   "app.containers.AdminPage.ProjectEdit.limited": "Limité",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "La vue en liste est toujours disponible et ne peut pas être désactivée.",
+  "app.containers.AdminPage.ProjectEdit.listViewDescription1": "Les contributions sont affichées sous forme de liste, triable par tendance, réactions, commentaires, date ou activité. Idéal pour : les consultations à petite échelle.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Vue de la liste",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Voir plus de modèles",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Rendre par défaut",

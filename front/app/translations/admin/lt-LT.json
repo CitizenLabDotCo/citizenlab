@@ -2445,6 +2445,7 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Vienam dalyviui tenkančių \"patinka\" paspaudimų skaičius",
   "app.containers.AdminPage.ProjectEdit.limited": "Ribotas",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "Sąrašo rodinys yra visada prieinamas ir jo negalima išjungti.",
+  "app.containers.AdminPage.ProjectEdit.listViewDescription1": "Įvestys rodomos kaip slenkantis kanalas, surūšiuotas pagal tendencijas, reakcijas, komentarus, datą arba veiklą. Geriausiai tinka: mažesnėms konsultacijoms.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Sąrašo rodinys",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Įkelti daugiau šablonų",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Nustatykite numatytąsias nuostatas",
