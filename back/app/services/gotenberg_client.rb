@@ -16,7 +16,7 @@ class GotenbergClient
   end
 
   def initialize
-    @api_url = ENV.fetch('GOTENBURG_PDF_URL', 'http://gotenberg:3000')
+    @api_url = ENV.fetch('GOTENBERG_PDF_URL', 'http://gotenberg:3000')
   end
 
   # Use Gotenberg web service (separate docker container) to render html to PDF

@@ -9,7 +9,7 @@ RSpec.describe GotenbergClient do
 
   describe '#render_html_to_pdf' do
     it 'raises HttpError on non-2xx response' do
-      url = "#{ENV.fetch('GOTENBURG_PDF_URL', 'http://gotenberg:3000')}/forms/chromium/convert/html"
+      url = "#{ENV.fetch('GOTENBERG_PDF_URL', 'http://gotenberg:3000')}/forms/chromium/convert/html"
       stub_request(:post, url).to_return(status: 500, body: 'Internal Server Error')
 
       expect { client.render_html_to_pdf('<html></html>') }
