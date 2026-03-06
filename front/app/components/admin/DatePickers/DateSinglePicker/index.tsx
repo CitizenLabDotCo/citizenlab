@@ -19,7 +19,7 @@ const DateSinglePicker = ({
   defaultMonth,
   placement,
   onChange,
-  disabledDates,
+  disabledPast = undefined,
 }: Props) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
 
@@ -36,7 +36,7 @@ const DateSinglePicker = ({
               startMonth={startMonth}
               endMonth={endMonth}
               defaultMonth={defaultMonth}
-              disabledDates={disabledDates}
+              disabledPast={disabledPast}
               onChange={(date) => {
                 // We don't allow deselecting dates
                 // TODO: Fix this the next time the file is edited.

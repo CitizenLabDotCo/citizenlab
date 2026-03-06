@@ -44,7 +44,7 @@ import { getFullName } from 'utils/textUtils';
 import messages from '../messages';
 
 import TimeInputScheduling from './TimeInputScheduling';
-import { getTimezoneOffset, getDefaultTime, isPastDate } from './utils';
+import { getTimezoneOffset, getDefaultTime } from './utils';
 const StampIcon = styled(Stamp)`
   margin-right: 20px;
 `;
@@ -452,8 +452,8 @@ const Show = () => {
                   onChange={handleDateChange}
                   selectedDate={selectedDate}
                   startMonth={new Date()}
-                  disabledDates={isPastDate}
                   placement="right"
+                  disabledPast={{ before: new Date() }}
                 />
                 <TimeInputScheduling
                   selectedTime={selectedTime}

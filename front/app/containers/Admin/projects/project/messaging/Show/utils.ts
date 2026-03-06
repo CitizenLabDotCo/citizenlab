@@ -22,15 +22,6 @@ export const getDefaultTime = () => {
   return date;
 };
 
-// Disable past dates in the date picker to prevent scheduling campaigns in the past
-export const isPastDate = (date: Date) => {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const compareDate = new Date(date);
-  compareDate.setHours(0, 0, 0, 0);
-  return compareDate < today;
-};
-
 // Generate times in 5 minute intervals for the time selector
 export const generateTimes = () => {
   const times: Date[] = [];
