@@ -416,8 +416,8 @@ resource 'Projects' do
           expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
         end
 
-        context 'space involved' do
-          context 'project not in folder and not in space' do
+        context 'when space involved' do
+          context 'when project not in folder and not in space' do
             before do
               @project.update!(folder_id: nil, space_id: nil)
             end
@@ -451,7 +451,7 @@ resource 'Projects' do
             end
           end
 
-          context 'project not in space and in folder not in space' do
+          context 'when project not in space and in folder not in space' do
             before do
               @folder = create(:project_folder, space: nil, projects: [@project])
             end
@@ -493,7 +493,7 @@ resource 'Projects' do
             end
           end
 
-          context 'project in space and not in folder' do
+          context 'when project in space and not in folder' do
             before do
               @space = create(:space)
               @project.update!(space_id: @space.id)
@@ -551,7 +551,7 @@ resource 'Projects' do
             end
           end
 
-          context 'project in folder in space' do
+          context 'when project in folder in space' do
             before do
               @space = create(:space)
               folder = create(:project_folder, space: @space, projects: [@project])
