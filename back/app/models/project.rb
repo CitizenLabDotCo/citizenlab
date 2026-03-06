@@ -299,8 +299,7 @@ class Project < ApplicationRecord
 
   def space_must_match_folder_space
     folder = admin_publication&.parent&.publication
-    return unless folder.is_a?(ProjectFolders::Folder)
-    return if folder.space_id == space_id
+    return unless folder.present? && folder.space_id != space_id
 
     # Skip during folder transitions on existing projects.
     # That case is handled by the cannot_move_to_folder_in_different_space validation.
