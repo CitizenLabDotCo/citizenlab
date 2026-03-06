@@ -84,12 +84,4 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.pagesPerFormRequired',
     defaultMessage: 'Please enter the number of pages per form',
   },
-  pagesPerFormMin: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.pagesPerFormMin',
-    defaultMessage: 'Must be at least 1',
-  },
-  pagesPerFormInteger: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.pagesPerFormInteger',
-    defaultMessage: 'Must be a whole number',
-  },
 });

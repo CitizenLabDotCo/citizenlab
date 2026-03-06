@@ -99,11 +99,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
       )
       .when('multiple_forms', {
         is: true,
-        then: (s) =>
-          s
-            .required(formatMessage(messages.pagesPerFormRequired))
-            .min(1, formatMessage(messages.pagesPerFormMin))
-            .integer(formatMessage(messages.pagesPerFormInteger)),
+        then: (s) => s.required(formatMessage(messages.pagesPerFormRequired)),
       }),
   });
 
@@ -209,6 +205,8 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
                   name="pages_per_form"
                   type="number"
                   label={formatMessage(messages.pagesPerFormLabel)}
+                  min="1"
+                  step="1"
                 />
 
                 <Text fontSize="s" color="textSecondary" mt="4px">
