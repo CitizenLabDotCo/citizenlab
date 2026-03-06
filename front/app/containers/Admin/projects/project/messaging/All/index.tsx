@@ -10,7 +10,7 @@ import {
 import { useParams } from 'react-router-dom';
 
 import useCampaigns from 'api/campaigns/useCampaigns';
-import { isDraft, isScheduled } from 'api/campaigns/util';
+import { isDraft } from 'api/campaigns/util';
 
 import DraftCampaignRow from 'components/admin/Email/DraftCampaignRow';
 import ScheduledCampaignRow from 'components/admin/Email/ScheduledCampaignRow';
@@ -46,28 +46,6 @@ const CustomEmails = () => {
     setCurrentPage(page);
     fetchNextPage({ pageParam: page });
   };
-
-  // Sort campaigns: drafts first, then scheduled (nearest to farthest), then sent (newest to oldest)
-  const sortedCampaigns = [...campaignsList.data].sort((a, b) => {
-    // Priority: 0 = draft, 1 = scheduled, 2 = sent
-    const getPriority = (c) => (isDraft(c) ? 0 : isScheduled(c) ? 1 : 2);
-    const priorityDiff = getPriority(a) - getPriority(b);
-
-    if (priorityDiff !== 0) return priorityDiff;
-
-    // Within same priority, sort by date
-    if (isScheduled(a)) {
-      return (
-        new Date(a.attributes.scheduled_at || 0).getTime() -
-        new Date(b.attributes.scheduled_at || 0).getTime()
-      );
-    }
-
-    return (
-      new Date(b.attributes.updated_at).getTime() -
-      new Date(a.attributes.updated_at).getTime()
-    );
-  });
 
   if (campaignsList.data.length === 0) {
     return (
@@ -115,15 +93,15 @@ const CustomEmails = () => {
         </Box>
 
         <Box background={colors.white} p="40px">
-          <List key={sortedCampaigns.map((c) => c.id).join()}>
-            {sortedCampaigns.map((campaign) =>
+          <List key={campaignsList.data.map((c) => c.id).join()}>
+            {campaignsList.data.map((campaign) =>
               isDraft(campaign) ? (
                 <DraftCampaignRow
                   key={campaign.id}
                   campaign={campaign}
                   context="project"
                 />
-              ) : isScheduled(campaign) ? (
+              ) : campaign.attributes.scheduled_at ? (
                 <ScheduledCampaignRow
                   key={campaign.id}
                   campaign={campaign}

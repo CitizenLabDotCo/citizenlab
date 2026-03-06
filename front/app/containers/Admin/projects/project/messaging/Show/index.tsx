@@ -21,7 +21,7 @@ import useCampaign from 'api/campaigns/useCampaign';
 import useSendCampaign from 'api/campaigns/useSendCampaign';
 import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
 import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
-import { isDraft, isScheduled } from 'api/campaigns/util';
+import { isDraft } from 'api/campaigns/util';
 import useUserById from 'api/users/useUserById';
 
 import useLocalize from 'hooks/useLocalize';
@@ -110,7 +110,7 @@ const Show = () => {
 
   const handleSend = () => {
     // if the campaign is scheduled, we need to cancel the schedule ( send null ) before sending the campaign
-    if (isScheduled(campaign?.data)) {
+    if (campaign?.data.attributes.scheduled_at) {
       updateCampaign({
         id: campaignId,
         campaign: { enabled: true, scheduled_at: null },
@@ -150,10 +150,7 @@ const Show = () => {
 
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
     () => {
-      if (
-        isScheduled(campaign?.data) &&
-        campaign?.data.attributes.scheduled_at
-      ) {
+      if (campaign?.data.attributes.scheduled_at) {
         return new Date(campaign.data.attributes.scheduled_at);
       }
       return undefined;
@@ -161,7 +158,7 @@ const Show = () => {
   );
 
   const [selectedTime, setSelectedTime] = React.useState<Date>(() => {
-    if (isScheduled(campaign?.data) && campaign?.data.attributes.scheduled_at) {
+    if (campaign?.data.attributes.scheduled_at) {
       return new Date(campaign.data.attributes.scheduled_at);
     }
     return getDefaultTime();
@@ -231,7 +228,7 @@ const Show = () => {
   };
   const handleOpenSchaduleModal = () => {
     // if email is already scheduled set the default value to scheduled date and time
-    if (isScheduled(campaign?.data) && campaign?.data.attributes.scheduled_at) {
+    if (campaign?.data.attributes.scheduled_at) {
       const scheduledDate = new Date(campaign.data.attributes.scheduled_at);
       setSelectedDate(scheduledDate);
       setSelectedTime(scheduledDate);
@@ -273,13 +270,14 @@ const Show = () => {
                   text={<FormattedMessage {...messages.draft} />}
                 />
               )}
-              {!isDraft(campaign.data) && !isScheduled(campaign.data) && (
-                <StatusLabel
-                  backgroundColor={colors.success}
-                  text={<FormattedMessage {...messages.sent} />}
-                />
-              )}
-              {isScheduled(campaign.data) && (
+              {!isDraft(campaign.data) &&
+                !campaign.data.attributes.scheduled_at && (
+                  <StatusLabel
+                    backgroundColor={colors.success}
+                    text={<FormattedMessage {...messages.sent} />}
+                  />
+                )}
+              {campaign.data.attributes.scheduled_at && (
                 <>
                   <StatusLabel
                     backgroundColor={colors.teal500}
@@ -298,7 +296,8 @@ const Show = () => {
                 </>
               )}
             </Box>
-            {(isDraft(campaign.data) || isScheduled(campaign.data)) && (
+            {(isDraft(campaign.data) ||
+              campaign.data.attributes.scheduled_at) && (
               <Buttons>
                 <ButtonWithLink
                   linkTo={`/admin/projects/${projectId}/messaging/${campaign.data.id}/edit`}
@@ -360,7 +359,7 @@ const Show = () => {
                             <FormattedMessage {...messages.scheduleSend} />
                           </Button>
                         )}
-                        {isScheduled(campaign.data) && (
+                        {campaign.data.attributes.scheduled_at && (
                           <>
                             <Button
                               onClick={handleOpenSchaduleModal}
@@ -433,7 +432,7 @@ const Show = () => {
             )}
           </Box>
 
-          {isDraft(campaign.data) || isScheduled(campaign.data) ? (
+          {isDraft(campaign.data) || campaign.data.attributes.scheduled_at ? (
             <DraftCampaignDetails campaign={campaign.data} />
           ) : (
             <SentCampaignDetails campaignId={campaign.data.id} />
