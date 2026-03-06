@@ -115,7 +115,6 @@ class Project < ApplicationRecord
   validates :live_auto_input_topics_enabled, inclusion: { in: [true, false] }
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # TODO: This should always be validated!
   validate :space_must_match_folder_space
-  # validate :space_cannot_change_if_in_folder_in_space
   validate :cannot_move_to_folder_in_different_space
 
   scope :not_hidden, -> { where(hidden: false) }
