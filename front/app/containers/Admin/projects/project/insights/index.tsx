@@ -16,6 +16,8 @@ import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
 import usePhase from 'api/phases/usePhase';
 
+import useLocalize from 'hooks/useLocalize';
+
 import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
 
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
@@ -329,11 +331,12 @@ const AdminPhaseInsights = () => {
     phaseId: string;
   };
   const { data: phase } = usePhase(phaseId);
+  const localize = useLocalize();
 
   // Get phase title for filename, fallback to phaseId if not loaded yet
   const phaseTitle = phase?.data.attributes.title_multiloc;
   const phaseName = phaseTitle
-    ? Object.values(phaseTitle)[0] || `phase-${phaseId}`
+    ? localize(phaseTitle) || `phase-${phaseId}`
     : `phase-${phaseId}`;
 
   // Sanitize filename: replace spaces and special characters
