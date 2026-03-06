@@ -5,4 +5,8 @@ export default defineMessages({
     id: 'app.components.admin.SpaceSelect.noSpaceLabel',
     defaultMessage: '— No space —',
   },
+  sameSpaceAsFolder: {
+    id: 'app.components.admin.SpaceSelect.sameSpaceAsFolder',
+    defaultMessage: '— Same space as folder —',
+  },
 });

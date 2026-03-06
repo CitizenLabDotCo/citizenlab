@@ -687,9 +687,19 @@ const AdminProjectsProjectGeneral = () => {
             <Highlighter fragmentId={folderFragmentId}>
               <ProjectFolderSelect
                 projectAttrs={projectAttrs}
-                onProjectAttributesDiffChange={
-                  handleProjectAttributeDiffOnChange
-                }
+                onProjectAttributesDiffChange={(change, submitState) => {
+                  if (change.folder_id) {
+                    // If a folder is chosen, the project will automatically
+                    // inherit the folder's space. So we don't allow
+                    // explicitly setting the space_id from the project.
+                    const clonedChange = { ...change };
+                    delete clonedChange.space_id;
+                    handleProjectAttributeDiffOnChange(
+                      clonedChange,
+                      submitState
+                    );
+                  }
+                }}
                 isNewProject={isNewProject}
               />
             </Highlighter>

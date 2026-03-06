@@ -15,10 +15,11 @@ import messages from './messages';
 
 interface Props {
   spaceId: string | null;
+  disabled?: boolean;
   onChange: (spaceId: string | null) => void;
 }
 
-const SpaceSelectSection = ({ spaceId, onChange }: Props) => {
+const SpaceSelectSection = ({ spaceId, disabled = false, onChange }: Props) => {
   const { data: spaces } = useSpaces();
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
@@ -29,10 +30,19 @@ const SpaceSelectSection = ({ spaceId, onChange }: Props) => {
     <SectionField>
       <SubSectionTitle>
         <FormattedMessage {...messages.spaceSelectTitle} />
-        <IconTooltip content={formatMessage(messages.tooltip)} />
+        <IconTooltip
+          content={formatMessage(
+            disabled ? messages.disabledTooltip : messages.tooltip
+          )}
+        />
       </SubSectionTitle>
 
-      <SpaceSelect spaceId={spaceId} spaces={spaces.data} onChange={onChange} />
+      <SpaceSelect
+        spaceId={spaceId}
+        disabled={disabled}
+        spaces={spaces.data}
+        onChange={onChange}
+      />
     </SectionField>
   );
 };

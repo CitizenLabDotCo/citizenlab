@@ -31,7 +31,9 @@ const SpaceSelect = ({
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  const noSpaceLabel = formatMessage(messages.noSpaceLabel);
+  const noSpaceLabel = formatMessage(
+    disabled ? messages.sameSpaceAsFolder : messages.noSpaceLabel
+  );
   const noSpaceOption = { value: NO_SPACE_ID, label: noSpaceLabel };
 
   const spaceOptions = [
