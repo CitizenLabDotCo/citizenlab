@@ -218,12 +218,13 @@ const EsriMap = ({
           referenceLayersHandled.current = true;
         }
 
-        // Remove any internal layers that were passed in as props to the Web Map
-        map.layers.forEach((layer) => {
-          if (layer.id.includes('_internal')) {
-            map.remove(layer);
-          }
-        });
+        // Remove any internal layers that were passed in as props to the Web Map.
+        // Note: We collect layers first, then remove — mutating a Collection
+        // during forEach iteration causes items to be skipped.
+        const layersToRemove = map.layers
+          .filter((layer) => layer.id.includes('_internal'))
+          .toArray();
+        layersToRemove.forEach((layer) => map.remove(layer));
 
         // Now, add any additional layers that passed in as props to the Web Map
         layers.forEach((layer) => {
@@ -248,23 +249,30 @@ const EsriMap = ({
 
   useEffect(() => {
     // On map click, pass the event to onClick handler if it was provided
-    if (onClick) {
-      mapView?.on('click', function (event) {
-        // By passing the mapView to onClick functions, we can easily change the map from that function
-        onClick(event, mapView);
-      });
-    }
+    if (!onClick || !mapView) return;
+
+    const handle = mapView.on('click', function (event) {
+      onClick(event, mapView);
+    });
+
+    return () => {
+      handle.remove();
+    };
   }, [onClick, mapView]);
 
   useEffect(() => {
     // On map hover, pass the event to hover handler if it was provided
-    if (onHover && mapView) {
-      const debouncedHover = debounce((event: any) => {
-        onHover(event, mapView);
-      }, 60);
+    if (!onHover || !mapView) return;
 
-      mapView.on('pointer-move', debouncedHover);
-    }
+    const debouncedHover = debounce((event: any) => {
+      onHover(event, mapView);
+    }, 60);
+
+    const handle = mapView.on('pointer-move', debouncedHover);
+
+    return () => {
+      handle.remove();
+    };
   }, [onHover, mapView]);
 
   useEffect(() => {
