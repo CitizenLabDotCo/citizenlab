@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Title, Text } from '@citizenlab/cl2-component-library';
+import { Box, Title, Text, Button } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -8,7 +8,6 @@ import { ICampaignData } from 'api/campaigns/types';
 import useDeleteCampaign from 'api/campaigns/useDeleteCampaign';
 
 import PreviewFrame from 'components/admin/Email/PreviewFrame';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
@@ -34,7 +33,7 @@ const DraftCampaignDetails = ({ campaign }: Props) => {
   const handleDelete = () => {
     deleteCampaign(campaign.id, {
       onSuccess: () => {
-        setOpenDeleteModal(false);
+        setIsDeleteModalOpen(false);
         if (projectId) {
           clHistory.push(`/admin/projects/${projectId}/messaging`);
         } else {
@@ -44,26 +43,23 @@ const DraftCampaignDetails = ({ campaign }: Props) => {
     });
   };
 
-  const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const handleOpenDeleteModal = () => setOpenDeleteModal(true);
-  const handleCloseDeleteModal = () => setOpenDeleteModal(false);
-
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   return (
     <>
       <PreviewFrame campaignId={campaign.id} />
       <ButtonWrapper>
-        <ButtonWithLink
+        <Button
           buttonStyle="delete"
           icon="delete"
-          onClick={handleOpenDeleteModal}
+          onClick={() => setIsDeleteModalOpen(true)}
           processing={isLoading}
         >
           {formatMessage(messages.deleteCampaignButton)}
-        </ButtonWithLink>
+        </Button>
       </ButtonWrapper>
       <Modal
-        opened={openDeleteModal}
-        close={handleCloseDeleteModal}
+        opened={isDeleteModalOpen}
+        close={() => setIsDeleteModalOpen(false)}
         hideCloseButton
       >
         <Title variant="h2">
@@ -73,20 +69,20 @@ const DraftCampaignDetails = ({ campaign }: Props) => {
           {formatMessage(messages.campaignDeleteWarning)}
         </Text>
         <Box display="flex" gap="16px" justifyContent="flex-end" mt="24px">
-          <ButtonWithLink
+          <Button
             buttonStyle="delete"
             icon="delete"
             onClick={handleDelete}
             processing={isLoading}
           >
             {formatMessage(messages.deleteCampaignButton)}
-          </ButtonWithLink>
-          <ButtonWithLink
+          </Button>
+          <Button
             buttonStyle="secondary"
-            onClick={handleCloseDeleteModal}
+            onClick={() => setIsDeleteModalOpen(false)}
           >
             {formatMessage(messages.cancel)}
-          </ButtonWithLink>
+          </Button>
         </Box>
       </Modal>
     </>
