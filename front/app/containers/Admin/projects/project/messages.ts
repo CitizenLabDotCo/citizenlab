@@ -338,7 +338,7 @@ export default defineMessages({
     defaultMessage: 'List view',
   },
   listViewDescription: {
-    id: 'app.containers.AdminPage.ProjectEdit.listViewDescription',
+    id: 'app.containers.AdminPage.ProjectEdit.listViewDescription1',
     defaultMessage:
       'Inputs are displayed as a scrollable feed, sorted by trending, reactions, comments, date, or activity. Best for: smaller consultations.',
   },
@@ -550,7 +550,7 @@ export default defineMessages({
     defaultMessage: 'Option',
   },
   issueTerm: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.issueTerm',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.issueTerm1',
     defaultMessage: 'Issue',
   },
   contributionTerm: {
@@ -568,6 +568,30 @@ export default defineMessages({
   petitionTerm: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.petitionTerm',
     defaultMessage: 'Petition',
+  },
+  commentTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.commentTerm',
+    defaultMessage: 'Comment',
+  },
+  responseTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.responseTerm',
+    defaultMessage: 'Response',
+  },
+  suggestionTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.suggestionTerm',
+    defaultMessage: 'Suggestion',
+  },
+  topicTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.topicTerm',
+    defaultMessage: 'Topic',
+  },
+  postTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.postTerm',
+    defaultMessage: 'Post',
+  },
+  storyTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.storyTerm',
+    defaultMessage: 'Story',
   },
   inputTermSelectLabel: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel',

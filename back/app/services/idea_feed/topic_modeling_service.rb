@@ -87,12 +87,14 @@ module IdeaFeed
               additionalProperties: false,
               description:
               "The title of the topic in #{locales.join(', ')}",
+              required: locales,
               properties: locales.index_with { |locale| { type: 'string', description: "The title in #{locale}" } }
             },
             description_multiloc: {
               type: 'object',
               additionalProperties: false,
               description: "A short description of the topic in #{locales.join(', ')}",
+              required: locales,
               properties: locales.index_with { |locale| { type: 'string', description: "The description in #{locale}" } }
             },
             icon: {
@@ -112,12 +114,14 @@ module IdeaFeed
                     additionalProperties: false,
                     description:
                     "The title of the problem in #{locales.join(', ')}. A very short problem statement.",
+                    required: locales,
                     properties: locales.index_with { |locale| { type: 'string', description: "The title in #{locale}" } }
                   },
                   description_multiloc: {
                     type: 'object',
                     additionalProperties: false,
                     description: "A short description of the problem in #{locales.join(', ')}. An open question that invites further exploration, without leading the respondent.",
+                    required: locales,
                     properties: locales.index_with { |locale| { type: 'string', description: "The description in #{locale}" } }
                   }
                 }

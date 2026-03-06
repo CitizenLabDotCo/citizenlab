@@ -110,6 +110,30 @@ export default defineMessages({
     id: 'app.components.admin.PostManager.petitionFormTitle',
     defaultMessage: 'Edit petition',
   },
+  commentFormTitle: {
+    id: 'app.components.admin.PostManager.commentFormTitle',
+    defaultMessage: 'Edit comment',
+  },
+  responseFormTitle: {
+    id: 'app.components.admin.PostManager.responseFormTitle',
+    defaultMessage: 'Edit response',
+  },
+  suggestionFormTitle: {
+    id: 'app.components.admin.PostManager.suggestionFormTitle',
+    defaultMessage: 'Edit suggestion',
+  },
+  topicFormTitle: {
+    id: 'app.components.admin.PostManager.topicFormTitle',
+    defaultMessage: 'Edit topic',
+  },
+  postFormTitle: {
+    id: 'app.components.admin.PostManager.postFormTitle',
+    defaultMessage: 'Edit post',
+  },
+  storyFormTitle: {
+    id: 'app.components.admin.PostManager.storyFormTitle',
+    defaultMessage: 'Edit story',
+  },
   submitApiError: {
     id: 'app.components.admin.PostManager.submitApiError',
     defaultMessage:

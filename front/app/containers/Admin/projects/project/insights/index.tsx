@@ -6,12 +6,11 @@ import {
   Button,
   Text,
   Dropdown,
+  DropdownListItem,
   Badge,
   colors,
-  fontSizes,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
-import styled from 'styled-components';
 
 import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
@@ -20,7 +19,6 @@ import usePhase from 'api/phases/usePhase';
 import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
 
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -41,13 +39,6 @@ import {
   WordExportProvider,
   useWordExportContext,
 } from './word/WordExportContext';
-
-const DropdownButton = styled(ButtonWithLink)`
-  button {
-    display: flex !important;
-    justify-content: flex-start !important;
-  }
-`;
 
 const AI_ANALYSIS_SUPPORTED_METHODS = [
   'ideation',
@@ -227,37 +218,28 @@ const InsightsContent = () => {
                       <FormattedMessage {...messages.download} />
                     </Button>
                     <Dropdown
-                      width="220px"
+                      width="max-content"
                       top="42px"
-                      right="0px"
+                      right="12px"
                       opened={dropdownOpened}
                       onClickOutside={toggleDropdown(false)}
+                      zIndex="10000"
                       content={
                         <Box
                           p="8px"
                           display="flex"
                           flexDirection="column"
                           gap="4px"
+                          style={{ whiteSpace: 'nowrap' }}
                         >
-                          <DropdownButton
-                            onClick={handleDownloadPdf}
-                            buttonStyle="text"
-                            padding="8px"
-                            fontSize={`${fontSizes.s}px`}
-                          >
+                          <DropdownListItem onClick={handleDownloadPdf}>
                             <FormattedMessage {...messages.downloadPdf} />
-                          </DropdownButton>
-                          <DropdownButton
-                            onClick={handleDownloadWord}
-                            buttonStyle="text"
-                            padding="8px"
-                            fontSize={`${fontSizes.s}px`}
-                          >
+                          </DropdownListItem>
+                          <DropdownListItem onClick={handleDownloadWord}>
                             <Box
                               display="inline-flex"
                               alignItems="center"
                               gap="6px"
-                              style={{ whiteSpace: 'nowrap' }}
                             >
                               <FormattedMessage {...messages.downloadWord} />
                               <Badge
@@ -267,7 +249,7 @@ const InsightsContent = () => {
                                 {formatMessage(projectFilesMessages.beta)}
                               </Badge>
                             </Box>
-                          </DropdownButton>
+                          </DropdownListItem>
                         </Box>
                       }
                     />
