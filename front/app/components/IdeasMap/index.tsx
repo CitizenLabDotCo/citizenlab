@@ -237,7 +237,8 @@ const IdeasMap = memo<Props>(
       });
     }, [ideaMarkers]);
 
-    // Create an Esri feature layer from the idea pin graphics so we can add a cluster display
+    // Create an Esri feature layer from the idea pin graphics
+    const isWebMap = !!mapConfig?.data?.attributes?.esri_web_map_id;
     const ideasLayer = useMemo(() => {
       if (graphics) {
         return new FeatureLayer({
@@ -261,8 +262,12 @@ const IdeasMap = memo<Props>(
             symbol: ideaIcon,
           }),
           legendEnabled: false,
-          // Add cluster display to this layer
-          featureReduction: getClusterConfiguration(theme.colors.tenantPrimary),
+          // Skip clustering on WebMaps — the FeatureReductionCluster engine
+          // is extremely slow to re-render on WebMaps with non-standard
+          // spatial references (e.g. UTM32), causing 10-15s ghost graphics.
+          featureReduction: isWebMap
+            ? undefined
+            : getClusterConfiguration(theme.colors.tenantPrimary),
           // Add a popup template which is used when multiple ideas share a single location
           popupTemplate: {
             title: formatMessage(messages.multipleInputsAtLocation),
@@ -279,6 +284,7 @@ const IdeasMap = memo<Props>(
       ideasAtLocationNode,
       theme.colors.tenantPrimary,
       ideaIcon,
+      isWebMap,
     ]);
 
     const layers = useMemo(() => {
