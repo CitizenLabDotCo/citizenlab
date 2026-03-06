@@ -7,9 +7,11 @@ import {
   Title,
   Text,
 } from '@citizenlab/cl2-component-library';
+import { FormattedDate, FormattedTime } from 'react-intl';
 import { RouteType } from 'routes';
 
 import { ICampaignData } from 'api/campaigns/types';
+import { isDraft } from 'api/campaigns/util';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
@@ -46,10 +48,27 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
           <T value={campaign.attributes.subject_multiloc} />
         </Title>
         <Box display="flex" alignItems="center" gap="12px">
-          <StatusLabel
-            backgroundColor={colors.orange500}
-            text={<FormattedMessage {...messages.draft} />}
-          />
+          {campaign.attributes.scheduled_at && (
+            <>
+              <Text m="0px" fontSize="s">
+                <>
+                  <FormattedDate value={campaign.attributes.scheduled_at} />
+                  &nbsp;
+                  <FormattedTime value={campaign.attributes.scheduled_at} />
+                </>
+              </Text>
+              <StatusLabel
+                backgroundColor={colors.teal500}
+                text={<FormattedMessage {...messages.scheduled} />}
+              />
+            </>
+          )}
+          {isDraft(campaign) && (
+            <StatusLabel
+              backgroundColor={colors.orange500}
+              text={<FormattedMessage {...messages.draft} />}
+            />
+          )}
           {/* Only display project name in the global messaging tab */}
           {context === 'global' && project && (
             <Text m="0px">

@@ -13,7 +13,6 @@ import useCampaigns from 'api/campaigns/useCampaigns';
 import { isDraft } from 'api/campaigns/util';
 
 import DraftCampaignRow from 'components/admin/Email/DraftCampaignRow';
-import ScheduledCampaignRow from 'components/admin/Email/ScheduledCampaignRow';
 import SentCampaignRow from 'components/admin/Email/SentCampaignRow';
 import { ButtonWrapper } from 'components/admin/PageWrapper';
 import { List } from 'components/admin/ResourceList';
@@ -95,14 +94,8 @@ const CustomEmails = () => {
         <Box background={colors.white} p="40px">
           <List key={campaignsList.data.map((c) => c.id).join()}>
             {campaignsList.data.map((campaign) =>
-              isDraft(campaign) ? (
+              isDraft(campaign) || campaign.attributes.scheduled_at ? (
                 <DraftCampaignRow
-                  key={campaign.id}
-                  campaign={campaign}
-                  context="project"
-                />
-              ) : campaign.attributes.scheduled_at ? (
-                <ScheduledCampaignRow
                   key={campaign.id}
                   campaign={campaign}
                   context="project"
