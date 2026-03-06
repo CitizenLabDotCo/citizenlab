@@ -246,6 +246,18 @@ ur:
           title: آپ کی پہل کیا ہے؟
         petition:
           title: آپ کی درخواست کیا ہے؟
+        comment:
+          title: آپ کا کیا تبصرہ ہے؟
+        response:
+          title: آپ کا کیا جواب ہے؟
+        suggestion:
+          title: آپ کی کیا تجویز ہے؟
+        topic:
+          title: آپ کا موضوع کیا ہے؟
+        post:
+          title: آپ کی پوسٹ کیا ہے؟
+        story:
+          title: آپ کی کہانی کیا ہے؟
   custom_field_options:
     gender:
       male: مرد
