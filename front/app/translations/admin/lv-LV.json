@@ -2462,6 +2462,7 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Number of likes per participant",
   "app.containers.AdminPage.ProjectEdit.limited": "Ierobežoti",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "Saraksta skats ir pieejams vienmēr, un to nevar atspējot.",
+  "app.containers.AdminPage.ProjectEdit.listViewDescription1": "Ievadi tiek parādīti kā ritināms avots, kas sakārtots pēc tendencēm, reakcijām, komentāriem, datuma vai aktivitātes. Vispiemērotākais: mazākām konsultācijām.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Saraksta skats",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Ielādēt vairāk veidņu",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Veikt noklusējuma iestatījumus",

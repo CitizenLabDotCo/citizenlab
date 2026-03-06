@@ -2462,6 +2462,7 @@
   "app.containers.AdminPage.ProjectEdit.likingMethodTitle": "Antall likes per deltaker",
   "app.containers.AdminPage.ProjectEdit.limited": "Begrenset",
   "app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled": "Listevisningen er alltid tilgjengelig og kan ikke deaktiveres.",
+  "app.containers.AdminPage.ProjectEdit.listViewDescription1": "Inndataene vises som en rullbar feed, sortert etter trender, reaksjoner, kommentarer, dato eller aktivitet. Best for: mindre konsultasjoner.",
   "app.containers.AdminPage.ProjectEdit.listViewTitle": "Listevisning",
   "app.containers.AdminPage.ProjectEdit.loadMoreTemplates": "Last inn flere maler",
   "app.containers.AdminPage.ProjectEdit.makeDefault": "Gjør standard",
