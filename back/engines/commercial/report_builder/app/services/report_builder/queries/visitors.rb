@@ -19,15 +19,12 @@ module ReportBuilder
     )
       validate_resolution(resolution)
 
-      start_date, end_date = TimeBoundariesParser.new(start_at, end_at).parse
-
-      sessions = ImpactTracking::Session.where(created_at: start_date..end_date)
-      sessions = apply_project_filter_if_needed(sessions, project_id)
-      sessions = exclude_roles_if_needed(sessions, exclude_roles)
+      visits_service = Insights::VisitsService.new
+      sessions = visits_service.visits(project_id, start_at:, end_at:, exclude_roles:)
 
       visitors_timeseries = sessions
         .select(
-          "count(*) as visits, count(distinct(monthly_user_hash)) as visitors, date_trunc('#{resolution}', created_at) as date_group"
+          "count(distinct(session_id) as visits, count(distinct(visitor_id)) as visitors, date_trunc('#{resolution}', acted_at) as date_group"
         )
         .group('date_group')
         .order('date_group')
@@ -51,10 +48,7 @@ module ReportBuilder
 
       # If compare_start_at and compare_end_at are present:
       if compare_start_at.present? && compare_end_at.present?
-        compare_sessions = ImpactTracking::Session.where(created_at: compare_start_at..compare_end_at)
-        compare_sessions = apply_project_filter_if_needed(compare_sessions, project_id)
-        compare_sessions = exclude_roles_if_needed(compare_sessions, exclude_roles)
-
+        compare_sessions = visits_service.visits(project_id, start_at: compare_start_at, end_at: compare_end_at, exclude_roles: exclude_roles)
         compare_stats = calculate_stats(compare_sessions)
 
         response = {
@@ -69,27 +63,9 @@ module ReportBuilder
       response
     end
 
-    def apply_project_filter_if_needed(sessions, project_id)
-      if project_id.present?
-        sessions_with_project = ImpactTracking::Pageview.where(project_id: project_id).select(:session_id)
-        sessions = sessions.where(id: sessions_with_project)
-      end
-
-      sessions
-    end
-
-    def exclude_roles_if_needed(sessions, exclude_roles)
-      if exclude_roles == 'exclude_admins_and_moderators'
-        sessions = sessions
-          .where("highest_role IS NULL OR highest_role = 'user'")
-      end
-
-      sessions
-    end
-
     def calculate_stats(sessions)
       # Total number of visits and visitors
-      visits = sessions.count
+      visits = sessions.count # TODO: this is not going to work with this new way
       visitors = sessions.distinct.pluck(:monthly_user_hash).count
 
       # Create new pageviews query for avg seconds per session and avg pages per session
