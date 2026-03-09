@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { colors } from '../../utils/styleUtils';
 import { render, screen } from '../../utils/testUtils/rtl';
 
 import StatusLabel from '.';
