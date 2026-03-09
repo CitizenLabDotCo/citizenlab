@@ -24,6 +24,5 @@ module BulkImportIdeas
       SideFxBulkImportService.new.after_failure(import_user, phase, 'idea', format, e.to_s)
       raise e
     end
-
   end
 end

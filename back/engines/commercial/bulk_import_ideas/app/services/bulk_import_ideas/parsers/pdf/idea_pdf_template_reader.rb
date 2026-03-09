@@ -2,7 +2,7 @@
 
 module BulkImportIdeas::Parsers::Pdf
   class IdeaPdfTemplateReader
-    def initialize(phase, locale, personal_data_enabled, gpt_parser: false) # rubocop:disable Lint/UnusedMethodArgument
+    def initialize(phase, locale, personal_data_enabled)
       @phase = phase
       @locale = locale
       @personal_data_enabled = personal_data_enabled

@@ -9,6 +9,5 @@ module InputTypeStrategy
     def supports_matrix_statements?
       true
     end
-
   end
 end
