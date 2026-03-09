@@ -16,31 +16,27 @@ class ActivitiesService
 
   private
 
-  def create_phase_started_activities(now, last_time)
-    return unless now.to_date != last_time.to_date
+  def create_phase_started_activities(now, _last_time)
+    # Selects more phases than strictly necessary to make it more defensive and help
+    # recover if previous jobs failed.
+    starting_phases = Phase.published.where(start_at: (now - 1.day)..now)
 
-    start_date = now.to_date
-    start_time = start_date.in_time_zone
-    starting_phases = Phase.published.starting_on(start_date)
-
-    # Phases that already have a started activity for *this starting date* are excluded
-    # to avoid creating duplicate activities (and, consequently, duplicate
-    # notifications). We still allow the creation of new activities when the start date
-    # is different (which can occur if the phase is edited).
+    # Phases with a started activity in the last 24 hours are excluded to avoid creating
+    # duplicate activities (and consequently, duplicate notifications). We still allow
+    # multiple started activities on different days to account for modifications to the
+    # `start_at` of a phase.
     excluded_phases = Activity
-      .where(item_id: starting_phases, action: 'started', acted_at: start_date.all_day)
+      .where(item_id: starting_phases, action: 'started', acted_at: (now - 1.day)..)
       .select(:item_id)
 
     starting_phases.where.not(id: excluded_phases).each do |phase|
-      LogActivityJob.perform_later(phase, 'started', nil, start_time)
+      LogActivityJob.perform_later(phase, 'started', nil, phase.start_at)
     end
   end
 
-  def create_phase_upcoming_activities(now, last_time)
-    today = now.to_date
-    return unless today != last_time.to_date
+  def create_phase_upcoming_activities(now, _last_time)
+    upcoming_phases = Phase.published.where(start_at: now..(now + 1.week))
 
-    upcoming_phases = Phase.published.starting_on(today..(today + 1.week))
     # Exclude phases for which an upcoming activity has already been created to avoid
     # duplicate notifications.
     excluded_phases = Activity
@@ -49,8 +45,12 @@ class ActivitiesService
 
     upcoming_phases.where.not(id: excluded_phases).each do |phase|
       if phase.ends_before?(now + 1.day)
-        raise "Invalid phase upcoming event would have been generated for phase\
-               #{phase.id} with now=#{now} and last_time=#{last_time}"
+        ErrorReporter.report_msg(
+          'Invalid phase upcoming event would have been generated',
+          extra: { phase_id: phase.id, now: now, end_at: phase.end_at }
+        )
+
+        next
       end
 
       LogActivityJob.perform_later(phase, 'upcoming', nil, now)
@@ -99,10 +99,14 @@ class ActivitiesService
   end
 
   def create_phase_ended_activities(now)
-    Phase.published.where(end_at: ..now - 1.day).each do |phase|
-      if Activity.find_by(item: phase, action: 'ended').nil?
-        LogActivityJob.perform_later(phase, 'ended', nil, now)
-      end
+    ended_phases = Phase.published.where(end_at: ..now)
+
+    excluded_phases = Activity
+      .where(item_id: ended_phases, action: 'ended')
+      .select(:item_id)
+
+    ended_phases.where.not(id: excluded_phases).each do |phase|
+      LogActivityJob.perform_later(phase, 'ended', nil, now)
     end
   end
 end

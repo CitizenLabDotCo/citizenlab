@@ -321,15 +321,23 @@ describe LocalProjectCopyService do
 
     it 'shifts timelines of phases to start first phase on day of copying' do
       freeze_time do
-        phase1_start = timeline_project.phases.order(:start_at).first.start_at
-        phase2_end = timeline_project.phases.order(:start_at).second.end_at
+        phase1_start = timeline_project.phases.first.start_at
+        phase2_end = timeline_project.phases.second.end_at
 
-        today = Time.zone.today
-        expected_shift = (today - phase1_start).days
         copied_project = service.copy(timeline_project)
+        copied_phase1_start = copied_project.phases.first.start_at
+        copied_phase2_end = copied_project.phases.second.end_at
 
-        expect(copied_project.phases.order(:start_at).first.start_at).to eq today
-        expect(copied_project.phases.order(:start_at).second.end_at).to eq phase2_end + expected_shift
+        today = Date.current
+        expect(copied_phase1_start)
+          # The first phase should start on the copy date at the same time as the original
+          # phase. Subsecond precision is lost by the serialization/deserialization
+          # process used by LocalProjectCopyService.
+          .to be_within(1.second)
+          .of(phase1_start.change(year: today.year, month: today.month, day: today.day))
+
+        expect(copied_phase2_end - copied_phase1_start)
+          .to be_within(1.second).of(phase2_end - phase1_start)
       end
     end
 

@@ -311,9 +311,11 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
 
   def yml_phases(shift_timestamps: 0, timeline_start_at: nil)
     if timeline_start_at && @project.phases.first
-      kickoff_at = @project.phases.first.start_at
-      shift_timestamps = (Date.parse(timeline_start_at) - kickoff_at).to_i
+      kickoff_date = @project.phases.first.start_at.to_date
+      timeline_start_date = timeline_start_at.in_time_zone.to_date
+      shift_timestamps = (timeline_start_date - kickoff_date)
     end
+
     @project.phases.map do |phase|
       yml_phase = {
         'project_ref' => lookup_ref(phase.project_id, :project),
