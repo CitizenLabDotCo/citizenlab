@@ -50,6 +50,7 @@ const TopicItem = ({
     <>
       <Box
         as={StyledButton}
+        data-cy="e2e-topic-item"
         buttonStyle="secondary-outlined"
         background={isActive ? colors.teal100 : 'transparent'}
         onClick={() => onTopicSelect(topicId)}

@@ -60,7 +60,12 @@ class WebApi::V1::PermissionsController < ApplicationController
   def custom_fields
     authorize @permission
     fields = user_requirements_service.requirements_custom_fields @permission
-    render json: WebApi::V1::CustomFieldSerializer.new(fields, params: jsonapi_serializer_params_with_locked_fields).serializable_hash.to_json
+    ActiveRecord::Associations::Preloader.new(records: fields, associations: [options: :image]).call
+    render json: WebApi::V1::CustomFieldSerializer.new(
+      fields,
+      params: jsonapi_serializer_params_with_locked_fields,
+      include: [:options]
+    ).serializable_hash.to_json
   end
 
   def custom_field_options

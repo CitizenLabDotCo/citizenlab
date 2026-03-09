@@ -246,6 +246,18 @@ pt:
           title: Qual é a iniciativa de vocês?
         petition:
           title: Qual é a sua petição?
+        comment:
+          title: Qual é o seu comentário?
+        response:
+          title: Qual é a resposta que você dá?
+        suggestion:
+          title: Qual é a sua sugestão?
+        topic:
+          title: Qual é o seu tópico?
+        post:
+          title: Qual é a sua postagem?
+        story:
+          title: Qual é a história de vocês?
   custom_field_options:
     gender:
       male: Homem

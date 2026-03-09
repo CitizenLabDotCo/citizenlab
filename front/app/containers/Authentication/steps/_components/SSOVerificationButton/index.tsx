@@ -83,6 +83,10 @@ const SSOVerificationButton = ({
       label: messages.verifyAcm,
       icon: 'acm',
     },
+    federa: {
+      label: messages.verifyFedera,
+      icon: 'shield-check',
+    },
   };
 
   const buttonConfig = verificationButtonConfigs[methodName];
