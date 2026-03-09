@@ -129,6 +129,7 @@ const Sidebar = ({ projectId, onSheetCollapse, onSheetExpand }: Props) => {
 
   return (
     <Box
+      data-cy="e2e-ideas-feed-sidebar"
       width="30%"
       background={colors.white}
       borderRight={`1px solid ${colors.grey300}`}
