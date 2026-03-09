@@ -22,6 +22,7 @@ export const PARAMS: Parameter[] = [
   'visibility',
   'discoverability',
   'review_state',
+  'space_ids',
 ];
 
 const MULTISELECT_PARAMS = new Set<string>([
@@ -32,6 +33,7 @@ const MULTISELECT_PARAMS = new Set<string>([
   'participation_methods',
   'visibility',
   'discoverability',
+  'space_ids',
 ] satisfies Parameter[]);
 
 export const setParam = <ParamName extends Parameter>(
