@@ -291,16 +291,12 @@ const Show = () => {
                     backgroundColor={colors.teal500}
                     text={<FormattedMessage {...messages.scheduled} />}
                   />
-                  {campaign.data.attributes.scheduled_at && (
-                    <>
-                      <FormattedDate
-                        value={campaign.data.attributes.scheduled_at}
-                      />{' '}
-                      <FormattedTime
-                        value={campaign.data.attributes.scheduled_at}
-                      />
-                    </>
-                  )}
+                  <FormattedDate
+                    value={campaign.data.attributes.scheduled_at}
+                  />{' '}
+                  <FormattedTime
+                    value={campaign.data.attributes.scheduled_at}
+                  />
                 </>
               )}
             </Box>
