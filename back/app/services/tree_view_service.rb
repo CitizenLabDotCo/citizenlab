@@ -17,7 +17,7 @@ class TreeViewService
 
     query = filter_by_space(query) if @space_id.present?
 
-    query.includes(children: :publication)
+    query.includes(:publication, children: :publication)
   end
 
   def filter_by_space(query)
