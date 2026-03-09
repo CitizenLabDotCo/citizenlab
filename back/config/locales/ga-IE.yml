@@ -1,43 +1,43 @@
 ga:
   locales:
-    en: English
-    ar-MA: Arabic (Morocco)
-    ar-SA: Arabic (Saudi Arabia)
-    ca-ES: Catalan
-    cy-GB: Welsh
-    da-DK: Danish
-    de-DE: German
-    el-GR: Greek
-    en-CA: English (Canada)
-    en-GB: English (UK)
-    en-IE: English (Ireland)
-    es-CL: Spanish (Chile)
-    es-ES: Spanish (Spain)
-    fi-FI: Finnish
-    fr-BE: French (Belgium)
-    fr-FR: French
-    hr-HR: Croatian
-    hu-HU: Hungarian
-    it-IT: Italian
-    kl-GL: Greenlandic
-    lb-LU: Luxembourgish
-    lv-LV: Latvian
-    mi: Maori
-    nb-NO: Norwegian (Bokmål)
-    nl-BE: Dutch (Belgium)
-    nl-NL: Dutch
-    pl-PL: Polish
-    pt-BR: Portuguese (Brazil)
-    ro-RO: Romanian
-    sr-Latn: Serbian (Latin)
-    sr-SP: Serbian (Cyrillic)
-    sv-SE: Swedish
-    tr-TR: Turkish
+    en: Béarla
+    ar-MA: Araibis (Maracó)
+    ar-SA: Araibis (An Araib Shádach)
+    ca-ES: Catalóinis
+    cy-GB: Breatnais
+    da-DK: Danmhairgis
+    de-DE: Gearmáinis
+    el-GR: Gréigis
+    en-CA: Béarla (Ceanada)
+    en-GB: Béarla (RA)
+    en-IE: Béarla (Éire)
+    es-CL: Spáinnis (An tSile)
+    es-ES: Spáinnis (An Spáinn)
+    fi-FI: Fionlainnis
+    fr-BE: Fraincis (An Bheilg)
+    fr-FR: Fraincis
+    hr-HR: Cróitis
+    hu-HU: Ungáiris
+    it-IT: Iodáilis
+    kl-GL: Grónlannach
+    lb-LU: Lucsambuirgéiseach
+    lv-LV: Laitvis
+    mi: Maoraigh
+    nb-NO: Ioruais (Bokmål)
+    nl-BE: Ollainnis (An Bheilg)
+    nl-NL: Ollainnis
+    pl-PL: Polainnis
+    pt-BR: Portaingéilis (an Bhrasaíl)
+    ro-RO: Rómáinis
+    sr-Latn: Seirbis (Laidin)
+    sr-SP: Seirbis (Coireallach)
+    sv-SE: Sualainnis
+    tr-TR: Tuircis
   symbols:
     outside: áit éigin eile
   idea_statuses:
-    prescreening: screening
-    prescreening_description: This input is currently under review by the project manager and is not yet visible to the public.
+    prescreening: scagadh
+    prescreening_description: Tá an t-ionchur seo faoi athbhreithniú ag an mbainisteoir tionscadail faoi láthair agus níl sé le feiceáil ag an bpobal go fóill.
     proposed: molta
     proposed_description: Tá an ionchur seo curtha isteach agus tá sé oscailte anois le haghaidh tacaíochta ón bpobal. Bailigh vótaí chun cabhrú leis bogadh go dtí an chéad chéim eile.
     viewed: amharctha
@@ -50,14 +50,14 @@ ga:
     implemented_description: Tá an ionchur seo curtha i bhfeidhm ag an mbainisteoir tionscadail.
     rejected: diúltaithe
     rejected_description: Diúltaíodh don ionchur seo.
-    expired: expired
-    expired_description: This input is no longer active and has been closed due to time constraints or inactivity.
-    threshold_reached: threshold reached
-    threshold_reached_description: This input has met the required support threshold and will now be considered for further action.
-    answered: answered
-    answered_description: The project manager has published an official feedback on this input.
-    ineligible: ineligible
-    ineligible_description: This input has been reviewed and, unfortunately, has been rejected. An official update has been provided with more details.
+    expired: imithe in éag
+    expired_description: Níl an ionchur seo gníomhach a thuilleadh agus tá sé dúnta mar gheall ar shrianta ama nó neamhghníomhaíochta.
+    threshold_reached: tairseach bainte amach
+    threshold_reached_description: Tá an t-ionchur seo tar éis an tairseach tacaíochta riachtanach a bhaint amach agus breithneofar anois é le haghaidh gníomhaíochta breise.
+    answered: freagraíodh
+    answered_description: Tá aiseolas oifigiúil foilsithe ag bainisteoir an tionscadail ar an ionchur seo.
+    ineligible: neamh-incháilithe
+    ineligible_description: Rinneadh athbhreithniú ar an ionchur seo agus, ar an drochuair, diúltaíodh dó. Tá nuashonrú oifigiúil curtha ar fáil le tuilleadh sonraí.
   topics:
     nature: Dúlra agus bithéagsúlacht
     nature_description: Dúlra agus bithéagsúlacht
@@ -91,9 +91,9 @@ ga:
     services_description: Seirbhísí poiblí
     other: Eile
     other_description: Eile
-    quality_of_life: Quality of life
-    service_delivery: Service delivery
-    governance_and_trust: Governance and trust
+    quality_of_life: Cáilíocht na beatha
+    service_delivery: Seachadadh seirbhíse
+    governance_and_trust: Rialachas agus muinín
   static_pages:
     terms_and_conditions_title: Téarmaí & coinníollacha
     terms_and_conditions_body: >
@@ -125,12 +125,12 @@ ga:
     open_idea_project_description_preview: B’fhéidir go bhfuil smaoineamh agat nach n-oireann do cheann de na tionscadail atá ann cheana féin? Ansin cuir suas anseo é, bailigh tacaíocht agus cuir ar an gclár oibre polaitiúil é!
     open_idea_project_description: >
       <p>Anseo, is féidir leat do smaoineamh féin a thosú mura n-oireann sé do cheann de na tionscadail atá ann cheana féin.</p><p><strong>An cuspóir?</strong> Chun do smaoineamh a chur ar an gclár oibre polaitiúil.</p><p><strong>Conas?</strong> Trí thacaíocht a bhailiú, eadhon 100 vóta ar a laghad i 3 mhí. Is féidir leat é sin a dhéanamh trí do smaoineamh a dhéanamh 'tarraingteach' ar dtús. Scríobh é ar bhealach soiléir agus mealltach, cuir íomhánna leis, tabhair argóintí láidre bunaithe ar fhíricí, cuir ceangaltáin leis le tuilleadh sonraí nó faisnéis chúlra, ... Tar éis duit é sin a dhéanamh, tosaigh ag roinnt do smaoineamh ar na meáin shóisialta nó trí ríomhphost. Tabhair cuireadh do dhaoine páirt a ghlacadh sa phlé ar do smaoineamh, nó cuir ina luí orthu tacú leis trí vótáil ar a shon.</p><p><strong>Cad faoi?</strong> Is féidir le do smaoineamh a bheith faoi go leor rudaí, fad is a bhaineann sé le do chathair agus a beartas. Is féidir gur fadhb a bhíonn agat, réiteach a shamhlaíonn tú nó fiú meascán den dá rud é. Is féidir leis a bheith fiáin agus fadtéarmach, nó an-inláimhsithe agus bua tapa.</p><p><strong>Agus ansin? </strong>Ar shroich tú 100 vóta i 3 mhí? Comhghairdeas! Cuirfidh an chathair do smaoineamh san áireamh anois. Má mheastar go bhfuil do smaoineamh indéanta agus mura ndéanann sé dochar do ghrúpaí ná do dhaoine aonair ar leith, gheobhaidh tú an deis do thogra a chur i láthair le linn chruinniú na comhairle. Le linn an chruinnithe chéanna sin, tabharfaidh baill na comhairle aiseolas díreach duit ar a ndéanfaidh siad nó nach ndéanfaidh siad le do smaoineamh agus cén fáth. Mura mbailíonn tú 100 vóta i gceann 3 mhí, ní bhreithneofar do thogra.</p><p>Tá spéis againn i do chuid smaointe!</p>
-    published_projects: Published projects
+    published_projects: Tionscadail fhoilsithe
   phases:
-    open_idea_phase_title: Current phase
-    native_survey_title: Survey
-    native_survey_button: Take the survey
-    community_monitor_title: Community monitor
+    open_idea_phase_title: Céim reatha
+    native_survey_title: Suirbhé
+    native_survey_button: Glac an suirbhé
+    community_monitor_title: Monatóir pobail
   events:
     council_meeting_title: Cruinniú na Comhairle
     council_meeting_description: >
@@ -156,8 +156,8 @@ ga:
         title: Clibeanna
         description:
       consponsor_ids:
-        title: Co-sponsors
-        description: Invite co-sponsors through the field below. The invited co-sponsor(s) will receive an email.
+        title: Comhurraitheoirí
+        description: Cuir cuireadh chuig comhurraitheoirí tríd an réimse thíos. Gheobhaidh an comhurraitheoir/na comhurraitheoirí a bhfuil cuireadh tugtha dóibh ríomhphost.
       location:
         title: Suíomh
         description:
@@ -175,56 +175,56 @@ ga:
       title_page:
         description:
       body_page:
-        title: Tell us more
+        title: Inis dúinn tuilleadh
         description:
       uploads_page:
-        title: Images and attachments
+        title: Íomhánna agus ceangaltáin
         description:
       details_page:
-        title: Details
+        title: Sonraí
         description:
       other_input_field:
-        title: Type your answer
-        print_title: If '%{other_option}', please specify
+        title: Clóscríobh do fhreagra
+        print_title: Más '%{other_option}', sonraigh le do thoil
       ask_follow_up_field:
-        title: Tell us why
+        title: Inis dúinn cén fáth
     community_monitor:
       questions:
         place_to_live:
-          title: City as a place to live
+          title: Cathair mar áit chónaithe
         sense_of_safety:
-          title: Overall sense of safety
+          title: Braistint fhoriomlán sábháilteachta
         access_to_parks:
-          title: Access to parks, green spaces, and recreational opportunities
+          title: Rochtain ar pháirceanna, spásanna glasa agus deiseanna áineasa
         affordable_housing:
-          title: Availability of affordable housing
+          title: Infhaighteacht tithíochta inacmhainne
         employment_opportunities:
-          title: Employment and economic advancement opportunities
+          title: Deiseanna fostaíochta agus dul chun cinn eacnamaíoch
         quality_of_services:
-          title: Overall quality of services provided by the city
+          title: Cáilíocht fhoriomlán na seirbhísí a sholáthraíonn an chathair
         overall_value:
-          title: Overall value you receive for your city taxes and fees
+          title: Luach foriomlán a fhaigheann tú as do chánacha agus táillí cathrach
         cleanliness_and_maintenance:
-          title: Overall cleanliness and maintenance of streets and public spaces
+          title: Glanadh agus cothabháil fhoriomlán na sráideanna agus na spásanna poiblí
         trust_in_government:
-          title: Trust in local government
+          title: Muinín sa rialtas áitiúil
         responsiveness_of_officials:
-          title: Responsiveness of elected officials to community concerns
+          title: Freagrúlacht oifigeach tofa do imní an phobail
         transparency_of_money_spent:
-          title: Transparency about how municipal tax money is spent
+          title: Trédhearcacht faoin gcaoi a gcaitear airgead cánach bardasach
       question_categories:
-        quality_of_life: Quality of life
-        service_delivery: Service delivery
-        governance_and_trust: Governance and trust
-        other: Other
+        quality_of_life: Cáilíocht na beatha
+        service_delivery: Seachadadh seirbhíse
+        governance_and_trust: Rialachas agus muinín
+        other: Eile
       labels:
-        label_1: Very poor
-        label_2: Poor
-        label_3: Fair
-        label_4: Good
-        label_5: Excellent
+        label_1: An-lag
+        label_2: Bocht
+        label_3: Cóir
+        label_4: Go maith
+        label_5: Sármhaith
       form_end:
-        button_text: Back to home
+        button_text: Ar ais sa bhaile
   custom_forms:
     categories:
       main_content:
@@ -241,23 +241,23 @@ ga:
         option:
           title: Cad é do rogha?
         proposal:
-          title: What is your proposal?
+          title: Cad é do mholadh?
         initiative:
-          title: What is your initiative?
+          title: Cad é do thionscnamh?
         petition:
-          title: What is your petition?
+          title: Cad é d’achainí?
         comment:
-          title: What is your comment?
+          title: Cad é do thuairim?
         response:
-          title: What is your response?
+          title: Cad é do fhreagra?
         suggestion:
-          title: What is your suggestion?
+          title: Cad é do mholadh?
         topic:
-          title: What is your topic?
+          title: Cad é do thopaic?
         post:
-          title: What is your post?
+          title: Cad é do phost?
         story:
-          title: What is your story?
+          title: Cad é do scéal?
   custom_field_options:
     gender:
       male: Fireann
@@ -267,138 +267,138 @@ ga:
       outside: Áit éigin eile
   reset_password_mailer:
     send_reset_password:
-      preheader: 'Reset your password for %{organizationName}'
+      preheader: 'Athshocraigh do phasfhocal le haghaidh %{organizationName}'
       cta_reset_password: 'Athshocraigh do phasfhocal'
       message_you_reset_your_password: 'D''iarr tú athshocrú pasfhocail don ardán rannpháirtíochta %{organizationName}. Cliceáil an cnaipe thíos chun pasfhocal nua, sábháilte a roghnú. Rachaidh an nasc in éag i gceann uair an chloig.'
       subject: '%{organizationName}: Athshocraigh do phasfhocal'
       title_reset_your_password: 'Roghnaigh pasfhocal nua'
   xlsx_export:
-    anonymous: 'Anonymous'
+    anonymous: 'Gan ainm'
     column_headers:
       assignee_fullname: 'Sannaí'
       assignee_email: 'Ríomhphost an sannaí'
-      attachments: 'Attachments'
+      attachments: 'Ceangaltáin'
       author_email: 'Ríomhphost an údair'
       author_fullname: 'Ainm an údair'
       author_id: 'ID an Údair'
       budget: 'Buiséad'
       comments_count: 'Tráchtanna'
-      cost: 'Cost'
+      cost: 'Costas'
       created_at: 'Arna chur isteach ag'
-      description: 'Description'
-      dislikes_count: 'Dislikes'
-      email: 'Email'
-      first_name: 'First name(s)'
-      image_url: 'Image URL'
+      description: 'Cur síos'
+      dislikes_count: 'Ní maith liom'
+      email: 'Ríomhphost'
+      first_name: 'Céadainm(neacha)'
+      image_url: 'URL na híomhá'
       input_id: 'Aitheantas'
-      manual_votes: 'Offline votes'
+      manual_votes: 'Vótaí as líne'
       input_url: 'URL'
-      last_name: 'Last name'
+      last_name: 'Sloinne'
       latitude: 'Domhanleithead'
-      likes_count: 'Likes'
-      location: 'Location'
+      likes_count: 'Is maith liom'
+      location: 'Suíomh'
       longitude: 'Domhanfhad'
-      neutral_reactions_count: 'Unsure'
-      participants: 'Participants'
-      picks: 'Picks'
+      neutral_reactions_count: 'Níl mé cinnte'
+      participants: 'Rannpháirtithe'
+      picks: 'Roghanna'
       project: 'Tionscadal'
       published_at: 'Foilsithe ag'
-      registration_completed_at: 'Registration completed at'
+      registration_completed_at: 'Clárú críochnaithe ag'
       status: 'Stádas'
-      submitted_at: 'Submitted at'
-      tags: 'Tags'
-      title: 'Title'
-      user_data: 'User data'
-      votes_count: 'Votes'
+      submitted_at: 'Arna chur isteach ag'
+      tags: 'Clibeanna'
+      title: 'Teideal'
+      user_data: 'Sonraí úsáideora'
+      votes_count: 'Vótaí'
   form_builder:
     default_select_field:
       title: 'Do cheist'
       option1: 'Rogha 1'
       option2: 'Rogha 2'
     form_end_page:
-      title_text_3: 'Thank you for sharing your input!'
-      description_text_3: "Your input has been successfully submitted."
+      title_text_3: 'Go raibh maith agat as do chuid ionchuir a roinnt!'
+      description_text_3: "Tá d’ionchur curtha isteach go rathúil."
     form_user_page:
-      title_text: 'About you'
+      title_text: 'Fút féin'
     pdf_export:
-      personal_data: 'Personal data'
-      personal_data_explanation_public: "We will submit your input to %{organizationName}'s online participation platform. If you want your name to be displayed as author of this input and receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your email will not be public and will only be used by %{organizationName}. If you want to remain anonymous, or do not agree for us to use your personal data in this way, you can leave them empty."
-      personal_data_explanation_private: "We will submit your input to %{organizationName}'s online participation platform. If you want to receive updates relevant to your input by email, please fill out the following fields on this page and we will create an account for you. Your data will not be public and will only be used by %{organizationName}. If you do not agree for us to use your personal data in this way, you can leave them empty."
-      first_name: 'First name(s)'
-      last_name: 'Last name'
-      email_address: 'Email address'
-      by_checking_this_box: "By checking this box I consent to my data being used to create an account on %{organizationName}'s participation platform."
-      optional: 'optional'
-      permission: 'Permission'
-      choose_as_many: 'Choose as many as you like'
+      personal_data: 'Sonraí pearsanta'
+      personal_data_explanation_public: "Cuirfimid d’ionchur isteach chuig ardán rannpháirtíochta ar líne %{organizationName}. Más mian leat d’ainm a thaispeáint mar údar an ionchuir seo agus nuashonruithe a bhaineann le d’ionchur a fháil trí ríomhphost, líon isteach na réimsí seo a leanas ar an leathanach seo agus cruthóimid cuntas duit. Ní bheidh do sheoladh ríomhphoist poiblí agus ní úsáidfidh ach %{organizationName}é. Más mian leat fanacht gan ainm, nó mura n-aontaíonn tú linn do shonraí pearsanta a úsáid ar an mbealach seo, is féidir leat iad a fhágáil folamh."
+      personal_data_explanation_private: "Cuirfimid d’ionchur isteach chuig ardán rannpháirtíochta ar líne %{organizationName}. Más mian leat nuashonruithe a bhaineann le d’ionchur a fháil trí ríomhphost, líon isteach na réimsí seo a leanas ar an leathanach seo agus cruthóimid cuntas duit. Ní bheidh do shonraí poiblí agus ní úsáidfidh ach %{organizationName}iad. Mura n-aontaíonn tú go n-úsáidfimid do shonraí pearsanta ar an mbealach seo, is féidir leat iad a fhágáil folamh."
+      first_name: 'Céadainm(neacha)'
+      last_name: 'Sloinne'
+      email_address: 'Seoladh ríomhphoist'
+      by_checking_this_box: "Tríd an mbosca seo a sheiceáil, tugaim toiliú go n-úsáidfear mo chuid sonraí chun cuntas a chruthú ar ardán rannpháirtíochta %{organizationName}."
+      optional: 'roghnach'
+      permission: 'Cead'
+      choose_as_many: 'Roghnaigh an oiread agus is mian leat'
       choose_exactly:
-        one: 'Choose exactly %{count} option'
-        two: 'Choose exactly %{count} options'
-        few: 'Choose exactly %{count} options'
-        many: 'Choose exactly %{count} options'
-        other: 'Choose exactly %{count} options'
-      choose_between: 'Choose between %{min} and %{max} options'
-      choose_at_least: 'Choose at least %{count} options'
-      choose_at_most: 'Choose at most %{count} options'
-      this_answer: 'This answer will only be shared with moderators, and not to the public.'
-      page: 'Page'
-      date_published: 'Date Published (dd-mm-yyyy)'
-      instructions: 'Instructions'
-      write_as_clearly: 'Write as <b>clearly</b> as you can— these forms might be scanned'
-      write_in_language: 'Write your answers in the same language as this form'
-      linear_scale_print_description: 'Please write a number between %{min_label} and %{max_label} only'
-      unsupported_field: 'This field cannot be completed on paper. Please use the online version of this form instead.'
-      ranking_print_description: 'Please write a number from 1 (most preferred) and %{max_rank} (least preferred) in each box. Use each number exactly once.'
-      matrix_print_description: 'For each row, mark one circle with a cross to indicate your preference.'
-      rating_print_description: 'Rate this by writing a number between 1 (worst) and %{max_stars} (best).'
-      sentiment_linear_scale_print_description: 'Please write a number between 1 and 5.'
+        one: 'Roghnaigh an rogha %{count} go díreach'
+        two: 'Roghnaigh roghanna go díreach %{count}'
+        few: 'Roghnaigh roghanna go díreach %{count}'
+        many: 'Roghnaigh roghanna go díreach %{count}'
+        other: 'Roghnaigh roghanna go díreach %{count}'
+      choose_between: 'Roghnaigh idir na roghanna %{min} agus %{max}'
+      choose_at_least: 'Roghnaigh roghanna %{count} ar a laghad'
+      choose_at_most: 'Roghnaigh %{count} roghanna ar a mhéad'
+      this_answer: 'Ní roinnfear an freagra seo ach le modhnóirí, agus ní leis an bpobal.'
+      page: 'Leathanach'
+      date_published: 'Dáta Foilsithe (ll-mm-bbbb)'
+      instructions: 'Treoracha'
+      write_as_clearly: 'Scríobh chomh <b>soiléir</b> agus is féidir leat — d''fhéadfaí na foirmeacha seo a scanadh'
+      write_in_language: 'Scríobh do chuid freagraí sa teanga chéanna leis an bhfoirm seo'
+      linear_scale_print_description: 'Scríobh uimhir idir %{min_label} agus %{max_label} amháin le do thoil'
+      unsupported_field: 'Ní féidir an réimse seo a chomhlánú ar pháipéar. Bain úsáid as an leagan ar líne den fhoirm seo ina ionad.'
+      ranking_print_description: 'Scríobh uimhir ó 1 (an ceann is fearr leat) agus %{max_rank} (an ceann is lú fearr leat) i ngach bosca. Bain úsáid as gach uimhir uair amháin go díreach.'
+      matrix_print_description: 'I ngach sraith, marcáil ciorcal amháin le cros chun do rogha a léiriú.'
+      rating_print_description: 'Rátáil é seo trí uimhir a scríobh idir 1 (is measa) agus %{max_stars} (is fearr).'
+      sentiment_linear_scale_print_description: 'Scríobh uimhir idir 1 agus 5 le do thoil.'
       sentiment_linear_scale_print_labels: '1 = %{min_label}, 3 = %{neutral_label}, 5 = %{max_label}.'
-      point_print_description: 'Please draw an X on the map below to show the location or write the address instead.'
-      line_print_description: 'Please draw a route on the map below.'
-      polygon_print_description: 'Please draw a shape on the map below.'
-      select_print_description: 'Only choose one option.'
-      date_print_description: 'Please write a date in the format YYYY-MM-DD.'
+      point_print_description: 'Tarraing X ar an léarscáil thíos le do thoil chun an suíomh a thaispeáint nó scríobh an seoladh ina ionad.'
+      line_print_description: 'Tarraing bealach ar an léarscáil thíos le do thoil.'
+      polygon_print_description: 'Tarraing cruth ar an léarscáil thíos, le do thoil.'
+      select_print_description: 'Ná roghnaigh ach rogha amháin.'
+      date_print_description: 'Scríobh dáta san fhormáid BBBB-MM-DD le do thoil.'
   project_copy:
     title_suffix: 'Cóipeáil'
   confirmations_mailer:
     send_confirmation_code:
       subject: "Deimhnigh do sheoladh ríomhphoist le haghaidh ardán rannpháirtíochta %{organizationName}"
-      preheader: 'Confirm your email address for %{organizationName}'
+      preheader: 'Deimhnigh do sheoladh ríomhphoist le haghaidh %{organizationName}'
       header: "Do Chód Deimhnithe"
       header_message: "Haigh %{firstName}!"
-      confirm_email_address: "Confirm your email address"
-      thanks_for_signing_up1: "Thank you for your participation. Please enter this confirmation code in the window on %{organizationName}'s participation platform:"
-      best_regards: "Best regards,"
-      ignore_email: "If you didn't request a code, you can safely ignore this email."
-      expire_code: "This code will be expired in "
-      24_hours: "24 hours."
+      confirm_email_address: "Deimhnigh do sheoladh ríomhphoist"
+      thanks_for_signing_up1: "Go raibh maith agat as do rannpháirtíocht. Cuir isteach an cód deimhnithe seo sa fhuinneog ar ardán rannpháirtíochta %{organizationName}le do thoil:"
+      best_regards: "Le meas,"
+      ignore_email: "Mura ndearna tú iarratas ar chód, is féidir leat neamhaird a dhéanamh den ríomhphost seo go sábháilte."
+      expire_code: "Beidh an cód seo in éag i "
+      24_hours: "24 uair an chloig."
       copy_paste_the_link_below: "Cóipeáil agus greamaigh an cód thíos isteach san fhoirm chlárúcháin ar an ardán."
       the_link_is_valid_for: "Tá an nasc seo bailí ar feadh 24 uair an chloig. Má tá an nasc imithe in éag, féadfaidh tú <a href=\"%{link}\">cód nua a iarraidh</a>."
       did_you_receive_this_email_in_error: "An bhfuair tú an ríomhphost seo trí dhearmad? <a href=\"%{link}\">Cuir in iúl dúinn</a>."
   user_blocked_mailer:
     send_user_blocked_email:
-      subject: 'Your account has been temporarily disabled'
-      preheader: 'Your account on the participation platform of %{organizationName} has been temporarily disabled'
-      title_user_blocked: 'Your account has been temporarily disabled'
-      paragraph_1_without_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for a violation of the community guidelines."
-      paragraph_1_with_reason: "Your account on the participation platform of %{organizationName} has been temporarily disabled for the following reason:"
-      for_more_information: "For more information on this, you can consult the %{termsAndConditionsPage}"
-      you_can_sign_in_again_from: "You can sign in again from %{date}"
+      subject: 'Tá do chuntas díchumasaithe go sealadach'
+      preheader: 'Tá do chuntas ar ardán rannpháirtíochta %{organizationName} díchumasaithe go sealadach'
+      title_user_blocked: 'Tá do chuntas díchumasaithe go sealadach'
+      paragraph_1_without_reason: "Tá do chuntas ar ardán rannpháirtíochta %{organizationName} díchumasaithe go sealadach mar gheall ar shárú ar threoirlínte an phobail."
+      paragraph_1_with_reason: "Tá do chuntas ar ardán rannpháirtíochta %{organizationName} díchumasaithe go sealadach ar an gcúis seo a leanas:"
+      for_more_information: "Chun tuilleadh eolais a fháil faoi seo, is féidir leat dul i gcomhairle leis an %{termsAndConditionsPage}"
+      you_can_sign_in_again_from: "Is féidir leat síniú isteach arís ó %{date}"
   user:
-    anon_first_name: "User"
+    anon_first_name: "Úsáideoir"
     anon_scheme:
-      animals: 'alligator,crocodile,alpaca,ant,antelope,ape,armadillo,baboon,badger,bat,bear,beaver,bee,beetle,buffalo,butterfly,camel,water buffalo,caribou,cat,cattle,cheetah,chimpanzee,chinchilla,cicada,clam,cockroach,cod,coyote,crab,cricket,crow,raven,deer,dinosaur,dog,dolphin,porpoise,duck,eagle,eel,elephant,elk,ferret,fish,fly,fox,frog,toad,gerbil,giraffe,gnat,gnu,wildebeest,goat,goldfish,goose,gorilla,grasshopper,guinea pig,hamster,hare,hedgehog,herring,hippopotamus,hornet,horse,hound,hyena,impala,jackal,jellyfish,kangaroo,wallaby,koala,leopard,lion,lizard,llama,locust,louse,macaw,mallard,mammoth,manatee,marten,mink,minnow,mole,moose,mosquito,mouse,rat,mule,muskrat,otter,ox,oyster,panda,pig,platypus,porcupine,prairie dog,pug,rabbit,raccoon,reindeer,rhinoceros,salmon,sardine,scorpion,seal,sea lion,serval,shark,sheep,skunk,snail,snake,spider,squirrel,swan,termite,tiger,trout,turtle,tortoise,walrus,wasp,whale,wolf,wombat,woodchuck,worm,yak,yellowjacket,zebra'
+      animals: 'ailigéadar, crogall, alpaca, seangán, antalóp, apa, armadillo, babún, broc, ialtóg, béar, bébhar, beach, ciaróg, buabhall, féileacán, camall, buabhall uisce, caribou, cat, eallach, geit, sionnach, cicada, breall, cockroach, trosc, cóta, portán, cricead, préachán, fiach dubh, fia, dineasár, madra, deilf, muc mhara, lacha, iolar, eascann, eilifint, fia rua, firéad, iasc, cuileog, sionnach, frog, buaf, geirbil, sioráf, cnapán beag, gnú, gnu, gnu, gabhar, iasc órga, gé, gorilla, dreoilín féaraigh, guine muc, hamstar, giorria, gráinneog, scadán, hipeapotamas, cornóg, capall, cú, híona, impala, seacal, smugairle róin, cangarú, vallaby, cóala, liopard, leon, laghairt, llama, lócaist, míol mór, macaw, mallard, mamat, manatee, mart, minc, mionóg, taoide, mól, mús, corrmhíol, luch, francach, miúil, muscrat, dobharchú, damh, oisrí, panda, muc, plaitíp, torcán, madra prairie, pug, coinín, racún, réinfhianna, rinoceros, bradán, sairdín, scairp, rón, farraige leon, serval, siorc, caora, broc, seilide, nathair, damhán alla, iora, eala, teirmít, tíogar, breac, turtar, turtar, walrus, foiche, míol mór, mac tíre, wombat, lus an adhmad, péist, iac, seabra buí'
   time:
     am: am
     formats:
       hour_of_day: "%l %p"
-    pm: pm
+    pm: i.n.
   voting_method:
-    default_voting_term_singular: "vote"
-    default_voting_term_plural: "votes"
+    default_voting_term_singular: "vóta"
+    default_voting_term_plural: "vótaí"
   ics_calendar_event:
-    event_details: "Event details"
+    event_details: "Sonraí an imeachta"
   errors:
     messages:
-      max_must_be_greater_than_min_characters: "The maximum must be greater than the minimum."
-      max_must_be_greater_than_or_equal_to_min_select_count: "The maximum must be greater than or equal to the minimum."
+      max_must_be_greater_than_min_characters: "Caithfidh an t-uasmhéid a bheith níos mó ná an t-íosmhéid."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Caithfidh an t-uasmhéid a bheith níos mó ná an t-íosmhéid nó cothrom leis."
