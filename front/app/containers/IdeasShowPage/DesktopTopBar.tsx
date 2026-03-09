@@ -29,7 +29,7 @@ const TopBar = ({ project }: Props) => {
 
   const handleGoBack = useCallback(() => {
     if (goBack) {
-      clHistory.back();
+      clHistory.goBack();
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     } else if (project) {

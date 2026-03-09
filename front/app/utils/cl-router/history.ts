@@ -36,5 +36,5 @@ export default {
     historyMethod('push', location, { scrollToTop: options?.scrollToTop }),
   replace: (location: Partial<Location> | RouteType, options?: Options): void =>
     historyMethod('replace', location, { scrollToTop: options?.scrollToTop }),
-  goBack: () => history.back(),
+  goBack: () => history.go(-1),
 };

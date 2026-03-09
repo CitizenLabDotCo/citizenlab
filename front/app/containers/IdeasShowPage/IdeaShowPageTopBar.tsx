@@ -106,7 +106,7 @@ const IdeaShowPageTopBar = ({
 
   const handleGoBack = useCallback(() => {
     if (goBack) {
-      clHistory.back();
+      clHistory.goBack();
     } else if (deselectIdeaOnMap) {
       deselectIdeaOnMap();
     } else if (project) {
