@@ -46,8 +46,6 @@ describe('<StatusLabel />', () => {
     );
     const statusLabel = screen.getByText('Border Test');
     const style = window.getComputedStyle(statusLabel);
-    expect(style.border.toLowerCase()).toBe(
-      `1px solid ${colors.textSecondary}`.toLowerCase()
-    );
+    expect(style.border).toBe('1px solid rgb(89, 107, 122)');
   });
 });
