@@ -17,7 +17,6 @@ import SimpleLineSymbol from '@arcgis/core/symbols/SimpleLineSymbol';
 import SimpleMarkerSymbol from '@arcgis/core/symbols/SimpleMarkerSymbol';
 import MapView from '@arcgis/core/views/MapView';
 import WebMap from '@arcgis/core/WebMap';
-import Popup from '@arcgis/core/widgets/Popup';
 import { colors } from '@citizenlab/cl2-component-library';
 import { transparentize } from 'polished';
 import { v4 as uuidv4 } from 'uuid';
@@ -489,7 +488,9 @@ export const getClusterConfiguration = (clusterSymbolColor?: string) => {
     symbol: getShapeSymbol({
       shape: 'circle',
       color: clusterSymbolColor || colors.coolGrey700,
+      outlineColor: colors.white,
       outlineWidth: 3,
+      sizeInPx: 20,
     }),
     labelingInfo: [
       // Cluster configuration from Esri sample
@@ -548,25 +549,28 @@ export const showAddInputPopup = ({
   // Project the point to Web Mercator to guarantee the correct coordinate system
   const clickedPointProjected = projectPointToWebMercator(event.mapPoint);
 
-  goToMapLocation(esriPointToGeoJson(clickedPointProjected), mapView).then(
-    () => {
-      // Create an Esri popup
-      mapView.popup = new Popup({
-        dockEnabled: false,
-        dockOptions: {
-          buttonEnabled: false,
-          breakpoint: false,
-        },
-        location: clickedPointProjected,
+  // Close any open UI elements
+  setSelectedInput(null);
+  // Pan to the clicked location, then open popup.
+  // Using mapView.openPopup() directly — avoid creating new Popup()
+  // as the Popup widget class is deprecated and broken in ArcGIS SDK 4.34+.
+  mapView
+    .goTo({ center: clickedPointProjected }, { duration: 500 })
+    .then(() => {
+      mapView.openPopup({
         title: popupTitle,
+        content: popupContentNode,
+        location: clickedPointProjected,
       });
-      // Set content of the popup to the node we created (so we can insert our React component via a portal)
-      mapView.popup.content = popupContentNode;
-      // Close any open UI elements and open the popup
-      setSelectedInput(null);
-      mapView.openPopup();
-    }
-  );
+    })
+    .catch(() => {
+      // goTo can be interrupted by user interaction — still open popup
+      mapView.openPopup({
+        title: popupTitle,
+        content: popupContentNode,
+        location: clickedPointProjected,
+      });
+    });
 };
 
 // createEsriFeatureLayers
