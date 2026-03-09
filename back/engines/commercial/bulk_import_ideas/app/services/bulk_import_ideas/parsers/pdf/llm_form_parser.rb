@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 module BulkImportIdeas::Parsers::Pdf
-  class GPTFormParser
-    def initialize(phase, locale)
+  class LLMFormParser
+    def initialize(phase, locale, llm_class: Analysis::LLM::GPT41)
       @phase = phase
       @locale = locale
+      @llm_class = llm_class
     end
 
     # Return in format compatible with idea_to_idea_row
@@ -125,7 +126,7 @@ module BulkImportIdeas::Parsers::Pdf
     end
 
     def llm
-      @llm ||= Analysis::LLM::GPT41.new
+      @llm ||= @llm_class.new
     end
 
     def printable_form_fields

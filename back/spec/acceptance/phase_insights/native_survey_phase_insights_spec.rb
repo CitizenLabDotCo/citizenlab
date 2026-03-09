@@ -111,16 +111,16 @@ resource 'Phase insights' do
       metrics = json_response_body.dig(:data, :attributes, :metrics)
       expect(metrics).to eq({
         visitors: 3,
-        visitors_7_day_percent_change: -50.0, # from 2 (in week before last) to 1 unique visitor (in last 7 days) = -50% decrease
+        visitors_7_day_percent_change: 0.0, # from 3 unique visitors 7-days ago to 3 now = 0% change
         participants: 3,
-        participants_7_day_percent_change: 100.0, # from 1 (in week before last) to 2 unique participants (in last 7 days) = 100% increase
+        participants_7_day_percent_change: 50.0, # from 2 unique participants 7-days ago, to 3 now = 50% increase
         participation_rate_as_percent: 100.0,
-        participation_rate_7_day_percent_change: 300.0, # participation_rate_last_7_days: 1.0, participation_rate_previous_7_days: 1.0 = 0% change
+        participation_rate_7_day_percent_change: 50.0, # participation_rate_7_days_ago = 0.6666666666666666, participation_rate_now = 1.0 = (((1.0 - 0.6666666666666666).to_f / 0.6666666666666666) * 100.0).round(1) = 50% increase
         native_survey: {
           surveys_submitted: 4,
           surveys_submitted_7_day_percent_change: 100.0, # from 1 (in week before last) to 2 (in last 7 days) = +100% change
           completion_rate_as_percent: 80.0, # 4 submitted surveys out of 5 ideas
-          completion_rate_7_day_percent_change: 100.0 # completion_rate_last_7_days: 1.0, completion_rate_previous_7_days: 0.5 = (((1.0 - 0.5).to_f / 0.5) * 100.0).round(1) = +100% change
+          completion_rate_7_day_percent_change: 20.0 # completion_rate_7_days_ago = 0.6666666666666666, completion_rate_now = 0.8 = (((0.8 - 0.6666666666666666).to_f / 0.6666666666666666) * 100.0).round(1) = 20% increase
         }
       })
 

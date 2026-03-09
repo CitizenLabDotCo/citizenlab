@@ -215,7 +215,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileGPTParser do
     it 'converts the GPT parser output into an idea' do
       # NOTE: Enable the following lines locally to test the actual LLM parsing - sample_survey.pdf matches the form created above
       # file = Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/sample_survey.pdf')
-      # gpt_parser = BulkImportIdeas::Parsers::Pdf::GPTFormParser.new(phase, 'en')
+      # gpt_parser = BulkImportIdeas::Parsers::Pdf::LLMFormParser.new(phase, 'en')
       # puts "SENDING FILE TO GPT FOR PARSING: #{file}"
       # raw_result = parser.send(:parse, file)
       # parse_idea_result = parser.send(:parse_idea, file, 3)
@@ -237,7 +237,7 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileGPTParser do
         }
       }
 
-      expect_any_instance_of(BulkImportIdeas::Parsers::Pdf::GPTFormParser).to receive(:parse_idea).and_return(parse_idea_result)
+      expect_any_instance_of(BulkImportIdeas::Parsers::Pdf::LLMFormParser).to receive(:parse_idea).and_return(parse_idea_result)
 
       # Test the conversion to idea_rows
       import_file = create(:idea_import_file)

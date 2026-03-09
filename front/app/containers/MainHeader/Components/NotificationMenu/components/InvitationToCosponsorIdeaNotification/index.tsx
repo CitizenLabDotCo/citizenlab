@@ -49,6 +49,12 @@ const InvitationToCosponsorIdeaNotification = memo<Props>((props) => {
             initiative: messages.invitationToCosponsorInitiative,
             petition: messages.invitationToCosponsorPetition,
             proposal: messages.invitationToCosponsorProposal,
+            comment: messages.invitationToCosponsorComment,
+            response: messages.invitationToCosponsorResponse,
+            suggestion: messages.invitationToCosponsorSuggestion,
+            topic: messages.invitationToCosponsorTopic,
+            post: messages.invitationToCosponsorPost,
+            story: messages.invitationToCosponsorStory,
           })}
           values={{
             name: (
