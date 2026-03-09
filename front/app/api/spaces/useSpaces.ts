@@ -17,11 +17,10 @@ const fetchSpaces = () => {
   });
 };
 
-const useSpaces = (enabled = true) => {
+const useSpaces = () => {
   return useQuery<Spaces, CLErrors, Spaces, SpacesKeys>({
     queryKey: spacesKeys.list({}),
     queryFn: () => fetchSpaces(),
-    enabled,
   });
 };
 

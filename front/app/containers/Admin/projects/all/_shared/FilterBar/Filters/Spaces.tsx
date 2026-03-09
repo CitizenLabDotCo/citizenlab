@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
 import useSpaces from 'api/spaces/useSpaces';
 
@@ -23,23 +23,13 @@ const Spaces = ({ onClear }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  // Disabled by default because we want to only make the request when the user opens the dropdown
-  // This prevents unnecessary requests when the component is mounted and the user doesn't interact with it
-  const { data, isLoading, refetch } = useSpaces(false);
-  const hasFetchedRef = useRef(false);
+  const { data, isLoading } = useSpaces();
 
   const spaceOptions =
     data?.data.map((space) => ({
       value: space.id,
       label: localize(space.attributes.title_multiloc),
     })) ?? [];
-
-  const handleOpen = () => {
-    if (!hasFetchedRef.current) {
-      refetch();
-      hasFetchedRef.current = true;
-    }
-  };
 
   return (
     <MultiSelect
@@ -48,7 +38,6 @@ const Spaces = ({ onClear }: Props) => {
       selected={spaceIds}
       isLoading={isLoading}
       openedDefaultValue={spaceIds.length === 0}
-      onOpen={handleOpen}
       onChange={(spaceIds) => {
         setParam('space_ids', spaceIds);
         trackEventByName(tracks.setSpace, {
