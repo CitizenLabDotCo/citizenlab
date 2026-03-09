@@ -12,6 +12,7 @@ import {
   Text,
   Dropdown,
 } from '@citizenlab/cl2-component-library';
+import { formatInTimeZone } from 'date-fns-tz';
 import { FormattedDate, FormattedTime } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -148,7 +149,9 @@ const Show = () => {
   };
 
   const timeZone = tenant?.data.attributes.settings.core.timezone;
-
+  const gmtOffset = timeZone
+    ? formatInTimeZone(new Date(), timeZone, 'XXX')
+    : '';
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
     () => {
       if (campaign?.data.attributes.scheduled_at) {
@@ -170,13 +173,17 @@ const Show = () => {
 
   const handleScheduleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (campaign && selectedDate) {
+    if (campaign && selectedDate && timeZone) {
       const scheduledDateTime = new Date(selectedDate);
       scheduledDateTime.setHours(selectedTime.getHours());
       scheduledDateTime.setMinutes(selectedTime.getMinutes());
       scheduledDateTime.setSeconds(0);
-
-      const scheduledAt = scheduledDateTime.toISOString();
+      // store time in the tenant's timezone
+      const scheduledAt = formatInTimeZone(
+        scheduledDateTime,
+        timeZone,
+        "yyyy-MM-dd'T'HH:mm:ssXXX"
+      );
       updateCampaign(
         {
           id: campaign.data.id,
@@ -461,7 +468,7 @@ const Show = () => {
                   onChange={handleTimeChange}
                   selectedDate={selectedDate}
                 />
-                <Text fontSize="l">{timeZone}</Text>
+                <Text fontSize="l">GMT{gmtOffset}</Text>
               </Box>
               <Warning mt="24px">
                 <Text mt="12px" fontSize="m">
