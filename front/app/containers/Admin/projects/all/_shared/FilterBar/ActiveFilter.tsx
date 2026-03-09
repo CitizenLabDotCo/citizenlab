@@ -32,7 +32,7 @@ const ActiveFilter = ({ filterKey, onRemove }: Props) => {
     case 'discoverability':
       return <Discoverability onClear={onRemove} />;
     case 'space_ids':
-      return <Spaces onClear={onRemove} />;
+      return <Spaces onClear={onRemove} openedDefaultValue={true} />;
   }
 };
 

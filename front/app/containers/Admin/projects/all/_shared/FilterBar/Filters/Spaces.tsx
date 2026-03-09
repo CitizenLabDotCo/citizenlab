@@ -15,11 +15,12 @@ import messages from './messages';
 import tracks from './tracks';
 
 interface Props {
+  openedDefaultValue?: boolean;
   mr?: string;
   onClear?: () => void;
 }
 
-const Spaces = ({ mr, onClear }: Props) => {
+const Spaces = ({ openedDefaultValue = false, mr, onClear }: Props) => {
   const spaceIds = useParam('space_ids') ?? [];
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -39,7 +40,7 @@ const Spaces = ({ mr, onClear }: Props) => {
       mr={mr}
       selected={spaceIds}
       isLoading={isLoading}
-      openedDefaultValue={spaceIds.length === 0}
+      openedDefaultValue={openedDefaultValue && spaceIds.length === 0}
       onChange={(spaceIds) => {
         setParam('space_ids', spaceIds);
         trackEventByName(tracks.setSpace, {
