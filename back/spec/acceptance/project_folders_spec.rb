@@ -235,6 +235,39 @@ resource 'ProjectFolder' do
           expect(project_folder.reload.header_bg_url).to be_nil
         end
       end
+
+      context "when updating folder's space" do
+        let!(:space) { create(:space) }
+        let!(:folder) { create(:project_folder) }
+        let!(:project_in_folder) { create(:project, folder: folder) }
+
+        let(:id) { folder.id }
+
+        example "Contained projects are set to folder's space when folder in no space is added to a space" do
+          do_request project_folder: { space_id: space.id }
+
+          expect(folder.reload.space_id).to eq space.id
+          expect(project_in_folder.reload.space_id).to eq space.id
+        end
+
+        example "Contained projects are set to folder's space when the folder is moved to another space" do
+          new_space = create(:space)
+          folder.update!(space: space)
+
+          do_request project_folder: { space_id: new_space.id }
+
+          expect(folder.reload.space_id).to eq new_space.id
+          expect(project_in_folder.reload.space_id).to eq new_space.id
+        end
+
+        example "Contained projects updated to no space when the folder's space is removed" do
+          folder.update!(space: space)
+
+          do_request project_folder: { space_id: nil }
+          expect(folder.reload.space_id).to be_nil
+          expect(project_in_folder.reload.space_id).to be_nil
+        end
+      end
     end
 
     delete 'web_api/v1/project_folders/:id' do
