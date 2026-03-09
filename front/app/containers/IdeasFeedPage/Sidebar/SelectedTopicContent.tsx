@@ -117,6 +117,7 @@ const SelectedTopicContent = ({
             <Divider m="0px" />
             <Box
               as={StyledButton}
+              data-cy="e2e-subtopic-item"
               buttonStyle="secondary-outlined"
               bgColor={isActive ? colors.grey100 : 'transparent'}
               onClick={() => handleSubtopicClick(subtopic.id)}
