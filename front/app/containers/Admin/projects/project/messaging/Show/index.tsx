@@ -12,8 +12,7 @@ import {
   Text,
   Dropdown,
 } from '@citizenlab/cl2-component-library';
-import { formatInTimeZone } from 'date-fns-tz';
-import { FormattedDate, FormattedTime } from 'react-intl';
+import { formatInTimeZone, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -153,20 +152,11 @@ const Show = () => {
     ? formatInTimeZone(new Date(), timeZone, 'XXX')
     : '';
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
-    () => {
-      if (campaign?.data.attributes.scheduled_at) {
-        return new Date(campaign.data.attributes.scheduled_at);
-      }
-      return undefined;
-    }
+    undefined
   );
-
-  const [selectedTime, setSelectedTime] = React.useState<Date>(() => {
-    if (campaign?.data.attributes.scheduled_at) {
-      return new Date(campaign.data.attributes.scheduled_at);
-    }
-    return getDefaultTime();
-  });
+  const [selectedTime, setSelectedTime] = React.useState<Date>(
+    getDefaultTime()
+  );
   const [openScheduleModal, setOpenScheduleModal] = useState(false);
   const [openCancelScheduleModal, setOpenCancelScheduleModal] = useState(false);
   const [openedDropdown, setOpenedDropdown] = useState(false);
@@ -179,11 +169,9 @@ const Show = () => {
       scheduledDateTime.setMinutes(selectedTime.getMinutes());
       scheduledDateTime.setSeconds(0);
       // store time in the tenant's timezone
-      const scheduledAt = formatInTimeZone(
-        scheduledDateTime,
-        timeZone,
-        "yyyy-MM-dd'T'HH:mm:ssXXX"
-      );
+      const utcDateTime = zonedTimeToUtc(scheduledDateTime, timeZone);
+      const scheduledAt = utcDateTime.toISOString();
+
       updateCampaign(
         {
           id: campaign.data.id,
@@ -236,8 +224,11 @@ const Show = () => {
   };
   const handleOpenScheduleModal = () => {
     // if email is already scheduled set the default value to scheduled date and time
-    if (campaign?.data.attributes.scheduled_at) {
-      const scheduledDate = new Date(campaign.data.attributes.scheduled_at);
+    if (campaign?.data.attributes.scheduled_at && timeZone) {
+      const scheduledDate = utcToZonedTime(
+        new Date(campaign.data.attributes.scheduled_at),
+        timeZone
+      );
       setSelectedDate(scheduledDate);
       setSelectedTime(scheduledDate);
     }
@@ -285,18 +276,19 @@ const Show = () => {
                     text={<FormattedMessage {...messages.sent} />}
                   />
                 )}
-              {campaign.data.attributes.scheduled_at && (
+              {campaign.data.attributes.scheduled_at && timeZone && (
                 <>
                   <StatusLabel
                     backgroundColor={colors.teal500}
                     text={<FormattedMessage {...messages.scheduled} />}
                   />
-                  <FormattedDate
-                    value={campaign.data.attributes.scheduled_at}
-                  />{' '}
-                  <FormattedTime
-                    value={campaign.data.attributes.scheduled_at}
-                  />
+                  <Text fontSize="base">
+                    {formatInTimeZone(
+                      campaign.data.attributes.scheduled_at,
+                      timeZone,
+                      'MMM dd, yyyy hh:mm a (XXX)'
+                    )}
+                  </Text>
                 </>
               )}
             </Box>
