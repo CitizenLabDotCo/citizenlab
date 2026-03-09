@@ -15,10 +15,11 @@ import messages from './messages';
 import tracks from './tracks';
 
 interface Props {
-  onClear: () => void;
+  mr?: string;
+  onClear?: () => void;
 }
 
-const Spaces = ({ onClear }: Props) => {
+const Spaces = ({ mr, onClear }: Props) => {
   const spaceIds = useParam('space_ids') ?? [];
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -35,6 +36,7 @@ const Spaces = ({ onClear }: Props) => {
     <MultiSelect
       title={formatMessage(messages.spaces)}
       options={spaceOptions}
+      mr={mr}
       selected={spaceIds}
       isLoading={isLoading}
       openedDefaultValue={spaceIds.length === 0}

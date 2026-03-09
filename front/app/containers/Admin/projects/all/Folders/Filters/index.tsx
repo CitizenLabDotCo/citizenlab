@@ -3,6 +3,7 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import Manager from '../../_shared/FilterBar/Filters/Manager';
+import Spaces from '../../_shared/FilterBar/Filters/Spaces';
 import Status from '../../_shared/FilterBar/Filters/Status';
 
 const Filters = () => {
@@ -16,6 +17,7 @@ const Filters = () => {
       <Box display="flex" alignItems="center" w="100%">
         <Manager mr="8px" />
         <Status mr="8px" />
+        <Spaces mr="8px" />
       </Box>
     </Box>
   );
