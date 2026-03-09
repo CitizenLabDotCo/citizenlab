@@ -21,7 +21,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
-import DefaultViewPicker from '../../shared/DefaultViewPicker';
+import ViewSelector from '../../shared/ViewSelector';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import { ReactingLimitInput } from '../../shared/styling';
 import PrescreeningModeSelector from '../_shared/PrescreeningModeSelector';
@@ -65,7 +65,12 @@ interface Props {
     allow_anonymous_participation: boolean
   ) => void;
   presentation_mode: PresentationMode | null | undefined;
+  available_views: PresentationMode[] | null | undefined;
   handleIdeasDisplayChange: (presentation_mode: PresentationMode) => void;
+  handleAvailableViewsChange: (
+    available_views: PresentationMode[],
+    presentation_mode?: PresentationMode
+  ) => void;
   ideas_order: IdeaSortMethod | undefined;
   handleIdeaDefaultSortMethodChange: (ideas_order: IdeaSortMethod) => void;
   prescreening_mode: PrescreeningMode | null | undefined;
@@ -103,7 +108,9 @@ const IdeationInputs = ({
   handleReactingDislikeEnabledOnChange,
   handleAllowAnonymousParticipationOnChange,
   presentation_mode,
+  available_views,
   handleIdeasDisplayChange,
+  handleAvailableViewsChange,
   ideas_order,
   handleIdeaDefaultSortMethodChange,
   prescreening_mode,
@@ -241,10 +248,12 @@ const IdeationInputs = ({
         handleThresholdChange={handleThresholdChange}
       />
 
-      <DefaultViewPicker
+      <ViewSelector
         presentation_mode={presentation_mode}
+        available_views={available_views}
         apiErrors={apiErrors}
         handleIdeasDisplayChange={handleIdeasDisplayChange}
+        handleAvailableViewsChange={handleAvailableViewsChange}
       />
 
       <SortingPicker

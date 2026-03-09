@@ -196,8 +196,7 @@ const IdeasWithoutFiltersSidebar = ({
             <ViewButtons
               selectedView={selectedView}
               onClick={setSelectedView}
-              locationEnabled={locationEnabled}
-              defaultView={defaultView}
+              availableViews={phase?.data.attributes.available_views}
             />
           </Box>
           <Box

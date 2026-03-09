@@ -121,6 +121,12 @@ const ideationConfig: ParticipationMethodConfig = {
           proposal: messages.proposalFormTitle,
           petition: messages.petitionFormTitle,
           initiative: messages.initiativeFormTitle,
+          comment: messages.commentFormTitle,
+          response: messages.responseFormTitle,
+          suggestion: messages.suggestionFormTitle,
+          topic: messages.topicFormTitle,
+          post: messages.postFormTitle,
+          story: messages.storyFormTitle,
         }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );
@@ -188,6 +194,12 @@ const proposalsConfig: ParticipationMethodConfig = {
           proposal: messages.proposalFormTitle,
           petition: messages.petitionFormTitle,
           initiative: messages.initiativeFormTitle,
+          comment: messages.commentFormTitle,
+          response: messages.responseFormTitle,
+          suggestion: messages.suggestionFormTitle,
+          topic: messages.topicFormTitle,
+          post: messages.postFormTitle,
+          story: messages.storyFormTitle,
         }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );
@@ -294,6 +306,15 @@ const votingConfig: ParticipationMethodConfig = {
           question: messages.questionFormTitle,
           issue: messages.issueFormTitle1,
           contribution: messages.contributionFormTitle,
+          proposal: messages.proposalFormTitle,
+          petition: messages.petitionFormTitle,
+          initiative: messages.initiativeFormTitle,
+          comment: messages.commentFormTitle,
+          response: messages.responseFormTitle,
+          suggestion: messages.suggestionFormTitle,
+          topic: messages.topicFormTitle,
+          post: messages.postFormTitle,
+          story: messages.storyFormTitle,
         }[getInputTerm(props.phases, props.phaseFromUrl)]}
       />
     );

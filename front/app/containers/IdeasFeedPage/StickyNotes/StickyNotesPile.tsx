@@ -168,6 +168,7 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
     <Box overflow="hidden">
       <Box display="flex" justifyContent="center" width="100%">
         <PileContainer
+          data-cy="e2e-sticky-notes-pile"
           position="relative"
           width="100%"
           maxWidth={
@@ -230,6 +231,12 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
               proposal: messages.seeAllProposals,
               initiative: messages.seeAllInitiatives,
               petition: messages.seeAllPetitions,
+              comment: messages.seeAllComments,
+              response: messages.seeAllResponses,
+              suggestion: messages.seeAllSuggestions,
+              topic: messages.seeAllTopicsTerm,
+              post: messages.seeAllPosts,
+              story: messages.seeAllStories,
             })}
             values={{ ideasCount }}
           />

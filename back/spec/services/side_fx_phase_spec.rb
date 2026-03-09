@@ -71,7 +71,9 @@ describe SideFxPhaseService do
       }.each do |attribute, new_value|
         it "logs a '#{attribute}_changed' action job when the phase attribute has changed" do
           old_value = phase[attribute]
-          phase.update!(attribute => new_value)
+          attrs = { attribute => new_value }
+          attrs[:available_views] = %w[card map] if attribute == :presentation_mode
+          phase.update!(attrs)
           expect { service.after_update(phase, user) }
             .to have_enqueued_job(LogActivityJob)
             .with(phase, "changed_#{attribute}", user, phase.updated_at.to_i, project_id: phase.project.id, payload: { change: [old_value, new_value] })
