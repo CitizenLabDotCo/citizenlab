@@ -426,6 +426,7 @@ resource 'Projects' do
               space = create(:space)
               do_request(project: { space_id: space.id })
 
+              expect(response_status).to eq 200
               expect(json_response[:data][:attributes][:space_id]).to eq space.id
             end
 
@@ -433,7 +434,10 @@ resource 'Projects' do
               space = create(:space)
               folder = create(:project_folder, space: space)
 
+              # folder= method will sync the project space to the folder space
               do_request(project: { folder_id: folder.id })
+              expect(response_status).to eq 200
+
               @project.reload
 
               expect(@project.folder_id).to eq folder.id
@@ -444,6 +448,8 @@ resource 'Projects' do
               folder = create(:project_folder, space: nil)
 
               do_request(project: { folder_id: folder.id })
+              expect(response_status).to eq 200
+
               @project.reload
 
               expect(@project.folder_id).to eq folder.id
@@ -458,6 +464,8 @@ resource 'Projects' do
 
             example 'Remove the project from the folder' do
               do_request(project: { folder_id: nil })
+              expect(response_status).to eq 200
+
               @project.reload
 
               expect(@project.folder_id).to be_nil
@@ -477,19 +485,19 @@ resource 'Projects' do
               expect(@project.folder_id).not_to be_nil
             end
 
-            example '[Error] Add the project to a folder in another space' do
+            example 'Add the project to a folder in a space' do
               space = create(:space)
               folder2 = create(:project_folder, space: space)
 
               do_request(project: { folder_id: folder2.id })
+              expect(response_status).to eq 200
 
-              expect(response_status).to eq 422
-              expect(json_response[:errors][:folder_id]).to include(
-                { error: 'project space must match target folder space' }
-              )
+              # folder= method will sync the project space to the folder space
+              expect(response_status).to eq 200
+              expect(json_response[:data][:attributes][:space_id]).to eq space.id
 
               @project.reload
-              expect(@project.folder_id).to eq @folder.id
+              expect(@project.folder_id).to eq folder2.id
             end
           end
 
@@ -503,50 +511,55 @@ resource 'Projects' do
               folder = create(:project_folder, space: @space)
 
               do_request(project: { folder_id: folder.id })
+              expect(response_status).to eq 200
+
               @project.reload
 
               expect(@project.folder_id).to eq folder.id
               expect(json_response[:data][:attributes][:space_id]).to eq @space.id
             end
 
-            example '[Error] Add the project to a folder in another space' do
+            example 'Add the project to a folder in another space' do
               space2 = create(:space)
               folder = create(:project_folder, space: space2)
 
               do_request(project: { folder_id: folder.id })
+              expect(response_status).to eq 200
 
-              expect(response_status).to eq 422
-              expect(json_response[:errors][:folder_id]).to include(
-                { error: 'project space must match target folder space' }
-              )
+              # folder= method will sync the project space to the folder space
+              expect(response_status).to eq 200
+              expect(json_response[:data][:attributes][:space_id]).to eq space2.id
 
               @project.reload
-              expect(@project.folder_id).to be_nil
+              expect(@project.folder_id).to eq folder.id
             end
 
-            example '[Error] Add the project to a folder not in a space' do
+            example 'Add the project to a folder not in a space' do
               folder = create(:project_folder, space: nil)
 
               do_request(project: { folder_id: folder.id })
+              expect(response_status).to eq 200
 
-              expect(response_status).to eq 422
-              expect(json_response[:errors][:folder_id]).to include(
-                { error: 'project space must match target folder space' }
-              )
+              # folder= method will sync the project space to the folder space (nil)
+              expect(response_status).to eq 200
+              expect(json_response[:data][:attributes][:space_id]).to be_nil
 
               @project.reload
-              expect(@project.folder_id).to be_nil
+              expect(@project.folder_id).to eq folder.id
             end
 
             example 'Move the project to another space' do
               space2 = create(:space)
-
               do_request(project: { space_id: space2.id })
+
+              expect(response_status).to eq 200
               expect(json_response[:data][:attributes][:space_id]).to eq space2.id
             end
 
             example 'Move the project to no space' do
               do_request(project: { space_id: nil })
+              expect(response_status).to eq 200
+
               expect(json_response[:data][:attributes][:space_id]).to be_nil
             end
           end
@@ -554,8 +567,8 @@ resource 'Projects' do
           context 'when project in folder in space' do
             before do
               @space = create(:space)
-              folder = create(:project_folder, space: @space, projects: [@project])
-              @project.update!(space_id: @space.id, folder_id: folder.id)
+              folder = create(:project_folder, space: @space)
+              @project.update!(folder_id: folder.id)
             end
 
             example '[Error] Move the project to another space' do
@@ -571,16 +584,19 @@ resource 'Projects' do
               expect(@project.space_id).to eq @space.id
             end
 
-            example '[Error] Move the project to a folder in another space' do
+            example 'Move the project to a folder in another space' do
               space2 = create(:space)
               folder2 = create(:project_folder, space: space2)
 
               do_request(project: { folder_id: folder2.id })
+              expect(response_status).to eq 200
 
-              expect(response_status).to eq 422
-              expect(json_response[:errors][:folder_id]).to include(
-                { error: 'project space must match target folder space' }
-              )
+              # folder= method will sync the project space to the folder space
+              expect(response_status).to eq 200
+              expect(json_response[:data][:attributes][:space_id]).to eq space2.id
+
+              @project.reload
+              expect(@project.folder_id).to eq folder2.id
             end
 
             example '[Error] Move the project to no space' do
@@ -597,8 +613,11 @@ resource 'Projects' do
 
             example 'Remove the project from the folder' do
               do_request(project: { folder_id: nil })
+              expect(response_status).to eq 200
+
               @project.reload
 
+              # folder= method will sync the project space to the folder space (nil)
               expect(@project.folder_id).to be_nil
               expect(json_response[:data][:attributes][:space_id]).to eq @space.id
             end

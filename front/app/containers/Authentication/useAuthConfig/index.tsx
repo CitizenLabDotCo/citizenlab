@@ -84,6 +84,8 @@ export default function useAuthConfig() {
       name: 'acm_login',
     }) || providerForTest === 'acm';
 
+  const federa = useFeatureFlag({ name: 'federa_login' });
+
   const fakeSso = useFeatureFlag({ name: 'fake_sso' });
 
   const ssoProviders = {
@@ -101,6 +103,7 @@ export default function useAuthConfig() {
     keycloak,
     twoday,
     acm,
+    federa,
     fakeSso,
   };
 

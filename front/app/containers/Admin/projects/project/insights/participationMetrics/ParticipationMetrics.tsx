@@ -9,6 +9,8 @@ import { useIntl } from 'utils/cl-intl';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 
 import messages from '../messages';
+import wordMessages from '../word/messages';
+import { useWordSection } from '../word/useWordSection';
 
 import MethodMetrics from './MethodMetrics';
 import MetricCard from './MetricCard';
@@ -18,7 +20,8 @@ interface Props {
 }
 
 const ParticipationMetrics = ({ phase }: Props) => {
-  const { formatMessage, formatNumber } = useIntl();
+  const intl = useIntl();
+  const { formatMessage, formatNumber } = intl;
   const { start_at, end_at, participation_method } = phase.attributes;
   const {
     data: response,
@@ -27,6 +30,122 @@ const ParticipationMetrics = ({ phase }: Props) => {
   } = usePhaseInsights({
     phaseId: phase.id,
   });
+
+  const metrics = response?.data.attributes.metrics;
+  const isCurrentPhase = pastPresentOrFuture([start_at, end_at]) === 'present';
+
+  useWordSection(
+    'participation-metrics',
+    () => {
+      if (!metrics) return [];
+      const rows: string[][] = [
+        [formatMessage(wordMessages.metric), formatMessage(wordMessages.value)],
+      ];
+
+      rows.push([formatMessage(messages.visitors), String(metrics.visitors)]);
+      rows.push([
+        formatMessage(messages.participants),
+        String(metrics.participants),
+      ]);
+
+      rows.push([
+        formatMessage(messages.participationRate),
+        typeof metrics.participation_rate_as_percent === 'number'
+          ? `${metrics.participation_rate_as_percent.toFixed(1)}%`
+          : '-',
+      ]);
+
+      if (metrics.ideation) {
+        rows.push([
+          formatMessage(messages.ideasPosted),
+          String(metrics.ideation.ideas_posted),
+        ]);
+        rows.push([
+          formatMessage(wordMessages.commentsPosted),
+          String(metrics.ideation.comments_posted),
+        ]);
+        rows.push([
+          formatMessage(messages.reactions),
+          String(metrics.ideation.reactions),
+        ]);
+      }
+
+      if (metrics.native_survey) {
+        rows.push([
+          formatMessage(wordMessages.surveysSubmitted),
+          String(metrics.native_survey.surveys_submitted),
+        ]);
+        if (
+          typeof metrics.native_survey.completion_rate_as_percent === 'number'
+        ) {
+          rows.push([
+            formatMessage(messages.completionRate),
+            `${metrics.native_survey.completion_rate_as_percent.toFixed(1)}%`,
+          ]);
+        }
+      }
+
+      if (metrics.voting) {
+        rows.push([
+          formatMessage(messages.voters),
+          String(metrics.voting.voters),
+        ]);
+        rows.push([
+          formatMessage(messages.votes),
+          String(
+            (metrics.voting.online_votes || 0) +
+              (metrics.voting.offline_votes || 0)
+          ),
+        ]);
+      }
+
+      if (metrics.proposals) {
+        rows.push([
+          formatMessage(wordMessages.proposalsPosted),
+          String(metrics.proposals.ideas_posted),
+        ]);
+      }
+
+      if (metrics.volunteering) {
+        rows.push([
+          formatMessage(messages.volunteerings),
+          String(metrics.volunteering.volunteerings),
+        ]);
+      }
+
+      if (metrics.poll) {
+        rows.push([
+          formatMessage(messages.responses),
+          String(metrics.poll.responses),
+        ]);
+      }
+
+      if (metrics.common_ground) {
+        rows.push([
+          formatMessage(messages.ideasPosted),
+          String(metrics.common_ground.ideas_posted),
+        ]);
+        rows.push([
+          formatMessage(messages.associatedIdeas),
+          String(metrics.common_ground.associated_ideas),
+        ]);
+        rows.push([
+          formatMessage(messages.reactions),
+          String(metrics.common_ground.reactions),
+        ]);
+      }
+
+      return [
+        {
+          type: 'heading' as const,
+          text: formatMessage(wordMessages.participationMetrics),
+          level: 2 as const,
+        },
+        { type: 'table' as const, rows, columnWidths: [60, 40] },
+      ];
+    },
+    { skip: isLoading || !!error || !metrics }
+  );
 
   if (isLoading) {
     return (
@@ -42,7 +161,7 @@ const ParticipationMetrics = ({ phase }: Props) => {
     );
   }
 
-  if (error) {
+  if (!response) {
     return (
       <Box
         display="flex"
@@ -56,38 +175,34 @@ const ParticipationMetrics = ({ phase }: Props) => {
     );
   }
 
-  const metrics = response.data.attributes.metrics;
-
-  const isCurrentPhase = pastPresentOrFuture([start_at, end_at]) === 'present';
-
-  const { participation_rate_as_percent } = metrics;
+  const { participation_rate_as_percent } = metrics!;
 
   return (
     <Box display="flex" flexWrap="wrap" gap="16px" w="100%">
       <MetricCard
         label={formatMessage(messages.visitors)}
-        value={metrics.visitors}
+        value={metrics!.visitors}
         icon="user-circle"
         change={
-          isCurrentPhase ? metrics.visitors_7_day_percent_change : undefined
+          isCurrentPhase ? metrics!.visitors_7_day_percent_change : undefined
         }
       />
       <MetricCard
         label={formatMessage(messages.participants)}
-        value={metrics.participants}
+        value={metrics!.participants}
         icon="sidebar-users"
         change={
-          isCurrentPhase ? metrics.participants_7_day_percent_change : undefined
+          isCurrentPhase
+            ? metrics!.participants_7_day_percent_change
+            : undefined
         }
         labelTooltip={formatMessage(messages.phaseParticipantsMetricTooltip2)}
       />
-
       <MethodMetrics
         participationMethod={participation_method}
-        metrics={metrics}
+        metrics={metrics!}
         showChange={isCurrentPhase}
       />
-
       <MetricCard
         label={formatMessage(messages.participationRate)}
         value={
@@ -103,7 +218,7 @@ const ParticipationMetrics = ({ phase }: Props) => {
         icon="chart-bar"
         change={
           isCurrentPhase
-            ? metrics.participation_rate_7_day_percent_change
+            ? metrics!.participation_rate_7_day_percent_change
             : undefined
         }
         labelTooltip={formatMessage(

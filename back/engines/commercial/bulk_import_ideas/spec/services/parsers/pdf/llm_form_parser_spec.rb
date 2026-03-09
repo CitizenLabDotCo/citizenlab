@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe BulkImportIdeas::Parsers::Pdf::GPTFormParser do
+RSpec.describe BulkImportIdeas::Parsers::Pdf::LLMFormParser do
   subject(:parser) { described_class.new(phase, 'en') }
 
   let(:phase) { create(:native_survey_phase, with_permissions: true) }

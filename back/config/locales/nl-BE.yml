@@ -246,6 +246,18 @@ nl-BE:
           title: Waar is jouw initiatief?
         petition:
           title: Wat is jouw petitie?
+        comment:
+          title: Wat is je opmerking?
+        response:
+          title: Wat is je reactie?
+        suggestion:
+          title: Wat is jouw suggestie?
+        topic:
+          title: Wat is je thema?
+        post:
+          title: Wat is je bericht?
+        story:
+          title: Wat is je verhaal?
   custom_field_options:
     gender:
       male: Man

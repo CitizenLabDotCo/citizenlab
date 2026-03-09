@@ -17,6 +17,7 @@ import idClaveUnicaConfiguration from './commercial/id_clave_unica';
 import idCowConfiguration from './commercial/id_cow';
 import idCriiptoConfiguration from './commercial/id_criipto';
 import idFakeSSOConfiguration from './commercial/id_fake_sso';
+import idFederaConfiguration from './commercial/id_federa';
 import idFranceConnectConfiguration from './commercial/id_franceconnect';
 import idGentRrnConfiguration from './commercial/id_gent_rrn';
 import idIdAustriaConfiguration from './commercial/id_id_austria';
@@ -87,6 +88,9 @@ export default loadModules([
   },
   {
     configuration: idFakeSSOConfiguration,
+  },
+  {
+    configuration: idFederaConfiguration,
   },
   {
     configuration: idBosaFasConfiguration,
