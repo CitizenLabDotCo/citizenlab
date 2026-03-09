@@ -125,7 +125,7 @@ ga:
     open_idea_project_description_preview: B’fhéidir go bhfuil smaoineamh agat nach n-oireann do cheann de na tionscadail atá ann cheana féin? Ansin cuir suas anseo é, bailigh tacaíocht agus cuir ar an gclár oibre polaitiúil é!
     open_idea_project_description: >
       <p>Anseo, is féidir leat do smaoineamh féin a thosú mura n-oireann sé do cheann de na tionscadail atá ann cheana féin.</p><p><strong>An cuspóir?</strong> Chun do smaoineamh a chur ar an gclár oibre polaitiúil.</p><p><strong>Conas?</strong> Trí thacaíocht a bhailiú, eadhon 100 vóta ar a laghad i 3 mhí. Is féidir leat é sin a dhéanamh trí do smaoineamh a dhéanamh 'tarraingteach' ar dtús. Scríobh é ar bhealach soiléir agus mealltach, cuir íomhánna leis, tabhair argóintí láidre bunaithe ar fhíricí, cuir ceangaltáin leis le tuilleadh sonraí nó faisnéis chúlra, ... Tar éis duit é sin a dhéanamh, tosaigh ag roinnt do smaoineamh ar na meáin shóisialta nó trí ríomhphost. Tabhair cuireadh do dhaoine páirt a ghlacadh sa phlé ar do smaoineamh, nó cuir ina luí orthu tacú leis trí vótáil ar a shon.</p><p><strong>Cad faoi?</strong> Is féidir le do smaoineamh a bheith faoi go leor rudaí, fad is a bhaineann sé le do chathair agus a beartas. Is féidir gur fadhb a bhíonn agat, réiteach a shamhlaíonn tú nó fiú meascán den dá rud é. Is féidir leis a bheith fiáin agus fadtéarmach, nó an-inláimhsithe agus bua tapa.</p><p><strong>Agus ansin? </strong>Ar shroich tú 100 vóta i 3 mhí? Comhghairdeas! Cuirfidh an chathair do smaoineamh san áireamh anois. Má mheastar go bhfuil do smaoineamh indéanta agus mura ndéanann sé dochar do ghrúpaí ná do dhaoine aonair ar leith, gheobhaidh tú an deis do thogra a chur i láthair le linn chruinniú na comhairle. Le linn an chruinnithe chéanna sin, tabharfaidh baill na comhairle aiseolas díreach duit ar a ndéanfaidh siad nó nach ndéanfaidh siad le do smaoineamh agus cén fáth. Mura mbailíonn tú 100 vóta i gceann 3 mhí, ní bhreithneofar do thogra.</p><p>Tá spéis againn i do chuid smaointe!</p>
-    published_projects: Published projects
+    published_projects: Tionscadail fhoilsithe
   phases:
     open_idea_phase_title: Céim reatha
     native_survey_title: Suirbhé
@@ -345,7 +345,7 @@ ga:
       line_print_description: 'Tarraing bealach ar an léarscáil thíos le do thoil.'
       polygon_print_description: 'Tarraing cruth ar an léarscáil thíos, le do thoil.'
       select_print_description: 'Ná roghnaigh ach rogha amháin.'
-      date_print_description: 'Please write a date in the format YYYY-MM-DD.'
+      date_print_description: 'Scríobh dáta san fhormáid BBBB-MM-DD le do thoil.'
   project_copy:
     title_suffix: 'Cóipeáil'
   confirmations_mailer:
@@ -388,5 +388,5 @@ ga:
     event_details: "Sonraí an imeachta"
   errors:
     messages:
-      max_must_be_greater_than_min_characters: "The maximum must be greater than the minimum."
-      max_must_be_greater_than_or_equal_to_min_select_count: "The maximum must be greater than or equal to the minimum."
+      max_must_be_greater_than_min_characters: "Caithfidh an t-uasmhéid a bheith níos mó ná an t-íosmhéid."
+      max_must_be_greater_than_or_equal_to_min_select_count: "Caithfidh an t-uasmhéid a bheith níos mó ná an t-íosmhéid nó cothrom leis."
