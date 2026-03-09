@@ -1,20 +1,20 @@
 ga:
   analysis:
-    example_tag_n: Example tag %{n}
+    example_tag_n: Clib shamplach %{n}
     cell_statement:
-      percent_more: "%{percent}% more"
-      percent_less: "%{percent}% less"
-      range_min_max: "%{min} to %{max}"
-      range_min: "%{min} or more"
-      range_max: "%{max} or less"
+      percent_more: "%{percent}% níos mó"
+      percent_less: "%{percent}% níos lú"
+      range_min_max: "%{min} go %{max}"
+      range_min: "%{min} nó níos mó"
+      range_max: "%{max} nó níos lú"
       tag_vs_bin:
-        inputs: "People who respond %{answer} to %{question} post %{percent_more_less} in %{tag} than average."
-        likes: "People who respond %{answer} to %{question} like %{percent_more_less} inputs in %{tag} than average."
-        dislikes: "People who respond %{answer} to %{question} dislike %{percent_more_less} inputs in %{tag} than average."
-        participants: "People who respond %{answer} to %{question} participate %{percent_more_less} in %{tag} than average."
+        inputs: "Daoine a fhreagraíonn %{answer} do %{question} postáil %{percent_more_less} i %{tag} níos airde ná an meán."
+        likes: "Is fearr le daoine a fhreagraíonn %{answer} go %{question} ionchuir %{percent_more_less} i %{tag} ná an meán."
+        dislikes: "Daoine a fhreagraíonn %{answer} go %{question} , is fuath leo ionchuir %{percent_more_less} i %{tag} ná an meán."
+        participants: "Bíonn daoine a fhreagraíonn %{answer} go %{question} páirteach %{percent_more_less} i %{tag} níos mó ná an meán."
       bin_vs_bin:
-        inputs: "People who respond %{answer1} to %{question1} answer %{answer2} to %{question2} %{percent_more_less} than average."
-        likes: "People who respond %{answer1} to %{question1} like %{percent_more_less} inputs when they answer %{answer2} to %{question2} than average."
-        dislikes: "People who respond %{answer1} to %{question1} dislike %{percent_more_less} inputs when they answer %{answer2} to %{question2} than average."
-        participants: "People who respond %{answer1} to %{question1} participate %{percent_more_less} when they answer %{answer2} to %{question2} than average."
+        inputs: "Daoine a fhreagraíonn %{answer1} go %{question1} a fhreagraíonn %{answer2} go %{question2} %{percent_more_less} níos airde ná an meán."
+        likes: "Is fearr le daoine a fhreagraíonn %{answer1} go %{question1} ionchuir %{percent_more_less} nuair a fhreagraíonn siad %{answer2} go %{question2} ná an meán."
+        dislikes: "Is beag an meas atá ag daoine a fhreagraíonn %{answer1} go %{question1} ar ionchur %{percent_more_less} nuair a fhreagraíonn siad %{answer2} go %{question2} ná an meán."
+        participants: "Bíonn daoine a fhreagraíonn %{answer1} go %{question1} níos rannpháirteacha i %{percent_more_less} nuair a fhreagraíonn siad %{answer2} go %{question2} ná an meán."
 
