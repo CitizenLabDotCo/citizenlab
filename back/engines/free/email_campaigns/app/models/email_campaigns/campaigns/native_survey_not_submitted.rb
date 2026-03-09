@@ -94,7 +94,7 @@ module EmailCampaigns
         event_payload: {
           survey_url: "#{project_url}/ideas/new?phase_id=#{idea.creation_phase.id}",
           phase_title_multiloc: idea.creation_phase.title_multiloc,
-          phase_end_at: idea.creation_phase.end_at
+          phase_end_at: idea.creation_phase.end_date
         }
       }]
     end

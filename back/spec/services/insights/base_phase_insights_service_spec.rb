@@ -702,7 +702,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
   describe '#phase_has_run_more_than_7_days?' do
     it 'returns false when phase duration is less than 7 days' do
       travel_to(Time.zone.parse('2026-01-15 12:00:00')) do
-        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 6)) # 6 days, including both start and end dates
+        # Exclusive end: Jan 1 to Jan 7 = 6 days duration
+        phase = create(:single_voting_phase, start_at: Time.zone.local(2026, 1, 1), end_at: Time.zone.local(2026, 1, 7))
         service = described_class.new(phase)
         expect(service.send(:phase_has_run_more_than_7_days?)).to be false
       end
@@ -710,7 +711,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
     it 'returns false when phase duration is 7 days but elapsed time is less than 7 days' do
       travel_to(Time.zone.parse('2026-01-6 12:00:00')) do
-        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 7)) # 7 days, including both start and end dates
+        # Exclusive end: Jan 1 to Jan 8 = 7 days duration
+        phase = create(:single_voting_phase, start_at: Time.zone.local(2026, 1, 1), end_at: Time.zone.local(2026, 1, 8))
         service = described_class.new(phase)
         expect(service.send(:phase_has_run_more_than_7_days?)).to be false
       end
@@ -718,7 +720,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
     it 'returns true when phase duration is 7 days and elapsed time is at least 7 days' do
       travel_to(Time.zone.parse('2026-01-8 12:00:00')) do
-        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 7)) # 7 days, including both start and end dates
+        # Exclusive end: Jan 1 to Jan 8 = 7 days duration
+        phase = create(:single_voting_phase, start_at: Time.zone.local(2026, 1, 1), end_at: Time.zone.local(2026, 1, 8))
         service = described_class.new(phase)
         expect(service.send(:phase_has_run_more_than_7_days?)).to be true
       end
@@ -726,7 +729,8 @@ RSpec.describe Insights::BasePhaseInsightsService do
 
     it 'returns false when phase is long enough but started less than 7 days ago' do
       travel_to(Time.zone.parse('2026-01-7 12:00:00')) do
-        phase = create(:single_voting_phase, start_at: Date.new(2026, 1, 1), end_at: Date.new(2026, 1, 7)) # 7 days, including both start and end dates
+        # Exclusive end: Jan 1 to Jan 8 = 7 days duration
+        phase = create(:single_voting_phase, start_at: Time.zone.local(2026, 1, 1), end_at: Time.zone.local(2026, 1, 8))
         service = described_class.new(phase)
         expect(service.send(:phase_has_run_more_than_7_days?)).to be false
       end

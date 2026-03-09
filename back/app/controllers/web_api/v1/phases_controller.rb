@@ -193,10 +193,21 @@ class WebApi::V1::PhasesController < ApplicationController
     ]
 
     if AppConfiguration.instance.feature_activated? 'disable_disliking'
-      permitted += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]
+      permitted + %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]
     end
 
-    params.require(:phase).permit(permitted)
+    # Temporary code to convert `start_at` and `end_at` to timestamps when they are sent
+    # as dates to keep the API backward compatible.
+    params.require(:phase).permit(permitted).tap do |attrs|
+      attrs[:start_at] = AppConfiguration.timezone.parse(attrs[:start_at]) if date_format?(attrs[:start_at])
+      attrs[:end_at] = AppConfiguration.timezone.parse(attrs[:end_at]) + 1.day if date_format?(attrs[:end_at])
+    end
+  end
+
+  def date_format?(str)
+    return false unless str.is_a?(String)
+
+    str.match?(/\A\d{4}-\d{2}-\d{2}\z/)
   end
 
   def detect_invalid_timeline_changes

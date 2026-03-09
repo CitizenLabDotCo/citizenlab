@@ -31,21 +31,21 @@ module MultiTenancy
           title_multiloc: { 'en' => 'Past proposals phase' },
           description_multiloc: runner.rand_description_multiloc,
           participation_method: 'proposals',
-          start_at: Time.zone.today - 30.days,
-          end_at: Time.zone.today - 11.days
+          start_at: Time.zone.now.beginning_of_day - 30.days,
+          end_at: Time.zone.now.beginning_of_day - 10.days
         )
         project.phases.create!(
           title_multiloc: { 'en' => 'Current ideation phase' },
           description_multiloc: runner.rand_description_multiloc,
           participation_method: 'ideation',
-          start_at: Time.zone.today - 10.days,
-          end_at: Time.zone.today + 10.days
+          start_at: Time.zone.now.beginning_of_day - 10.days,
+          end_at: Time.zone.now.beginning_of_day + 11.days
         )
         project.phases.create!(
           title_multiloc: { 'en' => 'Future native survey phase' },
           description_multiloc: runner.rand_description_multiloc,
           participation_method: 'native_survey',
-          start_at: Time.zone.today + 11.days,
+          start_at: Time.zone.now.beginning_of_day + 11.days,
           end_at: nil,
           native_survey_title_multiloc: { 'en' => 'Survey' },
           native_survey_button_multiloc: { 'en' => 'Take the survey' }
@@ -92,8 +92,8 @@ module MultiTenancy
           title_multiloc: { 'en' => 'Past information phase' },
           description_multiloc: runner.rand_description_multiloc,
           participation_method: 'information',
-          start_at: Time.zone.today - 30.days,
-          end_at: Time.zone.today - 11.days
+          start_at: Time.zone.now.beginning_of_day - 30.days,
+          end_at: Time.zone.now.beginning_of_day - 10.days
         )
         project.project_images.create!(image: Rails.root.join("spec/fixtures/image#{rand(20)}.jpg").open)
         project.input_topics.create!(
@@ -148,14 +148,14 @@ module MultiTenancy
       end
 
       def configure_random_timeline_for(project)
-        start_at = Faker::Date.between(from: Tenant.current.created_at, to: 1.year.from_now)
+        start_at = Faker::Date.between(from: Tenant.current.created_at, to: 1.year.from_now).to_time
         rand(8).times do
           start_at += 1.day
           phase = project.phases.new({
             title_multiloc: runner.create_for_tenant_locales { Faker::Lorem.sentence },
             description_multiloc: runner.rand_description_multiloc,
             start_at: start_at,
-            end_at: (start_at += rand(150).days),
+            end_at: (start_at += (rand(150) + 1).days),
             participation_method: %w[ideation voting poll information ideation ideation][rand(6)]
           })
           if phase.voting?

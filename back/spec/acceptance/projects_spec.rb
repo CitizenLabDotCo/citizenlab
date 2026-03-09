@@ -823,8 +823,8 @@ resource 'Projects' do
           :phase,
           project: project,
           participation_method: 'ideation',
-          start_at: (Time.zone.today - 40.days),
-          end_at: (Time.zone.today - 31.days)
+          start_at: (Time.zone.now.beginning_of_day - 40.days),
+          end_at: (Time.zone.now.beginning_of_day - 30.days)
         )
       end
 
@@ -832,8 +832,8 @@ resource 'Projects' do
         create(
           :volunteering_phase,
           project: project,
-          start_at: (Time.zone.today - 30.days),
-          end_at: (Time.zone.today - 21.days)
+          start_at: (Time.zone.now.beginning_of_day - 30.days),
+          end_at: (Time.zone.now.beginning_of_day - 20.days)
         )
       end
 
@@ -841,8 +841,8 @@ resource 'Projects' do
         create(
           :poll_phase,
           project: project,
-          start_at: (Time.zone.today - 20.days),
-          end_at: (Time.zone.today - 11.days)
+          start_at: (Time.zone.now.beginning_of_day - 20.days),
+          end_at: (Time.zone.now.beginning_of_day - 10.days)
         )
       end
 
@@ -957,8 +957,8 @@ resource 'Projects' do
           project: project,
           participation_method: 'ideation',
           title_multiloc: { 'en' => 'Phase 1: Ideation' },
-          start_at: (Time.zone.today - 40.days),
-          end_at: (Time.zone.today - 31.days)
+          start_at: (Time.zone.now.beginning_of_day - 40.days),
+          end_at: (Time.zone.now.beginning_of_day - 30.days)
         )
       end
       let(:native_survey_phase) do
@@ -966,8 +966,8 @@ resource 'Projects' do
           :native_survey_phase,
           project: project,
           title_multiloc: { 'en' => 'Phase 2: Native survey' },
-          start_at: (Time.zone.today - 30.days),
-          end_at: (Time.zone.today - 21.days),
+          start_at: (Time.zone.now.beginning_of_day - 30.days),
+          end_at: (Time.zone.now.beginning_of_day - 20.days),
           with_permissions: true
         )
       end
@@ -979,8 +979,8 @@ resource 'Projects' do
           project: project,
           participation_method: 'information',
           title_multiloc: { 'en' => 'Phase 3: Information' },
-          start_at: (Time.zone.today - 20.days),
-          end_at: (Time.zone.today - 11.days)
+          start_at: (Time.zone.now.beginning_of_day - 20.days),
+          end_at: (Time.zone.now.beginning_of_day - 10.days)
         )
       end
       let(:single_voting_phase) do
@@ -988,8 +988,8 @@ resource 'Projects' do
           :single_voting_phase,
           project: project,
           title_multiloc: { 'en' => 'Phase 4: Voting' },
-          start_at: (Time.zone.today - 10.days),
-          end_at: (Time.zone.today + 2.days)
+          start_at: (Time.zone.now.beginning_of_day - 10.days),
+          end_at: (Time.zone.now.beginning_of_day + 3.days)
         )
       end
       let(:id) { project.id }

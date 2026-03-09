@@ -1,12 +1,9 @@
 require 'rails_helper'
 
 describe Insights::VisitsService do
-  before do
-    AppConfiguration.instance.update!(platform_start_at: '2025-09-01')
-    travel_to(Time.zone.parse('2025-12-12'))
-  end
+  let(:service) { described_class.new }
 
-  context 'Phase visits' do
+  describe '#phase_visits' do
     # rubocop:disable RSpec/ScatteredLet
     let(:phase) { create(:single_voting_phase, start_at: 20.days.ago, end_at: 2.days.ago) }
 
@@ -34,47 +31,43 @@ describe Insights::VisitsService do
     # rubocop:enable RSpec/ScatteredLet
 
     it 'returns correct visits data for the phase' do
-      service = described_class.new(phase.project_id, start_at: phase.start_at, end_at: phase.end_at)
-      expect(service.total_visits).to eq({ visits: 3, visitors: 3 })
-      expect(service.visits_by_date('month')).to eq [
-        { visits: 2, visitors: 2, date_group: Date.new(2025, 11) },
-        { visits: 1, visitors: 1, date_group: Date.new(2025, 12) }
-      ]
+      visits = service.phase_visits(phase)
+
+      expect(visits).to contain_exactly(
+        { acted_at: pageview2.created_at, visitor_id: user1.id },
+        { acted_at: pageview3.created_at, visitor_id: user1.id },
+        { acted_at: pageview4.created_at, visitor_id: user2.id },
+        { acted_at: pageview5.created_at, visitor_id: user2.id },
+        { acted_at: pageview6.created_at, visitor_id: 'anonymous_user_hash' }
+      )
     end
 
     describe 'edge cases for phase date boundaries' do
-      let(:phase2) { create(:single_voting_phase, start_at: Date.new(2025, 10, 15), end_at: Date.new(2025, 11, 2)) }
+      let(:phase2) { create(:single_voting_phase, start_at: Time.zone.local(2026, 1, 15), end_at: Time.zone.local(2026, 2, 3)) }
       let(:session) { create(:session, user_id: user1.id) }
-      let(:tz) { AppConfiguration.timezone }
-
-      let(:service) { described_class.new(phase2.project_id, start_at: phase2.start_at, end_at: phase2.end_at) }
 
       it 'excludes a visit before the phase start date' do
-        create(:pageview, session: session, created_at: tz.parse('2025-10-14 23:59:59'), project_id: phase2.project.id) # before phase start
-        expect(service.total_visits).to eq({ visits: 0, visitors: 0 })
-        expect(service.visits_by_date('month')).to eq []
+        create(:pageview, session: session, created_at: Time.zone.parse('2026-01-14 23:59:59'), project_id: phase2.project.id) # before phase start
+        visits = service.phase_visits(phase2)
+        expect(visits).to be_empty
       end
 
       it 'includes a visit on the phase start date' do
-        create(:pageview, session: session, created_at: tz.parse('2025-10-15 00:00:00'), project_id: phase2.project.id) # on phase start
-        expect(service.total_visits).to eq({ visits: 1, visitors: 1 })
-        expect(service.visits_by_date('month')).to eq [
-          { visits: 1, visitors: 1, date_group: Date.new(2025, 10) }
-        ]
+        pageview = create(:pageview, session: session, created_at: Time.zone.parse('2026-01-15 00:00:00'), project_id: phase2.project.id) # on phase start
+        visits = service.phase_visits(phase2)
+        expect(visits).to contain_exactly({ acted_at: pageview.created_at, visitor_id: user1.id })
       end
 
       it 'includes a visit on the phase end date' do
-        create(:pageview, session: session, created_at: tz.parse('2025-11-02 23:59:59'), project_id: phase2.project.id) # on phase end
-        expect(service.total_visits).to eq({ visits: 1, visitors: 1 })
-        expect(service.visits_by_date('month')).to eq [
-          { visits: 1, visitors: 1, date_group: Date.new(2025, 11) }
-        ]
+        pageview = create(:pageview, session: session, created_at: Time.zone.parse('2026-02-02 23:59:59'), project_id: phase2.project.id) # on phase end
+        visits = service.phase_visits(phase2)
+        expect(visits).to contain_exactly({ acted_at: pageview.created_at, visitor_id: user1.id })
       end
 
       it 'excludes a visit after the phase end date' do
-        create(:pageview, session: session, created_at: tz.parse('2025-11-03 00:00:00'), project_id: phase2.project.id) # after phase end
-        expect(service.total_visits).to eq({ visits: 0, visitors: 0 })
-        expect(service.visits_by_date('month')).to eq []
+        create(:pageview, session: session, created_at: Time.zone.parse('2026-02-03 00:00:00'), project_id: phase2.project.id) # after phase end
+        visits = service.phase_visits(phase2)
+        expect(visits).to be_empty
       end
     end
   end

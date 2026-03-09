@@ -236,8 +236,8 @@ module EmailCampaigns
         id: phase.id,
         title_multiloc: phase.title_multiloc,
         participation_method: phase.participation_method,
-        start_at: phase.start_at.iso8601,
-        end_at: phase.end_at&.iso8601
+        start_at: phase.start_date.iso8601,
+        end_at: phase.end_date&.iso8601
       }
     end
 

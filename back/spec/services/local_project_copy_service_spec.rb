@@ -324,12 +324,12 @@ describe LocalProjectCopyService do
         phase1_start = timeline_project.phases.order(:start_at).first.start_at
         phase2_end = timeline_project.phases.order(:start_at).second.end_at
 
-        today = Time.zone.today
-        expected_shift = (today - phase1_start).days
+        today_midnight = Date.parse(Time.now.to_s).to_time
+        shift_days = ((today_midnight - phase1_start) / 1.day).to_i
         copied_project = service.copy(timeline_project)
 
-        expect(copied_project.phases.order(:start_at).first.start_at).to eq today
-        expect(copied_project.phases.order(:start_at).second.end_at).to eq phase2_end + expected_shift
+        expect(copied_project.phases.order(:start_at).first.start_at).to eq(phase1_start + shift_days.days)
+        expect(copied_project.phases.order(:start_at).second.end_at).to eq(phase2_end + shift_days.days)
       end
     end
 

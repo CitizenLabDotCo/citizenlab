@@ -37,40 +37,42 @@ RSpec.describe MultiTenancy::TenantService do
       expect(user.reload.registration_completed_at).to be_within(5.seconds).of(original_time)
     end
 
-    it 'maintains valid phase dates when one phase ends today and another starts tomorrow' do
+    it 'maintains valid phase dates when one phase ends tomorrow and another starts tomorrow' do
       project = create(:project)
-      phase1 = create(:phase, project: project, start_at: 10.days.ago.to_date, end_at: Time.zone.today)
-      phase2 = create(:phase, project: project, start_at: Time.zone.tomorrow, end_at: 10.days.from_now.to_date)
+      now = Time.zone.now.beginning_of_day
+      phase1 = create(:phase, project: project, start_at: now - 10.days, end_at: now + 1.day)
+      phase2 = create(:phase, project: project, start_at: now + 1.day, end_at: now + 11.days)
 
       service.shift_timestamps(1)
 
       phase1.reload
       phase2.reload
 
-      # Phase dates should remain valid (start_at <= end_at)
-      expect(phase1.start_at).to be <= phase1.end_at
-      expect(phase2.start_at).to be <= phase2.end_at
+      # Phase dates should remain valid (start_at < end_at for exclusive end)
+      expect(phase1.start_at).to be < phase1.end_at
+      expect(phase2.start_at).to be < phase2.end_at
 
-      # Phases should not overlap
-      expect(phase1.end_at).to be < phase2.start_at
+      # Phases should not overlap (contiguous is ok with exclusive end)
+      expect(phase1.end_at).to be <= phase2.start_at
     end
 
-    it 'maintains valid phase dates when one phase ended yesterday and another starts today' do
+    it 'maintains valid phase dates when one phase ended today and another starts today' do
       project = create(:project)
-      phase1 = create(:phase, project: project, start_at: 10.days.ago.to_date, end_at: Time.zone.yesterday)
-      phase2 = create(:phase, project: project, start_at: Time.zone.today, end_at: 10.days.from_now.to_date)
+      now = Time.zone.now.beginning_of_day
+      phase1 = create(:phase, project: project, start_at: now - 10.days, end_at: now)
+      phase2 = create(:phase, project: project, start_at: now, end_at: now + 11.days)
 
       service.shift_timestamps(1)
 
       phase1.reload
       phase2.reload
 
-      # Phase dates should remain valid (start_at <= end_at)
-      expect(phase1.start_at).to be <= phase1.end_at
-      expect(phase2.start_at).to be <= phase2.end_at
+      # Phase dates should remain valid (start_at < end_at for exclusive end)
+      expect(phase1.start_at).to be < phase1.end_at
+      expect(phase2.start_at).to be < phase2.end_at
 
-      # Phases should not overlap
-      expect(phase1.end_at).to be < phase2.start_at
+      # Phases should not overlap (contiguous is ok with exclusive end)
+      expect(phase1.end_at).to be <= phase2.start_at
     end
   end
 

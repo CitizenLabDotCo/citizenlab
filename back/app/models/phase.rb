@@ -195,10 +195,6 @@ class Phase < ApplicationRecord
                     allow_nil: true }
   validates :voting_filtering_enabled, inclusion: { in: [true, false] }
 
-  scope :starting_on, lambda { |date|
-    where(start_at: date)
-  }
-
   # any type of native_survey phase
   with_options if: ->(phase) { phase.pmethod.supports_survey_form? } do
     validates :native_survey_title_multiloc, presence: true, multiloc: { presence: true }
@@ -230,13 +226,12 @@ class Phase < ApplicationRecord
   }
 
   scope :current, lambda {
-    where('start_at <= ? AND (end_at IS NULL OR end_at >= ?)', Time.zone.now, Time.zone.now)
+    now = Time.zone.now
+    where('start_at <= ? AND (end_at IS NULL OR end_at > ?)', now, now)
   }
 
-  def ends_before?(date)
-    return false if end_at.blank?
-
-    end_at.iso8601 < date.to_date.iso8601
+  def ends_before?(time)
+    end_at.present? && end_at <= time
   end
 
   def permission_scope
@@ -261,6 +256,14 @@ class Phase < ApplicationRecord
 
   def started?
     start_at <= Time.zone.now
+  end
+
+  def start_date
+    start_at && AppConfiguration.timezone.at(start_at).to_date
+  end
+
+  def end_date
+    end_at && (AppConfiguration.timezone.at(end_at).to_date - 1.day)
   end
 
   # Used for validations (which are hard to delegate through the participation method)
@@ -364,21 +367,22 @@ class Phase < ApplicationRecord
     errors.add(:end_at, message: 'cannot be blank unless it is the last phase')
   end
 
-  # If a previous phase has a blank end_at, update it and validate that the end date is 2 days after
+  # If a previous phase has a blank end_at, update it and validate that the new phase
+  # starts after the previous phase (so the previous phase has nonzero duration).
   def validate_previous_blank_end_at
     previous_phase = TimelineService.new.previous_phase(self)
     if previous_phase && previous_phase.end_at.blank?
-      if start_at < (previous_phase.start_at + 2.days)
-        errors.add(:start_at, message: 'must be 2 days after the start of the last phase')
+      if start_at <= previous_phase.start_at
+        errors.add(:start_at, message: 'must be after the start of the last phase')
       else
-        previous_phase.update!(end_at: (start_at - 1.day))
+        previous_phase.update!(end_at: start_at)
         @previous_phase_end_at_updated = true
       end
     end
   end
 
   def validate_start_at_before_end_at
-    return unless start_at.present? && end_at.present? && start_at > end_at
+    return unless start_at.present? && end_at.present? && start_at >= end_at
 
     errors.add(:start_at, :after_end_at, message: 'is after end_at')
   end

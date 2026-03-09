@@ -13,17 +13,17 @@ describe WebApi::V1::ProjectMiniSerializer do
     end
 
     it 'returns the number of days before first phase starts' do
-      create(:phase, project: project, start_at: 1.day.from_now.to_date)
+      create(:phase, project: project, start_at: Time.zone.now.beginning_of_day + 1.day)
       expect(starts_days_from_now).to eq(1)
     end
 
     it 'returns nil if first phase started today' do
-      create(:phase, project: project, start_at: Time.zone.now.to_date)
+      create(:phase, project: project, start_at: Time.zone.now.beginning_of_day)
       expect(starts_days_from_now).to be_nil
     end
 
     it 'returns nil if first phase started in the past' do
-      create(:phase, project: project, start_at: 1.day.ago.to_date)
+      create(:phase, project: project, start_at: Time.zone.now.beginning_of_day - 1.day)
       expect(starts_days_from_now).to be_nil
     end
 
@@ -41,17 +41,20 @@ describe WebApi::V1::ProjectMiniSerializer do
     end
 
     it 'returns the number of days since the last phase ended' do
-      create(:phase, project: project, end_at: 1.day.ago.to_date)
+      # With exclusive end, end_date = end_at - 1 day.
+      # end_at = beginning_of_day means end_date = yesterday
+      create(:phase, project: project, end_at: Time.zone.now.beginning_of_day)
       expect(ended_days_ago).to eq(1)
     end
 
-    it 'returns nil if last phase ends today' do
-      create(:phase, project: project, end_at: Time.zone.now.to_date)
+    it 'returns nil if last phase ends today (end_date = today)' do
+      # end_at = tomorrow midnight → end_date = today
+      create(:phase, project: project, end_at: Time.zone.now.beginning_of_day + 1.day)
       expect(ended_days_ago).to be_nil
     end
 
     it 'returns nil if last phase ends in the future' do
-      create(:phase, project: project, end_at: 1.day.from_now.to_date)
+      create(:phase, project: project, end_at: Time.zone.now.beginning_of_day + 2.days)
       expect(ended_days_ago).to be_nil
     end
 

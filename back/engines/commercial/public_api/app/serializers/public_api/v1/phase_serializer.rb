@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class PublicApi::V1::PhaseSerializer < ActiveModel::Serializer
-  attributes :id,
-    :title,
-    :start_at,
-    :end_at
+  attributes :id, :title
+
+  attribute :start_at, &:start_date
+  attribute :end_at, &:end_date
 
   def title
     multiloc_service.t(object.title_multiloc)

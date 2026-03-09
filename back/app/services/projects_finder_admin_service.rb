@@ -79,12 +79,12 @@ class ProjectsFinderAdminService
 
   def self.sort_phase_starting_or_ending_soon(scope)
     phases_ending_soon_subquery = Phase
-      .where("coalesce(end_at, 'infinity'::DATE) >= current_date")
+      .where("coalesce(end_at, 'infinity'::timestamp) >= now()")
       .group(:project_id)
-      .select("project_id, min(coalesce(end_at, 'infinity'::DATE)) AS min_end_at")
+      .select("project_id, min(coalesce(end_at, 'infinity'::timestamp)) AS min_end_at")
 
     phases_starting_soon_subquery = Phase
-      .where('start_at >= current_date')
+      .where('start_at >= now()')
       .group(:project_id)
       .select('project_id, min(start_at) AS min_start_at')
 
@@ -278,7 +278,7 @@ class ProjectsFinderAdminService
 
     overlapping_project_ids = Phase
       .select(:project_id)
-      .where("(start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS (?, ?)", start_date, end_date)
+      .where("(start_at, coalesce(end_at, 'infinity'::timestamp)) OVERLAPS (?::timestamp, ?::timestamp)", start_date, end_date)
 
     scope.where(id: overlapping_project_ids)
   end
@@ -287,12 +287,11 @@ class ProjectsFinderAdminService
     participation_states = params[:participation_states] || []
     return scope if participation_states.blank?
 
-    today = Time.zone.today
     conditions = []
 
     if participation_states.include?('not_started')
       # Projects with no phases that have started yet
-      conditions << "projects.id NOT IN (SELECT project_id FROM phases WHERE start_at < '#{today}')"
+      conditions << "projects.id NOT IN (SELECT project_id FROM phases WHERE start_at < now())"
     end
 
     if participation_states.include?('collecting_data')
@@ -300,7 +299,7 @@ class ProjectsFinderAdminService
       conditions << <<-SQL.squish
         projects.id IN (
           SELECT project_id FROM phases
-          WHERE (start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS ('#{today}', '#{today}')
+          WHERE start_at <= now() AND coalesce(end_at, 'infinity'::timestamp) > now()
           AND participation_method != 'information'
         )
       SQL
@@ -311,7 +310,7 @@ class ProjectsFinderAdminService
       conditions << <<-SQL.squish
         projects.id IN (
           SELECT project_id FROM phases
-          WHERE (start_at, coalesce(end_at, 'infinity'::DATE)) OVERLAPS ('#{today}', '#{today}')
+          WHERE start_at <= now() AND coalesce(end_at, 'infinity'::timestamp) > now()
           AND participation_method = 'information'
         )
       SQL
@@ -321,10 +320,10 @@ class ProjectsFinderAdminService
       # Projects that have at least one phase and all phases have ended
       conditions << <<-SQL.squish
         projects.id IN (
-          SELECT project_id FROM phases 
-          GROUP BY project_id 
-          HAVING COUNT(*) > 0 
-          AND MAX(coalesce(end_at, 'infinity'::DATE)) < '#{today}'
+          SELECT project_id FROM phases
+          GROUP BY project_id
+          HAVING COUNT(*) > 0
+          AND MAX(coalesce(end_at, 'infinity'::timestamp)) <= now()
         )
       SQL
     end
@@ -339,7 +338,7 @@ class ProjectsFinderAdminService
 
     current_phases_with_participation_methods = Phase
       .where(participation_method: participation_methods)
-      .where("start_at <= current_date AND coalesce(end_at, 'infinity'::DATE) >= current_date")
+      .where("start_at <= now() AND coalesce(end_at, 'infinity'::timestamp) > now()")
 
     project_ids_with_matching_phase = current_phases_with_participation_methods
       .select(:project_id)

@@ -8,17 +8,19 @@ describe TimelineService do
   describe 'past_phases' do
     let(:project) { create(:project) }
 
-    it 'returns the past phases' do
-      phase1 = create(:phase, project: project, start_at: Time.now.to_date - 10.days, end_at: Time.now.to_date - 5.days)
-      phase2 = create(:phase, project: project, start_at: Time.now.to_date - 4.days, end_at: Time.now.to_date - 2.days)
-      phase3 = create(:phase, project: project, start_at: Time.now.to_date - 1.day, end_at: Time.now.to_date + 2.days)
+    it 'returns the past phases (exclusive end: past when end_at <= now)' do
+      now = Time.zone.now
+      phase1 = create(:phase, project: project, start_at: now - 10.days, end_at: now - 5.days)
+      phase2 = create(:phase, project: project, start_at: now - 4.days, end_at: now - 1.day)
+      phase3 = create(:phase, project: project, start_at: now, end_at: now + 3.days)
       project.phases << [phase1, phase2, phase3]
       expect(service.past_phases(project)).to contain_exactly(phase1, phase2)
     end
 
     it 'returns the past phases when the last phase has no end date' do
-      phase1 = create(:phase, project: project, start_at: Time.now.to_date - 10.days, end_at: Time.now.to_date - 2.days)
-      phase2 = create(:phase, project: project, start_at: Time.now.to_date - 1.day, end_at: nil)
+      now = Time.zone.now
+      phase1 = create(:phase, project: project, start_at: now - 10.days, end_at: now - 1.day)
+      phase2 = create(:phase, project: project, start_at: now, end_at: nil)
       project.phases << [phase1, phase2]
       expect(service.past_phases(project)).to contain_exactly(phase1)
     end
@@ -33,38 +35,37 @@ describe TimelineService do
       expect(service.current_phase(project)&.id).to eq(active_phase.id)
     end
 
-    it "returns the active phase when we're in the last day of the phase" do
-      today = AppConfiguration.timezone.now.to_date
-      phase = create(:phase, start_at: today - 1.week, end_at: today, project: project)
-      expect(service.current_phase(project)&.id).to eq(phase.id)
-    end
-
-    it "returns the active phase when we're in the first day of the phase" do
-      phase = create(:phase, start_at: Time.now.to_date, end_at: Time.now.to_date + 1.week, project: project)
+    it "returns the active phase when we're at the start of the phase" do
+      now = Time.zone.now
+      phase = create(:phase, start_at: now, end_at: now + 1.week, project: project)
       expect(service.current_phase(project)&.id).to eq(phase.id)
     end
 
     it 'respects the tenant timezone' do
-      phase = create(:phase, project: project, start_at: Date.new(2019, 9, 2), end_at: Date.new(2019, 9, 9))
+      # Phase runs from Sep 2 midnight to Sep 10 midnight (exclusive end = active through Sep 9)
+      phase = create(:phase, project: project, start_at: Time.utc(2019, 9, 2), end_at: Time.utc(2019, 9, 10))
 
-      t = Time.utc(2019, 9, 9, 23) # 11 pm utc = 1 am Brussels == 8pm Santiage
+      t = Time.utc(2019, 9, 9, 23) # 11 pm utc = 1 am Sep 10 Brussels == 8pm Sep 9 Santiago
 
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = 'Europe/Brussels'
       AppConfiguration.instance.update!(settings: settings)
       service = described_class.new
+      # In Brussels it's Sep 10 1am, which is >= end_at, so phase is over
       expect(service.current_phase(project, t)&.id).to be_nil
 
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = 'America/Santiago'
       AppConfiguration.instance.update!(settings: settings)
       service = described_class.new
+      # In Santiago it's Sep 9 8pm, which is < end_at, so phase is still active
       expect(service.current_phase(project, t)&.id).to eq phase.id
     end
 
     it 'returns the active phase when it has no end date' do
-      phase1 = create(:phase, project: project, start_at: Time.now.to_date - 10.days, end_at: Time.now.to_date - 2.days)
-      phase2 = create(:phase, project: project, start_at: Time.now.to_date - 1.day, end_at: nil)
+      now = Time.zone.now
+      phase1 = create(:phase, project: project, start_at: now - 10.days, end_at: now - 1.day)
+      phase2 = create(:phase, project: project, start_at: now, end_at: nil)
       project.phases << [phase1, phase2]
       expect(service.current_phase(project)&.id).to eq(phase2.id)
     end
@@ -102,9 +103,10 @@ describe TimelineService do
     end
 
     it 'returns the last completed phase for a timeline project without an active phase' do
+      now = Time.zone.now
       project = create(:project)
-      past_phase1 = create(:phase, project: project, start_at: Time.now.to_date - 10.days, end_at: Time.now.to_date - 5.days)
-      past_phase2 = create(:phase, project: project, start_at: Time.now.to_date - 4.days, end_at: Time.now.to_date - 2.days)
+      past_phase1 = create(:phase, project: project, start_at: now - 10.days, end_at: now - 4.days)
+      past_phase2 = create(:phase, project: project, start_at: now - 3.days, end_at: now - 1.day)
       project.phases << [past_phase1, past_phase2]
       expect(service.current_phase_or_last_completed_not_archived(project).id).to eq(past_phase2.id)
     end
@@ -118,20 +120,23 @@ describe TimelineService do
   describe 'phase_is_complete?' do
     let(:project) { create(:project) }
 
-    it 'returns true if the phase is complete' do
-      phase = create(:phase, project: project, start_at: Time.now.to_date - 10.days, end_at: Time.now.to_date - 5.days)
+    it 'returns true if the phase is complete (end_at <= now)' do
+      now = Time.zone.now
+      phase = create(:phase, project: project, start_at: now - 10.days, end_at: now - 5.days)
       project.phases << phase
       expect(service.phase_is_complete?(phase)).to be true
     end
 
-    it 'returns false if the phase is not complete' do
-      phase = create(:phase, start_at: Time.now.to_date - 2.days, end_at: Time.now.to_date + 2.days)
+    it 'returns false if the phase is not complete (end_at > now)' do
+      now = Time.zone.now
+      phase = create(:phase, start_at: now - 2.days, end_at: now + 3.days)
       project.phases << phase
       expect(service.phase_is_complete?(phase)).to be false
     end
 
     it 'returns false if the phase has no end date' do
-      phase = create(:phase, project: project, start_at: Time.now.to_date - 2.days, end_at: nil)
+      now = Time.zone.now
+      phase = create(:phase, project: project, start_at: now - 2.days, end_at: nil)
       project.phases << phase
       expect(service.phase_is_complete?(phase)).to be false
     end
@@ -147,7 +152,7 @@ describe TimelineService do
     end
 
     it 'returns the currently active proposal phase of the project' do
-      active_phase = create(:proposals_phase, project: project, start_at: Date.yesterday, end_at: Date.tomorrow)
+      active_phase = create(:proposals_phase, project: project, start_at: Time.zone.now - 1.day, end_at: Time.zone.now + 2.days)
       2.times { create_inactive_phase(project, participation_method: 'ideation') }
       expect(service.current_or_backup_transitive_phase(project)&.id).to eq(active_phase.id)
     end
@@ -173,13 +178,15 @@ describe TimelineService do
 
     it 'returns the last ideation phase of the project if the end_date is blank' do
       create_active_phase(project, factory: :native_survey_phase)
-      open_ideation_phase = create(:phase, project: project, participation_method: 'ideation', start_at: Time.now.to_date + 10.days, end_at: nil)
+      now = Time.zone.now
+      open_ideation_phase = create(:phase, project: project, participation_method: 'ideation', start_at: now + 10.days, end_at: nil)
       expect(service.current_or_backup_transitive_phase(project)&.id).to eq(open_ideation_phase.id)
     end
 
     it 'returns the current ideation phase of the project if the end_date is blank' do
-      create(:phase, project: project, participation_method: 'ideation', start_at: Time.now.to_date - 10.days, end_at: Time.now.to_date - 2.days)
-      open_current_ideation_phase = create(:phase, project: project, participation_method: 'ideation', start_at: Time.now.to_date - 1.day, end_at: nil)
+      now = Time.zone.now
+      create(:phase, project: project, participation_method: 'ideation', start_at: now - 10.days, end_at: now - 1.day)
+      open_current_ideation_phase = create(:phase, project: project, participation_method: 'ideation', start_at: now, end_at: nil)
       expect(service.current_or_backup_transitive_phase(project)&.id).to eq(open_current_ideation_phase.id)
     end
 
@@ -201,30 +208,33 @@ describe TimelineService do
     end
 
     it 'returns current and future phases when the last phase is open ended' do
+      now = Time.zone.now
       project = create(:project)
-      past_phase = create(:phase, project: project, start_at: Time.now.to_date - 10.days, end_at: Time.now.to_date - 3.days)
-      current_phase = create(:phase, project: project, start_at: Time.now.to_date - 2.days, end_at: Time.now.to_date + 2.days)
-      future_phase = create(:phase, project: project, start_at: Time.now.to_date + 3.days, end_at: nil)
+      past_phase = create(:phase, project: project, start_at: now - 10.days, end_at: now - 2.days)
+      current_phase = create(:phase, project: project, start_at: now - 1.day, end_at: now + 3.days)
+      future_phase = create(:phase, project: project, start_at: now + 3.days, end_at: nil)
       project.phases << [past_phase, current_phase, future_phase]
       expect(service.current_and_future_phases(project)).to contain_exactly(current_phase, future_phase)
     end
 
     it 'respects the tenant timezone' do
-      phase = create(:phase, start_at: Date.new(2019, 9, 2), end_at: Date.new(2019, 9, 9))
+      phase = create(:phase, start_at: Time.utc(2019, 9, 2), end_at: Time.utc(2019, 9, 10))
       project = phase.project
 
-      t = Time.utc(2019, 9, 9, 23) # 11 pm utc = 1 am Brussels == 8pm Santiage
+      t = Time.utc(2019, 9, 9, 23) # 11 pm utc = 1 am Sep 10 Brussels == 8pm Sep 9 Santiago
 
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = 'Europe/Brussels'
       AppConfiguration.instance.update!(settings: settings)
       service = described_class.new
+      # In Brussels it's Sep 10 1am, which is >= end_at, so phase is over
       expect(service.current_and_future_phases(project, t)).to eq []
 
       settings = AppConfiguration.instance.settings
       settings['core']['timezone'] = 'America/Santiago'
       AppConfiguration.instance.update!(settings: settings)
       service = described_class.new
+      # In Santiago it's Sep 9 8pm, which is < end_at, so phase is still active
       expect(service.current_and_future_phases(project, t)).to eq [phase]
     end
   end
@@ -256,14 +266,14 @@ describe TimelineService do
 
     it 'returns :present for a project with an current open ended last phase' do
       project = create(:project)
-      project.phases << create(:phase, project: project, start_at: '2022-01-01', end_at: '2022-01-10')
-      project.phases << create(:phase, project: project, start_at: '2022-01-11', end_at: nil)
+      project.phases << create(:phase, project: project, start_at: Time.zone.local(2022, 1, 1), end_at: Time.zone.local(2022, 1, 11))
+      project.phases << create(:phase, project: project, start_at: Time.zone.local(2022, 1, 11), end_at: nil)
       expect(service.timeline_active(project)).to eq :present
     end
 
     it 'returns :present for a project with a single current open ended phase' do
       project = create(:project)
-      project.phases << create(:phase, project: project, start_at: '2022-01-01', end_at: nil)
+      project.phases << create(:phase, project: project, start_at: Time.zone.local(2022, 1, 1), end_at: nil)
       expect(service.timeline_active(project)).to eq :present
     end
 
@@ -279,15 +289,15 @@ describe TimelineService do
 
     it 'returns :future for a project with a future open ended phase' do
       project = create(:project)
-      project.phases << create(:phase, project: project, start_at: Time.now.to_date + 5.days, end_at: nil)
+      project.phases << create(:phase, project: project, start_at: Time.zone.now + 5.days, end_at: nil)
       expect(service.timeline_active(project)).to eq :future
     end
 
     it 'respects the tenant timezone' do
-      phase = create(:phase, start_at: Date.new(2019, 9, 2), end_at: Date.new(2019, 9, 9))
+      phase = create(:phase, start_at: Time.utc(2019, 9, 2), end_at: Time.utc(2019, 9, 10))
       project = phase.project
 
-      travel_to Time.utc(2019, 9, 9, 23) do # 11 pm utc = 1 am Brussels == 8pm Santiage
+      travel_to Time.utc(2019, 9, 9, 23) do # 11 pm utc = 1 am Sep 10 Brussels == 8pm Sep 9 Santiago
         settings = AppConfiguration.instance.settings
         settings['core']['timezone'] = 'Europe/Brussels'
         AppConfiguration.instance.update!(settings: settings)
@@ -323,16 +333,17 @@ describe TimelineService do
     end
 
     it 'returns array of :present and :future for each project when project end dates are open' do
+      now = Time.zone.now
       present_project = create(:project)
-      present_project.phases << create(:phase, project: present_project, start_at: Time.now.to_date - 5.days, end_at: Time.now.to_date - 2.days)
-      present_project.phases << create(:phase, project: present_project, start_at: Time.now.to_date - 1.day, end_at: nil)
+      present_project.phases << create(:phase, project: present_project, start_at: now - 5.days, end_at: now - 1.day)
+      present_project.phases << create(:phase, project: present_project, start_at: now, end_at: nil)
       present_project2 = create(:project)
-      present_project2.phases << create(:phase, project: present_project2, start_at: Time.now.to_date - 1.day, end_at: nil)
+      present_project2.phases << create(:phase, project: present_project2, start_at: now - 1.day, end_at: nil)
       future_project = create(:project)
-      future_project.phases << create(:phase, project: future_project, start_at: Time.now.to_date + 1.day, end_at: Time.now.to_date + 4.days)
-      future_project.phases << create(:phase, project: future_project, start_at: Time.now.to_date + 5.days, end_at: nil)
+      future_project.phases << create(:phase, project: future_project, start_at: now + 1.day, end_at: now + 5.days)
+      future_project.phases << create(:phase, project: future_project, start_at: now + 5.days, end_at: nil)
       future_project2 = create(:project)
-      future_project2.phases << create(:phase, project: future_project2, start_at: Time.now.to_date + 5.days, end_at: nil)
+      future_project2.phases << create(:phase, project: future_project2, start_at: now + 5.days, end_at: nil)
       projects = [present_project, present_project2, future_project, future_project2]
       expect(service.timeline_active_on_collection(projects)).to match_array(
         present_project.id => :present,
@@ -347,26 +358,26 @@ describe TimelineService do
     it 'returns false when a phase ends before the next starts' do
       project = build(:project)
 
-      phase1 = build(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now + 2.days))
-      phase2 = build(:phase, project: project, start_at: (Time.now + 5.days), end_at: (Time.now + 12.days))
+      phase1 = build(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now + 3.days))
+      phase2 = build(:phase, project: project, start_at: (Time.now + 5.days), end_at: (Time.now + 13.days))
       expect(service.overlaps?(phase1, phase2)).to be false
       expect(service.overlaps?(phase2, phase1)).to be false
     end
 
-    it 'returns true when a phase ends on the same date that next starts' do
+    it 'returns false when contiguous (p1.end_at == p2.start_at, exclusive end)' do
       project = build(:project)
 
-      phase1 = build(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now + 2.days))
-      phase2 = build(:phase, project: project, start_at: (Time.now + 2.days), end_at: (Time.now + 12.days))
-      expect(service.overlaps?(phase1, phase2)).to be true
-      expect(service.overlaps?(phase2, phase1)).to be true
+      phase1 = build(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now + 3.days))
+      phase2 = build(:phase, project: project, start_at: (Time.now + 3.days), end_at: (Time.now + 13.days))
+      expect(service.overlaps?(phase1, phase2)).to be false
+      expect(service.overlaps?(phase2, phase1)).to be false
     end
 
     it 'returns true when a phase ends in between start and end of the next phase' do
       project = build(:project)
 
-      phase1 = build(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now + 5.days))
-      phase2 = build(:phase, project: project, start_at: (Time.now + 2.days), end_at: (Time.now + 12.days))
+      phase1 = build(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now + 6.days))
+      phase2 = build(:phase, project: project, start_at: (Time.now + 2.days), end_at: (Time.now + 13.days))
       expect(service.overlaps?(phase1, phase2)).to be true
       expect(service.overlaps?(phase2, phase1)).to be true
     end
@@ -374,8 +385,8 @@ describe TimelineService do
     it 'returns true when a phase starts and ends inside the start-end period of the other phase' do
       project = build(:project)
 
-      phase1 = build(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now + 12.days))
-      phase2 = build(:phase, project: project, start_at: (Time.now + 2.days), end_at: (Time.now + 5.days))
+      phase1 = build(:phase, project: project, start_at: (Time.now - 5.days), end_at: (Time.now + 13.days))
+      phase2 = build(:phase, project: project, start_at: (Time.now + 2.days), end_at: (Time.now + 6.days))
       expect(service.overlaps?(phase1, phase2)).to be true
       expect(service.overlaps?(phase2, phase1)).to be true
     end
@@ -383,7 +394,7 @@ describe TimelineService do
     it 'returns false for a phase ending before a phase with no end date starts' do
       project = build(:project)
       phase1 = build(:phase, project: project, start_at: (Time.now + 5.days), end_at: nil)
-      phase2 = build(:phase, project: project, start_at: (Time.now - 2.days), end_at: (Time.now + 2.days))
+      phase2 = build(:phase, project: project, start_at: (Time.now - 2.days), end_at: (Time.now + 3.days))
       expect(service.overlaps?(phase1, phase2)).to be false
       expect(service.overlaps?(phase2, phase1)).to be false
     end
@@ -391,7 +402,7 @@ describe TimelineService do
     it 'returns true for a phase ending after a phase with no end date starts' do
       project = build(:project)
       phase1 = build(:phase, project: project, start_at: (Time.now + 5.days), end_at: nil)
-      phase2 = build(:phase, project: project, start_at: (Time.now + 2.days), end_at: (Time.now + 12.days))
+      phase2 = build(:phase, project: project, start_at: (Time.now + 2.days), end_at: (Time.now + 13.days))
       expect(service.overlaps?(phase1, phase2)).to be true
       expect(service.overlaps?(phase2, phase1)).to be true
     end
@@ -399,10 +410,11 @@ describe TimelineService do
 
   describe 'phase_number' do
     it 'returns the phase number' do
+      now = Time.zone.now
       project = create(:project)
-      future_phase = create(:phase, project: project, start_at: (Time.zone.today + 20.days), end_at: (Time.zone.today + 25.days))
-      past_phase = create(:phase, project: project, start_at: (Time.zone.today - 15.days), end_at: (Time.zone.today - 10.days))
-      current_phase = create(:phase, project: project, start_at: (Time.zone.today - 2.days), end_at: (Time.zone.today + 3.days))
+      future_phase = create(:phase, project: project, start_at: (now + 20.days), end_at: (now + 26.days))
+      past_phase = create(:phase, project: project, start_at: (now - 15.days), end_at: (now - 9.days))
+      current_phase = create(:phase, project: project, start_at: (now - 2.days), end_at: (now + 4.days))
       expect(service.phase_number(past_phase.reload)).to eq 1
       expect(service.phase_number(current_phase.reload)).to eq 2
       expect(service.phase_number(future_phase.reload)).to eq 3
@@ -411,10 +423,11 @@ describe TimelineService do
 
   describe 'previous_phase' do
     it 'returns the previous phase' do
+      now = Time.zone.now
       project = create(:project)
-      first_phase = create(:phase, project: project, start_at: (Time.zone.today - 25.days), end_at: (Time.zone.today - 20.days))
-      second_phase = create(:phase, project: project, start_at: (Time.zone.today - 15.days), end_at: (Time.zone.today - 10.days))
-      third_phase = create(:phase, project: project, start_at: (Time.zone.today - 2.days), end_at: (Time.zone.today + 3.days))
+      first_phase = create(:phase, project: project, start_at: (now - 25.days), end_at: (now - 19.days))
+      second_phase = create(:phase, project: project, start_at: (now - 15.days), end_at: (now - 9.days))
+      third_phase = create(:phase, project: project, start_at: (now - 2.days), end_at: (now + 4.days))
 
       expect(service.previous_phase(first_phase)).to be_nil
       expect(service.previous_phase(second_phase)).to eq first_phase
@@ -429,7 +442,7 @@ describe TimelineService do
       old_last_phase = project.phases.last
       expect(service.last_phase?(old_last_phase)).to be true
 
-      new_last_phase = create(:phase, project: project, start_at: (old_last_phase.end_at + 1.day).to_s)
+      new_last_phase = create(:phase, project: project, start_at: old_last_phase.end_at)
       expect(service.last_phase?(new_last_phase)).to be true
       expect(service.last_phase?(old_last_phase)).to be false
     end
@@ -440,8 +453,8 @@ describe TimelineService do
   end
 
   def create_active_phase(project, factory: :phase)
-    today = AppConfiguration.timezone.now.to_date
-    create(factory, project: project, start_at: today - 2.weeks, end_at: today)
+    now = AppConfiguration.timezone.now
+    create(factory, project: project, start_at: now - 2.weeks, end_at: now + 1.day)
   end
 
   def create_inactive_phase(project, phase_options = {})

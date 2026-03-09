@@ -183,7 +183,7 @@ class ProjectsFinderService
     projects
       .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
       .where(
-        'phases.start_at <= ? AND (phases.end_at >= ? OR phases.end_at IS NULL)',
+        'phases.start_at <= ? AND (phases.end_at > ? OR phases.end_at IS NULL)',
         Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
       )
       .select('projects.*, phases.end_at AS phase_end_at')
