@@ -23,19 +23,19 @@ module Insights
 
     # TODO: Implement caching? (may not be needed if performance good enough)
     def cached_insights_data(participations)
-      visits = VisitsService.new.phase_visits(@phase)
+      sessions = visits_service.sessions(@phase.project_id, start_at: @phase.start_at, end_at: @phase.end_at)
       flattened_participations = participations.values.flatten
       participant_ids = flattened_participations.pluck(:participant_id).uniq
       participation_method_metrics = phase_participation_method_metrics(participations)
-      metrics = metrics_data(participations, participant_ids, visits, participation_method_metrics)
+      metrics = metrics_data(participations, participant_ids, sessions, participation_method_metrics)
       demographics = demographics_data(flattened_participations, participant_ids)
-      participants_and_visitors_chart_data = participants_and_visitors_chart_data(flattened_participations, visits)
+      participants_and_visitors_chart_data = participants_and_visitors_chart_data(flattened_participations, sessions)
 
       metrics.merge(demographics: { fields: demographics }, participants_and_visitors_chart_data: participants_and_visitors_chart_data)
     end
 
-    def metrics_data(participations, participant_ids, visits, participation_method_metrics)
-      base_metrics = base_metrics(participations, participant_ids, visits)
+    def metrics_data(participations, participant_ids, sessions, participation_method_metrics)
+      base_metrics = base_metrics(participations, participant_ids, sessions)
 
       phase_participation_method_metrics = {
         @phase.participation_method => participation_method_metrics
@@ -44,10 +44,13 @@ module Insights
       { metrics: base_metrics.merge(phase_participation_method_metrics) }
     end
 
-    def base_metrics(participations, participant_ids, visits)
-      visitors_count = visits.pluck(:visitor_id).uniq.count
+    def base_metrics(participations, participant_ids, sessions)
+      # TODO: 1
+      # visitors_count = visits.pluck(:visitor_id).uniq.count
+      visitors_count = visits_service.totals(sessions)[:visitors]
+
       participants_count = participant_ids.count
-      base_7_day_changes = base_7_day_changes(participations, visits, visitors_count, participants_count)
+      base_7_day_changes = base_7_day_changes(participations, visitors_count, participants_count)
 
       {
         visitors: visitors_count,
@@ -59,7 +62,7 @@ module Insights
       }
     end
 
-    def base_7_day_changes(participations, visits, visitors_count, participants_count)
+    def base_7_day_changes(participations, visitors_count, participants_count)
       unless phase_has_run_more_than_7_days?
         return {
           visitors_7_day_percent_change: nil,
@@ -74,9 +77,34 @@ module Insights
         p[:acted_at] < 7.days.ago
       end.pluck(:participant_id).uniq.count
 
-      visitors_count_7_days_ago = visits.select do |v|
-        v[:acted_at] < 7.days.ago
-      end.pluck(:visitor_id).uniq.count
+      # OLD LOGIC
+      # constraints = { project_id: @phase.project.id }
+      # constraints[:created_at] = if @phase.end_at.present?
+      #                              @phase.start_at.beginning_of_day..phase.end_at.end_of_day
+      #                            else
+      #                              @phase.start_at.beginning_of_day..
+      #                                end
+      # visits = ImpactTracking::Session
+      #            .joins(:pageviews)
+      #            .where(impact_tracking_pageviews: constraints)
+      #
+      # old = visits.select(
+      #   "impact_tracking_pageviews.created_at AS date,
+      #   impact_tracking_sessions.user_id AS user_id,
+      #   impact_tracking_sessions.monthly_user_hash AS monthly_user_hash"
+      # ).map do |row|
+      #   {
+      #     acted_at: row.date,
+      #     visitor_id: row.user_id.present? ? row.user_id.to_s : row.monthly_user_hash
+      #   }
+      # end
+
+      # TODO: 2
+      # old_visitors_count_7_days_ago = old.select do |v|
+      #   v[:acted_at] < 7.days.ago
+      # end.pluck(:visitor_id).uniq.count
+      sessions_7_days_ago = visits_service.sessions(@phase.project_id, start_at: @phase.start_at, end_at: 7.days.ago)
+      visitors_count_7_days_ago = visits_service.totals(sessions_7_days_ago)[:visitors]
 
       participation_rate_7_day_percent_change = if visitors_count > 0 && visitors_count_7_days_ago > 0
         participation_rate_7_days_ago = participants_count_7_days_ago.to_f / visitors_count_7_days_ago
@@ -277,9 +305,13 @@ module Insights
       ref_distribution.distribution_by_option_key
     end
 
-    def participants_and_visitors_chart_data(flattened_participations, visits)
+    def participants_and_visitors_chart_data(flattened_participations, sessions)
       resolution = chart_resolution
-      grouped_visits = visits.group_by { |v| date_truncate(v[:acted_at], resolution) }
+      # TODO: 3
+      # grouped_visits = visits.group_by { |v| date_truncate(v[:acted_at], resolution) }
+      grouped_visits = visits_service.group_by_date(sessions, resolution).each_with_object({}) do |row, hash|
+        hash[row.date_group.to_date] = { visits: row.visits, visitors: row.visitors }
+      end
       grouped_participations = flattened_participations.group_by { |p| date_truncate(p[:acted_at], resolution) }
 
       # Get all unique date groups from both participations and visits
@@ -289,9 +321,10 @@ module Insights
         participations_in_group = grouped_participations[date_group] || []
         visits_in_group = grouped_visits[date_group] || []
 
+        binding.pry
         {
           participants: participations_in_group.pluck(:participant_id).uniq.count,
-          visitors: visits_in_group.pluck(:visitor_id).uniq.count,
+          visitors: visits_in_group[:visitors],
           date_group: date_group
         }
       end
@@ -329,6 +362,10 @@ module Insights
       else # 'month'
         Date.new(date.year, date.month, 1)
       end
+    end
+
+    def visits_service
+      @visits_service ||= Insights::VisitsService.new
     end
   end
 end

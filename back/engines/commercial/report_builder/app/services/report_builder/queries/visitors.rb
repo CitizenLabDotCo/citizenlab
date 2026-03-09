@@ -19,24 +19,18 @@ module ReportBuilder
     )
       validate_resolution(resolution)
 
-      visits_service = Insights::VisitsService.new
-      sessions = visits_service.visits(project_id, start_at:, end_at:, exclude_roles:)
-
-      visitors_timeseries = sessions
-        .select(
-          "count(distinct(session_id) as visits, count(distinct(visitor_id)) as visitors, date_trunc('#{resolution}', acted_at) as date_group"
-        )
-        .group('date_group')
-        .order('date_group')
-        .map do |row|
+      sessions = visits_service.sessions(project_id, start_at:, end_at:, exclude_roles:)
+      visitors_timeseries = visits_service.group_by_date(sessions, resolution).map do |row|
           {
             visits: row.visits,
             visitors: row.visitors,
             date_group: row.date_group.to_date
           }
-        end
+      end
 
-      stats = calculate_stats(sessions)
+      page_views = visits_service.page_views(sessions)
+      totals = visits_service.totals(sessions)
+      stats = calculate_stats(totals, page_views)
 
       response = {
         visitors_timeseries: visitors_timeseries,
@@ -48,8 +42,10 @@ module ReportBuilder
 
       # If compare_start_at and compare_end_at are present:
       if compare_start_at.present? && compare_end_at.present?
-        compare_sessions = visits_service.visits(project_id, start_at: compare_start_at, end_at: compare_end_at, exclude_roles: exclude_roles)
-        compare_stats = calculate_stats(compare_sessions)
+        compare_sessions = visits_service.sessions(project_id, start_at: compare_start_at, end_at: compare_end_at, exclude_roles: exclude_roles)
+        compare_page_views = visits_service.page_views(compare_sessions)
+        compare_totals = visits_service.totals(compare_sessions)
+        compare_stats = calculate_stats(compare_totals, compare_page_views)
 
         response = {
           **response,
@@ -63,14 +59,12 @@ module ReportBuilder
       response
     end
 
-    def calculate_stats(sessions)
+    def calculate_stats(totals, pageviews)
       # Total number of visits and visitors
-      visits = sessions.count # TODO: this is not going to work with this new way
-      visitors = sessions.distinct.pluck(:monthly_user_hash).count
+      visits = totals[:visits]
+      visitors = totals[:visitors]
 
-      # Create new pageviews query for avg seconds per session and avg pages per session
-      pageviews = ImpactTracking::Pageview.where(session_id: sessions.select(:id))
-
+      # avg seconds per session and avg pages per session from pageview data
       # Calculate avg pages visited per session
       # Or, if project filter is applied:
       # Avg pages visited per session where someone visited the project during the session
@@ -125,6 +119,10 @@ module ReportBuilder
         avg_seconds_per_session: avg_seconds_per_session,
         avg_pages_visited: avg_pages_visited
       }
+    end
+
+    def visits_service
+      @visits_service ||= Insights::VisitsService.new
     end
   end
 end
