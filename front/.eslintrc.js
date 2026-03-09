@@ -154,11 +154,6 @@ module.exports = {
               "Import FormattedMessage, injectIntl and useIntl from 'utils/cl-intl' instead of directly from 'react-intl'",
           },
           {
-            name: 'history',
-            message:
-              "Import history from utils/cl-router/cl-history instead of directly from 'history'",
-          },
-          {
             name: 'lodash',
             message:
               "Import lodash functions from 'lodash-es' instead of 'lodash'",

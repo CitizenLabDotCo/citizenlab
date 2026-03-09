@@ -1,11 +1,11 @@
-// eslint-disable-next-line no-restricted-imports
-import { Location } from 'history';
 import { isString } from 'lodash-es';
 import { SupportedLocale } from 'typings';
 
 import { getUrlLocale } from 'utils/getUrlLocale';
 import { replacePathnameLocale } from 'utils/replacePathnameLocale';
 import { setPathnameLocale } from 'utils/setPathnameLocale';
+
+import type { Location } from 'react-router-dom';
 
 type LocationDescriptorObject = Partial<Location> | string;
 

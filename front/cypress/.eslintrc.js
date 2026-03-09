@@ -96,11 +96,6 @@ module.exports = {
               "Import FormattedMessage and injectIntl from 'utils/cl-intl' instead",
           },
           {
-            name: 'history',
-            message:
-              "Please import history from utils/cl-router/cl-history instead of directly from 'history'",
-          },
-          {
             name: 'lodash',
             message: "module 'lodash' forbidden: use 'lodash-es' instead",
           },

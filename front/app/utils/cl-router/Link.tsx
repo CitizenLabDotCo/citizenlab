@@ -1,11 +1,10 @@
 import React from 'react';
 
-// eslint-disable-next-line no-restricted-imports
-import { Path } from 'history';
 import {
   // eslint-disable-next-line no-restricted-imports
   NavLink as RouterLink,
   NavLinkProps,
+  Path,
 } from 'react-router-dom';
 import { RouteType } from 'routes';
 
