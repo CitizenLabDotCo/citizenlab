@@ -49,15 +49,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.upload',
     defaultMessage: 'Upload',
   },
-  googleConsent: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.googleConsent2',
-    defaultMessage:
-      'I hereby consent to processing this file using the Google Cloud Form Parser',
-  },
-  consentNeeded: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.consentNeeded',
-    defaultMessage: 'You need to consent to this before you can continue',
-  },
   pleaseUploadFile: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.pleaseUploadFile',
     defaultMessage: 'Please upload a file to continue',

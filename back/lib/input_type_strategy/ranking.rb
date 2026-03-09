@@ -6,10 +6,6 @@ module InputTypeStrategy
       true
     end
 
-    def supports_pdf_import?
-      false
-    end
-
     def supports_logic?
       true
     end

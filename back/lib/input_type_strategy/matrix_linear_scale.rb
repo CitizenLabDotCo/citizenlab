@@ -10,8 +10,5 @@ module InputTypeStrategy
       true
     end
 
-    def supports_pdf_import?
-      false
-    end
   end
 end
