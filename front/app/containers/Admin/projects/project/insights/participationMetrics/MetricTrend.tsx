@@ -23,9 +23,8 @@ const MetricTrend = ({ change }: Props) => {
   const { formatMessage, formatNumber } = useIntl();
 
   const insufficientDataMessages = {
-    null: messages.insufficientComparisonDataPhaseTooNew,
-    last_7_days_compared_with_zero:
-      messages.insufficientComparisonDataNoPriorActivity,
+    null: messages.insufficientComparisonDataPhaseTooYoung,
+    current_value_compared_with_zero: messages.currentValueComparedWithZero,
     no_visitors_in_one_or_both_periods:
       messages.cannotCalculateNoVisitsInPeriod,
     no_new_survey_responses_in_one_or_both_periods:
@@ -33,8 +32,18 @@ const MetricTrend = ({ change }: Props) => {
   };
 
   if (change === null || typeof change === 'string') {
-    const tooltipMessage =
-      insufficientDataMessages[change as keyof typeof insufficientDataMessages];
+    let tooltipMessage;
+
+    if (change === null) {
+      tooltipMessage = insufficientDataMessages.null;
+    } else if (change in insufficientDataMessages) {
+      tooltipMessage =
+        insufficientDataMessages[
+          change as keyof typeof insufficientDataMessages
+        ];
+    } else {
+      tooltipMessage = messages.sevenDayChangeDefaultTooltip;
+    }
 
     return (
       <Tooltip content={formatMessage(tooltipMessage)} placement="top">
@@ -81,30 +90,35 @@ const MetricTrend = ({ change }: Props) => {
     : 'red500';
 
   return (
-    <Box display="flex" alignItems="center" gap="6px" flexWrap="wrap">
-      <Box display="flex" alignItems="center" gap="2px">
-        {trendIcon && (
-          <Icon
-            name={trendIcon}
-            width="12px"
-            height="12px"
-            fill={colors[trendColor]}
-          />
-        )}
-        <Text
-          as="span"
-          fontSize="xs"
-          fontWeight="bold"
-          color={trendColor}
-          m="0"
-        >
-          {trendLabel}
+    <Tooltip
+      content={formatMessage(messages.sevenDayChangeDefaultTooltip)}
+      placement="top"
+    >
+      <Box display="flex" alignItems="center" gap="6px" flexWrap="wrap">
+        <Box display="flex" alignItems="center" gap="2px">
+          {trendIcon && (
+            <Icon
+              name={trendIcon}
+              width="12px"
+              height="12px"
+              fill={colors[trendColor]}
+            />
+          )}
+          <Text
+            as="span"
+            fontSize="xs"
+            fontWeight="bold"
+            color={trendColor}
+            m="0"
+          >
+            {trendLabel}
+          </Text>
+        </Box>
+        <Text as="span" fontSize="s" color="coolGrey500" m="0">
+          {formatMessage(messages.sevenDayChange)}
         </Text>
       </Box>
-      <Text as="span" fontSize="s" color="coolGrey500" m="0">
-        {formatMessage(messages.vsLast7Days)}
-      </Text>
-    </Box>
+    </Tooltip>
   );
 };
 

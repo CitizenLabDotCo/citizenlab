@@ -6,7 +6,7 @@ module BulkImportIdeas::Parsers
     # Returns an array of idea rows compatible with IdeaImporter
     # Only one row ever returned as only one PDF per idea is parsed by this service
     def parse_rows(file)
-      gpt_service = BulkImportIdeas::Parsers::Pdf::GPTFormParser.new(@phase, @locale)
+      gpt_service = BulkImportIdeas::Parsers::Pdf::LLMFormParser.new(@phase, @locale)
       form_parsed_idea = gpt_service.parse_idea(file.file, template_data[:page_count])
 
       # Store the parsed idea for better analysis later

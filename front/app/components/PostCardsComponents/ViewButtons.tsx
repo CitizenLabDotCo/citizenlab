@@ -12,8 +12,6 @@ import styled, { useTheme } from 'styled-components';
 
 import { PresentationMode } from 'api/phases/types';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -74,25 +72,21 @@ interface Props {
   className?: string;
   selectedView: PresentationMode;
   onClick: (selectedView: PresentationMode) => void;
-  locationEnabled?: boolean;
-  defaultView?: PresentationMode;
+  availableViews?: PresentationMode[];
 }
 
 const ViewButtons = ({
   className,
   selectedView,
   onClick,
-  locationEnabled,
-  defaultView,
+  availableViews,
 }: Props) => {
   const theme = useTheme();
-  const ideaFeedEnabled = useFeatureFlag({ name: 'idea_feed' });
   const listButtonRef = useRef<HTMLButtonElement | null>(null);
   const mapButtonRef = useRef<HTMLButtonElement | null>(null);
   const feedButtonRef = useRef<HTMLButtonElement | null>(null);
-
-  const showMapButton = !!locationEnabled;
-  const showFeedButton = ideaFeedEnabled && defaultView === 'feed';
+  const showMapButton = availableViews?.includes('map');
+  const showFeedButton = availableViews?.includes('feed');
 
   if (!showMapButton && !showFeedButton) {
     return null;

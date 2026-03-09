@@ -15,8 +15,8 @@ export default defineMessages({
     defaultMessage: 'webhook documentation',
   },
   documentationUrl: {
-    id: 'app.containers.Admin.tools.webhooks.documentationUrl',
-    defaultMessage: 'https://developers.citizenlab.co/webhooks',
+    id: 'app.containers.Admin.tools.webhooks.documentationUrl2',
+    defaultMessage: 'https://developers.govocal.com/guides/reference-webhooks',
   },
   name: {
     id: 'app.containers.Admin.tools.webhooks.name',

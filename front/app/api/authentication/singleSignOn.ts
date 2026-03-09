@@ -22,6 +22,7 @@ export interface SSOProviderMap {
   id_austria: 'id_austria';
   criipto: 'criipto';
   fake_sso: 'fake_sso';
+  federa: 'federa';
   nemlog_in: 'nemlog_in';
   keycloak: 'keycloak';
   twoday: 'twoday';
