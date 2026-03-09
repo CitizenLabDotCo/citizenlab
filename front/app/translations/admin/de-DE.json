@@ -1412,7 +1412,7 @@
   "app.containers.Admin.projects.project.insights.ideation.mostLikedDescription": "Diese Beiträge erzielten die größte Resonanz",
   "app.containers.Admin.projects.project.insights.ideation.newResponses": "{count, plural, one {# neue Antwort} other {# neue Antworten}}",
   "app.containers.Admin.projects.project.insights.ideation.noTopics": "Den Ideen sind noch keine Themen zugeordnet",
-  "app.containers.Admin.projects.project.insights.ideation.notEnoughInputs1": "Mindestens {minInputs} Beiträge werden benötigt, um eine KI-Zusammenfassung zu erstellen. Momentan gibt es {count, plural, one {# Beitrag} other {# Beiträge}}.",
+  "app.containers.Admin.projects.project.insights.ideation.notEnoughInputs1": "Es werden mindestens {minInputs} Beiträge benötigt, um eine KI-Zusammenfassung zu erstellen. Derzeit gibt es {count, plural, one {einen Beitrag} other {# Beiträge}}.",
   "app.containers.Admin.projects.project.insights.ideation.refresh": "Aktualisieren",
   "app.containers.Admin.projects.project.insights.ideation.topics": "Themen",
   "app.containers.Admin.projects.project.insights.ideation.whatArePeopleSaying": "Was sagen die Leute?",
