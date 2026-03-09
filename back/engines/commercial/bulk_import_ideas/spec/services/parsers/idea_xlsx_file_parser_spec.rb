@@ -54,7 +54,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/import.xlsx').read
       expect do
         service.parse_file_async("data:application/pdf;base64,#{base_64_content}")
-      end.to have_enqueued_job(BulkImportIdeas::IdeaImportJob)
+      end.to have_enqueued_job(BulkImportIdeas::IdeaXlsxImportJob)
     end
   end
 
