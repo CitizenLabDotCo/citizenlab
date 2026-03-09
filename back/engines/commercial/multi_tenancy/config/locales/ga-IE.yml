@@ -1,11 +1,11 @@
 # Translations for continuous to timeline migration
 ga:
   phase_title_default:
-    ideation: Collect input
-    voting: Voting
-    poll: Poll
-    native_survey: Survey
-    survey: Survey
-    document_annotation: Document feedback
-    volunteering: Find volunteers
-    information: Information
+    ideation: Bailigh ionchur
+    voting: Vótáil
+    poll: Polaitíocht
+    native_survey: Suirbhé
+    survey: Suirbhé
+    document_annotation: Aiseolas doiciméad
+    volunteering: Aimsigh oibrithe deonacha
+    information: Eolas
