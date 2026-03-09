@@ -6,8 +6,8 @@ ga:
       "idea_assigned_to_you": Sannadh ionchuir - riarthóirí agus bainisteoirí tionscadail
     idea_assigned_to_you:
       by_author: 'ag %{authorName}'
-      cta_button: 'Give feedback to %{authorName}'
-      event_description: 'An input has been assigned to you. Give feedback by writing an official update or by changing its status.'
-      title: '%{firstName}, an input was assigned to you'
+      cta_button: 'Tabhair aiseolas do %{authorName}'
+      event_description: 'Tá ionchur sannta duit. Tabhair aiseolas trí nuashonrú oifigiúil a scríobh nó trína stádas a athrú.'
+      title: '%{firstName}, sannadh ionchur duit'
       subject: 'Sannadh ionchur duit ar ardán %{organizationName}'
-      preheader: 'The input of %{authorName} has been assigned to you'
+      preheader: 'Tá ionchur %{authorName} sannta duit'
