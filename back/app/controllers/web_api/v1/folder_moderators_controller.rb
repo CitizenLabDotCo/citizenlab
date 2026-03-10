@@ -26,7 +26,6 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
 
   # insert
   def create
-    puts "FolderModeratorsController#create called with params: #{params.inspect}"
     @user = User.find(create_moderator_params[:user_id])
     @folder = ProjectFolders::Folder.find(params[:project_folder_id])
     # SideFxFolderModeratorService.new.before_create(@user, @folder, current_user)
