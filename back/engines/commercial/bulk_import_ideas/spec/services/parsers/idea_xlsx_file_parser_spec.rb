@@ -209,7 +209,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       create(:custom_field_option, custom_field: fourth_select_field, key: 'other', other: true, title_multiloc: { 'en' => 'Other' })
 
       base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/import_select_other.xlsx').read
-      file = service.row_mapper.upload_source_file( "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}")
+      file = service.row_mapper.upload_source_file("data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}")
       parsed_rows = service.parse_rows(file)
 
       expect(parsed_rows.pluck(:custom_field_values)).to eq(
@@ -238,7 +238,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
 
     it 'correctly parses the rows of a real xlsx file and converts to idea_rows' do
       base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/import.xlsx').read
-      file = service.row_mapper.upload_source_file( "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}")
+      file = service.row_mapper.upload_source_file("data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}")
       parsed_rows = service.parse_rows(file)
       expect(parsed_rows.count).to eq 2
       expect(parsed_rows[0]).to include(
