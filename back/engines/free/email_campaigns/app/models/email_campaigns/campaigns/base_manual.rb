@@ -45,8 +45,6 @@ module EmailCampaigns
     # Without this, the campaign would be sent on every event and every schedule trigger.
     filter :only_manual_send
 
-    after_send :mark_scheduled_send_complete
-
     validate :scheduled_at_in_future, if: -> { scheduled_at.present? && schedule_changed? }
 
     def self.default_schedule
@@ -99,6 +97,13 @@ module EmailCampaigns
       false
     end
 
+    def clear_scheduled_at_if_needed
+      return if scheduled_at.blank?
+
+      self.ic_schedule = self.class.default_schedule
+      save!(validate: false)
+    end
+
     # Override Schedulable's filter to allow send_now (time is nil for manual triggers)
     def filter_campaign_scheduled(time:, activity: nil)
       return true unless time              # Allow send_now
@@ -120,15 +125,6 @@ module EmailCampaigns
       return true unless time   # Allow send_now
 
       !sent?                    # Prevent re-sending via cron
-    end
-
-    def mark_scheduled_send_complete(_command)
-      return if scheduled_at.blank?
-
-      self.ic_schedule = self.class.default_schedule
-      save!(validate: false)
-
-      SideFxCampaignService.new.after_send(self, author)
     end
 
     def scheduled_at_in_future

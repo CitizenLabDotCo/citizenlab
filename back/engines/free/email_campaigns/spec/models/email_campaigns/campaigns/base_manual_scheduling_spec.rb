@@ -96,6 +96,20 @@ RSpec.describe EmailCampaigns::Campaigns::BaseManual do
     end
   end
 
+  describe 'clear_scheduled_at_if_needed' do
+    it 'clears the schedule when scheduled_at is present' do
+      campaign = create(:manual_campaign, scheduled_at: 2.hours.from_now)
+      expect(campaign.scheduled_at).to be_present
+      campaign.clear_scheduled_at_if_needed
+      expect(campaign.reload.scheduled_at).to be_nil
+    end
+
+    it 'does nothing when scheduled_at is blank' do
+      campaign = create(:manual_campaign)
+      expect { campaign.clear_scheduled_at_if_needed }.not_to change { campaign.reload.updated_at }
+    end
+  end
+
   describe 'scheduled_at validation' do
     it 'is valid without scheduled_at' do
       campaign = build(:manual_campaign, scheduled_at: nil)

@@ -101,6 +101,7 @@ module EmailCampaigns
       if @campaign.valid?(:send)
         SideFxCampaignService.new.before_send(@campaign, current_user)
         EmailCampaigns::DeliveryService.new.send_now(@campaign)
+        @campaign.clear_scheduled_at_if_needed
         SideFxCampaignService.new.after_send(@campaign, current_user)
         render json: WebApi::V1::CampaignSerializer.new(
           @campaign.reload,
