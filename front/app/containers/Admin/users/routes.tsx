@@ -3,7 +3,7 @@ import React, { lazy } from 'react';
 const AdminUsersIndex = lazy(() => import('.'));
 const AdminAllUsers = lazy(() => import('./AllUsers'));
 const AdminAdmins = lazy(() => import('./Admins'));
-const AdminProjectModerators = lazy(() => import('./Moderators'));
+const AdminProjectModerators = lazy(() => import('./ProjectModerators'));
 const AdminUsersGroup = lazy(() => import('./UsersGroup'));
 const AdminBlockedUsers = lazy(() => import('./BlockedUsers'));
 const AdminBannedEmails = lazy(() => import('./BannedEmails'));

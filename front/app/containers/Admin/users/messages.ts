@@ -122,7 +122,7 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.GroupsPanel.admins',
     defaultMessage: 'Admins',
   },
-  managers: {
+  projectManagers: {
     id: 'app.containers.Admin.Users.GroupsPanel.managers',
     defaultMessage: 'Project managers',
   },
