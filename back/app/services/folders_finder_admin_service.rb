@@ -3,6 +3,7 @@ class FoldersFinderAdminService
     folders = filter_status(scope, params)
     folders = filter_folder_manager(folders, params)
     folders = search(folders, params)
+    folders = filter_space(folders, params)
 
     folders
       .order('project_folders_folders.created_at DESC, project_folders_folders.id ASC')
@@ -41,5 +42,12 @@ class FoldersFinderAdminService
     return scope if search.blank?
 
     scope.search_by_title(search)
+  end
+
+  def self.filter_space(scope, params = {})
+    space_ids = params[:space_ids]
+    return scope if space_ids.blank?
+
+    scope.where(space_id: space_ids)
   end
 end

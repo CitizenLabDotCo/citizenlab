@@ -32,6 +32,7 @@ export type Parameters = {
   participation_methods?: ParticipationMethod[];
   visibility?: Visibility[];
   discoverability?: Discoverability[];
+  space_ids?: string[];
   sort: ProjectSortableParam;
   locale: SupportedLocale;
 } & Pagination;
