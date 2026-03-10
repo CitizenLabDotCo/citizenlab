@@ -1,6 +1,6 @@
 import { ParticipationMethod } from 'api/phases/types';
 
-const INSIGHT_EXPORT_REGISTRY = {
+const _INSIGHT_EXPORT_REGISTRY = {
   'participation-metrics': true,
   'participation-timeline': true,
   demographics: true,
@@ -14,7 +14,7 @@ const INSIGHT_EXPORT_REGISTRY = {
   'survey-results': true,
 } as const;
 
-export type ExportId = keyof typeof INSIGHT_EXPORT_REGISTRY;
+export type ExportId = keyof typeof _INSIGHT_EXPORT_REGISTRY;
 
 const EXPECTED_COMPONENTS: Partial<Record<ParticipationMethod, ExportId[]>> = {
   ideation: [

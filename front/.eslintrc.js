@@ -39,7 +39,7 @@ module.exports = {
     '@typescript-eslint/strict-boolean-expressions': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
-    '@typescript-eslint/ts-comment': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-empty-object-type': 'off',
     '@typescript-eslint/no-require-imports': 'off',
@@ -191,7 +191,11 @@ module.exports = {
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': [
       'warn',
-      { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      {
+        argsIgnorePattern: '^_',
+        varsIgnorePattern: '^_',
+        caughtErrors: 'none',
+      },
     ],
     'unused-imports/no-unused-imports': 'warn',
     'quote-props': ['error', 'as-needed'],
@@ -221,6 +225,10 @@ module.exports = {
       {
         markers: ['/'],
       },
+    ],
+    '@typescript-eslint/no-unused-expressions': [
+      'error',
+      { allowShortCircuit: true, allowTernary: true },
     ],
     '@typescript-eslint/no-unnecessary-condition': 'error',
   },

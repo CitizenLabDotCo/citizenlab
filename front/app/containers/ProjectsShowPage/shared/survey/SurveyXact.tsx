@@ -55,8 +55,7 @@ export default memo(({ surveyXactUrl, className }: Props) => {
             : (parseInt(width, 10) - 1).toString()
         );
       }, 1000);
-    }),
-      10000;
+    }, 10000);
   };
 
   return (

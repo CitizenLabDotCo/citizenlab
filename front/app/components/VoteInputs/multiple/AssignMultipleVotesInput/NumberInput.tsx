@@ -43,7 +43,9 @@ const NumberInput = ({ value, max, onChange }: Props) => {
   };
 
   const handleBlur = () => {
-    isEmpty ? onChange(0) : null;
+    if (isEmpty) {
+      onChange(0);
+    }
   };
 
   return (

@@ -8,7 +8,7 @@ const UserSessionRecordingModal = lazy(
 );
 const CommunityMonitorModal = lazy(() => import('./CommunityMonitor/Modal'));
 
-const MODAL_PRIORITIES = {
+const _MODAL_PRIORITIES = {
   100: 'CRITICAL',
   75: 'IMPORTANT',
   50: 'HIGH',
@@ -17,7 +17,7 @@ const MODAL_PRIORITIES = {
   1: 'BACKGROUND',
 } as const;
 
-type ModalPriority = keyof typeof MODAL_PRIORITIES;
+type ModalPriority = keyof typeof _MODAL_PRIORITIES;
 
 export type ModalId =
   | 'consent-modal'

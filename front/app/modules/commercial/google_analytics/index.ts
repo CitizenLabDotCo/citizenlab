@@ -41,6 +41,7 @@ const configuration: ModuleConfiguration = {
 
       (function (i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r;
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         (i[r] =
           i[r] ||
           function () {
@@ -48,7 +49,7 @@ const configuration: ModuleConfiguration = {
             (i[r].q = i[r].q || []).push(arguments);
           }),
           (i[r].l = 1 * currdate);
-        // eslint-disable-next-line no-param-reassign
+        // eslint-disable-next-line no-param-reassign, @typescript-eslint/no-unused-expressions
         (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
         a.async = 1;
         a.src = g;
@@ -80,6 +81,7 @@ const configuration: ModuleConfiguration = {
       shutdownFor('google_analytics'),
     ]).subscribe(([tenant, _]) => {
       if (tenant) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         window[
           `ga-disable-${tenant.data.attributes.settings.google_analytics?.tracking_id}`
         ];

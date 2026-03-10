@@ -345,6 +345,6 @@ describe('ProjectDescriptionBuilderTopBar', () => {
         />
       </Editor>
     );
-    expect(screen.getByText('Save')).not.toBeInTheDocument;
+    expect(screen.getByText('Save')).not.toBeInTheDocument();
   });
 });

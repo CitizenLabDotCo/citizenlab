@@ -151,7 +151,7 @@ export const setupPointDrag = ({
             if (
               longitude ===
                 pointBeingDragged.current?.geometry?.['longitude'] &&
-              latitude === pointBeingDragged.current.geometry?.['latitude']
+              latitude === pointBeingDragged.current.geometry['latitude']
             ) {
               // This is the original point the user tried to drag, so
               // now we update the geometry.
@@ -206,7 +206,7 @@ export const generateLinePreview = ({
   const indexOfDragPoint = currentDataCoordinates.findIndex(
     (coordinates: number[][]) =>
       coordinates[0] === pointBeingDragged.current?.geometry?.['longitude'] &&
-      coordinates[1] === pointBeingDragged.current.geometry?.['latitude']
+      coordinates[1] === pointBeingDragged.current.geometry['latitude']
   );
 
   // Project the point to Web Mercator, in case the map is using a different projection
