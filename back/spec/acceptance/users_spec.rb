@@ -844,7 +844,7 @@ resource 'Users' do
           fm1 = create(:project_folder_moderator, project_folders: [f1, f2])
           fm2 = create(:project_folder_moderator, project_folders: [f1])
           p = create(:project)
-          p = create(:project_moderator, projects: [p])
+          create(:project_moderator, projects: [p])
 
           do_request(folder_moderators_only: true)
           assert_status 200
