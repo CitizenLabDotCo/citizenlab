@@ -119,7 +119,6 @@ class SideFxProjectService
   private
 
   def ensure_user_can_moderate_project!(project, user)
-    puts "SideFxProjectService#ensure_user_can_moderate_project! called with project_id: #{project.id}, user_id: #{user&.id}"
     if user && !UserRoleService.new.can_moderate_project?(project, user)
       user.add_role('project_moderator', project_id: project.id).save!
     end
