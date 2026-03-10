@@ -334,11 +334,7 @@ const Show = () => {
                     top="65px"
                     right="0px"
                     content={
-                      <Box
-                        background={colors.white}
-                        border={`1px solid ${colors.borderLight}`}
-                        borderRadius="4px"
-                      >
+                      <Box background={colors.white}>
                         {isDraft(campaign.data) && (
                           <Button
                             onClick={() => {
@@ -431,65 +427,80 @@ const Show = () => {
             <SentCampaignDetails campaignId={campaign.data.id} />
           )}
         </Box>
-        <Modal opened={openScheduleModal} close={closeScheduleModal}>
-          <Title>
-            <FormattedMessage {...messages.scheduleSendTitle} />
-          </Title>
-          <Text>
-            <FormattedMessage {...messages.scheduleSendDescription} />
-          </Text>
-          <Box>
-            <StyledForm onSubmit={handleScheduleFormSubmit}>
-              <Box display="flex" gap="16px" alignItems="center">
-                <DateSinglePicker
-                  onChange={handleDateChange}
-                  selectedDate={selectedDate}
-                  startMonth={new Date()}
-                  placement="right"
-                  disabledPast={{ before: new Date() }}
-                />
-                <TimeInput
-                  selectedTime={selectedTime}
-                  onChange={handleTimeChange}
-                  selectedDate={selectedDate}
-                  currentTimeInTz={tenantTimeNow}
-                />
-                <Text fontSize="l">GMT{gmtOffset}</Text>
-              </Box>
-              <Warning mt="24px">
-                <Text mt="12px" fontSize="m">
-                  <FormattedMessage {...messages.scheduleSendWarning} />
-                </Text>
-              </Warning>
-              <Button
-                type="submit"
-                mt="24px"
-                disabled={!selectedDate || !selectedTime}
-              >
-                <FormattedMessage {...messages.confirmSchedule} />
-              </Button>
-            </StyledForm>
+        <Modal
+          opened={openScheduleModal}
+          close={closeScheduleModal}
+          niceHeader
+          header={
+            <Title px="12px">
+              <FormattedMessage {...messages.scheduleSendTitle} />
+            </Title>
+          }
+        >
+          <Box mb="16px" p="24px">
+            <Text>
+              <FormattedMessage {...messages.scheduleSendDescription} />
+            </Text>
+            <Box>
+              <StyledForm onSubmit={handleScheduleFormSubmit}>
+                <Box display="flex" gap="16px" alignItems="center">
+                  <DateSinglePicker
+                    onChange={handleDateChange}
+                    selectedDate={selectedDate}
+                    startMonth={new Date()}
+                    placement="right"
+                    disabledPast={{ before: new Date() }}
+                  />
+                  <TimeInput
+                    selectedTime={selectedTime}
+                    onChange={handleTimeChange}
+                    selectedDate={selectedDate}
+                    currentTimeInTz={tenantTimeNow}
+                  />
+                  <Text fontSize="l">GMT{gmtOffset}</Text>
+                </Box>
+                <Warning mt="24px">
+                  <Text mt="12px" fontSize="m">
+                    <FormattedMessage {...messages.scheduleSendWarning} />
+                  </Text>
+                </Warning>
+                <Button
+                  type="submit"
+                  mt="24px"
+                  disabled={!selectedDate || !selectedTime}
+                >
+                  <FormattedMessage {...messages.confirmSchedule} />
+                </Button>
+              </StyledForm>
+            </Box>
           </Box>
         </Modal>
 
         <Modal
           opened={openCancelScheduleModal}
           close={closeCancelScheduleModal}
+          niceHeader
+          header={
+            <Title px="12px">
+              <FormattedMessage {...messages.cancelScheduleTitle} />{' '}
+            </Title>
+          }
         >
-          <Title>
-            {' '}
-            <FormattedMessage {...messages.cancelScheduleTitle} />{' '}
-          </Title>
-          <Text mb="16px">
-            <FormattedMessage {...messages.cancelScheduleDescription} />
-          </Text>
-          <Box display="flex" gap="16px" justifyContent="flex-end">
-            <Button onClick={handleCancelSchedule} buttonStyle="admin-dark">
-              <FormattedMessage {...messages.confirmCancelSchedule} />
-            </Button>
-            <Button onClick={closeCancelScheduleModal} buttonStyle="secondary">
-              <FormattedMessage {...messages.keepSchedule} />
-            </Button>
+          <Box mb="16px" p="24px">
+            <Text mb="16px">
+              <FormattedMessage {...messages.cancelScheduleDescription} />
+            </Text>
+            <Box display="flex" gap="16px" justifyContent="flex-end">
+              <Button onClick={handleCancelSchedule} buttonStyle="admin-dark">
+                <FormattedMessage {...messages.confirmCancelSchedule} />
+              </Button>
+              <Button
+                onClick={closeCancelScheduleModal}
+                buttonStyle="secondary"
+              >
+                <FormattedMessage {...messages.keepSchedule} />
+              </Button>
+            </Box>
           </Box>
         </Modal>
       </Box>

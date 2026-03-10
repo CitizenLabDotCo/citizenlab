@@ -61,28 +61,33 @@ const DraftCampaignDetails = ({ campaign }: Props) => {
         opened={isDeleteModalOpen}
         close={() => setIsDeleteModalOpen(false)}
         hideCloseButton
+        niceHeader
+        header={
+          <Title variant="h2" px="12px">
+            {formatMessage(messages.campaignDeleteConfirmation)}
+          </Title>
+        }
       >
-        <Title variant="h2">
-          {formatMessage(messages.campaignDeleteConfirmation)}
-        </Title>
-        <Text color="textSecondary" mt="12px">
-          {formatMessage(messages.campaignDeleteWarning)}
-        </Text>
-        <Box display="flex" gap="16px" justifyContent="flex-end" mt="24px">
-          <Button
-            buttonStyle="delete"
-            icon="delete"
-            onClick={handleDelete}
-            processing={isLoading}
-          >
-            {formatMessage(messages.deleteCampaignButton)}
-          </Button>
-          <Button
-            buttonStyle="secondary"
-            onClick={() => setIsDeleteModalOpen(false)}
-          >
-            {formatMessage(messages.cancel)}
-          </Button>
+        <Box mt="8px" p="12px">
+          <Text color="textSecondary" mt="12px">
+            {formatMessage(messages.campaignDeleteWarning)}
+          </Text>
+          <Box display="flex" gap="16px" justifyContent="flex-end" mt="24px">
+            <Button
+              buttonStyle="delete"
+              icon="delete"
+              onClick={handleDelete}
+              processing={isLoading}
+            >
+              {formatMessage(messages.deleteCampaignButton)}
+            </Button>
+            <Button
+              buttonStyle="secondary"
+              onClick={() => setIsDeleteModalOpen(false)}
+            >
+              {formatMessage(messages.cancel)}
+            </Button>
+          </Box>
         </Box>
       </Modal>
     </>

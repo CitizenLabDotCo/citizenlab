@@ -256,9 +256,9 @@ export default defineMessages({
     defaultMessage: 'When should this email go out?',
   },
   scheduleSendWarning: {
-    id: 'app.containers.Admin.project.emails.scheduleSendWarning',
+    id: 'app.containers.Admin.project.emails.scheduleSendWarning2',
     defaultMessage:
-      ' Note: the schedule time can be up to 30 minutes later than the selected time due to processing time.',
+      ' Note: The actual time can be 30 min later than the scheduled time.',
   },
   confirmSchedule: {
     id: 'app.containers.Admin.project.emails.confirmSchedule',
