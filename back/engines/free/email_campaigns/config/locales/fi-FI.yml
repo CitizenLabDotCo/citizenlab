@@ -380,7 +380,7 @@ fi:
       title_manage_folder: 'Muokkaa kansion asetuksia ja luo uusia projekteja.'
       title_what_can_you_do_folderadmin: 'Mitä voit tehdä kansioiden ylläpitäjänä?'
       title: 'Sinut on lisätty kansioiden hallinnoijaksi'
-      x_projects: '%{numberOfProjects} projekteja'
+      x_projects: '%{numberOfProjects} projektia'
     project_phase_started:
       cta_button: 'Tutustu tähän uuteen vaiheeseen'
       event_description: 'Tämä projekti siirtyi uuteen vaiheeseen alustalla %{organizationName}. Napsauta alla olevaa linkkiä saadaksesi lisätietoja!'
