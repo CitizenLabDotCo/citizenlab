@@ -19,7 +19,6 @@
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
 #  context_type         :string
-#  scheduled_at         :datetime
 #
 # Indexes
 #

@@ -12,6 +12,7 @@ import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
@@ -83,8 +84,12 @@ const AuthModal = () => {
         ) : undefined
       }
       niceHeader
+      ariaLabelledBy="auth-modal-title"
     >
       <Box id="e2e-authentication-modal" px={marginX} py="32px" w="100%">
+        <ScreenReaderOnly id="auth-modal-title">
+          {formatMessage(messages.authenticationDialog)}
+        </ScreenReaderOnly>
         {error && (
           <Box mb="16px">
             <Error

@@ -48,6 +48,7 @@ module EmailCampaigns
       Campaigns::VotingLastChance,
       Campaigns::VotingPhaseStarted,
       Campaigns::VotingResults,
+      Campaigns::ScreeningDigest,
       Campaigns::Welcome,
       Campaigns::YourInputInScreening
     ].freeze
@@ -86,6 +87,11 @@ module EmailCampaigns
       campaign_candidates = filter_campaigns_on_activity_context(campaign_candidates, activity)
 
       apply_send_pipeline(campaign_candidates, activity: activity)
+    end
+
+    # called by SendScheduledCampaignJob to send a single scheduled campaign
+    def send_on_schedule_for(campaign, time = Time.zone.now)
+      apply_send_pipeline([campaign], time: time)
     end
 
     #  called when explicit send is requested by human

@@ -9,7 +9,7 @@ module EmailCampaigns
     def after_update(campaign, user)
       super
 
-      %i[enabled reply_to body_multiloc subject_multiloc title_multiloc intro_multiloc button_text_multiloc scheduled_at].each do |attr|
+      %i[enabled reply_to body_multiloc subject_multiloc title_multiloc intro_multiloc button_text_multiloc schedule].each do |attr|
         next if !campaign.public_send(:"saved_change_to_#{attr}?")
 
         LogActivityJob.perform_later(
@@ -19,6 +19,14 @@ module EmailCampaigns
           campaign.updated_at.to_i,
           payload: { change: campaign.saved_changes[attr] }
         )
+      end
+
+      # Enqueue delayed send for scheduled manual campaigns
+      if campaign.manual? && campaign.saved_change_to_schedule?
+        scheduled_at = campaign.scheduled_at
+        if scheduled_at.present? && scheduled_at > Time.zone.now
+          SendScheduledCampaignJob.set(wait_until: scheduled_at).perform_later(campaign.id, scheduled_at.iso8601)
+        end
       end
     end
 

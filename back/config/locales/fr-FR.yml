@@ -16,6 +16,7 @@ fr:
     fi-FI: Finnois
     fr-BE: Français (Belgique)
     fr-FR: Français
+    ga-IE: Irlandais
     hr-HR: Croate
     hu-HU: Hongrois
     it-IT: Italien
@@ -246,6 +247,18 @@ fr:
           title: Quelle est votre initiative ?
         petition:
           title: Quelle est votre pétition ?
+        comment:
+          title: Quel est votre commentaire ?
+        response:
+          title: Quelle est votre réponse ?
+        suggestion:
+          title: Quelle est votre suggestion ?
+        topic:
+          title: Quel est votre thème ?
+        post:
+          title: Quelle est votre publication ?
+        story:
+          title: Quel est votre témoignage ?
   custom_field_options:
     gender:
       male: Masculin

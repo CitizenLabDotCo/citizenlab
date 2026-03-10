@@ -10,6 +10,7 @@ import Modal from 'components/UI/Modal';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
+import { COOKIE_MODAL_TITLE_ID } from '../BaseMainContent';
 import { getConsent, ISavedDestinations, setConsent } from '../consent';
 import { allCategories, TCategory } from '../destinations';
 import InitialScreenFooter from '../InitialScreen/Footer';
@@ -160,6 +161,7 @@ const ConsentManagerModal = () => {
       closeOnClickOutside={false}
       hideCloseButton
       close={reject}
+      ariaLabelledBy={COOKIE_MODAL_TITLE_ID}
       footer={
         <>
           {screen === 'initial' && (

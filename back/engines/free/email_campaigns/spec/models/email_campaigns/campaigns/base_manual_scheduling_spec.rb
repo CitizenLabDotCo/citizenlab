@@ -3,10 +3,10 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaigns::BaseManual do
-  describe '#only_manual_send filter' do
+  describe 'filter hooks' do
     let(:campaign) { create(:manual_campaign) }
 
-    context 'without scheduled_at' do
+    context 'without schedule (not scheduled)' do
       it 'allows send_now (no time, no activity)' do
         expect(campaign.run_filter_hooks).to be true
       end
@@ -24,8 +24,9 @@ RSpec.describe EmailCampaigns::Campaigns::BaseManual do
     context 'with scheduled_at in the past' do
       let(:campaign) do
         c = create(:manual_campaign)
-        c.update_column(:scheduled_at, 1.hour.ago)
-        c.reload
+        c.scheduled_at = 1.hour.ago
+        c.save!(validate: false)
+        c
       end
 
       it 'allows send_now' do
@@ -57,8 +58,9 @@ RSpec.describe EmailCampaigns::Campaigns::BaseManual do
     context 'when already sent' do
       let(:campaign) do
         c = create(:manual_campaign)
-        c.update_column(:scheduled_at, 1.hour.ago)
-        c.reload
+        c.scheduled_at = 1.hour.ago
+        c.save!(validate: false)
+        c
       end
 
       before { create(:delivery, campaign: campaign) }
@@ -66,6 +68,45 @@ RSpec.describe EmailCampaigns::Campaigns::BaseManual do
       it 'rejects schedule-triggered send' do
         expect(campaign.run_filter_hooks(time: Time.zone.now)).to be false
       end
+    end
+  end
+
+  describe 'scheduled_at virtual attribute' do
+    it 'returns nil when no schedule is set' do
+      campaign = create(:manual_campaign)
+      expect(campaign.scheduled_at).to be_nil
+    end
+
+    it 'returns the scheduled time when set' do
+      scheduled_time = 2.hours.from_now
+      campaign = create(:manual_campaign, scheduled_at: scheduled_time)
+      expect(campaign.scheduled_at).to be_within(1.second).of(scheduled_time)
+    end
+
+    it 'clears the schedule when set to nil' do
+      campaign = create(:manual_campaign, scheduled_at: 2.hours.from_now)
+      campaign.update!(scheduled_at: nil)
+      expect(campaign.scheduled_at).to be_nil
+    end
+
+    it 'stores the schedule in the schedule JSONB column' do
+      campaign = create(:manual_campaign, scheduled_at: 2.hours.from_now)
+      expect(campaign.schedule).to be_present
+      expect(campaign.ic_schedule.rtimes.size).to eq 1
+    end
+  end
+
+  describe 'clear_scheduled_at_if_needed' do
+    it 'clears the schedule when scheduled_at is present' do
+      campaign = create(:manual_campaign, scheduled_at: 2.hours.from_now)
+      expect(campaign.scheduled_at).to be_present
+      campaign.clear_scheduled_at_if_needed
+      expect(campaign.reload.scheduled_at).to be_nil
+    end
+
+    it 'does nothing when scheduled_at is blank' do
+      campaign = create(:manual_campaign)
+      expect { campaign.clear_scheduled_at_if_needed }.not_to change { campaign.reload.updated_at }
     end
   end
 

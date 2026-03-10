@@ -269,11 +269,19 @@ const WebhookSubscriptions = () => {
           <Title variant="h3">{formatMessage(messages.noWebhooks)}</Title>
         </Box>
       )}
-      <Modal opened={modal.view === 'create'} close={closeModal}>
+      <Modal
+        opened={modal.view === 'create'}
+        close={closeModal}
+        ariaLabelledBy="create-webhook-modal-title"
+      >
         <CreateSubscriptionModal onClose={closeModal} />
       </Modal>
       {modal.view === 'edit' && (
-        <Modal opened={true} close={closeModal}>
+        <Modal
+          opened={true}
+          close={closeModal}
+          ariaLabelledBy="edit-webhook-modal-title"
+        >
           <EditSubscriptionModal
             subscriptionId={modal.subscriptionId}
             onClose={closeModal}
@@ -281,7 +289,12 @@ const WebhookSubscriptions = () => {
         </Modal>
       )}
       {modal.view === 'deliveries' && (
-        <Modal opened={true} close={closeModal} width="800px">
+        <Modal
+          opened={true}
+          close={closeModal}
+          width="800px"
+          ariaLabelledBy="deliveries-modal-title"
+        >
           <DeliveriesModal
             subscriptionId={modal.subscriptionId}
             onClose={closeModal}
@@ -289,9 +302,15 @@ const WebhookSubscriptions = () => {
         </Modal>
       )}
       {modal.view === 'new_secret' && (
-        <Modal opened={true} close={closeModal}>
+        <Modal
+          opened={true}
+          close={closeModal}
+          ariaLabelledBy="new-secret-modal-title"
+        >
           <Box data-testid="webhookNewSecret">
-            <Title variant="h2">{formatMessage(messages.newSecretTitle)}</Title>
+            <Title id="new-secret-modal-title" variant="h2">
+              {formatMessage(messages.newSecretTitle)}
+            </Title>
             <SecretTokenDisplay
               secret={modal.new_secret_token}
               onClose={closeModal}

@@ -2,10 +2,11 @@ import { API_PATH } from 'containers/App/constants';
 
 import { setJwt } from 'utils/auth/jwt';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
-import { clearClaimTokens, getClaimTokens } from 'utils/claimToken';
 
 import signOut from './signOut';
 
+// This endpoint is only used if user_confirmation is switched off,
+// which is strongly advised against.
 export default async function getUserTokenUnconfirmed(email: string) {
   try {
     await getAndSetToken(email);
@@ -20,7 +21,6 @@ async function getAndSetToken(email: string) {
   const bodyData = {
     auth: {
       email,
-      claim_tokens: getClaimTokens(),
     },
   };
 
@@ -34,6 +34,5 @@ async function getAndSetToken(email: string) {
     .then((response) => response.json())
     .then((data) => {
       setJwt(data.jwt, false);
-      clearClaimTokens();
     });
 }

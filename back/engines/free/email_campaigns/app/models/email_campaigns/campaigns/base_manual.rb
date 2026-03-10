@@ -21,7 +21,6 @@
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
 #  context_type         :string
-#  scheduled_at         :datetime
 #
 # Indexes
 #
@@ -40,13 +39,36 @@ module EmailCampaigns
     include SenderConfigurable
     include RecipientConfigurable
     include Trackable
+    include Schedulable
     include LifecycleStageRestrictable
 
     # Without this, the campaign would be sent on every event and every schedule trigger.
-    # When scheduled_at is set, the hourly TriggerOnScheduleJob is allowed to send it.
     filter :only_manual_send
 
-    validate :scheduled_at_in_future, if: -> { scheduled_at.present? && scheduled_at_changed? }
+    validate :scheduled_at_in_future, if: -> { scheduled_at.present? && schedule_changed? }
+
+    def self.default_schedule
+      IceCube::Schedule.new(Time.current)
+    end
+
+    # Virtual getter: extract scheduled datetime from IceCube rtimes
+    def scheduled_at
+      return nil if schedule.blank? || ic_schedule.rtimes.empty?
+
+      ic_schedule.rtimes.first
+    end
+
+    # Virtual setter: convert datetime to IceCube one-time schedule
+    def scheduled_at=(datetime)
+      if datetime.present?
+        time = datetime.is_a?(String) ? Time.zone.parse(datetime) : datetime
+        ics = IceCube::Schedule.new(time)
+        ics.add_recurrence_time(time)
+        self.ic_schedule = ics
+      else
+        self.ic_schedule = self.class.default_schedule
+      end
+    end
 
     def mailer_class
       ManualCampaignMailer
@@ -75,6 +97,21 @@ module EmailCampaigns
       false
     end
 
+    def clear_scheduled_at_if_needed
+      return if scheduled_at.blank?
+
+      self.ic_schedule = self.class.default_schedule
+      save!(validate: false)
+    end
+
+    # Override Schedulable's filter to allow send_now (time is nil for manual triggers)
+    def filter_campaign_scheduled(time:, activity: nil)
+      return true unless time              # Allow send_now
+      return false unless scheduled_at     # No schedule = not eligible for cron
+
+      super
+    end
+
     protected
 
     def unique_campaigns_per_context?
@@ -84,10 +121,10 @@ module EmailCampaigns
     private
 
     def only_manual_send(activity: nil, time: nil)
-      return false if activity
-      return true unless time
+      return false if activity  # Never send on activity
+      return true unless time   # Allow send_now
 
-      scheduled_at.present? && !sent? && scheduled_at <= time
+      !sent?                    # Prevent re-sending via cron
     end
 
     def scheduled_at_in_future

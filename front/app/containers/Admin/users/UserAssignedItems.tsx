@@ -144,7 +144,7 @@ const UserAssignedItems = ({ user }: { user: IUserData }) => {
 
   return (
     <div>
-      <Title mb="0px">
+      <Title id="assigned-items-modal-title" mb="0px">
         <FormattedMessage
           {...messages.assignedItemsFor}
           values={{ name: getFullName(user) }}

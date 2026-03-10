@@ -7,7 +7,7 @@ import fetcher from 'utils/cl-react-query/fetcher';
 
 import { importedIdeasKeys } from './keys';
 
-export type ParserType = 'legacy' | 'gpt' | undefined;
+export type ParserType = 'legacy' | 'gpt' | 'claude' | undefined;
 
 interface RequestParams {
   phase_id: string;
