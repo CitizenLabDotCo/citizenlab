@@ -2,7 +2,7 @@
 
 module InputTypeStrategy
   class Files < Base
-    def supports_pdf_gpt_import?
+    def supports_pdf_import?
       false
     end
 

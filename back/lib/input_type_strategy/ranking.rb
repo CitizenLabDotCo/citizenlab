@@ -7,7 +7,7 @@ module InputTypeStrategy
     end
 
     def supports_pdf_import?
-      false
+      true
     end
 
     def supports_logic?

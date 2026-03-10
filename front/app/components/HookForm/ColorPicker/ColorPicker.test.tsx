@@ -14,14 +14,14 @@ const schema = object({
 
 const onSubmit = jest.fn();
 
-const defaultFormValues = {
+const _defaultFormValues = {
   color: '',
 };
 
 const Form = ({
   defaultValues,
 }: {
-  defaultValues?: typeof defaultFormValues;
+  defaultValues?: typeof _defaultFormValues;
 }) => {
   const methods = useForm({
     defaultValues,
