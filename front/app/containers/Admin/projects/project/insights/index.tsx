@@ -25,6 +25,7 @@ import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { captureAllMapScreenshots } from 'utils/mapViewRegistry';
 
 import { getAnalysisScope } from '../../components/AnalysisBanner/utils';
 
@@ -114,11 +115,13 @@ const InsightsContent = () => {
 
   const handleDownloadPdf = async () => {
     setDropdownOpened(false);
+    await captureAllMapScreenshots();
     await downloadPdf();
   };
 
   const handleDownloadWord = async () => {
     setDropdownOpened(false);
+    await captureAllMapScreenshots();
     await downloadWord();
   };
 
