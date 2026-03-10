@@ -87,7 +87,7 @@ describe TreeViewService do
 
     context 'with space_id filter' do
       it 'returns an empty array when there are no publications in space' do
-        project_not_in_space = create(:project)
+        create(:project)
         result = described_class.new(space_id: space.id).generate_tree
         expect(result).to eq([])
       end
