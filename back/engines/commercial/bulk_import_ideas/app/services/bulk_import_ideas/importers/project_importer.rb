@@ -126,7 +126,7 @@ module BulkImportIdeas::Importers
 
     private
 
-    # NOTE: Pinched a little from IdeaBaseFileParser. Could not think of way to share the code easily.
+    # NOTE: Pinched a little from IdeaRowMapper. Could not think of way to share the code easily.
     # Currently only works for fields we know we need to import for new west
     def process_user_custom_field_values(custom_fields, user_row)
       custom_field_values = {}
