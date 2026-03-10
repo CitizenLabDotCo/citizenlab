@@ -10,7 +10,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import useAuthUser from 'api/me/useAuthUser';
 
-import NewLabel from 'components/UI/NewLabel';
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { trackEventByName } from 'utils/analytics';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -62,7 +62,8 @@ const Tabs = () => {
   const [searchParams] = useSearchParams();
   const tab = searchParams.get('tab');
   const { data: user } = useAuthUser();
-  const { formatMessage } = useIntl();
+  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
+
   if (!user) return null;
 
   const userIsAdmin = isAdmin(user);
@@ -107,37 +108,33 @@ const Tabs = () => {
           }}
         />
       )}
-      <Box
-        borderBottom={
-          tab === 'calendar' ? `2px solid ${colors.primary}` : undefined
-        }
-        pb="4px"
-        mr="20px"
-        display="flex"
-        alignItems="center"
-        data-cy="projects-overview-calendar-tab"
-      >
-        <Button
-          buttonStyle="text"
-          p="0"
-          m="0"
-          icon="calendar"
-          iconSize="16px"
-          textColor={tab === 'calendar' ? colors.textPrimary : undefined}
-          iconColor={tab === 'calendar' ? colors.textPrimary : undefined}
+      {userIsAdmin && spacesEnabled && (
+        <Tab
+          message={messages.spaces}
+          icon="spaces"
+          active={tab === 'spaces'}
+          dataCy="projects-overview-spaces-tab"
           onClick={() => {
-            if (tab === 'folders') {
-              removeSearchParams(FOLDER_PARAMS);
-            }
-
-            updateSearchParams({ tab: 'calendar' });
-            trackEventByName(tracks.setTab, { tab: 'calendar' });
+            removeSearchParams([...PROJECT_PARAMS, ...FOLDER_PARAMS]);
+            updateSearchParams({ tab: 'spaces' });
+            trackEventByName(tracks.setTab, { tab: 'spaces' });
           }}
-        >
-          {formatMessage(messages.calendar)}
-        </Button>
-        <NewLabel ml="4px" expiryDate={new Date('2025-12-01')} />
-      </Box>
+        />
+      )}
+      <Tab
+        message={messages.calendar}
+        icon="calendar"
+        active={tab === 'calendar'}
+        dataCy="projects-overview-calendar-tab"
+        onClick={() => {
+          if (tab === 'folders') {
+            removeSearchParams(FOLDER_PARAMS);
+          }
+
+          updateSearchParams({ tab: 'calendar' });
+          trackEventByName(tracks.setTab, { tab: 'calendar' });
+        }}
+      />
       {userIsAdmin && (
         <Tab
           message={messages.arrangeProjects}
