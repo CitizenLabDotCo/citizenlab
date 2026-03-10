@@ -49,6 +49,7 @@ export interface IProjectFolderData {
     publication_status: PublicationStatus;
     followers_count: number;
     uses_content_builder: boolean;
+    space_id: string | null;
   };
   relationships: {
     admin_publication: {
