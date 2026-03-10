@@ -541,6 +541,8 @@ const AdminProjectsProjectGeneral = () => {
         space_id: spaceId,
       };
     });
+
+    setSubmitState('enabled');
   };
 
   const projectAttrs = {
