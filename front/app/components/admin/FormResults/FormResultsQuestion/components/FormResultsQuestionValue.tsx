@@ -11,6 +11,7 @@ import SurveyBarsVertical from 'components/admin/Graphs/SurveyBars/SurveyBarsVer
 import LineLocationQuestion from '../MappingQuestions/LineLocationQuestion';
 import PointLocationQuestion from '../MappingQuestions/PointLocationQuestion';
 import PolygonLocationQuestion from '../MappingQuestions/PolygonLocationQuestion';
+import StaticMapScreenshot from '../MappingQuestions/StaticMapScreenshot';
 import MatrixQuestion from '../MatrixQuestion';
 import NumberQuestion from '../NumberQuestion';
 import RankingQuestion from '../RankingQuestion';
@@ -21,11 +22,13 @@ import { determineAnswerType } from '../utils';
 type FormResultQuestionValueProps = {
   result: ResultUngrouped;
   logicConfig: LogicConfig;
+  isPdfExport?: boolean;
 };
 
 const FormResultQuestionValue = ({
   result,
   logicConfig,
+  isPdfExport,
 }: FormResultQuestionValueProps) => {
   const hasAnswersOfType: ICustomFieldInputType | undefined =
     determineAnswerType(result);
@@ -88,6 +91,9 @@ const FormResultQuestionValue = ({
       ) : null;
     }
     case 'point': {
+      if (isPdfExport) {
+        return <StaticMapScreenshot customFieldId={customFieldId} />;
+      }
       return pointResponses ? (
         <PointLocationQuestion
           pointResponses={pointResponses}
@@ -97,6 +103,9 @@ const FormResultQuestionValue = ({
       ) : null;
     }
     case 'line': {
+      if (isPdfExport) {
+        return <StaticMapScreenshot customFieldId={customFieldId} />;
+      }
       return lineResponses ? (
         <LineLocationQuestion
           lineResponses={lineResponses}
@@ -106,6 +115,9 @@ const FormResultQuestionValue = ({
       ) : null;
     }
     case 'polygon': {
+      if (isPdfExport) {
+        return <StaticMapScreenshot customFieldId={customFieldId} />;
+      }
       return polygonResponses ? (
         <PolygonLocationQuestion
           polygonResponses={polygonResponses}
