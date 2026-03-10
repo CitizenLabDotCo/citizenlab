@@ -1247,6 +1247,7 @@
   "app.containers.AreaTerms.areaTerm": "crwdns6465437:0crwdne6465437:0",
   "app.containers.AreaTerms.areasTerm": "crwdns6465439:0crwdne6465439:0",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "crwdns6465441:0crwdne6465441:0",
+  "app.containers.Authentication.authenticationDialog": "crwdns6478827:0crwdne6478827:0",
   "app.containers.Authentication.signUpOrLogIn": "crwdns6465443:0crwdne6465443:0",
   "app.containers.Authentication.steps.AccessDenied.close": "crwdns6465445:0crwdne6465445:0",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "crwdns6465447:0crwdne6465447:0",
