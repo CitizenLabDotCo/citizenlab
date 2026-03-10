@@ -391,10 +391,14 @@ const ParticipationMethodPicker = ({
           <Error apiErrors={apiErrors && apiErrors.participation_method} />
         </>
       </SectionField>
-      <Modal opened={showChangeMethodModal} close={closeModal}>
+      <Modal
+        opened={showChangeMethodModal}
+        close={closeModal}
+        ariaLabelledBy="change-method-modal-title"
+      >
         <Box display="flex" flexDirection="column" width="100%" p="20px">
           <Box mb="40px">
-            <Title variant="h3" color="primary">
+            <Title id="change-method-modal-title" variant="h3" color="primary">
               <FormattedMessage {...messages2.changingMethod} />
             </Title>
             <Text color="primary" fontSize="l">
