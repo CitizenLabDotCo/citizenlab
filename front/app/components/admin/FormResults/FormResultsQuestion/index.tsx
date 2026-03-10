@@ -99,7 +99,11 @@ const FormResultsQuestion = ({
           </Text>
         </DescriptionContainer>
 
-        <FormResultQuestionValue result={result} logicConfig={logicConfig} />
+        <FormResultQuestionValue
+          result={result}
+          logicConfig={logicConfig}
+          isPdfExport={isPdfExport}
+        />
 
         {files && files.length > 0 && (
           <Box display="flex" gap="24px" mt={answers ? '20px' : '0'} w="50%">
