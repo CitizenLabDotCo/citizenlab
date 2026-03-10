@@ -6,8 +6,8 @@ ar-MA:
       "idea_assigned_to_you": تعيين الفكرة - المسؤولين ومديري المشاريع
     idea_assigned_to_you:
       by_author: 'بواسطة %{authorName}'
-      cta_reply_to: 'قدّم ملاحظاتك لـ %{authorName}'
-      event_description_idea: 'تم تعيين فكرة إليك. قدّم ملاحظاتك من خلال كتابة تحديث رسمي أو بتغيير حالتها.'
-      main_header: '%{firstName}، لديك مهمة جديدة'
+      cta_button: 'أرسل تعليقك إلى %{authorName}'
+      event_description: 'تم تكليفك بمدخل. شاركنا رأيك بكتابة تحديث رسمي أو بتغيير حالته.'
+      title: '%{firstName}، تم تعيين إدخال لك'
       subject: 'لديك مهمة على المنصة الخاصة بـ %{organizationName}'
-      preheader: 'تم نسب فكرة %{authorName} إليك'
+      preheader: 'لقد تم تعيين مدخلات %{authorName} لك'
