@@ -2,12 +2,7 @@ module Insights
   class VisitsService
     def phase_visits(phase)
       constraints = { project_id: phase.project.id }
-
-      constraints[:created_at] = if phase.end_at.present?
-        phase.start_at...phase.end_at
-      else
-        phase.start_at..
-      end
+      constraints[:created_at] = phase.start_at...phase.end_at
 
       visits = ImpactTracking::Session
         .joins(:pageviews)

@@ -93,19 +93,9 @@ module Insights
     end
 
     def phase_has_run_more_than_7_days?
-      time_now = Time.current
-      phase_end_time = @phase.end_at || time_now
-
-      # Check if the phase duration (start to end or current time) is less than 7 days
-      # With exclusive end boundaries, no +1 needed
-      phase_duration_days = ((phase_end_time - @phase.start_at) / 1.day).to_i
-
-      return false if phase_duration_days < 7
-
-      # Check if the elapsed time from phase start to now is more than 7 days
-      elapsed_days = ((time_now - @phase.start_at) / 1.day).to_i
-
-      elapsed_days >= 7
+      now = AppConfiguration.timezone.now
+      effective_end = [@phase.end_at, now].compact.min
+      (effective_end - @phase.start_at) / 1.day >= 7
     end
 
     def percentage_change(old_value, new_value)
@@ -304,7 +294,7 @@ module Insights
 
     # Modelled on logic in getSensibleresolution.ts, with addition of 'year' resolution
     def chart_resolution
-      end_at = @phase.end_at.present? ? @phase.end_at : Time.current
+      end_at = @phase.end_at.presence || Time.current
       duration_seconds = end_at - @phase.start_at
       duration_months = (duration_seconds / 1.month).round(1)
       duration_weeks = (duration_seconds / 1.week).round(1)

@@ -180,12 +180,12 @@ class ProjectsFinderService
   private
 
   def projects_with_active_phase(projects)
+    now = Time.zone.now
+
     projects
       .joins('INNER JOIN phases AS phases ON phases.project_id = projects.id')
-      .where(
-        'phases.start_at <= ? AND (phases.end_at > ? OR phases.end_at IS NULL)',
-        Time.zone.now.to_fs(:db), Time.zone.now.to_fs(:db)
-      )
+      .where('phases.start_at <= ?', now)
+      .where('phases.end_at IS NULL OR phases.end_at > ?', now)
       .select('projects.*, phases.end_at AS phase_end_at')
   end
 
