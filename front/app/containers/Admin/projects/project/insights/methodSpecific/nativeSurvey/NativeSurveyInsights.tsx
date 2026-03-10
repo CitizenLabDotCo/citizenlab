@@ -37,8 +37,8 @@ async function collectMapImages(
 ): Promise<MapImageMap> {
   const mapImages: MapImageMap = new Map();
 
-  const mappingResults = results.filter((r) =>
-    MAPPING_INPUT_TYPES.has(r.inputType)
+  const mappingResults = results.filter((result) =>
+    MAPPING_INPUT_TYPES.has(result.inputType)
   );
 
   for (const result of mappingResults) {
