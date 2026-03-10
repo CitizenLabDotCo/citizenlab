@@ -17,4 +17,8 @@ export default defineMessages({
     id: 'app.containers.Admin.spaces.NewSpace.save',
     defaultMessage: 'Save',
   },
+  saved: {
+    id: 'app.containers.Admin.spaces.NewSpace.saved',
+    defaultMessage: 'Saved',
+  },
 });

@@ -2,18 +2,38 @@ import React, { useState } from 'react';
 
 import { Box, IconButton, colors } from '@citizenlab/cl2-component-library';
 
+import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
+import { FolderNode } from 'api/spaces/types';
+
+import useLocalize from 'hooks/useLocalize';
+
 import Link from './_shared/Link';
 import RemoveFromSpaceButton from './_shared/RemoveFromSpaceButton';
 import Row from './_shared/Row';
 import Project from './Project';
-import { FolderNode } from './types';
 
 interface Props {
   node: FolderNode;
 }
 
 const Folder = ({ node }: Props) => {
+  const localize = useLocalize();
   const [expanded, setExpanded] = useState(true);
+  const [isRemoving, setIsRemoving] = useState(false);
+
+  const { mutate: updateFolder } = useUpdateProjectFolder();
+
+  const handleRemoveProject = () => {
+    setIsRemoving(true);
+    updateFolder(
+      { projectFolderId: node.id, space_id: null },
+      {
+        onSuccess: () => {
+          setIsRemoving(false);
+        },
+      }
+    );
+  };
 
   return (
     <Box>
@@ -30,11 +50,14 @@ const Folder = ({ node }: Props) => {
             onClick={() => setExpanded(!expanded)}
             a11y_buttonActionMessage=""
           />
-          <Link to={node.path} color={colors.black}>
-            {node.name}
+          <Link to={`/admin/projects/folders/${node.id}`} color={colors.black}>
+            {localize(node.title_multiloc)}
           </Link>
         </Box>
-        <RemoveFromSpaceButton />
+        <RemoveFromSpaceButton
+          processing={isRemoving}
+          onClick={handleRemoveProject}
+        />
       </Row>
       <Box pl="31px">
         {expanded && (

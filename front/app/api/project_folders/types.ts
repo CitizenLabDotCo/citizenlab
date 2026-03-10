@@ -24,6 +24,7 @@ export interface INewProjectFolderDiff {
   admin_publication_attributes: {
     publication_status: PublicationStatus;
   };
+  space_id?: string | null;
 }
 
 export interface IProjectFolder {
@@ -76,4 +77,5 @@ export interface IUpdatedProjectFolder {
   admin_publication_attributes?: {
     publication_status?: PublicationStatus;
   };
+  space_id?: string | null;
 }

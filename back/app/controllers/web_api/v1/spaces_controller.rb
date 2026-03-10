@@ -1,5 +1,5 @@
 class WebApi::V1::SpacesController < ApplicationController
-  before_action :set_space, only: %i[show update destroy]
+  before_action :set_space, only: %i[show update destroy tree_view]
 
   def index
     authorize :space, :index?
@@ -51,6 +51,11 @@ class WebApi::V1::SpacesController < ApplicationController
     else
       render json: { errors: @space.errors.details }, status: :unprocessable_entity
     end
+  end
+
+  def tree_view
+    nodes = TreeViewService.new(space_id: @space.id).generate_tree
+    render json: raw_json({ nodes: })
   end
 
   private

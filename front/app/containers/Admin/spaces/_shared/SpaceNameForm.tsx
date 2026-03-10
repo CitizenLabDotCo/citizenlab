@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Multiloc } from 'typings';
@@ -17,11 +17,12 @@ interface FormValues {
   spaceName: Multiloc;
 }
 
-const DEFAULT_VALUES: FormValues = {
-  spaceName: {},
-};
+interface Props {
+  spaceName?: Multiloc;
+  onSubmit: (data: FormValues) => Promise<any>;
+}
 
-const SpaceNameForm = () => {
+const SpaceNameForm = ({ spaceName = {}, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
 
   const schema = object({
@@ -30,20 +31,16 @@ const SpaceNameForm = () => {
 
   const methods = useForm<FormValues>({
     mode: 'onSubmit',
-    defaultValues: DEFAULT_VALUES,
+    defaultValues: { spaceName },
     resolver: yupResolver(schema),
   });
 
-  const loading = methods.formState.isSubmitting;
-
-  const handleSubmit = () => {
-    // TODO
-  };
+  const { isSubmitting, isSubmitted } = methods.formState;
 
   return (
     <Box display="flex" flexDirection="column" alignItems="flex-start">
       <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(handleSubmit)}>
+        <form onSubmit={methods.handleSubmit(onSubmit)}>
           <Box w="448px">
             <InputMultilocWithLocaleSwitcher
               name="spaceName"
@@ -56,17 +53,32 @@ const SpaceNameForm = () => {
               }
             />
           </Box>
+          <Box display="flex">
+            {isSubmitted ? (
+              <Button
+                type="submit"
+                width="auto"
+                disabled={true}
+                bgColor={colors.success}
+                icon="check"
+                mt="16px"
+              >
+                {formatMessage(messages.saved)}
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                width="auto"
+                disabled={isSubmitting}
+                processing={isSubmitting}
+                buttonStyle="admin-dark"
+                mt="16px"
+              >
+                {formatMessage(messages.save)}
+              </Button>
+            )}
+          </Box>
         </form>
-        <Button
-          type="submit"
-          width="auto"
-          disabled={loading}
-          processing={loading}
-          buttonStyle="admin-dark"
-          mt="16px"
-        >
-          {formatMessage(messages.save)}
-        </Button>
       </FormProvider>
     </Box>
   );
