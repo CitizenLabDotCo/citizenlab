@@ -16,6 +16,7 @@ fi:
     fi-FI: Suomalainen
     fr-BE: ranska (Belgia)
     fr-FR: Ranskan kieli
+    ga-IE: Irlantilainen
     hr-HR: Kroatia
     hu-HU: Unkarin kieli
     it-IT: italialainen
@@ -246,6 +247,18 @@ fi:
           title: Mikä on aloitteesi?
         petition:
           title: Mikä on vetoomuksenne?
+        comment:
+          title: Mikä on kommenttisi?
+        response:
+          title: Mikä on vastauksesi?
+        suggestion:
+          title: Mikä on ehdotuksesi?
+        topic:
+          title: Mikä on aiheesi?
+        post:
+          title: Mikä on sinun viestisi?
+        story:
+          title: Mikä on sinun tarinasi?
   custom_field_options:
     gender:
       male: Mies
