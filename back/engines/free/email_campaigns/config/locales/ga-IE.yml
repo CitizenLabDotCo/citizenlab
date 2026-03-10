@@ -50,6 +50,7 @@ ga:
       "voting_phase_started": Céim nua tionscadail le vótáil
       "voting_results": Torthaí vótála
       "your_input_in_screening": Tá mo ionchur ag fanacht le scagadh
+      "screening_digest": Meabhrúchán scagthástála seachtainiúil
     general:
       by_author: 'ag %{authorName}'
       author_wrote: 'Scríobh %{authorName}:'
@@ -525,6 +526,13 @@ ga:
       event_description: 'Beidh "%{input_title}" le feiceáil ag daoine eile a luaithe a bheidh sé athbhreithnithe agus ceadaithe.'
       subject: 'Tá "%{input_title}" beagnach foilsithe'
       preheader: 'Tá sé i %{prescreening_status_title} faoi láthair'
+    screening_digest:
+      subject: '%{count} ionchur ag fanacht le hathbhreithniú'
+      preheader: 'Athbhreithnigh ionchuir le haghaidh %{organizationName}'
+      title: '%{firstName}, tá na hionchuir ag fanacht le hathbhreithniú'
+      event_description: "Ní mór na hionchuir seo a cheadú sula mbeidh siad le feiceáil ag an bpobal. Is féidir leat athbhreithniú a dhéanamh orthu sa Bhainisteoir Ionchuir ar fud an ardáin nó laistigh de Bhainisteoir Ionchuir gach céime."
+      cta_button: 'Athbhreithnigh ionchuir'
+      inputs_awaiting_screening: 'ionchuir le hathbhreithniú'
     voting_basket_submitted:
       subject: '%{organizationName}: Vótáil tú go rathúil'
       preheader: 'Vótáil tú go rathúil ar ardán rannpháirtíochta %{organizationName}'
