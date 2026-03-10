@@ -1247,6 +1247,7 @@
   "app.containers.AreaTerms.areaTerm": "area",
   "app.containers.AreaTerms.areasTerm": "aree",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Un account con questo indirizzo e-mail esiste già. Puoi uscire, accedere con questo indirizzo e-mail e verificare il tuo account nella pagina delle impostazioni.",
+  "app.containers.Authentication.authenticationDialog": "Autenticazione",
   "app.containers.Authentication.signUpOrLogIn": "Iscriviti o accedi",
   "app.containers.Authentication.steps.AccessDenied.close": "Chiudi",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Non hai i requisiti per partecipare a questo processo.",
