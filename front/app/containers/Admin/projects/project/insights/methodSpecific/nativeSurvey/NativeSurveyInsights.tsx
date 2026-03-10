@@ -15,7 +15,7 @@ import SurveyResultsPdfExport from 'components/admin/FormResults/PdfExport/Surve
 
 import { useIntl } from 'utils/cl-intl';
 import fetcher from 'utils/cl-react-query/fetcher';
-import { getMapView } from 'utils/mapViewRegistry';
+import { getMapScreenshot } from 'utils/mapViewRegistry';
 
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
 import {
@@ -32,7 +32,7 @@ interface Props {
 
 const MAPPING_INPUT_TYPES = new Set(['point', 'line', 'polygon']);
 
-async function captureMapImages(
+async function collectMapImages(
   results: { customFieldId: string; inputType: string }[]
 ): Promise<MapImageMap> {
   const mapImages: MapImageMap = new Map();
@@ -42,22 +42,28 @@ async function captureMapImages(
   );
 
   for (const result of mappingResults) {
-    const mapView = getMapView(result.customFieldId);
-    if (!mapView || !mapView.ready) continue;
+    const dataUrl = getMapScreenshot(result.customFieldId);
+    if (!dataUrl) continue;
 
     try {
-      const screenshot = await mapView.takeScreenshot({ format: 'png' });
-      const response = await fetch(screenshot.dataUrl);
+      const response = await fetch(dataUrl);
       const blob = await response.blob();
       const arrayBuffer = await blob.arrayBuffer();
 
+      const img = new Image();
+      img.src = dataUrl;
+      await new Promise<void>((resolve) => {
+        img.onload = () => resolve();
+        img.onerror = () => resolve();
+      });
+
       mapImages.set(result.customFieldId, {
         buffer: new Uint8Array(arrayBuffer),
-        width: screenshot.data.width,
-        height: screenshot.data.height,
+        width: img.naturalWidth || 800,
+        height: img.naturalHeight || 440,
       });
     } catch {
-      // Skip this map if screenshot fails
+      // Skip this map if conversion fails
     }
   }
 
@@ -133,7 +139,7 @@ const NativeSurveyInsights = ({ phaseId }: Props) => {
         aiSummaries = await fetchAISummaries(analysesData.data);
       }
 
-      const mapImages = await captureMapImages(surveyResults);
+      const mapImages = await collectMapImages(surveyResults);
 
       const elements = createSurveyResultsSection(
         surveyResults,
