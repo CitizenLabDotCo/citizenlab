@@ -1,3 +1,6 @@
+# Used to generate a grouped view, with top-level admin publication
+# in an array, and folders having an array of children
+# (see specs)
 class TreeViewService
   def initialize(space_id: nil)
     @space_id = space_id
@@ -17,7 +20,7 @@ class TreeViewService
 
     query = filter_by_space(query) if @space_id.present?
 
-    query.includes(children: :publication)
+    query.includes(:publication, children: :publication)
   end
 
   def filter_by_space(query)
@@ -34,18 +37,12 @@ class TreeViewService
     publication = admin_publication.publication
 
     node = {
-      id: admin_publication.publication_id,
+      id: publication.id,
       type: publication_type_name(admin_publication.publication_type),
       title_multiloc: publication.title_multiloc
     }
 
-    if folder?(admin_publication)
-      node[:children] = if admin_publication.children.any?
-        build_children(admin_publication.children)
-      else
-        []
-      end
-    end
+    node[:children] = build_children(admin_publication.children) if folder?(admin_publication)
 
     node
   end
