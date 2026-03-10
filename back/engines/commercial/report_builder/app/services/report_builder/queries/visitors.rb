@@ -19,51 +19,40 @@ module ReportBuilder
     )
       validate_resolution(resolution)
 
-      sessions = visits_service.sessions(project_id, start_at:, end_at:, exclude_roles:)
-      visitors_timeseries = visits_service.group_by_date(sessions, resolution).map do |row|
-          {
-            visits: row.visits,
-            visitors: row.visitors,
-            date_group: row.date_group.to_date
-          }
-      end
-
-      page_views = visits_service.page_views(sessions)
-      totals = visits_service.totals(sessions)
-      stats = calculate_stats(totals, page_views)
+      visits_service = Insights::VisitsService.new(project_id, start_at:, end_at:, exclude_roles:)
+      visitors_timeseries = visits_service.visits_by_date(resolution)
+      totals = visits_service.total_visits
+      page_views = visits_service.all_session_page_views
+      timings = calculate_timings(page_views)
 
       response = {
         visitors_timeseries: visitors_timeseries,
-        visits_whole_period: stats[:visits],
-        visitors_whole_period: stats[:visitors],
-        avg_seconds_per_session_whole_period: stats[:avg_seconds_per_session],
-        avg_pages_visited_whole_period: stats[:avg_pages_visited]
+        visits_whole_period: totals[:visits],
+        visitors_whole_period: totals[:visitors],
+        avg_seconds_per_session_whole_period: timings[:avg_seconds_per_session],
+        avg_pages_visited_whole_period: timings[:avg_pages_visited]
       }
 
       # If compare_start_at and compare_end_at are present:
       if compare_start_at.present? && compare_end_at.present?
-        compare_sessions = visits_service.sessions(project_id, start_at: compare_start_at, end_at: compare_end_at, exclude_roles: exclude_roles)
-        compare_page_views = visits_service.page_views(compare_sessions)
-        compare_totals = visits_service.totals(compare_sessions)
-        compare_stats = calculate_stats(compare_totals, compare_page_views)
+        compare_visits_service = Insights::VisitsService.new(project_id, start_at: compare_start_at, end_at: compare_end_at, exclude_roles: exclude_roles)
+        compare_totals = compare_visits_service.total_visits
+        compare_page_views = compare_visits_service.all_session_page_views
+        compare_timings = calculate_timings(compare_page_views)
 
         response = {
           **response,
-          visits_compared_period: compare_stats[:visits],
-          visitors_compared_period: compare_stats[:visitors],
-          avg_seconds_per_session_compared_period: compare_stats[:avg_seconds_per_session],
-          avg_pages_visited_compared_period: compare_stats[:avg_pages_visited]
+          visits_compared_period: compare_totals[:visits],
+          visitors_compared_period: compare_totals[:visitors],
+          avg_seconds_per_session_compared_period: compare_timings[:avg_seconds_per_session],
+          avg_pages_visited_compared_period: compare_timings[:avg_pages_visited]
         }
       end
 
       response
     end
 
-    def calculate_stats(totals, pageviews)
-      # Total number of visits and visitors
-      visits = totals[:visits]
-      visitors = totals[:visitors]
-
+    def calculate_timings(pageviews)
       # avg seconds per session and avg pages per session from pageview data
       # Calculate avg pages visited per session
       # Or, if project filter is applied:
@@ -89,7 +78,7 @@ module ReportBuilder
         .select(
           <<-SQL.squish
             extract(epoch from
-              (lead(created_at,1) over (partition by session_id order by created_at)) - created_at
+              (lead(impact_tracking_pageviews.created_at,1) over (partition by session_id order by impact_tracking_pageviews.created_at)) - impact_tracking_pageviews.created_at
             ) as seconds_on_page
           SQL
         )
@@ -114,15 +103,9 @@ module ReportBuilder
       avg_seconds_per_session = avg_seconds_on_page * avg_pages_visited
 
       {
-        visits: visits,
-        visitors: visitors,
         avg_seconds_per_session: avg_seconds_per_session,
         avg_pages_visited: avg_pages_visited
       }
-    end
-
-    def visits_service
-      @visits_service ||= Insights::VisitsService.new
     end
   end
 end
