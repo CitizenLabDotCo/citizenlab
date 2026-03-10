@@ -308,4 +308,38 @@ describe ProjectFolders::FolderPolicy do
       it { is_expected.not_to permit(:destroy) }
     end
   end
+
+  describe 'permitted_attributes' do
+    subject(:policy) { described_class.new(user, subject_folder) }
+
+    let(:subject_folder) { create(:project_folder) }
+
+    shared_examples 'does not permit space_id' do
+      it 'does not include space_id' do
+        expect(policy.permitted_attributes.flatten).not_to include(:space_id)
+      end
+    end
+
+    context 'for an admin' do
+      let(:user) { create(:admin) }
+
+      it 'includes space_id' do
+        expect(policy.permitted_attributes.flatten).to include(:space_id)
+      end
+    end
+
+    # TODO: Insert test for space manager (moderator) once that role is implemented
+
+    context 'for a project moderator' do
+      let(:user) { create(:project_moderator) }
+
+      it_behaves_like 'does not permit space_id'
+    end
+
+    context 'for a folder moderator' do
+      let(:user) { create(:project_folder_moderator) }
+
+      it_behaves_like 'does not permit space_id'
+    end
+  end
 end

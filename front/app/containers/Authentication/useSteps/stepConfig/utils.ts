@@ -1,6 +1,6 @@
 import { AuthenticationRequirements } from 'api/authentication/authentication_requirements/types';
 import getUserTokenUnconfirmed from 'api/authentication/sign_in_out/getUserTokenUnconfirmed';
-import { handleOnSSOClick } from 'api/authentication/singleSignOn';
+import { redirectToSSOProvider } from 'api/authentication/singleSignOn';
 import checkUser from 'api/users/checkUser';
 
 import {
@@ -178,24 +178,38 @@ export const handleSSOClick = async (
   getRequirements: GetRequirements,
   setCurrentStep: (step: Step) => void,
   updateState: UpdateState,
-  state: State
+  state: State,
+  claimTokens?: string[]
 ) => {
   if (ssoProvider === 'clave_unica') {
     // If clave unica, we always go straight to SSO login
-    handleOnSSOClick(ssoProvider, getAuthenticationData(), true, state.flow);
+    redirectToSSOProvider(
+      ssoProvider,
+      getAuthenticationData(),
+      true,
+      state.flow,
+      claimTokens
+    );
   } else if (ssoProvider === 'franceconnect') {
     const { requirements } = await getRequirements();
 
-    handleOnSSOClick(
+    redirectToSSOProvider(
       'franceconnect',
       getAuthenticationData(),
       requirements.verification,
-      'signin'
+      'signin',
+      claimTokens
     );
   } else {
     // If other SSO provider, it depends on the flow
     if (state.flow === 'signin') {
-      handleOnSSOClick(ssoProvider, getAuthenticationData(), true, state.flow);
+      redirectToSSOProvider(
+        ssoProvider,
+        getAuthenticationData(),
+        true,
+        state.flow,
+        claimTokens
+      );
     } else {
       updateState({ ssoProvider });
       setCurrentStep('email:sso-policies');

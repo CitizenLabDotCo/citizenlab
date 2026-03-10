@@ -88,7 +88,7 @@ const SetAsProjectModerator = ({
 
   return (
     <div>
-      <Title mb="40px">
+      <Title id="set-moderator-modal-title" mb="40px">
         <FormattedMessage
           {...messages.setUserAsProjectModerator}
           values={{ name: getFullName(user) }}

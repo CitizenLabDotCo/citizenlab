@@ -94,8 +94,8 @@ namespace :cl2_back do
           allowed: true
         },
         segment: {
-          enabled: true,
-          allowed: true
+          enabled: false,
+          allowed: false
         },
         planhat: {
           enabled: false,
@@ -371,7 +371,7 @@ namespace :cl2_back do
           enabled: false,
           allowed: false
         },
-        workspaces: {
+        spaces: {
           enabled: false,
           allowed: false
         }

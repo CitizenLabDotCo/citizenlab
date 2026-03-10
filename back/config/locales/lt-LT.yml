@@ -16,6 +16,7 @@ lt:
     fi-FI: Suomijos
     fr-BE: prancūzų (Belgija)
     fr-FR: Prancūzų kalba
+    ga-IE: Airių
     hr-HR: Kroatijos
     hu-HU: Vengrų
     it-IT: Italų kalba
@@ -246,6 +247,18 @@ lt:
           title: Kokia yra jūsų iniciatyva?
         petition:
           title: Kokia yra jūsų peticija?
+        comment:
+          title: Koks jūsų komentaras?
+        response:
+          title: Koks jūsų atsakymas?
+        suggestion:
+          title: Koks jūsų pasiūlymas?
+        topic:
+          title: Kokia jūsų tema?
+        post:
+          title: Koks yra jūsų pranešimas?
+        story:
+          title: Kokia yra jūsų istorija?
   custom_field_options:
     gender:
       male: Vyras

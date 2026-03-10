@@ -1,6 +1,7 @@
 import { ICustomFields } from 'api/custom_fields/types';
 
 export const projectResponse: ICustomFields = {
+  included: [],
   data: [
     {
       id: 'field_1',
@@ -44,6 +45,7 @@ export const projectResponse: ICustomFields = {
 };
 
 export const phaseResponse: ICustomFields = {
+  included: [],
   data: [
     {
       id: 'field_3',
@@ -87,6 +89,7 @@ export const phaseResponse: ICustomFields = {
 };
 
 export const ideaResponse: ICustomFields = {
+  included: [],
   data: [
     {
       id: 'field_3',

@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -180,7 +181,11 @@ const ProjectTemplateCard = memo<Props>(
             setPreviewModalOpened(false);
           }}
           width={'95%'}
+          ariaLabelledBy="template-preview-modal-title"
         >
+          <ScreenReaderOnly id="template-preview-modal-title">
+            {title}
+          </ScreenReaderOnly>
           <Box width="100%" display="flex" justifyContent="center">
             <ProjectTemplatePreviewAdmin
               projectTemplateId={projectTemplateId}

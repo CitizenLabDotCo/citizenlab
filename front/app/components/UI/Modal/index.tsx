@@ -317,14 +317,13 @@ const ModalContentContainerSwitch = ({
   return <StyledFocusOn width={width}>{children}</StyledFocusOn>;
 };
 
-interface Props {
+interface BaseProps {
   'data-testid'?: string;
   opened: boolean;
   fixedHeight?: boolean;
   width?: number | string;
   close: () => void;
   className?: string;
-  header?: JSX.Element | string;
   niceHeader?: boolean;
   footer?: JSX.Element;
   hasSkipButton?: boolean;
@@ -341,6 +340,10 @@ interface Props {
    */
   returnFocusRef?: React.RefObject<HTMLElement>;
 }
+
+type Props =
+  | (BaseProps & { header: JSX.Element | string; ariaLabelledBy?: string })
+  | (BaseProps & { header?: JSX.Element | string; ariaLabelledBy: string });
 
 const Modal: React.FC<Props> = ({
   'data-testid': dataTestId,
@@ -359,6 +362,7 @@ const Modal: React.FC<Props> = ({
   children,
   zIndex,
   hideCloseButton,
+  ariaLabelledBy,
   returnFocusRef,
 }) => {
   const nodeRef = useRef(null); // Needed to fix React StrictMode warning
@@ -490,7 +494,7 @@ const Modal: React.FC<Props> = ({
             className={`modalcontent ${fixedHeight ? 'fixedHeight' : ''}`}
             onClickOutside={clickOutsideModal}
             windowHeight={windowHeight}
-            ariaLabelledBy={header ? 'modal-header' : undefined}
+            ariaLabelledBy={header ? 'modal-header' : ariaLabelledBy}
             aria-modal="true"
             role="dialog"
           >
