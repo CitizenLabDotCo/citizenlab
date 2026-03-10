@@ -1,4 +1,4 @@
-import { Table, Paragraph } from 'docx';
+import { Table, Paragraph, ImageRun } from 'docx';
 import { MessageDescriptor } from 'react-intl';
 
 import type { ResultUngrouped } from 'api/survey_results/types';
@@ -11,6 +11,7 @@ import {
   createHeading,
   createParagraph,
 } from 'utils/word/converters/textConverter';
+import { getScaledDimensions } from 'utils/word/utils/styleConstants';
 
 import messages from '../messages';
 
@@ -24,6 +25,16 @@ export interface WordExportIntl {
 }
 
 export type AISummaryMap = Map<string, string>;
+
+export interface MapImageData {
+  buffer: Uint8Array;
+  width: number;
+  height: number;
+}
+
+export type MapImageMap = Map<string, MapImageData>;
+
+const MAPPING_INPUT_TYPES = new Set(['point', 'line', 'polygon']);
 
 const UUID_REGEX =
   /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
@@ -126,7 +137,8 @@ export function createSurveyResultsSection(
   results: ResultUngrouped[],
   totalSubmissions: number,
   intl: WordExportIntl,
-  aiSummaries?: AISummaryMap
+  aiSummaries?: AISummaryMap,
+  mapImages?: MapImageMap
 ): (Paragraph | Table)[] {
   const { formatMessage, localize } = intl;
   const elements: (Paragraph | Table)[] = [];
@@ -196,6 +208,28 @@ export function createSurveyResultsSection(
           }
         )
       );
+    }
+
+    if (MAPPING_INPUT_TYPES.has(result.inputType)) {
+      const mapImage = mapImages?.get(result.customFieldId);
+      if (mapImage) {
+        const { width, height } = getScaledDimensions(
+          mapImage.width,
+          mapImage.height
+        );
+        elements.push(
+          new Paragraph({
+            children: [
+              new ImageRun({
+                data: mapImage.buffer,
+                transformation: { width, height },
+                type: 'png',
+              }),
+            ],
+          })
+        );
+      }
+      continue;
     }
 
     const table = createAnswersTable(result, intl);
