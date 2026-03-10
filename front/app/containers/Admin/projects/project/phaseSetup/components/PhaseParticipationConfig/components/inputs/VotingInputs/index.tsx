@@ -27,9 +27,9 @@ import Link from 'utils/cl-router/Link';
 
 import messages from '../../../../../../messages';
 import { ValidationErrors } from '../../../../../typings';
-import ViewSelector from '../../shared/ViewSelector';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import { ToggleRow } from '../../shared/styling';
+import ViewSelector from '../../shared/ViewSelector';
 
 import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
 import MultipleVotingInputs from './votingMethodInputs/MultipleVotingInputs';
@@ -285,6 +285,7 @@ const VotingInputs = ({
           handleIdeasDisplayChange={handleIdeasDisplayChange}
           handleAvailableViewsChange={handleAvailableViewsChange}
           title={messages.defaultViewOptions}
+          hideFeed
         />
       </Box>
     </>

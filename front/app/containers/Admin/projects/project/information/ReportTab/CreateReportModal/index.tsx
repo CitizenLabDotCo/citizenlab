@@ -104,9 +104,19 @@ const CreateReportModal = ({
   };
 
   return (
-    <Modal opened={open} close={onClose} width="640px">
+    <Modal
+      opened={open}
+      close={onClose}
+      width="640px"
+      ariaLabelledBy="create-report-modal-title"
+    >
       <Box display="flex" flexDirection="column" alignItems="center" px="100px">
-        <Title variant="h2" color="primary" mt="40px">
+        <Title
+          id="create-report-modal-title"
+          variant="h2"
+          color="primary"
+          mt="40px"
+        >
           {formatMessage(otherModalMessages.createReportModalTitle)}
         </Title>
         <Text

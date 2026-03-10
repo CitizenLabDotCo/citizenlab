@@ -9,14 +9,12 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider, Resolver } from 'react-hook-form';
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { SupportedLocale } from 'typings';
 import { object, mixed, boolean, number } from 'yup';
 
 import { IBackgroundJobData } from 'api/background_jobs/types';
-import useAddOfflineIdeasAsync, {
-  ParserType,
-} from 'api/import_ideas/useAddOfflineIdeasAsync';
+import useAddOfflineIdeasAsync from 'api/import_ideas/useAddOfflineIdeasAsync';
 import usePhase from 'api/phases/usePhase';
 
 import useLocale from 'hooks/useLocale';
@@ -39,7 +37,6 @@ interface FormValues {
   locale: SupportedLocale;
   file?: Record<string, any>;
   personal_data: boolean;
-  parser_consent: boolean;
   multiple_forms: boolean;
   pages_per_form: number | undefined;
 }
@@ -59,10 +56,6 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   const { projectId } = useParams() as {
     projectId: string;
   };
-  // Allows switching of different parsers if needed
-  const [searchParams] = useSearchParams();
-  const parser = (searchParams.get('parser') || undefined) as ParserType;
-  const parserConsentRequired = parser !== 'gpt' && parser !== 'claude'; // Only need to show consent when using Google document AI parser
 
   const downloadFormPath =
     phase?.data.attributes.participation_method === 'native_survey'
@@ -73,7 +66,6 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
     locale,
     file: undefined,
     personal_data: false,
-    parser_consent: !parserConsentRequired,
     multiple_forms: false,
     pages_per_form: undefined,
   };
@@ -81,17 +73,7 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
   const schema = object({
     locale: validateLocale().required(),
     file: mixed().required(formatMessage(messages.pleaseUploadFile)),
-
     personal_data: boolean().required(),
-    parser_consent: boolean()
-      .required()
-      .test('', formatMessage(messages.consentNeeded), (v, context) => {
-        if (context.parent.file?.extension === 'application/pdf') {
-          return !!v;
-        }
-
-        return true;
-      }),
     multiple_forms: boolean().required(),
     pages_per_form: number()
       .transform((value, originalValue) =>
@@ -122,7 +104,6 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
 
   const submitFile = async ({
     file,
-    parser_consent: _,
     locale,
     personal_data,
     multiple_forms,
@@ -135,7 +116,6 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
         phase_id: phaseId,
         file: file?.base64,
         format: 'pdf',
-        parser,
         locale,
         personal_data,
         pages_per_form: multiple_forms ? pages_per_form : undefined,
@@ -221,15 +201,6 @@ const ImportPdfModal = ({ open, onClose, onImport }: Props) => {
                 label={<FormattedMessage {...messages.formHasPersonalData} />}
               />
             </Box>
-
-            {parserConsentRequired && (
-              <Box mt="24px">
-                <CheckboxWithLabel
-                  name="parser_consent"
-                  label={<FormattedMessage {...messages.googleConsent} />}
-                />
-              </Box>
-            )}
             <Box w="100%" display="flex" mt="32px">
               <Button
                 bgColor={colors.primary}

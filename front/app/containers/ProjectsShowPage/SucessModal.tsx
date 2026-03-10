@@ -66,7 +66,12 @@ const SuccessModal = ({ projectId }: Props) => {
   const handleClose = () => setShowModal(false);
 
   return (
-    <Modal opened={showModal} close={handleClose} hasSkipButton={false}>
+    <Modal
+      opened={showModal}
+      close={handleClose}
+      hasSkipButton={false}
+      ariaLabelledBy="success-modal-title"
+    >
       <Box
         width="100%"
         display="flex"

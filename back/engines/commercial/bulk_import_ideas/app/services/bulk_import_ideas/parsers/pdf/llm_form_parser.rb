@@ -2,7 +2,7 @@
 
 module BulkImportIdeas::Parsers::Pdf
   class LLMFormParser
-    def initialize(phase, locale, llm_class: Analysis::LLM::GPT41)
+    def initialize(phase, locale, llm_class: Analysis::LLM::ClaudeSonnet46)
       @phase = phase
       @locale = locale
       @llm_class = llm_class

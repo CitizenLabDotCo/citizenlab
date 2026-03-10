@@ -8,7 +8,7 @@ module.exports = {
   },
   setupFilesAfterEnv: [
     '<rootDir>/internals/jest/setup.js',
-    '@testing-library/jest-dom/extend-expect',
+    '@testing-library/jest-dom',
   ],
   testMatch: ['**/?(*.)+(test).(js|jsx|ts|tsx)'],
   testPathIgnorePatterns: ['<rootDir>/internals/'],

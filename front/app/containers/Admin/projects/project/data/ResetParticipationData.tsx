@@ -27,8 +27,14 @@ const ResetParticipationData = () => {
       >
         {formatMessage(messages.resetParticipationData)}
       </Button>
-      <Modal opened={modalOpened} close={() => setModalOpened(false)}>
-        <Title variant="h3">{formatMessage(messages.confirmationTitle)}</Title>
+      <Modal
+        opened={modalOpened}
+        close={() => setModalOpened(false)}
+        ariaLabelledBy="reset-data-modal-title"
+      >
+        <Title id="reset-data-modal-title" variant="h3">
+          {formatMessage(messages.confirmationTitle)}
+        </Title>
         <Text>{formatMessage(messages.confirmationDescription)}</Text>
         <Box display="flex" justifyContent="flex-end" gap="12px">
           <Button

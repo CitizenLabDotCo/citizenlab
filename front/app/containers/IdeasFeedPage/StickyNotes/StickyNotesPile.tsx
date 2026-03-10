@@ -168,6 +168,7 @@ const StickyNotesPile = ({ phaseId, slug }: Props) => {
     <Box overflow="hidden">
       <Box display="flex" justifyContent="center" width="100%">
         <PileContainer
+          data-cy="e2e-sticky-notes-pile"
           position="relative"
           width="100%"
           maxWidth={

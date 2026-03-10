@@ -115,7 +115,7 @@ const CreateSubscriptionModal = ({ onClose }: CreateSubscriptionModalProps) => {
     <Box w="100%" m="24px auto" pr="24px">
       {!methods.formState.isSubmitSuccessful ? (
         <>
-          <Title variant="h2">
+          <Title id="create-webhook-modal-title" variant="h2">
             {formatMessage(messages.createWebhookTitle)}
           </Title>
           <Text>

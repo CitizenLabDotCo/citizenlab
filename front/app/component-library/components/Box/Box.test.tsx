@@ -13,13 +13,13 @@ describe('<Box />', () => {
     it('applies color', () => {
       render(<Box color="green">Test box</Box>);
       expect(screen.getByText('Test box')).toHaveStyle({
-        color: 'green',
+        color: 'rgb(0, 128, 0)',
       });
     });
     it('applies bgColor', () => {
       render(<Box bgColor="green">Test box</Box>);
       expect(screen.getByText('Test box')).toHaveStyle({
-        backgroundColor: 'green',
+        backgroundColor: 'rgb(0, 128, 0)',
       });
     });
     it('applies opacity', () => {
@@ -398,27 +398,27 @@ describe('<Box />', () => {
     });
     it('applies borderTop', () => {
       render(<Box borderTop="1px solid red">Test box</Box>);
-      expect(screen.getByText('Test box')).toHaveStyle({
-        borderTop: '1px solid red',
-      });
+      expect(screen.getByText('Test box')).toHaveStyle(
+        'border-top: 1px solid red'
+      );
     });
     it('applies borderBottom', () => {
       render(<Box borderBottom="1px solid red">Test box</Box>);
-      expect(screen.getByText('Test box')).toHaveStyle({
-        borderBottom: '1px solid red',
-      });
+      expect(screen.getByText('Test box')).toHaveStyle(
+        'border-bottom: 1px solid red'
+      );
     });
     it('applies borderLeft', () => {
       render(<Box borderLeft="1px solid red">Test box</Box>);
-      expect(screen.getByText('Test box')).toHaveStyle({
-        borderLeft: '1px solid red',
-      });
+      expect(screen.getByText('Test box')).toHaveStyle(
+        'border-left: 1px solid red'
+      );
     });
     it('applies borderRight', () => {
       render(<Box borderRight="1px solid red">Test box</Box>);
-      expect(screen.getByText('Test box')).toHaveStyle({
-        borderRight: '1px solid red',
-      });
+      expect(screen.getByText('Test box')).toHaveStyle(
+        'border-right: 1px solid red'
+      );
     });
     it('applies borderColor', () => {
       render(<Box borderColor="red">Test box</Box>);
