@@ -15,10 +15,12 @@ import SurveyResultsPdfExport from 'components/admin/FormResults/PdfExport/Surve
 
 import { useIntl } from 'utils/cl-intl';
 import fetcher from 'utils/cl-react-query/fetcher';
+import { getMapView } from 'utils/mapViewRegistry';
 
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
 import {
   AISummaryMap,
+  MapImageMap,
   createSurveyResultsSection,
 } from '../../word/insightConverters/surveyResultsConverter';
 import { useWordSection } from '../../word/useWordSection';
@@ -26,6 +28,40 @@ import WordExportableInsight from '../../word/WordExportableInsight';
 
 interface Props {
   phaseId: string;
+}
+
+const MAPPING_INPUT_TYPES = new Set(['point', 'line', 'polygon']);
+
+async function captureMapImages(
+  results: { customFieldId: string; inputType: string }[]
+): Promise<MapImageMap> {
+  const mapImages: MapImageMap = new Map();
+
+  const mappingResults = results.filter((r) =>
+    MAPPING_INPUT_TYPES.has(r.inputType)
+  );
+
+  for (const result of mappingResults) {
+    const mapView = getMapView(result.customFieldId);
+    if (!mapView || !mapView.ready) continue;
+
+    try {
+      const screenshot = await mapView.takeScreenshot({ format: 'png' });
+      const response = await fetch(screenshot.dataUrl);
+      const blob = await response.blob();
+      const arrayBuffer = await blob.arrayBuffer();
+
+      mapImages.set(result.customFieldId, {
+        buffer: new Uint8Array(arrayBuffer),
+        width: screenshot.data.width,
+        height: screenshot.data.height,
+      });
+    } catch {
+      // Skip this map if screenshot fails
+    }
+  }
+
+  return mapImages;
 }
 
 async function fetchAISummaries(
@@ -97,6 +133,8 @@ const NativeSurveyInsights = ({ phaseId }: Props) => {
         aiSummaries = await fetchAISummaries(analysesData.data);
       }
 
+      const mapImages = await captureMapImages(surveyResults);
+
       const elements = createSurveyResultsSection(
         surveyResults,
         totalSubmissions,
@@ -105,7 +143,8 @@ const NativeSurveyInsights = ({ phaseId }: Props) => {
           locale: intl.locale || 'en',
           localize,
         },
-        aiSummaries
+        aiSummaries,
+        mapImages
       );
 
       return [{ type: 'docx-elements', elements }];
