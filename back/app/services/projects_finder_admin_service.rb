@@ -78,25 +78,25 @@ class ProjectsFinderAdminService
   end
 
   def self.sort_phase_starting_or_ending_soon(scope)
-    phases_ending_soon_subquery = Phase
-      .where("coalesce(end_at, 'infinity'::timestamp) >= now()")
-      .group(:project_id)
-      .select("project_id, min(coalesce(end_at, 'infinity'::timestamp)) AS min_end_at")
+    now = Time.zone.now
 
-    phases_starting_soon_subquery = Phase
-      .where('start_at >= now()')
+    phases_ending_soon = Phase
+      .where("coalesce(end_at, 'infinity'::timestamptz) >= ?", now)
+      .group(:project_id)
+      .select("project_id, min(coalesce(end_at, 'infinity'::timestamptz)) AS min_end_at")
+
+    phases_starting_soon = Phase
+      .where(start_at: now..)
       .group(:project_id)
       .select('project_id, min(start_at) AS min_start_at')
 
-    projects_subquery = scope
-      .joins("LEFT JOIN (#{phases_ending_soon_subquery.to_sql}) AS phases_ending_soon ON phases_ending_soon.project_id = projects.id")
-      .joins("LEFT JOIN (#{phases_starting_soon_subquery.to_sql}) AS phases_starting_soon ON phases_starting_soon.project_id = projects.id")
-      .select('least(phases_ending_soon.min_end_at, phases_starting_soon.min_start_at) AS soon_date, projects.*')
-
     # We order by soon_date, but tie-break with created_at and id for a stable sort,
     # which is important for pagination
-    Project
-      .from(projects_subquery, :projects)
+    scope
+      .with(phases_ending_soon:, phases_starting_soon:)
+      .joins('LEFT JOIN phases_ending_soon ON phases_ending_soon.project_id = projects.id')
+      .joins('LEFT JOIN phases_starting_soon ON phases_starting_soon.project_id = projects.id')
+      .select('projects.*, least(phases_ending_soon.min_end_at, phases_starting_soon.min_start_at) AS soon_date')
       .order('soon_date ASC NULLS LAST, projects.created_at ASC, projects.id ASC')
   end
 
@@ -291,7 +291,7 @@ class ProjectsFinderAdminService
 
     if participation_states.include?('not_started')
       # Projects with no phases that have started yet
-      conditions << "projects.id NOT IN (SELECT project_id FROM phases WHERE start_at < now())"
+      conditions << 'projects.id NOT IN (SELECT project_id FROM phases WHERE start_at < now())'
     end
 
     if participation_states.include?('collecting_data')
