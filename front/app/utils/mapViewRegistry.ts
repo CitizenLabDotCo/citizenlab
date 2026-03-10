@@ -19,10 +19,6 @@ export const unregisterMapView = (id: string) => {
   mapViews.delete(id);
 };
 
-export const getMapView = (id: string): MapView | undefined => {
-  return mapViews.get(id);
-};
-
 export const getMapScreenshot = (id: string): string | undefined => {
   return mapScreenshots.get(id);
 };
