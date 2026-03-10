@@ -192,6 +192,15 @@ resource 'Campaigns' do
         expect(json_response[:data][:attributes][:delivery_stats]).to be_nil
       end
 
+      example 'Get a scheduled campaign includes scheduled_at' do
+        campaign.scheduled_at = 2.hours.from_now
+        campaign.save!
+        do_request
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :scheduled_at)).to be_present
+      end
+
       example 'Get a manual campaign that has been sent' do
         create_list(:delivery, 5, campaign: campaign)
         do_request
@@ -353,6 +362,7 @@ resource 'Campaigns' do
       context 'manual campaigns' do
         with_options scope: :campaign do
           parameter :group_ids, 'Array of group ids to whom the email should be sent', required: false
+          parameter :scheduled_at, 'The datetime at which the campaign should be sent (ISO 8601)', required: false
         end
 
         let(:campaign) { create(:manual_campaign) }
@@ -370,6 +380,31 @@ resource 'Campaigns' do
           expect(json_response.dig(:data, :attributes, :reply_to)).to match reply_to
           expect(json_response.dig(:data, :relationships, :author, :data, :id)).to eq campaign.author_id
           expect(json_response.dig(:data, :relationships, :groups, :data).pluck(:id)).to eq group_ids
+        end
+
+        example 'Schedule a campaign for future sending' do
+          scheduled_time = 2.hours.from_now.iso8601
+          do_request(campaign: { scheduled_at: scheduled_time })
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :scheduled_at)).to be_present
+        end
+
+        example 'Unschedule a campaign by setting scheduled_at to nil' do
+          campaign.scheduled_at = 2.hours.from_now
+          campaign.save!
+          do_request(campaign: { scheduled_at: nil })
+
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response.dig(:data, :attributes, :scheduled_at)).to be_nil
+        end
+
+        example '[error] Schedule a campaign with a past date' do
+          do_request(campaign: { scheduled_at: 1.hour.ago.iso8601 })
+
+          assert_status 422
         end
 
         context 'when body contains images' do
@@ -486,6 +521,15 @@ resource 'Campaigns' do
         assert_status 200
         json_response = json_parse response_body
         expect(json_response.dig(:data, :attributes, :deliveries_count)).to eq User.count
+      end
+
+      example 'Send a scheduled campaign immediately (overrides schedule)' do
+        campaign.scheduled_at = 2.hours.from_now
+        campaign.save!
+        do_request
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :attributes, :deliveries_count)).to be >= 1
       end
 
       example '[error] Send out the campaign without an author' do
