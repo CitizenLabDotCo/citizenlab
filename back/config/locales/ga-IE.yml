@@ -16,6 +16,7 @@ ga:
     fi-FI: Fionlainnis
     fr-BE: Fraincis (An Bheilg)
     fr-FR: Fraincis
+    ga-IE: Éireannach
     hr-HR: Cróitis
     hu-HU: Ungáiris
     it-IT: Iodáilis
@@ -246,6 +247,18 @@ ga:
           title: Cad é do thionscnamh?
         petition:
           title: Cad é d’achainí?
+        comment:
+          title: Cad é do thuairim?
+        response:
+          title: Cad é do fhreagra?
+        suggestion:
+          title: Cad é do mholadh?
+        topic:
+          title: Cad é do thopaic?
+        post:
+          title: Cad é do phost?
+        story:
+          title: Cad é do scéal?
   custom_field_options:
     gender:
       male: Fireann
