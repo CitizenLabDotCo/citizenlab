@@ -10,6 +10,7 @@ import {
   Icon,
   Text,
   DropdownListItem,
+  Badge,
 } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
 
@@ -26,6 +27,8 @@ import { downloadSurveyResults } from 'api/survey_results/utils';
 
 import useLocale from 'hooks/useLocale';
 
+import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
+
 import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -35,6 +38,7 @@ import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
 
 import messages from '../../messages';
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
+import { useWordExportContext } from '../../word/WordExportContext';
 
 interface Props {
   phase: IPhaseData;
@@ -48,6 +52,7 @@ const SurveyActions = ({ phase }: Props) => {
 
   const { downloadPdf, isDownloading: isDownloadingPdf } =
     usePdfExportContext();
+  const { downloadWord, isDownloadingWord } = useWordExportContext();
 
   const { data: project } = useProjectById(projectId);
   const { mutate: updatePhase } = useUpdatePhase();
@@ -179,7 +184,9 @@ const SurveyActions = ({ phase }: Props) => {
   return (
     <>
       <Box display="flex" alignItems="center" gap="8px" data-pdf-exclude="true">
-        {(isDownloadingXlsx || isDownloadingPdf) && <Spinner size="24px" />}
+        {(isDownloadingXlsx || isDownloadingPdf || isDownloadingWord) && (
+          <Spinner size="24px" />
+        )}
         <Box position="relative">
           <Button
             icon="dots-horizontal"
@@ -197,11 +204,12 @@ const SurveyActions = ({ phase }: Props) => {
             opened={isDropdownOpened}
             onClickOutside={closeDropdown}
             className="dropdown"
-            width="auto"
-            right="0px"
+            width="max-content"
+            right="12px"
             top="45px"
+            zIndex="10000"
             content={
-              <Box minWidth="300px">
+              <Box style={{ whiteSpace: 'nowrap' }}>
                 <DropdownListItem
                   onClick={() => {
                     setDropdownOpened(false);
@@ -212,6 +220,20 @@ const SurveyActions = ({ phase }: Props) => {
                   <Text my="0px">
                     {formatMessage(messages.downloadInsightsPdf)}
                   </Text>
+                </DropdownListItem>
+                <DropdownListItem
+                  onClick={() => {
+                    setDropdownOpened(false);
+                    downloadWord();
+                  }}
+                >
+                  <Icon name="download" fill={colors.coolGrey600} mr="8px" />
+                  <Box display="flex" alignItems="center" gap="6px">
+                    <Text my="0px">{formatMessage(messages.downloadWord)}</Text>
+                    <Badge color={colors.coolGrey600} className="inverse">
+                      {formatMessage(projectFilesMessages.beta)}
+                    </Badge>
+                  </Box>
                 </DropdownListItem>
                 <DropdownListItem
                   onClick={handleDownloadXlsx}

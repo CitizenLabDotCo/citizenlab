@@ -141,6 +141,65 @@ RSpec.describe Phase do
     end
   end
 
+  describe 'available_views' do
+    describe 'defaults (set_presentation_mode callback)' do
+      it 'defaults to [card] when not explicitly set' do
+        phase = create(:phase, available_views: nil)
+        expect(phase.available_views).to eq %w[card]
+      end
+
+      it 'automatically includes the presentation_mode in available_views' do
+        phase = create(:phase, presentation_mode: 'map', available_views: %w[card])
+        expect(phase.available_views).to include('map')
+      end
+
+      it 'does not duplicate if presentation_mode is already included' do
+        phase = create(:phase, presentation_mode: 'card', available_views: %w[card map])
+        expect(phase.available_views).to eq %w[card map]
+      end
+    end
+
+    describe 'validation' do
+      # Stub set_presentation_mode so the before_validation callback
+      # doesn't auto-correct the values we're testing against.
+      before { allow_any_instance_of(described_class).to receive(:set_presentation_mode) }
+
+      it 'is invalid when empty' do
+        phase = build(:phase, presentation_mode: 'card', available_views: [])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('non-empty array')
+      end
+
+      it 'is invalid with an unrecognized view mode' do
+        phase = build(:phase, presentation_mode: 'card', available_views: %w[card unknown])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('invalid view modes')
+      end
+
+      it 'is invalid without card view' do
+        phase = build(:phase, presentation_mode: 'map', available_views: %w[map])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('must include card view')
+      end
+
+      it 'is invalid when available_views does not include the presentation_mode' do
+        phase = build(:phase, presentation_mode: 'map', available_views: %w[card feed])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('must include the default presentation mode')
+      end
+
+      it 'is valid with card and the current presentation_mode' do
+        phase = build(:phase, presentation_mode: 'map', available_views: %w[card map])
+        expect(phase).to be_valid
+      end
+
+      it 'is valid with all presentation modes' do
+        phase = build(:phase, presentation_mode: 'card', available_views: %w[card map feed])
+        expect(phase).to be_valid
+      end
+    end
+  end
+
   describe 'input_term' do
     it 'default is set by the participation method defaults' do
       phase = build(:phase, input_term: nil)

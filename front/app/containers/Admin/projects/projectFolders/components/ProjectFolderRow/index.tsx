@@ -6,6 +6,8 @@ import styled from 'styled-components';
 import { IAdminPublicationData } from 'api/admin_publications/types';
 import useAuthUser from 'api/me/useAuthUser';
 
+import useLocalize from 'hooks/useLocalize';
+
 import PublicationStatusLabel from 'containers/Admin/projects/components/PublicationStatusLabel';
 import {
   RowContent,
@@ -13,8 +15,6 @@ import {
   RowTitle,
   RowButton,
 } from 'containers/Admin/projects/components/StyledComponents';
-
-import useLocalize from 'hooks/useLocalize';
 
 import Error from 'components/UI/Error';
 
