@@ -16,6 +16,7 @@ pa:
     fi-FI: ਫਿਨਿਸ਼
     fr-BE: ਫ੍ਰੈਂਚ (ਬੈਲਜੀਅਮ)
     fr-FR: ਫ੍ਰੈਂਚ
+    ga-IE: ਆਇਰਿਸ਼
     hr-HR: ਕਰੋਸ਼ੀਅਨ
     hu-HU: ਹੰਗੇਰੀਅਨ
     it-IT: ਇਤਾਲਵੀ
@@ -246,6 +247,18 @@ pa:
           title: ਤੁਹਾਡੀ ਪਹਿਲ ਕੀ ਹੈ?
         petition:
           title: ਤੁਹਾਡੀ ਪਟੀਸ਼ਨ ਕੀ ਹੈ?
+        comment:
+          title: ਤੁਹਾਡੀ ਕੀ ਟਿੱਪਣੀ ਹੈ?
+        response:
+          title: ਤੁਹਾਡਾ ਕੀ ਜਵਾਬ ਹੈ?
+        suggestion:
+          title: ਤੁਹਾਡਾ ਕੀ ਸੁਝਾਅ ਹੈ?
+        topic:
+          title: ਤੁਹਾਡਾ ਵਿਸ਼ਾ ਕੀ ਹੈ?
+        post:
+          title: ਤੁਹਾਡੀ ਪੋਸਟ ਕੀ ਹੈ?
+        story:
+          title: ਤੁਹਾਡੀ ਕਹਾਣੀ ਕੀ ਹੈ?
   custom_field_options:
     gender:
       male: ਨਰ
