@@ -820,6 +820,36 @@ resource 'Users' do
           assert_status 200
           expect(response_ids).to contain_exactly(project_reviewer.id)
         end
+
+        example 'List only project moderators' do
+          p1 = create(:project)
+          p2 = create(:project)
+          create(:admin)
+          create(:user)
+          pm1 = create(:project_moderator, projects: [p1, p2])
+          pm2 = create(:project_moderator, projects: [p1])
+          f = create(:project_folder)
+          create(:project_folder_moderator, project_folders: [f])
+
+          do_request(project_moderators_only: true)
+          assert_status 200
+          expect(response_ids).to contain_exactly(pm1.id, pm2.id)
+        end
+
+        example 'List only folder moderators' do
+          f1 = create(:project_folder)
+          f2 = create(:project_folder)
+          create(:admin)
+          create(:user)
+          fm1 = create(:project_folder_moderator, project_folders: [f1, f2])
+          fm2 = create(:project_folder_moderator, project_folders: [f1])
+          p = create(:project)
+          p = create(:project_moderator, projects: [p])
+
+          do_request(folder_moderators_only: true)
+          assert_status 200
+          expect(response_ids).to contain_exactly(fm1.id, fm2.id)
+        end
       end
 
       get 'web_api/v1/users/seats' do
