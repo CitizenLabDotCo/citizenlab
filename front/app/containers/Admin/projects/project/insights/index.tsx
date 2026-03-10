@@ -319,12 +319,7 @@ const InsightsContent = () => {
       {isDownloadingPdf && (
         <div style={hiddenContainerStyle}>
           <PdfExportProvider isPdfRenderMode>
-            <WordExportProvider
-              filename=""
-              participationMethod={participationMethod}
-            >
-              <InsightsPdfContent phase={phase.data} />
-            </WordExportProvider>
+            <InsightsPdfContent phase={phase.data} />
           </PdfExportProvider>
         </div>
       )}
