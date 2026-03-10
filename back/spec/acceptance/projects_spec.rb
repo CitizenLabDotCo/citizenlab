@@ -636,7 +636,7 @@ resource 'Projects' do
         end
 
         example 'Move a project from one folder to another' do
-          old_folder = create(:project_folder, projects: [@project])
+          create(:project_folder, projects: [@project])
           new_folder = create(:project_folder)
 
           do_request(project: { folder_id: new_folder.id })
