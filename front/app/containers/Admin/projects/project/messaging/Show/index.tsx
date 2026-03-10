@@ -12,7 +12,7 @@ import {
   Text,
   Dropdown,
 } from '@citizenlab/cl2-component-library';
-import { formatInTimeZone, utcToZonedTime, zonedTimeToUtc } from 'date-fns-tz';
+import moment from 'moment-timezone';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -148,12 +148,8 @@ const Show = () => {
   };
 
   const timeZone = tenant?.data.attributes.settings.core.timezone;
-  const tenantTimeNow = timeZone
-    ? utcToZonedTime(new Date(), timeZone)
-    : new Date();
-  const gmtOffset = timeZone
-    ? formatInTimeZone(new Date(), timeZone, 'XXX')
-    : '';
+  const tenantTimeNow = timeZone ? moment().tz(timeZone).toDate() : new Date();
+  const gmtOffset = timeZone ? moment().tz(timeZone).format('Z') : '';
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
     undefined
   );
@@ -172,8 +168,10 @@ const Show = () => {
       scheduledDateTime.setMinutes(selectedTime.getMinutes());
       scheduledDateTime.setSeconds(0);
       // store time in the tenant's timezone
-      const utcDateTime = zonedTimeToUtc(scheduledDateTime, timeZone);
-      const scheduledAt = utcDateTime.toISOString();
+      const scheduledAt = moment
+        .tz(scheduledDateTime, timeZone)
+        .utc()
+        .toISOString();
 
       updateCampaign(
         {
@@ -227,10 +225,9 @@ const Show = () => {
   const handleOpenScheduleModal = () => {
     // if email is already scheduled set the default value to scheduled date and time
     if (campaign?.data.attributes.scheduled_at && timeZone) {
-      const scheduledDate = utcToZonedTime(
-        new Date(campaign.data.attributes.scheduled_at),
-        timeZone
-      );
+      const scheduledDate = moment(campaign.data.attributes.scheduled_at)
+        .tz(timeZone)
+        .toDate();
       setSelectedDate(scheduledDate);
       setSelectedTime(scheduledDate);
     }
@@ -285,11 +282,9 @@ const Show = () => {
                     text={<FormattedMessage {...messages.scheduled} />}
                   />
                   <Text fontSize="base">
-                    {formatInTimeZone(
-                      campaign.data.attributes.scheduled_at,
-                      timeZone,
-                      'MMM dd, yyyy hh:mm a (XXX)'
-                    )}
+                    {moment(campaign.data.attributes.scheduled_at)
+                      .tz(timeZone)
+                      .format('MMM DD, YYYY hh:mm A')}
                   </Text>
                 </>
               )}
