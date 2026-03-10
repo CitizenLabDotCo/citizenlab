@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import { Button } from '@citizenlab/cl2-component-library';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
@@ -21,6 +23,7 @@ interface Props {
 const DynamicFilters = ({ isUserAdmin }: Props) => {
   const params = useParams();
   const { formatMessage } = useIntl();
+  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
 
   const [activeFilters, setActiveFilters] = useState(() => {
     return FILTER_KEYS.filter((key) => {
@@ -66,9 +69,19 @@ const DynamicFilters = ({ isUserAdmin }: Props) => {
     trackEventByName(tracks.clearFilters);
   };
 
-  const availableFilters = FILTER_KEYS.filter(
-    (key) => !activeFilters.includes(key)
-  );
+  const getAvailableFilters = () => {
+    const availableFilterKeys = FILTER_KEYS.filter(
+      (key) => !activeFilters.includes(key)
+    );
+
+    if (!spacesEnabled) {
+      return availableFilterKeys.filter((key) => key !== 'space_ids');
+    }
+
+    return availableFilterKeys;
+  };
+
+  const availableFilters = getAvailableFilters();
 
   return (
     <>

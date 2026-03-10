@@ -1272,6 +1272,7 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_created_desc1": "Recently created (new-old)",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.recently_viewed": "Recently viewed",
   "app.containers.Admin.projects.all.new.Projects.Filters.Sort.status": "Status",
+  "app.containers.Admin.projects.all.new.Projects.Filters.Spaces.spaces": "Spaces",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.admins": "Admins",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.anyone": "Anyone",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.groups": "Groups",

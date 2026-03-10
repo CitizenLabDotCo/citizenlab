@@ -22,7 +22,12 @@ import { Parameter, PARAMS as PROJECT_PARAMS } from './_shared/params';
 import messages from './messages';
 import tracks from './tracks';
 
-const FOLDER_PARAMS: Parameter[] = ['status', 'managers', 'search'];
+const FOLDER_PARAMS: Parameter[] = [
+  'status',
+  'managers',
+  'search',
+  'space_ids',
+];
 
 interface TabProps {
   message: MessageDescriptor;
