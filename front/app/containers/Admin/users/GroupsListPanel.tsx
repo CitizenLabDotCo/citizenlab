@@ -223,6 +223,16 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
           </MembersCount>
         )}
       </MenuLink>
+      <MenuLink to="/admin/users/folder-moderators">
+        <GroupName>
+          <FormattedMessage {...messages.folderManagers} />
+        </GroupName>
+        {usersCount && (
+          <MembersCount data-cy="e2e-moderator-count">
+            {usersCount.data.attributes.moderators_count}
+          </MembersCount>
+        )}
+      </MenuLink>
       <MenuLink to="/admin/users/project-moderators">
         <GroupName>
           <FormattedMessage {...messages.projectManagers} />
