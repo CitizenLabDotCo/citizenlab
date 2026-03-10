@@ -2,23 +2,16 @@
 
 class TimelineService
   def future_phases(project, time = Time.now)
-    now = tenant_timezone.at(time)
-    project.phases.select do |phase|
-      phase.start_at > now
-    end
+    project.phases.where('start_at > ?', time)
   end
 
   def past_phases(project, time = Time.now)
-    now = tenant_timezone.at(time)
-    project.phases.select do |phase|
-      phase.end_at&.<= now
-    end
+    project.phases.where('end_at IS NOT NULL AND end_at <= ?', time)
   end
 
   def current_phase(project, time = Time.now)
-    now = tenant_timezone.at(time)
     project.phases.find do |phase|
-      phase.start_at <= now && (phase.end_at.nil? || phase.end_at > now)
+      phase.start_at <= time && (phase.end_at.nil? || phase.end_at > time)
     end
   end
 
@@ -38,8 +31,7 @@ class TimelineService
   end
 
   def phase_is_complete?(phase, time = Time.now)
-    now = tenant_timezone.at(time)
-    phase.end_at.present? && phase.end_at <= now
+    phase.end_at.present? && phase.end_at <= time
   end
 
   def current_or_backup_transitive_phase(project, time = Time.now)
@@ -56,11 +48,7 @@ class TimelineService
   end
 
   def current_and_future_phases(project, time = Time.now)
-    now = tenant_timezone.at(time)
-
-    project.phases.select do |phase|
-      phase.end_at.nil? || phase.end_at > now
-    end
+    project.phases.where('end_at IS NULL OR end_at > ?', time)
   end
 
   def in_active_phase?(idea)
@@ -68,11 +56,9 @@ class TimelineService
   end
 
   def overlaps?(phase1, phase2)
-    return true if (phase1.start_at.blank? && phase1.end_at.blank?) || (phase2.start_at.blank? && phase2.end_at.blank?) || (phase1.end_at.blank? && phase2.end_at.blank?)
-    return (phase2.end_at > phase1.start_at) if phase1.end_at.blank?
-    return (phase1.end_at > phase2.start_at) if phase2.end_at.blank?
-
-    (phase1.start_at...phase1.end_at).overlap?(phase2.start_at...phase2.end_at)
+    period1 = phase1.start_at...phase1.end_at
+    period2 = phase2.start_at...phase2.end_at
+    period1.overlap?(period2)
   end
 
   def other_project_phases(phase)
@@ -80,37 +66,28 @@ class TimelineService
   end
 
   def timeline_active(project)
-    now = tenant_timezone.at(Time.now)
-    if project.phases.blank?
-      nil
-    elsif now < project.phases.minimum(:start_at)
-      :future
-    elsif project.phases.last.end_at.present? && now >= project.phases.maximum(:end_at)
-      :past
-    else
-      :present
-    end
+    timeline_active_on_collection([project]).values.sole
   end
 
   def timeline_active_on_collection(projects)
-    projects = projects.to_a
-    now = tenant_timezone.at(Time.now)
-    starts = Phase.where(project: projects).group(:project_id).minimum(:start_at)
-    ends = Phase.where(project: projects).group(:project_id).maximum(:end_at)
+    now = Time.now
 
-    # For any projects open end dates?
-    open_end_starts = Phase.where(project: projects, end_at: nil).group(:project_id).maximum(:start_at)
+    starts = Phase.where(project: projects).group(:project_id).minimum(:start_at)
+    ends = Phase.where(project: projects)
+      .group(:project_id)
+      .maximum(Arel.sql("coalesce(end_at, 'infinity'::timestamptz)"))
 
     projects.to_h do |project|
-      active = if project.phases.blank?
+      active = if starts[project.id].blank? # No phases
         nil
       elsif now < starts[project.id]
         :future
-      elsif open_end_starts[project.id].blank? && now >= ends[project.id]
+      elsif now >= ends[project.id]
         :past
       else
         :present
       end
+
       [project.id, active]
     end
   end
@@ -135,11 +112,5 @@ class TimelineService
     return false if !phase.start_at
 
     other_project_phases.maximum(:start_at) < phase.start_at
-  end
-
-  private
-
-  def tenant_timezone
-    @tenant_timezone ||= AppConfiguration.timezone
   end
 end
