@@ -78,8 +78,10 @@ export const WordExportProvider = ({
 }: WordExportProviderProps) => {
   const { formatMessage } = useIntl();
 
-  // Serializer registry
+  // Ref-counted serializer registry. Keeps the first serializer for each exportId
+  // and only removes it when all registrations for that id are unregistered.
   const serializers = useRef<Map<ExportId, WordSerializer>>(new Map());
+  const refCounts = useRef<Map<ExportId, number>>(new Map());
   const skipped = useRef<Set<ExportId>>(new Set());
   // Bumped on every register/unregister/skip so `allComponentsReady` re-evaluates
   const [registrationVersion, setRegistrationVersion] = useState(0);
@@ -94,17 +96,30 @@ export const WordExportProvider = ({
   const [captureWarnings, setCaptureWarnings] = useState<string[]>([]);
 
   const registerSerializer = useCallback((id: ExportId, fn: WordSerializer) => {
-    serializers.current.set(id, fn);
+    const count = (refCounts.current.get(id) || 0) + 1;
+    refCounts.current.set(id, count);
+    // Only store the serializer on the first registration
+    if (count === 1) {
+      serializers.current.set(id, fn);
+    }
     setRegistrationVersion((v) => v + 1);
   }, []);
 
   const unregisterSerializer = useCallback((id: ExportId) => {
-    serializers.current.delete(id);
-    skipped.current.delete(id);
+    const count = (refCounts.current.get(id) || 0) - 1;
+    if (count <= 0) {
+      serializers.current.delete(id);
+      refCounts.current.delete(id);
+      skipped.current.delete(id);
+    } else {
+      refCounts.current.set(id, count);
+    }
     setRegistrationVersion((v) => v + 1);
   }, []);
 
   const setSerializerSkipped = useCallback((id: ExportId, skip: boolean) => {
+    // Ignore skip changes from duplicate registrations
+    if ((refCounts.current.get(id) || 0) > 1) return;
     if (skip) skipped.current.add(id);
     else skipped.current.delete(id);
     setRegistrationVersion((v) => v + 1);

@@ -108,12 +108,13 @@ const RankingOption = ({
                 onChange={(selectedOption) => {
                   moveOptionInArray(index, selectedOption.value - 1);
 
-                  // For a11y, focus the list item again after reordering.
-                  (
-                    document.querySelector(
-                      `[data-rbd-drag-handle-draggable-id="ranking-item-${option.value}"]`
-                    ) as HTMLElement
-                  ).focus();
+                  // For a11y, focus the select dropdown of the reordered item.
+                  requestAnimationFrame(() => {
+                    document
+                      .getElementById(`ranking-item-${option.value}`)
+                      ?.querySelector<HTMLSelectElement>('select')
+                      ?.focus();
+                  });
                 }}
               />
               <Text
