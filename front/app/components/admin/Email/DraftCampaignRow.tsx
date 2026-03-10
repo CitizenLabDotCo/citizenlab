@@ -7,9 +7,10 @@ import {
   Title,
   Text,
 } from '@citizenlab/cl2-component-library';
-import { FormattedDate, FormattedTime } from 'react-intl';
+import moment from 'moment-timezone';
 import { RouteType } from 'routes';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { ICampaignData } from 'api/campaigns/types';
 import { isDraft } from 'api/campaigns/util';
 import useProjectById from 'api/projects/useProjectById';
@@ -40,7 +41,8 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
     context === 'global'
       ? `/admin/messaging/emails/custom/${campaign.id}`
       : `/admin/projects/${campaign.relationships.context?.data?.id}/messaging/${campaign.id}`;
-
+  const { data: tenant } = useAppConfiguration();
+  const timeZone = tenant?.data.attributes.settings.core.timezone || 'UTC';
   return (
     <Row id={campaign.id}>
       <Box>
@@ -51,11 +53,11 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
           {campaign.attributes.scheduled_at && (
             <>
               <Text m="0px" fontSize="s">
-                <>
-                  <FormattedDate value={campaign.attributes.scheduled_at} />
-                  &nbsp;
-                  <FormattedTime value={campaign.attributes.scheduled_at} />
-                </>
+                <Text fontSize="base">
+                  {moment(campaign.attributes.scheduled_at)
+                    .tz(timeZone)
+                    .format('MMM DD, YYYY hh:mm A ')}
+                </Text>
               </Text>
               <StatusLabel
                 backgroundColor={colors.teal500}
