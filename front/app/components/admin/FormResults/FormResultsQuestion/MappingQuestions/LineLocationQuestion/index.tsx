@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
@@ -11,6 +11,7 @@ import LineMap from 'components/admin/Graphs/LineMap';
 import ResetMapViewButton from 'components/EsriMap/components/ResetMapViewButton';
 
 import { useIntl } from 'utils/cl-intl';
+import { registerMapView, unregisterMapView } from 'utils/mapViewRegistry';
 
 import messages from '../../../messages';
 import ExportGeoJSONButton from '../components/ExportGeoJSONButton';
@@ -37,6 +38,20 @@ const LineLocationQuestion = ({
 
   // State variables
   const [mapView, setMapView] = useState<MapView | null>(null);
+
+  const handleMapInit = useCallback(
+    (view: MapView) => {
+      setMapView(view);
+      registerMapView(customFieldId, view);
+    },
+    [customFieldId]
+  );
+
+  useEffect(() => {
+    return () => {
+      unregisterMapView(customFieldId);
+    };
+  }, [customFieldId]);
 
   // Add reset button to the map
   useEffect(() => {
@@ -72,7 +87,7 @@ const LineLocationQuestion = ({
             mapConfig={mapConfig}
             layerTitle={formatMessage(messages.responses)}
             layerId={`responsesLayer_${customFieldId}`}
-            onInit={setMapView}
+            onInit={handleMapInit}
           />
           <ResetMapViewButton
             mapView={mapView}
