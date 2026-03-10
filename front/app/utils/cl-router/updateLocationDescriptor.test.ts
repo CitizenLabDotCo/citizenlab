@@ -20,7 +20,7 @@ test('updates /ideas to /nl-BE/ideas : updates a simple path with no locale as e
       locale: 'nl-BE',
     },
   });
-  expect(serviceSpy.mock.results[1]).toBeNull();
+  expect(serviceSpy.mock.results[1]).toBeUndefined();
 });
 
 test('updates /fr-BE/ to /nl-BE/ : updates a home with a locale as expected', () => {
