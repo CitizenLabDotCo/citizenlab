@@ -20,12 +20,14 @@ interface Props {
   selectedTime: Date;
   onChange: (newDate: Date) => void;
   selectedDate?: Date;
+  currentTimeInTz?: Date;
 }
 
 const TimeInput = ({
   selectedTime,
   onChange,
   selectedDate = undefined,
+  currentTimeInTz = undefined,
 }: Props) => {
   const [visible, setVisible] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
@@ -47,16 +49,16 @@ const TimeInput = ({
     timeIndexRef.current = timeIndex;
   });
 
-  // Check if selected date is today
+  // Check if selected date is today - use tenant timezone if provided
+  const referenceTime = currentTimeInTz || new Date();
   const isToday = selectedDate
-    ? new Date(selectedDate).toDateString() === new Date().toDateString()
+    ? new Date(selectedDate).toDateString() === referenceTime.toDateString()
     : false;
 
-  // Filter times based on whether it's today
+  // Filter times based on whether it's today - use tenant timezone
   const availableTimes = isToday
     ? TIMES.filter((time) => {
-        const now = new Date();
-        const currentHour = now.getHours();
+        const currentHour = referenceTime.getHours();
         const timeHour = time.getHours();
         return timeHour > currentHour;
       })
@@ -71,8 +73,7 @@ const TimeInput = ({
       Math.max(timeIndexRef.current - 2, 0) * BUTTON_HEIGHT;
   }, [visible]);
 
-  const handleButtonClick = (i: number) => {
-    const time = TIMES[i];
+  const handleButtonClick = (time: Date) => {
     const hour = time.getHours();
     const minute = time.getMinutes();
 
@@ -96,20 +97,23 @@ const TimeInput = ({
           maxHeight={`${5 * BUTTON_HEIGHT}px`}
           overflowY="scroll"
         >
-          {availableTimes.map((time, i) => (
-            <Button
-              key={i}
-              buttonStyle="text"
-              aria-selected={i === timeIndex}
-              tabIndex={i === timeIndex ? 0 : -1}
-              bgColor={i === timeIndex ? colors.teal700 : 'white'}
-              textColor={i === timeIndex ? 'white' : colors.black}
-              bgHoverColor={i === timeIndex ? colors.teal700 : colors.teal100}
-              onClick={() => handleButtonClick(i)}
-            >
-              {format(time, 'p', { locale: getLocale(locale) })}
-            </Button>
-          ))}
+          {availableTimes.map((time, i) => {
+            const isSelected = time.getHours() === h && time.getMinutes() === m;
+            return (
+              <Button
+                key={i}
+                buttonStyle="text"
+                aria-selected={isSelected}
+                tabIndex={isSelected ? 0 : -1}
+                bgColor={isSelected ? colors.teal700 : 'white'}
+                textColor={isSelected ? 'white' : colors.black}
+                bgHoverColor={isSelected ? colors.teal700 : colors.teal100}
+                onClick={() => handleButtonClick(time)}
+              >
+                {format(time, 'p', { locale: getLocale(locale) })}
+              </Button>
+            );
+          })}
         </Box>
       }
     >

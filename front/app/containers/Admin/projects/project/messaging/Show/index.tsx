@@ -148,6 +148,9 @@ const Show = () => {
   };
 
   const timeZone = tenant?.data.attributes.settings.core.timezone;
+  const tenantTimeNow = timeZone
+    ? utcToZonedTime(new Date(), timeZone)
+    : new Date();
   const gmtOffset = timeZone
     ? formatInTimeZone(new Date(), timeZone, 'XXX')
     : '';
@@ -204,15 +207,14 @@ const Show = () => {
 
   const handleDateChange = (date: Date) => {
     setSelectedDate(date);
-    // If today is selected, update time to next hour
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const selected = new Date(date);
-    selected.setHours(0, 0, 0, 0);
+    // if the selected date is today, set the default time to the next hour in tenant timezone
+    const todayInTenantTz = new Date(tenantTimeNow);
+    todayInTenantTz.setHours(0, 0, 0, 0);
+    const selectedInTenantTz = new Date(date);
+    selectedInTenantTz.setHours(0, 0, 0, 0);
 
-    if (selected.getTime() === today.getTime()) {
-      const now = new Date();
-      const nextHour = now.getHours() + 1;
+    if (selectedInTenantTz.getTime() === todayInTenantTz.getTime()) {
+      const nextHour = tenantTimeNow.getHours() + 1;
       const newTime = new Date();
       newTime.setHours(nextHour, 0, 0, 0);
       setSelectedTime(newTime);
@@ -455,6 +457,7 @@ const Show = () => {
                   selectedTime={selectedTime}
                   onChange={handleTimeChange}
                   selectedDate={selectedDate}
+                  currentTimeInTz={tenantTimeNow}
                 />
                 <Text fontSize="l">GMT{gmtOffset}</Text>
               </Box>
