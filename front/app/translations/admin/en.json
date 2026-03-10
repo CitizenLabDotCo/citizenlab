@@ -1196,7 +1196,7 @@
   "app.containers.Admin.project.emails.scheduleSend": "Schedule send",
   "app.containers.Admin.project.emails.scheduleSendDescription2": "When should this email go out?",
   "app.containers.Admin.project.emails.scheduleSendTitle": "Schedule email",
-  "app.containers.Admin.project.emails.scheduleSendWarning": "Note: the schedule time can be up to 30 minutes later than the selected time due to processing time.",
+  "app.containers.Admin.project.emails.scheduleSendWarning2": "Note: The actual time can be 30 min later than the scheduled time.",
   "app.containers.Admin.project.emails.scheduled": "Scheduled",
   "app.containers.Admin.project.emails.send": "Send",
   "app.containers.Admin.project.emails.sendTestEmailButton": "Send a preview",
