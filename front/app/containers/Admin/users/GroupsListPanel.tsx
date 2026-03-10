@@ -229,7 +229,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
         </GroupName>
         {usersCount && (
           <MembersCount data-cy="e2e-moderator-count">
-            {usersCount.data.attributes.moderators_count}
+            {usersCount.data.attributes.folder_moderators_count}
           </MembersCount>
         )}
       </MenuLink>
@@ -239,7 +239,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
         </GroupName>
         {usersCount && (
           <MembersCount data-cy="e2e-moderator-count">
-            {usersCount.data.attributes.moderators_count}
+            {usersCount.data.attributes.project_moderators_count}
           </MembersCount>
         )}
       </MenuLink>
