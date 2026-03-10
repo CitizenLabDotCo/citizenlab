@@ -285,6 +285,7 @@ const VotingInputs = ({
           handleIdeasDisplayChange={handleIdeasDisplayChange}
           handleAvailableViewsChange={handleAvailableViewsChange}
           title={messages.defaultViewOptions}
+          hideFeed
         />
       </Box>
     </>

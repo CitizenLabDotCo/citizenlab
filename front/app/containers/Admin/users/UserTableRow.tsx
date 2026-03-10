@@ -364,6 +364,7 @@ const UserTableRow = ({
           close={() => setIsAssignedItemsOpened(false)}
           // Return focus to the More Actions button on close
           returnFocusRef={moreActionsButtonRef}
+          ariaLabelledBy="assigned-items-modal-title"
         >
           <UserAssignedItems user={userInRow} />
         </Modal>
@@ -372,6 +373,7 @@ const UserTableRow = ({
           close={() => setIsSetSetAsProjectModeratorOpened(false)}
           // Return focus to the More Actions button on close
           returnFocusRef={moreActionsButtonRef}
+          ariaLabelledBy="set-moderator-modal-title"
         >
           <SetSetAsProjectModerator
             user={userInRow}

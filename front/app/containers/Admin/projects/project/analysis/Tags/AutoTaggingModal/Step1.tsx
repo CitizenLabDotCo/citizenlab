@@ -90,7 +90,7 @@ const Step1 = ({
 
   return (
     <>
-      <Title mb="32px">
+      <Title id="auto-tagging-modal-title" mb="32px">
         <Icon name="stars" height="32px" width="32px" mr="4px" />
         {formatMessage(messages.autoTagTitle)}
       </Title>

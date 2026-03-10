@@ -1247,6 +1247,7 @@
   "app.containers.AreaTerms.areaTerm": "limistéar",
   "app.containers.AreaTerms.areasTerm": "ceantair",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Tá cuntas leis an seoladh ríomhphoist seo ann cheana féin. Is féidir leat síniú amach, logáil isteach leis an seoladh ríomhphoist seo agus do chuntas a fhíorú ar an leathanach socruithe.",
+  "app.containers.Authentication.authenticationDialog": "Fíordheimhniú",
   "app.containers.Authentication.signUpOrLogIn": "Cláraigh nó logáil isteach",
   "app.containers.Authentication.steps.AccessDenied.close": "Dún",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "Ní chomhlíonann tú na ceanglais chun páirt a ghlacadh sa phróiseas seo.",

@@ -158,6 +158,7 @@ const SharingModalContent = ({ postId, className, title, subtitle }: Props) => {
       >
         <Image width="80px" height="80px" src={rocket} alt="" />
         <Title
+          id="success-modal-title"
           variant="h2"
           textAlign="center"
           className={`e2e-idea-social-sharing-modal-title`}
