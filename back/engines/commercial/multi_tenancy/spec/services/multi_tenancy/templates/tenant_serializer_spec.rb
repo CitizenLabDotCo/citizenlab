@@ -39,6 +39,7 @@ describe MultiTenancy::Templates::TenantSerializer do
         expect(CustomMaps::MapConfig.count).to be 2
         expect(CustomMaps::Layer.count).to be 2
         expect(StaticPage.count).to be > 0
+        expect(Space.count).to be > 0
       end
     end
 
