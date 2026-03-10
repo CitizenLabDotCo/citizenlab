@@ -1567,8 +1567,7 @@ CREATE TABLE public.email_campaigns_campaigns (
     title_multiloc jsonb DEFAULT '{}'::jsonb,
     intro_multiloc jsonb DEFAULT '{}'::jsonb,
     button_text_multiloc jsonb DEFAULT '{}'::jsonb,
-    context_type character varying,
-    scheduled_at timestamp(6) without time zone
+    context_type character varying
 );
 
 
@@ -8451,7 +8450,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20260302100745'),
 ('20260302100636'),
 ('20260227120000'),
-('20260226110316'),
 ('20260223103753'),
 ('20260205124240'),
 ('20260127094257'),
