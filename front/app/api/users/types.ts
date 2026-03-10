@@ -142,4 +142,7 @@ export interface IQueryParameters {
   project_reviewer?: boolean;
   // Pass project id to filter users who participated in the project
   project?: string;
+
+  project_moderator_only?: boolean;
+  folder_moderator_only?: boolean;
 }
