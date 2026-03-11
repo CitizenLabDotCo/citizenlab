@@ -5,7 +5,7 @@ class MakeCustomFieldsOrderingConstraintDeferrable < ActiveRecord::Migration[7.2
     remove_index :custom_fields, name: :index_custom_fields_on_resource_id_and_ordering_unique
 
     safety_assured do
-      execute <<~SQL
+      execute <<~SQL.squish
         ALTER TABLE custom_fields
           ADD CONSTRAINT custom_fields_resource_id_ordering_unique
           UNIQUE (resource_id, ordering)
@@ -16,7 +16,7 @@ class MakeCustomFieldsOrderingConstraintDeferrable < ActiveRecord::Migration[7.2
 
   def down
     safety_assured do
-      execute <<~SQL
+      execute <<~SQL.squish
         ALTER TABLE custom_fields
           DROP CONSTRAINT custom_fields_resource_id_ordering_unique
       SQL

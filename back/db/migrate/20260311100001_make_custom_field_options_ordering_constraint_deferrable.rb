@@ -5,7 +5,7 @@ class MakeCustomFieldOptionsOrderingConstraintDeferrable < ActiveRecord::Migrati
     remove_index :custom_field_options, name: :index_custom_field_options_on_field_id_and_ordering_unique
 
     safety_assured do
-      execute <<~SQL
+      execute <<~SQL.squish
         ALTER TABLE custom_field_options
           ADD CONSTRAINT custom_field_options_field_id_ordering_unique
           UNIQUE (custom_field_id, ordering)
@@ -16,7 +16,7 @@ class MakeCustomFieldOptionsOrderingConstraintDeferrable < ActiveRecord::Migrati
 
   def down
     safety_assured do
-      execute <<~SQL
+      execute <<~SQL.squish
         ALTER TABLE custom_field_options
           DROP CONSTRAINT custom_field_options_field_id_ordering_unique
       SQL
