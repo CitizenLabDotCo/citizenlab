@@ -151,8 +151,14 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     moderated_directly_ids = roles.select { |role| role['type'] == 'project_moderator' }.pluck('project_id').compact
 
     # Include ids of projects in folders the user moderates
-    moderated_folders = ProjectFolders::Folder.where(id: moderated_project_folder_ids)
-    moderated_folder_project_ids = moderated_folders.flat_map { |folder| folder.projects.pluck(:id) }
+    moderated_folder_project_ids = AdminPublication
+      .joins(:parent)
+      .where(parents_admin_publications: { 
+        publication_type: 'ProjectFolders::Folder', 
+        publication_id: moderated_project_folder_ids 
+      })
+      .where(publication_type: 'Project')
+      .pluck(:publication_id)
 
     (moderated_directly_ids + moderated_folder_project_ids).uniq
   end
