@@ -10,7 +10,8 @@ export interface IUsersCount {
     attributes: {
       count: number;
       administrators_count: number;
-      moderators_count: number;
+      folder_moderators_count: number;
+      project_moderators_count: number;
     };
   };
 }
