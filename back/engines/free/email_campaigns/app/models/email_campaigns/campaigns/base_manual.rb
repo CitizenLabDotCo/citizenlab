@@ -53,7 +53,8 @@ module EmailCampaigns
 
     # Virtual getter: extract scheduled datetime from IceCube rtimes
     def scheduled_at
-      return nil if schedule.blank? || ic_schedule.rtimes.empty?
+      return nil if schedule.blank?
+      return nil if ic_schedule.rtimes.empty?
 
       ic_schedule.rtimes.first
     end
@@ -66,8 +67,12 @@ module EmailCampaigns
         ics.add_recurrence_time(time)
         self.ic_schedule = ics
       else
-        self.ic_schedule = self.class.default_schedule
+        self.schedule = nil
       end
+    end
+
+    def schedule_optional?
+      true
     end
 
     def mailer_class
@@ -97,11 +102,11 @@ module EmailCampaigns
       false
     end
 
-    def clear_scheduled_at_if_needed
+    def clear_scheduled_at
       return if scheduled_at.blank?
 
-      self.ic_schedule = self.class.default_schedule
-      save!(validate: false)
+      self.schedule = nil
+      save!
     end
 
     # Override Schedulable's filter to allow send_now (time is nil for manual triggers)

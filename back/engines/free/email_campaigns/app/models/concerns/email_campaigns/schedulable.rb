@@ -5,14 +5,15 @@ module EmailCampaigns
     extend ActiveSupport::Concern
 
     included do
-      validates :schedule, presence: true
+      validates :schedule, presence: true, unless: :schedule_optional?
 
       filter :filter_campaign_scheduled
-      before_validation :force_schedule_start_in_config_timezone
+      before_validation :force_schedule_start_in_config_timezone, if: -> { schedule.present? }
     end
 
     def filter_campaign_scheduled(time:, activity: nil)
       return unless time
+      return false if schedule.blank?
 
       time = AppConfiguration.timezone.at(time)
 
@@ -26,15 +27,13 @@ module EmailCampaigns
     end
 
     def ic_schedule
-      if schedule.blank?
-        self.class.default_schedule
-      else
-        IceCube::Schedule.from_hash(schedule)
-      end
+      return nil if schedule.blank?
+
+      IceCube::Schedule.from_hash(schedule)
     end
 
     def ic_schedule=(ics)
-      self.schedule = ics.to_hash
+      self.schedule = ics&.to_hash
     end
 
     # Ice cube assumes all rules are expressed in the same timezone as the
@@ -45,11 +44,17 @@ module EmailCampaigns
       self.ic_schedule = ics
     end
 
+    def schedule_optional?
+      false
+    end
+
     def recurring_schedule?
-      ic_schedule.rrules.any?
+      ic_schedule&.rrules&.any? || false
     end
 
     def schedule_multiloc_value
+      return unless schedule.present?
+
       rules = schedule.dig('rrules', 0)
       return unless rules
 

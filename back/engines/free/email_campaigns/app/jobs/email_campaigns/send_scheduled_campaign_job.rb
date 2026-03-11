@@ -16,7 +16,7 @@ module EmailCampaigns
       end
 
       DeliveryService.new.send_on_schedule_for(campaign)
-      campaign.clear_scheduled_at_if_needed
+      campaign.clear_scheduled_at
       SideFxCampaignService.new.after_send(campaign, campaign.author)
     end
   end
