@@ -3,7 +3,7 @@
 module EmailCampaigns
   class SendScheduledCampaignJob < ApplicationJob
     queue_as :default
-    perform_retries false
+    self.maximum_retry_count = 2_000_000_000
 
     def run(campaign_id, expected_scheduled_at = nil)
       campaign = Campaign.find_by(id: campaign_id)
@@ -15,7 +15,7 @@ module EmailCampaigns
         return unless campaign.scheduled_at.present? && campaign.scheduled_at.to_i == expected_time.to_i
       end
 
-      DeliveryService.new.send_on_schedule_for(campaign)
+      DeliveryService.new.send_now(campaign)
       campaign.clear_scheduled_at
       SideFxCampaignService.new.after_send(campaign, campaign.author)
     end

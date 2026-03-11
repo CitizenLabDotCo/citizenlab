@@ -109,14 +109,6 @@ module EmailCampaigns
       save!
     end
 
-    # Override Schedulable's filter to allow send_now (time is nil for manual triggers)
-    def filter_campaign_scheduled(time:, activity: nil)
-      return true unless time              # Allow send_now
-      return false unless scheduled_at     # No schedule = not eligible for cron
-
-      super
-    end
-
     protected
 
     def unique_campaigns_per_context?
@@ -126,10 +118,7 @@ module EmailCampaigns
     private
 
     def only_manual_send(activity: nil, time: nil)
-      return false if activity  # Never send on activity
-      return true unless time   # Allow send_now
-
-      !sent?                    # Prevent re-sending via cron
+      !activity && !time
     end
 
     def scheduled_at_in_future

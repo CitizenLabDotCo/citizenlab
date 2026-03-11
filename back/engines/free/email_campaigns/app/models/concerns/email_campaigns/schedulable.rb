@@ -12,7 +12,7 @@ module EmailCampaigns
     end
 
     def filter_campaign_scheduled(time:, activity: nil)
-      return unless time
+      return true unless time
       return false if schedule.blank?
 
       time = AppConfiguration.timezone.at(time)

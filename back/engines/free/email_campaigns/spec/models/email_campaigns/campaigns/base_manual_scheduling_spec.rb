@@ -21,52 +21,20 @@ RSpec.describe EmailCampaigns::Campaigns::BaseManual do
       end
     end
 
-    context 'with scheduled_at in the past' do
-      let(:campaign) do
-        c = create(:manual_campaign)
-        c.scheduled_at = 1.hour.ago
-        c.save!(validate: false)
-        c
-      end
+    context 'with scheduled_at set' do
+      let(:campaign) { create(:manual_campaign, scheduled_at: 2.hours.from_now) }
 
       it 'allows send_now' do
         expect(campaign.run_filter_hooks).to be true
       end
 
-      it 'allows schedule-triggered send when time >= scheduled_at' do
-        expect(campaign.run_filter_hooks(time: Time.zone.now)).to be true
+      it 'rejects cron-triggered sends (time present)' do
+        expect(campaign.run_filter_hooks(time: Time.zone.now)).to be false
       end
 
       it 'rejects activity-triggered sends' do
         activity = instance_double(Activity)
         expect(campaign.run_filter_hooks(activity: activity)).to be false
-      end
-    end
-
-    context 'with scheduled_at in the future' do
-      let(:campaign) { create(:manual_campaign, scheduled_at: 2.hours.from_now) }
-
-      it 'rejects schedule-triggered send when time < scheduled_at' do
-        expect(campaign.run_filter_hooks(time: Time.zone.now)).to be false
-      end
-
-      it 'allows schedule-triggered send when time >= scheduled_at' do
-        expect(campaign.run_filter_hooks(time: 3.hours.from_now)).to be true
-      end
-    end
-
-    context 'when already sent' do
-      let(:campaign) do
-        c = create(:manual_campaign)
-        c.scheduled_at = 1.hour.ago
-        c.save!(validate: false)
-        c
-      end
-
-      before { create(:delivery, campaign: campaign) }
-
-      it 'rejects schedule-triggered send' do
-        expect(campaign.run_filter_hooks(time: Time.zone.now)).to be false
       end
     end
   end
