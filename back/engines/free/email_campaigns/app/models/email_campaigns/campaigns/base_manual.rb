@@ -47,10 +47,6 @@ module EmailCampaigns
 
     validate :scheduled_at_in_future, if: -> { scheduled_at.present? && schedule_changed? }
 
-    def self.default_schedule
-      IceCube::Schedule.new(Time.current)
-    end
-
     # Virtual getter: extract scheduled datetime from IceCube rtimes
     def scheduled_at
       return nil if schedule.blank?

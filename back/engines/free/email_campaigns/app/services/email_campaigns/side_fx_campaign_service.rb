@@ -25,7 +25,7 @@ module EmailCampaigns
       if campaign.manual? && campaign.saved_change_to_schedule?
         scheduled_at = campaign.scheduled_at
         if scheduled_at.present? && scheduled_at > Time.zone.now
-          SendScheduledCampaignJob.set(wait_until: scheduled_at).perform_later(campaign.id, scheduled_at.iso8601)
+          SendScheduledCampaignJob.set(wait_until: scheduled_at).perform_later(campaign.id, scheduled_at)
         end
       end
     end

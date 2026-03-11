@@ -5,8 +5,8 @@ module EmailCampaigns
     queue_as :default
     self.maximum_retry_count = 2_000_000_000
 
-    def run(campaign_id, expected_scheduled_at = nil)
-      campaign = Campaign.find_by(id: campaign_id)
+    def run(campaign_id, expected_scheduled_at)
+      campaign = Campaign.find(campaign_id)
       return unless campaign
 
       # Skip stale jobs from reschedules
