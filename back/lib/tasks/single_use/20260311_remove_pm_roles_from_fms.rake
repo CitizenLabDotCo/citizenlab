@@ -113,29 +113,27 @@ namespace :single_use do
 
           if new_roles == old_roles
             puts "......... No new PM roles needed to be added to folder moderator: #{fm.id}."
-          else
-            if execute
-              user_before = fm.attributes
-              fm.roles = new_roles
-              if fm.save
-                puts "......... PM roles added for folder moderator #{fm.id}: for projects; #{new_pm_roles.map { |r| r['project_id'] }.join(', ')}"
+          elsif execute
+            user_before = fm.attributes
+            fm.roles = new_roles
+            if fm.save
+              puts "......... PM roles added for folder moderator #{fm.id}: for projects; #{new_pm_roles.map { |r| r['project_id'] }.join(', ')}"
 
-                reporter.add_change(
-                  { user: user_before },
-                  { user: fm.attributes },
-                  context: { tenant: Tenant.current.host, user: fm.id }
-                )
-              else
-                puts "......... ERROR! Failed to save folder moderator #{fm.id} after adding PM roles: #{fm.errors.full_messages.join(', ')}"
-
-                reporter.add_error(
-                  fm.errors.details,
-                  context: { tenant: Tenant.current.host, user: fm.id }
-                )
-              end
+              reporter.add_change(
+                { user: user_before },
+                { user: fm.attributes },
+                context: { tenant: Tenant.current.host, user: fm.id }
+              )
             else
-              puts "......... Would add PM roles for folder moderator #{fm.id}: for projects; #{new_pm_roles.map { |r| r['project_id'] }.join(', ')}"
+              puts "......... ERROR! Failed to save folder moderator #{fm.id} after adding PM roles: #{fm.errors.full_messages.join(', ')}"
+
+              reporter.add_error(
+                fm.errors.details,
+                context: { tenant: Tenant.current.host, user: fm.id }
+              )
             end
+          else
+            puts "......... Would add PM roles for folder moderator #{fm.id}: for projects; #{new_pm_roles.map { |r| r['project_id'] }.join(', ')}"
           end
         end
       end
