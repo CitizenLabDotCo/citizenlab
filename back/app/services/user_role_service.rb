@@ -59,8 +59,6 @@ class UserRoleService
     return scope.none unless user
     return scope.all if user.admin?
 
-    moderatable_projects = scope.none
-
     if user.project_moderator? || user.project_folder_moderator?
       scope.where(id: user.moderatable_project_ids)
     else
