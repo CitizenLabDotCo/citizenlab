@@ -102,7 +102,6 @@ class Project < ApplicationRecord
 
   attr_accessor :folder_changed, :folder_was
 
-  # after_save :reassign_moderators, if: :folder_changed?
   after_commit :clear_folder_changes, if: :folder_changed?
 
   INTERNAL_ROLES = %w[open_idea_box community_monitor].freeze
@@ -343,41 +342,6 @@ class Project < ApplicationRecord
       moderator.delete_role 'project_moderator', project_id: id
       moderator.save!
     end
-  end
-
-  def reassign_moderators
-    add_new_folder_moderators
-    remove_old_folder_moderators
-  end
-
-  def add_new_folder_moderators
-    new_folder_moderators.each do |moderator|
-      next if moderator.moderatable_project_ids.include?(id)
-
-      moderator.add_role('project_moderator', project_id: id)
-      moderator.save
-    end
-  end
-
-  def remove_old_folder_moderators
-    old_folder_moderators.each do |moderator|
-      next unless moderator.moderatable_project_ids.include?(id)
-
-      moderator.delete_role('project_moderator', project_id: id)
-      moderator.save
-    end
-  end
-
-  def new_folder_moderators
-    return ::User.none unless folder&.id
-
-    ::User.project_folder_moderator(folder&.id)
-  end
-
-  def old_folder_moderators
-    return ::User.none unless folder_was.is_a?(ProjectFolders::Folder)
-
-    ::User.project_folder_moderator(folder_was.id)
   end
 end
 

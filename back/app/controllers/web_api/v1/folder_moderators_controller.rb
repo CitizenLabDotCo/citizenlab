@@ -28,7 +28,6 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
   def create
     @user = User.find(create_moderator_params[:user_id])
     @folder = ProjectFolders::Folder.find(params[:project_folder_id])
-    # SideFxFolderModeratorService.new.before_create(@user, @folder, current_user)
     @user.add_role 'project_folder_moderator', project_folder_id: params[:project_folder_id]
     if @user.save
       serialized_data = ::WebApi::V1::UserSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash
