@@ -153,9 +153,9 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     # Include ids of projects in folders the user moderates
     moderated_folder_project_ids = AdminPublication
       .joins(:parent)
-      .where(parents_admin_publications: { 
-        publication_type: 'ProjectFolders::Folder', 
-        publication_id: moderated_project_folder_ids 
+      .where(parents_admin_publications: {
+        publication_type: 'ProjectFolders::Folder',
+        publication_id: moderated_project_folder_ids
       })
       .where(publication_type: 'Project')
       .pluck(:publication_id)
