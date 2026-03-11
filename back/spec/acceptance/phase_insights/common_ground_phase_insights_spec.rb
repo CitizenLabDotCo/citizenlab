@@ -4,7 +4,6 @@ require 'rspec_api_documentation/dsl'
 resource 'Phase insights' do
   before do
     admin_header_token
-
     # This reference time means we can expect exact dates in the chart data
     AppConfiguration.instance.update!(platform_start_at: '2025-09-01')
     travel_to(Time.zone.parse('2025-12-02 12:00:00'))
