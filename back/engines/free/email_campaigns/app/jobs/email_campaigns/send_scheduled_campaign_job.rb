@@ -15,8 +15,10 @@ module EmailCampaigns
         return unless campaign.scheduled_at.present? && campaign.scheduled_at.to_i == expected_time.to_i
       end
 
-      DeliveryService.new.send_now(campaign)
-      campaign.clear_scheduled_at
+      campaign.with_lock do
+        campaign.clear_scheduled_at
+        DeliveryService.new.send_now(campaign)
+      end
       SideFxCampaignService.new.after_send(campaign, campaign.author)
     end
   end
