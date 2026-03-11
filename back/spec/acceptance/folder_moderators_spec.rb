@@ -156,7 +156,7 @@ resource 'Moderators' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq user_id
         expect(user.reload.roles).to eq([{ 'type' => 'project_folder_moderator', 'project_folder_id' => project_folder.id }])
-        expect(user.reload.moderatable_project_ids).to match_array(*child_projects.map(&:id))
+        expect(user.reload.moderatable_project_ids).to match_array(child_projects.map(&:id))
       end
     end
 
@@ -191,7 +191,7 @@ resource 'Moderators' do
           expect(@user.reload.roles).to include({ 'type' => 'project_moderator', 'project_id' => @child_projects.first.id })
           expect(@user.reload.roles).to include({ 'type' => 'project_moderator', 'project_id' => @child_projects.second.id })
           expect(@user.reload.roles).to include({ 'type' => 'project_moderator', 'project_id' => @child_projects.third.id })
-          expect(@user.reload.moderatable_project_ids).to match_array(*@child_projects.map(&:id))
+          expect(@user.reload.moderatable_project_ids).to match_array(@child_projects.map(&:id))
         end
       end
     end
