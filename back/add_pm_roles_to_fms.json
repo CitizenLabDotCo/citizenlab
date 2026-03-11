@@ -1,0 +1,120 @@
+{
+  "processed_tenants": [],
+  "creates": [],
+  "changes": [
+    {
+      "old_value": {
+        "user": {
+          "id": "e31db1ad-c44d-4ff2-af52-e28828be6b21",
+          "email": "elias1@ullrich.example",
+          "password_digest": "$2a$04$XrnF2iFHnbpauXe7DFGgZ.Dq6DqL0iCALEQHfD1LndrV6aZBPtJk.",
+          "slug": "antony-altenwerth",
+          "roles": [
+            {
+              "type": "project_folder_moderator",
+              "project_folder_id": "995e552e-e161-4e1e-9825-9693cff105b7"
+            },
+            {
+              "type": "project_moderator",
+              "project_id": "eb4d375d-3f85-40ed-b49c-6b2fd8a57f2a"
+            },
+            {
+              "type": "project_moderator",
+              "project_id": "42f1bd65-bf47-4a3b-b37c-aeb0172bd5ca"
+            }
+          ],
+          "reset_password_token": null,
+          "created_at": "2026-03-11 16:22:34 UTC",
+          "updated_at": "2026-03-11 16:22:34 UTC",
+          "avatar": "00ae0d62-af7b-4a57-a86d-d37b3fab8437.jpg",
+          "first_name": "Antony",
+          "last_name": "Altenwerth",
+          "locale": "en",
+          "bio_multiloc": {},
+          "invite_status": "accepted",
+          "custom_field_values": {},
+          "registration_completed_at": "2026-03-11 16:22:34 UTC",
+          "verified": false,
+          "email_confirmed_at": "2026-03-11 16:22:34 UTC",
+          "email_confirmation_code": null,
+          "email_confirmation_retry_count": 0,
+          "email_confirmation_code_reset_count": 0,
+          "email_confirmation_code_sent_at": null,
+          "confirmation_required": false,
+          "block_start_at": null,
+          "block_reason": null,
+          "block_end_at": null,
+          "new_email": null,
+          "followings_count": 0,
+          "onboarding": {},
+          "unique_code": null,
+          "last_active_at": null,
+          "imported": false
+        }
+      },
+      "new_value": {
+        "user": {
+          "roles": [
+            {
+              "type": "project_folder_moderator",
+              "project_folder_id": "995e552e-e161-4e1e-9825-9693cff105b7"
+            },
+            {
+              "type": "project_moderator",
+              "project_id": "eb4d375d-3f85-40ed-b49c-6b2fd8a57f2a"
+            },
+            {
+              "type": "project_moderator",
+              "project_id": "42f1bd65-bf47-4a3b-b37c-aeb0172bd5ca"
+            },
+            {
+              "type": "project_moderator",
+              "project_id": "e8ed0345-4ba8-4f4c-93e7-281ea14ce1dd"
+            },
+            {
+              "type": "project_moderator",
+              "project_id": "98572dec-3683-49b9-93ac-51d1e300ddd4"
+            }
+          ],
+          "id": "e31db1ad-c44d-4ff2-af52-e28828be6b21",
+          "email": "elias1@ullrich.example",
+          "password_digest": "$2a$04$XrnF2iFHnbpauXe7DFGgZ.Dq6DqL0iCALEQHfD1LndrV6aZBPtJk.",
+          "slug": "antony-altenwerth",
+          "reset_password_token": null,
+          "created_at": "2026-03-11 16:22:34 UTC",
+          "updated_at": "2026-03-11 16:22:34 UTC",
+          "avatar": "00ae0d62-af7b-4a57-a86d-d37b3fab8437.jpg",
+          "first_name": "Antony",
+          "last_name": "Altenwerth",
+          "locale": "en",
+          "bio_multiloc": {},
+          "invite_status": "accepted",
+          "custom_field_values": {},
+          "registration_completed_at": "2026-03-11 16:22:34 UTC",
+          "verified": false,
+          "email_confirmed_at": "2026-03-11 16:22:34 UTC",
+          "email_confirmation_code": null,
+          "email_confirmation_retry_count": 0,
+          "email_confirmation_code_reset_count": 0,
+          "email_confirmation_code_sent_at": null,
+          "confirmation_required": false,
+          "block_start_at": null,
+          "block_reason": null,
+          "block_end_at": null,
+          "new_email": null,
+          "followings_count": 0,
+          "onboarding": {},
+          "unique_code": null,
+          "last_active_at": null,
+          "imported": false
+        }
+      },
+      "context": {
+        "tenant": "example.org",
+        "user": "e31db1ad-c44d-4ff2-af52-e28828be6b21"
+      }
+    }
+  ],
+  "deletes": [],
+  "errors": []
+}

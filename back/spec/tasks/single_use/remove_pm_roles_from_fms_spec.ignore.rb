@@ -12,24 +12,24 @@ describe 'single_use:remove_pm_roles_from_fms rake task' do
     Rake::Task['single_use:remove_pm_roles_from_fms'].reenable
   end
 
-  let(:folderA) { create(:project_folder) }
-  let!(:projectA1) { create(:project, folder: folderA) }
-  let!(:projectA2) { create(:project, folder: folderA) }
+  let(:folder_a) { create(:project_folder) }
+  let!(:project_a1) { create(:project, folder: folder_a) }
+  let!(:project_a2) { create(:project, folder: folder_a) }
 
-  let(:folderB) { create(:project_folder) }
-  let!(:projectB1) { create(:project, folder: folderB) }
+  let(:folder_b) { create(:project_folder) }
+  let!(:project_b1) { create(:project, folder: folder_b) }
 
-  let!(:projectC) { create(:project) }
+  let!(:project_c) { create(:project) }
 
   let(:user) do
     create(
       :user,
       roles: [
-        { type: 'project_folder_moderator', project_folder_id: folderA.id },
-        { type: 'project_moderator', project_id: projectA1.id },
-        { type: 'project_moderator', project_id: projectA2.id },
-        { type: 'project_moderator', project_id: projectB1.id },
-        { type: 'project_moderator', project_id: projectC.id }
+        { type: 'project_folder_moderator', project_folder_id: folder_a.id },
+        { type: 'project_moderator', project_id: project_a1.id },
+        { type: 'project_moderator', project_id: project_a2.id },
+        { type: 'project_moderator', project_id: project_b1.id },
+        { type: 'project_moderator', project_id: project_c.id }
       ]
     )
   end
@@ -42,13 +42,14 @@ describe 'single_use:remove_pm_roles_from_fms rake task' do
     expect(user.reload.roles.count).to eq(3)
 
     # The project moderator roles for the projects in the moderated folder should be removed
-    expect(user.roles).not_to include({ 'type' => 'project_moderator', 'project_id' => projectA1.id })
-    expect(user.roles).not_to include({ 'type' => 'project_moderator', 'project_id' => projectA2.id })
+    expect(user.roles).not_to include({ 'type' => 'project_moderator', 'project_id' => project_a1.id })
+    expect(user.roles).not_to include({ 'type' => 'project_moderator', 'project_id' => project_a2.id })
 
     # The project moderator roles for the projects not in the moderated folder should remain,
     # including the moderated project in a folder the user does not moderate.
-    expect(user.roles).to include({ 'type' => 'project_folder_moderator', 'project_folder_id' => folderA.id })
-    expect(user.roles).to include({ 'type' => 'project_moderator', 'project_id' => projectB1.id })
-    expect(user.roles).to include({ 'type' => 'project_moderator', 'project_id' => projectC.id })
+    expect(user.roles).to include({ 'type' => 'project_folder_moderator', 'project_folder_id' => folder_a.id })
+    expect(user.roles).to include({ 'type' => 'project_moderator', 'project_id' => project_b1.id })
+    expect(user.roles).to include({ 'type' => 'project_moderator', 'project_id' => project_c.id })
   end
 end
+# rubocop:enable RSpec/DescribeClass
