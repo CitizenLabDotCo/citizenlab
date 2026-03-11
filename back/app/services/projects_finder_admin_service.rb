@@ -90,13 +90,16 @@ class ProjectsFinderAdminService
       .group(:project_id)
       .select('project_id, min(start_at) AS min_start_at')
 
-    # We order by soon_date, but tie-break with created_at and id for a stable sort,
-    # which is important for pagination
-    scope
+    projects_subquery = scope
       .with(phases_ending_soon:, phases_starting_soon:)
       .joins('LEFT JOIN phases_ending_soon ON phases_ending_soon.project_id = projects.id')
       .joins('LEFT JOIN phases_starting_soon ON phases_starting_soon.project_id = projects.id')
       .select('projects.*, least(phases_ending_soon.min_end_at, phases_starting_soon.min_start_at) AS soon_date')
+
+    # We order by soon_date, but tie-break with created_at and id for a stable sort,
+    # which is important for pagination
+    Project
+      .from(projects_subquery, :projects)
       .order('soon_date ASC NULLS LAST, projects.created_at ASC, projects.id ASC')
   end
 
