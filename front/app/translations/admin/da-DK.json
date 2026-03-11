@@ -1200,7 +1200,7 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL2": "{tenantName, select,  {https://matomo.org/} other {https://support.govocal.com/da/articles/527652-hvad-er-de-anbefalede-dimensioner-og-storrelser-af-platformsbilleder}}",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "besøg vores supportcenter",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Slet mellemrum",
-  "app.containers.Admin.projects.all.Spaces.Table.space": "Rummet",
+  "app.containers.Admin.projects.all.Spaces.Table.space": "Mellemrum",
   "app.containers.Admin.projects.all.Spaces.Table.spaceManagers": "Rumansvarlige",
   "app.containers.Admin.projects.all.Spaces.deleteSpaceModalTitle": "Slet denne plads permanent?",
   "app.containers.Admin.projects.all.Spaces.deleteSpaceModalWarning": "Dette vil slette dette rum permanent. De projekter og mapper, der ligger i det, slettes ikke, men flyttes ud af rummet.",
