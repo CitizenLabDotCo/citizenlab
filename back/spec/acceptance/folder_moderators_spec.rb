@@ -168,8 +168,8 @@ resource 'Moderators' do
           @project_folder = create(:project_folder)
           other_moderators = create_list(:project_folder_moderator, 2, project_folders: [@project_folder])
           @user = other_moderators.first
-          child_projects = create_list(:project, 3)
-          child_projects.each do |project|
+          @child_projects = create_list(:project, 3)
+          @child_projects.each do |project|
             project.update! folder: @project_folder
             @user.add_role('project_moderator', project_id: project.id)
           end
@@ -181,13 +181,13 @@ resource 'Moderators' do
 
         example 'Delete the moderator role of a user for a project_folder' do
           expect(@user.reload.roles).to include({ 'type' => 'project_folder_moderator', 'project_folder_id' => @project_folder.id })
-          
+
           do_request
 
           expect(response_status).to eq 200
-          expect(@user.reload.roles).to_not include({ 'type' => 'project_folder_moderator', 'project_folder_id' => @project_folder.id })
+          expect(@user.reload.roles).not_to include({ 'type' => 'project_folder_moderator', 'project_folder_id' => @project_folder.id })
           # We expect the existing project moderator roles for projects in the folder to remain:
-          expect(@user.reload.moderatable_project_ids).to contain_exactly(*Project.where(folder: @project_folder).pluck(:id))
+          expect(@user.reload.moderatable_project_ids).to contain_exactly(*@child_projects.map(&:id))
         end
       end
     end
