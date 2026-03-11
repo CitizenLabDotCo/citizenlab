@@ -85,7 +85,8 @@ const EmailForm = ({ onSubmit }: Props) => {
             width="auto"
             disabled={loading || !methods.formState.isValid}
             processing={loading}
-            icon="plus-circle"
+            icon="email"
+            buttonStyle="admin-dark"
             ml="20px"
           >
             {formatMessage(messages.invite)}
