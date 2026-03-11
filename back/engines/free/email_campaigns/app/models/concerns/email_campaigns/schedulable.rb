@@ -8,11 +8,12 @@ module EmailCampaigns
       validates :schedule, presence: true, unless: :schedule_optional?
 
       filter :filter_campaign_scheduled
+      before_validation :set_default_schedule, if: -> { schedule.blank? && !schedule_optional? }
       before_validation :force_schedule_start_in_config_timezone, if: -> { schedule.present? }
     end
 
     def filter_campaign_scheduled(time:, activity: nil)
-      return true unless time
+      return unless time
       return false if schedule.blank?
 
       time = AppConfiguration.timezone.at(time)
@@ -48,12 +49,16 @@ module EmailCampaigns
       false
     end
 
+    def set_default_schedule
+      self.ic_schedule = self.class.default_schedule
+    end
+
     def recurring_schedule?
       ic_schedule&.rrules&.any? || false
     end
 
     def schedule_multiloc_value
-      return unless schedule.present?
+      return if schedule.blank?
 
       rules = schedule.dig('rrules', 0)
       return unless rules

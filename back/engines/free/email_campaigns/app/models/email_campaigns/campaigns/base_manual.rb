@@ -105,6 +105,12 @@ module EmailCampaigns
       save!
     end
 
+    # Manual campaigns bypass the schedule filter — sending is controlled
+    # by only_manual_send and the SendScheduledCampaignJob.
+    def filter_campaign_scheduled(time:, activity: nil)
+      true
+    end
+
     protected
 
     def unique_campaigns_per_context?

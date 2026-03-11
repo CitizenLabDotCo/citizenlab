@@ -94,27 +94,7 @@ describe EmailCampaigns::DeliveryService do
       end
       let!(:users) { create_list(:user, 3) }
 
-      it 'sends a manual campaign when scheduled_at has passed' do
-        expect { service.send_on_schedule(Time.zone.now) }
-          .to have_enqueued_job(ActionMailer::MailDeliveryJob)
-          .at_least(1).times
-      end
-
-      it 'does not send a manual campaign when scheduled_at is in the future' do
-        campaign.scheduled_at = 2.hours.from_now
-        campaign.save!
-        expect { service.send_on_schedule(Time.zone.now) }
-          .not_to have_enqueued_job(ActionMailer::MailDeliveryJob)
-      end
-
-      it 'does not send a manual campaign without scheduled_at' do
-        campaign.update!(scheduled_at: nil)
-        expect { service.send_on_schedule(Time.zone.now) }
-          .not_to have_enqueued_job(ActionMailer::MailDeliveryJob)
-      end
-
-      it 'does not re-send an already sent scheduled campaign' do
-        create(:delivery, campaign: campaign)
+      it 'does not send manual campaigns via cron (handled by SendScheduledCampaignJob)' do
         expect { service.send_on_schedule(Time.zone.now) }
           .not_to have_enqueued_job(ActionMailer::MailDeliveryJob)
       end
