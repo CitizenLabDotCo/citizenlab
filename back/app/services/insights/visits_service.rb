@@ -31,7 +31,7 @@ date_trunc('#{resolution}', impact_tracking_pageviews.created_at) as date_group"
         {
           visits: row.visits,
           visitors: row.visitors,
-          date_group: row.date_group.to_date
+          date_group: resolution == 'hour' ? row.date_group.to_datetime : row.date_group.to_date
         }
       end
     end
