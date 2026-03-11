@@ -1,15 +1,16 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { Outlet as RouterOutlet, useParams } from 'react-router-dom';
-import styled from 'styled-components';
-import { ITab } from 'typings';
 
 import useAuthUser from 'api/me/useAuthUser';
 import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 
 import useLocalize from 'hooks/useLocalize';
 
-import TabbedResource from 'components/admin/TabbedResource';
+import TabbedResource, {
+  Props as TabbedResourceProps,
+} from 'components/admin/TabbedResource';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import GoBackButton from 'components/UI/GoBackButton';
 
@@ -19,37 +20,20 @@ import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
 
-const TopContainer = styled.div`
-  width: 100%;
-  margin-top: -5px;
-  margin-bottom: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: relative;
-`;
-
-type TabbedPropsType = {
-  resource: {
-    title: string;
-  };
-  tabs: ITab[];
-};
-
 const AdminProjectFolderEdition = () => {
-  const { projectFolderId } = useParams() as { projectFolderId: string };
+  const { projectFolderId } = useParams();
   const { data: projectFolder } = useProjectFolderById(projectFolderId);
   const { data: authUser } = useAuthUser();
   const localize = useLocalize();
   const { formatMessage } = useIntl();
 
-  if (!authUser || !projectFolder) return null;
+  if (!authUser || !projectFolder || !projectFolderId) return null;
 
   const goBack = () => {
     clHistory.push('/admin/projects');
   };
 
-  let tabbedProps: TabbedPropsType = {
+  let tabbedProps: Omit<TabbedResourceProps, 'children'> = {
     resource: {
       title: localize(projectFolder.data.attributes.title_multiloc),
     },
@@ -80,7 +64,7 @@ const AdminProjectFolderEdition = () => {
 
   return (
     <>
-      <TopContainer>
+      <Box display="flex" justifyContent="space-between" alignItems="center">
         <GoBackButton onClick={goBack} />
         <ButtonWithLink
           buttonStyle="admin-dark"
@@ -90,7 +74,7 @@ const AdminProjectFolderEdition = () => {
         >
           <FormattedMessage {...messages.viewPublicProjectFolder} />
         </ButtonWithLink>
-      </TopContainer>
+      </Box>
       <TabbedResource {...tabbedProps}>
         <RouterOutlet />
       </TabbedResource>

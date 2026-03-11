@@ -73,8 +73,8 @@ resource 'BulkImportIdeasImportIdeas' do
             expect(BulkImportIdeas::IdeaImport.all.count).to eq 0
             expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 2
             # If we used the normal test adapter instead of :active_job_que_adapter, we could test it like this
-            # expect(BulkImportIdeas::IdeaImportJob).to have_been_enqueued
-            expect(QueJob.by_args({ job_class: 'BulkImportIdeas::IdeaImportJob' }).count).to eq 1
+            # expect(BulkImportIdeas::IdeaXlsxImportJob).to have_been_enqueued
+            expect(QueJob.by_args({ job_class: 'BulkImportIdeas::IdeaXlsxImportJob' }).count).to eq 1
           end
         end
 
@@ -101,8 +101,8 @@ resource 'BulkImportIdeasImportIdeas' do
             expect(BulkImportIdeas::IdeaImport.all.count).to eq 0
             expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 2
             # If we used the normal test adapter instead of :active_job_que_adapter, we could test it like this
-            # expect(BulkImportIdeas::IdeaImportJob).to have_been_enqueued
-            expect(QueJob.by_args({ job_class: 'BulkImportIdeas::IdeaImportJob' }).count).to eq 1
+            # expect(BulkImportIdeas::IdeaPdfImportJob).to have_been_enqueued
+            expect(QueJob.by_args({ job_class: 'BulkImportIdeas::IdeaPdfImportJob' }).count).to eq 1
           end
         end
       end
