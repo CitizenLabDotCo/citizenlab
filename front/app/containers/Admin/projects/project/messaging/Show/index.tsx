@@ -74,6 +74,7 @@ const Buttons = styled.div`
   & > * {
     padding: 0 10px;
   }
+  align-items: center;
 `;
 
 const StyledForm = styled(Form)`
@@ -284,7 +285,7 @@ const Show = () => {
                     backgroundColor={colors.teal500}
                     text={<FormattedMessage {...messages.scheduled} />}
                   />
-                  <Text fontSize="base">
+                  <Text fontSize="base" whiteSpace="nowrap">
                     {moment(campaign.data.attributes.scheduled_at)
                       .tz(timeZone)
                       .format('MMM DD, YYYY hh:mm A')}
@@ -307,6 +308,7 @@ const Show = () => {
                   display="flex"
                   gap="0.3px"
                   alignItems="center"
+                  maxHeight="90px"
                 >
                   <Button
                     buttonStyle="admin-dark"
@@ -318,7 +320,6 @@ const Show = () => {
                     borderRadius={
                       isEmailSchedulingAllowed ? '3px 0px 0px 3px' : '3px'
                     }
-                    height="75%"
                   >
                     <FormattedMessage {...messages.send} />
                   </Button>
@@ -330,7 +331,7 @@ const Show = () => {
                       disabled={isLoading}
                       borderRadius="0px 3px 3px 0px"
                       padding="0px 8px"
-                      height="75%"
+                      height="45px"
                     />
                   )}
                   <Dropdown
