@@ -102,8 +102,9 @@ export const getTabs = (
         ? undefined
         : formatMessage(messages.lockedTooltip),
     },
-    // Show Insights tab when phase_insights is enabled (for all methods except information)
+    // Show Insights tab when phase_insights is enabled (for all methods except information and external surveys)
     phase.attributes.participation_method !== 'information' &&
+      phase.attributes.participation_method !== 'survey' &&
       phase_insights_enabled && {
         label: formatMessage(messages.insightsTab),
         url: 'insights',

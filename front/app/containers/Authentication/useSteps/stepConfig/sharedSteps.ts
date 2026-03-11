@@ -5,7 +5,7 @@ import getUserDataFromToken from 'api/authentication/getUserDataFromToken';
 import { triggerSuccessAction } from 'containers/Authentication/SuccessActions';
 
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
-import { clearClaimTokens } from 'utils/claimToken';
+import { clearClaimToken, getClaimTokens } from 'utils/claimToken';
 
 import {
   GetRequirements,
@@ -57,7 +57,7 @@ export const sharedSteps = (
 
       // When the user returns from SSO
       RESUME_FLOW_AFTER_SSO: async (flow: 'signup' | 'signin') => {
-        clearClaimTokens();
+        clearClaimToken();
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
@@ -91,6 +91,7 @@ export const sharedSteps = (
           token: null,
           prefilledBuiltInFields: null,
           ssoProvider: null,
+          claimTokens: null,
         });
 
         const { requirements, disabled_reason } = await getRequirements();
@@ -172,6 +173,9 @@ export const sharedSteps = (
       },
 
       TRIGGER_POST_PARTICIPATION_FLOW: async () => {
+        const claimTokens = getClaimTokens();
+        updateState({ claimTokens });
+
         setCurrentStep('post-participation:email');
       },
     },

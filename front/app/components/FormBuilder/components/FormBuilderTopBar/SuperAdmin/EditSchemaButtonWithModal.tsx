@@ -144,9 +144,14 @@ const EditSchemaButtonWithModal = ({
       >
         <FormattedMessage {...messages.schemaEdit} />
       </Button>
-      <Modal opened={showModal} close={() => setShowModal(false)} width="800px">
+      <Modal
+        opened={showModal}
+        close={() => setShowModal(false)}
+        width="800px"
+        ariaLabelledBy="edit-schema-modal-title"
+      >
         <Box p="24px">
-          <Title variant="h3" mb="16px">
+          <Title id="edit-schema-modal-title" variant="h3" mb="16px">
             <FormattedMessage {...messages.schemaEdit} />
           </Title>
 

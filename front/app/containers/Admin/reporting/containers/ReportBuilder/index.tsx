@@ -38,6 +38,7 @@ import { A4_WIDTH } from '../../constants';
 import { ReportContextProvider } from '../../context/ReportContext';
 import messages from '../../messages';
 import areCraftjsObjectsEqual from '../../utils/areCraftjsObjectsEqual';
+import { ReportWordExportProvider } from '../../word/ReportWordExportContext';
 
 import { getTemplateConfig, TemplateConfig } from './utils';
 
@@ -93,71 +94,78 @@ const ReportBuilder = ({ report, reportLayout, templateConfig }: Props) => {
   }, []);
 
   return (
-    <ReportContextProvider width={view} reportId={reportId} phaseId={phaseId}>
+    <ReportContextProvider
+      width={view}
+      reportId={reportId}
+      phaseId={phaseId}
+      contentBuilderLocale={selectedLocale}
+    >
       <FullscreenContentBuilder onUploadImage={setImageUploading}>
         <Editor
           isPreview={false}
           // onNodesChange is called twice on initial load.
           onNodesChange={handleNodesChange}
         >
-          <TopBar
-            hasPendingState={imageUploading}
-            selectedLocale={selectedLocale}
-            reportId={reportId}
-            isTemplate={!!templateConfig}
-            saved={saved}
-            view={view}
-            setView={setView}
-            setSaved={handleSetSaved}
-            setSelectedLocale={setSelectedLocale}
-          />
-          <Box mt={`${stylingConsts.menuHeight}px`}>
-            <Toolbox selectedLocale={selectedLocale} />
-            <LanguageProvider
-              contentBuilderLocale={selectedLocale}
-              platformLocale={platformLocale}
-            >
-              <StyledRightColumn>
-                {!!phaseId && (
-                  <Box maxWidth={A4_WIDTH} mb="20px">
-                    <Warning>
-                      <FormattedMessage {...messages.warningBanner} />
-                    </Warning>
-                  </Box>
-                )}
-                <ViewContainer view={view}>
-                  <Frame editorData={initialData}>
-                    {emptyReportOnInit &&
-                    templateConfig?.template === 'project' ? (
-                      <ProjectTemplate
-                        reportId={reportId}
-                        projectId={templateConfig.projectId}
-                      />
-                    ) : emptyReportOnInit &&
-                      templateConfig?.template === 'phase' ? (
-                      <PhaseTemplate
-                        phaseId={templateConfig.phaseId}
-                        selectedLocale={selectedLocale}
-                      />
-                    ) : emptyReportOnInit &&
-                      templateConfig?.template === 'platform' ? (
-                      <PlatformTemplate
-                        startDate={templateConfig.startDate}
-                        endDate={templateConfig.endDate}
-                      />
-                    ) : emptyReportOnInit &&
-                      templateConfig?.template === 'community-monitor' ? (
-                      <CommunityMonitorTemplate
-                        quarter={templateConfig.quarter}
-                        year={templateConfig.year}
-                      />
-                    ) : null}
-                  </Frame>
-                </ViewContainer>
-              </StyledRightColumn>
-            </LanguageProvider>
-            <Settings />
-          </Box>
+          <ReportWordExportProvider>
+            <TopBar
+              hasPendingState={imageUploading}
+              selectedLocale={selectedLocale}
+              reportId={reportId}
+              isTemplate={!!templateConfig}
+              saved={saved}
+              view={view}
+              setView={setView}
+              setSaved={handleSetSaved}
+              setSelectedLocale={setSelectedLocale}
+            />
+            <Box mt={`${stylingConsts.menuHeight}px`}>
+              <Toolbox selectedLocale={selectedLocale} />
+              <LanguageProvider
+                contentBuilderLocale={selectedLocale}
+                platformLocale={platformLocale}
+              >
+                <StyledRightColumn>
+                  {!!phaseId && (
+                    <Box maxWidth={A4_WIDTH} mb="20px">
+                      <Warning>
+                        <FormattedMessage {...messages.warningBanner} />
+                      </Warning>
+                    </Box>
+                  )}
+                  <ViewContainer view={view}>
+                    <Frame editorData={initialData}>
+                      {emptyReportOnInit &&
+                      templateConfig?.template === 'project' ? (
+                        <ProjectTemplate
+                          reportId={reportId}
+                          projectId={templateConfig.projectId}
+                        />
+                      ) : emptyReportOnInit &&
+                        templateConfig?.template === 'phase' ? (
+                        <PhaseTemplate
+                          phaseId={templateConfig.phaseId}
+                          selectedLocale={selectedLocale}
+                        />
+                      ) : emptyReportOnInit &&
+                        templateConfig?.template === 'platform' ? (
+                        <PlatformTemplate
+                          startDate={templateConfig.startDate}
+                          endDate={templateConfig.endDate}
+                        />
+                      ) : emptyReportOnInit &&
+                        templateConfig?.template === 'community-monitor' ? (
+                        <CommunityMonitorTemplate
+                          quarter={templateConfig.quarter}
+                          year={templateConfig.year}
+                        />
+                      ) : null}
+                    </Frame>
+                  </ViewContainer>
+                </StyledRightColumn>
+              </LanguageProvider>
+              <Settings />
+            </Box>
+          </ReportWordExportProvider>
         </Editor>
       </FullscreenContentBuilder>
     </ReportContextProvider>

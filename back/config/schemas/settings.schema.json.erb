@@ -1605,6 +1605,30 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "spaces": {
+        "type": "object",
+        "title": "Spaces (In development - do not enable)",
+        "description": "A space is used to manage a group of projects and folders and the people that can work on them.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "enhanced_user_profile_privacy": {
+        "type": "object",
+        "title": "Enhanced user profile privacy",
+        "description": "Turn on for privacy/security reasons to use user ID as the slug of user profiles instead of name eg /profile/joe-bloggs. Also prevents profiles being public unless users have posted publicly.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {

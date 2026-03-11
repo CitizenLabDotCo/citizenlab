@@ -35,8 +35,8 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 
 import InputTopicModal from './InputTopicModal';
-import messages from './messages';
 import LiveAutoInputTopicsControl from './LiveAutoInputTopicsControl';
+import messages from './messages';
 
 const IndentedSortableRow = styled(SortableRow)<{ depth: number }>`
   padding-left: ${(props) => props.depth * 32}px;

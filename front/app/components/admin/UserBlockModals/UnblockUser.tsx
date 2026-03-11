@@ -40,8 +40,9 @@ const UnblockUserModal = ({ setClose, user, returnFocusRef }: Props) => {
       close={setClose}
       opened={true}
       returnFocusRef={returnFocusRef}
+      ariaLabelledBy="unblock-user-modal-title"
     >
-      <Title variant="h3" m="35px 0 30px">
+      <Title id="unblock-user-modal-title" variant="h3" m="35px 0 30px">
         {formatMessage(messages.confirmUnblock, {
           name: getFullName(user),
         })}

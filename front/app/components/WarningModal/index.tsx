@@ -45,6 +45,7 @@ const WarningModal = ({
       opened={open}
       close={onClose}
       returnFocusRef={returnFocusRef}
+      ariaLabelledBy="warning-modal-title"
     >
       <Box
         display="flex"
@@ -63,7 +64,7 @@ const WarningModal = ({
       </Box>
       <Box display="flex" flexDirection="column" width="100%">
         <Box mb="24px">
-          <Title variant="h4" color="tenantText">
+          <Title id="warning-modal-title" variant="h4" color="tenantText">
             {title}
           </Title>
           <Text color="tenantText" fontSize="s">

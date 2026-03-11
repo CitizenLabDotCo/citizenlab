@@ -20,10 +20,14 @@ const DeleteModal = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   return (
-    <Modal opened={showDeleteModal} close={closeDeleteModal}>
+    <Modal
+      opened={showDeleteModal}
+      close={closeDeleteModal}
+      ariaLabelledBy="delete-survey-modal-title"
+    >
       <Box display="flex" flexDirection="column" width="100%" p="20px">
         <Box mb="40px">
-          <Title variant="h3" color="primary">
+          <Title id="delete-survey-modal-title" variant="h3" color="primary">
             {formatMessage(messages.deleteResultsConfirmationQuestion)}
           </Title>
           <Text color="primary" fontSize="l">

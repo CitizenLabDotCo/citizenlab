@@ -77,11 +77,18 @@ const UserDeletedModal = ({
   intl: { formatMessage },
 }: Props & WrappedComponentProps) => {
   return (
-    <Modal opened={modalOpened} close={closeUserDeletedModal}>
+    <Modal
+      opened={modalOpened}
+      close={closeUserDeletedModal}
+      ariaLabelledBy="user-deleted-modal-title"
+    >
       {userSuccessfullyDeleted ? (
         <Container>
           <img src={illustration} alt="illu" />
-          <Title data-cy="e2e-user-deleted-success-modal-content">
+          <Title
+            id="user-deleted-modal-title"
+            data-cy="e2e-user-deleted-success-modal-content"
+          >
             <FormattedMessage {...messages.userDeletedTitle} />
           </Title>
           <Subtitle>

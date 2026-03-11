@@ -67,7 +67,7 @@ export type ChangingRoleTypes = 'admin' | 'moderator' | 'user';
 
 const getStatusMessage = (user: IUserData): MessageDescriptor => {
   if (user.attributes.blocked) return blockUserMessages.blocked;
-  const highestRole = user.attributes.highest_role;
+  const highestRole = user.attributes.highest_role ?? 'user';
   const roleMessage = {
     admin: messages.platformAdmin,
     super_admin: messages.platformAdmin,
@@ -364,6 +364,7 @@ const UserTableRow = ({
           close={() => setIsAssignedItemsOpened(false)}
           // Return focus to the More Actions button on close
           returnFocusRef={moreActionsButtonRef}
+          ariaLabelledBy="assigned-items-modal-title"
         >
           <UserAssignedItems user={userInRow} />
         </Modal>
@@ -372,6 +373,7 @@ const UserTableRow = ({
           close={() => setIsSetSetAsProjectModeratorOpened(false)}
           // Return focus to the More Actions button on close
           returnFocusRef={moreActionsButtonRef}
+          ariaLabelledBy="set-moderator-modal-title"
         >
           <SetSetAsProjectModerator
             user={userInRow}

@@ -24,6 +24,7 @@ export interface INewProjectFolderDiff {
   admin_publication_attributes: {
     publication_status: PublicationStatus;
   };
+  space_id?: string | null;
 }
 
 export interface IProjectFolder {
@@ -48,6 +49,7 @@ export interface IProjectFolderData {
     publication_status: PublicationStatus;
     followers_count: number;
     uses_content_builder: boolean;
+    space_id: string | null;
   };
   relationships: {
     admin_publication: {
@@ -76,4 +78,5 @@ export interface IUpdatedProjectFolder {
   admin_publication_attributes?: {
     publication_status?: PublicationStatus;
   };
+  space_id?: string | null;
 }

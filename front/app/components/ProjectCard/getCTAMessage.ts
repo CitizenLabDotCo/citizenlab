@@ -70,6 +70,12 @@ const getCTAMessage = ({
           initiative: messages.submitYourInitiative,
           proposal: messages.submitYourProposal,
           petition: messages.submitYourPetition,
+          comment: messages.submitYourComment,
+          response: messages.submitYourResponse,
+          suggestion: messages.submitYourSuggestion,
+          topic: messages.submitYourTopic,
+          post: messages.submitYourPost,
+          story: messages.submitYourStory,
         })
       );
     } else if (canReact) {
@@ -88,6 +94,12 @@ const getCTAMessage = ({
           proposal: messages.viewTheProposals,
           initiative: messages.viewTheInitiatives,
           petition: messages.viewThePetitions,
+          comment: messages.viewTheComments,
+          response: messages.viewTheResponses,
+          suggestion: messages.viewTheSuggestions,
+          topic: messages.viewTheTopics,
+          post: messages.viewThePosts,
+          story: messages.viewTheStories,
         })
       );
     }

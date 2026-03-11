@@ -39,7 +39,7 @@ export const isModerator = (user: IUser | undefined) => {
   if (!user) return false;
 
   return ['project_moderator', 'project_folder_moderator'].includes(
-    user.data.attributes.highest_role
+    user.data.attributes.highest_role as any
   );
 };
 

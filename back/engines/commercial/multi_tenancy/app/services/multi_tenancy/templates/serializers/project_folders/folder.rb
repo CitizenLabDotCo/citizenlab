@@ -7,6 +7,7 @@ module MultiTenancy
         class Folder < Base
           attributes %i[description_multiloc description_preview_multiloc title_multiloc]
           upload_attribute :header_bg
+          ref_attribute :space
         end
       end
     end
