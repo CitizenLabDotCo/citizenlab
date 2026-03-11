@@ -187,7 +187,7 @@ resource 'Moderators' do
           expect(response_status).to eq 200
           expect(@user.reload.roles).not_to include({ 'type' => 'project_folder_moderator', 'project_folder_id' => @project_folder.id })
           # We expect the existing project moderator roles for projects in the folder to remain:
-          expect(@user.reload.moderatable_project_ids).to contain_exactly(*@child_projects.map(&:id))
+          expect(@user.reload.moderatable_project_ids).to match_array(@child_projects.map(&:id))
         end
       end
     end
