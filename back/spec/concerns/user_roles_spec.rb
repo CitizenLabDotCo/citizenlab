@@ -150,7 +150,7 @@ RSpec.describe UserRoles do
         ]
       )
 
-      expect(user.moderatable_project_ids).to match_array([project_a.id, project_b.id])
+      expect(user.moderatable_project_ids).to contain_exactly(project_a.id, project_b.id)
     end
   end
 
@@ -164,7 +164,7 @@ RSpec.describe UserRoles do
         ]
       )
 
-      expect(user.moderated_project_folder_ids).to match_array(['123', '456'])
+      expect(user.moderated_project_folder_ids).to contain_exactly('123', '456')
     end
   end
 
