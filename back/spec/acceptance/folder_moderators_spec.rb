@@ -163,7 +163,7 @@ resource 'Moderators' do
     delete 'web_api/v1/project_folders/:project_folder_id/moderators/:user_id' do
       ValidationErrorHelper.new.error_fields self, User
 
-      describe 'when moderating the projects of a folder' do
+      describe 'when moderating projects in a folder' do
         before do
           @project_folder = create(:project_folder)
           other_moderators = create_list(:project_folder_moderator, 2, project_folders: [@project_folder])
@@ -179,10 +179,15 @@ resource 'Moderators' do
         let(:project_folder_id) { @project_folder.id }
         let(:user_id) { @user.id }
 
-        example_request 'Delete the moderator role of a user for a project_folder' do
+        example 'Delete the moderator role of a user for a project_folder' do
+          expect(@user.reload.roles).to include({ 'type' => 'project_folder_moderator', 'project_folder_id' => @project_folder.id })
+          
+          do_request
+
           expect(response_status).to eq 200
-          expect(@user.reload.roles).to be_empty
-          expect(@user.reload.moderatable_project_ids).to be_empty
+          expect(@user.reload.roles).to_not include({ 'type' => 'project_folder_moderator', 'project_folder_id' => @project_folder.id })
+          # We expect the existing project moderator roles for projects in the folder to remain:
+          expect(@user.reload.moderatable_project_ids).to contain_exactly(*Project.where(folder: @project_folder).pluck(:id))
         end
       end
     end
