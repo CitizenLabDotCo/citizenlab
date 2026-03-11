@@ -727,7 +727,8 @@ RSpec.describe User do
 
   describe 'project_or_folder_moderator?' do
     it 'responds true when the user has the project_folder_moderator role' do
-      u = build(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: 'project_folder_id' }])
+      folder = create(:project_folder)
+      u = build(:user, roles: [{ type: 'project_folder_moderator', project_folder_id: folder.id }])
       expect(u.project_or_folder_moderator?).to be true
     end
 
