@@ -1196,7 +1196,7 @@
   "app.containers.Admin.project.emails.scheduleSend": "Terminierung",
   "app.containers.Admin.project.emails.scheduleSendDescription2": "Wann soll diese E-Mail verschickt werden?",
   "app.containers.Admin.project.emails.scheduleSendTitle": "E-Mail terminieren",
-  "app.containers.Admin.project.emails.scheduleSendWarning2": "Hinweis: Die tatsächliche Zeit kann 30 Minuten später sein als die geplante Zeit.",
+  "app.containers.Admin.project.emails.scheduleSendWarning2": "Hinweis: Die tatsächliche Uhrzeit kann bis zu 30 Minuten später als die geplante Uhrzeit sein.",
   "app.containers.Admin.project.emails.scheduled": "Geplant",
   "app.containers.Admin.project.emails.send": "Senden",
   "app.containers.Admin.project.emails.sendTestEmailButton": "Eine Vorschau senden",
