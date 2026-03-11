@@ -3,7 +3,6 @@
 module EmailCampaigns
   class SendScheduledCampaignJob < ApplicationJob
     queue_as :default
-    self.maximum_retry_count = 2_000_000_000
 
     def run(campaign_id, expected_scheduled_at)
       campaign = Campaign.find(campaign_id)
