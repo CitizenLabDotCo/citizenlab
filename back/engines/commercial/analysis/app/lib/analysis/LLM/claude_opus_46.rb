@@ -3,7 +3,7 @@ module Analysis
     class ClaudeOpus46 < RubyLLM
       # The model ID as returned by RubyLLM.models.chat_models
       def model
-        'eu.anthropic.claude-opus-4-6-v1'
+        ENV.fetch('BEDROCK_OPUS_MODEL', 'eu.anthropic.claude-opus-4-6-v1')
       end
 
       def self.family
