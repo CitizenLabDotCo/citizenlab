@@ -89,7 +89,9 @@ const ProjectManagement = ({ projectId }: Props) => {
           await addProjectModerator({ moderatorEmail: email, projectId });
         }}
       />
-      <ModeratorList projectId={projectId} />
+      <Box mt="40px">
+        <ModeratorList projectId={projectId} />
+      </Box>
       <Box width="516px">
         <SeatInfo seatType="moderator" />
       </Box>

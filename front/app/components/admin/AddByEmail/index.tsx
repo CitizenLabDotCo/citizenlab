@@ -21,8 +21,8 @@ type FormValues = {
   email: string;
 };
 
-const DEFAULT_VALUES: Partial<FormValues> = {
-  email: undefined,
+const DEFAULT_VALUES: FormValues = {
+  email: '',
 };
 
 interface Props {
@@ -49,6 +49,7 @@ const EmailForm = ({ onSubmit }: Props) => {
 
   const methods = useForm<FormValues>({
     mode: 'onSubmit',
+    reValidateMode: 'onSubmit',
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
   });
@@ -56,6 +57,7 @@ const EmailForm = ({ onSubmit }: Props) => {
   const handleSubmit = async ({ email }: FormValues) => {
     try {
       await onSubmit(email);
+      methods.reset({ email: '' });
     } catch (e) {
       if (isCLErrorsWrapper(e)) {
         handleHookFormSubmissionError(e, methods.setError);
