@@ -26,7 +26,7 @@ import Link from 'utils/cl-router/Link';
 import { IProjectFolderModeratorRole } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
 
-import messages from './messages';
+import messages from '../messages';
 
 const StyledLink = styled(Link)`
   color: ${colors.textSecondary};

@@ -36,8 +36,8 @@ import eventEmitter from 'utils/eventEmitter';
 import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
 
-import events from './events';
-import messages from './messages';
+import events from '../events';
+import messages from '../messages';
 import SetSetAsProjectModerator from './SetAsProjectModerator';
 import UserAssignedItems from './UserAssignedItems';
 

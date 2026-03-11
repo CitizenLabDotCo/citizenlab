@@ -34,9 +34,9 @@ import eventEmitter from 'utils/eventEmitter';
 import { isAdmin } from 'utils/permissions/roles';
 import { requestBlob } from 'utils/requestBlob';
 
-import events, { MembershipAdd } from './events';
-import messages from './messages';
-import tracks from './tracks';
+import events, { MembershipAdd } from '../events';
+import messages from '../messages';
+import tracks from '../tracks';
 
 const UserCount = styled.span`
   color: ${colors.textSecondary};
