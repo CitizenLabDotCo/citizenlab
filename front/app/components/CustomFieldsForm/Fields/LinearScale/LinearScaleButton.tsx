@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
 import {
   Box,
@@ -34,18 +34,8 @@ const LinearScaleButton = ({
 }: Props) => {
   const theme = useTheme();
   const isSmallerThanPhone = useBreakpoint('phone');
-  const wrapperRef = useRef<HTMLDivElement>(null);
 
   const name = question.key;
-  const isSelected = data === visualIndex;
-
-  // Set aria-pressed on the inner <button> element, not the wrapper <div>
-  useEffect(() => {
-    const button = wrapperRef.current?.querySelector('button');
-    if (button) {
-      button.setAttribute('aria-pressed', String(isSelected));
-    }
-  }, [isSelected]);
 
   const getButtonWidth = () => {
     if (isSmallerThanPhone) {
@@ -56,7 +46,6 @@ const LinearScaleButton = ({
 
   return (
     <Box
-      ref={wrapperRef}
       flexBasis={100 / maximum}
       key={`${name}-radio-${visualIndex}`}
       minWidth={getButtonWidth()}
@@ -65,23 +54,34 @@ const LinearScaleButton = ({
       <StyledButton
         py="12px"
         id={`linear-scale-option-${visualIndex}`}
-        selected={isSelected}
+        selected={data === visualIndex}
         tabIndex={-1}
+        ariaPressed={data === visualIndex}
         borderRadius="3px"
         borderColor={
-          isSelected ? theme.colors.tenantPrimary : theme.colors.borderDark
+          data === visualIndex
+            ? theme.colors.tenantPrimary
+            : theme.colors.borderDark
         }
         borderHoverColor={
-          isSelected ? theme.colors.tenantPrimary : theme.colors.borderDark
+          data === visualIndex
+            ? theme.colors.tenantPrimary
+            : theme.colors.borderDark
         }
-        bgColor={isSelected ? theme.colors.tenantPrimary : theme.colors.white}
+        bgColor={
+          data === visualIndex ? theme.colors.tenantPrimary : theme.colors.white
+        }
         bgHoverColor={
-          isSelected ? theme.colors.tenantPrimary : theme.colors.white
+          data === visualIndex ? theme.colors.tenantPrimary : theme.colors.white
         }
-        textHoverColor={isSelected ? colors.white : theme.colors.textPrimary}
-        textColor={isSelected ? colors.white : theme.colors.textPrimary}
+        textHoverColor={
+          data === visualIndex ? colors.white : theme.colors.textPrimary
+        }
+        textColor={
+          data === visualIndex ? colors.white : theme.colors.textPrimary
+        }
         width="100%"
-        onClick={() => onSelect(isSelected ? undefined : visualIndex)}
+        onClick={() => onSelect(data === visualIndex ? undefined : visualIndex)}
       >
         {visualIndex}
       </StyledButton>
