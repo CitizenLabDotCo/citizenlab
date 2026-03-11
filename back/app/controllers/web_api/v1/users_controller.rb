@@ -126,7 +126,7 @@ class WebApi::V1::UsersController < ApplicationController
         render json: raw_json({ action: 'terms' })
       elsif @user.invite_pending?
         render json: { errors: { email: [{ error: 'taken_by_invite', value: email, inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
-      elsif !@user.no_password?
+      elsif !@user.no_password? || @user.sso?
         if @user.confirmation_required?
           # If a user has a password set but still needs to confirm their email,
           # we send them to the confirm action first.
@@ -138,6 +138,7 @@ class WebApi::V1::UsersController < ApplicationController
           render json: raw_json({ action: 'password' })
         end
       elsif !app_configuration.feature_activated?('user_confirmation')
+        # Only triggered for new users - at this point they have no password
         render json: raw_json({ action: 'token' })
       else
         if @user.email_confirmation_code_reset_count == 0

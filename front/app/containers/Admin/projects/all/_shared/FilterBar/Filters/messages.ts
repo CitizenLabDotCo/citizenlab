@@ -153,4 +153,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.PendingApproval.pendingApproval',
     defaultMessage: 'Pending approval',
   },
+  spaces: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.Spaces.spaces',
+    defaultMessage: 'Spaces',
+  },
 });

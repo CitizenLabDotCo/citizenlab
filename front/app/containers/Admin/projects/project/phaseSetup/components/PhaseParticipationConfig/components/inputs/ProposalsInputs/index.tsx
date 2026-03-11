@@ -20,8 +20,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
-import ViewSelector from '../../shared/ViewSelector';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
+import ViewSelector from '../../shared/ViewSelector';
 import PrescreeningModeSelector from '../_shared/PrescreeningModeSelector';
 import SortingPicker from '../_shared/SortingPicker';
 import UserActions from '../_shared/UserActions';

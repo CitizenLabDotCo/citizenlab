@@ -188,6 +188,7 @@ export const trackFormPageView = (
 ) => {
   const pageNum =
     currentPageIndex === lastPageIndex ? 'submitted' : currentPageIndex + 1;
-  if (pageNum !== 1)
+  if (pageNum !== 1) {
     trackVirtualPageView(`${window.location.pathname}/${pageNum}`);
+  }
 };

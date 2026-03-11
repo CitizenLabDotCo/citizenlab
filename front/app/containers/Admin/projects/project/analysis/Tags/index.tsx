@@ -178,6 +178,7 @@ const Tags = () => {
         opened={autotaggingModalIsOpened}
         close={() => setAutotaggingModalIsOpened(false)}
         width="1000px"
+        ariaLabelledBy="auto-tagging-modal-title"
       >
         <AutotaggingModal
           onCloseModal={() => setAutotaggingModalIsOpened(false)}

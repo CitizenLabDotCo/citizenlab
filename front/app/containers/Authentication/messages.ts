@@ -111,4 +111,8 @@ export default defineMessages({
     id: 'app.containers.Authentication.signUpOrLogIn',
     defaultMessage: 'Sign up or log in',
   },
+  authenticationDialog: {
+    id: 'app.containers.Authentication.authenticationDialog',
+    defaultMessage: 'Authentication',
+  },
 });

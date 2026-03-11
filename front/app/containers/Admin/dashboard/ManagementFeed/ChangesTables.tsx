@@ -37,7 +37,7 @@ const ChangesTablesBeforeAndAfter = ({
     <div>
       <Box display="flex" gap="8px">
         <Box flex="1">
-          <Title color="primary" variant="h2">
+          <Title id="changes-modal-title" color="primary" variant="h2">
             {formatMessage(messages.before)}
           </Title>
           <ChangesTable changes={beforeChanges} />

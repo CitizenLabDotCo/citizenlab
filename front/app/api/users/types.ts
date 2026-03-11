@@ -37,7 +37,7 @@ export interface IUserAttributes {
   last_name?: string | null;
   slug: string;
   locale: SupportedLocale;
-  highest_role: HighestRole;
+  highest_role?: HighestRole;
   bio_multiloc: Multiloc;
   block_end_at?: string;
   block_reason?: string;

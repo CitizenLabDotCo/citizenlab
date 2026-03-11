@@ -50,6 +50,7 @@ ach:
       "voting_phase_started": crwdns1336704:0crwdne1336704:0
       "voting_results": crwdns777343:0crwdne777343:0
       "your_input_in_screening": crwdns3324669:0crwdne3324669:0
+      "screening_digest": crwdns6478795:0crwdne6478795:0
     general:
       by_author: 'crwdns1081674:0%{authorName}crwdne1081674:0'
       author_wrote: 'crwdns1081676:0%{authorName}crwdne1081676:0'
@@ -525,6 +526,13 @@ ach:
       event_description: 'crwdns5184307:0%{input_title}crwdne5184307:0'
       subject: 'crwdns3324799:0%{input_title}crwdne3324799:0'
       preheader: 'crwdns3324801:0%{prescreening_status_title}crwdne3324801:0'
+    screening_digest:
+      subject: 'crwdns6478797:0%{count}crwdne6478797:0'
+      preheader: 'crwdns6478799:0%{organizationName}crwdne6478799:0'
+      title: 'crwdns6478801:0%{firstName}crwdne6478801:0'
+      event_description: "crwdns6478803:0crwdne6478803:0"
+      cta_button: 'crwdns6478805:0crwdne6478805:0'
+      inputs_awaiting_screening: 'crwdns6478807:0crwdne6478807:0'
     voting_basket_submitted:
       subject: 'crwdns777427:0%{organizationName}crwdne777427:0'
       preheader: 'crwdns777429:0%{organizationName}crwdne777429:0'

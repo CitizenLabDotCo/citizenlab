@@ -38,6 +38,7 @@ interface Props {
     presentation_mode?: PresentationMode
   ) => void;
   title?: MessageDescriptor;
+  hideFeed?: boolean;
 }
 
 const ViewSelector = ({
@@ -47,6 +48,7 @@ const ViewSelector = ({
   handleIdeasDisplayChange,
   handleAvailableViewsChange,
   title,
+  hideFeed,
 }: Props) => {
   const { formatMessage } = useIntl();
   const { projectId, phaseId } = useParams<{
@@ -84,7 +86,8 @@ const ViewSelector = ({
       description: messages.mapViewDescription,
       descriptionValues: { inputFormLink },
     },
-    ...(ideaFeedEnabled
+    // Feed view is hidden for voting phases, as it's only relevant for ideation and proposals
+    ...(ideaFeedEnabled && !hideFeed
       ? [
           {
             value: 'feed' as const,

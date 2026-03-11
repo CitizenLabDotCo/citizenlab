@@ -1247,6 +1247,7 @@
   "app.containers.AreaTerms.areaTerm": "zona",
   "app.containers.AreaTerms.areasTerm": "àrees",
   "app.containers.AuthProviders.emailTakenAndUserCanBeVerified": "Ja existeix un compte amb aquest correu electrònic. Podeu tancar la sessió, iniciar sessió amb aquesta adreça de correu electrònic i verificar el vostre compte a la pàgina de configuració.",
+  "app.containers.Authentication.authenticationDialog": "Autenticació",
   "app.containers.Authentication.signUpOrLogIn": "Registra't o inicia la sessió",
   "app.containers.Authentication.steps.AccessDenied.close": "Tancar",
   "app.containers.Authentication.steps.AccessDenied.youDoNotMeetTheRequirements": "No compleixes els requisits per participar en aquest procés.",

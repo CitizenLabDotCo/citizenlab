@@ -31,6 +31,7 @@ const IdeaSharingModal = ({
       close={closeIdeaSocialSharingModal}
       hasSkipButton={true}
       skipText={<>{formatMessage(messages.skipSharing)}</>}
+      ariaLabelledBy="success-modal-title"
     >
       <SharingModalContent
         postId={newIdeaId}

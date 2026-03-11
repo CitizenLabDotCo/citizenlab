@@ -34,7 +34,6 @@ import matomoConfiguration from './commercial/matomo';
 import posthogConfiguration from './commercial/posthog_integration';
 import posthogUserTrackingConfiguration from './commercial/posthog_user_tracking';
 import satismeterConfiguration from './commercial/satismeter';
-import segmentConfiguration from './commercial/segment';
 import smartGroupsConfiguration from './commercial/smart_groups';
 import widgetsConfiguration, { widgetsRouteTypes } from './commercial/widgets';
 
@@ -67,9 +66,6 @@ export default loadModules([
   },
   {
     configuration: satismeterConfiguration,
-  },
-  {
-    configuration: segmentConfiguration,
   },
   {
     configuration: flagInappropriateContentConfiguration,

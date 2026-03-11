@@ -54,6 +54,14 @@ export const createQuill = (
                     alt: altTextLabel || 'Alt Text',
                     title: imageTitleLabel || 'Image Title',
                   },
+                  // Our Modal component (UI/Modal) uses z-index 1000001.
+                  // Override the library default (9999) so the alt text
+                  // modal renders above it.
+                  styles: {
+                    modalBackground: {
+                      zIndex: 1000002,
+                    },
+                  },
                 },
               },
             }
