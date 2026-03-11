@@ -1155,7 +1155,7 @@
   "app.containers.Admin.project.emails.cancelScheduleDescription2": "Weet je zeker dat je de planning voor deze campagne wilt annuleren? De campagne wordt niet langer ingepland om te verzenden, maar je kunt deze nog steeds handmatig verzenden of opnieuw inplannen.",
   "app.containers.Admin.project.emails.cancelScheduleTitle": "Geplande e-mail annuleren",
   "app.containers.Admin.project.emails.confirmCancelSchedule": "Ja, geplande e-mail annuleren",
-  "app.containers.Admin.project.emails.confirmSchedule2": "Schema",
+  "app.containers.Admin.project.emails.confirmSchedule2": "Inplannen",
   "app.containers.Admin.project.emails.dateSent": "Verzenddatum",
   "app.containers.Admin.project.emails.deleteButtonLabel": "Verwijder",
   "app.containers.Admin.project.emails.draft": "Concept",
