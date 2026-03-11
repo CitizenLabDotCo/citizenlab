@@ -14,7 +14,7 @@ import eventEmitter from 'utils/eventEmitter';
 import { isNil } from 'utils/helperUtils';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
-import events from '../events';
+import events from '../../events';
 import NoUsers from './NoUsers';
 import UserTable from './UserTable';
 import UserTableActions from './UserTableActions';

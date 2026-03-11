@@ -10,7 +10,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
-import messages from './messages';
+import messages from '../messages';
 
 const TitleWrapper = styled.div`
   min-height: 105px;

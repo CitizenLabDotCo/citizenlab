@@ -9,7 +9,7 @@ import { MembershipType } from 'api/groups/types';
 import { FormattedMessage } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 
-import messages from '../messages';
+import messages from '../../messages';
 
 const NoUsersPage = styled.div`
   display: flex;

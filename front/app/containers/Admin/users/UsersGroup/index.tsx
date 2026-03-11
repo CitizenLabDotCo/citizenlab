@@ -22,11 +22,11 @@ import clHistory from 'utils/cl-router/history';
 import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 
-import events from './events';
-import messages from './messages';
-import NormalGroupForm, { NormalFormValues } from './NormalGroupForm';
-import tracks from './tracks';
-import UserManager from './UserManager';
+import events from '../events';
+import messages from '../messages';
+import NormalGroupForm, { NormalFormValues } from '../NormalGroupForm';
+import tracks from '../tracks';
+import UserManager from '../_shared/UserManager';
 import UsersGroupHeader from './UsersGroupHeader';
 
 const UsersGroup = () => {

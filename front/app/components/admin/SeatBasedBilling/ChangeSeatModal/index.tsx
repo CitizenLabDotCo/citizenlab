@@ -6,7 +6,7 @@ import { IUserData } from 'api/users/types';
 
 import useExceedsSeats from 'hooks/useExceedsSeats';
 
-import { ChangingRoleTypes } from 'containers/Admin/users/UserManager/UserTableRow';
+import { ChangingRoleTypes } from 'containers/Admin/users/_shared/UserManager/UserTableRow';
 
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import BillingWarning from 'components/admin/SeatBasedBilling/SeatInfo/BillingWarning';

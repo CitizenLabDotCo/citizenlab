@@ -11,8 +11,8 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import messages from './messages';
-import { FirstRow, TextAndButtons } from './UsersHeader';
+import messages from '../messages';
+import { FirstRow, TextAndButtons } from '../_shared/UsersHeader';
 
 const OnlyRow = styled(FirstRow)`
   min-height: 105px;
