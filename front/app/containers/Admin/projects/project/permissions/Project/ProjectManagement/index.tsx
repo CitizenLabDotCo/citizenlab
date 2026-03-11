@@ -1,16 +1,25 @@
 import React from 'react';
 
-import { IconTooltip, Box, Title } from '@citizenlab/cl2-component-library';
+import {
+  IconTooltip,
+  Box,
+  Title,
+  Text,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import ModeratorList from 'components/admin/ModeratorList/ModeratorList';
+import UserSearch from 'components/admin/ModeratorUserSearch';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
-import AddByEmail from 'components/admin/AddByEmail';
 import { Section } from 'components/admin/Section';
+import AddByEmail from 'components/admin/AddByEmail';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import Or from 'components/UI/Or';
+import useAuthUser from 'api/me/useAuthUser';
+import { isAdmin } from 'utils/permissions/roles';
 
 const ModeratorSubSection = styled(Section)`
   margin-bottom: 30px;
@@ -28,6 +37,7 @@ interface Props {
 
 const ProjectManagement = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
+  const { data: authUser } = useAuthUser();
 
   return (
     <ModeratorSubSection>
@@ -56,6 +66,26 @@ const ProjectManagement = ({ projectId }: Props) => {
           }
         />
       </Box>
+      {isAdmin(authUser) && (
+        <>
+          <UserSearch
+            projectId={projectId}
+            label={
+              <Text
+                color="primary"
+                p="0px"
+                mb="0px"
+                style={{ fontWeight: '500', fontSize: '18px' }}
+              >
+                {formatMessage(messages.moderatorSearchFieldLabel)}
+              </Text>
+            }
+          />
+          <Box maxWidth="500px" mt="36px">
+            <Or />
+          </Box>
+        </>
+      )}
       <AddByEmail onSubmit={() => {}} />
       <ModeratorList projectId={projectId} />
       <Box width="516px">
