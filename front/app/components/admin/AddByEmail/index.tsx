@@ -14,7 +14,8 @@ import {
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
 import { isValidEmail } from 'utils/validate';
-import messages from 'containers/Authentication/steps/messages';
+import authenticationMessages from 'containers/Authentication/steps/messages';
+import messages from './messages';
 
 type FormValues = {
   email: string;
@@ -35,9 +36,13 @@ const EmailForm = ({ onSubmit }: Props) => {
     () =>
       object({
         email: string()
-          .email(formatMessage(messages.emailFormatError))
-          .required(formatMessage(messages.emailMissingError))
-          .test('', formatMessage(messages.emailFormatError), isValidEmail),
+          .email(formatMessage(authenticationMessages.emailFormatError))
+          .required(formatMessage(authenticationMessages.emailMissingError))
+          .test(
+            '',
+            formatMessage(authenticationMessages.emailFormatError),
+            isValidEmail
+          ),
       }),
     [formatMessage]
   );
@@ -62,28 +67,30 @@ const EmailForm = ({ onSubmit }: Props) => {
   const loading = methods.formState.isSubmitting;
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(handleSubmit)}>
-        <Box>
-          <Input
-            name="email"
-            type="email"
-            autocomplete="email"
-            label={formatMessage(messages.email)}
-          />
-        </Box>
-        <Box w="100%" display="flex" mt="32px">
-          <ButtonWithLink
-            type="submit"
-            width="100%"
-            disabled={loading}
-            processing={loading}
-          >
-            {formatMessage(messages.continue)}
-          </ButtonWithLink>
-        </Box>
-      </form>
-    </FormProvider>
+    <Box maxWidth="500px">
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(handleSubmit)}>
+          <Box>
+            <Input
+              name="email"
+              type="email"
+              autocomplete="email"
+              label={formatMessage(messages.inviteModeratorByEmail)}
+            />
+          </Box>
+          <Box w="100%" display="flex" mt="4px">
+            <ButtonWithLink
+              type="submit"
+              width="100%"
+              disabled={loading}
+              processing={loading}
+            >
+              {formatMessage(messages.invite)}
+            </ButtonWithLink>
+          </Box>
+        </form>
+      </FormProvider>
+    </Box>
   );
 };
 
