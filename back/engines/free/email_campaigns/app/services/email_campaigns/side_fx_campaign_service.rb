@@ -21,13 +21,7 @@ module EmailCampaigns
         )
       end
 
-      # Enqueue delayed send for scheduled manual campaigns
-      if campaign.manual? && campaign.saved_change_to_schedule?
-        scheduled_at = campaign.scheduled_at
-        if scheduled_at.present? && scheduled_at > Time.zone.now
-          SendScheduledCampaignJob.set(wait_until: scheduled_at).perform_later(campaign.id, scheduled_at)
-        end
-      end
+      enqueue_scheduled_send(campaign)
     end
 
     def before_send(campaign, user); end
@@ -39,6 +33,15 @@ module EmailCampaigns
     def before_destroy(campaign, user); end
 
     private
+
+    def enqueue_scheduled_send(campaign)
+      return unless campaign.manual? && campaign.saved_change_to_schedule?
+
+      scheduled_at = campaign.scheduled_at
+      return unless scheduled_at.present? && scheduled_at > Time.zone.now
+
+      SendScheduledCampaignJob.set(wait_until: scheduled_at).perform_later(campaign.id, scheduled_at)
+    end
 
     def resource_name
       :campaign
