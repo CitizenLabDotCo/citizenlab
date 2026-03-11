@@ -24,6 +24,7 @@ import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
 import { isDraft } from 'api/campaigns/util';
 import useUserById from 'api/users/useUserById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
@@ -45,7 +46,6 @@ import TimeInput from '../../events/components/DateTimeSelection/TimeInput';
 import messages from '../messages';
 
 import { getDefaultTime } from './utils';
-
 const StampIcon = styled(Stamp)`
   margin-right: 20px;
 `;
@@ -146,6 +146,9 @@ const Show = () => {
 
     return senderName;
   };
+  const isEmailSchedulingAllowed = useFeatureFlag({
+    name: 'email_scheduling',
+  });
 
   const timeZone = tenant?.data.attributes.settings.core.timezone;
   const tenantTimeNow = timeZone ? moment().tz(timeZone).toDate() : new Date();
@@ -312,21 +315,24 @@ const Show = () => {
                     onClick={handleSend}
                     disabled={isLoading}
                     processing={isSendingCampaign}
-                    borderRadius="3px 0px 0px 3px"
+                    borderRadius={
+                      isEmailSchedulingAllowed ? '3px 0px 0px 3px' : '3px'
+                    }
                     height="75%"
                   >
                     <FormattedMessage {...messages.send} />
                   </Button>
-                  <Button
-                    buttonStyle="admin-dark"
-                    icon="chevron-down"
-                    onClick={toggleScheduleSendDropdown}
-                    disabled={isLoading}
-                    borderRadius="0px 3px 3px 0px"
-                    padding="0px 8px"
-                    height="75%"
-                  />
-
+                  {isEmailSchedulingAllowed && (
+                    <Button
+                      buttonStyle="admin-dark"
+                      icon="chevron-down"
+                      onClick={toggleScheduleSendDropdown}
+                      disabled={isLoading}
+                      borderRadius="0px 3px 3px 0px"
+                      padding="0px 8px"
+                      height="75%"
+                    />
+                  )}
                   <Dropdown
                     opened={openedDropdown}
                     onClickOutside={() => setOpenedDropdown(false)}
@@ -430,15 +436,10 @@ const Show = () => {
         <Modal
           opened={openScheduleModal}
           close={closeScheduleModal}
-          niceHeader
-          header={
-            <Title px="12px">
-              <FormattedMessage {...messages.scheduleSendTitle} />
-            </Title>
-          }
+          header={formatMessage(messages.scheduleSendTitle)}
         >
-          <Box mb="16px" p="24px">
-            <Text>
+          <Box p="30px">
+            <Text mt="0">
               <FormattedMessage {...messages.scheduleSendDescription} />
             </Text>
             <Box>
@@ -479,26 +480,21 @@ const Show = () => {
         <Modal
           opened={openCancelScheduleModal}
           close={closeCancelScheduleModal}
-          niceHeader
-          header={
-            <Title px="12px">
-              <FormattedMessage {...messages.cancelScheduleTitle} />{' '}
-            </Title>
-          }
+          header={formatMessage(messages.cancelScheduleTitle)}
         >
-          <Box mb="16px" p="24px">
-            <Text mb="16px">
+          <Box p="30px">
+            <Text mt="0">
               <FormattedMessage {...messages.cancelScheduleDescription} />
             </Text>
             <Box display="flex" gap="16px" justifyContent="flex-end">
-              <Button onClick={handleCancelSchedule} buttonStyle="admin-dark">
-                <FormattedMessage {...messages.confirmCancelSchedule} />
-              </Button>
               <Button
                 onClick={closeCancelScheduleModal}
                 buttonStyle="secondary"
               >
                 <FormattedMessage {...messages.keepSchedule} />
+              </Button>{' '}
+              <Button onClick={handleCancelSchedule} buttonStyle="admin-dark">
+                <FormattedMessage {...messages.confirmCancelSchedule} />
               </Button>
             </Box>
           </Box>

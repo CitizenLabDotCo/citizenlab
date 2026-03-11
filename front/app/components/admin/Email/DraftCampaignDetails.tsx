@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Title, Text, Button } from '@citizenlab/cl2-component-library';
+import { Box, Text, Button } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -61,18 +61,19 @@ const DraftCampaignDetails = ({ campaign }: Props) => {
         opened={isDeleteModalOpen}
         close={() => setIsDeleteModalOpen(false)}
         hideCloseButton
-        niceHeader
-        header={
-          <Title variant="h2" px="12px">
-            {formatMessage(messages.campaignDeleteConfirmation)}
-          </Title>
-        }
+        header={formatMessage(messages.campaignDeleteConfirmation)}
       >
-        <Box mt="8px" p="12px">
-          <Text color="textSecondary" mt="12px">
+        <Box p="30px">
+          <Text color="textSecondary" mt="0">
             {formatMessage(messages.campaignDeleteWarning)}
           </Text>
-          <Box display="flex" gap="16px" justifyContent="flex-end" mt="24px">
+          <Box display="flex" gap="16px" justifyContent="flex-end">
+            <Button
+              buttonStyle="secondary"
+              onClick={() => setIsDeleteModalOpen(false)}
+            >
+              {formatMessage(messages.cancel)}
+            </Button>{' '}
             <Button
               buttonStyle="delete"
               icon="delete"
@@ -80,12 +81,6 @@ const DraftCampaignDetails = ({ campaign }: Props) => {
               processing={isLoading}
             >
               {formatMessage(messages.deleteCampaignButton)}
-            </Button>
-            <Button
-              buttonStyle="secondary"
-              onClick={() => setIsDeleteModalOpen(false)}
-            >
-              {formatMessage(messages.cancel)}
             </Button>
           </Box>
         </Box>
