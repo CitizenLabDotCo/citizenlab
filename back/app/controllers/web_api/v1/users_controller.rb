@@ -42,6 +42,9 @@ class WebApi::V1::UsersController < ApplicationController
     when 'false' then @users = @users.not_admin
     end
 
+    @users = @users.project_moderator if params[:project_moderators_only].present?
+    @users = @users.project_folder_moderator if params[:folder_moderators_only].present?
+
     sort_by_sort_param if params[:search].blank?
 
     @users = paginate @users
