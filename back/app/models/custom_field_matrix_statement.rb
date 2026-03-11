@@ -12,6 +12,7 @@
 #
 # Indexes
 #
+#  custom_field_matrix_statements_field_id_ordering_unique  (custom_field_id,ordering) UNIQUE
 #  index_custom_field_matrix_statements_on_custom_field_id  (custom_field_id)
 #  index_custom_field_matrix_statements_on_key              (key)
 #
@@ -27,6 +28,8 @@ class CustomFieldMatrixStatement < ApplicationRecord
 
   before_validation :generate_key, on: :create
   acts_as_list column: :ordering, top_of_list: 0, scope: :custom_field
+  include BulkReorderable
+  bulk_reorderable ordering_column: :ordering, constraint_name: :custom_field_matrix_statements_field_id_ordering_unique
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :key, presence: true, uniqueness: { scope: [:custom_field_id] },

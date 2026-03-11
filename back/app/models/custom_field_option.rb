@@ -15,9 +15,9 @@
 #
 # Indexes
 #
-#  index_custom_field_options_on_custom_field_id               (custom_field_id)
-#  index_custom_field_options_on_custom_field_id_and_key       (custom_field_id,key) UNIQUE
-#  index_custom_field_options_on_field_id_and_ordering_unique  (custom_field_id,ordering) UNIQUE
+#  custom_field_options_field_id_ordering_unique          (custom_field_id,ordering) UNIQUE
+#  index_custom_field_options_on_custom_field_id          (custom_field_id)
+#  index_custom_field_options_on_custom_field_id_and_key  (custom_field_id,key) UNIQUE
 #
 # Foreign Keys
 #
@@ -28,6 +28,8 @@ class CustomFieldOption < ApplicationRecord
   attribute :temp_id, :string, default: nil
 
   acts_as_list column: :ordering, top_of_list: 0, scope: :custom_field, sequential_updates: true
+  include BulkReorderable
+  bulk_reorderable ordering_column: :ordering, constraint_name: :custom_field_options_field_id_ordering_unique
 
   belongs_to :custom_field
 
