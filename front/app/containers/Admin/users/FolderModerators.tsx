@@ -15,19 +15,14 @@ const StyledBox = styled(Box)`
   grid-auto-rows: 1fr;
 `;
 
-const Moderators = () => (
+const FolderModerators = () => (
   <>
-    <UsersHeader title={messages.managers} />
-    <UserManager
-      canModerate
-      canAdmin={false}
-      notCitizenlabMember
-      includeInactive
-    />
+    <UsersHeader title={messages.folderManagers} />
+    <UserManager folderModeratorsOnly notCitizenlabMember includeInactive />
     <StyledBox mt="20px">
       <SeatInfo seatType="moderator" />
     </StyledBox>
   </>
 );
 
-export default Moderators;
+export default FolderModerators;

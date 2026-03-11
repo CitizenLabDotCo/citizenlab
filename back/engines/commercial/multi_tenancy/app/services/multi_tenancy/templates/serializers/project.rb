@@ -15,6 +15,8 @@ module MultiTenancy
           visible_to
           hidden
         ]
+
+        ref_attribute :space
       end
     end
   end

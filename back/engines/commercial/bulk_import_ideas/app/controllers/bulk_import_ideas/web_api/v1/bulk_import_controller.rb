@@ -18,15 +18,6 @@ module BulkImportIdeas
         },
         'pdf' => {
           exporter_class: Exporters::IdeaPdfFormExporter,
-          parser_class: Parsers::IdeaPdfFileParser
-        },
-        # Alpha feature for GPT based PDF form parser
-        'gpt_pdf' => {
-          exporter_class: Exporters::IdeaPdfFormExporter,
-          parser_class: Parsers::IdeaPdfFileGPTParser
-        },
-        'claude_pdf' => {
-          exporter_class: Exporters::IdeaPdfFormExporter,
           parser_class: Parsers::IdeaPdfFileClaudeParser
         }
       }
@@ -120,7 +111,7 @@ module BulkImportIdeas
     def bulk_create_params
       params
         .require(:import)
-        .permit(%i[file locale personal_data parser])
+        .permit(%i[file locale personal_data])
     end
 
     def authorize_bulk_import_ideas
@@ -157,18 +148,7 @@ module BulkImportIdeas
 
       return CONSTANTIZER.fetch(model)[class_type] if class_type == :serializer_class
 
-      format = 'gpt_pdf' if format == 'pdf' && use_gpt_form_parser?
-      format = 'claude_pdf' if format == 'pdf' && use_claude_form_parser?
-
       CONSTANTIZER.fetch(model).fetch(format)[class_type]
-    end
-
-    def use_gpt_form_parser?
-      params[:import] ? bulk_create_params[:parser] == 'gpt' : false
-    end
-
-    def use_claude_form_parser?
-      params[:import] ? bulk_create_params[:parser] == 'claude' : false
     end
 
     def serializer

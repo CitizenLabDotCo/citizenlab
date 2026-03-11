@@ -6,6 +6,7 @@ import adminPublicationsStatusCountsKeys from 'api/admin_publications_status_cou
 import projectFoldersKeys from 'api/project_folders/keys';
 import projectFoldersMiniKeys from 'api/project_folders_mini/keys';
 import projectsKeys from 'api/projects/keys';
+import spacesKeys from 'api/spaces/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -40,6 +41,9 @@ const useUpdateProjectFolder = () => {
       });
       queryClient.invalidateQueries({
         queryKey: adminPublicationsStatusCountsKeys.items(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: spacesKeys.all(),
       });
     },
   });
