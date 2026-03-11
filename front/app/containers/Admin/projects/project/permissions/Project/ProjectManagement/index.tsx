@@ -74,7 +74,7 @@ const ProjectManagement = ({ projectId }: Props) => {
         mb="32px"
         style={{ fontWeight: '500', fontSize: '18px' }}
       >
-        {formatMessage(messages.moderatorSearchFieldLabel)}
+        {formatMessage(messages.addProjectModerators)}
       </Text>
       {isAdmin(authUser) && (
         <>
@@ -90,6 +90,14 @@ const ProjectManagement = ({ projectId }: Props) => {
         }}
       />
       <Box mt="40px">
+        <Text
+          color="primary"
+          p="0px"
+          mb="32px"
+          style={{ fontWeight: '500', fontSize: '18px' }}
+        >
+          {formatMessage(messages.moderatorSearchFieldLabel)}
+        </Text>
         <ModeratorList projectId={projectId} />
       </Box>
       <Box width="516px">
