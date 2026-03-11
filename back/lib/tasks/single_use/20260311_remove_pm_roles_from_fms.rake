@@ -34,7 +34,7 @@ namespace :single_use do
           pm_roles = roles.select { |r| r['type'] == 'project_moderator' && project_ids.include?(r['project_id']) }
 
           if pm_roles.any?
-            roles = roles - pm_roles
+            roles -= pm_roles
 
             if execute
               user_before = fm.attributes
@@ -102,16 +102,18 @@ namespace :single_use do
           projects = folder.projects
 
           if projects.empty?
-            puts "......... No projects found in this folder. Skipping..."
+            puts '......... No projects found in this folder. Skipping...'
             next
           end
 
           project_ids = projects.pluck(:id)
           new_pm_roles = project_ids.map { |project_id| { 'type' => 'project_moderator', 'project_id' => project_id } }
           old_roles = roles
-          new_roles = roles | new_pm_roles  # Automatically deduplicates
+          new_roles = roles | new_pm_roles # Automatically deduplicates
 
-          if new_roles != old_roles
+          if new_roles == old_roles
+            puts "......... No new PM roles needed to be added to folder moderator: #{fm.id}."
+          else
             if execute
               user_before = fm.attributes
               fm.roles = new_roles
@@ -134,8 +136,6 @@ namespace :single_use do
             else
               puts "......... Would add PM roles for folder moderator #{fm.id}: for projects; #{new_pm_roles.map { |r| r['project_id'] }.join(', ')}"
             end
-          else
-            puts "......... No new PM roles needed to be added to folder moderator: #{fm.id}."
           end
         end
       end
