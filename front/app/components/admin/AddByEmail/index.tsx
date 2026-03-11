@@ -67,30 +67,30 @@ const EmailForm = ({ onSubmit }: Props) => {
   const loading = methods.formState.isSubmitting;
 
   return (
-    <Box maxWidth="500px">
-      <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(handleSubmit)}>
-          <Box>
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(handleSubmit)}>
+        <Box display="flex" alignItems="center">
+          <Box width="500px">
             <Input
               name="email"
               type="email"
               autocomplete="email"
-              label={formatMessage(messages.inviteModeratorByEmail)}
+              placeholder={formatMessage(messages.typeEmailToInviteModerator)}
             />
           </Box>
-          <Box w="100%" display="flex" mt="4px">
-            <ButtonWithLink
-              type="submit"
-              width="100%"
-              disabled={loading}
-              processing={loading}
-            >
-              {formatMessage(messages.invite)}
-            </ButtonWithLink>
-          </Box>
-        </form>
-      </FormProvider>
-    </Box>
+          <ButtonWithLink
+            type="submit"
+            width="auto"
+            disabled={loading || !methods.formState.isValid}
+            processing={loading}
+            icon="plus-circle"
+            ml="20px"
+          >
+            {formatMessage(messages.invite)}
+          </ButtonWithLink>
+        </Box>
+      </form>
+    </FormProvider>
   );
 };
 

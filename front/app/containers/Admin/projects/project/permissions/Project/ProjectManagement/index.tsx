@@ -20,6 +20,7 @@ import messages from './messages';
 import Or from 'components/UI/Or';
 import useAuthUser from 'api/me/useAuthUser';
 import { isAdmin } from 'utils/permissions/roles';
+import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
 
 const ModeratorSubSection = styled(Section)`
   margin-bottom: 30px;
@@ -38,6 +39,7 @@ interface Props {
 const ProjectManagement = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
+  const { mutateAsync: addProjectModerator } = useAddProjectModerator();
 
   return (
     <ModeratorSubSection>
@@ -66,27 +68,27 @@ const ProjectManagement = ({ projectId }: Props) => {
           }
         />
       </Box>
+      <Text
+        color="primary"
+        p="0px"
+        mb="32px"
+        style={{ fontWeight: '500', fontSize: '18px' }}
+      >
+        {formatMessage(messages.moderatorSearchFieldLabel)}
+      </Text>
       {isAdmin(authUser) && (
         <>
-          <UserSearch
-            projectId={projectId}
-            label={
-              <Text
-                color="primary"
-                p="0px"
-                mb="0px"
-                style={{ fontWeight: '500', fontSize: '18px' }}
-              >
-                {formatMessage(messages.moderatorSearchFieldLabel)}
-              </Text>
-            }
-          />
-          <Box maxWidth="500px" mt="36px">
+          <UserSearch projectId={projectId} />
+          <Box maxWidth="500px" mt="28px">
             <Or />
           </Box>
         </>
       )}
-      <AddByEmail onSubmit={() => {}} />
+      <AddByEmail
+        onSubmit={async (email) => {
+          await addProjectModerator({ moderatorEmail: email, projectId });
+        }}
+      />
       <ModeratorList projectId={projectId} />
       <Box width="516px">
         <SeatInfo seatType="moderator" />
