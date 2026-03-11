@@ -790,6 +790,7 @@
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Уреди групу",
   "app.containers.Admin.Users.GroupsPanel.admins": "Admins",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Регистровани корисници",
+  "app.containers.Admin.Users.GroupsPanel.folderManagers": "Folder managers",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Групе",
   "app.containers.Admin.Users.GroupsPanel.managers": "Project managers",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Assigned items",
