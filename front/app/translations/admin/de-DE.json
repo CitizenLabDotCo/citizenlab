@@ -790,6 +790,7 @@
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Gruppe bearbeiten",
   "app.containers.Admin.Users.GroupsPanel.admins": "Admins",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Registrierte Nutzer*innen",
+  "app.containers.Admin.Users.GroupsPanel.folderManagers": "Ordner-Manager*innen",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Gruppen",
   "app.containers.Admin.Users.GroupsPanel.managers": "Projektmanager*innen",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Zugewiesene Elemente",
