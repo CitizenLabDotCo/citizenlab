@@ -147,6 +147,8 @@ module UserRoles # rubocop:disable Metrics/ModuleLength
     !admin? && moderatable_project_ids.blank? && moderated_project_folder_ids.blank?
   end
 
+  # Returns an array of project IDs that the user, other than an admin, moderates, either directly or through a folder.
+  # Admins can always moderate all projects, so this method is only relevant for non-admins.
   def moderatable_project_ids
     moderated_directly_ids = roles.select { |role| role['type'] == 'project_moderator' }.pluck('project_id').compact
 
