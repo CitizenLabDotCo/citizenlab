@@ -19,6 +19,7 @@
 #
 #  index_impact_tracking_sessions_on_highest_role       (highest_role)
 #  index_impact_tracking_sessions_on_monthly_user_hash  (monthly_user_hash)
+#  index_impact_tracking_sessions_on_user_id            (user_id)
 #
 class ImpactTracking::Session < ApplicationRecord
   validates :monthly_user_hash, presence: true

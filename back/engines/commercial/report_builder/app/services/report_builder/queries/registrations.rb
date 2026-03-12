@@ -57,12 +57,8 @@ module ReportBuilder
     end
 
     def registration_rate(registrations, start_date, end_date)
-      visitors = ImpactTracking::Session
-        .where(created_at: start_date..end_date)
-        .distinct
-        .pluck(:monthly_user_hash)
-        .count
-
+      visits_service = Insights::VisitsService.new(nil, start_at: start_date, end_at: end_date)
+      visitors = visits_service.total_visits[:visitors]
       visitors.zero? ? 0 : (registrations / visitors.to_f)
     end
   end
