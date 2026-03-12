@@ -790,6 +790,7 @@
   "app.containers.Admin.Users.GroupsHeader.editGroup": "تعديل المجموعة",
   "app.containers.Admin.Users.GroupsPanel.admins": "المشرفين",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "المستخدمون",
+  "app.containers.Admin.Users.GroupsPanel.folderManagers": "مديرو المجلدات",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "المجموعات",
   "app.containers.Admin.Users.GroupsPanel.managers": "مدراء مشروع",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "العناصر المخصصة",
