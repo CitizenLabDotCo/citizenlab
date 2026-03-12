@@ -25,9 +25,13 @@ const UserAssignedItems2 = ({ user }: Props) => {
 
   return (
     <Box>
-      <Title variant="h3">Folders user moderates</Title>
+      <Title variant="h3" mt="0px">
+        Folders user moderates
+      </Title>
       <TreeView nodes={foldersUserModerates} />
-      <Title variant="h3">Projects user moderates</Title>
+      <Title variant="h3" mt="40px">
+        Projects user moderates
+      </Title>
       <TreeView nodes={projectsUserModerates} />
     </Box>
   );
