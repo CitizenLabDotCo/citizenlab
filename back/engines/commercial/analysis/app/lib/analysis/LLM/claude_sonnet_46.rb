@@ -3,7 +3,7 @@ module Analysis
     class ClaudeSonnet46 < RubyLLM
       # The model ID as returned by RubyLLM.models.chat_models
       def model
-        'eu.anthropic.claude-sonnet-4-6'
+        ENV.fetch('BEDROCK_SONNET_MODEL', 'eu.anthropic.claude-sonnet-4-6')
       end
 
       def self.family
