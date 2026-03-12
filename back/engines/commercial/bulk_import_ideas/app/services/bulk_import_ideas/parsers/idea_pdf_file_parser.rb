@@ -15,7 +15,7 @@ module BulkImportIdeas::Parsers
     end
 
     def parse_rows(file)
-      claude_service = BulkImportIdeas::Parsers::Pdf::LLMFormParser.new(@phase, @locale, llm_class: Analysis::LLM::ClaudeSonnet46)
+      claude_service = BulkImportIdeas::Parsers::Pdf::LLMFormParser.new(@phase, @locale)
       form_parsed_idea = claude_service.parse_idea(file.file, template_data[:page_count])
 
       file.update!(parsed_value: { parser: 'claude', value: form_parsed_idea })
