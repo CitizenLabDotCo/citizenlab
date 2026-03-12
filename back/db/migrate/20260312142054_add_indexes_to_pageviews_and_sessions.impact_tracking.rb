@@ -7,5 +7,6 @@ class AddIndexesToPageviewsAndSessions < ActiveRecord::Migration[7.1]
     add_index :impact_tracking_pageviews, :project_id, algorithm: :concurrently
     add_index :impact_tracking_pageviews, :created_at, algorithm: :concurrently
     add_index :impact_tracking_sessions, :highest_role, algorithm: :concurrently
+    add_index :impact_tracking_sessions, :user_id, algorithm: :concurrently
   end
 end

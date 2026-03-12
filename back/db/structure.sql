@@ -295,6 +295,7 @@ DROP INDEX IF EXISTS public.index_internal_comments_on_author_id;
 DROP INDEX IF EXISTS public.index_input_topics_on_rgt;
 DROP INDEX IF EXISTS public.index_input_topics_on_project_id;
 DROP INDEX IF EXISTS public.index_input_topics_on_parent_id;
+DROP INDEX IF EXISTS public.index_impact_tracking_sessions_on_user_id;
 DROP INDEX IF EXISTS public.index_impact_tracking_sessions_on_monthly_user_hash;
 DROP INDEX IF EXISTS public.index_impact_tracking_sessions_on_highest_role;
 DROP INDEX IF EXISTS public.index_impact_tracking_pageviews_on_session_id;
@@ -6313,6 +6314,13 @@ CREATE INDEX index_impact_tracking_sessions_on_highest_role ON public.impact_tra
 --
 
 CREATE INDEX index_impact_tracking_sessions_on_monthly_user_hash ON public.impact_tracking_sessions USING btree (monthly_user_hash);
+
+
+--
+-- Name: index_impact_tracking_sessions_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_impact_tracking_sessions_on_user_id ON public.impact_tracking_sessions USING btree (user_id);
 
 
 --
