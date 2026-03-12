@@ -444,6 +444,17 @@ resource 'AdminPublication' do
         expect(response_data[:attributes][:status_counts][:published]).to eq 3
       end
     end
+
+    get 'web_api/v1/admin_publications/tree_view' do
+      example 'Get tree view of admin publications' do
+        do_request
+        expect(status).to eq 200
+        nodes = response_data[:attributes][:nodes]
+        expect(nodes.length).to eq 7
+        folders = nodes.filter { |n| n[:type] == 'folder' }
+        expect(folders.length).to eq 2
+      end
+    end
   end
 
   context 'when resident' do
