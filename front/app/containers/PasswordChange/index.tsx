@@ -131,7 +131,6 @@ const ChangePassword = () => {
       <main>
         <StyledContentContainer>
           <Title>{formatMessage(pageTitle)}</Title>
-
           <FormProvider {...methods}>
             <Form>
               {isAdmin(authUser) && (
