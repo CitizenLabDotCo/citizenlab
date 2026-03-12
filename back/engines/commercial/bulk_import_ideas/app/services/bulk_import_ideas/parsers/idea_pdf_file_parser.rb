@@ -14,11 +14,6 @@ module BulkImportIdeas::Parsers
       @row_mapper = IdeaRowMapper.new(phase: @phase, project: @project, locale: @locale, personal_data_enabled: @personal_data_enabled, strategy: self)
     end
 
-    # Synchronous version not implemented for PDFs
-    def parse_file(_file_content)
-      raise NotImplementedError, 'This method is not implemented for PDFs'
-    end
-
     def parse_rows(file)
       claude_service = BulkImportIdeas::Parsers::Pdf::LLMFormParser.new(@phase, @locale, llm_class: Analysis::LLM::ClaudeSonnet46)
       form_parsed_idea = claude_service.parse_idea(file.file, template_data[:page_count])
