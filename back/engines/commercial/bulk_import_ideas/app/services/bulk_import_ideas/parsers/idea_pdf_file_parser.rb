@@ -38,7 +38,6 @@ module BulkImportIdeas::Parsers
     end
 
     # Strategy methods called by IdeaRowMapper
-
     def structure_raw_fields(idea)
       idea = extract_permission_checkbox(idea)
       idea.map do |name, value|
