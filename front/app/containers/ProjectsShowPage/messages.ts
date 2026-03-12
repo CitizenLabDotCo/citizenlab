@@ -272,8 +272,8 @@ export default defineMessages({
     id: 'app.containers.Projects.seeTheQuestions',
     defaultMessage: 'See the questions',
   },
-  seeTheIssues: {
-    id: 'app.containers.Projects.seeTheIssues',
+  seeTheIssues1: {
+    id: 'app.containers.Projects.seeTheIssues1',
     defaultMessage: 'See the issues',
   },
   seeTheContributions: {
