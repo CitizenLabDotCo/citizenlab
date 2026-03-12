@@ -790,6 +790,7 @@
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Redaguoti grupę",
   "app.containers.Admin.Users.GroupsPanel.admins": "Administratoriai",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Registruoti naudotojai",
+  "app.containers.Admin.Users.GroupsPanel.folderManagers": "Aplankų tvarkyklės",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grupės",
   "app.containers.Admin.Users.GroupsPanel.managers": "Projektų vadovai",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Priskirti elementai",
