@@ -165,7 +165,7 @@ namespace :setup_and_support do
     raise "No locale columns found in CSV headers: #{stripped_headers.join(', ')}" if locale_columns.empty?
 
     sort_column = args[:sort_column]&.strip
-    raise "Sort column '#{sort_column}' not found in CSV headers: #{stripped_headers.join(', ')}" if sort_column.present? && !stripped_headers.include?(sort_column)
+    raise "Sort column '#{sort_column}' not found in CSV headers: #{stripped_headers.join(', ')}" if sort_column.present? && stripped_headers.exclude?(sort_column)
 
     sorted_rows = if sort_column.present?
       rows.sort_by { |row| row[sort_column].to_s.strip.downcase }
