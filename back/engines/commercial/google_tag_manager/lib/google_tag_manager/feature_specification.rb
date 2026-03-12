@@ -30,7 +30,7 @@ module GoogleTagManager
     add_setting 'container_id', schema: {
       type: 'string',
       description: 'The unique ID of your GTM workspace, format GTM-XXXXXXX. More than one GTM ID can be added here with commas but is not recommended.',
-      pattern: '^GTM-[A-Z0-9]{1,7}(,\\s*GTM-[A-Z0-9]{1,7})*$',
+      pattern: '^GTM-[A-Z0-9]{1,9}(, GTM-[A-Z0-9]{1,9})*$',
       default: ENV.fetch('DEFAULT_GTM_CONTAINER_ID', '')
     }
     add_setting 'category', schema: {

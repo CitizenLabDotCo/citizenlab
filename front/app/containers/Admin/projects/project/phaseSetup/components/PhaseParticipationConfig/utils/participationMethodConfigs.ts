@@ -16,6 +16,7 @@ export const defaultParticipationConfig: IUpdatedPhaseProperties = {
   voting_max_total: null,
   voting_max_votes_per_idea: 1,
   presentation_mode: 'card',
+  available_views: ['card'],
   ideas_order: undefined,
   input_term: 'idea',
   poll_anonymous: false,
@@ -24,7 +25,7 @@ export const defaultParticipationConfig: IUpdatedPhaseProperties = {
   survey_embed_url: null,
   expire_days_limit: undefined,
   reacting_threshold: undefined,
-  prescreening_enabled: undefined,
+  prescreening_mode: undefined,
 };
 
 export const ideationDefaultConfig: IUpdatedPhaseProperties = {
@@ -40,9 +41,10 @@ export const ideationDefaultConfig: IUpdatedPhaseProperties = {
   allow_anonymous_participation: false,
   reacting_dislike_limited_max: null,
   presentation_mode: 'card',
+  available_views: ['card', 'map'],
   input_term: 'idea',
   ideas_order: 'trending',
-  prescreening_enabled: false,
+  prescreening_mode: null,
 };
 
 export const nativeSurveyDefaultConfig: IUpdatedPhaseProperties = {
@@ -66,6 +68,7 @@ export const votingDefaultConfig: IUpdatedPhaseProperties = {
   commenting_enabled: true,
   autoshare_results_enabled: true,
   presentation_mode: 'card',
+  available_views: ['card'],
   ideas_order: 'random',
   input_term: 'idea',
   vote_term: 'vote',
@@ -89,9 +92,10 @@ export const proposalsDefaultConfig: IUpdatedPhaseProperties = {
   allow_anonymous_participation: false,
   reacting_dislike_limited_max: null,
   presentation_mode: 'card',
+  available_views: ['card', 'map'],
   input_term: 'proposal',
   ideas_order: 'trending',
   expire_days_limit: 90,
   reacting_threshold: 300,
-  prescreening_enabled: false,
+  prescreening_mode: null,
 };

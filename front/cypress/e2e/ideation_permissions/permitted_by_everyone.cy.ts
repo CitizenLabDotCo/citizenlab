@@ -1,6 +1,11 @@
 import moment = require('moment');
 import { randomString, randomEmail } from '../../support/commands';
-import { updatePermission } from '../../support/permitted_by_utils';
+import {
+  updatePermission,
+  confirmUserCustomFieldHasValue,
+  addPermissionsCustomField,
+  setupProject,
+} from '../../support/permitted_by_utils';
 import { fillOutTitleAndBody } from './_utils';
 
 describe('Ideation permitted by: everyone', () => {
@@ -9,71 +14,37 @@ describe('Ideation permitted by: everyone', () => {
   let projectId = '';
   let projectSlug = '';
   let phaseId = '';
+  let fieldName = '';
   let userId: string | undefined;
-  let ideaId: string | undefined;
   let answer: string | undefined;
-
-  const fieldName = randomString(10);
-
-  const twoDaysAgo = moment().subtract(2, 'days').format('DD/MM/YYYY');
-  const inTwoMonths = moment().add(2, 'month').format('DD/MM/YYYY');
 
   before(() => {
     // Create custom field
-    cy.apiCreateCustomField(fieldName, true, false).then((response) => {
-      customFieldId = response.body.data.id;
-      customFieldKey = response.body.data.attributes.key;
+    setupProject({ participationMethod: 'ideation' }).then((data) => {
+      customFieldId = data.customFieldId;
+      customFieldKey = data.customFieldKey;
+      projectId = data.projectId;
+      projectSlug = data.projectSlug;
+      phaseId = data.phaseId;
+      fieldName = data.fieldName;
 
-      // Create project with active native survey phase
-      cy.apiCreateProject({
-        title: randomString(),
-        descriptionPreview: randomString(),
-        description: randomString(),
-        publicationStatus: 'published',
-      }).then((project) => {
-        projectId = project.body.data.id;
-        projectSlug = project.body.data.attributes.slug;
-        cy.apiCreatePhase({
-          projectId,
-          title: randomString(),
-          startAt: twoDaysAgo,
-          endAt: inTwoMonths,
-          participationMethod: 'ideation',
-          canComment: true,
-          canPost: true,
-          canReact: true,
-          description: 'Some description',
-          allow_anonymous_participation: true,
-        }).then((phase) => {
-          phaseId = phase.body.data.id;
+      return cy
+        .apiLogin('admin@govocal.com', 'democracy2.0')
+        .then((response) => {
+          const adminJwt = response.body.jwt;
 
-          return cy
-            .apiLogin('admin@govocal.com', 'democracy2.0')
-            .then((response) => {
-              const adminJwt = response.body.jwt;
-
-              return updatePermission(cy, {
-                adminJwt,
-                phaseId,
-                permitted_by: 'everyone',
-              }).then(() => {
-                // Add one permissions custom field
-                return cy.request({
-                  headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${adminJwt}`,
-                  },
-                  method: 'POST',
-                  url: `web_api/v1/phases/${phaseId}/permissions/posting_idea/permissions_custom_fields`,
-                  body: {
-                    custom_field_id: customFieldId,
-                    required: true,
-                  },
-                });
-              });
+          return updatePermission({
+            adminJwt,
+            phaseId,
+            permitted_by: 'everyone',
+          }).then(() => {
+            return addPermissionsCustomField({
+              adminJwt,
+              phaseId,
+              customFieldId,
             });
+          });
         });
-      });
     });
   });
 
@@ -157,15 +128,9 @@ describe('Ideation permitted by: everyone', () => {
     });
 
     const confirmSavedToProfile = (expectedAnswer: string | undefined) => {
-      cy.intercept('GET', `/web_api/v1/users/me`).as('getMe');
-      cy.visit('/');
-      cy.wait('@getMe').then((interception) => {
-        expect(interception.response?.statusCode).to.equal(200);
-        expect(
-          interception.response?.body.data.attributes.custom_field_values[
-            customFieldKey
-          ]
-        ).to.eq(expectedAnswer);
+      confirmUserCustomFieldHasValue({
+        key: customFieldKey,
+        value: expectedAnswer,
       });
     };
 

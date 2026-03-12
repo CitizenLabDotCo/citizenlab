@@ -10,6 +10,7 @@ import {
   Icon,
   Text,
   DropdownListItem,
+  Badge,
 } from '@citizenlab/cl2-component-library';
 import { stringify } from 'qs';
 
@@ -26,15 +27,19 @@ import { downloadSurveyResults } from 'api/survey_results/utils';
 
 import useLocale from 'hooks/useLocale';
 
+import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
+
 import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
+import { captureAllMapScreenshots } from 'utils/mapViewRegistry';
 
 import messages from '../../messages';
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
+import { useWordExportContext } from '../../word/WordExportContext';
 
 interface Props {
   phase: IPhaseData;
@@ -48,6 +53,7 @@ const SurveyActions = ({ phase }: Props) => {
 
   const { downloadPdf, isDownloading: isDownloadingPdf } =
     usePdfExportContext();
+  const { downloadWord, isDownloadingWord } = useWordExportContext();
 
   const { data: project } = useProjectById(projectId);
   const { mutate: updatePhase } = useUpdatePhase();
@@ -68,7 +74,7 @@ const SurveyActions = ({ phase }: Props) => {
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [isDropdownOpened, setDropdownOpened] = useState(false);
-  const [isDownloading, setIsDownloading] = useState(false);
+  const [isDownloadingXlsx, setIsDownloadingXlsx] = useState(false);
 
   if (!project || !submissionCount) {
     return null;
@@ -113,15 +119,15 @@ const SurveyActions = ({ phase }: Props) => {
     );
   };
 
-  const handleDownloadResults = async () => {
+  const handleDownloadXlsx = async () => {
     try {
-      setIsDownloading(true);
+      setIsDownloadingXlsx(true);
       setDropdownOpened(false);
       await downloadSurveyResults(locale, phase);
     } catch (error) {
       // eslint-disable-next-line no-empty
     } finally {
-      setIsDownloading(false);
+      setIsDownloadingXlsx(false);
     }
   };
 
@@ -176,17 +182,12 @@ const SurveyActions = ({ phase }: Props) => {
     setDropdownOpened(false);
   };
 
-  if (isDownloading) {
-    return (
-      <Box width="100%" height="100%" display="flex" alignItems="center">
-        <Spinner />
-      </Box>
-    );
-  }
-
   return (
     <>
       <Box display="flex" alignItems="center" gap="8px" data-pdf-exclude="true">
+        {(isDownloadingXlsx || isDownloadingPdf || isDownloadingWord) && (
+          <Spinner size="24px" />
+        )}
         <Box position="relative">
           <Button
             icon="dots-horizontal"
@@ -204,28 +205,47 @@ const SurveyActions = ({ phase }: Props) => {
             opened={isDropdownOpened}
             onClickOutside={closeDropdown}
             className="dropdown"
-            width="auto"
-            right="0px"
+            width="max-content"
+            right="12px"
             top="45px"
+            zIndex="10000"
             content={
-              <Box minWidth="250px">
+              <Box style={{ whiteSpace: 'nowrap' }}>
                 <DropdownListItem
-                  onClick={handleDownloadResults}
+                  onClick={async () => {
+                    setDropdownOpened(false);
+                    await captureAllMapScreenshots();
+                    downloadPdf();
+                  }}
+                >
+                  <Icon name="download" fill={colors.coolGrey600} mr="8px" />
+                  <Text my="0px">
+                    {formatMessage(messages.downloadInsightsPdf)}
+                  </Text>
+                </DropdownListItem>
+                <DropdownListItem
+                  onClick={async () => {
+                    setDropdownOpened(false);
+                    await captureAllMapScreenshots();
+                    downloadWord();
+                  }}
+                >
+                  <Icon name="download" fill={colors.coolGrey600} mr="8px" />
+                  <Box display="flex" alignItems="center" gap="6px">
+                    <Text my="0px">{formatMessage(messages.downloadWord)}</Text>
+                    <Badge color={colors.coolGrey600} className="inverse">
+                      {formatMessage(projectFilesMessages.beta)}
+                    </Badge>
+                  </Box>
+                </DropdownListItem>
+                <DropdownListItem
+                  onClick={handleDownloadXlsx}
                   data-cy="e2e-download-survey-results"
                 >
                   <Icon name="download" fill={colors.coolGrey600} mr="8px" />
                   <Text my="0px">
-                    {formatMessage(messages.downloadSurveyResults)}
+                    {formatMessage(messages.downloadSurveyResults)} (.xlsx)
                   </Text>
-                </DropdownListItem>
-                <DropdownListItem>
-                  <Toggle
-                    checked={postingEnabled}
-                    label={formatMessage(messages.openForResponses)}
-                    onChange={() => {
-                      togglePostingEnabled();
-                    }}
-                  />
                 </DropdownListItem>
                 {haveSubmissionsComeIn && (
                   <DropdownListItem
@@ -242,15 +262,15 @@ const SurveyActions = ({ phase }: Props) => {
             }
           />
         </Box>
-        <Button
-          buttonStyle="text"
-          onClick={downloadPdf}
-          processing={isDownloadingPdf}
-          aria-label={formatMessage(messages.downloadInsightsPdf)}
-          data-pdf-exclude="true"
-        >
-          {formatMessage(messages.download)}
-        </Button>
+        <Box flexShrink={0} style={{ whiteSpace: 'nowrap' }}>
+          <Toggle
+            checked={postingEnabled}
+            label={formatMessage(messages.openForResponses)}
+            onChange={() => {
+              togglePostingEnabled();
+            }}
+          />
+        </Box>
         <ButtonWithLink
           linkTo={`/projects/${project.data.attributes.slug}/surveys/new?phase_id=${phaseId}`}
           buttonStyle="text"

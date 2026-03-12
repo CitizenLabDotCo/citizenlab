@@ -1,15 +1,26 @@
 # frozen_string_literal: true
 
 module BulkImportIdeas::Parsers
-  class IdeaPdfFileParser < IdeaBaseFileParser
+  class IdeaPdfFileParser
     IDEAS_PER_JOB = 5
-    POSITION_TOLERANCE = 10
     MAX_TOTAL_PAGES = 100
-    TEXT_FIELD_TYPES = %w[text multiline_text text_multiloc html_multiloc]
 
-    # Synchronous version not implemented for PDFs
-    def parse_file(file_content)
-      raise NotImplementedError, 'This method is not implemented for PDFs'
+    def initialize(current_user, locale, phase_id, personal_data_enabled)
+      @import_user = current_user
+      @phase = Phase.find(phase_id)
+      @project = @phase.project
+      @locale = locale || AppConfiguration.instance.settings('core', 'locales').first
+      @personal_data_enabled = personal_data_enabled
+      @row_mapper = IdeaRowMapper.new(phase: @phase, project: @project, locale: @locale, personal_data_enabled: @personal_data_enabled, strategy: self)
+    end
+
+    def parse_rows(file)
+      claude_service = BulkImportIdeas::Parsers::Pdf::LLMFormParser.new(@phase, @locale, llm_class: Analysis::LLM::ClaudeSonnet46)
+      form_parsed_idea = claude_service.parse_idea(file.file, template_data[:page_count])
+
+      file.update!(parsed_value: { parser: 'claude', value: form_parsed_idea })
+
+      [@row_mapper.idea_to_idea_row(form_parsed_idea, file)]
     end
 
     # Asynchronous version of the parse_file method
@@ -19,7 +30,7 @@ module BulkImportIdeas::Parsers
       job_ids = []
       job_first_idea_index = 1
       files.each_slice(IDEAS_PER_JOB) do |sliced_files|
-        job = BulkImportIdeas::IdeaImportJob.perform_later(self.class, sliced_files, @import_user, @locale, @phase, @personal_data_enabled, job_first_idea_index)
+        job = BulkImportIdeas::IdeaPdfImportJob.perform_later(sliced_files, @import_user, @locale, @phase, @personal_data_enabled, job_first_idea_index)
         job_ids << job.job_id
         job_first_idea_index += IDEAS_PER_JOB
       end
@@ -27,27 +38,69 @@ module BulkImportIdeas::Parsers
       job_ids
     end
 
-    # Returns an array of idea rows compatible with IdeaImporter
-    # Only one row ever returned as only one PDF per idea is parsed by this service
-    def parse_rows(file)
-      pdf_file = file.file.read
+    # Strategy methods called by IdeaRowMapper
 
-      # We get both parsed values so we can merge the best values from both
-      google_forms_service = Pdf::IdeaGoogleFormParserService.new
-      google_parsed_idea = google_parsed_idea(google_forms_service, pdf_file)
-      text_parsed_idea = text_parsed_idea(google_forms_service, pdf_file)
+    def structure_raw_fields(idea)
+      idea = extract_permission_checkbox(idea)
+      idea.map do |name, value|
+        {
+          name: name,
+          value: value,
+          type: 'field',
+          page: 1,
+          position: nil
+        }
+      end
+    end
 
-      # Store the parsed idea for better analysis later
-      file.update!(parsed_value: { parser: 'google', value: { google_parsed: google_parsed_idea, text_parsed: text_parsed_idea } })
+    def merge_idea_with_form_fields(idea_fields)
+      merged_fields = []
+      form_fields = template_data[:fields].deep_dup
+      form_fields.each do |form_field|
+        next unless form_field[:type] == 'field'
 
-      # Merge the two types of parsed idea into one idea row
-      [merge_parsed_ideas_into_idea_row(google_parsed_idea, text_parsed_idea, file)]
+        idea_field = idea_fields.find { |f| f[:name] == form_field[:name] || form_field[:description] == f[:name] }
+        next unless idea_field && idea_field[:value].present?
+
+        new_field = form_field
+        new_field[:value] = idea_field[:value]
+        new_field = @row_mapper.process_field_value(new_field, form_fields)
+        merged_fields << new_field
+        idea_fields.delete(idea_field)
+      end
+      merged_fields
+    end
+
+    def extract_matrix_value(field)
+      return nil if field[:value].blank?
+
+      # Swap the keys for the matrix statements to the actual field keys
+      multiloc_service = MultilocService.new
+      matrix_field = CustomField.find_by(key: field[:key])
+      statement_keys = matrix_field.matrix_statements.each_with_object({}) do |statement, res|
+        statement_title = I18n.with_locale(@locale) { multiloc_service.t(statement.title_multiloc) }
+        res[statement_title] = statement.key if statement_title.present?
+      end
+
+      field[:value].transform_keys { |key| statement_keys[key] }
     end
 
     private
 
+    def extract_permission_checkbox(idea)
+      organization_name = AppConfiguration.instance.settings('core', 'organization_name')[@locale]
+      permission_checkbox_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.by_checking_this_box', organizationName: organization_name) }
+      checkbox = idea.select { |key, value| key == permission_checkbox_label && value == 'checked' }
+      if checkbox != {}
+        locale_permission_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.permission') }
+        idea[locale_permission_label] = 'X'
+        idea.delete(checkbox.first.first) # Remove the original field
+      end
+      idea
+    end
+
     def create_files(file_content)
-      source_file = upload_source_file file_content
+      source_file = @row_mapper.upload_source_file file_content
 
       # Split a pdf into one PDF per idea
       split_pdf_files = []
@@ -96,155 +149,6 @@ module BulkImportIdeas::Parsers
         end
       end
       split_pdf_files
-    end
-
-    def google_parsed_idea(google_forms_service, pdf_file)
-      remove_question_numbers_in_keys(google_forms_service.parse_pdf(pdf_file))
-    end
-
-    def text_parsed_idea(google_forms_service, pdf_file)
-      raw_text = google_forms_service.raw_text_page_array(pdf_file)
-      Pdf::IdeaPlainTextParser.new(@locale).parse_text(raw_text, template_data)
-    rescue BulkImportIdeas::Error
-      {}
-    end
-
-    # Returns the field titles without question numbers for the google parsed ideas
-    def remove_question_numbers_in_keys(parsed_idea)
-      template_data[:fields].each do |field|
-        parsed_idea[:fields] = parsed_idea[:fields].transform_keys { |key| key == field[:print_title] ? field[:name] : key }
-      end
-      parsed_idea
-    end
-
-    # Overridden from base class to handle the way checkboxes are filled in the PDF
-    # and detect fields from description as well as title
-    # @param [Array<Hash>] idea_fields - comes from IdeaBaseFileParser#structure_raw_fields
-    def merge_idea_with_form_fields(idea_fields)
-      merged_fields = []
-      form_fields = template_data[:fields].deep_dup # Array<Hash> comes from IdeaPdfFormExporter#add_to_importer_fields
-      form_fields.each do |form_field|
-        idea_fields.each do |idea_field|
-          if form_field[:name] == idea_field[:name] || form_field[:description] == idea_field[:name]
-            if form_field[:type] == 'field' && idea_field[:value].present?
-              new_field = form_field
-              new_field[:value] = idea_field[:value]
-              new_field = process_field_value(new_field, form_fields)
-              merged_fields << new_field
-              idea_fields.delete_if { |f| f == idea_field }
-              break
-            elsif idea_field[:value] == 'filled_checkbox' && form_field[:page] == idea_field[:page]
-              # Check that the value is near to the position on the page it should be
-              if idea_field[:position].between?(form_field[:position].to_i - POSITION_TOLERANCE, form_field[:position].to_i + POSITION_TOLERANCE)
-                select_field = merged_fields.find { |f| f[:key] == form_field[:parent_key] } || form_fields.find { |f| f[:key] == form_field[:parent_key] }.clone
-                select_field[:value] = select_field[:value] ? select_field[:value] << form_field[:key] : [form_field[:key]]
-                merged_fields << select_field
-                idea_fields.delete_if { |f| f == idea_field }
-                form_fields.delete_if { |f| f == idea_field } if select_field[:input_type] == 'select'
-                break
-              end
-            end
-          end
-        end
-      end
-      merged_fields
-    end
-
-    # Overridden from base class to tidy data returned from PDF
-    def structure_raw_fields(idea)
-      locale_optional_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.optional') }
-      idea = extract_permission_checkbox(idea)
-      idea.map do |name, value|
-        option = name.match(/(.*)_(\d*).(\d*).(\d{2})/) # Is this an option (checkbox)?
-        {
-          name: option ? option[1] : name.gsub("(#{locale_optional_label})", '').squish,
-          value: value,
-          type: value.to_s.include?('checkbox') ? 'option' : 'field',
-          page: option ? option[2].to_i : nil,
-          position: option ? option[4].to_i : nil
-        }
-      end
-    end
-
-    def extract_permission_checkbox(idea)
-      # Truncate the checkbox label and downcase for better multiline checkbox detection
-      permission_checkbox_label = (I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.by_checking_this_box') })[0..30]
-      checkbox = idea.select { |key, value| key.downcase.match(/^#{permission_checkbox_label.downcase}/) && value == 'filled_checkbox' }
-      if checkbox != {}
-        locale_permission_label = I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.permission') }
-        idea[locale_permission_label] = 'X'
-        idea.delete(checkbox.first.first) # Remove the original field
-      end
-      idea
-    end
-
-    def merge_parsed_ideas_into_idea_row(form_parsed_idea, text_parsed_idea, file)
-      form_parsed_idea_row = idea_to_idea_row(form_parsed_idea, file)
-      text_parsed_idea_row = idea_to_idea_row(text_parsed_idea, file)
-      return form_parsed_idea_row if text_parsed_idea_row.blank?
-      return text_parsed_idea_row if form_parsed_idea_row.blank?
-
-      # Merge the core fields and prefer the form parsed values
-      merged_row = text_parsed_idea_row.merge(form_parsed_idea_row)
-
-      # Merge the custom field values of only select fields
-      # 1. For most fields prefer the text parsed value
-      custom_field_values = form_parsed_idea_row[:custom_field_values].merge(text_parsed_idea_row[:custom_field_values])
-
-      # 2. If multi select (array) combine the two sets of values
-      custom_field_values = custom_field_values.to_h do |name, value|
-        if value.is_a?(Array)
-          value += form_parsed_idea_row[:custom_field_values][name] || [] # Add nothing if not present
-          value.uniq!
-        end
-        [name, value]
-      end
-
-      merged_row[:custom_field_values] = custom_field_values
-
-      # Get the complete PDF page range - although should always be the same
-      merged_row[:pdf_pages] = complete_page_range(form_parsed_idea_row[:pdf_pages], text_parsed_idea_row[:pdf_pages])
-      merged_row
-    end
-
-    # @param [Hash] field - comes from IdeaPdfFormExporter#add_to_importer_fields OR IdeaHtmlPdfTemplateReader#import_config_for_field
-    # @param [Array<Hash>] form_fields - comes from IdeaPdfFormExporter#add_to_importer_fields OR IdeaHtmlPdfTemplateReader#import_config_for_field
-    def process_field_value(field, form_fields)
-      processed_field = super
-
-      if TEXT_FIELD_TYPES.include?(processed_field[:input_type]) && processed_field[:value]
-        processed_field[:value] = process_text_field_value(processed_field)
-      end
-
-      processed_field
-    end
-
-    # NOTE: This is already done better in the text parser, but done again here to catch anything coming back from the google form parser
-    def process_text_field_value(field)
-      value = field[:value]
-
-      # Strip out greedily scanned text from the start and end of text fields based on text strings in delimiters
-      # eg next question title, form end text, end of description
-      start_delimiter = field.dig(:content_delimiters, :start)
-      end_delimiter = field.dig(:content_delimiters, :end)
-
-      if start_delimiter
-        split_string = value.split(start_delimiter)
-        value = split_string[1] if split_string.count > 1
-      end
-
-      if end_delimiter
-        split_string = value.split(end_delimiter)
-        value = split_string[0] if split_string.count > 1
-      end
-
-      value.strip
-    end
-
-    def complete_page_range(pages1, pages2)
-      min = [pages1.min, pages2.min].min
-      max = [pages1.max, pages2.max].max
-      (min..max).to_a
     end
 
     # This data is a combination of the form_fields and the context of where those fields are in the PDF

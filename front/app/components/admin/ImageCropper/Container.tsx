@@ -58,7 +58,7 @@ const Container = ({
               values={{
                 link: (
                   <a
-                    href={formatMessage(messages.imageSupportPageURL)}
+                    href={formatMessage(messages.imageSupportPageURL2)}
                     target="_blank"
                     rel="noreferrer"
                   >

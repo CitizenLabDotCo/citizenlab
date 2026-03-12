@@ -203,15 +203,20 @@ const FormBuilderTopBar = ({
         <ButtonWithLink
           buttonStyle="admin-dark"
           processing={isSubmitting}
+          disabled={isSubmitting}
           type="submit"
         >
           <FormattedMessage {...messages.save} />
         </ButtonWithLink>
       </Box>
-      <Modal opened={showLeaveModal} close={closeModal}>
+      <Modal
+        opened={showLeaveModal}
+        close={closeModal}
+        ariaLabelledBy="leave-builder-modal-title"
+      >
         <Box display="flex" flexDirection="column" width="100%" p="20px">
           <Box mb="40px">
-            <Title variant="h3" color="primary">
+            <Title id="leave-builder-modal-title" variant="h3" color="primary">
               <FormattedMessage
                 {...messages.leaveBuilderConfirmationQuestion}
               />

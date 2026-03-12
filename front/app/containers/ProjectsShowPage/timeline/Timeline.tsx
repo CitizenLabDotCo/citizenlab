@@ -424,6 +424,7 @@ const Timeline = ({
                       id={`phase-tab-${phaseNumber}`}
                       showArrow={showArrow}
                       isCurrentPhase={isCurrentPhase}
+                      className={`intercom-project-timeline-phase-${phaseNumber}`}
                     >
                       {isCurrentPhase && (
                         <BlinkingDot isSelected={isSelectedPhase} />
@@ -480,6 +481,7 @@ const Timeline = ({
                         role="tab"
                         id="new-phase"
                         showArrow={false}
+                        className="intercom-timeline-add-new-phase-button"
                       >
                         <span
                           aria-hidden

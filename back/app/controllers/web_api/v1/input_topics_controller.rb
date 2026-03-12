@@ -34,7 +34,7 @@ class WebApi::V1::InputTopicsController < ApplicationController
       input_topics,
       WebApi::V1::InputTopicSerializer,
       params: jsonapi_serializer_params,
-      include: [:children]
+      include: %i[children parent]
     )
   end
 

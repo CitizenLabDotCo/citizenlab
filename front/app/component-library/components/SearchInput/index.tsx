@@ -159,7 +159,7 @@ const SearchInput = ({
         <StyledInput
           id={id}
           className="e2e-search-input"
-          type="text"
+          type="search"
           aria-label={ariaLabel}
           placeholder={isLabelFloating ? '' : placeholder}
           value={internalSearchTerm || ''}
@@ -181,7 +181,11 @@ const SearchInput = ({
               mr="-5px"
             />
           ) : (
-            <Icon name="search" fill={colors.textSecondary} />
+            <Icon
+              name="search"
+              fill={colors.textSecondary}
+              role="presentation"
+            />
           )}
         </IconContainer>
       </StyledInputWrapper>

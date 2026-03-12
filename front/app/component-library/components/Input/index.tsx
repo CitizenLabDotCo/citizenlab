@@ -76,7 +76,7 @@ export interface InputProps {
   labelTooltipPlacement?: Placement;
   value?: string | null;
   locale?: Locale;
-  type: 'text' | 'email' | 'password' | 'number' | 'date';
+  type: 'text' | 'email' | 'password' | 'number' | 'date' | 'search';
   placeholder?: string | null;
   error?: string | null;
   onChange?: (arg: string, locale: Locale | undefined) => void;
@@ -107,6 +107,7 @@ export interface InputProps {
   className?: string;
   size?: InputSize;
   'data-testid'?: string;
+  'data-cy'?: string;
 }
 
 class Input extends PureComponent<InputProps> {
@@ -164,6 +165,7 @@ class Input extends PureComponent<InputProps> {
       autocomplete,
       size = 'medium',
       'data-testid': dataTestId,
+      'data-cy': dataCy,
       onChange,
       onMultilinePaste,
     } = this.props;
@@ -184,6 +186,7 @@ class Input extends PureComponent<InputProps> {
         className={className || ''}
         size={size}
         data-testid={dataTestId}
+        data-cy={dataCy}
       >
         {label && (
           <Label htmlFor={id}>

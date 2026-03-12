@@ -21,7 +21,7 @@ const EmptyState = () => {
       </Text>
       <Box display="flex" justifyContent="center" mt="32px">
         <ButtonWithLink
-          linkTo={formatMessage(messages.supportButtonLink) as RouteType}
+          linkTo={formatMessage(messages.supportButtonLink3) as RouteType}
           openLinkInNewTab
         >
           <FormattedMessage {...messages.supportButtonLabel} />

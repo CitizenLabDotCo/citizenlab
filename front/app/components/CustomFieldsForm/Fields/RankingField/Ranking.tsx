@@ -15,6 +15,7 @@ import {
 import { DragAndDropResult } from 'components/FormBuilder/edit/utils';
 
 import { useIntl } from 'utils/cl-intl';
+import { sanitizeForClassname } from 'utils/JSONFormUtils';
 
 import messages from '../../messages';
 
@@ -100,7 +101,7 @@ const Ranking = ({ value: data, question, onChange }: Props) => {
             <Text m="0px" aria-hidden color="textPrimary">
               {formatMessage(messages.rankingInstructions)}
             </Text>
-            <Ul aria-labelledby={`ranking-question-label-${question.key}`}>
+            <Ul aria-labelledby={`${sanitizeForClassname(question.key)}-label`}>
               {options.map((option: IOption, index: number) => (
                 <RankingOption
                   key={option.value}

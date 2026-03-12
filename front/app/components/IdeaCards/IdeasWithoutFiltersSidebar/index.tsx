@@ -196,8 +196,7 @@ const IdeasWithoutFiltersSidebar = ({
             <ViewButtons
               selectedView={selectedView}
               onClick={setSelectedView}
-              locationEnabled={locationEnabled}
-              defaultView={defaultView}
+              availableViews={phase?.data.attributes.available_views}
             />
           </Box>
           <Box
@@ -255,7 +254,7 @@ const IdeasWithoutFiltersSidebar = ({
                     alignment={smallerThanTablet ? 'right' : 'left'}
                     participationMethod={participationMethod}
                     isScreeningEnabled={
-                      phase?.data.attributes.prescreening_enabled
+                      !!phase?.data.attributes.prescreening_mode
                     }
                   />
                 )}

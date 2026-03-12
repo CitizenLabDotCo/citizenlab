@@ -16,9 +16,9 @@ export default defineMessages({
       'The question will be asked in the global sign-up process (e.g. when people click "Sign up" on the homepage).',
   },
   subtitleBullet2: {
-    id: 'app.containers.AdminPage.SettingsPage.subtitleBullet2',
+    id: 'app.containers.AdminPage.SettingsPage.subtitleBullet3',
     defaultMessage:
-      'The question will be asked <b>by default</b> when people sign up for a specific phase or event. However: <b>admins and project moderators can override this per phase</b>- see the "Phase access and user data" tab on each phase.',
+      'The question will be asked <b>by default</b> when people want to engage with a project or sign up for an event. Depending on your license, however, <b>admins and project managers can override this per phase</b>- see the “Phase access and user data” tab on each project phase.',
   },
   subtitleRegistration2: {
     id: 'app.containers.AdminPage.SettingsPage.subtitleRegistration2',

@@ -43,7 +43,7 @@ const UpsellNudge = () => {
           </Tooltip>
 
           <ButtonWithLink
-            linkTo={formatMessage(messages.timelineSupportArticle)}
+            linkTo={formatMessage(messages.timelineSupportArticle2)}
             buttonStyle="text"
             textColor={theme.colors.tenantPrimary}
           >

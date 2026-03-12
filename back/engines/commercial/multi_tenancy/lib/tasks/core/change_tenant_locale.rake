@@ -4,7 +4,7 @@
 # and craftjs_json content.
 #
 # Usage:
-#   rake 'core:change_tenant_locale[hostname.com,en-GB,en]'
+#   rake fix_existing_tenants:change_tenant_locale[hostname.com,en-GB,en]
 #
 # The task will:
 #   1. Add the new locale to AppConfiguration settings (alongside the current locale)

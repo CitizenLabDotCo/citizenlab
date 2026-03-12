@@ -2,7 +2,7 @@ import { API_PATH } from 'containers/App/constants';
 
 import { getJwt, setJwt } from 'utils/auth/jwt';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
-import { getClaimTokens, clearClaimTokens } from 'utils/claimToken';
+import { clearClaimToken } from 'utils/claimToken';
 
 import getAuthUser from '../auth_user/getAuthUser';
 
@@ -13,6 +13,7 @@ interface Parameters {
   password: string;
   rememberMe?: boolean;
   tokenLifetime?: number;
+  claimTokens?: string[];
 }
 
 export default async function signIn(parameters: Parameters) {
@@ -35,13 +36,14 @@ async function getAndSetToken({
   password,
   rememberMe = false,
   tokenLifetime,
+  claimTokens,
 }: Parameters) {
   const bodyData = {
     auth: {
       email,
       password,
       remember_me: rememberMe,
-      claim_tokens: getClaimTokens(),
+      claim_tokens: claimTokens,
     },
   };
 
@@ -57,7 +59,7 @@ async function getAndSetToken({
     .then((response) => response.json())
     .then((data) => {
       setJwt(data.jwt, rememberMe, tokenLifetime);
-      clearClaimTokens();
+      clearClaimToken();
     });
 }
 

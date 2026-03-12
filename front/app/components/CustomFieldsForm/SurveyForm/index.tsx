@@ -22,6 +22,7 @@ import tracks from '../tracks';
 import { convertCustomFieldsToNestedPages } from '../util';
 
 import SurveyPage from './SurveyPage';
+import { getInitialData } from './utils';
 
 const SurveyForm = ({
   projectId,
@@ -109,7 +110,7 @@ const SurveyForm = ({
     }
   };
 
-  const initialFormData = draftIdea?.data.attributes;
+  const initialFormData = getInitialData(draftIdea, authUser, phase);
 
   if (isLoading) {
     return <Spinner />;

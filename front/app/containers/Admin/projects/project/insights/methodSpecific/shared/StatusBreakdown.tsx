@@ -10,6 +10,9 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { useWordSection } from '../../word/useWordSection';
+import WordExportableInsight from '../../word/WordExportableInsight';
+
 import DistributionBar from './DistributionBar';
 import messages from './messages';
 
@@ -88,54 +91,86 @@ const StatusBreakdown = ({ phaseId, participationMethod }: Props) => {
 
   const isLoading = isLoadingCounts || isLoadingStatuses;
 
+  useWordSection(
+    'status-breakdown',
+    () => {
+      if (statusData.length === 0) return [];
+      return [
+        {
+          type: 'breakdown',
+          items: statusData.map((s) => ({
+            name: s.name,
+            count: s.count,
+            color: s.color,
+            percentage: s.percentage,
+          })),
+          title: formatMessage(messages.statusBreakdown),
+        },
+      ];
+    },
+    { skip: isLoading || statusData.length === 0 }
+  );
+
   if (isLoading) {
     return (
-      <StatusCard>
-        <Box display="flex" alignItems="center" gap="8px">
-          <Spinner size="24px" />
-        </Box>
-      </StatusCard>
+      <WordExportableInsight exportId="status-breakdown">
+        <StatusCard>
+          <Box display="flex" alignItems="center" gap="8px">
+            <Spinner size="24px" />
+          </Box>
+        </StatusCard>
+      </WordExportableInsight>
     );
   }
 
   if (statusData.length === 0) {
     return (
+      <WordExportableInsight exportId="status-breakdown">
+        <StatusCard>
+          <Text
+            m="0"
+            mb="16px"
+            fontWeight="semi-bold"
+            fontSize="m"
+            color="primary"
+          >
+            {formatMessage(messages.statusBreakdown)}
+          </Text>
+          <Text m="0" color="textSecondary">
+            {formatMessage(messages.noInputsSubmitted)}
+          </Text>
+        </StatusCard>
+      </WordExportableInsight>
+    );
+  }
+
+  return (
+    <WordExportableInsight exportId="status-breakdown">
       <StatusCard>
         <Text
           m="0"
-          mb="16px"
+          mb="24px"
           fontWeight="semi-bold"
           fontSize="m"
           color="primary"
         >
           {formatMessage(messages.statusBreakdown)}
         </Text>
-        <Text m="0" color="textSecondary">
-          {formatMessage(messages.noInputsSubmitted)}
-        </Text>
+        <Box display="flex" flexDirection="column" gap="4px">
+          {statusData.map((status) => (
+            <DistributionBar
+              key={status.id}
+              name={status.name}
+              count={status.count}
+              percentage={status.percentage}
+              maxCount={maxCount}
+              barColor={status.color}
+              showBadge={false}
+            />
+          ))}
+        </Box>
       </StatusCard>
-    );
-  }
-
-  return (
-    <StatusCard>
-      <Text m="0" mb="24px" fontWeight="semi-bold" fontSize="m" color="primary">
-        {formatMessage(messages.statusBreakdown)}
-      </Text>
-      <Box display="flex" flexDirection="column" gap="4px">
-        {statusData.map((status) => (
-          <DistributionBar
-            key={status.id}
-            name={status.name}
-            count={status.count}
-            percentage={status.percentage}
-            maxCount={maxCount}
-            barColor={status.color}
-            showBadge={false}
-          />
-        ))}
-      </Box>
-    </StatusCard>
+    </WordExportableInsight>
   );
 };
 

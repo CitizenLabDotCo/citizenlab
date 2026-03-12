@@ -4,21 +4,8 @@ require 'rails_helper'
 
 RSpec.describe ClaimTokenService do
   describe '.generate' do
-    context 'when ideation_accountless_posting is disabled' do
-      let(:idea) { create(:idea, author: nil) }
-
-      before { SettingsService.new.deactivate_feature!('ideation_accountless_posting') }
-
-      it 'returns nil without creating a token' do
-        expect { described_class.generate(idea) }.not_to change(ClaimToken, :count)
-        expect(described_class.generate(idea)).to be_nil
-      end
-    end
-
     context 'when item has no owner' do
       let(:idea) { create(:idea, author: nil) }
-
-      before { SettingsService.new.activate_feature!('ideation_accountless_posting') }
 
       it 'creates a claim token for the item' do
         token = nil
@@ -37,8 +24,6 @@ RSpec.describe ClaimTokenService do
 
     context 'when item has an owner' do
       let(:idea) { create(:idea) }
-
-      before { SettingsService.new.activate_feature!('ideation_accountless_posting') }
 
       it 'does not create a claim token' do
         token = nil
@@ -135,6 +120,67 @@ RSpec.describe ClaimTokenService do
       pending_token.update!(expires_at: 1.hour.ago)
       described_class.complete(user)
       expect(idea.reload.author_id).to eq(user.id)
+    end
+
+    it 'syncs user demographics by most recently created idea' do
+      user = create(:user)
+      idea1 = create(:idea, author: nil, created_at: 2.hours.ago, custom_field_values: {
+        field: 'value',
+        u_gender: 'male'
+      })
+      idea2 = create(:idea, author: nil, created_at: 1.hour.ago, custom_field_values: {
+        field: 'value',
+        u_gender: 'female'
+      })
+      create(:claim_token, item: idea1, pending_claimer: user)
+      create(:claim_token, item: idea2, pending_claimer: user)
+
+      described_class.complete(user)
+
+      expect(user.reload.custom_field_values).to eq({
+        'gender' => 'female'
+      })
+    end
+
+    context 'idea in survey phase' do
+      before do
+        @project = create(:single_phase_native_survey_project, phase_attrs: { with_permissions: true })
+        @phase = @project.phases.first
+        @permission = @phase.permissions.find_by(action: 'posting_idea')
+        @idea = create(:idea, author: nil, project: @project, creation_phase: @phase, custom_field_values: {
+          field: 'value',
+          u_gender: 'male'
+        })
+        @user = create(:user)
+        @claim_token = create(:claim_token, item: @idea, pending_claimer: @user)
+      end
+
+      context 'when user_data_collection = all_data' do
+        it 'syncs user demographics and sets author_id' do
+          expect(@permission.user_data_collection).to eq('all_data')
+          described_class.complete(@user)
+          expect(@user.reload.custom_field_values).to eq({
+            'gender' => 'male'
+          })
+          expect(@idea.reload.author_id).to eq(@user.id)
+        end
+      end
+
+      context 'when user_data_collection = demographics_only' do
+        before do
+          @permission.update!(
+            user_data_collection: 'demographics_only'
+          )
+        end
+
+        it 'syncs user demographics but DOES NOT set author_id' do
+          described_class.complete(@user)
+          expect(@user.reload.custom_field_values).to eq({
+            'gender' => 'male'
+          })
+          expect(@idea.reload.author_id).to be_nil
+        end
+      end
     end
   end
 

@@ -46,7 +46,7 @@ export const Workshops = () => {
           <ButtonWithLink
             height="45px"
             buttonStyle="text"
-            linkTo={formatMessage(messages.workshopsSupportLink) as RouteType}
+            linkTo={formatMessage(messages.workshopsSupportLink2) as RouteType}
             openLinkInNewTab
             textColor={colors.primary}
           >

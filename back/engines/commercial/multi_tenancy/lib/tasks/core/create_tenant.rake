@@ -94,8 +94,8 @@ namespace :cl2_back do
           allowed: true
         },
         segment: {
-          enabled: true,
-          allowed: true
+          enabled: false,
+          allowed: false
         },
         planhat: {
           enabled: false,
@@ -242,6 +242,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        prescreening_flagged_only: {
+          enabled: false,
+          allowed: false
+        },
         disable_disliking: {
           enabled: true,
           allowed: true
@@ -343,6 +347,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        live_auto_input_topics: {
+          enabled: true,
+          allowed: true
+        },
         data_repository_transcription: {
           enabled: true,
           allowed: true
@@ -356,10 +364,6 @@ namespace :cl2_back do
           allowed: true
         },
         phase_insights: {
-          enabled: false,
-          allowed: false
-        },
-        ideation_accountless_posting: {
           enabled: true,
           allowed: true
         },
@@ -367,9 +371,9 @@ namespace :cl2_back do
           enabled: false,
           allowed: false
         },
-        post_participation_signup: {
-          enabled: true,
-          allowed: true
+        spaces: {
+          enabled: false,
+          allowed: false
         }
       }
     )

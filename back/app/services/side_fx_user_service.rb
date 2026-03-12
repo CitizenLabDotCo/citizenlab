@@ -37,7 +37,7 @@ class SideFxUserService
     UpdateMemberCountJob.perform_later
   end
 
-  def after_destroy(frozen_user, current_user, participation_data_deleted: false)
+  def after_destroy(frozen_user, current_user, participation_data_deleted: false, update_member_counts: true)
     activity_user = current_user&.id == frozen_user&.id ? nil : current_user
 
     LogActivityJob.perform_later(
@@ -48,7 +48,7 @@ class SideFxUserService
       payload: { participation_data_deleted: }
     )
 
-    UpdateMemberCountJob.perform_later
+    UpdateMemberCountJob.perform_later if update_member_counts
     RemoveUserFromIntercomJob.perform_later(frozen_user.id)
     RemoveUsersFromSegmentJob.perform_later([frozen_user.id])
   end

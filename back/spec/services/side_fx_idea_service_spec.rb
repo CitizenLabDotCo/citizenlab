@@ -163,34 +163,43 @@ describe SideFxIdeaService do
         .with(idea)
     end
 
-    it 'enqueues a wise voice detection job if the presentation_mode is feed' do
+    it 'enqueues a wise voice detection job if feed is in available_views' do
       idea = create(:idea)
-      idea.phases.first.update!(presentation_mode: 'feed')
+      idea.phases.first.update!(presentation_mode: 'feed', available_views: %w[card feed])
       expect { service.after_create(idea, user, phase) }
         .to enqueue_job(WiseVoiceDetectionJob)
         .with(idea)
         .exactly(1).times
     end
 
-    it "doesn't enqueue a wise voice detection job if the presentation_mode is not feed" do
+    it "doesn't enqueue a wise voice detection job if feed is not in available_views" do
       idea = create(:idea)
       expect { service.after_create(idea, user, phase) }
         .not_to enqueue_job(WiseVoiceDetectionJob)
     end
 
-    it 'enqueues an IdeaFeed::TopicClassificationJob if the presentation_mode is feed' do
+    it 'enqueues an IdeaFeed::BatchTopicClassificationJob if live_input_topics_enabled is true' do
       idea = create(:idea)
-      idea.phases.first.update!(presentation_mode: 'feed')
+      idea.project.update!(live_auto_input_topics_enabled: true)
       expect { service.after_create(idea, user, phase) }
-        .to enqueue_job(IdeaFeed::TopicClassificationJob)
-        .with(idea.phases.first, idea)
+        .to enqueue_job(IdeaFeed::BatchTopicClassificationJob)
+        .with(idea.phases.first, [idea.id])
         .exactly(1).times
     end
 
-    it "doesn't enqueue an IdeaFeed::TopicClassificationJob if the presentation_mode is not feed" do
+    it "doesn't enqueue an IdeaFeed::BatchTopicClassificationJob if the presentation_mode is not feed" do
       idea = create(:idea)
       expect { service.after_create(idea, user, phase) }
-        .not_to enqueue_job(IdeaFeed::TopicClassificationJob)
+        .not_to enqueue_job(IdeaFeed::BatchTopicClassificationJob)
+    end
+
+    it "doesn't enqueue an IdeaFeed::BatchTopicClassificationJob if topics are already assigned" do
+      idea = create(:idea)
+      idea.project.update!(live_auto_input_topics_enabled: true)
+      topic = create(:input_topic, project: idea.project)
+      idea.update!(input_topics: [topic])
+      expect { service.after_create(idea, user, phase) }
+        .not_to enqueue_job(IdeaFeed::BatchTopicClassificationJob)
     end
   end
 
@@ -444,9 +453,9 @@ describe SideFxIdeaService do
         .with(idea)
     end
 
-    it 'enqueues a wise voice detection job when presentation_mode is feed and title or body changed' do
+    it 'enqueues a wise voice detection job when feed is in available_views and title or body changed' do
       idea = create(:idea)
-      idea.phases.first.update!(presentation_mode: 'feed')
+      idea.phases.first.update!(presentation_mode: 'feed', available_views: %w[card feed])
       idea.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
         .to enqueue_job(WiseVoiceDetectionJob)
@@ -454,7 +463,7 @@ describe SideFxIdeaService do
         .exactly(1).times
     end
 
-    it 'does not enqueue a wise voice detection job when presentation_mode is not feed' do
+    it 'does not enqueue a wise voice detection job when feed is not in available_views' do
       idea = create(:idea)
       idea.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
@@ -462,30 +471,29 @@ describe SideFxIdeaService do
         .with(idea)
     end
 
-    it 'does not enqueue a wise voice detection job when presentation_mode is feed but title and body did not change' do
+    it 'does not enqueue a wise voice detection job when live_auto_input_topics_enabled is true but title and body did not change' do
       idea = create(:idea).reload
-      idea.phases.first.update!(presentation_mode: 'feed')
+      idea.project.update!(live_auto_input_topics_enabled: true)
       expect { service.after_update(idea, user) }
         .not_to enqueue_job(WiseVoiceDetectionJob)
         .with(idea)
     end
 
-    it 'enqueues an IdeaFeed::TopicClassificationJob when presentation_mode is feed and title or body changed' do
+    it 'enqueues an IdeaFeed::BatchTopicClassificationJob when live_auto_input_topics_enabled is true and title or body changed' do
       idea = create(:idea)
-      idea.phases.first.update!(presentation_mode: 'feed')
+      idea.project.update!(live_auto_input_topics_enabled: true)
       idea.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
-        .to enqueue_job(IdeaFeed::TopicClassificationJob)
-        .with(idea.phases.first, idea)
+        .to enqueue_job(IdeaFeed::BatchTopicClassificationJob)
+        .with(idea.phases.first, [idea.id])
         .exactly(1).times
     end
 
-    it 'does not enqueue an IdeaFeed::TopicClassificationJob when presentation_mode is not feed' do
+    it 'does not enqueue an IdeaFeed::BatchTopicClassificationJob when presentation_mode is not feed' do
       idea = create(:idea)
       idea.update!(title_multiloc: { en: 'changed' })
       expect { service.after_update(idea, user) }
-        .not_to enqueue_job(IdeaFeed::TopicClassificationJob)
-        .with(idea)
+        .not_to enqueue_job(IdeaFeed::BatchTopicClassificationJob)
     end
 
     context 'user fields in survey form' do

@@ -9,13 +9,28 @@ module WebApi
 
         def index
           scope = policy_scope(Idea)
+          scope = scope.with_some_input_topics_and_children(params[:topics]) if params[:topics]
+
           feed_service = ::IdeaFeed::FeedService.new(
             @phase,
             user: current_user,
-            topic_ids: params[:topics],
             visitor_hash: VisitorHashService.new.generate_for_request(request)
           )
+
           ideas = feed_service.top_n(page_size, scope)
+
+          ActiveRecord::Associations::Preloader.new(
+            records: ideas,
+            associations: [
+              :idea_images,
+              :input_topics,
+              :phases,
+              :ideas_phases,
+              :idea_status,
+              :creation_phase,
+              { project: [:phases], author: [:unread_notifications] }
+            ]
+          ).call
 
           render json: WebApi::V1::IdeaSerializer.new(ideas, params: jsonapi_serializer_params).serializable_hash
         end
@@ -34,3 +49,5 @@ module WebApi
     end
   end
 end
+
+WebApi::V1::IdeaFeed::IdeasController.include(AggressiveCaching::Patches::WebApi::V1::IdeaFeed::IdeasController)

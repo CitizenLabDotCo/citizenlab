@@ -105,10 +105,10 @@ export default defineMessages({
     id: 'app.containers.ContentBuilder.homepage.fixedRatioBannerTooltipLink',
     defaultMessage: 'knowledge base',
   },
-  imageSupportPageURL: {
-    id: 'app.containers.ContentBuilder.homepage.imageSupportPageURL',
+  imageSupportPageURL2: {
+    id: 'app.containers.ContentBuilder.homepage.imageSupportPageURL2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/1346397-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
+      'https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images',
   },
   overlayToggleLabel: {
     id: 'app.containers.ContentBuilder.homepage.overlayToggleLabel',
@@ -143,5 +143,61 @@ export default defineMessages({
     id: 'app.containers.ContentBuilder.homepage.customizationNotAvailable2',
     defaultMessage:
       'Customizing settings other than the image and text on the homepage banner is not included in your current license. Reach out to your GovSuccess Manager to learn more about it.',
+  },
+  headerHeights: {
+    id: 'app.containers.ContentBuilder.homepage.headerHeights',
+    defaultMessage: 'Header heights (in pixels)',
+  },
+  headerHeightDesktop: {
+    id: 'app.containers.ContentBuilder.homepage.headerHeightDesktop',
+    defaultMessage: 'Desktop',
+  },
+  headerHeightTablet: {
+    id: 'app.containers.ContentBuilder.homepage.headerHeightTablet',
+    defaultMessage: 'Tablet',
+  },
+  headerHeightPhone: {
+    id: 'app.containers.ContentBuilder.homepage.headerHeightPhone',
+    defaultMessage: 'Phone',
+  },
+  useSameHeight: {
+    id: 'app.containers.ContentBuilder.homepage.useSameHeight',
+    defaultMessage: 'Use same height as non-registered banner',
+  },
+  useSameHeightDescription: {
+    id: 'app.containers.ContentBuilder.homepage.useSameHeightDescription',
+    defaultMessage:
+      'When enabled, the banner for registered users will use the same heights as the banner for non-registered users.',
+  },
+  advancedHeightCustomization: {
+    id: 'app.containers.ContentBuilder.homepage.advancedHeightCustomization',
+    defaultMessage: 'Advanced height customization',
+  },
+  advancedHeightCustomizationInfoSignedIn: {
+    id: 'app.containers.ContentBuilder.homepage.advancedHeightCustomizationInfoSignedIn2',
+    defaultMessage:
+      'These settings customize the banner height specifically for <bold>registered users</bold>.',
+  },
+  advancedHeightCustomizationInfoSignedOut: {
+    id: 'app.containers.ContentBuilder.homepage.advancedHeightCustomizationInfoSignedOut',
+    defaultMessage:
+      'These settings customize the banner height specifically for <bold>non-registered users</bold>.',
+  },
+  disableSameHeightInfo: {
+    id: 'app.containers.ContentBuilder.homepage.disableSameHeightInfo',
+    defaultMessage:
+      "Disable 'Use same height as non-registered banner' to edit these values.",
+  },
+  desktopHeightPx: {
+    id: 'app.containers.ContentBuilder.homepage.desktopHeightPx',
+    defaultMessage: 'Desktop height (px)',
+  },
+  tabletHeightPx: {
+    id: 'app.containers.ContentBuilder.homepage.tabletHeightPx',
+    defaultMessage: 'Tablet height (px)',
+  },
+  phoneHeightPx: {
+    id: 'app.containers.ContentBuilder.homepage.phoneHeightPx',
+    defaultMessage: 'Phone height (px)',
   },
 });

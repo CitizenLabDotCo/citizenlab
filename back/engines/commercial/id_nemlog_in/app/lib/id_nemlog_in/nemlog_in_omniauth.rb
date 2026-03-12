@@ -4,18 +4,16 @@ module IdNemlogIn
   class NemlogInOmniauth < OmniauthMethods::Base
     include NemlogInVerification
 
+    # Certs can be found here: https://www.nemlog-in.dk/metadata/#broker-idp
     ENVIRONMENTS = {
       pre_production_integration: {
-        # https://www.nemlog-in.dk/vejledningertiltestmiljo/forside/test-som-tjenesteudbyder-eller-broker/
         # But the certificates from `production_integration` are used, because the ones from `pre_production_integration` give "Invalid Signature on SAML Response"
         metadata_xml_file: File.join(IdNemlogIn::Engine.root, 'config', 'saml', 'idp_metadata', 'pre_production_integration.xml')
       },
       production_integration: {
-        # https://tu.nemlog-in.dk/oprettelse-og-administration-af-tjenester/log-in/dokumentation.og.guides/integrationstestmiljo/
         metadata_xml_file: File.join(IdNemlogIn::Engine.root, 'config', 'saml', 'idp_metadata', 'production_integration.xml')
       },
       production: {
-        # https://tu.nemlog-in.dk/oprettelse-og-administration-af-tjenester/log-in/dokumentation.og.guides/produktionsmiljo/
         metadata_xml_file: File.join(IdNemlogIn::Engine.root, 'config', 'saml', 'idp_metadata', 'production.xml')
       }
     }.freeze

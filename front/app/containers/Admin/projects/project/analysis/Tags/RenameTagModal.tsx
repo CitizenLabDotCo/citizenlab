@@ -57,7 +57,9 @@ const RenameTag = ({
 
   return (
     <Box>
-      <Title>{formatMessage(messages.renameTagModalTitle)}</Title>
+      <Title id="rename-tag-modal-title">
+        {formatMessage(messages.renameTagModalTitle)}
+      </Title>
       <FormProvider {...methods}>
         <Box as="form" mt="40px" onSubmit={methods.handleSubmit(onFormSubmit)}>
           <Input

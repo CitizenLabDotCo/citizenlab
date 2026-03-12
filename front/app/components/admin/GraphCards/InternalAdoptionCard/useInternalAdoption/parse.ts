@@ -5,7 +5,6 @@ import {
   TimeSeriesResponseRow,
 } from 'api/graph_data_units/responseTypes/InternalAdoptionWidget';
 
-import { RESOLUTION_TO_MESSAGE_KEY } from 'components/admin/GraphCards/_utils/resolution';
 import { timeSeriesParser } from 'components/admin/GraphCards/_utils/timeSeries';
 import { IResolution } from 'components/admin/ResolutionControl';
 
@@ -62,26 +61,30 @@ export const parseStats = (
   attributes: InternalAdoptionResponse['data']['attributes']
 ): Stats => {
   const {
-    active_admins_count,
-    active_moderators_count,
-    total_admin_pm_count,
-    active_admins_compared,
-    active_moderators_compared,
-    total_admin_pm_compared,
+    admin_counts,
+    moderator_counts,
+    admin_counts_compared,
+    moderator_counts_compared,
   } = attributes;
 
+  const adminActiveLastPeriod = admin_counts_compared?.active ?? 0;
+  const moderatorActiveLastPeriod = moderator_counts_compared?.active ?? 0;
+
   return {
-    activeAdmins: {
-      value: active_admins_count,
-      lastPeriod: active_admins_compared,
+    admins: {
+      registered: admin_counts.registered,
+      active: admin_counts.active,
+      activeLastPeriod: adminActiveLastPeriod,
     },
-    activeModerators: {
-      value: active_moderators_count,
-      lastPeriod: active_moderators_compared,
+    moderators: {
+      registered: moderator_counts.registered,
+      active: moderator_counts.active,
+      activeLastPeriod: moderatorActiveLastPeriod,
     },
-    totalAdminPm: {
-      value: total_admin_pm_count,
-      lastPeriod: total_admin_pm_compared,
+    total: {
+      registered: admin_counts.registered + moderator_counts.registered,
+      active: admin_counts.active + moderator_counts.active,
+      activeLastPeriod: adminActiveLastPeriod + moderatorActiveLastPeriod,
     },
   };
 };
@@ -89,15 +92,12 @@ export const parseStats = (
 export const parseExcelData = (
   stats: Stats,
   timeSeries: CombinedTimeSeriesRow[] | null,
-  resolution: IResolution,
   translations: Translations
 ) => {
-  const lastPeriod = translations[RESOLUTION_TO_MESSAGE_KEY[resolution]];
-
   const statsData = keys(stats).map((key) => ({
     [translations.statistic]: translations[key],
-    [translations.total]: stats[key].value,
-    [lastPeriod]: stats[key].lastPeriod,
+    [translations.registered]: stats[key].registered,
+    [translations.activePeriodLabel]: stats[key].activeLastPeriod,
   }));
 
   const timeSeriesData = timeSeries?.map((row) => ({

@@ -88,7 +88,9 @@ module UserConfirmation
   end
 
   def user_confirmation_enabled?
-    @user_confirmation_enabled ||= AppConfiguration.instance.feature_activated?('user_confirmation')
+    return @user_confirmation_enabled if defined?(@user_confirmation_enabled)
+
+    @user_confirmation_enabled = AppConfiguration.instance.feature_activated?('user_confirmation')
   end
 
   def generate_confirmation_code

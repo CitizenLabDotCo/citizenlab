@@ -98,6 +98,7 @@ declare global {
         toolboxSelector: string
       ): Chainable<JQuery<HTMLElement>>;
       selectReactSelectOption: typeof selectReactSelectOption;
+      apiCreateInputTopic: typeof apiCreateInputTopic;
     }
   }
 }
@@ -604,6 +605,49 @@ function getUserBySlug(userSlug: string) {
   });
 }
 
+type InputTopicType = {
+  projectId: string;
+  title: string;
+  description?: string;
+  icon?: string;
+  parentId?: string;
+};
+
+function apiCreateInputTopic({
+  projectId,
+  title,
+  description,
+  icon,
+  parentId,
+}: InputTopicType) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy.request({
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${adminJwt}`,
+      },
+      method: 'POST',
+      url: `web_api/v1/projects/${projectId}/input_topics`,
+      body: {
+        input_topic: {
+          title_multiloc: {
+            en: title,
+            'nl-BE': title,
+          },
+          description_multiloc: {
+            en: description || '',
+            'nl-BE': description || '',
+          },
+          icon: icon || null,
+          parent_id: parentId,
+        },
+      },
+    });
+  });
+}
+
 type IdeaType = {
   projectId: string;
   ideaTitle: string;
@@ -614,6 +658,7 @@ type IdeaType = {
   budget?: number;
   anonymous?: boolean;
   phaseIds?: string[];
+  topicIds?: string[];
 };
 
 function apiCreateIdea({
@@ -626,6 +671,7 @@ function apiCreateIdea({
   budget,
   anonymous,
   phaseIds,
+  topicIds,
 }: IdeaType) {
   const doRequest = (jwt: string) =>
     cy.request({
@@ -652,6 +698,7 @@ function apiCreateIdea({
           budget,
           anonymous,
           phase_ids: phaseIds,
+          topic_ids: topicIds,
         },
       },
     });
@@ -1168,6 +1215,7 @@ function apiCreatePhase({
   nativeSurveyTitleMultiloc,
   presentation_mode,
   reacting_dislike_enabled,
+  available_views = ['card', 'map'],
 }: {
   projectId: string;
   title: string;
@@ -1180,7 +1228,8 @@ function apiCreatePhase({
   description?: string;
   surveyUrl?: string;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
-  presentation_mode?: 'card' | 'map';
+  presentation_mode?: 'card' | 'map' | 'feed';
+  available_views?: ('card' | 'map' | 'feed')[];
   votingMaxTotal?: number;
   allow_anonymous_participation?: boolean;
   votingMethod?: VotingMethod;
@@ -1214,6 +1263,7 @@ function apiCreatePhase({
           reacting_enabled: canReact,
           commenting_enabled: canComment,
           presentation_mode,
+          available_views,
           description_multiloc: { en: description },
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
@@ -1232,7 +1282,6 @@ function apiCreatePhase({
 
 function apiCreateCustomField(
   fieldName: string,
-  enabled: boolean,
   required: boolean,
   input_type = 'text'
 ) {
@@ -1248,7 +1297,10 @@ function apiCreateCustomField(
       url: 'web_api/v1/users/custom_fields',
       body: {
         custom_field: {
-          enabled,
+          // this should be false! otherwise,
+          // these fields will be added to the global sign up flow
+          // and tests will start failing
+          enabled: false,
           required,
           input_type,
           title_multiloc: {
@@ -1983,7 +2035,6 @@ function createProjectWithNativeSurveyPhase({
   description,
   nativeSurveyButtonMultiloc = { en: 'Take the survey' },
   nativeSurveyTitleMultiloc = { en: 'Survey' },
-  allow_anonymous_participation,
   presentation_mode,
 }: {
   projectTitle?: string;
@@ -2025,7 +2076,6 @@ function createProjectWithNativeSurveyPhase({
           description,
           nativeSurveyButtonMultiloc,
           nativeSurveyTitleMultiloc,
-          allow_anonymous_participation,
           presentation_mode,
         })
         .then((phase) => {
@@ -2241,3 +2291,4 @@ Cypress.Commands.add(
   'createProjectWithIdeationPhase',
   createProjectWithIdeationPhase
 );
+Cypress.Commands.add('apiCreateInputTopic', apiCreateInputTopic);

@@ -79,7 +79,7 @@ const DeletionDialog = ({
     return (
       <Container>
         {logo && <Logo src={logo} alt={localizedOrgName} />}
-        <Styledh1>
+        <Styledh1 id="delete-account-modal-title">
           <FormattedMessage {...messages.deleteYourAccount} />
         </Styledh1>
         <p>

@@ -21,6 +21,7 @@ class ProjectsFinderAdminService
     projects = filter_current_phase_participation_method(projects, params)
     projects = filter_visibility(projects, params)
     projects = filter_discoverability(projects, params)
+    projects = filter_space(projects, params)
 
     # Apply sorting
     case params[:sort]
@@ -124,6 +125,7 @@ class ProjectsFinderAdminService
   end
 
   def self.filter_moderatable(scope, current_user)
+    return scope.none unless current_user
     return scope if current_user.admin?
 
     moderatable_project_ids = current_user.moderatable_project_ids
@@ -383,5 +385,13 @@ class ProjectsFinderAdminService
     else
       scope.where(listed: false)
     end
+  end
+
+  # Filter projects by space
+  def self.filter_space(scope, params = {})
+    space_ids = params[:space_ids]
+    return scope if space_ids.blank?
+
+    scope.where(space_id: space_ids)
   end
 end

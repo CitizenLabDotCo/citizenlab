@@ -150,6 +150,7 @@ class ProjectPolicy < ApplicationPolicy
       :visible_to,
       :include_all_areas,
       :listed,
+      :live_auto_input_topics_enabled,
       {
         title_multiloc: CL2_SUPPORTED_LOCALES,
         description_multiloc: CL2_SUPPORTED_LOCALES,
@@ -159,6 +160,8 @@ class ProjectPolicy < ApplicationPolicy
         header_bg_alt_text_multiloc: CL2_SUPPORTED_LOCALES
       }
     ]
+
+    shared << :space_id if user&.admin?
 
     if AppConfiguration.instance.feature_activated? 'disable_disliking'
       shared += %i[reacting_dislike_enabled reacting_dislike_method reacting_dislike_limited_max]

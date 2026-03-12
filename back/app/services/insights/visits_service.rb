@@ -4,9 +4,9 @@ module Insights
       constraints = { project_id: phase.project.id }
 
       constraints[:created_at] = if phase.end_at.present?
-        phase.start_at..phase.end_at
+        phase.start_at.beginning_of_day..phase.end_at.end_of_day
       else
-        phase.start_at..
+        phase.start_at.beginning_of_day..
       end
 
       visits = ImpactTracking::Session

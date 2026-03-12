@@ -12,6 +12,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import CookieModalContentContainer from './CookieModalContentContainer';
 import messages from './messages';
 
+export const COOKIE_MODAL_TITLE_ID = 'cookie-modal-title';
+
 interface Props {
   id?: string;
   children?: ReactNode;
@@ -28,7 +30,11 @@ const BaseMainContent = ({ id, children }: Props) => {
   return (
     <CookieModalContentContainer id={id}>
       <Icon name="cookie" fill={theme.colors.tenantPrimary} />
-      <Title as="h1" variant={isSmallerThanPhone ? 'h4' : 'h3'}>
+      <Title
+        as="h1"
+        id={COOKIE_MODAL_TITLE_ID}
+        variant={isSmallerThanPhone ? 'h4' : 'h3'}
+      >
         <FormattedMessage {...messages.cookieModalTitle} />
         {siteName && <> - {localize(siteName)}</>}
       </Title>

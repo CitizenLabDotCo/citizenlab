@@ -34,6 +34,7 @@ export const phasesData: IPhaseData[] = [
       total_votes_amount: 0,
       user_data_collection: 'all_data',
       voting_filtering_enabled: false,
+      user_fields_in_form_enabled: false,
     },
     relationships: {
       permissions: {
@@ -81,6 +82,7 @@ export const phasesData: IPhaseData[] = [
       total_votes_amount: 0,
       user_data_collection: 'all_data',
       voting_filtering_enabled: false,
+      user_fields_in_form_enabled: false,
     },
     relationships: {
       permissions: {
@@ -124,6 +126,7 @@ export const phasesData: IPhaseData[] = [
       total_votes_amount: 0,
       user_data_collection: 'all_data',
       voting_filtering_enabled: false,
+      user_fields_in_form_enabled: false,
     },
     relationships: {
       permissions: {
@@ -172,6 +175,7 @@ export const mockPhaseInformationData: IPhaseData = {
     total_votes_amount: 0,
     user_data_collection: 'all_data',
     voting_filtering_enabled: false,
+    user_fields_in_form_enabled: false,
   },
   relationships: {
     permissions: {
@@ -219,6 +223,7 @@ export const mockPhaseIdeationData: IPhaseData = {
     total_votes_amount: 0,
     user_data_collection: 'all_data',
     voting_filtering_enabled: false,
+    user_fields_in_form_enabled: false,
   },
   relationships: {
     permissions: {
@@ -268,6 +273,7 @@ export const mockPhaseSurveyTypeformData: IPhaseData = {
     total_votes_amount: 0,
     user_data_collection: 'all_data',
     voting_filtering_enabled: false,
+    user_fields_in_form_enabled: false,
   },
   relationships: {
     permissions: {
@@ -317,6 +323,7 @@ export const mockPhaseSurveyGoogleFormData: IPhaseData = {
     total_votes_amount: 0,
     user_data_collection: 'all_data',
     voting_filtering_enabled: false,
+    user_fields_in_form_enabled: false,
   },
   relationships: {
     permissions: {
@@ -385,6 +392,7 @@ const votingPhase: IPhaseData = {
     report_public: false,
     user_data_collection: 'all_data',
     voting_filtering_enabled: true,
+    user_fields_in_form_enabled: false,
   },
   relationships: {
     permissions: {

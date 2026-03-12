@@ -11,7 +11,7 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
 
     raise ActiveRecord::RecordNotFound if user.blank?
 
-    if user.password_digest.present?
+    if user.password_digest.present? || user.sso?
       render(
         json: { errors: { base: [{ error: 'cannot_have_password' }] } },
         status: :unprocessable_entity

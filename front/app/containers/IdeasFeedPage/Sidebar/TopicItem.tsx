@@ -13,6 +13,8 @@ import useInputTopicById from 'api/input_topics/useInputTopicById';
 
 import useLocalize from 'hooks/useLocalize';
 
+import Emoji from 'components/UI/Emoji';
+
 import { getTopicColor, getTopicProgressBarColor } from '../topicsColor';
 
 interface Props {
@@ -48,6 +50,7 @@ const TopicItem = ({
     <>
       <Box
         as={StyledButton}
+        data-cy="e2e-topic-item"
         buttonStyle="secondary-outlined"
         background={isActive ? colors.teal100 : 'transparent'}
         onClick={() => onTopicSelect(topicId)}
@@ -61,10 +64,16 @@ const TopicItem = ({
           justifyContent="space-between"
           alignItems="center"
           w="100%"
+          gap="8px"
         >
-          <Text mb="0px" fontWeight="bold" variant="bodyL">
-            {localize(topic?.data.attributes.title_multiloc)}
-          </Text>
+          <Box display="flex" alignItems="center" gap="8px">
+            {topic?.data.attributes.icon && (
+              <Emoji emoji={topic.data.attributes.icon} size="24px" />
+            )}
+            <Text m="0px" p="0px" fontWeight="bold" variant="bodyL">
+              {localize(topic?.data.attributes.title_multiloc)}
+            </Text>
+          </Box>
           <Box
             display="flex"
             alignItems="center"

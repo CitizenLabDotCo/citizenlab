@@ -25,9 +25,12 @@ const AdminIdeaEdit = ({
   ideaId: string;
   goBack: () => void;
 }) => {
-  const { phaseId } = useParams() as { phaseId: string };
+  const { phaseId: phaseIdFromUrl } = useParams() as { phaseId?: string };
   const theme = useTheme();
   const { data: idea } = useIdeaById(ideaId);
+
+  // Use URL phaseId if available, otherwise get from idea's phases
+  const phaseId = phaseIdFromUrl || idea?.data.relationships.phases.data[0]?.id;
   const { data: phase } = usePhase(phaseId);
 
   const { data: project } = useProjectById(

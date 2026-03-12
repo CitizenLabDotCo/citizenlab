@@ -20,7 +20,7 @@ module ContentBuilder
       def extract_and_join
         @with_metadata = false
         locales = AppConfiguration.instance.settings['core']['locales']
-        extracted = extract
+        extracted = extract.compact
 
         locales.index_with do |locale|
           extracted.filter_map { |multiloc| multiloc[locale] }.join
@@ -69,7 +69,7 @@ module ContentBuilder
           }
         else
           @ordered_multilocs << make_h3s(node['props']['title']) if resolved_name == 'AccordionMultiloc'
-          @ordered_multilocs << node['props']['text']
+          @ordered_multilocs << node['props']['text'] if node['props']['text'].present?
         end
       end
 

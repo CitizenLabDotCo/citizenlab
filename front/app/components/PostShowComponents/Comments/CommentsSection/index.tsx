@@ -33,6 +33,7 @@ export interface Props {
   className?: string;
   allowAnonymousParticipation?: boolean;
   showInternalComments?: boolean;
+  onUnauthenticatedCommentClick?: () => void;
 }
 
 type CommentType = 'internal' | 'public';
@@ -43,6 +44,7 @@ const CommentsSection = ({
   className,
   allowAnonymousParticipation,
   showInternalComments = false,
+  onUnauthenticatedCommentClick,
 }: Props) => {
   const { formatMessage } = useIntl();
   const isInternalCommentingEnabled = useFeatureFlag({
@@ -116,6 +118,7 @@ const CommentsSection = ({
                 postId={postId}
                 allowAnonymousParticipation={allowAnonymousParticipation}
                 className={className}
+                onUnauthenticatedCommentClick={onUnauthenticatedCommentClick}
               />
             </Box>
           )}
@@ -143,6 +146,7 @@ const CommentsSection = ({
       postId={postId}
       allowAnonymousParticipation={allowAnonymousParticipation}
       className={className}
+      onUnauthenticatedCommentClick={onUnauthenticatedCommentClick}
     />
   );
 };

@@ -54,6 +54,7 @@ export interface IPhaseAttributes {
   reacting_dislike_enabled: boolean;
   reacting_dislike_limited_max: number;
   presentation_mode: PresentationMode;
+  available_views?: PresentationMode[];
   survey_service?: TSurveyService | null;
   survey_embed_url?: string | null;
   survey_popup_frequency?: number | null;
@@ -76,12 +77,13 @@ export interface IPhaseAttributes {
   report_public: boolean;
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;
-  prescreening_enabled?: boolean;
+  prescreening_mode?: PrescreeningMode;
   manual_voters_amount?: number;
   similarity_enabled?: boolean;
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
   user_data_collection: UserDataCollection;
+  user_fields_in_form_enabled: boolean;
 }
 
 export interface IPhases {
@@ -113,6 +115,7 @@ export interface IUpdatedPhaseProperties {
   reacting_dislike_limited_max?: number | null;
   reacting_threshold?: number | null;
   presentation_mode?: 'card' | 'map' | 'feed' | null;
+  available_views?: PresentationMode[] | null;
   voting_min_total?: number | null;
   voting_max_total?: number | null;
   voting_max_votes_per_idea?: number | null;
@@ -126,7 +129,7 @@ export interface IUpdatedPhaseProperties {
   document_annotation_embed_url?: string | null;
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;
-  prescreening_enabled?: boolean | null;
+  prescreening_mode?: PrescreeningMode | null;
   allow_anonymous_participation?: boolean;
   expire_days_limit?: number;
   manual_voters_amount?: number;
@@ -169,7 +172,7 @@ export type ParticipationMethod =
 
 export type VotingMethod = 'budgeting' | 'multiple_voting' | 'single_voting';
 
-export type VoteTerm = 'vote' | 'point' | 'token' | 'credit';
+export type VoteTerm = 'vote' | 'point' | 'token' | 'credit' | 'percent';
 
 export type IdeaSortMethod =
   | 'trending'
@@ -188,6 +191,14 @@ export type InputTerm =
   | 'contribution'
   | 'proposal'
   | 'initiative'
-  | 'petition';
+  | 'petition'
+  | 'comment'
+  | 'response'
+  | 'suggestion'
+  | 'topic'
+  | 'post'
+  | 'story';
 
 export type PresentationMode = 'card' | 'map' | 'feed';
+
+export type PrescreeningMode = 'flagged_only' | 'all';

@@ -6,6 +6,7 @@ import {
   Radio,
   Title,
   IconTooltip,
+  Error,
 } from '@citizenlab/cl2-component-library';
 
 import { UserDataCollection } from 'api/phase_permissions/types';
@@ -69,6 +70,12 @@ const DataCollection = ({ user_data_collection, onChange }: Props) => {
         }
         onChange={onChange}
       />
+      {user_data_collection === 'demographics_only' && (
+        <Error text={formatMessage(messages.demographicsOnlyWarning)} />
+      )}
+      {user_data_collection === 'anonymous' && (
+        <Error text={formatMessage(messages.anonymousWarning)} />
+      )}
     </Box>
   );
 };

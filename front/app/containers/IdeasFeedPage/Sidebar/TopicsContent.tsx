@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Box, Divider, Title, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Divider,
+  Title,
+  Text,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { useSearchParams } from 'react-router-dom';
 
 import usePhase from 'api/phases/usePhase';
@@ -56,29 +62,27 @@ const TopicsContent = ({
 
   return (
     <>
-      {!isMobile && (
-        <Box mb="24px">
-          <GoBackButton
-            linkTo={`/projects/${slug}`}
-            size="s"
-            customMessage={messages.backToProject}
-          />
-        </Box>
-      )}
-
       <Box px="16px" mb="16px">
+        <GoBackButton
+          linkTo={`/projects/${slug}`}
+          size="s"
+          customMessage={messages.back}
+          iconSize="20px"
+          iconColor={colors.textPrimary}
+          textColor={colors.textPrimary}
+        />
         <Title fontWeight="bold" variant="h2" as="h1">
           <T value={phase?.data.attributes.title_multiloc} />
         </Title>
-        <Text>
-          <T value={phase?.data.attributes.description_multiloc} supportHtml />
-        </Text>
         {projectId && (
           <AvatarBubbles
             context={{ type: 'project', id: projectId }}
             size={28}
           />
         )}
+        <Text>
+          <T value={phase?.data.attributes.description_multiloc} supportHtml />
+        </Text>
       </Box>
       <Divider mb="0px" />
       {topicIds

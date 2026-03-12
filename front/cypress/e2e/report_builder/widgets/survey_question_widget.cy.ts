@@ -461,8 +461,13 @@ describe('Survey question widget', () => {
           .first()
           .select(surveyCustomFields.data[5].id);
 
-        // Expect map to render
-        cy.get('div.esri-view-root').contains('Responses');
+        // Expect map to render - expand legend first (collapsed by default in ArcGIS 4.34)
+        cy.get('.esri-ui-bottom-right .esri-expand__toggle').click({
+          force: true,
+        });
+        cy.get('div.esri-view-root').contains('Responses', {
+          includeShadowDom: true,
+        });
 
         // Save
         cy.intercept('PATCH', `/web_api/v1/reports/${reportId}`).as(
@@ -473,7 +478,12 @@ describe('Survey question widget', () => {
 
         // Check if it's visible in the frontend
         cy.visit(`/projects/${projectSlug}`);
-        cy.get('div.esri-view-root').contains('Responses');
+        cy.get('.esri-ui-bottom-right .esri-expand__toggle').click({
+          force: true,
+        });
+        cy.get('div.esri-view-root').contains('Responses', {
+          includeShadowDom: true,
+        });
       });
     });
 
@@ -613,6 +623,64 @@ describe('Survey question widget', () => {
         // Reload page and check if values are still correct
         cy.reload();
         ensureCorrectGrouping();
+      });
+    });
+
+    it('allows sorting by original order or count', () => {
+      cy.setAdminLoginCookie();
+      if (currentReportId) {
+        cy.apiRemoveReportBuilder(currentReportId);
+        currentReportId = undefined;
+      }
+
+      cy.apiCreateReportBuilder(informationPhaseId).then((report) => {
+        const reportId = report.body.data.id;
+        currentReportId = reportId;
+
+        cy.visit(`/admin/reporting/report-builder/${reportId}/editor`);
+
+        cy.get('#e2e-draggable-survey-question-result-widget').dragAndDrop(
+          '#e2e-content-builder-frame',
+          {
+            position: 'inside',
+          }
+        );
+
+        cy.wait(1000);
+
+        // Select project, phase and question (single select)
+        cy.selectReactSelectOption(
+          '#e2e-report-builder-project-filter-box',
+          projectTitle
+        );
+        cy.get('#e2e-phase-filter').select(surveyPhaseId);
+        cy.get('.e2e-question-select select')
+          .first()
+          .select(surveyCustomFields.data[1].id);
+
+        // Verify sort dropdown is visible for single select question
+        cy.dataCy('sort-select').should('be.visible');
+
+        // Select multiselect question
+        cy.get('.e2e-question-select select')
+          .first()
+          .select(surveyCustomFields.data[2].id);
+
+        // Verify sort dropdown is visible for multiselect question
+        cy.dataCy('sort-select').should('be.visible');
+
+        // Default should be 'count'
+        cy.dataCy('sort-select').should('have.value', 'count');
+
+        // Change to original order
+        cy.dataCy('sort-select').select('original');
+        cy.dataCy('sort-select').should('have.value', 'original');
+
+        // Verify sort dropdown is not visible for linear_scale question
+        cy.get('.e2e-question-select select')
+          .first()
+          .select(surveyCustomFields.data[3].id);
+        cy.dataCy('sort-select').should('not.exist');
       });
     });
 

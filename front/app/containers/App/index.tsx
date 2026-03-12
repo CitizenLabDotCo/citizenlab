@@ -43,11 +43,7 @@ import clHistory from 'utils/cl-router/history';
 import Navigate from 'utils/cl-router/Navigate';
 import { removeLocale } from 'utils/cl-router/updateLocationDescriptor';
 import eventEmitter from 'utils/eventEmitter';
-import {
-  initiativeShowPageSlug,
-  isIdeaShowPage,
-  isPage,
-} from 'utils/helperUtils';
+import { initiativeShowPageSlug, isPage } from 'utils/helperUtils';
 import { usePermission } from 'utils/permissions';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
 
@@ -322,7 +318,6 @@ const App = ({ children }: Props) => {
   );
   const isIdeaFormPage = isPage('idea_form', location.pathname);
   const isIdeaEditPage = isPage('idea_edit', location.pathname);
-  const isEventPage = isPage('event_page', location.pathname);
   const isNativeSurveyPage = isPage('native_survey', location.pathname);
   const isIdeasFeedPage = isPage('ideas_feed', location.pathname);
   const theme = getTheme(appConfiguration);
@@ -355,12 +350,6 @@ const App = ({ children }: Props) => {
       isIdeasFeedPage
     ) {
       return false;
-    }
-
-    if (isSmallerThanTablet) {
-      if (isEventPage || isIdeaShowPage(urlSegments)) {
-        return false;
-      }
     }
 
     return true;

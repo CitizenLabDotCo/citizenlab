@@ -25,6 +25,7 @@ RSpec.describe User do
     it { is_expected.to have_many(:jobs_trackers).class_name('Jobs::Tracker').with_foreign_key('owner_id').dependent(:nullify) }
     it { is_expected.to have_many(:files).class_name('Files::File').with_foreign_key('uploader_id').dependent(:nullify) }
     it { is_expected.to have_many(:claim_tokens).with_foreign_key('pending_claimer_id').dependent(:destroy) }
+    it { is_expected.to have_many(:idea_exposures).dependent(:destroy) }
 
     it 'nullifies idea import association' do
       idea_import = create(:idea_import, import_user: user)
@@ -42,6 +43,15 @@ RSpec.describe User do
       phase = create(:phase, manual_voters_last_updated_by: user)
       expect { user.destroy }.not_to raise_error
       expect(phase.reload.manual_voters_last_updated_by).to be_nil
+    end
+
+    it 'destroys idea_exposures when user is deleted' do
+      user.save!
+      phase = create(:phase)
+      idea = create(:idea, phases: [phase])
+      idea_exposure = create(:idea_exposure, user: user, idea: idea, phase: phase)
+      expect { user.destroy }.not_to raise_error
+      expect { idea_exposure.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 
@@ -71,6 +81,86 @@ RSpec.describe User do
     it 'does not generate a slug if an invited user' do
       invitee = create(:invited_user, first_name: nil, last_name: nil)
       expect(invitee.slug).to be_nil
+    end
+  end
+
+  describe '#slug' do
+    let(:user) { create(:user, first_name: 'bob', last_name: 'smith') }
+
+    context 'when enhanced_user_profile_privacy feature is not active' do
+      it 'returns the normal slug' do
+        expect(user.slug).to eq 'bob-smith'
+      end
+    end
+
+    context 'when enhanced_user_profile_privacy feature is active' do
+      before do
+        settings = AppConfiguration.instance.settings
+        settings['enhanced_user_profile_privacy'] = { 'enabled' => true, 'allowed' => true }
+        AppConfiguration.instance.update!(settings: settings)
+      end
+
+      it 'returns the user id instead of the slug' do
+        expect(user.slug).to eq user.id
+      end
+    end
+  end
+
+  describe '#show_public_profile?' do
+    let(:user) { create(:user) }
+
+    context 'when enhanced_user_profile_privacy is not active' do
+      it 'returns true' do
+        expect(user.show_public_profile?).to be true
+      end
+    end
+
+    context 'when enhanced_user_profile_privacy is active' do
+      before do
+        settings = AppConfiguration.instance.settings
+        settings['enhanced_user_profile_privacy'] = { 'enabled' => true, 'allowed' => true }
+        AppConfiguration.instance.update!(settings: settings)
+        create(:idea_status_proposed)
+      end
+
+      it 'returns false when user has no ideas or comments' do
+        expect(user.show_public_profile?).to be false
+      end
+
+      it 'returns true when user has posted an idea in an ideation phase' do
+        create(:idea, author: user)
+        expect(user.show_public_profile?).to be true
+      end
+
+      it 'returns false when user has only posted anonymous ideas' do
+        create(:idea, author: user, anonymous: true)
+        expect(user.show_public_profile?).to be false
+      end
+
+      it 'returns true when user has posted an idea in a proposals phase' do
+        create(:proposal, author: user)
+        expect(user.show_public_profile?).to be true
+      end
+
+      it 'returns false when user has only posted anonymous ideas in a proposals phase' do
+        create(:proposal, author: user, anonymous: true)
+        expect(user.show_public_profile?).to be false
+      end
+
+      it 'returns false when user only has ideas in a native survey phase' do
+        create(:native_survey_response, author: user)
+        expect(user.show_public_profile?).to be false
+      end
+
+      it 'returns true when user has comments' do
+        create(:comment, author: user)
+        expect(user.show_public_profile?).to be true
+      end
+
+      it 'returns false when user has only posted anonymous comments' do
+        create(:comment, author: user, anonymous: true)
+        expect(user.show_public_profile?).to be false
+      end
     end
   end
 

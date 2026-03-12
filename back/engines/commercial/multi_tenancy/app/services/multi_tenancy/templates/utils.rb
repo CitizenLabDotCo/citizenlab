@@ -194,7 +194,6 @@ module MultiTenancy
           serialized_models
         end
 
-        # rubocop:disable Metrics/CyclomaticComplexity
         def translate_and_fix_locales(serialized_models)
           translator = MachineTranslations::MachineTranslationService.new
           locales_to = AppConfiguration.instance.settings('core', 'locales')
@@ -236,12 +235,16 @@ module MultiTenancy
                   locales_to.each do |locale|
                     next if field_value.key?(locale) && field_value[locale].present?
 
-                    field_value[locale] = if source_text.blank?
-                      source_text
-                    else
-                      translate_logs[:strings] += 1
-                      translate_logs[:chars] += source_text.length
-                      translator.translate source_text, source_locale, locale, retries: 10
+                    begin
+                      field_value[locale] = if source_text.blank?
+                        source_text
+                      else
+                        translate_logs[:strings] += 1
+                        translate_logs[:chars] += source_text.length
+                        translator.translate source_text, source_locale, locale, retries: 10
+                      end
+                    rescue StandardError => e
+                      ErrorReporter.report(e, extra: { model: model_name, field: field_name, from: source_locale, to: locale, text: source_text })
                     end
                   end
 
@@ -254,23 +257,8 @@ module MultiTenancy
             end
           end
 
-          # Cut off translations that are too long.
-          {
-            'project' => { 'description_preview_multiloc' => 280 },
-            'idea' => { 'title_multiloc' => 80 }
-          }.each do |model, restrictions|
-            serialized_models['models'][model]&.each do |attributes|
-              restrictions.each do |field_name, max_len|
-                multiloc = attributes[field_name]
-                multiloc.each do |locale, value|
-                  multiloc[locale] = value[0...max_len] if value.size > max_len
-                end
-              end
-            end
-          end
           [serialized_models, translate_logs]
         end
-        # rubocop:enable Metrics/CyclomaticComplexity
 
         def user_locales(serialized_models)
           serialized_models = serialized_models.with_indifferent_access

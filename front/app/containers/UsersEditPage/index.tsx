@@ -5,8 +5,6 @@ import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import CampaignsConsentForm from 'components/CampaignConsentForm';
 import Unauthorized from 'components/Unauthorized';
 
@@ -33,7 +31,6 @@ const Container = styled.div`
 `;
 
 const UsersEditPage = () => {
-  const passwordLoginActive = useFeatureFlag({ name: 'password_login' });
   const { data: authUser } = useAuthUser();
 
   if (!authUser?.data.attributes.registration_completed_at) {
@@ -59,7 +56,7 @@ const UsersEditPage = () => {
           <div>
             <VerificationStatus />
             <ProfileForm />
-            {passwordLoginActive && <LoginCredentials user={authUser.data} />}
+            <LoginCredentials user={authUser.data} />
             <ProfileDeletion />
             <CampaignsConsentForm
               trackEventName={tracks.defaultSettingsChanged}

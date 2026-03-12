@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
   Title,
   Button,
   Text,
+  Dropdown,
+  DropdownListItem,
   Badge,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -14,11 +16,16 @@ import useAddAnalysis from 'api/analyses/useAddAnalysis';
 import useAnalyses from 'api/analyses/useAnalyses';
 import usePhase from 'api/phases/usePhase';
 
+import useLocalize from 'hooks/useLocalize';
+
+import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
+
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { captureAllMapScreenshots } from 'utils/mapViewRegistry';
 
 import { getAnalysisScope } from '../../components/AnalysisBanner/utils';
 
@@ -30,6 +37,11 @@ import ParticipantsTimeline from './ParticipantsTimeline';
 import ParticipationMetrics from './participationMetrics/ParticipationMetrics';
 import InsightsPdfContent from './pdf/InsightsPdfContent';
 import { PdfExportProvider, usePdfExportContext } from './pdf/PdfExportContext';
+import wordMessages from './word/messages';
+import {
+  WordExportProvider,
+  useWordExportContext,
+} from './word/WordExportContext';
 
 const AI_ANALYSIS_SUPPORTED_METHODS = [
   'ideation',
@@ -52,7 +64,7 @@ const hiddenContainerStyle: React.CSSProperties = {
   overflow: 'visible',
 };
 
-// Inner component that uses the PDF export context (visible UI)
+// Inner component that uses the export contexts (visible UI)
 const InsightsContent = () => {
   const { projectId, phaseId } = useParams() as {
     projectId: string;
@@ -60,17 +72,61 @@ const InsightsContent = () => {
   };
   const { data: phase } = usePhase(phaseId);
   const { formatMessage } = useIntl();
+  const [dropdownOpened, setDropdownOpened] = useState(false);
+
   const {
     downloadPdf,
     isDownloading: isDownloadingPdf,
     error: pdfError,
   } = usePdfExportContext();
 
+  const {
+    downloadWord,
+    isDownloadingWord,
+    exportStatus,
+    exportProgress,
+    allComponentsReady,
+    error: wordError,
+    captureWarnings,
+  } = useWordExportContext();
+
+  const isDownloading = isDownloadingPdf || isDownloadingWord;
+  const exportError = pdfError || wordError;
+
+  const getExportStatusText = () => {
+    switch (exportStatus) {
+      case 'preparing':
+        return formatMessage(wordMessages.exportPreparing);
+      case 'capturing':
+        return formatMessage(wordMessages.exportCapturing, {
+          completed: exportProgress.completed,
+          total: exportProgress.total,
+        });
+      case 'generating':
+        return formatMessage(wordMessages.exportGenerating);
+      default:
+        return null;
+    }
+  };
+
+  const toggleDropdown = (value?: boolean) => () => {
+    setDropdownOpened(value ?? !dropdownOpened);
+  };
+
+  const handleDownloadPdf = async () => {
+    setDropdownOpened(false);
+    await captureAllMapScreenshots();
+    await downloadPdf();
+  };
+
+  const handleDownloadWord = async () => {
+    setDropdownOpened(false);
+    await captureAllMapScreenshots();
+    await downloadWord();
+  };
+
   const participationMethod = phase?.data.attributes.participation_method;
   const { start_at, end_at } = phase?.data.attributes || {};
-  const isCurrentPhase = start_at
-    ? pastPresentOrFuture([start_at, end_at ?? null]) === 'present'
-    : false;
   const isFuturePhase = start_at
     ? pastPresentOrFuture([start_at, end_at ?? null]) === 'future'
     : false;
@@ -118,7 +174,6 @@ const InsightsContent = () => {
 
   return (
     <>
-      {/* Visible UI - never changes during PDF export */}
       <Box
         borderBottom="none"
         display="flex"
@@ -133,18 +188,9 @@ const InsightsContent = () => {
           alignItems="flex-start"
         >
           <Box>
-            <Box display="flex" alignItems="center">
-              <Title variant="h2" as="h1" color="textPrimary" m="0px">
-                <FormattedMessage {...messages.insights} />
-              </Title>
-              {isCurrentPhase && (
-                <Box ml="12px">
-                  <Badge className="inverse" color={colors.primary}>
-                    <FormattedMessage {...messages.liveData} />
-                  </Badge>
-                </Box>
-              )}
-            </Box>
+            <Title variant="h2" as="h1" color="textPrimary" m="0px">
+              <FormattedMessage {...messages.insights} />
+            </Title>
             <Text fontSize="s" color="textSecondary" m="0" mt="4px">
               <FormattedMessage {...messages.insightsSubtitle1} />
             </Text>
@@ -165,15 +211,54 @@ const InsightsContent = () => {
                 alignItems="flex-end"
               >
                 <Box display="flex" gap="8px">
-                  <Button
-                    buttonStyle={supportsAiAnalysis ? 'secondary' : 'primary'}
-                    icon="download"
-                    onClick={downloadPdf}
-                    processing={isDownloadingPdf}
-                    aria-label={formatMessage(messages.downloadInsightsPdf)}
-                  >
-                    <FormattedMessage {...messages.download} />
-                  </Button>
+                  <Box position="relative" display="inline-block">
+                    <Button
+                      buttonStyle={supportsAiAnalysis ? 'secondary' : 'primary'}
+                      icon="download"
+                      onClick={toggleDropdown()}
+                      processing={isDownloading}
+                      disabled={!allComponentsReady && !isDownloading}
+                      aria-label={formatMessage(messages.downloadInsightsPdf)}
+                    >
+                      <FormattedMessage {...messages.download} />
+                    </Button>
+                    <Dropdown
+                      width="max-content"
+                      top="42px"
+                      right="12px"
+                      opened={dropdownOpened}
+                      onClickOutside={toggleDropdown(false)}
+                      zIndex="10000"
+                      content={
+                        <Box
+                          p="8px"
+                          display="flex"
+                          flexDirection="column"
+                          gap="4px"
+                          style={{ whiteSpace: 'nowrap' }}
+                        >
+                          <DropdownListItem onClick={handleDownloadPdf}>
+                            <FormattedMessage {...messages.downloadPdf} />
+                          </DropdownListItem>
+                          <DropdownListItem onClick={handleDownloadWord}>
+                            <Box
+                              display="inline-flex"
+                              alignItems="center"
+                              gap="6px"
+                            >
+                              <FormattedMessage {...messages.downloadWord} />
+                              <Badge
+                                color={colors.coolGrey600}
+                                className="inverse"
+                              >
+                                {formatMessage(projectFilesMessages.beta)}
+                              </Badge>
+                            </Box>
+                          </DropdownListItem>
+                        </Box>
+                      }
+                    />
+                  </Box>
                   {supportsAiAnalysis && (
                     <Button
                       buttonStyle="primary"
@@ -185,9 +270,19 @@ const InsightsContent = () => {
                     </Button>
                   )}
                 </Box>
-                {pdfError && (
+                {isDownloadingWord && getExportStatusText() && (
+                  <Text fontSize="s" color="textSecondary" m="0px">
+                    {getExportStatusText()}
+                  </Text>
+                )}
+                {exportError && (
                   <Text fontSize="s" color="error" m="0px">
-                    {formatMessage(messages.errorPdfDownload)}
+                    {exportError}
+                  </Text>
+                )}
+                {captureWarnings.length > 0 && !isDownloading && (
+                  <Text fontSize="s" color="orange500" m="0px">
+                    {formatMessage(wordMessages.exportCaptureWarning)}
                   </Text>
                 )}
               </Box>
@@ -221,10 +316,11 @@ const InsightsContent = () => {
         </Box>
       </Box>
 
-      {/* Hidden container for PDF rendering - only mounted during export */}
       {isDownloadingPdf && (
         <div style={hiddenContainerStyle}>
-          <InsightsPdfContent phase={phase.data} />
+          <PdfExportProvider isPdfRenderMode>
+            <InsightsPdfContent phase={phase.data} />
+          </PdfExportProvider>
         </div>
       )}
     </>
@@ -238,11 +334,12 @@ const AdminPhaseInsights = () => {
     phaseId: string;
   };
   const { data: phase } = usePhase(phaseId);
+  const localize = useLocalize();
 
   // Get phase title for filename, fallback to phaseId if not loaded yet
   const phaseTitle = phase?.data.attributes.title_multiloc;
   const phaseName = phaseTitle
-    ? Object.values(phaseTitle)[0] || `phase-${phaseId}`
+    ? localize(phaseTitle) || `phase-${phaseId}`
     : `phase-${phaseId}`;
 
   // Sanitize filename: replace spaces and special characters
@@ -251,9 +348,17 @@ const AdminPhaseInsights = () => {
     .replace(/\s+/g, '-')
     .toLowerCase();
 
+  const participationMethod = phase?.data.attributes.participation_method;
+
   return (
     <PdfExportProvider filename={sanitizedPhaseName}>
-      <InsightsContent />
+      <WordExportProvider
+        filename={sanitizedPhaseName}
+        title={phaseName}
+        participationMethod={participationMethod}
+      >
+        <InsightsContent />
+      </WordExportProvider>
     </PdfExportProvider>
   );
 };

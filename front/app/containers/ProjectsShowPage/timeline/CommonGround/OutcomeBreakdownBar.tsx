@@ -36,21 +36,21 @@ const OutcomeBreakdownBar = ({
           as="span"
           fontWeight="bold"
           fontSize="s"
-          color="red500"
-          mr="8px"
-          my="0px"
-        >
-          {disagreePercent}%
-        </Text>
-        <Text
-          as="span"
-          fontWeight="bold"
-          fontSize="s"
           color="coolGrey500"
           mr="8px"
           my="0px"
         >
           {unsurePercent}%
+        </Text>
+        <Text
+          as="span"
+          fontWeight="bold"
+          fontSize="s"
+          color="red500"
+          mr="8px"
+          my="0px"
+        >
+          {disagreePercent}%
         </Text>
         {typeof totalCount === 'number' && (
           <Text as="span" color="grey800" my="0px">
@@ -68,8 +68,8 @@ const OutcomeBreakdownBar = ({
         bg={colors.background}
       >
         <Box width={`${agreedPercent}%`} bg={colors.green500} />
-        <Box width={`${disagreePercent}%`} bg={colors.red500} />
         <Box width={`${unsurePercent}%`} bg={colors.coolGrey500} />
+        <Box width={`${disagreePercent}%`} bg={colors.red500} />
         {emptyPercent > 0 && (
           <Box width={`${emptyPercent}%`} bg={colors.white} />
         )}

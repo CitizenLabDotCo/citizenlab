@@ -67,6 +67,8 @@ describe SideFxCommentService do
     end
 
     it 'enqueues wise voice detection job if idea_feed feature is activated' do
+      SettingsService.new.activate_feature! 'nested_input_topics'
+      SettingsService.new.activate_feature! 'live_auto_input_topics'
       SettingsService.new.activate_feature! 'idea_feed'
       expect { service.after_create(comment, user) }.to have_enqueued_job(WiseVoiceDetectionJob).with(comment)
     end
@@ -106,6 +108,8 @@ describe SideFxCommentService do
     end
 
     it 'enqueues wise voice detection job if idea_feed feature is activated and body_multiloc changed' do
+      SettingsService.new.activate_feature! 'nested_input_topics'
+      SettingsService.new.activate_feature! 'live_auto_input_topics'
       SettingsService.new.activate_feature! 'idea_feed'
       comment.update!(body_multiloc: { en: 'changed' })
       expect { service.after_update(comment, user) }.to have_enqueued_job(WiseVoiceDetectionJob).with(comment)

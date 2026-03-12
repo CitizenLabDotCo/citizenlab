@@ -37,6 +37,7 @@ const AssignMultipleVotesBox = memo(({ ideaId, phase }: Props) => {
     point: messages.numberOfPointsLeft,
     token: messages.numberOfTokensLeft,
     credit: messages.numberOfCreditsLeft,
+    percent: messages.numberOfPercentsLeft,
   });
 
   return (

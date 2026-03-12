@@ -43,7 +43,6 @@ export type IAppConfigurationSettingsCore = {
   color_menu_bg?: string | null;
   currency: TCurrency;
   reply_to_email: string;
-  segment_destinations_blacklist: string[] | null;
   areas_term?: Multiloc;
   area_term?: Multiloc;
   topics_term?: Multiloc;
@@ -141,6 +140,10 @@ export interface IAppConfigurationSettings {
     allowed: boolean;
     enabled: boolean;
   };
+  federa_login?: {
+    allowed: boolean;
+    enabled: boolean;
+  };
   nemlog_in_login?: {
     allowed: boolean;
     enabled: boolean;
@@ -188,6 +191,7 @@ export interface IAppConfigurationSettings {
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
   flag_inappropriate_content?: AppConfigurationFeature;
+  prescreening_flagged_only?: AppConfigurationFeature;
   disable_disliking?: AppConfigurationFeature;
   blocking_profanity?: AppConfigurationFeature;
   anonymous_participation?: AppConfigurationFeature;
@@ -199,9 +203,6 @@ export interface IAppConfigurationSettings {
   };
   google_analytics?: AppConfigurationFeature & {
     tracking_id: string;
-  };
-  segment?: AppConfigurationFeature & {
-    destinations: string;
   };
   google_tag_manager?: AppConfigurationFeature & {
     destinations: string;
@@ -273,11 +274,11 @@ export interface IAppConfigurationSettings {
   project_importer?: AppConfigurationFeature;
   idea_feed?: AppConfigurationFeature;
   nested_input_topics?: AppConfigurationFeature;
+  live_auto_input_topics?: AppConfigurationFeature;
   workshops?: AppConfigurationFeature;
-  ideation_accountless_posting?: AppConfigurationFeature;
-  participation_location_tracking?: AppConfigurationFeature;
-  post_participation_signup?: AppConfigurationFeature;
   phase_insights?: AppConfigurationFeature;
+  participation_location_tracking?: AppConfigurationFeature;
+  spaces?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

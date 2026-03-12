@@ -105,7 +105,7 @@ gem 'interactor'
 gem 'interactor-rails'
 gem 'liquid', '~> 5.8'
 gem 'mini_magick', '~> 4.13'
-gem 'nokogiri', '~> 1.18.9'
+gem 'nokogiri', '~> 1.19.1'
 gem 'pg_search', '~> 2.3.7'
 gem 'premailer-rails', '~> 1.12.0'
 gem 'rest-client'
@@ -115,9 +115,9 @@ gem 'stackprof', '~> 0.2.27'
 gem 'scientist', '~> 1.6.4'
 
 gem 'okcomputer'
+gem 'simple_segment', '~>1.5'
 gem 'sentry-ruby'
 gem 'sentry-rails'
-gem 'simple_segment', '~>1.5'
 
 gem 'faraday-jwt', '~> 0.1.0'
 gem 'acts_as_list', '~> 1.2'
@@ -142,7 +142,8 @@ gem 'faraday', '~>  2.14.0'
 gem 'faraday-multipart'
 
 # AI
-gem 'ruby_llm', '~> 1.11.0'
+# Temporary SHA checkout to enable AWS Bedrock Schema support. Remove the ref and point to the latest version once Bedrock Schema support is released.
+gem 'ruby_llm', git: 'https://github.com/crmne/ruby_llm.git', ref: '7282f9725cb3f83eee8f0f26a0812c998f82402f'
 
 # Also required here to be able to initialize Mailgun in
 # e.g. production.rb, which would otherwise result in an
@@ -166,7 +167,6 @@ gem 'intercom', '~> 4.2'
 gem 'mjml-rails', '~> 4.11'
 gem 'mrml'
 gem 'cloudfront-rails', '~> 0.4'
-gem 'google-cloud-document_ai', '~> 1.4'
 gem 'combine_pdf', '~> 1.0.26'
 gem 'neighbor', '~> 0.5.0'
 gem 'browser', '~> 6.1'
@@ -251,6 +251,7 @@ commercial_engines = [
   'id_cow',
   'id_criipto',
   'id_fake_sso',
+  'id_federa',
   'id_franceconnect',
   'id_gent_rrn',
   'id_id_card_lookup',

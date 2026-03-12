@@ -40,6 +40,7 @@ import {
   SectionField,
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
+import SpaceSelectSection from 'components/admin/SpaceSelectSection';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
 import DescriptionBuilderToggle from 'components/DescriptionBuilder/DescriptionBuilderToggle';
 import Highlighter from 'components/Highlighter';
@@ -533,6 +534,17 @@ const AdminProjectsProjectGeneral = () => {
       setSubmitState(submitState);
     };
 
+  const handleSpaceSelectChange = (spaceId: string | null) => {
+    setProjectAttributesDiff((projectAttributesDiff) => {
+      return {
+        ...projectAttributesDiff,
+        space_id: spaceId,
+      };
+    });
+
+    setSubmitState('enabled');
+  };
+
   const projectAttrs = {
     ...(!isNilOrError(project) ? project.data.attributes : {}),
     ...projectAttributesDiff,
@@ -677,13 +689,29 @@ const AdminProjectsProjectGeneral = () => {
             <Highlighter fragmentId={folderFragmentId}>
               <ProjectFolderSelect
                 projectAttrs={projectAttrs}
-                onProjectAttributesDiffChange={
-                  handleProjectAttributeDiffOnChange
-                }
+                onProjectAttributesDiffChange={(change, submitState) => {
+                  if (change.folder_id) {
+                    // If a folder is chosen, the project will automatically
+                    // inherit the folder's space. So we clear
+                    // any previously chosen space.
+                    handleProjectAttributeDiffOnChange(
+                      { ...change, space_id: undefined },
+                      submitState
+                    );
+                  } else {
+                    handleProjectAttributeDiffOnChange(change, submitState);
+                  }
+                }}
                 isNewProject={isNewProject}
               />
             </Highlighter>
           )}
+
+          <SpaceSelectSection
+            spaceId={projectAttrs.space_id ?? null}
+            disabled={!!projectAttrs.folder_id}
+            onChange={handleSpaceSelectChange}
+          />
 
           <SectionField className="intercom-product-tour-project-header-image-field">
             <SubSectionTitle>
@@ -759,7 +787,7 @@ const AdminProjectsProjectGeneral = () => {
               fileAttachments={projectFileAttachments}
               enableDragAndDrop
               apiErrors={apiErrors}
-              maxSizeMb={10}
+              maxSizeMb={50}
               isUploadingFile={isAddingFile}
             />
           </StyledSectionField>

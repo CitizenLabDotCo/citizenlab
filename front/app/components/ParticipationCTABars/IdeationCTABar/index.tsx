@@ -95,6 +95,12 @@ const IdeationCTABar = ({ phases, project }: CTABarProps) => {
                 proposal: messages.seeProposals,
                 initiative: messages.seeInitiatives,
                 petition: messages.seePetitions,
+                comment: messages.seeComments,
+                response: messages.seeResponses,
+                suggestion: messages.seeSuggestions,
+                topic: messages.seeTopics,
+                post: messages.seePosts,
+                story: messages.seeStories,
               })}
             />
           </Button>

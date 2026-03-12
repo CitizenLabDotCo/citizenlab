@@ -241,7 +241,6 @@ Rails.application.routes.draw do
         concerns :file_attachable, attachable_type: 'Project'
 
         resources :events, only: %i[new create]
-        resources :projects_allowed_input_topics, only: [:index]
         resources :input_topics, shallow: true do
           patch 'move', on: :member
         end
@@ -282,8 +281,8 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :projects_allowed_input_topics, only: %i[show create destroy] do
-        patch 'reorder', on: :member
+      resources :spaces, only: %i[index show create update destroy] do
+        get 'tree_view', on: :member, to: 'spaces#tree_view'
       end
 
       resources :admin_publications, only: %i[index show] do
@@ -339,8 +338,6 @@ Rails.application.routes.draw do
         end
 
         with_options controller: 'stats_ideas' do
-          get 'ideas_count'
-
           get 'ideas_by_topic'
           get 'ideas_by_project'
 

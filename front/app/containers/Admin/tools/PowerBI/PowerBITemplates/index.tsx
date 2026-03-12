@@ -111,7 +111,7 @@ const PowerBITemplates = () => {
           values={{
             link: (
               <a
-                href={formatMessage(messages.supportLinkUrl)}
+                href={formatMessage(messages.supportLinkUrl2)}
                 target="_blank"
                 rel="noreferrer"
               >

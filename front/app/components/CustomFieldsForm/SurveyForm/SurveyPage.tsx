@@ -12,7 +12,6 @@ import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import { triggerPostParticipationFlow } from 'containers/Authentication/events';
@@ -33,7 +32,7 @@ import PageTitle from '../Page/PageTitle';
 import { FormValues } from '../Page/types';
 import usePageForm from '../Page/usePageForm';
 import PostParticipationBox from '../PostParticipationBox';
-import { getFormCompletionPercentage, Pages } from '../util';
+import { getFormCompletionPercentage, Pages, trackFormPageView } from '../util';
 
 import {
   determineNextPageNumber,
@@ -95,9 +94,6 @@ const SurveyPage = ({
   const isMapPage = page.page_layout === 'map';
   const isMobileOrSmaller = useBreakpoint('phone');
   const { data: authUser } = useAuthUser();
-  const postParticipationSignUpEnabled = useFeatureFlag({
-    name: 'post_participation_signup',
-  });
 
   const [searchParams] = useSearchParams();
   const ideaId = (initialIdeaId || searchParams.get('idea_id')) ?? undefined;
@@ -128,6 +124,10 @@ const SurveyPage = ({
     currentPage: page,
     formData: methods.watch(),
   });
+
+  useEffect(() => {
+    trackFormPageView(currentPageIndex, lastPageIndex);
+  }, [currentPageIndex, lastPageIndex]);
 
   // Clear values from skipped pages when form data changes
   // This ensures that if a user changes an answer that affects conditional logic,
@@ -216,12 +216,7 @@ const SurveyPage = ({
   const isLastPage = currentPageIndex === lastPageIndex;
 
   const showSubmissionReference = isLastPage && idea && showIdeaId;
-  const showPostParticipationSignup = !!(
-    isLastPage &&
-    idea &&
-    !authUser &&
-    postParticipationSignUpEnabled
-  );
+  const showPostParticipationSignup = !!(isLastPage && idea && !authUser);
 
   return (
     <FormProvider {...methods}>
@@ -288,8 +283,9 @@ const SurveyPage = ({
                           <PostParticipationBox
                             onCreateAccount={() => {
                               triggerPostParticipationFlow({
-                                name: 'redirect',
+                                name: 'followProjectAndRedirect',
                                 params: {
+                                  projectId: project.data.id,
                                   path: `/projects/${project.data.attributes.slug}`,
                                 },
                               });

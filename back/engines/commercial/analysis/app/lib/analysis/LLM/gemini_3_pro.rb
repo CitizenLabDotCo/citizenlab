@@ -3,7 +3,7 @@ module Analysis
     class Gemini3Pro < RubyLLM
       # The model ID as returned by RubyLLM.models.chat_models
       def model
-        'gemini-3-pro-preview'
+        'gemini-3.1-pro-preview'
       end
 
       def self.family

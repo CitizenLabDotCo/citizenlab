@@ -9,12 +9,6 @@
 #  title_multiloc       :jsonb            not null
 #  description_multiloc :jsonb            not null
 #  icon                 :string
-#  ordering             :integer          default(0), not null
-#  parent_id            :uuid
-#  lft                  :integer
-#  rgt                  :integer
-#  depth                :integer          default(0)
-#  children_count       :integer          default(0)
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
 #  parent_id            :uuid
@@ -25,11 +19,9 @@
 #
 # Indexes
 #
-#  index_input_topics_on_parent_id                (parent_id)
-#  index_input_topics_on_project_id               (project_id)
-#  index_input_topics_on_project_id_and_ordering  (project_id,ordering)
-#  index_input_topics_on_parent_id                (parent_id)
-#  index_input_topics_on_rgt                      (rgt)
+#  index_input_topics_on_parent_id   (parent_id)
+#  index_input_topics_on_project_id  (project_id)
+#  index_input_topics_on_rgt         (rgt)
 #
 # Foreign Keys
 #
@@ -50,6 +42,7 @@ class InputTopic < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_multiloc, multiloc: { presence: false }
   validate :max_depth_validation
+  validate :icon_only_for_root_topics
 
   scope :order_ideas_count, lambda { |ideas, direction: :asc|
     topics_counts = IdeasCountService.counts(ideas, ['input_topic_id'])['input_topic_id']
@@ -76,5 +69,11 @@ class InputTopic < ApplicationRecord
     return if parent.blank?
 
     errors.add(:parent_id, :too_deep) if parent.depth >= 1
+  end
+
+  def icon_only_for_root_topics
+    return if icon.blank?
+
+    errors.add(:icon, :not_allowed_for_subtopics) if depth.present? && depth >= 1
   end
 end

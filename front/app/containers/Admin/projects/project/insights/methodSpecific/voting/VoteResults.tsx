@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   Box,
@@ -8,6 +8,7 @@ import {
   Spinner,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { useSearchParams } from 'react-router-dom';
 import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
 
@@ -18,8 +19,10 @@ import useUserCustomFields from 'api/user_custom_fields/useUserCustomFields';
 import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
+import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 
 import { INSIGHTS_CHART_COLORS } from '../../constants';
+import { usePdfExportContext } from '../../pdf/PdfExportContext';
 
 import ClusteredIdeaRow from './ClusteredIdeaRow';
 import { getStripedPattern } from './constants';
@@ -35,7 +38,17 @@ const VoteResults = ({ phaseId }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const theme = useTheme();
-  const [clusterBy, setClusterBy] = useState<string>('');
+  const { isPdfRenderMode } = usePdfExportContext();
+  const [searchParams] = useSearchParams();
+
+  // Read clusterBy from URL so it persists across PDF export
+  const clusterBy = searchParams.get('votingClusterBy') || '';
+
+  const handleClusterByChange = (option: IOption) => {
+    updateSearchParams({
+      votingClusterBy: option.value || null, // null removes the param
+    });
+  };
 
   const { data: userCustomFields } = useUserCustomFields({
     inputTypes: ['select', 'multiselect', 'checkbox', 'number'],
@@ -117,25 +130,27 @@ const VoteResults = ({ phaseId }: Props) => {
           {formatMessage(messages.voteResults)}
         </Title>
 
-        <Box display="flex" gap="12px" alignItems="flex-end">
-          <Box width="200px">
-            <Text
-              fontSize="xs"
-              color="grey700"
-              fontWeight="bold"
-              mb="4px"
-              my="0px"
-              style={{ textTransform: 'uppercase' }}
-            >
-              {formatMessage(messages.clusterBy1)}
-            </Text>
-            <Select
-              value={clusterBy}
-              options={clusterByOptions}
-              onChange={(option) => setClusterBy(option.value)}
-            />
+        {!isPdfRenderMode && (
+          <Box display="flex" gap="12px" alignItems="flex-end">
+            <Box width="200px">
+              <Text
+                fontSize="xs"
+                color="grey700"
+                fontWeight="bold"
+                mb="4px"
+                my="0px"
+                style={{ textTransform: 'uppercase' }}
+              >
+                {formatMessage(messages.clusterBy1)}
+              </Text>
+              <Select
+                value={clusterBy}
+                options={clusterByOptions}
+                onChange={handleClusterByChange}
+              />
+            </Box>
           </Box>
-        </Box>
+        )}
       </Box>
 
       {clusterBy && demographicKeys.length > 0 ? (

@@ -78,7 +78,7 @@ const DeliveriesModal = ({ subscriptionId }: DeliveriesModalProps) => {
 
   return (
     <Box w="100%" m="24px auto" pr="24px" maxHeight="80vh" overflowY="auto">
-      <Title variant="h2">
+      <Title id="deliveries-modal-title" variant="h2">
         <FormattedMessage
           {...messages.deliveriesTitle}
           values={{

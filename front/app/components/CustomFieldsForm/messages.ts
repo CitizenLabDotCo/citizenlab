@@ -313,6 +313,26 @@ export default defineMessages({
     id: 'app.utils.IdeasNewPage.viewYourIssue',
     defaultMessage: 'View your issue',
   },
+  viewYourResponse: {
+    id: 'app.utils.IdeasNewPage.viewYourResponse',
+    defaultMessage: 'View your response',
+  },
+  viewYourSuggestion: {
+    id: 'app.utils.IdeasNewPage.viewYourSuggestion',
+    defaultMessage: 'View your suggestion',
+  },
+  viewYourTopic: {
+    id: 'app.utils.IdeasNewPage.viewYourTopic',
+    defaultMessage: 'View your topic',
+  },
+  viewYourPost: {
+    id: 'app.utils.IdeasNewPage.viewYourPost',
+    defaultMessage: 'View your post',
+  },
+  viewYourStory: {
+    id: 'app.utils.IdeasNewPage.viewYourStory',
+    defaultMessage: 'View your story',
+  },
   valueOutOfTotalWithLabel: {
     id: 'app.components.form.controls.valueOutOfTotalWithLabel',
     defaultMessage: '{value} out of {total}, {label}',
@@ -336,6 +356,10 @@ export default defineMessages({
   clearAllScreenreader: {
     id: 'app.components.form.controls.clearAllScreenreader',
     defaultMessage: 'Clear all answers from above matrix question',
+  },
+  matrixStatementHeader: {
+    id: 'app.components.form.controls.matrixStatementHeader',
+    defaultMessage: 'Statement',
   },
   noRankSelected: {
     id: 'app.components.form.controls.noRankSelected',

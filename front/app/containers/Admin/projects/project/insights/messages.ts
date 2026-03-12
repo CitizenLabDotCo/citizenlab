@@ -5,10 +5,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights',
     defaultMessage: 'Insights',
   },
-  liveData: {
-    id: 'app.containers.Admin.projects.project.insights.liveData',
-    defaultMessage: 'Live data',
-  },
   insightsSubtitle1: {
     id: 'app.containers.Admin.projects.project.insights.insightsSubtitle1',
     defaultMessage: 'Track engagement in real-time',
@@ -30,8 +26,8 @@ export default defineMessages({
     defaultMessage: 'Total',
   },
   participants: {
-    id: 'app.containers.Admin.projects.project.insights.participants',
-    defaultMessage: 'Participants',
+    id: 'app.containers.Admin.projects.project.insights.participants2',
+    defaultMessage: 'Phase participants',
   },
   inputs: {
     id: 'app.containers.Admin.projects.project.insights.inputs',
@@ -48,6 +44,10 @@ export default defineMessages({
   votes: {
     id: 'app.containers.Admin.projects.project.insights.votes',
     defaultMessage: 'Votes',
+  },
+  voters: {
+    id: 'app.containers.Admin.projects.project.insights.voters',
+    defaultMessage: 'Voters',
   },
   submissions: {
     id: 'app.containers.Admin.projects.project.insights.submissions',
@@ -201,29 +201,74 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.count',
     defaultMessage: 'Count',
   },
-  vsLast7Days: {
-    id: 'app.containers.Admin.projects.project.insights.vsLast7Days',
-    defaultMessage: 'vs last 7 days',
+  sevenDayChange: {
+    id: 'app.containers.Admin.projects.project.insights.sevenDayChange',
+    defaultMessage: '7-day change',
   },
-  noComparisonData: {
-    id: 'app.containers.Admin.projects.project.insights.noComparisonData',
-    defaultMessage: 'No comparison data',
-  },
-  comparisonAvailableAfter14Days: {
-    id: 'app.containers.Admin.projects.project.insights.comparisonAvailableAfter14Days',
-    defaultMessage: 'Comparison available after 14 days',
-  },
-  firstActivityWithinLast7Days: {
-    id: 'app.containers.Admin.projects.project.insights.firstActivityWithinLast7Days',
-    defaultMessage: 'First activity started within the last 7 days',
-  },
-  noReferenceData: {
-    id: 'app.containers.Admin.projects.project.insights.noReferenceData',
+  sevenDayChangeDefaultTooltip: {
+    id: 'app.containers.Admin.projects.project.insights.sevenDayChangeDefaultTooltip',
     defaultMessage:
-      'No reference data yet. {addBaseDataLink} for this demographic to enable representativeness.',
+      "The percentage this metric's value has changed, in comparison to its value 7-days ago.",
   },
-  addBaseData: {
-    id: 'app.containers.Admin.projects.project.insights.addBaseData',
-    defaultMessage: 'Add base data',
+  phaseParticipantsMetricTooltip2: {
+    id: 'app.containers.Admin.projects.project.insights.phaseParticipantsMetricTooltip2',
+    defaultMessage:
+      'The number of unique participants. Does not include event registrants and project followers.',
+  },
+  participationRateExplanationTooltip: {
+    id: 'app.containers.Admin.projects.project.insights.participationRateExplanationTooltip',
+    defaultMessage:
+      'The number of participants divided by the number of visitors, expressed as a percentage.',
+  },
+  completionRateExplanationTooltip: {
+    id: 'app.containers.Admin.projects.project.insights.completionRateExplanationTooltip',
+    defaultMessage:
+      "The number of submitted survey responses divided by the total number of survey responses (including 'draft', unsubmitted responses), expressed as a percentage.",
+  },
+  insufficientComparisonData: {
+    id: 'app.containers.Admin.projects.project.insights.insufficientComparisonData',
+    defaultMessage: 'Insufficient comparison data',
+  },
+  insufficientComparisonDataPhaseTooYoung: {
+    id: 'app.containers.Admin.projects.project.insights.insufficientComparisonDataPhaseTooYoung',
+    defaultMessage:
+      'Cannot calculate 7-day change when phase has run for less than 7 days',
+  },
+  currentValueComparedWithZero: {
+    id: 'app.containers.Admin.projects.project.insights.currentValueComparedWithZero',
+    defaultMessage:
+      'Current value compared with zero (would give infinite percentage change)',
+  },
+  cannotCalculateNoVisitsInPeriod: {
+    id: 'app.containers.Admin.projects.project.insights.cannotCalulateNoVisitsInPeriod',
+    defaultMessage:
+      'Cannot calculate participation rate change with zero visitors in a comparison period',
+  },
+  cannotCalculateNoNewSurveyResponsesInPeriod: {
+    id: 'app.containers.Admin.projects.project.insights.cannotCalculateNoNewSurveyResponsesInPeriod',
+    defaultMessage:
+      'Cannot calculate completion rate change with zero new survey responses in a comparison period',
+  },
+  cannotCalculateParticipationRateZeroVisitors: {
+    id: 'app.containers.Admin.projects.project.insights.cannotCalculateParticipationRateZeroVisitors',
+    defaultMessage: 'Cannot calculate participation rate when zero visitors',
+  },
+  cannotCalculateCompletionRateNoSurveyResponses: {
+    id: 'app.containers.Admin.projects.project.insights.cannotCalculateCompletionRateNoSurveyResponses',
+    defaultMessage:
+      'Cannot calculate completion rate when no survey responses exist',
+  },
+  noReferenceDataMessage: {
+    id: 'app.containers.Admin.projects.project.insights.noReferenceDataMessage',
+    defaultMessage:
+      'No reference census data is available yet for this demographic dimension. <link>Add it here</link> to understand how representative your data is.',
+  },
+  downloadPdf: {
+    id: 'app.containers.Admin.projects.project.insights.downloadPdf',
+    defaultMessage: 'Download as PDF',
+  },
+  downloadWord: {
+    id: 'app.containers.Admin.projects.project.insights.downloadWord',
+    defaultMessage: 'Download as Word',
   },
 });

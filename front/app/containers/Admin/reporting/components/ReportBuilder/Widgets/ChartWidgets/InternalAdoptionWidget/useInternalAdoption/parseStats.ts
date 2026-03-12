@@ -1,41 +1,47 @@
 import { InternalAdoptionResponse } from 'api/graph_data_units/responseTypes/InternalAdoptionWidget';
 
-import { Stats } from '../typings';
+import { Stat, Stats } from '../typings';
 
 export const parseStats = (
   attributes: InternalAdoptionResponse['data']['attributes']
 ): Stats => {
   const {
-    active_admins_count,
-    active_moderators_count,
-    total_admin_pm_count,
-    active_admins_compared,
-    active_moderators_compared,
-    total_admin_pm_compared,
+    admin_counts,
+    moderator_counts,
+    admin_counts_compared,
+    moderator_counts_compared,
   } = attributes;
 
+  const hasComparison = !!admin_counts_compared && !!moderator_counts_compared;
+
+  const totalCounts = {
+    active: admin_counts.active + moderator_counts.active,
+    registered: admin_counts.registered + moderator_counts.registered,
+  };
+
+  const totalCountsCompared = hasComparison
+    ? {
+        active: admin_counts_compared.active + moderator_counts_compared.active,
+        registered:
+          admin_counts_compared.registered +
+          moderator_counts_compared.registered,
+      }
+    : undefined;
+
   return {
-    activeAdmins: {
-      value: active_admins_count,
-      change: getDelta(active_admins_count, active_admins_compared),
-    },
-    activeModerators: {
-      value: active_moderators_count,
-      change: getDelta(active_moderators_count, active_moderators_compared),
-    },
-    totalAdminPm: {
-      value: total_admin_pm_count,
-      change: getDelta(total_admin_pm_count, total_admin_pm_compared),
-    },
+    admins: buildStat(admin_counts, admin_counts_compared),
+    moderators: buildStat(moderator_counts, moderator_counts_compared),
+    total: buildStat(totalCounts, totalCountsCompared),
   };
 };
 
-const getDelta = (
-  current: number,
-  compared?: number | undefined
-): number | undefined => {
-  if (compared === undefined) {
-    return undefined;
-  }
-  return current - compared;
-};
+type Counts = { registered: number; active: number };
+
+const buildStat = (counts: Counts, compared?: Counts): Stat => ({
+  registered: counts.registered,
+  active: counts.active,
+  activeDelta: compared ? counts.active - compared.active : undefined,
+  registeredDelta: compared
+    ? counts.registered - compared.registered
+    : undefined,
+});

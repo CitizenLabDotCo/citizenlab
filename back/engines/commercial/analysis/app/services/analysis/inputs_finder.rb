@@ -61,9 +61,12 @@ module Analysis
       scope = inputs
 
       scope = scope.where('published_at >= ?', params[:published_at_from]) if params[:published_at_from]
-      scope = scope.where('published_at <= ?', params[:published_at_to]) if params[:published_at_to]
-
+      scope = scope.where('published_at <= ?', parse_end_of_day(params[:published_at_to])) if params[:published_at_to]
       scope
+    end
+
+    def parse_end_of_day(date_string)
+      date_string.to_datetime.in_time_zone(AppConfiguration.timezone).end_of_day
     end
 
     def filter_reactions(inputs)

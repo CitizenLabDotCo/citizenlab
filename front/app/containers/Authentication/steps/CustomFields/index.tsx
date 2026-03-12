@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Box, Spinner, useBreakpoint } from '@citizenlab/cl2-component-library';
 
@@ -13,10 +13,7 @@ import {
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import UserCustomFieldsForm from 'components/UserCustomFields';
 
-import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
-
-import tracks from '../../tracks';
 
 import messages from './messages';
 
@@ -45,10 +42,6 @@ const CustomFields = ({
   const [triggerCustomFieldsValidation, setTriggerCustomFieldsValidation] =
     useState(false);
   const [validationInProgress, setValidationInProgress] = useState(false);
-
-  useEffect(() => {
-    trackEventByName(tracks.signUpCustomFieldsStepEntered);
-  }, []);
 
   if (!authUser || !customFields) {
     return <Spinner />;
@@ -85,6 +78,7 @@ const CustomFields = ({
     >
       <UserCustomFieldsForm
         authenticationContext={authenticationData.context}
+        formData={authUser.data.attributes.custom_field_values}
         onChange={setFormData}
         triggerValidation={triggerCustomFieldsValidation}
         onValidationResult={handleCustomFieldsValidation}

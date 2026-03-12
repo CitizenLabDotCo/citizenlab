@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -21,7 +21,6 @@ import PasswordInput from 'components/HookForm/PasswordInput';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { DEFAULT_MINIMUM_PASSWORD_LENGTH } from 'components/UI/PasswordInput';
 
-import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import {
   isCLErrorsWrapper,
@@ -29,7 +28,6 @@ import {
 } from 'utils/errorUtils';
 import { isNilOrError } from 'utils/helperUtils';
 
-import tracks from '../../tracks';
 import { BuiltInFieldsUpdate } from '../../useSteps/stepConfig/typings';
 import sharedMessages from '../messages';
 
@@ -73,10 +71,6 @@ const BuiltInFields = ({
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
   });
-
-  useEffect(() => {
-    trackEventByName(tracks.signUpEmailPasswordStepEntered);
-  }, []);
 
   if (isNilOrError(locale) || isNilOrError(authUser)) return null;
 

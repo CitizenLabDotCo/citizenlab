@@ -42,7 +42,7 @@ const ActionFormSurvey = ({
       verification_enabled,
       verification_expiry,
       everyone_tracking_enabled,
-      user_fields_in_form_frontend_descriptor,
+      user_fields_in_form_descriptor,
       user_data_collection,
     },
     relationships,
@@ -65,13 +65,13 @@ const ActionFormSurvey = ({
     action === 'posting_idea' &&
     permitted_by === 'everyone';
 
-  const userFieldsInForm = user_fields_in_form_frontend_descriptor.value;
-  const { explanation } = user_fields_in_form_frontend_descriptor;
+  const userFieldsInForm = user_fields_in_form_descriptor.value;
+  const { explanation } = user_fields_in_form_descriptor;
 
   return (
     <form className={`e2e-action-form-${action}`}>
       <AccessRestrictions
-        showAnyone
+        showAnyone={'show'}
         permissionData={permissionData}
         onChange={onChange}
       />
@@ -88,9 +88,7 @@ const ActionFormSurvey = ({
               phaseId={phaseId}
               action={action}
               allowAddingFields={allowAddingFields(explanation)}
-              user_fields_in_form_frontend_descriptor={
-                user_fields_in_form_frontend_descriptor
-              }
+              user_fields_in_form_descriptor={user_fields_in_form_descriptor}
               permitted_by={permitted_by}
               onChangeUserFieldsInForm={(user_fields_in_form) => {
                 onChange({ user_fields_in_form });

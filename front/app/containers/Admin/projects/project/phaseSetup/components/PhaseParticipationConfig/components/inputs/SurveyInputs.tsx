@@ -44,7 +44,7 @@ const SurveyInputs = ({
             values={{
               surveyServiceTooltipLink: (
                 <StyledA
-                  href={formatMessage(messages.surveyServiceTooltipLink)}
+                  href={formatMessage(messages.surveyServiceTooltipLink2)}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -80,7 +80,7 @@ const SurveyInputs = ({
                                 googleFormsTooltipLink: (
                                   <StyledA
                                     href={formatMessage(
-                                      messages.googleFormsTooltipLink
+                                      messages.googleFormsTooltipLink2
                                     )}
                                     target="_blank"
                                     rel="noopener noreferrer"
@@ -103,24 +103,7 @@ const SurveyInputs = ({
                         </Box>
                         <IconTooltip
                           content={
-                            <FormattedMessage
-                              {...messages.hiddenFieldsTip}
-                              values={{
-                                hiddenFieldsLink: (
-                                  <a
-                                    href={formatMessage(
-                                      messages.hiddenFieldsSupportArticleUrl
-                                    )}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                  >
-                                    {formatMessage(
-                                      messages.hiddenFieldsLinkText
-                                    )}
-                                  </a>
-                                ),
-                              }}
-                            />
+                            <FormattedMessage {...messages.hiddenFieldsTip2} />
                           }
                         />
                       </Box>

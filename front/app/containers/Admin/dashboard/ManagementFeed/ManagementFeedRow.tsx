@@ -153,6 +153,7 @@ const ManagementFeedRow = ({ item }: { item: ManagementFeedData }) => {
         opened={isChangedModalOpened}
         close={() => setIsChangedModalOpened(false)}
         width="1000px"
+        ariaLabelledBy="changes-modal-title"
       >
         <ChangesTables changes={item.attributes.change} />
       </Modal>

@@ -6,8 +6,6 @@ import usePermissionsPhaseCustomFields from 'api/permissions_phase_custom_fields
 import { isPhasePermission } from 'api/phase_permissions/utils';
 import usePhase from 'api/phases/usePhase';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import AccessRestrictions from '../ActionForm/AccessRestrictions';
 import Fields from '../ActionForm/Fields';
 import FlowVisualization from '../ActionForm/FlowVisualization';
@@ -29,10 +27,6 @@ const ActionFormIdeation = ({
     action: permissionData.attributes.action,
   });
 
-  const ideationAccountlessPostingEnabled = useFeatureFlag({
-    name: 'ideation_accountless_posting',
-  });
-
   if (!isPhasePermission(permissionData)) {
     return null;
   }
@@ -43,7 +37,7 @@ const ActionFormIdeation = ({
       action,
       verification_enabled,
       verification_expiry,
-      user_fields_in_form_frontend_descriptor,
+      user_fields_in_form_descriptor,
     },
     relationships,
   } = permissionData;
@@ -53,13 +47,13 @@ const ActionFormIdeation = ({
   if (!permissionsCustomFields) return null;
   if (!phase) return null;
 
-  const userFieldsInForm = user_fields_in_form_frontend_descriptor.value;
-  const { explanation } = user_fields_in_form_frontend_descriptor;
+  const userFieldsInForm = user_fields_in_form_descriptor.value;
+  const { explanation } = user_fields_in_form_descriptor;
 
   return (
     <form className={`e2e-action-form-${action}`}>
       <AccessRestrictions
-        showAnyone={ideationAccountlessPostingEnabled}
+        showAnyone={'show-with-new-label'}
         permissionData={permissionData}
         onChange={onChange}
       />
@@ -70,9 +64,7 @@ const ActionFormIdeation = ({
               phaseId={phaseId}
               action={action}
               allowAddingFields={allowAddingFields(explanation)}
-              user_fields_in_form_frontend_descriptor={
-                user_fields_in_form_frontend_descriptor
-              }
+              user_fields_in_form_descriptor={user_fields_in_form_descriptor}
               permitted_by={permitted_by}
               onChangeUserFieldsInForm={(user_fields_in_form) => {
                 onChange({ user_fields_in_form });

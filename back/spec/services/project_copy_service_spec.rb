@@ -32,6 +32,27 @@ describe ProjectCopyService do
       end
     end
 
+    describe 'new_slug' do
+      let(:new_slug) { 'custom-project-slug' }
+
+      it 'preserves the slug if possible' do
+        template = create(:tenant).switch do
+          service.export create(:project), new_slug:
+        end
+        service.import template
+        expect(Project.find_by(slug: 'custom-project-slug')).to be_present
+      end
+
+      it 'generates a unique variation of the slug if a project with the slug already exists' do
+        template = create(:tenant).switch do
+          service.export create(:project), new_slug:
+        end
+        create(:project, slug: 'custom-project-slug')
+        service.import template
+        expect(Project.find_by(slug: 'custom-project-slug')).to be_present
+      end
+    end
+
     it 'successfully copies over native surveys and responses' do
       create(:idea_status_proposed)
 
@@ -446,6 +467,26 @@ describe ProjectCopyService do
           expect(copied_project.title_multiloc).to eq({ 'en' => 'ENGLISH PROJECT', 'fr-FR' => 'FRENCH PROJECT', 'de-DE' => 'TRANSLATED: ENGLISH PROJECT' })
           expect(copied_project.ideas.first.title_multiloc).to eq({ 'en' => 'TRANSLATED: FRENCH IDEA', 'fr-FR' => 'FRENCH IDEA', 'de-DE' => 'TRANSLATED: FRENCH IDEA' })
         end
+      end
+    end
+
+    context 'when project is in a space' do
+      it 'copies the space_id if copying locally' do
+        space = create(:space)
+        project = create(:project, space:)
+        template = service.export project, local_copy: true
+        copied_project = service.import template, local_copy: true
+
+        expect(copied_project.space_id).to eq space.id
+      end
+
+      it 'does not copy the space_id if not copying locally' do
+        space = create(:space)
+        project = create(:project, space:)
+        template = service.export project, local_copy: false
+        copied_project = service.import template, local_copy: false
+
+        expect(copied_project.space_id).to be_nil
       end
     end
   end

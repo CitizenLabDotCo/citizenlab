@@ -77,7 +77,9 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                         values={{
                           link: (
                             <a
-                              href={formatMessage(messages.imageSupportPageURL)}
+                              href={formatMessage(
+                                messages.imageSupportPageURL2
+                              )}
                               target="_blank"
                               rel="noreferrer"
                               onClick={(e) => e.stopPropagation()}
@@ -146,7 +148,9 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                         values={{
                           link: (
                             <a
-                              href={formatMessage(messages.imageSupportPageURL)}
+                              href={formatMessage(
+                                messages.imageSupportPageURL2
+                              )}
                               target="_blank"
                               rel="noreferrer"
                               onClick={(e) => e.stopPropagation()}
@@ -191,7 +195,9 @@ const LayoutSettingField = ({ bannerLayout, onChange }: Props) => {
                         values={{
                           link: (
                             <a
-                              href={formatMessage(messages.imageSupportPageURL)}
+                              href={formatMessage(
+                                messages.imageSupportPageURL2
+                              )}
                               target="_blank"
                               rel="noreferrer"
                               onClick={(e) => e.stopPropagation()}

@@ -224,6 +224,10 @@ module ParticipationMethod
       false
     end
 
+    def supports_input_topics?
+      false
+    end
+
     # Only implemented in native_survey and community monitor
     def user_data_collection
       'all_data'

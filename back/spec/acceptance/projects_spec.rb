@@ -25,6 +25,7 @@ resource 'Projects' do
       parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}.", required: false
       parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned', required: false
       parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)'
+      parameter :live_auto_input_topics_enabled, 'Whether the project should automatically detect topics and assign inputs to them. Defaults to false.', required: false
     end
 
     with_options scope: %i[project admin_publication_attributes] do
@@ -46,6 +47,7 @@ resource 'Projects' do
       parameter :visible_to, "Defines who can see the project, either #{Project::VISIBLE_TOS.join(',')}. Defaults to public.", required: false
       parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)', required: false
       parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Defaults to unassigned', required: false
+      parameter :live_auto_input_topics_enabled, 'Whether the project should automatically detect topics and assign inputs to them. Defaults to false.', required: false
     end
 
     with_options scope: %i[project admin_publication_attributes] do
@@ -301,6 +303,7 @@ resource 'Projects' do
         let(:visible_to) { 'admins' }
         let(:publication_status) { 'published' }
         let(:default_assignee_id) { create(:admin).id }
+        let(:live_auto_input_topics_enabled) { true }
 
         example_request 'Create a timeline project' do
           assert_status 201
@@ -313,7 +316,8 @@ resource 'Projects' do
             description_preview_multiloc: description_preview_multiloc.symbolize_keys,
             visible_to: visible_to,
             first_published_at: new_project.admin_publication.first_published_at.iso8601(3),
-            header_bg: be_present
+            header_bg: be_present,
+            live_auto_input_topics_enabled: live_auto_input_topics_enabled
           )
 
           expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
@@ -329,12 +333,28 @@ resource 'Projects' do
 
         example 'Create a project in a folder' do
           folder = create(:project_folder)
-          do_request folder_id: folder.id
+          do_request(project: { folder_id: folder.id })
           assert_status 201
+
           # New folder projects are added to the top
           expect(json_response[:included].find do |inc|
                    inc[:type] == 'admin_publication'
                  end.dig(:attributes, :ordering)).to eq 0
+
+          project = Project.find(json_response[:data][:id])
+          expect(project.folder_id).to eq folder.id
+          expect(project.space_id).to be_nil
+        end
+
+        example 'Create a project in a folder in a workspace' do
+          space = create(:space)
+          folder = create(:project_folder, space: space)
+          do_request(project: { folder_id: folder.id })
+          assert_status 201
+
+          project = Project.find(json_response[:data][:id])
+          expect(project.folder_id).to eq folder.id
+          expect(project.space_id).to eq folder.space.id
         end
 
         context 'when project description contains text images' do
@@ -364,6 +384,7 @@ resource 'Projects' do
         let(:visible_to) { 'groups' }
         let(:publication_status) { 'archived' }
         let(:default_assignee_id) { create(:admin).id }
+        let(:live_auto_input_topics_enabled) { true }
 
         example 'Update a project' do
           old_publcation_ids = AdminPublication.ids
@@ -381,6 +402,7 @@ resource 'Projects' do
           expect(json_response.dig(:data, :attributes, :visible_to)).to eq 'groups'
           expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'archived'
           expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
+          expect(json_response.dig(:data, :attributes, :live_auto_input_topics_enabled)).to be true
         end
 
         example 'Add a project to a folder' do
@@ -392,6 +414,214 @@ resource 'Projects' do
           expect(@project.folder_id).to eq folder.id
           # Projects moved into folders are added to the top
           expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :ordering)).to eq 0
+        end
+
+        context 'when space involved' do
+          context 'when project not in folder and not in space' do
+            before do
+              @project.update!(folder_id: nil, space_id: nil)
+            end
+
+            example 'move project to a space' do
+              space = create(:space)
+              do_request(project: { space_id: space.id })
+
+              expect(response_status).to eq 200
+              expect(json_response[:data][:attributes][:space_id]).to eq space.id
+            end
+
+            example 'Add a project to a folder in a space' do
+              space = create(:space)
+              folder = create(:project_folder, space: space)
+
+              # folder= method will sync the project space to the folder space
+              do_request(project: { folder_id: folder.id })
+              expect(response_status).to eq 200
+
+              @project.reload
+
+              expect(@project.folder_id).to eq folder.id
+              expect(json_response[:data][:attributes][:space_id]).to eq space.id
+            end
+
+            example 'Add a project to a folder not in a space' do
+              folder = create(:project_folder, space: nil)
+
+              do_request(project: { folder_id: folder.id })
+              expect(response_status).to eq 200
+
+              @project.reload
+
+              expect(@project.folder_id).to eq folder.id
+              expect(json_response[:data][:attributes][:space_id]).to be_nil
+            end
+          end
+
+          context 'when project not in space and in folder not in space' do
+            before do
+              @folder = create(:project_folder, space: nil, projects: [@project])
+            end
+
+            example 'Remove the project from the folder' do
+              do_request(project: { folder_id: nil })
+              expect(response_status).to eq 200
+
+              @project.reload
+
+              expect(@project.folder_id).to be_nil
+              expect(json_response[:data][:attributes][:space_id]).to be_nil
+            end
+
+            example '[Error] Add the project to a space' do
+              space = create(:space)
+              do_request(project: { space_id: space.id })
+
+              expect(response_status).to eq 422
+              expect(json_response[:errors][:space_id]).to include(
+                { error: 'project space must match the space of its folder' }
+              )
+
+              @project.reload
+              expect(@project.folder_id).not_to be_nil
+            end
+
+            example 'Add the project to a folder in a space' do
+              space = create(:space)
+              folder2 = create(:project_folder, space: space)
+
+              do_request(project: { folder_id: folder2.id })
+              expect(response_status).to eq 200
+
+              # folder= method will sync the project space to the folder space
+              expect(response_status).to eq 200
+              expect(json_response[:data][:attributes][:space_id]).to eq space.id
+
+              @project.reload
+              expect(@project.folder_id).to eq folder2.id
+            end
+          end
+
+          context 'when project in space and not in folder' do
+            before do
+              @space = create(:space)
+              @project.update!(space_id: @space.id)
+            end
+
+            example 'Add the project to a folder in the same space' do
+              folder = create(:project_folder, space: @space)
+
+              do_request(project: { folder_id: folder.id })
+              expect(response_status).to eq 200
+
+              @project.reload
+
+              expect(@project.folder_id).to eq folder.id
+              expect(json_response[:data][:attributes][:space_id]).to eq @space.id
+            end
+
+            example 'Add the project to a folder in another space' do
+              space2 = create(:space)
+              folder = create(:project_folder, space: space2)
+
+              do_request(project: { folder_id: folder.id })
+              expect(response_status).to eq 200
+
+              # folder= method will sync the project space to the folder space
+              expect(response_status).to eq 200
+              expect(json_response[:data][:attributes][:space_id]).to eq space2.id
+
+              @project.reload
+              expect(@project.folder_id).to eq folder.id
+            end
+
+            example 'Add the project to a folder not in a space' do
+              folder = create(:project_folder, space: nil)
+
+              do_request(project: { folder_id: folder.id })
+              expect(response_status).to eq 200
+
+              # folder= method will sync the project space to the folder space (nil)
+              expect(response_status).to eq 200
+              expect(json_response[:data][:attributes][:space_id]).to be_nil
+
+              @project.reload
+              expect(@project.folder_id).to eq folder.id
+            end
+
+            example 'Move the project to another space' do
+              space2 = create(:space)
+              do_request(project: { space_id: space2.id })
+
+              expect(response_status).to eq 200
+              expect(json_response[:data][:attributes][:space_id]).to eq space2.id
+            end
+
+            example 'Move the project to no space' do
+              do_request(project: { space_id: nil })
+              expect(response_status).to eq 200
+
+              expect(json_response[:data][:attributes][:space_id]).to be_nil
+            end
+          end
+
+          context 'when project in folder in space' do
+            before do
+              @space = create(:space)
+              folder = create(:project_folder, space: @space)
+              @project.update!(folder_id: folder.id)
+            end
+
+            example '[Error] Move the project to another space' do
+              space2 = create(:space)
+              do_request(project: { space_id: space2.id })
+
+              expect(response_status).to eq 422
+              expect(json_response[:errors][:space_id]).to include(
+                { error: 'project space must match the space of its folder' }
+              )
+
+              @project.reload
+              expect(@project.space_id).to eq @space.id
+            end
+
+            example 'Move the project to a folder in another space' do
+              space2 = create(:space)
+              folder2 = create(:project_folder, space: space2)
+
+              do_request(project: { folder_id: folder2.id })
+              expect(response_status).to eq 200
+
+              # folder= method will sync the project space to the folder space
+              expect(response_status).to eq 200
+              expect(json_response[:data][:attributes][:space_id]).to eq space2.id
+
+              @project.reload
+              expect(@project.folder_id).to eq folder2.id
+            end
+
+            example '[Error] Move the project to no space' do
+              do_request(project: { space_id: nil })
+
+              expect(response_status).to eq 422
+              expect(json_response[:errors][:space_id]).to include(
+                { error: 'project space must match the space of its folder' }
+              )
+
+              @project.reload
+              expect(@project.space_id).to eq @space.id
+            end
+
+            example 'Remove the project from the folder' do
+              do_request(project: { folder_id: nil })
+              expect(response_status).to eq 200
+
+              @project.reload
+
+              # folder= method will sync the project space to the folder space (nil)
+              expect(@project.folder_id).to be_nil
+              expect(json_response[:data][:attributes][:space_id]).to eq @space.id
+            end
+          end
         end
 
         example 'Remove a project from a folder' do

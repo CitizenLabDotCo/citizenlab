@@ -141,6 +141,65 @@ RSpec.describe Phase do
     end
   end
 
+  describe 'available_views' do
+    describe 'defaults (set_presentation_mode callback)' do
+      it 'defaults to [card] when not explicitly set' do
+        phase = create(:phase, available_views: nil)
+        expect(phase.available_views).to eq %w[card]
+      end
+
+      it 'automatically includes the presentation_mode in available_views' do
+        phase = create(:phase, presentation_mode: 'map', available_views: %w[card])
+        expect(phase.available_views).to include('map')
+      end
+
+      it 'does not duplicate if presentation_mode is already included' do
+        phase = create(:phase, presentation_mode: 'card', available_views: %w[card map])
+        expect(phase.available_views).to eq %w[card map]
+      end
+    end
+
+    describe 'validation' do
+      # Stub set_presentation_mode so the before_validation callback
+      # doesn't auto-correct the values we're testing against.
+      before { allow_any_instance_of(described_class).to receive(:set_presentation_mode) }
+
+      it 'is invalid when empty' do
+        phase = build(:phase, presentation_mode: 'card', available_views: [])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('non-empty array')
+      end
+
+      it 'is invalid with an unrecognized view mode' do
+        phase = build(:phase, presentation_mode: 'card', available_views: %w[card unknown])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('invalid view modes')
+      end
+
+      it 'is invalid without card view' do
+        phase = build(:phase, presentation_mode: 'map', available_views: %w[map])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('must include card view')
+      end
+
+      it 'is invalid when available_views does not include the presentation_mode' do
+        phase = build(:phase, presentation_mode: 'map', available_views: %w[card feed])
+        expect(phase).not_to be_valid
+        expect(phase.errors[:available_views].first).to include('must include the default presentation mode')
+      end
+
+      it 'is valid with card and the current presentation_mode' do
+        phase = build(:phase, presentation_mode: 'map', available_views: %w[card map])
+        expect(phase).to be_valid
+      end
+
+      it 'is valid with all presentation modes' do
+        phase = build(:phase, presentation_mode: 'card', available_views: %w[card map feed])
+        expect(phase).to be_valid
+      end
+    end
+  end
+
   describe 'input_term' do
     it 'default is set by the participation method defaults' do
       phase = build(:phase, input_term: nil)
@@ -288,6 +347,46 @@ RSpec.describe Phase do
       it 'returns no phases if the date is tomorrow' do
         expect(described_class.starting_on(start_date + 1.day).length).to eq 0
       end
+    end
+  end
+
+  describe '::current' do
+    let(:timeline_service) { TimelineService.new }
+
+    it 'returns phases that have started and not yet ended' do
+      phase = create(:phase, start_at: 5.days.ago, end_at: 5.days.from_now)
+      expect(described_class.current).to include(phase)
+      expect(timeline_service.current_phase(phase.project)).to eq(phase)
+    end
+
+    it 'returns phases starting today' do
+      phase = create(:phase, start_at: Time.zone.today, end_at: 5.days.from_now)
+      expect(described_class.current).to include(phase)
+      expect(timeline_service.current_phase(phase.project)).to eq(phase)
+    end
+
+    it 'returns phases ending today' do
+      phase = create(:phase, start_at: 5.days.ago, end_at: Time.zone.today)
+      expect(described_class.current).to include(phase)
+      expect(timeline_service.current_phase(phase.project)).to eq(phase)
+    end
+
+    it 'returns phases with no end date that have started' do
+      phase = create(:phase, start_at: 5.days.ago, end_at: nil)
+      expect(described_class.current).to include(phase)
+      expect(timeline_service.current_phase(phase.project)).to eq(phase)
+    end
+
+    it 'excludes phases that have not started yet' do
+      phase = create(:phase, start_at: 1.day.from_now, end_at: 5.days.from_now)
+      expect(described_class.current).not_to include(phase)
+      expect(timeline_service.current_phase(phase.project)).to be_nil
+    end
+
+    it 'excludes phases that have already ended' do
+      phase = create(:phase, start_at: 10.days.ago, end_at: 1.day.ago)
+      expect(described_class.current).not_to include(phase)
+      expect(timeline_service.current_phase(phase.project)).to be_nil
     end
   end
 
@@ -487,6 +586,83 @@ RSpec.describe Phase do
       AppConfiguration.instance.save!
       phase = create(:phase)
       expect(phase.reacting_dislike_enabled).to be true
+    end
+  end
+
+  describe 'prescreening_mode' do
+    using RSpec::Parameterized::TableSyntax
+
+    describe 'validation' do
+      def set_feature_flags(prescreening:, flag_inappropriate_content:)
+        AppConfiguration.instance.settings.tap do |settings|
+          settings['prescreening'] = { 'allowed' => true, 'enabled' => prescreening }
+          settings['prescreening_ideation'] = { 'allowed' => true, 'enabled' => prescreening }
+          settings['flag_inappropriate_content'] = { 'allowed' => true, 'enabled' => flag_inappropriate_content }
+        end
+
+        AppConfiguration.instance.save!
+      end
+
+      describe 'on create' do
+        where(:factory, :prescreening_mode, :prescreening, :flag_inappropriate_content, :valid) do
+          :phase           | nil            | false | false | true
+          :phase           | 'all'          | false | false | false
+          :phase           | 'all'          | true  | false | true
+          :phase           | 'flagged_only' | true  | false | false
+          :phase           | 'flagged_only' | true  | true  | true
+          :phase           | 'invalid'      | true  | true  | false
+          :proposals_phase | nil            | false | false | true
+          :proposals_phase | 'all'          | false | false | false
+          :proposals_phase | 'all'          | true  | false | true
+          :proposals_phase | 'flagged_only' | true  | false | false
+          :proposals_phase | 'flagged_only' | true  | true  | true
+          :proposals_phase | 'invalid'      | true  | true  | false
+        end
+
+        with_them do
+          before { set_feature_flags(prescreening:, flag_inappropriate_content:) }
+
+          it { expect(build(factory, prescreening_mode: prescreening_mode).valid?).to eq valid }
+        end
+      end
+
+      describe 'on update' do
+        it 'remains valid when feature is disabled but prescreening_mode unchanged' do
+          set_feature_flags(prescreening: true, flag_inappropriate_content: false)
+          phase = create(:phase, prescreening_mode: 'all')
+          set_feature_flags(prescreening: false, flag_inappropriate_content: false)
+
+          expect(phase).to be_valid
+          phase.title_multiloc = { 'en' => 'Updated title' }
+          expect(phase).to be_valid
+        end
+
+        it 'becomes invalid when changing prescreening_mode to non-nil with feature disabled' do
+          set_feature_flags(prescreening: true, flag_inappropriate_content: true)
+          phase = create(:phase, prescreening_mode: 'flagged_only')
+          set_feature_flags(prescreening: false, flag_inappropriate_content: false)
+
+          expect(phase).to be_valid
+          phase.prescreening_mode = 'all'
+          expect(phase).not_to be_valid
+        end
+      end
+    end
+
+    describe 'helper methods' do
+      where(:mode, :enabled, :flagged_only, :all) do
+        nil            | false | false | false
+        'flagged_only' | true  | true  | false
+        'all'          | true  | false | true
+      end
+
+      with_them do
+        subject(:phase) { build(:phase, prescreening_mode: mode) }
+
+        it { expect(phase.prescreening_enabled?).to eq enabled }
+        it { expect(phase.prescreening_flagged_only?).to eq flagged_only }
+        it { expect(phase.prescreening_all?).to eq all }
+      end
     end
   end
 end

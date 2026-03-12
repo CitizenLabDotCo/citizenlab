@@ -3,7 +3,12 @@ import React from 'react';
 import { Input, IOption } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
-import { IdeaSortMethod, InputTerm } from 'api/phases/types';
+import {
+  IdeaSortMethod,
+  InputTerm,
+  PresentationMode,
+  PrescreeningMode,
+} from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -15,9 +20,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
-import DefaultViewPicker from '../../shared/DefaultViewPicker';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
-import PrescreeningToggle from '../_shared/PrescreeningToggle';
+import ViewSelector from '../../shared/ViewSelector';
+import PrescreeningModeSelector from '../_shared/PrescreeningModeSelector';
 import SortingPicker from '../_shared/SortingPicker';
 import UserActions from '../_shared/UserActions';
 
@@ -48,13 +53,18 @@ interface Props {
     allow_anonymous_participation: boolean
   ) => void;
   presentation_mode: 'card' | 'map' | 'feed' | null | undefined;
+  available_views: PresentationMode[] | null | undefined;
   handleIdeasDisplayChange: (presentation_mode: 'map' | 'card') => void;
+  handleAvailableViewsChange: (
+    available_views: PresentationMode[],
+    presentation_mode?: PresentationMode
+  ) => void;
   ideas_order: IdeaSortMethod | undefined;
   handleIdeaDefaultSortMethodChange: (ideas_order: IdeaSortMethod) => void;
   handleDaysLimitChange: (limit: string) => void;
   handleReactingThresholdChange: (threshold: string) => void;
-  prescreening_enabled: boolean | null | undefined;
-  togglePrescreeningEnabled: (prescreening_enabled: boolean) => void;
+  prescreening_mode: PrescreeningMode | null | undefined;
+  onPrescreeningModeChange: (mode: PrescreeningMode | null) => void;
   similarity_enabled?: boolean | null;
   similarity_threshold_title: number | null | undefined;
   similarity_threshold_body: number | null | undefined;
@@ -88,13 +98,15 @@ const ProposalsInputs = ({
   handleLikingLimitOnChange,
   handleAllowAnonymousParticipationOnChange,
   presentation_mode,
+  available_views,
   handleIdeasDisplayChange,
+  handleAvailableViewsChange,
   ideas_order,
   handleIdeaDefaultSortMethodChange,
   handleDaysLimitChange,
   handleReactingThresholdChange,
-  prescreening_enabled,
-  togglePrescreeningEnabled,
+  prescreening_mode,
+  onPrescreeningModeChange,
   similarity_enabled,
   similarity_threshold_title,
   similarity_threshold_body,
@@ -153,9 +165,9 @@ const ProposalsInputs = ({
         disabledReason={toggleAnonymousPostingDisabledReason}
       />
       {prescreeningFeatureEnabled && (
-        <PrescreeningToggle
-          prescreening_enabled={prescreening_enabled}
-          togglePrescreeningEnabled={togglePrescreeningEnabled}
+        <PrescreeningModeSelector
+          prescreening_mode={prescreening_mode}
+          onPrescreeningModeChange={onPrescreeningModeChange}
         />
       )}
       <UserActions
@@ -182,10 +194,12 @@ const ProposalsInputs = ({
         handleThresholdChange={handleThresholdChange}
       />
 
-      <DefaultViewPicker
+      <ViewSelector
         presentation_mode={presentation_mode}
+        available_views={available_views}
         apiErrors={apiErrors}
         handleIdeasDisplayChange={handleIdeasDisplayChange}
+        handleAvailableViewsChange={handleAvailableViewsChange}
       />
 
       <SortingPicker

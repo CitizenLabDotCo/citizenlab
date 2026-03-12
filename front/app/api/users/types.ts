@@ -37,7 +37,7 @@ export interface IUserAttributes {
   last_name?: string | null;
   slug: string;
   locale: SupportedLocale;
-  highest_role: HighestRole;
+  highest_role?: HighestRole;
   bio_multiloc: Multiloc;
   block_end_at?: string;
   block_reason?: string;
@@ -142,4 +142,7 @@ export interface IQueryParameters {
   project_reviewer?: boolean;
   // Pass project id to filter users who participated in the project
   project?: string;
+
+  project_moderators_only?: boolean;
+  folder_moderators_only?: boolean;
 }

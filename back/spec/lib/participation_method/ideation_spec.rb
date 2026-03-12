@@ -7,8 +7,6 @@ RSpec.describe ParticipationMethod::Ideation do
 
   let(:phase) { create(:phase, with_permissions: true) }
 
-  before_all { SettingsService.new.activate_feature!('ideation_accountless_posting') }
-
   describe '#method_str' do
     it 'returns ideation' do
       expect(described_class.method_str).to eq 'ideation'
@@ -49,6 +47,50 @@ RSpec.describe ParticipationMethod::Ideation do
         expect(input.idea_status).to eq initial_status
       end
     end
+
+    context 'with prescreening_mode' do
+      before_all do
+        SettingsService.new.activate_feature!('prescreening_ideation')
+        SettingsService.new.activate_feature!('flag_inappropriate_content')
+      end
+
+      let!(:prescreening_status) { create(:idea_status_prescreening) }
+      let!(:proposed_status) { create(:idea_status_proposed) }
+      let(:phase) { create(:phase, prescreening_mode: prescreening_mode, with_permissions: true) }
+
+      context 'when prescreening_mode is all' do
+        let(:prescreening_mode) { 'all' }
+
+        it 'sets idea_status to prescreening and publication_status to submitted' do
+          input = build(:idea, idea_status: nil, publication_status: nil)
+          participation_method.assign_defaults input
+          expect(input.idea_status).to eq prescreening_status
+          expect(input.publication_status).to eq 'submitted'
+        end
+      end
+
+      context 'when prescreening_mode is flagged_only' do
+        let(:prescreening_mode) { 'flagged_only' }
+
+        it 'sets idea_status to proposed and publication_status to published' do
+          input = build(:idea, idea_status: nil, publication_status: nil)
+          participation_method.assign_defaults input
+          expect(input.idea_status).to eq(proposed_status)
+          expect(input.publication_status).to eq('published')
+        end
+      end
+
+      context 'when prescreening_mode is nil' do
+        let(:prescreening_mode) { nil }
+
+        it 'sets idea_status to proposed and publication_status to published' do
+          input = build(:idea, idea_status: nil, publication_status: nil)
+          participation_method.assign_defaults input
+          expect(input.idea_status).to eq proposed_status
+          expect(input.publication_status).to eq 'published'
+        end
+      end
+    end
   end
 
   describe '#assign_defaults_for_phase' do
@@ -62,9 +104,9 @@ RSpec.describe ParticipationMethod::Ideation do
     describe 'when prescreening is activated' do
       before { SettingsService.new.activate_feature! 'prescreening' }
 
-      it 'sets prescreening_enabled to false' do
+      it 'does not set prescreening_mode' do
         participation_method.assign_defaults_for_phase
-        expect(phase.prescreening_enabled).to be false
+        expect(phase.prescreening_mode).to be_nil
       end
     end
   end

@@ -329,6 +329,53 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.feedDisplay',
     defaultMessage: 'Feed',
   },
+  availableViews: {
+    id: 'app.containers.AdminPage.ProjectEdit.availableViews',
+    defaultMessage: 'Available views',
+  },
+  listViewTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.listViewTitle',
+    defaultMessage: 'List view',
+  },
+  listViewDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.listViewDescription1',
+    defaultMessage:
+      'Inputs are displayed as a scrollable feed, sorted by trending, reactions, comments, date, or activity. Best for: smaller consultations.',
+  },
+  mapViewTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.mapViewTitle',
+    defaultMessage: 'Map view',
+  },
+  mapViewDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.mapViewDescription',
+    defaultMessage:
+      'Displays inputs as pins on a map. Make sure you add a location field to the {inputFormLink}. Best for: location-based consultations, urban planning, infrastructure feedback.',
+  },
+  feedViewTitle: {
+    id: 'app.containers.AdminPage.ProjectEdit.feedViewTitle',
+    defaultMessage: 'Perspectives view',
+  },
+  feedViewDescription: {
+    id: 'app.containers.AdminPage.ProjectEdit.feedViewDescription2',
+    defaultMessage:
+      'Participants explore the discussion via emerging topics. AI surfaces representative voices and bridges between perspectives if you enable the Perspectives toggle in the {inputTagsLink}. Best for: Large-scale consultations, finding common ground, avoiding echo chambers.',
+  },
+  inputTagsPageLink: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputTagsPageLink',
+    defaultMessage: 'Input Tags page',
+  },
+  makeDefault: {
+    id: 'app.containers.AdminPage.ProjectEdit.makeDefault',
+    defaultMessage: 'Make default',
+  },
+  defaultLabel: {
+    id: 'app.containers.AdminPage.ProjectEdit.defaultLabel',
+    defaultMessage: 'Default',
+  },
+  listViewCannotBeDisabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.listViewCannotBeDisabled',
+    defaultMessage: 'List view is always available and cannot be disabled.',
+  },
   trendingSortingMethod: {
     id: 'app.containers.AdminPage.ProjectEdit.trendingSortingMethod',
     defaultMessage: 'Trending',
@@ -357,15 +404,15 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.surveyService',
     defaultMessage: 'Survey Service',
   },
-  surveyServiceTooltipLink: {
-    id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink1',
+  surveyServiceTooltipLink2: {
+    id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLink2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/7025887-creating-an-external-survey-project',
+      'https://support.govocal.com/en/articles/527596-creating-an-external-survey-project',
   },
   surveyServiceTooltip: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltip',
     defaultMessage:
-      'Choose what survey tool you want to embed. All information can be found {surveyServiceTooltipLink}.',
+      'Choose what survey tool you want to embed. All information can be found {surveyServiceTooltipLink2}.',
   },
   surveyServiceTooltipLinkText: {
     id: 'app.containers.AdminPage.ProjectEdit.surveyServiceTooltipLinkText',
@@ -480,18 +527,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals',
     defaultMessage: 'Manage proposals, give feedback and assign topics.',
   },
-  hiddenFieldsTip: {
-    id: 'app.components.admin.PostManager.hiddenFieldsTip',
+  hiddenFieldsTip2: {
+    id: 'app.components.admin.PostManager.hiddenFieldsTip2',
     defaultMessage:
-      'Tip: add {hiddenFieldsLink} when setting up your Typeform survey to keep track of who has responded to your survey.',
-  },
-  hiddenFieldsLinkText: {
-    id: 'app.components.admin.PostManager.hiddenFieldsLink',
-    defaultMessage: 'hidden fields',
-  },
-  hiddenFieldsSupportArticleUrl: {
-    id: 'app.components.admin.PostManager.hiddenFieldsSupportArticleUrl',
-    defaultMessage: 'https://support.govocal.com/en/articles/1641202',
+      'Tip: add hidden fields when setting up your Typeform survey to keep track of who has responded to your survey.',
   },
   // #input_term_copy
   ideaTerm: {
@@ -511,7 +550,7 @@ export default defineMessages({
     defaultMessage: 'Option',
   },
   issueTerm: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.issueTerm',
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.issueTerm1',
     defaultMessage: 'Issue',
   },
   contributionTerm: {
@@ -529,6 +568,30 @@ export default defineMessages({
   petitionTerm: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.petitionTerm',
     defaultMessage: 'Petition',
+  },
+  commentTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.commentTerm',
+    defaultMessage: 'Comment',
+  },
+  responseTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.responseTerm',
+    defaultMessage: 'Response',
+  },
+  suggestionTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.suggestionTerm',
+    defaultMessage: 'Suggestion',
+  },
+  topicTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.topicTerm',
+    defaultMessage: 'Topic',
+  },
+  postTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.postTerm',
+    defaultMessage: 'Post',
+  },
+  storyTerm: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.storyTerm',
+    defaultMessage: 'Story',
   },
   inputTermSelectLabel: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel',
@@ -568,12 +631,12 @@ export default defineMessages({
   googleFormsTooltip: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltip',
     defaultMessage:
-      'More information on how to embed a link for Google Forms can be found in {googleFormsTooltipLink}.',
+      'More information on how to embed a link for Google Forms can be found in {googleFormsTooltipLink2}.',
   },
-  googleFormsTooltipLink: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink',
+  googleFormsTooltipLink2: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLink2',
     defaultMessage:
-      'https://support.govocal.com/en/articles/5050525-how-to-embed-your-google-forms-survey-in-a-project-phase',
+      'https://support.govocal.com/en/articles/527596-creating-an-external-survey-project',
   },
   googleFormsTooltipLinkText: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText',
@@ -645,15 +708,6 @@ export default defineMessages({
   participationOptions: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.participationOptions',
     defaultMessage: 'Participation options',
-  },
-  prescreeningText: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.screeningText',
-    defaultMessage: 'Require screening of inputs',
-  },
-  prescreeningSubtext: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.prescreeningSubtext',
-    defaultMessage:
-      'Inputs won’t be visible until an admin reviews and approves them. Authors can’t edit inputs after they are screened or reacted on.',
   },
   missingStartDateError: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.missingStartDateError',

@@ -122,7 +122,7 @@ describe('Form builder multiple choice choose multiple component', () => {
       }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
 
-    cy.get(`[id^="${questionTitle}"]`)
+    cy.get(`[id^="${questionTitle}"]:not([id$="-label"])`)
       .first()
       .should(($element) => {
         const id = $element.attr('id');

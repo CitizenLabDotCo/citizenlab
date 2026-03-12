@@ -79,6 +79,23 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
         .to be_within(1.second).of(Idea.find(first_participation[:item_id]).created_at)
     end
 
+    it 'adds user custom field values as expected' do
+      user1.update!(custom_field_values: { 'field_1' => 'value_1u', 'field_2' => 'value_2u' })
+
+      prefix = UserFieldsInFormService.prefix
+      idea2.update!(custom_field_values: { "#{prefix}field_1" => 'value_1i', 'field_3' => 'value_3i', "#{prefix}field_4" => 'value_4i' })
+
+      participations_submitting_idea = service.send(:participations_submitting_idea)
+      idea2_participation = participations_submitting_idea.find { |p| p[:item_id] == idea2.id }
+
+      # We expect that:
+      # - field_1 value comes from idea2 (item), preferred over value from user1, which collides after removing key prefix
+      # - field_2 comes from user1 custom_field_values (not present in idea2)
+      # - field_3 filtered from idea2 (item) custom_field_values (no prefix)
+      # - field_4 comes from idea2 (item) custom_field_values, with key prefix removed
+      expect(idea2_participation[:user_custom_field_values]).to eq({ 'field_1' => 'value_1i', 'field_2' => 'value_2u', 'field_4' => 'value_4i' })
+    end
+
     it 'correctly handles phases with no end date' do
       phase.update!(end_at: nil)
       participations_submitting_idea = service.send(:participations_submitting_idea)
@@ -115,17 +132,52 @@ RSpec.describe Insights::NativeSurveyPhaseInsightsService do
     end
   end
 
-  describe 'phase_participation_method_metrics' do
+  describe '#phase_participation_method_metrics' do
     it 'calculates the correct metrics' do
       participations = service.send(:phase_participations)
-
       metrics = service.send(:phase_participation_method_metrics, participations)
 
       expect(metrics).to eq({
         surveys_submitted: 6,
-        surveys_submitted_7_day_percent_change: -33.3, # from 3 (in week before last) to 2 (in last 7 days) = -33.3% change
+        surveys_submitted_7_day_percent_change: 50.0, # from 4 by 7-days ago, to 6 now = 50% increase
         completion_rate_as_percent: 85.7, # 6 submitted surveys out of 7 ideas created during phase
-        completion_rate_7_day_percent_change: 33.3 # completion_rate_last_7_days: 1.0, completion_rate_previous_7_days: 0.75 = 33.3% change
+        completion_rate_7_day_percent_change: 7.1 # completion_rate_7_days_ago = 0.8, completion_rate_now = 0.8571428571428571: 0.75 = 7.1% increase
+      })
+    end
+
+    it 'handles zero ideas associated with the phase as expected' do
+      Idea.destroy_all
+
+      participations = { submitting_idea: [] }
+      metrics = service.send(:phase_participation_method_metrics, participations)
+
+      expect(metrics).to eq({
+        surveys_submitted: 0,
+        surveys_submitted_7_day_percent_change: 0,
+        completion_rate_as_percent: 'submitted_count_compared_with_zero_ideas',
+        completion_rate_7_day_percent_change: 'no_new_survey_responses_in_one_or_both_periods'
+      })
+    end
+  end
+
+  describe '#survey_7_day_changes' do
+    it 'handles zero ideas created as expected' do
+      Idea.all.each { |idea| idea.update!(created_at: 5.days.ago) } # all ideas created in last 7 days
+      participations = service.send(:phase_participations)
+      changes = service.send(:survey_7_day_changes, participations, Idea.all.count)
+
+      expect(changes).to eq({
+        surveys_submitted_7_day_percent_change: 50.0, # from 4 by 7-days ago, to 6 now = 50% increase
+        completion_rate_7_day_percent_change: 'no_new_survey_responses_in_one_or_both_periods'
+      })
+
+      Idea.destroy_all # zero ideas created in both periods
+      participations = { submitting_idea: [] }
+      changes = service.send(:survey_7_day_changes, participations, Idea.all.count)
+
+      expect(changes).to eq({
+        surveys_submitted_7_day_percent_change: 0.0, # from 0 (in week before last) to 0 (in last 7 days) = 0.0% change
+        completion_rate_7_day_percent_change: 'no_new_survey_responses_in_one_or_both_periods'
       })
     end
   end

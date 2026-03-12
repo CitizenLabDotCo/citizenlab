@@ -110,7 +110,7 @@ describe('Form builder single choice field', () => {
     cy.wait(2000);
     cy.contains(otherText).click({ force: true });
     cy.contains('Survey').should('exist');
-    cy.get(`[id^="${questionTitle}"]`).should('exist');
+    cy.get(`[id^="${questionTitle}"]:not([id$="-label"])`).should('exist');
 
     // Try submitting without entering data for required field
     cy.dataCy('e2e-submit-form').click();
@@ -124,7 +124,7 @@ describe('Form builder single choice field', () => {
       }/en/projects/${projectSlug}/surveys/new?phase_id=${phaseId}`
     );
 
-    cy.get(`[id^="${questionTitle}"]`)
+    cy.get(`[id^="${questionTitle}"]:not([id$="-label"])`)
       .first()
       .should(($element) => {
         const id = $element.attr('id');

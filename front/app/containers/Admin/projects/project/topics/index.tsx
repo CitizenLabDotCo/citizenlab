@@ -35,6 +35,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 
 import InputTopicModal from './InputTopicModal';
+import LiveAutoInputTopicsControl from './LiveAutoInputTopicsControl';
 import messages from './messages';
 
 const IndentedSortableRow = styled(SortableRow)<{ depth: number }>`
@@ -214,6 +215,8 @@ const ProjectInputTopics = () => {
           </span>
         )}
       </SectionDescription>
+
+      <LiveAutoInputTopicsControl projectId={projectId} />
 
       <ButtonWrapper>
         <ButtonWithLink

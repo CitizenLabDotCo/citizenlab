@@ -18,7 +18,7 @@ describe IdeaPolicy do
       it do
         is_expected.to permit(:show)
         is_expected.to permit(:by_slug)
-        is_expected.not_to permit(:create)
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
         is_expected.not_to permit(:update)
         expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
@@ -53,7 +53,7 @@ describe IdeaPolicy do
       it do
         is_expected.to     permit(:show)
         is_expected.to     permit(:by_slug)
-        is_expected.not_to permit(:create)
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
         is_expected.not_to permit(:update)
         expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
@@ -308,7 +308,7 @@ describe IdeaPolicy do
       it do
         is_expected.not_to permit(:show)
         is_expected.not_to permit(:by_slug)
-        is_expected.not_to permit(:create)
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
         is_expected.not_to permit(:update)
         expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
@@ -374,7 +374,7 @@ describe IdeaPolicy do
     it do
       is_expected.not_to permit(:show)
       is_expected.not_to permit(:by_slug)
-      is_expected.not_to permit(:create)
+      expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
       is_expected.not_to permit(:update)
       expect(editing_idea_disabled_reason).to be_present
       is_expected.not_to permit(:destroy)
@@ -449,7 +449,7 @@ describe IdeaPolicy do
       it do
         is_expected.not_to permit(:show)
         is_expected.not_to permit(:by_slug)
-        is_expected.not_to permit(:create)
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
         is_expected.not_to permit(:update)
         expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)
@@ -503,7 +503,7 @@ describe IdeaPolicy do
       it do
         is_expected.to permit(:show)
         is_expected.to permit(:by_slug)
-        is_expected.not_to permit(:create)
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
         is_expected.not_to permit(:update)
         expect(editing_idea_disabled_reason).to be_present
 
@@ -561,7 +561,7 @@ describe IdeaPolicy do
       it do
         is_expected.to permit(:show)
         is_expected.to permit(:by_slug)
-        is_expected.not_to permit(:create)
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
         is_expected.not_to permit(:update)
         expect(editing_idea_disabled_reason).to be_present
 
@@ -663,7 +663,7 @@ describe IdeaPolicy do
 
         it do
           is_expected.to permit(:show)
-          is_expected.not_to permit(:create)
+          is_expected.to permit(:create)
           is_expected.not_to permit(:update)
           expect(editing_idea_disabled_reason).to be_present
           is_expected.not_to permit(:destroy)
@@ -692,7 +692,7 @@ describe IdeaPolicy do
   end
 
   context 'on a proposal that is in pre-screening' do
-    let(:project) { create(:single_phase_proposals_project, phase_attrs: { prescreening_enabled: true }) }
+    let(:project) { create(:single_phase_proposals_project, phase_attrs: { prescreening_mode: 'all' }) }
     let(:idea) { create(:proposal, project: project, publication_status: 'submitted', idea_status: create(:proposals_status, code: 'prescreening')) }
     let!(:cosponsorship) { create(:cosponsorship, idea:, status: 'pending') }
 

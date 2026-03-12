@@ -446,6 +446,36 @@ export function quillEditedContent(
       max-width: 100%;
     }
 
+    [class^="ql-image-align-"],
+    [class^="ql-iframe-align-"] {
+      display: block;
+      width: var(--resize-width, auto);
+      max-width: 100%;
+    }
+
+    [class^="ql-image-align-"] > img {
+      width: 100%;
+      height: auto;
+    }
+
+    .ql-image-align-left,
+    .ql-iframe-align-left {
+      float: left;
+      margin: 0 1em 1em 0;
+    }
+
+    .ql-image-align-center,
+    .ql-iframe-align-center {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .ql-image-align-right,
+    .ql-iframe-align-right {
+      float: right;
+      margin: 0 0 1em 1em;
+    }
+
     .custom-button {
       padding: 10px 18px;
       display: inline-block;

@@ -1,0 +1,25 @@
+<!-- Statistics box with CTA -->
+<mj-section padding="0 25px 25px">
+  <mj-column>
+    <mj-table>
+      <tr>
+        <td style="border: 1px solid #EAEAEA; padding: 25px; background-color: #fff; border-radius: 5px; text-align: center;">
+          <p style="font-size: 28px; font-weight: 700; margin: 0 0 10px;">
+            <%= event.screening_count %>
+          </p>
+
+          <p style="font-size: 16px; margin: 0 0 20px;">
+            <%= format_message('inputs_awaiting_screening') %>
+          </p>
+
+          <a
+            href="<%= event.screening_url %>"
+            style="display: inline-block; background-color: #044D6C; color: #FFFFFF; border-radius: 4px; font-size: 16px; padding: 12px 24px; text-decoration: none;"
+          >
+            <%= cta_button_text %>
+          </a>
+        </td>
+      </tr>
+    </mj-table>
+  </mj-column>
+</mj-section>

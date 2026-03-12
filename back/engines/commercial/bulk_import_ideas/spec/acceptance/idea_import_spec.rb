@@ -73,8 +73,8 @@ resource 'BulkImportIdeasImportIdeas' do
             expect(BulkImportIdeas::IdeaImport.all.count).to eq 0
             expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 2
             # If we used the normal test adapter instead of :active_job_que_adapter, we could test it like this
-            # expect(BulkImportIdeas::IdeaImportJob).to have_been_enqueued
-            expect(QueJob.by_args({ job_class: 'BulkImportIdeas::IdeaImportJob' }).count).to eq 1
+            # expect(BulkImportIdeas::IdeaXlsxImportJob).to have_been_enqueued
+            expect(QueJob.by_args({ job_class: 'BulkImportIdeas::IdeaXlsxImportJob' }).count).to eq 1
           end
         end
 
@@ -101,8 +101,8 @@ resource 'BulkImportIdeasImportIdeas' do
             expect(BulkImportIdeas::IdeaImport.all.count).to eq 0
             expect(BulkImportIdeas::IdeaImportFile.all.count).to eq 2
             # If we used the normal test adapter instead of :active_job_que_adapter, we could test it like this
-            # expect(BulkImportIdeas::IdeaImportJob).to have_been_enqueued
-            expect(QueJob.by_args({ job_class: 'BulkImportIdeas::IdeaImportJob' }).count).to eq 1
+            # expect(BulkImportIdeas::IdeaPdfImportJob).to have_been_enqueued
+            expect(QueJob.by_args({ job_class: 'BulkImportIdeas::IdeaPdfImportJob' }).count).to eq 1
           end
         end
       end
@@ -334,9 +334,7 @@ resource 'BulkImportIdeasImportIdeas' do
   end
 
   def stub_external_apis
-    allow_any_instance_of(Analysis::LLM::GPT41).to receive(:chat).and_return('[{}]')
+    allow_any_instance_of(Analysis::LLM::ClaudeSonnet46).to receive(:chat).and_return('[{}]')
     allow_any_instance_of(BulkImportIdeas::Exporters::IdeaPdfFormExporter).to receive(:export).and_return(Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/scan_1.pdf'))
-    allow_any_instance_of(BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService).to receive(:raw_text_page_array).and_return(create_project_bulk_import_raw_text_array)
-    allow_any_instance_of(BulkImportIdeas::Parsers::Pdf::IdeaGoogleFormParserService).to receive(:parse_pdf).and_return(create_project_bulk_import_parse_pdf)
   end
 end

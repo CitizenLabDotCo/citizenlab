@@ -38,7 +38,7 @@ export interface IRelationship {
 
 export interface ITab {
   name: string;
-  label: string;
+  label: React.ReactNode;
   url: RouteType;
   active?: boolean | ((pathname: string) => boolean);
   feature?: TAppConfigurationSetting;

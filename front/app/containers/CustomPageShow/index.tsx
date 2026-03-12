@@ -85,7 +85,7 @@ const CustomPageShow = () => {
 
   // when neither have loaded
   if (!appConfiguration || !page) {
-    return null;
+    return <PageNotFound />;
   }
 
   if (

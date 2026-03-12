@@ -179,11 +179,15 @@ const TopBar = () => {
           icon="info-solid"
           buttonStyle="text"
           openLinkInNewTab
-          linkTo={formatMessage(messages.supportArticleLink) as RouteType}
+          linkTo={formatMessage(messages.supportArticleLink2) as RouteType}
           iconColor={colors.grey800}
         />
         {isFiltersOpen && <Filters onClose={() => setIsFiltersOpen(false)} />}
-        <Modal opened={showLaunchModal} close={closeLaunchModal}>
+        <Modal
+          opened={showLaunchModal}
+          close={closeLaunchModal}
+          ariaLabelledBy="launch-modal-title"
+        >
           <LaunchModal onClose={closeLaunchModal} />
         </Modal>
       </Box>

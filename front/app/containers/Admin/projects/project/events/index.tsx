@@ -113,7 +113,7 @@ const AdminProjectEventsIndex = () => {
                   supportArticleLink: (
                     <a
                       href={formatMessage(
-                        messages.attendanceSupportArticleLink
+                        messages.attendanceSupportArticleLink2
                       )}
                       target="_blank"
                       rel="noopener noreferrer"

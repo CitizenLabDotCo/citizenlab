@@ -133,6 +133,7 @@ const AssignMultipleVotesInput = ({
     point: messages.xPoints,
     token: messages.xTokens,
     credit: messages.xCredits,
+    percent: messages.xPercents,
   });
 
   // TODO: Fix this the next time the file is edited.

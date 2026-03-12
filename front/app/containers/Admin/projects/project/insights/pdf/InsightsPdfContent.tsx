@@ -4,6 +4,8 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
 
+import useLocalize from 'hooks/useLocalize';
+
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -24,7 +26,8 @@ interface Props {
  * Components receive isPdfExport=true to render PDF-optimized layouts.
  */
 const InsightsPdfContent = ({ phase }: Props) => {
-  const phaseName = Object.values(phase.attributes.title_multiloc)[0] || '';
+  const localize = useLocalize();
+  const phaseName = localize(phase.attributes.title_multiloc);
 
   return (
     <Box
@@ -48,16 +51,15 @@ const InsightsPdfContent = ({ phase }: Props) => {
         </PageBreakBox>
 
         <PageBreakBox>
-          <ParticipantsTimeline phaseId={phase.id} isPdfExport />
+          <ParticipantsTimeline phaseId={phase.id} />
         </PageBreakBox>
 
-        <DemographicsSection phase={phase} isPdfExport />
+        <DemographicsSection phase={phase} />
 
         <PageBreakBox>
           <MethodSpecificInsights
             phaseId={phase.id}
             participationMethod={phase.attributes.participation_method}
-            isPdfExport
           />
         </PageBreakBox>
       </Box>
