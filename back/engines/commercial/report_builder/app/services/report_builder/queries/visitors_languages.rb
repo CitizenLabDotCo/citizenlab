@@ -8,7 +8,7 @@ module ReportBuilder
       **_other_props
     )
       visits_service = Insights::VisitsService.new(project_id, start_at:, end_at:, exclude_roles:)
-      pageviews = visits_service.filtered_page_views
+      pageviews = visits_service.filtered_page_views_query
 
       locale_sql = Arel.sql("split_part(path, '/', 2)")
 

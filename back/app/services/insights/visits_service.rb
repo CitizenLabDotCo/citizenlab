@@ -24,8 +24,7 @@ module Insights
     # Grouping needs to join page views to session to be able to group by the date of each page view
     # @param [String] resolution - hour|day|month|year
     def visits_by_date(resolution)
-      result = filtered_page_views_query.joins(:session)
-      result = exclude_session_roles(result)
+      result = filtered_page_views_query
       result = result.select("
         COUNT(DISTINCT session_id) as visits,
         COUNT(DISTINCT COALESCE(CAST(user_id AS TEXT), monthly_user_hash)) as visitors,
@@ -52,25 +51,22 @@ module Insights
       exclude_session_roles(ImpactTracking::Session.where(id: session_ids))
     end
 
-    def filtered_page_views
-      result = filtered_page_views_query
-      if @exclude_roles
-        result = result.joins(:session)
-        result = exclude_session_roles(result)
-      end
+    def filtered_page_views_query
+      result = filtered_page_views_root_query.joins(:session)
+      result = exclude_session_roles(result) if @exclude_roles
       result
     end
 
     private
 
-    def filtered_page_views_query
+    def filtered_page_views_root_query
       page_views = ImpactTracking::Pageview.where(created_at: @start_date..@end_date)
       page_views = page_views.where(project_id: @project_id) if @project_id
       page_views
     end
 
     def session_ids
-      @session_ids ||= filtered_page_views_query.pluck(:session_id).uniq
+      @session_ids ||= filtered_page_views_root_query.pluck(:session_id).uniq
     end
 
     # NOTE: An extra query is needed when excluding roles
