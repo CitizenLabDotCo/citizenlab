@@ -29,6 +29,8 @@ interface Props {
   notCitizenlabMember?: IQueryParameters['not_citizenlab_member'];
   includeInactive?: IQueryParameters['include_inactive'];
   projectId?: string;
+  projectModeratorsOnly?: boolean;
+  folderModeratorsOnly?: boolean;
 }
 
 type error = {
@@ -48,6 +50,8 @@ const UserManager = ({
   canAdmin,
   onlyBlocked,
   projectId,
+  projectModeratorsOnly,
+  folderModeratorsOnly,
 }: Props) => {
   const [sort, setSort] = useState<IQueryParameters['sort']>('-created_at');
   const [pageNumber, setPageNumber] =
@@ -70,6 +74,8 @@ const UserManager = ({
     not_citizenlab_member: notCitizenlabMember,
     can_admin: canAdmin,
     project: projectId,
+    project_moderators_only: projectModeratorsOnly,
+    folder_moderators_only: folderModeratorsOnly,
   });
 
   useEffect(() => {
