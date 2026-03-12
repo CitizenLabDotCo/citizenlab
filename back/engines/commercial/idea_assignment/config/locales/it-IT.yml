@@ -6,8 +6,8 @@ it:
       "idea_assigned_to_you": Assegnazione di un'idea - amministratori e responsabili di progetto
     idea_assigned_to_you:
       by_author: 'da %{authorName}'
-      cta_reply_to: 'Dai un feedback a %{authorName}'
-      event_description_idea: 'Un''idea ti è stata assegnata. Dai un feedback scrivendo un aggiornamento ufficiale o cambiando il suo stato.'
-      main_header: '%{firstName}, hai un nuovo incarico'
+      cta_button: 'Give feedback to %{authorName}'
+      event_description: 'An input has been assigned to you. Give feedback by writing an official update or by changing its status.'
+      title: '%{firstName}, an input was assigned to you'
       subject: 'Hai un compito sulla piattaforma di %{organizationName}'
-      preheader: 'L''idea di %{authorName} ti è stata assegnata'
+      preheader: 'The input of %{authorName} has been assigned to you'
