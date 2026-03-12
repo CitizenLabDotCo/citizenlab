@@ -376,8 +376,8 @@ namespace :cl2_back do
           allowed: false
         },
         email_scheduling: {
-          enabled: false,
-          allowed: false
+          enabled: true,
+          allowed: true
         }
       }
     )

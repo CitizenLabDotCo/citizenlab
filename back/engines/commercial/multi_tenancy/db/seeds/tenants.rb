@@ -599,8 +599,8 @@ module MultiTenancy
               allowed: false
             },
             email_scheduling: {
-              enabled: false,
-              allowed: false
+              enabled: true,
+              allowed: true
             }
           })
         )

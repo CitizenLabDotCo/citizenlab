@@ -60,7 +60,6 @@ const DraftCampaignDetails = ({ campaign }: Props) => {
       <Modal
         opened={isDeleteModalOpen}
         close={() => setIsDeleteModalOpen(false)}
-        hideCloseButton
         header={formatMessage(messages.campaignDeleteConfirmation)}
       >
         <Box p="30px">
@@ -73,7 +72,7 @@ const DraftCampaignDetails = ({ campaign }: Props) => {
               onClick={() => setIsDeleteModalOpen(false)}
             >
               {formatMessage(messages.cancel)}
-            </Button>{' '}
+            </Button>
             <Button
               buttonStyle="delete"
               icon="delete"

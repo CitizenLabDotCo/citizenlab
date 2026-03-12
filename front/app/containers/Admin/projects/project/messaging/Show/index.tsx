@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useState } from 'react';
 
 import {
   StatusLabel,
@@ -10,7 +9,6 @@ import {
   fontSizes,
   Button,
   Text,
-  Dropdown,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment-timezone';
 import { useParams } from 'react-router-dom';
@@ -27,25 +25,20 @@ import useUserById from 'api/users/useUserById';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
-import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
 import DraftCampaignDetails from 'components/admin/Email/DraftCampaignDetails';
+import EmailScheduling from 'components/admin/Email/Scheduling';
 import SentCampaignDetails from 'components/admin/Email/SentCampaignDetails';
 import Stamp from 'components/admin/Email/Stamp';
-import { Form } from 'components/smallForm';
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
 import GoBackButton from 'components/UI/GoBackButton';
-import Modal from 'components/UI/Modal';
-import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
-import TimeInput from '../../events/components/DateTimeSelection/TimeInput';
 import messages from '../messages';
 
-import { getDefaultTime } from './utils';
 const StampIcon = styled(Stamp)`
   margin-right: 20px;
 `;
@@ -75,11 +68,6 @@ const Buttons = styled.div`
     padding: 0 10px;
   }
   align-items: center;
-`;
-
-const StyledForm = styled(Form)`
-  max-width: none;
-  padding: 0;
 `;
 
 const Show = () => {
@@ -150,108 +138,7 @@ const Show = () => {
   const isEmailSchedulingAllowed = useFeatureFlag({
     name: 'email_scheduling',
   });
-
   const timeZone = tenant?.data.attributes.settings.core.timezone;
-  const tenantTimeNow = timeZone ? moment().tz(timeZone).toDate() : new Date();
-  const gmtOffset = timeZone ? moment().tz(timeZone).format('Z') : '';
-  const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(
-    undefined
-  );
-  const [selectedTime, setSelectedTime] = React.useState<Date>(
-    getDefaultTime()
-  );
-  const [openScheduleModal, setOpenScheduleModal] = useState(false);
-  const [openCancelScheduleModal, setOpenCancelScheduleModal] = useState(false);
-  const [openedDropdown, setOpenedDropdown] = useState(false);
-
-  const handleScheduleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (campaign && selectedDate && timeZone) {
-      const scheduledDateTime = new Date(selectedDate);
-      scheduledDateTime.setHours(selectedTime.getHours());
-      scheduledDateTime.setMinutes(selectedTime.getMinutes());
-      scheduledDateTime.setSeconds(0);
-      // store time in the tenant's timezone
-      const scheduledAt = moment
-        .tz(scheduledDateTime, timeZone)
-        .utc()
-        .toISOString();
-
-      updateCampaign(
-        {
-          id: campaign.data.id,
-          campaign: { enabled: true, scheduled_at: scheduledAt },
-        },
-        {
-          onSuccess: () => {
-            closeScheduleModal();
-          },
-        }
-      );
-    }
-  };
-  // cancel schedule campaign ( send scheduledAt as null )
-  const handleCancelSchedule = () => {
-    if (campaign) {
-      updateCampaign(
-        {
-          id: campaign.data.id,
-          campaign: { enabled: true, scheduled_at: null },
-        },
-        {
-          onSuccess: () => {
-            closeCancelScheduleModal();
-          },
-        }
-      );
-    }
-  };
-
-  const handleDateChange = (date: Date) => {
-    setSelectedDate(date);
-    // if the selected date is today, set the default time to the next hour in tenant timezone
-    const todayInTenantTz = new Date(tenantTimeNow);
-    todayInTenantTz.setHours(0, 0, 0, 0);
-    const selectedInTenantTz = new Date(date);
-    selectedInTenantTz.setHours(0, 0, 0, 0);
-
-    if (selectedInTenantTz.getTime() === todayInTenantTz.getTime()) {
-      const nextHour = tenantTimeNow.getHours() + 1;
-      const newTime = new Date();
-      newTime.setHours(nextHour, 0, 0, 0);
-      setSelectedTime(newTime);
-    }
-  };
-
-  const handleTimeChange = (time: Date) => {
-    setSelectedTime(time);
-  };
-  const handleOpenScheduleModal = () => {
-    // if email is already scheduled set the default value to scheduled date and time
-    if (campaign?.data.attributes.scheduled_at && timeZone) {
-      const scheduledDate = moment(campaign.data.attributes.scheduled_at)
-        .tz(timeZone)
-        .toDate();
-      setSelectedDate(scheduledDate);
-      setSelectedTime(scheduledDate);
-    }
-    setOpenScheduleModal(true);
-  };
-  const closeScheduleModal = () => {
-    // reset selected date and time when closing the modal
-    setSelectedDate(undefined);
-    setSelectedTime(getDefaultTime());
-    setOpenScheduleModal(false);
-  };
-  const handleCancelScheduleModal = () => {
-    setOpenCancelScheduleModal(true);
-  };
-  const closeCancelScheduleModal = () => {
-    setOpenCancelScheduleModal(false);
-  };
-  const toggleScheduleSendDropdown = () => {
-    setOpenedDropdown(!openedDropdown);
-  };
 
   if (campaign) {
     const senderType = campaign.data.attributes.sender;
@@ -324,60 +211,8 @@ const Show = () => {
                     <FormattedMessage {...messages.send} />
                   </Button>
                   {isEmailSchedulingAllowed && (
-                    <Button
-                      buttonStyle="admin-dark"
-                      icon="chevron-down"
-                      onClick={toggleScheduleSendDropdown}
-                      disabled={isLoading}
-                      borderRadius="0px 3px 3px 0px"
-                      padding="0px 8px"
-                      height="45px"
-                    />
+                    <EmailScheduling campaign={campaign} timeZone={timeZone} />
                   )}
-                  <Dropdown
-                    opened={openedDropdown}
-                    onClickOutside={() => setOpenedDropdown(false)}
-                    width="200px"
-                    top="65px"
-                    right="0px"
-                    content={
-                      <Box background={colors.white}>
-                        {isDraft(campaign.data) && (
-                          <Button
-                            onClick={() => {
-                              handleOpenScheduleModal();
-                              setOpenedDropdown(false);
-                            }}
-                            buttonStyle="text"
-                            justify="left"
-                            bgHoverColor={colors.background}
-                          >
-                            <FormattedMessage {...messages.scheduleSend} />
-                          </Button>
-                        )}
-                        {campaign.data.attributes.scheduled_at && (
-                          <>
-                            <Button
-                              onClick={handleOpenScheduleModal}
-                              buttonStyle="text"
-                              justify="left"
-                              bgHoverColor={colors.background}
-                            >
-                              <FormattedMessage {...messages.rescheduleSend} />
-                            </Button>
-                            <Button
-                              onClick={handleCancelScheduleModal}
-                              buttonStyle="text"
-                              justify="left"
-                              bgHoverColor={colors.background}
-                            >
-                              <FormattedMessage {...messages.cancelSchedule} />
-                            </Button>
-                          </>
-                        )}
-                      </Box>
-                    }
-                  />
                 </Box>
               </Buttons>
             )}
@@ -434,72 +269,6 @@ const Show = () => {
             <SentCampaignDetails campaignId={campaign.data.id} />
           )}
         </Box>
-        <Modal
-          opened={openScheduleModal}
-          close={closeScheduleModal}
-          header={formatMessage(messages.scheduleSendTitle)}
-        >
-          <Box p="30px">
-            <Text mt="0">
-              <FormattedMessage {...messages.scheduleSendDescription} />
-            </Text>
-            <Box>
-              <StyledForm onSubmit={handleScheduleFormSubmit}>
-                <Box display="flex" gap="16px" alignItems="center">
-                  <DateSinglePicker
-                    onChange={handleDateChange}
-                    selectedDate={selectedDate}
-                    startMonth={new Date()}
-                    placement="right"
-                    disabledPast={{ before: new Date() }}
-                  />
-                  <TimeInput
-                    selectedTime={selectedTime}
-                    onChange={handleTimeChange}
-                    selectedDate={selectedDate}
-                    currentTimeInTz={tenantTimeNow}
-                  />
-                  <Text fontSize="l">GMT{gmtOffset}</Text>
-                </Box>
-                <Warning mt="24px">
-                  <Text mt="12px" fontSize="m">
-                    <FormattedMessage {...messages.scheduleSendWarning} />
-                  </Text>
-                </Warning>
-                <Button
-                  type="submit"
-                  mt="24px"
-                  disabled={!selectedDate || !selectedTime}
-                >
-                  <FormattedMessage {...messages.confirmSchedule} />
-                </Button>
-              </StyledForm>
-            </Box>
-          </Box>
-        </Modal>
-
-        <Modal
-          opened={openCancelScheduleModal}
-          close={closeCancelScheduleModal}
-          header={formatMessage(messages.cancelScheduleTitle)}
-        >
-          <Box p="30px">
-            <Text mt="0">
-              <FormattedMessage {...messages.cancelScheduleDescription} />
-            </Text>
-            <Box display="flex" gap="16px" justifyContent="flex-end">
-              <Button
-                onClick={closeCancelScheduleModal}
-                buttonStyle="secondary"
-              >
-                <FormattedMessage {...messages.keepSchedule} />
-              </Button>{' '}
-              <Button onClick={handleCancelSchedule} buttonStyle="admin-dark">
-                <FormattedMessage {...messages.confirmCancelSchedule} />
-              </Button>
-            </Box>
-          </Box>
-        </Modal>
       </Box>
     );
   }
