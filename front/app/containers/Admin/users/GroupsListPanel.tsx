@@ -228,7 +228,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
           <FormattedMessage {...messages.folderManagers} />
         </GroupName>
         {usersCount && (
-          <MembersCount data-cy="e2e-moderator-count">
+          <MembersCount data-cy="e2e-folder-moderator-count">
             {usersCount.data.attributes.folder_moderators_count}
           </MembersCount>
         )}
@@ -238,7 +238,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
           <FormattedMessage {...messages.projectManagers} />
         </GroupName>
         {usersCount && (
-          <MembersCount data-cy="e2e-moderator-count">
+          <MembersCount data-cy="e2e-project-moderator-count">
             {usersCount.data.attributes.project_moderators_count}
           </MembersCount>
         )}
