@@ -43,9 +43,9 @@ export default defineMessages({
     id: 'app.containers.NotificationMenu.userCommentedOnQuestionYouFollow',
     defaultMessage: '{name} commented on a question that you follow',
   },
-  userCommentedOnIssueYouFollow: {
-    id: 'app.containers.NotificationMenu.userCommentedOnIssueYouFollow',
-    defaultMessage: '{name} commented on a issue that you follow',
+  userCommentedOnIssueYouFollow1: {
+    id: 'app.containers.NotificationMenu.userCommentedOnIssueYouFollow1',
+    defaultMessage: '{name} commented on an issue that you follow',
   },
   userCommentedOnContributionYouFollow: {
     id: 'app.containers.NotificationMenu.userCommentedOnContributionYouFollow',
