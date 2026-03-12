@@ -6,18 +6,24 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import spacesKeys from './keys';
 import { TreeView, SpacesKeys } from './types';
 
-const fetchTreeView = (id?: string) => {
+const fetchTreeView = (spaceId?: string) => {
+  if (!spaceId) {
+    return fetcher<TreeView>({
+      path: '/admin_publications/tree_view',
+      action: 'get',
+    });
+  }
+
   return fetcher<TreeView>({
-    path: `/spaces/${id}/tree_view`,
+    path: `/spaces/${spaceId}/tree_view`,
     action: 'get',
   });
 };
 
-const useTreeView = (id?: string) => {
+const useTreeView = (spaceId?: string) => {
   return useQuery<TreeView, CLErrors, TreeView, SpacesKeys>({
-    queryKey: spacesKeys.list({ id: id ?? '', type: 'tree_view' }),
-    queryFn: () => fetchTreeView(id),
-    enabled: !!id,
+    queryKey: spacesKeys.item({ id: spaceId ?? '', type: 'tree_view' }),
+    queryFn: () => fetchTreeView(spaceId),
   });
 };
 
