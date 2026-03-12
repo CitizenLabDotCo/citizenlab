@@ -22,8 +22,8 @@ module ReportBuilder
       visits_service = Insights::VisitsService.new(project_id, start_at:, end_at:, exclude_roles:)
       visitors_timeseries = visits_service.visits_by_date(resolution)
       totals = visits_service.total_visits
-      page_views = visits_service.all_session_page_views
-      timings = calculate_timings(page_views)
+      page_views = visits_service.all_page_views_for_sessions
+      timings = calculate_timings(page_views, totals[:visits])
 
       response = {
         visitors_timeseries: visitors_timeseries,
@@ -37,8 +37,8 @@ module ReportBuilder
       if compare_start_at.present? && compare_end_at.present?
         compare_visits_service = Insights::VisitsService.new(project_id, start_at: compare_start_at, end_at: compare_end_at, exclude_roles: exclude_roles)
         compare_totals = compare_visits_service.total_visits
-        compare_page_views = compare_visits_service.all_session_page_views
-        compare_timings = calculate_timings(compare_page_views)
+        compare_page_views = compare_visits_service.all_page_views_for_sessions
+        compare_timings = calculate_timings(compare_page_views, compare_totals[:visits])
 
         response = {
           **response,
@@ -52,15 +52,12 @@ module ReportBuilder
       response
     end
 
-    def calculate_timings(pageviews)
+    def calculate_timings(pageviews, visits)
       # avg seconds per session and avg pages per session from pageview data
       # Calculate avg pages visited per session
       # Or, if project filter is applied:
       # Avg pages visited per session where someone visited the project during the session
-      # ALSO: here we only sessions that have pageviews, otherwise we might
-      # also count sessions without pageviews (from before we collected pageview data)
-      visits_with_pageviews = pageviews.select(:session_id).distinct.count
-      avg_pages_visited = visits_with_pageviews == 0 ? 0 : pageviews.count / visits_with_pageviews.to_f
+      avg_pages_visited = visits == 0 ? 0 : pageviews.count / visits.to_f
 
       # Avg seconds per session
       # Because we can only know the time spent on a page if there is
