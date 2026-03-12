@@ -22,7 +22,7 @@ module ReportBuilder
       visits_service = Insights::VisitsService.new(project_id, start_at:, end_at:, exclude_roles:)
       visitors_timeseries = visits_service.visits_by_date(resolution)
       totals = visits_service.total_visits
-      page_views = visits_service.all_page_views_for_sessions
+      page_views = visits_service.all_page_views_query
       timings = calculate_timings(page_views, totals[:visits])
 
       response = {
@@ -37,7 +37,7 @@ module ReportBuilder
       if compare_start_at.present? && compare_end_at.present?
         compare_visits_service = Insights::VisitsService.new(project_id, start_at: compare_start_at, end_at: compare_end_at, exclude_roles: exclude_roles)
         compare_totals = compare_visits_service.total_visits
-        compare_page_views = compare_visits_service.all_page_views_for_sessions
+        compare_page_views = compare_visits_service.all_page_views_query
         compare_timings = calculate_timings(compare_page_views, compare_totals[:visits])
 
         response = {

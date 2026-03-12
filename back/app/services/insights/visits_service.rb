@@ -44,8 +44,21 @@ module Insights
 
     # Because we want to calculate timings based on all page views of sessions that had a page view in the period,
     # we need to get all page views of for the sessions, even the ones outside the period.
-    def all_page_views_for_sessions
+    def all_page_views_query
       ImpactTracking::Pageview.where(session_id: session_ids_excluding_roles)
+    end
+
+    def filtered_sessions_query
+      exclude_session_roles(ImpactTracking::Session.where(id: session_ids))
+    end
+
+    def filtered_page_views
+      result = filtered_page_views_query
+      if @exclude_roles
+        result = result.joins(:session)
+        result = exclude_session_roles(result)
+      end
+      result
     end
 
     private
@@ -54,10 +67,6 @@ module Insights
       page_views = ImpactTracking::Pageview.where(created_at: @start_date..@end_date)
       page_views = page_views.where(project_id: @project_id) if @project_id
       page_views
-    end
-
-    def filtered_sessions_query
-      exclude_session_roles(ImpactTracking::Session.where(id: session_ids))
     end
 
     def session_ids
