@@ -185,7 +185,7 @@ nl:
         description:
       other_input_field:
         title: Typ je antwoord
-        print_title: Indien '%{other_option}', gelieve te specificeren
+        print_title: Indien '%{other_option}', graag toelichten
       ask_follow_up_field:
         title: Vertel ons waarom
     community_monitor:
