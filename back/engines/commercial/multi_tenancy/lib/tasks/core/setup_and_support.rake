@@ -154,17 +154,46 @@ namespace :setup_and_support do
     end
   end
 
-  desc 'Adds an ordered list of custom field options to the specified custom field'
-  task :add_custom_field_options, %i[host url id locale] => [:environment] do |_t, args|
-    options = open(args[:url]).readlines.map(&:strip)
+  desc 'Adds custom field options from a CSV. Locale columns (e.g. nl-BE, fr-BE) become the title_multiloc. Optional sort_column for alphabetical ordering.'
+  task :add_custom_field_options, %i[host url custom_field_id sort_column] => [:environment] do |_t, args|
+    reporter = ScriptReporter.new
+    rows = CSV.parse(URI.open(args[:url]).read, headers: true, col_sep: ',')
+    supported_locales = CL2_SUPPORTED_LOCALES.map(&:to_s)
+    stripped_headers = rows.headers.map(&:strip)
+    locale_columns = stripped_headers.select { |h| supported_locales.include?(h) }
+
+    raise "No locale columns found in CSV headers: #{stripped_headers.join(', ')}" if locale_columns.empty?
+
+    sort_column = args[:sort_column]&.strip
+    raise "Sort column '#{sort_column}' not found in CSV headers: #{stripped_headers.join(', ')}" if sort_column.present? && !stripped_headers.include?(sort_column)
+
+    sorted_rows = if sort_column.present?
+      rows.sort_by { |row| row[sort_column].to_s.strip.downcase }
+    else
+      rows.to_a
+    end
+
     Apartment::Tenant.switch(args[:host].tr('.', '_')) do
-      locale = args[:locale] || AppConfiguration.instance.settings.dig('core', 'locales').first
-      cf = CustomField.find args[:id]
-      options.each do |option|
-        cfo = cf.options.find_or_create_by!(title_multiloc: { locale => option })
-        cfo.move_to_bottom
+      cf = CustomField.find_by(id: args[:custom_field_id])
+      raise "CustomField with id '#{args[:custom_field_id]}' not found" if !cf
+      raise "CustomField '#{cf.title_multiloc}' (#{cf.input_type}) does not support options" if !cf.supports_options?
+
+      sorted_rows.each do |row|
+        title_multiloc = locale_columns.each_with_object({}) do |locale, hash|
+          value = row[locale].to_s.strip
+          hash[locale] = value if value.present?
+        end
+
+        if (cfo = cf.options.create(title_multiloc: title_multiloc))
+          cfo.move_to_bottom
+          reporter.add_create('CustomFieldOption', title_multiloc, context: { custom_field_id: cf.id })
+        else
+          reporter.add_error(cfo.errors.full_messages.join(', '), context: { title_multiloc: title_multiloc })
+        end
       end
     end
+
+    reporter.report!('add_custom_field_options_report.json', verbose: true)
   end
 
   desc 'Translate all content of a platform from one locale to another'
