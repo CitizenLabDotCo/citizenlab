@@ -7,6 +7,8 @@ import { FolderNode } from 'api/spaces/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { MessageDescriptor } from 'utils/cl-intl';
+
 import Link from './_shared/Link';
 import RemoveFromSpaceButton from './_shared/RemoveFromSpaceButton';
 import Row from './_shared/Row';
@@ -14,9 +16,11 @@ import Project from './Project';
 
 interface Props {
   node: FolderNode;
+  lockedProjectTooltip?: MessageDescriptor;
+  removeButtonMessage: MessageDescriptor;
 }
 
-const Folder = ({ node }: Props) => {
+const Folder = ({ node, lockedProjectTooltip, removeButtonMessage }: Props) => {
   const localize = useLocalize();
   const [expanded, setExpanded] = useState(true);
   const [isRemoving, setIsRemoving] = useState(false);
@@ -56,6 +60,7 @@ const Folder = ({ node }: Props) => {
         </Box>
         <RemoveFromSpaceButton
           processing={isRemoving}
+          message={removeButtonMessage}
           onClick={handleRemoveProject}
         />
       </Row>
@@ -63,7 +68,12 @@ const Folder = ({ node }: Props) => {
         {expanded && (
           <>
             {node.children.map((child) => (
-              <Project key={child.id} node={child} removable={false} />
+              <Project
+                key={child.id}
+                node={child}
+                lockedProjectTooltip={lockedProjectTooltip}
+                removeButtonMessage={removeButtonMessage}
+              />
             ))}
           </>
         )}

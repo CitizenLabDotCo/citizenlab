@@ -2,16 +2,19 @@ import React from 'react';
 
 import { Button, fontSizes } from '@citizenlab/cl2-component-library';
 
-import { FormattedMessage } from 'utils/cl-intl';
-
-import messages from '../messages';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 interface Props {
   processing?: boolean;
+  message: MessageDescriptor;
   onClick: () => void;
 }
 
-const RemoveFromSpaceButton = ({ processing = false, onClick }: Props) => {
+const RemoveFromSpaceButton = ({
+  processing = false,
+  message,
+  onClick,
+}: Props) => {
   return (
     <Button
       buttonStyle="text"
@@ -21,7 +24,7 @@ const RemoveFromSpaceButton = ({ processing = false, onClick }: Props) => {
       processing={processing}
       onClick={onClick}
     >
-      <FormattedMessage {...messages.removeFromSpace} />
+      <FormattedMessage {...message} />
     </Button>
   );
 };

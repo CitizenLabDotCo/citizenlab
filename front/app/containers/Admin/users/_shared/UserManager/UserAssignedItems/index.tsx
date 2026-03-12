@@ -5,8 +5,9 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import useTreeView from 'api/spaces/useTreeView';
 import { IUserData } from 'api/users/types';
 
-import TreeView from 'containers/Admin/spaces/EditSpace/ProjectsAndFolders/TreeView';
+import TreeView from 'components/admin/TreeView';
 
+import messages from './messages';
 import { getLists as getModeratedItems } from './utils';
 
 interface Props {
@@ -28,11 +29,18 @@ const UserAssignedItems2 = ({ user }: Props) => {
       <Title variant="h3" mt="0px">
         Folders user moderates
       </Title>
-      <TreeView nodes={foldersUserModerates} />
+      <TreeView
+        nodes={foldersUserModerates}
+        lockedProjectTooltip={messages.lockedProject}
+        removeButtonMessage={messages.remove}
+      />
       <Title variant="h3" mt="40px">
         Projects user moderates
       </Title>
-      <TreeView nodes={projectsUserModerates} />
+      <TreeView
+        nodes={projectsUserModerates}
+        removeButtonMessage={messages.remove}
+      />
     </Box>
   );
 };
