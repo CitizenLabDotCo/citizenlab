@@ -22,8 +22,8 @@ export default defineMessages({
     defaultMessage:
       '{ideasCount, plural, no {# projects} one {# project} other {# projects}}',
   },
-  xIssues: {
-    id: 'app.components.ProjectCard.xIssues',
+  xIssues1: {
+    id: 'app.components.ProjectCard.xIssues1',
     defaultMessage:
       '{ideasCount, plural, no {# issues} one {# issue} other {# issues}}',
   },
@@ -200,8 +200,8 @@ export default defineMessages({
     id: 'app.components.ProjectCard.viewTheQuestions',
     defaultMessage: 'View the questions',
   },
-  viewTheIssues: {
-    id: 'app.components.ProjectCard.viewTheIssues',
+  viewTheIssues1: {
+    id: 'app.components.ProjectCard.viewTheIssues1',
     defaultMessage: 'View the issues',
   },
   viewTheContributions: {

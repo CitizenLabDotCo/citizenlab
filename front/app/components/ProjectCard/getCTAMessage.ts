@@ -89,7 +89,7 @@ const getCTAMessage = ({
           option: messages.viewTheOptions,
           project: messages.viewTheProjects,
           question: messages.viewTheQuestions,
-          issue: messages.viewTheIssues,
+          issue: messages.viewTheIssues1,
           contribution: messages.viewTheContributions,
           proposal: messages.viewTheProposals,
           initiative: messages.viewTheInitiatives,
