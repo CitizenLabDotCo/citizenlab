@@ -218,7 +218,7 @@ RSpec.describe ReportBuilder::Queries::Visitors do
       })
     end
 
-    it 'applies exclude_roles filter' do
+    it 'excludes roles' do
       # Create session december (admin)
       session = create(:session, created_at: Date.new(2022, 12, 2), highest_role: 'admin')
       create(:pageview, session_id: session.id, path: '/en/', created_at: DateTime.new(2022, 12, 2, 10, 0, 0))
