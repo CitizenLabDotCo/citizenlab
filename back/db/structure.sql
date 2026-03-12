@@ -296,6 +296,10 @@ DROP INDEX IF EXISTS public.index_input_topics_on_rgt;
 DROP INDEX IF EXISTS public.index_input_topics_on_project_id;
 DROP INDEX IF EXISTS public.index_input_topics_on_parent_id;
 DROP INDEX IF EXISTS public.index_impact_tracking_sessions_on_monthly_user_hash;
+DROP INDEX IF EXISTS public.index_impact_tracking_sessions_on_highest_role;
+DROP INDEX IF EXISTS public.index_impact_tracking_pageviews_on_session_id;
+DROP INDEX IF EXISTS public.index_impact_tracking_pageviews_on_project_id;
+DROP INDEX IF EXISTS public.index_impact_tracking_pageviews_on_created_at;
 DROP INDEX IF EXISTS public.index_identities_on_user_id;
 DROP INDEX IF EXISTS public.index_ideas_search;
 DROP INDEX IF EXISTS public.index_ideas_phases_on_phase_id;
@@ -6277,6 +6281,34 @@ CREATE INDEX index_identities_on_user_id ON public.identities USING btree (user_
 
 
 --
+-- Name: index_impact_tracking_pageviews_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_impact_tracking_pageviews_on_created_at ON public.impact_tracking_pageviews USING btree (created_at);
+
+
+--
+-- Name: index_impact_tracking_pageviews_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_impact_tracking_pageviews_on_project_id ON public.impact_tracking_pageviews USING btree (project_id);
+
+
+--
+-- Name: index_impact_tracking_pageviews_on_session_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_impact_tracking_pageviews_on_session_id ON public.impact_tracking_pageviews USING btree (session_id);
+
+
+--
+-- Name: index_impact_tracking_sessions_on_highest_role; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_impact_tracking_sessions_on_highest_role ON public.impact_tracking_sessions USING btree (highest_role);
+
+
+--
 -- Name: index_impact_tracking_sessions_on_monthly_user_hash; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -8446,6 +8478,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260312142054'),
 ('20260302101045'),
 ('20260302100745'),
 ('20260302100636'),
