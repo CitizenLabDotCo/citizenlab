@@ -10,6 +10,11 @@ export default defineMessages({
     id: 'app.containers.Admin.users.UserAssignedItems.remove',
     defaultMessage: 'Remove',
   },
+  asAnAdmin: {
+    id: 'app.containers.Admin.users.UserAssignedItems.asAnAdmin',
+    defaultMessage:
+      'As an admin, this user can moderate all folders and projects.',
+  },
   foldersUserManages: {
     id: 'app.containers.Admin.users.UserAssignedItems.foldersUserManages',
     defaultMessage: 'Folders user manages',

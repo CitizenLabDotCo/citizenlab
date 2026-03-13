@@ -29,7 +29,9 @@ const UserAssignedItems = ({ user }: Props) => {
 
   if (isAdmin({ data: user })) {
     return (
-      <Text>As an admin, this user can moderate all folders and projects.</Text>
+      <Text>
+        <FormattedMessage {...messages.asAnAdmin} />
+      </Text>
     );
   }
 
