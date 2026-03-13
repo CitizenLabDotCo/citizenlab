@@ -52,7 +52,7 @@ sv:
     rejected_description: Den här idén har avvisats
     expired: utgått
     expired_description: utgått
-    threshold_reached: tröskelvärdet uppnått
+    threshold_reached: Väntar svar från nämnd
     threshold_reached_description: tröskelvärdet uppnått
     answered: besvarade
     answered_description: besvarade
