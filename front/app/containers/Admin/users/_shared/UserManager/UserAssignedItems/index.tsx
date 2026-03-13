@@ -14,7 +14,7 @@ interface Props {
   user: IUserData;
 }
 
-const UserAssignedItems2 = ({ user }: Props) => {
+const UserAssignedItems = ({ user }: Props) => {
   const { data: treeView } = useTreeView();
 
   if (!treeView) return null;
@@ -49,4 +49,4 @@ const UserAssignedItems2 = ({ user }: Props) => {
   );
 };
 
-export default UserAssignedItems2;
+export default UserAssignedItems;
