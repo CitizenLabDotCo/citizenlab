@@ -10,7 +10,7 @@ describe UserRoleService do
       it "permits admins and project moderators of related project for #{object_name}" do
         object = send(object_name)
         project = send(:project)
-        
+
         expect(service).to be_can_moderate(object, create(:admin))
         expect(service).to be_can_moderate(object, create(:project_moderator, projects: [project]))
 
