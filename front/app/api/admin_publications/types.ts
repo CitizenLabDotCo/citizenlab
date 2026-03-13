@@ -22,8 +22,6 @@ export interface IQueryParameters {
   removeNotAllowedParents?: boolean;
   onlyProjects?: boolean;
   review_state?: ReviewState;
-  filter_is_moderator_of?: boolean;
-  filter_user_is_moderator_of?: string;
   // This excludes projects that are already inside included folders from the result set, so we don't show duplicates.
   exclude_projects_in_included_folders?: boolean;
   include_publications?: boolean;
