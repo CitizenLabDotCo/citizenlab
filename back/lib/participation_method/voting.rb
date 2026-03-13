@@ -30,7 +30,6 @@ module ParticipationMethod
     end
 
     def validate_phase
-      super
       voting_method.validate_phase
     end
 

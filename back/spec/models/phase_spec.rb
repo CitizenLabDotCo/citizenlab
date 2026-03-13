@@ -76,32 +76,29 @@ RSpec.describe Phase do
       p = create(:phase, participation_method: 'voting', voting_method: 'budgeting', voting_max_total: 200)
       expect(p.save).to be true
     end
+  end
 
-    it 'can be changed from ideation to voting' do
+  describe '#validate_no_inputs_on_participation_method_change' do
+    it 'blocks changing the participation method when the phase has transitive inputs (via ideas_phases)' do
       phase = create(:phase, participation_method: 'ideation')
-      phase.participation_method = 'voting'
-      phase.voting_method = 'budgeting'
-      phase.ideas_order = 'random'
-      phase.voting_max_total = 200
-      expect(phase.save).to be true
+      create(:idea, phases: [phase], project: phase.project)
+      phase.participation_method = 'information'
+      expect(phase).not_to be_valid
+      expect(phase.errors.details).to eq({ participation_method: [{ error: :has_inputs }] })
     end
 
-    it 'can be changed from ideation to native_survey' do
-      phase = create(:phase, participation_method: 'ideation')
-      phase.participation_method = 'native_survey'
-      phase.native_survey_title_multiloc = { en: 'Survey' }
-      phase.native_survey_button_multiloc = { en: 'Take the survey' }
-      phase.ideas_order = nil
-      expect(phase.save).to be true
+    it 'blocks changing the participation method when the phase has non-transitive inputs (via creation_phase)' do
+      phase = create(:proposals_phase)
+      create(:proposal, creation_phase: phase, project: phase.project)
+      phase.participation_method = 'ideation'
+      expect(phase).not_to be_valid
+      expect(phase.errors.details).to eq({ participation_method: [{ error: :has_inputs }] })
     end
 
-    it 'can be changed from native_survey to ideation' do
-      phase = create(:native_survey_phase)
-      phase.participation_method = 'voting'
-      phase.voting_method = 'budgeting'
-      phase.voting_max_total = 200
-      phase.input_term = 'idea'
-      expect(phase.save).to be true
+    it 'allows changing the participation method when there are no inputs' do
+      phase = create(:phase, participation_method: 'ideation')
+      phase.participation_method = 'information'
+      expect(phase).to be_valid
     end
   end
 

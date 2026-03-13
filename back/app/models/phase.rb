@@ -205,6 +205,7 @@ class Phase < ApplicationRecord
     validates :native_survey_button_multiloc, presence: true, multiloc: { presence: true }
   end
 
+  validate :validate_no_inputs_on_participation_method_change, on: :update
   validate :validate_phase_participation_method
 
   scope :published, lambda {
@@ -442,6 +443,19 @@ class Phase < ApplicationRecord
 
     unless available_views.include?(presentation_mode)
       errors.add(:available_views, :invalid, message: 'must include the default presentation mode')
+    end
+  end
+
+  def validate_no_inputs_on_participation_method_change
+    return if !participation_method_changed?
+    return if !id
+
+    if Idea.where(creation_phase_id: id).exists? || IdeasPhase.where(phase_id: id).exists?
+      errors.add(
+        :participation_method,
+        :has_inputs,
+        message: 'cannot change the participation method when there are inputs in the phase'
+      )
     end
   end
 

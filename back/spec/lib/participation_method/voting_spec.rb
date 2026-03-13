@@ -187,20 +187,7 @@ RSpec.describe ParticipationMethod::Voting do
     end
   end
 
-  describe '#validate_phase' do
-    it 'does not add an error with transitive inputs' do
-      create(:idea, phases: [phase], project: phase.project)
-      expect(phase).to be_valid
-    end
-
-    it 'adds an error with non-transitive inputs' do
-      phase.update!(participation_method: 'proposals', reacting_threshold: 50, expire_days_limit: 10)
-      create(:proposal, creation_phase: phase, project: phase.project)
-      phase.participation_method = 'voting'
-      expect(phase).not_to be_valid
-      expect(phase.errors.details).to eq({ participation_method: [{ error: :non_complying_inputs }] })
-    end
-  end
+  # validate_phase input checks have moved to Phase model (validate_no_inputs_on_participation_method_change)
 
   its(:allowed_ideas_orders) { is_expected.to eq ['random'] }
   its(:return_disabled_actions?) { is_expected.to be false }
