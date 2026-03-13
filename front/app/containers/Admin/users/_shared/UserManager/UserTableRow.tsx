@@ -194,7 +194,7 @@ const UserTableRow = ({
       handler: () => {
         setIsSetSetAsProjectModeratorOpened(true);
       },
-      label: formatMessage(messages.setAsProjectModerator),
+      label: formatMessage(messages.assignAsManager),
       icon: 'user-check' as const,
     };
 
