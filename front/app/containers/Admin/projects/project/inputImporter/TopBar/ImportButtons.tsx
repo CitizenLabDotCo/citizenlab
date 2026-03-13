@@ -24,7 +24,6 @@ const ImportButtons = ({ onClickPDFImport, onClickExcelImport }: Props) => {
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const printedFormsAllowed = useFeatureFlag({
     name: 'import_printed_forms',
-    onlyCheckAllowed: true,
   });
   const inputImporterAllowed = useFeatureFlag({
     name: 'input_importer',

@@ -22,8 +22,8 @@ export default defineMessages({
     id: 'app.containers.IdeaButton.addAQuestion',
     defaultMessage: 'Add a question',
   },
-  submitAnIssue: {
-    id: 'app.containers.IdeaButton.submitAnIssue',
+  submitAnIssue1: {
+    id: 'app.containers.IdeaButton.submitAnIssue1',
     defaultMessage: 'Submit an issue',
   },
   addAContribution: {

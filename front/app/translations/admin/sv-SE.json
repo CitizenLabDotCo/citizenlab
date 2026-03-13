@@ -790,6 +790,7 @@
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Redigera grupp",
   "app.containers.Admin.Users.GroupsPanel.admins": "Administratörer",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Registrerade användare",
+  "app.containers.Admin.Users.GroupsPanel.folderManagers": "Förvaltare av mappar",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grupper",
   "app.containers.Admin.Users.GroupsPanel.managers": "Projektledare",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Tilldelade objekt",
