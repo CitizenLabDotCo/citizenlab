@@ -139,14 +139,15 @@ const AdminPage = memo<Props>(({ className }) => {
     !isDescriptionBuilderRoute &&
     !isReportBuilderEditorRoute;
 
-  const projectsExceptNewAndFolders =
+  const projectsExceptNewAndFoldersAndSpaces =
     pathname.includes('admin/projects') &&
     !pathname.includes('admin/projects/new') &&
-    !pathname.includes('admin/projects/folders');
+    !pathname.includes('admin/projects/folders') &&
+    !pathname.includes('admin/projects/spaces');
 
   const noPadding =
     pathname.includes('admin/dashboard') ||
-    projectsExceptNewAndFolders ||
+    projectsExceptNewAndFoldersAndSpaces ||
     pathname.includes('admin/messaging') ||
     pathname.includes('admin/settings') ||
     pathname.includes('admin/ideas') ||
@@ -156,7 +157,7 @@ const AdminPage = memo<Props>(({ className }) => {
 
   const fullWidth =
     pathname.includes('admin/dashboard') ||
-    projectsExceptNewAndFolders ||
+    projectsExceptNewAndFoldersAndSpaces ||
     pathname.includes('admin/messaging') ||
     pathname.includes('admin/settings') ||
     pathname.includes('admin/ideas') ||

@@ -18,7 +18,7 @@ module BulkImportIdeas
         },
         'pdf' => {
           exporter_class: Exporters::IdeaPdfFormExporter,
-          parser_class: Parsers::IdeaPdfFileClaudeParser
+          parser_class: Parsers::IdeaPdfFileParser
         }
       }
     }

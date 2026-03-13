@@ -56,7 +56,7 @@ const LinearScaleButton = ({
         id={`linear-scale-option-${visualIndex}`}
         selected={data === visualIndex}
         tabIndex={-1}
-        aria-pressed={data === visualIndex}
+        ariaPressed={data === visualIndex}
         borderRadius="3px"
         borderColor={
           data === visualIndex

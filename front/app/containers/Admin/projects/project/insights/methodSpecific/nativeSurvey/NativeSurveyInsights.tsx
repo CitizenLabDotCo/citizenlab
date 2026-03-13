@@ -15,10 +15,12 @@ import SurveyResultsPdfExport from 'components/admin/FormResults/PdfExport/Surve
 
 import { useIntl } from 'utils/cl-intl';
 import fetcher from 'utils/cl-react-query/fetcher';
+import { getMapScreenshot } from 'utils/mapViewRegistry';
 
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
 import {
   AISummaryMap,
+  MapImageMap,
   createSurveyResultsSection,
 } from '../../word/insightConverters/surveyResultsConverter';
 import { useWordSection } from '../../word/useWordSection';
@@ -26,6 +28,46 @@ import WordExportableInsight from '../../word/WordExportableInsight';
 
 interface Props {
   phaseId: string;
+}
+
+const MAPPING_INPUT_TYPES = new Set(['point', 'line', 'polygon']);
+
+async function collectMapImages(
+  results: { customFieldId: string; inputType: string }[]
+): Promise<MapImageMap> {
+  const mapImages: MapImageMap = new Map();
+
+  const mappingResults = results.filter((result) =>
+    MAPPING_INPUT_TYPES.has(result.inputType)
+  );
+
+  for (const result of mappingResults) {
+    const dataUrl = getMapScreenshot(result.customFieldId);
+    if (!dataUrl) continue;
+
+    try {
+      const response = await fetch(dataUrl);
+      const blob = await response.blob();
+      const arrayBuffer = await blob.arrayBuffer();
+
+      const img = new Image();
+      img.src = dataUrl;
+      await new Promise<void>((resolve) => {
+        img.onload = () => resolve();
+        img.onerror = () => resolve();
+      });
+
+      mapImages.set(result.customFieldId, {
+        buffer: new Uint8Array(arrayBuffer),
+        width: img.naturalWidth || 800,
+        height: img.naturalHeight || 440,
+      });
+    } catch {
+      // Skip this map if conversion fails
+    }
+  }
+
+  return mapImages;
 }
 
 async function fetchAISummaries(
@@ -97,6 +139,8 @@ const NativeSurveyInsights = ({ phaseId }: Props) => {
         aiSummaries = await fetchAISummaries(analysesData.data);
       }
 
+      const mapImages = await collectMapImages(surveyResults);
+
       const elements = createSurveyResultsSection(
         surveyResults,
         totalSubmissions,
@@ -105,7 +149,8 @@ const NativeSurveyInsights = ({ phaseId }: Props) => {
           locale: intl.locale || 'en',
           localize,
         },
-        aiSummaries
+        aiSummaries,
+        mapImages
       );
 
       return [{ type: 'docx-elements', elements }];
