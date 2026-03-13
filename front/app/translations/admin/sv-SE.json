@@ -854,7 +854,6 @@
   "app.containers.Admin.Users.selectPublicationsPlaceholder": "Skriv för att söka",
   "app.containers.Admin.Users.setAsAdmin": "Ställ in som administratör",
   "app.containers.Admin.Users.setAsNormalUser": "Ställ in som normal användare",
-  "app.containers.Admin.Users.setAsProjectModerator": "Gör till projektledare",
   "app.containers.Admin.Users.setUserAsProjectModerator": "Tilldela {name} rollen som projektledare",
   "app.containers.Admin.Users.userBlockModal.allDone": "Allt är klart",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Blockera användare",

@@ -854,7 +854,6 @@
   "app.containers.Admin.Users.selectPublicationsPlaceholder": "Teipiwch i chwilio",
   "app.containers.Admin.Users.setAsAdmin": "Gosod fel gweinyddwr",
   "app.containers.Admin.Users.setAsNormalUser": "Gosod fel defnyddiwr arferol",
-  "app.containers.Admin.Users.setAsProjectModerator": "Gosod fel rheolwr prosiect",
   "app.containers.Admin.Users.setUserAsProjectModerator": "Neilltuo {name} fel rheolwr prosiect",
   "app.containers.Admin.Users.userBlockModal.allDone": "Pawb wedi ei wneud",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Bloc defnyddiwr",

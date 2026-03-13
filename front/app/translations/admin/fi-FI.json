@@ -854,7 +854,6 @@
   "app.containers.Admin.Users.selectPublicationsPlaceholder": "Hae kirjoittamalla",
   "app.containers.Admin.Users.setAsAdmin": "Aseta järjestelmänvalvojaksi",
   "app.containers.Admin.Users.setAsNormalUser": "Aseta tavalliseksi käyttäjäksi",
-  "app.containers.Admin.Users.setAsProjectModerator": "Aseta projektipäälliköksi",
   "app.containers.Admin.Users.setUserAsProjectModerator": "Määritä {name} projektipäälliköksi",
   "app.containers.Admin.Users.userBlockModal.allDone": "Valmista",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Estä käyttäjä",

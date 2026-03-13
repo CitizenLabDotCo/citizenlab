@@ -854,7 +854,6 @@
   "app.containers.Admin.Users.selectPublicationsPlaceholder": "ਖੋਜਣ ਲਈ ਟਾਈਪ ਕਰੋ",
   "app.containers.Admin.Users.setAsAdmin": "ਪ੍ਰਸ਼ਾਸਕ ਵਜੋਂ ਸੈੱਟ ਕਰੋ",
   "app.containers.Admin.Users.setAsNormalUser": "ਆਮ ਉਪਭੋਗਤਾ ਵਜੋਂ ਸੈੱਟ ਕਰੋ",
-  "app.containers.Admin.Users.setAsProjectModerator": "ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਵਜੋਂ ਸੈੱਟ ਕਰੋ",
   "app.containers.Admin.Users.setUserAsProjectModerator": "ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਵਜੋਂ {name} ਨੂੰ ਜ਼ਿੰਮੇ ਲਗਾਓ",
   "app.containers.Admin.Users.userBlockModal.allDone": "ਸਭ ਕੀਤਾ",
   "app.containers.Admin.Users.userBlockModal.blockAction": "ਉਪਭੋਗਤਾ ਨੂੰ ਬਲਾਕ ਕਰੋ",

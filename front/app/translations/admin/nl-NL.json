@@ -854,7 +854,6 @@
   "app.containers.Admin.Users.selectPublicationsPlaceholder": "Typ om te zoeken",
   "app.containers.Admin.Users.setAsAdmin": "Instellen als platformbeheerder",
   "app.containers.Admin.Users.setAsNormalUser": "Instellen als normale gebruiker",
-  "app.containers.Admin.Users.setAsProjectModerator": "Instellen als projectbeheerder",
   "app.containers.Admin.Users.setUserAsProjectModerator": "Wijs {name} aan als projectbeheerder",
   "app.containers.Admin.Users.userBlockModal.allDone": "Helemaal klaar.",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Blokkeer gebruiker",

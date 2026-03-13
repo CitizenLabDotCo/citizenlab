@@ -854,7 +854,6 @@
   "app.containers.Admin.Users.selectPublicationsPlaceholder": "Tippen um zu suchen",
   "app.containers.Admin.Users.setAsAdmin": "Admin-Zugang gewähren",
   "app.containers.Admin.Users.setAsNormalUser": "Als normale*n Nutzer*in einstellen",
-  "app.containers.Admin.Users.setAsProjectModerator": "Als Projektmanager*in festlegen",
   "app.containers.Admin.Users.setUserAsProjectModerator": "Weisen Sie {name} als Projektmanager*in zu",
   "app.containers.Admin.Users.userBlockModal.allDone": "Alles erledigt",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Nutzer*in sperren",

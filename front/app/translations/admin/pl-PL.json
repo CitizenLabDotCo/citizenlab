@@ -854,7 +854,6 @@
   "app.containers.Admin.Users.selectPublicationsPlaceholder": "Wpisz, aby wyszukać",
   "app.containers.Admin.Users.setAsAdmin": "Ustawienie jako administrator",
   "app.containers.Admin.Users.setAsNormalUser": "Ustawienie jako zwykły użytkownik",
-  "app.containers.Admin.Users.setAsProjectModerator": "Ustaw jako kierownik projektu",
   "app.containers.Admin.Users.setUserAsProjectModerator": "Przydziel {name} jako kierownika projektu",
   "app.containers.Admin.Users.userBlockModal.allDone": "Wszystko zrobione",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Zablokuj użytkownika",
