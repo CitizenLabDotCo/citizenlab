@@ -10,7 +10,7 @@ import useLocalize from 'hooks/useLocalize';
 import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 import Link from './_shared/Link';
-import RemoveFromSpaceButton from './_shared/RemoveFromSpaceButton';
+import RemoveButton from './_shared/RemoveButton';
 import Row from './_shared/Row';
 
 interface Props {
@@ -77,7 +77,7 @@ const Project = ({
         )}
       </Box>
       {!lockedProjectTooltip && (
-        <RemoveFromSpaceButton
+        <RemoveButton
           processing={isRemoving}
           message={removeButtonMessage}
           onClick={handleRemoveProject}

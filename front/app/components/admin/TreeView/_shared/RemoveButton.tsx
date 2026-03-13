@@ -10,11 +10,7 @@ interface Props {
   onClick: () => void;
 }
 
-const RemoveFromSpaceButton = ({
-  processing = false,
-  message,
-  onClick,
-}: Props) => {
+const RemoveButton = ({ processing = false, message, onClick }: Props) => {
   return (
     <Button
       buttonStyle="text"
@@ -29,4 +25,4 @@ const RemoveFromSpaceButton = ({
   );
 };
 
-export default RemoveFromSpaceButton;
+export default RemoveButton;

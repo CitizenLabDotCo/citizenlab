@@ -10,7 +10,7 @@ import useLocalize from 'hooks/useLocalize';
 import { MessageDescriptor } from 'utils/cl-intl';
 
 import Link from './_shared/Link';
-import RemoveFromSpaceButton from './_shared/RemoveFromSpaceButton';
+import RemoveButton from './_shared/RemoveButton';
 import Row from './_shared/Row';
 import Project from './Project';
 
@@ -58,7 +58,7 @@ const Folder = ({ node, lockedProjectTooltip, removeButtonMessage }: Props) => {
             {localize(node.title_multiloc)}
           </Link>
         </Box>
-        <RemoveFromSpaceButton
+        <RemoveButton
           processing={isRemoving}
           message={removeButtonMessage}
           onClick={handleRemoveProject}
