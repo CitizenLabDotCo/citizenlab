@@ -60,7 +60,7 @@
   "app.components.Admin.Email.scheduling.confirmSchedule": "Tidsplan",
   "app.components.Admin.Email.scheduling.keepSchedule": "Nej, hold tidsplanen",
   "app.components.Admin.Email.scheduling.rescheduleSend": "Omlægning af tid",
-  "app.components.Admin.Email.scheduling.scheduleSend": "Send tidsplan",
+  "app.components.Admin.Email.scheduling.scheduleSend": "Planlæg afsendelse",
   "app.components.Admin.Email.scheduling.scheduleSendDescription": "Hvornår skal denne e-mail sendes ud?",
   "app.components.Admin.Email.scheduling.scheduleSendTitle": "Planlæg e-mail",
   "app.components.Admin.Email.scheduling.scheduleSendWarning": "Bemærk: Afsendelsen kan blive lidt forsinket afhængigt af antallet af modtagere.",
