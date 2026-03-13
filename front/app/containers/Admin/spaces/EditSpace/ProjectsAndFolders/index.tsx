@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 
 import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 import useUpdateProject from 'api/projects/useUpdateProject';
-import useTreeView from 'api/spaces/useTreeView';
+import useTreeView from 'api/admin_publications/useTreeView';
 
 import TreeView from 'components/admin/TreeView';
 

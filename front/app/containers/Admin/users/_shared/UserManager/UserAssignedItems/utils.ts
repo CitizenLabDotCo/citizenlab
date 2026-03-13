@@ -1,4 +1,4 @@
-import { TreeView } from 'api/spaces/types';
+import { FolderNode, TreeView } from 'api/admin_publications/types';
 import { IUserData } from 'api/users/types';
 
 export const getLists = (user: IUserData, treeView: TreeView) => {
@@ -23,7 +23,10 @@ export const getLists = (user: IUserData, treeView: TreeView) => {
 
   const { nodes } = treeView.data.attributes;
 
-  const folders = nodes.filter((node) => node.type === 'folder');
+  const folders = nodes.filter(
+    (node): node is FolderNode => node.type === 'folder'
+  );
+
   const foldersUserModerates = folders.filter((node) =>
     foldersSet.has(node.id)
   );

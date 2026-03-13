@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Box, Icon, colors, Tooltip } from '@citizenlab/cl2-component-library';
 
-import { ProjectNode } from 'api/spaces/types';
+import { ProjectNode } from 'api/admin_publications/types';
 
 import useLocalize from 'hooks/useLocalize';
 

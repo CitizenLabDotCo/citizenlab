@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Box, IconButton, colors } from '@citizenlab/cl2-component-library';
 
-import { FolderNode } from 'api/spaces/types';
+import { FolderNode } from 'api/admin_publications/types';
 
 import useLocalize from 'hooks/useLocalize';
 

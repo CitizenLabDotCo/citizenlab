@@ -4,7 +4,7 @@ import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 
 import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDeleteProjectFolderModerator';
 import useDeleteProjectModerator from 'api/project_moderators/useDeleteProjectModerator';
-import useTreeView from 'api/spaces/useTreeView';
+import useTreeView from 'api/admin_publications/useTreeView';
 import { IUserData } from 'api/users/types';
 
 import TreeView from 'components/admin/TreeView';

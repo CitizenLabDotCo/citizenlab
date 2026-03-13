@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import { TreeNode } from 'api/spaces/types';
+import { TreeNode } from 'api/admin_publications/types';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
