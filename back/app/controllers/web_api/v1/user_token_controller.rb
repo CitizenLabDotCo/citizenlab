@@ -52,10 +52,10 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
 
   def check_sso_enforcement
     email = params.dig(:auth, :email)
-    return unless AuthenticationService.sso_enforced_for_email?(email)
+    sso_message = AuthenticationService.sso_enforced_for_email(email)
+    return unless sso_message
 
-    message = AuthenticationService.sso_enforced_error_message_for_email(email)
-    render json: { errors: { base: [{ error: 'sso_enforced_for_domain', message: message }.compact] } }, status: :unprocessable_entity
+    render json: { errors: { base: [{ error: 'sso_enforced_for_domain', message: sso_message }] } }, status: :unprocessable_entity
   end
 
   def authenticate_user_token_unconfirmed

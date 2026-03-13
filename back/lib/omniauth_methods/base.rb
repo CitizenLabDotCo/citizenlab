@@ -58,7 +58,7 @@ module OmniauthMethods
     end
 
     def enforced_email_domain_error_message
-      nil
+      I18n.t('errors.messages.sso_enforced_for_domain')
     end
   end
 end

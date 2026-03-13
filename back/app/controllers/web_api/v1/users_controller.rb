@@ -124,9 +124,9 @@ class WebApi::V1::UsersController < ApplicationController
     email = params[:user][:email]
 
     if User::EMAIL_REGEX.match?(email)
-      if AuthenticationService.sso_enforced_for_email?(email)
-        message = AuthenticationService.sso_enforced_error_message_for_email(email)
-        render json: raw_json({ action: 'sso', error_message: message }.compact)
+      sso_message = AuthenticationService.sso_enforced_for_email(email)
+      if sso_message
+        render json: { errors: { base: [{ error: 'sso_enforced_for_domain', message: sso_message }] } }, status: :unprocessable_entity
         return
       end
 
@@ -172,10 +172,10 @@ class WebApi::V1::UsersController < ApplicationController
 
   def create
     email = params.dig(:user, :email)
-    if AuthenticationService.sso_enforced_for_email?(email)
+    sso_message = AuthenticationService.sso_enforced_for_email(email)
+    if sso_message
       skip_authorization
-      message = AuthenticationService.sso_enforced_error_message_for_email(email)
-      render json: { errors: { base: [{ error: 'sso_enforced_for_domain', message: message }.compact] } }, status: :unprocessable_entity
+      render json: { errors: { base: [{ error: 'sso_enforced_for_domain', message: sso_message }] } }, status: :unprocessable_entity
       return
     end
 

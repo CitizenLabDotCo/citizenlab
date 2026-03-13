@@ -15,16 +15,12 @@ class AuthenticationService
       @all_methods[name.to_s] = authentication_method
     end
 
-    def sso_enforced_for_email?(email)
-      domain = email_domain(email)
-      return false unless domain
+    # Returns the error message string if SSO is enforced for this email's domain, nil otherwise.
+    def sso_enforced_for_email(email)
+      return nil if email.blank?
 
-      all_methods.any? { |_name, method| method.enforced_email_domains.include?(domain) }
-    end
-
-    def sso_enforced_error_message_for_email(email)
-      domain = email_domain(email)
-      return nil unless domain
+      domain = email.split('@').last&.strip&.downcase
+      return nil if domain.blank?
 
       all_methods.each_value do |method|
         next unless method.enforced_email_domains.include?(domain)
@@ -33,15 +29,6 @@ class AuthenticationService
       end
 
       nil
-    end
-
-    def email_domain(email)
-      return nil if email.blank?
-
-      domain = email.split('@').last&.strip&.downcase
-      return nil if domain.blank?
-
-      domain
     end
   end
 

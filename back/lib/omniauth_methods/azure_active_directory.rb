@@ -34,7 +34,8 @@ module OmniauthMethods
       config = AppConfiguration.instance
       return nil unless config.feature_activated?('azure_ad_login')
 
-      config.settings('azure_ad_login', 'enforced_email_domain_error_message').presence
+      config.settings('azure_ad_login', 'enforced_email_domain_error_message').presence ||
+        I18n.t('errors.messages.sso_enforced_for_domain')
     end
 
     private
