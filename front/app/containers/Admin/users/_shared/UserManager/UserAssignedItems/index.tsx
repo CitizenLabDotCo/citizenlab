@@ -7,6 +7,7 @@ import { IUserData } from 'api/users/types';
 
 import TreeView from 'components/admin/TreeView';
 
+import { FormattedMessage } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
@@ -39,11 +40,10 @@ const UserAssignedItems = ({ user }: Props) => {
       {hasFolders && (
         <>
           <Title variant="h3" mt="0px">
-            Folders user manages
+            <FormattedMessage {...messages.foldersUserManages} />
           </Title>
           <Text>
-            This user can manage the following folders, including the projects
-            inside of them:
+            <FormattedMessage {...messages.thisUserCanManage} />
           </Text>
           <TreeView
             nodes={foldersUserModerates}
@@ -55,7 +55,7 @@ const UserAssignedItems = ({ user }: Props) => {
       {projectsUserModerates.length > 0 && (
         <>
           <Title variant="h3" mt={hasFolders ? '40px' : '0px'}>
-            Projects user manages
+            <FormattedMessage {...messages.projectsUserManages} />
           </Title>
           <TreeView
             nodes={projectsUserModerates}

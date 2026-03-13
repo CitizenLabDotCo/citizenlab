@@ -10,4 +10,17 @@ export default defineMessages({
     id: 'app.containers.Admin.users.UserAssignedItems.remove',
     defaultMessage: 'Remove',
   },
+  foldersUserManages: {
+    id: 'app.containers.Admin.users.UserAssignedItems.foldersUserManages',
+    defaultMessage: 'Folders user manages',
+  },
+  thisUserCanManage: {
+    id: 'app.containers.Admin.users.UserAssignedItems.thisUserCanManage',
+    defaultMessage:
+      'This user can manage the following folders, including the projects inside of them:',
+  },
+  projectsUserManages: {
+    id: 'app.containers.Admin.users.UserAssignedItems.projectsUserManages',
+    defaultMessage: 'Projects user manages',
+  },
 });
