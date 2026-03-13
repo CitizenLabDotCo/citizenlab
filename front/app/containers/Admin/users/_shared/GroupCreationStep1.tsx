@@ -13,7 +13,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { injectIntl } from 'utils/cl-intl';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 
-import messages from './messages';
+import messages from '../messages';
 
 const Container = styled.div`
   display: flex;

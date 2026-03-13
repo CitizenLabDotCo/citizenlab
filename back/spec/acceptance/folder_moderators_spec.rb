@@ -148,13 +148,15 @@ resource 'Moderators' do
       shared_examples 'adding a folder moderator' do
         example 'Add a moderator role' do
           expect(test_user.reload.moderatable_project_ids).to be_empty
+          expect(user.roles).to be_empty
 
           do_request
 
           expect(response_status).to eq 201
-          json_response = json_parse(response_body)
-          expect(json_response.dig(:data, :id)).to eq test_user.id
-          expect(test_user.reload.moderatable_project_ids).to match_array child_projects.pluck(:id)
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :id)).to eq user_id
+        expect(user.reload.roles).to eq([{ 'type' => 'project_folder_moderator', 'project_folder_id' => project_folder.id }])
+        expect(user.reload.moderatable_project_ids).to match_array(child_projects.map(&:id))
         end
       end
 
@@ -176,26 +178,30 @@ resource 'Moderators' do
     delete 'web_api/v1/project_folders/:project_folder_id/moderators/:user_id' do
       ValidationErrorHelper.new.error_fields self, User
 
-      describe 'when moderating the projects of a folder' do
+      describe 'when moderating projects in a folder' do
         before do
           @project_folder = create(:project_folder)
           other_moderators = create_list(:project_folder_moderator, 2, project_folders: [@project_folder])
           @user = other_moderators.first
-          child_projects = create_list(:project, 3)
-          child_projects.each do |project|
-            project.update! folder: @project_folder
-            @user.add_role('project_moderator', project_id: project.id)
-          end
+          @child_projects = create_list(:project, 3)
+          @child_projects.first.update! folder: @project_folder
+          @user.add_role('project_moderator', project_id: @child_projects.first.id)
           @user.save!
         end
 
         let(:project_folder_id) { @project_folder.id }
         let(:user_id) { @user.id }
 
-        example_request 'Delete the moderator role of a user for a project_folder' do
+        example 'Delete the moderator role of a user for a project_folder' do
+          expect(@user.reload.roles).to include({ 'type' => 'project_folder_moderator', 'project_folder_id' => @project_folder.id })
+
+          do_request
           expect(response_status).to eq 200
-          expect(@user.reload.roles).to be_empty
-          expect(@user.reload.moderatable_project_ids).to be_empty
+
+          # We expect the existing project moderator role(s) for project(s) in the folder to remain,
+          # and the project_folder_moderator role to be removed.
+          expect(@user.reload.roles).to eq([{ 'type' => 'project_moderator', 'project_id' => @child_projects.first.id }])
+          expect(@user.reload.moderatable_project_ids).to eq [@child_projects.first.id]
         end
       end
     end

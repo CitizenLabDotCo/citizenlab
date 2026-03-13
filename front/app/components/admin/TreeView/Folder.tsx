@@ -2,37 +2,38 @@ import React, { useState } from 'react';
 
 import { Box, IconButton, colors } from '@citizenlab/cl2-component-library';
 
-import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
-import { FolderNode } from 'api/spaces/types';
+import { FolderNode } from 'api/admin_publications/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { MessageDescriptor } from 'utils/cl-intl';
+
 import Link from './_shared/Link';
-import RemoveFromSpaceButton from './_shared/RemoveFromSpaceButton';
+import RemoveButton from './_shared/RemoveButton';
 import Row from './_shared/Row';
 import Project from './Project';
 
 interface Props {
   node: FolderNode;
+  lockedProjectTooltip?: MessageDescriptor;
+  removeButtonMessage: MessageDescriptor;
+  onRemove: (nodeId: string, nodeType: 'project' | 'folder') => Promise<void>;
 }
 
-const Folder = ({ node }: Props) => {
+const Folder = ({
+  node,
+  lockedProjectTooltip,
+  removeButtonMessage,
+  onRemove,
+}: Props) => {
   const localize = useLocalize();
   const [expanded, setExpanded] = useState(true);
   const [isRemoving, setIsRemoving] = useState(false);
 
-  const { mutate: updateFolder } = useUpdateProjectFolder();
-
-  const handleRemoveProject = () => {
+  const handleRemoveFolder = async () => {
     setIsRemoving(true);
-    updateFolder(
-      { projectFolderId: node.id, space_id: null },
-      {
-        onSuccess: () => {
-          setIsRemoving(false);
-        },
-      }
-    );
+    await onRemove(node.id, 'folder');
+    setIsRemoving(false);
   };
 
   return (
@@ -54,16 +55,23 @@ const Folder = ({ node }: Props) => {
             {localize(node.title_multiloc)}
           </Link>
         </Box>
-        <RemoveFromSpaceButton
+        <RemoveButton
           processing={isRemoving}
-          onClick={handleRemoveProject}
+          message={removeButtonMessage}
+          onClick={handleRemoveFolder}
         />
       </Row>
       <Box pl="31px">
         {expanded && (
           <>
             {node.children.map((child) => (
-              <Project key={child.id} node={child} removable={false} />
+              <Project
+                key={child.id}
+                node={child}
+                lockedProjectTooltip={lockedProjectTooltip}
+                removeButtonMessage={removeButtonMessage}
+                onRemove={onRemove}
+              />
             ))}
           </>
         )}

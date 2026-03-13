@@ -2,38 +2,36 @@ import React, { useState } from 'react';
 
 import { Box, Icon, colors, Tooltip } from '@citizenlab/cl2-component-library';
 
-import useUpdateProject from 'api/projects/useUpdateProject';
-import { ProjectNode } from 'api/spaces/types';
+import { ProjectNode } from 'api/admin_publications/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor } from 'utils/cl-intl';
 
 import Link from './_shared/Link';
-import RemoveFromSpaceButton from './_shared/RemoveFromSpaceButton';
+import RemoveButton from './_shared/RemoveButton';
 import Row from './_shared/Row';
-import messages from './messages';
 
 interface Props {
   node: ProjectNode;
-  removable: boolean;
+  lockedProjectTooltip?: MessageDescriptor;
+  removeButtonMessage: MessageDescriptor;
+  onRemove: (nodeId: string, nodeType: 'project' | 'folder') => Promise<void>;
 }
 
-const Project = ({ node, removable }: Props) => {
+const Project = ({
+  node,
+  lockedProjectTooltip,
+  removeButtonMessage,
+  onRemove,
+}: Props) => {
   const [isRemoving, setIsRemoving] = useState(false);
   const localize = useLocalize();
-  const { mutate: updateProject } = useUpdateProject();
 
-  const handleRemoveProject = () => {
+  const handleRemoveProject = async () => {
     setIsRemoving(true);
-    updateProject(
-      { projectId: node.id, space_id: null },
-      {
-        onSuccess: () => {
-          setIsRemoving(false);
-        },
-      }
-    );
+    await onRemove(node.id, 'project');
+    setIsRemoving(false);
   };
 
   return (
@@ -45,19 +43,19 @@ const Project = ({ node, removable }: Props) => {
           width="20px"
           height="20px"
           transform="translateY(-1px)"
-          fill={removable ? colors.black : colors.grey600}
+          fill={lockedProjectTooltip ? colors.grey600 : colors.black}
         />
         <Link
           to={`/admin/projects/${node.id}`}
-          color={removable ? colors.black : colors.grey600}
+          color={lockedProjectTooltip ? colors.grey600 : colors.black}
         >
           {localize(node.title_multiloc)}
         </Link>
-        {!removable && (
+        {lockedProjectTooltip && (
           <Tooltip
             content={
               <Box>
-                <FormattedMessage {...messages.lockedProject} />
+                <FormattedMessage {...lockedProjectTooltip} />
               </Box>
             }
           >
@@ -72,9 +70,10 @@ const Project = ({ node, removable }: Props) => {
           </Tooltip>
         )}
       </Box>
-      {removable && (
-        <RemoveFromSpaceButton
+      {!lockedProjectTooltip && (
+        <RemoveButton
           processing={isRemoving}
+          message={removeButtonMessage}
           onClick={handleRemoveProject}
         />
       )}

@@ -28,7 +28,6 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
   def create
     @user = find_user_by_params
     @folder = ProjectFolders::Folder.find(params[:project_folder_id])
-    SideFxFolderModeratorService.new.before_create(@user, @folder, current_user)
     @user.add_role 'project_folder_moderator', project_folder_id: params[:project_folder_id]
     if @user.save
       serialized_data = ::WebApi::V1::UserSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash
@@ -42,7 +41,6 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
   # delete
   def destroy
     @folder = ProjectFolders::Folder.find(params[:project_folder_id])
-    SideFxFolderModeratorService.new.before_destroy(@moderator, @folder, current_user)
     @moderator.delete_role 'project_folder_moderator', project_folder_id: params[:project_folder_id]
     if @moderator.save
       SideFxFolderModeratorService.new.after_destroy(@moderator, @folder, current_user)

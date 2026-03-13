@@ -17,9 +17,9 @@ import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 import { TRole } from 'utils/permissions/roles';
 
-import events from './events';
-import messages from './messages';
-import tracks from './tracks';
+import events from '../../events';
+import messages from '../../messages';
+import tracks from '../../tracks';
 import UserTableRow from './UserTableRow';
 
 const Container = styled.div`
