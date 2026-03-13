@@ -10,7 +10,7 @@ export interface WeglotData {
  * or null if Weglot is not loaded.
  */
 export function getWeglotCurrentLang(): string | null {
-  return window.Weglot?.getCurrentLang?.() ?? null;
+  return window.Weglot?.getCurrentLang() ?? null;
 }
 
 /**
