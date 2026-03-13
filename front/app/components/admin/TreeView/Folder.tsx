@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { Box, IconButton, colors } from '@citizenlab/cl2-component-library';
 
-import useUpdateProjectFolder from 'api/project_folders/useUpdateProjectFolder';
 import { FolderNode } from 'api/spaces/types';
 
 import useLocalize from 'hooks/useLocalize';
@@ -18,25 +17,23 @@ interface Props {
   node: FolderNode;
   lockedProjectTooltip?: MessageDescriptor;
   removeButtonMessage: MessageDescriptor;
+  onRemove: (nodeId: string, nodeType: 'project' | 'folder') => Promise<void>;
 }
 
-const Folder = ({ node, lockedProjectTooltip, removeButtonMessage }: Props) => {
+const Folder = ({
+  node,
+  lockedProjectTooltip,
+  removeButtonMessage,
+  onRemove,
+}: Props) => {
   const localize = useLocalize();
   const [expanded, setExpanded] = useState(true);
   const [isRemoving, setIsRemoving] = useState(false);
 
-  const { mutate: updateFolder } = useUpdateProjectFolder();
-
-  const handleRemoveProject = () => {
+  const handleRemoveFolder = async () => {
     setIsRemoving(true);
-    updateFolder(
-      { projectFolderId: node.id, space_id: null },
-      {
-        onSuccess: () => {
-          setIsRemoving(false);
-        },
-      }
-    );
+    await onRemove(node.id, 'folder');
+    setIsRemoving(false);
   };
 
   return (
@@ -61,7 +58,7 @@ const Folder = ({ node, lockedProjectTooltip, removeButtonMessage }: Props) => {
         <RemoveButton
           processing={isRemoving}
           message={removeButtonMessage}
-          onClick={handleRemoveProject}
+          onClick={handleRemoveFolder}
         />
       </Row>
       <Box pl="31px">
@@ -73,6 +70,7 @@ const Folder = ({ node, lockedProjectTooltip, removeButtonMessage }: Props) => {
                 node={child}
                 lockedProjectTooltip={lockedProjectTooltip}
                 removeButtonMessage={removeButtonMessage}
+                onRemove={onRemove}
               />
             ))}
           </>

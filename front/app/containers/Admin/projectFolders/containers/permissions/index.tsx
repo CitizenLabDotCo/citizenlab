@@ -81,7 +81,7 @@ const FolderPermissions = () => {
   };
 
   const handleDeleteFolderModeratorClick = (moderatorId: string) => () => {
-    deleteFolderModerator({ projectFolderId, id: moderatorId });
+    deleteFolderModerator({ projectFolderId, userId: moderatorId });
   };
 
   const handleAddClick = () => {

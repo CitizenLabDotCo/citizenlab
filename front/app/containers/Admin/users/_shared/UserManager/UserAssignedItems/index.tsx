@@ -2,6 +2,8 @@ import React from 'react';
 
 import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 
+import useDeleteProjectFolderModerator from 'api/project_folder_moderators/useDeleteProjectFolderModerator';
+import useDeleteProjectModerator from 'api/project_moderators/useDeleteProjectModerator';
 import useTreeView from 'api/spaces/useTreeView';
 import { IUserData } from 'api/users/types';
 
@@ -20,6 +22,10 @@ interface Props {
 const UserAssignedItems = ({ user }: Props) => {
   const { data: treeView } = useTreeView();
 
+  const { mutateAsync: deleteProjectModerator } = useDeleteProjectModerator();
+  const { mutateAsync: deleteFolderModerator } =
+    useDeleteProjectFolderModerator();
+
   if (!treeView) return null;
 
   const { projectsUserModerates, foldersUserModerates } = getModeratedItems(
@@ -37,6 +43,17 @@ const UserAssignedItems = ({ user }: Props) => {
 
   const hasFolders = foldersUserModerates.length > 0;
 
+  const handleRemove = async (
+    nodeId: string,
+    nodeType: 'project' | 'folder'
+  ) => {
+    if (nodeType === 'project') {
+      await deleteProjectModerator({ projectId: nodeId, userId: user.id });
+    } else {
+      await deleteFolderModerator({ projectFolderId: nodeId, userId: user.id });
+    }
+  };
+
   return (
     <Box>
       {hasFolders && (
@@ -51,6 +68,7 @@ const UserAssignedItems = ({ user }: Props) => {
             nodes={foldersUserModerates}
             lockedProjectTooltip={messages.lockedProject}
             removeButtonMessage={messages.remove}
+            onRemove={handleRemove}
           />
         </>
       )}
@@ -62,6 +80,7 @@ const UserAssignedItems = ({ user }: Props) => {
           <TreeView
             nodes={projectsUserModerates}
             removeButtonMessage={messages.remove}
+            onRemove={handleRemove}
           />
         </>
       )}

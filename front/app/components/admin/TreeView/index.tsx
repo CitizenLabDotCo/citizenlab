@@ -13,25 +13,32 @@ interface Props {
   nodes: TreeNode[];
   lockedProjectTooltip?: MessageDescriptor;
   removeButtonMessage: MessageDescriptor;
+  onRemove: (nodeId: string, nodeType: 'project' | 'folder') => Promise<void>;
 }
 
 const TreeView = ({
   nodes,
   lockedProjectTooltip,
   removeButtonMessage,
+  onRemove,
 }: Props) => {
   return (
     <Box maxWidth="800px">
       {nodes.map((node) => (
         <Box key={node.id}>
           {node.type === 'project' && (
-            <Project node={node} removeButtonMessage={removeButtonMessage} />
+            <Project
+              node={node}
+              removeButtonMessage={removeButtonMessage}
+              onRemove={onRemove}
+            />
           )}
           {node.type === 'folder' && (
             <Folder
               node={node}
               lockedProjectTooltip={lockedProjectTooltip}
               removeButtonMessage={removeButtonMessage}
+              onRemove={onRemove}
             />
           )}
         </Box>

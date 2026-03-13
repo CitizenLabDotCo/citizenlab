@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { Box, Icon, colors, Tooltip } from '@citizenlab/cl2-component-library';
 
-import useUpdateProject from 'api/projects/useUpdateProject';
 import { ProjectNode } from 'api/spaces/types';
 
 import useLocalize from 'hooks/useLocalize';
@@ -17,27 +16,22 @@ interface Props {
   node: ProjectNode;
   lockedProjectTooltip?: MessageDescriptor;
   removeButtonMessage: MessageDescriptor;
+  onRemove: (nodeId: string, nodeType: 'project' | 'folder') => Promise<void>;
 }
 
 const Project = ({
   node,
   lockedProjectTooltip,
   removeButtonMessage,
+  onRemove,
 }: Props) => {
   const [isRemoving, setIsRemoving] = useState(false);
   const localize = useLocalize();
-  const { mutate: updateProject } = useUpdateProject();
 
-  const handleRemoveProject = () => {
+  const handleRemoveProject = async () => {
     setIsRemoving(true);
-    updateProject(
-      { projectId: node.id, space_id: null },
-      {
-        onSuccess: () => {
-          setIsRemoving(false);
-        },
-      }
-    );
+    await onRemove(node.id, 'project');
+    setIsRemoving(false);
   };
 
   return (
