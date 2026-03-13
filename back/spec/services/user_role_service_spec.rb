@@ -12,6 +12,7 @@ describe UserRoleService do
 
       expect(service).to be_can_moderate(folder, create(:project_folder_moderator, project_folders: [folder]))
       expect(service).to be_can_moderate(folder, create(:admin))
+
       expect(service).not_to be_can_moderate(folder, create(:user))
       expect(service).not_to be_can_moderate(folder, create(:project_folder_moderator))
       expect(service).not_to be_can_moderate(folder, create(:project_moderator, projects: [project]))
@@ -20,24 +21,67 @@ describe UserRoleService do
     it 'for a project' do
       project = create(:project)
 
-      expect(service.can_moderate?(project, create(:admin))).to be true
-      expect(service.can_moderate?(project, create(:user))).to be false
+      expect(service).to be_can_moderate(project, create(:admin))
+      expect(service).not_to be_can_moderate(project, create(:user))
+    end
+
+    it 'for a project in a folder' do
+      project = create(:project)
+      folder = create(:project_folder, projects: [project])
+
+      expect(service).to be_can_moderate(project, create(:project_moderator, projects: [project]))
+      expect(service).to be_can_moderate(project, create(:project_folder_moderator, project_folders: [folder]))
+      expect(service).to be_can_moderate(project, create(:admin))
+
+      expect(service).not_to be_can_moderate(project, create(:user))
+      expect(service).not_to be_can_moderate(project, create(:project_moderator, projects: [create(:project)]))
+      expect(service).not_to be_can_moderate(project, create(:project_folder_moderator, project_folders: [create(:project_folder)]))
     end
 
     it 'for an idea' do
       project = create(:project)
       idea = create(:idea, project: project)
 
-      expect(service.can_moderate?(idea, create(:admin))).to be true
-      expect(service.can_moderate?(idea, create(:user))).to be false
+      expect(service).to be_can_moderate(idea, create(:admin))
+      expect(service).to be_can_moderate(idea, create(:project_moderator, projects: [project]))
+
+      expect(service).not_to be_can_moderate(idea, create(:user))
+      expect(service).not_to be_can_moderate(idea, create(:project_moderator, projects: [create(:project)]))
+
+      # Idea in project in folder:
+      folder = create(:project_folder, projects: [project])
+
+      expect(service).to be_can_moderate(idea, create(:admin))
+      expect(service).to be_can_moderate(idea, create(:project_moderator, projects: [project]))
+      expect(service).to be_can_moderate(idea, create(:project_folder_moderator, project_folders: [folder]))
+
+      expect(service).not_to be_can_moderate(idea, create(:user))
+      expect(service).not_to be_can_moderate(idea, create(:project_moderator, projects: [create(:project)]))
+      expect(service).not_to be_can_moderate(idea, create(:project_folder_moderator, project_folders: [create(:project_folder)]))
     end
 
     it 'for a comment' do
-      proposal = create(:proposal)
+      project = create(:single_phase_proposals_project)
+      proposal = create(:proposal, project: project, creation_phase: project.phases.first)
       comment = create(:comment, idea: proposal)
 
-      expect(service.can_moderate?(comment, create(:admin))).to be true
-      expect(service.can_moderate?(comment, create(:user))).to be false
+      expect(service).to be_can_moderate(comment, create(:admin))
+      expect(service).to be_can_moderate(comment, create(:project_moderator, projects: [project]))
+
+      expect(service).not_to be_can_moderate(comment, create(:user))
+      expect(service).not_to be_can_moderate(comment, create(:project_moderator, projects: [create(:project)]))
+      expect(service).not_to be_can_moderate(comment, create(:project_folder_moderator))
+
+      # Comment on idea in project in folder:
+      folder = create(:project_folder, projects: [project])
+
+      expect(service).to be_can_moderate(comment, create(:admin))
+      expect(service).to be_can_moderate(comment, create(:project_moderator, projects: [project]))
+      expect(service).to be_can_moderate(comment, create(:project_folder_moderator, project_folders: [folder]))
+
+      expect(service).not_to be_can_moderate(comment, create(:user))
+      expect(service).not_to be_can_moderate(comment, create(:project_moderator, projects: [create(:project)]))
+      expect(service).not_to be_can_moderate(comment, create(:project_folder_moderator, project_folders: [create(:project_folder)]))
     end
   end
 
