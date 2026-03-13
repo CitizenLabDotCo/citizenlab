@@ -450,7 +450,7 @@ class Phase < ApplicationRecord
     return if !participation_method_changed?
     return if !id
 
-    if Idea.where(creation_phase_id: id).exists? || IdeasPhase.where(phase_id: id).exists?
+    if Idea.exists?(creation_phase_id: id) || IdeasPhase.exists?(phase_id: id)
       errors.add(
         :participation_method,
         :has_inputs,

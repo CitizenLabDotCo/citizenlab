@@ -3,7 +3,7 @@
 module ParticipationMethod
   class Voting < Ideation
     SUPPORTED_REACTION_MODES = [].freeze
-    delegate :additional_export_columns, :supports_serializing?, to: :voting_method
+    delegate :additional_export_columns, :supports_serializing?, :validate_phase, to: :voting_method
 
     def self.method_str
       'voting'
@@ -27,10 +27,6 @@ module ParticipationMethod
     # Remove after unified status implementation
     def idea_status_method
       'ideation'
-    end
-
-    def validate_phase
-      voting_method.validate_phase
     end
 
     def supported_email_campaigns
