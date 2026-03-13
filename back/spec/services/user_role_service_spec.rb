@@ -115,80 +115,51 @@ describe UserRoleService do
   end
 
   describe 'moderators_for' do
-    it 'lists all moderators of a project folder' do
-      project = create(:project)
-      folder = create(:project_folder, projects: [project])
-      other_folder = create(:project_folder)
-      create(:user)
-      admin = create(:admin)
-      create(:project_moderator, projects: [project])
-      folder_moderators = [
-        create(:project_folder_moderator, project_folders: [other_folder, folder]),
-        create(:project_folder_moderator, project_folders: [other_folder])
-      ]
+    let!(:project) { create(:project) }
+    let!(:other_project) { create(:project) }
+    let!(:folder) { create(:project_folder, projects: [project]) }
+    let!(:other_folder) { create(:project_folder) }
 
-      expect(service.moderators_for(folder).ids).to contain_exactly(admin.id, folder_moderators[0].id)
+    let!(:user) { create(:user) }
+    let!(:admin) { create(:admin) }
+    let!(:project_moderator_a) { create(:project_moderator, projects: [project]) }
+    let!(:project_moderator_b) { create(:project_moderator, projects: [project]) }
+    let!(:other_project_moderator) { create(:project_moderator, projects: [other_project]) }
+    let!(:folder_moderator) { create(:project_folder_moderator, project_folders: [folder]) }
+    let!(:other_folder_moderator) { create(:project_folder_moderator, project_folders: [other_folder]) }
+
+    it 'lists all moderators of a project folder' do
+      expect(service.moderators_for(folder).ids).to contain_exactly(admin.id, folder_moderator.id)
     end
 
     it 'lists all moderators of a project' do
-      project = create(:project)
-      other_project = create(:project)
-      folder = create(:project_folder, projects: [project])
-      other_folder = create(:project_folder, projects: [other_project])
+      expect(service.moderators_for(project.reload).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id)
+    end
 
-      create(:user)
-      admin = create(:admin)
-      moderator = create(:project_moderator, projects: [project, other_project])
-      create(:project_moderator, projects: [other_project])
-      folder_moderators = [
-        create(:project_folder_moderator, project_folders: [other_folder, folder]),
-        create(:project_folder_moderator, project_folders: [other_folder])
-      ]
+    it 'lists all moderators of a phase' do
+      phase = create(:phase, project: project)
 
-      expect(service.moderators_for(project.reload).ids).to contain_exactly(admin.id, moderator.id, folder_moderators[0].id)
+      expect(service.moderators_for(phase.reload).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id)
     end
 
     it 'lists all moderators of an idea' do
-      project = create(:project)
-      folder = create(:project_folder, projects: [project])
       idea = create(:idea, project: project)
 
-      other_project = create(:project)      
-      other_folder = create(:project_folder, projects: [other_project])
-
-      create(:user)
-      admin = create(:admin)
-      moderator = create(:project_moderator, projects: [other_project, project])
-      also_moderator = create(:project_moderator, projects: [project])
-      create(:project_moderator, projects: [other_project])
-      folder_moderators = [
-        create(:project_folder_moderator, project_folders: [other_folder, folder]),
-        create(:project_folder_moderator, project_folders: [other_folder])
-      ]
-
-      expect(service.moderators_for(idea).ids).to contain_exactly(admin.id, moderator.id, also_moderator.id, folder_moderators[0].id)
+      expect(service.moderators_for(idea).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id)
     end
 
     it 'lists all moderators of a comment' do
-      project = create(:project)
-      folder = create(:project_folder, projects: [project])
       idea = create(:idea, project: project)
       comment = create(:comment, idea: idea)
 
-      other_project = create(:project)      
-      other_folder = create(:project_folder, projects: [other_project])
+      expect(service.moderators_for(comment).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id)
+    end
 
-      create(:user)
-      admin = create(:admin)
-      moderator = create(:project_moderator, projects: [other_project, project])
-      also_moderator = create(:project_moderator, projects: [project])
-      create(:project_moderator, projects: [other_project])
-      folder_moderators = [
-        create(:project_folder_moderator, project_folders: [other_folder, folder]),
-        create(:project_folder_moderator, project_folders: [other_folder])
-      ]
+    it 'lists all moderators of a permission' do
+      phase = create(:phase, project: project)
+      permission = create(:permission, permission_scope: phase)
 
-      expect(service.moderators_for(comment).ids).to contain_exactly(admin.id, moderator.id, also_moderator.id, folder_moderators[0].id)
+      expect(service.moderators_for(permission).ids).to contain_exactly(admin.id, project_moderator_a.id, project_moderator_b.id, folder_moderator.id)
     end
   end
 
