@@ -7,6 +7,8 @@ import { IUserData } from 'api/users/types';
 
 import TreeView from 'components/admin/TreeView';
 
+import { isAdmin } from 'utils/permissions/roles';
+
 import messages from './messages';
 import { getLists as getModeratedItems } from './utils';
 
@@ -23,6 +25,12 @@ const UserAssignedItems = ({ user }: Props) => {
     user,
     treeView
   );
+
+  if (isAdmin({ data: user })) {
+    return (
+      <Text>As an admin, this user can moderate all folders and projects.</Text>
+    );
+  }
 
   return (
     <Box>
