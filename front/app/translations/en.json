@@ -2404,6 +2404,7 @@
   "app.errors.generics.taken": "This email already exists. Another account is linked to it.",
   "app.errors.generics.unsupported_locales": "This field does not support the current locale.",
   "app.errors.group_ids_unauthorized_choice_moderator": "As a project manager, you can only email to people that can access your project(s)",
+  "app.errors.has_inputs": "You cannot change the participation method because this phase already has inputs. Please remove all inputs first.",
   "app.errors.has_other_overlapping_phases": "Projects cannot have overlapping phases.",
   "app.errors.invalid_email": "The email {value} found in row {row} is not a valid email address",
   "app.errors.invalid_row": "An unknown error occurred while trying to process row {row}",
