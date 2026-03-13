@@ -213,7 +213,7 @@ describe UserRoleService do
       let(:user) { create(:project_folder_moderator, project_folders: [folder]).add_role('project_moderator', project_id: projects.last.id) }
 
       it 'lists all moderatable projects in given scope' do
-        expect(service.moderatable_projects(user)).to match_array([projects.last, project_in_folder])
+        expect(service.moderatable_projects(user)).to contain_exactly(projects.last, project_in_folder)
 
         expect(service.moderatable_projects(user, Project.where(id: [projects.first.id, project_in_folder.id]))).to eq([project_in_folder])
       end
