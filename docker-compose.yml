@@ -34,6 +34,7 @@ services:
     volumes:
       - "./back:/citizenlab/back"
       - bundle:/bundle
+      - .docker_web_bash_history:/home/dev/.bash_history
     env_file:
       - "env_files/back-safe.env"
       - "env_files/back-secret.env"

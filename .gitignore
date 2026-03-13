@@ -26,3 +26,6 @@ CLAUDE.local.md
 # MCP local files
 .serena/
 .playwright-mcp/
+
+# Docker bash history
+.docker_web_bash_history
