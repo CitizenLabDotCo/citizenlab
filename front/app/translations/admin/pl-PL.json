@@ -1849,7 +1849,6 @@
   "app.containers.Admin.reporting.word.wordExportCaptureFailed": "Jeden z widżetów raportu nie mógł zostać przechwycony do eksportu.",
   "app.containers.Admin.reporting.word.wordExportFailed": "Nie udało się wyeksportować dokumentu Word.",
   "app.containers.Admin.reporting.word.wordExportMissingWidget": "Podczas eksportowania nie można znaleźć jednego z widżetów raportu.",
-  "app.containers.Admin.spaces.EditSpace.TreeView.crossedOutFolder": "Tego folderu nie ma w przestrzeni. Znajdują się w nim jednak niektóre projekty. Projekty te są pokazane poniżej.",
   "app.containers.Admin.spaces.EditSpace.TreeView.lockedProject": "Folder, w którym znajduje się ten projekt, został dodany do tej przestrzeni. W związku z tym projekt automatycznie znajduje się również w tej przestrzeni. Aby usunąć ten projekt z tej przestrzeni, musisz usunąć folder.",
   "app.containers.Admin.spaces.EditSpace.TreeView.removeFromSpace": "Usuń z przestrzeni",
   "app.containers.Admin.spaces.NewSpace.createANewSpace": "Stwórz nową przestrzeń",

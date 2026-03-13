@@ -1849,7 +1849,6 @@
   "app.containers.Admin.reporting.word.wordExportCaptureFailed": "Jedan od widgeta izvješća nije mogao biti snimljen za izvoz.",
   "app.containers.Admin.reporting.word.wordExportFailed": "Izvoz Word dokumenta nije uspio.",
   "app.containers.Admin.reporting.word.wordExportMissingWidget": "Jedan od widgeta izvješća nije pronađen tijekom izvoza.",
-  "app.containers.Admin.spaces.EditSpace.TreeView.crossedOutFolder": "Ova mapa nije u prostoru. Međutim, neki projekti unutar nje jesu. Ti projekti prikazani su u nastavku.",
   "app.containers.Admin.spaces.EditSpace.TreeView.lockedProject": "Mapa u kojoj se nalazi ovaj projekt dodana je u ovaj prostor. Stoga se i projekt automatski nalazi u tom prostoru. Da biste uklonili ovaj projekt iz ovog prostora, morat ćete ukloniti mapu.",
   "app.containers.Admin.spaces.EditSpace.TreeView.removeFromSpace": "Ukloni iz prostora",
   "app.containers.Admin.spaces.NewSpace.createANewSpace": "Stvori novi prostor",

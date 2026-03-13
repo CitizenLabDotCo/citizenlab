@@ -1849,7 +1849,6 @@
   "app.containers.Admin.reporting.word.wordExportCaptureFailed": "Um dos widgets de relatório não pôde ser capturado para exportação.",
   "app.containers.Admin.reporting.word.wordExportFailed": "Falha ao exportar o documento do Word.",
   "app.containers.Admin.reporting.word.wordExportMissingWidget": "Um dos widgets de relatório não pôde ser encontrado durante a exportação.",
-  "app.containers.Admin.spaces.EditSpace.TreeView.crossedOutFolder": "Essa pasta não está no espaço. No entanto, alguns projetos dentro dela estão. Esses projetos são mostrados abaixo.",
   "app.containers.Admin.spaces.EditSpace.TreeView.lockedProject": "A pasta em que esse projeto está foi adicionada a esse espaço. Portanto, o projeto também está automaticamente no espaço. Para remover esse projeto desse espaço, você precisará remover a pasta.",
   "app.containers.Admin.spaces.EditSpace.TreeView.removeFromSpace": "Remover do espaço",
   "app.containers.Admin.spaces.NewSpace.createANewSpace": "Criar um novo espaço",

@@ -1849,7 +1849,6 @@
   "app.containers.Admin.reporting.word.wordExportCaptureFailed": "En av rapportwidgetarna kunde inte fångas upp för export.",
   "app.containers.Admin.reporting.word.wordExportFailed": "Misslyckades med att exportera Word-dokument.",
   "app.containers.Admin.reporting.word.wordExportMissingWidget": "En av rapportwidgetarna kunde inte hittas under exporten.",
-  "app.containers.Admin.spaces.EditSpace.TreeView.crossedOutFolder": "Den här mappen finns inte i utrymmet. Det gör däremot några av projekten i den. Dessa projekt visas nedan.",
   "app.containers.Admin.spaces.EditSpace.TreeView.lockedProject": "Den mapp som projektet ligger i har lagts till i detta utrymme. Därför finns projektet automatiskt också i utrymmet. Om du vill ta bort projektet från det här utrymmet måste du ta bort mappen.",
   "app.containers.Admin.spaces.EditSpace.TreeView.removeFromSpace": "Ta bort från utrymmet",
   "app.containers.Admin.spaces.NewSpace.createANewSpace": "Skapa ett nytt utrymme",

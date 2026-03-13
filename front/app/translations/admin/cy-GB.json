@@ -1849,7 +1849,6 @@
   "app.containers.Admin.reporting.word.wordExportCaptureFailed": "Ni ellid cipio un o'r teclynnau adroddiad i'w allforio.",
   "app.containers.Admin.reporting.word.wordExportFailed": "Methwyd allforio dogfen Word.",
   "app.containers.Admin.reporting.word.wordExportMissingWidget": "Ni ellid dod o hyd i un o'r teclynnau adroddiad wrth allforio.",
-  "app.containers.Admin.spaces.EditSpace.TreeView.crossedOutFolder": "Nid yw'r ffolder hon yn y gofod. Fodd bynnag, mae rhai prosiectau y tu mewn iddi. Dangosir y prosiectau hyn isod.",
   "app.containers.Admin.spaces.EditSpace.TreeView.lockedProject": "Mae'r ffolder y mae'r prosiect hwn ynddo wedi'i ychwanegu at y gofod hwn. Felly, mae'r prosiect yn awtomatig yn y gofod hefyd. I gael gwared ar y prosiect hwn o'r gofod hwn, bydd angen i chi gael gwared ar y ffolder.",
   "app.containers.Admin.spaces.EditSpace.TreeView.removeFromSpace": "Tynnu o'r gofod",
   "app.containers.Admin.spaces.NewSpace.createANewSpace": "Creu gofod newydd",

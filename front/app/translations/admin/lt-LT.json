@@ -1849,7 +1849,6 @@
   "app.containers.Admin.reporting.word.wordExportCaptureFailed": "Vieno iš ataskaitos valdiklių nepavyko užfiksuoti eksportui.",
   "app.containers.Admin.reporting.word.wordExportFailed": "Nepavyko eksportuoti \"Word\" dokumento.",
   "app.containers.Admin.reporting.word.wordExportMissingWidget": "Eksportuojant nepavyko rasti vieno iš ataskaitos valdiklių.",
-  "app.containers.Admin.spaces.EditSpace.TreeView.crossedOutFolder": "Šio aplanko nėra erdvėje. Tačiau kai kurie jame esantys projektai yra. Šie projektai parodyti toliau.",
   "app.containers.Admin.spaces.EditSpace.TreeView.lockedProject": "Aplankas, kuriame yra šis projektas, buvo įtrauktas į šią vietą. Todėl projektas automatiškai patenka ir į šią erdvę. Norėdami pašalinti šį projektą iš šios erdvės, turėsite pašalinti aplanką.",
   "app.containers.Admin.spaces.EditSpace.TreeView.removeFromSpace": "Pašalinti iš erdvės",
   "app.containers.Admin.spaces.NewSpace.createANewSpace": "Sukurkite naują erdvę",
