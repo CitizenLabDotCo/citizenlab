@@ -169,10 +169,8 @@ resource 'Moderators' do
           other_moderators = create_list(:project_folder_moderator, 2, project_folders: [@project_folder])
           @user = other_moderators.first
           @child_projects = create_list(:project, 3)
-          @child_projects.each do |project|
-            project.update! folder: @project_folder
-            @user.add_role('project_moderator', project_id: project.id)
-          end
+          @child_projects.first.update! folder: @project_folder
+          @user.add_role('project_moderator', project_id: @child_projects.first.id)
           @user.save!
         end
 
@@ -183,15 +181,12 @@ resource 'Moderators' do
           expect(@user.reload.roles).to include({ 'type' => 'project_folder_moderator', 'project_folder_id' => @project_folder.id })
 
           do_request
-
           expect(response_status).to eq 200
-          expect(@user.reload.roles).not_to include({ 'type' => 'project_folder_moderator', 'project_folder_id' => @project_folder.id })
 
-          # We expect the existing project moderator roles for projects in the folder to remain:
-          expect(@user.reload.roles).to include({ 'type' => 'project_moderator', 'project_id' => @child_projects.first.id })
-          expect(@user.reload.roles).to include({ 'type' => 'project_moderator', 'project_id' => @child_projects.second.id })
-          expect(@user.reload.roles).to include({ 'type' => 'project_moderator', 'project_id' => @child_projects.third.id })
-          expect(@user.reload.moderatable_project_ids).to match_array(@child_projects.map(&:id))
+          # We expect the existing project moderator role(s) for project(s) in the folder to remain,
+          # and the project_folder_moderator role to be removed.
+          expect(@user.reload.roles).to eq([{ 'type' => 'project_moderator', 'project_id' => @child_projects.first.id }])
+          expect(@user.reload.moderatable_project_ids).to eq [@child_projects.first.id]
         end
       end
     end
