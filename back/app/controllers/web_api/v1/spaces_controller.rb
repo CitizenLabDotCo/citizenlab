@@ -53,11 +53,6 @@ class WebApi::V1::SpacesController < ApplicationController
     end
   end
 
-  def tree_view
-    nodes = TreeViewService.new(space_id: @space.id).generate_tree
-    render json: raw_json({ nodes: })
-  end
-
   private
 
   def set_space

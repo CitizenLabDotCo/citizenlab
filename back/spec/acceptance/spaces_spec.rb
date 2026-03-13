@@ -165,18 +165,6 @@ resource 'Spaces' do
         expect(Space.where(id: space1.id)).to be_empty
       end
     end
-
-    get 'web_api/v1/spaces/:space_id/tree_view' do
-      example_request 'Retrieving space tree view' do
-        expect(status).to eq(200)
-        nodes = response_data[:attributes][:nodes]
-        expect(nodes.length).to eq(2)
-        expect(nodes.count { |n| n[:type] == 'project' }).to eq(1)
-        folders = nodes.select { |n| n[:type] == 'folder' }
-        expect(folders.length).to eq(1)
-        expect(folders[0][:children].length).to eq(1)
-      end
-    end
   end
 
   context 'when visitor' do
