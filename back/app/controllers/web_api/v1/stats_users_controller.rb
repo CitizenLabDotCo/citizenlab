@@ -10,8 +10,8 @@ class WebApi::V1::StatsUsersController < WebApi::V1::StatsController
     render json: raw_json({
       count: count,
       administrators_count: User.billed_admins.count,
-      folder_moderators_count: User.project_folder_moderator.count,
-      project_moderators_count: User.project_moderator.count
+      folder_moderators_count: User.project_folder_moderator.not_citizenlab_member.count,
+      project_moderators_count: User.project_moderator.not_citizenlab_member.count
     })
   end
 
