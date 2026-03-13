@@ -790,6 +790,7 @@
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Uredi grupu",
   "app.containers.Admin.Users.GroupsPanel.admins": "Administratori",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Registrirani korisnici",
+  "app.containers.Admin.Users.GroupsPanel.folderManagers": "Upravitelji mapa",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grupe",
   "app.containers.Admin.Users.GroupsPanel.managers": "Voditelji projekata",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Dodijeljene stavke",

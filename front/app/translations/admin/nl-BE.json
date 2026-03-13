@@ -790,6 +790,7 @@
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Bewerk groep",
   "app.containers.Admin.Users.GroupsPanel.admins": "Platformbeheerders",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Geregistreerde gebruikers",
+  "app.containers.Admin.Users.GroupsPanel.folderManagers": "Mapbeheerders",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Groepen",
   "app.containers.Admin.Users.GroupsPanel.managers": "Projectbeheerders",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Toegewezen items",

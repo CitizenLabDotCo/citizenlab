@@ -790,6 +790,7 @@
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Rediger gruppe",
   "app.containers.Admin.Users.GroupsPanel.admins": "Administratorer",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Registrerte brukere",
+  "app.containers.Admin.Users.GroupsPanel.folderManagers": "Mappeadministratorer",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grupper",
   "app.containers.Admin.Users.GroupsPanel.managers": "Prosjektledere",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Tildelte elementer",

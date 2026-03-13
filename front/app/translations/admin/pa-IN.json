@@ -790,6 +790,7 @@
   "app.containers.Admin.Users.GroupsHeader.editGroup": "ਸਮੂਹ ਦਾ ਸੰਪਾਦਨ ਕਰੋ",
   "app.containers.Admin.Users.GroupsPanel.admins": "ਪ੍ਰਸ਼ਾਸਕ",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "ਰਜਿਸਟਰਡ ਉਪਭੋਗਤਾ",
+  "app.containers.Admin.Users.GroupsPanel.folderManagers": "ਫੋਲਡਰ ਮੈਨੇਜਰ",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "ਸਮੂਹ",
   "app.containers.Admin.Users.GroupsPanel.managers": "ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "ਨਿਰਧਾਰਤ ਆਈਟਮਾਂ",

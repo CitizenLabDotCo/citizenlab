@@ -790,6 +790,7 @@
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Golygu Grŵp",
   "app.containers.Admin.Users.GroupsPanel.admins": "Gweinyddwyr",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Defnyddwyr cofrestredig",
+  "app.containers.Admin.Users.GroupsPanel.folderManagers": "Rheolwyr ffolderi",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grwpiau",
   "app.containers.Admin.Users.GroupsPanel.managers": "Rheolwyr prosiect",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Eitemau a neilltuwyd",

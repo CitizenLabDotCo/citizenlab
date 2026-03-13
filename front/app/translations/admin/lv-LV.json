@@ -790,6 +790,7 @@
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Rediģēt grupu",
   "app.containers.Admin.Users.GroupsPanel.admins": "Administratori",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Reģistrētie lietotāji",
+  "app.containers.Admin.Users.GroupsPanel.folderManagers": "Mapju pārvaldnieki",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grupas",
   "app.containers.Admin.Users.GroupsPanel.managers": "Projektu vadītāji",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Piešķirtie priekšmeti",
