@@ -411,7 +411,7 @@ resource 'AdminPublication' do
 
       example 'Filter by space id' do
         space = create(:space, :with_projects)
-        space_folder = create(:project_folder, space_id: space.id)
+        create(:project_folder, space_id: space.id)
         do_request({ space_id: space.id })
         expect(status).to eq 200
         nodes = response_data[:attributes][:nodes]
