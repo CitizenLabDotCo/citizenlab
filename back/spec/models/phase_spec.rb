@@ -83,6 +83,7 @@ RSpec.describe Phase do
       phase = create(:phase, participation_method: 'ideation')
       create(:idea, phases: [phase], project: phase.project)
       phase.participation_method = 'information'
+      phase.ideas_order = nil
       expect(phase).not_to be_valid
       expect(phase.errors.details).to eq({ participation_method: [{ error: :has_inputs }] })
     end
@@ -98,6 +99,7 @@ RSpec.describe Phase do
     it 'allows changing the participation method when there are no inputs' do
       phase = create(:phase, participation_method: 'ideation')
       phase.participation_method = 'information'
+      phase.ideas_order = nil
       expect(phase).to be_valid
     end
   end
