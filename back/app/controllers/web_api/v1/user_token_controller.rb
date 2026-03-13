@@ -2,6 +2,7 @@
 
 class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
   TOKEN_LIFETIME = 1.day
+  before_action :check_sso_enforcement, only: %i[create user_token_unconfirmed]
   before_action :authenticate_user_token_unconfirmed, only: [:user_token_unconfirmed]
   skip_before_action :authenticate, only: [:user_token_unconfirmed]
 
@@ -47,6 +48,14 @@ class WebApi::V1::UserTokenController < AuthToken::AuthTokenController
 
   def user_token_unconfirmed_params
     params.require(:auth).permit id_param
+  end
+
+  def check_sso_enforcement
+    email = params.dig(:auth, :email)
+    return unless AuthenticationService.sso_enforced_for_email?(email)
+
+    message = AuthenticationService.sso_enforced_error_message_for_email(email)
+    render json: { errors: { base: [{ error: 'sso_enforced_for_domain', message: message }.compact] } }, status: :unprocessable_entity
   end
 
   def authenticate_user_token_unconfirmed

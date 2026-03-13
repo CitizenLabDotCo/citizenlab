@@ -124,6 +124,12 @@ class WebApi::V1::UsersController < ApplicationController
     email = params[:user][:email]
 
     if User::EMAIL_REGEX.match?(email)
+      if AuthenticationService.sso_enforced_for_email?(email)
+        message = AuthenticationService.sso_enforced_error_message_for_email(email)
+        render json: raw_json({ action: 'sso', error_message: message }.compact)
+        return
+      end
+
       @user = User.find_by_cimail(email)
       if @user.nil?
         render json: raw_json({ action: 'terms' })
@@ -165,6 +171,14 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def create
+    email = params.dig(:user, :email)
+    if AuthenticationService.sso_enforced_for_email?(email)
+      skip_authorization
+      message = AuthenticationService.sso_enforced_error_message_for_email(email)
+      render json: { errors: { base: [{ error: 'sso_enforced_for_domain', message: message }.compact] } }, status: :unprocessable_entity
+      return
+    end
+
     @user = User.new
     saved = UserService.upsert_in_web_api(@user, permitted_attributes(@user)) do
       authorize @user

@@ -514,6 +514,16 @@
             "enum": ["show", "link", "hide"],
             "default": "show",
             "description": "Should this login mechanism be shown with other options to everyone, be hidden but available at /sign-in/admin or linked from the login modal via an 'admin options' link?"
+          },
+          "enforced_email_domains": {
+            "title": "Enforced Domains",
+            "type": "string",
+            "description": "Comma-separated list of email domains (e.g. 'example.com,company.org'). Users with these email domains must sign in via Azure AD."
+          },
+          "enforced_email_domain_error_message": {
+            "title": "Enforce Email Domain Error Message",
+            "type": "string",
+            "description": "Custom error message shown to users who must sign in via Azure AD due to their email domain."
           }
         }
       },

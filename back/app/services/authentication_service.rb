@@ -14,6 +14,35 @@ class AuthenticationService
     def add_method(name, authentication_method)
       @all_methods[name.to_s] = authentication_method
     end
+
+    def sso_enforced_for_email?(email)
+      domain = email_domain(email)
+      return false unless domain
+
+      all_methods.any? { |_name, method| method.enforced_email_domains.include?(domain) }
+    end
+
+    def sso_enforced_error_message_for_email(email)
+      domain = email_domain(email)
+      return nil unless domain
+
+      all_methods.each_value do |method|
+        next unless method.enforced_email_domains.include?(domain)
+
+        return method.enforced_email_domain_error_message
+      end
+
+      nil
+    end
+
+    def email_domain(email)
+      return nil if email.blank?
+
+      domain = email.split('@').last&.strip&.downcase
+      return nil if domain.blank?
+
+      domain
+    end
   end
 
   def all_methods

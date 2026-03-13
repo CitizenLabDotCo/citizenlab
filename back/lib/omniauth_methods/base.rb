@@ -52,5 +52,13 @@ module OmniauthMethods
     def email_confirmed?(_auth)
       true
     end
+
+    def enforced_email_domains
+      []
+    end
+
+    def enforced_email_domain_error_message
+      nil
+    end
   end
 end
