@@ -76,10 +76,10 @@ RSpec.describe UserRoles do
       it 'orders admins first, then other users' do
         expected_ordered_users = User.order_role
         expected_admin_emails = expected_ordered_users.limit(2).pluck(:email)
-        
+
         # First two should be admins (ordering uncertain)
         expect(expected_admin_emails).to contain_exactly('super@citizenlab.eu', 'admin@example.com')
-        
+
         # Remaining users are non-admins (ordering uncertain)
         expected_non_admin_emails = expected_ordered_users.offset(2).pluck(:email)
         expect(expected_non_admin_emails).to contain_exactly('project_mod@example.com', 'folder_mod@example.com', 'normal_user@example.com')
@@ -206,6 +206,23 @@ RSpec.describe UserRoles do
     end
   end
 
+  describe '#project_folder_moderator?' do
+    it 'returns true when user is folder moderator' do
+      user = build(:user, roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => '123' }])
+      expect(user.project_folder_moderator?).to be true
+    end
+
+    it 'returns true when checking specific folder user moderates' do
+      user = build(:user, roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => '123' }])
+      expect(user.project_folder_moderator?('123')).to be true
+    end
+
+    it 'returns false when checking folder user does not moderate' do
+      user = build(:user, roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => '123' }])
+      expect(user.project_folder_moderator?('456')).to be false
+    end
+  end
+
   describe '#project_moderator?' do
     it 'returns true when user is project moderator' do
       user = build(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => '123' }])
@@ -230,20 +247,20 @@ RSpec.describe UserRoles do
     end
   end
 
-  describe '#project_folder_moderator?' do
-    it 'returns true when user is folder moderator' do
-      user = build(:user, roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => '123' }])
-      expect(user.project_folder_moderator?).to be true
+  describe '#normal_user?' do
+    it 'returns true for user with no roles' do
+      user = build(:user, roles: [])
+      expect(user).to be_normal_user
     end
 
-    it 'returns true when checking specific folder user moderates' do
-      user = build(:user, roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => '123' }])
-      expect(user.project_folder_moderator?('123')).to be true
+    it 'returns false for admin' do
+      user = build(:user, roles: [{ 'type' => 'admin' }])
+      expect(user).not_to be_normal_user
     end
 
-    it 'returns false when checking folder user does not moderate' do
-      user = build(:user, roles: [{ 'type' => 'project_folder_moderator', 'project_folder_id' => '123' }])
-      expect(user.project_folder_moderator?('456')).to be false
+    it 'returns false for project moderator' do
+      user = build(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => '123' }])
+      expect(user).not_to be_normal_user
     end
   end
 
@@ -280,34 +297,19 @@ RSpec.describe UserRoles do
     end
   end
 
-  describe '#normal_user?' do
-    it 'returns true for user with no roles' do
-      user = build(:user, roles: [])
-      expect(user).to be_normal_user
-    end
-
-    it 'returns false for admin' do
-      user = build(:user, roles: [{ 'type' => 'admin' }])
-      expect(user).not_to be_normal_user
-    end
-
-    it 'returns false for project moderator' do
-      user = build(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => '123' }])
-      expect(user).not_to be_normal_user
-    end
-  end
-
   describe '#add_role' do
     it 'adds a role to the user' do
-      user = build(:user, roles: [])
+      user = build(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => '123' }])
       user.add_role(:admin)
-      expect(user.roles).to eq([{ 'type' => 'admin' }])
+
+      expect(user.roles).to eq([{ 'type' => 'project_moderator', 'project_id' => '123' }, { 'type' => 'admin' }])
     end
 
     it 'adds a role with options' do
-      user = build(:user, roles: [])
-      user.add_role(:project_moderator, project_id: '123')
-      expect(user.roles).to eq([{ 'type' => 'project_moderator', 'project_id' => '123' }])
+      user = build(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => '123' }])
+      user.add_role(:project_moderator, project_id: '456')
+
+      expect(user.roles).to eq([{ 'type' => 'project_moderator', 'project_id' => '123' }, { 'type' => 'project_moderator', 'project_id' => '456' }])
     end
 
     it 'does not add duplicate roles' do
@@ -319,9 +321,10 @@ RSpec.describe UserRoles do
 
   describe '#delete_role' do
     it 'removes a role from the user' do
-      user = build(:user, roles: [{ 'type' => 'admin' }])
+      user = build(:user, roles: [{ 'type' => 'project_moderator', 'project_id' => '123' }, { 'type' => 'admin' }])
       user.delete_role(:admin)
-      expect(user.roles).to eq([])
+
+      expect(user.roles).to eq([{ 'type' => 'project_moderator', 'project_id' => '123' }])
     end
 
     it 'removes a role with options' do
@@ -333,6 +336,7 @@ RSpec.describe UserRoles do
         ]
       )
       user.delete_role(:project_moderator, project_id: '123')
+
       expect(user.roles).to eq([{ 'type' => 'project_moderator', 'project_id' => '456' }])
     end
   end
