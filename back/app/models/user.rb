@@ -234,7 +234,6 @@ class User < ApplicationRecord
     }
   end
 
-  # TODO: If there is an existing JWT, the FE sometimes seems to think it has sent a code to your address
   def self.from_token_payload(payload)
     find_by(id: payload['sub'], token_expiry_key: payload['expiry_key'])
   end
