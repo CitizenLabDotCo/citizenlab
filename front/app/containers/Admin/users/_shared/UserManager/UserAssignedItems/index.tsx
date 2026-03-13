@@ -21,17 +21,10 @@ const UserAssignedItems = ({ user }: Props) => {
 
   if (!treeView) return null;
 
-  console.log({ user, treeView })
-
   const { projectsUserModerates, foldersUserModerates } = getModeratedItems(
     user,
     treeView
   );
-
-  console.log({
-    projectsUserModerates,
-    foldersUserModerates
-  })
 
   if (isAdmin({ data: user })) {
     return (
