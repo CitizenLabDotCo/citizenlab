@@ -42,17 +42,12 @@ describe ImpactTracking::SessionHashService do
     end
 
     it 'generate a different hash for the same parameters in a different month' do
-      hash1 = nil
-      hash2 = nil
       ip = '5.4.3.2'
       user_agent = 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:64.0) Gecko/20100101 Firefox/64.0'
-      travel_to(Date.parse('2022-09-03')) do
-        hash1 = service.generate_for_visitor(ip, user_agent)
-      end
 
-      travel_to(Date.parse('2022-10-01')) do
-        hash2 = service.generate_for_visitor(ip, user_agent)
-      end
+      time = Time.utc(2022, 9, 3)
+      hash1 = travel_to(time) { service.generate_for_visitor(ip, user_agent) }
+      hash2 = travel_to(time + 1.month) { service.generate_for_visitor(ip, user_agent) }
 
       expect(hash1).not_to eq hash2
     end
@@ -92,15 +87,9 @@ describe ImpactTracking::SessionHashService do
     end
 
     it 'generate a different hash for the same user in a different month' do
-      hash1 = nil
-      hash2 = nil
-      travel_to(Date.parse('2022-09-03')) do
-        hash1 = service.generate_for_user(@user1_id)
-      end
-
-      travel_to(Date.parse('2022-10-01')) do
-        hash2 = service.generate_for_user(@user1_id)
-      end
+      time = Time.utc(2022, 9, 3)
+      hash1 = travel_to(time) { service.generate_for_user(@user1_id) }
+      hash2 = travel_to(time + 1.month) { service.generate_for_user(@user1_id) }
 
       expect(hash1).not_to eq hash2
     end

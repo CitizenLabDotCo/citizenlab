@@ -4,6 +4,9 @@ module Analysis
   class InputsFinder
     attr_reader :analysis, :params
 
+    # @param params [Hash] The filter parameters
+    # @option params [Date, String, nil] :published_at_from The start of the date range for published_at
+    # @option params [Date, String, nil] :published_at_to The end of the date range for published_at
     def initialize(analysis, params = {})
       @analysis = analysis
       @params = params
@@ -58,15 +61,11 @@ module Analysis
     end
 
     def filter_published_at(inputs)
-      scope = inputs
-
-      scope = scope.where('published_at >= ?', params[:published_at_from]) if params[:published_at_from]
-      scope = scope.where('published_at <= ?', parse_end_of_day(params[:published_at_to])) if params[:published_at_to]
-      scope
-    end
-
-    def parse_end_of_day(date_string)
-      date_string.to_datetime.in_time_zone(AppConfiguration.timezone).end_of_day
+      # Boundaries should be dates. Any time component is discarded: "from" is shifted to
+      # the beginning of the day, qand "to" is shifted to the end of the day.
+      from_time = params[:published_at_from]&.in_time_zone&.beginning_of_day
+      to_time = params[:published_at_to]&.in_time_zone&.end_of_day
+      inputs.where(published_at: from_time..to_time)
     end
 
     def filter_reactions(inputs)

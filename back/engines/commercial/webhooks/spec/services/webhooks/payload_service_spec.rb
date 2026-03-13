@@ -11,7 +11,7 @@ RSpec.describe Webhooks::PayloadService do
       item: idea,
       user: user,
       project_id: project.id,
-      acted_at: Time.zone.parse('2025-10-22 10:30:00'))
+      acted_at: '2025-10-22T10:30:00') # uses tenant time zone
   end
 
   describe '#generate' do
@@ -21,7 +21,7 @@ RSpec.describe Webhooks::PayloadService do
       expect(payload).to include(
         id: activity.id,
         event_type: 'idea.created',
-        acted_at: '2025-10-22T10:30:00Z',
+        acted_at: '2025-10-22T10:30:00+02:00',
         item_type: 'Idea',
         item_id: idea.id,
         action: 'created',
@@ -38,7 +38,7 @@ RSpec.describe Webhooks::PayloadService do
 
     it 'includes ISO8601 formatted acted_at' do
       payload = described_class.new.generate(activity)
-      expect(payload[:acted_at]).to match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/)
+      expect(payload[:acted_at]).to match(time_regex)
     end
 
     it 'serializes the item data using PublicApi::V2 serializer' do

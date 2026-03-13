@@ -339,7 +339,7 @@ RSpec.describe Webhooks, type: :integration do
       # Verify event details
       expect(payload['id']).to eq(activity.id)
       expect(payload['event_type']).to eq('idea.created')
-      expect(payload['acted_at']).to match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/)
+      expect(payload['acted_at']).to match(time_regex)
 
       # Verify metadata
       expect(payload).to include(

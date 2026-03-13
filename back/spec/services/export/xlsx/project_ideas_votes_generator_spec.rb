@@ -144,8 +144,13 @@ describe Export::Xlsx::ProjectIdeasVotesGenerator do
       expect(idea_row[header_row.find_index 'Author name']).to eq "#{author.first_name} #{author.last_name}"
       expect(idea_row[header_row.find_index 'Author email']).to eq author.email
       expect(idea_row[header_row.find_index 'Author ID']).to eq author.id
-      expect(idea_row[header_row.find_index 'Published at'].to_i).to eq ideas[0].published_at.to_i
       expect(idea_row[header_row.find_index 'Offline votes'].to_i).to eq 11
+
+      # On writing: Axlsx ignores timezone and offset when storing dates.
+      # On reading: RubyXL reads the naive datetime as UTC.
+      published_at = AppConfiguration.timezone.local_to_utc(idea_row[header_row.find_index 'Published at']).in_time_zone
+      # Not an exact match due to precision loss during xlsx serialization
+      expect(published_at).to be_within(1e-3.seconds).of ideas[0].published_at
     end
   end
 end

@@ -20,6 +20,7 @@ class ActivitiesService
     return unless now.to_date != last_time.to_date
 
     start_date = now.to_date
+    start_time = start_date.in_time_zone
     starting_phases = Phase.published.starting_on(start_date)
 
     # Phases that already have a started activity for *this starting date* are excluded
@@ -27,11 +28,11 @@ class ActivitiesService
     # notifications). We still allow the creation of new activities when the start date
     # is different (which can occur if the phase is edited).
     excluded_phases = Activity
-      .where(item_id: starting_phases, action: 'started', acted_at: start_date)
+      .where(item_id: starting_phases, action: 'started', acted_at: start_time)
       .select(:item_id)
 
     starting_phases.where.not(id: excluded_phases).each do |phase|
-      LogActivityJob.perform_later(phase, 'started', nil, start_date.to_time)
+      LogActivityJob.perform_later(phase, 'started', nil, start_time)
     end
   end
 

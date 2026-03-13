@@ -18,7 +18,7 @@ module GeneralHelper
   end
 
   def time_regex
-    /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/
+    /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})/
   end
 
   def uuid_regex

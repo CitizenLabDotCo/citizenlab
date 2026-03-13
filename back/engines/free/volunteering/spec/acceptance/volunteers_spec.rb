@@ -151,8 +151,13 @@ resource 'Volunteering Volunteers' do
         expect(worksheets[0][1][0].value).to eq @volunteer1.user.first_name
         expect(worksheets[0][1][1].value).to eq @volunteer1.user.last_name
         expect(worksheets[0][1][2].value).to eq @volunteer1.user.email
-        expect(worksheets[0][1][3].value.to_i).to eq @volunteer1.created_at.to_i
         expect(worksheets[0][1][4].value).to eq 'Center'
+
+        # On writing: Axlsx ignores timezone and offset when storing dates.
+        # On reading: RubyXL reads the naive datetime as UTC.
+        created_at = AppConfiguration.timezone.local_to_utc(worksheets[0][1][3].value).in_time_zone
+        # Not an exact match due to precision loss during xlsx serialization
+        expect(created_at).to be_within(1e-3.seconds).of @volunteer1.created_at
       end
 
       describe 'when resident' do
