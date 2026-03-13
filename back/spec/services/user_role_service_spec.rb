@@ -160,13 +160,15 @@ describe UserRoleService do
       expect(service.moderatable_projects(create(:user)).ids).to eq []
     end
 
-    it 'lists all projects for admins' do
+    it 'lists all projects in the given scope for admins' do
       public_projects = create_list(:project, 3, visible_to: 'public')
       create(:project, visible_to: 'admins')
 
       expect(
         service.moderatable_projects(create(:admin), Project.where(visible_to: 'public')).ids
       ).to match_array public_projects.map(&:id)
+
+      expect(service.moderatable_projects(create(:admin)).ids).to match_array Project.all.map(&:id)
     end
 
     it 'lists some projects for project moderators' do
@@ -200,6 +202,20 @@ describe UserRoleService do
 
       it 'lists all projects' do
         expect(service.moderatable_projects(user)).to match_array(projects)
+      end
+    end
+
+    context 'when the user is both project moderator and folder moderator' do
+      let(:projects) { create_list(:project, 2) }
+      let(:project_in_folder) { create(:project) }
+
+      let(:folder) { create(:project_folder, projects: [project_in_folder]) }
+      let(:user) { create(:project_folder_moderator, project_folders: [folder]).add_role('project_moderator', project_id: projects.last.id) }
+
+      it 'lists all moderatable projects in given scope' do
+        expect(service.moderatable_projects(user)).to match_array([projects.last, project_in_folder])
+
+        expect(service.moderatable_projects(user, Project.where(id: [projects.first.id, project_in_folder.id]))).to eq([project_in_folder])
       end
     end
   end
