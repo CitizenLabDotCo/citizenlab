@@ -345,6 +345,8 @@ describe('ProjectDescriptionBuilderTopBar', () => {
         />
       </Editor>
     );
-    expect(screen.getByText('Save')).not.toBeInTheDocument;
+    expect(screen.getByTestId('contentBuilderTopBarSaveButton')).toHaveClass(
+      'disabled'
+    );
   });
 });

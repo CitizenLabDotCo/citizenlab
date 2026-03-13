@@ -190,53 +190,46 @@ module Insights
         comments_posted_7_day_percent_change: nil
       }
 
-      return result unless phase_has_run_more_than_14_days?
+      return result unless phase_has_run_more_than_7_days?
 
       voting_participations = participations[:voting]
-      voters_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.pluck(:participant_id).uniq.count
-      voters_previous_7_days = voting_participations.select do |p|
-        p[:acted_at] >= 14.days.ago && p[:acted_at] < 7.days.ago
+      voters_count = voting_participations.pluck(:participant_id).uniq.count
+      voters_count_7_days_ago = voting_participations.select do |p|
+        p[:acted_at] < 7.days.ago
       end.pluck(:participant_id).uniq.count
 
       commenting_ideas_participations = participations[:commenting_idea]
-      comments_last_7_days = commenting_ideas_participations.count { |p| p[:acted_at] >= 7.days.ago }
-      comments_previous_7_days = commenting_ideas_participations.count do |p|
-        p[:acted_at] >= 14.days.ago && p[:acted_at] < 7.days.ago
-      end
+      comments_count = commenting_ideas_participations.count
+      comments_count_7_days_ago = commenting_ideas_participations.count { |p| p[:acted_at] < 7.days.ago }
 
-      result[:voters_7_day_percent_change] = percentage_change(voters_previous_7_days, voters_last_7_days)
-      result[:comments_posted_7_day_percent_change] = percentage_change(comments_previous_7_days, comments_last_7_days)
+      result[:voters_7_day_percent_change] = percentage_change(voters_count_7_days_ago, voters_count)
+      result[:comments_posted_7_day_percent_change] = percentage_change(comments_count_7_days_ago, comments_count)
 
       result
     end
 
     def online_picks_7_day_percent_change(participations)
-      return nil unless phase_has_run_more_than_14_days?
+      return nil unless phase_has_run_more_than_7_days?
 
       voting_participations = participations[:voting]
       return 0.0 if voting_participations.empty?
 
-      online_picks_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.sum { |p| p[:ideas_count] }
-      picks_in_previous_7_days = voting_participations.select do |p|
-        p[:acted_at] >= 14.days.ago && p[:acted_at] < 7.days.ago
-      end
-      online_picks_previous_7_days = picks_in_previous_7_days.sum { |p| p[:ideas_count] }
+      online_picks = voting_participations.sum { |p| p[:ideas_count] }
+      online_picks_7_days_ago = voting_participations.select { |p| p[:acted_at] < 7.days.ago }.sum { |p| p[:ideas_count] }
 
-      percentage_change(online_picks_previous_7_days, online_picks_last_7_days)
+      percentage_change(online_picks_7_days_ago, online_picks)
     end
 
     def online_votes_7_day_percent_change(participations)
-      return nil unless phase_has_run_more_than_14_days?
+      return nil unless phase_has_run_more_than_7_days?
 
       voting_participations = participations[:voting]
       return 0.0 if voting_participations.empty?
 
-      online_votes_last_7_days = voting_participations.select { |p| p[:acted_at] >= 7.days.ago }.sum { |p| p[:total_votes] }
-      votes_in_previous_7_days = voting_participations.select do |p|
-        p[:acted_at] >= 14.days.ago && p[:acted_at] < 7.days.ago
-      end
-      online_votes_previous_7_days = votes_in_previous_7_days.sum { |p| p[:total_votes] }
-      percentage_change(online_votes_previous_7_days, online_votes_last_7_days)
+      online_votes_count = voting_participations.sum { |p| p[:total_votes] }
+      online_votes_count_7_days_ago = voting_participations.select { |p| p[:acted_at] < 7.days.ago }.sum { |p| p[:total_votes] }
+
+      percentage_change(online_votes_count_7_days_ago, online_votes_count)
     end
   end
 end

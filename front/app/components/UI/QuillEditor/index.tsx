@@ -110,7 +110,25 @@ const QuillEditor = ({
     setHTML(quill, value);
     setEditor(quill);
 
+    // When the blot-formatter alt text modal is appended to document.body,
+    // it falls outside react-focus-on's focus trap (used by our Modal component).
+    // Adding data-no-focus-lock lets react-focus-lock allow interaction with it.
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes) {
+          if (
+            node instanceof HTMLElement &&
+            node.hasAttribute('data-blot-formatter-modal')
+          ) {
+            node.setAttribute('data-no-focus-lock', 'true');
+          }
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true });
+
     return () => {
+      observer.disconnect();
       container.innerHTML = '';
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

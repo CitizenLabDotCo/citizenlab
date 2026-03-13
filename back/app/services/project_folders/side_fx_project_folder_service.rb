@@ -16,6 +16,22 @@ module ProjectFolders
 
     def after_update(folder, user)
       change = folder.saved_changes
+
+      if folder.space_id_previously_changed?
+        folder.projects.each do |project|
+          project.space_id = folder.space_id
+
+          if project.save
+            project_change = project.saved_changes
+
+            payload = { project: clean_time_attributes(project.attributes) }
+            payload[:change] = sanitize_change(project_change) if project_change.present?
+
+            LogActivityJob.perform_later(project, 'changed', user, project.updated_at.to_i, payload: payload)
+          end
+        end
+      end
+
       payload = { project_folder: clean_time_attributes(folder.attributes) }
       payload[:change] = sanitize_change(change) if change.present?
 

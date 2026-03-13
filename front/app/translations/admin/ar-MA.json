@@ -116,7 +116,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.googleFormsTooltipLinkText": "مقالة الدعم هذه",
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": "الفكرة",
   "app.components.app.containers.AdminPage.ProjectEdit.inputTermSelectLabel": "بماذا ينبغي تسمية أحد المدخلات؟",
-  "app.components.app.containers.AdminPage.ProjectEdit.issueTerm": "مشكلة",
   "app.components.app.containers.AdminPage.ProjectEdit.maxBudgetRequired": "يجب إدخال حد أقصى للميزانية",
   "app.components.app.containers.AdminPage.ProjectEdit.minBudgetLargerThanMaxError": "لا يمكن أن يكون الحد الأدنى للميزانية أكبر من الحد الأقصى للميزانية",
   "app.components.app.containers.AdminPage.ProjectEdit.minBudgetRequired": "يجب إدخال حد أدنى للميزانية",

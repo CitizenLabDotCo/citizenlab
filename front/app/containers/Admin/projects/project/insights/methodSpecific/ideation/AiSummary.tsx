@@ -269,7 +269,7 @@ const AiSummary = ({ phaseId, participationMethod }: Props) => {
     summaryData.data.relationships.background_task.data.id;
 
   return (
-    <WordExportableInsight exportId="ai-summary">
+    <WordExportableInsight exportId="ai-summary" skipExport>
       <Box>
         <Title variant="h3" m="0" mb="16px">
           {formatMessage(messages.whatArePeopleSaying)}

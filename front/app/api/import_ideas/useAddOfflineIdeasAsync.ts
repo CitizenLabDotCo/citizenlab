@@ -7,15 +7,12 @@ import fetcher from 'utils/cl-react-query/fetcher';
 
 import { importedIdeasKeys } from './keys';
 
-export type ParserType = 'legacy' | 'gpt' | undefined;
-
 interface RequestParams {
   phase_id: string;
   file: string;
   format: string;
   locale: SupportedLocale;
   personal_data: boolean;
-  parser?: ParserType; // Allows switching to different parsers if needed
 }
 
 interface JobIdResponse {
@@ -29,12 +26,11 @@ const addOfflineIdeas = async ({
   format,
   locale,
   personal_data,
-  parser,
 }: RequestParams): Promise<JobIdResponse> =>
   fetcher<JobIdResponse>({
     path: `/phases/${phase_id}/importer/bulk_create_async/idea/${format}`,
     action: 'post',
-    body: { import: { file, locale, personal_data, parser } },
+    body: { import: { file, locale, personal_data } },
   });
 
 const useAddOfflineIdeasAsync = () => {

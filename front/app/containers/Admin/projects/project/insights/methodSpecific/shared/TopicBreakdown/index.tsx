@@ -12,7 +12,7 @@ import { ParticipationMethod } from 'api/phases/types';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { useWordSection } from '../../../word/useWordSection';
+import { useWordSection, type WordSection } from '../../../word/useWordSection';
 import WordExportableInsight from '../../../word/WordExportableInsight';
 import messages from '../messages';
 
@@ -39,26 +39,68 @@ const TopicBreakdown = ({ phaseId, participationMethod }: Props) => {
     isLoading,
   } = useTopicBreakdownData({ phaseId, participationMethod });
 
-  const allTopics = [...aiTopics, ...manualTopics].sort(
-    (a, b) => b.count - a.count
-  );
+  const hasAnyTopics = aiTopics.length > 0 || manualTopics.length > 0;
+
   useWordSection(
     'topic-breakdown',
     () => {
-      if (allTopics.length === 0) return [];
-      return [
+      if (!hasAnyTopics) return [];
+
+      const sections: WordSection[] = [
         {
-          type: 'breakdown',
-          items: allTopics.map((t) => ({
-            name: t.name,
-            count: t.count,
-            percentage: t.percentage,
-          })),
-          title: formatMessage(messages.topicBreakdown),
+          type: 'heading',
+          text: formatMessage(messages.topicBreakdown),
+          level: 2,
         },
+        {
+          type: 'heading',
+          text: formatMessage(messages.aiTopicDistribution),
+          level: 3,
+        },
+        ...(aiTopics.length > 0
+          ? [
+              {
+                type: 'breakdown' as const,
+                items: aiTopics.map((t) => ({
+                  name: t.name,
+                  count: t.count,
+                  percentage: t.percentage,
+                })),
+              },
+            ]
+          : [
+              {
+                type: 'paragraph' as const,
+                text: formatMessage(messages.noAiTopics),
+              },
+            ]),
+        {
+          type: 'heading',
+          text: formatMessage(messages.manualTagsByParticipants),
+          level: 3,
+        },
+        ...(manualTopics.length > 0
+          ? [
+              {
+                type: 'breakdown' as const,
+                items: manualTopics.map((t) => ({
+                  name: t.name,
+                  count: t.count,
+                  percentage: t.percentage,
+                })),
+              },
+            ]
+          : [
+              {
+                type: 'paragraph' as const,
+                text: formatMessage(messages.noManualTags),
+              },
+            ]),
       ];
+
+      return sections;
     },
-    { skip: isLoading || allTopics.length === 0 }
+    { skip: isLoading || !hasAnyTopics }
   );
 
   if (isLoading) {
@@ -80,7 +122,7 @@ const TopicBreakdown = ({ phaseId, participationMethod }: Props) => {
   }
 
   return (
-    <WordExportableInsight exportId="topic-breakdown">
+    <WordExportableInsight exportId="topic-breakdown" skipExport>
       <Box
         bgColor="white"
         borderRadius="8px"

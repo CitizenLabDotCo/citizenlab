@@ -81,7 +81,12 @@ const QuestionPreview = ({
           participationMethod={'native_survey'}
         />
       </Suspense>
-      <Text textAlign="center" color="textSecondary" fontSize="s">
+      <Text
+        id="community-monitor-modal-title"
+        textAlign="center"
+        color="textSecondary"
+        fontSize="s"
+      >
         {formatMessage(messages.surveyDescription)}
       </Text>
     </FormProvider>

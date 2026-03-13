@@ -35,6 +35,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { getFormActionsConfig } from 'utils/configs/formActionsConfig/utils';
+import { captureAllMapScreenshots } from 'utils/mapViewRegistry';
 
 import messages from '../../messages';
 import { usePdfExportContext } from '../../pdf/PdfExportContext';
@@ -204,13 +205,16 @@ const SurveyActions = ({ phase }: Props) => {
             opened={isDropdownOpened}
             onClickOutside={closeDropdown}
             className="dropdown"
-            right="0px"
+            width="max-content"
+            right="12px"
             top="45px"
+            zIndex="10000"
             content={
-              <Box minWidth="300px">
+              <Box style={{ whiteSpace: 'nowrap' }}>
                 <DropdownListItem
-                  onClick={() => {
+                  onClick={async () => {
                     setDropdownOpened(false);
+                    await captureAllMapScreenshots();
                     downloadPdf();
                   }}
                 >
@@ -220,8 +224,9 @@ const SurveyActions = ({ phase }: Props) => {
                   </Text>
                 </DropdownListItem>
                 <DropdownListItem
-                  onClick={() => {
+                  onClick={async () => {
                     setDropdownOpened(false);
+                    await captureAllMapScreenshots();
                     downloadWord();
                   }}
                 >

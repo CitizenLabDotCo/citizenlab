@@ -1789,7 +1789,8 @@ CREATE TABLE public.phases (
     vote_term character varying DEFAULT 'vote'::character varying,
     voting_min_selected_options integer DEFAULT 1 NOT NULL,
     voting_filtering_enabled boolean DEFAULT false NOT NULL,
-    prescreening_mode character varying
+    prescreening_mode character varying,
+    available_views character varying[] DEFAULT '{card}'::character varying[] NOT NULL
 );
 
 
@@ -8451,6 +8452,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20260302100745'),
 ('20260302100636'),
 ('20260227120000'),
+('20260223103753'),
 ('20260205124240'),
 ('20260127094257'),
 ('20260127092840'),

@@ -10,6 +10,7 @@ import { string, object, number, boolean, array } from 'yup';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Modal from 'components/UI/Modal';
 
+import { ScreenReaderOnly } from 'utils/a11y';
 import { trackEventByName } from 'utils/analytics';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -152,7 +153,11 @@ const IdeasWidget = () => {
         opened={codeModalOpened}
         close={handleCloseCodeModal}
         fixedHeight={true}
+        ariaLabelledBy="widget-code-modal-title"
       >
+        <ScreenReaderOnly id="widget-code-modal-title">
+          <FormattedMessage {...messages.htmlCodeTitle} />
+        </ScreenReaderOnly>
         <WidgetCode
           path={`/ideas?${widgetParams}`}
           width={methods.getValues('width') || 300}

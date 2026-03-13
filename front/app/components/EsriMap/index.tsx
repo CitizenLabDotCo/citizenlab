@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import Basemap from '@arcgis/core/Basemap';
 import esriConfig from '@arcgis/core/config';
-import Collection from '@arcgis/core/core/Collection';
+import * as projection from '@arcgis/core/geometry/projection.js';
 import Graphic from '@arcgis/core/Graphic';
 import { setLocale as setEsriLocale } from '@arcgis/core/intl/locale.js';
 import Layer from '@arcgis/core/layers/Layer';
@@ -95,8 +95,7 @@ const EsriMap = ({
 
   const [map, setMap] = useState<Map | WebMap | null>(null);
   const [mapView, setMapView] = useState<MapView | null>(null);
-  const [referenceLayers, setReferenceLayers] =
-    useState<Collection<Layer> | null>(null);
+  const referenceLayersHandled = useRef(false);
 
   const mapRef = useRef<HTMLDivElement | null>(null);
   const [updateMapViewConfig, setUpdateMapViewConfig] = useState(false);
@@ -139,6 +138,10 @@ const EsriMap = ({
     setMapView(mapView);
     setUpdateMapViewConfig(true);
 
+    // Load the projection engine early so synchronous projection.project() calls work.
+    // This is required for WebMaps that use non-Web Mercator spatial references.
+    projection.load();
+
     return () => {
       mapView.destroy();
     };
@@ -147,6 +150,7 @@ const EsriMap = ({
   // If the webMapId changes, reset the initialized state
   useEffect(() => {
     setInitialized(false);
+    referenceLayersHandled.current = false;
   }, [webMapId]);
 
   // Load initial map configuration data that was passed in.
@@ -204,17 +208,23 @@ const EsriMap = ({
     // Otherwise add the layers into the WebMap
     if (isWebMap) {
       map.when(() => {
-        // If the Web Map has any reference layers, re-order them so the layer hierarchy is correct
-        if (referenceLayers && referenceLayers.length > 0) {
-          handleWebMapReferenceLayers(map, referenceLayers);
+        // On first load, move basemap reference layers underneath our layers
+        if (
+          !referenceLayersHandled.current &&
+          map.basemap?.referenceLayers.length &&
+          map.basemap.referenceLayers.length > 0
+        ) {
+          handleWebMapReferenceLayers(map, map.basemap.referenceLayers);
+          referenceLayersHandled.current = true;
         }
 
-        // Remove any internal layers that were passed in as props to the Web Map
-        map.layers.forEach((layer) => {
-          if (layer.id.includes('_internal')) {
-            map.remove(layer);
-          }
-        });
+        // Remove any internal layers that were passed in as props to the Web Map.
+        // Note: We collect layers first, then remove — mutating a Collection
+        // during forEach iteration causes items to be skipped.
+        const layersToRemove = map.layers
+          .filter((layer) => layer.id.includes('_internal'))
+          .toArray();
+        layersToRemove.forEach((layer) => map.remove(layer));
 
         // Now, add any additional layers that passed in as props to the Web Map
         layers.forEach((layer) => {
@@ -223,12 +233,9 @@ const EsriMap = ({
             : `${layer.id}_internal`;
           map.add(layer);
         });
-
-        // If the WebMap has reference layers, save them in state
-        setReferenceLayers(map.basemap?.referenceLayers || null);
       });
     }
-  }, [layers, map, mapView, referenceLayers]);
+  }, [layers, map, mapView]);
 
   useEffect(() => {
     // Add any graphics which were passed in
@@ -242,23 +249,30 @@ const EsriMap = ({
 
   useEffect(() => {
     // On map click, pass the event to onClick handler if it was provided
-    if (onClick) {
-      mapView?.on('click', function (event) {
-        // By passing the mapView to onClick functions, we can easily change the map from that function
-        onClick(event, mapView);
-      });
-    }
+    if (!onClick || !mapView) return;
+
+    const handle = mapView.on('click', function (event) {
+      onClick(event, mapView);
+    });
+
+    return () => {
+      handle.remove();
+    };
   }, [onClick, mapView]);
 
   useEffect(() => {
     // On map hover, pass the event to hover handler if it was provided
-    if (onHover && mapView) {
-      const debouncedHover = debounce((event: any) => {
-        onHover(event, mapView);
-      }, 60);
+    if (!onHover || !mapView) return;
 
-      mapView.on('pointer-move', debouncedHover);
-    }
+    const debouncedHover = debounce((event: any) => {
+      onHover(event, mapView);
+    }, 60);
+
+    const handle = mapView.on('pointer-move', debouncedHover);
+
+    return () => {
+      handle.remove();
+    };
   }, [onHover, mapView]);
 
   useEffect(() => {

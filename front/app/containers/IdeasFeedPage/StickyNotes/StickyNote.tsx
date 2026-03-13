@@ -149,6 +149,7 @@ const StickyNote: React.FC<Props> = ({
   return (
     <StyledNote
       as="button"
+      data-cy="e2e-sticky-note"
       borderRadius="2px"
       width={`${noteWidth}px`}
       noteAspectRatio={noteAspectRatio}

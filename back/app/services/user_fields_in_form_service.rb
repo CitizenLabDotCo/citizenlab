@@ -113,6 +113,8 @@ class UserFieldsInFormService
 
       return fields unless user_fields.any?
 
+      ActiveRecord::Associations::Preloader.new(records: user_fields, associations: [options: :image]).call
+
       fields = fields.to_a # sometimes array passed in, sometimes active record relations
 
       # Remove the last page so we can add it back later

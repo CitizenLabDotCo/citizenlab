@@ -100,7 +100,13 @@ const ChangeSeatModal = ({
 
   const header = !showSuccess ? (
     <Box px="2px">
-      <Text color="primary" my="8px" fontSize="l" fontWeight="bold">
+      <Text
+        id="change-seat-modal-title"
+        color="primary"
+        my="8px"
+        fontSize="l"
+        fontWeight="bold"
+      >
         {formatMessage(messages.changeUserRights)}
       </Text>
     </Box>
@@ -118,6 +124,7 @@ const ChangeSeatModal = ({
       close={resetModal}
       header={header}
       returnFocusRef={returnFocusRef}
+      ariaLabelledBy="change-seat-modal-title"
     >
       {showSuccess ? (
         <SeatSetSuccess

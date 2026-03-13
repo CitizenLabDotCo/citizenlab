@@ -172,6 +172,11 @@ FactoryBot.define do
     schedule { weekly_schedule }
   end
 
+  factory :screening_digest_campaign, class: 'EmailCampaigns::Campaigns::ScreeningDigest' do
+    enabled { true }
+    schedule { weekly_schedule }
+  end
+
   factory :assignee_digest_campaign, class: 'EmailCampaigns::Campaigns::AssigneeDigest' do
     enabled { true }
     schedule { weekly_schedule }

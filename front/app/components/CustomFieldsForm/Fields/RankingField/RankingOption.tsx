@@ -76,6 +76,8 @@ const RankingOption = ({
     })
   );
 
+  const selectId = `ranking-select-${option.value}`;
+
   return (
     <li aria-roledescription="sortable">
       <Drag index={index} useBorder={false} id={`ranking-item-${option.value}`}>
@@ -92,7 +94,7 @@ const RankingOption = ({
           >
             <Box display="flex">
               <ScreenReaderOnly>
-                <Label>
+                <Label htmlFor={selectId}>
                   {`${option.label}. ${
                     getRankOfOption(option)
                       ? formatMessage(messages.currentRank)
@@ -102,18 +104,20 @@ const RankingOption = ({
               </ScreenReaderOnly>
 
               <StyledSelect
+                id={selectId}
                 options={rankDropdownOptions}
                 value={getRankOfOption(option)}
                 height="auto"
                 onChange={(selectedOption) => {
                   moveOptionInArray(index, selectedOption.value - 1);
 
-                  // For a11y, focus the list item again after reordering.
-                  (
-                    document.querySelector(
-                      `[data-rbd-drag-handle-draggable-id="ranking-item-${option.value}"]`
-                    ) as HTMLElement
-                  ).focus();
+                  // For a11y, focus the select dropdown of the reordered item.
+                  requestAnimationFrame(() => {
+                    document
+                      .getElementById(`ranking-item-${option.value}`)
+                      ?.querySelector<HTMLSelectElement>('select')
+                      ?.focus();
+                  });
                 }}
               />
               <Text
