@@ -853,7 +853,6 @@
   "app.containers.Admin.Users.selectPublicationsPlaceholder": "Skriv inn for å søke",
   "app.containers.Admin.Users.setAsAdmin": "Angi som administrator",
   "app.containers.Admin.Users.setAsNormalUser": "Angi som vanlig bruker",
-  "app.containers.Admin.Users.setAsProjectModerator": "Innstilt som prosjektleder",
   "app.containers.Admin.Users.setUserAsProjectModerator": "Tildel {name} som prosjektleder",
   "app.containers.Admin.Users.userBlockModal.allDone": "Alt er gjort",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Blokker bruker",

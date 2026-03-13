@@ -853,7 +853,6 @@
   "app.containers.Admin.Users.selectPublicationsPlaceholder": "Digite para pesquisar",
   "app.containers.Admin.Users.setAsAdmin": "Definir como administrador",
   "app.containers.Admin.Users.setAsNormalUser": "Definir como utilizador normal",
-  "app.containers.Admin.Users.setAsProjectModerator": "Definir como gerente de projeto",
   "app.containers.Admin.Users.setUserAsProjectModerator": "Designe {name} como gerente de projeto",
   "app.containers.Admin.Users.userBlockModal.allDone": "Tudo feito",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Utilizador de bloco",

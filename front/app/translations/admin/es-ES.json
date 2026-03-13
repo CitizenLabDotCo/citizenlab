@@ -853,7 +853,6 @@
   "app.containers.Admin.Users.selectPublicationsPlaceholder": "Escribe para buscar",
   "app.containers.Admin.Users.setAsAdmin": "Establecer como administrador",
   "app.containers.Admin.Users.setAsNormalUser": "Establecer como usuario normal",
-  "app.containers.Admin.Users.setAsProjectModerator": "Establecer como jefe de proyecto",
   "app.containers.Admin.Users.setUserAsProjectModerator": "Asigna {name} como director del proyecto",
   "app.containers.Admin.Users.userBlockModal.allDone": "Todo hecho",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Bloquear usuario",

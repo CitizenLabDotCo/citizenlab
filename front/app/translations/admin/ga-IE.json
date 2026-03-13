@@ -853,7 +853,6 @@
   "app.containers.Admin.Users.selectPublicationsPlaceholder": "Clóscríobh le cuardach",
   "app.containers.Admin.Users.setAsAdmin": "Socraigh mar riarthóir",
   "app.containers.Admin.Users.setAsNormalUser": "Socraigh mar ghnáthúsáideoir",
-  "app.containers.Admin.Users.setAsProjectModerator": "Socraigh mar bhainisteoir tionscadail",
   "app.containers.Admin.Users.setUserAsProjectModerator": "Sannadh {name} mar bhainisteoir tionscadail",
   "app.containers.Admin.Users.userBlockModal.allDone": "Gach rud déanta",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Úsáideoir blocáilte",

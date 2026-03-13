@@ -853,7 +853,6 @@
   "app.containers.Admin.Users.selectPublicationsPlaceholder": "اكتب للبحث",
   "app.containers.Admin.Users.setAsAdmin": "تعيين كمسؤول",
   "app.containers.Admin.Users.setAsNormalUser": "تعيين كمستخدم عادي",
-  "app.containers.Admin.Users.setAsProjectModerator": "تعيين كمدير للمشروع",
   "app.containers.Admin.Users.setUserAsProjectModerator": "تعيين {name} كمدير للمشروع",
   "app.containers.Admin.Users.userBlockModal.allDone": "كله تمام",
   "app.containers.Admin.Users.userBlockModal.blockAction": "مستخدم محضور",

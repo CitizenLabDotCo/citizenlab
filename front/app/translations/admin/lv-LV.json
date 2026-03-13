@@ -853,7 +853,6 @@
   "app.containers.Admin.Users.selectPublicationsPlaceholder": "Veiciet meklēšanu",
   "app.containers.Admin.Users.setAsAdmin": "Iestatīts kā administrators",
   "app.containers.Admin.Users.setAsNormalUser": "Iestatīts kā parasts lietotājs",
-  "app.containers.Admin.Users.setAsProjectModerator": "Iestatīts kā projekta vadītājs",
   "app.containers.Admin.Users.setUserAsProjectModerator": "Piešķirt {name} kā projekta vadītāju",
   "app.containers.Admin.Users.userBlockModal.allDone": "Viss izdarīts",
   "app.containers.Admin.Users.userBlockModal.blockAction": "Bloķēt lietotāju",
