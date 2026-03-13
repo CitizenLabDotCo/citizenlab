@@ -19,7 +19,7 @@ describe UserRoleService do
         expect(service).not_to be_can_moderate(object, create(:project_folder_moderator))
       end
 
-      it "also permits folder moderators for #{object_name} when related project is in folder" do
+      it "also permits folder moderators for #{object_name} when related project is in their moderated folder" do
         object = send(object_name)
         project = send(:project)
         folder = create(:project_folder, projects: [project])
