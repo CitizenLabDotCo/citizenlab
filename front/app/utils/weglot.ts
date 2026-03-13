@@ -46,6 +46,7 @@ export async function weglotTranslate(
         body: JSON.stringify({
           l_from: fromLang,
           l_to: toLang.split('-')[0], // Weglot expects 2-letter ISO codes
+          request_url: window.location.href,
           words: [{ w: text, t: 3 }], // t:3 for HTML content
         }),
         signal: AbortSignal.timeout(5000), // 5s timeout
