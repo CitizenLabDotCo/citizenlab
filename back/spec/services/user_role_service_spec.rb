@@ -135,6 +135,7 @@ describe UserRoleService do
       other_project = create(:project)
       folder = create(:project_folder, projects: [project])
       other_folder = create(:project_folder, projects: [other_project])
+
       create(:user)
       admin = create(:admin)
       moderator = create(:project_moderator, projects: [project, other_project])
@@ -149,29 +150,45 @@ describe UserRoleService do
 
     it 'lists all moderators of an idea' do
       project = create(:project)
-      other_project = create(:project)
+      folder = create(:project_folder, projects: [project])
+      idea = create(:idea, project: project)
+
+      other_project = create(:project)      
+      other_folder = create(:project_folder, projects: [other_project])
+
       create(:user)
       admin = create(:admin)
       moderator = create(:project_moderator, projects: [other_project, project])
       also_moderator = create(:project_moderator, projects: [project])
       create(:project_moderator, projects: [other_project])
-      idea = create(:idea, project: project)
+      folder_moderators = [
+        create(:project_folder_moderator, project_folders: [other_folder, folder]),
+        create(:project_folder_moderator, project_folders: [other_folder])
+      ]
 
-      expect(service.moderators_for(idea).ids).to contain_exactly(admin.id, moderator.id, also_moderator.id)
+      expect(service.moderators_for(idea).ids).to contain_exactly(admin.id, moderator.id, also_moderator.id, folder_moderators[0].id)
     end
 
     it 'lists all moderators of a comment' do
       project = create(:project)
-      other_project = create(:project)
+      folder = create(:project_folder, projects: [project])
+      idea = create(:idea, project: project)
+      comment = create(:comment, idea: idea)
+
+      other_project = create(:project)      
+      other_folder = create(:project_folder, projects: [other_project])
+
       create(:user)
       admin = create(:admin)
       moderator = create(:project_moderator, projects: [other_project, project])
       also_moderator = create(:project_moderator, projects: [project])
       create(:project_moderator, projects: [other_project])
-      idea = create(:idea, project: project)
-      comment = create(:comment, idea: idea)
+      folder_moderators = [
+        create(:project_folder_moderator, project_folders: [other_folder, folder]),
+        create(:project_folder_moderator, project_folders: [other_folder])
+      ]
 
-      expect(service.moderators_for(comment).ids).to contain_exactly(admin.id, moderator.id, also_moderator.id)
+      expect(service.moderators_for(comment).ids).to contain_exactly(admin.id, moderator.id, also_moderator.id, folder_moderators[0].id)
     end
   end
 
