@@ -285,10 +285,10 @@ resource 'Users' do
 
         let(:email) { 'user@example.com' }
 
-        example_request 'Returns "sso" with error message' do
-          assert_status 200
-          expect(json_response_body[:data][:attributes][:action]).to eq('sso')
-          expect(json_response_body[:data][:attributes][:error_message]).to eq('Please use Azure AD to sign in.')
+        example_request 'Returns 422 with sso_enforced_for_domain error and message' do
+          assert_status 422
+          expect(json_response_body.dig(:errors, :base, 0, :error)).to eq('sso_enforced_for_domain')
+          expect(json_response_body.dig(:errors, :base, 0, :message)).to eq('Please use Azure AD to sign in.')
         end
       end
     end
