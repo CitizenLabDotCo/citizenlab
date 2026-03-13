@@ -33,14 +33,6 @@ const UserAssignedItems = ({ user }: Props) => {
     treeView
   );
 
-  if (isAdmin({ data: user })) {
-    return (
-      <Text>
-        <FormattedMessage {...messages.asAnAdmin} />
-      </Text>
-    );
-  }
-
   const hasFolders = foldersUserModerates.length > 0;
 
   const handleRemove = async (
@@ -54,11 +46,18 @@ const UserAssignedItems = ({ user }: Props) => {
     }
   };
 
+  const userIsAdmin = isAdmin({ data: user });
+
   return (
     <Box>
+      {userIsAdmin && (
+        <Text>
+          <FormattedMessage {...messages.asAnAdmin} />
+        </Text>
+      )}
       {hasFolders && (
         <>
-          <Title variant="h3" mt="0px">
+          <Title variant="h3" mt={userIsAdmin ? '40px' : '0px'}>
             <FormattedMessage {...messages.foldersUserManages} />
           </Title>
           <Text>
