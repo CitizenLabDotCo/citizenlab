@@ -1849,7 +1849,6 @@
   "app.containers.Admin.reporting.word.wordExportCaptureFailed": "En af rapportens widgets kunne ikke indfanges til eksport.",
   "app.containers.Admin.reporting.word.wordExportFailed": "Kunne ikke eksportere Word-dokument.",
   "app.containers.Admin.reporting.word.wordExportMissingWidget": "En af rapportens widgets kunne ikke findes under eksport.",
-  "app.containers.Admin.spaces.EditSpace.TreeView.crossedOutFolder": "Denne mappe er ikke i rummet. Men nogle af projekterne i den er. Disse projekter er vist nedenfor.",
   "app.containers.Admin.spaces.EditSpace.TreeView.lockedProject": "Den mappe, som projektet ligger i, er blevet tilføjet til dette rum. Derfor er projektet automatisk også i rummet. Hvis du vil fjerne projektet fra dette område, skal du fjerne mappen.",
   "app.containers.Admin.spaces.EditSpace.TreeView.removeFromSpace": "Fjern fra rummet",
   "app.containers.Admin.spaces.NewSpace.createANewSpace": "Skab et nyt rum",

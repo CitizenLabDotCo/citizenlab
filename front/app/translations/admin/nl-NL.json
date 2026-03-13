@@ -1849,7 +1849,6 @@
   "app.containers.Admin.reporting.word.wordExportCaptureFailed": "Een van de rapportwidgets kon niet worden vastgelegd voor export.",
   "app.containers.Admin.reporting.word.wordExportFailed": "Niet gelukt om Word-document te exporteren.",
   "app.containers.Admin.reporting.word.wordExportMissingWidget": "Een van de rapportwidgets kon niet worden gevonden tijdens het exporteren.",
-  "app.containers.Admin.spaces.EditSpace.TreeView.crossedOutFolder": "Deze map staat niet in de ruimte. Maar sommige projecten erin wel. Deze projecten worden hieronder getoond.",
   "app.containers.Admin.spaces.EditSpace.TreeView.lockedProject": "De map waarin dit project staat, is toegevoegd aan deze ruimte. Daarom staat het project automatisch ook in deze ruimte. Om dit project uit deze ruimte te verwijderen, moet je de map verwijderen uit de ruimte.",
   "app.containers.Admin.spaces.EditSpace.TreeView.removeFromSpace": "Verwijderen uit de ruimte",
   "app.containers.Admin.spaces.NewSpace.createANewSpace": "Creëer een nieuwe ruimte",
