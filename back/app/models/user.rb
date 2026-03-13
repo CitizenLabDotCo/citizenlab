@@ -239,7 +239,8 @@ class User < ApplicationRecord
     find_by(id: payload['sub'], token_expiry_key: payload['expiry_key'])
   end
 
-  def refresh_token_expiry_key!
+  # We can expire a token by changing the token_expiry_key, which is checked when decoding the token in from_token_payload.
+  def expire_token!
     update!(token_expiry_key: SecureRandom.hex(10))
   end
 

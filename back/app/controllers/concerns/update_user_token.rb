@@ -7,10 +7,10 @@ module UpdateUserToken
 
   # Reset the user's JWT token after certain actions, such as password change or email change, to invalidate existing sessions.
   def reset_token(user)
-    user.refresh_token_expiry_key!
+    user.expire_token!
     return unless user == current_user # Only reset the cookie for the current user, not for admin actions on other users
 
-    # get the expiry time from the current token
+    # Get the expiry time from the current token
     current_token = request.headers['Authorization']&.split&.last
     current_payload = AuthToken::AuthToken.new(token: current_token).payload
 
