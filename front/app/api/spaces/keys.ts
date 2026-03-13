@@ -11,11 +11,11 @@ const spacesKeys = {
     { ...baseKey, operation: 'list', parameters },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],
-  item: ({ id, type }: { id?: string; type?: string }) => [
+  item: ({ id }: { id?: string }) => [
     {
       ...baseKey,
       operation: 'item',
-      parameters: { id, type },
+      parameters: { id },
     },
   ],
 } satisfies QueryKeys;
