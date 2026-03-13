@@ -64,12 +64,6 @@ resource 'Spaces' do
         expect(status).to eq(401)
       end
     end
-
-    get 'web_api/v1/spaces/:space_id/tree_view' do
-      example_request 'Retrieving space tree view' do
-        expect(status).to eq(401)
-      end
-    end
   end
 
   before { header 'Content-Type', 'application/json' }

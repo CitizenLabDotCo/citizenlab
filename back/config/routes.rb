@@ -281,9 +281,7 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :spaces, only: %i[index show create update destroy] do
-        get 'tree_view', on: :member, to: 'spaces#tree_view'
-      end
+      resources :spaces, only: %i[index show create update destroy]
 
       resources :admin_publications, only: %i[index show] do
         patch 'reorder', on: :member
