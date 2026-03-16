@@ -18,7 +18,7 @@ interface Params {
   setShowUnblockUserModal: (value: boolean) => void;
   setShowBlockUserModal: (value: boolean) => void;
   setShowDeleteUserModal: (value: boolean) => void;
-  setIsSetSetAsProjectModeratorOpened: (value: boolean) => void;
+  setSetAsModeratorOpened: (value: boolean) => void;
   changeRoleHandler: (role: string) => void;
 }
 
@@ -30,7 +30,7 @@ export const getActions = ({
   setShowUnblockUserModal,
   setShowBlockUserModal,
   setShowDeleteUserModal,
-  setIsSetSetAsProjectModeratorOpened,
+  setSetAsModeratorOpened,
   changeRoleHandler,
 }: Params) => {
   const isUserInRowAdmin = isAdmin({ data: user });
@@ -75,7 +75,7 @@ export const getActions = ({
 
     const setSetAsProjectModeratorAction = {
       handler: () => {
-        setIsSetSetAsProjectModeratorOpened(true);
+        setSetAsModeratorOpened(true);
       },
       label: formatMessage(messages.assignAsManager),
       icon: 'user-check' as const,

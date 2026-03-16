@@ -87,10 +87,7 @@ const UsersTableRow = ({
 }: Props) => {
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   const [isAssignedItemsOpened, setIsAssignedItemsOpened] = useState(false);
-  const [
-    isSetSetAsProjectModeratorOpened,
-    setIsSetSetAsProjectModeratorOpened,
-  ] = useState(false);
+  const [setAsModeratorOpened, setSetAsModeratorOpened] = useState(false);
   const locale = useLocale();
   const { formatMessage } = useIntl();
   const isUserBlockingEnabled = useFeatureFlag({
@@ -158,7 +155,7 @@ const UsersTableRow = ({
       setShowUnblockUserModal,
       setShowBlockUserModal,
       setShowDeleteUserModal,
-      setIsSetSetAsProjectModeratorOpened,
+      setSetAsModeratorOpened,
       changeRoleHandler,
     });
   }, [
@@ -169,7 +166,7 @@ const UsersTableRow = ({
     setShowUnblockUserModal,
     setShowBlockUserModal,
     setShowDeleteUserModal,
-    setIsSetSetAsProjectModeratorOpened,
+    setSetAsModeratorOpened,
     changeRoleHandler,
   ]);
 
@@ -288,15 +285,15 @@ const UsersTableRow = ({
           <UserAssignedItems user={userInRow} />
         </Modal>
         <Modal
-          opened={isSetSetAsProjectModeratorOpened}
-          close={() => setIsSetSetAsProjectModeratorOpened(false)}
+          opened={setAsModeratorOpened}
+          close={() => setSetAsModeratorOpened(false)}
           // Return focus to the More Actions button on close
           returnFocusRef={moreActionsButtonRef}
           ariaLabelledBy="set-moderator-modal-title"
         >
           <SetAsModerator
             user={userInRow}
-            onClose={() => setIsSetSetAsProjectModeratorOpened(false)}
+            onClose={() => setSetAsModeratorOpened(false)}
             onSuccess={() => changeRoleHandler('moderator')}
           />
         </Modal>
