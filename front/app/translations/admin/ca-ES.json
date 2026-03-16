@@ -1002,6 +1002,7 @@
   "app.containers.Admin.emails.previewSentConfirmation": "S'ha enviat un correu electrònic de previsualització a la vostra adreça electrònica",
   "app.containers.Admin.emails.previewTitle": "Vista prèvia",
   "app.containers.Admin.emails.regionMultilocError": "Please provide a value for all languages",
+  "app.containers.Admin.emails.scheduled": "Programat",
   "app.containers.Admin.emails.seeEmailHereText": "Tan bon punt s'enviï un correu electrònic d'aquest tipus, el podreu comprovar aquí.",
   "app.containers.Admin.emails.send": "Send",
   "app.containers.Admin.emails.sendNowButton": "Enviar ara",
