@@ -1002,6 +1002,7 @@
   "app.containers.Admin.emails.previewSentConfirmation": "Uz jūsu e-pasta adresi ir nosūtīts e-pasts priekšskatīšanai",
   "app.containers.Admin.emails.previewTitle": "Priekšskatījums",
   "app.containers.Admin.emails.regionMultilocError": "Lūdzu, norādiet vērtību visām valodām",
+  "app.containers.Admin.emails.scheduled": "Plānotais",
   "app.containers.Admin.emails.seeEmailHereText": "Tiklīdz šāda veida e-pasta vēstule tiks nosūtīta, to varēsiet pārbaudīt šeit.",
   "app.containers.Admin.emails.send": "Sūtīt",
   "app.containers.Admin.emails.sendNowButton": "Sūtīt tagad",
