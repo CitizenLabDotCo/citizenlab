@@ -12,7 +12,6 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import UserSelect from 'components/UI/UserSelect';
 
 import { useIntl } from 'utils/cl-intl';
-import { isRegularUser } from 'utils/permissions/roles';
 
 import messages from './messages';
 
@@ -38,8 +37,8 @@ const UserSearch = memo(({ projectId, label }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const [moderatorToAdd, setModeratorToAdd] = useState<IUserData | null>(null);
 
-  const exceedsSeats = useExceedsSeats()({
-    newlyAddedModeratorsNumber: 1,
+  const { loading, getExceedsSeats } = useExceedsSeats({
+    roleToBeAdded: 'moderator',
   });
 
   const closeModal = () => {
@@ -68,9 +67,9 @@ const UserSearch = memo(({ projectId, label }: Props) => {
   };
 
   const handleAddClick = () => {
-    const isSelectedUserAModerator =
-      moderatorToAdd && !isRegularUser({ data: moderatorToAdd });
-    const shouldOpenModal = exceedsSeats.moderator && !isSelectedUserAModerator;
+    if (loading || !moderatorToAdd) return;
+    const shouldOpenModal = getExceedsSeats(moderatorToAdd);
+
     if (shouldOpenModal) {
       openModal();
     } else {
