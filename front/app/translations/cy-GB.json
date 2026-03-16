@@ -2379,6 +2379,7 @@
   "app.errors.bulk_import_maximum_ideas_exceeded": "Rhagorwyd ar yr uchafswm o {value} syniadau.",
   "app.errors.bulk_import_maximum_pdf_pages_exceeded": "Rhagorwyd ar yr uchafswm o {value} tudalennau mewn PDF.",
   "app.errors.bulk_import_not_enough_pdf_pages": "Nid oes gan y PDF a uwchlwythwyd ddigon o dudalennau - dylai fod ganddo o leiaf yr un nifer o dudalennau â'r templed wedi'i lawrlwytho.",
+  "app.errors.bulk_import_pdf_pages_not_divisible": "Rhaid i gyfanswm nifer y tudalennau yn y PDF fod yn rhanadwy'n gyfartal â'r nifer penodedig o dudalennau fesul ffurflen.",
   "app.errors.bulk_import_publication_date_invalid_format": "Syniad gyda fformat dyddiad cyhoeddi annilys \"{value}\". Defnyddiwch y fformat \"DD-MM-BBBB\".",
   "app.errors.cannot_contain_ideas": "Nid yw'r dull cyfranogiad a ddewisoch yn cefnogi'r math hwn o bostiad. Golygwch eich dewis a rhowch gynnig arall arni.",
   "app.errors.cant_change_after_first_response": "Ni allwch newid hyn mwyach, gan fod rhai defnyddwyr eisoes wedi ymateb",
