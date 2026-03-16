@@ -1002,6 +1002,7 @@
   "app.containers.Admin.emails.previewSentConfirmation": "تم إرسال رسالة معاينة إلكترونية إلى عنوان بريدك الإلكتروني",
   "app.containers.Admin.emails.previewTitle": "معاينة",
   "app.containers.Admin.emails.regionMultilocError": "يرجى تقديم قيمة لجميع اللغات",
+  "app.containers.Admin.emails.scheduled": "مُجدول",
   "app.containers.Admin.emails.seeEmailHereText": "بمجرد إرسال بريد إلكتروني من هذا النوع ، ستتمكن من التحقق منه هنا.",
   "app.containers.Admin.emails.send": "إرسال",
   "app.containers.Admin.emails.sendNowButton": "أرسل الآن",
