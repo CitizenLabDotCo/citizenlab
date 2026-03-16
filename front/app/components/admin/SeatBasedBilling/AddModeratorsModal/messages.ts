@@ -14,12 +14,4 @@ export default defineMessages({
     id: 'app.containers.admin.addCollaboratorsModal.buyAdditionalSeats1',
     defaultMessage: 'Buy 1 additional seat',
   },
-  confirmManagerRights: {
-    id: 'app.containers.admin.addCollaboratorsModal.confirmManagerRights',
-    defaultMessage: 'Are you sure you want to give 1 person manager rights?',
-  },
-  confirmButtonText: {
-    id: 'app.containers.admin.addCollaboratorsModal.confirmButtonText',
-    defaultMessage: 'Confirm',
-  },
 });

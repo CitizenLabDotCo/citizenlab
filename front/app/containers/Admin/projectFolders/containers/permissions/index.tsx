@@ -19,7 +19,6 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import UserSelect from 'components/UI/UserSelect';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { isRegularUser } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
@@ -52,8 +51,8 @@ const FolderPermissions = () => {
   const [showModal, setShowModal] = useState(false);
   const [moderatorToAdd, setModeratorToAdd] = useState<IUserData | null>(null);
 
-  const exceedsSeats = useExceedsSeats()({
-    newlyAddedModeratorsNumber: 1,
+  const { loading, getExceedsSeats } = useExceedsSeats({
+    roleToBeAdded: 'moderator',
   });
 
   const closeModal = () => {
@@ -85,9 +84,9 @@ const FolderPermissions = () => {
   };
 
   const handleAddClick = () => {
-    const isSelectedUserAModerator =
-      moderatorToAdd && !isRegularUser({ data: moderatorToAdd });
-    const shouldOpenModal = exceedsSeats.moderator && !isSelectedUserAModerator;
+    if (loading || !moderatorToAdd) return;
+    const shouldOpenModal = getExceedsSeats(moderatorToAdd);
+
     if (shouldOpenModal) {
       setShowModal(true);
     } else {

@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
-import useExceedsSeats from 'hooks/useExceedsSeats';
-
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import BillingWarning from 'components/admin/SeatBasedBilling/SeatInfo/BillingWarning';
 import SeatSetSuccess from 'components/admin/SeatBasedBilling/SeatSetSuccess';
@@ -27,13 +25,7 @@ const AddModeratorsModal = ({
   const { formatMessage } = useIntl();
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const exceedsSeats = useExceedsSeats()({
-    newlyAddedModeratorsNumber: 1,
-  });
-
-  const buttonText = exceedsSeats.moderator
-    ? formatMessage(messages.buyAdditionalSeats)
-    : formatMessage(messages.confirmButtonText);
+  const buttonText = formatMessage(messages.buyAdditionalSeats);
 
   const header = !showSuccess ? (
     <Text
@@ -64,7 +56,7 @@ const AddModeratorsModal = ({
         <SeatSetSuccess
           closeModal={resetModal}
           seatType="moderator"
-          hasExceededPlanSeatLimit={exceedsSeats.moderator}
+          hasExceededPlanSeatLimit={true}
         />
       ) : (
         <Box
@@ -74,11 +66,7 @@ const AddModeratorsModal = ({
           data-cy="e2e-add-moderators-body"
         >
           <Text color="textPrimary" fontSize="m" mt="0" mb="24px">
-            <FormattedMessage
-              {...(exceedsSeats.moderator
-                ? messages.hasReachedOrIsOverLimit
-                : messages.confirmManagerRights)}
-            />
+            <FormattedMessage {...messages.hasReachedOrIsOverLimit} />
           </Text>
           <Box mb="24px">
             <SeatInfo seatType="moderator" />
