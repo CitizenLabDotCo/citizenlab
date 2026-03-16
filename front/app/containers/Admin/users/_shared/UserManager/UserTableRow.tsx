@@ -39,7 +39,7 @@ import { getFullName } from 'utils/textUtils';
 import events from '../../events';
 import messages from '../../messages';
 
-import SetSetAsProjectModerator from './SetAsProjectModerator';
+import SetAsModerator from './SetAsModerator';
 import UserAssignedItems from './UserAssignedItems';
 
 const RegisteredAt = styled(Td)`
@@ -376,7 +376,7 @@ const UserTableRow = ({
           returnFocusRef={moreActionsButtonRef}
           ariaLabelledBy="set-moderator-modal-title"
         >
-          <SetSetAsProjectModerator
+          <SetAsModerator
             user={userInRow}
             onClose={() => setIsSetSetAsProjectModeratorOpened(false)}
             onSuccess={() => changeRoleHandler('moderator')}

@@ -17,7 +17,7 @@ import { getFullName } from 'utils/textUtils';
 
 import messages from '../../messages';
 
-const SetAsProjectModerator = ({
+const SetAsModerator = ({
   user,
   onClose,
   onSuccess,
@@ -111,4 +111,4 @@ const SetAsProjectModerator = ({
   );
 };
 
-export default SetAsProjectModerator;
+export default SetAsModerator;
