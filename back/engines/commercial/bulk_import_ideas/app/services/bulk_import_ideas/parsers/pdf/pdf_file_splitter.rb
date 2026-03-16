@@ -4,15 +4,16 @@ module BulkImportIdeas::Parsers::Pdf
   class PdfFileSplitter
     MAX_TOTAL_PAGES = 100
 
-    def initialize(project:, pages_per_idea:)
+    def initialize(project:, pages_per_form: nil)
       @project = project
-      @pages_per_idea = pages_per_idea
+      @pages_per_form = pages_per_form
     end
 
     # Takes a source IdeaImportFile, splits it into one PDF file per idea.
     # Returns array of split IdeaImportFile records.
     def split(source_file)
       pdf = parse_pdf(source_file)
+      @pages_per_idea = determine_pages_per_idea(pdf)
       validate_page_count!(pdf, source_file)
       split_into_idea_files(pdf, source_file)
     end
@@ -25,11 +26,19 @@ module BulkImportIdeas::Parsers::Pdf
       raise BulkImportIdeas::Error.new 'bulk_import_malformed_pdf', value: source_file.file_content_url
     end
 
+    # Use manual override if provided, otherwise treat entire PDF as a single form
+    def determine_pages_per_idea(pdf)
+      @pages_per_form || pdf.pages.count
+    end
+
     def validate_page_count!(pdf, source_file)
       source_file_page_count = pdf.pages.count
       source_file.update!(num_pages: source_file_page_count)
       raise BulkImportIdeas::Error.new 'bulk_import_maximum_pdf_pages_exceeded', value: MAX_TOTAL_PAGES if source_file_page_count > MAX_TOTAL_PAGES
       raise BulkImportIdeas::Error.new 'bulk_import_not_enough_pdf_pages', value: source_file_page_count if source_file_page_count < @pages_per_idea
+      if @pages_per_form && (source_file_page_count % @pages_per_idea != 0)
+        raise BulkImportIdeas::Error.new 'bulk_import_pdf_pages_not_divisible', total_pages: source_file_page_count, pages_per_form: @pages_per_idea
+      end
     end
 
     def split_into_idea_files(pdf, source_file)
