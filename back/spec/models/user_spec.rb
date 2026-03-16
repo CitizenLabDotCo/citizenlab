@@ -1525,7 +1525,7 @@ RSpec.describe User do
         create(:admin)
         project_moderator = create(:project_moderator)
         folder_moderator = create(:project_folder_moderator)
-        thing = create_admin_moderator(:project_moderator)
+        create_admin_moderator(:project_moderator)
         create_admin_moderator(:project_folder_moderator)
         expect(described_class.billed_moderators).to contain_exactly(project_moderator, folder_moderator)
       end
