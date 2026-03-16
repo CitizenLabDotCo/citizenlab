@@ -1002,6 +1002,7 @@
   "app.containers.Admin.emails.previewSentConfirmation": "ਇੱਕ ਪੂਰਵਦਰਸ਼ਨ ਈਮੇਲ ਤੁਹਾਡੇ ਈਮੇਲ ਪਤੇ 'ਤੇ ਭੇਜੀ ਗਈ ਹੈ",
   "app.containers.Admin.emails.previewTitle": "ਝਲਕ",
   "app.containers.Admin.emails.regionMultilocError": "ਕਿਰਪਾ ਕਰਕੇ ਸਾਰੀਆਂ ਭਾਸ਼ਾਵਾਂ ਲਈ ਇੱਕ ਮੁੱਲ ਪ੍ਰਦਾਨ ਕਰੋ।",
+  "app.containers.Admin.emails.scheduled": "ਤਹਿ ਕੀਤਾ ਗਿਆ",
   "app.containers.Admin.emails.seeEmailHereText": "ਜਿਵੇਂ ਹੀ ਇਸ ਕਿਸਮ ਦੀ ਈਮੇਲ ਭੇਜੀ ਜਾਂਦੀ ਹੈ ਤੁਸੀਂ ਇਸਨੂੰ ਇੱਥੇ ਚੈੱਕ ਕਰਨ ਦੇ ਯੋਗ ਹੋਵੋਗੇ।",
   "app.containers.Admin.emails.send": "ਭੇਜੋ",
   "app.containers.Admin.emails.sendNowButton": "ਹੁਣੇ ਭੇਜੋ",
