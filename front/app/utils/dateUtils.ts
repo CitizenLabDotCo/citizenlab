@@ -357,8 +357,14 @@ export const toBackendDateString = (date?: Date) => {
   return `${date.getFullYear()}-${month}-${day}`;
 };
 
-export const formatDateinTimezone = (date: string, timeZone: string) => {
-  return new TZDate(date, timeZone)
+export const formatDateinTimezone = (
+  date: string | null | undefined,
+  timeZone: string = 'UTC'
+): string | null => {
+  if (!date) return null;
+
+  const zonedDate = new TZDate(date, timeZone);
+  return zonedDate
     .toLocaleString('en-US', {
       year: 'numeric',
       month: 'numeric',
