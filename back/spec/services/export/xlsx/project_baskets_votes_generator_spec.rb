@@ -89,7 +89,7 @@ describe Export::Xlsx::ProjectBasketsVotesGenerator do
       # On writing: Axlsx ignores timezone and offset when storing dates.
       # On reading: RubyXL reads the naive datetime as UTC.
       submitted_at = user_row[header_row.find_index('Submitted at')]
-      submitted_at = AppConfiguration.timezone.local_to_utc(submitted_at).in_time_zone
+      submitted_at = override_timezone(submitted_at, AppConfiguration.timezone)
       # Not an exact match due to xlsx serialization precision loss
       expect(submitted_at).to be_within(1e-3.seconds).of basket3.submitted_at
     end

@@ -155,7 +155,7 @@ resource 'Volunteering Volunteers' do
 
         # On writing: Axlsx ignores timezone and offset when storing dates.
         # On reading: RubyXL reads the naive datetime as UTC.
-        created_at = AppConfiguration.timezone.local_to_utc(worksheets[0][1][3].value).in_time_zone
+        created_at = override_timezone(worksheets[0][1][3].value, AppConfiguration.timezone)
         # Not an exact match due to precision loss during xlsx serialization
         expect(created_at).to be_within(1e-3.seconds).of @volunteer1.created_at
       end
