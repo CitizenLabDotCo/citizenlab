@@ -1002,6 +1002,7 @@
   "app.containers.Admin.emails.previewSentConfirmation": "Un email de prévisualisation a été envoyé à votre adresse e-mail",
   "app.containers.Admin.emails.previewTitle": "Aperçu",
   "app.containers.Admin.emails.regionMultilocError": "Veuillez indiquer une valeur pour toutes les langues",
+  "app.containers.Admin.emails.scheduled": "Prévu",
   "app.containers.Admin.emails.seeEmailHereText": "Une fois qu'un e-mail de ce type sera envoyé, vous pourrez le consulter ici.",
   "app.containers.Admin.emails.send": "Envoyer",
   "app.containers.Admin.emails.sendNowButton": "Envoyer maintenant",
