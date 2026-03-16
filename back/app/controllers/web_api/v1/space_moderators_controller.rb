@@ -18,6 +18,12 @@ class WebApi::V1::SpaceModeratorsController < ApplicationController
     render json: linked_json(@moderators, ::WebApi::V1::UserSerializer, params: jsonapi_serializer_params)
   end
 
+  def show
+  end
+
+  def destroy
+  end
+
   def do_authorize
     authorize Moderator.new(params[:space_id])
   end

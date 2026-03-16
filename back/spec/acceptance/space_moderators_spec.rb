@@ -25,7 +25,7 @@ resource 'Moderators' do
         space = create(:space)
         space_moderators = create_list(:space_moderator, 5, spaces: [space])
         other_space = create(:space)
-        other_space_moderator = create(:space_moderator, spaces: [other_space])
+        _other_space_moderator = create(:space_moderator, spaces: [other_space])
 
         do_request space_id: space.id
         expect(status).to eq(200)

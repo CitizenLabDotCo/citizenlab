@@ -23,6 +23,6 @@ class SpaceModeratorPolicy < ApplicationPolicy
 
   # TODO: simple version for now
   def admin_or_moderator?
-    user&.active? && user&.admin?
+    user&.active? && user.admin?
   end
 end
