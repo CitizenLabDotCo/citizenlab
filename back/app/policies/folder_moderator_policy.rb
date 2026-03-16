@@ -33,6 +33,6 @@ class FolderModeratorPolicy < ApplicationPolicy
   private
 
   def active_and_can_moderate?
-    user&.active? && UserRoleService.new.can_moderate?(record, user)
+    user&.active? && UserRoleService.new.can_moderate?(ProjectFolders::Folder.find_by(id: record.project_folder_id), user)
   end
 end

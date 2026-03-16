@@ -11,8 +11,8 @@ resource 'Moderators' do
   end
 
   context 'as a folder moderator' do
-    let(:project_folder) { create(:project_folder) }
-    let(:moderator) { create(:project_folder_moderator, project_folders: [project_folder]) }
+    let!(:project_folder) { create(:project_folder) }
+    let!(:moderator) { create(:project_folder_moderator, project_folders: [project_folder]) }
 
     before do
       header_token_for(moderator)
