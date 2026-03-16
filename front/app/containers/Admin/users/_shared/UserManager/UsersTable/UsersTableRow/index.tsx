@@ -1,4 +1,4 @@
-import React, { useState, Suspense, useRef } from 'react';
+import React, { useState, Suspense, useRef, useMemo, useCallback } from 'react';
 
 import {
   Tr,
@@ -26,19 +26,17 @@ import DeleteUser from 'components/admin/UserDeleteModal';
 import Avatar from 'components/Avatar';
 import Checkbox from 'components/UI/Checkbox';
 import Modal from 'components/UI/Modal';
-import MoreActionsMenu, { IAction } from 'components/UI/MoreActionsMenu';
+import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { timeAgo } from 'utils/dateUtils';
-import eventEmitter from 'utils/eventEmitter';
-import { isAdmin, isRegularUser } from 'utils/permissions/roles';
+import { isAdmin } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
 
-import events from '../../../../events';
 import messages from '../../../../messages';
 
+import { getActions } from './actions';
 import SetAsModerator from './SetAsModerator';
 import UserAssignedItems from './UserAssignedItems';
 
@@ -99,11 +97,8 @@ const UsersTableRow = ({
     name: 'user_blocking',
   });
 
-  const isUserInRowAdmin = isAdmin({ data: userInRow });
-  const isUserInRowModerator = !isRegularUser({ data: userInRow });
   const userInRowHasRegistered =
     userInRow.attributes.invite_status !== 'pending';
-  const userInRowIsCurrentUser = userInRow.id === authUser.id;
   const authUserIsAdmin = isAdmin({ data: authUser });
 
   const [showBlockUserModal, setShowBlockUserModal] = useState(false);
@@ -125,135 +120,58 @@ const UsersTableRow = ({
     setShowChangeSeatModal(false);
   };
 
-  const changeRoleHandler = (changingToRoleType: ChangingRoleTypes) => {
-    setChangingToRoleType(changingToRoleType);
-    const changeToNormalUser = changingToRoleType === 'user';
+  const changeRoleHandler = useCallback(
+    (changingToRoleType: ChangingRoleTypes) => {
+      setChangingToRoleType(changingToRoleType);
+      const changeToNormalUser = changingToRoleType === 'user';
 
-    const showModalForAdmin =
-      changingToRoleType === 'admin' && exceedsSeatsAdmin.admin;
-    const showModalForModerator =
-      changingToRoleType === 'moderator' && exceedsSeatsModerator.moderator;
+      const showModalForAdmin =
+        changingToRoleType === 'admin' && exceedsSeatsAdmin.admin;
+      const showModalForModerator =
+        changingToRoleType === 'moderator' && exceedsSeatsModerator.moderator;
 
-    const shouldOpenConfirmationInModal =
-      changeToNormalUser || showModalForAdmin || showModalForModerator;
+      const shouldOpenConfirmationInModal =
+        changeToNormalUser || showModalForAdmin || showModalForModerator;
 
-    if (shouldOpenConfirmationInModal) {
-      setShowChangeSeatModal(true);
-      return;
-    }
-
-    // If the user is changing to moderator, we want to bypass calling the changeRoles function because the role change is handled in the SetAsProjectModerator modal
-    if (changingToRoleType === 'moderator') {
-      return;
-    }
-
-    // We pass in the user along with whether to change that user to a normal user or admin. We are not toggling because the user passed in could have other roles or be a moderator
-    changeRoles(userInRow, changeToNormalUser);
-  };
-
-  /*
-  =======
-  Actions
-  =======
-  */
-  const showProfileAction = {
-    handler: () => {
-      clHistory.push(`/profile/${userInRow.attributes.slug}`);
-    },
-    label: formatMessage(messages.seeProfile),
-    icon: 'eye' as const,
-  };
-
-  const userBlockingRelatedActions: IAction[] =
-    isUserBlockingEnabled && !userInRowIsCurrentUser
-      ? [
-          userInRow.attributes.blocked
-            ? {
-                handler: () => setShowUnblockUserModal(true),
-                label: formatMessage(blockUserMessages.unblockAction),
-                icon: 'user-circle' as const,
-              }
-            : {
-                handler: () => setShowBlockUserModal(true),
-                label: formatMessage(blockUserMessages.blockAction),
-                icon: 'halt' as const,
-              },
-        ]
-      : [];
-
-  const getSeatChangeActions = () => {
-    const setAsAdminAction = {
-      handler: () => {
-        changeRoleHandler('admin');
-      },
-      label: formatMessage(messages.setAsAdmin),
-      icon: 'shield-checkered' as const,
-    };
-
-    const setSetAsProjectModeratorAction = {
-      handler: () => {
-        setIsSetSetAsProjectModeratorOpened(true);
-      },
-      label: formatMessage(messages.assignAsManager),
-      icon: 'user-check' as const,
-    };
-
-    const setAsNormalUserAction = {
-      handler: () => {
-        changeRoleHandler('user');
-      },
-      label: formatMessage(messages.setAsNormalUser),
-      icon: 'user-circle' as const,
-    };
-
-    if (isUserInRowAdmin) {
-      return [setAsNormalUserAction, setSetAsProjectModeratorAction];
-    } else if (isUserInRowModerator) {
-      return [
-        setAsNormalUserAction,
-        setAsAdminAction,
-        setSetAsProjectModeratorAction,
-      ];
-    } else {
-      return [setAsAdminAction, setSetAsProjectModeratorAction];
-    }
-  };
-
-  const deleteUserAction = {
-    handler: () => {
-      if (userInRowIsCurrentUser) {
-        eventEmitter.emit<JSX.Element>(
-          events.userDeletionFailed,
-          <FormattedMessage {...messages.youCantDeleteYourself} />
-        );
-      } else {
-        setShowDeleteUserModal(true);
+      if (shouldOpenConfirmationInModal) {
+        setShowChangeSeatModal(true);
+        return;
       }
+
+      // If the user is changing to moderator, we want to bypass calling the changeRoles function because the role change is handled in the SetAsProjectModerator modal
+      if (changingToRoleType === 'moderator') {
+        return;
+      }
+
+      // We pass in the user along with whether to change that user to a normal user or admin. We are not toggling because the user passed in could have other roles or be a moderator
+      changeRoles(userInRow, changeToNormalUser);
     },
-    label: formatMessage(messages.deleteUser),
-    icon: 'delete' as const,
-  };
+    [userInRow, changeRoles, exceedsSeatsAdmin, exceedsSeatsModerator]
+  );
 
-  const getActions = () => {
-    if (userInRowHasRegistered) {
-      return authUserIsAdmin
-        ? [
-            showProfileAction,
-            ...getSeatChangeActions(),
-            deleteUserAction,
-            ...userBlockingRelatedActions,
-          ]
-        : [showProfileAction]; // Project/folder managers can only see profile
-    }
-
-    return authUserIsAdmin ? [deleteUserAction] : []; // Project/folder managers cannot delete anyone
-  };
-
-  /*
-  ===========
-  Actions end
-  ===========
-  */
+  const actions = useMemo(() => {
+    return getActions({
+      formatMessage,
+      user: userInRow,
+      authUser,
+      isUserBlockingEnabled,
+      setShowUnblockUserModal,
+      setShowBlockUserModal,
+      setShowDeleteUserModal,
+      setIsSetSetAsProjectModeratorOpened,
+      changeRoleHandler,
+    });
+  }, [
+    formatMessage,
+    userInRow,
+    authUser,
+    isUserBlockingEnabled,
+    setShowUnblockUserModal,
+    setShowBlockUserModal,
+    setShowDeleteUserModal,
+    setIsSetSetAsProjectModeratorOpened,
+    changeRoleHandler,
+  ]);
 
   return (
     <>
@@ -326,7 +244,7 @@ const UsersTableRow = ({
           <MoreActionsMenu
             showLabel={false}
             ref={moreActionsButtonRef}
-            actions={getActions()}
+            actions={actions}
           />
         </Td>
         {showBlockUserModal && (
