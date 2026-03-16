@@ -4,18 +4,19 @@ module BulkImportIdeas::Parsers
   class IdeaPdfFileParser
     IDEAS_PER_JOB = 5
 
-    def initialize(current_user, locale, phase_id, personal_data_enabled)
+    def initialize(current_user, locale, phase_id, personal_data_enabled, pages_per_form: nil)
       @import_user = current_user
       @phase = Phase.find(phase_id)
       @project = @phase.project
       @locale = locale || AppConfiguration.instance.settings('core', 'locales').first
       @personal_data_enabled = personal_data_enabled
+      @pages_per_form = pages_per_form
       @row_mapper = IdeaRowMapper.new(phase: @phase, project: @project, locale: @locale, personal_data_enabled: @personal_data_enabled, strategy: self)
     end
 
     def parse_rows(file)
       claude_service = BulkImportIdeas::Parsers::Pdf::LLMFormParser.new(@phase, @locale, llm_class: Analysis::LLM::ClaudeSonnet46)
-      form_parsed_idea = claude_service.parse_idea(file.file, template_data[:page_count])
+      form_parsed_idea = claude_service.parse_idea(file.file, file.num_pages)
 
       file.update!(parsed_value: { parser: 'claude', value: form_parsed_idea })
 

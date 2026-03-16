@@ -24,7 +24,7 @@ Layout/HashAlignment:
   EnforcedHashRocketStyle: [key, table]
 
 Metrics/BlockLength:
-  Max: 384
+  Max: 410
   Exclude:
     - "engines/*/*/spec/**/*"
     - "spec/**/*"
