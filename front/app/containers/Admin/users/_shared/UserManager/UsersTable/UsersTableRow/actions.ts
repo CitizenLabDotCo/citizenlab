@@ -105,10 +105,7 @@ export const getActions = ({
   const deleteUserAction = {
     handler: () => {
       if (userInRowIsCurrentUser) {
-        // eventEmitter.emit<JSX.Element>(
-        //   events.userDeletionFailed,
-        //   <FormattedMessage { ...messages.youCantDeleteYourself } />
-        // );
+        window.alert(formatMessage(messages.youCantDeleteYourself));
       } else {
         setShowDeleteUserModal(true);
       }
