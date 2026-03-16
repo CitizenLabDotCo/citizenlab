@@ -296,6 +296,11 @@ export default defineMessages({
     defaultMessage:
       'The uploaded PDF does not have enough pages - it should have at least the same number of pages as the downloaded template.',
   },
+  bulk_import_pdf_pages_not_divisible: {
+    id: 'app.errors.bulk_import_pdf_pages_not_divisible',
+    defaultMessage:
+      'The total number of pages in the PDF must be evenly divisible by the specified number of pages per form.',
+  },
   uncaught_error: {
     id: 'app.errors.uncaught_error',
     defaultMessage: 'An unknown error occurred.',

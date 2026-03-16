@@ -5,18 +5,19 @@ module BulkImportIdeas::Parsers
     IDEAS_PER_JOB = 5
     MAX_TOTAL_PAGES = 100
 
-    def initialize(current_user, locale, phase_id, personal_data_enabled)
+    def initialize(current_user, locale, phase_id, personal_data_enabled, pages_per_form: nil)
       @import_user = current_user
       @phase = Phase.find(phase_id)
       @project = @phase.project
       @locale = locale || AppConfiguration.instance.settings('core', 'locales').first
       @personal_data_enabled = personal_data_enabled
+      @pages_per_form = pages_per_form
       @row_mapper = IdeaRowMapper.new(phase: @phase, project: @project, locale: @locale, personal_data_enabled: @personal_data_enabled, strategy: self)
     end
 
     def parse_rows(file)
       claude_service = BulkImportIdeas::Parsers::Pdf::LLMFormParser.new(@phase, @locale, llm_class: Analysis::LLM::ClaudeSonnet46)
-      form_parsed_idea = claude_service.parse_idea(file.file, template_data[:page_count])
+      form_parsed_idea = claude_service.parse_idea(file.file, file.num_pages)
 
       file.update!(parsed_value: { parser: 'claude', value: form_parsed_idea })
 
@@ -105,9 +106,6 @@ module BulkImportIdeas::Parsers
       # Split a pdf into one PDF per idea
       split_pdf_files = []
       if source_file&.import_type == 'pdf'
-        # Get number of pages in a form from the exported PDF template
-        pages_per_idea = template_data[:page_count]
-
         pdf = begin
           ::CombinePDF.parse source_file.file.read
         rescue ::CombinePDF::ParsingError
@@ -117,7 +115,14 @@ module BulkImportIdeas::Parsers
         source_file_page_count = pdf.pages.count
         source_file.update!(num_pages: source_file_page_count)
         raise BulkImportIdeas::Error.new 'bulk_import_maximum_pdf_pages_exceeded', value: MAX_TOTAL_PAGES if source_file_page_count > MAX_TOTAL_PAGES
+
+        # Use manual override if provided, otherwise treat entire PDF as a single form
+        pages_per_idea = @pages_per_form || source_file_page_count
+
         raise BulkImportIdeas::Error.new 'bulk_import_not_enough_pdf_pages', value: source_file_page_count if source_file_page_count < pages_per_idea
+        if @pages_per_form && (source_file_page_count % pages_per_idea != 0)
+          raise BulkImportIdeas::Error.new 'bulk_import_pdf_pages_not_divisible', total_pages: source_file_page_count, pages_per_form: pages_per_idea
+        end
 
         new_pdf = ::CombinePDF.new
         new_pdf_count = 0

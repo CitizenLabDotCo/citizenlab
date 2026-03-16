@@ -58,4 +58,21 @@ export default defineMessages({
     defaultMessage:
       'The uploaded form was created with the "Personal data" section',
   },
+  multipleFormsCheckbox: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.multipleFormsCheckbox',
+    defaultMessage: 'This file contains multiple scanned forms',
+  },
+  pagesPerFormLabel: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.pagesPerFormLabel',
+    defaultMessage: 'Number of pages per single form',
+  },
+  pagesPerFormDescription: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.pagesPerFormDescription',
+    defaultMessage:
+      'This is required to accurately split the PDF into separate submissions.',
+  },
+  pagesPerFormRequired: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ImportModal.pagesPerFormRequired',
+    defaultMessage: 'Please enter the number of pages per form',
+  },
 });
