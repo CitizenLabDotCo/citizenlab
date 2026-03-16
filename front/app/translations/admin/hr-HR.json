@@ -1002,6 +1002,7 @@
   "app.containers.Admin.emails.previewSentConfirmation": "Probna e-poruka poslana je na vašu adresu e-pošte",
   "app.containers.Admin.emails.previewTitle": "Pretpregled",
   "app.containers.Admin.emails.regionMultilocError": "Molimo navedite vrijednost za sve jezike",
+  "app.containers.Admin.emails.scheduled": "Zakazano",
   "app.containers.Admin.emails.seeEmailHereText": "Čim se pošalje e-pošta ove vrste, moći ćete je provjeriti ovdje.",
   "app.containers.Admin.emails.send": "Pošalji",
   "app.containers.Admin.emails.sendNowButton": "Pošalji sad",
