@@ -8,19 +8,20 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import useAuthUser from 'api/me/useAuthUser';
+import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
+
+import AddByEmail from 'components/admin/AddByEmail';
 import ModeratorList from 'components/admin/ModeratorList/ModeratorList';
 import UserSearch from 'components/admin/ModeratorUserSearch';
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import { Section } from 'components/admin/Section';
-import AddByEmail from 'components/admin/AddByEmail';
+import Or from 'components/UI/Or';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { isAdmin } from 'utils/permissions/roles';
 
 import messages from './messages';
-import Or from 'components/UI/Or';
-import useAuthUser from 'api/me/useAuthUser';
-import { isAdmin } from 'utils/permissions/roles';
-import useAddProjectModerator from 'api/project_moderators/useAddProjectModerator';
 
 const ModeratorSubSection = styled(Section)`
   margin-bottom: 30px;
