@@ -208,4 +208,5 @@ export interface IUpdatedProjectProperties {
   listed?: boolean;
   live_auto_input_topics_enabled?: boolean;
   space_id?: string | null;
+  scheduled_at?: string | null;
 }

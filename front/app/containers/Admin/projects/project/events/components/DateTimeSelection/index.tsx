@@ -13,7 +13,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../messages';
 import { ErrorType } from '../../types';
 
-import TimeInput from './TimeInput';
+import TimeInput from 'components/admin/TimeInput';
 
 interface Props {
   startAt: string;
