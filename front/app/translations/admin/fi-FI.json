@@ -790,6 +790,7 @@
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Muokkaa ryhmää",
   "app.containers.Admin.Users.GroupsPanel.admins": "Järjestelmänvalvojat",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Rekisteröityneet käyttäjät",
+  "app.containers.Admin.Users.GroupsPanel.folderManagers": "Kansioiden hallintaohjelmat",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Ryhmät",
   "app.containers.Admin.Users.GroupsPanel.managers": "Projektipäälliköt",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Määritetyt kohteet",

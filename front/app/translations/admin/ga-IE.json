@@ -790,6 +790,7 @@
   "app.containers.Admin.Users.GroupsHeader.editGroup": "Cuir Grúpa in Eagar",
   "app.containers.Admin.Users.GroupsPanel.admins": "Riarthóirí",
   "app.containers.Admin.Users.GroupsPanel.allUsers": "Úsáideoirí cláraithe",
+  "app.containers.Admin.Users.GroupsPanel.folderManagers": "Bainisteoirí fillteán",
   "app.containers.Admin.Users.GroupsPanel.groupsTitle": "Grúpaí",
   "app.containers.Admin.Users.GroupsPanel.managers": "Bainisteoirí tionscadail",
   "app.containers.Admin.Users.GroupsPanel.seeAssignedItems": "Míreanna sannta",

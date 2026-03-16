@@ -100,7 +100,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       ]
     end
     let!(:import_file) { create(:idea_import_file) }
-    let(:rows) { service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file) }
+    let(:rows) { service.row_mapper.ideas_to_idea_rows(xlsx_ideas_array, import_file) }
 
     it 'converts parsed XLSX core fields into idea rows' do
       expect(rows[0]).to include({
@@ -127,7 +127,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
 
     it 'does not include user details when "Permission" is blank' do
       xlsx_ideas_array[0][:fields]['Permission'] = ''
-      rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      rows = service.row_mapper.ideas_to_idea_rows(xlsx_ideas_array, import_file)
 
       expect(rows[0]).not_to include({
         user_first_name: 'Bill',
@@ -171,7 +171,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
           }
         }
       ]
-      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      idea_rows = service.row_mapper.ideas_to_idea_rows(xlsx_ideas_array, import_file)
       expect(idea_rows.count).to eq 0
     end
 
@@ -186,7 +186,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
           }
         }
       ]
-      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      idea_rows = service.row_mapper.ideas_to_idea_rows(xlsx_ideas_array, import_file)
       expect(idea_rows.count).to eq 1
       expect(idea_rows[0][:custom_field_values][:text_field]).to eq 'First text field'
       expect(idea_rows[0][:custom_field_values][:text_field2]).to eq 'Second text field'
@@ -209,7 +209,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       create(:custom_field_option, custom_field: fourth_select_field, key: 'other', other: true, title_multiloc: { 'en' => 'Other' })
 
       base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/import_select_other.xlsx').read
-      file = service.send(:upload_source_file, "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}")
+      file = service.row_mapper.upload_source_file("data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}")
       parsed_rows = service.parse_rows(file)
 
       expect(parsed_rows.pluck(:custom_field_values)).to eq(
@@ -238,7 +238,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
 
     it 'correctly parses the rows of a real xlsx file and converts to idea_rows' do
       base_64_content = Base64.encode64 Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/import.xlsx').read
-      file = service.send(:upload_source_file, "data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}")
+      file = service.row_mapper.upload_source_file("data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,#{base_64_content}")
       parsed_rows = service.parse_rows(file)
       expect(parsed_rows.count).to eq 2
       expect(parsed_rows[0]).to include(
@@ -271,7 +271,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
           }
         }
       ]
-      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      idea_rows = service.row_mapper.ideas_to_idea_rows(xlsx_ideas_array, import_file)
       expect(idea_rows.count).to eq 1
       expect(idea_rows[0][:custom_field_values][:select_integer]).to eq '2'
     end
@@ -281,7 +281,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
         { pdf_pages: [1], fields: { 'Text field' => 2 } },
         { pdf_pages: [1], fields: { 'Text field' => 2.2 } }
       ]
-      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      idea_rows = service.row_mapper.ideas_to_idea_rows(xlsx_ideas_array, import_file)
       expect(idea_rows.count).to eq 2
       expect(idea_rows[0][:custom_field_values][:text_field]).to eq '2'
       expect(idea_rows[1][:custom_field_values][:text_field]).to eq '2.2'
@@ -291,13 +291,13 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
       xlsx_ideas_array = [
         { pdf_pages: [1], fields: { 'Matrix field' => 'We should send more animals into space: Yes; We should ride our bicycles more often: Maybe' } }
       ]
-      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      idea_rows = service.row_mapper.ideas_to_idea_rows(xlsx_ideas_array, import_file)
       expect(idea_rows.count).to eq 1
       expect(idea_rows[0][:custom_field_values][:matrix_field]).to eq({ 'send_more_animals_to_space' => 3, 'ride_bicycles_more_often' => 2 })
 
       # Misformatted matrix field - detects what it can
       xlsx_ideas_array[0][:fields]['Matrix field'] = 'We should send more animals into spaceNo; We should ride our bicycles more often: Yes'
-      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      idea_rows = service.row_mapper.ideas_to_idea_rows(xlsx_ideas_array, import_file)
       expect(idea_rows[0][:custom_field_values][:matrix_field]).to eq({ 'ride_bicycles_more_often' => 3 })
     end
 
@@ -328,7 +328,7 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
           }
         }
       ]
-      idea_rows = service.send(:ideas_to_idea_rows, xlsx_ideas_array, import_file)
+      idea_rows = service.row_mapper.ideas_to_idea_rows(xlsx_ideas_array, import_file)
       expect(idea_rows.count).to eq 1
       custom_field_values = idea_rows[0][:custom_field_values]
       expect(custom_field_values[:text_field]).to eq 'Something'
@@ -341,19 +341,19 @@ describe BulkImportIdeas::Parsers::IdeaXlsxFileParser do
   describe 'format_date' do
     it 'formats date strings in dd-mm-yyyy format' do
       date_string = '15-08-2023'
-      formatted_date = service.send(:format_date, date_string)
+      formatted_date = service.row_mapper.send(:format_date, date_string)
       expect(formatted_date).to eq '2023-08-15'
     end
 
     it 'formats date objects' do
       date_object = Date.new(2023, 8, 15)
-      formatted_date = service.send(:format_date, date_object)
+      formatted_date = service.row_mapper.send(:format_date, date_object)
       expect(formatted_date).to eq '2023-08-15'
     end
 
     it 'returns nil for invalid date strings' do
       invalid_date_string = 'A DATE'
-      formatted_date = service.send(:format_date, invalid_date_string)
+      formatted_date = service.row_mapper.send(:format_date, invalid_date_string)
       expect(formatted_date).to be_nil
     end
   end
