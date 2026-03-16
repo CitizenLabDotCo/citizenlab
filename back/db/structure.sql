@@ -1674,8 +1674,7 @@ CREATE TABLE public.comments (
     body_updated_at timestamp without time zone,
     children_count integer DEFAULT 0 NOT NULL,
     author_hash character varying,
-    anonymous boolean DEFAULT false NOT NULL,
-    weglot_data jsonb DEFAULT '{}'::jsonb NOT NULL
+    anonymous boolean DEFAULT false NOT NULL
 );
 
 
@@ -8447,7 +8446,6 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20260313120000'),
 ('20260302101045'),
 ('20260302100745'),
 ('20260302100636'),

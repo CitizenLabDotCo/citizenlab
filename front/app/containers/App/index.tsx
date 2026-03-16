@@ -179,11 +179,10 @@ const App = ({ children }: Props) => {
         document.head.appendChild(script);
 
         script.onload = function () {
-          const apiKey =
-            appConfiguration.data.attributes.settings.core.weglot_api_key;
-          if (window.Weglot && apiKey) {
-            window.Weglot.initialize({ api_key: apiKey });
-          }
+          window.Weglot.initialize({
+            api_key:
+              appConfiguration.data.attributes.settings.core.weglot_api_key,
+          });
         };
 
         script.src = 'https://cdn.weglot.com/weglot.min.js';
