@@ -5,7 +5,6 @@ import { filter } from 'rxjs/operators';
 import styled, { useTheme } from 'styled-components';
 import { CLErrors } from 'typings';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IUpdatedComment } from 'api/comments/types';
 import useComment from 'api/comments/useComment';
 import useUpdateComment from 'api/comments/useUpdateComment';
@@ -24,12 +23,6 @@ import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import {
-  isWeglotTranslatedPage,
-  getWeglotCurrentLang,
-  weglotTranslate,
-  WeglotData,
-} from 'utils/weglot';
 
 import { commentTranslateButtonClicked$ } from '../events';
 import messages from '../messages';
@@ -78,7 +71,6 @@ const CommentBody = ({
   ideaId,
 }: Props) => {
   const theme = useTheme();
-  const { data: appConfiguration } = useAppConfiguration();
   const { data: comment } = useComment(commentId);
   const { mutate: updateComment, isLoading: processing } = useUpdateComment({
     ideaId,
@@ -162,33 +154,13 @@ const CommentBody = ({
     event.preventDefault();
 
     if (!isNilOrError(locale)) {
-      const processedValue = editableCommentContent.replace(
-        /@\[(.*?)\]\((.*?)\)/gi,
-        '@$2'
-      );
-
-      let bodyMultiloc: Record<string, string> = {
-        [locale]: processedValue,
-      };
-      let weglotData: WeglotData | Record<string, never> = {};
-
-      const weglotApiKey =
-        appConfiguration?.data.attributes.settings.core.weglot_api_key;
-      if (weglotApiKey && isWeglotTranslatedPage(locale)) {
-        const weglotLang = getWeglotCurrentLang()!;
-        const translatedValue = await weglotTranslate(
-          processedValue,
-          weglotLang,
-          locale,
-          weglotApiKey
-        );
-        bodyMultiloc = { [locale]: translatedValue };
-        weglotData = { locale: weglotLang, body: processedValue };
-      }
-
       const updatedComment: Omit<IUpdatedComment, 'commentId'> = {
-        body_multiloc: bodyMultiloc,
-        weglot_data: weglotData,
+        body_multiloc: {
+          [locale]: editableCommentContent.replace(
+            /@\[(.*?)\]\((.*?)\)/gi,
+            '@$2'
+          ),
+        },
       };
 
       setApiErrors(null);

@@ -9,12 +9,6 @@ class WebApi::V1::CommentSerializer < WebApi::V1::BaseSerializer
     end
   end
 
-  attribute :weglot_data do |object|
-    if object.publication_status != 'deleted'
-      object.weglot_data
-    end
-  end
-
   attribute :is_admin_comment do |object|
     object.author&.admin?
   end

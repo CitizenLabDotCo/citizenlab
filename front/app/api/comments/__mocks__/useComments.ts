@@ -11,7 +11,6 @@ export const links = {
 
 export const mockCommentDataAttributes1: IPresentComment = {
   body_multiloc: { en: 'body_multiloc' },
-  weglot_data: {},
   created_at: 'created_at',
   publication_status: 'published',
   likes_count: 0,
@@ -53,7 +52,6 @@ export const commentsData: ICommentData[] = [
     type: 'comment',
     attributes: {
       body_multiloc: { en: 'body_multiloc' },
-      weglot_data: {},
       created_at: 'created_at',
       publication_status: 'published',
       likes_count: 0,
