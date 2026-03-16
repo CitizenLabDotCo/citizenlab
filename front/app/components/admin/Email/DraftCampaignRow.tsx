@@ -53,7 +53,6 @@ const DraftCampaignRow = ({ campaign, context }: Props) => {
           {campaign.attributes.scheduled_at && (
             <>
               <Text fontSize="base">
-                {' '}
                 {formatDateinTimezone(
                   campaign.attributes.scheduled_at,
                   timeZone
