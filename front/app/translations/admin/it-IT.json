@@ -2080,7 +2080,7 @@
   "app.containers.AdminPage.DashboardPage.day": "giorno",
   "app.containers.AdminPage.DashboardPage.false": "falso",
   "app.containers.AdminPage.DashboardPage.female": "donna",
-  "app.containers.AdminPage.DashboardPage.fiveInputsWithMostReactions": "La top 5 degli input per reazioni",
+  "app.containers.AdminPage.DashboardPage.fiveInputsWithMostReactions": "I 5 contributi con più reazioni",
   "app.containers.AdminPage.DashboardPage.fromTo": "da {from} a {to}",
   "app.containers.AdminPage.DashboardPage.helmetDescription": "Cruscotto per le attività sulla piattaforma",
   "app.containers.AdminPage.DashboardPage.helmetTitle": "Pagina del cruscotto dell'amministratore",
