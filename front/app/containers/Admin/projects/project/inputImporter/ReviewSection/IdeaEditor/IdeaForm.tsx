@@ -56,6 +56,11 @@ const IdeaForm = ({
     defaultValues: formData,
   });
 
+  // Trigger validation on mount so errors show immediately
+  useEffect(() => {
+    methods.trigger();
+  }, [methods]);
+
   // Ensure initial form validation state is correct
   useEffect(() => {
     setIdeaFormDataValid(methods.formState.isValid);
