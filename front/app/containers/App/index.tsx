@@ -54,6 +54,7 @@ import CommunityMonitorModalManager from './ModalQueue/modals/CommunityMonitor/M
 import UserSessionRecordingModalManager from './ModalQueue/modals/UserSessionRecording/ModalManager';
 
 const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
+const SessionExpiryModal = lazy(() => import('./SessionExpiryModal'));
 const PlatformFooter = lazy(() => import('containers/PlatformFooter'));
 
 const SkipLinkStyled = styled.a`
@@ -395,6 +396,9 @@ const App = ({ children }: Props) => {
                 closeUserDeletedModal={closeUserDeletedModal}
                 userSuccessfullyDeleted={userSuccessfullyDeleted}
               />
+              <Suspense fallback={null}>
+                <SessionExpiryModal />
+              </Suspense>
             </ErrorBoundary>
             <ErrorBoundary>
               <Authentication />

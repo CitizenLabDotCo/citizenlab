@@ -90,6 +90,11 @@ class WebApi::V1::UsersController < ApplicationController
     send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'users.xlsx'
   end
 
+  def ping
+    skip_authorization
+    head :ok
+  end
+
   def me
     @user = current_user
     skip_authorization

@@ -7,6 +7,7 @@ const COOKIE_NAME = 'cl2_jwt';
 
 export interface IDecodedJwt {
   sub: string;
+  exp: number;
   provider?: string;
   logout_supported?: boolean;
 }
@@ -47,4 +48,16 @@ export function removeJwt() {
 
 export function decode(jwt) {
   return jwtDecode<IDecodedJwt>(jwt);
+}
+
+export function getSecondsUntilExpiry(): number | null {
+  console.log('checking', Date.now());
+  const jwt = getJwt();
+  if (!jwt) return null;
+  try {
+    const decoded = decode(jwt);
+    return decoded.exp - Math.floor(Date.now() / 1000);
+  } catch {
+    return null;
+  }
 }

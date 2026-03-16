@@ -315,6 +315,49 @@ resource 'User Token' do
     end
   end
 
+  post 'web_api/v1/user_token/refresh' do
+    let!(:user) { create(:user) }
+
+    context 'with a valid JWT' do
+      before do
+        payload = user.to_token_payload
+        payload[:exp] = 1.day.from_now.to_i
+        token = AuthToken::AuthToken.new(payload: payload).token
+        header 'Authorization', "Bearer #{token}"
+      end
+
+      example 'returns a new JWT' do
+        do_request
+        assert_status 201
+
+        jwt = JWT.decode(json_response_body[:jwt], nil, false).first
+        expect(jwt['sub']).to eq(user.id)
+        expect(jwt['exp']).to be > Time.now.to_i
+      end
+    end
+
+    context 'without a JWT' do
+      example 'returns 401' do
+        do_request
+        assert_status 401
+      end
+    end
+
+    context 'with an expired JWT' do
+      before do
+        payload = user.to_token_payload
+        payload[:exp] = 1.hour.ago.to_i
+        token = JWT.encode(payload, OpenSSL::PKey::RSA.new(ENV.fetch('JWT_RS256_PRIVATE_KEY').gsub('\n', "\n")), 'RS256')
+        header 'Authorization', "Bearer #{token}"
+      end
+
+      example 'returns 401' do
+        do_request
+        assert_status 401
+      end
+    end
+  end
+
   post 'web_api/v1/user_token/unconfirmed' do
     with_options scope: :auth do
       parameter :email, required: true
