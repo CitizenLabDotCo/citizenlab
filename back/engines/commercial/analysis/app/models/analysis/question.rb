@@ -37,7 +37,7 @@ module Analysis
     validates :accuracy, numericality: { in: 0..1 }, allow_blank: true
 
     def source_project
-      insight.analysis.project
+      insight.analysis.source_project
     end
   end
 end
