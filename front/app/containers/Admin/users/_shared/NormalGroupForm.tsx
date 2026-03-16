@@ -16,7 +16,7 @@ import { injectIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
-import messages from './messages';
+import messages from '../messages';
 
 type Props = {
   onSubmit: (formValues: NormalFormValues) => void | Promise<void>;
