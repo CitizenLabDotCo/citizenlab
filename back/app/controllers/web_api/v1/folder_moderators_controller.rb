@@ -69,7 +69,7 @@ class WebApi::V1::FolderModeratorsController < ApplicationController
     elsif create_moderator_params[:user_email].present?
       User.find_by!(email: create_moderator_params[:user_email])
     else
-      raise ActiveRecord::RecordNotFound, "Must provide either user_id or user_email"
+      raise ActiveRecord::RecordNotFound, 'Must provide either user_id or user_email'
     end
   end
 

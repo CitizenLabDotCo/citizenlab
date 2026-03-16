@@ -72,7 +72,7 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
   end
 
   def create_moderator_params
-     params.require(:moderator).permit(:user_id, :user_email)
+    params.require(:moderator).permit(:user_id, :user_email)
   end
 
   def find_user_by_params
@@ -81,7 +81,7 @@ class WebApi::V1::ProjectModeratorsController < ApplicationController
     elsif create_moderator_params[:user_email].present?
       ::User.find_by!(email: create_moderator_params[:user_email])
     else
-      raise ActiveRecord::RecordNotFound, "Must provide either user_id or user_email"
+      raise ActiveRecord::RecordNotFound, 'Must provide either user_id or user_email'
     end
   end
 
