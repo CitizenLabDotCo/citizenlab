@@ -36,8 +36,8 @@ import eventEmitter from 'utils/eventEmitter';
 import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
 
-import events from '../../events';
-import messages from '../../messages';
+import events from '../../../../events';
+import messages from '../../../../messages';
 
 import SetAsModerator from './SetAsModerator';
 import UserAssignedItems from './UserAssignedItems';
@@ -80,7 +80,7 @@ const getStatusMessage = (user: IUserData): MessageDescriptor => {
   return roleMessage[highestRole];
 };
 
-const UserTableRow = ({
+const UsersTableRow = ({
   userInRow,
   selected,
   toggleSelect,
@@ -387,4 +387,4 @@ const UserTableRow = ({
   );
 };
 
-export default UserTableRow;
+export default UsersTableRow;

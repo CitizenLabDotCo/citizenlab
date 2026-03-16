@@ -17,10 +17,11 @@ import eventEmitter from 'utils/eventEmitter';
 import { isNilOrError } from 'utils/helperUtils';
 import { TRole } from 'utils/permissions/roles';
 
-import events from '../../events';
-import messages from '../../messages';
-import tracks from '../../tracks';
-import UserTableRow from './UserTableRow';
+import events from '../../../events';
+import messages from '../../../messages';
+import tracks from '../../../tracks';
+
+import UsersTableRow from './UsersTableRow';
 
 const Container = styled.div`
   flex: 1;
@@ -187,7 +188,7 @@ const UsersTable = ({
           </Thead>
           <Tbody>
             {usersList.map((user) => (
-              <UserTableRow
+              <UsersTableRow
                 key={user.id}
                 userInRow={user}
                 selected={
