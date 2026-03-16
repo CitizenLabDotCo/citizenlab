@@ -2,7 +2,8 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
-import moment from 'moment-timezone';
+import { TZDate } from '@date-fns/tz';
+import isSameDay from 'date-fns/isSameDay';
 import styled from 'styled-components';
 
 import { ICampaign } from 'api/campaigns/types';
@@ -18,12 +19,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import TimeInput from '../../../../containers/Admin/projects/project/events/components/DateTimeSelection/TimeInput';
 
 import messages from './messages';
-import {
-  getDefaultTime,
-  datetimeInTimezone,
-  getNextHourTime,
-  isSameDay,
-} from './utils';
+import { getDefaultTime, getNextHourTime } from './utils';
 
 const StyledForm = styled(Form)`
   max-width: none;
@@ -37,13 +33,22 @@ interface Props {
   onClose: () => void;
 }
 
-const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
+const ScheduleModal = ({
+  opened,
+  campaign,
+  timeZone = 'Asia/Qatar',
+  onClose,
+}: Props) => {
   const { formatMessage } = useIntl();
   const { mutate: updateCampaign, isLoading: isUpdatingCampaign } =
     useUpdateCampaign();
 
-  const tenantTimeNow = timeZone ? moment().tz(timeZone).toDate() : new Date();
-  const gmtOffset = timeZone ? moment().tz(timeZone).format('Z') : '';
+  const tenantTimeNow = timeZone
+    ? new TZDate(new Date(), timeZone)
+    : new Date();
+  const gmtOffset = new TZDate(new Date(), timeZone)
+    .toISOString()
+    .match(/([+-]\d{2}:\d{2})$/)?.[1];
 
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<Date>(getDefaultTime());
@@ -51,9 +56,10 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
   // if email is already scheduled set the default value to scheduled date and time
   useEffect(() => {
     if (opened && campaign.data.attributes.scheduled_at && timeZone) {
-      const scheduledDate = moment(campaign.data.attributes.scheduled_at)
-        .tz(timeZone)
-        .toDate();
+      const scheduledDate = new TZDate(
+        campaign.data.attributes.scheduled_at,
+        timeZone
+      );
       setSelectedDate(scheduledDate);
       setSelectedTime(scheduledDate);
     }
@@ -76,12 +82,9 @@ const ScheduleModal = ({ opened, campaign, timeZone, onClose }: Props) => {
     e.preventDefault();
     if (!selectedDate || !timeZone) return;
 
-    const scheduledAt = datetimeInTimezone(
-      selectedDate,
-      selectedTime,
-      timeZone
-    );
-
+    const combined = new Date(selectedDate);
+    combined.setHours(selectedTime.getHours(), selectedTime.getMinutes(), 0, 0);
+    const scheduledAt = new Date(new TZDate(combined, timeZone)).toISOString();
     updateCampaign(
       {
         id: campaign.data.id,

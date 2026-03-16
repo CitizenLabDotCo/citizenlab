@@ -10,7 +10,6 @@ import {
   Button,
   Text,
 } from '@citizenlab/cl2-component-library';
-import moment from 'moment-timezone';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -35,6 +34,7 @@ import Error from 'components/UI/Error';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { formatDateinTimezone } from 'utils/dateUtils';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../messages';
@@ -173,9 +173,10 @@ const Show = () => {
                     text={<FormattedMessage {...messages.scheduled} />}
                   />
                   <Text fontSize="base" whiteSpace="nowrap">
-                    {moment(campaign.data.attributes.scheduled_at)
-                      .tz(timeZone)
-                      .format('MMM DD, YYYY hh:mm A')}
+                    {formatDateinTimezone(
+                      campaign.data.attributes.scheduled_at,
+                      timeZone
+                    )}
                   </Text>
                 </>
               )}

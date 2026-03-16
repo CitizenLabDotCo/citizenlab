@@ -1,3 +1,4 @@
+import { TZDate } from '@date-fns/tz';
 import { isString } from 'lodash-es';
 // moment-timezone extends the regular moment library,
 // so there's no need to import both moment and moment-timezone
@@ -354,4 +355,18 @@ export const toBackendDateString = (date?: Date) => {
   const day = dayNumber < 10 ? `0${dayNumber}` : dayNumber;
 
   return `${date.getFullYear()}-${month}-${day}`;
+};
+
+export const formatDateinTimezone = (date: string, timeZone: string) => {
+  return new TZDate(date, timeZone)
+    .toLocaleString('en-US', {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true,
+      timeZone,
+    })
+    .replace(',', '');
 };
