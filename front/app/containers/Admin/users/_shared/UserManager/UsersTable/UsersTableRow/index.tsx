@@ -268,11 +268,11 @@ const UsersTableRow = ({
         <Suspense fallback={null}>
           <ChangeSeatModal
             userToChangeSeat={userInRow}
-            changeRoles={changeRoles}
             showModal={showChangeSeatModal}
-            closeModal={closeChangeSeatModal}
             returnFocusRef={moreActionsButtonRef}
             changingToRoleType={changingToRoleType}
+            closeModal={closeChangeSeatModal}
+            onConfirm={() => changeRoleHandler(changingToRoleType)}
           />
         </Suspense>
         <Modal
