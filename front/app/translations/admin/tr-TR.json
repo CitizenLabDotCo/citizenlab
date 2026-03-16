@@ -1002,6 +1002,7 @@
   "app.containers.Admin.emails.previewSentConfirmation": "E-posta adresinize bir e-posta önizlemesi gönderildi",
   "app.containers.Admin.emails.previewTitle": "Önizleme",
   "app.containers.Admin.emails.regionMultilocError": "Lütfen tüm diller için bir değer girin",
+  "app.containers.Admin.emails.scheduled": "Planlanmış",
   "app.containers.Admin.emails.seeEmailHereText": "Bu tür bir e-posta gönderilir gönderilmez buradan kontrol edebileceksiniz.",
   "app.containers.Admin.emails.send": "Gönder",
   "app.containers.Admin.emails.sendNowButton": "Şimdi gönder",
