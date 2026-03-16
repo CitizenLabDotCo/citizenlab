@@ -10,16 +10,20 @@ import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 
 import messages from '../../../../messages';
 
+export type Action =
+  | 'unblock-user'
+  | 'block-user'
+  | 'set-admin'
+  | 'set-moderator'
+  | 'set-normal-user'
+  | 'delete-user';
+
 interface Params {
   formatMessage: FormatMessage;
   user: IUserData;
   authUser: IUserData;
   isUserBlockingEnabled: boolean;
-  setShowUnblockUserModal: (value: boolean) => void;
-  setShowBlockUserModal: (value: boolean) => void;
-  setShowDeleteUserModal: (value: boolean) => void;
-  setSetAsModeratorOpened: (value: boolean) => void;
-  changeRoleHandler: (role: string) => void;
+  onAction: (action: Action) => void;
 }
 
 export const getActions = ({
@@ -27,11 +31,7 @@ export const getActions = ({
   user,
   authUser,
   isUserBlockingEnabled,
-  setShowUnblockUserModal,
-  setShowBlockUserModal,
-  setShowDeleteUserModal,
-  setSetAsModeratorOpened,
-  changeRoleHandler,
+  onAction,
 }: Params) => {
   const isUserInRowAdmin = isAdmin({ data: user });
   const isUserInRowModerator = !isRegularUser({ data: user });
@@ -52,12 +52,12 @@ export const getActions = ({
       ? [
           user.attributes.blocked
             ? {
-                handler: () => setShowUnblockUserModal(true),
+                handler: () => onAction('unblock-user'),
                 label: formatMessage(blockUserMessages.unblockAction),
                 icon: 'user-circle' as const,
               }
             : {
-                handler: () => setShowBlockUserModal(true),
+                handler: () => onAction('block-user'),
                 label: formatMessage(blockUserMessages.blockAction),
                 icon: 'halt' as const,
               },
@@ -66,25 +66,19 @@ export const getActions = ({
 
   const getSeatChangeActions = () => {
     const setAsAdminAction = {
-      handler: () => {
-        changeRoleHandler('admin');
-      },
+      handler: () => onAction('set-admin'),
       label: formatMessage(messages.setAsAdmin),
       icon: 'shield-checkered' as const,
     };
 
     const setSetAsProjectModeratorAction = {
-      handler: () => {
-        setSetAsModeratorOpened(true);
-      },
+      handler: () => onAction('set-moderator'),
       label: formatMessage(messages.assignAsManager),
       icon: 'user-check' as const,
     };
 
     const setAsNormalUserAction = {
-      handler: () => {
-        changeRoleHandler('user');
-      },
+      handler: () => onAction('set-normal-user'),
       label: formatMessage(messages.setAsNormalUser),
       icon: 'user-circle' as const,
     };
@@ -107,7 +101,7 @@ export const getActions = ({
       if (userInRowIsCurrentUser) {
         window.alert(formatMessage(messages.youCantDeleteYourself));
       } else {
-        setShowDeleteUserModal(true);
+        onAction('delete-user');
       }
     },
     label: formatMessage(messages.deleteUser),

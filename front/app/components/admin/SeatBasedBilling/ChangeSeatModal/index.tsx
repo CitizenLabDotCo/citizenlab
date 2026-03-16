@@ -6,7 +6,7 @@ import { IUserData } from 'api/users/types';
 
 import useExceedsSeats from 'hooks/useExceedsSeats';
 
-import { ChangingRoleTypes } from 'containers/Admin/users/_shared/UserManager/UsersTable/UsersTableRow';
+import { ChangingRoleType } from 'containers/Admin/users/_shared/UserManager/UsersTable/UsersTableRow';
 
 import SeatInfo from 'components/admin/SeatBasedBilling/SeatInfo';
 import BillingWarning from 'components/admin/SeatBasedBilling/SeatInfo/BillingWarning';
@@ -52,8 +52,7 @@ const getButtonText = (
 
 interface Props {
   userToChangeSeat: IUserData;
-  showModal: boolean;
-  changingToRoleType: ChangingRoleTypes;
+  changingToRoleType?: ChangingRoleType;
   /**
    * Optional ref to return focus on close.
    * By default, focus returns to the control that opened the modal.
@@ -65,7 +64,6 @@ interface Props {
 }
 
 const ChangeSeatModal = ({
-  showModal,
   userToChangeSeat,
   returnFocusRef,
   changingToRoleType,
@@ -133,7 +131,7 @@ const ChangeSeatModal = ({
   const seatType = changingToRoleType === 'admin' ? 'admin' : 'moderator';
   return (
     <Modal
-      opened={showModal}
+      opened={!!changingToRoleType}
       close={resetModal}
       header={header}
       returnFocusRef={returnFocusRef}

@@ -8,13 +8,13 @@ import {
   Text,
   Button,
   fontSizes,
+  Checkbox,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 import styled from 'styled-components';
 
 import { IUserData } from 'api/users/types';
 
-import useExceedsSeats from 'hooks/useExceedsSeats';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
@@ -24,7 +24,6 @@ import blockUserMessages from 'components/admin/UserBlockModals/messages';
 import UnblockUser from 'components/admin/UserBlockModals/UnblockUser';
 import DeleteUser from 'components/admin/UserDeleteModal';
 import Avatar from 'components/Avatar';
-import Checkbox from 'components/UI/Checkbox';
 import Modal from 'components/UI/Modal';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 
@@ -36,7 +35,7 @@ import { getFullName } from 'utils/textUtils';
 
 import messages from '../../../../messages';
 
-import { getActions } from './actions';
+import { Action, getActions } from './actions';
 import SetAsModerator from './SetAsModerator';
 import UserAssignedItems from './UserAssignedItems';
 
@@ -57,12 +56,14 @@ const StyledLink = styled(Link)`
 interface Props {
   userInRow: IUserData;
   selected: boolean;
-  toggleSelect: () => void;
-  changeRoles: (user: IUserData, changeToNormalUser: boolean) => void;
   authUser: IUserData;
+  toggleSelect: () => void;
+  onMakeAdmin: () => void;
+  onMakeModerator: () => void;
+  onMakeNormalUser: () => void;
 }
 
-export type ChangingRoleTypes = 'admin' | 'moderator' | 'user';
+export type ChangingRoleType = 'admin' | 'moderator' | 'user';
 
 const getStatusMessage = (user: IUserData): MessageDescriptor => {
   if (user.attributes.blocked) return blockUserMessages.blocked;
@@ -81,9 +82,11 @@ const getStatusMessage = (user: IUserData): MessageDescriptor => {
 const UsersTableRow = ({
   userInRow,
   selected,
-  toggleSelect,
-  changeRoles,
   authUser,
+  toggleSelect,
+  onMakeAdmin,
+  onMakeModerator,
+  onMakeNormalUser,
 }: Props) => {
   const moreActionsButtonRef = useRef<HTMLButtonElement>(null);
   const [isAssignedItemsOpened, setIsAssignedItemsOpened] = useState(false);
@@ -101,50 +104,34 @@ const UsersTableRow = ({
   const [showBlockUserModal, setShowBlockUserModal] = useState(false);
   const [showUnblockUserModal, setShowUnblockUserModal] = useState(false);
   const [showDeleteUserModal, setShowDeleteUserModal] = useState(false);
-  const [showChangeSeatModal, setShowChangeSeatModal] = useState(false);
-  const [changingToRoleType, setChangingToRoleType] =
-    useState<ChangingRoleTypes>('admin');
+  const [showChangeSeatModalFor, setShowChangeSeatModalFor] = useState<
+    ChangingRoleType | undefined
+  >(undefined);
 
-  const exceedsSeatsAdmin = useExceedsSeats()({
-    newlyAddedAdminsNumber: 1,
-  });
-
-  const exceedsSeatsModerator = useExceedsSeats()({
-    newlyAddedModeratorsNumber: 1,
-  });
-
-  const closeChangeSeatModal = () => {
-    setShowChangeSeatModal(false);
-  };
-
-  const changeRoleHandler = useCallback(
-    (changingToRoleType: ChangingRoleTypes) => {
-      setChangingToRoleType(changingToRoleType);
-      const changeToNormalUser = changingToRoleType === 'user';
-
-      const showModalForAdmin =
-        changingToRoleType === 'admin' && exceedsSeatsAdmin.admin;
-      const showModalForModerator =
-        changingToRoleType === 'moderator' && exceedsSeatsModerator.moderator;
-
-      const shouldOpenConfirmationInModal =
-        changeToNormalUser || showModalForAdmin || showModalForModerator;
-
-      if (shouldOpenConfirmationInModal) {
-        setShowChangeSeatModal(true);
-        return;
-      }
-
-      // If the user is changing to moderator, we want to bypass calling the changeRoles function because the role change is handled in the SetAsProjectModerator modal
-      if (changingToRoleType === 'moderator') {
-        return;
-      }
-
-      // We pass in the user along with whether to change that user to a normal user or admin. We are not toggling because the user passed in could have other roles or be a moderator
-      changeRoles(userInRow, changeToNormalUser);
-    },
-    [userInRow, changeRoles, exceedsSeatsAdmin, exceedsSeatsModerator]
-  );
+  const onAction = useCallback((action: Action) => {
+    switch (action) {
+      case 'block-user':
+        setShowBlockUserModal(true);
+        break;
+      case 'unblock-user':
+        setShowUnblockUserModal(true);
+        break;
+      case 'delete-user':
+        setShowDeleteUserModal(true);
+        break;
+      case 'set-admin':
+        setShowChangeSeatModalFor('admin');
+        break;
+      case 'set-moderator':
+        setSetAsModeratorOpened(true);
+        break;
+      case 'set-normal-user':
+        setShowChangeSeatModalFor('user');
+        break;
+      default:
+        break;
+    }
+  }, []);
 
   const actions = useMemo(() => {
     return getActions({
@@ -152,23 +139,9 @@ const UsersTableRow = ({
       user: userInRow,
       authUser,
       isUserBlockingEnabled,
-      setShowUnblockUserModal,
-      setShowBlockUserModal,
-      setShowDeleteUserModal,
-      setSetAsModeratorOpened,
-      changeRoleHandler,
+      onAction,
     });
-  }, [
-    formatMessage,
-    userInRow,
-    authUser,
-    isUserBlockingEnabled,
-    setShowUnblockUserModal,
-    setShowBlockUserModal,
-    setShowDeleteUserModal,
-    setSetAsModeratorOpened,
-    changeRoleHandler,
-  ]);
+  }, [formatMessage, userInRow, authUser, isUserBlockingEnabled, onAction]);
 
   return (
     <>
@@ -268,11 +241,10 @@ const UsersTableRow = ({
         <Suspense fallback={null}>
           <ChangeSeatModal
             userToChangeSeat={userInRow}
-            showModal={showChangeSeatModal}
             returnFocusRef={moreActionsButtonRef}
-            changingToRoleType={changingToRoleType}
-            closeModal={closeChangeSeatModal}
-            onConfirm={() => changeRoleHandler(changingToRoleType)}
+            changingToRoleType={showChangeSeatModalFor}
+            closeModal={() => setShowChangeSeatModalFor(undefined)}
+            onConfirm={() => {}}
           />
         </Suspense>
         <Modal
@@ -294,7 +266,7 @@ const UsersTableRow = ({
           <SetAsModerator
             user={userInRow}
             onClose={() => setSetAsModeratorOpened(false)}
-            onSuccess={() => changeRoleHandler('moderator')}
+            onSuccess={() => setShowChangeSeatModalFor('moderator')}
           />
         </Modal>
       </Tr>
