@@ -37,6 +37,8 @@ interface Props {
   projectId: string;
 }
 
+const TEMP_HIDE_STUFF = Math.random() > -1;
+
 const ProjectManagement = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
   const { data: authUser } = useAuthUser();
@@ -80,16 +82,20 @@ const ProjectManagement = ({ projectId }: Props) => {
       {isAdmin(authUser) && (
         <>
           <UserSearch projectId={projectId} />
-          <Box maxWidth="500px" mt="28px">
-            <Or />
-          </Box>
+          {TEMP_HIDE_STUFF && (
+            <Box maxWidth="500px" mt="28px">
+              <Or />
+            </Box>
+          )}
         </>
       )}
-      <AddByEmail
-        onSubmit={async (email) => {
-          await addProjectModerator({ moderatorEmail: email, projectId });
-        }}
-      />
+      {TEMP_HIDE_STUFF && (
+        <AddByEmail
+          onSubmit={async (email) => {
+            await addProjectModerator({ moderatorEmail: email, projectId });
+          }}
+        />
+      )}
       <Box mt="40px">
         <Text
           color="primary"

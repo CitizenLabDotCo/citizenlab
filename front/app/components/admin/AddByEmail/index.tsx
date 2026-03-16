@@ -5,6 +5,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { string, object } from 'yup';
 
+import authenticationMessages from 'containers/Authentication/steps/messages';
+
 import Input from 'components/HookForm/Input';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -14,7 +16,7 @@ import {
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
 import { isValidEmail } from 'utils/validate';
-import authenticationMessages from 'containers/Authentication/steps/messages';
+
 import messages from './messages';
 
 type FormValues = {
