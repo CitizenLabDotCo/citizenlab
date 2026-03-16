@@ -1002,6 +1002,7 @@
   "app.containers.Admin.emails.previewSentConfirmation": "A preview email has been sent to your email address",
   "app.containers.Admin.emails.previewTitle": "Preview",
   "app.containers.Admin.emails.regionMultilocError": "Please provide a value for all languages",
+  "app.containers.Admin.emails.scheduled": "Geplangt",
   "app.containers.Admin.emails.seeEmailHereText": "Soubal eng E-Mail vun dësem Typ geschéckt gëtt, kënnt Dir se hei kucken.",
   "app.containers.Admin.emails.send": "Send",
   "app.containers.Admin.emails.sendNowButton": "Send now",
