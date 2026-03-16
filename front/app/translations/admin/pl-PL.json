@@ -1002,6 +1002,7 @@
   "app.containers.Admin.emails.previewSentConfirmation": "Na Twój adres e-mail został wysłany e-mail podglądowy",
   "app.containers.Admin.emails.previewTitle": "Podgląd",
   "app.containers.Admin.emails.regionMultilocError": "Podaj wartość dla wszystkich języków",
+  "app.containers.Admin.emails.scheduled": "Zaplanowane",
   "app.containers.Admin.emails.seeEmailHereText": "Gdy tylko wiadomość tego typu zostanie wysłana, będziesz mógł ją sprawdzić tutaj.",
   "app.containers.Admin.emails.send": "Wyślij",
   "app.containers.Admin.emails.sendNowButton": "Wyślij teraz",
