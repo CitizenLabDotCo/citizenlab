@@ -1002,6 +1002,7 @@
   "app.containers.Admin.emails.previewSentConfirmation": "Į jūsų el. pašto adresą buvo išsiųstas peržiūros el. laiškas",
   "app.containers.Admin.emails.previewTitle": "Peržiūra",
   "app.containers.Admin.emails.regionMultilocError": "Nurodykite visų kalbų vertę",
+  "app.containers.Admin.emails.scheduled": "Suplanuota",
   "app.containers.Admin.emails.seeEmailHereText": "Kai tik bus išsiųstas tokio tipo el. laiškas, galėsite jį patikrinti čia.",
   "app.containers.Admin.emails.send": "Siųsti",
   "app.containers.Admin.emails.sendNowButton": "Siųsti dabar",
