@@ -8,6 +8,7 @@ import {
   Title,
   Box,
   fontSizes,
+  Text,
 } from '@citizenlab/cl2-component-library';
 import { useParams } from 'react-router-dom';
 import GetGroup from 'resources/GetGroup';
@@ -21,9 +22,11 @@ import { isDraft } from 'api/campaigns/util';
 import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import DraftCampaignDetails from 'components/admin/Email/DraftCampaignDetails';
+import EmailScheduling from 'components/admin/Email/Scheduling';
 import SentCampaignDetails from 'components/admin/Email/SentCampaignDetails';
 import Stamp from 'components/admin/Email/Stamp';
 import T from 'components/T';
@@ -35,6 +38,7 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
+import { formatDateInTimezone } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { getFullName } from 'utils/textUtils';
 
@@ -186,6 +190,10 @@ const Show = () => {
       },
     });
   };
+  const isEmailSchedulingAllowed = useFeatureFlag({
+    name: 'email_scheduling',
+  });
+  const timeZone = tenant?.data.attributes.settings.core.timezone;
 
   if (campaign) {
     const groupIds: string[] = campaign.data.relationships.groups.data.map(
@@ -203,23 +211,40 @@ const Show = () => {
       <Box background={colors.white} p="40px" id="e2e-custom-email-container">
         <GoBackButton onClick={goBack} />
         <Box display="flex" mb="20px">
-          <Box display="flex" alignItems="center" mr="auto">
+          <Box display="flex" alignItems="center" mr="auto" gap="12px">
             <Title mr="12px">
               <T value={campaign.data.attributes.subject_multiloc} />
             </Title>
-            {isDraft(campaign.data) ? (
+            {isDraft(campaign.data) && (
               <StatusLabel
                 backgroundColor={colors.brown}
                 text={<FormattedMessage {...messages.draft} />}
               />
-            ) : (
-              <StatusLabel
-                backgroundColor={colors.success}
-                text={<FormattedMessage {...messages.sent} />}
-              />
+            )}
+            {!isDraft(campaign.data) &&
+              !campaign.data.attributes.scheduled_at && (
+                <StatusLabel
+                  backgroundColor={colors.success}
+                  text={<FormattedMessage {...messages.sent} />}
+                />
+              )}
+            {campaign.data.attributes.scheduled_at && timeZone && (
+              <>
+                <StatusLabel
+                  backgroundColor={colors.teal500}
+                  text={<FormattedMessage {...messages.scheduled} />}
+                />
+                <Text fontSize="base" whiteSpace="nowrap">
+                  {formatDateInTimezone({
+                    date: campaign.data.attributes.scheduled_at,
+                    timeZone,
+                  })}
+                </Text>
+              </>
             )}
           </Box>
-          {isDraft(campaign.data) && (
+          {(isDraft(campaign.data) ||
+            campaign.data.attributes.scheduled_at) && (
             <Buttons>
               <ButtonWithLink
                 linkTo={`/admin/messaging/emails/custom/${campaign.data.id}/edit`}
@@ -227,16 +252,31 @@ const Show = () => {
               >
                 <FormattedMessage {...messages.editButtonLabel} />
               </ButtonWithLink>
-              <ButtonWithLink
-                buttonStyle="admin-dark"
-                icon="send"
-                iconPos="right"
-                onClick={handleSend(noGroupsSelected)}
-                disabled={isLoading}
-                processing={isLoading}
+
+              <Box
+                position="relative"
+                display="flex"
+                gap="1px"
+                alignItems="center"
+                maxHeight="90px"
               >
-                <FormattedMessage {...messages.send} />
-              </ButtonWithLink>
+                <ButtonWithLink
+                  buttonStyle="admin-dark"
+                  icon="send"
+                  iconPos="right"
+                  onClick={handleSend(noGroupsSelected)}
+                  disabled={isLoading}
+                  processing={isLoading}
+                  borderRadius={
+                    isEmailSchedulingAllowed ? '3px 0px 0px 3px' : '3px'
+                  }
+                >
+                  <FormattedMessage {...messages.send} />
+                </ButtonWithLink>
+                {isEmailSchedulingAllowed && (
+                  <EmailScheduling campaign={campaign} timeZone={timeZone} />
+                )}
+              </Box>
             </Buttons>
           )}
         </Box>
@@ -308,7 +348,8 @@ const Show = () => {
               ))}
             </div>
           </FromTo>
-          {isDraft(campaign.data) && (
+          {(isDraft(campaign.data) ||
+            campaign.data.attributes.scheduled_at) && (
             <Box mb="30px" display="flex" alignItems="center">
               <SendTestEmailButton onClick={handleSendTestEmail}>
                 <FormattedMessage {...messages.sendTestEmailButton} />
@@ -323,7 +364,7 @@ const Show = () => {
           )}
         </Box>
 
-        {isDraft(campaign.data) ? (
+        {isDraft(campaign.data) || campaign.data.attributes.scheduled_at ? (
           <DraftCampaignDetails campaign={campaign.data} />
         ) : (
           <SentCampaignDetails campaignId={campaign.data.id} />

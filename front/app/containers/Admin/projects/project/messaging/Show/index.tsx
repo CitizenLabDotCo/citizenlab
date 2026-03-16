@@ -250,7 +250,8 @@ const Show = () => {
                 </span>
               </div>
             </FromTo>
-            {isDraft(campaign.data) && (
+            {(isDraft(campaign.data) ||
+              campaign.data.attributes.scheduled_at) && (
               <Box mb="30px" display="flex" alignItems="center">
                 <SendTestEmailButton onClick={handleSendTestEmail}>
                   <FormattedMessage {...messages.sendTestEmailButton} />
